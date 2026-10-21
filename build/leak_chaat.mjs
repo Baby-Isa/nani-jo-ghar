@@ -117,10 +117,7 @@ export function play(level, strategy, rng, { R: rr = rules(), o = order(level, r
     } else {
       here.add(id);
       if (j.verdict === "bounce") out.add(id);
-      else {
-        inOrder.add(id);
-        got.length = 0;
-      }
+      else inOrder.add(id); // CHT-14 (Zafar, 21 Oct): a later one comes back out; the bowl keeps what it had
     }
   }
   const right = o.rows.filter((r) => !missed.has(`${r.no ? "no:" : ""}${r.id}`)).length;

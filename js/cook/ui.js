@@ -1669,6 +1669,19 @@
           const parts = flat.map((x) => partNode(x.r, x.gi));
           // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
           // only block (count 2: never the shared card's "direct" shape, which drops the head)
+          const n = s.head.qty || 1;
+          if (n > 1 && s.head.made != null) {
+            // SH-53 (Zafar, 21 Oct: yes): the kind's row ("trae samosa") over one box per samosa, its fillings in it; a box's
+            // pieces tick as that samosa is made (filled and left for the next strip: progress, never which spoonful was
+            // right, so the counting rule holds); the kind's row ticks only when all of them are made (SAM-24: closeItem)
+            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: !!s.head.done, key: s.head, src: [] });
+            for (let u = 0; u < n; u++) {
+              const made = !!s.head.done || u < s.head.made;
+              items.push({ label: null, count: 1, parts: parts.map((p) => Object.assign({}, p, { done: made || p.done, next: false })), ordered: false, group: true, done: made, src: [] });
+            }
+            rowsShown.push(s.head, ...flat.map((x) => x.r));
+            return;
+          }
           items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;

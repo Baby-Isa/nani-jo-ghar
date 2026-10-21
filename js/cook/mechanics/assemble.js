@@ -116,15 +116,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   "in"     it is what the order wants here: it stays (its row ticks as it goes in)
    *   "bounce" it is not wanted at all (a decoy, the 'no' item, one more than asked): a pause, the glass wobbles with a
    *            warm glow and it comes back out; the bowl keeps what it had
-   *   "reset"  it is in the order, but later ("if you get the third item in the wrong order, it throws out all the items.
-   *            You have to go from the beginning again"): the same wobble, and the bowl empties
+   *   "later"  it is in the order, but later: the same wobble and it comes back out; the right ones stay in the bowl and
+   *            stay ticked (Zafar, 21 Oct: replaces decision 9's "a wrong one in the sequence empties the bowl")
    * expected: what the order wanted here (its row loses its tick: a tick is the right item first go).
    */
   function judgeDrop(C, got, id) {
     const m = C.mistake(got.concat(id));
     if (!m || m.got === undefined || m.at > got.length) return { verdict: "in", expected: id };
     const later = [].concat(...C.rest(got.length, got)).includes(id);
-    return { verdict: later ? "reset" : "bounce", expected: C.next(got) };
+    return { verdict: later ? "later" : "bounce", expected: C.next(got) };
   }
   /**
    * The rows a wrong try costs their tick (P63: "you get a tick if you put the right item in the right sequence on the first
@@ -137,7 +137,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const out = [];
     if (j.expected) out.push({ id: j.expected, no: false });
     if (exclude.includes(id)) out.push({ id, no: true });
-    else if (j.verdict === "reset" && id !== j.expected) out.push({ id, no: false });
+    else if (j.verdict === "later" && id !== j.expected) out.push({ id, no: false });
     return out;
   }
   /* ---- /CHAAT_RULES ---- */
@@ -1297,8 +1297,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       /*
        * CHT-14, CHT-15 (decision 9, softened for rule 12): a wrong thing goes in, a short pause, the glass wobbles with a warm
-       * glow (never red) and it comes back out to its pot; one from later in the order empties the bowl (every layer back to
-       * its pot: start again from the bottom). Nothing is said. The rows it costs lose their tick (judgeDrop, rowsMissed); the
+       * glow (never red) and it comes back out to its pot, one from later in the order too (Zafar, 21 Oct: the right ones
+       * stay in the bowl and stay ticked). Nothing is said. The rows it costs lose their tick (judgeDrop, rowsMissed); the
        * card ticks nothing for it, so the bowl, not a missing tick, is what tells the child.
        */
       const missedIds = new Set();
@@ -1322,28 +1322,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await Cook.wait(260); // the little pause ("maybe there's a tiny little pause, and then the bowl shakes")
         if (Cook.sfx.soft) Cook.sfx.soft();
         await bowl.notIn();
-        if (j.verdict === "bounce") {
-          await bowl.removeTop(260);
-          await spoonBack(id, p);
-        } else {
-          // everything out: each layer's spoonful back to its pot, the card's rows open again (their ticks earned stay earned)
-          const back = got.concat(id);
-          const at = bowl.surfaceAt();
-          await bowl.empty();
-          await Promise.all([...new Set(back)].map((x, i) => Cook.wait(i * 90).then(() => spoonBack(x, at))));
-          got.length = 0;
-          while (ticked.length) {
-            const r = ticked.pop();
-            if (r) {
-              r.got = Math.max(0, (r.got || 1) - 1);
-              r.done = false;
-            }
-          }
-          const L = ladderOf(ctx);
-          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
-          if (sq) sq.at = 0;
-          UI.mission.refresh();
-        }
+        // CHT-14 (Zafar, 21 Oct): only the wrong one comes back out, whatever it was (not wanted, or wanted later); the
+        // right ones stay in the bowl and stay ticked
+        await bowl.removeTop(260);
+        await spoonBack(id, p);
         z.progress({ wrong: id, verdict: j.verdict, n: got.length });
         busy--;
       }

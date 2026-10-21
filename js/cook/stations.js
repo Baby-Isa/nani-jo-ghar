@@ -607,45 +607,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /** A small "it went in" mark where something lands in a pot or a glass (28 Sept, s8). */
     puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {
       // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa), the same in every station.
-      // (s08 w6M: clouds read as blobs on the food, CK-06; then a ripple of rings, which the judge saw as only a thin ring.)
-      // CK-27 (Zafar's "a small puff or sprinkle"; the judge, 21 Oct: "only a thin white ring"): now a fine sprinkle. A
-      // spray of tiny grains (never blobs, CK-06: each a couple of px) jumps up out of where the thing landed, arcs and falls
-      // back, fading: the item's own colour and a lighter one, each grain with a thin dark edge so it reads on a pale glass
-      // or a dark pan. flat: how far the spray reaches sideways against up (a side-on glass keeps it narrower). Gone by ~0.8 s.
+      // (s08 w6M: clouds read as blobs on the food, CK-06; then a ripple of rings, "only a thin ring"; then a fine sprinkle.)
+      // CK-27 (Zafar, 21 Oct: yes; the fine sprinkle read as a few specks at 1x): a brief soft splash, ONE shape where the thing
+      // landed: a little crown of eight short points, the item's colour lightened, with a soft dark edge so it reads on a
+      // pale glass or a dark pan. It springs open and fades in about 0.5 s. flat: its height over its width (a side-on glass
+      // passes a flatter one).
       const c = Number(color) >>> 0;
       const tone = (k) => {
         const mix = (sh) => Math.max(0, Math.min(255, Math.round(((c >> sh) & 255) * (1 - k) + 255 * k)));
         return (mix(16) << 16) | (mix(8) << 8) | mix(0);
       };
-      const cols = [c, tone(0.35), tone(0.6)];
-      const n = 16;
-      const reach = size * 1.25;
-      for (let i = 0; i < n; i++) {
-        const r = Math.max(1.4, size * (0.035 + Math.random() * 0.03));
-        const dot = this.track(this.add.circle(x, y, r, cols[i % cols.length], 1).setDepth(D.fx));
-        dot.setStrokeStyle(Math.max(0.8, r * 0.35), 0x3a2410, 0.45);
-        // up and out: from straight up to about 70 degrees either side
-        const ang = -Math.PI / 2 + (Math.random() - 0.5) * 2.4;
-        const dist = reach * (0.45 + Math.random() * 0.55);
-        const dx = Math.cos(ang) * dist * (0.6 + 0.4 * Math.min(1, flat / 0.72));
-        const up = -Math.sin(ang) * dist;
-        const st = { t: 0 };
-        this.tweens.add({
-          targets: st,
-          t: 1,
-          delay: Math.random() * 90,
-          duration: 560 + Math.random() * 240,
-          ease: "Linear",
-          onUpdate: () => {
-            if (!dot.active) return;
-            const t = st.t;
-            // a little arc: up fast, then back down past where it started (gravity), fading out over the last half
-            dot.setPosition(x + dx * t, y - up * (2 * t - t * t * 1.6));
-            dot.setAlpha(t < 0.5 ? 1 : 1 - (t - 0.5) * 2);
-          },
-          onComplete: () => dot.destroy(),
-        });
+      const R = size * 0.95;
+      const g = this.track(this.add.graphics().setDepth(D.fx).setPosition(x, y));
+      const pts = [];
+      const N = 8;
+      for (let i = 0; i < N * 2; i++) {
+        const a = (i / (N * 2)) * Math.PI * 2 - Math.PI / 2;
+        const rr = i % 2 ? 0.55 : 1;
+        pts.push({ x: Math.cos(a) * R * rr, y: Math.sin(a) * R * rr * flat });
       }
+      g.fillStyle(tone(0.45), 0.9);
+      g.fillPoints(pts, true, true);
+      g.lineStyle(Math.max(1.5, R * 0.07), 0x3a2410, 0.4);
+      g.strokePoints(pts, true, true);
+      g.fillStyle(0xffffff, 0.55);
+      g.fillEllipse(0, 0, R * 0.7, R * 0.7 * flat);
+      g.setScale(0.35).setAlpha(1);
+      this.tweens.add({ targets: g, scale: 1, duration: 200, ease: "Back.easeOut" });
+      this.tweens.add({ targets: g, alpha: 0, delay: 220, duration: 300, ease: "Quad.easeIn", onComplete: () => g.destroy() });
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
     wisps(x, y, n = 2, w = 60) {

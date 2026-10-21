@@ -1041,6 +1041,24 @@
   {
    "flow": "cook:samosa",
    "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "SH-53 Cook part (Zafar, 21 Oct): the samosa kind's row over one box per samosa; a box's fillings tick as that samosa is made (filled, then the next strip begun); the kind's row ticks only when all are made",
+   "max": 6
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
    "level": 3,
    "sizes": [
     "1366x768"
