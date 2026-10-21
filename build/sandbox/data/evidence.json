@@ -8771,13 +8771,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:drill",
+   "at": "heal:drill",
    "after": null,
    "capture": [
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "drilled inside the mouth; decay jagged and scattered by level"
+   "note": "drilled inside the mouth; decay jagged and scattered by level (s09: at the first drill move, before it: at step:drill the decay was already drilled to a soft patch)"
   }
  ],
  "CLN-53": [
@@ -8914,10 +8914,11 @@
    "after": null,
    "capture": [
     "shot",
+    "strip:.cl-heal:3x350",
     "dom:.njg-guide"
    ],
    "expect": null,
-   "note": "always clear what next: after each change the player waits 8.5 s (the L1 help ladder is 7 s), so the next thing's glow, the doctor's line and the lit row are on the screen; a live thermometer with a zone (s09: the frames were taken at the change itself, before any pause, and the crop left out the sidebar)",
+   "note": "always clear what next: after each change the player waits 8.5 s (the L1 help ladder is 7 s), so the next thing's glow, the doctor's line and the lit row are on the screen; a live thermometer with a zone (a 3-frame strip catches the glow's 1 s pulse; s09: the frames were taken at the change itself, before any pause, and the crop left out the sidebar)",
    "delay": 8500
   }
  ],
@@ -17228,7 +17229,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-hic-start",
+   "at": "every:rec:heal-hic-*",
    "after": null,
    "capture": [
     "shot",
@@ -17237,7 +17238,8 @@
    "expect": [
     "noFinding:scroll-container"
    ],
-   "note": "the parked hiccups game: no written English sound words, nothing clipped, the sidebar card whole (s08 w8B: a spec for a live row that had none, PRC-06)"
+   "note": "the parked hiccups game: no written English sound words, nothing clipped, the sidebar card whole (s08 w8B: a spec for a live row that had none, PRC-06) (s09: every moment of the round, not only its start: the card scrolled at the hold step, its third row, at 800x360)",
+   "max": 6
   }
  ],
  "SH-92": [
