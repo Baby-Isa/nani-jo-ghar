@@ -192,7 +192,10 @@
         const br = box.getBoundingClientRect();
         const tx = m.a * t[0] + m.c * t[1] + m.e - br.left;
         const ty = m.b * t[0] + m.d * t[1] + m.f - br.top;
-        if (o.camera.size && q.r) k = Math.max(1.6, Math.min(9, (o.camera.size * m.a) / q.r));
+        // shared3 (CLN-87, the judge 21 Oct: the pull-out's first frame was a mid shot of her lap, and the push-in ghosted her
+        // seated body over the knee): the knee's match needs 11.2x, and a cap of 9 left the room's knee smaller than the
+        // close-up's at the hand-over, so the two pictures never met. The cap is 16: the room always reaches the close-up
+        if (o.camera.size && q.r) k = Math.max(1.6, Math.min(16, (o.camera.size * m.a) / q.r));
         dx = tx - q.x;
         dy = ty - q.y;
         // CLN-163 (clinic decision 7): where the part is, in client px, on the room (q) and on the close-up (t)
@@ -258,9 +261,13 @@
       const bg = [];
       const el = closeEl();
       const r = el && a.tc ? el.getBoundingClientRect() : null;
+      // CLN-87 (Zafar, 6 Oct Z2: the pull-out starts from full zoom on the healed part): the pull-out holds the close-up, the
+      // healed part (the bandage, the plaster) at full zoom, for its first 0.2 of the move, then pulls back in the rest
+      const HOLD = dir > 0 ? 0 : 0.2;
       for (let i = 0; i <= N; i++) {
         const u = i / N;
-        const p = ease(dir > 0 ? u : 1 - u); // p: 0 = the wide shot, 1 = the close-up
+        const v = HOLD ? Math.max(0, (u - HOLD) / (1 - HOLD)) : u;
+        const p = ease(dir > 0 ? v : 1 - v); // p: 0 = the wide shot, 1 = the close-up
         const s = Math.pow(a.k, p);
         const f = a.k > 1.001 ? (s - 1) / (a.k - 1) : p;
         // s08 w6N (CLN-163; the judge: "the zoom still blurs the cartoon girl heavily"): no blur on the room (a blur on
@@ -369,7 +376,8 @@
         placeMid(a.k);
         if (midEl) midEl.style.display = "";
         const F = frames(a, -1);
-        const opts = { duration: ms, easing: "linear", fill: "forwards" };
+        // (CLN-87: the hold on the healed part is the first 0.2 of the move, so the pull-back itself still takes about 1.5 s)
+        const opts = { duration: Math.round(ms * 1.25), easing: "linear", fill: "forwards" };
         if (F.el) {
           F.el.style.transformOrigin = F.origin;
           F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)

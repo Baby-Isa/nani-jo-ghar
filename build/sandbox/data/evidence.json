@@ -1831,10 +1831,11 @@
   "at": "every:rec:stage",
   "after": null,
   "capture": [
-   "dom:.cl-side .oc-card .oc-strip"
+   "dom:.cl-side .njg-guide",
+   "dom:.cl-side .oc-card"
   ],
   "expect": null,
-  "note": "Zafar, 21 Oct: from level 2 too his strip says the step now in every stage (the waiting room, the pharmacy and the send-off were empty)",
+  "note": "Zafar, 21 Oct: from level 2 too the guide box says the step now in every stage, the card keeps the order (no step line on the card)",
   "delay": 1500
  }
  ],
@@ -7144,7 +7145,7 @@
    "at": "zoom-out",
    "after": null,
    "capture": [
-    "strip:.cl-zoom:6x250"
+    "strip:.cl-stage:6x250"
    ],
    "expect": null,
    "note": "the pull-out as it plays (a 1x page: its frames 250 ms apart)",

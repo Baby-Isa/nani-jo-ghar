@@ -101,10 +101,11 @@
 /* (s09, the judge on 20 Oct: her circle "brows to chin fill the circle, no hair or ears" beside Nana's and the doctor's whole heads with a
    margin: hers zooms out to her whole face, ears and the top of her hair inside the circle, as theirs are) */
 /* (shared2, the orchestrator on 21 Oct: at 1.3 her circle showed her whole head and shoulders, far wider than Nana's and the doctor's.
-   Measured on her 512 px head: cheeks 0.55 of the picture wide, eyes at 0.43, chin at 0.69. Zoom 1.5 puts her cheeks across 0.82 of
-   the circle, as Nana's (0.8) and the doctor's are, her eyes just above the middle and her chin near the bottom; the hair top and the
-   ears' edges are cut a little, as theirs are) */
-.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.5; --face-y: 46%; }
+   Measured on her 512 px head: cheeks 0.55 of the picture wide, eyes at 0.43, chin at 0.69. shared3 (the judge, 21 Oct: at 1.5 / 46 %
+   the cut's transparent edges beside her chin showed as white blotches, and her face sat tighter than the doctor's whole head): the
+   largest circle about 34 % down with no transparent pixel in it and inside the picture (measured on all six moods) has a radius of 0.334,
+   so zoom 1.5: her whole head from the crown, her chin at the circle's foot, nothing of the cut's edge inside) */
+.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.5; --face-y: 34%; }
 .hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
 /* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
    zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */
