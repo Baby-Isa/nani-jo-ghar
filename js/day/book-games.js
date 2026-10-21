@@ -128,3 +128,47 @@ export function bookWords(plan) {
   }
   return out;
 }
+
+/**
+ * The book's one line at a time (DAY-02, the judge, 21 Oct): every line Nani says in the book goes through this queue, so each
+ * starts only after the last has ended, and the same line asked for again while it is still waiting, being said or within `gapMs`
+ * of its end is not said a second time (one line per event). say(ln, ...rest) -> the promise of that line's end.
+ *   const q = sayQueue((ln, ...rest) => api.say(ln, ...rest), { now: () => Date.now(), gapMs: 1000 })
+ */
+export function sayQueue(sayFn, { now = () => Date.now(), gapMs = 1000 } = {}) {
+  let tail = Promise.resolve();
+  let last = null; // {ln, done: promise, end: ms | null}
+  return function say(ln, ...rest) {
+    if (!ln) return Promise.resolve();
+    if (last && last.ln === ln && (last.end == null || now() - last.end < gapMs)) return last.done;
+    const entry = { ln, end: null };
+    entry.done = tail
+      .then(() => sayFn(ln, ...rest))
+      .catch(() => {})
+      .then(() => {
+        entry.end = now();
+      });
+    tail = entry.done;
+    last = entry;
+    return entry.done;
+  };
+}
+
+/**
+ * The faults in a list of said lines [{text, a (start ms), b (end ms)}] in the order they started: a line said again within 1 s of
+ * its own end (twice for one event), two lines at once (one starting before the last has ended), a line with no length at all.
+ */
+export function voiceFaults(list, { gapMs = 1000, slackMs = 30 } = {}) {
+  const out = [];
+  const lastOf = new Map();
+  let prev = null;
+  for (const e of list) {
+    if (e.b != null && e.b - e.a < 1) out.push({ kind: "zero", text: e.text, at: e.a });
+    const p = lastOf.get(e.text);
+    if (p && p.b != null && e.a - p.b < gapMs) out.push({ kind: "twice", text: e.text, at: e.a });
+    if (prev && (prev.b == null || e.a < prev.b - slackMs)) out.push({ kind: "overlap", text: e.text, over: prev.text, at: e.a });
+    lastOf.set(e.text, e);
+    if (!prev || prev.b == null || (e.b != null && e.b > prev.b)) prev = e;
+  }
+  return out;
+}

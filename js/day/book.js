@@ -21,7 +21,7 @@
  * window.Day.book = {plan, results: [{game, key, firstTry}], stage}: the tests' read-only view (build/sandbox/flows/day.mjs)
  */
 import { paintSky, shapes } from "./sky.js";
-import { planBook, linesFor, bookWords } from "./book-games.js";
+import { planBook, linesFor, bookWords, sayQueue } from "./book-games.js";
 import { runGame } from "./book-play.js";
 
 const todayDate = () => new Date().toISOString().slice(0, 10);
@@ -55,6 +55,14 @@ const el = (tag, cls, parent) => {
 
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
+  // every line the book says, one at a time: each starts after the last has ended, and one event says its line once (DAY-02)
+  // (each line's start and end on the page's clock in window.Day.book.voice: the tests' read-only view, the day-book flow's check)
+  const bookSay = sayQueue((ln, o) => {
+    const e = { text: String(ln.text || ln.en || ""), a: performance.now(), b: null };
+    const B = window.Day.book;
+    if (B) (B.voice = B.voice || []).push(e);
+    return Promise.resolve(api.say(ln, o)).finally(() => (e.b = performance.now()));
+  });
   // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
   api.test.state("day/book/load");
   api.test.expect(() => ({ kind: "wait" }));
@@ -282,7 +290,7 @@ export async function runBook(host, api, day) {
   spk.addEventListener("click", () => {
     if (!roomLine) return;
     bubble.classList.add("speaking");
-    api.say(roomLine, { el: bubbleText.firstChild, who: "nani", min: false }).then(() => bubble.classList.remove("speaking"));
+    bookSay(roomLine, { el: bubbleText.firstChild, who: "nani" }).then(() => bubble.classList.remove("speaking"));
   });
   const H = A.head || { x: 512, y: 150, r: 95 };
   const placeBubble = (prefer = "left") => {
@@ -318,7 +326,7 @@ export async function runBook(host, api, day) {
     placeBubble(prefer);
     bubble.classList.add("in");
     bubble.classList.add("speaking");
-    await api.say(ln, { el: r, who: "nani" });
+    await bookSay(ln, { el: r, who: "nani" });
     bubble.classList.remove("speaking");
   };
 
@@ -344,7 +352,7 @@ export async function runBook(host, api, day) {
   face.addEventListener("click", () => {
     if (!current) return;
     face.classList.add("on");
-    api.say(current, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani", min: false }).then(() => face.classList.remove("on"));
+    bookSay(current, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani" }).then(() => face.classList.remove("on"));
   });
 
   // the pages picture always covers the screen (no letterbox); on a phone it comes closer so each page is at least minPageW wide
@@ -451,14 +459,21 @@ export async function runBook(host, api, day) {
     } else box.appendChild(shapes(B.shapes, 600, 640));
     return box;
   };
+  // her face and her card show together and only with a line on a page that is showing: never the circle alone, never a blank card
+  let headHeld = true;
+  const showHead = () => {
+    if (headHeld || !current) return;
+    const ln = current;
+    // (with its words already drawn: two frames after the line is laid out)
+    requestAnimationFrame(() => requestAnimationFrame(() => current === ln && !headHeld && (headRow.style.visibility = "")));
+  };
   const head = (ln) => {
     current = ln || null;
     headLine.innerHTML = "";
     if (ln) headLine.appendChild(api.render(ln));
     if (window.FitText) window.FitText.run(headRow);
-    // her card shows with its words already drawn (never a blank card for a frame while the new line lays out)
-    headLine.style.visibility = "hidden";
-    requestAnimationFrame(() => requestAnimationFrame(() => current === (ln || null) && (headLine.style.visibility = "")));
+    headRow.style.visibility = "hidden";
+    showHead();
   };
   let turnOn = false;
   const showTurn = (on) => {
@@ -477,7 +492,9 @@ export async function runBook(host, api, day) {
     line,
     head,
     headLine: () => (headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null),
-    say: (ln, node, o = {}) => api.say(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o)),
+    // (a page built before it shows speaks only once it shows: g.go)
+    go: Promise.resolve(),
+    say: (ln, node, o = {}) => g.go.then(() => bookSay(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o))),
     // (the tests act only once the page shows: a hidden page takes no touch)
     expect: (fn) => api.test.expect(() => (g.hidden ? { kind: "wait" } : fn())),
     state: (s) => {
@@ -540,6 +557,35 @@ export async function runBook(host, api, day) {
     book.classList.remove("day-turning");
   };
 
+  /**
+   * A page built and drawn before it shows: its pictures fetched, the game's page made (hidden; her lines held until it shows),
+   * every <img> on it decoded in place. reveal() shows it, her face and card with it, and lets her speak.
+   */
+  let first = null;
+  const prep = async (p) => {
+    await picsOf(p);
+    mount(p);
+    g.hidden = true;
+    headHeld = true;
+    headRow.style.visibility = "hidden";
+    g.wrap.style.visibility = "hidden";
+    let release = null;
+    g.go = new Promise((r) => (release = r));
+    const run = runGame(g, p);
+    await Promise.race([Promise.all([...g.wrap.querySelectorAll("img")].map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(2500)]);
+    await new Promise((r) => requestAnimationFrame(() => r()));
+    return { p, run, release, wrap: g.wrap };
+  };
+  const reveal = (pg, i) => {
+    pg.wrap.style.visibility = "";
+    api.test.state(`day/book/${pg.p.game}`);
+    window.Day.book.page = i;
+    g.hidden = false;
+    headHeld = false;
+    showHead();
+    pg.release();
+  };
+
   // ---------------------------------------------------------------- the evening
   // the room is up: the evening's first moment (BOOK-01 films from here)
   await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
@@ -551,9 +597,12 @@ export async function runBook(host, api, day) {
   await api.wait(500);
   const direct = !!only;
   if (!direct) {
-    // she greets by the fire, the camera comes to her face, turns down to the book on her lap ...
+    // she greets by the fire (while she does, the first page is built on the hidden pages and its pictures drawn), the camera
+    // comes to her face, turns down to the book on her lap ...
+    const firstP = plan.pages[0] ? ready.then(() => prep(plan.pages[0])) : null;
     await sayRoom(line("greet"), "left");
     await ready;
+    first = firstP ? await firstP : null;
     // the push-in to her face: the room grows, her close-up (lined up on her eyes) fades in over it as it comes, sharp
     window.Day.book.stage = "face";
     zooming(true);
@@ -573,6 +622,8 @@ export async function runBook(host, api, day) {
     window.Day.book.stage = "tilt";
     zooming(true);
     layout();
+    // the first page comes up with the pages, drawn (her face, card and voice wait for the landing)
+    if (first) first.wrap.style.visibility = "";
     book.style.transition = "none";
     book.style.transform = bookTo(camAt);
     book.style.opacity = "0";
@@ -606,19 +657,11 @@ export async function runBook(host, api, day) {
   for (let i = 0; i < plan.pages.length; i++) {
     const p = plan.pages[i];
     keepTurn = null;
-    await picsOf(p);
+    // the first page was built and drawn before the camera turned down to it; it shows as the camera lands
+    const pg0 = i === 0 && first ? first : await prep(p);
     if (plan.pages[i + 1]) picsOf(plan.pages[i + 1]);
-    mount(p);
-    api.test.state(`day/book/${p.game}`);
-    window.Day.book.page = i;
-    // the page shows when every picture on it is drawn (each <img> decoded in place, not only fetched): never a sprite popping in
-    g.hidden = true;
-    g.wrap.style.visibility = "hidden";
-    const run = runGame(g, p);
-    await Promise.race([Promise.all([...g.wrap.querySelectorAll("img")].map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(1500)]);
-    await new Promise((r) => requestAnimationFrame(() => r()));
-    g.wrap.style.visibility = "";
-    g.hidden = false;
+    reveal(pg0, i);
+    const run = pg0.run;
     await run;
     await waitTurn();
     while (cleanups.length) cleanups.pop()();

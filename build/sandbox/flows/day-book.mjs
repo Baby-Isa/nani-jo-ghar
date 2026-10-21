@@ -4,6 +4,7 @@
 // The contract checks 45 (the door's lines in turn) and 46 (English only under the door's lines) read these pages.
 import { BASE, sleep } from "../lib/env.mjs";
 import { mark } from "../drivers/index.mjs";
+import { voiceFaults } from "../../../js/day/book-games.js";
 
 const SPEED = 3;
 const expect = (page) => page.evaluate(() => (window.njgTest && window.njgTest.expect ? window.njgTest.expect() : null)).catch(() => null);
@@ -160,6 +161,12 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
   ctx.extra = Object.assign(ctx.extra || {}, { book: b && { results: b.results, pages: b.plan && b.plan.pages.map((p) => p.game) } });
   const games = b && b.plan ? b.plan.pages.length : 0;
   if (!b || b.results.length < games) throw new Error(`the book did not play every page (${JSON.stringify(b && b.results)})`);
+  // the book's lines: none twice within a second (of the child's time) for one event, never two at once, none of no length
+  // (the book logs each line it says, window.Day.book.voice: read here, never by wrapping its voice, which the sound log also wraps)
+  const said = ((await page.evaluate(() => (window.Day.book && window.Day.book.voice) || []).catch(() => [])) || []).filter((e) => e.text);
+  const faults = voiceFaults(said, { gapMs: 1000 / speed, slackMs: 30 });
+  ctx.extra = Object.assign(ctx.extra || {}, { bookVoice: { lines: said.length, faults } });
+  if (faults.length) throw new Error(`the book's lines: ${faults.slice(0, 4).map((f) => `${f.kind} "${f.text}"${f.over ? ` over "${f.over}"` : ""} at ${Math.round(f.at)} ms`).join("; ")}${faults.length > 4 ? ` and ${faults.length - 4} more` : ""}`);
 }
 
 export const dayBook = {

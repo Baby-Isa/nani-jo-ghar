@@ -45,8 +45,11 @@ function idler(g, fn, ms = 8000) {
   };
   const poke = () => arm();
   g.book.addEventListener("pointerdown", poke);
-  arm();
+  // (counted from when the page shows: a page built ahead waits for g.go)
+  let stopped = false;
+  Promise.resolve(g.go).then(() => !stopped && arm());
   return () => {
+    stopped = true;
     clearTimeout(t);
     g.book.removeEventListener("pointerdown", poke);
   };
@@ -156,8 +159,8 @@ async function nameit(g, page) {
     btns.forEach((b) =>
       b.addEventListener("click", () => {
         if (filled) return;
-        // each button says its own word as it is tapped (the shared voice queue: it cuts in, never waits)
-        b._said = g.say(b._word, null, { min: false });
+        // each button says its own word as it is tapped, through the book's one queue (after the line being said; never of no length)
+        b._said = g.say(b._word, null);
         if (b._key === page.answer) {
           filled = true;
           resolve(b);
