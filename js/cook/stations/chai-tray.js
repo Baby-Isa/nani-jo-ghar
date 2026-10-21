@@ -1482,7 +1482,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           Cook.Kit.review(S, {
             who: pan.who,
             ok: !wrongPans.includes(pan),
-            x: pan.well.x - off(pan),
+            // (s08 sweep, CK-07's flaw: "Nanu's hanging off the tray's left edge": a face stays on the tray, its left edge
+            // inside the tray's own)
+            x: Math.max(tray.x + size / 2 + 6, pan.well.x - off(pan)),
             // CK-07 (§14a, S05-C): each face by its own glass (one face per person: its small rim badge goes)
             y: pan.well.y - off(pan),
             size,

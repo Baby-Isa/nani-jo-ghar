@@ -121,7 +121,7 @@ if (s.flows?.length && !a.has("no-rows")) {
 
 add(...proofLines(s, report));
 add(
-  `TESTS: ${s.browser === false ? "no browser needed" : `browser tests one at a time (\`flock -w 1800 /tmp/njg-browser.lock timeout ...\`, B16), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}`}.`, "");
+  `TESTS: ${s.browser === false ? "no browser needed" : `your own browser lock (\`flock -w 1800 /tmp/njg-browser-${s.port || "PORT"}.lock timeout ...\`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay`}.`, "");
 
 add("GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.",
   `FINISH: build/reports/${report}.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch.` +
