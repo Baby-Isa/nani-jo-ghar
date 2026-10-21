@@ -8,20 +8,14 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (21 Oct 2026, 05:00 UK), Sprint 9's chat:** Sprint 9 ("A day at Nani's") is built, merged and judged on `claude/funny-maxwell-3dkhif`, which sits on Sprint 8's branch; `main` = 700b1023 (Sprint 8 not yet published: its chat was on wave 8B). Reports: `build/reports/s09-ride.md`, `s09-book.md`, `s09-final-door.md`, `s09-final-art.md`. Built: the door on the s09b art (four skies, the empty house, Nani's seven pose cut-outs, the two cards), the window ride (looping layers, gentle parallax, three speeds, the farm road's s09b things, the wide window), the evening book (camera, find it, name it, stick in the photo, our day, gold cards, day-books), and the modular day runner (`data/days.json`: a day is a stage list; the farm day door, ride, book; kitchen and clinic days hand off). Every S09 row has a judge or machine PASS except BOOK-05's wrong-drag and take-back (needs a driver: Sprint 10). Art: s09r and s09b landed and cut (`cut_s09r.py`, `cut_s09b.py`); Nani's s09b likeness approved (Zafar, 21 Oct). Days docs: `docs/game-design/days/` (README, farm, shops, beach, safari, boat).
+**Where things stand (21 Oct 2026, 16:50 UK):** Sprint 8 is published twice today (c2410f7a at 14:06, 4c12399b at 16:47); the second carries Sprint 9 too (merged from main). Every open fix-list row has a label (to fix: code / to fix: check / waiting on Zafar / Mum / art / before app store); `checks.mjs` fixlist fails an unlabelled one and `evidence --apply` keeps labels.
 
-**Next steps:**
-1. Zafar's answer on the red-first question (open question 1); then `evidence.mjs --apply` marks the passing S09 rows built.
-2. When Sprint 8 is on `main`: merge `origin/main` into this branch (status.md and overnight-log.md conflict: keep both), `/review` (the full check at 8 sizes), fix, `/publish` (Zafar's go, 21 Oct: "push to main and finish the sprint"), `/sprint` close.
-3. Sprint 10, the farm day in full (`docs/game-design/days/farm.md`): pack the bag, meet Hannah Mami, feed, eggs, snap, the corn stall, animals home, Ali's egg; the engines put-it-in-its-place and count-to-a-number; DAY-03 (Cook and the clinic return to the book and write the day log); LNG-18 (the device voice reads every unrecorded line on the test site, every game); BOOK-05's wrong-drag driver. About $150; two builders.
+**Open, by label:** `grep -c "to fix: code" docs/process/regressions.md` and the like. Still in code: SH-63 (the clinic card at L2 shows step lines, not the order), SH-53 (samosa boxes at L2 not yet filmed; the clinic glow white and off-centre). Waiting on Zafar: DAAR-12 (stir lab L3: the speed as dots?) and his play pass (CK-01). Art: the match-cut knee (CLN-87), the tooth zoom's middle step (CLN-163), the forearm close-up (CLN-43), the barbecue, bowl, jar stickers and daal tip (SEK-20, CHT-04, SH-14, SH-117).
 
-**Open questions to Zafar:**
-1. Count "the probe couldn't run because the feature didn't exist yet" as red, so new-feature rows close on their green PASS? (Recommend yes; a small change to `redGreen` in `build/tools/review/lib/evidence.mjs`.)
-2. Hannah Mami: her name in the game, picture (a likeness run) and voice.
-3. Mum's words: the corn dressings, the shops' directions, the ride's and book's grey lines (the recording sheet).
+**Process (Zafar, 21 Oct):** a sweep is every "to fix: code" row; each builder runs its own browser and batches proofs; the judge gets Zafar's latest words with the batch.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/funny-maxwell-3dkhif` (Sprint 9, built and judged; `main` = 700b1023, Sprint 8 not yet published). Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 8 and Sprint 9 are live (4c12399b). Give me the "waiting on Zafar" rows as a numbered list with recommendations, then sweep the "to fix: code" rows.
 
 ## The fix list
 
@@ -41,6 +35,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+21 Oct 2026, published 16:47 UK (4c12399b, 20261021T154315Z): Sprint 8's second update on top of Sprint 9 (merged from main): the sweep's fixes, Zafar's five Cook yeses, the guide box, the phone stamp, the sekelo glow; on his word past the publish gate (`--force`).
 
 21 Oct 2026, published 14:06 UK (c2410f7a, 20261021T130210Z): Sprint 8 (the 17-18 Oct fixes, the s08c art, the chicken with an English placeholder, the overnight and sweep fixes), on Zafar's word past the publish gate (`--force`). A second update follows with the last code rows.
 
