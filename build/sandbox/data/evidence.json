@@ -4948,9 +4948,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3,
-    4
+    2
    ],
    "sizes": [
     "1366x768"
@@ -4965,7 +4963,7 @@
    "expect": [
     "textMatches:(?i)\\bchund[oa]\\b|\\bbataat[oa]\\b"
    ],
-   "note": "a base filling row in every order (s08 w8A: the moment it waited for no longer comes at every level: the card read once it has folded into the sidebar)",
+   "note": "a base filling row in every order (s08 w8A: the moment it waited for no longer comes at every level: the card read once it has folded into the sidebar); L3 dots the fillings and L4 hides the card (the level table, Zafar 19 Oct), so the written row is read at L1-L2 and the base filling at every level is the orders test's (test_cook.py --orders)",
    "delay": 900
   }
  ],
