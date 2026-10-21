@@ -34,7 +34,9 @@ About $290 in all, ceiling $350. Waiting on Mum, not this sprint: the stir sente
 - Zafar, 16 Oct: publish Sprint 7 now past the gate (low on tokens); start Sprint 8 from his play feedback.
 
 ## Outcome
-(at close)
+Published 21 Oct (overnight, on Zafar's go). In: every 17 and 18 Oct code fix (waves 6A-6N), the chips rule, the s08c art (7A Cook, 7B clinic and family faces), the chicken (murgi, English placeholder until Mum records it), and waves 8A/8B's fixes from the pre-publish evidence (art loads capped in real time, faces kept across redraws, the foot after the jugs, boing's ticks). Evidence: two runs, 36 judge batches; 178 rows on the fix list after apply (34 reopened, the rest already open, mostly waiting on art or Mum). Reports: build/reports/s08-w7*.md, s08-w8*.md.
 
 ## Look back (three lines)
-(at close)
+- Art wiring broke things only a full evidence run caught (a game-time load cap, faces re-created on redraw): a static rule now catches the first; wire art in the same wave as its evidence.
+- Evidence after an art wave re-judges hundreds of built rows; many FAILs were stale checks or rows Zafar had since overtaken: reword rows the day he decides.
+- Disk and container restarts cost hours: evidence runs should keep only what judging reads (checks-to-build), and builders resume cleanly from their worktrees.
