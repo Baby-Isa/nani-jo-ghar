@@ -199,7 +199,9 @@ export function redGreen(verdicts, { kinds, specs, log, run, legacy = [] }) {
     const at = mine.findIndex((e) => e.run === run);
     const before = at < 0 ? mine : mine.slice(0, at);
     if (v.verdict === "PASS" && !["built", "fixed"].includes(kinds[id])) {
-      const red = legacy.some((e) => e.id === id) || before.some((e) => e.verdict === "FAIL" && e.run !== run && e.spec === specs[id]);
+      // A new feature (an open row that has never failed) has no before to fail: its PASS closes it (Zafar, 21 Oct).
+      const fresh = kinds[id] === "open" && !mine.some((e) => e.verdict === "FAIL") && !legacy.some((e) => e.id === id);
+      const red = fresh || legacy.some((e) => e.id === id) || before.some((e) => e.verdict === "FAIL" && e.run !== run && e.spec === specs[id]);
       if (!red) { refused.push({ id, why: "no red first: run this row's probe before the fix and see it fail (a FAIL on this probe from an earlier run)" }); continue; }
     }
     if (v.verdict === "FAIL") {

@@ -762,3 +762,18 @@
 {"id":"BOOK-09","run":"ev-20261021-041111-l2d","earlier":"**reopened** (evidence FAIL ev-20261021-032427-602)"}
 {"id":"BOOK-01","run":"ev-20261021-041111-l2d","earlier":"built (evidence PASS ev-20261021-000057-xfq: Claude Fable 5.1 [claude-fable-5-1], session_01PykEzWjMEMAAbLhHgsM1vm: A, 0 ms wide room with Nani by the fire and her greeting, 1437-3189 ms the view moves in to her face, 3659-5683 ms it turns down to the open book facing the child and fills the frame, 6996 ms the kitchen game sits on the two pages; B shows the zoom back out to the full room [0-2305 ms]; C shows the page turn [786 ms the right page swinging over the fold] and the next game on fresh pages; flaws: the landing on the book goes via a dissolve to a different crop [5683 ms bookshelf on the right, 6385 ms fireplace on the right; the same swap in reverse at B 0-464 ms], so the camera does not land on the picture it zoomed through; A 8610 ms shows an empty speech bubble; English lines [\"What did we do today?\", \"There's the chai!\"] are grey italic, allowed under decision 84)"}
 {"id":"BOOK-09","run":"ev-20261021-041649-2u0","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261021-041111-l2d)"}
+{"id":"RIDE-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-03","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-04","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-05","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-06","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-06","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-08","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-03","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-04","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DAY-01","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-07","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-04","run":"ev-20261021-041111-l2d","earlier":"**open**"}
+{"id":"DOOR-01","run":"ev-20261021-032427-602","earlier":"**open**"}
