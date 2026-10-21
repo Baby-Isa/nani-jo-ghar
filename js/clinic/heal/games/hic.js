@@ -304,7 +304,7 @@
     const slots = {};
     // CLN-158 (non-negotiable 5: no written English for the child): the sound bubbles carry marks, never English sound
     // words ("hic!", "glug!", "BOO!" were written English); only a count bubble writes its Kutchi number
-    const SOUND = { hic: "!", puff: "~ ~", sip: "\u2248 \u2248", hold: "\u2026", boo: "!!", laugh: "\u266a \u266a" };
+    const SOUND = { hic: "!", puff: "~ ~", sip: "≈ ≈", hold: "…", boo: "!!", laugh: "♪ ♪" };
     function bubble(text, x, y, big, slot) {
       if (slot && slots[slot]) slots[slot].remove(); // one bubble per spot: a new count replaces the last
       const g = S("g", {}, fxG);
