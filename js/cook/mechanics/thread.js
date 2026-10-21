@@ -321,7 +321,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const stepHelped = G && G.lastHelpAt && Date.now() - G.lastHelpAt < 1000 && G.lastHelpAt > shownAt;
           // contract-24 (s08 w8A: at L3 her hint and glow came after 6.8 s, the word's stage, not the round's level): the help
           // ladder's pause is the round's level (data/cook.json calm.helpMs: 7, 8, 11, 15 s), as in every other station
-          if (!hinted && idle > helpPause()) {
+          // contract-24 (Zafar's ladder, SH-60: "the timer restarts on every action"): the pause counts from the LAST action on the
+          // page (NaniGuide.idleMs, the clock the shared stepper uses), not only from the last piece tapped: a tap on the card's
+          // face (a replay) or anywhere else restarts it too (it came 9.2 s after the replay at L3, which waits 11 s)
+          const quiet = G && G.idleMs ? Math.min(idle, G.idleMs()) : idle;
+          if (!hinted && quiet > helpPause()) {
             hinted = true;
             if (Cook.onHelp) Cook.onHelp("hint");
             St.nani(hintLine(p)).catch(() => {});
