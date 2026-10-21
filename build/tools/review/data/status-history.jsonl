@@ -757,3 +757,5 @@
 {"id":"BOOK-07","run":"ev-20261021-000057-xfq","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-194937-bb2)"}
 {"id":"BOOK-03","run":"ev-20261021-000057-xfq","earlier":"built (evidence PASS ev-20261020-194937-bb2: Fable 5.1 [claude-fable-5-1], session_01PykEzWjMEMAAbLhHgsM1vm: A, the field runs across both pages with four separate sprites [murgi, chakli left; bakri, kutro right] and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two [chakli, bakri] of the four shown and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap; C/D show the same at 844x390 unclipped. Not on the sheet: the gold corner tick, the bounce/wiggle and the no-red wrong state [the wrong-tap strip was captured but left off]; the found-lines \"There's the bird!\"/\"There's the goat!\" and \"Goodnight!\"/\"See you tomorrow!\" are unrecorded English [silent], allowed only if tagged to-record)"}
 {"id":"DAY-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DAY-02","run":"ev-20261021-032427-602","earlier":"**open**"}
+{"id":"BOOK-09","run":"ev-20261021-032427-602","earlier":"**open**"}

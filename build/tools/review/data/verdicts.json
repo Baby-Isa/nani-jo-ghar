@@ -385,6 +385,23 @@
   "commit": "9014b36b",
   "date": "2026-10-21"
  },
+ "BOOK-09": {
+  "hash": "1e2baa4e77a94e8bf3ab",
+  "dhash": [
+   "74743d19dd89891b",
+   "71b992866f2d0d0f",
+   "71b992866f2d0d0f",
+   "74743d19dd898948"
+  ],
+  "verdict": "FAIL",
+  "line": "D, the camera lands on the book at 4439 ms with blank pages and a lone avatar circle (no bubble text), still blank at 4923 ms; the kitchen spread and \"Maani kida ai?\" bubble only appear at 5400 ms, so the picture is late and an empty-bubble state shows. B/C do show the farm find-it spread with real sprites at 844x390 and the landing frames (5400-6919 ms) sit over the room.",
+  "panel": "D",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-032427-602",
+  "commit": "f5338db7",
+  "png": "build/screenshots/evidence/ev-20261021-032427-602/BOOK-09.png",
+  "date": "2026-10-21"
+ },
  "CHAI-02": {
   "hash": "7d0f070be18f4468d8e3",
   "dhash": [
@@ -4274,15 +4291,40 @@
   "date": "2026-10-21"
  },
  "DAY-02": {
-  "hash": "544032391efe2aaac7e8",
+  "hash": "a8e7f7b83edb65e5704c",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "DAY-02-p2-L1-1366x768 voice, the kitchen day runs door straight to book: after the child's \"Ha!\" at 6.20s the next event is day:book \"What did we do today?\" at 8.66s with no Cook stage between (no request/stage-start/stage-end as the farm probe's day:window has), so the day shown is door -> book, not door -> Cook -> book; p2 also has no dom capture at page:end, and the door line \"Tu muke randhan lai madad kar de\" is marked [?: mum/kar.mp3] (a whole sentence mapped to the single clip \"kar\"). The farm day (p1) does meet its words: door -> ride (bakri, murgi, kutro found) -> book, with the finds in the page:end dom (murgi, kutro, bakri, darwajo, gadi) and reached page:end at 59.1s; \"[ph] See you tomorrow!\" is a tagged placeholder, allowed (decision 84).",
+  "line": "DAY-02-p2-L1-1366x768 voice, the kitchen day shows no hand-off: after the door \"Ha!\" (8.16s) the next entry is day:book \"What did we do today?\" at 12.00s on the same page clock, with no request/stage step for Cook and no page reopen logged, so \"hands off and the book follows on return\" is not shown (and p2 has no dom capture at page:end); the farm day (p1) is complete: door -> request day:window -> ride-call/ride-found 0,1,2 (bakri, murgi, kutro) -> ride-end -> book with those finds (dom at page:end lists bakri, kutro, murgi, darwajo, gadi) -> \"See you tomorrow!\" -> page:end 59.1s. Flaws off the row: Kutchi book/ride lines (\"Nar!\", \"bakri\", \"murgi\", \"kutro\", \"Bakri kida ai?\", \"Murgi kida ai?\", \"Kutro kida ai?\", \"chai\", \"dudh\") are [silent: nothing played], not to-record English, so decision 84 does not cover them; p2 marks mum/kar.mp3 and mum/ha.mp3 \"[?]\" where p1 marks ha.mp3 family-ok; in both probes a tap on img restarts the turn line while it is still playing (p1 36.16/36.65 \"Then we saw a big goat.\", p2 31.18/32.22 \"Then we used the milk.\").",
   "panel": "DAY-02-p2-L1-1366x768 voice",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
+  "run": "ev-20261021-032427-602",
+  "commit": "f5338db7",
   "png": null,
+  "date": "2026-10-21"
+ },
+ "DOOR-01": {
+  "hash": "bea4ebd0f17159e880cd",
+  "dhash": [
+   "490a68b9a96b4749",
+   "3959c99bcbc6cacb",
+   "6d29694bcbe3e64b",
+   "9d9ae9b9ed674769",
+   "bab1ebcbcbc6cac9",
+   "ae9b6b4bcbe6e24b",
+   "999979e9e5676561",
+   "3a1bc1cbc7c6cac9",
+   "8c8aeb47e7e6e641",
+   "584a68b96d634749",
+   "50c5c9dbcbc6cacb",
+   "480d694bcbe7664b"
+  ],
+  "verdict": "PASS",
+  "line": "A, sunny sky with sun sits behind the cut-out house, roofline about a third down at 1024x768; B and C the same at 1366x768 and 844x390; D-F raining (grey sky, drawn rain streaks), G-I night (stars, crescent), J-L cloudy, roofline a third down in all twelve. Off the row: Ha!/Na! look translucent in C, I, L (mid fade-in at .day-answer.in); J-L say \"Tu muke help kar de\" where A-C/G-I say \"madad\" (fine only if \"help\" is loan:en).",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-032427-602",
+  "commit": "f5338db7",
+  "png": "build/screenshots/evidence/ev-20261021-032427-602/DOOR-01.png",
   "date": "2026-10-21"
  },
  "DOOR-02": {

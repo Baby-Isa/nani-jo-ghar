@@ -17508,13 +17508,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "page:end",
+   "at": "visible:.day-lab-note",
    "after": null,
    "capture": [
-    "voice"
+    "dom:.day-lab-note",
+    "voice",
+    "dom:.day-root@page:end"
    ],
-   "expect": null,
-   "note": "the kitchen day: the door, the hand-off to Cook, then (day.html opened again) the evening book"
+   "expect": [
+    "textMatches:(?i)hand-off: cook"
+   ],
+   "note": "the kitchen day: after Ha! the door hands off to Cook (the lab's grown-ups' note names cook.html: in play it opens Cook); then day.html is opened again and the evening book follows (the dom at the end)"
   }
  ],
  "RIDE-07": [
