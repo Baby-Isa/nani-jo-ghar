@@ -781,7 +781,7 @@
     // the frame: the keyed car window. With a `show` box (the wide window: both pillars and the sill, art px) it is fitted so
     // that box is whole in the play area, as big as that allows; else by height (the first window). Where the picture stops
     // short of an edge it is carried on: sideways by its own mirror image (from `mirrorAt`, the columns just inside its outer
-    // edges), up and down by its top and bottom rows stretched; and on under the host's sidebar (o.under: an element behind it),
+    // edges), up and down by its top and bottom edges' colours; and on under the host's sidebar (o.under: an element behind it),
     // so the car's inside runs the whole width of the screen (never a plain column)
     const fr = view.frame || {};
     const car = useArt && fr.art ? h("div", "wr-car", win) : null;
@@ -800,8 +800,12 @@
       const P = { main: part("wr-car-main"), l: part("wr-car-l"), r: part("wr-car-r"), t: part("wr-car-t"), b: part("wr-car-b") };
       // behind a mirrored side: the pillar's trim (data `trim`), where the mirror image has the window's keyed opening
       if (fr.trim) [P.l, P.r].forEach((p) => (p.box.style.background = fr.trim));
-      // the stretched rows carry the art's fine grain as streaks: softened (they are the headliner and the door panel)
-      [P.t, P.b].forEach((p) => (p.im.style.filter = "blur(10px)"));
+      // above and below the picture: its top and bottom edges' own colours carried on as soft gradients (data `edges`; never the
+      // picture's rows stretched, which would blow the picture up far past its resolution)
+      [[P.t, "top"], [P.b, "bottom"]].forEach(([p, k]) => {
+        p.im.style.display = "none";
+        if (fr.edges && fr.edges[k]) p.box.style.background = fr.edges[k];
+      });
       return P;
     };
     const carSet = car ? carParts(car) : null;
@@ -816,7 +820,6 @@
         Object.assign(p.box.style, { left: `${box[0]}px`, top: `${box[1]}px`, width: `${Math.max(0, box[2])}px`, height: `${Math.max(0, box[3])}px`, display: box[2] > 0.5 && box[3] > 0.5 ? "block" : "none" });
         Object.assign(p.im.style, im);
       };
-      const fh0 = fr.h || 1024;
       set(P.main, [X, fy, fw, fh], { left: "0px", top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "none" });
       // sideways: the picture mirrored about the column `mirrorAt` px in from each outer edge (a flipped copy shows column c at
       // left + fw - c k: column ml lands on the left axis with the rest running on leftwards, column mr on the right one)
@@ -825,11 +828,9 @@
       const axR = X + mr * k;
       set(P.l, [0, fy, axL, fh], { left: `${axL - fw + ml * k}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
       set(P.r, [axR, fy, HW - axR, fh], { left: `${mr * k - fw}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
-      // up and down: three rows just inside the top and the bottom edge, stretched over the gap (the headliner, the door panel)
-      const rows = 3;
-      set(P.t, [X, 0, fw, fy], { left: "0px", top: `${-(fy / rows) * 2}px`, width: `${fw}px`, height: `${(fy / rows) * fh0}px`, transform: "none" });
-      const gb = H0 - (fy + fh);
-      set(P.b, [X, fy + fh, fw, gb], { left: "0px", top: `${-(gb / rows) * (fh0 - rows - 1)}px`, width: `${fw}px`, height: `${(gb / rows) * fh0}px`, transform: "none" });
+      // up and down: the gaps above and below the picture, its edges' colours carried on (the headliner, the door panel)
+      set(P.t, [X, 0, fw, fy], {});
+      set(P.b, [X, fy + fh, fw, H0 - (fy + fh)], {});
     };
 
     const fit = { s: 1, tx: 0, open: null, vl: 0, vt: 0 };

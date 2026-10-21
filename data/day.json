@@ -205,8 +205,9 @@
             "mirrorAt": [60,1520],
             "fill": "#7a502f",
             "trim": "linear-gradient(180deg, #96623a 0%, #c48f58 35%, #a87346 60%, #6e4a30 75%, #5a4030 100%)",
+            "edges": { "top": "linear-gradient(to top, transparent 0, rgba(40, 24, 14, 0.35) 100%), linear-gradient(to right, #8a562f 0%, #87562f 30%, #80522f 45%, #6f482a 60%, #7e5231 75%, #7a5031 100%)", "bottom": "linear-gradient(to bottom, transparent 0, rgba(20, 14, 10, 0.4) 100%), linear-gradient(to right, #221a15 0%, #2e3035 33%, #4d3323 60%, #623d26 75%, #423329 100%)" },
             "src": "sources/art/s09b (W1, keyed by build/tools/art/cut_s09b.py; the opening from its cut-report.json)",
-            "_about": "The wide window (Zafar, 21 Oct: both pillars show on 4:3 tablets): the frame is fitted so its `show` box (both pillars and the sill, art px) is whole inside the play area, as big as that allows; the opening [x0, y0, x1, y1] is the view. Where the art does not reach an edge of the screen it is carried on by its own mirror image sideways (at `mirrorAt`, the columns just inside its outer edges, so the strip of the next window at its very edge never shows) and by its top or bottom rows stretched; the car runs on under the sidebar (never a plain column under the word rail)."
+            "_about": "The wide window (Zafar, 21 Oct: both pillars show on 4:3 tablets): the frame is fitted so its `show` box (both pillars and the sill, art px) is whole inside the play area, as big as that allows; the opening [x0, y0, x1, y1] is the view. Where the art does not reach an edge of the screen it is carried on by its own mirror image sideways (at `mirrorAt`, the columns just inside its outer edges, so the strip of the next window at its very edge never shows) and above and below by its edges' own colours as soft gradients (`edges`; behind a mirrored side the pillar's `trim`); the car runs on under the sidebar (never a plain column under the word rail)."
           },
           "layers": [
             {
