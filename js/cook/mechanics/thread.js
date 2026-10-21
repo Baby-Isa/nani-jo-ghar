@@ -87,7 +87,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
       // (the chips: the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct)
-      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)) });
+      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)), go: handoff ? handoff.label || "" : null });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
@@ -133,6 +133,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       line.blocked = () => waiting;
 
       /* Nani's help if you hesitate: she says it again (a hint), then it glows (the accuracy badge) */
+      const helpPause = () => {
+        const ms = ((Cook.data && Cook.data.calm) || {}).helpMs || [7000, 8000, 11000, 15000];
+        const lv = Math.max(1, Math.min(ms.length, Cook.roundLevel(ctx) || 1));
+        return ms[lv - 1] + Math.max(0, (Cook.quietUntil || 0) - Date.now());
+      };
       let idle = 0;
       let hinted = false;
       let shown = null;
@@ -314,7 +319,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // (the stepper's line after the ladder's pause) lights the piece too
           const G = window.NaniGuide;
           const stepHelped = G && G.lastHelpAt && Date.now() - G.lastHelpAt < 1000 && G.lastHelpAt > shownAt;
-          if (!hinted && idle > Cook.hintDelay(p.w)) {
+          // contract-24 (s08 w8A: at L3 her hint and glow came after 6.8 s, the word's stage, not the round's level): the help
+          // ladder's pause is the round's level (data/cook.json calm.helpMs: 7, 8, 11, 15 s), as in every other station
+          if (!hinted && idle > helpPause()) {
             hinted = true;
             if (Cook.onHelp) Cook.onHelp("hint");
             St.nani(hintLine(p)).catch(() => {});

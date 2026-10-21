@@ -900,11 +900,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
     // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
-    await Promise.race([Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), Cook.wait(1200)]);
+    await Cook.Stations.capLoad(Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), 1200); // real time (loadcap)
     // the drawn stand-ins when a served picture is missing OR still loading (a slow one: the stand-in was drawn unloaded,
     // Phaser's green missing-texture box on the tray, S05-C2)
     const unserved = (d) => !Cook.Art.servedArt(d.recipe) || !S().textures.exists(Cook.Art.servedKey(Cook.Art.servedName(d.recipe)));
-    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
+    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Cook.Stations.capLoad(Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), 800);
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     // TEST HOOK (only the evidence player sets it, as Cook.tasteHold): the served dishes stay on the counter this long in
@@ -1062,7 +1062,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(null);
     // her chai on her tray, as every served dish is (CK-21): the served picture, never the old "glass-chai" prop, which
     // nothing loads now (Phaser drew its green missing-texture box there, S05-C2)
-    await Promise.race([Cook.Art.loadServed(S(), "chai"), Cook.wait(1200)]);
+    await Cook.Stations.capLoad(Cook.Art.loadServed(S(), "chai"), 1200); // real time (loadcap)
     drawServed({ served: [{ recipe: "chai", count: 1 }] }, Cook.CHARS.nani.x);
     S().setMood("nani", "happy");
     Cook.sfx.fanfare();

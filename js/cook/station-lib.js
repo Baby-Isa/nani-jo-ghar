@@ -490,7 +490,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * a 5 s cap became 1 s and maani's millet pile drew as Phaser's missing square, a tap target nobody could hit; a slow
    * connection did the same at 5 s). The cap only stops a dead file hanging the game.
    */
-  S$.loadArt = (S, list, ms = 20000) => Promise.race([S$.load(S, list), new Promise((r) => setTimeout(r, ms))]);
+  S$.capLoad = (p, ms = 20000) => Promise.race([Promise.resolve(p).catch(() => {}), new Promise((r) => setTimeout(r, ms))]);
+  S$.loadArt = (S, list, ms = 20000) => S$.capLoad(S$.load(S, list), ms);
   /**
    * A spoon stir in a vessel (anything with a rim and a surface): a spoon dips in,
    * goes round twice with a swirl on the liquid, and lifts out.

@@ -14,6 +14,9 @@
 //   plane     the doctor and the girl in one plane (CLN-154, s08): at the door one feet line, standing hers 0.02-0.03 in front
 //             of his, seated his 0.02-0.04 in front of her bed line (s08-placement-judge); him 1.35-1.6x her body, a tad back
 //             (PLANE_BACK), a 1.75 m man by the room door; her tap areas never under today's size (data/clinic/scenes-v2.json)
+//   loadcap   an art load is never capped in game time: no Cook.wait inside a Promise.race with a load (at test speed a 5 s cap
+//             became 1 s and Phaser drew its green missing-texture box where a face goes; CHAI-25, CK-04, CK-08, s08 w8A):
+//             cap it in real time (Cook.Stations.loadArt / capLoad)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -207,6 +210,25 @@ export function planeFindings(sc) {
   return out;
 }
 
+// ---- loadcap: an art load's safety cap runs in real time ----
+// each Promise.race( ... ) call's arguments, bracket-matched; a load in them and a Cook.wait beside it is a finding
+const LOAD_CALL = /(?:\.|\b)load(?:Served|File|Art)?\s*\(/;
+export function loadcapFindings(file, text) {
+  const out = [];
+  const re = /Promise\.race\s*\(/g;
+  let m;
+  while ((m = re.exec(text))) {
+    let depth = 1, i = m.index + m[0].length;
+    for (; i < text.length && depth; i++) { const c = text[i]; if (c === "(") depth++; else if (c === ")") depth--; }
+    const args = text.slice(m.index + m[0].length, i - 1);
+    if (LOAD_CALL.test(args) && /\bCook\.wait\s*\(/.test(args)) {
+      const line = text.slice(0, m.index).split("\n").length;
+      out.push({ check: "loadcap", at: `${file}:${line}`, key: `loadcap|${file}|${args.replace(/\s+/g, " ").trim().slice(0, 80)}`, text: "an art load raced against Cook.wait (game time: at test speed the cap shrinks and the art misses it); cap it in real time (St.loadArt / St.capLoad)" });
+    }
+  }
+  return out;
+}
+
 // ---------- the repo ----------
 export function run(root = ROOT, only = null) {
   const want = (k) => !only || only.includes(k);
@@ -232,6 +254,7 @@ export function run(root = ROOT, only = null) {
   }
   if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
   if (want("bulb")) out.push(...bulbFindings(bulbTables(rd, J)));
+  if (want("loadcap")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...loadcapFindings(f, rd(f)));
   if (want("plane")) out.push(...planeFindings(J("data/clinic/scenes-v2.json")));
   return out;
 }

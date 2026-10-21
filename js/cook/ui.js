@@ -911,6 +911,8 @@
     ring.classList.remove("run");
     box.classList.remove("late");
     const ringMs = opts.ringMs || (Cook.data.calm || {}).passMeRingMs || 3000;
+    // MAA-14: her frown is fetched now, so the swap at the end of the ring is instant (the same framing as her face here)
+    if (typeof Image !== "undefined") new Image().src = Cook.v(Cook.facePath("nani", "frown"));
     let clock = null;
     let ticker = null;
     let over = false;
@@ -2626,7 +2628,8 @@
     const ws = key && key !== "_" ? String(key).split("+") : [];
     const g = ws.length && Lang.gender ? Lang.gender(ws[ws.length - 1]) : null;
     const w = t.n >= 1 && t.n <= 10 && Lang.num ? (Lang.num(t.n, g)[0] || {}).t : null;
-    return w || String(t.n);
+    // (DAAR-12's flaw, s08 w8A: the laps chip read the digit "0" before the first lap; nothing counted yet is the icon alone)
+    return w || (t.n >= 1 ? String(t.n) : "");
   }
   UI.count = function (n, { speak = true, id = "_", icon = null, state = null } = {}) {
     const prev = tally.get(id);
