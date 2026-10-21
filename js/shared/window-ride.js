@@ -479,8 +479,18 @@
     // the road as the ride starts: a landmark on the far hills and a thing in the sky already in the window, whole (so the first
     // look out is never an empty view with things only coming on, half behind the pillar)
     m.begin = function () {
-      if (farOnly.length) nextFarAt = passBy("far", farOnly, 0, [1.1, 2.2], vx0 + viewW() * (0.35 + rng() * 0.2));
-      if (skyOnly.length) nextSkyAt = passBy("sky", skyOnly, 0, [0.9, 1.6], vx0 + viewW() * (0.55 + rng() * 0.15));
+      if (farOnly.length) nextFarAt = passBy("far", farOnly, 0, [1.1, 2.2], vx0 + viewW() * (0.12 + rng() * 0.12));
+      if (skyOnly.length) nextSkyAt = passBy("sky", skyOnly, 0, [0.9, 1.6], vx0 + viewW() * (0.6 + rng() * 0.12));
+      // one thing already passing on the field, whole in the window; the next comes on only once the first group has
+      const res = reserved();
+      const pool = passOnly.filter((id) => !res.has(id) && W.linesOf(things[id]).includes("field"));
+      if (pool.length) {
+        const id = pool[Math.floor(rng() * pool.length)];
+        const w = sizeOf(id, "field").w;
+        const x = vx0 + viewW() * 0.42;
+        if (x + w < vx1 - viewW() * 0.05) mk(id, "field", x, -1);
+      }
+      nextPasserAt = Math.max(nextPasserAt, viewW() * 0.6);
     };
 
     if (opt.hold) m.setSpeed(opt.hold, "hold");
