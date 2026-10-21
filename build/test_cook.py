@@ -711,7 +711,7 @@ ORDERS_JS = r"""
   if (R.chai && seen.extra.size < 3) out.errors.push("level 1 chai: plain, elchi and aadu should all come up: " + [...seen.extra]);
   if (R.mishkaki && seen.skew.size < 2) out.errors.push("level 1 mishkaki: the skewer kinds should vary: " + [...seen.skew]);
   if (R.daal && ![...seen.chopN].some((x) => x >= 2)) out.errors.push("level 1 daal: several vegetables to chop: " + [...seen.chopN]);
-  // the Maani line: how many of each kind (sizes from level 3), the kinds said in either order
+  // the Maani line: how many of each kind (sizes by the recipe's level data), the kinds said in either order
   let both = 0;
   let bajrFirst = 0;
   for (let lv = 1; lv <= 4; lv++) {
@@ -720,8 +720,13 @@ ORDERS_JS = r"""
       const tot = Object.values(d.maani).reduce((a, b) => a + b, 0);
       const [lo, hi] = [[1, 1], [2, 2], [3, 3], [2, 4]][lv - 1];
       if (tot < lo || tot > hi) out.errors.push(`maani level ${lv}: total ${tot}`);
-      if (lv === 3 && !(d.maani["cook-maani"] && d.maani["cook-bajrmaani"])) out.errors.push(`maani level 3 asks for both doughs ${JSON.stringify(d.maani)}`);
-      if ((lv === 4) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 4 ${JSON.stringify(d.maani)}`);
+      // s08 w8A (the level table, Zafar 19 Oct: maani big or small from L2, was L4): which levels say a size is the recipe's own
+      // data (a sized kind is "ph-big+cook-maani"); L3 asks for both doughs, whatever their sizes
+      const dough = (k) => Object.keys(d.maani).filter((x) => d.maani[x] > 0 && x.split("+").pop() === k).length > 0;
+      if (lv === 3 && !(dough("cook-maani") && dough("cook-bajrmaani"))) out.errors.push(`maani level 3 asks for both doughs ${JSON.stringify(d.maani)}`);
+      const mb = ((((Cook.data.recipes.maani || {}).slots || {}).maani || {}).byLevel || [])[lv - 1];
+      const sized = !!mb && (mb.kinds || []).some((k) => k.includes("+"));
+      if (sized !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes ${sized ? "from the data" : "not"} at this level ${JSON.stringify(d.maani)}`);
       const L = Cook.Order.ladder(d, 0);
       const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));

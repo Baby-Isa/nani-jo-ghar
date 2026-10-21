@@ -207,7 +207,7 @@
         return sub;
       });
     },
-    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind, minFirst. */
+    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind, minFirst, oneOfEach. */
     tally(spec, env) {
       const t = fromTaste(spec, env);
       if (t !== undefined) return t;
@@ -216,6 +216,12 @@
       kinds.forEach((k) => (out[k] = (spec.min || {})[k] || 0));
       // minFirst: the first kind (samosa's base filling) is always there, at least this many (S18)
       if (spec.minFirst && kinds.length) out[kinds[0]] = Math.max(out[kinds[0]], spec.minFirst);
+      // oneOfEach: [[kinds], ...]: at least one from each group (maani L3, the level table: "3, both kinds", whatever
+      // their sizes; s08 w8A), a member picked at random where the group has none yet
+      (spec.oneOfEach || []).forEach((g) => {
+        const grp = g.filter((k) => kinds.includes(k));
+        if (grp.length && !grp.some((k) => out[k] > 0)) out[Cook.pick(grp)]++;
+      });
       let left = value(spec.total, env) - kinds.reduce((a, k) => a + out[k], 0);
       while (left-- > 0) {
         const open = kinds.filter((k) => (spec.max || {})[k] == null || out[k] < spec.max[k]);

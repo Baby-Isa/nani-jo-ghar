@@ -1124,6 +1124,16 @@
         "ph-small+cook-bajrmaani"
        ],
        "total": 3,
+       "oneOfEach": [
+        [
+         "ph-big+cook-maani",
+         "ph-small+cook-maani"
+        ],
+        [
+         "ph-big+cook-bajrmaani",
+         "ph-small+cook-bajrmaani"
+        ]
+       ],
        "max": {
         "ph-big+cook-maani": 2,
         "ph-small+cook-maani": 2,
