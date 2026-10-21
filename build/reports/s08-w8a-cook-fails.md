@@ -45,7 +45,7 @@ Red = the base run ev-20261020-203453-9h9 (its sheets and machine lines) unless 
 | SAM-04 | FIXED | base B: "chundo", no count → uz7 B: "hakro chundo", "ba chunda" (L2) |
 | SH-39 | FIXED | base B 844x390: badge cut at the top → 1lu B: whole |
 | SH-51 | FIXED | base A: empty card → 1lu A: jar shown (one fill picture up to 37 coins is the fill rule) |
-| SH-32 | FIXED, not re-shot | heaps were drawn but faint; a third bigger (762be095) |
+| SH-32 | FIXED (judge) | heaps were drawn but faint (1lu); a third bigger: ekc (ev-20261021-024230-ekc) A5-A8, partly under the teaspoon |
 | DAAR-12 | ZAFAR + FIXED part | L3 dial follows Nani's spoken switch (level table); card keeps the first ask (a leak question for him). Digit "0": base D → 1lu D icon only |
 | DAAR-13 | FIXED part, rest BIG | finger off the blade (1lu A); throws still cross mid-air |
 | LNG-03, SH-13 | ZAFAR + SPEC | L3 dots item words, numbers written; L4 dots uncalled rows (level table, DAAR-34): uz7 PASS |
@@ -65,3 +65,14 @@ Red = the base run ev-20261020-203453-9h9 (its sheets and machine lines) unless 
 Proposed row words: LNG-03 "no English or 'boga' placeholders; dots only as the level table dots"; SH-13 "L1 counted aloud, L2-L3 written, L4 heard"; CK-21 drop "shadows to the right"; PAN-10 drop "the guide box folded at L2"; PAN-07 "the pass-me pop-up's items side-on"; CK-27 "one shared ripple".
 
 Checks: `checks.mjs` all ok (unit 462, words, static, leak, bump, specs, docs, recordings, size, load 29/29); check_onboard ok; lint-specs 0.
+
+### Replay at every size (run s08-w8a-cook-fails-matrix)
+
+The brief's 10 flows at 8 sizes, `--contract`, `--parallel 3` (one page at a time would have run 70 min; the two day-1 pages the container restart killed were rerun): 80 of 80 pages reach their end, 0 page errors. 1 contract break: contract-5 (badges all at once) on cook:day1 at 800x360 after the "?" was opened; the same break is in earlier runs of first, samosa and fetch, and the end screen is js/shared's, not changed here. Shot diff: 553 changed against an old manifest, almost all from the s08b and s08c art; on the 40-cell sheet the flaws are the "?" pop-up over the help strip at 1024x768 (cells 5, 23) and the grey-italic placeholders (allowed). No flaw traced to this wave.
+
+### Wave 8B's Cook items
+
+- SH-72: ZAFAR. The level table opens the L3 card with its item words dotted, so the L3 pop-up writes its rows; only L4 hides it. The Cook probe is now L4 only.
+- Texture names for the probes (`canvas:<part of the key>`): daar's trivet `dv3-trivet`, `dv3-trivet-plain`; served dishes `s02-served-<recipe>` (`s02-served-daal`, `s02-served-chaat`); chaat's bowl `cv3-bowl`; maani's thali `mv-thali`; review faces `<who>-badge[-mood]-v2round-256`, rim badges `-v2round`. DAAR-06 and CHT-11 probe at "results", where the station is gone: probe the served dish on a story day (drv:dish-served).
+- Moments respecced (run ekc): SH-58 to samosa (chai ends with the pour): machine PASS; CHAI-18 at kind-timing, SEK-03 at the sidebar card, SEK-13 at each threaded piece: reached, for the judge; SAM-03 after popup-fold, written-row check at L1-L2 (L3 dots, L4 hides). Still open: CHT-08 reaches wrong-tap but the card never changes after it (no re-said order: may be real, needs a look); CK-38's peek never comes on the hint or peek-every-tap path at 800x360 (a driver change). SH-72's clinic probes are 8B's (no text in .njg-rq-card).
+- The picture-load check passes on this branch (29/29). nani-face-talk (280 px) drawn at 56 px comes with 8B's guide face size: it needs a smaller cut of her face sheet (assets, not mine).
