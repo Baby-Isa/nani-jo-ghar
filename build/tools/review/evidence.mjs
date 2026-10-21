@@ -252,11 +252,12 @@ async function run() {
 // ---------- the sheets ----------
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const MODE_DIRS = (flow) => {
-  const m = /^(cook|lab:cook|clinic|mode:(\w+)|house|first)/.exec(flow) || [];
+  const m = /^(cook|lab:cook|clinic|day|mode:(\w+)|house|first)/.exec(flow) || []; // day: the day pages (Sprint 9: a change to js/day must re-judge their rows)
   const k = m[1] && m[1].startsWith("lab:cook") ? "cook" : m[2] || m[1] || "";
   const dirs = ["js/shared", "css/shared", "js/core"];
   if (k === "cook") dirs.push("js/cook", "assets/cook");
   else if (k === "clinic") dirs.push("js/clinic", "assets/clinic", "data/clinic");
+  else if (k === "day") dirs.push("js/day", "css/day.css", "css/day-book.css", "data/day.json", "data/days.json", "data/day-book.json", "assets/day");
   else if (k) dirs.push(`js/${k}`);
   return dirs;
 };
