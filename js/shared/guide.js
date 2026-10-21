@@ -90,7 +90,8 @@
    * LAST ACTION (any tap, drag or key: the idle clock below), never from when a step opened:
    *   PAUSE[level-1]   how long she must have done nothing before Nani helps: her line and the glow at the SAME moment
    *                    (2 s later than before: 7, 8, 11, 15 s)
-   *   REPEAT           a help line is said again only after this much idle time more (never twice in a row, PAN-16)
+   *   REPEAT           a help line is never said again within this time (never twice in a row, PAN-16); a help never comes
+ *                    again with no action since it (SH-60: it "shouldn't persist"): after an action the pause runs again
    *   BULB_PULSE       after this long stuck both light bulbs pulse, so the child knows they can be tapped (15-20 s)
    * Nothing is said or lit when a step opens (the "step call", Nani saying each step once as it opens, is the next wave's:
    * pass `call(step)` to the stepper and it runs at that moment). Cook's data (data/cook.json calm.helpMs, calm.bulbPulseMs)
@@ -206,11 +207,14 @@
         G.helping = false;
       }
     };
-    // when the next help is due: PAUSE of no action after the step opened or the last action; a second help only after
-    // REPEAT of no action more and REPEAT since the last help
+    // when the next help is due: PAUSE of no action after the step opened or the last action. SH-60 (Zafar: the help "shouldn't
+    // persist"): once helped, it never comes again while the child does nothing (it used to repeat every REPEAT, line and glow);
+    // after an action the pause applies again from that action
     const due = (s) => {
       const base = Math.max(clock.t, s.openedAt);
-      return s.helped ? Math.max(base + G.REPEAT, s.helpedAt + G.REPEAT) : base + pause(lv());
+      if (!s.helped) return base + pause(lv());
+      if (clock.t <= s.helpedAt) return Infinity;
+      return clock.t + pause(lv());
     };
     const arm = () => {
       stopTimer();

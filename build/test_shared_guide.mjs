@@ -45,7 +45,7 @@ test("a step opens: its line is shown at once (SH-63, Zafar 21 Oct), nothing sai
   }
 });
 
-test("the pause is counted from the LAST action: a poke restarts it; and the same line is not said again before the repeat time", async () => {
+test("the pause is counted from the LAST action: a poke restarts it; a help never comes again with no action (SH-60); the same line is not said again before the repeat time", async () => {
   G.PAUSE = [400, 400, 400, 400];
   G.REPEAT = 700;
   const { st, log } = make(1);
@@ -58,10 +58,11 @@ test("the pause is counted from the LAST action: a poke restarts it; and the sam
   await wait(300); // 400+ after the poke
   assert.deepEqual(kinds(log), ["show", "help", "speak", "glow"]);
   log.length = 0;
-  await wait(500); // 500 after the help: below the repeat
-  assert.deepEqual(kinds(log), [], "never twice in a row");
-  await wait(500); // past the repeat and 10 s... of idle
-  assert.ok(kinds(log).includes("glow"), "again after the repeat time");
+  await wait(1000); // past the repeat with no action: SH-60, the help "shouldn't persist"
+  assert.deepEqual(kinds(log), [], "never again while the child does nothing");
+  st.poke(); // the child acts: the pause runs again from that action
+  await wait(750); // (the ladder's clock ticks every 200 ms)
+  assert.ok(kinds(log).includes("glow"), "after an action and the pause, the help again");
   st.close();
 });
 
