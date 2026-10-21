@@ -542,8 +542,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .hs-tool .hs-sw { display: inline-block; width: var(--njg-s4); height: var(--njg-s5); border-radius: var(--njg-s1); background: var(--sw, #ccc); border: 2px solid rgba(0, 0, 0, .2); }
 .hs-tool.sel { border-color: #2e8b7a; box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); }
 .hs-tool.used { opacity: .45; }
-.hs-tool.pulse { animation: hs-pulse 1s ease-in-out infinite; }
-@keyframes hs-pulse { 50% { box-shadow: 0 0 0 7px rgba(240, 180, 60, .55); } }
+/* SH-53: the next tool's glow is the shared one (css/shared/focus.css njgGlow: the tick's beat and reach), never a ring of its own */
+.hs-tool.pulse { animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .hs-tool.pulse { animation: none; filter: drop-shadow(0 0 var(--glow-radius, var(--njg-s3)) rgba(var(--glow-rgb, 224, 166, 58), var(--glow-alpha, .85))); } }
 .hs-timer { position: absolute; left: 22%; right: 22%; top: calc(var(--njg-big-face) * 1.3); height: var(--njg-s3); border-radius: var(--njg-s2); background: rgba(255, 255, 255, .7); border: 2px solid #d8c6a8; z-index: 7; overflow: hidden; pointer-events: none; }
 .hs-timer i { position: absolute; left: 0; top: 0; bottom: 0; background: #6bbf8a; transition: width .25s linear; }
 .hs-timer.low i { background: #f0a040; }

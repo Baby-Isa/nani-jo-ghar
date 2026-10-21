@@ -100,7 +100,11 @@
 .oc-card .oc-face img[src*="/doctor/v2/faces/"], .cl-face.doctor img { --face-zoom: 1.9; --face-y: 36%; }
 /* (s09, the judge on 20 Oct: her circle "brows to chin fill the circle, no hair or ears" beside Nana's and the doctor's whole heads with a
    margin: hers zooms out to her whole face, ears and the top of her hair inside the circle, as theirs are) */
-.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.3; --face-y: 40%; }
+/* (shared2, the orchestrator on 21 Oct: at 1.3 her circle showed her whole head and shoulders, far wider than Nana's and the doctor's.
+   Measured on her 512 px head: cheeks 0.55 of the picture wide, eyes at 0.43, chin at 0.69. Zoom 1.5 puts her cheeks across 0.82 of
+   the circle, as Nana's (0.8) and the doctor's are, her eyes just above the middle and her chin near the bottom; the hair top and the
+   ears' edges are cut a little, as theirs are) */
+.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.5; --face-y: 46%; }
 .hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
 /* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
    zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */
@@ -161,6 +165,14 @@
 /* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
    order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
 .stamped .oc-card { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+/* PAN-01 (800x360: "Bring me these" and the tick ran under the stamp on a folded served card): the stamp's room holds on every size
+   (:root: the phones' tighter card padding below no longer wins over it), and a folded card's stamp is the tick's size, centred
+   in its head beside the tick (the stamp reads these, css/cook-side-v2.css), so the headline keeps a line's room (shrink, then wrap) */
+:root .stamped .oc-card:not(.oc-big):not(.oc-mini) { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+:root .stamped .oc-card.folded:not(.oc-big):not(.oc-mini) {
+  --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75);
+  padding-right: calc(var(--oc-tick) * 1.5 + var(--njg-s2) * 1.5);
+}
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
 .oc-look img { object-fit: contain; pointer-events: none; user-select: none; }

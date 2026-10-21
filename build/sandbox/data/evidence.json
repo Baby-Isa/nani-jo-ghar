@@ -1754,6 +1754,25 @@
    "expect": null,
    "note": "the line table: guide box says the step, the card says the order (every Cook station)"
   },
+ {
+  "flow": "cook:recipe:daal",
+  "path": "fair",
+  "level": 1,
+  "sizes": [
+   "1366x768"
+  ],
+  "profile": "seen",
+  "want": null,
+  "at": "every:life:step-open",
+  "after": null,
+  "capture": [
+   "dom:.njg-guide",
+   "dom:#mission .oc-card"
+  ],
+  "expect": null,
+  "note": "Zafar, 21 Oct: the guide says the step from the moment it opens (never empty between step calls); the card keeps the order",
+  "delay": 400
+ },
   {
    "flow": "clinic:patient",
    "path": "fair",
@@ -1771,7 +1790,25 @@
    ],
    "expect": null,
    "note": "the same rule in every clinic stage"
-  }
+  },
+ {
+  "flow": "clinic:morning@L2",
+  "path": "fair",
+  "level": 2,
+  "sizes": [
+   "1366x768"
+  ],
+  "profile": "seen",
+  "want": null,
+  "at": "every:rec:stage",
+  "after": null,
+  "capture": [
+   "dom:.cl-side .oc-card .oc-strip"
+  ],
+  "expect": null,
+  "note": "Zafar, 21 Oct: from level 2 too his strip says the step now in every stage (the waiting room, the pharmacy and the send-off were empty)",
+  "delay": 1500
+ }
  ],
  "SH-64": [
   {
@@ -2822,6 +2859,7 @@
    "level": 1,
    "sizes": [
     "1366x768",
+    "1024x768",
     "844x390",
     "800x360"
    ],
@@ -6788,6 +6826,30 @@
   }
  ],
  "CLN-82": [
+ {
+  "flow": "clinic:heal-cut",
+  "path": "fair",
+  "level": [
+   2,
+   3
+  ],
+  "sizes": [
+   "1366x768"
+  ],
+  "profile": "seen",
+  "want": null,
+  "at": "visible:.cl-row.next-up",
+  "after": null,
+  "capture": [
+   "crop:.hs-tools",
+   "dom:.cl-side .oc-card"
+  ],
+  "expect": [
+   "count:.hs-tool.used.sel=0"
+  ],
+  "note": "the judge, 21 Oct: once the dabs are done the next row lights, and the used jug and cloth keep no picked ring (the plaster tiles' glow after the pause: the sandbox player never pauses here, so it is the reviewer's eye on the knee's path, the same code)",
+  "delay": 3500
+ },
   {
    "flow": "clinic:heal-cut",
    "path": "fair",

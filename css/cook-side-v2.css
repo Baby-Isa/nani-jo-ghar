@@ -336,7 +336,7 @@ body.w6 #intro .oc-card.speaking .oc-face img { box-shadow: 0 0 0 4px var(--njg-
 body.w6 #mission .m-stamp { display: none; }
 body.w6 #mission.stamped .oc-card::after {
   content: ""; position: absolute; z-index: 4; pointer-events: none;
-  right: var(--njg-s2); bottom: var(--njg-s2); width: calc(var(--njg-icon) * 1.6); height: calc(var(--njg-icon) * 1.6);
+  right: var(--njg-s2); bottom: var(--oc-stamp-b, var(--njg-s2)); top: var(--oc-stamp-t, auto); width: var(--oc-stamp, calc(var(--njg-icon) * 1.6)); height: var(--oc-stamp, calc(var(--njg-icon) * 1.6)); margin-top: var(--oc-stamp-mt, 0);
   transform: rotate(-12deg); opacity: .9; animation: stampIn .35s cubic-bezier(.2,1.4,.4,1);
   background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E");
 }

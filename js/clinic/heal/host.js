@@ -1080,10 +1080,22 @@
         // was read and folded before it had faded in (contract-1: no pop-up seen, its line said outside it)
         read: () => shownIn(veil).then(() => (veil && (veil.classList.contains("going") || !veil.isConnected) ? null : big.speak())), // (a tap-through while it faded in: nothing said)
         onStop: () => Kit.Voice.clear(),
+        // CLN-87 (Zafar, 6 Oct Z1: "about 1.5 s"; 21 Oct: about 0.7 s passed before the zoom moved): the pop-up's beat after
+        // the read-out was 700 ms, and the push-in waited for the card's 480 ms fly as well. The beat is short here and the
+        // push-in starts as the card leaves (zoomIn, below), so the room moves the moment the request is done
+        hold: 150,
+        onFold: () => zoomIn(),
       }).then(() => {
         popped = true;
         popAt = Date.now();
       });
+    };
+    // the push-in, once (at the pop-up's fold, or after it when there is no pop-up)
+    let zoomStarted = false;
+    const zoomIn = () => {
+      if (finished || zoomStarted) return;
+      zoomStarted = true;
+      ctx.zoomed = staging ? staging.in().catch(() => {}) : Promise.resolve();
     };
     // start() may run for a while (the doctor reads the card): mount returns at once. The zoom in plays over the
     // game's opening (the close-up is live underneath: input never waits for it, E5)
@@ -1092,7 +1104,7 @@
         if (finished) return null;
         // CLN-133 (S05-D3): the first-time help's ghost finger waits for the close-up (ctx.zoomed): played during the
         // push-in, its first demo was over before the child could see it
-        ctx.zoomed = staging ? staging.in().catch(() => {}) : Promise.resolve();
+        zoomIn();
         return controller.start && controller.start();
       })
       .catch((e) => console.error(`Healing game "${def.id}" failed to start`, e));

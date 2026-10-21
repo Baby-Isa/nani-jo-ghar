@@ -85,8 +85,9 @@
       fig.react("idle", 0);
       // T28, CLN-98: her lines in her bubble at her face, his at his (S.doctor: his head)
       Kit.Voice.speakers.patient = () => (onArt && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
-      // the doctor is on screen: his box holds only the child's next step, [Pick how she feels] at L1 (T28)
-      screen.setNani(plan.level <= 1 ? S.line(env, "pick-feel") : null);
+      // the doctor is on screen: his box holds only the child's next step, [Pick how she feels] (T28), at every level
+      // (SH-63, Zafar 21 Oct: the guide always says the step now)
+      screen.setNani(S.line(env, "pick-feel"));
       // UX 16: while they talk, the doctor and the patient stand three-quarter turned to each other (her turn, on her
       // art, is her own three-quarter view; on the child's turn both face the player)
       const stageTurn = (to) => {
