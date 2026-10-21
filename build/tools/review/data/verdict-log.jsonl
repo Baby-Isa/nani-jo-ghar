@@ -1568,3 +1568,9 @@
 {"id":"RIDE-07","run":"ev-20261021-031310-gsc","event":"built","date":"2026-10-21"}
 {"id":"BOOK-04","run":"ev-20261021-041111-l2d","event":"built","date":"2026-10-21"}
 {"id":"DOOR-01","run":"ev-20261021-032427-602","event":"built","date":"2026-10-21"}
+{"id":"SH-13","run":"ev-20261021-141514-4pn","verdict":"PASS","spec":"86d852dd5b9771db2dda","judge":"expect","date":"2026-10-21"}
+{"id":"SH-92","run":"ev-20261021-141514-4pn","verdict":"PASS","spec":"2019c30e4cffe8295b8b","judge":"expect","date":"2026-10-21"}
+{"id":"PAN-01","run":"ev-20261021-141514-4pn","verdict":"FAIL","spec":"1f18b5a80218ea9cac0f","judge":"expect","date":"2026-10-21"}
+{"id":"CLN-159","run":"ev-20261021-141514-4pn","verdict":"PASS","spec":"5995559263c0510ada78","judge":"expect","date":"2026-10-21"}
+{"id":"LNG-09","run":"ev-20261021-141514-4pn","verdict":"PASS","spec":"1c554418ce6d8fb01751","judge":"expect","date":"2026-10-21"}
+{"id":"SH-56","run":"ev-20261021-141514-4pn","verdict":"PASS","spec":"8873b352a157d18195d8","judge":"expect","date":"2026-10-21"}

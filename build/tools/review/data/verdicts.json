@@ -310,6 +310,143 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/ART-23.png",
   "date": "2026-10-20"
  },
+ "BOOK-01": {
+  "hash": "1d3d1d501e55bc729484",
+  "dhash": [
+   "74743d19dd898948",
+   "643413131313138e",
+   "64742d2f2b290d8e"
+  ],
+  "verdict": "PASS",
+  "line": "A, 0 ms the wide room with Nani by the fire holding the open book and her greeting, 810 ms the view moved in on her, 1739-2681 ms her face, 3468-4232 ms the open book on her lap facing the child fills the frame, 4232-9871 ms the kitchen game sits on its two pages; C shows the page turn between games (514 ms corner lift, 884 ms the page over the fold, 1700 ms the next game on fresh pages); B shows the zoom back out (0 ms book, 974-1711 ms her face, 2055 ms widening). Flaws: the moves are cross-dissolves between differently framed pictures, not one camera (A 1739 and 3468 ms show the book ghosted over her face; the face shot has shelves and a lamp on the right, the book shot has the fireplace on the right, same swap in B 401 ms), so the \"turn down\" is a jump; B's 2.4 s strip ends at 2055 ms before the full room is reached; A 0 ms the greeting bubble \"What did we do today?\" sits top-left, away from Nani (grey italic, to-record, allowed as English); C 514 ms the kitchen game has already vanished before the page lifts, so the turning page is blank",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
+  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-01.png",
+  "date": "2026-10-21"
+ },
+ "BOOK-02": {
+  "hash": "78fe6ee72a6e324d0ec7",
+  "dhash": [
+   "1111535341515111",
+   "1111535341515111",
+   "7511135341535311",
+   "7511135341535311"
+  ],
+  "verdict": "PASS",
+  "line": "machine: minSize:.day-book button>=64 (minSize 93, 72, 64); noClip:.day-book (1 clean); minSize:.day-book button>=64 (minSize 93, 72, 64)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "BOOK-03": {
+  "hash": "6c6366cdb494d90a874f",
+  "dhash": [
+   "647417072b0f0f8e",
+   "647417172b0f0f8e",
+   "75b79627692b0f11",
+   "75b79627692b0f11"
+  ],
+  "verdict": "PASS",
+  "line": "A, the field runs across both pages with four separate sprites (murgi and chakli on the left, bakri and kutro on the right) and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two (chakli, bakri) of the four shown, and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap with no other line; C and D show the same at 844x390 with nothing clipped. Noted: crop B (same moment, 1366x768) shows the hen and goat missing with only their shadow ellipses and a blank bubble, so at the instant .day-find appears the sprites and line are not yet drawn; the found bounce, gold corner tick, wiggle and no-red wrong state are still not on the sheet (the wrong-tap strip was captured but left off); \"There's the bird!\"/\"There's the goat!\"/\"Goodnight!\"/\"See you tomorrow!\" are unrecorded English [silent], fine only if tagged to-record; the leak-bot half of the Check is not on this sheet.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-03.png",
+  "date": "2026-10-21"
+ },
+ "BOOK-04": {
+  "hash": "d99a85b509f83fa450b3",
+  "dhash": [
+   "6474130323030f8e",
+   "6474130323030f8e",
+   "6474130323030f8e",
+   "6474130323030f8e"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1366x768 the open book has one thing (the chai glass) on the left page and three identical speaker buttons on the right with nothing written on them, an empty dashed slot above; Nani's bubble reads \"Hi kuro ai?\" and the voice timeline plays only that clip (mum/hi-rc.mp3) before the tap at 3.47, so she never says the word first; C then shows the chosen word \"chai\" sitting in the slot on the right page with the day's sentence beneath it and the timeline has her say \"chai\" then \"Nana wanted chai.\" (both unrecorded, grey italic, allowed under decision 84, not a leak). No clipping, overlap or old art; the bubble carries Nani's avatar on the page she holds.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
+  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-04.png",
+  "date": "2026-10-21"
+ },
+ "BOOK-05": {
+  "hash": "3d77fb4e29165cee3fdf",
+  "dhash": [
+   "311113131315130f"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 0 ms the dashed frame on the left page with \"Ne poi wadhi bakri.\" written under it and three unlabelled photos (goat, bird, brown dog) on the right page; 1228-2541 ms the goat photo is dragged across and shrinks into the frame; 3072-4431 ms it sits snapped in with gold corner mounts, the sentence still under it, the other two photos tidied on the right page and the Done arrow shown. Not demonstrated on this sheet: a wrong photo sliding back, a take-back before Done, the word-by-word writing (the full sentence is already up at 0 ms, i.e. 1.23 s, mid-line of the 0.94-1.54 s voice), and the \"book leak bot\" half of the Check has no result in the .md. The dom capture reads only Kutchi; all Nani lines are marked silent (no clip played), which is a recording gap not a leak. No clipping or overlap.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-05.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-06": {
+  "hash": "8fe2bf0d52e53f04b106",
+  "dhash": [
+   "647413431b130f8e",
+   "647413431b130f8e"
+  ],
+  "verdict": "PASS",
+  "line": "B, three photos on the left page (door, car, goat) and two on the right (hen, dog), the fold clear, no score anywhere, only the turn arrow; A shows it on the full 1366x768 screen",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/BOOK-06.png",
+  "date": "2026-10-21"
+ },
+ "BOOK-07": {
+  "hash": "60e9fe9e4a5ba257dbc0",
+  "dhash": [
+   "74743d19dd89891b"
+  ],
+  "verdict": "PASS",
+  "line": "A, six gold word cards along the bottom (chakli, bakri, kutro, gadi, darwajo, murgi, the farm day's words) and one day-book outline standing on the otherwise empty shelf behind Nani, no stars and no scores; \"See you tomorrow!\" is [ph] grey italic (allowed). Noted: a pale-blue translucent door, larger than the cards and unlabelled, stands at the right end of the card row flush with the screen bottom, with nothing to say what it is; the dom capture lists no text for it.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-07.png",
+  "date": "2026-10-21"
+ },
+ "BOOK-08": {
+  "hash": "11ec3e7478d4fdfe6df4",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/leak_book.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "BOOK-09": {
+  "hash": "68f2c16b1ea24a0dbbd7",
+  "dhash": [
+   "74743d19dd89891b",
+   "71b992866f2d0d0f",
+   "71b992866f2d0d0f",
+   "74743d19dd898948"
+  ],
+  "verdict": "PASS",
+  "line": "D, the 1366x768 strip runs room (0 ms, blank book, no bubble) → \"What did we do today?\" (600 ms, grey-italic to-record, by her head) → push-in to the nani-face-fire close-up (1338–3600 ms) → down onto the book at 4480 ms where the kitchen spread (chapati, jug, chai, sugar jar) is already on the page the first frame the book is in view, over the same lamp-and-fireplace room it zoomed through; \"Maani kida ai?\" (5400 ms) and \"There's the chapati!\" (7011 ms, grey italic) are both bubbles with words, no empty bubble anywhere; B then C show the 844x390 farm find-it spread with real sprites (murgi, bakri, kutro, chakli) and \"Chakli kida ai?\" by Nani's avatar; A shows the farm end at 1366x768 with real sprite tiles (chakli, bakri, kutro, gadi, darwajo, murgi) and \"See you tomorrow!\" grey italic. Flaws off the row's point: D 2399 ms shows a pale translucent rectangle across her chest (the room shot's blank pages ghosting through mid-crossfade), gone by 3000 ms; B has a thin underline under \"ai\" in \"Chakli kida ai?\" that C (same state, cropped) does not show, likely a spellcheck/outline artefact.",
+  "panel": "D",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041649-2u0",
+  "commit": "35ebc5e0",
+  "png": "build/screenshots/evidence/ev-20261021-041649-2u0/BOOK-09.png",
+  "date": "2026-10-21"
+ },
  "CHAI-02": {
   "hash": "c9308ddedbf9d2a782ad",
   "dhash": [
@@ -2378,7 +2515,7 @@
   "date": "2026-10-21"
  },
  "CLN-159": {
-  "hash": "d314eed0b66be662b223",
+  "hash": "3cbadd164fc142642db5",
   "dhash": [
    "e5c4c4c0e7ecedee",
    "c988888883d8d8de",
@@ -2388,8 +2525,8 @@
   "line": "machine: count:.cl-lab-out=0 (0 visible); count:.cl-lab-out=0 (0 visible (3 moments))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
   "date": "2026-10-21"
  },
  "CLN-162": {
@@ -4351,6 +4488,105 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "DAY-01": {
+  "hash": "9ab7bbf575dc7b52296f",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/test_day_runner.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "DAY-02": {
+  "hash": "cfc13d25f2baaf3757c4",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "DAY-02-p1-L1-1366x768 voice, the farm day runs door (Nani's farm invitation, child \"Ha!\" 5.98s) → ride (ride-call/ride-found for bakri, murgi, kutro, ride-end 14.73s) → book (finds goat, chicken, dog, then \"went by car\", \"Goodnight! See you tomorrow!\" 54.5s) and reaches page:end at 57.9s; the dom:.day-root at page:end lists the ride's finds bakri, murgi, kutro with darwajo and gadi. DAY-02-p2-L1-1366x768: the kitchen day hands off after \"Ha!\" (dom:.day-lab-note \"Hand-off: cook.html\" at 7.0s, expect PASS), then the evening book follows with maani, chai, dudh and ends \"Goodnight! See you tomorrow!\", page:end at 56.5s, dom listing maani, chai, dudh, darwajo. Flaws noted, off the point: most Nani lines play silent as to-record English placeholders (allowed, decision 84; the \"[ph]\" prefix in the dom capture reads as the tool's annotation of the hidden tag, not a visible flag); duplicated \"step-close\" lifecycle entries per ride find in p1; p2 marks mum/ha.mp3 and mum/kar.mp3 \"?\" where p1 marks ha.mp3 family-ok (clip status, not for this row).",
+  "panel": "DAY-02-p1-L1-1366x768 voice",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
+  "png": null,
+  "date": "2026-10-21"
+ },
+ "DOOR-01": {
+  "hash": "bea4ebd0f17159e880cd",
+  "dhash": [
+   "490a68b9a96b4749",
+   "3959c99bcbc6cacb",
+   "6d29694bcbe3e64b",
+   "9d9ae9b9ed674769",
+   "bab1ebcbcbc6cac9",
+   "ae9b6b4bcbe6e24b",
+   "999979e9e5676561",
+   "3a1bc1cbc7c6cac9",
+   "8c8aeb47e7e6e641",
+   "584a68b96d634749",
+   "50c5c9dbcbc6cacb",
+   "480d694bcbe7664b"
+  ],
+  "verdict": "PASS",
+  "line": "A, sunny sky with sun sits behind the cut-out house, roofline about a third down at 1024x768; B and C the same at 1366x768 and 844x390; D-F raining (grey sky, drawn rain streaks), G-I night (stars, crescent), J-L cloudy, roofline a third down in all twelve. Off the row: Ha!/Na! look translucent in C, I, L (mid fade-in at .day-answer.in); J-L say \"Tu muke help kar de\" where A-C/G-I say \"madad\" (fine only if \"help\" is loan:en).",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-032427-602",
+  "commit": "f5338db7",
+  "png": "build/screenshots/evidence/ev-20261021-032427-602/DOOR-01.png",
+  "date": "2026-10-21"
+ },
+ "DOOR-02": {
+  "hash": "249ccca6e4b0fd9f0bd8",
+  "dhash": [
+   "71e1c9cbcbc6cacb"
+  ],
+  "verdict": "PASS",
+  "line": "A, Nani is a cut-out standing on the path at the foot of the steps at about half the frame's height, and her pose changes with each line: shading her eyes at \"The sun's out!\" (0 ms), a fan at \"Ach!\" (1400 ms), open arms with the pot thought bubble at \"I want to cook today.\" (2101 ms) and hands clasped listening with Ha!/Na! from 4655 ms; flaws noted off the row's point: faint dev text \"Hand-off: cook.html\" shows bottom-left under the sidebar at 8421 ms (written English on the child's screen, needs its own row), Nani is half-transparent mid-fade at 701 ms, and her line card sits top-left away from her while only the thought bubble is tailed to her.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-02.png",
+  "date": "2026-10-21"
+ },
+ "DOOR-03": {
+  "hash": "ab3043624ce5c8991def",
+  "dhash": [
+   "3959c99bcbc6cacb",
+   "81c1b1f0f1a10101",
+   "6d29694bcbe3e64b",
+   "838181a5f5f1f1b1"
+  ],
+  "verdict": "PASS",
+  "line": "B, at 1366x768 the sidebar shows the weather card (sky picture, speaker icon, \"The sun's out!\" grey italic, [ph]-tagged in the DOM capture) above the activity card (pot, speaker icon, \"randhan\"), and A shows the Ha! and Na! pills bottom right; D and C show the same at 844x390 with the cards filling the column. Minor: the .day-side box overlaps the scene by a few pixels (B's crop carries a sliver of sky and grass), invisible on the screen",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-03.png",
+  "date": "2026-10-21"
+ },
+ "DOOR-04": {
+  "hash": "66e03b6827748cd97d23",
+  "dhash": [
+   "490a68b9ad634749",
+   "286868a9aae34349",
+   "18d8c89bebeacbc1",
+   "1878f899e9634749",
+   "3959c99bcbc6cacb",
+   "18c0c89bebeecbc9",
+   "4d29494bcbe7e26b",
+   "6d29694bcbe3e24b"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.day-lines (1 clean); noOverlap:.day-nani,.day-side (no overlap); noClip:.day-lines (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
  "FL-01": {
   "hash": "f7b91023934b2dbe5fa0",
   "dhash": [
@@ -4475,14 +4711,14 @@
   "date": "2026-10-20"
  },
  "LNG-09": {
-  "hash": "a35e6a82fe74a263540c",
+  "hash": "4ca71343f26be101a237",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: textMatches:ATEMPO = 1\\.0 (the script's output matches /ATEMPO = 1\\.0/); textMatches:u\\.rate = 1; (the script's output matches /u\\.rate = 1;/); !textMatches:u\\.rate = 0\\.[0-7]\\b (not (the script's output does not match /u\\.rate = 0\\.[0-7]\\b/))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
   "date": "2026-10-21"
  },
  "LNG-10": {
@@ -4804,19 +5040,20 @@
   "date": "2026-10-20"
  },
  "PAN-01": {
-  "hash": "1f9941f734d69ce4d61e",
+  "hash": "b01aa355e2e7b565f276",
   "dhash": [
-   "01898d0101818101",
-   "0585818181818101",
-   "0089a48181818101"
+   "80888c83c1018141",
+   "00b0898d02c18101",
+   "05a1858c81818101",
+   "0151818581818181"
   ],
   "verdict": "FAIL",
-  "line": "machine: PAN-01-p1-L1-800x360: noClip:#mission: .oc-in scrolls down; .oc-items past the edge; .oc-item past the edge; .oc-fold past the edge; .oc-fold-in past the edge; .oc-parts past the edge (6 moments); PAN-01-p1-L1-844x390: noClip:#mission: .oc-in scrolls down; .oc-items past the edge; .oc-item past the edge; .oc-fold past the edge; .oc-fold-in past the edge; .oc-parts past the edge (6 moments)",
+  "line": "machine: PAN-01-p1-L1-844x390: noClip:#mission: .oc-in scrolls down; .oc-items past the edge; .oc-item past the edge; .oc-fold past the edge; .oc-fold-in past the edge; .oc-parts past the edge (6 moments)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
+  "date": "2026-10-21"
  },
  "PAN-02": {
   "hash": "52e1220fdbe9391d7030",
@@ -5116,6 +5353,101 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "RIDE-01": {
+  "hash": "c3d9cd23ca0b85ee84da",
+  "dhash": [
+   "3a4f6b29530b1b0b",
+   "724f4b5b6d434101"
+  ],
+  "verdict": "FAIL",
+  "line": "B, the 844x390 strip never crosses a join (the shop houses and red/green doors of 0-5.5 s do not come round again in 12 s) and the scroll decays to a near-stop over the last three frames (goat, dog and tree barely move between 9899 and 12100 ms, against ~120 px per frame earlier); A at 1366x768 is fine: fence and wall continuous in every frame, the red/green doors come round at 9669-11001 ms with no seam or ghosting, the bicycle (middle) and doors (near) move at different speeds; A's frame spacing is uneven (0 then 4375 ms), a tool quirk",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/RIDE-01.png",
+  "date": "2026-10-21"
+ },
+ "RIDE-02": {
+  "hash": "cc18f66e765904cbeadf",
+  "dhash": [
+   "5603375d251c4919",
+   "7f43257d6f1d1d19"
+  ],
+  "verdict": "PASS",
+  "line": "machine: contract-47 (0 breaks on this page); contract-47 (0 breaks on this page)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "RIDE-03": {
+  "hash": "912760a411a18379683d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: lastsMs:.wr-member>=8000 (on screen 10786 ms); lastsMs:.wr-member>=3000 (on screen 3921 ms); lastsMs:.wr-member<=4500 (on screen 3921 ms)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "RIDE-04": {
+  "hash": "12a087246b65e9bd0692",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: contract-48 (0 breaks on this page)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "RIDE-05": {
+  "hash": "f04ab784ccdb81052056",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/leak_window_ride.mjs --speeds slow,normal,fast: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "RIDE-06": {
+  "hash": "9f98b21598045750c2cb",
+  "dhash": [
+   "6c6c6bd5db15c926",
+   "6c6c6b9193d10c26",
+   "d8dbe59595b319ee",
+   "735f5557d1c99171"
+  ],
+  "verdict": "PASS",
+  "line": "D, at 800x360 the car's ceiling, door and pillar run to every edge with no green outside, the view (sky, rainbow, buildings, wall) fills the whole opening; A, B and C show the same at 1024x768, 1366x1024 and 1366x768, nothing clipped",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-06.png",
+  "date": "2026-10-21"
+ },
+ "RIDE-07": {
+  "hash": "86bd94267fa13c740398",
+  "dhash": [
+   "6c6c6bcdd70bc926",
+   "6c6c6b8b83d30c26",
+   "72534555d59b8d30"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1024x768 the window shows sun, clouds, rainbow and kite in the sky, looping hills, the buildings, the buffalo standing in the grass in front of the stone wall, the wooden fence empty, and both pillars framing the window; B at 1366x1024 the same with a dog in the grass at the right edge; C at 844x390 the right pillar runs off-screen, as the phone shape allows",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-07.png",
+  "date": "2026-10-21"
  },
  "SAM-01": {
   "hash": "284fba9159f0fe8bf1aa",
@@ -6095,14 +6427,14 @@
   "date": "2026-10-21"
  },
  "SH-13": {
-  "hash": "4ed50fb656aa7c1b8b2d",
+  "hash": "f75fb1d6dc700b657cc9",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: hasWord:number (number: trae); hasWord:number (number: ba); hasWord:number (number: trae, ba)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
   "date": "2026-10-21"
  },
  "SH-14": {
@@ -6698,15 +7030,14 @@
   "date": "2026-10-21"
  },
  "SH-56": {
-  "hash": "810b18182f009e2b0c4e",
+  "hash": "d08251c3b9c43c403f1d",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "SH-56-p3-L1-1366x768 dom:.njg-guide at cook-done:swipe (8), the guide box is on screen with no words 5.4 s after step-call (2) \"Samosa waar!\", in the middle of a step. It is empty the same way at chai cook-done:click 1.9 s after step-call (1) and in 27 of 28 captures. The only daar line, \"[ph] Add the spices, in order.\", is one line for several steps, the daar timeline is cut before any \"turn on\" / \"put the daar in\" line, and maani L1 was not probed",
-  "panel": "SH-56-p3-L1-1366x768 dom",
-  "judge": "judge",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
-  "png": null,
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)make each pan|^\\s*$ (not (text: \"Dudh wiji chad! Khun wiji chad! Khun wiji chad! Khun wiji chad! Elchi wiji chad! Chulo bar !\")); !textMatches:(?i)first jeeru then lasan (not (text: \"Chulo bar !\")); !textMatches:(?i)cook it the way they said (not (text: \"Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! \"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
   "date": "2026-10-21"
  },
  "SH-57": {
@@ -7154,14 +7485,14 @@
   "date": "2026-10-20"
  },
  "SH-92": {
-  "hash": "18d5e57a7daaff276cc2",
+  "hash": "2c9528a7a32c97e8abda",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
+  "run": "ev-20261021-141514-4pn",
+  "commit": "3a402ff9",
   "date": "2026-10-21"
  },
  "SH-97": {
@@ -7210,336 +7541,5 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
- },
- "BOOK-01": {
-  "hash": "1d3d1d501e55bc729484",
-  "dhash": [
-   "74743d19dd898948",
-   "643413131313138e",
-   "64742d2f2b290d8e"
-  ],
-  "verdict": "PASS",
-  "line": "A, 0 ms the wide room with Nani by the fire holding the open book and her greeting, 810 ms the view moved in on her, 1739-2681 ms her face, 3468-4232 ms the open book on her lap facing the child fills the frame, 4232-9871 ms the kitchen game sits on its two pages; C shows the page turn between games (514 ms corner lift, 884 ms the page over the fold, 1700 ms the next game on fresh pages); B shows the zoom back out (0 ms book, 974-1711 ms her face, 2055 ms widening). Flaws: the moves are cross-dissolves between differently framed pictures, not one camera (A 1739 and 3468 ms show the book ghosted over her face; the face shot has shelves and a lamp on the right, the book shot has the fireplace on the right, same swap in B 401 ms), so the \"turn down\" is a jump; B's 2.4 s strip ends at 2055 ms before the full room is reached; A 0 ms the greeting bubble \"What did we do today?\" sits top-left, away from Nani (grey italic, to-record, allowed as English); C 514 ms the kitchen game has already vanished before the page lifts, so the turning page is blank",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-041111-l2d",
-  "commit": "a617bdef",
-  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-01.png",
-  "date": "2026-10-21"
- },
- "BOOK-02": {
-  "hash": "78fe6ee72a6e324d0ec7",
-  "dhash": [
-   "1111535341515111",
-   "1111535341515111",
-   "7511135341535311",
-   "7511135341535311"
-  ],
-  "verdict": "PASS",
-  "line": "machine: minSize:.day-book button>=64 (minSize 93, 72, 64); noClip:.day-book (1 clean); minSize:.day-book button>=64 (minSize 93, 72, 64)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "BOOK-03": {
-  "hash": "6c6366cdb494d90a874f",
-  "dhash": [
-   "647417072b0f0f8e",
-   "647417172b0f0f8e",
-   "75b79627692b0f11",
-   "75b79627692b0f11"
-  ],
-  "verdict": "PASS",
-  "line": "A, the field runs across both pages with four separate sprites (murgi and chakli on the left, bakri and kutro on the right) and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two (chakli, bakri) of the four shown, and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap with no other line; C and D show the same at 844x390 with nothing clipped. Noted: crop B (same moment, 1366x768) shows the hen and goat missing with only their shadow ellipses and a blank bubble, so at the instant .day-find appears the sprites and line are not yet drawn; the found bounce, gold corner tick, wiggle and no-red wrong state are still not on the sheet (the wrong-tap strip was captured but left off); \"There's the bird!\"/\"There's the goat!\"/\"Goodnight!\"/\"See you tomorrow!\" are unrecorded English [silent], fine only if tagged to-record; the leak-bot half of the Check is not on this sheet.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-03.png",
-  "date": "2026-10-21"
- },
- "BOOK-04": {
-  "hash": "d99a85b509f83fa450b3",
-  "dhash": [
-   "6474130323030f8e",
-   "6474130323030f8e",
-   "6474130323030f8e",
-   "6474130323030f8e"
-  ],
-  "verdict": "PASS",
-  "line": "A, at 1366x768 the open book has one thing (the chai glass) on the left page and three identical speaker buttons on the right with nothing written on them, an empty dashed slot above; Nani's bubble reads \"Hi kuro ai?\" and the voice timeline plays only that clip (mum/hi-rc.mp3) before the tap at 3.47, so she never says the word first; C then shows the chosen word \"chai\" sitting in the slot on the right page with the day's sentence beneath it and the timeline has her say \"chai\" then \"Nana wanted chai.\" (both unrecorded, grey italic, allowed under decision 84, not a leak). No clipping, overlap or old art; the bubble carries Nani's avatar on the page she holds.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-041111-l2d",
-  "commit": "a617bdef",
-  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-04.png",
-  "date": "2026-10-21"
- },
- "BOOK-05": {
-  "hash": "3d77fb4e29165cee3fdf",
-  "dhash": [
-   "311113131315130f"
-  ],
-  "verdict": "PASS",
-  "line": "A, at 0 ms the dashed frame on the left page with \"Ne poi wadhi bakri.\" written under it and three unlabelled photos (goat, bird, brown dog) on the right page; 1228-2541 ms the goat photo is dragged across and shrinks into the frame; 3072-4431 ms it sits snapped in with gold corner mounts, the sentence still under it, the other two photos tidied on the right page and the Done arrow shown. Not demonstrated on this sheet: a wrong photo sliding back, a take-back before Done, the word-by-word writing (the full sentence is already up at 0 ms, i.e. 1.23 s, mid-line of the 0.94-1.54 s voice), and the \"book leak bot\" half of the Check has no result in the .md. The dom capture reads only Kutchi; all Nani lines are marked silent (no clip played), which is a recording gap not a leak. No clipping or overlap.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-05.png",
-  "date": "2026-10-20"
- },
- "BOOK-06": {
-  "hash": "8fe2bf0d52e53f04b106",
-  "dhash": [
-   "647413431b130f8e",
-   "647413431b130f8e"
-  ],
-  "verdict": "PASS",
-  "line": "B, three photos on the left page (door, car, goat) and two on the right (hen, dog), the fold clear, no score anywhere, only the turn arrow; A shows it on the full 1366x768 screen",
-  "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/BOOK-06.png",
-  "date": "2026-10-21"
- },
- "BOOK-07": {
-  "hash": "60e9fe9e4a5ba257dbc0",
-  "dhash": [
-   "74743d19dd89891b"
-  ],
-  "verdict": "PASS",
-  "line": "A, six gold word cards along the bottom (chakli, bakri, kutro, gadi, darwajo, murgi, the farm day's words) and one day-book outline standing on the otherwise empty shelf behind Nani, no stars and no scores; \"See you tomorrow!\" is [ph] grey italic (allowed). Noted: a pale-blue translucent door, larger than the cards and unlabelled, stands at the right end of the card row flush with the screen bottom, with nothing to say what it is; the dom capture lists no text for it.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-07.png",
-  "date": "2026-10-21"
- },
- "BOOK-08": {
-  "hash": "11ec3e7478d4fdfe6df4",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: pass (node build/leak_book.mjs: exit 0)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "BOOK-09": {
-  "hash": "68f2c16b1ea24a0dbbd7",
-  "dhash": [
-   "74743d19dd89891b",
-   "71b992866f2d0d0f",
-   "71b992866f2d0d0f",
-   "74743d19dd898948"
-  ],
-  "verdict": "PASS",
-  "line": "D, the 1366x768 strip runs room (0 ms, blank book, no bubble) → \"What did we do today?\" (600 ms, grey-italic to-record, by her head) → push-in to the nani-face-fire close-up (1338–3600 ms) → down onto the book at 4480 ms where the kitchen spread (chapati, jug, chai, sugar jar) is already on the page the first frame the book is in view, over the same lamp-and-fireplace room it zoomed through; \"Maani kida ai?\" (5400 ms) and \"There's the chapati!\" (7011 ms, grey italic) are both bubbles with words, no empty bubble anywhere; B then C show the 844x390 farm find-it spread with real sprites (murgi, bakri, kutro, chakli) and \"Chakli kida ai?\" by Nani's avatar; A shows the farm end at 1366x768 with real sprite tiles (chakli, bakri, kutro, gadi, darwajo, murgi) and \"See you tomorrow!\" grey italic. Flaws off the row's point: D 2399 ms shows a pale translucent rectangle across her chest (the room shot's blank pages ghosting through mid-crossfade), gone by 3000 ms; B has a thin underline under \"ai\" in \"Chakli kida ai?\" that C (same state, cropped) does not show, likely a spellcheck/outline artefact.",
-  "panel": "D",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-041649-2u0",
-  "commit": "35ebc5e0",
-  "png": "build/screenshots/evidence/ev-20261021-041649-2u0/BOOK-09.png",
-  "date": "2026-10-21"
- },
- "DAY-01": {
-  "hash": "9ab7bbf575dc7b52296f",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: pass (node build/test_day_runner.mjs: exit 0)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "DAY-02": {
-  "hash": "cfc13d25f2baaf3757c4",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "DAY-02-p1-L1-1366x768 voice, the farm day runs door (Nani's farm invitation, child \"Ha!\" 5.98s) → ride (ride-call/ride-found for bakri, murgi, kutro, ride-end 14.73s) → book (finds goat, chicken, dog, then \"went by car\", \"Goodnight! See you tomorrow!\" 54.5s) and reaches page:end at 57.9s; the dom:.day-root at page:end lists the ride's finds bakri, murgi, kutro with darwajo and gadi. DAY-02-p2-L1-1366x768: the kitchen day hands off after \"Ha!\" (dom:.day-lab-note \"Hand-off: cook.html\" at 7.0s, expect PASS), then the evening book follows with maani, chai, dudh and ends \"Goodnight! See you tomorrow!\", page:end at 56.5s, dom listing maani, chai, dudh, darwajo. Flaws noted, off the point: most Nani lines play silent as to-record English placeholders (allowed, decision 84; the \"[ph]\" prefix in the dom capture reads as the tool's annotation of the hidden tag, not a visible flag); duplicated \"step-close\" lifecycle entries per ride find in p1; p2 marks mum/ha.mp3 and mum/kar.mp3 \"?\" where p1 marks ha.mp3 family-ok (clip status, not for this row).",
-  "panel": "DAY-02-p1-L1-1366x768 voice",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-041111-l2d",
-  "commit": "a617bdef",
-  "png": null,
-  "date": "2026-10-21"
- },
- "DOOR-01": {
-  "hash": "bea4ebd0f17159e880cd",
-  "dhash": [
-   "490a68b9a96b4749",
-   "3959c99bcbc6cacb",
-   "6d29694bcbe3e64b",
-   "9d9ae9b9ed674769",
-   "bab1ebcbcbc6cac9",
-   "ae9b6b4bcbe6e24b",
-   "999979e9e5676561",
-   "3a1bc1cbc7c6cac9",
-   "8c8aeb47e7e6e641",
-   "584a68b96d634749",
-   "50c5c9dbcbc6cacb",
-   "480d694bcbe7664b"
-  ],
-  "verdict": "PASS",
-  "line": "A, sunny sky with sun sits behind the cut-out house, roofline about a third down at 1024x768; B and C the same at 1366x768 and 844x390; D-F raining (grey sky, drawn rain streaks), G-I night (stars, crescent), J-L cloudy, roofline a third down in all twelve. Off the row: Ha!/Na! look translucent in C, I, L (mid fade-in at .day-answer.in); J-L say \"Tu muke help kar de\" where A-C/G-I say \"madad\" (fine only if \"help\" is loan:en).",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-032427-602",
-  "commit": "f5338db7",
-  "png": "build/screenshots/evidence/ev-20261021-032427-602/DOOR-01.png",
-  "date": "2026-10-21"
- },
- "DOOR-02": {
-  "hash": "249ccca6e4b0fd9f0bd8",
-  "dhash": [
-   "71e1c9cbcbc6cacb"
-  ],
-  "verdict": "PASS",
-  "line": "A, Nani is a cut-out standing on the path at the foot of the steps at about half the frame's height, and her pose changes with each line: shading her eyes at \"The sun's out!\" (0 ms), a fan at \"Ach!\" (1400 ms), open arms with the pot thought bubble at \"I want to cook today.\" (2101 ms) and hands clasped listening with Ha!/Na! from 4655 ms; flaws noted off the row's point: faint dev text \"Hand-off: cook.html\" shows bottom-left under the sidebar at 8421 ms (written English on the child's screen, needs its own row), Nani is half-transparent mid-fade at 701 ms, and her line card sits top-left away from her while only the thought bubble is tailed to her.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-02.png",
-  "date": "2026-10-21"
- },
- "DOOR-03": {
-  "hash": "ab3043624ce5c8991def",
-  "dhash": [
-   "3959c99bcbc6cacb",
-   "81c1b1f0f1a10101",
-   "6d29694bcbe3e64b",
-   "838181a5f5f1f1b1"
-  ],
-  "verdict": "PASS",
-  "line": "B, at 1366x768 the sidebar shows the weather card (sky picture, speaker icon, \"The sun's out!\" grey italic, [ph]-tagged in the DOM capture) above the activity card (pot, speaker icon, \"randhan\"), and A shows the Ha! and Na! pills bottom right; D and C show the same at 844x390 with the cards filling the column. Minor: the .day-side box overlaps the scene by a few pixels (B's crop carries a sliver of sky and grass), invisible on the screen",
-  "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-03.png",
-  "date": "2026-10-21"
- },
- "DOOR-04": {
-  "hash": "66e03b6827748cd97d23",
-  "dhash": [
-   "490a68b9ad634749",
-   "286868a9aae34349",
-   "18d8c89bebeacbc1",
-   "1878f899e9634749",
-   "3959c99bcbc6cacb",
-   "18c0c89bebeecbc9",
-   "4d29494bcbe7e26b",
-   "6d29694bcbe3e24b"
-  ],
-  "verdict": "PASS",
-  "line": "machine: noClip:.day-lines (1 clean); noOverlap:.day-nani,.day-side (no overlap); noClip:.day-lines (1 clean)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "RIDE-01": {
-  "hash": "c3d9cd23ca0b85ee84da",
-  "dhash": [
-   "3a4f6b29530b1b0b",
-   "724f4b5b6d434101"
-  ],
-  "verdict": "FAIL",
-  "line": "B, the 844x390 strip never crosses a join (the shop houses and red/green doors of 0-5.5 s do not come round again in 12 s) and the scroll decays to a near-stop over the last three frames (goat, dog and tree barely move between 9899 and 12100 ms, against ~120 px per frame earlier); A at 1366x768 is fine: fence and wall continuous in every frame, the red/green doors come round at 9669-11001 ms with no seam or ghosting, the bicycle (middle) and doors (near) move at different speeds; A's frame spacing is uneven (0 then 4375 ms), a tool quirk",
-  "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/RIDE-01.png",
-  "date": "2026-10-21"
- },
- "RIDE-02": {
-  "hash": "cc18f66e765904cbeadf",
-  "dhash": [
-   "5603375d251c4919",
-   "7f43257d6f1d1d19"
-  ],
-  "verdict": "PASS",
-  "line": "machine: contract-47 (0 breaks on this page); contract-47 (0 breaks on this page)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "RIDE-03": {
-  "hash": "912760a411a18379683d",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: lastsMs:.wr-member>=8000 (on screen 10786 ms); lastsMs:.wr-member>=3000 (on screen 3921 ms); lastsMs:.wr-member<=4500 (on screen 3921 ms)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "RIDE-04": {
-  "hash": "12a087246b65e9bd0692",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: contract-48 (0 breaks on this page)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "RIDE-05": {
-  "hash": "f04ab784ccdb81052056",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: pass (node build/leak_window_ride.mjs --speeds slow,normal,fast: exit 0)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "date": "2026-10-21"
- },
- "RIDE-06": {
-  "hash": "9f98b21598045750c2cb",
-  "dhash": [
-   "6c6c6bd5db15c926",
-   "6c6c6b9193d10c26",
-   "d8dbe59595b319ee",
-   "735f5557d1c99171"
-  ],
-  "verdict": "PASS",
-  "line": "D, at 800x360 the car's ceiling, door and pillar run to every edge with no green outside, the view (sky, rainbow, buildings, wall) fills the whole opening; A, B and C show the same at 1024x768, 1366x1024 and 1366x768, nothing clipped",
-  "panel": "D",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-06.png",
-  "date": "2026-10-21"
- },
- "RIDE-07": {
-  "hash": "86bd94267fa13c740398",
-  "dhash": [
-   "6c6c6bcdd70bc926",
-   "6c6c6b8b83d30c26",
-   "72534555d59b8d30"
-  ],
-  "verdict": "PASS",
-  "line": "A, at 1024x768 the window shows sun, clouds, rainbow and kite in the sky, looping hills, the buildings, the buffalo standing in the grass in front of the stone wall, the wooden fence empty, and both pillars framing the window; B at 1366x1024 the same with a dog in the grass at the right edge; C at 844x390 the right pillar runs off-screen, as the phone shape allows",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-07.png",
-  "date": "2026-10-21"
  }
 }
