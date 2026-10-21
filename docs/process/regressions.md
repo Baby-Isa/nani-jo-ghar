@@ -218,7 +218,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | DAY-02 | A whole day plays through: the farm day goes door, ride, book with its finds; a kitchen or clinic day hands off and the book follows on return | **open (two strikes: Zafar)** (evidence FAIL ev-20261021-032427-602) | auto: the full-day flows reach their end | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
 | DAY-03 | The way back: Cook's or the clinic's round returns to the evening book by itself, and writes the day log the book reads | **waiting on** Sprint 8's publish (a change in Cook and the clinic) | auto: day:full-kitchen plays Cook's round and returns to the book | s09-final-door report, 21 Oct |
 | RIDE-07 | The farm road shows the s09b art (animals, vehicles, sky things, landmarks, the looping hills, the wide window with both pillars on tablets); field things stand in the grass, never on the fence | **open** | eye: 1024x768, 1366x1024, 844x390 | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
-| BOOK-09 | The book shows the s09b art (the find-it spreads, her face close-up, real sprites); no picture late, no empty bubble, the camera lands over the room it zoomed through | **reopened** (evidence FAIL ev-20261021-032427-602) | eye: 1366x768 and 844x390 | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
+| BOOK-09 | The book shows the s09b art (the find-it spreads, her face close-up, real sprites); no picture late, no empty bubble, the camera lands over the room it zoomed through | **open (two strikes: Zafar)** (evidence FAIL ev-20261021-041111-l2d) | eye: 1366x768 and 844x390 | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
 
 ## Other modes
 

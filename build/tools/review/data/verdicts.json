@@ -266,19 +266,19 @@
   "date": "2026-10-20"
  },
  "BOOK-01": {
-  "hash": "2728e12c49fa7749a9df",
+  "hash": "1d3d1d501e55bc729484",
   "dhash": [
    "74743d19dd898948",
-   "6474131313130f8e",
-   "64741317072b0f8e"
+   "643413131313138e",
+   "64742d2f2b290d8e"
   ],
   "verdict": "PASS",
-  "line": "A, 0 ms wide room with Nani by the fire and her greeting, 1437-3189 ms the view moves in to her face, 3659-5683 ms it turns down to the open book facing the child and fills the frame, 6996 ms the kitchen game sits on the two pages; B shows the zoom back out to the full room (0-2305 ms); C shows the page turn (786 ms the right page swinging over the fold) and the next game on fresh pages; flaws: the landing on the book goes via a dissolve to a different crop (5683 ms bookshelf on the right, 6385 ms fireplace on the right; the same swap in reverse at B 0-464 ms), so the camera does not land on the picture it zoomed through; A 8610 ms shows an empty speech bubble; English lines (\"What did we do today?\", \"There's the chai!\") are grey italic, allowed under decision 84",
+  "line": "A, 0 ms the wide room with Nani by the fire holding the open book and her greeting, 810 ms the view moved in on her, 1739-2681 ms her face, 3468-4232 ms the open book on her lap facing the child fills the frame, 4232-9871 ms the kitchen game sits on its two pages; C shows the page turn between games (514 ms corner lift, 884 ms the page over the fold, 1700 ms the next game on fresh pages); B shows the zoom back out (0 ms book, 974-1711 ms her face, 2055 ms widening). Flaws: the moves are cross-dissolves between differently framed pictures, not one camera (A 1739 and 3468 ms show the book ghosted over her face; the face shot has shelves and a lamp on the right, the book shot has the fireplace on the right, same swap in B 401 ms), so the \"turn down\" is a jump; B's 2.4 s strip ends at 2055 ms before the full room is reached; A 0 ms the greeting bubble \"What did we do today?\" sits top-left, away from Nani (grey italic, to-record, allowed as English); C 514 ms the kitchen game has already vanished before the page lifts, so the turning page is blank",
   "panel": "A",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-01.png",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
+  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-01.png",
   "date": "2026-10-21"
  },
  "BOOK-02": {
@@ -315,7 +315,7 @@
   "date": "2026-10-21"
  },
  "BOOK-04": {
-  "hash": "53f2b7762151646bffb3",
+  "hash": "d99a85b509f83fa450b3",
   "dhash": [
    "6474130323030f8e",
    "6474130323030f8e",
@@ -323,12 +323,12 @@
    "6474130323030f8e"
   ],
   "verdict": "PASS",
-  "line": "B, the chai alone on the left page, three identical speaker buttons with nothing written on them and an empty dashed slot on the right, Nani's bubble \"Hi kuro ai?\"; the voice timeline plays the question (mum/hi-rc.mp3) and says \"chai\" only after the tap at 2.75s; D, the slot now reads \"chai\" with the day's sentence under it in grey italic (to-record, allowed)",
-  "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-031310-gsc",
-  "commit": "9014b36b",
-  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/BOOK-04.png",
+  "line": "A, at 1366x768 the open book has one thing (the chai glass) on the left page and three identical speaker buttons on the right with nothing written on them, an empty dashed slot above; Nani's bubble reads \"Hi kuro ai?\" and the voice timeline plays only that clip (mum/hi-rc.mp3) before the tap at 3.47, so she never says the word first; C then shows the chosen word \"chai\" sitting in the slot on the right page with the day's sentence beneath it and the timeline has her say \"chai\" then \"Nana wanted chai.\" (both unrecorded, grey italic, allowed under decision 84, not a leak). No clipping, overlap or old art; the bubble carries Nani's avatar on the page she holds.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
+  "png": "build/screenshots/evidence/ev-20261021-041111-l2d/BOOK-04.png",
   "date": "2026-10-21"
  },
  "BOOK-05": {
@@ -4291,14 +4291,14 @@
   "date": "2026-10-21"
  },
  "DAY-02": {
-  "hash": "9982e9151bd43be94831",
+  "hash": "cfc13d25f2baaf3757c4",
   "dhash": [],
   "verdict": "PASS",
-  "line": "DAY-02-p1-L1-1366x768 voice + dom:.day-root@page:end, the farm day runs door (Nani's farm invitation, child \"Ha!\" at 6.95s) -> request day:window -> ride with three calls and three ride-found steps (bakri, murgi, kutro) -> ride-end 15.63s -> book \"What did we do today?\" with the ride's finds tapped and recapped -> \"Goodnight!\" / \"See you tomorrow!\" -> page:end reached at 54.1s, and the end dom lists bakri, murgi, kutro, darwajo, gadi; the kitchen day (DAY-02-p2-L1-1366x768) shows door -> \"Ha!\" -> dom:.day-lab-note \"Hand-off: cook.html\" at 8.0s (expect PASS), then on reopening day.html the evening book follows with maani, chai, dudh and reaches page:end at 52.7s (dom:.day-root@page:end lists maani, chai, dudh, darwajo). Flaws off the row's point: book lines double-fire and overlap after an img tap (p1 \"Then we saw a big chicken.\" 31.43 and 31.94; p2 \"Then we used the milk.\" 26.63 and 27.09; p2 \"Then we used the chai.\" 30.18 and 31.71); p1 \"There's the chicken!\" (23.68) starts over \"Murgi kida ai?\" (23.56-24.06); p1 book \"kutro\" has zero duration (28.02-28.02); p2 tags \"Tu muke randhan lai madad kar de.\" as [?: mum/kar.mp3] (a whole sentence on one word clip, unverified) and \"Ha!\" as [?] where p1 has it family-ok; most Nani lines are to-record placeholders (allowed, decision 84) and a text-only sheet cannot show their grey italic.",
-  "panel": "DAY-02-p1-L1",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-032953-b2n",
-  "commit": "75e68f28",
+  "line": "DAY-02-p1-L1-1366x768 voice, the farm day runs door (Nani's farm invitation, child \"Ha!\" 5.98s) → ride (ride-call/ride-found for bakri, murgi, kutro, ride-end 14.73s) → book (finds goat, chicken, dog, then \"went by car\", \"Goodnight! See you tomorrow!\" 54.5s) and reaches page:end at 57.9s; the dom:.day-root at page:end lists the ride's finds bakri, murgi, kutro with darwajo and gadi. DAY-02-p2-L1-1366x768: the kitchen day hands off after \"Ha!\" (dom:.day-lab-note \"Hand-off: cook.html\" at 7.0s, expect PASS), then the evening book follows with maani, chai, dudh and ends \"Goodnight! See you tomorrow!\", page:end at 56.5s, dom listing maani, chai, dudh, darwajo. Flaws noted, off the point: most Nani lines play silent as to-record English placeholders (allowed, decision 84; the \"[ph]\" prefix in the dom capture reads as the tool's annotation of the hidden tag, not a visible flag); duplicated \"step-close\" lifecycle entries per ride find in p1; p2 marks mum/ha.mp3 and mum/kar.mp3 \"?\" where p1 marks ha.mp3 family-ok (clip status, not for this row).",
+  "panel": "DAY-02-p1-L1-1366x768 voice",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-041111-l2d",
+  "commit": "a617bdef",
   "png": null,
   "date": "2026-10-21"
  },
