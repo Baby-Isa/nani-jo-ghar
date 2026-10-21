@@ -3,23 +3,29 @@
 Branch `worktree-agent-ac78a83501956f4f8` (not pushed). Changed: the window ride (`js/shared/window-ride.js`, `js/day/window.js`, `data/day.json`), its checks, flows, lab.
 
 ## Flaws first
-1. A faint ghost of the far hills remains over each 10% overlap: the cut's outer tenths are not plain hillside.
-2. `plus-lighter` (the two-way cross-fade) needs Safari 15.4 or later.
-3. Tablets: the height-fitted frame loses its pillars (s09b's window fixes it).
-4. 800x360: things are small (door about 70 px; taps 56 px minimum).
-5. `touched.mjs` can't place `js/day/*`, `data/day.json`, `lab/*`.
-6. `load` once failed on cook:chop (an oversized Nani face, Cook's), then passed 29/29.
+1. RIDE-01's new spec (`strip:.wr-view:16x800`) is a tool failure: at most 12 frames.
+2. The game's motion was already even in headless Chromium; the jerk was the recorder (below).
+3. One 150-183 ms hitch early at 844x390 in 2 of 6 runs; no new element that frame.
+4. Faint far-hill ghost over each overlap (the cut's outer tenths); `plus-lighter` needs Safari 15.4+.
+5. Tablets lose the frame's pillars; things small at 800x360.
+6. `ride-gentle` and `ride-together` are old recordings (5-8% repeated frames).
+7. `checks.mjs` load: cook:chop fails now and then (Cook's oversized Nani face, not mine); all else ok.
 
-## Fix round (20 Oct)
-- **RIDE-01 jump/stall**, causes: (a) the strip filmed a 3x ride, a fifth to a half of the window per 400 ms frame; (b) late frames were clamped to 100 ms, so the road lost time, then crept; (c) a prop at a group's front came on inside the window. Now the fair ride plays at speed 1, the road keeps wall-clock time, and the prop comes on with its group. The new no-jump test was red on (c).
-- **Zafar's stray edge**: the join, not the cut. Only the incoming copy faded, so the old copy's hill line ended in a hard vertical edge. Now both copies fade, summed with `plus-lighter`.
-- **Parallax**: `parallax` and `parallaxSets` (deep, gentle, together) per trip, default deep; switch on the preview.
+## Round 3 (Zafar, 20 Oct evening)
+- Gentle layers (0.5 / 0.8 / 1) are the farm road's default.
+- **Smoothness, measured in the page** (rAF, 10 s, normal speed, no screenshots):
+  - 1366x768: frames p5/p50/p95 16.6/16.7/16.7 ms; 1-4 dropped frames (33 ms).
+  - 844x390: 16.6/16.7/16.8, max 16.8.
+  - 0 frames whose move differed from its time (0.5 px margin).
+  - Old Playwright videos: 5-10% of frames repeat, standstills up to 240 ms.
+- **Fixes:** the clock is one pure step (`W.advance`), tested over 10 s of uneven frames (worst under 0.2%); sub-pixel `translate3d`; `will-change`; no repeated style writes.
+- **Videos:** frame-exact recorder (paused Playwright clock, compositor capture, 50 fps). ride-normal (gentle, starting in town), slow and fast: 1000 frames each, 0 repeated, spacing 20 ms.
+- **Town start:** the middle layer's first copy is town-shops (`lead`, marked placeholder), cross-faded into the fields.
 
 ## Proof
-RIDE-01: red `s09-ride-r01-red`, then green filmstrips `s09-ride-fix2` for the judge. RIDE-02 to 05 machine PASS; RIDE-06 panels. Matrix `s09-ride-matrix3`: fair and miss at 8 sizes, 0 breaks. `checks.mjs` all ok.
-Videos and stills in `build/screenshots/s09-ride/`: slow, normal, fast (20 s); `ride-gentle.webm`, `ride-together.webm` (15 s); a placeholder still.
+RIDE-02 to 05 machine PASS, RIDE-06 panels (`s09-ride-r3`). Matrix `s09-ride-matrix4`: fair and miss at 8 sizes, 16 pages end, 0 breaks. Unit tests 20/20.
 
 ## Requests
-- `catalog.mjs`: `FAIR_MOMENTS["day-window"]` = the `life:ride-*` moments.
-- Move the ride's injected CSS to `css/day.css`.
-- Re-cut far-hills with plain outer tenths.
+- RIDE-01 spec: at most 12 frames (e.g. `12x800`).
+- `catalog.mjs`: `FAIR_MOMENTS["day-window"]` = `life:ride-*`.
+- Move the injected CSS to `css/day.css`; re-cut far-hills with plain outer tenths.
