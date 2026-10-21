@@ -18,14 +18,19 @@ SHEETS = {"p1-props-v1.png": ["bush", "haystack", "wall", "tree"], "i1-animals-v
 SPRITE_H = 360  # px tall at most (the near line at 1440 wide draws a goat about 200 px)
 
 
-def key(path):
+def magenta(a):
+    """How magenta each pixel is (about 255 for pure #FF00FF, below 0 for most things)."""
+    return np.minimum(a[..., 0], a[..., 2]) - a[..., 1]
+
+
+def key(path, keyness=magenta, k=(255, 0, 255)):
     """Magenta to alpha. A pixel is clearly the thing (barely magenta), clearly ground (nearly pure magenta), or a mix at an
     edge. A mixed pixel's alpha is its position on the line from magenta to the colour of the nearest clear pixel of the thing,
     and its colour is that thing colour: so a thin blade of grass keeps its green instead of turning pink or brown."""
     a = np.asarray(Image.open(path).convert("RGB")).astype(np.float32)
-    k = np.array([255, 0, 255], np.float32)
-    m = np.minimum(a[..., 0], a[..., 2]) - a[..., 1]   # how magenta a pixel is
+    m = keyness(a)                                     # how much of the key colour a pixel is
     thing, ground = m < 15, m > 235
+    k = np.median(a[ground], axis=0) if k is None and ground.any() else np.array(k or (255, 0, 255), np.float32)  # None: the ground's own colour
     # the rim (3 px in from the ground) is mixed with magenta even where it looks like the thing (thin grass tips turn orange):
     # its colour comes from the nearest pixel deeper in
     deep = ndimage.distance_transform_edt(thing) > 3
