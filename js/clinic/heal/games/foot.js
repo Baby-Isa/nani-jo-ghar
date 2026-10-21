@@ -429,6 +429,11 @@
           s("circle", { cx: h.x, cy: h.y, r: 9, fill: "#8a5a2a", stroke: "#fff", "stroke-width": 2 }, splG);
         }
         if (pulling) s("circle", { class: "fo-grip", cx: h.x, cy: h.y, r: 16, fill: "#ffe27a", opacity: 0.5 }, gripG);
+        // CLN-82 (s08 w8B, "stuck after jugs"): from level 2 the soak closes by taking hold of a splinter, so once the
+        // jugs' count is reached the splinters are the next thing: the host's reveal lights them (controller.nextUp), as
+        // it lights the next tool in the other games (the next row first, then this). Every splinter, never the first toe
+        // alone: which toe comes first is the Kutchi's to tell (the leak test, C10)
+        else if (st.nextUp && c && c.kind === "soak") s("circle", { class: "fo-grip fo-next", cx: h.x, cy: h.y, r: 22, fill: "#ffe27a", opacity: 0.6 }, gripG);
       });
       P.splinters.forEach((q) => {
         const sp = { x: q.pts[0][0], y: q.pts[0][1] };
@@ -475,6 +480,10 @@
       if (!c) return;
       if (c.kind === "soak") {
         washDirt(1); // the soak is over: the last of the dirt rinses off and the splinters show
+        // CLN-82 (s08 w8B): the jug is put down with the soak (the splinters are taken by the finger: its ring stayed lit)
+        S.sel = null;
+        Object.values(S.toolEls).forEach((b) => b.classList.remove("sel"));
+        st.nextUp = false;
         judge("soak-water", st.temp === c.temp, st.temp || "none");
         judge("soak-jugs", st.jugs === c.jugs, `${st.jugs} of ${c.jugs}`);
       }
@@ -648,6 +657,18 @@
       },
       destroy() {
         S.destroy();
+      },
+      // CLN-82 (s08 w8B): the host's "what's next" reveal (decision 52) for a next thing that is no tool: "splinter" lights
+      // the splinters and puts the jug down (its ring read as still lit: one thing lit at a time, decision 95); null: off
+      nextUp(t) {
+        const on = t === "splinter";
+        if (on === !!st.nextUp) return;
+        st.nextUp = on;
+        if (on && /^jug-/.test(S.sel || "")) {
+          S.sel = null;
+          Object.values(S.toolEls).forEach((b) => b.classList.remove("sel"));
+        }
+        draw();
       },
       debug: {
         get plan() {

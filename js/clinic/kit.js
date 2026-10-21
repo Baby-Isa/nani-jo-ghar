@@ -621,7 +621,14 @@
       if (!played && w.kutchi && w.placeholder !== true && w.plan && w.plan.length) played = await Voice.plan(w.plan, ao);
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
-      if (left > 0 && live(gen) && !stale(opts)) await new Promise((r) => setTimeout(r, left));
+      // SH-64 (s08 w8B; the judge: the pharmacy's "plaster" ran on 0.34 s past the tap through the pop-up): a line with no
+      // clip (a placeholder) is held for its length, and a voice stop (Voice.gen) or its step closing ends that hold at once
+      if (left > 0 && live(gen) && !stale(opts))
+        await new Promise((r) => {
+          const until = Date.now() + left;
+          const wait = () => (!live(gen) || stale(opts) || Date.now() >= until ? r() : setTimeout(wait, 40));
+          wait();
+        });
       if (stopTalk) stopTalk();
       if (offGuide) offGuide();
       setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
@@ -890,6 +897,10 @@
         rowEl.classList.toggle("pulse", st.pulse === r.id);
         rowEl.classList.toggle("now", st.now === r.id);
         rowEl.classList.toggle("reading", st.reading === r.id);
+        // SH-10 (s08 w8B; the judge: boing's card "loses its ticks"): the card is drawn again on every change (a hush, a
+        // step opening, the fold), and each redraw played every tick's pop-in again from nothing, so a row ticked long
+        // ago blinked out; only a row ticked since the last drawing pops in (css/shared/order-card.css .tk-seen)
+        if (st.done.has(r.id) && st.tkSeen && st.tkSeen.has(r.id)) rowEl.classList.add("tk-seen");
         const n = st.counts[r.id];
         if (n > 0) {
           const chip = document.createElement("span");
@@ -942,6 +953,14 @@
     // SH-41 (S05-D): the card in English for the bulb's time is the card itself (the shared .oc-card), redrawn or not
     if (this.el.classList.contains("english")) c.classList.add("english");
     if (global.FitText && global.FitText.run) try { global.FitText.run(c); } catch (e) { /* no fitting */ }
+    st.tkSeen = new Set(st.done); // SH-10: the ticks drawn now don't pop in again at the next drawing
+    // CLN-148 (s08 w8B; fever at 800x360: "Switch on ceiling fan" ran on under its tick): a step group stacks a beat after
+    // it is drawn (js/shared/order-card.js stackWhenTight, once it has its width), and its words were fitted before that,
+    // as wide as a side-by-side pill: fit them again once it has settled (shrunk, then wrapped: never cut, rule 9)
+    if (global.FitText && global.FitText.run && c.querySelector(".oc-group")) {
+      clearTimeout(this.refitT);
+      this.refitT = setTimeout(() => c.isConnected && global.FitText.run(c), 80);
+    }
     return this;
   };
   Kit.Card.prototype.setTitle = function (title, faceEl) {

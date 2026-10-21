@@ -680,10 +680,19 @@
     let nextT = null;
     let nextOn = null;
     let readyT = null;
+    // the game's own "this next" light for a next thing that is no tool (CLN-82: the foot's splinters); null puts it out
+    const nextGame = (t) => {
+      try {
+        if (controller && typeof controller.nextUp === "function") controller.nextUp(t);
+      } catch (e) {
+        /* the game has none */
+      }
+    };
     const nextOff = () => {
       clearTimeout(nextT);
       nextT = null;
       if (!nextOn) return;
+      nextGame(null);
       stage.querySelectorAll(".hs-tool.next-up").forEach((b) => b.classList.remove("pulse", "next-up"));
       card.el.querySelectorAll(".cl-row.next-up").forEach((r) => r.classList.remove("next-up"));
       nextOn = null;
@@ -709,6 +718,9 @@
         const glow = () => {
           if (nextOn !== on || finished) return;
           [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+          // CLN-82 (s08 w8B; foot: "stuck after jugs"): a next thing that is no tool (the foot's splinters, taken by the
+          // finger) is lit by the game itself (controller.nextUp)
+          nextGame(t);
         };
         // the doctor (off screen: his box) says the next step's line, once
         if (id) {
