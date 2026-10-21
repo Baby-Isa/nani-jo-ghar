@@ -123,7 +123,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 > from: docs/design-language/ui-design-system.md (before the split) § §14 The chaat station v2 (with 14a)
 
 ## 14. The chaat station v2 (Zafar approved, 29 Sept, with the changes in 14a)
-**What works:** the mechanic (build the bowl in order) is good for teaching order and *ne poi*; decoys, including a "don't" item (*Marcha na.*), make you listen. The ticks gave it away (Zafar, 18 Oct): a wrong item now bounces back out with a wobble and a warm glow, a wrong one in the sequence empties the bowl, and a tick is only for the right item first go (CHT-14, CHT-15).
+**What works:** the mechanic (build the bowl in order) is good for teaching order and *ne poi*; decoys, including a "don't" item (*Marcha na.*), make you listen. The ticks gave it away (Zafar, 18 Oct): a wrong item now bounces back out with a wobble and a warm glow while the right ones stay in the bowl (Zafar, 21 Oct: replaces "a wrong one in the sequence empties the bowl"), and a tick is only for the right item first go (CHT-14, CHT-15).
 
 **What's wrong:**
 1. **Mixed viewpoints.** The glass bowl is seen from the side while the ingredient bowls are seen from the top, which is the same problem the pantry had.
