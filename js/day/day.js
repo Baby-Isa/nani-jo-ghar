@@ -252,6 +252,8 @@ function makeApi({ data, days, core, E }) {
   api.today = () => core.save.get("story").today || null;
   api.setToday = (patch) => core.save.update("story", (s) => ((s.today = Object.assign({}, s.today, patch)), s));
   api.dayNo = () => Number(core.save.get("story").dayNo) || 1;
+  /** Day N as the older stage code reads a day ({id, weather, activity, trip, lines}): the book's tomorrow uses it. */
+  api.dayDef = (n = api.dayNo()) => dayView(dayOf(days, n), data);
 
   /** Leave for another page of the app (or, in tests, only note where it would go). */
   api.go = function (url) {
@@ -366,7 +368,8 @@ async function boot() {
 
   // the day: ?day=N, or the one this child is on (or stopped in today)
   const today = api.today();
-  const isToday = !!(today && today.date === todayDate());
+  // today's day still under way (a hand-off, a closed tab); once its book is done (at "done") the next day starts
+  const isToday = !!(today && today.date === todayDate() && today.at !== "done");
   const n = Number(q.get("day")) || (isToday && today.day) || api.dayNo();
   const day = withOverrides(dayOf(days, n), data, { weather: q.get("weather"), activity: q.get("activity"), trip: q.get("trip") });
   const asked = q.get("stage") ? stageId(q.get("stage")) : null;
@@ -382,7 +385,7 @@ async function boot() {
     }
   } else if (isToday && today.day === day.id) {
     // where today stopped: the stage after the hand-off (older saves: the book once the activity was started)
-    if (Number.isInteger(today.next)) from = Math.min(today.next, day.stages.length - 1);
+    if (Number.isInteger(today.next)) from = today.next < day.stages.length ? today.next : 0;
     else if (today.at === "activity") from = Math.max(0, day.stages.findIndex((s) => s.stage === "book"));
   }
 
@@ -405,7 +408,8 @@ async function boot() {
     onStage: async (entry, i) => {
       // a beat between two stages (the one before keeps its end on screen a moment: its test hook's "end" is still read)
       if (i > from) await new Promise((r) => setTimeout(r, 400));
-      window.Day.stage = entry.stage === "ride" ? "window" : entry.stage;
+      // the hand-off stage draws nothing: the door stays on screen and is still the stage the page shows
+      if (entry.stage !== "activity") window.Day.stage = entry.stage === "ride" ? "window" : entry.stage;
       api.test.state(`day/${entry.stage}`);
       api.test.expect(() => ({ kind: "wait" }));
       // where the day is: a page left mid-day (a hand-off, a closed tab) picks up here today

@@ -106,7 +106,8 @@ export function check45(tl, add) {
       const l = { id: e.id, t0: e.t, t1: null, text: e.text };
       lines.push(l);
       byId.set(e.id, l);
-    } else if (e.type === "line-end" && byId.has(e.id)) byId.get(e.id).t1 = e.t;
+    } else if (e.type === "line") byId.delete(e.id); // a line id used again (a second page in one flow: the day picked up after Cook)
+    else if (e.type === "line-end" && byId.has(e.id) && byId.get(e.id).t1 == null) byId.get(e.id).t1 = e.t;
   }
   lines.sort((a, b) => a.t0 - b.t0);
   for (let i = 1; i < lines.length; i++) {

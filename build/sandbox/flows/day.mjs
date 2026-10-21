@@ -131,9 +131,10 @@ export const dayFullFarm = {
     // the ride, by the ride's own driver
     await page.waitForFunction(() => /^day\/(ride|window)/.test(window.njgTest.state()), null, { timeout: 30000 });
     await playStage(ctx, dayWindowFlow(1, "fair"), "ride");
-    // the book, by the book's own driver (the whole book, from Nani's greeting in the room)
+    // the book, by the book's own driver: its pages-first player (the room's greeting is said while the ride's driver closes the
+    // ride; the driver ignores its own query here, so the page's real book, planned from the ride's finds, is the one played)
     await page.waitForFunction(() => /^day\/book/.test(window.njgTest.state()), null, { timeout: 30000 });
-    await playStage(ctx, dayBookFlow(1, "farm"), "book");
+    await playStage(ctx, dayBookFlow(1, "find"), "book");
     await page.waitForFunction(() => window.njgTest.state() === "day/end", null, { timeout: 30000 });
     const d = await dayOf(page);
     const stages = ((d && d.log && d.log.stages) || []).map((s) => `${s.stage}:${s.status}`);

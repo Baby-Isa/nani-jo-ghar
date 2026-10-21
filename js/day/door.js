@@ -107,10 +107,17 @@ export async function runDoor(host, api, day) {
   // ---- the thought bubble of the day's place, beside her head, away from her lines ----
   const thought = el("div", "day-thought", play);
   const tdef = set.thought || {};
+  const A = (look.cards.activity || {})[day.lines] || {};
   if (tdef.art) {
     const im = el("img", "", thought);
     im.alt = "";
     im.src = url(tdef.art);
+  } else if (A.pic && A.pic.bg) {
+    // no cut-out of the place yet: the activity card's own picture, round in the cloud
+    const im = el("img", "day-thought-bg", thought);
+    im.alt = "";
+    im.src = url(A.pic.bg);
+    im.style.objectPosition = A.pic.pos || "50% 50%";
   }
   for (let i = 0; i < 2; i++) el("i", `day-thought-dot d${i}`, thought);
   const placeThought = (g) => {
@@ -137,8 +144,9 @@ export async function runDoor(host, api, day) {
     const pr = play.getBoundingClientRect();
     const B = g.H * (NP.height || 0.5);
     const pad = g.H < 500 ? 12 : 24;
-    // its right edge stays clear of her (her widest pose reaches about a third of her height either side of her feet)
-    const room = g.foot.x - B * 0.33 - pad * 2;
+    // its right edge stays clear of her: at the bubble's height only her head and shoulders (her arms move on the other side
+    // or at her waist), about a quarter of her height left of her middle
+    const room = g.foot.x - B * 0.25 - pad * 2;
     bubble.style.maxWidth = `${Math.round(Math.max(220, Math.min(room, 600)))}px`;
     const w = bubble.offsetWidth;
     const h = bubble.offsetHeight;
@@ -184,7 +192,6 @@ export async function runDoor(host, api, day) {
     },
     api.line(W.word)
   );
-  const A = (look.cards.activity || {})[day.lines] || {};
   const activityCard = card(
     "activity",
     (pic) => {
@@ -237,6 +244,8 @@ export async function runDoor(host, api, day) {
     const B = window.NjgButtons;
     const pick = (id, btn) => {
       if (answered) return;
+      // input is live while she speaks (E5): the tap is the child's act at once
+      if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("act", { during: "day:door", choice: id });
       if (id === "no") {
         // Na shakes (UX 14): the day waits for Ha!, nothing else happens
         nos++;
@@ -246,6 +255,12 @@ export async function runDoor(host, api, day) {
         return;
       }
       answered = true;
+      // Ha! goes ahead: her line stops where it is
+      try {
+        api.core.voice.stop("day");
+      } catch (e) {
+        /* nothing playing */
+      }
       resolveAnswer();
     };
     const choices = [
@@ -290,7 +305,7 @@ export async function runDoor(host, api, day) {
     bubble.classList.add("in", "speaking");
     if (i === lines.length - 1) showAnswer();
     const stopTalk = talk && front ? talk.dom(front) : null;
-    await api.say(ln, { el: row, who: "nani" });
+    await Promise.race([api.say(ln, { el: row, who: "nani" }), answer]);
     if (typeof stopTalk === "function") stopTalk();
     bubble.classList.remove("speaking");
     if (i < lines.length - 1) await api.wait(data.door.gapMs || 450);
