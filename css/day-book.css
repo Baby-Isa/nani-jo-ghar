@@ -1,1 +1,17 @@
 /* The evening book's own styles from Sprint 9's last round (s09-final-art owns this file; css/day.css is the door's). */
+
+/* her face close up by the fire (s09b C1), laid over the room picture lined up on her eyes: it fades in as the camera pushes in to
+   her face; its edges are soft while it is smaller than the screen (at the face shot they lie off screen) */
+.day-close {
+  position: absolute; display: block; opacity: 0; pointer-events: none; user-select: none; -webkit-user-drag: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--feather), #000 calc(100% - var(--feather)), transparent 100%), linear-gradient(to bottom, transparent 0, #000 var(--feather), #000 calc(100% - var(--feather)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--feather), #000 calc(100% - var(--feather)), transparent 100%), linear-gradient(to bottom, transparent 0, #000 var(--feather), #000 calc(100% - var(--feather)), transparent 100%);
+  mask-composite: intersect;
+}
+
+/* find it's place: one picture across both pages (each page shows its part; the fold hides the middle strip) */
+.day-spread > img { position: absolute; display: block; max-width: none; object-fit: fill; }
+
+/* her line on the page: never an empty bubble (a line not yet drawn, or none, shows no card) */
+.day-head-line:not(:has(.day-line)) { display: none; }

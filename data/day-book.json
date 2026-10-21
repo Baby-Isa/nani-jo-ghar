@@ -65,32 +65,72 @@
       "x": 512,
       "y": 165,
       "r": 110
-    }
+    },
+    "faceShot": {
+      "_about": "The camera's face shot (s09b C1, BOOK-09): the close-up of her face by the fire, laid over the room picture lined up on her eyes (each eye's centre measured in both pictures, so the push-in to her face is one move: the room grows, the close-up fades in over it, sharp). pagesIn: the pages picture laid under the close-up's bottom edge (the book's spine and top edge measured in both, scale q), so the turn down to the book is one move too: the close-up slides up out of view as the pages come up into it, landing on the same pages the games use (never a different crop of the room). feather: the close-up's soft edge (a share of each side) while it is smaller than the screen.",
+      "art": "assets/day/s09b/nani-face-fire.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "eyes": {
+        "room": [
+          [
+            489.5,
+            182.5
+          ],
+          [
+            540.75,
+            165
+          ]
+        ],
+        "face": [
+          [
+            561,
+            312.5
+          ],
+          [
+            690.6,
+            259.4
+          ]
+        ]
+      },
+      "pagesIn": {
+        "spine": {
+          "pages": [
+            770,
+            212
+          ],
+          "face": [
+            930,
+            940
+          ]
+        },
+        "q": 0.915
+      },
+      "feather": 0.05
+    },
+    "_sprites": "The things' own sprites (BOOK-09): the dog and the bird from the road's cut (assets/day/ride/s09r), the door (the red door) and the car (assets/day/s09b); the goat and the hen the characters' own."
   },
   "camera": {
-    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. The moves (to her face, the tilt to the book, onto its pages, the page turn, the way back out) always take their real time, also at test speed, so a filmstrip sees them. maxUpscale: never more screen px per picture px than this (ART-05), so a sharper room picture brings the close-ups closer. No player character (Zafar, 19 Oct). fadeMs: the short cross-fade between the room's book and the pages picture's book, lined up (lapBook).",
+    "_about": "The camera over the room picture (b1) and her close-up (art.faceShot): wide is a centre in the room picture's pixels and a zoom over the cover fit; face is a centre in the close-up's pixels and a zoom over its cover fit (inside its feathered edge). The moves: the push-in to her face (toFaceMs: the room grows, the close-up fades in over its last part), the turn down to the book (tiltMs: the close-up slides up as the pages come up under it, lined up, art.faceShot.pagesIn), the page turn, the way back out (the turn up to her face, then the pull back to the whole room: outMs). They always take their real time, also at test speed, so a filmstrip sees them. maxUpscale: never more screen px per picture px than this (ART-05) once a shot is still. No player character (Zafar, 19 Oct).",
     "wide": {
       "cx": 768,
       "cy": 512,
       "zoom": 1
     },
     "face": {
-      "cx": 512,
-      "cy": 175,
-      "zoom": 3
+      "cx": 690,
+      "cy": 420,
+      "zoom": 1
     },
-    "book": {
-      "cx": 636,
-      "cy": 452,
-      "zoom": 3.4
-    },
-    "toFaceMs": 1800,
+    "toFaceMs": 2000,
     "tiltMs": 1800,
-    "outMs": 2400,
+    "outMs": 2000,
     "turnMs": 1000,
     "maxUpscale": 1.45,
-    "inMs": 1500,
-    "fadeMs": 400
+    "upMs": 1400,
+    "holdMs": 500
   },
   "order": [
     "find",
@@ -463,260 +503,22 @@
     ]
   },
   "backdrops": {
-    "_about": "Find it's place, drawn across both pages (each page its own 600x640 box; the horizon at the same height on both), placeholder shapes until the s09b art: an `art` path per page replaces them. The kitchen's light-blue shapes are its windows (frame, panes, sill).",
+    "_about": "Find it's place (s09b, BOOK-09): one picture across both pages, laid over the two page frames as if the fold were not there (art.pageL to art.pageR): each page shows its own part, the middle strip falls in the fold (the art keeps it empty). top: which band of the picture shows, a share of what the pages leave over (0 its top, 1 its bottom). The spots (places.<id>.find.spots) are where things stand on it: the grass in the field, the counter in the kitchen.",
     "field": {
-      "l": {
-        "art": null,
-        "shapes": [
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 0,
-            "w": 600,
-            "h": 300,
-            "fill": "#bfe0f2"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 300,
-            "w": 600,
-            "h": 340,
-            "fill": "#9fc46a"
-          },
-          {
-            "t": "ellipse",
-            "cx": 300,
-            "cy": 520,
-            "rx": 420,
-            "ry": 60,
-            "fill": "#93b95f"
-          },
-          {
-            "t": "rect",
-            "x": 90,
-            "y": 170,
-            "w": 26,
-            "h": 150,
-            "fill": "#7a5432"
-          },
-          {
-            "t": "circle",
-            "cx": 103,
-            "cy": 150,
-            "r": 78,
-            "fill": "#5f8a3e"
-          },
-          {
-            "t": "ellipse",
-            "cx": 420,
-            "cy": 90,
-            "rx": 70,
-            "ry": 26,
-            "fill": "#ffffff",
-            "a": 0.85
-          }
-        ]
-      },
-      "r": {
-        "art": null,
-        "shapes": [
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 0,
-            "w": 600,
-            "h": 300,
-            "fill": "#bfe0f2"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 300,
-            "w": 600,
-            "h": 340,
-            "fill": "#9fc46a"
-          },
-          {
-            "t": "ellipse",
-            "cx": 300,
-            "cy": 520,
-            "rx": 420,
-            "ry": 60,
-            "fill": "#93b95f"
-          },
-          {
-            "t": "rect",
-            "x": 470,
-            "y": 170,
-            "w": 26,
-            "h": 150,
-            "fill": "#7a5432"
-          },
-          {
-            "t": "circle",
-            "cx": 483,
-            "cy": 150,
-            "r": 80,
-            "fill": "#5f8a3e"
-          },
-          {
-            "t": "ellipse",
-            "cx": 170,
-            "cy": 110,
-            "rx": 80,
-            "ry": 28,
-            "fill": "#ffffff",
-            "a": 0.85
-          }
-        ]
-      }
+      "art": "assets/day/s09b/book-farm-spread.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "top": 0.14
     },
     "kitchen": {
-      "l": {
-        "art": null,
-        "shapes": [
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 0,
-            "w": 600,
-            "h": 640,
-            "fill": "#f1dfc0"
-          },
-          {
-            "t": "rect",
-            "x": 52,
-            "y": 52,
-            "w": 216,
-            "h": 166,
-            "r": 10,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 60,
-            "y": 60,
-            "w": 200,
-            "h": 150,
-            "r": 6,
-            "fill": "#cfe3ef"
-          },
-          {
-            "t": "rect",
-            "x": 157,
-            "y": 60,
-            "w": 6,
-            "h": 150,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 60,
-            "y": 132,
-            "w": 200,
-            "h": 6,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 44,
-            "y": 214,
-            "w": 232,
-            "h": 12,
-            "r": 4,
-            "fill": "#a87a4c"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 360,
-            "w": 600,
-            "h": 40,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 400,
-            "w": 600,
-            "h": 240,
-            "fill": "#d9b88c"
-          }
-        ]
-      },
-      "r": {
-        "art": null,
-        "shapes": [
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 0,
-            "w": 600,
-            "h": 640,
-            "fill": "#f1dfc0"
-          },
-          {
-            "t": "rect",
-            "x": 332,
-            "y": 52,
-            "w": 216,
-            "h": 166,
-            "r": 10,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 340,
-            "y": 60,
-            "w": 200,
-            "h": 150,
-            "r": 6,
-            "fill": "#cfe3ef"
-          },
-          {
-            "t": "rect",
-            "x": 437,
-            "y": 60,
-            "w": 6,
-            "h": 150,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 340,
-            "y": 132,
-            "w": 200,
-            "h": 6,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 324,
-            "y": 214,
-            "w": 232,
-            "h": 12,
-            "r": 4,
-            "fill": "#a87a4c"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 360,
-            "w": 600,
-            "h": 40,
-            "fill": "#b98a5a"
-          },
-          {
-            "t": "rect",
-            "x": 0,
-            "y": 400,
-            "w": 600,
-            "h": 240,
-            "fill": "#d9b88c"
-          }
-        ]
-      }
+      "art": "assets/day/s09b/book-kitchen-spread.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "top": 0.42
     }
   },
   "places": {
@@ -731,7 +533,8 @@
             "green-door"
           ],
           "shape": "door",
-          "h": 0.4
+          "h": 0.4,
+          "art": "assets/day/ride/s09r/red-door.webp"
         },
         "car": {
           "word": "n.car",
@@ -740,7 +543,8 @@
             "farm-road"
           ],
           "shape": "car",
-          "h": 0.3
+          "h": 0.3,
+          "art": "assets/day/s09b/car.webp"
         },
         "goat": {
           "word": "n.she-goat",
@@ -764,7 +568,8 @@
             "dog"
           ],
           "shape": "dog",
-          "h": 0.32
+          "h": 0.3,
+          "art": "assets/day/ride/s09r/dog.webp"
         },
         "bird": {
           "word": "n.bird",
@@ -772,7 +577,8 @@
             "bird"
           ],
           "shape": "bird",
-          "h": 0.24
+          "h": 0.22,
+          "art": "assets/day/ride/s09r/bird.webp"
         }
       },
       "find": {
@@ -958,22 +764,22 @@
           {
             "page": "l",
             "x": 0.3,
-            "y": 0.6
+            "y": 0.72
           },
           {
             "page": "l",
             "x": 0.72,
-            "y": 0.86
+            "y": 0.78
           },
           {
             "page": "r",
             "x": 0.28,
-            "y": 0.86
+            "y": 0.78
           },
           {
             "page": "r",
             "x": 0.7,
-            "y": 0.6
+            "y": 0.72
           }
         ]
       },
