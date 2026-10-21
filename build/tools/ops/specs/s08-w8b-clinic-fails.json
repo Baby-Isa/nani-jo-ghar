@@ -1,0 +1,65 @@
+{
+  "kind": "fix",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is triaged, or 3 hours (05:30 UK)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "root-causing clinic and shared-screen regressions, judged by picture",
+  "cost": "about $40-60",
+  "name": "s08 wave 8B, Clinic and shared screens: the pre-publish evidence FAILs and tool failures (easy code fixes only; Zafar, 20 Oct night)",
+  "port": 8874,
+  "report": "s08-w8b-clinic-fails",
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/evidence-ev-20261020-203453-9h9.md (the machine verdicts; each row's sheet and .md under build/screenshots/evidence/ev-20261020-203453-9h9/)",
+    "build/screenshots/evidence/ev-20261020-203453-9h9/judge/batch-*.verdicts.md (the judges' FAIL lines and flaws; grep the row id)",
+    "docs/sprints/S08-play-feedback-final.md (Zafar's decisions; a FAIL that contradicts his later words is not a bug)",
+    "docs/feedback/ (his own words for each row: the 18 Oct clinic notes)"
+  ],
+  "owns": [
+    "js/clinic/**",
+    "data/clinic/**",
+    "css/clinic*.css",
+    "js/shared/**",
+    "css/shared/**",
+    "build/sandbox/data/evidence.json (the clinic, shared and tool rows' specs only)",
+    "build/sandbox/lib/drivers*.mjs",
+    "build/reports/s08-w8b-clinic-fails.md"
+  ],
+  "readOnly": [
+    "js/cook/**, data/cook.json, data/stations/** (wave 8A)",
+    "docs/process/regressions.md, docs/archive/regressions-done.md (the orchestrator rewords rows; put proposals in the report)",
+    "assets/** (no new art; a picture problem goes to the redo list in the report)"
+  ],
+  "stubs": "never a code-drawn stand-in for missing art; never remove or replace a mechanic (CLAUDE.md rule 2)",
+  "tasks": [
+    {
+      "do": "Blockers first. (a) CLN-82: in the foot game the jug keeps glowing after its count and the plaster never glows at L2 and L3 (the 'stuck after jugs' bug): if a child cannot finish, fix it. (b) CLN-118: counts are back in the fresh profile's taught first round ('Hammer, hakro', 'Ne poi bandage, char turns', 'ba dabs', 'hakro jugs'); it passed in ev-20261014-120206-258: check Zafar's later decisions first, then fix if it is a regression. (c) SH-10: boing's card loses its ticks at the end (all four rows unticked at 20.3 s, yellow plaster never ticks). (d) Check every '[ph]' text the judges saw on the clinic pop-ups ('[ph] Let's clean it.'): if it is the hidden to-record tag in the capture, say so; if a child sees '[ph]', fix it (rule 5).",
+      "accept": "eye: clinic:heal-foot L2 and L3 reaching its plaster and end; clinic:heal-boing's card keeping its ticks; auto: CLN-118's and SH-10's probes green"
+    },
+    {
+      "do": "Triage each newly failing clinic and shared row (built before tonight, failing now): ART-18 CLN-34 CLN-35 CLN-37 CLN-40 CLN-43 CLN-44 CLN-52 CLN-57 CLN-69 CLN-87 CLN-98 CLN-99 CLN-101 CLN-108 CLN-148 CLN-151 CLN-152 CLN-178 SH-55 SH-62 SH-64 PRC-06. For each, first check the FAIL against Zafar's latest words (CLN-34: the kidney dish replaced the tissue's bin, CLN-174). Then one of: FIXED (a small code bug: red then green, the row's own probe), SPEC (the probe misses its moment: fix the spec), ZAFAR (the game follows a later decision: quote it, propose the row's new words), or BIG (leave it to reopen; one line why). PRC-06: evidence --plan --all exits 1 on six rows marked 'needs a decision' (CLN-137, CLN-131, CLN-115, CLN-61, CLN-122, SH-104): list which Zafar has since decided (CLN-115: the doctor standing at his door, 20 Oct) for the orchestrator.",
+      "accept": "the report's table: every row with its class and proof; each FIXED row's probe red on the base, green after"
+    },
+    {
+      "do": "The 28 tool failures (the moment never reached, a blank crop, a spec error): CLN-65 SH-17 SH-69 SH-58 SH-72 SH-73 CHAI-02 CHAI-07 CHAI-17 CHAI-18 DAAR-06 CHT-03 CHT-08 CHT-11 SAM-01 SAM-03 SAM-15 SEK-03 SEK-13 CK-20 CK-38 CLN-07 CLN-112 CLN-22 CLN-73 CLN-102 ART-08 LNG-05. Fix the cheap ones in the spec or the driver (the Cook ones in the spec only: js/cook is wave 8A's); list the rest with their cause.",
+      "accept": "auto: node build/tools/review/evidence.mjs --plan on each fixed row passes and its moment is reached in a run"
+    }
+  ],
+  "flows": [
+    "clinic:heal-foot",
+    "clinic:heal-boing",
+    "clinic:heal-knee",
+    "clinic:heal-cut",
+    "clinic:heal-eye",
+    "clinic:heal-ear",
+    "clinic:heal-tooth",
+    "clinic:heal-fever",
+    "clinic:patient",
+    "clinic:pharmacy",
+    "clinic:morning"
+  ]
+}

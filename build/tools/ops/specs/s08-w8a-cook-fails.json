@@ -1,0 +1,61 @@
+{
+  "kind": "fix",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is triaged, or 3 hours (05:30 UK)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "root-causing visual regressions after the s08c art wiring, judged by picture",
+  "cost": "about $40-60",
+  "name": "s08 wave 8A, Cook: the pre-publish evidence FAILs (easy code fixes only; Zafar, 20 Oct night)",
+  "port": 8873,
+  "report": "s08-w8a-cook-fails",
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/evidence-ev-20261020-203453-9h9.md (the machine verdicts; each row's sheet and .md under build/screenshots/evidence/ev-20261020-203453-9h9/)",
+    "build/screenshots/evidence/ev-20261020-203453-9h9/judge/batch-*.verdicts.md (the judges' FAIL lines and flaws; grep the row id)",
+    "docs/sprints/S08-play-feedback-final.md (Zafar's decisions; a FAIL that contradicts his later words is not a bug)",
+    "docs/feedback/cook-playtest-2026-10-17.md (his own words for each row)"
+  ],
+  "owns": [
+    "js/cook/**",
+    "data/cook.json",
+    "data/stations/**",
+    "css/cook.css",
+    "build/test_cook.py",
+    "build/check_vessel_meta.py",
+    "build/lint/static.mjs (the one new rule in task 1)",
+    "build/sandbox/data/evidence.json (the Cook rows' specs only)",
+    "build/reports/s08-w8a-cook-fails.md"
+  ],
+  "readOnly": [
+    "js/clinic/**, js/shared/**, data/clinic/** (wave 8B)",
+    "docs/process/regressions.md, docs/archive/regressions-done.md (the orchestrator rewords rows; put proposals in the report)",
+    "assets/** (no new art; a picture problem goes to the redo list in the report)"
+  ],
+  "stubs": "never a code-drawn stand-in for missing art; never remove or replace a mechanic (CLAUDE.md rule 2)",
+  "tasks": [
+    {
+      "do": "Blockers first. (a) The chai tray caps its art load with Cook.wait(5000) (js/cook/stations/chai-tray.js ~261; js/cook/mechanics/assemble.js ~939 the same): game time, so at test speed the faces, tip frames and glasses miss the race and Phaser draws its green missing-texture box where Nana's face goes (CHAI-25, CK-04, CK-13 sheets) and the pan never tips / glasses stay empty (CHAI-08). Use St.loadArt (the 20 s real-time cap, station-lib.js 489-493) in both, and add a static.mjs rule that fails Cook.wait inside a Promise.race with a load. (b) MAA-14: the counter avatar swaps from Nani in her red dupatta to a different woman with no headscarf mid-line (3002-3600 ms): find which texture (likely the 7B talk/blink wiring, js/cook/stations.js, commit 10f26980) and fix it; modest clothing is non-negotiable 16. (c) Nani's face as a blank white circle (DAAR-04, DAAR-18, CHT-06 sheets). (d) cook:mishkaki-grill@L3#hint at 800x360: the go button covers veg-03 so the play times out (build/screenshots/sandbox/ev-20261020-203453-9h9/data/cook_mishkaki_grill@L3#hint__800x360__p-seen.json). (e) SH-57: after the bulb the guide reads 'Give me chai.' in English: written English for the child is rule 5 (grey-italic to-record placeholders are allowed, decision 84; check which this is).",
+      "accept": "eye: chai-tray L1 and L3 at 1366x768 and 800x360 with every face, the pan tipping and the glass filling; the maani line with Nani throughout; auto: the static rule red on the old line, green after; cook:mishkaki-grill@L3#hint reaches its end at 800x360"
+    },
+    {
+      "do": "Triage each newly failing Cook row (built before tonight, failing now): CHAI-06 CHAI-15 CHT-04 CK-02 CK-07 CK-21 CK-27 DAAR-08 DAAR-12 DAAR-13 DAAR-22 DAAR-34 LNG-03 PAN-01 PAN-07 PAN-10 PAN-13 SAM-04 SEK-05 SH-12 SH-13 SH-14 SH-19 SH-32 SH-33 SH-39 SH-51 SH-56 SH-63. For each, first check the FAIL against Zafar's latest words (sprint file, feedback docs, the row's own status note): CHT-04's bowl is his design (CHT-14), the chips rule (a word written until used right once, then speaker only) and the L3 dots are his. Then one of: FIXED (a small code bug: red then green, the row's own probe), STALE TEST (build/test_cook.py still expects the old chai L3; build/check_vessel_meta.py still measures the old ladle and rack: read the values from the data), SPEC (the probe misses its moment: fix the spec), ZAFAR (the game follows a later decision: quote it, propose the row's new words), or BIG (leave it to reopen; one line why).",
+      "accept": "the report's table: every row with its class and proof; each FIXED row's probe red on the base, green after"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "cook:chai",
+    "cook:daar",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:chaat",
+    "cook:chop",
+    "cook:maani-line",
+    "cook:stir",
+    "cook:day1"
+  ]
+}

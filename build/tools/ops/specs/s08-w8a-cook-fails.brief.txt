@@ -1,0 +1,73 @@
+SESSION NAME / MODE:  s08 wave 8A, Cook: the pre-publish evidence FAILs (easy code fixes only; Zafar, 20 Oct night)
+MODEL AND EFFORT:     Opus, high effort (root-causing visual regressions after the s08c art wiring, judged by picture)
+COST ESTIMATE:        about $40-60
+HARD STOP:            when every task is triaged, or 3 hours (05:30 UK). Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w8a-cook-fails.context.md (843 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/evidence-ev-20261020-203453-9h9.md (the machine verdicts; each row's sheet and .md under build/screenshots/evidence/ev-20261020-203453-9h9/)
+     build/screenshots/evidence/ev-20261020-203453-9h9/judge/batch-*.verdicts.md (the judges' FAIL lines and flaws; grep the row id)
+     docs/sprints/S08-play-feedback-final.md (Zafar's decisions; a FAIL that contradicts his later words is not a bug)
+     docs/feedback/cook-playtest-2026-10-17.md (his own words for each row)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/**
+  - data/cook.json
+  - data/stations/**
+  - css/cook.css
+  - build/test_cook.py
+  - build/check_vessel_meta.py
+  - build/lint/static.mjs (the one new rule in task 1)
+  - build/sandbox/data/evidence.json (the Cook rows' specs only)
+  - build/reports/s08-w8a-cook-fails.md
+READ-ONLY (never edit):
+  - js/clinic/**, js/shared/**, data/clinic/** (wave 8B)
+  - docs/process/regressions.md, docs/archive/regressions-done.md (the orchestrator rewords rows; put proposals in the report)
+  - assets/** (no new art; a picture problem goes to the redo list in the report)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: never a code-drawn stand-in for missing art; never remove or replace a mechanic (CLAUDE.md rule 2)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Blockers first. (a) The chai tray caps its art load with Cook.wait(5000) (js/cook/stations/chai-tray.js ~261; js/cook/mechanics/assemble.js ~939 the same): game time, so at test speed the faces, tip frames and glasses miss the race and Phaser draws its green missing-texture box where Nana's face goes (CHAI-25, CK-04, CK-13 sheets) and the pan never tips / glasses stay empty (CHAI-08). Use St.loadArt (the 20 s real-time cap, station-lib.js 489-493) in both, and add a static.mjs rule that fails Cook.wait inside a Promise.race with a load. (b) MAA-14: the counter avatar swaps from Nani in her red dupatta to a different woman with no headscarf mid-line (3002-3600 ms): find which texture (likely the 7B talk/blink wiring, js/cook/stations.js, commit 10f26980) and fix it; modest clothing is non-negotiable 16. (c) Nani's face as a blank white circle (DAAR-04, DAAR-18, CHT-06 sheets). (d) cook:mishkaki-grill@L3#hint at 800x360: the go button covers veg-03 so the play times out (build/screenshots/sandbox/ev-20261020-203453-9h9/data/cook_mishkaki_grill@L3#hint__800x360__p-seen.json). (e) SH-57: after the bulb the guide reads 'Give me chai.' in English: written English for the child is rule 5 (grey-italic to-record placeholders are allowed, decision 84; check which this is).
+     Accept: eye: chai-tray L1 and L3 at 1366x768 and 800x360 with every face, the pan tipping and the glass filling; the maani line with Nani throughout; auto: the static rule red on the old line, green after; cook:mishkaki-grill@L3#hint reaches its end at 800x360
+  2. Triage each newly failing Cook row (built before tonight, failing now): CHAI-06 CHAI-15 CHT-04 CK-02 CK-07 CK-21 CK-27 DAAR-08 DAAR-12 DAAR-13 DAAR-22 DAAR-34 LNG-03 PAN-01 PAN-07 PAN-10 PAN-13 SAM-04 SEK-05 SH-12 SH-13 SH-14 SH-19 SH-32 SH-33 SH-39 SH-51 SH-56 SH-63. For each, first check the FAIL against Zafar's latest words (sprint file, feedback docs, the row's own status note): CHT-04's bowl is his design (CHT-14), the chips rule (a word written until used right once, then speaker only) and the L3 dots are his. Then one of: FIXED (a small code bug: red then green, the row's own probe), STALE TEST (build/test_cook.py still expects the old chai L3; build/check_vessel_meta.py still measures the old ladle and rack: read the values from the data), SPEC (the probe misses its moment: fix the spec), ZAFAR (the game follows a later decision: quote it, propose the row's new words), or BIG (leave it to reopen; one line why).
+     Accept: the report's table: every row with its class and proof; each FIXED row's probe red on the base, green after
+
+REGRESSION ROWS TO RECHECK (180 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-08*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  cook:chai (29): CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-08*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*, CK-06*, CK-29, CK-27, CK-TB-01
+  cook:daar (37): DAAR-02*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-30*, DAAR-32*, DAAR-33*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29, DAAR-05, DAAR-31, DAAR-34, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, SAM-25, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29, CK-27, CK-39, CK-TB-01
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29
+  cook:maani-line (17): MAA-15*, MAA-16, MAA-17*, MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09, MAA-10, MAA-11, MAA-12, MAA-13, MAA-14
+  cook:stir (15): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15
+  cook:day1 (49): CK-01*, CK-TAB-01, CK-44*, CK-45*, CK-46*, CK-48*, CK-06*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-24, CK-31, CK-47, CK-TB-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:chai,cook:daar,cook:mishkaki-grill,cook:samosa,cook:chaat,cook:chop,cook:maani-line,cook:stir,cook:day1 --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s08-w8a-cook-fails-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w8a-cook-fails` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8873.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w8a-cook-fails.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

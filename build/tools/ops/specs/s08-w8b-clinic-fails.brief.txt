@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s08 wave 8B, Clinic and shared screens: the pre-publish evidence FAILs and tool failures (easy code fixes only; Zafar, 20 Oct night)
+MODEL AND EFFORT:     Opus, high effort (root-causing clinic and shared-screen regressions, judged by picture)
+COST ESTIMATE:        about $40-60
+HARD STOP:            when every task is triaged, or 3 hours (05:30 UK). Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w8b-clinic-fails.context.md (849 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/evidence-ev-20261020-203453-9h9.md (the machine verdicts; each row's sheet and .md under build/screenshots/evidence/ev-20261020-203453-9h9/)
+     build/screenshots/evidence/ev-20261020-203453-9h9/judge/batch-*.verdicts.md (the judges' FAIL lines and flaws; grep the row id)
+     docs/sprints/S08-play-feedback-final.md (Zafar's decisions; a FAIL that contradicts his later words is not a bug)
+     docs/feedback/ (his own words for each row: the 18 Oct clinic notes)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/**
+  - data/clinic/**
+  - css/clinic*.css
+  - js/shared/**
+  - css/shared/**
+  - build/sandbox/data/evidence.json (the clinic, shared and tool rows' specs only)
+  - build/sandbox/lib/drivers*.mjs
+  - build/reports/s08-w8b-clinic-fails.md
+READ-ONLY (never edit):
+  - js/cook/**, data/cook.json, data/stations/** (wave 8A)
+  - docs/process/regressions.md, docs/archive/regressions-done.md (the orchestrator rewords rows; put proposals in the report)
+  - assets/** (no new art; a picture problem goes to the redo list in the report)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: never a code-drawn stand-in for missing art; never remove or replace a mechanic (CLAUDE.md rule 2)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Blockers first. (a) CLN-82: in the foot game the jug keeps glowing after its count and the plaster never glows at L2 and L3 (the 'stuck after jugs' bug): if a child cannot finish, fix it. (b) CLN-118: counts are back in the fresh profile's taught first round ('Hammer, hakro', 'Ne poi bandage, char turns', 'ba dabs', 'hakro jugs'); it passed in ev-20261014-120206-258: check Zafar's later decisions first, then fix if it is a regression. (c) SH-10: boing's card loses its ticks at the end (all four rows unticked at 20.3 s, yellow plaster never ticks). (d) Check every '[ph]' text the judges saw on the clinic pop-ups ('[ph] Let's clean it.'): if it is the hidden to-record tag in the capture, say so; if a child sees '[ph]', fix it (rule 5).
+     Accept: eye: clinic:heal-foot L2 and L3 reaching its plaster and end; clinic:heal-boing's card keeping its ticks; auto: CLN-118's and SH-10's probes green
+  2. Triage each newly failing clinic and shared row (built before tonight, failing now): ART-18 CLN-34 CLN-35 CLN-37 CLN-40 CLN-43 CLN-44 CLN-52 CLN-57 CLN-69 CLN-87 CLN-98 CLN-99 CLN-101 CLN-108 CLN-148 CLN-151 CLN-152 CLN-178 SH-55 SH-62 SH-64 PRC-06. For each, first check the FAIL against Zafar's latest words (CLN-34: the kidney dish replaced the tissue's bin, CLN-174). Then one of: FIXED (a small code bug: red then green, the row's own probe), SPEC (the probe misses its moment: fix the spec), ZAFAR (the game follows a later decision: quote it, propose the row's new words), or BIG (leave it to reopen; one line why). PRC-06: evidence --plan --all exits 1 on six rows marked 'needs a decision' (CLN-137, CLN-131, CLN-115, CLN-61, CLN-122, SH-104): list which Zafar has since decided (CLN-115: the doctor standing at his door, 20 Oct) for the orchestrator.
+     Accept: the report's table: every row with its class and proof; each FIXED row's probe red on the base, green after
+  3. The 28 tool failures (the moment never reached, a blank crop, a spec error): CLN-65 SH-17 SH-69 SH-58 SH-72 SH-73 CHAI-02 CHAI-07 CHAI-17 CHAI-18 DAAR-06 CHT-03 CHT-08 CHT-11 SAM-01 SAM-03 SAM-15 SEK-03 SEK-13 CK-20 CK-38 CLN-07 CLN-112 CLN-22 CLN-73 CLN-102 ART-08 LNG-05. Fix the cheap ones in the spec or the driver (the Cook ones in the spec only: js/cook is wave 8A's); list the rest with their cause.
+     Accept: auto: node build/tools/review/evidence.mjs --plan on each fixed row passes and its moment is reached in a run
+
+REGRESSION ROWS TO RECHECK (156 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (10): CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81
+  clinic:heal-foot (46): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-190*, CLN-191*, CLN-192, CLN-193, CLN-194*, CLN-198*, CLN-135*, CLN-82, CLN-30, CLN-40, CLN-42, CLN-43, CLN-44, CLN-47, CLN-64, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-75, CLN-76, CLN-77, CLN-79, CLN-108, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-boing (47): CLN-159*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-166*, CLN-167*, CLN-170*, CLN-198*, CLN-82, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140, CLN-165, CLN-168
+  clinic:heal-knee (43): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-145*, CLN-172*, CLN-179*, CLN-198*, CLN-82, CLN-30, CLN-33, CLN-42, CLN-43, CLN-44, CLN-47, CLN-48, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-122, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140, CLN-178
+  clinic:heal-cut (49): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-172*, CLN-173*, CLN-175, CLN-186, CLN-192, CLN-193, CLN-198*, CLN-82, CLN-113, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-46, CLN-62, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99, CLN-121, CLN-124, CLN-125, CLN-128, CLN-133, CLN-142, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-eye (54): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-163*, CLN-186, CLN-189*, CLN-198*, CLN-188*, CLN-85, CLN-152, CLN-30, CLN-39, CLN-42, CLN-43, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118, CLN-140, CLN-136, CLN-187
+  clinic:heal-ear (46): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-173*, CLN-174*, CLN-198*, CLN-135*, CLN-86, CLN-30, CLN-34, CLN-42, CLN-43, CLN-44, CLN-49, CLN-50, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-101, CLN-102, CLN-124, CLN-125, CLN-128, CLN-133, CLN-134, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-tooth (46): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-198*, CLN-09, CLN-30, CLN-35, CLN-42, CLN-43, CLN-44, CLN-51, CLN-52, CLN-53, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-fever (53): CLN-65*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-175, CLN-177*, CLN-198*, CLN-86, CLN-152, CLN-153, CLN-30, CLN-31, CLN-42, CLN-43, CLN-44, CLN-56, CLN-57, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-120, CLN-124, CLN-125, CLN-128, CLN-130, CLN-132, CLN-133, CLN-147, CLN-146, CLN-148, CLN-45, CLN-100, CLN-126, CLN-127, CLN-149, CLN-131, CLN-118, CLN-140, CLN-176, CLN-178, CLN-105
+  clinic:patient (17): CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+  clinic:pharmacy (25): CLN-23*, CLN-20, CLN-21, CLN-22, CLN-24, CLN-96, CLN-97, CLN-19, CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+  clinic:morning (17): CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-foot,clinic:heal-boing,clinic:heal-knee,clinic:heal-cut,clinic:heal-eye,clinic:heal-ear,clinic:heal-tooth,clinic:heal-fever,clinic:patient,clinic:pharmacy,clinic:morning --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s08-w8b-clinic-fails-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w8b-clinic-fails` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8874.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w8b-clinic-fails.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
