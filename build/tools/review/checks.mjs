@@ -10,7 +10,7 @@
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
  * specs  evidence.mjs --lint-specs: the static pass over build/sandbox/data/evidence.json (no browser; new flags only, a baseline holds the known ones)
  * docs   build/tools/review/docs.mjs (decision 99): the docs' size limits and unique IDs
- * fixlist  every open row on the fix list starts its status with one label (to fix: code / to fix: check / waiting on Zafar / Mum / art; Zafar, 21 Oct)
+ * fixlist  every open row on the fix list starts its status with one label (to fix: code / to fix: check / waiting on Zafar / Mum / art, before app store; Zafar, 21 Oct)
  * recordings  build/tools/ops/recordings.mjs --check (Zafar, 20 Oct): docs/language/recording-sheet.md is current (regenerate: node build/tools/ops/recordings.mjs)
  * size   build/tools/review/sitesize.mjs (Zafar, 14 Oct): the live site stays under 800 MB (GitHub Pages stops deploying near 1 GB)
  * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures

@@ -66,7 +66,7 @@ export function loadRegressions(file) { return parseRegressions(file ? readFileS
 export const plain = (s) => s.replace(/\*\*|`|\*/g, "").replace(/\s+/g, " ").trim();
 // "open", "reopened", "waiting on art", "built, not re-played", "fixed", "open (unverified)", "retired" ...
 // Zafar, 21 Oct: an open row's status starts with its label (to fix: code/check, waiting on Zafar/Mum/art)
-const LABEL_RE = /^(?:to fix: (?:code|check)|waiting on (?:zafar|mum|art))\b/;
+const LABEL_RE = /^(?:to fix: (?:code|check)|waiting on (?:zafar|mum|art)|before app store)\b/;
 export const statusKind = (s) => { const t = plain(s).toLowerCase(); if (LABEL_RE.test(t)) return /\breopened\b/.test(t) ? "reopened" : "open"; return t.startsWith("reopened") ? "reopened" : t.startsWith("open") ? "open" : t.startsWith("built") ? "built" : t.startsWith("fixed") ? "fixed" : t.startsWith("retired") ? "retired" : t.startsWith("keep") ? "keep" : "other"; };
 
 // the rows the contract run checks on every flow (decision 75; build/sandbox/lib/contract.mjs): a contract break names its check
