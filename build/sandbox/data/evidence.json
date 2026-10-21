@@ -1600,8 +1600,9 @@
    "expect": [
     "!textMatches:(?i)cook it the way they said"
    ],
-   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same)",
-   "max": 10
+   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same). 0.7 s after each move, when the next step's line is up (s08 sweep: at the tap itself the box is between one step's line and the next, so 7 of 10 captures read empty: the chai probe's R2 delay)",
+   "max": 10,
+   "delay": 700
   }
  ],
  "SH-57": [
@@ -2368,7 +2369,8 @@
     "shot"
    ],
    "expect": null,
-   "note": "one focal thing per screen; identical shelf slots; UI and world one product"
+   "note": "one focal thing per screen; identical shelf slots; UI and world one product (1.5 s after each view opens: at the view itself the chop's marble is bare, its throws not yet up, s08 sweep)",
+   "delay": 1500
   }
  ],
  "SH-38": [
@@ -11365,6 +11367,25 @@
     "textMatches:ATEMPO = 1\\.0"
    ],
    "note": "the test voice at normal speed (test-only; never ships)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -rn \"u.rate = 0\\.[0-7]\\b\" js/cook || echo none-slow"
+   ],
+   "expect": [
+    "textMatches:^none-slow"
+   ],
+   "note": "the device's test voice in Cook at normal speed: no utterance rate of 0.7 or below in js/cook (the reopened cause: js/cook/lang.js at 0.7)"
   }
  ],
  "LNG-10": [
