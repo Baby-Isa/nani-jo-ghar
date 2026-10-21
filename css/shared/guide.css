@@ -100,12 +100,11 @@
   .njg-guide .ng-tools { gap: var(--njg-s1); }
 }
 
-/* R4 (guide-and-card, decision 55): the asker is the guide (Nani's own pantry list): one face only, on her card;
-   the box keeps just its tools (the bulb and the mute) on one quiet line, and her line shows as the card's top strip */
-.njg-guide.ng-strip { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tools"; padding: 0; background: none; border-color: transparent; box-shadow: none; }
-.njg-guide.ng-strip::before { display: none; }
-.njg-guide.ng-strip .ng-face,
-.njg-guide.ng-strip .ng-say { display: none; }
+/* R4 (guide-and-card, decision 55): the asker is the guide (Nani's own pantry list, the doctor's card): one face only, on
+   the card. SH-63 (Zafar, 21 Oct: the guide box always says the step, the card keeps the order): the box keeps its line,
+   under its tools, without the face; the card never carries the step line */
+.njg-guide.ng-strip { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tools" "say"; }
+.njg-guide.ng-strip .ng-face { display: none; }
 
 /* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in

@@ -87,14 +87,18 @@ test("a line that was just said (the daar's tadka order at the start) is not sai
   m.st.close();
 });
 
-test("closing a step stops its help: no line or glow after the step is done", async () => {
+test("closing a step stops its help: no voice or glow after the step is done; its line stays until the next step (SH-63)", async () => {
   G.PAUSE = [250, 250, 250, 250];
   const { st, log } = make(1);
   G.poke();
   st.open({ html: "Waar!" });
   st.close();
   await wait(500);
-  assert.ok(!kinds(log).includes("speak") && !log.some((x) => x[0] === "glow" && x[2]) && log[log.length - 1][0] === "clear", JSON.stringify(log));
+  // SH-63 (Zafar, 21 Oct: never empty): the line stays until the next step opens; close({clear: true}) (the stage's end) clears it
+  assert.ok(!kinds(log).includes("speak") && !log.some((x) => x[0] === "glow" && x[2]) && log[log.length - 1][0] !== "clear", JSON.stringify(log));
+  st.open({ html: "Tar!" });
+  st.close({ clear: true });
+  assert.equal(log[log.length - 1][0], "clear");
 });
 
 test("the page's idle clock: poke() and idleMs(); the bulbs' pulse is a class on both bulbs", () => {

@@ -33,7 +33,8 @@
  *                           the box at every level (SH-63, Zafar 21 Oct: the guide says the step, the card keeps the order).
  *                           Nothing is said or lit at the open (SH-60, SH-95: the help ladder below); the step call of the
  *                           level table (Nani saying each step once as it opens) hooks in as `call(step)`.
- *   st.close()              the step ended: its line clears (a spoken line never outstays its step), the glow goes
+ *   st.close([{clear}])     the step ended: the glow goes; its line stays until the next step opens (SH-63), cleared
+ *                           with {clear: true} (the stage's end)
  *   st.poke()               the child did something: the page's idle clock starts again (it also starts on every tap, drag or key)
  *   st.help()               the help now (the bulb, a wrong tap): line, voice and glow
  *   NaniGuide.PAUSE / REPEAT / BULB_PULSE   the ladder's table (below); NaniGuide.idleMs() ms since the last action;
@@ -243,12 +244,17 @@
         arm();
         return cur;
       },
-      close() {
+      /**
+       * The step ended: its glow goes and its help stops. SH-63 (Zafar, 21 Oct: the guide box always says the current step,
+       * never empty): its line stays in the box until the next step opens (open() replaces it) or the stage ends
+       * (close({clear: true}), below); a host clears it itself when there is nothing left to do (Cook's UI.guideClear).
+       */
+      close(opt) {
         stopTimer();
         const s = cur;
         cur = null;
         if (s) call(o.glow, s, false);
-        call(o.clear);
+        if (opt && opt.clear) call(o.clear);
       },
       /** The child did something: the pause starts again (every station's actions also poke the page's idle clock). */
       poke() {
@@ -263,7 +269,7 @@
     };
     // a stage that ends takes its open step with it: no help line or glow ever comes after the stage (contract-3)
     try {
-      if (root.Lifecycle && root.Lifecycle.onStageEnd) root.Lifecycle.onStageEnd(() => st.close());
+      if (root.Lifecycle && root.Lifecycle.onStageEnd) root.Lifecycle.onStageEnd(() => st.close({ clear: true }));
     } catch (e) {
       /* no lifecycle on this page */
     }
