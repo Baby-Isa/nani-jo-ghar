@@ -4325,13 +4325,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:trivet"
    ],
    "expect": null,
-   "note": "finished daar photoreal on a small wooden trivet (s02-daar-trivet at the station's end) ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
+   "note": "finished daar photoreal on a small wooden trivet (s02-daar-trivet at the station's end)"
   }
  ],
  "DAAR-07": [
@@ -4696,13 +4696,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:bowl"
    ],
    "expect": null,
-   "note": "the full bowl: layer strips, flat and simple ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
+   "note": "the full bowl: layer strips, flat and simple"
   }
  ],
  "CHT-04": [
@@ -4886,13 +4886,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:cv3-bowl"
    ],
    "expect": null,
-   "note": "the finished chaat bowl at the station's end (the lab has no service view: no s02-served-chaat on screen) ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
+   "note": "the finished chaat bowl at the station's end (the lab has no service view: no s02-served-chaat on screen)"
   }
  ],
  "SAM-01": [
@@ -11225,13 +11225,12 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "dom:.cl-bubble",
     "voice"
    ],
    "expect": [
     "!textMatches:\\bnar\\b"
    ],
-   "note": "na, not nar, in diagnosis answers (ha / na are bubbles at their faces)",
+   "note": "na, not nar, in diagnosis answers (ha / na are bubbles at their faces); the words said (the diagnosis bubbles at these moments hold pictures, no words, so the bubble text was empty) (s08 w8B)",
    "max": 6
   },
   {
@@ -11726,13 +11725,12 @@
    "at": "visible:.njg-rq-card",
    "after": null,
    "capture": [
-    "crop:.njg-rq-card",
-    "dom:.njg-rq-card"
+    "crop:.njg-rq-card"
    ],
    "expect": [
     "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
-   "note": "the clinic's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B)",
+   "note": "the clinic's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B); a crop only: the eye's closed big card holds no words at all (face and dots), so there is no text to read",
    "delay": 150
   },
   {
