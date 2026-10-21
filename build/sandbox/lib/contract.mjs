@@ -1075,6 +1075,9 @@ function check30(r, tl, segs, v, nums, add) {
   for (const l of v.lines) {
     const text = String(l.text || "").trim();
     if (!text || WRITTEN_SKIP.has(l.role) || isCountLine(l, nums)) continue;
+    // a day page (day.html, Sprint 9) has no order cards: its side cards are the door's weather and activity, so its lines are
+    // not orders to write down (the book's placeholder "What did we do today?" read as the number do, 21 Oct)
+    if (/^day:/.test(String(l.who || ""))) continue;
     // the stage it was said in (the request pop-up reads the order out before the station's own stage starts: the first stage's)
     const s = segAt(segs, l.t0) || segs[0] || { key: "page", t0: -Infinity, t1: null };
     if (/cook:between|cook:closing/.test(s.key)) continue;
