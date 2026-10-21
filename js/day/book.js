@@ -21,7 +21,7 @@
  * window.Day.book = {plan, results: [{game, key, firstTry}], stage}: the tests' read-only view (build/sandbox/flows/day.mjs)
  */
 import { paintSky, shapes } from "./sky.js";
-import { planBook, linesFor, bookWords } from "./book-games.js";
+import { planBook, linesFor, bookWords, sayQueue } from "./book-games.js";
 import { runGame } from "./book-play.js";
 
 const todayDate = () => new Date().toISOString().slice(0, 10);
@@ -55,6 +55,8 @@ const el = (tag, cls, parent) => {
 
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
+  // every line the book says, one at a time: each starts after the last has ended, and one event says its line once (DAY-02)
+  const bookSay = sayQueue((ln, o) => api.say(ln, o));
   // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
   api.test.state("day/book/load");
   api.test.expect(() => ({ kind: "wait" }));
@@ -282,7 +284,7 @@ export async function runBook(host, api, day) {
   spk.addEventListener("click", () => {
     if (!roomLine) return;
     bubble.classList.add("speaking");
-    api.say(roomLine, { el: bubbleText.firstChild, who: "nani", min: false }).then(() => bubble.classList.remove("speaking"));
+    bookSay(roomLine, { el: bubbleText.firstChild, who: "nani" }).then(() => bubble.classList.remove("speaking"));
   });
   const H = A.head || { x: 512, y: 150, r: 95 };
   const placeBubble = (prefer = "left") => {
@@ -318,7 +320,7 @@ export async function runBook(host, api, day) {
     placeBubble(prefer);
     bubble.classList.add("in");
     bubble.classList.add("speaking");
-    await api.say(ln, { el: r, who: "nani" });
+    await bookSay(ln, { el: r, who: "nani" });
     bubble.classList.remove("speaking");
   };
 
@@ -344,7 +346,7 @@ export async function runBook(host, api, day) {
   face.addEventListener("click", () => {
     if (!current) return;
     face.classList.add("on");
-    api.say(current, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani", min: false }).then(() => face.classList.remove("on"));
+    bookSay(current, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani" }).then(() => face.classList.remove("on"));
   });
 
   // the pages picture always covers the screen (no letterbox); on a phone it comes closer so each page is at least minPageW wide
@@ -486,7 +488,7 @@ export async function runBook(host, api, day) {
     headLine: () => (headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null),
     // (a page built before it shows speaks only once it shows: g.go)
     go: Promise.resolve(),
-    say: (ln, node, o = {}) => g.go.then(() => api.say(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o))),
+    say: (ln, node, o = {}) => g.go.then(() => bookSay(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o))),
     // (the tests act only once the page shows: a hidden page takes no touch)
     expect: (fn) => api.test.expect(() => (g.hidden ? { kind: "wait" } : fn())),
     state: (s) => {

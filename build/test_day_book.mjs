@@ -12,7 +12,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createEngine, DATA_FILES } from "../js/core/lang/engine/index.js";
-import { planBook, todayThings, fill, bookWords } from "../js/day/book-games.js";
+import { planBook, todayThings, fill, bookWords, sayQueue, voiceFaults } from "../js/day/book-games.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const J = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
@@ -124,4 +124,42 @@ test("one game alone (the lab's ?game=): name it and stick in the photo give two
     const plan = planBook({ data: D, place: "farm", today: { entries: log.entries, words: log.words }, say: sayable("farm"), rng: rngOf(5), only: g });
     assert.deepEqual(plan.pages.map((p) => p.game), g === "nameit" || g === "photo" ? [g, g] : [g]);
   }
+});
+
+// ---- one line at a time (DAY-02, the judge, 21 Oct: lines said twice, a found line over the question still playing) ----
+test("voiceFaults: catches a line said twice within 1 s, two lines at once and a line with no length", () => {
+  const judge = [
+    { text: "Murgi kida ai?", a: 23560, b: 24060 },
+    { text: "There's the chicken!", a: 23680, b: 24170 },
+    { text: "kutro", a: 28020, b: 28020 },
+    { text: "Then we saw a big chicken.", a: 31430, b: 32260 },
+    { text: "Then we saw a big chicken.", a: 31940, b: 32770 },
+  ];
+  const kinds = voiceFaults(judge).map((f) => f.kind);
+  assert.ok(kinds.includes("overlap") && kinds.includes("zero") && kinds.includes("twice"), kinds.join(","));
+  assert.deepEqual(voiceFaults([{ text: "a", a: 0, b: 500 }, { text: "b", a: 520, b: 900 }, { text: "a", a: 2000, b: 2400 }]), []);
+});
+
+test("sayQueue: each line starts after the last ended; the same line again within 1 s of its end, or while queued, is said once", async () => {
+  let clock = 0;
+  const said = [];
+  const fake = (ln) => {
+    const e = { text: ln.text, a: clock };
+    said.push(e);
+    return new Promise((r) => setTimeout(() => ((clock += 500), (e.b = clock), r()), 5));
+  };
+  const say = sayQueue(fake, { now: () => clock, gapMs: 1000 });
+  const ask = { text: "Murgi kida ai?" };
+  const found = { text: "There's the chicken!" };
+  const photo = { text: "Then we saw a big chicken." };
+  // the question, a tap while it plays (the found line), a photo line said at the page's start and again as it is placed
+  await Promise.all([say(ask), say(found), say(photo), say(photo)]);
+  assert.deepEqual(said.map((e) => e.text), ["Murgi kida ai?", "There's the chicken!", "Then we saw a big chicken."]);
+  assert.deepEqual(voiceFaults(said), []);
+  clock += 2000; // a while later the same line is a new event: said again
+  await say(photo);
+  assert.equal(said.length, 4);
+  // red: the same events said at once, without the queue, are faults
+  const raw = [ask, found, photo, photo].map((ln, i) => ({ text: ln.text, a: i * 100, b: i * 100 + 500 }));
+  assert.ok(voiceFaults(raw).length >= 2);
 });
