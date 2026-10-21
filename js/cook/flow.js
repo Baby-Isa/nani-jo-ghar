@@ -773,7 +773,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   /*
    * S02-E (B1, K4): a dish's served picture on its tray (art.s02 "served-dishes", loaded with the order: Art.prefetch),
-   * standing on the tray's floor (the painted rim hides its base), its contact shadow falling right. False when the
+   * standing on the tray's floor (the painted rim hides its base). False when the
    * dish has no picture yet (it keeps the drawing below).
    */
   function servedPic(s, recipe, x, t, i, maxW = Infinity) {
@@ -784,16 +784,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const h = a.drawH * k;
     const w = (h * a.w) / a.h;
     const base = t.y + t.h * 0.18;
-    // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left): it reaches past the dish's
-    // right side, so it shows beside the base and is not all hidden under the dish
-    // (S06 round 3: one flat ellipse at 0.3 of a warm brown read as the tray's own brown on the dark walnut floor: a flat
-    // darkening looks like darker wood. Now it fades: darkest at the dish's right foot, lighter as it falls away right,
-    // stacked rings of near-black, so the eye reads a shadow by its edge)
-    const shH = Math.max(12, Math.min(t.h * 0.3, h * 0.2));
-    const shY = t.y - t.h * 0.1;
-    [1.3, 1.08, 0.86, 0.66, 0.48].forEach((f, n) =>
-      s.track(s.add.ellipse(x + w * (0.22 + f * 0.2), shY, w * f, shH * (0.55 + f * 0.45), 0x000000, 0.13).setDepth(Cook.D.occ + 1.9 + i * 0.01 + n * 0.001))
-    );
+    // CK-21 (Zafar, 21 Oct: "no tray shadow"): no contact shadow on the tray. The floor the child sees is only the strip
+    // between the back rim and the front wall's top, so the front lip hid the earlier tries' shadow; it is not worth it
     const img = s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
     trayFront(s, t);
     // (for the test hook servedTray: each served picture with its tray, in the order drawn; evidence CK-21)
@@ -1008,6 +1000,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else setTimeout(prefetchJar, 6000);
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
+      // PAN-13 (Zafar, 21 Oct): Nani's own pantry order may name its dish (day 1: for chai). Then it IS that dish's trip: it
+      // fetches the dish's things, and the dish's order later that day starts with no second trip
+      const forDish = !free && spec.for && spec.dishes.includes("pantry") && pantryFirst(spec.for) ? spec.for : null;
+      if (forDish) {
+        fetched.add(forDish);
+        markFetched(forDish);
+      }
       const trips = free ? [] : spec.dishes.filter((dish) => !fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish));
       // CHT-07 (decisions 53, 87): chaat is asked for first (the dish, not its layers); the pantry and the prep come
       // next, and the layer order is said just before the bowl (assemble's sequence). The customer waits at the counter.
@@ -1018,11 +1017,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await runOrder(pantryFor(dish, spec), day);
       }
       state.waiting = null;
-      await runOrder(buildOrder(spec), day, { asked });
+      await runOrder(forDish ? pantryFor(forDish, spec) : buildOrder(spec), day, { asked });
       // the app shell (js/cook/app.js): a first launch goes home after Nani's pantry round
       if (Cook.afterOrder && (await Cook.afterOrder(spec, day, { free })) === "leave") return;
     }
-    finishDay(day, { free });
+    await finishDay(day, { free });
   }
   /**
    * 29 Sept (Q6, Zafar): story mode only. The first time each of chai, daar, chaat and samosa is made
@@ -1075,7 +1074,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.hideGist();
   }
 
-  function finishDay(day, { free } = {}) {
+  async function finishDay(day, { free } = {}) {
     // a day is done when its last order is served (the title's day dots)
     if (!free) {
       Cook.save.best[day.id] = Math.max(Cook.save.best[day.id] || 0, state.cards.length);
@@ -1085,6 +1084,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Cook.save.best.free = Math.max(Cook.save.best.free || 0, state.cards.length);
     }
     Cook.writeSave();
+    // SH-51 (ev-20261020: at 1366x768 the summary had no jar): its five pictures are loaded before it opens (capped, real time)
+    await Cook.Stations.capLoad(loadJar(), 1500);
     showSummary(day, { free });
   }
 
@@ -1172,19 +1173,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   const JAR_LEVELS = ["empty", "quarter", "half", "three-quarter", "full"];
   const jarFull = () => Math.max(50, ...Cook.data.upgrades.filter((u) => !u.hidden).map((u) => Cook.price(u) || 0));
-  const jarLevel = (coins) => Math.max(0, Math.min(4, Math.ceil((coins / jarFull()) * 4 - 0.001)));
-  function prefetchJar() {
-    const s02 = (Cook.data.art || {}).s02 || {};
-    [...JAR_LEVELS.map((l) => `coin-jar-${l}`), "coin"].forEach((k) => {
-      const a = s02[k];
-      if (a && a.ready && a.file && typeof Image !== "undefined") new Image().src = Cook.v(a.file);
-    });
+  /*
+   * SH-51 (judge, ev-20261020: "the same fill picture at 25, 32 and 37"): the jar fills towards the next thing in Nani's
+   * shop the child is saving for: the cheapest upgrade not yet owned that the jar could not buy when today began. Full
+   * when it can be bought; else a quarter for each quarter of its price saved. (It filled towards the dearest upgrade,
+   * 80, so a whole day's coins stayed in one picture.) Nothing left to buy: towards the old full jar.
+   */
+  function jarGoal(start) {
+    const ups = Cook.data.upgrades.filter((u) => !u.hidden && !Cook.hasUpgrade(u.id)).map((u) => Cook.price(u)).filter((p) => isFinite(p) && p > start);
+    return ups.length ? Math.min(...ups) : jarFull();
   }
-  /** The jar at a fill level, redrawn only when the level changes (a new picture each coin flashed it empty while it loaded). */
+  const jarLevel = (coins, goal = jarFull()) => (coins >= goal ? 4 : Math.max(0, Math.min(3, Math.floor((coins / goal) * 4))));
+  const jarUrls = () => {
+    const s02 = (Cook.data.art || {}).s02 || {};
+    return [...JAR_LEVELS.map((l) => `coin-jar-${l}`), "coin"].map((k) => s02[k]).filter((a) => a && a.ready && a.file).map((a) => Cook.v(a.file));
+  };
+  const jarImgs = new Map();
+  /** The jar's pictures, each loaded and decoded once (resolves when all are in, or failed). */
+  function loadJar() {
+    if (typeof Image === "undefined") return Promise.resolve();
+    return Promise.all(
+      jarUrls().map((u) => {
+        if (!jarImgs.has(u)) {
+          const im = new Image();
+          im.src = u;
+          jarImgs.set(u, (im.decode ? im.decode() : new Promise((r, j) => ((im.onload = r), (im.onerror = j)))).catch(() => {}));
+        }
+        return jarImgs.get(u);
+      })
+    );
+  }
+  const prefetchJar = () => loadJar();
+  /**
+   * The jar at a fill level, redrawn only when the level changes. The new picture replaces the old one only once it is
+   * decoded (ev-20261020: the jar went blank for a moment as each level loaded, and the day summary's last frame had none).
+   */
   function setJar(pic, level) {
     if (pic.dataset.lv === String(level)) return;
     pic.dataset.lv = String(level);
-    pic.innerHTML = jarHtml(level);
+    const html = jarHtml(level);
+    const m = /src="([^"]+)"/.exec(html);
+    if (!m || typeof Image === "undefined") return void (pic.innerHTML = html);
+    const im = new Image();
+    im.src = m[1];
+    const put = () => {
+      if (pic.dataset.lv === String(level)) pic.innerHTML = html;
+    };
+    (im.decode ? im.decode() : Promise.reject()).then(put, put);
   }
   function jarHtml(level) {
     const art = (((Cook.data.art || {}).s02 || {})[`coin-jar-${JAR_LEVELS[level]}`]) || null;
@@ -1209,11 +1244,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const last = day.finale && !free;
     const total = Cook.coins();
     let shown = Math.max(0, total - (state.dayCoins || 0));
+    const goal = jarGoal(shown);
+    const lv = (n) => jarLevel(n, goal);
     const card = (c) => `<div class="ccard sum-card jar-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
     const p = UI.panel(`
       <div class="jar-sum">
         <div class="jar-col">
-          <div class="jar-stage"><div class="jar-pic" data-lv="${jarLevel(shown)}">${jarHtml(jarLevel(shown))}</div><div class="jar-drop"></div></div>
+          <div class="jar-stage"><div class="jar-pic" data-lv="${lv(shown)}">${jarHtml(lv(shown))}</div><div class="jar-drop"></div></div>
           <div class="jar-total">${coinsHtml(shown, "total")}</div>
         </div>
         <div class="jar-today">${coinsHtml(`+${state.dayCoins}`, "today")}</div>
@@ -1281,14 +1318,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           Cook.sfx.coin();
           shown += c.coins;
           tot.innerHTML = coinsHtml(Math.min(shown, total), "total");
-          setJar(pic, jarLevel(shown));
+          setJar(pic, lv(shown));
         }
         await anim([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-70px)", opacity: 0 }], { duration: 420, easing: "ease-in" });
         drop.innerHTML = "";
       }
       if (run === Cook.run && tot.isConnected) {
         tot.innerHTML = coinsHtml(total, "total");
-        setJar(pic, jarLevel(total));
+        setJar(pic, lv(total));
       }
     })();
   }
@@ -1732,7 +1769,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     } finally {
       hideCloseKitchenButton();
     }
-    finishDay(day, { free: true });
+    await finishDay(day, { free: true });
   }
 
   function startOpenKitchen() {

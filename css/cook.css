@@ -1080,6 +1080,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .jar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .jar-stage { position: relative; width: clamp(96px, 20vh, 170px); padding-top: clamp(56px, 11vh, 96px); }
 .jar-pic .jar-svg, .jar-pic .jar-img { display: block; width: 100%; height: auto; }
+/* SH-51: the jar keeps its room while a fill picture swaps (the s02 jar is 209x360), so the card above never drops into a gap */
+.jar-pic { aspect-ratio: 209 / 360; }
+.jar-pic .jar-img, .jar-pic .jar-svg { height: 100%; object-fit: contain; }
 .jar-drop { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: clamp(190px, 46vw, 260px); pointer-events: none; }
 .jar-drop .jar-card { margin: 0; box-shadow: 0 6px 18px rgba(40, 25, 10, 0.18); }
 .jar-drop .jar-coin { position: absolute; left: 50%; top: 70%; width: 22px; height: 22px; }

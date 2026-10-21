@@ -451,9 +451,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SAM-22 (P40; the judge, 20 Oct: "that cluster hangs half off the wrapper's corner ... the filling spilling over the wrapper
     // edge"): proto.mounds fits each mound's radius r with 0.85 r to spare from every edge of the corner the fold lays over, but
     // each was drawn 2.3 r across (a quarter bigger again on the board, and up to 1.15 more as spoons go in), so it hung over
-    // the strip's edges. Now 1.6 r across to be folded and 1.8 r on the board's small strips (the heap pictures' soft edges
-    // leave each mound's visible round inside its 0.85 r margin): inside the corner, never off the pastry
-    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: (o.scaleX < FULL * 0.9 ? 1.8 : 1.6) * s.r * U(o) }));
+    // the strip's edges. Now 1.6 r across everywhere: the heap pictures fill 0.9 of their box, so even grown 1.15 by more
+    // spoons a mound's visible round (0.83 r) stays inside its 0.85 r margin: inside the corner, never off the pastry.
+    // SAM-22 (21 Oct: "a tiny speck"): r itself was capped at 0.21 (fill-fold.js mounds); one mound now fills the corner
+    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: 1.6 * s.r * U(o) }));
     const grow = (o) => Math.min(1.15, 1 + 0.05 * ((o.spoons || 1) - 1));
 
     /* a spoonful: a little heap lifts off its pile and lands on the strip's corner (the first fold covers it) */
