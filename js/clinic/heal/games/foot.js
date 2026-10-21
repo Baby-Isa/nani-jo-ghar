@@ -305,6 +305,10 @@
     const streamG = s("g", { opacity: 0 }, fxG);
     const streamW = s("path", { fill: "none", stroke: "rgba(170,214,240,.55)", "stroke-width": 13, "stroke-linecap": "round" }, streamG);
     const streamC = s("path", { fill: "none", stroke: "rgba(255,255,255,.75)", "stroke-width": 3.5, "stroke-linecap": "round" }, streamG);
+    // CLN-190 (Zafar, 18 Oct: "a colored, coded jet"; the judge, 20 Oct: "a thin, flat pale-blue stroke"): the water runs
+    // down the stream (bright beads moving along it) and throws a few drops where it lands on dirt
+    const streamF = s("path", { fill: "none", stroke: "rgba(255,255,255,.95)", "stroke-width": 3, "stroke-dasharray": "5 15", "stroke-linecap": "round" }, streamG);
+    if (streamF.animate) streamF.animate([{ strokeDashoffset: 0 }, { strokeDashoffset: -40 }], { duration: 260, iterations: Infinity });
     const WASH_R = 44; // svg units round the water's point that it washes
     const washAt = (p, temp) => {
       // CLN-108 (s09): the jug's picture is set once per jug, never on every step of a sweep: setting an image's href again
@@ -321,6 +325,7 @@
       const d = `M${p.x + 22} ${p.y - 126} Q${p.x + 5} ${p.y - 68} ${p.x} ${p.y}`;
       streamW.setAttribute("d", d);
       streamC.setAttribute("d", d);
+      streamF.setAttribute("d", d);
       streamG.setAttribute("opacity", 1);
       let hit = 0;
       dirt.forEach((q) => {
@@ -337,6 +342,12 @@
         const sp = s("ellipse", { cx: p.x, cy: p.y, rx: 10, ry: 6, fill: "rgba(200,230,248,.35)", stroke: "rgba(255,255,255,.8)", "stroke-width": 2.5 }, fxG);
         sp.animate([{ rx: 10, ry: 6, opacity: 1 }, { rx: hit ? 40 : 28, ry: hit ? 22 : 15, opacity: 0 }], { duration: fast() ? 60 : 420, fill: "forwards" });
         ctx.after(fast() ? 80 : 460, () => sp.remove());
+        if (hit)
+          [-1, 0, 1].forEach((k) => {
+            const dr = s("circle", { cx: p.x, cy: p.y, r: 3.5 + Math.abs(k), fill: "rgba(225,242,252,.9)", stroke: "rgba(255,255,255,.9)", "stroke-width": 1 }, fxG);
+            if (dr.animate) dr.animate([{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${k * 26 + 6}px, ${18 - Math.abs(k) * 10}px)`, opacity: 0 }], { duration: 420, easing: "ease-out", fill: "forwards" });
+            ctx.after(460, () => dr.remove());
+          });
       }
       return hit;
     };

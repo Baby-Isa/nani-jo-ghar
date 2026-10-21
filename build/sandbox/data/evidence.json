@@ -1081,13 +1081,14 @@
    "at": "heal-cut-start",
    "after": null,
    "capture": [
-    "contract:8",
-    "zoom2:.hs-tools"
+    "zoom2:.hs-tools",
+    "crop:.cl-stage"
    ],
    "expect": [
     "pass"
    ],
-   "note": "the clinic tool strip uses the same glow token, no ring of its own (at the scrape start: L1 has no mid moment)"
+   "note": "the clinic tool strip uses the same glow token, no ring of its own (at the scrape start: L1 has no mid moment) (s09: the player waits 8.5 s at the start, past the L1 help ladder's 7 s, so the next tool's glow is on the frame: before, nothing was lit yet)",
+   "delay": 8500
   }
  ],
  "SH-54": [
