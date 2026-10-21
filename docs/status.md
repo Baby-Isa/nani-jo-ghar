@@ -8,19 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (21 Oct 2026, 14:30 UK):** Sprint 9 ("A day at Nani's": the door, the window ride, the evening book, the day runner) is live on `main` (a6c72e54) with Sprint 8 under it. Branch `ccr-1888a520-dk18y7` = `main` + this handover. Zafar's 21 Oct rule: a new feature that never failed closes on its green PASS (`redGreen`, CLAUDE.md rule 7); 15 S09 rows closed by it. Still open: BOOK-05 (wrong-drag driver), DAY-02 (two strikes: Zafar's call; it now passes on a stronger probe), DAY-03 and LNG-18 (Sprint 10). Not run before this publish (Zafar: as few checks as possible): `/review`'s full 8-size check and a gate run; the merge took main's game code for every Sprint 8 file.
+**Where things stand (22 Oct 2026, 01:00 UK):** Sprint 9 is live on `main` (a6c72e54). The planning session (21 Oct) agreed "easy to play, easy to learn": the plan, its evidence and the critic's pre-mortem are in `docs/game-design/easy-to-play.md`; rules 5 and 6 now allow supported English and matching (support then fade). Sprint 10 "Show it" (`docs/sprints/S10-show-it.md`) runs overnight: two Sonnet builders in worktrees, s10a-labs (labs page, day builder `?stages=`/`?then=`, New player `Save.resetPlayer`, walkthrough pantry then chai) and s10b-clinic (girl as every patient, tooth drill starting in a bigger cavity, code effects off). Briefs: `build/tools/ops/specs/s10a-labs.brief.txt`, `s10b-clinic.brief.txt`.
 
 **Next steps:**
-1. Zafar plays (`labs.html`, `day.html`); his notes → `/feedback`.
-2. `/sprint` close for Sprint 9 (three-line look back), then open Sprint 10, the farm day in full (`docs/game-design/days/farm.md`), with DAY-03, LNG-18 and BOOK-05's driver. About $150; two builders.
+1. When the builders report: merge their worktree branches into `ccr-1888a520-dk18y7`, checks.mjs, one `judge` pass on their sheets at 1366x768 and 1480x924, fix what fails, `/publish` (Zafar's go for this run, 21 Oct), `/handover`.
+2. Sprint 11 (`docs/sprints/S11-easy-to-play.md`) only if budget is left: Step 0 (shared word card, progress fading, onboarding rungs, play log, leak bot on a learned save, the door), then B-cook (chai, kitchen conversation, top-down pour) and B-clinic (flash-card eye test, toothbrush cross).
 
-**Open questions to Zafar:**
-1. DAY-02: close it on its latest PASS (the probe was strengthened after its two FAILs)? Recommend yes.
-2. Hannah Mami: her name in the game, picture (a likeness run) and voice.
-3. Mum's words: the corn dressings, the shops' directions, the ride's and book's grey lines (the recording sheet).
+**Open questions to Zafar:** none blocking. Art run (toothbrush, doctor with a card, an effects sheet) is written in Sprint 11 Step 0.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Sprint 9 is live on `main`. Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Carry on from "Next steps" (Sprint 10's overnight run). Tell me before launching anything new.
 
 ## The fix list
 
