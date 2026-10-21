@@ -607,35 +607,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /** A small "it went in" mark where something lands in a pot or a glass (28 Sept, s8). */
     puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {
       // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa), the same in every station.
-      // s08 w6M (CK-06 reopened; the judge, 20 Oct: "blurry see-through white blobs over the oil and onions"): no clouds any
-      // more (white or tinted, round or wisps: every version read as blobs lying on the food). It is a ripple: two thin rings
-      // spread out from where it landed and fade, a pale line with a soft dark one just outside it (a ripple's light and its
-      // shadow), so it reads on a light pan or a dark one and leaves nothing over what went in. flat: the rings' height over
-      // their width (a side-on glass passes a flatter ring). Same timing as before (gone by about 0.9 s)
-      // CK-27 (the judge, 20 Oct: "no puff or sprinkle shows in any frame ... only water ripples"): the same ripple, made plain
-      // to see: wider, three rings, a bolder light line and its shadow (was two thin rings at 0.7 and 0.22, lost at 1x)
-      const s = size * 1.7;
-      const light = (() => {
-        const c = Number(color) >>> 0;
-        const mix = (sh) => Math.round(255 * 0.8 + ((c >> sh) & 255) * 0.2);
+      // (s08 w6M: clouds read as blobs on the food, CK-06; then a ripple of rings, which the judge saw as only a thin ring.)
+      // CK-27 (Zafar's "a small puff or sprinkle"; the judge, 21 Oct: "only a thin white ring"): now a fine sprinkle. A
+      // spray of tiny grains (never blobs, CK-06: each a couple of px) jumps up out of where the thing landed, arcs and falls
+      // back, fading: the item's own colour and a lighter one, each grain with a thin dark edge so it reads on a pale glass
+      // or a dark pan. flat: how far the spray reaches sideways against up (a side-on glass keeps it narrower). Gone by ~0.8 s.
+      const c = Number(color) >>> 0;
+      const tone = (k) => {
+        const mix = (sh) => Math.max(0, Math.min(255, Math.round(((c >> sh) & 255) * (1 - k) + 255 * k)));
         return (mix(16) << 16) | (mix(8) << 8) | mix(0);
-      })();
-      for (let i = 0; i < 3; i++) {
-        const g = this.track(this.add.graphics().setDepth(D.fx).setPosition(x, y));
-        const st = { r: s * 0.14, a: 1 };
-        const draw = () => {
-          if (!g.active) return;
-          g.clear();
-          const w = st.r * 2;
-          const h = w * flat;
-          g.lineStyle(Math.max(2, s * 0.09), 0x3a2410, 0.32 * st.a);
-          g.strokeEllipse(0, s * 0.02, w + s * 0.1, h + s * 0.1 * flat);
-          g.lineStyle(Math.max(1.5, s * 0.06), light, 0.95 * st.a);
-          g.strokeEllipse(0, 0, w, h);
-        };
-        draw();
-        // (fading late: each ring holds most of its strength for the first half of its spread, so a frame at any moment shows it)
-        this.tweens.add({ targets: st, r: s * (0.5 + 0.25 * i), a: 0, delay: i * 140, duration: 820, ease: "Quad.easeIn", onUpdate: draw, onComplete: () => g.destroy() });
+      };
+      const cols = [c, tone(0.35), tone(0.6)];
+      const n = 16;
+      const reach = size * 1.25;
+      for (let i = 0; i < n; i++) {
+        const r = Math.max(1.4, size * (0.035 + Math.random() * 0.03));
+        const dot = this.track(this.add.circle(x, y, r, cols[i % cols.length], 1).setDepth(D.fx));
+        dot.setStrokeStyle(Math.max(0.8, r * 0.35), 0x3a2410, 0.45);
+        // up and out: from straight up to about 70 degrees either side
+        const ang = -Math.PI / 2 + (Math.random() - 0.5) * 2.4;
+        const dist = reach * (0.45 + Math.random() * 0.55);
+        const dx = Math.cos(ang) * dist * (0.6 + 0.4 * Math.min(1, flat / 0.72));
+        const up = -Math.sin(ang) * dist;
+        const st = { t: 0 };
+        this.tweens.add({
+          targets: st,
+          t: 1,
+          delay: Math.random() * 90,
+          duration: 560 + Math.random() * 240,
+          ease: "Linear",
+          onUpdate: () => {
+            if (!dot.active) return;
+            const t = st.t;
+            // a little arc: up fast, then back down past where it started (gravity), fading out over the last half
+            dot.setPosition(x + dx * t, y - up * (2 * t - t * t * 1.6));
+            dot.setAlpha(t < 0.5 ? 1 : 1 - (t - 0.5) * 2);
+          },
+          onComplete: () => dot.destroy(),
+        });
       }
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
