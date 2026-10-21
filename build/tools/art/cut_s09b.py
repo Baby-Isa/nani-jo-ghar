@@ -36,6 +36,15 @@ def grey_of(a):
     return 255 - d * 8
 
 
+def firm(rgba):
+    """A steeper edge for the road's sprites: a thin thing (a bicycle's spokes, a rainbow's cloud) keeps no faint haze or
+    soft rim that shows dark on the light verge (the pixel check, SH-115)."""
+    a = rgba[..., 3].astype(np.float32) / 255
+    out = rgba.copy()
+    out[..., 3] = (np.clip((a - 0.35) / 0.4, 0, 1) * 255).astype(np.uint8)
+    return out
+
+
 def webp(im, name, q=88):
     im.save(os.path.join(OUT, name + ".webp"), "WEBP", quality=q, method=6)
 
@@ -115,7 +124,7 @@ def main():
     webp(Image.fromarray(h, "RGBA"), "house-empty", q=90)
     rep["house-empty"] = {"roofline_y": roof}
     for f, names in SHEETS.items():
-        cut_sheet(key(os.path.join(SRC, f)), names, SPRITE_H, rep, f)
+        cut_sheet(firm(key(os.path.join(SRC, f))), names, SPRITE_H, rep, f)
     for f, names in POSES.items():
         cut_sheet(key(os.path.join(SRC, f), keyness=grey_of, k=None), names, POSE_H, rep, f)
     json.dump(rep, open(os.path.join(OUT, "cut-report.json"), "w"), indent=1)

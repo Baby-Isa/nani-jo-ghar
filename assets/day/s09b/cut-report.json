@@ -42,7 +42,7 @@
  },
  "donkey": {
   "size": [
-   275,
+   276,
    360
   ],
   "from": "a1-farm-animals-v1.png"
@@ -56,15 +56,15 @@
  },
  "buffalo": {
   "size": [
-   381,
+   382,
    360
   ],
   "from": "a2-farm-animals-v1.png"
  },
  "duck": {
   "size": [
-   276,
-   305
+   275,
+   303
   ],
   "from": "a2-farm-animals-v1.png"
  },
@@ -77,56 +77,56 @@
  },
  "hen-chicks": {
   "size": [
-   296,
-   309
+   295,
+   308
   ],
   "from": "a2-farm-animals-v1.png"
  },
  "bus": {
   "size": [
-   455,
+   454,
    264
   ],
   "from": "v1-road-vehicles-v1.png"
  },
  "tractor": {
   "size": [
-   288,
-   229
+   286,
+   228
   ],
   "from": "v1-road-vehicles-v1.png"
  },
  "bicycle": {
   "size": [
-   258,
-   185
+   256,
+   183
   ],
   "from": "v1-road-vehicles-v1.png"
  },
  "car": {
   "size": [
-   370,
-   203
+   369,
+   202
   ],
   "from": "v1-road-vehicles-v1.png"
  },
  "milk-van": {
   "size": [
-   480,
+   479,
    283
   ],
   "from": "v2-road-things-v1.png"
  },
  "kite": {
   "size": [
-   300,
+   301,
    360
   ],
   "from": "v2-road-things-v1.png"
  },
  "aeroplane": {
   "size": [
-   411,
+   410,
    226
   ],
   "from": "v2-road-things-v1.png"
@@ -154,7 +154,7 @@
  },
  "rainbow": {
   "size": [
-   551,
+   550,
    303
   ],
   "from": "l1-road-landmarks-v1.png"
