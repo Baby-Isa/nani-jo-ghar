@@ -1,30 +1,27 @@
 # s08-w8b-clinic-fails
 
-Branch `worktree-agent-ae8f5f408ae173d90` (reset onto `claude/new-session-b5r2am` at 1cf4a05c: the worktree had been made from `main`). Not pushed. Game code changed: yes, clinic and one shared CSS rule.
+Branch `worktree-agent-ae8f5f408ae173d90`, reset onto `claude/new-session-b5r2am` (1cf4a05c), as the worktree had been made from `main`. Not pushed.
 
 ## What changed
 
-Four code fixes. **Foot (CLN-82):** a child could always finish (every run reached its end), but after the jugs nothing on the stage said what next and the jug kept its lit ring; now, from level 2, the host's "what's next" reveal lights every splinter (never just the first toe: the leak test) and puts the jug down (`foot.js`, `host.js` nextUp hook, `clinic.css`). **Card ticks (SH-10):** each redraw of the clinic card replayed every tick's pop-in from nothing, so frames caught rows unticked; only a new tick pops in now (`kit.js`, `order-card.css` `.tk-seen`). **Voice stop (SH-64):** a placeholder line (no clip) ran its full length after a tap through the pop-up; it now ends at the stop (`kit.js`). **Card words (CLN-148):** a step group stacks a beat after it is drawn, its words fitted before that; the card fits them again once settled (`kit.js`).
+Four small code fixes, each in the table below: the foot lights its splinters after the jugs (CLN-82), the card's ticks stop blinking out (SH-10), a placeholder line stops at a tap (SH-64), and the fan row fits beside its tick (CLN-148). A child could always finish the foot: every run reached its end.
 
-**[ph]:** the evidence capture's tag for the hidden to-record placeholder (grey italic English); no screenshot shows "[ph]". Allowed while testing (Zafar, 21 Oct). Not a bug.
+The "[ph]" the judges saw is the capture's tag for the hidden to-record placeholder. No screenshot shows it, and Zafar allows the placeholder while testing (21 Oct).
 
-**CLN-118:** not a regression: SH-99/CLN-161 (Zafar, 18 Oct: "all the frequencies has to be written down. And audible as well") reverses the count-free taught round. "Hakro" (one) is still written ("Hammer, hakro", "hakro jugs"), against Zafar's 19 Oct "one is never written": that is open SH-99's engine work, left for its owner.
+CLN-118 follows Zafar's later words (18 Oct). "Hakro" (one) is still written, against his 19 Oct "one is never written": that is SH-99's open engine work.
 
-Specs: 22 probes reach their moments now, and ten live rows got specs. PRC-06 still exits 1 on nine rows with no spec, none of them mine.
+Specs: 22 probes now reach their moments, and ten live rows have specs. PRC-06 still fails on nine rows that are not mine.
 
-Open: the BIG rows and the driver-bound tool failures in the tables below.
+## Proof
 
-## Proof (from the run; do not retype)
-- **Pages run:** 88 (flow x size): 11 flows at 1024x768, 1180x820, 1280x800, 1366x1024, 1366x768, 1440x900, 800x360, 844x390. 88 reach their end, 0 stop short.
-- **Page errors:** 0.
-- **Contract (the brief's eight-size replay, run `s08-w8b-clinic-fails-matrix`):** CONTRACT PASSED, 0 breaks over 88 pages.
-- **Screenshots:** 799 of 799 states, in `build/screenshots/sandbox/s08-w8b-clinic-fails-matrix` (not committed, B19).
-- **Layout lint vs baseline:** **PASSED**: 0 new findings (0 known, 2 fixed). Findings in the run: 0 (none).
-- **Sound:** 72 lines with no family clip, 2 played files that are not an approved family clip.
-- **Screenshots against the approved manifest:** 2295 shots, 924 changed, 913 new, 394 gone, 159 identical (the manifest predates the s08 art). Flaws first, from `sheets/changed.png`: many end cards sit on a bare grey stage (boing, cut, ear, at every size): CLN-69 below. No change from this session shows there (the foot's glow and the ticks are mid-game).
-- **Checks (`checks.mjs`):** unit (461 pass, 0 fail), words, static, bump, specs, docs, recordings, size: ok. The picture-load check waited on the browser lock (wave 8A's run) and did not run here.
-- **Regression rows:** `regress.mjs` lists 150 for these flows; the matrix (0 breaks, every end reached) and the evidence runs below are the recheck here; one by one is the orchestrator's `/review`.
-- **Word checks (report-only):** A 39 English literals in game code (0 Kutchi); B 39 + 33 label words a child may see; C 4 of 8 misspelt variants; D 36 words with no clip.
+| what | result |
+|---|---|
+| Code | `js/clinic/heal/games/foot.js` (nextUp: every splinter lit, never the first toe alone (the leak test), the jug put down), `js/clinic/heal/host.js` (the reveal hands a non-tool next thing to the game), `js/clinic/kit.js` (`.tk-seen`; the placeholder's hold ends at a voice stop; a refit 80 ms after a card with a step group is drawn), `css/clinic.css` (`.fo-next`), `css/shared/order-card.css` (`.tk-seen` stops the pop-in; only the clinic card sets it) |
+| Matrix `s08-w8b-clinic-fails-matrix` | 88 pages (11 flows x 8 sizes): 88 reach their end, 0 page errors, CONTRACT PASSED (0 breaks), layout lint 0 new findings |
+| Shotdiff | 924 changed against an approved manifest from before the s08 art. Flaws first: many end cards sit on a bare grey stage (boing, cut, ear, every size): CLN-69. Nothing from this session shows there (the glow and ticks are mid-game) |
+| checks.mjs | unit 461 pass, words, static, bump, specs, docs, recordings, size: ok. The picture-load check sat waiting for the browser lock (wave 8A's run) and did not finish |
+| Regression rows | `regress.mjs`: 150 for these flows; the matrix and the evidence runs are tonight's recheck, row by row is `/review` |
+| Sound, words | 72 lines with no family clip; word checks unchanged (39 English literals in game code, 0 Kutchi) |
 
 ### Rows (red: `ev-20261020-203453-9h9` unless named; green: `build/screenshots/evidence/w8b-green{1,2,3}/`, judge pending)
 
