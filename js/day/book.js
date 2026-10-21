@@ -395,6 +395,14 @@ export async function runBook(host, api, day) {
   const ro = typeof ResizeObserver === "function" ? new ResizeObserver(() => layout()) : null;
   if (ro) ro.observe(root);
   const zooming = (on) => root.classList.toggle("njg-zooming", !!on);
+  /** while the pages come up under her close-up (or go back down), their top edge is soft: no hard line across her chin. The
+   * soft band lies above the screen once the pages are at rest (never a jump when it goes) */
+  const softTop = (on) => {
+    const f = on ? Math.max(12, Math.min(80 * bookAt.s, -bookAt.oy)) : 0;
+    const m = on ? `linear-gradient(to bottom, transparent 0, black ${f.toFixed(1)}px)` : "";
+    book.style.webkitMaskImage = m;
+    book.style.maskImage = m;
+  };
 
   // ---- the game's context (book-play.js) ----
   const cleanups = [];
@@ -448,6 +456,9 @@ export async function runBook(host, api, day) {
     headLine.innerHTML = "";
     if (ln) headLine.appendChild(api.render(ln));
     if (window.FitText) window.FitText.run(headRow);
+    // her card shows with its words already drawn (never a blank card for a frame while the new line lays out)
+    headLine.style.visibility = "hidden";
+    requestAnimationFrame(() => requestAnimationFrame(() => current === (ln || null) && (headLine.style.visibility = "")));
   };
   let turnOn = false;
   const showTurn = (on) => {
@@ -562,6 +573,7 @@ export async function runBook(host, api, day) {
     book.style.transition = "none";
     book.style.transform = bookTo(camAt);
     book.style.opacity = "0";
+    softTop(true);
     void book.offsetWidth;
     shot = "pages";
     book.style.transition = `transform ${C.tiltMs}ms ${EASE}, opacity ${C.tiltMs * 0.45}ms ease-in-out ${C.tiltMs * 0.15}ms`;
@@ -572,6 +584,7 @@ export async function runBook(host, api, day) {
     await realWait(C.tiltMs + 40);
     book.classList.add("open");
     book.style.transition = "none";
+    softTop(false);
     // the room behind the pages goes back to the whole room (hidden behind the pages, ready for the way out)
     close.style.transition = "none";
     close.style.opacity = "0";
@@ -621,6 +634,7 @@ export async function runBook(host, api, day) {
     close.style.opacity = "1";
     void book.offsetWidth;
     const to = faceCam();
+    softTop(true);
     book.style.transition = `transform ${C.upMs}ms ${EASE}, opacity ${C.upMs * 0.45}ms ease-in-out ${C.upMs * 0.4}ms`;
     book.style.transform = bookTo(to);
     book.style.opacity = "0";
@@ -629,6 +643,7 @@ export async function runBook(host, api, day) {
     book.classList.remove("open");
     book.style.transition = "none";
     book.style.transform = "none";
+    softTop(false);
     // ... then the pull back to the whole room: the room under her close-up, which fades as the camera goes back
     room.style.visibility = "";
     close.style.transition = `opacity ${C.outMs * 0.5}ms ease-in-out ${C.outMs * 0.05}ms`;
