@@ -543,7 +543,9 @@ export async function runBook(host, api, day) {
   // the room is up: the evening's first moment (BOOK-01 films from here)
   await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
   // (the close-up, the pages and the first page's pictures load while she greets: the camera waits for them before it sets off)
-  const ready = Promise.race([Promise.all([pic(A.pages), FS && pic(FS.art), plan.pages[0] && picsOf(plan.pages[0])]), realWait(4000)]);
+  // (and the italic face her grey to-record lines use: a face still loading draws its text invisible, a blank card)
+  const italic = document.fonts && document.fonts.load ? document.fonts.load('italic 700 20px "Nunito"').catch(() => {}) : null;
+  const ready = Promise.race([Promise.all([pic(A.pages), FS && pic(FS.art), plan.pages[0] && picsOf(plan.pages[0]), italic]), realWait(4000)]);
   api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
@@ -594,6 +596,7 @@ export async function runBook(host, api, day) {
     place3(C.wide);
     book.classList.add("open");
     book.style.opacity = "1";
+    await ready;
     await api.wait(300);
   }
   window.Day.book.stage = "pages";
@@ -607,7 +610,13 @@ export async function runBook(host, api, day) {
     mount(p);
     api.test.state(`day/book/${p.game}`);
     window.Day.book.page = i;
-    await runGame(g, p);
+    // the page shows when every picture on it is drawn (each <img> decoded in place, not only fetched): never a sprite popping in
+    g.wrap.style.visibility = "hidden";
+    const run = runGame(g, p);
+    await Promise.race([Promise.all([...g.wrap.querySelectorAll("img")].map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(1500)]);
+    await new Promise((r) => requestAnimationFrame(() => r()));
+    g.wrap.style.visibility = "";
+    await run;
     await waitTurn();
     while (cleanups.length) cleanups.pop()();
     head(null);
