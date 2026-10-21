@@ -445,15 +445,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const c = u2w(o, proto.fillCentre());
       return { x: c.x, y: c.y, r: 0.21 * U(o) };
     };
-    /** Where m fillings' mounds sit on a strip (world px): inside the corner the first fold lays over them. */
-    // (on a strip laid out on the board they're drawn a quarter bigger, so they read at its size; at full size, to be folded,
-    // they fit inside where the corner lands)
-    // SAM-22 (P40; the judge, 20 Oct: "that cluster hangs half off the wrapper's corner ... the filling spilling over the wrapper
-    // edge"): proto.mounds fits each mound's radius r with 0.85 r to spare from every edge of the corner the fold lays over, but
-    // each was drawn 2.3 r across (a quarter bigger again on the board, and up to 1.15 more as spoons go in), so it hung over
-    // the strip's edges. Now 1.6 r across to be folded and 1.8 r on the board's small strips (the heap pictures' soft edges
-    // leave each mound's visible round inside its 0.85 r margin): inside the corner, never off the pastry
-    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: (o.scaleX < FULL * 0.9 ? 1.8 : 1.6) * s.r * U(o) }));
+    /** Where m fillings' mounds sit on a strip (world px), at the corner the first fold lays over. */
+    // SAM-22 (Zafar, 21 Oct: yes): the filling reaches past the first fold's corner so it reads as a spoonful (part of it shows
+    // until the later folds cover it), never off the wrapper. The corner (a right triangle, legs 0.58 and 1 strip-height)
+    // only fits a mound 0.34 across, a speck; so each mound is a set round (one: 0.54 of the strip's height across, two:
+    // 0.42, three or more: 0.34), its middle moved in from the corner until its round, grown 1.15 by more spoons, keeps
+    // 0.03 inside every edge of the strip. Several sit side by side along the fold's line. (Heap pictures fill 0.9 of their box.)
+    const mounds = (o, m) => {
+      const n = Math.max(1, m);
+      const R = n === 1 ? 0.27 : n === 2 ? 0.21 : 0.17; // visible radius, strip-heights
+      const keep = R * 1.15 + 0.03;
+      const base = proto.mounds(m);
+      const c0 = base.reduce((a, s) => [a[0] + s.x / base.length, a[1] + s.y / base.length], [0, 0]);
+      const u = [0.5, 0.866]; // along the first fold's line (the corner's long edge)
+      return base.map((s, j) => {
+        const off = (j - (n - 1) / 2) * 1.7 * R;
+        const x = Math.min(LU - keep, Math.max(keep, c0[0] + keep * 0.6 + u[0] * off));
+        const y = Math.min(1 - keep, Math.max(keep, c0[1] + u[1] * off));
+        return Object.assign(u2w(o, [x, y]), { size: ((2 * R) / 0.9) * U(o) });
+      });
+    };
     const grow = (o) => Math.min(1.15, 1 + 0.05 * ((o.spoons || 1) - 1));
 
     /* a spoonful: a little heap lifts off its pile and lands on the strip's corner (the first fold covers it) */
@@ -705,7 +716,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       x.blobs.forEach((bl) => (bl.tapReady = true));
       x.block = b;
     };
+    // SH-53 (Zafar, 21 Oct): the card shows each samosa made (a strip filled and left for another) in its own box; the kind's
+    // row still ticks only when all are made (SAM-24)
+    const markMade = (all = false) => {
+      const L = ladderOf(ctx);
+      if (!L) return;
+      let changed = false;
+      L.sections.forEach((sec) => {
+        if (!sec.block || !sec.head) return;
+        const made = Math.min(sec.head.qty || 1, filledOf().filter((x) => (all || x !== active) && (blockOf(x) || 1) === sec.block).length);
+        if (sec.head.made !== made) (sec.head.made = made), (changed = true);
+      });
+      if (changed && UI.mission.refresh) UI.mission.refresh();
+    };
     for (;;) {
+      markMade();
       const r = await pick();
       if (r.strip && !r.back) {
         setActive(r.strip);
@@ -742,6 +767,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         continue;
       }
       if (!r.done) continue;
+      markMade(true);
       /* the one tick: every strip is graded now */
       const filled = filledOf();
       filled.forEach((x) => (x.block = blockOf(x)));
