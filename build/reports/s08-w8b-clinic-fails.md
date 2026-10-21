@@ -19,7 +19,7 @@ Specs: 22 probes now reach their moments, and ten live rows have specs. PRC-06 s
 | Code | `js/clinic/heal/games/foot.js` (nextUp: every splinter lit, never the first toe alone (the leak test), the jug put down), `js/clinic/heal/host.js` (the reveal hands a non-tool next thing to the game), `js/clinic/kit.js` (`.tk-seen`; the placeholder's hold ends at a voice stop; a refit 80 ms after a card with a step group is drawn), `css/clinic.css` (`.fo-next`), `css/shared/order-card.css` (`.tk-seen` stops the pop-in; only the clinic card sets it) |
 | Matrix `s08-w8b-clinic-fails-matrix` | 88 pages (11 flows x 8 sizes): 88 reach their end, 0 page errors, CONTRACT PASSED (0 breaks), layout lint 0 new findings |
 | Shotdiff | 924 changed against an approved manifest from before the s08 art. Flaws first: many end cards sit on a bare grey stage (boing, cut, ear, every size): CLN-69. Nothing from this session shows there (the glow and ticks are mid-game) |
-| checks.mjs | unit 461 pass, words, static, bump, specs, docs, recordings, size: ok. The picture-load check sat waiting for the browser lock (wave 8A's run) and did not finish |
+| checks.mjs | unit 461 pass, words, static, bump, specs, docs, recordings, size: ok. The picture-load check fails one page, cook:chop: `assets/cook/characters/nani-face-talk.webp` is 280 px wide and drawn at 56 px. That is Cook's art; this diff touches no Cook file and no face |
 | Regression rows | `regress.mjs`: 150 for these flows; the matrix and the evidence runs are tonight's recheck, row by row is `/review` |
 | Sound, words | 72 lines with no family clip; word checks unchanged (39 English literals in game code, 0 Kutchi) |
 
