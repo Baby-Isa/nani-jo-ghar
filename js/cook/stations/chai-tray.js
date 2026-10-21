@@ -591,13 +591,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       let i = 0;
       for (let k = 0; k < heaps; k++, i++) {
         const q = spot(i);
-        const w = rIn * 0.24;
+        // SH-32 (s08 w8A; the judge: "the pan's contents look the same" after each spoonful): a third bigger, on a darker
+        // wet patch, so each spoonful reads at laptop size (it was a faint 15 px speck on the milky chai)
+        const w = rIn * 0.32;
         // a small wet patch where it landed, then the mound: fine crystals, lit from the top left (a seeded scatter,
         // so the same spoonful looks the same every frame)
-        g.fillStyle(0x5a3a1c, 0.16).fillEllipse(q.x + w * 0.05, q.y + w * 0.08, w * 1.05, w * 0.66);
+        g.fillStyle(0x5a3a1c, 0.26).fillEllipse(q.x + w * 0.05, q.y + w * 0.08, w * 1.05, w * 0.66);
         let seed = (i + 1) * 9301;
         const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
-        for (let c = 0; c < 46; c++) {
+        for (let c = 0; c < 72; c++) {
           const a = rnd() * Math.PI * 2;
           const rr = Math.sqrt(rnd());
           const cx = q.x + Math.cos(a) * rr * w * 0.5;
