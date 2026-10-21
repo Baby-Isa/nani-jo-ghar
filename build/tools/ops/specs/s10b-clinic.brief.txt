@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  s10b-clinic: the girl as every patient, the tooth drill in a bigger cavity, code effects off (Sprint 10, Show it)
+MODEL AND EFFORT:     Sonnet, medium effort (small, well-located code changes with clear acceptance; the judge checks the pictures)
+COST ESTIMATE:        about $15-20
+HARD STOP:            22 Oct 2026, 07:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-1888a520-dk18y7. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s10b-clinic.context.md (847 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S10-show-it.md
+     docs/game-design/easy-to-play.md (Sprint 10 section only)
+     docs/game-design/modes/clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/pipeline.js and data/clinic/pipeline.json (girl-only)
+  - js/clinic/heal/games/tooth.js and data/clinic/heal/tooth.json (the drill)
+  - js/cook/stations.js (the code fx become no-ops)
+  - js/clinic/heal/games/taste.js and js/clinic/heal/games/boing.js (their local sparkle and mist off)
+  - build/sandbox/data/evidence.json entries GIRL-01, DRILL-01, FX-01 and their rows in docs/process/regressions.md
+  - build/reports/s10b-clinic.md
+READ-ONLY (never edit):
+  - js/clinic/main.js, js/clinic/screen.js, js/shared/**, js/day/**, js/cook/ui.js (s10a)
+  - js/cook/stations/** (Sprint 11 owns chai)
+  - CLAUDE.md and docs/ (the orchestrator)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Every clinic patient is the girl at every level (the only patient with full art; Zafar, 21 Oct): fix the flip['kind'] crash in js/clinic/pipeline.js other() (guard a === 'kind'), set stages.waiting.kidsOnly.from to 1 in data/clinic/pipeline.json so the target is always the girl, and accept a forceKind option in P.waiting/P.patient (s10a passes ?patientKind= through js/clinic/main.js; default 'girl').
+     Accept: a unit test runs P.waiting at levels 1-4 over 50 seeds: the target is always the girl, no crash; a screenshot of the waiting room and a heal game at level 1 shows the girl
+  2. Tooth drill: the drill keeps its drag (touchscreen players drag; Zafar, 21 Oct) but rests in the middle of the first cavity instead of DRILL_REST (tooth.js ~740-747), so touching and moving cuts at once; the cavities are bigger (level 1 radius at least 70, others scaled up the same) and have a clear dark outline. The ghost cue (~637) starts from the cavity. The bot next() (~978) still wins; the leak bot still passes.
+     Accept: a filmstrip at 1366x768 and 1480x924: the drill sits on the cavity at the start, one drag clears it; node build/leak_*.mjs for the tooth game passes
+  3. Code-drawn effects off everywhere (Zafar, 21 Oct: they don't match the art; a matching version comes in Sprint 11): CookScene burst, sparkle, puff and wisps in js/cook/stations.js become no-ops that keep their signatures and any completion callbacks; the clinic's local sparkle (taste.js ~339) and mist and sparkles (boing.js ~421) are removed. NjgPour stays. Nothing waits on a removed effect.
+     Accept: a chai-tray and a grill screenshot after a success show no dots, rings or wisps; every Cook and clinic flow still ends
+
+REGRESSION ROWS TO RECHECK (174 rows of the fix list and its done archive; * = open or reopened):
+  clinic:waiting (37): CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-159*, CLN-82*, CLN-87*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-83, CLN-84, CLN-85, CLN-86, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-153, CLN-151, CLN-01, CLN-81, CLN-152
+  clinic:heal-tooth (56): CLN-87*, CLN-119*, CLN-137*, CLN-141*, CLN-150*, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180*, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-198*, CLN-35*, CLN-43*, CLN-52*, CLN-02, CLN-03, CLN-08, CLN-09, CLN-84, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-42, CLN-44, CLN-51, CLN-53, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-69
+  clinic:heal-taste (51): CLN-87*, CLN-119*, CLN-137*, CLN-141*, CLN-150*, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-144*, CLN-196*, CLN-198*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-36, CLN-42, CLN-44, CLN-54, CLN-55, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-104, CLN-149, CLN-118*, CLN-140, CLN-195, CLN-69
+  clinic:heal-boing (57): CLN-159*, CLN-82*, CLN-87*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150*, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-166*, CLN-167*, CLN-170*, CLN-198*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-42, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118*, CLN-140, CLN-165, CLN-168, CLN-69
+  clinic:patient (27): CLN-159*, CLN-82*, CLN-87*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-83, CLN-84, CLN-85, CLN-86, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-153, CLN-151, CLN-01, CLN-81, CLN-152
+  cook:chai-tray (25): CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CK-45*
+  cook:mishkaki-grill (21): SEK-14*, SEK-18*, SEK-19*, SEK-20*, SEK-21*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, SEK-07, CK-38
+  cook:samosa (28): SAM-22*, SAM-24*, SAM-01, SAM-02, SAM-03, SAM-04*, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, SAM-25, SAM-21, CK-27*, CK-08, CK-09, CK-29, CK-43
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:waiting,clinic:heal-tooth,clinic:heal-taste,clinic:heal-boing,clinic:patient,cook:chai-tray,cook:mishkaki-grill,cook:samosa --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s10b-clinic-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s10b-clinic` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8822.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8822; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s10b-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

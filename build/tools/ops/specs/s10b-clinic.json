@@ -1,0 +1,33 @@
+{
+  "name": "s10b-clinic: the girl as every patient, the tooth drill in a bigger cavity, code effects off (Sprint 10, Show it)",
+  "model": "Sonnet",
+  "effort": "medium",
+  "why": "small, well-located code changes with clear acceptance; the judge checks the pictures",
+  "cost": "about $15-20",
+  "stop": "22 Oct 2026, 07:00 UK",
+  "branch": "ccr-1888a520-dk18y7",
+  "read": [
+    "docs/sprints/S10-show-it.md",
+    "docs/game-design/easy-to-play.md (Sprint 10 section only)",
+    "docs/game-design/modes/clinic.md"
+  ],
+  "owns": [
+    "js/clinic/pipeline.js and data/clinic/pipeline.json (girl-only)",
+    "js/clinic/heal/games/tooth.js and data/clinic/heal/tooth.json (the drill)",
+    "js/cook/stations.js (the code fx become no-ops)",
+    "js/clinic/heal/games/taste.js and js/clinic/heal/games/boing.js (their local sparkle and mist off)",
+    "build/sandbox/data/evidence.json entries GIRL-01, DRILL-01, FX-01 and their rows in docs/process/regressions.md",
+    "build/reports/s10b-clinic.md"
+  ],
+  "readOnly": ["js/clinic/main.js, js/clinic/screen.js, js/shared/**, js/day/**, js/cook/ui.js (s10a)", "js/cook/stations/** (Sprint 11 owns chai)", "CLAUDE.md and docs/ (the orchestrator)"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "Every clinic patient is the girl at every level (the only patient with full art; Zafar, 21 Oct): fix the flip['kind'] crash in js/clinic/pipeline.js other() (guard a === 'kind'), set stages.waiting.kidsOnly.from to 1 in data/clinic/pipeline.json so the target is always the girl, and accept a forceKind option in P.waiting/P.patient (s10a passes ?patientKind= through js/clinic/main.js; default 'girl').", "accept": "a unit test runs P.waiting at levels 1-4 over 50 seeds: the target is always the girl, no crash; a screenshot of the waiting room and a heal game at level 1 shows the girl" },
+    { "do": "Tooth drill: the drill keeps its drag (touchscreen players drag; Zafar, 21 Oct) but rests in the middle of the first cavity instead of DRILL_REST (tooth.js ~740-747), so touching and moving cuts at once; the cavities are bigger (level 1 radius at least 70, others scaled up the same) and have a clear dark outline. The ghost cue (~637) starts from the cavity. The bot next() (~978) still wins; the leak bot still passes.", "accept": "a filmstrip at 1366x768 and 1480x924: the drill sits on the cavity at the start, one drag clears it; node build/leak_*.mjs for the tooth game passes" },
+    { "do": "Code-drawn effects off everywhere (Zafar, 21 Oct: they don't match the art; a matching version comes in Sprint 11): CookScene burst, sparkle, puff and wisps in js/cook/stations.js become no-ops that keep their signatures and any completion callbacks; the clinic's local sparkle (taste.js ~339) and mist and sparkles (boing.js ~421) are removed. NjgPour stays. Nothing waits on a removed effect.", "accept": "a chai-tray and a grill screenshot after a success show no dots, rings or wisps; every Cook and clinic flow still ends" }
+  ],
+  "flows": ["clinic:waiting", "clinic:heal-tooth", "clinic:heal-taste", "clinic:heal-boing", "clinic:patient", "cook:chai-tray", "cook:mishkaki-grill", "cook:samosa"],
+  "port": 8822,
+  "report": "s10b-clinic",
+  "publish": false
+}
