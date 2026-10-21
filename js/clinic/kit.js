@@ -954,6 +954,13 @@
     if (this.el.classList.contains("english")) c.classList.add("english");
     if (global.FitText && global.FitText.run) try { global.FitText.run(c); } catch (e) { /* no fitting */ }
     st.tkSeen = new Set(st.done); // SH-10: the ticks drawn now don't pop in again at the next drawing
+    // CLN-148 (s08 w8B; fever at 800x360: "Switch on ceiling fan" ran on under its tick): a step group stacks a beat after
+    // it is drawn (js/shared/order-card.js stackWhenTight, once it has its width), and its words were fitted before that,
+    // as wide as a side-by-side pill: fit them again once it has settled (shrunk, then wrapped: never cut, rule 9)
+    if (global.FitText && global.FitText.run && c.querySelector(".oc-group")) {
+      clearTimeout(this.refitT);
+      this.refitT = setTimeout(() => c.isConnected && global.FitText.run(c), 80);
+    }
     return this;
   };
   Kit.Card.prototype.setTitle = function (title, faceEl) {
