@@ -7034,14 +7034,14 @@
   "date": "2026-10-21"
  },
  "SH-56": {
-  "hash": "d08251c3b9c43c403f1d",
+  "hash": "8061ffa205af7d53df99",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: !textMatches:(?i)make each pan|^\\s*$ (not (text: \"Dudh wiji chad! Khun wiji chad! Khun wiji chad! Khun wiji chad! Elchi wiji chad! Chulo bar !\")); !textMatches:(?i)first jeeru then lasan (not (text: \"Chulo bar !\")); !textMatches:(?i)cook it the way they said (not (text: \"Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! \"))",
+  "line": "machine: !textMatches:(?i)make each pan|^\\s*$ (not (text: \"Dudh wiji chad! Khun wiji chad! Khun wiji chad! Khun wiji chad! Elchi wiji chad! Chulo bar ! Chulo bar !\")); !textMatches:(?i)first jeeru then lasan (not (text: \"Kali hakro mirchi . Ne ba dungri . Ne hakro tameto . Bas ! Bas ! Bas ! Bas ! Bas ! Kali hakro mirchi . Ne ba dungri .\")); !textMatches:(?i)cook it the way they said (not (text: \"Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar \"))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-141514-4pn",
-  "commit": "3a402ff9",
+  "run": "ev-20261021-152759-xhj",
+  "commit": "29f80f7b",
   "date": "2026-10-21"
  },
  "SH-57": {
