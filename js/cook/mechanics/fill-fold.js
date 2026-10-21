@@ -235,9 +235,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const ic = [(sides[1] * land[0][0] + sides[2] * land[1][0] + sides[0] * land[2][0]) / per, (sides[1] * land[0][1] + sides[2] * land[1][1] + sides[0] * land[2][1]) / per];
           const u = [land[1][0] - land[0][0], land[1][1] - land[0][1]].map((x) => x / sides[0]);
           const n1 = Math.max(1, m);
-          // SAM-22 (the judge, 21 Oct: "a tiny speck in the pastry's corner"): the search started at r 0.21, so one mound never
-          // grew past 0.21 although the corner's incircle (a right corner of the strip's height: inradius 0.29) takes 0.34
-          for (let r = 0.4; r > 0.06; r -= 0.005) {
+          for (let r = 0.21; r > 0.06; r -= 0.005) {
             for (const shift of [0, 0.3, -0.3]) {
               const c = [ic[0] + shift * r * u[1], ic[1] - shift * r * u[0]];
               const spots = Array.from({ length: n1 }, (_, j) => {
