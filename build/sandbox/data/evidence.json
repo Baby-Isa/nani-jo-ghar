@@ -920,12 +920,12 @@
    "at": "visible:#mission .oc-strip .ra-on",
    "after": null,
    "capture": [
-    "strip:#mission .oc-strip:6x300"
+    "strip:#mission:6x300"
    ],
    "expect": [
     "count:#mission .oc-strip .ra-on>=1"
    ],
-   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace) (frames 300 ms apart: since S05-G each part stays lit at least ~640 ms, so 100 ms frames never change)",
+   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace) (frames 300 ms apart: since S05-G each part stays lit at least ~640 ms, so 100 ms frames never change); the whole card filmed (the strip element alone was off screen a beat after its read-along lit) (s08 w8B)",
    "delay": 0
   },
   {
@@ -1152,9 +1152,9 @@
     "zoom2:.cl-side .oc-card"
    ],
    "expect": [
-    "noClip:.cl-side .oc-card"
+    "noClip:.cl-side .oc-card .oc-items"
    ],
-   "note": "clinic card outline unclipped"
+   "note": "clinic card outline unclipped; the rows only: the face circle crops its picture by design (CLN-151) (s08 w8B)"
   }
  ],
  "SH-62": [
@@ -1243,7 +1243,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-cut-start",
+   "at": "rec:stage-heal",
    "after": null,
    "capture": [
     "crop:.cl-side",
@@ -1252,7 +1252,7 @@
    "expect": [
     "!hasWord:name"
    ],
-   "note": "the clinic card: no patient name label"
+   "note": "the clinic card: no patient name label; at the heal stage, whatever ailment the seed gives (heal-cut-start never came on this seed) (s08 w8B)"
   }
  ],
  "SH-70": [
@@ -1316,7 +1316,7 @@
  ],
  "SH-18": [
   {
-   "flow": "first",
+   "flow": "cook:fetch",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -1325,7 +1325,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "pantry-round-view-pantry",
+   "at": "view-pantry",
    "after": null,
    "capture": [
     "shot"
@@ -1334,7 +1334,7 @@
     "count:.oc-card=1",
     "count:#btn-bulb<=1"
    ],
-   "note": "the first round: one card, one bulb, silence first, help behind '?'"
+   "note": "the first round: one card, one bulb, silence first, help behind '?'; played as Cook's pantry round with a fresh profile (the first-launch flow's CookPlayer states, pantry-round-*, are not moments a first-flow probe can name: the plan refused it, PRC-06) (s08 w8B)"
   }
  ],
  "SH-19": [
@@ -6760,10 +6760,11 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "crop:.hs-tools"
+    "crop:.cl-stage"
    ],
    "expect": null,
-   "note": "foot after the jugs"
+   "note": "foot after the jugs: the whole close-up and its tools, from the jugs to the plasters (s08 w8B: the tools crop alone stopped at the pulls and never showed the splinters' glow nor the plaster step)",
+   "max": 16
   }
  ],
  "CLN-83": [
@@ -8170,6 +8171,24 @@
     "liveInput"
    ],
    "note": "brushing clear; voice-overs, input live and the sidebar work"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "brushing at a child's pace, the sidebar in the crop: each step's frame shows the plaque clearing where the brush has been (the tap-during-speech page's frames all fell at one moment) (s08 w8B)",
+   "max": 8
   }
  ],
  "CLN-36": {
@@ -8200,7 +8219,7 @@
   },
   {
    "flow": "clinic:heal-boing",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -8213,7 +8232,7 @@
     "crop:.cl-heal"
    ],
    "expect": null,
-   "note": "boing ends on the plaster: the plaster tool picked, then the plaster on the jab spot (the last step; step:plaster also matches the tool pick, plaster-skin)",
+   "note": "boing ends on the plaster: the plaster tool picked, then the plaster on the jab spot (the last step; step:plaster also matches the tool pick, plaster-skin); at a child's pace, so the plaster on the arm is filmed before the end card (at test speed the results card was already up) (s08 w8B)",
    "max": 2
   },
   {
@@ -8400,9 +8419,9 @@
     "dom:.cl-side .oc-card .oc-headline"
    ],
    "expect": [
-    "textMatches:\\S"
+    "lines:.cl-side .oc-card .oc-headline>=1"
    ],
-   "note": "every heal card has a headline and folds to it with the check (all nine)"
+   "note": "every heal card has a headline and folds to it with the check (all nine); the headline is a to-record placeholder until Mum records the goals, so the check is that it is drawn (one line or more), not that it holds Kutchi (textMatches skips the hidden to-record tag) (s08 w8B)"
   }
  ],
  "CLN-45": [
@@ -11686,7 +11705,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-open",
+   "at": "visible:.njg-rq-card",
    "after": null,
    "capture": [
     "crop:.njg-rq-card",
@@ -11695,8 +11714,8 @@
    "expect": [
     "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
-   "note": "the clinic's L3 pop-up: the closed big card, no rows written",
-   "delay": 300
+   "note": "the clinic's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B)",
+   "delay": 700
   },
   {
    "flow": "clinic:pharmacy",
@@ -11707,7 +11726,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-open",
+   "at": "visible:.njg-rq-card",
    "after": null,
    "capture": [
     "crop:.njg-rq-card",
@@ -11716,8 +11735,8 @@
    "expect": [
     "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
-   "note": "the pharmacy's L3 pop-up: the closed big card, no rows written",
-   "delay": 300
+   "note": "the pharmacy's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B)",
+   "delay": 700
   }
  ],
  "SH-73": [
@@ -11727,8 +11746,7 @@
    "level": 3,
    "sizes": [
     "800x360",
-    "844x390",
-    "390x844"
+    "844x390"
    ],
    "profile": "seen",
    "want": [
@@ -11744,7 +11762,7 @@
     "lines:#mission .oc-group .oc-part<=1",
     "noClip:#mission"
    ],
-   "note": "sekelo L2 on phones: a group's pills stack one per line when they don't fit side by side; no word broken across lines (Zafar, 13 Oct, Z1); 390x844 is the turn-your-phone card"
+   "note": "sekelo L2 on phones: a group's pills stack one per line when they don't fit side by side; no word broken across lines (Zafar, 13 Oct, Z1); 390x844 is the turn-your-phone card; 390x844 dropped: it shows only the turn-your-phone card, so the sidebar card is never on screen there (s08 w8B)"
   }
  ],
  "SAM-17": [
@@ -13560,9 +13578,9 @@
    ],
    "expect": [
     "noFinding:scroll-container",
-    "noClip:div.njg-rq-card"
+    "noClip:div.njg-rq-card .oc-items"
    ],
-   "note": "heal-foot's request pop-up card, open and fitted: the card inside never scrolls (div.cl-card.njg-rq-body ran 92>90, 156>154, 134>132)",
+   "note": "heal-foot's request pop-up card, open and fitted: the card inside never scrolls (div.cl-card.njg-rq-body ran 92>90, 156>154, 134>132); noClip on the rows only: the face circle crops its picture by design (s08 w8B)",
    "delay": 700
   },
   {
@@ -17003,5 +17021,232 @@
    "expect": null,
    "note": "one style on the bench: every person (the old man and woman, the auntie, the uncle, the woman with the baby, the boy and the girl) in the same soft 3D style and proportions, no chibi big heads or clay look, seated at one scale"
   }
- ]
+ ],
+ "CLN-154": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-diagnosis",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the exam room: both on one floor line, his height an adult's beside her (s08 w8B: a spec for a live row that had none, PRC-06)"
+  },
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-sendoff",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the send-off: the same two in one plane (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "CLN-155": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-diagnosis",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the seated exam: clear floor between his shoes and every furniture leg; he stands in line with the middle or front of her step stool (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "CLN-156": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-diagnosis",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the standing check-up: they read side by side, her a touch forward and bigger (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "CLN-157": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:rec:stage",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "every clinic stage: the way the doctor faces suits what he does there (s08 w8B: a spec for a live row that had none, PRC-06)",
+   "max": 8
+  }
+ ],
+ "CLN-158": [
+  {
+   "flow": "clinic:heal-extra-hic",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-hic-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.cl-stage"
+   ],
+   "expect": [
+    "noFinding:scroll-container"
+   ],
+   "note": "the parked hiccups game: no written English sound words, nothing clipped, the sidebar card whole (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "SH-92": [
+  {
+   "flow": "cook:daar",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-16 over daar with the bulb: 0 breaks (s08 w8B: a spec for a live row that had none, PRC-06)"
+  },
+  {
+   "flow": "lab:cook/recipe-daal",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:19"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-19 over the recipe lab's daar at L3 (the stir's laps): 0 breaks (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "SH-93": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": null,
+   "note": "the word review card with a single word: no empty left half, no divider (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "SH-86": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/lint/static.mjs --only bulb"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every bulb shows its English 8 s at every level: the static bulb check (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "SH-89": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "whos-playing",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noFinding:scroll-container"
+   ],
+   "note": "the house at 800x360 and 844x390: the who's-playing card, the grown-ups' panel and the doors never scroll (s08 w8B: a spec for a live row that had none, PRC-06)"
+  }
+ ],
+ "SH-90": {
+  "human": "Zafar plays every game at 844x390, 800x360 and 915x412 and says whether the items are big enough and the vertical padding is used (the phone review, a future sprint; s08 w8B: PRC-06 wanted a spec)"
+ }
 }

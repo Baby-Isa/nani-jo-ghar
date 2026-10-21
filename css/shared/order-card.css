@@ -191,6 +191,8 @@
 .oc-card .oc-tk:empty { display: none; }
 .oc-card .oc-tk svg { display: block; width: 100%; height: 100%; }
 .oc-card .oc-row.done .oc-tk svg { animation: ocTick 0.3s cubic-bezier(0.2, 1.5, 0.4, 1); }
+/* SH-10 (s08 w8B): a host that draws its card again keeps the ticks it already showed still (.tk-seen): only a new tick pops in */
+.oc-card .oc-row.done.tk-seen .oc-tk svg { animation: none; }
 @keyframes ocTick { from { transform: scale(0.3); opacity: 0; } to { transform: none; opacity: 1; } }
 /* done: the same row, a flat 2px gold outline (1px border + 1px ring, so nothing shifts). 29 Sept (P2): the ring is
    inset, so the clipped (folding) body never cuts it at the sides or at the first and last row */
