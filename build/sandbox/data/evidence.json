@@ -1611,7 +1611,7 @@
  ],
  "SH-58": [
   {
-   "flow": "cook:chai",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -1627,7 +1627,7 @@
    "expect": [
     "count:.njg-done.njg-pulse=1"
    ],
-   "note": "the check glows when it is the only thing left (first plays)",
+   "note": "the check glows when it is the only thing left (first plays) (s08 w8A: the moment it waited for no longer comes: chai's round ends with the pour, never on a lone tick; samosa's ends on its one tick)",
    "webgl": true
   },
   {
@@ -3765,13 +3765,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#done-btn",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:tray"
    ],
    "expect": null,
-   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people) (at the ✓, before the end card: S05 judges saw C under the end card)",
+   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people) (at the ✓, before the end card: S05 judges saw C under the end card) (s08 w8A: the moment it waited for no longer comes: the tray has no lone tick now; the glasses and their badges at the heat, as probe 2)",
    "delay": 400
   },
   {
@@ -4823,7 +4823,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "retry",
+   "at": "wrong-tap",
    "after": null,
    "capture": [
     "strip:#mission:5x400",
@@ -4832,7 +4832,8 @@
    "expect": [
     "count:#mission .oc-card=1"
    ],
-   "note": "a retry re-says the order on his own card with rows lit; no extra card"
+   "note": "a retry re-says the order on his own card with rows lit; no extra card (s08 w8A: the moment it waited for no longer comes: no drv:retry on the chaat's mistake path; 1.5 s after the wrong tap, when he says his order again)",
+   "delay": 1500
   }
  ],
  "CHT-09": [
@@ -4956,7 +4957,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "popup-fold",
    "after": null,
    "capture": [
     "dom:#mission"
@@ -4964,7 +4965,8 @@
    "expect": [
     "textMatches:(?i)\\bchund[oa]\\b|\\bbataat[oa]\\b"
    ],
-   "note": "a base filling row in every order"
+   "note": "a base filling row in every order (s08 w8A: the moment it waited for no longer comes at every level: the card read once it has folded into the sidebar)",
+   "delay": 900
   }
  ],
  "SAM-04": [
@@ -5322,13 +5324,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#mission .oc-card.peek",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)",
+   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card) (s08 w8A: the moment it waited for no longer comes: the hint path shows the big bulb's English, not the card's peek; the grouped card in the sidebar)",
    "delay": 150
   },
   {
@@ -5342,13 +5344,13 @@
    "want": [
     "said:/samosa[\\s\\S]*samosa/"
    ],
-   "at": "visible:#mission .oc-card.peek",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)",
+   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own) (s08 w8A: the moment it waited for no longer comes: the hint path shows the big bulb's English, not the card's peek; the grouped card in the sidebar)",
    "delay": 150
   },
   {
@@ -5580,7 +5582,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:peek-open",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "crop:#mission"
@@ -5588,7 +5590,7 @@
    "expect": null,
    "max": 2,
    "delay": 150,
-   "note": "the card opened by a peek at L3 (a mixed skewer first comes at L3, where cards are closed): its piece rows show (each skewer drawn as its little skewer of pieces)"
+   "note": "the card opened by a peek at L3 (a mixed skewer first comes at L3, where cards are closed): its piece rows show (each skewer drawn as its little skewer of pieces) (s08 w8A: the moment it waited for no longer comes: no peek on the hint path; the card at every piece threaded, as probe 2)"
   },
   {
    "flow": "cook:mishkaki-grill",
@@ -11678,7 +11680,6 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
-    3,
     4
    ],
    "sizes": [
@@ -11695,7 +11696,7 @@
    "expect": [
     "count:#intro .ic-card .oc-row:not(.oc-ph-row)=0"
    ],
-   "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9)",
+   "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9) (s08 w8A: the level table, Zafar 19 Oct, opens the L3 card with its item words dotted; only L4 hides it, so only L4's pop-up writes no row)",
    "delay": 300
   },
   {
@@ -13357,7 +13358,7 @@
  "CK-38": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "hint",
+   "path": "peek-every-tap",
    "level": 3,
    "sizes": [
     "800x360"
@@ -13372,7 +13373,7 @@
    "expect": [
     "noClip:aside#side"
    ],
-   "note": "L3's peek (the hint) on a short phone: the sidebar holds the opened card without scrolling (it ran 429 px in a 360 px screen). Machine: nothing in aside#side clipped or scrolled",
+   "note": "L3's peek (the hint) on a short phone: the sidebar holds the opened card without scrolling (it ran 429 px in a 360 px screen). Machine: nothing in aside#side clipped or scrolled (s08 w8A: the moment it waited for no longer comes on the hint path (it plays the big bulb): the peek-every-tap path opens the card's peek; the 800x360 time-out is fixed, s08 w8A)",
    "delay": 700
   }
  ],
