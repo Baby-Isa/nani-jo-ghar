@@ -222,7 +222,6 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | LAB-01 | Labs page: top row (New player, Walkthrough, house, day builder); every Cook and clinic game once with a level picker and Play; door, ride, book; old pages folded; nothing clipped | **to fix: check** · built; judge to close | eye: labs.html 1366x768, 1480x924 | `docs/sprints/S10-show-it.md` |
-| LAB-02 | Day builder: stages in order or one game; Cook and the clinic hand off with ?then=day.html and Next comes back (DAY-03's way back) | **to fix: check** · built; judge to close | auto: test_day_stages · eye: door, chai L1, book | `docs/sprints/S10-show-it.md` |
 | LAB-03 | New player: Save.resetPlayer clears words, help, Cook, clinic levels, day, conversations; keeps wallet, character, firstDone | **to fix: check** · built; judge to close | auto: test_shared_reset_player | `docs/sprints/S10-show-it.md` |
 | LAB-04 | Walkthrough: pantry, then chai, then back to the labs | **to fix: check** · built; judge to close | eye: pantry, chai, labs | `docs/sprints/S10-show-it.md` |
 
