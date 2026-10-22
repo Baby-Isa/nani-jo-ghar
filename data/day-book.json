@@ -519,6 +519,14 @@
         1024
       ],
       "top": 0.42
+    },
+    "clinic": {
+      "art": "assets/clinic/s11/book-clinic-room-s11@2x.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "top": 0.45
     }
   },
   "places": {
@@ -851,11 +859,159 @@
           }
         ]
       }
+    },
+    "clinic": {
+      "things": {
+        "door": {
+          "word": "n.door",
+          "ids": [
+            "door"
+          ],
+          "shape": "door",
+          "h": 0.4,
+          "art": "assets/day/ride/s09r/red-door.webp"
+        },
+        "toothbrush": {
+          "word": "n.toothbrush",
+          "ids": [
+            "n.toothbrush",
+            "toothbrush"
+          ],
+          "art": "assets/clinic/s11/toothbrush-s11.webp",
+          "h": 0.12
+        },
+        "thermometer": {
+          "word": "n.thermometer",
+          "ids": [
+            "n.thermometer",
+            "thermometer"
+          ],
+          "art": "assets/clinic/items-v2/thermometer.webp",
+          "h": 0.22
+        },
+        "plaster": {
+          "word": "n.plaster",
+          "ids": [
+            "n.plaster",
+            "plaster"
+          ],
+          "art": "assets/clinic/items-v2/plaster-blue.webp",
+          "h": 0.18
+        },
+        "cotton": {
+          "word": "n.cotton",
+          "ids": [
+            "n.cotton",
+            "cotton"
+          ],
+          "art": "assets/clinic/items-v2/cotton-buds.webp",
+          "h": 0.22
+        }
+      },
+      "find": {
+        "backdrop": "clinic",
+        "shown": [
+          "toothbrush",
+          "thermometer",
+          "plaster",
+          "cotton"
+        ],
+        "ask": 2,
+        "spots": [
+          {
+            "page": "l",
+            "x": 0.3,
+            "y": 0.72
+          },
+          {
+            "page": "l",
+            "x": 0.72,
+            "y": 0.78
+          },
+          {
+            "page": "r",
+            "x": 0.28,
+            "y": 0.78
+          },
+          {
+            "page": "r",
+            "x": 0.7,
+            "y": 0.72
+          }
+        ]
+      },
+      "nameit": {
+        "pool": [
+          "toothbrush",
+          "thermometer",
+          "plaster",
+          "cotton"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.then-we-used-the-x",
+                "thing": "{x}"
+              },
+              "en": "Then we used the {en}."
+            }
+          ]
+        }
+      },
+      "photo": {
+        "pool": [
+          "toothbrush",
+          "thermometer",
+          "plaster",
+          "cotton"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.then-we-used-the-x",
+                "thing": "{x}"
+              },
+              "en": "Then we used the {en}."
+            }
+          ]
+        }
+      },
+      "ourday": [
+        "door",
+        "toothbrush",
+        "thermometer",
+        "plaster"
+      ],
+      "told": {
+        "door": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.in-the-morning-we-opened-the-door"
+            },
+            "en": "In the morning we opened the door."
+          }
+        ],
+        "default": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.then-we-used-the-x",
+              "thing": "{x}"
+            },
+            "en": "Then we used the {en}."
+          }
+        ]
+      }
     }
   },
   "activityPlace": {
     "kitchen": "kitchen",
-    "clinic": "kitchen",
+    "clinic": "clinic",
     "trip": "farm",
     "farm": "farm"
   },
