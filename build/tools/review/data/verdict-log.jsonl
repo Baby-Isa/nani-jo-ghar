@@ -1569,3 +1569,5 @@
 {"id":"BOOK-04","run":"ev-20261021-041111-l2d","event":"built","date":"2026-10-21"}
 {"id":"DOOR-01","run":"ev-20261021-032427-602","event":"built","date":"2026-10-21"}
 {"id":"LAB-02","run":"s10-judge-02","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"DRILL-01","run":"s10-judge-03","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"FX-01","run":"s10-judge-03","verdict":"PASS","event":"built","date":"2026-10-22"}

@@ -1164,3 +1164,5 @@
 {"id":"BOOK-04","run":"ev-20261021-041111-l2d","earlier":"**open**"}
 {"id":"DOOR-01","run":"ev-20261021-032427-602","earlier":"**open**"}
 {"id":"LAB-02","run":"s10-judge-02","earlier":"**to fix: check** · built; judge to close"}
+{"id":"DRILL-01","run":"s10-judge-03","earlier":"**to fix: check** · built in s10b-clinic; the judge decides"}
+{"id":"FX-01","run":"s10-judge-03","earlier":"**to fix: check** · built in s10b-clinic; the judge decides"}
