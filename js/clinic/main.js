@@ -357,7 +357,8 @@ export default {
   lab: () =>
     ["waiting", "diagnosis", "pharmacy", "sendoff"]
       .map((s) => ({ game: s, label: `Clinic: ${STAGE_LABEL[s]}`, note: "One stage alone, with its own patient." }))
-      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}${g === "eye" ? " (test A, split screen)" : ""}`, note: "One healing game, mounted by the pipeline's heal stage.", extra: g === "eye" ? "&eyetest=a" : "" })))
+      // Sprint 10: each game once; the eye's default is layout A (decision 85), B is its own test entry below
+      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}`, note: "One healing game, mounted by the pipeline's heal stage." })))
       // D15h: both eye tests are prototyped; B (side by side) next to A
       .concat([{ game: "eye", label: `Clinic heal: ${LABEL.eye} (test B, side by side)`, note: "The eye test's version B (the lab's eyetest=b).", extra: "&eyetest=b" }])
       .concat(PARKED.map((g) => ({ game: g, label: `Clinic heal (parked): ${LABEL[g]}`, note: "Parked: as it is, lab only." })))

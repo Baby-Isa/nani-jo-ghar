@@ -237,10 +237,11 @@ export function stagesText(stages) {
  */
 export function handoffUrl(s, then = "day.html") {
   const L = Number(s.level) || 1;
-  if (s.stage === "cook") return s.game ? `lab.html?mode=cook&game=${s.game}&level=${L}&then=${then}` : `lab.html?mode=cook&level=${L}&then=${then}`;
+  const t = then ? `&then=${then}` : ""; // then = null: the game alone (its end screen's All games goes back to the labs)
+  if (s.stage === "cook") return s.game ? `lab.html?mode=cook&game=${s.game}&level=${L}${t}` : `lab.html?mode=cook&level=${L}${t}`;
   if (s.stage === "clinic") {
-    if (!s.game) return `clinic.html?then=${then}`;
-    return `clinic.html?stage=${CLINIC_STAGES.includes(s.game) ? s.game : `heal&game=${s.game}`}&level=${L}&then=${then}`;
+    if (!s.game) return then ? `clinic.html?then=${then}` : "clinic.html";
+    return `clinic.html?stage=${CLINIC_STAGES.includes(s.game) ? s.game : `heal&game=${s.game}`}&level=${L}${t}`;
   }
   return null;
 }

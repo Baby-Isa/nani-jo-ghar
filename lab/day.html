@@ -29,13 +29,48 @@
   .frame { padding: 0 16px 16px; }
   iframe { width: 100%; aspect-ratio: 16 / 9; border: 1px solid #d9bf95; border-radius: 12px; background: #f3e7d3; display: block; }
   .url { font: 12px ui-monospace, Menlo, monospace; color: #7a6558; padding: 4px 0; word-break: break-all; }
+  .builder { margin: 8px 16px 12px; padding: 12px 14px; background: #fff; border: 1px solid #d9bf95; border-radius: 14px; max-width: 1100px; }
+  .builder h2 { font-size: 17px; margin: 0 0 8px; color: #8a4b2a; }
+  .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .rows li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #e6d6c3; border-radius: 12px; background: #fffaf1; }
+  .rows .n { width: 26px; height: 26px; border-radius: 50%; background: #8a4b2a; color: #fff; display: inline-grid; place-items: center; font-weight: 700; font-size: 13px; flex: 0 0 auto; }
+  .rows .kind { font-weight: 700; min-width: 92px; }
+  .rows label { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; color: #7a6558; }
+  .rows .tools { margin-left: auto; display: inline-flex; gap: 6px; }
+  .rows .tools button { min-width: 40px; padding: 4px 10px; cursor: pointer; }
+  .empty { margin: 4px 0 8px; color: #7a6558; font-size: 14px; }
+  .empty[hidden] { display: none; }
+  .add { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+  .add button { cursor: pointer; }
+  .add.presets button { background: #fff; border-color: #c9b497; }
+  .playbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 12px; }
+  a.go { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 22px; border-radius: 10px; background: #2f6b4f; color: #fff; font-weight: 700; text-decoration: none; }
+  a.go[aria-disabled="true"] { background: #b9b2a6; pointer-events: none; }
+  details.viewer { margin: 4px 16px 16px; }
+  details.viewer > summary { cursor: pointer; font-weight: 700; padding: 10px 0; min-height: 44px; color: #8a4b2a; }
+  .hint { margin: 0 0 8px; color: #7a6558; font-size: 13px; }
+  details.viewer .skies, details.viewer .bar, details.viewer .quick, details.viewer .frame { padding-left: 0; padding-right: 0; }
 </style>
 </head>
 <body>
 <header>
   <h1>A day at Nani's</h1>
-  <p>The morning door (weather, Nani's lines in turn with their English beneath, the thought bubble, Ha!), the window ride and the evening book. Placeholder art (shapes) until the agreed art lands; lines the engine can't say yet are grey "to record".</p>
+  <p>Build a day from the stages you pick, in order, or play one game on its own. Further down: each stage of the day on its own.</p>
 </header>
+<section class="builder" id="builder" aria-labelledby="b-h">
+  <h2 id="b-h">Build a day</h2>
+  <ol id="rows" class="rows"></ol>
+  <p class="empty" id="empty">No stages yet: add one below, or start from a ready-made day.</p>
+  <div class="add" id="add"></div>
+  <div class="add presets" id="presets"></div>
+  <div class="playbar">
+    <a class="go" id="play-day" href="../day.html">Play the day</a>
+    <span class="url" id="b-url"></span>
+  </div>
+</section>
+<details class="viewer" id="viewer">
+<summary>One stage at a time: the skies, the door, the ride and the book</summary>
+<p class="hint">The morning door (weather, Nani's lines in turn with their English beneath, the thought bubble, Ha!), the window ride and the evening book. Placeholder art (shapes) until the agreed art lands; lines the engine can't say yet are grey "to record".</p>
 <div class="skies" id="skies"></div>
 <div class="bar">
   <label>Stage <select id="stage"><option value="door">door</option><option value="window">window ride</option><option value="book">evening book</option></select></label>
@@ -49,6 +84,7 @@
 </div>
 <div class="quick" id="quick"></div>
 <div class="frame"><div class="url" id="url"></div><iframe id="view" title="day.html"></iframe></div>
+</details>
 <script type="module">
   import { paintSky } from "../js/day/sky.js";
   const $ = (id) => document.getElementById(id);
@@ -90,7 +126,97 @@
     $("view").src = u;
   }
   $("go").addEventListener("click", play);
-  play();
+  $("viewer").addEventListener("toggle", () => $("viewer").open && !$("view").getAttribute("src") && play());
+</script>
+<script type="module">
+  // The day builder (Sprint 10): the stages in order -> day.html?stages=door:sunny,cook:chai-tray:1,clinic:eye:1,book
+  import { stagesText, handoffUrl, parseStages } from "../js/day/day.js";
+  import cook from "../js/cook/main.js";
+  import clinic from "../js/clinic/main.js";
+  const $ = (id) => document.getElementById(id);
+  const data = await (await fetch("../data/day.json")).json();
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  // the games each mode lists in its lab (parked games and test variants are left to the labs page's Behind the scenes)
+  const listOf = (m) => m.lab().filter((l) => l.game && !l.extra && !/^Parked/.test(l.note || "")).map((l) => ({ id: l.game, label: String(l.label).replace(/^(Cook|Clinic heal|Clinic): /, ""), levels: l.levels || (m.games[l.game] && m.games[l.game].levels) || [1] }));
+  const GAMES = { cook: listOf(cook), clinic: listOf(clinic) };
+  const WEATHER = Object.keys(data.weather);
+  const TRIPS = Object.keys(data.trips);
+  const KIND = { door: "The door", cook: "Cook", clinic: "Clinic", ride: "The ride", book: "The book" };
+  let rows = [];
+  const fresh = (kind) => ({ door: { stage: "door", weather: "sunny" }, cook: { stage: "cook", game: "chai-tray", level: 1 }, clinic: { stage: "clinic", game: "eye", level: 1 }, ride: { stage: "ride", trip: TRIPS[0] || "farm" }, book: { stage: "book" } })[kind];
+  const sel = (cls, opts, cur) => `<select class="${cls}">${opts.map(([v, l]) => `<option value="${esc(v)}"${String(v) === String(cur) ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
+  const rowsOf = (stages) => stages.map((s) => Object.assign({}, s, { game: s.game == null && (s.stage === "cook" || s.stage === "clinic") ? "" : s.game }));
+
+  function draw() {
+    $("rows").innerHTML = rows.map((r, i) => {
+      let opts = "";
+      if (r.stage === "door") opts = `<label>Weather ${sel("w", WEATHER.map((w) => [w, w]), r.weather)}</label>`;
+      if (r.stage === "ride") opts = `<label>To ${sel("t", TRIPS.map((t) => [t, t]), r.trip)}</label>`;
+      if (r.stage === "cook" || r.stage === "clinic") {
+        const list = GAMES[r.stage];
+        const g = list.find((x) => x.id === r.game);
+        const levels = g ? g.levels : [1, 2, 3, 4];
+        opts = `<label>${r.stage === "cook" ? "Station" : "Game"} ${sel("g", [["", r.stage === "cook" ? "the kitchen round (pantry, then chai)" : "a whole morning"]].concat(list.map((x) => [x.id, x.label])), r.game || "")}</label>` +
+          (r.game || r.stage === "cook" ? `<label>Level ${sel("l", levels.map((l) => [l, String(l)]), Math.min(r.level || 1, levels[levels.length - 1]))}</label>` : "");
+      }
+      return `<li data-i="${i}"><span class="n">${i + 1}</span><span class="kind">${KIND[r.stage]}</span>${opts}<span class="tools"><button type="button" class="up" aria-label="Move up"${i ? "" : " disabled"}>&uarr;</button><button type="button" class="down" aria-label="Move down"${i < rows.length - 1 ? "" : " disabled"}>&darr;</button><button type="button" class="rm" aria-label="Remove">&times;</button></span></li>`;
+    }).join("");
+    $("empty").hidden = rows.length > 0;
+    const stages = rows.map((r) => Object.assign({}, r, r.game === "" ? { game: null } : {}));
+    const text = stagesText(stages);
+    // one game alone goes straight to its page (its end screen's All games comes back to the labs); a day goes to day.html
+    const one = stages.length === 1 && (stages[0].stage === "cook" || stages[0].stage === "clinic") ? handoffUrl(stages[0], null) : null;
+    const url = one ? `../${one}` : `../day.html?stages=${text}`;
+    $("play-day").href = url;
+    $("play-day").textContent = one ? "Play the game" : "Play the day";
+    $("play-day").setAttribute("aria-disabled", rows.length ? "false" : "true");
+    $("b-url").textContent = rows.length ? url.replace("../", "") : "";
+    try { history.replaceState(null, "", rows.length ? `?stages=${text}` : location.pathname); } catch (e) { /* no history */ }
+  }
+  $("rows").addEventListener("change", (e) => {
+    const i = +e.target.closest("li").dataset.i;
+    const r = rows[i];
+    if (e.target.classList.contains("w")) r.weather = e.target.value;
+    if (e.target.classList.contains("t")) r.trip = e.target.value;
+    if (e.target.classList.contains("g")) { r.game = e.target.value; r.level = 1; }
+    if (e.target.classList.contains("l")) r.level = +e.target.value;
+    draw();
+  });
+  $("rows").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const i = +b.closest("li").dataset.i;
+    if (b.classList.contains("rm")) rows.splice(i, 1);
+    if (b.classList.contains("up") && i > 0) [rows[i - 1], rows[i]] = [rows[i], rows[i - 1]];
+    if (b.classList.contains("down") && i < rows.length - 1) [rows[i + 1], rows[i]] = [rows[i], rows[i + 1]];
+    draw();
+  });
+  for (const k of ["door", "cook", "clinic", "ride", "book"]) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = `+ ${KIND[k]}`;
+    b.addEventListener("click", () => { rows.push(fresh(k)); draw(); });
+    $("add").appendChild(b);
+  }
+  const PRESETS = [
+    ["Door, chai tray, book", "door:sunny,cook:chai-tray:1,book"],
+    ["Door, eye, book", "door:sunny,clinic:eye:1,book"],
+    ["Door, chai tray, eye, book", "door:sunny,cook:chai-tray:1,clinic:eye:1,book"],
+    ["A kitchen day", "door:sunny,cook:full,book"],
+    ["A clinic morning", "door:cloudy,clinic:full,book"],
+    ["The farm", "door:sunny,ride:farm,book"],
+  ];
+  for (const [label, t] of PRESETS) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    b.addEventListener("click", () => { rows = rowsOf(parseStages(t, data).stages); draw(); });
+    $("presets").appendChild(b);
+  }
+  // opened with ?stages= (a link back from a played day): show that day
+  const asked = new URLSearchParams(location.search).get("stages");
+  if (asked) rows = rowsOf(parseStages(asked, data).stages);
+  draw();
 </script>
 </body>
 </html>
