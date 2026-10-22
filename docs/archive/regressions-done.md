@@ -674,3 +674,11 @@ Not rechecked. The thing each row was about has been removed or replaced.
 | LAB-01 | Labs page: top row (New player, Walkthrough, house, day builder); every Cook and clinic game once with a level picker and Play; door, ride, book; old pages folded; nothing clipped | built (evidence PASS s10-judge-05: judge: every Cook and clinic game once with a level picker and Play at both sizes; old pages folded) | eye: labs.html 1366x768, 1480x924 | `docs/sprints/S10-show-it.md` |
 | LAB-03 | New player: Save.resetPlayer clears words, help, Cook, clinic levels, day, conversations; keeps wallet, character, firstDone | built (evidence PASS s10-judge-05: machine: build/test_shared_reset_player.mjs green in checks.mjs [words unseen, onboarding again, levels 1, wallet kept]; the labs pickers reset to 1) | auto: test_shared_reset_player | `docs/sprints/S10-show-it.md` |
 | LAB-04 | Walkthrough: pantry, then chai, then back to the labs | built (evidence PASS s10-judge-05: judge: pantry list, then the chai game, then back at the labs) | eye: pantry, chai, labs | `docs/sprints/S10-show-it.md` |
+
+## Easy to play (Sprint 11)
+
+| ID | Issue | Status | Check | Source |
+|---|---|---|---|---|
+| EASY-01 | The shared word card: four fixed slots; English blank at stage 3, the picture at 4, the Kutchi text at 5; a reveal on each blank | built (evidence PASS s11-judge-01: the five stages and reveals at both sizes) | eye: stages and reveals | `docs/sprints/S11-easy-to-play.md` |
+| EASY-06 | The door's cards are the shared word card, fading by stage | built (evidence PASS s11-judge-01: stage 4's picture blank with its reveal) | eye: the door, new and stage 4 | `docs/sprints/S11-easy-to-play.md` |
+| LAB-05 | Labs New player toggle with a badge; a launch with it on plays as the New player | built (evidence PASS s11-judge-01: the switch, badge and first-time help) | eye: labs off, on, a launch | `docs/sprints/S11-easy-to-play.md` |
