@@ -56,10 +56,31 @@
  *   const res = await host.run({ mode, plan, play, level, seed, actions, params })   params: every stage's defaults
  *     -> { round, finish, out, findings, stages, left? }    out = the end screen's answer ({action})
  *   host.leave()    the child left (Home): the current stage is destroyed, waits reject, run() resolves {left}
+ *   ?then=<page>    (Sprint 10: the day builder's hand-off, generalising Cook's ?first=…&then= of js/cook/app.js) the end screen's
+ *                   way on (the list, or home, when the mode offers no Next) goes to that page of the app, labelled Next;
+ *                   thenTarget() checks it. nonav=1 only notes it (host.current.then, window.__thenUrl).
  *
  * ES module. The only global it writes is window.njgTest (§ 8.1), and only with hook: true.
  */
 import { createInput, createPlacements, GESTURES } from "./input.js";
+
+/** A page of this app only (the same check as js/cook/app.js: first.html?app=1&done=pantry): "day.html", "cook.html?app=1&first=chai". */
+const THEN_RE = /^[\w-]+\.html(\?[\w=&%.,-]*)?$/;
+/** The page ?then= names, or null (not given, or not a page of this app). */
+export function thenTarget(search = "") {
+  const t = new URLSearchParams(search || "").get("then");
+  return t && THEN_RE.test(t) ? t : null;
+}
+/**
+ * The end screen's actions when a page waits (?then=): the list (or home) becomes "Next" with the next arrow, still its own id
+ * so the lab's selectors hold; where the mode already offers Next (a clinic morning's patients) it stays the way on and the
+ * list/home are dropped. Without a page waiting, or with no list, the actions are as they were.
+ */
+export function thenActions(actions, then) {
+  if (!then || !Array.isArray(actions)) return actions;
+  if (actions.some((a) => a.id === "next")) return actions.filter((a) => a.id !== "list" && a.id !== "home");
+  return actions.map((a) => (a.id === "list" || a.id === "home" ? Object.assign({}, a, { label: "Next", icon: "next", primary: true }) : a));
+}
 
 /** Thrown into a stage's ctx.wait() when the child leaves; the host swallows it. */
 export class HostLeft extends Error {
@@ -241,6 +262,7 @@ export function createHost(opts = {}) {
     const roundGame = (plan && !Array.isArray(plan) && plan.game) || (steps.filter((s) => s.game).length === 1 ? steps.find((s) => s.game).game : mode.id);
     const lvl = level || (play && play.level) || (steps.find((s) => s.level) || {}).level || 1;
     const rng = seeded(seed != null ? seed : (T.now() & 0x7fffffff) || 1);
+    const then = opts.then !== undefined ? opts.then : typeof location !== "undefined" ? thenTarget(location.search) : null;
     const tally = createTally();
     const words = [];
     const stages = [];
@@ -314,7 +336,7 @@ export function createHost(opts = {}) {
         steps: stepsOf(stages),
         taught: round.taught,
         words: dedupeWords(words),
-        actions: actions || undefined,
+        actions: thenActions(actions, then) || undefined,
         speak: opts.speakWord,
         sound: opts.sound !== false,
         store,
@@ -323,6 +345,20 @@ export function createHost(opts = {}) {
       now.expect = { kind: "click", selector: ".njg-results .rs-next, .njg-results .rs-last [data-act]" };
       const out = await Promise.race([shown, leaving]);
       res.out = out === "left" ? { action: "home" } : out;
+      // ?then=: the way on goes to the waiting page (the day builder's day), not to the lab list or the house
+      if (then && out !== "left" && res.out && (res.out.action === "list" || res.out.action === "home")) {
+        res.out = Object.assign({}, res.out, { then });
+        now.then = then;
+        if (typeof window !== "undefined") window.__thenUrl = then;
+        const nonav = opts.nonav !== undefined ? opts.nonav : typeof location !== "undefined" && new URLSearchParams(location.search).get("nonav") === "1";
+        if (!nonav && typeof location !== "undefined") {
+          const A = typeof window !== "undefined" ? window.NjgApp : null;
+          if (A && A.go) A.go(then);
+          else location.href = then;
+          // the page is leaving: the shell's own list/home navigation must not override it
+          await new Promise(() => {});
+        }
+      }
     } else res.out = { action: (opts.autoAction && opts.autoAction(round)) || "done", badges: res.finish && res.finish.badges };
     now.state = "done";
     now.expect = null;
