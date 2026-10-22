@@ -1572,3 +1572,6 @@
 {"id":"DRILL-01","run":"s10-judge-03","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"FX-01","run":"s10-judge-03","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"GIRL-01","run":"s10-judge-04","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"LAB-01","run":"s10-judge-05","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"LAB-03","run":"s10-judge-05","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"LAB-04","run":"s10-judge-05","verdict":"PASS","event":"built","date":"2026-10-22"}

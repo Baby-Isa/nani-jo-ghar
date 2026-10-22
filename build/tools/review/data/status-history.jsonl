@@ -1167,3 +1167,6 @@
 {"id":"DRILL-01","run":"s10-judge-03","earlier":"**to fix: check** · built in s10b-clinic; the judge decides"}
 {"id":"FX-01","run":"s10-judge-03","earlier":"**to fix: check** · built in s10b-clinic; the judge decides"}
 {"id":"GIRL-01","run":"s10-judge-04","earlier":"**to fix: check** · built in s10b-clinic; the judge decides"}
+{"id":"LAB-01","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
+{"id":"LAB-03","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
+{"id":"LAB-04","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
