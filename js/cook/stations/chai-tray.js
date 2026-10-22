@@ -153,7 +153,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const STAGE = { empty: ["empty"], water: ["empty", "water"], leaves: ["empty", "leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk", "spiced"], "boil-tea": ["black", "boil-tea"], "boil-milky": ["milk", "boil-milky"], foam: ["milk", "foam"] };
   const DISCS = PAN_LOOKS.filter((k) => STAGE[k][1]);
   const RING = "chai-pan-ring";
+  /*
+   * Sprint 11 (the painted effects, pack s11; the coordinator, 22 Oct): splash (something lands in the pan or the glass:
+   * CK-27's "it went in"), steam (the boil), sparkle (a finished, served glass). Brief and small over the motion on the real
+   * art: scale in, fade out in about half a second. No code-drawn dots, rings or sparkles. (The shine is held back.)
+   */
+  const FX = "assets/shared/fx-s11/";
+  const FX_SIZE = { splash: [158, 133], steam: [123, 181], sparkle: [138, 160] };
   const ART = [
+    ["fx-s11-splash", `${FX}splash-s11.webp`],
+    ["fx-s11-steam", `${FX}steam-s11.webp`],
+    ["fx-s11-sparkle", `${FX}sparkle-s11.webp`],
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
     ["v2-glass-empty", `${S8C}glass/glass-empty-top-s08c.webp`],
     ["v2-glass-full", `${S8C}glass/glass-chai-top-s08c.webp`],
@@ -753,7 +763,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // when each item's name was last said here (the pour says a row again only if its words weren't just said: an item's
     // name is never said twice within 10 s of the child's time, contract-23)
     const saidAt = {};
-    const saidLately = (ids) => (ids || []).some((id) => saidAt[id] && (Date.now() - saidAt[id]) * (Cook.speed || 1) < 10000);
+    const saidLately = (ids) => (ids || []).some((id) => saidAt[id] && Date.now() - saidAt[id] < 10000);
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
       const c = S.track(S.add.container(0, 0).setDepth(D.fx + 3).setAlpha(0).setScale(k));
@@ -808,6 +818,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           };
           step();
         });
+    // a painted effect: w design px wide, scaled in, then faded out (ms in all), drifting up by rise; never blocks a tap
+    const fx = (kind, x, y, { w = 90, ms = 520, rise = 0, depth = D.fx + 2 } = {}) => {
+      const key = `fx-s11-${kind}`;
+      if (!S.textures.exists(key)) return null;
+      const k = w / FX_SIZE[kind][0];
+      const im = S.track(S.add.image(x, y, key).setDepth(depth).setScale(k * 0.55).setAlpha(0));
+      S.tweens.add({ targets: im, scale: k, alpha: 1, duration: ms * 0.3, ease: "Back.easeOut" });
+      S.tweens.add({ targets: im, alpha: 0, y: y - rise, delay: ms * 0.3, duration: ms * 0.7, ease: "Sine.easeIn", onComplete: () => im.destroy() });
+      return im;
+    };
     const panLayers = (pan) => [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((o) => o && o.visible);
     const soft = (name, volume = 0.5) => {
       try {
@@ -910,7 +930,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       stream.destroy();
       pan.fading = false;
       setLook(pan);
-      S.puff(pan.x, pan.y, color, 36);
+      fx("splash", pan.x, pan.y, { w: rIn * 0.95 }); // (it went in: CK-27, the painted splash)
       await new Promise((r) => S.tweens.add({ targets: art, angle: 0, duration: 180, onComplete: r }));
       await S.fly(art, obj.x, obj.y - obj.displayHeight / 2, { duration: 320, arc: 40 });
       art.destroy();
@@ -996,6 +1016,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await spoonInto(pan, obj, id);
         drawBits(pan);
         land(panLayers(pan), { k: 0.03, top: true, ms: 260 }); // (the spoonful lands: the pan gives a little)
+        if (pan.has.water > 0 || pan.has.milk > 0) fx("splash", pan.x, pan.y, { w: rIn * 0.6, ms: 420 });
         // the leaves (or a spice) land: the next picture fades in
         if (id === "cook-chai" && pan.level < 0.05) pan.level = 0.12;
         fadeLook(pan, look);
@@ -1096,7 +1117,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // CK-06 (CP4 v2: "never drawn circles or rings"): no drawn bubbles; the pictured boil rolls (its picture turns slowly)
           const spin = 0.0025 * Math.min(1.4, hot);
           [pan.disc, pan.mixDisc].forEach((im) => im && im.visible && im.setRotation(im.rotation + spin));
-          if (steamT > 0.3 && Math.random() < 0.2 + hot * 0.3) S.wisps(pan.x + (Math.random() - 0.5) * rIn, pan.y - rIn * 1.05, 1, 56); // (CK-06, s08 w6M: off the far rim, never over the tea)
+          // the painted steam, now and then, off the far rim (never over the tea: CK-06), only near the boil
+          if (steamT > 0.3 && hot >= 0.8 && Math.random() < 0.12 + hot * 0.1) fx("steam", pan.x + (Math.random() - 0.5) * rIn * 0.8, pan.y - rIn * 1.2, { w: rIn * 0.55, ms: 900, rise: rIn * 0.35, depth: D.fx - 2 });
         }
       });
       if (steamT > 0.3) steamT = 0;
@@ -1225,10 +1247,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
       if (level <= 2 && !pan.poured && UI.readAlong) {
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === pan.who);
-        const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no && !saidLately(p.row.ids)) : [];
+        const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no && !saidLately(p.row.ids) && !(UI.readLately && UI.readLately(p.line))) : [];
         if (said.length) {
           said.forEach((p) => (p.row.ids || []).forEach((id) => (saidAt[id] = Date.now())));
-          UI.readAlong(said).catch(() => {});
+          // (as the chai starts to flow, once the pan is over the glass: the tap's own moment stays quiet)
+          Cook.wait(900).then(() => !finished && UI.readAlong(said)).catch(() => {});
         }
       }
       unglow();
@@ -1396,7 +1419,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       ["empty", "half", "full"].forEach((s2) => w.glass[s2].setAlpha(s2 === st(to) ? 1 : 0));
       pan.poured = to;
       w.fill = to;
-      S.wisps(w.x, w.y - 20, 2, 40);
+      fx("splash", w.x, w.y, { w: w.glass.empty.displayWidth * 0.62 }); // (the chai went into the glass)
       body.setVisible(true).setPosition(pan.x, pan.y).setAngle(TOP.turn).setScale(s8).setDepth(D.item);
       land(body, { k: 0.04, top: true }); // (it sets down on the burner: a small settle)
       land(w.glass[st(to)], { k: 0.05, top: true }); // (the glass, full: a small settle and its clink)
@@ -1902,7 +1925,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       pan.poured = 2;
       pan.redo = 0;
       personRows(L(), pan.who).forEach((r) => UI.mission.tickItem(r.ids[0], dishNo(), { for: pan.who, no: r.no, close: true }));
-      S.sparkle(pan.well.x, pan.well.y);
+      fx("sparkle", pan.well.x + pan.well.glass.empty.displayWidth * 0.3, pan.well.y - pan.well.glass.empty.displayWidth * 0.3, { w: pan.well.glass.empty.displayWidth * 0.55, ms: 650 });
     };
     for (;;) {
       await doneP;
@@ -1980,7 +2003,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
         else {
           pan.redo = 0;
-          S.sparkle(pan.well.x, pan.well.y);
+          fx("sparkle", pan.well.x + pan.well.glass.empty.displayWidth * 0.3, pan.well.y - pan.well.glass.empty.displayWidth * 0.3, { w: pan.well.glass.empty.displayWidth * 0.55, ms: 650 });
         }
       }
       // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,

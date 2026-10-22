@@ -1763,12 +1763,20 @@
    * voice file of that chunk, or a reading pause if it has none). A new
    * read stops the last one.
    */
+  // (Sprint 11: when each part's words were last read out, so a station can leave out a line said a moment ago)
+  const readAt = new Map();
+  const readKey = (line) => Lang.plain(line).toLowerCase().replace(/[^a-z\s-]/g, "").trim();
+  UI.readLately = (line, ms = 10000) => {
+    const t = readAt.get(readKey(line));
+    return !!t && Date.now() - t < ms;
+  };
   async function readAlong(parts, { min = 0 } = {}) {
     stopReading();
     const token = ++readToken;
     const t0 = Date.now();
     for (const p of parts) {
       if (token !== readToken) return;
+      readAt.set(readKey(p.line), Date.now());
       const lit = oneLit(p.els);
       // SH-79 (decision 95, contract-8): one lit thing on the card: while a row is read out, the next row's mark waits
       readActive = true;
@@ -1886,7 +1894,7 @@
         say: () => Lang.speak(r.line),
       },
       wordOpts: {
-        slots: { picture: base.picture && !hidden && !!src, english: base.english && !hidden && !(mission && mission.english), kutchiText: true },
+        slots: { picture: base.picture && !hidden && !!src, english: base.english && !hidden, kutchiText: true },
         progress: Cook.core && Cook.core.progress,
         onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
       },
