@@ -40,7 +40,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const OB = () => global.Onboard;
   const obId = (key) => `cook/${key}`;
   /** Has this station been shown already? */
-  C.seen = (key) => !!(Cook.save.coached || {})[key] || !!(OB() && OB().seen(obId(key)));
+  // (SH-120: the grown-ups' New player sees every station's first-time help in each visit, whatever the save says)
+  const newPlayer = () => !!(OB() && OB().newPlayer && OB().newPlayer());
+  C.seen = (key) => !newPlayer() && (!!(Cook.save.coached || {})[key] || !!(OB() && OB().seen(obId(key))));
   C.active = () => !!live;
   /** The phase being coached now (its data.onboard key), or null. */
   C.key = () => (live ? live.key : null);
@@ -122,38 +124,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       i,
     }));
     state.kit = true;
-    // the ghost is the player's own hand, see-through (js/cook/hands.js); else the kit's drawn one
-    const hand = Cook.Hands ? Cook.Hands.ghostImage() : null;
-    Onboard.run(obId(key), steps, Object.assign({ idleMs: 6000 }, hand ? { hand } : {})).then(() => {
+    // SH-119 (Zafar, 22 Oct: one finger in every game): the kit's own finger, in its own cadence (no picture hand, no 6 s gap)
+    Onboard.run(obId(key), steps, {}).then(() => {
       if (live === state) C.stop(true);
     });
   }
 
   /*
-   * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook): a station whose script's steps name a "step" and a
-   * "demo" (data.onboard["chai-tray"]) is shown by the REAL item, not the ghost hand: the first time each step appears the
-   * item itself does the action (the pan lifts to the glass, the jar tips over the pan) and comes back, then the child does
-   * it; when the child is stuck the hint rungs run on the live target (5 s: the 62% spotlight, all else inert, and the demo
-   * again; 15 s: the demo again with the guide's line). Both are the shared kit's (js/shared/onboard.js Onboard.stuck); the
-   * station says, step by step, where its live control is and how its item moves (C.rungs). C.start leaves such a station
-   * to it (no overlay).
+   * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
+   * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by
+   * step, by the shared kit's hint rungs (js/shared/onboard.js Onboard.stuck): the first time a step appears, the spotlight on
+   * its item at once (the box, the item glowing, the finger); stuck, the station's own ladder (C.rungs's o.at, o.glowAt). The
+   * station says where its live control is (C.rungs). C.start leaves such a station to it (no overlay).
    */
   C.itemDemo = (key) => {
     const s = C.script(key);
-    return !!(s && s.every((st) => st.step && st.demo));
+    return !!(s && s.every((st) => st.step));
   };
   /** The step's script entry (data.onboard[key] whose step is `step`), or null. */
   C.stepOf = (key, step) => (C.script(key) || []).find((st) => st.step === step) || null;
   /**
    * The rungs for one step of station `key` (Onboard.stuck): o {target (the live control: a page rect or a function giving
-   * one), item ({x, y} page point of the thing that demonstrates), path (page points, or a function giving them), move(dx,
-   * dy, t) (a canvas sprite moves itself), line (the guide's line at 15 s), ms}. The first time per profile (and not once the
-   * station's coach was seen, Cook.save.coached) the demo plays as the step opens. -> handle {done(), stop()} or null.
+   * one), live, light, at, glowAt, glow(on), line, first}. The first time per profile (and not once the station's coach was
+   * seen, Cook.save.coached; a New player: every visit) the spotlight comes up as the step opens. -> handle {done(), stop()}
    */
   C.rungs = function (key, step, o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
-    const first = !(Cook.save.coached || {})[key];
+    const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
     return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
   };

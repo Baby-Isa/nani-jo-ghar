@@ -91,6 +91,8 @@
       block: r.block || null,
       // DAAR-19: a step row's tool, drawn before its words (the stir row's ladle)
       pic: r.pic || null,
+      // CK-51 (Zafar, 22 Oct): on the card, never said (chai's water and tea: every item a dish needs is on its card)
+      unsaid: !!r.unsaid,
     };
   }
   O.row = row;
@@ -297,6 +299,7 @@
   };
   O.sentence = function (head, rows, { join = "with" } = {}) {
     const F = Lang.frames();
+    rows = rows.filter((r) => !r.unsaid); // (CK-51: a row on the card only is never said)
     head = spokenHead(head, F);
     const parts = [];
     const said = head && !head.rec && head.line;
@@ -408,6 +411,7 @@
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;
           g.forEach((r) => {
+            if (r.unsaid) return; // (CK-51: on the card only)
             if (r.no) return push(r.line, r);
             if (s.simple) return push(r.line, r);
             if (!r.list && r.said) {

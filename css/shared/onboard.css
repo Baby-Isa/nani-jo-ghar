@@ -1,7 +1,7 @@
-/* The onboarding kit (js/shared/onboard.js): the dim with its lit holes, the
-   ghost hand, the grown-up's skip, and the fade-in for UI that appears when
-   first needed. Calm: a soft dim, a slow glow on the lit thing, no motion
-   under prefers-reduced-motion. */
+/* The onboarding kit (js/shared/onboard.js): the dim with its one lit box, the
+   item glowing and bouncing in it, the one finger, the grown-up's skip, and the
+   fade-in for UI that appears when first needed. One look in every game
+   (Sprint 12, EASY-08, SH-119); no motion under prefers-reduced-motion. */
 .njg-onboard {
   position: fixed;
   inset: 0;
@@ -14,6 +14,21 @@
 .njg-onboard .ob-dim { position: absolute; inset: 0; width: 100%; height: 100%; }
 .njg-onboard .ob-ring { fill: none; stroke: #f7d57a; stroke-width: var(--njg-s1); opacity: 0.9; animation: ob-glow 1.8s ease-in-out infinite; }
 .njg-onboard.between .ob-ring { opacity: 0; }
+/* EASY-08 (Zafar, 22 Oct): the box is a plain gold edge, rounded, no glow and no pulse of its own */
+.njg-onboard .ob-box { fill: none; stroke: #f7d57a; stroke-width: 3; }
+/* the item glows and bounces: a canvas thing's soft warm ring (the kit's), an HTML control by its own shape (ob-lit) */
+.njg-onboard .ob-item-glow { fill: none; stroke: rgba(255, 196, 92, 0.95); stroke-width: 7; animation: ob-item-glow 1.4s ease-in-out infinite; }
+.njg-onboard.between .ob-item-glow, .njg-onboard.between .ob-finger { opacity: 0; }
+.ob-lit { filter: drop-shadow(0 0 5px rgba(255, 200, 96, 0.95)) drop-shadow(0 0 12px rgba(255, 170, 60, 0.7)); animation: ob-bounce 0.9s ease-in-out infinite; }
+
+/* SH-119: the one finger (Onboard.finger): its box's top-left is moved so the fingertip lands on the point; it taps in one
+   cadence (js/shared/onboard.js Onboard.FINGER) */
+.ob-finger { position: fixed; left: 0; top: 0; z-index: 960; width: var(--njg-hand-w, 64px); height: var(--njg-hand-h, 80px); pointer-events: none; filter: drop-shadow(0 var(--njg-s1, 4px) var(--njg-s2, 8px) rgba(0, 0, 0, 0.35)); }
+.njg-onboard .ob-finger { position: absolute; z-index: auto; }
+.ob-finger-in { position: relative; width: 100%; height: 100%; transform-origin: calc(100% * 25 / 64) calc(100% * 3 / 80); }
+.ob-finger-in svg { width: 100%; height: 100%; display: block; position: relative; }
+.ob-finger-in.pressed { transform: scale(0.88); }
+.ob-finger .ob-ripple { position: absolute; left: calc(100% * 25 / 64 - var(--njg-tap, 48px) * 0.75); top: calc(100% * 3 / 80 - var(--njg-tap, 48px) * 0.75); width: calc(var(--njg-tap, 48px) * 1.5); height: calc(var(--njg-tap, 48px) * 1.5); border-radius: 50%; border: var(--njg-s1, 4px) solid #f7d57a; background: rgba(247, 213, 122, 0.25); opacity: 0; }
 
 /* the ghost hand: its box's top-left is moved so the fingertip lands on the point */
 .njg-onboard .ob-ghost {
@@ -71,13 +86,15 @@
 .njg-fadein { animation: ob-fadein 0.9s ease-out both, ob-shine 1.6s ease-out 0.4s 1; border-radius: inherit; }
 
 @keyframes ob-glow { 50% { stroke-opacity: 0.35; stroke-width: calc(var(--njg-s1) * 1.75); } }
+@keyframes ob-item-glow { 0%, 100% { stroke-opacity: 0.55; } 50% { stroke-opacity: 1; } }
+@keyframes ob-bounce { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
 @keyframes ob-hold { from { --p: 0%; } to { --p: 100%; } }
 @keyframes ob-fadein { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
 @keyframes ob-shine { 0% { box-shadow: 0 0 0 0 rgba(224, 166, 58, 0.7); } 100% { box-shadow: 0 0 0 var(--njg-s4) rgba(224, 166, 58, 0); } }
 
 @media (prefers-reduced-motion: reduce) {
   .njg-onboard { transition: none; }
-  .njg-onboard .ob-ring { animation: none; }
+  .njg-onboard .ob-ring, .njg-onboard .ob-item-glow, .ob-lit { animation: none; }
   .njg-onboard .ob-ghost.pressed { transition: none; }
   .njg-onboard .ob-ghost.on,
   .njg-onboard .ob-ghost.pressed { opacity: 0.95; }

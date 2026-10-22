@@ -1,9 +1,10 @@
 /*
  * The onboarding kit (docs/design-language/ux-principles.md s8 and s10; docs/architecture/shared-api.md
- * s9): onboarding by showing, not telling. The first time a child meets a
- * station, each step dims everything except one thing, a ghost hand does
- * the action once, then the kit waits for the child to do it before
- * revealing the next thing. No text: an optional audio hook per step.
+ * s9): onboarding by showing, not telling. One look in every game (Sprint 12; Zafar, 22 Oct: EASY-08, SH-118, SH-119):
+ * everything dims (Onboard.DIM) except ONE rounded box with a plain gold edge round the thing to do (or round a group given
+ * together), the thing itself glows and bounces, and the kit's one finger taps it in one cadence (tap, lift off, half a
+ * second, again) until the child does it. No item ever moves to its target by itself (EASY-03). No text: an optional audio
+ * hook per step.
  *
  * A station's script is a list of steps:
  *   [{spotlight: "#pan", ghost: {from: "#jug", to: "#pan", gesture: "drag"}, wait: "pour-done"},
@@ -12,31 +13,34 @@
  *
  *   spotlight  what stays lit: a selector, an element, [x, y, w, h] in
  *              page pixels (a canvas game), a function returning any of
- *              these, or a list of them. Touches elsewhere are blocked.
- *   ghost      {gesture, from?, to?, ms?}: "tap", "drag" (from -> to),
+ *              these, or a list of them (one box round all). Touches elsewhere are blocked.
+ *   ghost      {gesture, from?, to?, ms?}: "tap" (the finger, tapping until the step is done), "drag" (from -> to),
  *              "hold", "swipe" (from -> to, or rightwards), "circle-stir"
  *              (round the from/spotlight). from defaults to the spotlight.
  *   wait       the signal name that finishes the step: the mode calls
  *              Onboard.signal("pour-done") when the child has done it.
  *              Default "tap": any tap inside the light.
  *   audio      a URL or a function(step, i), played as the step starts.
- *   idleMs     replay the ghost if nothing happens for this long (default 7000; 0 = never).
+ *   idleMs     0: a gesture is shown once; else it plays again after the finger's half-second wait (SH-119).
  *
- *   await Onboard.run(stationId, script, {force, audio, idleMs, container})
+ *   await Onboard.run(stationId, script, {force, audio, idleMs, container, light})
  *     -> "done" | "skipped" | "seen"   ("seen": this profile already had it; nothing shown)
  *   Onboard.signal(name)        the child did the thing
+ *   Onboard.spot(target, o) / Onboard.stuck(step, o) / Onboard.demo(item, path, o)   the stuck help (below)
+ *   Onboard.finger(at, o)       the one finger alone (a game's own help, the conversations): -> {el, stop()}
+ *   Onboard.newPlayer()         the grown-ups' New player is on (SH-120: first-time help at once, every visit)
  *   Onboard.fadeIn(el, key?)    UI that appears when first needed: fades in (with a
  *                               soft glow) the first time, instantly after that
  *   Onboard.await(el, key?)     hide it until fadeIn (instantly visible if already seen)
  *   Onboard.seen(stationId) / Onboard.reset(stationId?)
- *   Onboard.machine(script)     the pure state machine under run() (Node tests)
+ *   Onboard.machine(script)     the pure state machine under run() (Node tests); Onboard.groupBox, fingerKeys (pure)
  *
  * A grown-up can skip the whole script from the mode's ? menu (G7 / CQ15, 29 Sept:
  * the corner button read as "next chapter"): Onboard.skipButton(parent) draws the
  * hold-to-skip row there (held for a second; a quick tap does nothing), shown only
  * while a script runs; or Escape. Anything marked [data-ob-pass] (the ? button and
  * its menu) stays usable under the dimming. opts.skipButton: the old corner button.
- * Once per profile per station, through js/shared/uistore.js.
+ * Once per profile per station, through js/shared/uistore.js. Styles: css/shared/onboard.css.
  *
  * Plain <script>: window.Onboard (and Shared.onboard); Node: require().
  */
@@ -180,28 +184,23 @@
     }
     return k;
   };
-  /**
-   * The light's shape round a box (F17: a centred soft circular glow): an ellipse centred on the box whose solid
-   * part (72 % of its radius; the rest feathers out) holds the box and PAD round it. Squarish boxes (up to 1.6:1)
-   * get a circle; long ones (a shelf, a strip) a rounder ellipse, never a box.
+  /*
+   * ONE LOOK FOR HELP IN EVERY GAME (Sprint 12; Zafar, 22 Oct: EASY-08, SH-118, SH-119). Onboard.run (a script) and
+   * Onboard.spot (the stuck spotlight) draw the same thing:
+   *   the dim       Onboard.DIM over everything (one token: a little darker than the old 0.62, SH-118);
+   *   the box       ONE rounded rectangle with a plain gold edge (no glow of its own, no pulse) round the target, or round all
+   *                 of the targets given together (a group: the eye test's haa, na and the mic), hugging them (Onboard.groupBox);
+   *   the item      inside the box the item itself glows (its own soft radiating glow) and bounces: an HTML control by the
+   *                 class ob-lit (css/shared/onboard.css), a canvas thing by its game (o.light / o.move) or the kit's soft ring;
+   *   the finger    the kit's one drawn hand (Onboard.finger), tapping in one cadence: in, press, lift off, wait half a second,
+   *                 again, for as long as the help is up (Onboard.FINGER).
    */
-  Onboard.glowShape = function (r, pad) {
-    pad = pad == null ? 12 : pad;
-    // the solid core is an ellipse through the box's corners (a = w√2, b = h√2 puts the corner (w, h) on it), and
-    // never closer than PAD to an edge's middle; the feather (the outer 28 %) is outside that
-    const core = (half) => Math.max(half * Math.SQRT2, half + pad);
-    let rx = core(r.w / 2) / 0.72;
-    let ry = core(r.h / 2) / 0.72;
-    const ratio = Math.max(rx, ry) / Math.max(1, Math.min(rx, ry));
-    if (ratio <= 1.6) rx = ry = Math.max(rx, ry);
-    else if (rx > ry) ry = Math.max(ry, rx / 2.2);
-    else rx = Math.max(rx, ry / 2.2);
-    return { cx: r.x + r.w / 2, cy: r.y + r.h / 2, rx, ry };
-  };
+  Onboard.DIM = 0.72;
+  Onboard.dimFill = () => `rgba(30,18,10,${Onboard.DIM})`;
   /**
-   * EASY-08 (Sprint 11): the stuck spotlight's light hugs each live control's own box: a rounded rect with a small, even pad,
-   * never an oval that spills over its neighbours. When two lit things, or a thing and a neighbour to keep dark (avoid), are
-   * close, the pad shrinks to half the gap between them (down to 0) rather than light the neighbour.
+   * EASY-08 (Sprint 11): the light hugs the control's own box: a rounded rect with a small, even pad, never an oval that spills
+   * over its neighbours. When two lit things, or a thing and a neighbour to keep dark (avoid), are close, the pad shrinks to
+   * half the gap between them (down to 0) rather than light the neighbour.
    * rects, avoid: [{x, y, w, h}]; -> [{x, y, w, h, r, pad}] in the same order.
    */
   Onboard.HUG_PAD = 6;
@@ -223,45 +222,47 @@
       return { x: r.x - p, y: r.y - p, w, h, r: Math.min(12, w / 2, h / 2), pad: p };
     });
   };
-
-  /**
-   * The soft round glow from the item itself (Zafar, 22 Oct): for each live control, its own box grown with the roundest
-   * corners (a circle round a square thing, a pill round a wide one) and blurred by Onboard.GLOW_SD in the page. The glow
-   * reaches at most Onboard.GLOW past the control, side by side: on a side where another lit thing, or a neighbour to keep dark
-   * (avoid), sits within reach, the reach is only what fits in this control's half of the gap (less the hug pad's), so the
-   * glow never lights a neighbour or the gap between two lit controls; the other sides keep the full glow.
-   * rects, avoid: [{x, y, w, h}]; -> [{x, y, w, h, r, reach: {l, r, t, b}}] in the same order (x..h: the box to blur, its far
-   * edges already pulled in by the blur's tail, 2 widths, so the glow has faded out by the time it reaches the limit).
-   */
-  Onboard.GLOW = 26;
-  Onboard.GLOW_SD = 6.5;
-  Onboard.glowShapes = function (rects, avoid, pad) {
-    pad = pad == null ? Onboard.HUG_PAD : pad;
-    const all = (rects || []).filter(Boolean);
-    const others = (i) => all.filter((_, j) => j !== i).concat((avoid || []).filter(Boolean));
-    const span = (a0, a1, b0, b1) => Math.min(a1, b1) - Math.max(a0, b0); // overlap of two ranges (negative: apart)
-    return all.map((r, i) => {
-      const reach = { l: Onboard.GLOW, r: Onboard.GLOW, t: Onboard.GLOW, b: Onboard.GLOW };
-      others(i).forEach((q) => {
-        // a neighbour limits a side when it lies that way and (nearly) overlaps this control across it
-        const ox = span(r.x - Onboard.GLOW, r.x + r.w + Onboard.GLOW, q.x, q.x + q.w) > 0;
-        const oy = span(r.y - Onboard.GLOW, r.y + r.h + Onboard.GLOW, q.y, q.y + q.h) > 0;
-        const lim = (side, gap) => (reach[side] = Math.min(reach[side], Math.max(0, gap / 2 - pad)));
-        if (oy && q.x >= r.x + r.w - 1) lim("r", q.x - (r.x + r.w));
-        if (oy && q.x + q.w <= r.x + 1) lim("l", r.x - (q.x + q.w));
-        if (ox && q.y >= r.y + r.h - 1) lim("b", q.y - (r.y + r.h));
-        if (ox && q.y + q.h <= r.y + 1) lim("t", r.y - (q.y + q.h));
-      });
-      const tail = 2 * Onboard.GLOW_SD;
-      const x0 = r.x - reach.l + tail;
-      const x1 = r.x + r.w + reach.r - tail;
-      const y0 = r.y - reach.t + tail;
-      const y1 = r.y + r.h + reach.b - tail;
-      const w = Math.max(2, x1 - x0);
-      const h = Math.max(2, y1 - y0);
-      return { x: x0, y: y0, w, h, r: Math.min(w, h) / 2, reach };
-    });
+  /** The smallest box holding every rect, or null. */
+  Onboard.unionOf = function (rs) {
+    rs = (rs || []).filter(Boolean);
+    if (!rs.length) return null;
+    const x0 = Math.min(...rs.map((r) => r.x));
+    const y0 = Math.min(...rs.map((r) => r.y));
+    return { x: x0, y: y0, w: Math.max(...rs.map((r) => r.x + r.w)) - x0, h: Math.max(...rs.map((r) => r.y + r.h)) - y0 };
   };
+  /**
+   * EASY-08 (Zafar, 22 Oct: "one rectangle encompassing all three buttons"): the box for a target or a group of targets given
+   * together: ONE rounded rect round all of them, padded by Onboard.BOX_PAD (less where a neighbour to keep dark is close).
+   * rects, avoid: [{x, y, w, h}] -> {x, y, w, h, r, pad} or null.
+   */
+  Onboard.BOX_PAD = 10;
+  Onboard.groupBox = function (rects, avoid, pad) {
+    const u = Onboard.unionOf(rects);
+    if (!u) return null;
+    return Onboard.hugShapes([u], avoid, pad == null ? Onboard.BOX_PAD : pad)[0];
+  };
+  /**
+   * SH-119 (Zafar, 22 Oct: "click, move off, wait half a second, click ... right now the gaps are too long"): the finger's one
+   * cadence, every game. ms: in (from lifted onto the point), press (down and held), up (lifts off), gap (waits, lifted).
+   */
+  Onboard.FINGER = { in: 220, press: 200, up: 280, gap: 500 };
+  Onboard.FINGER_LIFT = { x: 26, y: 34 }; // where the fingertip waits, lifted off (down and right of the point)
+  /** One cycle of the finger as keyframes: {o (0..1), x, y (offsets from the point), press (0|1), ring (the ripple)}. */
+  Onboard.fingerKeys = function () {
+    const F = Onboard.FINGER;
+    const T = F.in + F.press + F.up + F.gap;
+    const L = Onboard.FINGER_LIFT;
+    const at = (ms) => +(ms / T).toFixed(4);
+    return [
+      { o: 0, x: L.x, y: L.y, press: 0 },
+      { o: at(F.in), x: 0, y: 0, press: 0 },
+      { o: at(F.in + F.press * 0.35), x: 0, y: 0, press: 1, ring: 1 },
+      { o: at(F.in + F.press), x: 0, y: 0, press: 1 },
+      { o: at(F.in + F.press + F.up), x: L.x, y: L.y, press: 0 },
+      { o: 1, x: L.x, y: L.y, press: 0 },
+    ];
+  };
+  Onboard.fingerMs = () => Onboard.FINGER.in + Onboard.FINGER.press + Onboard.FINGER.up + Onboard.FINGER.gap;
 
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
@@ -355,9 +356,12 @@
 
   const reduced = () => !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const PAD = 12;
+  // SH-119: the kit's one finger, every game (Cook's coach and the clinic draw this one; Onboard.HAND for a game's own markup)
   const HAND = `<svg viewBox="0 0 64 80" aria-hidden="true"><path d="M20 6c0-3 2-5 5-5s5 2 5 5v26l2-1V24c0-3 2-5 5-5s5 2 5 5v9l2-.5V28c0-3 2-5 5-5s5 2 5 5v7c1.5-2 3-3 5-2.5 2.5.6 3.6 3 3 5.5l-2 16C58 68 50 78 37 78h-4C22 78 16 72 12 64L3 46c-1.4-2.8-.2-5.6 2.3-6.7 2.4-1 4.9 0 6.2 2.2L20 52z" fill="#fff" stroke="#2b1810" stroke-width="3" stroke-linejoin="round"/></svg>`;
   const HOTSPOT = [25, 3]; // the fingertip, in the 64x80 hand box
   const HAND_W = 64;
+  Onboard.HAND = HAND;
+  Onboard.HOTSPOT = HOTSPOT;
 
   function rectOf(t) {
     if (t == null) return null;
@@ -366,17 +370,225 @@
     const el = typeof t === "string" ? document.querySelector(t) : t;
     if (!el || !el.getBoundingClientRect) return null;
     const r = el.getBoundingClientRect();
-    return { x: r.left, y: r.top, w: r.width, h: r.height };
+    if (!r.width && !r.height) return null; // (hidden: nothing to light)
+    // a lit control bounces (ob-lit: the CSS translate property): its box, and the light round it, stay where it rests
+    let dx = 0;
+    let dy = 0;
+    if (el.classList && el.classList.contains("ob-lit") && root.getComputedStyle) {
+      const tr = String(root.getComputedStyle(el).translate || "");
+      const m = /^(-?[\d.]+)px(?:\s+(-?[\d.]+)px)?/.exec(tr);
+      if (m) [dx, dy] = [+m[1] || 0, +m[2] || 0];
+    }
+    return { x: r.left - dx, y: r.top - dy, w: r.width, h: r.height };
   }
   const listOf = (t) => (Array.isArray(t) && !(t.length === 4 && t.every((n) => typeof n === "number")) ? t : [t]);
   const rectsOf = (t) => listOf(t).map(rectOf).filter(Boolean);
   const centre = (r) => (r ? { x: r.x + r.w / 2, y: r.y + r.h / 2 } : null);
   const inside = (p, r) => p.x >= r.x - PAD && p.x <= r.x + r.w + PAD && p.y >= r.y - PAD && p.y <= r.y + r.h + PAD;
-  const union = (rs) => {
-    if (!rs.length) return null;
-    const x0 = Math.min(...rs.map((r) => r.x));
-    const y0 = Math.min(...rs.map((r) => r.y));
-    return { x: x0, y: y0, w: Math.max(...rs.map((r) => r.x + r.w)) - x0, h: Math.max(...rs.map((r) => r.y + r.h)) - y0 };
+  const union = Onboard.unionOf;
+  const isPoint = (p) => !!p && typeof p === "object" && typeof p.x === "number" && typeof p.y === "number" && p.w == null && !p.getBoundingClientRect;
+  /** The HTML controls among the targets (they glow and bounce themselves: class ob-lit); the rest are canvas things. */
+  const htmlOf = (t) => {
+    const v = typeof t === "function" ? t() : t;
+    const el = typeof v === "string" ? document.querySelector(v) : v;
+    return el && root.HTMLElement && el instanceof root.HTMLElement ? el : null;
+  };
+  /** The targets split: {els: HTML controls, rects: every lit box, canvas: the boxes of the things that aren't HTML}. */
+  const split = (t) => {
+    const els = [];
+    const rects = [];
+    const canvas = [];
+    listOf(t).forEach((x) => {
+      const r = rectOf(x);
+      if (!r) return;
+      rects.push(r);
+      const el = htmlOf(x);
+      if (el) els.push(el);
+      else canvas.push(r);
+    });
+    return { els, rects, canvas };
+  };
+  /** The page's idle-clock log: one help moment (a rung, a demo) */
+  const LCnote = (what, info) => {
+    try {
+      if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  const LCghost = (step, info) => {
+    // TEST HOOK (s04-hooks; only logged): each time the finger starts, in Lifecycle.log, so a probe counts plays (SH-46, CLN-101)
+    try {
+      if (root.Lifecycle && root.Lifecycle.ghost) root.Lifecycle.ghost(step, info);
+    } catch (e) {
+      /* only a log */
+    }
+  };
+
+  /**
+   * SH-120 (Zafar, 22 Oct: "if new player is toggled on, as soon as I load into the game, it should do the walkthrough"): the
+   * grown-ups' New player (labs.html: the profile it resets at every launch carries the shell flag "newPlayer"). On, every
+   * first-time help shows at once the first time its step comes up in this visit, whatever the save says it has seen.
+   */
+  const shownNow = new Set();
+  Onboard.newPlayer = function () {
+    try {
+      return !!(root.Save && typeof root.Save.flag === "function" && root.Save.flag("newPlayer") === true);
+    } catch (e) {
+      return false;
+    }
+  };
+  /** Has this profile had the first-time help `id`? (New player: only if it came up in this visit) */
+  const hadFirst = (id) => (Onboard.newPlayer() ? shownNow.has(id) : Onboard.seen(id));
+  const markFirst = (id) => {
+    shownNow.add(id);
+    const S = store();
+    if (S) S.set("onboarded", id, true);
+  };
+
+  /**
+   * SH-119: the one finger. The kit's drawn hand, its fingertip on `at` (a page point {x, y}, an element or selector, a box
+   * [x, y, w, h], or a function giving any of them: it follows it every frame), tapping in Onboard.FINGER's cadence for as long
+   * as it is up. o: {container (default the page: fixed, over the dim), step (its name in the log)}. -> {el, stop()}
+   * Wave 2's games (the conversations' emoji finger) switch to this one.
+   */
+  Onboard.finger = function (at, o) {
+    o = o || {};
+    const host = o.container || document.body;
+    const el = document.createElement("div");
+    el.className = "ob-finger";
+    el.setAttribute("aria-hidden", "true");
+    el.innerHTML = `<div class="ob-finger-in"><span class="ob-ripple"></span>${HAND}</div>`;
+    if (!o.container) el.classList.add("page");
+    host.appendChild(el);
+    const inner = el.firstChild;
+    const ripple = inner.querySelector(".ob-ripple");
+    const pointOf = () => {
+      const v = typeof at === "function" ? at() : at;
+      if (isPoint(v)) return v;
+      return centre(union(rectsOf(v)));
+    };
+    let raf = 0;
+    let stopped = false;
+    const place = () => {
+      if (stopped) return;
+      const p = pointOf();
+      el.style.display = p ? "" : "none";
+      if (p) {
+        // the fingertip (HOTSPOT in the 64x80 hand) on the point, at whatever size the page draws the hand
+        const k = (el.offsetWidth || HAND_W) / HAND_W;
+        el.style.transform = `translate(${(p.x - HOTSPOT[0] * k).toFixed(1)}px, ${(p.y - HOTSPOT[1] * k).toFixed(1)}px)`;
+      }
+      raf = requestAnimationFrame(place);
+    };
+    place();
+    const anims = [];
+    if (reduced() || !inner.animate) inner.classList.add("pressed");
+    else {
+      const T = Onboard.fingerMs();
+      const keys = Onboard.fingerKeys();
+      const frames = keys.map((kf) => ({ offset: kf.o, transform: `translate(${kf.x}px, ${kf.y}px) scale(${kf.press ? 0.88 : 1})` }));
+      anims.push(inner.animate(frames, { duration: T, iterations: Infinity, easing: "ease-in-out" }));
+      const ring = keys.find((kf) => kf.ring);
+      const lift = keys[keys.length - 2].o;
+      anims.push(ripple.animate([{ offset: 0, opacity: 0, transform: "scale(0.3)" }, { offset: Math.max(0.01, ring.o - 0.02), opacity: 0, transform: "scale(0.3)" }, { offset: ring.o, opacity: 0.9, transform: "scale(0.6)" }, { offset: lift, opacity: 0, transform: "scale(1.6)" }, { offset: 1, opacity: 0, transform: "scale(1.6)" }], { duration: T, iterations: Infinity }));
+    }
+    if (o.step != null) LCghost(String(o.step), { gesture: "tap", finger: true });
+    return {
+      el,
+      stop() {
+        if (stopped) return;
+        stopped = true;
+        cancelAnimationFrame(raf);
+        anims.forEach((a) => a.cancel());
+        el.remove();
+      },
+    };
+  };
+
+  /*
+   * The light (EASY-08, one look): the dim with ONE rounded hole round the target(s) (Onboard.groupBox), the plain gold box on
+   * its edge, and the kit's soft ring round each canvas thing inside it (an HTML control glows itself: ob-lit).
+   */
+  const NS = "http://www.w3.org/2000/svg";
+  const lightSvg = (sid) =>
+    `<svg class="ob-dim" aria-hidden="true"><defs><filter id="ob-feather-${sid}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="ob-soft-${sid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.5"/></filter><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><rect class="ob-hole" fill="#000" filter="url(#ob-feather-${sid})"/></mask></defs><rect class="ob-shade" width="100%" height="100%" fill="${Onboard.dimFill()}" mask="url(#ob-mask-${sid})"/><g class="ob-glows" filter="url(#ob-soft-${sid})"></g><rect class="ob-box"/></svg>`;
+  function lightOf(layer) {
+    const hole = layer.querySelector(".ob-hole");
+    const box = layer.querySelector(".ob-box");
+    const glows = layer.querySelector(".ob-glows");
+    const put = (el, b) => {
+      el.setAttribute("x", b.x.toFixed(1));
+      el.setAttribute("y", b.y.toFixed(1));
+      el.setAttribute("width", b.w.toFixed(1));
+      el.setAttribute("height", b.h.toFixed(1));
+      el.setAttribute("rx", b.r.toFixed(1));
+      el.setAttribute("ry", b.r.toFixed(1));
+    };
+    let litEls = [];
+    const lit = (els) => {
+      litEls.filter((e) => !els.includes(e)).forEach((e) => e.classList.remove("ob-lit"));
+      els.forEach((e) => e.classList.add("ob-lit"));
+      litEls = els.slice();
+    };
+    return {
+      /** rects: the targets' boxes; o: {avoid, pad, rings: the canvas things' boxes to ring, els: the HTML controls}. -> the box */
+      draw(rects, o) {
+        o = o || {};
+        const b = rects.length ? Onboard.groupBox(rects, o.avoid, o.pad) : null;
+        [hole, box].forEach((el) => {
+          el.style.display = b ? "" : "none";
+          if (b) put(el, b);
+        });
+        const rs = b ? o.rings || [] : [];
+        while (glows.childNodes.length < rs.length) {
+          const g = document.createElementNS(NS, "rect");
+          g.setAttribute("class", "ob-item-glow");
+          glows.appendChild(g);
+        }
+        [...glows.childNodes].forEach((g, i) => {
+          const r = rs[i];
+          g.style.display = r ? "" : "none";
+          if (!r) return;
+          // the item's own soft glow: a warm ring just round it, rounded like a thing (a circle round a jar, a pill round a long one)
+          const w = r.w + 4;
+          const h = r.h + 4;
+          put(g, { x: r.x - 2, y: r.y - 2, w, h, r: Math.min(w, h) / 2 });
+        });
+        lit(b ? o.els || [] : []);
+        return b;
+      },
+      clear() {
+        lit([]);
+      },
+    };
+  }
+  // a canvas thing bounces by its game's own hook (o.move(dx, dy, t): the sprite moves itself), as the item glows
+  const BOUNCE = { px: 7, ms: 900 };
+  const bouncer = (move) => {
+    if (typeof move !== "function" || reduced()) return { tick() {}, stop() {} };
+    const t0 = performance.now();
+    let on = true;
+    return {
+      tick() {
+        if (!on) return;
+        const t = ((performance.now() - t0) % BOUNCE.ms) / BOUNCE.ms;
+        try {
+          move(0, -BOUNCE.px * Math.abs(Math.sin(Math.PI * t)), Math.min(0.99, t));
+        } catch (e) {
+          /* the game's own drawing */
+        }
+      },
+      stop() {
+        if (!on) return;
+        on = false;
+        try {
+          move(0, 0, 1);
+        } catch (e) {
+          /* the game's own drawing */
+        }
+      },
+    };
   };
 
   const DUR = { tap: 1500, hold: 2200, drag: 2200, swipe: 1500, "circle-stir": 3000 };
@@ -424,92 +636,39 @@
 
   Onboard.run = function (id, script, opts) {
     opts = opts || {};
-    if (!opts.force && Onboard.seen(id)) return Promise.resolve("seen");
+    if (!opts.force && hadFirst(id)) return Promise.resolve("seen");
     if (active) return new Promise((r) => pending.push(() => Onboard.run(id, script, opts).then(r)));
     const problems = Onboard.validate(script);
     if (problems.length) throw new Error(`onboard ${id}: ${problems.join("; ")}`);
+    shownNow.add(id);
     const m = Onboard.machine(script);
     const host = opts.container || document.body;
     const layer = document.createElement("div");
     layer.className = "njg-onboard";
-    layer.innerHTML = `
-      <svg class="ob-dim" aria-hidden="true"><defs>
-          <radialGradient id="ob-soft-${id}"><stop offset="0" stop-color="#000"/><stop offset="0.72" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-          <radialGradient id="ob-halo-${id}"><stop offset="0.6" stop-color="#ffe7a3" stop-opacity="0"/><stop offset="0.8" stop-color="#ffe7a3" stop-opacity="0.38"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient>
-          <mask id="ob-mask-${id}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes"></g></mask></defs>
-        <rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${id})"/><g class="ob-rings"></g></svg>
-      <div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${opts.hand ? `<img alt="" src="${opts.hand.src}">` : HAND}</div>
-      ${opts.skipButton ? SKIP_HTML : ""}`;
+    const sid = `ob${String(id).replace(/[^\w-]/g, "-")}`;
+    // (opts.hand, a picture hand, is gone: one finger in every game, SH-119)
+    layer.innerHTML = `${lightSvg(sid)}<div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${HAND}</div>${opts.skipButton ? SKIP_HTML : ""}`;
     host.appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const ghost = layer.querySelector(".ob-ghost");
-    // opts.hand: a picture hand instead of the drawn one ({src, w, h, hot: the fingertip [x, y], opacity})
-    const hot = opts.hand ? opts.hand.hot : HOTSPOT;
-    if (opts.hand) {
-      const hd = opts.hand;
-      Object.assign(ghost.style, { width: `${hd.w}px`, height: `${hd.h}px`, transformOrigin: `${hot[0]}px ${hot[1]}px` });
-      ghost.classList.add("picture");
-      const im = ghost.querySelector("img");
-      Object.assign(im.style, { width: "100%", height: "100%", display: "block", position: "relative", opacity: String(hd.opacity != null ? hd.opacity : 1) });
-      // the forearm fades out below the wrist (the see-through hand has no screen edge to come from)
-      im.style.webkitMaskImage = im.style.maskImage = "linear-gradient(to bottom, #000 62%, transparent 92%)";
-      const rp = ghost.querySelector(".ob-ripple");
-      Object.assign(rp.style, { left: `${hot[0] - 36}px`, top: `${hot[1] - 36}px`, zIndex: 1 });
-    }
-    const holes = layer.querySelector(".ob-holes");
-    const rings = layer.querySelector(".ob-rings");
-    const idleMs = (st) => (st.idleMs != null ? st.idleMs : opts.idleMs != null ? opts.idleMs : 7000);
+    const hot = HOTSPOT;
+    const light = lightOf(layer);
+    const gap = (st) => (st.idleMs === 0 || opts.idleMs === 0 ? 0 : Onboard.FINGER.gap);
     let lit = [];
     let raf = 0;
     let betweenT = 0;
     let idleTimer = 0;
     let anim = null;
+    let finger = null;
     let resolveRun;
     const result = new Promise((r) => (resolveRun = r));
 
-    // keep the holes on their targets (things move, the page resizes)
-    const NS = "http://www.w3.org/2000/svg";
+    // keep the light on its targets (things move, the page resizes)
     const draw = () => {
       const st = m.state().step;
-      lit = st ? rectsOf(st.spotlight) : [];
-      // the light (F17, CLN-72, 2 Oct): a soft round glow centred on the thing, never a rounded box: the hole in the dim
-      // is an ellipse (a circle for anything squarish) whose edge feathers into the dark, ringed by a faint warm halo.
-      // It is big enough that the whole box (and PAD round it, where a tap counts) sits inside its solid part.
-      while (holes.childNodes.length < lit.length) {
-        const r = document.createElementNS(NS, "ellipse");
-        r.setAttribute("fill", `url(#ob-soft-${id})`);
-        holes.appendChild(r);
-        const g = document.createElementNS(NS, "ellipse");
-        g.setAttribute("class", "ob-ring ob-halo");
-        g.setAttribute("fill", `url(#ob-halo-${id})`);
-        g.style.stroke = "none";
-        if (!reduced()) {
-          // the gentle pulse of the focal rule (F17), on the halo only
-          const an = document.createElementNS(NS, "animate");
-          an.setAttribute("attributeName", "fill-opacity");
-          an.setAttribute("values", "0.55;1;0.55");
-          an.setAttribute("dur", "1.8s");
-          an.setAttribute("repeatCount", "indefinite");
-          g.appendChild(an);
-        }
-        rings.appendChild(g);
-      }
-      [...holes.childNodes].forEach((h, i) => {
-        const r = lit[i];
-        const g = rings.childNodes[i];
-        h.style.display = g.style.display = r ? "" : "none";
-        if (!r) return;
-        const e = Onboard.glowShape(r, PAD);
-        h.setAttribute("cx", e.cx);
-        h.setAttribute("cy", e.cy);
-        h.setAttribute("rx", e.rx);
-        h.setAttribute("ry", e.ry);
-        // the halo sits just outside the feathered edge
-        g.setAttribute("cx", e.cx);
-        g.setAttribute("cy", e.cy);
-        g.setAttribute("rx", e.rx * 1.22);
-        g.setAttribute("ry", e.ry * 1.22);
-      });
+      const sp = st ? split(st.spotlight) : { els: [], rects: [], canvas: [] };
+      lit = sp.rects;
+      light.draw(sp.rects, { rings: opts.light === false ? [] : sp.canvas, els: sp.els });
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
@@ -520,6 +679,10 @@
         if (typeof st.audio === "function") st.audio(st, i);
         else if (typeof st.audio === "string") new Audio(st.audio).play().catch(() => {});
       } catch (e) { /* audio is optional */ }
+    };
+    const stopFinger = () => {
+      if (finger) finger.stop();
+      finger = null;
     };
     const playGhost = () => {
       const s = m.state();
@@ -532,15 +695,18 @@
         m.ghostDone();
         return armIdle();
       }
+      const box = (r) => (r ? { left: r.x, top: r.y, width: r.w, height: r.h } : null);
+      LCghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
+      if (st.ghost.gesture === "tap") {
+        // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
+        if (!finger) finger = Onboard.finger(() => centre(st.ghost.from ? union(rectsOf(st.ghost.from)) : union(rectsOf(st.spotlight))), { container: layer });
+        setTimeout(() => {
+          if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
+        }, Onboard.fingerMs());
+        return;
+      }
       const keys = Onboard.path(st.ghost.gesture, centre(fromR), centre(toR), fromR);
       const dur = st.ghost.ms || DUR[st.ghost.gesture];
-      // TEST HOOK (s04-hooks; only logged): each play in Lifecycle.log, so a probe counts plays (SH-46, CLN-101)
-      try {
-        const box = (r) => (r ? { left: r.x, top: r.y, width: r.w, height: r.h } : null);
-        if (root.Lifecycle && root.Lifecycle.ghost) root.Lifecycle.ghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
-      } catch (e) {
-        /* only a log */
-      }
       const tf = (p) => `translate(${p.x - hot[0]}px, ${p.y - hot[1]}px) scale(${p.press ? 0.88 : 1})`;
       ghost.classList.add("on");
       ghost.classList.toggle("hold", st.ghost.gesture === "hold");
@@ -575,16 +741,17 @@
         }
       };
     };
+    // SH-119: a gesture plays again after the finger's half-second wait while the step waits (no long gaps)
     const armIdle = () => {
       clearTimeout(idleTimer);
       const st = m.state().step;
-      if (!st || !st.ghost || !idleMs(st)) return;
+      if (!st || !st.ghost || st.ghost.gesture === "tap" || !gap(st)) return;
       idleTimer = setTimeout(() => {
         if (m.state().phase === "wait") {
           m.idle();
           playGhost();
         }
-      }, idleMs(st));
+      }, gap(st));
     };
     const begin = () => {
       const s = m.state();
@@ -598,6 +765,7 @@
     const advanced = () => {
       clearTimeout(idleTimer);
       if (anim) anim.cancel();
+      stopFinger();
       ghost.classList.remove("on", "pressed");
       if (root.Sfx) root.Sfx.play("pop", { volume: 0.7 });
       // a short breath between steps, so the child sees what their action did
@@ -677,12 +845,15 @@
       cancelAnimationFrame(raf);
       clearTimeout(idleTimer);
       if (anim) anim.cancel();
+      stopFinger();
+      light.clear();
       EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
       root.removeEventListener("pointerup", up, true);
       root.removeEventListener("keydown", key);
       const S = store();
       // (C4: a script cut short because its game was unmounted, "left", isn't seen: it shows again next time)
       if (S && how !== "left") S.set("onboarded", id, true);
+      if (how === "left") shownNow.delete(id);
       layer.classList.remove("on");
       setTimeout(() => layer.remove(), reduced() ? 0 : 300);
       if (active && active.layer === layer) active = null;
@@ -732,104 +903,34 @@
     return first;
   };
 
-  /* ---------------- Sprint 11: the real item shows it, and the hint rungs ---------------- */
-  const LCnote = (what, info) => {
-    try {
-      if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
-    } catch (e) {
-      /* only a log */
-    }
-  };
-  /** A path's points as offsets from `from` (page px): [{x, y}], an element or selector (its middle), {dx, dy}, or a function. */
-  function offsets(path, from) {
-    if (typeof path === "function") path = path();
-    if (path == null) return [];
-    if (!Array.isArray(path) && typeof path === "object" && ("dx" in path || "dy" in path)) return [{ x: path.dx || 0, y: path.dy || 0 }];
-    const pts = (Array.isArray(path) && !(path.length === 4 && path.every((n) => typeof n === "number")) ? path : [path])
-      .map((p) => (p && typeof p.x === "number" && typeof p.y === "number" && !p.getBoundingClientRect ? p : centre(rectOf(p))))
-      .filter(Boolean);
-    return pts.map((p) => ({ x: p.x - from.x, y: p.y - from.y }));
-  }
+  /* ---------------- the item shows itself, and the hint rungs ---------------- */
   /**
-   * The real item shows the action, then goes back to where it was (principle 2: 2-3 year olds copy the thing, not an
-   * arrow). item: an element (it moves itself, by the CSS translate property, so its own transform is untouched), or a
-   * scene point {x, y} with o.move(dx, dy, t) (a canvas game moves its own sprite each frame; t 0..1 through the path).
-   * path: page points, an element or selector to go to (and back), or {dx, dy}. o.ms: the whole demo (default 1600);
-   * o.step: its name in the log; o.hand: the ghost finger rides along. Resolves when the item is home.
+   * EASY-03 (Zafar, 22 Oct: "the user clicks on the item, they don't drag it ... take that out, that whole show it"): the real
+   * item never moves to its target by itself in any game. Onboard.demo is the item showing where it is: it glows and bounces
+   * in place for o.ms (an HTML element by class ob-lit; a canvas thing by o.move(dx, dy, t), its game moving its own sprite a
+   * little up and back), with the kit's finger tapping on it when o.hand. `path` is no longer used (kept in the signature for
+   * the games that pass one). o.step: its name in the log. Resolves when it is done.
    */
   Onboard.demo = function (item, path, o) {
     o = o || {};
     const isEl = item && (typeof item === "string" || item.nodeType === 1);
     const elx = isEl ? (typeof item === "string" ? document.querySelector(item) : item) : null;
-    const from = elx ? centre(rectOf(elx)) : item && typeof item.x === "number" ? { x: item.x, y: item.y } : null;
+    const from = elx ? centre(rectOf(elx)) : isPoint(item) ? { x: item.x, y: item.y } : null;
     if (!from) return Promise.resolve(false);
-    const pts = offsets(path, from);
-    if (!pts.length) pts.push({ x: 0, y: -Math.max(24, (elx ? rectOf(elx).h : 60) * 0.3) });
     if (!o.quiet) LCnote("demo", { step: o.step != null ? String(o.step) : "", gesture: "item" }); // (a rung logs its own: one help)
-    const ms = o.ms || 600 + 500 * pts.length;
-    // a leg out to each point, a short hold at the last, and home
-    const keys = [{ x: 0, y: 0, o: 0 }];
-    pts.forEach((p, i) => keys.push({ x: p.x, y: p.y, o: (0.12 + (0.55 * (i + 1)) / pts.length) }));
-    keys.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y, o: 0.78 }, { x: 0, y: 0, o: 1 });
-    const at = (t) => {
-      for (let i = 1; i < keys.length; i++) {
-        if (t <= keys[i].o) {
-          const a = keys[i - 1];
-          const b = keys[i];
-          const k = b.o === a.o ? 1 : (t - a.o) / (b.o - a.o);
-          const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-          return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e };
-        }
-      }
-      return { x: 0, y: 0 };
-    };
-    let hand = null;
-    if (o.hand) {
-      hand = document.createElement("div");
-      hand.className = "ob-demo-hand";
-      hand.setAttribute("aria-hidden", "true");
-      hand.innerHTML = HAND;
-      Object.assign(hand.style, { position: "fixed", left: "0", top: "0", width: `${HAND_W}px`, height: "80px", zIndex: "960", pointerEvents: "none", opacity: "0.9" });
-      document.body.appendChild(hand);
-    }
-    const placeHand = (d) => hand && (hand.style.transform = `translate(${from.x + d.x - HOTSPOT[0]}px, ${from.y + d.y - HOTSPOT[1]}px)`);
-    if (reduced()) {
-      // no motion: the item lifts where it is for a moment (a glow), and the hand, if any, sits on it
-      if (elx) Object.assign(elx.style, { outline: "4px solid var(--njg-focus)", outlineOffset: "4px" });
-      placeHand({ x: 0, y: 0 });
-      return new Promise((r) =>
-        setTimeout(() => {
-          if (elx) Object.assign(elx.style, { outline: "", outlineOffset: "" });
-          if (hand) hand.remove();
-          r(true);
-        }, 900)
-      );
-    }
+    const ms = o.ms || 1600;
+    const html = elx && root.HTMLElement && elx instanceof root.HTMLElement;
+    if (html) elx.classList.add("ob-lit");
+    const b = html ? null : bouncer(o.move);
+    const f = o.hand ? Onboard.finger(elx || from, { step: o.step }) : null;
     return new Promise((resolve) => {
       const t0 = performance.now();
-      if (elx) elx.classList.add("ob-demo");
       const tick = (now) => {
-        const t = Math.min(1, (now - t0) / ms);
-        const d = at(t);
-        const lift = t > 0.06 && t < 0.94 ? 1.06 : 1;
-        if (elx) {
-          elx.style.translate = `${d.x.toFixed(1)}px ${d.y.toFixed(1)}px`;
-          elx.style.scale = String(lift);
-        } else if (o.move) {
-          try {
-            o.move(d.x, d.y, t);
-          } catch (e) {
-            /* the game's own drawing */
-          }
-        }
-        placeHand(d);
-        if (t < 1) return requestAnimationFrame(tick);
-        if (elx) {
-          elx.style.translate = "";
-          elx.style.scale = "";
-          elx.classList.remove("ob-demo");
-        } else if (o.move) o.move(0, 0, 1);
-        if (hand) hand.remove();
+        b && b.tick();
+        if (now - t0 < ms) return requestAnimationFrame(tick);
+        if (html) elx.classList.remove("ob-lit");
+        if (b) b.stop();
+        if (f) f.stop();
         resolve(true);
       };
       requestAnimationFrame(tick);
@@ -837,86 +938,41 @@
   };
 
   /**
-   * The spotlight alone (the 5 s rung): the 62% dim (as Onboard.run's) with a hole hugging each `target` box (EASY-08: a
-   * rounded rect, a small even pad, o.avoid: neighbours the pad shrinks for; o.hold(): true while the item demonstrates, the
-   * light stays where the control rests); each live control also gives off a soft round glow of its own (Onboard.glowShapes, Zafar,
-   * 22 Oct), never into a neighbour; everything but the live control (o.live,
-   * default the target) is inert: a touch elsewhere is stopped before the page gets it. [data-ob-pass] (the ? and its menu)
-   * stays usable. -> {close(), layer}
+   * The spotlight (the same light as Onboard.run's, EASY-08): the Onboard.DIM dim with ONE rounded hole round `target` (one
+   * thing, or several given together: a group in one box), its plain gold edge, the item(s) inside glowing and bouncing, and
+   * the kit's finger tapping on o.item (a page point) or the first target (o.finger === false: no finger). o.avoid: neighbours
+   * the box keeps out; o.light: false (the game glows its canvas thing itself) or a function(on); o.move(dx, dy, t): a canvas
+   * thing's own bounce. Everything but the live controls (o.live, default the targets) is inert: a touch elsewhere is stopped
+   * before the page gets it. [data-ob-pass] (the ? and its menu) stays usable. -> {close(), layer}
    */
   Onboard.spot = function (target, o) {
     o = o || {};
     const sid = `sp${Math.random().toString(36).slice(2, 8)}`;
     const layer = document.createElement("div");
     layer.className = "njg-onboard njg-spot";
-    // EASY-08: one rounded-rect hole per live control, hugging its box (Onboard.hugShapes), a thin gold ring round each
-    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><filter id="ob-feather-${sid}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="ob-soft-${sid}" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation="${Onboard.GLOW_SD}"/></filter><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes" filter="url(#ob-feather-${sid})"></g></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/><g mask="url(#ob-mask-${sid})"><g class="ob-glows" filter="url(#ob-soft-${sid})"></g></g><g class="ob-hugs"></g></svg>`;
+    layer.innerHTML = lightSvg(sid);
     (o.container || document.body).appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
-    const NSs = "http://www.w3.org/2000/svg";
-    const holes = layer.querySelector(".ob-holes");
-    const rings = layer.querySelector(".ob-hugs");
-    const glows = layer.querySelector(".ob-glows");
-    let homeGlow = [];
-    let shapes = [];
-    let home = [];
+    const light = lightOf(layer);
+    const bounce = bouncer(o.move);
+    if (typeof o.light === "function") o.light(true);
     let raf = 0;
-    const put = (g, i, fill, ring) => {
-      while (g.childNodes.length <= i) {
-        const r = document.createElementNS(NSs, "rect");
-        if (ring) Object.assign(r.style, { fill: "none", stroke: "#f7d57a", strokeWidth: "2", opacity: "0.9" });
-        else r.setAttribute("fill", fill);
-        g.appendChild(r);
-      }
-      return g.childNodes[i];
-    };
+    let shown = null;
     const draw = () => {
-      // while the item demonstrates (o.hold), the light stays on where the live control rests: it never follows the moving item onto a neighbour
-      // (and the item itself is lit as it goes, hugged with no pad, so the demo is seen)
-      if (!(o.hold && o.hold() && home.length)) shapes = home = Onboard.hugShapes(rectsOf(target), o.avoid ? rectsOf(o.avoid) : null, o.pad);
-      else shapes = home.concat(Onboard.hugShapes(rectsOf(target), null, 0).filter((m) => !home.some((h) => Math.abs(h.x + h.pad - m.x) < 2 && Math.abs(h.y + h.pad - m.y) < 2)));
-      [holes, rings].forEach((g, k) => {
-        [...g.childNodes].forEach((n, i) => (n.style.display = i < shapes.length ? "" : "none"));
-        shapes.forEach((sh, i) => {
-          const r = put(g, i, "#000", k === 1);
-          r.style.display = "";
-          r.setAttribute("x", sh.x);
-          r.setAttribute("y", sh.y);
-          r.setAttribute("width", sh.w);
-          r.setAttribute("height", sh.h);
-          r.setAttribute("rx", sh.r);
-          r.setAttribute("ry", sh.r);
-        });
-      });
-      // the soft round glow from each live control itself (Onboard.glowShapes): warm, outside the holes only (the mask), and,
-      // like the light, it stays where the control rests while the item demonstrates
-      if (!(o.hold && o.hold() && homeGlow.length)) homeGlow = Onboard.glowShapes(rectsOf(target), o.avoid ? rectsOf(o.avoid) : null, o.pad).filter((g) => Math.max(g.reach.l, g.reach.r, g.reach.t, g.reach.b) >= 3);
-      const gs = homeGlow;
-      [...glows.childNodes].forEach((n, i) => (n.style.display = i < gs.length ? "" : "none"));
-      gs.forEach((g, i) => {
-        while (glows.childNodes.length <= i) {
-          const gr = document.createElementNS(NSs, "rect");
-          gr.setAttribute("fill", "rgba(255,196,92,0.9)");
-          glows.appendChild(gr);
-        }
-        const r = glows.childNodes[i];
-        r.style.display = "";
-        r.setAttribute("x", g.x);
-        r.setAttribute("y", g.y);
-        r.setAttribute("width", g.w);
-        r.setAttribute("height", g.h);
-        r.setAttribute("rx", g.r);
-        r.setAttribute("ry", g.r);
-      });
+      const sp = split(target);
+      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, rings: o.light === undefined || o.light === true ? sp.canvas : [], els: sp.els });
+      if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
     draw();
-    const liveRects = () => (o.live ? Onboard.hugShapes(rectsOf(o.live), o.avoid ? rectsOf(o.avoid) : null, o.pad) : home);
+    const firstRect = () => rectsOf(target)[0] || null;
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : typeof o.item === "function" ? o.item() : centre(firstRect())), { container: layer, step: o.step });
+    // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
+    const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
       const t = e.changedTouches ? e.changedTouches[0] : e;
       return { x: t.clientX, y: t.clientY };
     };
-    // a tap counts only on the lit box itself (its pad included): never on the neighbour the pad shrank for
     const on = (p, r) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
     // a press in the dark is stopped whole: its release too (a host's tap reads the pointerup, js/shared/input.js), but only
     // that press's: a drag that started on the live control (the toothbrush) may end anywhere
@@ -942,10 +998,15 @@
     let closed = false;
     return {
       layer,
+      box: () => shown,
       close() {
         if (closed) return;
         closed = true;
         cancelAnimationFrame(raf);
+        if (finger) finger.stop();
+        bounce.stop();
+        light.clear();
+        if (typeof o.light === "function") o.light(false);
         EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
         layer.classList.remove("on");
         setTimeout(() => layer.remove(), reduced() ? 0 : 300);
@@ -969,11 +1030,15 @@
   };
   Onboard.RUNGS = [0, 5000, 15000];
   /**
-   * The hint rungs for one step, the same for every age (principle 3): at 0 s the real item's demo the first time this
-   * step appears for this child (once per profile per o.id, default "stuck/<step>"); at 5 s idle the spotlight (the live
-   * control stays tappable, nothing else) plus the demo again; at 15 s the demo again with the guide's line (o.line()).
-   * After an action the clock runs again and so can the rungs. It never does the step for the child.
-   *   o: {target (the live control), item (what demonstrates; default target), path, move, live, line, first, id, at}
+   * The hint rungs for one step (principle 3), on the shared idle clock:
+   *   at[0]   the first time this step appears for this child (once per profile per o.id, default "stuck/<step>"; a New player:
+   *           once per visit): the spotlight on the real item at once (EASY-03: no demo; the box, the item glowing, the finger);
+   *   glowAt  (optional; CHAI-32) idle this long: o.glow(true), the game's own light help (its call-out card, the item glowing
+   *           and bouncing): no dim, no box;
+   *   at[1]   idle this long: the spotlight (o.glow(false) first: never the call-out and the heavy dim together);
+   *   at[2]   idle this long: the guide's line (o.line()). null leaves a rung out.
+   * After an action the clock runs again and so can the rungs (the spotlight and the call-out go). It never does the step.
+   *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id}
    *   -> {done(), stop(), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
    */
   Onboard.stuck = function (step, o) {
@@ -981,21 +1046,27 @@
     const name = String(step);
     const id = o.id || `stuck/${name}`;
     const AT = o.at || Onboard.RUNGS;
-    const item = o.item || o.target;
-    const S = store();
     LCnote("step-open", { step: name });
     if (root.PlayLog && root.PlayLog.step) root.PlayLog.step(name, { noted: true });
     let spot = null;
     let poll = 0;
     let fired = {};
     let lastAct = null;
-    let busy = false;
     let off = null;
+    let glowing = false;
     const h = { rung: 0 };
-    const demo = () => {
-      if (busy || h.over) return Promise.resolve();
-      busy = true;
-      return Onboard.demo(item, o.path, { step: name, move: o.move, hand: o.hand, ms: o.ms, quiet: true }).finally(() => (busy = false));
+    const glow = (on) => {
+      if (glowing === on || typeof o.glow !== "function") return;
+      glowing = on;
+      try {
+        o.glow(on);
+      } catch (e) {
+        /* the game's own help */
+      }
+    };
+    const openSpot = () => {
+      glow(false);
+      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: o.move, step: name });
     };
     const closeSpot = () => {
       if (spot) spot.close();
@@ -1006,46 +1077,52 @@
       h.over = true;
       clearInterval(poll);
       closeSpot();
+      glow(false);
       if (off) off();
     };
     h.done = end;
     h.stop = end;
-    // the first time: the real item shows it as the step opens
-    const first = o.first !== false && !(S && S.get("onboarded", id));
-    if (first && AT[0] != null) {
-      if (S) S.set("onboarded", id, true);
+    // the first time: the spotlight on the real item as the step opens
+    const first = o.first !== false && AT[0] != null && !hadFirst(id);
+    if (first) {
+      markFirst(id);
       setTimeout(() => {
         if (h.over) return;
         h.rung = 0;
         LCnote("rung", { step: name, rung: 0 });
-        demo();
-      }, AT[0] || 300);
+        openSpot();
+      }, AT[0] || 0);
     }
     poll = setInterval(() => {
       if (h.over) return;
       const G = root.NaniGuide;
       const la = G && G.lastAction ? G.lastAction() : ownClock.t;
       if (la !== lastAct) {
-        // the child did something: the rungs start again from now, and the spotlight goes
+        // the child did something: the rungs start again from now, and the help goes
         if (lastAct != null) {
           fired = {};
           closeSpot();
+          glow(false);
         }
         lastAct = la;
       }
       const idle = idleMs();
+      if (o.glowAt != null && idle >= o.glowAt && !fired.g && !spot) {
+        fired.g = true;
+        h.rung = Math.round(o.glowAt / 1000);
+        LCnote("rung", { step: name, rung: h.rung, light: true });
+        glow(true);
+      }
       if (AT[1] != null && idle >= AT[1] && !fired[1]) {
         fired[1] = true;
-        h.rung = 5;
-        LCnote("rung", { step: name, rung: 5 });
-        if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, hold: () => busy });
-        demo();
+        h.rung = Math.round(AT[1] / 1000);
+        LCnote("rung", { step: name, rung: h.rung });
+        openSpot();
       }
       if (AT[2] != null && idle >= AT[2] && !fired[2]) {
         fired[2] = true;
-        h.rung = 15;
-        LCnote("rung", { step: name, rung: 15 });
-        demo();
+        h.rung = Math.round(AT[2] / 1000);
+        LCnote("rung", { step: name, rung: h.rung });
         try {
           if (o.line) o.line(name);
         } catch (e) {
@@ -1056,7 +1133,6 @@
     if (root.Lifecycle && root.Lifecycle.onStageEnd) off = root.Lifecycle.onStageEnd(end);
     return h;
   };
-
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */
   // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
   if (root.PlayLog && root.PlayLog.__live) {

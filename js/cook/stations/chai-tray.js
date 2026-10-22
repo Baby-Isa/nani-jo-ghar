@@ -228,7 +228,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const personHead = (L, who) => (L.sections.find((x) => x.for === who) || {}).head || L.head;
   // 29 Sept (X1): one sentence per person, in card order ("Muke aadu waari chai khape, with dudh, ba khun.")
   const personLine = (L, who, rows) => Cook.Order.sentence(personHead(L, who), rows || personRows(L, who), { join: Cook.Order.joinOf(L) });
-  const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.dotItem(s.w, Cook.roundLevel()));
+  const hiddenRow = (r) => !r.unsaid && !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.dotItem(s.w, Cook.roundLevel()));
 
   /** The speaker icon (the kitchen kit's). */
   const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
@@ -1066,6 +1066,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (id === "cook-paani") {
         pop(id, pan);
         pan.has.water++;
+        // CK-51: the water is on every cup's card (not said in the order): it ticks as it goes in
+        if (!pan.closed) UI.mission.tickItem("cook-paani", dishNo(), { for: pan.who });
         note("chai-add", id, `${pan.who}:${pan.has.water}`);
         await pourInto(pan, obj, COL.water, Math.min(0.9, pan.level + (pan.level < 0.1 ? 0.62 : 0.12)), look);
       } else if (id === "cook-dudh") {
@@ -1089,6 +1091,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       } else {
         if (id === "cook-chai") {
           pan.has.leaves++;
+          if (!pan.closed) UI.mission.tickItem("cook-chai", dishNo(), { for: pan.who }); // (CK-51: the tea row ticks too)
           note("chai-add", id, `${pan.who}:${pan.has.leaves}`);
         }
         else {
@@ -1654,155 +1657,138 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       glowing = null;
     };
     /*
-     * Sprint 11 (B-cook, task 5; easy-to-play principles 2-3): the real item shows each step the first time it appears (the
-     * bottle or the jar lifts over the pan and tips, the knob turns, the ready pan lifts towards its glass) and goes home,
-     * then the child does it; stuck, the hint rungs run on the live thing (5 s: the spotlight and the demo, 15 s: the demo
-     * and Nani's step line). js/cook/coach.js C.rungs on the shared kit's Onboard.stuck. What a person asked for (milk, the
-     * sugar, an extra) is the answer, so its rungs run only while Nani helps (the focal rule, as its glow).
+     * Sprint 12 (Zafar, 22 Oct; CHAI-32, EASY-03, EASY-10): chai's help ladder, on the shared kit's rungs (js/cook/coach.js
+     * C.rungs, js/shared/onboard.js Onboard.stuck). No item ever moves by itself:
+     *   the water, then the tea, the first time: the full dim and box at once (the item glowing in it, the finger tapping);
+     *   every item step after that (the first ordered item included: none at once): no tap for 5 s, the next item's card comes
+     *     up at the top left by Nani's box, as if from her, and the item glows and bounces (no box, no dim); 7 s more and the
+     *     dim and box come instead (never the card and the heavy dim together); still nothing, it is left as it is;
+     *   the knob, the slow-down and the pour keep the kit's own rungs (the box at once the first time; stuck, at 5 s).
+     * What a person asked for (milk, the sugar, an extra) is the answer: its help runs only while it is study (Nani helps, a
+     * redo, or the word still supported, stage 1-2), and a word shown that way is not counted as known (non-negotiable 4).
      */
-    const pagePt = (o) => UI.worldToScreen(at(o).x, at(o).y);
-    const pageRect = (o, pad = 6) => () => {
+    const LADDER = { glowAt: 5000, boxAt: 12000 };
+    const ITEM_STEPS = new Set(["water", "tea", "cups"]);
+    // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above)
+    const pageRect = (o, pad = 0) => () => {
       if (!o || !o.active) return null;
       const b = o.getBounds();
       const a = UI.worldToScreen(b.x - pad, b.y - pad);
       const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
-    const tipT = (t) => (t > 0.3 && t < 0.8 ? Math.sin(((t - 0.3) / 0.5) * Math.PI) : 0);
-    // a shelf thing goes over the pan as it would to pour (pourInto's place), tips, and comes home
-    const jarDemo = (obj, pan) => {
-      let home = null;
-      const back = () => {
-        if (!home) return;
-        if (obj.active && !obj.flying) obj.setPosition(home.x, home.y).setAngle(home.a).setDepth(home.d);
-        if (obj.shadow) obj.shadow.lifted = false;
-        home = null;
-      };
-      return {
-        item: pagePt(obj),
-        path: () => [UI.worldToScreen(pan.x + panR * 0.55, pan.y + panR * 0.05)],
-        move: (dx, dy, t) => {
-          if (!obj.active || obj.flying || finished) return back();
-          if (!home) home = { x: obj.x, y: obj.y, a: obj.angle, d: obj.depth };
-          if (obj.shadow) obj.shadow.lifted = true;
-          const k = pxPerWorld();
-          obj.setPosition(home.x + dx / k, home.y + dy / k).setDepth(D.fx + 1).setAngle(home.a - 75 * tipT(t));
-          if (t >= 1) back();
-        },
-      };
-    };
-    // the knob turns (by `by` degrees) and back
-    const knobDemo = (pan, by) => {
-      let a0 = null;
-      let st0 = null;
-      return {
-        item: pagePt(pan.knobHit),
-        path: { dx: 0, dy: -1 },
-        move: (dx, dy, t) => {
-          if (!pan.knob.active) return;
-          if (a0 == null) [a0, st0] = [pan.knob.angle, pan.state];
-          if (pan.state !== st0) return; // (the child turned it meanwhile: its own turn stands)
-          pan.knob.setAngle(t >= 1 ? a0 : a0 + by * Math.sin(Math.PI * t));
-          if (t >= 1) a0 = null;
-        },
-      };
-    };
-    // the ready pan lifts a little way towards its person's glass and comes back (the pour itself is the child's tap)
-    const panDemo = (pan) => {
-      let st = null;
-      const back = () => {
-        if (!st) return;
-        st.forEach(({ o, x, y, sx, sy }) => o.active && o.setPosition(x, y).setScale(sx, sy));
-        // (a pour that began meanwhile has its own layers: they come back when it is home)
-        if (!pan.away) {
-          [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.active && o.setVisible(true));
-          setLook(pan);
-        }
-        st = null;
-      };
-      return {
-        item: UI.worldToScreen(pan.x, pan.y),
-        path: () => [UI.worldToScreen(pan.x + (pan.well.x - pan.x) * 0.3, pan.y + (pan.well.y - pan.y) * 0.3 - panR * 0.3)],
-        move: (dx, dy, t) => {
-          if (busy || pan.away || finished) return back();
-          if (!st) {
-            st = [pan.img, pan.mix, pan.glowRing].map((o) => ({ o, x: o.x, y: o.y, sx: o.scaleX, sy: o.scaleY }));
-            [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.setVisible(false));
-          }
-          const k = pxPerWorld();
-          const up = 1 + 0.06 * Math.sin(Math.PI * Math.min(1, t));
-          st.forEach(({ o, x, y, sx, sy }) => o.setPosition(x + dx / k, y + dy / k).setScale(sx * up, sy * up));
-          if (t >= 1) back();
-        },
-      };
+    const shelfBut = (obj) => Object.values(shelf).filter((o) => o !== obj && o.active).map((o) => pageRect(o));
+    const supported = (id) => !!id && Cook.wordStage(id) <= 2;
+    const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
+    let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
+    const helpGlow = (obj) => {
+      if (helpObj === obj) return;
+      helpObj = obj;
+      unglow();
+      refresh();
     };
     let rung = null;
     let rungKey = null;
+    // within a step the live thing can change (the next pan's knob): the help follows the one live now (rungCur)
+    let rungCur = null;
     const rungOf = (nx) => {
       if (!nx || !nx.e || finished) return null;
       const key = nx.e.key || "";
       if (nx.phase === "pour" && /^pour-/.test(key)) {
         const pan = pans.find((q) => `pour-${q.who}` === key);
-        return pan && { step: "pour", id: key, target: pageRect(pan.glowRing), spec: panDemo(pan) };
+        return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
       }
-      if (nx.phase === "slow" && nx.slowAt) return { step: "slow", id: key, target: pageRect(nx.slowAt.knob, 14), spec: knobDemo(nx.slowAt, 45) };
+      if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob, 4) };
       if (/^knob-on-/.test(key)) {
         const pan = pans.find((q) => `knob-on-${q.who}` === key);
-        return pan && { step: "knob", id: key, target: pageRect(pan.knob, 14), spec: knobDemo(pan, 90) };
+        return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
       }
       const obj = shelf[key];
       if (!obj || !sel) return null;
-      const step = key === "cook-paani" ? "water" : key === "cook-chai" ? "tea" : "cups";
-      if (step === "cups" && !(guided || sel.redo)) return null; // (the answer: only while Nani helps)
-      return { step, id: `${key}:${sel.who}`, target: pageRect(obj), spec: jarDemo(obj, sel) };
+      return { obj, id: key, target: pageRect(obj), avoid: () => shelfBut(obj) };
     };
-    // The rungs follow Nani's own steps (the stepper's, phase() in refresh): one rung per step she opens and calls, under
-    // that step's own id (UI.stepId: one step in the step log, her call or its skip answers both, contract-36). Within a
-    // step the live thing can change (the next pan's knob): the spotlight and the demo follow the one live now (rungCur),
-    // a demo under way keeps its own item to the end.
-    let rungCur = null;
-    let rungSpec = null;
+    /* the call-out card (CHAI-32: "the card that comes up when they're ordering ... should look like it's coming from Nani"): the
+       next item's word card, big, at the top left of the play area by her guide box (the order's own card: UI.wordOf), with a
+       tail towards her box */
+    let callout = null;
+    const rowFor = (pid) => (sel ? personRows(L(), sel.who).find((r) => !r.no && r.ids.includes(pid)) : null);
+    const hideCallout = () => {
+      if (callout) callout.remove();
+      callout = null;
+    };
+    const showCallout = (pid) => {
+      hideCallout();
+      const r = rowFor(pid);
+      const stage = document.querySelector("#stage");
+      const w = r && UI.wordOf && global.WordCard ? UI.wordOf(r, { size: 240 }) : null;
+      if (!w || !stage) return;
+      const box = document.createElement("div");
+      box.className = "ck-callout";
+      box.dataset.item = pid;
+      Object.assign(box.style, { position: "absolute", left: "var(--njg-s4, 16px)", top: "var(--njg-s3, 12px)", zIndex: "21", animation: "icWordIn .3s cubic-bezier(.2, 1.3, .4, 1)" });
+      const card = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
+      card.style.width = "clamp(150px, min(17vw, 36vh), 210px)";
+      // the tail: from her box, on the card's left edge
+      const tail = document.createElement("i");
+      tail.setAttribute("aria-hidden", "true");
+      Object.assign(tail.style, { position: "absolute", left: "-11px", top: "var(--njg-s5, 24px)", width: "0", height: "0", borderTop: "11px solid transparent", borderBottom: "11px solid transparent", borderRight: "12px solid var(--njg-card)", filter: "drop-shadow(-2px 1px 1px rgba(60, 40, 20, 0.12))" });
+      box.appendChild(tail);
+      stage.appendChild(box);
+      callout = box;
+      if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(hideCallout);
+    };
     const coachStep = (nx, sid) => {
       rungCur = rungOf(nx);
-      if (sid === rungKey) return;
+      if (sid === rungKey) {
+        if (helpObj && rungCur && helpObj !== rungCur.obj) helpGlow(rungCur.obj);
+        return;
+      }
       if (rung) rung.done();
       rung = null;
       rungKey = sid;
+      hideCallout();
+      if (helpObj) helpGlow(null);
       const step = nx && nx.phase;
       if (!step || !Cook.Coach || !Cook.Coach.rungs) return;
-      if (step === "cups" && !(guided || (sel && sel.redo))) return; // (the answer: only while Nani helps)
-      const spec = () => rungSpec || (rungCur && rungCur.spec) || null;
+      const cur = rungCur;
+      if (!cur) return;
+      const answer = step === "cups";
+      if (answer && !(guided || (sel && sel.redo) || supported(cur.id))) return; // (the answer: only while it is study)
+      const items = ITEM_STEPS.has(step);
       const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
       // (under the spotlight the live thing takes a tap, and so do the bulbs and the "?": the help stays everyone's, Zafar, 21 Oct)
       const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"];
-      const item = {
-        get x() {
-          const sp = spec();
-          return sp ? sp.item.x : 0;
-        },
-        get y() {
-          const sp = spec();
-          return sp ? sp.item.y : 0;
-        },
-      };
-      const path = () => {
-        const sp = spec();
-        if (!sp) return { dx: 0, dy: -1 };
-        return typeof sp.path === "function" ? sp.path() : sp.path;
-      };
-      const move = (dx, dy, t) => {
-        if (!rungSpec) rungSpec = rungCur && rungCur.spec;
-        const sp = rungSpec;
-        if (sp) sp.move(dx, dy, t);
-        if (t >= 1) rungSpec = null;
-      };
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
-      rung = Cook.Coach.rungs("chai-tray", step, { name, target, live, item, path, move, line: () => UI.stepHelp && UI.stepHelp() });
+      const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
+      const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
+      rung = Cook.Coach.rungs("chai-tray", step, Object.assign(
+        { name, target, live, avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
+        answer ? { first: false } : {},
+        items
+          ? {
+              at: [0, LADDER.boxAt, null],
+              glowAt: LADDER.glowAt,
+              glow: (on) => {
+                if (on) {
+                  mark();
+                  showCallout(cur.id);
+                  helpGlow(lightObj());
+                } else {
+                  hideCallout();
+                  helpGlow(null);
+                }
+              },
+            }
+          : { line: () => UI.stepHelp && UI.stepHelp() }
+      ));
     };
     const coachEnd = () => {
       if (rung) rung.done();
       rung = null;
       rungKey = null;
+      hideCallout();
+      helpObj = null;
     };
 
     /*
@@ -1917,13 +1903,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
       else hideMic();
       // the focal rule: the next generic step pulses (a person's choice only when Nani helps)
-      const pick = nx && nx.obj && (nx.focal || guided || (sel && sel.redo)) ? nx.obj : null; // decision 51: a redo has help
+      // (CHAI-32: what the help lights glows and bounces at once, not after Nani's pause)
+      const pick = helpObj || (nx && nx.obj && (nx.focal || guided || (sel && sel.redo)) ? nx.obj : null); // decision 51: a redo has help
       // CHAI-25: a pan glows as a ring on its rim's centre
       const obj = pick && pick.panOf ? pick.panOf.glowRing : pick;
       if (glowing !== obj) {
         unglow();
         if (obj && obj.texture && obj.texture.key === RING) obj.setVisible(true).setAlpha(0.9);
-        if (obj) S.glow(obj, true, { bounce: !!obj.isJar });
+        if (obj) S.glow(obj, true, { bounce: !!obj.isJar, now: !!helpObj });
         glowing = obj;
       }
       // inactive shelf things step back about 10%
@@ -2069,13 +2056,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // CK-TB-01: a wrong spoonful taken back before Done is still this cup's first try (it's not redone, only marked)
         const tookBack = !round && !why.length && !pan.salt ? pan.firstWrong || [] : [];
         const rows = personRows(lad, pan.who);
+        const said = rows.filter((r) => !r.unsaid); // (CK-51: the water and the tea rows are on the card, never said)
         const bad = [];
         rows.forEach((r) => {
           const id = r.ids[0];
-          const ok = id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
+          const ok = id === "cook-paani" ? pan.has.water > 0 : id === "cook-chai" ? pan.has.leaves > 0 : id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
           if (ok) {
             UI.mission.tickItem(id, dish, { for: pan.who, no: r.no });
-            if (!round && !r.no && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
+            if (!round && !r.no && !r.unsaid && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
           } else {
             // the first try is the one scored: a redo marks nothing new
             if (!round) UI.mission.missItem(id, dish, { for: pan.who, no: r.no });
@@ -2083,25 +2071,27 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           }
         });
         // a wrong cup with no row of its own to blame (a plain chai with an extra in it): its person's first row
-        if (!round && (why.length || pan.salt) && !bad.length && rows[0]) UI.mission.missItem(rows[0].ids[0], dish, { for: pan.who, no: rows[0].no });
+        if (!round && (why.length || pan.salt) && !bad.length && said[0]) UI.mission.missItem(said[0].ids[0], dish, { for: pan.who, no: said[0].no });
         // CK-32: at the review the rows found wrong are red on that person's card (it stays open to show them), every try
-        if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : rows.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who });
+        if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : said.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who });
         if (!round) why.forEach((w) => ctx.listen(false, w));
         if (tookBack.length) {
           tookBack.forEach((t) => t.why && ctx.listen(false, t.why));
           // the row it was about (a spice nobody asked for: the person's extra row, or their first)
-          const r0 = rows.find((r) => tookBack.some((t) => t.row === r.ids[0])) || rows.find((r) => !r.no && r.ids[0] !== "cook-dudh" && r.ids[0] !== "cook-khun") || rows[0];
+          const r0 = rows.find((r) => tookBack.some((t) => t.row === r.ids[0])) || rows.find((r) => !r.no && !r.unsaid && r.ids[0] !== "cook-dudh" && r.ids[0] !== "cook-khun") || said[0] || rows[0];
           if (r0) UI.mission.missItem(r0.ids[0], dish, { for: pan.who, no: r0.no });
         }
         if (!guided && !round) {
           // the water and the leaves are in every chai: a cup made with both is their word used right (Zafar, 20 Oct: then
           // their chips are the speaker alone, like every other jar's; nothing is marked missed for them)
           if (got.chai) ["cook-paani", "cook-chai"].forEach((id) => Cook.markRight(id));
-          (got.milk ? Cook.markRight : Cook.markMiss)("cook-dudh");
+          // CHAI-32 (non-negotiable 4): a word the help showed this round is study: right, it is not counted as known
+          const right = (id, also) => !helped.has(id) && !helped.has(also) && Cook.markRight(id);
+          (got.milk ? right : Cook.markMiss)("cook-dudh");
           // (a count the jar stopped at its number, L1, is supported counting: it never advances the number word; rule 6)
-          if (p.khun && !pan.capped) (got.sugar ? Cook.markRight : Cook.markMiss)(Cook.numId(p.khun));
-          (got.sugar ? Cook.markRight : Cook.markMiss)("cook-khun");
-          if (p.extra) (got.extra ? Cook.markRight : Cook.markMiss)(p.extra);
+          if (p.khun && !pan.capped) (got.sugar ? right : Cook.markMiss)(Cook.numId(p.khun), "cook-khun");
+          (got.sugar ? right : Cook.markMiss)("cook-khun");
+          if (p.extra) (got.extra ? right : Cook.markMiss)(p.extra);
         }
         if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
         else {

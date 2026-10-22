@@ -143,26 +143,37 @@ test("EASY-08: the stuck spotlight hugs each live control's box; close neighbour
   assert.ok(r.y >= 44);
 });
 
-test("the 5 s spotlight's glow (Zafar, 22 Oct): a soft round glow from the item, never into a neighbour or the gap between two lit controls", () => {
-  // alone: the full glow on every side, a pill-round box
-  const [a] = Onboard.glowShapes([{ x: 200, y: 200, w: 100, h: 40 }]);
-  assert.deepEqual(a.reach, { l: Onboard.GLOW, r: Onboard.GLOW, t: Onboard.GLOW, b: Onboard.GLOW });
-  assert.equal(a.r, Math.min(a.w, a.h) / 2, "the roundest corners");
-  assert.ok(a.x < 200 && a.x + a.w > 300 - Onboard.GLOW * 2, "it grows past the control on the open sides");
-  // three pills 4 px apart in a row (ha, na, mic): the sides facing each other have no glow, the outer sides and top and bottom do
+test("EASY-08 (Zafar, 22 Oct): one rounded box round a group given together; the box has no glow of its own", () => {
+  // three controls in a row (haa, na, the mic): ONE box round all three, padded evenly
   const row = [{ x: 0, y: 0, w: 100, h: 40 }, { x: 104, y: 0, w: 100, h: 40 }, { x: 208, y: 0, w: 40, h: 40 }];
-  const [p, q, m] = Onboard.glowShapes(row);
-  assert.equal(p.reach.r, 0);
-  assert.equal(q.reach.l, 0);
-  assert.equal(q.reach.r, 0);
-  assert.equal(m.reach.l, 0);
-  assert.equal(p.reach.l, Onboard.GLOW);
-  assert.equal(m.reach.r, Onboard.GLOW);
-  assert.equal(q.reach.t, Onboard.GLOW);
-  // the blurred box never reaches a neighbour: its far edge, plus two blur widths, stops short of the next control
-  assert.ok(p.x + p.w + 2 * Onboard.GLOW_SD <= row[1].x);
-  // a neighbour to keep dark above, 10 px off: the glow upward stops short of it (half the gap less the hug pad: 0)
-  const [t] = Onboard.glowShapes([{ x: 0, y: 60, w: 100, h: 40 }], [{ x: 0, y: 0, w: 100, h: 50 }]);
-  assert.equal(t.reach.t, 0);
-  assert.equal(t.reach.b, Onboard.GLOW);
+  const b = Onboard.groupBox(row);
+  const P = Onboard.BOX_PAD;
+  assert.deepEqual([b.x, b.y, b.w, b.h, b.pad], [-P, -P, 248 + 2 * P, 40 + 2 * P, P]);
+  assert.ok(b.r > 0 && b.r <= 12, "rounded corners");
+  // one thing alone: its own box; a neighbour to keep dark 8 px above: the pad shrinks to half the gap, never lighting it
+  const one = Onboard.groupBox([{ x: 0, y: 50, w: 60, h: 80 }], [{ x: 0, y: 0, w: 60, h: 42 }]);
+  assert.equal(one.pad, 4);
+  assert.ok(one.y >= 42);
+  assert.equal(Onboard.groupBox([]), null);
+  // the outer glow round the box is gone (Zafar: "the rectangle itself doesn't need a glow")
+  assert.equal(Onboard.glowShapes, undefined);
+});
+
+test("SH-118: one dim for every game, a little darker than 0.62", () => {
+  assert.ok(Onboard.DIM >= 0.7 && Onboard.DIM <= 0.75);
+  assert.equal(Onboard.dimFill(), "rgba(30,18,10," + Onboard.DIM + ")");
+});
+
+test("SH-119: the one finger's cadence: tap, lift off, wait half a second, again; no long gaps", () => {
+  const T = Onboard.fingerMs();
+  const k = Onboard.fingerKeys();
+  assert.equal(k[0].o, 0);
+  assert.equal(k[k.length - 1].o, 1);
+  const press = k.find((f) => f.press);
+  const lifted = k[k.length - 2];
+  assert.ok(press && press.x === 0 && press.y === 0, "it presses on the point");
+  assert.ok(lifted.x > 0 && lifted.y > 0 && !lifted.press, "it lifts off");
+  assert.equal(Math.round((1 - lifted.o) * T), Onboard.FINGER.gap, "it waits lifted for the gap");
+  assert.equal(Onboard.FINGER.gap, 500);
+  assert.ok(T <= 1500, "one tap every " + T + " ms");
 });
