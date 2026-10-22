@@ -26,3 +26,15 @@ Branch `worktree-agent-aaeebedd6450b84d6` (from `ccr-1888a520-dk18y7` at 0406967
 - Mum needs to record chai, paani and dudh as single words for the microphone.
 - The fx art fails `artcheck` (above).
 - Old rows to recheck: CHAI-26 (the pour), CHAI-08, CHAI-19, CK-27 (the splash is back, painted).
+
+## Fix round (CHAI-31, EASY-04)
+- Black tea's glass is the s08c black-tea glass: the pan's tea colour, in pan, stream and glass. Milky stays the s08c chai.
+- The splash only shows for water going into the pan; a served glass has the sparkle alone.
+- The conversation bubble's face is the speaker's own portrait.
+- A short sidebar (G1 compact 2+) goes back to plain rows: L4 at 915x412 no longer overflows.
+- The burner flame is already off while the pan pours.
+- **Proof:** unit, words and static are ok. Sandbox `s11-cook-fix1` and `s11-cook-fix2` (chai L1/L3/L4 and the lab at 1366x768 and 915x412): all reach their end, 0 breaks.
+- **Frames:** `build/screenshots/s11-cook/fix1/`:
+  - `{1366x768,915x412}-pour-1..6.png` and `-fx-sparkle.png` (915x412 L1; at 1366x768 L1 the pour frames only: the rest was overwritten by the L4 run)
+  - `915x412-conversation.png` (L1) and `1366x768-conversation.png` (from the L4 run)
+  - `1366x768-served-no-done.png` and `1366x768-served-moving-on.png` (L4: every card ticked, no Done or Next, then back in the kitchen)
