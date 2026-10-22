@@ -445,18 +445,7 @@
       });
       S.clear(liquidG);
       boingSound();
-      // the stars and hearts round the spot (kept), drifting up
-      const fun = s("g", {}, countG);
-      for (let k = 0; k < 7; k++) {
-        const a = -Math.PI / 2 + (k - 3) * 0.42;
-        const g = s("g", {}, fun);
-        if (k % 2) s("path", { d: "M0 -6 C-6 -14 -16 -6 0 6 C16 -6 6 -14 0 -6Z", fill: "#f28aa0", stroke: "#c95a78", "stroke-width": 2 }, g);
-        else s("path", { d: "M0 -10 L3 -3 L10 -3 L4 2 L6 9 L0 5 L-6 9 L-4 2 L-10 -3 L-3 -3Z", fill: "#ffd84a", stroke: "#e8a02f", "stroke-width": 2 }, g);
-        const x1 = A.x + Math.cos(a) * 90;
-        const y1 = A.y - 40 + Math.sin(a) * 90;
-        if (g.animate) g.animate([{ transform: `translate(${A.x}px, ${A.y - 30}px) scale(.2)`, opacity: 0 }, { transform: `translate(${x1}px, ${y1}px) scale(1.3)`, opacity: 1 }, { transform: `translate(${x1}px, ${y1 - 20}px) scale(1)`, opacity: 0 }], { duration: D(900), fill: "forwards" });
-        else g.setAttribute("transform", `translate(${x1} ${y1})`);
-      }
+      // (the code-drawn stars and hearts round the spot are off with the other code effects: Zafar, 21 Oct, on the judge's round)
       S.face("giggle", 900);
       // the syringe lifts away and goes
       const lift = syG.animate ? syG.animate([{ transform: `translate(${OVER.dx}px, ${OVER.dy + 10}px)`, opacity: 1 }, { transform: `translate(${OVER.dx}px, ${OVER.dy - 50}px)`, opacity: 0 }], { duration: D(600), delay: D(250), easing: "ease-in", fill: "forwards" }) : null;

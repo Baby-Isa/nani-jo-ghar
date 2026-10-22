@@ -266,6 +266,20 @@
         s("image", { href: url(hd.src), x: b[0] + hd.crop[0] * k, y: b[1] + hd.crop[1] * k, width: (hd.crop[2] - hd.crop[0]) * k, height: (hd.crop[3] - hd.crop[1]) * k, preserveAspectRatio: "none", class: "tooth-teeth-hd" }, face2);
       }
     }
+    if (artMode && mouthArt.glint) {
+      // Sprint 10 (the judge: "a hard-edged pale rectangle covers the top of the tooth"): the mouth picture has a pale
+      // rectangular glint baked into the sore tooth's top (in the 1x and in the upscaled teeth alike). A feathered patch
+      // of the tooth's own surface from just below it (the same two pictures, shifted) covers it, so no box edge shows
+      const G = mouthArt.glint; // {x, y, rx, ry, dy, blur}: the glint's ellipse and where the clean surface is, in this layer's units
+      const gd = s("defs", {}, face2);
+      const gf = s("filter", { id: `${uid}-gblur`, x: "-60%", y: "-60%", width: "220%", height: "220%" }, gd);
+      s("feGaussianBlur", { stdDeviation: G.blur }, gf);
+      const gm = s("mask", { id: `${uid}-gm`, maskUnits: "userSpaceOnUse", x: G.x - G.rx * 2, y: G.y - G.ry * 3, width: G.rx * 4, height: G.ry * 6 }, gd);
+      s("ellipse", { cx: G.x, cy: G.y, rx: G.rx, ry: G.ry, fill: "#fff", filter: `url(#${uid}-gblur)` }, gm);
+      const patch = s("g", { class: "tooth-glint-patch", mask: `url(#${uid}-gm)` }, face2);
+      const shifted = s("g", { transform: `translate(0 ${-G.dy})` }, patch);
+      [...face2.querySelectorAll(":scope > image")].forEach((im) => shifted.appendChild(im.cloneNode(true)));
+    }
     const ds = s("g", { class: "tooth-drill-space", transform: dsT }, face2); // the drill's units
     const toothPath = (x0, x1, y0, y1) => `M${x0} ${y0} Q${(x0 + x1) / 2} ${y0 - 26} ${x1} ${y0} L${x1 - 6} ${y1 - 40} Q${x1 - 14} ${y1 + 6} ${(x0 + x1) / 2} ${y1} Q${x0 + 14} ${y1 + 6} ${x0 + 6} ${y1 - 40}Z`;
     if (!artMode) {
