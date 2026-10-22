@@ -1,0 +1,34 @@
+{
+  "name": "s11-clinic: the flash-card eye test and toothbrushing (Sprint 11)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "two redesigned mini-games with their feel, leak test and onboarding: judgement and visual work",
+  "cost": "about $55-75",
+  "stop": "23 Oct 2026, 08:00 UK",
+  "branch": "ccr-1888a520-dk18y7",
+  "read": [
+    "docs/game-design/easy-to-play.md (principles 1-11; B-clinic)",
+    "docs/sprints/S11-easy-to-play.md (Zafar's 22 Oct changes)",
+    "build/reports/s11-step0.md and the API at the top of js/shared/word-card.js",
+    "docs/game-design/modes/clinic.md (the eye and tooth games)"
+  ],
+  "owns": [
+    "js/clinic/heal/games/eye.js and data/clinic/heal/eye.json",
+    "js/clinic/heal/games/tooth.js and data/clinic/heal/tooth.json",
+    "js/clinic/heal/scene.js, css/clinic.css",
+    "build/tools/review/leak-configs entries for eye and tooth only",
+    "build/reports/s11-clinic.md"
+  ],
+  "readOnly": ["js/shared/** (Step 0's)", "js/cook/** (s11-cook)", "other heal games (keep working)", "data/lang/** (words come from the engine; missing ones are reported, never written)", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "Eye test: retire the chart (ROWS, drawChart, versions A/B; keep the drops part). The doctor holds up one big WordCard.card at a time on the existing stand (the hand-held card art comes from the art run later). Cards use the kitchen words already recorded (chai, dudh, paani and the like) so the eye test reviews Cook's words. The girl says her guess every 1.5 s until the player taps big haa or na (at least 120 px wide); she can be right or wrong. Four judged cards per round (blind 'always haa' about 9%, under 10%). The first card is the demo, unscored. A wrong answer: a gentle shake and the doctor names the card. The player can also say haa or na (Speech.listen); the pills always work. No Next, no Done: the round moves on by itself.", "accept": "frames at 1366x768, 1480x924, 915x412 of the card held up with her guess and the big haa/na; the leak bot for eye passes" },
+    { "do": "Toothbrushing (Zafar, 21 Oct): a large plus-shaped track with the brush at its centre; it moves only along the vertical and horizontal channels; pulled to the end of a channel it snaps back to the centre. Each end has a clear target (a tooth-shine spot the brush head must meet), not bare dots. The order is direction cards (WordCard with an arrow picture and the word: dabo left, jamno right, mathe up, niche down; up, down and right may be to-record placeholders: use what the engine gives, never write Kutchi). A wrong direction bumps the brush gently back and the patient says the right word again. Dirt overlaid in code: at L1-2 only on the directions in the order; from L3 on all four sides. The first time, the real brush demonstrates (Onboard.demo). No Done: the step moves on when the order is brushed.", "accept": "a filmstrip at 1366x768 and 1480x924: the cross, a pull to the end and the snap back, a wrong direction; a frame at 915x412; the leak bot for tooth passes" },
+    { "do": "Onboarding on both games: the real item demonstrates the first time (Onboard.demo), Onboard.stuck runs the 5 s and 15 s rungs; everything but the live control is inert while the spotlight shows.", "accept": "a frame of each game's first-time demo" },
+    { "do": "The drill (Sprint 10) and the drops keep working; every clinic flow still ends.", "accept": "clinic:heal-eye, clinic:heal-tooth, clinic:patient, clinic:morning reach their end at the three sizes" }
+  ],
+  "flows": ["clinic:heal-eye", "clinic:heal-tooth", "clinic:patient", "clinic:morning"],
+  "port": 8842,
+  "report": "s11-clinic",
+  "publish": false
+}

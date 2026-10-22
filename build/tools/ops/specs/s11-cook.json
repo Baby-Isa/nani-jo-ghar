@@ -1,0 +1,37 @@
+{
+  "name": "s11-cook: chai, easy to play and easy to learn (Sprint 11)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "visual layout, the coded pour and the feel of the order: judgement and visual work",
+  "cost": "about $55-75",
+  "stop": "23 Oct 2026, 08:00 UK",
+  "branch": "ccr-1888a520-dk18y7",
+  "read": [
+    "docs/game-design/easy-to-play.md (principles 1-11; B-cook)",
+    "docs/sprints/S11-easy-to-play.md (Zafar's 22 Oct changes)",
+    "build/reports/s11-step0.md and the API at the top of js/shared/word-card.js (WordCard, Onboard.demo/stuck, NjgButtons.moveOn, PlayLog)",
+    "docs/game-design/modes/cook.md (chai) and docs/design-language/guide-and-card.md"
+  ],
+  "owns": [
+    "js/cook/ui.js, js/cook/coach.js, css/cook.css",
+    "js/cook/stations/chai-tray.js and data/stations/chai-tray.json",
+    "data/cook.json (onboard, calm, chai only)",
+    "js/shared/order-card.js (rowEl delegates to WordCard.row)",
+    "build/reports/s11-cook.md"
+  ],
+  "readOnly": ["js/shared/** other than order-card.js (Step 0's)", "js/clinic/** (s11-clinic)", "other Cook stations and mechanics (keep working; don't redesign)", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "The kitchen conversation plays before the chai order (Conversations.maybe with the CK1/CK2 placements, hooked before M.introduce, about js/cook/ui.js:1284), so the child hears it modelled before being asked.", "accept": "a frame at both sizes of the conversation bubble at the speaker before the order" },
+    { "do": "The order: the asker's face and bubble stay visible (the pop-up no longer covers the face). Items are said one by one; each pops a WordCard.row from the guide box (#guide, top left) into the card (#mission) as it is said, with picture, Kutchi, English and speaker, fading by the word's stage. OrderCard.rowEl delegates to WordCard.row so every mode keeps one card. Chai L1 uses four words at most (chai, dudh, khun, paani or the recorded set). Each word is heard at the order, at the shelf and at the pour.", "accept": "frames at 1366x768, 1480x924, 915x412: the order mid-way with one card flying from the guide and the face visible; the card after the order" },
+    { "do": "Pans true top-down and centred on the burner (TOP.turn 0; drop the s08c three-quarter pour frames pan-tip-*-s08c.webp). The pour is coded from the one top-down pan: it lifts over the glass, squashes slightly along the tilt (how a tilt looks from above), the tea surface slides toward the spout, and NjgPour.stream leaves from the spout. It must read as natural; a filmstrip shows it.", "accept": "a pour filmstrip at 1366x768 and 1480x924 (6 frames)" },
+    { "do": "No Next and no Done (Zafar, 22 Oct): #go-btn's waits use NjgButtons.moveOn; chai's own Done (chai-tray.js ~1310) goes: each step moves on by itself when complete; a count ends at the right number and an extra tap doesn't land; a placed item can be tapped to take it back until the step moves on. Every Cook station keeps working (the shared #go-btn moves on by itself).", "accept": "the chai flow and every Cook station flow reach their end in the sandbox at the three sizes (`run.mjs --touched` with the Cook flows); a frame of the chai cup step with no Done" },
+    { "do": "Onboarding: the first time each chai action appears, the real item demonstrates it (Onboard.demo: the pan lifts to the glass, the jar tips over the cup), then the child does it; Onboard.stuck runs the 5 s and 15 s rungs on the live target. coach.js's chai scripts move onto this.", "accept": "a filmstrip at 1366x768: first-time demo with the real pan, then the 5 s spotlight" },
+    { "do": "Speaking as play: the child can call 'chai' (or the recorded word) to serve the glass using Speech.listen({choices}) from js/shared/speech.js; a tap always works too; a miss is a shrug; never a gate.", "accept": "the serve step works by tap in the sandbox; speech path unit-tested or noted" },
+    { "do": "New effects, art-consistent: motion on the real item art (settle, small squash and bounce when an item lands) and soft sounds through js/shared/sfx.js (clink, pour, pop) from CC0 sources, credited in the report; no code-drawn dots, rings or sparkles.", "accept": "a filmstrip of an item landing at 1366x768" }
+  ],
+  "flows": ["cook:chai-tray", "lab:cook/chai-tray", "cook:fetch", "cook:mishkaki-grill", "cook:daar", "cook:samosa", "cook:maani-line", "cook:chaat", "day:full-kitchen"],
+  "port": 8841,
+  "report": "s11-cook",
+  "publish": false
+}

@@ -1,0 +1,70 @@
+SESSION NAME / MODE:  s11-clinic: the flash-card eye test and toothbrushing (Sprint 11)
+MODEL AND EFFORT:     Opus, high effort (two redesigned mini-games with their feel, leak test and onboarding: judgement and visual work)
+COST ESTIMATE:        about $55-75
+HARD STOP:            23 Oct 2026, 08:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-1888a520-dk18y7. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s11-clinic.context.md (836 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/game-design/easy-to-play.md (principles 1-11; B-clinic)
+     docs/sprints/S11-easy-to-play.md (Zafar's 22 Oct changes)
+     build/reports/s11-step0.md and the API at the top of js/shared/word-card.js
+     docs/game-design/modes/clinic.md (the eye and tooth games)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/heal/games/eye.js and data/clinic/heal/eye.json
+  - js/clinic/heal/games/tooth.js and data/clinic/heal/tooth.json
+  - js/clinic/heal/scene.js, css/clinic.css
+  - build/tools/review/leak-configs entries for eye and tooth only
+  - build/reports/s11-clinic.md
+READ-ONLY (never edit):
+  - js/shared/** (Step 0's)
+  - js/cook/** (s11-cook)
+  - other heal games (keep working)
+  - data/lang/** (words come from the engine; missing ones are reported, never written)
+  - CLAUDE.md and docs/
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Eye test: retire the chart (ROWS, drawChart, versions A/B; keep the drops part). The doctor holds up one big WordCard.card at a time on the existing stand (the hand-held card art comes from the art run later). Cards use the kitchen words already recorded (chai, dudh, paani and the like) so the eye test reviews Cook's words. The girl says her guess every 1.5 s until the player taps big haa or na (at least 120 px wide); she can be right or wrong. Four judged cards per round (blind 'always haa' about 9%, under 10%). The first card is the demo, unscored. A wrong answer: a gentle shake and the doctor names the card. The player can also say haa or na (Speech.listen); the pills always work. No Next, no Done: the round moves on by itself.
+     Accept: frames at 1366x768, 1480x924, 915x412 of the card held up with her guess and the big haa/na; the leak bot for eye passes
+  2. Toothbrushing (Zafar, 21 Oct): a large plus-shaped track with the brush at its centre; it moves only along the vertical and horizontal channels; pulled to the end of a channel it snaps back to the centre. Each end has a clear target (a tooth-shine spot the brush head must meet), not bare dots. The order is direction cards (WordCard with an arrow picture and the word: dabo left, jamno right, mathe up, niche down; up, down and right may be to-record placeholders: use what the engine gives, never write Kutchi). A wrong direction bumps the brush gently back and the patient says the right word again. Dirt overlaid in code: at L1-2 only on the directions in the order; from L3 on all four sides. The first time, the real brush demonstrates (Onboard.demo). No Done: the step moves on when the order is brushed.
+     Accept: a filmstrip at 1366x768 and 1480x924: the cross, a pull to the end and the snap back, a wrong direction; a frame at 915x412; the leak bot for tooth passes
+  3. Onboarding on both games: the real item demonstrates the first time (Onboard.demo), Onboard.stuck runs the 5 s and 15 s rungs; everything but the live control is inert while the spotlight shows.
+     Accept: a frame of each game's first-time demo
+  4. The drill (Sprint 10) and the drops keep working; every clinic flow still ends.
+     Accept: clinic:heal-eye, clinic:heal-tooth, clinic:patient, clinic:morning reach their end at the three sizes
+
+REGRESSION ROWS TO RECHECK (92 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (10): CLN-87*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81
+  clinic:heal-eye (55): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-85, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+  clinic:heal-tooth (48): CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-180*, CLN-35*, CLN-43*, CLN-52*, CLN-09, CLN-30, CLN-42, CLN-44, CLN-51, CLN-53, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-69, CLN-154, CLN-155, CLN-157, DRILL-01, FX-01, CLN-141, CLN-181, CLN-182, CLN-183, CLN-184, CLN-198
+  clinic:patient (17): CLN-82*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-153, CLN-01, CLN-152, CLN-159
+  clinic:morning (17): CLN-82*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-153, CLN-01, CLN-152, CLN-159
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye,clinic:heal-tooth,clinic:patient,clinic:morning --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s11-clinic-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s11-clinic` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8842.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8842; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s11-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
