@@ -700,7 +700,7 @@
     if (!from) return Promise.resolve(false);
     const pts = offsets(path, from);
     if (!pts.length) pts.push({ x: 0, y: -Math.max(24, (elx ? rectOf(elx).h : 60) * 0.3) });
-    LCnote("demo", { step: o.step != null ? String(o.step) : "", gesture: "item" });
+    if (!o.quiet) LCnote("demo", { step: o.step != null ? String(o.step) : "", gesture: "item" }); // (a rung logs its own: one help)
     const ms = o.ms || 600 + 500 * pts.length;
     // a leg out to each point, a short hold at the last, and home
     const keys = [{ x: 0, y: 0, o: 0 }];
@@ -868,7 +868,7 @@
     const demo = () => {
       if (busy || h.over) return Promise.resolve();
       busy = true;
-      return Onboard.demo(item, o.path, { step: name, move: o.move, hand: o.hand, ms: o.ms }).finally(() => (busy = false));
+      return Onboard.demo(item, o.path, { step: name, move: o.move, hand: o.hand, ms: o.ms, quiet: true }).finally(() => (busy = false));
     };
     const closeSpot = () => {
       if (spot) spot.close();

@@ -52,19 +52,16 @@ canvas.day-layer { width: 100%; height: 100%; }
 
 /* ---------- the door's sidebar: two cards, the weather and the day's activity, each as its sentence is said (idea 55) ---------- */
 .day-door .day-side { display: flex; flex-direction: column; gap: var(--njg-s3); padding-right: max(var(--njg-side-pad), var(--njg-s2)); box-sizing: border-box; overflow: hidden; }
-.day-wcard { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); visibility: hidden; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .4s, transform .4s, visibility 0s .4s; }
-.day-wcard.in { visibility: visible; opacity: 1; transform: none; transition: opacity .4s, transform .4s; }
-.day-wpic { position: relative; flex: 0 1 auto; min-height: 0; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--njg-radius); overflow: hidden; background: var(--njg-cream); }
-.day-wpic > img.day-wbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.day-wpic > img.day-wbg.contain { object-fit: contain; }
-.day-wpic > img.day-wsprite { position: absolute; width: auto; transform: translate(-50%, -100%); display: block; }
-.day-wpic > canvas.day-rain { position: absolute; inset: 0; width: 100%; height: 100%; }
-.day-wword { flex: none; display: flex; align-items: center; gap: var(--njg-s2); min-width: 0; }
-.day-wspk { flex: none; width: var(--njg-tap); height: var(--njg-tap); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
-.day-wspk svg { width: 24px; height: 24px; display: block; }
-.day-wspk.on { box-shadow: 0 0 0 4px var(--njg-focus); }
-.day-wline { min-width: 0; }
-.day-wline .day-k { font-size: var(--njg-t2); }
+/* each card is the shared word card (css/shared/word-card.css; Sprint 11): only its place in the sidebar, its arrival and the
+   door's own picture layers are the door's */
+.day-wcard.wc { flex: 0 1 auto; min-height: 0; visibility: hidden; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .4s, transform .4s, visibility 0s .4s; }
+.day-wcard.wc.in { visibility: visible; opacity: 1; transform: none; transition: opacity .4s, transform .4s; }
+.day-wcard .wc-pic > img.day-wbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.day-wcard .wc-pic > img.day-wbg.contain { object-fit: contain; }
+.day-wcard .wc-pic > img.day-wsprite { position: absolute; width: auto; transform: translate(-50%, -100%); display: block; }
+.day-wcard .wc-pic > canvas.day-rain { position: absolute; inset: 0; width: 100%; height: 100%; }
+.day-wcard .day-wline { min-width: 0; }
+.day-wcard .day-wline .day-k { margin: 0; font-size: var(--njg-t2); }
 
 /* the child's answer: the shared Ha! and Na pills, bottom right of the play area */
 .day-answer { position: absolute; right: var(--njg-s6); bottom: var(--njg-s6); z-index: 3; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .3s, transform .3s; }

@@ -18,30 +18,32 @@
 /* the strip: the speaker, then the Kutchi with the English beneath */
 .wc-strip { flex: 1 1 auto; display: flex; align-items: center; gap: var(--njg-s2); min-width: 0; }
 .wc-card .wc-strip { flex: none; }
-.wc-spk { flex: none; width: var(--njg-tap); height: var(--njg-tap); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-cream); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
+.wc-spk { flex: none; width: var(--njg-tap); height: var(--njg-tap); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
 .wc-spk svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
 .wc-spk.on { box-shadow: 0 0 0 4px var(--njg-focus); }
 .wc-words { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
-.wc-slot.wc-k, .wc-slot.wc-en { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.wc-k { font-size: var(--njg-t2); font-weight: 700; line-height: 1.2; color: var(--njg-word); }
-.wc-row .wc-k { font-size: var(--njg-t3); }
+
+/* the two text slots keep one height whether shown or blank (four fixed slots): the same edge, transparent when shown */
+.wc-slot.wc-k, .wc-slot.wc-en { margin: 0; min-width: 0; overflow-wrap: anywhere; box-sizing: border-box; padding: 0 var(--njg-s1); border: var(--njg-line-2) solid transparent; border-radius: var(--njg-radius); display: flex; align-items: center; }
+.wc-k { font-size: var(--njg-t2); font-weight: 700; line-height: 1.2; color: var(--njg-word); min-height: calc(var(--njg-t2) * 1.2 + var(--njg-line-2) * 2); }
+.wc-row .wc-k { font-size: var(--njg-t3); min-height: calc(var(--njg-t3) * 1.2 + var(--njg-line-2) * 2); }
 .wc-k.to-record { font-style: italic; color: var(--njg-ink-soft); }
-.wc-en { font-size: var(--njg-t4); line-height: 1.25; color: var(--njg-ink-soft); }
+.wc-en { font-size: var(--njg-t4); line-height: 1.25; color: var(--njg-ink-soft); min-height: calc(var(--njg-t4) * 1.25 + var(--njg-line-2) * 2); }
 .wc-en.none { display: none; }
+.wc-k > *, .wc-en > * { min-width: 0; }
 
 /* a blanked slot: it keeps its place, a dashed outline and the free reveal */
 .wc-slot.blank { display: flex; align-items: center; justify-content: flex-start; border: var(--njg-line-2) dashed var(--njg-cream-edge); border-radius: var(--njg-radius); background: var(--njg-tint); }
 .wc-pic.blank { justify-content: center; }
-.wc-k.blank { min-height: calc(var(--njg-t2) * 1.2 + var(--njg-s1) * 2); padding: 0 var(--njg-s1); box-sizing: border-box; }
-.wc-row .wc-k.blank { min-height: calc(var(--njg-t3) * 1.2 + var(--njg-s1) * 2); }
-.wc-en.blank { min-height: calc(var(--njg-t4) * 1.25 + var(--njg-s1) * 2); padding: 0 var(--njg-s1); box-sizing: border-box; }
-.wc-reveal { flex: none; width: calc(var(--njg-tap) * 0.75); height: calc(var(--njg-tap) * 0.75); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
+.wc-reveal { position: relative; flex: none; width: calc(var(--njg-tap) * 0.75); height: calc(var(--njg-tap) * 0.75); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
 .wc-pic .wc-reveal { width: var(--njg-tap); height: var(--njg-tap); }
-.wc-reveal svg { width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); display: block; }
-/* the text slots' reveal is smaller than their tap target would suggest, so its tap area is widened round it */
-.wc-k .wc-reveal, .wc-en .wc-reveal { position: relative; width: calc(var(--njg-icon) * 1.25); height: calc(var(--njg-icon) * 1.25); }
-.wc-k .wc-reveal::after, .wc-en .wc-reveal::after { content: ""; position: absolute; inset: calc(var(--njg-s2) * -1); }
 .wc-row .wc-pic .wc-reveal { width: calc(var(--njg-tap) * 0.75); height: calc(var(--njg-tap) * 0.75); }
+.wc-reveal svg { width: 70%; height: 70%; display: block; }
+/* the text slots' eye fits the line; its tap area reaches round it */
+.wc-k .wc-reveal { width: calc(var(--njg-t2) * 1.2); height: calc(var(--njg-t2) * 1.2); }
+.wc-row .wc-k .wc-reveal { width: calc(var(--njg-t3) * 1.2); height: calc(var(--njg-t3) * 1.2); }
+.wc-en .wc-reveal { width: calc(var(--njg-t4) * 1.25); height: calc(var(--njg-t4) * 1.25); border-width: var(--njg-line); }
+.wc-k .wc-reveal::after, .wc-en .wc-reveal::after { content: ""; position: absolute; inset: calc(var(--njg-s3) * -1); }
 
 /* WordCard.pop: the copy in flight, and the row waiting for it */
 .wc.wc-away { visibility: hidden; }

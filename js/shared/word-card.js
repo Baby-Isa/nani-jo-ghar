@@ -120,15 +120,13 @@
   }
   function fillKutchi(box, word) {
     box.innerHTML = "";
-    const k = word.kutchi;
-    if (word.rec) {
-      box.classList.add("to-record");
-      box.dataset.rec = "";
-      box.lang = "en";
-      box.textContent = typeof k === "string" ? k : word.english || "";
-      return;
-    }
-    box.lang = "gu-Latn";
+    let k = word.kutchi;
+    // still to record (decision 84): the English placeholder, grey italic, flagged in the markup only
+    box.classList.toggle("to-record", !!word.rec);
+    if (word.rec) box.dataset.rec = "";
+    else delete box.dataset.rec;
+    box.lang = word.rec ? "en" : "gu-Latn";
+    if (k == null && word.rec) k = word.english || "";
     if (k == null) return;
     if (typeof k === "string") box.textContent = k;
     else if (k.nodeType) box.appendChild(k);
@@ -189,6 +187,7 @@
       },
     };
     const showsOf = (s) => ({ picture: s.picture, text: s.kutchi, english: s.english && !word.rec });
+    const filled = {};
     const draw = () => {
       const shows = showsOf(st.slots);
       Object.keys(boxes).forEach((k) => {
@@ -200,9 +199,12 @@
         b.classList.toggle("none", none);
         b.classList.toggle("revealed", revealed.has(k) && !shows[k]);
         if (on) {
-          fill[k]();
+          // filled once (a picture's own effects, the door's rain, start once)
+          if (!filled[k]) fill[k]();
+          filled[k] = true;
           return;
         }
+        filled[k] = false;
         b.innerHTML = "";
         if (none) return;
         const r = el("button", "wc-reveal", b);

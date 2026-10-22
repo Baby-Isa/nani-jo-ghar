@@ -9,7 +9,8 @@
  *                (each starts only when the one before has been said, on the one voice queue): the weather word alone, then in
  *                a sentence, then the day's lines; each line's Kutchi with its English written beneath (rule 5's door exception)
  *   the sidebar  two cards, each appearing as its sentence is said (idea 55): today's weather, then the day's activity, each
- *                with the speaker and its word's Kutchi beneath
+ *                the shared word card (js/shared/word-card.js; Sprint 11): its picture, the speaker, its word's Kutchi and English,
+ *                the slots faded by the word's stage in the progress words (English, then the picture, then the text)
  *   the answer   the shared Ha! and Na pills (js/shared/buttons.js); Na shakes, Ha! starts the day
  * Every line is an engine meaning (data/day.json); what the engine can't say yet is its English in grey italic, to record.
  *
@@ -17,6 +18,14 @@
  *       day: the runner's day view (js/day/day.js): day.weather, day.lines (a key of data/day.json activities or trips)
  */
 import { paintDoor, rain } from "./sky.js";
+import "../shared/word-card.js"; // window.WordCard (a classic script, imported for its side effect)
+
+/** A door card's word id in the progress words (its lexicon id, or its meaning's phrase or kind). */
+export function wordId(def, kind) {
+  const d = def || {};
+  const m = d.meaning || {};
+  return String(d.word || m.x || m.kind || `door.${kind}`);
+}
 
 const SPK = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
 const el = (tag, cls, parent) => {
@@ -160,23 +169,29 @@ export async function runDoor(host, api, day) {
     api.say(shown.ln, { el: shown.row, who: "nani", min: false }).then(() => bubble.classList.remove("speaking"));
   });
 
-  // ---- the sidebar's two cards (idea 55): the weather, then the day's activity ----
-  const card = (kind, picFill, ln) => {
-    const c = el("section", "day-wcard", side);
-    c.dataset.card = kind;
-    const pic = el("div", "day-wpic", c);
-    picFill(pic);
-    const row = el("div", "day-wword", c);
-    const b = el("button", "day-wspk", row);
-    b.type = "button";
-    b.setAttribute("aria-label", "");
-    b.innerHTML = SPK;
+  // ---- the sidebar's two cards (idea 55): the weather, then the day's activity, each the shared word card ----
+  // (Sprint 11, Step 0: js/shared/word-card.js; its slots fade by the word's stage: English, then the picture, then the text)
+  const WordCard = window.WordCard;
+  WordCard.useCss(url("css/shared/word-card.css"));
+  const progress = api.core && api.core.progress;
+  window.Day.doorCards = [];
+  const card = (kind, picFill, ln, def) => {
+    const id = wordId(def, kind);
     const line = api.render(ln, { cls: "day-wline" });
-    row.appendChild(line);
-    b.addEventListener("click", () => {
-      b.classList.add("on");
-      api.say(ln, { el: line, who: "nani", min: false }).then(() => b.classList.remove("on"));
-    });
+    const c = WordCard.card(
+      side,
+      {
+        id,
+        kutchi: line,
+        english: ln.en,
+        rec: !ln.ok,
+        picture: (box) => picFill(box),
+        say: () => api.say(ln, { el: line, who: "nani", min: false }),
+      },
+      { progress, cls: "day-wcard" }
+    );
+    c.dataset.card = kind;
+    window.Day.doorCards.push({ kind, id, stage: c.wc.stage, slots: c.wc.slots });
     return c;
   };
   const SK = look.skies[wkey] || look.skies.sunny;
@@ -190,7 +205,8 @@ export async function runDoor(host, api, day) {
       im.style.objectPosition = SK.card || "50% 30%";
       if (W.rain) stops.push(rain(pic, W.rain, 400, 300, () => api.speed));
     },
-    api.line(W.word)
+    api.line(W.word),
+    W.word
   );
   const activityCard = card(
     "activity",
@@ -214,7 +230,8 @@ export async function runDoor(host, api, day) {
         Object.assign(sp.style, { left: `${s.x * 100}%`, top: `${s.y * 100}%`, height: `${s.h * 100}%` });
       });
     },
-    api.line(A.word || { meaning: { fn: "Item", kind: `n.${day.lines}` }, en: day.lines })
+    api.line(A.word || { meaning: { fn: "Item", kind: `n.${day.lines}` }, en: day.lines }),
+    A.word || { meaning: { fn: "Item", kind: `n.${day.lines}` } }
   );
 
   scn.onFit((g) => {
