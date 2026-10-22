@@ -167,6 +167,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
     ["v2-glass-empty", `${S8C}glass/glass-empty-top-s08c.webp`],
     ["v2-glass-full", `${S8C}glass/glass-chai-top-s08c.webp`],
+    // CHAI-31 (the judge, 22 Oct: "dark maroon in the pan but amber in the glass"): black tea's glass is the s08c set's own
+    // black-tea glass, the pan's tea colour (the half glass composed as the milky one's)
+    ["v2-glass-black-full", `${S8C}glass/glass-black-top-s08c.webp`],
   ]
     .concat(Object.values(TOP.looks).map((t) => [t.key, t.file]))
     .concat(DISCS.map((k) => [`v3-pan-${k}`, BREW8[k] ? BREW8[k].file : `${V3}pan-${k}.webp`]))
@@ -276,6 +279,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       ct.refresh();
     };
     half8("v2-glass-half", "v2-glass-full");
+    half8("v2-glass-black-half", "v2-glass-black-full");
     if (St.hasArt(S, "chai-glass-black-full")) half8(St.artKey("chai-glass-black-half"), St.artKey("chai-glass-black-full"));
     let lastPhase = null;
     const steps = St.steps(ctx);
@@ -930,7 +934,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       stream.destroy();
       pan.fading = false;
       setLook(pan);
-      fx("splash", pan.x, pan.y, { w: rIn * 0.95 }); // (it went in: CK-27, the painted splash)
+      // (it went in: CK-27, the painted splash. CHAI-31: the splash is water's own, so only water shows it)
+      if (color === COL.water) fx("splash", pan.x, pan.y, { w: rIn * 0.95 });
       await new Promise((r) => S.tweens.add({ targets: art, angle: 0, duration: 180, onComplete: r }));
       await S.fly(art, obj.x, obj.y - obj.displayHeight / 2, { duration: 320, arc: 40 });
       art.destroy();
@@ -1016,7 +1021,6 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await spoonInto(pan, obj, id);
         drawBits(pan);
         land(panLayers(pan), { k: 0.03, top: true, ms: 260 }); // (the spoonful lands: the pan gives a little)
-        if (pan.has.water > 0 || pan.has.milk > 0) fx("splash", pan.x, pan.y, { w: rIn * 0.6, ms: 420 });
         // the leaves (or a spice) land: the next picture fades in
         if (id === "cook-chai" && pan.level < 0.05) pan.level = 0.12;
         fadeLook(pan, look);
@@ -1132,7 +1136,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const g = w.glass[st];
         if (!g || g.blackDone) return;
         g.blackDone = true;
-        if (St.hasArt(S, `chai-glass-black-${st}`)) {
+        if (S.textures.exists(`v2-glass-black-${st}`)) {
+          const [dw, dh] = [g.displayWidth, g.displayHeight];
+          g.setTexture(`v2-glass-black-${st}`).setDisplaySize(dw, dh);
+        } else if (St.hasArt(S, `chai-glass-black-${st}`)) {
           const [dw, dh] = [g.displayWidth, g.displayHeight];
           g.setTexture(St.artKey(`chai-glass-black-${st}`)).setDisplaySize(dw, dh);
         }
@@ -1419,7 +1426,6 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       ["empty", "half", "full"].forEach((s2) => w.glass[s2].setAlpha(s2 === st(to) ? 1 : 0));
       pan.poured = to;
       w.fill = to;
-      fx("splash", w.x, w.y, { w: w.glass.empty.displayWidth * 0.62 }); // (the chai went into the glass)
       body.setVisible(true).setPosition(pan.x, pan.y).setAngle(TOP.turn).setScale(s8).setDepth(D.item);
       land(body, { k: 0.04, top: true }); // (it sets down on the burner: a small settle)
       land(w.glass[st(to)], { k: 0.05, top: true }); // (the glass, full: a small settle and its clink)

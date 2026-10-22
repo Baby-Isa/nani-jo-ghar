@@ -1368,7 +1368,24 @@
         anchor,
         container: document.body,
         character: {
-          mood: (id, kind) => S.chars && S.chars[id === "ali" ? "cousin" : id] && S.setMood(id === "ali" ? "cousin" : id, kind === "happy" ? "happy" : "neutral"),
+          mood: (id, kind) => {
+            const cw = id === "ali" ? "cousin" : id;
+            if (S.chars && S.chars[cw]) S.setMood(cw, kind === "happy" ? "happy" : "neutral");
+            // CHAI-31 (the judge: "a generic emoji face, not Nana's portrait"): the bubble's face is the speaker's own,
+            // as on the order's card (the module redraws its face on every mood: it is put back each time)
+            document.querySelectorAll(`.cv-bubble[data-speaker="${id}"] .cv-face`).forEach((f) => {
+              const src = faceUrl(cw, kind === "happy" ? "happy" : undefined);
+              if (f.querySelector("img") && f.dataset.face === src) return;
+              f.dataset.face = src;
+              f.textContent = "";
+              const im = document.createElement("img");
+              im.alt = "";
+              im.src = src;
+              im.onerror = () => (im.src = faceUrl(cw));
+              Object.assign(im.style, { width: "2.4em", height: "2.4em", borderRadius: "50%", objectFit: "cover", display: "block" });
+              f.appendChild(im);
+            });
+          },
         },
       };
       const dish = (((ctx.order || {}).dishes || [])[0] || {}).recipe || "chai";
@@ -1878,6 +1895,9 @@
   UI.wordOf = function (r, { size = 96 } = {}) {
     const W = global.WordCard;
     if (!W || !r || r.head) return null;
+    // (a sidebar too short for every card, G1's second step and on: the rows go back to the plain one-line rows, so the
+    // order still fits whole without scrolling; non-negotiable 9)
+    if (mission && (mission.compact || 0) >= 2 && size < 200) return null;
     const id = wcWordId(r);
     const src = wcPicSrc(id);
     const hidden = rowHidden(r) && dotsOk();
