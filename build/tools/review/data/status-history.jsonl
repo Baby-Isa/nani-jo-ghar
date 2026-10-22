@@ -1242,3 +1242,5 @@
 {"id":"LNG-17","run":"zafar-22oct","earlier":"**waiting on Zafar** · passes"}
 {"id":"EASY-09","run":"s11-judge-05","earlier":"**to fix: code** · the brush's 5 s demo pushed up while the order said down"}
 {"id":"EASY-04","run":"s11-judge-06","earlier":"**to fix: check** · the frame caught the third cup mid-pour"}
+{"id":"EASY-03","run":"s11-judge-07","earlier":"**to fix: check** · 0 s and 5 s pass; the 15 s demo isn't caught in a frame"}
+{"id":"EASY-07","run":"s11-judge-07","earlier":"**to fix: check** · the round lists; a flagged step not yet shown"}

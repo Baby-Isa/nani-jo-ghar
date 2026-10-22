@@ -1664,3 +1664,5 @@
 {"id":"LNG-17","run":"zafar-22oct","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"EASY-09","run":"s11-judge-05","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"EASY-04","run":"s11-judge-06","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"EASY-03","run":"s11-judge-07","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"EASY-07","run":"s11-judge-07","verdict":"PASS","event":"built","date":"2026-10-22"}
