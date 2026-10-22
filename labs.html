@@ -171,7 +171,7 @@
       </div>
     </div>
     <div class="game" data-tpl="lab.html?mode=cook&amp;game=recipe-daal&amp;level={v}">
-      <b>Daal, every station</b>
+      <b>Daar, every station</b>
       <span></span>
       <div class="bar">
         <label for="p-1054766737">Level</label>
@@ -232,10 +232,14 @@
 
   <h2 class="grp">Clinic: a patient and a morning</h2>
   <div class="games">
-    <div class="game">
+    <div class="game" data-tpl="clinic.html?level={v}">
       <b>A clinic morning</b>
       <span>The clinic as the child plays it: a morning of patients, then close the clinic. Saves the clinic's progress.</span>
-      <div class="bar"><a class="play" href="clinic.html">Play</a></div>
+      <div class="bar">
+        <label for="p-890307924">Level</label>
+        <select id="p-890307924"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        <a class="play" href="clinic.html?level=1">Play</a>
+      </div>
     </div>
     <div class="game" data-tpl="lab.html?mode=clinic&amp;level={v}">
       <b>One patient</b>
@@ -480,6 +484,8 @@
   // New player: the current player starts fresh (Save.resetPlayer: words, first-time help, Cook, clinic, story, conversations; the purse stays)
   document.getElementById("new-player").addEventListener("click", function () {
     var out = document.getElementById("fresh");
+    // every picker back at its first option (level 1), every Play link with it
+    document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
     try {
       var p = Save.ensurePlayer();
       Save.resetPlayer(p.id);

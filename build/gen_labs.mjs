@@ -159,7 +159,7 @@ export function sortEntries(modes, arcs) {
         } else if (m.id === "clinic") {
           if (l.game && ["waiting", "diagnosis", "pharmacy", "sendoff"].includes(l.game)) put("Clinic: the stages", card1(m, l));
           else if (l.game === null) {
-            put("Clinic: a patient and a morning", { title: "A clinic morning", text: "The clinic as the child plays it: a morning of patients, then close the clinic. Saves the clinic's progress.", tpl: "clinic.html", pick: null });
+            put("Clinic: a patient and a morning", { title: "A clinic morning", text: "The clinic as the child plays it: a morning of patients, then close the clinic. Saves the clinic's progress.", tpl: "clinic.html?level={v}", pick: levelPick([1, 2, 3, 4]) });
             put("Clinic: a patient and a morning", card1(m, l));
           }
           else put("Clinic: the healing games", card1(m, l));
@@ -268,6 +268,8 @@ ${hidden.map(sub).join("\n\n")}
   // New player: the current player starts fresh (Save.resetPlayer: words, first-time help, Cook, clinic, story, conversations; the purse stays)
   document.getElementById("new-player").addEventListener("click", function () {
     var out = document.getElementById("fresh");
+    // every picker back at its first option (level 1), every Play link with it
+    document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
     try {
       var p = Save.ensurePlayer();
       Save.resetPlayer(p.id);

@@ -383,6 +383,13 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
   const P = G().ClinicPipeline;
   if (!R.data) await R.load();
   const st = R.state();
+  // Sprint 10: ?level=N (the labs' picker) plays this morning with every stage at that level and saves nothing of it
+  const asked = Number(new URLSearchParams(search()).get("level"));
+  const lv = Number.isInteger(asked) && asked >= 1 && asked <= 5 ? asked : null;
+  if (lv) {
+    st.levels = Object.assign({}, st.levels, { waiting: lv, diagnosis: lv, pharmacy: lv, heal: lv, sendoff: lv });
+    noSave = true;
+  }
   const n0 = sess || st.session;
   const seed0 = seed || Math.floor(Math.random() * 1e9) + 1; // kept: Again plays this same morning (CLN-111)
   const rng = P.rng(seed0);
