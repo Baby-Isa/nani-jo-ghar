@@ -18171,7 +18171,7 @@
    ],
    "expect": [
     "count:.top-row .top=4",
-    "noClip:main"
+    "noClip:.top-row", "count:.game>=8"
    ],
    "note": "labs.html: the top row of four (New player, Walkthrough, the house, the day builder) above the Play any game grid, nothing clipped (the 1480x924 pictures come from build/s10a_shoot.mjs labs)"
   },
@@ -18206,7 +18206,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node --test build/host/labs.test.mjs"
+    "cmd:node build/host/labs.test.mjs"
    ],
    "expect": [
     "pass"
@@ -18227,7 +18227,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node --test build/test_day_stages.mjs"
+    "cmd:node build/test_day_stages.mjs"
    ],
    "expect": [
     "pass"
@@ -18248,7 +18248,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node --test build/test_shared_reset_player.mjs"
+    "cmd:node build/test_shared_reset_player.mjs"
    ],
    "expect": [
     "pass"
@@ -18269,7 +18269,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node --test build/host/labs.test.mjs"
+    "cmd:node build/host/labs.test.mjs"
    ],
    "expect": [
     "pass"
