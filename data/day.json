@@ -59,6 +59,7 @@
       "tint": { "fill": "#fff1cc", "a": 0.08 },
       "shadow": true,
       "word": { "meaning": { "fn": "Say", "x": "phrase.the-suns-out" }, "en": "The sun's out!" },
+      "card": { "meaning": { "fn": "Item", "kind": "n.sun" }, "en": "sun", "_about": "DOOR-07 (Zafar, 22 Oct): the sidebar card is the single word; her line keeps the phrase" },
       "sentence": { "meaning": { "fn": "Say", "x": "phrase.its-sunny-today" }, "en": "Today it's sunny. Lots of sun!" },
       "gesture": "arms-up"
     },
@@ -138,6 +139,7 @@
     "_about": "The door's order (Zafar, 19 Oct): the weather word alone, then in a sentence with a gesture, then the day as short lines in turn, each its own line with its English beneath; a thought bubble of the day's place; the child answers Ha!",
     "gapMs": 450,
     "yes": { "meaning": { "fn": "Exclaim", "x": "phrase.yes" }, "en": "Yes!" },
+    "come": { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!", "_about": "DOOR-08 (Zafar, 22 Oct: after yes \"she should say come ... and have the face\"): her answer to the child's Ha!, the engine's sentence; her come-here pose when the art run brings one (data/days.json door.poses.come)" },
     "naniFace": "assets/cook/characters/nani-badge.webp"
   },
   "book": {

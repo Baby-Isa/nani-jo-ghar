@@ -471,6 +471,37 @@ function makeApi({ data, days, core, E }) {
     void who;
   };
 
+  /**
+   * The shared help kit (SH-19: first-time help in every game, the same kit): js/shared/onboard.js with its css, and
+   * js/shared/uistore.js for "seen once per player" (a New player's reset clears it). Loaded when a stage first needs it.
+   *   await api.kit() -> window.Onboard     api.helpDue(id) -> true when this player has not had that help yet
+   *   api.helped(id)   it has now (once per player)
+   */
+  let kitP = null;
+  api.kit = () =>
+    (kitP =
+      kitP ||
+      (async () => {
+        if (!window.UIStore) await import("../shared/uistore.js");
+        if (!window.Onboard) await import("../shared/onboard.js");
+        if (!document.querySelector("link[data-onboard-css]")) {
+          const l = document.createElement("link");
+          l.rel = "stylesheet";
+          l.href = api.url("css/shared/onboard.css");
+          l.dataset.onboardCss = "";
+          document.head.appendChild(l);
+        }
+        return window.Onboard;
+      })());
+  api.helpDue = (id) => !!(window.Onboard && !window.Onboard.seen(id));
+  api.helped = (id) => {
+    try {
+      if (window.UIStore) window.UIStore.set("onboarded", id, true);
+    } catch (e) {
+      /* the save is out of reach: the help shows again next time */
+    }
+  };
+
   api.today = () => core.save.get("story").today || null;
   api.setToday = (patch) => core.save.update("story", (s) => ((s.today = Object.assign({}, s.today, patch)), s));
   api.dayNo = () => Number(core.save.get("story").dayNo) || 1;

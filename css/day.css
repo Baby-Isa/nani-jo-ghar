@@ -30,7 +30,9 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-nani { position: absolute; display: block; max-width: none; opacity: 0; transition: opacity var(--day-fade, 260ms) ease-in-out; user-select: none; }
 .day-nani.on { opacity: 1; }
 .day-contact { position: absolute; left: 12%; right: 12%; bottom: -12px; height: 24px; border-radius: var(--njg-round); background: var(--njg-contact); }
-.day-nani-wrap > .day-contact { right: auto; bottom: auto; left: calc(var(--day-b, 300px) * -.15); width: calc(var(--day-b, 300px) * .3); top: calc(var(--day-b, 300px) * -.022); height: calc(var(--day-b, 300px) * .044); border-radius: var(--njg-round); background: var(--njg-contact); opacity: .6; }
+/* DOOR-08: glad at the child's Ha! (a small hop as she says come) */
+.day-nani-wrap.day-glad { animation: day-glad .7s cubic-bezier(.3, .7, .3, 1) 1; }
+@keyframes day-glad { 0%, 100% { transform: none; } 35% { transform: translateY(calc(var(--day-b, 300px) * -.035)); } 65% { transform: translateY(calc(var(--day-b, 300px) * .006)); } }
 
 /* the thought bubble of the day's place: a white cloud beside her head, the picture in it, two dots down to her */
 .day-thought { position: absolute; z-index: 2; background: var(--njg-card); border-radius: var(--njg-round); box-shadow: var(--njg-shadow); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transform-origin: 0% 100%; transition: opacity .4s, transform .4s; pointer-events: none; }
@@ -39,8 +41,9 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-thought > img, .day-thought > svg { width: 72%; height: 72%; object-fit: contain; }
 .day-thought > img.day-thought-bg { width: 84%; height: 80%; object-fit: cover; border-radius: var(--njg-round); }
 .day-thought-dot { position: absolute; background: var(--njg-card); border-radius: var(--njg-round); box-shadow: var(--njg-shadow); }
-.day-thought-dot.d0 { width: 16px; height: 16px; left: 4px; bottom: -16px; }
-.day-thought-dot.d1 { width: 8px; height: 8px; left: -8px; bottom: -28px; }
+/* SH-68: the dots' places and sizes are set by door.js, from her head up to the bubble's corner */
+.day-thought-dot.d0 { width: 16px; height: 16px; }
+.day-thought-dot.d1 { width: 8px; height: 8px; }
 
 /* her lines: the shared speech bubble (css/shared/conversations.css), placed in the sky's upper left by door.js; the line's Kutchi
    takes the bubble's own size, its English beneath */
@@ -80,7 +83,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-en { margin: var(--njg-s1) 0 0; font-size: var(--njg-t4); font-weight: 600; color: var(--njg-ink-soft); }
 .day-inline { display: inline; }
 .day-inline .day-k { display: inline; font-size: inherit; font-weight: inherit; }
-@media (prefers-reduced-motion: reduce) { .day-sky > img.day-drift, .day-twinkle > i { animation: none; } .day-nani { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .day-sky > img.day-drift, .day-twinkle > i, .day-nani-wrap.day-glad { animation: none; } .day-nani { transition: none; } }
 
 /* ---------- the evening book (js/day/book.js, book-play.js): the room and its camera, the book's two pages, the games ---------- */
 .day-book-scene { background: var(--njg-ink); }

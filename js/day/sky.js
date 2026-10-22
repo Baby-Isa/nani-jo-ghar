@@ -146,10 +146,15 @@ export function rain(box, def, W, H, speedOf = () => 1) {
 /** The house's place for a play area of W x H (pure: build/test_day_runner.mjs checks it): roofline at roofAt, width covered,
  *  the foot of the picture never above the bottom. */
 export function houseFit(house, W, H) {
-  const roof = H * (house.roofAt || 1 / 3);
-  const s = Math.max(W / house.w, (H - roof) / (house.h - house.roofline));
+  const roof0 = H * (house.roofAt || 1 / 3);
+  // DOOR-06 (Zafar, 22 Oct: "a little closer"): the camera a little closer (zoom, centred on her feet) with the foot of the steps
+  // at footAt of the height, so she can be bigger with the sky still above her head; the house still covers the width and reaches
+  // the bottom whatever the zoom
+  const s = Math.max(W / house.w, (H - roof0) / (house.h - house.roofline)) * (house.zoom || 1);
   const left = W / 2 - house.foot.x * s;
-  const top = roof - house.roofline * s;
+  let top = house.footAt != null ? H * house.footAt - house.foot.y * s : roof0 - house.roofline * s;
+  top = Math.max(top, H - house.h * s);
+  const roof = top + house.roofline * s;
   return { W, H, s, left, top, roof, foot: { x: left + house.foot.x * s, y: top + house.foot.y * s } };
 }
 

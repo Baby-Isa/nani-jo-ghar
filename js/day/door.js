@@ -50,6 +50,13 @@ export function poseBox(pose, B) {
   return { w: pose.w * k, h: pose.h * k, left: -pose.cx * pose.w * k, top: -pose.body[1] * k };
 }
 
+/** Her head's middle and radius in the play area's px (SH-68): the pose's head point (a share of its picture), her feet at `foot`. */
+export function headPoint(pose, B, foot) {
+  const b = poseBox(pose, B);
+  const hd = pose.head || [pose.cx, 0.08];
+  return { x: foot.x + b.left + hd[0] * b.w, y: foot.y + b.top + hd[1] * b.h, r: B * 0.075 };
+}
+
 export async function runDoor(host, api, day) {
   const { data, url } = api;
   const look = api.days.door;
@@ -69,13 +76,13 @@ export async function runDoor(host, api, day) {
   if (window.Frame && window.Frame.mount) window.Frame.mount({ app: root, side, play });
   const scn = paintDoor(play, { look, wkey, weather: W, url, speed: () => api.speed });
 
-  // ---- Nani: her pose cut-outs, feet at the foot of the steps ----
+  // ---- Nani: her pose cut-outs, feet at the foot of the steps (DOOR-05: standing on the ground, no pill under her) ----
   const NP = look.nani;
   const wrap = el("div", "day-nani-wrap", scn.figs);
-  el("i", "day-contact", wrap);
   wrap.style.setProperty("--day-fade", `${NP.fadeMs || 260}ms`);
   let front = null;
   let pose = null;
+  const headAt = (g) => (pose && NP.poses[pose] ? headPoint(NP.poses[pose], g.H * (NP.height || 0.5), g.foot) : null);
   const placeImg = (im) => {
     const g = scn.geo();
     const b = poseBox(NP.poses[im.dataset.pose], g.H * (NP.height || 0.5));
@@ -100,6 +107,8 @@ export async function runDoor(host, api, day) {
     im.src = url(NP.poses[name].art);
     placeImg(im);
     wrap.appendChild(im);
+    // her head moved with the pose: the thought's dots follow it
+    if (scn.geo()) placeThought(scn.geo());
     if (im.decode) await im.decode().catch(() => {});
     if (pose !== name) return im.remove();
     requestAnimationFrame(() => {
@@ -128,14 +137,35 @@ export async function runDoor(host, api, day) {
     im.src = url(A.pic.bg);
     im.style.objectPosition = A.pic.pos || "50% 50%";
   }
-  for (let i = 0; i < 2; i++) el("i", `day-thought-dot d${i}`, thought);
+  const dots = [0, 1].map((i) => el("i", `day-thought-dot d${i}`, thought));
+  // SH-68 (Zafar, 22 Oct: "the dot, dot, dot should always be coming from her head"): the bubble sits up and to the side of
+  // her HEAD (the pose's own head point, data/days.json nani.poses.<pose>.head), and its dots rise from the top of her head to
+  // its corner, the small one nearest her; on the side with room (her right, else her left)
   const placeThought = (g) => {
-    const B = g.H * (NP.height || 0.5);
+    const hd = headAt(g);
+    if (!hd) return;
     const h = Math.max(72, g.H * ((look.thought && look.thought.h) || 0.2));
     const w = h * 1.3;
-    const x = Math.min(g.W - w - 16, g.foot.x + B * 0.2);
-    const y = Math.max(16, g.foot.y - B * 0.9 - h);
-    Object.assign(thought.style, { left: `${x.toFixed(1)}px`, top: `${y.toFixed(1)}px`, width: `${w.toFixed(1)}px`, height: `${h.toFixed(1)}px` });
+    const gap = Math.max(10, hd.r * 0.5);
+    let right = hd.x + hd.r * 0.6 + gap + w <= g.W - 12;
+    let x = right ? hd.x + hd.r * 0.6 + gap : hd.x - hd.r * 0.6 - gap - w;
+    if (!right && x < 12) {
+      right = true;
+      x = Math.min(g.W - w - 12, hd.x + hd.r * 0.6 + gap);
+    }
+    const y = Math.max(12, hd.y - hd.r * 1.1 - gap - h);
+    Object.assign(thought.style, { left: `${x.toFixed(1)}px`, top: `${y.toFixed(1)}px`, width: `${w.toFixed(1)}px`, height: `${h.toFixed(1)}px`, transformOrigin: right ? "0% 100%" : "100% 100%" });
+    // the dots: from just above her head (on the bubble's side) to the bubble's near bottom corner
+    const p0 = { x: hd.x + (right ? 1 : -1) * hd.r * 0.45, y: hd.y - hd.r * 1.15 };
+    const c = { x: right ? x + w * 0.16 : x + w * 0.84, y: y + h * 0.9 };
+    const sizes = [Math.max(14, h * 0.15), Math.max(8, h * 0.08)];
+    [0.55, 0.12].forEach((k, i) => {
+      const d = sizes[i];
+      const px = p0.x + (c.x - p0.x) * k;
+      const py = p0.y + (c.y - p0.y) * k;
+      Object.assign(dots[i].style, { width: `${d.toFixed(1)}px`, height: `${d.toFixed(1)}px`, left: `${(px - x - d / 2).toFixed(1)}px`, top: `${(py - y - d / 2).toFixed(1)}px` });
+    });
+    thought.dataset.head = `${Math.round(hd.x)},${Math.round(hd.y)},${Math.round(hd.r)}`;
   };
 
   // ---- her lines: the shared speech bubble in the sky's upper left ----
@@ -205,8 +235,10 @@ export async function runDoor(host, api, day) {
       im.style.objectPosition = SK.card || "50% 30%";
       if (W.rain) stops.push(rain(pic, W.rain, 400, 300, () => api.speed));
     },
-    api.line(W.word),
-    W.word
+    // DOOR-07 (Zafar, 22 Oct: "they need to be singular words ... we're trying to build up vocabulary"): the card's word is the
+    // weather's own single word (data/day.json weather.<w>.card), her line keeps the phrase
+    api.line(W.card || W.word),
+    W.card || W.word
   );
   const activityCard = card(
     "activity",
@@ -272,6 +304,7 @@ export async function runDoor(host, api, day) {
         return;
       }
       answered = true;
+      endHelp();
       // Ha! goes ahead: her line stops where it is
       try {
         api.core.voice.stop("day");
@@ -299,6 +332,45 @@ export async function runDoor(host, api, day) {
     }
     pills.classList.add("in");
     api.test.expect(() => (answered ? { kind: "wait" } : { kind: "tap", sel: '.day-answer button[data-choice="yes"]', wrongSel: '.day-answer button[data-choice="no"]' }));
+    startHelp();
+  };
+
+  // ---- SH-19 (Zafar, 22 Oct: "this will probably be the first thing the person ever plays, so the onboarding needs to exist
+  // here as well ... the highlight, the bounce up and down, and the shadow with ... the rectangle with the rounded corners"): a new
+  // player's first door, the shared kit's help on Ha!: the dim with its box round the pill, the pill's glow and bounce, the kit's
+  // finger tapping it (again every couple of seconds) until the child answers. Once per player (a New player has it again).
+  const HELP_ID = "day/door";
+  let help = null;
+  const startHelp = async () => {
+    if (help || answered) return;
+    help = { stop: false };
+    const O = await api.kit().catch(() => null);
+    const yesBtn = pills.querySelector('button[data-choice="yes"]');
+    if (!O || !yesBtn || answered || help.stop || !api.helpDue(HELP_ID)) return;
+    await api.wait(400); // the pills land first
+    if (answered || help.stop) return;
+    help.spot = O.spot(yesBtn, {});
+    help.spot.layer.dataset.help = HELP_ID;
+    if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("help", { during: "day:door", step: "yes" });
+    const tapOnce = () => {
+      const r = yesBtn.getBoundingClientRect();
+      const at = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      // the finger comes in from just below and to the right of the pill (on screen), taps it, and lifts off
+      const below = Math.max(18, Math.min(56, (window.innerHeight || 0) - at.y - 24));
+      return O.demo({ x: at.x + Math.min(48, r.width * 0.4), y: at.y + below }, [at], { hand: true, ms: 1100, step: "door-yes", quiet: true });
+    };
+    while (!answered && !help.stop) {
+      await tapOnce();
+      await new Promise((ok) => setTimeout(ok, 500));
+    }
+  };
+  const endHelp = () => {
+    if (!help) return;
+    help.stop = true;
+    if (help.spot) {
+      help.spot.close();
+      api.helped(HELP_ID);
+    }
   };
 
   setPose(look.poses.idle);
@@ -336,6 +408,28 @@ export async function runDoor(host, api, day) {
   pills.querySelectorAll('button[data-choice="yes"]').forEach((b) => b.classList.add("chosen"));
   // the child's own Ha!, heard
   await api.say(yes, { who: "child", min: false });
+  // DOOR-08 (Zafar, 22 Oct: "after you say yes, you should say come ... and have the face"): her answer, glad, in her
+  // come-here pose when the art has one (data/days.json door.poses.come: the first that exists), in the bubble like every line
+  const come = data.door.come ? api.line(data.door.come) : null;
+  if (come) {
+    const cp = [].concat(look.poses.come || []).find((p) => NP.poses[p]);
+    if (cp) setPose(cp);
+    wrap.classList.remove("day-glad");
+    void wrap.offsetWidth;
+    wrap.classList.add("day-glad");
+    const row = api.render(come, { english: true, cls: "day-say" });
+    row.dataset.kind = "come";
+    bubbleText.innerHTML = "";
+    bubbleText.appendChild(row);
+    shown = { ln: come, row };
+    placeBubble();
+    bubble.classList.add("in", "speaking");
+    window.Day.doorLines.push({ text: come.text, ok: come.ok, en: come.en, kind: "come" });
+    const stopTalk = talk && front ? talk.dom(front) : null;
+    await api.say(come, { el: row, who: "nani" });
+    if (typeof stopTalk === "function") stopTalk();
+    bubble.classList.remove("speaking");
+  }
   thought.classList.add("go");
   api.test.expect(() => ({ kind: "end" }));
   await api.wait(700);
