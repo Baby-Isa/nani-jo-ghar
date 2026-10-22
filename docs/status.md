@@ -8,17 +8,17 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (22 Oct 2026, 17:15 UK):** Sprint 11 "Easy to play, easy to learn" is live on `main` (40adcb2): the word card that fades per word, hints by the real item, no Next or Done (chai, eye test, toothbrushing; other games' Done buttons listed in `build/reports/s11-step0.md`), the labs New player toggle, chai with the kitchen conversation and a top-down pour, the flash-card eye test, toothbrushing on a plus track, the book's clinic pages. Rules are now 9 non-negotiables plus rapid-prototype mode (three sizes, light checks). Plan and evidence: `docs/game-design/easy-to-play.md`.
+**Where things stand (22 Oct 2026, 17:30 UK):** Sprint 11 "Easy to play, easy to learn" is live on `main` (40adcb2). Sprint 12 is open (`docs/sprints/S12-polish.md`): minor fixes and tweaks to the eye test, the tooth game, chai, the day (door and ride) and the book, iterating on the approved plan `docs/game-design/easy-to-play.md` in rapid-prototype mode (three sizes, light targeted checks, one judge pass per builder). Working branch `ccr-1888a520-dk18y7`.
 
 **Next steps:**
-1. Zafar plays and shows people; notes go to `/feedback`; the play log in the labs shows where players hesitated.
-2. Fix EASY-08 and CHAI-31 (cosmetic), then the rollout: remove Done from the other games and move them onto the word card and the hints (pantry and maani, knee, waiting, diagnosis, pharmacy, the book), then the farm day.
-3. Mum's round: chai, dudh, paani, khun as single words; mathe, niche, jamno, brush, toothbrush; thermometer, plaster, cotton.
+1. Wait for Zafar's feedback; turn every point into a fix-list row the same day (`/feedback`).
+2. Propose the builders (model, effort, cost, files owned), on top of the rows carried in (EASY-08, CHAI-31 and the chai flaws in the sprint file). Launch only on his go.
+3. Merge, judge, `checks.mjs`, publish; close the sprint.
 
 **Open questions to Zafar:** "ha" or "haa"; "bateto" or "bataato"; redo the shine as a round starburst (recommended).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 11 is live. Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Sprint 11 is live on `main`. We're starting Sprint 12 (`docs/sprints/S12-polish.md`): minor fixes and tweaks to the eye test, the tooth game, chai, the day (door and ride) and the book, still in rapid-prototype mode (three sizes, light targeted checks, one judge pass per builder), iterating on the approved plan in `docs/game-design/easy-to-play.md`: easy to play, easy to learn for people who don't know Kutchi. Don't build anything yet: wait for my feedback, turn it into fix-list rows with `/feedback`, then propose the builders (model, effort, cost) and launch only on my go.
 
 ## The fix list
 
