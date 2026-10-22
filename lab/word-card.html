@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Word card lab: the fade and the hint rungs</title>
+<link rel="stylesheet" href="../css/shared/tokens.css?v=20261022T014206Z">
+<link rel="stylesheet" href="../css/shared/onboard.css?v=20261022T014206Z">
+<link rel="stylesheet" href="../css/shared/word-card.css?v=20261022T014206Z">
+<style>
+  :root { --bg: #fbf5ea; --line: #d9bf95; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--njg-ink); font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  header { padding: 12px 16px 0; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  header p, .note { margin: 0; color: var(--njg-ink-soft); font-size: 13px; }
+  main { padding: 8px 16px 24px; display: grid; gap: 12px; }
+  section.box { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; min-width: 0; }
+  h2 { font-size: 15px; margin: 0 0 8px; }
+  .stages { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: start; }
+  .stage-col { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .stage-col > b { font-size: 13px; color: var(--njg-ink-soft); }
+  .rows { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+  .side-panel { background: var(--njg-panel); border-radius: 12px; padding: 8px; }
+  pre { white-space: pre-wrap; font-size: 12px; background: #f7f0e3; padding: 8px; border-radius: 8px; margin: 8px 0 0; max-height: 120px; overflow: auto; }
+  button.lab { font: inherit; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff7e8; cursor: pointer; min-height: 40px; }
+  /* the rungs' little scene: the real tea tin, the real pan; a guide box with the step's line */
+  .scene { position: relative; height: 360px; border-radius: 12px; background: #f4e3c4; overflow: hidden; display: grid; grid-template-columns: 260px 1fr; }
+  .scene-side { background: var(--njg-panel); padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .guide { background: #dfe8d6; border-left: 8px solid #9db48a; border-radius: 12px; padding: 12px; min-height: 64px; font-size: 18px; font-weight: 700; }
+  .guide .ph { font-style: italic; color: var(--njg-ink-soft); }
+  .guide.said { box-shadow: 0 0 0 4px var(--njg-focus); }
+  .scene-play { position: relative; }
+  #tin { position: absolute; left: 14%; top: 34%; width: 120px; height: auto; cursor: pointer; user-select: none; -webkit-user-drag: none; }
+  #pan { position: absolute; right: 12%; top: 30%; width: 300px; height: auto; pointer-events: none; }
+  .clock { position: absolute; right: 12px; top: 8px; font: 600 14px/1 system-ui; color: var(--njg-ink-soft); }
+  .rung-tag { position: absolute; left: 12px; top: 8px; font: 700 14px/1 system-ui; color: var(--njg-word); }
+  body.part-stuck #fade, body.part-fade #stuck { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Word card lab</h1>
+  <p>Sprint 11, Step 0 (js/shared/word-card.js): one word, <b>chai</b>, at its five stages. The fade: English first, then the picture, then the Kutchi text; the speaker always. A blank slot's eye is a free reveal (logged as that cue, never as recall). <code>?part=fade</code> or <code>?part=stuck</code> shows one part.</p>
+</header>
+<main>
+  <section class="box" id="fade">
+    <h2>The fade: stages 1 to 5 (cards), and the sidebar row at each stage</h2>
+    <div class="stages" id="cards"></div>
+    <div class="rows" id="rows"></div>
+    <pre id="reveals">reveals: none yet</pre>
+  </section>
+
+  <section class="box" id="stuck">
+    <h2>The hint rungs (Onboard.demo, Onboard.stuck): the real tea tin shows it at 0 s the first time, at 5 s the spotlight and the demo, at 15 s the demo and the guide's line</h2>
+    <div class="scene" id="scene">
+      <div class="scene-side">
+        <div class="guide" id="guide"><span class="ph" data-rec="">Put the chai in</span></div>
+        <p class="note">Tap the tin to put it in the pan (the step is done). The rungs never do it for you.</p>
+        <div><button class="lab" id="again" type="button" data-ob-pass>Again, as a first time</button></div>
+      </div>
+      <div class="scene-play" id="play">
+        <img id="pan" alt="" src="../assets/cook/props/saucepan.webp" draggable="false">
+        <img id="tin" alt="" src="../assets/cook/props/tea-tin.webp" draggable="false">
+        <span class="rung-tag" id="rung"></span>
+        <span class="clock" id="clock"></span>
+      </div>
+    </div>
+    <pre id="log">the play log: the round shows here when the step is done</pre>
+  </section>
+</main>
+<script src="../js/version.js?v=20261022T014206Z"></script>
+<script src="../js/shared/save.js?v=20261022T014206Z"></script>
+<script src="../js/shared/uistore.js?v=20261022T014206Z"></script>
+<script src="../js/shared/guide.js?v=20261022T014206Z"></script>
+<script src="../js/shared/request-popup.js?v=20261022T014206Z"></script>
+<script src="../js/shared/onboard.js?v=20261022T014206Z"></script>
+<script src="../js/shared/buttons.js?v=20261022T014206Z"></script>
+<script src="../js/shared/word-card.js?v=20261022T014206Z"></script>
+<script type="module">
+  const q = new URLSearchParams(location.search);
+  const part = q.get("part");
+  if (part) document.body.classList.add(`part-${part}`);
+  window.WordLab = { ready: false };
+
+  // ---- the word: chai from the language engine (n.tea), its family clip on the one voice path ----
+  const { loadCore } = await import("../js/core/index.js");
+  const { createEngine, DATA_FILES } = await import("../js/core/lang/engine/index.js");
+  const { loadJSON } = await import("../js/core/env.js");
+  const load = (p) => loadJSON(p, { base: "../" });
+  const core = await loadCore({ base: "../" });
+  const langData = {};
+  const [audio] = await Promise.all([load("data/family-audio.json").catch(() => []), ...DATA_FILES.map(async (f) => (langData[f] = await load(`data/lang/${f}.json`)))]);
+  const E = createEngine({ data: langData, audio: audio || [], voice: core.voice });
+  const res = E.word("n.tea");
+  const ok = !!(res && res.ok);
+  const markup = () => {
+    const p = document.createElement("span");
+    p.innerHTML = ok ? res.segments.map((s, i) => `<span data-seg="${i}">${s.t.replace(/</g, "&lt;")}</span>`).join("") : "chai";
+    return p;
+  };
+  // the lab never writes the player's save: the reveals are logged here
+  const reveals = [];
+  const fake = { reveal: (id, slot) => { reveals.push(`${id}: ${slot}`); document.getElementById("reveals").textContent = "reveals (progress.reveal, the cue; never recall): " + reveals.join(", "); } };
+  const word = () => ({ id: "n.tea", kutchi: markup(), english: (res && res.en) || "tea", rec: !ok, picture: { src: "../assets/cook/props/glass-chai.webp", fit: "contain" }, say: () => (ok ? core.voice.say(res, { channel: "lab" }) : Promise.resolve()) });
+  const cards = document.getElementById("cards");
+  const rows = document.getElementById("rows");
+  for (let st = 1; st <= 5; st++) {
+    const col = document.createElement("div");
+    col.className = "stage-col";
+    col.innerHTML = `<b>Stage ${st}</b>`;
+    cards.appendChild(col);
+    WordCard.card(col, word(), { stage: st, progress: fake, id: `card-${st}` });
+    const side = document.createElement("div");
+    side.className = "side-panel";
+    rows.appendChild(side);
+    WordCard.row(side, word(), { stage: st, progress: fake, id: `row-${st}` });
+  }
+  window.WordLab.text = ok ? res.text : null;
+
+  // ---- the rungs ----
+  const tin = document.getElementById("tin");
+  const pan = document.getElementById("pan");
+  const guide = document.getElementById("guide");
+  const rungTag = document.getElementById("rung");
+  const clock = document.getElementById("clock");
+  const fast = Number(q.get("fast")) || 1;
+  let handle = null;
+  const start = (first) => {
+    if (handle) handle.stop();
+    if (first && window.UIStore) UIStore.set("onboarded", "lab/word-card/tin", false);
+    tin.style.visibility = "";
+    pan.classList.remove("full");
+    guide.classList.remove("said");
+    if (window.NaniGuide) NaniGuide.poke();
+    Lifecycle.stageStart("lab/word-card");
+    PlayLog.meta({ mode: "lab", game: "word-card" });
+    handle = Onboard.stuck("put the chai in", {
+      id: "lab/word-card/tin",
+      target: tin,
+      path: pan,
+      at: [300, 5000 / fast, 15000 / fast],
+      line: () => {
+        guide.classList.add("said");
+        setTimeout(() => guide.classList.remove("said"), 1500);
+      },
+    });
+  };
+  tin.addEventListener("click", () => {
+    if (!handle || handle.over) return;
+    Lifecycle.note("act", { during: false, stage: "lab/word-card" }); // the game took the tap (as every host logs it)
+    handle.done();
+    tin.style.visibility = "hidden";
+    NjgButtons.moveOn(() => {
+      Lifecycle.stageEnd("lab/word-card");
+      document.getElementById("log").textContent = "the play log (njg-play-log, last round):\n" + JSON.stringify(PlayLog.last, null, 1);
+    }, { ms: 400 });
+  });
+  document.getElementById("again").addEventListener("click", () => start(true));
+  setInterval(() => {
+    const idle = window.NaniGuide ? NaniGuide.idleMs() : 0;
+    clock.textContent = `idle ${(idle / 1000).toFixed(1)} s`;
+    rungTag.textContent = handle && !handle.over ? (handle.rung === 15 ? "15 s rung: demo + the guide's line" : handle.rung === 5 ? "5 s rung: spotlight + demo" : "first time: the tin shows it") : "";
+  }, 100);
+  if (part !== "fade") start(true);
+  window.WordLab.ready = true;
+  window.WordLab.restart = () => start(true);
+</script>
+</body>
+</html>

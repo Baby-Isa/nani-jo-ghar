@@ -7,7 +7,8 @@
  *   node build/gen_labs.mjs --check   exit 1 if labs.html isn't what this would write (a stale or hand-edited page)
  *
  * The page (Sprint 10, Zafar 21 Oct), top to bottom:
- *   1. a top row: New player (Save.resetPlayer), the Walkthrough (Cook's own ?first=pantry chain, then chai), the house, the day builder;
+ *   1. a top row: the New player toggle (Sprint 11, Zafar 22 Oct: on, every launch plays a reset "New player" profile; his own
+ *      player is never wiped; labsPlayer below), the Walkthrough (Cook's own ?first=pantry chain, then chai), the house, the day builder;
  *   2. "Play any game": every Cook station and every clinic game once each, each with a level picker and a Play button (like
  *      lab/clinic-heal-host.html), made from the moved modes' lab() lists (js/<mode>/main.js: the mode interface, js/shared/mode.js),
  *      plus the day's door, ride and book;
@@ -27,11 +28,65 @@ const OUT = join(ROOT, "labs.html");
 export const WALKTHROUGH = "cook.html?app=1&first=pantry&then=" + encodeURIComponent("cook.html?app=1&first=chai&then=labs.html");
 
 export const TOP = [
-  { id: "new-player", button: true, title: "New player", text: "Start this player fresh: every word new, every game at level 1. The pocket money stays." },
+  { id: "new-player", toggle: true, title: "New player", text: "On: every launch plays a fresh New player (no words, every first-time help, level 1). Off: your own player, never wiped." },
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
   { href: "lab/day.html", title: "The day builder", text: "Pick the stages of a day in order, or one game, and play it." },
 ];
+
+/**
+ * The New player toggle (Sprint 11, Zafar 22 Oct), the page's own logic, embedded in labs.html as written here (so the unit test
+ * runs the same code). Save: js/shared/save.js; store: a localStorage-like object (every access wrapped). On: before a launch the
+ * dedicated "New player" profile (made once with Save.addPlayer, its id remembered) is selected and reset (Save.resetPlayer). Off:
+ * the grown-up's own player (remembered when the toggle goes on) is selected again; it is never reset.
+ */
+export function labsPlayer(Save, store) {
+  var NAME = "New player", K_ON = "njg-labs-new-player", K_OWN = "njg-labs-own-player", K_NEW = "njg-labs-new-player-id";
+  var get = function (k) { try { return store.getItem(k); } catch (e) { return null; } };
+  var put = function (k, v) { try { if (v == null) store.removeItem(k); else store.setItem(k, v); } catch (e) { /* this visit only */ } };
+  var has = function (id) { return !!id && Save.players().some(function (p) { return p.id === id; }); };
+  var newId = function () {
+    var id = get(K_NEW);
+    if (has(id)) return id;
+    var p = Save.players().filter(function (q) { return q.name === NAME; })[0];
+    return p ? p.id : null;
+  };
+  var ownId = function () {
+    var id = get(K_OWN);
+    if (has(id) && id !== newId()) return id;
+    var p = Save.players().filter(function (q) { return q.id !== newId(); })[0];
+    return p ? p.id : null;
+  };
+  var remember = function () { var c = Save.currentId(); if (c && c !== newId()) put(K_OWN, c); };
+  var api = {
+    NAME: NAME,
+    on: function () { return get(K_ON) === "1"; },
+    setOn: function (v) { remember(); put(K_ON, v ? "1" : "0"); return api.label(); },
+    /** The player a launch plays as, chosen (and, when on, reset) now. -> that player */
+    launch: function () {
+      remember();
+      if (api.on()) {
+        var id = newId();
+        if (!id) { id = Save.addPlayer({ name: NAME }).id; put(K_NEW, id); }
+        Save.select(id);
+        Save.resetPlayer(id);
+        return Save.current();
+      }
+      var own = ownId();
+      if (own) Save.select(own);
+      else Save.addPlayer({ name: "Player 1" });
+      return Save.current();
+    },
+    /** Who will play: the badge's words */
+    label: function () {
+      if (api.on()) return NAME + " (fresh every launch)";
+      var own = ownId();
+      var p = Save.players().filter(function (q) { return q.id === own; })[0];
+      return p ? p.name : "Player 1";
+    },
+  };
+  return api;
+}
 
 // ---------------------------------------------------------------- the day's door, ride and book (day.html)
 
@@ -82,6 +137,8 @@ export const BEHIND = [
       { href: "lab/conversations.html", title: "Conversations", text: "The nine MVP exchanges: play each one, boy/girl voice, register, placeholder flags; simulate the first launch, Cook and the clinic." },
       { href: "lab/family-audio.html", title: "Family voice clips", text: "Mum's and Zafar's words from the recordings (Section B, then Round 3): play each one, tick the good ones." },
       { href: "lab/shared-ui.html", title: "End-of-round screen and onboarding", text: "The three badges and word review; the ghost-hand onboarding on a fake chai station." },
+      { href: "lab/word-card.html", title: "Word card and hint rungs", text: "Sprint 11: the shared word card at its five stages (English, then the picture, then the Kutchi text fade; the free reveals), and the real item's demo with the 5 s and 15 s rungs." },
+      { href: "lab/play-log.html", title: "Play log", text: "Where players hesitated on this device: each step's seconds to the first action, taps that did nothing and help shown; slow steps flagged; export as JSON." },
       { href: "lab/order-card.html", title: "Order card", text: "The shared person card (person &rarr; items &rarr; parts): every state, in the sidebar and the request pop-up." },
       { href: "lab/kit.html", title: "Shared kit: every state", text: "The frame's sidebar kit on one sheet: the guide box, the order card (stacked and pills), the tally and the bulb. <code>?part=results</code> or <code>?part=words</code> opens the end screen." },
     ],
@@ -190,7 +247,11 @@ export async function render(root = ROOT) {
   const hidden = BEHIND.map((s) => ({ ...s }));
   hidden.splice(2, 0, { title: "Test, demo and parked games", lead: "On the game host (lab.html); made from each mode's lab() list.", cards: behind.test });
   hidden.splice(3, 0, { title: "Story and free play", lead: "Story mode's errands and free play, as the map starts them.", cards: behind.story });
-  const top = TOP.map((t) => (t.button ? `    <button type="button" class="top" id="${t.id}"><b>${t.title}</b><span>${t.text}</span></button>` : `    <a class="top" href="${href(t.href)}"><b>${t.title}</b><span>${t.text}</span></a>`));
+  const top = TOP.map((t) =>
+    t.toggle
+      ? `    <label class="top toggle" id="${t.id}"><input type="checkbox" id="${t.id}-toggle"><i class="switch" aria-hidden="true"></i><b>${t.title}</b><span>${t.text}</span></label>`
+      : `    <a class="top" href="${href(t.href)}"><b>${t.title}</b><span>${t.text}</span></a>`
+  );
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -213,8 +274,16 @@ export async function render(root = ROOT) {
   .top:hover, .top:focus-visible { background: #fff7ea; }
   .top b { display: block; color: var(--accent); font-size: 1.2rem; margin-bottom: 2px; }
   .top span { color: var(--muted); font-size: .92rem; }
-  #fresh { margin: 8px 0 0; padding: 10px 14px; border-radius: 10px; background: #e7f3ec; border: 1px solid #b7d8c5; color: #1f4d37; font-weight: 600; }
-  #fresh[hidden] { display: none; }
+  .top.toggle { position: relative; padding-right: 76px; }
+  .top.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .top.toggle .switch { position: absolute; right: 16px; top: 16px; width: 48px; height: 28px; border-radius: 14px; background: var(--line); transition: background .2s; }
+  .top.toggle .switch::after { content: ""; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: left .2s; }
+  .top.toggle input:checked ~ .switch { background: var(--go); }
+  .top.toggle input:checked ~ .switch::after { left: 23px; }
+  .top.toggle input:focus-visible ~ .switch { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .top.toggle.on { background: #eef7f1; border-color: var(--go); }
+  #player-badge { display: inline-block; margin: 8px 0 0; padding: 8px 14px; border-radius: 999px; background: #fff; border: 2px solid var(--line); color: var(--ink); font-weight: 600; }
+  #player-badge.on { background: #e7f3ec; border-color: #b7d8c5; color: #1f4d37; }
   .grid, .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .games { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
   a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: inherit; }
@@ -242,7 +311,7 @@ export async function render(root = ROOT) {
   <div class="top-row">
 ${top.join("\n")}
   </div>
-  <p id="fresh" role="status" hidden></p>
+  <p id="player-badge" role="status">Playing as: your player</p>
 
   <h2>Play any game</h2>
   <p class="lead">Pick a level, press Play. At the end, All games comes back here.</p>
@@ -265,20 +334,29 @@ ${hidden.map(sub).join("\n\n")}
     if (!sel) return;
     sel.addEventListener("change", function () { a.setAttribute("href", tpl.replace("{v}", encodeURIComponent(sel.value))); });
   });
-  // New player: the current player starts fresh (Save.resetPlayer: words, first-time help, Cook, clinic, story, conversations; the purse stays)
-  document.getElementById("new-player").addEventListener("click", function () {
-    var out = document.getElementById("fresh");
-    // every picker back at its first option (level 1), every Play link with it
-    document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
-    try {
-      var p = Save.ensurePlayer();
-      Save.resetPlayer(p.id);
-      out.textContent = "Fresh start: every word new, every game at level 1 (" + p.name + ").";
-    } catch (e) {
-      out.textContent = "Could not reach the save on this device.";
-    }
-    out.hidden = false;
+  // New player (Sprint 11, Zafar 22 Oct): a toggle. On, every launch plays the reset "New player" profile; off, the grown-up's own player
+  var LabsPlayer = (${labsPlayer.toString()})(Save, (function () { try { return window.localStorage; } catch (e) { return { getItem: function () { return null; }, setItem: function () {}, removeItem: function () {} }; } })());
+  var tog = document.getElementById("new-player-toggle"), badge = document.getElementById("player-badge"), box = document.getElementById("new-player");
+  function show() {
+    var on = LabsPlayer.on();
+    tog.checked = on;
+    box.classList.toggle("on", on);
+    badge.classList.toggle("on", on);
+    badge.textContent = "Playing as: " + LabsPlayer.label();
+  }
+  tog.addEventListener("change", function () {
+    LabsPlayer.setOn(tog.checked);
+    // on: every picker back at its first option (level 1), every Play link with it
+    if (tog.checked) document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
+    show();
   });
+  // every launch (Play, the Walkthrough, the house, the day builder) plays as the player the toggle says, fresh when on
+  document.querySelectorAll("a.play, a.top").forEach(function (a) {
+    a.addEventListener("click", function () {
+      try { LabsPlayer.launch(); } catch (e) { /* the save is unreachable: the page plays as it can */ }
+    });
+  });
+  try { show(); } catch (e) { badge.textContent = "Could not reach the save on this device."; }
 </script>
 </body>
 </html>

@@ -198,6 +198,93 @@
     else rx = Math.max(rx, ry / 2.2);
     return { cx: r.x + r.w / 2, cy: r.y + r.h / 2, rx, ry };
   };
+  /* ---------------- the play log (Sprint 11; pure part) ---------------- */
+  /*
+   * The play log (easy-to-play.md principle 11): each stage's events folded into one round
+   *   {mode, game, level, at, ms, steps: [{mode, game, step, firstActMs, taps, allTaps, acts, helps}]}
+   * taps = taps that did nothing (no live control under them, and no act the game logged for them); acts = the inputs the
+   * game took (Lifecycle "act" notes); helps = every help shown in the step (a ghost, a demo, a hint rung, Nani's help line,
+   * a reveal on the word card). firstActMs = from the step opening to its first act (null: none). Steps are cut by
+   * "step-open" (Onboard.stuck, PlayLog.step) and "step-close" (the order card's tick, the heal host) notes.
+   */
+  const PL = {};
+  PL.KEY = "playlog"; // the save namespace (below)
+  PL.MAX = 50;
+  PL.SLOW_MS = 5000;
+  PL.DEAD = 2;
+  PL.HELPS = ["ghost", "demo", "rung", "help", "reveal"];
+  PL.ACT_WINDOW = 250;
+  /** The mode and game a stage reason names ("clinic/eye", "cook:station"), with meta's names first. */
+  PL.names = function (reason, meta) {
+    const m = Object.assign({}, meta);
+    const r = String(reason || "");
+    const sl = r.split("/");
+    const co = r.split(":");
+    const mode = m.mode || (sl.length > 1 ? sl[0] : co[0]) || "?";
+    const game = m.game || (sl.length > 1 ? sl.slice(1).join("/") : co.slice(1).join(":")) || r || "?";
+    return { mode, game };
+  };
+  /**
+   * Fold one stage: entries (Lifecycle.log entries from its stage-start to its stage-end, in order: {what, t, reason, step?}),
+   * taps ([{t, live}] in that time). meta: {mode, game, level, step}. -> the round.
+   */
+  PL.fold = function (entries, taps, meta) {
+    entries = (entries || []).filter((e) => e && typeof e.t === "number");
+    taps = (taps || []).filter((x) => x && typeof x.t === "number");
+    meta = meta || {};
+    const start = entries.find((e) => e.what === "stage-start");
+    const end = [...entries].reverse().find((e) => e.what === "stage-end");
+    const t0 = start ? start.t : entries.length ? entries[0].t : taps.length ? taps[0].t : 0;
+    const t1 = end ? end.t : Math.max(t0, ...entries.map((e) => e.t), ...taps.map((x) => x.t));
+    const { mode, game } = PL.names((start && start.reason) || (end && end.reason), meta);
+    // the steps' windows
+    const cuts = [];
+    let cur = { step: meta.step || null, from: t0, named: !!meta.step };
+    entries.forEach((e) => {
+      if (e.what === "step-open") {
+        const name = e.step != null ? String(e.step) : e.reason;
+        const fresh = !entries.some((x) => x.t >= cur.from && x.t < e.t && x.what === "act") && !taps.some((x) => x.t >= cur.from && x.t < e.t);
+        if (fresh) {
+          cur.step = name;
+          cur.named = true;
+          return;
+        }
+        cuts.push(Object.assign(cur, { to: e.t }));
+        cur = { step: name, from: e.t, named: true };
+      } else if (e.what === "step-close") {
+        const name = e.step != null ? String(e.step) : e.reason;
+        if (!cur.named) cur.step = name;
+        cuts.push(Object.assign(cur, { to: e.t }));
+        cur = { step: null, from: e.t, named: false };
+      }
+    });
+    cuts.push(Object.assign(cur, { to: t1 }));
+    const acts = entries.filter((e) => e.what === "act");
+    const steps = cuts
+      .map((c, i) => {
+        const inW = (t, last) => t >= c.from && (last ? t <= c.to : t < c.to);
+        const last = i === cuts.length - 1;
+        const a = acts.filter((e) => inW(e.t, last));
+        const tp = taps.filter((x) => inW(x.t, last));
+        const dead = tp.filter((x) => !x.live && !acts.some((e) => e.t >= x.t && e.t <= x.t + PL.ACT_WINDOW)).length;
+        const helps = entries.filter((e) => inW(e.t, last) && PL.HELPS.includes(e.what)).length;
+        return { mode, game, step: c.step || (cuts.length > 1 ? `${game} #${i + 1}` : game), firstActMs: a.length ? a[0].t - c.from : null, taps: dead, allTaps: tp.length, acts: a.length, helps, ms: Math.max(0, c.to - c.from) };
+      })
+      // a step that closed as the stage ended (nothing in it, a moment long) is not a step
+      .filter((s, i, all) => !(i === all.length - 1 && all.length > 1 && !s.acts && !s.allTaps && !s.helps && s.ms < 400));
+    return { mode, game, level: meta.level != null ? meta.level : null, at: t0, ms: Math.max(0, t1 - t0), steps };
+  };
+  /** Is this step worth a look? (over 5 s to its first act, or 2+ taps that did nothing) */
+  PL.flags = function (s) {
+    const out = [];
+    if (s && (s.firstActMs == null ? s.ms > PL.SLOW_MS : s.firstActMs > PL.SLOW_MS)) out.push("slow");
+    if (s && s.taps >= PL.DEAD) out.push("dead-taps");
+    return out;
+  };
+  /** The log with a round added (the last MAX kept). */
+  PL.append = (list, round) => (Array.isArray(list) ? list : []).concat([round]).slice(-PL.MAX);
+  Onboard.playLog = PL;
+
   /* ---------------- the overlay ---------------- */
   if (typeof document === "undefined") return Onboard;
 
@@ -579,5 +666,396 @@
     }
     return first;
   };
+
+  /* ---------------- Sprint 11: the real item shows it, and the hint rungs ---------------- */
+  const LCnote = (what, info) => {
+    try {
+      if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  /** A path's points as offsets from `from` (page px): [{x, y}], an element or selector (its middle), {dx, dy}, or a function. */
+  function offsets(path, from) {
+    if (typeof path === "function") path = path();
+    if (path == null) return [];
+    if (!Array.isArray(path) && typeof path === "object" && ("dx" in path || "dy" in path)) return [{ x: path.dx || 0, y: path.dy || 0 }];
+    const pts = (Array.isArray(path) && !(path.length === 4 && path.every((n) => typeof n === "number")) ? path : [path])
+      .map((p) => (p && typeof p.x === "number" && typeof p.y === "number" && !p.getBoundingClientRect ? p : centre(rectOf(p))))
+      .filter(Boolean);
+    return pts.map((p) => ({ x: p.x - from.x, y: p.y - from.y }));
+  }
+  /**
+   * The real item shows the action, then goes back to where it was (principle 2: 2-3 year olds copy the thing, not an
+   * arrow). item: an element (it moves itself, by the CSS translate property, so its own transform is untouched), or a
+   * scene point {x, y} with o.move(dx, dy, t) (a canvas game moves its own sprite each frame; t 0..1 through the path).
+   * path: page points, an element or selector to go to (and back), or {dx, dy}. o.ms: the whole demo (default 1600);
+   * o.step: its name in the log; o.hand: the ghost finger rides along. Resolves when the item is home.
+   */
+  Onboard.demo = function (item, path, o) {
+    o = o || {};
+    const isEl = item && (typeof item === "string" || item.nodeType === 1);
+    const elx = isEl ? (typeof item === "string" ? document.querySelector(item) : item) : null;
+    const from = elx ? centre(rectOf(elx)) : item && typeof item.x === "number" ? { x: item.x, y: item.y } : null;
+    if (!from) return Promise.resolve(false);
+    const pts = offsets(path, from);
+    if (!pts.length) pts.push({ x: 0, y: -Math.max(24, (elx ? rectOf(elx).h : 60) * 0.3) });
+    if (!o.quiet) LCnote("demo", { step: o.step != null ? String(o.step) : "", gesture: "item" }); // (a rung logs its own: one help)
+    const ms = o.ms || 600 + 500 * pts.length;
+    // a leg out to each point, a short hold at the last, and home
+    const keys = [{ x: 0, y: 0, o: 0 }];
+    pts.forEach((p, i) => keys.push({ x: p.x, y: p.y, o: (0.12 + (0.55 * (i + 1)) / pts.length) }));
+    keys.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y, o: 0.78 }, { x: 0, y: 0, o: 1 });
+    const at = (t) => {
+      for (let i = 1; i < keys.length; i++) {
+        if (t <= keys[i].o) {
+          const a = keys[i - 1];
+          const b = keys[i];
+          const k = b.o === a.o ? 1 : (t - a.o) / (b.o - a.o);
+          const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+          return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e };
+        }
+      }
+      return { x: 0, y: 0 };
+    };
+    let hand = null;
+    if (o.hand) {
+      hand = document.createElement("div");
+      hand.className = "ob-demo-hand";
+      hand.setAttribute("aria-hidden", "true");
+      hand.innerHTML = HAND;
+      Object.assign(hand.style, { position: "fixed", left: "0", top: "0", width: `${HAND_W}px`, height: "80px", zIndex: "960", pointerEvents: "none", opacity: "0.9" });
+      document.body.appendChild(hand);
+    }
+    const placeHand = (d) => hand && (hand.style.transform = `translate(${from.x + d.x - HOTSPOT[0]}px, ${from.y + d.y - HOTSPOT[1]}px)`);
+    if (reduced()) {
+      // no motion: the item lifts where it is for a moment (a glow), and the hand, if any, sits on it
+      if (elx) Object.assign(elx.style, { outline: "4px solid var(--njg-focus)", outlineOffset: "4px" });
+      placeHand({ x: 0, y: 0 });
+      return new Promise((r) =>
+        setTimeout(() => {
+          if (elx) Object.assign(elx.style, { outline: "", outlineOffset: "" });
+          if (hand) hand.remove();
+          r(true);
+        }, 900)
+      );
+    }
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      if (elx) elx.classList.add("ob-demo");
+      const tick = (now) => {
+        const t = Math.min(1, (now - t0) / ms);
+        const d = at(t);
+        const lift = t > 0.06 && t < 0.94 ? 1.06 : 1;
+        if (elx) {
+          elx.style.translate = `${d.x.toFixed(1)}px ${d.y.toFixed(1)}px`;
+          elx.style.scale = String(lift);
+        } else if (o.move) {
+          try {
+            o.move(d.x, d.y, t);
+          } catch (e) {
+            /* the game's own drawing */
+          }
+        }
+        placeHand(d);
+        if (t < 1) return requestAnimationFrame(tick);
+        if (elx) {
+          elx.style.translate = "";
+          elx.style.scale = "";
+          elx.classList.remove("ob-demo");
+        } else if (o.move) o.move(0, 0, 1);
+        if (hand) hand.remove();
+        resolve(true);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
+  /**
+   * The spotlight alone (the 5 s rung): the 62% dim (as Onboard.run's) with a soft hole on `target`; everything but the live
+   * control (o.live, default the target) is inert: a touch elsewhere is stopped before the page gets it. [data-ob-pass]
+   * (the ? and its menu) stays usable. -> {close(), layer}
+   */
+  Onboard.spot = function (target, o) {
+    o = o || {};
+    const sid = `sp${Math.random().toString(36).slice(2, 8)}`;
+    const layer = document.createElement("div");
+    layer.className = "njg-onboard njg-spot";
+    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><radialGradient id="ob-soft-${sid}"><stop offset="0" stop-color="#000"/><stop offset="0.72" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><ellipse class="ob-hole" fill="url(#ob-soft-${sid})"/></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/></svg>`;
+    (o.container || document.body).appendChild(layer);
+    requestAnimationFrame(() => layer.classList.add("on"));
+    const hole = layer.querySelector(".ob-hole");
+    let raf = 0;
+    const draw = () => {
+      const r = union(rectsOf(target));
+      hole.style.display = r ? "" : "none";
+      if (r) {
+        const e = Onboard.glowShape(r, PAD);
+        hole.setAttribute("cx", e.cx);
+        hole.setAttribute("cy", e.cy);
+        hole.setAttribute("rx", e.rx);
+        hole.setAttribute("ry", e.ry);
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    raf = requestAnimationFrame(draw);
+    const liveRects = () => rectsOf(o.live || target);
+    const pt = (e) => {
+      const t = e.changedTouches ? e.changedTouches[0] : e;
+      return { x: t.clientX, y: t.clientY };
+    };
+    const block = (e) => {
+      if (e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
+      if (liveRects().some((r) => inside(pt(e), r))) return;
+      e.stopPropagation();
+      e.preventDefault();
+    };
+    const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu"];
+    EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
+    let closed = false;
+    return {
+      layer,
+      close() {
+        if (closed) return;
+        closed = true;
+        cancelAnimationFrame(raf);
+        EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
+        layer.classList.remove("on");
+        setTimeout(() => layer.remove(), reduced() ? 0 : 300);
+      },
+    };
+  };
+
+  /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
+  const ownClock = { t: Date.now(), on: false };
+  const idleMs = () => {
+    const G = root.NaniGuide;
+    if (G && G.idleMs && G.watch) {
+      G.watch();
+      return G.idleMs();
+    }
+    if (!ownClock.on) {
+      ownClock.on = true;
+      ["pointerdown", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, () => (ownClock.t = Date.now()), true));
+    }
+    return Date.now() - ownClock.t;
+  };
+  Onboard.RUNGS = [0, 5000, 15000];
+  /**
+   * The hint rungs for one step, the same for every age (principle 3): at 0 s the real item's demo the first time this
+   * step appears for this child (once per profile per o.id, default "stuck/<step>"); at 5 s idle the spotlight (the live
+   * control stays tappable, nothing else) plus the demo again; at 15 s the demo again with the guide's line (o.line()).
+   * After an action the clock runs again and so can the rungs. It never does the step for the child.
+   *   o: {target (the live control), item (what demonstrates; default target), path, move, live, line, first, id, at}
+   *   -> {done(), stop(), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
+   */
+  Onboard.stuck = function (step, o) {
+    o = o || {};
+    const name = String(step);
+    const id = o.id || `stuck/${name}`;
+    const AT = o.at || Onboard.RUNGS;
+    const item = o.item || o.target;
+    const S = store();
+    LCnote("step-open", { step: name });
+    if (root.PlayLog && root.PlayLog.step) root.PlayLog.step(name, { noted: true });
+    let spot = null;
+    let poll = 0;
+    let fired = {};
+    let lastAct = null;
+    let busy = false;
+    let off = null;
+    const h = { rung: 0 };
+    const demo = () => {
+      if (busy || h.over) return Promise.resolve();
+      busy = true;
+      return Onboard.demo(item, o.path, { step: name, move: o.move, hand: o.hand, ms: o.ms, quiet: true }).finally(() => (busy = false));
+    };
+    const closeSpot = () => {
+      if (spot) spot.close();
+      spot = null;
+    };
+    const end = () => {
+      if (h.over) return;
+      h.over = true;
+      clearInterval(poll);
+      closeSpot();
+      if (off) off();
+    };
+    h.done = end;
+    h.stop = end;
+    // the first time: the real item shows it as the step opens
+    const first = o.first !== false && !(S && S.get("onboarded", id));
+    if (first && AT[0] != null) {
+      if (S) S.set("onboarded", id, true);
+      setTimeout(() => {
+        if (h.over) return;
+        h.rung = 0;
+        LCnote("rung", { step: name, rung: 0 });
+        demo();
+      }, AT[0] || 300);
+    }
+    poll = setInterval(() => {
+      if (h.over) return;
+      const G = root.NaniGuide;
+      const la = G && G.lastAction ? G.lastAction() : ownClock.t;
+      if (la !== lastAct) {
+        // the child did something: the rungs start again from now, and the spotlight goes
+        if (lastAct != null) {
+          fired = {};
+          closeSpot();
+        }
+        lastAct = la;
+      }
+      const idle = idleMs();
+      if (AT[1] != null && idle >= AT[1] && !fired[1]) {
+        fired[1] = true;
+        h.rung = 5;
+        LCnote("rung", { step: name, rung: 5 });
+        if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live });
+        demo();
+      }
+      if (AT[2] != null && idle >= AT[2] && !fired[2]) {
+        fired[2] = true;
+        h.rung = 15;
+        LCnote("rung", { step: name, rung: 15 });
+        demo();
+        try {
+          if (o.line) o.line(name);
+        } catch (e) {
+          /* the guide's line is the game's */
+        }
+      }
+    }, 200);
+    if (root.Lifecycle && root.Lifecycle.onStageEnd) off = root.Lifecycle.onStageEnd(end);
+    return h;
+  };
+
+  /* ---------------- the play log (Sprint 11): the runtime ---------------- */
+  // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
+  if (root.PlayLog && root.PlayLog.__live) {
+    Onboard.playLog = root.PlayLog;
+    return Onboard;
+  }
+  const PlayLog = Object.assign(Object.create(PL), { __live: true });
+  let meta = {};
+  const taps = [];
+  const liveControl = (t) => {
+    const c = t && t.closest && t.closest("button, [role='button'], a[href], input, select, label");
+    if (!c || c.disabled || c.getAttribute("aria-disabled") === "true") return false;
+    return !c.closest(".hidden, [hidden], [inert]");
+  };
+  // every trusted tap, before anything can stop it (a spotlight's block is registered later on the same target)
+  root.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (!e.isTrusted && !PlayLog.untrusted) return;
+      taps.push({ t: Date.now(), live: liveControl(e.target) });
+      if (taps.length > 600) taps.splice(0, taps.length - 600);
+      hook();
+    },
+    true
+  );
+  // stored through the one save (privacy rule: storage only in the save modules): each player's own "playlog" namespace,
+  // {rounds: [...]} (the last 50); a New player's reset (Save.resetPlayer) keeps it. With no save on the page: this visit only.
+  const mem = { rounds: [] };
+  const S = () => (root.Save && typeof root.Save.get === "function" ? root.Save : null);
+  const mine = () => {
+    try {
+      const v = S() ? S().get(PL.NS).rounds : mem.rounds;
+      return Array.isArray(v) ? v : [];
+    } catch (e) {
+      return [];
+    }
+  };
+  PL.NS = "playlog";
+  /** Every player's rounds on this device, oldest first, each with its player's name. */
+  PlayLog.read = function () {
+    try {
+      const sv = S();
+      if (!sv) return mem.rounds.slice();
+      return sv
+        .players()
+        .flatMap((pl) => ((sv.get(PL.NS, pl.id) || {}).rounds || []).map((r) => Object.assign({ player: pl.name }, r)))
+        .sort((x, y) => (x.at || 0) - (y.at || 0));
+    } catch (e) {
+      return [];
+    }
+  };
+  /** The current player's rounds replaced (append: the fold; clear: every player's). */
+  PlayLog.write = function (list) {
+    try {
+      if (S()) S().set(PL.NS, { rounds: list });
+      else mem.rounds = list;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+  PlayLog.clear = function () {
+    try {
+      const sv = S();
+      if (sv) sv.players().forEach((pl) => sv.set(PL.NS, { rounds: [] }, pl.id));
+      mem.rounds = [];
+    } catch (e) {
+      /* nothing to clear */
+    }
+  };
+  /** Name the stage now running (the host: {mode, game, level}); cleared at its end. */
+  PlayLog.meta = (m) => (hook(), (meta = Object.assign({}, meta, m || {})));
+  /** A step opens by name (Onboard.stuck does it; a game may too): it is logged as a "step-open" note. */
+  PlayLog.step = function (name, o) {
+    if (!(o && o.noted)) LCnote("step-open", { step: String(name) });
+  };
+  /** Fold the stage that just ended into the log (the Lifecycle stage-end hook). Never throws. */
+  PlayLog.stageEnd = function () {
+    try {
+      const L = root.Lifecycle;
+      const log = (L && L.log) || [];
+      let e = log.length - 1;
+      while (e >= 0 && log[e].what !== "stage-end") e--;
+      if (e < 0) return null;
+      let s = e - 1;
+      while (s >= 0 && log[s].what !== "stage-start" && log[s].what !== "stage-end") s--;
+      const from = s >= 0 && log[s].what === "stage-start" ? s : s + 1;
+      const entries = log.slice(Math.max(0, from), e + 1);
+      if (!entries.length) return null;
+      const t0 = entries[0].t;
+      const started = entries[0].what === "stage-start";
+      const m = Object.assign({}, meta);
+      // a stage that names only its kind ("cook:station"): the page's own game from its address (cook.html?first=chai)
+      if (!m.game && !String(entries[0].reason || "").includes("/")) {
+        try {
+          const q = new URLSearchParams(root.location.search);
+          const g = q.get("game") || q.get("station") || q.get("first");
+          if (g) m.game = g;
+        } catch (err) {
+          /* no address */
+        }
+      }
+      const round = PL.fold(entries, taps.filter((x) => x.t >= t0 && x.t <= log[e].t + 5), m);
+      meta = {};
+      // only a stage that started (not the gap before an end screen) and that someone played (not a hand-off or a lab boot)
+      if (!started || (!round.steps.some((st) => st.acts || st.allTaps) && round.ms < 1500)) return null;
+      PlayLog.write(PL.append(mine(), round));
+      PlayLog.last = round;
+      return round;
+    } catch (err) {
+      return null;
+    }
+  };
+  // the stage-end hook on the page's Lifecycle (js/shared/request-popup.js), again if the page loads a new one (a mode's own copy)
+  let hookedOn = null;
+  function hook() {
+    const L = root.Lifecycle;
+    if (!L || !L.onStageEnd || L === hookedOn) return;
+    hookedOn = L;
+    L.onStageEnd(() => PlayLog.stageEnd());
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hook);
+  setTimeout(hook, 0);
+  setInterval(hook, 2000);
+  PlayLog.hook = hook;
+  root.PlayLog = PlayLog;
+  Onboard.playLog = PlayLog;
   return Onboard;
 });

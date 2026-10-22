@@ -1,0 +1,84 @@
+# The run spec for pack s11: Sprint 11's art (rule 13; easy-to-play.md decision 9, Zafar 21 Oct; his 22 Oct changes): a proper
+# toothbrush, the girl's mouth without its pale box, the doctor holding a big blank card, the evening book's clinic pictures and a
+# small painted effects sheet. One image per prompt. Read by build/tools/art/artblock.py. Edit this file, then regenerate the block:
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s11.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s11.run.yaml
+pack: s11
+title: 'Sprint 11: the toothbrush, the mouth, the doctor with a card, the clinic book pages and the effects'
+plan: docs/design-language/art-plans/s11-art-plan.md
+plan_branch: ccr-1888a520-dk18y7
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: main
+dest: sources/art/s11
+real_people: true
+approvals: "- The doctor and the girl (DC, BK2) are real people. Zafar judges their likeness after the run, in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes its check and the PASS/FAIL list.\n- Everything else is yours to judge with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  old-toothbrush.png: sources/art/s08b/tb1-toothbrush-v1.png
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  mouth.png: sources/art/s02/girl-m1-mouth-v2.png
+  doctor-sheet.png: sources/art/s08/sheet-doctor-final-1.png
+  girl-sheet.png: sources/art/s08/sheet-girl-v2-1.png
+  lineup.png: sources/art/s08/lineup-v4-1.png
+  waiting-room.png: sources/art/clinic-v2/cb1-waiting-wide-v1.png
+  book-kitchen.png: sources/art/s09b/k2-book-kitchen-spread-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  TB: {attach: [style-anchor-v1.png, old-toothbrush.png], save: tb-toothbrush-v1.png, check: ITEM}
+  MO: {attach: ["edit: mouth.png"], save: mo-mouth-no-box-v1.png, check: EDIT}
+  DC: {attach: [doctor-sheet.png, lineup.png], save: dc-doctor-blank-card-v1.png, check: PERSON}
+  BK1: {attach: [waiting-room.png, book-kitchen.png], save: bk1-book-clinic-spread-v1.png, check: SPREAD}
+  BK2: {attach: [girl-sheet.png, doctor-sheet.png, lineup.png, "kept:BK1"], save: bk2-book-clinic-photo-v1.png, check: PHOTO}
+  FX: {attach: [style-anchor-v1.png], save: fx-effects-sheet-v1.png, check: SPRITES}
+parts:
+- id: A
+  title: 'THE TOOTHBRUSHING GAME'
+  intro: 'TB is a new toothbrush (straight handle, real bristles); MO is an edit of the mouth close-up that removes the pale box on a tooth and changes nothing else.'
+  items:
+  - lines: [TB, MO]
+- id: B
+  title: 'THE EYE TEST'
+  intro: 'DC: the doctor holding up one big blank card; the game draws the word on it.'
+  items:
+  - lines: [DC]
+- id: C
+  title: 'THE EVENING BOOK AFTER A CLINIC DAY'
+  intro: 'BK1 is the clinic across the book''s two pages, empty for the game''s things; BK2 is a photo of the girl and the doctor in that room.'
+  items:
+  - lines: [BK1, BK2]
+- id: D
+  title: 'THE EFFECTS'
+  intro: 'FX: five small painted effects, apart on flat magenta.'
+  items:
+  - lines: [FX]
+checks:
+  ITEM:
+    text: 'one toothbrush, flat and side on, head left; the handle completely straight; real bristle tufts; whole, with space round it, on ONE flat pure magenta with no floor or shadow'
+    judge: {aspect: [3, 2], bg: none}
+  EDIT:
+    text: 'the same picture as the attached mouth (same size, framing, lips, teeth, tongue) with no pale box or hard-edged highlight on any tooth; nothing else changed'
+    judge: {aspect: [3, 2], bg: none}
+  PERSON:
+    text: 'the doctor as on his sheet (face, glasses, navy blazer), whole head to feet, holding a big landscape card square-on in both hands by its side edges; the card completely blank; ONE flat pure magenta behind with no floor or shadow'
+    judge: {aspect: [2, 3], bg: none}
+  SPREAD:
+    text: 'a clinic room filling the picture, a long empty counter across the whole width, no people and no loose things, nothing standing in the middle tenth; no writing, posters with text or red crosses'
+    judge: {aspect: [3, 2], bg: none}
+  PHOTO:
+    text: 'the girl and the doctor as on their sheets, side by side from the knees up, smiling at the camera, in the kept clinic room; she waves, his hand on her shoulder; modest clothes as on the sheets'
+    judge: {aspect: [3, 2], bg: none}
+  SPRITES:
+    text: 'exactly five effects in one row, in order sparkle, splash, steam, bubble, shine, each whole and well apart, solid enough to cut out, on ONE flat pure magenta with no floor or shadow'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones; anything written or drawn on the doctor's card.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things or the wrong view; a curved or bent toothbrush handle.
+- A key background that isn't one flat pure magenta (a gradient, a floor, shadows or haze on it); pink or purple anywhere else.
+- A real person who doesn't look like their sheet, or a skin tone that drifts from the lineup; immodest clothes.
+- Anything scary; sweets, lollies or biscuits; any religious marker; a red cross.

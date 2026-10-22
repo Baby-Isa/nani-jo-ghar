@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Play log: where players hesitated</title>
+<style>
+  :root { --bg: #fbf5ec; --ink: #3b2a20; --muted: #7a6558; --card: #fff; --line: #e6d6c3; --accent: #8a4b2a; --flag: #b3412e; --flag-bg: #fdecea; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { color: var(--accent); margin: 0 0 4px; font-size: 1.5rem; }
+  p.lead { color: var(--muted); margin: 0 0 12px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; align-items: center; }
+  button { font: inherit; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+  button.go { background: #2f6b4f; color: #fff; border-color: #2f6b4f; font-weight: 700; }
+  .round { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 0 0 12px; }
+  .round h2 { font-size: 1.05rem; margin: 0 0 6px; }
+  .round h2 small { color: var(--muted); font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  th { color: var(--muted); font-weight: 600; border-top: 0; }
+  tr.flag td { background: var(--flag-bg); }
+  td .why { color: var(--flag); font-weight: 700; }
+  .empty { color: var(--muted); padding: 24px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Play log</h1>
+  <p class="lead">Every player's last 50 rounds on this device (the save's <code>playlog</code> namespace; js/shared/onboard.js PlayLog): each step's seconds to the first action, the taps that did nothing and the help shown. Flagged: over 5 s to the first action, or 2 or more taps that did nothing. Nothing leaves the device unless you export it.</p>
+  <div class="bar">
+    <button class="go" id="export" type="button">Export JSON</button>
+    <button id="refresh" type="button">Refresh</button>
+    <button id="clear" type="button">Clear the log</button>
+    <span id="count" class="lead"></span>
+  </div>
+  <div id="rounds"></div>
+</main>
+<script src="../js/shared/save.js?v=20261022T014206Z"></script>
+<script src="../js/shared/onboard.js?v=20261022T014206Z"></script>
+<script>
+  var PL = window.PlayLog;
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var secs = function (ms) { return ms == null ? "none" : (ms / 1000).toFixed(1) + " s"; };
+  function draw() {
+    var list = PL.read().slice().reverse();
+    var box = document.getElementById("rounds");
+    document.getElementById("count").textContent = list.length + " round" + (list.length === 1 ? "" : "s");
+    if (!list.length) { box.innerHTML = '<p class="empty">No rounds yet. Play a game on this device, then come back.</p>'; return; }
+    box.innerHTML = list.map(function (r, i) {
+      var flagged = r.steps.filter(function (s) { return PL.flags(s).length; }).length;
+      var rows = r.steps.map(function (s) {
+        var f = PL.flags(s);
+        var why = f.map(function (x) { return x === "slow" ? "over 5 s" : "2+ taps did nothing"; }).join(", ");
+        return '<tr class="' + (f.length ? "flag" : "") + '" data-flags="' + f.join(" ") + '"><td>' + esc(s.step) + '</td><td>' + secs(s.firstActMs) + '</td><td>' + s.taps + (s.allTaps != null ? " of " + s.allTaps : "") + '</td><td>' + s.acts + '</td><td>' + s.helps + '</td><td>' + secs(s.ms) + '</td><td>' + (why ? '<span class="why">' + why + "</span>" : "") + "</td></tr>";
+      }).join("");
+      return '<section class="round" data-round="' + i + '"><h2>' + esc(r.mode) + " / " + esc(r.game) + (r.level != null ? " L" + esc(r.level) : "") + ' <small>' + (r.player ? esc(r.player) + " · " : "") + esc(new Date(r.at).toLocaleString()) + " · " + secs(r.ms) + " · " + r.steps.length + " step" + (r.steps.length === 1 ? "" : "s") + (flagged ? " · " + flagged + " flagged" : "") + '</small></h2><table><thead><tr><th>Step</th><th>To first action</th><th>Taps that did nothing</th><th>Actions</th><th>Help shown</th><th>Time</th><th>Flag</th></tr></thead><tbody>' + rows + "</tbody></table></section>";
+    }).join("");
+  }
+  document.getElementById("refresh").addEventListener("click", draw);
+  document.getElementById("clear").addEventListener("click", function () { if (confirm("Clear every player's play log on this device?")) { PL.clear(); draw(); } });
+  document.getElementById("export").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify({ format: "nani-jo-ghar-play-log", exported: new Date().toISOString(), rounds: PL.read() }, null, 1)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "njg-play-log-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  });
+  draw();
+</script>
+</body>
+</html>
