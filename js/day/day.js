@@ -50,6 +50,15 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
 
 // ================================================================ the runner (pure: no page; build/test_day_runner.mjs)
 
+/**
+ * LNG-18 (Zafar, 20 and 22 Oct: "it should be playing with a robotic voice if there's no recordings"): a line the engine can't
+ * build yet (its grey to-record English) is still heard while testing. On the test path the device voice says its English; the
+ * store build says nothing (a "missing" piece: never a computer voice, js/core/voice.js). -> a clip plan for voice.say
+ */
+export function unsaidPlan(en, path = "test") {
+  return { clipPlan: [{ text: String(en == null ? "" : en), source: path === "test" ? "device" : "missing", tokens: [0, 0] }] };
+}
+
 /** A stage id's name in the URL: the ride was "window" in the first build's labs. */
 export const stageId = (s) => (s === "window" ? "ride" : s);
 
@@ -125,7 +134,7 @@ const CLINIC_STAGES = ["waiting", "diagnosis", "pharmacy", "sendoff"];
  *   cook[:station[:level]]    one Cook station at a level (lab.html?mode=cook&game=…), or cook / cook:full[:level] / cook:2: Cook's story
  *                             round, the pantry first and then the chai order
  *   clinic[:game[:level]]     one healing game (or waiting / diagnosis / pharmacy / sendoff) at a level, or clinic / clinic:full: a morning
- *   ride[:trip]               the window ride to a trip (farm, shops; farm when left out); `window` is the same
+ *   ride[:trip[:level]]       the window ride to a trip (farm, shops; farm when left out) at a level; `window` is the same
  *   book                      the evening book
  * The data is optional (the weather and trips are checked against it when it is given).
  */
@@ -167,7 +176,9 @@ export function parseStages(text, data = null) {
         notes.push(`${tok}: no such trip, left out`);
         continue;
       }
-      out.push({ stage: "ride", trip, road: trips ? trips[trip].ride : null });
+      const lv = p[1] != null && p[1] !== "" ? level(p[1]) : null;
+      if (p[1] && lv == null) notes.push(`${tok}: level 1 to 4, the ride's own instead`);
+      out.push(Object.assign({ stage: "ride", trip, road: trips ? trips[trip].ride : null }, lv ? { level: lv } : {}));
     } else if (name === "book") {
       out.push({ stage: "book" });
     } else if (name === "activity") {
@@ -186,20 +197,89 @@ export function parseStages(text, data = null) {
 }
 
 /**
- * The builder's day for this page load: ?stages= (a fresh run from its first stage) or, with none, the list story.today kept when a
- * hand-off left the page (custom, stages), resumed at the stage after it (today.next). -> {stages | null, id, from, over, notes}
- * over: the hand-off was the last stage, so the day is finished.
+ * The builder's day for this page load: ?stages= (a fresh run from its first stage) or, only when asked (?resume=1, the page a
+ * hand-off comes back to: handoffUrl's ?then=), the list story.today kept when that hand-off left the page (custom, stages), resumed
+ * at the stage after it (today.next). -> {stages | null, id, from, over, notes, stale}
+ * over: the hand-off was the last stage, so the day is finished. stale (LAB-07, Zafar 22 Oct: the builder "opened by itself"): a
+ * builder's day saved in story.today that this load did not ask to resume; the page clears it and plays the child's own day.
  */
-export function customDay({ asked = null, today = null, isToday = false, data = null, dayNo = 1 } = {}) {
+export function customDay({ asked = null, today = null, isToday = false, data = null, dayNo = 1, resume = false } = {}) {
   if (asked) {
     const p = parseStages(asked, data);
-    return { stages: p.stages.length ? p.stages : null, id: dayNo, from: 0, over: false, notes: p.notes };
+    return { stages: p.stages.length ? p.stages : null, id: dayNo, from: 0, over: false, notes: p.notes, stale: false };
   }
-  if (isToday && today && today.custom && Array.isArray(today.stages) && today.stages.length) {
+  const saved = !!(today && today.custom && Array.isArray(today.stages) && today.stages.length);
+  if (resume && isToday && saved) {
     const from = Number.isInteger(today.next) ? today.next : 0;
-    return { stages: today.stages, id: today.day || dayNo, from, over: from >= today.stages.length, notes: [] };
+    return { stages: today.stages, id: today.day || dayNo, from, over: from >= today.stages.length, notes: [], stale: false };
   }
-  return { stages: null, id: dayNo, from: 0, over: false, notes: [] };
+  return { stages: null, id: dayNo, from: 0, over: false, notes: [], stale: saved };
+}
+
+/** What story.today becomes when a stale builder's day is cleared (LAB-07): no list, nothing to resume; the child's day starts afresh. */
+export const CLEAR_CUSTOM = Object.freeze({ custom: false, stages: null, next: null, at: null });
+
+/**
+ * One page load's start (the page's boot, pure): which list it plays and from where. -> {cu, today (after a stale builder's day
+ * is cleared), isToday, n (the day's number), clear (the patch to save, or null)}
+ *   asked: ?stages= (or a bookend's); resume: ?resume=1; dayAsked: ?day=N; date: today's date; dayNo: the child's day (story.dayNo)
+ */
+export function pageStart({ today = null, asked = null, resume = false, dayAsked = null, date = todayDate(), dayNo = 1, data = null } = {}) {
+  const live = (t) => !!(t && t.date === date && t.at !== "done" && t.at != null);
+  const cu = customDay({ asked, today, isToday: live(today), data, dayNo, resume });
+  const clear = cu.stale ? Object.assign({}, CLEAR_CUSTOM) : null;
+  const t = clear ? Object.assign({}, today, clear) : today;
+  const isToday = live(t);
+  const n = Number(dayAsked) || (isToday && t.day) || dayNo;
+  return { cu, today: t, isToday, n, clear };
+}
+
+/** A page of this app, as the host's ?then= check allows it (js/shared/host.js THEN_RE): never another site. */
+const APP_PAGE = /^[\w-]+\.html(\?[\w=&%.,:-]*)?$/;
+
+/**
+ * LAB-06 (Zafar, 22 Oct: "if you toggle the day builder it just bookends with the Nani house and the Nani book"): a game the labs
+ * launches with the Day builder toggle on (labs.html sends it as day.html?bookend=<its link>) -> {stages: the ?stages= text (the
+ * door, the game, the book), log} or null (a page the day can't play as a stage: the labs launch it as it is).
+ *   lab.html?mode=cook&game=chai-tray&level=1   -> door,cook:chai-tray:1,book      lab.html?mode=cook&level=2 -> door,cook:full:2,book
+ *   lab.html?mode=clinic&game=eye&level=1       -> door,clinic:eye:1,book          clinic.html?level=1        -> door,clinic:full:1,book
+ *   day.html?stage=ride&day=2&level=1           -> door,ride:farm:1,book           day.html?stage=book&log=k  -> door,book (log k)
+ *   day.html?stages=door:night                  -> door:night,book                 (a list that has its own door or book keeps it)
+ * A link with anything else in it (?eyetest=b, ?play=free, ?lab=1) is not bookended: its variant would be lost.
+ */
+export function bookendStages(href) {
+  const s = String(href == null ? "" : href).trim();
+  if (!APP_PAGE.test(s)) return null;
+  const [page, query = ""] = s.split("?");
+  const p = new URLSearchParams(query);
+  const keys = [...p.keys()];
+  const only = (...ok) => keys.every((k) => ok.includes(k));
+  const lv = (() => {
+    const n = Number(p.get("level"));
+    return Number.isInteger(n) && n >= 1 && n <= 4 ? n : 1;
+  })();
+  const game = (p.get("game") || "").toLowerCase();
+  if (game && !COOK_ID.test(game)) return null;
+  const wrap = (mid, log = null) => ({ stages: `door,${mid},book`, log });
+  if (page === "lab.html" && only("mode", "game", "level")) {
+    const mode = p.get("mode");
+    if (mode !== "cook" && mode !== "clinic") return null;
+    return wrap(game ? `${mode}:${game}:${lv}` : `${mode}:full:${lv}`);
+  }
+  if (page === "clinic.html" && only("level")) return wrap(`clinic:full:${lv}`);
+  if (page === "day.html") {
+    if (p.get("stages") && only("stages")) {
+      const list = p.get("stages").split(",").map((x) => x.trim()).filter(Boolean);
+      if (!list.length) return null;
+      if (stageId(list[0].split(":")[0]) !== "door") list.unshift("door");
+      if (list[list.length - 1] !== "book") list.push("book");
+      return { stages: list.join(","), log: null };
+    }
+    const st = stageId(p.get("stage") || "");
+    if (st === "ride" && only("stage", "day", "level")) return wrap(p.get("level") ? `ride:farm:${lv}` : "ride:farm");
+    if (st === "book" && only("stage", "log")) return { stages: "door,book", log: p.get("log") || null };
+  }
+  return null;
 }
 
 /**
@@ -223,24 +303,27 @@ export function stagesText(stages) {
     .map((s) => {
       if (s.stage === "door") return s.weather && s.weather !== "sunny" ? `door:${s.weather}` : s.weather ? "door:sunny" : "door";
       if (s.stage === "cook" || s.stage === "clinic") return s.game ? `${s.stage}:${s.game}:${s.level || 1}` : s.level && s.level > 1 ? `${s.stage}:full:${s.level}` : `${s.stage}:full`;
-      if (s.stage === "ride") return s.trip ? `ride:${s.trip}` : "ride";
+      if (s.stage === "ride") return s.trip ? `ride:${s.trip}${s.level ? `:${s.level}` : ""}` : "ride";
       if (s.stage === "activity") return `activity:${s.activity || "kitchen"}`;
       return s.stage;
     })
     .join(",");
 }
 
+/** The page a builder's hand-off comes back to: day.html, asked to resume the saved day (LAB-07: never resumed unasked). */
+export const RESUME = "day.html?resume=1";
+
 /**
  * Where a cook or clinic stage hands off to, and back: the host's page for that one game (or Cook's story round, or a clinic morning)
- * with ?then=day.html, which the end screen's Next follows (js/shared/host.js, js/clinic/main.js); day.html then picks the day up at
- * the stage after this one (story.today.next).
+ * with ?then=day.html?resume=1 (encoded), which the end screen's Next follows (js/shared/host.js, js/clinic/main.js); day.html then
+ * picks the day up at the stage after this one (story.today.next).
  */
-export function handoffUrl(s, then = "day.html") {
+export function handoffUrl(s, then = RESUME) {
   const L = Number(s.level) || 1;
-  const t = then ? `&then=${then}` : ""; // then = null: the game alone (its end screen's All games goes back to the labs)
+  const t = then ? `&then=${encodeURIComponent(then)}` : ""; // then = null: the game alone (its end screen's All games goes back to the labs)
   if (s.stage === "cook") return s.game ? `lab.html?mode=cook&game=${s.game}&level=${L}${t}` : `lab.html?mode=cook&level=${L}${t}`;
   if (s.stage === "clinic") {
-    if (!s.game) return then ? `clinic.html?then=${then}` : "clinic.html";
+    if (!s.game) return then ? `clinic.html?then=${encodeURIComponent(then)}` : "clinic.html";
     return `clinic.html?stage=${CLINIC_STAGES.includes(s.game) ? s.game : `heal&game=${s.game}`}&level=${L}${t}`;
   }
   return null;
@@ -372,7 +455,7 @@ function makeApi({ data, days, core, E }) {
           segs.forEach((s) => s.classList.toggle("said", Number(s.dataset.seg) >= span[0] && Number(s.dataset.seg) <= span[1]));
         },
       });
-    }
+    } else if (ln.en) p = core.voice.say(unsaidPlan(ln.en, core.voice.path ? core.voice.path() : "test"), { channel: "day", queue: true });
     await p.catch(() => {});
     // a line with no recording yet still takes its time (the read-along is never a flash), at the test speed
     if (min) {
@@ -424,7 +507,7 @@ function pageStages(app, api) {
   const fresh = () => (app.innerHTML = "");
   const handoff = (settings) => {
     // a test speed (?speed=3) goes there and comes back: the game's own, and the page the end screen's Next opens
-    const back = api.speed !== 1 ? encodeURIComponent(`day.html?speed=${api.speed}`) : "day.html";
+    const back = api.speed !== 1 ? `${RESUME}&speed=${api.speed}` : RESUME;
     const to = handoffUrl(settings, back) + (api.speed !== 1 ? `&speed=${api.speed}` : "");
     api.go(to);
     const root = app.querySelector(".day-root");
@@ -529,14 +612,29 @@ async function boot() {
   api.say = (ln, o) => window.Day.say(ln, o);
 
   window.Day.skipped = [];
-  // the day: ?day=N, or the one this child is on (or stopped in today)
-  const today = api.today();
-  // today's day still under way (a hand-off, a closed tab); once its book is done (at "done") the next day starts
-  const isToday = !!(today && today.date === todayDate() && today.at !== "done");
-  const n = Number(q.get("day")) || (isToday && today.day) || api.dayNo();
-  // Sprint 10: a day of the builder's own, ?stages=… (a fresh run), or the one saved in story.today that a hand-off left (resumed)
-  const stagesAsked = q.get("stages");
-  const cu = customDay({ asked: stagesAsked, today, isToday, data, dayNo: api.dayNo() });
+  // LAB-06: a game the labs launched with the Day builder toggle on (?bookend=<its link>): the door, the game, the book
+  let stagesAsked = q.get("stages");
+  const be = q.get("bookend");
+  if (be && !stagesAsked) {
+    const b = bookendStages(be);
+    if (!b) {
+      // a page the day can't play as a stage: it is launched as it is (only a page of this app)
+      if (APP_PAGE.test(be)) api.go(be);
+      return;
+    }
+    stagesAsked = b.stages;
+    if (b.log && !q.get("log")) q.set("log", b.log);
+    window.Day.bookend = b.stages;
+  }
+  // the day: ?day=N, or the one this child is on (or stopped in today: a hand-off, a closed tab; once its book is done, at
+  // "done", the next day starts). LAB-07: a builder's day saved in story.today is resumed only when the page that comes back from
+  // its hand-off asks (?resume=1); any other load clears it, so it never opens by itself, and plays the child's own day
+  const ps = pageStart({ today: api.today(), asked: stagesAsked, resume: q.get("resume") === "1", dayAsked: q.get("day"), dayNo: api.dayNo(), data });
+  if (ps.clear) {
+    api.setToday(ps.clear);
+    window.Day.cleared = true;
+  }
+  const { cu, today, isToday, n } = ps;
   cu.notes.forEach((m) => window.Day.skipped.push(m));
   const custom = cu.stages;
   const day = custom ? { id: cu.id, name: "custom", stages: clone(custom) } : withOverrides(dayOf(days, n), data, { weather: q.get("weather"), activity: q.get("activity"), trip: q.get("trip") });

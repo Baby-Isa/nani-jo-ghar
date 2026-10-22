@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runDay, parseStages, stagesText, customDay, handoffUrl, startPatch, donePatches, dayView } from "../js/day/day.js";
+import { runDay, parseStages, stagesText, customDay, handoffUrl, startPatch, donePatches, dayView, bookendStages, unsaidPlan, CLEAR_CUSTOM, RESUME, pageStart, dayOf } from "../js/day/day.js";
 import { thenTarget, thenActions } from "../js/shared/host.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -61,26 +61,28 @@ test("stagesText is the inverse of parseStages", () => {
   }
 });
 
-test("hand-off: Cook and the clinic go to the host's page with ?then=day.html", () => {
-  assert.equal(handoffUrl({ stage: "cook", game: "chai-tray", level: 1 }), "lab.html?mode=cook&game=chai-tray&level=1&then=day.html");
-  assert.equal(handoffUrl({ stage: "cook", game: null, level: 2 }), "lab.html?mode=cook&level=2&then=day.html");
-  assert.equal(handoffUrl({ stage: "clinic", game: "eye", level: 1 }), "clinic.html?stage=heal&game=eye&level=1&then=day.html");
-  assert.equal(handoffUrl({ stage: "clinic", game: "pharmacy", level: 2 }), "clinic.html?stage=pharmacy&level=2&then=day.html");
-  assert.equal(handoffUrl({ stage: "clinic", game: null, level: 1 }), "clinic.html?then=day.html");
+test("hand-off: Cook and the clinic go to the host's page with ?then=day.html?resume=1 (LAB-07: the day is resumed only when asked)", () => {
+  const R = encodeURIComponent(RESUME);
+  assert.equal(handoffUrl({ stage: "cook", game: "chai-tray", level: 1 }), `lab.html?mode=cook&game=chai-tray&level=1&then=${R}`);
+  assert.equal(handoffUrl({ stage: "cook", game: null, level: 2 }), `lab.html?mode=cook&level=2&then=${R}`);
+  assert.equal(handoffUrl({ stage: "clinic", game: "eye", level: 1 }), `clinic.html?stage=heal&game=eye&level=1&then=${R}`);
+  assert.equal(handoffUrl({ stage: "clinic", game: "pharmacy", level: 2 }), `clinic.html?stage=pharmacy&level=2&then=${R}`);
+  assert.equal(handoffUrl({ stage: "clinic", game: null, level: 1 }), `clinic.html?then=${R}`);
+  assert.equal(handoffUrl({ stage: "cook", game: "daar", level: 1 }, "day.html?resume=1&speed=3"), "lab.html?mode=cook&game=daar&level=1&then=day.html%3Fresume%3D1%26speed%3D3");
   assert.equal(handoffUrl({ stage: "book" }), null);
   // and the host accepts every one of those as a page that waits
   for (const s of [{ stage: "cook", game: "chai-tray", level: 1 }, { stage: "clinic", game: "eye", level: 1 }]) {
     const then = new URL(handoffUrl(s), "http://x/").searchParams.get("then");
-    assert.equal(thenTarget(`?then=${then}`), "day.html");
+    assert.equal(thenTarget(`?then=${encodeURIComponent(then)}`), RESUME);
   }
 });
 
 // the page loop in miniature: the stage modules (cook and clinic hand off), story.today kept by startPatch / donePatches, and a second
 // page load deciding where to start with customDay
-async function loadOnce({ today, asked, order = [] }) {
+async function loadOnce({ today, asked, order = [], resume = false }) {
   const store = { today: clone(today) };
   const isToday = !!(today && today.date === "2026-10-22" && today.at !== "done");
-  const cu = customDay({ asked, today, isToday, data: DATA, dayNo: 3 });
+  const cu = customDay({ asked, today, isToday, data: DATA, dayNo: 3, resume });
   if (!cu.stages) return { cu, store, ran: [] };
   const day = { id: cu.id, name: "custom", stages: clone(cu.stages) };
   const mod = (id, hand) => ({ built: true, async start() { order.push(id); return hand ? { status: "handoff", url: id } : { status: "done" }; } });
@@ -105,31 +107,31 @@ test("store and resume: door, Cook hand-off, then the clinic hand-off, then the 
   assert.equal(a.store.today.at, "activity");
   assert.equal(a.store.today.activity, "kitchen");
   // 2. back from Cook: day.html with no ?stages=, resumes at the clinic stage
-  const b = await loadOnce({ today: a.store.today });
+  const b = await loadOnce({ today: a.store.today, resume: true });
   assert.equal(b.cu.from, 2);
   assert.deepEqual(b.ran, ["clinic:handoff"]);
   assert.equal(b.store.today.next, 3);
   // 3. back from the clinic: the book, and the day is over
-  const c = await loadOnce({ today: b.store.today });
+  const c = await loadOnce({ today: b.store.today, resume: true });
   assert.deepEqual(c.ran, ["book:done"]);
   assert.equal(c.store.today.at, "done", "a day not ended by the book itself is marked over");
   assert.equal(c.store.today.custom, false);
   // 4. a later plain visit is not the builder's day any more
-  const d = await loadOnce({ today: c.store.today });
+  const d = await loadOnce({ today: c.store.today, resume: true });
   assert.equal(d.cu.stages, null);
 });
 
 test("resume: a hand-off that was the last stage ends the day; a new ?stages= always starts over; another day's list is not resumed", async () => {
   const a = await loadOnce({ today: {}, asked: "cook:chai-tray:1" });
   assert.deepEqual(a.ran, ["cook:handoff"]);
-  const back = customDay({ today: a.store.today, isToday: true, data: DATA });
+  const back = customDay({ today: a.store.today, isToday: true, data: DATA, resume: true });
   assert.equal(back.over, true, "nothing is left to play");
   // a fresh ?stages= wins over a list kept from earlier
   const fresh = customDay({ asked: "door,book", today: a.store.today, isToday: true, data: DATA });
   assert.equal(fresh.from, 0);
   assert.equal(fresh.stages.length, 2);
   // yesterday's list is not today's
-  assert.equal(customDay({ today: a.store.today, isToday: false, data: DATA }).stages, null);
+  assert.equal(customDay({ today: a.store.today, isToday: false, data: DATA, resume: true }).stages, null);
   // a day that is not the builder's is untouched
   assert.equal(customDay({ today: { date: "x", next: 1, at: "activity" }, isToday: true, data: DATA }).stages, null);
 });
@@ -162,4 +164,71 @@ test("?then=: the end screen's list becomes Next; where Next exists the list goe
   const morning = [{ id: "again" }, { id: "next", primary: true }, { id: "list" }];
   assert.deepEqual(thenActions(morning, "day.html").map((a) => a.id), ["again", "next"]);
   assert.equal(thenActions(null, "day.html"), null);
+});
+
+// ---- Sprint 12 (s12-w1b) ----
+const DAYS = JSON.parse(readFileSync(join(ROOT, "data/days.json"), "utf8"));
+
+test("LAB-07: a half-played builder's day, then day.html with no stages, opens the child's own (farm) day from its door, never the builder's", async () => {
+  // the builder's day: door, Cook (hands off), the clinic, the book; the page left at the Cook hand-off and never came back
+  const a = await loadOnce({ today: {}, asked: "door:sunny,cook:chai-tray:1,clinic:eye:1,book" });
+  const saved = Object.assign({}, a.store.today, { date: "2026-10-22", day: 2 });
+  assert.equal(saved.custom, true);
+  // the book's end went home; the house opens day.html (no ?stages=, no ?resume=1)
+  const ps = pageStart({ today: saved, date: "2026-10-22", dayNo: 2, data: DATA });
+  assert.equal(ps.cu.stages, null, "the builder's list is not resumed");
+  assert.equal(ps.cu.stale, true);
+  assert.deepEqual(ps.clear, { ...CLEAR_CUSTOM }, "the stale list is cleared from the save");
+  assert.equal(ps.today.custom, false);
+  assert.equal(ps.isToday, false, "nothing of today is resumed");
+  const day = dayOf(DAYS, ps.n);
+  assert.equal(day.name, "the farm");
+  assert.equal(day.stages[0].stage, "door", "from its door");
+  // and a second plain load finds nothing to clear
+  assert.equal(pageStart({ today: ps.today, date: "2026-10-22", dayNo: 2, data: DATA }).clear, null);
+});
+
+test("LAB-07: the page a hand-off comes back to (?resume=1) still resumes the builder's day; a story day's own resume is untouched", async () => {
+  const a = await loadOnce({ today: {}, asked: "door,cook:chai-tray:1,book" });
+  const saved = Object.assign({}, a.store.today, { date: "2026-10-22" });
+  const ps = pageStart({ today: saved, resume: true, date: "2026-10-22", dayNo: 2, data: DATA });
+  assert.equal(ps.cu.stages.length, 3);
+  assert.equal(ps.cu.from, 2);
+  assert.equal(ps.clear, null);
+  // the child's own kitchen day, stopped at its Cook hand-off: day.html picks it up (no builder list involved)
+  const story = { date: "2026-10-22", day: 1, next: 2, at: "activity", custom: false, stages: null };
+  const s = pageStart({ today: story, date: "2026-10-22", dayNo: 1, data: DATA });
+  assert.equal(s.isToday, true);
+  assert.equal(s.n, 1);
+  assert.equal(s.clear, null);
+});
+
+test("LAB-06: a labs launch with the Day builder toggle on is bookended by the door and the book", () => {
+  const b = (h) => bookendStages(h);
+  assert.deepEqual(b("lab.html?mode=cook&game=chai-tray&level=1"), { stages: "door,cook:chai-tray:1,book", log: null });
+  assert.equal(b("lab.html?mode=cook&level=2").stages, "door,cook:full:2,book");
+  assert.equal(b("lab.html?mode=clinic&game=eye&level=3").stages, "door,clinic:eye:3,book");
+  assert.equal(b("lab.html?mode=clinic&level=1").stages, "door,clinic:full:1,book");
+  assert.equal(b("clinic.html?level=2").stages, "door,clinic:full:2,book");
+  assert.equal(b("day.html?stage=ride&day=2&level=3").stages, "door,ride:farm:3,book");
+  assert.deepEqual(b("day.html?stage=book&log=clinic"), { stages: "door,book", log: "clinic" });
+  assert.equal(b("day.html?stages=door:night").stages, "door:night,book");
+  assert.equal(b("day.html?stages=cook:daar:2").stages, "door,cook:daar:2,book");
+  // a variant the day would lose, another site, or a page it can't play: launched as it is
+  for (const h of ["lab.html?mode=clinic&game=eye&level=1&eyetest=b", "lab.html?mode=clinic&play=free", "clinic.html?lab=1", "dress.html", "https://evil.example/x.html", "//x.html", "lab.html?mode=cook&game=Bad%20Game&level=1", "", null]) assert.equal(b(h), null, String(h));
+  // every bookended list parses whole: the door's lines follow the game, the book ends it
+  for (const h of ["lab.html?mode=cook&game=chai-tray&level=1", "lab.html?mode=clinic&game=eye&level=1", "day.html?stage=ride&day=2&level=1"]) {
+    const p = parseStages(b(h).stages, DATA);
+    assert.deepEqual(p.notes, [], h);
+    assert.equal(p.stages[0].stage, "door");
+    assert.equal(p.stages[p.stages.length - 1].stage, "book");
+    assert.ok(p.stages[0].lines, `${h}: the door says what the day is about`);
+  }
+  assert.equal(parseStages("ride:farm:3", DATA).stages[0].level, 3, "the ride keeps its level");
+  assert.equal(stagesText(parseStages("door:sunny,ride:farm:2,book", DATA).stages), "door:sunny,ride:farm:2,book");
+});
+
+test("LNG-18: a line the engine can't build is spoken by the device voice on the test path, and by nothing in the store build", () => {
+  assert.deepEqual(unsaidPlan("Come!", "test").clipPlan, [{ text: "Come!", source: "device", tokens: [0, 0] }]);
+  assert.equal(unsaidPlan("Come!", "store").clipPlan[0].source, "missing");
 });
