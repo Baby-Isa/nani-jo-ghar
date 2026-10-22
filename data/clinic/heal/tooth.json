@@ -192,7 +192,7 @@
     1536,
     1024
    ],
-   "always2x": true,
+   "always2x": true, "glint": {"x": 475, "y": 129, "rx": 30, "ry": 13, "dy": 30, "blur": 4, "_why": "s10b: the pale rectangle baked into the sore tooth top of the mouth picture (and its upscaled teeth); patched with the surface 30 units below, feathered"},
    "teeth": [
     [
      605,

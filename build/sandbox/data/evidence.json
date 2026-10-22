@@ -16479,6 +16479,7 @@
    "path": "fair",
    "level": [
     1,
+    2,
     3
    ],
    "sizes": [
@@ -16489,13 +16490,11 @@
    "at": "rec:stage-waiting",
    "after": null,
    "capture": [
-    "crop:.cl-room",
-    "cmd:node build/test_shared_clinic_girl.mjs"
+    "zoom2:.cl-room",
+    "voice"
    ],
-   "expect": [
-    "pass"
-   ],
-   "note": "the waiting room: the girl is the patient the doctor calls, at level 1 and level 3 (every patient is the girl: the only one with full art); the unit test runs P.waiting at levels 1-4 over 50 seeds, never anyone but her, no crash"
+   "expect": null,
+   "note": "the waiting room at levels 1, 2 and 3: the call (voice timeline) names the patient so that only one person on the bench fits it (level 1 her kind, level 2 her colour, level 3 her height), and that one is a girl; with two girls on the bench the call's colour or height tells them apart"
   },
   {
    "flow": "clinic:heal-tooth",
@@ -16509,10 +16508,29 @@
    "at": "heal-tooth-start",
    "after": null,
    "capture": [
-    "crop:.cl-stage"
+    "zoom2:.cl-stage"
    ],
    "expect": null,
-   "note": "a heal game at level 1: the girl's own close-up (her face circle top right, the mouth of the girl), not a boy or a grown-up"
+   "note": "a heal game at level 1 (tooth): the girl's own close-up, her face circle top right, not a boy or a grown-up"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_shared_clinic_girl.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "P.waiting at levels 1-4 over 50 seeds: the patient is always the girl, no crash"
   }
  ],
  "DRILL-01": [
@@ -16600,13 +16618,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:life:advance",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:rack"
+    "zoom2:canvas:grill"
    ],
    "expect": null,
-   "note": "the grill as the last skewer lands: no sparkle, dots or rings over the trays (code effects off)"
+   "note": "the grill after each tap that lands (a skewer set on the grill, each turn on the green, the lift): no sparkle, dots, rings or wisps over the bed and the skewers (code effects off)",
+   "max": 6,
+   "delay": 250
   },
   {
    "flow": "clinic:heal-taste",
@@ -16640,10 +16660,10 @@
    "at": "heal:press-the-glowing-end",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x250"
+    "strip:.cl-heal:6x200"
    ],
    "expect": null,
-   "note": "boing: the press, the medicine goes in, the stars and hearts pop, and no puff of mist or sparkles covers the cap's end (the code mist is off)"
+   "note": "boing: the press and the medicine going in, then the lift: no faint specks beside the barrel, no puff of mist, no ring of stars and hearts round the cap (all code-drawn effects off); frames 200 ms apart"
   }
  ],
  "CLN-182": [
