@@ -258,8 +258,8 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| EASY-08 | The spotlight lights only the live control (judge, 22 Oct: it half-lit the jar above and the water bottle) | **to fix: code** · Step 0's spotlight | eye: the 5 s spotlight on chai, one thing lit | `docs/sprints/S11-easy-to-play.md` |
-| CHAI-31 | Tea colour and effects (judge, 22 Oct): the tea is maroon in the pan but amber in the glass; a blue water splash lands on amber tea; the conversation bubble shows a generic face, not Nana's | **to fix: code** · s11-cook fix round | eye: pan and glass the same tea; splash in the tea's colour; the bubble with his face | `docs/sprints/S11-easy-to-play.md` |
+| EASY-08 | The spotlight lights only the live control (judge, 22 Oct: it half-lit the jar above and the water bottle) | **to fix: code** · chai passes; the eye test's holes are much bigger than the pills, so the doctor's jacket shows lit (judge s11-judge-08) | eye: the 5 s spotlight on chai, one thing lit | `docs/sprints/S11-easy-to-play.md` |
+| CHAI-31 | Tea colour and effects (judge, 22 Oct): the tea is maroon in the pan but amber in the glass; a blue water splash lands on amber tea; the conversation bubble shows a generic face, not Nana's | **to fix: code** · bubble, served glass and the pan's tea pass; mid-pour the glass is paler than the pan and the stream is hair-thin (judge s11-judge-08) | eye: pan and glass the same tea; splash in the tea's colour; the bubble with his face | `docs/sprints/S11-easy-to-play.md` |
 
 ## Keep (things Zafar liked: must not regress)
 
