@@ -2,10 +2,17 @@
  * H-tooth (clinic v2; the 1 Oct play-test D15d, decision 27): brush, drill, fill, all inside ONE mouth close-up.
  *
  * Why: "My tooth hurts." / "Let's brush, fix it and fill it."
- * 1. Brush: the toothbrush rests in the open mouth. The doctor calls ONE move at a time (its row appears as it's said,
- *    D8: never the whole order up front, R5's "6 shown at once" fixed); drag the brush that way. L1 2 moves; L2 4,
- *    left / right the patient's own (dabo / jamno, mirrored on screen); L3 the same, heard only; L4 6 (Zafar's heal
- *    ladder, 13 Oct: each level one new thing, all by L2, L3 heard only, harder variety from L4).
+ * 1. Brush (Sprint 11, Zafar 21 Oct): a large plus-shaped track over the mouth, the brush at its centre; it moves only along
+ *    the vertical and horizontal channels, and pulled to the end of one it snaps back to the centre. Each end is a clear
+ *    target, a tooth-shine spot the brush head must meet. The doctor calls ONE move at a time (D8) and its direction card
+ *    comes up (js/shared/word-card.js: an arrow picture and the word: dabo left, jamno right, mathe up, niche down; the
+ *    engine's grey to-record placeholder where Mum hasn't said it yet). Left and right are the screen's (the child's own,
+ *    as the arrows point; they were the patient's own, mirrored, before the cards). A wrong direction bumps the brush gently
+ *    back and the patient says the move again. Dirt drawn in code sits on the targets: at L1-2, while the order's words
+ *    are still supported (stage 1-2), only on the directions in the order; otherwise (from L3, or a child who knows the
+ *    words: rule 6) on all four sides, so listening is what wins. The first time the real brush shows the way round the
+ *    cross (Onboard.stuck's 0 s rung); the 5 s and 15 s rungs spotlight the cross and show it again (never the answer).
+ *    No Done: each move closes as it's brushed, and the drill comes on when the order is. L1 2 moves; L2-3 4; L4 6.
  * 2. Drill: the camera pushes in on the sore tooth, still in the mouth (gum above, the neighbours either side, the
  *    lip below: CLN-52, P43). The decay is jagged and scattered by level (L1 one patch, L2-3 two, L4 four small ones:
  *    P44). Drag the drill over it; its tip is the finger (CLN-51). Drilling the white too long chips the tooth.
@@ -13,7 +20,8 @@
  *    gauge under the teeth fills (CLN-129): let go in the green, with red either side. The green narrows and the fill speeds
  *    up by level (data: fill.ms, fill.zone; CLN-53, P45). Letting go below the green just pauses (press again);
  *    past it is too much.
- * Rows: the brush order (the words decide it); the drill and the fill are hand-skill rows.
+ * Rows: the brush order (the words decide it: right only if every move went the right way first time, no arrow opened);
+ *    the drill and the fill are hand-skill rows.
  * Art swaps in by file name: data art.* (the art plan's M1 mouth, O2 decay, B1 button and nozzle) once `ready`.
  */
 (function (root) {
@@ -38,10 +46,14 @@
     fill: { gesture: "hold" },
   };
   const DIRS = ["up", "down", "left", "right"];
-  // the direction words by id (the engine, data/lang/lexicon.json): English placeholders to record; dabo / jamno at L3
+  // the direction words by id (the engine, data/lang/lexicon.json): dabo; up, down and right still to record (mathe, niche,
+  // jamno: Mum's list), the engine's grey English placeholder until then
   const DIR_ID = { up: "tooth-up", down: "tooth-down", left: "tooth-left", right: "tooth-right" };
-  // the patient's own left is on our right
-  const SCREEN = { up: [0, -1], down: [0, 1], left: [1, 0], right: [-1, 0] };
+  // Sprint 11: the screen's directions (the arrows on the cards point the way the brush goes)
+  const SCREEN = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+  // the dirt: only on the order's sides up to this level, while the order's words are supported (stage 1-2)
+  const DIRT = { orderTo: 2 };
+  const orderDirt = (level, moves) => level <= DIRT.orderTo && moves.some((m) => HS.stageOf(DIR_ID[m]) <= 2);
   // the tooth close-up's crown (svg units): decay is placed inside it
   const CROWN = { x0: 300, x1: 482, y0: 168, y1: 352 };
 
@@ -78,7 +90,7 @@
       moves.push(m);
     }
     const Lg = HS.L;
-    const dirM = (m) => (L >= 2 && (m === "left" || m === "right") ? Lg.item(Lg.sideId(m)) : Lg.item(DIR_ID[m]));
+    const dirM = (m) => Lg.item(DIR_ID[m]);
     // the decay: jagged patches scattered over the crown, never overlapping
     const dk = Object.assign({}, K.decay[L], lv.decay || {});
     const patches = [];
@@ -100,16 +112,15 @@
       // whole row in grey English ("First down"), never a mix; a move with its word ("pela dabo") stays Kutchi
       row: Object.assign({ id: `b${i}` }, HS.whole(Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 }))),
     }));
+    steps.forEach((x) => (x.line = x.row)); // the move's own engine line (the taught round's card shows [Brush] instead)
     steps.push({ id: "drill", kind: "drill", patches, timer: (lv.drillMs != null ? lv.drillMs : K.drillMs[L]) || 0, row: Object.assign({}, Lg.w("tooth-drill", { cap: true }), { id: "drill" }) });
     steps.push({ id: "fill", kind: "fill", row: Object.assign({}, Lg.w("tooth-fill", { cap: true }), { id: "fill" }) });
     const rows = [
-      { id: "b-order", seq: DIRS, answer: moves, placeholder: L < 3 }, // up / down wait for the recording
+      { id: "b-order", seq: DIRS, answer: moves, placeholder: moves.some((m) => !!Lg.w(DIR_ID[m]).placeholder) }, // up, down and right wait for Mum
       { id: "drill-care", skill: true, answer: true },
       { id: "fill-line", skill: true, answer: true },
     ];
-    const words = [Lg.w("tooth-up"), Lg.w("tooth-down"), Lg.w("body-tooth"), Lg.w("tooth-brush")];
-    if (L >= 2) words.push(Lg.w(Lg.sideId("left")), Lg.w(Lg.sideId("right")));
-    else words.push(Lg.w("tooth-left"), Lg.w("tooth-right"));
+    const words = [Lg.w("tooth-up"), Lg.w("tooth-down"), Lg.w("tooth-left"), Lg.w("tooth-right"), Lg.w("body-tooth"), Lg.w("tooth-brush")];
     return { level: L, moves, steps, rows, words };
   }
 
@@ -142,7 +153,7 @@
     const zone = (FILL.zone && FILL.zone[P.level]) || K.fill.zone[P.level];
     const fillMs = ((FILL.ms && FILL.ms[P.level]) || K.fill.ms[P.level]) * 1;
     const chipAt = data.chipAt || K.chipAt;
-    const st = { i: 0, done: [], judged: {}, over: false, busy: false, fill: 0, holding: false, white: 0, chipped: false, mark: 0, view: "far", overs: 0 };
+    const st = { i: 0, done: [], tries: [], missed: [], helped: [], judged: {}, over: false, busy: false, fill: 0, holding: false, white: 0, chipped: false, mark: 0, view: "far", overs: 0 };
     const cur = () => P.steps[st.i] || null;
     const uid = `t${Math.floor(Math.random() * 1e9)}`;
     const fast = () => !!(Kit0 && Kit0.fast);
@@ -232,16 +243,65 @@
       const y = (k % 2 ? 188 : 160) + (ctx.rng() - 0.5) * 8;
       plaque.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (12 + ctx.rng() * 7).toFixed(1), ry: (4 + ctx.rng() * 2).toFixed(1), fill: "#d6be5a", opacity: 0.55 }, plaqueG), gone: false });
     }
-    // CLN-180 (Zafar, 18 Oct; the s08b TB1 brush): the brush lies level, its bristles at its left end against the front
-    // teeth and its handle running out of the mouth to the right: no turn, no squash (it was turned 38 degrees)
+    /*
+     * Sprint 11 (Zafar, 21 Oct): the plus-shaped track. Its centre is where the brush head rests (TR, the mouth's units),
+     * its four channels run out to a target each (END): a tooth-shine spot, with the dirt drawn on it.
+     */
+    const TR = Object.assign({ x: M.x, y: M.y - 60, ax: 235, ay: 150, w: 86, r: 40 }, data.track || {});
+    const END = { up: { x: TR.x, y: TR.y - TR.ay }, down: { x: TR.x, y: TR.y + TR.ay }, left: { x: TR.x - TR.ax, y: TR.y }, right: { x: TR.x + TR.ax, y: TR.y } };
+    const trackG = s("g", { class: "tooth-track" }, mouthG);
+    const arms = [[TR.x - TR.ax - TR.w / 2, TR.y - TR.w / 2, 2 * TR.ax + TR.w, TR.w], [TR.x - TR.w / 2, TR.y - TR.ay - TR.w / 2, TR.w, 2 * TR.ay + TR.w]];
+    // one see-through cross (the group's opacity: the two arms' overlap is never doubled), a soft gold edge round it
+    const band = s("g", { opacity: 0.55 }, trackG);
+    arms.forEach(([x, y, w, hh]) => s("rect", { x, y, width: w, height: hh, rx: TR.w / 2, fill: "none", stroke: "#f2dc9b", "stroke-width": 10 }, band));
+    arms.forEach(([x, y, w, hh]) => s("rect", { x, y, width: w, height: hh, rx: TR.w / 2, fill: "#fffdf6" }, band));
+    const STAR = (r) => `M0 ${-r} Q${r * 0.16} ${-r * 0.16} ${r} 0 Q${r * 0.16} ${r * 0.16} 0 ${r} Q${-r * 0.16} ${r * 0.16} ${-r} 0 Q${-r * 0.16} ${-r * 0.16} 0 ${-r}Z`;
+    const target = {};
+    DIRS.forEach((d) => {
+      const e = END[d];
+      const g = s("g", { class: "tooth-target", transform: `translate(${e.x} ${e.y})` }, trackG);
+      g.dataset.dir = d;
+      s("circle", { r: TR.r, fill: "#ffffff", stroke: "#8fcde3", "stroke-width": 5 }, g);
+      s("path", { d: STAR(TR.r * 0.62), fill: "#bfe8f6" }, g); // the shine spot
+      const dirt = s("g", { class: "tooth-dirt", opacity: 0 }, g);
+      for (let k = 0; k < 7; k++) {
+        const an = (k / 7) * Math.PI * 2 + ctx.rng() * 0.6;
+        const rr = k ? TR.r * (0.35 + ctx.rng() * 0.38) : 0;
+        s("ellipse", { cx: (Math.cos(an) * rr).toFixed(1), cy: (Math.sin(an) * rr).toFixed(1), rx: (TR.r * (0.26 + ctx.rng() * 0.14)).toFixed(1), ry: (TR.r * (0.2 + ctx.rng() * 0.1)).toFixed(1), fill: k % 2 ? "#b8913a" : "#d0ad4e", opacity: 0.92 }, dirt);
+      }
+      const shine = s("g", { opacity: 0 }, g);
+      [[-0.9, -0.7, 0.42], [0.85, -0.55, 0.32], [0.6, 0.85, 0.36], [-0.7, 0.75, 0.28]].forEach(([x, y, k]) => s("path", { d: STAR(TR.r * k), fill: "#ffffff", stroke: "#8fcde3", "stroke-width": 2, transform: `translate(${(x * TR.r).toFixed(1)} ${(y * TR.r).toFixed(1)})` }, shine));
+      target[d] = { g, dirt, shine, level: 0, step: 1 };
+    });
+    // the dirt (drawn in code): at L1-2, while the order's words are supported, only on the order's sides; else all four.
+    // On the order's sides each right move takes its share; on all four a brushed side only fades (never bare until the
+    // order is done: a clean side would tell where not to go)
+    const orderOnly = orderDirt(P.level, P.moves);
+    const cnt = (d) => P.moves.filter((m) => m === d).length;
+    const dirtShow = (d) => target[d].dirt.setAttribute("opacity", Math.max(0, target[d].level).toFixed(2));
+    DIRS.forEach((d) => {
+      const t = target[d];
+      t.level = orderOnly ? (cnt(d) ? 1 : 0) : 1;
+      t.step = orderOnly ? 1 / Math.max(1, cnt(d)) : 1 / (cnt(d) + 2);
+      dirtShow(d);
+    });
+    // CLN-180 (Zafar, 18 Oct; the s08b TB1 brush): the brush lies straight, its bristles at its end on the cross's centre.
+    // Sprint 11: on the cross its handle lies at an angle (data brush.angle, 45 degrees down to the right), between the
+    // right and the down channels, so it never covers a target
     const brushIn = art("brushInMouth");
-    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300 }, data.brush || {}, brushIn ? { size: brushIn.size, head: brushIn.head, w: brushIn.w } : {});
+    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300, angle: 45 }, data.brush || {}, brushIn ? { size: brushIn.size, head: brushIn.head, w: brushIn.w } : {});
     const brushG = s("g", { class: "tooth-brush" }, mouthG);
     const bW = BR.w;
     const bH = (BR.w * BR.size[1]) / BR.size[0];
     const hx = (BR.head[0] / BR.size[0]) * bW;
     const hy = (BR.head[1] / BR.size[1]) * bH;
-    s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? null : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
+    s("image", { href: url(brushIn ? brushIn.src : BR.src), x: TR.x - hx, y: TR.y - hy, width: bW, height: bH, transform: `rotate(${BR.angle} ${TR.x} ${TR.y})` }, brushG);
+    const at = { x: 0, y: 0 }; // the brush head's offset from the centre (mouth units)
+    const setBrush = (x, y) => {
+      at.x = x;
+      at.y = y;
+      brushG.setAttribute("transform", x || y ? `translate(${x.toFixed(1)} ${y.toFixed(1)})` : "");
+    };
     const wipe = (x, y, r = 58) => wipeMask && s("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r, fill: "#000" }, wipeMask);
     const plaqueGone = (ms = 600) => plaqueImg && plaqueImg.animate && plaqueImg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, fill: "forwards" });
     const scrub = (hx2, hy2) => {
@@ -602,6 +662,8 @@
         st.moving = true;
         S.clear(foam); // the brushing's foam stays in the brushing (never into the drill's close-up)
         brushG.setAttribute("opacity", 0);
+        trackG.setAttribute("opacity", 0);
+        dirOff();
         await camera(view.far(), view.near(), CAM.ms, (e) => {
           face2.setAttribute("opacity", fade(e, 0, 0.4).toFixed(3));
           face1.setAttribute("opacity", (1 - fade(e, 0.25, 0.45)).toFixed(3));
@@ -622,6 +684,8 @@
       if (plaqueImg) plaqueImg.setAttribute("opacity", 0);
       plaqueG.setAttribute("opacity", 0);
       brushG.setAttribute("opacity", 0);
+      trackG.setAttribute("opacity", 0);
+      dirOff();
       st.moving = true;
       await camera(view.near(), view.far(), CAM.ms, (e) => {
         face1.setAttribute("opacity", fade(e, 0.6, 0.85).toFixed(3));
@@ -644,11 +708,7 @@
       ctx.card.now(rowOf(c));
       await view2(c.kind);
       if (cur() !== c || st.over) return;
-      if (c.kind === "brush") {
-        // the guided round shows the very move asked for (D13); later the ghost only shows "drag the brush"
-        const [dx, dy] = SCREEN[c.move];
-        S.cue("brush", ctx.taught ? { gesture: "drag", to: { x: M.x + dx * 110, y: M.y + dy * 90 } } : CUES.brush, { x: M.x, y: M.y });
-      }
+      if (c.kind === "brush") openBrush(c);
       if (c.kind === "drill") {
         const p = c.patches[0];
         // Sprint 10: the ghost starts in the cavity, where the drill rests, and drags across it
@@ -671,7 +731,10 @@
       if (c.kind === "brush") {
         // the taught round's one [Brush] row ticks with the last move (CLN-118)
         if (!c.rowKey || c.i === P.moves.length - 1) ctx.card.tick(rowOf(c));
-        if (c.i === P.moves.length - 1) judge("b-order", JSON.stringify(st.done) === JSON.stringify(P.moves), { moves: st.done.slice() }); // the review shows it on the brush rows (D14)
+        // the order is right when every move went the right way first time and no card's arrow was opened (the review shows
+        // it on the brush rows, D14)
+        const firstTry = P.steps.filter((x) => x.kind === "brush").every((x) => !st.missed[x.i] && !st.helped[x.i]);
+        if (c.i === P.moves.length - 1) judge("b-order", JSON.stringify(st.done) === JSON.stringify(P.moves) && firstTry, { moves: st.done.slice(), tries: st.tries.slice() });
       }
       if (c.kind === "drill") {
         if (timer) timer.stop();
@@ -704,8 +767,10 @@
       const p = S.pt(e);
       const c = cur();
       if (!c) return;
-      if (c.kind === "brush" && Math.hypot(p.x - M.x, (p.y - M.y) * 1.3) < 230) drag = { from: p, fired: false };
-      else if (c.kind === "drill") {
+      // the brush: taken anywhere near its head (it rests on the cross's centre)
+      if (c.kind === "brush") {
+        if (!st.snapping && Math.hypot(p.x - TR.x - at.x, p.y - TR.y - at.y) < TR.w * 1.6) drag = { from: p, axis: null, fired: false };
+      } else if (c.kind === "drill") {
         drag = { drill: true, last: null };
         drillAt(toD(p));
       } else if (c.kind === "fill" && onButton(toD(p))) startFill();
@@ -715,53 +780,231 @@
       if (!drag) return;
       const p = S.pt(e);
       if (drag.drill) return drillAt(toD(p));
-      // T1: the brush follows the finger across the whole mouth (kept inside the open mouth), scrubbing the plaque
+      // Sprint 11: the brush runs only in the cross's channels: the first few units of a pull choose the channel, back at
+      // the centre it can turn into the other; pulled to a channel's end it has made that move
       if (cur() && cur().kind === "brush") {
-        const dxB = Math.max(-190, Math.min(190, p.x - drag.from.x));
-        const dyB = Math.max(-80, Math.min(110, p.y - drag.from.y));
-        brushG.setAttribute("transform", `translate(${dxB.toFixed(1)} ${dyB.toFixed(1)})`);
-        scrub(M.x + dxB, M.y - 60 + dyB);
+        if (drag.fired) return;
+        const dx = p.x - drag.from.x;
+        const dy = p.y - drag.from.y;
+        if (!drag.axis) {
+          if (Math.hypot(dx, dy) < 10) return;
+          drag.axis = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
+        }
+        let v = drag.axis === "x" ? dx : dy;
+        const o = drag.axis === "x" ? dy : dx;
+        if (Math.abs(v) < 14 && Math.abs(o) > 26) {
+          drag.axis = drag.axis === "x" ? "y" : "x";
+          v = o;
+        }
+        const A = drag.axis === "x" ? TR.ax : TR.ay;
+        v = Math.max(-A, Math.min(A, v));
+        setBrush(drag.axis === "x" ? v : 0, drag.axis === "y" ? v : 0);
+        if (Math.abs(v) >= A * 0.92) {
+          drag.fired = true;
+          reach(drag.axis === "x" ? (v < 0 ? "left" : "right") : v < 0 ? "up" : "down");
+        }
       }
-      if (drag.fired) return;
-      const dx = p.x - drag.from.x;
-      const dy = p.y - drag.from.y;
-      if (Math.hypot(dx, dy) < 40) return;
-      drag.fired = true;
-      const scr = Math.abs(dx) > Math.abs(dy) ? [Math.sign(dx), 0] : [0, Math.sign(dy)];
-      brushMove(DIRS.find((d) => SCREEN[d][0] === scr[0] && SCREEN[d][1] === scr[1]));
     });
     const up = () => {
       if (drag && drag.drill) parkDrill();
-      if (drag && !drag.drill) brushG.setAttribute("transform", "");
+      if (drag && !drag.drill && !drag.fired) snapBack(false);
       drag = null;
       if (st.holding) stopFill();
     };
     ctx.on(S.svg, "pointerup", up);
     ctx.on(S.svg, "pointercancel", up);
 
-    const brushMove = (m) => {
+    /* ---------------- the brushing's moves ---------------- */
+    // the brush goes back to the centre: a plain snap, or (a wrong way) a gentle bump that overshoots a little
+    const snapBack = (bump) =>
+      new Promise((res) => {
+        const x0 = at.x;
+        const y0 = at.y;
+        if (!x0 && !y0) return res();
+        st.snapping = true;
+        const ms = fast() ? 60 : bump ? 520 : 260;
+        const t0 = Date.now();
+        const ease = (u) => (bump ? 1 + 2.4 * Math.pow(u - 1, 3) + 1.4 * Math.pow(u - 1, 2) : 1 - Math.pow(1 - u, 3));
+        const step = () => {
+          if (st.gone) return res();
+          const u = Math.min(1, (Date.now() - t0) / ms);
+          const k = 1 - ease(u);
+          setBrush(x0 * k, y0 * k);
+          if (u < 1 && root.requestAnimationFrame) return root.requestAnimationFrame(step);
+          setBrush(0, 0);
+          st.snapping = false;
+          res();
+        };
+        step();
+      });
+    const sayMove = (c) => (c.line && !ctx.taught ? ctx.say(c.line, { who: "patient" }) : Promise.resolve());
+    const reach = (d) => {
       const c = cur();
-      if (!c || c.kind !== "brush") return;
-      st.done.push(m);
-      const [dx, dy] = SCREEN[m];
-      if (!drag && brushG.animate) brushG.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx * 140}px,${dy * 70}px)` }, { transform: "translate(0,0)" }], { duration: 520 });
-      scrub(M.x + dx * 120, M.y - 60 + dy * 60);
+      if (!c || c.kind !== "brush" || st.over) return;
+      (st.tries[c.i] = st.tries[c.i] || []).push(d);
+      S.did();
+      if (d !== c.move) {
+        // a wrong way: the brush bumps gently back, the card gives a little shake and she says the move again
+        st.missed[c.i] = true;
+        ctx.log({ type: "extra", rowId: "b-order", detail: { asked: c.move, went: d } });
+        snapBack(true);
+        if (dirCard) {
+          dirCard.classList.remove("tooth-dshake");
+          void dirCard.offsetWidth;
+          dirCard.classList.add("tooth-dshake");
+        }
+        sayMove(c);
+        if (ctx.taught) demoMove(c);
+        return;
+      }
+      st.done.push(d);
+      const t = target[d];
+      // the shine: the target sparkles and its dirt goes (all of it once the order is brushed)
+      t.level = Math.max(0, t.level - t.step);
+      dirtShow(d);
+      if (t.shine.animate) t.shine.animate([{ opacity: 0, transform: "scale(.6)" }, { opacity: 1, transform: "scale(1.1)" }, { opacity: 0, transform: "scale(1.3)" }], { duration: fast() ? 120 : 700 });
+      const [dx, dy] = SCREEN[d];
+      for (let k = 1; k <= 3; k++) scrub(TR.x + (dx * TR.ax * k) / 3, TR.y + (dy * TR.ay * k) / 3);
       if (c.i === P.moves.length - 1) {
         plaque.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 600, fill: "forwards" })));
         plaqueGone();
+        DIRS.forEach((x) => {
+          target[x].level = 0;
+          dirtShow(x);
+        });
       }
       for (let k = 0; k < 3; k++) {
-        const f = s("circle", { cx: M.x + dx * (30 + k * 25) + (ctx.rng() - 0.5) * 40, cy: M.y - 70 + dy * (20 + k * 18) + (ctx.rng() - 0.5) * 20, r: 9 + k * 3, fill: "#fff", opacity: 0.92 }, foam);
+        const f = s("circle", { cx: END[d].x - dx * k * 22 + (ctx.rng() - 0.5) * 30, cy: END[d].y - dy * k * 18 + (ctx.rng() - 0.5) * 24, r: 9 + k * 3, fill: "#fff", opacity: 0.92 }, foam);
         ctx.after(1500, () => f.remove());
       }
       S.face("happy", 400);
       ctx.sfx("tap");
-      // one move, one row: it closes as it's brushed (D5; the next move's line comes with its row, D8)
+      if (stuck) stuck.done();
+      stuck = null;
+      // one move, one row: it snaps back and closes as it's brushed (D5; the next move's line comes with its row, D8)
       st.busy = true;
+      snapBack(false);
       ctx.after(fast() ? 80 : 450, () => {
         st.busy = false;
         if (cur() === c) close();
       });
+    };
+    // the direction card (js/shared/word-card.js): an arrow and the word, top left of the play area. The arrow fades with
+    // the word's support (rule 6: past stage 2 it would be the answer); opening it is free, and that move counts as shown
+    const dirBox = S.h("div", "tooth-dir hidden", S.root);
+    let dirCard = null;
+    const ARROW = { right: 0, down: 90, left: 180, up: 270 };
+    const arrowPic = (d) => (box) => {
+      box.innerHTML = `<svg class="tooth-arrow" viewBox="0 0 120 90" aria-hidden="true"><g transform="rotate(${ARROW[d]} 60 45)"><path d="M24 45 H88" stroke="#2f6fbf" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M66 20 L92 45 L66 70" stroke="#2f6fbf" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></svg>`;
+    };
+    // the card sits in the corner left of the cross, above its left arm where it fits, else below it (short phones),
+    // never over a target: as wide as that corner allows, up to its own width
+    function placeDir() {
+      if (!dirCard || dirBox.classList.contains("hidden")) return;
+      const rr = S.root.getBoundingClientRect();
+      if (!rr.width) return;
+      const gap = 12;
+      const armL = S.client(TR.x - TR.w / 2, 0).x - rr.left; // the up and down arms' left edge
+      const top = S.client(0, TR.y - TR.w / 2).y - rr.top; // the left arm's top edge
+      const bot = S.client(0, TR.y + TR.w / 2).y - rr.top; // and its bottom edge
+      const want = (dirBox.style.width = "", dirBox.getBoundingClientRect().width || 160);
+      const MINW = 140;
+      const fit = (y0, y1, x1) => {
+        let w = Math.min(want, x1 - gap * 2);
+        if (w < MINW) return null;
+        dirBox.style.width = `${Math.round(w)}px`;
+        let h = dirBox.getBoundingClientRect().height;
+        if (h > y1 - y0 - gap * 2) {
+          w = w - ((h - (y1 - y0 - gap * 2)) * 4) / 3;
+          if (w < MINW) return null; // too small to read its word: the other corner
+          w = Math.max(MINW, w);
+          dirBox.style.width = `${Math.round(w)}px`;
+          h = dirBox.getBoundingClientRect().height;
+        }
+        return h <= y1 - y0 - gap * 2 + 1 ? h : null;
+      };
+      // above the left arm (the corner left of the up arm), else below it (left of the down arm)
+      let h = fit(0, top, armL);
+      if (h != null) return Object.assign(dirBox.style, { left: `${gap}px`, top: `${gap}px` });
+      h = fit(bot, rr.height, armL);
+      Object.assign(dirBox.style, { left: `${gap}px`, top: `${Math.round(h != null ? bot + gap : Math.max(gap, rr.height - gap - dirBox.getBoundingClientRect().height))}px` });
+    }
+    ctx.on(root, "resize", () => placeDir());
+    function dirOff() {
+      dirBox.classList.add("hidden");
+      dirBox.innerHTML = "";
+      dirCard = null;
+    }
+    const showDir = async (c) => {
+      const WC = await HS.wordCardKit().catch(() => null);
+      if (st.gone || cur() !== c || !WC || !WC.card) return;
+      dirBox.innerHTML = "";
+      const id = DIR_ID[c.move];
+      const w = HS.L.w(id);
+      const stg = HS.stageOf(id);
+      const sl = WC.slots(stg, { placeholder: !!w.placeholder });
+      dirCard = WC.card(
+        dirBox,
+        { id, kutchi: w.kutchi, english: w.english, rec: !!w.placeholder, picture: arrowPic(c.move), say: () => ctx.say(w, { who: "doctor", noBubble: true }) },
+        {
+          stage: stg,
+          progress: HS.progress() || undefined,
+          slots: { picture: stg <= 2, english: sl.english, kutchiText: sl.kutchi },
+          cls: "tooth-dcard",
+          onReveal: (slot) => slot === "picture" && cur() === c && (st.helped[c.i] = true),
+        }
+      );
+      dirCard.dataset.dir = c.move;
+      dirBox.classList.remove("hidden");
+      placeDir();
+      dirCard.classList.add("tooth-din");
+      ctx.after(fast() ? 50 : 450, () => dirCard && dirCard.classList.remove("tooth-din"));
+    };
+    // principle 2: the real brush shows it. A first time (and the 5 s and 15 s rungs) it goes round the cross, every channel
+    // to its end and back (never only the answer); the taught round shows the very move asked for
+    let stuck = null;
+    const headClient = () => S.client(TR.x, TR.y);
+    const tour = (only) => {
+      const pts = [];
+      (only ? [only] : ["up", "right", "down", "left"]).forEach((d, k) => {
+        if (k) pts.push(S.client(TR.x, TR.y));
+        pts.push(S.client(END[d].x, END[d].y));
+      });
+      return pts;
+    };
+    const demoAt = (dx, dy) => {
+      if (drag || st.snapping) return;
+      const u = S.unit();
+      setBrush(dx * u, dy * u);
+    };
+    function demoMove(c) {
+      if (!root.Onboard || !root.Onboard.demo || ctx.onboardOn === false) return Promise.resolve();
+      return root.Onboard.demo(headClient(), tour(c.move), { step: "tooth-brush", move: demoAt, ms: fast() ? 200 : 1500 });
+    }
+    const openBrush = (c) => {
+      trackG.setAttribute("opacity", 1);
+      brushG.setAttribute("opacity", 1);
+      setBrush(0, 0);
+      // the step's name for the help log (its demo is the real brush: Onboard.stuck below), no ghost finger
+      S.cue("brush", Object.assign({ watch: true }, CUES.brush), { x: TR.x, y: TR.y });
+      if (!ctx.taught) showDir(c);
+      if (stuck) stuck.stop();
+      stuck = null;
+      if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
+        stuck = root.Onboard.stuck("tooth-brush", {
+          id: "clinic/heal-tooth-brush",
+          first: c.i === 0 && !ctx.taught,
+          target: trackG,
+          live: trackG,
+          item: headClient(),
+          move: demoAt,
+          path: () => tour(ctx.taught ? c.move : null),
+          ms: fast() ? 300 : ctx.taught ? 1500 : 3800,
+          line: () => (cur() === c ? sayMove(c) : null),
+        });
+      }
+      // the taught round (D13): every move is shown first, the very move asked for
+      if (ctx.taught) ctx.after(fast() ? 50 : 500, () => cur() === c && !st.done[c.i] && demoMove(c));
     };
     // CLN-103 (decision 72, s04-r2k2): the drill rests beside the tooth, its bur by the crown's lower right, until the
     // finger takes it (its tip under the finger), and goes back
@@ -932,6 +1175,7 @@
       destroy() {
         st.gone = true;
         st.holding = false;
+        if (stuck) stuck.stop();
         if (fillT && root.cancelAnimationFrame) root.cancelAnimationFrame(fillT);
         S.destroy();
       },
@@ -978,10 +1222,11 @@
             return S.client(q.x, q.y);
           };
           if (c.kind === "brush") {
+            // from the brush head along the move's channel to its end (and a little past: the brush stops there)
+            if (st.snapping) return { do: "wait" };
             const [dx, dy] = SCREEN[c.move];
-            const a = cl(M.x, M.y - 40);
-            const b = cl(M.x + dx * 90, M.y - 40 + dy * 90);
-            return { do: "drag", pts: [[a.x, a.y], [b.x, b.y]], what: c.move };
+            const pts = [0, 0.25, 0.5, 0.75, 1.08].map((k) => cl(TR.x + dx * TR.ax * k, TR.y + dy * TR.ay * k)).map((q) => [q.x, q.y]);
+            return { do: "drag", pts, what: c.move };
           }
           if (c.kind === "drill") {
             // one patch per stroke (lifting between them: no white drilled), row by row, back and forth
@@ -1014,19 +1259,59 @@
           // brush the first move the wrong way
           const c = cur();
           if (!S.ready || !c || c.kind !== "brush" || st.busy || st.done.length) return null;
+          if (st.snapping || (st.tries[c.i] || []).length) return null;
           const m = DIRS.find((d) => d !== c.move);
           const [dx, dy] = SCREEN[m];
-          const a = S.client(M.x, M.y - 40);
-          const b = S.client(M.x + dx * 90, M.y - 40 + dy * 90);
-          return { do: "drag", pts: [[a.x, a.y], [b.x, b.y]], what: "slip " + m };
+          const pts = [0, 0.25, 0.5, 0.75, 1.08].map((k) => S.client(TR.x + dx * TR.ax * k, TR.y + dy * TR.ay * k)).map((q) => [q.x, q.y]);
+          return { do: "drag", pts, what: "slip " + m };
+        },
+        /** TEST HOOK (s11-clinic; read-only): the brushing's state: the move asked, the brush head's offset, each side's dirt, the dirt's mode, the card */
+        brushing() {
+          const c = cur();
+          return { move: c && c.kind === "brush" ? c.move : null, at: Object.assign({}, at), dirt: Object.fromEntries(DIRS.map((d) => [d, +target[d].level.toFixed(2)])), orderOnly, card: dirCard ? { dir: dirCard.dataset.dir, stage: dirCard.wc && dirCard.wc.stage, slots: dirCard.wc && dirCard.wc.slots } : null, missed: st.missed.slice(), snapping: !!st.snapping };
+        },
+        /** TEST HOOK (s11-clinic; read-only): client px of the cross's centre and its four ends */
+        cross() {
+          const q = (p) => S.client(p.x, p.y);
+          return { centre: q(TR), ends: Object.fromEntries(DIRS.map((d) => [d, q(END[d])])) };
         },
       },
     };
   }
 
+  /**
+   * The dirt reader (Sprint 11): a blind player who brushes the dirtiest side each time (never the side just brushed:
+   * the order never repeats a move), as the game draws the dirt for this save (orderDirt): the leak bot's own check
+   * that the dirt doesn't give the order away past support.
+   */
+  function dirtRead(moves, orderOnly, rng) {
+    const cnt = (d) => moves.filter((m) => m === d).length;
+    const dirt = Object.fromEntries(DIRS.map((d) => [d, orderOnly ? (cnt(d) ? 1 : 0) : 1]));
+    const step = Object.fromEntries(DIRS.map((d) => [d, orderOnly ? 1 / Math.max(1, cnt(d)) : 1 / (cnt(d) + 2)]));
+    let prev = null;
+    for (const m of moves) {
+      const can = DIRS.filter((d) => d !== prev);
+      const top = Math.max(...can.map((d) => dirt[d]));
+      const pick = HS.pick(can.filter((d) => Math.abs(dirt[d] - top) < 1e-9), rng);
+      if (pick !== m) return false;
+      dirt[m] = Math.max(0, dirt[m] - step[m]);
+      prev = m;
+    }
+    return true;
+  }
   function bot(level, rng) {
     const p = plan(level, rng);
-    return Object.assign(HS.bot(p.rows, rng), { plan: p });
+    const b = HS.bot(p.rows, rng);
+    const solve = b.solve;
+    return Object.assign(b, {
+      plan: p,
+      strategies: HS.STRATEGIES.concat(["dirt-reader"]),
+      solve(strategy) {
+        if (strategy !== "dirt-reader") return solve(strategy);
+        const ok = dirtRead(p.moves, orderDirt(p.level, p.moves), rng);
+        return { right: p.rows.filter((r) => r.skill).length + (ok ? 1 : 0), total: p.rows.length };
+      },
+    });
   }
 
   const def = {

@@ -672,6 +672,15 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-mic.listening { background: #fff6dc; animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }
 .eye-mic.shrug { animation: eye-shake .45s; }
 @media (prefers-reduced-motion: reduce) { .eye-card.eye-in, .eye-card.eye-shake, .eye-mic.listening, .eye-mic.shrug { animation: none; } }
+/* Sprint 11 (s11-clinic): the brushing's direction card (the shared word card: an arrow and the word), top left */
+.tooth-dir { position: absolute; left: var(--njg-s3); top: var(--njg-s3); z-index: 7; width: calc(var(--njg-tap) * 3.6); }
+.tooth-dir.hidden { display: none; }
+.tooth-dir > .wc { width: 100%; }
+.tooth-dir .wc-pic { background: #f4f8fb; }
+.tooth-arrow { position: absolute; inset: 8%; width: 84%; height: 84%; display: block; }
+.tooth-dcard.tooth-din { animation: eye-up .4s ease-out; }
+.tooth-dcard.tooth-dshake { animation: eye-shake .45s; }
+@media (prefers-reduced-motion: reduce) { .tooth-dcard.tooth-din, .tooth-dcard.tooth-dshake { animation: none; } }
 /* T4 (CLN-103): the tooth buzzes when the drill goes outside the line */
 .tooth-close.buzz { animation: tooth-buzz .25s linear 2; }
 @keyframes tooth-buzz { 25% { transform: translate(2px, -1px); } 50% { transform: translate(-2px, 1px); } 75% { transform: translate(1px, 1px); } }
