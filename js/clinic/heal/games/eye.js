@@ -344,9 +344,22 @@
     s("rect", { x: SPLIT + 14, y: 424, width: 1000, height: 8, fill: "#fffaf1", opacity: 0.55 }, testG); // the skirting
 
     // the stand and the card (HTML over the drawing: the shared word card), the big pills and the mic under it
-    const stand = S.h("div", "eye-stand hidden", S.root);
+    // Sprint 11 art (s11 pack, data art.doctorCard): the doctor standing, holding a big blank card; the word card sits in
+    // its face (art.doctorCard.card: the face's x, y, w, h as shares of the picture). Without it, the drawn stand
+    const DOC = (() => {
+      const d = art("doctorCard");
+      return d && d.card && d.size ? d : null;
+    })();
+    const stand = S.h("div", `eye-stand hidden${DOC ? " eye-doc" : ""}`, S.root);
+    let docImg = null;
+    if (DOC) {
+      docImg = S.h("img", "eye-doc-img", stand);
+      docImg.alt = "";
+      docImg.draggable = false;
+      docImg.src = url(DOC.src);
+    }
     const holder = S.h("div", "eye-holder", stand);
-    S.h("div", "eye-easel", stand).setAttribute("aria-hidden", "true");
+    if (!DOC) S.h("div", "eye-easel", stand).setAttribute("aria-hidden", "true");
     const judgeBox = S.h("div", "hs-judge eye-judge", S.root);
     const NB = root.NjgButtons;
     const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
@@ -431,6 +444,20 @@
       const top = gap;
       const room = rr.height - jh - gap * 3 - top; // the card and its ledge, above the pills
       const card = holder.firstElementChild;
+      if (DOC) {
+        // the doctor as tall as lets the card's face end above the pills (his legs go off the bottom), no wider than the
+        // room's panel; the word card fills the face, its picture and its strip side by side
+        const [iw, ih] = DOC.size;
+        const f = DOC.card;
+        const H = Math.min(room / (f.y + f.h), ((x1 - x0) * 0.96 * ih) / iw);
+        const Wd = (H * iw) / ih;
+        const cx = (x0 + x1) / 2;
+        Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top), width: px(Wd), height: px(H) });
+        Object.assign(holder.style, { left: px(f.x * Wd), top: px(f.y * H), width: px(f.w * Wd), height: px(f.h * H) });
+        judgeBox.style.left = px(cx);
+        judgeBox.style.width = "max-content";
+        return;
+      }
       let w = Math.min((x1 - x0) * 0.58, room * 1.2);
       holder.style.width = px(w);
       if (card) {

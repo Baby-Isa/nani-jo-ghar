@@ -659,6 +659,14 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-easel::before, .eye-easel::after { content: ""; position: absolute; top: 0; bottom: 0; width: var(--njg-s3); background: var(--njg-cream-lip); border: 2px solid var(--njg-gold); border-top: 0; }
 .eye-easel::before { left: 22%; transform: skewX(8deg); transform-origin: top; }
 .eye-easel::after { right: 22%; transform: skewX(-8deg); transform-origin: top; }
+/* the s11 art: the doctor holds the card up; the word card fills its face, picture and strip side by side */
+.eye-stand.eye-doc { display: block; }
+.eye-stand.eye-doc.hidden { display: none; }
+.eye-doc-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
+.eye-doc .eye-holder { position: absolute; display: flex; }
+.eye-doc .eye-holder > .wc { width: 100%; height: 100%; flex-direction: row; align-items: center; box-shadow: none; background: transparent; }
+.eye-doc .eye-holder .wc-pic { flex: none; width: auto; height: 100%; max-width: 58%; aspect-ratio: 4 / 3; background: transparent; }
+.eye-doc .eye-holder .wc-strip { flex: 1 1 auto; flex-direction: column; align-items: flex-start; justify-content: center; }
 .eye-card.eye-hush .wc-strip { visibility: hidden; }
 .eye-card.eye-in { animation: eye-up .45s ease-out; }
 @keyframes eye-up { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }

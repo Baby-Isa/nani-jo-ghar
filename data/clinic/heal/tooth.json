@@ -239,7 +239,8 @@
      410
     ]
    },
-   "_s08": "CLN-163 (clinic decision 7): ONE picture for the drill and the fill, the camera pushing in on its own sore tooth (js/clinic/heal/games/tooth.js). box: registered on the brushing mouth (mouthBrush) by the two front teeth (their gap at x 769 / 768.75 and their lower edge at y 422 / 372.5 in the two 1x sources; widths 106 / 95 px), so the change from one mouth to the other is the mouth opening; always2x: the @2x whatever the screen (the camera pushes in on it about 2-3x); teeth: the four front upper teeth [x0, y0, x1, y1] in the 1x source (measured on the @2x), the sore one of them; hd: the same teeth upscaled x2 from the @2x (Real-ESRGAN x2plus, build/tools/art/upscale.py's network and weights, run in numpy: 1680 x 680), laid exactly over its crop [x0, y0, x1, y1] of the 1x source. The s02 box is box_s02."
+   "_s08": "CLN-163 (clinic decision 7): ONE picture for the drill and the fill, the camera pushing in on its own sore tooth (js/clinic/heal/games/tooth.js). box: registered on the brushing mouth (mouthBrush) by the two front teeth (their gap at x 769 / 768.75 and their lower edge at y 422 / 372.5 in the two 1x sources; widths 106 / 95 px), so the change from one mouth to the other is the mouth opening; always2x: the @2x whatever the screen (the camera pushes in on it about 2-3x); teeth: the four front upper teeth [x0, y0, x1, y1] in the 1x source (measured on the @2x), the sore one of them; hd: the same teeth upscaled x2 from the @2x (Real-ESRGAN x2plus, build/tools/art/upscale.py's network and weights, run in numpy: 1680 x 680), laid exactly over its crop [x0, y0, x1, y1] of the 1x source. The s02 box is box_s02.",
+   "_s11": "Sprint 11 (s11-clinic): the s11 open mouth (assets/clinic/s11/mouth-open-s11.webp) is not used: it is a cartoon face framed wide (nose to chin, small teeth), so neither the measured teeth (teeth, hd, glint) nor the photo brushing mouth registered on them match it; this picture and its glint patch stay"
   },
   "decay1": {
    "src": "assets/clinic/heal-v3/decay-1.webp",
@@ -309,15 +310,15 @@
    "_s02": "S02-E (M4, T9): the plaque picture, registered to M3 (same box): drawn over it and wiped away where the brush goes (a mask), the last of it at the brushing's end"
   },
   "brushInMouth": {
-   "src": "assets/clinic/items-s08b/toothbrush-s08b.webp",
+   "src": "assets/clinic/s11/toothbrush-s11.webp",
    "ready": true,
    "size": [
-    640,
-    112
+    713,
+    92
    ],
    "head": [
-    24,
-    56
+    79.5,
+    32.2
    ],
    "w": 380,
    "_s02": "S02-E (E5b, CLN-103): the brusher's view of the toothbrush, level; up and down are the same brush tipped 30 degrees for an up or down stroke (their own canvases: up 471 x 220, down 472 x 194, the head at the left)",
@@ -325,7 +326,17 @@
    "up_s02": "assets/clinic/sheets/brushing/brushing-up.webp",
    "down_s02": "assets/clinic/sheets/brushing/brushing-down.webp",
    "has2x": true,
-   "_s08": "CLN-180 (Zafar, 18 Oct; s08b TB1): the brush lying level, the bristles at its left end against the front teeth (head = the bristles' middle, 1x px), the handle running out of the mouth to the right; no turn and no squash (brushTurn is gone), no tipped up/down pictures (the old brush's, kept as *_s02)"
+   "_s08": "CLN-180 (Zafar, 18 Oct; s08b TB1): the brush lying level, the bristles at its left end against the front teeth (head = the bristles' middle, 1x px), the handle running out of the mouth to the right; no turn and no squash (brushTurn is gone), no tipped up/down pictures (the old brush's, kept as *_s02)",
+   "src_s08b": "assets/clinic/items-s08b/toothbrush-s08b.webp",
+   "size_s08b": [
+    640,
+    112
+   ],
+   "head_s08b": [
+    24,
+    56
+   ],
+   "_s11": "Sprint 11 art (22 Oct): the straight brush with real bristles replaces the s08b TB1 one; head = the bristle centre (s11-art.json head, in 1x px), the brush's hit point on the plus track"
   },
   "drillView": {
    "src": "assets/clinic/closeups/{kind}/tooth-drill.webp",
@@ -433,7 +444,9 @@
   "assets/clinic/heal-v3/filling-patch.webp",
   "assets/clinic/items-v2/dentist-drill.webp",
   "assets/clinic/items-s08b/toothbrush-s08b*.webp",
-  "assets/clinic/closeups/girl/face-aah-s08c.webp"
+  "assets/clinic/closeups/girl/face-aah-s08c.webp",
+  "assets/clinic/s11/toothbrush-s11.webp",
+  "assets/clinic/s11/toothbrush-s11@2x.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
  "view": {

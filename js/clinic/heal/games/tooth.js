@@ -769,7 +769,13 @@
       if (!c) return;
       // the brush: taken anywhere near its head (it rests on the cross's centre)
       if (c.kind === "brush") {
-        if (!st.snapping && Math.hypot(p.x - TR.x - at.x, p.y - TR.y - at.y) < TR.w * 1.6) drag = { from: p, axis: null, fired: false };
+        // (or near the centre while a demo has it out on the cross: the child's hand takes over, the brush comes home)
+        const nearHead = Math.hypot(p.x - TR.x - at.x, p.y - TR.y - at.y) < TR.w * 1.6;
+        const nearHome = Math.hypot(p.x - TR.x, p.y - TR.y) < TR.w * 1.6;
+        if (!st.snapping && (nearHead || nearHome)) {
+          if (!nearHead || at.x || at.y) setBrush(0, 0);
+          drag = { from: p, axis: null, fired: false };
+        }
       } else if (c.kind === "drill") {
         drag = { drill: true, last: null };
         drillAt(toD(p));

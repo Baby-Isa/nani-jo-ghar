@@ -563,6 +563,22 @@
    "splash": "assets/clinic/items-s08b/drop-splash-s08b.webp",
    "splashW": 46,
    "splashAspect": 2.022
+  },
+  "doctorCard": {
+   "src": "assets/clinic/s11/doctor-card-s11.webp",
+   "ready": true,
+   "has2x": true,
+   "size": [
+    316,
+    725
+   ],
+   "card": {
+    "x": 0.0949,
+    "y": 0.2193,
+    "w": 0.8101,
+    "h": 0.1972
+   },
+   "_s11": "Sprint 11 art (Zafar ran it, 22 Oct; assets/clinic/s11/s11-art.json): the doctor holding a big blank card; the eye test's word card sits in its face (card: x, y, w, h as shares of the 1x picture), in place of the drawn stand"
   }
  },
  "assets": [
@@ -582,7 +598,9 @@
   "assets/clinic/items-s08b/drop-falling-s08b.webp",
   "assets/clinic/items-s08b/drop-splash-s08b.webp",
   "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
-  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp"
+  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
+  "assets/clinic/s11/doctor-card-s11.webp",
+  "assets/clinic/s11/doctor-card-s11@2x.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
  "chart_colours": {
