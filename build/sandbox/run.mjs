@@ -7,7 +7,7 @@
 import { mkdirSync, writeFileSync, existsSync, readFileSync, readdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
-import { ROOT, SIZES, ALL_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
+import { ROOT, SIZES, ALL_SIZES, STORE_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
 import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
@@ -121,7 +121,7 @@ const flows = evOnly ? [] : pick();
 if (has("--quick") && (has("--all") || has("--gate"))) { console.error("--quick is for named flows only."); process.exit(2); }
 const sizeOpt = has("--quick") ? [QUICK_SIZE] : val("--sizes") ? val("--sizes").split(",") : null;
 for (const s of sizeOpt || []) if (!SIZES[s]) { console.error(`Unknown size ${s}. Known: ${Object.keys(SIZES).join(", ")}`); process.exit(2); }
-const sizesOf = (f) => (f.static ? ["static"] : sizeOpt ? sizeOpt.filter((s) => !!SIZES[s].upright === !!f.upright) : has("--every-size") && !f.upright ? ALL_SIZES : flowSizes(f));
+const sizesOf = (f) => (f.static ? ["static"] : sizeOpt ? sizeOpt.filter((s) => !!SIZES[s].upright === !!f.upright) : has("--every-size") && !f.upright ? STORE_SIZES : flowSizes(f));
 
 const runId = val("--run-id") || val("--resume") || val("--from-run") || new Date().toISOString().replace(/[-:]/g, "").slice(0, 13).replace("T", "-");
 const runDir = join(ROOT, "build", "screenshots", "sandbox", runId);

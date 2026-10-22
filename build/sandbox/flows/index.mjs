@@ -58,7 +58,8 @@ export function allFlows() {
   for (const f of [...DAY_FLOWS, ...DAY_BOOK_FLOWS, ...DAY_WINDOW_FLOWS]) flows.push({ ...f, sizes: ["844x390", "1024x768", "1366x768"] });
   return flows.map((f) => ({ ...f, parked: false }));
 }
-export const flowSizes = (f) => f.sizes || ALL_SIZES;
+// Rapid prototype (Zafar, 22 Oct): every flow at the three sizes; only the upright rotate-card flow keeps its own.
+export const flowSizes = (f) => (f.upright && f.sizes) || ALL_SIZES;
 // a flow and every level and path of it: "cook:chai-tray" also gives cook:chai-tray@L2, @L3, #mistake, #hint ...
 export const variantsOf = (flows, id) => flows.filter((f) => f.id === id || f.id.startsWith(id + "@") || f.id.startsWith(id + "#"));
 export function parkedFlows() { return []; }

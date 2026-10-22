@@ -20,7 +20,8 @@ export const FONTS_DIR = join(ROOT, "build", "sandbox", "fonts");
 export const SIZES = {
   "844x390": { width: 844, height: 390, label: "phone landscape (iPhone 12-14)", touch: true },
   "800x360": { width: 800, height: 360, label: "small Android landscape", touch: true },
-  "915x412": { width: 915, height: 412, label: "wide Android landscape, 20:9 (Zafar's phone; CK-44): not in the gate's sizes", touch: true },
+  "915x412": { width: 915, height: 412, label: "phone landscape, 20:9 (Galaxy Z Flip 5, Zafar's phone; CK-44)", touch: true },
+  "1480x924": { width: 1480, height: 924, label: "tablet landscape (Galaxy Tab S8 Ultra)", touch: true },
   "1366x768": { width: 1366, height: 768, label: "laptop" },
   "1440x900": { width: 1440, height: 900, label: "16:10 laptop" },
   "1280x800": { width: 1280, height: 800, label: "16:10 laptop (small)" },
@@ -29,11 +30,13 @@ export const SIZES = {
   "1366x1024": { width: 1366, height: 1024, label: "tablet landscape (iPad Pro 12.9)", touch: true },
   "390x844": { width: 390, height: 844, label: "phone upright (the rotate card)", touch: true, upright: true },
 };
-// the five sizes the baseline was first made at, then the tablets; the upright phone is only for the rotate-card flow
-export const ALL_SIZES = ["844x390", "800x360", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024"];
+// Rapid prototype (Zafar, 22 Oct): every flow runs at three sizes, a laptop, his S8 Ultra tablet and his Z Flip 5 phone.
+// The full set (STORE_SIZES, `run.mjs --every-size`) comes back before the app stores. The upright phone is only for the rotate card.
+export const ALL_SIZES = ["1366x768", "1480x924", "915x412"];
+export const STORE_SIZES = ["844x390", "800x360", "915x412", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024", "1480x924"];
 export const QUICK_SIZE = "1366x768";
 // the sizes that bound the others: the tightest phone, a 4:3 tablet and a 16:10 laptop (the gate's reduced set for deeper paths)
-export const CORE_SIZES = ["800x360", "1024x768", "1440x900"];
+export const CORE_SIZES = ALL_SIZES;
 
 const require = createRequire(import.meta.url);
 let pw;
