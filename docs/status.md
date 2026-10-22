@@ -8,7 +8,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (22 Oct 2026, evening UK):** Sprint 11 "Easy to play" is live on `main` (40adcb2). Sprint 12 "polish" (eye test, tooth, chai, the door and ride, the book; rapid-prototype mode) has started: Zafar's two 22 Oct voice notes are consolidated in `docs/feedback/s12-polish-2026-10-22.md` (64 points, every line mapped, a second reader's 20 gaps folded in) and on the fix list (section "Sprint 12 polish", plus reopened rows CK-48, EASY-08, SH-104, ART-19, LNG-18, CHAI-08, CHAI-26, SH-115). The new Kutchi lines are on the recording sheet (1c). `docs/sprints/S12-polish.md` does not exist yet.
+**Where things stand (22 Oct 2026, evening UK):** Sprint 11 "Easy to play" is live on `main` (40adcb2). Sprint 12 "polish" (eye test, tooth, chai, the door and ride, the book; rapid-prototype mode) has started: Zafar's two 22 Oct voice notes are consolidated in `docs/feedback/s12-polish-2026-10-22.md` (64 points, every line mapped, a second reader's 20 gaps folded in) and on the fix list (section "Sprint 12 polish", plus reopened rows CK-48, EASY-08, SH-104, ART-19, LNG-18, CHAI-08, CHAI-26, SH-115). The new Kutchi lines are on the recording sheet (1c). The S12 sprint file is not written yet.
 
 **Next steps:**
 1. Zafar records at Masi's from `docs/language/recording-sheet.md`; `/mum-round` processes it.
