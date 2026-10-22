@@ -1,0 +1,45 @@
+{
+  "name": "s11-step0: the shared pieces for 'easy to play, easy to learn' (Sprint 11)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "shared visual components and onboarding every game will use; judgement on layout and feel",
+  "cost": "about $35-45",
+  "stop": "22 Oct 2026, 23:00 UK",
+  "branch": "ccr-1888a520-dk18y7",
+  "read": [
+    "docs/game-design/easy-to-play.md (the whole plan: principles 1-11, Sprint 11, Step 0)",
+    "docs/sprints/S11-easy-to-play.md (Zafar's 22 Oct changes: the New player toggle, no Next or Done anywhere, light proof)",
+    "docs/design-language/guide-and-card.md and docs/design-language/ux-principles.md section 8",
+    "docs/game-design/progression-and-scoring.md Part 1 (word stages)"
+  ],
+  "owns": [
+    "js/shared/word-card.js and css/shared/word-card.css (new: WordCard.card, WordCard.row, WordCard.pop)",
+    "js/core/progress.js and data/progress.json (support per stage: english, picture, kutchiText; cues picture and english)",
+    "js/shared/onboard.js (Onboard.demo with the real item, Onboard.stuck rungs at 0/5/15 s)",
+    "js/shared/buttons.js and js/clinic/kit.js (no Next: the shared next button moves on by itself; one shared move-on hook for games)",
+    "js/shared/host.js (the play log at each stage end)",
+    "lab/play-log.html (new) and lab/word-card.html (new, every stage of the card)",
+    "js/day/door.js and css/day.css (the door's cards on WordCard.card)",
+    "build/gen_labs.mjs, labs.html (the New player toggle)",
+    "build/tools/review/leak.mjs (the save: learned knob, default)",
+    "build/tools/art/specs/s11.run.yaml and docs/design-language/art-plans/s11-art-plan.md (the art run's plan and spec; the paste block via artblock.py)",
+    "build/test_shared_word_card.mjs (new)",
+    "build/reports/s11-step0.md"
+  ],
+  "readOnly": ["js/cook/** and data/cook.json, data/stations/** (s11-cook)", "js/clinic/heal/** and data/clinic/heal/** (s11-clinic)", "CLAUDE.md and docs/ outside your art plan (the orchestrator)"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "WordCard: one shared card with four fixed slots (picture, Kutchi text, English text, a speaker always shown). WordCard.card(...) is big (door, eye test), WordCard.row(...) is a sidebar row, both the same shape; a slot blanked by the word's stage shows an obvious free reveal button. Fade order (Zafar, 21 Oct): stage 1-2 all shown, stage 3 English blank, stage 4 picture blank too, stage 5 Kutchi text blank (speaker only). The speaker plays the family clip through the existing say/engine path; a to-record word shows its grey-italic English placeholder. WordCard.pop(fromEl, toEl) flies a card from the guide box to its row (reuse RequestPopup.fly). A reveal logs cue 'picture' or 'english' via progress.js, so it never advances the word.", "accept": "lab/word-card.html shows one word at stages 1-5 and a reveal tapped, at 1366x768 and 1480x924, nothing clipped; build/test_shared_word_card.mjs" },
+    { "do": "Onboarding rungs, the same for every age: the first time an action appears, the real item shows it (Onboard.demo(itemEl or a scene point, path): the item itself moves along the path and returns), then the child does it; at 5 s idle, spotlight (the existing 62% dim) plus the demo again; at 15 s, the demo again with the guide's line. It never does the step for them. Everything but the live control is inert while the spotlight shows. Onboard.stuck(step, {target, path}) wires the 5 and 15 s rungs off the shared idle clock (NaniGuide). The bulb keeps its own timing.", "accept": "a filmstrip in lab/shared-ui.html or lab/word-card.html at both sizes: first-time demo with the real item, then 5 s and 15 s rungs" },
+    { "do": "No Next anywhere (Zafar, 22 Oct): the shared next button (NjgButtons.next, and Kit.button's non-Done path in js/clinic/kit.js) no longer waits: after a short beat (about 1 s) it moves on by itself, with nothing to press. Add one shared hook (e.g. NjgButtons.moveOn(onDone) or ctx.moveOn) that games call when a step is complete instead of showing a Done. Games keep working: the Done buttons inside individual games are removed by the two game builders for chai, the eye test and toothbrushing; for every other game, list each remaining Done in your report (file:line) for the fix list. Do not edit game files.", "accept": "the Cook and clinic flows that used a Next still end (sandbox touched flows); the remaining Done list in the report" },
+    { "do": "The play log: at each stage end, js/shared/host.js folds the stage's events into {mode, game, step, firstActMs, taps, acts, helps} and appends to localStorage njg-play-log (last 50 rounds; try/catch, never breaks play). lab/play-log.html lists rounds, flags steps over 5 s to the first act or with 2+ taps that did nothing, and exports JSON.", "accept": "after one chai round in the sandbox, lab/play-log.html shows the round with its steps" },
+    { "do": "The door's word cards (js/day/door.js card(), css/day.css's door-only card CSS) move onto WordCard.card; same content and look, now fading by the word's stage.", "accept": "the door at 1366x768 and 1480x924 for a new player (all slots) and with the weather word at stage 4 (picture blank, reveal shown)" },
+    { "do": "Labs: replace the one-shot New player button with an on/off toggle (Zafar, 22 Oct). On: every Play, the walkthrough and the day builder launch as a dedicated 'New player' profile, created once with Save.addPlayer and reset with Save.resetPlayer before each launch (no words known, every onboarding, every game at level 1); Zafar's own player is never wiped. Off: his own player, as now. The toggle is remembered on the device (localStorage, try/catch) and a badge shows which player is active.", "accept": "labs at both sizes with the toggle off and on; build/host/labs.test.mjs updated; one launch with it on shows the first-time help" },
+    { "do": "Leak bot: a 'save': 'learned' knob, default on, so adapters judge a child whose words are past support (stage 3+); the 10% limit is unchanged.", "accept": "node build/tools/review/leak.mjs over all configs green" },
+    { "do": "The art run's plan and spec (rule 13; Zafar runs it): a proper toothbrush (straight handle, real bristles), the doctor holding a big blank card, the mouth picture without its pale box, clinic pictures for the evening book, and a small painted effects sheet (sparkle, splash, steam, bubble, shine) in the art bible's style. Build the paste block with build/tools/art/artblock.py --check then without; put the block's path, image count and time in your report.", "accept": "artblock.py --check passes; the block file exists" }
+  ],
+  "flows": ["day:door", "cook:chai-tray", "clinic:heal-eye", "clinic:heal-tooth", "lab:cook/chai-tray", "house"],
+  "port": 8831,
+  "report": "s11-step0",
+  "publish": false
+}
