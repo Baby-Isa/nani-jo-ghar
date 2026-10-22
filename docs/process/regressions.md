@@ -261,7 +261,6 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | EASY-03 | Hints by the real item: first-time demo, 5 s spotlight plus demo, 15 s demo with the guide line; never does the step | **to fix: check** · 0 s and 5 s pass; the 15 s demo isn't caught in a frame | eye: a mid-demo frame at 15 s | `docs/sprints/S11-easy-to-play.md` |
 | EASY-07 | The play log flags slow steps (over 5 s to the first act, or 2+ taps that did nothing) | **to fix: check** · the round lists; a flagged step not yet shown | eye: a round with a slow step | `docs/sprints/S11-easy-to-play.md` |
 | EASY-08 | The spotlight lights only the live control (judge, 22 Oct: it half-lit the jar above and the water bottle) | **to fix: code** · Step 0's spotlight | eye: the 5 s spotlight on chai, one thing lit | `docs/sprints/S11-easy-to-play.md` |
-| EASY-04 | No Next and no Done in chai: every cup served and the round moves on with no button | **to fix: check** · the frame caught the third cup mid-pour | eye: the all-served state | `docs/sprints/S11-easy-to-play.md` |
 | CHAI-31 | Tea colour and effects (judge, 22 Oct): the tea is maroon in the pan but amber in the glass; a blue water splash lands on amber tea; the conversation bubble shows a generic face, not Nana's | **to fix: code** · s11-cook fix round | eye: pan and glass the same tea; splash in the tea's colour; the bubble with his face | `docs/sprints/S11-easy-to-play.md` |
 
 ## Keep (things Zafar liked: must not regress)
