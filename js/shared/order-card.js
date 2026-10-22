@@ -184,8 +184,9 @@
     ".oc-card .oc-row.oc-wc { padding-top: var(--njg-line-2); padding-bottom: var(--njg-line-2); }",
     ".oc-card .oc-row.oc-wc > .wc { flex: 1 1 auto; padding: 0; gap: var(--njg-s1); background: transparent; box-shadow: none; }",
     ".oc-card .oc-row.oc-wc .wc-row .wc-pic { width: calc(var(--oc-part-h) * 1.15); height: calc(var(--oc-part-h) * 1.15); background: transparent; }",
-    ".oc-card .oc-row.oc-wc .wc-k { font-size: var(--oc-p); min-height: 0; padding: 0; }",
-    ".oc-card .oc-row.oc-wc .wc-en { min-height: 0; padding: 0; }",
+    // (a row's words wrap only between words, never inside one: contract-15)
+    ".oc-card .oc-row.oc-wc .wc-k { font-size: var(--oc-p); min-height: 0; padding: 0; overflow-wrap: normal; word-break: normal; }",
+    ".oc-card .oc-row.oc-wc .wc-en { min-height: 0; padding: 0; overflow-wrap: normal; word-break: normal; }",
     ".oc-card.folded .oc-row.oc-wc .wc-k, .oc-card.folded .oc-row.oc-wc .wc-en { white-space: nowrap; overflow-wrap: normal; }",
   ].join("\n");
   function wcCss() {

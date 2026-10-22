@@ -154,7 +154,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
     const first = !(Cook.save.coached || {})[key];
-    return Onboard.stuck(`${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
+    // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
+    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
   };
 
   /**

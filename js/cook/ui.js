@@ -578,6 +578,8 @@
     return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null, again: !!o.again });
   };
   UI.stepDone = () => stepper && stepper.close();
+  // (Sprint 11: the open step's id, as Nani's stepper logs it: a station's hint rungs for that step go by the same name)
+  UI.stepId = () => (stepper && stepper.current ? stepper.current.id : null);
   /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
   UI.guideSay = async function (line, o = {}) {
     if (!guide || !line) return UI.say(line, { badge: true }, o);

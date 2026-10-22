@@ -750,6 +750,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return y - h < hobY + RIM_CLEAR ? [x, hobY - 10] : [x, y];
     };
     /* ---------- the word pop (§4: learning happens during the action) ---------- */
+    // when each item's name was last said here (the pour says a row again only if its words weren't just said: an item's
+    // name is never said twice within 10 s of the child's time, contract-23)
+    const saidAt = {};
+    const saidLately = (ids) => (ids || []).some((id) => saidAt[id] && (Date.now() - saidAt[id]) * (Cook.speed || 1) < 10000);
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
       const c = S.track(S.add.container(0, 0).setDepth(D.fx + 3).setAlpha(0).setScale(k));
@@ -769,7 +773,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       c.setPosition(x, y + 14);
       S.tweens.add({ targets: c, alpha: 1, y, duration: 180, ease: "Back.easeOut" });
       S.tweens.add({ targets: c, alpha: 0, y: y - drift, delay: 1900, duration: 320, onComplete: () => c.destroy() });
-      if (speak && !UI.naniMuted()) Lang.popWord(id);
+      if (speak && !UI.naniMuted()) {
+        Lang.popWord(id);
+        saidAt[id] = Date.now();
+      }
       return c;
     };
     /*
@@ -1218,8 +1225,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
       if (level <= 2 && !pan.poured && UI.readAlong) {
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === pan.who);
-        const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no) : [];
-        if (said.length) UI.readAlong(said).catch(() => {});
+        const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no && !saidLately(p.row.ids)) : [];
+        if (said.length) {
+          said.forEach((p) => (p.row.ids || []).forEach((id) => (saidAt[id] = Date.now())));
+          UI.readAlong(said).catch(() => {});
+        }
       }
       unglow();
       // CHAI-08's flaw (the judge, 20 Oct: "loose 'hakro' pills float at the hob's top-left corner during the pour"): the pan's
@@ -1620,15 +1630,48 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (step === "cups" && !(guided || sel.redo)) return null; // (the answer: only while Nani helps)
       return { step, id: `${key}:${sel.who}`, target: pageRect(obj), spec: jarDemo(obj, sel) };
     };
-    const coachStep = (nx) => {
-      const r = rungOf(nx);
-      const k = r ? `${r.step}/${r.id}` : null;
-      if (k === rungKey) return;
+    // The rungs follow Nani's own steps (the stepper's, phase() in refresh): one rung per step she opens and calls, under
+    // that step's own id (UI.stepId: one step in the step log, her call or its skip answers both, contract-36). Within a
+    // step the live thing can change (the next pan's knob): the spotlight and the demo follow the one live now (rungCur),
+    // a demo under way keeps its own item to the end.
+    let rungCur = null;
+    let rungSpec = null;
+    const coachStep = (nx, sid) => {
+      rungCur = rungOf(nx);
+      if (sid === rungKey) return;
       if (rung) rung.done();
       rung = null;
-      rungKey = k;
-      if (!r || !Cook.Coach || !Cook.Coach.rungs) return;
-      rung = Cook.Coach.rungs("chai-tray", r.step, Object.assign({ target: r.target, live: r.target, line: () => UI.stepHelp && UI.stepHelp() }, r.spec));
+      rungKey = sid;
+      const step = nx && nx.phase;
+      if (!step || !Cook.Coach || !Cook.Coach.rungs) return;
+      if (step === "cups" && !(guided || (sel && sel.redo))) return; // (the answer: only while Nani helps)
+      const spec = () => rungSpec || (rungCur && rungCur.spec) || null;
+      const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
+      // (under the spotlight the live thing takes a tap, and so do the bulbs and the "?": the help stays everyone's, Zafar, 21 Oct)
+      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"];
+      const item = {
+        get x() {
+          const sp = spec();
+          return sp ? sp.item.x : 0;
+        },
+        get y() {
+          const sp = spec();
+          return sp ? sp.item.y : 0;
+        },
+      };
+      const path = () => {
+        const sp = spec();
+        if (!sp) return { dx: 0, dy: -1 };
+        return typeof sp.path === "function" ? sp.path() : sp.path;
+      };
+      const move = (dx, dy, t) => {
+        if (!rungSpec) rungSpec = rungCur && rungCur.spec;
+        const sp = rungSpec;
+        if (sp) sp.move(dx, dy, t);
+        if (t >= 1) rungSpec = null;
+      };
+      const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
+      rung = Cook.Coach.rungs("chai-tray", step, { name, target, live, item, path, move, line: () => UI.stepHelp && UI.stepHelp() });
     };
     const coachEnd = () => {
       if (rung) rung.done();
@@ -1742,7 +1785,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // (contract-70: where the bar was as "Slow kar" was called)
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
-      coachStep(nx); // Sprint 11: the real item's demo and the hint rungs for the step now
+      // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
+      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}` : null);
       // Sprint 11: a ready pan can be served by calling "chai" (its microphone by the glass)
       if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
       else hideMic();
