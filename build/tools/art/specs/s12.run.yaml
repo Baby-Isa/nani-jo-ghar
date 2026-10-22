@@ -1,0 +1,118 @@
+# The run spec for pack s12: Sprint 12's polish art (decision 77; Zafar's 22 Oct voice notes, docs/feedback/s12-polish-2026-10-22.md):
+# the chai pan tipping seen from exactly above (and in black tea), the glasses exactly from above, the four face circles as one
+# passport sheet, the whole lemon on magenta, the door's big sun and its farm, the book's page turn in four frames, Nani's
+# "come here". One image per prompt. Read by build/tools/art/artblock.py. Edit this file, then regenerate the block:
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s12.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s12.run.yaml
+pack: s12
+title: 'Sprint 12: the chai pour, the face circles, the lemon, the door''s sun and farm, the page turn, Nani''s come-here'
+plan: docs/design-language/art-plans/s12-art-plan.md
+plan_branch: claude/exciting-pasteur-usf3d2
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/exciting-pasteur-usf3d2
+dest: sources/art/s12
+real_people: true
+approvals: "- Nani (FC, NW), the doctor and the girl (FC) are real people. Zafar judges their likeness after the run, in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes its check and the PASS/FAIL list.\n- Everything else is yours to judge with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  pan-top.png: sources/art/s08b/cp2-chai-pan-topdown-v1.png
+  pour-tipping.jpg: sources/art/pour-reference-2026-10-22/frame-2.jpg
+  pour-full.jpg: sources/art/pour-reference-2026-10-22/frame-4.jpg
+  pour-trickle.jpg: sources/art/pour-reference-2026-10-22/frame-7.jpg
+  glasses-top.png: sources/art/s08c/gl1-chai-glasses-top-v1.png
+  doctor-sheet.png: sources/art/s08/sheet-doctor-final-1.png
+  girl-sheet.png: sources/art/s08/sheet-girl-v2-1.png
+  nani-sheet.png: sources/art/s08/sheet-nani-final-1.png
+  nana-sheet.png: sources/art/characters/char-nana-v1.png
+  old-lemon.png: sources/art/s08b/lm1-lemon-whole-v1.png
+  orange-card.png: assets/items/fruit/fru-04.png
+  sky-sunny.png: sources/art/s09b/s1-sky-sunny-v1.png
+  farm-fields.png: sources/art/s09r/m1-farm-mid-fields-v1.png
+  farm-animals.png: sources/art/s09r/i1-animals-v1.png
+  book-pages.png: sources/art/s09a/b2-book-open-v2.png
+  nani-door-poses.png: sources/art/s09b/n1-nani-door-poses-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  PT1: {attach: [pan-top.png, pour-tipping.jpg, pour-full.jpg, pour-trickle.jpg], save: pt1-chai-pan-tip-topdown-v1.png, check: TILT}
+  PT2: {attach: ["edit: kept:PT1"], save: pt2-chai-pan-tip-black-v1.png, check: RECOLOUR}
+  GL: {attach: [glasses-top.png], save: gl-chai-glasses-top-v1.png, check: GLASS}
+  FC: {attach: [doctor-sheet.png, girl-sheet.png, nani-sheet.png, nana-sheet.png], save: fc-face-circles-v1.png, check: FACES}
+  LM: {attach: [old-lemon.png, orange-card.png], save: lm-lemon-whole-v1.png, check: ITEM}
+  SN: {attach: [sky-sunny.png], save: sn-door-sun-v1.png, check: SUN}
+  FM: {attach: [farm-fields.png, farm-animals.png], save: fm-door-farm-v1.png, check: FARM}
+  PG1: {prompt: PG, attach: ["edit: book-pages.png"], save: pg1-page-turn-25-v1.png, check: TURN, slots: {STAGE: 'lifted just a little: its bottom-right corner has risen off the book and the page curls up, raised about a quarter of the way (about 25 degrees from where it lay)'}}
+  PG2: {prompt: PG, attach: ["edit: book-pages.png"], save: pg2-page-turn-70-v1.png, check: TURN, slots: {STAGE: 'standing up at about 70 degrees from where it lay, leaning a little toward the fold, so we see its back narrow and foreshortened'}}
+  PG3: {prompt: PG, attach: ["edit: book-pages.png"], save: pg3-page-turn-120-v1.png, check: TURN, slots: {STAGE: 'past the middle, leaning to the left at about 120 degrees from where it lay, falling toward the left page, its underside toward us'}}
+  PG4: {prompt: PG, attach: ["edit: book-pages.png"], save: pg4-page-turn-160-v1.png, check: TURN, slots: {STAGE: 'almost down on the left page, about 160 degrees from where it lay, only a narrow sliver still raised above the left page'}}
+  NW: {attach: [nani-sheet.png, nani-door-poses.png], save: nw-nani-come-here-v1.png, check: POSES}
+parts:
+- id: A
+  title: 'THE CHAI POUR'
+  intro: 'PT1 is the pan tipping lip-down, seen from exactly above, six cells on flat grey (the photos are only for how a pan tips); PT2 is an edit of the kept PT1 that recolours the tea to black tea; GL is the three glasses exactly from above.'
+  items:
+  - lines: [PT1, PT2, GL]
+- id: B
+  title: 'THE FACE CIRCLES'
+  intro: 'FC: four passport-style heads on one sheet, framed identically (three are real people: Zafar judges likeness later).'
+  items:
+  - lines: [FC]
+- id: C
+  title: 'THE EYE TEST''S LEMON'
+  intro: 'LM: one whole lemon on flat magenta, no shadow.'
+  items:
+  - lines: [LM]
+- id: D
+  title: 'THE DOOR''S CARDS'
+  intro: 'SN: a big sun filling two thirds of the sky; FM: a farmhouse, a farmer with a pitchfork and the s09r animals.'
+  items:
+  - lines: [SN, FM]
+- id: E
+  title: 'THE BOOK''S PAGE TURN'
+  intro: 'PG1-PG4: four edits of the same book picture, each attaching the original (never another frame); only the right page moves.'
+  items:
+  - lines: [PG1, PG2, PG3, PG4]
+- id: F
+  title: 'NANI AT THE DOOR'
+  intro: 'NW: two poses of Nani saying "come": the raised open palm, then the beckon (a real person: Zafar judges her likeness later).'
+  items:
+  - lines: [NW]
+checks:
+  TILT:
+    text: 'exactly six pans in a 3 by 2 grid, every one seen from directly above at the same size with the rim''s centre at the same point of its cell, the handle to the right in all six; cells 1 to 4 four clearly different rims (a circle, then ellipses narrower from left to right), the tea sliding to the lip on the left and a band of inside wall growing on the right; cell 5 only a short tongue of tea over the lip, no long falling stream; cell 6 nearly empty with a thin trickle; no hand, sink or side view; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: none}
+  RECOLOUR:
+    text: 'the same six pans as the attached sheet at the same places, sizes and tilts; only the liquid changed, now clear dark reddish-brown black tea in every cell; the grey and everything else unchanged'
+    judge: {aspect: [3, 2], bg: none}
+  GLASS:
+    text: 'three identical glasses from directly above in a row: the rim a perfect circle, the floor a smaller circle concentric with it, the facets evenly spaced round; empty, milky chai, black tea; no holder or saucer; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: none}
+  FACES:
+    text: 'exactly four head-and-shoulders portraits in a 2 by 2 grid in the order doctor, girl, Nani, Nana, each the person on their sheet, each facing the camera dead on with both sides of the face showing equally, the eyes on the cell''s horizontal midline and looking at the viewer, the head the same size in all four; nothing drawn round them; modest clothes, no rings on Nani; ONE flat mid-grey with no shadow'
+    judge: {aspect: [3, 2], bg: none}
+  ITEM:
+    text: 'one whole uncut lemon, side on, lying level, centred, about 70 percent wide, no leaf, no second fruit; NO cast or contact shadow and no floor, on ONE flat pure magenta'
+    judge: {aspect: [1, 1], bg: none}
+  SUN:
+    text: 'one round sun filling about two thirds of the picture''s height, centred a little above the middle, soft glow, no face and no rays drawn as lines; only blue sky round it, clouds small and near the bottom corners only; no ground, hills, trees or buildings'
+    judge: {aspect: [3, 2], bg: none}
+  FARM:
+    text: 'one farmhouse with a big red roof centred in the middle distance, hay bales beside it, a wooden fence in front, one farmer (a woman in a straw hat, long sleeves, trousers, boots) holding a pitchfork upright, the goat, the hen and the dog near her, green fields and blue sky; all of it within the middle 85 percent of the width; no sign, board, tractor or other people; no writing'
+    judge: {aspect: [3, 2], bg: none}
+  TURN:
+    text: 'the same picture as the attached (left page, cover, hands, dupatta, room unchanged) except the right page, lifted to the stage the line names and bending like paper; the next page showing blank cream with a gold border where it lifted; both pages blank'
+    judge: {aspect: [3, 2], bg: none}
+  POSES:
+    text: 'exactly two poses of the same woman as her sheet, the same size and feet line as the attached door poses, facing the viewer, whole: (1) right arm raised, palm toward us, fingers open, mouth a little open; (2) the same arm, the hand turned toward her with the fingers curled in; her face and clothing as on the sheet, modest, no rings or bracelets, on ONE flat mid-grey with no shadow'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones; anything written or drawn on the book's pages.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things or the wrong view; a pan, glass or face not seen the way its check says; a hand, a sink or a side view copied from the pour photos.
+- A key background that isn't one flat colour (a gradient, a floor, shadows or haze on it); pink or purple anywhere else in a magenta image.
+- A real person who doesn't look like their sheet, or a skin tone that drifts from it; immodest clothes; rings or bracelets on Nani.
+- Anything scary; sweets, lollies or biscuits; any religious marker.
