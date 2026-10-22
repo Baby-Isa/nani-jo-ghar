@@ -8,7 +8,7 @@ description: Design a new Nani jo Ghar mode or redesign one against the design d
 
 ## 1. Start from the syllabus, not the game
 - List the Kutchi the mode teaches (words, then phrases) from `data/lang/` and the question sheets. A mode that teaches nothing new is cut.
-- Check `docs/ideas.md` and the existing modes first: never replace or remove a mechanic or mini-game Zafar didn't comment on (non-negotiable 2).
+- Check `docs/ideas.md` and the existing modes first: never replace or remove a mechanic or mini-game Zafar didn't comment on (non-negotiable 1).
 - Find a proven fun game for each need (`references/fun-patterns.md`), then fit the story around the games.
 
 ## 2. The pipeline
@@ -23,7 +23,7 @@ A mode is **a pipeline of stages**, each a pool of mini-games, stitched into one
 Score each 1-5, keep the best 6-8 per stage (8-10 for a big library), park the rest in "maybe later".
 
 ## 4. Test it against the design docs and the non-negotiables before showing Zafar
-- **Leak test (non-negotiable 6):** can someone with no Kutchi win by reading, matching, eliminating, patterns or waiting? If yes, redesign.
+- **Leak test (non-negotiable 4):** can someone with no Kutchi win by reading, matching, eliminating, patterns or waiting? If yes, redesign.
 - **No written English for the child; no English in games or help (NN5).** Missing Kutchi is grey-italic English, tagged "to record" in the markup only. Never invent Kutchi (NN4).
 - **Same shared screens and buttons** from `js/shared/` (NN8); a missing shared piece goes to the shared-layer owner, never restyled per mode.
 - **Instructions and onboarding:** requests come first in one pop-up; the ghost finger shows, the child does; the guide box says the next step; never make the child wait for speech.

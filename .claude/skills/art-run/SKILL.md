@@ -4,7 +4,7 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
 ---
 # /art-run: the block, the judge, the cutter
 
-**For:** art packs. Method: `docs/design-language/art-pipeline.md` (§15 the tools and the runner loop), look: `art-bible.md`. Rules: non-negotiables 13 and 16 in CLAUDE.md. Zafar approves only art of real people (Nani, Big Ma, the doctor).
+**For:** art packs. Method: `docs/design-language/art-pipeline.md` (§15 the tools and the runner loop), look: `art-bible.md`. Rules: non-negotiables 8 and 9 in CLAUDE.md. Zafar approves only art of real people (Nani, Big Ma, the doctor).
 
 ## Before the run
 1. Plan first: what each object is for, how it's seen in game, who stands where (D-rules). The pack's plan is `docs/design-language/art-plans/<pack>-art-plan.md`; its run spec `build/tools/art/specs/<pack>.run.yaml`.

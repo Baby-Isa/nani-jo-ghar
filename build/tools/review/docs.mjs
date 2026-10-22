@@ -19,6 +19,9 @@ import { parseRegressions, statusKind } from "./lib/regressions.mjs";
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
 
+// Rapid prototype (Zafar, 22 Oct): only CLAUDE.md keeps its word limit; the other limits and the report prose cap come back
+// (PROTOTYPE = false) before the app stores. IDs, paths and the fix list's shape are still checked.
+export const PROTOTYPE = true;
 export const LIMITS = {
   "CLAUDE.md": 900,
   "docs/status.md": 1500,
@@ -69,26 +72,27 @@ const read = (p) => (existsSync(join(ROOT, p)) ? readFileSync(join(ROOT, p), "ut
 export function checkDocs() {
   const fails = [], info = [];
   for (const [p, max] of Object.entries(LIMITS)) {
+    if (PROTOTYPE && p !== "CLAUDE.md") continue;
     const t = read(p); if (t == null) continue;
     const n = words(t); (n > max ? fails : info).push(`${p}: ${n} words (limit ${max})`);
   }
-  for (const [p, max] of Object.entries(DOC_LIMITS)) {
+  for (const [p, max] of PROTOTYPE ? [] : Object.entries(DOC_LIMITS)) {
     const t = read(p); if (t == null) { fails.push(`${p}: in DOC_LIMITS but the file is gone (remove the limit)`); continue; }
     const n = words(t); (n > max ? fails : info).push(`${p}: ${n} words (limit ${max})`);
   }
-  for (const d of DOC_DIRS) {
+  for (const d of PROTOTYPE ? [] : DOC_DIRS) {
     if (!existsSync(join(ROOT, d))) continue;
     for (const f of readdirSync(join(ROOT, d)).filter((x) => x.endsWith(".md"))) if (!(`${d}/${f}` in DOC_LIMITS)) fails.push(`${d}/${f}: no word limit (add it to DOC_LIMITS in build/tools/review/docs.mjs)`);
   }
   const status = read("docs/status.md");
-  if (status) {
+  if (status && !PROTOTYPE) {
     const m = /## Next chat\n([\s\S]*?)\n## /.exec(status + "\n## ");
     const n = m ? words(m[1]) : 0; (n > NEXT_CHAT ? fails : info).push(`status.md "Next chat": ${n} words (limit ${NEXT_CHAT})`);
   }
   // the newest sprint file (older ones are closed records); its Outcome and Look back are not counted
   const sprints = existsSync(join(ROOT, "docs/sprints")) ? readdirSync(join(ROOT, "docs/sprints")).filter((f) => /^S\d+.*\.md$/.test(f)).sort() : [];
   const newest = sprints.at(-1);
-  if (newest && newest >= "S06") {
+  if (newest && newest >= "S06" && !PROTOTYPE) {
     const t = read(`docs/sprints/${newest}`).split(/\n## Outcome/)[0];
     const n = words(t); (n > SPRINT ? fails : info).push(`docs/sprints/${newest}: ${n} words before its Outcome (limit ${SPRINT})`);
   }
@@ -131,7 +135,7 @@ export function reportProblems(dir = "build/reports") {
   for (const f of readdirSync(join(ROOT, dir)).filter((x) => /^s(0[6-9]|[1-9]\d)[a-z0-9-]*\.md$/i.test(x))) {
     const t = read(`${dir}/${f}`) || "";
     const n = proseWords(t);
-    if (n > REPORT_PROSE) out.push(`${dir}/${f}: ${n} words of prose (limit ${REPORT_PROSE}; the tables are the proof)`);
+    if (n > REPORT_PROSE && !PROTOTYPE) out.push(`${dir}/${f}: ${n} words of prose (limit ${REPORT_PROSE}; the tables are the proof)`);
     if (!/^#+\s*proof/im.test(t) && !/\bev-\d{8}-\d{4,6}-\w+|\bev-s\d+/.test(t) && !/^#+\s*(what moved|moved)/im.test(t)) out.push(`${dir}/${f}: no proof (a "Proof" section, or the evidence runs it rests on)`);
   }
   return out;

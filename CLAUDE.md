@@ -13,25 +13,22 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - When he says more is coming, collect; plan nothing. Improve on his ideas: research, push back.
 - Short, plain replies; don't assume he remembers IDs; hand him exactly what to do. Every launch: model, effort, cost.
 - **Keep it small:** a rule that can be code becomes a check (`docs/process/checks-to-build.md`); a new rule replaces an old one.
+- **Fix it properly, once** (the fix list, `docs/process/regressions.md`): a builder fixes what it breaks before handing back; anything found broken after a merge, and every point of Zafar's feedback, is a row the same day, fixed this sprint if it blocks play, else next. Built is done; done rows come back if they fail (Zafar, 22 Oct).
+- **Builders** are in-chat subagents in their own worktrees, two at most on different files (four while two sprints overlap); they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Rules for briefs: `docs/process/session-brief-template.md`.
+- **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
+- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** checks at three sizes (laptop, Tab S8 Ultra, Z Flip 5); the leak bot and the judge only on what a sprint changed; no red-then-green; only CLAUDE.md has a word limit. The full checks come back before the stores.
 
 ## Non-negotiables
 
-1. **Discuss first; act only when told.** (above)
-2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his OK.
-3. **Fix it properly, once.** Every genuine thing still to fix is on the fix list (`docs/process/regressions.md`); done rows stay checked and come back if they fail.
-4. **Never invent Kutchi.** Mum is the authority (Masi second; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (no visible flag; decision 84).
-5. **No written English for the child,** except under Nani's lines at the door (Zafar, 19 Oct) and on a word card while the word is supported, then only when tapped (Zafar, 21 Oct). Spoken English only in story mode, rare and simple. A to-record word's placeholder (decision 84) is device-spoken while testing, never in a store build (Zafar, 21 Oct). Written English for grown-ups lives only in the "?" pop-up and the end-of-round review.
-6. **Pass the Kutchi leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting. While supported, matching is study and never advances a word (Zafar, 21 Oct).
-7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after (a never-failed new feature: green alone; Zafar, 21 Oct), and the `judge` agent, never the builder, passes the picture, flaws first.
-8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
-9. **No clipped or ellipsised text, anywhere.** Headlines shrink, then wrap.
-10. **Only real family voices ship;** no AI-generated Kutchi.
-11. **Every line is a full, natural sentence built by the language engine, and every word the child hears is a real family voice.** The most frequent phrases (from simulated play) are recorded whole; the rest are built from recorded words. No hand-written fragments or fixes: if the engine can't say it, report the gap.
-12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can undo until the step moves on (Zafar, 22 Oct).
-13. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude plans the run and writes one paste block; he runs it and approves what lands; Claude judges, cuts and wires. No image-API art without his say-so.
-14. **Sessions:** builders are in-chat subagents in their own worktrees, two at most on different files (four while two sprints overlap: Zafar, 19 Oct); they never judge their own work or push; the orchestrator judges, merges, runs the full check and publishes (`/publish`).
-15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
-16. **The family is Khoja Shia Ithna'asheri Muslim** (internal only; never named in anything public): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
+1. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his OK.
+2. **Never invent Kutchi; only real family voices ship.** Mum is the authority (Masi second; Zafar confirms spellings); two AIs agreeing is not evidence. Every line is a full, natural sentence built by the language engine from recorded phrases and words; no hand-written fragments: if the engine can't say it, report the gap. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (decision 84), device-spoken while testing, never in a store build.
+3. **No written English for the child,** except under Nani's lines at the door and on a word card while the word is supported, then only when tapped (Zafar, 21 Oct). Spoken English only in story mode, rare and simple. Grown-ups' English lives only in the "?" pop-up and the end-of-round review.
+4. **The Kutchi leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting. While supported, matching is study and never advances a word.
+5. **Done means an independent picture:** the `judge` agent, never the builder, passes the changed screens, flaws first.
+6. **The same shared screens and buttons in every mode** (`js/shared/`, never restyled per mode); **no clipped or ellipsised text** (headlines shrink, then wrap).
+7. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can undo until the step moves on (Zafar, 22 Oct).
+8. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude plans and writes one paste block, he runs it and approves what lands, Claude judges, cuts and wires. No image-API art without his say-so.
+9. **The family is Khoja Shia Ithna'asheri Muslim** (internal only; never named in anything public): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
 
 ## Where things live
 

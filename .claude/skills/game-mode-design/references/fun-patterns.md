@@ -1,6 +1,6 @@
 # Fun patterns: a pool to draw upon
 
-Codified from the clinic's game research (`docs/archive/feedback/clinic-playtest-2026-09-29.md`, `2026-10-01.md`, `docs/process/mode-design-method.md` §2). Pick patterns; the Kutchi must still decide the challenge (leak test, non-negotiable 6). Each is the upside version: nothing floods, breaks or punishes.
+Codified from the clinic's game research (`docs/archive/feedback/clinic-playtest-2026-09-29.md`, `2026-10-01.md`, `docs/process/mode-design-method.md` §2). Pick patterns; the Kutchi must still decide the challenge (leak test, non-negotiable 4). Each is the upside version: nothing floods, breaks or punishes.
 
 | Pattern | What it is | Where it lives now / example |
 |---|---|---|

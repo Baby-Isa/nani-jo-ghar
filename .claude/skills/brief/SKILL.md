@@ -4,7 +4,7 @@ description: Write a complete brief for a new build session (mode, engine, art o
 ---
 # /brief: a session brief from a spec
 
-**For:** the orchestrator, before any `create_session`. Enforced by `brief.mjs` (required fields, owned files, no helpers, the overlap check) and CLAUDE.md non-negotiable 14; template `docs/process/session-brief-template.md`.
+**For:** the orchestrator, before any `create_session`. Enforced by `brief.mjs` (required fields, owned files, no helpers, the overlap check) and CLAUDE.md the working agreement's Builders line; template `docs/process/session-brief-template.md`.
 
 ## Steps
 1. Copy a spec: `build/tools/ops/specs/4e-clinic-engine.json` is the worked example. Fill name, model, effort and why, cost, stop (UK), branch, owns, readOnly, tasks (each `do` + `accept`), flows, port, report, publish.
