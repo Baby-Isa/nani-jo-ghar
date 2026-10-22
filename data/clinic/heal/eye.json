@@ -1,5 +1,5 @@
 {
- "_about": "H-eye (1 Oct play-test D15h, decision 27; js/clinic/heal/games/eye.js): drops in a front close-up (only the sore eye red, the dropper over it), then the eye test in two versions (test.version: A the split screen, B side by side with the chart on a stand; the lab's ?eyetest=a|b picks either). Chart rows light and tick like card rows; after na the dropper hangs over the eye and pulses. The chart's pictures are Cook's icons for words the child knows (data/clinic/lang.json ids). Sides are said only in the diagnosis (D10). art: the art plan's Y1-Y3, T1, T2, C1, C2 swap in by file name once ready. The older keys below (numbers, chart_nouns, levels) are the first design's notes, kept for Mum's word list; the game's levels are in its code (K).",
+ "_about": "H-eye (1 Oct play-test D15h, decision 27; Sprint 11 s11-clinic, js/clinic/heal/games/eye.js): drops in a front close-up (only the sore eye red, the dropper over it; they close at the count by themselves, no Done), then the eye test as flash cards (Zafar, 21 Oct): the chart and its versions A/B are retired. She sits close up covering one eye (art testA); the doctor holds up one big shared word card at a time on a stand; she says her guess every 1.5 s; the child taps big haa or na, or says it (the mic); the first card is the demo, four are judged. The cards are Cook's words the family has recorded (the code's POOL; WAITING words join once recorded). After a misread the dropper hangs over her eye (CLN-62). Sides are said only in the diagnosis (D10). The older keys below (numbers, chart_nouns, levels) are the first design's notes, kept for Mum's word list; the game's levels are in its code (K).",
  "id": "eye",
  "ailments": {
   "sore-eye": {
@@ -327,8 +327,7 @@
   }
  },
  "test": {
-  "version": "A",
-  "_about": "A = the split screen (the patient close up covering one eye, looking over our shoulder; the chart on the right); B = the patient side-on at the left, a big chart on a stand at the right, turned a quarter towards both (D15h: both prototyped for Zafar)",
+  "_about": "Sprint 11 (s11-clinic): the chart's versions A/B are retired (version is gone); split is where her panel ends (close-up units) and the room with the card's stand begins",
   "split": 200,
   "_s08w6c": "CLN-188 (the judge: the board filled about a third, her photo the larger part): the split at 250 (was the middle, 392), her panel's picture 230 wide in it, the wall's picture bigger and its board centred in the rest (art.wall.box), its foot clear of the yes / no pills on the shortest screen",
   "_s08w6n": "CLN-188 (s08 w6N; the judge: the board 'fills only the right half of the stage ... the girl's face takes the left half'): the split at 200, her picture moved left with it (her open eye and hand stay in her panel), the wall's picture bigger and its board widened (art.wall), so the board's face takes most of the play area and is bigger than her panel at every size"
@@ -427,7 +426,7 @@
   },
   "testB": {
    "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
-   "ready": true,
+   "ready": false,
    "box": [
     0,
     0,
@@ -446,7 +445,7 @@
   },
   "chartFront": {
    "src": "assets/clinic/heal-v3/eye-chart-front.webp",
-   "ready": true,
+   "ready": false,
    "size": [
     691,
     1024
@@ -481,7 +480,7 @@
   },
   "chartTurned": {
    "src": "assets/clinic/heal-v3/eye-chart-turned.webp",
-   "ready": true,
+   "ready": false,
    "size": [
     507,
     1024
@@ -550,7 +549,8 @@
     1.8
    ],
    "_s08w6h": "CLN-188 (the judge: the board a third of the play width): box x 230 (was 297) and stretch [a, b, f]: the picture's middle share 0.3-0.7 (the plain board face, the wall above it and the skirting below) drawn 1.835x as wide (js/clinic/heal/games/eye.js, a nine-slice: the frame's sides keep their size), so the board's face is 400 x 400 units, x 300-700, its frame clear of her face circle in the top right corner; the wall is clipped at the split",
-   "_s08w6n": "CLN-188 (s08 w6N): box [167, -86, 475, 713] and stretch middle x1.8: the board's face about 464 x 470 units, its frame clear of her face circle in the top right corner and its foot above the yes / no pills"
+   "_s08w6n": "CLN-188 (s08 w6N): box [167, -86, 475, 713] and stretch middle x1.8: the board's face about 464 x 470 units, its frame clear of her face circle in the top right corner and its foot above the yes / no pills",
+   "_s11": "Sprint 11 (s11-clinic): the wall picture (the chart board) is no longer drawn; fill and floor, when given, colour the room behind the card stand"
   },
   "drop": {
    "_about": "s08-w5b (CLN-186; Zafar 18 Oct: 'photorealistic drops, and the bottle ... isn't cut out nicely'): bottle = the re-cut bottle held nozzle down (SH-115 sheets-v3), cut off at nozzle (its nozzle's end, a share of its height: its own painted drop hidden); tool = the re-cut bottle in the strip; falling = the s08b DP3 photo drop (aspect its width over height, w its width in the close-up's units) hanging at the nozzle and falling; splash = DP3's splash on the eye (splashW wide)",
@@ -578,7 +578,6 @@
   "assets/cook/items/icon-veg-03.webp",
   "assets/cook/items/icon-veg-12.webp",
   "assets/cook/items/icon-veg-13.webp",
-  "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
   "assets/clinic/items-s08b/lemon-whole-s08b.webp",
   "assets/clinic/items-s08b/drop-falling-s08b.webp",
   "assets/clinic/items-s08b/drop-splash-s08b.webp",

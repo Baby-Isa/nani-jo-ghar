@@ -351,7 +351,7 @@
     const NB = root.NjgButtons;
     const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
     // CLN-152 (contract-21): the shared pills wire their own taps: each one is handed to the game, logged as an act
-    const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: yesNo.yes }, { id: "no", html: yesNo.no }], (id) => (ctx.act && ctx.act(), onJudge(id === "yes", "pill"))) : null;
+    const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: `<span class="eye-pill-t">${yesNo.yes}</span>` }, { id: "no", html: `<span class="eye-pill-t">${yesNo.no}</span>` }], (id) => (ctx.act && ctx.act(), onJudge(id === "yes", "pill"))) : null;
     const mk = (id, label) => {
       if (pills) {
         const b = pills.pill(id);
@@ -597,13 +597,16 @@
       if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
         if (stuck) stuck.stop();
         const live = mic ? [judgeBox] : [haaBtn, naBtn];
+        // the rungs count from this card coming up (her guess, not the child, was the last thing)
+        if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
         stuck = root.Onboard.stuck(c.demo ? "eye-card-demo" : "eye-card", {
           id: c.demo ? "clinic/heal-eye-card-demo" : "clinic/heal-eye-card",
           first: c.demo,
           target: live,
           live,
           item: c.demo ? haaBtn : judgeBox,
-          path: { dx: 0, dy: -18 },
+          path: { dx: 0, dy: -22 },
+          hand: true,
           line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(c.said), { who: "patient", noBubble: true }) : null),
         });
       }

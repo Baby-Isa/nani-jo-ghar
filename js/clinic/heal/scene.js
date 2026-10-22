@@ -97,7 +97,10 @@
       /* no save */
     }
     const leak = global.NJG_LEAK_SAVE;
-    return leak && leak.stage ? leak.stage() : 1;
+    if (leak && leak.stage) return leak.stage();
+    // a leak bot's own script (leak.mjs spawns it): the save it plays is named in the environment (a learned child: stage 3)
+    const env = typeof process !== "undefined" && process.env ? process.env.NJG_LEAK_SAVE : null;
+    return env === "learned" ? 3 : 1;
   };
   /** The player's word progress (the core's), or null (a lab page, Node). */
   HS.progress = () => (global.__clinic && global.__clinic.core && global.__clinic.core.progress) || null;

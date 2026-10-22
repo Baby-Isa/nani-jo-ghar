@@ -979,7 +979,7 @@
     };
     function demoMove(c) {
       if (!root.Onboard || !root.Onboard.demo || ctx.onboardOn === false) return Promise.resolve();
-      return root.Onboard.demo(headClient(), tour(c.move), { step: "tooth-brush", move: demoAt, ms: fast() ? 200 : 1500 });
+      return root.Onboard.demo(headClient(), tour(c.move), { step: "tooth-brush", move: demoAt, hand: true, ms: fast() ? 200 : 1500 });
     }
     const openBrush = (c) => {
       trackG.setAttribute("opacity", 1);
@@ -990,7 +990,12 @@
       if (!ctx.taught) showDir(c);
       if (stuck) stuck.stop();
       stuck = null;
-      if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
+      // CLN-133: the help waits for the close-up's push-in (ctx.zoomed): a demo during it is over before it's seen
+      Promise.resolve(ctx.zoomed).then(() => {
+        if (st.gone || cur() !== c || st.done.length > c.i || !root.Onboard || !root.Onboard.stuck || ctx.onboardOn === false) return;
+        if (stuck) stuck.stop();
+        // the rungs count from this step opening (the request pop-up and the push-in are not the child being stuck)
+        if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
         stuck = root.Onboard.stuck("tooth-brush", {
           id: "clinic/heal-tooth-brush",
           first: c.i === 0 && !ctx.taught,
@@ -999,12 +1004,13 @@
           item: headClient(),
           move: demoAt,
           path: () => tour(ctx.taught ? c.move : null),
+          hand: true,
           ms: fast() ? 300 : ctx.taught ? 1500 : 3800,
           line: () => (cur() === c ? sayMove(c) : null),
         });
-      }
-      // the taught round (D13): every move is shown first, the very move asked for
-      if (ctx.taught) ctx.after(fast() ? 50 : 500, () => cur() === c && !st.done[c.i] && demoMove(c));
+        // the taught round (D13): every move is shown first, the very move asked for
+        if (ctx.taught) ctx.after(fast() ? 50 : 400, () => cur() === c && st.done.length <= c.i && demoMove(c));
+      });
     };
     // CLN-103 (decision 72, s04-r2k2): the drill rests beside the tooth, its bur by the crown's lower right, until the
     // finger takes it (its tip under the finger), and goes back

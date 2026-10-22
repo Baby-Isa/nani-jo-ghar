@@ -75,7 +75,7 @@
     "n": 1,
     "r": 70
    },
-   "_note": "two moves (up/down/left/right, one at a time); one big patch; no timer"
+   "_note": "two moves on the cross (up / down / left / right, one at a time, the screen's left and right); dirt only on the order's sides while its words are supported; one big patch; no timer"
   },
   "2": {
    "chain": 4,
@@ -83,7 +83,7 @@
     "n": 2,
     "r": 51
    },
-   "_note": "four moves, the patient's own dabo / jamno for left and right (the level's one new thing); two patches"
+   "_note": "four moves on the cross; dirt only on the order's sides while its words are supported (stage 1-2); two patches"
   },
   "3": {
    "chain": 4,
@@ -91,7 +91,7 @@
     "n": 2,
     "r": 51
    },
-   "_note": "level 2 heard only (the closed card): four moves, the patient's own dabo / jamno, two patches, no timer (Zafar's heal ladder, 13 Oct)"
+   "_note": "four moves, dirt on all four sides (listening wins); two patches"
   },
   "4": {
    "chain": 6,
@@ -143,7 +143,9 @@
    62,
    52
   ],
-  "w": 300
+  "w": 300,
+  "angle": 45,
+  "_s11": "Sprint 11: on the plus-shaped track the handle lies 45 degrees down to the right, between the right and down channels, so it never covers a target"
  },
  "drill": {
   "_about": "CLN-51: the drill's picture and where its tip (the bur) is in the picture's own pixels; the tip sits under the finger.",
@@ -192,7 +194,16 @@
     1536,
     1024
    ],
-   "always2x": true, "glint": {"x": 475, "y": 129, "rx": 30, "ry": 13, "dy": 30, "blur": 4, "_why": "s10b: the pale rectangle baked into the sore tooth top of the mouth picture (and its upscaled teeth); patched with the surface 30 units below, feathered"},
+   "always2x": true,
+   "glint": {
+    "x": 475,
+    "y": 129,
+    "rx": 30,
+    "ry": 13,
+    "dy": 30,
+    "blur": 4,
+    "_why": "s10b: the pale rectangle baked into the sore tooth top of the mouth picture (and its upscaled teeth); patched with the surface 30 units below, feathered"
+   },
    "teeth": [
     [
      605,
@@ -432,5 +443,12 @@
   "nearTop": 0.14,
   "ms": 1100,
   "_about": "CLN-163 (CLN-185: 'a little bit too zoomed in ... a bit intimidating'): the tooth's own camera (js/clinic/heal/games/tooth.js view). far: the brushing view, the scene's fit widened by 1/far, centred on y farY (svg units); near: the drill and fill view, the sore tooth 256 of `near` drill units wide (it was 256 of 800), its top nearTop of the view down; ms: the move in or out (one tween)."
+ },
+ "track": {
+  "_about": "Sprint 11 (Zafar, 21 Oct): the plus-shaped brushing track, the mouth close-up's units: its centre (where the brush head rests) is the code's (x 400, y 190); ax / ay how far the channels run, w their width, r the targets' radius",
+  "ax": 235,
+  "ay": 150,
+  "w": 86,
+  "r": 40
  }
 }
