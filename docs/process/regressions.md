@@ -254,6 +254,14 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | PRC-06 | Rows were marked built from reading code and never seen in play; feedback documents never re-read against the list for coverage | **to fix: check** · nine rows still have no spec | the full audit (decision 76): every row with proof | `docs/archive/feedback/playtest-2026-10-08-sprint3.md` Z11 |
 
+## Easy to play (Sprint 11)
+
+| ID | Issue | Status | Check | Source |
+|---|---|---|---|---|
+| EASY-03 | Hints by the real item: first-time demo, 5 s spotlight plus demo, 15 s demo with the guide line; never does the step | **to fix: check** · 0 s and 5 s pass; the 15 s demo isn't caught in a frame | eye: a mid-demo frame at 15 s | `docs/sprints/S11-easy-to-play.md` |
+| EASY-07 | The play log flags slow steps (over 5 s to the first act, or 2+ taps that did nothing) | **to fix: check** · the round lists; a flagged step not yet shown | eye: a round with a slow step | `docs/sprints/S11-easy-to-play.md` |
+| EASY-08 | The spotlight lights only the live control (judge, 22 Oct: it half-lit the jar above and the water bottle) | **to fix: code** · Step 0's spotlight | eye: the 5 s spotlight on chai, one thing lit | `docs/sprints/S11-easy-to-play.md` |
+
 ## Keep (things Zafar liked: must not regress)
 
 | ID | Issue | Status | Check | Source |
