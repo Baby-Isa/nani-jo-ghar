@@ -188,6 +188,8 @@
     ".oc-card .oc-row.oc-wc .wc-k { font-size: var(--oc-p); min-height: 0; padding: 0; overflow-wrap: normal; word-break: normal; }",
     ".oc-card .oc-row.oc-wc .wc-en { min-height: 0; padding: 0; overflow-wrap: normal; word-break: normal; }",
     ".oc-card.folded .oc-row.oc-wc .wc-k, .oc-card.folded .oc-row.oc-wc .wc-en { white-space: nowrap; overflow-wrap: normal; }",
+    // (the row's copy in flight, WordCard.pop, is outside the card: the same no-break rule, and the row's picture size)
+    ".wc.oc-wcrow .wc-k, .wc.oc-wcrow .wc-en { overflow-wrap: normal; word-break: normal; }",
   ].join("\n");
   function wcCss() {
     if (typeof document === "undefined" || document.querySelector("style[data-oc-wc]")) return;

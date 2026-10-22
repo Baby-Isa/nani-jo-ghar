@@ -1613,8 +1613,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const back = () => {
         if (!st) return;
         st.forEach(({ o, x, y, sx, sy }) => o.active && o.setPosition(x, y).setScale(sx, sy));
-        [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.active && o.setVisible(true));
-        setLook(pan);
+        // (a pour that began meanwhile has its own layers: they come back when it is home)
+        if (!pan.away) {
+          [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.active && o.setVisible(true));
+          setLook(pan);
+        }
         st = null;
       };
       return {

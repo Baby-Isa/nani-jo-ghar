@@ -1890,7 +1890,8 @@
         kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), rowHide(r)))}</span>` },
         english: r.line.en || "",
         rec: !!r.rec,
-        picture: pic ? { src: pic, fit: "contain" } : null,
+        // (the big card said now: its own picture while the small copy is still being made)
+        picture: pic ? { src: pic, fit: "contain" } : src && size >= 200 ? { src: Cook.v(src), fit: "contain" } : null,
         say: () => Lang.speak(r.line),
       },
       wordOpts: {

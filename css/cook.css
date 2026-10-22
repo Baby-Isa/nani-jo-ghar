@@ -1172,7 +1172,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #intro.along .ic-card, body.w6 #intro.along .ic-card { width: auto; max-width: none; max-height: none; background: transparent; border: none; box-shadow: none; border-radius: 0; padding: 0; overflow: visible; animation: none; }
 #intro.along .ic-head, #intro.along .ic-go, #intro.along .ic-how { display: none; }
 #intro.along .ic-order, body.w6 #intro.along .ic-order { display: block; }
-#intro.along .wc-card.ic-word { width: clamp(128px, min(17vw, 30vh), 220px); animation: icWordIn .3s cubic-bezier(.2, 1.3, .4, 1); }
+#intro.along .wc-card.ic-word { width: clamp(168px, min(19vw, 42vh), 230px); animation: icWordIn .3s cubic-bezier(.2, 1.3, .4, 1); }
+/* (the word said now never breaks inside a word: a short phone's card is wide enough for "dudh na") */
+#intro.along .wc-card.ic-word p { overflow-wrap: normal; word-break: normal; }
 @keyframes icWordIn { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { #intro.along .wc-card.ic-word { animation: none; } }
 /* (a row not said yet, and a word card inside an order card row: js/shared/order-card.js keeps those with the component) */
