@@ -58,7 +58,7 @@
  *   host.leave()    the child left (Home): the current stage is destroyed, waits reject, run() resolves {left}
  *   the play log    (Sprint 11) each stage is named to window.PlayLog (js/shared/onboard.js) as it starts; the shared stage
  *                   end (Lifecycle.stageEnd) folds its events into {mode, game, step, firstActMs, taps, acts, helps} rows,
- *                   appended to localStorage "njg-play-log" (the last 50 rounds); lab/play-log.html reads them
+ *                   appended to the player's "playlog" save namespace (the last 50 rounds); lab/play-log.html reads them
  *   ?then=<page>    (Sprint 10: the day builder's hand-off, generalising Cook's ?first=…&then= of js/cook/app.js) the end screen's
  *                   way on (the list, or home, when the mode offers no Next) goes to that page of the app, labelled Next;
  *                   thenTarget() checks it. nonav=1 only notes it (host.current.then, window.__thenUrl).

@@ -28,7 +28,7 @@
 <body>
 <main>
   <h1>Play log</h1>
-  <p class="lead">This device's last 50 rounds (localStorage <code>njg-play-log</code>; js/shared/onboard.js PlayLog): each step's seconds to the first action, the taps that did nothing and the help shown. Flagged: over 5 s to the first action, or 2 or more taps that did nothing. Nothing leaves the device unless you export it.</p>
+  <p class="lead">Every player's last 50 rounds on this device (the save's <code>playlog</code> namespace; js/shared/onboard.js PlayLog): each step's seconds to the first action, the taps that did nothing and the help shown. Flagged: over 5 s to the first action, or 2 or more taps that did nothing. Nothing leaves the device unless you export it.</p>
   <div class="bar">
     <button class="go" id="export" type="button">Export JSON</button>
     <button id="refresh" type="button">Refresh</button>
@@ -37,6 +37,7 @@
   </div>
   <div id="rounds"></div>
 </main>
+<script src="../js/shared/save.js?v=20261022T014206Z"></script>
 <script src="../js/shared/onboard.js?v=20261022T014206Z"></script>
 <script>
   var PL = window.PlayLog;
@@ -54,11 +55,11 @@
         var why = f.map(function (x) { return x === "slow" ? "over 5 s" : "2+ taps did nothing"; }).join(", ");
         return '<tr class="' + (f.length ? "flag" : "") + '" data-flags="' + f.join(" ") + '"><td>' + esc(s.step) + '</td><td>' + secs(s.firstActMs) + '</td><td>' + s.taps + (s.allTaps != null ? " of " + s.allTaps : "") + '</td><td>' + s.acts + '</td><td>' + s.helps + '</td><td>' + secs(s.ms) + '</td><td>' + (why ? '<span class="why">' + why + "</span>" : "") + "</td></tr>";
       }).join("");
-      return '<section class="round" data-round="' + i + '"><h2>' + esc(r.mode) + " / " + esc(r.game) + (r.level != null ? " L" + esc(r.level) : "") + ' <small>' + esc(new Date(r.at).toLocaleString()) + " · " + secs(r.ms) + " · " + r.steps.length + " step" + (r.steps.length === 1 ? "" : "s") + (flagged ? " · " + flagged + " flagged" : "") + '</small></h2><table><thead><tr><th>Step</th><th>To first action</th><th>Taps that did nothing</th><th>Actions</th><th>Help shown</th><th>Time</th><th>Flag</th></tr></thead><tbody>' + rows + "</tbody></table></section>";
+      return '<section class="round" data-round="' + i + '"><h2>' + esc(r.mode) + " / " + esc(r.game) + (r.level != null ? " L" + esc(r.level) : "") + ' <small>' + (r.player ? esc(r.player) + " · " : "") + esc(new Date(r.at).toLocaleString()) + " · " + secs(r.ms) + " · " + r.steps.length + " step" + (r.steps.length === 1 ? "" : "s") + (flagged ? " · " + flagged + " flagged" : "") + '</small></h2><table><thead><tr><th>Step</th><th>To first action</th><th>Taps that did nothing</th><th>Actions</th><th>Help shown</th><th>Time</th><th>Flag</th></tr></thead><tbody>' + rows + "</tbody></table></section>";
     }).join("");
   }
   document.getElementById("refresh").addEventListener("click", draw);
-  document.getElementById("clear").addEventListener("click", function () { if (confirm("Clear this device's play log?")) { PL.clear(); draw(); } });
+  document.getElementById("clear").addEventListener("click", function () { if (confirm("Clear every player's play log on this device?")) { PL.clear(); draw(); } });
   document.getElementById("export").addEventListener("click", function () {
     var blob = new Blob([JSON.stringify({ format: "nani-jo-ghar-play-log", exported: new Date().toISOString(), rounds: PL.read() }, null, 1)], { type: "application/json" });
     var a = document.createElement("a");

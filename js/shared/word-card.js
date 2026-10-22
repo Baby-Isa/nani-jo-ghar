@@ -47,7 +47,7 @@
  *            after it is shown (again each beat while it stays shown, so a guarded handler goes on when it can).
  *   PlayLog (js/shared/onboard.js, window.PlayLog): the play log. Every Lifecycle stage end folds that stage's events into
  *            {mode, game, at, ms, steps: [{mode, game, step, firstActMs, taps, dead, acts, helps}]} and appends it to
- *            localStorage "njg-play-log" (the last 50; never breaks play). PlayLog.meta({mode, game}) names the stage
+ *            the save: each player's "playlog" namespace (the last 50; never breaks play). PlayLog.meta({mode, game}) names the stage
  *            (js/shared/host.js does it for its games); PlayLog.step(name) opens a step by name. lab/play-log.html reads it.
  *
  * Plain <script>: window.WordCard (and Shared.wordCard); also importable as a module for its side effect; Node: require()

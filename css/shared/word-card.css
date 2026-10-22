@@ -20,7 +20,7 @@
 .wc-card .wc-strip { flex: none; }
 .wc-spk { flex: none; width: var(--njg-tap); height: var(--njg-tap); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
 .wc-spk svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
-.wc-spk.on { box-shadow: 0 0 0 4px var(--njg-focus); }
+.wc-spk.on { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
 .wc-words { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
 
 /* the two text slots keep one height whether shown or blank (four fixed slots): the same edge, transparent when shown */
@@ -49,5 +49,5 @@
 .wc.wc-away { visibility: hidden; }
 .wc.wc-flying { box-shadow: var(--njg-shadow-lift); }
 .wc.wc-landed { animation: wc-land .45s ease-out; }
-@keyframes wc-land { 0% { box-shadow: 0 0 0 0 var(--njg-focus); } 40% { box-shadow: 0 0 0 4px var(--njg-focus); } 100% { box-shadow: var(--njg-shadow); } }
+@keyframes wc-land { 0% { box-shadow: 0 0 0 0 var(--njg-focus); } 40% { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } 100% { box-shadow: var(--njg-shadow); } }
 @media (prefers-reduced-motion: reduce) { .wc.wc-landed { animation: none; } }

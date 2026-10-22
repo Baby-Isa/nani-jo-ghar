@@ -92,8 +92,8 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 ## 6. Cut and wire notes
 
 - Key magenta to alpha, erode 1 px, trim; soft edges (FX steam, shine) keep their feathered alpha.
-- **TB** → `assets/clinic/items-s11/toothbrush-s11.webp` (and @2x), its head's bristle centre measured as the brush's hit point for the plus-shaped track (s11-clinic owns the game).
+- **TB** → a new `toothbrush-s11.webp` (and @2x) beside the clinic's other items, its head's bristle centre measured as the brush's hit point for the plus-shaped track (s11-clinic owns the game).
 - **MO** → replaces the mouth close-up the tooth game uses; the code patch for the pale box goes (S10 known gap). The game's measured tooth spots are re-checked on it.
 - **DC** → the eye test's doctor-with-card pose; the card face's four corners measured into the eye test's data so `WordCard.card` sits inside it (s11-clinic).
-- **BK1, BK2** → `assets/day/s11/book-clinic-spread.webp` and the clinic day's photo; `data/day-book.json` `activityPlace.clinic` moves from the kitchen to a clinic place (a follow-up row; the book's owner wires it).
-- **FX** → five sprites, `assets/shared/fx-s11/{sparkle,splash,steam,bubble,shine}.webp`, for the effects tried first in chai (s11-cook; CK-27's splash comes back on its splash).
+- **BK1, BK2** → a new `book-clinic-spread.webp` beside the book's kitchen and farm spreads, and the clinic day's photo; `data/day-book.json` `activityPlace.clinic` moves from the kitchen to a clinic place (a follow-up row; the book's owner wires it).
+- **FX** → five sprites (sparkle, splash, steam, bubble, shine) in a new shared effects folder, for the effects tried first in chai (s11-cook; CK-27's splash comes back on its splash).

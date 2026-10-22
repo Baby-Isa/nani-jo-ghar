@@ -208,7 +208,7 @@
    * "step-open" (Onboard.stuck, PlayLog.step) and "step-close" (the order card's tick, the heal host) notes.
    */
   const PL = {};
-  PL.KEY = "njg-play-log";
+  PL.KEY = "playlog"; // the save namespace (below)
   PL.MAX = 50;
   PL.SLOW_MS = 5000;
   PL.DEAD = 2;
@@ -955,23 +955,51 @@
     },
     true
   );
-  PlayLog.read = function () {
+  // stored through the one save (privacy rule: storage only in the save modules): each player's own "playlog" namespace,
+  // {rounds: [...]} (the last 50); a New player's reset (Save.resetPlayer) keeps it. With no save on the page: this visit only.
+  const mem = { rounds: [] };
+  const S = () => (root.Save && typeof root.Save.get === "function" ? root.Save : null);
+  const mine = () => {
     try {
-      const v = JSON.parse(root.localStorage.getItem(PL.KEY) || "[]");
+      const v = S() ? S().get(PL.NS).rounds : mem.rounds;
       return Array.isArray(v) ? v : [];
     } catch (e) {
       return [];
     }
   };
+  PL.NS = "playlog";
+  /** Every player's rounds on this device, oldest first, each with its player's name. */
+  PlayLog.read = function () {
+    try {
+      const sv = S();
+      if (!sv) return mem.rounds.slice();
+      return sv
+        .players()
+        .flatMap((pl) => ((sv.get(PL.NS, pl.id) || {}).rounds || []).map((r) => Object.assign({ player: pl.name }, r)))
+        .sort((x, y) => (x.at || 0) - (y.at || 0));
+    } catch (e) {
+      return [];
+    }
+  };
+  /** The current player's rounds replaced (append: the fold; clear: every player's). */
   PlayLog.write = function (list) {
     try {
-      root.localStorage.setItem(PL.KEY, JSON.stringify(list));
+      if (S()) S().set(PL.NS, { rounds: list });
+      else mem.rounds = list;
       return true;
     } catch (e) {
       return false;
     }
   };
-  PlayLog.clear = () => PlayLog.write([]);
+  PlayLog.clear = function () {
+    try {
+      const sv = S();
+      if (sv) sv.players().forEach((pl) => sv.set(PL.NS, { rounds: [] }, pl.id));
+      mem.rounds = [];
+    } catch (e) {
+      /* nothing to clear */
+    }
+  };
   /** Name the stage now running (the host: {mode, game, level}); cleared at its end. */
   PlayLog.meta = (m) => (hook(), (meta = Object.assign({}, meta, m || {})));
   /** A step opens by name (Onboard.stuck does it; a game may too): it is logged as a "step-open" note. */
@@ -1008,7 +1036,7 @@
       meta = {};
       // only a stage that started (not the gap before an end screen) and that someone played (not a hand-off or a lab boot)
       if (!started || (!round.steps.some((st) => st.acts || st.allTaps) && round.ms < 1500)) return null;
-      PlayLog.write(PL.append(PlayLog.read(), round));
+      PlayLog.write(PL.append(mine(), round));
       PlayLog.last = round;
       return round;
     } catch (err) {
