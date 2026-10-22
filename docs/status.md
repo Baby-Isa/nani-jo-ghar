@@ -8,18 +8,17 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (22 Oct 2026, 03:00 UK):** Sprint 10 "Show it" is live on `main` (7ff52b9): the tidy labs page (New player, walkthrough pantry then chai, every Cook and clinic game with a level picker, the day builder), the girl as every clinic patient, the tooth drill starting in a bigger cavity, code-drawn effects off. All seven rows judged and built (`docs/sprints/S10-show-it.md`). The plan for what's next, with its evidence and the critic's pre-mortem: `docs/game-design/easy-to-play.md`.
+**Where things stand (22 Oct 2026, 17:15 UK):** Sprint 11 "Easy to play, easy to learn" is live on `main` (40adcb2): the word card that fades per word, hints by the real item, no Next or Done (chai, eye test, toothbrushing; other games' Done buttons listed in `build/reports/s11-step0.md`), the labs New player toggle, chai with the kitchen conversation and a top-down pour, the flash-card eye test, toothbrushing on a plus track, the book's clinic pages. Rules are now 9 non-negotiables plus rapid-prototype mode (three sizes, light checks). Plan and evidence: `docs/game-design/easy-to-play.md`.
 
 **Next steps:**
-1. Zafar shows his Masi and plays; notes go to `/feedback`.
-2. Sprint 11 "Easy to play, easy to learn" (`docs/sprints/S11-easy-to-play.md`, about $160-200) on Zafar's go: Step 0 (shared word card, fading by word stage, onboarding rungs with the real item, play log, leak bot on a learned save, the door; and the art run's paste block), then B-cook (kitchen conversation, chai order cards, top-down coded pour, new effects) and B-clinic (flash-card eye test with spoken haa/na, the toothbrush cross).
+1. Zafar plays and shows people; notes go to `/feedback`; the play log in the labs shows where players hesitated.
+2. Fix EASY-08 and CHAI-31 (cosmetic), then the rollout: remove Done from the other games and move them onto the word card and the hints (pantry and maani, knee, waiting, diagnosis, pharmacy, the book), then the farm day.
+3. Mum's round: chai, dudh, paani, khun as single words; mathe, niche, jamno, brush, toothbrush; thermometer, plaster, cotton.
 
-**Open questions to Zafar:**
-1. Cook's new "it went in" splash (CK-27, approved 21 Oct afternoon) is off with the other effects until Sprint 11's art-matched version. OK? (Recommend yes.)
-2. The book after a clinic day shows kitchen pictures until the book gets clinic art: add to Sprint 11's art run? (Recommend yes.)
+**Open questions to Zafar:** "ha" or "haa"; "bateto" or "bataato"; redo the shine as a round starburst (recommended).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 10 is live. Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 11 is live. Carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
@@ -39,6 +38,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+22 Oct 2026, published about 17:10 UK (40adcb2, 20261022T161039Z): Sprint 11 "Easy to play, easy to learn", judged row by row (two cosmetic rows left).
 
 22 Oct 2026, published about 02:45 UK (7ff52b9, 20261022T014206Z): Sprint 10 "Show it" (labs, day builder, New player, girl patient, tooth drill, effects off), judged row by row.
 

@@ -1,6 +1,6 @@
 # Sprint 11: Easy to play, easy to learn
 
-**Status:** open
+**Status:** published 22 Oct 2026 (40adcb2)
 **Opened:** 22 Oct 2026 (Zafar's go: rapid prototype, light on tokens) · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -23,7 +23,9 @@ About $160-200: Step 0 (shared word card, progress, onboarding rungs, play log, 
 - No repeat-after-me pause: speaking moments are play actions through `js/shared/speech.js`, never a gate (Zafar, 21 Oct).
 
 ## Outcome
-(at close)
+Published to `main` at 40adcb2 (22 Oct, about 17:10 UK). Built and judged: the shared word card fading by word stage (English, then picture, then Kutchi text), hints by the real item at 0/5/15 s, no Next or Done anywhere (shared; chai, the eye test and toothbrushing in full), the play log, the labs New player toggle, the door on the word card; chai with the kitchen conversation, word cards from the guide, top-down coded pour, painted effects; the flash-card eye test; toothbrushing on the plus track; the evening book's clinic pages; the s11 art cut and wired. Left on the fix list: EASY-08 (the eye test's spotlight holes too big) and CHAI-31 (mid-pour tea paler in the glass, a thin stream). Other games' own Done buttons are listed for the rollout. Mum's words needed: chai, dudh, paani, khun as single words (the mic and more eye cards), mathe, niche, jamno, brush, toothbrush, thermometer, plaster, cotton.
 
 ## Look back (three lines)
-(at close)
+1. Shared pieces first, then two game builders on their own files, worked; the judge caught real flaws each round (a wrong-way hint, a card over a target, a group spotlight).
+2. Most second rounds were missing frames; a container restart cost a round of shots.
+3. Give each builder the judge's exact frame list up front, and stop at "doesn't block play" sooner.
