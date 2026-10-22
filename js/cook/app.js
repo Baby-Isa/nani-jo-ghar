@@ -51,12 +51,11 @@ import { Cook } from "./ns.js";
     return "leave";
   };
   // the story's own rounds (Cook's data, only for this visit)
-  const CHAI_THINGS = ["cook-chai", "cook-dudh", "cook-khun"];
   const CHAI_DAY = { id: "first-chai", title: "Chai for Nani", gist: "Nani would love a cup of chai!", orders: [{ who: "nani", dishes: ["chai"], level: 1 }] };
   function begin(titleStart) {
     if (kind === "pantry") {
-      const basics = Cook.data.recipes.pantry.lists.basics;
-      if (CHAI_THINGS.every((id) => basics.includes(id))) Cook.data.recipes.pantry.lists.basics = CHAI_THINGS.slice();
+      // PAN-13 (Zafar, 21 Oct): day 1's pantry order is the chai trip itself (data days[0] "for": "chai"), so the chai
+      // visit after it has no second trip
       Cook.startDay(Object.assign({}, Cook.data.days[0], { gist: "Nani needs the chai things from the pantry." }));
     } else if (kind === "chai") {
       // the one cup is Nani's own (the tray's people come from the recipe's family list)

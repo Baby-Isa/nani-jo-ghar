@@ -29,10 +29,12 @@
  * The step rules (decision 55, rules R1-R4 of docs/design-language/guide-and-card.md), one for every mode:
  *   const st = NaniGuide.stepper({show(html, {rec}), clear(), speak(step) -> Promise, glow(step, on), level() -> n,
  *                                 pauseMs(level) -> ms, onHelp(step)})
- *   st.open({html, rec, line, ...})   a step opens: ONE line, the next step only (never the whole card). Nothing is shown,
- *                           said or lit at the open, at any level (SH-60, SH-95: the help ladder below); the step call of the
- *                           level table (Nani saying each step once as it opens) hooks in as `call(step)` (next wave).
- *   st.close()              the step ended: its line clears (a spoken line never outstays its step), the glow goes
+ *   st.open({html, rec, line, ...})   a step opens: ONE line, the next step only (never the whole card), shown at once in
+ *                           the box at every level (SH-63, Zafar 21 Oct: the guide says the step, the card keeps the order).
+ *                           Nothing is said or lit at the open (SH-60, SH-95: the help ladder below); the step call of the
+ *                           level table (Nani saying each step once as it opens) hooks in as `call(step)`.
+ *   st.close([{clear}])     the step ended: the glow goes; its line stays until the next step opens (SH-63), cleared
+ *                           with {clear: true} (the stage's end)
  *   st.poke()               the child did something: the page's idle clock starts again (it also starts on every tap, drag or key)
  *   st.help()               the help now (the bulb, a wrong tap): line, voice and glow
  *   NaniGuide.PAUSE / REPEAT / BULB_PULSE   the ladder's table (below); NaniGuide.idleMs() ms since the last action;
@@ -89,7 +91,8 @@
    * LAST ACTION (any tap, drag or key: the idle clock below), never from when a step opened:
    *   PAUSE[level-1]   how long she must have done nothing before Nani helps: her line and the glow at the SAME moment
    *                    (2 s later than before: 7, 8, 11, 15 s)
-   *   REPEAT           a help line is said again only after this much idle time more (never twice in a row, PAN-16)
+   *   REPEAT           a help line is never said again within this time (never twice in a row, PAN-16); a help never comes
+ *                    again with no action since it (SH-60: it "shouldn't persist"): after an action the pause runs again
    *   BULB_PULSE       after this long stuck both light bulbs pulse, so the child knows they can be tapped (15-20 s)
    * Nothing is said or lit when a step opens (the "step call", Nani saying each step once as it opens, is the next wave's:
    * pass `call(step)` to the stepper and it runs at that moment). Cook's data (data/cook.json calm.helpMs, calm.bulbPulseMs)
@@ -205,11 +208,14 @@
         G.helping = false;
       }
     };
-    // when the next help is due: PAUSE of no action after the step opened or the last action; a second help only after
-    // REPEAT of no action more and REPEAT since the last help
+    // when the next help is due: PAUSE of no action after the step opened or the last action. SH-60 (Zafar: the help "shouldn't
+    // persist"): once helped, it never comes again while the child does nothing (it used to repeat every REPEAT, line and glow);
+    // after an action the pause applies again from that action
     const due = (s) => {
       const base = Math.max(clock.t, s.openedAt);
-      return s.helped ? Math.max(base + G.REPEAT, s.helpedAt + G.REPEAT) : base + pause(lv());
+      if (!s.helped) return base + pause(lv());
+      if (clock.t <= s.helpedAt) return Infinity;
+      return clock.t + pause(lv());
     };
     const arm = () => {
       stopTimer();
@@ -228,19 +234,27 @@
       open(step) {
         st.close();
         cur = Object.assign({ shown: false, helped: false, openedAt: Date.now(), id: ++seq }, step);
-        // opening a step says and lights nothing: the child gets the pause first (SH-60, SH-95). The step call (wave 2) hooks in here
+        // SH-63 (Zafar, 21 Oct: "the guide says the step, the card keeps the order"): the box shows the step's line as the step
+        // opens, at every level, and keeps it until the step closes, so it is never empty between step calls. Nothing is said
+        // or lit at the open: the voice is the step call (o.call) and the help after the pause, with the glow (SH-60, SH-95)
         call(o.clear);
+        show(cur);
         logHelp("step-open", { step: String(cur.id), by: `L${lv()}` });
         call(o.call, cur);
         arm();
         return cur;
       },
-      close() {
+      /**
+       * The step ended: its glow goes and its help stops. SH-63 (Zafar, 21 Oct: the guide box always says the current step,
+       * never empty): its line stays in the box until the next step opens (open() replaces it) or the stage ends
+       * (close({clear: true}), below); a host clears it itself when there is nothing left to do (Cook's UI.guideClear).
+       */
+      close(opt) {
         stopTimer();
         const s = cur;
         cur = null;
         if (s) call(o.glow, s, false);
-        call(o.clear);
+        if (opt && opt.clear) call(o.clear);
       },
       /** The child did something: the pause starts again (every station's actions also poke the page's idle clock). */
       poke() {
@@ -255,7 +269,7 @@
     };
     // a stage that ends takes its open step with it: no help line or glow ever comes after the stage (contract-3)
     try {
-      if (root.Lifecycle && root.Lifecycle.onStageEnd) root.Lifecycle.onStageEnd(() => st.close());
+      if (root.Lifecycle && root.Lifecycle.onStageEnd) root.Lifecycle.onStageEnd(() => st.close({ clear: true }));
     } catch (e) {
       /* no lifecycle on this page */
     }

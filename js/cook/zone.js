@@ -531,7 +531,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** Run combined station `id`: one view, 2-3 zones, one set of marks. */
   M.host = async function (id, S, ctx, params = {}, opts = {}) {
     const def = M.combos[id];
-    await Cook.Stations.begin(S, ctx, def.station || id, def.view || "marble");
+    // CK-48 (build/sandbox/slowload.mjs: daar at 800 kbit/s opened on the bare marble for 5 s while its own 32 pictures loaded):
+    // a combo that loads its pictures and then begins its view itself (def.selfBegin) is not begun here first
+    if (!def.selfBegin) await Cook.Stations.begin(S, ctx, def.station || id, def.view || "marble");
     const host = new Host(S, ctx, def, params, opts.level || params.level || (ctx && ctx.level) || 1);
     host.build();
     const r = def.run ? await def.run(host, params) : await host.runAll();

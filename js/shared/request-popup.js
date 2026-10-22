@@ -50,6 +50,7 @@
  *     ignore(ev),    // true: this tap is not a tap-through (Cook's face = replay)
  *     onStop(),      // a tap-through: the host's own stop (its read-along token) besides VoiceStop.stop()
  *     onTap(ev),     // any tap on it (before the fold)
+ *     onFold(),      // the fold starts (before the card flies): what the host plays next can start with it (CLN-87)
  *     level,         // the play's level: from 3 the order is heard, never written; every big card drawn is closed (SH-72)
  *     closed,        // the same, whatever the level
  *   });            // -> {skipped}: resolves once the card is in the sidebar
@@ -224,6 +225,12 @@
           veil.removeEventListener("click", onTap);
           if (current === me) current = null;
           veil.classList.add("going");
+          // CLN-87 (the clinic's zoom waited for the fly): the host's next move starts as the card leaves, not after
+          try {
+            if (opts.onFold) opts.onFold({ skipped: !!skipped });
+          } catch (e) {
+            /* the host's own problem */
+          }
           try {
             await fly(cardEl, resolveEl(opts.target), { fast });
           } catch (e) {

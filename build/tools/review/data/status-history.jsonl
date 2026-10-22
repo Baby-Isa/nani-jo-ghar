@@ -1170,3 +1170,26 @@
 {"id":"LAB-01","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
 {"id":"LAB-03","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
 {"id":"LAB-04","run":"s10-judge-05","earlier":"**to fix: check** · built; judge to close"}
+{"id":"SH-92","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"SH-113","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"PAN-01","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"DAAR-12","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"DAAR-34","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · reworded to the bulb decision; re-judge"}
+{"id":"CHT-06","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"CLN-159","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"CLN-87","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"CLN-162","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"CLN-154","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"CLN-155","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"CLN-157","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"LNG-09","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · sweep: right; judge to close"}
+{"id":"SH-56","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"SH-63","run":"ev-20261021-141514-4pn","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"SH-53","run":"ev-20261021-144926-u2e","earlier":"**to fix: check** · built; film samosa L2 to show the boxes"}
+{"id":"SAM-22","run":"ev-20261021-144926-u2e","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"CHT-14","run":"ev-20261021-144926-u2e","earlier":"**to fix: check** · fixed (21 Oct); judge to close"}
+{"id":"CK-27","run":"ev-20261021-144926-u2e","earlier":"**to fix: check** · built; reads in chai and samosa; film daar"}
+{"id":"SH-113","run":"ev-20261021-152759-xhj","earlier":"**to fix: check** · open (two strikes: Zafar) (evidence FAIL ev-20261021-141514-4pn)"}
+{"id":"CLN-87","run":"ev-20261021-152759-xhj","earlier":"**waiting on art** · the room's knee and the close-up's knee drawn at one size (match cut)"}
+{"id":"SH-63","run":"ev-20261021-152759-xhj","earlier":"**to fix: check** · open (two strikes: Zafar) (evidence FAIL ev-20261021-141514-4pn)"}
+{"id":"SH-56","run":"ev-20261021-152759-xhj","earlier":"built (evidence PASS ev-20261021-141514-4pn: machine: !textMatches:[?i]make each pan/^\\s*$ [not [text: \"Dudh wiji chad! Khun wiji chad! Khun wiji chad! Khun wiji chad! Elchi wiji chad! Chulo bar !\"]]; !textMatches:[?i]first jeeru then lasan [not [text: \"Chulo bar !\"]]; !textMatches:[?i]cook it the way they said [not [text: \"Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! \"]])"}

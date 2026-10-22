@@ -106,9 +106,25 @@
       requestAnimationFrame(() => {
         queued = false;
         F.run(rootEl);
+        watchBoxes();
       });
     };
+    // PAN-01 (a served card folding at 1366x768: its head narrowed for the stamp, the root's size never changed, and the headline
+    // kept the size it was fitted at, under the tick): the box each fitted line sits in is watched too, so any change of the room a
+    // line has fits it again
+    const boxes = new WeakSet();
     const ro = typeof ResizeObserver === "function" ? new ResizeObserver(again) : null;
+    const watchBoxes = () => {
+      if (!ro) return;
+      rootEl.querySelectorAll(".fit").forEach((el) => {
+        // (a sidebar card's head only: it is as wide as the sidebar, never as wide as its words, so a refit can't feed itself)
+        const b = el.closest(".oc-card:not(.oc-big) .oc-head");
+        if (b && rootEl.contains(b) && !boxes.has(b)) {
+          boxes.add(b);
+          ro.observe(b);
+        }
+      });
+    };
     if (ro) ro.observe(rootEl);
     const mo = typeof MutationObserver === "function" ? new MutationObserver((recs) => recs.some((r) => r.type === "childList" || r.attributeName === "class") && again()) : null;
     if (mo) mo.observe(rootEl, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });

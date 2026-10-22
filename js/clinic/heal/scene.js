@@ -118,7 +118,7 @@
     ".hs-pic{width:calc(var(--njg-tap) * 2);height:calc(var(--njg-tap) * 2);border-radius:var(--njg-radius);border:6px solid #c8a46e;outline:2px solid #a9824d;background:#fffefb;display:grid;place-items:center;padding:var(--njg-s1);cursor:pointer;box-shadow:var(--njg-shadow)}",
     ".hs-pic img{width:80%;height:80%;object-fit:contain;pointer-events:none}",
     ".hs-pic.picked{border-color:var(--njg-gold)}",
-    ".hs-pic.pulse{animation:hs-pulse 1s ease-in-out infinite}",
+    ".hs-pic.pulse{animation:njgGlow var(--glow-ms, 1200ms) ease-in-out infinite}", // SH-53: the shared glow (css/shared/focus.css)
   ].join("\n");
   /** A colour lighter (k > 0) or darker (k < 0): "#c99a74", 0.12 -> a hex. */
   HS.shade = function (hex, k) {
@@ -527,7 +527,14 @@
       Object.entries(S.toolEls).forEach(([k, b]) => b.classList.toggle("sel", k === id));
       if (ctx.sfx) ctx.sfx("tap");
     };
-    S.used = (id, on = true) => S.toolEls[id] && S.toolEls[id].classList.toggle("used", on);
+    // CLN-82 (the judge, 21 Oct: the used cloth kept a faded ring): a tool whose step is done drops its picked ring (S.sel is kept:
+    // the game still knows what is in the hand; picking it again rings it again)
+    S.used = (id, on = true) => {
+      const b = S.toolEls[id];
+      if (!b) return;
+      b.classList.toggle("used", on);
+      if (on) b.classList.remove("sel");
+    };
     S.pulseTool = (id) => Object.entries(S.toolEls).forEach(([k, b]) => b.classList.toggle("pulse", k === id));
 
     /* ---- what came from the pharmacy (13: the tray feeds the heal game) ---- */
@@ -586,8 +593,53 @@
       S.lastDid = Date.now();
       if (global.Onboard && global.Onboard.signal) global.Onboard.signal("hs-did");
     };
+    /*
+     * SH-53 (clinic part; Zafar 17 Oct, the one next-thing glow): after the help ladder's pause with nothing done (js/shared/guide.js
+     * NaniGuide.PAUSE by level: 7, 8, 11, 15 s from the child's last action), the step's thing on the tool strip glows with the
+     * shared glow (css/shared/focus.css njgGlow, class "pulse" on the tool), whether or not the first-time help (the spotlight and
+     * ghost finger) plays; the card's band steps back while it glows (one thing lit, decision 95). Any action puts it out; the next
+     * step's cue re-arms it. A thing already in the hand (the tool picked) or a spot on the close-up has no glow of this kind.
+     */
+    let glowSeq = 0;
+    let idleGlow = null;
+    const glowOff = () => {
+      if (!idleGlow) return;
+      idleGlow.classList.remove("pulse", "idle-glow");
+      idleGlow = null;
+      if (ctx.card && ctx.card.hush) ctx.card.hush(false);
+    };
+    S.glowOff = glowOff;
+    const armGlow = (target) => {
+      const me = ++glowSeq;
+      glowOff();
+      const NG = global.NaniGuide;
+      if (!NG || !NG.idleMs || !NG.PAUSE) return;
+      if (NG.watch) NG.watch();
+      const pause = () => NG.PAUSE[Math.min(NG.PAUSE.length, Math.max(1, ctx.level || 1)) - 1];
+      const elOf = () => {
+        const t = typeof target === "function" ? target() : target;
+        return t && t.closest ? t.closest(".hs-tool, .hs-pic") : null;
+      };
+      // the pause counts from the child's last action or the step's opening, whichever is later (contract-24, as Cook's ladder)
+      const armedAt = Date.now();
+      const idle = () => Date.now() - Math.max(armedAt, NG.lastAction ? NG.lastAction() : 0);
+      const tick = () => {
+        if (me !== glowSeq) return;
+        const el = elOf();
+        if (idleGlow && (idle() < 400 || !el || el !== idleGlow)) glowOff();
+        else if (!idleGlow && el && el.isConnected && !el.classList.contains("sel") && !el.classList.contains("used") && !el.classList.contains("pulse") && idle() >= pause()) {
+          idleGlow = el;
+          if (ctx.card && ctx.card.hush) ctx.card.hush(true);
+          el.classList.add("pulse", "idle-glow");
+          if (NG.logHelp) NG.logHelp("help", { step: "idle", by: `L${ctx.level || 1} heal-${S.game} glow` });
+        }
+        ctx.after(250, tick);
+      };
+      ctx.after(250, tick);
+    };
     S.cue = (key, spec, target, then) => {
       S.cueLog.push(key);
+      if (!(spec && spec.watch)) armGlow(target);
       if (!S.cuesOn || !spec || spec.watch) return; // a step the child only watches has nothing to demo
       const sp = typeof spec === "string" ? { gesture: "tap" } : spec;
       const g = sp.gesture || "tap";

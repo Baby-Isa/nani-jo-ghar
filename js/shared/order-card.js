@@ -410,10 +410,13 @@
     const e = el("div", ["oc-strip", s.rec ? "rec" : ""].filter(Boolean).join(" "), `<span class="oc-strip-t fit fit2">${s.html}</span>${s.rec ? `<small class="oc-rec">to record</small>` : ""}`);
     return e;
   };
+  // SH-63 (Zafar, 21 Oct: the guide box says the step, the card keeps the order): a guide's step line is never on the card (the
+  // guide box shows it); only the asker's task line (strip.task: PAN-10, the pantry's [Bring these from the pantry]) is
+  const cardStrip = (s) => !!(s && s.html && s.task);
   OC.setStrip = function (cardEl, s) {
     if (!cardEl) return;
     const old = cardEl.querySelector(":scope > .oc-strip");
-    if (!s || !s.html) return old && old.remove();
+    if (!cardStrip(s)) return old && old.remove();
     const e = OC.stripEl(s);
     if (old) old.replaceWith(e);
     else cardEl.insertBefore(e, cardEl.firstChild);
@@ -442,7 +445,7 @@
     const c = el("div", ["oc-card", opts.big ? "oc-big" : "", sh.done ? "done" : "", sh.direct ? "direct" : ""].filter(Boolean).join(" "));
     const p = data.person || null;
     if (p && p.id) c.dataset.who = p.id;
-    if (data.strip && data.strip.html && !opts.big) c.appendChild(OC.stripEl(data.strip));
+    if (cardStrip(data.strip) && !opts.big) c.appendChild(OC.stripEl(data.strip));
     const head = el("div", "oc-head");
     if (p && p.face) {
       const f = el("button", "oc-face face-say", `<img src="${esc(p.face)}" alt="${esc(p.name || "")}"><span class="say-badge" aria-hidden="true"></span>`);

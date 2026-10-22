@@ -5281,13 +5281,15 @@
     "pantry",
     "chai"
    ],
-   "gist": "Nani needs a few things from the pantry. Then Nana is coming for chai!",
+   "gist": "Nani needs the chai things from the pantry. Then Nana is coming for chai!",
+   "_orders": "PAN-13 (Zafar, 21 Oct): day 1 has one pantry trip. Nani's pantry order names its dish (for: chai), so it fetches the chai things (recipes.pantry.forDish.chai) and counts as chai's trip; the next step, Nani's chai, is made with them, then Nana's.",
    "orders": [
     {
      "who": "nani",
      "dishes": [
       "pantry"
-     ]
+     ],
+     "for": "chai"
     },
     {
      "who": "nana",

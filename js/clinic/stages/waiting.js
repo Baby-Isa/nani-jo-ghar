@@ -148,8 +148,8 @@
       peopleArt = (S._healArt && S._healArt.waiting) || {};
       const stage = S.room(screen, "waiting");
       // T22, T23 (decision 55): the doctor is on screen, so he talks in bubbles at his face; his box holds only the
-      // child's next step: [Bring them in] at L1, nothing from L2
-      screen.setNani(plan.level <= 1 ? S.line(env, "bring-them-in") : null);
+      // child's next step, [Bring them in], at every level (SH-63, Zafar 21 Oct: the guide always says the step now)
+      screen.setNani(S.line(env, "bring-them-in"));
       stage.dataset.variant = plan.variant;
       stage.dataset.level = String(plan.level);
       const box = stage.scene || stage;

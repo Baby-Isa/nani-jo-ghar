@@ -197,6 +197,14 @@
       // T27: a pause with nothing picked: the doctor's box names the next thing and it glows as it passes (E16: a
       // glow only after a hesitation); it goes quiet again at the next pick
       let idle = 0;
+      // SH-63 (Zafar, 21 Oct: the guide says the step, the card keeps the order): his strip always holds the step now, the
+      // next thing to bring (levels 1-2, where the card writes the order too); from level 3 the order is heard, never
+      // written (13c, SH-72), so the strip keeps his room line [Bring me...] and names the thing only as help, after the pause
+      const stepNow = () => {
+        if (dead) return;
+        const want = plan.asked.find((a) => !st.dishes.some((d) => d && d.key === PL().beltKey(a)));
+        screen.setNani(want && plan.level <= 2 ? S.line(env, "bringme", { a: wordOf(want) }) : S.line(env, "why-pharmacy"));
+      };
       const idleHint = () => {
         clearTimeout(idle);
         idle = setTimeout(() => {
@@ -215,11 +223,12 @@
         if (idleHinted) {
           helpKeys.delete(idleHinted);
           idleHinted = null;
-          screen.setNani(null);
+          stepNow();
         }
         idleHint();
         const r = PL().beltGrab(plan, st, o.it);
         if (!r) return;
+        stepNow();
         o.taken = true;
         if (global.Sfx && global.Sfx.pop) try { global.Sfx.pop(); } catch (e) { /* no sound */ }
         S.signal("clinic-belt-tap");
@@ -249,6 +258,7 @@
         if (busy || committed || !st.dishes[i]) return;
         const d = PL().beltTakeBack(st, i);
         tray.fill(i, null);
+        stepNow();
         counts[d.key] = 0;
         if (counted) screen.tally.set(d.id, 0);
         res.log.push({ type: "takeback", detail: d.key });
@@ -317,6 +327,7 @@
             await S.say(S.line(env, "handover-no", { x: it ? wordOf(it) : "clinic.line.pipeline.w-empty", y: want ? wordOf(want) : "clinic.line.pipeline.w-that" }), "doctor");
             tray.fill(r.dish, null);
             if (it) screen.tally.set(it.id, 0);
+            stepNow();
             if (want) {
               if (step.action === "show") shows.push({ dish: r.dish, want });
               else if (redo.help(`grab${k}`)) helpKeys.add(r.want);
@@ -353,6 +364,7 @@
         return { stage: "pharmacy", kind: "belt", key: k, target: `.cl-belt-dish[data-key="${k}"]`, wrong: `.cl-belt-dish:not([data-key="${k}"])` };
       });
 
+      stepNow();
       idleHint();
       if (env.first) S.onboard(env, "pharmacy", [{ spotlight: () => track, ghost: { gesture: "tap" }, wait: "clinic-belt-tap" }]);
 
