@@ -1165,3 +1165,25 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   .finale-row img { height: clamp(56px, 16vh, 150px); }
   .patch { width: 80px; height: 80px; margin: 4px auto; }
 }
+
+/* ---- Sprint 11 (B-cook): the order said item by item (js/cook/ui.js introduceAlong): see-through, nothing over a face.
+   The item said now is its word card, big, at the top left of the play area by the guide box; it flies into its row ---- */
+#intro.along { background: transparent; align-items: flex-start; justify-content: flex-start; padding: var(--njg-s3, 12px); animation: none; cursor: default; }
+#intro.along .ic-card, body.w6 #intro.along .ic-card { width: auto; max-width: none; max-height: none; background: transparent; border: none; box-shadow: none; border-radius: 0; padding: 0; overflow: visible; animation: none; }
+#intro.along .ic-head, #intro.along .ic-go, #intro.along .ic-how { display: none; }
+#intro.along .ic-order, body.w6 #intro.along .ic-order { display: block; }
+#intro.along .wc-card.ic-word { width: clamp(168px, min(19vw, 42vh), 230px); animation: icWordIn .3s cubic-bezier(.2, 1.3, .4, 1); }
+/* (the word said now never breaks inside a word: a short phone's card is wide enough for "dudh na") */
+#intro.along .wc-card.ic-word p { overflow-wrap: normal; word-break: normal; }
+@keyframes icWordIn { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #intro.along .wc-card.ic-word { animation: none; } }
+/* (a row not said yet, and a word card inside an order card row: js/shared/order-card.js keeps those with the component) */
+
+/* ---- Sprint 11 (B-cook, task 6): call "chai" to serve: a round microphone by the ready pan's glass (js/cook/stations/chai-tray.js).
+   A tap listens once; a miss is a shrug (it sways). Only where the family has recorded the words ---- */
+.ck-mic { position: absolute; z-index: 12; transform: translate(-50%, -50%); width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: 0; display: grid; place-items: center; border-radius: 50%; background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-cream-edge); color: var(--njg-ink); box-shadow: var(--njg-shadow); cursor: pointer; touch-action: manipulation; }
+.ck-mic svg { width: 56%; height: 56%; display: block; }
+.ck-mic.on { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
+.ck-mic.shrug { animation: ckShrug .5s ease-in-out; }
+@keyframes ckShrug { 25% { transform: translate(-50%, -50%) rotate(-12deg); } 75% { transform: translate(-50%, -50%) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .ck-mic.shrug { animation: none; } }

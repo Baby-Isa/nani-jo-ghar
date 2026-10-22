@@ -24,6 +24,40 @@
   // unmount); on a parked page it is a plain listener. Returns the function that removes it.
   const onPage = (t, type, fn, o) => (Cook.life ? Cook.life.on(t, type, fn, o) : (t.addEventListener(type, fn, o), () => t.removeEventListener(type, fn, o)));
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /*
+   * Sprint 11 (B-cook): the shared pieces Cook's page doesn't list: js/shared/word-card.js (the order's word cards),
+   * js/shared/conversations.js (the kitchen conversation) and js/shared/speech.js (speaking as play), each loaded once when
+   * first asked for (UI.init asks early, so they are there by the first order), with the page's version stamp and its
+   * styles. Nothing waits on them: a page without one goes on as before.
+   */
+  const SHARED = {
+    "word-card": ["WordCard", "js/shared/word-card.js", "css/shared/word-card.css"],
+    conversations: ["Conversations", "js/shared/conversations.js", "css/shared/conversations.css"],
+    speech: ["Speech", "js/shared/speech.js", null],
+  };
+  const sharedP = {};
+  const stamped = (rel) => {
+    const u = new URL(rel, document.baseURI);
+    if (global.NJG_V) u.search = `?v=${global.NJG_V}`;
+    return u.href;
+  };
+  UI.needShared = function (name) {
+    if (sharedP[name]) return sharedP[name];
+    const spec = SHARED[name];
+    if (!spec || typeof document === "undefined") return Promise.resolve(null);
+    const [glob, js, css] = spec;
+    if (css && ![...document.querySelectorAll('link[rel="stylesheet"]')].some((l) => (l.getAttribute("href") || "").includes(css))) {
+      const l = document.createElement("link");
+      l.rel = "stylesheet";
+      l.href = stamped(css);
+      document.head.appendChild(l);
+    }
+    sharedP[name] = (global[glob] ? Promise.resolve() : import(stamped(js)))
+      .then(() => global[glob] || null)
+      .catch(() => null);
+    return sharedP[name];
+  };
   UI.esc = esc;
 
   /* ---------------- icons ---------------- */
@@ -544,6 +578,8 @@
     return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null, again: !!o.again });
   };
   UI.stepDone = () => stepper && stepper.close();
+  // (Sprint 11: the open step's id, as Nani's stepper logs it: a station's hint rungs for that step go by the same name)
+  UI.stepId = () => (stepper && stepper.current ? stepper.current.id : null);
   /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
   UI.guideSay = async function (line, o = {}) {
     if (!guide || !line) return UI.say(line, { badge: true }, o);
@@ -804,7 +840,9 @@
   UI.helpOpen = () => !!$("#help-pop") && !$("#help-pop").classList.contains("hidden");
 
   /* ---------------- choices (small talk), as big pills ---------------- */
+  let lastChoose = 0; // (Sprint 11: the flow's own small talk just ran: the kitchen conversation isn't played on top of it)
   UI.choose = function (options, correctKey, opts = {}) {
+    lastChoose = Date.now();
     const box = $("#choices");
     box.innerHTML = "";
     box.classList.remove("hidden");
@@ -1074,6 +1112,10 @@
       english: false,
       // the order's level: how long the light bulb shows English (data.calm.bulbMs)
       level: orderLevel(),
+      // Sprint 11 (B-cook): a people order (the chai tray's cups) is said item by item, each a word card that pops from the
+      // guide box into its row; its rows are the shared word card's (OrderCard rowEl -> WordCard.row)
+      wordRows: ladders.some((L) => (L.sections || []).some((x) => x.for)),
+      away: new Set(),
     };
     // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
     // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
@@ -1105,6 +1147,9 @@
     el.querySelector(".m-ring").title = name;
     renderStars();
     renderOrder();
+    // Sprint 11: the word cards' pictures (the row's small copy and the big one the item is said with) start now, so they
+    // are there by the time each item is said (the kitchen conversation comes first)
+    if (mission.wordRows) mission.ladders.forEach((L) => Order().rows(L).forEach((r) => !r.head && wcPicSrc(wcWordId(r)) && [96, 240].forEach((n) => thumbOf(Cook.v(wcPicSrc(wcWordId(r))), n))));
     UI.setPatience(busy ? 1 : null);
   };
   // parked modes only (legacy stars): Cook's card has no star box (R4)
@@ -1261,6 +1306,7 @@
   const intro = () => $("#intro");
   const introOpen = () => !intro().classList.contains("hidden");
   function renderIntro() {
+    if (intro().classList.contains("along")) return; // (Sprint 11: the item said now is the pop-up's only card)
     if (UI.w6()) return renderIntro6();
     const box = intro().querySelector(".ic-order");
     box.innerHTML = "";
@@ -1279,6 +1325,174 @@
       box.appendChild(lad);
     });
   }
+  /*
+   * Sprint 11 (B-cook, task 1; docs/game-design/easy-to-play.md principle 10; Zafar, 14 Oct: "model, then ask"): the kitchen
+   * conversation before the order, through the shared module (js/shared/conversations.js, placements CK1 then CK2: the
+   * customer's salaam or how are you, else the ask, make me chai). Its bubbles sit at the speaker's head on the counter, the
+   * reply pills bottom right; it models the answer itself when nobody answers (its own idle time), so it never holds the
+   * game. The module keeps its own caps (one a visit, then one every 2 minutes; none in a save's first order). Not after the
+   * flow's own small talk (story mode's greeting, which runs through UI.choose), so nothing is greeted twice.
+   */
+  let convN = 0;
+  async function kitchenTalk() {
+    const m = mission;
+    if (!m || m.talked || m.who === "nani" || !Cook.scene) return;
+    m.talked = true;
+    if (Date.now() - lastChoose < 20000) return;
+    const ctx = Cook.ctx || {};
+    const C = await UI.needShared("conversations");
+    if (!C || !C.maybe || m !== mission) return;
+    const S = Cook.scene;
+    const who = m.who;
+    const token = Cook.run;
+    const prevExpect = Cook.expect;
+    // (the test players wait: the moment ends by itself, as for a child who doesn't answer)
+    Cook.expect = { kind: "wait", talk: true };
+    try {
+      C.speed = Cook.speed || 1;
+      if (C.startVisitNow && !kitchenTalk.visit) kitchenTalk.visit = (C.startVisitNow("cook"), true);
+      const cv = document.querySelector("#game canvas");
+      const anchor = (id) => {
+        const img = S.chars && S.chars[id === "ali" ? "cousin" : id];
+        if (!img || !cv || !S.headBox) return null;
+        const hb = S.headBox(img);
+        const a = UI.worldToScreen(hb.x + hb.w / 2, hb.y);
+        return { x: a.x, y: a.y };
+      };
+      const base = {
+        mode: "cook",
+        round: `cook-order-${++convN}`,
+        busy: Cook.save.mode === "busy",
+        firstRound: !ctx.lab && !(Cook.save.orders > 0),
+        speaker: who === "cousin" ? "ali" : who,
+        anchor,
+        container: document.body,
+        character: {
+          mood: (id, kind) => S.chars && S.chars[id === "ali" ? "cousin" : id] && S.setMood(id === "ali" ? "cousin" : id, kind === "happy" ? "happy" : "neutral"),
+        },
+      };
+      const dish = (((ctx.order || {}).dishes || [])[0] || {}).recipe || "chai";
+      const c1 = await C.maybe(Object.assign({ placement: "CK1" }, base));
+      if (!c1.ran && token === Cook.run) await C.maybe(Object.assign({ placement: "CK2", x: { dish: dish === "chai" ? "cook-chai" : `cook-${dish}` } }, base));
+    } catch (e) {
+      /* the conversation is never the game: the order goes on */
+    } finally {
+      if (Cook.expect && Cook.expect.talk) Cook.expect = prevExpect && !prevExpect.talk ? prevExpect : null;
+    }
+    Cook.checkRun(token);
+  }
+
+  /*
+   * Sprint 11 (B-cook, task 2; easy-to-play principles 6 and 9): a people order said item by item. The asker stays in
+   * view at the counter and says each part of their card in their own bubble at their head; as each item is said its word
+   * card shows big at the top left of the play area, by the guide box, then flies into its row on their sidebar card
+   * (WordCard.pop), so the card fills as it is said. Still the shared request pop-up (Lifecycle.request: the game under it
+   * quiet, a tap anywhere stops the voice and lands every row at once), but see-through: no veil, nothing over a face.
+   */
+  async function introduceAlong(opts = {}) {
+    const m = mission;
+    const el = intro();
+    const card = el.querySelector(".ic-card");
+    const box = el.querySelector(".ic-order");
+    el.classList.add("along");
+    card.classList.remove("crowd", "c4", "wide", "talk");
+    card.classList.add("people");
+    box.innerHTML = "";
+    const people = orderCards().filter((c) => c.who);
+    // every person's row waits off the card until it is said
+    m.away = new Set([].concat(...people.map((c) => c.rows.filter((r) => !r.head))));
+    renderOrder();
+    UI.closeHelp();
+    const token = Cook.run;
+    let skipped = false;
+    const prevExpect = Cook.expect;
+    Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
+    const rowElOf = (who, r) => {
+      const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+      return c ? (sideEls.get(r) || []).find((e) => c.contains(e) && e.classList.contains("oc-row")) || null : null;
+    };
+    const land = (r, who, fast) => {
+      m.away.delete(r);
+      const to = rowElOf(who, r);
+      if (!to) return Promise.resolve();
+      const big = box.querySelector(".wc-card");
+      if (fast || !big) {
+        to.classList.remove("oc-away");
+        return Promise.resolve();
+      }
+      // (the row's frame shows; its word card flies in from the big one: WordCard.pop hides it until it lands)
+      const wc = to.querySelector(":scope > .wc") || to;
+      to.classList.remove("oc-away");
+      big.style.visibility = "hidden";
+      return global.WordCard.pop(big, wc).catch(() => wc.classList.remove("wc-away"));
+    };
+    const sayPart = async (who, line) => {
+      const S = Cook.scene;
+      if (S && S.chars && S.chars[who] && S.talk) return S.talk(who, line, { ms: Cook.readMs(Lang.plain(line)) * 0.6 });
+      // (nobody at the counter to say it: the card's own read-along)
+      return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
+    };
+    const read = async () => {
+      for (const who of people.map((c) => c.who)) {
+        if (skipped || token !== Cook.run) return;
+        const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+        if (!c || !c._parts) continue;
+        if (M.focus) M.focus(who);
+        const parts = c._parts();
+        for (const p of parts) {
+          if (skipped || token !== Cook.run) return;
+          const r = p.row;
+          const item = r && m.away.has(r);
+          box.innerHTML = "";
+          if (item) {
+            const w = UI.wordOf(r, { size: 240 });
+            if (w) {
+              const big = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
+              big.classList.add("in");
+            }
+          }
+          try {
+            await sayPart(who, p.line);
+          } catch (e) {
+            if (!(e instanceof Cook.Abort)) throw e;
+          }
+          if (item && !skipped) await land(r, who, false);
+          box.innerHTML = "";
+          if (!skipped) await Cook.wait(120);
+        }
+        UI.hideBubble();
+      }
+    };
+    try {
+      await global.Lifecycle.request({
+        reason: "cook:order",
+        el,
+        card,
+        target: () => $("#mission"),
+        lead: 0,
+        hold: 300,
+        wait: (ms) => Cook.wait(ms),
+        // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
+        onTap: () => (skipped = true),
+        onStop: () => UI.hush(),
+        read,
+      });
+    } finally {
+      skipped = true;
+      box.innerHTML = "";
+      el.classList.remove("along");
+      UI.hideBubble();
+      stopReading();
+      if (m === mission) {
+        m.away.clear();
+        renderOrder();
+      }
+      if (M.focus && m === mission) M.focus(null);
+      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
+    }
+    Cook.checkRun(token);
+  }
+
   /**
    * Show the order big while it's said. Resolves once it has flown into
    * the sidebar: on a tap, or after the voice and a short pause.
@@ -1294,8 +1508,19 @@
       renderOrder();
     }
     if (!hasRows(mission)) return;
+    // Sprint 11 (B-cook, task 1; Zafar, 14 Oct: "model, then ask"): the kitchen conversation plays before the order (a
+    // people order's rows wait off its card meanwhile: they come as they are said)
+    const along = people && !opts.only && mission.wordRows && global.WordCard && OCard() && UI.w6();
+    if (along) {
+      mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
+      renderOrder();
+    }
+    if (!opts.only && opts.pause == null) await kitchenTalk();
+    // Sprint 11 (task 2): a people order (the chai cups) is said item by item at the asker's face, each its word card
+    if (along) return introduceAlong(opts);
     const m = mission;
     const el = intro();
+    el.classList.remove("along");
     const card = el.querySelector(".ic-card");
     el.querySelector(".ic-face").src = faceUrl(m.who);
     const nameEl = el.querySelector(".ic-name");
@@ -1387,6 +1612,8 @@
   /** ↻ on the small card: the order big again, said again (a replay: help once its words are dots). */
   M.replay = async function () {
     if (!mission || introOpen() || $("#mission").classList.contains("stamped")) return;
+    // Sprint 11: a people order's card says itself again on the card (its rows are already there)
+    if (mission.wordRows && global.WordCard) return M.sayCard();
     const relaxed = Cook.save.mode !== "busy";
     const wasPaused = Cook.paused;
     if (relaxed) Cook.paused = true;
@@ -1536,12 +1763,20 @@
    * voice file of that chunk, or a reading pause if it has none). A new
    * read stops the last one.
    */
+  // (Sprint 11: when each part's words were last read out, so a station can leave out a line said a moment ago)
+  const readAt = new Map();
+  const readKey = (line) => Lang.plain(line).toLowerCase().replace(/[^a-z\s-]/g, "").trim();
+  UI.readLately = (line, ms = 10000) => {
+    const t = readAt.get(readKey(line));
+    return !!t && Date.now() - t < ms;
+  };
   async function readAlong(parts, { min = 0 } = {}) {
     stopReading();
     const token = ++readToken;
     const t0 = Date.now();
     for (const p of parts) {
       if (token !== readToken) return;
+      readAt.set(readKey(p.line), Date.now());
       const lit = oneLit(p.els);
       // SH-79 (decision 95, contract-8): one lit thing on the card: while a row is read out, the next row's mark waits
       readActive = true;
@@ -1595,19 +1830,19 @@
   // The picture is the station's own (already loaded for the station), drawn on the card at a line's height: a small copy
   // made once from it (64 px, the load check's rule: never a 360 px picture drawn at 24 px), the card redrawn when it's ready
   const THUMBS = new Map();
-  const thumbOf = (src) => {
-    if (THUMBS.has(src)) return THUMBS.get(src);
-    THUMBS.set(src, null);
+  const thumbOf = (src, N = 64) => {
+    const key = N === 64 ? src : `${src}@${N}`;
+    if (THUMBS.has(key)) return THUMBS.get(key);
+    THUMBS.set(key, null);
     const im = new Image();
     im.onload = () => {
       try {
-        const N = 64;
         const k = N / Math.max(im.naturalWidth, im.naturalHeight);
         const c = document.createElement("canvas");
         c.width = Math.max(1, Math.round(im.naturalWidth * k));
         c.height = Math.max(1, Math.round(im.naturalHeight * k));
         c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
-        THUMBS.set(src, c.toDataURL("image/png"));
+        THUMBS.set(key, c.toDataURL("image/png"));
         if (mission) renderOrder();
       } catch (e) {
         /* no picture: the row keeps its words */
@@ -1621,6 +1856,51 @@
     return t ? `<img class="ck-step-pic" src="${t}" alt="" aria-hidden="true">` : "";
   };
   const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
+  /*
+   * Sprint 11 (B-cook, task 2): a people order's row is the shared word card's row (js/shared/word-card.js through
+   * OrderCard's rowEl): the item's picture (its own shelf art, drawn small: a copy at the row's size, as rowPic's), its
+   * Kutchi (the card's own words, dotted where the level dots them), its English and the speaker, faded by the word's
+   * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
+   * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
+   */
+  const WC_PIC = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp" };
+  const WC_ID = /^(cook-(paani|dudh|chai|khun)|spi-[0-9]+|veg-[0-9]+)$/;
+  const wcPicSrc = (id) => WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
+  const wcStage = (id) => {
+    try {
+      const P = Cook.core && Cook.core.progress;
+      return P && P.stage ? P.stage(id) || 1 : 1;
+    } catch (e) {
+      return 1;
+    }
+  };
+  UI.wordOf = function (r, { size = 96 } = {}) {
+    const W = global.WordCard;
+    if (!W || !r || r.head) return null;
+    const id = wcWordId(r);
+    const src = wcPicSrc(id);
+    const hidden = rowHidden(r) && dotsOk();
+    const base = W.slots(wcStage(id), { placeholder: !!r.rec });
+    const pic = src ? thumbOf(Cook.v(src), size) : null;
+    return {
+      word: {
+        id,
+        // (one span: the slot lays its children out as flex items, which would drop the spaces between the words)
+        kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), rowHide(r)))}</span>` },
+        english: r.line.en || "",
+        rec: !!r.rec,
+        // (the big card said now: its own picture while the small copy is still being made)
+        picture: pic ? { src: pic, fit: "contain" } : src && size >= 200 ? { src: Cook.v(src), fit: "contain" } : null,
+        say: () => Lang.speak(r.line),
+      },
+      wordOpts: {
+        slots: { picture: base.picture && !hidden && !!src, english: base.english && !hidden, kutchiText: true },
+        progress: Cook.core && Cook.core.progress,
+        onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
+      },
+    };
+  };
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -1653,7 +1933,7 @@
           const placed = rows.slice().sort((a, b) => Order().slotOf(L, a.r) - Order().slotOf(L, b.r));
           // decision 97 (3), SH-78: a person's card stays open from their dish's first step to its last: every row ticked
           // is not finished while their dish is still being made (chai: their pour); the station closes them ({all, for})
-          const parts = placed.map((x) => partNode(x.r, x.gi));
+          const parts = placed.map((x) => Object.assign(partNode(x.r, x.gi), mission.wordRows ? UI.wordOf(x.r) : null));
           const rowsDone = parts.length > 0 && parts.every((p) => p.done || p.no);
           const dishDone = !!(L.closedAll || (L.closedFor && L.closedFor[s.for]));
           cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline: s.head ? headNode(s.head) : headline, items: [{ label: null, parts }], done: rowsDone && dishDone } });
@@ -2027,6 +2307,8 @@
   function renderOrder6() {
     const box = $("#mission .m-order");
     drawCards(box, sideEls);
+    // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
+    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
     checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
     $("#mission").classList.add("people");
@@ -2036,6 +2318,7 @@
     if (readActive) holdNext([...document.querySelectorAll(".reading")]);
   }
   function renderIntro6() {
+    if (intro().classList.contains("along")) return;
     const box = intro().querySelector(".ic-order");
     drawCards(box, introEls, { big: true });
     const card = intro().querySelector(".ic-card");
@@ -2816,9 +3099,26 @@
     t.textContent = label;
     // a label Mum hasn't given yet is the engine's English placeholder: italic, flagged to record (rule G2)
     t.classList.toggle("ph", !!opts.rec);
-    b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
-    return new Promise((resolve) => (goResolve = resolve));
+    const kit = global.NjgButtons;
+    // Sprint 11 (Zafar, 22 Oct: "no Next and no Done anywhere"; principle 4): the job between two jobs is complete, so
+    // after a short beat the station moves on by itself through the one move-on hook (NjgButtons.moveOn). #go-btn stays
+    // in the page, hidden (its label and picture code keeps working), and is never waited on. A UI.hideGo() before the
+    // beat (the station went another way) cancels it. A page without the kit keeps the old button.
+    if (!kit || !kit.moveOn) {
+      b.classList.remove("hidden");
+      return new Promise((resolve) => (goResolve = resolve));
+    }
+    b.classList.add("hidden");
+    return new Promise((resolve) => {
+      const mine = (goResolve = resolve);
+      const run = Cook.run;
+      kit.moveOn(() => {
+        if (goResolve !== mine || run !== Cook.run) return;
+        goResolve = null;
+        resolve();
+      }, { reason: "cook:station", ms: opts.ms });
+    });
   };
   UI.glowGo = (on) => $("#go-btn") && $("#go-btn").classList.toggle("glow", on);
   UI.hideGo = function () {
@@ -2904,6 +3204,8 @@
   };
 
   UI.init = function () {
+    // Sprint 11: the word card and the conversations, there by the first order
+    ["word-card", "conversations"].forEach((n) => UI.needShared(n));
     // every page element here is optional (another page, like find.html, may not have all of them)
     const on = (sel, fn) => {
       const e = $(sel);
