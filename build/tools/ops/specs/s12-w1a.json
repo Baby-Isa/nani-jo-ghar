@@ -1,0 +1,81 @@
+{
+  "name": "s12-w1a: the shared help kit and chai (Sprint 12)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared onboarding is visual and every game leans on it: judgement and visual work",
+  "cost": "about $30-40",
+  "stop": "23 Oct 2026, 12:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points A2-A6, A12, B6-B8; Zafar's own words, and the causes with file:line)",
+    "docs/sprints/S12-polish.md",
+    "docs/game-design/easy-to-play.md (the onboarding principles)",
+    "the API at the top of js/shared/onboard.js (Onboard.run, demo, stuck, spot)"
+  ],
+  "owns": [
+    "js/shared/onboard.js",
+    "js/cook/coach.js",
+    "js/cook/stations/chai-tray.js and data/stations/chai-tray.json",
+    "js/cook/order.js, js/cook/recipes.js",
+    "data/cook.json (onboard, chai, level gates)",
+    "labs.html (the New player flag only)",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w1a.md"
+  ],
+  "readOnly": [
+    "js/day/**, css/day.css, data/day.json, lab/day.html (W1-B)",
+    "js/shared/window-ride.js (W1-B)",
+    "js/shared/results.js, conversations.js, word-card.js, guide.js (wave 2)",
+    "js/clinic/** (wave 2; the eye test calls the kit and must keep working)",
+    "CLAUDE.md and docs/"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "EASY-03, EASY-10: take the first-time demo out everywhere (Zafar: 'the user clicks on the item, they don't drag it ... take that out, that whole show it'). Onboard.demo no longer moves the real item to its target in any game; Onboard.stuck's first rung becomes the spotlight on the real item.",
+      "accept": "no frame anywhere shows an item moving by itself to its target; the chai, pantry and daar first steps at 1366x768 show the item glowing in its box instead"
+    },
+    {
+      "do": "EASY-08: the spotlight box is a rounded rectangle with a plain gold edge and no glow of its own; the item inside glows (its own soft radiating glow) and bounces; a group of controls given together (Onboard.spot with several targets) gets ONE rounded box round all of them, each control glowing and bouncing on its own. One look in every game.",
+      "accept": "frames at 1366x768, 1480x924 (Tab S8 Ultra) and 915x412 (Z Flip 5): chai's water bottle in its box; a group of three in one box (a unit test or a lab page calling spot with three targets)"
+    },
+    {
+      "do": "SH-118: the dim a little darker in every game (from 0.62 to about 0.72), one token used by Onboard.run and Onboard.spot.",
+      "accept": "one constant; a frame of the dim"
+    },
+    {
+      "do": "SH-119: one shared finger for every game: the kit's own hand, used by Cook's coach and the clinic too (Cook's hand image and the conversation's emoji go to the kit's finger; conversations.js is wave 2's file: expose the kit's finger so wave 2 can switch to it, and note the gap). Cadence: tap, lift off, wait 0.5 s, tap again, repeating while help is up; no long gaps.",
+      "accept": "a filmstrip of 6 frames over 3 s of the finger on chai's bottle showing the tap-lift-tap rhythm"
+    },
+    {
+      "do": "SH-120: New player on means help from the moment the game loads: the game pages read the New player flag (labs.html sets it; today only labs reads it) and the first step's help opens at once, not after the order.",
+      "accept": "chai L1 with New player on: a frame within 1.5 s of the first step being playable shows the box and finger"
+    },
+    {
+      "do": "CHAI-32, Zafar's ladder for chai: the full dim and box at once for the water, then the tea (they tick off on the card); none for the first ordered item; if no tap after about 5 s, the next item's card comes up top-left by Nani's guide box, looking like it comes from her, and the item glows and bounces (no box, no dim); after about 5-8 s more, the dim and box; if still nothing, leave it. Never the call-out card and the heavy dim together.",
+      "accept": "a filmstrip at 1366x768 of the milk step: 0 s, 5 s card plus glow, 12 s dim plus box"
+    },
+    {
+      "do": "CK-51: the recipe card lists every item a dish needs: for chai, paani and chai first (not said in the order), then the ordered ones in sequence; the order itself still says only what is asked ('with milk and sugar'). Every Cook station's card shows its full set.",
+      "accept": "frames of chai's card at the three sizes; the other stations' cards unchanged or complete (sandbox flows below)"
+    },
+    {
+      "do": "CK-50: level 1 orders never hold a 'no' (dudh na, khun na ...): coded in the order maker, with a unit test that makes 500 L1 orders for every recipe and finds none.",
+      "accept": "the unit test passes"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "lab:cook/chai-tray",
+    "cook:fetch",
+    "cook:daar",
+    "cook:samosa",
+    "cook:chaat",
+    "clinic:heal-eye",
+    "clinic:heal-cut"
+  ],
+  "port": 8851,
+  "report": "s12-w1a",
+  "publish": false,
+  "specsByBuilder": true
+}

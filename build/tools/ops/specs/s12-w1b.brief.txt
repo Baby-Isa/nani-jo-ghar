@@ -1,0 +1,83 @@
+SESSION NAME / MODE:  s12-w1b: the door, the ride, labs (Sprint 12)
+MODEL AND EFFORT:     Opus, high effort (staging Nani, the ride's design and its onboarding are visual judgement)
+COST ESTIMATE:        about $30-40
+HARD STOP:            23 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w1b.context.md (868 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points D1-D9, E1-E5, A13-A15, C4/D8; Zafar's own words, and the causes with file:line)
+     docs/sprints/S12-polish.md (decisions 3 and 4)
+     docs/game-design/easy-to-play.md and docs/game-design/modes/ (the day: door, ride, book)
+     the API at the top of js/shared/onboard.js and js/shared/word-card.js (use them as they are; W1-A owns onboard.js)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/day/door.js, js/day/day.js, css/day.css
+  - js/shared/window-ride.js
+  - data/day.json
+  - lab/day.html
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w1b.md
+READ-ONLY (never edit):
+  - js/shared/onboard.js, js/cook/**, data/cook.json, labs.html (W1-A)
+  - js/day/book.js, book-play.js, book-games.js (wave 3)
+  - js/shared/results.js, conversations.js, word-card.js (wave 2)
+  - CLAUDE.md and docs/
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. DOOR-05: Nani stands on the ground: no grey pill under her (the fixed .day-contact); a soft contact shadow only if it follows her feet and reads as a shadow.
+     Accept: frames of the door at 1366x768, 1480x924 and 915x412
+  2. SH-68: the thought bubble's dots rise from her head, never her shoulder, from the shared bubble placement.
+     Accept: the same frames; the contract-4 bubble check passes
+  3. DOOR-06: Nani about 20% bigger, the camera a little closer, the door still in view.
+     Accept: the same frames
+  4. DOOR-07: the left bar's pictures keep their look but get the shared word card's layout and function (Kutchi, English while supported, speaker), single words where possible ('we're trying to build up vocabulary').
+     Accept: a frame of the left bar at 1366x768 and 915x412
+  5. DOOR-08: after 'yes', Nani says 'come' (grey italic and device-spoken until Mum records it; never invented Kutchi) with her face reacting; the come-here wave only if a pose exists (the art run brings one).
+     Accept: a frame after yes
+  6. LNG-18 and A13: no silent lines on the test site: a line the engine can't build is spoken by the device voice while testing (never in a store build), at the door, the ride and the book.
+     Accept: the sandbox's sound log for day:door and day:book shows a voice for every line
+  7. SH-19 (the door): first-time help with the shared kit: the box, the glow and bounce, the finger, the dim.
+     Accept: a frame of the door's first step for a new player
+  8. RIDE-03: about 50% slower at every level (crossings of about 13.5, 9 and 5 s); early items clearly different from each other.
+     Accept: the constants; RIDE-04 and RIDE-05's leak checks still pass
+  9. RIDE-08: the car faces the way the world moves: mirror the car's art in code (decision 3); keep the left-to-right scroll.
+     Accept: a frame of the ride at 1366x768
+  10. RIDE-09: a left list of the three things to find, any order; the current one opens as a full word card and Nani says it; found, it collapses to its word (ticked) and the next opens. No order screen first.
+     Accept: a filmstrip at 1366x768 of one find
+  11. RIDE-10: the ride's onboarding: the first card in a box (not dimmed, not bouncing), the animal in the scene glows and bounces, the finger taps it for the child, it ticks off, the next card opens; the child does the other two.
+     Accept: a filmstrip at 1366x768
+  12. LAB-06: a Day builder toggle beside New player: on, any game launched from labs is bookended by the door and the book.
+     Accept: a frame of labs with both toggles; a chai launch with the toggle on starts at the door
+  13. LAB-07: the book's end goes home and never resumes a stale builder day; day.html resumes a saved day only when asked.
+     Accept: a unit test or sandbox step: a half-played saved day, then day.html with no stages, opens the farm day, not the builder's
+
+REGRESSION ROWS TO RECHECK (0 rows of the fix list and its done archive; * = open or reopened):
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow day:door,day:window,day:book,day:full-farm,day:full-kitchen --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w1b-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w1b` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8852.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8852; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w1b.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

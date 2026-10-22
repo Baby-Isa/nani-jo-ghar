@@ -1,0 +1,84 @@
+SESSION NAME / MODE:  s12-w1a: the shared help kit and chai (Sprint 12)
+MODEL AND EFFORT:     Opus, high effort (the shared onboarding is visual and every game leans on it: judgement and visual work)
+COST ESTIMATE:        about $30-40
+HARD STOP:            23 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w1a.context.md (836 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points A2-A6, A12, B6-B8; Zafar's own words, and the causes with file:line)
+     docs/sprints/S12-polish.md
+     docs/game-design/easy-to-play.md (the onboarding principles)
+     the API at the top of js/shared/onboard.js (Onboard.run, demo, stuck, spot)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/onboard.js
+  - js/cook/coach.js
+  - js/cook/stations/chai-tray.js and data/stations/chai-tray.json
+  - js/cook/order.js, js/cook/recipes.js
+  - data/cook.json (onboard, chai, level gates)
+  - labs.html (the New player flag only)
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w1a.md
+READ-ONLY (never edit):
+  - js/day/**, css/day.css, data/day.json, lab/day.html (W1-B)
+  - js/shared/window-ride.js (W1-B)
+  - js/shared/results.js, conversations.js, word-card.js, guide.js (wave 2)
+  - js/clinic/** (wave 2; the eye test calls the kit and must keep working)
+  - CLAUDE.md and docs/
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. EASY-03, EASY-10: take the first-time demo out everywhere (Zafar: 'the user clicks on the item, they don't drag it ... take that out, that whole show it'). Onboard.demo no longer moves the real item to its target in any game; Onboard.stuck's first rung becomes the spotlight on the real item.
+     Accept: no frame anywhere shows an item moving by itself to its target; the chai, pantry and daar first steps at 1366x768 show the item glowing in its box instead
+  2. EASY-08: the spotlight box is a rounded rectangle with a plain gold edge and no glow of its own; the item inside glows (its own soft radiating glow) and bounces; a group of controls given together (Onboard.spot with several targets) gets ONE rounded box round all of them, each control glowing and bouncing on its own. One look in every game.
+     Accept: frames at 1366x768, 1480x924 (Tab S8 Ultra) and 915x412 (Z Flip 5): chai's water bottle in its box; a group of three in one box (a unit test or a lab page calling spot with three targets)
+  3. SH-118: the dim a little darker in every game (from 0.62 to about 0.72), one token used by Onboard.run and Onboard.spot.
+     Accept: one constant; a frame of the dim
+  4. SH-119: one shared finger for every game: the kit's own hand, used by Cook's coach and the clinic too (Cook's hand image and the conversation's emoji go to the kit's finger; conversations.js is wave 2's file: expose the kit's finger so wave 2 can switch to it, and note the gap). Cadence: tap, lift off, wait 0.5 s, tap again, repeating while help is up; no long gaps.
+     Accept: a filmstrip of 6 frames over 3 s of the finger on chai's bottle showing the tap-lift-tap rhythm
+  5. SH-120: New player on means help from the moment the game loads: the game pages read the New player flag (labs.html sets it; today only labs reads it) and the first step's help opens at once, not after the order.
+     Accept: chai L1 with New player on: a frame within 1.5 s of the first step being playable shows the box and finger
+  6. CHAI-32, Zafar's ladder for chai: the full dim and box at once for the water, then the tea (they tick off on the card); none for the first ordered item; if no tap after about 5 s, the next item's card comes up top-left by Nani's guide box, looking like it comes from her, and the item glows and bounces (no box, no dim); after about 5-8 s more, the dim and box; if still nothing, leave it. Never the call-out card and the heavy dim together.
+     Accept: a filmstrip at 1366x768 of the milk step: 0 s, 5 s card plus glow, 12 s dim plus box
+  7. CK-51: the recipe card lists every item a dish needs: for chai, paani and chai first (not said in the order), then the ordered ones in sequence; the order itself still says only what is asked ('with milk and sugar'). Every Cook station's card shows its full set.
+     Accept: frames of chai's card at the three sizes; the other stations' cards unchanged or complete (sandbox flows below)
+  8. CK-50: level 1 orders never hold a 'no' (dudh na, khun na ...): coded in the order maker, with a unit test that makes 500 L1 orders for every recipe and finds none.
+     Accept: the unit test passes
+
+REGRESSION ROWS TO RECHECK (198 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  lab:cook/chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01*, PAN-13*, PAN-10*, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-14, PAN-15, PAN-17
+  cook:daar (37): DAAR-02*, DAAR-26*, DAAR-12*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29, DAAR-05, DAAR-31, DAAR-35, DAAR-30, DAAR-34, DAAR-20, DAAR-23, DAAR-27, DAAR-32, DAAR-33, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:samosa (28): SAM-01, SAM-02, SAM-03, SAM-04*, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, SAM-25, SAM-21, SAM-22, SAM-24, CK-08, CK-09, CK-29, CK-43, CK-27
+  cook:chaat (18): CHT-13*, CHT-04*, CHT-01, CHT-02, CHT-03, CHT-05, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CHT-06, CHT-12, CK-29, CK-39, CK-TB-01, CK-27
+  clinic:heal-eye (65): CLN-87*, CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+  clinic:heal-cut (61): CLN-82*, CLN-87*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-172*, CLN-175*, CLN-186*, CLN-192*, CLN-193*, CLN-43*, CLN-99*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-113, CLN-114, CLN-151, CLN-81, CLN-30, CLN-32, CLN-42, CLN-44, CLN-46, CLN-62, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-121, CLN-124, CLN-125, CLN-128, CLN-133, CLN-142, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-69, CLN-154, CLN-155, CLN-157, DRILL-01, FX-01, CLN-141, CLN-173, CLN-198
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,lab:cook/chai-tray,cook:fetch,cook:daar,cook:samosa,cook:chaat,clinic:heal-eye,clinic:heal-cut --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w1a-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w1a` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8851.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8851; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w1a.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

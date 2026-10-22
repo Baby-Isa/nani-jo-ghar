@@ -1,0 +1,95 @@
+{
+  "name": "s12-w1b: the door, the ride, labs (Sprint 12)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "staging Nani, the ride's design and its onboarding are visual judgement",
+  "cost": "about $30-40",
+  "stop": "23 Oct 2026, 12:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points D1-D9, E1-E5, A13-A15, C4/D8; Zafar's own words, and the causes with file:line)",
+    "docs/sprints/S12-polish.md (decisions 3 and 4)",
+    "docs/game-design/easy-to-play.md and docs/game-design/modes/ (the day: door, ride, book)",
+    "the API at the top of js/shared/onboard.js and js/shared/word-card.js (use them as they are; W1-A owns onboard.js)"
+  ],
+  "owns": [
+    "js/day/door.js, js/day/day.js, css/day.css",
+    "js/shared/window-ride.js",
+    "data/day.json",
+    "lab/day.html",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w1b.md"
+  ],
+  "readOnly": [
+    "js/shared/onboard.js, js/cook/**, data/cook.json, labs.html (W1-A)",
+    "js/day/book.js, book-play.js, book-games.js (wave 3)",
+    "js/shared/results.js, conversations.js, word-card.js (wave 2)",
+    "CLAUDE.md and docs/"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "DOOR-05: Nani stands on the ground: no grey pill under her (the fixed .day-contact); a soft contact shadow only if it follows her feet and reads as a shadow.",
+      "accept": "frames of the door at 1366x768, 1480x924 and 915x412"
+    },
+    {
+      "do": "SH-68: the thought bubble's dots rise from her head, never her shoulder, from the shared bubble placement.",
+      "accept": "the same frames; the contract-4 bubble check passes"
+    },
+    {
+      "do": "DOOR-06: Nani about 20% bigger, the camera a little closer, the door still in view.",
+      "accept": "the same frames"
+    },
+    {
+      "do": "DOOR-07: the left bar's pictures keep their look but get the shared word card's layout and function (Kutchi, English while supported, speaker), single words where possible ('we're trying to build up vocabulary').",
+      "accept": "a frame of the left bar at 1366x768 and 915x412"
+    },
+    {
+      "do": "DOOR-08: after 'yes', Nani says 'come' (grey italic and device-spoken until Mum records it; never invented Kutchi) with her face reacting; the come-here wave only if a pose exists (the art run brings one).",
+      "accept": "a frame after yes"
+    },
+    {
+      "do": "LNG-18 and A13: no silent lines on the test site: a line the engine can't build is spoken by the device voice while testing (never in a store build), at the door, the ride and the book.",
+      "accept": "the sandbox's sound log for day:door and day:book shows a voice for every line"
+    },
+    {
+      "do": "SH-19 (the door): first-time help with the shared kit: the box, the glow and bounce, the finger, the dim.",
+      "accept": "a frame of the door's first step for a new player"
+    },
+    {
+      "do": "RIDE-03: about 50% slower at every level (crossings of about 13.5, 9 and 5 s); early items clearly different from each other.",
+      "accept": "the constants; RIDE-04 and RIDE-05's leak checks still pass"
+    },
+    {
+      "do": "RIDE-08: the car faces the way the world moves: mirror the car's art in code (decision 3); keep the left-to-right scroll.",
+      "accept": "a frame of the ride at 1366x768"
+    },
+    {
+      "do": "RIDE-09: a left list of the three things to find, any order; the current one opens as a full word card and Nani says it; found, it collapses to its word (ticked) and the next opens. No order screen first.",
+      "accept": "a filmstrip at 1366x768 of one find"
+    },
+    {
+      "do": "RIDE-10: the ride's onboarding: the first card in a box (not dimmed, not bouncing), the animal in the scene glows and bounces, the finger taps it for the child, it ticks off, the next card opens; the child does the other two.",
+      "accept": "a filmstrip at 1366x768"
+    },
+    {
+      "do": "LAB-06: a Day builder toggle beside New player: on, any game launched from labs is bookended by the door and the book.",
+      "accept": "a frame of labs with both toggles; a chai launch with the toggle on starts at the door"
+    },
+    {
+      "do": "LAB-07: the book's end goes home and never resumes a stale builder day; day.html resumes a saved day only when asked.",
+      "accept": "a unit test or sandbox step: a half-played saved day, then day.html with no stages, opens the farm day, not the builder's"
+    }
+  ],
+  "flows": [
+    "day:door",
+    "day:window",
+    "day:book",
+    "day:full-farm",
+    "day:full-kitchen"
+  ],
+  "port": 8852,
+  "report": "s12-w1b",
+  "publish": false,
+  "specsByBuilder": true
+}
