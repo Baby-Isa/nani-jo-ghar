@@ -336,17 +336,7 @@
         const n = (budG.dabN = (budG.dabN || 0) + 1);
         ctx.after(fast() ? 10 : budTip ? 700 : 160, () => budG.dabN === n && budG.setAttribute("opacity", 0));
       });
-    const sparkle = (x, y, col) => {
-      const g = s("g", { transform: `translate(${x} ${y})` }, fxG);
-      for (let k = 0; k < 8; k++) {
-        const a = (k / 8) * Math.PI * 2;
-        s("line", { x1: Math.cos(a) * 14, y1: Math.sin(a) * 14, x2: Math.cos(a) * 30, y2: Math.sin(a) * 30, stroke: k % 2 ? "#fff6c8" : col, "stroke-width": 5, "stroke-linecap": "round" }, g);
-      }
-      tween(fast() ? 1 : 420, (u) => {
-        g.setAttribute("transform", `translate(${x} ${y}) scale(${0.6 + u})`);
-        g.setAttribute("opacity", 1 - u);
-      }).then(() => g.remove());
-    };
+    // (Sprint 10, Zafar 21 Oct: the code-drawn sparkle where a spot pops is off; it did not match the art)
 
     /* ---------------- the drink: the clear glass, the pour, the spoon ---------------- */
     // CLN-196 (clinic decision 10; Zafar, 18 Oct: "a metal cup, but it's got a drop shadow, but it's sitting on the
@@ -571,7 +561,6 @@
       if (sp.target) {
         sp.state = "popped";
         ctx.sfx("pop");
-        sparkle(sp.x, sp.y, hexOf(sp.colour));
         tween(fast() ? 1 : 200, (u) => setK(sp, (1 - u) * 1.15));
         S.face("happy", 500);
         if (spots.filter((q) => q.target).every((q) => q.state === "popped")) {
