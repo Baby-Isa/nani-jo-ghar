@@ -18,6 +18,9 @@
  *   ?stage=door             the day from its door, played on (labs, tests); ?stage=window|ride|book|activity: that stage alone
  *   ?weather= ?activity=kitchen|clinic|trip ?trip=farm|shops   the lab's overrides (the day's list rebuilt around them)
  *   ?level=1..3  ?seed=N  ?speed=N (test speed)  ?nonav=1 (no hand-off: tests)  ?log=kitchen|clinic|farm (the book with a lab day log)
+ *   ?stages=door:sunny,cook:chai-tray:1,clinic:eye:1,ride:farm,book   (Sprint 10, lab/day.html's day builder) a day of the grown-up's own
+ *                           making: the stages in this order (parseStages), saved in story.today with where it is, resumed after each
+ *                           hand-off (Cook and the clinic go to lab.html / clinic.html with ?then=day.html and come back to it)
  *
  * window.Day   {say(line, {who}), plain(line), handoff, stage, log, skipped}: the sound hook (build/sandbox/lib/sound.mjs) wraps Day.say
  * window.njgTest  {state(), expect()}: "day/door", "day/book/...", "day/window/ride", "day/end": what the stage wants next (the flows)
@@ -67,7 +70,8 @@ export function dayOf(days, n) {
 export function dayView(day, data, stage = null) {
   const find = (id) => (day.stages || []).find((s) => s.stage === id);
   const door = find("door") || {};
-  const act = find("activity");
+  // a day of the builder's own (?stages=): a cook stage is the kitchen, a clinic stage is the clinic
+  const act = find("activity") || (find("cook") && { activity: "kitchen" }) || (find("clinic") && { activity: "clinic" }) || null;
   const ride = find("ride");
   const trips = (data && data.trips) || {};
   const lines = door.lines || (act && act.activity) || "kitchen";
@@ -105,6 +109,140 @@ export function withOverrides(day, data, o = {}) {
   }
   d.stages.forEach((s) => s.stage === "door" && (s.weather = weather));
   return d;
+}
+
+// ---------------------------------------------------------------- the builder's days (?stages=)
+
+const COOK_ID = /^[a-z][a-z0-9-]*$/;
+/** The clinic's stages other than the healing games: ?stages=clinic:pharmacy:2 plays that stage alone. */
+const CLINIC_STAGES = ["waiting", "diagnosis", "pharmacy", "sendoff"];
+
+/**
+ * ?stages=door:sunny,cook:chai-tray:1,clinic:eye:1,ride:farm,book  ->  {stages: [{stage, ...settings}], notes: [what was left out]}
+ *
+ *   door[:weather]            the morning door (a key of data/day.json weather; sunny when left out); its line set follows the
+ *                             next stage: cook -> kitchen, clinic -> clinic, ride -> that trip's
+ *   cook[:station[:level]]    one Cook station at a level (lab.html?mode=cook&game=…), or cook / cook:full[:level] / cook:2: Cook's story
+ *                             round, the pantry first and then the chai order
+ *   clinic[:game[:level]]     one healing game (or waiting / diagnosis / pharmacy / sendoff) at a level, or clinic / clinic:full: a morning
+ *   ride[:trip]               the window ride to a trip (farm, shops; farm when left out); `window` is the same
+ *   book                      the evening book
+ * The data is optional (the weather and trips are checked against it when it is given).
+ */
+export function parseStages(text, data = null) {
+  const notes = [];
+  const out = [];
+  const weather = (data && data.weather) || null;
+  const trips = (data && data.trips) || null;
+  const level = (v) => {
+    const n = Number(v);
+    return Number.isInteger(n) && n >= 1 && n <= 4 ? n : null;
+  };
+  for (const raw of String(text == null ? "" : text).split(",")) {
+    const tok = raw.trim();
+    if (!tok) continue;
+    const [name0, ...p] = tok.split(":").map((x) => x.trim());
+    const name = stageId(name0.toLowerCase());
+    if (name === "door") {
+      let w = (p[0] || "sunny").toLowerCase();
+      if (weather && !weather[w]) {
+        notes.push(`${tok}: no such weather, sunny instead`);
+        w = "sunny";
+      }
+      out.push({ stage: "door", weather: w });
+    } else if (name === "cook" || name === "clinic") {
+      const nums = p.filter((x) => /^\d+$/.test(x));
+      const word = p.find((x) => x && !/^\d+$/.test(x)) || null;
+      const lv = level(nums[0]);
+      if (nums.length && lv == null) notes.push(`${tok}: level 1 to 4, 1 instead`);
+      const game = word && word !== "full" ? word.toLowerCase() : null;
+      if (game && !COOK_ID.test(game)) {
+        notes.push(`${tok}: not a game, left out`);
+        continue;
+      }
+      out.push({ stage: name, game, level: lv || 1 });
+    } else if (name === "ride") {
+      const trip = (p[0] || "farm").toLowerCase();
+      if (trips && !trips[trip]) {
+        notes.push(`${tok}: no such trip, left out`);
+        continue;
+      }
+      out.push({ stage: "ride", trip, road: trips ? trips[trip].ride : null });
+    } else if (name === "book") {
+      out.push({ stage: "book" });
+    } else if (name === "activity") {
+      const a = (p[0] || "kitchen").toLowerCase();
+      out.push({ stage: "activity", activity: a });
+    } else notes.push(`${tok}: not a stage, left out`);
+  }
+  // each door says what the day is about: the lines of the next stage that is about something
+  out.forEach((s, i) => {
+    if (s.stage !== "door") return;
+    const next = out.slice(i + 1).find((x) => ["cook", "clinic", "ride", "activity"].includes(x.stage));
+    if (!next) return;
+    s.lines = next.stage === "cook" ? "kitchen" : next.stage === "clinic" ? "clinic" : next.stage === "ride" ? next.trip : next.activity;
+  });
+  return { stages: out, notes };
+}
+
+/**
+ * The builder's day for this page load: ?stages= (a fresh run from its first stage) or, with none, the list story.today kept when a
+ * hand-off left the page (custom, stages), resumed at the stage after it (today.next). -> {stages | null, id, from, over, notes}
+ * over: the hand-off was the last stage, so the day is finished.
+ */
+export function customDay({ asked = null, today = null, isToday = false, data = null, dayNo = 1 } = {}) {
+  if (asked) {
+    const p = parseStages(asked, data);
+    return { stages: p.stages.length ? p.stages : null, id: dayNo, from: 0, over: false, notes: p.notes };
+  }
+  if (isToday && today && today.custom && Array.isArray(today.stages) && today.stages.length) {
+    const from = Number.isInteger(today.next) ? today.next : 0;
+    return { stages: today.stages, id: today.day || dayNo, from, over: from >= today.stages.length, notes: [] };
+  }
+  return { stages: null, id: dayNo, from: 0, over: false, notes: [] };
+}
+
+/**
+ * What story.today keeps: where the day is as a stage starts (the page left mid-day, a hand-off or a closed tab, picks up here today);
+ * a day of the builder's own keeps its list (custom, stages) so the page that comes back from a hand-off plays the rest of it.
+ */
+export function startPatch(day, data, i, entry, custom = false) {
+  const v = dayView(day, data);
+  return { date: todayDate(), day: day.id, weather: v.weather, activity: v.activity, trip: v.trip, next: i, at: entry.stage, custom, stages: custom ? clone(day.stages) : null };
+}
+/** And as a stage ends: the next stage is next (after a hand-off, the activity's); a builder's day that does not end in the book is over after its last stage (the book sets "done" itself). */
+export function donePatches(day, i, entry, custom = false) {
+  const out = [entry.status === "handoff" ? { next: i + 1, at: "activity" } : { next: i + 1 }];
+  if (custom && i + 1 >= day.stages.length && entry.status !== "handoff") out.push({ at: "done", custom: false, stages: null });
+  return out;
+}
+
+/** The ?stages= text for a list (the builder writes it): the inverse of parseStages. */
+export function stagesText(stages) {
+  return (stages || [])
+    .map((s) => {
+      if (s.stage === "door") return s.weather && s.weather !== "sunny" ? `door:${s.weather}` : s.weather ? "door:sunny" : "door";
+      if (s.stage === "cook" || s.stage === "clinic") return s.game ? `${s.stage}:${s.game}:${s.level || 1}` : s.level && s.level > 1 ? `${s.stage}:full:${s.level}` : `${s.stage}:full`;
+      if (s.stage === "ride") return s.trip ? `ride:${s.trip}` : "ride";
+      if (s.stage === "activity") return `activity:${s.activity || "kitchen"}`;
+      return s.stage;
+    })
+    .join(",");
+}
+
+/**
+ * Where a cook or clinic stage hands off to, and back: the host's page for that one game (or Cook's story round, or a clinic morning)
+ * with ?then=day.html, which the end screen's Next follows (js/shared/host.js, js/clinic/main.js); day.html then picks the day up at
+ * the stage after this one (story.today.next).
+ */
+export function handoffUrl(s, then = "day.html") {
+  const L = Number(s.level) || 1;
+  if (s.stage === "cook") return s.game ? `lab.html?mode=cook&game=${s.game}&level=${L}&then=${then}` : `lab.html?mode=cook&level=${L}&then=${then}`;
+  if (s.stage === "clinic") {
+    if (!s.game) return `clinic.html?then=${then}`;
+    return `clinic.html?stage=${CLINIC_STAGES.includes(s.game) ? s.game : `heal&game=${s.game}`}&level=${L}&then=${then}`;
+  }
+  return null;
 }
 
 /**
@@ -283,6 +421,14 @@ function makeApi({ data, days, core, E }) {
 /** The stage modules: each {built, start(day, log) -> done}, drawn into the page's one box. */
 function pageStages(app, api) {
   const fresh = () => (app.innerHTML = "");
+  const handoff = (settings) => {
+    const to = handoffUrl(settings);
+    api.go(to);
+    const root = app.querySelector(".day-root");
+    if (root) root.dataset.handoff = to;
+    if (api.nonav) labNote(app, `Hand-off: ${to}`);
+    return { status: "handoff", url: to };
+  };
   return {
     door: {
       built: true,
@@ -302,6 +448,19 @@ function pageStages(app, api) {
         if (root) root.dataset.handoff = to;
         if (api.nonav) labNote(app, `Hand-off: ${to}`);
         return { status: "handoff", url: to };
+      },
+    },
+    // Sprint 10: a Cook game or a clinic game (or a morning) hands off to its own page with ?then=day.html and the day goes on after it
+    cook: {
+      built: true,
+      async start(day) {
+        return handoff(day.stage);
+      },
+    },
+    clinic: {
+      built: true,
+      async start(day) {
+        return handoff(day.stage);
       },
     },
     ride: {
@@ -366,16 +525,33 @@ async function boot() {
   window.Day.plain = (ln) => (ln && ln.text) || "";
   api.say = (ln, o) => window.Day.say(ln, o);
 
+  window.Day.skipped = [];
   // the day: ?day=N, or the one this child is on (or stopped in today)
   const today = api.today();
   // today's day still under way (a hand-off, a closed tab); once its book is done (at "done") the next day starts
   const isToday = !!(today && today.date === todayDate() && today.at !== "done");
   const n = Number(q.get("day")) || (isToday && today.day) || api.dayNo();
-  const day = withOverrides(dayOf(days, n), data, { weather: q.get("weather"), activity: q.get("activity"), trip: q.get("trip") });
-  const asked = q.get("stage") ? stageId(q.get("stage")) : null;
+  // Sprint 10: a day of the builder's own, ?stages=… (a fresh run), or the one saved in story.today that a hand-off left (resumed)
+  const stagesAsked = q.get("stages");
+  const cu = customDay({ asked: stagesAsked, today, isToday, data, dayNo: api.dayNo() });
+  cu.notes.forEach((m) => window.Day.skipped.push(m));
+  const custom = cu.stages;
+  const day = custom ? { id: cu.id, name: "custom", stages: clone(custom) } : withOverrides(dayOf(days, n), data, { weather: q.get("weather"), activity: q.get("activity"), trip: q.get("trip") });
+  const asked = !custom && q.get("stage") ? stageId(q.get("stage")) : null;
   let from = 0;
   let only = false;
-  if (asked) {
+  if (custom) {
+    from = cu.from;
+    if (cu.over) {
+      // the last stage was the hand-off: the day is over
+      api.setToday({ at: "done", custom: false, stages: null });
+      window.Day.stage = "end";
+      api.test.state("day/end");
+      api.test.expect(() => ({ kind: "end" }));
+      api.home();
+      return;
+    }
+  } else if (asked) {
     from = day.stages.findIndex((s) => stageId(s.stage) === asked);
     only = asked !== "door";
     // a stage the day does not have (?stage=window on a kitchen day): played alone with its defaults
@@ -391,7 +567,6 @@ async function boot() {
 
   const log = { day: day.id, date: todayDate(), stages: [] };
   window.Day.log = log;
-  window.Day.skipped = [];
   const stages = pageStages(app, api);
   const L = await runDay(day, {
     stages,
@@ -409,15 +584,14 @@ async function boot() {
       // a beat between two stages (the one before keeps its end on screen a moment: its test hook's "end" is still read)
       if (i > from) await new Promise((r) => setTimeout(r, 400));
       // the hand-off stage draws nothing: the door stays on screen and is still the stage the page shows
-      if (entry.stage !== "activity") window.Day.stage = entry.stage === "ride" ? "window" : entry.stage;
+      if (!["activity", "cook", "clinic"].includes(entry.stage)) window.Day.stage = entry.stage === "ride" ? "window" : entry.stage;
       api.test.state(`day/${entry.stage}`);
       api.test.expect(() => ({ kind: "wait" }));
       // where the day is: a page left mid-day (a hand-off, a closed tab) picks up here today
-      api.setToday({ date: todayDate(), day: day.id, weather: dayView(day, data).weather, activity: dayView(day, data).activity, trip: dayView(day, data).trip, next: i, at: entry.stage });
+      api.setToday(startPatch(day, data, i, entry, !!custom));
     },
     onDone: (entry, i) => {
-      if (entry.status === "handoff") api.setToday({ next: i + 1, at: "activity" });
-      else api.setToday({ next: i + 1 });
+      donePatches(day, i, entry, !!custom).forEach((p) => api.setToday(p));
       // the day log: each stage's end in the story log (a `round`: the book never makes a word of it)
       if (core.log && entry.status !== "skipped") core.log.log({ arc: "day", errand: `day${day.id}:${entry.stage}`, type: "round", what: `day-stage:${entry.stage}`, place: entry.status });
     },
