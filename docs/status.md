@@ -8,18 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (22 Oct 2026, 03:00 UK):** Sprint 10 "Show it" is live on `main` (7ff52b9): the tidy labs page (New player, walkthrough pantry then chai, every Cook and clinic game with a level picker, the day builder), the girl as every clinic patient, the tooth drill starting in a bigger cavity, code-drawn effects off. All seven rows judged and built (`docs/sprints/S10-show-it.md`). The plan for what's next, with its evidence and the critic's pre-mortem: `docs/game-design/easy-to-play.md`.
+**Where things stand (22 Oct 2026, evening UK):** Sprint 11 "Easy to play" is live on `main` (40adcb2). Sprint 12 "polish" (eye test, tooth, chai, the door and ride, the book; rapid-prototype mode) has started: Zafar's two 22 Oct voice notes are consolidated in `docs/feedback/s12-polish-2026-10-22.md` (64 points, every line mapped, a second reader's 20 gaps folded in) and on the fix list (section "Sprint 12 polish", plus reopened rows CK-48, EASY-08, SH-104, ART-19, LNG-18, CHAI-08, CHAI-26, SH-115). The new Kutchi lines are on the recording sheet (1c). `docs/sprints/S12-polish.md` does not exist yet.
 
 **Next steps:**
-1. Zafar shows his Masi and plays; notes go to `/feedback`.
-2. Sprint 11 "Easy to play, easy to learn" (`docs/sprints/S11-easy-to-play.md`, about $160-200) on Zafar's go: Step 0 (shared word card, fading by word stage, onboarding rungs with the real item, play log, leak bot on a learned save, the door; and the art run's paste block), then B-cook (kitchen conversation, chai order cards, top-down coded pour, new effects) and B-clinic (flash-card eye test with spoken haa/na, the toothbrush cross).
+1. Zafar records at Masi's from `docs/language/recording-sheet.md`; `/mum-round` processes it.
+2. On his go: the S12 fix plan from the report (it owes him answers: why the third end page survived (A8, cause in the report), the pour (B10), zooms (A11), the mic (C8), Nani's size and animations (D2, D9), the farm picture (D7), the ride (E2, E4), the book's three games (F12)); then `/sprint` opens S12.
 
-**Open questions to Zafar:**
-1. Cook's new "it went in" splash (CK-27, approved 21 Oct afternoon) is off with the other effects until Sprint 11's art-matched version. OK? (Recommend yes.)
-2. The book after a clinic day shows kitchen pictures until the book gets clinic art: add to Sprint 11's art run? (Recommend yes.)
+**Open questions to Zafar:** CHAI-26 (his pan photos for a ChatGPT pour run, or no pour); DOOR-06 (Nani bigger).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 10 is live. Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 11 is live; Sprint 12's feedback is on the fix list. Carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
@@ -27,14 +25,14 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 25 | 71 |
-| Cook: pantry | 2 | 12 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 6 / 2 / 9 / 2 / 3 / 5 / 6 | 15 / 14 / 23 / 12 / 20 / 14 / 33 |
-| Clinic | 41 | 141 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 18 | 78 |
+| Cook: pantry | 5 | 9 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 4 / 3 / 3 / 2 / 1 / 3 / 6 | 18 / 14 / 29 / 12 / 22 / 17 / 32 |
+| Clinic | 27 | 164 |
 | First launch and shell | 0 | 2 |
-| Other modes | 2 | 9 |
-| Art | 7 | 9 |
-| Language and audio | 11 | 4 |
+| Other modes | 1 | 10 |
+| Art | 8 | 9 |
+| Language and audio | 10 | 6 |
 
 ---
 

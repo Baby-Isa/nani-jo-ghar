@@ -55,6 +55,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 - For the next recording session (Zafar, 20 Oct): the plural of tomato: is two tomatoes *ba tameto* or *ba tameta*? (Mum's notes say it doesn't change; her phrase "hane tameta wij" says *tameta*.) Until she answers, daal and chaat ask for one tomato only.
 - Daal stir line (DAAR-26, Zafar 21 Oct): Nani says "Firai! Ba! jaldi" today. Is that natural, or should it be one sentence, and how would you say it (e.g. "Ba firai jaldi")?
 - Toothbrushing directions (Zafar, 21 Oct): up *mathe* ("Mutt-Hair") and down *niche* ("Knee-Chair") are Zafar's; please record them with *dabo* (left), *jamno* (right: is that right?), brush and toothbrush.
+- From the 22 Oct play-test (Zafar; Masi or Mum, English meanings only): (1) *Salaam alaikum* in Nani's voice, for the kitchen greeting (LNG-19). (2) The doctor's three set sentences, said with the eye and then each body part: "the eye isn't right", "we will heal the eye", "we'll use this medicine", plus the word *medicine* on its own (CLN-199). (3) Nani's "come!" at the door, after the child says yes (DOOR-08). (4) The customer's line when the dish is served, "aah, chai" (and *baraba*), then "thank you" (SH-121): check whether these are already recorded first.
 
 ## 2. Cook
 
