@@ -143,7 +143,6 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| GIRL-01 | Every clinic patient is the girl, at every level (Zafar, 21 Oct); the call still picks out the one meant when several girls wait (L2+: colour, height) | **to fix: check** · built in s10b-clinic; the judge decides | auto: `build/test_shared_clinic_girl.mjs`; eye: waiting room and a heal game, both sizes | `docs/sprints/S10-show-it.md` |
 
 ### Diagnosis
 

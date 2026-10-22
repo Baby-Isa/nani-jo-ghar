@@ -363,6 +363,7 @@ Built, fixed and retired rows moved out of the live fix list (`docs/process/regr
 | CLN-91 | The closed card's eye is a small bulb, no counter | built (evidence PASS ev-20261020-203453-9h9: machine: count:.cl-side .ng-bulb=1 [1 visible]; count:.cl-hint-n=0 [0 visible]) | eye: W L3 | `docs/archive/feedback/clinic-playtest-2026-10-06.md` W5 |
 | CLN-92 | "To the doctor's room" button (location, not "where does it hurt") | built, not re-played (S04-B: no room button: the room moves on by itself after the greeting (`Lifecycle.advance`); shot build/screenshots/sandbox/s04b-c2/clinic-waiting/1366x768/c05-stage.png) | eye: waiting end | `docs/archive/feedback/clinic-playtest-2026-10-06.md` CL3 |
 | CLN-110 | Waiting room moves on by itself once the right person is picked and greeted: no ✓ or stage button | built (evidence PASS ev-20261020-203453-9h9: machine: pass [0 contract breaks]; count:.njg-done=0 [0 visible]; pass [0 contract breaks]) | auto: contract check (no button after a finished step); eye: waiting L1–L3 | `docs/archive/feedback/playtest-2026-10-08-sprint3.md` Z7 |
+| GIRL-01 | Every clinic patient is the girl, at every level (Zafar, 21 Oct); the call still picks out the one meant when several girls wait (L2+: colour, height) | built (evidence PASS s10-judge-04: judge: the girl is the patient at L1 and L3 at both sizes; the L3 call names the short one; the heal game shows her face) | auto: `build/test_shared_clinic_girl.mjs`; eye: waiting room and a heal game, both sizes | `docs/sprints/S10-show-it.md` |
 
 ### Diagnosis
 
