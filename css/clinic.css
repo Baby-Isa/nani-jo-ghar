@@ -672,6 +672,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @keyframes eye-up { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }
 .eye-card.eye-shake { animation: eye-shake .45s; }
 @keyframes eye-shake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
+.eye-card.eye-named .wc-spk { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } /* the doctor names it: its speaker lit until the next card */
 .eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
 .eye-judge { align-items: center; }
 .eye-pill-t { display: inline-block; min-width: calc(var(--njg-tap) * 1.7); text-align: center; }
@@ -686,7 +687,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .tooth-dir > .wc { width: 100%; }
 .tooth-dir .wc-pic { background: var(--njg-cream); }
 .tooth-arrow { position: absolute; inset: 8%; width: 84%; height: 84%; display: block; }
-.tooth-dcard.tooth-din { animation: eye-up .4s ease-out; }
+.tooth-dcard.tooth-din { animation: cl-pop .4s ease-out; } /* a fade only: it never moves over the cross (BRUSH-01) */
 .tooth-dcard.tooth-dshake { animation: eye-shake .45s; }
 @media (prefers-reduced-motion: reduce) { .tooth-dcard.tooth-din, .tooth-dcard.tooth-dshake { animation: none; } }
 /* T4 (CLN-103): the tooth buzzes when the drill goes outside the line */

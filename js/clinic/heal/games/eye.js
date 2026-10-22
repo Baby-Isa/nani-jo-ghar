@@ -627,12 +627,20 @@
         const live = mic ? [judgeBox] : [haaBtn, naBtn];
         // the rungs count from this card coming up (her guess, not the child, was the last thing)
         if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
+        // the real pill (or row) lifts; the ghost hand rides at its lower right corner, never over its word (EASY-09)
+        const mover = c.demo ? haaBtn : judgeBox;
+        const mr = mover.getBoundingClientRect();
         stuck = root.Onboard.stuck(c.demo ? "eye-card-demo" : "eye-card", {
           id: c.demo ? "clinic/heal-eye-card-demo" : "clinic/heal-eye-card",
           first: c.demo,
           target: live,
           live,
-          item: c.demo ? haaBtn : judgeBox,
+          item: { x: mr.right - Math.min(14, mr.width * 0.1), y: mr.bottom - Math.min(8, mr.height * 0.15) },
+          move: (dx, dy, t) => {
+            const lift = t > 0.06 && t < 0.94 ? 1.06 : 1;
+            mover.style.translate = dx || dy ? `${dx.toFixed(1)}px ${dy.toFixed(1)}px` : "";
+            mover.style.scale = lift === 1 ? "" : String(lift);
+          },
           path: { dx: 0, dy: -22 },
           hand: true,
           line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(c.said), { who: "patient", noBubble: true }) : null),
