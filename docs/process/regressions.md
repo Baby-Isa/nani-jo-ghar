@@ -217,6 +217,15 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | DAY-02 | A whole day plays through: the farm day goes door, ride, book with its finds; a kitchen or clinic day hands off and the book follows on return | **waiting on Zafar** · open (two strikes) (evidence FAIL ev-20261021-032427-602) | auto: the full-day flows reach their end | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
 | DAY-03 | The way back: Cook's or the clinic's round returns to the evening book by itself, and writes the day log the book reads | **waiting on** Sprint 8's publish (a change in Cook and the clinic) | auto: day:full-kitchen plays Cook's round and returns to the book | s09-final-door report, 21 Oct |
 
+## Labs and the day builder
+
+| ID | Issue | Status | Check | Source |
+|---|---|---|---|---|
+| LAB-01 | Labs page: top row (New player, Walkthrough, house, day builder); every Cook and clinic game once with a level picker and Play; door, ride, book; old pages folded; nothing clipped | **to fix: check** · built; judge to close | eye: labs.html 1366x768, 1480x924 | `docs/sprints/S10-show-it.md` |
+| LAB-02 | Day builder: stages in order or one game; Cook and the clinic hand off with ?then=day.html and Next comes back (DAY-03's way back) | **to fix: check** · built; judge to close | auto: test_day_stages · eye: door, chai L1, book | `docs/sprints/S10-show-it.md` |
+| LAB-03 | New player: Save.resetPlayer clears words, help, Cook, clinic levels, day, conversations; keeps wallet, character, firstDone | **to fix: check** · built; judge to close | auto: test_shared_reset_player | `docs/sprints/S10-show-it.md` |
+| LAB-04 | Walkthrough: pantry, then chai, then back to the labs | **to fix: check** · built; judge to close | eye: pantry, chai, labs | `docs/sprints/S10-show-it.md` |
+
 ## Other modes
 
 | ID | Issue | Status | Check | Source |

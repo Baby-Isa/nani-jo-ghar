@@ -18323,5 +18323,131 @@
    "expect": null,
    "note": "the kitchen day with Cook's round played and the game back at the book by itself, the book's words from Cook's day log"
   }
+ ],
+ "LAB-01": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1440x900"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "labs",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:.top-row",
+    "dom:.top-row"
+   ],
+   "expect": [
+    "count:.top-row .top=4",
+    "noClip:.top-row", "count:.game>=8"
+   ],
+   "note": "labs.html: the top row of four (New player, Walkthrough, the house, the day builder) above the Play any game grid, nothing clipped (the 1480x924 pictures come from build/s10a_shoot.mjs labs)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/gen_labs.mjs --check"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "labs.html is what the generator writes"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/host/labs.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every Cook station and clinic game once with a picker and Play, one folded Behind the scenes, no page lost, no clinic game listed three ways"
+  }
+ ],
+ "LAB-02": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_day_stages.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "?stages= parsed in order, kept in story.today, resumed after each hand-off; the hand-off urls carry ?then=day.html; the end screen's list becomes Next (the filmstrip door, chai L1, book at 1366x768: build/s10a_shoot.mjs day)"
+  }
+ ],
+ "LAB-03": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_shared_reset_player.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "after Save.resetPlayer every word is unseen, the first-time help is back, Cook and the clinic start at level 1, the day and conversations are empty, the wallet, the character and firstDone are kept"
+  }
+ ],
+ "LAB-04": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/host/labs.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the Walkthrough tile is Cook's own pantry-then-chai chain ending at labs.html (the pictures: build/s10a_shoot.mjs walk)"
+  }
  ]
 }

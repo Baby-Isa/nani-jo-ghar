@@ -21,6 +21,7 @@
  *   Save.addPlayer({name, colour})  select(id)  updatePlayer(id, {...})  removePlayer(id)  ensurePlayer()
  *   Save.get(ns, pid?)  has(ns, pid?)  set(ns, v, pid?)  update(ns, fn, pid?)  clear(ns, pid?)  namespaces(pid?)
  *   Save.flag(name)  setFlag(name, v)  setting(name)  setSetting(name, v)
+ *   new (Sprint 10): Save.resetPlayer(id?) a fresh start (words, ui, cook, clinic, story, conversations cleared; wallet, character, shell kept)
  *   Save.exportJSON()  importJSON(text)  persistent()  use(storage)  memoryStore()  onChange(fn)
  *   new: Save.lang()  setLang(id)  contentVersion(kind, id)  noteContent(kind, id, version)  NAMESPACES
  *
@@ -354,6 +355,20 @@ export function createSave(root = globalThis) {
   Save.clear = function (ns, playerId) {
     remove(nsKey(pid(playerId), ns));
     emit("data", ns);
+  };
+  /**
+   * New player (Zafar, 21 Oct, Sprint 10): a fresh start for one player, who stays the same player. Clears what a child has
+   * learned and unlocked: every word (words), the first-time help and bests (ui, which also held the clinic's old levels),
+   * Cook (cook), the clinic (clinic: every stage back to level 1), the day and arc progress (story) and the conversations.
+   * Keeps the wallet (the one purse and its upgrades), the character and the shell's flags (firstDone: the first-launch story
+   * does not take over again), and the settings, shelf, unlocks and voice enrolment.
+   */
+  Save.RESET_NAMESPACES = ["words", "ui", "cook", "clinic", "story", "conversations"];
+  Save.resetPlayer = function (playerId) {
+    const id = pid(playerId);
+    Save.RESET_NAMESPACES.forEach((ns) => remove(nsKey(id, ns)));
+    emit("data", "reset");
+    return id;
   };
   Save.namespaces = function (playerId) {
     const pre = `${ROOT_KEY}:${pid(playerId)}:`;

@@ -171,10 +171,10 @@
         h("div", "cl-help-text", helpPop, scr.goal || "Listen to the doctor, then do what the card says.");
         // SH-60: the grown-ups' "play as new" (the same as Cook's): every word is new again, the first-time help too
         global.NjgButtons.playAsNew(helpPop, () => {
+          // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic levels, story, conversations)
           const core = global.__clinic && global.__clinic.core;
+          if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
           if (core && core.progress && core.progress.reset) core.progress.reset();
-          if (global.UIStore && global.UIStore.clear) global.UIStore.clear();
-          if (global.Onboard && global.Onboard.reset) global.Onboard.reset();
           scr.closeHelp();
         }, { cls: "cl-help-new" });
         if (global.Onboard && global.Onboard.active && global.Onboard.active()) {

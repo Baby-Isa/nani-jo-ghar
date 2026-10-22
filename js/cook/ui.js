@@ -770,6 +770,8 @@
     // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
     // S02-G (gate): the shared grown-ups' button (NjgButtons.grownUp), at tap height, not a small link
     global.NjgButtons.playAsNew(pop, () => {
+      // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic, story, conversations), then this page's own copy
+      if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
       Cook.resetSave({ fresh: true });
       UI.closeHelp();
       if (mission) renderOrder();

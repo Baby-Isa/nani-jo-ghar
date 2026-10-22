@@ -16,9 +16,14 @@
  * the one purse, word evidence) and shows the one end screen. The clinic's own save namespace keeps only its
  * session and stage levels (no coins: decision 20, the one purse).
  *
+ * Sprint 10: ?patientKind=girl forces the kind of patient (forceKind to the pipeline); ?then=day.html goes on to that page at the
+ * end of a round (js/shared/host.js) or of a morning (playMorning).
+ *
  * A round's stages share one patient (a plan from js/clinic/pipeline.js), made when the round's first stage
  * starts, from the step's params: {round, seed, levels?, variant?, game?, morning?}.
  */
+
+import { thenTarget } from "../shared/host.js";
 
 /** The clinic's classic scripts, in load order (lab.html loads them through `needs`; clinic.html has them as tags). */
 export const CLASSIC = [
@@ -57,6 +62,25 @@ const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
 const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear"]; // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
 
 const G = () => globalThis;
+/** The page's own query ("" in Node). */
+const search = () => (G().location && G().location.search) || "";
+/**
+ * Sprint 10: ?patientKind=girl (the labs and the day builder) asks the pipeline for that kind of patient only: passed on as
+ * `forceKind` (js/clinic/pipeline.js P.patient / P.morning take it; a pipeline without the option ignores the key).
+ */
+const forcedKind = () => new URLSearchParams(search()).get("patientKind") || undefined;
+/**
+ * Sprint 10: ?then=<page> (the day builder's hand-off; js/shared/host.js thenTarget): the end of a clinic morning goes on to that
+ * page. (A single round's end screen is the host's: its list becomes Next.) nonav=1 only notes it.
+ */
+async function goThen(then) {
+  G().__thenUrl = then;
+  if (new URLSearchParams(search()).get("nonav") === "1" || !G().location) return;
+  const A = G().NjgApp;
+  if (A && A.go) A.go(then);
+  else G().location.href = then;
+  await new Promise(() => {}); // the page is leaving
+}
 const stamp = (u) => (typeof G().njgV === "function" ? G().njgV(u) : u);
 
 /** The site root relative to the page ("" from a root page, "../" from lab/). */
@@ -210,7 +234,7 @@ function roundFor(ctx, screen) {
     // (data/clinic/pipeline.json parked); no morning ever draws them
     const D = heal && !P.ailmentsFor(R.data, 3, [heal]).length && R.data.parked ? Object.assign({}, R.data, { ailments: Object.assign({}, R.data.ailments, R.data.parked, { _about: R.data.ailments._about }) }) : R.data;
     const ailment = heal ? P.ailmentsFor(D, 3, [heal]).find((a) => (D.ailments[a].from || 1) <= L) || P.ailmentsFor(D, 3, [heal])[0] : null;
-    plan = P.patient(D, { rng, levels: p.levels || levelsAll(L), variants: p.variant ? { [p.stage || ctx.game]: p.variant } : {}, ailment, games, speak: R.opts.speak });
+    plan = P.patient(D, { rng, levels: p.levels || levelsAll(L), variants: p.variant ? { [p.stage || ctx.game]: p.variant } : {}, ailment, games, speak: R.opts.speak, forceKind: forcedKind() });
   }
   // decision 68: this patient's healing game starts loading now, while the waiting room and the diagnosis play
   if (plan.stages && plan.stages.heal) prefetchGame(plan.stages.heal.game);
@@ -333,7 +357,8 @@ export default {
   lab: () =>
     ["waiting", "diagnosis", "pharmacy", "sendoff"]
       .map((s) => ({ game: s, label: `Clinic: ${STAGE_LABEL[s]}`, note: "One stage alone, with its own patient." }))
-      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}${g === "eye" ? " (test A, split screen)" : ""}`, note: "One healing game, mounted by the pipeline's heal stage.", extra: g === "eye" ? "&eyetest=a" : "" })))
+      // Sprint 10: each game once; the eye's default is layout A (decision 85), B is its own test entry below
+      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}`, note: "One healing game, mounted by the pipeline's heal stage." })))
       // D15h: both eye tests are prototyped; B (side by side) next to A
       .concat([{ game: "eye", label: `Clinic heal: ${LABEL.eye} (test B, side by side)`, note: "The eye test's version B (the lab's eyetest=b).", extra: "&eyetest=b" }])
       .concat(PARKED.map((g) => ({ game: g, label: `Clinic heal (parked): ${LABEL[g]}`, note: "Parked: as it is, lab only." })))
@@ -362,7 +387,7 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
   const seed0 = seed || Math.floor(Math.random() * 1e9) + 1; // kept: Again plays this same morning (CLN-111)
   const rng = P.rng(seed0);
   // patients: a lab's number of patients (the sandbox's morning at a level: a later session, two patients)
-  const m = P.morning(R.data, { session: n0, levels: st.levels, rng, games: R.games(), speak: R.opts.speak, patients: patients || null });
+  const m = P.morning(R.data, { session: n0, levels: st.levels, rng, games: R.games(), speak: R.opts.speak, patients: patients || null, forceKind: forcedKind() });
   // CLN-111 (13l): every end screen of the morning offers Again (the same patient), Next and All patients, like Cook;
   // Next stays the main one (the morning goes on)
   const ends = (ids) => {
@@ -408,5 +433,8 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
     R.save(st);
   }
   const action = session.screen ? await R.close(session.screen, outs, { coins: core && core.wallet ? core.wallet.coins() : 0, actions: ends(["again", "next", "list"]) }) : "next";
-  return { morning: m, outs, state: st, action, seed: seed0, session: n0 };
+  // ?then=: the morning is over, the page that waits (the day builder's day) goes on
+  const then = thenTarget(search());
+  if (then && action !== "again") await goThen(then);
+  return { morning: m, outs, state: st, action, seed: seed0, session: n0, then: then || undefined };
 }
