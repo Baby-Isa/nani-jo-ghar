@@ -1175,11 +1175,13 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #intro.along .wc-card.ic-word { width: clamp(128px, min(17vw, 30vh), 220px); animation: icWordIn .3s cubic-bezier(.2, 1.3, .4, 1); }
 @keyframes icWordIn { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { #intro.along .wc-card.ic-word { animation: none; } }
-/* a row not said yet keeps its place, unseen */
-#mission .oc-row.wc-away { visibility: hidden; }
-/* the word card's row inside the order card's row frame: the frame is the card (no second card edge or shadow) */
-#mission .oc-row.oc-wc { padding-top: 2px; padding-bottom: 2px; }
-#mission .oc-row.oc-wc > .wc { flex: 1 1 auto; padding: 0; gap: var(--njg-s1, 4px); background: transparent; box-shadow: none; }
-#mission .oc-row.oc-wc .wc-row .wc-pic { width: calc(var(--oc-part-h, 40px) * 1.15); height: calc(var(--oc-part-h, 40px) * 1.15); background: transparent; }
-#mission .oc-row.oc-wc .wc-k { font-size: var(--oc-p, 18px); min-height: 0; padding: 0; }
-#mission .oc-row.oc-wc .wc-en { min-height: 0; padding: 0; }
+/* (a row not said yet, and a word card inside an order card row: js/shared/order-card.js keeps those with the component) */
+
+/* ---- Sprint 11 (B-cook, task 6): call "chai" to serve: a round microphone by the ready pan's glass (js/cook/stations/chai-tray.js).
+   A tap listens once; a miss is a shrug (it sways). Only where the family has recorded the words ---- */
+.ck-mic { position: absolute; z-index: 12; transform: translate(-50%, -50%); width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: 0; display: grid; place-items: center; border-radius: 50%; background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-cream-edge); color: var(--njg-ink); box-shadow: var(--njg-shadow); cursor: pointer; touch-action: manipulation; }
+.ck-mic svg { width: 56%; height: 56%; display: block; }
+.ck-mic.on { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
+.ck-mic.shrug { animation: ckShrug .5s ease-in-out; }
+@keyframes ckShrug { 25% { transform: translate(-50%, -50%) rotate(-12deg); } 75% { transform: translate(-50%, -50%) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .ck-mic.shrug { animation: none; } }

@@ -129,12 +129,41 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
   }
 
+  /*
+   * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook): a station whose script's steps name a "step" and a
+   * "demo" (data.onboard["chai-tray"]) is shown by the REAL item, not the ghost hand: the first time each step appears the
+   * item itself does the action (the pan lifts to the glass, the jar tips over the pan) and comes back, then the child does
+   * it; when the child is stuck the hint rungs run on the live target (5 s: the 62% spotlight, all else inert, and the demo
+   * again; 15 s: the demo again with the guide's line). Both are the shared kit's (js/shared/onboard.js Onboard.stuck); the
+   * station says, step by step, where its live control is and how its item moves (C.rungs). C.start leaves such a station
+   * to it (no overlay).
+   */
+  C.itemDemo = (key) => {
+    const s = C.script(key);
+    return !!(s && s.every((st) => st.step && st.demo));
+  };
+  /** The step's script entry (data.onboard[key] whose step is `step`), or null. */
+  C.stepOf = (key, step) => (C.script(key) || []).find((st) => st.step === step) || null;
+  /**
+   * The rungs for one step of station `key` (Onboard.stuck): o {target (the live control: a page rect or a function giving
+   * one), item ({x, y} page point of the thing that demonstrates), path (page points, or a function giving them), move(dx,
+   * dy, t) (a canvas sprite moves itself), line (the guide's line at 15 s), ms}. The first time per profile (and not once the
+   * station's coach was seen, Cook.save.coached) the demo plays as the step opens. -> handle {done(), stop()} or null.
+   */
+  C.rungs = function (key, step, o = {}) {
+    const Onboard = OB();
+    if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
+    const first = !(Cook.save.coached || {})[key];
+    return Onboard.stuck(`${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
+  };
+
   /**
    * Coach station `key` (once ever): spotlight each next thing to do, as its
    * script says (data.onboard), until C.stop() (the station ends).
    */
   C.start = function (key, { force = false } = {}) {
     C.stop();
+    if (C.itemDemo(key)) return; // (the station runs its own: the real item shows each step, C.rungs)
     if (!force && C.seen(key)) return;
     const script = C.script(key);
     const useKit = !!(OB() && script);

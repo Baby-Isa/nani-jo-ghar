@@ -1415,12 +1415,12 @@
       if (!to) return Promise.resolve();
       const big = box.querySelector(".wc-card");
       if (fast || !big) {
-        to.classList.remove("wc-away");
+        to.classList.remove("oc-away");
         return Promise.resolve();
       }
       // (the row's frame shows; its word card flies in from the big one: WordCard.pop hides it until it lands)
       const wc = to.querySelector(":scope > .wc") || to;
-      to.classList.remove("wc-away");
+      to.classList.remove("oc-away");
       big.style.visibility = "hidden";
       return global.WordCard.pop(big, wc).catch(() => wc.classList.remove("wc-away"));
     };
@@ -2297,7 +2297,7 @@
     const box = $("#mission .m-order");
     drawCards(box, sideEls);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
-    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("wc-away")));
+    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
     checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
     $("#mission").classList.add("people");
@@ -3106,7 +3106,7 @@
         if (goResolve !== mine || run !== Cook.run) return;
         goResolve = null;
         resolve();
-      }, { reason: "cook:go", ms: opts.ms });
+      }, { reason: "cook:station", ms: opts.ms });
     });
   };
   UI.glowGo = (on) => $("#go-btn") && $("#go-btn").classList.toggle("glow", on);

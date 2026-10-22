@@ -173,6 +173,29 @@
     if (L && L.note) L.note("step-close", { step: id, by: "card" });
   }
 
+  /*
+   * The word card inside a row (Sprint 11): the row's own frame is the card, so the word card adds no second edge, shadow or
+   * padding; its picture is the row's height. .oc-away: a row that keeps its place unseen (a host popping its words in as
+   * they are said, Cook's people order). A folded card's word rows never re-wrap in the collapsed body. Kept here with the
+   * component (no mode restyles it: rule 8), added to the page once, the first time a word row is drawn.
+   */
+  const WC_CSS = [
+    ".oc-card .oc-row.oc-away { visibility: hidden; }",
+    ".oc-card .oc-row.oc-wc { padding-top: var(--njg-line-2); padding-bottom: var(--njg-line-2); }",
+    ".oc-card .oc-row.oc-wc > .wc { flex: 1 1 auto; padding: 0; gap: var(--njg-s1); background: transparent; box-shadow: none; }",
+    ".oc-card .oc-row.oc-wc .wc-row .wc-pic { width: calc(var(--oc-part-h) * 1.15); height: calc(var(--oc-part-h) * 1.15); background: transparent; }",
+    ".oc-card .oc-row.oc-wc .wc-k { font-size: var(--oc-p); min-height: 0; padding: 0; }",
+    ".oc-card .oc-row.oc-wc .wc-en { min-height: 0; padding: 0; }",
+    ".oc-card.folded .oc-row.oc-wc .wc-k, .oc-card.folded .oc-row.oc-wc .wc-en { white-space: nowrap; overflow-wrap: normal; }",
+  ].join("\n");
+  function wcCss() {
+    if (typeof document === "undefined" || document.querySelector("style[data-oc-wc]")) return;
+    const st = document.createElement("style");
+    st.dataset.ocWc = "";
+    st.textContent = WC_CSS;
+    (document.head || document.body).appendChild(st);
+  }
+
   function rowEl(node, cls, opts) {
     // Sprint 11 (B-cook; rule 8, one card everywhere): a row that carries its word (node.word, node.wordOpts: the shared
     // word card's word and options, js/shared/word-card.js) IS the word card's row: picture, speaker, Kutchi, English, faded
@@ -182,6 +205,7 @@
     const word = node.word && W && W.row ? node.word : null;
     const r = el("div", ["oc-row", cls, word ? "oc-wc" : "", node.done && !node.wrong ? "done" : "", node.next ? "next" : "", node.no ? "no" : "", node.miss ? "miss" : "", node.wrong ? "wrong" : ""].filter(Boolean).join(" "));
     if (word) {
+      wcCss();
       const w = W.row(r, word, Object.assign({}, node.wordOpts || {}, { cls: "oc-wcrow" }));
       const k = w.querySelector(".wc-k");
       if (k) k.classList.add("oc-t");

@@ -5987,19 +5987,39 @@
   "chai-tray": [
    {
     "do": "tap",
-    "what": "the water jug: one tap pours water into the pan, up to the line"
+    "step": "water",
+    "demo": "the water bottle lifts over the pan, tips, and goes back to the shelf",
+    "what": "the water bottle: one tap pours water into the pan"
    },
    {
     "do": "tap",
+    "step": "tea",
+    "demo": "the chai jar lifts over the pan, tips, and goes back",
     "what": "the tea leaves (among look-alikes)"
    },
    {
     "do": "tap",
+    "step": "knob",
+    "demo": "the knob turns a quarter and back",
     "what": "the big knob: the burner lights"
    },
    {
     "do": "tap",
+    "step": "cups",
+    "demo": "the jar this person asked for tips over their pan and goes back (only while Nani helps: it is the answer)",
     "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"
+   },
+   {
+    "do": "tap",
+    "step": "slow",
+    "demo": "the knob turns further round (low) and back, while the heat is in the green",
+    "what": "the knob again in the green: the fire turns down"
+   },
+   {
+    "do": "tap",
+    "step": "pour",
+    "demo": "the ready pan lifts towards its person's glass and comes back",
+    "what": "the ready pan: it pours into its person's glass"
    }
   ],
   "maani-line": [

@@ -1214,6 +1214,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (sel !== pan) select(pan);
       finishGen++; // (L4: a second pour in the last beat holds the move-on)
       busy++;
+      // Sprint 11 (easy-to-play principle 9: each word heard at the order, at the shelf and at the pour): while their chai
+      // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
+      if (level <= 2 && !pan.poured && UI.readAlong) {
+        const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === pan.who);
+        const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no) : [];
+        if (said.length) UI.readAlong(said).catch(() => {});
+      }
       unglow();
       // CHAI-08's flaw (the judge, 20 Oct: "loose 'hakro' pills float at the hob's top-left corner during the pour"): the pan's
       // running count goes while it is off the hob pouring, and comes back with it if it is still on the go
@@ -1413,7 +1420,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         else {
           const gen = finishGen;
           const go = () => gen === finishGen && !finished && !busy && finishUp();
-          if (global.NjgButtons && global.NjgButtons.moveOn) global.NjgButtons.moveOn(go, { ms: HALF_BEAT_MS, reason: "chai:served" });
+          if (global.NjgButtons && global.NjgButtons.moveOn) global.NjgButtons.moveOn(go, { ms: HALF_BEAT_MS, reason: "cook:station" });
           else Cook.wait(HALF_BEAT_MS).then(go);
         }
       }
@@ -1513,6 +1520,210 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (glowing && glowing.texture && glowing.texture.key === RING) glowing.setVisible(false);
       glowing = null;
     };
+    /*
+     * Sprint 11 (B-cook, task 5; easy-to-play principles 2-3): the real item shows each step the first time it appears (the
+     * bottle or the jar lifts over the pan and tips, the knob turns, the ready pan lifts towards its glass) and goes home,
+     * then the child does it; stuck, the hint rungs run on the live thing (5 s: the spotlight and the demo, 15 s: the demo
+     * and Nani's step line). js/cook/coach.js C.rungs on the shared kit's Onboard.stuck. What a person asked for (milk, the
+     * sugar, an extra) is the answer, so its rungs run only while Nani helps (the focal rule, as its glow).
+     */
+    const pagePt = (o) => UI.worldToScreen(at(o).x, at(o).y);
+    const pageRect = (o, pad = 6) => () => {
+      if (!o || !o.active) return null;
+      const b = o.getBounds();
+      const a = UI.worldToScreen(b.x - pad, b.y - pad);
+      const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
+      return [a.x, a.y, z.x - a.x, z.y - a.y];
+    };
+    const tipT = (t) => (t > 0.3 && t < 0.8 ? Math.sin(((t - 0.3) / 0.5) * Math.PI) : 0);
+    // a shelf thing goes over the pan as it would to pour (pourInto's place), tips, and comes home
+    const jarDemo = (obj, pan) => {
+      let home = null;
+      const back = () => {
+        if (!home) return;
+        if (obj.active && !obj.flying) obj.setPosition(home.x, home.y).setAngle(home.a).setDepth(home.d);
+        if (obj.shadow) obj.shadow.lifted = false;
+        home = null;
+      };
+      return {
+        item: pagePt(obj),
+        path: () => [UI.worldToScreen(pan.x + panR * 0.55, pan.y + panR * 0.05)],
+        move: (dx, dy, t) => {
+          if (!obj.active || obj.flying || finished) return back();
+          if (!home) home = { x: obj.x, y: obj.y, a: obj.angle, d: obj.depth };
+          if (obj.shadow) obj.shadow.lifted = true;
+          const k = pxPerWorld();
+          obj.setPosition(home.x + dx / k, home.y + dy / k).setDepth(D.fx + 1).setAngle(home.a - 75 * tipT(t));
+          if (t >= 1) back();
+        },
+      };
+    };
+    // the knob turns (by `by` degrees) and back
+    const knobDemo = (pan, by) => {
+      let a0 = null;
+      let st0 = null;
+      return {
+        item: pagePt(pan.knobHit),
+        path: { dx: 0, dy: -1 },
+        move: (dx, dy, t) => {
+          if (!pan.knob.active) return;
+          if (a0 == null) [a0, st0] = [pan.knob.angle, pan.state];
+          if (pan.state !== st0) return; // (the child turned it meanwhile: its own turn stands)
+          pan.knob.setAngle(t >= 1 ? a0 : a0 + by * Math.sin(Math.PI * t));
+          if (t >= 1) a0 = null;
+        },
+      };
+    };
+    // the ready pan lifts a little way towards its person's glass and comes back (the pour itself is the child's tap)
+    const panDemo = (pan) => {
+      let st = null;
+      const back = () => {
+        if (!st) return;
+        st.forEach(({ o, x, y, sx, sy }) => o.active && o.setPosition(x, y).setScale(sx, sy));
+        [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.active && o.setVisible(true));
+        setLook(pan);
+        st = null;
+      };
+      return {
+        item: UI.worldToScreen(pan.x, pan.y),
+        path: () => [UI.worldToScreen(pan.x + (pan.well.x - pan.x) * 0.3, pan.y + (pan.well.y - pan.y) * 0.3 - panR * 0.3)],
+        move: (dx, dy, t) => {
+          if (busy || pan.away || finished) return back();
+          if (!st) {
+            st = [pan.img, pan.mix, pan.glowRing].map((o) => ({ o, x: o.x, y: o.y, sx: o.scaleX, sy: o.scaleY }));
+            [pan.disc, pan.mixDisc, pan.layers.handle, pan.bits].forEach((o) => o && o.setVisible(false));
+          }
+          const k = pxPerWorld();
+          const up = 1 + 0.06 * Math.sin(Math.PI * Math.min(1, t));
+          st.forEach(({ o, x, y, sx, sy }) => o.setPosition(x + dx / k, y + dy / k).setScale(sx * up, sy * up));
+          if (t >= 1) back();
+        },
+      };
+    };
+    let rung = null;
+    let rungKey = null;
+    const rungOf = (nx) => {
+      if (!nx || !nx.e || finished) return null;
+      const key = nx.e.key || "";
+      if (nx.phase === "pour" && /^pour-/.test(key)) {
+        const pan = pans.find((q) => `pour-${q.who}` === key);
+        return pan && { step: "pour", id: key, target: pageRect(pan.glowRing), spec: panDemo(pan) };
+      }
+      if (nx.phase === "slow" && nx.slowAt) return { step: "slow", id: key, target: pageRect(nx.slowAt.knob, 14), spec: knobDemo(nx.slowAt, 45) };
+      if (/^knob-on-/.test(key)) {
+        const pan = pans.find((q) => `knob-on-${q.who}` === key);
+        return pan && { step: "knob", id: key, target: pageRect(pan.knob, 14), spec: knobDemo(pan, 90) };
+      }
+      const obj = shelf[key];
+      if (!obj || !sel) return null;
+      const step = key === "cook-paani" ? "water" : key === "cook-chai" ? "tea" : "cups";
+      if (step === "cups" && !(guided || sel.redo)) return null; // (the answer: only while Nani helps)
+      return { step, id: `${key}:${sel.who}`, target: pageRect(obj), spec: jarDemo(obj, sel) };
+    };
+    const coachStep = (nx) => {
+      const r = rungOf(nx);
+      const k = r ? `${r.step}/${r.id}` : null;
+      if (k === rungKey) return;
+      if (rung) rung.done();
+      rung = null;
+      rungKey = k;
+      if (!r || !Cook.Coach || !Cook.Coach.rungs) return;
+      rung = Cook.Coach.rungs("chai-tray", r.step, Object.assign({ target: r.target, live: r.target, line: () => UI.stepHelp && UI.stepHelp() }, r.spec));
+    };
+    const coachEnd = () => {
+      if (rung) rung.done();
+      rung = null;
+      rungKey = null;
+    };
+
+    /*
+     * Sprint 11 (B-cook, task 6; easy-to-play principle 10: speaking is part of play, never a gate): when a pan is ready the
+     * child may call "chai" to serve it. A round microphone sits by that pan's glass; a tap on it listens once, on the
+     * device (js/shared/speech.js Speech.listen, a closed set: chai and two other words of the station, the family's own
+     * recordings as the templates). "chai" heard: the ready pan pours, as a tap on it does. Anything else, or nothing: a
+     * shrug (the microphone sways), nothing else. A tap on the pan always works. The microphone shows only where the family
+     * has recorded every word of the set (no device voice is ever a template): until Mum records them it stays away.
+     */
+    const SAY_SET = ["cook-chai", "cook-paani", "cook-dudh"];
+    const MIC_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>';
+    let mic = null;
+    let micPan = null;
+    let listening = false;
+    const sayUrls = () => {
+      const Sp = global.Speech;
+      if (!Sp || !Sp.templateUrls) return null;
+      const urls = SAY_SET.map((id) => Sp.templateUrls(id, Cook.audioManifest || {}).map((u) => Cook.v(u)));
+      return urls.every((u) => u.length) ? urls : null;
+    };
+    const micCan = () => {
+      const Sp = global.Speech;
+      return !!(Sp && Sp.listen && !(Sp.status && ["refused", "absent"].includes(Sp.status())) && global.navigator && navigator.mediaDevices && sayUrls());
+    };
+    const hideMic = () => {
+      if (mic) mic.classList.add("hidden");
+      micPan = null;
+    };
+    const placeMic = () => {
+      if (!mic || !micPan) return;
+      const w = micPan.well;
+      const p = UI.worldToStage(w.x + w.glass.empty.displayWidth * 0.62, w.y - w.glass.empty.displayWidth * 0.62);
+      mic.style.left = `${p.x}px`;
+      mic.style.top = `${p.y}px`;
+    };
+    const heardServe = async () => {
+      const Sp = global.Speech;
+      if (listening || !Sp || !micPan) return;
+      listening = true;
+      mic.classList.add("on");
+      const pan = micPan;
+      let res = null;
+      try {
+        Cook.unlockAudio();
+        const urls = sayUrls();
+        // (inside the tap, for iOS: the family's recordings decoded as templates, once)
+        if (urls) for (let i = 0; i < SAY_SET.length; i++) if (!(Sp.hasTemplates && Sp.hasTemplates([SAY_SET[i]]))) await Sp.loadTemplates(SAY_SET[i], urls[i]);
+        res = await Sp.listen({ choices: SAY_SET, timeoutMs: 3000 });
+      } catch (e) {
+        res = null;
+      } finally {
+        listening = false;
+        if (mic) mic.classList.remove("on");
+      }
+      note("chai-say", res ? res.choice : "none", pan.who);
+      if (res && res.choice === "cook-chai" && pan.state === "ready" && !finished && !busy) {
+        if (Sp.confirm) Sp.confirm("cook-chai", "game");
+        return panTap(pan);
+      }
+      // a shrug: the microphone sways, nothing else happens
+      if (mic) {
+        mic.classList.remove("shrug");
+        void mic.offsetWidth;
+        mic.classList.add("shrug");
+      }
+    };
+    const showMic = (pan) => {
+      if (!micCan()) return hideMic();
+      if (!mic) {
+        const stage = document.querySelector("#stage");
+        if (!stage) return;
+        mic = document.createElement("button");
+        mic.type = "button";
+        mic.className = "ck-mic hidden";
+        mic.setAttribute("aria-label", "");
+        mic.innerHTML = MIC_SVG;
+        mic.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          heardServe();
+        });
+        stage.appendChild(mic);
+        if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(() => mic && mic.remove());
+      }
+      micPan = pan;
+      mic.classList.remove("hidden");
+      placeMic();
+    };
+    if (UI.needShared) UI.needShared("speech");
+
     let gaugePan = null;
     function refresh() {
       if (finished) return;
@@ -1521,6 +1732,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (pans.length && pans.every((q) => q.poured > 0)) UI.hideCount();
       if (busy) {
         zb.expect({ kind: "wait" }); // a pour in progress: the player waits for it
+        hideMic();
         return;
       }
       const nx = plan();
@@ -1530,6 +1742,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // (contract-70: where the bar was as "Slow kar" was called)
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
+      coachStep(nx); // Sprint 11: the real item's demo and the hint rungs for the step now
+      // Sprint 11: a ready pan can be served by calling "chai" (its microphone by the glass)
+      if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
+      else hideMic();
       // the focal rule: the next generic step pulses (a person's choice only when Nani helps)
       const pick = nx && nx.obj && (nx.focal || guided || (sel && sel.redo)) ? nx.obj : null; // decision 51: a redo has help
       // CHAI-25: a pan glows as a ring on its rim's centre
@@ -1647,6 +1863,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     for (;;) {
       await doneP;
       finished = true;
+      coachEnd();
+      hideMic();
       clearInterval(nudge);
       syncTakeBack(); // (Done: nothing comes back out now)
       phase(null);
@@ -1753,6 +1971,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       refresh();
     }
     stopHeat();
+    if (mic) mic.remove();
+    mic = null;
     [...pans.flatMap((q) => [q.img, q.face, q.knobHit]), ...Object.values(shelf)].forEach((o) => S.untap(o));
     Object.values(shelf).forEach((o) => o.chip && o.chip.disableInteractive());
     await Cook.wait(500);
