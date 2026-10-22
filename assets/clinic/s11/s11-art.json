@@ -1,0 +1,45 @@
+{
+ "doctor-card-s11": {
+  "size": [
+   316,
+   725
+  ],
+  "card": {
+   "x": 0.0949,
+   "y": 0.2193,
+   "w": 0.8101,
+   "h": 0.1972
+  },
+  "note": "card face as fractions of the 1x image; place WordCard.card inside it"
+ },
+ "toothbrush-s11": {
+  "size": [
+   713,
+   92
+  ],
+  "head": {
+   "x": 0.1115,
+   "y": 0.35
+  },
+  "note": "bristle centre as fractions of the 1x image: the brush hit point"
+ },
+ "mouth-open-s11": {
+  "size": [
+   768,
+   512
+  ]
+ },
+ "book-clinic-room-s11": {
+  "size": [
+   768,
+   512
+  ]
+ },
+ "book-clinic-photo-s11": {
+  "size": [
+   768,
+   512
+  ]
+ },
+ "_about": "Sprint 11 art (pack s11, Zafar ran it 22 Oct); sources in sources/art/s11/; cut by the orchestrator (magenta keyed, despilled). The effects sheet (FX) is still to upload."
+}
