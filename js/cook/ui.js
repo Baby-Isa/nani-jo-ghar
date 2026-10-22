@@ -2816,9 +2816,26 @@
     t.textContent = label;
     // a label Mum hasn't given yet is the engine's English placeholder: italic, flagged to record (rule G2)
     t.classList.toggle("ph", !!opts.rec);
-    b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
-    return new Promise((resolve) => (goResolve = resolve));
+    const kit = global.NjgButtons;
+    // Sprint 11 (Zafar, 22 Oct: "no Next and no Done anywhere"; principle 4): the job between two jobs is complete, so
+    // after a short beat the station moves on by itself through the one move-on hook (NjgButtons.moveOn). #go-btn stays
+    // in the page, hidden (its label and picture code keeps working), and is never waited on. A UI.hideGo() before the
+    // beat (the station went another way) cancels it. A page without the kit keeps the old button.
+    if (!kit || !kit.moveOn) {
+      b.classList.remove("hidden");
+      return new Promise((resolve) => (goResolve = resolve));
+    }
+    b.classList.add("hidden");
+    return new Promise((resolve) => {
+      const mine = (goResolve = resolve);
+      const run = Cook.run;
+      kit.moveOn(() => {
+        if (goResolve !== mine || run !== Cook.run) return;
+        goResolve = null;
+        resolve();
+      }, { reason: "cook:go", ms: opts.ms });
+    });
   };
   UI.glowGo = (on) => $("#go-btn") && $("#go-btn").classList.toggle("glow", on);
   UI.hideGo = function () {
