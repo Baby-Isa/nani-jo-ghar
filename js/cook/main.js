@@ -72,7 +72,7 @@ const STATIONS = [
 const RECIPES = [
   ["chai", "Chai"],
   ["maani", "Maani"],
-  ["daal", "Daal"],
+  ["daal", "Daar"],
   ["chaat", "Chaat bowl"],
   ["samosa", "Samosa"],
   ["mishkaki", "Sekelo"],

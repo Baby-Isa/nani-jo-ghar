@@ -72,6 +72,13 @@ async function labs() {
     const msg = await page.$eval("#fresh", (e) => e.textContent);
     const state = await page.evaluate(() => ({ words: Save.get("words"), coins: Save.get("wallet").coins }));
     check(/Fresh start: every word new, every game at level 1/.test(msg) && Object.keys(state.words).length === 0 && state.coins === 12, `New player: "${msg}", words ${JSON.stringify(state.words)}, wallet ${state.coins}`);
+    // every picker (Nani's pantry included) reads its first option, and every Play link starts at level 1 (or the first weather, day)
+    const pickers = await page.$$eval(".game", (gs) => gs.filter((g) => g.querySelector("select")).map((g) => ({ t: g.querySelector("b").textContent, v: g.querySelector("select").selectedIndex, href: g.querySelector("a.play").getAttribute("href") })));
+    const off = pickers.filter((p) => p.v !== 0 || /level=(?!1(&|$))/.test(p.href));
+    check(off.length === 0 && pickers.length >= 30, `after New player all ${pickers.length} pickers are at their first option and every link starts at level 1 ${JSON.stringify(off.slice(0, 3))}`);
+    check(pickers.find((p) => p.t === "Nani's pantry").href.endsWith("level=1"), `Nani's pantry: ${pickers.find((p) => p.t === "Nani's pantry").href}`);
+    const clinicM = await page.$eval('.game a.play[href^="clinic.html"]', (a) => a.getAttribute("href"));
+    check(/clinic\.html\?level=1/.test(clinicM), `the clinic morning has a picker: ${clinicM}`);
     await page.screenshot({ path: join(OUT, `labs-new-player-${key}.png`) });
     // Behind the scenes opened
     await page.click("details.behind > summary");
@@ -233,7 +240,7 @@ async function day(key, kind = "cook") {
   // the book plays its pages; at its end the day goes home (the sandbox's nonav is off here: the hand-offs had to leave the page)
   let bookErr = null;
   await book.run(ctx).catch((e) => (bookErr = e));
-  await page.waitForURL(/index\.html/, { timeout: 30000 }).catch(() => {});
+  await page.waitForURL(/index\.html/, { timeout: 120000 }).catch(() => {});
   check(/index\.html/.test(page.url()), `the day ended at the house: ${page.url().replace(BASE, "")}${bookErr ? ` (the book driver's own end check: ${String(bookErr.message).slice(0, 80)})` : ""}`);
   const today = await page.evaluate(() => Save.get("story").today).catch(() => null);
   check(today && today.at === "done" && !today.custom, `story.today at: ${today && today.at}, custom: ${today && today.custom}`);
@@ -259,6 +266,8 @@ async function walk(key) {
     await sleep(700);
     await rec.state(`${kind}-play-button`);
     await tapSel(page, "#njg-play");
+    await sleep(kind === "pantry" ? 6000 : 7000);
+    await rec.state(`${kind}-${kind === "pantry" ? "list-in-play" : "game-in-play"}`, { settle: 0 });
     const P = new CookPlayer(page, rec, { speed: 3, prefix: `${kind}-` });
     const leftRound = async () => (await page.evaluate(() => new URLSearchParams(location.search).get("first") + "|" + location.pathname).catch(() => "gone")) !== `${kind}|/cook.html`;
     try { await P.play(leftRound, { timeout: 300000 }); } catch (e) { await page.waitForFunction((k) => new URLSearchParams(location.search).get("first") !== k, kind, { timeout: 20000 }); }

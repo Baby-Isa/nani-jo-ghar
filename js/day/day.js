@@ -540,6 +540,8 @@ async function boot() {
   cu.notes.forEach((m) => window.Day.skipped.push(m));
   const custom = cu.stages;
   const day = custom ? { id: cu.id, name: "custom", stages: clone(custom) } : withOverrides(dayOf(days, n), data, { weather: q.get("weather"), activity: q.get("activity"), trip: q.get("trip") });
+  // a builder's day of the clinic only (no Cook stage): the evening book is the clinic's day (log=clinic), not the kitchen's
+  if (custom && !q.get("log") && day.stages.some((s) => s.stage === "clinic") && !day.stages.some((s) => s.stage === "cook")) q.set("log", "clinic");
   const asked = !custom && q.get("stage") ? stageId(q.get("stage")) : null;
   let from = 0;
   let only = false;
@@ -604,6 +606,11 @@ async function boot() {
     window.Day.stage = "end";
     api.test.state("day/end");
     api.test.expect(() => ({ kind: "end" }));
+    // a builder's day is over after its last stage: home (the book goes home itself, but not when it shows a lab day log)
+    if (custom) {
+      await api.wait(1500);
+      api.home();
+    }
   } else if (L.stages.length && L.stages[L.stages.length - 1].status === "handoff") {
     api.test.expect(() => ({ kind: "end" }));
   }
