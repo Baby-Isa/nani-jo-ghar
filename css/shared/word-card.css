@@ -35,15 +35,22 @@
 /* a blanked slot: it keeps its place, a dashed outline and the free reveal */
 .wc-slot.blank { display: flex; align-items: center; justify-content: flex-start; border: var(--njg-line-2) dashed var(--njg-cream-edge); border-radius: var(--njg-radius); background: var(--njg-tint); }
 .wc-pic.blank { justify-content: center; }
-.wc-reveal { position: relative; flex: none; width: calc(var(--njg-tap) * 0.75); height: calc(var(--njg-tap) * 0.75); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
-.wc-pic .wc-reveal { width: var(--njg-tap); height: var(--njg-tap); }
-.wc-row .wc-pic .wc-reveal { width: calc(var(--njg-tap) * 0.75); height: calc(var(--njg-tap) * 0.75); }
-.wc-reveal svg { width: 70%; height: 70%; display: block; }
-/* the text slots' eye fits the line; its tap area reaches round it */
-.wc-k .wc-reveal { width: calc(var(--njg-t2) * 1.2); height: calc(var(--njg-t2) * 1.2); }
-.wc-row .wc-k .wc-reveal { width: calc(var(--njg-t3) * 1.2); height: calc(var(--njg-t3) * 1.2); }
-.wc-en .wc-reveal { width: calc(var(--njg-t4) * 1.25); height: calc(var(--njg-t4) * 1.25); border-width: var(--njg-line); }
-.wc-k .wc-reveal::after, .wc-en .wc-reveal::after { content: ""; position: absolute; inset: calc(var(--njg-s3) * -1); }
+/* the reveal: its button is always at least 44 px to tap (the tap-small check measures the button), while the round eye it
+   shows is drawn at the slot's own size (--wc-vis); in a text slot the big button overhangs the line (negative margins), so
+   the slot keeps its height */
+.wc-reveal { --wc-vis: calc(var(--njg-tap) * 0.75); --wc-hit: max(var(--wc-vis), calc(var(--njg-tap) - var(--njg-s1))); position: relative; flex: none; width: var(--wc-hit); height: var(--wc-hit); margin-block: calc((var(--wc-vis) - var(--wc-hit)) / 2); padding: 0; display: grid; place-items: center; border: 0; border-radius: var(--njg-round); background: none; color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
+.wc-reveal::before { content: ""; position: absolute; left: 50%; top: 50%; width: var(--wc-vis); height: var(--wc-vis); transform: translate(-50%, -50%); box-sizing: border-box; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); }
+.wc-reveal svg { position: relative; width: calc(var(--wc-vis) * 0.7); height: calc(var(--wc-vis) * 0.7); display: block; }
+.wc-pic .wc-reveal { --wc-vis: var(--njg-tap); }
+.wc-row .wc-pic .wc-reveal { --wc-vis: calc(var(--njg-tap) * 0.75); }
+/* the text slots' eye fits the line, at the slot's left; the button's extra width runs to the right, over the blank line */
+.wc-k .wc-reveal, .wc-en .wc-reveal { margin-inline-start: calc(var(--njg-s1) * -1); justify-items: start; }
+.wc-k .wc-reveal::before, .wc-en .wc-reveal::before { left: calc(var(--wc-vis) / 2 + var(--njg-s1)); }
+.wc-k .wc-reveal svg, .wc-en .wc-reveal svg { margin-inline-start: calc(var(--njg-s1) + var(--wc-vis) * 0.15); }
+.wc-k .wc-reveal { --wc-vis: calc(var(--njg-t2) * 1.2); }
+.wc-row .wc-k .wc-reveal { --wc-vis: calc(var(--njg-t3) * 1.2); }
+.wc-en .wc-reveal { --wc-vis: calc(var(--njg-t4) * 1.25); }
+.wc-en .wc-reveal::before { border-width: var(--njg-line); }
 
 /* WordCard.pop: the copy in flight, and the row waiting for it */
 .wc.wc-away { visibility: hidden; }

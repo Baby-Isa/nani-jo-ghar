@@ -128,3 +128,17 @@ test("the move-on hook: no Next, no Done; it goes on by itself after its beat", 
   await B.moveOn(() => done++, { ms: 0, ready: new Promise(() => {}), cap: 20 });
   assert.equal(done, 3);
 });
+
+test("EASY-08: the stuck spotlight hugs each live control's box; close neighbours shrink the pad, never get lit", () => {
+  const [a] = Onboard.hugShapes([{ x: 100, y: 100, w: 80, h: 40 }]);
+  assert.deepEqual([a.x, a.y, a.w, a.h, a.pad], [94, 94, 92, 52, 6], "a small, even pad");
+  assert.ok(a.r <= 12);
+  // two pills 4 px apart: each lit box stops 2 px short of the other
+  const [p, q] = Onboard.hugShapes([{ x: 0, y: 0, w: 100, h: 40 }, { x: 104, y: 0, w: 100, h: 40 }]);
+  assert.equal(p.pad, 2);
+  assert.ok(p.x + p.w <= q.x);
+  // a neighbour to keep dark (the card above the pills), 6 px away: the pad is 3, the light never reaches it
+  const [r] = Onboard.hugShapes([{ x: 0, y: 50, w: 100, h: 40 }], [{ x: 0, y: 0, w: 100, h: 44 }]);
+  assert.equal(r.pad, 3);
+  assert.ok(r.y >= 44);
+});

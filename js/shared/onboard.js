@@ -198,6 +198,32 @@
     else rx = Math.max(rx, ry / 2.2);
     return { cx: r.x + r.w / 2, cy: r.y + r.h / 2, rx, ry };
   };
+  /**
+   * EASY-08 (Sprint 11): the stuck spotlight's light hugs each live control's own box: a rounded rect with a small, even pad,
+   * never an oval that spills over its neighbours. When two lit things, or a thing and a neighbour to keep dark (avoid), are
+   * close, the pad shrinks to half the gap between them (down to 0) rather than light the neighbour.
+   * rects, avoid: [{x, y, w, h}]; -> [{x, y, w, h, r, pad}] in the same order.
+   */
+  Onboard.HUG_PAD = 6;
+  Onboard.hugShapes = function (rects, avoid, pad) {
+    pad = pad == null ? Onboard.HUG_PAD : pad;
+    const gap = (a, b) => {
+      const dx = Math.max(0, Math.max(a.x, b.x) - Math.min(a.x + a.w, b.x + b.w));
+      const dy = Math.max(0, Math.max(a.y, b.y) - Math.min(a.y + a.h, b.y + b.h));
+      return Math.max(dx, dy);
+    };
+    const all = (rects || []).filter(Boolean);
+    return all.map((r, i) => {
+      let p = pad;
+      all.forEach((q, j) => j !== i && (p = Math.min(p, gap(r, q) / 2)));
+      (avoid || []).filter(Boolean).forEach((q) => (p = Math.min(p, gap(r, q) / 2)));
+      p = Math.max(0, p);
+      const w = r.w + 2 * p;
+      const h = r.h + 2 * p;
+      return { x: r.x - p, y: r.y - p, w, h, r: Math.min(12, w / 2, h / 2), pad: p };
+    });
+  };
+
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
    * The play log (easy-to-play.md principle 11): each stage's events folded into one round
@@ -772,45 +798,84 @@
   };
 
   /**
-   * The spotlight alone (the 5 s rung): the 62% dim (as Onboard.run's) with a soft hole on `target`; everything but the live
-   * control (o.live, default the target) is inert: a touch elsewhere is stopped before the page gets it. [data-ob-pass]
-   * (the ? and its menu) stays usable. -> {close(), layer}
+   * The spotlight alone (the 5 s rung): the 62% dim (as Onboard.run's) with a hole hugging each `target` box (EASY-08: a
+   * rounded rect, a small even pad, o.avoid: neighbours the pad shrinks for; o.hold(): true while the item demonstrates, the
+   * light stays where the control rests); everything but the live control (o.live,
+   * default the target) is inert: a touch elsewhere is stopped before the page gets it. [data-ob-pass] (the ? and its menu)
+   * stays usable. -> {close(), layer}
    */
   Onboard.spot = function (target, o) {
     o = o || {};
     const sid = `sp${Math.random().toString(36).slice(2, 8)}`;
     const layer = document.createElement("div");
     layer.className = "njg-onboard njg-spot";
-    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><radialGradient id="ob-soft-${sid}"><stop offset="0" stop-color="#000"/><stop offset="0.72" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><ellipse class="ob-hole" fill="url(#ob-soft-${sid})"/></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/></svg>`;
+    // EASY-08: one rounded-rect hole per live control, hugging its box (Onboard.hugShapes), a thin gold ring round each
+    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><filter id="ob-feather-${sid}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.5"/></filter><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes" filter="url(#ob-feather-${sid})"></g></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/><g class="ob-hugs"></g></svg>`;
     (o.container || document.body).appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
-    const hole = layer.querySelector(".ob-hole");
+    const NSs = "http://www.w3.org/2000/svg";
+    const holes = layer.querySelector(".ob-holes");
+    const rings = layer.querySelector(".ob-hugs");
+    let shapes = [];
+    let home = [];
     let raf = 0;
-    const draw = () => {
-      const r = union(rectsOf(target));
-      hole.style.display = r ? "" : "none";
-      if (r) {
-        const e = Onboard.glowShape(r, PAD);
-        hole.setAttribute("cx", e.cx);
-        hole.setAttribute("cy", e.cy);
-        hole.setAttribute("rx", e.rx);
-        hole.setAttribute("ry", e.ry);
+    const put = (g, i, fill, ring) => {
+      while (g.childNodes.length <= i) {
+        const r = document.createElementNS(NSs, "rect");
+        if (ring) Object.assign(r.style, { fill: "none", stroke: "#f7d57a", strokeWidth: "2", opacity: "0.9" });
+        else r.setAttribute("fill", fill);
+        g.appendChild(r);
       }
+      return g.childNodes[i];
+    };
+    const draw = () => {
+      // while the item demonstrates (o.hold), the light stays on where the live control rests: it never follows the moving item onto a neighbour
+      // (and the item itself is lit as it goes, hugged with no pad, so the demo is seen)
+      if (!(o.hold && o.hold() && home.length)) shapes = home = Onboard.hugShapes(rectsOf(target), o.avoid ? rectsOf(o.avoid) : null, o.pad);
+      else shapes = home.concat(Onboard.hugShapes(rectsOf(target), null, 0).filter((m) => !home.some((h) => Math.abs(h.x + h.pad - m.x) < 2 && Math.abs(h.y + h.pad - m.y) < 2)));
+      [holes, rings].forEach((g, k) => {
+        [...g.childNodes].forEach((n, i) => (n.style.display = i < shapes.length ? "" : "none"));
+        shapes.forEach((sh, i) => {
+          const r = put(g, i, "#000", k === 1);
+          r.style.display = "";
+          r.setAttribute("x", sh.x);
+          r.setAttribute("y", sh.y);
+          r.setAttribute("width", sh.w);
+          r.setAttribute("height", sh.h);
+          r.setAttribute("rx", sh.r);
+          r.setAttribute("ry", sh.r);
+        });
+      });
       raf = requestAnimationFrame(draw);
     };
-    raf = requestAnimationFrame(draw);
-    const liveRects = () => rectsOf(o.live || target);
+    draw();
+    const liveRects = () => (o.live ? Onboard.hugShapes(rectsOf(o.live), o.avoid ? rectsOf(o.avoid) : null, o.pad) : home);
     const pt = (e) => {
       const t = e.changedTouches ? e.changedTouches[0] : e;
       return { x: t.clientX, y: t.clientY };
     };
+    // a tap counts only on the lit box itself (its pad included): never on the neighbour the pad shrank for
+    const on = (p, r) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
+    // a press in the dark is stopped whole: its release too (a host's tap reads the pointerup, js/shared/input.js), but only
+    // that press's: a drag that started on the live control (the toothbrush) may end anywhere
+    const dark = new Set();
     const block = (e) => {
+      if (e.type === "pointerup" || e.type === "pointercancel" || e.type === "touchend") {
+        const id = e.pointerId != null ? e.pointerId : "t";
+        if (!dark.has(id)) return;
+        dark.delete(id);
+        e.stopPropagation();
+        e.preventDefault();
+        return;
+      }
       if (e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
-      if (liveRects().some((r) => inside(pt(e), r))) return;
+      if (liveRects().some((r) => on(pt(e), r))) return;
+      if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
+      if (e.type === "touchstart") dark.add("t");
       e.stopPropagation();
       e.preventDefault();
     };
-    const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu"];
+    const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu", "pointerup", "pointercancel", "touchend"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     let closed = false;
     return {
@@ -911,7 +976,7 @@
         fired[1] = true;
         h.rung = 5;
         LCnote("rung", { step: name, rung: 5 });
-        if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live });
+        if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, hold: () => busy });
         demo();
       }
       if (AT[2] != null && idle >= AT[2] && !fired[2]) {
@@ -1035,7 +1100,7 @@
       const round = PL.fold(entries, taps.filter((x) => x.t >= t0 && x.t <= log[e].t + 5), m);
       meta = {};
       // only a stage that started (not the gap before an end screen) and that someone played (not a hand-off or a lab boot)
-      if (!started || (!round.steps.some((st) => st.acts || st.allTaps) && round.ms < 1500)) return null;
+      if (!started || (!round.steps.some((st) => st.acts || st.allTaps) && round.ms < 5000)) return null; // (a stage left idle 5 s or more is kept: a slow step)
       PlayLog.write(PL.append(mine(), round));
       PlayLog.last = round;
       return round;
