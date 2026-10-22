@@ -15,6 +15,9 @@
   header { padding: 12px 16px 0; }
   h1 { font-size: 19px; margin: 0 0 4px; }
   header p { margin: 0; color: #7a6558; font-size: 13px; }
+  .db-toggle { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 0; padding: 8px 12px; min-height: 44px; border: 1px solid #d9bf95; border-radius: 12px; background: #fff7e8; font-size: 14px; max-width: 1100px; box-sizing: border-box; cursor: pointer; }
+  .db-toggle input { width: 22px; height: 22px; }
+  .db-toggle span { color: #7a6558; font-size: 13px; }
   .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; }
   .bar label { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; color: #7a6558; }
   select, button { font: inherit; padding: 6px 12px; border-radius: 10px; border: 1px solid #d9bf95; background: #fff7e8; min-height: 40px; color: inherit; }
@@ -56,7 +59,17 @@
 <header>
   <h1>A day at Nani's</h1>
   <p>Build a day from the stages you pick, in order, or play one game on its own. Further down: each stage of the day on its own.</p>
+  <label class="db-toggle"><input type="checkbox" id="db-toggle"> <b>Day builder on the labs page</b> <span>On: every game you play from the labs page starts at Nani's door and ends with the evening book (the same switch as beside New player there).</span></label>
 </header>
+<script>
+  // LAB-06 (Zafar, 22 Oct: "if you toggle the day builder it just bookends with the Nani house and the Nani book"): the labs page's
+  // Day builder switch, kept on this device (njg-labs-day-builder); with it on, labs.html sends each game to day.html?bookend=<its link>
+  (function () {
+    var K = "njg-labs-day-builder", t = document.getElementById("db-toggle");
+    try { t.checked = localStorage.getItem(K) === "1"; } catch (e) { t.checked = false; }
+    t.addEventListener("change", function () { try { localStorage.setItem(K, t.checked ? "1" : "0"); } catch (e) { /* this visit only */ } });
+  })();
+</script>
 <section class="builder" id="builder" aria-labelledby="b-h">
   <h2 id="b-h">Build a day</h2>
   <ol id="rows" class="rows"></ol>
