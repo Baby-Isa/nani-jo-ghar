@@ -9,7 +9,9 @@
  *   P.heard(id, { ok, cue = "kutchi", firstTry })   // understanding: only cue "kutchi" (nothing else to go on) is recall
  *   P.said(id, { ok, via = "speech" })              // speaking: "speech" | "pill" | "parent"
  *   P.get(id) -> record      P.stage(id) -> understand_stage      P.produceStage(id)
- *   P.support(id, { placeholder }) -> { label, card, hintAfterMs, autoPlay, picture }   (how much help to give)
+ *   P.support(id, { placeholder }) -> { label, card, hintAfterMs, autoPlay, picture, english, kutchiText }   (how much help to give)
+ *   P.reveal(id, slot)                              S11 (Zafar, 21 Oct): a free reveal on the word card (js/shared/word-card.js):
+ *                                                   slot "picture" | "english" | "text" is logged as that cue, never as recall
  *   P.cookStage(id) -> 1..4  // Cook's own four stages, for Cook's callers until R4 moves them
  *   P.importCook(cookWords)  // Cook's seen/right/miss records in; safe to call again (only what changed since)
  *                            // (done by itself on every read while Cook keeps its own words: followCook)
@@ -34,12 +36,13 @@ export const DEFAULT_DATA = {
   understand: { meetAdvances: true, advanceAfter: { 1: 0, 2: 4, 3: 5, 4: 6 }, dropAfterMisses: 2, floorOnceMet: 2, dropStreak: { 2: 1, 3: 0, 4: 0 } },
   produce: { advanceAfter: { 1: 1, 2: 2, 3: 3, 4: 3 }, dropAfterMisses: 2, floor: 1, dropStreak: {} },
   cookImport: { base: { 1: 0, 2: 0, 3: 4, 4: 9 } },
+  cues: ["kutchi", "picture", "english", "text"],
   support: {
-    1: { label: "text", card: "text", hintAfterMs: 7000, autoPlay: true, picture: true },
-    2: { label: "speaker", card: "text", hintAfterMs: 8000, autoPlay: true, picture: true },
-    3: { label: "speaker", card: "dots", hintAfterMs: 11000, autoPlay: false, picture: true },
-    4: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: true },
-    5: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: false },
+    1: { label: "text", card: "text", hintAfterMs: 7000, autoPlay: true, picture: true, english: true, kutchiText: true },
+    2: { label: "speaker", card: "text", hintAfterMs: 8000, autoPlay: true, picture: true, english: true, kutchiText: true },
+    3: { label: "speaker", card: "dots", hintAfterMs: 11000, autoPlay: false, picture: true, english: false, kutchiText: true },
+    4: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: false, english: false, kutchiText: true },
+    5: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: false, english: false, kutchiText: false },
   },
 };
 
@@ -182,15 +185,38 @@ export function importCook(words, cookWords, data) {
   return out;
 }
 
-/** How much help a word gets at its stage (replaces Cook's labelMode, cardHidden and hintDelay). */
+/**
+ * How much help a word gets at its stage (replaces Cook's labelMode, cardHidden and hintDelay). The word card's slots
+ * (S11, Zafar 21 Oct: the fade order English, then the picture, then the Kutchi text; the speaker always): picture,
+ * english, kutchiText. A file without them gets the defaults' slots for that stage.
+ */
 export function support(rec, data, { placeholder = false } = {}) {
   const D = rules(data);
   const st = fresh(rec).understand_stage;
-  const s = Object.assign({}, (D.support || DEFAULT_DATA.support)[st] || DEFAULT_DATA.support[1]);
-  // an English placeholder is never "known" Kutchi: never dotted out on the card
+  const def = DEFAULT_DATA.support[st] || DEFAULT_DATA.support[1];
+  const s = Object.assign({}, def, (D.support || DEFAULT_DATA.support)[st] || {});
+  // an English placeholder is never "known" Kutchi: never dotted out on the card, its text never blanked
   if (placeholder && s.card === "dots") s.card = "text";
+  if (placeholder) s.kutchiText = true;
   s.stage = st;
   return s;
+}
+
+/** The cue a reveal on the word card logs (S11): a known one, else "english". */
+export const REVEAL_CUES = ["picture", "english", "text"];
+
+/**
+ * A free reveal on the word card (S11): the slot the child opened is logged as its cue on the word's record
+ * ({cues: {picture: n, english: n, text: n}, lastCue}); it is exposure, never recall, so the stage never moves.
+ */
+export function reveal(rec, slot, data, now = Date.now()) {
+  const r = fresh(rec);
+  const cue = REVEAL_CUES.includes(slot) ? slot : "english";
+  r.cues = Object.assign({}, r.cues);
+  r.cues[cue] = num(r.cues[cue]) + 1;
+  r.lastCue = { cue, at: now };
+  r.last = now;
+  return r;
 }
 
 /** The progress service over the one save's `words` namespace. */
@@ -229,6 +255,7 @@ export function createProgress({ save, data, followCook = true } = {}) {
     heard: (id, ev) => put(id, heard(all()[id], ev, D)),
     said: (id, ev) => put(id, said(all()[id], ev, D)),
     support: (id, o) => support(all()[id], D, o),
+    reveal: (id, slot) => put(id, reveal(all()[id], slot, D)),
     importCook: (cookWords) => save && save.set("words", importCook(all(), cookWords, D)),
     /** SH-60 (PA5): forget every learned word ("Start over", the grown-ups' "play as new"): each word is new again. */
     reset: () => {

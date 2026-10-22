@@ -4,9 +4,11 @@
  *
  *   ✓ Done     the round gold tick, bottom right of the play area: commit what you've made
  *              (serve the dish, hand over the tray, finish the heal step). Cook's #done-btn look.
- *   → Next     the go-on button (SH-106, 19 Oct): the flat design-system card, taller than the ✓, with a clear picture
- *              of where it goes (the grill, the karahi, the eye chart) and the gold arrow, ALWAYS: move on to the
- *              next screen or phase. One look and one place in every Cook station and every heal game.
+ *   → Next     RETIRED (Zafar, 22 Oct: "no Next and no Done anywhere"; Sprint 11): NjgButtons.next still makes its
+ *              button (so every caller's markup, label and picture calls keep working), but it is never drawn and
+ *              nothing waits for a press: a beat (about 1 s) after it is shown it presses itself, and again each beat
+ *              while it stays shown (a handler that isn't ready yet goes on as soon as it is). Games call the one
+ *              move-on hook instead: NjgButtons.moveOn(onDone, {ms, ready, reason}).
  *   answer pills   one pill style for haa / na and the speaking fallbacks.
  *   the end screen's actions: Again / Next / Home (or the list), always in that order (endActions()).
  *
@@ -15,6 +17,11 @@
  *            label: a string, a DOM node (the mode's own word markup) or {html}; "" or null for a picture only
  *            pic: the picture of where it goes, a URL or {src, src2x} (the @2x for dense screens)
  *            the arrow is always drawn last (SH-106: "there's no arrow"); nothing can take it off
+ *            (Sprint 11: auto, drawn as nothing; o.manual: the old pressable look, for a lab page only)
+ *   await NjgButtons.moveOn(onDone, {ms, ready, cap, reason, wait})   THE move-on hook (Sprint 11): a step is complete,
+ *            the game moves on by itself after a short beat (BEAT_MS, about 1 s, at the page's ?speed=); waits for
+ *            o.ready first (capped at o.cap, 6 s), through Lifecycle.advance when the page has it. No Next, no Done.
+ *   NjgButtons.BEAT_MS   the beat (1000); NjgButtons.speed() the page's test speed
  *   NjgButtons.pic(btn, pic, {untilHidden})  put (or with null take off) a go-on button's picture; untilHidden: it
  *            goes when the button is next hidden (a button made once and shown again for other jobs: Cook's #go-btn)
  *   const row = NjgButtons.pills(parent, [{id, label | html | node}], onPick, {cls}) -> <div class="njg-pills">
@@ -116,15 +123,78 @@
     sync();
     if (typeof root.MutationObserver === "function") new root.MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ["class"] });
   }
+  /* ---------------- Sprint 11: no Next (Zafar, 22 Oct) ---------------- */
+  B.BEAT_MS = 1000;
+  /** The page's test speed (?speed=N runs every beat N times faster), 1 otherwise. */
+  B.speed = function () {
+    try {
+      const v = Number(new URLSearchParams((root.location && root.location.search) || "").get("speed"));
+      return v > 0 ? v : 1;
+    } catch (e) {
+      return 1;
+    }
+  };
+  const beat = (ms) => (ms != null ? ms : B.BEAT_MS) / B.speed();
   /**
-   * → Next, the go-on button (SH-106): [label] [picture] →, bottom right of the play area. The arrow is part of the
-   * button, always last (data-arrow marks it for the contract run's check, contract-27); a label and a picture are
-   * each optional.
+   * THE move-on hook: the step is complete, so after a short beat the game goes on by itself (principle 4). Waits for
+   * o.ready (e.g. the line being said; capped at o.cap) first. Resolves after onDone has run.
+   */
+  B.moveOn = async function (onDone, o = {}) {
+    const L = root.Lifecycle;
+    const ms = beat(o.ms);
+    if (L && L.advance) await L.advance({ ready: o.ready, cap: o.cap, ms, wait: o.wait, reason: o.reason || "move-on" });
+    else {
+      const w = o.wait || ((t) => new Promise((r) => setTimeout(r, t)));
+      if (o.ready) await Promise.race([Promise.resolve(o.ready).catch(() => {}), w(o.cap != null ? o.cap : 6000)]);
+      await w(ms);
+    }
+    if (typeof onDone === "function") return onDone();
+  };
+  /** Is the go-on button up (made, on the page, not hidden or disabled)? Then it would have been pressed: it goes on. */
+  const shownNow = (b) => b.isConnected && !b.disabled && !b.hidden && !b.classList.contains("hidden") && !(b.closest && b.closest(".hidden, [hidden]"));
+  function autoPress(b, o) {
+    let t = 0;
+    const arm = () => {
+      if (t) return;
+      if (!shownNow(b)) return;
+      t = setTimeout(() => {
+        t = 0;
+        if (!shownNow(b)) return;
+        b.dataset.auto = "pressed";
+        delete b.dataset.cool;
+        b.click();
+        // still up after its press (a guarded handler: not ready yet): try again next beat
+        if (shownNow(b)) arm();
+      }, beat(o.ms));
+    };
+    const watch = () => {
+      // hidden again before its beat: the timer goes (shown again later, it starts again)
+      if (t && !shownNow(b)) {
+        clearTimeout(t);
+        t = 0;
+      }
+      arm();
+    };
+    if (typeof root.MutationObserver === "function") new root.MutationObserver(watch).observe(b, { attributes: true, attributeFilter: ["class", "disabled", "hidden"] });
+    // made and placed in the same turn as most callers do: armed once it is in the page
+    setTimeout(arm, 0);
+    b.__njgArm = arm;
+  }
+  /**
+   * → Next, retired (Sprint 11): the old go-on button's markup (SH-106: [label] [picture] →, the arrow always last), kept
+   * so callers' label and picture code keeps working, but never drawn (class njg-auto, display none inline) and
+   * pressed by itself a beat after it is shown. o.manual: the old pressable button (a lab page only).
    */
   B.next = function (parent, label, onPress, o = {}) {
     const b = doc().createElement("button");
     b.type = "button";
-    b.className = `njg-btn njg-next${o.glow ? " glow" : ""}${o.cls ? ` ${o.cls}` : ""}`;
+    b.className = `njg-btn njg-next${o.manual ? "" : " njg-auto"}${o.glow ? " glow" : ""}${o.cls ? ` ${o.cls}` : ""}`;
+    if (!o.manual) {
+      // never drawn: nothing to press, nothing to cover the play (inline, so no stylesheet has to know)
+      b.style.setProperty("display", "none", "important");
+      b.tabIndex = -1;
+      b.setAttribute("aria-hidden", "true");
+    }
     if (o.id) b.id = o.id;
     const t = doc().createElement("span");
     t.className = "njg-next-t";
@@ -133,7 +203,9 @@
     b.insertAdjacentHTML("beforeend", `<span class="njg-next-ic" data-arrow="1" aria-hidden="true">${B.ICON.arrow}</span>`);
     if (o.pic) B.pic(b, o.pic);
     if (parent) parent.appendChild(b);
-    return wire(b, onPress);
+    wire(b, onPress);
+    if (!o.manual) autoPress(b, o);
+    return b;
   };
   /** A go-on button's picture (SH-106): set it (a URL or {src, src2x}), or take it off (null). */
   B.pic = function (b, pic, o = {}) {

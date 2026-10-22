@@ -56,6 +56,9 @@
  *   const res = await host.run({ mode, plan, play, level, seed, actions, params })   params: every stage's defaults
  *     -> { round, finish, out, findings, stages, left? }    out = the end screen's answer ({action})
  *   host.leave()    the child left (Home): the current stage is destroyed, waits reject, run() resolves {left}
+ *   the play log    (Sprint 11) each stage is named to window.PlayLog (js/shared/onboard.js) as it starts; the shared stage
+ *                   end (Lifecycle.stageEnd) folds its events into {mode, game, step, firstActMs, taps, acts, helps} rows,
+ *                   appended to localStorage "njg-play-log" (the last 50 rounds); lab/play-log.html reads them
  *   ?then=<page>    (Sprint 10: the day builder's hand-off, generalising Cook's ?first=…&then= of js/cook/app.js) the end screen's
  *                   way on (the list, or home, when the mode offers no Next) goes to that page of the app, labelled Next;
  *                   thenTarget() checks it. nonav=1 only notes it (host.current.then, window.__thenUrl).
@@ -421,6 +424,13 @@ export function createHost(opts = {}) {
     // S05-S1 (SH-66): every host stage marks its own start in the lifecycle log (the clinic marked none), so a line the
     // next stage says as it opens is known to be its own, never the last stage's carrying over
     const LC0 = lifecycle();
+    // Sprint 11, the play log (js/shared/onboard.js PlayLog): this stage's name, so its end folds into {mode, game, steps}
+    try {
+      const PLg = typeof window !== "undefined" ? window.PlayLog : null;
+      if (PLg && PLg.meta) PLg.meta({ mode: mode.id, game: def.id, level });
+    } catch (e) {
+      /* the log never breaks play */
+    }
     if (LC0 && LC0.stageStart) LC0.stageStart(stageId);
     let tAct = null; // the stage's first action: its time runs from here to Done (pauses and Conversations don't count)
     const info = { game: def.id, level, tStart, tEnd: null, timeMs: 0, left: false, words: null, tasks: 0, result: null };

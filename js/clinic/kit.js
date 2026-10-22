@@ -1304,6 +1304,9 @@
    * The clinic's buttons come from the shared button kit (js/shared/buttons.js): "✓" (or cls "done")
    * is the round gold ✓ Done; anything else is the → Next pill with its label. They sit in the play
    * area's bottom-right corner (screen.actions), inside its edges on every screen.
+   * Sprint 11 (Zafar, 22 Oct: no Next anywhere): the non-Done path is the shared kit's retired Next: never drawn, it
+   * presses itself a beat (about 1 s) after it is shown (js/shared/buttons.js NjgButtons.next), so every stage that
+   * waited on it moves on by itself. A game with a step to end calls NjgButtons.moveOn(onDone) instead.
    */
   Kit.button = function (parent, label, onPress, cls) {
     const NB = global.NjgButtons;
@@ -1326,6 +1329,8 @@
       if (b.disabled) return;
       onPress && onPress(e);
     });
+    // no shared kit on the page (an old lab): the same rule, a go-on button presses itself after a beat
+    if (!isDone) setTimeout(() => b.isConnected && !b.disabled && b.click(), 1000);
     return b;
   };
 
