@@ -521,6 +521,7 @@
     m.help = function () {
       const c = m.open();
       if (!c) return false;
+      c.help = true;
       if (!c.glow) {
         c.glow = true;
         emit({ type: "glow", i: c.i, why: "help" });
@@ -721,7 +722,10 @@
 .wr-found > .wr-body { animation: wr-found .6s ease-out 1 forwards; }
 @keyframes wr-found { 0% { transform: none; opacity: 1; } 60% { transform: translateY(-14%) scale(1.12); opacity: 1; } 100% { transform: translateY(-20%) scale(0.9); opacity: 0; } }
 .wr-nudge > .wr-body { animation: wr-nudge .4s ease-in-out 1; }
-@media (prefers-reduced-motion: reduce) { .wr-nudge > .wr-body { animation: none; } }
+/* RIDE-10: the first-time help: the thing to find glows (the shared glow's colour, css/shared/focus.css) and bounces up and down */
+.wr-help > .wr-body { animation: wr-help .8s ease-in-out infinite; filter: drop-shadow(0 0 8px rgba(var(--glow-rgb, 224, 166, 58), 1)) drop-shadow(0 0 30px rgba(var(--glow-rgb, 224, 166, 58), var(--glow-alpha, .85))); }
+@keyframes wr-help { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12%); } }
+@media (prefers-reduced-motion: reduce) { .wr-nudge > .wr-body, .wr-help > .wr-body { animation: none; } }
 `;
   const styleOnce = (doc) => {
     if (doc.getElementById("wr-style")) return;
@@ -1161,12 +1165,14 @@
           if (member) b.dataset.call = String(th.member);
           else delete b.dataset.call;
         }
-        const lit = !!(open && open.glow && open.namedTh === th);
-        if (lit !== !!e.lit) {
+        // the glow (after a wrong tap or the pause), or the first-time help's stronger glow and bounce (RIDE-10)
+        const lit = !!(open && open.glow && open.namedTh === th) ? (open.help ? "help" : "glow") : "";
+        if (lit !== (e.lit || "")) {
           e.lit = lit;
-          b.classList.toggle("wr-glow", lit);
+          b.classList.toggle("wr-glow", !!lit);
+          b.classList.toggle("wr-help", lit === "help");
           const body = b.firstChild;
-          if (body) body.classList.toggle("njg-pulse", lit);
+          if (body) body.classList.toggle("njg-pulse", lit === "glow");
         }
         if (th.got && !b.disabled) b.disabled = true;
       }

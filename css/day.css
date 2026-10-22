@@ -214,6 +214,23 @@ canvas.day-layer { width: 100%; height: 100%; }
 /* ---------- the window ride (js/shared/window-ride.js) ---------- */
 .day-window .day-play { position: relative; overflow: hidden; }
 .day-card { margin-top: var(--njg-s2); }
+/* RIDE-09: the list of what to find under her guide box: the one to find now open as the shared word card (its picture shrinks
+   to the room the sidebar has), the others their word, ticked when found */
+.day-window .day-side { display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box; }
+.day-find { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s2); margin-top: var(--njg-s2); padding: var(--njg-s1); }
+.day-find-card.wc { flex: 0 1 auto; min-height: 0; transition: box-shadow .3s; }
+.day-find-card.wc .wc-pic { aspect-ratio: auto; flex: 1 1 auto; min-height: var(--njg-tap); height: calc(var(--njg-side-w, 240px) * .62); max-height: calc(var(--njg-side-w, 240px) * .75); }
+.day-find-card .day-wline .day-k { margin: 0; font-size: var(--njg-t2); }
+.day-find-row { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--njg-s2); min-height: var(--njg-tap); padding: var(--njg-s1) var(--njg-s3); box-sizing: border-box; background: var(--njg-card); border: 0; border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); color: var(--njg-ink); font: inherit; text-align: left; cursor: pointer; touch-action: manipulation; }
+.day-find-row .day-line { min-width: 0; }
+.day-find-row .day-k { font-size: var(--njg-t2); color: var(--njg-word); }
+.day-find-row .day-k.to-record { color: var(--njg-ink-soft); }
+.day-find-row.done .day-k { color: var(--njg-ink-soft); }
+.day-find-tick { flex: none; position: relative; width: 28px; height: 28px; border-radius: var(--njg-round); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); box-sizing: border-box; }
+.day-find-tick::after { content: ""; position: absolute; left: 8px; top: 3px; width: 7px; height: 13px; border: solid var(--njg-gold); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+/* RIDE-10: the first-time help's box round the open card (not dimmed, never bouncing: the thing in the view is what bounces) */
+.day-find-card.day-help-box { box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), 0 0 0 calc(var(--njg-line-2) + var(--njg-s1)) var(--njg-focus), var(--njg-shadow); }
+@media (max-height: 499.98px) { .day-find { gap: var(--njg-s1); margin-top: var(--njg-s1); } .day-find-card.wc .wc-pic { height: calc(var(--njg-side-w, 240px) * .42); } }
 .wr-window { position: absolute; inset: 0; overflow: hidden; background: var(--njg-panel); touch-action: manipulation; }
 .wr-scene { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .wr-sky { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; }
