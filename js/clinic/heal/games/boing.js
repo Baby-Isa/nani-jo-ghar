@@ -9,7 +9,7 @@
  *    the one scored (E14). The colour is said and on the card at every level (CLN-169); L2 two colours in order
  *    ("ba [red], ne poi hakro [blue]"); L3 the same, heard only (the closed card: Zafar's ladder, 13 Oct).
  * 3. Filled (L1 at the count; L2+ the child's ✓), the syringe places itself over the arm (CLN-167); its glowing end is
- *    pressed: a puff of mist and sparkles at the spot (no needle is ever seen), the medicine goes in, stars and hearts
+ *    pressed: the medicine goes in (no needle is ever seen; the code-drawn mist and sparkles are off, Sprint 10), stars and hearts
  *    pop and she giggles. No count-down, no squash, no shake (Zafar, 18 Oct).
  * 4. A plaster of the colour asked on the spot. The apple is only at the send-off (H33), not here.
  * Rows (the words decide): the wipes; the drops (the count at L1, the colours in order from L2).
@@ -418,25 +418,7 @@
       const D = (ms) => ms;
       const at = { x: A.x, y: A.y - 4 };
       const down = syG.animate ? syG.animate([{ transform: `translate(${OVER.dx}px, ${OVER.dy}px)` }, { transform: `translate(${OVER.dx}px, ${OVER.dy + 10}px)` }], { duration: D(260), easing: "ease-in", fill: "forwards" }) : null;
-      // the puff: soft white mist round the cap's end, with gold sparkles in it
-      const puff = s("g", { class: "bo-puff" }, S.fx);
-      const defs = s("defs", {}, puff);
-      const gid = `bo-mist-${Math.floor(ctx.rng() * 1e9)}`;
-      const rg = s("radialGradient", { id: gid }, defs);
-      s("stop", { offset: "0", "stop-color": "#ffffff", "stop-opacity": 0.95 }, rg);
-      s("stop", { offset: "0.6", "stop-color": "#f4f8ff", "stop-opacity": 0.7 }, rg);
-      s("stop", { offset: "1", "stop-color": "#ffffff", "stop-opacity": 0 }, rg);
-      const mist = [[0, 0, 30], [-22, -8, 22], [22, -6, 22], [-10, 12, 20], [14, 12, 19], [0, -20, 18]].map(([dx, dy, r]) => s("circle", { cx: at.x + dx, cy: at.y + dy, r, fill: `url(#${gid})` }, puff));
-      const sparks = [[-30, -24], [32, -18], [-20, 26], [26, 24], [2, -36]].map(([dx, dy], k) => s("path", { d: `M${at.x + dx} ${at.y + dy - 7} L${at.x + dx + 2} ${at.y + dy - 2} L${at.x + dx + 7} ${at.y + dy} L${at.x + dx + 2} ${at.y + dy + 2} L${at.x + dx} ${at.y + dy + 7} L${at.x + dx - 2} ${at.y + dy + 2} L${at.x + dx - 7} ${at.y + dy} L${at.x + dx - 2} ${at.y + dy - 2}Z`, fill: k % 2 ? "#fff6c8" : "#ffd84a", stroke: "#e8b04a", "stroke-width": 0.8 }, puff));
-      if (puff.animate) {
-        mist.forEach((m, k) => m.animate([{ transform: "scale(.3)", opacity: 0 }, { transform: "scale(1)", opacity: 1, offset: 0.25 }, { transform: "scale(1.15)", opacity: 1, offset: 0.7 }, { transform: "scale(1.35)", opacity: 0 }], { duration: D(1500 + k * 40), fill: "forwards", easing: "ease-out" }));
-        mist.forEach((m) => ((m.style.transformBox = "fill-box"), (m.style.transformOrigin = "center")));
-        sparks.forEach((p, k) => {
-          p.style.transformBox = "fill-box";
-          p.style.transformOrigin = "center";
-          p.animate([{ transform: "scale(0) rotate(0deg)", opacity: 0 }, { transform: "scale(1.2) rotate(30deg)", opacity: 1, offset: 0.4 }, { transform: "scale(.8) rotate(60deg)", opacity: 0 }], { duration: D(1200), delay: fast() ? 0 : 120 + k * 70, fill: "forwards" });
-        });
-      }
+      // (Sprint 10, Zafar 21 Oct: the code-drawn puff of mist and sparkles at the cap is off; it did not match the art)
       if (down) await down.finished.catch(() => {});
       // the medicine goes in: the liquid runs down, the plunger goes home (the pressed picture, same canvas)
       const n0 = st.drops.length;
@@ -480,7 +462,6 @@
       const lift = syG.animate ? syG.animate([{ transform: `translate(${OVER.dx}px, ${OVER.dy + 10}px)`, opacity: 1 }, { transform: `translate(${OVER.dx}px, ${OVER.dy - 50}px)`, opacity: 0 }], { duration: D(600), delay: D(250), easing: "ease-in", fill: "forwards" }) : null;
       ctx.after(D(950), () => {
         S.clear(countG);
-        puff.remove();
         if (down) down.cancel();
         if (lift) lift.cancel();
         syG.setAttribute("opacity", 0);

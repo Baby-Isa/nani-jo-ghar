@@ -73,7 +73,7 @@
    "chain": 2,
    "decay": {
     "n": 1,
-    "r": 52
+    "r": 70
    },
    "_note": "two moves (up/down/left/right, one at a time); one big patch; no timer"
   },
@@ -81,7 +81,7 @@
    "chain": 4,
    "decay": {
     "n": 2,
-    "r": 38
+    "r": 51
    },
    "_note": "four moves, the patient's own dabo / jamno for left and right (the level's one new thing); two patches"
   },
@@ -89,7 +89,7 @@
    "chain": 4,
    "decay": {
     "n": 2,
-    "r": 38
+    "r": 51
    },
    "_note": "level 2 heard only (the closed card): four moves, the patient's own dabo / jamno, two patches, no timer (Zafar's heal ladder, 13 Oct)"
   },
@@ -97,7 +97,7 @@
    "chain": 6,
    "decay": {
     "n": 4,
-    "r": 25
+    "r": 34
    },
    "drillMs": 16000,
    "_note": "harder variety (level 4, Zafar 13 Oct): six moves; four small patches scattered; a gentle timer; the narrow green"

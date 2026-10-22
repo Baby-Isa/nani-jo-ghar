@@ -179,8 +179,12 @@
     // the patient (the last one called) is the girl, so her art is the patient at every level. A child has no
     // old / young (the age rung): the call is the kind plus the child's own words (a colour, tall / short), and the
     // grown-ups in the room are never called (with the baby / the child, the colours, still in the room)
+    // Sprint 10 (Zafar, 21 Oct): the girl is the only patient with full art, so she is the patient at every level (from 1):
+    // forceKind (default "girl"; "boy", "man", "woman", or "any" to lift the rule) names the kind the patient is
+    const FK = o.forceKind == null ? "girl" : o.forceKind;
+    const KID = FK === "girl" || FK === "boy" ? FK : null; // the child kinds use the kids-only build below
     const KO = S.kidsOnly || null;
-    const kids = !!(KO && L >= (KO.from || 2) && !o.first && variant !== "W3");
+    const kids = !!(KO && KID && L >= (KO.from || 1) && !o.first);
     const kidRungs = kids ? ["kind"].concat((KO.rungs || ["colour", "height"]).filter((a) => L >= ((KO.rungFrom || {})[a] || 2))) : null;
     const rungs = P.waitingRungs(data, L);
     const focus = variant === "W3" ? "kind" : kids ? (KO.focus || {})[L] || kidRungs[kidRungs.length - 1] : rungs[rungs.length - 1];
@@ -196,15 +200,15 @@
       return p;
     };
     const flip = { age: { old: "young", young: "old" }, height: { tall: "short", short: "tall" }, with: { baby: "child", child: "baby" } };
-    const other = (a, v) => (a === "colour" ? pick(colours.filter((c) => c !== v), rng) : a === "with" ? (rng() < 0.5 ? null : flip.with[v]) : flip[a][v]);
+    const other = (a, v) => (a === "kind" ? v : a === "colour" ? pick(colours.filter((c) => c !== v), rng) : a === "with" ? (rng() < 0.5 ? null : flip.with[v]) : flip[a][v]);
     let n = o.first ? S.firstBench : o.bench || between(S.people[L] || S.people[3], rng);
     let people;
     let targets;
     for (let attempt = 0; attempt < 60; attempt++) {
       people = [];
       if (o.first) {
-        people = shuffle(["girl", "boy"], rng).map((w) => ({ who: w, age: null, height: null, colour: null, with: null }));
-        targets = [people.findIndex((p) => p.who === "girl")];
+        people = shuffle(KID === "boy" ? ["boy", "girl"] : ["girl", "boy"], rng).map((w) => ({ who: w, age: null, height: null, colour: null, with: null }));
+        targets = [people.findIndex((p) => p.who === (KID === "boy" ? "boy" : "girl"))];
         break;
       }
       if (kids) {
@@ -215,20 +219,27 @@
           if (kidRungs.includes("colour")) p.colour = pick(colours, rng);
           return p;
         };
-        const t = kid("girl");
+        const t = kid(KID);
+        const sib = KID === "girl" ? "boy" : "girl";
         people.push(t);
-        people.push(Object.assign(kid("girl"), { [focus]: other(focus, t[focus]) }));
-        people.push(Object.assign(kid("boy"), { [focus]: t[focus] }));
-        // W4: a second child to call first (a boy, so the order is the lesson, not the look)
-        if (variant === "W4") people.push(kid("boy"));
-        while (people.length < n) people.push(person(pick(["man", "woman"], rng)));
+        if (focus === "kind") {
+          // kinds only (level 1, or the child speaks): the patient and the other kinds, every one a different kind
+          shuffle(whos.filter((w) => w !== KID), rng).slice(0, Math.max(2, n - 1)).forEach((w) => people.push(person(w)));
+        } else {
+          people.push(Object.assign(kid(KID), { [focus]: other(focus, t[focus]) }));
+          people.push(Object.assign(kid(sib), { [focus]: t[focus] }));
+          // W4: a second child to call first (the other child kind, so the order is the lesson, not the look)
+          if (variant === "W4") people.push(kid(sib));
+          while (people.length < n) people.push(person(pick(["man", "woman"], rng)));
+        }
       } else if (variant === "W3" || L === 1) {
         // kinds only: different kinds (never two identical people, 13), so every one of them can be called
-        shuffle(whos, rng).slice(0, Math.min(n, whos.length)).forEach((w) => people.push(person(w)));
+        const first = FK === "any" ? [] : [FK];
+        first.concat(shuffle(whos.filter((w) => !first.includes(w)), rng)).slice(0, Math.min(n, whos.length)).forEach((w) => people.push(person(w)));
       } else {
         // the target has the level's word; a near miss for each word
         const needAdult = focus === "age" || focus === "with";
-        const tWho = pick(needAdult ? ["man", "woman"] : whos, rng);
+        const tWho = FK !== "any" && (!needAdult || ADULT(FK)) ? FK : pick(needAdult ? ["man", "woman"] : whos, rng);
         const t = person(tWho);
         if (focus === "with" && !t.with) t.with = rng() < 0.5 ? "baby" : "child";
         if (focus === "with" && t.with === "baby" && t.who === "man") t.with = "child"; // the baby sits with a woman (the stand-in art)
@@ -263,15 +274,15 @@
       people = shuffle(people, rng);
       // who can be called: a description naming just them (kind + the level's word first)
       const callable = people.map((p, i) => (variant === "W3" || L === 1 ? (people.filter((q) => q.who === p.who).length === 1 ? ["kind"] : null) : kids && ADULT(p.who) ? null : P.uniqueAttrs(data, people, i, L, focus, kidRungs)));
-      const withFocus = people.map((p, i) => i).filter((i) => callable[i] && (focus === "kind" || callable[i].includes(focus)) && (!kids || people[i].who === "girl"));
+      const withFocus = people.map((p, i) => i).filter((i) => callable[i] && (focus === "kind" || callable[i].includes(focus)) && (FK === "any" || people[i].who === FK));
       if (!withFocus.length) continue;
       const a = pick(withFocus, rng);
       targets = [a];
       if (variant === "W4") {
         const b = people.map((p, i) => i).filter((i) => i !== a && callable[i]);
         if (!b.length) continue;
-        // the patient is the last one called: with children only she is the girl, called second
-        if (kids) targets.unshift(pick(b, rng));
+        // the patient is the last one called: the forced kind (the girl), called second
+        if (kids || FK !== "any") targets.unshift(pick(b, rng));
         else targets.push(pick(b, rng));
       }
       break;
@@ -646,7 +657,7 @@
     const lv = Object.assign({ waiting: 1, diagnosis: 1, pharmacy: 1, heal: 1, sendoff: 1 }, o.levels || {});
     const va = o.variants || {};
     const games = o.games || null;
-    const waiting = P.waiting(data, lv.waiting, rng, { variant: va.waiting, first: o.first, speak: o.speak, bench: o.bench });
+    const waiting = P.waiting(data, lv.waiting, rng, { variant: va.waiting, first: o.first, speak: o.speak, bench: o.bench, forceKind: o.forceKind });
     let ailment = o.ailment;
     let part = null;
     if (!ailment) {
@@ -708,6 +719,7 @@
         speak: o.speak,
         asks: entry.asks,
         bench: entry.bench,
+        forceKind: o.forceKind,
       });
       used.push(p.game);
       patients.push(p);

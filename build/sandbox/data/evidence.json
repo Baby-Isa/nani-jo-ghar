@@ -16473,6 +16473,179 @@
    "note": "the fill: no code-drawn white line from the drill to the filling; the tip centred in the cavity and the cavity fills from the middle"
   }
  ],
+ "GIRL-01": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-waiting",
+   "after": null,
+   "capture": [
+    "crop:.cl-room",
+    "cmd:node build/test_shared_clinic_girl.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the waiting room: the girl is the patient the doctor calls, at level 1 and level 3 (every patient is the girl: the only one with full art); the unit test runs P.waiting at levels 1-4 over 50 seeds, never anyone but her, no crash"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-tooth-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "a heal game at level 1: the girl's own close-up (her face circle top right, the mouth of the girl), not a boy or a grown-up"
+  }
+ ],
+ "DRILL-01": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:drill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the tooth drill at its start (the capture holds the player, so no drag yet): the drill rests with its bur in the middle of the first cavity, not beside the tooth; the cavity is big with a clear dark outline, one cavity at level 1 and two at level 3"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:fill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "after the one drag the bot made: the cavity is cleared to a soft hollow (nothing of the dark patch left), the drill has gone from it, and the fill step is up"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "cmd:node build/leak_clinic_heal_tooth.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the tooth leak bot still cannot win by reading, matching, eliminating or waiting, and the bot's next() still wins (the fair strategy 100%)"
+  }
+ ],
+ "FX-01": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:tap",
+   "after": null,
+   "capture": [
+    "strip:canvas:hob:8x170"
+   ],
+   "expect": null,
+   "note": "chai tray at a child's pace (speed 1): after each tap that lands in the pan, no rings, dots or wisps (the code puff, sparkle and steam are off)"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:advance",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:rack"
+   ],
+   "expect": null,
+   "note": "the grill as the last skewer lands: no sparkle, dots or rings over the trays (code effects off)"
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-taste-mid",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "taste: a popped spot leaves no sparkle (the code-drawn sparkle is off)"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:press-the-glowing-end",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x250"
+   ],
+   "expect": null,
+   "note": "boing: the press, the medicine goes in, the stars and hearts pop, and no puff of mist or sparkles covers the cap's end (the code mist is off)"
+  }
+ ],
  "CLN-182": [
   {
    "flow": "clinic:heal-tooth",

@@ -586,74 +586,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const a = obj.angle;
       this.tweens.add({ targets: obj, angle: { from: a - 8, to: a + 8 }, duration: 70, yoyo: true, repeat: 2, onComplete: () => obj.active && obj.setAngle(a) });
     }
-    burst(x, y, colors, n = 12, spread = 90) {
-      for (let i = 0; i < n; i++) {
-        const c = Array.isArray(colors) ? Cook.pick(colors) : colors;
-        const dot = this.track(this.add.circle(x, y, 4 + Math.random() * 5, c, 1).setDepth(D.fx));
-        const ang = Math.random() * Math.PI * 2;
-        const dist = spread * (0.4 + Math.random() * 0.6);
-        this.tweens.add({
-          targets: dot,
-          x: x + Math.cos(ang) * dist,
-          y: y + Math.sin(ang) * dist * 0.7 - 20,
-          alpha: 0,
-          scale: 0.4,
-          duration: 500 + Math.random() * 300,
-          ease: "Cubic.easeOut",
-          onComplete: () => dot.destroy(),
-        });
-      }
-    }
+    // Sprint 10 (Zafar, 21 Oct): the code-drawn effects (burst, sparkle, puff, wisps, steam) don't match the art, so they
+    // draw nothing for now; the matching version comes in Sprint 11. The signatures stay, so every caller still runs
+    // (none of them waits on an effect: no completion callbacks).
+    burst(x, y, colors, n = 12, spread = 90) {}
     /** A small "it went in" mark where something lands in a pot or a glass (28 Sept, s8). */
-    puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {
-      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa), the same in every station.
-      // s08 w6M (CK-06 reopened; the judge, 20 Oct: "blurry see-through white blobs over the oil and onions"): no clouds any
-      // more (white or tinted, round or wisps: every version read as blobs lying on the food). It is a ripple: two thin rings
-      // spread out from where it landed and fade, a pale line with a soft dark one just outside it (a ripple's light and its
-      // shadow), so it reads on a light pan or a dark one and leaves nothing over what went in. flat: the rings' height over
-      // their width (a side-on glass passes a flatter ring). Same timing as before (gone by about 0.9 s)
-      // CK-27 (the judge, 20 Oct: "no puff or sprinkle shows in any frame ... only water ripples"): the same ripple, made plain
-      // to see: wider, three rings, a bolder light line and its shadow (was two thin rings at 0.7 and 0.22, lost at 1x)
-      const s = size * 1.7;
-      const light = (() => {
-        const c = Number(color) >>> 0;
-        const mix = (sh) => Math.round(255 * 0.8 + ((c >> sh) & 255) * 0.2);
-        return (mix(16) << 16) | (mix(8) << 8) | mix(0);
-      })();
-      for (let i = 0; i < 3; i++) {
-        const g = this.track(this.add.graphics().setDepth(D.fx).setPosition(x, y));
-        const st = { r: s * 0.14, a: 1 };
-        const draw = () => {
-          if (!g.active) return;
-          g.clear();
-          const w = st.r * 2;
-          const h = w * flat;
-          g.lineStyle(Math.max(2, s * 0.09), 0x3a2410, 0.32 * st.a);
-          g.strokeEllipse(0, s * 0.02, w + s * 0.1, h + s * 0.1 * flat);
-          g.lineStyle(Math.max(1.5, s * 0.06), light, 0.95 * st.a);
-          g.strokeEllipse(0, 0, w, h);
-        };
-        draw();
-        // (fading late: each ring holds most of its strength for the first half of its spread, so a frame at any moment shows it)
-        this.tweens.add({ targets: st, r: s * (0.5 + 0.25 * i), a: 0, delay: i * 140, duration: 820, ease: "Quad.easeIn", onUpdate: draw, onComplete: () => g.destroy() });
-      }
-    }
+    puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {}
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
-    wisps(x, y, n = 2, w = 60) {
-      for (let i = 0; i < n; i++) {
-        const s = this.track(this.add.ellipse(x + (Math.random() - 0.5) * w, y, w * 0.4, w * 0.55, 0xffffff, 0.2).setDepth(D.fx));
-        this.tweens.add({ targets: s, y: y - w * (1.6 + Math.random()), x: s.x + (Math.random() - 0.5) * w * 0.6, scaleX: 2.2, scaleY: 1.6, alpha: 0, duration: 1500 + Math.random() * 600, delay: i * 220, ease: "Sine.easeOut", onComplete: () => s.destroy() });
-      }
-    }
-    sparkle(x, y) {
-      this.burst(x, y, [0xffe08a, 0xffffff, 0xf6c35b], 16, 120);
-    }
-    steam(x, y, n = 3) {
-      for (let i = 0; i < n; i++) {
-        const s = this.track(this.add.ellipse(x + (Math.random() - 0.5) * 60, y, 30, 40, 0xffffff, 0.5).setDepth(D.fx));
-        this.tweens.add({ targets: s, y: y - 120 - Math.random() * 60, x: s.x + (Math.random() - 0.5) * 40, scale: 2, alpha: 0, duration: 1200 + Math.random() * 500, delay: i * 180, onComplete: () => s.destroy() });
-      }
-    }
+    wisps(x, y, n = 2, w = 60) {}
+    sparkle(x, y) {}
+    steam(x, y, n = 3) {}
     fly(obj, x, y, { scale, duration = 520, arc = 140, depth } = {}) {
       if (depth != null) obj.setDepth(depth);
       if (obj.shadow) {
@@ -1111,16 +1053,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     special(obj, on = true) {
       if (!obj || !on) return obj;
       obj.setTint(0xffe2a0, 0xffd27a, 0xffe9b8, 0xf6c35b);
-      const ev = this.time.addEvent({
-        delay: 1800,
-        loop: true,
-        callback: () => {
-          if (!obj.active || !obj.visible) return;
-          const b = obj.getBounds();
-          this.burst(b.x + Math.random() * b.width, b.y + Math.random() * b.height * 0.6, [0xfff3c4, 0xffffff], 5, 30);
-        },
-      });
-      obj.once("destroy", () => ev.remove());
+      // (its glint loop drew bursts: off with the other code effects, Sprint 10; the golden tint stays)
       return obj;
     }
   }

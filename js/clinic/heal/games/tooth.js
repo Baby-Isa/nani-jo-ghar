@@ -24,7 +24,8 @@
   // the defaults; data/clinic/heal/tooth.json (levels, fill, drill) overrides them in the browser
   const K = {
     moves: { 1: 2, 2: 4, 3: 4, 4: 6 },
-    decay: { 1: { n: 1, r: 52 }, 2: { n: 2, r: 38 }, 3: { n: 2, r: 38 }, 4: { n: 4, r: 25 } },
+    // Sprint 10 (Zafar, 21 Oct): bigger cavities, level 1 from 52 to 70 and the others scaled up the same (x1.35)
+    decay: { 1: { n: 1, r: 70 }, 2: { n: 2, r: 51 }, 3: { n: 2, r: 51 }, 4: { n: 4, r: 34 } },
     chipAt: 16, // healthy enamel points drilled before the tooth chips
     drillMs: { 4: 16000 },
     fill: { ms: { 1: 3400, 2: 2600, 3: 2600, 4: 2000 }, zone: { 1: [0.55, 0.86], 2: [0.62, 0.82], 3: [0.62, 0.82], 4: [0.67, 0.8] }, max: 1.15 },
@@ -82,10 +83,12 @@
     const dk = Object.assign({}, K.decay[L], lv.decay || {});
     const patches = [];
     let guard = 0;
-    while (patches.length < dk.n && guard++ < 400) {
+    while (patches.length < dk.n && guard++ < 600) {
       const cx = CROWN.x0 + dk.r + rng() * (CROWN.x1 - CROWN.x0 - 2 * dk.r);
       const cy = CROWN.y0 + dk.r + rng() * (CROWN.y1 - CROWN.y0 - 2 * dk.r);
-      if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * 2.3)) continue;
+      // the bigger cavities fill the crown: the gap between two eases (2.3, then 1.9, then 1.5 radii) when they will not fit
+      const gap = guard < 250 ? 2.3 : guard < 450 ? 1.9 : 1.5;
+      if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * gap)) continue;
       patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, pts: jag(cx, cy, dk.r, rng) });
     }
     const steps = moves.map((m, i) => ({
@@ -336,9 +339,9 @@
         const cid = `${uid}-d${k}`;
         s("path", { d }, s("clipPath", { id: cid }, decayG));
         s("image", { href: url(a.src), x: hollowMid(p).x - p.r * 1.5, y: hollowMid(p).y - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none", "clip-path": `url(#${cid})` }, decayG);
-        s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0.6 }, decayG);
+        s("path", { d, fill: "none", stroke: "#2f1f17", "stroke-width": 5, "stroke-linejoin": "round", opacity: 0.95 }, decayG); // Sprint 10: a clear dark outline
       } else {
-        s("path", { d, fill: "#4a3326", stroke: "#2f1f17", "stroke-width": 3, "stroke-linejoin": "round" }, decayG);
+        s("path", { d, fill: "#4a3326", stroke: "#2f1f17", "stroke-width": 5, "stroke-linejoin": "round" }, decayG);
         s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 9, opacity: 0.5, transform: `translate(${p.cx * 0.12} ${p.cy * 0.12}) scale(0.88)` }, decayG);
       }
       // the points the drill must reach (every 9 units inside the patch)
@@ -358,7 +361,7 @@
     const drillEl = s("image", { href: url(DR.src), x: -1000, y: -1000, width: DW, height: DH, opacity: 0, class: "hs-drill" }, dsFx);
     drillEl.dataset.tipX = String(tipX);
     drillEl.dataset.tipY = String(tipY);
-    const TIP_R = 17; // the bur's reach, drill units
+    const TIP_R = 23; // the bur's reach, drill units (17 before the bigger cavities of Sprint 10)
 
     /* ---------------- 3. the fill: the nozzle on the cavity, the gauge and the big button ---------------- */
     const fillG = s("g", { opacity: 0, class: "tooth-fill" }, dsFx);
@@ -634,7 +637,9 @@
       }
       if (c.kind === "drill") {
         const p = c.patches[0];
-        S.cue("drill", { gesture: "drag", to: inM(p.cx + p.r * 0.6, p.cy) }, inM(p.cx - p.r * 0.6, p.cy));
+        // Sprint 10: the ghost starts in the cavity, where the drill rests, and drags across it
+        const m0 = hollowMid(p);
+        S.cue("drill", { gesture: "drag", to: inM(m0.x + p.r * 0.6, m0.y) }, inM(m0.x, m0.y));
         if (c.timer) timer = S.timer(c.timer * (fast() ? 2 : 1), () => cur() === c && close());
         parkDrill();
       }
@@ -746,12 +751,13 @@
     };
     // CLN-103 (decision 72, s04-r2k2): the drill rests beside the tooth, its bur by the crown's lower right, until the
     // finger takes it (its tip under the finger), and goes back
-    const DRILL_REST = { x: 548, y: TOOTH.y1 - 20 };
+    // Sprint 10 (Zafar, 21 Oct): it rests in the middle of the first cavity instead, so a touch and a move cut at once
     const parkDrill = () => {
       const c = cur();
       if (!c || c.kind !== "drill" || st.over) return drillEl.setAttribute("opacity", 0);
-      drillEl.setAttribute("x", DRILL_REST.x - tipX);
-      drillEl.setAttribute("y", DRILL_REST.y - tipY);
+      const rest = hollowMid(c.patches.find((q) => q.left.size) || c.patches[0]);
+      drillEl.setAttribute("x", rest.x - tipX);
+      drillEl.setAttribute("y", rest.y - tipY);
       drillEl.setAttribute("opacity", 1);
     };
     const drillAt = (p) => {
@@ -974,7 +980,7 @@
               .map(Number)
               .sort((a, b) => a - b)
               .forEach((y, k) => (k % 2 ? rows[y].sort((a, b) => b - a) : rows[y].sort((a, b) => a - b)).forEach((x) => pts.push(clD(x, y))));
-            const path = pts.slice(0, 60).map((q) => [q.x, q.y]);
+            const path = pts.slice(0, 400).map((q) => [q.x, q.y]); // the bigger cavity (Sprint 10) is cleared by one stroke
             return path.length ? { do: "drag", pts: [path[0]].concat(path), steps: 2, what: "drill" } : { do: "wait" };
           }
           const t = clD(BTN.x, BTN.y);
