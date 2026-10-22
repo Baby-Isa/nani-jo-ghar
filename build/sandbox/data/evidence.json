@@ -16528,14 +16528,30 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:drill",
+   "at": "heal:drill",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
-    "strip:.cl-heal:6x250"
+    "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "the tooth drill: it rests in the middle of the first cavity (the bur on the cavity, not beside the tooth); the cavity is big with a clear dark outline; one drag clears it (frames 250 ms apart: the cavity, the drill working, the cavity gone)"
+   "note": "the tooth drill at its start (the capture holds the player, so no drag yet): the drill rests with its bur in the middle of the first cavity, not beside the tooth; the cavity is big with a clear dark outline, one cavity at level 1 and two at level 3"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:fill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "after the one drag the bot made: the cavity is cleared to a soft hollow (nothing of the dark patch left), the drill has gone from it, and the fill step is up"
   },
   {
    "flow": "clinic:heal-tooth",
