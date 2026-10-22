@@ -624,7 +624,8 @@
       // a judged card's rungs lift the whole pill row, never the answer (the leak test: no winning by waiting)
       if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
         if (stuck) stuck.stop();
-        const live = mic ? [judgeBox] : [haaBtn, naBtn];
+        // each live control has its own hole and glow (Zafar, 22 Oct): never one box round the row (the doctor's trousers lit in the gaps)
+        const live = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
         // the rungs count from this card coming up (her guess, not the child, was the last thing)
         if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
         // the real pill (or row) lifts; the ghost hand rides at its lower right corner, never over its word (EASY-09)

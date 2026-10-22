@@ -142,3 +142,27 @@ test("EASY-08: the stuck spotlight hugs each live control's box; close neighbour
   assert.equal(r.pad, 3);
   assert.ok(r.y >= 44);
 });
+
+test("the 5 s spotlight's glow (Zafar, 22 Oct): a soft round glow from the item, never into a neighbour or the gap between two lit controls", () => {
+  // alone: the full glow on every side, a pill-round box
+  const [a] = Onboard.glowShapes([{ x: 200, y: 200, w: 100, h: 40 }]);
+  assert.deepEqual(a.reach, { l: Onboard.GLOW, r: Onboard.GLOW, t: Onboard.GLOW, b: Onboard.GLOW });
+  assert.equal(a.r, Math.min(a.w, a.h) / 2, "the roundest corners");
+  assert.ok(a.x < 200 && a.x + a.w > 300 - Onboard.GLOW * 2, "it grows past the control on the open sides");
+  // three pills 4 px apart in a row (ha, na, mic): the sides facing each other have no glow, the outer sides and top and bottom do
+  const row = [{ x: 0, y: 0, w: 100, h: 40 }, { x: 104, y: 0, w: 100, h: 40 }, { x: 208, y: 0, w: 40, h: 40 }];
+  const [p, q, m] = Onboard.glowShapes(row);
+  assert.equal(p.reach.r, 0);
+  assert.equal(q.reach.l, 0);
+  assert.equal(q.reach.r, 0);
+  assert.equal(m.reach.l, 0);
+  assert.equal(p.reach.l, Onboard.GLOW);
+  assert.equal(m.reach.r, Onboard.GLOW);
+  assert.equal(q.reach.t, Onboard.GLOW);
+  // the blurred box never reaches a neighbour: its far edge, plus two blur widths, stops short of the next control
+  assert.ok(p.x + p.w + 2 * Onboard.GLOW_SD <= row[1].x);
+  // a neighbour to keep dark above, 10 px off: the glow upward stops short of it (half the gap less the hug pad: 0)
+  const [t] = Onboard.glowShapes([{ x: 0, y: 60, w: 100, h: 40 }], [{ x: 0, y: 0, w: 100, h: 50 }]);
+  assert.equal(t.reach.t, 0);
+  assert.equal(t.reach.b, Onboard.GLOW);
+});

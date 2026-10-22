@@ -224,6 +224,45 @@
     });
   };
 
+  /**
+   * The soft round glow from the item itself (Zafar, 22 Oct): for each live control, its own box grown with the roundest
+   * corners (a circle round a square thing, a pill round a wide one) and blurred by Onboard.GLOW_SD in the page. The glow
+   * reaches at most Onboard.GLOW past the control, side by side: on a side where another lit thing, or a neighbour to keep dark
+   * (avoid), sits within reach, the reach is only what fits in this control's half of the gap (less the hug pad's), so the
+   * glow never lights a neighbour or the gap between two lit controls; the other sides keep the full glow.
+   * rects, avoid: [{x, y, w, h}]; -> [{x, y, w, h, r, reach: {l, r, t, b}}] in the same order (x..h: the box to blur, its far
+   * edges already pulled in by the blur's tail, 2 widths, so the glow has faded out by the time it reaches the limit).
+   */
+  Onboard.GLOW = 26;
+  Onboard.GLOW_SD = 6.5;
+  Onboard.glowShapes = function (rects, avoid, pad) {
+    pad = pad == null ? Onboard.HUG_PAD : pad;
+    const all = (rects || []).filter(Boolean);
+    const others = (i) => all.filter((_, j) => j !== i).concat((avoid || []).filter(Boolean));
+    const span = (a0, a1, b0, b1) => Math.min(a1, b1) - Math.max(a0, b0); // overlap of two ranges (negative: apart)
+    return all.map((r, i) => {
+      const reach = { l: Onboard.GLOW, r: Onboard.GLOW, t: Onboard.GLOW, b: Onboard.GLOW };
+      others(i).forEach((q) => {
+        // a neighbour limits a side when it lies that way and (nearly) overlaps this control across it
+        const ox = span(r.x - Onboard.GLOW, r.x + r.w + Onboard.GLOW, q.x, q.x + q.w) > 0;
+        const oy = span(r.y - Onboard.GLOW, r.y + r.h + Onboard.GLOW, q.y, q.y + q.h) > 0;
+        const lim = (side, gap) => (reach[side] = Math.min(reach[side], Math.max(0, gap / 2 - pad)));
+        if (oy && q.x >= r.x + r.w - 1) lim("r", q.x - (r.x + r.w));
+        if (oy && q.x + q.w <= r.x + 1) lim("l", r.x - (q.x + q.w));
+        if (ox && q.y >= r.y + r.h - 1) lim("b", q.y - (r.y + r.h));
+        if (ox && q.y + q.h <= r.y + 1) lim("t", r.y - (q.y + q.h));
+      });
+      const tail = 2 * Onboard.GLOW_SD;
+      const x0 = r.x - reach.l + tail;
+      const x1 = r.x + r.w + reach.r - tail;
+      const y0 = r.y - reach.t + tail;
+      const y1 = r.y + r.h + reach.b - tail;
+      const w = Math.max(2, x1 - x0);
+      const h = Math.max(2, y1 - y0);
+      return { x: x0, y: y0, w, h, r: Math.min(w, h) / 2, reach };
+    });
+  };
+
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
    * The play log (easy-to-play.md principle 11): each stage's events folded into one round
@@ -800,7 +839,8 @@
   /**
    * The spotlight alone (the 5 s rung): the 62% dim (as Onboard.run's) with a hole hugging each `target` box (EASY-08: a
    * rounded rect, a small even pad, o.avoid: neighbours the pad shrinks for; o.hold(): true while the item demonstrates, the
-   * light stays where the control rests); everything but the live control (o.live,
+   * light stays where the control rests); each live control also gives off a soft round glow of its own (Onboard.glowShapes, Zafar,
+   * 22 Oct), never into a neighbour; everything but the live control (o.live,
    * default the target) is inert: a touch elsewhere is stopped before the page gets it. [data-ob-pass] (the ? and its menu)
    * stays usable. -> {close(), layer}
    */
@@ -810,12 +850,14 @@
     const layer = document.createElement("div");
     layer.className = "njg-onboard njg-spot";
     // EASY-08: one rounded-rect hole per live control, hugging its box (Onboard.hugShapes), a thin gold ring round each
-    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><filter id="ob-feather-${sid}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.5"/></filter><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes" filter="url(#ob-feather-${sid})"></g></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/><g class="ob-hugs"></g></svg>`;
+    layer.innerHTML = `<svg class="ob-dim" aria-hidden="true"><defs><filter id="ob-feather-${sid}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="ob-soft-${sid}" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation="${Onboard.GLOW_SD}"/></filter><mask id="ob-mask-${sid}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes" filter="url(#ob-feather-${sid})"></g></mask></defs><rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${sid})"/><g mask="url(#ob-mask-${sid})"><g class="ob-glows" filter="url(#ob-soft-${sid})"></g></g><g class="ob-hugs"></g></svg>`;
     (o.container || document.body).appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const NSs = "http://www.w3.org/2000/svg";
     const holes = layer.querySelector(".ob-holes");
     const rings = layer.querySelector(".ob-hugs");
+    const glows = layer.querySelector(".ob-glows");
+    let homeGlow = [];
     let shapes = [];
     let home = [];
     let raf = 0;
@@ -845,6 +887,26 @@
           r.setAttribute("rx", sh.r);
           r.setAttribute("ry", sh.r);
         });
+      });
+      // the soft round glow from each live control itself (Onboard.glowShapes): warm, outside the holes only (the mask), and,
+      // like the light, it stays where the control rests while the item demonstrates
+      if (!(o.hold && o.hold() && homeGlow.length)) homeGlow = Onboard.glowShapes(rectsOf(target), o.avoid ? rectsOf(o.avoid) : null, o.pad).filter((g) => Math.max(g.reach.l, g.reach.r, g.reach.t, g.reach.b) >= 3);
+      const gs = homeGlow;
+      [...glows.childNodes].forEach((n, i) => (n.style.display = i < gs.length ? "" : "none"));
+      gs.forEach((g, i) => {
+        while (glows.childNodes.length <= i) {
+          const gr = document.createElementNS(NSs, "rect");
+          gr.setAttribute("fill", "rgba(255,196,92,0.9)");
+          glows.appendChild(gr);
+        }
+        const r = glows.childNodes[i];
+        r.style.display = "";
+        r.setAttribute("x", g.x);
+        r.setAttribute("y", g.y);
+        r.setAttribute("width", g.w);
+        r.setAttribute("height", g.h);
+        r.setAttribute("rx", g.r);
+        r.setAttribute("ry", g.r);
       });
       raf = requestAnimationFrame(draw);
     };

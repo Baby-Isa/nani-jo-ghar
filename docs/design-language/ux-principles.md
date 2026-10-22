@@ -66,6 +66,7 @@ These three badges are the whole score (H5): time, accuracy and hints. There are
 
 ## 10. When onboarding gets built
 - The **onboarding kit** (dim, spotlight, ghost finger, "do it now", fade-in of UI) is a shared component, built now.
+- The kit's 5 s spotlight (`Onboard.spot`): a rounded box hugging each live control plus a soft round glow from the item itself (Zafar, 22 Oct). Several live controls (the eye test's ha, na and mic) each get their own hole and glow, never one box round the group; the glow never lights a neighbour or the gap between two lit controls.
 - Each mini-game's **onboarding script** (which thing to spotlight, what the ghost finger does) is written at the end of that mini-game's build, once its mechanics have stopped changing, so it isn't redone after every playtest. Cook's stations get theirs first, since they're the most settled.
 
 ## 11. Show progress, not verdicts (Zafar, 25 Sept, late)

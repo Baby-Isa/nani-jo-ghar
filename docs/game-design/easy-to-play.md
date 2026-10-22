@@ -22,7 +22,7 @@ The farm day waits until Cook and the clinic are right (Zafar, 21 Oct). There ar
    - 2-3 year olds copy a demonstration, not an arrow (toddler touch research). `Onboard.run` gains "move this item" next to its ghost hand.
 3. **Three hint rungs on the clock, the same for every age:**
    - at 0 s, a demo the first time;
-   - at 5 s idle, spotlight plus the demo replayed;
+   - at 5 s idle, spotlight plus the demo replayed (the 5 s spotlight: a rounded box hugging each live control plus a soft round glow from the item itself (Zafar, 22 Oct); several live controls each get their own, never one box round the group);
    - at 15 s, the real item demonstrates again, with the guide's line. It never does the step for them: the critic warned that teaches a 3-year-old to wait.
    - The bulb stays everyone's help, whoever is playing (Zafar, 21 Oct).
    - Evidence: time-delay prompting (AFIRM). This replaces the level-based 7-15 s wait for the "where to tap" hint. Nani's bulb and her own lines keep their timing.
