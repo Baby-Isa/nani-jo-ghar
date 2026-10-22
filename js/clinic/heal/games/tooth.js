@@ -980,7 +980,7 @@
               .map(Number)
               .sort((a, b) => a - b)
               .forEach((y, k) => (k % 2 ? rows[y].sort((a, b) => b - a) : rows[y].sort((a, b) => a - b)).forEach((x) => pts.push(clD(x, y))));
-            const path = pts.slice(0, 60).map((q) => [q.x, q.y]);
+            const path = pts.slice(0, 400).map((q) => [q.x, q.y]); // the bigger cavity (Sprint 10) is cleared by one stroke
             return path.length ? { do: "drag", pts: [path[0]].concat(path), steps: 2, what: "drill" } : { do: "wait" };
           }
           const t = clD(BTN.x, BTN.y);
