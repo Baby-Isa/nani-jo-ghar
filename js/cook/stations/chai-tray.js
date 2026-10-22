@@ -279,6 +279,87 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       ct.refresh();
     };
     half8("v2-glass-half", "v2-glass-full");
+    /*
+     * CHAI-31 (the judge, 22 Oct: "dark maroon-brown in the pan, light golden amber in the glass"): one chai colour per brew.
+     * The served glass is what must look like real chai, so the glass's own tea is measured (its middle, on the picture) and
+     * the pan's tea is recoloured to it, its own light and shade kept (a copy of each pan picture made once, in code); the
+     * stream is drawn in the same colour. Milky chai and black tea each have their own.
+     */
+    const teaOf = (key) => {
+      try {
+        const src = S.textures.get(key).getSourceImage();
+        const cv = document.createElement("canvas");
+        cv.width = src.width;
+        cv.height = src.height;
+        const g = cv.getContext("2d", { willReadFrequently: true });
+        g.drawImage(src, 0, 0);
+        const d = g.getImageData(0, 0, cv.width, cv.height).data;
+        let n = 0;
+        const sum = [0, 0, 0];
+        const r0 = cv.width * 0.3;
+        for (let y = 0; y < cv.height; y += 2)
+          for (let x = 0; x < cv.width; x += 2) {
+            if (Math.hypot(x - cv.width / 2, y - cv.height / 2) > r0) continue;
+            const i = (y * cv.width + x) * 4;
+            if (d[i + 3] < 200 || d[i] - d[i + 2] < 40) continue;
+            sum[0] += d[i];
+            sum[1] += d[i + 1];
+            sum[2] += d[i + 2];
+            n++;
+          }
+        return n ? sum.map((v) => v / n) : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    const TEA = { milk: teaOf("v2-glass-full"), black: teaOf(S.textures.exists("v2-glass-black-full") ? "v2-glass-black-full" : "v2-glass-full") };
+    const hexOf = (c) => (Math.round(c[0]) << 16) | (Math.round(c[1]) << 8) | Math.round(c[2]);
+    const recolour = (name) => {
+      const t = TOP.looks[name];
+      const tea = TEA[name];
+      t.base = t.base || t.key;
+      if (!tea || !S.textures.exists(t.base)) return;
+      const key = `${t.base}-tea`;
+      if (S.textures.exists(key)) S.textures.remove(key);
+      const src = S.textures.get(t.base).getSourceImage();
+      const ct = S.textures.createCanvas(key, src.width, src.height);
+      const g = ct.getContext();
+      g.drawImage(src, 0, 0);
+      const img = g.getImageData(0, 0, src.width, src.height);
+      const d = img.data;
+      const inside = (x, y) => Math.hypot(x - t.cx, y - t.cy) <= TOP.inner * 1.04;
+      const lum = (i) => 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2];
+      // the pan's own tea: its mean brightness, so its shading is kept around the glass's colour
+      let n = 0;
+      let L = 0;
+      for (let y = 0; y < src.height; y++)
+        for (let x = 0; x < src.width; x++) {
+          const i = (y * src.width + x) * 4;
+          if (d[i + 3] > 0 && inside(x, y) && d[i] - d[i + 2] > 40) {
+            L += lum(i);
+            n++;
+          }
+        }
+      if (!n) return;
+      L /= n;
+      for (let y = 0; y < src.height; y++)
+        for (let x = 0; x < src.width; x++) {
+          const i = (y * src.width + x) * 4;
+          if (!(d[i + 3] > 0 && inside(x, y) && d[i] - d[i + 2] > 40)) continue;
+          // (x1.2: the glass's tea is measured with its light in it; the pan's surface reads the same at that)
+          const k = Math.min(1.5, Math.max(0.65, (lum(i) / L) * 1.2));
+          d[i] = Math.min(255, tea[0] * k);
+          d[i + 1] = Math.min(255, tea[1] * k);
+          d[i + 2] = Math.min(255, tea[2] * k);
+        }
+      g.putImageData(img, 0, 0);
+      ct.refresh();
+      t.key = key;
+    };
+    ["milk", "black"].forEach(recolour);
+    if (TEA.milk) POUR.milkTea = hexOf(TEA.milk.map((v) => v * 0.92));
+    if (TEA.black) POUR.blackTea = hexOf(TEA.black.map((v) => v * 0.92));
+    POUR.edge = 0x5a2408;
     half8("v2-glass-black-half", "v2-glass-black-full");
     if (St.hasArt(S, "chai-glass-black-full")) half8(St.artKey("chai-glass-black-half"), St.artKey("chai-glass-black-full"));
     let lastPhase = null;
@@ -298,7 +379,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const sid = key ? `${key}:${id || ""}` : null;
       if (sid === lastPhase) return;
       lastPhase = sid;
-      if (!key) return steps.done();
+      if (!key) {
+        steps.done();
+        // CHAI-31 (the judge: "Pour it into their glass." still up once all is served): every cup poured, nothing is left
+        // to do, so her box goes empty (R2; SH-63's host clear)
+        if (pans.length && pans.every((q) => q.poured > 0) && UI.guideClear) UI.guideClear();
+        return;
+      }
       steps.to(key, { id: sid, line: stepLine(key, id) });
       if (key === lastGist) return;
       lastGist = key;
@@ -1367,7 +1454,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         [base, body].forEach((im) => im.setVisible(true).setPosition(f.x, f.y).setAngle(deg).setScale(z * sx, z));
         // the chai: how much is left in the pan (from 1 at a full pan to 0 once both halves are poured), slid to the spout
         const x = from + (to - from) * f.fill;
-        const left = Math.max(0, 1 - x / 2);
+        // CHAI-31 (the judge: "the tilted pan shows bare steel"): the last of the chai stays in sight at the spout until the
+        // pour ends; it goes as the pan tips back (a full pour), or stays as it is (a half one)
+        const end = f.phase === "untip" ? Math.min(1, (t - M.pour) / P.untipMs) : f.phase === "back" || f.phase === "done" ? 1 : 0;
+        const left = Math.max(0, 1 - x / 2, (1 - end) * 0.32);
         const rI = TOP.inner * z;
         const slide = rI * (0.3 * Math.min(1, tip) + 0.22 * (1 - left) * Math.min(1, tip));
         const kr = 0.45 + 0.55 * Math.sqrt(left);
@@ -1385,11 +1475,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const sp = { x: f.x + d.x, y: f.y + d.y };
           // (seen from above the stream is short: wide at the spout, narrowing as it falls away into the glass; the pan's
           // own chai colour, measured on its pictures)
-          const wd = Math.max(5, rimR * 0.12);
-          const col = black ? POUR.black : POUR.milk;
+          // (CHAI-31: wider, and the measured tea of the glass it falls into)
+          const wd = Math.max(9, rimR * 0.22);
+          const col = black ? POUR.blackTea || POUR.black : POUR.milkTea || POUR.milk;
           const sm = NjgPour.stream(sp, surf, wd * (0.4 + 0.6 * f.flow), t / 1000);
-          stream.fillStyle(col, 0.86);
+          stream.fillStyle(col, 0.94);
           stream.fillPoints(sm.poly, true);
+          // (its edge a shade darker, so the stream reads against the tea it falls into)
+          stream.lineStyle(Math.max(1.2, wd * 0.12), POUR.edge, 0.55);
+          stream.strokePoints(sm.poly, true);
           stream.lineStyle(Math.max(1, wd * 0.14), 0xffffff, 0.24);
           stream.strokePoints(sm.core, false);
           stream.fillStyle(col, 0.4 * f.flow);

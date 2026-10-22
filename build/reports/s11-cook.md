@@ -38,3 +38,12 @@ Branch `worktree-agent-aaeebedd6450b84d6` (from `ccr-1888a520-dk18y7` at 0406967
   - `{1366x768,915x412}-pour-1..6.png` and `-fx-sparkle.png` (915x412 L1; at 1366x768 L1 the pour frames only: the rest was overwritten by the L4 run)
   - `915x412-conversation.png` (L1) and `1366x768-conversation.png` (from the L4 run)
   - `1366x768-served-no-done.png` and `1366x768-served-moving-on.png` (L4: every card ticked, no Done or Next, then back in the kitchen)
+
+## Fix round 2 (CHAI-31)
+- **One chai colour per brew:** the served glass's own tea is measured on its picture. The pan's tea is recoloured to it, keeping its own shading; the stream uses the same colour, wider, with a darker edge. Measured at 1366x768: pan (148,44,2), glass (151,45,3).
+- The last of the chai stays at the spout until the pour ends.
+- The conversation bubble comes down into the screen when its face makes it taller (no clip at 915x412).
+- The ghost finger taps the reply's right end, so the words stay readable.
+- The guide box goes empty once every cup is poured.
+- **Proof:** unit, words and static ok. Sandbox `s11-cook-fix3` (chai L1, L4 and the lab at 1366x768 and 915x412): all reach their end, 0 breaks.
+- **Frames:** `build/screenshots/s11-cook/fix2/{1366x768,915x412}-pour-3.png` and `-pour-5.png`; `fix2/915x412-conversation.png`; `fix2-l4/1366x768-served-no-done.png` and `fix2-l4/1366x768-served-moving-on.png`.

@@ -1382,18 +1382,52 @@
               im.alt = "";
               im.src = src;
               im.onerror = () => (im.src = faceUrl(cw));
-              Object.assign(im.style, { width: "2.4em", height: "2.4em", borderRadius: "50%", objectFit: "cover", display: "block" });
+              const short = (global.innerHeight || 800) < 520;
+              Object.assign(im.style, { width: short ? "1.8em" : "2.4em", height: short ? "1.8em" : "2.4em", borderRadius: "50%", objectFit: "cover", display: "block" });
               f.appendChild(im);
+              // CHAI-31 (the judge: the bubble cut off at the top at 915x412): the face makes it taller than the module placed
+              // it for, so it comes down into the screen if it reaches past the top (never clipped: non-negotiable 9)
+              const b = f.closest(".cv-bubble");
+              const fit = () => {
+                if (!b || !b.isConnected) return;
+                const r = b.getBoundingClientRect();
+                if (r.top < 8) b.style.top = `${parseFloat(b.style.top || "0") + (8 - r.top)}px`;
+              };
+              im.onload = fit;
+              requestAnimationFrame(fit);
             });
           },
         },
       };
+      // CHAI-31 (the judge: the ghost finger covers "Wa alaikum salaam!"): the finger taps the reply's right end, its
+      // words left readable (the module puts it on the pill's middle)
+      if (global.MutationObserver && !kitchenTalk.mo) {
+        kitchenTalk.mo = new MutationObserver((ms) =>
+          ms.forEach((m) =>
+            m.addedNodes.forEach((n) => {
+              if (!n.classList || !n.classList.contains("cv-ghost")) return;
+              const x = parseFloat(n.style.left) || 0;
+              const y = parseFloat(n.style.top) || 0;
+              const pill = [...document.querySelectorAll(".cv-replies .cv-pill")].find((q) => {
+                const r = q.getBoundingClientRect();
+                return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+              });
+              if (!pill) return;
+              const r = pill.getBoundingClientRect();
+              n.style.left = `${r.right - Math.min(26, r.width * 0.12)}px`;
+              n.style.top = `${r.top + r.height * 0.55}px`;
+            })
+          )
+        );
+        kitchenTalk.mo.observe(document.body, { childList: true, subtree: true });
+      }
       const dish = (((ctx.order || {}).dishes || [])[0] || {}).recipe || "chai";
       const c1 = await C.maybe(Object.assign({ placement: "CK1" }, base));
       if (!c1.ran && token === Cook.run) await C.maybe(Object.assign({ placement: "CK2", x: { dish: dish === "chai" ? "cook-chai" : `cook-${dish}` } }, base));
     } catch (e) {
       /* the conversation is never the game: the order goes on */
     } finally {
+      if (kitchenTalk.mo) kitchenTalk.mo = (kitchenTalk.mo.disconnect(), null);
       if (Cook.expect && Cook.expect.talk) Cook.expect = prevExpect && !prevExpect.talk ? prevExpect : null;
     }
     Cook.checkRun(token);
