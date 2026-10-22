@@ -58,6 +58,7 @@ export const NAMESPACES = {
   settings: { owner: "core/settings", holds: "this child's settings (model voice, level, read-along, sound)" },
   conversations: { owner: "Conversations", holds: "its state" },
   speech: { owner: "voice", holds: "voice enrolment" },
+  playlog: { owner: "PlayLog (js/shared/host.js)", holds: "the last 50 rounds: seconds to first act and taps that did nothing, per step (Sprint 11)" },
   shell: { owner: "shell", holds: "the shell's flags" },
   cook: { owner: "Cook", holds: "Cook's own state (and, until R4, its old words and coins)" },
   clinic: { owner: "clinic", holds: "the clinic's own state (after R5)" },

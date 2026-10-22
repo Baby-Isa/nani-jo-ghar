@@ -429,6 +429,8 @@ export class CookPlayer {
         await sleep(5500);
         if (!(await p.isVisible(sel).catch(() => false))) return;
       }
+      // no Next (Zafar, 22 Oct): the go button presses itself a beat after it shows, so one that is already gone is done
+      if (String(sel).includes("#go-btn") && !(await p.isVisible(sel).catch(() => false))) { await sleep(1200); if (!(await p.isVisible(sel).catch(() => false))) return; }
       await p.waitForSelector(sel, { state: "visible", timeout: 10000 });
       if (sel.includes(".njg-results")) {
         if (sel.includes("rs-next")) {
