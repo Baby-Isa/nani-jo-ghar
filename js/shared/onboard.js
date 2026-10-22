@@ -966,7 +966,7 @@
     };
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : typeof o.item === "function" ? o.item() : centre(firstRect())), { container: layer, step: o.step });
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || centre(firstRect())), { container: layer, step: o.step });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {

@@ -1678,6 +1678,30 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
     const shelfBut = (obj) => Object.values(shelf).filter((o) => o !== obj && o.active).map((o) => pageRect(o));
+    // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests
+    // (not where its bounce has it), with room for its own glow (the station's halo, Cook.Stations glowDraw) and its word chip
+    const restY = (o) => (o.glowFx && o.glowFx.y != null ? o.y - o.glowFx.y : 0);
+    const itemRect = (o) => () => {
+      if (!o || !o.active) return null;
+      const b = o.getBounds();
+      const dy = restY(o);
+      const gx = b.width * 0.125 + 12;
+      const gy = b.height * 0.1 + 10;
+      let [x0, y0, x1, y1] = [b.x - gx, b.y - dy - gy, b.right + gx, b.bottom - dy + gy];
+      if (o.chip && o.chip.active) {
+        const c = o.chip.getBounds();
+        [x0, x1, y1] = [Math.min(x0, c.x), Math.max(x1, c.right), Math.max(y1, c.bottom)];
+      }
+      const a = UI.worldToScreen(x0, y0);
+      const z = UI.worldToScreen(x1, y1);
+      return [a.x, a.y, z.x - a.x, z.y - a.y];
+    };
+    // the finger taps the thing itself, where it rests
+    const itemPt = (o) => () => {
+      if (!o || !o.active) return null;
+      const b = o.getBounds();
+      return UI.worldToScreen(b.centerX, b.centerY - restY(o));
+    };
     const supported = (id) => !!id && Cook.wordStage(id) <= 2;
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
     let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
@@ -1705,7 +1729,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       const obj = shelf[key];
       if (!obj || !sel) return null;
-      return { obj, id: key, target: pageRect(obj), avoid: () => shelfBut(obj) };
+      return { obj, id: key, target: itemRect(obj), point: itemPt(obj), avoid: () => shelfBut(obj) };
     };
     /* the call-out card (CHAI-32: "the card that comes up when they're ordering ... should look like it's coming from Nani"): the
        next item's word card, big, at the top left of the play area by her guide box (the order's own card: UI.wordOf), with a
@@ -1762,7 +1786,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
       rung = Cook.Coach.rungs("chai-tray", step, Object.assign(
-        { name, target, live, avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        { name, target, live, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
