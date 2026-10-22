@@ -647,16 +647,48 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: #8a7a6a; }
 .eye-said.talk i:nth-child(2) { animation-delay: .13s; }
 .eye-said.talk i:nth-child(3) { animation-delay: .26s; }
-/* EY13: the doctor names the row with its pictures (by his box, top left) */
-.eye-name { position: absolute; left: var(--njg-s2); top: var(--njg-s2); z-index: 9; display: flex; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s3); background: #e8f1ea; border: 2px solid #9cc2a6; border-radius: 16px; box-shadow: var(--njg-shadow); animation: cl-pop .2s; }
-.eye-name { align-items: center; }
-.eye-name img { width: calc(var(--njg-tap, 48px) * 1.35); height: calc(var(--njg-tap, 48px) * 1.35); object-fit: contain; }
-/* CLN-107 (s08 w6N): his face starts the bubble: the doctor names the row */
-.eye-name img.eye-name-face { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); border-radius: 50%; object-fit: cover; border: inherit; }
 /* a wrong yes / no shakes red (decision 59) */
 .hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
-.eye-btn .njg-next-t { display: flex; align-items: center; }
-.eye-btn-chart { width: 34px; height: 44px; display: block; }
+/* Sprint 11 (s11-clinic): the eye test's flash card, held up on a stand (the shared word card, js/shared/word-card.js; the
+   hand-held card art comes from the art run), the big haa / na under it and the mic beside them */
+.eye-stand { position: absolute; z-index: 6; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+.eye-stand.hidden { display: none; }
+.eye-holder { position: relative; z-index: 2; flex: none; pointer-events: auto; }
+.eye-holder > .wc { width: 100%; }
+.eye-easel { position: relative; z-index: 1; flex: 1 1 auto; width: 112%; margin-top: calc(var(--njg-s1) * -1); border-top: var(--njg-s3) solid var(--njg-gold); border-radius: var(--njg-s1); }
+.eye-easel::before, .eye-easel::after { content: ""; position: absolute; top: 0; bottom: 0; width: var(--njg-s3); background: var(--njg-cream-lip); border: 2px solid var(--njg-gold); border-top: 0; }
+.eye-easel::before { left: 22%; transform: skewX(8deg); transform-origin: top; }
+.eye-easel::after { right: 22%; transform: skewX(-8deg); transform-origin: top; }
+/* the s11 art: the doctor holds the card up; the word card fills its face, picture and strip side by side */
+.eye-stand.eye-doc { display: block; }
+.eye-stand.eye-doc.hidden { display: none; }
+.eye-doc-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
+.eye-doc .eye-holder { position: absolute; display: flex; }
+.eye-doc .eye-holder > .wc { width: 100%; height: 100%; flex-direction: row; align-items: center; box-shadow: none; background: transparent; }
+.eye-doc .eye-holder .wc-pic { flex: none; width: auto; height: 100%; max-width: 58%; aspect-ratio: 4 / 3; background: transparent; }
+.eye-doc .eye-holder .wc-strip { flex: 1 1 auto; flex-direction: column; align-items: flex-start; justify-content: center; }
+.eye-card.eye-hush .wc-strip { visibility: hidden; }
+.eye-card.eye-in { animation: eye-up .45s ease-out; }
+@keyframes eye-up { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }
+.eye-card.eye-shake { animation: eye-shake .45s; }
+@keyframes eye-shake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
+.eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
+.eye-judge { align-items: center; }
+.eye-pill-t { display: inline-block; min-width: calc(var(--njg-tap) * 1.7); text-align: center; }
+.eye-mic { flex: none; width: calc(var(--njg-tap) + var(--njg-s2)); height: calc(var(--njg-tap) + var(--njg-s2)); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-card); color: var(--njg-ink); box-shadow: var(--njg-shadow); cursor: pointer; touch-action: manipulation; }
+.eye-mic svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
+.eye-mic.listening { background: var(--njg-flag-bg); animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }
+.eye-mic.shrug { animation: eye-shake .45s; }
+@media (prefers-reduced-motion: reduce) { .eye-card.eye-in, .eye-card.eye-shake, .eye-mic.listening, .eye-mic.shrug { animation: none; } }
+/* Sprint 11 (s11-clinic): the brushing's direction card (the shared word card: an arrow and the word), top left */
+.tooth-dir { position: absolute; left: var(--njg-s3); top: var(--njg-s3); z-index: 7; width: calc(var(--njg-tap) * 3.6); }
+.tooth-dir.hidden { display: none; }
+.tooth-dir > .wc { width: 100%; }
+.tooth-dir .wc-pic { background: var(--njg-cream); }
+.tooth-arrow { position: absolute; inset: 8%; width: 84%; height: 84%; display: block; }
+.tooth-dcard.tooth-din { animation: eye-up .4s ease-out; }
+.tooth-dcard.tooth-dshake { animation: eye-shake .45s; }
+@media (prefers-reduced-motion: reduce) { .tooth-dcard.tooth-din, .tooth-dcard.tooth-dshake { animation: none; } }
 /* T4 (CLN-103): the tooth buzzes when the drill goes outside the line */
 .tooth-close.buzz { animation: tooth-buzz .25s linear 2; }
 @keyframes tooth-buzz { 25% { transform: translate(2px, -1px); } 50% { transform: translate(-2px, 1px); } 75% { transform: translate(1px, 1px); } }

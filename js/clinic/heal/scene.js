@@ -56,6 +56,63 @@
     return pourKit;
   };
   if (SELF) HS.pourKit().catch(() => (pourKit = null));
+  /*
+   * Sprint 11 (s11-clinic): the shared word card (js/shared/word-card.js, Step 0's) for the eye test's flash cards and the
+   * brushing's direction cards. The clinic page doesn't load it itself, so it is asked for here, beside this file, as soon
+   * as this file runs (as the pour kit is): HS.wordCardKit() -> Promise<WordCard>, its stylesheet added once.
+   */
+  let wcKit = null;
+  HS.wordCardKit = function () {
+    const css = () => {
+      const W = global.WordCard;
+      if (!W || !W.useCss || typeof document === "undefined") return W;
+      const Kit = global.Clinic && global.Clinic.Kit;
+      W.useCss(Kit && Kit.url ? Kit.url("css/shared/word-card.css") : new URL("../../../css/shared/word-card.css", SELF || document.baseURI).href);
+      return W;
+    };
+    if (global.WordCard) return Promise.resolve(css());
+    if (!wcKit) {
+      const u = new URL("../../shared/word-card.js", SELF || (typeof document !== "undefined" ? document.baseURI : "file:///"));
+      if (SELF) u.search = new URL(SELF).search;
+      wcKit = import(u.href).then(() => css());
+    }
+    return wcKit;
+  };
+  if (SELF) HS.wordCardKit().catch(() => (wcKit = null));
+  /**
+   * A word's progress stage (1-5) for the word card: the lab's ?wcStage=N (a picture of a learned child), else the player's
+   * progress (the core's, js/core/progress.js, which follows Cook's words), else 1 (a new word). Node: the leak bot's save.
+   */
+  HS.stageOf = function (id) {
+    try {
+      const q = global.location && new URLSearchParams(global.location.search).get("wcStage");
+      if (q) return Math.max(1, Math.min(5, Number(q) || 1));
+    } catch (e) {
+      /* no page */
+    }
+    const P = HS.progress();
+    try {
+      if (P && P.stage && id != null) return Math.max(1, Math.min(5, P.stage(id) || 1));
+    } catch (e) {
+      /* no save */
+    }
+    const leak = global.NJG_LEAK_SAVE;
+    if (leak && leak.stage) return leak.stage();
+    // a leak bot's own script (leak.mjs spawns it): the save it plays is named in the environment (a learned child: stage 3)
+    const env = typeof process !== "undefined" && process.env ? process.env.NJG_LEAK_SAVE : null;
+    return env === "learned" ? 3 : 1;
+  };
+  /** The player's word progress (the core's), or null (a lab page, Node). */
+  HS.progress = () => (global.__clinic && global.__clinic.core && global.__clinic.core.progress) || null;
+  /** Rule 10: a word the family has recorded on its own (every piece of the engine's clip plan a family clip). */
+  HS.recorded = function (id) {
+    try {
+      const w = Lg().w(id);
+      return !!(w && w.kutchi && !w.placeholder && w.plan && w.plan.length && w.plan.every((p) => /^family/.test(String(p.source || ""))));
+    } catch (e) {
+      return false;
+    }
+  };
   /**
    * CLN-118 (D13): the taught first round has no counts, sizes or sides: its word review drops the number, size and side
    * words (each game builds its rows without them: its own mount, `if (ctx.taught)`); counts start on the next round.
