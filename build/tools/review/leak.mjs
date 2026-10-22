@@ -5,8 +5,13 @@
  * strategy wins under the limit (10%) at every level (Zafar, 14 Oct). A game needs only a small config in build/tools/review/leak-configs/<name>.json;
  * the old per-game scripts (build/leak_*.mjs) are thin wrappers that run this with their config.
  *
- *   node build/tools/review/leak.mjs <name|path.json> [--rounds 1000] [--l1 5000] [--seed 1] [--json out.json]
+ *   node build/tools/review/leak.mjs <name|path.json> [--rounds 1000] [--l1 5000] [--seed 1] [--json out.json] [--save learned|new]
  *   node build/tools/review/leak.mjs --list
+ *
+ * The save (Sprint 11, rule 6; Zafar 21 Oct: "while supported, matching is study"): the bot plays a child whose words are past support
+ * (every word at stage 3 or higher: no English on the card, from stage 4 no picture). "learned" is the default; a config's "save" or
+ * --save new plays a brand-new child instead. The 10% limit is the same either way. Adapters get it as `save`
+ * ({kind, stage(id) -> 1..5, learned}); a heal game's bot and a script read it as globalThis.NJG_LEAK_SAVE and the env NJG_LEAK_SAVE.
  *
  * Config: { "id": "clinic-heal-knee", "adapter": "heal-registry",
  *           "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/knee.js"], "games": ["knee"],
@@ -35,11 +40,20 @@ if (!fs.existsSync(cfgPath)) die(`No config ${which}. --list shows them.`);
 const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
 const require = createRequire(import.meta.url);
 
+// ---- the save the bot plays (Sprint 11): a learned child by default ----
+const SAVE_KIND = String(a.val("save", cfg.save || "learned"));
+if (!["learned", "new"].includes(SAVE_KIND)) die(`--save is "learned" or "new", not ${SAVE_KIND}`);
+export const LEARNED_STAGE = 3;
+const SAVE = Object.freeze({ kind: SAVE_KIND, learned: SAVE_KIND === "learned", stage: () => (SAVE_KIND === "learned" ? LEARNED_STAGE : 1) });
+globalThis.NJG_LEAK_SAVE = SAVE;
+process.env.NJG_LEAK_SAVE = SAVE_KIND;
+
 // ---- a game with its own bot: run its script, its output and exit code are the verdict ----
 if (cfg.adapter === "script") {
   const { spawnSync } = await import("child_process");
-  const rest = process.argv.slice(process.argv.indexOf(which) + 1);
-  const r = spawnSync(process.execPath, [path.join(ROOT, cfg.script), ...(rest.length ? rest : cfg.args || [])], { stdio: "inherit", cwd: ROOT });
+  const rest = process.argv.slice(process.argv.indexOf(which) + 1).filter((x, i, all) => x !== "--save" && all[i - 1] !== "--save");
+  console.log(`save: ${SAVE_KIND} (NJG_LEAK_SAVE)`);
+  const r = spawnSync(process.execPath, [path.join(ROOT, cfg.script), ...(rest.length ? rest : cfg.args || [])], { stdio: "inherit", cwd: ROOT, env: process.env });
   process.exit(r.status === null ? 1 : r.status);
 }
 
@@ -52,12 +66,13 @@ const ADAPTERS = {
       games: c.games,
       def: (id) => Heal.get(id),
       strategies: (id, level) => Heal.botStrategies(id, level),
+      // a game's bot reads the save as globalThis.NJG_LEAK_SAVE (Heal.botRun's signature is the registry's)
       run: (id, level, s, rng) => Heal.botRun(id, level, s, rng),
       rows: (id, level, rng) => (Heal.get(id).bot(level, rng).rows) || [],
     };
   },
 };
-const adapter = ADAPTERS[cfg.adapter || "heal-registry"] ? ADAPTERS[cfg.adapter || "heal-registry"](cfg) : (await import(path.join(ROOT, cfg.adapter))).default(cfg, require);
+const adapter = ADAPTERS[cfg.adapter || "heal-registry"] ? ADAPTERS[cfg.adapter || "heal-registry"](cfg) : (await import(path.join(ROOT, cfg.adapter))).default(cfg, require, { save: SAVE });
 
 const ROUNDS = Number(a.val("rounds", 1000)), L1 = Number(a.val("l1", 5000)), SEED = Number(a.val("seed", 1)), JSON_OUT = a.val("json");
 const BLIND = cfg.blindMax ?? 0.1, ACCEPTED = cfg.accepted || {};
@@ -65,7 +80,8 @@ function rngFrom(seed) {
   let s = seed >>> 0 || 0x9e3779b9;
   return function () { s = (s + 0x6d2b79f5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
-const out = { seed: SEED, rounds: ROUNDS, l1Rounds: L1, games: {} };
+const out = { seed: SEED, rounds: ROUNDS, l1Rounds: L1, save: SAVE_KIND, games: {} };
+console.log(`save: ${SAVE_KIND}${SAVE.learned ? ` (every word past support: stage ${LEARNED_STAGE}+)` : " (a brand-new child)"}`);
 const fails = [];
 const pct = (x) => `${(100 * x).toFixed(1)}%`.padStart(7);
 for (const id of adapter.games) {
@@ -83,10 +99,10 @@ for (const id of adapter.games) {
     let rowsSeen = 0, placeholderRows = 0;
     for (const s of strategies) {
       let wins = 0, right = 0, total = 0;
-      for (let i = 0; i < n; i++) { const r = adapter.run(id, level, s, rng); if (r.win) wins++; right += r.right; total += r.total; }
+      for (let i = 0; i < n; i++) { const r = adapter.run(id, level, s, rng, SAVE); if (r.win) wins++; right += r.right; total += r.total; }
       row[s] = { win: wins / n, rowShare: total ? right / total : 0 };
     }
-    for (const r of adapter.rows(id, level, rng)) { rowsSeen++; if (r.placeholder) placeholderRows++; }
+    for (const r of adapter.rows(id, level, rng, SAVE)) { rowsSeen++; if (r.placeholder) placeholderRows++; }
     out.games[id][level] = { strategies: row, rows: rowsSeen, placeholderRows };
     console.log(`  L${level} (${n} rounds, ${rowsSeen} rows, ${placeholderRows} still English)  ${strategies.map((s) => `${s} ${pct(row[s].win)}`).join("  ")}`);
     if (!row.fair || row.fair.win < 1) fails.push(`${id} L${level}: fair wins ${pct(row.fair ? row.fair.win : 0)}, not 100%`);

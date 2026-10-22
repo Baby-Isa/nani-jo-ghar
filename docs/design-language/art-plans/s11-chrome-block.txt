@@ -1,0 +1,121 @@
+You're making 6 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Zafar approves the likenesses (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-1888a520-dk18y7/docs/design-language/art-plans/s11-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
+Reference images, by the name the run order uses:
+ old-toothbrush.png   RAW + sources/art/s08b/tb1-toothbrush-v1.png
+ style-anchor-v1.png  RAW + sources/art/style-anchor-v1.png
+ mouth.png            RAW + sources/art/s02/girl-m1-mouth-v2.png
+ doctor-sheet.png     RAW + sources/art/s08/sheet-doctor-final-1.png
+ girl-sheet.png       RAW + sources/art/s08/sheet-girl-v2-1.png
+ lineup.png           RAW + sources/art/s08/lineup-v4-1.png
+ waiting-room.png     RAW + sources/art/clinic-v2/cb1-waiting-wide-v1.png
+ book-kitchen.png     RAW + sources/art/s09b/k2-book-kitchen-spread-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
+Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
+
+MOVING IMAGES (references in, kept images stay put until the end)
+Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
+
+1. INTO CHATGPT (references). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, in the order the line names them, and check the composer shows exactly that many thumbnails before you paste.
+
+2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest kept try of that chat, by its title and thumbnail), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
+
+3. OUT OF CHATGPT: only at the very end, or when Zafar says "stop" or "download": from the Library page (https://chatgpt.com/library), each kept image in the run order with ChatGPT's own download button (Chrome's normal download; the file keeps ChatGPT's title, so you log "title -> save as" for each one; see AT THE END). Until then every kept image stays in its chat, and its chat link, title and save-as name are in THE LOG.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
+
+THE TICK. Repeat until every line is KEPT or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
+   FAIL with redos left: put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+APPROVALS
+- The doctor and the girl (DC, BK2) are real people. Zafar judges their likeness after the run, in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes its check and the PASS/FAIL list.
+- Everything else is yours to judge with the checks below. Redo only for a failed check or a PASS/FAIL point.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it. The only change allowed is filling a code box's {SLOTS}.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it in a fresh chat with the same attachments, at most 2 redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong.
+6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: THE TOOTHBRUSHING GAME (2)
+TB is a new toothbrush (straight handle, real bristles); MO is an edit of the mouth close-up that removes the pale box on a tooth and changes nothing else.
+TB | style-anchor-v1.png, old-toothbrush.png | tb-toothbrush-v1.png | ITEM
+MO | edit: mouth.png | mo-mouth-no-box-v1.png | EDIT
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: THE EYE TEST (1)
+DC: the doctor holding up one big blank card; the game draws the word on it.
+DC | doctor-sheet.png, lineup.png | dc-doctor-blank-card-v1.png | PERSON
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: THE EVENING BOOK AFTER A CLINIC DAY (2)
+BK1 is the clinic across the book's two pages, empty for the game's things; BK2 is a photo of the girl and the doctor in that room.
+BK1 | waiting-room.png, book-kitchen.png | bk1-book-clinic-spread-v1.png | SPREAD
+BK2 | girl-sheet.png, doctor-sheet.png, lineup.png, kept:BK1 | bk2-book-clinic-photo-v1.png | PHOTO
+Part C done: post the part C summary (see AT THE END) and carry on.
+
+PART D: THE EFFECTS (1)
+FX: five small painted effects, apart on flat magenta.
+FX | style-anchor-v1.png | fx-effects-sheet-v1.png | SPRITES
+Part D done.
+
+CHECKS (by check ID)
+ITEM: one toothbrush, flat and side on, head left; the handle completely straight; real bristle tufts; whole, with space round it, on ONE flat pure magenta with no floor or shadow
+EDIT: the same picture as the attached mouth (same size, framing, lips, teeth, tongue) with no pale box or hard-edged highlight on any tooth; nothing else changed
+PERSON: the doctor as on his sheet (face, glasses, navy blazer), whole head to feet, holding a big landscape card square-on in both hands by its side edges; the card completely blank; ONE flat pure magenta behind with no floor or shadow
+SPREAD: a clinic room filling the picture, a long empty counter across the whole width, no people and no loose things, nothing standing in the middle tenth; no writing, posters with text or red crosses
+PHOTO: the girl and the doctor as on their sheets, side by side from the knees up, smiling at the camera, in the kept clinic room; she waves, his hand on her shoulder; modest clothes as on the sheets
+SPRITES: exactly five effects in one row, in order sparkle, splash, steam, bubble, shine, each whole and well apart, solid enough to cut out, on ONE flat pure magenta with no floor or shadow
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones; anything written or drawn on the doctor's card.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things or the wrong view; a curved or bent toothbrush handle.
+- A key background that isn't one flat pure magenta (a gradient, a floor, shadows or haze on it); pink or purple anywhere else.
+- A real person who doesn't look like their sheet, or a skin tone that drifts from the lineup; immodest clothes.
+- Anything scary; sweets, lollies or biscuits; any religious marker; a red cross.
+
+THE LOG
+One line per kept image:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link and title. At the very end, or as soon as Zafar says "stop" or "download" in this chat, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open https://chatgpt.com/library, find the kept image (by its chat's title and its thumbnail; the newest kept try of that chat), open it and download it with ChatGPT's own download button, which is Chrome's normal download into the Downloads folder. The file keeps the name ChatGPT gives it; you cannot rename it, so log each download at once, in order, as "DOWNLOADED <n>: <ChatGPT's title, as the file is named> -> <save as>". When every kept image is down, post the whole log once more with that numbered title -> save-as list at its end: Zafar renames from it and pushes the folder and the log to the repo himself. Never page JavaScript, never a GitHub upload, never a file picker. If a download is refused, say so, log it, and post the ordered list of chat links, titles and save-as names instead; Zafar downloads from it.
