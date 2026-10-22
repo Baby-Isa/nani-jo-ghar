@@ -13,6 +13,7 @@
   h1 { color: var(--accent); margin: 0 0 4px; font-size: 1.7rem; }
   p.lead { color: var(--muted); margin: 0 0 12px; }
   h2 { font-size: 1.25rem; margin: 28px 0 4px; color: var(--accent); }
+  h2.grp { font-size: 1.02rem; margin: 22px 0 8px; color: var(--ink); }
   h3 { font-size: 1.02rem; margin: 20px 0 8px; }
   .top-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0 6px; }
   .top { display: block; text-align: left; font: inherit; color: inherit; background: var(--card); border: 2px solid var(--accent); border-radius: 14px; padding: 14px 16px; text-decoration: none; cursor: pointer; min-height: 88px; }
@@ -55,7 +56,7 @@
 
   <h2>Play any game</h2>
   <p class="lead">Pick a level, press Play. At the end, All games comes back here.</p>
-  <h3>Cook stations</h3>
+  <h2 class="grp">Cook stations</h2>
   <div class="games">
     <div class="game" data-tpl="lab.html?mode=cook&amp;game=fetch&amp;level={v}">
       <b>Nani's pantry</b>
@@ -149,7 +150,7 @@
     </div>
   </div>
 
-  <h3>Cook: a whole dish, every station in turn</h3>
+  <h2 class="grp">Cook: a whole dish, every station in turn</h2>
   <div class="games">
     <div class="game" data-tpl="lab.html?mode=cook&amp;game=recipe-chai&amp;level={v}">
       <b>Chai, every station</b>
@@ -207,7 +208,7 @@
     </div>
   </div>
 
-  <h3>Cook: rounds</h3>
+  <h2 class="grp">Cook: rounds</h2>
   <div class="games">
     <div class="game" data-tpl="lab.html?mode=cook&amp;game=order&amp;level={v}">
       <b>One customer</b>
@@ -229,7 +230,7 @@
     </div>
   </div>
 
-  <h3>Clinic: a patient and a morning</h3>
+  <h2 class="grp">Clinic: a patient and a morning</h2>
   <div class="games">
     <div class="game">
       <b>A clinic morning</b>
@@ -247,7 +248,7 @@
     </div>
   </div>
 
-  <h3>Clinic: the healing games</h3>
+  <h2 class="grp">Clinic: the healing games</h2>
   <div class="games">
     <div class="game" data-tpl="lab.html?mode=clinic&amp;game=cut&amp;level={v}">
       <b>The scrape</b>
@@ -332,7 +333,7 @@
     </div>
   </div>
 
-  <h3>Clinic: the stages</h3>
+  <h2 class="grp">Clinic: the stages</h2>
   <div class="games">
     <div class="game" data-tpl="lab.html?mode=clinic&amp;game=waiting&amp;level={v}">
       <b>Waiting room</b>
@@ -372,7 +373,7 @@
     </div>
   </div>
 
-  <h3>A day at Nani's: the door, the ride, the book</h3>
+  <h2 class="grp">A day at Nani's: the door, the ride, the book</h2>
   <div class="games">
     <div class="game" data-tpl="day.html?stages=door:{v}">
       <b>The door</b>

@@ -185,8 +185,8 @@ export async function render(root = ROOT) {
   const V = (readFileSync(join(root, "js/version.js"), "utf8").match(/const V = "([^"]*)"/) || [])[1] || "0";
   const { groups, behind } = sortEntries(await movedModes(root), arcs);
   const names = ORDER.filter((g) => groups[g]).concat(Object.keys(groups).filter((g) => !ORDER.includes(g)));
-  const play = names.map((g) => `  <h3>${esc(g)}</h3>\n  <div class="games">\n${groups[g].map(gameCard).join("\n")}\n  </div>`);
-  play.push(`  <h3>A day at Nani's: the door, the ride, the book</h3>\n  <div class="games">\n${DAY_GAMES.map(gameCard).join("\n")}\n  </div>`);
+  const play = names.map((g) => `  <h2 class="grp">${esc(g)}</h2>\n  <div class="games">\n${groups[g].map(gameCard).join("\n")}\n  </div>`);
+  play.push(`  <h2 class="grp">A day at Nani's: the door, the ride, the book</h2>\n  <div class="games">\n${DAY_GAMES.map(gameCard).join("\n")}\n  </div>`);
   const hidden = BEHIND.map((s) => ({ ...s }));
   hidden.splice(2, 0, { title: "Test, demo and parked games", lead: "On the game host (lab.html); made from each mode's lab() list.", cards: behind.test });
   hidden.splice(3, 0, { title: "Story and free play", lead: "Story mode's errands and free play, as the map starts them.", cards: behind.story });
@@ -206,6 +206,7 @@ export async function render(root = ROOT) {
   h1 { color: var(--accent); margin: 0 0 4px; font-size: 1.7rem; }
   p.lead { color: var(--muted); margin: 0 0 12px; }
   h2 { font-size: 1.25rem; margin: 28px 0 4px; color: var(--accent); }
+  h2.grp { font-size: 1.02rem; margin: 22px 0 8px; color: var(--ink); }
   h3 { font-size: 1.02rem; margin: 20px 0 8px; }
   .top-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0 6px; }
   .top { display: block; text-align: left; font: inherit; color: inherit; background: var(--card); border: 2px solid var(--accent); border-radius: 14px; padding: 14px 16px; text-decoration: none; cursor: pointer; min-height: 88px; }

@@ -214,6 +214,15 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | DAY-02 | A whole day plays through: the farm day goes door, ride, book with its finds; a kitchen or clinic day hands off and the book follows on return | **waiting on Zafar** · open (two strikes) (evidence FAIL ev-20261021-032427-602) | auto: the full-day flows reach their end | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
 | DAY-03 | The way back: Cook's or the clinic's round returns to the evening book by itself, and writes the day log the book reads | **waiting on** Sprint 8's publish (a change in Cook and the clinic) | auto: day:full-kitchen plays Cook's round and returns to the book | s09-final-door report, 21 Oct |
 
+## Labs and the day builder
+
+| ID | Issue | Status | Check | Source |
+|---|---|---|---|---|
+| LAB-01 | The labs page: a top row (New player, Walkthrough, the house, the day builder), then "Play any game" (every Cook station and every clinic game once each, a level picker and a Play button; the door, the ride and the book), and every retired, old, parked, test and demo page once inside one folded "Behind the scenes"; nothing deleted, no clinic game listed three ways, nothing clipped | **to fix: check** · built (s10a-labs); judge to close | eye: labs.html at 1366x768 and 1480x924 · auto: gen_labs --check | `docs/sprints/S10-show-it.md` (Zafar, 21 Oct) |
+| LAB-02 | The day builder: tick stages in order (door with a weather, a Cook station at a level or the kitchen round, a clinic game at a level or a whole morning, ride, book) or just one game; day.html?stages= plays them, Cook and the clinic hand off with ?then=day.html and their end screen's Next comes back to the day; this closes DAY-03's way back | **to fix: check** · built (s10a-labs); judge to close | auto: test_day_stages · eye: filmstrip door, chai L1, book at 1366x768 | `docs/sprints/S10-show-it.md` (Zafar, 21 Oct) |
+| LAB-03 | New player: one Save.resetPlayer(id) clears every word, the first-time help, Cook, the clinic's levels, the day and the conversations, and keeps the wallet, the character and firstDone; both "Play as new" buttons and the labs button use it, the labs one with "Fresh start: every word new, every game at level 1" | **to fix: check** · built (s10a-labs); judge to close | auto: test_shared_reset_player · eye: labs.html after the button | `docs/sprints/S10-show-it.md` (Zafar, 21 Oct) |
+| LAB-04 | The Walkthrough: from labs.html, Cook's pantry list for the chai things, then one cup of chai, then back to the labs (Cook's own ?first=pantry&then= chain) | **to fix: check** · built (s10a-labs); judge to close | auto: gen_labs test (the link) · eye: pantry, chai, back at labs.html | `docs/sprints/S10-show-it.md` (Zafar, 21 Oct) |
+
 ## Other modes
 
 | ID | Issue | Status | Check | Source |

@@ -423,7 +423,9 @@ function makeApi({ data, days, core, E }) {
 function pageStages(app, api) {
   const fresh = () => (app.innerHTML = "");
   const handoff = (settings) => {
-    const to = handoffUrl(settings);
+    // a test speed (?speed=3) goes there and comes back: the game's own, and the page the end screen's Next opens
+    const back = api.speed !== 1 ? encodeURIComponent(`day.html?speed=${api.speed}`) : "day.html";
+    const to = handoffUrl(settings, back) + (api.speed !== 1 ? `&speed=${api.speed}` : "");
     api.go(to);
     const root = app.querySelector(".day-root");
     if (root) root.dataset.handoff = to;
