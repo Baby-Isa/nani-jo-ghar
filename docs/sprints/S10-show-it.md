@@ -1,6 +1,6 @@
 # Sprint 10: Show it
 
-**Status:** open
+**Status:** published 22 Oct 2026 (7ff52b9)
 **Opened:** 21 Oct 2026 · **Closes at:** the publish to `main` (Zafar's go, 21 Oct), his play and `/feedback`
 
 ## Goal
@@ -20,7 +20,9 @@ About $30-45 (two Sonnet builders, medium effort, overnight). Proof proportional
 - Effects off everywhere now; the art-matched version comes in Sprint 11 (`S11-easy-to-play.md`).
 
 ## Outcome
-(at close)
+Published to `main` at 7ff52b9 (22 Oct, about 02:45 UK), with main's 21 Oct afternoon fixes merged in. All seven rows judged and built: LAB-01..04, GIRL-01, DRILL-01, FX-01, each after one fix round. Known gaps: the book after a clinic day still shows kitchen pictures (no clinic art in the book yet); the mouth art has a pale box patched in code (art run); Cook's newer "it went in" splash (CK-27) stays off with the other effects until Sprint 11's art-matched version.
 
 ## Look back (three lines)
-(at close)
+1. Two small builders on disjoint files plus a judge per row caught real flaws (an ambiguous call shot, a baked-in art box, leftover stars) before Zafar saw them.
+2. Every row needed a second round; most were evidence gaps (wrong frame, missing size), not code.
+3. Ask builders for one named frame per claim at both sizes up front.

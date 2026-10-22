@@ -8,16 +8,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (22 Oct 2026, 01:00 UK):** Sprint 9 is live on `main` (a6c72e54). The planning session (21 Oct) agreed "easy to play, easy to learn": the plan, its evidence and the critic's pre-mortem are in `docs/game-design/easy-to-play.md`; rules 5 and 6 now allow supported English and matching (support then fade). Sprint 10 "Show it" (`docs/sprints/S10-show-it.md`) runs overnight: two Sonnet builders in worktrees, s10a-labs (labs page, day builder `?stages=`/`?then=`, New player `Save.resetPlayer`, walkthrough pantry then chai) and s10b-clinic (girl as every patient, tooth drill starting in a bigger cavity, code effects off). Briefs: `build/tools/ops/specs/s10a-labs.brief.txt`, `s10b-clinic.brief.txt`.
+**Where things stand (22 Oct 2026, 03:00 UK):** Sprint 10 "Show it" is live on `main` (7ff52b9): the tidy labs page (New player, walkthrough pantry then chai, every Cook and clinic game with a level picker, the day builder), the girl as every clinic patient, the tooth drill starting in a bigger cavity, code-drawn effects off. All seven rows judged and built (`docs/sprints/S10-show-it.md`). The plan for what's next, with its evidence and the critic's pre-mortem: `docs/game-design/easy-to-play.md`.
 
 **Next steps:**
-1. When the builders report: merge their worktree branches into `ccr-1888a520-dk18y7`, checks.mjs, one `judge` pass on their sheets at 1366x768 and 1480x924, fix what fails, `/publish` (Zafar's go for this run, 21 Oct), `/handover`.
-2. Sprint 11 (`docs/sprints/S11-easy-to-play.md`) only if budget is left: Step 0 (shared word card, progress fading, onboarding rungs, play log, leak bot on a learned save, the door), then B-cook (chai, kitchen conversation, top-down pour) and B-clinic (flash-card eye test, toothbrush cross).
+1. Zafar shows his Masi and plays; notes go to `/feedback`.
+2. Sprint 11 "Easy to play, easy to learn" (`docs/sprints/S11-easy-to-play.md`, about $160-200) on Zafar's go: Step 0 (shared word card, fading by word stage, onboarding rungs with the real item, play log, leak bot on a learned save, the door; and the art run's paste block), then B-cook (kitchen conversation, chai order cards, top-down coded pour, new effects) and B-clinic (flash-card eye test with spoken haa/na, the toothbrush cross).
 
-**Open questions to Zafar:** none blocking. Art run (toothbrush, doctor with a card, an effects sheet) is written in Sprint 11 Step 0.
+**Open questions to Zafar:**
+1. Cook's new "it went in" splash (CK-27, approved 21 Oct afternoon) is off with the other effects until Sprint 11's art-matched version. OK? (Recommend yes.)
+2. The book after a clinic day shows kitchen pictures until the book gets clinic art: add to Sprint 11's art run? (Recommend yes.)
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Carry on from "Next steps" (Sprint 10's overnight run). Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 10 is live. Carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
@@ -37,6 +39,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+22 Oct 2026, published about 02:45 UK (7ff52b9, 20261022T014206Z): Sprint 10 "Show it" (labs, day builder, New player, girl patient, tooth drill, effects off), judged row by row.
 
 21 Oct 2026, published 14:29 UK (a6c72e54, 20261021T132558Z): Sprint 9 ("A day at Nani's") on Sprint 8, past the gate on Zafar's word ("push to main asap"); only checks.mjs run (green).
 
