@@ -10,8 +10,8 @@
  *    as the arrows point; they were the patient's own, mirrored, before the cards). A wrong direction bumps the brush gently
  *    back and the patient says the move again. Dirt drawn in code sits on the targets: at L1-2, while the order's words
  *    are still supported (stage 1-2), only on the directions in the order; otherwise (from L3, or a child who knows the
- *    words: rule 6) on all four sides, so listening is what wins. The first time the real brush shows the way round the
- *    cross (Onboard.stuck's 0 s rung); the 5 s and 15 s rungs spotlight the cross and show it again (never the answer).
+ *    words: rule 6) on all four sides, so listening is what wins. The real brush shows it (Onboard.stuck: 0 s the first time, then
+ *    the 5 s spotlight and 15 s): while the word is supported it goes the order's way; past support it only wiggles (EASY-09).
  *    No Done: each move closes as it's brushed, and the drill comes on when the order is. L1 2 moves; L2-3 4; L4 6.
  * 2. Drill: the camera pushes in on the sore tooth, still in the mouth (gum above, the neighbours either side, the
  *    lip below: CLN-52, P43). The decay is jagged and scattered by level (L1 one patch, L2-3 two, L4 four small ones:
@@ -999,8 +999,8 @@
       dirCard.classList.add("tooth-din");
       ctx.after(fast() ? 50 : 450, () => dirCard && dirCard.classList.remove("tooth-din"));
     };
-    // principle 2: the real brush shows it. A first time (and the 5 s and 15 s rungs) it goes round the cross, every channel
-    // to its end and back (never only the answer); the taught round shows the very move asked for
+    // principle 2: the real brush shows it. While the move's word is supported (and in the taught round) the first time, the 5 s
+    // and the 15 s rungs take it the order's way and back; past support they only wiggle it on the centre (EASY-09)
     let stuck = null;
     const headClient = () => S.client(TR.x, TR.y);
     const tour = (only) => {
@@ -1010,6 +1010,11 @@
         pts.push(S.client(END[d].x, END[d].y));
       });
       return pts;
+    };
+    const wiggle = () => {
+      const o = S.client(TR.x, TR.y);
+      const r = Math.max(6, (TR.w * 0.12) / S.unit());
+      return [[r, 0], [0, r], [-r, 0], [0, -r], [r, 0]].map(([x, y]) => ({ x: o.x + x, y: o.y + y }));
     };
     const demoAt = (dx, dy) => {
       if (drag || st.snapping) return;
@@ -1042,7 +1047,10 @@
           live: trackG,
           item: headClient(),
           move: demoAt,
-          path: () => tour(ctx.taught ? c.move : null),
+          // EASY-09 (the judge: a hint must never show a wrong move): while the move's word is supported (stage 1-2) and
+          // in the taught round the brush goes the order's way; past support it only wiggles on the centre, the same small
+          // move every way (it shows the brush, never a direction)
+          path: () => (ctx.taught || HS.stageOf(DIR_ID[c.move]) <= 2 ? tour(c.move) : wiggle()),
           hand: true,
           ms: fast() ? 300 : ctx.taught ? 1500 : 3800,
           line: () => (cur() === c ? sayMove(c) : null),
