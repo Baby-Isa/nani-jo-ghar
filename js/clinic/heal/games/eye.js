@@ -121,7 +121,8 @@
       const a = data.art && data.art[key];
       // A1: a {kind} picture only for the kinds that have it cut (a.kinds); the @2x on dense screens (a.has2x)
       if (!a || !a.ready || !a.src || (a.kinds && a.src.includes("{kind}") && !a.kinds.includes(kind))) return null;
-      const two = a.has2x && (root.devicePixelRatio || 1) > 1.25;
+      // (a.always2x: a picture drawn far bigger than its 1x, the s11 doctor holding the card: ART-05, contract-11)
+      const two = a.has2x && (a.always2x || (root.devicePixelRatio || 1) > 1.25);
       return Object.assign({}, a, { src: a.src.replace("{kind}", kind).replace(two ? /\.webp$/ : /$^/, "@2x.webp") });
     };
     const st = { i: 0, drops: 0, n: { right: 0, left: 0 }, nowEye: "right", judged: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false, listening: false };

@@ -578,7 +578,8 @@
     "w": 0.8101,
     "h": 0.1972
    },
-   "_s11": "Sprint 11 art (Zafar ran it, 22 Oct; assets/clinic/s11/s11-art.json): the doctor holding a big blank card; the eye test's word card sits in its face (card: x, y, w, h as shares of the 1x picture), in place of the drawn stand"
+   "_s11": "Sprint 11 art (Zafar ran it, 22 Oct; assets/clinic/s11/s11-art.json): the doctor holding a big blank card; the eye test's word card sits in its face (card: x, y, w, h as shares of the 1x picture), in place of the drawn stand",
+   "always2x": true
   }
  },
  "assets": [
