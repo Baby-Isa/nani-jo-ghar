@@ -137,6 +137,8 @@ export const BEHIND = [
       { href: "lab/conversations.html", title: "Conversations", text: "The nine MVP exchanges: play each one, boy/girl voice, register, placeholder flags; simulate the first launch, Cook and the clinic." },
       { href: "lab/family-audio.html", title: "Family voice clips", text: "Mum's and Zafar's words from the recordings (Section B, then Round 3): play each one, tick the good ones." },
       { href: "lab/shared-ui.html", title: "End-of-round screen and onboarding", text: "The three badges and word review; the ghost-hand onboarding on a fake chai station." },
+      { href: "lab/word-card.html", title: "Word card and hint rungs", text: "Sprint 11: the shared word card at its five stages (English, then the picture, then the Kutchi text fade; the free reveals), and the real item's demo with the 5 s and 15 s rungs." },
+      { href: "lab/play-log.html", title: "Play log", text: "Where players hesitated on this device: each step's seconds to the first action, taps that did nothing and help shown; slow steps flagged; export as JSON." },
       { href: "lab/order-card.html", title: "Order card", text: "The shared person card (person &rarr; items &rarr; parts): every state, in the sidebar and the request pop-up." },
       { href: "lab/kit.html", title: "Shared kit: every state", text: "The frame's sidebar kit on one sheet: the guide box, the order card (stacked and pills), the tally and the bulb. <code>?part=results</code> or <code>?part=words</code> opens the end screen." },
     ],

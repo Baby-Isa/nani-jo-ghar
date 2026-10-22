@@ -931,7 +931,12 @@
   };
 
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */
-  const PlayLog = Object.assign(Object.create(PL), {});
+  // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
+  if (root.PlayLog && root.PlayLog.__live) {
+    Onboard.playLog = root.PlayLog;
+    return Onboard;
+  }
+  const PlayLog = Object.assign(Object.create(PL), { __live: true });
   let meta = {};
   const taps = [];
   const liveControl = (t) => {
@@ -968,7 +973,7 @@
   };
   PlayLog.clear = () => PlayLog.write([]);
   /** Name the stage now running (the host: {mode, game, level}); cleared at its end. */
-  PlayLog.meta = (m) => (meta = Object.assign({}, meta, m || {}));
+  PlayLog.meta = (m) => (hook(), (meta = Object.assign({}, meta, m || {})));
   /** A step opens by name (Onboard.stuck does it; a game may too): it is logged as a "step-open" note. */
   PlayLog.step = function (name, o) {
     if (!(o && o.noted)) LCnote("step-open", { step: String(name) });
@@ -1010,15 +1015,17 @@
       return null;
     }
   };
-  let hooked = false;
+  // the stage-end hook on the page's Lifecycle (js/shared/request-popup.js), again if the page loads a new one (a mode's own copy)
+  let hookedOn = null;
   function hook() {
-    if (hooked || !root.Lifecycle || !root.Lifecycle.onStageEnd) return;
-    hooked = true;
-    root.Lifecycle.onStageEnd(() => PlayLog.stageEnd());
+    const L = root.Lifecycle;
+    if (!L || !L.onStageEnd || L === hookedOn) return;
+    hookedOn = L;
+    L.onStageEnd(() => PlayLog.stageEnd());
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hook);
-  else setTimeout(hook, 0);
   setTimeout(hook, 0);
+  setInterval(hook, 2000);
   PlayLog.hook = hook;
   root.PlayLog = PlayLog;
   Onboard.playLog = PlayLog;
