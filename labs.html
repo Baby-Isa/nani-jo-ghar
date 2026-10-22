@@ -20,8 +20,16 @@
   .top:hover, .top:focus-visible { background: #fff7ea; }
   .top b { display: block; color: var(--accent); font-size: 1.2rem; margin-bottom: 2px; }
   .top span { color: var(--muted); font-size: .92rem; }
-  #fresh { margin: 8px 0 0; padding: 10px 14px; border-radius: 10px; background: #e7f3ec; border: 1px solid #b7d8c5; color: #1f4d37; font-weight: 600; }
-  #fresh[hidden] { display: none; }
+  .top.toggle { position: relative; padding-right: 76px; }
+  .top.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .top.toggle .switch { position: absolute; right: 16px; top: 16px; width: 48px; height: 28px; border-radius: 14px; background: var(--line); transition: background .2s; }
+  .top.toggle .switch::after { content: ""; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: left .2s; }
+  .top.toggle input:checked ~ .switch { background: var(--go); }
+  .top.toggle input:checked ~ .switch::after { left: 23px; }
+  .top.toggle input:focus-visible ~ .switch { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .top.toggle.on { background: #eef7f1; border-color: var(--go); }
+  #player-badge { display: inline-block; margin: 8px 0 0; padding: 8px 14px; border-radius: 999px; background: #fff; border: 2px solid var(--line); color: var(--ink); font-weight: 600; }
+  #player-badge.on { background: #e7f3ec; border-color: #b7d8c5; color: #1f4d37; }
   .grid, .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .games { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
   a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: inherit; }
@@ -47,12 +55,12 @@
   <p class="lead">Everything to show and try, for grown-ups. Words are mostly English placeholders until the family's recordings go in.</p>
 
   <div class="top-row">
-    <button type="button" class="top" id="new-player"><b>New player</b><span>Start this player fresh: every word new, every game at level 1. The pocket money stays.</span></button>
+    <label class="top toggle" id="new-player"><input type="checkbox" id="new-player-toggle"><i class="switch" aria-hidden="true"></i><b>New player</b><span>On: every Play, the Walkthrough, the house and the day builder start a fresh &ldquo;New player&rdquo; (no words known, every first-time help, every game at level 1). Off: your own player, never wiped.</span></label>
     <a class="top" href="cook.html?app=1&amp;first=pantry&amp;then=cook.html%3Fapp%3D1%26first%3Dchai%26then%3Dlabs.html"><b>Walkthrough</b><span>Nani's pantry list, then one cup of chai, as a new player sees it.</span></a>
     <a class="top" href="index.html"><b>The house</b><span>Nani's house, the game as the child plays it.</span></a>
     <a class="top" href="lab/day.html"><b>The day builder</b><span>Pick the stages of a day in order, or one game, and play it.</span></a>
   </div>
-  <p id="fresh" role="status" hidden></p>
+  <p id="player-badge" role="status">Playing as: your player</p>
 
   <h2>Play any game</h2>
   <p class="lead">Pick a level, press Play. At the end, All games comes back here.</p>
@@ -481,20 +489,75 @@
     if (!sel) return;
     sel.addEventListener("change", function () { a.setAttribute("href", tpl.replace("{v}", encodeURIComponent(sel.value))); });
   });
-  // New player: the current player starts fresh (Save.resetPlayer: words, first-time help, Cook, clinic, story, conversations; the purse stays)
-  document.getElementById("new-player").addEventListener("click", function () {
-    var out = document.getElementById("fresh");
-    // every picker back at its first option (level 1), every Play link with it
-    document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
-    try {
-      var p = Save.ensurePlayer();
-      Save.resetPlayer(p.id);
-      out.textContent = "Fresh start: every word new, every game at level 1 (" + p.name + ").";
-    } catch (e) {
-      out.textContent = "Could not reach the save on this device.";
-    }
-    out.hidden = false;
+  // New player (Sprint 11, Zafar 22 Oct): a toggle. On, every launch plays the reset "New player" profile; off, the grown-up's own player
+  var LabsPlayer = (function labsPlayer(Save, store) {
+  var NAME = "New player", K_ON = "njg-labs-new-player", K_OWN = "njg-labs-own-player", K_NEW = "njg-labs-new-player-id";
+  var get = function (k) { try { return store.getItem(k); } catch (e) { return null; } };
+  var put = function (k, v) { try { if (v == null) store.removeItem(k); else store.setItem(k, v); } catch (e) { /* this visit only */ } };
+  var has = function (id) { return !!id && Save.players().some(function (p) { return p.id === id; }); };
+  var newId = function () {
+    var id = get(K_NEW);
+    if (has(id)) return id;
+    var p = Save.players().filter(function (q) { return q.name === NAME; })[0];
+    return p ? p.id : null;
+  };
+  var ownId = function () {
+    var id = get(K_OWN);
+    if (has(id) && id !== newId()) return id;
+    var p = Save.players().filter(function (q) { return q.id !== newId(); })[0];
+    return p ? p.id : null;
+  };
+  var remember = function () { var c = Save.currentId(); if (c && c !== newId()) put(K_OWN, c); };
+  var api = {
+    NAME: NAME,
+    on: function () { return get(K_ON) === "1"; },
+    setOn: function (v) { remember(); put(K_ON, v ? "1" : "0"); return api.label(); },
+    /** The player a launch plays as, chosen (and, when on, reset) now. -> that player */
+    launch: function () {
+      remember();
+      if (api.on()) {
+        var id = newId();
+        if (!id) { id = Save.addPlayer({ name: NAME }).id; put(K_NEW, id); }
+        Save.select(id);
+        Save.resetPlayer(id);
+        return Save.current();
+      }
+      var own = ownId();
+      if (own) Save.select(own);
+      else Save.addPlayer({ name: "Player 1" });
+      return Save.current();
+    },
+    /** Who will play: the badge's words */
+    label: function () {
+      if (api.on()) return NAME + " (fresh every launch)";
+      var own = ownId();
+      var p = Save.players().filter(function (q) { return q.id === own; })[0];
+      return p ? p.name : "Player 1";
+    },
+  };
+  return api;
+})(Save, (function () { try { return window.localStorage; } catch (e) { return { getItem: function () { return null; }, setItem: function () {}, removeItem: function () {} }; } })());
+  var tog = document.getElementById("new-player-toggle"), badge = document.getElementById("player-badge"), box = document.getElementById("new-player");
+  function show() {
+    var on = LabsPlayer.on();
+    tog.checked = on;
+    box.classList.toggle("on", on);
+    badge.classList.toggle("on", on);
+    badge.textContent = "Playing as: " + LabsPlayer.label();
+  }
+  tog.addEventListener("change", function () {
+    LabsPlayer.setOn(tog.checked);
+    // on: every picker back at its first option (level 1), every Play link with it
+    if (tog.checked) document.querySelectorAll(".game select").forEach(function (sel) { sel.selectedIndex = 0; sel.dispatchEvent(new Event("change")); });
+    show();
   });
+  // every launch (Play, the Walkthrough, the house, the day builder) plays as the player the toggle says, fresh when on
+  document.querySelectorAll("a.play, a.top").forEach(function (a) {
+    a.addEventListener("click", function () {
+      try { LabsPlayer.launch(); } catch (e) { /* the save is unreachable: the page plays as it can */ }
+    });
+  });
+  try { show(); } catch (e) { badge.textContent = "Could not reach the save on this device."; }
 </script>
 </body>
 </html>

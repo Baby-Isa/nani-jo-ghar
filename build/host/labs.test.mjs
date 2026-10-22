@@ -51,6 +51,38 @@ test("labs.html on disk is what the generator writes (never hand-edited, never s
   assert.match(out, /up to date/);
 });
 
+test("Sprint 11 (Zafar, 22 Oct): New player is a toggle; on, every launch plays a reset New player; off, the own player, never wiped", async () => {
+  const { labsPlayer } = await import("../gen_labs.mjs");
+  const { createRequire } = await import("node:module");
+  const Save = createRequire(import.meta.url)("../../js/shared/save.js");
+  Save.use(Save.memoryStore());
+  const store = Save.memoryStore();
+  const own = Save.addPlayer({ name: "Zafar" });
+  Save.set("words", { "n.tea": { understand_stage: 4 } });
+  const L = labsPlayer(Save, store);
+  assert.equal(L.on(), false);
+  assert.equal(L.label(), "Zafar");
+  assert.equal(L.launch().id, own.id, "off: his own player");
+  L.setOn(true);
+  const a = L.launch();
+  assert.equal(a.name, "New player");
+  assert.notEqual(a.id, own.id);
+  Save.set("words", { "n.tea": { understand_stage: 3 } });
+  Save.set("ui", { onboarded: { "cook/fetch": true } });
+  const b = L.launch();
+  assert.equal(b.id, a.id, "made once");
+  assert.deepEqual(Save.get("words"), {}, "reset before every launch: no words known");
+  assert.deepEqual(Save.get("ui"), {}, "every onboarding again");
+  assert.equal(Save.players().filter((p) => p.name === "New player").length, 1);
+  L.setOn(false);
+  assert.equal(L.launch().id, own.id, "off again: back to his own player");
+  assert.equal(Save.get("words", own.id)["n.tea"].understand_stage, 4, "his own player is never wiped");
+  const html = await render();
+  assert.match(html, /<label class="top toggle" id="new-player"><input type="checkbox" id="new-player-toggle">/);
+  assert.match(html, /id="player-badge"/);
+  assert.ok(html.includes(labsPlayer.toString()), "the page runs the tested code");
+});
+
 test("every moved mode's lab() entries are listed, with story and free play; every page a link names exists", async () => {
   const html = await render();
   const now = links(html);
