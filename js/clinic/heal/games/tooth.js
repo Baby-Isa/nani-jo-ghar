@@ -903,53 +903,70 @@
     const arrowPic = (d) => (box) => {
       box.innerHTML = `<svg class="tooth-arrow" viewBox="0 0 120 90" aria-hidden="true"><g transform="rotate(${ARROW[d]} 60 45)"><path d="M24 45 H88" stroke="#2f6fbf" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M66 20 L92 45 L66 70" stroke="#2f6fbf" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></svg>`;
     };
-    // the card sits in the corner left of the cross, above its left arm where it fits, else below it (short phones),
-    // never over a target: as wide as that corner allows, up to its own width
+    // the card sits in a corner left of the cross (above its left arm, else below it), never over the cross or a target
+    // (BRUSH-01): as wide as that corner allows; where neither corner takes the card, the same word as the shared row
+    // (picture, speaker and word side by side: a short strip) goes there instead
+    const crossBoxes = () => {
+      const rr = S.root.getBoundingClientRect();
+      const box = (x0, y0, x1, y1) => {
+        const p = S.client(x0, y0);
+        const q = S.client(x1, y1);
+        return { left: p.x - rr.left, top: p.y - rr.top, right: q.x - rr.left, bottom: q.y - rr.top };
+      };
+      const pad = TR.r * 0.35; // the shine's sparkles
+      return [box(TR.x - TR.ax - TR.w / 2 - pad, TR.y - TR.w / 2 - pad, TR.x + TR.ax + TR.w / 2 + pad, TR.y + TR.w / 2 + pad), box(TR.x - TR.w / 2 - pad, TR.y - TR.ay - TR.w / 2 - pad, TR.x + TR.w / 2 + pad, TR.y + TR.ay + TR.w / 2 + pad)];
+    };
+    const dirClear = () => {
+      if (!dirCard || dirBox.classList.contains("hidden")) return true;
+      const rr = S.root.getBoundingClientRect();
+      const r = dirBox.getBoundingClientRect();
+      const c = { left: r.left - rr.left, top: r.top - rr.top, right: r.right - rr.left, bottom: r.bottom - rr.top };
+      return crossBoxes().every((b) => c.right <= b.left || c.left >= b.right || c.bottom <= b.top || c.top >= b.bottom);
+    };
+    let dirMode = null;
+    let dirFor = null;
     function placeDir() {
       if (!dirCard || dirBox.classList.contains("hidden")) return;
       const rr = S.root.getBoundingClientRect();
       if (!rr.width) return;
       const gap = 12;
-      const armL = S.client(TR.x - TR.w / 2, 0).x - rr.left; // the up and down arms' left edge
-      const top = S.client(0, TR.y - TR.w / 2).y - rr.top; // the left arm's top edge
-      const bot = S.client(0, TR.y + TR.w / 2).y - rr.top; // and its bottom edge
-      const want = (dirBox.style.width = "", dirBox.getBoundingClientRect().width || 160);
+      const [hArm, vArm] = crossBoxes();
+      const corners = [[0, hArm.top, vArm.left], [hArm.bottom, rr.height, vArm.left]]; // [y0, y1, x1]: above, then below the left arm
       const MINW = 140;
-      const fit = (y0, y1, x1) => {
+      const fit = (y0, y1, x1, want) => {
         let w = Math.min(want, x1 - gap * 2);
-        if (w < MINW) return null;
+        if (w < MINW) return false;
         dirBox.style.width = `${Math.round(w)}px`;
         let h = dirBox.getBoundingClientRect().height;
-        if (h > y1 - y0 - gap * 2) {
-          w = w - ((h - (y1 - y0 - gap * 2)) * 4) / 3;
-          if (w < MINW) return null; // too small to read its word: the other corner
-          w = Math.max(MINW, w);
+        if (h > y1 - y0 - gap * 2 && dirMode === "card") {
+          w -= ((h - (y1 - y0 - gap * 2)) * 4) / 3;
+          if (w < MINW) return false; // too small to read its word: the other corner
           dirBox.style.width = `${Math.round(w)}px`;
           h = dirBox.getBoundingClientRect().height;
         }
-        return h <= y1 - y0 - gap * 2 + 1 ? h : null;
+        if (h > y1 - y0 - gap * 2 + 1) return false;
+        Object.assign(dirBox.style, { left: `${gap}px`, top: `${Math.round(y0 + gap)}px` });
+        return true;
       };
-      // above the left arm (the corner left of the up arm), else below it (left of the down arm)
-      let h = fit(0, top, armL);
-      if (h != null) return Object.assign(dirBox.style, { left: `${gap}px`, top: `${gap}px` });
-      h = fit(bot, rr.height, armL);
-      Object.assign(dirBox.style, { left: `${gap}px`, top: `${Math.round(h != null ? bot + gap : Math.max(gap, rr.height - gap - dirBox.getBoundingClientRect().height))}px` });
+      for (const mode of ["card", "row"]) {
+        if (dirMode !== mode) buildDir(mode);
+        dirBox.style.width = "";
+        const want = mode === "row" ? corners[0][2] - gap * 2 : dirBox.getBoundingClientRect().width || 160;
+        if (corners.some(([y0, y1, x1]) => fit(y0, y1, x1, want))) return;
+      }
+      // (nowhere clear: the row, top left)
+      Object.assign(dirBox.style, { left: `${gap}px`, top: `${gap}px` });
     }
-    ctx.on(root, "resize", () => placeDir());
-    function dirOff() {
-      dirBox.classList.add("hidden");
-      dirBox.innerHTML = "";
-      dirCard = null;
-    }
-    const showDir = async (c) => {
-      const WC = await HS.wordCardKit().catch(() => null);
-      if (st.gone || cur() !== c || !WC || !WC.card) return;
+    function buildDir(mode) {
+      const c = dirFor;
+      const WC = root.WordCard;
+      if (!c || !WC) return;
       dirBox.innerHTML = "";
       const id = DIR_ID[c.move];
       const w = HS.L.w(id);
       const stg = HS.stageOf(id);
       const sl = WC.slots(stg, { placeholder: !!w.placeholder });
-      dirCard = WC.card(
+      dirCard = (mode === "row" ? WC.row : WC.card)(
         dirBox,
         { id, kutchi: w.kutchi, english: w.english, rec: !!w.placeholder, picture: arrowPic(c.move), say: () => ctx.say(w, { who: "doctor", noBubble: true }) },
         {
@@ -961,8 +978,24 @@
         }
       );
       dirCard.dataset.dir = c.move;
+      dirBox.dataset.mode = dirMode = mode;
+    }
+    ctx.on(root, "resize", () => placeDir());
+    function dirOff() {
+      dirBox.classList.add("hidden");
+      dirBox.innerHTML = "";
+      dirCard = null;
+    }
+    const showDir = async (c) => {
+      const WC = await HS.wordCardKit().catch(() => null);
+      if (st.gone || cur() !== c || !WC || !WC.card) return;
+      dirFor = c;
+      dirMode = null;
       dirBox.classList.remove("hidden");
+      buildDir("card");
       placeDir();
+      // (measured again once the close-up's push-in has landed: during it the stage is scaled, BRUSH-01)
+      Promise.resolve(ctx.zoomed).then(() => ctx.after(60, () => cur() === c && placeDir()));
       dirCard.classList.add("tooth-din");
       ctx.after(fast() ? 50 : 450, () => dirCard && dirCard.classList.remove("tooth-din"));
     };
@@ -1282,6 +1315,9 @@
           const c = cur();
           return { move: c && c.kind === "brush" ? c.move : null, at: Object.assign({}, at), dirt: Object.fromEntries(DIRS.map((d) => [d, +target[d].level.toFixed(2)])), orderOnly, card: dirCard ? { dir: dirCard.dataset.dir, stage: dirCard.wc && dirCard.wc.stage, slots: dirCard.wc && dirCard.wc.slots } : null, missed: st.missed.slice(), snapping: !!st.snapping };
         },
+        /** TEST HOOK (BRUSH-01; read-only): the direction card is clear of the cross and its targets; its layout (card or row) */
+        dirClear: () => dirClear(),
+        dirMode: () => dirMode,
         /** TEST HOOK (s11-clinic; read-only): client px of the cross's centre and its four ends */
         cross() {
           const q = (p) => S.client(p.x, p.y);
