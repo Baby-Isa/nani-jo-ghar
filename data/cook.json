@@ -876,25 +876,55 @@
        "tasteChance": 0.5
       },
       "khun": {
-       "int": [
-        1,
-        3
-       ],
-       "zero": 0.2,
-       "taste": "khun",
-       "tasteChance": 0.5
+       "_s11": "Sprint 11 (easy-to-play principle 9: chai L1 is four words, chai, dudh, khun, paani): at L1 one sugar or none (one is the bare item, so no number word), never a taste's count",
+       "byLevel": [
+        {
+         "int": [
+          1,
+          1
+         ],
+         "zero": 0.3
+        },
+        {
+         "int": [
+          1,
+          3
+         ],
+         "zero": 0.2,
+         "taste": "khun",
+         "tasteChance": 0.5
+        }
+       ]
       },
       "extra": {
-       "pick": [
-        null,
-        "spi-10",
-        "veg-14"
-       ],
-       "taste": "extra",
-       "tasteChance": 0.4
+       "_s11": "Sprint 11 (principle 9): no extra spice at L1 (four words); from L2 as before",
+       "byLevel": [
+        {
+         "pick": [
+          null
+         ]
+        },
+        {
+         "pick": [
+          null,
+          "spi-10",
+          "veg-14"
+         ],
+         "taste": "extra",
+         "tasteChance": 0.4
+        }
+       ]
       },
       "named": {
-       "chance": 0.5
+       "_s11": "Sprint 11 (principle 9): kari / mori chai (two more words) from L2",
+       "byLevel": [
+        {
+         "chance": 0
+        },
+        {
+         "chance": 0.5
+        }
+       ]
       },
       "amount": {
        "byLevel": [
