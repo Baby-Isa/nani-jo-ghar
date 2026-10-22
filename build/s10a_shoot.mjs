@@ -258,14 +258,14 @@ async function walk(key) {
     await page.waitForSelector("#njg-play", { timeout: 20000 });
     await sleep(700);
     await rec.state(`${kind}-play-button`);
-    await page.click("#njg-play");
+    await tapSel(page, "#njg-play");
     const P = new CookPlayer(page, rec, { speed: 3, prefix: `${kind}-` });
     const leftRound = async () => (await page.evaluate(() => new URLSearchParams(location.search).get("first") + "|" + location.pathname).catch(() => "gone")) !== `${kind}|/cook.html`;
     try { await P.play(leftRound, { timeout: 300000 }); } catch (e) { await page.waitForFunction((k) => new URLSearchParams(location.search).get("first") !== k, kind, { timeout: 20000 }); }
     check(true, `the ${kind} round ended: ${page.url().replace(BASE, "")}`);
   }
-  await page.waitForURL(/labs\.html/, { timeout: 60000 });
-  check(true, `back at ${page.url().replace(BASE, "")}`);
+  await page.waitForURL((u) => u.pathname.endsWith("/labs.html"), { timeout: 60000 });
+  check(new URL(page.url()).pathname.endsWith("/labs.html"), `back at ${page.url().replace(BASE, "")}`);
   await rec.state("back-at-labs");
   check(errors.length === 0, `no page errors ${errors.slice(0, 3)}`);
   await page.context().close();
