@@ -172,7 +172,10 @@
     const words = el("div", "wc-words", strip);
     const kt = el("p", "wc-slot wc-k", words);
     kt.dataset.slot = "text";
-    const en = el("p", "wc-slot wc-en", words);
+    // rule 5's word-card exception (Zafar, 21 Oct): the word's English, only while supported or when tapped open. Marked as
+    // the allowed English (class english, the contract run's tag) and data-word-en (a check to build: shown only then)
+    const en = el("p", "wc-slot wc-en english", words);
+    en.dataset.wordEn = "";
     en.dataset.slot = "english";
     en.lang = "en";
 

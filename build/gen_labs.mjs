@@ -28,7 +28,7 @@ const OUT = join(ROOT, "labs.html");
 export const WALKTHROUGH = "cook.html?app=1&first=pantry&then=" + encodeURIComponent("cook.html?app=1&first=chai&then=labs.html");
 
 export const TOP = [
-  { id: "new-player", toggle: true, title: "New player", text: "On: every Play, the Walkthrough, the house and the day builder start a fresh &ldquo;New player&rdquo; (no words known, every first-time help, every game at level 1). Off: your own player, never wiped." },
+  { id: "new-player", toggle: true, title: "New player", text: "On: every launch plays a fresh New player (no words, every first-time help, level 1). Off: your own player, never wiped." },
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
   { href: "lab/day.html", title: "The day builder", text: "Pick the stages of a day in order, or one game, and play it." },

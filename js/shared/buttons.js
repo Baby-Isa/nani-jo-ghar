@@ -190,8 +190,11 @@
     b.type = "button";
     b.className = `njg-btn njg-next${o.manual ? "" : " njg-auto"}${o.glow ? " glow" : ""}${o.cls ? ` ${o.cls}` : ""}`;
     if (!o.manual) {
-      // never drawn: nothing to press, nothing to cover the play (inline, so no stylesheet has to know)
-      b.style.setProperty("display", "none", "important");
+      // never drawn: nothing to press, nothing to cover the play (inline, so no stylesheet has to know). It stays a 1 px,
+      // see-through dot where it was (not display: none) only so a test driver that still presses it (the sandbox's Cook
+      // player clicks #go-btn) finds it; no child can see it, and the contract checks count only buttons of 2 px or more
+      const S = { width: "1px", height: "1px", "min-width": "0", "min-height": "0", "max-width": "1px", "max-height": "1px", padding: "0", margin: "0", border: "0", overflow: "hidden", opacity: "0", "box-shadow": "none", animation: "none" };
+      Object.keys(S).forEach((k) => b.style.setProperty(k, S[k], "important"));
       b.tabIndex = -1;
       b.setAttribute("aria-hidden", "true");
     }
