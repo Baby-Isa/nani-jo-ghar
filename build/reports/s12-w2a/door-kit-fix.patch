@@ -1,0 +1,39 @@
+S12 W2-A, for the orchestrator (files outside W2-A's list: the kit and the door). Proven in the worktree, then reverted:
+frames build/reports/s12-w2a/door-with-proposed-fix/ (the box still: its top edge at the same row in all six frames, 250 ms
+apart, at 1366x768 and 915x412; one finger). Without it (build/reports/s12-w2a/door/): the box rides the hop (6 px) and two
+hands show (the kit's spot finger from above, the door's own O.demo hand from below).
+
+diff --git a/js/day/door.js b/js/day/door.js
+--- a/js/day/door.js
++++ b/js/day/door.js
+@@ -378,10 +378,7 @@ export async function runDoor(host, api, day) {
+       const below = Math.max(8, Math.min(40, (window.innerHeight || 0) - at.y - 84));
+       return O.demo({ x: at.x + Math.min(48, r.width * 0.4), y: at.y + below }, [at], { hand: true, ms: 1100, step: "door-yes", quiet: true });
+     };
+-    while (!answered && !help.stop) {
+-      await tapOnce();
+-      await new Promise((ok) => setTimeout(ok, 500));
+-    }
++    void tapOnce; // (better: delete tapOnce too: Onboard.spot's own finger taps Ha! on the kit's cadence)
+   };
+diff --git a/js/shared/onboard.js b/js/shared/onboard.js
+--- a/js/shared/onboard.js
++++ b/js/shared/onboard.js
+@@ -384,8 +384,11 @@
+     let dy = 0;
+     if (el.classList && el.classList.contains("ob-lit") && root.getComputedStyle) {
+       const tr = String(root.getComputedStyle(el).translate || "");
+-      const m = /^(-?[\d.]+)px(?:\s+(-?[\d.]+)px)?/.exec(tr);
+-      if (m) [dx, dy] = [+m[1] || 0, +m[2] || 0];
++      const m = /^(-?[\d.]+)(px|%)(?:\s+(-?[\d.]+)(px|%))?/.exec(tr);
++      if (m) {
++        dx = m[2] === "%" ? (+m[1] / 100) * r.width : +m[1] || 0;
++        dy = m[3] == null ? 0 : m[4] === "%" ? (+m[3] / 100) * r.height : +m[3] || 0;
++      }
+     }
+     return { x: r.left - dx, y: r.top - dy, w: r.width, h: r.height };
+   }
+
+Why: css/shared/onboard.css's ob-bounce hops by `translate: 0 -10%`; Chrome's computed `translate` keeps the percentage
+("0px -7.7%"), which the old regex (px only) read as 0, so every lit HTML control's box followed its hop (the door's Ha!, the
+eye test's haa/na, any ob-lit pill in a box).
