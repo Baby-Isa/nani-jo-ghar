@@ -12,8 +12,8 @@ About $230-290 and 2-3 days (approved by Zafar, 22 Oct). Scope is cut, never the
 ## Sessions
 - W1-A, the shared help kit and chai: EASY-03, EASY-10, EASY-08, SH-118, SH-119, SH-120, CHAI-32, CK-51, CK-50 (Opus, high; about $35) · report s12-w1a
 - W1-B, the door, the ride, labs: DOOR-05, SH-68, DOOR-06, DOOR-07, DOOR-08, RIDE-03, RIDE-08, RIDE-09, RIDE-10, LAB-06, LAB-07, LNG-18, SH-19 (door, ride) (Opus, high; about $35) · report s12-w1b
-- W2-A, shared UI: SH-104, SH-124, SH-125, SH-126, LNG-19, SH-123, ART-19 (Opus, high; about $35)
-- W2-B, the eye test: CLN-199 to CLN-203, SH-127, SH-128, SH-19 (eye), EASY-08 (eye) (Opus, high; about $35)
+- W2-A, shared UI: SH-104, SH-124, SH-125, SH-126, LNG-19, SH-123, ART-19, ART-08 (the circles), the known-list check (Opus, high; about $35-45)
+- W2-B, the eye test: CLN-199 to CLN-204, SH-127, SH-128, SH-19 (eye), EASY-08 (eye), SH-115 (the lemon) (Opus, high; about $35-45)
 - W3-A, the book: BOOK-10 to BOOK-14, SH-19 (book) (Opus, high; about $35)
 - W3-B, loading and the served moment: CK-48 (Sonnet, medium; about $10), SH-121 (Opus, high; about $25)
 - Art run (Zafar in ChatGPT; one paste block): CHAI-26 and CHAI-08 (from his eight pour frames, `sources/art/pour-reference-2026-10-22/`), ART-08, SH-115 (the lemon), ART-24, ART-25, ART-27, Nani's come-here wave

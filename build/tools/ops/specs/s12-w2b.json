@@ -1,0 +1,41 @@
+{
+  "name": "s12-w2b: the eye test (Sprint 12, wave 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a new start for the eye test, its mic and layout: design judgement and visual work",
+  "cost": "about $35-45",
+  "stop": "24 Oct 2026, 12:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "specsByBuilder": true,
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points C1-C10; Zafar's words and the causes with file:line)",
+    "docs/sprints/S12-polish.md (decisions 1 the mic, 7 the doctor's start) and build/reports/s12-answers.md sections 5 (the mic)",
+    "build/reports/s12-w1a.md (the help kit: the box round a group, the finger, the glow and hop)",
+    "docs/game-design/modes/ (the clinic) and docs/language/engine-spec.md (how lines are built; never invent Kutchi)"
+  ],
+  "owns": [
+    "js/clinic/heal/games/eye.js and its data",
+    "js/clinic/heal/host.js (the eye test's start only)",
+    "css/clinic.css",
+    "js/shared/speech.js (the two-choice match) and the mic's look",
+    "the eye test's card pictures (the new lemon from sources/art/s12/lm-lemon-whole-v1.png)",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w2b.md"
+  ],
+  "readOnly": ["js/shared/results.js, conversations.js, word-card.js, guide.js, js/clinic/kit.js, js/cook/stations.js (W2-A)", "js/shared/onboard.js (merged kit; use its API)", "js/day/** ", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "CLN-199: the eye test opens with the doctor standing beside the girl on her bench (no pop-up), saying set sentences like the chai order: the eye isn't right (an eye word card), we will heal the eye, we'll use this medicine (the dropper gets a 'medicine' card, a placeholder name); each built by the engine; any line or word Mum hasn't recorded shows its English in grey italic, device-spoken on the test path only; never invented Kutchi. Then the zoom into her eye (continuity). Built so the same formula serves knee, ear and others later.", "accept": "a filmstrip at 1366x768: the doctor beside her, the three sentences with their cards, the zoom in" },
+    { "do": "CLN-200: after a wrong word and 'na', nobody says the right word yet: the drops first, then she can see and reads it right, then haa, then the next card. (Today the doctor names it before the drops: eye.js:590.)", "accept": "a filmstrip of a wrong read, na, the drops, her right read, haa" },
+    { "do": "CLN-201: the card's word repeats with a 1.5 s pause measured from the END of the clip to the next start.", "accept": "the sound log: gaps of 1.5 s +-0.2 between clips" },
+    { "do": "CLN-202: less padding round the doctor, more room for her (she looked squished).", "accept": "frames at the three sizes" },
+    { "do": "CLN-203: tapping her eye is clear (the help kit's box, glow and finger on the eye at the drops step) and never dead: check for a stuck state after the screen sleeps or the tab loses focus.", "accept": "a frame of the drops step's help; a sandbox step that blurs and refocuses the page then taps the eye" },
+    { "do": "SH-127, SH-128 (the mic): haa/na must be recognised reliably: two choices, so take the nearer of the two with a smaller margin, use every family take of each word, and keep the 3.5 s window; the look (Zafar's decision 1): tap once, everything dims, a pop-up shows a live sound wave that grows with the child's voice, it stops by itself after ~1 s of silence or a second tap sends; a tap on haa/na always works too; a miss is a gentle shrug, never a verdict.", "accept": "unit tests of the two-choice match on the family clips; a filmstrip of the listening pop-up at 1366x768 and 915x412" },
+    { "do": "SH-19 and EASY-08 in the eye test: onboarding through the whole first L1 round; the haa, na and mic in ONE box (it touched the screen's bottom edge at 1366x768: keep it fully on screen), each glowing and hopping; the drops step boxes the eye (a rounded box round the eye, not a big round light) and the bottle glows.", "accept": "frames at the three sizes" },
+    { "do": "SH-115 and CLN-204: wire the new lemon (sources/art/s12/lm-lemon-whole-v1.png: key out the magenta, no shadow) at the same size and place on the card as the other fruit, never over the doctor's hand; remove the stray 'f' on its own line in the clinic sidebar under 'ne poi yellow plaster' (the cut game).", "accept": "the lemon card at 1366x768; the cut game's sidebar at the three sizes" }
+  ],
+  "flows": ["clinic:heal-eye", "clinic:heal-cut", "clinic:heal-knee", "clinic:waiting"],
+  "port": 8854,
+  "report": "s12-w2b",
+  "publish": false
+}

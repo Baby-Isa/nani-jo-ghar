@@ -1,0 +1,43 @@
+{
+  "name": "s12-w2a: shared UI (Sprint 12, wave 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared screens every game uses, and the face circles: judgement and visual work",
+  "cost": "about $35-45",
+  "stop": "24 Oct 2026, 12:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "specsByBuilder": true,
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points A8, A10, A16, B1-B5; Zafar's words and the causes with file:line)",
+    "docs/sprints/S12-polish.md and build/reports/s12-answers.md section 1 (the shared-code habits Zafar approved)",
+    "build/reports/s12-w1a.md (the help kit's API: Onboard.finger, the box, the glow and hop)",
+    "docs/design-language/art-plans/s12-art-plan.md section 2 (why the face circles failed; the one circle rule)"
+  ],
+  "owns": [
+    "js/shared/results.js, css/shared/results.css",
+    "js/shared/conversations.js and its CSS",
+    "js/shared/word-card.js and its CSS",
+    "js/shared/guide.js, js/clinic/kit.js (talking-face timing only)",
+    "the face-circle images and wherever they are listed (assets/shared/, the faces' data and CSS)",
+    "js/cook/stations.js (the canvas glow's strength only)",
+    "build/lint/static.mjs (the known-list rule)",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w2a.md"
+  ],
+  "readOnly": ["js/clinic/heal/** and css/clinic.css and js/shared/speech.js (W2-B)", "js/day/**, js/shared/window-ride.js, js/shared/onboard.js (merged; ask before changing the kit)", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "SH-104: the end screen's third page (the vertical sequence) goes from EVERY game: one shared switch in js/shared/results.js, off, and a contract check that fails if any game shows it. Zafar asked why one shared fix didn't reach every game: the switch must be the only way in.", "accept": "the end screen of chai, the eye test and one more clinic game at 1366x768: two pages only; the new contract check passes on every flow you run" },
+    { "do": "SH-124, SH-125, SH-126 (the conversations' replies, every game): bigger replies and icons; the reply to pick bounces and glows gold with the shared finger tapping it (Onboard.finger; the 👆 emoji goes); a speaker button to the LEFT of each reply with a gap, outside the bubble, playing that reply; ONE tap answers (ctx.oneTap by default everywhere).", "accept": "frames of the kitchen conversation at the three sizes: replies, speakers, the glowing reply with the finger; one tap answers (a sandbox step)" },
+    { "do": "LNG-19: the 'Salaam alaikum' clip that is Zafar's own voice is replaced by the device voice on the test path until Nani's take exists (never in a store build); never invented Kutchi.", "accept": "the sound log of the kitchen conversation shows no Zafar clip for it" },
+    { "do": "SH-123 (the shared word card): the speaker, Kutchi and English sit centred in their half, larger, scaling with the card and screen; English follows Zafar's rule exactly: shown while the word is supported, then only when tapped (the judges kept seeing plain grey English under learned words: check the stage logic).", "accept": "frames of the word card in chai's list, the eye test's card and the door's left bar at the three sizes, for a supported and a learned word" },
+    { "do": "ART-19: talking faces much slower: the doctor's mouth (now every 170 ms) and the guide box face (130-210 ms) to a calm rate, mouth opening less, blinks slow and rarer.", "accept": "a 2 s filmstrip of the doctor talking at 1366x768" },
+    { "do": "ART-08: cut and wire the new face circles from sources/art/s12/fc-face-circles-v1.png (2x2: doctor, girl, Nani, Nana; Zafar passed the likeness): one rule for all four (centre on the nose, the same head size, both ears showing, no second crop in CSS), replacing the old circles everywhere they appear.", "accept": "a sheet of all four circles side by side as they appear in game (the guide box, order cards, the clinic) at 1366x768" },
+    { "do": "Small carry-overs from wave 1's judges: (a) the flour jar's canvas glow is barely visible on 915x412: strengthen it so it reads at every size (js/cook/stations.js); (b) re-shoot the door's first-time help on the merged kit: Ha! must glow and hop inside a still box (SH-19 at the door: frames 250 ms apart at 1366x768 and 915x412); (c) SH-19's evidence spec watches .ob-ghost; the kit's finger is .ob-finger now: update it.", "accept": "a bounce strip of the door and of the pantry jar at 915x412" },
+    { "do": "The static check's known list only shrinks (Zafar, 23 Oct; docs/process/checks-to-build.md): build/lint/static.mjs fails if the known kit restyles (52) or raw values (883) go up; the known file is only ever rewritten downwards.", "accept": "a unit test: adding one restyle fails the check" }
+  ],
+  "flows": ["cook:chai-tray", "lab:cook/chai-tray", "cook:fetch", "clinic:heal-eye", "clinic:heal-cut", "day:door"],
+  "port": 8853,
+  "report": "s12-w2a",
+  "publish": false
+}

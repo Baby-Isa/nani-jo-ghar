@@ -1,0 +1,80 @@
+SESSION NAME / MODE:  s12-w2a: shared UI (Sprint 12, wave 2)
+MODEL AND EFFORT:     Opus, high effort (the shared screens every game uses, and the face circles: judgement and visual work)
+COST ESTIMATE:        about $35-45
+HARD STOP:            24 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w2a.context.md (834 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points A8, A10, A16, B1-B5; Zafar's words and the causes with file:line)
+     docs/sprints/S12-polish.md and build/reports/s12-answers.md section 1 (the shared-code habits Zafar approved)
+     build/reports/s12-w1a.md (the help kit's API: Onboard.finger, the box, the glow and hop)
+     docs/design-language/art-plans/s12-art-plan.md section 2 (why the face circles failed; the one circle rule)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/results.js, css/shared/results.css
+  - js/shared/conversations.js and its CSS
+  - js/shared/word-card.js and its CSS
+  - js/shared/guide.js, js/clinic/kit.js (talking-face timing only)
+  - the face-circle images and wherever they are listed (assets/shared/, the faces' data and CSS)
+  - js/cook/stations.js (the canvas glow's strength only)
+  - build/lint/static.mjs (the known-list rule)
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w2a.md
+READ-ONLY (never edit):
+  - js/clinic/heal/** and css/clinic.css and js/shared/speech.js (W2-B)
+  - js/day/**, js/shared/window-ride.js, js/shared/onboard.js (merged; ask before changing the kit)
+  - CLAUDE.md and docs/
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-104: the end screen's third page (the vertical sequence) goes from EVERY game: one shared switch in js/shared/results.js, off, and a contract check that fails if any game shows it. Zafar asked why one shared fix didn't reach every game: the switch must be the only way in.
+     Accept: the end screen of chai, the eye test and one more clinic game at 1366x768: two pages only; the new contract check passes on every flow you run
+  2. SH-124, SH-125, SH-126 (the conversations' replies, every game): bigger replies and icons; the reply to pick bounces and glows gold with the shared finger tapping it (Onboard.finger; the 👆 emoji goes); a speaker button to the LEFT of each reply with a gap, outside the bubble, playing that reply; ONE tap answers (ctx.oneTap by default everywhere).
+     Accept: frames of the kitchen conversation at the three sizes: replies, speakers, the glowing reply with the finger; one tap answers (a sandbox step)
+  3. LNG-19: the 'Salaam alaikum' clip that is Zafar's own voice is replaced by the device voice on the test path until Nani's take exists (never in a store build); never invented Kutchi.
+     Accept: the sound log of the kitchen conversation shows no Zafar clip for it
+  4. SH-123 (the shared word card): the speaker, Kutchi and English sit centred in their half, larger, scaling with the card and screen; English follows Zafar's rule exactly: shown while the word is supported, then only when tapped (the judges kept seeing plain grey English under learned words: check the stage logic).
+     Accept: frames of the word card in chai's list, the eye test's card and the door's left bar at the three sizes, for a supported and a learned word
+  5. ART-19: talking faces much slower: the doctor's mouth (now every 170 ms) and the guide box face (130-210 ms) to a calm rate, mouth opening less, blinks slow and rarer.
+     Accept: a 2 s filmstrip of the doctor talking at 1366x768
+  6. ART-08: cut and wire the new face circles from sources/art/s12/fc-face-circles-v1.png (2x2: doctor, girl, Nani, Nana; Zafar passed the likeness): one rule for all four (centre on the nose, the same head size, both ears showing, no second crop in CSS), replacing the old circles everywhere they appear.
+     Accept: a sheet of all four circles side by side as they appear in game (the guide box, order cards, the clinic) at 1366x768
+  7. Small carry-overs from wave 1's judges: (a) the flour jar's canvas glow is barely visible on 915x412: strengthen it so it reads at every size (js/cook/stations.js); (b) re-shoot the door's first-time help on the merged kit: Ha! must glow and hop inside a still box (SH-19 at the door: frames 250 ms apart at 1366x768 and 915x412); (c) SH-19's evidence spec watches .ob-ghost; the kit's finger is .ob-finger now: update it.
+     Accept: a bounce strip of the door and of the pantry jar at 915x412
+  8. The static check's known list only shrinks (Zafar, 23 Oct; docs/process/checks-to-build.md): build/lint/static.mjs fails if the known kit restyles (52) or raw values (883) go up; the known file is only ever rewritten downwards.
+     Accept: a unit test: adding one restyle fails the check
+
+REGRESSION ROWS TO RECHECK (120 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  lab:cook/chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01*, PAN-13*, PAN-10*, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-14, PAN-15, PAN-17
+  clinic:heal-eye (65): CLN-87*, CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+  clinic:heal-cut (61): CLN-82*, CLN-87*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-172*, CLN-175*, CLN-186*, CLN-192*, CLN-193*, CLN-43*, CLN-99*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-113, CLN-114, CLN-151, CLN-81, CLN-30, CLN-32, CLN-42, CLN-44, CLN-46, CLN-62, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-121, CLN-124, CLN-125, CLN-128, CLN-133, CLN-142, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-69, CLN-154, CLN-155, CLN-157, DRILL-01, FX-01, CLN-141, CLN-173, CLN-198
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,lab:cook/chai-tray,cook:fetch,clinic:heal-eye,clinic:heal-cut,day:door --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w2a-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w2a` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8853.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8853; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w2a.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

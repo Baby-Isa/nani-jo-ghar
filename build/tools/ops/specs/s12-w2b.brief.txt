@@ -1,0 +1,79 @@
+SESSION NAME / MODE:  s12-w2b: the eye test (Sprint 12, wave 2)
+MODEL AND EFFORT:     Opus, high effort (a new start for the eye test, its mic and layout: design judgement and visual work)
+COST ESTIMATE:        about $35-45
+HARD STOP:            24 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w2b.context.md (835 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points C1-C10; Zafar's words and the causes with file:line)
+     docs/sprints/S12-polish.md (decisions 1 the mic, 7 the doctor's start) and build/reports/s12-answers.md sections 5 (the mic)
+     build/reports/s12-w1a.md (the help kit: the box round a group, the finger, the glow and hop)
+     docs/game-design/modes/ (the clinic) and docs/language/engine-spec.md (how lines are built; never invent Kutchi)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/heal/games/eye.js and its data
+  - js/clinic/heal/host.js (the eye test's start only)
+  - css/clinic.css
+  - js/shared/speech.js (the two-choice match) and the mic's look
+  - the eye test's card pictures (the new lemon from sources/art/s12/lm-lemon-whole-v1.png)
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w2b.md
+READ-ONLY (never edit):
+  - js/shared/results.js, conversations.js, word-card.js, guide.js, js/clinic/kit.js, js/cook/stations.js (W2-A)
+  - js/shared/onboard.js (merged kit; use its API)
+  - js/day/** 
+  - CLAUDE.md and docs/
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. CLN-199: the eye test opens with the doctor standing beside the girl on her bench (no pop-up), saying set sentences like the chai order: the eye isn't right (an eye word card), we will heal the eye, we'll use this medicine (the dropper gets a 'medicine' card, a placeholder name); each built by the engine; any line or word Mum hasn't recorded shows its English in grey italic, device-spoken on the test path only; never invented Kutchi. Then the zoom into her eye (continuity). Built so the same formula serves knee, ear and others later.
+     Accept: a filmstrip at 1366x768: the doctor beside her, the three sentences with their cards, the zoom in
+  2. CLN-200: after a wrong word and 'na', nobody says the right word yet: the drops first, then she can see and reads it right, then haa, then the next card. (Today the doctor names it before the drops: eye.js:590.)
+     Accept: a filmstrip of a wrong read, na, the drops, her right read, haa
+  3. CLN-201: the card's word repeats with a 1.5 s pause measured from the END of the clip to the next start.
+     Accept: the sound log: gaps of 1.5 s +-0.2 between clips
+  4. CLN-202: less padding round the doctor, more room for her (she looked squished).
+     Accept: frames at the three sizes
+  5. CLN-203: tapping her eye is clear (the help kit's box, glow and finger on the eye at the drops step) and never dead: check for a stuck state after the screen sleeps or the tab loses focus.
+     Accept: a frame of the drops step's help; a sandbox step that blurs and refocuses the page then taps the eye
+  6. SH-127, SH-128 (the mic): haa/na must be recognised reliably: two choices, so take the nearer of the two with a smaller margin, use every family take of each word, and keep the 3.5 s window; the look (Zafar's decision 1): tap once, everything dims, a pop-up shows a live sound wave that grows with the child's voice, it stops by itself after ~1 s of silence or a second tap sends; a tap on haa/na always works too; a miss is a gentle shrug, never a verdict.
+     Accept: unit tests of the two-choice match on the family clips; a filmstrip of the listening pop-up at 1366x768 and 915x412
+  7. SH-19 and EASY-08 in the eye test: onboarding through the whole first L1 round; the haa, na and mic in ONE box (it touched the screen's bottom edge at 1366x768: keep it fully on screen), each glowing and hopping; the drops step boxes the eye (a rounded box round the eye, not a big round light) and the bottle glows.
+     Accept: frames at the three sizes
+  8. SH-115 and CLN-204: wire the new lemon (sources/art/s12/lm-lemon-whole-v1.png: key out the magenta, no shadow) at the same size and place on the card as the other fruit, never over the doctor's hand; remove the stray 'f' on its own line in the clinic sidebar under 'ne poi yellow plaster' (the cut game).
+     Accept: the lemon card at 1366x768; the cut game's sidebar at the three sizes
+
+REGRESSION ROWS TO RECHECK (109 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (10): CLN-87*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81
+  clinic:heal-eye (55): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-85, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+  clinic:heal-cut (51): CLN-82*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-172*, CLN-175*, CLN-186*, CLN-192*, CLN-193*, CLN-43*, CLN-99*, CLN-113, CLN-30, CLN-32, CLN-42, CLN-44, CLN-46, CLN-62, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-121, CLN-124, CLN-125, CLN-128, CLN-133, CLN-142, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-69, CLN-154, CLN-155, CLN-157, DRILL-01, FX-01, CLN-141, CLN-173, CLN-198
+  clinic:heal-knee (44): CLN-82*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-172*, CLN-179*, CLN-43*, CLN-30, CLN-33, CLN-42, CLN-44, CLN-47, CLN-48, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-122, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118*, CLN-140, CLN-178, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-145, CLN-198
+  clinic:waiting (28): CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, GIRL-01, CLN-82*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-153, CLN-01, CLN-152, CLN-159
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye,clinic:heal-cut,clinic:heal-knee,clinic:waiting --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w2b-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w2b` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8854.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8854; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w2b.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
