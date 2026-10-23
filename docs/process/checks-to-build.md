@@ -26,3 +26,5 @@ Rules become code (decision 99): each item below is a check that will make a rul
 - **A trip file's stage table matches its data** (days structure review, 21 Oct): each docs/game-design/days/<trip>.md "The day's list" table lists the same stages in the same order as that trip's days in the days data file; checked like gen_labs --check.
 
 - **An evidence run keeps only what judging reads** (Sprint 8, 20 Oct night: a 500-page run filled the disk at ~1.5 GB per chunk): after each page, `evidence.mjs --run` deletes that page's per-state PNGs outside `evidence/` and `data/`; a test proves the sheets still build.
+
+- **The static check's known list only shrinks** (Zafar, 23 Oct, `build/reports/s12-answers.md` §1): `build/lint/static.mjs` fails when the known kit restyles (52) or raw values (883) go up; the known file is rewritten only downwards. Built in Sprint 12's wave 2; the list itself is cleared by Sprint 13 "One shared kit".
