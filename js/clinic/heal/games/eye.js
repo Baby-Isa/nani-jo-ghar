@@ -691,11 +691,19 @@
         const said = st.awaiting.said || me.said;
         S.face("read");
         mouthSay(supported(me.id) && supported(said) ? String(W(BY[said]).kutchi || "") : null);
+        // (the clip's real end: the voice path holds a short line a little past its clip, so the quiet is timed from the last
+        // moment a clip, or the device voice, was sounding)
+        let sounded = 0;
+        const V = Kit0 && Kit0.Voice;
+        const ear = setInterval(() => {
+          if ((V && V.playing && V.playing.size) || (root.speechSynthesis && root.speechSynthesis.speaking)) sounded = Date.now();
+        }, 25);
         await (st.reading = after(st.reading, () => ctx.say(lineOf(said), { who: "patient", noBubble: true })));
+        clearInterval(ear);
         S.face("neutral");
         // (the quiet counts again from zero if the mic was opened in it: never her voice right after a listen)
         const gap = fast() ? 400 : K.gapMs;
-        let from = Date.now();
+        let from = sounded && Date.now() - sounded < gap ? sounded : Date.now();
         while (mine() && Date.now() - from < gap) {
           await wait(Math.min(100, Math.max(10, gap - (Date.now() - from))));
           if (st.listening) from = Date.now();
