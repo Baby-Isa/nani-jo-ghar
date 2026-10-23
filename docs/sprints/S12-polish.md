@@ -27,6 +27,8 @@ About $230-290 and 2-3 days (approved by Zafar, 22 Oct). Scope is cut, never the
 6. The pour (CHAI-26): his eight frames are the reference for a ChatGPT tilt sequence (4-5 steps); if the pan still isn't top-down and centred, the old pans come back (CHAI-08).
 7. The doctor's new start (CLN-199) is built now; unrecorded lines show in grey italic English and are device-spoken while testing.
 
+8. The art (Zafar, 23 Oct): the likenesses pass (the doctor, the girl, Nani and Nana circles; Nani's come-here poses). The pour frames turn the pan in the plane as it tips: the wiring places the glass and plans the pan's path from the hob so the turn reads as aiming the spout at the glass.
+
 Not this sprint: ART-26 (animal sprites, with the farm game); the "no" introduction at L2+ (CK-50 only removes "no" from L1).
 
 ## Outcome
