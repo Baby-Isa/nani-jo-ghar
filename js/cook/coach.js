@@ -193,7 +193,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const S = Cook.scene;
     if (state.lit && S && S.glow) S.glow(state.lit, false);
     state.lit = obj;
-    if (obj && S && S.glow) S.glow(obj, true, { bounce: true, now: true });
+    if (!obj || !S || !S.glow) return;
+    // (logged as one of the kit's rungs: this glow is the first-time help's, on its own clock, not Nani's early: contract-24)
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${obId(state.key)}`, rung: 0, coach: true });
+    } catch (e) {
+      /* only a log */
+    }
+    S.glow(obj, true, { bounce: true, now: true });
   }
 
   /**
