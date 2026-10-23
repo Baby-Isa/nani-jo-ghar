@@ -31,6 +31,8 @@ About $230-290 and 2-3 days (approved by Zafar, 22 Oct). Scope is cut, never the
 
 9. The book (Zafar, 23 Oct, from `build/reports/s12-research-cefr-and-book.md`): W3-A also builds the spaced words (the book's pool draws from 1, 3 and 7 days back as well as today) and "Say it" as the first rung of Name it (the mic listens; the three speakers come after a try or a tap); Stick in the photo offers 2-3 pictures with short sentences; Find it's decoys are learned words. "What's missing" waits for the next sprint (ideas list); "Choose the reply" waits for Mum's question phrases (recording sheet).
 
+10. The face circles (Zafar, 23 Oct): the new centred circles go in now; their moods and mouth shapes (happy, frown, two mouths each) come from a small FC2 art run in the next paste block.
+
 Not this sprint: ART-26 (animal sprites, with the farm game); the "no" introduction at L2+ (CK-50 only removes "no" from L1).
 
 ## Outcome
