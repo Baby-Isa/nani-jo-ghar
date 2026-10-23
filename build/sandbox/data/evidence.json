@@ -18548,5 +18548,320 @@
    ],
    "note": "the Walkthrough tile is Cook's own pantry-then-chai chain ending at labs.html (the pictures: build/s10a_shoot.mjs walk)"
   }
+ ],
+ "EASY-03": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.njg-spot.on=1",
+    "count:.ob-finger=1"
+   ],
+   "note": "no demo (Zafar, 22 Oct): the first time, the water bottle glows and bounces in its box with the finger tapping; nothing moves to the pan by itself",
+   "delay": 700
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the pantry's first step: the box round the thing on the shelf, its glow, the finger tapping; nothing flies",
+   "delay": 700
+  }
+ ],
+ "EASY-10": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-chai",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "count:.njg-spot.on=1"
+   ],
+   "note": "the tea's first time: the box at once round the chai jar (CHAI-32), never the jar flying to the pan",
+   "delay": 700
+  }
+ ],
+ "EASY-08": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-spot .ob-box"
+   ],
+   "expect": [
+    "count:.njg-spot .ob-box=1"
+   ],
+   "note": "one rounded box with a plain gold edge (no glow of its own, no pulse) round the water bottle and its word; the bottle glows and bounces inside it; the milk beside it stays dark",
+   "delay": 700
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_shared_word_card.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "a group given together (three controls in a row) gets ONE box round all three (Onboard.groupBox); the old outer glow is gone"
+  }
+ ],
+ "SH-118": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "shot",
+    "js:Onboard.DIM"
+   ],
+   "expect": null,
+   "note": "the dim a little darker in every game: one token, Onboard.DIM (0.72, was 0.62), used by Onboard.run and Onboard.spot",
+   "delay": 700
+  }
+ ],
+ "SH-119": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "strip:.njg-spot:6x500"
+   ],
+   "expect": null,
+   "note": "the one finger (the kit's): tap, lift off, wait half a second, tap again, for as long as the help is up (6 frames over 3 s)",
+   "delay": 300
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"Onboard.run(obId(key), steps\" js/cook/coach.js"
+   ],
+   "expect": null,
+   "note": "Cook's coach draws the kit's finger (no picture hand); the conversations' emoji finger is wave 2's (Onboard.finger is exposed for it)"
+  }
+ ],
+ "SH-120": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.njg-spot.on=1",
+    "count:.ob-finger=1"
+   ],
+   "note": "a new player: the box and the finger within 1.5 s of the first step being playable (labs' New player sets the shell flag newPlayer, Onboard.newPlayer)",
+   "delay": 1200
+  }
+ ],
+ "CHAI-32": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.njg-spot.on=1",
+    "count:.ck-callout=0"
+   ],
+   "note": "the first time: the full dim and box at once for the water (then the tea), no call-out card with it",
+   "delay": 700
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "idle-twice",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "idle-hint",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.ck-callout=1",
+    "count:.njg-spot=0"
+   ],
+   "note": "stuck 8 s on a step (help seen before): the item's card at the top left by Nani's box, as from her, and the item glowing and bouncing; no dim, no box"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "idle-twice",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "idle-again",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.njg-spot.on=1",
+    "count:.ck-callout=0"
+   ],
+   "note": "16 s: the dim and the box instead, the card gone (never the card and the heavy dim together)"
+  }
+ ],
+ "CK-51": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "chai's card lists every item: paani and chai first (not said in the order), then the asked-for ones in order; the order still says only what is asked"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/core/cook-l1-order.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every cup's card at L1-L4: paani, chai first, never said"
+  }
+ ],
+ "CK-50": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/core/cook-l1-order.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "500 level 1 orders of every recipe: none holds a 'no' (coded in the order maker, js/cook/recipes.js make)"
+  }
  ]
 }

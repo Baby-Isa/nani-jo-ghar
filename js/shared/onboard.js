@@ -1047,6 +1047,7 @@
     const id = o.id || `stuck/${name}`;
     const AT = o.at || Onboard.RUNGS;
     LCnote("step-open", { step: name });
+    const opened = Date.now();
     if (root.PlayLog && root.PlayLog.step) root.PlayLog.step(name, { noted: true });
     let spot = null;
     let poll = 0;
@@ -1106,7 +1107,9 @@
         }
         lastAct = la;
       }
-      const idle = idleMs();
+      // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long
+      // read-out is not a child who has been stuck all that time)
+      const idle = Math.min(idleMs(), Date.now() - opened);
       if (o.glowAt != null && idle >= o.glowAt && !fired.g && !spot) {
         fired.g = true;
         h.rung = Math.round(o.glowAt / 1000);
