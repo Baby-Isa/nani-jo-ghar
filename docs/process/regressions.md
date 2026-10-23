@@ -302,6 +302,7 @@ From `docs/feedback/s12-polish-2026-10-22.md`. Rows reopened from this feedback 
 | CLN-201 | The word repeats too often: "time the pause between the end of them saying it and then the start of them saying it again ... a second and a half" | **to fix: code** · timed from the clip's start today | auto: eye test at L1, L2, L3 and L4; three sizes | `docs/feedback/s12-polish-2026-10-22.md` C3 |
 | CLN-202 | Layout: "she's very squished ... and the doctor has space either side of him"; "the doctor should have less padding around him, and she should have more space" (screenshot 3) | **to fix: code** | auto: eye test at L1, L2, L3 and L4; three sizes | `docs/feedback/s12-polish-2026-10-22.md` C5 |
 | CLN-203 | Tapping her eye: "it's not clear why I'm clicking, because I'm clicking on her eyeball. It's not working. I'm clicking everywhere"; then it worked ("the screen went to sleep or something"): check for a dead state | **to fix: code** | auto: eye test at L1, L2, L3 and L4; three sizes | `docs/feedback/s12-polish-2026-10-22.md` C6 |
+| CLN-204 | A lone "f" sits on its own line in the clinic sidebar under "ne poi yellow plaster" (the cut game; judge, 23 Oct, s12-w1a-ev5 panels H and I): a broken wrap or a leftover glyph | **to fix: code** | auto: clinic cut at L1, L2, L3 and L4; three sizes | judge note, `build/reports/s12-answers.md` §Proof (s12-w1a-ev5) |
 
 ### The door
 
