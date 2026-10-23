@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runDay, parseStages, stagesText, customDay, handoffUrl, startPatch, donePatches, dayView, bookendStages, unsaidPlan, CLEAR_CUSTOM, RESUME, pageStart, dayOf } from "../js/day/day.js";
+import { runDay, parseStages, stagesText, customDay, handoffUrl, startPatch, donePatches, dayView, bookendStages, unsaidPlan, CLEAR_CUSTOM, RESUME, pageStart, dayOf, testVoiced } from "../js/day/day.js";
 import { thenTarget, thenActions } from "../js/shared/host.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -231,4 +231,9 @@ test("LAB-06: a labs launch with the Day builder toggle on is bookended by the d
 test("LNG-18: a line the engine can't build is spoken by the device voice on the test path, and by nothing in the store build", () => {
   assert.deepEqual(unsaidPlan("Come!", "test").clipPlan, [{ text: "Come!", source: "device", tokens: [0, 0] }]);
   assert.equal(unsaidPlan("Come!", "store").clipPlan[0].source, "missing");
+  // a built line with words not yet recorded: device on the test path, the family clips kept, the store untouched
+  const r = { ok: true, clipPlan: [{ source: "missing", text: "ach", tokens: [0, 0] }, { source: "family-ok", file: "x.mp3", text: "ai", tokens: [1, 1] }] };
+  assert.deepEqual(testVoiced(r, "test").clipPlan.map((c) => c.source), ["device", "family-ok"]);
+  assert.equal(testVoiced(r, "store"), r);
+  assert.equal(r.clipPlan[0].source, "missing", "the engine's own result is never changed");
 });

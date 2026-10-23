@@ -58,6 +58,16 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
 export function unsaidPlan(en, path = "test") {
   return { clipPlan: [{ text: String(en == null ? "" : en), source: path === "test" ? "device" : "missing", tokens: [0, 0] }] };
 }
+/**
+ * And a line the engine CAN build whose words have no family recording yet: its clip plan marks them "missing" (the store's
+ * rule: nothing is said for them); on the test path the device voice reads them instead (LNG-18), the recorded words still
+ * play as the family's. The store path is left as it is. -> the result to say
+ */
+export function testVoiced(result, path = "test") {
+  if (path !== "test" || !result || !Array.isArray(result.clipPlan)) return result;
+  if (!result.clipPlan.some((c) => c.source === "missing")) return result;
+  return Object.assign({}, result, { clipPlan: result.clipPlan.map((c) => (c.source === "missing" ? Object.assign({}, c, { source: "device" }) : c)) });
+}
 
 /** A stage id's name in the URL: the ride was "window" in the first build's labs. */
 export const stageId = (s) => (s === "window" ? "ride" : s);
@@ -446,8 +456,9 @@ function makeApi({ data, days, core, E }) {
     const segs = el ? [...el.querySelectorAll("[data-seg]")] : [];
     if (el) el.classList.add("on");
     let p = Promise.resolve();
+    const vpath = core.voice.path ? core.voice.path() : "test";
     if (ln.ok) {
-      p = core.voice.say(ln.result, {
+      p = core.voice.say(testVoiced(ln.result, vpath), {
         channel: "day",
         queue: true,
         onWord: (tokens, it) => {
@@ -455,7 +466,7 @@ function makeApi({ data, days, core, E }) {
           segs.forEach((s) => s.classList.toggle("said", Number(s.dataset.seg) >= span[0] && Number(s.dataset.seg) <= span[1]));
         },
       });
-    } else if (ln.en) p = core.voice.say(unsaidPlan(ln.en, core.voice.path ? core.voice.path() : "test"), { channel: "day", queue: true });
+    } else if (ln.en) p = core.voice.say(unsaidPlan(ln.en, vpath), { channel: "day", queue: true });
     await p.catch(() => {});
     // a line with no recording yet still takes its time (the read-along is never a flash), at the test speed
     if (min) {

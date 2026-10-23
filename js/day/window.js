@@ -94,10 +94,12 @@ export async function runWindow(el, api, day) {
           api.say(asks[current], { who: "nani", min: false }).then(() => btn.classList.remove("on"));
         },
         onBulb: () => {
-          if (current < 0 || bulbOn) return;
+          // (between groups: the one to find now, the open card's)
+          const at = current >= 0 ? current : openAt;
+          if (at < 0 || bulbOn) return;
           hints++;
           bulbOn = true;
-          guide.set(`<span class="bulb-en" data-bulb-en>${api.esc(asks[current].en)}</span>`);
+          guide.set(`<span class="bulb-en" data-bulb-en>${api.esc(asks[at].en)}</span>`);
           setTimeout(() => {
             bulbOn = false;
             showCall(current);
@@ -105,6 +107,14 @@ export async function runWindow(el, api, day) {
         },
       })
     : null;
+  // SH-96 (contract-25): the light bulb pulses once the child has done nothing for the guide's BULB_PULSE (15-20 s), as in every game;
+  // the slower ride (RIDE-03) leaves long stretches between finds
+  const bulbT = G
+    ? setInterval(() => {
+        if (G.watch) G.watch();
+        G.pulseBulbs(G.idleMs() >= (G.BULB_PULSE || 17000));
+      }, 250)
+    : 0;
   const html = (ln) => {
     const n = api.render(ln, { cls: "day-inline" });
     return n.innerHTML;
@@ -299,6 +309,8 @@ export async function runWindow(el, api, day) {
     r.start();
   });
   window.Day.rideResult = result;
+  clearInterval(bulbT);
+  if (G) G.pulseBulbs(false);
   if (LC && LC.stageEnd) LC.stageEnd("day:window");
   api.test.state("day/window-end");
   api.test.expect(() => ({ kind: "end" }));
