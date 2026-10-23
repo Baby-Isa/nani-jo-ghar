@@ -109,6 +109,8 @@ export async function runWindow(el, api, day) {
     : null;
   // SH-96 (contract-25): the light bulb pulses once the child has done nothing for the guide's BULB_PULSE (15-20 s), as in every game;
   // the slower ride (RIDE-03) leaves long stretches between finds
+  // (the page's idle clock: the door starts it, so the child's Ha! is its last action, never the page's load)
+  if (G && G.watch) G.watch();
   const bulbT = G
     ? setInterval(() => {
         if (G.watch) G.watch();

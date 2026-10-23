@@ -64,6 +64,8 @@ export async function runDoor(host, api, day) {
   const W = data.weather[wkey];
   const set = data.activities[day.lines] || data.trips[day.lines] || data.activities.kitchen;
   api.test.state("day/door");
+  // the page's idle clock (js/shared/guide.js) watches from the door on: the stages after it count from the child's Ha!
+  if (window.NaniGuide && window.NaniGuide.watch) window.NaniGuide.watch();
   api.test.expect(() => ({ kind: "wait" }));
   window.Day.stage = "door";
 
