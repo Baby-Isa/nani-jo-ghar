@@ -70,11 +70,14 @@ export function labsPlayer(Save, store) {
         if (!id) { id = Save.addPlayer({ name: NAME }).id; put(K_NEW, id); }
         Save.select(id);
         Save.resetPlayer(id);
+        // SH-120 (Zafar, 22 Oct): the game pages read it (Onboard.newPlayer): every first-time help at once, every visit
+        Save.setFlag("newPlayer", true, id);
         return Save.current();
       }
       var own = ownId();
       if (own) Save.select(own);
       else Save.addPlayer({ name: "Player 1" });
+      Save.setFlag("newPlayer", false);
       return Save.current();
     },
     /** Who will play: the badge's words */

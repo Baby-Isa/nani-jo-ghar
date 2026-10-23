@@ -1,0 +1,1 @@
+cut 915x412: help up; finger frames at 0,502,1000,1503,2000,2502 ms; bounce frames at 0,254,500,751,1002,1254 ms

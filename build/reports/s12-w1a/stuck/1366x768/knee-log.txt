@@ -1,0 +1,1 @@
+knee 1366x768: help up; finger frames at 0,500,1003,1500,2000,2500 ms; bounce frames at 0,250,502,750,1003,1250 ms

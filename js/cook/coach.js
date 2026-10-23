@@ -40,7 +40,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const OB = () => global.Onboard;
   const obId = (key) => `cook/${key}`;
   /** Has this station been shown already? */
-  C.seen = (key) => !!(Cook.save.coached || {})[key] || !!(OB() && OB().seen(obId(key)));
+  // (SH-120: the grown-ups' New player sees every station's first-time help in each visit, whatever the save says)
+  const newPlayer = () => !!(OB() && OB().newPlayer && OB().newPlayer());
+  C.seen = (key) => !newPlayer() && (!!(Cook.save.coached || {})[key] || !!(OB() && OB().seen(obId(key))));
   C.active = () => !!live;
   /** The phase being coached now (its data.onboard key), or null. */
   C.key = () => (live ? live.key : null);
@@ -122,41 +124,84 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       i,
     }));
     state.kit = true;
-    // the ghost is the player's own hand, see-through (js/cook/hands.js); else the kit's drawn one
-    const hand = Cook.Hands ? Cook.Hands.ghostImage() : null;
-    Onboard.run(obId(key), steps, Object.assign({ idleMs: 6000 }, hand ? { hand } : {})).then(() => {
+    // SH-119 (Zafar, 22 Oct: one finger in every game): the kit's own finger, in its own cadence (no picture hand, no 6 s gap)
+    // (the hand from above: a shelf thing's word chip sits under it, never under the hand; the judge, 23 Oct)
+    Onboard.run(obId(key), steps, { fingerDown: true }).then(() => {
       if (live === state) C.stop(true);
     });
   }
 
   /*
-   * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook): a station whose script's steps name a "step" and a
-   * "demo" (data.onboard["chai-tray"]) is shown by the REAL item, not the ghost hand: the first time each step appears the
-   * item itself does the action (the pan lifts to the glass, the jar tips over the pan) and comes back, then the child does
-   * it; when the child is stuck the hint rungs run on the live target (5 s: the 62% spotlight, all else inert, and the demo
-   * again; 15 s: the demo again with the guide's line). Both are the shared kit's (js/shared/onboard.js Onboard.stuck); the
-   * station says, step by step, where its live control is and how its item moves (C.rungs). C.start leaves such a station
-   * to it (no overlay).
+   * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
+   * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by
+   * step, by the shared kit's hint rungs (js/shared/onboard.js Onboard.stuck): the first time a step appears, the spotlight on
+   * its item at once (the box, the item glowing, the finger); stuck, the station's own ladder (C.rungs's o.at, o.glowAt). The
+   * station says where its live control is (C.rungs). C.start leaves such a station to it (no overlay).
    */
   C.itemDemo = (key) => {
     const s = C.script(key);
-    return !!(s && s.every((st) => st.step && st.demo));
+    return !!(s && s.every((st) => st.step));
   };
   /** The step's script entry (data.onboard[key] whose step is `step`), or null. */
   C.stepOf = (key, step) => (C.script(key) || []).find((st) => st.step === step) || null;
   /**
    * The rungs for one step of station `key` (Onboard.stuck): o {target (the live control: a page rect or a function giving
-   * one), item ({x, y} page point of the thing that demonstrates), path (page points, or a function giving them), move(dx,
-   * dy, t) (a canvas sprite moves itself), line (the guide's line at 15 s), ms}. The first time per profile (and not once the
-   * station's coach was seen, Cook.save.coached) the demo plays as the step opens. -> handle {done(), stop()} or null.
+   * one), live, light, at, glowAt, glow(on), line, first}. The first time per profile (and not once the station's coach was
+   * seen, Cook.save.coached; a New player: every visit) the spotlight comes up as the step opens. -> handle {done(), stop()}
    */
   C.rungs = function (key, step, o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
-    const first = !(Cook.save.coached || {})[key];
+    const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
     return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
   };
+
+  /*
+   * EASY-08 (the judge, 23 Oct: "the flour jar never moves and has no glow"): in the box the thing itself glows and hops, as chai's
+   * bottle does: the station's own glow (S.glow, with its hop: Onboard.HOP), at once, on the picture the step names (its wordId,
+   * the nearest to where the step points); off when the step moves on or the coach ends.
+   */
+  function thingOf(e) {
+    const S = Cook.scene;
+    if (!S || !S.children || !e) return null;
+    let best = null;
+    let bd = Infinity;
+    // (or, for a step not named by a word, maani's "dough", the smallest tappable picture under where it points)
+    let hit = null;
+    let ha = 360000;
+    const look = (list) =>
+      (list || []).forEach((o) => {
+        if (!o || !o.active) return;
+        if (e.x != null && !best && o.texture && o.input && o.input.enabled && o.visible !== false && o.getBounds) {
+          const b = o.getBounds();
+          const a = b.width * b.height;
+          if (a > 0 && a < ha && b.contains(e.x, e.y)) [ha, hit] = [a, o];
+        }
+        if (e.key && o.wordId === e.key && o.visible !== false && o.getBounds) {
+          const b = o.getBounds();
+          const d = e.x == null ? 0 : Math.hypot(b.centerX - e.x, b.centerY - e.y);
+          if (d < bd) [bd, best] = [d, o];
+        }
+        if (o.list) look(o.list);
+      });
+    look(S.children.list);
+    return best || hit;
+  }
+  function lightThing(state, obj) {
+    if (state.lit === obj) return;
+    const S = Cook.scene;
+    if (state.lit && S && S.glow) S.glow(state.lit, false);
+    state.lit = obj;
+    if (!obj || !S || !S.glow) return;
+    // (logged as one of the kit's rungs: this glow is the first-time help's, on its own clock, not Nani's early: contract-24)
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${obId(state.key)}`, rung: 0, coach: true });
+    } catch (e) {
+      /* only a log */
+    }
+    S.glow(obj, true, { bounce: true, now: true });
+  }
 
   /**
    * Coach station `key` (once ever): spotlight each next thing to do, as its
@@ -191,6 +236,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return;
         }
         if (!t) {
+          lightThing(state, null);
           // nothing to point at for a moment: the overlay steps back (it never traps a child)
           if ((state.lost += 120) > 2500) C.stop(true);
           return;
@@ -200,6 +246,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           state.last = s;
           OB().signal("cook-next");
         }
+        lightThing(state, OB().active() ? thingOf(e) : null);
         return;
       }
       if (t && s !== state.last) {
@@ -225,6 +272,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) a.skip();
+    lightThing(state, null);
     draw(null);
   };
 
@@ -236,6 +284,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     live = null;
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) (a.leave || a.skip)();
+    lightThing(state, null);
     draw(null);
   };
 

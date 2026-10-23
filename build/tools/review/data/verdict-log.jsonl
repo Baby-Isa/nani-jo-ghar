@@ -1666,3 +1666,9 @@
 {"id":"EASY-04","run":"s11-judge-06","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"EASY-03","run":"s11-judge-07","verdict":"PASS","event":"built","date":"2026-10-22"}
 {"id":"EASY-07","run":"s11-judge-07","verdict":"PASS","event":"built","date":"2026-10-22"}
+{"id":"SH-120","run":"s12-w1a-ev1","verdict":"PASS","spec":"1c5e877a2324b6a6ff1e","judge":"expect","date":"2026-10-23"}
+{"id":"CHAI-32","run":"s12-w1a-ev1","verdict":"FAIL","spec":"965a8ac39145b0fc7676","judge":"expect","date":"2026-10-23"}
+{"id":"EASY-10","run":"s12-w1a-ev1","verdict":"PASS","spec":"5c5803dfd4988d0078ed","judge":"expect","date":"2026-10-23"}
+{"id":"EASY-08","run":"s12-w1a-ev2","verdict":"PASS","spec":"e55eb8b6e6ec516c082d","judge":"expect","date":"2026-10-23"}
+{"id":"CK-50","run":"s12-w1a-ev2","verdict":"PASS","spec":"4cd2acc29bf421043faf","judge":"expect","date":"2026-10-23"}
+{"id":"CHAI-32","run":"s12-w1a-ev2","verdict":"FAIL","spec":"965a8ac39145b0fc7676","judge":"expect","date":"2026-10-23"}

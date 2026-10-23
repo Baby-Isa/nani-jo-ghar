@@ -341,8 +341,9 @@
       if (frame === "bare" && !ps.length) return;
       // "bare": the words on their own, no frame ("trae aste thi": the stir row, T14)
       const line = frame === "bare" ? Lang.bare(Lang.phrase(ps)) : Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
-      // silent: on the card only, never said (SAM-11: the first block's head, "ba samosa", is already in the order)
-      if (!when && !e.silent) lines.push(line);
+      // silent: on the card only, never said (SAM-11: the first block's head, "ba samosa", is already in the order); unsaid
+      // (CK-51): a row on the card that is never said at all, at the station either (chai's water and tea)
+      if (!when && !e.silent && !e.unsaid) lines.push(line);
       // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
       // keeps that line as the card's head, so what's fetched is all rows, the first one leading
@@ -352,7 +353,7 @@
       const kind = e.blockHead && e.block ? "bhead" : e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
       if (kind !== "no" && kind !== "phead" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
       // pic (DAAR-19): a step row's own tool beside its words (the stir row's ladle: "ba" alone read as a stray row)
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame, pic: e.pic || null });
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame, pic: e.pic || null, unsaid: !!e.unsaid });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };
@@ -463,7 +464,23 @@
     const def = () => Cook.data.recipes[id];
     const r = {
       id,
+      /**
+       * One order of this dish for customer `who` at opts.level. CK-50 (Zafar, 22 Oct: "at level one there shouldn't be any
+       * no's ... it should be coded in"): a level 1 order never holds a "no" row (dudh na, khun na, dungri na): it is made
+       * again until it has none (a customer's usual that always says no is set aside at level 1).
+       */
       make(who, opts = {}) {
+        const lvl = opts.level || def().level || 1;
+        if (lvl > 1) return r.makeOnce(who, opts);
+        const hasNo = (d) => build(def(), d, 0).rows.some((row) => row.kind === "no");
+        let d = null;
+        for (let n = 0; n < 200; n++) {
+          d = r.makeOnce(who, n < 20 ? opts : Object.assign({}, opts, { usual: false }));
+          if (!hasNo(d)) return d;
+        }
+        throw new Error(`CK-50: no level 1 order of ${id} without a "no" in 200 tries`);
+      },
+      makeOnce(who, opts = {}) {
         const D = def();
         // a recipe can share another's tastes ("tastes": "chai")
         const taste = tasteOf(who, D.tastes || id);

@@ -1,0 +1,1 @@
+cut 1366x768: help up; finger frames at 0,501,1000,1502,2002,2501 ms; bounce frames at 0,250,502,750,1003,1250 ms

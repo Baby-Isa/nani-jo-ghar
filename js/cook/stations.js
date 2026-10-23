@@ -523,12 +523,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         tweens.push(this.tweens.add({ targets: fx, outerStrength: 8, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       }
       // SH-60 (s08 w6J: the WebGL outline alone was too thin to see on a pantry jar, so her line came "without the highlight"):
-      // the soft halo behind the picture in both renderers, the outline on top where WebGL draws it
-      {
-        const c = this.opaqueBox(obj);
-        halo = this.track(this.add.ellipse(c.x, c.y, c.w * 1.25 + 24, c.h * 1.2 + 20, 0xffd27a, 0.4).setDepth(obj.depth - 0.5));
-        tweens.push(this.tweens.add({ targets: halo, alpha: 0.18, scale: 1.08, duration: 520, yoyo: true, repeat: -1 }));
-      }
+      // a soft glow behind the picture in both renderers. EASY-08 (the judge, 23 Oct: "a solid pale-gold disc ... an oval plate round
+      // the jar": Zafar's rejected round glow in a square box): it is the picture's own silhouette, blurred gold, so it follows its
+      // outline (glowHalo below); it rides the hop with the picture
+      halo = this.glowHalo(obj);
+      if (halo) tweens.push(this.tweens.add({ targets: halo, alpha: 0.5, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       // (a test hook, only logged: when a glow comes on, so a check can hold it to Nani's help line, SH-60)
       try {
         if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("glow", { step: "on", by: String(obj.wordId || (obj.texture && obj.texture.key) || "") });
@@ -539,10 +538,51 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let y = null;
       if (bounce && typeof obj.y === "number" && !this.tweens.isTweening(obj)) {
         y = obj.y;
-        const hop = Math.max(6, Math.min(16, obj.displayHeight * 0.07));
-        tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 260, yoyo: true, repeat: -1, repeatDelay: 700, ease: "Quad.easeOut" }));
+        // (the judge, 23 Oct: a clear hop up and back, the shared kit's share of the thing's height, Onboard.HOP, in every game)
+        const hop = Math.max(8, Math.min(48, obj.displayHeight * ((window.Onboard && window.Onboard.HOP) || 0.1)));
+        tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 300, yoyo: true, repeat: -1, repeatDelay: 450, ease: "Quad.easeOut" }));
       }
       obj.glowFx = { fx, halo, tweens, y };
+    }
+    /**
+     * The glow from a picture's own outline (EASY-08): its silhouette drawn once, blurred, in the focus gold (an offscreen canvas:
+     * only the shadow of the picture lands on it), as an image behind the picture with the same frame, origin, scale and angle, kept
+     * on it every frame (the hop). A picture with no texture (a container, a drawing) gets none. -> the image, or null.
+     */
+    glowHalo(obj) {
+      const fr = obj.frame;
+      const img = fr && fr.source && fr.source.image;
+      if (!img || !obj.texture || !fr.cutWidth || !fr.cutHeight) return null;
+      const k = Math.abs(obj.scaleX || 1) || 1;
+      const blur = Math.round(Math.max(6, Math.min(80, 13 / k)));
+      const key = `__glow:${obj.texture.key}:${fr.name}:${blur}`;
+      const w = fr.cutWidth;
+      const h = fr.cutHeight;
+      const p = Math.ceil(blur * 1.8);
+      if (!this.textures.exists(key)) {
+        const ct = this.textures.createCanvas(key, w + 2 * p, h + 2 * p);
+        if (!ct) return null;
+        const g = ct.getContext();
+        const OFF = 20000;
+        g.shadowColor = "rgba(255, 196, 80, 1)";
+        g.shadowBlur = blur;
+        g.shadowOffsetX = OFF;
+        // twice, for a glow that reads at a glance; the picture itself lands off the canvas, only its shadow on it
+        for (let i = 0; i < 2; i++) g.drawImage(img, fr.cutX, fr.cutY, w, h, p - OFF, p, w, h);
+        ct.refresh();
+      }
+      const halo = this.add.image(obj.x, obj.y, key).setOrigin((obj.originX * w + p) / (w + 2 * p), (obj.originY * h + p) / (h + 2 * p));
+      const box = obj.parentContainer;
+      if (box) box.addAt(halo, Math.max(0, box.getIndex(obj)));
+      else this.track(halo);
+      const sync = () => {
+        if (!halo.active || !obj.active) return;
+        halo.setPosition(obj.x, obj.y).setScale(obj.scaleX, obj.scaleY).setAngle(obj.angle).setVisible(obj.visible).setDepth(obj.depth - 0.5);
+      };
+      sync();
+      this.events.on("update", sync);
+      halo.once("destroy", () => this.events.off("update", sync));
+      return halo;
     }
     /** The opaque part of an image in world px (its texture's transparent margins left out). */
     opaqueBox(obj) {
@@ -988,52 +1028,72 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
 
     /**
-     * A see-through fingertip that demonstrates a gesture until the player starts. step: what it shows, for the test
-     * log only (each play is logged to Lifecycle.log as {what: "ghost", step, at}: MAA-13; s04-hooks).
+     * The finger that demonstrates a gesture until the player starts. SH-119 (Zafar, 22 Oct: one finger in every game): the shared
+     * kit's finger (js/shared/onboard.js Onboard.finger): a tap (two points a few px apart: the maani pile) taps in the kit's
+     * cadence; a longer path or a circle is the finger pressed and moving along it, then lifted, half a second, again. step: what it
+     * shows, for the test log only (each play is logged to Lifecycle.log as {what: "ghost", step, at}: MAA-13; s04-hooks).
      */
     ghost(points, { duration = 1100, delay = 0, step = null } = {}) {
-      const dot = this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
-      // Nani's see-through finger shows the move (js/cook/hands.js), once her hand has loaded
-      let nh = null;
-      let tw = null;
+      const OB = window.Onboard;
+      const page = (x, y) => (UI.worldToScreen ? UI.worldToScreen(x, y) : { x, y });
+      const span = points.circle ? Infinity : Math.hypot(points[points.length - 1][0] - points[0][0], points[points.length - 1][1] - points[0][1]);
+      const tap = span < 12;
       let alive = true;
-      const run = () => {
-        if (!alive || !dot.active) return;
-        if (!nh && Cook.Hands) nh = Cook.Hands.ghost(this);
-        dot.setVisible(!nh);
+      let tw = null;
+      let finger = null;
+      let cur = null;
+      let loop = null;
+      const dot = OB && OB.finger ? null : this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
+      const log = () => {
         // TEST HOOK (s04-hooks; only logged): each play in Lifecycle.log, so a probe counts plays (MAA-13)
         try {
           const L = window.Lifecycle;
           if (L && L.ghost) {
             const p0 = points.circle ? points.circle : { x: points[0][0], y: points[0][1] };
-            const at = UI.worldToScreen ? UI.worldToScreen(p0.x, p0.y) : p0;
-            L.ghost(step || `cook:${this.viewName || (this.sys && this.sys.settings.key) || "?"}`, { gesture: points.circle ? "circle" : "path", at: { x: Math.round(at.x), y: Math.round(at.y) } });
+            const at = page(p0.x, p0.y);
+            L.ghost(step || `cook:${this.viewName || (this.sys && this.sys.settings.key) || "?"}`, { gesture: points.circle ? "circle" : tap ? "tap" : "path", at: { x: Math.round(at.x), y: Math.round(at.y) } });
           }
         } catch (e) {
           /* only a log */
         }
+      };
+      const posAt = (k) => {
+        if (points.circle) {
+          const c = points.circle;
+          const a = k * Math.PI * 2;
+          return { x: c.x + Math.cos(a) * c.rx, y: c.y + Math.sin(a) * c.ry };
+        }
+        const seg = Math.min(points.length - 2, Math.floor(k * (points.length - 1)));
+        const f = k * (points.length - 1) - seg;
+        const [x1, y1] = points[seg];
+        const [x2, y2] = points[seg + 1];
+        return { x: x1 + (x2 - x1) * f, y: y1 + (y2 - y1) * f };
+      };
+      const run = () => {
+        if (!alive || !this.sys || !this.sys.isActive()) return;
+        log();
+        if (OB && OB.finger && tap) {
+          // a tap: the kit's own cadence, logged once a cycle (a probe counts the plays)
+          if (!finger) {
+            finger = OB.finger(() => page(points[0][0], points[0][1]));
+            loop = this.time.addEvent({ delay: OB.fingerMs(), loop: true, callback: log });
+          }
+          return;
+        }
+        if (OB && OB.finger && !finger) finger = OB.finger(() => cur, { hold: true });
         tw = this.tweens.addCounter({
           from: 0,
           to: 1,
           duration,
           onUpdate: (t) => {
             const k = t.getValue();
-            if (points.circle) {
-              const c = points.circle;
-              const a = k * Math.PI * 2;
-              dot.setPosition(c.x + Math.cos(a) * c.rx, c.y + Math.sin(a) * c.ry);
-            } else {
-              const seg = Math.min(points.length - 2, Math.floor(k * (points.length - 1)));
-              const f = k * (points.length - 1) - seg;
-              const [x1, y1] = points[seg];
-              const [x2, y2] = points[seg + 1];
-              dot.setPosition(x1 + (x2 - x1) * f, y1 + (y2 - y1) * f);
-            }
-            dot.setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
-            if (nh) nh.at(dot.x, dot.y, dot.alpha / 0.75);
+            const p = posAt(k);
+            if (finger) cur = k > 0.04 && k < 0.96 ? page(p.x, p.y) : null;
+            if (dot) dot.setVisible(true).setPosition(p.x, p.y).setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
           },
           onComplete: () => {
-            if (alive) this.time.delayedCall(350, run);
+            cur = null;
+            if (alive) this.time.delayedCall(OB && OB.FINGER ? OB.FINGER.gap : 350, run);
           },
         });
       };
@@ -1042,11 +1102,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         alive = false;
         t0.remove();
         if (tw) tw.stop();
-        if (nh) nh.stop();
-        if (dot.active) dot.destroy();
+        if (loop) loop.remove();
+        if (finger) finger.stop();
+        if (dot && dot.active) dot.destroy();
         this.input.off("pointerdown", stop);
       };
       this.input.once("pointerdown", stop);
+      // the scene goes (the station ends): the finger goes with it
+      this.events.once("shutdown", stop);
       return { stop };
     }
 

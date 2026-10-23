@@ -1,0 +1,12 @@
+20.7s water playable: {"in":"cook","kind":"tap","x":479.12625,"y":655.3007111536865,"key":"cook-paani","sx":479.12625,"sy":655.3007111536865}
+27.1s spot up: true
+27.1s tapped water
+29.0s tea playable: {"in":"cook","kind":"tap","x":747.33125,"y":657.4617000000001,"key":"cook-chai","sx":747.33125,"sy":657.4617000000001,"swrongs":[{"x":479.12625,"y":655.3007111536865,"s":0.69125}]}
+30.0s tapped tea
+30.0s next: {"in":"cook","kind":"tap","x":598.02125,"y":655.6170701302194,"key":"cook-dudh","sx":598.02125,"sy":655.6170701302194}
+30.5s milk-0: spot false, card false
+33.3s milk-3: spot false, card false
+35.8s milk-5: spot false, card true
+39.3s milk-9: spot false, card true
+42.8s milk-12: spot true, card false
+46.2s milk-16: spot true, card false

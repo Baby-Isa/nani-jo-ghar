@@ -831,25 +831,29 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return () => UI.mission.closeCards(false);
   }
 
-  /* the ghost finger (first time only): a see-through hand on the page, over everything */
-  const FINGER_SVG =
+  /* the ghost finger (first time only): SH-119 (Zafar, 22 Oct: one finger in every game): the shared kit's hand (Onboard.HAND,
+     its fingertip at Onboard.HOTSPOT in the 64x80 box), on the page, over everything; this file's own drawing only without the kit */
+  const FINGER_SVG_OWN =
     '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M26 6c3 0 5 2 5 5v17l2-1c3-1 6 1 6 4v1l2-1c3-1 6 1 6 4l2-.5c3-.6 5 1.5 5 4.5v9c0 9-7 16-16 16h-4c-6 0-10-3-13-8l-8-13c-1.6-2.6.8-5.8 3.8-5l5.2 3V11c0-3 2-5 5-5z" fill="#fff" stroke="#2A2522" stroke-width="2.5" stroke-linejoin="round"/></svg>';
   function ghost() {
     const el = document.createElement("div");
     el.className = "cv2-ghost";
-    el.innerHTML = FINGER_SVG;
+    const kit = global.Onboard && global.Onboard.HAND;
+    el.innerHTML = kit || FINGER_SVG_OWN;
+    const hot = kit ? global.Onboard.HOTSPOT : [22, 4];
+    const at0 = `translate(${-hot[0]}px, ${-hot[1]}px)`;
     Object.assign(el.style, {
       position: "fixed",
       left: "0px",
       top: "0px",
       width: "64px",
-      height: "64px",
+      height: kit ? "80px" : "64px",
       zIndex: 60,
       pointerEvents: "none",
       opacity: "0",
       transition: "left .7s ease-in-out, top .7s ease-in-out, opacity .3s, transform .15s",
       filter: "drop-shadow(0 3px 6px rgba(40,25,10,.35))",
-      transform: "translate(-22px, -4px)",
+      transform: at0,
     });
     const ring = document.createElement("div");
     Object.assign(ring.style, {
@@ -878,11 +882,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       async tap(x, y) {
         ring.style.left = `${x}px`;
         ring.style.top = `${y}px`;
-        el.style.transform = "translate(-22px, -4px) scale(.86)";
+        el.style.transform = `${at0} scale(.86)`;
         ring.style.opacity = "1";
         ring.style.transform = "scale(1.25)";
         await Cook.wait(260);
-        el.style.transform = "translate(-22px, -4px)";
+        el.style.transform = at0;
         ring.style.opacity = "0";
         ring.style.transform = "scale(.6)";
       },

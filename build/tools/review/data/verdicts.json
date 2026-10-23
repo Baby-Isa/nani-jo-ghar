@@ -761,6 +761,23 @@
   "png": "build/screenshots/evidence/ev-20261021-031423-a9z/CHAI-25.png",
   "date": "2026-10-21"
  },
+ "CHAI-32": {
+  "hash": "9eae0b4dc348d1146eb8",
+  "dhash": [
+   "0034642434201010",
+   "0060642434241010",
+   "7034207430101858",
+   "0034642434201010",
+   "0034642434201010"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: CHAI-32-p2-L1-1366x768: count:.ck-callout=1: 0 visible; CHAI-32-p2-L1-1366x768: count:.njg-spot=0: 1 visible",
+  "panel": null,
+  "judge": "expect",
+  "run": "s12-w1a-ev2",
+  "commit": "d3e1c0d",
+  "date": "2026-10-23"
+ },
  "CHT-01": {
   "hash": "ff0ba1426c907aa7f5b1",
   "dhash": [],
@@ -1522,6 +1539,17 @@
   "commit": "10ec9e89",
   "png": "build/screenshots/evidence/ev-20261020-073941-0e9/CK-48.png",
   "date": "2026-10-20"
+ },
+ "CK-50": {
+  "hash": "00e07765860b2207b1cf",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/core/cook-l1-order.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s12-w1a-ev2",
+  "commit": "d3e1c0d",
+  "date": "2026-10-23"
  },
  "CK-TAB-01": {
   "hash": "04da15a4f99ec6bd9fbe",
@@ -4589,6 +4617,35 @@
   "commit": "9014b36b",
   "date": "2026-10-21"
  },
+ "EASY-08": {
+  "hash": "ec4d418222a6b557ff8a",
+  "dhash": [
+   "0131316969793b33",
+   "0131317179777531",
+   "1331717171636725"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.njg-spot .ob-box=1 (1 visible); count:.njg-spot .ob-box=1 (1 visible); count:.njg-spot .ob-box=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s12-w1a-ev2",
+  "commit": "d3e1c0d",
+  "date": "2026-10-23"
+ },
+ "EASY-10": {
+  "hash": "8001789dae1ede420eb8",
+  "dhash": [
+   "0034642434202c0c",
+   "00c0ccc8c8c08808"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.njg-spot.on=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s12-w1a-ev1",
+  "commit": "6d8849f",
+  "date": "2026-10-23"
+ },
  "FL-01": {
   "hash": "f7b91023934b2dbe5fa0",
   "dhash": [
@@ -6427,6 +6484,19 @@
   "commit": "a6961675",
   "png": "build/screenshots/evidence/ev-20261021-122141-93k/SH-12.png",
   "date": "2026-10-21"
+ },
+ "SH-120": {
+  "hash": "e7a9432278adad4e5a25",
+  "dhash": [
+   "0034642434201010"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.njg-spot.on=1 (1 visible); count:.ob-finger=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s12-w1a-ev1",
+  "commit": "6d8849f",
+  "date": "2026-10-23"
  },
  "SH-13": {
   "hash": "f75fb1d6dc700b657cc9",

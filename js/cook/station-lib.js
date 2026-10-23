@@ -318,8 +318,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // a part of the order that waits for this station comes up in the shared request pop-up before play (S04-B)
     if (ctx.nextStep) await ctx.nextStep(key);
     // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
-    // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
-    if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
+    // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer. SH-120 (Zafar, 22 Oct):
+    // and for the grown-ups' New player (labs.html), whose words are all new: the walkthrough from the moment the game loads
+    if (Cook.Coach && UI.w6() && (ctx.guided || newPlayer())) Cook.Coach.start(key);
     // the child can act from here: the help ladder's idle time counts from now (not from the art loading and the pop-up read-out)
     if (NG()) NG().poke();
   }
@@ -328,7 +329,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * stir run on after the chop in the same view, so its begin can't start them. Same rule as begin's.
    */
   function coach(ctx, key) {
-    if (Cook.Coach && UI.w6() && ctx && ctx.guided) Cook.Coach.start(key);
+    if (Cook.Coach && UI.w6() && ctx && (ctx.guided || newPlayer())) Cook.Coach.start(key);
+  }
+  function newPlayer() {
+    return !!(global.Onboard && global.Onboard.newPlayer && global.Onboard.newPlayer());
   }
   function end() {
     // S04-B (decision 75 (3), SH-66, Z5): a station's end is a stage end: every voice stops (the pantry's lines never

@@ -36,7 +36,6 @@
  *   Hands.count(S, n)                    n fingers up, bottom left, for a moment
  *   Hands.nani(S, action, opts) -> rig   Nani's hand from the top edge
  *   Hands.hide(S)                        every hand goes
- *   Hands.ghostImage()                   the onboarding overlay's see-through hand
  */
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
@@ -560,53 +559,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!S.sys || !S.sys.isActive()) return null;
     return H.show(S, act.frames[0], { x, y, who: "nani", k, alpha });
   };
-  /**
-   * Nani's see-through pointing finger for S.ghost: {at(x, y, alpha), stop()}.
-   * Until her texture is there, null (the ghost keeps its dot).
-   */
-  H.ghost = function (S, { k = 0.85 } = {}) {
-    if (!H.ready()) return null;
-    const p = pose("point");
-    if (!p) return null;
-    const ch = charOf("nani");
-    if (!S.textures.exists(key(ch, p.file))) {
-      loadFile(S, ch, p.file);
-      return null;
-    }
-    const c = rig(S, "point", { who: "nani", k, alpha: 0 });
-    if (!c) return null;
-    c.setDepth(Cook.D.top - 0.5);
-    return {
-      at(x, y, alpha) {
-        if (!c.active) return;
-        c.setPosition(x, y).aim().setAlpha(alpha * 0.62).setVisible(alpha > 0.01);
-      },
-      stop() {
-        if (c.active) c.destroy();
-      },
-    };
-  };
-
-  /* ---------------- the onboarding overlay's hand (page px) ---------------- */
-  /**
-   * The player's pointing hand as an <img> for the shared onboarding kit:
-   * {src, w, h, hot: [x, y] the fingertip, opacity}, sized as it is on the
-   * canvas. Null without data (the kit keeps its drawn hand).
-   */
-  H.ghostImage = function () {
-    if (!H.ready()) return null;
-    const p = pose("point");
-    const m = p && meta(p.file);
-    const canvas = document.querySelector("#game canvas");
-    if (!m || !canvas) return null;
-    const k = (Cook.UI && Cook.UI.worldScale ? Cook.UI.worldScale() : canvas.getBoundingClientRect().width / W) * TAP_K;
-    const s = sprites.scale;
-    return {
-      src: Cook.v(`assets/cook/hands/${H.who()}/${p.file}.webp`),
-      w: m.size[0] * k,
-      h: m.size[1] * k,
-      hot: [(p.tip[0] - m.crop[0]) * s * k, (p.tip[1] - m.crop[1]) * s * k],
-      opacity: 0.6,
-    };
-  };
+  // (Nani's see-through finger and the onboarding overlay's picture hand are gone: SH-119, one finger in every game, the shared
+  // kit's Onboard.finger; Zafar, 22 Oct)
 })(window);

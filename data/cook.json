@@ -955,6 +955,23 @@
      "for": "$it.who",
      "say": [
       {
+       "_ck51": "CK-51 (Zafar, 22 Oct): every item a cup needs is on its card: the water and the tea first, never said (the order says only what is asked: 'with milk and sugar'); they tick as they go in",
+       "frame": "and",
+       "x": [
+        "cook-paani"
+       ],
+       "when": "chai-tray",
+       "unsaid": true
+      },
+      {
+       "frame": "and",
+       "x": [
+        "cook-chai"
+       ],
+       "when": "chai-tray",
+       "unsaid": true
+      },
+      {
        "if": "it.extra",
        "frame": "need_waari",
        "x": [
@@ -1083,8 +1100,14 @@
    ],
    "how": "Each person says how they like their chai. Make every cup their way.",
    "card": {
-    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them. 29 Sept (X1, Zafar): the extra (aadu / elchi) is the TOP row, since the headline names it (Muke aadu waari chai khape.), then milk, then sugar; said in this order too.",
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them. 29 Sept (X1, Zafar): the extra (aadu / elchi) is the top row said, since the headline names it (Muke aadu waari chai khape.), then milk, then sugar; said in this order too. CK-51 (Zafar, 22 Oct): above them the water and the tea, on the card only.",
     "slots": [
+     [
+      "cook-paani"
+     ],
+     [
+      "cook-chai"
+     ],
      [
       "spi-10",
       "veg-14"
@@ -1101,7 +1124,7 @@
      ]
     ],
     "optional": [
-     3
+     5
     ]
    }
   },
@@ -5991,37 +6014,37 @@
    {
     "do": "tap",
     "step": "water",
-    "demo": "the water bottle lifts over the pan, tips, and goes back to the shelf",
+    "help": "CHAI-32: the first time, the dim and the box at once round the water bottle (it glows and bounces, the finger taps it); after that, stuck 5 s: its card by Nani's box and the bottle glowing; 12 s: the dim and the box",
     "what": "the water bottle: one tap pours water into the pan"
    },
    {
     "do": "tap",
     "step": "tea",
-    "demo": "the chai jar lifts over the pan, tips, and goes back",
+    "help": "as the water: the first time the box at once round the chai jar; after that the card at 5 s, the box at 12 s",
     "what": "the tea leaves (among look-alikes)"
    },
    {
     "do": "tap",
     "step": "knob",
-    "demo": "the knob turns a quarter and back",
+    "help": "the first time the box round the knob at once (the finger taps it); stuck, the box at 5 s, Nani's line at 15 s",
     "what": "the big knob: the burner lights"
    },
    {
     "do": "tap",
     "step": "cups",
-    "demo": "the jar this person asked for tips over their pan and goes back (only while Nani helps: it is the answer)",
+    "help": "never at once (Zafar, 22 Oct); stuck 5 s: the asked-for thing's card by Nani's box and the thing glowing; 12 s: the dim and the box. Only while it is study (Nani helps, a redo, or the word still supported): it is the answer, and a word shown is not counted as known",
     "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"
    },
    {
     "do": "tap",
     "step": "slow",
-    "demo": "the knob turns further round (low) and back, while the heat is in the green",
+    "help": "the first time the box round the knob at once, while the heat is in the green; stuck, the box at 5 s",
     "what": "the knob again in the green: the fire turns down"
    },
    {
     "do": "tap",
     "step": "pour",
-    "demo": "the ready pan lifts towards its person's glass and comes back",
+    "help": "the first time the box round the ready pan at once; stuck, the box at 5 s",
     "what": "the ready pan: it pours into its person's glass"
    }
   ],
