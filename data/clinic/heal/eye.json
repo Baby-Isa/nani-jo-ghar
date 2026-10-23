@@ -124,8 +124,44 @@
    "e": "I can see!",
    "who": "patient",
    "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "intro-not-right": {
+   "e": "The eye isn't right.",
+   "who": "doctor",
+   "_frame": "the formula's first sentence, {part} isn't right (Zafar's 'aai baraba nai', not on record): the engine has no frame for it (IsA is only the positive, 'Akh barabar ai'); to record with Mum, then a meaning here",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): the doctor's set sentences; English placeholder, to record"
+  },
+  "intro-heal": {
+   "e": "We will heal the eye.",
+   "who": "doctor",
+   "_frame": "the formula's second sentence, we will heal {part}: no verb 'heal' and no future frame in the engine; to record",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): English placeholder, to record"
+  },
+  "intro-use": {
+   "e": "We'll use this medicine.",
+   "who": "doctor",
+   "_frame": "the formula's third sentence, we'll use this {tool}: v.use is known only as a bare command (wapur) and n.medicine has no Kutchi yet; to record",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): English placeholder, to record"
   }
  },
+ "intro": [
+  {
+   "line": "intro-not-right",
+   "card": "body-eye",
+   "pic": "assets/clinic/s12/eye-card-s12.webp"
+  },
+  {
+   "line": "intro-heal",
+   "card": "body-eye",
+   "pic": "assets/clinic/s12/eye-card-s12.webp"
+  },
+  {
+   "line": "intro-use",
+   "card": "n.medicine",
+   "pic": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp"
+  }
+ ],
+ "_intro": "CLN-199 (s12-w2b; Zafar 22 Oct, C1; sprint decision 7): the doctor's start, the formula every heal game can name in its data (js/clinic/heal/host.js runIntro): the wide shot with the doctor standing beside her (no pop-up), his set sentences one by one in his bubble, the word card of the thing he names shown big as he says it (the eye; the medicine, a placeholder name for the dropper: Zafar 'call it medicine for now'), then the push-in to the close-up. A knee or an ear names its own three lines and cards here.",
  "chart_nouns": [
   {
    "id": "fru-01",
@@ -411,6 +447,15 @@
     33,
     203
    ],
+   "src_size": [
+    1024,
+    1536
+   ],
+   "eye_src": [
+    390,
+    657
+   ],
+   "_s12": "CLN-202 (s12-w2b; Zafar 22 Oct: 'she's very squished'): her panel widens to everything left of the doctor's own width (eye.js place/setSplit); her picture is slice-fitted, centred in the panel, and her open eye is placed from src_size and eye_src (the 1x source's size and her open eye in it)",
    "kinds": [
     "girl"
    ],
@@ -601,7 +646,8 @@
   "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
   "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
   "assets/clinic/s11/doctor-card-s11.webp",
-  "assets/clinic/s11/doctor-card-s11@2x.webp"
+  "assets/clinic/s11/doctor-card-s11@2x.webp",
+  "assets/clinic/s12/eye-card-s12.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
  "chart_colours": {

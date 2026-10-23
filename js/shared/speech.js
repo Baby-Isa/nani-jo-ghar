@@ -93,6 +93,16 @@
   };
   Speech.config = Object.assign({}, DEFAULTS);
   Speech.SR = SR;
+  /*
+   * SH-127 (Zafar, 22 Oct: "it just shook and didn't like it ... if there's only two options, then it's much better"): with
+   * exactly two choices (haa or na) the nearer one is taken on a smaller margin, against the single nearest take of each
+   * (kBest 1: every family take counts on its own, so a word with more takes isn't averaged away). Measured on the family's
+   * takes, leave-one-out, through child-like pitch and tempo shifts and noise (build/test_speech_pair.mjs): 49 of 60 named
+   * and 0 wrong, against 19 of 60 with the general settings; other family words taken for haa or na: 7 of 177 (4 %).
+   */
+  Speech.PAIR = { accept: 0.06, maxDistance: 5.5, kBest: 1 };
+  // the quiet after speech that ends a take by itself (SH-128: "it stops by itself after about a second of silence")
+  Speech.SILENCE_MS = 1000;
 
   /* ------------------------------------------------------------ utilities */
   function resample(x, from, to) {
@@ -560,9 +570,14 @@
   Speech.status = () => micStatus;
   Speech._setStatus = (s) => (micStatus = s); // tests and the parent screen's "try the mic again"
   let cancelCurrent = null;
+  let stopCurrent = null;
   /** Stop a listen in progress; it resolves null. Safe to call any time. */
   Speech.cancel = () => {
     if (cancelCurrent) cancelCurrent("cancel");
+  };
+  /** SH-128: end a listen now and judge what was said so far (the child's second tap: "send"). Safe to call any time. */
+  Speech.stop = () => {
+    if (stopCurrent) stopCurrent();
   };
   Speech.busy = () => !!cancelCurrent;
   function audioContext() {
@@ -604,6 +619,9 @@
     opts = opts || {};
     const timeoutMs = opts.timeoutMs || Speech.config.timeoutMs;
     const onState = opts.onState || (() => {});
+    // SH-128: onLevel(0..1) about every 10 ms, the voice's loudness for a live wave; silenceMs: the quiet that ends a take
+    const onLevel = typeof opts.onLevel === "function" ? opts.onLevel : null;
+    const quietMs = opts.silenceMs || 600;
     if (!isBrowser || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return null;
     const ac = audioContext();
     let stream;
@@ -630,6 +648,8 @@
     const done = new Promise((resolve) => (finish = resolve));
     cancelCurrent = (why) => finish(why);
     const t0 = Date.now();
+    // CLN-203 (a screen that slept, a tab put away): the audio stops coming, so the window closes on a clock too
+    const hard = setTimeout(() => finish("timeout"), timeoutMs + 250);
     const onAudio = (data) => {
       chunks.push(Float32Array.from(data));
       total += data.length;
@@ -639,6 +659,7 @@
         const db = 20 * Math.log10(Math.sqrt(s / hop) + 1e-9);
         if (!started) floor = Math.min(-30, 0.95 * floor + 0.05 * db);
         const on = db > Math.max(floor + 12, -50);
+        if (onLevel) onLevel(Math.max(0, Math.min(1, (db - floor - 6) / 36)));
         if (on) {
           speechMs += 10;
           silenceMs = 0;
@@ -648,11 +669,13 @@
           }
         } else if (started) {
           silenceMs += 10;
-          if (silenceMs >= 600 && speechMs >= 250) finish("end");
+          if (silenceMs >= quietMs && speechMs >= 250) finish("end");
         } else speechMs = Math.max(0, speechMs - 10);
       }
       if (Date.now() - t0 > timeoutMs) finish("timeout");
     };
+    // SH-128 (a second tap sends): what was said so far is the take; nothing said yet is no take
+    stopCurrent = () => finish(started ? "end" : "cancel");
     let node;
     let worklet = false;
     try {
@@ -675,7 +698,9 @@
     if (!worklet) node.connect(ac.destination); // ScriptProcessor only runs when connected
     onState("listening");
     const why = await done;
+    clearTimeout(hard);
     cancelCurrent = null;
+    stopCurrent = null;
     try {
       src.disconnect();
       node.disconnect();
@@ -716,16 +741,18 @@
     if (!pcm) {
       if (cancelCurrent || micStatus === "refused" || micStatus === "absent") return null;
       try {
-        pcm = await Speech.record({ timeoutMs: opts.timeoutMs, onState: opts.onState });
+        pcm = await Speech.record({ timeoutMs: opts.timeoutMs, onState: opts.onState, onLevel: opts.onLevel, silenceMs: opts.silenceMs });
       } catch (e) {
         cancelCurrent = null;
+        stopCurrent = null;
         return null;
       }
     }
     if (!pcm || pcm.length < SR * 0.2) return null;
     const q = queryFeatures(pcm, SR);
     pcm = null;
-    const r = classify(q, Speech.templatesFor(choices));
+    // SH-127: two choices take the pair's settings (Speech.PAIR); opts.classify overrides either
+    const r = classify(q, Speech.templatesFor(choices), Object.assign({}, choices.length === 2 ? Speech.PAIR : {}, opts.classify || {}));
     Speech.last = { feat: q[0], result: r, choices, confirmed: false }; // q[0] is the unwarped take
     return r.choice ? { choice: r.choice, confidence: r.confidence } : null;
   };
@@ -764,6 +791,27 @@
   };
 
   /**
+   * SH-127 ("use every family take of each word"): the files of every family take that says just this word, from the family
+   * audio list (data/family-audio.json: [{kutchi, file, checked}]): a take whose Kutchi, without its marks and case, is one
+   * of `spellings` (["ha", "haa"]); a take checked as not OK is left out. Pure.
+   */
+  Speech.familyTakes = function (list, spellings) {
+    const norm = (t) =>
+      String(t || "")
+        .toLowerCase()
+        .replace(/[^a-z ]/g, "")
+        .trim();
+    const want = new Set((spellings || []).map(norm).filter(Boolean));
+    const out = [];
+    for (const e of list || []) {
+      if (!e || !e.file || !want.has(norm(e.kutchi))) continue;
+      if (e.checked && !/^ok/.test(String(e.checked))) continue;
+      if (!out.includes(e.file)) out.push(e.file);
+    }
+    return out;
+  };
+
+  /**
    * The family recordings of a word id, from the audio manifest
    * (data/audio-manifest.json: {kind: [ids]}). Family voice kinds only
    * ("word"); the placeholder TTS voices ("cook-tts",
@@ -793,6 +841,136 @@
     if (Speech.log.length > 500) Speech.log.shift();
     if (typeof Speech.onLog === "function") Speech.onLog(e);
     return e;
+  };
+
+  /*
+   * SH-128, the listening look (Zafar's decision 1, 22 Oct: "tap once; everything dims, a pop-up shows a live sound wave; it
+   * stops by itself after a second of silence, or a second tap sends"; build/reports/s12-answers.md 5: tap-to-talk with a
+   * clear listening animation and an automatic stop, as children's apps do; hold-to-talk is hard for small hands).
+   *   const p = Speech.panel({keep: [el, ...], near: el, onTap})   while a listen runs
+   *   p.level(0..1)   the voice's loudness now (listen's onLevel): the wave grows with it
+   *   p.close()
+   * Everything dims except the `keep` controls (the answer buttons and the mic: a tap on them still works, a hole in the dim);
+   * a pop-up card above `near` holds the mic sign and the live wave. A tap anywhere else is onTap (the "send"). No words.
+   */
+  const PANEL_CSS = `
+.njg-mic-veil{position:fixed;inset:0;z-index:950;background:rgba(var(--njg-dim-rgb,26,18,10),var(--njg-mic-dim,.62));opacity:0;transition:opacity .18s ease-out;touch-action:none}
+.njg-mic-veil.on{opacity:1}
+.njg-mic-pop{position:fixed;z-index:951;display:flex;align-items:center;gap:var(--njg-s3,12px);padding:var(--njg-s3,12px) var(--njg-s5,24px) var(--njg-s3,12px) var(--njg-s3,12px);border-radius:var(--njg-round,999px);background:var(--njg-card,#fffaf1);border:var(--njg-line-2,2px) solid var(--njg-gold,#d9a441);box-shadow:var(--njg-shadow,0 6px 18px rgba(0,0,0,.25));transform:translate(-50%,-100%) scale(.9);opacity:0;transition:transform .2s ease-out,opacity .2s ease-out;cursor:pointer}
+.njg-mic-pop.on{transform:translate(-50%,-100%) scale(1);opacity:1}
+.njg-mic-pop .dot{flex:none;width:calc(var(--njg-tap,48px) + var(--njg-s2,8px));height:calc(var(--njg-tap,48px) + var(--njg-s2,8px));border-radius:50%;display:grid;place-items:center;background:var(--njg-flag-bg,#fde7d8);color:var(--njg-ink,#3b2415);animation:njg-mic-breathe 1.4s ease-in-out infinite}
+.njg-mic-pop .dot svg{width:var(--njg-icon,24px);height:var(--njg-icon,24px)}
+.njg-mic-pop .wave{display:block;width:calc(var(--njg-tap,48px) * 3.6);height:calc(var(--njg-tap,48px) * 1.1);overflow:visible}
+.njg-mic-pop .wave path{fill:none;stroke:var(--njg-focus,#e0a63a);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.njg-mic-pop .wave path.b{stroke:var(--njg-gold,#d9a441);opacity:.45;stroke-width:3}
+@keyframes njg-mic-breathe{0%,100%{box-shadow:0 0 0 0 rgba(224,166,58,.55)}50%{box-shadow:0 0 0 10px rgba(224,166,58,0)}}
+@media (prefers-reduced-motion:reduce){.njg-mic-pop .dot{animation:none}.njg-mic-veil,.njg-mic-pop{transition:none}}`;
+  const MIC_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>`;
+  /** The wave's points: n samples across w, a travelling sum of sines whose height follows `amp` (0..1). Pure. */
+  Speech.wavePath = function (amp, phase, w, h, n) {
+    n = n || 48;
+    const mid = h / 2;
+    const a = Math.max(0.04, Math.min(1, amp)) * (h / 2 - 3);
+    let d = "";
+    for (let i = 0; i <= n; i++) {
+      const u = i / n;
+      const env = Math.sin(Math.PI * u); // quiet at both ends, tallest in the middle
+      const y = mid + a * env * (0.62 * Math.sin(u * 13 + phase) + 0.38 * Math.sin(u * 29 - phase * 1.7));
+      d += `${i ? "L" : "M"}${(u * w).toFixed(1)} ${y.toFixed(1)}`;
+    }
+    return d;
+  };
+  Speech.panel = function (o) {
+    o = o || {};
+    if (!isBrowser) return { level() {}, close() {} };
+    const doc = document;
+    if (!doc.getElementById("njg-mic-css")) {
+      const s = doc.createElement("style");
+      s.id = "njg-mic-css";
+      s.textContent = PANEL_CSS;
+      (doc.head || doc.body).appendChild(s);
+    }
+    const keep = (o.keep || []).filter(Boolean);
+    const veil = doc.createElement("div");
+    veil.className = "njg-mic-veil";
+    veil.dataset.micVeil = "";
+    const pop = doc.createElement("div");
+    pop.className = "njg-mic-pop";
+    pop.setAttribute("aria-hidden", "true");
+    pop.innerHTML = `<span class="dot">${MIC_SVG}</span><svg class="wave" viewBox="0 0 172 53" preserveAspectRatio="none"><path class="b"/><path class="a"/></svg>`;
+    doc.body.appendChild(veil);
+    doc.body.appendChild(pop);
+    const pa = pop.querySelector("path.a");
+    const pb = pop.querySelector("path.b");
+    // the dim with a rounded hole round each kept control (clip-path's even-odd: taps in a hole reach the control)
+    const holes = () => {
+      const W = window.innerWidth || doc.documentElement.clientWidth;
+      const H = window.innerHeight || doc.documentElement.clientHeight;
+      let d = `M0 0H${W}V${H}H0Z`;
+      for (const el of keep) {
+        const r = el.getBoundingClientRect();
+        if (!r.width) continue;
+        const p = 6;
+        const x = r.left - p;
+        const y = r.top - p;
+        const w = r.width + 2 * p;
+        const h = r.height + 2 * p;
+        const k = Math.min(h / 2, w / 2);
+        d += `M${x + k} ${y}H${x + w - k}A${k} ${k} 0 0 1 ${x + w} ${y + k}V${y + h - k}A${k} ${k} 0 0 1 ${x + w - k} ${y + h}H${x + k}A${k} ${k} 0 0 1 ${x} ${y + h - k}V${y + k}A${k} ${k} 0 0 1 ${x + k} ${y}Z`;
+      }
+      veil.style.clipPath = `path(evenodd, "${d}")`;
+      const n = o.near && o.near.getBoundingClientRect ? o.near.getBoundingClientRect() : null;
+      const gap = 14;
+      pop.style.left = `${n ? n.left + n.width / 2 : W / 2}px`;
+      pop.style.top = `${n ? Math.max(8 + (pop.offsetHeight || 80), n.top - gap) : H / 2}px`;
+    };
+    holes();
+    const tap = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (typeof o.onTap === "function") o.onTap();
+    };
+    veil.addEventListener("pointerdown", tap);
+    pop.addEventListener("pointerdown", tap);
+    window.addEventListener("resize", holes);
+    requestAnimationFrame(() => {
+      veil.classList.add("on");
+      pop.classList.add("on");
+    });
+    let target = 0;
+    let amp = 0;
+    let phase = 0;
+    let raf = 0;
+    let closed = false;
+    const still = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const draw = () => {
+      amp += (target - amp) * 0.25;
+      target *= 0.94; // falls back when the voice stops
+      phase += still ? 0 : 0.22;
+      pa.setAttribute("d", Speech.wavePath(amp, phase, 172, 53));
+      pb.setAttribute("d", Speech.wavePath(amp * 0.7, phase + 1.9, 172, 53));
+      if (!closed) raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return {
+      veil,
+      pop,
+      level(v) {
+        target = Math.max(target, Math.max(0, Math.min(1, +v || 0)));
+      },
+      close() {
+        if (closed) return;
+        closed = true;
+        cancelAnimationFrame(raf);
+        window.removeEventListener("resize", holes);
+        veil.classList.remove("on");
+        pop.classList.remove("on");
+        setTimeout(() => {
+          veil.remove();
+          pop.remove();
+        }, 220);
+      },
+    };
   };
 
   if (isBrowser) loadEnrolments();
