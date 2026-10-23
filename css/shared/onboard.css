@@ -31,8 +31,9 @@
 /* the hand from above, pointing down (a thing with its word under it): the fingertip is at the bottom */
 .ob-finger.down .ob-finger-in { transform-origin: calc(100% * 25 / 64) calc(100% * 77 / 80); }
 .ob-finger.down .ob-finger-in svg { transform: scaleY(-1); }
-.ob-finger.down .ob-ripple { top: calc(100% * 77 / 80 - var(--njg-tap) * 0.75); }
-.ob-finger .ob-ripple { position: absolute; left: calc(100% * 25 / 64 - var(--njg-tap) * 0.75); top: calc(100% * 3 / 80 - var(--njg-tap) * 0.75); width: calc(var(--njg-tap) * 1.5); height: calc(var(--njg-tap) * 1.5); border-radius: 50%; border: var(--njg-s1) solid var(--njg-focus); background: color-mix(in srgb, var(--njg-focus) 25%, transparent); opacity: 0; }
+.ob-finger.down .ob-finger-in .ob-ripple { top: calc(100% * 77 / 80 - var(--njg-tap) * 0.25); }
+/* the tap's ripple: small and soft, at the fingertip only (the judge, 23 Oct: never a ring round the thing) */
+.ob-finger .ob-finger-in .ob-ripple { position: absolute; left: calc(100% * 25 / 64 - var(--njg-tap) * 0.25); top: calc(100% * 3 / 80 - var(--njg-tap) * 0.25); width: calc(var(--njg-tap) * 0.5); height: calc(var(--njg-tap) * 0.5); border-radius: 50%; border: calc(var(--njg-s1) / 2) solid var(--njg-focus); background: color-mix(in srgb, var(--njg-focus) 30%, transparent); opacity: 0; }
 
 /* the ghost hand: its box's top-left is moved so the fingertip lands on the point */
 .njg-onboard .ob-ghost {
@@ -91,7 +92,8 @@
 
 @keyframes ob-glow { 50% { stroke-opacity: 0.35; stroke-width: calc(var(--njg-s1) * 1.75); } }
 @keyframes ob-item-glow { 0%, 100% { stroke-opacity: 0.55; } 50% { stroke-opacity: 1; } }
-@keyframes ob-bounce { 0%, 100% { translate: 0 0; } 50% { translate: 0 calc(var(--njg-s2) * -0.9); } }
+/* a clear hop, Onboard.HOP (10%) of the thing's own height, up quickly and back, then a rest */
+@keyframes ob-bounce { 0%, 55%, 100% { translate: 0 0; animation-timing-function: ease-out; } 22% { translate: 0 -10%; animation-timing-function: ease-in; } }
 @keyframes ob-hold { from { --p: 0%; } to { --p: 100%; } }
 @keyframes ob-fadein { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
 @keyframes ob-shine { 0% { box-shadow: 0 0 0 0 rgba(224, 166, 58, 0.7); } 100% { box-shadow: 0 0 0 var(--njg-s4) rgba(224, 166, 58, 0); } }

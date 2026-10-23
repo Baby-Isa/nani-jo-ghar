@@ -1696,11 +1696,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const z = UI.worldToScreen(x1, y1);
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
-    // the finger taps the thing itself, where it rests
+    // the finger taps the top of the thing from above, clear of its hop (the judge, 23 Oct: the hand never covers the thing,
+    // even at the top of its bounce, nor its word under it)
     const itemPt = (o) => () => {
       if (!o || !o.active) return null;
       const b = o.getBounds();
-      return UI.worldToScreen(b.centerX, b.centerY - restY(o));
+      const hop = (global.Onboard && global.Onboard.HOP) || 0.1;
+      return UI.worldToScreen(b.centerX, b.y - restY(o) - b.height * hop);
     };
     const supported = (id) => !!id && Cook.wordStage(id) <= 2;
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
@@ -1748,13 +1750,23 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const guide = document.querySelector("#guide");
       const w = r && UI.wordOf && global.WordCard ? UI.wordOf(r, { size: 240 }) : null;
       if (!w || !side || !guide) return;
-      // the judge, 23 Oct: never over the hob, the tray or the shelf: the card sits in the left column, right under Nani's guide box
-      // (over the order card for its few seconds), its tail up to her box, sized to the column and to what is left above the rail
+      // the judge, 23 Oct: never over the hob, the tray, the shelf or the order list (fit, below)
       const box = document.createElement("div");
       box.className = "ck-callout";
       box.dataset.item = pid;
       Object.assign(box.style, { position: "fixed", left: "0", top: "0", zIndex: "40", animation: "icWordIn .3s cubic-bezier(.2, 1.3, .4, 1)" });
-      const card = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
+      let card = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
+      const word = w;
+      // (a phone, no room for the big card by the hob nor under the list: the same word card in its row form, [picture][speaker]
+      // word, which is short enough to sit under the list)
+      const asRow = () => {
+        if (card.classList.contains("wc-row")) return;
+        card.remove();
+        card = global.WordCard.row(box, word.word, Object.assign({}, word.wordOpts, { cls: "ic-word" }));
+        box.insertBefore(card, box.firstChild);
+        // (as the order's own call-out card: the word never breaks inside itself, css/cook.css #intro.along .ic-word p)
+        card.querySelectorAll("p, span").forEach((e) => Object.assign(e.style, { overflowWrap: "normal", wordBreak: "normal" }));
+      };
       const tail = document.createElement("i");
       tail.setAttribute("aria-hidden", "true");
       Object.assign(tail.style, { position: "absolute", left: "var(--njg-s5, 24px)", top: "-11px", width: "0", height: "0", borderLeft: "11px solid transparent", borderRight: "11px solid transparent", borderBottom: "12px solid var(--njg-card)", filter: "drop-shadow(0 -1px 1px rgba(60, 40, 20, 0.12))" });
@@ -1764,19 +1776,52 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (!box.isConnected) return;
         const s = side.getBoundingClientRect();
         const g = guide.getBoundingClientRect();
+        const stage = document.querySelector("#stage");
+        const st = stage ? stage.getBoundingClientRect() : { left: s.right, top: s.top };
+        // the judge, 23 Oct (second round): never over the order list either. Where it goes, in this order:
+        //  1. the play area's top left, by Nani's guide box: the strip left of the hob, above the shelf (wide enough: 115 px,
+        //     the speaker and a word side by side; a phone's strip is about that);
+        //  2. the left column, under the order list and above the rail (a phone: the strip by the hob is too narrow);
+        //  3. else under her box, over the list (a crowded card at L3-L4 on a phone)
+        const hb = hob && hob.active ? hob.getBounds() : null;
+        const hobLeft = hb ? UI.worldToScreen(hb.x, hb.y).x : st.left + 220;
+        const shelfTop = UI.worldToScreen(0, SHELF_TOP).y;
+        const pad = 10;
+        const size = (w) => ((card.style.width = `${w}px`), card.offsetHeight);
+        // the widest card up to `max` that is at most `h` tall (a narrower card is shorter: its picture is 4:3); null under 100 px
+        const widest = (max, h) => {
+          for (let w = Math.min(210, Math.floor(max)); w >= 100; w -= 6) if (size(w) <= h) return w;
+          return null;
+        };
+        const free = hobLeft - st.left - 24; // (its 14 px from the column, its tail in the gap, 10 px clear of the hob)
+        const list = document.querySelector("#mission");
         const rail = document.querySelector("#side .side-rail");
+        // (where the list's own rows end: the card box itself can stretch down the column)
+        const rowsIn = list && list.offsetParent ? [...list.querySelectorAll(".oc-card, .oc-row, .oc-pills, .m-head")].map((e) => e.getBoundingClientRect()).filter((r) => r.height > 0) : [];
+        const listEnd = rowsIn.length ? Math.max(...rowsIn.map((r) => r.bottom)) : g.bottom;
         const floor = rail && rail.offsetParent ? rail.getBoundingClientRect().top : s.bottom;
-        const pad = Math.max(6, Math.min(12, s.width * 0.05));
-        const top = g.bottom + 14;
-        let width = Math.min(210, s.width - 2 * pad);
-        card.style.width = `${width}px`;
-        // shrink until it ends above the rail (the picture is 4:3, so a narrower card is shorter)
-        for (let i = 0; i < 6 && top + card.offsetHeight > floor - pad && width > 90; i++) {
-          width = Math.max(90, width * 0.88);
-          card.style.width = `${width}px`;
+        let w = free >= 115 ? widest(free, shelfTop - st.top - 2 * pad) : null;
+        let at = "play";
+        if (!w) {
+          w = widest(s.width - 2 * pad, floor - listEnd - 14 - pad);
+          at = "under-list";
         }
-        box.style.left = `${s.left + (s.width - width) / 2}px`;
-        box.style.top = `${top}px`;
+        if (!w) {
+          asRow();
+          w = Math.floor(s.width - 8);
+          if (size(w) > floor - listEnd - 14 - pad) at = "under-guide";
+        }
+        box.dataset.at = at;
+        const up = { left: "var(--njg-s5, 24px)", top: "-11px", borderTop: "0", borderLeft: "11px solid transparent", borderRight: "11px solid transparent", borderBottom: "12px solid var(--njg-card)" };
+        if (at === "play") {
+          box.style.left = `${st.left + 14}px`;
+          box.style.top = `${Math.max(st.top + pad, g.top)}px`;
+          Object.assign(tail.style, { left: "-11px", top: "var(--njg-s5, 24px)", borderLeft: "0", borderTop: "11px solid transparent", borderBottom: "11px solid transparent", borderRight: "12px solid var(--njg-card)" });
+        } else {
+          box.style.left = `${s.left + (s.width - w) / 2}px`;
+          box.style.top = `${(at === "under-list" ? listEnd : g.bottom) + 14}px`;
+          Object.assign(tail.style, up);
+        }
       };
       fit();
       callout = box;

@@ -539,8 +539,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let y = null;
       if (bounce && typeof obj.y === "number" && !this.tweens.isTweening(obj)) {
         y = obj.y;
-        const hop = Math.max(6, Math.min(16, obj.displayHeight * 0.07));
-        tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 260, yoyo: true, repeat: -1, repeatDelay: 700, ease: "Quad.easeOut" }));
+        // (the judge, 23 Oct: a clear hop up and back, the shared kit's share of the thing's height, Onboard.HOP, in every game)
+        const hop = Math.max(8, Math.min(48, obj.displayHeight * ((window.Onboard && window.Onboard.HOP) || 0.1)));
+        tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 300, yoyo: true, repeat: -1, repeatDelay: 450, ease: "Quad.easeOut" }));
       }
       obj.glowFx = { fx, halo, tweens, y };
     }

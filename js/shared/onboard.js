@@ -196,6 +196,8 @@
    *                 again, for as long as the help is up (Onboard.FINGER).
    */
   Onboard.DIM = 0.72;
+  /** The lit thing's hop, a share of its own height (the judge, 23 Oct: a clear hop up and back, not a dip): every game. */
+  Onboard.HOP = 0.1;
   Onboard.dimFill = () => `rgba(30,18,10,${Onboard.DIM})`;
   /**
    * EASY-08 (Sprint 11): the light hugs the control's own box: a rounded rect with a small, even pad, never an oval that spills
@@ -571,8 +573,11 @@
     };
   }
   // a canvas thing bounces by its game's own hook (o.move(dx, dy, t): the sprite moves itself), as the item glows
-  const BOUNCE = { px: 7, ms: 900 };
-  const bouncer = (move) => {
+  const BOUNCE = { ms: 900 };
+  // the finger's tip by a thing, never over it (the judge, 23 Oct): from above, just over its top, clear of its hop; from below,
+  // at its base
+  const tipOf = (r, down) => (r ? { x: r.x + r.w / 2, y: down ? r.y - r.h * Onboard.HOP : r.y + r.h * 0.96 } : null);
+  const bouncer = (move, height) => {
     if (typeof move !== "function" || reduced()) return { tick() {}, stop() {} };
     const t0 = performance.now();
     let on = true;
@@ -581,7 +586,8 @@
         if (!on) return;
         const t = ((performance.now() - t0) % BOUNCE.ms) / BOUNCE.ms;
         try {
-          move(0, -BOUNCE.px * Math.abs(Math.sin(Math.PI * t)), Math.min(0.99, t));
+          const px = Math.max(6, (typeof height === "function" ? height() || 60 : 60) * Onboard.HOP);
+          move(0, -px * Math.abs(Math.sin(Math.PI * t)), Math.min(0.99, t));
         } catch (e) {
           /* the game's own drawing */
         }
@@ -675,7 +681,8 @@
       const st = m.state().step;
       const sp = st ? split(st.spotlight) : { els: [], rects: [], canvas: [] };
       lit = sp.rects;
-      light.draw(sp.rects, { rings: opts.light === false ? [] : sp.canvas, els: sp.els });
+      // (no ring round a canvas thing: Zafar disliked a round glow in the square box; the thing glows by its game)
+      light.draw(sp.rects, { rings: [], els: sp.els });
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
@@ -706,7 +713,8 @@
       LCghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
       if (st.ghost.gesture === "tap") {
         // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
-        if (!finger) finger = Onboard.finger(() => centre(st.ghost.from ? union(rectsOf(st.ghost.from)) : union(rectsOf(st.spotlight))), { container: layer, down: !!(st.ghost.down || opts.fingerDown) });
+        const down = !!(st.ghost.down || opts.fingerDown);
+        if (!finger) finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), down), { container: layer, down });
         setTimeout(() => {
           if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
         }, Onboard.fingerMs());
@@ -1031,7 +1039,7 @@
     const ms = o.ms || 1600;
     const html = elx && root.HTMLElement && elx instanceof root.HTMLElement;
     if (html) elx.classList.add("ob-lit");
-    const b = html ? null : bouncer(o.move);
+    const b = html ? null : bouncer(o.move, () => (elx ? rectOf(elx) || {} : {}).h);
     const f = o.hand ? Onboard.finger(elx || from, { step: o.step }) : null;
     return new Promise((resolve) => {
       const t0 = performance.now();
@@ -1064,19 +1072,19 @@
     (o.container || document.body).appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const light = lightOf(layer);
-    const bounce = bouncer(o.move);
+    const bounce = bouncer(o.move, () => (rectsOf(target)[0] || {}).h);
     if (typeof o.light === "function") o.light(true);
     let raf = 0;
     let shown = null;
     const draw = () => {
       const sp = split(target);
-      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, rings: o.light === undefined || o.light === true ? sp.canvas : [], els: sp.els });
+      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, rings: [], els: sp.els });
       if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || centre(firstRect())), { container: layer, step: o.step, down: !!o.fingerDown });
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), !!o.fingerDown)), { container: layer, step: o.step, down: !!o.fingerDown });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
