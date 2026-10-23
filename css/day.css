@@ -67,10 +67,10 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-wcard .day-wline .day-k { margin: 0; font-size: var(--njg-t2); }
 
 /* the child's answer: the shared Ha! and Na pills, bottom right of the play area */
-.day-answer { position: absolute; right: var(--njg-s6); bottom: var(--njg-s6); z-index: 3; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .3s, transform .3s; }
+.day-answer { position: absolute; right: var(--njg-s6); bottom: calc(var(--njg-tap) + var(--njg-s6)); z-index: 3; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .3s, transform .3s; }
 .day-answer.in { opacity: 1; transform: none; }
 .day-yes-word .day-k { font-size: var(--njg-t1); }
-@media (max-height: 499.98px) { .day-answer { right: var(--njg-s4); bottom: var(--njg-s4); } }
+@media (max-height: 499.98px) { .day-answer { right: var(--njg-s4); bottom: calc(var(--njg-tap) + var(--njg-s4)); } }
 .day-lab-note { position: absolute; left: var(--njg-s2); bottom: var(--njg-s2); z-index: 30; margin: 0; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-flag-bg); color: var(--njg-flag); border: var(--njg-line) solid var(--njg-flag-edge); border-radius: var(--njg-radius); font-size: var(--njg-t4); }
 .day-lab-note + .day-lab-note { bottom: calc(var(--njg-s2) * 6); }
 

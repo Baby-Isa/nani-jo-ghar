@@ -152,7 +152,9 @@ export function houseFit(house, W, H) {
   // the bottom whatever the zoom
   const s = Math.max(W / house.w, (H - roof0) / (house.h - house.roofline)) * (house.zoom || 1);
   const left = W / 2 - house.foot.x * s;
-  let top = house.footAt != null ? H * house.footAt - house.foot.y * s : roof0 - house.roofline * s;
+  // (a short phone screen sets her feet a little lower, footAtShort, so her lines' bubble has room over her head)
+  const footAt = H < 500 && house.footAtShort != null ? house.footAtShort : house.footAt;
+  let top = footAt != null ? H * footAt - house.foot.y * s : roof0 - house.roofline * s;
   top = Math.max(top, H - house.h * s);
   const roof = top + house.roofline * s;
   return { W, H, s, left, top, roof, foot: { x: left + house.foot.x * s, y: top + house.foot.y * s } };

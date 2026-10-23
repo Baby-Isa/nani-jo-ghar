@@ -124,8 +124,11 @@ export async function runWindow(el, api, day) {
   const showCall = (i) => {
     if (!guide || bulbOn) return;
     if (speaking && i < 0) return guide.set(html(speaking), { rec: !speaking.ok });
-    if (i < 0) guide.set("");
-    else guide.set(html(asks[i]), { rec: !asks[i].ok });
+    // nothing asked this moment: her box keeps the question of the one to find now (the open card's), never empty
+    const at = i >= 0 ? i : openAt;
+    if (at < 0 || !asks[at]) guide.set(head ? html(head) : "", { rec: !!head && !head.ok });
+    else guide.set(html(asks[at]), { rec: !asks[at].ok });
+    return;
   };
 
   // ---- the list of what to find (RIDE-09): the one to find now open as the shared word card, the rest their word ----

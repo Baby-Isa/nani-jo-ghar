@@ -70,7 +70,7 @@
   ],
   "door": {
     "_about": "The morning door on the s09b art (Zafar, 20 Oct, yes to all ten; DOOR-01..04): the sky is its own full layer behind the cut-out empty house, the house scaled so its roofline (y 322 of 1024) sits a third of the way down the play area and covering its width (its sides cropped on squarer screens); code draws only what moves (the rain falling, the stars twinkling, the clouds drifting). Nani is one of her pose cut-outs at 0.6 of the screen height (DOOR-06, Zafar 22 Oct: about 20% bigger, the camera a little closer: house.zoom, centred on her feet, with the foot of the steps at house.footAt of the height), her feet at the foot of the steps (foot, in the house's pixels), her head's middle at head (a share of the pose picture: SH-68, the thought's dots rise from it), every pose at one body height (body: the pose picture's head top and feet bottom rows; the umbrella's top is the umbrella, so its head starts lower; cx: the feet's middle across the picture). Her pose follows her lines (poses). The sidebar's two cards (idea 55): today's weather, then the day's activity, each as its sentence is said, with the speaker and the Kutchi beneath.",
-    "house": { "art": "assets/day/s09b/house-empty.webp", "w": 1536, "h": 1024, "roofline": 322, "foot": { "x": 768, "y": 740 }, "roofAt": 0.3333, "zoom": 1.1, "footAt": 0.86 },
+    "house": { "art": "assets/day/s09b/house-empty.webp", "w": 1536, "h": 1024, "roofline": 322, "foot": { "x": 768, "y": 740 }, "roofAt": 0.3333, "zoom": 1.1, "footAt": 0.86, "footAtShort": 0.93 },
     "skies": {
       "sunny": { "art": "assets/day/s09b/sky-sunny.webp", "card": "78% 22%", "house": null },
       "cloudy": { "art": "assets/day/s09b/sky-cloudy.webp", "card": "70% 30%", "drift": true, "house": "brightness(0.96) saturate(0.92)" },
@@ -101,7 +101,7 @@
       },
       "day": ["wave", "welcome", "welcome"],
       "wait": "listen",
-      "come": ["come-here", "welcome"]
+      "come": ["come-here", "wave"]
     },
     "cards": {
       "_about": "The sidebar's two cards (Zafar, 19 Oct night; idea 55): the weather card shows as the weather word is said (its picture: the day's own sky, framed on its sun, moon or clouds; the rain falls on it in code), the activity card as the day's line is said (its line marked thought in data/day.json). Under each picture the shared speaker and the card's word: the weather word (data/day.json weather.<w>.word), and the activity's word here (an engine meaning; what the engine can't say is its grey to-record English, decision 84). Pictures: a backdrop and, on it, sprites (x: their middle across, h: their height, both shares of the picture; feet on y).",

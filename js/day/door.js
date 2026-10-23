@@ -110,7 +110,10 @@ export async function runDoor(host, api, day) {
     placeImg(im);
     wrap.appendChild(im);
     // her head moved with the pose: the thought's dots follow it
-    if (scn.geo()) placeThought(scn.geo());
+    if (scn.geo()) {
+      if (shown) placeBubble();
+      placeThought(scn.geo());
+    }
     if (im.decode) await im.decode().catch(() => {});
     if (pose !== name) return im.remove();
     requestAnimationFrame(() => {
@@ -149,11 +152,21 @@ export async function runDoor(host, api, day) {
     const h = Math.max(72, g.H * ((look.thought && look.thought.h) || 0.2));
     const w = h * 1.3;
     const gap = Math.max(10, hd.r * 0.5);
-    let right = hd.x + hd.r * 0.6 + gap + w <= g.W - 12;
-    let x = right ? hd.x + hd.r * 0.6 + gap : hd.x - hd.r * 0.6 - gap - w;
+    // her lines' bubble hangs over her head: the thought sits beside it (its right, else its left), never on it
+    // (its box from its own placement: centred on its left, at full size, whatever its arrival transition is doing)
+    const pr = play.getBoundingClientRect();
+    const on = shown && bubble.style.left;
+    const bw = on ? bubble.offsetWidth : 0;
+    const bx = on ? parseFloat(bubble.style.left) - pr.left : hd.x;
+    const bl = bx - bw / 2;
+    const brt = bx + bw / 2;
+    const nearR = Math.max(hd.x + hd.r * 0.6, brt) + gap;
+    const nearL = Math.min(hd.x - hd.r * 0.6, bl) - gap - w;
+    let right = nearR + w <= g.W - 12;
+    let x = right ? nearR : nearL;
     if (!right && x < 12) {
       right = true;
-      x = Math.min(g.W - w - 12, hd.x + hd.r * 0.6 + gap);
+      x = Math.min(g.W - w - 12, nearR);
     }
     const y = Math.max(12, hd.y - hd.r * 1.1 - gap - h);
     Object.assign(thought.style, { left: `${x.toFixed(1)}px`, top: `${y.toFixed(1)}px`, width: `${w.toFixed(1)}px`, height: `${h.toFixed(1)}px`, transformOrigin: right ? "0% 100%" : "100% 100%" });
@@ -170,9 +183,9 @@ export async function runDoor(host, api, day) {
     thought.dataset.head = `${Math.round(hd.x)},${Math.round(hd.y)},${Math.round(hd.r)}`;
   };
 
-  // ---- her lines: the shared speech bubble in the sky's upper left ----
+  // ---- her lines: the shared speech bubble over her head, its tail down to it (SH-68: every bubble from its speaker's head) ----
   const cv = el("div", "cv-layer day-door-cv", root);
-  const bubble = el("div", "cv-bubble cv-say day-lines", cv);
+  const bubble = el("div", "cv-bubble cv-say cv-anchored day-lines", cv);
   bubble.dataset.speaker = "nani";
   const bubbleText = el("span", "cv-text", bubble);
   const spk = el("button", "cv-spk", bubble);
@@ -182,18 +195,21 @@ export async function runDoor(host, api, day) {
   let shown = null;
   const placeBubble = () => {
     const g = scn.geo();
+    const hd = headAt(g);
+    if (!g || !hd) return;
     const pr = play.getBoundingClientRect();
-    const B = g.H * (NP.height || 0.5);
-    const pad = g.H < 500 ? 12 : 24;
-    // its right edge stays clear of her: at the bubble's height only her head and shoulders (her arms move on the other side
-    // or at her waist), about a quarter of her height left of her middle
-    const room = g.foot.x - B * 0.25 - pad * 2;
-    bubble.style.maxWidth = `${Math.round(Math.max(220, Math.min(room, 600)))}px`;
+    const pad = g.H < 500 ? 8 : 16;
+    // the shared placement (js/shared/conversations.js placeBubble): the bubble hangs above its point, centred on it, its tail
+    // (::after, at its middle) down to the point: here the top of her head. As wide as stays inside the play area round her head
+    const half = Math.min(hd.x, g.W - hd.x) - pad;
+    bubble.style.maxWidth = `${Math.round(Math.max(200, Math.min(half * 2, 560)))}px`;
     const w = bubble.offsetWidth;
-    const h = bubble.offsetHeight;
-    const lift = parseFloat(getComputedStyle(bubble).getPropertyValue("--njg-u")) || 1;
-    // the shared bubble hangs above its point (translate -50%, -100% and its tail's room): its box lands at the play area's top left
-    Object.assign(bubble.style, { left: `${(pr.left + pad + w / 2).toFixed(1)}px`, top: `${(pr.top + pad + h + 14 * lift).toFixed(1)}px` });
+    const x = Math.max(pad + w / 2, Math.min(g.W - pad - w / 2, hd.x));
+    // its point the top of her head; never pushed off the top of the screen (then it sits just over her head instead)
+    const u = parseFloat(getComputedStyle(bubble).getPropertyValue("--njg-u")) || 1;
+    const y = Math.max(hd.y - hd.r * 1.05, bubble.offsetHeight + 14 * u + 4);
+    Object.assign(bubble.style, { left: `${(pr.left + x).toFixed(1)}px`, top: `${(pr.top + y).toFixed(1)}px` });
+    bubble.dataset.head = `${Math.round(pr.left + hd.x)},${Math.round(pr.top + hd.y)}`;
   };
   spk.addEventListener("click", () => {
     if (!shown) return;
@@ -270,8 +286,8 @@ export async function runDoor(host, api, day) {
 
   scn.onFit((g) => {
     placeNani(g);
-    placeThought(g);
     if (shown) placeBubble();
+    placeThought(g);
   });
 
   // ---- the lines in their order: the weather word, the weather sentence, then the day's own lines ----
@@ -358,7 +374,8 @@ export async function runDoor(host, api, day) {
       const r = yesBtn.getBoundingClientRect();
       const at = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
       // the finger comes in from just below and to the right of the pill (on screen), taps it, and lifts off
-      const below = Math.max(18, Math.min(56, (window.innerHeight || 0) - at.y - 24));
+      // (the kit's hand hangs about 80 px below its fingertip: it starts low enough to read as coming in, never off the screen)
+      const below = Math.max(8, Math.min(40, (window.innerHeight || 0) - at.y - 84));
       return O.demo({ x: at.x + Math.min(48, r.width * 0.4), y: at.y + below }, [at], { hand: true, ms: 1100, step: "door-yes", quiet: true });
     };
     while (!answered && !help.stop) {
@@ -394,6 +411,7 @@ export async function runDoor(host, api, day) {
     shown = { ln, row };
     placeBubble();
     bubble.classList.add("in", "speaking");
+    placeThought(scn.geo());
     if (i === lines.length - 1) showAnswer();
     const stopTalk = talk && front ? talk.dom(front) : null;
     await Promise.race([api.say(ln, { el: row, who: "nani" }), answer]);
@@ -410,6 +428,9 @@ export async function runDoor(host, api, day) {
   pills.querySelectorAll('button[data-choice="yes"]').forEach((b) => b.classList.add("chosen"));
   // the child's own Ha!, heard
   await api.say(yes, { who: "child", min: false });
+  // the question is answered: the pills go
+  pills.classList.remove("in");
+  pills.style.pointerEvents = "none";
   // DOOR-08 (Zafar, 22 Oct: "after you say yes, you should say come ... and have the face"): her answer, glad, in her
   // come-here pose when the art has one (data/days.json door.poses.come: the first that exists), in the bubble like every line
   const come = data.door.come ? api.line(data.door.come) : null;
