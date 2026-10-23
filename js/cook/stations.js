@@ -523,12 +523,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         tweens.push(this.tweens.add({ targets: fx, outerStrength: 8, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       }
       // SH-60 (s08 w6J: the WebGL outline alone was too thin to see on a pantry jar, so her line came "without the highlight"):
-      // the soft halo behind the picture in both renderers, the outline on top where WebGL draws it
-      {
-        const c = this.opaqueBox(obj);
-        halo = this.track(this.add.ellipse(c.x, c.y, c.w * 1.25 + 24, c.h * 1.2 + 20, 0xffd27a, 0.4).setDepth(obj.depth - 0.5));
-        tweens.push(this.tweens.add({ targets: halo, alpha: 0.18, scale: 1.08, duration: 520, yoyo: true, repeat: -1 }));
-      }
+      // a soft glow behind the picture in both renderers. EASY-08 (the judge, 23 Oct: "a solid pale-gold disc ... an oval plate round
+      // the jar": Zafar's rejected round glow in a square box): it is the picture's own silhouette, blurred gold, so it follows its
+      // outline (glowHalo below); it rides the hop with the picture
+      halo = this.glowHalo(obj);
+      if (halo) tweens.push(this.tweens.add({ targets: halo, alpha: 0.5, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       // (a test hook, only logged: when a glow comes on, so a check can hold it to Nani's help line, SH-60)
       try {
         if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("glow", { step: "on", by: String(obj.wordId || (obj.texture && obj.texture.key) || "") });
@@ -544,6 +543,46 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 300, yoyo: true, repeat: -1, repeatDelay: 450, ease: "Quad.easeOut" }));
       }
       obj.glowFx = { fx, halo, tweens, y };
+    }
+    /**
+     * The glow from a picture's own outline (EASY-08): its silhouette drawn once, blurred, in the focus gold (an offscreen canvas:
+     * only the shadow of the picture lands on it), as an image behind the picture with the same frame, origin, scale and angle, kept
+     * on it every frame (the hop). A picture with no texture (a container, a drawing) gets none. -> the image, or null.
+     */
+    glowHalo(obj) {
+      const fr = obj.frame;
+      const img = fr && fr.source && fr.source.image;
+      if (!img || !obj.texture || !fr.cutWidth || !fr.cutHeight) return null;
+      const k = Math.abs(obj.scaleX || 1) || 1;
+      const blur = Math.round(Math.max(6, Math.min(80, 13 / k)));
+      const key = `__glow:${obj.texture.key}:${fr.name}:${blur}`;
+      const w = fr.cutWidth;
+      const h = fr.cutHeight;
+      const p = Math.ceil(blur * 1.8);
+      if (!this.textures.exists(key)) {
+        const ct = this.textures.createCanvas(key, w + 2 * p, h + 2 * p);
+        if (!ct) return null;
+        const g = ct.getContext();
+        const OFF = 20000;
+        g.shadowColor = "rgba(255, 196, 80, 1)";
+        g.shadowBlur = blur;
+        g.shadowOffsetX = OFF;
+        // twice, for a glow that reads at a glance; the picture itself lands off the canvas, only its shadow on it
+        for (let i = 0; i < 2; i++) g.drawImage(img, fr.cutX, fr.cutY, w, h, p - OFF, p, w, h);
+        ct.refresh();
+      }
+      const halo = this.add.image(obj.x, obj.y, key).setOrigin((obj.originX * w + p) / (w + 2 * p), (obj.originY * h + p) / (h + 2 * p));
+      const box = obj.parentContainer;
+      if (box) box.addAt(halo, Math.max(0, box.getIndex(obj)));
+      else this.track(halo);
+      const sync = () => {
+        if (!halo.active || !obj.active) return;
+        halo.setPosition(obj.x, obj.y).setScale(obj.scaleX, obj.scaleY).setAngle(obj.angle).setVisible(obj.visible).setDepth(obj.depth - 0.5);
+      };
+      sync();
+      this.events.on("update", sync);
+      halo.once("destroy", () => this.events.off("update", sync));
+      return halo;
     }
     /** The opaque part of an image in world px (its texture's transparent margins left out). */
     opaqueBox(obj) {
