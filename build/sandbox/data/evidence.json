@@ -1396,13 +1396,13 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-ghost, .co-finger",
+   "at": "every:visible:.ob-finger, .co-finger",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": [
-    "count:.ob-ghost,.co-finger>=1"
+    "count:.ob-finger,.co-finger>=1"
    ],
    "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (counted once the ghost is visible, not at its 0-opacity first frame)",
    "delay": 0,
@@ -1417,7 +1417,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-ghost, .co-finger",
+   "at": "every:visible:.ob-finger, .co-finger",
    "after": null,
    "capture": [
     "shot",
@@ -10897,6 +10897,48 @@
    "expect": null,
    "note": "face close-ups in the review circle (<who>-badge-<mood>-v2round-256): eyes level, filling the circle",
    "max": 6
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#side .oc-card .oc-face img",
+   "after": null,
+   "capture": [
+    "crop:#guide .ng-face",
+    "crop:#side .oc-card .oc-face",
+    "ref:sources/art/s12/fc-face-circles-v1.png"
+   ],
+   "expect": null,
+   "note": "Nani's guide box and Nana's order card: the passport circles (assets/shared/faces/), centred on the nose, the same head size, both ears or both sides of the scarf, no second crop"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-start",
+   "after": null,
+   "capture": [
+    "crop:.hs-face",
+    "crop:#side .cl-card-face",
+    "ref:sources/art/s12/fc-face-circles-v1.png"
+   ],
+   "expect": null,
+   "note": "the girl's circle and the doctor's card in the clinic: the same rule as Nani and Nana"
   }
  ],
  "ART-09": [
@@ -11229,7 +11271,7 @@
    "max": 3
   },
   {
-   "flow": "lab:cook/order",
+   "flow": "clinic:heal-eye",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -11237,13 +11279,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "request",
    "after": null,
    "capture": [
-    "strip:canvas:nani-:8x120"
+    "strip:.njg-rq-card .cl-face.doctor:20x100"
    ],
    "expect": null,
-   "note": "Cook service: mouth shapes while speaking"
+   "note": "the doctor talking in the request pop-up: a calm mouth (open about 150 ms, shut 330-470 ms, NaniGuide.MOUTH) and a rare slow blink; Zafar 22 Oct: 'slow it way down and open the mouth less'"
   }
  ],
  "ART-20": [
@@ -14873,28 +14915,68 @@
    "note": "with one or two wrong words: the divider has moved over by one unit per wrong word, nothing squeezed or cut, the right words still in one column ('if there are more incorrect items then the line has to move over')"
   }
  ],
- "SH-104": {
-  "needsDecision": "Keep the third end-review page (the steps list), or hold it aside for now as Zafar said ('maybe we don't need this third screen ... hold it to the side for now')? Decide after CHT-14; he said yes on 18 Oct.",
-  "probes": [
-   {
-    "flow": "cook:chaat",
-    "path": "mistake",
-    "level": 1,
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "visible:.njg-results .rs-p3 .rs-step",
-    "after": null,
-    "capture": [
-     "crop:.njg-results"
-    ],
-    "expect": null,
-    "note": "the chaat review's third page as built: does it tick Channa, or show a pill that says potato ('that's not really clear')?"
-   }
-  ]
- },
+ "SH-104": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results"
+   ],
+   "expect": [
+    "count:.njg-results .rs-p3=0",
+    "count:.njg-results .rs-steps-list=0"
+   ],
+   "note": "S12 W2-A: two pages only (the badges, the word review): the eye test passes a step per card, and still no steps page (Results.STEPS_PAGE off; contract-38 on every flow)"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results"
+   ],
+   "expect": [
+    "count:.njg-results .rs-p3=0",
+    "count:.njg-results .rs-steps-list=0"
+   ],
+   "note": "S12 W2-A: two pages only in a second clinic game"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results"
+   ],
+   "expect": [
+    "count:.njg-results .rs-p3=0",
+    "count:.njg-results .rs-steps-list=0"
+   ],
+   "note": "S12 W2-A: two pages only in chai"
+  }
+ ],
  "SH-105": [
   {
    "flow": "cook:chai-tray",
@@ -19285,6 +19367,153 @@
     "pass"
    ],
    "note": "a line the engine can't build: the device voice on the test path, nothing in the store build"
+  }
+ ],
+ "SH-124": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cv-replies.in .cv-pill",
+   "after": null,
+   "capture": [
+    "strip:.cv-replies:6x250"
+   ],
+   "expect": [
+    "count:.cv-pill.ob-lit>=1",
+    "count:.ob-finger>=1"
+   ],
+   "note": "the kitchen conversation, a fresh child: the reply to pick glows gold and hops in place, the kit's finger taps it from its right (nobody tapping); bigger replies and pictures"
+  }
+ ],
+ "SH-125": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cv-replies.in .cv-pill",
+   "after": null,
+   "capture": [
+    "crop:.cv-replies"
+   ],
+   "expect": [
+    "count:.cv-reply .cv-hear>=2",
+    "noOverlap:.cv-hear,.cv-pill"
+   ],
+   "note": "a speaker to the LEFT of each reply, outside it with a gap, that plays that reply"
+  }
+ ],
+ "SH-126": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cv-replies.in .cv-pill",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_conversations-browser.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "one tap answers (the module's browser test taps each reply once: the wrong ones shake, the right one answers; its speaker beside it plays it and answers nothing)"
+  }
+ ],
+ "LNG-19": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cv-bubble",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the kitchen greeting's 'Salamun alaykum!' plays Nani's (Mum's) take: Zafar's two takes are marked redo in data/family-audio.json (never played); no Zafar clip in the timeline"
+  }
+ ],
+ "SH-123": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-redrop",
+   "after": null,
+   "capture": [
+    "crop:.eye-card"
+   ],
+   "expect": null,
+   "note": "the eye test's card: the speaker, the Kutchi and the English centred as one group in the card's right half, bigger, growing with the card (container units); English only while the word is supported (contract-39)"
+  },
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-wcard.in",
+   "after": null,
+   "capture": [
+    "crop:.day-side"
+   ],
+   "expect": null,
+   "note": "the door's left bar: each card's speaker, Kutchi and English centred under its picture, bigger with the card"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#side .oc-card .wc-row",
+   "after": null,
+   "capture": [
+    "crop:#side .oc-card"
+   ],
+   "expect": null,
+   "note": "chai's list: the sidebar rows keep the shared row size; English blank past support (contract-39)"
   }
  ]
 }
