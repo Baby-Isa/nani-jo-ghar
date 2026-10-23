@@ -1,0 +1,1 @@
+fetch 1366x768: help up; finger frames at 0,502,1003,1500,2002,2500 ms; bounce frames at 0,254,504,751,1001,1251 ms

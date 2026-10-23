@@ -1,0 +1,1 @@
+chai 1480x924: help up; finger frames at 0,502,1000,1503,2000,2500 ms; bounce frames at 0,251,503,753,1002,1251 ms
