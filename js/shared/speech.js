@@ -927,10 +927,12 @@
         d += `M${x + k} ${y}H${x + w - k}A${k} ${k} 0 0 1 ${x + w} ${y + k}V${y + h - k}A${k} ${k} 0 0 1 ${x + w - k} ${y + h}H${x + k}A${k} ${k} 0 0 1 ${x} ${y + h - k}V${y + k}A${k} ${k} 0 0 1 ${x + k} ${y}Z`;
       }
       veil.style.clipPath = `path(evenodd, "${d}")`;
+      // o.at(): the page point the pop-up's foot is centred on (a game keeps it off what the child is judging), else above `near`
+      const at = typeof o.at === "function" ? o.at() : null;
       const n = o.near && o.near.getBoundingClientRect ? o.near.getBoundingClientRect() : null;
       const gap = 14;
-      pop.style.left = `${n ? n.left + n.width / 2 : W / 2}px`;
-      pop.style.top = `${n ? Math.max(8 + (pop.offsetHeight || 80), n.top - gap) : H / 2}px`;
+      pop.style.left = `${at ? at.x : n ? n.left + n.width / 2 : W / 2}px`;
+      pop.style.top = `${at ? at.y : n ? Math.max(8 + (pop.offsetHeight || 80), n.top - gap) : H / 2}px`;
     };
     holes();
     const tap = (e) => {

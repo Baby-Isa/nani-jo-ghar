@@ -459,6 +459,12 @@
       // dim) sends; a pill tap still answers (it ends the listen). A miss is a shrug, never a verdict
       let panel = null;
       const sendNow = () => SP.stop && SP.stop();
+      // (the judge, 23 Oct: the pop-up never covers the card): it stands in her panel, level with the pills
+      const popAt = () => {
+        const rr = S.root.getBoundingClientRect();
+        const jr = judgeBox.getBoundingClientRect();
+        return { x: (rr.left + S.client(SPLIT, 0).x) / 2, y: jr.bottom };
+      };
       ctx.on(mic, "click", () => {
         if (st.listening) return sendNow();
         if (!st.awaiting || st.busy || st.over) return;
@@ -468,7 +474,7 @@
         mic.classList.add("listening");
         // (her voice stops for the listen: never her line inside the child's take)
         if (Kit0 && Kit0.Voice && Kit0.Voice.clear) Kit0.Voice.clear();
-        panel = SP.panel ? SP.panel({ keep: [haaBtn, naBtn, mic], near: judgeBox, onTap: sendNow }) : null;
+        panel = SP.panel ? SP.panel({ keep: [haaBtn, naBtn, mic], near: judgeBox, at: popAt, onTap: sendNow }) : null;
         // listen() starts inside this tap (iOS): no await before it
         const p = SP.listen({ choices: [VOICE.yes, VOICE.no], timeoutMs: 3500, silenceMs: SP.SILENCE_MS || 1000, onLevel: (v) => panel && panel.level(v) });
         Promise.resolve(p)
@@ -500,7 +506,7 @@
     // where the card stands: the middle of the room's panel, as big as the screen allows above the pills
     const px = (v) => `${Math.round(v)}px`;
     // CLN-202: the doctor is never wider than this share of the play area (the tablets' tall screens): she keeps the rest
-    const DOC_MAX = 0.62;
+    const DOC_MAX = 0.48;
     const place = (force) => {
       if (!force && st.view !== "test" && !stand.classList.contains("on")) return;
       const rr = S.root.getBoundingClientRect();
@@ -521,10 +527,22 @@
         // DOC_MAX of the play area; the word card fills the face, its picture and its strip side by side
         const [iw, ih] = DOC.size;
         const f = DOC.card;
-        const H = Math.min(room / (f.y + f.h), (rr.width * DOC_MAX * ih) / iw);
-        const Wd = (H * iw) / ih;
-        // CLN-202: his panel is his own width and a small margin each side; she has everything left of it
-        const panelW = Wd + 2 * gap;
+        // CLN-202 (the judge, 23 Oct: "her panel ~380 px ... the doctor's ~700 px with wall either side"): his panel is at
+        // most DOC_MAX of the play area (she has at least half), never narrower than the pills' row; he is as tall as fits it
+        let jw = judgeBox.offsetWidth;
+        if (!jw) {
+          const was = judgeBox.classList.contains("hidden");
+          judgeBox.style.visibility = "hidden";
+          judgeBox.classList.remove("hidden");
+          jw = judgeBox.offsetWidth;
+          if (was) judgeBox.classList.add("hidden");
+          judgeBox.style.visibility = "";
+        }
+        const panelW = Math.max(jw + 2 * gap, Math.min((room / (f.y + f.h)) * (iw / ih) + 2 * gap, rr.width * DOC_MAX));
+        const Wd = Math.min(panelW - 2 * gap, ((room / (f.y + f.h)) * iw) / ih);
+        const H = (Wd * ih) / iw;
+        // (a shorter doctor stands lower: his card's foot just above the pills, as when he is height-bound)
+        const drop = Math.max(0, room - (f.y + f.h) * H);
         const want = rr.width - panelW;
         if (herImg && Math.abs(want - x0) > 1) {
           const sx = S.pt({ clientX: rr.left + want, clientY: rr.top }).x - 14;
@@ -533,11 +551,11 @@
           mouthPlace();
         }
         const cx = rr.width - panelW / 2;
-        Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top), width: px(Wd), height: px(H) });
+        Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top + drop), width: px(Wd), height: px(H) });
         Object.assign(holder.style, { left: px(f.x * Wd), top: px(f.y * H), width: px(f.w * Wd), height: px(f.h * H) });
-        // (the pills under his card, whole on screen: on a phone the row is wider than his panel, never past the edge)
-        const jw = judgeBox.offsetWidth || 0;
-        judgeBox.style.left = px(jw ? Math.max(jw / 2 + gap, Math.min(cx, rr.width - jw / 2 - gap)) : cx);
+        // (the pills under his card, whole inside his panel: never across the divider, never past the edge)
+        const pl = rr.width - panelW;
+        judgeBox.style.left = px(jw ? Math.max(pl + jw / 2 + gap, Math.min(cx, rr.width - jw / 2 - gap)) : cx);
         judgeBox.style.width = "max-content";
         return;
       }
@@ -736,7 +754,12 @@
       if (stuck) stuck.stop();
       stuck = null;
       if (!root.Onboard || !root.Onboard.stuck || ctx.onboardOn === false) return;
-      const live = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
+      // (the judge, 23 Oct: the finger never over the card's picture): the kit lays the hand beside the first of the group, on
+      // the first side that is clear; above the row is the card, so it lies to the right of the row's last control where there
+      // is room, else to the left of the first
+      const room = (root.innerWidth || 0) - judgeBox.getBoundingClientRect().right;
+      const row = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
+      const live = room > 120 ? row.slice().reverse() : row;
       // the rungs count from this card coming up (her guess, not the child, was the last thing)
       if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
       const first = c.demo || (P.level === 1 && firstRound());
@@ -746,8 +769,6 @@
         first,
         target: live,
         live,
-        // (the finger from above, onto the row: from the side it lay over the next pill's word)
-        fingerDown: true,
         line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(st.awaiting.said || c.said), { who: "patient", noBubble: true }) : null),
       });
     };
@@ -795,7 +816,15 @@
       }
       const again = !!st.awaiting.again;
       st.awaiting = null;
-      showJudge(false);
+      // (the judge, 23 Oct: the right press shows gold for a moment, then the pills go)
+      const pressed = saysRight ? haaBtn : naBtn;
+      pressed.classList.add("right");
+      if (stuck) stuck.stop();
+      stuck = null;
+      ctx.after(fast() ? 100 : 550, () => {
+        pressed.classList.remove("right");
+        if (!st.awaiting) showJudge(false);
+      });
       if (wrong && !again) {
         // CLN-62, CLN-200: she misread and the child said na: the dropper for her eye, then she reads it right (nobody names
         // it before the drops)
@@ -832,6 +861,7 @@
           first: first || undefined,
           target: eyeBox,
           live: eyeBox,
+          item: () => S.client(readEye.x, readEye.y + 14), // (the finger from below, up at her eye)
           light: glowDropper,
           at: [0, 5000, null],
         });
@@ -861,7 +891,8 @@
         const te = c.both ? "right" : soreSide; // CLN-187: from level 2 the first row's eye (the patient's right)
         // S02-G: the dropper, then the eye; EASY-08 (Zafar, 22 Oct: "the brightness radius is too big ... a square box of
         // rounded corners just isolating the eye"): the second box is the eye and the nozzle over it, no more
-        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: eyeFrame(te) });
+        // (the eye's own help comes as the bottle is picked, helpEye: the finger on her eye, not the bottle's cap)
+        return S.cue("drops", CUES.drops, () => S.toolEls.drops, null);
       }
       if (c.kind === "card") return openCard(c.card);
     };
@@ -920,7 +951,27 @@
       // EASY-08 (Zafar, 22 Oct: "the medicine thing needs to glow the bottle"): in the taught round the bottle glows over the
       // eye until the first drop
       glowDropper(st.drops === 0 && P.level === 1 && firstRound());
+      if (st.drops === 0) helpEye(cur().both ? "right" : soreSide);
     });
+    // EASY-08, the judge (23 Oct: "points at her eye, not the bottle cap"): ONE box round the eye and the bottle over it, the
+    // bottle glowing, the kit's finger from below pointing up at the eye; at once in the taught round, else after a pause
+    const helpEye = (sd) => {
+      if (stuck) stuck.stop();
+      stuck = null;
+      if (!root.Onboard || !root.Onboard.stuck || ctx.onboardOn === false) return;
+      const e = EY[sd];
+      const r = EYA && EYA.eyeR ? EYA.eyeR : [92, 54];
+      const first = P.level === 1 && firstRound();
+      stuck = root.Onboard.stuck("eye-drops", {
+        id: first ? "clinic/heal-eye-drops-taught" : "clinic/heal-eye-drops",
+        first: first || undefined,
+        target: eyeFrame(sd),
+        live: eyeFrame(sd),
+        item: () => S.client(e.x, e.y + r[1] * 0.6),
+        light: glowDropper,
+        at: [0, 5000, null],
+      });
+    };
     const dropIn = async (at, hang) => {
       await fallDrop(at, hang);
       S.face("wince", 400);
@@ -955,6 +1006,10 @@
       if (full(c, sd)) return;
       const eye = EY[sd];
       glowDropper(false);
+      if (stuck && st.drops === 0) {
+        stuck.done();
+        stuck = null;
+      }
       st.drops++;
       st.n[sd]++;
       if (c.both) {

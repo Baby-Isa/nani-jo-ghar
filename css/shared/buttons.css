@@ -72,6 +72,7 @@
 .njg-pill:active { transform: translateY(var(--njg-line)); }
 .njg-pill.shake { animation: njgPillShake .45s; }
 .njg-pill.chosen { background: #fff6dc; }
+.njg-pill.right { background: var(--njg-gold); border-color: var(--njg-gold); } /* a right answer, for a moment (the eye test's haa, s12-w2b) */
 .njg-pills.locked .njg-pill { pointer-events: none; }
 @keyframes njgPillShake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
 @media (prefers-reduced-motion: reduce) { .njg-done.glow, .njg-next.glow, .njg-pill.shake { animation: none; } }
