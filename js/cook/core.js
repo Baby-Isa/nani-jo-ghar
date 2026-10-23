@@ -257,7 +257,11 @@
    * smile), happy (it's right), frown (it's wrong). Anyone else has one badge. A path (Cook.v it for the DOM).
    */
   Cook.FACES = ["nani", "nana", "ma", "cousin", "isa"]; // (isa: from the v3 face sheet A2, 29 Sept)
+  // ART-08 (S12, Zafar 23 Oct): Nani's and Nana's circles are the shared face circles (assets/shared/faces/, one cut rule for
+  // the doctor, the girl, Nani and Nana): the same face at every mood until the sheet has their other faces
+  const SHARED_FACES = ["nani", "nana"];
   Cook.facePath = function (who, mood = "neutral") {
+    if (SHARED_FACES.includes(who)) return `assets/shared/faces/${who}.webp`;
     if (!Cook.FACES.includes(who)) return `assets/cook/characters/${who}-badge.webp`;
     return `assets/cook/characters/${who}-face${mood && mood !== "neutral" ? `-${mood}` : ""}.webp`;
   };

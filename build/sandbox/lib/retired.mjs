@@ -47,6 +47,13 @@ export function build() {
   // 9 Oct (decision 77): S04-C's API lean was rejected and reverted, so no replacement exists yet: the standing Nani is
   // the only picture until the s05 art run's part A lands (ART-13 stays reopened and on the art list). Put these back then.
   if (process.env.NJG_RETIRE_STANDING_NANI) for (const m of ["neutral", "talk", "happy", "point"]) add(`assets/cook/characters/nani-${m}.webp`, "Nani leaning on the counter (decision 64, ART-13)", "Z9 (8 Oct): the standing Nani sprite in service", "cook:*:service");
+  // 5. named by Zafar, 22 Oct (A9, ART-08: "not centred ... one of his ears but not the other"): the old face circles; the
+  // passport sheet's circles replace them everywhere (assets/shared/faces/, cut by build/reports/s12-w2a/cut_faces.py)
+  const FC = "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it";
+  for (const m of ["neutral", "talk", "laugh", "think"]) add(`assets/clinic/patients/doctor/v2/faces/${m}.webp`, "assets/shared/faces/doctor.webp", FC);
+  for (const m of ["neutral", "happy", "sad", "sore", "hot", "cold"]) add(`assets/clinic/patients/girl/girl-head-${m}.webp`, "assets/shared/faces/girl.webp", FC);
+  for (const m of ["", "-blink", "-frown", "-happy", "-talk"]) add(`assets/cook/characters/nani-face${m}.webp`, "assets/shared/faces/nani.webp", FC);
+  for (const m of ["", "-frown", "-happy"]) add(`assets/cook/characters/nana-face${m}.webp`, "assets/shared/faces/nana.webp", FC);
   return out.filter((e) => e.sha256);
 }
 

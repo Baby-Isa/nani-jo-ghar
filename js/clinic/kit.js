@@ -158,7 +158,7 @@
   Kit.doctorFace = function (mood) {
     const A = Kit.doctorArt();
     const box = (A && A.box) || {};
-    return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/v2/faces/neutral.webp");
+    return Kit.url(box[mood || "neutral"] || box.neutral || "assets/shared/faces/doctor.webp");
   };
   /**
    * ART-19 (Zafar, 22 Oct, A10: "way too quick ... slow it way down and open the mouth less"): every talking face keeps the one

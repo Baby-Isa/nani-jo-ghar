@@ -259,6 +259,132 @@
    "by": "assets/cook/items/tool-knife-t-v2.webp",
    "why": "Z8 (8 Oct): the hand holding the old knife at the chopping board",
    "scope": "cook:*:wood"
+  },
+  {
+   "file": "assets/clinic/patients/doctor/v2/faces/neutral.webp",
+   "sha256": "7476ef82b0855ac4",
+   "by": "assets/shared/faces/doctor.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/doctor/v2/faces/talk.webp",
+   "sha256": "698b9addff29e235",
+   "by": "assets/shared/faces/doctor.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/doctor/v2/faces/laugh.webp",
+   "sha256": "54a58e62e74b19ea",
+   "by": "assets/shared/faces/doctor.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/doctor/v2/faces/think.webp",
+   "sha256": "c34095680b5e39f8",
+   "by": "assets/shared/faces/doctor.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-neutral.webp",
+   "sha256": "f6a0e29dbf198126",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-happy.webp",
+   "sha256": "d4b1a30393d610cd",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-sad.webp",
+   "sha256": "ca0c0e0fdf5eabb6",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-sore.webp",
+   "sha256": "ddac41a720c0e130",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-hot.webp",
+   "sha256": "bd137087e58bebe8",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/patients/girl/girl-head-cold.webp",
+   "sha256": "3dd660fecd92ac4b",
+   "by": "assets/shared/faces/girl.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nani-face.webp",
+   "sha256": "467d6d111fe30685",
+   "by": "assets/shared/faces/nani.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nani-face-blink.webp",
+   "sha256": "45d8a917ca9e2589",
+   "by": "assets/shared/faces/nani.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nani-face-frown.webp",
+   "sha256": "b300184d3dd258e3",
+   "by": "assets/shared/faces/nani.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nani-face-happy.webp",
+   "sha256": "acd00fde1fba53e1",
+   "by": "assets/shared/faces/nani.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nani-face-talk.webp",
+   "sha256": "b19648b2711439c0",
+   "by": "assets/shared/faces/nani.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nana-face.webp",
+   "sha256": "7a80679a0fef4428",
+   "by": "assets/shared/faces/nana.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nana-face-frown.webp",
+   "sha256": "a1e050548d8f9bd2",
+   "by": "assets/shared/faces/nana.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/characters/nana-face-happy.webp",
+   "sha256": "cbb0d15ca4d9dea6",
+   "by": "assets/shared/faces/nana.webp",
+   "why": "ART-08 (Zafar, 22 Oct): the old face circle; the s12 passport circles replace it",
+   "scope": null
   }
  ]
 }
