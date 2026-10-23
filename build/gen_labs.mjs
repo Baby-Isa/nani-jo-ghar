@@ -29,6 +29,7 @@ export const WALKTHROUGH = "cook.html?app=1&first=pantry&then=" + encodeURICompo
 
 export const TOP = [
   { id: "new-player", toggle: true, title: "New player", text: "On: every launch plays a fresh New player (no words, every first-time help, level 1). Off: your own player, never wiped." },
+  { id: "day-builder", toggle: true, title: "Day builder", text: "On: every game you launch starts at Nani's door and ends with the evening book. Off: the game alone." },
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
   { href: "lab/day.html", title: "The day builder", text: "Pick the stages of a day in order, or one game, and play it." },
@@ -360,6 +361,21 @@ ${hidden.map(sub).join("\n\n")}
     });
   });
   try { show(); } catch (e) { badge.textContent = "Could not reach the save on this device."; }
+  // Day builder (LAB-06, Zafar 22 Oct: "if you toggle the day builder it just bookends with the Nani house and the Nani book, so you
+  // have two toggles"): beside New player. On, every game launched here starts at the door and ends with the book: day.html?bookend=
+  // <its link> (js/day/day.js bookendStages; a link it can't play as a stage, e.g. ?eyetest=b, launches as it is)
+  var DB = "njg-labs-day-builder", dbTog = document.getElementById("day-builder-toggle"), dbBox = document.getElementById("day-builder");
+  var dbOn = function () { try { return localStorage.getItem(DB) === "1"; } catch (e) { return false; } };
+  function dbShow() { dbTog.checked = dbOn(); dbBox.classList.toggle("on", dbOn()); }
+  dbTog.addEventListener("change", function () { try { localStorage.setItem(DB, dbTog.checked ? "1" : "0"); } catch (e) { /* this visit only */ } dbShow(); });
+  document.querySelectorAll("a.play").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      if (!dbOn()) return;
+      e.preventDefault();
+      location.href = "day.html?bookend=" + encodeURIComponent(a.getAttribute("href") || "");
+    });
+  });
+  try { dbShow(); } catch (e) { /* the switch shows off */ }
 </script>
 </body>
 </html>

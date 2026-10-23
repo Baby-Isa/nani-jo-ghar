@@ -10,10 +10,15 @@
  *   tree) stand on the near line in front of everything and can half-hide a thing. Unasked things pass between the groups.
  *   The car never stops (no stop-the-car beat, Zafar, 20 Oct): three speeds, normal from the start; Nani says speed up or slow
  *   down and the whole view and every thing on it eases to the new speed over about a second. A thing crosses the window in
- *   about 9 s (slow), 6 s (normal) and 3.3 s (fast), scaled by the window's own width, so every screen gets the same time.
+ *   about 13.5 s (slow), 9 s (normal) and 5 s (fast; RIDE-03, Zafar 22 Oct: half as slow again), scaled by the window's own
+ *   width, so every screen gets the same time.
  *
  *   The game: look-alikes come by together (a group is k things of one family: animals, doors) and any member may be the one
- *   named, so only the word decides (the Kutchi leak test, non-negotiable 6). Nani asks as the group comes into view, when
+ *   named, so only the word decides (the Kutchi leak test, non-negotiable 6). The first groups of a level (its `distinct`) are
+ *   things that look nothing alike (each thing's data `look`: a hen and a bird are both birds; RIDE-03, Zafar: "in the beginning
+ *   of the game there's some big variations"). The three to find are all on the card (RIDE-09, Zafar 22 Oct): any of them,
+ *   tapped wherever it shows (in another's group, passing by), is found, in any order; the groups still come in the card's
+ *   order, one at a time, for the first not yet found. Nani asks as the group comes into view, when
  *   every member is at least about half in view and the first of them has not yet crossed the middle (never as it leaves;
  *   never for a hidden thing: contracts 47 and 48). The child taps it as it passes. A thing asked for and missed comes round
  *   again, with new look-alikes, until it is found (Zafar, 20 Oct: was once). A glow helps after a wrong tap or about 5 s of
@@ -46,7 +51,9 @@
   const W = {};
   const SCENE = { w: 1600, h: 900 };
   W.SCENE = SCENE;
-  W.SPEEDS = { slow: 9000, normal: 6000, fast: 3300 };
+  // RIDE-03 (Zafar, 22 Oct: "all three levels need to drastically slow down, maybe 50%"; Mum: "way too quick"): about half as
+  // fast again at every speed (was 9, 6 and 3.3 s)
+  W.SPEEDS = { slow: 13500, normal: 9000, fast: 5000 };
   W.SPEED_ORDER = ["slow", "normal", "fast"];
   W.FADE = 0.1; // the cross-fade: each copy of a layer fades in over the outer tenth of the one before
   const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 654, scale: 0.55, layer: "middle", edge: 646 }, far: { y: 450, scale: 0.12, layer: "far" }, sky: { y: 270, scale: 1, layer: "far" } };
@@ -88,11 +95,29 @@
     return fam;
   };
 
-  /** A group for a named thing: it and k-1 look-alikes of its family, in a random order. */
-  W.groupFor = function (named, members, k, rng) {
-    const others = shuffle(members.filter((m) => m !== named), rng).slice(0, Math.max(1, Math.min(k, members.length) - 1));
-    return shuffle([named, ...others], rng);
+  /**
+   * A group for a named thing: it and k-1 look-alikes of its family, in a random order. lookOf (the early groups): the others are
+   * things that look nothing like it or each other (a different `look`) where the family has enough of them.
+   */
+  W.groupFor = function (named, members, k, rng, lookOf = null) {
+    const want = Math.max(1, Math.min(k, members.length) - 1);
+    let pool = shuffle(members.filter((m) => m !== named), rng);
+    if (lookOf) {
+      const seen = new Set([lookOf(named)]);
+      const apart = [];
+      pool.forEach((m) => {
+        if (seen.has(lookOf(m))) return;
+        seen.add(lookOf(m));
+        apart.push(m);
+      });
+      if (apart.length >= want) pool = apart;
+    }
+    return shuffle([named, ...pool.slice(0, want)], rng);
   };
+  /** A thing's look (data `look`; its own id when it has none): two things of one look are hard to tell apart at a glance. */
+  W.lookOf = (ride) => (id) => ((ride.things || {})[id] || {}).look || id;
+  /** Can this family give a group of things that all look different? */
+  const apartOk = (members, k, lookOf) => new Set(members.map(lookOf)).size >= Math.min(k, members.length) && members.length >= 2;
 
   /**
    * The round: `calls` groups, each k look-alikes of one family in a random order, one of them named; families take turns as
@@ -103,7 +128,7 @@
     const L = W.levelOf(ride, level);
     const fam = W.families(ride, callable);
     const families = Object.keys(fam);
-    const base = { level: L.level, card: L.card || "open", speeds: L.speeds || [], families: fam, group: L.group || 3, fieldShare: L.fieldShare != null ? L.fieldShare : 0.3 };
+    const base = { level: L.level, card: L.card || "open", speeds: L.speeds || [], families: fam, group: L.group || 3, fieldShare: L.fieldShare != null ? L.fieldShare : 0.3, distinct: L.distinct || 0 };
     if (!families.length) return Object.assign(base, { calls: [] });
     const bag = [];
     families.forEach((f) => fam[f].forEach(() => bag.push(f)));
@@ -112,15 +137,20 @@
     let last = null;
     // the first group comes on the near verge: from a family whose things may all stand there (by their real size), if any
     const nearBag = bag.filter((f) => fam[f].every((id) => W.linesOf(ride.things[id]).includes("near")));
+    // the first `distinct` groups: from a family that can give things that all look different, and those things
+    const lookOf = W.lookOf(ride);
+    const early = (b) => b.filter((f) => apartOk(fam[f], L.group || 3, lookOf));
     for (let i = 0; i < L.calls; i++) {
-      const from = i === 0 && nearBag.length ? nearBag : bag;
+      const apart = i < (L.distinct || 0);
+      let from = i === 0 && nearBag.length ? nearBag : bag;
+      if (apart && early(from).length) from = early(from);
       const f = from[Math.floor(rng() * from.length)];
       // a thing not named yet if the family has one (the card lists each thing once where it can), never the last one again
       const fresh = fam[f].filter((g) => !used.has(g) && g !== last);
       const pool = fresh.length ? fresh : fam[f].filter((g) => g !== last);
       const named = pool[Math.floor(rng() * pool.length)];
       used.add(named);
-      const group = W.groupFor(named, fam[f], L.group || 3, rng);
+      const group = W.groupFor(named, fam[f], L.group || 3, rng, apart ? lookOf : null);
       // the first group on the near verge, later ones on the field at the level's share (a group whose things may not stand
       // on the verge, by their real size, goes on the field)
       let line = i === 0 ? "near" : rng() < base.fieldShare ? "field" : "near";
@@ -416,22 +446,23 @@
       c.namedTh = null;
       // it comes round again with new look-alikes, on either line
       const f = fam[c.family] || c.group;
-      c.group = W.groupFor(c.named, f, Math.max(2, c.group.length), rng);
+      c.group = W.groupFor(c.named, f, Math.max(2, c.group.length), rng, c.i < (plan.distinct || 0) ? W.lookOf(ride) : null);
       c.line = rng() < (plan.fieldShare != null ? plan.fieldShare : 0.3) ? "field" : "near";
       if (!c.group.every((id) => W.linesOf(things[id]).includes(c.line))) c.line = GROUND.find((l) => c.group.every((id) => W.linesOf(things[id]).includes(l))) || c.line;
       nextGroupAt = m.road + viewW() * 0.12;
     }
 
+    /** the next call still to find, from ci on (one found out of turn is passed over) */
+    const nextOpen = () => {
+      while (ci < calls.length && calls[ci].state === "found") ci += 1;
+    };
+    const allFound = () => calls.every((x) => x.state === "found");
     /** a tap on a thing: {counted, ok} */
     m.tap = function (u) {
       const th = m.things.find((o) => o.uid === u);
       if (!th || th.got || m.done) return { counted: false };
       const c = m.open();
-      if (!c) {
-        emit({ type: "idle-tap", uid: u, id: th.id });
-        return { counted: false };
-      }
-      if (u === c.namedTh.uid) {
+      if (c && (u === c.namedTh.uid || th.id === c.named)) {
         th.got = true;
         th.gotAt = m.t;
         const res = c.pass === 1 && !c.glow && c.wrong === 0 ? "right" : "helped";
@@ -441,13 +472,40 @@
         emit({ type: "found", i: c.i, pass: c.pass, uid: u, id: c.named, res });
         // (its look-alikes stay members of their group until they have gone by: the next group comes on after them)
         ci += 1;
-        if (ci >= calls.length) endAt = m.t + 600;
+        nextOpen();
+        if (ci >= calls.length || allFound()) endAt = m.t + 600;
         else {
           const want = plan.speeds && plan.speeds[ci];
           if (!opt.hold && want && want !== m.speed) m.setSpeed(want, "plan");
           nextGroupAt = m.road + viewW() * (0.28 + rng() * 0.2);
         }
         return { counted: true, ok: true };
+      }
+      // RIDE-09 (Zafar, 22 Oct: "if you're quick and you're clever and you know what all the items are, you can just click them
+      // all, whichever way you see them"): another thing on the card, tapped wherever it shows, is found out of turn
+      const k = calls.findIndex((x) => x.state !== "found" && x.named === th.id && x !== c);
+      // (a thing still going by from a group that has passed is not found out of turn: a missed one is found when it comes
+      // round, as it always does; the tap is no mistake either)
+      if (k >= 0 && th.member === -2) return { counted: false };
+      if (k >= 0) {
+        const o = calls[k];
+        th.got = true;
+        th.gotAt = m.t;
+        o.state = "found";
+        o.result = o.pass <= 1 && !o.glow && o.wrong === 0 ? "right" : "helped";
+        o.early = true;
+        m.found += 1;
+        emit({ type: "found", i: k, pass: o.pass, uid: u, id: o.named, res: o.result, early: true });
+        if (!c) {
+          // between groups: the current one may be the one just found
+          nextOpen();
+          if (ci >= calls.length) endAt = m.t + 600;
+        } else if (allFound()) endAt = m.t + 600;
+        return { counted: true, ok: true };
+      }
+      if (!c) {
+        emit({ type: "idle-tap", uid: u, id: th.id });
+        return { counted: false };
       }
       c.wrong += 1;
       emit({ type: "wrong", i: c.i, uid: u, id: th.id });
@@ -459,6 +517,17 @@
     };
 
     m.drain = () => m.events.splice(0, m.events.length);
+    /** the first-time help (RIDE-10): the asked thing glows at once (a find it helps is "helped", never "right") */
+    m.help = function () {
+      const c = m.open();
+      if (!c) return false;
+      c.help = true;
+      if (!c.glow) {
+        c.glow = true;
+        emit({ type: "glow", i: c.i, why: "help" });
+      }
+      return true;
+    };
 
     // one sky thing or landmark comes on at the window's right edge (x0) on its line when the way is clear; returns when the next
     // may come (road px)
@@ -653,7 +722,10 @@
 .wr-found > .wr-body { animation: wr-found .6s ease-out 1 forwards; }
 @keyframes wr-found { 0% { transform: none; opacity: 1; } 60% { transform: translateY(-14%) scale(1.12); opacity: 1; } 100% { transform: translateY(-20%) scale(0.9); opacity: 0; } }
 .wr-nudge > .wr-body { animation: wr-nudge .4s ease-in-out 1; }
-@media (prefers-reduced-motion: reduce) { .wr-nudge > .wr-body { animation: none; } }
+/* RIDE-10: the first-time help: the thing to find glows (the shared glow's colour, css/shared/focus.css) and bounces up and down */
+.wr-help > .wr-body { animation: wr-help .8s ease-in-out infinite; filter: drop-shadow(0 0 6px rgba(var(--glow-rgb, 224, 166, 58), 1)) drop-shadow(0 0 6px rgba(var(--glow-rgb, 224, 166, 58), 1)) drop-shadow(0 0 22px rgba(var(--glow-rgb, 224, 166, 58), 1)) drop-shadow(0 0 44px rgba(var(--glow-rgb, 224, 166, 58), .9)); }
+@keyframes wr-help { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12%); } }
+@media (prefers-reduced-motion: reduce) { .wr-nudge > .wr-body, .wr-help > .wr-body { animation: none; } }
 `;
   const styleOnce = (doc) => {
     if (doc.getElementById("wr-style")) return;
@@ -749,6 +821,20 @@
     return ms;
   };
 
+  /**
+   * The car frame's boxes as the screen uses them (pure; RIDE-08): with `flip` the picture is shown mirrored, so its opening,
+   * show box and mirror columns (art px) are mirrored across its width, and its edges' left-to-right gradients run the other way.
+   */
+  W.frameView = function (fr = {}) {
+    const w = fr.w || 1536;
+    const h = fr.h || 1024;
+    const flip = !!fr.flip;
+    const mx = (b) => (b && flip ? [w - b[2], b[1], w - b[0], b[3]] : b);
+    const [ml, mr] = fr.mirrorAt || [0, w];
+    const edges = fr.edges && flip ? Object.fromEntries(Object.entries(fr.edges).map(([k, v]) => [k, String(v).replace(/to right/g, "to left")])) : fr.edges || null;
+    return { w, h, flip, opening: mx(fr.opening || [0, 0, w, h]), show: fr.show ? mx(fr.show) : null, mirrorAt: flip ? [w - mr, w - ml] : [ml, mr], edges };
+  };
+
   W.mount = function (el, o) {
     const doc = root.document;
     styleOnce(doc);
@@ -800,6 +886,9 @@
     // edges), up and down by its top and bottom edges' colours; and on under the host's sidebar (o.under: an element behind it),
     // so the car's inside runs the whole width of the screen (never a plain column)
     const fr = view.frame || {};
+    // RIDE-08 (Zafar, 22 Oct: "it looks like you're reversing ... the way it's scrolling is good. I think the car needs to change"):
+    // the car's picture mirrored (data `flip`), so its front is the way the road goes by; its boxes (art px) mirrored with it
+    const FR = W.frameView(fr);
     const car = useArt && fr.art ? h("div", "wr-car", win) : null;
     const under = car && o.under ? h("div", "wr-car wr-car-under", o.under) : null;
     const frameEl = car ? null : h("div", "wr-frame", win);
@@ -820,7 +909,7 @@
       // picture's rows stretched, which would blow the picture up far past its resolution)
       [[P.t, "top"], [P.b, "bottom"]].forEach(([p, k]) => {
         p.im.style.display = "none";
-        if (fr.edges && fr.edges[k]) p.box.style.background = fr.edges[k];
+        if (FR.edges && FR.edges[k]) p.box.style.background = FR.edges[k];
       });
       return P;
     };
@@ -836,14 +925,17 @@
         Object.assign(p.box.style, { left: `${box[0]}px`, top: `${box[1]}px`, width: `${Math.max(0, box[2])}px`, height: `${Math.max(0, box[3])}px`, display: box[2] > 0.5 && box[3] > 0.5 ? "block" : "none" });
         Object.assign(p.im.style, im);
       };
-      set(P.main, [X, fy, fw, fh], { left: "0px", top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "none" });
+      // (flipped: the picture shown is the mirror image, so its mirrored sides are the picture as drawn)
+      const shown = FR.flip ? "scaleX(-1)" : "none";
+      const mirrored = FR.flip ? "none" : "scaleX(-1)";
+      set(P.main, [X, fy, fw, fh], { left: "0px", top: "0px", width: `${fw}px`, height: `${fh}px`, transform: shown });
       // sideways: the picture mirrored about the column `mirrorAt` px in from each outer edge (a flipped copy shows column c at
       // left + fw - c k: column ml lands on the left axis with the rest running on leftwards, column mr on the right one)
-      const [ml, mr] = fr.mirrorAt || [0, fr.w || 1536];
+      const [ml, mr] = FR.mirrorAt;
       const axL = X + ml * k;
       const axR = X + mr * k;
-      set(P.l, [0, fy, axL, fh], { left: `${axL - fw + ml * k}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
-      set(P.r, [axR, fy, HW - axR, fh], { left: `${mr * k - fw}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
+      set(P.l, [0, fy, axL, fh], { left: `${axL - fw + ml * k}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: mirrored });
+      set(P.r, [axR, fy, HW - axR, fh], { left: `${mr * k - fw}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: mirrored });
       // up and down: the gaps above and below the picture, its edges' colours carried on (the headliner, the door panel)
       set(P.t, [X, 0, fw, fy], {});
       set(P.b, [X, fy + fh, fw, H0 - (fy + fh)], {});
@@ -856,16 +948,16 @@
       const H0 = win.clientHeight || 1;
       let op = { l: 0, t: 0, r: W0, b: H0 };
       if (car) {
-        const fw0 = fr.w || 1536;
-        const fh0 = fr.h || 1024;
-        const o4 = fr.opening || [0, 0, fw0, fh0];
+        const fw0 = FR.w;
+        const fh0 = FR.h;
+        const o4 = FR.opening;
         let k;
         let fx;
         let fy;
-        if (fr.show) {
+        if (FR.show) {
           // the show box whole and as big as it can be, centred; the picture then covers what it can (never pulled in past an
           // edge it reaches); short of the bottom it sits on the bottom (the gap goes to the headliner above)
-          const [sx0, sy0, sx1, sy1] = fr.show;
+          const [sx0, sy0, sx1, sy1] = FR.show;
           k = Math.min(W0 / (sx1 - sx0), H0 / (sy1 - sy0));
           fx = W0 / 2 - ((sx0 + sx1) / 2) * k;
           fy = H0 / 2 - ((sy0 + sy1) / 2) * k;
@@ -1073,12 +1165,14 @@
           if (member) b.dataset.call = String(th.member);
           else delete b.dataset.call;
         }
-        const lit = !!(open && open.glow && open.namedTh === th);
-        if (lit !== !!e.lit) {
+        // the glow (after a wrong tap or the pause), or the first-time help's stronger glow and bounce (RIDE-10)
+        const lit = !!(open && open.glow && open.namedTh === th) ? (open.help ? "help" : "glow") : "";
+        if (lit !== (e.lit || "")) {
           e.lit = lit;
-          b.classList.toggle("wr-glow", lit);
+          b.classList.toggle("wr-glow", !!lit);
+          b.classList.toggle("wr-help", lit === "help");
           const body = b.firstChild;
-          if (body) body.classList.toggle("njg-pulse", lit);
+          if (body) body.classList.toggle("njg-pulse", lit === "glow");
         }
         if (th.got && !b.disabled) b.disabled = true;
       }
@@ -1130,6 +1224,28 @@
       },
       state: () => (model.done ? "end" : "ride"),
       result: () => model.result(),
+      /** the first-time help (RIDE-10): the thing asked for glows and bounces now -> its uid (null: nothing asked) */
+      help() {
+        if (!model.help()) return null;
+        handle();
+        const c = model.open();
+        return c && c.namedTh ? c.namedTh.uid : null;
+      },
+      /** a thing tapped as the child would tap it (the help's finger taps it for the child) */
+      tap(uid) {
+        const th = model.things.find((x) => x.uid === uid);
+        if (th) tap(th);
+      },
+      /** where a thing's middle will be (page px) after `ms` of real time at the road's speed now: the finger aims there */
+      ahead(uid, ms = 0) {
+        const e = els.get(uid);
+        const th = model.things.find((x) => x.uid === uid);
+        if (!e || !th) return null;
+        const r = e.el.getBoundingClientRect();
+        if (!r.width) return null;
+        const dx = model.vel() * model.speedOf(th) * ms * speed * fit.s;
+        return { x: r.left + r.width / 2 - dx, y: r.top + r.height * 0.55, w: r.width, h: r.height };
+      },
       /** what the ride wants now (window.njgTest): the named thing to tap once it has been asked for and shows */
       expect() {
         if (model.done) return { kind: "end" };

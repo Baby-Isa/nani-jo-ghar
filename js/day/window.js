@@ -1,17 +1,26 @@
 /*
  * The window ride on a trip day (js/shared/window-ride.js: the view out of the car's window, the road going by; data/day.json
  * window.rides). The shared frame: Nani's guide box at the top of the sidebar (her face = replay, her call written as she says
- * it, the bulb), the card of what we'll see under it (the things' words, each ticked when spotted), the play area the view out
- * of the window. The request pop-up opens first and reads the card out (decision 53), folds into the sidebar, then the car goes:
- * Nani asks "Where is the dog?" (an engine sentence) as each group of look-alikes comes into view, and the child taps it as it
- * passes; a missed one comes round again until it is found. Between the finds she says speed up or slow down (the level's
- * speeds; engine lines, grey to-record placeholders until Mum records them) and the whole road goes faster or slower.
- * Each thing spotted is a `saw` line in the day log (the evening book's "spotted" page).
+ * it, the bulb), the list of what to find under it, the play area the view out of the window.
+ *   RIDE-09 (Zafar, 22 Oct: "dive straight into this to save on screens"; "on the left there's the three items you have to find
+ *   ... the first item is an expanded tablet, basically like that item card ... when you complete it, it collapses up, just
+ *   leaves you with the word ... and the second item expands"): no order pop-up; the list on the left, the one to find now open
+ *   as the shared word card (js/shared/word-card.js: its picture, speaker, Kutchi and English, faded by the word's stage) and said
+ *   by Nani as it opens, the others as their word; found, it collapses to its word, ticked, and the next opens. Any of them may
+ *   be found in any order ("if you're quick and you're clever ... you can just click them all").
+ *   RIDE-10 (Zafar, 22 Oct): a new player's first ride shows the first find: the open card in a box (not dimmed, still), the
+ *   animal in the view glowing and bouncing, the shared kit's finger tapping it for the child; it ticks off and the next card
+ *   opens; the child does the rest.
+ * The car goes at once: Nani asks "Where is the dog?" (an engine sentence) as each group of look-alikes comes into view, and the
+ * child taps it as it passes; a missed one comes round again until it is found. Between the finds she says speed up or slow down
+ * (the level's speeds; engine lines, grey to-record placeholders until Mum records them) and the whole road goes faster or
+ * slower. Each thing spotted is a `saw` line in the day log (the evening book's "spotted" page).
  *
  *   await runWindow(el, api, day) -> the ride's result {right, helped, missed, calls, found, won, hints}
  *   ?ride=slow|fast (tests and the lab): Nani's speed held from the ride's start (she says it once, before the first thing)
  */
 import { paintSky } from "./sky.js";
+import "../shared/word-card.js"; // window.WordCard (a classic script, imported for its side effect)
 
 export async function runWindow(el, api, day) {
   const { data, url, core } = api;
@@ -67,7 +76,7 @@ export async function runWindow(el, api, day) {
   const guideEl = document.createElement("div");
   side.appendChild(guideEl);
   const cardBox = document.createElement("section");
-  cardBox.className = "day-card";
+  cardBox.className = "day-find";
   side.appendChild(cardBox);
 
   let current = -1;
@@ -85,10 +94,12 @@ export async function runWindow(el, api, day) {
           api.say(asks[current], { who: "nani", min: false }).then(() => btn.classList.remove("on"));
         },
         onBulb: () => {
-          if (current < 0 || bulbOn) return;
+          // (between groups: the one to find now, the open card's)
+          const at = current >= 0 ? current : openAt;
+          if (at < 0 || bulbOn) return;
           hints++;
           bulbOn = true;
-          guide.set(`<span class="bulb-en" data-bulb-en>${api.esc(asks[current].en)}</span>`);
+          guide.set(`<span class="bulb-en" data-bulb-en>${api.esc(asks[at].en)}</span>`);
           setTimeout(() => {
             bulbOn = false;
             showCall(current);
@@ -96,6 +107,16 @@ export async function runWindow(el, api, day) {
         },
       })
     : null;
+  // SH-96 (contract-25): the light bulb pulses once the child has done nothing for the guide's BULB_PULSE (15-20 s), as in every game;
+  // the slower ride (RIDE-03) leaves long stretches between finds
+  // (the page's idle clock: the door starts it, so the child's Ha! is its last action, never the page's load)
+  if (G && G.watch) G.watch();
+  const bulbT = G
+    ? setInterval(() => {
+        if (G.watch) G.watch();
+        G.pulseBulbs(G.idleMs() >= (G.BULB_PULSE || 17000));
+      }, 250)
+    : 0;
   const html = (ln) => {
     const n = api.render(ln, { cls: "day-inline" });
     return n.innerHTML;
@@ -103,21 +124,71 @@ export async function runWindow(el, api, day) {
   const showCall = (i) => {
     if (!guide || bulbOn) return;
     if (speaking && i < 0) return guide.set(html(speaking), { rec: !speaking.ok });
-    if (i < 0) guide.set("");
-    else guide.set(html(asks[i]), { rec: !asks[i].ok });
+    // nothing asked this moment: her box keeps the question of the one to find now (the open card's), never empty
+    const at = i >= 0 ? i : openAt;
+    if (at < 0 || !asks[at]) guide.set(head ? html(head) : "", { rec: !!head && !head.ok });
+    else guide.set(html(asks[at]), { rec: !asks[at].ok });
+    return;
   };
 
+  // ---- the list of what to find (RIDE-09): the one to find now open as the shared word card, the rest their word ----
   const done = plan.calls.map(() => false);
-  const fold = {};
-  const cardData = () => ({
-    person: null,
-    headline: head ? { html: html(head), rec: !head.ok } : null,
-    items: plan.calls.map((c, i) => ({ label: html(words[i]), count: 1, parts: [], done: done[i], key: i })),
-  });
   const closed = plan.card === "closed";
+  const WordCard = window.WordCard;
+  if (WordCard && WordCard.useCss) WordCard.useCss(url("css/shared/word-card.css"));
+  const progress = core && core.progress;
+  let openAt = -1; // the list's open card
+  let boxed = false; // the first-time help's box round it (RIDE-10)
+  // her ride lines in turn: each starts when the one before has been said (one at a time, never two open at once)
+  let turn = Promise.resolve();
+  const sayInTurn = (ln, o) => (turn = turn.then(() => api.say(ln, o)).catch(() => {}));
+  const sayWord = (i, el) => sayInTurn(words[i], { el, who: "nani", min: false });
   const drawCard = () => {
-    if (!window.OrderCard) return;
-    window.OrderCard.render(cardBox, [cardData()], { fold, closed, onPeek: () => hints++ });
+    const next = done.indexOf(false);
+    const opened = next !== openAt;
+    openAt = next;
+    cardBox.innerHTML = "";
+    plan.calls.forEach((c, i) => {
+      const t = ride.things[c.named] || {};
+      if (i === next && WordCard) {
+        const line = api.render(words[i], { cls: "day-wline" });
+        const card = WordCard.card(
+          cardBox,
+          {
+            id: meaningOf(t).kind || c.named,
+            kutchi: line,
+            english: words[i].en,
+            rec: !words[i].ok,
+            picture: t.art ? { src: url(t.art), fit: "contain" } : null,
+            say: () => sayWord(i, line),
+          },
+          // L3 (a closed card): the picture is not on the card, only the word (its free reveal is the card's own)
+          { progress, cls: "day-find-card", slots: closed ? { picture: false, english: false, kutchiText: true } : undefined }
+        );
+        card.dataset.find = String(i);
+        card.dataset.thing = c.named;
+        if (boxed) card.classList.add("day-help-box");
+        // as it opens Nani says its word (the first one after her "Look!")
+        if (opened) setTimeout(() => sayWord(i, line), 0);
+        return;
+      }
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = `day-find-row${done[i] ? " done" : ""}`;
+      row.dataset.find = String(i);
+      row.dataset.thing = c.named;
+      const w = api.render(words[i], { cls: "day-inline" });
+      row.appendChild(w);
+      if (done[i]) {
+        const tick = document.createElement("i");
+        tick.className = "day-find-tick";
+        tick.setAttribute("aria-hidden", "true");
+        row.appendChild(tick);
+      }
+      // a word on the list says itself when tapped
+      row.addEventListener("click", () => sayWord(i, w));
+      cardBox.appendChild(row);
+    });
   };
 
   // ---- the ride's own pictures, fetched while the pop-up reads the card (decision 68: only this ride's, at their drawn size) ----
@@ -134,30 +205,50 @@ export async function runWindow(el, api, day) {
     ),
   );
 
-  // ---- the request pop-up first: the card at full size, read out row by row, then into the sidebar ----
+  // ---- no order pop-up (RIDE-09): her "Look!" in the guide box, the list with its first card open, and the car goes ----
   const LC = window.Lifecycle;
-  if (LC && LC.request && window.OrderCard) {
-    await LC.request({
-      reason: "day:window",
-      host: play,
-      target: () => cardBox,
-      fast: api.speed > 2,
-      wait: (ms) => api.wait(ms),
-      build(box) {
-        box.appendChild(window.OrderCard.card(cardData(), { big: true, closed }));
-      },
-      read: async () => {
-        await api.wait(250);
-        if (head) await api.say(head, { who: "nani" });
-        for (const w of words) await api.say(w, { who: "nani" });
-      },
-      onStop: () => core.voice.stop("day"),
-    });
-  }
-  drawCard();
+  // RIDE-10: a new player's first ride shows the first find (the shared kit's finger; once per player)
+  const HELP_ID = "day/ride";
+  const O = await api.kit().catch(() => null);
+  let helping = !!O && api.helpDue(HELP_ID);
+  boxed = helping;
   // the view comes on whole (never a half-drawn road): wait for its pictures, at most a moment more
   await Promise.race([loaded, new Promise((r) => setTimeout(r, 2500))]);
+  if (head) {
+    if (guide) guide.set(html(head), { rec: !head.ok });
+    sayInTurn(head, { who: "nani" });
+  }
+  drawCard();
   if (LC && LC.stageStart) LC.stageStart("day:window");
+
+  // ---- RIDE-10: the first find shown: as Nani asks, the thing glows and bounces, then the kit's finger taps it for the child ----
+  let ride0 = null;
+  let showing = false;
+  const showFind = async (i) => {
+    if (showing || !O) return;
+    showing = true;
+    try {
+      await api.wait(700); // her call has begun
+      if (!helping || !ride0 || current !== i) return;
+      const uid = ride0.help();
+      if (uid == null) return;
+      if (LC && LC.note) LC.note("help", { during: "day:window", step: String(i) });
+      await api.wait(1200); // it glows and bounces a moment first
+      if (!helping || current !== i) return;
+      const MS = 1400;
+      const PRESS = 0.67; // the kit's demo reaches its point two thirds of the way through
+      const at = ride0.ahead(uid, MS * PRESS);
+      if (!at) return;
+      // the finger comes in from below and to the right of where the thing will be, taps it, lifts off
+      const start = { x: at.x + Math.min(90, at.w * 0.5), y: Math.min((window.innerHeight || 600) - 24, at.y + Math.min(110, at.h * 0.8)) };
+      const pressed = new Promise((ok) => setTimeout(ok, MS * PRESS));
+      O.demo(start, [{ x: at.x, y: at.y }], { hand: true, ms: MS, step: "ride-first" });
+      await pressed;
+      if (helping && current === i) ride0.tap(uid);
+    } finally {
+      showing = false;
+    }
+  };
 
   // ---- the ride ----
   api.test.state("day/window/ride");
@@ -176,7 +267,8 @@ export async function runWindow(el, api, day) {
         current = i;
         speaking = null;
         showCall(i);
-        api.say(asks[i], { who: "nani", min: false });
+        sayInTurn(asks[i], { who: "nani", min: false });
+        if (helping) showFind(i);
       },
       // Nani to the driver: faster or slower (the whole road eases to the new speed as she says it)
       saySpeed: (to, from) => {
@@ -184,7 +276,7 @@ export async function runWindow(el, api, day) {
         if (!ln) return;
         speaking = ln;
         if (current < 0) showCall(-1);
-        api.say(ln, { who: "nani" }).then(() => {
+        sayInTurn(ln, { who: "nani" }).then(() => {
           if (speaking === ln) speaking = null;
           if (current < 0) showCall(-1);
         });
@@ -201,6 +293,12 @@ export async function runWindow(el, api, day) {
       },
       onResult: (i, outcome) => {
         done[i] = true;
+        if (helping) {
+          // the first find shown (or found by the child first): the help is over, the box goes
+          helping = false;
+          boxed = false;
+          api.helped(HELP_ID);
+        }
         drawCard();
         if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("step-close", { step: String(i) });
         core.log.log({ arc: "day", errand: `day${day.id}:window`, type: "saw", what: meaningOf(ride.things[plan.calls[i].named]).kind });
@@ -212,11 +310,15 @@ export async function runWindow(el, api, day) {
       },
       onEnd: (res) => resolve(Object.assign(res, { hints: (res.hints || 0) + hints })),
     });
-    api.test.expect(() => r.expect());
+    // (while the help shows the first find, the ride wants nothing of the player: the finger does it)
+    api.test.expect(() => (helping ? { kind: "wait", help: true } : r.expect()));
     window.Day.rideApi = r;
+    ride0 = r;
     r.start();
   });
   window.Day.rideResult = result;
+  clearInterval(bulbT);
+  if (G) G.pulseBulbs(false);
   if (LC && LC.stageEnd) LC.stageEnd("day:window");
   api.test.state("day/window-end");
   api.test.expect(() => ({ kind: "end" }));

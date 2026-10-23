@@ -155,19 +155,23 @@ test("the day view and the lab's overrides", () => {
   assert.deepEqual(clinic.stages.map((s) => s.activity || s.lines || s.stage), ["clinic", "clinic", "book"]);
 });
 
-test("the door's house: the roofline a third down and the house across the width at every test size", () => {
+test("the door's house: the camera a little closer (DOOR-06), the house across the width and the door in view at every test size", () => {
   const H = DAYS.door.house;
   assert.ok(existsSync(join(ROOT, H.art)));
+  assert.ok(H.zoom >= 1.05 && H.zoom <= 1.25, "a little closer");
+  assert.ok(DAYS.door.nani.height >= 0.58 && DAYS.door.nani.height <= 0.62, "Nani about 20% bigger than half the height");
   // the play area at each test size (the sidebar takes about a fifth: phone 200-260 px, laptop up to 360, tablet up to 300)
-  const sizes = [[800, 360, 200], [844, 390, 200], [1024, 768, 256], [1180, 820, 295], [1280, 800, 243], [1366, 768, 260], [1366, 1024, 300], [1440, 900, 274]];
+  const sizes = [[800, 360, 200], [844, 390, 200], [915, 412, 200], [1024, 768, 256], [1180, 820, 295], [1280, 800, 243], [1366, 768, 260], [1366, 1024, 300], [1440, 900, 274], [1480, 924, 280]];
   for (const [w, h, side] of sizes) {
     const g = houseFit(H, w - side, h);
-    const roofY = g.top + H.roofline * g.s;
-    assert.ok(Math.abs(roofY - h / 3) < 1, `${w}x${h}: roofline at ${roofY.toFixed(1)}`);
+    const plain = houseFit(Object.assign({}, H, { zoom: 1, footAt: null }), w - side, h);
+    assert.ok(g.s > plain.s * 1.05, `${w}x${h}: closer than the plain fit`);
     assert.ok(g.left <= 0.5 && g.left + H.w * g.s >= w - side - 0.5, `${w}x${h}: the house covers the width`);
     assert.ok(g.top + H.h * g.s >= h - 0.5, `${w}x${h}: the house reaches the bottom`);
-    // Nani at half the height, her feet at the foot of the steps, her head on screen
-    assert.ok(g.foot.y - h * DAYS.door.nani.height > 0, `${w}x${h}: her head on screen`);
+    // the front door (art rows about 400 to 650) in view, under the sky
+    assert.ok(g.top + 400 * g.s > 0 && g.top + 650 * g.s < h, `${w}x${h}: the door in view`);
+    // Nani at 0.6 of the height, her feet at the foot of the steps, her head on screen with room above it for the thought
+    assert.ok(g.foot.y - h * DAYS.door.nani.height > h * 0.12, `${w}x${h}: her head on screen, room above it`);
     assert.ok(g.foot.y < h, `${w}x${h}: her feet on screen`);
   }
 });

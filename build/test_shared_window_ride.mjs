@@ -89,14 +89,14 @@ const crossing = (hold, view) => {
   return null;
 };
 
-test("three speeds: a thing crosses the window in about 9, 6 and 3.5 s (never under 3 s), the same on a phone and a tablet", () => {
+test("three speeds (RIDE-03, half as slow again): a thing crosses the window in about 13.5, 9 and 5 s (never under 4.5 s), the same on a phone and a tablet", () => {
   for (const view of Object.values(VIEWS)) {
     const slow = crossing("slow", view);
     const normal = crossing("normal", view);
     const fast = crossing("fast", view);
-    assert.ok(slow.ms >= 8000 && slow.ms <= 10500, `slow ${slow.ms} ms`);
-    assert.ok(normal.ms >= 5300 && normal.ms <= 7000, `normal ${normal.ms} ms`);
-    assert.ok(fast.ms >= 3000 && fast.ms <= 4200, `fast ${fast.ms} ms`);
+    assert.ok(slow.ms >= 12000 && slow.ms <= 15500, `slow ${slow.ms} ms`);
+    assert.ok(normal.ms >= 8000 && normal.ms <= 10500, `normal ${normal.ms} ms`);
+    assert.ok(fast.ms >= 4500 && fast.ms <= 6000, `fast ${fast.ms} ms`);
   }
 });
 
@@ -381,4 +381,64 @@ test("RIDE-07: never asked once half behind the window's left pillar (the call e
     }
     assert.ok(m.done, `seed ${s}: the ride ends`);
   }
+});
+
+// ---- Sprint 12 (s12-w1b) ----
+test("RIDE-09: any thing on the card, tapped wherever it shows, is found in any order; the groups go on for the rest; wrong taps still help", () => {
+  let tried = 0;
+  for (let s = 1; s <= 400 && tried < 12; s++) {
+    const p = W.plan(ride, 1, seeded(s), { callable });
+    // a round whose first group holds the second call's thing as a look-alike
+    if (!p.calls[0].group.includes(p.calls[1].named)) continue;
+    tried++;
+    const m = W.model(ride, p, { rng: seeded(s), view: VIEWS.tablet });
+    while (!m.open() && m.t < 60000) m.step(20);
+    const c0 = m.open();
+    assert.ok(c0 && c0.i === 0, `seed ${s}: the first call is asked`);
+    m.drain();
+    const other = c0.members.find((o) => o.id === p.calls[1].named);
+    assert.ok(m.tap(other.uid).ok, `seed ${s}: the second thing, out of turn, is found`);
+    const ev = m.drain().find((e) => e.type === "found");
+    assert.equal(ev.i, 1);
+    assert.equal(ev.res, "right", "found first time, unhelped");
+    assert.equal(m.open(), c0, "the first call is still asked");
+    m.tap(c0.namedTh.uid);
+    // the next group is the third call's: the second is passed over
+    assert.equal(m.current().i, 2, `seed ${s}: the found one is skipped`);
+    while (!m.done && m.t < 5 * 60000) {
+      m.step(20);
+      const c = m.open();
+      if (c) m.tap(c.namedTh.uid);
+      m.drain();
+    }
+    assert.ok(m.done, `seed ${s}: the ride ends`);
+    const r = m.result();
+    assert.equal(r.found, 3);
+    assert.equal(r.right, 3);
+  }
+  assert.ok(tried >= 5, "rounds with a card thing among the first group's look-alikes");
+});
+
+test("RIDE-03: the first groups of a level are things that look nothing alike (no hen beside a bird)", () => {
+  const look = W.lookOf(ride);
+  for (let s = 1; s <= 300; s++)
+    for (const L of [1, 2, 3]) {
+      const p = W.plan(ride, L, seeded(s), { callable });
+      for (let i = 0; i < p.distinct; i++) {
+        const g = p.calls[i].group;
+        assert.equal(new Set(g.map(look)).size, g.length, `L${L} seed ${s} call ${i + 1}: ${g.join(", ")}`);
+      }
+    }
+  assert.ok(W.levelOf(ride, 1).distinct >= 2, "level 1's first two groups");
+});
+
+test("RIDE-08: the car is shown mirrored, its opening and show box mirrored with it (the road still goes by right to left)", () => {
+  const fr = ride.view.frame;
+  assert.equal(fr.flip, true);
+  const v = W.frameView(fr);
+  assert.deepEqual(v.opening, [fr.w - fr.opening[2], fr.opening[1], fr.w - fr.opening[0], fr.opening[3]]);
+  assert.deepEqual(v.show, [fr.w - fr.show[2], fr.show[1], fr.w - fr.show[0], fr.show[3]]);
+  assert.deepEqual(v.mirrorAt, [fr.w - fr.mirrorAt[1], fr.w - fr.mirrorAt[0]]);
+  assert.ok(!/to right/.test(v.edges.top) && /to left/.test(v.edges.top));
+  assert.deepEqual(W.frameView(Object.assign({}, fr, { flip: false })).opening, fr.opening, "unflipped: as drawn");
 });

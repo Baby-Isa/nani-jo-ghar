@@ -1429,6 +1429,44 @@
    "note": "daar: every phase has its help (the shots, one per ghost); the machine is the row's own check, build/check_onboard.mjs (s08 w8A: a count at every moment failed on a second 'visible' moment 0.1 s after the last, the finger's one pass already over, and on the 300 ms delay the same)",
    "delay": 0,
    "max": 14
+  },
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.njg-spot.on",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.njg-spot.on>=1"
+   ],
+   "note": "the door, a new player: the shared kit's help on Ha! (the dim, the box round the pill, its glow and bounce, the kit's finger tapping it)"
+  },
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.day-help-box",
+   "after": null,
+   "capture": [
+    "strip:.day-root:12x600"
+   ],
+   "expect": null,
+   "note": "the ride, a new player: RIDE-10's first find shown (the card boxed, the thing glowing and bouncing, the finger tapping it, the tick, the next card)"
   }
  ],
  "SH-20": [
@@ -1782,25 +1820,25 @@
    "expect": null,
    "note": "the line table: guide box says the step, the card says the order (every Cook station)"
   },
- {
-  "flow": "cook:recipe:daal",
-  "path": "fair",
-  "level": 1,
-  "sizes": [
-   "1366x768"
-  ],
-  "profile": "seen",
-  "want": null,
-  "at": "every:life:step-open",
-  "after": null,
-  "capture": [
-   "dom:.njg-guide",
-   "dom:#mission .oc-card"
-  ],
-  "expect": null,
-  "note": "Zafar, 21 Oct: the guide says the step from the moment it opens (never empty between step calls); the card keeps the order",
-  "delay": 400
- },
+  {
+   "flow": "cook:recipe:daal",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:step-open",
+   "after": null,
+   "capture": [
+    "dom:.njg-guide",
+    "dom:#mission .oc-card"
+   ],
+   "expect": null,
+   "note": "Zafar, 21 Oct: the guide says the step from the moment it opens (never empty between step calls); the card keeps the order",
+   "delay": 400
+  },
   {
    "flow": "clinic:patient",
    "path": "fair",
@@ -1819,25 +1857,25 @@
    "expect": null,
    "note": "the same rule in every clinic stage"
   },
- {
-  "flow": "clinic:morning@L2",
-  "path": "fair",
-  "level": 2,
-  "sizes": [
-   "1366x768"
-  ],
-  "profile": "seen",
-  "want": null,
-  "at": "every:rec:stage",
-  "after": null,
-  "capture": [
-   "dom:.cl-side .njg-guide",
-   "dom:.cl-side .oc-card"
-  ],
-  "expect": null,
-  "note": "Zafar, 21 Oct: from level 2 too the guide box says the step now in every stage, the card keeps the order (no step line on the card)",
-  "delay": 1500
- }
+  {
+   "flow": "clinic:morning@L2",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:rec:stage",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .njg-guide",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "Zafar, 21 Oct: from level 2 too the guide box says the step now in every stage, the card keeps the order (no step line on the card)",
+   "delay": 1500
+  }
  ],
  "SH-64": [
   {
@@ -2091,6 +2129,25 @@
     "pass"
    ],
    "note": "story day 2's greeting bubble at 800x360 (the tightest phone): above its speaker's head, not clipped"
+  },
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-thought.in",
+   "after": null,
+   "capture": [
+    "crop:.day-play"
+   ],
+   "expect": null,
+   "note": "the door: the thought bubble's dots rise from the top of Nani's head (never her shoulder), the bubble up and to the side of her head"
   }
  ],
  "SH-23": [
@@ -6855,30 +6912,30 @@
   }
  ],
  "CLN-82": [
- {
-  "flow": "clinic:heal-cut",
-  "path": "fair",
-  "level": [
-   2,
-   3
-  ],
-  "sizes": [
-   "1366x768"
-  ],
-  "profile": "seen",
-  "want": null,
-  "at": "visible:.cl-row.next-up",
-  "after": null,
-  "capture": [
-   "crop:.hs-tools",
-   "dom:.cl-side .oc-card"
-  ],
-  "expect": [
-   "count:.hs-tool.used.sel=0"
-  ],
-  "note": "the judge, 21 Oct: once the dabs are done the next row lights, and the used jug and cloth keep no picked ring (the plaster tiles' glow after the pause: the sandbox player never pauses here, so it is the reviewer's eye on the knee's path, the same code)",
-  "delay": 3500
- },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.cl-row.next-up",
+   "after": null,
+   "capture": [
+    "crop:.hs-tools",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "count:.hs-tool.used.sel=0"
+   ],
+   "note": "the judge, 21 Oct: once the dabs are done the next row lights, and the used jug and cloth keep no picked ring (the plaster tiles' glow after the pause: the sandbox player never pauses here, so it is the reviewer's eye on the knee's path, the same code)",
+   "delay": 3500
+  },
   {
    "flow": "clinic:heal-cut",
    "path": "fair",
@@ -17762,46 +17819,46 @@
    "path": "speed-slow",
    "level": 1,
    "sizes": [
-    "800x360"
+    "915x412"
    ],
    "profile": "seen",
    "want": null,
    "at": "visible:.wr-member",
    "after": null,
    "capture": [
-    "trace:.wr-member:12000"
+    "trace:.wr-member:17000"
    ],
    "expect": [
-    "lastsMs:.wr-member>=8000"
+    "lastsMs:.wr-member>=12000"
    ],
-   "note": "slow: one thing crosses the window in about 9 s"
+   "note": "slow: one thing crosses the window in about 13.5 s (RIDE-03, Zafar 22 Oct: about 50% slower)"
   },
   {
    "flow": "day:window",
    "path": "speed-fast",
    "level": 1,
    "sizes": [
-    "800x360"
+    "915x412"
    ],
    "profile": "seen",
    "want": null,
    "at": "visible:.wr-member",
    "after": null,
    "capture": [
-    "trace:.wr-member:6000"
+    "trace:.wr-member:8000"
    ],
    "expect": [
-    "lastsMs:.wr-member>=3000",
-    "lastsMs:.wr-member<=4500"
+    "lastsMs:.wr-member>=4500",
+    "lastsMs:.wr-member<=6200"
    ],
-   "note": "fast: one thing crosses in about 3.5 s, never less than 3 s"
+   "note": "fast: one thing crosses in about 5 s, never less than 4.5 s"
   },
   {
    "flow": "day:window",
    "path": "fair",
    "level": 1,
    "sizes": [
-    "800x360"
+    "915x412"
    ],
    "profile": "seen",
    "want": null,
@@ -17814,6 +17871,25 @@
     "!textMatches:(?i)stop the car"
    ],
    "note": "Nani says speed up and slow down during the ride, and the car never stops"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_shared_window_ride.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the three crossings (13.5, 9, 5 s) on the model; the first groups of each level are things that look nothing alike (no hen beside a bird); the leak bot (node build/leak_window_ride.mjs) still passes"
   }
  ],
  "RIDE-04": [
@@ -18443,7 +18519,8 @@
    ],
    "expect": [
     "count:.top-row .top=4",
-    "noClip:.top-row", "count:.game>=8"
+    "noClip:.top-row",
+    "count:.game>=8"
    ],
    "note": "labs.html: the top row of four (New player, Walkthrough, the house, the day builder) above the Play any game grid, nothing clipped (the 1480x924 pictures come from build/s10a_shoot.mjs labs)"
   },
@@ -18905,6 +18982,309 @@
     "pass"
    ],
    "note": "500 level 1 orders of every recipe: none holds a 'no' (coded in the order maker, js/cook/recipes.js make)"
+  }
+ ],
+ "DOOR-05": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "zoom2:.day-play"
+   ],
+   "expect": [
+    "count:.day-nani-wrap .day-contact=0"
+   ],
+   "note": "Nani stands on the ground: no grey pill under her feet"
+  }
+ ],
+ "DOOR-06": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noClip:.day-lines",
+    "noOverlap:.day-nani,.day-side"
+   ],
+   "note": "Nani about 20% bigger (0.6 of the height), the camera a little closer, the front door still in view, the sky above her head"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_day_runner.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the camera at every test size: the house across the width and to the bottom, the door in view, her head on screen with room above it"
+  }
+ ],
+ "DOOR-07": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "crop:.day-side",
+    "dom:.day-side",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the left bar's two cards in the shared word card's layout (picture, speaker, Kutchi, English while supported), single words: the weather card says sun (grey italic to record: no Kutchi for it yet), not 'The sun's out!'"
+  }
+ ],
+ "DOOR-08": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-lines .day-line[data-kind=come]",
+   "after": null,
+   "capture": [
+    "crop:.day-play",
+    "voice"
+   ],
+   "expect": null,
+   "note": "after Ha!: Nani says come (the engine's sentence; device-spoken until Mum records it), glad, in her welcome pose until the art run brings a come-here wave"
+  }
+ ],
+ "RIDE-08": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-band",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the car mirrored: the front seat (the seat-belt pillar) to the right, ahead as the road goes by right to left; the door handle at the front of the door"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_shared_window_ride.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the frame's opening, show box and mirror columns mirrored with the picture (frameView)"
+  }
+ ],
+ "RIDE-09": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-find-card",
+   "after": null,
+   "capture": [
+    "strip:.day-root:14x900",
+    "voice"
+   ],
+   "expect": null,
+   "note": "no order pop-up: the list on the left, the open card (the shared word card) said by Nani; found, it collapses to its word, ticked, and the next opens"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_shared_window_ride.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "any thing on the card, tapped wherever it shows, is found out of turn; the groups go on for the rest; the leak bot still passes"
+  }
+ ],
+ "RIDE-10": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.day-help-box",
+   "after": null,
+   "capture": [
+    "strip:.day-root:14x500"
+   ],
+   "expect": null,
+   "note": "a new player's first ride: the first card in a box (not dimmed, still), the animal glowing and bouncing, the kit's finger tapping it, the tick, the next card open; the child does the rest"
+  }
+ ],
+ "LAB-06": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_day_stages.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "a labs launch with the Day builder toggle on (labs.html sends day.html?bookend=<its link>) is the door, the game, the book; a link it can't play as a stage launches as it is (the labs frame with both toggles: after labs.html gets the switch at merge)"
+  }
+ ],
+ "LAB-07": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_day_stages.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "a half-played builder's day, then day.html with no stages, opens the child's own (farm) day from its door, never the builder's; a hand-off's way back (?resume=1) still resumes it"
+  }
+ ],
+ "LNG-18": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the door: every line has a sound: a family clip, or the device voice on the test site (a line the engine can't build says its English)"
+  },
+  {
+   "flow": "day:book",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the book: every line has a sound (the device voice for what is still to record)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_day_stages.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "a line the engine can't build: the device voice on the test path, nothing in the store build"
   }
  ]
 }
