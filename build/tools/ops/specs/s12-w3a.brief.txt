@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  s12-w3a: the book and the door's art (Sprint 12, wave 3)
+MODEL AND EFFORT:     Opus, high effort (the book's games are design and visual work; wiring art is visual)
+COST ESTIMATE:        about $35-45
+HARD STOP:            24 Oct 2026, 18:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w3a.context.md (838 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points F1-F13, D6, D7, D9; Zafar's words and causes)
+     docs/sprints/S12-polish.md (decisions 2 and 9: the book's games, spaced words, Say it)
+     build/reports/s12-research-cefr-and-book.md (the recommendation) and build/reports/s12-answers.md section 10
+     build/reports/s12-w1a.md and s12-w1b.md (the help kit, the door)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/day/book.js, js/day/book-play.js, js/day/book-games.js and the book's CSS in css/day.css
+  - js/day/door.js and data/day.json (the door's sun and farm pictures, Nani's come-here pose only)
+  - assets/day/ (new cuts from sources/art/s12: sn, fm, pg1-pg4, nw)
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w3a.md
+READ-ONLY (never edit):
+  - js/cook/**, js/core/**, js/clinic/** (W3-B)
+  - js/shared/** (use the kit, word card and speech APIs as they are)
+  - CLAUDE.md and docs/
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. BOOK-10: the evening opens on the book (no zoom to Nani's face first).
+     Accept: a frame of the opening at 1366x768
+  2. BOOK-11, BOOK-12 (Find it): the item's word card shown big (picture, Kutchi, English while supported, Nani says it), it shrinks to a quarter, 3-4 other plain picture cards are placed one by one in a grid, a 2 s shuffle, then Nani asks 'kan kida ai?' and repeats it every few seconds; the first time the help kit shows the tap; later rounds skip the intro card; decoys are words the child has already learned.
+     Accept: a filmstrip at 1366x768 and frames at 1480x924 and 915x412
+  3. BOOK-13 (Name it, rebuilt, with Say it first): the picture appears and Nani asks; the mic (js/shared/speech.js, Speech.listen with the choices) listens quietly first; after a try or a tap the three Kutchi words appear as speaker buttons that really play (no queuing behind a line, no dropped second tap); the child picks one; a miss is a gentle shrug.
+     Accept: a filmstrip at 1366x768; a sandbox step where each speaker plays its own word
+  4. BOOK-14 (Stick in the photo): onboarded the first time (the help kit shows the drag); 2-3 pictures as word cards (Kutchi, English fading by stage, speaker); the sentence in Kutchi with small English under while supported; short sentences; 'Then we use' folds into it.
+     Accept: a filmstrip of the first-time drag at 1366x768; frames at the three sizes
+  5. Spaced words (Zafar's decision 9): the book's word pool draws from words met 1, 3 and 7 days ago as well as today (from the play log or save), so old words come back.
+     Accept: a unit test with a save spanning 8 days
+  6. ART-27: the page turn uses sources/art/s12/pg1-pg4 (in that order; pg3 is already registered to pg1's framing) between the book's pages.
+     Accept: a filmstrip of a page turn at 1366x768
+  7. ART-24, ART-25, DOOR-08: the door's sun and farm pictures from sources/art/s12/sn-door-sun-v1.png and fm-door-farm-v1.png (as word-card pictures); Nani's come-here pose from nw-nani-come-here-v1.png (cut her from the flat grey; the open-palm then the beckon) after 'yes'.
+     Accept: frames of the door's left bar and the come-here at 1366x768 and 915x412
+
+REGRESSION ROWS TO RECHECK (0 rows of the fix list and its done archive; * = open or reopened):
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow day:book,day:door,day:full-farm,day:full-kitchen --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w3a-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w3a` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8855.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8855; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w3a.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

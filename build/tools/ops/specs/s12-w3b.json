@@ -1,0 +1,34 @@
+{
+  "name": "s12-w3b: the pour, the served moment, loading (Sprint 12, wave 3)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the pour's path and the served moment are visual judgement; loading is careful plumbing",
+  "cost": "about $35-45",
+  "stop": "24 Oct 2026, 18:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "specsByBuilder": true,
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points A1, A7, B9, B10; Zafar's words and causes)",
+    "docs/process/regressions.md rows CHAI-26, CHAI-08, SH-121, CK-48 (Zafar's 23 Oct words on the mirrored pan)",
+    "docs/design-language/art-plans/s12-art-plan.md (the pour frames: pt1 milky, pt2 black, gl the glasses)",
+    "build/reports/s12-w1a.md (the help kit)"
+  ],
+  "owns": [
+    "js/cook/stations/chai-tray.js and data/stations/chai-tray.json",
+    "js/cook/flow.js (the served moment), js/cook/boot.js, js/core/index.js, js/clinic/lang.js (loading)",
+    "assets/cook/ (new cuts from sources/art/s12: pt1, pt2, gl)",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w3b.md"
+  ],
+  "readOnly": ["js/day/** (W3-A)", "js/shared/** other than adding a small served-card helper if needed (say so)", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "CHAI-26, CHAI-08 (Zafar, 23 Oct): cut the six pour frames from sources/art/s12/pt1-chai-pan-tip-topdown-v1.png (milky) and pt2-...-black-v1.png (black tea), trimming the drip below the spout; MIRROR the pan (the hob pan and the frames): the glasses stay in the tray right of the hob; the pan lifts off the burner and is carried spout-first to the right, stopping up-left of the target glass, then the six tip frames play (the spout dips down-right into the glass) and the game's stream runs from the spout; for the right column it hangs over the left column, never past the tray's edge. The pan sits centred on its burner; the glass centred in its holder (gl-chai-glasses-top-v1.png if plainly better than the current glass, else keep it).", "accept": "a pour filmstrip (8 frames) at 1366x768 and 915x412, for a left- and a right-column glass" },
+    { "do": "SH-121 (the served moment, every Cook station): when the dish is served it sits on the tray in front of the customer; the customer says the dish's word ('aah, chai'); the dish's picture card comes up top-left from him, slides into the left bar and is stamped 'served' with a soft sound; he says thank you (baraba) and goes. Unrecorded lines in grey italic, device-spoken on the test path only.", "accept": "a filmstrip at 1366x768 for chai and one more station; frames at 915x412" },
+    { "do": "CK-48: loading: each data file loaded once (family-audio.json is loaded twice for chai; the language files twice in the clinic) and independent loads in parallel; the game's first screen sooner.", "accept": "the time to the left bar on chai and the eye test, before and after, at 1366x768 (numbers in the report)" }
+  ],
+  "flows": ["cook:chai-tray", "lab:cook/chai-tray", "cook:fetch", "cook:samosa", "clinic:heal-eye"],
+  "port": 8856,
+  "report": "s12-w3b",
+  "publish": false
+}

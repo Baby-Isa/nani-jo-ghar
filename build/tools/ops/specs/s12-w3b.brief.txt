@@ -1,0 +1,66 @@
+SESSION NAME / MODE:  s12-w3b: the pour, the served moment, loading (Sprint 12, wave 3)
+MODEL AND EFFORT:     Opus, high effort (the pour's path and the served moment are visual judgement; loading is careful plumbing)
+COST ESTIMATE:        about $35-45
+HARD STOP:            24 Oct 2026, 18:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/exciting-pasteur-usf3d2. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s12-w3b.context.md (838 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/s12-polish-2026-10-22.md (points A1, A7, B9, B10; Zafar's words and causes)
+     docs/process/regressions.md rows CHAI-26, CHAI-08, SH-121, CK-48 (Zafar's 23 Oct words on the mirrored pan)
+     docs/design-language/art-plans/s12-art-plan.md (the pour frames: pt1 milky, pt2 black, gl the glasses)
+     build/reports/s12-w1a.md (the help kit)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/chai-tray.js and data/stations/chai-tray.json
+  - js/cook/flow.js (the served moment), js/cook/boot.js, js/core/index.js, js/clinic/lang.js (loading)
+  - assets/cook/ (new cuts from sources/art/s12: pt1, pt2, gl)
+  - build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)
+  - build/reports/s12-w3b.md
+READ-ONLY (never edit):
+  - js/day/** (W3-A)
+  - js/shared/** other than adding a small served-card helper if needed (say so)
+  - CLAUDE.md and docs/
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. CHAI-26, CHAI-08 (Zafar, 23 Oct): cut the six pour frames from sources/art/s12/pt1-chai-pan-tip-topdown-v1.png (milky) and pt2-...-black-v1.png (black tea), trimming the drip below the spout; MIRROR the pan (the hob pan and the frames): the glasses stay in the tray right of the hob; the pan lifts off the burner and is carried spout-first to the right, stopping up-left of the target glass, then the six tip frames play (the spout dips down-right into the glass) and the game's stream runs from the spout; for the right column it hangs over the left column, never past the tray's edge. The pan sits centred on its burner; the glass centred in its holder (gl-chai-glasses-top-v1.png if plainly better than the current glass, else keep it).
+     Accept: a pour filmstrip (8 frames) at 1366x768 and 915x412, for a left- and a right-column glass
+  2. SH-121 (the served moment, every Cook station): when the dish is served it sits on the tray in front of the customer; the customer says the dish's word ('aah, chai'); the dish's picture card comes up top-left from him, slides into the left bar and is stamped 'served' with a soft sound; he says thank you (baraba) and goes. Unrecorded lines in grey italic, device-spoken on the test path only.
+     Accept: a filmstrip at 1366x768 for chai and one more station; frames at 915x412
+  3. CK-48: loading: each data file loaded once (family-audio.json is loaded twice for chai; the language files twice in the clinic) and independent loads in parallel; the game's first screen sooner.
+     Accept: the time to the left bar on chai and the eye test, before and after, at 1366x768 (numbers in the report)
+
+REGRESSION ROWS TO RECHECK (134 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  lab:cook/chai-tray (25): CHAI-26*, CHAI-19*, CHAI-08*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01*, PAN-13*, PAN-10*, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-14, PAN-15, PAN-17
+  cook:samosa (28): SAM-01, SAM-02, SAM-03, SAM-04*, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, SAM-25, SAM-21, SAM-22, SAM-24, CK-08, CK-09, CK-29, CK-43, CK-27
+  clinic:heal-eye (65): CLN-87*, CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,lab:cook/chai-tray,cook:fetch,cook:samosa,clinic:heal-eye --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s12-w3b-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s12-w3b` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8856.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8856; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s12-w3b.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

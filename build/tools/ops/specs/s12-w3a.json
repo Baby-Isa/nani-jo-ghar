@@ -1,0 +1,38 @@
+{
+  "name": "s12-w3a: the book and the door's art (Sprint 12, wave 3)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the book's games are design and visual work; wiring art is visual",
+  "cost": "about $35-45",
+  "stop": "24 Oct 2026, 18:00 UK",
+  "branch": "claude/exciting-pasteur-usf3d2",
+  "specsByBuilder": true,
+  "read": [
+    "docs/feedback/s12-polish-2026-10-22.md (points F1-F13, D6, D7, D9; Zafar's words and causes)",
+    "docs/sprints/S12-polish.md (decisions 2 and 9: the book's games, spaced words, Say it)",
+    "build/reports/s12-research-cefr-and-book.md (the recommendation) and build/reports/s12-answers.md section 10",
+    "build/reports/s12-w1a.md and s12-w1b.md (the help kit, the door)"
+  ],
+  "owns": [
+    "js/day/book.js, js/day/book-play.js, js/day/book-games.js and the book's CSS in css/day.css",
+    "js/day/door.js and data/day.json (the door's sun and farm pictures, Nani's come-here pose only)",
+    "assets/day/ (new cuts from sources/art/s12: sn, fm, pg1-pg4, nw)",
+    "build/sandbox/data/evidence.json (only the entries for this brief's own rows; add, never rewrite others)",
+    "build/reports/s12-w3a.md"
+  ],
+  "readOnly": ["js/cook/**, js/core/**, js/clinic/** (W3-B)", "js/shared/** (use the kit, word card and speech APIs as they are)", "CLAUDE.md and docs/"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "BOOK-10: the evening opens on the book (no zoom to Nani's face first).", "accept": "a frame of the opening at 1366x768" },
+    { "do": "BOOK-11, BOOK-12 (Find it): the item's word card shown big (picture, Kutchi, English while supported, Nani says it), it shrinks to a quarter, 3-4 other plain picture cards are placed one by one in a grid, a 2 s shuffle, then Nani asks 'kan kida ai?' and repeats it every few seconds; the first time the help kit shows the tap; later rounds skip the intro card; decoys are words the child has already learned.", "accept": "a filmstrip at 1366x768 and frames at 1480x924 and 915x412" },
+    { "do": "BOOK-13 (Name it, rebuilt, with Say it first): the picture appears and Nani asks; the mic (js/shared/speech.js, Speech.listen with the choices) listens quietly first; after a try or a tap the three Kutchi words appear as speaker buttons that really play (no queuing behind a line, no dropped second tap); the child picks one; a miss is a gentle shrug.", "accept": "a filmstrip at 1366x768; a sandbox step where each speaker plays its own word" },
+    { "do": "BOOK-14 (Stick in the photo): onboarded the first time (the help kit shows the drag); 2-3 pictures as word cards (Kutchi, English fading by stage, speaker); the sentence in Kutchi with small English under while supported; short sentences; 'Then we use' folds into it.", "accept": "a filmstrip of the first-time drag at 1366x768; frames at the three sizes" },
+    { "do": "Spaced words (Zafar's decision 9): the book's word pool draws from words met 1, 3 and 7 days ago as well as today (from the play log or save), so old words come back.", "accept": "a unit test with a save spanning 8 days" },
+    { "do": "ART-27: the page turn uses sources/art/s12/pg1-pg4 (in that order; pg3 is already registered to pg1's framing) between the book's pages.", "accept": "a filmstrip of a page turn at 1366x768" },
+    { "do": "ART-24, ART-25, DOOR-08: the door's sun and farm pictures from sources/art/s12/sn-door-sun-v1.png and fm-door-farm-v1.png (as word-card pictures); Nani's come-here pose from nw-nani-come-here-v1.png (cut her from the flat grey; the open-palm then the beckon) after 'yes'.", "accept": "frames of the door's left bar and the come-here at 1366x768 and 915x412" }
+  ],
+  "flows": ["day:book", "day:door", "day:full-farm", "day:full-kitchen"],
+  "port": 8855,
+  "report": "s12-w3a",
+  "publish": false
+}
