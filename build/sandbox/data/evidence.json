@@ -1467,6 +1467,25 @@
    ],
    "expect": null,
    "note": "the ride, a new player: RIDE-10's first find shown (the card boxed, the thing glowing and bouncing, the finger tapping it, the tick, the next card)"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:visible:.njg-spot",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the eye test's taught first round (fresh profile, level 1): the help shows at once on every card (haa, na and the mic in one box), the drops step and the redrop, not only the demo card",
+   "delay": 600,
+   "max": 12
   }
  ],
  "SH-20": [
@@ -15434,6 +15453,25 @@
    ],
    "expect": null,
    "note": "are the four cuts Zafar named (eye bottle, foot toes, tweezers, thermometer) listed as findings, i.e. does the pixel check see them?"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:python3 build/tools/art/artpixels.py assets/clinic/s12/lemon-whole-s12.webp"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the eye test's new lemon (s12) passes the pixel check: no key colour, no cast shadow, a thin rim"
   }
  ],
  "SH-116": [
@@ -19285,6 +19323,210 @@
     "pass"
    ],
    "note": "a line the engine can't build: the device voice on the test path, nothing in the store build"
+  }
+ ],
+ "CLN-199": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:12x700",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the eye test opens with no pop-up: the room's wide shot, the doctor standing beside her on her bench; he says three set sentences in his bubble (the eye isn't right; we will heal the eye; we'll use this medicine: each its English in grey italic, to record), the eye's word card big at the top left as he names it, then the medicine's (the dropper's picture, a placeholder name, grey: to record); then the push-in to her eye (real pace)"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "textMatches:(?i)isn't right.*heal the eye.*medicine"
+   ],
+   "note": "the three set sentences in order, each said once, by the doctor"
+  }
+ ],
+ "CLN-200": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-redrop",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:12x500",
+    "voice"
+   ],
+   "expect": null,
+   "note": "she misread the card and the child said na: nobody says the card's word yet (no doctor's line between the na and the drop); the dropper over her open eye; after the drop she reads the card right (her own voice, the first time the word is said) and the haa/na pills come back: haa, then the next card (real pace)"
+  }
+ ],
+ "CLN-201": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:yes",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "her guess repeats with about 1.5 s of quiet from the END of one clip to the start of the next (1.3-1.7 s between her patient lines on the same card); the s12-w2b report's sound log measures it"
+  }
+ ],
+ "CLN-202": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:yes",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the eye test's layout: the doctor's panel is his own width with a small margin each side; she has everything left of it (wider than before: never squished), her open eye clear of the panel's left edge"
+  }
+ ],
+ "CLN-203": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "heal-eye-redrop",
+   "after": null,
+   "capture": [
+    "shot",
+    "zoom2:.njg-spot"
+   ],
+   "expect": null,
+   "note": "the redrop's help (taught round, fresh profile): ONE rounded box round her open eye and the bottle hanging over it (never a big round light), the bottle glowing, the kit's finger by it; a tap on her eye or the bottle always lands (the card's help is put away as the dropper comes: its spotlight had left only the pills live)",
+   "delay": 600
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-redrop",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the page blurred and refocused (a screen that slept) while the dropper waits: then a tap on her eye lands the drop and she reads the card (the s12-w2b report's frames: build/reports/s12-w2b/cln-203-*)"
+  }
+ ],
+ "CLN-204": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:wash",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the cut game's sidebar card: nothing under its last row (ne poi yellow plaster): no stray mark like an f (the skewer's pointed tip and its stub are gone from the clinic's instruction card; the stick between rows stays)"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": [
+    "fru-02"
+   ],
+   "at": "step:yes",
+   "after": null,
+   "capture": [
+    "zoom2:.eye-stand",
+    "ref:sources/art/s12/lm-lemon-whole-v1.png"
+   ],
+   "expect": null,
+   "note": "the lemon card (seed with limu): the new lemon keyed off its magenta, no shadow, the size of the other fruit on the card and clear of the doctor's hands"
+  }
+ ],
+ "SH-127": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_shared_speech_pair.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the two-choice match (haa or na) on the family's takes, leave-one-out and through child-like shifts: the pair's settings name far more than the general ones did and never the other word; other family words are rarely taken for haa or na"
+  }
+ ],
+ "SH-128": [
+  {
+   "human": "Tap the mic in the eye test: everything dims but haa, na and the mic; a pop-up over the pills shows a live wave that grows as you speak; it stops by itself about a second after you stop, or a second tap sends; saying na or haa answers; a miss is a small shrug (frames: build/reports/s12-w2b/sh-128-*)"
   }
  ]
 }

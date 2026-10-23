@@ -532,7 +532,9 @@
         const cx = rr.width - panelW / 2;
         Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top), width: px(Wd), height: px(H) });
         Object.assign(holder.style, { left: px(f.x * Wd), top: px(f.y * H), width: px(f.w * Wd), height: px(f.h * H) });
-        judgeBox.style.left = px(cx);
+        // (the pills under his card, whole on screen: on a phone the row is wider than his panel, never past the edge)
+        const jw = judgeBox.offsetWidth || 0;
+        judgeBox.style.left = px(jw ? Math.max(jw / 2 + gap, Math.min(cx, rr.width - jw / 2 - gap)) : cx);
         judgeBox.style.width = "max-content";
         return;
       }
@@ -733,6 +735,8 @@
         first,
         target: live,
         live,
+        // (the finger from above, onto the row: from the side it lay over the next pill's word)
+        fingerDown: true,
         line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(st.awaiting.said || c.said), { who: "patient", noBubble: true }) : null),
       });
     };
@@ -998,7 +1002,8 @@
           const a0 = st.awaiting;
           if (!a0) return null;
           const c = a0.c;
-          return { i: c.i, id: c.id, said: c.said, wrong: c.wrong, demo: c.demo, hushed: !!(cardEl && cardEl.classList.contains("eye-hush")) };
+          // (again: after the drops she reads it right and the child judges again, CLN-200; saying: the word she says now)
+          return { i: c.i, id: c.id, said: c.said, wrong: c.wrong, demo: c.demo, hushed: !!(cardEl && cardEl.classList.contains("eye-hush")), again: !!a0.again, saying: a0.said || c.said };
         },
         /** TEST HOOK (s11-clinic; read-only): client px boxes of the card, each pill and the mic */
         layout() {

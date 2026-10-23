@@ -680,12 +680,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-mic svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
 .eye-mic.listening { background: var(--njg-flag-bg); animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }
 .eye-mic.shrug { animation: eye-shake .45s; }
-/* CLN-204 (Zafar, 22 Oct: "a stray f on its own line" under the cut game's last row): the doctor's steps are instructions, not
-   a skewer: no pointed tip and no stub of stick past the last row (the stick between the rows still reads them in order) */
-.cl-side .oc-card .oc-item.oc-skewer .oc-group-parts { padding-right: 0; }
-.cl-side .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding-bottom: 0; }
-.cl-side .oc-card .oc-item.oc-skewer .oc-group-parts::after,
-.cl-side .oc-card .oc-item.oc-skewer.oc-stack .oc-part:last-child::after { display: none; }
 /* CLN-199: the doctor's start (js/clinic/heal/host.js runIntro): see-through over the wide shot (a tap anywhere goes on), the
    word card of the thing he names big at the top left of the play area, as Cook's people's orders (css/cook.css #intro.along) */
 .cl-intro { position: absolute; inset: 0; z-index: 25; background: transparent; cursor: default; }

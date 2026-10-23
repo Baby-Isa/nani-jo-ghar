@@ -97,7 +97,7 @@
    * SH-127 (Zafar, 22 Oct: "it just shook and didn't like it ... if there's only two options, then it's much better"): with
    * exactly two choices (haa or na) the nearer one is taken on a smaller margin, against the single nearest take of each
    * (kBest 1: every family take counts on its own, so a word with more takes isn't averaged away). Measured on the family's
-   * takes, leave-one-out, through child-like pitch and tempo shifts and noise (build/test_speech_pair.mjs): 49 of 60 named
+   * takes, leave-one-out, through child-like pitch and tempo shifts and noise (s12-w2b; the unit test is build/test_shared_speech_pair.mjs): 49 of 60 named
    * and 0 wrong, against 19 of 60 with the general settings; other family words taken for haa or na: 7 of 177 (4 %).
    */
   Speech.PAIR = { accept: 0.06, maxDistance: 5.5, kBest: 1 };
@@ -650,12 +650,20 @@
     const t0 = Date.now();
     // CLN-203 (a screen that slept, a tab put away): the audio stops coming, so the window closes on a clock too
     const hard = setTimeout(() => finish("timeout"), timeoutMs + 250);
+    // SH-127 (s12-w2b, the cause of "it just shook"): an AudioWorklet hands the audio over in render quanta of 128 samples,
+    // shorter than one 10 ms hop (441-480 samples), so the endpointing, which looked at whole hops inside one chunk, never
+    // ran: nothing was ever heard, every take timed out as "nothing said". The hops now run over the stream, across chunks
+    let carry = 0; // samples of the current hop seen so far
+    let acc = 0; // their sum of squares
     const onAudio = (data) => {
       chunks.push(Float32Array.from(data));
       total += data.length;
-      for (let i = 0; i + hop <= data.length; i += hop) {
-        let s = 0;
-        for (let j = i; j < i + hop; j++) s += data[j] * data[j];
+      for (let i = 0; i < data.length; i++) {
+        acc += data[i] * data[i];
+        if (++carry < hop) continue;
+        const s = acc;
+        carry = 0;
+        acc = 0;
         const db = 20 * Math.log10(Math.sqrt(s / hop) + 1e-9);
         if (!started) floor = Math.min(-30, 0.95 * floor + 0.05 * db);
         const on = db > Math.max(floor + 12, -50);
@@ -910,7 +918,7 @@
       for (const el of keep) {
         const r = el.getBoundingClientRect();
         if (!r.width) continue;
-        const p = 6;
+        const p = 3; // (a hole just round the control: no ring of the room round it)
         const x = r.left - p;
         const y = r.top - p;
         const w = r.width + 2 * p;
