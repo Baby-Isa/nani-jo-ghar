@@ -29,6 +29,7 @@
 //                                          ms) and the play area's CSS talk or bob animations, with Lifecycle.talk.SPEC
 //   k: "texts"   {list: [{t, rec, en, grown, name, sel}]}   every visible text, tagged (contract-16; name: a player's typed name)
 //   k: "faces"   {list: [{who, sel, doctor}], cards, figFull, clinic}   face circles on screen and whose (contract-20)
+//   k: "card-en"  {list: [{word, stage, revealed, text}]}   the word cards' English on screen, by the card's stage (contract-39)
 //   k: "endpages" {pages, step, steps}     the end screen's pages (data-page), the one shown, and how many step rows it holds (contract-38)
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
@@ -647,6 +648,9 @@ export const CONTRACT_HOOK = `(() => {
     if (!c) return null;
     return { pages: [...c.querySelectorAll(".rs-page")].map((p) => +p.dataset.page), step: +c.dataset.step || 0, steps: c.querySelectorAll(".rs-step, .rs-steps-list").length };
   };
+  // contract-39 (SH-123): every word card's English on screen (the shared card's English slot, .wc-en[data-word-en], with words in
+  // it), with the card's word, its stage and whether the child opened it (a free reveal)
+  const cardEnglish = () => [...document.querySelectorAll(".wc .wc-en[data-word-en]")].filter((e) => !e.classList.contains("blank") && !e.classList.contains("none") && (e.textContent || "").trim() && shown(e)).map((e) => { const c = e.closest(".wc"); return { word: (c && c.dataset.word) || "?", stage: +((c && c.dataset.stage) || 1), revealed: e.classList.contains("revealed"), text: (e.textContent || "").trim().slice(0, 30) }; });
   // contract-33 (SH-107): the headlines of the order pop-up (the cards at the start of a round): each one's size, the size it would
   // have at full (a bare clone of it in the same place, no inline size), and how many lines it takes
   const heads = () => {
@@ -710,6 +714,8 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("bulbs", bl2)) emit({ k: "bulbs", list: bl2 });
     const rv = safe(review, null);
     if (!same("review", rv)) emit({ k: "review", ...(rv || { none: true }) });
+    const ce = safe(cardEnglish, []);
+    if (!same("cardEn", ce)) emit({ k: "card-en", list: ce });
     const ep = safe(endPages, null);
     if (ep && !same("endpages", ep)) emit({ k: "endpages", ...ep });
     const hd = safe(heads, []);

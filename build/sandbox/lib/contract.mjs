@@ -43,6 +43,7 @@
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
 //   contract-38 two-pages    the end screen has two pages in every game: the badges and the word review, never the steps page (SH-104)
+//   contract-39 card-english the word card's English only while the word is supported (stage 1-2), then only when tapped open (SH-123)
 //   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
 //   contract-70 slow-at-green  chai: "Slow kar" as the heat bar enters the green, never before it (CHAI-24; lib/contract-chai.mjs)
 //   contract-71 once-each      chai: milk, water and tea go into a pan once each; a second tap adds nothing (CHAI-22)
@@ -103,6 +104,7 @@ export const CHECKS = {
   "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
   "contract-38": { item: "two-pages", title: "the end screen: two pages", how: "Every endpages sample (lib/contract-hook.mjs: the end screen's pages, data-page, the one shown, data-step, and its step rows): a third page (the steps of the round, .rs-p3), a card on step 3 or any step row (.rs-step, .rs-steps-list) in any game is a break (SH-104, Zafar, 22 Oct: the third page goes from every game; js/shared/results.js Results.STEPS_PAGE is the only way in, and it is off)." },
+  "contract-39": { item: "card-english", title: "the word card's English: supported, then tapped", how: "Every card-en sample (lib/contract-hook.mjs: each shared word card's English slot on screen with words in it, its card's data-stage and whether the child opened it, the slot's revealed class): English showing on a card at stage 3 or more that the child did not open is a break (SH-123; Zafar, 21 Oct: English on a word card only while the word is supported, then only when tapped; data/progress.json support[stage].english)." },
   ...DAY_CHECKS,
   ...DAAL_CHECKS,
   ...CHAI_CHECKS,
@@ -1158,6 +1160,18 @@ export function check38(tl, add) {
     }
   }
 }
+// 39 (SH-123): a word card's English shows only while its word is supported (stage 1-2), past that only when the child opens it
+export function check39(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "card-en") continue;
+    for (const x of e.list || []) {
+      if (x.stage < 3 || x.revealed || seen.has(x.word)) continue;
+      seen.add(x.word);
+      add("contract-39", e.t, `the word card for ${x.word} (stage ${x.stage}, past support) shows its English "${x.text}" without the child opening it`);
+    }
+  }
+}
 // 33 (SH-107): the order pop-up's headlines are one size per screen, and wrap at full size before they shrink: a size under the full
 // one is only for headlines that don't fit two lines, so a pop-up whose every headline is on one line is at full size
 function check33(tl, add) {
@@ -1400,6 +1414,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check32(tl, add);
   check33(tl, add);
   check38(tl, add);
+  check39(tl, add);
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
   check37(r, tl, segs, add);

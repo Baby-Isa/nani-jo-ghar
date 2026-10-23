@@ -46,3 +46,11 @@ test("the switch: Results.STEPS_PAGE is off, and only js/shared/results.js names
   walk("js");
   assert.deepEqual(hits, [], "no game turns the steps page on");
 });
+
+test("contract-39: a word card's English past support is a break unless the child opened it", () => {
+  const tl = (list) => page("clinic:heal-eye", [C(T, "stage", { key: "host:heal/eye" }), C(T + 100, "card-en", { list })]);
+  assert.equal(of(run(tl([{ word: "mirchi", stage: 4, revealed: false, text: "chilli" }])), "contract-39").length, 1);
+  assert.equal(of(run(tl([{ word: "mirchi", stage: 4, revealed: true, text: "chilli" }])), "contract-39").length, 0, "opened by the child");
+  assert.equal(of(run(tl([{ word: "mirchi", stage: 2, revealed: false, text: "chilli" }])), "contract-39").length, 0, "supported");
+  assert.ok(CHECKS["contract-39"] && CHECKS["contract-39"].how.length > 40);
+});
