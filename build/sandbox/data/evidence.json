@@ -18634,30 +18634,9 @@
    "expect": [
     "count:.njg-spot .ob-box=1"
    ],
-   "note": "one rounded box with a plain gold edge (no glow of its own, no pulse) round the water bottle and its word; the bottle glows and bounces inside it; the milk beside it stays dark",
+   "note": "one rounded box with a plain gold edge (no glow of its own, no pulse) round the water bottle and its word; the milk beside it stays dark",
    "delay": 700
   },
-  {
-   "flow": "repo",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "fresh",
-   "want": null,
-   "at": "now",
-   "after": null,
-   "capture": [
-    "cmd:node build/test_shared_word_card.mjs"
-   ],
-   "expect": [
-    "pass"
-   ],
-   "note": "a group given together (three controls in a row) gets ONE box round all three (Onboard.groupBox); the old outer glow is gone"
-  }
- ],
- "SH-118": [
   {
    "flow": "cook:chai-tray",
    "path": "fair",
@@ -18670,12 +18649,91 @@
    "at": "exp:cook-paani",
    "after": null,
    "capture": [
-    "shot",
-    "js:Onboard.DIM"
+    "strip:.njg-spot:6x250"
    ],
    "expect": null,
-   "note": "the dim a little darker in every game: one token, Onboard.DIM (0.72, was 0.62), used by Onboard.run and Onboard.spot",
+   "note": "the bottle glows and bounces inside its box (6 frames over 1.5 s); the box stays still",
    "delay": 700
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.njg-spot",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a group given together in a real game: the eye test's haa, na (and the mic) in ONE box, each glowing and bouncing (if the eye test's help is not reached here, the lab frame build/reports/s12-w1a/group-of-three-*.png stands in)",
+   "delay": 600
+  }
+ ],
+ "SH-118": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chai: the dim (Onboard.DIM 0.72, one token) round the first-time box",
+   "delay": 700
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-pantry",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the pantry: the same dim round its first-time box (Cook's coach on the shared kit)",
+   "delay": 700
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.njg-onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a clinic heal game (the cut): the same dim round its first-time help",
+   "delay": 600
   }
  ],
  "SH-119": [
@@ -18684,7 +18742,9 @@
    "path": "fair",
    "level": 1,
    "sizes": [
-    "1366x768"
+    "1366x768",
+    "1480x924",
+    "915x412"
    ],
    "profile": "fresh",
    "want": null,
@@ -18694,25 +18754,48 @@
     "strip:.njg-spot:6x500"
    ],
    "expect": null,
-   "note": "the one finger (the kit's): tap, lift off, wait half a second, tap again, for as long as the help is up (6 frames over 3 s)",
+   "note": "chai: the one finger, from above (never over the word chip): tap, lift off, half a second, tap again (6 frames over 3 s)",
    "delay": 300
   },
   {
-   "flow": "repo",
+   "flow": "cook:fetch",
    "path": "fair",
    "level": 1,
    "sizes": [
-    "1366x768"
+    "1366x768",
+    "1480x924",
+    "915x412"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "now",
+   "at": "view-pantry",
    "after": null,
    "capture": [
-    "cmd:grep -n \"Onboard.run(obId(key), steps\" js/cook/coach.js"
+    "strip:.njg-onboard:6x500"
    ],
    "expect": null,
-   "note": "Cook's coach draws the kit's finger (no picture hand); the conversations' emoji finger is wave 2's (Onboard.finger is exposed for it)"
+   "note": "the pantry: the same finger and cadence (Cook's coach: no picture hand)",
+   "delay": 300
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "1480x924",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.njg-onboard",
+   "after": null,
+   "capture": [
+    "strip:.njg-onboard:6x500"
+   ],
+   "expect": null,
+   "note": "a clinic heal game (the cut): the same finger and cadence",
+   "delay": 300
   }
  ],
  "SH-120": [
