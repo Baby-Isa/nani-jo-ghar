@@ -11,19 +11,22 @@
  *    She sits close up on the left covering one eye (art testA); the doctor holds up ONE big word card at a time
  *    (js/shared/word-card.js WordCard.card) on a stand on the right (the hand-held card art comes from the art run).
  *    The cards are Cook's words the family has recorded (rule 10: chai, dudh, paani and the rest join by themselves once
- *    Mum records them: WAITING below). She says her guess every 1.5 s until the child taps big haa or na (or says it:
- *    js/shared/speech.js Speech.listen, the mic beside the pills; the pills always work). She is right or wrong, half
- *    and half. The first card is the demo (she is right; unscored); four judged cards follow (a blind "always haa" wins
- *    1 in 16, 6.25%). A wrong judgement: the pill shakes red, the card shakes gently and the doctor names the card. A
- *    misread (judged na, or a haa put right) brings the dropper over her open eye (CLN-62, the redrop Zafar liked): one
- *    tap and she says it right. No Next, no Done: each card moves on by itself (NjgButtons.moveOn).
+ *    Mum records them: WAITING below). She says her guess, 1.5 s of quiet from the end of each clip (CLN-201), until the
+ *    child taps big haa or na (or says it: js/shared/speech.js Speech.listen and its listening pop-up, Speech.panel, the
+ *    mic beside the pills, SH-127/SH-128; the pills always work). She is right or wrong, half and half. The first card is
+ *    the demo (she is right; unscored); four judged cards follow (a blind "always haa" wins 1 in 16, 6.25%). A wrong
+ *    judgement shakes the pill red and the card gently; on a card she read right the doctor names it. A misread (judged
+ *    na, or a haa put right) brings the dropper over her open eye (CLN-62); nobody says the card's word before the drops
+ *    (CLN-200): one tap, she reads it right, and the child judges again (haa), the first judgement the one scored. No
+ *    Next, no Done: each card moves on by itself (NjgButtons.moveOn). The game opens with the doctor's start in the room
+ *    (CLN-199: data intro, js/clinic/heal/host.js runIntro); her panel takes all but the doctor's own width (CLN-202).
  *    The card's slots fade by the word's stage (English, then the Kutchi text; the speaker always). The picture is the
  *    eye test itself, so it always shows. Rule 6 (the leak test past support): while the word is past support (stage
  *    3+) the card's strip (its Kutchi, its English and its speaker, which would say the answer) is held back until the
  *    card is judged, and her guess is heard only (dots in her bubble); while supported, matching text is study.
- * 3. Onboarding (Sprint 11, principle 3): the demo card's haa pill shows itself the first time (Onboard.stuck's 0 s
- *    rung: the real pill lifts); stuck, the 5 s rung spotlights the pills (all else inert) and the whole pill row lifts
- *    (never the answer), the 15 s rung lifts it again and she says her guess again.
+ * 3. Onboarding (principle 3; Sprint 12 SH-19, EASY-08): haa, na and the mic in ONE box, each glowing and hopping (never the
+ *    answer alone), at once on the demo card and, in the taught first round, on every card; else the 5 s rung, and the 15 s
+ *    rung says her guess again. The drops step boxes the eye and the bottle over it; the redrop has its own help (CLN-203).
  * Rows (the words decide): each judged card. The drops are hand-skill rows.
  * Art swaps in by file name: data art.* (the art plan's Y1-Y3 eyes, T1 eye test) once ready.
  */
