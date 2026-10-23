@@ -124,3 +124,12 @@ Built to your design (W1-B):
 ## 14. The lemon (C9)
 - It was cut with its shadow. Why it overlaps the doctor's hand when the other fruit don't isn't confirmed yet: the picture's size or position on the card differs. I'll check that when it's re-cut.
 - The art run makes a new lemon. A cut check for shadows and overlaps comes with it, so the next one is caught.
+
+## Proof
+- Code size and copies, measured 23 Oct:
+  - line counts per area with `wc -l` over `js/`;
+  - files drawing their own glows: `grep -rlE "box-shadow|drop-shadow|glow" js/cook js/clinic js/day css` (62);
+  - the style checker's known list: `node build/tools/review/checks.mjs --only static` (937 known: kit 52, tokens 883, ladder 2).
+- Causes with file and line: the report's §2 (`docs/feedback/s12-polish-2026-10-22.md`), checked by the code search on 22 Oct.
+- L1 "no" count before the fix: W1-A's unit test (204 of 500 chai and 75 of 500 daal orders), `build/reports/s12-w1a.md`.
+- W1-B's fixes named here (LAB-07, the ride, the car, Nani's size) are judged in `s12-w1b-frames`.
