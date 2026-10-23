@@ -28,6 +28,10 @@
 .ob-finger-in { position: relative; width: 100%; height: 100%; transform-origin: calc(100% * 25 / 64) calc(100% * 3 / 80); }
 .ob-finger-in svg { width: 100%; height: 100%; display: block; position: relative; }
 .ob-finger-in.pressed { transform: scale(0.88); }
+/* the hand from above, pointing down (a thing with its word under it): the fingertip is at the bottom */
+.ob-finger.down .ob-finger-in { transform-origin: calc(100% * 25 / 64) calc(100% * 77 / 80); }
+.ob-finger.down .ob-finger-in svg { transform: scaleY(-1); }
+.ob-finger.down .ob-ripple { top: calc(100% * 77 / 80 - var(--njg-tap) * 0.75); }
 .ob-finger .ob-ripple { position: absolute; left: calc(100% * 25 / 64 - var(--njg-tap) * 0.75); top: calc(100% * 3 / 80 - var(--njg-tap) * 0.75); width: calc(var(--njg-tap) * 1.5); height: calc(var(--njg-tap) * 1.5); border-radius: 50%; border: var(--njg-s1) solid var(--njg-focus); background: color-mix(in srgb, var(--njg-focus) 25%, transparent); opacity: 0; }
 
 /* the ghost hand: its box's top-left is moved so the fingertip lands on the point */

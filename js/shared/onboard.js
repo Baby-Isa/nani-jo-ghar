@@ -247,11 +247,14 @@
    */
   Onboard.FINGER = { in: 220, press: 200, up: 280, gap: 500 };
   Onboard.FINGER_LIFT = { x: 26, y: 34 }; // where the fingertip waits, lifted off (down and right of the point)
-  /** One cycle of the finger as keyframes: {o (0..1), x, y (offsets from the point), press (0|1), ring (the ripple)}. */
-  Onboard.fingerKeys = function () {
+  /**
+   * One cycle of the finger as keyframes: {o (0..1), x, y (offsets from the point), press (0|1), ring (the ripple)}. o.down: the
+   * hand comes from above (it lifts up and right), so it never covers a label under the thing.
+   */
+  Onboard.fingerKeys = function (o) {
     const F = Onboard.FINGER;
     const T = F.in + F.press + F.up + F.gap;
-    const L = Onboard.FINGER_LIFT;
+    const L = o && o.down ? { x: Onboard.FINGER_LIFT.x, y: -Onboard.FINGER_LIFT.y } : Onboard.FINGER_LIFT;
     const at = (ms) => +(ms / T).toFixed(4);
     return [
       { o: 0, x: L.x, y: L.y, press: 0 },
@@ -449,7 +452,9 @@
   /**
    * SH-119: the one finger. The kit's drawn hand, its fingertip on `at` (a page point {x, y}, an element or selector, a box
    * [x, y, w, h], or a function giving any of them: it follows it every frame), tapping in Onboard.FINGER's cadence for as long
-   * as it is up. o: {container (default the page: fixed, over the dim), step (its name in the log)}. -> {el, stop()}
+   * as it is up. o: {container (default the page: fixed, over the dim), step (its name in the log), down (the hand comes from
+   * above, pointing down: for a thing with its word label under it, so the hand never covers the label), hold (pressed, no
+   * taps: the finger of a drag or a swipe, `at` moving along the move; `at` giving null hides it)}. -> {el, stop()}
    * Wave 2's games (the conversations' emoji finger) switch to this one.
    */
   Onboard.finger = function (at, o) {
@@ -460,6 +465,8 @@
     el.setAttribute("aria-hidden", "true");
     el.innerHTML = `<div class="ob-finger-in"><span class="ob-ripple"></span>${HAND}</div>`;
     if (!o.container) el.classList.add("page");
+    const hotY = o.down ? 80 - HOTSPOT[1] : HOTSPOT[1];
+    if (o.down) el.classList.add("down");
     host.appendChild(el);
     const inner = el.firstChild;
     const ripple = inner.querySelector(".ob-ripple");
@@ -477,23 +484,23 @@
       if (p) {
         // the fingertip (HOTSPOT in the 64x80 hand) on the point, at whatever size the page draws the hand
         const k = (el.offsetWidth || HAND_W) / HAND_W;
-        el.style.transform = `translate(${(p.x - HOTSPOT[0] * k).toFixed(1)}px, ${(p.y - HOTSPOT[1] * k).toFixed(1)}px)`;
+        el.style.transform = `translate(${(p.x - HOTSPOT[0] * k).toFixed(1)}px, ${(p.y - hotY * k).toFixed(1)}px)`;
       }
       raf = requestAnimationFrame(place);
     };
     place();
     const anims = [];
-    if (reduced() || !inner.animate) inner.classList.add("pressed");
+    if (reduced() || !inner.animate || o.hold) inner.classList.add("pressed");
     else {
       const T = Onboard.fingerMs();
-      const keys = Onboard.fingerKeys();
+      const keys = Onboard.fingerKeys({ down: o.down });
       const frames = keys.map((kf) => ({ offset: kf.o, transform: `translate(${kf.x}px, ${kf.y}px) scale(${kf.press ? 0.88 : 1})` }));
       anims.push(inner.animate(frames, { duration: T, iterations: Infinity, easing: "ease-in-out" }));
       const ring = keys.find((kf) => kf.ring);
       const lift = keys[keys.length - 2].o;
       anims.push(ripple.animate([{ offset: 0, opacity: 0, transform: "scale(0.3)" }, { offset: Math.max(0.01, ring.o - 0.02), opacity: 0, transform: "scale(0.3)" }, { offset: ring.o, opacity: 0.9, transform: "scale(0.6)" }, { offset: lift, opacity: 0, transform: "scale(1.6)" }, { offset: 1, opacity: 0, transform: "scale(1.6)" }], { duration: T, iterations: Infinity }));
     }
-    if (o.step != null) LCghost(String(o.step), { gesture: "tap", finger: true });
+    if (o.step != null) LCghost(String(o.step), { gesture: o.hold ? "path" : "tap", finger: true });
     return {
       el,
       stop() {
@@ -699,7 +706,7 @@
       LCghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
       if (st.ghost.gesture === "tap") {
         // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
-        if (!finger) finger = Onboard.finger(() => centre(st.ghost.from ? union(rectsOf(st.ghost.from)) : union(rectsOf(st.spotlight))), { container: layer });
+        if (!finger) finger = Onboard.finger(() => centre(st.ghost.from ? union(rectsOf(st.ghost.from)) : union(rectsOf(st.spotlight))), { container: layer, down: !!(st.ghost.down || opts.fingerDown) });
         setTimeout(() => {
           if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
         }, Onboard.fingerMs());
@@ -904,6 +911,106 @@
   };
 
   /* ---------------- the item shows itself, and the hint rungs ---------------- */
+  /*
+   * Zafar, 23 Oct: the demo STAYS where the child's own move is a drag or a brush (the toothbrush): there the real item shows the
+   * move and comes home (moveDemo, Sprint 11's: path = page points, an element or selector, or {dx, dy}; o.move(dx, dy, t) for a
+   * canvas sprite; o.hand: the kit's finger rides along). Only a tap item loses it (Onboard.demo below: it glows in place).
+   */
+  /** A path's points as offsets from `from` (page px): [{x, y}], an element or selector (its middle), {dx, dy}, or a function. */
+  function offsets(path, from) {
+    if (typeof path === "function") path = path();
+    if (path == null) return [];
+    if (!Array.isArray(path) && typeof path === "object" && ("dx" in path || "dy" in path)) return [{ x: path.dx || 0, y: path.dy || 0 }];
+    const pts = (Array.isArray(path) && !(path.length === 4 && path.every((n) => typeof n === "number")) ? path : [path])
+      .map((p) => (p && typeof p.x === "number" && typeof p.y === "number" && !p.getBoundingClientRect ? p : centre(rectOf(p))))
+      .filter(Boolean);
+    return pts.map((p) => ({ x: p.x - from.x, y: p.y - from.y }));
+  }
+  /**
+   * The real item shows the action, then goes back to where it was (principle 2: 2-3 year olds copy the thing, not an
+   * arrow). item: an element (it moves itself, by the CSS translate property, so its own transform is untouched), or a
+   * scene point {x, y} with o.move(dx, dy, t) (a canvas game moves its own sprite each frame; t 0..1 through the path).
+   * path: page points, an element or selector to go to (and back), or {dx, dy}. o.ms: the whole demo (default 1600);
+   * o.step: its name in the log; o.hand: the ghost finger rides along. Resolves when the item is home.
+   */
+  const moveDemo = function (item, path, o) {
+    o = o || {};
+    const isEl = item && (typeof item === "string" || item.nodeType === 1);
+    const elx = isEl ? (typeof item === "string" ? document.querySelector(item) : item) : null;
+    const from = elx ? centre(rectOf(elx)) : item && typeof item.x === "number" ? { x: item.x, y: item.y } : null;
+    if (!from) return Promise.resolve(false);
+    const pts = offsets(path, from);
+    if (!pts.length) pts.push({ x: 0, y: -Math.max(24, (elx ? rectOf(elx).h : 60) * 0.3) });
+    if (!o.quiet) LCnote("demo", { step: o.step != null ? String(o.step) : "", gesture: "item" }); // (a rung logs its own: one help)
+    const ms = o.ms || 600 + 500 * pts.length;
+    // a leg out to each point, a short hold at the last, and home
+    const keys = [{ x: 0, y: 0, o: 0 }];
+    pts.forEach((p, i) => keys.push({ x: p.x, y: p.y, o: (0.12 + (0.55 * (i + 1)) / pts.length) }));
+    keys.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y, o: 0.78 }, { x: 0, y: 0, o: 1 });
+    const at = (t) => {
+      for (let i = 1; i < keys.length; i++) {
+        if (t <= keys[i].o) {
+          const a = keys[i - 1];
+          const b = keys[i];
+          const k = b.o === a.o ? 1 : (t - a.o) / (b.o - a.o);
+          const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+          return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e };
+        }
+      }
+      return { x: 0, y: 0 };
+    };
+    let hand = null;
+    if (o.hand) {
+      hand = document.createElement("div");
+      hand.className = "ob-demo-hand";
+      hand.setAttribute("aria-hidden", "true");
+      hand.innerHTML = HAND;
+      Object.assign(hand.style, { position: "fixed", left: "0", top: "0", width: `${HAND_W}px`, height: "80px", zIndex: "960", pointerEvents: "none", opacity: "0.9" });
+      document.body.appendChild(hand);
+    }
+    const placeHand = (d) => hand && (hand.style.transform = `translate(${from.x + d.x - HOTSPOT[0]}px, ${from.y + d.y - HOTSPOT[1]}px)`);
+    if (reduced()) {
+      // no motion: the item lifts where it is for a moment (a glow), and the hand, if any, sits on it
+      if (elx) Object.assign(elx.style, { outline: "4px solid var(--njg-focus)", outlineOffset: "4px" });
+      placeHand({ x: 0, y: 0 });
+      return new Promise((r) =>
+        setTimeout(() => {
+          if (elx) Object.assign(elx.style, { outline: "", outlineOffset: "" });
+          if (hand) hand.remove();
+          r(true);
+        }, 900)
+      );
+    }
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      if (elx) elx.classList.add("ob-demo");
+      const tick = (now) => {
+        const t = Math.min(1, (now - t0) / ms);
+        const d = at(t);
+        const lift = t > 0.06 && t < 0.94 ? 1.06 : 1;
+        if (elx) {
+          elx.style.translate = `${d.x.toFixed(1)}px ${d.y.toFixed(1)}px`;
+          elx.style.scale = String(lift);
+        } else if (o.move) {
+          try {
+            o.move(d.x, d.y, t);
+          } catch (e) {
+            /* the game's own drawing */
+          }
+        }
+        placeHand(d);
+        if (t < 1) return requestAnimationFrame(tick);
+        if (elx) {
+          elx.style.translate = "";
+          elx.style.scale = "";
+          elx.classList.remove("ob-demo");
+        } else if (o.move) o.move(0, 0, 1);
+        if (hand) hand.remove();
+        resolve(true);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
   /**
    * EASY-03 (Zafar, 22 Oct: "the user clicks on the item, they don't drag it ... take that out, that whole show it"): the real
    * item never moves to its target by itself in any game. Onboard.demo is the item showing where it is: it glows and bounces
@@ -911,8 +1018,11 @@
    * little up and back), with the kit's finger tapping on it when o.hand. `path` is no longer used (kept in the signature for
    * the games that pass one). o.step: its name in the log. Resolves when it is done.
    */
+  /** Is this the demo of a drag or a brush? o.drag says so; else a canvas thing that moves itself (o.move: the toothbrush). */
+  const dragMove = (item, o) => (o.drag != null ? !!o.drag : typeof o.move === "function" && !(item && root.HTMLElement && item instanceof root.HTMLElement));
   Onboard.demo = function (item, path, o) {
     o = o || {};
+    if (dragMove(item, o)) return moveDemo(item, path, o);
     const isEl = item && (typeof item === "string" || item.nodeType === 1);
     const elx = isEl ? (typeof item === "string" ? document.querySelector(item) : item) : null;
     const from = elx ? centre(rectOf(elx)) : isPoint(item) ? { x: item.x, y: item.y } : null;
@@ -966,7 +1076,7 @@
     };
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || centre(firstRect())), { container: layer, step: o.step });
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || centre(firstRect())), { container: layer, step: o.step, down: !!o.fingerDown });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
@@ -1056,6 +1166,16 @@
     let off = null;
     let glowing = false;
     const h = { rung: 0 };
+    // Zafar, 23 Oct: a drag or a brush (a canvas thing that moves itself along a path: the toothbrush) keeps its demo: the item
+    // shows the move at each rung, and the light never bounces it or taps it (only a tap item glows in its box)
+    const drag = o.drag != null ? !!o.drag : typeof o.move === "function" && o.path != null && !split(o.target).els.length;
+    let busy = false;
+    const demo = () => {
+      if (!drag || busy || h.over) return;
+      busy = true;
+      const pt = o.item || centre(rectsOf(o.target)[0] || null);
+      moveDemo(pt, o.path, { step: name, move: o.move, hand: o.hand, ms: o.ms, quiet: true }).finally(() => (busy = false));
+    };
     const glow = (on) => {
       if (glowing === on || typeof o.glow !== "function") return;
       glowing = on;
@@ -1067,7 +1187,7 @@
     };
     const openSpot = () => {
       glow(false);
-      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: o.move, step: name });
+      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? false : undefined, fingerDown: o.fingerDown, step: name });
     };
     const closeSpot = () => {
       if (spot) spot.close();
@@ -1091,7 +1211,9 @@
         if (h.over) return;
         h.rung = 0;
         LCnote("rung", { step: name, rung: 0 });
-        openSpot();
+        // (a drag's first time: the item shows the move; a tap's: the box at once)
+        if (drag) demo();
+        else openSpot();
       }, AT[0] || 0);
     }
     poll = setInterval(() => {
@@ -1121,11 +1243,13 @@
         h.rung = Math.round(AT[1] / 1000);
         LCnote("rung", { step: name, rung: h.rung });
         openSpot();
+        demo();
       }
       if (AT[2] != null && idle >= AT[2] && !fired[2]) {
         fired[2] = true;
         h.rung = Math.round(AT[2] / 1000);
         LCnote("rung", { step: name, rung: h.rung });
+        demo();
         try {
           if (o.line) o.line(name);
         } catch (e) {

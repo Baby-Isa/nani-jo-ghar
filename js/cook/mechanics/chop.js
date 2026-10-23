@@ -513,7 +513,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const a = { x: z.X(420), y: z.Y(440) };
         const b = { x: z.X(1180), y: z.Y(400) };
         const home = { x: knife.x, y: knife.y };
-        const nh = Cook.Hands && Cook.Hands.ghost ? Cook.Hands.ghost(S) : null;
+        // SH-119 (Zafar, 22 Oct: one finger in every game): the shared kit's finger, pressed on the handle as it drags the knife
+        let fpt = null;
+        const nh = global.Onboard && global.Onboard.finger ? global.Onboard.finger(() => fpt, { hold: true }) : null;
         const dot = nh ? null : S.track(S.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top));
         let tw = null;
         let alive = true;
@@ -532,10 +534,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               // DAAR-13 (s08 w8A; the judge: "a white disc covers the knife blade so its tip can't be seen"): the finger holds
               // the handle (the knife's lower right), so the knife sits up and left of it, its blade and tip clear
               knife.setPosition(x - z.L(40), y - z.L(20));
-              if (nh) nh.at(x, y, al);
+              if (nh) fpt = al > 0.3 ? UI.worldToScreen(x, y) : null;
               if (dot) dot.setPosition(x, y).setAlpha(0.75 * al);
             },
-            onComplete: () => alive && S.time.delayedCall(500, go),
+            onComplete: () => {
+              fpt = null;
+              if (alive) S.time.delayedCall(500, go);
+            },
           });
         };
         const t0 = S.time.delayedCall(z.guided ? 1200 : 4000, go);

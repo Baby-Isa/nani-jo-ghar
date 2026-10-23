@@ -125,7 +125,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }));
     state.kit = true;
     // SH-119 (Zafar, 22 Oct: one finger in every game): the kit's own finger, in its own cadence (no picture hand, no 6 s gap)
-    Onboard.run(obId(key), steps, {}).then(() => {
+    // (the hand from above: a shelf thing's word chip sits under it, never under the hand; the judge, 23 Oct)
+    Onboard.run(obId(key), steps, { fingerDown: true }).then(() => {
       if (live === state) C.stop(true);
     });
   }

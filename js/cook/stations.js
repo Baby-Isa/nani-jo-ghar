@@ -988,52 +988,72 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
 
     /**
-     * A see-through fingertip that demonstrates a gesture until the player starts. step: what it shows, for the test
-     * log only (each play is logged to Lifecycle.log as {what: "ghost", step, at}: MAA-13; s04-hooks).
+     * The finger that demonstrates a gesture until the player starts. SH-119 (Zafar, 22 Oct: one finger in every game): the shared
+     * kit's finger (js/shared/onboard.js Onboard.finger): a tap (two points a few px apart: the maani pile) taps in the kit's
+     * cadence; a longer path or a circle is the finger pressed and moving along it, then lifted, half a second, again. step: what it
+     * shows, for the test log only (each play is logged to Lifecycle.log as {what: "ghost", step, at}: MAA-13; s04-hooks).
      */
     ghost(points, { duration = 1100, delay = 0, step = null } = {}) {
-      const dot = this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
-      // Nani's see-through finger shows the move (js/cook/hands.js), once her hand has loaded
-      let nh = null;
-      let tw = null;
+      const OB = window.Onboard;
+      const page = (x, y) => (UI.worldToScreen ? UI.worldToScreen(x, y) : { x, y });
+      const span = points.circle ? Infinity : Math.hypot(points[points.length - 1][0] - points[0][0], points[points.length - 1][1] - points[0][1]);
+      const tap = span < 12;
       let alive = true;
-      const run = () => {
-        if (!alive || !dot.active) return;
-        if (!nh && Cook.Hands) nh = Cook.Hands.ghost(this);
-        dot.setVisible(!nh);
+      let tw = null;
+      let finger = null;
+      let cur = null;
+      let loop = null;
+      const dot = OB && OB.finger ? null : this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
+      const log = () => {
         // TEST HOOK (s04-hooks; only logged): each play in Lifecycle.log, so a probe counts plays (MAA-13)
         try {
           const L = window.Lifecycle;
           if (L && L.ghost) {
             const p0 = points.circle ? points.circle : { x: points[0][0], y: points[0][1] };
-            const at = UI.worldToScreen ? UI.worldToScreen(p0.x, p0.y) : p0;
-            L.ghost(step || `cook:${this.viewName || (this.sys && this.sys.settings.key) || "?"}`, { gesture: points.circle ? "circle" : "path", at: { x: Math.round(at.x), y: Math.round(at.y) } });
+            const at = page(p0.x, p0.y);
+            L.ghost(step || `cook:${this.viewName || (this.sys && this.sys.settings.key) || "?"}`, { gesture: points.circle ? "circle" : tap ? "tap" : "path", at: { x: Math.round(at.x), y: Math.round(at.y) } });
           }
         } catch (e) {
           /* only a log */
         }
+      };
+      const posAt = (k) => {
+        if (points.circle) {
+          const c = points.circle;
+          const a = k * Math.PI * 2;
+          return { x: c.x + Math.cos(a) * c.rx, y: c.y + Math.sin(a) * c.ry };
+        }
+        const seg = Math.min(points.length - 2, Math.floor(k * (points.length - 1)));
+        const f = k * (points.length - 1) - seg;
+        const [x1, y1] = points[seg];
+        const [x2, y2] = points[seg + 1];
+        return { x: x1 + (x2 - x1) * f, y: y1 + (y2 - y1) * f };
+      };
+      const run = () => {
+        if (!alive || !this.sys || !this.sys.isActive()) return;
+        log();
+        if (OB && OB.finger && tap) {
+          // a tap: the kit's own cadence, logged once a cycle (a probe counts the plays)
+          if (!finger) {
+            finger = OB.finger(() => page(points[0][0], points[0][1]));
+            loop = this.time.addEvent({ delay: OB.fingerMs(), loop: true, callback: log });
+          }
+          return;
+        }
+        if (OB && OB.finger && !finger) finger = OB.finger(() => cur, { hold: true });
         tw = this.tweens.addCounter({
           from: 0,
           to: 1,
           duration,
           onUpdate: (t) => {
             const k = t.getValue();
-            if (points.circle) {
-              const c = points.circle;
-              const a = k * Math.PI * 2;
-              dot.setPosition(c.x + Math.cos(a) * c.rx, c.y + Math.sin(a) * c.ry);
-            } else {
-              const seg = Math.min(points.length - 2, Math.floor(k * (points.length - 1)));
-              const f = k * (points.length - 1) - seg;
-              const [x1, y1] = points[seg];
-              const [x2, y2] = points[seg + 1];
-              dot.setPosition(x1 + (x2 - x1) * f, y1 + (y2 - y1) * f);
-            }
-            dot.setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
-            if (nh) nh.at(dot.x, dot.y, dot.alpha / 0.75);
+            const p = posAt(k);
+            if (finger) cur = k > 0.04 && k < 0.96 ? page(p.x, p.y) : null;
+            if (dot) dot.setVisible(true).setPosition(p.x, p.y).setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
           },
           onComplete: () => {
-            if (alive) this.time.delayedCall(350, run);
+            cur = null;
+            if (alive) this.time.delayedCall(OB && OB.FINGER ? OB.FINGER.gap : 350, run);
           },
         });
       };
@@ -1042,11 +1062,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         alive = false;
         t0.remove();
         if (tw) tw.stop();
-        if (nh) nh.stop();
-        if (dot.active) dot.destroy();
+        if (loop) loop.remove();
+        if (finger) finger.stop();
+        if (dot && dot.active) dot.destroy();
         this.input.off("pointerdown", stop);
       };
       this.input.once("pointerdown", stop);
+      // the scene goes (the station ends): the finger goes with it
+      this.events.once("shutdown", stop);
       return { stop };
     }
 

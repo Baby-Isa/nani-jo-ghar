@@ -1737,28 +1737,52 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     let callout = null;
     const rowFor = (pid) => (sel ? personRows(L(), sel.who).find((r) => !r.no && r.ids.includes(pid)) : null);
     const hideCallout = () => {
+      if (callout) callout.dispatchEvent(new Event("ck-gone"));
       if (callout) callout.remove();
       callout = null;
     };
     const showCallout = (pid) => {
       hideCallout();
       const r = rowFor(pid);
-      const stage = document.querySelector("#stage");
+      const side = document.querySelector("#side");
+      const guide = document.querySelector("#guide");
       const w = r && UI.wordOf && global.WordCard ? UI.wordOf(r, { size: 240 }) : null;
-      if (!w || !stage) return;
+      if (!w || !side || !guide) return;
+      // the judge, 23 Oct: never over the hob, the tray or the shelf: the card sits in the left column, right under Nani's guide box
+      // (over the order card for its few seconds), its tail up to her box, sized to the column and to what is left above the rail
       const box = document.createElement("div");
       box.className = "ck-callout";
       box.dataset.item = pid;
-      Object.assign(box.style, { position: "absolute", left: "var(--njg-s4, 16px)", top: "var(--njg-s3, 12px)", zIndex: "21", animation: "icWordIn .3s cubic-bezier(.2, 1.3, .4, 1)" });
+      Object.assign(box.style, { position: "fixed", left: "0", top: "0", zIndex: "40", animation: "icWordIn .3s cubic-bezier(.2, 1.3, .4, 1)" });
       const card = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
-      card.style.width = "clamp(150px, min(17vw, 36vh), 210px)";
-      // the tail: from her box, on the card's left edge
       const tail = document.createElement("i");
       tail.setAttribute("aria-hidden", "true");
-      Object.assign(tail.style, { position: "absolute", left: "-11px", top: "var(--njg-s5, 24px)", width: "0", height: "0", borderTop: "11px solid transparent", borderBottom: "11px solid transparent", borderRight: "12px solid var(--njg-card)", filter: "drop-shadow(-2px 1px 1px rgba(60, 40, 20, 0.12))" });
+      Object.assign(tail.style, { position: "absolute", left: "var(--njg-s5, 24px)", top: "-11px", width: "0", height: "0", borderLeft: "11px solid transparent", borderRight: "11px solid transparent", borderBottom: "12px solid var(--njg-card)", filter: "drop-shadow(0 -1px 1px rgba(60, 40, 20, 0.12))" });
       box.appendChild(tail);
-      stage.appendChild(box);
+      document.body.appendChild(box);
+      const fit = () => {
+        if (!box.isConnected) return;
+        const s = side.getBoundingClientRect();
+        const g = guide.getBoundingClientRect();
+        const rail = document.querySelector("#side .side-rail");
+        const floor = rail && rail.offsetParent ? rail.getBoundingClientRect().top : s.bottom;
+        const pad = Math.max(6, Math.min(12, s.width * 0.05));
+        const top = g.bottom + 14;
+        let width = Math.min(210, s.width - 2 * pad);
+        card.style.width = `${width}px`;
+        // shrink until it ends above the rail (the picture is 4:3, so a narrower card is shorter)
+        for (let i = 0; i < 6 && top + card.offsetHeight > floor - pad && width > 90; i++) {
+          width = Math.max(90, width * 0.88);
+          card.style.width = `${width}px`;
+        }
+        box.style.left = `${s.left + (s.width - width) / 2}px`;
+        box.style.top = `${top}px`;
+      };
+      fit();
       callout = box;
+      const onResize = () => fit();
+      global.addEventListener("resize", onResize);
+      box.addEventListener("ck-gone", () => global.removeEventListener("resize", onResize));
       if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(hideCallout);
     };
     const coachStep = (nx, sid) => {
@@ -1786,7 +1810,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
       rung = Cook.Coach.rungs("chai-tray", step, Object.assign(
-        { name, target, live, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
+        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
