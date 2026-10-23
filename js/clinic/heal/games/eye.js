@@ -695,11 +695,11 @@
         S.face("read");
         mouthSay(supported(me.id) && supported(said) ? String(W(BY[said]).kutchi || "") : null);
         // (the clip's real end: the voice path holds a short line a little past its clip, so the quiet is timed from the last
-        // moment a clip, or the device voice, was sounding)
+        // moment a family clip was sounding; a line still to record is timed from its end)
         let sounded = 0;
         const V = Kit0 && Kit0.Voice;
         const ear = setInterval(() => {
-          if ((V && V.playing && V.playing.size) || (root.speechSynthesis && root.speechSynthesis.speaking)) sounded = Date.now();
+          if (V && V.playing && V.playing.size) sounded = Date.now();
         }, 25);
         await (st.reading = after(st.reading, () => ctx.say(lineOf(said), { who: "patient", noBubble: true })));
         clearInterval(ear);
