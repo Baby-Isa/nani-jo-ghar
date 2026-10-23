@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT } from "./static.mjs";
+import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
   assert.equal(kitFindings("css/clinic.css", ".cl-card.oc-card { padding: 2px; }").length, 1);
@@ -98,4 +98,32 @@ test("the repo: no static finding outside the known list (build/lint/static-know
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);
   const fresh = run().filter((f) => !known.has(f.key));
   assert.deepEqual(fresh.map((f) => `${f.check} ${f.at}: ${f.text}`), []);
+});
+test("the known list only shrinks (Zafar, 23 Oct): one more kit restyle or raw value fails; --write-known never adds", () => {
+  const found = run();
+  // the list as --write-known leaves it today (the fixed ones dropped)
+  const knownKeys = shrinkKnown(found, JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")));
+  assert.equal(compareKnown(found, knownKeys).ok, true, "today: green");
+  // a game restyling the shared kit once more: a new finding, and the kit's count above the known list's
+  const restyle = kitFindings("css/cook.css", ".ck-new .njg-btn { padding: 2px; }");
+  const r = compareKnown(found.concat(restyle), knownKeys);
+  assert.equal(r.ok, false);
+  assert.equal(r.fresh.length, 1);
+  assert.deepEqual(r.up.map((u) => u.check), ["kit"]);
+  // a known restyle copied to a second place: the same key, one more occurrence: up, so red
+  const copy = compareKnown(found.concat([found.find((f) => f.check === "kit")]), knownKeys);
+  assert.equal(copy.ok, false);
+  assert.deepEqual(copy.up.map((u) => u.check), ["kit"]);
+  // a raw colour added in a mode's CSS
+  const raw = compareKnown(found.concat(tokenFindings("css/clinic.css", ".cl-new { color: #123456; }")), knownKeys);
+  assert.equal(raw.ok, false);
+  assert.deepEqual(raw.up.map((u) => u.check), ["tokens"]);
+  // a known line edited into a new key while another known one is fixed: still new, so still red (fix it, never re-know it)
+  const swapped = found.filter((f) => f.key !== found.find((x) => x.check === "kit").key).concat(restyle);
+  assert.equal(compareKnown(swapped, knownKeys).ok, false);
+  // the writer keeps only known keys still found: a fixed one drops, a new one is never added
+  const next = shrinkKnown(found.concat(restyle).filter((f) => f.key !== knownKeys[0]), knownKeys);
+  assert.equal(next.length, knownKeys.length - 1);
+  assert.ok(!next.includes(restyle[0].key));
+  assert.ok(next.every((k) => knownKeys.includes(k)));
 });
