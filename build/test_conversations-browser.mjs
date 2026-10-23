@@ -69,11 +69,9 @@ async function open(w, h, extra = "") {
   await page.waitForSelector("body[data-ready]");
   return { ctx, page, errors };
 }
-// tap a pill twice (hear it, then say it)
+// tap a pill ONCE: one tap answers (SH-126, Zafar, 22 Oct); its own speaker beside it is for hearing it first
 async function tapTap(page, sel) {
-  // force: a throbbing pill is never "stable" to Playwright
-  await page.click(sel, { force: true, timeout: 3000 });
-  await sleep(450);
+  // force: a lit (hopping) pill is never "stable" to Playwright
   await page.click(sel, { force: true, timeout: 3000 });
 }
 // answer every moment right (after one wrong try, if asked) until the simulation ends
@@ -124,7 +122,11 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
   await page.click('#rung button[data-v="1"]');
   await page.click("#play");
   await page.waitForSelector(".cv-replies.in .cv-pill");
-  await sleep(1000); // the ghost finger, the first time ever
+  await sleep(1000); // the kit's finger on the reply to pick, the first time ever
+  // SH-124, SH-125: the first time, the right reply glows and the kit's finger taps it; every reply has its own speaker to its left
+  check(!!(await page.$('.cv-pill.ob-lit[data-correct="true"]')) && !!(await page.$(".ob-finger")), `${tag}: the first time, the reply to pick glows and the finger taps it`);
+  const rows = await page.$$eval(".cv-reply", (rs) => rs.map((r) => { const h = r.querySelector(".cv-hear"), p = r.querySelector(".cv-pill"); if (!h || !p) return null; const a = h.getBoundingClientRect(), b = p.getBoundingClientRect(); return { gap: b.left - a.right, outside: !p.contains(h) }; }));
+  check(rows.length >= 2 && rows.every((x) => x && x.outside && x.gap >= 6), `${tag}: a speaker to the left of each reply, outside it, with a gap (${JSON.stringify(rows)})`);
   const moods = [];
   for (let i = 0; i < 3; i++) {
     await tapTap(page, '.cv-pill[data-correct="false"]');
@@ -140,7 +142,7 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
   }
   check(new Set(moods.filter(Boolean)).size >= 3, `${tag}: the speaker cycles embarrassed looks (${moods.join(" | ")})`);
   check((await page.evaluate(() => window.__vib.length)) >= 3, `${tag}: the phone buzzes on each wrong reply`);
-  check(!!(await page.$(".cv-pill.throb")), `${tag}: after two wrongs the right pill throbs`);
+  check(!!(await page.$('.cv-pill.cv-pick[data-correct="true"]')), `${tag}: after two wrongs the right reply glows`);
   check(!!(await page.$(".cv-replies.in")), `${tag}: the conversation doesn't move on`);
   await tapTap(page, '.cv-pill[data-correct="true"]');
   await page.waitForFunction(() => !document.querySelector(".cv-layer") && !document.body.dataset.running, null, { timeout: 8000 });
