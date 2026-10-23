@@ -157,6 +157,45 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
   };
 
+  /*
+   * EASY-08 (the judge, 23 Oct: "the flour jar never moves and has no glow"): in the box the thing itself glows and hops, as chai's
+   * bottle does: the station's own glow (S.glow, with its hop: Onboard.HOP), at once, on the picture the step names (its wordId,
+   * the nearest to where the step points); off when the step moves on or the coach ends.
+   */
+  function thingOf(e) {
+    const S = Cook.scene;
+    if (!S || !S.children || !e) return null;
+    let best = null;
+    let bd = Infinity;
+    // (or, for a step not named by a word, maani's "dough", the smallest tappable picture under where it points)
+    let hit = null;
+    let ha = 360000;
+    const look = (list) =>
+      (list || []).forEach((o) => {
+        if (!o || !o.active) return;
+        if (e.x != null && !best && o.texture && o.input && o.input.enabled && o.visible !== false && o.getBounds) {
+          const b = o.getBounds();
+          const a = b.width * b.height;
+          if (a > 0 && a < ha && b.contains(e.x, e.y)) [ha, hit] = [a, o];
+        }
+        if (e.key && o.wordId === e.key && o.visible !== false && o.getBounds) {
+          const b = o.getBounds();
+          const d = e.x == null ? 0 : Math.hypot(b.centerX - e.x, b.centerY - e.y);
+          if (d < bd) [bd, best] = [d, o];
+        }
+        if (o.list) look(o.list);
+      });
+    look(S.children.list);
+    return best || hit;
+  }
+  function lightThing(state, obj) {
+    if (state.lit === obj) return;
+    const S = Cook.scene;
+    if (state.lit && S && S.glow) S.glow(state.lit, false);
+    state.lit = obj;
+    if (obj && S && S.glow) S.glow(obj, true, { bounce: true, now: true });
+  }
+
   /**
    * Coach station `key` (once ever): spotlight each next thing to do, as its
    * script says (data.onboard), until C.stop() (the station ends).
@@ -190,6 +229,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return;
         }
         if (!t) {
+          lightThing(state, null);
           // nothing to point at for a moment: the overlay steps back (it never traps a child)
           if ((state.lost += 120) > 2500) C.stop(true);
           return;
@@ -199,6 +239,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           state.last = s;
           OB().signal("cook-next");
         }
+        lightThing(state, OB().active() ? thingOf(e) : null);
         return;
       }
       if (t && s !== state.last) {
@@ -224,6 +265,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) a.skip();
+    lightThing(state, null);
     draw(null);
   };
 
@@ -235,6 +277,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     live = null;
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) (a.leave || a.skip)();
+    lightThing(state, null);
     draw(null);
   };
 

@@ -32,6 +32,9 @@
 .ob-finger.down .ob-finger-in { transform-origin: calc(100% * 25 / 64) calc(100% * 77 / 80); }
 .ob-finger.down .ob-finger-in svg { transform: scaleY(-1); }
 .ob-finger.down .ob-finger-in .ob-ripple { top: calc(100% * 77 / 80 - var(--njg-tap) * 0.25); }
+/* a hand on the right or the left of the point, pointing across (Onboard.fingerFrom): turned round its fingertip */
+.ob-finger.from-right .ob-finger-in svg { transform-origin: calc(100% * 25 / 64) calc(100% * 3 / 80); transform: rotate(-90deg); }
+.ob-finger.from-left .ob-finger-in svg { transform-origin: calc(100% * 25 / 64) calc(100% * 3 / 80); transform: rotate(90deg); }
 /* the tap's ripple: small and soft, at the fingertip only (the judge, 23 Oct: never a ring round the thing) */
 .ob-finger .ob-finger-in .ob-ripple { position: absolute; left: calc(100% * 25 / 64 - var(--njg-tap) * 0.25); top: calc(100% * 3 / 80 - var(--njg-tap) * 0.25); width: calc(var(--njg-tap) * 0.5); height: calc(var(--njg-tap) * 0.5); border-radius: 50%; border: calc(var(--njg-s1) / 2) solid var(--njg-focus); background: color-mix(in srgb, var(--njg-focus) 30%, transparent); opacity: 0; }
 

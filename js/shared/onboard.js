@@ -256,7 +256,10 @@
   Onboard.fingerKeys = function (o) {
     const F = Onboard.FINGER;
     const T = F.in + F.press + F.up + F.gap;
-    const L = o && o.down ? { x: Onboard.FINGER_LIFT.x, y: -Onboard.FINGER_LIFT.y } : Onboard.FINGER_LIFT;
+    const F0 = Onboard.FINGER_LIFT;
+    const from = (o && o.from) || (o && o.down ? "above" : "below");
+    // it lifts away the way the hand lies: up for a hand from above, right for a hand on the right ...
+    const L = { above: { x: F0.x, y: -F0.y }, below: F0, right: { x: F0.y, y: -8 }, left: { x: -F0.y, y: -8 } }[from] || F0;
     const at = (ms) => +(ms / T).toFixed(4);
     return [
       { o: 0, x: L.x, y: L.y, press: 0 },
@@ -467,8 +470,11 @@
     el.setAttribute("aria-hidden", "true");
     el.innerHTML = `<div class="ob-finger-in"><span class="ob-ripple"></span>${HAND}</div>`;
     if (!o.container) el.classList.add("page");
-    const hotY = o.down ? 80 - HOTSPOT[1] : HOTSPOT[1];
-    if (o.down) el.classList.add("down");
+    // where the hand lies (o.from): above (pointing down), below (pointing up), right or left of the point (pointing across)
+    const from = o.from || (o.down ? "above" : "below");
+    const hotY = from === "above" ? 80 - HOTSPOT[1] : HOTSPOT[1];
+    if (from === "above") el.classList.add("down");
+    if (from === "left" || from === "right") el.classList.add(`from-${from}`);
     host.appendChild(el);
     const inner = el.firstChild;
     const ripple = inner.querySelector(".ob-ripple");
@@ -495,7 +501,7 @@
     if (reduced() || !inner.animate || o.hold) inner.classList.add("pressed");
     else {
       const T = Onboard.fingerMs();
-      const keys = Onboard.fingerKeys({ down: o.down });
+      const keys = Onboard.fingerKeys({ from });
       const frames = keys.map((kf) => ({ offset: kf.o, transform: `translate(${kf.x}px, ${kf.y}px) scale(${kf.press ? 0.88 : 1})` }));
       anims.push(inner.animate(frames, { duration: T, iterations: Infinity, easing: "ease-in-out" }));
       const ring = keys.find((kf) => kf.ring);
@@ -535,7 +541,17 @@
       el.setAttribute("ry", b.r.toFixed(1));
     };
     let litEls = [];
-    const lit = (els) => {
+    // the thing itself glows and hops, never its tile (the judge, 23 Oct: the clinic's tool tile hopped with a glow of its own):
+    // a control holding a picture lights the picture; a control that is its own thing (a pill, a word) lights itself
+    const litOf = (e) => {
+      const im = e.querySelector && e.querySelector("img");
+      if (!im) return e;
+      const a = im.getBoundingClientRect();
+      const b = e.getBoundingClientRect();
+      return a.width * a.height >= 0.2 * b.width * b.height ? im : e;
+    };
+    const lit = (targets) => {
+      const els = targets.map(litOf);
       litEls.filter((e) => !els.includes(e)).forEach((e) => e.classList.remove("ob-lit"));
       els.forEach((e) => e.classList.add("ob-lit"));
       litEls = els.slice();
@@ -576,7 +592,48 @@
   const BOUNCE = { ms: 900 };
   // the finger's tip by a thing, never over it (the judge, 23 Oct): from above, just over its top, clear of its hop; from below,
   // at its base
-  const tipOf = (r, down) => (r ? { x: r.x + r.w / 2, y: down ? r.y - r.h * Onboard.HOP : r.y + r.h * 0.96 } : null);
+  const tipOf = (r, from) => {
+    if (!r) return null;
+    if (from === true || from === "above") return { x: r.x + r.w / 2, y: r.y - r.h * Onboard.HOP };
+    if (from === "right") return { x: r.x + r.w + 2, y: r.y + r.h / 2 };
+    if (from === "left") return { x: r.x - 2, y: r.y + r.h / 2 };
+    return { x: r.x + r.w / 2, y: r.y + r.h * 0.96 };
+  };
+  /*
+   * Where the hand lies by a thing (the judge, 23 Oct: never over the thing nor a neighbour): the first of above, right, left,
+   * below whose hand (and its lift) stays on screen and over nothing that can be tapped but the thing itself (for an HTML thing:
+   * what is under the hand, sampled; a canvas thing: above if there is room, else right).
+   */
+  const footOf = (from, t) => {
+    const m = 6;
+    if (from === "above") return { x: t.x - 25 - m, y: t.y - 77 - 34, w: 64 + 2 * m, h: 77 + 34 };
+    if (from === "right") return { x: t.x + m, y: t.y - 39 - 8, w: 77 + 34, h: 64 + 8 };
+    if (from === "left") return { x: t.x - 77 - 34 - m, y: t.y - 39 - 8, w: 77 + 34, h: 64 + 8 };
+    return { x: t.x - 25 - m, y: t.y + m, w: 64 + 2 * m, h: 77 + 34 };
+  };
+  const TAPPABLE = "button, img, a[href], input, select, [role='button'], .wc";
+  Onboard.fingerFrom = function (target, prefer) {
+    const order = ["above", "right", "left", "below"];
+    if (prefer && prefer !== "auto") return prefer;
+    const r = union(rectsOf(target));
+    if (!r) return "above";
+    const els = listOf(target).map(htmlOf).filter(Boolean);
+    const W = root.innerWidth || 1e4;
+    const H = root.innerHeight || 1e4;
+    const fits = (f) => {
+      const a = footOf(f, tipOf(r, f));
+      if (a.x < 0 || a.y < 0 || a.x + a.w > W || a.y + a.h > H) return false;
+      if (!els.length || !document.elementFromPoint) return true;
+      for (let i = 0; i <= 3; i++)
+        for (let j = 0; j <= 3; j++) {
+          const hit = document.elementFromPoint(a.x + (a.w * i) / 3, a.y + (a.h * j) / 3);
+          const t = hit && hit.closest && hit.closest(TAPPABLE);
+          if (t && !els.some((e) => e.contains(t) || t.contains(e))) return false;
+        }
+      return true;
+    };
+    return order.find(fits) || "above";
+  };
   const bouncer = (move, height) => {
     if (typeof move !== "function" || reduced()) return { tick() {}, stop() {} };
     const t0 = performance.now();
@@ -713,8 +770,8 @@
       LCghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
       if (st.ghost.gesture === "tap") {
         // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
-        const down = !!(st.ghost.down || opts.fingerDown);
-        if (!finger) finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), down), { container: layer, down });
+        const from = Onboard.fingerFrom(st.spotlight, st.ghost.down || opts.fingerDown ? "above" : "auto");
+        if (!finger) finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), from), { container: layer, from });
         setTimeout(() => {
           if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
         }, Onboard.fingerMs());
@@ -1084,7 +1141,9 @@
     };
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), !!o.fingerDown)), { container: layer, step: o.step, down: !!o.fingerDown });
+    // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
+    const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerDown ? "above" : "auto");
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
