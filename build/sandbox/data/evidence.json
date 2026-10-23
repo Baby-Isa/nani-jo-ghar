@@ -9891,10 +9891,10 @@
    "at": "life:ghost",
    "after": null,
    "capture": [
-    "trace:.ob-ghost:4000"
+    "trace:.ob-finger:4000"
    ],
    "expect": [
-    "traceAmp:.ob-ghost>=40",
+    "traceAmp:.ob-finger>=40",
     "times:life:ghost>=1"
    ],
    "note": "the ghost finger plays (its trace)"

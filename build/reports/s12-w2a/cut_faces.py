@@ -3,7 +3,7 @@
 
   python3 build/reports/s12-w2a/cut_faces.py            -> assets/shared/faces/{doctor,girl,nani,nana}.webp (128 px)
 
-The rule (docs/design-language/art-plans/s12-art-plan.md section 2): a circle centred on the NOSE, its diameter 1.5 times the
+The rule (docs/design-language/art-plans/s12-art-plan.md section 2): a circle centred on the NOSE, its diameter 1.35 times the
 head's height (the top of the hair, scarf or cap to the chin or the beard's end), so every head is the same size in its circle
 and both ears (or both sides of the scarf) show. The flat #808080 ground is keyed out where it touches the cell's edge (a flood
 fill, so grey shading inside the figure stays), its edge softened by a pixel; outside the circle is transparent. The CSS never
@@ -87,7 +87,7 @@ def main():
         rgba = cell.convert("RGBA")
         rgba.putalpha(key_ground(cell))
         head = f["chin"] - f["top"]
-        d = round(1.5 * head)
+        d = round(1.35 * head)  # the judge, 23 Oct: the head fills the circle (its top is 0.64 head above the nose: 1.35 keeps it in)
         nx, ny = f["nose"]
         box = (nx - d // 2, ny - d // 2, nx - d // 2 + d, ny - d // 2 + d)
         sq = Image.new("RGBA", (d, d), (0, 0, 0, 0))

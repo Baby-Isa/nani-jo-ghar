@@ -1399,35 +1399,12 @@
           },
         },
       };
-      // CHAI-31 (the judge: the ghost finger covers "Wa alaikum salaam!"): the finger taps the reply's right end, its
-      // words left readable (the module puts it on the pill's middle)
-      if (global.MutationObserver && !kitchenTalk.mo) {
-        kitchenTalk.mo = new MutationObserver((ms) =>
-          ms.forEach((m) =>
-            m.addedNodes.forEach((n) => {
-              if (!n.classList || !n.classList.contains("cv-ghost")) return;
-              const x = parseFloat(n.style.left) || 0;
-              const y = parseFloat(n.style.top) || 0;
-              const pill = [...document.querySelectorAll(".cv-replies .cv-pill")].find((q) => {
-                const r = q.getBoundingClientRect();
-                return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-              });
-              if (!pill) return;
-              const r = pill.getBoundingClientRect();
-              n.style.left = `${r.right - Math.min(26, r.width * 0.12)}px`;
-              n.style.top = `${r.top + r.height * 0.55}px`;
-            })
-          )
-        );
-        kitchenTalk.mo.observe(document.body, { childList: true, subtree: true });
-      }
       const dish = (((ctx.order || {}).dishes || [])[0] || {}).recipe || "chai";
       const c1 = await C.maybe(Object.assign({ placement: "CK1" }, base));
       if (!c1.ran && token === Cook.run) await C.maybe(Object.assign({ placement: "CK2", x: { dish: dish === "chai" ? "cook-chai" : `cook-${dish}` } }, base));
     } catch (e) {
       /* the conversation is never the game: the order goes on */
     } finally {
-      if (kitchenTalk.mo) kitchenTalk.mo = (kitchenTalk.mo.disconnect(), null);
       if (Cook.expect && Cook.expect.talk) Cook.expect = prevExpect && !prevExpect.talk ? prevExpect : null;
     }
     Cook.checkRun(token);

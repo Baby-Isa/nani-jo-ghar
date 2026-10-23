@@ -101,6 +101,9 @@
    so they are never cropped again: no zoom, centred */
 .cl-face img[src*="/shared/faces/"], .hs-face .hs-face-art[src*="/shared/faces/"] { --face-zoom: 1; --face-y: 50%; object-position: center; }
 .oc-card .oc-face img[src*="/shared/faces/"] { object-position: center; }
+/* ART-08 (the judge, 23 Oct: "the speaker badge covers the right ear"): every face circle's speaker badge sits ON the circle's
+   lower-right edge, mostly outside it, never over the face or an ear (the order cards, the guide box, the clinic, Cook's cards) */
+.say-badge { transform: translate(34%, 34%); }
 /* (s09, the judge on 20 Oct: her circle "brows to chin fill the circle, no hair or ears" beside Nana's and the doctor's whole heads with a
    margin: hers zooms out to her whole face, ears and the top of her hair inside the circle, as theirs are) */
 /* (shared2, the orchestrator on 21 Oct: at 1.3 her circle showed her whole head and shoulders, far wider than Nana's and the doctor's.
