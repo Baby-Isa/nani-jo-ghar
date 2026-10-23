@@ -1,0 +1,6 @@
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-01.png: paani|1 / chai|2 / dudh|1 / hakro khun|1 english: water,chai,milk,one sugar
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-02.png: paani|1 / chai|2 / dudh|1 / hakro khun|1 english: water,chai,milk,one sugar
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-03.png: water|1 / chai|2 / milk|1 / one sugar|1 english: water,chai,milk,one sugar
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-01.png: paani|4 / chai|4 / dudh|4 / hakro khun|1 english: [blank],[blank],[blank],one sugar
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-02.png: paani|4 / chai|4 / dudh|4 / hakro khun|1 english: [blank],[blank],[blank],one sugar
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-03.png: water|4 / chai|4 / milk|4 / one sugar|1 english: [blank],[blank],[blank],one sugar

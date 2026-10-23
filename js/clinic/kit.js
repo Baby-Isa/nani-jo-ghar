@@ -161,8 +161,17 @@
     return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/v2/faces/neutral.webp");
   };
   /**
+   * ART-19 (Zafar, 22 Oct, A10: "way too quick ... slow it way down and open the mouth less"): every talking face keeps the one
+   * calm cadence of the shared guide box (js/shared/guide.js NaniGuide.MOUTH: open briefly, shut longer, about two flaps a
+   * second; a slow, rare blink). Kit.mouthMs(open) is how long the mouth stays as it is; Kit.blinkGap() the wait to a blink.
+   */
+  const MOUTH = () => (global.NaniGuide && global.NaniGuide.MOUTH) || { open: 150, shut: 330, shutJitter: 140, blink: 220, blinkEvery: 5500, blinkJitter: 3500 };
+  Kit.mouthMs = (open) => (Kit.fast ? 60 : open ? MOUTH().open : MOUTH().shut + Math.random() * MOUTH().shutJitter);
+  Kit.blinkGap = () => MOUTH().blinkEvery + Math.random() * MOUTH().blinkJitter;
+  /**
    * ART-19 (s08 w6N): while the doctor's line plays and he is not on screen, the faces on his card (and his box) flap
-   * between his talk face and his neutral face (both his own art, data/clinic/heal-art.json doctor.box). Returns the stop.
+   * between his talk face and his neutral face (both his own art, data/clinic/heal-art.json doctor.box), in the calm cadence
+   * (Kit.mouthMs). Returns the stop.
    */
   Kit.cardTalk = function () {
     const doc = global.document;
@@ -182,7 +191,7 @@
         if (i.dataset.rest == null) i.dataset.rest = i.getAttribute("src") || rest;
         i.src = open ? talk : i.dataset.rest;
       });
-      t = setTimeout(flap, open ? 170 : 130);
+      t = setTimeout(flap, Kit.mouthMs(open));
     };
     let t = setTimeout(flap, 0);
     return () => {
@@ -324,11 +333,11 @@
         if (f && f.blink && !st.talking) {
           set(layer, f.blink);
           layer.hidden = false;
-          setTimeout(() => !st.talking && rest(), 140);
+          setTimeout(() => !st.talking && rest(), MOUTH().blink);
         }
-        st.blink = setTimeout(tick, 3200 + Math.random() * 2200);
+        st.blink = setTimeout(tick, Kit.blinkGap());
       };
-      st.blink = setTimeout(tick, 2400);
+      st.blink = setTimeout(tick, MOUTH().blinkEvery * 0.6);
     };
     d.__doc = {
       head,
@@ -355,11 +364,11 @@
             set(layer, f.talk);
             layer.hidden = !open;
           } else layer.hidden = open; // the closed mouth off = DD1's open mouth
+          st.flap = setTimeout(flap, Kit.mouthMs(open));
         };
         flap();
-        st.flap = setInterval(flap, Kit.fast ? 60 : 170);
         return () => {
-          clearInterval(st.flap);
+          clearTimeout(st.flap);
           st.talking = false;
           rest();
         };
