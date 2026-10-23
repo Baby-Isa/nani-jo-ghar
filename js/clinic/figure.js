@@ -548,10 +548,15 @@
             show(A, "talk", open);
           };
           fig.talking = true;
-          flap();
-          const t = setInterval(flap, Kit && Kit.fast ? 60 : 170);
+          // ART-19 (Zafar, 22 Oct): the one calm cadence (Kit.mouthMs: open briefly, shut longer)
+          let t = 0;
+          const tick = () => {
+            flap();
+            t = setTimeout(tick, Kit && Kit.mouthMs ? Kit.mouthMs(open) : 170);
+          };
+          tick();
           return () => {
-            clearInterval(t);
+            clearTimeout(t);
             fig.talking = false;
             const A = fig.art;
             if (A && A.lifeImg) A.lifeImg.hidden = true;

@@ -843,7 +843,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const stopBob = this.talkBob(img, who);
       // ART-19 (s08 w6G; the judge: "Nani keeps the same closed smile in all 8 frames while her line plays"): while she
       // speaks at the counter her mouth moves as the guide box's face does (js/shared/guide.js flap): her talking face
-      // and her resting one in turn every 130-210 ms (two mouth frames of the one registered picture), until the line ends.
+      // and her resting one in turn in the one calm cadence (NaniGuide.mouthMs, ART-19, Zafar 22 Oct), until the line ends.
       // Her mood reads "talk" meanwhile, so her resting blink never cuts in
       let flapT = 0;
       const talkKey = who === "nani" ? "nani-talk" : `${who}-talk`;
@@ -856,9 +856,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!img.active || img.mood !== "talk") return;
           open = !open;
           img.setTexture(open ? talkKey : restKey);
-          flapT = setTimeout(flap, 130 + Math.random() * 80);
+          flapT = setTimeout(flap, window.NaniGuide && window.NaniGuide.mouthMs ? window.NaniGuide.mouthMs(open) : 300);
         };
-        flapT = setTimeout(flap, 130 + Math.random() * 80);
+        flapT = setTimeout(flap, window.NaniGuide && window.NaniGuide.mouthMs ? window.NaniGuide.mouthMs(true) : 150);
       }
       const stopFlap = () => {
         clearTimeout(flapT);

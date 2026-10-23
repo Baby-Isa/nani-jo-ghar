@@ -384,8 +384,12 @@
     let dy = 0;
     if (el.classList && el.classList.contains("ob-lit") && root.getComputedStyle) {
       const tr = String(root.getComputedStyle(el).translate || "");
-      const m = /^(-?[\d.]+)px(?:\s+(-?[\d.]+)px)?/.exec(tr);
-      if (m) [dx, dy] = [+m[1] || 0, +m[2] || 0];
+      // (the bounce is `translate: 0 -10%`: the computed value keeps the percentage, of the control's own size)
+      const m = /^(-?[\d.]+)(px|%)(?:\s+(-?[\d.]+)(px|%))?/.exec(tr);
+      if (m) {
+        dx = m[2] === "%" ? (+m[1] / 100) * r.width : +m[1] || 0;
+        dy = m[3] == null ? 0 : m[4] === "%" ? (+m[3] / 100) * r.height : +m[3] || 0;
+      }
     }
     return { x: r.left - dx, y: r.top - dy, w: r.width, h: r.height };
   }
