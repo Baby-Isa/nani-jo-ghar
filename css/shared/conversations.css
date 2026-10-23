@@ -185,7 +185,8 @@
   .cv-replies { flex-direction: row; flex-wrap: wrap-reverse; justify-content: flex-end; align-items: center; gap: calc(var(--njg-u) * 8) calc(var(--njg-u) * 14); bottom: max(calc(var(--njg-u) * 6), env(safe-area-inset-bottom)); max-width: calc(100vw - var(--njg-side-w) - calc(var(--njg-u) * 24)); }
   .cv-reply { gap: calc(var(--njg-u) * 8); }
   .cv-hear { width: var(--njg-tap); height: var(--njg-tap); }
-  .cv-pill { min-height: var(--njg-tap); padding: calc(var(--njg-u) * 4) calc(var(--njg-u) * 16) calc(var(--njg-u) * 4) calc(var(--njg-u) * 16); }
-  .cv-pill .cv-pic { font-size: calc(var(--njg-u) * 26); }
-  .cv-pill .cv-words { font-size: calc(var(--njg-u) * 21); }
+  .cv-pill { min-height: var(--njg-tap); gap: calc(var(--njg-u) * 8); padding: calc(var(--njg-u) * 4) calc(var(--njg-u) * 12); }
+  .cv-replies.cv-helping { max-width: calc(100vw - var(--njg-side-w) - calc(var(--njg-u) * 24) - var(--njg-hand-h) - var(--njg-s6)); }
+  .cv-pill .cv-pic { font-size: calc(var(--njg-u) * 22); }
+  .cv-pill .cv-words { font-size: calc(var(--njg-u) * 19); }
 }

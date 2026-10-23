@@ -1,12 +1,5 @@
-1366x768: {"rows":[{"hear":[878,611,55,55],"pill":[949,606,289,66],"lit":false,"text":"👋🚪Khuda-fis!"},{"hear":[804,691,55,55],"pill":[875,681,363,66],"lit":true,"text":"🙋Wa alaikum salaam!"}],"finger":true,"ask":"Salamun alaykum!"}
-1366x768: after the speaker the replies still wait: true; one tap answered: true
-1366x768: family clips heard: assets/audio/family/mum/salamun-alaykum.mp3
-1366x768: errors: none
-1480x924: {"rows":[{"hear":[992,767,55,55],"pill":[1063,762,289,66],"lit":false,"text":"👋🚪Khuda-fis!"},{"hear":[918,847,55,55],"pill":[989,838,363,66],"lit":true,"text":"🙋Wa alaikum salaam!"}],"finger":true,"ask":"Salamun alaykum!"}
-1480x924: after the speaker the replies still wait: true; one tap answered: true
-1480x924: family clips heard: assets/audio/family/mum/salamun-alaykum.mp3
-1480x924: errors: none
-915x412: {"rows":[{"hear":[427,255,55,55],"pill":[498,250,289,66],"lit":false,"text":"👋🚪Khuda-fis!"},{"hear":[353,335,55,55],"pill":[424,323,363,66],"lit":true,"text":"🙋Wa alaikum salaam!"}],"finger":true,"ask":"Salamun alaykum!"}
+915x412: the lit reply's top, 250 ms apart: 358, 356.7, 353.8, 358, 358, 353.9
+915x412: {"rows":[{"hear":[232,358,48,48],"pill":[288,358,184,48],"lit":false,"text":"👋🚪Khuda-fis!"},{"hear":[486,358,48,48],"pill":[542,355,245,48],"lit":true,"text":"🙋Wa alaikum salaam!"}],"finger":true,"ask":"Salamun alaykum!"}
 915x412: after the speaker the replies still wait: true; one tap answered: true
 915x412: family clips heard: assets/audio/family/mum/salamun-alaykum.mp3
 915x412: errors: none

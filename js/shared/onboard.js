@@ -572,7 +572,10 @@
           const H = root.innerHeight || 1e4;
           const x = Math.max(m, b.x);
           const y = Math.max(m, b.y);
-          b = Object.assign({}, b, { x, y, w: Math.min(b.x + b.w, W - m) - x, h: Math.min(b.y + b.h, H - m) - y });
+          const w = Math.min(b.x + b.w, W - m) - x;
+          const h = Math.min(b.y + b.h, H - m) - y;
+          // (a target wholly off the screen, mid-move: no box until it is back)
+          b = w > 0 && h > 0 ? Object.assign({}, b, { x, y, w, h }) : null;
         }
         [hole, box].forEach((el) => {
           el.style.display = b ? "" : "none";
