@@ -1,0 +1,216 @@
+{
+ "_about": "s12 chai measures (build/reports/s12-w3b/cut_pour.py): the pour frames MIRRORED (spout right, handle left), each on one canvas registered on its rim's centre (cx, cy; rx, ry the rim's half width and height, source px); lip the spout's tip; pour where the chai leaves the rim (the stream's anchor). The glasses square on their rim's circle (r: its radius as a share of the width).",
+ "pan-tip-0": {
+  "file": "chai-pan/pan-tip-0-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 341.0,
+  "cy": 151.5,
+  "rx": 113.0,
+  "ry": 139.5,
+  "lip": [
+   454.0,
+   145.5
+  ],
+  "pour": null
+ },
+ "pan-tip-20": {
+  "file": "chai-pan/pan-tip-20-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 340.5,
+  "cy": 152.0,
+  "rx": 109.5,
+  "ry": 140.0,
+  "lip": [
+   450.0,
+   145.5
+  ],
+  "pour": null
+ },
+ "pan-tip-40": {
+  "file": "chai-pan/pan-tip-40-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 341.0,
+  "cy": 151.0,
+  "rx": 102.0,
+  "ry": 144.0,
+  "lip": [
+   443.0,
+   149.0
+  ],
+  "pour": null
+ },
+ "pan-tip-60": {
+  "file": "chai-pan/pan-tip-60-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 341.5,
+  "cy": 151.5,
+  "rx": 94.5,
+  "ry": 145.5,
+  "lip": [
+   436.0,
+   160.5
+  ],
+  "pour": null
+ },
+ "pan-pour": {
+  "file": "chai-pan/pan-pour-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 340.5,
+  "cy": 151.5,
+  "rx": 87.5,
+  "ry": 145.5,
+  "lip": [
+   428.0,
+   159.5
+  ],
+  "pour": [
+   423.0,
+   200.0
+  ]
+ },
+ "pan-pour-end": {
+  "file": "chai-pan/pan-pour-end-s12.webp",
+  "w": 493,
+  "h": 304,
+  "cx": 341.0,
+  "cy": 151.5,
+  "rx": 89.0,
+  "ry": 145.5,
+  "lip": [
+   430.0,
+   159.0
+  ],
+  "pour": [
+   425.0,
+   199.6
+  ]
+ },
+ "pan-tip-0-black": {
+  "file": "chai-pan/pan-tip-0-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.0,
+  "cy": 153.0,
+  "rx": 113.0,
+  "ry": 139.0,
+  "lip": [
+   459.0,
+   146.0
+  ],
+  "pour": null
+ },
+ "pan-tip-20-black": {
+  "file": "chai-pan/pan-tip-20-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.0,
+  "cy": 153.0,
+  "rx": 109.0,
+  "ry": 140.0,
+  "lip": [
+   455.0,
+   147.0
+  ],
+  "pour": null
+ },
+ "pan-tip-40-black": {
+  "file": "chai-pan/pan-tip-40-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.0,
+  "cy": 153.0,
+  "rx": 101.0,
+  "ry": 144.0,
+  "lip": [
+   447.0,
+   150.5
+  ],
+  "pour": null
+ },
+ "pan-tip-60-black": {
+  "file": "chai-pan/pan-tip-60-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.0,
+  "cy": 153.0,
+  "rx": 94.0,
+  "ry": 146.0,
+  "lip": [
+   440.0,
+   161.5
+  ],
+  "pour": null
+ },
+ "pan-pour-black": {
+  "file": "chai-pan/pan-pour-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.0,
+  "cy": 153.0,
+  "rx": 87.0,
+  "ry": 146.0,
+  "lip": [
+   433.0,
+   158.5
+  ],
+  "pour": [
+   428.0,
+   201.8
+  ]
+ },
+ "pan-pour-end-black": {
+  "file": "chai-pan/pan-pour-end-black-s12.webp",
+  "w": 503,
+  "h": 306,
+  "cx": 346.5,
+  "cy": 153.0,
+  "rx": 88.5,
+  "ry": 146.0,
+  "lip": [
+   435.0,
+   159.5
+  ],
+  "pour": [
+   430.0,
+   201.4
+  ]
+ },
+ "glass-empty": {
+  "file": "glass/glass-empty-top-s12.webp",
+  "w": 240,
+  "h": 240,
+  "r": 0.4905,
+  "fit": [
+   259.6,
+   474.7,
+   234.5
+  ]
+ },
+ "glass-chai": {
+  "file": "glass/glass-chai-top-s12.webp",
+  "w": 240,
+  "h": 240,
+  "r": 0.4901,
+  "fit": [
+   765.6,
+   474.7,
+   235.2
+  ]
+ },
+ "glass-black": {
+  "file": "glass/glass-black-top-s12.webp",
+  "w": 240,
+  "h": 240,
+  "r": 0.4907,
+  "fit": [
+   1273.1,
+   475.4,
+   234.5
+  ]
+ }
+}
