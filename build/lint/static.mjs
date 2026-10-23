@@ -17,7 +17,8 @@
 //   loadcap   an art load is never capped in game time: no Cook.wait inside a Promise.race with a load (at test speed a 5 s cap
 //             became 1 s and Phaser drew its green missing-texture box where a face goes; CHAI-25, CK-04, CK-08, s08 w8A):
 //             cap it in real time (Cook.Stations.loadArt / capLoad)
-// Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
+// Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails, and so does
+// a check with more findings than the list holds for it; --write-known only shrinks the list (Zafar, 23 Oct: compareKnown, shrinkKnown).
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -259,15 +260,64 @@ export function run(root = ROOT, only = null) {
   return out;
 }
 
+// ---------- the known list only shrinks (Zafar, 23 Oct; docs/process/checks-to-build.md) ----------
+// The known findings are today's debt (the 52 kit restyles, the 883 raw values, ...). A finding not on the list fails; and no
+// check may have more findings than the list holds for it (a known line edited into two still fails). --write-known only ever
+// rewrites the list DOWNWARDS: it keeps the known keys still found and drops the fixed ones; it never adds one (a new finding
+// is fixed, never made known), and it refuses while any is new.
+const checkOf = (key) => String(key).split("|")[0];
+export function countBy(keys) {
+  const by = {};
+  for (const k of keys) by[checkOf(k)] = (by[checkOf(k)] || 0) + 1;
+  return by;
+}
+/**
+ * found findings against the known list (one entry per occurrence: a line written twice is two) -> {fresh, gone, by, knownBy,
+ * up: [{check, now, known}], ok}. Counted by occurrence, so a known restyle copied to a second place is one more, and fails.
+ */
+export function compareKnown(found, knownKeys) {
+  const known = new Set(knownKeys);
+  const keys = new Set(found.map((f) => f.key));
+  const fresh = found.filter((f) => !known.has(f.key));
+  const gone = [...known].filter((k) => !keys.has(k));
+  const by = countBy(found.map((f) => f.key));
+  const knownBy = countBy(knownKeys);
+  const up = Object.keys(by).filter((c) => by[c] > (knownBy[c] || 0)).map((c) => ({ check: c, now: by[c], known: knownBy[c] || 0 }));
+  return { fresh, gone, by, knownBy, up, ok: !fresh.length && !up.length };
+}
+/** The list --write-known writes: each known key as many times as it is both known and still found (never more), sorted. */
+export function shrinkKnown(found, knownKeys) {
+  const left = new Map();
+  for (const f of found) left.set(f.key, (left.get(f.key) || 0) + 1);
+  const out = [];
+  for (const k of knownKeys) {
+    const n = left.get(k) || 0;
+    if (n > 0) (out.push(k), left.set(k, n - 1));
+  }
+  return out.sort();
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const argv = process.argv.slice(2), val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
   const only = val("--only") ? val("--only").split(",") : null;
   const found = run(ROOT, only);
-  if (argv.includes("--write-known")) { writeFileSync(KNOWN, JSON.stringify([...new Set(found.map((f) => f.key))].sort(), null, 1) + "\n"); console.log(`static: ${found.length} known findings written`); process.exit(0); }
-  const known = new Set(existsSync(KNOWN) ? JSON.parse(readFileSync(KNOWN, "utf8")) : []);
-  const fresh = found.filter((f) => !known.has(f.key)), gone = [...known].filter((k) => !found.some((f) => f.key === k));
-  const by = {}; for (const f of found) by[f.check] = (by[f.check] || 0) + 1;
-  for (const f of (argv.includes("--all") ? found : fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.at}: ${f.text}`);
-  console.log(`static: ${found.length} findings (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - fresh.length} known, ${fresh.length} new${gone.length ? `; ${gone.length} known ones are fixed: run --write-known to shrink the list` : ""}`);
-  process.exit(fresh.length ? 1 : 0);
+  const knownKeys = existsSync(KNOWN) ? JSON.parse(readFileSync(KNOWN, "utf8")) : [];
+  const known = new Set(knownKeys);
+  const cmp = compareKnown(found, only ? knownKeys.filter((k) => only.includes(checkOf(k))) : knownKeys);
+  if (argv.includes("--write-known")) {
+    if (only) { console.error("static: --write-known runs on every check (no --only)"); process.exit(2); }
+    if (cmp.fresh.length) {
+      for (const f of cmp.fresh.slice(0, 60)) console.log(`NEW ${f.check} ${f.at}: ${f.text}`);
+      console.error(`static: ${cmp.fresh.length} new finding(s): the known list only shrinks (Zafar, 23 Oct). Fix them; nothing written`);
+      process.exit(1);
+    }
+    const next = shrinkKnown(found, knownKeys);
+    writeFileSync(KNOWN, JSON.stringify(next, null, 1) + "\n");
+    console.log(`static: known list ${knownKeys.length} -> ${next.length} (${Object.entries(countBy(next)).map(([k, v]) => `${k} ${v}`).join(", ")})`);
+    process.exit(0);
+  }
+  for (const f of (argv.includes("--all") ? found : cmp.fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.at}: ${f.text}`);
+  for (const u of cmp.up) console.log(`UP ${u.check}: ${u.now} findings, the known list holds ${u.known} (it only shrinks)`);
+  console.log(`static: ${found.length} findings (${Object.entries(cmp.by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - cmp.fresh.length} known, ${cmp.fresh.length} new${cmp.up.length ? `, ${cmp.up.length} check(s) up` : ""}${cmp.gone.length ? `; ${cmp.gone.length} known ones are fixed: run --write-known to shrink the list` : ""}`);
+  process.exit(cmp.ok ? 0 : 1);
 }

@@ -110,3 +110,6 @@
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
 .njg-guide .ng-rec { display: none !important; }
+
+/* ART-08: the speaker badge on the circle's edge, never over the face (as css/shared/order-card.css) */
+.say-badge { transform: translate(34%, 34%); }

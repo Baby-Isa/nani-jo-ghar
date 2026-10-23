@@ -32,6 +32,20 @@
 .wc-en.none { display: none; }
 .wc-k > *, .wc-en > * { min-width: 0; }
 
+/* SH-123 (Zafar, 22 Oct, A16: "floating around ... centralised and on their half ... make the words bigger, they scale ... with the
+   screen size and the card size"): on the big card the speaker, the Kutchi and the English sit centred as one group in their half
+   (under the picture, or beside it where a game lays the card out across), and grow with the strip's own width (container units),
+   never under the shared sizes. The sidebar row keeps its size. */
+.wc-card .wc-strip { container-type: inline-size; justify-content: center; }
+.wc-card .wc-strip > .wc-spk, .wc-card .wc-strip > .wc-words { align-self: center; }
+.wc-card .wc-spk { width: clamp(var(--njg-tap), 27cqi, calc(var(--njg-tap) * 1.8)); height: clamp(var(--njg-tap), 27cqi, calc(var(--njg-tap) * 1.8)); }
+.wc-card .wc-spk svg { width: 50%; height: 50%; }
+.wc-card .wc-words { flex: 0 1 auto; min-width: 0; align-items: center; text-align: center; }
+.wc-card .wc-slot.wc-k, .wc-card .wc-slot.wc-en { justify-content: center; max-width: 100%; }
+/* the judge, 23 Oct: the words fill their half: big type in container units; a word that would not fit is shrunk to its line by
+   js/shared/word-card.js (fitWords: shrink, then wrap at spaces, never inside a word: non-negotiable 9) */
+.wc-card .wc-k { font-size: clamp(var(--njg-t2), 26cqi, calc(var(--njg-t1) * 2.8)); min-height: calc(1.2em + var(--njg-line-2) * 2); overflow-wrap: normal; word-break: normal; }
+.wc-card .wc-en { font-size: clamp(var(--njg-t4), 13cqi, calc(var(--njg-t1) * 1.3)); min-height: calc(1.25em + var(--njg-line-2) * 2); overflow-wrap: normal; word-break: normal; }
 /* a blanked slot: it keeps its place, a dashed outline and the free reveal */
 .wc-slot.blank { display: flex; align-items: center; justify-content: flex-start; border: var(--njg-line-2) dashed var(--njg-cream-edge); border-radius: var(--njg-radius); background: var(--njg-tint); }
 .wc-pic.blank { justify-content: center; }

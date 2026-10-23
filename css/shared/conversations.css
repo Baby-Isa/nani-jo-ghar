@@ -91,20 +91,46 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: calc(var(--njg-u) * 10);
-  max-width: min(calc(var(--njg-u) * 420), calc(100vw - calc(var(--njg-u) * 32)));
+  gap: calc(var(--njg-u) * 14);
+  max-width: min(calc(var(--njg-u) * 600), calc(100vw - calc(var(--njg-u) * 32)));
   pointer-events: auto;
   opacity: 0;
   transform: translateY(calc(var(--njg-u) * 24));
   transition: opacity .25s, transform .25s;
 }
 .cv-replies.in { opacity: 1; transform: none; }
+/* SH-125 (Zafar, 22 Oct, B4): a reply's row: its own speaker on the LEFT, outside the pill with a gap, then the pill */
+.cv-reply { display: flex; align-items: center; justify-content: flex-end; gap: calc(var(--njg-u) * 16); min-width: 0; max-width: 100%; transition: opacity .25s; }
+.cv-reply.gone { opacity: 0; pointer-events: none; }
+.cv-reply.picked .cv-hear { opacity: 0; pointer-events: none; }
+.cv-hear {
+  flex: none;
+  width: calc(var(--njg-tap) * 1.15);
+  height: calc(var(--njg-tap) * 1.15);
+  border-radius: var(--njg-round);
+  border: var(--njg-line-2) solid var(--cv-mine-line);
+  background: var(--njg-card);
+  color: var(--cv-ink);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: var(--njg-shadow);
+  touch-action: manipulation;
+  transition: transform .15s, opacity .25s;
+}
+.cv-hear svg { width: 55%; height: 55%; }
+.cv-hear:active { transform: scale(.92); }
+.cv-reply.hearing .cv-hear { border-color: var(--njg-focus); color: var(--njg-word); }
+/* SH-124 (B2): bigger replies and pictures, scaling with the screen (--njg-u) */
 .cv-pill {
   display: flex;
   align-items: center;
-  gap: calc(var(--njg-u) * 10);
-  min-height: calc(var(--njg-tap) + var(--njg-s2));
-  padding: calc(var(--njg-u) * 8) calc(var(--njg-u) * 18) calc(var(--njg-u) * 8) calc(var(--njg-u) * 12);
+  gap: calc(var(--njg-u) * 12);
+  min-height: calc(var(--njg-tap) * 1.3);
+  min-width: 0;
+  /* (the judge, 23 Oct: the picture stuck out past the pill's round top-left corner: room for it inside the curve) */
+  padding: calc(var(--njg-u) * 10) calc(var(--njg-u) * 22) calc(var(--njg-u) * 10) calc(var(--njg-u) * 22);
   background: var(--cv-mine);
   border: calc(var(--njg-u) * 2) solid var(--cv-mine-line);
   border-radius: calc(var(--njg-u) * 22) calc(var(--njg-u) * 22) calc(var(--njg-u) * 6) calc(var(--njg-u) * 22);
@@ -114,21 +140,22 @@
   transition: transform .18s, box-shadow .18s, opacity .25s;
   touch-action: manipulation;
 }
-.cv-pill .cv-pic { font-size: calc(var(--njg-u) * 30); line-height: 1; white-space: nowrap; flex: none; }
-.cv-pill .cv-words { font-size: calc(var(--njg-u) * 20); font-weight: 800; }
+.cv-pill .cv-pic { font-size: calc(var(--njg-u) * 36); line-height: 1.15; white-space: nowrap; flex: none; }
+.cv-pill .cv-words { font-size: calc(var(--njg-u) * 27); font-weight: 800; line-height: 1.2; min-width: 0; }
+.cv-pill .cv-glyph { display: inline-flex; }
 .cv-pill .cv-glyph svg { width: calc(var(--njg-u) * 26); height: calc(var(--njg-u) * 26); color: #2f4f7f; }
 .cv-pill.lifted { transform: translateY(calc(var(--njg-u) * -6)) scale(1.04); box-shadow: 0 calc(var(--njg-u) * 10) calc(var(--njg-u) * 20) rgba(30, 50, 90, .24); border-color: #3f6fb0; }
 .cv-pill.shake { animation: cv-shake .5s; }
 .cv-pill.dodge { animation: cv-dodge .5s ease forwards; }
 .cv-pill.dodge.dodge-alt { animation-name: cv-dodge-alt; }
-.cv-pill.throb { animation: cv-throb 1.1s ease-in-out infinite; }
+/* SH-124 (B3): the reply to pick glows gold and hops in place (the kit's ob-lit, css/shared/onboard.css); the kit's finger taps it */
+.cv-pill.cv-pick { border-color: var(--njg-focus); background: color-mix(in srgb, var(--njg-focus) 24%, var(--njg-card)); }
+/* while the finger shows, the replies make room on their right for the hand (it lies there, pointing at the reply) */
+.cv-replies.cv-helping { right: calc(max(calc(var(--njg-u) * 16), env(safe-area-inset-right)) + var(--njg-hand-h) + var(--njg-s6)); }
 .cv-pill.chosen { transform: translate(var(--dx, 0), var(--dy, calc(var(--njg-u) * -80))) scale(.9); opacity: 0; transition: transform .5s ease-in, opacity .5s .2s; }
 .cv-pill.gone { opacity: 0; pointer-events: none; }
-.rung-3 .cv-pill { min-width: calc(var(--njg-u) * 110); justify-content: center; }
-
-/* the ghost finger, once ever */
-.cv-ghost { position: absolute; font-size: calc(var(--njg-u) * 40); transform: translate(-30%, -10%); pointer-events: none; filter: drop-shadow(0 calc(var(--njg-u) * 2) calc(var(--njg-u) * 3) rgba(0, 0, 0, .3)); }
-.cv-ghost.tap { animation: cv-ghost .7s ease; }
+.rung-3 .cv-pill { min-width: calc(var(--njg-u) * 130); justify-content: center; }
+.cv-pill .cv-glyph svg { width: calc(var(--njg-u) * 34); height: calc(var(--njg-u) * 34); }
 
 /* the lab shows what the game hides */
 .cv-lab .cv-pill[data-correct="true"]::after { content: "✓"; font-size: var(--njg-t4); color: #3c7a2a; margin-left: calc(var(--njg-u) * 4); }
@@ -140,15 +167,26 @@
 @keyframes cv-throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); box-shadow: 0 0 0 calc(var(--njg-u) * 7) rgba(224, 166, 58, .35); } }
 @keyframes cv-sheepish { 0%, 100% { rotate: 0deg; } 30% { rotate: -3deg; } 60% { rotate: 2deg; } }
 @keyframes cv-hop { 50% { translate: 0 calc(var(--njg-u) * -6); } }
-@keyframes cv-ghost { 0% { opacity: 0; scale: 1.2; } 30% { opacity: 1; scale: 1.2; } 60% { scale: .9; } 100% { opacity: .9; scale: 1; } }
 
 @media (max-width: calc(var(--njg-u) * 520)) {
   .cv-text { font-size: calc(var(--njg-u) * 19); }
   .cv-face { font-size: calc(var(--njg-u) * 28); }
-  .cv-pill .cv-words { font-size: calc(var(--njg-u) * 18); }
+  .cv-pill .cv-words { font-size: calc(var(--njg-u) * 23); }
   .cv-bubble { gap: calc(var(--njg-u) * 8); padding: calc(var(--njg-u) * 10); }
   .cv-spk, .cv-skip { width: var(--njg-tap); height: var(--njg-tap); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cv-pill.shake, .cv-pill.throb, .cv-bubble[data-mood], .cv-ghost.tap { animation: none; }
+  .cv-pill.shake, .cv-bubble[data-mood] { animation: none; }
+}
+
+/* the judge, 23 Oct (915x412): on a phone the replies stand in ONE row along the bottom, over the counter's front, smaller, so
+   they never cover the trays or the speaker (they wrap to a second row only if there are more than fit) */
+@media (max-height: 499.98px) {
+  .cv-replies { flex-direction: row; flex-wrap: wrap-reverse; justify-content: flex-end; align-items: center; gap: calc(var(--njg-u) * 8) calc(var(--njg-u) * 14); bottom: max(calc(var(--njg-u) * 6), env(safe-area-inset-bottom)); max-width: calc(100vw - var(--njg-side-w) - calc(var(--njg-u) * 24)); }
+  .cv-reply { gap: calc(var(--njg-u) * 8); }
+  .cv-hear { width: var(--njg-tap); height: var(--njg-tap); }
+  .cv-pill { min-height: var(--njg-tap); gap: calc(var(--njg-u) * 8); padding: calc(var(--njg-u) * 4) calc(var(--njg-u) * 12); }
+  .cv-replies.cv-helping { max-width: calc(100vw - var(--njg-side-w) - calc(var(--njg-u) * 24) - var(--njg-hand-h) - var(--njg-s6)); }
+  .cv-pill .cv-pic { font-size: calc(var(--njg-u) * 22); }
+  .cv-pill .cv-words { font-size: calc(var(--njg-u) * 19); }
 }

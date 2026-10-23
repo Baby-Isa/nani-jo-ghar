@@ -4638,6 +4638,7 @@
     "files": [
      "assets/cook/bg/service*",
      "assets/cook/characters/*",
+     "assets/shared/faces/*",
      "assets/ui/**",
      "assets/cook/bg/bg-cook-*-1600.webp",
      "assets/cook/worktop-s08c/*"

@@ -94,12 +94,12 @@
     ]
    },
    "heads": {
-    "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
-    "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
-    "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
-    "pain": "assets/clinic/patients/girl/girl-head-sore.webp",
-    "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
-    "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
+    "neutral": "assets/shared/faces/girl.webp",
+    "happy": "assets/shared/faces/girl.webp",
+    "sad": "assets/shared/faces/girl.webp",
+    "pain": "assets/shared/faces/girl.webp",
+    "hot": "assets/shared/faces/girl.webp",
+    "cold": "assets/shared/faces/girl.webp"
    },
    "side": {
     "canvas": [
@@ -549,12 +549,12 @@
      "pain": "assets/clinic/patients/girl/girl-stand-face-sore.webp"
     },
     "heads": {
-     "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
-     "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
-     "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
-     "pain": "assets/clinic/patients/girl/girl-head-sore.webp",
-     "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
-     "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
+     "neutral": "assets/shared/faces/girl.webp",
+     "happy": "assets/shared/faces/girl.webp",
+     "sad": "assets/shared/faces/girl.webp",
+     "pain": "assets/shared/faces/girl.webp",
+     "hot": "assets/shared/faces/girl.webp",
+     "cold": "assets/shared/faces/girl.webp"
     },
     "fig_h": 600,
     "life": {
@@ -1255,10 +1255,10 @@
    "gesture-right": "3q-right-gesture"
   },
   "box": {
-   "neutral": "assets/clinic/patients/doctor/v2/faces/neutral.webp",
-   "talk": "assets/clinic/patients/doctor/v2/faces/talk.webp",
-   "laugh": "assets/clinic/patients/doctor/v2/faces/laugh.webp",
-   "think": "assets/clinic/patients/doctor/v2/faces/think.webp"
+   "neutral": "assets/shared/faces/doctor.webp",
+   "talk": "assets/shared/faces/doctor.webp",
+   "laugh": "assets/shared/faces/doctor.webp",
+   "think": "assets/shared/faces/doctor.webp"
   }
  },
  "waiting": {

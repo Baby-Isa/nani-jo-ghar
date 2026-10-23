@@ -247,8 +247,9 @@
 
   /* ================= the moment's state machine (pure) ================= */
   /**
-   * ask -> reply -> (wrong -> reply)* -> right -> done. Tap once to hear a pill (it lifts), tap it
-   * again to say it (design §3.1). Events: {type: "asked" | "tap" | "commit" | "bulb" | "replay" | "skip" | "timeout", key}.
+   * ask -> reply -> (wrong -> reply)* -> right -> done. One tap on a pill says it ("commit": SH-126, Zafar, 22 Oct; each
+   * reply's own speaker beside it lets the child hear it first); "tap" (hear, then say on a second tap) is only for a
+   * ctx.oneTap === false caller (design §3.1). Events: {type: "asked" | "tap" | "commit" | "bulb" | "replay" | "skip" | "timeout", key}.
    * step() returns {m, fx}: fx lists what the browser half does (play, lift, shake, react, throb, float, model).
    */
   C.machine = function (ex, sp, ctx = {}, rng = Math.random) {
@@ -354,7 +355,8 @@
         via: m.via || "tap",
         tries: m.tries,
         wrongs: m.wrongs.slice(),
-        hints: m.bulbs + Math.max(0, m.replays - 1),
+        hints: m.bulbs + Math.max(0, m.replays - 1) + (m.lit ? 1 : 0),
+        lit: !!m.lit,
         register: { asked: regAsked, chose: regAsked ? m.chose : null, ok: regAsked ? m.chose === regAsked : null },
         words,
       },
@@ -484,7 +486,8 @@
     return { exchange: ex, speaker: sp, stage, rung: Math.min(T.rung || 1, C.cap(ex, stage)), tested: tested && !flavour, flavour, due: !!due };
   };
 
-  const firstsOK = (h) => h.first && h.via !== "skip";
+  // a moment whose answer was shown (the lit reply: first-time help, or after two wrong tries) never moves the rung up
+  const firstsOK = (h) => h.first && h.via !== "skip" && !h.lit;
   /** Fold a finished moment into the state (§5.2 up/down, §5.3 spaced return, §6.2 skips, per-speaker memory). */
   C.update = function (s, o, now = Date.now()) {
     s = C.normalize(s);
@@ -512,7 +515,7 @@
     if (!o.tested || o.via === "skip" || o.flavour) return s; // placeholders and skips move nobody
     const sess = s.session.index;
     T.hist = T.hist
-      .concat({ t: now, session: sess, rung: o.rung, len: o.len, ok: true, first: !!o.firstTry, help: o.hints || 0, via: o.via, speaker: o.speaker, reg: o.register })
+      .concat({ t: now, session: sess, rung: o.rung, len: o.len, ok: true, first: !!o.firstTry, help: o.hints || 0, via: o.via, speaker: o.speaker, reg: o.register, lit: !!o.lit })
       .slice(-8);
     const stage = o.stage || s.stage;
     if (T.box > 0 && o.due) {
@@ -666,6 +669,9 @@
   const FACES = { talk: "", happy: "😊", embarrassed: "😳", scratch: "🤔", puzzled: "😕", sigh: "😮‍💨" };
   const SPEAKER_SVG =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  // a reply with its words hidden (past the written rung): a speech balloon with dots, never a second speaker
+  const REPLY_SVG =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 011 1v10a1 1 0 01-1 1H10l-5 4v-4H4a1 1 0 01-1-1V6a1 1 0 011-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="11" r="1.4" fill="currentColor"/><circle cx="12" cy="11" r="1.4" fill="currentColor"/><circle cx="16" cy="11" r="1.4" fill="currentColor"/></svg>';
   /** What a line shows: the Kutchi, or a placeholder's grey italic English. */
   const lineHTML = (line, english) => {
     if (!line) return "";
@@ -758,27 +764,78 @@
     await sayAsk();
     m = C.step(m, { type: "asked" }).m;
 
-    // the reply pills, bottom right
+    // the reply pills, bottom right; SH-125 (Zafar, 22 Oct, B4): each with its own speaker to its LEFT, outside the pill with a
+    // gap, that plays that reply (hearing it is free: it answers nothing), so a child who can't read hears each one first
     const box = mk("div", `cv-replies rung-${rung}`);
     layer.appendChild(box);
     const pills = {};
     const pillHTML = (a, english) => {
       const pic = rung <= 2 && a.line.pic ? `<span class="cv-pic" aria-hidden="true">${esc(a.line.pic)}</span>` : "";
-      const words = rung === 1 || english ? lineHTML(a.line, english) : `<span class="cv-glyph" aria-hidden="true">${SPEAKER_SVG}</span>`;
+      // past the written rung the pill has no words: its speaker beside it says it (a reply mark keeps the pill a reply)
+      const words = rung === 1 || english ? lineHTML(a.line, english) : `<span class="cv-glyph" aria-hidden="true">${REPLY_SVG}</span>`;
       return `${pic}<span class="cv-words">${words}</span>`;
     };
     m.answers.forEach((a) => {
+      const row = mk("div", "cv-reply");
+      const hear = mk("button", "cv-hear", SPEAKER_SVG);
+      hear.type = "button";
+      hear.dataset.key = a.key;
+      hear.setAttribute("aria-label", "Hear this reply");
       const b = mk("button", "cv-pill", pillHTML(a, false));
       b.type = "button";
       b.dataset.key = a.key;
       b.dataset.line = a.lineId;
       if (a.line.placeholder) b.classList.add("is-ph");
       if (ctx.lab) b.dataset.correct = String(!!a.correct);
-      box.appendChild(b);
+      row.appendChild(hear);
+      row.appendChild(b);
+      box.appendChild(row);
       pills[a.key] = b;
     });
     requestAnimationFrame(() => box.classList.add("in"));
 
+    // the reply to pick, lit: the kit's gold glow and hop on the pill (ob-lit, css/shared/onboard.css), the kit's finger on it
+    let pick = null;
+    const showPick = (key, o = {}) => {
+      const p = pills[key];
+      if (!p || (pick && pick.key === key)) return;
+      hidePick();
+      m.lit = true;
+      p.classList.add("ob-lit", "cv-pick");
+      let finger = null;
+      const O = root.Onboard;
+      if (o.finger !== false && O && O.finger) {
+        try {
+          // the hand lies to the RIGHT of the reply, pointing at its right end (the replies make room for it), so it covers
+          // neither the reply's words, its speaker nor the reply above or below it
+          box.classList.add("cv-helping");
+          const tip = () => {
+            if (!p.isConnected || p.classList.contains("chosen")) return null;
+            const r = p.getBoundingClientRect();
+            return { x: r.right - Math.min(10, r.width * 0.05), y: r.top + r.height / 2 };
+          };
+          finger = O.finger(tip, { from: "right", step: "conversation:pill" });
+        } catch (e) {
+          finger = null;
+        }
+      }
+      pick = { key, p, finger };
+      // TEST HOOK (s04-hooks; only logged): the help on the reply, in Lifecycle.log
+      try {
+        const L = root.Lifecycle;
+        const r = p.getBoundingClientRect();
+        if (L && L.ghost && !finger) L.ghost("conversation:pill", { gesture: "tap", from: { left: r.left, top: r.top, width: r.width, height: r.height } });
+      } catch (e) {
+        /* only a log */
+      }
+    };
+    const hidePick = () => {
+      if (!pick) return;
+      pick.p.classList.remove("ob-lit", "cv-pick");
+      box.classList.remove("cv-helping");
+      if (pick.finger) pick.finger.stop();
+      pick = null;
+    };
     let resolveDone;
     const finished = new Promise((r) => (resolveDone = r));
     let busy = false;
@@ -836,7 +893,7 @@
             await sayAsk();
             break;
           case "throb":
-            if (p) p.classList.add("throb");
+            showPick(f.key);
             break;
           case "float":
             if (p) {
@@ -844,8 +901,10 @@
               const pr = p.getBoundingClientRect();
               p.style.setProperty("--dx", `${br.left + br.width / 2 - (pr.left + pr.width / 2)}px`);
               p.style.setProperty("--dy", `${br.bottom - pr.top}px`);
+              hidePick();
               p.classList.add("chosen");
-              Object.values(pills).forEach((q) => q !== p && q.classList.add("gone"));
+              Object.values(pills).forEach((q) => q !== p && (q.classList.add("gone"), q.parentNode.classList.add("gone")));
+              p.parentNode.classList.add("picked");
               if (!m0Played(f.key)) await C.say(a.line, childVoice, ctx);
               else await wait(500);
             }
@@ -865,7 +924,7 @@
             if (a) {
               // a skip: the speaker says the answer themselves and carries on (§6.2)
               text.innerHTML = lineHTML(a.line, false);
-              if (p) p.classList.add("throb");
+              showPick(f.key, { finger: false });
               await C.say(a.line, spVoice, ctx);
             }
             break;
@@ -902,10 +961,26 @@
         handle(p);
       }
     };
+    // SH-126 (Zafar, 22 Oct, B5): ONE tap answers, in every game (ctx.oneTap: false keeps the old hear-then-say for a lab)
     box.addEventListener("click", (e) => {
+      const h = e.target.closest(".cv-hear");
+      if (h) return hearReply(h.dataset.key);
       const b = e.target.closest(".cv-pill");
-      if (b && !b.classList.contains("gone")) handle({ type: ctx.oneTap ? "commit" : "tap", key: b.dataset.key });
+      if (b && !b.classList.contains("gone")) handle({ type: ctx.oneTap === false ? "tap" : "commit", key: b.dataset.key });
     });
+    // a reply's own speaker: that reply in the child's voice, nothing else changes (free: no hint, no try)
+    let hearing = 0;
+    const hearReply = async (key) => {
+      const a = m.answers.find((z) => z.key === key);
+      if (!a || m.state === "done" || busy) return;
+      const n = ++hearing;
+      C.stop();
+      Object.values(pills).forEach((q) => q.parentNode.classList.toggle("hearing", q === pills[key]));
+      played[key] = true;
+      armIdle();
+      await C.say(a.line, childVoice, ctx);
+      if (n === hearing && pills[key]) pills[key].parentNode.classList.remove("hearing");
+    };
     // the No that dodges (E5): it slides away as the finger comes near, before a tap can land
     box.addEventListener("pointerdown", (e) => {
       const b = e.target.closest(".cv-pill");
@@ -919,16 +994,20 @@
     bubble.querySelector(".cv-skip").addEventListener("click", () => handle({ type: "skip" }));
     active = { event: handle };
 
-    // the first conversation ever: the ghost finger taps the right pill, twice (design §6.3)
+    // the first conversation ever (and every visit for a labs' New player): the reply to pick glows gold and hops in place,
+    // and the kit's finger taps it (SH-124, Zafar, 22 Oct, B3; design §6.3) until the child answers. A shown answer is help:
+    // the moment counts a hint and never moves the reply's rung (non-negotiable 4: matching is study)
     const st = C.loadState();
-    if (!st.onboarded && !ctx.noGhost) {
+    const newPlayer = !!(root.Onboard && root.Onboard.newPlayer && root.Onboard.newPlayer());
+    if ((!st.onboarded || newPlayer) && !ctx.noGhost) {
       const right = m.answers.find((a) => a.correct);
-      if (right) await ghost(layer, pills[right.key]);
+      if (right) showPick(right.key);
       st.onboarded = true;
       C.saveState(st);
     }
     armIdle();
     await finished;
+    hidePick();
     clearTimeout(idle);
     clearTimeout(englishT);
     active = null;
@@ -939,29 +1018,6 @@
     layer.remove();
     return C.outcome(m, ex, { mode: ctx.mode || null, round: ctx.round != null ? ctx.round : null, placement: ctx.placement || null });
   };
-
-  async function ghost(layer, target) {
-    if (!target) return;
-    const g = mk("div", "cv-ghost", "👆");
-    layer.appendChild(g);
-    const r = target.getBoundingClientRect();
-    g.style.left = `${r.left + r.width / 2}px`;
-    g.style.top = `${r.top + r.height / 2}px`;
-    // TEST HOOK (s04-hooks; only logged): the ghost finger's play in Lifecycle.log
-    try {
-      const L = typeof window !== "undefined" ? window.Lifecycle : null;
-      if (L && L.ghost) L.ghost("conversation:pill", { gesture: "tap", from: { left: r.left, top: r.top, width: r.width, height: r.height } });
-    } catch (e) {
-      /* only a log */
-    }
-    for (let i = 0; i < 2; i++) {
-      g.classList.remove("tap");
-      void g.offsetWidth;
-      g.classList.add("tap");
-      await wait(700);
-    }
-    g.remove();
-  }
 
   /** A heard-only line: a bubble, the voice, gone. Kasuku only ever repeats (§10a.10): pitched up. */
   C.hear = async function (lineId, o = {}) {

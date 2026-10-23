@@ -102,7 +102,18 @@
   G.REPEAT = 10000;
   G.idleHelp = false;
   G.BULB_PULSE = 17000;
-  const clock = { t: Date.now(), on: false };
+  /**
+   * ART-19 (Zafar, 22 Oct, A10: the doctor talking in the pop-up box is "way too quick ... the mouth opens and closes too wide ...
+   * blinks so rapidly: slow it way down and open the mouth less"): ONE calm cadence for every talking face (Nani's box here,
+   * the doctor's card faces and figure, js/clinic/kit.js). The mouth is open only briefly and shut for longer, about two flaps
+   * a second (it reads as opening less); a blink is a slow 220 ms, every 5.5 to 9 s.
+   */
+  G.MOUTH = { open: 150, shut: 330, shutJitter: 140, blink: 220, blinkEvery: 5500, blinkJitter: 3500 };
+  /** How long the mouth stays as it is now (open: true, just opened). */
+  G.mouthMs = (open) => (open ? G.MOUTH.open : G.MOUTH.shut + Math.random() * G.MOUTH.shutJitter);
+  /** The wait to the next blink. */
+  G.blinkGap = () => G.MOUTH.blinkEvery + Math.random() * G.MOUTH.blinkJitter;
+  const clock ={ t: Date.now(), on: false };
   /** The idle clock: one listener for the page, so every station pokes it on every action (SH-60: "the timer restarts on every action"). */
   G.watch = function () {
     const d = root.document;
@@ -334,10 +345,12 @@
     const put = (u) => u && faceImg.getAttribute("src") !== u && faceImg.setAttribute("src", u);
     /*
      * ART-19 (s08 w6F; the judge: "her mouth keeps the same closed smile ... while the line plays"): while she talks her
-     * mouth moves: her talking face and her resting one in turn (two mouth frames on the one registered canvas, every
-     * 130-210 ms, as the clinic's figures flap), until the mood changes. ART-10: and she blinks now and then at rest by
-     * herself (her blink face for 140 ms every 3-5.5 s), unless the host blinked her a moment ago (Cook's own blink).
+     * mouth moves: her talking face and her resting one in turn (two mouth frames on the one registered canvas, in the calm
+     * G.MOUTH cadence the clinic's figures share), until the mood changes. ART-10: and she blinks now and then at rest by
+     * herself (her blink face for G.MOUTH.blink every G.blinkGap()), unless the host blinked her a moment ago (Cook's own blink).
      */
+    // ART-19 (Zafar, 22 Oct, A10: "way too quick ... too much open, too much closed ... blinks so rapidly: slow it way down and
+    // open the mouth less"): the calm cadence of G.MOUTH, shared with the doctor's faces (js/clinic/kit.js)
     let flapT = 0;
     let mouthOpen = false;
     const stopFlap = () => {
@@ -352,7 +365,7 @@
       mouthOpen = !mouthOpen;
       put(mouthOpen ? moods.talk : moods.neutral || moods.talk);
       el.dataset.mouth = mouthOpen ? "open" : "shut";
-      flapT = setTimeout(flap, 130 + Math.random() * 80);
+      flapT = setTimeout(flap, G.mouthMs(mouthOpen));
     };
     let lastBlink = 0;
     let blinkT = 0;
@@ -372,7 +385,7 @@
       if (el.isConnected === false) return; // (a box taken off the page without destroy(): its blinks stop)
       const doc = root.document;
       const idle = moodNow === "neutral" && !flapT && moods.blink && moods.neutral;
-      if (idle && Date.now() - lastBlink > 2500 && !(doc && doc.hidden)) {
+      if (idle && Date.now() - lastBlink > G.MOUTH.blinkEvery * 0.6 && !(doc && doc.hidden)) {
         lastBlink = Date.now();
         blinkShut = true;
         put(moods.blink);
@@ -381,9 +394,9 @@
           blinkShut = false;
           delete el.dataset.blink;
           showMood();
-        }, 140);
+        }, G.MOUTH.blink);
       }
-      blinkT = setTimeout(selfBlink, 3000 + Math.random() * 2500);
+      blinkT = setTimeout(selfBlink, G.blinkGap());
     };
     if (opts.faces && opts.faces.blink && root.document) blinkT = setTimeout(selfBlink, 2600);
     // (each head is cut once per page: a box mounted again, the next screen, shows it at once, never opts.face first)

@@ -1,0 +1,61 @@
+supported clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-01.png: limu|1|fru-02 english: onion
+supported clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-02.png: tameto|1|veg-03 english: tomato
+supported clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-03.png: mirchi|1|veg-12 english: chilli
+supported clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-04.png: mirchi|1|veg-12 english: chilli
+supported clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-01.png: limu|1|fru-02 english: onion
+supported clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-02.png: tameto|1|veg-03 english: tomato
+supported clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-03.png: mirchi|1|veg-12 english: chilli
+supported clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-04.png: mirchi|1|veg-12 english: chilli
+supported clinic:heal-eye 915x412 clinic-heal-eye-915x412-01.png: limu|1|fru-02 english: onion
+supported clinic:heal-eye 915x412 clinic-heal-eye-915x412-02.png: tameto|1|veg-03 english: tomato
+supported clinic:heal-eye 915x412 clinic-heal-eye-915x412-03.png: mirchi|1|veg-12 english: chilli
+supported clinic:heal-eye 915x412 clinic-heal-eye-915x412-04.png: mirchi|1|veg-12 english: chilli
+supported day:door 1366x768 day-door-1366x768-01.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 1366x768 day-door-1366x768-02.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 1366x768 day-door-1366x768-03.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported day:door 1366x768 day-door-1366x768-04.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported day:door 1480x924 day-door-1480x924-01.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 1480x924 day-door-1480x924-02.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 1480x924 day-door-1480x924-03.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported day:door 1480x924 day-door-1480x924-04.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported day:door 915x412 day-door-915x412-01.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 915x412 day-door-915x412-02.png: sun|1|n.sun / randhan|1|n.cooking english: ,cooking
+supported day:door 915x412 day-door-915x412-03.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported day:door 915x412 day-door-915x412-04.png: warsaad|1|n.rain / market|1|n.market english: Rain.,
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-01.png: paani|1|cook-paani / chai|2|cook-chai / dudh|1|cook-dudh / hakro khun|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-02.png: paani|1|cook-paani / chai|2|cook-chai / dudh|1|cook-dudh / hakro khun|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 1366x768 cook-chai-tray-1366x768-03.png: water|1|cook-paani / chai|2|cook-chai / milk|1|cook-dudh / one sugar|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 1480x924 cook-chai-tray-1480x924-01.png: paani|1|cook-paani / chai|2|cook-chai / dudh|1|cook-dudh / hakro khun|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 1480x924 cook-chai-tray-1480x924-02.png: paani|1|cook-paani / chai|2|cook-chai / dudh|1|cook-dudh / hakro khun|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 1480x924 cook-chai-tray-1480x924-03.png: water|1|cook-paani / chai|2|cook-chai / milk|1|cook-dudh / one sugar|1|cook-khun english: water,chai,milk,one sugar
+supported cook:chai-tray 915x412 cook-chai-tray-915x412-01.png:  english: 
+learned clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-01.png: dungri|4|veg-02 english: [blank]
+learned clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-02.png: tameto|4|veg-03 english: [blank]
+learned clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-03.png: mirchi|4|veg-12 english: [blank]
+learned clinic:heal-eye 1366x768 clinic-heal-eye-1366x768-04.png: mirchi|4|veg-12 english: [blank]
+learned clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-01.png: dungri|4|veg-02 english: [blank]
+learned clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-02.png: tameto|4|veg-03 english: [blank]
+learned clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-03.png: mirchi|4|veg-12 english: [blank]
+learned clinic:heal-eye 1480x924 clinic-heal-eye-1480x924-04.png: mirchi|4|veg-12 english: [blank]
+learned clinic:heal-eye 915x412 clinic-heal-eye-915x412-01.png: limu|4|fru-02 english: [blank]
+learned clinic:heal-eye 915x412 clinic-heal-eye-915x412-02.png: dungri|4|veg-02 english: [blank]
+learned clinic:heal-eye 915x412 clinic-heal-eye-915x412-03.png: tameto|4|veg-03 english: [blank]
+learned clinic:heal-eye 915x412 clinic-heal-eye-915x412-04.png: mirchi|4|veg-12 english: [blank]
+learned day:door 1366x768 day-door-1366x768-01.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 1366x768 day-door-1366x768-02.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 1366x768 day-door-1366x768-03.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned day:door 1366x768 day-door-1366x768-04.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned day:door 1480x924 day-door-1480x924-01.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 1480x924 day-door-1480x924-02.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 1480x924 day-door-1480x924-03.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned day:door 1480x924 day-door-1480x924-04.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned day:door 915x412 day-door-915x412-01.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 915x412 day-door-915x412-02.png: sun|4|n.sun / randhan|4|n.cooking english: ,[blank]
+learned day:door 915x412 day-door-915x412-03.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned day:door 915x412 day-door-915x412-04.png: warsaad|4|n.rain / market|1|n.market english: [blank],
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-01.png: paani|4|cook-paani / chai|4|cook-chai / dudh|4|cook-dudh / hakro khun|4|cook-khun english: [blank],[blank],[blank],[blank]
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-02.png: paani|4|cook-paani / chai|4|cook-chai / dudh|4|cook-dudh / hakro khun|4|cook-khun english: [blank],[blank],[blank],[blank]
+learned cook:chai-tray 1366x768 cook-chai-tray-1366x768-03.png: water|4|cook-paani / chai|4|cook-chai / milk|4|cook-dudh / one sugar|4|cook-khun english: [blank],[blank],[blank],[blank]
+learned cook:chai-tray 1480x924 cook-chai-tray-1480x924-01.png: paani|4|cook-paani / chai|4|cook-chai / dudh|4|cook-dudh / hakro khun|4|cook-khun english: [blank],[blank],[blank],[blank]
+learned cook:chai-tray 1480x924 cook-chai-tray-1480x924-02.png: paani|4|cook-paani / chai|4|cook-chai / dudh|4|cook-dudh / hakro khun|4|cook-khun english: [blank],[blank],[blank],[blank]
+learned cook:chai-tray 1480x924 cook-chai-tray-1480x924-03.png: water|4|cook-paani / chai|4|cook-chai / milk|4|cook-dudh / one sugar|4|cook-khun english: [blank],[blank],[blank],[blank]

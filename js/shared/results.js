@@ -49,6 +49,14 @@
   const Results = {};
   const store = (o) => (o && o.store) || root.UIStore || (typeof require === "function" ? require("./uistore.js") : null);
 
+  /**
+   * SH-104 (Zafar, 22 Oct, A8: "is it not like a shared toggle?"): the end screen has two pages in every game, the badges
+   * and the word review. The third page (the steps of the round, decision 93) is OFF here, in one place: a game's
+   * opts.steps are ignored while this is false, so no game can bring it back on its own. The contract check
+   * contract-38 (build/sandbox/lib/contract.mjs) breaks on any game that shows it.
+   */
+  Results.STEPS_PAGE = false;
+
   /* ---------------- pure ---------------- */
 
   /** The personal-best key: one best per mode, game (mini-game) and level. */
@@ -417,7 +425,8 @@
     if (time) b.time = time;
     const words = (opts.words || []).filter((w) => w && (w.kutchi || w.english));
     const looks = typeof opts.looks === "number" ? opts.looks : null;
-    const steps = Array.isArray(opts.steps) ? opts.steps.filter((x) => x && x.label) : [];
+    // SH-104 (Zafar, 22 Oct): the steps page is off in every game; Results.STEPS_PAGE is the only way in (no game opts in)
+    const steps = Results.STEPS_PAGE && Array.isArray(opts.steps) ? opts.steps.filter((x) => x && x.label) : [];
     const host = opts.container || document.body;
     const el = document.createElement("div");
     el.className = "njg-results";

@@ -4,6 +4,7 @@
   "assets/ui/**",
   "assets/clinic/rooms/*",
   "assets/clinic/patients/**",
+  "assets/shared/faces/*",
   "assets/clinic/rough/**",
   "assets/clinic/sheets/*/*-belt.webp",
   "assets/clinic/sheets/bud/bud-flat.webp"

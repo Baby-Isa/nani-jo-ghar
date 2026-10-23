@@ -133,6 +133,20 @@
     else if (k.html != null) box.innerHTML = k.html;
   }
 
+  /** Shrink a text slot's own size until its widest word fits the line (the CSS size first; never under the token `min`). */
+  function fitWords(box, min) {
+    if (!box || !box.isConnected || box.classList.contains("blank")) return;
+    if (box.style.fontSize) box.style.fontSize = "";
+    const cs = root.getComputedStyle(box);
+    let fs = parseFloat(cs.fontSize) || 0;
+    const floor = parseFloat(root.getComputedStyle(doc.documentElement).getPropertyValue(min)) || 12;
+    let n = 0;
+    while (box.scrollWidth > box.clientWidth + 1 && fs > floor && n++ < 40) {
+      fs = Math.max(floor, fs - 1);
+      box.style.fontSize = `${fs}px`;
+    }
+  }
+
   function stageOf(word, opts) {
     if (opts.stage != null) return clampStage(opts.stage);
     const P = opts.progress;
@@ -281,6 +295,16 @@
       api.speak();
     });
     c.wc = api;
+    // SH-123 (the judge, 23 Oct: the words fill their half): the big card's Kutchi and English are drawn big (container units,
+    // css/shared/word-card.css); a word wider than its line shrinks to fit it, never under the shared size, so nothing breaks
+    // inside a word or spills (non-negotiable 9). Again whenever the card changes size.
+    if (kind === "card") {
+      const fit = () => [kt, en].forEach((b) => fitWords(b, b === kt ? "--njg-t2" : "--njg-t4"));
+      api.refit = fit;
+      if (root.ResizeObserver) new root.ResizeObserver(() => fit()).observe(strip);
+      const obs = root.MutationObserver ? new root.MutationObserver(() => fit()) : null;
+      if (obs) [kt, en].forEach((b) => obs.observe(b, { childList: true, characterData: true, subtree: true }));
+    }
     api.restage();
     if (parent) parent.appendChild(c);
     return c;

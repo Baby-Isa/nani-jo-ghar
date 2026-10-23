@@ -367,21 +367,10 @@ export async function runDoor(host, api, day) {
     if (!O || !yesBtn || answered || help.stop || !api.helpDue(HELP_ID)) return;
     await api.wait(400); // the pills land first
     if (answered || help.stop) return;
-    help.spot = O.spot(yesBtn, {});
+    // (S12 W2-A: ONE hand: the spotlight's own finger taps Ha! on the kit's cadence; the door's second, demo hand is gone)
+    help.spot = O.spot(yesBtn, { step: "door-yes" });
     help.spot.layer.dataset.help = HELP_ID;
     if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("help", { during: "day:door", step: "yes" });
-    const tapOnce = () => {
-      const r = yesBtn.getBoundingClientRect();
-      const at = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-      // the finger comes in from just below and to the right of the pill (on screen), taps it, and lifts off
-      // (the kit's hand hangs about 80 px below its fingertip: it starts low enough to read as coming in, never off the screen)
-      const below = Math.max(8, Math.min(40, (window.innerHeight || 0) - at.y - 84));
-      return O.demo({ x: at.x + Math.min(48, r.width * 0.4), y: at.y + below }, [at], { hand: true, ms: 1100, step: "door-yes", quiet: true });
-    };
-    while (!answered && !help.stop) {
-      await tapOnce();
-      await new Promise((ok) => setTimeout(ok, 500));
-    }
   };
   const endHelp = () => {
     if (!help) return;
