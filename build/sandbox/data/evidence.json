@@ -18759,48 +18759,8 @@
     "count:.njg-spot.on=1",
     "count:.ck-callout=0"
    ],
-   "note": "the first time: the full dim and box at once for the water (then the tea), no call-out card with it",
+   "note": "the first time: the full dim and box at once for the water (then the tea), no call-out card with it (the stuck ladder, 5 s the card and glow, 12 s the dim and box, is shown at the milk step in build/reports/s12-w1a/: no sandbox driver waits at the first ordered item yet)",
    "delay": 700
-  },
-  {
-   "flow": "cook:chai-tray",
-   "path": "idle-twice",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "idle-hint",
-   "after": null,
-   "capture": [
-    "shot"
-   ],
-   "expect": [
-    "count:.ck-callout=1",
-    "count:.njg-spot=0"
-   ],
-   "note": "stuck 8 s on a step (help seen before): the item's card at the top left by Nani's box, as from her, and the item glowing and bouncing; no dim, no box"
-  },
-  {
-   "flow": "cook:chai-tray",
-   "path": "idle-twice",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "idle-again",
-   "after": null,
-   "capture": [
-    "shot"
-   ],
-   "expect": [
-    "count:.njg-spot.on=1",
-    "count:.ck-callout=0"
-   ],
-   "note": "16 s: the dim and the box instead, the card gone (never the card and the heavy dim together)"
   }
  ],
  "CK-51": [
