@@ -42,6 +42,7 @@
 //   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3, hidden (folded) at L4 (SH-110)
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
+//   contract-38 two-pages    the end screen has two pages in every game: the badges and the word review, never the steps page (SH-104)
 //   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
 //   contract-70 slow-at-green  chai: "Slow kar" as the heat bar enters the green, never before it (CHAI-24; lib/contract-chai.mjs)
 //   contract-71 once-each      chai: milk, water and tea go into a pan once each; a second tap adds nothing (CHAI-22)
@@ -101,6 +102,7 @@ export const CHECKS = {
   "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
   "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
+  "contract-38": { item: "two-pages", title: "the end screen: two pages", how: "Every endpages sample (lib/contract-hook.mjs: the end screen's pages, data-page, the one shown, data-step, and its step rows): a third page (the steps of the round, .rs-p3), a card on step 3 or any step row (.rs-step, .rs-steps-list) in any game is a break (SH-104, Zafar, 22 Oct: the third page goes from every game; js/shared/results.js Results.STEPS_PAGE is the only way in, and it is off)." },
   ...DAY_CHECKS,
   ...DAAL_CHECKS,
   ...CHAI_CHECKS,
@@ -1146,6 +1148,16 @@ function check32(tl, add) {
     add("contract-32", e.t, `the review's right words take ${Math.round(share * 100)}% of the width with ${e.bad} wrong and ${e.ok} right (wanted about ${Math.round(want * 100)}%: room for four right and one wrong, the wrong side growing with its count)`);
   }
 }
+// 38 (SH-104): the end screen has two pages in every game (the badges, the word review): never the steps page
+export function check38(tl, add) {
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "endpages") continue;
+    if ((e.pages || []).includes(3) || e.step === 3 || e.steps > 0) {
+      add("contract-38", e.t, `the end screen holds the steps page (pages ${(e.pages || []).join(", ") || "none"}, showing ${e.step}, ${e.steps} step rows): two pages only in every game (SH-104)`);
+      return;
+    }
+  }
+}
 // 33 (SH-107): the order pop-up's headlines are one size per screen, and wrap at full size before they shrink: a size under the full
 // one is only for headlines that don't fit two lines, so a pop-up whose every headline is on one line is at full size
 function check33(tl, add) {
@@ -1387,6 +1399,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check31(tl, v, add);
   check32(tl, add);
   check33(tl, add);
+  check38(tl, add);
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
   check37(r, tl, segs, add);
