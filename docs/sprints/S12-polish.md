@@ -29,6 +29,8 @@ About $230-290 and 2-3 days (approved by Zafar, 22 Oct). Scope is cut, never the
 
 8. The art (Zafar, 23 Oct): the likenesses pass (the doctor, the girl, Nani and Nana circles; Nani's come-here poses). The pour frames turn the pan in the plane as it tips: the wiring places the glass and plans the pan's path from the hob so the turn reads as aiming the spout at the glass. The glasses stay in the tray; the pan is mirrored (hob pan and pour frames) and carried spout-first to the right, stopping up-left of the target glass (Zafar, 23 Oct).
 
+9. The book (Zafar, 23 Oct, from `build/reports/s12-research-cefr-and-book.md`): W3-A also builds the spaced words (the book's pool draws from 1, 3 and 7 days back as well as today) and "Say it" as the first rung of Name it (the mic listens; the three speakers come after a try or a tap); Stick in the photo offers 2-3 pictures with short sentences; Find it's decoys are learned words. "What's missing" waits for the next sprint (ideas list); "Choose the reply" waits for Mum's question phrases (recording sheet).
+
 Not this sprint: ART-26 (animal sprites, with the farm game); the "no" introduction at L2+ (CK-50 only removes "no" from L1).
 
 ## Outcome
