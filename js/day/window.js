@@ -136,7 +136,10 @@ export async function runWindow(el, api, day) {
   const progress = core && core.progress;
   let openAt = -1; // the list's open card
   let boxed = false; // the first-time help's box round it (RIDE-10)
-  const sayWord = (i, el) => api.say(words[i], { el, who: "nani", min: false });
+  // her ride lines in turn: each starts when the one before has been said (one at a time, never two open at once)
+  let turn = Promise.resolve();
+  const sayInTurn = (ln, o) => (turn = turn.then(() => api.say(ln, o)).catch(() => {}));
+  const sayWord = (i, el) => sayInTurn(words[i], { el, who: "nani", min: false });
   const drawCard = () => {
     const next = done.indexOf(false);
     const opened = next !== openAt;
@@ -210,7 +213,7 @@ export async function runWindow(el, api, day) {
   await Promise.race([loaded, new Promise((r) => setTimeout(r, 2500))]);
   if (head) {
     if (guide) guide.set(html(head), { rec: !head.ok });
-    api.say(head, { who: "nani" });
+    sayInTurn(head, { who: "nani" });
   }
   drawCard();
   if (LC && LC.stageStart) LC.stageStart("day:window");
@@ -261,7 +264,7 @@ export async function runWindow(el, api, day) {
         current = i;
         speaking = null;
         showCall(i);
-        api.say(asks[i], { who: "nani", min: false });
+        sayInTurn(asks[i], { who: "nani", min: false });
         if (helping) showFind(i);
       },
       // Nani to the driver: faster or slower (the whole road eases to the new speed as she says it)
@@ -270,7 +273,7 @@ export async function runWindow(el, api, day) {
         if (!ln) return;
         speaking = ln;
         if (current < 0) showCall(-1);
-        api.say(ln, { who: "nani" }).then(() => {
+        sayInTurn(ln, { who: "nani" }).then(() => {
           if (speaking === ln) speaking = null;
           if (current < 0) showCall(-1);
         });
