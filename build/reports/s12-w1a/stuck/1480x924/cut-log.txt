@@ -1,1 +1,1 @@
-cut 1480x924: help up; finger frames at 0,501,1000,1503,2003,2503 ms; bounce frames at 0,251,502,750,1001,1251 ms
+cut 1480x924: help up; finger frames at 0,505,1004,1505,2000,2500 ms; bounce frames at 1,251,500,750,1000,1254 ms

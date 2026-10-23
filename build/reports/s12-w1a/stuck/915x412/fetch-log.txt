@@ -1,1 +1,1 @@
-fetch 915x412: help up; finger frames at 0,503,1003,1503,2002,2501 ms; bounce frames at 0,253,502,750,1003,1250 ms
+fetch 915x412: help up; finger frames at 0,503,1000,1504,2000,2501 ms; bounce frames at 0,250,501,753,1001,1253 ms

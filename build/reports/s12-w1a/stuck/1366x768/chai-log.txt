@@ -1,1 +1,1 @@
-chai 1366x768: help up; finger frames at 0,502,1001,1501,2001,2517 ms; bounce frames at 0,253,500,750,1002,1252 ms
+chai 1366x768: help up; finger frames at 0,501,1003,1502,2000,2502 ms; bounce frames at 0,251,502,750,1002,1251 ms

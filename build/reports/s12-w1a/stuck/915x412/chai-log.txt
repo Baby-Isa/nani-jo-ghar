@@ -1,1 +1,1 @@
-chai 915x412: help up; finger frames at 0,501,1003,1502,2003,2503 ms; bounce frames at 0,250,503,751,1000,1250 ms
+chai 915x412: help up; finger frames at 0,500,1003,1501,2003,2501 ms; bounce frames at 0,253,502,751,1001,1253 ms

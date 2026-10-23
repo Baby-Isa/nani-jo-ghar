@@ -1,1 +1,1 @@
-fetch 1480x924: help up; finger frames at 0,502,1003,1502,2000,2500 ms; bounce frames at 0,252,503,751,1002,1252 ms
+fetch 1480x924: help up; finger frames at 0,503,1003,1502,2001,2504 ms; bounce frames at 0,252,501,751,1003,1251 ms
