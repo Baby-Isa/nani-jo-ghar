@@ -1995,9 +1995,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     wireRail();
     // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load
     // (no module support) still plays, unpaid, on Cook's own save (Cook.core stays null)
+    // CK-48 (s12-w3b): Cook's own data (the item catalogue, the station files, the hands) loads while the core does: it
+    // needs nothing from it (it waited for the core before)
+    const loaded = Cook.load();
+    loaded.catch(() => {});
     if (Cook.coreReady) await Cook.coreReady.catch(() => null);
     Cook.loadSave();
-    await Cook.load();
+    await loaded;
     const run = Cook.run;
     let ready;
     const shown = new Promise((r) => (ready = r));

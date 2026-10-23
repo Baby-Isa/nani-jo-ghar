@@ -26,15 +26,18 @@ const player = {
 // a load cut short by leaving the page (a reload) isn't a failure worth reporting
 let leaving = false;
 window.addEventListener("pagehide", () => (leaving = true));
+// CK-48 (s12-w3b; Zafar 22 Oct, A1): the language files are asked for at once with the core's own files (they waited
+// for the core), and the family's clip list is the core's (it was loaded a second time here)
+const langData = {};
+const langLoad = Promise.all(DATA_FILES.map(async (f) => (langData[f] = await loadJSON(`data/lang/${f}.json`))));
+langLoad.catch(() => {});
 Cook.coreReady = loadCore({ base: "", save: Save, cook: Cook, player })
   .then(async (core) => {
     Cook.core = core;
     // step 4d (decision 42): every word and line Cook shows or plays is the language engine's (js/cook/words.js), and
     // its clip plan (stitched from the family's word recordings, decision 26) plays through the core's voice
-    const data = {};
-    await Promise.all(DATA_FILES.map(async (f) => (data[f] = await loadJSON(`data/lang/${f}.json`))));
-    const audio = await loadJSON("data/family-audio.json").catch(() => []);
-    Cook.langEngine = createEngine({ data, audio: audio || [] });
+    await langLoad;
+    Cook.langEngine = createEngine({ data: langData, audio: core.data.familyAudio || [] });
     return core;
   })
   .catch((e) => {

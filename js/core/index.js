@@ -20,20 +20,31 @@ import { createUnlocks, Entitlements } from "./unlocks.js";
 import { fromQuery } from "./context.js";
 import { createLog } from "./log.js";
 
+/**
+ * CK-48 (s12-w3b): data/family-audio.json (330 KB) once per page. The first loader leaves its promise on
+ * globalThis.njgFamilyAudio and every other one (the clinic's js/clinic/lang.js) takes it from there; the core hands the
+ * list on as core.data.familyAudio (Cook's language engine).
+ */
+export function familyAudio(load) {
+  const g = globalThis;
+  if (!g.njgFamilyAudio) g.njgFamilyAudio = Promise.resolve(load("data/family-audio.json", [])).catch(() => []);
+  return g.njgFamilyAudio;
+}
+
 export async function loadCore({ base = "", save = Save, cook = null, player = null } = {}) {
   const load = (p, fallback) => loadJSON(p, { base }).catch(() => fallback);
-  const [economy, progressData, unlockRules, familyAudio, tts] = await Promise.all([
+  const [economy, progressData, unlockRules, audioList, tts] = await Promise.all([
     load("data/economy.json", {}),
     load("data/progress.json", null),
     load("data/unlocks.json", {}),
-    load("data/family-audio.json", []),
+    familyAudio(load),
     load("data/cook-tts.json", { lines: {} }),
   ]);
   save.progressData = progressData || undefined;
   save.init();
   const progress = createProgress({ save, data: progressData || undefined });
   const wallet = createWallet({ save, economy });
-  const index = clipIndex(familyAudio, { tts: (tts && tts.lines) || {} });
+  const index = clipIndex(audioList, { tts: (tts && tts.lines) || {} });
   const voice = createVoice({ index, player });
   const log = createLog({ save });
   return {
@@ -48,7 +59,7 @@ export async function loadCore({ base = "", save = Save, cook = null, player = n
     unlocks: createUnlocks({ save, rules: unlockRules }),
     entitlements: Entitlements,
     play: fromQuery(),
-    data: { economy, progress: progressData, unlocks: unlockRules },
+    data: { economy, progress: progressData, unlocks: unlockRules, familyAudio: audioList || [] },
   };
 }
 
