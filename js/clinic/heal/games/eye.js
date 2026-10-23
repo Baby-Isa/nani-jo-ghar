@@ -34,8 +34,10 @@
 
   // the cards' pictures: Cook's words, each by its lexicon id (HS.pic: the clinic's art where it has the thing, CLN-78)
   // EY10 (CLN-107): water is Cook's blue drop (the steel jug read as milk next to the milk jug)
-  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon (s08b LM1)
-  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp", "fru-02": "assets/clinic/items-s08b/lemon-whole-s08b.webp" };
+  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon. SH-115, CLN-204 (Zafar, 22 Oct: "cut out
+  // very badly ... a shadow ... it overlaps the doctor's hand"): the s12 lemon, keyed off its magenta with no shadow, on a square
+  // canvas with the fruit as wide as Cook's fruit icons fill theirs (84 %), so it sits on the card at their size, clear of his hands
+  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp", "fru-02": "assets/clinic/s12/lemon-whole-s12.webp" };
   // Sprint 11: the words the family has recorded on their own (rule 10), and the kitchen words that join by themselves the
   // day the engine has a family clip for them (HS.recorded). cook-chai waits for a picture too (its icon reads green to the
   // colour check, CLN-189)
