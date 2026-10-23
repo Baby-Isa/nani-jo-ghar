@@ -527,7 +527,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the jar": Zafar's rejected round glow in a square box): it is the picture's own silhouette, blurred gold, so it follows its
       // outline (glowHalo below); it rides the hop with the picture
       halo = this.glowHalo(obj);
-      if (halo) tweens.push(this.tweens.add({ targets: halo, alpha: 0.5, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
+      if (halo) tweens.push(this.tweens.add({ targets: halo, alpha: 0.75, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       // (a test hook, only logged: when a glow comes on, so a check can hold it to Nani's help line, SH-60)
       try {
         if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("glow", { step: "on", by: String(obj.wordId || (obj.texture && obj.texture.key) || "") });
@@ -554,8 +554,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = fr && fr.source && fr.source.image;
       if (!img || !obj.texture || !fr.cutWidth || !fr.cutHeight) return null;
       const k = Math.abs(obj.scaleX || 1) || 1;
-      const blur = Math.round(Math.max(6, Math.min(80, 13 / k)));
-      const key = `__glow:${obj.texture.key}:${fr.name}:${blur}`;
+      // S12 W2-A (the judge, 23 Oct: the jar's glow "barely visible on 915x412"): the glow is sized on the SCREEN, not the world.
+      // A phone shows the game shrunk (ds game px to a CSS px), so the same world blur was a few screen px; it keeps at least
+      // 14 screen px at every size, and is laid on more times where it is spread wider, so it reads as strongly
+      const ds = Math.max(1, (this.scale && this.scale.displayScale && this.scale.displayScale.x) || 1);
+      const blur = Math.round(Math.max(6, Math.min(160, Math.max(13, 14 * ds) / k)));
+      const passes = ds > 1.2 ? 5 : 3;
+      const key = `__glow:${obj.texture.key}:${fr.name}:${blur}:${passes}`;
       const w = fr.cutWidth;
       const h = fr.cutHeight;
       const p = Math.ceil(blur * 1.8);
@@ -564,11 +569,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!ct) return null;
         const g = ct.getContext();
         const OFF = 20000;
-        g.shadowColor = "rgba(255, 196, 80, 1)";
+        g.shadowColor = "rgba(255, 176, 40, 1)";
         g.shadowBlur = blur;
         g.shadowOffsetX = OFF;
-        // twice, for a glow that reads at a glance; the picture itself lands off the canvas, only its shadow on it
-        for (let i = 0; i < 2; i++) g.drawImage(img, fr.cutX, fr.cutY, w, h, p - OFF, p, w, h);
+        // laid on three times (five on a phone), for a glow that reads at a glance; the picture itself lands off the canvas, only
+        // its shadow on it
+        for (let i = 0; i < passes; i++) g.drawImage(img, fr.cutX, fr.cutY, w, h, p - OFF, p, w, h);
         ct.refresh();
       }
       const halo = this.add.image(obj.x, obj.y, key).setOrigin((obj.originX * w + p) / (w + 2 * p), (obj.originY * h + p) / (h + 2 * p));
