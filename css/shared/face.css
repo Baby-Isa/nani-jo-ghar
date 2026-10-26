@@ -33,8 +33,10 @@
 .njg-face-btn:active { transform: scale(0.95); }
 .njg-face-btn .say-badge {
   position: absolute; pointer-events: none; border-radius: 50%; aspect-ratio: 1;
-  right: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2); bottom: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2);
-  width: calc(var(--njg-face-d) * 0.38); min-width: var(--njg-s4); transform: translate(34%, 34%);
+  /* (S13-A2 fix round, the judge: on the lower-right edge it covered the headline's first word: on the lower-LEFT edge, away from
+     every face's words, still mostly outside the circle, never over the face) */
+  left: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2); bottom: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2);
+  width: calc(var(--njg-face-d) * 0.38); min-width: var(--njg-s4); transform: translate(-34%, 34%);
   background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card);
 }

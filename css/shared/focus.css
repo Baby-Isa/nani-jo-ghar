@@ -22,9 +22,11 @@
 .njg-hop { animation: var(--njg-hop-anim); }
 .njg-talk { animation: var(--njg-talk-anim); }
 .njg-dim { filter: brightness(0.9) saturate(0.9); transition: filter .3s; }
+/* SH-129 (S13-A2 fix round): the same halo as Cook's canvas glow (js/cook/station-lib.js: never out, a close bright edge and a
+   wide soft reach that swells and settles), so an HTML thing glows the way a canvas thing does in every game */
 @keyframes njgGlow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--njg-glow-rgb), 0)); }
-  50% { filter: drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))); }
+  0%, 100% { filter: drop-shadow(0 0 calc(var(--njg-glow-radius) * 0.25) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))) drop-shadow(0 0 calc(var(--njg-glow-radius) * 0.6) rgba(var(--njg-glow-rgb), calc(var(--njg-glow-alpha) * 0.7))) drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), 0)); }
+  50% { filter: drop-shadow(0 0 calc(var(--njg-glow-radius) * 0.35) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))) drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))) drop-shadow(0 0 calc(var(--njg-glow-radius) * 1.8) rgba(var(--njg-glow-rgb), calc(var(--njg-glow-alpha) * 0.6))); }
 }
 @keyframes njgPulse {
   0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(var(--njg-glow-rgb), 0)); }
@@ -36,7 +38,7 @@
 }
 @keyframes njgTalk { to { transform: translateY(calc(var(--njg-talk-lift) * -1)) rotate(var(--njg-talk-tilt)); } }
 /* still, for a child who asked for less motion: the glow and the pulse hold their lit look, the hop and the talk stop */
-@keyframes njgGlowStill { to { filter: drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))); } }
+@keyframes njgGlowStill { to { filter: drop-shadow(0 0 calc(var(--njg-glow-radius) * 0.35) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))) drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))); } }
 @keyframes njgPulseStill { to { filter: drop-shadow(0 0 var(--njg-s2) rgba(var(--njg-glow-rgb), var(--njg-pulse-alpha))); } }
 @media (prefers-reduced-motion: reduce) {
   :root {

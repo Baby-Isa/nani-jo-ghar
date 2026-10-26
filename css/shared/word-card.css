@@ -77,7 +77,8 @@
 .wc-card.wc-across { flex-direction: row; align-items: center; }
 .wc-card.wc-across.wc-fill { height: 100%; }
 .wc-card.wc-across .wc-pic { flex: none; width: auto; height: 100%; max-width: 52%; aspect-ratio: 4 / 3; }
-.wc-card.wc-across .wc-strip { flex: 1 1 auto; flex-direction: column; align-items: center; justify-content: center; padding-inline: var(--njg-s2) 8%; }
+/* (S13-A2 fix round, the judge: one word-card layout: the speaker left of the word, across as in every other card, never above it) */
+.wc-card.wc-across .wc-strip { flex: 1 1 auto; flex-direction: row; align-items: center; justify-content: center; padding-inline: var(--njg-s2) 8%; }
 /* SH-123 (the judge, 26 Oct: the eye card's words did not grow with the card): across, the strip is its own half, the safe inset only at
    the card's outer edge (the hand), and the words sized from that half (container units), never under the shared sizes */
 .wc-card.wc-across .wc-k { font-size: clamp(var(--njg-t2), 30cqi, calc(var(--njg-t1) * 2.8)); }
