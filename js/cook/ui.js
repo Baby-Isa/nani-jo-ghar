@@ -1479,8 +1479,10 @@
       // (the row's frame shows; its word card flies in from the big one: WordCard.fly hides it until it lands)
       const wc = to.querySelector(":scope > .wc") || to;
       to.classList.remove("oc-away");
-      big.style.visibility = "hidden";
-      return global.WordCard.fly(big, wc).catch(() => wc.classList.remove("wc-away"));
+      // (the flight starts from the big card's place, read at once; the big card then goes, so the word is never on screen twice)
+      const flight = global.WordCard.fly(big, wc).catch(() => wc.classList.remove("wc-away"));
+      big.remove();
+      return flight;
     };
     const sayPart = async (who, line) => {
       const S = Cook.scene;
@@ -2092,12 +2094,26 @@
             rowsShown.push(s.head, ...flat.map((x) => x.r));
             return;
           }
+          if (n <= 1) {
+            // S13-B1 (the judge on SH-110: "a box nested inside a 'samosa' box, unlike the flat rows above it"): one of a kind is
+            // drawn as several are, the kind's row over one box of its fillings (was the kind's own box round its row and fillings)
+            const all = !!s.head.done || (parts.length > 0 && parts.every((p) => p.done || p.no));
+            // (the kind's row ticks with its fillings, as the box's row did: SAM-24's one tick, contract-50)
+            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: all, key: s.head, src: [], say: sayRow(s.head) });
+            items.push({ label: null, count: 1, parts: parts.map((p) => Object.assign({}, p, { done: !!s.head.done || p.done, next: false })), ordered: false, group: true, done: all, src: [] });
+            rowsShown.push(s.head, ...flat.map((x) => x.r));
+            return;
+          }
           items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true, say: sayRow(s.head) });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
         if (flat.length) {
-          const parts = flat.map((x) => partNode(x.r, x.gi));
+          // S13-B1 (the judge: one card anatomy): a list whose every row is a thing with its own picture (the pantry's list, the
+          // daar's vegetables) is drawn in word-card rows, as a people order is (picture, speaker, Kutchi, English by the word's
+          // stage); an ordered list (a skewer, chaat's layers) keeps its little skewer of pills
+          const pics = !seq && flat.every((x) => !x.r.no && !x.r.head && wcPicSrc(wcWordId(x.r)));
+          const parts = flat.map((x) => Object.assign(partNode(x.r, x.gi), pics ? UI.wordOf(x.r) : null));
           // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
           // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
           const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
@@ -2192,7 +2208,7 @@
       const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
       e.dataset.extra = x.key;
       e.dataset.ck = `x:${x.key}`;
-      if ((mission.compact || 0) >= 3) e.classList.add("oc-pills");
+      if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-blank") ? "oc-tight" : "oc-pills");
       box.appendChild(e);
       return e;
     });
@@ -2222,6 +2238,7 @@
       const el = OC.update(before.get(c.key) || null, lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
         stamped: !big && !!mission.stamped,
+        mini: minis.has(c.key), // (G1's face alone: OrderCard draws its left speaker, SH-110)
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
@@ -2259,7 +2276,8 @@
       el._rows = c.rows;
       el.dataset.ck = c.key; // (the next redraw finds it: OrderCard.update)
       // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
-      if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add("oc-pills");
+      // (SH-110, the judge: a card with blanked rows keeps one row a line, each with its speaker at its left, never pills)
+      if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add(el.querySelector(".oc-blank") ? "oc-tight" : "oc-pills");
       if (minis.has(c.key)) {
         // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
         // (each face still the replay; a tap beside it brings that person forward)

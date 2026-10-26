@@ -33,3 +33,15 @@ test("contract-41: the kit's pop-up is no break; Cook's #intro or a pop-up with 
   assert.equal(of(run(page([kc(T, { pops: 1, intro: true }), kc(T + 50, { pops: 1, intro: true, n: 2 })])), "contract-41").length, 1, "red: #intro, once");
   assert.equal(of(run(page([kc(T, { pops: 1, ownPop: [".my-popup"] })])), "contract-41").length, 1, "red: a pop-up of the game's own");
 });
+
+// SH-133 (S13-B1 fix round): the help's hint rungs armed again for a step still open log a second step-open of the same id: that
+// is the step still open (judged at its first opening: its call, or its skip), not a new one; a new step with no call still is
+const C = (t, k, o = {}) => ({ type: "c", k, t, ...o });
+const life = (t, what, step = "", o = {}) => C(t, "life", { what, reason: step, at: t, ...o });
+test("contract-36 (SH-133): a step logged open again with nothing between is the same opening; a new uncalled step is a break", () => {
+  const base = [C(T, "stage", { key: "cook:station1:marble" }), life(T, "stage-start", "cook:station"),
+    life(T + 1000, "step-open", "21", { by: "L4" }), life(T + 1000, "step-call", "21", { by: "skip-novoice" }), life(T + 1001, "step-open", "21"), life(T + 2100, "step-open", "21")];
+  const tl = (x) => ({ flow: "cook:chai-tray@L4", size: "1280x665", t0: T, states: [{ name: "01-start", at: 0, shot: "01-start.png" }], timeline: x.sort((a, b) => a.t - b.t) });
+  assert.equal(of(run(tl(base.slice())), "contract-36").length, 0, "green: step 21's skip was logged at its opening; the rungs' re-log is the same step");
+  assert.equal(of(run(tl([...base, life(T + 3000, "step-open", "22")])), "contract-36").length, 1, "red: step 22 opened, never called, no skip");
+});

@@ -5074,7 +5074,8 @@
      "files": [
       "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/tool-knife-t.webp",
-      "assets/cook/items/veg-*"
+      "assets/cook/items/veg-*",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
      ],
      "prefetch": [
       "assets/cook/items/tool-knife-t-v2.webp",
@@ -5108,7 +5109,8 @@
       "assets/cook/items/*-bowl-t.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-pot-t.webp",
-      "assets/cook/items/vessel-tadka-pan-t.webp"
+      "assets/cook/items/vessel-tadka-pan-t.webp",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
      ],
      "prefetch": [
       "assets/cook/items/spice-hardar-bowl-t.webp",
@@ -5141,7 +5143,8 @@
      "files": [
       "assets/cook/items/tool-ladle-t.webp",
       "assets/cook/items/v3/daar/ladle-v3.webp",
-      "assets/cook/items-s08c/kadchi/*"
+      "assets/cook/items-s08c/kadchi/*",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
      ],
      "prefetch": [
       "assets/cook/items/tool-ladle-t.webp",
