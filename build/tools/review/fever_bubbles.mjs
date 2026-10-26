@@ -5,7 +5,7 @@
 //   COOK_TEST_PORT=8896 flock -w 900 /tmp/njg-browser.lock timeout 300 node build/tools/review/fever_bubbles.mjs [level] [size] [seed]
 import { BASE, startServer, launch, newPage } from "../../sandbox/lib/env.mjs";
 const level = +(process.argv[2] || 1);
-const size = process.argv[3] || "1366x768";
+const size = process.argv[3] || "1280x665";
 const seed = process.argv[4] || "11";
 const srv = await startServer();
 const browser = await launch();

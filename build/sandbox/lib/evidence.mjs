@@ -17,7 +17,16 @@ import { join } from "node:path";
 import { ALIASES } from "./moments.mjs";
 
 export const SPEC_FILE = (root) => join(root, "build", "sandbox", "data", "evidence.json");
-export const DEFAULT_SIZE = "1366x768";
+export const DEFAULT_SIZE = "1280x665"; // Zafar's laptop (lib/env.mjs QUICK_SIZE; 26 Oct)
+// afterPause (S13-T round 3): the capture waits the help ladder's pause for the probe's level (data/shared.json helpMs, the one
+// table every game reads) and 300 ms more, so a probe at a "placed" moment sees the ladder's later state (the glow), not the change
+export const AFTER_PAUSE_EXTRA = 300;
+let LADDER = null;
+export const ladderMs = (level, root = join(new URL("../../..", import.meta.url).pathname)) => {
+  if (!LADDER) { try { LADDER = JSON.parse(readFileSync(join(root, "data", "shared.json"), "utf8")).helpMs; } catch (e) { LADDER = [7000, 8000, 11000, 15000]; } }
+  return LADDER[Math.min(LADDER.length, Math.max(1, level)) - 1];
+};
+export const afterPauseMs = (level) => ladderMs(level) + AFTER_PAUSE_EXTRA;
 export const PHONE_SIZES = ["844x390", "800x360"];
 export const MAX_EVERY = 8;      // an every:<moment> probe captures at most this many times (a probe's "max" changes it)
 export const MAX_STRIP = 12;     // frames in one filmstrip
@@ -201,7 +210,7 @@ export function defaultsFromRow(text) {
 // ---------- the spec ----------
 // ctx: {resolve(flowId) -> flow|null, kindOf(base) -> {levels, paths}|null, sizes: SIZES, contractChecks, moments(flowId) -> patterns,
 //       reachable(want, patterns), drivers: [names in _drivers], rowText: {ID: Check text}}
-const FIELDS = new Set(["flow", "path", "level", "levels", "sizes", "at", "after", "capture", "expect", "note", "delay", "max", "profile", "want", "seed", "webgl", "kind"]);
+const FIELDS = new Set(["flow", "path", "level", "levels", "sizes", "at", "after", "capture", "expect", "note", "delay", "max", "profile", "want", "seed", "webgl", "kind", "afterPause"]);
 export function normalizeProbe(p, ctx, where, rowText = "") {
   const errors = [], warnings = [];
   const err = (s) => errors.push(`${where}: ${s}`);
@@ -274,7 +283,7 @@ export function normalizeProbe(p, ctx, where, rowText = "") {
       const pats = ctx.moments(flowId);
       for (const [f, v] of [["at", at.at], ["after", p.after], ...capture.filter((c) => c.atMoment).map((c) => [`${c.raw}'s @`, c.atMoment])]) if (v && !ctx.reachable(v, pats)) err(`${f} "${v}": no driver of ${flowId} reaches it (add it to the driver and lib/moments.mjs first)`);
     }
-    out.push({ flow: base, level: L, path, flowId, sizes, at: at.at, every: at.every, after: p.after ? String(p.after) : null, capture, expect, note: p.note ? String(p.note) : "", delay, max, profile, want, seed, webgl: !!p.webgl, kind, dpr: capture.some((c) => c.kind === "zoom2") ? 2 : 1, raw: p });
+    out.push({ flow: base, level: L, path, flowId, sizes, at: at.at, every: at.every, after: p.after ? String(p.after) : null, capture, expect, note: p.note ? String(p.note) : "", delay: delay + (p.afterPause ? afterPauseMs(L) : 0), ...(p.afterPause ? { afterPause: true } : {}), max, profile, want, seed, webgl: !!p.webgl, kind, dpr: capture.some((c) => c.kind === "zoom2") ? 2 : 1, raw: p });
   }
   return { errors, warnings, probes: errors.length ? [] : out };
 }

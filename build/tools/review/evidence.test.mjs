@@ -72,7 +72,7 @@ test("moments: words in a run, selectors exactly, aliases; reachability needs a 
   assert.deepEqual(watchList([{ at: "visible:.a", after: null, expect: [{ kind: "lastsMs", sel: ".b" }], capture: [] }]), [".a", ".b"]);
 });
 
-const SIZES = { "1366x768": {}, "800x360": {} };
+const SIZES = { "1280x665": {}, "1366x768": {}, "800x360": {} }; // (the default size is Zafar's laptop, 1280x665, since 26 Oct)
 const ctx = {
   resolve: (id) => (/^(cook:fetch|clinic:heal-knee)(@L[23])?(#hint)?$/.test(id) ? { id } : null),
   kindOf: (b) => (b === "cook:fetch" ? { levels: [1, 2, 3, 4], paths: ["fair", "hint"] } : b === "clinic:heal-knee" ? { levels: [1, 2, 3], paths: ["fair"] } : null),
@@ -120,11 +120,21 @@ test("the plan: one page serves every probe on the same flow, size and variant; 
   const n = normalizeSpec(spec, ctx);
   const plan = planPages(Object.keys(spec), n.rows);
   const keys = plan.pages.map((p) => p.key).sort();
-  assert.deepEqual(keys, ["cook:fetch@@1366x768", "cook:fetch@@1366x768@@x2", "cook:fetch@@800x360"]);
-  const main = plan.pages.find((p) => p.key === "cook:fetch@@1366x768");
+  assert.deepEqual(keys, ["cook:fetch@@1280x665", "cook:fetch@@1280x665@@x2", "cook:fetch@@800x360"]);
+  const main = plan.pages.find((p) => p.key === "cook:fetch@@1280x665");
   assert.equal(main.probes.length, 3, "A-01, its @results-words capture, A-02");
   assert.equal(main.probes.find((p) => p.sub).at, "results-words");
   assert.deepEqual(defaultsFromRow("eye: knee L1–L3 at 844x390"), { sizes: ["844x390"], levels: [1, 2, 3] });
+});
+
+test("round 3: afterPause waits the help ladder's pause for the level (data/shared.json helpMs) and 300 ms after the moment", async () => {
+  const { afterPauseMs, ladderMs } = await import("../../sandbox/lib/evidence.mjs");
+  const shared = JSON.parse((await import("node:fs")).readFileSync(new URL("../../../data/shared.json", import.meta.url), "utf8"));
+  assert.equal(ladderMs(1), shared.helpMs[0]);
+  assert.equal(afterPauseMs(2), shared.helpMs[1] + 300);
+  const n = normalizeSpec({ "A-01": [{ flow: "cook:fetch", level: [1, 2], at: "request", afterPause: true, delay: 100, capture: ["crop:.x"] }] }, ctx);
+  assert.deepEqual(n.rows["A-01"].map((p) => p.delay), [100 + shared.helpMs[0] + 300, 100 + shared.helpMs[1] + 300], "per level");
+  assert.deepEqual(n.warnings.filter((w) => /afterPause/.test(w)), [], "a known field");
 });
 
 test("expects decided after the page", () => {

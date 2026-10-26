@@ -32,7 +32,7 @@ node build/tools/review/sprintcheck.mjs --judge-prompt [--run-id id]
                   nothing is played again; a flow it lacks shows as "not played")
   --judge-prompt  prints the prompt for the reviewer (Fable): judge each sheet, flaws first, PASS/FAIL + one line into the report.
   --all-rows      every live row of the list, not just the sprint's (the full audit, decision 76)
-  --rows a,b      only these of the sprint's rows      --quick  every flow at 1366x768 only (the rotate card at its own size)
+  --rows a,b      only these of the sprint's rows      --quick  every flow at 1280x665 only (the rotate card at its own size)
   --sizes a,b     every flow at these sizes            --json   the plan as JSON
   Port: COOK_TEST_PORT (default 8843). No network.`;
 const a = args(); help(HELP, a);
@@ -84,7 +84,7 @@ function printPlan(P, runId) {
   const by = (re) => P.rows.filter((p) => re.test(p.change)).length;
   console.log(`sprint check: ${P.rows.length} rows changed in docs/process/regressions.md since ${P.since} (${P.sinceWhy}) up to ${P.head}${P.dirty ? " + uncommitted edits" : ""}: ${by(/added/)} added, ${by(/status/)} status, ${by(/issue/)} issue text`);
   const M = mapped(P), U = unmapped(P), R = P.rows.filter((p) => p.kind === "retired");
-  console.log(`\nmapped (${M.length}): row -> flows${P.options.quick ? " (all at 1366x768: --quick)" : P.options.sizes ? ` (all at ${P.options.sizes.join(",")})` : ""}`);
+  console.log(`\nmapped (${M.length}): row -> flows${P.options.quick ? " (all at 1280x665: --quick)" : P.options.sizes ? ` (all at ${P.options.sizes.join(",")})` : ""}`);
   more(M, 400, (p) => `  ${p.id.padEnd(8)} ${p.kind.padEnd(8)} ${p.via.split(" ")[0].padEnd(7)} ${shortFlows(p.flows)}${p.sizes.length && !P.options.quick && !P.options.sizes ? `  @ ${p.sizes.join(",")}` : ""}${p.contract.length ? `  [${p.contract.join(", ")} on every page]` : ""}${p.notes.length ? `  (${p.notes.join("; ")})` : ""}`);
   console.log(`\nUNMAPPED (${U.length}): each must get a flow or a manual check before the sprint can close`);
   more(U, 400, (p) => `  ${p.id.padEnd(8)} ${p.kind.padEnd(8)} ${p.section.slice(0, 28).padEnd(28)} check: ${p.check.slice(0, 70)} | ${p.issue.slice(0, 70)}`);
@@ -174,7 +174,7 @@ async function sheets() {
   const reportFile = join(ROOT, "build", "reports", `sprintcheck-${runId}.md`);
   const verdicts = readVerdicts(reportFile);
   const lines = [];
-  const sizePref = (p) => (r) => (p.sizes.includes(r.size) ? 0 : r.size === "1366x768" ? 1 : 2);
+  const sizePref = (p) => (r) => (p.sizes.includes(r.size) ? 0 : r.size === "1280x665" ? 1 : 2);
   for (const p of mapped(P)) {
     const rs = p.flows.flatMap((f) => (byFlow.get(f) || []).slice().sort((x, y) => sizePref(p)(x) - sizePref(p)(y)));
     const ran = new Set(rs.map((r) => r.flow)), missing = p.flows.filter((f) => !ran.has(f));
