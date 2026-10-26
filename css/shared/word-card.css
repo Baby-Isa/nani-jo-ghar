@@ -27,7 +27,6 @@
 .wc-slot.wc-k, .wc-slot.wc-en { margin: 0; min-width: 0; overflow-wrap: anywhere; box-sizing: border-box; padding: 0 var(--njg-s1); border: var(--njg-line-2) solid transparent; border-radius: var(--njg-radius); display: flex; align-items: center; }
 .wc-k { font-size: var(--njg-t2); font-weight: 700; line-height: 1.2; color: var(--njg-word); min-height: calc(var(--njg-t2) * 1.2 + var(--njg-line-2) * 2); }
 .wc-row .wc-k { font-size: var(--njg-t3); min-height: calc(var(--njg-t3) * 1.2 + var(--njg-line-2) * 2); }
-.wc-k.to-record { font-style: italic; color: var(--njg-ink-soft); }
 .wc-en { font-size: var(--njg-t4); line-height: 1.25; color: var(--njg-ink-soft); min-height: calc(var(--njg-t4) * 1.25 + var(--njg-line-2) * 2); }
 .wc-en.none { display: none; }
 .wc-k > *, .wc-en > * { min-width: 0; }

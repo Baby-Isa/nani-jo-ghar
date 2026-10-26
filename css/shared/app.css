@@ -74,3 +74,10 @@ html.njg-first #njg-home { display: none; }
   content: ""; position: absolute; inset: 27% 22% 27% 36%;
   background: var(--njg-rust); clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
+
+/* "To record" (decision 84; S13-A1): the ONE look of a line the family has not recorded yet, in every game: its English in grey
+   italic (the hidden "to record" tag stays in the markup: data-rec, .rec). .njg-ph is the kit's class (the shared renderers emit
+   it); .ph and .to-record are the games' older names, here until their renderers emit .njg-ph (js/cook/words.js, ui.js, flow.js,
+   js/clinic/kit.js, js/shared/say.js, js/day/). !important: inside a word's colour, a card row's or a pill's, a placeholder stays
+   grey italic */
+.njg-ph, .ph, .to-record { color: var(--njg-ink-soft) !important; font-style: italic !important; font-family: var(--njg-font); }

@@ -681,7 +681,7 @@
   /** What a line shows: the Kutchi, or a placeholder's grey italic English. */
   const lineHTML = (line, english) => {
     if (!line) return "";
-    if (line.placeholder || !line.k) return `<span class="cv-ph" title="placeholder (English): to record">${esc(line.en)}</span>`;
+    if (line.placeholder || !line.k) return `<span class="cv-ph njg-ph" title="placeholder (English): to record">${esc(line.en)}</span>`;
     return english ? `<span class="cv-en">${esc(line.en)}</span>` : `<span class="cv-k">${esc(line.k)}</span>`;
   };
 

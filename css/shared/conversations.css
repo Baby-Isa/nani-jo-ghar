@@ -80,7 +80,7 @@
 .cv-heard .cv-text { font-size: calc(var(--njg-u) * 20); }
 
 /* a placeholder line: grey italic English (never tested, to record) */
-.cv-ph { color: var(--cv-muted); font-style: italic; font-weight: 600; }
+.cv-ph { font-weight: 600; }
 .cv-en { color: var(--njg-leaf-deep); }
 
 /* ---------- the child's reply pills ---------- */

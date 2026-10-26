@@ -62,7 +62,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card.english .cl-row-text { display: none; }
 /* the bulb (E25): the same English look as Cook's sidebar under its bulb (its indigo, the UI font, never bold): CLN-76 */
 .cl-card.english .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
-.cl-words .ph { color: var(--cl-ph); font-style: italic; }
 .cl-words .ku { color: var(--cl-ink); }
 .cl-words .ph + .ku, .cl-words .ku + .ph, .cl-words .ph + .ph { margin-left: .25em; }
 @keyframes cl-throb { 0%, 100% { transform: scale(1); background: var(--njg-chosen); } 50% { transform: scale(1.04); background: #ffe2a6; } }
@@ -106,7 +105,7 @@ body.clinic button { font-family: inherit; color: inherit; }
    css/shared/buttons.css alone; these rules are only for the clinic's own old buttons */
 .cl-go:not(.njg-btn) { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: var(--njg-white) !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
 .cl-go:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
-.cl-go:not(.njg-btn) .ph { color: #e8fff9; }
+.cl-go:not(.njg-btn) .ph { color: #e8fff9 !important; } /* (light on the old teal button, over the kit's placeholder grey) */
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
 .cl-go:not(.njg-btn).done {
   align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
@@ -117,7 +116,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-go:not(.njg-btn).done.throb { animation: var(--njg-pulse-anim); }
 .cl-go:not(.njg-btn).done:active { box-shadow: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2); }
 .cl-go:not(.njg-btn).alt { background: var(--njg-white); color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
-.cl-go:not(.njg-btn).alt .ph { color: var(--cl-soft); }
 .cl-go:not(.njg-btn).throb { animation: var(--njg-pulse-anim); }
 .cl-go:not(.njg-btn):disabled { opacity: .35; animation: none; cursor: default; }
 
@@ -131,7 +129,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* CLN-124 (S05-D3; decisions 81, 84): a line still to record is its English in the one placeholder style the card uses
    (the body font, grey italic, not the bubble's bold display face), so it never reads as dark text to be read */
 .cl-bubble.rec { font-family: var(--njg-font); font-style: italic; font-weight: 600; color: var(--njg-ink-soft); }
-.cl-bubble.rec .ph { color: var(--njg-ink-soft); }
 .cl-bubble .cl-rec { display: block; width: max-content; margin-top: var(--njg-s1); padding: 0 var(--njg-s2); border-radius: var(--njg-round); white-space: nowrap; font: 800 var(--njg-flag-t) / 1.35 var(--njg-font); font-style: normal; letter-spacing: .04em; text-transform: uppercase; color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge); }
 /* CLN-77: the pull-out hides the close-up's own UI first (tools, face, panels, pills, counts): no ghost rectangles */
 .cl-stage.cl-outro .hs-root > :not(.hs-svg) { visibility: hidden; }
@@ -474,7 +471,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-card.english .oc-headline .cl-row-text { display: none; }
 .cl-card.english .oc-headline .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
 /* CLN-76: a placeholder (no Kutchi yet) keeps its grey italic under the bulb; only a real translation turns blue */
-.cl-card.english .cl-row-en.ph, .cl-card.english .oc-headline .cl-row-en.ph { color: var(--cl-ph); font-style: italic; }
 /* 13d: the feeling cards in a thought bubble rising from the patient's head, opening out to the right */
 .cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: var(--njg-s2); padding: var(--njg-s4) var(--njg-s4); background: var(--njg-white); border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
 .cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: var(--njg-s1); border-radius: 50%; border: 3px solid var(--njg-step-edge); }
@@ -715,7 +711,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-rec, .bubble-rec { display: none !important; }
 
 /* decision 84 (CLN-117): a speaking moment's caption still to record is grey italic, like its pills */
-.njg-say .cap.ph { font-style: italic; color: var(--njg-cl-soft); }
 /* CLN-22 (S05-D): the pharmacy tray is the pantry's tray (PAN-07): its front edge is drawn over what sits on it (a
    flat lip across the bottom, above the items), and a space's outline fades as the item lands */
 .cl-counter-tray.v2 .cl-dish { position: relative; z-index: 1; transition: border-color .35s ease, background-color .35s ease; }

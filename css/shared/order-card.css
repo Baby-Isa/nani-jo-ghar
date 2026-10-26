@@ -49,7 +49,6 @@
 .oc-card .word { color: var(--oc-word); }
 /* LNG-03 (non-negotiable 4): a word Mum hasn't given yet (the engine's English placeholder, e.g. the plural of tameto)
    is never styled as Kutchi: grey italic, and its row carries the grown-ups' "to record" flag */
-.oc-card .ph, .oc-card .word.ph { color: var(--njg-ink-soft); font-style: italic; font-family: var(--njg-font); }
 /* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
