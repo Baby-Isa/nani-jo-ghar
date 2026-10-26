@@ -240,6 +240,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | SH-133 | Chai at L4: a step opens and Nani does not call it (contract-36 expect-fails before and after S13-B1); she calls each step once as it opens, at every level | **to fix: code** · S13-B1 fix round | auto: contract-36 on cook:chai-tray@L4, both sizes | S13 judge, 26 Oct (brief s13-b1) |
 | SH-134 | The dotted rows' speaker buttons on the phone (915x412) have a 48x32 px tap area, under the 48 px minimum, because the tightened rows sit about 20 px apart (S13-B1) | **to fix: code** · S13-A2 (buttons and tap sizes) | auto: build/check_word_card_taps.mjs-style tap-size check on the order card's speakers at 915x412 | S13-B1 report, 26 Oct |
 | SAM-27 | Samosa L3 breaks contract-50 (a card's rows tick at one moment): SH-53's per-samosa boxes tick one samosa at a time; it breaks on the code before S13 too | **to fix: code** · phase 2 (finalise Cook) unless S14 settles it | auto: contract-50 on cook:samosa@L3, both sizes | S13-B1 report, 26 Oct |
+| CK-52 | The daar station still loads the retired knife picture (assets/cook/items/tool-knife-t.webp, via the old 'knife' tool entry in data/cook.json) though the knife shown is the new one; since S13-V decodes every load ahead, contract-6 (no retired art) breaks on cook:daar | **to fix: code** · fast lane, S13 if time, else S14 | auto: contract-6 on cook:daar, both sizes; loadcheck | S13 merge, 26 Oct |
 
 ## Shared components
 
