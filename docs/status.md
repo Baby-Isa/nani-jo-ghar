@@ -21,7 +21,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 3. Wave 3, then `/review`, publish on his OK, his play, `/feedback`.
 4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
 
-**Next sprint (S13), agreed with Zafar 23 Oct: "One shared kit".** Every shared element sits in one place so a change is made once and reaches every game: colours, textures, outlines, the bob and glow, cards, the order screen, end screens, the finger, bubbles and buttons. It starts with a Fable review (high) of what should live centrally and how, then the builders move each game onto it. Already agreed: his decisions become code with a check across every game; the static check's known list only shrinks; every builder moves what it touches onto the kit.
+**Next sprint (S13): "One shared kit", planned in `docs/sprints/S13-one-shared-kit.md`** (agreed with Zafar 23 Oct; written 26 Oct). It starts with a Fable review of what should be central and how (checked against best practice), plus what else speeds development, cuts tokens and makes fixes work first time; then two builders move every game onto the kit.
 
 **Open questions to Zafar:** none.
 
@@ -34,7 +34,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 18 | 78 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 18 | 77 |
 | Cook: pantry | 5 | 9 |
 | Cook: chai / maani / daar / chaat / samosa / sekelo / general | 4 / 3 / 3 / 2 / 1 / 3 / 6 | 18 / 14 / 29 / 12 / 22 / 17 / 32 |
 | Clinic | 27 | 164 |
