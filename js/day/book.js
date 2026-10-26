@@ -344,6 +344,7 @@ export async function runBook(host, api, day) {
   const [BW, BH] = A.pagesSize;
   const pg = { l: el("div", "day-pg-box l", book), r: el("div", "day-pg-box r", book) };
   const headRow = el("div", "day-head", book);
+  headRow.style.visibility = "hidden"; // (her face shows only with a line: never the circle alone)
   const face = el("button", "day-face", headRow);
   face.type = "button";
   face.setAttribute("aria-label", "");
@@ -594,6 +595,13 @@ export async function runBook(host, api, day) {
       const s = bookAt.s;
       const layer = el("div", "day-turnart", book);
       Object.assign(layer.style, { left: `${bx * s}px`, top: `${by * s}px`, width: `${bw * s}px`, height: `${bh * s}px` });
+      // soft at its sides and foot (the pictures' box edges never show as a seam): two crossed fades, the mask's alpha only
+      const across = "linear-gradient(to right, transparent 0, black 2.5%, black 97.5%, transparent 100%)";
+      const down = "linear-gradient(to bottom, black 0, black 95%, transparent 100%)";
+      layer.style.webkitMaskImage = `${across}, ${down}`;
+      layer.style.webkitMaskComposite = "source-in";
+      layer.style.maskImage = `${across}, ${down}`;
+      layer.style.maskComposite = "intersect";
       const ims = T.frames.map((f) => {
         const im = el("img", "", layer);
         im.alt = "";
