@@ -18,15 +18,10 @@
 }
 .njg-done-tick { position: absolute; inset: 0; background: no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp?v=20261026T131724Z"); }
 .njg-done:active { transform: scale(0.96); }
-/* SH-58: it glows when it is the only thing left: the one focal pulse (css/shared/focus.css .njg-pulse, a centred glow and
-   bounce; js/shared/buttons.js adds it with .glow), never a ring of its own */
-.njg-done.glow, .njg-done.njg-pulse { animation: njgDonePulse 1.2s ease-in-out infinite; }
-/* the focal glow without the bounce: a button that never stops moving can't be pressed by a test driver, and the ✓ is
-   already the biggest thing on its corner */
-@keyframes njgDonePulse {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--njg-focus-rgb), 0)); }
-  50% { filter: drop-shadow(0 0 var(--njg-s3) rgba(var(--njg-focus-rgb), 0.85)); }
-}
+/* SH-58: it glows when it is the only thing left: the kit's glow (css/shared/focus.css; js/shared/buttons.js adds .glow), never
+   a ring of its own; the glow without the grow: a button that never stops moving can't be pressed by a test driver, and the ✓ is
+   already the biggest thing on its corner (S13-A1: the tick's pulse IS the glow token, 1.2 s, 12 px at .85) */
+.njg-done.glow, .njg-done.njg-pulse { animation: var(--njg-glow-anim); }
 
 /* → Next, the go-on button (SH-106, 19 Oct: "consistent ... there's no arrow"; samosa's "twice as big vertically"): the
    flat card (white, charcoal text, gold edge), a quarter taller than the ✓ beside it, the picture of where it goes as
@@ -59,8 +54,8 @@
 .njg-next-ic { display: inline-flex; flex: none; width: calc(var(--njg-go-h) * 0.38); height: calc(var(--njg-go-h) * 0.38); color: var(--njg-gold); }
 .njg-next-ic svg { width: 100%; height: 100%; }
 .njg-next:active { transform: translateY(var(--njg-line)); }
-.njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
-@keyframes njgNextGlow { 50% { box-shadow: 0 0 0 var(--njg-s1) rgba(var(--njg-gold-rgb), .30), var(--njg-shadow); } }
+/* S13-A1: the kit's one glow (was a 4 px gold ring at 1 s of its own) */
+.njg-next.glow { animation: var(--njg-glow-anim); }
 
 /* the answer pills: haa / na, the speaking fallbacks */
 .njg-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s3); }
@@ -75,7 +70,7 @@
 .njg-pill.right { background: var(--njg-gold); border-color: var(--njg-gold); } /* a right answer, for a moment (the eye test's haa, s12-w2b) */
 .njg-pills.locked .njg-pill { pointer-events: none; }
 @keyframes njgPillShake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
-@media (prefers-reduced-motion: reduce) { .njg-done.glow, .njg-next.glow, .njg-pill.shake { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .njg-pill.shake { animation: none; } }
 
 /* The action button (S02-A, non-negotiable 8, SH-60): the end screen's buttons (Again / Next / the list / Home) as one
    shared look for every screen's actions: Cook's day summary, shop and title, the clinic's stage screens. White with a

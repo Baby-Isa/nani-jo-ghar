@@ -19,7 +19,7 @@
 /* the item glows and bounces: a canvas thing's soft warm ring (the kit's), an HTML control by its own shape (ob-lit) */
 .njg-onboard .ob-item-glow { fill: none; stroke: var(--njg-focus); stroke-width: 7; animation: ob-item-glow 1.4s ease-in-out infinite; }
 .njg-onboard.between .ob-item-glow, .njg-onboard.between .ob-finger { opacity: 0; }
-.ob-lit { filter: drop-shadow(0 0 var(--njg-s1) var(--njg-focus)) drop-shadow(0 0 var(--njg-s3) var(--njg-focus)); animation: ob-bounce 0.9s ease-in-out infinite; }
+.ob-lit { filter: drop-shadow(0 0 var(--njg-s1) var(--njg-focus)) drop-shadow(0 0 var(--njg-s3) var(--njg-focus)); animation: var(--njg-hop-anim); } /* the kit's hop (css/shared/focus.css) */
 
 /* SH-119: the one finger (Onboard.finger): its box's top-left is moved so the fingertip lands on the point; it taps in one
    cadence (js/shared/onboard.js Onboard.FINGER) */
@@ -96,7 +96,6 @@
 @keyframes ob-glow { 50% { stroke-opacity: 0.35; stroke-width: calc(var(--njg-s1) * 1.75); } }
 @keyframes ob-item-glow { 0%, 100% { stroke-opacity: 0.55; } 50% { stroke-opacity: 1; } }
 /* a clear hop, Onboard.HOP (10%) of the thing's own height, up quickly and back, then a rest */
-@keyframes ob-bounce { 0%, 55%, 100% { translate: 0 0; animation-timing-function: ease-out; } 22% { translate: 0 -10%; animation-timing-function: ease-in; } }
 @keyframes ob-hold { from { --p: 0%; } to { --p: 100%; } }
 @keyframes ob-fadein { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
 @keyframes ob-shine { 0% { box-shadow: 0 0 0 0 rgba(var(--njg-focus-rgb), 0.7); } 100% { box-shadow: 0 0 0 var(--njg-s4) rgba(var(--njg-focus-rgb), 0); } }

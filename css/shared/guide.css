@@ -50,8 +50,7 @@
   box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card);
 }
 .njg-guide .ng-face.on .say-badge { background-color: var(--njg-gold); }
-.njg-guide.talk .ng-face img { animation: ngTalk .45s ease-in-out infinite alternate; }
-@keyframes ngTalk { to { transform: translateY(calc(var(--njg-line-2) * -1)) rotate(-3deg); } }
+.njg-guide.talk .ng-face img { animation: var(--njg-talk-anim); } /* the kit's talk (css/shared/focus.css; ART-18) */
 .njg-guide .ng-say { grid-area: say; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
 /* up to 2 lines, shrunk to fit then wrapped (js/shared/fit.js "fit2"), never an ellipsis */
 .njg-guide .ng-line {

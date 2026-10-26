@@ -285,8 +285,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-find-tick { flex: none; position: relative; width: 28px; height: 28px; border-radius: var(--njg-round); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); box-sizing: border-box; }
 .day-find-tick::after { content: ""; position: absolute; left: 8px; top: 3px; width: 7px; height: 13px; border: solid var(--njg-gold); border-width: 0 3px 3px 0; transform: rotate(45deg); }
 /* SH-96: the bulb's pulse when the child has been stuck 15-20 s (js/shared/guide.js pulseBulbs; the shared glow, css/shared/focus.css) */
-.day-window .help-pulse { animation: njgGlow var(--glow-ms) ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .day-window .help-pulse { animation: none; } }
+.day-window .help-pulse { animation: var(--njg-glow-anim); } /* the kit's glow (css/shared/focus.css; S13-A1) */
 /* RIDE-10: the first-time help's box round the open card (not dimmed, never bouncing: the thing in the view is what bounces) */
 .day-find-card.day-help-box { box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), 0 0 0 calc(var(--njg-line-2) + var(--njg-s1)) var(--njg-focus), var(--njg-shadow); }
 @media (max-height: 499.98px) { .day-find { gap: var(--njg-s1); margin-top: var(--njg-s1); } .day-find-card.wc .wc-pic { height: calc(var(--njg-side-w, 240px) * .42); } }

@@ -96,12 +96,14 @@ export function kitImportFindings(text, sharedSheets) {
 // ---- motion: the glow, hop, pulse and talk live only in css/shared/focus.css (S13-A1) ----
 // a game's own keyframes for a kit motion (glow, hop, pulse, throb, bounce, talk, bob, shake) is a second copy that drifts from
 // the kit's: its elements take var(--njg-glow-anim) (and -hop-, -pulse-, -talk-) instead
-export const MOTION_NAME = /glow|hop|pulse|throb|bounce|talk|bob|shake/i;
+export const MOTION_NAME = /^(glow|hop|pulse|throb|bounce|talk|bob|shake)$/i;
+// a keyframes name in parts (camelCase and dashes: "throbIn" -> throb, in; "ringLow" -> ring, low): any part a kit motion
+export const motionName = (name) => String(name).replace(/([a-z0-9])([A-Z])/g, "$1-$2").split(/[-_]+/).some((p) => MOTION_NAME.test(p));
 export function motionFindings(file, text) {
   if (file.startsWith("css/shared/")) return [];
   const out = [];
   lines(stripCssComments(text)).forEach((l, i) => {
-    for (const m of l.matchAll(/@keyframes\s+([\w-]+)/g)) if (MOTION_NAME.test(m[1])) out.push({ check: "motion", at: `${file}:${i + 1}`, key: `motion|${file}|${m[1]}`, text: `@keyframes ${m[1]}: a kit motion of the game's own; take the kit's (var(--njg-glow-anim), -hop-, -pulse-, -talk-: css/shared/focus.css)` });
+    for (const m of l.matchAll(/@keyframes\s+([\w-]+)/g)) if (motionName(m[1])) out.push({ check: "motion", at: `${file}:${i + 1}`, key: `motion|${file}|${m[1]}`, text: `@keyframes ${m[1]}: a kit motion of the game's own; take the kit's (var(--njg-glow-anim), -hop-, -pulse-, -talk-: css/shared/focus.css)` });
   });
   return out;
 }

@@ -164,7 +164,6 @@
 @keyframes cv-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(calc(var(--njg-u) * -10)); } 40% { transform: translateX(calc(var(--njg-u) * 9)); } 60% { transform: translateX(calc(var(--njg-u) * -6)); } 80% { transform: translateX(calc(var(--njg-u) * 4)); } }
 @keyframes cv-dodge { 0% { transform: none; } 45% { transform: translateX(calc(var(--njg-u) * -70)) rotate(-6deg); } 100% { transform: translateX(calc(var(--njg-u) * -40)); } }
 @keyframes cv-dodge-alt { 0% { transform: translateX(calc(var(--njg-u) * -40)); } 45% { transform: translateX(calc(var(--njg-u) * 30)) rotate(6deg); } 100% { transform: none; } }
-@keyframes cv-throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); box-shadow: 0 0 0 calc(var(--njg-u) * 7) rgba(var(--njg-focus-rgb), .35); } }
 @keyframes cv-sheepish { 0%, 100% { rotate: 0deg; } 30% { rotate: -3deg; } 60% { rotate: 2deg; } }
 @keyframes cv-hop { 50% { translate: 0 calc(var(--njg-u) * -6); } }
 
@@ -196,4 +195,4 @@
 /* SH-124 (the judge, 23 Oct: the bounce was 1-2 px): the reply to pick hops a clear 10% of its height and rests at the top a moment
    (translate only: its size never changes) */
 .cv-pill.cv-pick.ob-lit { animation: cv-pick-hop 1s ease-in-out infinite; }
-@keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 -10%; } }
+@keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 var(--njg-hop-lift); } } /* the kit's hop, held a moment at the top (SH-124) */
