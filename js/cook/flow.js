@@ -885,6 +885,167 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
   }
 
+  /*
+   * SH-121 (Zafar, 22 Oct, A7: "the tea is ... on the tray in front of him. Then he should say aah. Chai and the picture
+   * card for chai comes up in the top left. And then maybe goes into the left sidebar and he says baraba and it gets ...
+   * stamped ... order served ... then he says thank you and he goes ... a bit of a satisfying sound and visual ... for all
+   * the game modes. So then you understand what chaat is and what samosa is"): every order's dish, once it sits on the
+   * customer's tray, is named by them ("Ahhh..." and the dish's word: the engine's own lines, the "Ahhh..." still to record,
+   * so grey English until Mum records it), while its picture card rises from them to the stage's top left, large; it slides
+   * into the left bar under their order card, they say "barabar" (just right: Mum's word) and a "served" stamp (a tick, no
+   * words: non-negotiable 3) lands on it with a soft sound. The caller then has them say thank you and go. One card per
+   * dish (an order of two dishes shows two). The cards go when the end screen comes (servedCardsAway).
+   */
+  const servedCards = [];
+  function servedCardsAway() {
+    servedCards.splice(0).forEach((el) => {
+      el.style.transition = "opacity 300ms ease";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 320);
+    });
+  }
+  const STAMP_SVG =
+    '<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="rgba(255,255,255,0.55)" stroke="#2f7d4a" stroke-width="7"/><circle cx="50" cy="50" r="35" fill="none" stroke="#2f7d4a" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M30 52 L45 66 L71 37" fill="none" stroke="#2f7d4a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  async function servedMoment(order, who) {
+    const dishes = [...new Set(order.dishes.map((d) => d.recipe))].filter((r) => r && R[r]);
+    if (!dishes.length || !S() || !S().chars) return;
+    const stage = $("#stage");
+    if (!stage) return;
+    const sr = stage.getBoundingClientRect();
+    // where they are on screen: their face, the card's start
+    const img = S().chars[who];
+    let from = { x: sr.left + sr.width * 0.6, y: sr.top + sr.height * 0.3 };
+    try {
+      const b = img && img.getBounds();
+      if (b) {
+        const p = UI.worldToScreen(b.centerX, b.top + b.height * 0.25);
+        from = { x: p.x, y: p.y };
+      }
+    } catch (e) {
+      /* (a character gone: the stage's middle) */
+    }
+    const mission = $("#mission") && $("#mission").getBoundingClientRect().width > 20 ? $("#mission") : null;
+    const side = document.querySelector(".njg-side");
+    // (the judge, 26 Oct: the card covered Nani's head at 1366x768 and all of her at 915x412): it never covers anyone. It
+    // goes at the top of the first gap between the people (from the left: the top left where there is room) that takes it
+    // near its full size, else the widest gap, sized to it
+    const n = dishes.length;
+    const want = Math.min(sr.height * 0.42, (sr.width * 0.5) / n);
+    const spans = [];
+    try {
+      Object.values(S().chars || {}).forEach((ch) => {
+        if (!ch || !ch.active || !ch.visible) return;
+        const b = ch.getBounds();
+        const a = UI.worldToScreen(b.left, b.top);
+        const z = UI.worldToScreen(b.right, b.bottom);
+        // (the picture's transparent margin: its middle 80% is the person)
+        const pad = (z.x - a.x) * 0.1;
+        spans.push([a.x + pad - 8, z.x - pad + 8]);
+      });
+    } catch (e) {
+      /* (no characters: the whole stage is free) */
+    }
+    spans.sort((u, v) => u[0] - v[0]);
+    const gaps = [];
+    let gx = sr.left + 12;
+    spans.forEach(([l, r]) => {
+      if (l > gx) gaps.push([gx, l]);
+      gx = Math.max(gx, r);
+    });
+    if (sr.right - 12 > gx) gaps.push([gx, sr.right - 12]);
+    const fit = (g) => Math.min(want, (g[1] - g[0] - 12 * (n - 1)) / n);
+    const gap = gaps.find((g) => fit(g) >= want * 0.8) || gaps.reduce((m, g) => (!m || fit(g) > fit(m) ? g : m), null) || [sr.left + 12, sr.right - 12];
+    const big = Math.max(60, fit(gap));
+    const cards = dishes.map((recipe, i) => {
+      const art = Cook.Art.servedArt(Cook.Art.servedName(recipe));
+      const word = R.dishWord(recipe);
+      const el = document.createElement("div");
+      el.className = "njg-served-card";
+      el.dataset.recipe = recipe;
+      Object.assign(el.style, {
+        position: "fixed", zIndex: "60", left: "0px", top: "0px", width: `${big}px`, boxSizing: "border-box", padding: `${big * 0.05}px`,
+        background: "#fffaf1", borderRadius: `${big * 0.08}px`, boxShadow: "0 6px 18px rgba(60,40,20,0.28)", border: "3px solid #e2c68f",
+        display: "flex", flexDirection: "column", alignItems: "center", pointerEvents: "none", transformOrigin: "0 0", willChange: "transform, opacity",
+        transition: "none", opacity: "0",
+      });
+      const pic = document.createElement("div");
+      Object.assign(pic.style, { width: "100%", aspectRatio: "1 / 0.78", display: "flex", alignItems: "center", justifyContent: "center" });
+      if (art && art.file) {
+        const im = document.createElement("img");
+        im.src = Cook.v(art.file);
+        im.alt = "";
+        Object.assign(im.style, { maxWidth: "100%", maxHeight: "100%", objectFit: "contain" });
+        pic.appendChild(im);
+      }
+      el.appendChild(pic);
+      // the dish's word (Kutchi, never English: non-negotiable 3), as the order card writes it
+      const w = document.createElement("div");
+      w.className = "njg-served-word";
+      try {
+        w.innerHTML = Lang.html(Lang.wordLine(word));
+      } catch (e) {
+        w.textContent = "";
+      }
+      Object.assign(w.style, { font: `800 ${Math.round(big * 0.15)}px Nunito, sans-serif`, color: "#8C2F2F", lineHeight: "1.1", textAlign: "center", overflowWrap: "anywhere", marginTop: `${big * 0.02}px` });
+      el.appendChild(w);
+      const stamp = document.createElement("div");
+      stamp.className = "njg-served-stamp";
+      stamp.innerHTML = STAMP_SVG;
+      Object.assign(stamp.style, { position: "absolute", right: "-6%", top: "-6%", width: "46%", aspectRatio: "1", opacity: "0", transform: "scale(1.8) rotate(-14deg)", transition: "none", pointerEvents: "none" });
+      el.appendChild(stamp);
+      document.body.appendChild(el);
+      servedCards.push(el);
+      // its place at the top left of the stage, then in the left bar (over the order card, stacked)
+      // (the top left where it fits; in a gap past the people, at its far edge, clear of the customer's bubble by their head)
+      const x0 = gap[0] <= sr.left + 12 ? gap[0] + 4 : gap[1] - 4 - n * big - (n - 1) * 12;
+      const at = { x: x0 + i * (big + 12), y: sr.top + 16 };
+      return { el, stamp, at, i };
+    });
+    const place = (c, x, y, k, o, ms) => {
+      c.el.style.transition = ms ? `transform ${ms}ms cubic-bezier(.2,.8,.2,1), opacity ${Math.min(ms, 260)}ms ease` : "none";
+      c.el.style.transform = `translate(${x}px, ${y}px) scale(${k})`;
+      c.el.style.opacity = String(o);
+    };
+    // 1. it rises from them, small, to the top left, large
+    cards.forEach((c) => place(c, from.x - big * 0.1, from.y, 0.2, 0, 0));
+    void document.body.offsetWidth;
+    Cook.servedMoment = { who, dishes, phase: "rise" };
+    Cook.sfx.pop();
+    cards.forEach((c) => place(c, c.at.x, c.at.y, 1, 1, 650));
+    // "Ahhh..., chai": their own word for it, as it comes up
+    const said = Lang.join([Lang.line("phrase.ahhh")].concat(dishes.map((r) => Lang.wordLine(R.dishWord(r)))));
+    await Promise.all([S().talk(who, said, { after: "happy" }), Cook.wait(1400)]);
+    // 2. it slides into the left bar, under their order card
+    Cook.servedMoment.phase = "slide";
+    // under their order card, never over its words (the judge, 26 Oct), and clear of the bar's buttons at its foot (the ? and
+    // home, in its lowest 40%)
+    const sb = side ? side.getBoundingClientRect() : { left: 12, top: sr.top + 12, width: 200, bottom: sr.bottom - 12 };
+    const mr = mission ? mission.getBoundingClientRect() : null;
+    const foot = [...document.querySelectorAll(".njg-side button, .njg-side a")].map((b) => b.getBoundingClientRect()).filter((r) => r.height > 0 && r.top > (mr ? mr.bottom : sb.top) && r.top > sb.top + sb.height * 0.6).reduce((m, r) => Math.min(m, r.top), sb.bottom);
+    const tr = { left: mr ? mr.left : sb.left + 6, top: (mr ? mr.bottom : sb.top) + 8, width: mr ? mr.width : sb.width - 12 };
+    const cardH = Math.max(...cards.map((c) => c.el.offsetHeight)) || big * 1.12;
+    const k = Math.max(0.2, Math.min(1, (tr.width - 8) / big, (foot - 8 - tr.top - (cards.length - 1) * 14) / cardH));
+    Cook.sfx.whoosh();
+    cards.forEach((c) => place(c, tr.left + 4 + c.i * 10, tr.top + 4 + c.i * 14, k, 1, 600));
+    await Cook.wait(650);
+    // 3. "barabar", and the stamp lands (a soft thump and a star)
+    Cook.servedMoment.phase = "stamp";
+    const just = Lang.line("phrase.just-right");
+    const talking = S().talk(who, just, { after: "happy" });
+    await Cook.wait(250);
+    cards.forEach((c) => {
+      c.stamp.style.transition = "transform 260ms cubic-bezier(.3,1.6,.5,1), opacity 160ms ease";
+      c.stamp.style.opacity = "1";
+      c.stamp.style.transform = "scale(1) rotate(-14deg)";
+    });
+    // (a stamp's thump, then a warm low note: never a verdict's chime)
+    Cook.sfx.chop();
+    setTimeout(() => Cook.sfx.soft(), 60);
+    await Promise.all([talking, Cook.wait(700)]);
+    // (the test hook stays up until they've gone: serve clears it)
+    Cook.servedMoment.phase = "thanks";
+  }
+
   async function serve(order, ctx) {
     const who = order.who;
     const tServed = Date.now();
@@ -951,6 +1112,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // T7: Shabash from Nani, then the customer's thank you (the family's English words, G6) and khuda-fis
       if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
       else S().setMood("nani", "happy");
+      // SH-121 (Zafar, 22 Oct, A7): the served moment, then their thanks
+      await servedMoment(order, who);
       await S().talk(who, Lang.line("thanks"), { after: "happy" });
       await S().talk(who, Lang.line("bye"));
     }
@@ -958,6 +1121,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (who !== "nani") await S().leaveChar(who);
     // the others who came in with the order (decision 53) go too
     for (const w of Object.keys(S().chars || {})) if (w !== "nani" && w !== state.waiting) await S().leaveChar(w);
+    Cook.servedMoment = null;
+    servedCardsAway();
     // Wave 6b: the shared end-of-round screen (time, accuracy, hints; then the words)
     await roundEnd(ctx, { scored });
     state.ordersServed = (state.ordersServed || 0) + 1;
@@ -1995,9 +2160,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     wireRail();
     // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load
     // (no module support) still plays, unpaid, on Cook's own save (Cook.core stays null)
+    // CK-48 (s12-w3b): Cook's own data (the item catalogue, the station files, the hands) loads while the core does: it
+    // needs nothing from it (it waited for the core before)
+    const loaded = Cook.load();
+    loaded.catch(() => {});
     if (Cook.coreReady) await Cook.coreReady.catch(() => null);
     Cook.loadSave();
-    await Cook.load();
+    await loaded;
     const run = Cook.run;
     let ready;
     const shown = new Promise((r) => (ready = r));
@@ -2064,6 +2233,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   let winFocus = null;
   Cook.halt = function () {
     Cook.run++;
+    // SH-121: a served card still up goes with the game
+    Cook.servedMoment = null;
+    servedCardsAway();
     Cook.inDay = false;
     Cook.paused = false;
     Cook.onSceneReady = null;

@@ -37,12 +37,27 @@
 
   /** Hand the clinic an engine (the browser after ready(), a test with its own data). */
   E.use = (engine) => (E.engine = engine || null);
+  /*
+   * CK-48: data/family-audio.json once per page: the promise any loader on the page started first (js/core/index.js
+   * leaves its own on globalThis.njgFamilyAudio), else this one, left there for the next.
+   */
+  const familyAudio = (loadJSON) => {
+    const g = globalThis;
+    if (!g.njgFamilyAudio) g.njgFamilyAudio = Promise.resolve(loadJSON("data/family-audio.json")).catch(() => []);
+    return g.njgFamilyAudio;
+  };
   /** The browser: load the engine module and data/lang/ once. loadJSON(path) is the kit's (stamped URLs). */
   // (it resolves to true, never to E: E has a `then` builder, so awaiting E would wait for ever)
   E.ready = async function (loadJSON, root = "") {
     if (E.engine) return true;
     if (!E.loading)
       E.loading = (async () => {
+        // CK-48 (s12-w3b): the data files are asked for at once, while the engine's module loads (they waited for it);
+        // the family's clip list is the page's one load of it (njgFamilyAudio, shared with the engine core's)
+        const data = {};
+        // CLN-88 (S02-A): the language files at once, not one after another
+        const files = Promise.all([familyAudio(loadJSON), ...DATA_FILES.map(async (f) => (data[f] = await loadJSON(`data/lang/${f}.json`)))]);
+        files.catch(() => {});
         // through the core's seam (the import map stamps it); a page without the map loads the engine by path
         let mod;
         try {
@@ -52,9 +67,7 @@
           const base = typeof document !== "undefined" ? document.baseURI : "";
           mod = await import(new URL(`${root}js/core/lang/engine/index.js`, base).href);
         }
-        const data = {};
-        // CLN-88 (S02-A): the language files at once, not one after another
-        const [audioRaw] = await Promise.all([loadJSON("data/family-audio.json"), ...DATA_FILES.map(async (f) => (data[f] = await loadJSON(`data/lang/${f}.json`)))]);
+        const [audioRaw] = await files;
         const audio = audioRaw || [];
         E.engine = mod.createEngine({ data, audio });
       })();
