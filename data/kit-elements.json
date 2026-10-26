@@ -92,7 +92,6 @@
         "first": {
           "at": "visible:.njg-rq-card .wc-card",
           "sel": ".njg-rq-card .wc-card",
-          "delay": 350,
           "tries": 10
         },
         "day": {
@@ -107,8 +106,9 @@
           "tries": 6
         },
         "clinic": {
-          "at": "visible:.wc-card",
-          "delay": 350
+          "at": "rec:heal-eye-redrop",
+          "sel": ".eye-card",
+          "flow": "clinic:heal-eye"
         },
         "lab": {
           "at": "visible:.njg-rq-card .wc-card",
