@@ -19,7 +19,8 @@
  *                       words: [{kutchi, english, audio?, id?, right?}],
  *                       onDone(out), onAgain?(out), speak?(word), container?,
  *                       actions?: [{id, label?, icon?, primary?, elId?}], onAction?(out),
- *                       sound?: true, store?: UIStore})
+ *                       sound?: true, store?: UIStore,
+ *                       receipt?: [{face: {who, src?, emoji?}, item: {src?, svg?, text?, tint?}, ok, coins?}], receiptHead?, coins?})
  *     -> out = {action: "done" | "again" | an actions id, badges, best: {ms, newBest, first}}
  *
  * A word's `right` (true/omitted = got it, false = missed it) decides which
@@ -391,6 +392,57 @@
     return `${opts.onAgain ? `<button class="rs-btn rs-again" type="button" data-act="again" aria-label="Play again">${ICON.again}</button>` : ""}
           <button class="rs-btn rs-done" type="button" data-act="done" aria-label="Done">${ICON.check}</button>`;
   }
+  /*
+   * The receipt (S13-B2; CLN-111, CLN-03; the kit review 2, "the receipt a data slot"): a round over several people (the clinic's
+   * morning) ends on one row per person in place of the badges: their face circle (js/shared/face.js, the row size), what they
+   * took home, a gold tick when they had every row right (grey otherwise: no stars, H5, F13); then the coins. Drawn here only,
+   * with the kit's classes: no game draws or restyles it (contract-49).
+   *   receipt: [{face: {who, src?, emoji?}, item: {src?, svg?, text?, tint?}, ok, coins?}]
+   *   opts.receiptHead: a heading picture (an emoji); opts.coins: the purse at the end (else the rows' coins added up)
+   */
+  function receiptEl(rows, opts) {
+    const d = document.createElement("div");
+    d.className = "rs-receipt";
+    const add = (parent, cls, text) => {
+      const n = parent.appendChild(document.createElement(cls === "img" ? "img" : "div"));
+      if (cls !== "img") n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+    if (opts.receiptHead) add(d, "rs-receipt-head", opts.receiptHead).setAttribute("aria-hidden", "true");
+    const list = add(d, "rs-receipt-list");
+    const F = root.Face;
+    for (const r of rows) {
+      const row = add(list, "rs-receipt-row");
+      const f = r.face || {};
+      const face = add(row, "rs-receipt-face");
+      if (F && F.circle && f.who) {
+        const c = F.circle(f.who, "row", { src: f.src || null });
+        const im = c.querySelector("img");
+        if (im && !im.getAttribute("src") && f.emoji) im.replaceWith(Object.assign(document.createElement("span"), { className: "njg-face-emoji", textContent: f.emoji }));
+        face.appendChild(c);
+      } else if (f.emoji) face.textContent = f.emoji;
+      const it = r.item || {};
+      const item = add(row, "rs-receipt-item");
+      if (it.tint) {
+        item.classList.add("tinted");
+        item.style.setProperty("--rs-tint", it.tint);
+      }
+      if (it.src) {
+        const im = add(item, "img");
+        im.alt = "";
+        im.draggable = false;
+        im.src = it.src;
+      } else if (it.svg) item.innerHTML = it.svg;
+      else if (it.text) add(item, "rs-receipt-glyph", it.text);
+      const mark = add(row, `rs-receipt-mark${r.ok ? " gold" : ""}`);
+      mark.innerHTML = root.OrderCard && root.OrderCard.CHECK ? root.OrderCard.CHECK : ICON.check;
+    }
+    const coins = opts.coins != null ? opts.coins : rows.some((r) => r.coins != null) ? rows.reduce((s, r) => s + (+r.coins || 0), 0) : null;
+    if (coins != null) add(d, "rs-receipt-coins", `🪙 ${coins}`);
+    return d;
+  }
+
   /**
    * Show the end-of-round pop-up. Resolves when an action is tapped.
    * Design system 10 (Zafar, 28 Sept, late): ONE pop-up card that steps through
@@ -399,8 +451,11 @@
    *   3. on that last step, the action buttons at the bottom of the card.
    * opts.actions: [{id, label?, icon? ("again", "next", "check", "grid"), primary?, elId?}] replaces the
    * default Play again / Done; the promise resolves with out.action = the tapped action's id.
-   * opts.body: a DOM node shown in place of the badges (a summary over several rounds, e.g. the clinic's end of the
-   * morning: CLN-111, CLN-03), in the same card, at the same place, with the same action buttons under it.
+   * opts.receipt: [{face: {who, src?, emoji?}, item: {src?, svg?, text?, tint?}, ok, coins?}] the receipt (a round over
+   * several people, the clinic's end of the morning: CLN-111, CLN-03) in place of the badges, in the same card, at the same
+   * place, with the same action buttons under it; drawn by receiptEl above with the kit's classes only (S13-B2, contract-49).
+   * opts.receiptHead (its heading picture), opts.coins (the purse at the end).
+   * opts.body: a DOM node in place of the badges (kept for a lab page; a game passes data, never markup of its own).
    */
   Results.show = function (opts) {
     opts = opts || {};
@@ -408,7 +463,8 @@
     const S = store(opts);
     // CLN-118 (D13): a taught round (a heal game's guided first round) is neither timed nor scored: no time is recorded
     // and the badge page is skipped; the card opens on the word review (or the steps), or holds only the actions
-    const taught = !!opts.taught && !opts.body;
+    const body = Array.isArray(opts.receipt) && opts.receipt.length ? receiptEl(opts.receipt, opts) : opts.body || null;
+    const taught = !!opts.taught && !body;
     const timed = opts.timeMs != null && !taught;
     const time = timed ? Results.recordTime(opts.mode, opts.game, opts.level, opts.timeMs, { store: S }) : null;
     const b = Results.badges(opts, time ? time.prevMs : null);
@@ -433,7 +489,7 @@
       <div class="rs-card${taught ? " taught" : ""}" data-step="${first}">
         <div class="rs-steps">
           ${taught ? "" : `<div class="rs-page rs-p1" data-page="1">
-            ${opts.body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
+            ${body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
           </div>`}
           ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}${taught ? " one" : ""}">${wordsHtml(words, { one: taught })}</div></div>` : ""}
           ${steps.length ? stepsHtml(steps) : ""}
@@ -441,7 +497,7 @@
         ${many ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
         ${many ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
-    if (opts.body) el.querySelector(".rs-body").appendChild(opts.body);
+    if (body) el.querySelector(".rs-body").appendChild(body);
     host.appendChild(el);
     // SH-74: the card sits over the play area, never off its left edge or over the sidebar; the dim still covers the whole
     // screen. The play area is the frame's (.njg-play: Cook) or the clinic's own grid (.cl-main); opts.area overrides
@@ -459,7 +515,8 @@
     };
     place();
     root.addEventListener("resize", place);
-    // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10)
+    // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10): it marks it
+    // data-njg-results-hide (css/shared/results.css), and the html carries njg-results-open while an end screen is up
     document.documentElement.classList.add("njg-results-open");
     if (root.Sfx) root.Sfx.unlock();
     const card = el.querySelector(".rs-card");

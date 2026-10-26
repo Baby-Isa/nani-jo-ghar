@@ -282,7 +282,7 @@ export class CookPlayer {
         if (d.askTried === d.choices) return false;
         d.askTried = d.choices;
         const say = await p.evaluate(() => {
-          const b = document.querySelector("#bubble:not(.hidden) .wp-say");
+          const b = document.querySelector(".cv-line .wp-say");
           const r = b && b.getBoundingClientRect();
           return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
         }).catch(() => null);

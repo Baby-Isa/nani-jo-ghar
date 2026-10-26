@@ -79,15 +79,9 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
 .cm-sw:active { transform: scale(.94); }
 .cm-sw.on { border-color: var(--clay); box-shadow: 0 0 0 4px rgba(181, 82, 59, .25), 0 4px 12px rgba(80, 45, 20, .14); }
 .cm-dot { position: absolute; right: 6px; bottom: 6px; width: 26%; aspect-ratio: 1; border-radius: 50%; border: 3px solid var(--njg-white); box-shadow: 0 1px 3px rgba(var(--njg-black-rgb), .25); }
-.cm-done {
-  justify-self: end;
-  width: clamp(72px, 16vmin, 112px); aspect-ratio: 1; border-radius: 50%;
-  border: 6px solid var(--paper); background: var(--leaf); color: var(--njg-white);
-  box-shadow: 0 6px 18px rgba(40, 90, 60, .35); display: grid; place-items: center;
-}
-.cm-done svg { width: 62%; height: 62%; }
-.cm-done.invite { animation: var(--njg-pulse-anim); } /* the kit's pulse (css/shared/focus.css; S13-A1) */
-.cm-done:active { transform: scale(.94); }
+/* S13-B2: the tick is the kit's ✓ Done (js/shared/buttons.js, css/shared/buttons.css), in its corner of the foot under the
+   swatches; the foot keeps its room (the ✓ and its margin) */
+.cm-foot { position: relative; min-height: calc(var(--njg-done) + var(--njg-s3) * 2); }
 
 /* a narrow portrait phone: the character on top, the choices under it */
 @media (max-aspect-ratio: 4/5) {
@@ -208,17 +202,16 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
 .st-kid { display: block; width: 100%; height: 100%; }
 
 /* ---------------- the big arrow and the answers, on the right (UX 2) ---------------- */
-.st-next, .st-yes, .st-no {
+.st-yes, .st-no {
   position: absolute; z-index: 6;
   width: clamp(76px, 16vmin, 116px); aspect-ratio: 1; border-radius: 50%;
   border: 6px solid var(--paper); display: grid; place-items: center; padding: 0;
   box-shadow: 0 6px 18px rgba(var(--njg-shade-rgb), .3);
 }
-.st-next svg, .st-yes svg, .st-no svg { width: 58%; height: 58%; }
-.st-next {
-  right: max(var(--gutter), env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
-  background: var(--clay); color: var(--njg-white); transform: scale(.4); opacity: 0; transition: transform .25s, opacity .25s;
-}
+.st-yes svg, .st-no svg { width: 58%; height: 58%; }
+/* S13-B2: the arrow is the kit's → Next (js/shared/buttons.js, css/shared/buttons.css: its look and its corner); the story keeps
+   only its entrance (it grows in, then pulses with the kit's pulse) and its press */
+.st-next { transform: scale(.4); opacity: 0; transition: transform .25s, opacity .25s; }
 .st-next.in { transform: scale(1); opacity: 1; animation: njgPulse var(--njg-pulse-ms) ease-in-out .6s infinite; }
 .st-next.go { transform: scale(.85); }
 .st-choice { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; }

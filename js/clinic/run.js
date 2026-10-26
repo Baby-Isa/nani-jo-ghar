@@ -110,32 +110,38 @@
     screen.card.setTitle("", null);
     screen.card.setRows([]);
     screen.card.el.style.display = "none"; // no empty request card beside the receipt
-    const r = h("div", "cl-receipt", null);
-    h("div", "cl-receipt-title", r, "🏥");
-    const list = h("div", "cl-receipt-list", r);
-    outs.forEach((o) => {
-      const row = h("div", "cl-receipt-row", list);
-      row.appendChild(Clinic.Figure.face(o.plan.kind, "happy"));
-      h("span", "cl-receipt-item", row).appendChild(Kit.icon(o.plan.stages.pharmacy.asked[0], null));
-      // no stars anywhere (H5): a gold tick for a patient with every row right, a grey one otherwise (F13)
-      const mark = h("span", `cl-receipt-mark${o.right === o.total ? " gold" : ""}`, row);
-      mark.innerHTML = global.OrderCard && global.OrderCard.CHECK ? global.OrderCard.CHECK : "&#10003;";
-    });
-    h("div", "cl-receipt-coins", r, `🪙 ${o.coins || 0}`);
+    // S13-B2: the receipt is the shared end screen's data slot (js/shared/results.js Results.show({receipt})): each patient's
+    // face (the kit's circle, her happy picture), what she took home and her tick (no stars anywhere, H5: gold with every row
+    // right, grey otherwise, F13); the end screen draws it, the clinic draws nothing of its own in it (contract-49)
+    const receipt = outs.map((o) => ({ face: faceData(o.plan.kind), item: itemData(o.plan.stages.pharmacy.asked[0]), ok: o.right === o.total }));
     const Res = global.Results;
     // the end buttons come from the caller (the shared kit's endActions: its labels, for screen readers only); else plain ids
     const acts = o.actions || ["again", "next", "list"].map((id) => ({ id, icon: id === "list" ? "grid" : id, primary: id === "next" }));
     let action = "next";
     if (Res && Res.show) {
-      const opts = { mode: "clinic", game: "morning", body: r, actions: acts, container: document.body };
+      const opts = { mode: "clinic", game: "morning", receipt, receiptHead: "🏥", coins: o.coins || 0, actions: acts, container: document.body };
       const LC = global.Lifecycle;
       const out = await (LC && LC.results ? LC.results(Res, opts) : Res.show(opts));
       action = (out && out.action) || "next";
     } else {
       // no shared end screen on the page (a test page): the old single button
-      screen.clearStage().appendChild(r);
       await S.button(screen, S.line({ data: R.data }, "close"));
     }
     return action; // the card comes back with the next thing it shows (Kit.Card render)
   };
+  /** A patient's face for the receipt, as data: who, and her happy picture (or her emoji when she has none yet). */
+  function faceData(kind) {
+    const c = Clinic.Figure.face(kind, "happy");
+    const im = c && c.querySelector("img");
+    const em = c && c.querySelector(".njg-face-emoji");
+    return { who: kind, src: im ? im.getAttribute("src") : null, emoji: em ? em.textContent : null };
+  }
+  /** What she took home, as data: its picture (a file, or the stand-in drawing), else its glyph, and its colour if tinted. */
+  function itemData(id) {
+    const ic = Kit.icon(id, null);
+    const im = ic.querySelector("img");
+    const sv = !im && ic.querySelector("svg");
+    const tint = ic.dataset.colour && !ic.classList.contains("own-colour") ? ic.style.getPropertyValue("--tint").trim() || null : null;
+    return { src: im ? im.getAttribute("src") : null, svg: sv ? sv.outerHTML : null, text: !im && !sv ? ic.textContent.trim() || null : null, tint };
+  }
 })(typeof self !== "undefined" ? self : this);

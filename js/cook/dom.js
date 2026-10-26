@@ -13,8 +13,7 @@ export const screenHTML = () => `
   <main id="stage" class="njg-play">
     <div id="game"></div>
 
-    <!-- a speech bubble beside a character (service view) -->
-    <div id="bubble" class="hidden" role="status" aria-live="polite"><div class="say-slot"></div></div>
+    <!-- a character's speech bubble (service view) is the kit's, made over this play area as it speaks: Conversations.bubble (S13-B2) -->
 
     <div id="gist" class="hidden"></div>
     <div id="choices" class="hidden"></div>
@@ -76,7 +75,7 @@ export const screenHTML = () => `
   </div>
 </div>
 
-<div id="overlay" class="hidden"><div id="panel"></div></div>
+<div id="overlay" class="hidden" data-njg-results-hide><div id="panel"></div></div>
 
 <!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
 <div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div></div>

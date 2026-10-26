@@ -250,51 +250,37 @@
   UI.queueSpeech = queued;
 
   /* ---------------- speech: bubble by a character, or Nani's card ---------------- */
+  // S13-B2 (the kit review 3, decision 6): a character's line is the kit's one speech bubble (js/shared/conversations.js
+  // Conversations.bubble), the same as the clinic's and a conversation's: placed by the one placement (Lifecycle.bubble.place:
+  // above the speaker's head, its tail down to it, below it with no room; S04-B, SH-68) and following the head while the camera
+  // moves. Cook's own #bubble, its tail and its placement went.
   let bubbleAnchor = null;
-  const bubble = () => $("#bubble");
+  let bubbleEl = null;
   const card = () => $("#nani-card");
+  // the speaker's head on the page (px): the top of their picture, in world px (anchor.head), else the point they speak from
+  const headBox = (an) => () => {
+    if (!an || an.badge) return null;
+    try {
+      const hd = an.head;
+      if (hd) {
+        const a = UI.worldToScreen(hd.x, hd.y);
+        const z = UI.worldToScreen(hd.x + hd.w, hd.y + hd.h);
+        return { left: a.x, top: a.y, width: z.x - a.x, height: z.y - a.y };
+      }
+      const p = UI.worldToScreen(an.x, an.y);
+      return { left: p.x, top: p.y, width: 1, height: 1 };
+    } catch (e) {
+      return null;
+    }
+  };
   function placeBubble() {
-    const b = bubble();
-    if (!bubbleAnchor || bubbleAnchor.badge || b.classList.contains("hidden")) return;
-    // S04-B (SH-68, decision 75 (4)): a speaker with a head (a character in the service view) gets the one shared
-    // placement: above the head, below it with no room (js/shared/request-popup.js Lifecycle.bubble)
-    const hd = bubbleAnchor.head;
-    if (hd && global.Lifecycle && document.querySelector("#game canvas")) {
-      const a = UI.worldToScreen(hd.x, hd.y);
-      const z = UI.worldToScreen(hd.x + hd.w, hd.y + hd.h);
-      b.classList.remove("tail-left");
-      b.style.maxWidth = "";
-      if (global.Lifecycle.bubble.place(b, { left: a.x, top: a.y, width: z.x - a.x, height: z.y - a.y }, $("#stage"))) return;
-    }
-    delete b.dataset.njgPlace;
-    const p = UI.worldToStage(bubbleAnchor.x, bubbleAnchor.y);
-    const stageW = p.stage ? p.stage.width : 1000;
-    // G1: beside the speaker's face (side "left": the tail points back at the mouth), never hanging over their
-    // body in the middle of the play area; a line too long for the room beside the face wraps instead of sliding over it
-    const side = bubbleAnchor.side === "left";
-    b.classList.toggle("tail-left", side);
-    b.style.maxWidth = side ? `${Math.max(160, Math.round(stageW - p.x - 18))}px` : "";
-    const w = b.offsetWidth;
-    if (side) {
-      const stageH = p.stage ? p.stage.height : 700;
-      const h = b.offsetHeight;
-      const left = Cook.clamp(p.x + 10, 8, stageW - w - 8);
-      let top = Cook.clamp(p.y - h / 2, 8, stageH - h - 8);
-      // LAY-06: nothing sits on the middle of the play area (its 40-70% by 30% grid): a bubble that would reach it
-      // rides up beside the head instead
-      const reach = [0.4, 0.55, 0.7].some((f) => f * stageW >= left - 2 && f * stageW <= left + w + 2);
-      if (reach && top + h > stageH * 0.3 - 6) top = Math.max(8, stageH * 0.3 - 6 - h);
-      b.style.left = `${left}px`;
-      b.style.top = `${top}px`;
-      b.style.setProperty("--tail-y", `${Cook.clamp(p.y - top - 9, 12, h - 30)}px`);
-      return;
-    }
-    let left = Cook.clamp(p.x - 26, 8, stageW - w - 8);
-    b.style.left = `${left}px`;
-    b.style.top = `${p.y}px`;
-    b.style.setProperty("--tail-x", `${Cook.clamp(p.x - left - 9, 14, w - 30)}px`);
+    if (bubbleEl && bubbleEl.isConnected && bubbleEl.njgPlace) bubbleEl.njgPlace();
   }
   UI.placeBubble = placeBubble;
+  const dropBubble = () => {
+    if (bubbleEl) bubbleEl.remove();
+    bubbleEl = null;
+  };
   // the page-wide resize listeners (a parked page: at load; Cook mounted: at UI.init, through its lifetime)
   const pageWide = () => {
     onPage(global, "resize", () => setTimeout(placeBubble, 60));
@@ -302,7 +288,7 @@
   };
 
   /**
-   * Say a line. anchor {x, y} in world px (a bubble by a character) or
+   * Say a line. anchor {x, y, head?, who?} in world px (a bubble by a character) or
    * {badge: true} (Nani's card in the sidebar, which can never cover a
    * thing to tap). Plays the voice; resolves when it ends. A tap anywhere
    * that isn't a button skips (nothing is unskippable). opts.hide hides
@@ -310,19 +296,31 @@
    */
   UI.say = async function (line, anchor, opts = {}) {
     bubbleAnchor = anchor;
-    const target = anchor && anchor.badge ? card() : bubble();
-    const other = target === card() ? bubble() : card();
-    other.classList.add("hidden");
-    const slot = target.querySelector(".say-slot");
-    slot.innerHTML = "";
-    slot.appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), readAlong: true }));
-    target.classList.remove("hidden", "talk");
-    target.style.animation = "none";
-    void target.offsetWidth;
-    target.style.animation = "";
-    if (target === bubble()) placeBubble();
-    else target.classList.add("talk");
     const token = Cook.run;
+    dropBubble();
+    // the kit's bubble (its script loads once, early: UI.needShared); without it the line goes to Nani's card
+    const C = anchor && anchor.badge ? null : await UI.needShared("conversations");
+    const toCard = !(C && C.bubble);
+    const pill = UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), readAlong: true });
+    let target, slot;
+    if (toCard) {
+      target = card();
+      slot = target.querySelector(".say-slot");
+      slot.innerHTML = "";
+      slot.appendChild(pill);
+      target.classList.remove("hidden", "talk");
+      target.style.animation = "none";
+      void target.offsetWidth;
+      target.style.animation = "";
+      target.classList.add("talk");
+    } else {
+      card().classList.add("hidden");
+      dropBubble(); // (one bubble at a time: a line said while this one's script was loading)
+      pill.classList.add("wp-line"); // (Cook's own pill: its words big, its speaker a full tap, css/cook.css .wp-line)
+      // its speaker (data-who): the one named, else "cook" (the contract's Cook speaker: the nearest character's head)
+      bubbleEl = target = C.bubble(headBox(anchor), { who: (anchor && anchor.who) || "cook", text: pill, layer: $("#stage"), tap: true, z: 10 });
+      slot = target.querySelector(".cv-text");
+    }
     let skip;
     let offSkip = null;
     const skipped = new Promise((resolve) => {
@@ -333,7 +331,7 @@
       offSkip = onPage(document, "pointerdown", skip, true);
     });
     try {
-      const naniQuiet = (target === card() || opts.nani) && UI.naniMuted();
+      const naniQuiet = (toCard || opts.nani) && UI.naniMuted();
       const voice = !opts.silent && !naniQuiet && Lang.hasVoice(line);
       const talk = voice ? Promise.all([queued(() => speakAlong(line, slot)), Cook.wait(LINE_MIN_MS)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
       await Promise.race([talk, skipped]);
@@ -345,7 +343,7 @@
     if (opts.autoHide) UI.hideBubble();
   };
   UI.hideBubble = function () {
-    bubble().classList.add("hidden");
+    dropBubble();
     card().classList.add("hidden");
   };
 
@@ -371,7 +369,7 @@
     if (!UI.w6() || !Cook.inStation || !$("#voice")) return UI.say(line, { badge: true }, opts);
     const tok = ++voiceTok;
     card().classList.add("hidden");
-    bubble().classList.add("hidden");
+    dropBubble();
     // the row she's talking about: ONE highlight at a time (SH-53), the first open row with one of her words on it;
     // a word hidden on the card is lit only the first time it is hidden (D11: after that the glow would give it away)
     const ids = lineWords(line).filter((id) => !String(id).startsWith("num-") && !String(id).startsWith("lnk-"));
@@ -3334,6 +3332,7 @@
     tally.clear();
     doneResolve = goResolve = null;
     bubbleAnchor = null;
+    dropBubble();
     speechTail = Promise.resolve();
     helpText = HELP_DEFAULT;
     voiceTok++;
