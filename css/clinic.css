@@ -578,7 +578,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-stand { position: absolute; z-index: 6; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
 .eye-stand.hidden { display: none; }
 .eye-holder { position: relative; z-index: 2; flex: none; pointer-events: auto; }
-.eye-holder > .wc { width: 100%; }
 .eye-easel { position: relative; z-index: 1; flex: 1 1 auto; width: 112%; margin-top: calc(var(--njg-s1) * -1); border-top: var(--njg-s3) solid var(--njg-gold); border-radius: var(--njg-s1); }
 .eye-easel::before, .eye-easel::after { content: ""; position: absolute; top: 0; bottom: 0; width: var(--njg-s3); background: var(--njg-cream-lip); border: 2px solid var(--njg-gold); border-top: 0; }
 .eye-easel::before { left: 22%; transform: skewX(8deg); transform-origin: top; }
@@ -588,15 +587,10 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-stand.eye-doc.hidden { display: none; }
 .eye-doc-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
 .eye-doc .eye-holder { position: absolute; display: flex; }
-.eye-doc .eye-holder > .wc { width: 100%; height: 100%; flex-direction: row; align-items: center; box-shadow: none; background: transparent; }
-.eye-doc .eye-holder .wc-pic { flex: none; width: auto; height: 100%; max-width: 58%; aspect-ratio: 4 / 3; background: transparent; }
-.eye-doc .eye-holder .wc-strip { flex: 1 1 auto; flex-direction: column; align-items: flex-start; justify-content: center; }
-.eye-card.eye-hush .wc-strip { visibility: hidden; }
 .eye-card.eye-in { animation: eye-up .45s ease-out; }
 @keyframes eye-up { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }
 .eye-card.eye-shake { animation: eye-shake .45s; }
 @keyframes eye-shake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
-.eye-card.eye-named .wc-spk { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } /* the doctor names it: its speaker lit until the next card */
 .eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
 .eye-judge { align-items: center; bottom: var(--njg-s5); } /* SH-19: clear of the bottom edge, so the help's box round the pills is whole */
 .eye-pill-t { display: inline-block; min-width: var(--njg-tap); text-align: center; } /* CLN-202: the pill keeps the shared size; the row fits his half on a phone */
@@ -610,8 +604,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* Sprint 11 (s11-clinic): the brushing's direction card (the shared word card: an arrow and the word), top left */
 .tooth-dir { position: absolute; left: var(--njg-s3); top: var(--njg-s3); z-index: 7; width: calc(var(--njg-tap) * 3.6); }
 .tooth-dir.hidden { display: none; }
-.tooth-dir > .wc { width: 100%; }
-.tooth-dir .wc-pic { background: var(--njg-cream); }
 .tooth-arrow { position: absolute; inset: 8%; width: 84%; height: 84%; display: block; }
 .tooth-dcard.tooth-din { animation: cl-pop .4s ease-out; } /* a fade only: it never moves over the cross (BRUSH-01) */
 .tooth-dcard.tooth-dshake { animation: eye-shake .45s; }

@@ -26,8 +26,11 @@
  *     opts: { stage,                              1-5; else progress.stage(id); else 1
  *             progress,                           anything with stage(id), support(id, o), reveal(id, slot) (core.progress)
  *             slots,                              force the slots {picture, english, kutchiText} (the lab, a test)
- *             onReveal(slot, el), cls, id }
- *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak() }   cue(): the cue a judged answer carries
+ *             onReveal(slot, el), cls, id,
+ *             layout: "across",                   (S13-B1: options, never a game's CSS) the picture left, the strip right
+ *             bare, fill, inset,                  no card box; filling its holder; the picture contained with a margin
+ *             shape: "side" }                     a card in the sidebar: its picture sized to the sidebar's width
+ *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak(), hush(on), lit(on), photo(on) }   cue(): the cue a judged answer carries
  *            ("kutchi" unless the child opened a slot on this card)
  *   WordCard.pop(el, word, opts) -> el              the one entrance (S13-B1): a big card of the word said now, made in el (the
  *            order pop-up's along body), popping in (.wc-pop)
@@ -175,7 +178,9 @@
   function build(kind, parent, word, opts) {
     word = word || {};
     opts = opts || {};
-    const c = el(kind === "row" ? "div" : "section", `wc wc-${kind}${opts.cls ? ` ${opts.cls}` : ""}`);
+    // S13-B1 (the games' own .wc- restyles went): the card's few looks are options, never a game's CSS (css/shared/word-card.css)
+    const look = [opts.layout === "across" ? "wc-across" : "", opts.bare ? "wc-bare" : "", opts.fill ? "wc-fill" : "", opts.inset ? "wc-inset" : "", opts.shape === "side" ? "wc-side" : ""].filter(Boolean);
+    const c = el(kind === "row" ? "div" : "section", [`wc wc-${kind}`, ...look, opts.cls || ""].filter(Boolean).join(" "));
     if (opts.id) c.id = opts.id;
     if (word.id != null) c.dataset.word = String(word.id);
     const pic = el("div", "wc-slot wc-pic", c);
@@ -278,6 +283,18 @@
         if (revealed.has("english")) return "english";
         if (revealed.has("text")) return "text";
         return "kutchi";
+      },
+      /** S13-B1: the strip (speaker, Kutchi, English) held back while the word waits to be judged (the eye test past support) */
+      hush(on = true) {
+        c.classList.toggle("wc-hush", !!on);
+      },
+      /** S13-B1: the word has been named: its speaker ringed in the focus colour until the next card (the eye test) */
+      lit(on = true) {
+        c.classList.toggle("wc-lit", !!on);
+      },
+      /** S13-B1: the picture alone, filling the card (the book's photo once it is in its frame) */
+      photo(on = true) {
+        c.classList.toggle("wc-photo", !!on);
       },
       speak() {
         const say = word.say || opts.say;

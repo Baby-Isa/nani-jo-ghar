@@ -163,7 +163,7 @@ export async function runWindow(el, api, day) {
             say: () => sayWord(i, line),
           },
           // L3 (a closed card): the picture is not on the card, only the word (its free reveal is the card's own)
-          { progress, cls: "day-find-card", slots: closed ? { picture: false, english: false, kutchiText: true } : undefined }
+          { progress, cls: "day-find-card", shape: "side", slots: closed ? { picture: false, english: false, kutchiText: true } : undefined }
         );
         card.dataset.find = String(i);
         card.dataset.thing = c.named;

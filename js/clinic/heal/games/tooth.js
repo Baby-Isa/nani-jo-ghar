@@ -974,6 +974,7 @@
           progress: HS.progress() || undefined,
           slots: { picture: stg <= 2, english: sl.english, kutchiText: sl.kutchi },
           cls: "tooth-dcard",
+          fill: true, // (S13-B1: the kit's option, was css/clinic.css .tooth-dir > .wc)
           onReveal: (slot) => slot === "picture" && cur() === c && (st.helped[c.i] = true),
         }
       );

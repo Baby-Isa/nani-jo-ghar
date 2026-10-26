@@ -685,7 +685,7 @@
       if (WC && WC.card) {
         // the picture is the test itself: always shown; the Kutchi text and English fade by the word's stage
         const sl = WC.slots(stg, { placeholder: word.rec });
-        el = WC.card(holder, word, { stage: stg, progress: HS.progress() || undefined, slots: { picture: true, english: sl.english, kutchiText: sl.kutchi }, cls: "eye-card" });
+        el = WC.card(holder, word, { stage: stg, progress: HS.progress() || undefined, slots: { picture: true, english: sl.english, kutchiText: sl.kutchi }, cls: "eye-card", fill: true, ...(DOC ? { layout: "across", bare: true } : {}) });
       } else {
         // (no shared card on the page: the picture alone)
         el = S.h("section", "wc wc-card eye-card", holder);
@@ -696,11 +696,16 @@
       el.dataset.card = String(c.i);
       // rule 6: past support the strip (its Kutchi, English and speaker) waits until the card is judged
       el.classList.toggle("eye-hush", !supported(t.id));
+      if (el.wc && el.wc.hush) el.wc.hush(!supported(t.id)); // (S13-B1: the kit's hush, css/shared/word-card.css)
       el.classList.add("eye-in");
       ctx.after(fast() ? 50 : 500, () => el.classList.remove("eye-in"));
       return el;
     };
-    const unhush = () => cardEl && cardEl.classList.remove("eye-hush");
+    const unhush = () => {
+      if (!cardEl) return;
+      cardEl.classList.remove("eye-hush");
+      if (cardEl.wc && cardEl.wc.hush) cardEl.wc.hush(false);
+    };
     const shakeCard = () => {
       if (!cardEl) return;
       cardEl.classList.remove("eye-shake");
@@ -711,6 +716,7 @@
     const nameCard = (c) => {
       unhush();
       if (cardEl) cardEl.classList.add("eye-named");
+      if (cardEl && cardEl.wc && cardEl.wc.lit) cardEl.wc.lit(true); // (S13-B1: the kit's named speaker)
       st.reading = after(st.reading, () => (cardEl && cardEl.wc ? cardEl.wc.speak() : ctx.say(lineOf(c.id), { who: "doctor", noBubble: true })));
       return st.reading;
     };
