@@ -30,11 +30,11 @@
       "rowWords": "word card|word-card|\\bwc-",
       "places": {
         "index": { "none": "the house shows no word card" },
-        "first": { "at": "visible:.wc-card" },
+        "first": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card" },
         "day": { "at": "visible:.wc-card" },
-        "cook": { "at": "visible:.wc-card" },
+        "cook": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "cook:chai-tray#speed1", "profile": "seen" },
         "clinic": { "at": "visible:.wc-card" },
-        "lab": { "at": "visible:.wc-card" }
+        "lab": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "lab:cook/chai-tray#speed1" }
       }
     },
     "order card": {
@@ -60,9 +60,9 @@
         "index": { "none": "no order on the house page" },
         "first": { "at": "life:popup-open", "delay": 300 },
         "day": { "none": "the door has no order pop-up" },
-        "cook": { "at": "life:popup-open", "delay": 300 },
+        "cook": { "at": "visible:.njg-rq-card .oc-card", "delay": 200, "flow": "cook:samosa", "profile": "seen" },
         "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "life:popup-open", "delay": 300 }
+        "lab": { "at": "visible:.njg-rq-card .oc-card", "delay": 200, "flow": "lab:cook/samosa" }
       }
     },
     "bubble": {
