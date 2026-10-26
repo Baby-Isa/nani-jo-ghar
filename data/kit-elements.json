@@ -92,7 +92,7 @@
         "first": {
           "at": "visible:.njg-rq-card .wc-card",
           "sel": ".njg-rq-card .wc-card",
-          "tries": 6
+          "tries": 10
         },
         "day": {
           "at": "visible:.wc-card"
@@ -182,7 +182,7 @@
         },
         "clinic": {
           "at": "life:popup-open",
-          "delay": 300,
+          "delay": 60,
           "flow": "clinic:waiting"
         },
         "lab": {
