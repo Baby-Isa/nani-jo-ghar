@@ -35,7 +35,7 @@ Answer:
 - **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`: done 26 Oct; 15 decisions to Zafar (decision 10 withdrawn: `input.js` has callers).
 - **S13-T, the checking loop** (Opus, high, about $30-40): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-t.md`. Merged 26 Oct; its first script-made batch judged: sheets unreadable (thumbnails), pairs not by moment, still strips unflagged -> fix round; fix round merged 26 Oct (959f9fb).
 - **S13-A1, colours, motion, page setup** (Opus, high, about $35-45): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-a1.md`. Merged 26 Oct; judge (Fable) 8 PASS of 8 (glow, finger, help ladder kit sheets; SH-124, SH-119, SH-19, CLN-203, DOOR-07).
-- **S13-B1, cards and order screen** (Opus, high, about $45-55): launched 26 Oct ~16:00 UK; step 0 fixes the SH-110 and SH-123 probes (the before run caught both). Report build/reports/s13-b1 (to write).
+- **S13-B1, cards and order screen** (Opus, high, about $45-55): launched 26 Oct ~16:00 UK; step 0 fixes the SH-110 and SH-123 probes (the before run caught both). Report `build/reports/s13-b1.md`. Merged 26 Oct (e7449e4): SH-110 in every game (dotted rows with speakers, nothing folds; CLN-114 retired), Cook's ladder through OrderCard, one card/pop-up/stamp; contract 0 breaks over 16 pages. Judge running.
 - **S13-V, voice, sound effects, saving** (Opus, high, about $35-45): launched 26 Oct ~16:55 UK after the judge's before check caught both its probes (LNG-16, CK-48); step 0 fixes them. Report build/reports/s13-v (to write).
 
 ## Small decisions (Zafar, 26 Oct)

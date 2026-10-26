@@ -235,6 +235,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | SH-63 | The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage | **to fix: code** · clinic L2 card shows step lines, not the order | eye/ear: every game | `docs/archive/feedback/clinic-playtest-2026-10-06.md` G1, D6, D13, FV7, B1, FT3 |
 | SH-129 | The glow is one look in every game: the clinic's glow is a white flood inside a gold border, the day's a ring round a pill, where first launch, Cook and the game host show the kit's orange halo round the item (found by the judge on the glow kit sheet, 26 Oct, after S13-A1's merge) | **to fix: code** · S13 pair 3 (S13-A2) | auto: kitsheet glow, 1366x768 and 915x412, judged one look | S13 judge, 26 Oct (build/screenshots/kit/glow/now/kitsheet-glow.png) |
 | SH-130 | The eye test's card step at 1366x768: the dim and the lit ha/na/mic box show, but no ghost finger (at 915x412 it shows); first-time help always has its finger (SH-19) | **to fix: code** · S13 pair 3 (S13-A2, the finger) | auto: evidence SH-19 at 1366x768 and 915x412, the card step | S13 judge, 26 Oct (brief s13-t-example, SH-19 pair B) |
+| SH-131 | The parked games (Find it, Dress up, Snap) show the bulb for 0 s since S13-A1/B1: they don't load js/shared/tokens.js, so the one ladder table never reaches them | **to fix: code** · S13-A2 (bulb.js falls back to data/shared.json's values when Tokens is missing) | auto: unit test on bulb.js without Tokens | S13-B1 report, 26 Oct |
 
 ## Shared components
 
