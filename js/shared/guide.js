@@ -95,13 +95,20 @@
  *                    again with no action since it (SH-60: it "shouldn't persist"): after an action the pause runs again
    *   BULB_PULSE       after this long stuck both light bulbs pulse, so the child knows they can be tapped (15-20 s)
    * Nothing is said or lit when a step opens (the "step call", Nani saying each step once as it opens, is the next wave's:
-   * pass `call(step)` to the stepper and it runs at that moment). Cook's data (data/cook.json calm.helpMs, calm.bulbPulseMs)
-   * replace these defaults when a station starts.
+   * pass `call(step)` to the stepper and it runs at that moment). PAUSE and BULB_PULSE are the ONE ladder table, data/shared.json
+   * helpMs and bulbPulseMs (S13-A1), read through js/shared/tokens.js (Tokens.ladder) every time, so every game has the same; no
+   * copy here. Until the table has loaded, every pause is endless (nothing helps yet). A test may set its own (G.PAUSE = [...]).
    */
-  G.PAUSE = [7000, 8000, 11000, 15000];
+  const ladder = (k) => {
+    const T = root.Tokens || (typeof module === "object" && module.exports && typeof require === "function" ? require("./tokens.js") : null);
+    return T && T.ladder ? T.ladder[k] : null;
+  };
+  let pauseOwn = null;
+  let pulseOwn = null;
+  Object.defineProperty(G, "PAUSE", { enumerable: true, get: () => pauseOwn || ladder("helpMs") || [Infinity, Infinity, Infinity, Infinity], set: (v) => (pauseOwn = v) });
+  Object.defineProperty(G, "BULB_PULSE", { enumerable: true, get: () => (pulseOwn != null ? pulseOwn : ladder("bulbPulseMs") != null ? ladder("bulbPulseMs") : Infinity), set: (v) => (pulseOwn = v) });
   G.REPEAT = 10000;
   G.idleHelp = false;
-  G.BULB_PULSE = 17000;
   /**
    * ART-19 (Zafar, 22 Oct, A10: the doctor talking in the pop-up box is "way too quick ... the mouth opens and closes too wide ...
    * blinks so rapidly: slow it way down and open the mouth less"): ONE calm cadence for every talking face (Nani's box here,

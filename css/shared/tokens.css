@@ -33,6 +33,39 @@
   --njg-flag-bg: #f6ebd2;
   --njg-flag-edge: #ead7ae;
   --njg-house: #f3e7d3;       /* the app's first-paint colour */
+  --njg-white: #ffffff; --njg-black: #000000;
+  --njg-paper: #fffaf2;       /* the house's warm white (the way home, the play button) */
+  --njg-rust: #b5523b;        /* the player's default colour, the play button */
+  --njg-brown: #6b3b24;       /* the way home's house */
+  --njg-cream-2: #fdf6e8;
+  --njg-chip: #f6ead6;        /* a chip on the end screen (best, hints, a step's done) */
+  --njg-chosen: #fff6dc;      /* an answer pill once chosen */
+  --njg-gold-hi: #f7d57a;     /* the onboarding ring and box, the end screen's bright gold */
+  --njg-gold-lo: #b97c1c; --njg-gold-dim: #cda958;
+  --njg-muted: #7a6558;       /* the end screen's English under a word */
+  --njg-divider: #d8c4a2;
+  --njg-madder: #a63b3b; --njg-leaf: #6f8f4a; --njg-indigo: #2f3e6b; --njg-pewter: #96897a; --njg-plain: #e9e0d2;
+  --njg-tile: #faf6ef; --njg-tile-edge: #e7ded0; --njg-rs-line: #e6d2b0; --njg-line-soft: #e6dac7; --njg-step-edge: #e3d4ba;
+  --njg-eye-1: #b58a3c; --njg-eye-2: #9a8a72; --njg-eye-3: #8a8070; --njg-eye-cap: #8a6a3a; /* the end screen's looks, fading */
+  --njg-forest: #1d2a1c;      /* Nani's guide box: the deep shade mixed from the sage */
+  --njg-stick: #b08a5a;       /* the order card's skewer stick */
+  --njg-face-bg: #f1e6d4; --njg-no-edge: #cfc3b1; --njg-no-ink: #6f6153;
+  --njg-skip-ink: #6f665c; --njg-skip-soft: #9a9187;
+  /* the conversations (css/shared/conversations.css) */
+  --njg-bubble: #fff8ea; --njg-bubble-ink: #2b1810; --njg-bubble-edge: #d9bf95; --njg-bubble-muted: #8a7568;
+  --njg-mine: #eaf3ff; --njg-mine-edge: #8fb0d8; --njg-speaking: #8a3b1c; --njg-leaf-deep: #3c5a2a;
+  --njg-navy: #2f4f7f; --njg-blue: #3f6fb0; --njg-tick-green: #3c7a2a;
+  /* colours with an alpha: rgba(var(--njg-<name>-rgb), a) */
+  --njg-focus-rgb: 224, 166, 58; --njg-gold-rgb: 201, 150, 46; --njg-gold-hi-rgb: 247, 213, 122; --njg-gold-pale-rgb: 255, 217, 138;
+  --njg-ink-rgb: 42, 37, 34; --njg-cream-2-rgb: 253, 246, 232; --njg-black-rgb: 0, 0, 0;
+  --njg-shade-rgb: 60, 35, 20; --njg-veil-rgb: 45, 32, 24; --njg-navy-shade-rgb: 30, 50, 90;
+
+  /* ---------- motion (S13-A1): the kit's four moves; css/shared/focus.css draws them, Cook's Phaser glow reads them
+     (js/shared/tokens.js Motion). The tick's own pulse is the reference (SH-53: 1.2 s, a 12 px gold glow at .85) ---------- */
+  --njg-glow-ms: 1200ms; --njg-glow-radius: var(--njg-s3); --njg-glow-rgb: var(--njg-focus-rgb); --njg-glow-alpha: .85;
+  --njg-pulse-ms: 1200ms; --njg-pulse-scale: 1.06; --njg-pulse-alpha: .75;
+  --njg-hop-ms: 900ms; --njg-hop-lift: -10%;          /* the help kit's hop (S12: the lit thing in its box) */
+  --njg-talk-ms: 450ms; --njg-talk-lift: var(--njg-line-2); --njg-talk-tilt: -3deg; /* a talking face's nod, alternating */
 
   /* ---------- the one shadow, and the type face ---------- */
   --njg-shadow: 0 2px 8px rgba(40, 25, 10, 0.1);

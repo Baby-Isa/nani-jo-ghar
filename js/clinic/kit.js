@@ -1158,9 +1158,12 @@
   };
 
   /* ---------------- the light bulb ---------------- */
-  // the bulb's time per level: data/clinic/pipeline.json "bulb_ms" (D11, 1 Oct: 8 s at every level to start); this is
-  // only the fallback before the data loads
-  Kit.BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000 };
+  // the bulb's time per level (D11, 1 Oct: 8 s at every level): the ONE ladder table's bulbMs (data/shared.json, through
+  // js/shared/tokens.js; S13-A1), read when asked: Kit.BULB_MS[level]; no copy here
+  Object.defineProperty(Kit, "BULB_MS", {
+    configurable: true,
+    get: () => Object.fromEntries(((global.Tokens && global.Tokens.ladder && global.Tokens.ladder.bulbMs) || []).map((ms, i) => [i + 1, ms])),
+  });
   // SH-101 (Zafar, 17 Oct: level 3 double, the same seconds added to the others): how long the closed card's small bulb holds it open (the
   // peek), by level; was a flat 3.5 s. Cook's table is data/cook.json calm.peekMs (contract-29 reads both as 7 s)
   Kit.PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000, 5: 7000 };
@@ -1189,7 +1192,7 @@
     if (this.on) return false;
     this.uses++;
     this.on = true;
-    const ms = Kit.BULB_MS[this.level] || 3000;
+    const ms = Kit.BULB_MS[this.level] || Kit.BULB_MS[1];
     const cards = Array.from(this.targets());
     cards.forEach((c) => c.classList.add("english"));
     if (this.onOn) this.onOn();

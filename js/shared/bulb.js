@@ -8,7 +8,7 @@
  *   - every use counts (onUse(uses)), then onOn(ms); after ms (divided by speed) it turns off and calls onOff().
  *
  *   const b = Bulb.create(btn, {level, ms, speed, fast, targets, bodyClass, onUse, onOn, onOff})
- *       ms: [8000, 8000, 8000, 8000] by level (8 s at every level: SH-86) (default Bulb.MS), a number, or a function -> number
+ *       ms: a table by level (default Bulb.MS: data/shared.json bulbMs, 8 s at every level: SH-86), a number, or a function
  *       speed: accepted but ignored since S05 (SH-41: a test speed never shortens reading time); fast: true -> 300 ms
  *       (the clinic's ?fast=1)
  *       targets: () -> elements that show English while it's on
@@ -27,7 +27,16 @@
   }
 })(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (root) {
   "use strict";
-  const B = { MS: [8000, 8000, 8000, 8000] }; // SH-86 (Zafar, D11 / SH-41): every bulb shows its English for 8 s at every level
+  const B = {};
+  // SH-86 (Zafar, D11 / SH-41): every bulb shows its English for 8 s at every level: the ONE ladder table's bulbMs
+  // (data/shared.json, through js/shared/tokens.js; S13-A1), no copy here ([] until it has loaded)
+  Object.defineProperty(B, "MS", {
+    enumerable: true,
+    get: () => {
+      const T = root.Tokens || (typeof module === "object" && module.exports && typeof require === "function" ? require("./tokens.js") : null);
+      return (T && T.ladder && T.ladder.bulbMs) || [];
+    },
+  });
   const val = (v) => (typeof v === "function" ? v() : v);
 
   B.msFor = function (ms, level) {
@@ -103,7 +112,7 @@
       this._b = B.create(btn, {
         click: !keep,
         level: opts.level || 1,
-        ms: () => [1, 2, 3, 4].map((l) => (Kit.BULB_MS && Kit.BULB_MS[l]) || B.MS[l - 1]),
+        ms: () => B.MS,
         fast: !!Kit.fast,
         targets: opts.targets || (() => root.document.querySelectorAll(".cl-card")),
         bodyClass: "cl-english",

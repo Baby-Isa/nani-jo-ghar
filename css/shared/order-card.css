@@ -70,7 +70,7 @@
   padding: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
   border: none; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
-.oc-card .oc-face img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #f1e6d4; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
+.oc-card .oc-face img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: var(--njg-face-bg); box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
 .oc-card .oc-face .say-badge {
   position: absolute; right: 0; bottom: 0; width: calc(var(--oc-face) * 0.4); min-width: var(--njg-s4); aspect-ratio: 1; border-radius: 50%;
   background: var(--oc-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -220,7 +220,7 @@
 .oc-card .oc-row.done { background: var(--oc-card); border-color: var(--oc-gold); box-shadow: inset 0 0 0 var(--njg-line) var(--oc-gold); }
 /* next (an ordered job's next part, while playing): the one highlight, in the one colour (the focal glow's, SH-53):
    an amber edge with a soft glow inside, never a fill of its own (a done row is the flat gold ring with its tick) */
-.oc-card .oc-row.next { background: var(--oc-card); border-color: var(--njg-focus); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35); }
+.oc-card .oc-row.next { background: var(--oc-card); border-color: var(--njg-focus); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(var(--njg-focus-rgb), 0.35); }
 /* CK-32 (Zafar, 29 Sept: "the card marks the wrong row"): a wrong serve's row, at the review: the same row with a flat red
    outline (the end review's red), no tick; the card stays open to show it until the row is redone */
 .oc-card .oc-row.wrong { background: var(--oc-card); border-color: var(--njg-wrong); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong); }
@@ -228,7 +228,7 @@
 .oc-card .oc-row.wrong.reading, .oc-card .oc-row.wrong.next { border-color: var(--njg-wrong) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong) !important; }
 /* read-along: flat, the gold edge (never a yellow box) */
 /* (!important: a page's own generic .reading, e.g. Cook's yellow box, must not reach the card) */
-.oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--njg-focus) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35) !important; }
+.oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--njg-focus) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(var(--njg-focus-rgb), 0.35) !important; }
 .oc-card .oc-headline.reading { background: none !important; box-shadow: none !important; text-decoration: underline calc(var(--njg-line-2) * 1.5) var(--oc-gold); text-underline-offset: var(--njg-s1); text-decoration-skip-ink: none; }
 /* G1 (C1's review): a headline still to record underlines its line only, never its "to record" flag */
 .oc-card .oc-headline.rec.reading { text-decoration: none; }
@@ -255,7 +255,7 @@
 .oc-card .oc-parts.oc-seq > .oc-part.no::before { display: none; }
 /* the "don't" row (design system 14: "dudh na", "marcha na"): no fill, a dashed muted edge, a small
    no-sign before the words, muted ink. It ticks (gold, solid) when the dish goes out without it */
-.oc-card .oc-row.no { background: transparent; border-style: dashed; border-color: #cfc3b1; color: #6f6153; }
+.oc-card .oc-row.no { background: transparent; border-style: dashed; border-color: var(--njg-no-edge); color: var(--njg-no-ink); }
 .oc-card .oc-row.no .oc-t { font-weight: 700; }
 .oc-card .oc-row.no::after {
   content: ""; order: -1; flex: none; width: calc(var(--oc-part-h) * 0.46); height: calc(var(--oc-part-h) * 0.46);
@@ -376,10 +376,10 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
    area, the same look as Cook's #intro; a tap anywhere folds it into the sidebar ---- */
 .njg-rq-veil {
   position: absolute; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center;
-  padding: 3%; background: rgba(45, 32, 24, 0.22); cursor: pointer; animation: njgRqFade .2s ease-out;
+  padding: 3%; background: rgba(var(--njg-veil-rgb), 0.22); cursor: pointer; animation: njgRqFade .2s ease-out;
   transition: background .4s;
 }
-.njg-rq-veil.going { background: rgba(45, 32, 24, 0); }
+.njg-rq-veil.going { background: rgba(var(--njg-veil-rgb), 0); }
 /* while the pop-up is up the game under it is quiet (Lifecycle.request: the host's other children are inert): its speech
    bubbles and the controls a game marks data-rq-hide (the diagnosis's magnifier) are hidden */
 .njg-rq-under :is(.cl-bubble, .njg-bubble, .cl-thought, [data-rq-hide]) { visibility: hidden; }
@@ -443,13 +443,13 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 .oc-card .oc-item.oc-skewer .oc-group-parts { position: relative; flex-wrap: nowrap; padding-right: calc(var(--njg-s3) + var(--njg-s1)); }
 .oc-card .oc-item.oc-skewer .oc-group-parts::before {
   content: ""; position: absolute; z-index: 0; left: calc(var(--njg-s1) * -1); right: var(--njg-s1); top: calc(50% - var(--njg-line));
-  height: var(--njg-line-2); border-radius: var(--njg-line); background: #b08a5a;
+  height: var(--njg-line-2); border-radius: var(--njg-line); background: var(--njg-stick);
 }
 .oc-card .oc-item.oc-skewer .oc-group-parts::after {
   content: ""; position: absolute; right: 0; top: calc(50% - var(--njg-s1)); width: var(--njg-s3); height: var(--njg-s2);
-  background: #b08a5a; clip-path: polygon(0 25%, 100% 50%, 0 75%);
+  background: var(--njg-stick); clip-path: polygon(0 25%, 100% 50%, 0 75%);
 }
-.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; background-color: var(--njg-card, #fff); } /* (an opaque pill: the stick never shows through a word, S05-C3) */
+.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; background-color: var(--njg-card, var(--njg-white)); } /* (an opaque pill: the stick never shows through a word, S05-C3) */
 .oc-card .oc-item.oc-skewer .oc-part::before { display: none; }
 /* SH-73 (Zafar, 13 Oct): pills that don't fit side by side stack, one per line, each word whole; a skewer stands upright
    (the stick down the middle behind the pills, its tip at the bottom), still read as a sequence, top to bottom */
@@ -465,7 +465,7 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { display: none; }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-part:not(.no)::after {
   content: ""; position: absolute; left: calc(50% - var(--njg-line)); top: 100%; width: var(--njg-line-2); height: var(--njg-s1);
-  background: #b08a5a; border-radius: var(--njg-line);
+  background: var(--njg-stick); border-radius: var(--njg-line);
 }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }
 /* CLN-204 (Zafar, 22 Oct: "a stray f on its own line" under the clinic card's last row): upright, the stub and the pointed

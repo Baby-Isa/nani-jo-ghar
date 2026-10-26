@@ -5,22 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#f3e7d3">
 <title>Cook with Nani</title>
-<!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20261026T131724Z">
-<!-- R3a: the design tokens and the frame (sidebar + play area, the turn-your-phone card), sized from data/layout.json by js/shared/frame.js -->
-<link rel="stylesheet" href="css/shared/tokens.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/frame.css?v=20261026T131724Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
 <link rel="stylesheet" href="css/cook.css?v=20261026T131724Z">
-<!-- Wave 6b: the shared end-of-round screen and onboarding kit (docs/architecture/shared-api.md 8-10) -->
-<link rel="stylesheet" href="css/shared/results.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/guide.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/order-card.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/buttons.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/tally.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/focus.css?v=20261026T131724Z">
+<!-- the shared kit in one link (css/shared/kit.css; S13-A1), after css/cook.css: the kit wins where the shared sheets did -->
+<link rel="stylesheet" href="css/shared/kit.css?v=20261026T131724Z">
 <!-- Sidebar v2 (docs/archive/feedback/cook-ui-feedback-2026-09-28.md 9): the sidebar, the request cards and pop-up -->
 <link rel="stylesheet" href="css/cook-side-v2.css?v=20261026T131724Z">
 <!-- the engine core's modules by name (filled and stamped by build/bump_version.py) -->
@@ -193,6 +182,8 @@
 
 <script src="js/vendor/phaser.min.js?v=20261026T131724Z"></script>
 <script src="js/version.js?v=20261026T131724Z"></script>
+<!-- the design tokens in code and the one ladder table, data/shared.json (js/shared/tokens.js; S13-A1) -->
+<script src="js/shared/tokens.js?v=20261026T131724Z"></script>
 <script src="js/shared/frame.js?v=20261026T131724Z"></script>
 <script src="js/shared/app.js?v=20261026T131724Z"></script>
 <script src="js/shared/family-voice.js?v=20261026T131724Z"></script>

@@ -9,8 +9,8 @@
   --ng-sage: var(--nani-sage, var(--njg-sage));
   --ng-bg: color-mix(in srgb, var(--ng-sage) 20%, var(--njg-card));
   --ng-edge: color-mix(in srgb, var(--ng-sage) 45%, var(--njg-card));
-  --ng-band: color-mix(in srgb, var(--ng-sage) 88%, #000);
-  --ng-deep: color-mix(in srgb, var(--ng-sage) 50%, #1d2a1c);
+  --ng-band: color-mix(in srgb, var(--ng-sage) 88%, var(--njg-black));
+  --ng-deep: color-mix(in srgb, var(--ng-sage) 50%, var(--njg-forest));
   --ng-ink: var(--njg-ink);
   --ng-face: var(--njg-guide-face);
   --ng-band-w: var(--njg-s2);

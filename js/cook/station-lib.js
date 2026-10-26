@@ -174,27 +174,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   - the idle clock is the page's (NaniGuide.idleMs: every tap, drag and key restarts it, in every station);
    *   - Nani's word and the glow come at the same moment, after the pause (S$.step below, the stepper in guide.js);
    *   - after calm.bulbPulseMs stuck, both light bulbs pulse.
-   * The numbers are data (data/cook.json calm.helpMs, calm.bulbPulseMs); the glow's size and beat are one token (Cook.GLOW,
-   * mirrored as CSS variables so the tick's pulse and the item glow are the same).
+   * The numbers are data: the ONE ladder table, data/shared.json helpMs and bulbPulseMs (NaniGuide.PAUSE and BULB_PULSE read it;
+   * S13-A1); the glow's size and beat are the kit's motion tokens (Cook.GLOW reads them, so the tick's pulse, the CSS glow and
+   * the Phaser item glow are the same).
    */
   if (Cook.labGuided == null) Cook.labGuided = false;
   const NG = () => global.NaniGuide;
   // the glow token (SH-53, 17 Oct: "make it glow even more, extend a little further out ... like how we got on the tick button,
-  // pulsating quite strongly"): the tick's own pulse (css/shared/buttons.css njgDonePulse: 1.2 s, a 12 px gold glow at .85) is
-  // the beat and the reach of the item glow, the bulbs' pulse and the done glow, written once here and mirrored as CSS variables
-  // (css/cook.css reads --glow-ms, --glow-radius, --glow-rgb, --glow-alpha)
-  const GLOW = (Cook.GLOW = { ms: 1200, radius: 12, color: 0xe0a63a, rgb: "224, 166, 58", alpha: 0.85 });
-  const glowCss = () => {
-    try {
-      const st = document.documentElement.style;
-      st.setProperty("--glow-ms", `${GLOW.ms}ms`);
-      st.setProperty("--glow-radius", `${GLOW.radius}px`);
-      st.setProperty("--glow-rgb", GLOW.rgb);
-      st.setProperty("--glow-alpha", String(GLOW.alpha));
-    } catch (e) {
-      /* no page */
-    }
-  };
+  // pulsating quite strongly"): the tick's own pulse is the beat and the reach of the item glow, the bulbs' pulse and the done
+  // glow. S13-A1: the numbers live once, in css/shared/tokens.css (--njg-glow-ms, -radius, -rgb, -alpha); Cook.GLOW reads them
+  // through js/shared/tokens.js Motion each time it is asked (Phaser's colour as 0xRRGGBB)
+  const GLOW = (Cook.GLOW = Object.defineProperties({}, {
+    ms: { enumerable: true, get: () => global.Motion.glow.ms },
+    radius: { enumerable: true, get: () => global.Motion.glow.radius },
+    color: { enumerable: true, get: () => global.Motion.glow.color },
+    rgb: { enumerable: true, get: () => global.Motion.glow.rgb },
+    alpha: { enumerable: true, get: () => global.Motion.glow.alpha },
+  }));
   let pulseTimer = null;
   let glowTimer = null;
   const levelOf = (ctx) => Cook.roundLevel(ctx);
@@ -202,13 +198,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const calm = (Cook.data && Cook.data.calm) || {};
     const G = NG();
     if (G) {
-      if (Array.isArray(calm.helpMs)) G.PAUSE = calm.helpMs.slice();
+      // (the pause and the bulbs' pulse are NaniGuide's own reads of data/shared.json: S13-A1)
       if (calm.repeatMs) G.REPEAT = calm.repeatMs;
-      if (calm.bulbPulseMs) G.BULB_PULSE = calm.bulbPulseMs;
       G.watch();
       G.poke();
     }
-    glowCss();
     Lang.popReset();
     // first-play guidance only at levels 1 and 2 (SH-95: "You shouldn't be getting help, especially not in level four")
     if (ctx && ctx.guided && levelOf(ctx) >= 3) ctx.guided = false;

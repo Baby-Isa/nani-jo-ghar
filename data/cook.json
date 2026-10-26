@@ -5887,8 +5887,8 @@
   ]
  },
  "calm": {
-  "_help": "S08-W1 (the help ladder, SH-60 SH-95 SH-96): helpMs = how long the child must have done nothing, counted from the LAST action (any tap, drag or key), before Nani helps (her word and the glow at the same moment), by level 1-4 (2 s later than before at level 1); repeatMs = a second help only after this much more idle time; bulbPulseMs = stuck this long and both light bulbs pulse. hintMs below is the old per-word-stage delay of the thread and chop hints.",
-  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (SH-41, D11: 8 s at every level to start); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
+  "_help": "S08-W1 (the help ladder, SH-60 SH-95 SH-96): the help, bulb and bulb-pulse times (helpMs, bulbMs, bulbPulseMs) are the ONE ladder table, data/shared.json, read by every game through js/shared/tokens.js (S13-A1); no copy here. repeatMs = a second help only after this much more idle time. hintMs below is the old per-word-stage delay of the thread and chop hints.",
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: (the light bulb's time is data/shared.json bulbMs: S13-A1); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
   "hintMs": [
    7000,
@@ -5896,25 +5896,12 @@
    11000,
    15000
   ],
-  "helpMs": [
-   7000,
-   8000,
-   11000,
-   15000
-  ],
   "repeatMs": 10000,
-  "bulbPulseMs": 17000,
   "passMeChance": {
    "relaxed": 0.4,
    "busy": 0.55,
    "level1": 0.2
   },
-  "bulbMs": [
-   8000,
-   8000,
-   8000,
-   8000
-  ],
   "peekMs": {
    "_about": "SH-101 (Zafar, 17 Oct: level 3 double, and the same seconds added to the others): how long the closed card's small bulb holds the card open (the peek), by level; was a flat 3.5 s. Read by js/cook/ui.js peekMsOf; the clinic has its own table (js/clinic/kit.js Kit.PEEK_MS).",
    "1": 7000,

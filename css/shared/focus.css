@@ -1,22 +1,48 @@
-/* The focal rule (js/shared/focus.js; F17): the next thing pulses gently, a centred glow and bounce; inactive
-   things dim about 10%. The glow is a drop-shadow, so it follows the thing's own shape and stays centred on it. */
-.njg-pulse { animation: njgPulse 1.2s ease-in-out infinite; transform-origin: 50% 50%; }
-@keyframes njgPulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(224, 166, 58, 0)); }
-  50% { transform: scale(1.06); filter: drop-shadow(0 0 var(--njg-s3) rgba(224, 166, 58, 0.75)); }
+/* The kit's motion (S13-A1; rule F17, the focal rule; SH-53, ART-18): the ONLY place the glow, the pulse, the hop and the talk are
+   drawn. Their numbers are tokens (css/shared/tokens.css --njg-glow-*, -pulse-*, -hop-*, -talk-*; js/shared/tokens.js Motion reads
+   them for Phaser). A game never writes keyframes of its own for these (build/lint/static.mjs motion): an element takes a class
+   below, or, when its own code sets its own class, the shorthand: `animation: var(--njg-glow-anim)` (and -pulse-, -hop-, -talk-).
+     .njg-glow    the next-thing glow every game lights after the pause: the tick's own pulse (SH-53, Zafar 17 Oct: "make it glow
+                  even more ... like how we got on the tick button ... pulsating quite strongly"), a drop-shadow, so it follows
+                  the thing's own shape and is never a ring of a game's own
+     .njg-pulse   the glow with a gentle grow (js/shared/focus.js Focus.pulse); .njg-dim: inactive things dim about 10%
+     .njg-hop     the help kit's hop (S12: the lit thing bounces in its still box; css/shared/onboard.css .ob-lit)
+     .njg-talk    a talking face's nod (ART-18: one talk animation for every speaking face) */
+:root {
+  --njg-glow-anim: njgGlow var(--njg-glow-ms) ease-in-out infinite;
+  --njg-pulse-anim: njgPulse var(--njg-pulse-ms) ease-in-out infinite;
+  --njg-hop-anim: njgHop var(--njg-hop-ms) ease-in-out infinite;
+  --njg-talk-anim: njgTalk var(--njg-talk-ms) ease-in-out infinite alternate;
+  /* the old names, for the styles a script writes itself (js/shared/window-ride.js, js/clinic/heal/scene.js): their owners move
+     them to --njg-glow-* */
+  --glow-ms: var(--njg-glow-ms); --glow-radius: var(--njg-glow-radius); --glow-rgb: var(--njg-glow-rgb); --glow-alpha: var(--njg-glow-alpha);
 }
+.njg-glow { animation: var(--njg-glow-anim); }
+.njg-pulse { animation: var(--njg-pulse-anim); transform-origin: 50% 50%; }
+.njg-hop { animation: var(--njg-hop-anim); }
+.njg-talk { animation: var(--njg-talk-anim); }
 .njg-dim { filter: brightness(0.9) saturate(0.9); transition: filter .3s; }
-@media (prefers-reduced-motion: reduce) { .njg-pulse { animation: none; filter: drop-shadow(0 0 var(--njg-s2) rgba(224, 166, 58, 0.75)); } }
-
-/* SH-53 (Zafar, 17 Oct: "make it glow even more, kind of extend a little bit further out from the item ... like how we got on the
-   tick button ... pulsating quite strongly"): the ONE next-thing glow every game lights after the pause: the tick's own pulse
-   (css/shared/buttons.css njgDonePulse: 1.2 s, a 12 px gold glow at .85), a drop-shadow, so it follows the thing's own shape and
-   is never a ring of a game's own. Cook's item glow writes the same values (js/cook/station-lib.js Cook.GLOW, css/cook.css
-   .help-pulse); the clinic's tool strip uses it as it is (css/clinic.css .hs-tool.pulse) */
-:root { --glow-ms: 1200ms; --glow-radius: var(--njg-s3); --glow-rgb: 224, 166, 58; --glow-alpha: .85; }
-.njg-glow { animation: njgGlow var(--glow-ms) ease-in-out infinite; }
 @keyframes njgGlow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--glow-rgb), 0)); }
-  50% { filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); }
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--njg-glow-rgb), 0)); }
+  50% { filter: drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))); }
 }
-@media (prefers-reduced-motion: reduce) { .njg-glow { animation: none; filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); } }
+@keyframes njgPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(var(--njg-glow-rgb), 0)); }
+  50% { transform: scale(var(--njg-pulse-scale)); filter: drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-pulse-alpha))); }
+}
+@keyframes njgHop {
+  0%, 55%, 100% { translate: 0 0; animation-timing-function: ease-out; }
+  22% { translate: 0 var(--njg-hop-lift); animation-timing-function: ease-in; }
+}
+@keyframes njgTalk { to { transform: translateY(calc(var(--njg-talk-lift) * -1)) rotate(var(--njg-talk-tilt)); } }
+/* still, for a child who asked for less motion: the glow and the pulse hold their lit look, the hop and the talk stop */
+@keyframes njgGlowStill { to { filter: drop-shadow(0 0 var(--njg-glow-radius) rgba(var(--njg-glow-rgb), var(--njg-glow-alpha))); } }
+@keyframes njgPulseStill { to { filter: drop-shadow(0 0 var(--njg-s2) rgba(var(--njg-glow-rgb), var(--njg-pulse-alpha))); } }
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --njg-glow-anim: njgGlowStill 1ms both;
+    --njg-pulse-anim: njgPulseStill 1ms both;
+    --njg-hop-anim: none;
+    --njg-talk-anim: none;
+  }
+}

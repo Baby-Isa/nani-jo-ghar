@@ -10,7 +10,11 @@
 //   privacy   nothing leaves the device: no fetch/XMLHttpRequest/sendBeacon/WebSocket to an absolute URL in js/, no third-party
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
-//   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
+//   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in the ONE ladder table, data/shared.json; a second
+//             table (a ladder key in other data, a ladder name beside a number in js/) is a finding (S13-A1)
+//   shell     every live page links css/shared/kit.css once and no shared sheet directly; kit.css imports every shared sheet
+//   motion    no game keyframes for a kit motion (glow, hop, pulse, throb, bounce, talk, bob, shake) outside css/shared/
+//   jscolour  no colour literal in js/ (UI colours through js/shared/tokens.js); an art-only file is listed once in the known list
 //   plane     the doctor and the girl in one plane (CLN-154, s08): at the door one feet line, standing hers 0.02-0.03 in front
 //             of his, seated his 0.02-0.04 in front of her bed line (s08-placement-judge); him 1.35-1.6x her body, a tad back
 //             (PLANE_BACK), a 1.75 m man by the room door; her tap areas never under today's size (data/clinic/scenes-v2.json)
@@ -39,15 +43,19 @@ const lines = (text) => text.split("\n");
 const stripCssComments = (t) => t.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
 
 // ---- kit: one look in every mode ----
+// the shared kit's class prefixes (S13-A1, the kit review 4): the frame and buttons (njg), the order card (oc), the end screen
+// (rs), the grown-ups' bits (gb), the word card (wc), Nani's guide box (ng), the onboarding kit (ob), the conversations (cv), the
+// fitter (fit, fit2, fit-*) and Say it (say)
+export const KIT_CLASS = /\.(?:(?:njg|oc|rs|gb|wc|ng|ob|cv|say)-[\w-]+|fit(?:2|-[\w-]+)?(?![\w-]))/g;
 export function kitFindings(file, text) {
   if (file.startsWith("css/shared/")) return [];
   const out = [];
   lines(stripCssComments(text)).forEach((l, i) => {
     const sel = l.split("{")[0];
     if (!l.includes("{")) return;
-    const m = sel.match(/\.(?:njg|oc|rs|gb)-[\w-]+/g);
+    const m = sel.match(KIT_CLASS);
     // a mode may name the shared class only to keep its own old element apart (":not(.njg-btn)")
-    if (m && m.some((c) => !new RegExp(`:not\\([^)]*\\${c}`).test(sel))) out.push({ check: "kit", at: `${file}:${i + 1}`, key: `kit|${file}|${sel.trim()}`, text: sel.trim().slice(0, 100) });
+    if (m && m.some((c) => !new RegExp(`:not\\([^)]*\\${c}(?![\\w-])`).test(sel))) out.push({ check: "kit", at: `${file}:${i + 1}`, key: `kit|${file}|${sel.trim()}`, text: sel.trim().slice(0, 100) });
   });
   return out;
 }
@@ -60,12 +68,72 @@ export function tokenFindings(file, text) {
     const bad = [];
     if (/#[0-9a-f]{3,8}\b/i.test(decl)) bad.push("hex colour");
     if (/\brgba?\(\s*\d/i.test(decl)) bad.push("rgb colour");
-    if (/linear-gradient|radial-gradient/i.test(decl)) bad.push("gradient");
+    // (a mask's gradient is an alpha ramp, never a painted colour: S13-A1)
+    if (/linear-gradient|radial-gradient/i.test(decl.replace(/(?:-webkit-)?mask-image\s*:[^;]*;?/gi, ""))) bad.push("gradient");
     if (/text-shadow\s*:/i.test(decl)) bad.push("text-shadow");
     for (const b of bad) out.push({ check: "tokens", at: `${file}:${i + 1}`, key: `tokens|${file}|${b}|${decl.trim().slice(0, 80)}`, text: `${b}: ${decl.trim().slice(0, 90)}` });
   });
   return out;
 }
+// ---- shell: one kit link on every live page (S13-A1) ----
+// every live page links css/shared/kit.css (it @imports every shared sheet, in order) and no shared sheet directly; the parked
+// games' pages (dress, find, monsoon, snap, tidy, who) switch over when they are unparked (Zafar, 26 Oct: out of scope)
+export const LIVE_PAGES = ["index.html", "first.html", "day.html", "cook.html", "clinic.html", "lab.html", "labs.html"];
+export function shellFindings(file, html) {
+  const out = [];
+  const links = [...String(html).replace(/<!--[\s\S]*?-->/g, "").matchAll(/<link\b[^>]*\bhref="((?:\.\.\/)?css\/shared\/[^"?]+)[^"]*"[^>]*>/gi)].map((m) => m[1].replace(/^\.\.\//, ""));
+  const kit = links.filter((h) => h === "css/shared/kit.css").length;
+  if (kit !== 1) out.push({ check: "shell", at: file, key: `shell|${file}|kit ${kit}`, text: `${file} links css/shared/kit.css ${kit} times: once, in the head` });
+  for (const h of links.filter((x) => x !== "css/shared/kit.css")) out.push({ check: "shell", at: file, key: `shell|${file}|${h}`, text: `${file} links ${h} directly: css/shared/kit.css imports it` });
+  return out;
+}
+export function kitImportFindings(text, sharedSheets) {
+  const out = [];
+  const imported = [...String(text).matchAll(/@import\s+url\(["']?([\w.-]+\.css)/g)].map((m) => m[1]);
+  for (const s of sharedSheets) if (s !== "kit.css" && !imported.includes(s)) out.push({ check: "shell", at: "css/shared/kit.css", key: `shell|css/shared/kit.css|misses ${s}`, text: `css/shared/kit.css does not import ${s}: every shared sheet comes through the kit` });
+  return out;
+}
+// ---- motion: the glow, hop, pulse and talk live only in css/shared/focus.css (S13-A1) ----
+// a game's own keyframes for a kit motion (glow, hop, pulse, throb, bounce, talk, bob, shake) is a second copy that drifts from
+// the kit's: its elements take var(--njg-glow-anim) (and -hop-, -pulse-, -talk-) instead
+export const MOTION_NAME = /glow|hop|pulse|throb|bounce|talk|bob|shake/i;
+export function motionFindings(file, text) {
+  if (file.startsWith("css/shared/")) return [];
+  const out = [];
+  lines(stripCssComments(text)).forEach((l, i) => {
+    for (const m of l.matchAll(/@keyframes\s+([\w-]+)/g)) if (MOTION_NAME.test(m[1])) out.push({ check: "motion", at: `${file}:${i + 1}`, key: `motion|${file}|${m[1]}`, text: `@keyframes ${m[1]}: a kit motion of the game's own; take the kit's (var(--njg-glow-anim), -hop-, -pulse-, -talk-: css/shared/focus.css)` });
+  });
+  return out;
+}
+// ---- jscolour: UI colours in js/ only through js/shared/tokens.js (S13-A1) ----
+// a colour literal (0xRRGGBB, "#hex", rgb(…)) in js/ is a finding; Phaser and SVG take Tokens.hex("focus") / Tokens.int("focus").
+// A file of art only (Phaser tints and fills for drawn things) is listed ONCE in the known list as `jscolour|<file>|art-only`:
+// its art colours fold into that one finding, but a UI token's colour in it (any --njg-* colour of tokens.css) still counts alone
+const JS_COLOUR = /\b0x[0-9a-f]{6}\b|["'`]#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})\b|\brgba?\(\s*\d/gi;
+export function uiColours(tokensCss) {
+  const set = new Set();
+  for (const m of String(tokensCss).matchAll(/--njg-[\w-]+\s*:\s*#([0-9a-f]{6})\b/gi)) set.add(m[1].toLowerCase());
+  return set;
+}
+export function jscolourFindings(file, text, { artOnly = false, ui = new Set() } = {}) {
+  if (file === "js/shared/tokens.js" || file.startsWith("js/vendor/")) return [];
+  const out = [];
+  let art = false;
+  lines(text).forEach((l, i) => {
+    if (/^\s*(\/\/|\*|\/\*)/.test(l)) return;
+    const code = l.replace(/\/\/.*$/, "");
+    const hits = code.match(JS_COLOUR) || [];
+    for (const h of hits) {
+      const hex = (/^0x([0-9a-f]{6})$/i.exec(h) || /^["'`]#([0-9a-f]{6})$/i.exec(h) || [])[1];
+      const isUi = hex && ui.has(hex.toLowerCase());
+      if (artOnly && !isUi) { art = true; continue; }
+      out.push({ check: "jscolour", at: `${file}:${i + 1}`, key: `jscolour|${file}|${isUi ? "ui " : ""}${code.trim().slice(0, 80)}`, text: `${isUi ? "a UI token's colour" : "a colour"} in code (${h}): Tokens.hex()/Tokens.int() from js/shared/tokens.js` });
+    }
+  });
+  if (art) out.push({ check: "jscolour", at: file, key: `jscolour|${file}|art-only`, text: `${file}: art colours (listed once as art-only)` });
+  return out;
+}
+
 // ---- ladder ----
 const size = (v) => (Array.isArray(v) ? Math.max(v.length, ...v.filter((x) => typeof x === "number")) : typeof v === "number" ? v : null);
 export function ladderFindings(file, levels) {
@@ -146,14 +214,36 @@ export function bulbFindings(tables) {
   }
   return out;
 }
+// S13-A1 (the kit review F3, decision 8): ONE ladder table, data/shared.json {helpMs, bulbMs, bulbPulseMs}, read by guide.js,
+// bulb.js, conversations.js, the clinic and Cook through js/shared/tokens.js (Tokens.ladder). The check reads that table alone
+export const LADDER_FILE = "data/shared.json";
 export function bulbTables(rd, J) {
-  const t = {};
-  const num = (src, re) => { const m = re.exec(src || ""); return m ? m[1].split(/[,\s]+/).map((x) => +String(x).replace(/^\d:\s*/, "")).filter((x) => !isNaN(x) && x > 100) : []; };
-  t["data/cook.json calm.bulbMs"] = [].concat((J("data/cook.json").calm || {}).bulbMs ?? []);
-  t["js/clinic/kit.js Kit.BULB_MS"] = Object.values(Function(`return ${(/Kit\.BULB_MS\s*=\s*(\{[^}]*\})/.exec(rd("js/clinic/kit.js")) || [0, "{}"])[1]}`)());
-  t["js/shared/bulb.js Bulb.MS"] = num(rd("js/shared/bulb.js"), /MS\s*:\s*\[([^\]]*)\]/);
-  t["js/shared/conversations.js BULB_MS"] = Object.values(Function(`return ${(/const BULB_MS\s*=\s*(\{[^}]*\})/.exec(rd("js/shared/conversations.js")) || [0, "{}"])[1]}`)());
-  return t;
+  return { [`${LADDER_FILE} bulbMs`]: [].concat((J(LADDER_FILE) || {}).bulbMs ?? []) };
+}
+// ... and a second table anywhere is a finding: a ladder key in other data, or a ladder name beside a number in code
+const LADDER_KEY = /^(helpMs|bulbMs|bulbPulseMs|bulb_ms|help_ms|bulb_pulse_ms)$/;
+export function ladderCopyFindings(file, textOrJson) {
+  const out = [];
+  if (file === LADDER_FILE) return out;
+  if (file.endsWith(".json")) {
+    const go = (x, path) => {
+      if (!x || typeof x !== "object") return;
+      for (const [k, v] of Object.entries(x)) {
+        if (k.startsWith("_")) continue;
+        const p = path ? `${path}.${k}` : k;
+        if (LADDER_KEY.test(k)) out.push({ check: "bulb", at: `${file} ${p}`, key: `bulb|${file}|${p}`, text: `a second ladder table (the one is ${LADDER_FILE})` });
+        else go(v, p);
+      }
+    };
+    go(textOrJson, "");
+    return out;
+  }
+  lines(textOrJson).forEach((l, i) => {
+    if (/^\s*(\/\/|\*|\/\*)/.test(l)) return;
+    const code = l.replace(/\/\/.*$/, "");
+    if (/\b(helpMs|bulbMs|bulbPulseMs|BULB_MS|BULB_PULSE|PAUSE|bulb_ms)\b/.test(code) && /(?<![\w.])\d{4,5}(?![\w.])/.test(code)) out.push({ check: "bulb", at: `${file}:${i + 1}`, key: `bulb|${file}|${code.trim().slice(0, 80)}`, text: `a ladder number in code (the one table is ${LADDER_FILE}): ${code.trim().slice(0, 80)}` });
+  });
+  return out;
 }
 
 // ---- plane ----
@@ -254,7 +344,22 @@ export function run(root = ROOT, only = null) {
     for (const f of readdirSync(root).filter((x) => x.endsWith(".html"))) out.push(...privacyFindings(f, rd(f)));
   }
   if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
-  if (want("bulb")) out.push(...bulbFindings(bulbTables(rd, J)));
+  if (want("bulb")) {
+    out.push(...bulbFindings(bulbTables(rd, J)));
+    for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/^data\/lang\//.test(p))) { try { out.push(...ladderCopyFindings(f, J(f))); } catch (e) { /* not JSON */ } }
+    for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...ladderCopyFindings(f, rd(f)));
+  }
+  if (want("shell")) {
+    for (const f of LIVE_PAGES) if (existsSync(join(root, f))) out.push(...shellFindings(f, rd(f)));
+    const sheets = readdirSync(join(root, "css/shared")).filter((f) => f.endsWith(".css"));
+    out.push(...(sheets.includes("kit.css") ? kitImportFindings(rd("css/shared/kit.css"), sheets) : [{ check: "shell", at: "css/shared/kit.css", key: "shell|css/shared/kit.css|missing", text: "css/shared/kit.css is missing" }]));
+  }
+  if (want("motion")) for (const f of css) out.push(...motionFindings(f, rd(f)));
+  if (want("jscolour")) {
+    const ui = uiColours(rd("css/shared/tokens.css"));
+    const art = new Set((existsSync(join(root, "build/lint/static-known.json")) ? JSON.parse(rd("build/lint/static-known.json")) : []).filter((k) => /^jscolour\|.*\|art-only$/.test(k)).map((k) => k.split("|")[1]));
+    for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...jscolourFindings(f, rd(f), { artOnly: art.has(f), ui }));
+  }
   if (want("loadcap")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...loadcapFindings(f, rd(f)));
   if (want("plane")) out.push(...planeFindings(J("data/clinic/scenes-v2.json")));
   return out;

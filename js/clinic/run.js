@@ -29,8 +29,8 @@
     // clinic v2: the item overrides (the apple, the tube, the torch) reach every picture; the new rooms
     Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
     Clinic.Scenes = await Kit.loadJSON("data/clinic/scenes-v2.json");
-    // D11: the light bulb's time per level, from data
-    if (pj.bulb_ms) Object.entries(pj.bulb_ms).forEach(([l, ms]) => /^\d+$/.test(l) && (Kit.BULB_MS[l] = ms));
+    // D11: the light bulb's time per level is the ONE ladder table (data/shared.json bulbMs; js/clinic/kit.js Kit.BULB_MS
+    // reads it, S13-A1): data/clinic/pipeline.json's old "bulb_ms" copy is no longer read
     R.bodyFile = Clinic.HealHost.bodyFile;
     return R;
   };

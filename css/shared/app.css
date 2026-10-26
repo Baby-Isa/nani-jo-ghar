@@ -1,5 +1,7 @@
-/* the design tokens: every page that has the app frame has them (css/shared/tokens.css) */
+/* the design tokens and the kit's motion: every page that has the app frame has them (css/shared/tokens.css, css/shared/focus.css;
+   a live page links css/shared/kit.css, which imports this; a parked game's page links this alone) */
 @import url("tokens.css?v=20261026T131724Z");
+@import url("focus.css?v=20261026T131724Z");
 
 /* The app frame (js/shared/app.js): loaded, render-blocking, in the head of
    every page of the app, so the first paint is already the house colour. */
@@ -8,7 +10,8 @@
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
 
-html { background: var(--njg-house); }
+/* (:where: a page's own html background wins, wherever its sheet sits beside the kit) */
+:where(html) { background: var(--njg-house); }
 /* browsers without view transitions: a quick fade-out before the next page */
 html.njg-leaving body { opacity: 0; transition: opacity 150ms ease-out; }
 
@@ -21,8 +24,8 @@ html.njg-leaving body { opacity: 0; transition: opacity 150ms ease-out; }
   width: var(--njg-tap); height: var(--njg-tap);
   padding: 0; margin: 0;
   border-radius: 50%;
-  border: var(--njg-s1) solid var(--njg-player, #b5523b);
-  background: #fffaf2;
+  border: var(--njg-s1) solid var(--njg-player, var(--njg-rust));
+  background: var(--njg-paper);
   box-shadow: var(--njg-shadow);
   display: grid; place-items: center;
   cursor: pointer;
@@ -37,7 +40,7 @@ html:has(.njg-side) #njg-home {
   left: calc(max(var(--njg-side-pad), env(safe-area-inset-left)) + var(--njg-rail) + var(--njg-s3));
   width: var(--njg-rail); height: var(--njg-rail);
 }
-#njg-home svg { width: 50%; height: 50%; fill: #6b3b24; }
+#njg-home svg { width: 50%; height: 50%; fill: var(--njg-brown); }
 #njg-home:active { transform: scale(.94); }
 #njg-home.hidden { display: none; }
 
@@ -45,7 +48,7 @@ html:has(.njg-side) #njg-home {
 html.njg-first #njg-home { display: none; }
 #njg-first {
   position: fixed; inset: 0; z-index: 2147482000;
-  background: #f3e7d3 center / cover no-repeat;
+  background: var(--njg-house) center / cover no-repeat;
   display: grid; place-items: center;
   transition: opacity 300ms ease-out;
 }
@@ -54,21 +57,20 @@ html.njg-first #njg-home { display: none; }
   position: relative;
   width: min(42vmin, calc(var(--njg-big-face) * 3)); height: min(42vmin, calc(var(--njg-big-face) * 3));
   border-radius: 50%; padding: 0;
-  border: var(--njg-s2) solid #fffaf2;
-  background: #b5523b;
+  border: var(--njg-s2) solid var(--njg-paper);
+  background: var(--njg-rust);
   box-shadow: var(--njg-shadow-lift);
   cursor: pointer; overflow: hidden;
-  animation: njgPulse 1.4s ease-in-out infinite alternate;
+  animation: var(--njg-pulse-anim);
   -webkit-tap-highlight-color: transparent;
 }
 #njg-play img { position: absolute; inset: 6% 6% 0; width: 88%; height: 94%; object-fit: cover; object-position: top; border-radius: 50% 50% 0 0; opacity: .95; }
 #njg-play .njg-tri {
   position: absolute; right: 4%; bottom: 4%;
   width: 34%; height: 34%; border-radius: 50%;
-  background: #fffaf2; box-shadow: var(--njg-shadow);
+  background: var(--njg-paper); box-shadow: var(--njg-shadow);
 }
 #njg-play .njg-tri::after {
   content: ""; position: absolute; inset: 27% 22% 27% 36%;
-  background: #b5523b; clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: var(--njg-rust); clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
-@keyframes njgPulse { to { transform: scale(1.05); } }

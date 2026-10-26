@@ -15,14 +15,10 @@
   (passed to every stage as ctx.params), &nonav=1 (the end screen's buttons don't leave the page: tests).
   labs.html lists every lab entry (build/gen_labs.mjs). The test hook is window.njgTest (target-model § 8.1).
 -->
-<link rel="stylesheet" href="css/shared/app.css?v=20261026T131724Z">
+<!-- the shared kit in one link: tokens, motion, the app frame and every component (css/shared/kit.css; S13-A1) -->
+<link rel="stylesheet" href="css/shared/kit.css?v=20261026T131724Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/shared/results.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/guide.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/order-card.css?v=20261026T131724Z">
-<link rel="stylesheet" href="css/shared/buttons.css?v=20261026T131724Z">
 <style>
   /* the lab page's own chrome only: the host's frame ({root, play, own}, R3a) fills the screen; the play area is where a stage draws */
   html, body { margin: 0; height: 100%; background: #f3e7d3; }
@@ -197,6 +193,8 @@
 <div id="lab-app"><div id="lab-stage"></div></div>
 
 <script src="js/version.js?v=20261026T131724Z"></script>
+<!-- the design tokens in code and the one ladder table, data/shared.json (js/shared/tokens.js; S13-A1) -->
+<script src="js/shared/tokens.js?v=20261026T131724Z"></script>
 <!-- the shared kit, as every game page loads it (the one save is the core's, js/core/save.js: no classic save.js here) -->
 <script src="js/shared/family-voice.js?v=20261026T131724Z"></script>
 <script src="js/shared/uistore.js?v=20261026T131724Z"></script>
