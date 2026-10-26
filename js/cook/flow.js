@@ -891,7 +891,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * stamped ... order served ... then he says thank you and he goes ... a bit of a satisfying sound and visual ... for all
    * the game modes. So then you understand what chaat is and what samosa is"): every order's dish, once it sits on the
    * customer's tray, is named by them ("Ahhh..." and the dish's word: the engine's own lines, the "Ahhh..." still to record,
-   * so grey English until Mum records it), while its picture card rises from them to the stage's top left, large; it slides
+   * so grey English until Mum records it), while its picture card comes up at the top left beside her box, large; it slides
    * into the left bar under their order card, they say "barabar" (just right: Mum's word) and a "served" stamp (a tick, no
    * words: non-negotiable 3) lands on it with a soft sound. The caller then has them say thank you and go. One card per
    * dish (an order of two dishes shows two). The cards go when the end screen comes (servedCardsAway).
@@ -904,26 +904,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       setTimeout(() => el.remove(), 320);
     });
   }
+  // (the judge, 26 Oct: "a stamp-like mark: a round inked stamp with a tick, no written word"): burgundy ink, a double ring,
+  // the tick, the ink mottled where it didn't take (an SVG turbulence mask), a little see-through, turned
   const STAMP_SVG =
-    '<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="rgba(255,255,255,0.55)" stroke="#2f7d4a" stroke-width="7"/><circle cx="50" cy="50" r="35" fill="none" stroke="#2f7d4a" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M30 52 L45 66 L71 37" fill="none" stroke="#2f7d4a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    '<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><defs><filter id="njg-ink" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.6" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter></defs><g filter="url(#njg-ink)" fill="none" stroke="#9b2335" opacity="0.88"><circle cx="50" cy="50" r="44" stroke-width="6"/><circle cx="50" cy="50" r="36" stroke-width="2.5"/><circle cx="50" cy="50" r="31" stroke-width="1.6" stroke-dasharray="3 3"/><path d="M33 51 L45 63 L68 38" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
   async function servedMoment(order, who) {
     const dishes = [...new Set(order.dishes.map((d) => d.recipe))].filter((r) => r && R[r]);
     if (!dishes.length || !S() || !S().chars) return;
     const stage = $("#stage");
     if (!stage) return;
     const sr = stage.getBoundingClientRect();
-    // where they are on screen: their face, the card's start
-    const img = S().chars[who];
-    let from = { x: sr.left + sr.width * 0.6, y: sr.top + sr.height * 0.3 };
-    try {
-      const b = img && img.getBounds();
-      if (b) {
-        const p = UI.worldToScreen(b.centerX, b.top + b.height * 0.25);
-        from = { x: p.x, y: p.y };
-      }
-    } catch (e) {
-      /* (a character gone: the stage's middle) */
-    }
     const mission = $("#mission") && $("#mission").getBoundingClientRect().width > 20 ? $("#mission") : null;
     const side = document.querySelector(".njg-side");
     // (the judge, 26 Oct: the card covered Nani's head at 1366x768 and all of her at 915x412): it never covers anyone. It
@@ -932,6 +922,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const n = dishes.length;
     const want = Math.min(sr.height * 0.42, (sr.width * 0.5) / n);
     const spans = [];
+    let headTop = sr.bottom;
     try {
       Object.values(S().chars || {}).forEach((ch) => {
         if (!ch || !ch.active || !ch.visible) return;
@@ -939,8 +930,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const a = UI.worldToScreen(b.left, b.top);
         const z = UI.worldToScreen(b.right, b.bottom);
         // (the picture's transparent margin: its middle 80% is the person)
-        const pad = (z.x - a.x) * 0.1;
+        // (the picture's transparent margin: its middle 60% is the person; their head a little under its top)
+        const pad = (z.x - a.x) * 0.2;
         spans.push([a.x + pad - 8, z.x - pad + 8]);
+        headTop = Math.min(headTop, a.y);
       });
     } catch (e) {
       /* (no characters: the whole stage is free) */
@@ -954,8 +947,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     if (sr.right - 12 > gx) gaps.push([gx, sr.right - 12]);
     const fit = (g) => Math.min(want, (g[1] - g[0] - 12 * (n - 1)) / n);
-    const gap = gaps.find((g) => fit(g) >= want * 0.8) || gaps.reduce((m, g) => (!m || fit(g) > fit(m) ? g : m), null) || [sr.left + 12, sr.right - 12];
-    const big = Math.max(60, fit(gap));
+    // (the judge, 26 Oct, Zafar's words: "comes up in the top left"): always the top left, beside Nani's guide box as chai's
+    // call-out card sits (js/cook/stations/chai-tray.js showCallout "play"), as big as the room before the first person allows
+    const gap = gaps.length && gaps[0][0] <= sr.left + 12 ? gaps[0] : [sr.left + 12, sr.left + 12 + want * n];
+    const gb = $("#guide") && $("#guide").getBoundingClientRect();
+    const top0 = Math.max(sr.top + 10, gb && gb.height ? gb.top : sr.top + 10);
+    // (wider than the room before the first person only where it stays wholly above everyone's heads: never on a face)
+    const big = Math.max(64, Math.min(want, Math.max(fit([gap[0] + 2, gap[1]]), (headTop - top0 - 18) / 1.32)));
     const cards = dishes.map((recipe, i) => {
       const art = Cook.Art.servedArt(Cook.Art.servedName(recipe));
       const word = R.dishWord(recipe);
@@ -991,14 +989,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const stamp = document.createElement("div");
       stamp.className = "njg-served-stamp";
       stamp.innerHTML = STAMP_SVG;
-      Object.assign(stamp.style, { position: "absolute", right: "-6%", top: "-6%", width: "46%", aspectRatio: "1", opacity: "0", transform: "scale(1.8) rotate(-14deg)", transition: "none", pointerEvents: "none" });
+      Object.assign(stamp.style, { position: "absolute", right: "2%", top: "34%", width: "58%", aspectRatio: "1", opacity: "0", transform: "scale(1.8) rotate(-14deg)", transition: "none", pointerEvents: "none" });
       el.appendChild(stamp);
       document.body.appendChild(el);
       servedCards.push(el);
       // its place at the top left of the stage, then in the left bar (over the order card, stacked)
-      // (the top left where it fits; in a gap past the people, at its far edge, clear of the customer's bubble by their head)
-      const x0 = gap[0] <= sr.left + 12 ? gap[0] + 4 : gap[1] - 4 - n * big - (n - 1) * 12;
-      const at = { x: x0 + i * (big + 12), y: sr.top + 16 };
+      const at = { x: sr.left + 14 + i * (big + 12), y: top0 };
       return { el, stamp, at, i };
     });
     const place = (c, x, y, k, o, ms) => {
@@ -1006,8 +1002,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       c.el.style.transform = `translate(${x}px, ${y}px) scale(${k})`;
       c.el.style.opacity = String(o);
     };
-    // 1. it rises from them, small, to the top left, large
-    cards.forEach((c) => place(c, from.x - big * 0.1, from.y, 0.2, 0, 0));
+    // 1. it comes up at the top left, beside Nani's box, large
+    // (it comes up in its own place, never across Nani: the judge, 26 Oct)
+    cards.forEach((c) => place(c, c.at.x + big * 0.25, c.at.y + big * 0.35, 0.4, 0, 0));
     void document.body.offsetWidth;
     Cook.servedMoment = { who, dishes, phase: "rise" };
     Cook.sfx.pop();
