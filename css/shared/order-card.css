@@ -251,14 +251,17 @@
 /* SH-110 (Zafar, 26 Oct: never a memory test): a blanked row starts with a clear speaker (js/shared/order-card.js speakerFirst):
    the round speaker drawn at the row's size, its tap area never under the tap floor (it overhangs the row, so the row keeps its
    height); a word row's own speaker (.wc-spk) is the same button, moved to the row's start */
-.oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); }
+.oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); min-height: var(--njg-tap); box-sizing: border-box; }
 .oc-card .oc-spk {
   --oc-spk-vis: calc(var(--oc-part-h) * 0.8); --oc-spk-hit: max(var(--oc-spk-vis), var(--njg-tap));
-  /* (its tap area may overlap the next row's, never reach that speaker's middle: under two rows' pitch tall; the covered check) */
-  --oc-spk-hit-h: min(var(--oc-spk-hit), calc(2 * var(--oc-part-h) - var(--njg-s2)));
+  /* SH-134 (S13-A2): its tap area is the full tap floor, 48 x 48, never over the next row's speaker: a blanked row is at least
+     that tall (below), so the speakers' tap areas sit one under another, none overlapping, at every size */
+  --oc-spk-hit-h: var(--oc-spk-hit);
   position: relative; z-index: 1; flex: none; order: -2; box-sizing: border-box;
   width: var(--oc-spk-hit); height: var(--oc-spk-hit-h); padding: 0; border: 0; border-radius: var(--njg-round);
   margin-block: calc((var(--oc-spk-vis) - var(--oc-spk-hit-h)) / 2); margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2);
+  /* (SH-81: its tap area reaches into the row's padding, never past the screen's edge: at 915x412 it hung 2 px off the left) */
+  margin-inline-start: max(calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2), calc(-1 * var(--njg-s1)));
   display: grid; place-items: center; background: none; box-shadow: none; color: var(--oc-ink); cursor: pointer; touch-action: manipulation;
 }
 .oc-card .oc-spk::before {
@@ -520,4 +523,5 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 .oc-card.oc-mini .oc-spk {
   --oc-spk-hit-h: var(--oc-spk-hit); /* (no row under it to reach into: a full tap) */
   margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 + var(--njg-s2)) calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 - var(--njg-s2));
+  margin-inline-start: max(calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 + var(--njg-s2)), calc(-1 * var(--njg-s1))); /* (SH-81: never off the screen's edge) */
 }
