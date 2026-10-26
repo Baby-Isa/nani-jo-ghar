@@ -24,9 +24,10 @@ FILES THIS SESSION OWNS (edit only these) · READ-ONLY (never edit) · SHARED PI
 DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on. NO helper sessions (B3).
 PERMISSIONS NEEDED UP FRONT
 TASKS (numbered, each with its acceptance criterion)
-REGRESSION ROWS TO RECHECK (listed by regress.mjs for the flows it touches)
-PROOF (decisions 48, 50; HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`): checks.mjs, leak scripts, check_onboard, touched.mjs and its sandbox command at 1366x768 only, shotdiff.mjs, regress.mjs --stdin, skeleton.mjs
-TESTS: browser tests one at a time (flock, own COOK_TEST_PORT; the next free port is recorded in docs/architecture/testing.md)
-GIT and FINISH: build/reports/<id>-<topic>.md (under 300 words), the QA checklist results, one line in docs/process/overnight-log.md, commit and push the branch.
+PLACES (for a spec naming `elements`: kitmap.mjs, every file:line that draws or styles each)
+REGRESSION ROWS TO RECHECK (the rows the tasks name, plus the open rows of the elements named; never a flow's whole list)
+PROOF (the one loop, docs/architecture/evidence-loop.md "The one loop (S13)"): checks.mjs and the unit tests; the before was played at launch; `evidence.mjs --after --brief <spec>`; the flows' contract run at 1366x768 and 915x412; kitsheet.mjs --after for named elements; no frames of its own, and the report lists only the after folder
+TESTS: browser tests on the session's own lock and COOK_TEST_PORT (`/tmp/njg-browser-<port>.lock`, NJG_LOCK for the evidence tools)
+GIT and FINISH: build/reports/<id>-<topic>.md (under 300 words), the QA checklist results, commit the branch (builders never push; the orchestrator merges).
   Only a session the brief marks `publish` ends with bump_version and one push to main.
 ```

@@ -1,0 +1,74 @@
+SESSION NAME / MODE:  s13-t: one checking loop (Sprint 13, pair 1)
+MODEL AND EFFORT:     Opus, high effort (the checking loop every later builder is judged by: design and careful plumbing over the existing evidence tool)
+COST ESTIMATE:        about $30-40
+HARD STOP:            26 Oct 2026, 21:00 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S13-one-shared-kit.md ('Small decisions (Zafar, 26 Oct)': the checking loop paragraph is your spec)
+     build/reports/s13-kit-review.md sections 1 (F7, F8), 4 and 5 (and its 'Orchestrator's check')
+     docs/architecture/evidence-loop.md (the loop as built: specs, moments, captures, sheets, judge, cache, red then green)
+     .claude/agents/judge.md (the judge's instructions)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/review/evidence.mjs, build/tools/review/lib/** , build/tools/review/kitmap.mjs (new), build/tools/review/kitsheet.mjs (new), their tests
+  - build/sandbox/lib/evidence.mjs, sheets.mjs, moments.mjs, evidence-probe.mjs, recorder.mjs; build/sandbox/drivers/** ; build/sandbox/run.mjs (only what the loop needs)
+  - data/kit-elements.json (new: each shared element -> its selectors, the pages and moments where it shows)
+  - the test hooks: js/cook/page.js:13, js/cook/ns.js:15, js/day/day.js:543, js/shared/host.js:664, the clinic's hook, and every build/ file that reads them (rename only)
+  - build/tools/ops/brief.mjs, build/tools/ops/briefpack.mjs, docs/process/session-brief-template.md
+  - .claude/agents/judge.md, .claude/skills/review/SKILL.md, .claude/skills/brief/SKILL.md
+  - docs/architecture/evidence-loop.md (a new top section 'The one loop (S13)'; trim what it replaces), docs/tools.md
+  - build/reports/s13-t.md
+READ-ONLY (never edit):
+  - css/** and every other js/** file (S13-A1 owns colours, motion and page setup)
+  - build/lint/** (S13-A1)
+  - build/sandbox/lib/contract.mjs (later builders add their element checks)
+  - CLAUDE.md
+  - build/sandbox/data/evidence.json (add entries only for rows you use as a worked example)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. BEFORE and AFTER in one command. `node build/tools/review/evidence.mjs --before --brief <spec.json>` plays only the rows the brief's tasks name (their evidence.json probes), at the brief's sizes (default 1366x768 and 915x412), as crops and short filmstrips (strip:<sel>:<n>x<ms> for anything that moves; 250 and 500 ms by default), and stores them as that brief's 'before'. `--after --brief <spec.json>` does the same after the build. Reuse --run, the verdict log and redGreen; add no second capture path. A row with no probe refuses the brief (as today). New features (rows that describe something not yet built) need no red: their before panel is simply 'not there yet'.
+     Accept: a worked example on 2-3 real rows (e.g. SH-19 the finger, a glow row, a help-box row): the before and after folders exist, named by brief and row; the unit tests cover the brief-to-rows step
+  2. The judge's batch is made by the script: `--judge --brief <spec>` writes batches where each row's sheet shows BEFORE beside AFTER (same moment, same size, same crop), panels labelled, its words on top. The judge passes a row only when before shows the problem (or 'not there yet' for a new feature) AND after shows it fixed; a before that does not show the problem is EVIDENCE (a probe fault), never PASS. Update .claude/agents/judge.md for this, keeping it short. `--before --check` lets the orchestrator send just the before sheets to the judge at launch, to prove the probes see the problem before the builder starts.
+     Accept: a batch file and its sheets for the worked example; the judge.md diff
+  3. The side-by-side sheet per shared element (kitsheet). data/kit-elements.json lists each element (face circle, word card, order card, order pop-up, bubble, buttons, finger, help box, glow, '?' pop-up, end screen, to-record text) with its selector(s) and where it shows (flow, moment) on every LIVE page (index, first, day, cook, clinic, lab; the parked games are out). `node build/tools/review/kitsheet.mjs --elem <name> [--before|--after]` crops that element from every page at 1366x768 and 915x412 into one sheet (game name under each crop), plus a 2-4 frame strip for moving ones (glow, finger, hop). The judge passes the element on that sheet: same look in every game. An element not reachable on a page is listed as such on the sheet, never silently dropped.
+     Accept: kitsheets for the finger, the glow and the order card from today's game, at both sizes; the list of any page/moment no driver reaches yet
+  4. The stuck player: a path `#stuck` every flow accepts (the player waits, taps nothing, through every help rung: 5 s, 12 s, the next), generalising drivers/catalog.mjs's idle-twice; help-box and finger rows and kitsheet use it.
+     Accept: #stuck plays on cook:chai-tray, clinic:heal-eye and the day's door; a strip shows each rung
+  5. Where an element appears, for briefs: kitmap.mjs prints, per element, every file:line that draws or styles it (from data/kit-elements.json plus grep rules seeded from s13-kit-review.md section 3). brief.mjs pastes it under PLACES for any brief naming an element (a spec field `elements: [...]`). Also trim the brief's REGRESSION ROWS list to the rows the tasks name plus the rows of the elements it names (S12 briefs pasted 190+ rows nobody rechecked).
+     Accept: the generated brief for this spec and for a sample element spec; kitmap output for 'finger' matches the review's places
+  6. Builders never shoot their own frames and never dump runs into reports: the brief's PROOF lines become checks.mjs, unit tests, `evidence.mjs --after --brief <spec>`, the touched contract run at 1366x768 and 915x412, and the report lists only the after folder. Retire the one-off shooting scripts in build/tools/review (shoot_*.mjs, fever_bubbles.mjs) if nothing live needs them (say which you kept and why).
+     Accept: the brief's standing PROOF lines changed in brief.mjs; the list of retired scripts
+  7. One test hook: window.njgTest is the only hook name (njgTest.cook, njgTest.clinic, njgTest.loading, the host's and the day's fields merged as now); rename every reader in build/. Mechanical; if any rename would change a game's behaviour, stop and report instead.
+     Accept: grep finds no __cook, __clinic or __njgCookLoading; checks.mjs and the unit tests green; the contract run on cook:chai-tray and clinic:heal-eye at 1366x768 has 0 breaks
+  8. Docs: a short 'The one loop (S13)' section at the top of docs/architecture/evidence-loop.md (the order: before at launch, build, after, script-made before/after batch, kitsheet for shared elements, machine checks first, one sweep at /review) and docs/tools.md lines; the review and brief skills point at it.
+     Accept: docs.mjs passes
+
+REGRESSION ROWS TO RECHECK (1; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (1): SH-19*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s13-t.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8861 NJG_LOCK=/tmp/njg-browser-8861.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s13-t.json`.
+  - BEFORE THE FINISH, your own flows at 1366x768 and 915x412 under your lock: `flock -w 3600 /tmp/njg-browser-8861.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,clinic:heal-eye --sizes 1366x768,915x412 --run-id s13-t-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s13-t.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s13-t.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8861.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8861; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s13-t.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

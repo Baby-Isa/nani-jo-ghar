@@ -15,4 +15,10 @@ Write the verdict file named in the batch (`batch-NN.verdicts.md`, next to it): 
 `ID | PASS: <panel letter>, <what that panel shows that proves it>`
 `ID | FAIL: <panel letter>, <what is wrong>`
 `ID | EVIDENCE: <what the sheet is missing>`
-A text-only row (Sheet: (text only)) cites its text capture by its label in the .md instead of a panel letter. Change nothing else: never edit the fix list or its archive, the code, the batch file or any other file. Reply with the verdict file path and the count of PASS / FAIL / EVIDENCE.
+A text-only row (Sheet: (text only)) cites its text capture by its label in the .md instead of a panel letter.
+
+**Before and after** (`brief-NN.md`, the one loop): each sheet shows a row's BEFORE (left, before the build) beside its AFTER (right): the same moment, size and crop, the pairs lettered A, B ... PASS only when the before shows the problem the row names (or "not there yet" for a new feature) AND the after shows it fixed; cite the pair. A before that does not show the problem is EVIDENCE (a probe fault), never PASS, whatever the after shows.
+**The before check** (`check-NN.md`): before pictures alone, taken before any build. FAIL: <letter>, <the problem you see> when the before shows it (the probe sees it); EVIDENCE when it does not. Never PASS there.
+**A kit sheet** (`kitsheet-<element>.png`): one element cropped from every game at both sizes. PASS only when it has the same look in every game; name the game that differs in a FAIL. A cell that says why it is missing is not a flaw of the element: list it.
+
+Change nothing else: never edit the fix list or its archive, the code, the batch file or any other file. Reply with the verdict file path and the count of PASS / FAIL / EVIDENCE.

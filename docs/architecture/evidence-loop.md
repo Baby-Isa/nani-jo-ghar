@@ -1,5 +1,16 @@
 # The evidence loop: every row proven by the game, judged without Zafar
 
+## The one loop (S13)
+
+Zafar, 26 Oct: one command shoots a builder's rows before and after; the script builds the judge's batch; one side-by-side sheet per shared element is "done"; builders never shoot their own frames; machine checks first; one broad sweep at `/review`. The evidence tool does all of it; there is no second capture path. In order:
+
+1. **Before, at launch (the orchestrator).** `node build/tools/review/evidence.mjs --before --check --brief <spec.json>` plays only the rows the brief names (`rows` and every row id in its tasks), each row's probes on the brief's `flows`, at its `sizes` (default 1366x768 and 915x412), a moving thing also filmed at 250 and 500 ms. A row with no probe refuses the brief. Each row's panels are copied to `build/screenshots/brief/<brief>/<ROW>/before/`. `--check` writes the judge's before check (`judge/check-NN.md`): FAIL = the before shows the problem (the red, logged), EVIDENCE = a probe fault, fixed before the builder starts. A row in `newRows` (not built yet) has a "not there yet" before.
+2. **The build.** Machine checks first: `checks.mjs`, the unit tests.
+3. **After (the builder).** The same command with `--after`: the same rows, probes and sizes, to `.../<ROW>/after/`; then its flows' contract run at 1366x768 and 915x412. Its report lists only the after folder.
+4. **The judge's batch, made by the script.** `--judge --brief <spec>` draws each row's BEFORE beside its AFTER (same moment, size and crop, pairs lettered) and writes `judge/brief-NN.md` in the after run. PASS only when the before shows the problem and the after shows it fixed; a before that does not show it is EVIDENCE. `--collect` and `--apply` on the after run as before (red then green: the before's red is logged, never a strike).
+5. **Shared elements: one sheet across every game.** `node build/tools/review/kitsheet.mjs --elem <name> [--before|--after]` crops the element from every live page (index, first, day, cook, clinic, lab; `data/kit-elements.json`) at both sizes, game names under the crops, a 4-frame strip for a moving one; a page where it is not shown says why. `--elem help-ladder` is the stuck player (`#stuck`: taps nothing through every help rung) at each rung. The judge passes the element on that sheet. `kitmap.mjs --elem <name>` lists every file:line that draws it; a brief naming `elements` carries it under PLACES.
+6. **One broad sweep at `/review`** (the sections below): the sprint's rows, the contract gate.
+
 **Why (12 Oct, Zafar):** "fix the game reviewers so they can see and validate all the things they couldn't … I can't be judging all of these things myself." The S04 audit judged 174 rows from whole-screen sheets of one 1366×768 run: 86 were "no evidence" because the run never reached the moment the row is about, showed the wrong game, or the row is about sound, timing or motion. Decision 82.
 
 ## The design (speed and tokens first)
@@ -30,7 +41,7 @@ node build/tools/review/evidence.mjs --judge [--batch 10] [--audit 10]        # 
 node build/tools/review/evidence.mjs --collect                                # the reviewers' batch verdict files -> the cache
 node build/tools/review/evidence.mjs --apply [--dry]                          # cached verdicts on this run's evidence -> regressions.md
 ```
-`/review` step 9 (the sprint check) runs these for the sprint's rows; the full list once per sprint close.
+`/review` step 9 (the sprint check) runs these for the sprint's rows; the full list once per sprint close. A builder no longer runs `--run --rows` red and green itself: its rows' red and green are the one loop's `--before` (at launch) and `--after` (above). The one-off shoot scripts are retired (S13-T); `shoot_knee_wrap.mjs` and `fever_bubbles.mjs` stay because evidence specs run them as `cmd:` captures.
 
 ## The format as built (12 Oct; additive to the above, read by `build/tools/review/evidence.mjs`)
 
@@ -52,7 +63,7 @@ node build/tools/review/evidence.mjs --apply [--dry]                          # 
 
 **The cache** (`build/tools/review/data/verdicts.json`, key = row id): `{hash, dhash, verdict, line, panel, judge, run, commit, png, date}`. `hash` covers the row's issue and Check, its spec, its text captures (dom text, spoken words, expect outcomes) and the git tree of the mode's `js/`, `css/`, `assets/` (and shared) folders (any uncommitted change there forces a re-judge); `dhash` is a 64-bit difference hash per panel, equal within 6 bits. Machine-decided rows are cached with judge `expect`. `--judge` writes `judge/batch-NN.md` (one kind per batch: 10 visual rows, 30 text rows) and an empty `batch-NN.verdicts.md` (first line `judge: <model and session>`, then `ID | PASS: <panel>, <what it shows>`, `ID | FAIL: <panel>, <what is wrong>` or `ID | EVIDENCE: <what is missing>`). `--collect` refuses a file judged by the builder (`--builder` or `NJG_BUILDER` at `--run`), and a PASS that names no panel; EVIDENCE lines go to the index's tool-owner list; `--audit 10` re-judges 10% of the cached PASSes and writes disagreements to `audit-disagreements.md` (Zafar's list). `--apply` writes only verdicts on this very evidence: FAIL → `**reopened** (evidence FAIL <run>: <line>; <png>) · earlier: <old status>`, PASS → `built (evidence PASS <run>: <line>) · earlier: …` (`fixed` stays fixed); keep and retired rows are never touched; a later run replaces the earlier evidence note.
 
-**Running it.** Under the browser lock, on your own port: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows …`. Inside a caller's flock it plays one 13-minute chunk and exits 75 if pages are left (run again with `--resume <id>`); on its own it takes and releases the lock chunk by chunk. `run.mjs --gate --evidence <pages.json>` carries the probes of the plain pages (no profile, seed, renderer or pixel ratio) on the gate's own pages, so `--run --from-run <gate run>` plays only the rest.
+**Running it.** Under the browser lock, on your own port: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows …` (a builder's own lock: `NJG_LOCK=/tmp/njg-browser-<port>.lock`, which the tool takes chunk by chunk). Inside a caller's flock it plays one 13-minute chunk and exits 75 if pages are left (run again with `--resume <id>`); on its own it takes and releases the lock chunk by chunk. `run.mjs --gate --evidence <pages.json>` carries the probes of the plain pages (no profile, seed, renderer or pixel ratio) on the gate's own pages, so `--run --from-run <gate run>` plays only the rest.
 
 ## Fable's review (12 Oct)
 

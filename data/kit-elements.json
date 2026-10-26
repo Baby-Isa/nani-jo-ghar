@@ -1,5 +1,5 @@
 {
-  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). A place is {at, sel?, delay?, flow?} (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
+  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). A place is {at, sel?, delay?, flow?, profile?, every?} (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
   "pages": {
     "index": { "flow": "house", "title": "the house (index.html)" },
     "first": { "flow": "first", "title": "first launch (first.html and its first Cook rounds)" },
@@ -46,8 +46,8 @@
         "index": { "none": "no order on the house page" },
         "first": { "at": "life:popup-fold", "delay": 900 },
         "day": { "none": "the door asks a question, it has no order card" },
-        "cook": { "at": "life:popup-fold", "delay": 900 },
-        "clinic": { "at": "life:popup-fold", "delay": 900 },
+        "cook": { "at": "life:popup-fold", "delay": 900, "flow": "cook:chai-tray", "profile": "seen" },
+        "clinic": { "at": "life:popup-fold", "delay": 900, "flow": "clinic:heal-eye" },
         "lab": { "at": "life:popup-fold", "delay": 900 }
       }
     },
@@ -99,12 +99,12 @@
       "grep": ["\\bob-finger\\b", "\\bco-finger\\b", "Onboard\\.finger\\b", "\\bOB\\.finger\\b", "\\bO\\.finger\\b"],
       "rowWords": "finger|ghost hand|the hand tapping",
       "places": {
-        "index": { "at": "visible:.ob-finger" },
-        "first": { "at": "visible:.ob-finger" },
-        "day": { "at": "visible:.ob-finger" },
-        "cook": { "at": "visible:.ob-finger" },
-        "clinic": { "at": "visible:.ob-finger" },
-        "lab": { "at": "visible:.ob-finger" }
+        "index": { "at": "visible:.ob-finger", "delay": 400 },
+        "first": { "at": "visible:.ob-finger", "delay": 400 },
+        "day": { "at": "visible:.ob-finger", "delay": 400 },
+        "cook": { "at": "visible:.ob-finger", "delay": 400 },
+        "clinic": { "at": "visible:.ob-finger", "delay": 400 },
+        "lab": { "at": "visible:.ob-finger", "delay": 400 }
       }
     },
     "help box": {
@@ -122,14 +122,14 @@
       }
     },
     "glow": {
-      "sel": ".njg-glow, .ob-item-glow",
+      "sel": ".njg-glow, .ob-item-glow, .ob-lit",
       "moves": true,
       "grep": ["\\bnjg-glow\\b", "\\bob-item-glow\\b", "\\bnjgGlow\\b", "\\bglowPulse\\b", "Cook\\.GLOW\\b", "--(njg-)?glow-[a-z]+", "@keyframes\\s+[\\w-]*([Gg]low|[Tt]hrob|[Pp]ulse)", "animation:[^;]*([Tt]hrob|[Gg]low)", "Focus\\.(pulse|phaser)"],
       "rowWords": "glow|throb|highlight",
       "places": {
         "index": { "at": "visible:.njg-glow" },
-        "first": { "at": "visible:.ob-item-glow", "sel": ".ob-item-glow" },
-        "day": { "at": "rec:stuck-5s", "sel": ".ob-item-glow" },
+        "first": { "at": "visible:.ob-finger", "sel": "hook:cook.glowing", "delay": 300 },
+        "day": { "at": "rec:stuck-5s", "sel": ".ob-lit, .ob-item-glow" },
         "cook": { "at": "rec:stuck-12s", "sel": "hook:cook.glowing" },
         "clinic": { "at": "rec:stuck-12s", "sel": "hook:heal.glowing" },
         "lab": { "at": "cook:tap", "sel": "hook:cook.glowing" }
@@ -175,6 +175,20 @@
         "cook": { "at": "life:popup-open", "delay": 300 },
         "clinic": { "at": "life:popup-open", "delay": 300 },
         "lab": { "at": "life:popup-open", "delay": 300 }
+      }
+    },
+    "help ladder": {
+      "sel": "screen",
+      "moves": false,
+      "grep": ["Onboard\\.RUNGS\\b", "Onboard\\.stuck\\b", "\\bG\\.PAUSE\\b", "\\bBULB_PULSE\\b", "\\bhelpMs\\b", "\\bbulbPulseMs\\b", "\\bLADDER\\b"],
+      "rowWords": "help ladder|after the pause|stuck|hint rung|bulbs? pulse",
+      "places": {
+        "index": { "none": "no step to be stuck at in the house" },
+        "first": { "none": "no stuck path on the first launch yet (its Cook rounds are Cook's: see cook)" },
+        "day": { "at": "rec:stuck", "every": 4 },
+        "cook": { "at": "rec:stuck", "every": 4 },
+        "clinic": { "at": "rec:stuck", "every": 4 },
+        "lab": { "none": "no stuck path on the game host yet (its Cook is Cook's: see cook)" }
       }
     }
   }

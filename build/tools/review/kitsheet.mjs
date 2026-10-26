@@ -58,8 +58,10 @@ for (const el of elems) {
     if (!pl) { cell.none = "no place listed in data/kit-elements.json"; continue; }
     if (pl.none) { cell.none = pl.none; continue; }
     Object.assign(cell, { flow: pl.flow || KIT.pages[pg].flow, at: pl.at, sel: pl.sel || E.sel, id: `KIT-${++n}` });
-    const capture = [`crop:${cell.sel}`, ...(E.moves ? [`strip:${cell.sel}:4x250`] : [])];
-    spec[cell.id] = [{ flow: cell.flow, at: cell.at, sizes: SIZES_WANTED, capture, delay: pl.delay || 0, note: `${el} on ${pg}` }];
+    // sel "screen": the whole screen (the help ladder); every: N: a frame each time the moment comes, up to N (each rung)
+    const capture = cell.sel === "screen" ? ["shot"] : [`crop:${cell.sel}`, ...(E.moves ? [`strip:${cell.sel}:4x250`] : [])];
+    cell.every = pl.every || 0;
+    spec[cell.id] = [{ flow: cell.flow, at: pl.every ? `every:${cell.at}` : cell.at, ...(pl.every ? { max: pl.every } : {}), sizes: SIZES_WANTED, capture, delay: pl.delay || 0, ...(pl.profile ? { profile: pl.profile } : {}), note: `${el} on ${pg}` }];
   }
 }
 const norm = S.normalizeSpec(spec, ctx);
@@ -124,7 +126,12 @@ for (const el of elems) {
         const r = results.get(`${c.id}|${size}`);
         if (!r) cell.why = "not played (the run did not reach this page)";
         else if (!r.reached) cell.why = `not reached: ${(r.tool || [])[0] ? r.tool[0].replace(/; moments seen:.*$/, "") : "the moment never came"}`;
-        else {
+        else if (c.every) {
+          // one frame per time the moment came (each rung): the whole screen, or the crop
+          cell.frames = [];
+          r.hits.forEach((h, k) => { const cap = h.captures.find((x) => !x.fail && (x.kind === "shot" || x.kind === "crop") && x.files[0]); if (!cap) return; const f = `${slugOf(c.page)}-${size}-${k + 1}.png`; copyFileSync(join(r.dir, cap.files[0]), join(out, f)); cell.frames.push({ file: f, label: `${h.name.replace(/^rec:/, "")} · ${(h.t / 1000).toFixed(1)} s` }); });
+          if (cell.frames.length) { cell.crop = cell.frames[0].file; cell.when = `${cell.frames.length} frames`; } else cell.why = `no frame: ${((r.tool || [])[0] || "nothing captured").slice(0, 200)}`;
+        } else {
           const h = r.hits[0], dir = r.dir;
           for (const cap of h.captures) {
             if (cap.fail) { cell.why = cell.why || `${cap.raw}: ${cap.fail}`; continue; }
@@ -152,8 +159,9 @@ if (unreached.length) { console.log(`\nnot on the sheet as a crop (${unreached.l
 
 function sheetHtml(el, E, grid, out) {
   const img = (f) => `<img src="${esc(shotUrl(join(out, f)))}">`;
-  const cell = (c) => `<figure class="${c.crop ? "" : "miss"}">${c.crop ? `<div class="crop">${img(c.crop)}</div>${c.strip.length ? `<div class="strip">${c.strip.map((s) => `<div>${img(s.file)}<small>${s.ms} ms</small></div>`).join("")}</div>` : ""}` : `<div class="why">${esc(c.why)}</div>`}<figcaption><b>${esc(c.page)}</b> ${esc(c.title)}${c.when ? `<span>${esc(c.when)}</span>` : ""}</figcaption></figure>`;
-  const cols = Math.max(...grid.map((g) => g.cells.length));
+  const cell = (c) => c.frames && c.frames.length ? `<figure><div class="rungs">${c.frames.map((f) => `<div>${img(f.file)}<small>${esc(f.label)}</small></div>`).join("")}</div><figcaption><b>${esc(c.page)}</b> ${esc(c.title)}</figcaption></figure>` : `<figure class="${c.crop ? "" : "miss"}">${c.crop ? `<div class="crop">${img(c.crop)}</div>${c.strip.length ? `<div class="strip">${c.strip.map((s) => `<div>${img(s.file)}<small>${s.ms} ms</small></div>`).join("")}</div>` : ""}` : `<div class="why">${esc(c.why)}</div>`}<figcaption><b>${esc(c.page)}</b> ${esc(c.title)}${c.when ? `<span>${esc(c.when)}</span>` : ""}</figcaption></figure>`;
+  // whole-screen frames (the help ladder) two pages to a line, so each frame reads at about 330 px
+  const cols = grid.some((g) => g.cells.some((c) => c.frames && c.frames.length)) ? 2 : Math.max(...grid.map((g) => g.cells.length));
   return `<!doctype html><meta charset="utf-8"><style>
     body{margin:0;padding:12px 16px;background:#f3ece0;font:14px/1.3 Nunito,system-ui,sans-serif;color:#2a1f14;width:1368px}
     header{background:#fff;border:2px solid #2a1f14;border-radius:8px;padding:6px 12px;margin-bottom:8px} h1{font-size:24px;margin:0} header p{margin:2px 0}
@@ -163,6 +171,7 @@ function sheetHtml(el, E, grid, out) {
     .crop img{display:block;max-width:100%;max-height:300px;margin:0 auto;object-fit:contain}
     .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4px} .strip img{width:100%;max-height:90px;object-fit:contain;display:block} .strip small{display:block;text-align:center;font-size:11px;font-weight:700}
     .why{padding:14px 6px;font-weight:800;color:#8a4a1a;font-size:13px}
+    .rungs{display:grid;grid-template-columns:repeat(2,1fr);gap:4px} .rungs img{width:100%;display:block} .rungs small{display:block;text-align:center;font-size:12px;font-weight:800}
     figcaption{font-size:13px;margin-top:3px;text-align:center} figcaption b{font-size:16px;display:block} figcaption span{display:block;color:#6b5a45;font-size:11px}
   </style><header><h1>${esc(el)}: one look in every game?</h1><p>Selector <code>${esc(E.sel)}</code>${E.moves ? " · a moving element: 4 frames 250 ms apart under each crop" : ""} · the game's name under each crop · a page where it is not shown says why</p></header>
   ${grid.map((g) => `<h2>${esc(g.size)}</h2><div class="grid">${g.cells.map(cell).join("")}</div>`).join("\n")}`;

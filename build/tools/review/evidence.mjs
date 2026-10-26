@@ -372,6 +372,9 @@ async function briefJudge(mode) {
     pairs.forEach((x, k) => (x.letter = "ABCDEFGHIJKL"[k] || null));
     const shown = pairs.filter((x) => x.letter);
     const sheetsOut = [];
+    // an earlier draw's sheets go first (a sheet left from a longer row would stand beside the new ones)
+    const stem = `${id}-${mode === "judge" ? "before-after" : "before"}`;
+    for (const f of readdirSync(join(BRIEF.dir, id))) if (new RegExp(`^${stem}(-\\d+)?\\.(png|html)$`).test(f)) rmSync(join(BRIEF.dir, id, f), { force: true });
     // at most four pairs to a sheet (each pair is two pictures side by side)
     for (let k = 0; k < Math.max(1, Math.ceil(shown.length / 4)); k++) {
       const part = shown.slice(k * 4, k * 4 + 4), n = Math.ceil(shown.length / 4);
