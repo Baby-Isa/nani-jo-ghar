@@ -69,3 +69,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-26 20:50 UK · CK-48 judged PASS (chop 1005->381, samosa 1942->419, eye 1751->452 ms). Judge flaw: untapped English on order-card rows ('two onions') since s13-b1 round 2 (against non-negotiable 3) -> added to s13-b1 round 3.
 - 2026-10-26 21:01 UK · Check-in: s13-b1 round 3 and s13-a2 running.
 - 2026-10-26 21:31 UK · Check-in: s13-b1 round 3 committed (every row its left speaker, English on a row only when tapped, one flat samosa, one pop-up look), proving; s13-a2 proving (drag-step finger, contract-42/44, the grown-ups' pop-up in the drivers).
+- 2026-10-26 21:50 UK · s13-a2 finished and merged (8 tasks; contract-34 8 breaks in first launch's #cm-done and #st-next, given to s13-b2; briefpack test fixed); its judge running; s13-b2 launched; s13-b1 round 3 proving. Zafar: publish to main when the sprint is done.
