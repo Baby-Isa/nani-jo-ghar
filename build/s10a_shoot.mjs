@@ -192,7 +192,7 @@ async function day(key, kind = "cook") {
   await page.waitForURL(/lab\.html\?mode=cook&game=chai-tray&level=1/, { timeout: 60000 });
   check(/then=day\.html/.test(page.url()), `handed off to ${page.url().replace(BASE, "")}`);
   await page.waitForFunction(() => /\/playing/.test(String(window.njgTest && njgTest.state())), null, { timeout: 90000 });
-  await page.evaluate(() => import("./js/cook/mount.js").then((m) => { window.__cook = m.Cook.testHook; window.Cook = m.Cook; }));
+  await page.evaluate(() => import("./js/cook/mount.js").then((m) => { (window.njgTest = window.njgTest || {}).cook = m.Cook.testHook; window.Cook = m.Cook; }));
   await sleep(500);
   await rec.state("chai-start");
   const P = new CookPlayer(page, rec, { prefix: "chai-", mode: "fair" });
@@ -214,8 +214,8 @@ async function day(key, kind = "cook") {
   const { ClinicPlayer } = await import("./sandbox/flows/clinic.mjs");
   await page.waitForURL(/clinic\.html\?stage=heal&game=eye&level=1/, { timeout: 60000 });
   check(/then=day\.html/.test(page.url()), `handed off to ${page.url().replace(BASE, "")}`);
-  await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
-  await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.__clinic.Stages.heal.current; }, get result() { return window.__clinic.last; } } }); });
+  await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.ready, null, { timeout: 30000 });
+  await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.njgTest?.clinic.Stages.heal.current; }, get result() { return window.njgTest?.clinic.last; } } }); });
   await sleep(500);
   await rec.state("eye-start");
   const P = new ClinicPlayer(page, rec, { mode: "fair" });
@@ -225,7 +225,7 @@ async function day(key, kind = "cook") {
     seenLabels.push(...(await page.$$eval(".njg-results [data-act]", (as) => as.map((a) => `${a.dataset.act}:${(a.getAttribute("aria-label") || a.getAttribute("title") || a.textContent).trim()}`)).catch(() => [])));
     return ClinicPlayer.prototype.results.call(this);
   };
-  await P.play({ label: "eye-to-day", timeout: 240000, done: () => !!(window.__clinic && window.__clinic.last) }).catch(() => {});
+  await P.play({ label: "eye-to-day", timeout: 240000, done: () => !!(window.njgTest?.clinic && window.njgTest?.clinic.last) }).catch(() => {});
   await page.waitForURL(/\/day\.html/, { timeout: 30000 }).catch(() => {});
   check(seenLabels.some((l) => /^list:.*Next/.test(l)), `the end screen's way on is Next: ${[...new Set(seenLabels)].join(" | ")}`);
   }

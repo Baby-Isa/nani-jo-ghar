@@ -242,7 +242,7 @@ function roundFor(ctx, screen) {
   screen.resetHints();
   screen.trayWrap.classList.add("hidden");
   session.round = { token, plan, env, healWords: [], results: {} };
-  if (G().__clinic) G().__clinic.plan = plan;
+  if (G().njgTest && G().njgTest.clinic) G().njgTest.clinic.plan = plan;
   return session.round;
 }
 
@@ -297,7 +297,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           // the end screen's words: the patient's own review after the send-off; a stage alone, its own words
           const last = ctx.params.last || ctx.params.round == null;
           const words = ctx.params.patient && name === "sendoff" ? P.words(R.data, plan, round.healWords) : ctx.params.patient ? [] : (res.words || []).concat(hl && hl.words ? hl.words : []);
-          if (G().__clinic) G().__clinic.stageResult = res;
+          if (G().njgTest && G().njgTest.clinic) G().njgTest.clinic.stageResult = res;
           if (last) env.fig.destroy();
           // the round had a closed card: the end screen shows the eye badge (D12)
           if (screen.card.closedSeen) ctx.lookable();

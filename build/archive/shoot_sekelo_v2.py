@@ -137,7 +137,7 @@ def run(vp, out, level, speed, guided=False, wrong=False, char=False, skewers=0)
             # the "not quite" path (serve and taste, §14a): the first plate is tasted as wrong
             P.tag += "-wrong"
             page.evaluate("Cook.forceTaste = false")
-        page.evaluate(f"() => {{ __cook.lab('mishkaki-grill', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('mishkaki-grill', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         t_end = []
 

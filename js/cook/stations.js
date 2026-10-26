@@ -902,7 +902,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         let pouring = false;
         let level = 0;
         let loop = null;
-        // where the gauge is (the test hook's box, __cook.gauge(); s04-hooks): the thing being poured
+        // where the gauge is (the test hook's box, njgTest.cook.gauge(); s04-hooks): the thing being poured
         const boxOf = () => {
           const b = obj.getBounds();
           return { x: b.x, y: b.y, w: b.width, h: b.height };

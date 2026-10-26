@@ -42,7 +42,7 @@ try {
   });
   const rec = new Recorder({ flow: "chai-frames", size, dir: out, page });
   const P = new CookPlayer(page, rec, { mode: "fair", speed: 3 });
-  await page.evaluate(() => { __cook.lab("chai-tray", true, { level: 1 }); });
+  await page.evaluate(() => { njgTest.cook.lab("chai-tray", true, { level: 1 }); });
   await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
   await sleep(500);
   let done = false;

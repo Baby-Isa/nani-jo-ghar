@@ -1,4 +1,4 @@
-// Cook: the title, then every station in the Station lab (the hook: __cook.lab(key, guided, {level})), played fair.
+// Cook: the title, then every station in the Station lab (the hook: njgTest.cook.lab(key, guided, {level})), played fair.
 // "fetch" is Nani's pantry. "cook:<recipe>" plays a whole recipe (recipe:<id>), every station in turn.
 import { BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
@@ -44,10 +44,10 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode, speed });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
-      if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
+      if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.njgTest?.cook.coachesSeen && window.njgTest?.cook.coachesSeen());
       // ctx.profile "numbers-known" (SH-13, decision 57): every number word has been heard three times, as after a few plays
       if (ctx.profile === "numbers-known") await page.evaluate(() => { const C = window.Cook; for (let n = 1; n <= 12; n++) for (let i = 0; i < 3; i++) C.markSeen(C.numId(n)); });
-      await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
+      await page.evaluate(([k, l, g]) => { njgTest.cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);
       await rec.state("start");
@@ -64,7 +64,7 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made], tookBack: P.tookBack };
       // #takeback (E14, R4): the station took something back and the round still ran to its end; a station that never
       // offers a take-back is noted (a gap for the regression list), not failed
-      if (mode === "takeback" && !P.tookBack) rec.note("take-back: this station offered none (no __cook.expectation().undo before Done)");
+      if (mode === "takeback" && !P.tookBack) rec.note("take-back: this station offered none (no njgTest.cook.expectation().undo before Done)");
       if (mode === "start-over") await startOver(ctx, { labKey, level, speed });
       ctx.reachedEnd = true;
     },
@@ -83,7 +83,7 @@ async function startOver(ctx, { labKey, level, speed }) {
   await page.click("#t-reset").catch(() => rec.stop("start-over: no \"Start over\" (#t-reset) behind the title's \"?\""));
   await sleep(600);
   await rec.state("started-over");
-  await page.evaluate(([k, l]) => { __cook.lab(k, true, { level: l }); }, [labKey, level]);
+  await page.evaluate(([k, l]) => { njgTest.cook.lab(k, true, { level: l }); }, [labKey, level]);
   await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
   await sleep(500);
   const P = new CookPlayer(page, rec, { mode: "start-over", speed, prefix: "again-" });
@@ -242,7 +242,7 @@ export const cookOpenKitchen = {
       await P.play(() => page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), { timeout: ctx.timeoutMs - 60000, closeKitchenAfter: 2 });
     } finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
     await sleep(500);
-    const served = await page.evaluate("__cook.state().cards.length");
+    const served = await page.evaluate("njgTest.cook.state().cards.length");
     if (served < 2) rec.stop(`open kitchen: only ${served} of 2 customers served before closing`);
     await rec.state("summary");
     ctx.reachedEnd = true;

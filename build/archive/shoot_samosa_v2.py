@@ -130,7 +130,7 @@ def run(vp, out, level, speed, guided=True, wrong=False):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag, wrong=wrong)
-        page.evaluate(f"() => {{ __cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if vp["height"] > vp["width"]:
             time.sleep(2.5)

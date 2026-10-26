@@ -4,7 +4,7 @@
 //   - the players (installHooks): each state a player records (Recorder.state: rec:<name>), Cook's moves (CookPlayer.act: cook:<kind>,
 //     exp:<key>, phase:<phase>, only:<selector> before; cook-done:<kind> after) and the heal games' debug steps (ClinicPlayer.healAct:
 //     heal:<step> before; heal-done:<step> and step:<step> after). These wait for the captures, so the moment is still on screen;
-//   - the page (EVIDENCE_HOOK): njgTest.state() (host:<state>), __clinic.expect() (clinic:<stage>/<kind>), watched selectors
+//   - the page (EVIDENCE_HOOK): njgTest.state() (host:<state>), njgTest.clinic.expect() (clinic:<stage>/<kind>), watched selectors
 //     (visible:<sel>, hidden:<sel>); the contract probe: the shared Lifecycle's log (life:<what>), the request pop-up (life:popup-open,
 //     life:popup-fold), a speech bubble (bubble). These capture as soon as they arrive (tens of ms late).
 // Every capture is checked as it is made (Fable 3): the moment came, the selector matched something visible, a crop is not one flat
@@ -33,7 +33,7 @@ export const EVIDENCE_HOOK = (watch = []) => `(() => {
   const nextRow = () => { const cards = Array.from(document.querySelectorAll(".oc-card")).filter((c) => !c.closest(".njg-rq-card, .njg-rq") && c.getBoundingClientRect().height > 1); for (const c of cards) { const rows = Array.from(c.querySelectorAll(".oc-row")); const i = rows.findIndex((r) => r.classList.contains("next")); if (i >= 0) return cards.indexOf(c) + "-" + i; } return null; };
   setInterval(() => {
     try { const s = window.njgTest && window.njgTest.state ? String(window.njgTest.state()) : null; if (s && s !== host) { host = s; emit("host:" + s); } } catch (e) {}
-    try { const k = window.__clinic && window.__clinic.expect ? window.__clinic.expect() : null; const s = k ? (k.stage || "?") + "/" + (k.kind || "?") : null; if (s && s !== clin) { clin = s; emit("clinic:" + s); } } catch (e) {}
+    try { const k = window.njgTest?.clinic && window.njgTest?.clinic.expect ? window.njgTest?.clinic.expect() : null; const s = k ? (k.stage || "?") + "/" + (k.kind || "?") : null; if (s && s !== clin) { clin = s; emit("clinic:" + s); } } catch (e) {}
     try { const r = nextRow(); if (r && r !== row) { row = r; emit("step:row-" + r); } } catch (e) {}
     for (const sel of WATCH) { let v = false; try { v = Array.from(document.querySelectorAll(sel)).some(vis); } catch (e) {} if (v !== !!on[sel]) { on[sel] = v; emit((v ? "visible:" : "hidden:") + sel); } }
   }, 80);
@@ -57,12 +57,12 @@ const BOXES = `(sel) => {
     return out;
   }
   // hook:<game>.<fn>: a game's own read-only test hook that returns a box, a {box} or a list of them in client px (s04-hooks):
-  // hook:cook.glowing, hook:cook.gauge (__cook), hook:heal.glowing, hook:heal.dropper, hook:heal.soreEye (the heal game's debug)
+  // hook:cook.glowing, hook:cook.gauge (njgTest.cook), hook:heal.glowing, hook:heal.dropper, hook:heal.soreEye (the heal game's debug)
   if (sel.startsWith("hook:")) {
     const m = /^hook:(cook|heal)\\.(\\w+)$/.exec(sel); if (!m) return { error: "bad hook " + sel + " (hook:cook.<fn> or hook:heal.<fn>)" };
     let obj = null;
-    if (m[1] === "cook") obj = window.__cook || (window.Cook && window.Cook.testHook);
-    else { const st = window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal, r = (st && st.current) || (window.__heal && window.__heal.run); obj = r && r.controller && r.controller.debug; }
+    if (m[1] === "cook") obj = window.njgTest?.cook || (window.Cook && window.Cook.testHook);
+    else { const st = window.njgTest?.clinic && window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal, r = (st && st.current) || (window.__heal && window.__heal.run); obj = r && r.controller && r.controller.debug; }
     if (!obj || typeof obj[m[2]] !== "function") return [];
     let v = null; try { v = obj[m[2]](); } catch (e) { return []; }
     return (Array.isArray(v) ? v : v ? [v] : []).map((x) => x && (x.box || x)).filter((b) => b && isFinite(b.left) && isFinite(b.top) && b.width > 0 && b.height > 0)

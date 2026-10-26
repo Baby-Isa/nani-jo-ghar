@@ -77,7 +77,7 @@ try {
       const { ctx, page, errors } = await newPage(browser, size);
       await page.addInitScript(SAY_LOG);
       await page.goto(`${BASE}/clinic.html?${query}&seed=1&quiet=1&fast=1&nonav=1&onboard=0`, { waitUntil: "load" });
-      await page.waitForFunction((boing) => window.__clinic && window.__clinic.ready && document.querySelector(boing ? ".bo-lever, svg" : ".cl-doc-art"), act === "boing", { timeout: 30000 });
+      await page.waitForFunction((boing) => window.njgTest?.clinic && window.njgTest?.clinic.ready && document.querySelector(boing ? ".bo-lever, svg" : ".cl-doc-art"), act === "boing", { timeout: 30000 });
       await sleep(act === "boing" ? 3000 : 2500);
       if (act === "talk" || act === "end") {
         // his first line after the child's tap (to her), or the ailment (said once the stage is played: S.current null)

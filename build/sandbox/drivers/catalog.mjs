@@ -2,7 +2,7 @@
 // plays on (flows/index.mjs flowKind adds them as paths) and the moments it records (lib/moments.mjs adds them to what that
 // path can reach). Pure data: no browser, no imports, so the moment catalogue and the flow index can both read it.
 //
-// A driver plays the game through its own test hooks only (Cook's __cook.expectation(), the clinic's __clinic.expect() and the
+// A driver plays the game through its own test hooks only (Cook's njgTest.cook.expectation(), the clinic's njgTest.clinic.expect() and the
 // heal games' debug.next()/slip(), the shared Lifecycle and RequestPopup, njgTest): never a game file changed. Moments a driver
 // records are either a player state (rec:<name>, a screenshot and lint like every state) or a bare evidence moment
 // (drv:<name>, drivers/index.mjs mark(): nothing recorded, only probes that ask for it capture).

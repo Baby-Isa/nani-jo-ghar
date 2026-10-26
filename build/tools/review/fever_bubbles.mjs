@@ -14,7 +14,7 @@ try {
   const { page } = await newPage(browser, size);
   await page.addInitScript(() => { try { localStorage.setItem("njg-test", "1"); } catch (e) {} });
   await page.goto(`${BASE}/clinic.html?stage=heal&game=fever&level=${level}&seed=${seed}&quiet=1&fast=0&nonav=1&onboard=0`, { waitUntil: "load" });
-  await page.waitForFunction(() => window.Clinic && Clinic.Kit && Clinic.Kit.Voice && window.__clinic && __clinic.Stages && __clinic.Stages.heal.current, null, { timeout: 30000 });
+  await page.waitForFunction(() => window.Clinic && Clinic.Kit && Clinic.Kit.Voice && window.njgTest?.clinic && njgTest.clinic.Stages && njgTest.clinic.Stages.heal.current, null, { timeout: 30000 });
   // every patient line: sampled every 50 ms while it plays
   await page.evaluate(() => {
     const V = Clinic.Kit.Voice;
@@ -53,12 +53,12 @@ try {
   const m = page.mouse;
   const t0 = Date.now();
   while (Date.now() - t0 < 150000) {
-    const a = await page.evaluate(() => { const r = __clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : null; }).catch(() => null);
+    const a = await page.evaluate(() => { const r = njgTest.clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : null; }).catch(() => null);
     if (!a) break;
     if (a.do === "tap") { await m.move(a.x, a.y); await m.down(); await m.up(); await page.waitForTimeout(600); }
     else if (a.do === "button") { const v = page.locator(".cl-go:not(.hidden)"); if (await v.count()) await v.last().click().catch(() => {}); await page.waitForTimeout(600); }
     else await page.waitForTimeout(250);
-    if (await page.evaluate(() => !!__clinic.last || !__clinic.Stages.heal.current)) break;
+    if (await page.evaluate(() => !!njgTest.clinic.last || !njgTest.clinic.Stages.heal.current)) break;
   }
   await page.waitForTimeout(1500);
   const lines = await page.evaluate(() => window.__lines);

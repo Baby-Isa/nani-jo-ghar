@@ -133,7 +133,7 @@ def run(vp, out, level, speed, side="counter"):
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag)
         page.evaluate(f"() => {{ Cook.daarSide = {json.dumps(side)}; Cook.tasteHold = 900; Cook.daarForce = {FORCE or 'null'}; }}")
-        page.evaluate(f"() => {{ __cook.lab('daar', false, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('daar', false, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
         time.sleep(1.0)

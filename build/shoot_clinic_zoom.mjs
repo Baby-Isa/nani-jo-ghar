@@ -47,7 +47,7 @@ for (const g of GAMES) {
     await page.evaluate(() => {
       window.__zoomAnims.forEach((a) => a.finish());
       window.__noPause = true;
-      window.__clinic.finishHeal();
+      window.njgTest?.clinic.finishHeal();
     });
     for (const ms of [150, 450, 1400]) {
       await sleep(ms === 150 ? 150 : ms === 450 ? 300 : 950);

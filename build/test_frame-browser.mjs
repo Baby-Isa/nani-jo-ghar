@@ -69,7 +69,7 @@ test("R6: a busy round's sidebar (three people at chai, level 3) fits a tablet's
   for (const size of ["1024x768", "1180x820"]) {
     const a = await open(size, "cook.html?speed=3");
     await a.page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
-    await a.page.evaluate(() => { __cook.lab("chai-tray", true, { level: 3 }); });
+    await a.page.evaluate(() => { njgTest.cook.lab("chai-tray", true, { level: 3 }); });
     await a.page.waitForFunction(() => document.querySelectorAll("#mission .oc-card").length >= 3, null, { timeout: 20000 });
     await sleep(800);
     const m = await a.page.evaluate(() => {

@@ -2003,7 +2003,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- test hooks ----------------
-   * C4: Cook's own test hook. cook.html (Cook's page, the sandbox's way in) publishes it as window.__cook; mounted in
+   * C4: Cook's own test hook. cook.html (Cook's page, the sandbox's way in) publishes it as window.njgTest.cook; mounted in
    * the game host, the host's window.njgTest is the only hook (target-model § 8.1). */
   Cook.testHook = {
     /** Every station's first-time coach counts as seen, before a round starts (as after its first play): the sandbox's

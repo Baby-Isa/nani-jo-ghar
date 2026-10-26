@@ -1,7 +1,7 @@
 // The contract probe (decision 75, rule C19): what a child sees and hears, sampled on screen, for the contract checks
 // (lib/contract.mjs). Injected into every page (addInitScript) next to the sound hook; it changes no game file and reads
 // no game code: it looks at the DOM, the Phaser display list, the drawn pixels' sources and the games' own test hooks
-// (__cook, __clinic, njgTest: the same calls the players use), and reports changes through window.__njgLog as
+// (njgTest.cook, njgTest.clinic, njgTest: the same calls the players use), and reports changes through window.__njgLog as
 // {type: "c", k: <kind>, ...}. Node keeps them with the sound events (one timeline, one clock).
 //
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
@@ -79,10 +79,10 @@ export const CONTRACT_HOOK = `(() => {
   // ---- what the game expects now (its own test hooks; the players read the same) ----
   const exp = () => {
     const o = {};
-    const ce = safe(() => window.__cook && window.__cook.expectation && window.__cook.expectation());
+    const ce = safe(() => window.njgTest?.cook && window.njgTest?.cook.expectation && window.njgTest?.cook.expectation());
     if (ce) o.cook = { kind: ce.kind, selector: ce.selector || null, intro: !!ce.intro };
-    const k = safe(() => window.__clinic && window.__clinic.expect && window.__clinic.expect());
-    if (window.__clinic) o.clinic = k ? { kind: k.kind, stage: k.stage || null, target: k.target || null } : null;
+    const k = safe(() => window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect());
+    if (window.njgTest?.clinic) o.clinic = k ? { kind: k.kind, stage: k.stage || null, target: k.target || null } : null;
     const h = safe(() => window.njgTest && window.njgTest.state && String(window.njgTest.state()));
     if (h) o.host = h;
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
@@ -101,7 +101,7 @@ export const CONTRACT_HOOK = `(() => {
     return o;
   };
   // the heal game running (the clinic's heal stage, or the heal host lab's)
-  const healRun = () => safe(() => (window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal && window.__clinic.Stages.heal.current) || (window.Clinic && window.Clinic.HealHost && window.Clinic.HealHost.current) || null);
+  const healRun = () => safe(() => (window.njgTest?.clinic && window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal && window.njgTest?.clinic.Stages.heal.current) || (window.Clinic && window.Clinic.HealHost && window.Clinic.HealHost.current) || null);
   // the heal game's own count, as it reports it to its host (ctx.tally(item, n, {of, capped, next})): read-only, the call
   // goes through unchanged; a new step (ctx.card.now) clears it
   const watchTally = (run) => safe(() => {

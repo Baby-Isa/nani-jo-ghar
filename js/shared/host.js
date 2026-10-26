@@ -661,7 +661,12 @@ export function createHost(opts = {}) {
     round: () => now.round,
     result: () => now.result,
   };
-  if (opts.hook && typeof window !== "undefined") window.njgTest = host.test;
+  if (opts.hook && typeof window !== "undefined") {
+    // the one hook (S13): a page's own fields set before the host (njgTest.clinic, njgTest.cook, njgTest.loading) are kept
+    const was = window.njgTest;
+    window.njgTest = host.test;
+    if (was && was !== host.test) for (const k of ["clinic", "cook", "loading"]) if (was[k] != null && host.test[k] == null) host.test[k] = was[k];
+  }
   return host;
 }
 

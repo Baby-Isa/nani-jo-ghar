@@ -51,7 +51,7 @@ def run(vp, out, station, level, speed, secs, every, guided):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, f"{station}-{vp['name']}-l{level}", every)
-        page.evaluate(f"() => {{ __cook.lab('{station}', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('{station}', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         time.sleep(1.6)
         P.snap("popup")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=15000)

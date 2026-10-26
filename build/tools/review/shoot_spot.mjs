@@ -17,7 +17,7 @@ try {
       await page.evaluate(() => localStorage.clear());
       await page.goto(`${BASE}/cook.html?speed=1`, { waitUntil: "load" });
       await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
-      await page.evaluate(() => { __cook.lab("chai-tray", true, { level: 1 }); });
+      await page.evaluate(() => { njgTest.cook.lab("chai-tray", true, { level: 1 }); });
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await page.waitForSelector(".njg-spot.on", { timeout: 40000 });
       await page.waitForFunction(() => (() => { const b = document.querySelector("[data-judge=yes]"); return !document.querySelector(".njg-onboard:not(.njg-spot)") && !(b && b.style.translate); })(), null, { timeout: 20000 }).catch(() => {}); await page.waitForTimeout(800);
@@ -31,17 +31,17 @@ try {
       await page.addInitScript(() => { try { localStorage.setItem("njg-test", "1"); } catch (e) {} });
       await page.goto(`${BASE}/clinic.html?stage=heal&game=eye&level=1&speed=1`, { waitUntil: "load" });
       // play the drops with the game's own driver until the first card is up, then leave it alone
-      await page.waitForFunction(() => window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal.current && window.__clinic.Stages.heal.current.controller, null, { timeout: 30000 });
+      await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal.current && window.njgTest?.clinic.Stages.heal.current.controller, null, { timeout: 30000 });
       const t0 = Date.now();
       while (Date.now() - t0 < 80000) {
-        const a = await page.evaluate(() => { const c = window.__clinic.Stages.heal.current.controller; return c.debug.card ? "card" : c.debug.next(); });
+        const a = await page.evaluate(() => { const c = window.njgTest?.clinic.Stages.heal.current.controller; return c.debug.card ? "card" : c.debug.next(); });
         if (a === "card") break;
         if (a && a.do === "tap") { await page.mouse.move(a.x, a.y); await page.mouse.down(); await page.mouse.up(); }
         await page.waitForTimeout(400);
       }
       await page.waitForSelector(".njg-spot.on", { timeout: 40000 });
       await page.waitForFunction(() => (() => { const b = document.querySelector("[data-judge=yes]"); return !document.querySelector(".njg-onboard:not(.njg-spot)") && !(b && b.style.translate); })(), null, { timeout: 20000 }).catch(() => {}); await page.waitForTimeout(800);
-      const info = await page.evaluate(() => { const l = window.__clinic.Stages.heal.current.controller.debug.layout(); return { mic: !!l.mic, spot: document.querySelectorAll(".njg-spot .ob-holes rect").length }; });
+      const info = await page.evaluate(() => { const l = window.njgTest?.clinic.Stages.heal.current.controller.debug.layout(); return { mic: !!l.mic, spot: document.querySelectorAll(".njg-spot .ob-holes rect").length }; });
       console.log("eye layout", size, JSON.stringify(info));
       await page.screenshot({ path: join(out, `spot-eye-${size}.png`) });
       await page.close();

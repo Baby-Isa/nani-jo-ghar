@@ -155,7 +155,7 @@ export const negate = (e, r) => (e.not && r.ok != null ? { ...r, ok: !r.ok, why:
 // ---------- moments ----------
 // A moment name is "<source>:<name>": life:request|stage-start|stage-end|advance|results|popup-fold|popup-open (the shared
 // Lifecycle and the request pop-up), rec:<state> (each state a sandbox player records), host:<njgTest.state()>, cook:<kind> /
-// cook-done:<kind> (just before / after the Cook player does what __cook.expectation() asked), exp:<key>, phase:<phase>,
+// cook-done:<kind> (just before / after the Cook player does what njgTest.cook.expectation() asked), exp:<key>, phase:<phase>,
 // only:<selector> (that expectation's key, phase, the one click left), clinic:<stage>/<kind>, heal:<step> / heal-done:<step> /
 // step:<step> (before / after / after: a heal game's debug step, its `what`, else its `do`), visible:<selector> (each time it turns
 // visible), bubble (a speech bubble shows), page:start, page:end. `at` matches when its words (split on - / :) are a run of the

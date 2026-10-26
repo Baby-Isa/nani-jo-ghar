@@ -23,7 +23,7 @@ try {
   console.log("title:", JSON.stringify(core));
   await rec.state("title");
   const P = new CookPlayer(page, rec, { mode: "fair" });
-  await page.evaluate((k) => { __cook.lab(k, true, { level: 1 }); }, key);
+  await page.evaluate((k) => { njgTest.cook.lab(k, true, { level: 1 }); }, key);
   await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
   await P.play(() => page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), { timeout: 240000 });
   await rec.state("end");

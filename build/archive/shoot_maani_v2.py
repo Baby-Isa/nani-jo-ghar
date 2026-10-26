@@ -99,7 +99,7 @@ class Shooter(T.Player):
                 self.snap("tawa-raw")
                 t0 = time.time()
                 while time.time() - t0 < 40:
-                    cur = p.evaluate("__cook.expectation()")
+                    cur = p.evaluate("njgTest.cook.expectation()")
                     if cur and cur.get("key") == "tawa-2":
                         break
                     time.sleep(0.05)
@@ -172,7 +172,7 @@ def run(vp, out, level, speed, wrong):
 
         page.mouse.move = move
         page.evaluate("() => { Cook.tasteHold = 900; }")
-        page.evaluate(f"() => {{ __cook.lab('maani-line', false, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('maani-line', false, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
         time.sleep(1.0)

@@ -94,18 +94,18 @@ const PAGES = [
   { id: "cook", url: "/cook.html?speed=3", ready: "!!document.querySelector('#panel .title-wrap')", allow: () => cookShared() },
   ...STATIONS.map((k) => ({
     id: `cook:${k}`, url: "/cook.html?speed=3", ready: "!!document.querySelector('#panel .title-wrap')",
-    then: `void __cook.lab(${JSON.stringify(k)}, true, { level: 1 })`,
-    ready2: "(() => { const e = __cook.expectation && __cook.expectation(); return !!(__cook.state().view && e && e.kind && e.kind !== 'click' && e.kind !== 'wait'); })()",
+    then: `void njgTest.cook.lab(${JSON.stringify(k)}, true, { level: 1 })`,
+    ready2: "(() => { const e = njgTest.cook.expectation && njgTest.cook.expectation(); return !!(njgTest.cook.state().view && e && e.kind && e.kind !== 'click' && e.kind !== 'wait'); })()",
     allow: () => cookShared().concat(cookStation(k)), station: k,
   })),
   {
-    id: "clinic:morning", url: "/clinic.html?morning=1&session=2&nosave=1&quiet=1&seed=1&fast=1", ready: "window.__clinic && window.__clinic.ready && !!window.__clinic.expect()",
+    id: "clinic:morning", url: "/clinic.html?morning=1&session=2&nosave=1&quiet=1&seed=1&fast=1", ready: "window.njgTest?.clinic && window.njgTest?.clinic.ready && !!window.njgTest?.clinic.expect()",
     allow: (pg) => clinicAssets.shared.concat(...(pg.games || []).map(gameAssets)), code: (pg) => pg.games || [],
     after: async (page, pg) => (pg.games = await page.evaluate(() => ((Clinic.Run.morningPlan || {}).patients || []).slice(0, 2).map((p) => p.stages && p.stages.heal && p.stages.heal.game).filter(Boolean))),
   },
   ...CLINIC.map((g) => ({
     id: `clinic:${g}`, url: `/clinic.html?stage=heal&game=${g}&level=1&quiet=1&seed=1&fast=1`,
-    ready: "window.__clinic && window.__clinic.ready && window.__clinic.Stages.heal.current && !!window.__clinic.Stages.heal.current.controller",
+    ready: "window.njgTest?.clinic && window.njgTest?.clinic.ready && window.njgTest?.clinic.Stages.heal.current && !!window.njgTest?.clinic.Stages.heal.current.controller",
     allow: () => clinicAssets.shared.concat(gameAssets(g)), code: () => [g],
   })),
   // checks-to-build 15: the first launch, the hub and every mode's page (no manifest yet: held to the oversize rule and page errors)

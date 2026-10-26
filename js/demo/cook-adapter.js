@@ -5,7 +5,7 @@
  *
  * How: Cook is a Phaser page with its own DOM, so the adapter runs the real cook.html in a frame filling the
  * screen (screen: "own"), waits for its Station lab, and asks it for one station through Cook's own test hook
- * (__cook.lab, the same call the sandbox uses). Cook's own end-of-round pop-up is caught instead of shown: the
+ * (njgTest.cook.lab, the same call the sandbox uses). Cook's own end-of-round pop-up is caught instead of shown: the
  * host shows the shared end screen ONCE, for the whole plan, and pays through the core. What Cook would have
  * shown (its ticks, hints, time and word review) becomes this stage's result.
  *
@@ -51,7 +51,7 @@ export function cookLab(key, { id = key.replace(/[^a-z0-9-]/g, "-"), gestures = 
         frame,
         async start() {
           ctx.test.state("loading");
-          await until(() => win().__cook && win().Results && win().document.querySelector("#panel h1"));
+          await until(() => win().njgTest?.cook && win().Results && win().document.querySelector("#panel h1"));
           const w = win();
           // Cook's end-of-round pop-up: caught, not shown (the host shows the one end screen)
           let round = null;
@@ -62,7 +62,7 @@ export function cookLab(key, { id = key.replace(/[^a-z0-9-]/g, "-"), gestures = 
             return p;
           };
           ctx.test.state("playing");
-          await w.__cook.lab(key, ctx.params.guided !== false, { level: ctx.level });
+          await w.njgTest?.cook.lab(key, ctx.params.guided !== false, { level: ctx.level });
           if (stopped) return;
           const r = round || { right: 0, total: 0, hints: 0, words: [] };
           const words = (r.words || []).map((x) => ({ id: x.id, kutchi: x.kutchi, english: x.english, right: x.right }));
@@ -79,7 +79,7 @@ export function cookLab(key, { id = key.replace(/[^a-z0-9-]/g, "-"), gestures = 
         /** Cook's own expectation, in this page's coordinates. */
         expect() {
           try {
-            const e = win().__cook.expectation();
+            const e = win().njgTest?.cook.expectation();
             if (!e) return null;
             const b = frame.getBoundingClientRect();
             const out = Object.assign({ in: "cook" }, e);

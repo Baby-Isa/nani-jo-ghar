@@ -2,7 +2,7 @@
 /*
  * R4, C4: Cook as a mode plug-in, played through lab.html and the one game host (js/cook/main.js), in a real browser.
  * C4: the host mounts Cook directly in its element (no frame); the test hands Cook's own hook to the sandbox's player
- * (window.__cook, window.Cook: the lab page has neither, the host's njgTest is its hook) and checks no iframe is used.
+ * (window.njgTest?.cook, window.Cook: the lab page has neither, the host's njgTest is its hook) and checks no iframe is used.
  *   1. lab: the pantry (fetch) alone -> the host's one end screen -> the list
  *   2. lab: the story plan (Nani's pantry for chai, then a customer's chai) -> one end screen for the plan
  *   3. free play: the open kitchen's first customer -> the end screen pays -> Next brings the next customer
@@ -35,7 +35,7 @@ async function playStage(page, rec, game, prefix) {
   if (!(await state(page)).includes(`${game}/playing`)) return false;
   check((await page.$$("iframe")).length === 0, `${game}: no iframe (Cook is mounted in the host's element)`);
   // the sandbox's player reads Cook's own hook: the test hands it over (the same module the host imported)
-  await page.evaluate(() => import("./js/cook/mount.js").then((m) => ((window.__cook = m.Cook.testHook), (window.Cook = m.Cook))));
+  await page.evaluate(() => import("./js/cook/mount.js").then((m) => (((window.njgTest = window.njgTest || {}).cook = m.Cook.testHook), (window.Cook = m.Cook))));
   await sleep(500);
   await rec.state(`${prefix}start`, { settle: 300 });
   const P = new CookPlayer(page, rec, { prefix });

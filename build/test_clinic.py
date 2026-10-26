@@ -2,7 +2,7 @@
 """Browser test for the clinic's pipeline (clinic.html; docs/archive/clinic/clinic-design-v1.md).
 
 Plays lab entries through REAL pointer events at screen coordinates, read
-from window.__clinic.expect() (what the current stage wants next): taps on the
+from window.njgTest?.clinic.expect() (what the current stage wants next): taps on the
 bench, the pulsing parts and the Found it / Next buttons, points on the
 patient's body, taps on the belt as the right dish passes, the Done/next
 buttons, the face cards, the pills of the speaking moments, and the shared
@@ -11,7 +11,7 @@ point is the one being tapped (nothing covers it). With --mistakes it makes
 one deliberate wrong tap per stage so the gentle-correction and no-verdict
 paths run. The healing games are played by their own tests (the heal
 agents' labs); here the heal stage is ended the way a fair player would
-(window.__clinic.finishHeal()) unless --play-cut and the game is cut.
+(window.njgTest?.clinic.finishHeal()) unless --play-cut and the game is cut.
 
 Usage:
   python3 build/test_clinic.py                              # every stage at levels 1-3, a patient per level, the first-ever morning; laptop
@@ -129,11 +129,11 @@ class Player:
                 return True
         return False
 
-    def play(self, label, done_js="() => !!(window.__clinic && window.__clinic.last)", timeout=240):
+    def play(self, label, done_js="() => !!(window.njgTest?.clinic && window.njgTest?.clinic.last)", timeout=240):
         t0 = time.time()
         last_stage = None
         while time.time() - t0 < timeout:
-            errs = self.ev("() => window.__clinic ? window.__clinic.errors : []")
+            errs = self.ev("() => window.njgTest?.clinic ? window.njgTest?.clinic.errors : []")
             if errs:
                 raise AssertionError(f"{label}: page errors {errs}")
             if self.ev(done_js):
@@ -149,7 +149,7 @@ class Player:
             # onboarding overlay: tap the light (the ghost finger's target)
             if self.centre(".ob-root, .njg-ob, .ob-layer"):
                 pass
-            e = self.ev("() => window.__clinic && window.__clinic.expect ? window.__clinic.expect() : null")
+            e = self.ev("() => window.njgTest?.clinic && window.njgTest?.clinic.expect ? window.njgTest?.clinic.expect() : null")
             stage = e and e.get("stage")
             if stage and stage != last_stage:
                 last_stage = stage
@@ -197,7 +197,7 @@ class Player:
                     pass  # the reference game's own driver lives in its lab test
                 time.sleep(0.4)
                 self.shot(f"{label}-heal-{e.get('game')}")
-                self.ev("() => window.__clinic.finishHeal()")
+                self.ev("() => window.njgTest?.clinic.finishHeal()")
                 time.sleep(0.4)
             elif k == "button":
                 c = self.centre(".cl-go")
@@ -206,7 +206,7 @@ class Player:
                 time.sleep(0.2)
             else:
                 time.sleep(0.1)
-        raise AssertionError(f"{label}: timed out (last expect {self.ev('() => window.__clinic.expect()')})")
+        raise AssertionError(f"{label}: timed out (last expect {self.ev('() => window.njgTest?.clinic.expect()')})")
 
     def tap_say(self, choice):
         # the shared Say panel (pills), or the clinic's own pills
@@ -244,18 +244,18 @@ def help_case(p, vp_name, args):
     name = "heal-fever-help"
     try:
         page.goto(f"http://127.0.0.1:{PORT}/clinic.html?stage=heal&game=fever&level=1&seed={args.seed}&quiet=1&fast=1&onboard=1")
-        page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
-        page.wait_for_function("() => { const r = window.__clinic.Stages.heal.current; return !!(r && r.controller); }", timeout=15000)
-        tray = page.evaluate("() => window.__clinic.Stages.heal.current.ctx.tray.map((t) => t.id)")
+        page.wait_for_function("() => window.njgTest?.clinic && window.njgTest?.clinic.ready", timeout=30000)
+        page.wait_for_function("() => { const r = window.njgTest?.clinic.Stages.heal.current; return !!(r && r.controller); }", timeout=15000)
+        tray = page.evaluate("() => window.njgTest?.clinic.Stages.heal.current.ctx.tray.map((t) => t.id)")
         if "thermometer" not in tray:
             raise AssertionError(f"the fever's tray has no thermometer: {tray}")
-        has_debug = page.evaluate("() => !!window.__clinic.Stages.heal.current.controller.debug")
+        has_debug = page.evaluate("() => !!window.njgTest?.clinic.Stages.heal.current.controller.debug")
         pl = heal_play.Play(page, "fever", 1, vp_name, args.seed, None)
         t0 = time.time()
         cues = []
         seen_ghost = False
         if has_debug:
-            while not page.evaluate("() => !!window.__clinic.last"):
+            while not page.evaluate("() => !!window.njgTest?.clinic.last"):
                 if time.time() - t0 > 90:
                     raise AssertionError("timed out playing fever with the help on")
                 # 13g: the help is the ghost finger on the shared kit: no words in it, and no device voice
@@ -265,8 +265,8 @@ def help_case(p, vp_name, args):
                     txt = (ob.inner_text() or "").strip()
                     if txt:
                         raise AssertionError(f"the first-time help shows words: {txt[:60]!r}")
-                a = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r ? r.controller.debug.next() : {do: 'wait'}; }")
-                c = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug.cues ? r.controller.debug.cues : null; }")
+                a = page.evaluate("() => { const r = window.njgTest?.clinic.Stages.heal.current; return r ? r.controller.debug.next() : {do: 'wait'}; }")
+                c = page.evaluate("() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug.cues ? r.controller.debug.cues : null; }")
                 if c is not None:
                     cues = c
                 pl.act(a)
@@ -276,7 +276,7 @@ def help_case(p, vp_name, args):
                 raise AssertionError("the first-time help never showed the ghost finger (the shared onboarding kit)")
         else:
             raise AssertionError("the fever game has no debug driver")
-        last = page.evaluate("() => { const l = window.__clinic.last; return l && l.heal ? {right: l.heal.right, total: l.heal.total} : null; }")
+        last = page.evaluate("() => { const l = window.njgTest?.clinic.last; return l && l.heal ? {right: l.heal.right, total: l.heal.total} : null; }")
         bad = [l for l in logs if "PAGEERROR" in l]
         if not last or last["right"] != last["total"]:
             raise AssertionError(f"not all right playing fair: {last}")
@@ -302,11 +302,11 @@ def run_case(p, vp_name, case, args):
     page.on("pageerror", lambda e: logs.append(f"PAGEERROR: {e}"))
     q = case["q"] + "&quiet=1&fast=1" + ("" if case.get("onboard") else "&onboard=0")
     page.goto(f"http://127.0.0.1:{PORT}/clinic.html?{q}")
-    page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
+    page.wait_for_function("() => window.njgTest?.clinic && window.njgTest?.clinic.ready", timeout=30000)
     pl = Player(page, vp, args.mistakes, os.path.join(SHOTS, vp_name), args.play_cut)
     try:
-        secs = pl.play(case["name"], case.get("done", "() => !!(window.__clinic && window.__clinic.last)"))
-        last = page.evaluate("() => { const l = window.__clinic.last; if (!l) return null; if (l.outs) return {outs: l.outs.map((o) => ({who: o.plan.kind, ail: o.plan.ailment, right: o.right, total: o.total}))}; if (l.rows) return {rows: l.rows.map((r) => [r.id, r.ok, r.tested])}; return {right: l.right, total: l.total}; }")
+        secs = pl.play(case["name"], case.get("done", "() => !!(window.njgTest?.clinic && window.njgTest?.clinic.last)"))
+        last = page.evaluate("() => { const l = window.njgTest?.clinic.last; if (!l) return null; if (l.outs) return {outs: l.outs.map((o) => ({who: o.plan.kind, ail: o.plan.ailment, right: o.right, total: o.total}))}; if (l.rows) return {rows: l.rows.map((r) => [r.id, r.ok, r.tested])}; return {right: l.right, total: l.total}; }")
         bad = [l for l in logs if "PAGEERROR" in l or ("error" in l and "Failed to load resource" not in l)]
         pl.shot(f"{case['name']}-end")
         status = "ok" if not bad else "console errors"
@@ -353,7 +353,7 @@ def main():
     for L in (1, 2, 3):
         cases.append({"name": f"patient-L{L}", "q": f"patient=1&level={L}&seed={s}&results=1"})
     sess = args.session or "1"
-    cases.append({"name": f"morning-s{sess}", "q": f"morning=1&session={sess}&seed={s}&nosave=1", "onboard": sess == "1", "done": "() => !!(window.__clinic && window.__clinic.last && window.__clinic.last.outs)"})
+    cases.append({"name": f"morning-s{sess}", "q": f"morning=1&session={sess}&seed={s}&nosave=1", "onboard": sess == "1", "done": "() => !!(window.njgTest?.clinic && window.njgTest?.clinic.last && window.njgTest?.clinic.last.outs)"})
     if args.only:
         cases = [c for c in cases if args.only in c["name"]]
     start_server()

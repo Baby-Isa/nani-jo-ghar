@@ -87,11 +87,11 @@ STATES = [
 def settle(page, kind_wanted=None, timeout=20):
     t0 = time.time()
     while time.time() - t0 < timeout:
-        e = page.evaluate("() => window.__clinic && window.__clinic.expect ? window.__clinic.expect() : null")
+        e = page.evaluate("() => window.njgTest?.clinic && window.njgTest?.clinic.expect ? window.njgTest?.clinic.expect() : null")
         if e and e.get("kind") not in (None, "wait") and (not kind_wanted or e.get("kind") in kind_wanted):
             return e
         time.sleep(0.15)
-    return page.evaluate("() => window.__clinic.expect()")
+    return page.evaluate("() => window.njgTest?.clinic.expect()")
 
 
 def tap(page, sel):
@@ -123,7 +123,7 @@ def main():
                 onb = "" if "onboard=1" in q else "&onboard=0"
                 fast = "" if act in ("cue", "help") else "&fast=1"
                 page.goto(f"http://127.0.0.1:{PORT}/clinic.html?lab=1&{q}&seed={a.seed}&quiet=1{fast}{onb}&results=0&fresh=1")
-                page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
+                page.wait_for_function("() => window.njgTest?.clinic && window.njgTest?.clinic.ready", timeout=30000)
                 # the lab's own chrome off: the shot is what a child sees
                 page.add_style_tag(content=".cl-lab-bar, .cl-lab-out { display: none !important; }")
                 e = settle(page)
@@ -133,7 +133,7 @@ def main():
                     elif e.get("kind") == "point":
                         page.mouse.click(e["x"], e["y"])
                     time.sleep(0.5)
-                    e2 = page.evaluate("() => window.__clinic.expect()")
+                    e2 = page.evaluate("() => window.njgTest?.clinic.expect()")
                     if name.startswith("D1") and e2 and e2.get("kind") == "tap":
                         pass
                     time.sleep(0.4)
@@ -144,7 +144,7 @@ def main():
                     time.sleep(1.2)
                 elif act == "tray":
                     for _ in range(40):
-                        e = page.evaluate("() => window.__clinic.expect()")
+                        e = page.evaluate("() => window.njgTest?.clinic.expect()")
                         if e and e.get("kind") == "belt":
                             c = page.evaluate("(s) => { const e = document.querySelector(s); if (!e) return null; const r = e.getBoundingClientRect(); return {x: r.left + r.width/2, y: r.top + r.height/2}; }", e["target"])
                             if c and 40 < c["x"] < w * 0.8:
@@ -155,7 +155,7 @@ def main():
                     time.sleep(0.3)
                 elif act == "bye":
                     for _ in range(60):
-                        e = page.evaluate("() => window.__clinic.expect()")
+                        e = page.evaluate("() => window.njgTest?.clinic.expect()")
                         if e and e.get("kind") == "tap":
                             tap(page, e["target"])
                         elif e and e.get("kind") == "say":
@@ -165,7 +165,7 @@ def main():
                 elif act == "extra":
                     # a not-happy answer at level 1: the right card, then the one more thing appears by the doctor
                     for _ in range(40):
-                        e = page.evaluate("() => window.__clinic.expect()")
+                        e = page.evaluate("() => window.njgTest?.clinic.expect()")
                         if e and e.get("kind") == "tap" and "cl-extra" in e.get("target", ""):
                             break
                         if e and e.get("kind") == "tap":

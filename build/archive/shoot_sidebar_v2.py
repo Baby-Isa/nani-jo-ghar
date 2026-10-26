@@ -84,7 +84,7 @@ def side_text(page):
 
 
 def lab(page, key, level):
-    page.evaluate(f"() => {{ __cook.lab('{key}', false, {{ level: {level} }}); }}")
+    page.evaluate(f"() => {{ njgTest.cook.lab('{key}', false, {{ level: {level} }}); }}")
     page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
 
 
