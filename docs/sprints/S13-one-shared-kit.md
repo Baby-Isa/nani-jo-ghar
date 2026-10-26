@@ -38,6 +38,7 @@ Answer:
 
 ## Also in this sprint (small, from Zafar)
 - **SH-110, reopened 26 Oct:** a card is never a memory test. Items are written in Kutchi when the order first comes; any blanked row has a clear speaker at its start that plays the word without penalty. This is the card component's first job in S13-B, if Sprint 12 didn't finish it.
+- **ART-08:** one shared face-circle component, so every place shows the same face size (S12's judge: popup, card and bubble still differ).
 - **The FC2 art block:** the face circles' moods and mouths. And CHT-16: the chop background.
 
 ## Outcome
