@@ -63,7 +63,8 @@ for (const el of elems) {
     // sel "screen": the whole screen (the help ladder); every: N: a frame each time the moment comes, up to N (each rung)
     const capture = cell.sel === "screen" ? ["shot"] : [`crop:${cell.sel}`, ...(E.moves ? [`strip:${cell.sel}:4x250`] : []), ...(E.dom ? [`dom:${cell.sel}`] : [])];
     cell.every = pl.every || 0;
-    spec[cell.id] = [{ flow: cell.flow, at: pl.every ? `every:${cell.at}` : cell.at, ...(pl.every ? { max: pl.every } : {}), sizes: SIZES_WANTED, capture, delay: pl.delay || 0, ...(pl.profile ? { profile: pl.profile } : {}), note: `${el} on ${pg}` }];
+    const times = pl.every || pl.tries || 0; // every: a frame each time; tries: the first time the crop worked
+    spec[cell.id] = [{ flow: cell.flow, at: times ? `every:${cell.at}` : cell.at, ...(times ? { max: times } : {}), sizes: SIZES_WANTED, capture, delay: pl.delay || 0, ...(pl.profile ? { profile: pl.profile } : {}), note: `${el} on ${pg}` }];
   }
 }
 const norm = S.normalizeSpec(spec, ctx);
@@ -115,6 +116,10 @@ if (!a.has("redraw") && existsSync(dataDir)) for (const f of readdirSync(dataDir
 if (a.val("from") && !a.has("redraw") && !existsSync(dataDir)) die(`The captures of ${runId} are gone (${rel(dataDir)}): redraw a sheet from its own folder with --redraw, or play again.`);
 const playedCells = a.val("from") && existsSync(join(runDir, "cells.json")) ? JSON.parse(readFileSync(join(runDir, "cells.json"), "utf8")) : cells;
 const cutPng = (file, box) => { const img = decodePng(readFileSync(file)); const x0 = Math.max(0, Math.min(img.w - 2, Math.round(box.x))), y0 = Math.max(0, Math.min(img.h - 2, Math.round(box.y))); const w = Math.max(2, Math.min(img.w - x0, Math.round(box.width))), h = Math.max(2, Math.min(img.h - y0, Math.round(box.height))); const data = Buffer.alloc(w * h * 4); for (let y = 0; y < h; y++) img.data.copy(data, y * w * 4, ((y0 + y) * img.w + x0) * 4, ((y0 + y) * img.w + x0 + w) * 4); return encodePng({ w, h, data }); };
+// two PNGs of one size showing the same picture (mean channel change under 3 of 255)
+const sameAs = (a, b) => { const A = decodePng(a), B = decodePng(b); if (A.w !== B.w || A.h !== B.h) return false; let d = 0, n = 0; for (let i = 0; i < A.w * A.h; i += 3) { const o = i * 4; d += Math.abs(A.data[o] - B.data[o]) + Math.abs(A.data[o + 1] - B.data[o + 1]) + Math.abs(A.data[o + 2] - B.data[o + 2]); n++; } return d / n / 3 < 3; };
+// a crop centred in a W x H box on the sheet's plain ground, 1:1
+const padPng = (buf, W, H) => { const img = decodePng(buf), w = Math.max(img.w, Math.round(W)), h = Math.max(img.h, Math.round(H)), data = Buffer.alloc(w * h * 4); for (let i = 0; i < w * h; i++) { data[i * 4] = 243; data[i * 4 + 1] = 236; data[i * 4 + 2] = 224; data[i * 4 + 3] = 255; } const x0 = Math.floor((w - img.w) / 2), y0 = Math.floor((h - img.h) / 2); for (let y = 0; y < img.h; y++) img.data.copy(data, ((y0 + y) * w + x0) * 4, y * img.w * 4, (y + 1) * img.w * 4); return encodePng({ w, h, data }); };
 const motionOf = (files) => { try { return stripMotion(files.map((f) => decodePng(readFileSync(f)))); } catch (e) { return { moving: true, note: "" }; } };
 const { startServer, launch } = await import("../../sandbox/lib/env.mjs");
 const { htmlToPng, shotUrl: rawUrl } = await import("../../sandbox/lib/sheets.mjs");
@@ -147,7 +152,7 @@ for (const el of elems) {
             r.hits.forEach((h, k) => { const cap = h.captures.find((x) => !x.fail && (x.kind === "shot" || x.kind === "crop") && x.files[0]); if (!cap) return; const f = `${slugOf(c.page)}-${size}-${k + 1}.png`; copyFileSync(join(r.dir, cap.files[0]), join(out, f)); cell.frames.push({ file: f, label: `${h.name.replace(/^rec:/, "")} · ${(h.t / 1000).toFixed(1)} s` }); });
             if (cell.frames.length) { cell.crop = cell.frames[0].file; cell.when = `${cell.frames.length} frames`; } else cell.why = `no frame: ${((r.tool || [])[0] || "nothing captured").slice(0, 200)}`;
           } else {
-            const h = r.hits[0], dir = r.dir;
+            const h = r.hits.find((x) => x.captures.some((c) => c.kind === "crop" && !c.fail)) || r.hits[0], dir = r.dir; // (tries: the first time its crop worked)
             for (const cap of h.captures) {
               if (cap.fail) { cell.why = cell.why || `${cap.raw}: ${cap.fail}`; continue; }
               if (cap.kind === "crop" && cap.files[0]) { cell.src = join(dir, cap.files[0]); cell.box = cap.box; cell.room = h.room ? join(dir, h.room) : null; cell.crop = `${slugOf(c.page)}-${size}-crop.png`; }
@@ -165,13 +170,17 @@ for (const el of elems) {
         row.push(cell);
       }
       // the same box for every game at this size: as big as the largest element's, round each element's centre, from its screen
-      const boxed = row.filter((x) => x.box && x.room && existsSync(x.room));
+      // (the screen is used only when it still shows the crop: a finger has moved on by the time the probe takes the whole screen,
+      // and then the crop itself is centred in the box on a plain ground instead)
+      const boxed = row.filter((x) => x.box && x.src && !x.frames);
       const W = Math.max(0, ...boxed.map((x) => x.box.width)), H = Math.max(0, ...boxed.map((x) => x.box.height));
       for (const x of row) {
         if (!x.crop || x.frames) continue;
         try {
-          if (x.box && x.room && existsSync(x.room)) { const cx = x.box.x + x.box.width / 2, cy = x.box.y + x.box.height / 2; writeFileSync(join(out, x.crop), cutPng(x.room, { x: cx - W / 2, y: cy - H / 2, width: W, height: H })); x.fixed = `${Math.round(W)} x ${Math.round(H)} px round the centre`; }
-          else copyFileSync(x.src, join(out, x.crop));
+          const cx = x.box.x + x.box.width / 2, cy = x.box.y + x.box.height / 2;
+          const same = x.room && existsSync(x.room) && sameAs(cutPng(x.room, x.box), readFileSync(x.src));
+          writeFileSync(join(out, x.crop), same ? cutPng(x.room, { x: cx - W / 2, y: cy - H / 2, width: W, height: H }) : padPng(readFileSync(x.src), W, H));
+          x.fixed = `${Math.round(W)} x ${Math.round(H)} px round the centre${same ? "" : " (the crop on a plain ground: the screen had moved on)"}`;
         } catch (e) { copyFileSync(x.src, join(out, x.crop)); }
         delete x.src; delete x.room;
       }

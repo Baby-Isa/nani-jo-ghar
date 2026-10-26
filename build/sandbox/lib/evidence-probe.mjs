@@ -331,6 +331,17 @@ export class EvidenceProbe {
       return Buffer.from(r.data, "base64");
     } catch (e) { return null; }
   }
+  // the clip alone, straight from the compositor (about 30 ms against 300-400 ms for the whole 1366x768 surface: a strip on its
+  // 250 ms clock); the caller checks it against the screen's top-left corner, the old clip fault below
+  async surfaceClip(clip) {
+    try {
+      if (this._cdp === undefined) this._cdp = await this.page.context().newCDPSession(this.page).catch(() => null);
+      if (!this._cdp) return null;
+      const c = { x: Math.round(clip.x), y: Math.round(clip.y), width: Math.max(2, Math.round(clip.width)), height: Math.max(2, Math.round(clip.height)), scale: 1 };
+      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, clip: c });
+      return Buffer.from(r.data, "base64");
+    } catch (e) { return null; }
+  }
   // the whole surface, cut here: with a clip, the compositor now and then returned the page's top-left corner at the
   // clip's size (CLN-126, CLN-127: the doctor's box where her bubble should be)
   async cut(raw, clip) {
@@ -451,15 +462,21 @@ export class EvidenceProbe {
             const bufs = [], t0 = Date.now();
             // on the clock: every frame is the whole surface at its slot (t0 + k x ms), cut only once all are taken; each frame's real
             // ms is kept (the sheet flags one more than 60 ms off its slot)
+            // each frame is the clip alone (fast); a frame that came back as the screen's top-left corner (the compositor's old clip
+            // fault, CLN-126) is taken again from the whole surface and noted
             const raws = [];
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
-              raws.push(await this.surface());
+              raws.push(await this.surfaceClip(clip));
             }
             out.slots = Array.from({ length: c.n }, (_, k) => k * c.ms);
+            if (clip.x > 2 || clip.y > 2) {
+              const corner = await this.surfaceClip({ x: 0, y: 0, width: clip.width, height: clip.height });
+              for (let k = 0; k < c.n; k++) if (raws[k] && corner && (frameDiff(raws[k], corner) ?? 99) < 0.5) { const whole = await this.surface(); raws[k] = whole ? await this.cut(whole, clip) : null; (out.notes = out.notes || []).push(`frame ${k + 1}: the compositor gave the top-left corner; taken again late from the whole screen`); }
+            }
             for (let k = 0; k < c.n; k++) {
-              const buf = raws[k] ? await this.cut(raws[k], clip) : await this.shot(clip); bufs.push(buf);
+              const buf = raws[k] || (await this.shot(clip)); bufs.push(buf);
               const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             }
             // (s08 w6E, SH-60) the frame where Nani's help was logged while this strip filmed gets a red frame, so the sheet shows the

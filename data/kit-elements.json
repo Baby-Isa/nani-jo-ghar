@@ -1,5 +1,5 @@
 {
-  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). An element may set dom: true (its text is read too: the to-record text). A place is {at, sel?, delay?, flow?, profile?, every?} (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
+  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). An element may set dom: true (its text is read too: the to-record text). A place is {at, sel?, delay?, flow?, profile?, every?, tries?} (tries: N: the first of the moment's first N times where the crop worked: a thing that flies in and out) (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
   "pages": {
     "index": {
       "flow": "house",
@@ -51,8 +51,9 @@
           "none": "the house shows no face circle"
         },
         "first": {
-          "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "at": "life:popup-open",
+          "delay": 300,
+          "tries": 3
         },
         "day": {
           "at": "visible:.ng-face, .day-face, .njg-face",
@@ -61,15 +62,18 @@
         },
         "cook": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "cook:day1"
         },
         "clinic": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "clinic:waiting"
         },
         "lab": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "lab:cook/round"
         }
       }
     },
@@ -87,23 +91,23 @@
         },
         "first": {
           "at": "visible:.wc-card",
-          "delay": 600
+          "tries": 4
         },
         "day": {
           "at": "visible:.wc-card",
-          "delay": 600
+          "tries": 4
         },
         "cook": {
           "at": "visible:.wc-card",
-          "delay": 600
+          "tries": 4
         },
         "clinic": {
           "at": "visible:.wc-card",
-          "delay": 600
+          "tries": 4
         },
         "lab": {
           "at": "visible:.wc-card",
-          "delay": 600
+          "tries": 4
         }
       }
     },
@@ -160,23 +164,27 @@
           "none": "no order on the house page"
         },
         "first": {
-          "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "at": "life:popup-open",
+          "delay": 300,
+          "tries": 3
         },
         "day": {
           "none": "the door has no order pop-up"
         },
         "cook": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "cook:day1"
         },
         "clinic": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "clinic:waiting"
         },
         "lab": {
           "at": "visible:.njg-rq-card, #intro .ic-card",
-          "delay": 400
+          "tries": 3,
+          "flow": "lab:cook/round"
         }
       }
     },
@@ -425,7 +433,7 @@
       }
     },
     "to-record text": {
-      "sel": ".njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
+      "sel": ".njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
       "moves": false,
       "grep": [
         "\\.ph\\b",
@@ -441,24 +449,31 @@
           "none": "the house says nothing to record"
         },
         "first": {
-          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
-          "delay": 300
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
         },
         "day": {
-          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
-          "delay": 300
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
         },
         "cook": {
-          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
-          "delay": 300
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3,
+          "flow": "cook:day1"
         },
         "clinic": {
-          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
-          "delay": 300
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
         },
         "lab": {
-          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph",
-          "delay": 300
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3,
+          "flow": "lab:cook/round"
         }
       },
       "dom": true
