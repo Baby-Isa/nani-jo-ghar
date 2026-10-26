@@ -39,7 +39,8 @@ export function briefProbes(probes, spec, parse) {
   return use.map((p) => {
     if (p.repo) return p;
     const capture = p.capture.slice();
-    if (p.kind === "motion" && parse) {
+    // (an every: probe films each of its moments already: no more strips for it)
+    if (p.kind === "motion" && !p.every && parse) {
       for (const sel of [...new Set(p.capture.filter((c) => c.kind === "strip" || c.kind === "trace").map((c) => c.sel))]) {
         for (const m of ms) {
           const raw = `strip:${sel}:${STRIP_FRAMES}x${m}`;

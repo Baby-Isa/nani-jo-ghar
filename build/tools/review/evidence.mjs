@@ -655,7 +655,9 @@ function writeReport(dir, P, index) {
   if (dec.length) md += `\n## Needs a decision (${dec.length}): docs/status.md, never a sheet\n\n${dec.map(([rid, r]) => `- ${rid}: ${r.expectLine}`).join("\n")}\n`;
   const evFile = join(dir, "evidence-lines.md");
   if (existsSync(evFile)) md += `\n## EVIDENCE lines from the reviewers (the tool owner's list)\n\n${readFileSync(evFile, "utf8")}\n`;
-  const f = join(ROOT, "build", "reports", `evidence-${id}.md`);
+  // a brief's run keeps its index beside its before and after (builders never dump runs into build/reports)
+  const f = P.brief ? join(BRIEF_DIR, P.brief.slug, `evidence-${id}.md`) : join(ROOT, "build", "reports", `evidence-${id}.md`);
+  mkdirSync(dirname(f), { recursive: true });
   writeFileSync(f, md);
   console.log(`\n${rows.length} rows: ${eye.length} for a reviewer, ${mach.length} machine-decided, ${tool.length} tool failures, ${human.length} Zafar's, ${dec.length} need a decision. Index: ${rel(f)}`);
 }

@@ -273,6 +273,11 @@ export class EvidenceProbe {
     const runs = jobs.map((j) => { const r = (j.s.queue || Promise.resolve()).then(() => j.go()).catch(() => {}); j.s.queue = r; return r; });
     const run = Promise.all(runs);
     this.chain = Promise.all([this.chain, run]).catch(() => {});
+    // a page that only serves its probes (kitsheet.mjs: early) stops once every probe has its capture: the rest of the play shows nothing
+    if (this.spec.early && !this.doneSent && this.state.every((s) => s.hits.length >= (s.p.every ? s.p.max : 1))) {
+      this.doneSent = true;
+      this.chain.then(() => this.reject(Object.assign(new Error("every probe on the page has its capture"), { probesDone: true })));
+    }
     // a filmstrip or a trace films what happens next: the player goes on while it runs (at heal:<step> or cook:<kind>, the move itself:
     // a heal game's drag or pour takes a few hundred ms; blocked, the strip saw only the still before it)
     const filmsTheMove = jobs.every((j) => j.s.p.capture.length && j.s.p.capture.every((c) => c.kind === "strip" || c.kind === "trace"));
