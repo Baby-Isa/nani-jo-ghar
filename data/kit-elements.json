@@ -60,9 +60,9 @@
         "index": { "none": "no order on the house page" },
         "first": { "at": "life:popup-open", "delay": 300 },
         "day": { "none": "the door has no order pop-up" },
-        "cook": { "at": "visible:.njg-rq-card .oc-card", "delay": 200, "flow": "cook:samosa", "profile": "seen" },
+        "cook": { "at": "life:popup-open", "delay": 300, "flow": "cook:samosa", "profile": "seen" },
         "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "visible:.njg-rq-card .oc-card", "delay": 200, "flow": "lab:cook/samosa" }
+        "lab": { "at": "life:popup-open", "delay": 300, "flow": "lab:cook/samosa" }
       }
     },
     "bubble": {
