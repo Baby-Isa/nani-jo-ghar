@@ -1,6 +1,6 @@
 # Sprint 12: Polish
 
-**Status:** open
+**Status:** closed (26 Oct 2026, published to `main`)
 **Opened:** 22 Oct 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -36,5 +36,18 @@ About $230-290 and 2-3 days (approved by Zafar, 22 Oct). Scope is cut, never the
 Not this sprint: ART-26 (animal sprites, with the farm game); the "no" introduction at L2+ (CK-50 only removes "no" from L1).
 
 ## Outcome
+Shipped (published 26 Oct):
+- **Wave 1:** one help look in every game (no demo for taps, a still box with the item glowing and hopping, one finger, a darker dim, help from load), chai's ladder and full recipe card, no "no" at L1; the door, the ride (slower, the find list and its help, the car mirrored) and the labs toggles.
+- **Wave 2:** the third end page off by one switch in every game; replies bigger with speakers and one tap; word cards; calm talking faces; the new face circles; the eye test rebuilt (the doctor's start, drops first, her half of the screen, the mic that now hears, the lemon).
+- **Wave 3:** the book (find it, name it with the mic first, stick in the photo, spaced words, the page turn); the door's new art and come-here; the mirrored spout-first pour; the served moment.
+- **Language:** Mum's 24 Oct sitting (C80-C103: 64 clips, about 20 draft words, 10 draft rules; spellings wait for Zafar).
+
+Review: checks.mjs and 532 unit tests green; the contract replay of 15 flows at 1366x768 and 915x412, 0 breaks (`s12-review-1`, `-2`). The full evidence loop was not run (rapid-prototype mode).
+
+Moved to Sprint 13: ART-08's one circle size everywhere (a shared component); SH-110, never a memory test; CK-48's last duplicate load (in js/shared/family-voice.js).
+Spend: about $300-350 (over the $230-290 budget; wave 1's four fix rounds and the weekly-limit restart).
 
 ## Look back (three lines)
+1. What worked: the independent judge caught real faults the builders missed every round (the dark pour, the squished girl, the mic that heard nothing).
+2. What cost too much: every shared look was rebuilt game by game (four fix rounds for one help box), and hand-built judge batches missed frames, giving EVIDENCE verdicts.
+3. One change: Sprint 13's shared kit, plus a capture helper and script-built judge batches.
