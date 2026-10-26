@@ -456,7 +456,9 @@
       st.loadVoice = () => {
         if (st.voiceAsked || !SP.loadTemplates) return;
         st.voiceAsked = true;
-        const list = Kit0 && Kit0.loadJSON ? Kit0.loadJSON("data/family-audio.json").catch(() => null) : Promise.resolve(null);
+        // CK-48 (S13-V): the family's clip list the page already has (one load per page: js/core/index.js familyAudio)
+        const have = root.njgFamilyAudio || null;
+        const list = have ? Promise.resolve(have).catch(() => null) : Kit0 && Kit0.loadJSON ? Kit0.loadJSON("data/family-audio.json").catch(() => null) : Promise.resolve(null);
         list.then((fam) => {
           if (st.gone) return;
           [[VOICE.yes, HS.L.yesId(), yesNo.yes], [VOICE.no, HS.L.noId(), yesNo.no]].forEach(([k, id, said]) => {

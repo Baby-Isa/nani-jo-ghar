@@ -278,6 +278,41 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
   }
 
+  /*
+   * CK-48 (S13-V): the request pop-up's fold, seen from here: folded() resolves once a pop-up has opened and then started to
+   * fold (RequestPopup.isOpen() turns false as the card starts to fly); lastFoldMs() is how long ago the last one folded.
+   */
+  let foldAt = 0;
+  function folded() {
+    const RP = global.RequestPopup;
+    if (!RP || !RP.isOpen) return new Promise(() => {});
+    return new Promise((resolve) => {
+      let seen = RP.isOpen();
+      const until = Date.now() + 60000; // (a pop-up that never comes: the caller's other promise wins; this one stops looking)
+      const t = setInterval(() => {
+        if (Date.now() > until) return clearInterval(t);
+        const open = RP.isOpen();
+        if (open) seen = true;
+        else if (seen) {
+          clearInterval(t);
+          foldAt = Date.now();
+          resolve();
+        }
+      }, 30);
+    });
+  }
+  (function watchFolds() {
+    const RP = global.RequestPopup;
+    if (!RP || !RP.isOpen) return;
+    let was = false;
+    setInterval(() => {
+      const open = RP.isOpen();
+      if (was && !open) foldAt = Date.now();
+      was = open;
+    }, 60);
+  })();
+  const lastFoldMs = () => (foldAt ? Date.now() - foldAt : Infinity);
+
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   async function begin(S, ctx, key, view, { closed = false } = {}) {
     ladderStart(S, ctx);
@@ -288,13 +323,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const art = Cook.Art.need(S, key, 20000);
     const bg = Cook.Art.refUrl && Cook.Art.refUrl(`bg:${view}`) ? Promise.race([Cook.Art.load(S, `bg:${view}`), new Promise((r) => setTimeout(r, 20000))]) : null;
     const hands = Cook.Hands ? Cook.Hands.need(S, key) : null;
-    // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
+    // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar.
+    // CK-48 (S13-V; Zafar 22 Oct: "it's taking really long to load"): the worktop swaps in as the card starts to fly (the
+    // tap through it, or its own fold), not after it has landed: the card's half-second flight covers the swap
+    // and the station builds while the card flies (it has left the middle of the screen), never waiting for it to land
+    const ready = Promise.all([art, bg, hands]);
+    let swap = null;
     if (ctx && ctx.intro) {
-      await ctx.intro;
+      const intro = ctx.intro;
       ctx.intro = null;
+      const fold = folded();
+      swap = Promise.race([fold, intro]).then(() => ready).then(() => S.setView(view, { underCard: true }));
+      await Promise.race([fold, intro]);
+      // (what the intro notes as it ends, needed by the station's first lines: decision 53, said already in the pop-up)
+      if (ctx.requestsSaid == null && UI.mission && UI.mission.peopleSaid) ctx.requestsSaid = !!UI.mission.peopleSaid();
     }
-    await Promise.all([art, bg, hands]);
-    await S.setView(view);
+    await ready;
+    await (swap || S.setView(view, { underCard: lastFoldMs() < 1500 }));
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
     // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she

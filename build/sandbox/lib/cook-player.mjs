@@ -357,11 +357,14 @@ export class CookPlayer {
     const p = this.page;
     // tap-through-popup (SH-64): the request pop-up is tapped 0.25 s after it opens (at test speed it folds by itself within a
     // second); a probe of its card takes it at "popup-open"
-    if (this.mode === "tap-through-popup") {
+    if (this.mode === "tap-through-popup" || this.mode === "tap-card-1s") {
       await until(() => popupOpen(p), 3000, 15);
+      const opened = Date.now();
       // at a child's pace (speed 1, S05-T2) the read-out is tapped half a second into the first line, so a cut-off would show;
       // at test speed it folds within ~0.25 s: tap as soon as it is seen open
-      if (this.speed === 1) {
+      // tap-card-1s (CK-48's Check): 1 s after the pop-up opened
+      if (this.mode === "tap-card-1s") await sleep(Math.max(0, 1000 - (Date.now() - opened)));
+      else if (this.speed === 1) {
         const v = await watchVoice(p);
         // SH-64 (s09; the judge: every tap landed as the first line ended, "plaster" and "Pela paani" are short): 0.2 s in
         if (await v.speaking() || await v.nextLine(3000)) await sleep(200); else this.rec.note("tap-through-popup: no line was said within 3 s of the pop-up opening");

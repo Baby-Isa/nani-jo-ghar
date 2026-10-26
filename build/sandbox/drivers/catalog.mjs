@@ -27,6 +27,9 @@ export const DRIVERS = {
   "mute-across-modes": { kinds: ["lab-cook"], moments: ["rec:muted-in-cook", "rec:after-mute", "rec:after-mute-cook"] },
   "start-over": { kinds: ["cook"], moments: ["rec:started-over", "rec:after-start-over"] },
   "tap-through-popup": { kinds: ["cook", "heal", "clinic-stage"], moments: ["rec:tapped-through", "drv:tapped-through"] },
+  // CK-48's Check (S13-V): the request pop-up tapped through 1 s after it opens, at a child's pace (then the station must be
+  // fully drawn within 1 s of the tap)
+  "tap-card-1s": { kinds: ["cook", "heal", "clinic-stage"], moments: ["rec:tapped-through", "drv:tapped-through"] },
   // the mistake player, then the end card's tick badge tapped to open the steps list (SH-44, D14)
   "open-steps": { kinds: ["cook"], moments: ["rec:steps-open", "rec:steps-none", "rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"] },
   // the send-off's E4 (the child asks first, 1 in 4 at L3 by draw): the clinic page with &variant=E4 (CLN-117)

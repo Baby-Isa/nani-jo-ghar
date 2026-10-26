@@ -236,11 +236,16 @@ export class EvidenceProbe {
   async setup() {
     const page = this.page, spec = this.spec;
     if (spec.dv) await page.context().addInitScript(DEVICE_VOICE);
-    if (spec.probes.some((p) => p.mark === "drawn")) {
+    if (spec.probes.some((p) => p.mark === "drawn" || p.capture.some((c) => c.kind === "trace" && c.sel === "station"))) {
       this.inflight = new Map();
+      this.requests = []; // every request of the page (CK-48's waterfall): {url, type, t0, t1} in wall-clock ms
       const art = (r) => ["xhr", "fetch", "image"].includes(r.resourceType()) && /\/assets\/.+\.(webp|png|jpe?g)(\?|$)/.test(r.url());
-      page.on("request", (r) => { if (art(r)) this.inflight.set(r.url(), Date.now()); });
-      const done = (r) => this.inflight.delete(r.url());
+      const byReq = new Map();
+      page.on("request", (r) => {
+        if (art(r)) this.inflight.set(r.url(), Date.now());
+        if (this.requests.length < 3000) { const x = { url: r.url().replace(/^https?:\/\/[^/]+\//, "").replace(/\?.*$/, ""), type: r.resourceType(), t0: Date.now(), t1: null }; this.requests.push(x); byReq.set(r, x); }
+      });
+      const done = (r) => { this.inflight.delete(r.url()); const x = byReq.get(r); if (x) x.t1 = Date.now(); };
       page.on("requestfinished", done);
       page.on("requestfailed", done);
     }
@@ -266,14 +271,14 @@ export class EvidenceProbe {
       const C = window.Cook, s = C && C.scene;
       const ov = document.querySelector("#overlay"), overlay = !!(ov && !ov.classList.contains("hidden") && ov.getBoundingClientRect().height > 1);
       // the page over the stage: the request pop-up's veil still there, the stage's canvas faded (its own or an ancestor's opacity)
-      const veil = Array.from(document.querySelectorAll(".njg-rq-veil")).some((v) => !v.classList.contains("hidden") && v.getBoundingClientRect().height > 1 && parseFloat(getComputedStyle(v).opacity) > 0.05);
+      const veil = Array.from(document.querySelectorAll(".njg-rq-veil")).some((v) => !v.classList.contains("hidden") && !v.classList.contains("going") && v.getBoundingClientRect().height > 1 && parseFloat(getComputedStyle(v).opacity) > 0.05);
       const cv = document.querySelector("#stage canvas") || document.querySelector("canvas");
       let alpha = 1; for (let x = cv; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") { alpha = 0; break; } alpha *= parseFloat(cs.opacity); }
       alpha = Math.round(alpha * 100) / 100;
       if (!s || !s.cameras || !s.children) return { view: null, overlay, veil, alpha };
       const cam = s.cameras.main, fx = cam.fadeEffect, list = s.children.list || [];
       return { view: s.viewName || null, bg: s.bg && s.bg.texture ? s.bg.texture.key : null, zoom: +cam.zoom.toFixed(3), fading: !!(fx && fx.isRunning), fadeAlpha: fx ? +fx.alpha.toFixed(2) : 0,
-        missing: list.filter((o) => o.visible && o.texture && o.texture.key === "__MISSING").length, objects: list.filter((o) => o.visible).length, inStation: !!C.inStation, overlay, veil, alpha,
+        missing: list.filter((o) => o.visible && o.texture && o.texture.key === "__MISSING").length, objects: list.filter((o) => o.visible).length, inStation: !!C.inStation, asks: !!(C.expect && !C.expect.intro), side: (() => { const c = document.querySelector("#side .oc-card, #mission .oc-card"); return !!(c && c.getBoundingClientRect().height > 4); })(), overlay, veil, alpha,
         loading: !!(s.load && s.load.isLoading && s.load.isLoading()) };
     })()`).catch(() => null);
     const open = [...(this.inflight || new Map()).keys()].map((u) => u.replace(/^https?:\/\/[^/]+\//, "").replace(/\?.*$/, ""));
@@ -283,7 +288,10 @@ export class EvidenceProbe {
     if (x.overlay) why.push("the order card is up");
     if (x.veil) why.push("the request pop-up's veil over it");
     if (x.alpha != null && x.alpha < 0.98) why.push(`the stage faded (opacity ${x.alpha})`);
-    if (x.fadeAlpha >= 0.05) why.push(`the camera fading (cover ${x.fadeAlpha})`);
+    if (x.fading || x.fadeAlpha >= 0.05) why.push(`the camera fading (cover ${x.fadeAlpha})`);
+    // (fix round: a still-fading pale board was marked drawn) the station built and asking for its first move, the sidebar's card up
+    if (x.view && x.view !== "service" && !x.asks) why.push("the station not yet asking for its first move");
+    if (x.view && x.side === false) why.push("no sidebar card");
     if (x.missing) why.push(`${x.missing} missing picture${x.missing > 1 ? "s" : ""}`);
     if (x.loading) why.push("Phaser's loader busy");
     if (open.length) why.push(`${open.length} picture${open.length > 1 ? "s" : ""} loading (${open.slice(0, 2).map((u) => u.split("/").pop()).join(", ")}${open.length > 2 ? " ..." : ""})`);
@@ -558,6 +566,19 @@ export class EvidenceProbe {
             out.moved = Math.round(moved * 100) / 100;
             if (moved < 0.02) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
           }
+        } else if (c.kind === "trace" && c.sel === "station") {
+          // CK-48 (S13-V): the station's own state every 50 ms in the page (its view, the camera's fade, the stage's opacity, the
+          // pop-up's veil, missing pictures, the loader, the first thing it asks for), the requests in flight beside it, and the
+          // moment it is fully drawn (and stays so): the machine measure, decided by drawnWithin:<ms>
+          const t0 = Date.now();
+          const r = await page.evaluate(`(${STATION_TRACE})(${JSON.stringify(c.ms)})`).catch((e) => [{ error: String(e.message || e).split("\n")[0] }]);
+          if (r[0] && r[0].error) { out.fail = r[0].error; continue; }
+          const reqs = (this.requests || []).filter((x) => x.t1 == null ? x.t0 < t0 + c.ms : x.t1 >= t0 - 50 && x.t0 <= t0 + c.ms);
+          // pictures and data in flight (a voice clip fetched for a line is not the station loading)
+          const open = (ms) => reqs.filter((x) => /\.(webp|png|jpe?g|json)$/.test(x.url) && x.t0 - t0 > -10000 && x.t0 - t0 <= ms && (x.t1 == null || x.t1 - t0 > ms)).length;
+          r.forEach((x) => { x.open = open(x.t); x.drawn = x.ready && !x.open; });
+          out.samples = r; out.station = stationStats(r);
+          out.text = stationTable(r, reqs, t0, out.station);
         } else if (c.kind === "trace") {
           const r = await page.evaluate(`(${TRACE})(${JSON.stringify([cssOf(c.sel), c.ms])})`);
           if (r[0] && r[0].error) { out.fail = r[0].error; continue; }
@@ -660,6 +681,11 @@ export class EvidenceProbe {
           const off = this.seen.find((x) => x.name === `hidden:${sel}` && x.t > on.t);
           const ms = (off ? off.t : Date.now() - this.t0) - on.t;
           put({ ok: cmp(ms, e.op, e.n), why: `on screen ${ms} ms${off ? "" : " (still at the end)"}` });
+        } else if (e.kind === "drawnWithin") {
+          const tr = s.hits.flatMap((h) => h.captures.filter((c) => c.station));
+          if (!tr.length) { put({ ok: null, why: "no trace:station capture" }); continue; }
+          const st = tr[0].station;
+          put(st.drawnAt == null ? { ok: false, why: `never fully drawn in the ${st.span} ms traced (${st.why})` } : { ok: st.drawnAt <= e.ms, why: `fully drawn ${st.drawnAt} ms after the moment (and stays so); ${st.why}` });
         } else if (/^trace/.test(e.kind)) {
           const tr = s.hits.flatMap((h) => h.captures.filter((c) => c.kind === "trace" && c.stats && c.raw.startsWith(`trace:${e.sel}:`)));
           const key = { traceAmp: "amp", tracePeriod: "period", traceRepeats: "repeats", traceRot: "rot" }[e.kind];
@@ -678,6 +704,81 @@ export class EvidenceProbe {
     }
     return out;
   }
+}
+// the station, sampled in the page (CK-48): Cook's scene, or the clinic's stage; ready = its view up, the fade done, nothing over
+// it, no missing picture, the loader idle and the game asking for its first move
+const STATION_TRACE = `async (ms) => {
+  const out = [], t0 = performance.now();
+  // the waterfall's steps (read-only wraps of Cook's own calls, as the sound hook's): when each started and ended
+  const marks = [];
+  const mark = (n) => { if (marks.length < 200) marks.push({ t: Math.round(performance.now() - t0), n }); };
+  const wrap = (obj, name, label) => {
+    try {
+      const f = obj && obj[name];
+      if (typeof f !== "function" || f.__njgT) return;
+      const w = function () { mark(label + " starts"); const r = f.apply(this, arguments); if (r && r.then) r.then(() => mark(label + " ends"), () => mark(label + " ends")); else mark(label + " ends"); return r; };
+      w.__njgT = true; obj[name] = w;
+    } catch (e) {}
+  };
+  const C0 = window.Cook;
+  if (C0) {
+    wrap(C0.Stations, "begin", "station begin"); wrap(C0.Art, "need", "station art"); wrap(C0.Hands, "need", "hand art");
+    if (C0.scene) { wrap(C0.scene, "setView", "setView"); try { C0.scene.textures.on("addtexture", (k) => mark("texture " + k)); } catch (e) {} }
+  }
+  if (window.Lifecycle) wrap(window.Lifecycle, "stageStart", "stage start");
+  let veilGone = false;
+  const side = () => { const c = document.querySelector("#side .oc-card, .cl-side .oc-card, #mission .oc-card"); return !!(c && c.getBoundingClientRect().height > 4); };
+  while (performance.now() - t0 < ms) {
+    const x = { t: Math.round(performance.now() - t0) };
+    try {
+      const veil = Array.from(document.querySelectorAll(".njg-rq-veil")).some((v) => !v.classList.contains("hidden") && !v.classList.contains("going") && v.getBoundingClientRect().height > 1 && parseFloat(getComputedStyle(v).opacity) > 0.05);
+      const C = window.Cook, s = C && C.scene;
+      const cv = (s && s.game && s.game.canvas) || document.querySelector("#stage canvas, .cl-heal canvas, canvas");
+      let alpha = 1; for (let e = cv; e && e.nodeType === 1; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.display === "none" || cs.visibility === "hidden") { alpha = 0; break; } alpha *= parseFloat(cs.opacity); }
+      x.alpha = Math.round(alpha * 100) / 100; x.veil = veil; x.side = side();
+      if (s && s.cameras && s.children) {
+        const cam = s.cameras.main, fx = cam.fadeEffect, list = s.children.list || [];
+        x.view = s.viewName || null; x.fade = fx && fx.isRunning ? Math.round(fx.alpha * 100) / 100 : 0;
+        x.objects = list.filter((o) => o.visible).length; x.missing = list.filter((o) => o.visible && o.texture && o.texture.key === "__MISSING").length;
+        x.loader = !!(s.load && s.load.isLoading && s.load.isLoading()); x.asks = !!(C.expect && !C.expect.intro); x.station = !!C.inStation;
+        x.ready = !!(x.view && x.view !== "service" && x.station && x.asks && x.fade < 0.05 && !veil && x.alpha >= 0.98 && !x.missing && !x.loader && x.side);
+      } else {
+        const k = window.njgTest && window.njgTest.clinic && window.njgTest.clinic.expect ? window.njgTest.clinic.expect() : null;
+        x.view = k ? (k.stage || "?") : null; x.asks = !!k; x.fade = 0;
+        x.ready = !!(k && !veil && x.alpha >= 0.98 && x.side);
+      }
+    } catch (e) { x.error = String(e.message || e); x.ready = false; }
+    if (!x.veil && !veilGone) { veilGone = true; mark("the pop-up folds (its veil clears, the card flies)"); }
+    out.push(x);
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  if (out.length) out[0].marks = marks;
+  return out;
+}`;
+// drawnAt: the first sample from which the station is drawn in every sample after (to the trace's end); the slowest gap between
+// samples (the page busy: no frame, no timer); when the view, the fade, the first ask and the sidebar first came
+export function stationStats(r) {
+  let drawnAt = null;
+  for (let i = r.length - 1; i >= 0; i--) { if (r[i].drawn) drawnAt = r[i].t; else break; }
+  const first = (f) => { const x = r.find(f); return x ? x.t : null; };
+  let gap = 0, gapAt = null;
+  for (let i = 1; i < r.length; i++) if (r[i].t - r[i - 1].t > gap) { gap = r[i].t - r[i - 1].t; gapAt = r[i - 1].t; }
+  const view = first((x) => x.view && x.view !== "service");
+  const why = [`view up ${view ?? "never"} ms`, `fade over ${first((x) => x.view && x.view !== "service" && !x.fade) ?? "never"} ms`, `first ask ${first((x) => x.asks) ?? "never"} ms`, `sidebar card ${first((x) => x.side) ?? "never"} ms`, `nothing loading ${first((x) => x.t >= (view ?? 0) && !x.open) ?? "never"} ms`, `longest stall ${gap} ms at ${gapAt} ms`].join(", ");
+  return { drawnAt, span: r.length ? r[r.length - 1].t : 0, gap, gapAt, why };
+}
+function stationTable(r, reqs, t0, st) {
+  const rows = [];
+  let last = "";
+  for (const x of r) {
+    const k = JSON.stringify([x.view, x.fade, x.alpha, x.veil, x.side, x.asks, x.missing, x.loader, x.open, x.drawn]);
+    if (k === last && x !== r[r.length - 1]) continue;
+    last = k;
+    rows.push(`${String(x.t).padStart(5)} ms  ${x.drawn ? "DRAWN" : "not drawn"}  view ${x.view || "-"}${x.fade ? `, fading ${x.fade}` : ""}${x.alpha < 1 ? `, stage opacity ${x.alpha}` : ""}${x.veil ? ", pop-up veil" : ""}${x.side ? "" : ", no sidebar card"}${x.asks ? ", asks" : ""}${x.missing ? `, ${x.missing} missing` : ""}${x.loader ? ", loader busy" : ""}${x.open ? `, ${x.open} loading` : ""}`);
+  }
+  const w = reqs.filter((x) => /^(assets|data|js)\//.test(x.url) && x.t0 - t0 > -10000).sort((a, b) => a.t0 - b.t0).slice(0, 40).map((x) => `${String(x.t0 - t0).padStart(6)} -> ${x.t1 == null ? "  open" : String(x.t1 - t0).padStart(6)} ms  ${x.url}`);
+  const marks = ((r[0] && r[0].marks) || []).map((m) => `${String(m.t).padStart(5)} ms  ${m.n}`);
+  return `${st.drawnAt == null ? "NEVER fully drawn" : `fully drawn from ${st.drawnAt} ms`} (every 50 ms from the moment: ${st.why})\n${rows.join("\n")}\n\nthe steps (ms from the moment)\n${marks.join("\n") || "(none seen)"}\n\nrequests from 10 s before it (ms from the moment: start -> end)\n${w.join("\n") || "(none)"}`;
 }
 function traceTable(r) {
   const rows = r.filter((_, i) => i % 2 === 0).slice(0, 60).map((x) => `${String(x.t).padStart(5)} ms  x ${isFinite(x.x) ? x.x : "-"}  y ${isFinite(x.y) ? x.y : "-"}  opacity ${x.o}${x.tr ? `  ${x.tr}` : ""}`);

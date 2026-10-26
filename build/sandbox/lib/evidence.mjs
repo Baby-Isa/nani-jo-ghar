@@ -112,7 +112,7 @@ export function parseCmd(s) {
 // The words of the spec file's _expect list. "!" in front negates (true <-> false; undecided stays undecided).
 // the layout lint's checks (build/lint/layout.mjs), for noFinding:<check>
 export const LINT_CHECKS = ["text-clipped", "ellipsis", "text-small", "tap-small", "text-offscreen", "tap-offscreen", "page-scroll", "scroll-container", "covered", "covers-play-area", "word-broken"];
-export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "noFinding:", "heardWhole:", "liveInput", "pass"];
+export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "noFinding:", "heardWhole:", "drawnWithin:", "liveInput", "pass"];
 const OP = "(>=|<=|=|<|>)";
 export function parseExpect(s, { contractChecks = null } = {}) {
   let t = String(s || "").trim(), not = false;
@@ -156,6 +156,8 @@ function parseExpectOne(t, contractChecks) {
   if ((m = /^clipClass:([\w-]+)$/.exec(t))) return { kind: "clipClass", cls: m[1] };
   // heardWhole:<moment>[<=ms] (S13-V, LNG-16): after each time the moment comes, the first line said starts within ms (1000 by
   // default) and is heard whole: every device-voice part started and ended (none cut, none dropped by a cancel), every clip ran out
+  // drawnWithin:<ms> (S13-V, CK-48): a trace:station capture finds the station fully drawn (and staying so) within ms of the moment
+  if ((m = /^drawnWithin:(\d+)$/.exec(t))) return { kind: "drawnWithin", ms: +m[1] };
   if ((m = /^heardWhole:(.+?)(?:<=(\d+))?$/.exec(t))) return { kind: "heardWhole", moment: m[1].trim(), ms: m[2] ? +m[2] : 1000 };
   // noFinding:<check>: the layout lint (build/lint/layout.mjs) finds none of this check on the page at the moment (SH-81: a tap
   // area 2 px off screen that no picture can show)

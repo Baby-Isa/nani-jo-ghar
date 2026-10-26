@@ -285,9 +285,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (i >= 0) this.ticks.splice(i, 1);
       };
     }
-    async setView(name, { fast } = {}) {
+    async setView(name, { fast, underCard = false } = {}) {
       const cam = this.cameras.main;
-      const dur = fast ? 120 : 220;
+      // CK-48 (S13-V; Zafar 22 Oct: "still just a light brown screen"): a station coming in under the order card as it flies
+      // into the sidebar swaps without fading the old view out to the light brown cover (the card covers the cut), and fades
+      // in quickly
+      const dur = fast || underCard ? 120 : 220;
       // a painted worktop (data.art.sprites.bg) loads while the old view fades
       const bgRef = `bg:${name}`;
       // SH-108 (P31: "if it's top-down then it should be the marble countertop"): a top-down worktop waits for its painting
@@ -297,7 +300,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const tileSpec = Cook.Art.bgTile ? Cook.Art.bgTile(name) : null;
       const plateLoad = tileSpec && tileSpec.plate ? Cook.Art.loadFile(this, `bgplate-${tileSpec.plate}`, tileSpec.plate.startsWith("assets/") ? `${tileSpec.plate}.webp` : `assets/cook/bg/${tileSpec.plate}.webp`) : Promise.resolve(true);
       const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Promise.all([Cook.Art.load(this, bgRef), plateLoad]), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
-      if (this.viewName) {
+      if (this.viewName && !underCard) {
         cam.fadeOut(dur, 233, 220, 196);
         await Cook.wait(dur + 20);
       }
@@ -312,7 +315,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.setBg(`bg-${name}`);
       else this.setBg(Cook.Art.tex(this, `bg:${name}`));
       UI.hideBubble();
-      cam.fadeIn(dur, 233, 220, 196);
+      // (under the card: never covered, so no fade back from the cover either)
+      if (underCard) {
+        if (cam.resetFX) cam.resetFX();
+      } else cam.fadeIn(dur, 233, 220, 196);
     }
     tex(key) {
       return Cook.Art.tex(this, key);
