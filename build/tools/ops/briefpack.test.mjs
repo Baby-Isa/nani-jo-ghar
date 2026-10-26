@@ -44,11 +44,11 @@ test("session scope (checks-to-build 14): files outside the spec's owns are list
 
 test("every brief's PROOF is the one loop: checks, --after --brief, the contract run at two sizes, no frames of its own (S13-T)", async () => {
   const { proofLines, matrixCommand, PROOF_SIZES } = await import("./briefpack.mjs");
-  assert.equal(PROOF_SIZES, "1366x768,915x412", "rapid prototype (Zafar, 22 Oct): laptop and phone");
+  assert.equal(PROOF_SIZES, "1280x665,915x412", "rapid prototype (Zafar, 26 Oct): his laptop and phone");
   assert.equal(matrixCommand(["clinic:heal-eye", "cook:chai-tray"], "s09-x"),
-    "node build/sandbox/run.mjs --contract --flow clinic:heal-eye,cook:chai-tray --sizes 1366x768,915x412 --run-id s09-x-contract --no-sheets");
+    "node build/sandbox/run.mjs --contract --flow clinic:heal-eye,cook:chai-tray --sizes 1280x665,915x412 --run-id s09-x-contract --no-sheets");
   const text = proofLines({ flows: ["clinic:heal-eye"], port: 8870, specFile: "build/tools/ops/specs/s09-x.json", elements: ["finger", "order card"] }, "s09-x").join("\n");
-  assert.ok(text.includes("flock -w 3600 /tmp/njg-browser-8870.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye --sizes 1366x768,915x412 --run-id s09-x-contract --no-sheets"));
+  assert.ok(text.includes("flock -w 3600 /tmp/njg-browser-8870.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye --sizes 1280x665,915x412 --run-id s09-x-contract --no-sheets"));
   assert.ok(text.includes("node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s09-x.json"), "the builder plays its rows after with the brief's own spec");
   assert.ok(text.includes("kitsheet.mjs --elem finger,order-card --after"), "a brief naming elements films them side by side");
   assert.match(text, /checks\.mjs/);

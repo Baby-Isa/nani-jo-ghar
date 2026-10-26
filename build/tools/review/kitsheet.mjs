@@ -11,7 +11,7 @@ import { spawnSync } from "node:child_process";
 import { args, help, die, ROOT, rel } from "./lib/common.mjs";
 
 const HELP = `
-node build/tools/review/kitsheet.mjs --elem <name>[,<name>...] [--before | --after] [--sizes 1366x768,915x412] [--pages cook,clinic]
+node build/tools/review/kitsheet.mjs --elem <name>[,<name>...] [--before | --after] [--sizes 1280x665,915x412] [--pages cook,clinic]
                                      [--parallel 2] [--plan] [--from <kit run id> | --redraw]
 node build/tools/review/kitsheet.mjs --list
   --elem     the element(s): a name or its slug from data/kit-elements.json (finger, glow, "order card" or order-card, help-box ...);
@@ -35,7 +35,7 @@ const want = String(a.val("elem") || "").split(",").map((s) => s.trim()).filter(
 if (!want.length) die("Name the element(s): --elem finger (--list shows them).");
 const elems = want.map((w) => { const k = Object.keys(KIT.elements).find((n) => n === w || slugOf(n) === slugOf(w)); if (!k) die(`No element "${w}" in data/kit-elements.json (--list shows them).`); return k; });
 const PAGES = Object.keys(KIT.pages).filter((p) => !a.val("pages") || a.val("pages").split(",").includes(p));
-const SIZES_WANTED = (a.val("sizes") || "1366x768,915x412").split(",");
+const SIZES_WANTED = (a.val("sizes") || "1280x665,915x412").split(",");
 const phase = a.has("before") ? "before" : a.has("after") ? "after" : "now";
 const stamp = () => new Date().toISOString().replace(/[-:]/g, "").slice(0, 15).replace("T", "-") + "-" + Math.random().toString(36).slice(2, 5);
 

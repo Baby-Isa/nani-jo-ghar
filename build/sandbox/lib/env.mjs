@@ -22,7 +22,8 @@ export const SIZES = {
   "800x360": { width: 800, height: 360, label: "small Android landscape", touch: true },
   "915x412": { width: 915, height: 412, label: "phone landscape, 20:9 (Galaxy Z Flip 5, Zafar's phone; CK-44)", touch: true },
   "1480x924": { width: 1480, height: 924, label: "tablet landscape (Galaxy Tab S8 Ultra)", touch: true },
-  "1366x768": { width: 1366, height: 768, label: "laptop" },
+  "1280x665": { width: 1280, height: 665, label: "laptop (Zafar's Yoga Pro 7: Chrome maximised, 2560x1600 at 200%, DPR 2)" },
+  "1366x768": { width: 1366, height: 768, label: "laptop 16:9" },
   "1440x900": { width: 1440, height: 900, label: "16:10 laptop" },
   "1280x800": { width: 1280, height: 800, label: "16:10 laptop (small)" },
   "1024x768": { width: 1024, height: 768, label: "tablet landscape 4:3 (iPad)", touch: true },
@@ -30,11 +31,12 @@ export const SIZES = {
   "1366x1024": { width: 1366, height: 1024, label: "tablet landscape (iPad Pro 12.9)", touch: true },
   "390x844": { width: 390, height: 844, label: "phone upright (the rotate card)", touch: true, upright: true },
 };
-// Rapid prototype (Zafar, 22 Oct): every flow runs at three sizes, a laptop, his S8 Ultra tablet and his Z Flip 5 phone.
+// Rapid prototype (Zafar, 26 Oct): every flow runs at two sizes, his laptop (1280x665, measured in his Chrome) and his Z Flip 5
+// phone; the tablet is close enough to the laptop. Every size (STORE_SIZES) before a publish.
 // The full set (STORE_SIZES, `run.mjs --every-size`) comes back before the app stores. The upright phone is only for the rotate card.
-export const ALL_SIZES = ["1366x768", "1480x924", "915x412"];
-export const STORE_SIZES = ["844x390", "800x360", "915x412", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024", "1480x924"];
-export const QUICK_SIZE = "1366x768";
+export const ALL_SIZES = ["1280x665", "915x412"];
+export const STORE_SIZES = ["1280x665", "844x390", "800x360", "915x412", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024", "1480x924"];
+export const QUICK_SIZE = "1280x665";
 // the sizes that bound the others: the tightest phone, a 4:3 tablet and a 16:10 laptop (the gate's reduced set for deeper paths)
 export const CORE_SIZES = ALL_SIZES;
 

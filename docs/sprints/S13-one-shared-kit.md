@@ -13,7 +13,7 @@ Every shared element sits in one central place, so one change reaches every game
 - So a fix passed in one game and failed in the next. Wave 1's help kit needed four fix rounds to look the same in chai, the pantry and the clinic.
 
 ## Budget
-What it needs; nothing moves to Sprint 14 (Zafar, 26 Oct: everything worth centralising is done this sprint, the parked games aside; the review's four-builder plan and methodology are fine). About $250-300 and 3 days for six builders in three pairs, judges and the review (Zafar, 26 Oct). Rapid-prototype checks at two sizes, laptop and Z Flip 5 (915x412); the tablet is close enough to the laptop; every size before the publish (Zafar, 26 Oct). Laptop: 1366x768 until Zafar's Yoga Pro 7 browser size is confirmed.
+What it needs; nothing moves to Sprint 14 (Zafar, 26 Oct: everything worth centralising is done this sprint, the parked games aside; the review's four-builder plan and methodology are fine). About $250-300 and 3 days for six builders in three pairs, judges and the review (Zafar, 26 Oct). Rapid-prototype checks at two sizes, laptop and Z Flip 5 (915x412); the tablet is close enough to the laptop; every size before the publish (Zafar, 26 Oct). Laptop = 1280x665, Zafar's Yoga Pro 7 measured in his Chrome (DPR 2); checks run at DPR 1 (same layout), art sharpness at DPR 2 before the publish.
 
 ## Step 1: the review (Fable, high, about $15-25; one report, no code)
 Its report is build/reports/s13-kit-review (to write). Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).
