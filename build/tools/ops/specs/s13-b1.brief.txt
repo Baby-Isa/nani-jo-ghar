@@ -1,0 +1,92 @@
+SESSION NAME / MODE:  s13-b1: the cards and the order screen (Sprint 13, pair 2)
+MODEL AND EFFORT:     Opus, high effort (the biggest move (Cook's recipe ladder onto the shared order card) and SH-110: visual judgement and careful wiring)
+COST ESTIMATE:        about $45-55
+HARD STOP:            26 Oct 2026, 23:00 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s13-b1.context.md (849 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S13-one-shared-kit.md (goal, 'Small decisions (Zafar, 26 Oct)')
+     build/reports/s13-kit-review.md sections 2-4 (Word card, Order card, Recipe card, Order screen, Word support and blanking, Intro cards, stamps) and its 'Orchestrator's check'
+     docs/architecture/evidence-loop.md 'The one loop (S13)' (how you prove your work)
+     docs/design-language/ui-design-system.md (its 'Kit' section and section 12, the card), docs/design-language/guide-and-card.md
+     build/reports/s13-a1.md (what pair 1 left you: the ladder copies and .ph emitters in your files)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/order-card.js, css/shared/order-card.css, js/shared/word-card.js, css/shared/word-card.css, js/shared/request-popup.js
+  - js/cook/ui.js, js/cook/dom.js, js/cook/flow.js, js/cook/words.js, cook.html (the #intro markup), css/cook-side-v2.css, the card and intro lines of css/cook.css
+  - js/clinic/kit.js (the card parts only: around :919 and the .cl-card builders; NOT its voice code at :440-633, S13-V owns that), the card lines of css/clinic.css (:45-67, :208-214, :410-480, :668-699)
+  - the word-card restyles in css/day.css (:62-65, :154, :227-229, :278)
+  - the leftovers pair 1 named in these files: js/cook/ui.js:2389 (bulb copy -> data/shared.json), js/cook/stations/maani-line.js:377 and js/day/window.js:117 (ladder fallbacks), data/clinic/pipeline.json bulb_ms (unused), js/cook/main.js and js/clinic/main.js (their lists of shared sheets -> kit.css), the .ph emitters in the files you own (-> .njg-ph)
+  - build/sandbox/lib/contract.mjs (new contract-40 one card markup + SH-110 speaker rows, contract-41 one pop-up; LADDER reads data/shared.json) and its tests
+  - build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)
+  - build/reports/s13-b1.md
+READ-ONLY (never edit):
+  - js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js, js/shared/save.js, js/core/save.js, js/shared/results.js, js/shared/conversations.js, js/shared/story.js, js/shared/onboard.js, js/cook/lang.js, js/cook/core.js (S13-V)
+  - css/shared/* other than order-card.css and word-card.css
+  - build/tools/**, build/lint/**, .claude/**
+  - the parked games (out of scope)
+  - CLAUDE.md
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: To play a card row's word, call the existing voice path the card already uses (S13-V is moving all voices onto js/core/voice.js; keep your call to one function so V's change reaches it).
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Delete before you build: the clinic's own card wrapper and row classes (.cl-card and its 36 restyles in clinic.css) and Cook's 13 '#intro .oc-card' restyles in cook-side-v2.css go; both games draw the card only through OrderCard. A card on screen carries only kit classes.
+     Accept: contract-40 (new): every .oc-card on screen has only kit classes on it and its rows, 0 breaks on cook:chai-tray, cook:fetch, clinic:diagnosis, clinic:heal-eye at both sizes; the order-card kitsheet after shows one look in Cook, the clinic, the lab and first launch
+  2. Cook's recipe ladder (the .ladder / .lsec / .r6 builder in js/cook/ui.js and cook-side-v2.css:111-151) becomes OrderCard rows: the three tiers the design specifies, the ladder calling OrderCard.update. Same steps, same order, same take-back (never remove a mechanic).
+     Accept: after shots of chai, daar and samosa's ladder at L1 and L3 beside the before; contract-40 0 breaks
+  3. SH-110 (Zafar, 26 Oct): a card is never a memory test. When the order first comes every item is written in Kutchi; any row that is blanked (L3+) starts with a clear speaker button at its left that plays that word, as often as tapped, never penalised and never marking the word learned or wrong. This overrides the level table's blanking at L3-L4 (update docs/game-design/modes/cook.md's level table line in your report as a request; the orchestrator edits docs). The leak bots must still pass: hearing the word and finding the item is the skill.
+     Accept: before/after of chai and samosa at L3 and L4, both sizes; contract-40's SH-110 part (every blanked row starts with a speaker) 0 breaks; leak bots green
+  4. Cook uses the kit's order pop-up (request-popup.js's njg-rq) like the clinic and the day: no el: '#intro', Cook's #intro markup and its CSS deleted. The pop-up says the order as today.
+     Accept: contract-41 (new): the pop-up on screen is .njg-rq-card, never #intro, 0 breaks; the order-pop-up kitsheet shows one look in Cook, the clinic and the day
+  5. The word card: the game restyles of .wc-* (clinic.css:668-699, cook.css:1175-1179, day.css as listed) become WordCard options (fit, bg) or go; one entrance, WordCard.pop(el, word), replaces cl-intro-in and icWordIn; SH-123's layout (the word and its English centred in its half, English only while supported and then only when tapped).
+     Accept: the word-card kitsheet after shows one look in the eye test, the door and chai; contract-39 0 breaks
+  6. One stamp: OrderCard.stamp(card) with one .oc-stamp (the S12 served stamp is the reference); cook.css:445-450 and cook-side-v2.css:336-343 go.
+     Accept: after shot of chai's served moment and a clinic card's done row
+  7. Pair 1's leftovers in your files (see owns): one ladder table everywhere; .njg-ph emitted; main.js sheet lists through kit.css. The static known list only shrinks: report kit and tokens counts before -> after for each file you touched.
+     Accept: static.mjs green with lower counts; the bulb known count down by the copies removed
+
+PLACES (build/tools/review/kitmap.mjs --elem order card,word card,order pop-up: where each element is drawn or styled today; one place to fix, the copies go):
+  order card (#mission .oc-card, .cl-side .oc-card, .njg-side .oc-card):
+    the kit: css/shared/order-card.css:5,11-49,57,60-78,81-82,89-92,102,113,117-125,127,129,132 (+51 more); js/shared/bulb.js:37,117; js/shared/conversations.js:52; js/shared/fit.js:121; js/shared/guide.js:99,104; js/shared/order-card.js:44-45,61-64,183-186,188-190,209,252,255-257,259,275,278-279,366,384 (+13 more); js/shared/request-popup.js:43,173,180; js/shared/tokens.js:15,86,88-89,99,113-114
+    outside the kit (19 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:45-52,62,64,176,202-208,291,404-417,434-444,469-472; css/cook-side-v2.css:111-112,116-117,119,123-135,137-139,141,143-145,147,149,151,178,219 (+13 more); css/cook.css:446-448,475,480,483-485,511-514,634-635,638-639,698-704,737-742,752,763,873-876 (+11 more); js/clinic/heal/games/cut.js:656; js/clinic/kit.js:182,780,910,919,928,937,959,1124,1165,1180,1200,1209; js/clinic/run.js:122; js/clinic/screen.js:90,118,167; js/clinic/stages/pharmacy.js:269,323; js/cook/flow.js:107,352; js/cook/mechanics/assemble.js:1359,1379; js/cook/mechanics/tadka.js:50; js/cook/order.js:4,111,123; js/cook/recipes.js:527; js/cook/station-lib.js:849,851; js/cook/stations/chai-tray.js:252,1379,1824; js/cook/stations/daar.js:409; js/cook/ui.js:620,636,714,1439-1440,1466,1560,1586,1591,1621,1683,1754,2076 (+10 more); js/cook/words.js:530,547; js/core/lang/index.js:143
+    parked games (out of scope until unparked): js/find/engine.js:196; js/find/games/ali.js:53; js/find/mechanics/where.js:45; js/find/round.js:131
+  word card (.wc-card):
+    the kit: css/shared/word-card.css:8-9,12-16,19-24,27-32,38-43,46-47,49-50,52,54-58,60-66,68-73; js/shared/order-card.js:36,186,188-192,213; js/shared/word-card.js:19,32,34-35,115,179,181-182,187-188,192,228,264,330,334 (+2 more)
+    outside the kit (8 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:659-661,666,679,681,689; css/cook.css:1160,1162,1164; css/day.css:62-65,154,227-229,278,290; js/clinic/heal/games/eye.js:12,691-692; js/cook/stations/chai-tray.js:1782,1787,1789; js/cook/ui.js:1116,1417,1446,1451,1455,1478,1921; js/day/door.js:225,231; js/day/window.js:138,155
+  order pop-up (.njg-rq-card, #intro .ic-card):
+    the kit: css/shared/order-card.css:375-381,384,386-390,392,394,397-398,400,405-406,408; js/shared/fit.js:89; js/shared/order-card.js:502; js/shared/request-popup.js:39,41,57-58,70,149,198,200,204,213,242,496,498 (+3 more); js/shared/word-card.js:32,320
+    outside the kit (8 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:675; css/cook-side-v2.css:56,111-117,123-135,137-139,141,143-145,147,149,151,154-168,179-190,193-194 (+12 more); css/cook.css:488-491,493-497,499-509,511-515,524,642-643,735-752,770,905-920,922,935-936,1156-1160 (+2 more); js/clinic/heal/host.js:1074,1103; js/cook/dom.js:31; js/cook/stations/chai-tray.js:1791; js/cook/ui.js:1306,1423,1437,1552,1575,1667,1679,2355,3205,3307; js/cook/words.js:547
+    parked games (out of scope until unparked): css/dress.css:67-68; css/monsoon.css:152-153; css/tidy.css:152-153; dress.html:31; find.html:38; js/dress/bot.js:82-83; js/dress/core.js:273,280; js/dress/flow.js:27,282; js/find/flow.js:387,389; js/monsoon/ui.js:207,214; js/snap/bot.js:58-59; js/snap/flow.js:322-324,408,410; js/tidy/engine.js:341,574; js/tidy/lab.js:177; monsoon.html:25; snap.html:67; tidy.html:61
+
+REGRESSION ROWS TO RECHECK (11; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (2): SH-110*, SH-123*
+  order card (its open rows, 5): SH-70*, SH-60*, DAAR-26*, CLN-158*, CLN-57*
+  word card (its open rows, 0): none
+  order pop-up (its open rows, 4): MAA-14*, LNG-01*, SH-64*, ART-08*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s13-b1.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8863 NJG_LOCK=/tmp/njg-browser-8863.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s13-b1.json`.
+  - The elements this brief names, side by side in every game: `COOK_TEST_PORT=8863 NJG_LOCK=/tmp/njg-browser-8863.lock node build/tools/review/kitsheet.mjs --elem order-card,word-card,order-pop-up --after`.
+  - BEFORE THE FINISH, your own flows at 1366x768 and 915x412 under your lock: `flock -w 3600 /tmp/njg-browser-8863.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:fetch,cook:samosa,cook:daar,clinic:diagnosis,clinic:pharmacy,clinic:heal-eye,lab:cook/chai-tray --sizes 1366x768,915x412 --run-id s13-b1-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s13-b1.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s13-b1.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8863.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8863; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s13-b1.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

@@ -1,0 +1,42 @@
+{
+  "name": "s13-v: one voice player, sound effects and saving (Sprint 13, pair 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "every spoken line goes through it, and a child's saved progress must survive: careful plumbing with timing judgement",
+  "cost": "about $35-45",
+  "stop": "26 Oct 2026, 23:00 UK",
+  "branch": "claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": ["LNG-16", "CK-48"],
+  "read": [
+    "docs/sprints/S13-one-shared-kit.md ('Small decisions (Zafar, 26 Oct)': voice, sound effects and saving are shared this sprint)",
+    "build/reports/s13-kit-review.md rows Voice playback, Sfx, Save and progress (section 2) and its 'Orchestrator's check'",
+    "docs/architecture/evidence-loop.md 'The one loop (S13)' (how you prove your work)",
+    "docs/design-language/audio.md, docs/architecture/target-model.md section 3.2 (the one player)",
+    "js/core/voice.js's header (the one player, built and tested, not yet wired to the live games)"
+  ],
+  "owns": [
+    "js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js",
+    "the voice and sound lines of: js/clinic/kit.js (:440-633 and its Voice object only; S13-B1 owns its card parts), js/cook/lang.js, js/cook/core.js, js/shared/conversations.js, js/shared/onboard.js (:772), js/shared/results.js (:205-235), js/shared/story.js, js/clinic/heal/games/boing.js",
+    "saving: js/shared/save.js, js/core/save.js, js/core/progress.js, js/progress.js, js/shared/uistore.js, build/host/helpers.mjs",
+    "the pages' script lists only where a voice, sfx or save file is added or removed (index, first, day, cook, clinic, lab, labs; labs via build/gen_labs.mjs)",
+    "build/lint/static.mjs and build/lint/static-known.json: a new 'voice' check only (no speechSynthesis, new Audio or .play() outside js/core/voice.js, js/shared/sfx.js and the mic in js/shared/speech.js)",
+    "build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others), new unit tests under build/",
+    "build/reports/s13-v.md"
+  ],
+  "readOnly": ["js/shared/order-card.js, word-card.js, request-popup.js, js/cook/ui.js, js/cook/dom.js, js/cook/flow.js, js/cook/words.js, cook.html markup, every css/** file, build/sandbox/lib/contract.mjs (S13-B1)", "js/shared/speech.js and say.js (the mic stays as it is)", "build/tools/**, .claude/**", "the parked games (out of scope)", "CLAUDE.md"],
+  "stubs": "request-popup.js:107 cancels the device voice directly; leave it for S13-B1 and list it in your report: Voice.stop() is the call it should make.",
+  "tasks": [
+    { "do": "One voice player: every live spoken line (Cook, the clinic, conversations, the help kit's audio, the end screen's words, story) plays through js/core/voice.js (createVoice: chooseClip, stitched words, channels, stop). family-voice.js's pick() is folded in, so the STORE path never plays an unchecked clip and never the device voice, while the TEST path keeps its stand-ins exactly as today (G14). Same timing as today: never block input during speech (non-negotiable 7), one stop silences all. Delete the copies (clinic kit.js's own player, Cook's own TTS, results.js and story.js's own speechSynthesis).", "accept": "the new static 'voice' check green at 0 known outside the parked games; contract-voice tests and the contract run 0 breaks on cook:chai-tray, clinic:heal-eye, clinic:diagnosis and the day's door at both sizes; ?dev=voice logs on chai and the eye test show the same lines and sources before and after (both logs in the report folder)" },
+    { "do": "LNG-16: the customer's opening line plays every order (the device voice's cancel race at js/core/voice.js:298); with no muke/khape clip yet it is device-spoken on the test path only, grey italic to record.", "accept": "a contract-run check built with the fix: the opening line starts within 1 s of the order, every order, on chai, maani and chaat L1 (the voice timeline in the before/after .md)" },
+    { "do": "CK-48's last duplicate: family-voice.js loads its data once (shared with the voice index), so no data file is fetched twice on any live page.", "accept": "loadcheck green; the before/after network count per page in the report" },
+    { "do": "Sound effects: every live effect plays through js/shared/sfx.js (by name); Cook's core.js and the clinic's boing keep no own new Audio.", "accept": "the 'voice' check covers it; the sound log of chai and the boing game lists the same effects before and after" },
+    { "do": "Saving: one save module. js/shared/save.js (live) and js/core/save.js (its module twin, same keys) become one; whichever stays, every live page and build/host/helpers.mjs use it, and the other is deleted. A unit test loads a save written by today's code (every key: progress, words, coins, settings, newPlayer) and finds everything. Never change a storage key.", "accept": "the unit test green; first launch, a Cook round and a clinic round on one profile, reloaded, keep their progress (after shots or a dom capture)" }
+  ],
+  "flows": ["cook:chai-tray", "cook:maani-line", "cook:chaat", "clinic:heal-eye", "clinic:heal-boing", "clinic:diagnosis", "first"],
+  "port": 8864,
+  "report": "s13-v",
+  "publish": false
+}

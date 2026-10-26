@@ -1,0 +1,46 @@
+{
+  "name": "s13-b1: the cards and the order screen (Sprint 13, pair 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the biggest move (Cook's recipe ladder onto the shared order card) and SH-110: visual judgement and careful wiring",
+  "cost": "about $45-55",
+  "stop": "26 Oct 2026, 23:00 UK",
+  "branch": "claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": ["SH-110", "SH-123"],
+  "elements": ["order card", "word card", "order pop-up"],
+  "read": [
+    "docs/sprints/S13-one-shared-kit.md (goal, 'Small decisions (Zafar, 26 Oct)')",
+    "build/reports/s13-kit-review.md sections 2-4 (Word card, Order card, Recipe card, Order screen, Word support and blanking, Intro cards, stamps) and its 'Orchestrator's check'",
+    "docs/architecture/evidence-loop.md 'The one loop (S13)' (how you prove your work)",
+    "docs/design-language/ui-design-system.md (its 'Kit' section and section 12, the card), docs/design-language/guide-and-card.md",
+    "build/reports/s13-a1.md (what pair 1 left you: the ladder copies and .ph emitters in your files)"
+  ],
+  "owns": [
+    "js/shared/order-card.js, css/shared/order-card.css, js/shared/word-card.js, css/shared/word-card.css, js/shared/request-popup.js",
+    "js/cook/ui.js, js/cook/dom.js, js/cook/flow.js, js/cook/words.js, cook.html (the #intro markup), css/cook-side-v2.css, the card and intro lines of css/cook.css",
+    "js/clinic/kit.js (the card parts only: around :919 and the .cl-card builders; NOT its voice code at :440-633, S13-V owns that), the card lines of css/clinic.css (:45-67, :208-214, :410-480, :668-699)",
+    "the word-card restyles in css/day.css (:62-65, :154, :227-229, :278)",
+    "the leftovers pair 1 named in these files: js/cook/ui.js:2389 (bulb copy -> data/shared.json), js/cook/stations/maani-line.js:377 and js/day/window.js:117 (ladder fallbacks), data/clinic/pipeline.json bulb_ms (unused), js/cook/main.js and js/clinic/main.js (their lists of shared sheets -> kit.css), the .ph emitters in the files you own (-> .njg-ph)",
+    "build/sandbox/lib/contract.mjs (new contract-40 one card markup + SH-110 speaker rows, contract-41 one pop-up; LADDER reads data/shared.json) and its tests",
+    "build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)",
+    "build/reports/s13-b1.md"
+  ],
+  "readOnly": ["js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js, js/shared/save.js, js/core/save.js, js/shared/results.js, js/shared/conversations.js, js/shared/story.js, js/shared/onboard.js, js/cook/lang.js, js/cook/core.js (S13-V)", "css/shared/* other than order-card.css and word-card.css", "build/tools/**, build/lint/**, .claude/**", "the parked games (out of scope)", "CLAUDE.md"],
+  "stubs": "To play a card row's word, call the existing voice path the card already uses (S13-V is moving all voices onto js/core/voice.js; keep your call to one function so V's change reaches it).",
+  "tasks": [
+    { "do": "Delete before you build: the clinic's own card wrapper and row classes (.cl-card and its 36 restyles in clinic.css) and Cook's 13 '#intro .oc-card' restyles in cook-side-v2.css go; both games draw the card only through OrderCard. A card on screen carries only kit classes.", "accept": "contract-40 (new): every .oc-card on screen has only kit classes on it and its rows, 0 breaks on cook:chai-tray, cook:fetch, clinic:diagnosis, clinic:heal-eye at both sizes; the order-card kitsheet after shows one look in Cook, the clinic, the lab and first launch" },
+    { "do": "Cook's recipe ladder (the .ladder / .lsec / .r6 builder in js/cook/ui.js and cook-side-v2.css:111-151) becomes OrderCard rows: the three tiers the design specifies, the ladder calling OrderCard.update. Same steps, same order, same take-back (never remove a mechanic).", "accept": "after shots of chai, daar and samosa's ladder at L1 and L3 beside the before; contract-40 0 breaks" },
+    { "do": "SH-110 (Zafar, 26 Oct): a card is never a memory test. When the order first comes every item is written in Kutchi; any row that is blanked (L3+) starts with a clear speaker button at its left that plays that word, as often as tapped, never penalised and never marking the word learned or wrong. This overrides the level table's blanking at L3-L4 (update docs/game-design/modes/cook.md's level table line in your report as a request; the orchestrator edits docs). The leak bots must still pass: hearing the word and finding the item is the skill.", "accept": "before/after of chai and samosa at L3 and L4, both sizes; contract-40's SH-110 part (every blanked row starts with a speaker) 0 breaks; leak bots green" },
+    { "do": "Cook uses the kit's order pop-up (request-popup.js's njg-rq) like the clinic and the day: no el: '#intro', Cook's #intro markup and its CSS deleted. The pop-up says the order as today.", "accept": "contract-41 (new): the pop-up on screen is .njg-rq-card, never #intro, 0 breaks; the order-pop-up kitsheet shows one look in Cook, the clinic and the day" },
+    { "do": "The word card: the game restyles of .wc-* (clinic.css:668-699, cook.css:1175-1179, day.css as listed) become WordCard options (fit, bg) or go; one entrance, WordCard.pop(el, word), replaces cl-intro-in and icWordIn; SH-123's layout (the word and its English centred in its half, English only while supported and then only when tapped).", "accept": "the word-card kitsheet after shows one look in the eye test, the door and chai; contract-39 0 breaks" },
+    { "do": "One stamp: OrderCard.stamp(card) with one .oc-stamp (the S12 served stamp is the reference); cook.css:445-450 and cook-side-v2.css:336-343 go.", "accept": "after shot of chai's served moment and a clinic card's done row" },
+    { "do": "Pair 1's leftovers in your files (see owns): one ladder table everywhere; .njg-ph emitted; main.js sheet lists through kit.css. The static known list only shrinks: report kit and tokens counts before -> after for each file you touched.", "accept": "static.mjs green with lower counts; the bulb known count down by the copies removed" }
+  ],
+  "flows": ["cook:chai-tray", "cook:fetch", "cook:samosa", "cook:daar", "clinic:diagnosis", "clinic:pharmacy", "clinic:heal-eye", "lab:cook/chai-tray"],
+  "port": 8863,
+  "report": "s13-b1",
+  "publish": false
+}
