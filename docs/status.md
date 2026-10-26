@@ -16,7 +16,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 3. Step 2: pair 1 (S13-T the checking loop, S13-A1 colours, motion, page setup) launched 26 Oct 14:30 UK as in-chat worktree builders; then pair 2 (B1 cards, V voice/sfx/save), pair 3 (A2 faces/buttons/finger/"?", B2 bubbles/end screen), then every game replayed at both sizes, `/review`, publish on his OK, his play, `/feedback`.
 4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
 
-**After S13 (Zafar, 26 Oct):** S14 lock the principles (ease of learning and of play, one rulebook turned into checks; first item: chai's order, said item by item in bubbles with big word cards flying to the sidebar, becomes every game's order, recommended); S15 finalise each Cook and clinic game; S16 the book (traditional learning; very important) and the morning scene; S17 the farm trip; then the stitching (transitions, scenes, zooms).
+**After S13: phases, each a few sprints (Zafar, 26 Oct):** 1. lock the principles (ease of learning and of play, one rulebook turned into checks), starting S14 with the chai-style order everywhere (said item by item in bubbles, big word cards flying to the sidebar; the S11 experiment's rollout, `docs/game-design/easy-to-play.md`; his 22 Oct C1 asked the same for the clinic), played and fed back on before it is final; 2. finalise each Cook and clinic game; 3. the book (traditional learning; very important) and the morning scene; 4. the farm trip; 5. the stitching (transitions, scenes, zooms).
 
 **Open questions to Zafar:** the review's 15 decisions (its section 7; 10 withdrawn).
 
