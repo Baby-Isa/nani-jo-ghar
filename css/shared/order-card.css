@@ -284,6 +284,11 @@
 .oc-card .oc-row.later.next-up { opacity: 1; }
 .oc-card .oc-row.now { background: var(--njg-chosen); }
 .oc-card .oc-row.pulse { animation: var(--njg-pulse-anim); }
+/* SH-53, SH-55 (Cook's station voice): the row a guide's line names, while she says it: the one highlight, the gold token drawn
+   INSIDE the row, so no card or sidebar edge can clip it (was Cook's #mission .throb) */
+.oc-card .oc-throb { border-radius: var(--njg-radius); animation: ocThrob 0.7s ease-in-out infinite alternate !important; }
+@keyframes ocThrob { from { box-shadow: inset 0 0 0 var(--njg-line) var(--njg-gold); background-color: var(--njg-card); } to { box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); background-color: color-mix(in srgb, var(--njg-gold) 16%, var(--njg-card)); } }
+@media (prefers-reduced-motion: reduce) { .oc-card .oc-throb { animation: none !important; box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); } }
 .oc-card .oc-count {
   flex: none; margin-left: var(--njg-s2); padding: var(--njg-s1) var(--njg-s2); border-radius: var(--njg-radius);
   background: var(--njg-chosen); color: var(--oc-word); font-weight: 800; font-size: var(--oc-p); line-height: 1.2;

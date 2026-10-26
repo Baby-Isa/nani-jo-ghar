@@ -156,11 +156,7 @@ body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
 
 
 /* (the served stamp is the kit's one stamp, OrderCard.stamp: css/shared/order-card.css .oc-stamp; S13-B1) */
-/* SH-53 / SH-55: the one highlight (her row while she talks) is the gold token, drawn INSIDE the row, so no card or
-   sidebar edge can clip it */
-body.w6 #mission .throb { animation: throbIn .7s ease-in-out infinite alternate !important; border-radius: var(--njg-radius); }
-@keyframes throbIn { from { box-shadow: inset 0 0 0 var(--njg-line) var(--njg-gold); background-color: var(--njg-card); } to { box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); background-color: color-mix(in srgb, var(--njg-gold) 16%, var(--njg-card)); } }
-@media (prefers-reduced-motion: reduce) { body.w6 #mission .throb { animation: none !important; box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); } }
+/* (SH-53, SH-55: the row Nani is talking about, the one highlight, is the kit's row state .oc-throb: css/shared/order-card.css; S13-B1) */
 
 /* decision 84 (12 Oct): the "to record" flag is a hidden tag */
 .md-rec { display: none !important; }

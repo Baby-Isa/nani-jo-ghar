@@ -387,8 +387,8 @@
     });
     const cap = $("#voice");
     const onCard = els.length > 0 && !opts.caption;
-    document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
-    els.forEach((e) => e.classList.add("throb"));
+    document.querySelectorAll(".oc-throb").forEach((e) => e.classList.remove("oc-throb"));
+    els.forEach((e) => e.classList.add("oc-throb")); // (the kit's row state, css/shared/order-card.css; S13-B1)
     // 28 Sept: her line shows in her own box at the top of the sidebar (no caption over the picture)
     if (guide) {
       guideLine = line;
@@ -421,7 +421,7 @@
     } finally {
       if (offSkip) offSkip();
       if (tok === voiceTok) {
-        els.forEach((e) => e.classList.remove("throb"));
+        els.forEach((e) => e.classList.remove("oc-throb"));
         cap.classList.add("hidden");
         if (guide) {
           guide.talk(false);
@@ -436,7 +436,7 @@
   UI.hideVoice = () => {
     voiceTok++;
     if ($("#voice")) $("#voice").classList.add("hidden");
-    document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
+    document.querySelectorAll(".oc-throb").forEach((e) => e.classList.remove("oc-throb"));
     if (guide) {
       guide.talk(false);
       showGuide();
