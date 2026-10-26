@@ -10953,7 +10953,7 @@
    "after": null,
    "capture": [
     "crop:.hs-face",
-    "crop:#side .cl-card-face",
+    "crop:.cl-side .oc-face",
     "ref:sources/art/s12/fc-face-circles-v1.png"
    ],
    "expect": null,
