@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { openGrownUps } from "../drivers/index.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
 import { MODE_DRIVER_FLOWS } from "./modes.mjs";
 
@@ -54,6 +55,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           await page.evaluate(() => import("./js/cook/mount.js").then((m) => { (window.njgTest = window.njgTest || {}).cook = m.Cook.testHook; window.Cook = m.Cook; }));
           await sleep(400);
           await rec.state(`${game.split("/").pop()}-start`, { settle: 200 });
+          if (stages === 1) await openGrownUps(page, rec, "#btn-help"); // (S13-A2: a probe about the grown-ups' "?")
           if (mode === "mute-across-modes" && !muted) { muted = true; await muteAcross(ctx, `${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`); continue; }
           const P = new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-`, mode: mode === "mistake" ? "mistake" : "fair" });
           P.helped = true;

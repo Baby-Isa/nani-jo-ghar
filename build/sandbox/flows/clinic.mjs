@@ -5,7 +5,7 @@
 // &quiet=1 (no device voice) &fast=1 (short waits) &onboard=0 (no first-time ghost finger) &seed=7 (the same people every run).
 import { BASE, sleep } from "../lib/env.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
-import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait } from "../drivers/index.mjs";
+import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait, openGrownUps } from "../drivers/index.mjs";
 
 const SEED = 7;
 // the evidence loop's named drivers on the clinic (drivers/catalog.mjs; build/sandbox/data/evidence.json _drivers): each plays fair
@@ -233,20 +233,6 @@ export class ClinicPlayer {
       if (["tap", "act", "point", "say", "belt"].includes(k) && !this.drv.turns.has(`${stage}-${k}`)) { this.drv.turns.add(`${stage}-${k}`); await mark(page, `your-turn-${stage}-${k}`); }
       if (this.hints && ["tap", "act", "point", "belt"].includes(k) && !(await this.page.evaluate(() => !!document.querySelector(".njg-onboard.on")))) await this.hintMoves(stage);
       if (this.mistakes && ["tap", "act", "belt"].includes(k) && (await this.mistakeMoves(stage, e))) continue;
-      // S13-A2: a probe about the grown-ups' "?" (lib/evidence-probe.mjs wantsHelp): the kit's "?" opened once, then put away
-      if (!this.drv.helped && ["tap", "act", "point", "belt"].includes(k)) {
-        this.drv.helped = true;
-        const ev = page.__njgEvidence;
-        if (ev && ev.wantsHelp && ev.wantsHelp() && (await page.$(".cl-dock .njg-gu-btn"))) {
-          await page.click(".cl-dock .njg-gu-btn", { force: true }).catch(() => {});
-          await sleep(300);
-          if (await page.$(".njg-gu-pop:not(.hidden)")) {
-            await this.once("help-open");
-            await page.click(".cl-dock .njg-gu-btn", { force: true }).catch(() => {});
-            await sleep(200);
-          }
-        }
-      }
       // stuck (S13-T): the stage's first ask left alone through every help rung (drivers/index.mjs stuckWait), then fair
       if (this.mode === "stuck" && !this.drv.stuck && ["tap", "act", "point", "belt"].includes(k)) { this.drv.stuck = true; await stuckWait(page, (n, o) => this.once(n, o)); continue; }
       if (k === "tap" || k === "act") {
@@ -469,6 +455,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in njgTest.clinic
       await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.njgTest?.clinic.Stages.heal.current; }, get result() { return window.njgTest?.clinic.last; } } }); });
       await sleep(500);
+      await openGrownUps(page, rec, ".cl-dock .njg-gu-btn");
       const P = new ClinicPlayer(page, rec, { mode });
       if (mode === "lab-log-on") await rec.state("lab-log-on", { settle: 300 });
       try {

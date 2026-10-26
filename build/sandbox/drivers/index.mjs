@@ -82,6 +82,21 @@ export async function watchVoice(page) {
 // counted from the stop on the wall clock, so a slow screenshot never pushes the next one later. Nothing is tapped or moved.
 export const STUCK_AT = [5500, 12500, 18500];
 export const stuckName = (ms) => `stuck-${Math.floor(ms / 1000)}s`;
+// S13-A2: a probe about the grown-ups' "?" (lib/evidence-probe.mjs wantsHelp) sees the kit's pop-up: the page's "?" opened once
+// (rec "help-open"), then put away
+export async function openGrownUps(page, rec, sel = ".njg-gu-btn") {
+  const ev = page.__njgEvidence;
+  if (!(ev && ev.wantsHelp && ev.wantsHelp())) return false;
+  const b = await page.$(sel);
+  if (!b || !(await b.isVisible().catch(() => false))) return false;
+  await page.click(sel, { force: true }).catch(() => {});
+  await sleep(350);
+  if (!(await page.$(".njg-gu-pop:not(.hidden)"))) return false;
+  await rec.state("help-open", { settle: 0 });
+  await page.click(sel, { force: true }).catch(() => {});
+  await sleep(200);
+  return true;
+}
 export async function stuckWait(page, once, { at = STUCK_AT, tail = 1200 } = {}) {
   const t0 = Date.now();
   await mark(page, "stuck", { block: false });
