@@ -1,5 +1,5 @@
 // CLN-126 / CLN-127 proof: plays the fever heal game (level 1, real pace) with its own debug driver and records, for
-// every line SHE says, whether her bubble (.cl-bubble.who-patient) was on screen while it played, and where its tail
+// every line SHE says, whether her bubble (.cv-line[data-who=patient], the one bubble since S13-B2) was on screen while it played, and where its tail
 // pointed against her face (the art's head and mouth anchors). Prints one line per patient line and a summary;
 // exit 1 if a line of hers had no bubble.
 //   COOK_TEST_PORT=8896 flock -w 900 /tmp/njg-browser.lock timeout 300 node build/tools/review/fever_bubbles.mjs [level] [size] [seed]
@@ -29,7 +29,7 @@ try {
         let playing = false;
         const t = setInterval(() => {
           if (!playing && V.busy) playing = true;
-          const b = document.querySelector(".cl-bubble.who-patient");
+          const b = document.querySelector(".cv-line[data-who=patient]");
           rec.samples++;
           if (b && b.getBoundingClientRect().width > 0) {
             rec.seen++;

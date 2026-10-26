@@ -214,7 +214,7 @@ export class ClinicPlayer {
       }
       if (await this.resultsVisible()) {
         // CLN-111 (s04-r2k2): the end of the morning, the receipt in the shared end pop-up with its end buttons
-        if (await this.ev(() => !!document.querySelector(".njg-results .cl-receipt"))) { await sleep(500); await this.once("morning-end"); await this.results(); continue; }
+        if (await this.ev(() => !!document.querySelector(".njg-results .rs-receipt"))) { await sleep(500); await this.once("morning-end"); await this.results(); continue; }
         const badges = !!(await this.centre(".rs-next"));
         if (badges) { await waitBadges(page); this.badges = await readBadges(page); } else await sleep(500);
         await this.once("results-" + (badges ? "badges" : "words"));
@@ -419,7 +419,7 @@ export class ClinicPlayer {
     const s = await this.ev(() => {
       const g = document.querySelector("[data-reading]");
       const m = document.querySelector(".fv-mood");
-      const b = Array.from(document.querySelectorAll(".cl-bubble")).map((e) => e.textContent.trim()).join(" / ");
+      const b = Array.from(document.querySelectorAll(".cv-line")).map((e) => e.textContent.trim()).join(" / ");
       let ok = null;
       try { const L = window.Clinic.HealScene.L; const w = L.show(L.word("fever-just-right")); ok = (w.kutchi || w.english || "").replace(/[[\]]/g, "").trim(); } catch (e) { /* no engine */ }
       return { reading: g ? g.dataset.reading : "", mood: m ? m.dataset.state || "" : "", bubble: b, ok };

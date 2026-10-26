@@ -166,7 +166,20 @@ export const CONTRACT_HOOK = `(() => {
   const hasArrow = (b) => [...b.querySelectorAll("svg path")].some((p) => p.getAttribute("d") === "M13 6l6 6-6 6" && shown(p.closest("svg"))) || /[→➜➔]/.test(b.textContent || "");
 
   // ---- speech bubbles and the speakers' heads ----
+  // (S13-B2: a line's bubble is the kit's .cv-bubble.njg-bubble, js/shared/conversations.js Conversations.bubble; the old
+  // selectors stay so a game's own bubble is still measured, and broken, by contract-4)
   const BUB = ".cl-bubble, #bubble, .njg-bubble, [data-bubble]";
+  // contract-49 (S13-B2): the end screen's classes; the kit's are its own prefixes and bare state words (gold, primary, wrong ...);
+  // a game's prefix (cl-, hc-, ...) or one of its bare word classes is not
+  const KIT_END = /^(njg-|rs-|oc-|wc|ng-|ob-|cv-|gb-|say-|fit|tier-|gloss-|face-)/;
+  const GAME_BARE = ["ku", "ph", "person", "art", "wp", "r6", "lface", "icard", "standin", "own-colour"];
+  const kitEnd = () => {
+    const r = document.querySelector(".njg-results");
+    if (!r || !shown(r)) return null;
+    const bad = new Set();
+    for (const el of [r, ...r.querySelectorAll("*")]) for (const c of el.classList || []) if ((c.includes("-") && !KIT_END.test(c)) || GAME_BARE.includes(c)) bad.add(c);
+    return { n: 1, bad: [...bad].sort().slice(0, 16) };
+  };
   const tailOf = (b) => {
     const r = b.getBoundingClientRect();
     for (const pe of ["::after", "::before"]) {
@@ -789,7 +802,11 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
     const fg = safe(fingers, []);
     if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on") });
-    const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));
+    // contract-49 (S13-B2): the classes on the end screen that are not the kit's
+    const ke = safe(kitEnd, null);
+    if (ke && !same("kitend", ke)) emit({ k: "kitend", ...ke });
+    // contract-4 (S13-B2): each bubble's kit flag (the kit's .cv-bubble) and, for one that is not, what it is
+    const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => { const kit = b.matches(".cv-bubble"); return { who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b), kit, ...(kit ? {} : { sel: desc(b) }) }; });
     const bsig = bubs.map((b) => [b.who, b.text, Math.round(b.box.l / 6), Math.round(b.box.t / 6)]);
     if (!same("bubble", bsig) && bubs.length) {
       emit({ k: "bubble", list: bubs, heads: [...phaserHeads(), ...domHeads()], play: playArea(), vw: innerWidth, vh: innerHeight });

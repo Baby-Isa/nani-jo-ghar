@@ -287,7 +287,7 @@ export async function runBook(host, api, day) {
   }
   const cvLayer = el("div", "cv-layer day-cv", root);
   let roomLine = null;
-  const bubble = el("div", "cv-bubble cv-say day-bubble", cvLayer);
+  const bubble = el("div", "cv-bubble cv-say", cvLayer);
   bubble.dataset.speaker = "nani";
   const bubbleText = el("span", "cv-text", bubble);
   const spk = el("button", "cv-spk", bubble);

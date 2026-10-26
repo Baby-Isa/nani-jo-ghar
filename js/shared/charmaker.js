@@ -25,10 +25,13 @@
       <div class="cm-side">
         <div class="cm-tabs" role="tablist"></div>
         <div class="cm-swatches" role="radiogroup"></div>
-        <button type="button" class="cm-done" id="cm-done" aria-label="Done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="cm-foot"></div>
       </div>`;
     host.appendChild(root);
     const $ = (s) => root.querySelector(s);
+    // S13-B2 (contract-34): the tick is the kit's ✓ Done (js/shared/buttons.js NjgButtons.done: its look, in its corner of the
+    // foot under the swatches); it waits for the child's tap as before, and glows (the kit's glow) once the last part is chosen
+    const done = global.NjgButtons.done($(".cm-foot"), null, { id: "cm-done", label: "Done" });
     const cat = (id) => opts.categories.find((c) => c.id === id);
     const touched = new Set();
 
@@ -72,7 +75,7 @@
           // invite the next part (one job at a time), without moving there by itself
           const next = root.querySelectorAll(".cm-tab")[i + 1];
           if (next) next.classList.add("invite");
-          else $(".cm-done").classList.add("invite");
+          else global.NjgButtons.glow(done, true);
           $(".cm-char").classList.remove("pop");
           void $(".cm-char").offsetWidth;
           $(".cm-char").classList.add("pop");
@@ -83,7 +86,7 @@
     drawTabs();
     drawSwatches();
     global.__charmaker = { choices: () => Object.assign({}, ch), tab: () => tab };
-    await new Promise((resolve) => $(".cm-done").addEventListener("click", resolve, { once: true }));
+    await new Promise((resolve) => done.addEventListener("click", resolve, { once: true }));
     root.classList.add("leaving");
     return ch;
   };

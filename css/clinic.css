@@ -81,18 +81,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* ---------- the big buttons (right): the shared kit's alone (.njg-btn, css/shared/buttons.css; S02-A, SH-61); the clinic's own
    old buttons and their looks went (S13-A2) ---------- */
-
-/* ---------- speech bubbles ---------- */
-.cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: var(--njg-white); border-radius: 18px; padding: var(--njg-s2) var(--njg-s3); font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(var(--njg-black-rgb), .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
-.cl-bubble.top { left: 50%; top: 10px; transform: translateX(-50%); }
-.cl-bubble.who-patient { background: var(--njg-cream-2); border: 3px solid #f1d9ae; }
-.cl-bubble.who-doctor { background: #eef8f5; border: 3px solid #bfe0d7; }
 @keyframes cl-pop { from { opacity: 0; } to { opacity: 1; } }
-/* CLN-76 (E1, G2): a line with no Kutchi yet: grey italic, flagged "to record" for the grown-ups, never dark text */
-/* CLN-124 (S05-D3; decisions 81, 84): a line still to record is its English in the one placeholder style the card uses
-   (the body font, grey italic, not the bubble's bold display face), so it never reads as dark text to be read */
-.cl-bubble.rec { font-family: var(--njg-font); font-style: italic; font-weight: 600; color: var(--njg-ink-soft); }
-.cl-bubble .cl-rec { display: block; width: max-content; margin-top: var(--njg-s1); padding: 0 var(--njg-s2); border-radius: var(--njg-round); white-space: nowrap; font: 800 var(--njg-flag-t) / 1.35 var(--njg-font); font-style: normal; letter-spacing: .04em; text-transform: uppercase; color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge); }
 /* CLN-77: the pull-out hides the close-up's own UI first (tools, face, panels, pills, counts): no ghost rectangles */
 .cl-stage.cl-outro .hs-root > :not(.hs-svg) { visibility: hidden; }
 
@@ -216,26 +205,6 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 /* speaking: the pills without a mic (the shared Say panel draws its own) */
 .cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s2); max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: var(--njg-s3); border-radius: 22px; box-shadow: 0 6px 20px rgba(var(--njg-black-rgb), .15); }
 .cl-pills-cap { width: 100%; text-align: center; font: 700 16px var(--cl-head); color: var(--cl-soft); }
-
-/* close the clinic: the receipt */
-.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: var(--njg-white); border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(var(--njg-black-rgb), .15); text-align: center; }
-/* CLN-111, CLN-03 (s04-r2k2): the receipt is the body of the one shared end pop-up, at its one place: no card of its own */
-.njg-results .cl-receipt { position: static; transform: none; width: min(100%, 520px); margin: 0 auto; background: none; box-shadow: none; padding: 0; }
-@media (max-height: 430px) {
-  .njg-results .cl-receipt-title { font-size: 28px; line-height: 1; }
-  .njg-results .cl-receipt-row { padding: var(--njg-s1) 0; } /* CLN-147: on the spacing grid */
-  .njg-results .cl-receipt-row .cl-face, .njg-results .cl-receipt-item { width: 40px; height: 40px; }
-  .njg-results .cl-receipt-mark { width: var(--njg-s5); height: var(--njg-s5); }
-  .njg-results .cl-receipt-coins { font-size: 22px; margin-top: var(--njg-s1); }
-}
-.cl-receipt-title { font-size: 44px; }
-.cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed var(--njg-tint-edge); }
-.cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
-.cl-receipt-item { width: 56px; height: 56px; display: grid; place-items: center; }
-.cl-receipt-mark { margin-left: auto; width: var(--njg-s6); height: var(--njg-s6); filter: grayscale(1) opacity(.45); }
-.cl-receipt-mark svg { width: 100%; height: 100%; display: block; }
-.cl-receipt-mark.gold { filter: none; }
-.cl-receipt-coins { margin-top: var(--njg-s2); font: 800 30px var(--cl-head); }
 
 /* narrow and short screens */
 @media (max-width: 700px) and (orientation: portrait) {
@@ -598,8 +567,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-probe.tried::before { border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); }
 .cl-probe.found::before { border-color: var(--njg-gold); background: rgba(242, 193, 78, .6); }
 
-/* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
-.cl-rec, .bubble-rec { display: none !important; }
 
 /* decision 84 (CLN-117): a speaking moment's caption still to record is grey italic, like its pills */
 /* CLN-22 (S05-D): the pharmacy tray is the pantry's tray (PAN-07): its front edge is drawn over what sits on it (a

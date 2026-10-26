@@ -18,6 +18,8 @@
  *   Conversations.setStage("S2")                                   the syllabus stage (the arcs set it)
  *   Conversations.roundMoments(roundId) / roundWords(roundId)       for Stars.voice / Results.show({words})
  *   Conversations.bulb()                                           the light bulb: English for a moment (UX §4)
+ *   Conversations.bubble(anchor, {who, text, en, mood, ...})       THE speech bubble for a line in every game (S13-B2):
+ *                                                                  the clinic's people, Cook's characters (see below)
  *
  * The rules it keeps:
  *   - UX §14 / §10a.13: a wrong pill shakes (and the phone buzzes), the speaker looks embarrassed
@@ -1017,6 +1019,104 @@
     await wait(260);
     layer.remove();
     return C.outcome(m, ex, { mode: ctx.mode || null, round: ctx.round != null ? ctx.round : null, placement: ctx.placement || null });
+  };
+
+  /* ---------- the one speech bubble for a line (S13-B2; the kit review 2-3, decision 6, Zafar 26 Oct) ---------- */
+  /**
+   * Conversations.bubble(anchor, {who, text, en, mood, rec, layer, tap, z, avoid, face}) -> the bubble (an element)
+   * Every speech bubble a game draws for a line (the clinic's people, Cook's characters) is this one: the kit's .cv-bubble,
+   * the same cream bubble as a conversation's, placed by the one placement (js/shared/request-popup.js Lifecycle.bubble.place:
+   * above its speaker's head, its tail down to the head; below with no room; beside a painted face, CLN-127), and it follows
+   * its speaker while it is up (a camera move, a resize, the figure stepping down). No game keeps a bubble of its own
+   * (build/sandbox/lib/contract.mjs contract-4).
+   *   anchor  the speaker's head: an element, a box {left, top, width, height} in page px, or a function giving either (asked
+   *           again each frame while the bubble is up); none: the bubble sits at the top middle of its layer
+   *   who     the speaker (data-who): their last bubble goes when they speak again
+   *   text    the engine's line: its words (a string) or the game's rendering of it (a Node: Cook's word pill, the clinic's words)
+   *   rec     a string line still to record: its English in grey italic, tagged "to record" in the markup only (decision 84)
+   *   en      its English, for the bulb (data-en; never shown by the bubble)
+   *   mood    data-mood ("happy", "embarrassed" ...): the kit's own small hop or shake
+   *   layer   the (positioned) element it is placed in: the play area. Default document.body
+   *   tap     true: it takes taps (a speaker button in it); else a tap goes through it to the game
+   *   z       its stacking order in its layer (default the kit's, 60)
+   *   avoid   other speakers it must not cover: elements, or a function giving them
+   *   face    true: the speaker's face circle at its start (js/shared/face.js, the row size)
+   * bubble.njgPlace() places it again now. Take it off with bubble.remove().
+   */
+  C.bubble = function (anchor, o = {}) {
+    const layer = o.layer || doc.body;
+    const who = o.who != null ? String(o.who) : "";
+    // the speaker's last bubble (kept a moment after its line) goes: two never stack in the same place
+    if (who) doc.querySelectorAll(".cv-line").forEach((x) => x.dataset.who === who && x.remove());
+    const b = mk("div", "cv-bubble cv-line njg-bubble");
+    b.setAttribute("role", "status");
+    b.setAttribute("aria-live", "polite");
+    if (who) b.dataset.who = b.dataset.speaker = who;
+    if (o.mood) b.dataset.mood = o.mood;
+    if (o.en) b.dataset.en = String(o.en);
+    if (o.tap) b.classList.add("cv-tap");
+    if (o.z != null) b.style.zIndex = String(o.z);
+    if (o.face && who) b.appendChild(mk("span", "cv-face", faceOf({ id: who }))).setAttribute("aria-hidden", "true");
+    const t = b.appendChild(mk("span", "cv-text"));
+    if (o.text && o.text.nodeType) t.appendChild(o.text);
+    else if (o.rec) {
+      const p = t.appendChild(mk("span", "cv-ph njg-ph"));
+      p.textContent = o.text == null ? "" : String(o.text);
+      p.dataset.rec = "to record";
+    } else t.textContent = o.text == null ? "" : String(o.text);
+    layer.appendChild(b);
+    const headOf = () => {
+      try {
+        return typeof anchor === "function" ? anchor() : anchor;
+      } catch (e) {
+        return null;
+      }
+    };
+    const avoidOf = () => {
+      try {
+        return ((typeof o.avoid === "function" ? o.avoid() : o.avoid) || []).filter((el) => el && el.isConnected !== false && el.getBoundingClientRect);
+      } catch (e) {
+        return [];
+      }
+    };
+    const L = root.Lifecycle;
+    const place = () => {
+      const a = headOf();
+      if (a && L && L.bubble && L.bubble.place(b, a, layer, { avoid: avoidOf() })) {
+        b.classList.remove("cv-top");
+        return true;
+      }
+      // no head to place by: the top middle of the play area
+      b.classList.add("cv-top");
+      delete b.dataset.njgPlace;
+      b.style.left = b.style.top = b.style.transform = "";
+      return false;
+    };
+    b.njgPlace = place;
+    const box = (a) => {
+      const r = a && (a.getBoundingClientRect ? a.getBoundingClientRect() : a);
+      return r ? `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)}` : "-";
+    };
+    const keyNow = (a) => `${box(a)},${b.offsetWidth},${b.offsetHeight},${root.innerWidth},${root.innerHeight},${doc.querySelectorAll("[data-njg-avoid]").length}`;
+    place();
+    let last = keyNow(headOf());
+    const raf = (f) => (root.requestAnimationFrame ? root.requestAnimationFrame(f) : setTimeout(f, 16));
+    // while it is up it follows its speaker: placed again whenever the head (or the bubble's own size) moves (CLN-146: every
+    // frame, not on a timer, so it never sits a tick behind on her face); a speaker gone from the page leaves it where it was
+    const follow = () => {
+      if (!b.isConnected) return;
+      const a = headOf();
+      if (a && a.nodeType && !a.isConnected) return;
+      const k = keyNow(a);
+      if (k !== last) {
+        last = k;
+        place();
+      }
+      raf(follow);
+    };
+    raf(follow);
+    raf(() => b.classList.add("in"));
+    return b;
   };
 
   /** A heard-only line: a bubble, the voice, gone. Kasuku only ever repeats (§10a.10): pitched up. */

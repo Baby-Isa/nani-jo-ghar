@@ -476,3 +476,31 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
 .rs-results .rs-rec, .rs-rec { display: none !important; }
+
+/* ---------- the receipt (S13-B2: Results.show({receipt}); CLN-111, CLN-03): one row per person in place of the badges, at the
+   end screen's one place; the face is the kit's circle (css/shared/face.css), drawn at its row size. No game restyles it. ---------- */
+.rs-receipt { width: min(100%, calc(var(--njg-s7) * 13)); margin: 0 auto; text-align: center; }
+.rs-receipt-head { font-size: calc(var(--njg-s7) * 1.1); line-height: 1; }
+.rs-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: var(--njg-line-2) dashed var(--njg-tint-edge); }
+.rs-receipt-face { flex: none; display: grid; place-items: center; }
+.rs-receipt-item {
+  flex: none; width: var(--njg-face); height: var(--njg-face); display: grid; place-items: center; box-sizing: border-box; padding: 11%;
+  border-radius: 50%; background: color-mix(in srgb, var(--rs-tint, var(--njg-tile-edge)) 45%, var(--njg-white)); /* (flat: no gradients in the kit) */
+  border: var(--njg-line-2) solid rgba(var(--njg-black-rgb), .08);
+}
+.rs-receipt-item.tinted { border-color: var(--rs-tint); }
+.rs-receipt-item img, .rs-receipt-item svg { width: 100%; height: 100%; object-fit: contain; display: block; }
+.rs-receipt-glyph { font-size: calc(var(--njg-face) * 0.6); line-height: 1; }
+.rs-receipt-mark { margin-left: auto; width: var(--njg-s6); height: var(--njg-s6); filter: grayscale(1) opacity(.45); }
+.rs-receipt-mark svg { width: 100%; height: 100%; display: block; }
+.rs-receipt-mark.gold { filter: none; }
+.rs-receipt-coins { margin-top: var(--njg-s2); font-weight: 800; font-size: calc(var(--njg-t1) * 1.35); }
+@media (max-height: 430px) {
+  .rs-receipt-head { font-size: calc(var(--njg-s7) * 0.7); }
+  .rs-receipt-row { padding: var(--njg-s1) 0; } /* CLN-147: on the spacing grid */
+  .rs-receipt-mark { width: var(--njg-s5); height: var(--njg-s5); }
+  .rs-receipt-coins { margin-top: var(--njg-s1); font-size: var(--njg-t1); }
+}
+/* a page can hide what must not show behind the pop-up (Cook's old menu card, design system 10): it marks it
+   data-njg-results-hide, and while an end screen is up it is gone */
+html.njg-results-open [data-njg-results-hide] { display: none !important; }

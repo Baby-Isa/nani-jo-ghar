@@ -454,25 +454,6 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 .oc-card.speaking:not(.oc-big) { border-color: var(--oc-gold); box-shadow: 0 0 0 var(--njg-line) var(--oc-gold), var(--oc-shadow); }
 .oc-card.speaking .oc-face .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold); }
 
-/* ---------- the one bubble placement (S04-B; SH-68, CLN-86): Lifecycle.bubble.place sets data-njg-place ----------
-   above the speaker's head: the tail points down at it; below (no room above): the tail points up. Cook's #bubble and
-   the clinic's .cl-bubble share it. */
-#bubble[data-njg-place]::before,
-.cl-bubble[data-njg-place]::before {
-  content: ""; position: absolute; width: calc(18 * var(--njg-u)); height: calc(18 * var(--njg-u)); background: inherit;
-  border-radius: calc(3 * var(--njg-u)); left: var(--njg-tail-x, calc(24 * var(--njg-u))); transform: rotate(45deg);
-}
-#bubble[data-njg-place="above"]::before, .cl-bubble[data-njg-place="above"]::before { top: auto; bottom: calc(-9 * var(--njg-u)); }
-#bubble[data-njg-place="below"]::before, .cl-bubble[data-njg-place="below"]::before { top: calc(-9 * var(--njg-u)); bottom: auto; }
-.cl-bubble[data-njg-place] { transform: none; }
-/* CLN-127: beside a painted head (Lifecycle.bubble.place's face placement): the bubble's bottom at her eye line, its tail
-   out of the near side, its tip at her cheek. The base sits on the straight part of the side, just above the corner. */
-#bubble[data-njg-place^="face-"]::before, .cl-bubble[data-njg-place^="face-"]::before {
-  width: calc(22 * var(--njg-u)); height: calc(36 * var(--njg-u)); border-radius: 0; transform: none; top: auto; bottom: calc(-10 * var(--njg-u));
-}
-#bubble[data-njg-place="face-right"]::before, .cl-bubble[data-njg-place="face-right"]::before { left: calc(-19 * var(--njg-u)); right: auto; clip-path: polygon(0 100%, 100% 0, 100% 50%); }
-#bubble[data-njg-place="face-left"]::before, .cl-bubble[data-njg-place="face-left"]::before { left: auto; right: calc(-19 * var(--njg-u)); clip-path: polygon(100% 100%, 0 0, 0 50%); }
-
 /* decision 84: the to-record flag is a hidden tag (see above) */
 .oc-card .oc-rec, .oc-card .oc-strip .oc-rec { display: none !important; }
 

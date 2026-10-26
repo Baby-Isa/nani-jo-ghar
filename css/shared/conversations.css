@@ -4,7 +4,8 @@
  * head (or top centre when the host gives no anchor); the child's reply pills rise from
  * the bottom right, under the thumb (UX §2). No dim, no card: the scene stays alive.
  */
-.cv-layer {
+/* (the colours on a bubble too: a line's bubble, Conversations.bubble, sits in a game's play area, not in a .cv-layer) */
+.cv-layer, .cv-bubble {
   --cv-cream: var(--njg-bubble);
   --cv-ink: var(--njg-bubble-ink);
   --cv-line: var(--njg-bubble-edge);
@@ -12,6 +13,8 @@
   --cv-mine-line: var(--njg-mine-edge);
   --cv-muted: var(--njg-bubble-muted);
   --cv-gold: var(--njg-focus);
+}
+.cv-layer {
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -196,3 +199,27 @@
    (translate only: its size never changes) */
 .cv-pill.cv-pick.ob-lit { animation: cv-pick-hop 1s ease-in-out infinite; }
 @keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 var(--njg-hop-lift); } } /* the kit's hop, held a moment at the top (SH-124) */
+
+/* ---------- the one speech bubble for a line (S13-B2: Conversations.bubble; the clinic's people, Cook's characters) ----------
+   The same cream bubble, placed by the one placement (js/shared/request-popup.js Lifecycle.bubble.place sets data-njg-place and
+   --njg-tail-x): above the speaker's head its tail points down at it, below it the tail points up, beside a painted face (CLN-127)
+   the tail comes out of the near side at her cheek. No head to place by: the top middle of the play area. No game restyles it. */
+.cv-bubble:not(.in) { visibility: hidden; } /* (a bubble on its way in is not on screen yet, for the checks either; was the day's own rule) */
+/* (it fades in where it is placed: never slides from the conversation bubble's own offset to its place, a tail away from the head) */
+.cv-line { z-index: 60; pointer-events: none; font-family: var(--njg-font); transition: opacity .22s; }
+.cv-line.cv-tap { pointer-events: auto; }
+.cv-line[data-njg-place], .cv-line[data-njg-place].in { transform: none; }
+.cv-line.cv-top, .cv-line.cv-top.in { left: 50%; top: max(calc(var(--njg-u) * 12), env(safe-area-inset-top)); transform: translateX(-50%); }
+.cv-bubble[data-njg-place]::before {
+  content: ""; position: absolute; box-sizing: border-box; width: calc(var(--njg-u) * 20); height: calc(var(--njg-u) * 20);
+  background: var(--cv-cream); left: var(--njg-tail-x, calc(var(--njg-u) * 24)); transform: rotate(45deg);
+}
+.cv-bubble[data-njg-place="above"]::before { top: auto; bottom: calc(var(--njg-u) * -11); border-right: calc(var(--njg-u) * 2) solid var(--cv-line); border-bottom: calc(var(--njg-u) * 2) solid var(--cv-line); }
+.cv-bubble[data-njg-place="below"]::before { top: calc(var(--njg-u) * -11); bottom: auto; border-left: calc(var(--njg-u) * 2) solid var(--cv-line); border-top: calc(var(--njg-u) * 2) solid var(--cv-line); }
+.cv-bubble[data-njg-place^="face-"]::before { width: calc(var(--njg-u) * 22); height: calc(var(--njg-u) * 36); transform: none; top: auto; bottom: calc(var(--njg-u) * -10); }
+.cv-bubble[data-njg-place="face-right"]::before { left: calc(var(--njg-u) * -19); right: auto; clip-path: polygon(0 100%, 100% 0, 100% 50%); }
+.cv-bubble[data-njg-place="face-left"]::before { left: auto; right: calc(var(--njg-u) * -19); clip-path: polygon(100% 100%, 0 0, 0 50%); }
+@media (max-height: 499.98px) {
+  .cv-line { padding: calc(var(--njg-u) * 8) calc(var(--njg-u) * 12); }
+  .cv-line .cv-text { font-size: calc(var(--njg-u) * 19); }
+}

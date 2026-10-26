@@ -234,11 +234,10 @@
     global.addEventListener("resize", fit);
   }
   function nextButton(host, label = "Next") {
-    const b = el("button", "st-next", `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4l9 8-9 8" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
-    b.type = "button";
-    b.id = "st-next";
+    // S13-B2 (contract-34): the kit's → Next (js/shared/buttons.js NjgButtons.next: its look, its arrow, its corner), the
+    // pressable one (manual): the story waits for the child's tap on it, as it always has (it never presses itself)
+    const b = global.NjgButtons.next(host, "", null, { manual: true, id: "st-next", cls: "st-next" });
     b.setAttribute("aria-label", label);
-    host.appendChild(b);
     return new Promise((resolve) => {
       requestAnimationFrame(() => b.classList.add("in"));
       b.addEventListener(

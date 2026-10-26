@@ -209,19 +209,21 @@
       "rowWords": "bubble",
       "places": {
         "index": {
-          "at": "bubble"
+          "none": "no one speaks in a bubble in the house (its lines are the guide box's)"
         },
         "first": {
           "at": "bubble"
         },
         "day": {
-          "at": "bubble"
+          "at": "visible:.cv-bubble.in",
+          "tries": 3
         },
         "cook": {
           "at": "bubble"
         },
         "clinic": {
-          "at": "bubble"
+          "at": "bubble",
+          "tries": 3
         },
         "lab": {
           "at": "bubble"

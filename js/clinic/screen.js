@@ -104,7 +104,7 @@
         // request pop-up) are known to be its own, never the last stage's carrying over
         if (global.Lifecycle && global.Lifecycle.stageStart) global.Lifecycle.stageStart("clinic:stage");
         if (scr.bulb && scr.bulb.off) scr.bulb.off(); // SH-41: the bulb's English ends with its stage
-        main.querySelectorAll(".cl-pills, .njg-pills, .cl-bubble, .cl-thought, .cl-card-big, .say-moment, .njg-say").forEach((n) => n.remove());
+        main.querySelectorAll(".cl-pills, .njg-pills, .cv-line, .cl-thought, .cl-card-big, .say-moment, .njg-say").forEach((n) => n.remove());
         document.querySelectorAll("body > .cl-fly").forEach((n) => n.remove());
         play.innerHTML = "";
         scr.stage = h("div", "cl-stage", play);
