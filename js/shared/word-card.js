@@ -123,6 +123,7 @@
     let k = word.kutchi;
     // still to record (decision 84): the English placeholder, grey italic, flagged in the markup only
     box.classList.toggle("to-record", !!word.rec);
+    box.classList.toggle("njg-ph", !!word.rec); // the kit's one placeholder look (css/shared/app.css; S13-A1)
     if (word.rec) box.dataset.rec = "";
     else delete box.dataset.rec;
     box.lang = word.rec ? "en" : "gu-Latn";

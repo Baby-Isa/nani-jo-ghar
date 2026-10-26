@@ -5,13 +5,13 @@
  * the bottom right, under the thumb (UX §2). No dim, no card: the scene stays alive.
  */
 .cv-layer {
-  --cv-cream: #fff8ea;
-  --cv-ink: #2b1810;
-  --cv-line: #d9bf95;
-  --cv-mine: #eaf3ff;
-  --cv-mine-line: #8fb0d8;
-  --cv-muted: #8a7568;
-  --cv-gold: #e0a63a;
+  --cv-cream: var(--njg-bubble);
+  --cv-ink: var(--njg-bubble-ink);
+  --cv-line: var(--njg-bubble-edge);
+  --cv-mine: var(--njg-mine);
+  --cv-mine-line: var(--njg-mine-edge);
+  --cv-muted: var(--njg-bubble-muted);
+  --cv-gold: var(--njg-focus);
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -35,7 +35,7 @@
   color: var(--cv-ink);
   border: calc(var(--njg-u) * 2) solid var(--cv-line);
   border-radius: calc(var(--njg-u) * 22);
-  box-shadow: 0 calc(var(--njg-u) * 6) calc(var(--njg-u) * 18) rgba(60, 35, 20, .18);
+  box-shadow: 0 calc(var(--njg-u) * 6) calc(var(--njg-u) * 18) rgba(var(--njg-shade-rgb), .18);
   opacity: 0;
   transform: translate(-50%, calc(-100% - calc(var(--njg-u) * 14))) scale(.9);
   transition: opacity .22s, transform .22s;
@@ -60,7 +60,7 @@
 .cv-free .cv-bubble.in { transform: translate(-50%, 0) scale(1); }
 .cv-face { font-size: calc(var(--njg-u) * 34); line-height: 1; flex: none; white-space: nowrap; }
 .cv-text { font-size: calc(var(--njg-u) * 22); font-weight: 800; line-height: 1.25; flex: 1 1 auto; min-width: 0; }
-.cv-bubble.speaking .cv-text { color: #8a3b1c; }
+.cv-bubble.speaking .cv-text { color: var(--njg-speaking); }
 .cv-bubble[data-mood="embarrassed"], .cv-bubble[data-mood="scratch"], .cv-bubble[data-mood="puzzled"], .cv-bubble[data-mood="sigh"] { animation: cv-sheepish .6s ease; }
 .cv-bubble[data-mood="happy"] { animation: cv-hop .45s ease; }
 .cv-spk, .cv-skip {
@@ -69,7 +69,7 @@
   height: var(--njg-tap);
   border-radius: 50%;
   border: calc(var(--njg-u) * 2) solid var(--cv-line);
-  background: #fff;
+  background: var(--njg-white);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -80,8 +80,8 @@
 .cv-heard .cv-text { font-size: calc(var(--njg-u) * 20); }
 
 /* a placeholder line: grey italic English (never tested, to record) */
-.cv-ph { color: var(--cv-muted); font-style: italic; font-weight: 600; }
-.cv-en { color: #3c5a2a; }
+.cv-ph { font-weight: 600; }
+.cv-en { color: var(--njg-leaf-deep); }
 
 /* ---------- the child's reply pills ---------- */
 .cv-replies {
@@ -134,7 +134,7 @@
   background: var(--cv-mine);
   border: calc(var(--njg-u) * 2) solid var(--cv-mine-line);
   border-radius: calc(var(--njg-u) * 22) calc(var(--njg-u) * 22) calc(var(--njg-u) * 6) calc(var(--njg-u) * 22);
-  box-shadow: 0 calc(var(--njg-u) * 4) calc(var(--njg-u) * 12) rgba(30, 50, 90, .16);
+  box-shadow: 0 calc(var(--njg-u) * 4) calc(var(--njg-u) * 12) rgba(var(--njg-navy-shade-rgb), .16);
   cursor: pointer;
   text-align: left;
   transition: transform .18s, box-shadow .18s, opacity .25s;
@@ -143,8 +143,8 @@
 .cv-pill .cv-pic { font-size: calc(var(--njg-u) * 36); line-height: 1.15; white-space: nowrap; flex: none; }
 .cv-pill .cv-words { font-size: calc(var(--njg-u) * 27); font-weight: 800; line-height: 1.2; min-width: 0; }
 .cv-pill .cv-glyph { display: inline-flex; }
-.cv-pill .cv-glyph svg { width: calc(var(--njg-u) * 26); height: calc(var(--njg-u) * 26); color: #2f4f7f; }
-.cv-pill.lifted { transform: translateY(calc(var(--njg-u) * -6)) scale(1.04); box-shadow: 0 calc(var(--njg-u) * 10) calc(var(--njg-u) * 20) rgba(30, 50, 90, .24); border-color: #3f6fb0; }
+.cv-pill .cv-glyph svg { width: calc(var(--njg-u) * 26); height: calc(var(--njg-u) * 26); color: var(--njg-navy); }
+.cv-pill.lifted { transform: translateY(calc(var(--njg-u) * -6)) scale(1.04); box-shadow: 0 calc(var(--njg-u) * 10) calc(var(--njg-u) * 20) rgba(var(--njg-navy-shade-rgb), .24); border-color: var(--njg-blue); }
 .cv-pill.shake { animation: cv-shake .5s; }
 .cv-pill.dodge { animation: cv-dodge .5s ease forwards; }
 .cv-pill.dodge.dodge-alt { animation-name: cv-dodge-alt; }
@@ -158,13 +158,12 @@
 .cv-pill .cv-glyph svg { width: calc(var(--njg-u) * 34); height: calc(var(--njg-u) * 34); }
 
 /* the lab shows what the game hides */
-.cv-lab .cv-pill[data-correct="true"]::after { content: "✓"; font-size: var(--njg-t4); color: #3c7a2a; margin-left: calc(var(--njg-u) * 4); }
-.cv-lab .is-ph::before, .cv-lab .cv-ph::after { content: "PH"; font: 700 var(--njg-t4)/1 system-ui; color: #fff; background: #a63b3b; border-radius: calc(var(--njg-u) * 6); padding: calc(var(--njg-u) * 2) calc(var(--njg-u) * 4); margin: 0 calc(var(--njg-u) * 4); font-style: normal; }
+.cv-lab .cv-pill[data-correct="true"]::after { content: "✓"; font-size: var(--njg-t4); color: var(--njg-tick-green); margin-left: calc(var(--njg-u) * 4); }
+.cv-lab .is-ph::before, .cv-lab .cv-ph::after { content: "PH"; font: 700 var(--njg-t4)/1 system-ui; color: var(--njg-white); background: var(--njg-madder); border-radius: calc(var(--njg-u) * 6); padding: calc(var(--njg-u) * 2) calc(var(--njg-u) * 4); margin: 0 calc(var(--njg-u) * 4); font-style: normal; }
 
 @keyframes cv-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(calc(var(--njg-u) * -10)); } 40% { transform: translateX(calc(var(--njg-u) * 9)); } 60% { transform: translateX(calc(var(--njg-u) * -6)); } 80% { transform: translateX(calc(var(--njg-u) * 4)); } }
 @keyframes cv-dodge { 0% { transform: none; } 45% { transform: translateX(calc(var(--njg-u) * -70)) rotate(-6deg); } 100% { transform: translateX(calc(var(--njg-u) * -40)); } }
 @keyframes cv-dodge-alt { 0% { transform: translateX(calc(var(--njg-u) * -40)); } 45% { transform: translateX(calc(var(--njg-u) * 30)) rotate(6deg); } 100% { transform: none; } }
-@keyframes cv-throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); box-shadow: 0 0 0 calc(var(--njg-u) * 7) rgba(224, 166, 58, .35); } }
 @keyframes cv-sheepish { 0%, 100% { rotate: 0deg; } 30% { rotate: -3deg; } 60% { rotate: 2deg; } }
 @keyframes cv-hop { 50% { translate: 0 calc(var(--njg-u) * -6); } }
 
@@ -196,4 +195,4 @@
 /* SH-124 (the judge, 23 Oct: the bounce was 1-2 px): the reply to pick hops a clear 10% of its height and rests at the top a moment
    (translate only: its size never changes) */
 .cv-pill.cv-pick.ob-lit { animation: cv-pick-hop 1s ease-in-out infinite; }
-@keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 -10%; } }
+@keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 var(--njg-hop-lift); } } /* the kit's hop, held a moment at the top (SH-124) */

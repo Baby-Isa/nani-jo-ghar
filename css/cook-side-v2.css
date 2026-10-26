@@ -14,25 +14,25 @@
    sidebars at once with the same weight as the game's ids. Loaded after css/cook.css.
    ===================================================================================== */
 :root {
-  --sb-panel: #efe5d6;
-  --sb-divider: #d2bf9f;
-  --sb-line: #e6dac7;
-  --sb-ink: #2d2018;
-  --sb-soft: #7a6857;
-  --sb-word: #a33a2c;
+  --sb-panel: var(--njg-panel);
+  --sb-divider: var(--njg-sb-divider);
+  --sb-line: var(--njg-line-soft);
+  --sb-ink: var(--njg-cook-ink);
+  --sb-soft: var(--njg-ink-soft);
+  --sb-word: var(--njg-sb-word);
   --sb-shadow: 0 1px 2px rgba(70, 45, 20, 0.07);
   --sb-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --sb-card: #ffffff;
-  --sb-pill-line: #e2d8c9;
-  --sb-gold-edge: #c99a2e;
+  --sb-card: var(--njg-white);
+  --sb-pill-line: var(--njg-tint-edge);
+  --sb-gold-edge: var(--njg-gold);
   --sb-gold-ink: var(--sb-ink);
-  --sb-next-fill: #eeebe6;
-  --sb-next-line: #d9d3ca;
-  --sb-next-edge: #c99a2e;
-  --sb-tint-a: #f6eee1;
-  --sb-tint-a-edge: #e8dac3;
-  --sb-tint-b: #eaf0ee;
-  --sb-tint-b-edge: #d3dfda;
+  --sb-next-fill: var(--njg-next);
+  --sb-next-line: var(--njg-grey);
+  --sb-next-edge: var(--njg-gold);
+  --sb-tint-a: var(--njg-page);
+  --sb-tint-a-edge: var(--njg-tint-edge);
+  --sb-tint-b: var(--njg-sb-tint-b);
+  --sb-tint-b-edge: var(--njg-sb-tint-b-edge);
   /* the type scale: the shared tokens (css/shared/tokens.css, sized per screen from data/layout.json; R3a) */
   --sb-h: var(--njg-side-h);
   --sb-p: var(--njg-side-p);
@@ -57,11 +57,11 @@ body.w6 :is(#side, .sb2) {
 
 /* ---------- the face = replay: a small speaker badge on its corner ---------- */
 .face-say { position: relative; flex: none; border: none; padding: 0; margin: 0; background: none; border-radius: 50%; cursor: pointer; display: block; -webkit-tap-highlight-color: transparent; }
-.face-say img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #f1e6d4; box-shadow: 0 0 0 1px var(--sb-line); }
+.face-say img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: var(--njg-face-bg); box-shadow: 0 0 0 1px var(--sb-line); }
 .face-say .say-badge {
   position: absolute; right: -2px; bottom: -2px; z-index: 3; width: 38%; min-width: 15px; max-width: 24px; aspect-ratio: 1; border-radius: 50%;
   background: var(--sb-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: 0 0 0 2px var(--njg-white);
   pointer-events: none;
 }
 .face-say:active { transform: scale(0.95); }
@@ -123,7 +123,7 @@ body.w6 :is(#side, .sb2, #intro) .r6::after { content: none; display: none; }
 body.w6 :is(#side, .sb2, #intro) .r6 {
   position: relative; display: flex; align-items: center; gap: 6px; width: 100%; min-width: 0;
   height: var(--sb-pill-h); min-height: 0; margin: 0; padding: 0 8px 0 12px;
-  border-radius: 10px; background: #fff; border: 1px solid var(--sb-pill-line);
+  border-radius: 10px; background: var(--njg-white); border: 1px solid var(--sb-pill-line);
   box-shadow: none;
   transition: background-color .2s, border-color .2s, box-shadow .2s;
 }
@@ -140,7 +140,7 @@ body.w6 :is(#side, .sb2, #intro) .r6 .tk svg { width: 100%; height: 100%; displa
 /* next (ordered jobs only): a light grey fill */
 body.w6 :is(#side, .sb2, #intro) .r6.next { background: var(--sb-next-fill); border-color: var(--sb-next-line); box-shadow: none; }
 /* done: the same white pill, a flat 2px gold outline (1px border + 1px ring, so nothing shifts), the check */
-body.w6 :is(#side, .sb2, #intro) .r6.done { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
+body.w6 :is(#side, .sb2, #intro) .r6.done { background: var(--njg-white); border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
 body.w6 :is(#side, .sb2, #intro) .r6.done .lt { color: var(--sb-ink); }
 body.w6 :is(#side, .sb2, #intro) .r6.done .tk svg { animation: tickIn .3s cubic-bezier(.2, 1.5, .4, 1); }
 /* a "no" row ("Dudh na.") is a pill like any other */
@@ -148,7 +148,7 @@ body.w6 :is(#side, .sb2, #intro) .r6.no .ldot, body.w6 :is(#side, .sb2, #intro) 
 /* English (the bulb) */
 body.w6 :is(#side, .sb2, #intro) .r6 .en6 { color: var(--indigo); font-family: var(--ui-font); }
 /* read-along: the part being said lights up */
-body.w6 :is(#side, .sb2, #intro) .r6.reading { background: #fff4d2 !important; border-color: var(--sb-next-edge) !important; box-shadow: 0 0 0 2px rgba(255, 217, 138, 0.9) !important; }
+body.w6 :is(#side, .sb2, #intro) .r6.reading { background: #fff4d2 !important; border-color: var(--sb-next-edge) !important; box-shadow: 0 0 0 2px rgba(var(--njg-gold-pale-rgb), 0.9) !important; }
 
 /* ---------- group boxes: one per skewer / maani / cup, alternately tinted; no label per group ---------- */
 body.w6 :is(#side, .sb2, #intro) .ugroup { display: contents; }
@@ -164,7 +164,7 @@ body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.named {
 body.w6 :is(#side, .sb2, #intro) .icard.tint-b,
 body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.tint-b { background: var(--sb-tint-b); border-color: var(--sb-tint-b-edge); }
 body.w6 :is(#side, .sb2, #intro) .icard.done,
-body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.done { background: #fbf2d9; border-color: #ecd9a6; }
+body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.done { background: var(--njg-chosen); border-color: #ecd9a6; }
 body.w6 :is(#side, .sb2, #intro) .icard .card-say:not(.face-say) { display: none; }
 @media (max-height: 430px) {
   body.w6 :is(#side, .sb2) .icards, body.w6 :is(#side, .sb2) .ugroup .icards { gap: 5px; }
@@ -278,15 +278,15 @@ body.w6 :is(#side, .sb2, #intro) .face-say.card-say { position: relative; top: a
 body.w6 #nani-card { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: var(--sb-shadow); padding: 10px; gap: 10px; }
 body.w6 #nani-card .nc-say { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 #nani-card .nc-face { width: 100%; height: 100%; border: none; }
-body.w6 #nani-card.talk .nc-say img { animation: badgeTalk .45s ease-in-out infinite alternate; }
+body.w6 #nani-card.talk .nc-say img { animation: var(--njg-talk-anim); }
 body.w6 #nani-card .say-slot .wp-say, body.w6 #passme .pm-say .wp-say { display: none; }
 body.w6 #nani-card .wp .wp-text { font-size: var(--sb-p); line-height: 1.25; }
 body.w6 #passme { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: 0 -4px 24px rgba(40, 25, 10, 0.22), 0 0 0 2px var(--sb-next-edge); }
 body.w6 #passme .pm-face { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
-body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: badgeTalk .45s ease-in-out 4 alternate; }
-body.w6 #passme .pm-item { background: #fff; border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
-body.w6 #passme .pm-item .wp-say { width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s3); background: #f3ece1; border: 1px solid var(--sb-line); }
-body.w6 #passme .pm-item.right { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
+body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: njgTalk var(--njg-talk-ms) ease-in-out 4 alternate; }
+body.w6 #passme .pm-item { background: var(--njg-white); border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
+body.w6 #passme .pm-item .wp-say { width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s3); background: var(--njg-page); border: 1px solid var(--sb-line); }
+body.w6 #passme .pm-item.right { background: var(--njg-white); border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
 body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
 
 /* short landscape phones: every gap tighter, so a full order and the rail fit the 390px-high sidebar */

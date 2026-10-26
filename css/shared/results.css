@@ -11,26 +11,26 @@
    its own shining gold+glow art when all right; the bulb swaps art by hint
    count. */
 .njg-results {
-  --rs-ink: #2a2522;
+  --rs-ink: var(--njg-ink);
   /* SH-37 (s08 w6J; the judge, 20 Oct: "a stark white card ... does not read as part of the painted world"): the card is the
      game's warm cream, edged like its round buttons, so it sits in the world, not over it */
   --rs-card: var(--njg-cream);
-  --rs-tile: #faf6ef;
-  --rs-tile-line: #e7ded0;
-  --rs-say-bg: #f4ecdf;
+  --rs-tile: var(--njg-tile);
+  --rs-tile-line: var(--njg-tile-edge);
+  --rs-say-bg: var(--njg-page);
   --rs-pad: var(--njg-end-pad);
-  --rs-cream: #fdf6e8;
-  --rs-paper: #fffaf0;
-  --rs-line: #e6d2b0;
-  --rs-gold: #e0a63a;
-  --rs-gold-hi: #f7d57a;
-  --rs-gold-lo: #b97c1c;
-  --rs-gold-dim: #cda958;
-  --rs-grey: #96897a;
-  --rs-plain: #e9e0d2;
-  --rs-leaf: #6f8f4a;
-  --rs-madder: #a63b3b;
-  --rs-indigo: #2f3e6b;
+  --rs-cream: var(--njg-cream-2);
+  --rs-paper: var(--njg-cream);
+  --rs-line: var(--njg-rs-line);
+  --rs-gold: var(--njg-focus);
+  --rs-gold-hi: var(--njg-gold-hi);
+  --rs-gold-lo: var(--njg-gold-lo);
+  --rs-gold-dim: var(--njg-gold-dim);
+  --rs-grey: var(--njg-pewter);
+  --rs-plain: var(--njg-plain);
+  --rs-leaf: var(--njg-leaf);
+  --rs-madder: var(--njg-madder);
+  --rs-indigo: var(--njg-indigo);
   --rs-disc: var(--njg-badge);
   --rs-btn: var(--njg-end-btn);
   position: fixed;
@@ -43,7 +43,7 @@
   box-sizing: border-box;
   /* Design system 10: a pop-up card over the (dimmed) game, not a page of its own (SH-37: dimmed less, so the kitchen still
      reads round it) */
-  background: rgba(42, 37, 34, 0.42);
+  background: rgba(var(--njg-ink-rgb), 0.42);
   color: var(--rs-ink);
   font: 600 var(--njg-t4)/1.2 var(--njg-font);
   animation: rs-fade 0.25s ease-out both;
@@ -151,7 +151,7 @@
 .rs-big.long { font-size: calc(var(--rs-disc) * 0.16); }
 
 /* time: the best line (crown icon) and the ribbon */
-.rs-best { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: #f6ead6; font-size: var(--njg-end-cap); }
+.rs-best { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: var(--njg-chip); font-size: var(--njg-end-cap); }
 .rs-ribbon {
   position: absolute;
   top: calc(var(--njg-s3) * -1);
@@ -160,7 +160,7 @@
   padding: var(--njg-s1) var(--njg-s4);
   border-radius: var(--njg-radius);
   background: var(--rs-madder);
-  color: #fff;
+  color: var(--njg-white);
   font-size: var(--njg-end-cap);
   font-weight: 800;
   white-space: nowrap;
@@ -177,8 +177,8 @@
 /* The gold fills over the pewter like a gauge, left to right, with a soft edge (no hard cut line). */
 .rs-tick-right {
   --rs-fill: 0%;
-  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
-  mask-image: linear-gradient(90deg, #000 calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
+  -webkit-mask-image: linear-gradient(90deg, var(--njg-black) calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
+  mask-image: linear-gradient(90deg, var(--njg-black) calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
   transition: --rs-fill 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .rs-tick-right.filled { --rs-fill: var(--rw, 0%); }
@@ -197,7 +197,7 @@
 .rs-badge[data-hn="2"] .rs-lamp-2,
 .rs-badge[data-hn="3"] .rs-lamp-3 { opacity: 1; }
 .rs-badge[data-hn="0"] .rs-lamp-0 { animation: rs-flicker 1.3s ease-in-out infinite; }
-.rs-hint-count { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: #f6ead6; font-size: var(--njg-end-cap); }
+.rs-hint-count { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: var(--njg-chip); font-size: var(--njg-end-cap); }
 .rs-cap-icon { width: 1.1em; height: 1.1em; object-fit: contain; vertical-align: -0.15em; }
 
 /* sparkles around a gold disc ("party lines") */
@@ -242,15 +242,15 @@
 .rs-btn:active { transform: scale(0.97); }
 .rs-btn:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--njg-gold); outline-offset: var(--njg-line-2); }
 /* the main action: charcoal; the others: white with a grey outline */
-.rs-btn.primary { background: var(--rs-ink); color: #fff; }
-.rs-btn:not(.primary):not(.rs-done) { border-color: #d9d2c7; }
+.rs-btn.primary { background: var(--rs-ink); color: var(--njg-white); }
+.rs-btn:not(.primary):not(.rs-done) { border-color: var(--njg-grey); }
 .rs-next { animation: rs-nudge 2.4s ease-in-out 2.2s infinite; }
 .rs-again { width: var(--rs-btn); padding: 0; }
 /* Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
    option A, the gold-metal tick on a round cream button (it replaces the green tick) */
 .rs-done {
   width: var(--rs-btn); border-radius: 50%; padding: 0;
-  background: #fffaf0 no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
+  background: var(--njg-cream) no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
   border: var(--njg-line) solid var(--njg-cream-edge);
 }
 .rs-done svg { display: none; }
@@ -287,14 +287,14 @@
   padding: 0 var(--njg-s4);
 }
 /* the thin divider between wrong (left) and right (right), always at the centre */
-.rs-words-bad + .rs-words-ok { border-left: var(--njg-line) solid #d8c4a2; }
+.rs-words-bad + .rs-words-ok { border-left: var(--njg-line) solid var(--njg-divider); }
 /* the two groups sit towards the middle */
 .rs-words-bad { justify-content: end; }
 .rs-words-ok { justify-content: start; }
 /* CLN-118: a taught round (nothing scored) has no halves: one group, centred, filling the card */
 .rs-words.one .rs-words-all { flex: 0 1 auto; justify-content: center; }
 .rs-word {
-  --rs-edge: #e6dac7;
+  --rs-edge: var(--njg-line-soft);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -307,7 +307,7 @@
   padding: var(--njg-s2) var(--njg-s3);
   border-radius: var(--njg-radius);
   border: var(--njg-line) solid var(--rs-edge);
-  background: #fff;
+  background: var(--njg-white);
   color: var(--rs-ink);
   font: inherit;
   cursor: pointer;
@@ -321,7 +321,7 @@
 .rs-word.bad { --rs-edge: var(--njg-wrong); background: var(--njg-card); color: var(--rs-ink); border: var(--njg-line-2) solid var(--rs-edge); box-shadow: var(--njg-shadow); }
 .rs-word:active { transform: scale(0.97); }
 .rs-word:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--rs-ink); outline-offset: var(--njg-line-2); }
-.rs-word.on { background: var(--njg-cream); box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) rgba(255, 217, 138, 0.9); }
+.rs-word.on { background: var(--njg-cream); box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) rgba(var(--njg-gold-pale-rgb), 0.9); }
 /* CLN-153: a word too long for one column even at the 14 px floor takes two (results.js fitPage), never broken */
 .rs-word.wide { grid-column: span 2; }
 .rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; white-space: normal; text-wrap: balance; max-width: 100%; } /* SH-01 (R3a): a long word wraps between its words, never cut */
@@ -337,8 +337,8 @@
 .rs-word.ok .rs-say, .rs-word.bad .rs-say { background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.on .rs-say { animation: rs-pulse 0.8s ease-in-out infinite; }
 .rs-word b { font-family: var(--njg-font); font-size: var(--njg-end-word); font-weight: 800; line-height: 1.15; letter-spacing: -0.005em; }
-.rs-en { font-family: var(--njg-font); font-size: var(--njg-t4); color: #7a6558; font-weight: 700; }
-.rs-word.ok .rs-en, .rs-word.bad .rs-en { color: #7a6558; }
+.rs-en { font-family: var(--njg-font); font-size: var(--njg-t4); color: var(--njg-muted); font-weight: 700; }
+.rs-word.ok .rs-en, .rs-word.bad .rs-en { color: var(--njg-muted); }
 
 /* ---------- narrow portrait phones: badges stack as rows ---------- */
 @media (orientation: portrait) {
@@ -355,7 +355,7 @@
   .rs-words { flex-direction: column; align-items: stretch; gap: var(--njg-s3); }
   .rs-words-col { padding: 0; flex: 0 0 auto; }
   .rs-words-col:empty { display: none; }
-  .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: var(--njg-line) solid #d8c4a2; padding-top: var(--njg-s3); }
+  .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: var(--njg-line) solid var(--njg-divider); padding-top: var(--njg-s3); }
   .rs-words-col { grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 1fr)); }
   .rs-words-col.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -397,17 +397,17 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 .rs-badges.n3.has-looks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .njg-results .rs-looks .rs-disc .rs-eye-art { width: 92%; height: 92%; margin: auto; color: var(--njg-gold); transition: opacity 0.4s, color 0.4s; }
 .njg-results .rs-looks .rs-foot svg.rs-cap-icon { display: inline-block; width: 1.5em; height: 1em; }
-.njg-results .rs-looks[data-ln="1"] .rs-disc .rs-eye-art { color: #b58a3c; opacity: 0.75; }
-.njg-results .rs-looks[data-ln="2"] .rs-disc .rs-eye-art { color: #9a8a72; opacity: 0.55; }
-.njg-results .rs-looks[data-ln="3"] .rs-disc .rs-eye-art { color: #8a8070; opacity: 0.4; }
-.njg-results .rs-looks .rs-cap-icon { color: #8a6a3a; }
+.njg-results .rs-looks[data-ln="1"] .rs-disc .rs-eye-art { color: var(--njg-eye-1); opacity: 0.75; }
+.njg-results .rs-looks[data-ln="2"] .rs-disc .rs-eye-art { color: var(--njg-eye-2); opacity: 0.55; }
+.njg-results .rs-looks[data-ln="3"] .rs-disc .rs-eye-art { color: var(--njg-eye-3); opacity: 0.4; }
+.njg-results .rs-looks .rs-cap-icon { color: var(--njg-eye-cap); }
 
 /* ---------- decision 93 (SH-44): page 3, the steps (which went wrong): Kutchi with the English under, right gold, wrong
    red, what was asked against what was done; in the card's flow (it grows to them), never an inner scroll ---------- */
 .rs-steps-list { display: flex; align-items: center; justify-content: center; min-width: 0; }
 .rs-steps-list.two ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
 .rs-steps-list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s2); min-width: 0; max-width: 100%; }
-.rs-step { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); border-radius: var(--njg-radius); border: var(--njg-line) solid #e3d4ba; font-family: var(--njg-font); font-size: var(--njg-t3); color: var(--njg-ink); }
+.rs-step { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--njg-step-edge); font-family: var(--njg-font); font-size: var(--njg-t3); color: var(--njg-ink); }
 .rs-step.ok { border-color: var(--njg-gold); }
 .rs-step.bad { border-color: var(--njg-wrong); }
 .rs-step-tick { flex: none; display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font-weight: 800; }
@@ -415,7 +415,7 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 .rs-step-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
 .rs-step-text small { font-size: var(--njg-t4); color: var(--njg-ink-soft); font-weight: 700; }
 .rs-step-text .rs-ph { font-style: italic; color: var(--njg-ink-soft); }
-.rs-step-done { margin-left: auto; padding: 0 var(--njg-s2); border-radius: var(--njg-round); background: #f6ead6; font-weight: 800; white-space: nowrap; }
+.rs-step-done { margin-left: auto; padding: 0 var(--njg-s2); border-radius: var(--njg-round); background: var(--njg-chip); font-weight: 800; white-space: nowrap; }
 @media (orientation: portrait) {
   .rs-badges.n4 { grid-template-columns: 1fr; gap: var(--njg-s2); }
 }

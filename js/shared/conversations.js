@@ -45,7 +45,13 @@
   const STAGES = ["S1", "S2", "S3", "S4", "S5", "S6"];
   const STAGE_MAX_RUNG = { S1: 3, S2: 4, S3: 5, S4: 5, S5: 5, S6: 5 };
   const REACTIONS = ["embarrassed", "scratch", "puzzled", "sigh"]; // the same four as story.js's Yes/No (UX §14)
-  const BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000, 5: 8000 }; // SH-86 (Zafar, D11 / SH-41): 8 s at every level
+  // SH-86 (Zafar, D11 / SH-41): 8 s at every rung: the ONE ladder table's bulbMs by rung 1-5 (data/shared.json, through
+  // js/shared/tokens.js; S13-A1), no copy here
+  const ladderBulb = () => {
+    const T = root.Tokens || (typeof module === "object" && module.exports && typeof require === "function" ? require("./tokens.js") : null);
+    return (T && T.ladder && T.ladder.bulbMs) || [];
+  };
+  const BULB_MS = new Proxy({}, { get: (o, k) => (/^\d+$/.test(String(k)) ? ladderBulb()[Math.min(ladderBulb().length, +k) - 1] : undefined), ownKeys: () => ladderBulb().map((x, i) => String(i + 1)), getOwnPropertyDescriptor: (o, k) => (/^\d+$/.test(String(k)) && +k >= 1 && +k <= ladderBulb().length ? { enumerable: true, configurable: true, value: ladderBulb()[+k - 1] } : undefined) });
   const BOX_GAP = [0, 1, 2, 4, 8]; // sessions until a mastered type is due again (§5.3)
   const REG_LEVELS = ["heard", "choose", "say", "start"];
   const GAP_MS = 2 * 60 * 1000; // §10a.9: one every 2 minutes on top of one per visit
@@ -289,7 +295,7 @@
         break;
       case "bulb":
         m.bulbs++;
-        fx.push({ fx: "english", ms: BULB_MS[m.rung] || 8000 });
+        fx.push({ fx: "english", ms: BULB_MS[Math.max(1, m.rung || 1)] });
         break;
       case "skip":
       case "timeout": {
@@ -675,7 +681,7 @@
   /** What a line shows: the Kutchi, or a placeholder's grey italic English. */
   const lineHTML = (line, english) => {
     if (!line) return "";
-    if (line.placeholder || !line.k) return `<span class="cv-ph" title="placeholder (English): to record">${esc(line.en)}</span>`;
+    if (line.placeholder || !line.k) return `<span class="cv-ph njg-ph" title="placeholder (English): to record">${esc(line.en)}</span>`;
     return english ? `<span class="cv-en">${esc(line.en)}</span>` : `<span class="cv-k">${esc(line.k)}</span>`;
   };
 
