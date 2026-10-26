@@ -1,0 +1,84 @@
+# Transcript: 90b60804-Voice_261024_180414.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:01** So if you're telling me yeah, if you're saying we money every day, okay, how do you say that Kutchi?
+- **0:11** We eat money every day
+- **0:16** Okay, that's the same as how much he says that
+- **0:30** Okay, and then the second one was
+- **0:34** What was it?
+- **0:35** They
+- **0:36** That was to Nana, Kutchi, Wade, Kutchi, you remember?
+- **0:39** Yeah, they to an elder
+- **0:40** Somebody older than you is eating money every day
+- **0:44** Oh yeah
+- **0:45** You're saying Kauta, not Kuta
+- **0:47** And if you're telling someone older than you
+- **0:49** But it's both dialects
+- **0:51** It's just dialect
+- **0:52** Yeah, both
+- **0:53** Okay, now this is a different question. If you're telling me a story, if you're telling me
+- **0:57** If you're telling me, yesterday I saw Hana
+- **1:01** How would you say that?
+- **1:03** I saw Hana yesterday
+- **1:05** No, not yesterday, yesterday
+- **1:07** I saw Hana yesterday
+- **1:09** Yesterday
+- **1:11** Okay, fine
+- **1:13** So you say yesterday because you're a male
+- **1:15** And if you saw Muhammad yesterday?
+- **1:17** I saw Muhammad yesterday
+- **1:19** Yesterday
+- **1:21** Yesterday
+- **1:23** So the yesterday is on you because you're the male
+- **1:25** Yeah
+- **1:29** I would say I would say for both because I'm a female
+- **1:42** And even though she's a girl you still say because it's on the speaker.
+- **1:47** Fine. Okay. I think now I'm thinking they're right. It's not
+- **1:52** So I'm wondering where is cute I used it a different point like, you know, there was a subtle difference there between
+- **1:58** these lot here and those lot there and then neutral.
+- **2:02** Cute, I could have happened. Yeah, you're right.
+- **2:13** No, I think there is a subtle difference. Hang on. I need to work it out.
+- **2:17** Just like I worked out between.
+- **2:22** No, just like I worked out between this lot, this lot, that lot and the neutral.
+- **2:28** Well, that wasn't what you really asked him though.
+- **2:30** Yeah, he said then I become Asa and they is Adoka.
+- **2:33** No, no, ask him for the whole sentence. Ask him to record the whole sentence naturally.
+- **2:36** Ask him to record two sentences, we eat money every day and they eat money every day.
+- **2:41** There are so many dialogues you can use. Yeah.
+- **2:44** I would understand it as well.
+- **2:46** But I'm trying to work out is there a subtle difference when we use it.
+- **2:49** Assalamu Alaikum. Assalamu Alaikum, how are you doing?
+- **2:51** I'm good, how are you? What does Anjum say?
+- **2:53** She says she is you.
+- **2:54** Okay, well, let's ask Mohammed as well.
+- **2:56** No, no, Mohammed.
+- **2:58** No, his Kajji is good, his Kajji is good though.
+- **3:00** It's better than mine.
+- **3:01** It's better than mine, no?
+- **3:02** No, no.
+- **3:04** How good is your Kajji? It's good, no?
+- **3:06** No.
+- **3:10** She's learning it though, no? She's come from Gujarati.
+- **3:17** How would you say, Assalamu Alaikum, how would you tell me, we eat Mani every day?
+- **3:24** And Kutchi, how would you say, we eat Mani every day?
+- **3:30** See again, it's different. That's how my Kutchi teacher in India says it. Say it again.
+- **3:34** We eat Mani every day.
+- **3:40** That's what she said, we eat Mani every day.
+- **3:45** I said, we eat Mani every day.
+- **3:47** We eat Mani every day.
+- **3:49** We eat Mani every day.
+- **3:51** We eat Mani every day.
+- **3:53** We eat Mani every day.
+- **3:55** We eat Mani every day.
+- **3:57** What's the difference between Mani every day and Kutchi every day?
+- **4:01** I think it's just the same way.
+- **4:03** It's like a different dialect, isn't it?
+- **4:05** But I think that's, I feel like that's the...
+- **4:07** It's just the dialect.
+- **4:09** What do you think, Ujati?
+- **4:12** But you don't say money, because I say roti.
+- **4:22** That's how our Kutchi teachers taught us Kayanta.
+- **4:25** And then because the Kauta sounds like a contraction, no? Like a more informal abbreviation.
+- **4:33** What's going on?
+- **4:35** Oh, I didn't tell you guys. I'm making a game to teach people how to speak Kutchi.

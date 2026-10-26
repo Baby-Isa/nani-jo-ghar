@@ -1,0 +1,346 @@
+# Transcript: b32eeea6-Kutchi_recording_24_Oct_2.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:01** Okay, C85 continued, part 2. We did finish this, no? Did we? We finished it, I saw them, okay.
+- **0:11** We were in China.
+- **0:12** Oh, wait, yeah, wait. Oh no, we did all of this, no?
+- **0:16** I have to go, this is where we were, C95.
+- **0:19** Oh yeah, sorry, C95, we did I have to go, but then we didn't do she has to go, we didn't do they have to go, did we?
+- **0:27** No, but this is where we were, between the want to go and she has to go.
+- **0:31** So let's go, okay, so sorry, C95, she has to go.
+- **0:37** Has to, like she has to.
+- **0:40** Yeah, if we could do she has to, she needs to, she wants to, all three.
+- **0:46** Okay, so she has to would be, in ke vinnu khap do.
+- **0:51** She wants to go, in ke vinnu aaye.
+- **0:54** And she needs to go, in ke vinnu njijiruray.
+- **0:59** Is that same for a boy?
+- **1:03** So for us, ke vinnu khap do, in ke vinnu aaye, in ke vinnu njijiruray.
+- **1:09** Same, same.
+- **1:10** Same, okay.
+- **1:11** And then, they want to go, they have to go, they need to go.
+- **1:15** Then in ke would become iloka.
+- **1:17** Iloka ke vinnu aaye.
+- **1:19** They want to go.
+- **1:21** Iloka ke vinnu kapdo. They will have to go.
+- **1:24** Iloka ke vinnan jo aaye.
+- **1:27** Is that how you say it?
+- **1:28** They need to go.
+- **1:29** No, vinnu kapdo.
+- **1:32** Vinnan jo aaye.
+- **1:34** Vinnan jo aaye is they have to go.
+- **1:38** No, that's how you say jo aaye.
+- **1:39** Vinnu kapdo is they need to go.
+- **1:41** No, vinnu aaye is they want to go.
+- **1:44** No, but you have to say jo aaye, no?
+- **1:49** Kapdo isn't want to, it's ought to. We ought to go kapdo, no? Or we ought to do that.
+- **1:55** Yeah, if they need to go, it would be in loka ke vinnu jijurure.
+- **1:58** Yeah, they have a need to go.
+- **1:59** Yeah, they have a need to go.
+- **2:00** Whereas, vinnu kapdo, I think it's they ought to.
+- **2:04** In loka ke vinnu kapdo, it's they ought to go. Yeah.
+- **2:08** Yeah.
+- **2:09** Loka ke vinnu aaye, they want to go.
+- **2:11** It's not quite ought to, it's kind of like...
+- **2:13** A mixture between obliged and ought to. Yeah. No, there's not one for one.
+- **2:21** Oh, there's one more. Okay, C96. I can go. An vinni sakati. And if I was a boy, I'd say
+- **2:29** an vinni sakanto. And then she can go. I vinni saketi. He can go would be
+- **2:39** he vinni saketo. He, vinni, such a hard one.
+- **2:44** He, vinni saketo. He, vinni saketo. He, vinni, sage. He, vinni, saketo. Saketo. Saketo. He, vinni saketo.
+- **2:57** He's able to go. He's able to go. Yeah. He can go. Oh, yeah, he can. Okay, so it's more. The girl would be he vinni saketi.
+- **3:04** She can go. She can go. They can go is iloka vinni sakanto.
+- **3:10** Let's see if there's no gender there. There's no gender there because it's there and I can't
+- **3:15** go is aonati vinni saka. And if I was a boy it would be aonato vinni saka. Aonato vinni
+- **3:22** saka. Saka. Saka. Yeah. Aonato vinni saka. So although this is the correct way of saying
+- **3:29** if we can go or can't go, literally it more translates to able to go. Yeah, which is can
+- **3:36** and able is about the same. Is there any difference?
+- **3:38** Yes. I don't know what it is, but there is. I'm able to. I can.
+- **3:45** Somewhere there's a distinction. I'm just saying it's important though because it's just that able to then comes elsewhere, right? When you sage, that suffix comes elsewhere, no?
+- **3:57** Yeah.
+- **3:58** Or no it doesn't. I feel like you use it somewhere else, don't you? If you were to say, what if I say I can cook?
+- **4:05** I'm able to cook. If I was a male, I'm able to cook.
+- **4:10** So it's the same, I'm able to cook. It's the same pattern then.
+- **4:13** Yeah, same pattern.
+- **4:14** Okay. C97. I eat money every day.
+- **4:21** But men says it, so I eat money every day.
+- **4:28** Do you need to wait for that?
+- **4:29** Yeah, give it a second.
+- **4:33** So male saying I can eat, I eat money every day would be, ao roj mani kianto.
+- **4:39** And translate word by word? Ao, roj, what's roj? Roj is every day. Every. Every day.
+- **4:46** Just every day? Every day. Roj is every day. Ao roj, money, is money. Kianto is eating.
+- **4:54** Eating, okay. And the female would say, ao roj mani kianti.
+- **5:01** So it's on the I being male or female. Which carries on from then before the I, but the I is the subject.
+- **5:10** Okay, C98, you eat money every day. We don't really. I think that's saying for a boy or a girl, because you would say, tu roj mani kianti.
+- **5:22** Tu roj mani kianto. So it would be different, yeah. So a girl would be, tu roj mani kianti.
+- **5:28** To a boy, you would say, tu roj mani kianto.
+- **5:31** Okay, and then C99, which is saying it to an elder, male or female.
+- **5:36** So I don't think it matters whether it's male or female.
+- **5:39** The elder would be, ao roj mani kianta.
+- **5:42** Ao roj mani kianta.
+- **5:45** Kianta.
+- **5:47** Kianta.
+- **5:48** You don't see the N?
+- **5:49** There's no N. Kianta.
+- **5:51** Not kianta.
+- **5:53** I wouldn't say, ao roj mani kauta.
+- **5:57** Kauta is Gujarati though.
+- **6:01** Ao roj mani kauta.
+- **6:08** How would you say?
+- **6:10** I think ao roj mani kauta is a question though. Are you eating mani every day?
+- **6:15** Ao roj mani kauta?
+- **6:18** I've heard faka fai baas now.
+- **6:21** Faka fai baas?
+- **6:22** When you say it then I feel like I hear it.
+- **6:24** I think I would use it in a question. Ao roj mani kauta?
+- **6:27** It depends on the tone. Ao roj mani kauta.
+- **6:31** There is a difference in the question.
+- **6:36** I would say ao roj mani kauta.
+- **6:40** It's the difference in the dialect again.
+- **6:42** That actually might be the dialect.
+- **6:44** How would Bapa say it? What would he say?
+- **6:50** I think he would say ao roj kauta.
+- **6:53** He would say ao roj kauta.
+- **6:57** In your dance family and in our family there is a slight difference in the dialect.
+- **7:03** Some of the things that Mum says is different to the things I say.
+- **7:08** There is only a minor difference like kiota and kauta.
+- **7:12** But I don't think it matters. Kiota is fine as well.
+- **7:19** I don't think my Kutchi changed.
+- **7:21** It would have done.
+- **7:23** Oh, ok. Your Kutchi definitely changed.
+- **7:27** Really? I hadn't realised.
+- **7:30** So you would say Kauta?
+- **7:32** Yes, I would say Kauta.
+- **7:34** Kauta.
+- **7:36** Kauta.
+- **7:38** But you would say Aukhjati.
+- **7:40** Not Aukhjati.
+- **7:42** Aukhjati.
+- **7:44** Aukhjati.
+- **7:46** Aukhjati.
+- **7:48** In English?
+- **7:50** What would we do with it?
+- **7:52** If you're...
+- **7:54** You eat money every day, no?
+- **7:56** If you're asking...
+- **7:58** You're asking an elder.
+- **8:01** You're not asking, you're telling them, no?
+- **8:03** Telling them, but it doesn't make a difference, I guess, with...
+- **8:05** Well, yeah, if you're telling an elder, you eat money every day.
+- **8:10** Oh, it does make a difference.
+- **8:12** It did, definitely.
+- **8:13** Anything else that changed or just generally just sounded a little different?
+- **8:16** No, the words, like, changed as well.
+- **8:18** Specific.
+- **8:19** Because when she got married and she came to live with you in the family,
+- **8:23** obviously with the presence of your dadima,
+- **8:27** the way she's changed, she's changed some of the words she was using before.
+- **8:34** And I think in my head, it was a difference between Gujarati and Kutchi.
+- **8:38** Possibly, but you, I think it was the influence of your mother-in-law, your daddy.
+- **8:45** Because she might have been proper Kutchi, more proper Kutchi than what we were.
+- **8:53** Or maybe the dialect was different.
+- **8:55** How would you say, if there was a plate of food and it had gone cold,
+- **9:02** how would you say?
+- **9:04** Can you tell if you like?
+- **9:06** Would you ever say, like, Taddo Tevye?
+- **9:08** I would say Tando Tevye.
+- **9:10** Tando. What did you say?
+- **9:12** Tando Tevye.
+- **9:14** Would you say Tadhevye?
+- **9:16** The slight difference is...
+- **9:18** Would you say Taddo Tevye?
+- **9:20** Tando Tevye.
+- **9:22** Taddo is what your Dadima would say.
+- **9:24** Right? Yeah, that's it.
+- **9:26** I would say Tando.
+- **9:28** Have you heard Tando?
+- **9:30** Yeah, I've heard Tando.
+- **9:32** Tando Tevye is, it's become cold.
+- **9:35** Tehriviwai in my head is it's cooled down, it's become cooler.
+- **9:40** One is it's become cold, one is it's become cooler.
+- **9:44** Yeah, I think Tehriviwai I would say has become cooler.
+- **9:47** Tando Tevye is it's become cold.
+- **9:50** There's a difference between cold and cooler.
+- **9:53** Say it one more time for me.
+- **9:56** So, Kenjo, Tehriviwai is it's become cooler.
+- **10:02** Kenjo, Tando Tehriviwai is it's become cold.
+- **10:06** So, it's cooler is relative to...
+- **10:08** But Tando Tehriviwai, you guys don't say it.
+- **10:10** No, that's a different Kutchi.
+- **10:11** But that is still Kutchi.
+- **10:12** It's still Kutchi, but it's a different dialect.
+- **10:14** Tando Tehriviwai, that is how they would say it in a different dialect.
+- **10:17** In a different Kutchi, which I'm used to.
+- **10:19** I feel like it's more Tando Tehriviwai.
+- **10:23** Tando Tehriviwai, yeah.
+- **10:26** I think that in my head the Maimons used to say it.
+- **10:30** Tando is a different dialect, is what I'm saying.
+- **10:33** But it was used more like, I don't know, that's what it was used for when someone got cold and you're annoyed about it.
+- **10:39** So that's Tando Tehriviwai.
+- **10:42** I'm annoyed?
+- **10:43** No, no, no.
+- **10:44** Oh, I was annoyed about it.
+- **10:45** No, no, it's more like if one is annoyed because someone's got cold, it's like,
+- **10:49** Pa kawde was, kawde was, na fkawdi.
+- **10:51** Tando Tehriviwai, yeah.
+- **10:52** That still says Tando.
+- **10:53** Yeah.
+- **10:54** That's where you're picking it up from.
+- **10:55** Yeah, so there is differences.
+- **10:56** But there is different dialects, yeah.
+- **10:58** That's what I'm thinking, that's one of the ones you didn't take on.
+- **11:00** But then as Marci's saying, other ones you would have adopted.
+- **11:05** Maybe I need to rethink, I think I just separated more, realised more the difference between Kutchi and Gujarati.
+- **11:11** Before I used to mix it a little bit more, because I used to speak both so fluently.
+- **11:15** But because on your dad's side of the family, nobody spoke Gujarati, then it became more clear in my head what was Gujarati and what was Kutchi.
+- **11:23** But we had a Kutchi teacher for a while from India, and she said things differently.
+- **11:28** And all the lessons were different.
+- **11:32** A lot more V than W.
+- **11:35** Vinantho, not Winantho.
+- **11:37** That was a...
+- **11:38** We don't say Vinantho, we don't say Vinantho.
+- **11:42** It was a...
+- **11:44** Vinantho is the difference which we have learned when we've come to the UK.
+- **11:48** The difference wasn't there when we were in Africa.
+- **11:51** Because in Africa we used to pronounce V and W the same.
+- **11:55** In English.
+- **11:56** But we found in some Kutchi examples we do pronounce it quite differently.
+- **12:01** I don't know, I can't think of anything.
+- **12:03** We did work them out, but we made a note that there were some places...
+- **12:06** We say Kutchi, I don't think we ever start a word, we don't begin a word with V.
+- **12:11** It's W most times.
+- **12:13** There is the word V in the middle.
+- **12:15** There's a V in the middle sometimes, but I can't remember top of my head now.
+- **12:23** And I think we might have adapted because of our...
+- **12:27** education in Africa because of there's no difference between V and W.
+- **12:32** Yeah, because I remember you would still make jokes about that.
+- **12:35** Everyone that comes from Africa or India...
+- **12:37** Yeah, even in the office they used to tell me,
+- **12:39** you don't say it like this, you have to say it like this.
+- **12:41** It's hard in physics.
+- **12:43** I'm like, which one is it?
+- **12:45** One's velocity, one's something else.
+- **12:47** V, V, I say V.
+- **12:49** It's a mixture of both.
+- **12:51** It is, yeah.
+- **12:53** It's like Japanese.
+- **12:56** Japanese don't say R very well.
+- **12:59** So how do they say it?
+- **13:01** It's R mixed with L. So it'd be like Roku, Roku.
+- **13:08** Karate?
+- **13:09** It would be Karate.
+- **13:11** So for example, if you were still going to tell a child, they'd say, Sony camera, camera.
+- **13:17** Oh, camera.
+- **13:18** In Japanese it's camera. It's not camera, it's not la.
+- **13:21** It's camera.
+- **13:22** It's not camera, it's camera.
+- **13:26** They combine it. It's one word to them and if you think about it, la ra, it's actually not that different.
+- **13:32** It's not different, ra is ra and la is la.
+- **13:38** They go to the top forward both times.
+- **13:40** But in ra it stays at the top.
+- **13:42** Yeah.
+- **13:43** So they do a ra maybe they do a start with R and drop to an L.
+- **13:49** But then the British tell me my R is very Spanish.
+- **13:52** It's a hard R which is good. I can't do a hard R.
+- **13:57** I don't know where we were.
+- **13:59** Do you want to stop? Is it going to get too long?
+- **14:01** No, it's 20-25.
+- **14:03** Anyway, comment where we were.
+- **14:05** So we got up to...
+- **14:07** Nana spawn, you eat money every day.
+- **14:11** Yeah, C99. We're on back to C99.
+- **14:13** You eat money every day.
+- **14:15** I think we're going to...
+- **14:17** So let's record both versions
+- **14:19** and then we'll ask a few other people
+- **14:21** and then we'll just go with the consensus.
+- **14:23** So okay two versions of you eat money every day to an elder. Version number one.
+- **14:31** And version number two.
+- **14:37** Okay to be determined. We'll do at the next AGM we'll put it to the members and then we can
+- **14:42** vote. Yeah like if we're gonna waste time anyway let's talk about something.
+- **14:47** Okay C100 he eats money every day.
+- **14:53** you
+- **14:54** Okay. So C101. He eats money every day. C102. He eats money every day. I would say he eats money every day.
+- **15:11** Okay so second version. He eats money every day. And the first one he eats money every day.
+- **15:20** Okay C103. They eat money every day. If you're referring to a group of boys.
+- **15:31** Iloka rojmani kenta.
+- **15:34** And if you're referring to a group of girls?
+- **15:36** I don't think there's no kenta.
+- **15:39** I don't think there's no kenta.
+- **15:42** And if it's a group of girls?
+- **15:44** Shame.
+- **15:46** Because you're saying iloka.
+- **15:48** Shame.
+- **15:49** Because iloka has no gender.
+- **15:53** Iloka rojmani kenta.
+- **15:57** So why does Kyoto become kenta then?
+- **16:03** Because it's they that know?
+- **16:05** I don't know either, but we need to think.
+- **16:07** It's part of the grammar change.
+- **16:09** It changes for he, she, they, them, us, our.
+- **16:13** It's just sometimes when I question myself and I work out why the grammar does that.
+- **16:18** Honestly, easier to answer the quote than afterwards it will tease out the walls for us.
+- **16:22** But what about...
+- **16:23** Hulaka. Hulaka. What if it's Hulaka? Those people are eating money every day.
+- **16:30** I think Hulaka is like these people and Hulaka is those people.
+- **16:37** They're not near you. They're talking about those people over there. Would it change the
+- **16:41** sentence? Just say those people over there are eating money. Hulaka rojmani kenta
+- **16:46** and Hulaka rojmani kenta. That's the same. Yeah, but there's a difference in Hulaka
+- **16:50** which is like these and Hulaka which is those. But these are closer to they.
+- **16:55** These are closer to you.
+- **16:57** If I say they, you'd say Hulaka.
+- **17:02** No, there's two theys.
+- **17:04** There's they who are near you.
+- **17:07** Like in the next door, Hulaka rojmani kenta.
+- **17:10** And there's people you're talking about in London from here.
+- **17:12** Hulaka rojmani kenta. Those people over there.
+- **17:15** So it's a difference between these and those.
+- **17:18** There isn't a neutral they.
+- **17:22** So these and they. Because it would always be hiloka ke huloka.
+- **17:25** Iloka rojmani kenta de. Iloka rojmani kenta.
+- **17:32** I or u? Iloka. Huloka.
+- **17:37** There's these and those.
+- **17:40** Iloka, huloka. This lot and that lot. Iloka, huloka.
+- **17:44** Yeah, I suppose. Okay, fair enough.
+- **17:48** No, no, challenge me. I'm just, I'm just working it out as well as I go along.
+- **17:52** I think iloka and huloka, no? But yeah, there's two differences.
+- **17:56** There's no one for them.
+- **17:59** Oh, there. That's fine.
+- **18:02** Or maybe iloka is the neutral one.
+- **18:05** For everything.
+- **18:06** For both of them, for these and those.
+- **18:09** So hiloka is this lot, huloka is that lot.
+- **18:13** And iloka.
+- **18:13** Iloka is them.
+- **18:14** They, they.
+- **18:16** It's a more neutral, you don't know whether they're here or they're there.
+- **18:19** The distance doesn't matter.
+- **18:20** The distance doesn't matter, yeah.
+- **18:21** Maybe there's a third version there, which is iloka.
+- **18:24** Iloka is just a general they.
+- **18:27** Hiloka is the ones nearby.
+- **18:29** This lot.
+- **18:30** Huloka is the ones far away.
+- **18:32** That lot, those are, yeah.
+- **18:33** Okay, so that, so that clearly.
+- **18:35** So iloka is the one, these, these people or these things.
+- **18:39** Iloka.
+- **18:40** Iloka.
+- **18:41** Huloka.
+- **18:43** Iloka is those ones.
+- **18:47** No, you've got lost now.
+- **18:49** How did you say them?
+- **18:51** It's he and he.
+- **18:53** Iloka is nearer. Huloka is far.
+- **18:57** Iloka is neutral, whether they're here or there, it's that lot, them lot, those people.
+- **19:03** So he, close, who, far, he, general.
+- **19:07** Yeah.
+- **19:09** Okay.
+- **19:12** That makes sense.
+- **19:14** Yeah.
+- **19:16** It's like he is general, and then add emphasis to close, it's like he or who.
+- **19:22** Imana.
+- **19:25** Yeah, it's this lot, that lot and them, just them.
+- **19:29** Okay.
+- **19:30** Do you want me to read it to you?
+- **19:32** No, you need to.
+- **19:34** Okay.
