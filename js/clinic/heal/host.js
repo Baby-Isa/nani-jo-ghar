@@ -375,6 +375,7 @@
         // measure on the unscaled room: the push-in's last frame (scaled, blurred) is still held
         [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         layer.appendChild(fig.el);
+        if (z.doc) z.doc.style.opacity = ""; // (CLN-199: the doctor stepped out of the zoom; he is back for the pull-out)
         fig.pose("sit");
         fig.react("happy", 0);
         healed();
@@ -447,6 +448,7 @@
         else fig.el.remove();
         restore();
         layer.insertBefore(still, layer.firstChild);
+        if (z.doc) z.doc.style.opacity = ""; // (CLN-199: the doctor, out of the zoom, is back in the kept room)
         z.kept = true;
       },
       destroy() {
@@ -1130,6 +1132,14 @@
       Kit.Voice.clear();
       const spk = Kit.Voice.speakers.doctor;
       const doc = staging.show("front");
+      // (the judge, 26 Oct: at 915x412 his bubble, with no room above his head, sat on her braid): his bubbles come from just
+      // right of his head, away from her (she sits on his left)
+      const head = doc && doc.__doc && doc.__doc.head;
+      if (head) {
+        const ank = h("i", "cl-doc-head cl-intro-ank", doc);
+        Object.assign(ank.style, { position: "absolute", display: "block", pointerEvents: "none", top: head.style.top, width: head.style.width, height: head.style.height, left: `calc(${head.style.left} + ${head.style.width} * 0.9)` });
+        Kit.Voice.speakers.doctor = () => ank;
+      }
       const el = h("div", "cl-intro", stage);
       const box = h("div", "cl-intro-card", el);
       let skipped = false;
@@ -1191,6 +1201,12 @@
         onFold: () => {
           // he turns to her as the camera goes in, and his bubbles come from his card again once the room has gone
           if (doc && Clinic.Stages.pose) Clinic.Stages.pose(doc, "talk", { facing: "left" });
+          // (the judge, 26 Oct: the mid-zoom frames cut his head at the top): he steps out of the shot as the camera goes in
+          // to her eye, and is back for the pull-out (HOST.stage out)
+          if (doc) {
+            doc.style.transition = Kit.fast ? "none" : "opacity .35s ease-out";
+            doc.style.opacity = "0";
+          }
           zoomIn();
           Promise.resolve(ctx.zoomed).then(() => {
             if (Kit.Voice.speakers.doctor !== spk) Kit.Voice.speakers.doctor = spk;

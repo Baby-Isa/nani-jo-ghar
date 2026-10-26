@@ -675,7 +675,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-card.eye-named .wc-spk { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } /* the doctor names it: its speaker lit until the next card */
 .eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
 .eye-judge { align-items: center; bottom: var(--njg-s5); } /* SH-19: clear of the bottom edge, so the help's box round the pills is whole */
-.eye-pill-t { display: inline-block; min-width: calc(var(--njg-tap) * 1.7); text-align: center; }
+.eye-pill-t { display: inline-block; min-width: var(--njg-tap); text-align: center; } /* CLN-202: the pill keeps the shared size; the row fits his half on a phone */
 .eye-mic { flex: none; width: calc(var(--njg-tap) + var(--njg-s2)); height: calc(var(--njg-tap) + var(--njg-s2)); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-card); color: var(--njg-ink); box-shadow: var(--njg-shadow); cursor: pointer; touch-action: manipulation; }
 .eye-mic svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
 .eye-mic.listening { background: var(--njg-flag-bg); animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }

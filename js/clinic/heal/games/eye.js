@@ -369,19 +369,31 @@
     // CLN-202: the split at x (close-up units): her panel's ground and her picture fill [the view's left edge, x], her picture
     // centred in it (slice-fitted at its height: up to its own width only more of her shows, never a bigger crop), her open
     // eye (the redrop's target) moves with it (art testA.src_size and eye_src: where the eye is in the source)
-    const setSplit = (x, viewL) => {
+    const setSplit = (x, viewL, viewT, viewB) => {
       SPLIT = x;
       panBg.setAttribute("width", String(x + 400));
       splitEls.forEach(([el, d]) => el.setAttribute("x", String(x + d)));
       if (!herImg || !a || !a.src_size || !a.eye_src) return;
-      const [, by, bw, bh] = a.box;
-      const cx = (viewL + x) / 2;
-      const w = Math.max(bw, x - viewL);
-      herImg.setAttribute("x", (cx - w / 2).toFixed(1));
-      herImg.setAttribute("width", w.toFixed(1));
-      const k = Math.max(w / a.src_size[0], bh / a.src_size[1]);
-      readEye.x = cx + k * (a.eye_src[0] - a.src_size[0] / 2);
-      readEye.y = by + bh / 2 + k * (a.eye_src[1] - a.src_size[1] / 2);
+      // the judge (26 Oct: "both braids and a bow cut off"): all of her shows: her cut-out as wide as the panel (a little
+      // margin), or as tall as the view when that is smaller, the top of her hair (art testA.top_src) just under the view's
+      // top; only the foot of her jumper runs off the bottom
+      const [sw, sh] = a.src_size;
+      const top = a.top_src || 0;
+      const vt = viewT != null ? viewT : a.box[1];
+      const vb = viewB != null ? viewB : a.box[1] + a.box[3];
+      const m = 8;
+      const w = x - viewL;
+      const k = Math.min((w - 2 * m) / sw, (vb - vt - m) / (sh - top));
+      const x0 = viewL + (w - sw * k) / 2;
+      const y0 = vt + m - top * k;
+      herImg.setAttribute("preserveAspectRatio", "none");
+      herImg.setAttribute("x", x0.toFixed(1));
+      herImg.setAttribute("y", y0.toFixed(1));
+      herImg.setAttribute("width", (sw * k).toFixed(1));
+      herImg.setAttribute("height", (sh * k).toFixed(1));
+      readEye.x = x0 + k * a.eye_src[0];
+      readEye.y = y0 + k * a.eye_src[1];
+      readEye.s = (k * sh) / a.box[3]; // her size against the data box's (her mouth bubble is placed by it)
     };
 
     // the stand and the card (HTML over the drawing: the shared word card), the big pills and the mic under it
@@ -472,6 +484,7 @@
         st.listening = true;
         const seq = st.judgeSeq;
         mic.classList.add("listening");
+        S.root.querySelectorAll(".eye-said").forEach((n) => n.remove());
         // (her voice stops for the listen: never her line inside the child's take)
         if (Kit0 && Kit0.Voice && Kit0.Voice.clear) Kit0.Voice.clear();
         panel = SP.panel ? SP.panel({ keep: [haaBtn, naBtn, mic], near: judgeBox, at: popAt, onTap: sendNow }) : null;
@@ -544,10 +557,13 @@
         // (a shorter doctor stands lower: his card's foot just above the pills, as when he is height-bound)
         const drop = Math.max(0, room - (f.y + f.h) * H);
         const want = rr.width - panelW;
-        if (herImg && Math.abs(want - x0) > 1) {
+        const key = `${Math.round(want)},${Math.round(rr.width)},${Math.round(rr.height)},${S.svg.getAttribute("viewBox")}`;
+        if (herImg && key !== st.splitKey) {
+          st.splitKey = key;
           const sx = S.pt({ clientX: rr.left + want, clientY: rr.top }).x - 14;
-          const viewL = S.pt({ clientX: rr.left, clientY: rr.top }).x;
-          if (isFinite(sx) && isFinite(viewL)) setSplit(sx, viewL);
+          const p0 = S.pt({ clientX: rr.left, clientY: rr.top });
+          const p1 = S.pt({ clientX: rr.left, clientY: rr.bottom });
+          if (isFinite(sx) && isFinite(p0.x)) setSplit(sx, p0.x, p0.y, p1.y);
           mouthPlace();
         }
         const cx = rr.width - panelW / 2;
@@ -619,7 +635,7 @@
     const after = (prev, fn) => Promise.resolve(prev).catch(() => {}).then(() => (st.gone ? null : fn()));
     const lineOf = (id) => HS.L.show(HS.L.join([BY[id].lex]));
     // her bubble under her mouth: her guess written while the word is supported (stage 1-2: study), else talking dots
-    const mouthAt = () => (readEye ? { x: readEye.x + 40, y: readEye.y + 92 } : null);
+    const mouthAt = () => (readEye ? { x: readEye.x + 40 * (readEye.s || 1), y: readEye.y + 92 * (readEye.s || 1) } : null);
     let mouthEl = null;
     const mouthPlace = () => {
       const m = mouthAt();
@@ -735,6 +751,8 @@
       if (st.view !== "test") await toTest();
       if (st.gone) return;
       if (c.i === 0) ctx.card.now("chart");
+      // (the judge, 26 Oct: a stale "limu" under her chin while the card showed tameto): the last card's word bubble goes
+      S.root.querySelectorAll(".eye-said").forEach((n) => n.remove());
       cardEl = await makeCard(c);
       if (st.gone) return;
       place();
