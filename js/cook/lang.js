@@ -276,35 +276,11 @@
    * (Gujarati or Hindi first), otherwise skipped, as missing lines always
    * were. A line counts as having a voice if any part of it can be heard.
    */
-  const synthVoice = () => {
-    try {
-      const vs = global.speechSynthesis ? global.speechSynthesis.getVoices() : [];
-      return vs.find((v) => /^gu/i.test(v.lang)) || vs.find((v) => /^hi/i.test(v.lang)) || vs.find((v) => /^en-IN/i.test(v.lang)) || vs[0] || null;
-    } catch (e) {
-      return null;
-    }
-  };
+  // S13-V: Cook's own device voice is gone: the one voice's (js/core/voice.js deviceSpeak, through window.NjgVoice) speaks a
+  // stand-in, on the test path only, at normal speed (LNG-09), after waiting out a cancel and for the voices (LNG-16)
+  const synthVoice = () => !!(global.NjgVoice && global.NjgVoice.path() === "test");
   const synth = (text) =>
-    new Promise((resolve) => {
-      const v = synthVoice();
-      if (!v) return resolve(false);
-      let done = false;
-      const fin = () => !done && ((done = true), resolve(true));
-      try {
-        const u = new SpeechSynthesisUtterance(text);
-        u.voice = v;
-        u.lang = v.lang;
-        // LNG-09 (decision 63; Zafar, 17 Oct: "the weird robotic slow voice. We definitely need to speed the voices up"):
-        // the device's test voice at normal speed, as js/core/voice.js DEVICE_RATE (was 0.7)
-        u.rate = 1;
-        u.onend = fin;
-        u.onerror = fin;
-        global.speechSynthesis.speak(u);
-      } catch (e) {
-        fin();
-      }
-      setTimeout(fin, (700 + 260 * text.length) / Cook.speed);
-    });
+    global.NjgVoice ? Promise.race([global.NjgVoice.device(text), new Promise((r) => setTimeout(() => r(true), (700 + 260 * text.length) / Cook.speed))]) : Promise.resolve(false);
   /**
    * A word's own phonetic spelling for the voice (data.words[id].say, e.g.
    * ph-quickly: kutchi "jaldi", say "jal-dee"), when it differs from what's shown on

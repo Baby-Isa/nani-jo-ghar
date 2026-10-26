@@ -22,6 +22,9 @@
 //   loadcap   an art load is never capped in game time: no Cook.wait inside a Promise.race with a load (at test speed a 5 s cap
 //             became 1 s and Phaser drew its green missing-texture box where a face goes; CHAI-25, CK-04, CK-08, s08 w8A):
 //             cap it in real time (Cook.Stations.loadArt / capLoad)
+//   voice     one voice player (S13-V): no speechSynthesis, SpeechSynthesisUtterance, new Audio or .play() outside js/core/voice.js
+//             (the voice), js/shared/sfx.js (the sound effects) and the mic (js/shared/speech.js); no synthesized sound (an
+//             oscillator, a noise buffer, a filter) outside js/shared/sfx.js; the parked games are left out (out of scope)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails, and so does
 // a check with more findings than the list holds for it; --write-known only shrinks the list (Zafar, 23 Oct: compareKnown, shrinkKnown).
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
@@ -308,6 +311,22 @@ export function planeFindings(sc) {
   return out;
 }
 
+// ---- voice: one voice player and one sound-effects player (S13-V) ----
+export const VOICE_HOME = new Set(["js/core/voice.js", "js/shared/sfx.js", "js/shared/speech.js"]);
+export const PARKED_JS = /^js\/(monsoon|tidy|who|dress|find|snap)\//;
+const VOICE_USE = /\bspeechSynthesis\b|\bSpeechSynthesisUtterance\b|\bnew\s+(?:global\.|root\.|window\.)?Audio\s*\(|\.play\(\s*\)/;
+const SFX_USE = /\.create(?:Oscillator|BiquadFilter)\s*\(|\.createBuffer\s*\(/;
+export function voiceFindings(file, text) {
+  if (VOICE_HOME.has(file) || PARKED_JS.test(file) || !file.startsWith("js/") || file.startsWith("js/vendor/")) return [];
+  const out = [];
+  lines(text).forEach((l, i) => {
+    const code = l.replace(/\/\/.*$/, "").replace(/^\s*\*.*$/, "");
+    const m = VOICE_USE.exec(code) || (file !== "js/shared/sfx.js" && SFX_USE.exec(code));
+    if (m) out.push({ check: "voice", at: `${file}:${i + 1}`, key: `voice|${file}|${code.trim().slice(0, 100)}`, text: `${m[0].trim()}: a voice or a sound played outside js/core/voice.js and js/shared/sfx.js (window.NjgVoice, Sfx.play)` });
+  });
+  return out;
+}
+
 // ---- loadcap: an art load's safety cap runs in real time ----
 // each Promise.race( ... ) call's arguments, bracket-matched; a load in them and a Cook.wait beside it is a finding
 const LOAD_CALL = /(?:\.|\b)load(?:Served|File|Art)?\s*\(/;
@@ -368,6 +387,7 @@ export function run(root = ROOT, only = null) {
     for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...jscolourFindings(f, rd(f), { artOnly: art.has(f), ui }));
   }
   if (want("loadcap")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...loadcapFindings(f, rd(f)));
+  if (want("voice")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...voiceFindings(f, rd(f)));
   if (want("plane")) out.push(...planeFindings(J("data/clinic/scenes-v2.json")));
   return out;
 }

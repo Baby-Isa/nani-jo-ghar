@@ -379,27 +379,11 @@
       if (cur()) open();
       else finish();
     };
-    // B2: a cartoon "boing" (a springy pitch wobble), made here; quiet in tests
+    // B2: a cartoon "boing" (a springy pitch wobble), the shared player's "boing" (js/shared/sfx.js; S13-V); quiet in tests
     const boingSound = () => {
       try {
         if (fast() || (Kit && Kit.Voice && Kit.Voice.quiet)) return;
-        const AC = root.AudioContext || root.webkitAudioContext;
-        if (!AC) return;
-        const c = (boingSound.ctx = boingSound.ctx || new AC());
-        const o = c.createOscillator();
-        const g = c.createGain();
-        const t = c.currentTime;
-        o.type = "sine";
-        o.frequency.setValueAtTime(180, t);
-        o.frequency.exponentialRampToValueAtTime(520, t + 0.08);
-        for (let k = 0; k < 6; k++) o.frequency.setValueAtTime(k % 2 ? 300 : 420, t + 0.1 + k * 0.06);
-        o.frequency.exponentialRampToValueAtTime(200, t + 0.5);
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.25, t + 0.03);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
-        o.connect(g).connect(c.destination);
-        o.start(t);
-        o.stop(t + 0.6);
+        if (root.Sfx) root.Sfx.play("boing");
       } catch (e) {
         /* no sound */
       }

@@ -372,23 +372,27 @@ async function voicesIn(S) {
     await new Promise((r) => setTimeout(r, 50));
   }
 }
-export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+// voice: a voice, a function that picks one once the voices are in, "default" (the device's own), or null (Gujarati, Hindi,
+// Indian English, else the first); volume: 0-1 (a whisper)
+export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, volume = 1, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   const S = globalThis.speechSynthesis;
   if (!S || !globalThis.SpeechSynthesisUtterance) return Promise.resolve(false);
   watchCancel(S);
-  return voicesIn(S).then(() => speakNow(S, text, { rate, voice, wait }));
+  return voicesIn(S).then(() => speakNow(S, text, { rate, voice, volume, wait }));
 }
-function speakNow(S, text, { rate, voice, wait }) {
+function speakNow(S, text, { rate, voice, volume, wait }) {
   return new Promise((resolve) => {
     let done = false;
     const fin = (v) => !done && ((done = true), resolve(v));
     const go = () => {
       try {
         const vs = (S.getVoices && S.getVoices()) || [];
-        const v = voice || vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs.find((x) => /^en-IN/i.test(x.lang)) || vs[0];
+        const chosen = typeof voice === "function" ? voice() : voice;
+        const v = chosen === "default" ? null : chosen || vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs.find((x) => /^en-IN/i.test(x.lang)) || vs[0];
         const u = new globalThis.SpeechSynthesisUtterance(text);
         if (v) (u.voice = v), (u.lang = v.lang);
         u.rate = rate;
+        if (volume != null && volume !== 1) u.volume = volume;
         let started = false;
         u.onstart = () => (started = true);
         // it ends when the browser says so (so the next piece never starts under it); a voice that never starts (none
@@ -553,6 +557,126 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
     });
   }
   return V;
+}
+
+/* ---------------- the one voice for the classic scripts (S13-V) ----------------
+ * The clinic's kit, the conversations, the story, the end screen's words and the help kit are plain scripts: they play every
+ * clip and every device-voice word through window.NjgVoice, set here (the only place a voice is made: the static check 'voice').
+ * The same rules as createVoice: on the STORE path only a family clip marked OK plays (chooseClip's rule, by the clip's file) and
+ * never the device voice; on the TEST path a clip plays as given and the device voice stands in, as before (G14). One stop
+ * (NjgVoice.stop, and every stop of the shared lifecycle's voice layer) silences all of it.
+ *   NjgVoice.clip(url, {volume, rate, path}) -> {done: Promise<played>, cut(), el, blocked}   a family clip (url as given)
+ *   NjgVoice.device(text, {rate, volume, lang: "k" | "en" | null, cancel}) -> Promise<heard>    test path only
+ *   NjgVoice.allowed(file) / NjgVoice.path() / NjgVoice.stop()
+ */
+const OK_CHECKS = ["ok", "ok-zafar", "ok-auto"];
+let famByFile = null;
+function familyFiles() {
+  if (famByFile) return famByFile;
+  famByFile = new Map();
+  const p = globalThis.njgFamilyAudio;
+  if (p && p.then)
+    p.then((list) => (list || []).forEach((e) => e && e.file && famByFile.set(e.file, e))).catch(() => {});
+  return famByFile;
+}
+const fileOf = (url) => String(url || "").split("?")[0].replace(/^(\.\.?\/)+/, "").replace(/^.*?(assets\/audio\/)/, "$1");
+/** May this clip play on this path? Test: yes. Store: only a family clip marked OK (never an unchecked, redo or stand-in file). */
+export function clipAllowed(url, path = voicePath()) {
+  if (path !== "store") return true;
+  const e = familyFiles().get(fileOf(url));
+  return !!e && OK_CHECKS.includes(e.checked);
+}
+const liveClips = new Set();
+export function playClip(url, { volume = 1, rate = null, path = voicePath() } = {}) {
+  const h = { el: null, blocked: false, cut: () => {} };
+  h.done = new Promise((resolve) => {
+    if (!url || typeof Audio === "undefined" || !clipAllowed(url, path)) return resolve(false);
+    let fin = false;
+    let untrack = () => {};
+    const end = (ok) => {
+      if (fin) return;
+      fin = true;
+      liveClips.delete(h);
+      untrack();
+      resolve(ok);
+    };
+    try {
+      const a = (h.el = new Audio(url));
+      if (volume !== 1) a.volume = volume;
+      if (rate) {
+        a.playbackRate = rate;
+        try {
+          a.preservesPitch = false;
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      // stopped: the clip pauses and counts as said
+      h.cut = () => {
+        try {
+          a.pause();
+        } catch (e) {
+          /* gone */
+        }
+        end(true);
+      };
+      liveClips.add(h);
+      const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
+      if (layer && layer.track) untrack = layer.track(a, h.cut) || untrack;
+      a.onended = () => end(true);
+      a.onerror = () => end(false);
+      const p = a.play();
+      if (p && p.catch)
+        p.catch((e) => {
+          if (e && e.name === "NotAllowedError") h.blocked = true;
+          end(false);
+        });
+    } catch (e) {
+      end(false);
+    }
+  });
+  return h;
+}
+const VOICE_PREF = { k: [/^gu/i, /^hi/i, /^en-IN/i], en: [/^en-GB/i, /^en-IN/i, /^en/i] };
+/** The device voice for a classic script: test path only (the store app never speaks with it). */
+export function speakDevice(text, { rate = DEVICE_RATE, volume = 1, lang = "k", cancel = false, path = voicePath() } = {}) {
+  const S = globalThis.speechSynthesis;
+  if (path === "store" || !text || !S) return Promise.resolve(false);
+  if (cancel) {
+    try {
+      watchCancel(S).cancel();
+    } catch (e) {
+      /* no voice */
+    }
+  }
+  const pick = () => {
+    const vs = (S.getVoices && S.getVoices()) || [];
+    if (!lang) return "default";
+    for (const re of VOICE_PREF[lang] || VOICE_PREF.k) {
+      const v = vs.find((x) => x.lang && re.test(String(x.lang).replace("_", "-")));
+      if (v) return v;
+    }
+    return lang === "en" ? "default" : vs[0] || null;
+  };
+  return deviceSpeak(text, { rate, volume, voice: pick });
+}
+export function stopAll() {
+  liveClips.forEach((h) => h.cut());
+  liveClips.clear();
+  try {
+    if (globalThis.speechSynthesis) watchCancel(globalThis.speechSynthesis).cancel();
+  } catch (e) {
+    /* no voice */
+  }
+}
+if (typeof globalThis !== "undefined" && !globalThis.NjgVoice) {
+  globalThis.NjgVoice = { clip: playClip, device: speakDevice, allowed: clipAllowed, path: voicePath, stop: stopAll, deviceSpeak };
+  try {
+    const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
+    if (layer && layer.onStop) layer.onStop(() => liveClips.forEach((h) => h.cut()));
+  } catch (e) {
+    /* no lifecycle on this page */
+  }
 }
 
 export default createVoice;

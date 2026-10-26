@@ -993,5 +993,6 @@
  "tokens|css/who.css|rgb colour|border-radius: 50%; border: 3px solid rgba(0, 0, 0, 0.15); }",
  "tokens|css/who.css|rgb colour|position: absolute; border-radius: 50%; border: 2px solid rgba(0, 0, 0, 0.18); }",
  "tokens|css/who.css|rgb colour|position: absolute; z-index: 7; border-radius: 50%; border: 10px solid #6b5a48; ",
- "tokens|css/who.css|rgb colour|position: fixed; inset: 0; background: rgba(59, 42, 30, 0.35); display: flex; al"
+ "tokens|css/who.css|rgb colour|position: fixed; inset: 0; background: rgba(59, 42, 30, 0.35); display: flex; al",
+ "voice|js/shared/request-popup.js|if (root.speechSynthesis) root.speechSynthesis.cancel();"
 ]

@@ -208,30 +208,20 @@
   /** Play one word: the mode's hook, else its own recording, else Cook's audio path (Lang), else the local TTS placeholder. */
   Results.speakWord = function (w, speak) {
     if (speak) return Promise.resolve(speak(w));
-    if (w.audio) {
-      return new Promise((resolve) => {
-        try {
-          const a = new Audio(w.audio);
-          a.onended = a.onerror = () => resolve(true);
-          a.play().catch(() => resolve(fallback(w)));
-        } catch (e) {
-          resolve(fallback(w));
-        }
-      });
+    // S13-V: the clip and the device voice through the one voice (js/core/voice.js, window.NjgVoice: OK family clips only in the
+    // store app, never the device voice there)
+    const NV = root.NjgVoice;
+    if (w.audio && NV) {
+      const h = NV.clip(w.audio);
+      return h.done.then((ok) => (ok ? true : fallback(w)));
     }
     return fallback(w);
   };
   function fallback(w) {
     if (w.id && root.Lang && root.Lang.speakWord && root.Cook && root.Cook.data && root.Cook.data.words && root.Cook.data.words[w.id]) return root.Lang.speakWord(w.id);
     if (root.NjgAudio && root.NjgAudio.speakRaw) return root.NjgAudio.speakRaw(w.kutchi);
-    if (!root.speechSynthesis || !w.kutchi) return Promise.resolve(false);
-    return new Promise((resolve) => {
-      const u = new SpeechSynthesisUtterance(w.kutchi);
-      u.rate = 0.85;
-      u.onend = u.onerror = () => resolve(true);
-      root.speechSynthesis.speak(u);
-      setTimeout(() => resolve(false), 4000);
-    });
+    if (!root.NjgVoice || !w.kutchi) return Promise.resolve(false);
+    return Promise.race([root.NjgVoice.device(w.kutchi, { rate: 0.85, lang: null }), new Promise((r) => setTimeout(() => r(false), 4000))]);
   }
 
   function timeBadge(t) {
