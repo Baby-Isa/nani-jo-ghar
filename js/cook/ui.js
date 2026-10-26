@@ -2001,14 +2001,17 @@
       return 1;
     }
   };
-  UI.wordOf = function (r, { size = 96, written = false } = {}) {
+  UI.wordOf = function (r, { size = 96, written = false, head = false } = {}) {
     const W = global.WordCard;
-    if (!W || !r || r.head) return null;
+    if (!W || !r || (r.head && !head)) return null;
     // (a sidebar too short for every card, G1's second step and on: the rows go back to the plain one-line rows, so the
-    // order still fits whole without scrolling; non-negotiable 9)
-    if (mission && (mission.compact || 0) >= 2 && size < 200) return null;
+    // order still fits whole without scrolling; non-negotiable 9. The pop-up's card (writtenCard) is never squeezed: one
+    // pop-up look at every size, round 3)
+    if (mission && !writtenCard && (mission.compact || 0) >= 2 && size < 200) return null;
     const id = wcWordId(r);
     const src = wcPicSrc(id);
+    // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
+    if (head && !src) return null;
     // (written: the word said now, big, as the order first comes: always written in Kutchi, SH-110)
     const hidden = !written && rowHidden(r) && dotsOk();
     const base = W.slots(wcStage(id), { placeholder: !!r.rec });
@@ -2094,17 +2097,16 @@
             rowsShown.push(s.head, ...flat.map((x) => x.r));
             return;
           }
-          if (n <= 1) {
-            // S13-B1 (the judge on SH-110: "a box nested inside a 'samosa' box, unlike the flat rows above it"): one of a kind is
-            // drawn as several are, the kind's row over one box of its fillings (was the kind's own box round its row and fillings)
-            const all = !!s.head.done || (parts.length > 0 && parts.every((p) => p.done || p.no));
-            // (the kind's row ticks with its fillings, as the box's row did: SAM-24's one tick, contract-50)
-            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: all, key: s.head, src: [], say: sayRow(s.head) });
-            items.push({ label: null, count: 1, parts: parts.map((p) => Object.assign({}, p, { done: !!s.head.done || p.done, next: false })), ordered: false, group: true, done: all, src: [] });
-            rowsShown.push(s.head, ...flat.map((x) => x.r));
-            return;
-          }
-          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true, say: sayRow(s.head) });
+          // S13-B1 (the judge on SH-110: "a box nested inside a 'samosa' box, unlike the flat rows above it"; round 3: "one flat
+          // look at every level", and the pop-up's "nested indented second row"): the kind's row over its fillings as the card's
+          // plain rows, one a line (was the kind's own box round its row and its fillings' chips), each a word row (picture,
+          // speaker, Kutchi) where the thing has a picture
+          // (several of a kind: its rows tick together when all its samosas are made, SAM-24's one tick; one: with its fillings)
+          const all = !!s.head.done || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
+          // (the kind's row ticks with its fillings, as the box's row did: SAM-24's one tick, contract-50)
+          items.push(Object.assign({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: all, key: s.head, src: [], say: sayRow(s.head) }, UI.wordOf(s.head, { head: true })));
+          const pics = flat.every((x) => !x.r.no && wcPicSrc(wcWordId(x.r)));
+          items.push({ label: null, count: 1, parts: parts.map((p, i) => Object.assign({}, p, { done: all || (n <= 1 && p.done), next: false }, pics ? UI.wordOf(flat[i].r) : null)), ordered: false, done: all, src: [] });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
@@ -2208,7 +2210,7 @@
       const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
       e.dataset.extra = x.key;
       e.dataset.ck = `x:${x.key}`;
-      if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-blank") ? "oc-tight" : "oc-pills");
+      if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
       box.appendChild(e);
       return e;
     });
@@ -2277,7 +2279,7 @@
       el.dataset.ck = c.key; // (the next redraw finds it: OrderCard.update)
       // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
       // (SH-110, the judge: a card with blanked rows keeps one row a line, each with its speaker at its left, never pills)
-      if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add(el.querySelector(".oc-blank") ? "oc-tight" : "oc-pills");
+      if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add(el.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
       if (minis.has(c.key)) {
         // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
         // (each face still the replay; a tap beside it brings that person forward)

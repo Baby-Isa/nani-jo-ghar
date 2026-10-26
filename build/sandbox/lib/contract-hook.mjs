@@ -650,7 +650,7 @@ export const CONTRACT_HOOK = `(() => {
   };
   // contract-39 (SH-123): every word card's English on screen (the shared card's English slot, .wc-en[data-word-en], with words in
   // it), with the card's word, its stage and whether the child opened it (a free reveal)
-  const cardEnglish = () => [...document.querySelectorAll(".wc .wc-en[data-word-en]")].filter((e) => !e.classList.contains("blank") && !e.classList.contains("none") && (e.textContent || "").trim() && shown(e)).map((e) => { const c = e.closest(".wc"); return { word: (c && c.dataset.word) || "?", stage: +((c && c.dataset.stage) || 1), revealed: e.classList.contains("revealed"), text: (e.textContent || "").trim().slice(0, 30) }; });
+  const cardEnglish = () => [...document.querySelectorAll(".wc .wc-en[data-word-en]")].filter((e) => !e.classList.contains("blank") && !e.classList.contains("none") && (e.textContent || "").trim() && shown(e)).map((e) => { const c = e.closest(".wc"); return { word: (c && c.dataset.word) || "?", stage: +((c && c.dataset.stage) || 1), revealed: e.classList.contains("revealed"), text: (e.textContent || "").trim().slice(0, 30), oc: !!e.closest(".oc-card") }; });
   // contract-33 (SH-107): the headlines of the order pop-up (the cards at the start of a round): each one's size, the size it would
   // have at full (a bare clone of it in the same place, no inline size), and how many lines it takes
   const heads = () => {

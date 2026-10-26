@@ -92,10 +92,12 @@
         "first": {
           "at": "visible:.njg-rq-card .wc-card",
           "sel": ".njg-rq-card .wc-card",
+          "delay": 350,
           "tries": 10
         },
         "day": {
-          "at": "visible:.wc-card"
+          "at": "visible:.wc-card",
+          "delay": 700
         },
         "cook": {
           "at": "visible:.njg-rq-card .wc-card",
@@ -105,7 +107,8 @@
           "tries": 6
         },
         "clinic": {
-          "at": "visible:.wc-card"
+          "at": "visible:.wc-card",
+          "delay": 350
         },
         "lab": {
           "at": "visible:.njg-rq-card .wc-card",

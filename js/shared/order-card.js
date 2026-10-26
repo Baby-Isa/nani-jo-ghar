@@ -213,8 +213,9 @@
    * speaker already: that one moves to the row's start, so the row keeps one speaker.
    */
   OC.SPK = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
-  function speakerFirst(r, node) {
-    r.classList.add("oc-blank");
+  // (S13-B1, the judge on SH-110: "every item row has its left speaker, written or dotted": blank marks a dotted row)
+  function speakerFirst(r, node, blank) {
+    if (blank) r.classList.add("oc-blank");
     let b = r.querySelector(".wc-spk");
     if (!b) {
       if (typeof node.say !== "function") return; // (no voice for this row: contract-40 reports a blanked row with no speaker)
@@ -231,6 +232,7 @@
       });
     } else b.classList.add("oc-spk");
     r.insertBefore(b, r.firstChild);
+    r.classList.add("oc-said");
   }
 
   function rowEl(node, cls, opts) {
@@ -243,13 +245,15 @@
     const r = el("div", ["oc-row", cls, word ? "oc-wc" : "", node.done && !node.wrong ? "done" : "", node.next ? "next" : "", node.no ? "no" : "", node.miss ? "miss" : "", node.wrong ? "wrong" : ""].filter(Boolean).join(" "));
     if (word) {
       wcCss();
-      const w = W.row(r, word, Object.assign({}, node.wordOpts || {}, { cls: "oc-wcrow" }));
+      // (non-negotiable 3, Zafar 21 Oct: a row's English only when the child taps it open: enTap)
+      const w = W.row(r, word, Object.assign({}, node.wordOpts || {}, { cls: "oc-wcrow", enTap: true }));
       const k = w.querySelector(".wc-k");
       if (k) k.classList.add("oc-t");
       r.insertAdjacentHTML("beforeend", tick(node.done && !node.wrong));
     } else r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done && !node.wrong)}`;
     // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): a row whose words are blanked (dotted) starts with a clear speaker
-    if (!node.done && (node.blank || r.querySelector(".dots"))) speakerFirst(r, node);
+    // (S13-B1, the judge: every item row, written or dotted, done or not, starts with its speaker: one row anatomy)
+    speakerFirst(r, node, !node.done && !!(node.blank || r.querySelector(".dots")));
     const id = keyId(node.key);
     if (id != null) r.dataset.key = id;
     if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);
@@ -291,7 +295,9 @@
     if (it.parts.length) {
       const fold = el("div", "oc-fold");
       const inner = el("div", "oc-fold-in");
-      const list = el("div", ["oc-parts", it.ordered && it.parts.filter((p) => !p.no).length > 1 ? "oc-seq" : ""].filter(Boolean).join(" "));
+      // (round 3, the judge: the clinic's step rows had "a stray connector line" and an indent unlike Cook's rows: an item of steps
+      // is the card's plain rows in their order, the step now lit by the next band; its headline says the order in words)
+      const list = el("div", ["oc-parts", it.ordered && !it.steps && it.parts.filter((p) => !p.no).length > 1 ? "oc-seq" : ""].filter(Boolean).join(" "));
       list.dataset.fitGroup = "";
       it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
       if (list.classList.contains("oc-seq")) seqEnd(list);
