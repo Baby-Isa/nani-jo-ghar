@@ -19,7 +19,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | once; twice; three times (stir it three times) | Cook line: {x} times | 1 line | Rule not known yet: needs Mum. Asked before: L54. |
 | One tomato, three tomatoes. | Cook: tomato | 1 line | Form missing: Mum's answer unlocks it. Asked before: Q14. Zafar, 20 Oct: see 1c. |
 | He-word or she-word? 30 nouns in Cook: sugar, flour, daal, potato, onion, tomato, chilli, garlic, peas (green peas), ginger, turmeric, cumin seeds, mustard seeds, cardamom, salt, red chilli powder, chickpeas, yoghurt, sev, coriander, mince, meat, ghee, chaat, samosa, sekelo, mishkaki, cupboard, vegetable, mixed | Cook: every line that names them | 65 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
-| He-word or she-word? 4 nouns in the clinic: foot, ear, drops (not sprinkle), apple | Clinic: every line that names them | 10 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
+| He-word or she-word? 5 nouns in the clinic: foot, ear, drops (not sprinkle), apple, medicine | Clinic: every line that names them | 12 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
 
 ### 1b. Wider grammar still open
 
@@ -392,12 +392,12 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | What's wrong with knee? | Clinic line: What's wrong with {x}? | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | X-ray the leg, then clonk the bone two times | Clinic line: X-ray the leg, then clonk the bone {n} times | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 
-### 3c. Words (285): 253 with no Kutchi yet, 32 with Kutchi but no recording
+### 3c. Words (285): 252 with no Kutchi yet, 33 with Kutchi but no recording
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
 | one | Clinic: head; Clinic: tummy; Clinic: arm | 108 lines | Kutchi known (hakro); no family recording. |
-| three | Clinic: hand; Clinic: foot; Clinic: ear (+2 more) | 12 lines | Kutchi known (trae); no family recording. |
+| three | Clinic: hand; Clinic: foot; Clinic: ear (+2 more) | 13 lines | Kutchi known (trae); no family recording. |
 | milk | Clinic line: {x}? No, my {y} hurts.; Clinic line: This is the {x}. The {y}, please.; Clinic line: Is it the {x}, or the {y}? | 7 lines | Kutchi known (dudh); no family recording. |
 | hand | Clinic: hand | 6 lines | Kutchi known (hath); no family recording. |
 | I / me | Clinic line: I need {a}; Clinic line: I need {a}, and {rest} | 5 lines | Kutchi known (muke); no family recording. |
@@ -428,6 +428,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | I don't feel well. | Clinic line: I don't feel well.; Clinic line: I don't feel well | 2 lines | No Kutchi yet (grey English). |
 | ice pack | Clinic: ice pack | 2 lines | No Kutchi yet (grey English). Asked before: G76. |
 | knee | Clinic: knee | 2 lines | Kutchi known (gutan); no family recording. |
+| medicine | Clinic: medicine | 2 lines | Kutchi known (dawa); no family recording. |
 | one | Clinic: eye; Clinic: teaspoon | 2 lines | Kutchi known (hakri); no family recording. |
 | Ow! | Clinic: Ow!; Clinic line: Ow! | 2 lines | No Kutchi yet (grey English). |
 | pointer | Clinic: pointer | 2 lines | No Kutchi yet (grey English). |
@@ -575,7 +576,6 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | Look in: the torch. | Clinic line: Look in: the torch. | 1 line | No Kutchi yet (grey English). |
 | lukewarm | Clinic: lukewarm | 1 line | No Kutchi yet (grey English). |
 | make | Clinic: make | 1 line | Kutchi known (banai); no family recording. |
-| medicine | Clinic: medicine | 1 line | No Kutchi yet (grey English). |
 | middle toe | Clinic: middle toe | 1 line | No Kutchi yet (grey English). |
 | Mmmph! (cheeks full) | Clinic line: Mmmph! (cheeks full) | 1 line | No Kutchi yet (grey English). |
 | mouth | Clinic: mouth | 1 line | No Kutchi yet (grey English). Asked before: G51. |
@@ -880,4 +880,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (163 Cook and 337 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (163 Cook and 339 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

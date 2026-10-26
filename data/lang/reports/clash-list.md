@@ -99,14 +99,16 @@ Every other recording in `data/family-audio.json` is linked in `clips.json`. The
 ### The recording and a game spell the word differently (Zafar to listen) (4)
 
 - `khuda-fis`: *Khuda hafiz!* (goodbye). The recording is transcribed Khuda hafiz; the game and Zafar spell it khuda-fis. Source: grammar-notes §30 K3, Zafar 26 Sept. Recommendation: Keep khuda-fis; link the clip by hand once Zafar has ticked it.
-- `bateto`: *bateto* (potato (one)). Whisper hears bateto; Cook spells the potato bataato for Zafar to check. Source: grammar-notes §34 P1. Recommendation: Zafar to listen and choose the spelling; the engine keeps bataato.
 - `trae-bateta`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
 - `trae-bateta-b`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
+- `bateto`: *bateto* (potato (one)). Whisper hears bateto; Cook spells the potato bataato for Zafar to check. Source: grammar-notes §34 P1. Recommendation: Zafar to listen and choose the spelling; the engine keeps bataato.
 
-### A sentence the engine has no rule for yet (2)
+### A sentence the engine has no rule for yet (4)
 
 - `toji-kursi-ain`: *Toji kursi ain.* (They're your chairs. (to a child)). 'They're your chairs': a plain statement of what a thing is, with ain; no rule yet. Source: grammar-notes §54 C73. Recommendation: Add a Be rule when Round 5's C86+ are answered.
 - `toja-amba-ain`: *Toja amba ain.* (They're your mangoes. (to a child)). As toji kursi ain. Source: grammar-notes §54 C73. Recommendation: As above.
+- `toke-chai-khapeti`: *Toke chai khapeti* (Do you want chai? (to a child; said as a question)). Do you want chai? (to a child): a question by the rising voice alone (Mum: 'that's a question, not a statement'); the engine's Ask takes only a fixed phrase, so it is not linked to the statement. Source: grammar-notes §58 C87. Recommendation: Add a question form of Need (same words, rising voice) when a game needs Nani to offer something.
+- `aau-gaykal-hana-ke-naryos`: *Aau gaykal Hana ke naryos* (I saw Hana yesterday. (a man says it)). I saw Hana yesterday (Zafar's take): See takes only a pronoun to see (a name with ke is not a rule yet), and Hana is not in the lexicon; gaykal is itself a working assumption. Source: grammar-notes §57. Recommendation: Zafar to tick gaykal and the spelling; then let See take a name + ke.
 
 ### Something the engine cannot do yet (7)
 

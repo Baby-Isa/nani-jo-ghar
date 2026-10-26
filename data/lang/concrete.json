@@ -1197,6 +1197,404 @@
    "what": "Nani sending the child to fetch a list ('bring me flour, sugar and milk')",
    "src": "grammar-kb feature 23; Round 5 L29"
   },
+  "GaveTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "to",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "v.give",
+     "cell": "past.{who.person|p3}.{$g|who.gender}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §56 C80-C84 (Nana muke ambo dino; Aau toke ambo dinos / dinis; E panke ambo dini)",
+   "notes": [
+    "The past of give follows the giver's gender (dino / dini), and for 'I' the speaker's (dinos / dinis: Zafar 26 Oct). The thing given (ambo, a he-word) does not change it (E panke ambo dini)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "to",
+       "case": "dat"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "lex": "v.give",
+       "cell": "past.p1.{$g|speaker}"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §56 C81-C83"
+    }
+   ]
+  },
+  "See": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "whom",
+     "case": "dat"
+    },
+    {
+     "lex": "v.look",
+     "cell": "{$tense|past}.p1.{$g|speaker}"
+    }
+   ],
+   "only": {
+    "who.person": [
+     "p1"
+    ]
+   },
+   "onlyAsk": [
+    "new (he saw, she saw: not asked; Nana saw me was inconclusive, §57)"
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §57 C85 (Aau toke naryos / naryis, narato / narati, nardos / nardis; Aau anke naryos; Aau inke naryos / naryis)",
+   "notes": [
+    "The ending is the speaker's gender, not the person seen (Zafar 26 Oct, decision 1); toke to a child, anke to an elder, inke for him or her. The meaning's tense field picks past (default), pres or fut."
+   ]
+  },
+  "NeedThing": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "n.need"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §58 C86-C92 (Muke chai ji jaruri; Toke dawa ji jaruri; Anke chai ji jaruri; Iloka ke chai ji jaruri)",
+   "notes": [
+    "ji stays ji with chai, dawa and vinnu (§58, §60): Claude reads it as the 'of' word agreeing with jaruri, not with the thing (a reading, not Mum's words). 'Need' is strong (Mum: 'I really need it'); the everyday ask is the want (PredDat, khapeti)."
+   ]
+  },
+  "Likes": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "v.like",
+     "cell": "pres.{thing.gender}.{thing.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §59 C94 (Muke chai wareti; Inke chai wareti; Iloka ke chai wareti: ⚠ spelling)",
+   "notes": [
+    "Like khapeti, the ending follows the thing liked (chai is a she-word), not the person (Mum: 'it's like French')."
+   ]
+  },
+  "WantTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "v.want-to",
+     "cell": "-"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke vinnu aaye; Inke vinnu aaye; Iloka ke vinnu aaye; Zafar 26 Oct, decision 2)"
+  },
+  "HaveTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "v.want",
+     "cell": "fut.he.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke vinnu khapdo; Inke vinnu khapdo; Iloka ke vinnu khapdo: ought to, obliged, 'like a wedding because you're related'; Zafar 26 Oct, decision 2), §33 S6 (Panke randhnu khapdo)"
+  },
+  "NeedTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "n.need"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke vinnu ji jaruri; Inke vinnu ji jaruri; Zafar 26 Oct, decision 2)",
+   "notes": [
+    "Whisper hears vinan ji / winanji here: whether the 'to go' word changes before ji is for Zafar's ear (§60)."
+   ]
+  },
+  "CanDo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "verb",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.can",
+     "cell": "pres.{who.person}.{$g|who.gender}.{who.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §61 C96 (Aau vinni sakati / sakanto; E vinni saketi / saketo; Iloka vinni sakanto)",
+   "exceptions": [
+    {
+     "only": {
+      "who.number": [
+       "pl"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "conj"
+      },
+      {
+       "lex": "v.can",
+       "cell": "pres.{who.person}.pl"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Iloka vinni sakanto: no gender)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "conj"
+      },
+      {
+       "lex": "v.can",
+       "cell": "pres.p1.{$g|speaker}.sg"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Aau vinni sakati: a woman; sakanto: a man)"
+    }
+   ]
+  },
+  "CantDo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "neg.not",
+     "cell": "{$g|speaker}"
+    },
+    {
+     "arg": "verb",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.can",
+     "cell": "neg"
+    }
+   ],
+   "only": {
+    "who.person": [
+     "p1"
+    ]
+   },
+   "onlyAsk": [
+    "new (she can't, they can't: not asked)"
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §61 C96 (Aau nati vinni saka: a woman; Aau nato vinni saka: a man)"
+  },
+  "EveryDay": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "adv.every-day"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "arg": "verb",
+     "cell": "pres.{who.person}.{$g|who.gender}.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §62 C97-C103 (Aau roj maani kianto / kianti; Tu roj maani khaito / khaiti; E roj maani khaito / khaiti; Aai roj maani kianta; Pa roj maani kianta; Iloka roj maani kenta)",
+   "notes": [
+    "To a child and about him or her the ending follows that person's gender (g); for 'I' the speaker's. The elder 'you' and 'we' share kianta, as they share aayo (§51, §52). Masi says kauta for both: a noted variant, not used (Zafar 26 Oct, decision 3)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "who.number": [
+       "pl"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.{who.person}.pl"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C102-C103 (Pa roj maani kianta; Iloka roj maani kenta: the same for boys and girls)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p2resp"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.p2resp"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C99 (Aai roj maani kianta: the same to Nana and Nani)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.p1.{$g|speaker}.sg"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C97 (Aau roj maani kianto: a man; kianti: a woman)"
+    }
+   ]
+  },
   "BringMeTheseForX": {
    "status": "unknown",
    "ask": [

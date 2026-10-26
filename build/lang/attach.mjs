@@ -6,6 +6,7 @@
 // meanings from the lexicon and compares text.
 import { createEngine } from "../../js/core/lang/engine/index.js";
 import { norm, readJSON } from "./lib.mjs";
+import { SENTENCES } from "./hand/rules.mjs";
 
 export function engineOf(S) {
   const params = readJSON("data/lang/params.json");
@@ -23,6 +24,7 @@ const CTX = {
 
 /** the meanings worth trying */
 function* candidates(S) {
+  yield* SENTENCES; // the hand rules' own recorded sentences (rules.mjs)
   const live = (e) => e.status !== "to-record";
   const nouns = Array.from(S.entries.values()).filter((e) => (e.pos === "N" || e.pos === "PN") && live(e)).map((e) => e.id);
   const common = nouns.filter((id) => S.entries.get(id).pos === "N");

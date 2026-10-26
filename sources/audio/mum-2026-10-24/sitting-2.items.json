@@ -1,0 +1,298 @@
+[
+ {
+  "qid": "C95",
+  "at": 31.8,
+  "items": [
+   {
+    "id": "inke-vinnu-khapdo",
+    "kutchi": "Inke vinnu khapdo",
+    "english": "She has to go.",
+    "mum": [
+     49.26,
+     50.38
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Inke winu khapdo.\""
+   },
+   {
+    "id": "inke-vinnu-aaye",
+    "kutchi": "Inke vinnu aaye",
+    "english": "She wants to go.",
+    "mum": [
+     52.86,
+     54.08
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Enke winu aye\""
+   },
+   {
+    "id": "inke-vinnu-ji-jaruri",
+    "kutchi": "Inke vinnu ji jaruri",
+    "english": "He (or she) needs to go.",
+    "mum": [
+     68.34,
+     69.62
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Inkevinenjijerure\"; Whisper hears vinan ji"
+   },
+   {
+    "id": "iloka-ke-vinnu-aaye",
+    "kutchi": "Iloka ke vinnu aaye",
+    "english": "They want to go.",
+    "mum": [
+     78.2,
+     79.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Iloka Kevin Nwai.\""
+   },
+   {
+    "id": "iloka-ke-vinnu-khapdo",
+    "kutchi": "Iloka ke vinnu khapdo",
+    "english": "They have to go.",
+    "mum": [
+     81.94,
+     83.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Iloka Kevin nukapdo\""
+   }
+  ]
+ },
+ {
+  "qid": "C96",
+  "at": 142.2,
+  "items": [
+   {
+    "id": "aau-vinni-sakati",
+    "kutchi": "Aau vinni sakati",
+    "english": "I can go. (a woman says it)",
+    "mum": [
+     145.96,
+     147.06
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Awini Sakati.\""
+   },
+   {
+    "id": "aau-vinni-sakanto",
+    "kutchi": "Aau vinni sakanto",
+    "english": "I can go. (a man says it)",
+    "mum": [
+     149.5,
+     150.56
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"anwinisa kanto.\""
+   },
+   {
+    "id": "e-vinni-saketi",
+    "kutchi": "E vinni saketi",
+    "english": "She can go.",
+    "mum": [
+     154.68,
+     155.76
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Iwinisakiti\""
+   },
+   {
+    "id": "e-vinni-saketo",
+    "kutchi": "E vinni saketo",
+    "english": "He can go.",
+    "mum": [
+     175.86,
+     177.28
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Iwinisakito\""
+   },
+   {
+    "id": "iloka-vinni-sakanto",
+    "kutchi": "Iloka vinni sakanto",
+    "english": "They can go.",
+    "mum": [
+     188.48,
+     189.9
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ilo kawini sakanta\""
+   },
+   {
+    "id": "aau-nati-vinni-saka",
+    "kutchi": "Aau nati vinni saka",
+    "english": "I can't go. (a woman says it)",
+    "mum": [
+     195.9,
+     196.92
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Wanati Winisaka\""
+   },
+   {
+    "id": "aau-nato-vinni-saka",
+    "kutchi": "Aau nato vinni saka",
+    "english": "I can't go. (a man says it)",
+    "mum": [
+     205.9,
+     207.04
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Auna tuu inisaka.\""
+   }
+  ]
+ },
+ {
+  "qid": "C97",
+  "at": 254.3,
+  "items": [
+   {
+    "id": "aau-roj-maani-kianto",
+    "kutchi": "Aau roj maani kianto",
+    "english": "I eat maani every day. (a man says it)",
+    "mum": [
+     278.9,
+     279.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Orojmani kianto.\""
+   },
+   {
+    "id": "aau-roj-maani-kianti",
+    "kutchi": "Aau roj maani kianti",
+    "english": "I eat maani every day. (a woman says it)",
+    "mum": [
+     298.6,
+     299.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Orojma nikyati\""
+   }
+  ]
+ },
+ {
+  "qid": "C98",
+  "at": 310.8,
+  "items": [
+   {
+    "id": "tu-roj-maani-khaiti",
+    "kutchi": "Tu roj maani khaiti",
+    "english": "You eat maani every day. (to a girl)",
+    "mum": [
+     320.52,
+     321.86
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"turojmani khaiti\""
+   },
+   {
+    "id": "tu-roj-maani-khaito",
+    "kutchi": "Tu roj maani khaito",
+    "english": "You eat maani every day. (to a boy)",
+    "mum": [
+     329.66,
+     330.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"tuu rojmani kaito.\""
+   }
+  ]
+ },
+ {
+  "qid": "C99",
+  "at": 332,
+  "items": [
+   {
+    "id": "aai-roj-maani-kianta",
+    "kutchi": "Aai roj maani kianta",
+    "english": "You eat maani every day. (to an elder)",
+    "mum": [
+     869.94,
+     871.3
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Aliroj Manikyuta.\"; Mum's version one; Masi's kauta (873.2) is a noted variant, not cut (Zafar, 26 Oct)"
+   }
+  ]
+ },
+ {
+  "qid": "C100",
+  "at": 887.1,
+  "items": [
+   {
+    "id": "e-roj-maani-khaito",
+    "kutchi": "E roj maani khaito",
+    "english": "He eats maani every day.",
+    "mum": [
+     891.82,
+     893.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Liroj mane kaito\""
+   }
+  ]
+ },
+ {
+  "qid": "C101",
+  "at": 898,
+  "items": [
+   {
+    "id": "e-roj-maani-khaiti",
+    "kutchi": "E roj maani khaiti",
+    "english": "She eats maani every day.",
+    "mum": [
+     901.1,
+     902.48
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Irojmani kaiti.\""
+   }
+  ]
+ },
+ {
+  "qid": "C102",
+  "at": 904.3,
+  "items": [
+   {
+    "id": "pa-roj-maani-kianta",
+    "kutchi": "Pa roj maani kianta",
+    "english": "We eat maani every day.",
+    "mum": [
+     917.6,
+     919.02
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Paroji manikyo ta.\"; Mum's version; Masi's kauta (914.3) is a noted variant, not cut"
+   }
+  ]
+ },
+ {
+  "qid": "C103",
+  "at": 925.5,
+  "items": [
+   {
+    "id": "iloka-roj-maani-kenta",
+    "kutchi": "Iloka roj maani kenta",
+    "english": "They eat maani every day.",
+    "mum": [
+     931.28,
+     932.86
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Iloka rojmani kenta.\""
+   },
+   {
+    "id": "huloka-roj-maani-kenta",
+    "kutchi": "Huloka roj maani kenta",
+    "english": "Those people (over there) eat maani every day.",
+    "mum": [
+     1032.9,
+     1034.2
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Hulo karoti manikenda\""
+   }
+  ]
+ }
+]

@@ -856,6 +856,162 @@
     "x"
    ]
   },
+  "GaveTo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "NP"
+    },
+    "to": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{who} gave {thing} to {to}.",
+   "elicit": [
+    "Nana gave the mango to me. I gave the mango to you. (to a child; a man says it, a woman says it)"
+   ]
+  },
+  "See": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "whom": {
+     "type": "Person"
+    }
+   },
+   "en": "{who} saw / see / will see {whom}.",
+   "elicit": [
+    "I saw you. I see you. I'll see you. (to a child; a man says it, a woman says it)"
+   ]
+  },
+  "NeedThing": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{who} need(s) {thing}.",
+   "elicit": [
+    "I need chai. You need medicine. (to a child)"
+   ]
+  },
+  "Likes": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{who} like(s) {thing}.",
+   "elicit": [
+    "I like chai. She likes chai. They like chai."
+   ]
+  },
+  "WantTo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} want(s) to {verb}.",
+   "elicit": [
+    "I want to go. She wants to go. They want to go."
+   ]
+  },
+  "HaveTo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} has to {verb} (ought to, is obliged to).",
+   "elicit": [
+    "I have to go. She has to go. They have to go."
+   ]
+  },
+  "NeedTo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} need(s) to {verb}.",
+   "elicit": [
+    "I need to go (to that appointment)."
+   ]
+  },
+  "CanDo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} can {verb}.",
+   "elicit": [
+    "I can go. She can go. They can go."
+   ]
+  },
+  "CantDo": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} can't {verb}.",
+   "elicit": [
+    "I can't go. (a man says it, a woman says it)"
+   ]
+  },
+  "EveryDay": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{who} {verb} {thing} every day.",
+   "elicit": [
+    "I eat chapatis every day. (a man says it, a woman says it)"
+   ]
+  },
   "BringMeTheseForX": {
    "cat": "Utt",
    "args": {
