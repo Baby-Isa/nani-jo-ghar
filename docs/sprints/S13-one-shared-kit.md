@@ -33,8 +33,9 @@ Answer:
 
 ## Sessions
 - **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`: done 26 Oct; 15 decisions to Zafar (decision 10 withdrawn: `input.js` has callers).
-- **S13-T, the checking loop** (Opus, high, about $30-40): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-t.md`.
-- **S13-A1, colours, motion, page setup** (Opus, high, about $35-45): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-a1.md`.
+- **S13-T, the checking loop** (Opus, high, about $30-40): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-t.md`. Merged 26 Oct; its first script-made batch judged: sheets unreadable (thumbnails), pairs not by moment, still strips unflagged -> fix round.
+- **S13-A1, colours, motion, page setup** (Opus, high, about $35-45): launched 26 Oct 14:30 UK, in-chat in its own worktree. Report `build/reports/s13-a1.md`. Merged 26 Oct; judge (Fable) 8 PASS of 8 (glow, finger, help ladder kit sheets; SH-124, SH-119, SH-19, CLN-203, DOOR-07).
+- **S13-B1, cards and order screen** (Opus, high, about $45-55): launched 26 Oct ~16:00 UK; step 0 fixes the SH-110 and SH-123 probes (the before run caught both). Report `build/reports/s13-b1.md`.
 
 ## Small decisions (Zafar, 26 Oct)
 - Also shared this sprint: the voice player (the built `js/core/voice.js` path, wired everywhere), sound effects, saving (one copy) and the test hooks. Not shared: tap and drag handling (one open row; every mechanic at risk) and Cook's round runner (a rewrite of Cook's core); parked games out of scope.
