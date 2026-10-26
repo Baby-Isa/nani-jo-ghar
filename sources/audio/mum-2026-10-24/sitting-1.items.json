@@ -1,0 +1,549 @@
+[
+ {
+  "qid": "C80",
+  "at": 0,
+  "items": [
+   {
+    "id": "nana-muke-ambo-dino",
+    "kutchi": "Nana muke ambo dino",
+    "english": "Nana gave me the mango.",
+    "mum": [
+     7.76,
+     9.74
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nanamuke ambodina.\""
+   }
+  ]
+ },
+ {
+  "qid": "C81",
+  "at": 11.9,
+  "items": [
+   {
+    "id": "aau-toke-ambo-dinis",
+    "kutchi": "Aau toke ambo dinis",
+    "english": "I gave you the mango. (to a child; a woman says it)",
+    "mum": [
+     50.96,
+     52.68
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Anapake ambo Dennis.\""
+   },
+   {
+    "id": "aau-toke-ambo-dinos",
+    "kutchi": "Aau toke ambo dinos",
+    "english": "I gave you the mango. (to a child; a man says it)",
+    "mum": [
+     52.8,
+     54.2
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Antoke ambo dinos\""
+   }
+  ]
+ },
+ {
+  "qid": "C82",
+  "at": 67.4,
+  "items": [
+   {
+    "id": "aau-anke-ambo-dinis",
+    "kutchi": "Aau anke ambo dinis",
+    "english": "I gave you the mango. (to an elder; a woman says it)",
+    "mum": [
+     83.98,
+     85.68
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"au anke ambodinis.\""
+   },
+   {
+    "id": "aau-anke-ambo-dinos",
+    "kutchi": "Aau anke ambo dinos",
+    "english": "I gave you the mango. (to an elder; a man says it)",
+    "mum": [
+     87.5,
+     89.24
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"au anke ambo dino\""
+   }
+  ]
+ },
+ {
+  "qid": "C83",
+  "at": 105.8,
+  "items": [
+   {
+    "id": "aau-inke-ambo-dinis",
+    "kutchi": "Aau inke ambo dinis",
+    "english": "I gave him (or her) the mango. (a woman says it)",
+    "mum": [
+     127.28,
+     128.74
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Ame inke ambo Dennis\""
+   }
+  ]
+ },
+ {
+  "qid": "C84",
+  "at": 152.1,
+  "items": [
+   {
+    "id": "e-panke-ambo-dini",
+    "kutchi": "E panke ambo dini",
+    "english": "She gave us the mango.",
+    "mum": [
+     161.6,
+     162.9
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ipanke ambo dini\""
+   },
+   {
+    "id": "e-iloka-ke-ambo-dini",
+    "kutchi": "E iloka ke ambo dini",
+    "english": "She gave them the mango.",
+    "mum": [
+     168.3,
+     170
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ilo kake ambodine.\""
+   }
+  ]
+ },
+ {
+  "qid": "C85",
+  "at": 213.2,
+  "items": [
+   {
+    "id": "aau-toke-naryos",
+    "kutchi": "Aau toke naryos",
+    "english": "I saw you. (to a child; a man says it)",
+    "mum": [
+     393.3,
+     394.94
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"auto kenarios.\""
+   },
+   {
+    "id": "aau-toke-naryis",
+    "kutchi": "Aau toke naryis",
+    "english": "I saw you. (to a child; a woman says it)",
+    "mum": [
+     396.38,
+     397.66
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Anto kena aris.\""
+   },
+   {
+    "id": "aau-toke-narati",
+    "kutchi": "Aau toke narati",
+    "english": "I see you. (to a child; a woman says it)",
+    "mum": [
+     405.08,
+     406.22
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Atakena rati\""
+   },
+   {
+    "id": "aau-toke-narato",
+    "kutchi": "Aau toke narato",
+    "english": "I see you. (to a child; a man says it)",
+    "mum": [
+     407.6,
+     408.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"antakena ra to\""
+   },
+   {
+    "id": "aau-toke-nardis",
+    "kutchi": "Aau toke nardis",
+    "english": "I'll see you. (to a child; a woman says it)",
+    "mum": [
+     400.5,
+     401.82
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Anto kena rdhi\"; said first in the present's place, then she gave the present; her later future take (6:57) is under talk"
+   },
+   {
+    "id": "aau-toke-nardos",
+    "kutchi": "Aau toke nardos",
+    "english": "I'll see you. (to a child; a man says it)",
+    "mum": [
+     419.66,
+     421.04
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Atakena ardos\""
+   },
+   {
+    "id": "aau-anke-naryis",
+    "kutchi": "Aau anke naryis",
+    "english": "I saw you. (to an elder; a woman says it)",
+    "mum": [
+     460.12,
+     461.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Ankenari\""
+   },
+   {
+    "id": "aau-anke-naryos",
+    "kutchi": "Aau anke naryos",
+    "english": "I saw you. (to an elder; a man says it)",
+    "mum": [
+     462.06,
+     463.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"au ankenarius.\""
+   },
+   {
+    "id": "aau-inke-naryos",
+    "kutchi": "Aau inke naryos",
+    "english": "I saw him (or her). (a man says it)",
+    "mum": [
+     501.76,
+     503.08
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"I'm in Kenarios.\"; said in the debate before Zafar's ruling (26 Oct: the speaker's gender)"
+   },
+   {
+    "id": "aau-inke-naryis",
+    "kutchi": "Aau inke naryis",
+    "english": "I saw him (or her). (a woman says it)",
+    "mum": [
+     505.42,
+     506.68
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Au inkinari\""
+   }
+  ]
+ },
+ {
+  "qid": "C86",
+  "at": 627.3,
+  "items": [
+   {
+    "id": "muke-chai-ji-jaruri",
+    "kutchi": "Muke chai ji jaruri",
+    "english": "I need chai.",
+    "mum": [
+     755.66,
+     756.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mukecha ijijerure.\""
+   },
+   {
+    "id": "muke-chai-khapeti-r5",
+    "kutchi": "Muke chai khapeti",
+    "english": "I want chai.",
+    "mum": [
+     805.78,
+     806.84
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Muke jai khabeti\""
+   }
+  ]
+ },
+ {
+  "qid": "C87",
+  "at": 812,
+  "items": [
+   {
+    "id": "toke-chai-khapeti",
+    "kutchi": "Toke chai khapeti",
+    "english": "Do you want chai? (to a child; said as a question)",
+    "mum": [
+     815.92,
+     817.12
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Tuke, chai, khapeti\""
+   },
+   {
+    "id": "toke-chai-ji-jaruri",
+    "kutchi": "Toke chai ji jaruri",
+    "english": "You need chai. (to a child)",
+    "mum": [
+     841.8,
+     843
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Tsoke chai jijirure\""
+   },
+   {
+    "id": "toke-dawa-ji-jaruri",
+    "kutchi": "Toke dawa ji jaruri",
+    "english": "You need medicine. (to a child)",
+    "mum": [
+     844.8,
+     846.14
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"toki dawaji jerure\""
+   }
+  ]
+ },
+ {
+  "qid": "C88",
+  "at": 849.1,
+  "items": [
+   {
+    "id": "anke-chai-ji-jaruri",
+    "kutchi": "Anke chai ji jaruri",
+    "english": "You need chai. (to an elder)",
+    "mum": [
+     855.6,
+     857.02
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Anke chai chijirure\""
+   }
+  ]
+ },
+ {
+  "qid": "C89",
+  "at": 886.2,
+  "items": [
+   {
+    "id": "inke-chai-khapeti",
+    "kutchi": "Inke chai khapeti",
+    "english": "He wants chai.",
+    "mum": [
+     892.52,
+     893.7
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Enki jayeka piti\""
+   },
+   {
+    "id": "inke-chai-ji-jaruri",
+    "kutchi": "Inke chai ji jaruri",
+    "english": "He needs chai.",
+    "mum": [
+     894.64,
+     895.86
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"inkecha eji jerure.\""
+   }
+  ]
+ },
+ {
+  "qid": "C90",
+  "at": 899.6,
+  "items": [
+   {
+    "id": "inke-chai-khapeti-b",
+    "kutchi": "Inke chai khapeti",
+    "english": "She wants chai.",
+    "mum": [
+     905,
+     906.12
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mienke chai kapiti\""
+   },
+   {
+    "id": "inke-chai-ji-jaruri-b",
+    "kutchi": "Inke chai ji jaruri",
+    "english": "She needs chai.",
+    "mum": [
+     906.34,
+     907.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Enkechai jijerure\""
+   }
+  ]
+ },
+ {
+  "qid": "C91",
+  "at": 910.5,
+  "items": [
+   {
+    "id": "panke-chai-khapeti",
+    "kutchi": "Panke chai khapeti",
+    "english": "We want chai.",
+    "mum": [
+     915.35,
+     916.7
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Sipanki Chai Khapeti\""
+   },
+   {
+    "id": "panke-chai-ji-jaruri",
+    "kutchi": "Panke chai ji jaruri",
+    "english": "We need chai.",
+    "mum": [
+     918.55,
+     920
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Pankecha ejijerure\""
+   }
+  ]
+ },
+ {
+  "qid": "C92",
+  "at": 924.4,
+  "items": [
+   {
+    "id": "iloka-ke-chai-khapeti",
+    "kutchi": "Iloka ke chai khapeti",
+    "english": "They want chai.",
+    "mum": [
+     929.44,
+     930.92
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ilo kakechai kapiti\""
+   },
+   {
+    "id": "iloka-ke-chai-ji-jaruri",
+    "kutchi": "Iloka ke chai ji jaruri",
+    "english": "They need chai.",
+    "mum": [
+     931.45,
+     932.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ila kakecha eji jerure\""
+   }
+  ]
+ },
+ {
+  "qid": "C93",
+  "at": 972,
+  "items": [
+   {
+    "id": "muke-chai-khapeti-r5b",
+    "kutchi": "Muke chai khapeti",
+    "english": "I want chai.",
+    "mum": [
+     982.88,
+     983.94
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Muka jayka beti\""
+   },
+   {
+    "id": "inke-chai-khapeti-c",
+    "kutchi": "Inke chai khapeti",
+    "english": "She wants chai.",
+    "mum": [
+     985.5,
+     986.6
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Inki chai kapiti\""
+   },
+   {
+    "id": "iloka-ke-chai-khapeti-b",
+    "kutchi": "Iloka ke chai khapeti",
+    "english": "They want chai.",
+    "mum": [
+     988.14,
+     989.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ilo kakecha ekapeti\""
+   }
+  ]
+ },
+ {
+  "qid": "C94",
+  "at": 991.3,
+  "items": [
+   {
+    "id": "muke-chai-wareti",
+    "kutchi": "Muke chai wareti",
+    "english": "I like chai.",
+    "mum": [
+     1005.56,
+     1006.64
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mkechaya arete\"; spelling a guess between yareti and wareti (Whisper: yaareti, areti, warati)"
+   },
+   {
+    "id": "inke-chai-wareti",
+    "kutchi": "Inke chai wareti",
+    "english": "She likes chai.",
+    "mum": [
+     1030.22,
+     1031.34
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Enki chai warati\""
+   },
+   {
+    "id": "iloka-ke-chai-wareti",
+    "kutchi": "Iloka ke chai wareti",
+    "english": "They like chai.",
+    "mum": [
+     1044.12,
+     1045.4
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Kiloka kechaya areti\""
+   }
+  ]
+ },
+ {
+  "qid": "C95",
+  "at": 1051.7,
+  "items": [
+   {
+    "id": "muke-vinnu-aaye",
+    "kutchi": "Muke vinnu aaye",
+    "english": "I want to go.",
+    "mum": [
+     1150.5,
+     1151.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mukewenu aye.\""
+   },
+   {
+    "id": "muke-vinnu-ji-jaruri",
+    "kutchi": "Muke vinnu ji jaruri",
+    "english": "I need to go.",
+    "mum": [
+     1159.2,
+     1161.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mukewinenji jerure.\"; Whisper hears winanji (vinnan ji?)"
+   },
+   {
+    "id": "muke-vinnu-khapdo",
+    "kutchi": "Muke vinnu khapdo",
+    "english": "I have to go.",
+    "mum": [
+     1274.98,
+     1275.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mukevenu kaptu.\""
+   }
+  ]
+ }
+]

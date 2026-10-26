@@ -414,6 +414,38 @@ Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10
 | ***aau … aiya · tu … aiye · aai … aayo · e … ai · pa/asa … aayo · … ain*** | I am · you are (child) · you are (elder) · he/she is · we are · they are | C79 9:52–15:59; C22-C49 6:00–7:54 | confirmed; *aiya*, *aiye*, *ain* spelling ✓ 5 Oct |
 | ***winjanta*** | (we) are going | C79 17:21, 24:25 | ⚠ |
 
+## 7. Words from the 24 Oct sitting (Round 5: C80–C103; Mum, Masi and Zafar)
+
+Source: `grammar-notes.md` §56–§63; recordings in `sources/audio/mum-2026-10-24/` (s1 = `sitting-1.m4a`, s2, s3; then mm:ss). **Every row is a draft until Zafar ticks its spelling** (`build/reports/mum-2026-10-24.md`, the numbered list). In the engine these live in `build/lang/hand/words.mjs` (the block "Round 5 C80-C103"); this table is for reading, the importer does not parse it. Clips: `data/family-audio.json` (source `sources/audio/mum-2026-10-24/…`), not yet ear-checked.
+
+| Kutchi | English | Notes | Source | Status |
+|---|---|---|---|---|
+| ***inke*** | to him, to her (also "it", §25) | the same word for him and her | s1 2:07–2:31 | ⚠ draft |
+| ***panke*** | to us (with you) | *E panke ambo dini* | s1 2:39 | ⚠ draft |
+| ***iloka ke*** | to them | *E iloka ke ambo dini*, *Iloka ke chai khapeti* | s1 2:46, 15:29 | ⚠ draft |
+| ***iloka*** | they (in general, near or far) | one word (Mum and Masi; Zafar 26 Oct, decision 4) | s1 15:40; s2 18:13 | spelling ✓ 5 Oct; one word ✓ |
+| ***hiloka*** | these (people), this lot (near) | Zafar 26 Oct, decision 4 | s2 17:22–18:30 | ⚠ draft |
+| ***huloka*** | those (people), that lot (far) | *Huloka roj maani kenta* | s2 17:13, 18:30 | ⚠ draft |
+| ***dino · dini · dinos · dinis*** | gave (he · she · I, a man · I, a woman) | the giver's gender; for "I" the speaker's | s1 0:07–2:56 | ⚠ draft |
+| ***naryos · naryis*** | (I) saw (a man · a woman) | past of *nar* (look); the speaker's gender (Zafar 26 Oct, decision 1) | s1 6:33–6:38 | ⚠ draft |
+| ***narato · narati*** | (I) see (a man · a woman) | | s1 6:45–6:49 | ⚠ draft |
+| ***nardos · nardis*** | (I) will see (a man · a woman) | like *dos / dis* (§32 S8) | s1 6:40, 7:00 | ⚠ draft |
+| ***jaruri*** | need (*… ji jaruri*) | *Muke chai ji jaruri*: strong, like medicine | s1 12:31–15:33 | ⚠ draft |
+| ***dawa*** | medicine | *Toke dawa ji jaruri*; gender unheard | s1 14:05 | ⚠ draft |
+| ***khapeti · khapeto*** | (is) wanted: a she-thing · a he-thing | follows the thing, never the person (§1, §58) | s1 10:50–12:20 | confirmed (§1) |
+| ***wareti*** | (is) liked: a she-thing | *Muke chai wareti*; Whisper: *yaareti, areti, warati* | s1 16:46–17:25 | ⚠ spelling |
+| ***vinnu*** | to go (the "to do" word) | perhaps *winnu* (Mum: Kutchi words mostly start with w) | s1 19:04; s2 0:46 | ⚠ draft |
+| ***aaye*** | want to (*vinnu aaye*) | perhaps the same as *ai* (is): to ask | s1 19:10; s2 0:53 | ⚠ draft |
+| ***khapdo*** | has to, ought to (*vinnu khapdo*) | as in *panke randhnu khapdo* (§33 S6) | s1 21:15; s2 0:49, 1:22 | ⚠ draft |
+| ***vinni*** | go (before *saka*) | | s2 2:26 | ⚠ draft |
+| ***sakati · sakanto · saketi · saketo · sakanto*** | can: I (a woman) · I (a man) · she · he · they | | s2 2:26–3:08 | ⚠ draft |
+| ***nati / nato … saka*** | can't (I, a woman / a man) | *Aau nati vinni saka* | s2 3:16–3:27 | ⚠ draft |
+| ***roj*** | every day | *Aau roj maani kianto* | s2 4:39 | ⚠ draft |
+| ***kianto · kianti*** | (I) eat (a man · a woman) | | s2 4:39–5:00 | ⚠ draft |
+| ***khaito · khaiti*** | (you, a child; he · she) eat(s) | Whisper hears *khaito* alone, *kianto* in context | s2 5:21–5:31, 14:52–15:02 | ⚠ draft |
+| ***kianta*** | (you, an elder; we) eat | Mum's version (Zafar 26 Oct, decision 3); Masi's *kauta* is a noted variant, not used | s2 14:30, 15:18 | ⚠ draft |
+| ***kenta*** | (they) eat | the same for boys and girls | s2 15:31–15:53 | ⚠ draft |
+
 ---
 
 ## Corrections (superseded handout and Cook spellings)

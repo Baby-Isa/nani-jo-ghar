@@ -177,7 +177,28 @@
     "§51 C64, C66"
    ],
    "notes": [
-    "e is both he and she (§21, §51); his and her are the same word (injo, §54 C76)."
+    "e is both he and she (§21, §51); his and her are the same word (injo, §54 C76).",
+    "inke is him or her, the same word (s1 2:19: 'it's a neutral'), and also 'it' (§25)."
+   ]
+  },
+  {
+   "id": "pron.these",
+   "pos": "Pron",
+   "ref": "p3pl.near",
+   "person": "p3",
+   "number": "pl",
+   "lemma": "hiloka",
+   "gloss": "these (people), this lot (near)",
+   "forms": {
+    "dir": {
+     "t": "hiloka",
+     "status": "draft",
+     "src": "grammar-notes §63 (s2 18:09)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §63 (s2 17:22-18:30; Zafar 26 Oct, decision 4)"
    ]
   },
   {
@@ -190,7 +211,12 @@
    "gloss": "they / them (those people)",
    "forms": {
     "dir": "iloka",
-    "obl": "iloka"
+    "obl": "iloka",
+    "dat": {
+     "t": "iloka ke",
+     "status": "draft",
+     "src": "grammar-notes §56 C84 (E iloka ke ambo dini, s1 2:46), §58 C92, §60 C95"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -198,13 +224,34 @@
     "grammar-notes §53 (no word for 'they' needed: rasore me ain)"
    ],
    "notes": [
-    "Said as one word (spelling confirmed by Zafar 5 Oct, decision 31); Mum thinks it may be two words, e + loka (§54)."
+    "Said as one word (spelling confirmed by Zafar 5 Oct, decision 31); Mum thought it might be e + loka (§54). Masi and Mum, 24 Oct: one word (§63, sitting-1 15:40-16:00; Zafar 26 Oct, decision 4).",
+    "One word, iloka (Mum and Masi, s1 15:40; Zafar 26 Oct, decision 4): they in general, near or far. hiloka = these, huloka = those (§63)."
    ],
    "open": [
     {
-     "q": "Is iloka one word or e + loka? Masi to say (also how she says 'all of these').",
+     "q": "How does Masi say 'all of these'? (mare)",
      "src": "grammar-notes §54, For Mum next time 10"
     }
+   ]
+  },
+  {
+   "id": "pron.those",
+   "pos": "Pron",
+   "ref": "p3pl.far",
+   "person": "p3",
+   "number": "pl",
+   "lemma": "huloka",
+   "gloss": "those (people), that lot (far)",
+   "forms": {
+    "dir": {
+     "t": "huloka",
+     "status": "draft",
+     "src": "grammar-notes §63 (huloka roj maani kenta, s2 17:13)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §63 (s2 17:10, 18:30; Zafar 26 Oct, decision 4)"
    ]
   },
   {
@@ -4474,20 +4521,32 @@
    "id": "n.medicine",
    "pos": "N",
    "gender": null,
+   "lemma": "dawa",
    "gloss": "medicine",
    "glossPl": "medicines",
-   "status": "to-record",
+   "forms": {
+    "*": {
+     "t": "dawa",
+     "status": "draft",
+     "src": "grammar-notes §58 C87"
+    }
+   },
+   "status": "draft",
    "src": [
+    "grammar-notes §58 C87 (Toke dawa ji jaruri: you need medicine, s1 14:05)",
     "data/clinic/lang.json words.boing-medicine: English placeholder (to record): the boing's drop machine: the coloured liquid medicine in its tubes (never sweets, I2)"
    ],
    "aliases": [
     "boing-medicine"
    ],
    "ask": {
-    "word": [
+    "gender": [
      "new"
     ]
-   }
+   },
+   "notes": [
+    "dawa heard once, in Mum's example 'like you would say with medicine' (§58); gender unheard."
+   ]
   },
   {
    "id": "n.middle",
@@ -4917,6 +4976,32 @@
      "G54"
     ]
    }
+  },
+  {
+   "id": "n.need",
+   "pos": "N",
+   "gender": null,
+   "lemma": "jaruri",
+   "gloss": "need (a necessity)",
+   "forms": {
+    "*": {
+     "t": "jaruri",
+     "status": "draft",
+     "src": "grammar-notes §58 C86-C92"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §58 C86 (Muke chai ji jaruri: I need chai, s1 12:36)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   },
+   "notes": [
+    "Stronger than wanting (Mum: 'I really need it, like medicine', s1 12:57)."
+   ]
   },
   {
    "id": "n.needle",
@@ -9133,6 +9218,51 @@
    ]
   },
   {
+   "id": "v.can",
+   "pos": "V",
+   "lemma": "saka",
+   "gloss": "can, be able to",
+   "forms": {
+    "pres.p1.she.sg": {
+     "t": "sakati",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Aau vinni sakati: a woman, s2 2:26)"
+    },
+    "pres.p1.he.sg": {
+     "t": "sakanto",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Aau vinni sakanto: a man, s2 2:30)"
+    },
+    "pres.p3.she.sg": {
+     "t": "saketi",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (E vinni saketi, s2 2:35)"
+    },
+    "pres.p3.he.sg": {
+     "t": "saketo",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (E vinni saketo, s2 2:56)"
+    },
+    "pres.p3.pl": {
+     "t": "sakanto",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Iloka vinni sakanto: no gender, s2 3:08)"
+    },
+    "neg": {
+     "t": "saka",
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Aau nati vinni saka / Aau nato vinni saka, s2 3:16-3:27)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §61 C96 (s2 2:21-3:29)"
+   ],
+   "notes": [
+    "Mum: literally 'able to'; 'I can cook' takes the same pattern (s2 4:05)."
+   ]
+  },
+  {
    "id": "v.clean-it",
    "pos": "V",
    "gloss": "Clean it",
@@ -9275,6 +9405,51 @@
      "t": "khai",
      "src": "grammar-notes §20 (khai vyo: ate)"
     },
+    "pres.p1.he.sg": {
+     "t": "kianto",
+     "status": "draft",
+     "src": "grammar-notes §62 C97 (Aau roj maani kianto: a man, s2 4:39)"
+    },
+    "pres.p1.she.sg": {
+     "t": "kianti",
+     "status": "draft",
+     "src": "grammar-notes §62 C97 (Aau roj maani kianti: a woman, s2 4:59)"
+    },
+    "pres.p2.he.sg": {
+     "t": "khaito",
+     "status": "draft",
+     "src": "grammar-notes §62 C98 (Tu roj maani khaito: to a boy, s2 5:30)"
+    },
+    "pres.p2.she.sg": {
+     "t": "khaiti",
+     "status": "draft",
+     "src": "grammar-notes §62 C98 (Tu roj maani khaiti: to a girl, s2 5:21)"
+    },
+    "pres.p3.he.sg": {
+     "t": "khaito",
+     "status": "draft",
+     "src": "grammar-notes §62 C100 (E roj maani khaito, s2 14:52)"
+    },
+    "pres.p3.she.sg": {
+     "t": "khaiti",
+     "status": "draft",
+     "src": "grammar-notes §62 C101 (E roj maani khaiti, s2 15:01)"
+    },
+    "pres.p2resp": {
+     "t": "kianta",
+     "status": "draft",
+     "src": "grammar-notes §62 C99 (Aai roj maani kianta: Mum's version; Masi says kauta; Zafar 26 Oct, decision 3; s2 14:29)"
+    },
+    "pres.p1.pl": {
+     "t": "kianta",
+     "status": "draft",
+     "src": "grammar-notes §62 C102 (Pa roj maani kianta: Mum's version, s2 15:18)"
+    },
+    "pres.p3.pl": {
+     "t": "kenta",
+     "status": "draft",
+     "src": "grammar-notes §62 C103 (Iloka roj maani kenta: boys and girls the same, s2 15:31, 15:52)"
+    },
     "imp.polite": {
      "status": "unknown",
      "ask": [
@@ -9289,7 +9464,8 @@
     "grammar-notes §20 (khai vyo: ate)"
    ],
    "notes": [
-    "khai vyo = ate (§20); khani vyo = took (from khan)."
+    "khai vyo = ate (§20); khani vyo = took (from khan).",
+    "Every day: kianto / kianti for 'I', khaito / khaiti for you (a child) and he / she, kianta for the elder 'you' and 'we', kenta for they (§62). Masi's kauta is a noted variant (decision 3)."
    ],
    "open": [
     {
@@ -9417,6 +9593,26 @@
      "status": "draft",
      "src": "grammar-notes §32 S8 (… kar dos: a boy says it; heard)"
     },
+    "past.p1.he": {
+     "t": "dinos",
+     "status": "draft",
+     "src": "grammar-notes §56 C81-C82 (Aau toke ambo dinos: a man says it, s1 0:25-0:59)"
+    },
+    "past.p1.she": {
+     "t": "dinis",
+     "status": "draft",
+     "src": "grammar-notes §56 C81-C83 (Aau toke ambo dinis: a woman says it, s1 0:25-2:12)"
+    },
+    "past.p3.he": {
+     "t": "dino",
+     "status": "draft",
+     "src": "grammar-notes §56 C80 (Nana muke ambo dino, s1 0:07)"
+    },
+    "past.p3.she": {
+     "t": "dini",
+     "status": "draft",
+     "src": "grammar-notes §56 C84 (E panke ambo dini, s1 2:39)"
+    },
     "imp.polite": {
      "status": "unknown",
      "ask": [
@@ -9437,6 +9633,23 @@
      ],
      "src": "grammar-notes §37.7"
     }
+   ]
+  },
+  {
+   "id": "v.go",
+   "pos": "V",
+   "lemma": "vinni",
+   "gloss": "go (before a helper: vinni saka, can go)",
+   "forms": {
+    "conj": {
+     "t": "vinni",
+     "status": "draft",
+     "src": "grammar-notes §61 C96"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §61 C96 (Aau vinni sakati, s2 2:26)"
    ]
   },
   {
@@ -9578,6 +9791,29 @@
    ]
   },
   {
+   "id": "v.like",
+   "pos": "V",
+   "lemma": "wareti",
+   "gloss": "like (the thing liked takes the ending)",
+   "forms": {
+    "pres.she.sg": {
+     "t": "wareti",
+     "status": "draft",
+     "src": "grammar-notes §59 C94 (Muke chai wareti, s1 16:46; Inke chai wareti, s1 17:10; Iloka ke chai wareti, s1 17:24)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §59 C94 (Muke chai wareti, s1 16:46; ⚠ Whisper: yaareti, areti, warati)"
+   ],
+   "open": [
+    {
+     "q": "C94 like: wareti, yareti or areti? Whisper hears all three.",
+     "src": "grammar-notes §59"
+    }
+   ]
+  },
+  {
    "id": "v.look",
    "pos": "V",
    "lemma": "nar",
@@ -9586,6 +9822,36 @@
     "imp.informal": {
      "t": "nar",
      "src": "grammar-notes §20"
+    },
+    "past.p1.he": {
+     "t": "naryos",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke naryos: a man says it, s1 6:33)"
+    },
+    "past.p1.she": {
+     "t": "naryis",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke naryis: a woman says it, s1 6:36)"
+    },
+    "pres.p1.he": {
+     "t": "narato",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke narato, s1 6:47)"
+    },
+    "pres.p1.she": {
+     "t": "narati",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke narati, s1 6:45)"
+    },
+    "fut.p1.he": {
+     "t": "nardos",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke nardos, s1 7:00)"
+    },
+    "fut.p1.she": {
+     "t": "nardis",
+     "status": "draft",
+     "src": "grammar-notes §57 C85 (Aau toke nardis, s1 6:40, 6:57)"
     },
     "imp.polite": {
      "status": "unknown",
@@ -9601,7 +9867,8 @@
     "grammar-notes header (nar is look, not no)"
    ],
    "notes": [
-    "Takes different endings (§20); nares (saw) is Whisper's hearing, not entered."
+    "Takes different endings (§20); nares (saw) is Whisper's hearing, not entered.",
+    "The 'I saw / I see / I'll see' endings follow the speaker's gender, not the person seen (Zafar 26 Oct, decision 1; §57). nardos / nardis match dos / dis (I'll give, §32 S8)."
    ]
   },
   {
@@ -10141,6 +10408,26 @@
    ]
   },
   {
+   "id": "v.to-go",
+   "pos": "V",
+   "lemma": "vinnu",
+   "gloss": "to go (the 'to do' word)",
+   "forms": {
+    "-": {
+     "t": "vinnu",
+     "status": "draft",
+     "src": "grammar-notes §60 C95"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §60 C95 (Muke vinnu aaye, s1 19:10; Zafar 26 Oct, decision 2)"
+   ],
+   "notes": [
+    "Mum: Kutchi seldom starts a word with v; it is mostly w (s2 12:06): vinnu or winnu is for Zafar's ear (cf. winja, winjanta, §52)."
+   ]
+  },
+  {
    "id": "v.touch",
    "pos": "V",
    "lemma": "ad",
@@ -10315,6 +10602,32 @@
    "src": [
     "grammar-notes §1",
     "§31"
+   ],
+   "notes": [
+    "khapeti (a she-thing) and khapeto (a he-thing): the ending follows the thing wanted, never the person (Mum, s1 11:36-12:19; §58). khapdo after a 'to do' word is 'has to / ought to' (§60)."
+   ]
+  },
+  {
+   "id": "v.want-to",
+   "pos": "V",
+   "lemma": "aaye",
+   "gloss": "want to (after a 'to do' word: muke vinnu aaye)",
+   "forms": {
+    "-": {
+     "t": "aaye",
+     "status": "draft",
+     "src": "grammar-notes §60 C95 (s1 18:08, 20:45; s2 0:51)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §60 C95 (Muke vinnu aaye = I want to go; Zafar 26 Oct, decision 2)"
+   ],
+   "open": [
+    {
+     "q": "Is aaye the same word as ai (is)? (Claude's guess from Hindi mujhe jaana hai: not evidence.)",
+     "src": "grammar-notes §60"
+    }
    ]
   },
   {
@@ -11056,6 +11369,19 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §25 B19"
+   ]
+  },
+  {
+   "id": "adv.every-day",
+   "pos": "Adv",
+   "lemma": "roj",
+   "gloss": "every day",
+   "forms": {
+    "-": "roj"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §62 C97 (Mum: roj is every day, s2 4:39)"
    ]
   },
   {

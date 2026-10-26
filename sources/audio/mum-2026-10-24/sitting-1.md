@@ -1,0 +1,300 @@
+# Transcript: 7ca6bb5e-Kutchi_recording_24th_Oct_1.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Okay starting with C80, C80 Nana gave the mango to me and that's same for male or
+- **0:12** female okay and C81 I gave the mango to you if you're talking to a child
+- **0:25** If I'm a female, I'll talk Ambo Dinis and if I'm a male, I'll talk Ambo Dinos.
+- **0:37** Is that right?
+- **0:41** I'll talk Ambo Dinis and you'll talk Ambo Dinos.
+- **0:45** I think so. It sounds like him.
+- **0:49** So say Dinis.
+- **0:51** I'll talk Ambo Dinis and you'll talk Ambo Dinos.
+- **0:54** And what's the girl version?
+- **0:56** Dinis.
+- **0:58** The girl is Dinis?
+- **0:59** Boy is Dinos. Male and female? Male and female, ok.
+- **1:07** So C82, I gave the mango to you, but you're talking to someone older than you basically.
+- **1:18** So how would you say I gave the mango to you to someone older than you? Respectful.
+- **1:23** I'll answer Ambo Dinis if I'm a female.
+- **1:28** I'll answer Ambo Dinis if I'm a male.
+- **1:33** Go back to C81.
+- **1:46** So C83, I gave the mango to him, I gave the mango to her.
+- **1:52** Are there different versions of this?
+- **1:55** No. If you said it and I said it, would we say it the same? Male or female?
+- **2:00** Yeah, I think it's the same. Let me say it.
+- **2:04** Okay, say it naturally, however you would say it.
+- **2:07** Am Inke Ambo Dinis. Am Inke Ambo Dinis. Is it the same?
+- **2:12** So it's Inke. Am Inke.
+- **2:15** If it's male or female. What's Inke? Just them? No.
+- **2:19** Him or her. Him or her. It's a neutral.
+- **2:22** So Inke is him or her. Neutral.
+- **2:26** It's almost like that person. Inke is that person.
+- **2:31** C84. She gave the mango to us and then she gave the mango to them.
+- **2:39** She gave the mango to us is I Panke Ambo Dini. Panke is us. I Panke Ambo Dini.
+- **2:46** And she gave the mangoes to them I Ilokake Ambo Dini.
+- **2:50** I Ilokake. So Ilokake is them, Panke is us.
+- **2:56** Kutchi understood. You're pretty good at this rather than me.
+- **3:00** It took me a while to get used to it.
+- **3:02** It took me quite a while to get used to it.
+- **3:04** But then sometimes we get stuck on them and we're not sure.
+- **3:06** I find it easier not to read and to listen to Zafrabas in this way.
+- **3:09** Yeah, that's why I repeat it.
+- **3:11** Because if I read then my brain is starting to work it out.
+- **3:14** There were some we got quite a few. There were a couple we got stuck on.
+- **3:17** It's funny because then Claude tells me
+- **3:19** it says don't forget to tell Masi ask Masi because in the recording I say when the recording we're
+- **3:24** talking we say I will ask Masi and then Claude said okay check with mum check with Masi check
+- **3:30** with um okay so C85 it's an interesting one Nana saw me
+- **3:43** Nana Mukenaria
+- **3:45** change male if you are male or female no I'd say the same Nana Mukenaria
+- **3:51** wait no Nana Mukenaria not Nariyo that's just me break that's just me
+- **3:58** just corrupting Kutchi okay still on C85 I saw you if you're talking to a
+- **4:04** child Aontokenaris it's the same whether it's a male child or a
+- **4:12** female child
+- **4:13** okay and then I saw him
+- **4:17** hang on when would you say Aontokenarios if I was a male saying it no Aontokenaris is present
+- **4:24** Aontokenarios is past oh this is saw this is past tense then no I saw you I wanted to say I
+- **4:31** we went out and then I think it's male and female because even if I say yes
+- **4:38** Aontokenaris but if he was a male I would say Aontokenarios if I was a male I would say Aontokenarios
+- **4:48** how to if you're male if I'm a male yeah so for the I if I'm a female I would say Aontokenarios
+- **4:54** but if I was a male I would say Aontokenarios yeah true both of those are past tense
+- **5:04** so future tense would be Aontokenar this now Aontokenarati is present tense
+- **5:13** present tense and does present tense have a male and female Aontokenarato
+- **5:18** that's what I would say male is a no I would say to you Aontokenarato
+- **5:26** because I'm the male no it depends on the speaker no you speaker the speaker is male
+- **5:30** Aontokenarato a female speaker Aontokenarati
+- **5:35** no how the future would be Aontokenaridis Aontokenarato
+- **5:41** the past would be Aontokenarios Aontokenaris
+- **5:45** but that's not what you just said at the beginning when you said I saw you you didn't say that
+- **5:51** just a minute ago
+- **5:55** I think it's Aontokenarios
+- **6:01** Aontokenaris and Aontokenarios is past
+- **6:05** current would be Aontokenarati, Aontokenarato and future would be Aontokenardis and Aontokenardos
+- **6:14** okay let's do that okay so one more time clearly but c85 we're gonna say
+- **6:18** male in female past tense I saw you made in female present tense I see you
+- **6:24** and made in female future tense I will see you okay except I'm doing the female one okay I'll
+- **6:29** do them you have to do them more okay so past tense first okay
+- **6:33** auto kenarios is male auto kenaris is female now present tense
+- **6:39** auto kenardis to kenarati is female auto kenarati female auto kenarato is male
+- **6:49** as in the speaker is male or the speaker is male yeah this is this is for the
+- **6:53** speaker's gender yeah and the future tense is auto kenardis
+- **6:58** female auto kenardos male okay so one more time that's the that's the speaker's gender
+- **7:06** not the person that they're talking to okay and so does that change if you if you're talking if
+- **7:12** you said that to a child or someone older than you yeah that was the child version
+- **7:17** that was the child version okay so okay would become okay that's the only difference that's
+- **7:22** the only difference for all of them so we'll just give one example just say i saw you to a child
+- **7:26** past tense
+- **7:27** to an adult no oh what was the first one you were doing
+- **7:31** oh okay okay so those six examples were all for child we'll give one example for
+- **7:37** an adult or someone older than you
+- **7:44** so both of those are for the respectful term
+- **7:49** past yeah you're right okay the doorbell went
+- **7:52** you got it sorry okay still on c85 then I saw him that is that different yeah we
+- **8:10** did I saw you know okay so we'll do I saw him female and then male
+- **8:20** um I'm in canarios if I'm a male I'm in canaries
+- **8:28** no sorry if it's male it would be I'm in canarios
+- **8:33** no if I'm a male it would be I'm in canarios and if I'm a female it would be I'm in canaries
+- **8:40** I saw okay do you do the do if you're talking about a girl now I don't think it I don't think
+- **8:46** matters whether it's him or her it matters whether I'm a male or a female
+- **8:50** just because the him or her is just in care
+- **8:54** male and female are in canarios and in canaries
+- **8:59** no the person you're looking at is male and female
+- **9:03** oh yeah that's true because I am the I'm if he was a female I would say I'm in canaries
+- **9:08** and if it was a male I would say I'm in canarios
+- **9:12** so we're going back on the previous rule
+- **9:15** yeah we had that
+- **9:20** no I would still say I'm Zoforabas canaries now Hanna canaries
+- **9:24** I wouldn't say I'm Zoforabas canarios
+- **9:28** I think if you don't have a name then sometimes you say it
+- **9:33** like if you're just saying to him rather than having someone's name you know
+- **9:36** yeah I don't think I think it changes on me
+- **9:39** as in like I saw that boy but if you say his name then you say canaries
+- **9:44** Yeah you're right because if I said I'm a chokre kenarios or I'm a chokre kenaris
+- **9:48** yeah but if you just say that for Masan it's just the same
+- **9:55** So what we did previously was correct
+- **9:57** No you changed it on the speaker before
+- **10:00** Yeah we changed it on the speaker before
+- **10:07** I know totally confused
+- **10:09** Okay pause that's good
+- **10:16** if it changes based on the speaker's gender or the subject's gender
+- **10:20** so we're going to come back to c85 mark it as inconclusive for the moment
+- **10:24** we're going to move on to c86 which is hopefully easier
+- **10:30** okay c86 I need chai
+- **10:35** what's need versus want?
+- **10:37** but that's want no?
+- **10:38** but you see again you could say muke chai kape
+- **10:40** you could say muke chai kape tea
+- **10:42** kape tea I would have said muke chai kape tea that's the full Kutchi
+- **10:46** I think kape is just is a short is a short shorthand
+- **10:50** I suppose tea you have to give the female pronoun to tea
+- **10:55** kape tea
+- **10:57** but you could just say muke chai kape
+- **11:01** I don't know I would have said chai kape tea
+- **11:05** chai kape sounds half
+- **11:07** it's like the shorthand
+- **11:09** it's more like a
+- **11:12** yeah I think we didn't say it properly but people do say kape though
+- **11:15** he kape he kape
+- **11:18** so if I'm asking you should I be saying to you
+- **11:20** kape really is a short form of he kape but you're not specifying what
+- **11:25** so therefore you can
+- **11:27** If you're telling me to I'll say muke he kape
+- **11:30** of the two I want this one
+- **11:32** you say kape ti though
+- **11:34** for chai
+- **11:36** chai is feminine
+- **11:38** if it was a masculine object you would say muke he kape to
+- **11:44** I think kape is just like a
+- **11:46** it's just
+- **11:48** but is there a difference?
+- **11:50** first of all is need and want, does that have a difference?
+- **11:52** need and want
+- **11:54** need would be mke jiruray
+- **11:56** jiruray is I need this
+- **11:58** want is kape ti
+- **12:00** so how would you say I need chai?
+- **12:02** mke chai jiruray
+- **12:04** mke chai jiruray
+- **12:06** like I need tea
+- **12:08** ok
+- **12:10** if you just want to say I want tea
+- **12:12** then you say mke chai kape ti
+- **12:14** because chai is feminine
+- **12:16** yeah
+- **12:18** so even I would say mke chai kape ti
+- **12:19** okay because there is the feminine is on the object the thing you want okay so
+- **12:26** regardless of the person's gender I need chai is mke chai ji jerure if it's
+- **12:33** need okay say it one more time mke chai ji jerure and how do you what's the
+- **12:39** literal translation me tea mke chai jerure is need I
+- **12:45** is I chai need is okay but you wouldn't really say you wouldn't you wouldn't say
+- **12:53** I need chai you'd say I want chai yeah it's quite I think I feel like Kutchi
+- **12:57** has more emphasis jerure it's like yeah it's like I really I really need it yeah
+- **13:04** I need a fix now you know I need it yeah like that I need my caffeine now okay rather than I
+- **13:09** would just like some
+- **13:10** so I'm gonna change make it I'm gonna change all of c86 to c96 to want
+- **13:18** because it's just what we need for the game so c86 I want chai
+- **13:25** muke chai khapeti c87 you need chai no sorry you want chai talking to a child
+- **13:35** muke chai khapeti
+- **13:37** it's a question that's a question it's not a statement but how would you say if
+- **13:44** you knew say okay if you're telling a kid you need medicine then you say
+- **13:47** jorure toke chai ji jorure you need to have tea because I can't tell somebody what
+- **13:54** they want I can tell them what that's true okay fine I stick with need so c87
+- **13:59** you need chai talking to a child toke chai ji jorure
+- **14:03** like you would say with medicine toke dawa ji jorure
+- **14:06** so toke is for the child
+- **14:08** toke is for the child okay which means c88 you need chai to someone older than you
+- **14:14** anke chai ji jorure
+- **14:17** okay that's an easy one
+- **14:20** maybe if it was anke chai kape tea it becomes a question
+- **14:23** do you want tea to an elder person or would you like some tea
+- **14:27** that's how you ask a question you just say
+- **14:30** if you ask a question in Kutchi like do you want tea you just say you want tea but you
+- **14:35** intonate it's a question you just make the end of it rise up yeah okay fine and then c89
+- **14:48** we'll just do both he needs chai and he wants chai
+- **14:57** okay and then c90 she needs chai and she wants chai
+- **15:08** okay c91 we need chai okay now if it was want i would say
+- **15:17** and if it was need i would say
+- **15:21** okay
+- **15:22** okay and then c92 they need chai and they want chai
+- **15:32** you're not likely to say they're need tea you're more likely to say they want tea
+- **15:37** unless you know like it's medicine or something you're desperate because this was a question
+- **15:40** from us is iloka do you think that's one word or do you think it's like
+- **15:47** it's one word just
+- **15:50** okay yeah it's them it's not like ee lokai ee baju ee it's just one word okay
+- **15:57** iloka is one word you can settle that one i've had the marsi verdict
+- **16:02** it could cost that one off i'll put in the credits i'll just put like any complaints send it to
+- **16:11** okay c93 i don't know who marsi is sorry
+- **16:14** i think we've done this but let's just do it anyway one more time c93
+- **16:21** i want chai she wants chai they want chai
+- **16:31** and then c94 i like chai oh you didn't do the if you know it says yes it says ask this because
+- **16:38** want is different from need yeah okay well we gave both anyway for everything
+- **16:42** so c94 i like chai
+- **16:47** and if you're a boy still this is what i'm because i used to change them all to male endings so i was
+- **16:59** like no i'm a boy that's when i used to get confused but it's because it's based on the
+- **17:02** child it's like french it's whether the object is feminine or masculine okay she likes chai
+- **17:09** in
+- **17:13** yeah
+- **17:14** so confused and then they like it's like that i can't go i'm like eyes for girls but it's not
+- **17:19** it's not so they like chai okay sounds so weird talking about a group of boys and you're like
+- **17:31** okay c95 i have to go
+- **17:41** i have to go i'm going i want to go yeah so we know i would be i want to go
+- **17:47** when enjoy is i have to go i would say we enjoy is in the future
+- **17:54** we know i'm okay we know is now yeah
+- **17:59** that's what my thinking we know enjoy is somewhere you want to go in the
+- **18:03** future okay when why is i want to go yes i have to go
+- **18:08** so then there's a book yeah
+- **18:14** is now oh yeah it doesn't have a now in there it's just i want to go in the future
+- **18:21** may win and your eyes will be in the future no so but this is i have to go so you would say
+- **18:31** i have to go no no i want to go
+- **18:36** yeah if there's no force in there it's like okay no i want to go and it's
+- **18:43** to have this is like i have to go
+- **18:47** i need to go that's why i'm saying
+- **18:50** i have to go huh but you'd only say that like when you have to go right now
+- **18:57** it's a very forceful i have to go i have a need to go okay so first let's say first one is
+- **19:04** i want to go so yeah i want to go yeah
+- **19:12** but i have to go
+- **19:16** one more time i have to go okay
+- **19:24** but that doesn't have an hour later because if it was now you would say
+- **19:29** and if it was tomorrow
+- **19:33** if you're talking about i have to go to this place tomorrow you would say
+- **19:39** there's no present or future tense in there that's just like i have to go
+- **19:43** but is there a future tense of i want to go yeah i want to go there's a future tense
+- **19:48** if you were doing it tomorrow then you would say
+- **19:52** what if you're saying tomorrow i want to go not i need to go
+- **19:57** actually i just thought you could say which is i'll have to go that's different
+- **20:05** you know that's like if you're saying are you going to go to a wedding or not and i'll say no
+- **20:08** i will have to go
+- **20:12** so that's yeah it's different from need to go yeah it's different from if you say a couple like
+- **20:19** okay we know cup though is when a cop then like it sounds i have to go so i would have a look up
+- **20:23** there but yeah you have no option to if you say need to then it's
+- **20:31** so need to have to and want to all different yes okay just like in english need to want to
+- **20:37** okay so let's say them one more time then so i want to go this is not future tense i want to go
+- **20:47** i have to go that's need to i need to go to that appointment i will have to go
+- **21:03** so that's that's i have to go there's no choice i have to if you're obligated to
+- **21:08** obligate because of like yeah for example a wedding because you've related
+- **21:13** then i would say and but if you need to go like because of the need is
+- **21:25** so juru is for need yeah just like for chai okay
+- **21:34** i'm not quite sure about the present tense in the future
+- **21:37** in future tense me for what having having to go yeah
+- **21:44** you would you would do it by adding have a do what about want it's just i want to go in the future
+- **22:06** no that's not want that's need
+- **22:09** it's neutral because you haven't put up today you just make it future or past by present
+- **22:21** by saying have a and what would you what would you say if i say do you want to do you want
+- **22:26** to go to madrasa tomorrow
+- **22:27** you have to go i thought i have to go now
+- **22:34** yeah but if you're just saying you wanted to go it was like say if i said do you want to go
+- **22:38** do you want to go do you want to go shopping tomorrow i want to go shopping i want to go
+- **22:43** shopping tomorrow so i wouldn't know why i would say we don't know why shopping so i don't know
+- **22:51** and if you were saying okay do you want to go shopping now
+- **22:53** however we know i should be so it's the heaven and somebody at the window it doesn't change
+- **22:59** yeah okay so the word doesn't have a future that would be the present yeah and the salary
+- **23:05** will be the future oh okay it's just like in english you would say i want to go now
+- **23:10** i want to go tomorrow i want to go no but english is different though went would i went i'm going i
+- **23:16** will i will be going no going is right now but if you were going in half an hour you'd say i want
+- **23:20** to go i want to go you wouldn't say i'm going now no yeah so you'd still say it's today it's
+- **23:26** when to go go you'd say i want to go yeah and if it was tomorrow you'd still say i want to go
+- **23:34** i will go tomorrow but when this is you saying i'm a female
+- **23:47** it's not what you're doing it's what you want to do so he's saying do you want to go shopping
+- **23:52** tomorrow or you're saying i want to go shopping but implying tomorrow
+- **24:04** you
+- **24:04** but that's if you're going now say if you're going later this evening
+- **24:13** no but you're not talking about i'll go later you're saying i want to go
+- **24:16** to something that's going to happen later in the evening you're saying i'm going later you're
+- **24:20** saying i want to go later yeah
+- **24:25** you can have to get to that now say it was the morning right now
+- **24:29** they signed your mud list way they took you are trying to say
+- **24:34** or i'm at least moving so that becomes future already no so so you would say
+- **24:42** or i'll go i'm at least moving this i'm going to go to the market that i am not i will not i want
+- **24:52** no i am going is different from i want to go here so what are we doing i am going or i want
+- **24:57** right now we're doing i want to i have to i need to not i am going so say
+- **25:04** how would you say it
+- **25:06** i'll win this because it's different no but that's you're saying no you know you're saying
+- **25:15** at night i will go i must win this i will go no no but you meant to be saying i want to go
+- **25:22** not i will go
+- **25:28** so you would say okay i want to go
+- **25:34** and if it was for tomorrow you'd still say i'm sorry we know okay we know i even this will be
+- **25:41** i need to go no no this is i will go i will go i will to go you're not saying i want to go i will
+- **25:47** go yeah that's a definite that's a definite and if you must go you would say i'm giving energy
+- **25:53** i have to go yeah i agree i hope that all that made sense it does
+- **25:59** i'm going to pause this one because if it gets too long

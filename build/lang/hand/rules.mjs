@@ -51,6 +51,19 @@ const ABSTRACT = [
   ["Place", "NP", { anchor: NP, rel: { type: "Post" } }, "{rel} {anchor}", ["on the table; behind the door; in the cupboard"]],
   ["Lift", "Utt", { x: Opt(NP) }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
   ["Leave", "Utt", { x: Opt(NP) }, "Leave the {x}.", ["Leave the chips in."], { rows: ["x"] }],
+  // Round 5 C80-C103 (24 Oct sitting; grammar-notes §56-§63). A verb that follows the subject's gender reads it from
+  // the meaning's own g ("she" / "he"); for "I" that is the speaker's gender (ctx.speaker, Zafar 26 Oct), so a recording
+  // a woman made and one a man made never share a key.
+  ["GaveTo", "Utt", { who: NP, to: { type: "Person" }, thing: NP }, "{who} gave {thing} to {to}.", ["Nana gave the mango to me. I gave the mango to you. (to a child; a man says it, a woman says it)"]],
+  ["See", "Utt", { who: { type: "Person" }, whom: { type: "Person" } }, "{who} saw / see / will see {whom}.", ["I saw you. I see you. I'll see you. (to a child; a man says it, a woman says it)"]],
+  ["NeedThing", "Utt", { who: { type: "Person" }, thing: NP }, "{who} need(s) {thing}.", ["I need chai. You need medicine. (to a child)"]],
+  ["Likes", "Utt", { who: { type: "Person" }, thing: NP }, "{who} like(s) {thing}.", ["I like chai. She likes chai. They like chai."]],
+  ["WantTo", "Utt", { who: { type: "Person" }, verb: { type: "V" } }, "{who} want(s) to {verb}.", ["I want to go. She wants to go. They want to go."]],
+  ["HaveTo", "Utt", { who: { type: "Person" }, verb: { type: "V" } }, "{who} has to {verb} (ought to, is obliged to).", ["I have to go. She has to go. They have to go."]],
+  ["NeedTo", "Utt", { who: { type: "Person" }, verb: { type: "V" } }, "{who} need(s) to {verb}.", ["I need to go (to that appointment)."]],
+  ["CanDo", "Utt", { who: { type: "Person" }, verb: { type: "V" } }, "{who} can {verb}.", ["I can go. She can go. They can go."]],
+  ["CantDo", "Utt", { who: { type: "Person" }, verb: { type: "V" } }, "{who} can't {verb}.", ["I can't go. (a man says it, a woman says it)"]],
+  ["EveryDay", "Utt", { who: { type: "Person" }, thing: NP, verb: { type: "V" } }, "{who} {verb} {thing} every day.", ["I eat chapatis every day. (a man says it, a woman says it)"]],
 ];
 
 const S = (arg, o = {}) => ({ arg, ...o });
@@ -164,7 +177,98 @@ const CONCRETE = {
   ButNo: { status: "unknown", ask: ["L19", "L24"], english: "{head}, but no {x}", what: "'but no onion' inside an order", src: "grammar-kb feature 19; Round 5 L19, L24" },
   Times: { status: "unknown", ask: ["L54"], english: "{n} times", what: "'three times' (stir it three times)", src: "data/clinic/lang.json lines.times (no Kutchi: gap Times); Round 5 L54" },
   Fetch: { status: "unknown", ask: ["L29", "N1", "N2"], english: "Bring me {things}", what: "Nani sending the child to fetch a list ('bring me flour, sugar and milk')", src: "grammar-kb feature 23; Round 5 L29" },
+
+  /* Round 5 C80-C103, the 24 Oct sitting (Mum, Masi and Zafar): grammar-notes §56-§63. Draft until Zafar ticks the
+     spellings (build/reports/mum-2026-10-24.md). "I" verbs take the speaker's gender (Zafar 26 Oct, decision 1). */
+  GaveTo: {
+    slots: [S("who", { case: "dir" }), S("to", { case: "dat" }), S("thing", { case: "dir" }), L("v.give", "past.{who.person|p3}.{$g|who.gender}")],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §56 C80-C84 (Nana muke ambo dino; Aau toke ambo dinos / dinis; E panke ambo dini)`,
+    notes: ["The past of give follows the giver's gender (dino / dini), and for 'I' the speaker's (dinos / dinis: Zafar 26 Oct). The thing given (ambo, a he-word) does not change it (E panke ambo dini)."],
+    exceptions: [{ only: { "who.person": ["p1"] }, slots: [S("who", { case: "dir" }), S("to", { case: "dat" }), S("thing", { case: "dir" }), L("v.give", "past.p1.{$g|speaker}")], status: "draft", src: `${GN} §56 C81-C83` }],
+  },
+  See: {
+    slots: [S("who", { case: "dir" }), S("whom", { case: "dat" }), L("v.look", "{$tense|past}.p1.{$g|speaker}")],
+    only: { "who.person": ["p1"] },
+    onlyAsk: ["new (he saw, she saw: not asked; Nana saw me was inconclusive, §57)"],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §57 C85 (Aau toke naryos / naryis, narato / narati, nardos / nardis; Aau anke naryos; Aau inke naryos / naryis)`,
+    notes: ["The ending is the speaker's gender, not the person seen (Zafar 26 Oct, decision 1); toke to a child, anke to an elder, inke for him or her. The meaning's tense field picks past (default), pres or fut."],
+  },
+  NeedThing: {
+    slots: [S("who", { case: "dat" }), S("thing", { case: "dir" }), L("gen.of", "she.sg.dir"), L("n.need")],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §58 C86-C92 (Muke chai ji jaruri; Toke dawa ji jaruri; Anke chai ji jaruri; Iloka ke chai ji jaruri)`,
+    notes: ["ji stays ji with chai, dawa and vinnu (§58, §60): Claude reads it as the 'of' word agreeing with jaruri, not with the thing (a reading, not Mum's words). 'Need' is strong (Mum: 'I really need it'); the everyday ask is the want (PredDat, khapeti)."],
+  },
+  Likes: {
+    slots: [S("who", { case: "dat" }), S("thing", { case: "dir" }), L("v.like", "pres.{thing.gender}.{thing.number|sg}")],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §59 C94 (Muke chai wareti; Inke chai wareti; Iloka ke chai wareti: ⚠ spelling)`,
+    notes: ["Like khapeti, the ending follows the thing liked (chai is a she-word), not the person (Mum: 'it's like French')."],
+  },
+  WantTo: { slots: [S("who", { case: "dat" }), S("verb", { cell: "-" }), L("v.want-to", "-")], mark: ".", status: "draft", src: `${GN} §60 C95 (Muke vinnu aaye; Inke vinnu aaye; Iloka ke vinnu aaye; Zafar 26 Oct, decision 2)` },
+  HaveTo: { slots: [S("who", { case: "dat" }), S("verb", { cell: "-" }), L("v.want", "fut.he.sg")], mark: ".", status: "draft", src: `${GN} §60 C95 (Muke vinnu khapdo; Inke vinnu khapdo; Iloka ke vinnu khapdo: ought to, obliged, 'like a wedding because you're related'; Zafar 26 Oct, decision 2), §33 S6 (Panke randhnu khapdo)` },
+  NeedTo: { slots: [S("who", { case: "dat" }), S("verb", { cell: "-" }), L("gen.of", "she.sg.dir"), L("n.need")], mark: ".", status: "draft", src: `${GN} §60 C95 (Muke vinnu ji jaruri; Inke vinnu ji jaruri; Zafar 26 Oct, decision 2)`, notes: ["Whisper hears vinan ji / winanji here: whether the 'to go' word changes before ji is for Zafar's ear (§60)."] },
+  CanDo: {
+    slots: [S("who", { case: "dir" }), S("verb", { cell: "conj" }), L("v.can", "pres.{who.person}.{$g|who.gender}.{who.number|sg}")],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §61 C96 (Aau vinni sakati / sakanto; E vinni saketi / saketo; Iloka vinni sakanto)`,
+    exceptions: [
+      { only: { "who.number": ["pl"] }, slots: [S("who", { case: "dir" }), S("verb", { cell: "conj" }), L("v.can", "pres.{who.person}.pl")], status: "draft", src: `${GN} §61 C96 (Iloka vinni sakanto: no gender)` },
+      { only: { "who.person": ["p1"] }, slots: [S("who", { case: "dir" }), S("verb", { cell: "conj" }), L("v.can", "pres.p1.{$g|speaker}.sg")], status: "draft", src: `${GN} §61 C96 (Aau vinni sakati: a woman; sakanto: a man)` },
+    ],
+  },
+  CantDo: {
+    slots: [S("who", { case: "dir" }), L("neg.not", "{$g|speaker}"), S("verb", { cell: "conj" }), L("v.can", "neg")],
+    only: { "who.person": ["p1"] },
+    onlyAsk: ["new (she can't, they can't: not asked)"],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §61 C96 (Aau nati vinni saka: a woman; Aau nato vinni saka: a man)`,
+  },
+  EveryDay: {
+    slots: [S("who", { case: "dir" }), L("adv.every-day"), S("thing", { case: "dir" }), S("verb", { cell: "pres.{who.person}.{$g|who.gender}.sg" })],
+    mark: ".",
+    status: "draft",
+    src: `${GN} §62 C97-C103 (Aau roj maani kianto / kianti; Tu roj maani khaito / khaiti; E roj maani khaito / khaiti; Aai roj maani kianta; Pa roj maani kianta; Iloka roj maani kenta)`,
+    notes: ["To a child and about him or her the ending follows that person's gender (g); for 'I' the speaker's. The elder 'you' and 'we' share kianta, as they share aayo (§51, §52). Masi says kauta for both: a noted variant, not used (Zafar 26 Oct, decision 3)."],
+    exceptions: [
+      { only: { "who.number": ["pl"] }, slots: [S("who", { case: "dir" }), L("adv.every-day"), S("thing", { case: "dir" }), S("verb", { cell: "pres.{who.person}.pl" })], status: "draft", src: `${GN} §62 C102-C103 (Pa roj maani kianta; Iloka roj maani kenta: the same for boys and girls)` },
+      { only: { "who.person": ["p2resp"] }, slots: [S("who", { case: "dir" }), L("adv.every-day"), S("thing", { case: "dir" }), S("verb", { cell: "pres.p2resp" })], status: "draft", src: `${GN} §62 C99 (Aai roj maani kianta: the same to Nana and Nani)` },
+      { only: { "who.person": ["p1"] }, slots: [S("who", { case: "dir" }), L("adv.every-day"), S("thing", { case: "dir" }), S("verb", { cell: "pres.p1.{$g|speaker}.sg" })], status: "draft", src: `${GN} §62 C97 (Aau roj maani kianto: a man; kianti: a woman)` },
+    ],
+  },
 };
+
+/** Sentences Mum recorded on 24 Oct, as meanings, so import_audio's attach step can find the clips that say them. */
+export const SENTENCES = [
+  { fn: "GaveTo", who: "pn.nana", to: "p1", thing: "n.mango" },
+  { fn: "EveryDay", who: "p2resp", thing: "n.chapati", verb: "v.eat" },
+  ...["she", "he"].flatMap((g) => [
+    { fn: "GaveTo", who: "pron.p1", to: "p2", thing: "n.mango", g },
+    { fn: "GaveTo", who: "pron.p1", to: "p3", thing: "n.mango", g },
+    ...["past", "pres", "fut"].map((tense) => ({ fn: "See", who: "p1", whom: "p2", tense, g })),
+    { fn: "See", who: "p1", whom: "p3", tense: "past", g },
+    { fn: "CanDo", who: "p1", verb: "v.go", g },
+    { fn: "CanDo", who: "p3", verb: "v.go", g },
+    { fn: "CantDo", who: "p1", verb: "v.go", g },
+    ...["p1", "p2", "p3"].map((who) => ({ fn: "EveryDay", who, thing: "n.chapati", verb: "v.eat", g })),
+  ]),
+  { fn: "GaveTo", who: "pron.p3", to: "p1pl.incl", thing: "n.mango", g: "she" },
+  { fn: "GaveTo", who: "pron.p3", to: "p3pl", thing: "n.mango", g: "she" },
+  ...["p1", "p2", "p3", "p1pl.incl", "p3pl"].flatMap((who) => [{ fn: "NeedThing", who, thing: "n.tea" }]),
+  { fn: "NeedThing", who: "p2", thing: "n.medicine" },
+  ...["p1", "p3", "p1pl.incl", "p3pl"].map((who) => ({ fn: "Need", who, thing: "n.tea" })),
+  ...["p1", "p3", "p3pl"].flatMap((who) => [{ fn: "Likes", who, thing: "n.tea" }, ...["WantTo", "HaveTo", "NeedTo"].map((fn) => ({ fn, who, verb: "v.to-go" }))]),
+  { fn: "CanDo", who: "p3pl", verb: "v.go" },
+  ...["p1pl.incl", "p3pl", "p3pl.far"].map((who) => ({ fn: "EveryDay", who, thing: "n.chapati", verb: "v.eat" })),
+];
 
 export function apply(S_) {
   // the 4a seed's examples for Mum are English only (the neutrality test: no Kutchi in abstract.json)

@@ -4,19 +4,19 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Lexicon
 
-964 entries (153 are fixed expressions made of other words).
+973 entries (153 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
 | Phrase | 440 |
-| N | 330 |
-| V | 56 |
+| N | 331 |
+| V | 61 |
 | A | 40 |
+| Adv | 27 |
 | Post | 26 |
-| Adv | 26 |
 | Num | 10 |
+| Pron | 9 |
 | PN | 9 |
-| Pron | 7 |
 | Q | 7 |
 | Dem | 4 |
 | Intj | 4 |
@@ -27,13 +27,13 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 466 |
+| to-record | 465 |
 | confirmed | 336 |
-| draft | 162 |
+| draft | 172 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
-| grammar-notes | 488 |
+| grammar-notes | 498 |
 | data/clinic* | 479 |
 | parked modes | 166 |
 | data/cook.json | 119 |
@@ -45,15 +45,15 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Grammar
 
-5 word classes (paradigms); 114 meanings; 113 rules (38 confirmed, 12 draft, 63 unknown, asking Mum); 4 exceptions.
+5 word classes (paradigms); 124 meanings; 123 rules (38 confirmed, 22 draft, 63 unknown, asking Mum); 10 exceptions.
 
 ## Recordings
 
-417 distinct recordings in data/family-audio.json (395 with a file). 593 rows in clips.json: 158 word forms, 258 fixed phrases, 177 sentences the rules build. 30 recordings are not linked (clash list § 6).
+481 distinct recordings in data/family-audio.json (459 with a file). 655 rows in clips.json: 158 word forms, 258 fixed phrases, 239 sentences the rules build. 32 recordings are not linked (clash list § 6).
 
 ## Games
 
-Game lines registered: 422 (cook 113, clinic 216, and 93 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 74.
+Game lines registered: 422 (cook 113, clinic 216, and 93 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 75.
 
 ## Sources loaded, and sources deliberately not
 

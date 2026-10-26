@@ -2,6 +2,33 @@
  "_about": "The clip index: which family recording (an id in data/family-audio.json) says which word form (lex + cell) or which whole meaning (a meaning key). Recordings never change the engine (rule G12). Built by build/lang/import_all.mjs from data/family-audio.json.",
  "clips": [
   {
+   "clip": "hever",
+   "lex": "adv.now-urgent",
+   "cell": "*"
+  },
+  {
+   "clip": "shabash",
+   "lex": "intj.well-done",
+   "cell": "*"
+  },
+  {
+   "clip": "shabash",
+   "lex": "phrase.well-done",
+   "cell": "*"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Say(phrase.not-the-red-one)"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Exclaim(phrase.not-the-red-one)"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Ask(phrase.not-the-red-one)"
+  },
+  {
    "clip": "ha",
    "lex": "phrase.yes",
    "cell": "*"
@@ -43,6 +70,18 @@
    "meaning": "Ask(phrase.whats-this)"
   },
   {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Say(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Exclaim(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Ask(phrase.whats-this)"
+  },
+  {
    "clip": "kida-ai",
    "meaning": "Say(phrase.where-is-it)"
   },
@@ -77,6 +116,18 @@
    "meaning": "Ask(phrase.what-would-you-like-to-a-child)"
   },
   {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Say(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Exclaim(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Ask(phrase.what-would-you-like-to-a-child)"
+  },
+  {
    "clip": "anke-kuro-khapeto",
    "meaning": "Say(phrase.what-would-you-like-to-an-adult)"
   },
@@ -101,13 +152,13 @@
    "meaning": "Ask(phrase.who-did-it-zafar-doesnt-recognise-it)"
   },
   {
-   "clip": "hi",
-   "lex": "dem.this",
+   "clip": "hu",
+   "lex": "dem.that",
    "cell": "*"
   },
   {
-   "clip": "hu",
-   "lex": "dem.that",
+   "clip": "hi",
+   "lex": "dem.this",
    "cell": "*"
   },
   {
@@ -250,11 +301,6 @@
    "cell": "he.pl.dir"
   },
   {
-   "clip": "nindho",
-   "lex": "a.small",
-   "cell": "he.sg.dir"
-  },
-  {
    "clip": "nindhi",
    "lex": "a.small",
    "cell": "she.sg.dir"
@@ -273,6 +319,11 @@
    "clip": "nindhi",
    "lex": "a.small",
    "cell": "she.pl.obl"
+  },
+  {
+   "clip": "nindho",
+   "lex": "a.small",
+   "cell": "he.sg.dir"
   },
   {
    "clip": "dai",
@@ -317,6 +368,18 @@
    "meaning": "Ask(phrase.and-then)"
   },
   {
+   "clip": "ne-poi-r3",
+   "meaning": "Say(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi-r3",
+   "meaning": "Exclaim(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi-r3",
+   "meaning": "Ask(phrase.and-then)"
+  },
+  {
    "clip": "mervan",
    "lex": "n.yoghurt-starter-culture",
    "cell": "*"
@@ -324,11 +387,6 @@
   {
    "clip": "kali",
    "lex": "adv.only",
-   "cell": "*"
-  },
-  {
-   "clip": "hever",
-   "lex": "adv.now-urgent",
    "cell": "*"
   },
   {
@@ -464,21 +522,6 @@
    "cell": "*"
   },
   {
-   "clip": "shabash",
-   "lex": "intj.well-done",
-   "cell": "*"
-  },
-  {
-   "clip": "shabash",
-   "lex": "phrase.well-done",
-   "cell": "*"
-  },
-  {
-   "clip": "chamcho",
-   "lex": "n.tablespoon",
-   "cell": "sg.dir"
-  },
-  {
    "clip": "chamchi",
    "lex": "n.teaspoon",
    "cell": "sg.dir"
@@ -497,6 +540,11 @@
    "clip": "chamchi",
    "lex": "n.teaspoon",
    "cell": "pl.obl"
+  },
+  {
+   "clip": "chamcho",
+   "lex": "n.tablespoon",
+   "cell": "sg.dir"
   },
   {
    "clip": "chips",
@@ -539,12 +587,12 @@
    "cell": "*"
   },
   {
-   "clip": "sambusa",
-   "lex": "n.samosa-nani",
+   "clip": "samosa",
+   "lex": "n.samosa",
    "cell": "*"
   },
   {
-   "clip": "samosa",
+   "clip": "samosa-r3",
    "lex": "n.samosa",
    "cell": "*"
   },
@@ -692,16 +740,9 @@
    "meaning": "Ask(phrase.careful-keep-care)"
   },
   {
-   "clip": "hi-kuro-ai-r3",
-   "meaning": "Say(phrase.whats-this)"
-  },
-  {
-   "clip": "hi-kuro-ai-r3",
-   "meaning": "Exclaim(phrase.whats-this)"
-  },
-  {
-   "clip": "hi-kuro-ai-r3",
-   "meaning": "Ask(phrase.whats-this)"
+   "clip": "sambusa",
+   "lex": "n.samosa-nani",
+   "cell": "*"
   },
   {
    "clip": "hi-kuro-ai-r3-b",
@@ -714,30 +755,6 @@
   {
    "clip": "hi-kuro-ai-r3-b",
    "meaning": "Ask(phrase.whats-this)"
-  },
-  {
-   "clip": "toke-kuro-khapeto-r3",
-   "meaning": "Say(phrase.what-would-you-like-to-a-child)"
-  },
-  {
-   "clip": "toke-kuro-khapeto-r3",
-   "meaning": "Exclaim(phrase.what-would-you-like-to-a-child)"
-  },
-  {
-   "clip": "toke-kuro-khapeto-r3",
-   "meaning": "Ask(phrase.what-would-you-like-to-a-child)"
-  },
-  {
-   "clip": "ne-poi-r3",
-   "meaning": "Say(phrase.and-then)"
-  },
-  {
-   "clip": "ne-poi-r3",
-   "meaning": "Exclaim(phrase.and-then)"
-  },
-  {
-   "clip": "ne-poi-r3",
-   "meaning": "Ask(phrase.and-then)"
   },
   {
    "clip": "hever-kadh",
@@ -919,16 +936,6 @@
    "cell": "*"
   },
   {
-   "clip": "big-ma",
-   "lex": "pn.big-ma",
-   "cell": "*"
-  },
-  {
-   "clip": "wadima",
-   "lex": "n.big-ma",
-   "cell": "*"
-  },
-  {
    "clip": "maji",
    "lex": "n.great-grandmother",
    "cell": "sg.dir"
@@ -947,6 +954,16 @@
    "clip": "maji",
    "lex": "n.great-grandmother",
    "cell": "pl.obl"
+  },
+  {
+   "clip": "big-ma",
+   "lex": "pn.big-ma",
+   "cell": "*"
+  },
+  {
+   "clip": "wadima",
+   "lex": "n.big-ma",
+   "cell": "*"
   },
   {
    "clip": "beta",
@@ -1145,6 +1162,11 @@
    "cell": "*"
   },
   {
+   "clip": "mirchi-b",
+   "lex": "n.chilli",
+   "cell": "*"
+  },
+  {
    "clip": "aakhi-mirchi",
    "meaning": "Say(phrase.a-whole-chilli-not-powdered)"
   },
@@ -1155,11 +1177,6 @@
   {
    "clip": "aakhi-mirchi",
    "meaning": "Ask(phrase.a-whole-chilli-not-powdered)"
-  },
-  {
-   "clip": "mirchi-b",
-   "lex": "n.chilli",
-   "cell": "*"
   },
   {
    "clip": "limu",
@@ -1185,11 +1202,6 @@
    "clip": "maani",
    "lex": "n.chapati",
    "cell": "pl.obl"
-  },
-  {
-   "clip": "samosa-r3",
-   "lex": "n.samosa",
-   "cell": "*"
   },
   {
    "clip": "sambusa-r3",
@@ -1242,6 +1254,23 @@
    "cell": "sg.dir"
   },
   {
+   "clip": "chamcho-oct5",
+   "lex": "n.tablespoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Say(phrase.all-of-those)"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Exclaim(phrase.all-of-those)"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Ask(phrase.all-of-those)"
+  },
+  {
    "clip": "chamcha",
    "lex": "n.tablespoon",
    "cell": "pl.dir"
@@ -1257,11 +1286,6 @@
    "cell": "*"
   },
   {
-   "clip": "matar",
-   "lex": "n.green-peas",
-   "cell": "*"
-  },
-  {
    "clip": "watana",
    "lex": "n.peas",
    "cell": "*"
@@ -1270,6 +1294,11 @@
    "clip": "watano",
    "lex": "n.peas",
    "cell": "sg.dir"
+  },
+  {
+   "clip": "matar",
+   "lex": "n.green-peas",
+   "cell": "*"
   },
   {
    "clip": "matar-b-m",
@@ -1323,16 +1352,9 @@
    "meaning": "Ask(phrase.with-the-big-boy)"
   },
   {
-   "clip": "laal-na",
-   "meaning": "Say(phrase.not-the-red-one)"
-  },
-  {
-   "clip": "laal-na",
-   "meaning": "Exclaim(phrase.not-the-red-one)"
-  },
-  {
-   "clip": "laal-na",
-   "meaning": "Ask(phrase.not-the-red-one)"
+   "clip": "laal",
+   "lex": "a.red",
+   "cell": "*"
   },
   {
    "clip": "wadho-ginech-nindho-ginech",
@@ -1350,6 +1372,11 @@
    "clip": "nindha",
    "lex": "a.small",
    "cell": "he.pl.dir"
+  },
+  {
+   "clip": "kan",
+   "lex": "n.ear",
+   "cell": "*"
   },
   {
    "clip": "nana-jo-ai",
@@ -1484,18 +1511,6 @@
    "meaning": "Ask(phrase.all-of-these)"
   },
   {
-   "clip": "hu-mare",
-   "meaning": "Say(phrase.all-of-those)"
-  },
-  {
-   "clip": "hu-mare",
-   "meaning": "Exclaim(phrase.all-of-those)"
-  },
-  {
-   "clip": "hu-mare",
-   "meaning": "Ask(phrase.all-of-those)"
-  },
-  {
    "clip": "chai-ke-ukar-paani-ke-ukar",
    "meaning": "Say(phrase.boil-the-tea-boil-the-water)"
   },
@@ -1508,6 +1523,16 @@
    "meaning": "Ask(phrase.boil-the-tea-boil-the-water)"
   },
   {
+   "clip": "ukar",
+   "lex": "v.boil",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "slow",
+   "lex": "adv.slow",
+   "cell": "*"
+  },
+  {
    "clip": "slow-kar",
    "meaning": "Say(phrase.turn-it-down-the-flame)"
   },
@@ -1518,6 +1543,11 @@
   {
    "clip": "slow-kar",
    "meaning": "Ask(phrase.turn-it-down-the-flame)"
+  },
+  {
+   "clip": "kar",
+   "lex": "v.do",
+   "cell": "imp.informal"
   },
   {
    "clip": "wiji-chad",
@@ -1554,6 +1584,16 @@
   {
    "clip": "kadhi-chad",
    "meaning": "Ask(phrase.take-it-out)"
+  },
+  {
+   "clip": "gund",
+   "lex": "v.knead",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "atto",
+   "lex": "n.flour",
+   "cell": "sg.dir"
   },
   {
    "clip": "dabai",
@@ -1629,6 +1669,11 @@
   {
    "clip": "tarelo-kari-chad",
    "meaning": "Ask(phrase.fry-it-make-it-fried)"
+  },
+  {
+   "clip": "bhar",
+   "lex": "v.fill",
+   "cell": "imp.informal"
   },
   {
    "clip": "thorok-wij",
@@ -1742,14 +1787,19 @@
    "cell": "*"
   },
   {
-   "clip": "chamcho-oct5",
-   "lex": "n.tablespoon",
-   "cell": "sg.dir"
-  },
-  {
    "clip": "aag",
    "lex": "n.fire",
    "cell": "*"
+  },
+  {
+   "clip": "chulo",
+   "lex": "n.stove",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "bar",
+   "lex": "v.light",
+   "cell": "imp.informal"
   },
   {
    "clip": "garam",
@@ -1769,59 +1819,261 @@
    "meaning": "Ask(phrase.its-gone-cold)"
   },
   {
-   "clip": "chulo",
-   "lex": "n.stove",
-   "cell": "sg.dir"
-  },
-  {
-   "clip": "ukar",
-   "lex": "v.boil",
-   "cell": "imp.informal"
-  },
-  {
-   "clip": "slow",
-   "lex": "adv.slow",
-   "cell": "*"
-  },
-  {
-   "clip": "kar",
-   "lex": "v.do",
-   "cell": "imp.informal"
-  },
-  {
-   "clip": "atto",
-   "lex": "n.flour",
-   "cell": "sg.dir"
-  },
-  {
-   "clip": "gund",
-   "lex": "v.knead",
-   "cell": "imp.informal"
-  },
-  {
-   "clip": "bar",
-   "lex": "v.light",
-   "cell": "imp.informal"
-  },
-  {
-   "clip": "bhar",
-   "lex": "v.fill",
-   "cell": "imp.informal"
-  },
-  {
    "clip": "thundo",
    "lex": "a.cold",
    "cell": "he.sg.dir"
   },
   {
-   "clip": "kan",
-   "lex": "n.ear",
-   "cell": "*"
+   "clip": "nana-muke-ambo-dino",
+   "meaning": "GaveTo(pn.nana,p1,n.mango)"
   },
   {
-   "clip": "laal",
-   "lex": "a.red",
-   "cell": "*"
+   "clip": "aai-roj-maani-kianta",
+   "meaning": "EveryDay(p2resp,n.chapati,v.eat)"
+  },
+  {
+   "clip": "aau-toke-ambo-dinis",
+   "meaning": "GaveTo(pron.p1,p2,n.mango,g=she)"
+  },
+  {
+   "clip": "aau-anke-ambo-dinis",
+   "meaning": "GaveTo(pron.p1,p2resp,n.mango,g=she)"
+  },
+  {
+   "clip": "aau-inke-ambo-dinis",
+   "meaning": "GaveTo(pron.p1,p3,n.mango,g=she)"
+  },
+  {
+   "clip": "aau-toke-naryis",
+   "meaning": "See(p1,p2,g=she,tense=past)"
+  },
+  {
+   "clip": "aau-anke-naryis",
+   "meaning": "See(p1,p2resp,g=she,tense=past)"
+  },
+  {
+   "clip": "aau-toke-narati",
+   "meaning": "See(p1,p2,g=she,tense=pres)"
+  },
+  {
+   "clip": "aau-toke-nardis",
+   "meaning": "See(p1,p2,g=she,tense=fut)"
+  },
+  {
+   "clip": "aau-inke-naryis",
+   "meaning": "See(p1,p3,g=she,tense=past)"
+  },
+  {
+   "clip": "aau-vinni-sakati",
+   "meaning": "CanDo(p1,v.go,g=she)"
+  },
+  {
+   "clip": "e-vinni-saketi",
+   "meaning": "CanDo(p3,v.go,g=she)"
+  },
+  {
+   "clip": "aau-nati-vinni-saka",
+   "meaning": "CantDo(p1,v.go,g=she)"
+  },
+  {
+   "clip": "aau-roj-maani-kianti",
+   "meaning": "EveryDay(p1,n.chapati,v.eat,g=she)"
+  },
+  {
+   "clip": "tu-roj-maani-khaiti",
+   "meaning": "EveryDay(p2,n.chapati,v.eat,g=she)"
+  },
+  {
+   "clip": "e-roj-maani-khaiti",
+   "meaning": "EveryDay(p3,n.chapati,v.eat,g=she)"
+  },
+  {
+   "clip": "aau-toke-ambo-dinos",
+   "meaning": "GaveTo(pron.p1,p2,n.mango,g=he)"
+  },
+  {
+   "clip": "aau-anke-ambo-dinos",
+   "meaning": "GaveTo(pron.p1,p2resp,n.mango,g=he)"
+  },
+  {
+   "clip": "aau-toke-naryos",
+   "meaning": "See(p1,p2,g=he,tense=past)"
+  },
+  {
+   "clip": "aau-anke-naryos",
+   "meaning": "See(p1,p2resp,g=he,tense=past)"
+  },
+  {
+   "clip": "aau-toke-narato",
+   "meaning": "See(p1,p2,g=he,tense=pres)"
+  },
+  {
+   "clip": "aau-toke-nardos",
+   "meaning": "See(p1,p2,g=he,tense=fut)"
+  },
+  {
+   "clip": "aau-inke-naryos",
+   "meaning": "See(p1,p3,g=he,tense=past)"
+  },
+  {
+   "clip": "aau-vinni-sakanto",
+   "meaning": "CanDo(p1,v.go,g=he)"
+  },
+  {
+   "clip": "e-vinni-saketo",
+   "meaning": "CanDo(p3,v.go,g=he)"
+  },
+  {
+   "clip": "aau-nato-vinni-saka",
+   "meaning": "CantDo(p1,v.go,g=he)"
+  },
+  {
+   "clip": "aau-roj-maani-kianto",
+   "meaning": "EveryDay(p1,n.chapati,v.eat,g=he)"
+  },
+  {
+   "clip": "tu-roj-maani-khaito",
+   "meaning": "EveryDay(p2,n.chapati,v.eat,g=he)"
+  },
+  {
+   "clip": "e-roj-maani-khaito",
+   "meaning": "EveryDay(p3,n.chapati,v.eat,g=he)"
+  },
+  {
+   "clip": "e-panke-ambo-dini",
+   "meaning": "GaveTo(pron.p3,p1pl.incl,n.mango,g=she)"
+  },
+  {
+   "clip": "e-iloka-ke-ambo-dini",
+   "meaning": "GaveTo(pron.p3,p3pl,n.mango,g=she)"
+  },
+  {
+   "clip": "muke-chai-ji-jaruri",
+   "meaning": "NeedThing(p1,n.tea)"
+  },
+  {
+   "clip": "toke-chai-ji-jaruri",
+   "meaning": "NeedThing(p2,n.tea)"
+  },
+  {
+   "clip": "anke-chai-ji-jaruri",
+   "meaning": "NeedThing(p2resp,n.tea)"
+  },
+  {
+   "clip": "inke-chai-ji-jaruri",
+   "meaning": "NeedThing(p3,n.tea)"
+  },
+  {
+   "clip": "inke-chai-ji-jaruri-b",
+   "meaning": "NeedThing(p3,n.tea)"
+  },
+  {
+   "clip": "panke-chai-ji-jaruri",
+   "meaning": "NeedThing(p1pl.incl,n.tea)"
+  },
+  {
+   "clip": "iloka-ke-chai-ji-jaruri",
+   "meaning": "NeedThing(p3pl,n.tea)"
+  },
+  {
+   "clip": "toke-dawa-ji-jaruri",
+   "meaning": "NeedThing(p2,n.medicine)"
+  },
+  {
+   "clip": "muke-chai-khapeti",
+   "meaning": "Need(p1,n.tea)|polite|"
+  },
+  {
+   "clip": "muke-chai-khapeti-r5",
+   "meaning": "Need(p1,n.tea)|polite|"
+  },
+  {
+   "clip": "muke-chai-khapeti-r5b",
+   "meaning": "Need(p1,n.tea)|polite|"
+  },
+  {
+   "clip": "inke-chai-khapeti",
+   "meaning": "Need(p3,n.tea)|polite|"
+  },
+  {
+   "clip": "inke-chai-khapeti-b",
+   "meaning": "Need(p3,n.tea)|polite|"
+  },
+  {
+   "clip": "inke-chai-khapeti-c",
+   "meaning": "Need(p3,n.tea)|polite|"
+  },
+  {
+   "clip": "panke-chai-khapeti",
+   "meaning": "Need(p1pl.incl,n.tea)|polite|"
+  },
+  {
+   "clip": "iloka-ke-chai-khapeti",
+   "meaning": "Need(p3pl,n.tea)|polite|"
+  },
+  {
+   "clip": "iloka-ke-chai-khapeti-b",
+   "meaning": "Need(p3pl,n.tea)|polite|"
+  },
+  {
+   "clip": "muke-chai-wareti",
+   "meaning": "Likes(p1,n.tea)"
+  },
+  {
+   "clip": "muke-vinnu-aaye",
+   "meaning": "WantTo(p1,v.to-go)"
+  },
+  {
+   "clip": "muke-vinnu-khapdo",
+   "meaning": "HaveTo(p1,v.to-go)"
+  },
+  {
+   "clip": "muke-vinnu-ji-jaruri",
+   "meaning": "NeedTo(p1,v.to-go)"
+  },
+  {
+   "clip": "inke-chai-wareti",
+   "meaning": "Likes(p3,n.tea)"
+  },
+  {
+   "clip": "inke-vinnu-aaye",
+   "meaning": "WantTo(p3,v.to-go)"
+  },
+  {
+   "clip": "inke-vinnu-khapdo",
+   "meaning": "HaveTo(p3,v.to-go)"
+  },
+  {
+   "clip": "inke-vinnu-ji-jaruri",
+   "meaning": "NeedTo(p3,v.to-go)"
+  },
+  {
+   "clip": "iloka-ke-chai-wareti",
+   "meaning": "Likes(p3pl,n.tea)"
+  },
+  {
+   "clip": "iloka-ke-vinnu-aaye",
+   "meaning": "WantTo(p3pl,v.to-go)"
+  },
+  {
+   "clip": "iloka-ke-vinnu-khapdo",
+   "meaning": "HaveTo(p3pl,v.to-go)"
+  },
+  {
+   "clip": "iloka-vinni-sakanto",
+   "meaning": "CanDo(p3pl,v.go)"
+  },
+  {
+   "clip": "pa-roj-maani-kianta",
+   "meaning": "EveryDay(p1pl.incl,n.chapati,v.eat)"
+  },
+  {
+   "clip": "iloka-roj-maani-kenta",
+   "meaning": "EveryDay(p3pl,n.chapati,v.eat)"
+  },
+  {
+   "clip": "huloka-roj-maani-kenta",
+   "meaning": "EveryDay(p3pl.far,n.chapati,v.eat)"
   },
   {
    "clip": "chokra-sathe-b",
@@ -2190,10 +2442,6 @@
   {
    "clip": "nana-ji-maani",
    "meaning": "Of(pn.nana,n.chapati)"
-  },
-  {
-   "clip": "muke-chai-khapeti",
-   "meaning": "Need(p1,Item(n.tea))|polite|"
   },
   {
    "clip": "aai-muke-chai-banai-dinda",

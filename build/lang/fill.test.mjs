@@ -329,3 +329,25 @@ test("the gap list and the clash list are written, and name what to ask", () => 
   assert.match(clash, /Two words for one thing/);
   assert.match(clash, /Recordings that are not linked/);
 });
+
+test("Round 5 C80-C103 (24 Oct): the speaker's gender, the giver's, the eater's (grammar-notes §56-§63; Zafar 26 Oct)", () => {
+  const say = (m, ctx = {}) => strip(E.say(m, ctx).text);
+  const she = { speaker: { gender: "she" } }, he = { speaker: { gender: "he" } };
+  assert.equal(say({ fn: "GaveTo", who: "pn.nana", to: "p1", thing: "n.mango" }), "nana muke ambo dino", "§56 C80");
+  assert.equal(say({ fn: "GaveTo", who: "pron.p1", to: "p2", thing: "n.mango" }, she), "aau toke ambo dinis", "§56 C81: the speaker's gender");
+  assert.equal(say({ fn: "GaveTo", who: "pron.p1", to: "p2", thing: "n.mango" }, { ...he, addressee: { elder: true } }), "aau anke ambo dinos", "§56 C82");
+  assert.equal(say({ fn: "GaveTo", who: "pron.p3", to: "p3pl", thing: "n.mango", g: "she" }), "e iloka ke ambo dini", "§56 C84");
+  assert.equal(say({ fn: "See", who: "p1", whom: "p2" }, he), "aau toke naryos", "§57 C85 past");
+  assert.equal(say({ fn: "See", who: "p1", whom: "p2", tense: "fut" }, she), "aau toke nardis", "§57 C85 future");
+  assert.equal(say({ fn: "NeedThing", who: "p2", thing: "n.medicine" }), "toke dawa ji jaruri", "§58 C87");
+  assert.equal(say({ fn: "Likes", who: "p3pl", thing: "n.tea" }), "iloka ke chai wareti", "§59 C94");
+  assert.equal(say({ fn: "HaveTo", who: "p3", verb: "v.to-go" }), "inke vinnu khapdo", "§60 C95");
+  assert.equal(say({ fn: "CanDo", who: "p3pl", verb: "v.go" }), "iloka vinni sakanto", "§61 C96");
+  assert.equal(say({ fn: "CantDo", who: "p1", verb: "v.go" }, he), "aau nato vinni saka", "§61 C96");
+  assert.equal(say({ fn: "EveryDay", who: "p2", thing: "n.chapati", verb: "v.eat", g: "she" }), "tu roj maani khaiti", "§62 C98");
+  assert.equal(say({ fn: "EveryDay", who: "p2", thing: "n.chapati", verb: "v.eat" }, { addressee: { elder: true } }), "aai roj maani kianta", "§62 C99 (Mum's, decision 3)");
+  assert.equal(say({ fn: "EveryDay", who: "p1pl.incl", thing: "n.chapati", verb: "v.eat" }), "pa roj maani kianta", "§62 C102");
+  assert.equal(say({ fn: "EveryDay", who: "p3pl.far", thing: "n.chapati", verb: "v.eat" }), "huloka roj maani kenta", "§63");
+  // no speaker and no g: a gap, never a guessed gender
+  assert.equal(E.say({ fn: "EveryDay", who: "p1", thing: "n.chapati", verb: "v.eat" }).ok, false);
+});
