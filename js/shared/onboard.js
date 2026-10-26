@@ -1167,7 +1167,7 @@
     const firstRect = () => rectsOf(target)[0] || null;
     // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
     const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerFrom || (o.fingerDown ? "above" : "auto"));
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from });
+    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold" });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
@@ -1278,7 +1278,7 @@
     };
     const openSpot = () => {
       glow(false);
-      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? false : undefined, fingerDown: o.fingerDown, fingerFrom: o.fingerFrom, step: name });
+      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? "hold" : undefined, fingerDown: o.fingerDown, fingerFrom: o.fingerFrom, step: name }); // (SH-130, S13-A2: a drag's box has its finger too, pressed on the thing to move)
     };
     const closeSpot = () => {
       if (spot) spot.close();

@@ -567,13 +567,15 @@ export const CONTRACT_HOOK = `(() => {
       if (seen.has(k) || !shown(k)) continue;
       const r = k.getBoundingClientRect();
       if (r.width < 16) continue;
+      // (its laid-out size: the talk's tilt or a pop-up's entrance scale draws a box a few px off)
+      const lw = k.offsetWidth || r.width, lh = k.offsetHeight || r.height;
       seen.add(k);
-      if (!c) { out.push({ sel: desc(el), kit: false, size: null, w: r.width, h: r.height, tok: 0 }); continue; }
+      if (!c) { out.push({ sel: desc(el), kit: false, size: null, w: lw, h: lh, tok: 0 }); continue; }
       const m = /njg-face-(row|guide|big)\\b/.exec(c.className || "");
       const size = m ? m[1] : null;
       const cs = getComputedStyle(c);
       const tok = parseFloat(cs.getPropertyValue({ row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face")) || 0;
-      out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: r.width, h: r.height, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
+      out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: lw, h: lh, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
     }
     return out;
   };
@@ -786,7 +788,7 @@ export const CONTRACT_HOOK = `(() => {
     const fk = safe(faceKit, []);
     if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
     const fg = safe(fingers, []);
-    if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-onboard.on, .njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-onboard.on, .njg-spot.on") });
+    if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on") });
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));
     const bsig = bubs.map((b) => [b.who, b.text, Math.round(b.box.l / 6), Math.round(b.box.t / 6)]);
     if (!same("bubble", bsig) && bubs.length) {
