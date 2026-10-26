@@ -334,7 +334,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       St.decoyNote(off.length, { what: "chop", lookalike: off.some((id) => kinds.some((w) => (LA[w] || []).includes(id))) });
     }
     const art = [
-      ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
+      ["dv2-knife", IT + "tool-knife-t-v2.webp"], // the fallback is the current knife (Z8: tool-knife-t.png/.webp are retired art; S13 decodes every load)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
       ["dv3-ladle", "assets/cook/items-s08c/kadchi/kadchi-daal-s08c.webp"], // DAAR-02: s08c KD1
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],

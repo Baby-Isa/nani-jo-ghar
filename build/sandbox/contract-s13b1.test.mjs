@@ -45,3 +45,11 @@ test("contract-36 (SH-133): a step logged open again with nothing between is the
   assert.equal(of(run(tl(base.slice())), "contract-36").length, 0, "green: step 21's skip was logged at its opening; the rungs' re-log is the same step");
   assert.equal(of(run(tl([...base, life(T + 3000, "step-open", "22")])), "contract-36").length, 1, "red: step 22 opened, never called, no skip");
 });
+
+// S13-B1 round 3 (CLAUDE.md non-negotiable 3: a word's English "only when tapped"): an order card's row never shows its English untapped
+test("contract-39: an order card row's English untapped is a break at any stage; tapped open, or a word card while supported, is not", () => {
+  const en = (list) => page([C(T, "card-en", { list })]);
+  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "two onions", oc: true }])), "contract-39").length, 1, "red: a row's English at stage 1, untapped");
+  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "two onions", oc: true }])), "contract-39").length, 0, "green: the child tapped it open");
+  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "onion", oc: false }])), "contract-39").length, 0, "green: the big word card while supported");
+});

@@ -19662,8 +19662,6 @@
    "path": "speed1",
    "level": 1,
    "sizes": [
-    "1366x768",
-    "1480x924",
     "915x412"
    ],
    "profile": "seen",
@@ -19674,7 +19672,7 @@
     "crop:.wc-card"
    ],
    "expect": null,
-   "note": "chai's big word card as each item of the order is said (the one word card the eye test and the door draw): the speaker, the Kutchi and the English centred as one group in its half, English only while the word is supported"
+   "note": "chai's big word card as each item of the order is said (915x412 only: at 1280x665 the card has flown before the crop, before and after alike; the kit sheet's word card shows Cook's card at both sizes)"
   }
  ],
  "CLN-199": [

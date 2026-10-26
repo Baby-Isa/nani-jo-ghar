@@ -29,7 +29,8 @@
  *             onReveal(slot, el), cls, id,
  *             layout: "across",                   (S13-B1: options, never a game's CSS) the picture left, the strip right
  *             bare, fill, inset,                  no card box; filling its holder; the picture contained with a margin
- *             shape: "side" }                     a card in the sidebar: its picture sized to the sidebar's width
+ *             shape: "side",                      a card in the sidebar: its picture sized to the sidebar's width
+             enTap: true }                       the English only when tapped open, at every stage (an order card's rows)
  *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak(), hush(on), lit(on), photo(on) }   cue(): the cue a judged answer carries
  *            ("kutchi" unless the child opened a slot on this card)
  *   WordCard.pop(el, word, opts) -> el              the one entrance (S13-B1): a big card of the word said now, made in el (the
@@ -164,6 +165,13 @@
     return 1;
   }
   function slotsOf(word, opts, stage) {
+    const s = slotsFor(word, opts, stage);
+    // S13-B1 (CLAUDE.md non-negotiable 3, Zafar 21 Oct: a word card's English "only when tapped"): enTap (an order card's rows)
+    // never shows the English by itself; it is the slot's free tap-to-reveal
+    if (opts.enTap) s.english = false;
+    return s;
+  }
+  function slotsFor(word, opts, stage) {
     if (opts.slots) return Object.assign(W.slots(stage, { placeholder: !!word.rec }), { picture: opts.slots.picture !== false, english: opts.slots.english !== false, kutchi: !!word.rec || opts.slots.kutchiText !== false });
     let sup = null;
     const P = opts.progress;

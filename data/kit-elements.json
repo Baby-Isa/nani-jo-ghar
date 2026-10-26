@@ -95,7 +95,8 @@
           "tries": 10
         },
         "day": {
-          "at": "visible:.wc-card"
+          "at": "visible:.wc-card",
+          "delay": 700
         },
         "cook": {
           "at": "visible:.njg-rq-card .wc-card",
@@ -105,7 +106,9 @@
           "tries": 6
         },
         "clinic": {
-          "at": "visible:.wc-card"
+          "at": "rec:heal-eye-redrop",
+          "sel": ".eye-card",
+          "flow": "clinic:heal-eye"
         },
         "lab": {
           "at": "visible:.njg-rq-card .wc-card",

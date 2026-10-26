@@ -251,7 +251,7 @@
 /* SH-110 (Zafar, 26 Oct: never a memory test): a blanked row starts with a clear speaker (js/shared/order-card.js speakerFirst):
    the round speaker drawn at the row's size, its tap area never under the tap floor (it overhangs the row, so the row keeps its
    height); a word row's own speaker (.wc-spk) is the same button, moved to the row's start */
-.oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); min-height: var(--njg-tap); box-sizing: border-box; }
+.oc-card .oc-row.oc-said, .oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); min-height: var(--njg-tap); box-sizing: border-box; }
 .oc-card .oc-spk {
   --oc-spk-vis: calc(var(--oc-part-h) * 0.8); --oc-spk-hit: max(var(--oc-spk-vis), var(--njg-tap));
   /* SH-134 (S13-A2): its tap area is the full tap floor, 48 x 48, never over the next row's speaker: a blanked row is at least
@@ -518,6 +518,8 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 :root .oc-card.oc-tight:not(.oc-big) { --oc-part-h: calc(var(--njg-part-h) - var(--njg-s1)); --oc-gap: var(--njg-line-2); }
 :root .oc-card.oc-tight:not(.oc-big) .oc-items { gap: var(--njg-line-2); margin-top: var(--njg-s1); }
 :root .oc-card.oc-tight:not(.oc-big) .oc-row .oc-t { padding-block: 0; }
+/* (a card that is its face alone has one speaker, the left one: its face's own badge goes; the judge on SH-110) */
+.oc-card.oc-mini .oc-face .say-badge { display: none; }
 /* (a card that is its face alone, at the screen's edge: its speaker's tap area moves a step in, never past the screen; the
    same width, so the face beside it keeps its place) */
 .oc-card.oc-mini .oc-spk {

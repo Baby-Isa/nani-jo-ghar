@@ -117,7 +117,7 @@ export const CHECKS = {
   "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
   "contract-38": { item: "two-pages", title: "the end screen: two pages", how: "Every endpages sample (lib/contract-hook.mjs: the end screen's pages, data-page, the one shown, data-step, and its step rows): a third page (the steps of the round, .rs-p3), a card on step 3 or any step row (.rs-step, .rs-steps-list) in any game is a break (SH-104, Zafar, 22 Oct: the third page goes from every game; js/shared/results.js Results.STEPS_PAGE is the only way in, and it is off)." },
-  "contract-39": { item: "card-english", title: "the word card's English: supported, then tapped", how: "Every card-en sample (lib/contract-hook.mjs: each shared word card's English slot on screen with words in it, its card's data-stage and whether the child opened it, the slot's revealed class): English showing on a card at stage 3 or more that the child did not open is a break (SH-123; Zafar, 21 Oct: English on a word card only while the word is supported, then only when tapped; data/progress.json support[stage].english)." },
+  "contract-39": { item: "card-english", title: "the word card's English: supported, then tapped", how: "Every card-en sample (lib/contract-hook.mjs: each shared word card's English slot on screen with words in it, its card's data-stage and whether the child opened it, the slot's revealed class): English showing on a card at stage 3 or more that the child did not open is a break (SH-123; Zafar, 21 Oct: English on a word card only while the word is supported, then only when tapped; data/progress.json support[stage].english). An order card's row (the slot inside an .oc-card, oc) never shows its English untapped, at any stage: a break (S13-B1 round 3; CLAUDE.md non-negotiable 3)." },
   ...DAY_CHECKS,
   ...DAAL_CHECKS,
   ...CHAI_CHECKS,
@@ -1248,9 +1248,12 @@ export function check39(tl, add) {
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "card-en") continue;
     for (const x of e.list || []) {
-      if (x.stage < 3 || x.revealed || seen.has(x.word)) continue;
-      seen.add(x.word);
-      add("contract-39", e.t, `the word card for ${x.word} (stage ${x.stage}, past support) shows its English "${x.text}" without the child opening it`);
+      // (S13-B1 round 3; CLAUDE.md non-negotiable 3, Zafar 21 Oct: "then only when tapped"): an order card's row (x.oc) never shows its
+      // English untapped, at any stage
+      if (x.revealed || (x.stage < 3 && !x.oc) || seen.has(x.word + (x.oc ? "|oc" : ""))) continue;
+      seen.add(x.word + (x.oc ? "|oc" : ""));
+      if (x.oc) add("contract-39", e.t, `the order card's row for ${x.word} (stage ${x.stage}) shows its English "${x.text}" without the child tapping it open`);
+      else add("contract-39", e.t, `the word card for ${x.word} (stage ${x.stage}, past support) shows its English "${x.text}" without the child opening it`);
     }
   }
 }
