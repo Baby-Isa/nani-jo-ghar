@@ -147,6 +147,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       this.fitBg();
       if (UI.onViewFit) UI.onViewFit();
     }
+    /** The wood worktop's size for the visible view at the screen's own resolution, and its texture's key. */
+    woodAt() {
+      const v = Cook.view;
+      const cr = this.game.canvas.getBoundingClientRect();
+      const sc = Math.max(1, Math.ceil(((cr.width / Math.max(1, v.w)) * (window.devicePixelRatio || 1)) * 4) / 4);
+      const vw = Math.round(v.right - v.left);
+      const vh = Math.round(v.bottom - v.top);
+      return { key: `bg:wood@${vw}x${vh}@${sc}`, vw, vh, sc };
+    }
+    /**
+     * CK-48 (S13-V fix round): a view's worktop made ahead of its swap, in a quiet moment while the order's card is up: the wood
+     * (drawn in code, about 0.4 s at a phone's speed) and a painted worktop's picture (loaded and decoded). Never shown here.
+     */
+    prewarmView(name) {
+      try {
+        if (!name || !Cook.view || !this.game || !this.game.canvas) return;
+        if (name === "wood" && Cook.Art.worktopAt) {
+          const { key, vw, vh, sc } = this.woodAt();
+          if (!this.textures.exists(key)) this.textures.addCanvas(key, Cook.Art.worktopAt(vw, vh, sc, { wood: true }));
+        } else if (Cook.Art.refUrl && Cook.Art.refUrl(`bg:${name}`)) Cook.Art.load(this, `bg:${name}`);
+      } catch (e) {
+        /* made at the swap, as before */
+      }
+    }
     /** A background texture, fitted to the visible world. */
     setBg(key) {
       this.bg.setTexture(key);
@@ -186,11 +210,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       // the wood (drawn in code: no painting): drawn for the visible view at the screen's own resolution, never zoomed
       if (this.viewName === "wood" && bg.texture.key === "bg:wood" && Cook.Art.worktopAt) {
-        const cr = this.game.canvas.getBoundingClientRect();
-        const sc = Math.max(1, Math.ceil(((cr.width / Math.max(1, v.w)) * (window.devicePixelRatio || 1)) * 4) / 4);
-        const vw = Math.round(v.right - v.left);
-        const vh = Math.round(v.bottom - v.top);
-        const key = `bg:wood@${vw}x${vh}@${sc}`;
+        const { key, vw, vh, sc } = this.woodAt();
         if (this.woodKey && this.woodKey !== key && this.textures.exists(this.woodKey)) this.textures.remove(this.woodKey);
         if (!this.textures.exists(key)) this.textures.addCanvas(key, Cook.Art.worktopAt(vw, vh, sc, { wood: true }));
         this.woodKey = key;

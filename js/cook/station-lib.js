@@ -321,6 +321,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // painted sprites, its worktop and its hand poses load behind the order's pop-up, and the view fades in only once they
     // are there, so nothing half-drawn shows (a dead file still has its cap, Art.need)
     const art = Cook.Art.need(S, key, 20000);
+    // (CK-48, S13-V fix round: the worktop made now, while the lab's order card is still up; the story's order made it already)
+    if (S.prewarmView && ctx && ctx.intro) Cook.Art.whenQuiet(() => S.prewarmView(view));
     const bg = Cook.Art.refUrl && Cook.Art.refUrl(`bg:${view}`) ? Promise.race([Cook.Art.load(S, `bg:${view}`), new Promise((r) => setTimeout(r, 20000))]) : null;
     const hands = Cook.Hands ? Cook.Hands.need(S, key) : null;
     // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar.
@@ -524,7 +526,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!missing.length) return Promise.resolve();
     return new Promise((resolve) => {
       missing.forEach(([key, url]) => S.load.image(key, Cook.v ? Cook.v(url) : url));
-      S.load.once("complete", resolve);
+      S.load.once("complete", () => {
+        // CK-48: each picture decoded in a quiet moment now, not as the station first draws it (Cook.Art.predecode)
+        if (Cook.Art && Cook.Art.predecode)
+          missing.forEach(([key]) => {
+            try {
+              if (S.textures.exists(key)) Cook.Art.predecode(S.textures.get(key).getSourceImage());
+            } catch (e) {
+              /* drawn as before */
+            }
+          });
+        resolve();
+      });
       S.load.start();
     });
   };
