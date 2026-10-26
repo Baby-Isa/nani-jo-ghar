@@ -16,7 +16,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - **Fix it properly, once** (the fix list, `docs/process/regressions.md`): a builder fixes what it breaks before handing back; anything found broken after a merge, and every point of Zafar's feedback, is a row the same day, fixed this sprint if it blocks play, else next. Built is done; done rows come back if they fail (Zafar, 22 Oct).
 - **Builders** are in-chat subagents in their own worktrees, two at most on different files (four while two sprints overlap); they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Rules for briefs: `docs/process/session-brief-template.md`.
 - **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
-- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** checks at three sizes (laptop, Tab S8 Ultra, Z Flip 5); the leak bot and the judge only on what a sprint changed; no red-then-green; only CLAUDE.md has a word limit. The full checks come back before the stores.
+- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** checks at three sizes (laptop, Tab S8 Ultra, Z Flip 5); the leak bot and the judge only on what a sprint changed; before-and-after shots (one script, never the builder's own) only for a builder's rows (Zafar, 26 Oct); only CLAUDE.md has a word limit. The full checks come back before the stores.
 
 ## Non-negotiables
 

@@ -13,7 +13,7 @@ Every shared element sits in one central place, so one change reaches every game
 - So a fix passed in one game and failed in the next. Wave 1's help kit needed four fix rounds to look the same in chai, the pantry and the clinic.
 
 ## Budget
-What it needs; nothing moves to Sprint 14 (Zafar, 26 Oct: everything worth centralising is done this sprint, the parked games aside; the review's four-builder plan and methodology are fine). Estimate pending the revised plan. Rapid-prototype checks: 1366x768 and 915x412.
+What it needs; nothing moves to Sprint 14 (Zafar, 26 Oct: everything worth centralising is done this sprint, the parked games aside; the review's four-builder plan and methodology are fine). About $250-300 and 3 days for six builders in three pairs, judges and the review (Zafar, 26 Oct). Rapid-prototype checks: 1366x768 and 915x412.
 
 ## Step 1: the review (Fable, high, about $15-25; one report, no code)
 Its report is build/reports/s13-kit-review (to write). Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).
@@ -33,6 +33,11 @@ Answer:
 
 ## Sessions
 - **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`: done 26 Oct; 15 decisions to Zafar (decision 10 withdrawn: `input.js` has callers).
+
+## Small decisions (Zafar, 26 Oct)
+- Also shared this sprint: the voice player (the built `js/core/voice.js` path, wired everywhere), sound effects, saving (one copy) and the test hooks. Not shared: tap and drag handling (one open row; every mechanic at risk) and Cook's round runner (a rewrite of Cook's core); parked games out of scope.
+- The checking loop: one command takes "before" shots of a builder's rows (the probe must show the problem first) and "after" shots; the script builds the judge's before/after batch, plus one side-by-side sheet per shared piece across every game (that sheet is "done"); builders never shoot their own frames; machine checks first; one broad sweep at `/review`. The existing evidence tool gains this; no second capture tool.
+- Order: pair 1 T (checking loop) + A1 (tokens, page setup, motion); pair 2 B1 (cards, order screen, SH-110) + V (voice, sfx, save); pair 3 A2 (faces, buttons, finger, "?") + B2 (bubbles, end screen). Any shared file has one owner; overlaps run in sequence.
 
 ## Step 2: the build (two builders at a time, Opus high; judge each)
 - **S13-A: tokens and motion.** Colours, outlines, the bob, glow and finger timings, as tokens used everywhere. The 883 raw values shrink.

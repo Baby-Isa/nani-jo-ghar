@@ -1,0 +1,78 @@
+SESSION NAME / MODE:  s13-a1: colours, motion timings and page setup (Sprint 13, pair 1)
+MODEL AND EFFORT:     Opus, high effort (the shared look every game draws from: careful, wide, judged on side-by-side pictures)
+COST ESTIMATE:        about $35-45
+HARD STOP:            26 Oct 2026, 21:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s13-a1.context.md (838 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S13-one-shared-kit.md (goal and 'Small decisions (Zafar, 26 Oct)')
+     build/reports/s13-kit-review.md sections 1-4 (rows: Colours, Outlines, Bob and glow, Help and bulb ladders, 'To record', Page shells, Motion) and its 'Orchestrator's check'
+     docs/design-language/ui-design-system.md
+     css/shared/tokens.css, data/layout.json
+
+FILES THIS SESSION OWNS (edit only these):
+  - css/shared/** (all), css/shared/kit.css (new)
+  - js/shared/tokens.js (new), js/shared/kit.js (new, if a loader is needed), js/shared/focus.js, js/shared/bulb.js, js/shared/guide.js (timings only)
+  - the live pages' <head>: index.html, first.html, day.html, cook.html, clinic.html, lab.html, labs.html (and build/gen_labs.mjs if labs.html is generated)
+  - colour, outline, keyframe and animation lines (and .ph rules) in the live games' CSS: css/cook.css, css/cook-side-v2.css, css/clinic.css, css/day.css, css/day-book.css, css/home.css, css/first.css
+  - js/cook/stations/station-lib.js:176-290 (Cook.GLOW reads the motion tokens)
+  - data/shared.json (new: helpMs, bulbMs, bulbPulseMs) and the readers that keep copies today: data/cook.json calm.*, js/clinic/kit.js:1163 (Kit.BULB_MS only), js/clinic/run.js:33, js/shared/conversations.js:48 (BULB_MS only), js/cook/mechanics/thread.js:137
+  - the '.njg-ph' class: one rule in css/shared/app.css; the renderers that emit the placeholder class (js/cook/lang.js, js/clinic/lang.js, js/shared/guide.js, js/shared/order-card.js, js/shared/word-card.js, js/shared/conversations.js:83): class name only
+  - build/lint/static.mjs and build/lint/static-known.json (new checks: shell, motion, jscolour; widened kit prefixes)
+  - docs/design-language/ui-design-system.md (a 'Kit' section: tokens and motion names; its hex list goes, tokens.css is the truth)
+  - build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)
+  - build/reports/s13-a1.md
+READ-ONLY (never edit):
+  - build/tools/review/**, build/sandbox/lib/** other than evidence.json, build/sandbox/drivers/**, build/tools/ops/**, .claude/** (S13-T owns the checking loop)
+  - the parked games' pages and CSS (dress, find, monsoon, snap, tidy, who): out of scope (Zafar, 26 Oct)
+  - every other js/** line (later builders own cards, faces, buttons, bubbles, voice)
+  - CLAUDE.md
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Page setup: one stylesheet link (css/shared/kit.css, @import of every shared sheet in order) and, if it is cleaner, one script entry for the shared scripts, on every LIVE page (index, first, day, cook, clinic, lab, labs). The version stamp on every URL still works (bump_version / frame.js). The house and first launch now get tokens.css; alias their own :root colours to the --njg-* tokens rather than repaint.
+     Accept: each live page's head shows one kit link; a static check `shell` fails a live page that links a shared sheet directly or misses kit.css; the house, first launch and day look unchanged at 1366x768 and 915x412 (before/after shots)
+  2. Colours and outlines: the raw colour values inside css/shared/ go to zero (tokens instead); the live games' own :root palettes alias the tokens; edge, done-gold and focus outlines come from tokens. A `jscolour` static check: UI colours in js/ only through js/shared/tokens.js (Tokens.hex('focus') for Phaser and SVG); art-only files listed once in its known list. The known list only shrinks; report the per-file counts before and after.
+     Accept: static.mjs green; css/shared raw values 0; the per-file known counts before -> after in the report
+  3. Motion tokens: the glow, hop, pulse and talk numbers (duration, lift, radius, colour, alpha, tilt) as --njg-* vars in tokens.css, read in JS by a small Motion reader in tokens.js; the four shared classes (njg-glow, njg-hop, njg-pulse, njg-talk) and their keyframes live only in css/shared/focus.css; the live games' own copies (cook.css glowPulse x4, badgeTalk, clinic.css throbs, day.css, home.css, first.css stBob...) are deleted and their elements use the shared classes; Cook.GLOW reads Motion. A `motion` static check: no kit-like @keyframes (glow, hop, pulse, throb, bounce, talk, bob, shake) outside css/shared/. Same feel as today's shared values (S12's help kit is the reference); where games differed, use the kit's.
+     Accept: kitsheet strips (or, until S13-T lands, an evidence strip at 250/500 ms) of the glow and hop in Cook, the clinic and the day at both sizes look the same; static.mjs motion green
+  4. One ladder table: data/shared.json {helpMs, bulbMs, bulbPulseMs}; guide.js, bulb.js, conversations.js, the clinic and Cook read it and keep no copies; the static bulb check reads this one table and fails if a second appears.
+     Accept: grep shows each number once; static.mjs green; check_onboard and unit tests green
+  5. 'To record' text: one .njg-ph rule (grey italic, as today) in app.css; the renderers emit .njg-ph; the game sheets' own .ph rules in the live games go; contract-16 still finds the hidden to-record tag.
+     Accept: a dom capture on the eye test and chai shows the grey italic unchanged; contract-16 0 breaks
+  6. Widen the static kit check: prefixes njg, oc, rs, gb, wc, ng, ob, cv, fit, say; no CSS outside css/shared/ selects a shared class (:not() allowed); today's hits go in the known list per file so later builders shrink them; the new checks (shell, motion, jscolour) start at the counts you leave and may only shrink.
+     Accept: static.mjs green; the report lists the known counts per file and per check
+
+REGRESSION ROWS TO RECHECK (127 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (23): CHAI-19*, CHAI-02*, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-13, CHAI-22, CHAI-24, CHAI-25, CK-45*
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01*, PAN-13*, PAN-10*, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-14, PAN-15, PAN-17
+  clinic:heal-eye (65): CLN-87*, CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-150*, CLN-156*, CLN-158*, CLN-163*, CLN-186*, CLN-43*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-152, CLN-30, CLN-39, CLN-42, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118*, CLN-140, CLN-136, CLN-187, CLN-188, CLN-69, CLN-154, CLN-155, CLN-157, FX-01, CLN-141, CLN-189, CLN-198
+  clinic:diagnosis (35): CLN-16, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116, CLN-17, CLN-162, CLN-82*, CLN-87*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-83, CLN-84, CLN-85, CLN-86, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-153, CLN-151, CLN-01, CLN-81, CLN-152, CLN-159
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:fetch,clinic:heal-eye,clinic:diagnosis,day:door --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s13-a1-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s13-a1` starts the report's proof section.
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8862.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8862; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s13-a1.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

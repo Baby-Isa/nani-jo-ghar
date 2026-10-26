@@ -1,0 +1,45 @@
+{
+  "name": "s13-a1: colours, motion timings and page setup (Sprint 13, pair 1)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared look every game draws from: careful, wide, judged on side-by-side pictures",
+  "cost": "about $35-45",
+  "stop": "26 Oct 2026, 21:00 UK",
+  "branch": "claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "read": [
+    "docs/sprints/S13-one-shared-kit.md (goal and 'Small decisions (Zafar, 26 Oct)')",
+    "build/reports/s13-kit-review.md sections 1-4 (rows: Colours, Outlines, Bob and glow, Help and bulb ladders, 'To record', Page shells, Motion) and its 'Orchestrator's check'",
+    "docs/design-language/ui-design-system.md",
+    "css/shared/tokens.css, data/layout.json"
+  ],
+  "owns": [
+    "css/shared/** (all), css/shared/kit.css (new)",
+    "js/shared/tokens.js (new), js/shared/kit.js (new, if a loader is needed), js/shared/focus.js, js/shared/bulb.js, js/shared/guide.js (timings only)",
+    "the live pages' <head>: index.html, first.html, day.html, cook.html, clinic.html, lab.html, labs.html (and build/gen_labs.mjs if labs.html is generated)",
+    "colour, outline, keyframe and animation lines (and .ph rules) in the live games' CSS: css/cook.css, css/cook-side-v2.css, css/clinic.css, css/day.css, css/day-book.css, css/home.css, css/first.css",
+    "js/cook/stations/station-lib.js:176-290 (Cook.GLOW reads the motion tokens)",
+    "data/shared.json (new: helpMs, bulbMs, bulbPulseMs) and the readers that keep copies today: data/cook.json calm.*, js/clinic/kit.js:1163 (Kit.BULB_MS only), js/clinic/run.js:33, js/shared/conversations.js:48 (BULB_MS only), js/cook/mechanics/thread.js:137",
+    "the '.njg-ph' class: one rule in css/shared/app.css; the renderers that emit the placeholder class (js/cook/lang.js, js/clinic/lang.js, js/shared/guide.js, js/shared/order-card.js, js/shared/word-card.js, js/shared/conversations.js:83): class name only",
+    "build/lint/static.mjs and build/lint/static-known.json (new checks: shell, motion, jscolour; widened kit prefixes)",
+    "docs/design-language/ui-design-system.md (a 'Kit' section: tokens and motion names; its hex list goes, tokens.css is the truth)",
+    "build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)",
+    "build/reports/s13-a1.md"
+  ],
+  "readOnly": ["build/tools/review/**, build/sandbox/lib/** other than evidence.json, build/sandbox/drivers/**, build/tools/ops/**, .claude/** (S13-T owns the checking loop)", "the parked games' pages and CSS (dress, find, monsoon, snap, tidy, who): out of scope (Zafar, 26 Oct)", "every other js/** line (later builders own cards, faces, buttons, bubbles, voice)", "CLAUDE.md"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "Page setup: one stylesheet link (css/shared/kit.css, @import of every shared sheet in order) and, if it is cleaner, one script entry for the shared scripts, on every LIVE page (index, first, day, cook, clinic, lab, labs). The version stamp on every URL still works (bump_version / frame.js). The house and first launch now get tokens.css; alias their own :root colours to the --njg-* tokens rather than repaint.", "accept": "each live page's head shows one kit link; a static check `shell` fails a live page that links a shared sheet directly or misses kit.css; the house, first launch and day look unchanged at 1366x768 and 915x412 (before/after shots)" },
+    { "do": "Colours and outlines: the raw colour values inside css/shared/ go to zero (tokens instead); the live games' own :root palettes alias the tokens; edge, done-gold and focus outlines come from tokens. A `jscolour` static check: UI colours in js/ only through js/shared/tokens.js (Tokens.hex('focus') for Phaser and SVG); art-only files listed once in its known list. The known list only shrinks; report the per-file counts before and after.", "accept": "static.mjs green; css/shared raw values 0; the per-file known counts before -> after in the report" },
+    { "do": "Motion tokens: the glow, hop, pulse and talk numbers (duration, lift, radius, colour, alpha, tilt) as --njg-* vars in tokens.css, read in JS by a small Motion reader in tokens.js; the four shared classes (njg-glow, njg-hop, njg-pulse, njg-talk) and their keyframes live only in css/shared/focus.css; the live games' own copies (cook.css glowPulse x4, badgeTalk, clinic.css throbs, day.css, home.css, first.css stBob...) are deleted and their elements use the shared classes; Cook.GLOW reads Motion. A `motion` static check: no kit-like @keyframes (glow, hop, pulse, throb, bounce, talk, bob, shake) outside css/shared/. Same feel as today's shared values (S12's help kit is the reference); where games differed, use the kit's.", "accept": "kitsheet strips (or, until S13-T lands, an evidence strip at 250/500 ms) of the glow and hop in Cook, the clinic and the day at both sizes look the same; static.mjs motion green" },
+    { "do": "One ladder table: data/shared.json {helpMs, bulbMs, bulbPulseMs}; guide.js, bulb.js, conversations.js, the clinic and Cook read it and keep no copies; the static bulb check reads this one table and fails if a second appears.", "accept": "grep shows each number once; static.mjs green; check_onboard and unit tests green" },
+    { "do": "'To record' text: one .njg-ph rule (grey italic, as today) in app.css; the renderers emit .njg-ph; the game sheets' own .ph rules in the live games go; contract-16 still finds the hidden to-record tag.", "accept": "a dom capture on the eye test and chai shows the grey italic unchanged; contract-16 0 breaks" },
+    { "do": "Widen the static kit check: prefixes njg, oc, rs, gb, wc, ng, ob, cv, fit, say; no CSS outside css/shared/ selects a shared class (:not() allowed); today's hits go in the known list per file so later builders shrink them; the new checks (shell, motion, jscolour) start at the counts you leave and may only shrink.", "accept": "static.mjs green; the report lists the known counts per file and per check" }
+  ],
+  "flows": ["cook:chai-tray", "cook:fetch", "clinic:heal-eye", "clinic:diagnosis", "day:door"],
+  "elements": ["glow", "to-record"],
+  "port": 8862,
+  "report": "s13-a1",
+  "publish": false
+}
