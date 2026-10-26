@@ -89,11 +89,18 @@ export async function openGrownUps(page, rec, sel = ".njg-gu-btn") {
   if (!(ev && ev.wantsHelp && ev.wantsHelp())) return false;
   const b = await page.$(sel);
   if (!b || !(await b.isVisible().catch(() => false))) return false;
-  await page.click(sel, { force: true }).catch(() => {});
-  await sleep(350);
-  if (!(await page.$(".njg-gu-pop:not(.hidden)"))) return false;
+  // (a station that begins as it opens puts it away again, Cook's UI.gist: tried again a moment later, three times at most)
+  let open = false;
+  for (let i = 0; i < 3 && !open; i++) {
+    if (i) await sleep(1500);
+    // (the button's own click: an order pop-up's veil may lie over the sidebar for a moment)
+    if (!(await page.$(".njg-gu-pop:not(.hidden)"))) await page.$eval(sel, (b) => b.click()).catch(() => {});
+    await sleep(350);
+    open = !!(await page.$(".njg-gu-pop:not(.hidden)"));
+  }
+  if (!open) return false;
   await rec.state("help-open", { settle: 0 });
-  await page.click(sel, { force: true }).catch(() => {});
+  await page.$eval(sel, (b) => b.click()).catch(() => {});
   await sleep(200);
   return true;
 }
