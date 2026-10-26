@@ -13,7 +13,7 @@ export const screenHTML = () => `
   <main id="stage" class="njg-play">
     <div id="game"></div>
 
-    <!-- a speech bubble beside a character (service view) -->
+    <!-- a character's speech bubble (service view) is the kit's, made over this play area as it speaks: Conversations.bubble (S13-B2) -->
 
     <div id="gist" class="hidden"></div>
     <div id="choices" class="hidden"></div>

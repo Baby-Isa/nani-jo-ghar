@@ -205,7 +205,8 @@
    --njg-tail-x): above the speaker's head its tail points down at it, below it the tail points up, beside a painted face (CLN-127)
    the tail comes out of the near side at her cheek. No head to place by: the top middle of the play area. No game restyles it. */
 .cv-bubble:not(.in) { visibility: hidden; } /* (a bubble on its way in is not on screen yet, for the checks either; was the day's own rule) */
-.cv-line { z-index: 60; pointer-events: none; font-family: var(--njg-font); }
+/* (it fades in where it is placed: never slides from the conversation bubble's own offset to its place, a tail away from the head) */
+.cv-line { z-index: 60; pointer-events: none; font-family: var(--njg-font); transition: opacity .22s; }
 .cv-line.cv-tap { pointer-events: auto; }
 .cv-line[data-njg-place], .cv-line[data-njg-place].in { transform: none; }
 .cv-line.cv-top, .cv-line.cv-top.in { left: 50%; top: max(calc(var(--njg-u) * 12), env(safe-area-inset-top)); transform: translateX(-50%); }
