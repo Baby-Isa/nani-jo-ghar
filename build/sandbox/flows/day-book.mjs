@@ -77,11 +77,11 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
   const { page, rec } = ctx;
   await open(page, query, speed);
   if (room) {
-    await page.waitForSelector(".day-cv .day-bubble.in .day-line", { timeout: 20000 });
+    // BOOK-10 (Zafar, 22 Oct): the evening opens on the book, her greeting on the page beside her face
+    await page.waitForFunction(() => window.Day.book && window.Day.book.stage === "open", null, { timeout: 30000 });
+    await page.waitForSelector(".day-head-line .day-line", { timeout: 20000 });
     await sleep(200);
-    await rec.state(`${prefix}room-greet`);
-    await page.waitForFunction(() => window.Day.book && window.Day.book.stage === "tilt", null, { timeout: 30000 });
-    await rec.state(`${prefix}face`);
+    await rec.state(`${prefix}open-greet`);
   }
   await page.waitForFunction(() => window.Day.book && window.Day.book.stage === "pages", null, { timeout: 30000 });
   const seen = new Set();

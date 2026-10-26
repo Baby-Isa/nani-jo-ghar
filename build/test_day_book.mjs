@@ -12,7 +12,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createEngine, DATA_FILES } from "../js/core/lang/engine/index.js";
-import { planBook, todayThings, fill, bookWords, sayQueue, voiceFaults } from "../js/day/book-games.js";
+import { planBook, todayThings, fill, bookWords, sayQueue, voiceFaults, spacedFrom } from "../js/day/book-games.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const J = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
@@ -69,20 +69,59 @@ test("every picture the book names exists", () => {
   for (const p of paths) assert.ok(existsSync(join(ROOT, p)), p);
 });
 
-test("find it: fewer asked than shown (by two), only today's words, things dealt to the spots at random", () => {
-  const spots = new Map();
+test("find it (BOOK-12): rounds of one ask among 3-4 cards, only today's words asked, the asked card in every slot; only the first round has the intro card", () => {
+  const slots = new Map();
   for (let s = 1; s <= 300; s++) {
     const log = D.lab.farm;
     const plan = planBook({ data: D, place: "farm", today: { entries: log.entries, words: log.words }, say: sayable("farm"), rng: rngOf(s) });
     const f = plan.pages.find((p) => p.game === "find");
     assert.ok(f, "a farm book has find it");
-    assert.ok(f.asks.length <= f.things.length - 2, `asks ${f.asks.length} of ${f.things.length}`);
-    for (const a of f.asks) assert.ok(plan.met.includes(a), `${a} was not met today`);
-    const goat = f.things.find((t) => t.key === "goat");
-    const k = `${goat.spot.page}${goat.spot.x}`;
-    spots.set(k, (spots.get(k) || 0) + 1);
+    assert.equal(f.rounds.length, 2);
+    f.rounds.forEach((r, i) => {
+      assert.ok(r.cards.length >= 3 && r.cards.length <= 5, `${r.cards.length} cards`);
+      assert.equal(new Set(r.cards).size, r.cards.length);
+      assert.ok(r.cards.includes(r.ask));
+      assert.ok(plan.met.includes(r.ask), `${r.ask} was not met today`);
+      assert.equal(r.intro, i === 0);
+      slots.set(r.cards.indexOf(r.ask), (slots.get(r.cards.indexOf(r.ask)) || 0) + 1);
+    });
   }
-  assert.equal(spots.size, 4, "the goat stands in every spot over the books");
+  assert.equal(slots.size, 4, "the asked card lands in every slot over the books");
+});
+
+test("spaced words (S12 decision 9): a save spanning 8 days brings back what was met 1, 3 and 7 days ago, never 2, 4, 5 or 6", () => {
+  // eight days of play, one thing a day (today: day 0); each day's thing is in the day log and in the save's words
+  const today = "2026-10-26";
+  const dayOf = (n) => new Date(Date.parse(`${today}T12:00:00Z`) - n * 86400000).toISOString().slice(0, 10);
+  const byDay = { 0: "goat", 1: "maani", 2: "milk", 3: "sugar", 4: "hen", 5: "dog", 6: "bird", 7: "chai" };
+  const days = Object.entries(byDay).map(([n, k]) => ({ date: dayOf(Number(n)), entries: [{ type: "saw", what: D.places.farm.things[k] ? D.places.farm.things[k].word : D.places.kitchen.things[k].word }] }));
+  const words = {};
+  for (const [n, k] of Object.entries(byDay)) {
+    const t = D.places.farm.things[k] || D.places.kitchen.things[k];
+    words[t.word] = { last: Date.parse(`${dayOf(Number(n))}T12:00:00Z`), understand_stage: 1, seen: 1 };
+  }
+  const history = spacedFrom({ today, days, words });
+  const sayAll = (k) => !!(D.places.farm.things[k] || D.places.kitchen.things[k]);
+  const plan = planBook({ data: D, place: "farm", today: { entries: days[0].entries, words: [] }, history, say: sayAll, rng: rngOf(1) });
+  assert.deepEqual(plan.met, ["goat"]);
+  assert.deepEqual([...plan.back].sort(), ["chai", "maani", "sugar"].sort(), "1, 3 and 7 days ago come back");
+  for (const k of ["milk", "hen", "dog", "bird"]) assert.ok(!plan.back.includes(k), `${k} (2, 4, 5 or 6 days ago) is not due`);
+  assert.ok(plan.things.maani && plan.things.chai, "a spaced word from another place brings its picture");
+  // over many books the spaced words are asked in name it, and every name-it answer is today's or spaced
+  const asked = new Set();
+  for (let s = 1; s <= 200; s++) {
+    const p = planBook({ data: D, place: "farm", today: { entries: days[0].entries, words: [] }, history, say: sayAll, rng: rngOf(s) });
+    for (const pg of p.pages.filter((x) => x.game === "nameit")) {
+      assert.ok(["goat", "chai", "maani", "sugar"].includes(pg.answer), `name it asked ${pg.answer}`);
+      asked.add(pg.answer);
+    }
+    // find it's decoys are words already learned (or today's), before the place's own
+    for (const r of p.pages.find((x) => x.game === "find").rounds) for (const k of r.cards) if (k !== r.ask) assert.ok(p.learned.includes(k) || k === "goat", `${k} is not learned`);
+  }
+  for (const k of ["chai", "maani", "sugar"]) assert.ok(asked.has(k), `${k} was never asked`);
+  // the save alone (no day log) gives the same
+  const h2 = spacedFrom({ today, days: [], words });
+  assert.deepEqual(planBook({ data: D, place: "farm", today: { entries: days[0].entries }, history: h2, say: sayAll, rng: rngOf(2) }).back.sort(), ["chai", "maani", "sugar"].sort());
 });
 
 test("name it and stick in the photo: three choices with the answer, no earlier answer back", () => {

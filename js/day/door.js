@@ -79,7 +79,9 @@ export async function runDoor(host, api, day) {
   const scn = paintDoor(play, { look, wkey, weather: W, url, speed: () => api.speed });
 
   // ---- Nani: her pose cut-outs, feet at the foot of the steps (DOOR-05: standing on the ground, no pill under her) ----
-  const NP = look.nani;
+  // (DOOR-08: her come-here poses, the s12 art run's, ride with the door's own data: data/day.json door.comeHere)
+  const CH = (data.door && data.door.comeHere) || null;
+  const NP = Object.assign({}, look.nani, { poses: Object.assign({}, look.nani.poses, (CH && CH.poses) || {}) });
   const wrap = el("div", "day-nani-wrap", scn.figs);
   wrap.style.setProperty("--day-fade", `${NP.fadeMs || 260}ms`);
   let front = null;
@@ -96,7 +98,7 @@ export async function runDoor(host, api, day) {
     wrap.querySelectorAll("img.day-nani").forEach(placeImg);
   };
   // the poses this door can use, fetched now (decision 68: only this screen's pictures)
-  const used = new Set([look.poses.idle, look.poses.wait, ...(look.poses.day || []), ...Object.values(look.poses.weather[wkey] || {})].filter(Boolean));
+  const used = new Set([look.poses.idle, look.poses.wait, ...(look.poses.day || []), ...Object.values(look.poses.weather[wkey] || {}), ...((CH && CH.order) || [])].filter(Boolean));
   used.forEach((p) => NP.poses[p] && (new Image().src = url(NP.poses[p].art)));
   const setPose = async (name) => {
     if (!NP.poses[name] || name === pose) return;
@@ -243,14 +245,20 @@ export async function runDoor(host, api, day) {
     return c;
   };
   const SK = look.skies[wkey] || look.skies.sunny;
+  // ART-24, ART-25 (Zafar, 22 Oct D6, D7): the s12 card pictures where the art run made one (data/day.json door.cardPics): a big sun
+  // against the sky, the farm with its farmer and animals; else the day's own sky and the activity's picture
+  const CP = (data.door && data.door.cardPics) || {};
+  const wPic = (CP.weather || {})[wkey] || null;
+  const aPic = (CP.activity || {})[day.lines] || null;
   const stops = [];
   const weatherCard = card(
     "weather",
     (pic) => {
       const im = el("img", "day-wbg", pic);
       im.alt = "";
-      im.src = url(SK.art);
-      im.style.objectPosition = SK.card || "50% 30%";
+      im.src = url(wPic ? wPic.art : SK.art);
+      im.style.objectPosition = wPic ? wPic.pos || "50% 50%" : SK.card || "50% 30%";
+      if (wPic) pic.dataset.art = "s12";
       if (W.rain) stops.push(rain(pic, W.rain, 400, 300, () => api.speed));
     },
     // DOOR-07 (Zafar, 22 Oct: "they need to be singular words ... we're trying to build up vocabulary"): the card's word is the
@@ -261,7 +269,8 @@ export async function runDoor(host, api, day) {
   const activityCard = card(
     "activity",
     (pic) => {
-      const P = A.pic || {};
+      const P = aPic ? { bg: aPic.art, pos: aPic.pos } : A.pic || {};
+      if (aPic) pic.dataset.art = "s12";
       if (P.fill) pic.style.background = P.fill;
       if (P.bg) {
         const im = el("img", "day-wbg", pic);
@@ -421,11 +430,25 @@ export async function runDoor(host, api, day) {
   pills.classList.remove("in");
   pills.style.pointerEvents = "none";
   // DOOR-08 (Zafar, 22 Oct: "after you say yes, you should say come ... and have the face"): her answer, glad, in her
-  // come-here pose when the art has one (data/days.json door.poses.come: the first that exists), in the bubble like every line
+  // come-here pose when the art has one (data/days.json door.poses.come: the first that exists), in the bubble like every line.
+  // The s12 art run's come-here (data/day.json door.comeHere): the open palm, then the beckon, in turn as she says it, the
+  // beckon held at the end
   const come = data.door.come ? api.line(data.door.come) : null;
   if (come) {
-    const cp = [].concat(look.poses.come || []).find((p) => NP.poses[p]);
-    if (cp) setPose(cp);
+    let gesture = Promise.resolve();
+    if (CH && CH.order && CH.order.length === 2 && CH.order.every((p) => NP.poses[p])) {
+      gesture = (async () => {
+        const n = Math.max(1, CH.times || 2) * 2;
+        for (let i = 0; i < n; i++) {
+          setPose(CH.order[i % 2]);
+          window.Day.doorCome = (window.Day.doorCome || []).concat(CH.order[i % 2]);
+          await api.wait(CH.beatMs || 420);
+        }
+      })();
+    } else {
+      const cp = [].concat(look.poses.come || []).find((p) => NP.poses[p]);
+      if (cp) setPose(cp);
+    }
     wrap.classList.remove("day-glad");
     void wrap.offsetWidth;
     wrap.classList.add("day-glad");
@@ -441,6 +464,7 @@ export async function runDoor(host, api, day) {
     await api.say(come, { el: row, who: "nani" });
     if (typeof stopTalk === "function") stopTalk();
     bubble.classList.remove("speaking");
+    await gesture;
   }
   thought.classList.add("go");
   api.test.expect(() => ({ kind: "end" }));

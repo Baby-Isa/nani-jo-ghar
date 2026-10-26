@@ -21,8 +21,9 @@
  * window.Day.book = {plan, results: [{game, key, firstTry}], stage}: the tests' read-only view (build/sandbox/flows/day.mjs)
  */
 import { paintSky, shapes } from "./sky.js";
-import { planBook, linesFor, bookWords, sayQueue } from "./book-games.js";
+import { planBook, linesFor, bookWords, sayQueue, spacedFrom, allThings } from "./book-games.js";
 import { runGame } from "./book-play.js";
+import { testVoiced, unsaidPlan } from "./day.js";
 
 const todayDate = () => new Date().toISOString().slice(0, 10);
 
@@ -77,6 +78,7 @@ export async function runBook(host, api, day) {
   const only = api.q.get("game");
   let entries = [];
   let met = [];
+  let history = null;
   let activity = (day && (day.activity === "trip" ? day.trip || "farm" : day.activity)) || "kitchen";
   if (fixture) {
     entries = fixture.entries || [];
@@ -92,9 +94,12 @@ export async function runBook(host, api, day) {
     entries = core.log.days().filter((d) => d.date === today).flatMap((d) => d.entries || []);
     const words = core.save.get("words") || {};
     met = Object.keys(words).filter((id) => words[id] && words[id].last && new Date(words[id].last).toISOString().slice(0, 10) === today);
+    // the spaced words (S12 decision 9, Zafar 23 Oct): what the child met 1, 3 and 7 days ago comes back in today's book
+    history = spacedFrom({ today, days: core.log.days(), words });
   }
   const placeKey = D.activityPlace[activity] || "farm";
-  const place = D.places[placeKey];
+  // the place's things, and every other place's (a spaced word from another day's place brings its own picture)
+  const place = Object.assign({}, D.places[placeKey], { things: allThings(D, placeKey) });
   const lexOf = (id) => E.linearizer.lexOf(id);
   const wordOf = (k) => place.things[k].word;
   const sameWord = (a, b) => {
@@ -109,7 +114,7 @@ export async function runBook(host, api, day) {
       return false;
     }
   };
-  const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
+  const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, history, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
   const results = [];
   // this book's pictures, fetched now (decision 68: only the chosen book's own art, prefetched while she greets)
   // each picture once, decoded: a page shows only when all of its pictures are ready (never a late pop-in)
@@ -133,8 +138,8 @@ export async function runBook(host, api, day) {
     const list = keys.map((k) => place.things[k] && place.things[k].art).concat(bd && bd.art ? [bd.art] : []);
     return Promise.race([Promise.all(list.map(pic)), new Promise((r) => setTimeout(r, 4000))]);
   };
-  for (const k of Object.keys(place.things)) pic(place.things[k].art);
-  [A.room, A.pages, A.faceShot && A.faceShot.art].forEach(pic);
+  for (const k of plan.pages.flatMap((p) => [].concat(p.things || [], p.choices || [], p.answer || []))) if (place.things[k]) pic(place.things[k].art);
+  [A.room, A.pages, A.faceShot && A.faceShot.art, ...((A.turn && A.turn.frames) || [])].forEach(pic);
   window.Day.book = { plan, results, stage: "room", place: placeKey };
 
   // ---- lines: the first candidate the engine can say, else the first one's grey placeholder (decision 84) ----
@@ -173,6 +178,8 @@ export async function runBook(host, api, day) {
   const room = el("img", "day-room", cam);
   room.alt = "";
   room.src = url(A.room);
+  // BOOK-10: the evening opens on the book: the room is only the way out (shown as the pages go back down)
+  room.style.visibility = "hidden";
   const shelf = el("div", "day-shelf", cam);
   const books = Math.max(0, Number((core.save.get("story") || {}).dayBooks) || 0);
   const S = A.shelf;
@@ -337,6 +344,7 @@ export async function runBook(host, api, day) {
   const [BW, BH] = A.pagesSize;
   const pg = { l: el("div", "day-pg-box l", book), r: el("div", "day-pg-box r", book) };
   const headRow = el("div", "day-head", book);
+  headRow.style.visibility = "hidden"; // (her face shows only with a line: never the circle alone)
   const face = el("button", "day-face", headRow);
   face.type = "button";
   face.setAttribute("aria-label", "");
@@ -495,6 +503,36 @@ export async function runBook(host, api, day) {
     // (a page built before it shows speaks only once it shows: g.go)
     go: Promise.resolve(),
     say: (ln, node, o = {}) => g.go.then(() => bookSay(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o))),
+    // a speaker the child taps (BOOK-13, F8: "when I click the sound icon, nothing plays"): said at once, cutting her line short
+    // (never queued behind it), and again on every tap (never dropped as a repeat)
+    // (js/core/voice.js's interjection, over: true: the line playing pauses, the word plays, the line carries on; never a stop,
+    // which would leave a paused line's promise waiting for ever and the book's one queue with it)
+    sayNow: (ln, node) => {
+      if (!ln) return Promise.resolve();
+      const vpath = core.voice.path ? core.voice.path() : "test";
+      const res = ln.ok ? testVoiced(ln.result, vpath) : ln.en ? unsaidPlan(ln.en, vpath) : null;
+      if (!res) return Promise.resolve();
+      const B = window.Day.book;
+      if (B) (B.now = B.now || []).push({ text: String(ln.text || ln.en || ""), a: performance.now() });
+      if (node) node.classList.add("on");
+      return Promise.resolve(core.voice.say(res, { over: true }))
+        .catch(() => {})
+        .finally(() => node && node.classList.remove("on"));
+    },
+    wordLn: (k) => api.word(wordOf(k), enOf(place.things[k])),
+    /** the word's progress stage (1-5; data/progress.json support): its card's slots fade by it */
+    stageOf: (k) => {
+      try {
+        return Math.max(1, Math.min(5, Number(core.progress && core.progress.stage ? core.progress.stage(wordOf(k)) : 1) || 1));
+      } catch (e) {
+        return 1;
+      }
+    },
+    progress: core.progress,
+    url,
+    kit: () => api.kit(),
+    helpDue: (id) => api.helpDue(id),
+    helped: (id) => api.helped(id),
     // (the tests act only once the page shows: a hidden page takes no touch)
     expect: (fn) => api.test.expect(() => (g.hidden ? { kind: "wait" } : fn())),
     state: (s) => {
@@ -543,17 +581,63 @@ export async function runBook(host, api, day) {
       };
       turnBtn.addEventListener("click", go);
     });
-  // the turn itself: the right page lifts from its bottom corner and swings over the fold onto the left (its real time)
+  // the turn itself (its real time). ART-27 (Zafar, 22 Oct F7: "maybe we can get ChatGPT to show the page in various stages of
+  // turning"): the art run's four pictures of the book, pg1-pg4 (the right page lifting at 25 degrees, standing at 70, over the
+  // fold at 120, landing at 160), each registered on the pages picture and laid over it at A.turn.box, shown in that order with
+  // a short cross-fade; the old page's game lifts away with the first, the new one shows as the last settles. Without them, the
+  // coded curl (the right page lifts from its bottom corner and swings over the fold)
+  const T = A.turn && A.turn.frames && A.turn.frames.length ? A.turn : null;
   const curl = async () => {
     window.Day.book.turning = (window.Day.book.turning || 0) + 1;
     book.classList.add("day-turning");
-    const c = el("div", "day-curl", book);
-    c.style.cssText = pg.r.style.cssText;
-    c.style.animationDuration = `${C.turnMs}ms`;
-    await realWait(C.turnMs * 0.5);
-    if (g.wrap) g.wrap.remove();
-    await realWait(C.turnMs * 0.5);
-    c.remove();
+    if (T) {
+      const [bx, by, bw, bh] = T.box;
+      const s = bookAt.s;
+      const layer = el("div", "day-turnart", book);
+      Object.assign(layer.style, { left: `${bx * s}px`, top: `${by * s}px`, width: `${bw * s}px`, height: `${bh * s}px` });
+      // soft at its sides and foot (the pictures' box edges never show as a seam): two crossed fades, the mask's alpha only
+      const across = "linear-gradient(to right, transparent 0, black 2.5%, black 97.5%, transparent 100%)";
+      const down = "linear-gradient(to bottom, black 0, black 95%, transparent 100%)";
+      layer.style.webkitMaskImage = `${across}, ${down}`;
+      layer.style.webkitMaskComposite = "source-in";
+      layer.style.maskImage = `${across}, ${down}`;
+      layer.style.maskComposite = "intersect";
+      const ims = T.frames.map((f) => {
+        const im = el("img", "", layer);
+        im.alt = "";
+        im.draggable = false;
+        im.src = url(f);
+        return im;
+      });
+      await Promise.race([Promise.all(ims.map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(800)]);
+      const step = (T.ms || C.turnMs) / (ims.length + 1);
+      const fade = Math.round(step * 0.45);
+      layer.style.setProperty("--fade", `${fade}ms`);
+      // the old page's game goes with the lifting page
+      if (g.wrap) {
+        g.wrap.style.transition = `opacity ${fade}ms ease-in`;
+        g.wrap.style.opacity = "0";
+      }
+      for (let i = 0; i < ims.length; i++) {
+        ims[i].classList.add("on");
+        window.Day.book.turnFrame = i + 1;
+        await realWait(step);
+        if (i > 0) ims[i - 1].classList.remove("on");
+      }
+      if (g.wrap) g.wrap.remove();
+      ims[ims.length - 1].classList.remove("on");
+      window.Day.book.turnFrame = 0;
+      await realWait(fade);
+      layer.remove();
+    } else {
+      const c = el("div", "day-curl", book);
+      c.style.cssText = pg.r.style.cssText;
+      c.style.animationDuration = `${C.turnMs}ms`;
+      await realWait(C.turnMs * 0.5);
+      if (g.wrap) g.wrap.remove();
+      await realWait(C.turnMs * 0.5);
+      c.remove();
+    }
     book.classList.remove("day-turning");
   };
 
@@ -596,61 +680,29 @@ export async function runBook(host, api, day) {
   api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
+  // BOOK-10 (Zafar, 22 Oct F1: "Zooming into her face, and then it scrolls down to the book. Why would we do that? Why didn't you
+  // zoom into the book to start with?"): the evening opens on the book: the pages (the book she holds out to the child) come up
+  // as soon as they are drawn, and she greets from her face on the page; the room, her fire and the shelf are the way out
+  await ready;
+  room.style.visibility = "hidden";
+  place3(C.wide);
+  shot = "pages";
+  layout();
+  book.style.transition = `opacity ${direct ? 0 : 450}ms ease-in-out`;
+  book.classList.add("open");
+  book.style.opacity = "1";
+  window.Day.book.stage = "open";
+  api.test.state("day/book/open");
   if (!direct) {
-    // she greets by the fire (while she does, the first page is built on the hidden pages and its pictures drawn), the camera
-    // comes to her face, turns down to the book on her lap ...
-    const firstP = plan.pages[0] ? ready.then(() => prep(plan.pages[0])) : null;
-    await sayRoom(line("greet"), "left");
-    await ready;
-    first = firstP ? await firstP : null;
-    // the push-in to her face: the room grows, her close-up (lined up on her eyes) fades in over it as it comes, sharp
-    window.Day.book.stage = "face";
-    zooming(true);
-    bubble.classList.remove("in");
-    setTimeout(() => (bubble.style.visibility = "hidden"), 250);
-    shot = "face";
-    close.style.transition = `opacity ${C.toFaceMs * 0.42}ms ease-in-out ${C.toFaceMs * 0.55}ms`;
-    close.style.opacity = "1";
-    setCam(faceCam(), C.toFaceMs);
-    await realWait(C.toFaceMs + 60);
-    // her face, still: only the close-up is on screen (the room under it is hidden, never judged past its resolution)
-    room.style.visibility = "hidden";
-    zooming(false);
-    await realWait(C.holdMs || 500);
-    // ... and the turn down to the book: the pages picture laid under the close-up's bottom edge comes up into the screen as the
-    // close-up slides up out of it, one move, landing on the pages at rest (the games' own place)
-    window.Day.book.stage = "tilt";
-    zooming(true);
-    layout();
-    // the first page comes up with the pages, drawn (her face, card and voice wait for the landing)
-    if (first) first.wrap.style.visibility = "";
-    book.style.transition = "none";
-    book.style.transform = bookTo(camAt);
-    book.style.opacity = "0";
-    softTop(true);
-    void book.offsetWidth;
-    shot = "pages";
-    book.style.transition = `transform ${C.tiltMs}ms ${EASE}, opacity ${C.tiltMs * 0.45}ms ease-in-out ${C.tiltMs * 0.15}ms`;
-    book.style.transform = "none";
-    book.style.opacity = "1";
-    room.style.visibility = "";
-    setCam(pagesCam(), C.tiltMs);
-    await realWait(C.tiltMs + 40);
-    book.classList.add("open");
-    book.style.transition = "none";
-    softTop(false);
-    // the room behind the pages goes back to the whole room (hidden behind the pages, ready for the way out)
-    close.style.transition = "none";
-    close.style.opacity = "0";
-    place3(C.wide);
-    zooming(false);
-  } else {
-    place3(C.wide);
-    book.classList.add("open");
-    book.style.opacity = "1";
-    await ready;
-    await api.wait(300);
-  }
+    await realWait(480);
+    // her greeting on the page, beside her face (the same card her games' lines use; her face replays it)
+    const greet = line("greet");
+    headHeld = false;
+    head(greet);
+    await bookSay(greet, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani" });
+    await api.wait(250);
+  } else await api.wait(300);
+  book.style.transition = "none";
   window.Day.book.stage = "pages";
   layout();
 
@@ -704,6 +756,7 @@ export async function runBook(host, api, day) {
     close.style.transition = `opacity ${C.outMs * 0.5}ms ease-in-out ${C.outMs * 0.05}ms`;
     close.style.opacity = "0";
   } else {
+    room.style.visibility = "";
     book.style.opacity = "0";
     book.classList.remove("open");
   }
