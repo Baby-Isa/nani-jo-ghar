@@ -401,7 +401,13 @@ async function nameit(g, page) {
     await realWait(500);
     showPicks();
   };
-  mic.addEventListener("click", () => listen());
+  // a new player's first name it: the kit's box and finger on the mic (SH-19)
+  const help = firstHelp(g, "day/book/nameit", mic, { delay: 600, spot: { live: [mic] } });
+  g.cleanup(() => help(false));
+  mic.addEventListener("click", () => {
+    help(true);
+    listen();
+  });
   g.say(ask).then(() => {
     // the mic listens quietly first where it already may (no permission asked unbidden)
     if (micOk() && SP.status && SP.status() === "ok") listen();
