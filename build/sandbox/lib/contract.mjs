@@ -7,7 +7,9 @@
 //   contract-2 moves-on  where the outcome is obvious the game moves on by itself: no ✓, Next or stage button once the
 //                        step's result is decided
 //   contract-3 voice     every stage and game end stops all voice: no line starts or keeps playing after its stage ended
-//   contract-4 bubble    every speech bubble sits above (or, without room, below) its speaker's head, never in a corner
+//   contract-4 bubble    every speech bubble sits above (or, without room, below) its speaker's head, never in a corner; S13-B2:
+//                        every one is the kit's .cv-bubble (Conversations.bubble), never a game's own (#bubble, .cl-bubble)
+//   contract-41b one-end  nothing inside the end screen (.njg-results) carries a game's own class (S13-B2: the receipt slot)
 //   contract-5 badges    end-screen badges appear one, two, three in order
 //   contract-6 old-art   no retired art drawn where a replacement exists (build/sandbox/data/retired-art.json)
 //
@@ -95,7 +97,7 @@ export const CHECKS = {
   "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded). Nani's how-to step line and her 'pass me' (the game tags them howto / passme) are not orders (decision 80), nor is a card the game tags data-howto (the clinic send-off's goal-only card: the doctor asks on screen, in his bubble; CLN-140)." },
   "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79). A button that starts the next part of the order (samosa's 'next kind', expectation choice) is the child's own move (decision 80)." },
   "contract-3": { item: "voice", title: "voice stops at every stage end", how: "Every clip's real start, length (the decoded buffer or the file's own length) and stop (ended, stop, pause, cancel) from the sound log; each belongs to the line (and so the stage) it was said for. A stage ends when the shared lifecycle logged its stage-end (Lifecycle.log, at its own millisecond; else the sampled stage change), so a line queued after the stop belongs to the next stage. A clip still sounding 250 ms after its stage ended, or started after it, is a break." },
-  "contract-4": { item: "bubble", title: "bubble at the speaker's head", how: "Every speech bubble's box and tail (its ::after / ::before) against its speaker's head on screen: a Cook character's sprite (the top quarter of the figure), the clinic figure's head (its measured head anchor on the art, data/clinic/heal-art.json, else the art's top fifth), the doctor's figure. The tail (or the bubble) must be in the head's column and the bubble above it (or below it); a bubble beside the head, away from it or in a corner of the screen is a break." },
+  "contract-4": { item: "bubble", title: "bubble at the speaker's head", how: "Every speech bubble's box and tail (its ::after / ::before) against its speaker's head on screen: a Cook character's sprite (the top quarter of the figure), the clinic figure's head (its measured head anchor on the art, data/clinic/heal-art.json, else the art's top fifth), the doctor's figure. The tail (or the bubble) must be in the head's column and the bubble above it (or below it); a bubble beside the head, away from it or in a corner of the screen is a break. S13-B2 (the kit review, decision 6): every bubble on screen is the kit's .cv-bubble (js/shared/conversations.js Conversations.bubble); a game's own (Cook's #bubble, the clinic's .cl-bubble) is a break, once per page." },
   "contract-5": { item: "badges", title: "badges in order", how: "While the end screen is up, every 40 ms: does anything of each badge show (its parts' opacity, or a picture on its spot from outside it). Each must first show after the one before it." },
   "contract-6": { item: "old-art", title: "no retired art", how: "Every image drawn (canvas drawImage, offscreen canvases a rig draws from, <img>, CSS backgrounds, Phaser WebGL textures) by file; a file on the retired list with the same content (sha256), in its scope, is a break." },
   "contract-7": { item: "one-voice", title: "one voice at a time", how: "Every clip said for a line (the sound log, its real start and stop as contract-3 reads them); two clips of different lines sounding together for more than 150 ms is a break (PAN-04: the count words, the next-thing line and the order never overlap). Clips whose length is only estimated are not judged." },
@@ -433,6 +435,12 @@ function check4(tl, segs, add) {
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "bubble") continue;
     for (const b of e.list) {
+      // S13-B2: the kit's bubble only (the hook's kit flag: .cv-bubble; an older timeline has none and is judged by its place)
+      if (b.kit === false && !seen.has(`kit|${b.sel || b.who}`)) {
+        seen.add(`kit|${b.sel || b.who}`);
+        const s = segAt(segs, e.t);
+        add("contract-4", e.t, `${s ? s.key : "?"}: ${b.who}'s bubble "${b.text}" (${b.sel || "?"}) is not the kit's bubble (.cv-bubble, Conversations.bubble)`);
+      }
       const hs = headsFor(b, e.heads || []);
       const area = e.play || { l: 0, t: 0, r: e.vw, b: e.vh };
       const corner = inCorner(b, { l: 0, t: 0, r: e.vw, b: e.vh }) || inCorner(b, area);
@@ -1544,7 +1552,26 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check66(r, tl, v, add);
   check70(r, tl, add);
   check71(r, tl, add);
+  check41b(tl, add);
   return out;
+}
+
+// ---- S13-B2 (one shared kit, pair 3): the end screen is the kit's alone ----
+// 41b: nothing inside .njg-results carries a game's own class (the hook's kitend sample: every class in it that is not the kit's);
+// the clinic's receipt is the kit's receipt slot (js/shared/results.js Results.show({receipt})). Each class once per page
+Object.assign(CHECKS, {
+  "contract-41b": { item: "one-end", title: "one end screen", how: "Every kitend sample (lib/contract-hook.mjs: each class on the end screen, .njg-results, and everything inside it that is not the kit's: rs-, njg-, the kit's face, word and button classes and their bare state words): a game's own class there (the clinic's cl-receipt, cl-face, Cook's own) is a break, each once per page (S13-B2: the receipt is a data slot of the shared end screen, Results.show({receipt}), drawn by results.js only)." },
+});
+export function check41b(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "kitend") continue;
+    for (const c of e.bad || []) {
+      if (seen.has(c)) continue;
+      seen.add(c);
+      add("contract-41b", e.t, `the end screen holds a game's own class: ${c} (one end screen everywhere: only the kit's classes)`);
+    }
+  }
 }
 
 // the voice log a reviewer reads: every line with its stage, its clips and their real start and end (seconds from the flow's start)
