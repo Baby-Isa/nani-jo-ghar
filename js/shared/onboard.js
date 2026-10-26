@@ -649,11 +649,14 @@
     };
     // a game's preferred side when the hand fits there (S12 W2-A, the judge: the pantry's finger from above went off the top of a
     // phone), else the first side that fits
-    if (prefer && prefer !== "auto") {
-      const a = footOf(prefer, tipOf(r, prefer));
-      if (a && a.x >= 0 && a.y >= 0 && a.x + a.w <= W && a.y + a.h <= H) return prefer;
-    }
-    return order.find(fits) || prefer || "above";
+    const onScreen = (f) => {
+      const a = footOf(f, tipOf(r, f));
+      return a.x >= 0 && a.y >= 0 && a.x + a.w <= W && a.y + a.h <= H;
+    };
+    if (prefer && prefer !== "auto" && onScreen(prefer)) return prefer;
+    // SH-130 (S13-A2): first-time help always has its finger. When no side is clear of every other control, the hand lies on the
+    // first side where it is at least wholly on the screen (was: "auto", read as below, off the bottom of a laptop's eye test)
+    return order.find(fits) || (prefer && prefer !== "auto" ? prefer : null) || order.find(onScreen) || "above";
   };
   const bouncer = (move, height) => {
     if (typeof move !== "function" || reduced()) return { tick() {}, stop() {} };
@@ -1163,7 +1166,7 @@
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
     // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
-    const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerDown ? "above" : "auto");
+    const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerFrom || (o.fingerDown ? "above" : "auto"));
     const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
@@ -1275,7 +1278,7 @@
     };
     const openSpot = () => {
       glow(false);
-      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? false : undefined, fingerDown: o.fingerDown, step: name });
+      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? false : undefined, fingerDown: o.fingerDown, fingerFrom: o.fingerFrom, step: name });
     };
     const closeSpot = () => {
       if (spot) spot.close();

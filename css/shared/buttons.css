@@ -104,7 +104,7 @@
 .njg-gu-btn.fresh { animation: var(--njg-glow-anim); } /* it glows the first time a station is met (the kit's glow) */
 .njg-gu-btn:active { transform: scale(0.95); }
 .njg-gu-pop {
-  --njg-gu-tail: 20px;
+  --njg-gu-tail: var(--njg-s4);
   position: fixed; z-index: 960; box-sizing: border-box; width: min(calc(var(--njg-tap) * 7), calc(100vw - 2 * var(--njg-s3)));
   padding: var(--njg-s3) var(--njg-s4); border-radius: var(--njg-radius); background: var(--njg-ink); color: var(--njg-bubble);
   box-shadow: var(--njg-shadow); font: 700 var(--njg-t3) / 1.35 var(--njg-font); text-align: left;
