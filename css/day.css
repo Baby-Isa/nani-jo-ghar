@@ -203,6 +203,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-pick.day-wobble { animation: day-wobble .5s ease-in-out 1; }
 .day-pick.day-right .day-pick-word { box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), var(--njg-lip); }
 .day-picks.done .day-pick { pointer-events: none; }
+.day-picks.done .day-pick:not(.day-right) { opacity: 0; transition: opacity .3s; }
 @keyframes day-wobble { 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 
 /* stick in the photo: the dashed frame with her sentence under it; the loose photos on the right page */
@@ -225,10 +226,12 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-photo-loose.day-in .wc-strip { display: none; }
 .day-photo-loose.day-in .wc-pic { width: 100%; height: 100%; }
 .day-photo-loose .wc-pic > img, .day-photo-loose .wc-pic > svg { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; }
+.day-photo-loose.day-demo-home { opacity: .45; }
+.day-demo-double { transform: none !important; box-shadow: var(--njg-shadow-lift); }
 .day-sentline { display: flex; align-items: center; justify-content: center; gap: var(--njg-s2); }
 .day-sentline .day-line { min-width: 0; }
 .day-gapword { display: inline-block; min-width: 2.2em; color: transparent !important; border-bottom: 3px dashed var(--njg-flag); line-height: 1.1; }
-.day-gapword.day-gapword-in { color: inherit !important; border-bottom-color: transparent; }
+.day-gapword.day-gapword-in { min-width: 0; color: inherit !important; border-bottom-color: transparent; }
 .day-sent-en { margin: var(--njg-s1) 0 0; font-size: var(--njg-t4); color: var(--njg-ink-soft); text-align: center; }
 .day-print { width: 100%; height: 100%; box-sizing: border-box; padding: 6% 6% 6%; background: var(--njg-card); box-shadow: var(--njg-shadow); display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .day-print > img, .day-print > svg { width: 100%; height: 100%; object-fit: contain; background: var(--njg-page); display: block; }

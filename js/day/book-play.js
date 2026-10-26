@@ -75,18 +75,30 @@ function idler(g, fn, ms = 4500) {
 function firstHelp(g, id, target, o = {}) {
   let spot = null;
   let stopped = false;
+  let ghost = null;
   (async () => {
     const O = await g.kit().catch(() => null);
     if (!O || stopped || !g.helpDue(id)) return;
     await g.api.wait(o.delay || 300);
     if (stopped) return;
-    spot = O.spot(target, Object.assign({ step: id }, o.spot || {}));
+    spot = O.spot(o.target || target, Object.assign({ step: id }, o.spot || {}));
     if (spot && spot.layer) spot.layer.dataset.help = id;
     if (o.drag && O.demo) {
-      // a drag's first time: the real card shows the move to the frame and comes home, again until the child takes it
+      // a drag's first time: the card shows the move to the frame and comes home, again until the child takes it. The one
+      // that travels is the card's double laid on it (the kit's demo can't be stopped part way, and the child may take the
+      // real card at any moment); the card itself fades back a little while its double travels
       const loop = async () => {
         while (!stopped) {
-          await O.demo(target, o.drag, { drag: true, hand: true, ms: 1700, step: id }).catch(() => {});
+          const r = target.getBoundingClientRect();
+          ghost = target.cloneNode(true);
+          ghost.classList.add("day-demo-double");
+          Object.assign(ghost.style, { position: "fixed", left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, margin: "0", zIndex: "955", pointerEvents: "none" });
+          document.body.appendChild(ghost);
+          target.classList.add("day-demo-home");
+          await O.demo(ghost, o.drag, { drag: true, hand: true, ms: 1700, step: id }).catch(() => {});
+          if (ghost) ghost.remove();
+          ghost = null;
+          target.classList.remove("day-demo-home");
           await realWait(900);
         }
       };
@@ -97,6 +109,12 @@ function firstHelp(g, id, target, o = {}) {
   return (done = true) => {
     if (stopped) return;
     stopped = true;
+    if (ghost) {
+      ghost.remove();
+      ghost = null;
+      document.querySelectorAll(".ob-demo-hand").forEach((h) => h.remove());
+    }
+    target.classList.remove("day-demo-home");
     if (spot) {
       spot.close();
       if (done) g.helped(id);
@@ -531,7 +549,21 @@ async function photo(g, page) {
   // a new player's first drag: the kit's box round the card and the frame, the card showing the move (F9, F10)
   let help = () => {};
   g.go.then(() => {
-    help = firstHelp(g, "day/book/photo", photos[ai], { delay: 900, drag: frame, spot: { live: [photos[ai]], finger: false } });
+    // (the box round the card and the frame together, given as boxes: the kit's own bounce, on an HTML control, would hold
+    // the card in place and the demo could not move it)
+    const box = (e) => {
+      const q = e.getBoundingClientRect();
+      return [q.left, q.top, q.width, q.height];
+    };
+    let rest = null; // the card's box at rest (not while the demo carries it)
+    const target = [
+      () => {
+        if (!rest || !photos[ai].classList.contains("ob-demo")) rest = box(photos[ai]);
+        return rest;
+      },
+      () => box(frame),
+    ];
+    help = firstHelp(g, "day/book/photo", photos[ai], { delay: 900, drag: frame, target, spot: { live: [photos[ai]], finger: false, light: false } });
     g.cleanup(() => help(false));
   });
   let helped = false;
