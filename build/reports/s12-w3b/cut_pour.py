@@ -112,7 +112,7 @@ def cut_pans(sheet, suffix):
 
 def cut_glasses():
     a = np.asarray(Image.open(os.path.join(SRC, "gl-chai-glasses-top-v1.png")).convert("RGB")).astype(int)
-    al, ground = alpha_of(a, tol=5, soft=14, bg=np.array([126, 126, 126]))
+    al, ground = alpha_of(a, tol=5, soft=5, bg=np.array([126, 126, 126]))
     lab, n = ndi.label(~ground)
     sizes = ndi.sum(np.ones_like(lab), lab, range(1, n + 1))
     blobs = sorted((int(np.where(lab == i + 1)[1].min()), i + 1) for i, s in enumerate(sizes) if s > 20000)
@@ -134,7 +134,7 @@ def cut_glasses():
         rgba[..., 3] = ((al * (ndi.binary_dilation(lab == i, iterations=2)))[y0 : y0 + 2 * half, x0 : x0 + 2 * half] * 255).astype(np.uint8)
         im = Image.fromarray(rgba, "RGBA")
         s1 = 240
-        im.resize((2 * s1, 2 * s1), Image.LANCZOS).save(os.path.join(OUT, "glass", f"glass-{name}-top-s12@2x.webp"), quality=90, method=6)
+
         im.resize((s1, s1), Image.LANCZOS).save(os.path.join(OUT, "glass", f"glass-{name}-top-s12.webp"), quality=90, method=6)
         meta[f"glass-{name}"] = {"file": f"glass/glass-{name}-top-s12.webp", "w": s1, "h": s1, "r": round(r / (2 * half), 4), "fit": [round(cx, 1), round(cy, 1), round(r, 1)]}
     return meta

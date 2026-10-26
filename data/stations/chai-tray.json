@@ -45,9 +45,10 @@
     "speakGapMs": 300,
     "tallyMax": 6,
     "pour": {
-     "liftMs": 420,
-     "stepMs": 150,
+     "liftMs": 520,
+     "tipMs": 480,
      "pourMs": 700,
+     "untipMs": 320,
      "backMs": 420
     }
    },
@@ -64,5 +65,5 @@
    }
   ]
  },
- "_pour": "CHAI-26 (Zafar 17 Oct, P59: 'four or five orientations of ... 20 degrees each time towards the player, and the chai level following'; the s08c redo, CP3 v2 cells 1-4, s08 w7A): the hob's pan lifts over its glass and tips towards the player in CP3's four pictures (0, 20, 40, 60 degrees: js/cook/stations/chai-tray.js TIP), a thin translucent stream (js/shared/pour.js) from its near rim; the times in ms: liftMs, stepMs each picture, pourMs each half glass, backMs"
+ "_pour": "CHAI-26 (Zafar 23 Oct; s12-w3b): the s12 pour frames (PT1 milky, PT2 black, cut MIRRORED: spout right, handle left; assets/cook/items-s12/): the hob pan lifts and is carried spout-first to just up-left of its glass, the six frames play (tip 0, 20, 40, 60, pour, pour end) and the thin stream (js/shared/pour.js) runs from where the chai leaves the rim; for a right-hand glass the pan hangs over the left column, never past the tray. The times in ms: liftMs the carry, tipMs the four tip frames, pourMs each half glass, untipMs, backMs"
 }

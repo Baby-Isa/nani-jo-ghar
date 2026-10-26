@@ -11,6 +11,7 @@ const out = process.argv[2] || "build/reports/s12-w3b";
 const size = process.argv[3] || "1366x768";
 const level = +(process.argv[4] || 2);
 const station = process.argv[5] || "chai-tray";
+const tag = station.replace(":", "-");
 mkdirSync(out, { recursive: true });
 const srv = await startServer();
 const browser = await launch();
@@ -52,8 +53,10 @@ try {
   });
   const rec = new Recorder({ flow: "pour-frames", size, dir: out, page });
   const P = new CookPlayer(page, rec, { mode: "fair", speed: 3 });
-  await page.evaluate(([st, lv]) => { __cook.lab(st, true, { level: lv }); }, [station, level]);
-  await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
+  // "order:<dish>": a customer's order (the served moment); else the station's lab
+  if (station.startsWith("order:")) await page.evaluate(([d, lv]) => { window.__orderDone = false; __cook.order({ dish: d, level: lv }).then(() => (window.__orderDone = true)); }, [station.slice(6), level]);
+  else await page.evaluate(([st, lv]) => { __cook.lab(st, true, { level: lv }); }, [station, level]);
+  await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 }).catch(() => {});
   await sleep(500);
   let done = false;
   let servedShots = 0;
@@ -63,13 +66,16 @@ try {
         const fz = await page.evaluate(() => window.__frozen || null);
         if (fz) {
           await sleep(80);
-          await page.screenshot({ path: join(out, `${station}-${fz}-${size}.png`) });
+          await page.screenshot({ path: join(out, `${tag}-${fz}-${size}.png`) });
           await page.evaluate(() => { window.Cook.scene.tweens.timeScale = 1; window.__frozen = null; });
         }
         // the served moment (SH-121): from its start, a frame every 300 ms
         const sv = await page.evaluate(() => !!(window.Cook && Cook.servedMoment));
-        if (sv && servedShots < 16) {
-          await page.screenshot({ path: join(out, `${station}-served-${String(servedShots).padStart(2, "0")}-${size}.png`) });
+        // (from the serve on, real time: the served moment as a child sees it)
+        await page.evaluate(() => { if (window.Cook && Cook.servedN && !window.__slowed) { window.__slowed = true; Cook.speed = 1; } });
+        if (sv) await page.evaluate(() => (window.__sawServed = true));
+        if (sv && servedShots < 24) {
+          await page.screenshot({ path: join(out, `${tag}-served-${String(servedShots).padStart(2, "0")}-${size}.png`) });
           servedShots++;
           await sleep(240);
           continue;
@@ -79,7 +85,7 @@ try {
     }
   })();
   try {
-    await P.play(() => page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), { timeout: 240000 });
+    await P.play(() => page.evaluate("(() => { if (window.__orderDone) return true; const b = document.querySelector('.njg-results #lab-list, .njg-results'); return !!b && b.offsetParent !== null && (!!document.querySelector('.njg-results #lab-list') || !window.Cook.servedMoment && document.querySelectorAll('.njg-served-card').length === 0 && window.__sawServed); })()"), { timeout: 240000 });
   } finally {
     done = true;
     await watcher;
