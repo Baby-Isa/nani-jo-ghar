@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 // The evidence loop (decision 82, docs/architecture/evidence-loop.md): every regressions.md row proven by the game and judged in small
 // cropped sheets, verdicts cached so only changed evidence is judged again. Specs: build/sandbox/data/evidence.json.
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, appendFileSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, appendFileSync, copyFileSync, rmSync } from "node:fs";
+import { join, dirname, resolve, extname } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
 import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds, changedRows } from "./lib/evidence.mjs";
+import { briefRows, briefSizes, briefSlug, briefProbes, panelKey, pairPanels, beforeNote } from "./lib/brief.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
@@ -41,10 +42,47 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              a PASS that names no panel); EVIDENCE lines go to the tool owner's list in the index.
   --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the run (the line stays in data/verdicts.json;
              a "waiting on ..." note is kept); PASS -> built with the line (keep and retired rows untouched). --dry prints what it would change.
-  Port: COOK_TEST_PORT (default 8843). The builder's session: NJG_BUILDER or --builder (recorded; never accepted as judge).`;
+  Port: COOK_TEST_PORT (default 8843). The builder's session: NJG_BUILDER or --builder (recorded; never accepted as judge).
+  Lock: NJG_LOCK (default /tmp/njg-browser.lock; a builder's own is /tmp/njg-browser-<port>.lock).
+
+The one loop (S13; docs/architecture/evidence-loop.md "The one loop (S13)"): a brief's rows, before and after the build
+node build/tools/review/evidence.mjs --before --brief <spec.json> [--check] [--reuse]
+node build/tools/review/evidence.mjs --after  --brief <spec.json>
+node build/tools/review/evidence.mjs --judge  --brief <spec.json>
+  --before   plays only the rows the brief names (spec.rows and every row id in its tasks' words; a row with no probe refuses the
+             brief), each row's probes on the brief's flows (all of them when none plays one), at the brief's sizes (spec.sizes,
+             default 1366x768 and 915x412), a moving thing also filmed at 250 and 500 ms (strip:<sel>:4x<ms>; spec.strips changes
+             it); the run is an ordinary --run, and each row's panels are copied to build/screenshots/brief/<brief>/<ROW>/before/.
+             spec.newRows: rows that describe something not built yet (their before is "not there yet", never a probe fault).
+             --check: then the judge's BEFORE CHECK batch (judge/check-NN.md in the before run): FAIL = the before shows the problem
+             (the red, logged for redGreen), EVIDENCE = it does not (a probe fault: fix the probe before the builder starts).
+             --reuse: the check batch for the last before run, without playing again.
+  --after    the same rows, probes and sizes after the build, to .../<ROW>/after/ (the builder runs this; it never shoots frames).
+  --judge    with --brief: one sheet per row, BEFORE beside AFTER (same moment, size and crop; panels lettered A, B ...; the row's
+             words on top) at .../<ROW>/<ROW>-before-after.png, and judge/brief-NN.md batches in the after run. --collect and
+             --apply on the after run as usual (a PASS or FAIL there also logs the before's red).`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";
-const LOCK = "/tmp/njg-browser.lock";
+const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser.lock";
+// ---------- a brief (the one loop): its rows, sizes, folder ----------
+const BRIEF_DIR = join(ROOT, "build", "screenshots", "brief");
+function loadBrief() {
+  const f = a.val("brief");
+  if (!f) return null;
+  const file = existsSync(f) ? resolve(f) : resolve(ROOT, f);
+  if (!existsSync(file)) die(`--brief ${f}: no such spec file.`);
+  let spec; try { spec = JSON.parse(readFileSync(file, "utf8")); } catch (e) { die(`--brief ${f}: not JSON (${e.message}).`); }
+  const known = parseRegressions(readAllRegressions()).map((r) => r.id);
+  const B = briefRows(spec, known);
+  if (B.unknown.length) die(`--brief ${rel(file)}: rows not on the fix list or its archive: ${B.unknown.join(", ")}`);
+  if (!B.rows.length) die(`--brief ${rel(file)}: names no fix-list row (spec.rows, or a row id in its tasks' words).`);
+  const slug = briefSlug(spec, file), dir = join(BRIEF_DIR, slug);
+  const phase = a.has("before") ? "before" : a.has("after") ? "after" : null;
+  return { file, spec, slug, dir, rows: B.rows, newRows: B.newRows, sizes: briefSizes(spec), phase };
+}
+const BRIEF = loadBrief();
+const briefState = () => { try { return JSON.parse(readFileSync(join(BRIEF.dir, "brief.json"), "utf8")); } catch (e) { return {}; } };
+const saveBriefState = (s) => { mkdirSync(BRIEF.dir, { recursive: true }); writeFileSync(join(BRIEF.dir, "brief.json"), JSON.stringify(s, null, 1) + "\n"); };
 const OUT = join(ROOT, "build", "screenshots", "evidence");
 const SANDBOX = join(ROOT, "build", "screenshots", "sandbox");
 const CACHE = join(ROOT, "build", "tools", "review", "data", "verdicts.json");
@@ -75,6 +113,7 @@ function selectRows() {
   // live rows: not retired, not the keep-checks (never touched by the loop)
   rows = rows.filter((r) => !["retired", "keep"].includes(statusKind(r.status)) && !/retired|^keep/i.test(r.h2));
   if (a.val("rows")) { const want = new Set(a.val("rows").split(",").map((s) => s.trim())); rows = all.filter((r) => want.has(r.id)); }
+  if (BRIEF) rows = BRIEF.rows.map((id) => all.find((r) => r.id === id)).filter(Boolean);
   const decision = rows.filter((r) => /needs-decision/i.test(r.check));
   return { all, rows: rows.filter((r) => !/needs-decision/i.test(r.check)), decision };
 }
@@ -142,11 +181,20 @@ async function makePlan() {
   // a row whose entry is {human} (Zafar's ear or feel) or {needsDecision} (docs/status.md) gets no page; a row with a spec error
   // gets none either: it is a tool failure until its spec or its driver is fixed
   const playable = ids.filter((id) => !norm.human[id] && !norm.decision[id] && !(norm.obsolete || {})[id]);
+  let brief = null;
+  if (BRIEF) {
+    // a row with no probe refuses the brief (as --plan does): Zafar's ear, a decision, an obsolete or broken spec, or none
+    const why = (id) => (norm.human[id] ? "Zafar's ear or feel (no probe)" : norm.decision[id] ? "needs a decision (no probe)" : (norm.obsolete || {})[id] ? "obsolete probe" : norm.rowErrors[id] ? `spec error: ${norm.rowErrors[id][0]}` : !norm.rows[id] ? "no evidence spec" : null);
+    const bad = BRIEF.rows.map((id) => [id, why(id)]).filter(([, w]) => w);
+    if (bad.length) die(`--brief ${rel(BRIEF.file)} refused: every row it names needs a probe in build/sandbox/data/evidence.json first:\n${bad.map(([id, w]) => `  ${id}: ${w}`).join("\n")}`);
+    for (const id of BRIEF.rows) norm.rows[id] = briefProbes(norm.rows[id], BRIEF.spec, S.parseCapture);
+    brief = { slug: BRIEF.slug, file: rel(BRIEF.file), phase: BRIEF.phase, rows: BRIEF.rows, newRows: BRIEF.newRows, sizes: BRIEF.sizes, flows: BRIEF.spec.flows || [] };
+  }
   const { pages, repo, noSpec } = S.planPages(playable, norm.rows);
   const errRows = Object.fromEntries(Object.entries(norm.rowErrors).filter(([id]) => ids.includes(id)));
   const unknownRows = Object.keys(norm.rows).filter((id) => !all.some((r) => r.id === id));
   const pick = (o) => Object.fromEntries(Object.entries(o).filter(([id]) => ids.includes(id)));
-  return { created: new Date().toISOString(), changed, head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
+  return { created: new Date().toISOString(), changed, brief, head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
 }
 function printPlan(P) {
   const L = log(null);
@@ -215,7 +263,7 @@ function pageData(P) {
   return out;
 }
 async function run() {
-  const id = a.val("resume") || a.val("run-id") || `ev-${stamp()}`;
+  const id = a.val("resume") || a.val("run-id") || (BRIEF ? `br-${BRIEF.slug}-${BRIEF.phase}-${stamp()}` : `ev-${stamp()}`);
   const dir = join(OUT, id);
   mkdirSync(dir, { recursive: true });
   const L = log(dir);
@@ -246,7 +294,137 @@ async function run() {
     }
     if (code !== 0 && code !== 1) die(`run.mjs exited ${code}. Fix it, then: node build/tools/review/evidence.mjs --run --resume ${id}`, code || 2);
   }
-  await sheets(dir);
+  const s = await sheets(dir);
+  if (BRIEF && BRIEF.phase && s !== "spawned") briefStore(dir);
+}
+
+// ---------- the one loop: a brief's before and after (lib/brief.mjs) ----------
+// each row's panels copied out of the run (sandbox runs are pruned; a brief's before must outlive them) to
+// build/screenshots/brief/<brief>/<ROW>/<phase>/: the frames, panels.json (key, letter, label, files), the row's sheet and text
+function briefStore(dir) {
+  const P = loadPlan(dir), index = JSON.parse(readFileSync(join(dir, "index.json"), "utf8")), phase = BRIEF.phase;
+  const st = briefState();
+  st.slug = BRIEF.slug; st.file = rel(BRIEF.file); st.rows = BRIEF.rows; st.newRows = BRIEF.newRows; st.sizes = BRIEF.sizes;
+  st[phase] = P.run; st[`${phase}At`] = new Date().toISOString(); st[`${phase}Commit`] = index.commit;
+  const lines = [];
+  for (const id of BRIEF.rows) {
+    const r = index.rows[id] || { tool: ["not in the run"], frames: [] };
+    const out = join(BRIEF.dir, id, phase);
+    rmSync(out, { recursive: true, force: true }); mkdirSync(out, { recursive: true });
+    const panels = [];
+    (r.frames || []).forEach((f, k) => {
+      const letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[k] || String(k + 1);
+      const files = [];
+      f.files.forEach((x, j) => {
+        const from = join(ROOT, x.src);
+        if (!existsSync(from)) return;
+        const name = `${letter}${f.files.length > 1 ? `-${String(j + 1).padStart(2, "0")}` : ""}${extname(from) || ".png"}`;
+        copyFileSync(from, join(out, name)); files.push({ file: name, cap: x.cap });
+      });
+      panels.push({ ...f, letter, files });
+    });
+    for (const s of r.sheets || []) if (existsSync(join(ROOT, s))) copyFileSync(join(ROOT, s), join(out, s.split("/").pop()));
+    if (r.md && existsSync(join(ROOT, r.md))) copyFileSync(join(ROOT, r.md), join(out, `${id}.md`));
+    const isNew = BRIEF.newRows.includes(id);
+    const shows = panels.length > 0;
+    const note = !shows && phase === "before" ? beforeNote(isNew, r.tool || []) : null;
+    writeFileSync(join(out, "panels.json"), JSON.stringify({ row: id, phase, run: P.run, commit: index.commit, isNew, tool: r.tool || [], expect: r.expect || null, expectLine: r.expectLine || "", note, panels }, null, 1) + "\n");
+    lines.push(`${id}: ${panels.length} panels${(r.tool || []).length ? `, TOOL FAILURE (${r.tool[0].slice(0, 140)})` : ""}${note ? ` -> ${note}` : ""} -> ${rel(out)}`);
+  }
+  saveBriefState(st);
+  console.log(`\n${phase} of brief ${BRIEF.slug} (run ${P.run}):\n${lines.map((l) => `  ${l}`).join("\n")}`);
+  if (phase === "before") console.log(`\nNext: the judge's before check (--before --check --reuse --brief ${rel(BRIEF.file)}), then the build, then --after --brief ${rel(BRIEF.file)}.`);
+  else console.log(`\nNext (the orchestrator): node build/tools/review/evidence.mjs --judge --brief ${rel(BRIEF.file)}`);
+}
+const rowOf = (P, id) => P.rows.find((x) => x.id === id) || { id, issue: "", check: "", source: "", status: "", kind: "", section: "" };
+const briefPanels = (id, phase) => { try { return JSON.parse(readFileSync(join(BRIEF.dir, id, phase, "panels.json"), "utf8")); } catch (e) { return null; } };
+// --before --check (mode "check": the before sheets alone, to the judge at launch: do the probes see the problem before the builder
+// starts?) and --judge --brief (mode "judge": each row's BEFORE beside AFTER, same moment, size and crop). The sheets are drawn from
+// the brief's own copies (.../<ROW>/<phase>/panels.json), so a pruned sandbox run never loses a before.
+async function briefJudge(mode) {
+  if (!underLock() && !process.env.NJG_EVIDENCE_LOCKED) { // the browser draws the sheets: under the lock (B16)
+    // (only the sheets and the batch: never the before run again)
+    const again = mode === "check" ? ["--before", "--check", "--reuse"] : ["--judge"];
+    const r = spawnSync("flock", ["-w", "1800", LOCK, "timeout", "900", process.execPath, process.argv[1], "--brief", BRIEF.file, ...again], { stdio: "inherit", env: { ...process.env, NJG_EVIDENCE_LOCKED: "1", COOK_TEST_PORT: PORT } });
+    if (r.status !== 0) process.exit(r.status === null ? 124 : r.status);
+    return;
+  }
+  const st = briefState();
+  if (!st.before) die(`No before run for brief ${BRIEF.slug}: node build/tools/review/evidence.mjs --before --brief ${rel(BRIEF.file)} first.`);
+  if (mode === "judge" && !st.after) die(`No after run for brief ${BRIEF.slug}: the builder runs --after --brief ${rel(BRIEF.file)} first.`);
+  const runId = mode === "check" ? st.before : st.after;
+  const dir = join(OUT, runId), P = loadPlan(dir), jdir = join(dir, "judge");
+  const index = mode === "judge" ? JSON.parse(readFileSync(join(dir, "index.json"), "utf8")) : null;
+  mkdirSync(jdir, { recursive: true });
+  const { startServer, launch } = await import("../../sandbox/lib/env.mjs");
+  const { htmlToPng, shotUrl: rawUrl } = await import("../../sandbox/lib/sheets.mjs");
+  const shotUrl = (f) => rawUrl(f).replace(/#/g, "%23").replace(/ /g, "%20");
+  const server = await startServer(), browser = await launch({ webgl: false });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
+  const todo = [], skipped = [];
+  for (const id of BRIEF.rows) {
+    const row = rowOf(P, id), b = briefPanels(id, "before"), af = mode === "judge" ? briefPanels(id, "after") : null;
+    if (!b) { skipped.push(`${id}: no before copy (play --before again)`); continue; }
+    if (mode === "judge" && !af) { skipped.push(`${id}: no after copy (play --after again)`); continue; }
+    if (mode === "judge" && af.tool.length) { skipped.push(`${id}: the after is a TOOL FAILURE (${af.tool[0].slice(0, 160)}): fix the probe or the driver, never a verdict`); continue; }
+    const isNew = BRIEF.newRows.includes(id);
+    const pairs = mode === "judge" ? pairPanels(b.panels, af.panels) : b.panels.map((p) => ({ key: p.key, before: p, after: null }));
+    pairs.forEach((x, k) => (x.letter = "ABCDEFGHIJKL"[k] || null));
+    const shown = pairs.filter((x) => x.letter);
+    const sheetsOut = [];
+    // at most four pairs to a sheet (each pair is two pictures side by side)
+    for (let k = 0; k < Math.max(1, Math.ceil(shown.length / 4)); k++) {
+      const part = shown.slice(k * 4, k * 4 + 4), n = Math.ceil(shown.length / 4);
+      const name = `${id}-${mode === "judge" ? "before-after" : "before"}${k ? `-${k + 1}` : ""}`;
+      sheetsOut.push(await htmlToPng(page, join(BRIEF.dir, id, `${name}.html`), briefSheetHtml(row, part, { mode, isNew, before: b, after: af, shotUrl, part: n > 1 ? `sheet ${k + 1} of ${n}` : "" })));
+    }
+    todo.push({ id, row, isNew, b, af, pairs, sheets: sheetsOut });
+  }
+  await page.close(); await browser.close(); server.close();
+  // --collect on this run reads it: a verdict on a before|after pair also logs the before's red (the judge saw the before)
+  if (mode === "judge") writeFileSync(join(jdir, "brief.json"), JSON.stringify({ brief: BRIEF.slug, before: st.before, after: st.after }, null, 1) + "\n");
+  const names = [];
+  for (let i = 0; i < todo.length; i += 8) {
+    const part = todo.slice(i, i + 8), name = `${mode === "judge" ? "brief" : "check"}-${String(i / 8 + 1).padStart(2, "0")}`, vf = join(jdir, `${name}.verdicts.md`);
+    let t = mode === "judge"
+      ? `# BEFORE AND AFTER · brief ${BRIEF.slug} · before ${st.before} · after ${st.after}\n\nYou are the judge (.claude/agents/judge.md, "Before and after"). You are not the builder${index && index.builder ? ` (${index.builder})` : ""}. Each row's sheet shows its BEFORE (left, before the build) beside its AFTER (right, after it): the same moment, size and crop, the pairs lettered A, B ... For each row, flaws first (in either picture), then one line:\n- \`ID | PASS: <letter>, <before shows ..., after shows ...>\` only when the BEFORE shows the problem the row names (or "not there yet" for a new feature) AND the AFTER shows it fixed.\n- \`ID | FAIL: <letter>, <what the after still shows>\` when the before shows the problem and the after does not fix it.\n- \`ID | EVIDENCE: <what is missing>\` when the before does not show the problem (a probe fault, never a PASS), or a picture is missing.\nFirst line of ${rel(vf)}: \`judge: <your model and session>\`.\n\n`
+      : `# BEFORE CHECK · brief ${BRIEF.slug} · run ${st.before}\n\nYou are the judge (.claude/agents/judge.md, "The before check"). These are the BEFORE pictures, taken before any build, of the rows the brief names. For each row: does the before show the problem its words describe?\n- \`ID | FAIL: <letter>, <the problem the panel shows>\` when it does (the red: the probe sees the problem). A new feature's before is "not there yet": \`ID | FAIL: none, not there yet\`.\n- \`ID | EVIDENCE: <what the before does not show>\` when it does not (a probe fault: the probe is fixed before the builder starts).\n- Never PASS here: a before that shows no problem is a probe fault.\nFirst line of ${rel(vf)}: \`judge: <your model and session>\`.\n\n`;
+    for (const x of part) {
+      t += `## ${x.id} ${x.row.section}${x.isNew ? " (new feature)" : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.sheets.map((s) => s).join(" and ")}\n- Text: before ${join(BRIEF.dir, x.id, "before", `${x.id}.md`)}${mode === "judge" ? `, after ${join(BRIEF.dir, x.id, "after", `${x.id}.md`)}` : ""}\n`;
+      if (!x.b.panels.length) t += `- Before: ${x.b.note || beforeNote(x.isNew, x.b.tool)}\n`;
+      t += x.pairs.filter((p) => p.letter).map((p) => `- Pair ${p.letter}: ${(p.after || p.before).label}${mode === "judge" && !p.before ? " (no before)" : ""}${mode === "judge" && !p.after ? " (no after)" : ""}`).join("\n") + "\n\n";
+    }
+    writeFileSync(join(jdir, `${name}.md`), t);
+    if (!existsSync(vf)) writeFileSync(vf, `judge: \n${part.map((x) => `${x.id} | `).join("\n")}\n`);
+    names.push(rel(join(jdir, `${name}.md`)));
+  }
+  console.log(`${mode === "judge" ? "before|after" : "before check"} for brief ${BRIEF.slug}: ${todo.length} rows in ${names.length} batch file(s)${skipped.length ? `; ${skipped.length} not sent:\n${skipped.map((s) => `  ${s}`).join("\n")}` : ""}`);
+  for (const n of names) console.log(`  ${n}`);
+  if (names.length) console.log(`\nOne judge call per batch file (never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id ${runId}${mode === "judge" ? ` and --apply --run-id ${runId}` : ""}`);
+}
+function briefSheetHtml(row, pairs, { mode, isNew, before, shotUrl, part }) {
+  const two = mode === "judge";
+  const pic = (p, phase) => {
+    if (!p) return `<div class="none">${phase === "before" ? esc(before && !before.panels.length ? before.note || beforeNote(isNew, before.tool) : isNew ? "not there yet (a new feature)" : "no before of this panel: PROBE FAULT") : "no after of this panel (not captured)"}</div>`;
+    const dir = join(BRIEF.dir, row.id, phase);
+    if (p.type === "frames") return `<div class="frames" style="--c:${Math.min(p.files.length, two ? 2 : 4)}">${p.files.map((f) => `<figure><img src="${esc(shotUrl(join(dir, f.file)))}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
+    return `<img class="one" src="${esc(shotUrl(join(dir, (p.files[0] || {}).file || "")))}">`;
+  };
+  const cells = pairs.map((x) => `<section><div class="lab"><b>${esc(x.letter)}</b> ${esc((x.after || x.before).label)}</div><div class="cols${two ? " two" : ""}"><div class="col"><div class="ph">BEFORE</div>${pic(x.before, "before")}</div>${two ? `<div class="col"><div class="ph after">AFTER</div>${pic(x.after, "after")}</div>` : ""}</div></section>`).join("\n");
+  const empty = !pairs.length ? `<section><div class="none">${esc(before && before.note ? before.note : beforeNote(isNew, (before && before.tool) || []))}</div></section>` : "";
+  return `<!doctype html><meta charset="utf-8"><style>
+    body{margin:0;padding:12px 16px;background:#f3ece0;font:15px/1.3 Nunito,system-ui,sans-serif;color:#2a1f14;width:1168px}
+    header{background:#fff;border:2px solid #2a1f14;border-radius:8px;padding:6px 12px;margin-bottom:8px}
+    h1{font-size:22px;margin:0 0 2px} h1 small{font-size:14px;font-weight:600;color:#6b5a45;margin-left:8px} header p{margin:1px 0;font-size:14px} .k{font-weight:800}
+    section{background:#fff;border:2px solid #cdbfa8;border-radius:8px;padding:4px 6px;margin-bottom:8px}
+    .lab{font-size:13px;font-weight:700;color:#4a3a28} .lab b{font-size:22px;font-weight:900;margin-right:6px;color:#2a1f14}
+    .cols{display:grid;grid-template-columns:1fr;gap:8px} .cols.two{grid-template-columns:1fr 1fr} .col{min-width:0}
+    .ph{font-size:18px;font-weight:900;letter-spacing:.06em;color:#6b5a45;margin:2px 0} .ph.after{color:#2f6b3a}
+    img.one{display:block;max-width:100%;max-height:520px;object-fit:contain}
+    .frames{display:grid;grid-template-columns:repeat(var(--c,2),minmax(0,1fr));gap:4px} .frames figure{margin:0} .frames img{width:100%;max-height:300px;object-fit:contain} figcaption{font-size:13px;font-weight:800;text-align:center}
+    .none{padding:18px;font-size:16px;font-weight:800;color:#8a4a1a;background:#fbf3e6;border:2px dashed #cdbfa8;border-radius:8px}
+  </style><header><h1>${esc(row.id)}<small>${esc(row.section || "")} · ${two ? "before | after" : "before"}${isNew ? " · new feature" : ""}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(String(row.issue).slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(String(row.check).slice(0, 220))}</p></header>
+  ${cells}${empty}`;
 }
 
 // ---------- the sheets ----------
@@ -277,8 +455,10 @@ function runCmd(cmd) {
 async function sheets(dirArg) {
   const dir = dirArg || runFolder(a.val("run-id"));
   if (!underLock() && !process.env.NJG_EVIDENCE_LOCKED) { // the browser renders the sheets: under the lock (B16)
-    const r = spawnSync("flock", ["-w", "1800", LOCK, "timeout", "900", process.execPath, process.argv[1], "--sheets", "--run-id", dir.split("/").pop()], { stdio: "inherit", env: { ...process.env, NJG_EVIDENCE_LOCKED: "1", COOK_TEST_PORT: PORT } });
-    process.exit(r.status === null ? 124 : r.status);
+    // (a brief's run: the child also copies the rows' panels out, briefStore)
+    const r = spawnSync("flock", ["-w", "1800", LOCK, "timeout", "900", process.execPath, process.argv[1], "--sheets", "--run-id", dir.split("/").pop(), ...(BRIEF && BRIEF.phase ? ["--brief", BRIEF.file, `--${BRIEF.phase}`] : [])], { stdio: "inherit", env: { ...process.env, NJG_EVIDENCE_LOCKED: "1", COOK_TEST_PORT: PORT } });
+    if (r.status !== 0) process.exit(r.status === null ? 124 : r.status);
+    return "spawned";
   }
   const P = loadPlan(dir), id = P.run, L = log(dir);
   parseCmd = (await import("../../sandbox/lib/evidence.mjs")).parseCmd;
@@ -347,6 +527,7 @@ async function sheets(dirArg) {
     const addPanel = (pl) => { if (panels.length < cap) { pl.letter = "ABCDEFGHIJKL"[panels.length]; panels.push(pl); } else extra.push(pl); };
     for (const p of probes) {
       const tag = `${p.flow} L${p.level} ${p.size}${p.variant ? ` [${p.variant}]` : ""}`;
+      const key = (raw, type) => panelKey(p.i, p.level, p.size, raw, type); // the same panel in a brief's before and after run
       const crops = [], strips = [];
       for (const h of p.hits || []) for (const c of h.captures || []) {
         if (c.fail) continue;
@@ -358,18 +539,18 @@ async function sheets(dirArg) {
       if (p.every && crops.length > 1) {
         // every turn: the crops side by side, one frame per moment
         const byCap = new Map(); for (const x of crops) { if (!byCap.has(x.c.raw)) byCap.set(x.c.raw, []); byCap.get(x.c.raw).push(x); }
-        for (const [raw, list] of byCap) addPanel({ type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
+        for (const [raw, list] of byCap) addPanel({ key: key(raw, "frames"), type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
       } else for (const x of crops) {
-        if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
-        addPanel({ type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
+        if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ key: key(x.c.raw, "room"), type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
+        addPanel({ key: key(x.c.raw, "img"), type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
       }
-      for (const x of strips) addPanel({ type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
+      for (const x of strips) addPanel({ key: key(x.c.raw, "strip"), type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
       // refs (Fable 12) and script output (Fable 13), from the spec
       for (const c of p.contract || []) texts.push(`#### ${p.id} · ${c.check} (contract)\n\n\`\`\`\n${c.text}\n\`\`\``);
       const specP = Array.isArray(P.spec[row.id]) ? P.spec[row.id][p.i] : P.spec[row.id] && P.spec[row.id].probes ? P.spec[row.id].probes[p.i] : P.spec[row.id];
       for (const cap of (specP || {}).capture || []) {
         if (typeof cap !== "string") continue;
-        if (cap.startsWith("ref:") && !panels.some((x) => x.ref === cap)) { const f = join(ROOT, cap.slice(4).trim()); if (existsSync(f) && /\.(png|webp|jpe?g|svg)$/i.test(f)) addPanel({ type: "img", ref: cap, label: `reference: ${cap.slice(4)}`, src: f, dpr: 1 }); else texts.push(`#### reference ${cap.slice(4)}\n\n${existsSync(f) ? "(not an image: open it)" : "MISSING FILE"}`); }
+        if (cap.startsWith("ref:") && !panels.some((x) => x.ref === cap)) { const f = join(ROOT, cap.slice(4).trim()); if (existsSync(f) && /\.(png|webp|jpe?g|svg)$/i.test(f)) addPanel({ key: `ref|${cap}`, type: "img", ref: cap, label: `reference: ${cap.slice(4)}`, src: f, dpr: 1 }); else texts.push(`#### reference ${cap.slice(4)}\n\n${existsSync(f) ? "(not an image: open it)" : "MISSING FILE"}`); }
         if (cap.startsWith("cmd:") && !texts.some((t) => t.startsWith(`#### ${cap.slice(4).trim()} (exit`))) { const c = cap.slice(4).trim(), r = cmdOut(c); texts.push(`#### ${c} (exit ${r.code})\n\n\`\`\`\n${r.text}\n\`\`\``); }
       }
       if (p.voice && p.voice.text) texts.push(`#### ${p.id} · voice (seconds from the page's start; ---- a lifecycle step; >>>> the probe's moment)\n\n\`\`\`\n${voiceWindow(p.voice.text)}\n\`\`\``);
@@ -410,7 +591,9 @@ async function sheets(dirArg) {
     if (panels.length) md += `## Panels${png ? ` (${sheets.map((s) => `\`${rel(s)}\``).join(", ")})` : ""}\n\n${panels.map((p) => `- **${p.letter}**: ${p.label}`).join("\n")}${extra.length ? `\n- (${extra.length} more not on the sheet: ${extra.map((p) => p.label).join("; ")})` : ""}\n\n`;
     if (texts.length) md += `## Text captures\n\n${texts.join("\n\n")}\n`;
     writeFileSync(join(dir, `${row.id}.md`), md);
-    index.rows[row.id] = { kind: TEXT_KINDS.has(kind) ? kind : kind, png: png ? rel(png) : null, sheets: sheets.map(rel), md: rel(join(dir, `${row.id}.md`)), panels: panels.map((p) => `${p.letter}: ${p.label}`), tool: outcome.tool, expect: outcome.expect, expectLine: outcome.line, fp, probes: probes.length, reached: probes.filter((p) => p.reached).length };
+    index.rows[row.id] = { kind: TEXT_KINDS.has(kind) ? kind : kind, png: png ? rel(png) : null, sheets: sheets.map(rel), md: rel(join(dir, `${row.id}.md`)), panels: panels.map((p) => `${p.letter}: ${p.label}`), tool: outcome.tool, expect: outcome.expect, expectLine: outcome.line, fp, probes: probes.length, reached: probes.filter((p) => p.reached).length,
+      // every panel's files (the extra ones too), for a brief's before|after sheet (lib/brief.mjs pairPanels; briefStore copies them)
+      frames: [...panels, ...extra].map((pl) => ({ key: pl.key || pl.label, label: pl.label, type: pl.type, zoom: !!pl.zoom, dpr: pl.dpr || 1, box: pl.box || null, files: pl.type === "frames" ? pl.frames.map((f) => ({ src: rel(f.src), cap: f.cap })) : [{ src: rel(pl.src), cap: "" }] })) };
     console.log(`${row.id}: ${outcome.tool.length ? `TOOL FAILURE (${outcome.tool.length})` : outcome.expect ? `machine ${outcome.expect}` : `${panels.length} panels${texts.length ? `, ${texts.length} text` : ""}`}${png ? ` -> ${rel(png)}` : ""}`);
   }
   await page.close(); await browser.close(); server.close();
@@ -542,14 +725,28 @@ function collect() {
     if (!v.judge) { refused.push(`${f}: no "judge:" line`); continue; }
     if (builder && v.judge.toLowerCase().includes(String(builder).toLowerCase())) { refused.push(`${f}: judged by the builder (${v.judge})`); continue; }
     for (const r of v.rejected) refused.push(`${f}: ${r.id}: ${r.why}`);
+    // the one loop (lib/brief.mjs): a BEFORE CHECK (check-NN) and a before|after batch (brief-NN)
+    const check = f.startsWith("check-"), pair = f.startsWith("brief-");
+    let beforeRun = null;
+    if (pair) { try { beforeRun = JSON.parse(readFileSync(join(jdir, "brief.json"), "utf8")).before; } catch (e) { /* no before: no red logged */ } }
     for (const l of v.lines) {
       const r = index.rows[l.id];
       if (!r) { refused.push(`${f}: ${l.id} is not in run ${id}`); continue; }
+      if (check) {
+        // a before check: FAIL = the before shows the problem (the red, logged for redGreen, never cached as this run's verdict);
+        // PASS or EVIDENCE = it does not: a probe fault for the tool owner, fixed before the builder starts
+        if (l.verdict === "FAIL") { if (!logged(vlog, l.id, id, "FAIL")) newLog.push({ id: l.id, run: id, verdict: "FAIL", spec: specHash(P.spec[l.id]), judge: v.judge, date: today, before: true, line: l.line.slice(0, 200) }); n++; }
+        else evidence.push(`- ${l.id}: the before does not show the problem (a probe fault: ${l.line}) (${v.judge})`);
+        continue;
+      }
       const why = passRefusal(l, !!r.png);
       if (why) { refused.push(`${f}: ${l.id}: ${why}`); continue; }
       if (l.verdict === "EVIDENCE") { evidence.push(`- ${l.id}: ${l.line} (${v.judge})`); continue; }
       if (f.startsWith("audit-") && cache[l.id] && cache[l.id].verdict !== l.verdict) { disagree.push(`- ${l.id}: ${cache[l.id].judge} said ${cache[l.id].verdict} (${cache[l.id].line}); ${v.judge} says ${l.verdict}: ${l.line}`); cache[l.id] = { ...cache[l.id], audit: { verdict: l.verdict, line: l.line, judge: v.judge, date: today } }; continue; }
       cache[l.id] = { ...r.fp, verdict: l.verdict, line: l.line, panel: l.panel, judge: v.judge, run: id, commit: index.commit, png: r.png, date: today };
+      // a verdict on a before|after pair says the judge saw the before show the problem: that is the before run's red (logged first:
+      // redGreen counts only the entries before this run's)
+      if (pair && beforeRun && !logged(vlog, l.id, beforeRun, "FAIL") && !newLog.some((e) => e.id === l.id && e.run === beforeRun)) newLog.push({ id: l.id, run: beforeRun, verdict: "FAIL", spec: specHash(P.spec[l.id]), judge: v.judge, date: today, before: true, line: `before, as judged beside the after: ${l.line.slice(0, 160)}` });
       if (!logged(vlog, l.id, id, l.verdict)) newLog.push({ id: l.id, run: id, verdict: l.verdict, spec: specHash(P.spec[l.id]), judge: v.judge, date: today });
       n++;
     }
@@ -640,8 +837,14 @@ if (a.has("lint-specs")) {
   console.log(`lint-specs: ${found.length} flagged, ${found.length - fresh.length} known, ${fresh.length} new${fresh.length ? ":\n" + fresh.map((f) => `  NEW ${f.row} p${f.probe} ${f.kind}: ${f.msg}`).join("\n") : ""}`);
   process.exit(fresh.length ? 1 : 0);
 }
-if (a.has("run")) await run();
-else if (a.has("sheets")) await sheets();
+if (a.has("sheets")) { const dir = runFolder(a.val("run-id")); const s = await sheets(dir); if (BRIEF && BRIEF.phase && s !== "spawned") briefStore(dir); }
+else if (BRIEF && (a.has("before") || a.has("after"))) {
+  // the one loop: --before (then --check: the judge's before check) or --after, for the brief's rows only
+  if (!(a.has("before") && a.has("reuse"))) await run();
+  if (a.has("before") && a.has("check")) await briefJudge("check");
+} else if (BRIEF && a.has("judge")) await briefJudge("judge");
+else if (a.has("before") || a.has("after")) die("--before and --after need --brief <spec.json> (the brief whose rows they play).");
+else if (a.has("run")) await run();
 else if (a.has("judge")) judge();
 else if (a.has("collect")) collect();
 else if (a.has("apply")) apply();

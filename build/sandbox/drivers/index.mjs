@@ -77,6 +77,22 @@ export async function watchVoice(page) {
     state: () => null,
   };
 }
+// The stuck player (S13-T; drivers/catalog.mjs "stuck"): the child stops at a step and taps nothing through every help rung.
+// once(name) records a player state (rec:<name>: a screenshot, the lint and every probe that asks for it); the rungs' times are
+// counted from the stop on the wall clock, so a slow screenshot never pushes the next one later. Nothing is tapped or moved.
+export const STUCK_AT = [5500, 12500, 18500];
+export const stuckName = (ms) => `stuck-${Math.floor(ms / 1000)}s`;
+export async function stuckWait(page, once, { at = STUCK_AT, tail = 1200 } = {}) {
+  const t0 = Date.now();
+  await mark(page, "stuck", { block: false });
+  await once("stuck-start", { settle: 0 });
+  for (const ms of at) {
+    const due = t0 + ms;
+    if (Date.now() < due) await sleep(due - Date.now());
+    await once(stuckName(ms), { settle: 0 });
+  }
+  await sleep(tail);
+}
 // wait until fn() is true (polled), at most ms; returns whether it came
 export async function until(fn, ms, step = 40) {
   const t0 = Date.now();

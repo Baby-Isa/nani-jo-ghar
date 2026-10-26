@@ -5,7 +5,7 @@
 // &quiet=1 (no device voice) &fast=1 (short waits) &onboard=0 (no first-time ghost finger) &seed=7 (the same people every run).
 import { BASE, sleep } from "../lib/env.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
-import { mark, watchVoice, until, popupOpen, tapPopup } from "../drivers/index.mjs";
+import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait } from "../drivers/index.mjs";
 
 const SEED = 7;
 // the evidence loop's named drivers on the clinic (drivers/catalog.mjs; build/sandbox/data/evidence.json _drivers): each plays fair
@@ -21,6 +21,7 @@ const SEED = 7;
 //                       and count no hint (SH-102, SH-114: contract-31); 7.5 s are given for the next lines to be said
 //   grab-hold           the ear's first wax drag held on the way while the zoom crops of the tweezers are taken (CLN-173: one prong behind the wax, one over it)
 //   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
+//   stuck               the first ask (a stage's tap, a heal game's first step) left alone through every help rung, help on (S13-T)
 //   mistake-real        the mistake player at real pace (no &fast=1): the wrong answer's shake, red and flash last their real time (CLN-107 at L3, CLN-194)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
@@ -232,6 +233,8 @@ export class ClinicPlayer {
       if (["tap", "act", "point", "say", "belt"].includes(k) && !this.drv.turns.has(`${stage}-${k}`)) { this.drv.turns.add(`${stage}-${k}`); await mark(page, `your-turn-${stage}-${k}`); }
       if (this.hints && ["tap", "act", "point", "belt"].includes(k) && !(await this.page.evaluate(() => !!document.querySelector(".njg-onboard.on")))) await this.hintMoves(stage);
       if (this.mistakes && ["tap", "act", "belt"].includes(k) && (await this.mistakeMoves(stage, e))) continue;
+      // stuck (S13-T): the stage's first ask left alone through every help rung (drivers/index.mjs stuckWait), then fair
+      if (this.mode === "stuck" && !this.drv.stuck && ["tap", "act", "point", "belt"].includes(k)) { this.drv.stuck = true; await stuckWait(page, (n, o) => this.once(n, o)); continue; }
       if (k === "tap" || k === "act") {
         await this.once(`${stage}-${k}`);
         if (!(await this.tapSel(e.target))) await sleep(100); else { await sleep(250); await this.stageTakeBack(e.target); await this.replayTap(); }
@@ -361,6 +364,7 @@ export class ClinicPlayer {
       await this.once("idle-again", { settle: 0 });
       return true;
     }
+    if (m === "stuck" && !d.stuck) { d.stuck = true; await stuckWait(this.page, (n, o) => this.once(n, o)); return true; }
     if (m === "tap-during-speech" && !d.spoke) {
       // the doctor speaks between moves: at each move, up to 1.5 s for her next line (twenty moves at most), then the move at once
       d.tries = (d.tries || 0) + 1;
@@ -437,7 +441,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off);
       // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
       // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
-      const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
+      const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" || mode === "stuck" ? 1 : 0;
       const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "mistake-real" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)

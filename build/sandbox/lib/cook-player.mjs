@@ -3,7 +3,7 @@
 // It records each new view and each new kind of expectation as a state, once.
 import { sleep, ROOT } from "./env.mjs";
 import { waitBadges, readBadges } from "./results.mjs";
-import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine } from "../drivers/index.mjs";
+import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine, stuckWait } from "../drivers/index.mjs";
 
 // the evidence loop's named drivers this player plays (drivers/catalog.mjs, build/sandbox/data/evidence.json _drivers): each plays
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
@@ -144,6 +144,12 @@ export class CookPlayer {
       await this.once("idle-hint", { settle: 0 });
       await sleep(8000);
       await this.once("idle-again", { settle: 0 });
+      return true;
+    }
+    // stuck (S13-T): at the first move, nothing tapped through every help rung (drivers/index.mjs stuckWait), then fair
+    if (m === "stuck" && !d.stuck && CALM.includes(e.kind)) {
+      d.stuck = true;
+      await stuckWait(p, (n, o) => this.once(n, o));
       return true;
     }
     // serve-wrong (CK-31, CK-32): a dish served wrong. At the first step that offers a look-alike (chai's sugar: the salt jar
