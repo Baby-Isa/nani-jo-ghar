@@ -385,7 +385,7 @@
     // below it, so a bubble never sits on the speaker's chest while there is room at their head
     if (!fitsAbove && !face) {
       const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
-      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr }, (o.avoid || []).concat(marked));
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr, m: Math.max(3, Math.round(r.width * 0.15)) }, (o.avoid || []).concat(marked));
       if (sd) return sd;
     }
     let side = fitsAbove || !fitsBelow ? "above" : "below";
@@ -425,7 +425,7 @@
     const tw = (cs && parseFloat(cs.width)) || 22;
     const off = cs && isFinite(parseFloat(cs.left)) ? -parseFloat(cs.left) - ((bs && parseFloat(bs.borderLeftWidth)) || 0) - tw / 2 : 5;
     // the tail's middle just inside her head's edge
-    const m = 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek
+    const m = g.m || 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek (S13-B2: beside a head that is not a painted face, a little further in: the tail well inside the head's column)
     const cy = hy + h / 2; // her eye line (the head anchor's centre)
     // S13-B2: a head too near the top for the bubble to end at the eye line (the doctor at 915x412) gets it beside the head from
     // the eye line down instead, its tail out of the near side's top at the cheek ("-low"); never on the chest under the head
