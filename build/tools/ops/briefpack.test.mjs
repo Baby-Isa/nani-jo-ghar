@@ -80,9 +80,8 @@ test("kitmap: every place an element is drawn or styled, the kit first, a CSS ru
   assert.equal(fmtSpan([795, 804]), "795-804");
   const [finger] = kitMap(["finger"]);
   assert.ok(finger.kit.some((x) => x.file === "js/shared/onboard.js"), "the kit's own finger");
-  const cook = finger.copies.find((x) => x.file === "css/cook.css");
-  assert.ok(cook && cook.spans.some(([a, b]) => b > a), "Cook's dead copy is a whole rule (s13-kit-review.md: cook.css:795-804)");
-  assert.ok(finger.copies.some((x) => x.file === "js/cook/coach.js"), "and where coach.js still sets it (coach.js:304-305)");
+  // Cook's dead copy (cook.css:795-804, coach.js:304-305) was deleted in S13-A2: no game copy is left outside the parked games
+  assert.ok(!finger.copies.some((x) => x.file === "css/cook.css"), "the deleted CSS copy stays gone (coach.js keeps only a comment)");
   assert.match(kitMapText([finger]), /the kit: .*onboard/);
 });
 
