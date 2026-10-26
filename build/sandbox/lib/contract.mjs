@@ -9,7 +9,7 @@
 //   contract-3 voice     every stage and game end stops all voice: no line starts or keeps playing after its stage ended
 //   contract-4 bubble    every speech bubble sits above (or, without room, below) its speaker's head, never in a corner; S13-B2:
 //                        every one is the kit's .cv-bubble (Conversations.bubble), never a game's own (#bubble, .cl-bubble)
-//   contract-41b one-end  nothing inside the end screen (.njg-results) carries a game's own class (S13-B2: the receipt slot)
+//   contract-49 one-end   nothing inside the end screen (.njg-results) carries a game's own class (S13-B2: the receipt slot)
 //   contract-5 badges    end-screen badges appear one, two, three in order
 //   contract-6 old-art   no retired art drawn where a replacement exists (build/sandbox/data/retired-art.json)
 //
@@ -1552,24 +1552,24 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check66(r, tl, v, add);
   check70(r, tl, add);
   check71(r, tl, add);
-  check41b(tl, add);
+  check49(tl, add);
   return out;
 }
 
 // ---- S13-B2 (one shared kit, pair 3): the end screen is the kit's alone ----
-// 41b: nothing inside .njg-results carries a game's own class (the hook's kitend sample: every class in it that is not the kit's);
+// 49 (the brief's "41b"; the check ids are numbers): nothing inside .njg-results carries a game's own class (the hook's kitend sample: every class in it that is not the kit's);
 // the clinic's receipt is the kit's receipt slot (js/shared/results.js Results.show({receipt})). Each class once per page
 Object.assign(CHECKS, {
-  "contract-41b": { item: "one-end", title: "one end screen", how: "Every kitend sample (lib/contract-hook.mjs: each class on the end screen, .njg-results, and everything inside it that is not the kit's: rs-, njg-, the kit's face, word and button classes and their bare state words): a game's own class there (the clinic's cl-receipt, cl-face, Cook's own) is a break, each once per page (S13-B2: the receipt is a data slot of the shared end screen, Results.show({receipt}), drawn by results.js only)." },
+  "contract-49": { item: "one-end", title: "one end screen", how: "Every kitend sample (lib/contract-hook.mjs: each class on the end screen, .njg-results, and everything inside it that is not the kit's: rs-, njg-, the kit's face, word and button classes and their bare state words): a game's own class there (the clinic's cl-receipt, cl-face, Cook's own) is a break, each once per page (S13-B2: the receipt is a data slot of the shared end screen, Results.show({receipt}), drawn by results.js only)." },
 });
-export function check41b(tl, add) {
+export function check49(tl, add) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "kitend") continue;
     for (const c of e.bad || []) {
       if (seen.has(c)) continue;
       seen.add(c);
-      add("contract-41b", e.t, `the end screen holds a game's own class: ${c} (one end screen everywhere: only the kit's classes)`);
+      add("contract-49", e.t, `the end screen holds a game's own class: ${c} (one end screen everywhere: only the kit's classes)`);
     }
   }
 }

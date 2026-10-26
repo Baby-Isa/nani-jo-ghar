@@ -6125,7 +6125,7 @@
    ],
    "expect": [
     "pass",
-    "noOverlap:#bubble,canvas:shelf"
+    "noOverlap:.cv-line,canvas:shelf"
    ],
    "note": "Nani talks from the sidebar; nothing covers the top shelf on a phone"
   }
@@ -6210,7 +6210,7 @@
     "crop:#stage"
    ],
    "expect": [
-    "noOverlap:#count-badge,#bubble",
+    "noOverlap:#count-badge,.cv-line",
     "noOverlap:#count-badge,#mission"
    ],
    "note": "count badges never overlap a bubble, card or tool"
@@ -6272,7 +6272,7 @@
     "crop:#stage"
    ],
    "expect": [
-    "noOverlap:#bubble,canvas:-happy"
+    "noOverlap:.cv-line,canvas:-happy"
    ],
    "note": "a customer's bubble never covers their own face"
   }
@@ -6377,7 +6377,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#bubble"
+    "dom:.cv-line"
    ],
    "expect": [
     "!textMatches:(?i)\\bmuke\\b.*\\b(de|khape)\\b"
@@ -9559,7 +9559,7 @@
    ],
    "expect": [
     "pass",
-    "inside:.cl-bubble,.cl-stage"
+    "inside:.cv-line,.cl-stage"
    ],
    "note": "speech bubbles inside the play area (the ear's sat off the top)"
   }
@@ -10057,7 +10057,7 @@
    "at": "every:line:clinic-patient",
    "after": null,
    "capture": [
-    "dom:.cl-bubble",
+    "dom:.cv-line",
     "crop:.cl-heal",
     "voice"
    ],
@@ -12842,8 +12842,8 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "zoom2:.cl-bubble",
-    "dom:.cl-bubble"
+    "zoom2:.cv-line",
+    "dom:.cv-line"
    ],
    "expect": null,
    "note": "her \"thank you, I feel better\" after the pull-out: a line to record, so grey italic English, never dark upright text",
@@ -12879,10 +12879,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:visible:.cl-bubble.who-patient",
+   "at": "every:visible:.cv-line[data-who=patient]",
    "after": null,
    "capture": [
-    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
+    "crop:.cv-line[data-who=patient], .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 11"
    ],
    "expect": null,
@@ -12902,10 +12902,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:visible:.cl-bubble.who-patient",
+   "at": "every:visible:.cv-line[data-who=patient]",
    "after": null,
    "capture": [
-    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
+    "crop:.cv-line[data-who=patient], .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 12"
    ],
    "expect": null,
@@ -13505,10 +13505,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.cl-receipt",
+   "at": "visible:.rs-receipt",
    "after": null,
    "capture": [
-    "zoom2:.cl-receipt"
+    "zoom2:.rs-receipt"
    ],
    "expect": null,
    "note": "the receipt on a short screen: rows and coins on the spacing grid",

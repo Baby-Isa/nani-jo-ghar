@@ -1,5 +1,5 @@
 // S13-B2 (one shared kit, pair 3): contract-4 (every speech bubble is the kit's .cv-bubble, js/shared/conversations.js
-// Conversations.bubble, its tail at its speaker's head) and contract-41b (nothing inside the end screen, .njg-results, carries a
+// Conversations.bubble, its tail at its speaker's head) and contract-49 (nothing inside the end screen, .njg-results, carries a
 // game's own class: the clinic's receipt is the kit's receipt slot, Results.show({receipt})), read from the hook's bubble and
 // kitend samples (lib/contract-hook.mjs).
 // node --test build/sandbox/contract-s13b2.test.mjs
@@ -33,9 +33,9 @@ test("contract-4: the kit's bubble away from the head still breaks on its place"
   assert.doesNotMatch(b[0].measured, /not the kit's bubble/);
 });
 
-test("contract-41b (S13-B2): an end screen of kit classes only is no break; a game's own class inside it is, once each per page", () => {
-  assert.equal(of(run(page([ke(T), ke(T + 100, { n: 2 })])), "contract-41b").length, 0, "green: rs-, njg-, the kit's face circle");
-  const b = of(run(page([ke(T, { bad: ["cl-receipt", "cl-face"] }), ke(T + 100, { bad: ["cl-receipt"] })])), "contract-41b");
+test("contract-49 (S13-B2): an end screen of kit classes only is no break; a game's own class inside it is, once each per page", () => {
+  assert.equal(of(run(page([ke(T), ke(T + 100, { n: 2 })])), "contract-49").length, 0, "green: rs-, njg-, the kit's face circle");
+  const b = of(run(page([ke(T, { bad: ["cl-receipt", "cl-face"] }), ke(T + 100, { bad: ["cl-receipt"] })])), "contract-49");
   assert.equal(b.length, 2, "red: the clinic's receipt and its face class, each once");
   assert.match(b[0].measured, /cl-receipt/);
 });

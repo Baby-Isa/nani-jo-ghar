@@ -122,7 +122,7 @@ function onThisPage(ctx) {
 async function playBookHere(ctx) {
   const { page, rec } = ctx;
   await page.waitForFunction(() => /^day\/book/.test(window.njgTest.state()), null, { timeout: 30000 });
-  if (await page.waitForSelector(".day-head-line .day-line, .day-cv .day-bubble.in .day-line", { timeout: 8000 }).then(() => true).catch(() => false)) await rec.state("book-room-greet");
+  if (await page.waitForSelector(".day-head-line .day-line, .day-cv .cv-bubble.in .day-line", { timeout: 8000 }).then(() => true).catch(() => false)) await rec.state("book-room-greet");
   await playStage(ctx, dayBookFlow(1, "find"), "book");
 }
 async function playStage(ctx, flow, what) {

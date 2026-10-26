@@ -169,7 +169,7 @@ export const CONTRACT_HOOK = `(() => {
   // (S13-B2: a line's bubble is the kit's .cv-bubble.njg-bubble, js/shared/conversations.js Conversations.bubble; the old
   // selectors stay so a game's own bubble is still measured, and broken, by contract-4)
   const BUB = ".cl-bubble, #bubble, .njg-bubble, [data-bubble]";
-  // contract-41b (S13-B2): the end screen's classes; the kit's are its own prefixes and bare state words (gold, primary, wrong ...);
+  // contract-49 (S13-B2): the end screen's classes; the kit's are its own prefixes and bare state words (gold, primary, wrong ...);
   // a game's prefix (cl-, hc-, ...) or one of its bare word classes is not
   const KIT_END = /^(njg-|rs-|oc-|wc|ng-|ob-|cv-|gb-|say-|fit|tier-|gloss-|face-)/;
   const GAME_BARE = ["ku", "ph", "person", "art", "wp", "r6", "lface", "icard", "standin", "own-colour"];
@@ -802,7 +802,7 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
     const fg = safe(fingers, []);
     if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on") });
-    // contract-41b (S13-B2): the classes on the end screen that are not the kit's
+    // contract-49 (S13-B2): the classes on the end screen that are not the kit's
     const ke = safe(kitEnd, null);
     if (ke && !same("kitend", ke)) emit({ k: "kitend", ...ke });
     // contract-4 (S13-B2): each bubble's kit flag (the kit's .cv-bubble) and, for one that is not, what it is

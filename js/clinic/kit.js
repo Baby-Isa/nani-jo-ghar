@@ -629,7 +629,8 @@
     else cutAll();
     Voice.queue = Promise.resolve();
     Voice.busy = false;
-    document.querySelectorAll(".cl-bubble").forEach((b) => b.remove());
+    Voice.bubbles.forEach((b) => b.remove());
+    Voice.bubbles.clear();
   };
   Voice.layer = null; // the element bubbles are placed in (the play area)
   Voice.toGuide = null; // screen.js: (line) -> restore(): the line in the doctor's green box while it's said
@@ -645,101 +646,35 @@
     const r = el.getBoundingClientRect();
     return r.width > 0 || r.height > 0;
   };
-  Voice.bubble = function (w, who, opts = {}) {
-    const layer = opts.layer || Voice.layer || document.body;
-    // the speaker's last bubble (kept for half a second after its line) goes when they speak again: two bubbles never
-    // stack in the same place (the eye test's rows, read one after another)
-    document.querySelectorAll(`.cl-bubble.who-${who}`).forEach((x) => x.remove());
-    const b = h("div", `cl-bubble who-${who}`, layer);
-    Kit.text(w, b);
-    // CLN-76 (E1, G2): a line with no Kutchi yet is a flagged placeholder (grey italic, "to record"), never dark text
-    // the child is meant to read
-    if (w && (!w.kutchi || w.placeholder === true)) {
-      b.classList.add("rec");
-      h("small", "cl-rec", b, "to record");
-    }
-    const anchor = Voice.speakers[who] && Voice.speakers[who]();
-    if (anchor) {
-      b.classList.add("anchored");
-      // the other speakers in the play area (the close-up's round face) are never covered by this one's bubble
-      const others = () =>
-        Object.keys(Voice.speakers)
-          .filter((k) => k !== who)
-          .map((k) => {
-            try {
-              return Voice.speakers[k] && Voice.speakers[k]();
-            } catch (e) {
-              return null;
-            }
-          })
-          .filter((el) => el && el.isConnected && el.getBoundingClientRect);
-      Voice.place(b, anchor, layer, others());
-      // the words can settle a frame later (fonts, fitting): place it again then; and while it's up it follows its
-      // speaker (S04-B, SH-68: a camera still zooming out moves the head after the bubble came up)
-      // CLN-146: every frame, not every 150 ms: her figure steps down at the send-off (about 115 px at 800x360) and a bubble a
-      // tick behind sat on her face; it re-places only when the head has moved
-      let last = "";
-      const follow = () => {
-        if (!b.isConnected || !anchor.isConnected) return;
-        const r = anchor.getBoundingClientRect();
-        // CLN-127: and when something it must not cover (data-njg-avoid: the fever's sweat drop) comes or goes
-        const key = `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)},${b.offsetWidth},${b.offsetHeight},${document.querySelectorAll("[data-njg-avoid]").length}`;
-        if (key !== last) { last = key; Voice.place(b, anchor, layer, others()); }
-        if (global.requestAnimationFrame) global.requestAnimationFrame(follow);
-        else setTimeout(follow, 16);
-      };
-      if (global.requestAnimationFrame) global.requestAnimationFrame(follow);
-      else setTimeout(follow, 16);
-    } else b.classList.add("top");
-    return b;
-  };
   /**
-   * S04-B (SH-68, CLN-86, Z1; decision 75 (4)): the one placement every mode uses (js/shared/request-popup.js
-   * Lifecycle.bubble.place): above the speaker's head, below it when there's no room, inside the play area, off the
-   * other speakers. The old rule below (CLN-71: above, else beside, else below) is only for a page without the
-   * shared lifecycle.
+   * A line's bubble by its speaker (S13-B2): the kit's one speech bubble (js/shared/conversations.js Conversations.bubble), the
+   * same in every game: placed by the one placement (Lifecycle.bubble.place: above the head, below it with no room, beside a
+   * painted face, off the other speakers), following its speaker while it is up (S04-B, SH-68, CLN-146, CLN-127). Its words are
+   * the engine's line (Kit.text: Kutchi, or a placeholder's English in grey italic, tagged "to record" in the markup only: CLN-76,
+   * decision 84). The clinic's own .cl-bubble and its placement went.
    */
-  Voice.place = function (b, anchor, layer, avoid = []) {
-    const L = global.Lifecycle;
-    if (L && L.bubble && L.bubble.place(b, anchor, layer, { avoid })) return;
-    const M = 8;
-    const lr = layer.getBoundingClientRect();
-    const r = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;
-    b.style.transform = "none";
-    b.style.left = "0px";
-    b.style.top = "0px";
-    const bw = b.offsetWidth;
-    const bh = b.offsetHeight;
-    const W = lr.width;
-    const H = lr.height;
-    const ax = r.left - lr.left;
-    const ay = r.top - lr.top;
-    let x = ax + r.width / 2 - bw * 0.3; // the tail end of the bubble near the speaker's middle
-    let y = ay - M - bh; // above
-    if (y < M) {
-      if (ax + r.width + M + bw <= W - M) {
-        x = ax + r.width + M; // beside, to the right
-        y = ay + Math.min(r.height / 2, Math.max(0, r.height - bh) / 2);
-      } else if (ax - M - bw >= M) {
-        x = ax - M - bw; // beside, to the left
-        y = ay;
-      } else y = ay + r.height + M; // below
-    }
-    x = Math.max(M, Math.min(W - bw - M, x));
-    y = Math.max(M, Math.min(H - bh - M, y));
-    // CLN-71: a bubble clamped in from a speaker outside the play area (the doctor in the guide box) can land on
-    // another speaker (the patient's round face, top left): it moves beside that speaker, else under it
-    avoid.forEach((el) => {
-      const o = el.getBoundingClientRect();
-      if (!o.width || !o.height) return;
-      const ox = o.left - lr.left;
-      const oy = o.top - lr.top;
-      if (x >= ox + o.width + M / 2 || x + bw <= ox - M / 2 || y >= oy + o.height + M / 2 || y + bh <= oy - M / 2) return;
-      if (ox + o.width + M + bw <= W - M) x = ox + o.width + M;
-      else y = Math.min(H - bh - M, oy + o.height + M);
-    });
-    b.style.left = `${Math.round(x)}px`;
-    b.style.top = `${Math.round(y)}px`;
+  Voice.bubbles = new Set();
+  Voice.bubble = function (w, who, opts = {}) {
+    const C = global.Conversations;
+    if (!C || !C.bubble) return null; // (a page without the kit's conversations script: the line is heard, no bubble)
+    const layer = opts.layer || Voice.layer || document.body;
+    const anchor = Voice.speakers[who] && Voice.speakers[who]();
+    // the other speakers in the play area (the close-up's round face) are never covered by this one's bubble
+    const others = () =>
+      Object.keys(Voice.speakers)
+        .filter((k) => k !== who)
+        .map((k) => {
+          try {
+            return Voice.speakers[k] && Voice.speakers[k]();
+          } catch (e) {
+            return null;
+          }
+        })
+        .filter((el) => el && el.isConnected && el.getBoundingClientRect);
+    const b = C.bubble(anchor || null, { who, text: Kit.text(w), en: w && w.english, layer, avoid: others });
+    Voice.bubbles.forEach((x) => !x.isConnected && Voice.bubbles.delete(x));
+    Voice.bubbles.add(b);
+    return b;
   };
 
   /* ---------------- the instruction card ---------------- */

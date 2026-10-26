@@ -94,8 +94,6 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-spine::after { content: ""; position: absolute; left: 0; right: 0; top: 16%; height: 7%; background: var(--njg-gold); }
 .day-spine.go { transition: transform 1.4s cubic-bezier(.3, .7, .3, 1); z-index: 2; }
 .day-spine.landed { animation: var(--njg-glow-anim); animation-iteration-count: 2; } /* SH-129: the kit's one glow, twice (was a ring of its own) */
-.day-cv .day-bubble { visibility: hidden; }
-.day-cv .day-bubble.in { visibility: visible; }
 .day-book { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; opacity: 0; transform-origin: 0 0; pointer-events: none; touch-action: none; }
 .day-book.open { pointer-events: auto; }
 .day-pg-box { position: absolute; visibility: hidden; pointer-events: none; }

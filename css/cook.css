@@ -95,26 +95,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; animation: pop .22s ease-out; }
 
 /* ---------- things over the game ---------- */
-#bubble {
-  position: absolute; z-index: 10; max-width: min(50%, 560px); min-width: 120px;
-  background: var(--cream); border-radius: 20px; padding: 8px 10px;
-  box-shadow: var(--shadow); border: 2px solid rgba(80,60,40,.08);
-  transform-origin: left top; animation: pop .22s ease-out;
-}
-#bubble::before {
-  content: ""; position: absolute; width: 18px; height: 18px; background: var(--cream);
-  left: var(--tail-x, 24px); top: -9px; transform: rotate(45deg); border-radius: 3px;
-}
-#bubble.tail-left::before { left: -8px; top: var(--tail-y, 22px); }
 @keyframes pop { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.bubble-kutchi { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(18px, 2.5vw, 34px); line-height: 1.15; }
-.bubble-kutchi .word { color: var(--madder); }
-.bubble-english { font-size: clamp(12px, 1.3vw, 16px); color: var(--ink-soft); margin-top: 2px; }
-.bubble-foot { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 4px; }
-.bubble-foot button { border: none; background: var(--njg-face-bg); border-radius: 10px; font-size: 12px; font-weight: 800; padding: 4px 9px; }
-.bubble-foot .bubble-en.on { background: var(--ink); color: var(--cream); }
-.bubble-rec { font-size: 10px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 4px; }
-.bubble-rec::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #d7b98a; }
 
 #gist {
   position: absolute; left: 50%; top: 3%; transform: translateX(-50%); z-index: 9; pointer-events: none;
@@ -297,7 +278,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wp .wp-en { width: 100%; font-family: var(--ui-font); font-size: 13px; color: var(--ink-soft); font-weight: 700; }
 .wp.wp-full .wp-text { font-size: clamp(17px, 2vw, 28px); }
 .wp.wp-choice .wp-text { font-size: clamp(17px, 2.2vw, 28px); }
-#bubble .wp .wp-text { font-size: clamp(18px, 2.4vw, 32px); }
+.wp.wp-line .wp-text { font-size: clamp(18px, 2.4vw, 32px); }
 .wp .wp-eye { background: var(--njg-chip); }
 .wp .wp-eye svg { opacity: .8; }
 .wp .wp-gap { display: inline-block; flex: none; width: 30px; height: 1px; }
@@ -326,9 +307,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice:active { transform: scale(.96); }
 #choices .choice .wp button { padding: 7px; min-height: 0; box-shadow: none; border: none; border-radius: 50%; background: var(--njg-face-bg); width: 36px; height: 36px; font-size: 0; }
 /* C3 (LAY-04, F1's tap-small): the bubble's and a choice's speaker are a full tap target; the icon stays 24 px */
-#bubble .wp .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); flex: none; min-width: var(--njg-tap, 48px); min-height: var(--njg-tap, 48px); box-sizing: border-box; } /* (never squeezed under the 48 px tap, end check c3-end97) */
+.wp.wp-line .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); flex: none; min-width: var(--njg-tap, 48px); min-height: var(--njg-tap, 48px); box-sizing: border-box; } /* (never squeezed under the 48 px tap, end check c3-end97) */
 /* (the bigger target takes no room: the bubble and the choices keep their size, so they never reach into the play area) */
-#bubble .wp .wp-say, #choices .choice .wp .wp-say { margin: calc(-1 * var(--njg-s2, 8px)); }
+.wp.wp-line .wp-say, #choices .choice .wp .wp-say { margin: calc(-1 * var(--njg-s2, 8px)); }
 #choices .choice.glow { border-color: var(--brass); animation: var(--njg-glow-anim); }
 #choices .choice.wrong { animation: shake .35s; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
@@ -888,7 +869,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 }
 
 /* Design system 10: the end-of-station pop-up sits over the game scene only; the menu card never shows behind it */
-.njg-results-open #overlay { display: none !important; }
 
 /* 29 Sept (X2): the read-along underline on every spoken line (Nani's box, a speech card, the caption),
    one part at a time, the same gold underline as the order card's headline */
@@ -1059,7 +1039,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #passme .pm-ring .pm-ring-bg { stroke: rgba(var(--njg-gold-rgb), 0.28); }
 
 /* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
-.bubble-rec, .md-rec { display: none !important; }
+.md-rec { display: none !important; }
 
 /* SH-09 / PAN-01 (S05-C, S's request): on a short phone the stamped card ran 7 px past the sidebar and scrolled;
    its padding tightens there (the rows and the headline keep their size) */
