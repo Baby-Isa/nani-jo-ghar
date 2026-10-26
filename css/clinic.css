@@ -2,14 +2,14 @@
    and every healing game. Sidebar left, play area, big buttons right
    (docs/design-language/ux-principles.md s2, s13). Greybox until the rough art lands. */
 :root {
-  --cl-bg: #f3e7d3;
-  --cl-paper: #fffaf1;
-  --cl-ink: #3a2e28;
-  --cl-soft: #8a7a6c;
-  --cl-accent: #2e8b7a;
-  --cl-accent-2: #e2a33a;
-  --cl-ph: #8d8a86;
-  --cl-good: #3fa35b;
+  --cl-bg: var(--njg-house);
+  --cl-paper: var(--njg-cream);
+  --cl-ink: var(--njg-cl-ink);
+  --cl-soft: var(--njg-cl-soft);
+  --cl-accent: var(--njg-cl-accent);
+  --cl-accent-2: var(--njg-focus);
+  --cl-ph: var(--njg-cl-ph);
+  --cl-good: var(--njg-cl-good);
   /* R3a: the frame's sidebar width (js/shared/frame.js from data/layout.json `sidebar`; css/shared/tokens.css) */
   --cl-side-w: var(--njg-side-w);
   --cl-act-w: clamp(96px, 11vw, 150px);
@@ -26,15 +26,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* ---------- the frame ---------- */
 #clinic-root { position: fixed; inset: 0; }
 .cl-app { position: absolute; inset: 0; display: grid; grid-template-columns: var(--cl-side-w) 1fr var(--cl-act-w); gap: 0; }
-.cl-side { background: var(--cl-paper); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); overflow: hidden; min-height: 0; }
+.cl-side { background: var(--cl-paper); border-right: 3px solid var(--njg-step-edge); display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); overflow: hidden; min-height: 0; }
 .cl-side-top:not(.njg-guide) { display: flex; align-items: center; gap: var(--njg-s2); }
 .cl-main { position: relative; overflow: hidden; min-width: 0; }
 .cl-play { position: absolute; inset: 0; }
 .cl-stage { position: absolute; inset: 0; }
-.cl-actions { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2) var(--njg-s3); background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.03)); }
+.cl-actions { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2) var(--njg-s3); background: linear-gradient(90deg, rgba(var(--njg-black-rgb), 0), rgba(var(--njg-black-rgb), .03)); }
 
 /* ---------- the light bulb ---------- */
-.cl-bulb { width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e7cf8e; background: #fff6d8; color: #caa13a; display: grid; place-items: center; cursor: pointer; flex: none; }
+.cl-bulb { width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e7cf8e; background: var(--njg-chosen); color: #caa13a; display: grid; place-items: center; cursor: pointer; flex: none; }
 .cl-bulb svg { width: 28px; height: 28px; }
 .cl-bulb.lit { background: #ffe26a; color: #b8860b; box-shadow: 0 0 18px 6px rgba(255, 220, 90, .8); }
 .cl-hint-n { font: 800 var(--njg-t2) var(--cl-head); color: var(--cl-soft); }
@@ -42,39 +42,39 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-hint-n { display: none !important; }
 
 /* ---------- the instruction card ---------- */
-.cl-card { background: #fff; border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: var(--njg-s2) var(--njg-s2) var(--njg-s2); flex: 0 1 auto; min-height: 0; overflow: auto; }
+.cl-card { background: var(--njg-white); border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: var(--njg-s2) var(--njg-s2) var(--njg-s2); flex: 0 1 auto; min-height: 0; overflow: auto; }
 .cl-card-head { display: flex; align-items: center; gap: var(--njg-s2); margin-bottom: var(--njg-s1); }
 .cl-card-face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex: none; background: #d6b08c; }
 .cl-card-face:empty { display: none; }
 .cl-card-face svg, .cl-card-face .cl-fig { width: 100%; height: 100%; }
 .cl-card-title { flex: 1; font: 700 15px var(--cl-head); color: var(--cl-soft); line-height: 1.1; }
-.cl-card-speak { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e0d2bd; background: #fffaf1; font-size: 20px; cursor: pointer; flex: none; }
+.cl-card-speak { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--njg-step-edge); background: var(--njg-cream); font-size: 20px; cursor: pointer; flex: none; }
 .cl-card-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
 .cl-row { display: flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 700 clamp(15px, 1.7vw, 22px) var(--cl-head); line-height: 1.15; }
-.cl-row.now { background: #fff4df; }
+.cl-row.now { background: var(--njg-chosen); }
 .cl-row.reading { background: #ffe9b3; }
 .cl-row.pulse { animation: cl-throb 1s ease-in-out infinite; }
 .cl-tick { width: 24px; height: 24px; border-radius: 50%; border: 3px solid #dccbb2; flex: none; position: relative; }
 .cl-row.done .cl-tick { background: var(--cl-good); border-color: var(--cl-good); }
-.cl-row.done .cl-tick::after { content: ""; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid #fff; border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.cl-row.done .cl-tick::after { content: ""; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid var(--njg-white); border-width: 0 3px 3px 0; transform: rotate(45deg); }
 .cl-row.done .cl-row-text { opacity: .6; }
 .cl-row-en { display: none; }
 .cl-card.english .cl-row-text { display: none; }
 /* the bulb (E25): the same English look as Cook's sidebar under its bulb (its indigo, the UI font, never bold): CLN-76 */
-.cl-card.english .cl-row-en { display: inline; color: #34457a; font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
+.cl-card.english .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
 .cl-words .ph { color: var(--cl-ph); font-style: italic; }
 .cl-words .ku { color: var(--cl-ink); }
 .cl-words .ph + .ku, .cl-words .ku + .ph, .cl-words .ph + .ph { margin-left: .25em; }
-@keyframes cl-throb { 0%, 100% { transform: scale(1); background: #fff4df; } 50% { transform: scale(1.04); background: #ffe2a6; } }
+@keyframes cl-throb { 0%, 100% { transform: scale(1); background: var(--njg-chosen); } 50% { transform: scale(1.04); background: #ffe2a6; } }
 
 /* ---------- the tray (fixed slots) ---------- */
 .cl-side-tray { flex: 0 0 auto; }
 .cl-tray { display: flex; flex-wrap: wrap; gap: var(--njg-s2); }
 .cl-side .cl-tray { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
 .cl-side .cl-tray .cl-dish { width: 100%; height: clamp(48px, 9vh, 76px); }
-.cl-dish { position: relative; width: clamp(64px, 8vw, 96px); height: clamp(64px, 8vw, 96px); border-radius: 50%; border: 4px dashed #d8c6a8; background: #fbf4e6; display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s; }
+.cl-dish { position: relative; width: clamp(64px, 8vw, 96px); height: clamp(64px, 8vw, 96px); border-radius: 50%; border: 4px dashed #d8c6a8; background: var(--njg-cream-2); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s; }
 .cl-side .cl-dish { border-radius: 18px; }
-.cl-dish.full { border-style: solid; border-color: #cdb996; background: #fff; }
+.cl-dish.full { border-style: solid; border-color: #cdb996; background: var(--njg-white); }
 .cl-dish.lit { border-color: var(--cl-accent-2); box-shadow: 0 0 0 4px rgba(226, 163, 58, .35); }
 .cl-dish.sel { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); transform: scale(1.05); }
 .cl-dish.used { opacity: .45; }
@@ -84,7 +84,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-dish-n { position: absolute; right: 4px; bottom: 2px; font: 800 16px var(--cl-head); color: var(--cl-soft); }
 
 /* ---------- items (greybox discs until the rough art) ---------- */
-.cl-item { --tint: #e9dfcf; width: 78%; height: 78%; max-width: 88px; max-height: 88px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #fff, var(--tint)); border: 3px solid rgba(0, 0, 0, .08); pointer-events: none; }
+.cl-item { --tint: var(--njg-tile-edge); width: 78%; height: 78%; max-width: 88px; max-height: 88px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, var(--njg-white), var(--tint)); border: 3px solid rgba(var(--njg-black-rgb), .08); pointer-events: none; }
 .cl-side .cl-dish .cl-item { width: auto; aspect-ratio: 1; height: 82%; }
 .cl-item[data-colour] { border-color: var(--tint); border-width: 5px; }
 .cl-item.small { transform: scale(.72); }
@@ -97,34 +97,34 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* ---------- the tally (top right of the play area) ---------- */
 .cl-tally { position: absolute; top: 8px; right: 8px; display: flex; gap: var(--njg-s2); z-index: 30; pointer-events: none; }
 .cl-tally.empty { display: none; }
-.cl-tally-chip { display: flex; align-items: center; gap: var(--njg-s1); background: #fff; border-radius: 20px; padding: var(--njg-s1) var(--njg-s2) var(--njg-s1) var(--njg-s1); box-shadow: 0 2px 6px rgba(0, 0, 0, .1); font: 800 20px var(--cl-head); }
+.cl-tally-chip { display: flex; align-items: center; gap: var(--njg-s1); background: var(--njg-white); border-radius: 20px; padding: var(--njg-s1) var(--njg-s2) var(--njg-s1) var(--njg-s1); box-shadow: 0 2px 6px rgba(var(--njg-black-rgb), .1); font: 800 20px var(--cl-head); }
 .cl-tally-chip.bump { animation: cl-bump .3s; }
 @keyframes cl-bump { 50% { transform: scale(1.2); } }
 
 /* ---------- the big buttons (right) ----------
    S02-A (non-negotiable 8, SH-61): the shared kit's buttons (.njg-btn: ✓ Done, → Next, the pills) are styled by
    css/shared/buttons.css alone; these rules are only for the clinic's own old buttons */
-.cl-go:not(.njg-btn) { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
+.cl-go:not(.njg-btn) { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: var(--njg-white) !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
 .cl-go:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
 .cl-go:not(.njg-btn) .ph { color: #e8fff9; }
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
 .cl-go:not(.njg-btn).done {
   align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
-  border: 1px solid #e6d5b8; color: transparent !important; font-size: 0; overflow: hidden;
-  box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
+  background: var(--njg-cream) no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
+  border: 1px solid var(--njg-cream-edge); color: transparent !important; font-size: 0; overflow: hidden;
+  box-shadow: 0 4px 0 var(--njg-cream-lip), 0 8px 18px rgba(70, 45, 20, 0.2);
 }
 .cl-go:not(.njg-btn).done.throb { animation: var(--njg-pulse-anim); }
-.cl-go:not(.njg-btn).done:active { box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
-.cl-go:not(.njg-btn).alt { background: #fff; color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
+.cl-go:not(.njg-btn).done:active { box-shadow: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2); }
+.cl-go:not(.njg-btn).alt { background: var(--njg-white); color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
 .cl-go:not(.njg-btn).alt .ph { color: var(--cl-soft); }
 .cl-go:not(.njg-btn).throb { animation: var(--njg-pulse-anim); }
 .cl-go:not(.njg-btn):disabled { opacity: .35; animation: none; cursor: default; }
 
 /* ---------- speech bubbles ---------- */
-.cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: #fff; border-radius: 18px; padding: var(--njg-s2) var(--njg-s3); font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(0, 0, 0, .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
+.cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: var(--njg-white); border-radius: 18px; padding: var(--njg-s2) var(--njg-s3); font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(var(--njg-black-rgb), .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
 .cl-bubble.top { left: 50%; top: 10px; transform: translateX(-50%); }
-.cl-bubble.who-patient { background: #fff7e8; border: 3px solid #f1d9ae; }
+.cl-bubble.who-patient { background: var(--njg-cream-2); border: 3px solid #f1d9ae; }
 .cl-bubble.who-doctor { background: #eef8f5; border: 3px solid #bfe0d7; }
 @keyframes cl-pop { from { opacity: 0; } to { opacity: 1; } }
 /* CLN-76 (E1, G2): a line with no Kutchi yet: grey italic, flagged "to record" for the grown-ups, never dark text */
@@ -165,11 +165,11 @@ body.clinic button { font-family: inherit; color: inherit; }
 @keyframes cl-spin { to { transform: rotate(360deg); } }
 
 /* ---------- lab chrome ---------- */
-.cl-lab-bar { position: fixed; top: 0; left: var(--cl-side-w); right: var(--cl-act-w); z-index: 200; display: flex; flex-wrap: wrap; gap: var(--njg-s2); align-items: center; padding: var(--njg-s1) var(--njg-s2); background: rgba(255, 250, 241, .92); border-bottom: 2px solid #e6d6bd; font: 600 13px var(--cl-font); }
-.cl-lab-bar select, .cl-lab-bar input, .cl-lab-bar button { font: 600 13px var(--cl-font); padding: var(--njg-s1) var(--njg-s2); border-radius: 8px; border: 1px solid #cdb996; background: #fff; }
+.cl-lab-bar { position: fixed; top: 0; left: var(--cl-side-w); right: var(--cl-act-w); z-index: 200; display: flex; flex-wrap: wrap; gap: var(--njg-s2); align-items: center; padding: var(--njg-s1) var(--njg-s2); background: rgba(255, 250, 241, .92); border-bottom: 2px solid var(--njg-step-edge); font: 600 13px var(--cl-font); }
+.cl-lab-bar select, .cl-lab-bar input, .cl-lab-bar button { font: 600 13px var(--cl-font); padding: var(--njg-s1) var(--njg-s2); border-radius: 8px; border: 1px solid #cdb996; background: var(--njg-white); }
 .cl-lab-bar .grow { flex: 1; }
 .cl-lab-bar.min > :not(.cl-lab-toggle) { display: none; }
-.cl-lab-out { position: fixed; left: calc(var(--cl-side-w) + 8px); bottom: 8px; z-index: 200; max-width: 55vw; max-height: 40vh; overflow: auto; background: rgba(255, 255, 255, .95); border-radius: 10px; padding: var(--njg-s2) var(--njg-s2); font: 12px ui-monospace, monospace; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(0, 0, 0, .15); }
+.cl-lab-out { position: fixed; left: calc(var(--cl-side-w) + 8px); bottom: 8px; z-index: 200; max-width: 55vw; max-height: 40vh; overflow: auto; background: rgba(255, 255, 255, .95); border-radius: 10px; padding: var(--njg-s2) var(--njg-s2); font: 12px ui-monospace, monospace; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(var(--njg-black-rgb), .15); }
 .cl-lab-out { display: none; }  /* CLN-159: shown only on ?debug=1 (lab/clinic-heal-host.html sets data-lab-debug) */
 html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
@@ -222,7 +222,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-seat.standing .cl-seat-who { transform: translateY(-8%); }
 .cl-seat.walking { transform: translate(var(--dx), var(--dy)) scale(.9); z-index: 5; pointer-events: none; }
 .cl-seat.rock .cl-seat-who { animation: cl-shiver .5s 2; }
-.cl-ring { position: absolute; left: 50%; top: -2%; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: conic-gradient(#e2a33a var(--p, 100%), #f1e3cc 0); animation: cl-ring var(--t, 30s) linear infinite; }
+.cl-ring { position: absolute; left: 50%; top: -2%; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: conic-gradient(var(--njg-focus) var(--p, 100%), #f1e3cc 0); animation: cl-ring var(--t, 30s) linear infinite; }
 @property --p { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
 @keyframes cl-ring { from { --p: 100%; } to { --p: 0%; } }
 .cl-exam-spot { position: absolute; right: 2%; bottom: 6%; width: 22%; height: 40%; }
@@ -234,7 +234,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-probe.done { opacity: .35; animation: none; }
 @keyframes cl-probe { 50% { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 0 0 8px rgba(226, 163, 58, .25); } }
 .cl-kit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: var(--njg-s2); z-index: 25; }
-.cl-kit-tool { width: clamp(52px, min(7vw, 13vh), 84px); height: clamp(52px, min(7vw, 13vh), 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.cl-kit-tool { width: clamp(52px, min(7vw, 13vh), 84px); height: clamp(52px, min(7vw, 13vh), 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: var(--njg-white); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .cl-kit-tool.sel { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); transform: scale(1.06); }
 .cl-find { position: absolute; transform: translate(-50%, -50%); font-size: 34px; pointer-events: none; animation: cl-pop .2s; }
 .cl-find.sore { font-size: 46px; filter: drop-shadow(0 0 8px #ffb347); }
@@ -243,32 +243,32 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-pharmacy .cl-belt { position: absolute; left: 0; right: 0; top: 8%; height: 30%; }
 .cl-belt-track { position: absolute; inset: 18% 0; background: repeating-linear-gradient(90deg, #6f7a86 0 26px, #5f6a75 26px 52px); border-top: 6px solid #4b545e; border-bottom: 6px solid #4b545e; overflow: hidden; }
 .cl-belt.stopped .cl-belt-track { filter: saturate(.4); }
-.cl-belt-dish { position: absolute; left: 0; top: 50%; margin-top: calc(clamp(64px, 9vw, 104px) / -2); width: clamp(64px, 9vw, 104px); height: clamp(64px, 9vw, 104px); border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; padding: 0; cursor: pointer; will-change: transform; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); touch-action: none; }
-.cl-fly { position: fixed; z-index: 300; border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; transition: transform .3s ease-in; pointer-events: none; }
+.cl-belt-dish { position: absolute; left: 0; top: 50%; margin-top: calc(clamp(64px, 9vw, 104px) / -2); width: clamp(64px, 9vw, 104px); height: clamp(64px, 9vw, 104px); border-radius: 50%; border: 4px solid var(--njg-plain); background: var(--njg-cream); display: grid; place-items: center; padding: 0; cursor: pointer; will-change: transform; box-shadow: 0 4px 0 rgba(var(--njg-black-rgb), .18); touch-action: none; }
+.cl-fly { position: fixed; z-index: 300; border-radius: 50%; border: 4px solid var(--njg-plain); background: var(--njg-cream); display: grid; place-items: center; transition: transform .3s ease-in; pointer-events: none; }
 .cl-counter-tray { position: absolute; right: 3%; bottom: 6%; padding: var(--njg-s3) var(--njg-s3); background: #caa46f; border-radius: 22px; box-shadow: 0 6px 0 #9c7a4a; display: flex; gap: var(--njg-s2); }
 .cl-counter-tray .cl-dish { cursor: default; }
-.cl-dish.lifted { transform: translateY(-18px) scale(1.08); box-shadow: 0 10px 18px rgba(0, 0, 0, .2); }
-.cl-stopper { position: absolute; left: 3%; bottom: 8%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff6d8; font-size: 30px; cursor: pointer; }
-.cl-item.own-colour { border-color: rgba(0, 0, 0, .08); }
+.cl-dish.lifted { transform: translateY(-18px) scale(1.08); box-shadow: 0 10px 18px rgba(var(--njg-black-rgb), .2); }
+.cl-stopper { position: absolute; left: 3%; bottom: 8%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: var(--njg-chosen); font-size: 30px; cursor: pointer; }
+.cl-item.own-colour { border-color: rgba(var(--njg-black-rgb), .08); }
 
 /* stage 5: faces, the one more thing, the sticker */
 .cl-faces { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--njg-s2); width: min(38%, 300px); z-index: 25; }
-.cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid #e2d3bb; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--njg-s1); cursor: pointer; padding: var(--njg-s2); }
+.cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid var(--njg-step-edge); background: var(--njg-white); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--njg-s1); cursor: pointer; padding: var(--njg-s2); }
 .cl-face-emoji { font-size: clamp(34px, 5vw, 54px); line-height: 1; }
 .cl-face-word { font: 700 15px var(--cl-head); }
 .cl-face-card.yes { border-color: var(--cl-good); box-shadow: 0 0 0 5px rgba(63, 163, 91, .3); }
 .cl-face-card.nope { animation: cl-shake .45s; }
-.cl-extra { margin-top: auto; width: 100%; height: 76px; border-radius: 18px; border: 4px solid var(--cl-accent-2); background: #fff; display: grid; place-items: center; cursor: pointer; animation: var(--njg-pulse-anim); }
-.cl-sticker { position: absolute; right: 8%; top: 8%; width: 96px; height: 96px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, .2); animation: cl-sticker 1s ease-out forwards; z-index: 30; }
+.cl-extra { margin-top: auto; width: 100%; height: 76px; border-radius: 18px; border: 4px solid var(--cl-accent-2); background: var(--njg-white); display: grid; place-items: center; cursor: pointer; animation: var(--njg-pulse-anim); }
+.cl-sticker { position: absolute; right: 8%; top: 8%; width: 96px; height: 96px; border-radius: 50%; border: 5px solid var(--njg-white); box-shadow: 0 4px 14px rgba(var(--njg-black-rgb), .2); animation: cl-sticker 1s ease-out forwards; z-index: 30; }
 @keyframes cl-sticker { 0% { transform: scale(0) rotate(-30deg); } 60% { transform: scale(1.2) rotate(8deg); } 100% { transform: scale(1) rotate(-6deg); } }
 
 /* speaking: the pills without a mic (the shared Say panel draws its own) */
-.cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s2); max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: var(--njg-s3); border-radius: 22px; box-shadow: 0 6px 20px rgba(0, 0, 0, .15); }
+.cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s2); max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: var(--njg-s3); border-radius: 22px; box-shadow: 0 6px 20px rgba(var(--njg-black-rgb), .15); }
 .cl-pills-cap { width: 100%; text-align: center; font: 700 16px var(--cl-head); color: var(--cl-soft); }
-.cl-pill { min-height: 64px; padding: var(--njg-s2) var(--njg-s4); border-radius: 32px; border: 3px solid #d8c6a8; background: #fff; font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
+.cl-pill { min-height: 64px; padding: var(--njg-s2) var(--njg-s4); border-radius: 32px; border: 3px solid #d8c6a8; background: var(--njg-white); font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
 
 /* close the clinic: the receipt */
-.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: #fff; border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(0, 0, 0, .15); text-align: center; }
+.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: var(--njg-white); border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(var(--njg-black-rgb), .15); text-align: center; }
 /* CLN-111, CLN-03 (s04-r2k2): the receipt is the body of the one shared end pop-up, at its one place: no card of its own */
 .njg-results .cl-receipt { position: static; transform: none; width: min(100%, 520px); margin: 0 auto; background: none; box-shadow: none; padding: 0; }
 @media (max-height: 430px) {
@@ -279,7 +279,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
   .njg-results .cl-receipt-coins { font-size: 22px; margin-top: var(--njg-s1); }
 }
 .cl-receipt-title { font-size: 44px; }
-.cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed #eadcc6; }
+.cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed var(--njg-tint-edge); }
 .cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
 .cl-receipt-item { width: 56px; height: 56px; display: grid; place-items: center; }
 .cl-receipt-mark { margin-left: auto; width: var(--njg-s6); height: var(--njg-s6); filter: grayscale(1) opacity(.45); }
@@ -290,7 +290,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 /* narrow and short screens */
 @media (max-width: 700px) and (orientation: portrait) {
   .cl-app { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
-  .cl-side { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 3px solid #e6d6bd; max-height: 34vh; }
+  .cl-side { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 3px solid var(--njg-step-edge); max-height: 34vh; }
   .cl-side .cl-card { flex: 1 1 60%; }
   .cl-side-tray { flex: 1 1 100%; }
   .cl-side .cl-tray { flex-direction: row; }
@@ -299,7 +299,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
   .cl-go:not(.njg-btn) { min-width: 140px; }
   .cl-lab-bar { left: 0; right: 0; }
 }
-.cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff; font-size: 30px; cursor: pointer; z-index: 25; }
+.cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: var(--njg-white); font-size: 30px; cursor: pointer; z-index: 25; }
 .cl-mag.on { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .3); }
 /* sidebar dishes on short screens: the picture stays inside its dish (heal B's note at 915x375) */
 .cl-side .cl-dish { overflow: hidden; grid-template-rows: 100%; }
@@ -307,7 +307,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
 /* ================= clinic v2 (docs/game-design/modes/clinic.md part A) ================= */
 /* the scene box: the approved background at full strength; everything placed in shares of the picture */
-.cl-room.v2 { background: #efe5d6; overflow: hidden; }
+.cl-room.v2 { background: var(--njg-panel); overflow: hidden; }
 .cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }
 .cl-scene-cap { position: absolute; display: none; background-repeat: no-repeat; filter: blur(2px); }
 /* A2: the square exam room (R3): the whole picture, running past the room box's top and bottom (stages/common.js) */
@@ -325,9 +325,9 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-wp-fig { position: relative; height: 100%; isolation: isolate; transform-origin: 50% 100%; }
 .cl-wp-img { height: 100%; width: auto; display: block; }
 .cl-wp-tint { position: absolute; inset: 0; background: var(--tint); mix-blend-mode: color; opacity: .95;
-  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, var(--njg-black) 60%, var(--njg-black) 81%, transparent 84%);
   -webkit-mask-size: 100% 100%, 100% 100%; -webkit-mask-composite: source-in;
-  mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, var(--njg-black) 60%, var(--njg-black) 81%, transparent 84%);
   mask-size: 100% 100%, 100% 100%; mask-composite: intersect; pointer-events: none; }
 .cl-wp-kid { position: absolute; right: -34%; bottom: 0; height: 52%; pointer-events: none; }
 .cl-wp.puzzled .cl-wp-fig { animation: cl-shake .7s; }
@@ -338,10 +338,10 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-wp .cl-ring { top: -8%; }
 /* CLN-48: the knee's lit dot (an svg circle) carries .cl-ring for the checks; none of the waiting room's ring styles */
 svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-radius: 0; background: none; animation: none; }
-.cl-wtick { width: clamp(48px, 4.6vw, 58px); height: clamp(48px, 4.6vw, 58px); padding: var(--njg-s2); border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
+.cl-wtick { width: clamp(48px, 4.6vw, 58px); height: clamp(48px, 4.6vw, 58px); padding: var(--njg-s2); border-radius: 50%; border: 4px solid var(--njg-gold); background: rgba(255, 255, 255, .88); color: var(--njg-white) !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
 .cl-wtick svg { width: 100%; height: 100%; display: block; opacity: 0; }
 .cl-wtick.locked svg { opacity: 1; }
-.cl-wtick.locked { background: #3fa35b; border-color: #fff; animation: cl-lock .35s ease-out; }
+.cl-wtick.locked { background: var(--njg-cl-good); border-color: var(--njg-white); animation: cl-lock .35s ease-out; }
 .cl-wtick.nope { animation: cl-tick-shake .5s; }
 .cl-wtick.gone { opacity: 0; pointer-events: none; transition: opacity .4s; }
 @keyframes cl-tick-shake { 20%, 60% { transform: translate(calc(-50% - 7px), -100%); } 40%, 80% { transform: translate(calc(-50% + 7px), -100%); } }
@@ -354,7 +354,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-doc svg { width: 100%; height: 100%; display: block; }
 .cl-doc-stand { transform: translate(-50%, -100%) scaleX(-1); }
 .cl-room.v2 .cl-kit { left: 2%; right: auto; top: 57%; bottom: auto; transform: translateY(-50%); flex-direction: column; background: rgba(255, 250, 241, .9); padding: var(--njg-s2); border-radius: 16px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-kit-tool.cue { animation: var(--njg-pulse-anim); border-color: #c9962e; }
+.cl-kit-tool.cue { animation: var(--njg-pulse-anim); border-color: var(--njg-gold); }
 .cl-item.standin { background: none; border: none; border-radius: 0; }
 .cl-item.standin svg { width: 100%; height: 100%; display: block; }
 
@@ -365,9 +365,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-belt.v2 .cl-belt-dish .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; filter: drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
 .cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: radial-gradient(circle at 50% 60%, var(--tint) 0 34%, transparent 36%); }
 .cl-belt.v2.stopped .cl-belt-dish { filter: saturate(.5); }
-.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: var(--njg-s2) var(--njg-s3); gap: var(--njg-s3); }
-.cl-counter-tray.v2 .cl-dish { border-radius: 14px; border: 3px dashed #c9962e; background: rgba(255, 255, 255, .6); }
-.cl-counter-tray.v2 .cl-dish.full { border: 3px solid #c9962e; background: #fff; }
+.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(var(--njg-gold-rgb), .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: var(--njg-s2) var(--njg-s3); gap: var(--njg-s3); }
+.cl-counter-tray.v2 .cl-dish { border-radius: 14px; border: 3px dashed var(--njg-gold); background: rgba(255, 255, 255, .6); }
+.cl-counter-tray.v2 .cl-dish.full { border: 3px solid var(--njg-gold); background: var(--njg-white); }
 .cl-counter-tray.v2 .cl-dish .cl-item { background: none; border: 0; }
 .cl-fly .cl-item { background: none; border: 0; }
 .cl-fly { background: none; border: 0; }
@@ -375,30 +375,30 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* E: the send-off on CB5: the face circle, the four feeling cards (or what helps), the apple, in the scene */
 .cl-feel { width: 100%; height: 100%; display: grid; place-items: center; }
 .cl-feel svg { width: 100%; height: 100%; display: block; }
-.cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid #fff; display: grid; place-items: center; }
+.cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: var(--njg-white); box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid var(--njg-white); display: grid; place-items: center; }
 .cl-feel-q { font: 800 26px var(--cl-head); color: #b9ae9f; }
 .cl-feel-circle.on { animation: cl-pop .25s ease-out; }
 .cl-feel-cards { display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid var(--njg-step-edge); }
 .cl-help-card .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; }
 .room-door .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
 .room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
 .cl-fly-help { position: fixed; z-index: 300; transition: transform .45s ease-in; pointer-events: none; }
-.cl-ask-card { transform: translate(-50%, -100%); width: 86px; height: 86px; border-radius: 50%; background: #fff; box-shadow: 0 4px 14px rgba(40, 25, 10, .2); border: 4px solid #dde6d5; }
+.cl-ask-card { transform: translate(-50%, -100%); width: 86px; height: 86px; border-radius: 50%; background: var(--njg-white); box-shadow: 0 4px 14px rgba(40, 25, 10, .2); border: 4px solid #dde6d5; }
 .cl-ask-card .cl-face { width: 100%; height: 100%; }
-.cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: #fff; font: 800 24px var(--cl-head); display: grid; place-items: center; }
+.cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: var(--njg-white); font: 800 24px var(--cl-head); display: grid; place-items: center; }
 .cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
 /* G6: the running count on a row (level 1), the Kutchi number word */
-.cl-row-count { margin-left: auto; padding: var(--njg-s1) var(--njg-s2); border-radius: 12px; background: #fff4df; color: #8c2f2f; font: 800 17px var(--cl-head); }
+.cl-row-count { margin-left: auto; padding: var(--njg-s1) var(--njg-s2); border-radius: 12px; background: var(--njg-chosen); color: var(--njg-word); font: 800 17px var(--cl-head); }
 .cl-row-count:empty { display: none; }
 .cl-row-count.bump { animation: cl-bump .3s; }
 .cl-row.done .cl-row-count { background: none; }
 
 /* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
 .cl-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
-.cl-help-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: var(--njg-s3) var(--njg-s3); box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
-.cl-help-pop .ob-skip-row { color: #2a2522; }
+.cl-help-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: 2px solid var(--njg-cream-edge); background: var(--njg-cream); font: 800 22px var(--cl-head); color: var(--njg-ink); cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: var(--njg-ink); color: var(--njg-bubble); border-radius: 16px; padding: var(--njg-s3) var(--njg-s3); box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
+.cl-help-pop .ob-skip-row { color: var(--njg-ink); }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
 /* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
@@ -407,20 +407,20 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-card.oc-card { padding: var(--njg-s2) var(--njg-s3); border-radius: 12px; }
 .cl-card.oc-card .cl-card-head { margin-bottom: var(--njg-s2); }
 .cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
-.cl-card.oc-card .cl-row { justify-content: space-between; padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: #2a2522; }
+.cl-card.oc-card .cl-row { justify-content: space-between; padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: var(--njg-ink); }
 .cl-card.oc-card .cl-row + .cl-row { border-top: 1px solid #efe8dc; }
-.cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid #d9d2c7; border-radius: 50%; background: none; flex: none; order: 3; }
+.cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid var(--njg-grey); border-radius: 50%; background: none; flex: none; order: 3; }
 .cl-card.oc-card .cl-row.done .cl-tick { border: 0; background: none; }
 .cl-card.oc-card .cl-row.done .cl-tick::after { display: none; }
 .cl-card.oc-card .cl-row.done .cl-tick svg { width: 100%; height: 100%; display: block; }
 .cl-card.oc-card .cl-row.done .cl-row-text { opacity: .55; }
 .cl-card.oc-card .cl-row-count { order: 2; }
 .cl-card.oc-card .cl-row-text { flex: 1 1 auto; min-width: 0; }
-.cl-card.oc-card .cl-words .ku { color: #8c2f2f; }
+.cl-card.oc-card .cl-words .ku { color: var(--njg-word); }
 .cl-card .oc-row .oc-t::first-letter { text-transform: none; }
 .cl-nani .ng-face { position: relative; flex: none; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
 .cl-nani .ng-face img { display: block; border-radius: 50%; object-fit: cover; object-position: top; }
-.cl-nani .ng-face .say-badge { position: absolute; width: calc(var(--njg-guide-face) * 0.36); height: calc(var(--njg-guide-face) * 0.36); border-radius: 50%; background: #2a2522 no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+.cl-nani .ng-face .say-badge { position: absolute; width: calc(var(--njg-guide-face) * 0.36); height: calc(var(--njg-guide-face) * 0.36); border-radius: 50%; background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px var(--njg-white); }
 /* (the guide box's tools are the shared kit's, 48 px: css/shared/guide.css) */
 .cl-nani .ng-bulb .bulb-t { display: none; }
 .cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }
@@ -441,7 +441,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-card .oc-face.cl-card-face > .cl-face { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
 .cl-card .oc-face.cl-card-face > .cl-face svg, .cl-card .oc-face.cl-card-face > .cl-face img { width: 100%; height: 100%; object-fit: cover; }
 .cl-card .cl-row { font: inherit; }
-.cl-card .cl-row .cl-row-text .ku { color: #8c2f2f; }
+.cl-card .cl-row .cl-row-text .ku { color: var(--njg-word); }
 .cl-card .cl-row-count { margin-left: var(--njg-s2); font-size: 15px; }
 .cl-card .oc-row .oc-t::first-letter { text-transform: none; }
 .cl-card .oc-card.closed { cursor: pointer; }
@@ -456,9 +456,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-counter-tray .cl-dish.full:active { transform: scale(.94); }
 .cl-counter-tray.committed .cl-dish.full { cursor: default; }
 /* 13a: W4 ticks show their number as they're tapped; the picked person rises off the seat and stays raised */
-.cl-wtick.picked:not(.locked) { background: #fff6dc; border-color: #c9962e; }
+.cl-wtick.picked:not(.locked) { background: var(--njg-chosen); border-color: var(--njg-gold); }
 .cl-wtick.locked::after { content: none !important; }
-.cl-wtick.picked::after { content: attr(data-n); position: absolute; inset: 0; display: grid; place-items: center; font: 800 clamp(20px, 2.4vw, 28px) var(--cl-head); color: #8c2f2f; }
+.cl-wtick.picked::after { content: attr(data-n); position: absolute; inset: 0; display: grid; place-items: center; font: 800 clamp(20px, 2.4vw, 28px) var(--cl-head); color: var(--njg-word); }
 .cl-wtick { position: absolute; }
 .cl-wp .cl-wp-fig { transition: transform .45s ease-out; }
 .cl-wp.risen .cl-wp-fig { transform: translateY(-9%); }
@@ -469,22 +469,22 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @keyframes cl-pose-fade { 0% { opacity: .85; } 100% { opacity: 1; } }
 .cl-staged[data-pose="talk"][data-facing="left"] > svg, .cl-staged[data-pose="talk"][data-facing="left"] > img { transform: scaleX(-1); }
 .cl-staged[data-pose="talk"] { filter: saturate(.92); }
-.cl-card .oc-headline.reading { box-shadow: inset 0 -3px 0 #c9962e; }
+.cl-card .oc-headline.reading { box-shadow: inset 0 -3px 0 var(--njg-gold); }
 .cl-card .oc-headline .cl-row-en { display: none; }
 .cl-card.english .oc-headline .cl-row-text { display: none; }
-.cl-card.english .oc-headline .cl-row-en { display: inline; color: #34457a; font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
+.cl-card.english .oc-headline .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
 /* CLN-76: a placeholder (no Kutchi yet) keeps its grey italic under the bulb; only a real translation turns blue */
 .cl-card.english .cl-row-en.ph, .cl-card.english .oc-headline .cl-row-en.ph { color: var(--cl-ph); font-style: italic; }
 /* 13d: the feeling cards in a thought bubble rising from the patient's head, opening out to the right */
-.cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: var(--njg-s2); padding: var(--njg-s4) var(--njg-s4); background: #fff; border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
-.cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: var(--njg-s1); border-radius: 50%; border: 3px solid #e2d3bb; }
-.cl-thought-dot { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(40, 25, 10, .14); }
+.cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: var(--njg-s2); padding: var(--njg-s4) var(--njg-s4); background: var(--njg-white); border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
+.cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: var(--njg-s1); border-radius: 50%; border: 3px solid var(--njg-step-edge); }
+.cl-thought-dot { position: absolute; border-radius: 50%; background: var(--njg-white); box-shadow: 0 2px 6px rgba(40, 25, 10, .14); }
 .cl-thought-dot.d1 { width: 18px; height: 18px; left: -14px; bottom: -14px; }
 .cl-thought-dot.d2 { width: 11px; height: 11px; left: -28px; bottom: -30px; }
 @keyframes cl-thought-in { from { transform: scale(.2); opacity: 0; } }
 /* 13e: from level 3, the help items in a tray along the bottom of the screen */
-.cl-help-tray { position: absolute; z-index: 25; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s4); background: rgba(255, 250, 241, .9); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-help-tray .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-help-tray { position: absolute; z-index: 25; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s4); background: rgba(255, 250, 241, .9); border: 2px solid rgba(var(--njg-gold-rgb), .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-tray .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid var(--njg-step-edge); }
 /* s08-rejudge-fixes: on a phone (a short screen) a tray of four cards (level 2's feelings) draws them at 48 px (LAY-04's smallest),
    gap 8, padding 8/12: about 0.40 of the room, and sendoff.js sets its left edge at room x 0.50 (as level 3's), clear of both feet */
 @media (max-height: 479px) {
@@ -517,7 +517,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* ---- the heal games' close-up (was a <style> written by js/clinic/heal/scene.js; R5: on the tokens) ---- */
 .hs-root { position: absolute; inset: 0; z-index: 5; overflow: hidden; background: linear-gradient(#efe3cc 0 55%, #9fbfa6 55%); touch-action: none; user-select: none; -webkit-user-select: none; }
 .hs-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.hs-face { position: absolute; left: var(--njg-s2); top: var(--njg-s2); width: calc(var(--njg-big-face) * 1.2); height: calc(var(--njg-big-face) * 1.2); border-radius: 50%; background: #fff; border: 4px solid #d9bf95; box-shadow: var(--njg-shadow); z-index: 7; pointer-events: none; }
+.hs-face { position: absolute; left: var(--njg-s2); top: var(--njg-s2); width: calc(var(--njg-big-face) * 1.2); height: calc(var(--njg-big-face) * 1.2); border-radius: 50%; background: var(--njg-white); border: 4px solid var(--njg-bubble-edge); box-shadow: var(--njg-shadow); z-index: 7; pointer-events: none; }
 .hs-face svg { width: 100%; height: 100%; }
 /* A1: the patient's own head crop in the corner face (the drawn face stays under it, hidden) */
 .hs-face { overflow: hidden; }
@@ -533,18 +533,18 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .hs-tools { --hs-pic-h: calc(var(--njg-done) * 1.05); /* s08-w6c CLN-165: the tiles a step bigger (were 0.95) */ --hs-pic-w: calc(var(--hs-pic-h) * 1.3); position: absolute; right: var(--njg-s2); top: calc(var(--njg-s2) * 2 + var(--njg-big-face) * 1.2); display: grid; grid-template-columns: repeat(var(--cols, 1), auto); gap: var(--njg-s2); z-index: 8; pointer-events: none; }
 @media (max-height: 499.98px), (max-width: 499.98px) { .hs-tools { --hs-pic-h: calc(var(--njg-done) * 0.76); --hs-pic-w: calc(var(--hs-pic-h) * 1.36); } }
 .hs-tools > * { pointer-events: auto; }
-.hs-root .hs-tool { position: relative; flex: 0 0 auto; width: auto; margin: 0; box-sizing: border-box; min-width: calc(var(--hs-pic-w) + var(--njg-s1) * 2 + var(--njg-line-2) * 4); min-height: calc(var(--hs-pic-h) + var(--njg-s1) * 2 + var(--njg-line-2) * 4); border-radius: var(--njg-radius); border: calc(var(--njg-line-2) * 2) solid #d8c6a8; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; font: 700 var(--njg-t4) / 1.1 var(--cl-head); color: #5b4636; cursor: pointer; padding: var(--njg-s1); }
+.hs-root .hs-tool { position: relative; flex: 0 0 auto; width: auto; margin: 0; box-sizing: border-box; min-width: calc(var(--hs-pic-w) + var(--njg-s1) * 2 + var(--njg-line-2) * 4); min-height: calc(var(--hs-pic-h) + var(--njg-s1) * 2 + var(--njg-line-2) * 4); border-radius: var(--njg-radius); border: calc(var(--njg-line-2) * 2) solid #d8c6a8; background: var(--njg-white); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; font: 700 var(--njg-t4) / 1.1 var(--cl-head); color: #5b4636; cursor: pointer; padding: var(--njg-s1); }
 .hs-tool .g { font-size: calc(var(--hs-pic-h) * 0.7); line-height: 1.1; }
 .hs-tool .sw { display: flex; gap: var(--njg-s1); }
-.hs-tool .hs-sw { display: inline-block; width: var(--njg-s4); height: var(--njg-s5); border-radius: var(--njg-s1); background: var(--sw, #ccc); border: 2px solid rgba(0, 0, 0, .2); }
-.hs-tool.sel { border-color: #2e8b7a; box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); }
+.hs-tool .hs-sw { display: inline-block; width: var(--njg-s4); height: var(--njg-s5); border-radius: var(--njg-s1); background: var(--sw, #ccc); border: 2px solid rgba(var(--njg-black-rgb), .2); }
+.hs-tool.sel { border-color: var(--njg-cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); }
 .hs-tool.used { opacity: .45; }
 /* SH-53: the next tool's glow is the kit's (css/shared/focus.css: the tick's beat and reach), never a ring of its own */
 .hs-tool.pulse { animation: var(--njg-glow-anim); }
 .hs-timer { position: absolute; left: 22%; right: 22%; top: calc(var(--njg-big-face) * 1.3); height: var(--njg-s3); border-radius: var(--njg-s2); background: rgba(255, 255, 255, .7); border: 2px solid #d8c6a8; z-index: 7; overflow: hidden; pointer-events: none; }
 .hs-timer i { position: absolute; left: 0; top: 0; bottom: 0; background: #6bbf8a; transition: width .25s linear; }
 .hs-timer.low i { background: #f0a040; }
-.hs-said { position: absolute; z-index: 8; background: #fff; border: 3px solid #d9bf95; border-radius: var(--njg-radius); padding: 0 var(--njg-s2); font: 800 var(--njg-t2) / 1.2 var(--cl-head); color: #3b2415; pointer-events: none; white-space: nowrap; }
+.hs-said { position: absolute; z-index: 8; background: var(--njg-white); border: 3px solid var(--njg-bubble-edge); border-radius: var(--njg-radius); padding: 0 var(--njg-s2); font: 800 var(--njg-t2) / 1.2 var(--cl-head); color: #3b2415; pointer-events: none; white-space: nowrap; }
 .hs-judge { position: absolute; left: 50%; bottom: var(--njg-s3); transform: translateX(-50%); display: flex; gap: var(--njg-s4); z-index: 8; }
 /* the tightest phones: the four feeling faces in one row, so the bubble above the head stays on the screen */
 @media (max-height: 420px) { .cl-thought { grid-template-columns: repeat(4, auto); padding: var(--njg-s2) var(--njg-s3); } }
@@ -587,8 +587,8 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-pill-say svg { width: 22px; height: 22px; }
 /* the colour rung on her art: only her dress (37-70% of her height) takes the colour */
 .cl-wp.art .cl-wp-tint { opacity: .9;
-  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, #000 39%, #000 68%, transparent 71%);
-  mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, #000 39%, #000 68%, transparent 71%); }
+  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, var(--njg-black) 39%, var(--njg-black) 68%, transparent 71%);
+  mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, var(--njg-black) 39%, var(--njg-black) 68%, transparent 71%); }
 /* CLN-98: on her art (sitting on the bed) the feelings' thought bubble opens to the LEFT of her head */
 .cl-thought.beside { transform-origin: 100% 0%; }
 .cl-thought.beside .cl-thought-dot.d1 { left: auto; bottom: auto; right: -14px; top: 18px; }
@@ -597,13 +597,13 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
    before her answer); a tried one grey and still; the found one gold for a beat */
 .cl-probe { width: clamp(32px, 3.4vw, 44px); height: clamp(32px, 3.4vw, 44px); border-width: 3px; }
 .cl-probe::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: rgba(226, 163, 58, .95); }
-.cl-probe.asking { animation: none; border-color: #c9962e; background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+.cl-probe.asking { animation: none; border-color: var(--njg-gold); background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(var(--njg-gold-rgb), .25); }
 .cl-probe.tried { animation: none; border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); cursor: default; }
 .cl-probe.tried::after { background: rgba(120, 110, 100, .6); }
-.cl-probe.found { animation: none; border-color: #c9962e; background: rgba(242, 193, 78, .6); }
+.cl-probe.found { animation: none; border-color: var(--njg-gold); background: rgba(242, 193, 78, .6); }
 /* D3 (CLN-94): the find is her sore face, no icon: just a soft ring where she was looked at */
-.cl-find { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(201, 150, 46, .8); font-size: 0; animation: cl-pop .2s; }
-.cl-find.sore { font-size: 0; filter: none; border-color: #c9962e; box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+.cl-find { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(var(--njg-gold-rgb), .8); font-size: 0; animation: cl-pop .2s; }
+.cl-find.sore { font-size: 0; filter: none; border-color: var(--njg-gold); box-shadow: 0 0 0 6px rgba(var(--njg-gold-rgb), .25); }
 /* T30: the point her speech bubbles come from (her mouth on the art) */
 .cl-fig .fig-anchor { position: absolute; min-width: 2px; min-height: 2px; pointer-events: none; }
 /* T27 (decision 53): the doctor's request pop-up over the counter, then it folds into the sidebar */
@@ -634,16 +634,16 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-ph-face .cl-face { width: 100%; height: 100%; }
 .cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
 /* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
-.eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: #fffaf1; border: 2px solid #e2d3bb; border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }
-.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: calc(var(--njg-s2) * -1); border: var(--njg-s2) solid transparent; border-top: 0; border-bottom-color: #fffaf1; }
+.eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-cream); border: 2px solid var(--njg-step-edge); border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }
+.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: calc(var(--njg-s2) * -1); border: var(--njg-s2) solid transparent; border-top: 0; border-bottom-color: var(--njg-cream); }
 .eye-said.fade { opacity: 0; }
 .eye-said.talk { display: flex; gap: var(--njg-s2); padding: 12px 16px; }
 /* ART-18 (contract-14): the dots talk by the shared njg-talk (js/shared/request-popup.js Lifecycle.talk), a beat apart */
-.eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: #8a7a6a; }
+.eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: var(--njg-cl-soft); }
 .eye-said.talk i:nth-child(2) { animation-delay: .13s; }
 .eye-said.talk i:nth-child(3) { animation-delay: .26s; }
 /* a wrong yes / no shakes red (decision 59) */
-.hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
+.hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: var(--njg-wrong) !important; color: var(--njg-word) !important; animation: cl-shake .5s; }
 /* Sprint 11 (s11-clinic): the eye test's flash card, held up on a stand (the shared word card, js/shared/word-card.js; the
    hand-held card art comes from the art run), the big haa / na under it and the mic beside them */
 .eye-stand { position: absolute; z-index: 6; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
@@ -707,23 +707,23 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-probe { width: 48px; height: 48px; border: 0; background: none; }
 .cl-probe::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 3px solid rgba(226, 163, 58, .9); background: rgba(255, 226, 150, .35); }
 .cl-probe.asking, .cl-probe.tried, .cl-probe.found { border: 0; background: none; box-shadow: none; }
-.cl-probe.asking::before { border-color: #c9962e; background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+.cl-probe.asking::before { border-color: var(--njg-gold); background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(var(--njg-gold-rgb), .25); }
 .cl-probe.tried::before { border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); }
-.cl-probe.found::before { border-color: #c9962e; background: rgba(242, 193, 78, .6); }
+.cl-probe.found::before { border-color: var(--njg-gold); background: rgba(242, 193, 78, .6); }
 
 /* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
 .cl-rec, .bubble-rec { display: none !important; }
 
 /* decision 84 (CLN-117): a speaking moment's caption still to record is grey italic, like its pills */
-.njg-say .cap.ph { font-style: italic; color: #8a7a6a; }
+.njg-say .cap.ph { font-style: italic; color: var(--njg-cl-soft); }
 /* CLN-22 (S05-D): the pharmacy tray is the pantry's tray (PAN-07): its front edge is drawn over what sits on it (a
    flat lip across the bottom, above the items), and a space's outline fades as the item lands */
 .cl-counter-tray.v2 .cl-dish { position: relative; z-index: 1; transition: border-color .35s ease, background-color .35s ease; }
-.cl-counter-tray.v2::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: -2px; height: 17%; z-index: 2; pointer-events: none; background: rgb(251, 244, 230); border: 2px solid rgba(201, 150, 46, .55); border-top-color: rgba(201, 150, 46, .8); border-radius: 0 0 18px 18px; }
+.cl-counter-tray.v2::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: -2px; height: 17%; z-index: 2; pointer-events: none; background: rgb(251, 244, 230); border: 2px solid rgba(var(--njg-gold-rgb), .55); border-top-color: rgba(var(--njg-gold-rgb), .8); border-radius: 0 0 18px 18px; }
 .cl-counter-tray.v2 .cl-dish.full .cl-item { transform: translateY(16%); }
 
 /* CLN-03 (G3, S05-D3): Cook's review face at the pharmacy handover: her big round face over the tray, happy or a frown */
-.cl-review { position: absolute; z-index: 30; width: clamp(84px, 9vw, 128px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff; border: 4px solid #f1d9ae; box-shadow: 0 6px 18px rgba(40, 25, 10, .22); transform: translate(-50%, -112%); pointer-events: none; animation: cl-review-in .32s cubic-bezier(.3, 1.5, .5, 1) both; }
+.cl-review { position: absolute; z-index: 30; width: clamp(84px, 9vw, 128px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--njg-white); border: 4px solid #f1d9ae; box-shadow: 0 6px 18px rgba(40, 25, 10, .22); transform: translate(-50%, -112%); pointer-events: none; animation: cl-review-in .32s cubic-bezier(.3, 1.5, .5, 1) both; }
 .cl-review.frown { border-color: #d9c6ad; }
 .cl-review img, .cl-review svg { display: block; width: 100%; height: 100%; object-fit: cover; }
 @keyframes cl-review-in { from { transform: translate(-50%, -80%) scale(.4); opacity: 0; } to { transform: translate(-50%, -112%) scale(1); opacity: 1; } }

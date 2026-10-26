@@ -60,6 +60,19 @@
   --njg-ink-rgb: 42, 37, 34; --njg-cream-2-rgb: 253, 246, 232; --njg-black-rgb: 0, 0, 0;
   --njg-shade-rgb: 60, 35, 20; --njg-veil-rgb: 45, 32, 24; --njg-navy-shade-rgb: 30, 50, 90;
 
+  /* the live games' own colours, each aliased once by its game's :root palette (S13-A1: no repaint; fold them into the kit's
+     colours as each game is reworked) */
+  /* css/cook.css */
+  --njg-cook-ink: #2d2018; --njg-cook-ink-soft: #6b5a4c; --njg-cook-sage-dark: #4f6b4b; --njg-cook-brass: #c9973a; --njg-cook-madder: #b24a3a; --njg-cook-indigo: #34457a;
+  /* css/cook-side-v2.css */
+  --njg-sb-divider: #d2bf9f; --njg-sb-word: #a33a2c; --njg-sb-tint-b: #eaf0ee; --njg-sb-tint-b-edge: #d3dfda;
+  /* css/clinic.css */
+  --njg-cl-ink: #3a2e28; --njg-cl-soft: #8a7a6c; --njg-cl-accent: #2e8b7a; --njg-cl-ph: #8d8a86; --njg-cl-good: #3fa35b;
+  /* css/home.css */
+  --njg-home-ink: #3b2a20; --njg-home-wall: #f4dcb6; --njg-home-wall2: #ecd0a4; --njg-home-roof2: #93402d; --njg-home-wood: #7a4a2a; --njg-home-wood2: #5d3620;
+  /* css/first.css */
+  --njg-first-ink: #3a2418; --njg-first-leaf: #3f8f6b; --njg-first-gold: #e0b040;
+
   /* ---------- motion (S13-A1): the kit's four moves; css/shared/focus.css draws them, Cook's Phaser glow reads them
      (js/shared/tokens.js Motion). The tick's own pulse is the reference (SH-53: 1.2 s, a 12 px gold glow at .85) ---------- */
   --njg-glow-ms: 1200ms; --njg-glow-radius: var(--njg-s3); --njg-glow-rgb: var(--njg-focus-rgb); --njg-glow-alpha: .85;
