@@ -6,7 +6,7 @@ BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; com
 
 MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
 
-CONTEXT PACK: build/tools/ops/specs/s13-b2.context.md (848 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+CONTEXT PACK: build/tools/ops/specs/s13-b2.context.md (886 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
@@ -22,6 +22,7 @@ READ FIRST (in this order):
 FILES THIS SESSION OWNS (edit only these):
   - js/shared/conversations.js and css/shared/conversations.css (Conversations.bubble(anchor, {who, text, en, mood}) as the one bubble; its voice calls stay as S13-V left them)
   - js/shared/results.js and css/shared/results.css (the receipt as a data slot: Results.show({badges, words, receipt:[{face, item, ok, coins}]}))
+  - js/shared/charmaker.js and js/shared/story.js (their buttons only: #cm-done, #st-next)
   - the bubble lines of: js/clinic/kit.js (:649-669, cl-bubble) and every cl-bubble caller in js/clinic/stages/*.js and js/clinic/heal/games/*.js, css/clinic.css (:128-138, :722 and the receipt :276-282), js/cook/ui.js (:252-312, #bubble), css/cook.css (:112-131, :337-369, :1155, :974), js/day/book.js (:290, the day-bubble class) and css/day.css (:98-99)
   - build/sandbox/lib/contract.mjs (contract-4: every bubble is .cv-bubble; new contract-41b: nothing inside .njg-results carries a non-kit class) and its tests
   - build/sandbox/data/evidence.json (entries for this brief's elements only; add, never rewrite others)
@@ -46,15 +47,17 @@ TASKS (each with its acceptance criterion):
      Accept: contract-4 (every bubble is .cv-bubble, tail inside its speaker's head box) 0 breaks on your flows at 1280x665 and 915x412; the bubble kit sheet shows one look in cook, clinic, day, first and lab
   2. The end screen: the clinic's receipt and Cook's overlay rules move into results.js/.css as the receipt data slot; nothing inside .njg-results carries a game class. Same pages as today (the third page off by its one switch, S12).
      Accept: new contract (nothing non-kit inside .njg-results) 0 breaks; the end-screen kit sheet shows one look in Cook and the clinic at both sizes
+  3. First launch's two buttons are not the kit's: the character maker's tick (#cm-done, js/shared/charmaker.js) and the story's next arrow (#st-next, js/shared/story.js) break contract-34 eight times since S13-A2 widened it; make both NjgButtons (done, next) with their behaviour unchanged.
+     Accept: contract-34 0 breaks on first at both sizes
 
 PLACES (build/tools/review/kitmap.mjs --elem bubble,end screen: where each element is drawn or styled today; one place to fix, the copies go):
   bubble (.cv-bubble, .cl-bubble, #bubble, .day-bubble, .say-bubble):
-    the kit: css/shared/conversations.css:26-60,63-65,174,178; css/shared/order-card.css:443,490-499,502-506; js/shared/conversations.js:748,1038; js/shared/request-popup.js:321-322
-    outside the kit (8 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:102-105,110-111; css/cook.css:110-120,325,355,357; css/day.css:98-99; js/clinic/kit.js:649,669-670; js/clinic/screen.js:118; js/cook/ui.js:252,1409,1423; js/day/book.js:290; js/day/door.js:190
+    the kit: css/shared/conversations.css:26-60,63-65,174,178; css/shared/order-card.css:393,440-449,452-456; js/shared/conversations.js:739,1029; js/shared/request-popup.js:322-323
+    outside the kit (8 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:86-89,94-95; css/cook.css:98-108,300,329,331; css/day.css:97-98; js/clinic/kit.js:632,652-653; js/clinic/screen.js:107; js/cook/ui.js:254,1407,1417; js/day/book.js:290; js/day/door.js:190
     parked games (out of scope until unparked): css/who.css:131; js/who/ui.js:70
   end screen (.njg-results .rs-card, .njg-results):
-    the kit: css/shared/results.css:13-58,62-76,78,81,83-85,88-96,98-99,101-114,119-120,122,127-128,132 (+29 more); js/shared/buttons.js:33,65; js/shared/conversations.js:19; js/shared/host.js:325,329,348,629; js/shared/mode.js:285; js/shared/results.js:18,242,255,263,278,299,320-322,329,415,432,441,443-444 (+9 more)
-    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:241,243-247; css/cook.css:956; js/cook/coach.js:225; js/cook/flow.js:689,691,697; js/demo/cook-adapter.js:58; js/demo/heal-adapter.js:85
+    the kit: css/shared/results.css:13-58,62-76,78,81,83-85,88-96,98-99,101-114,119-120,122,127-128,132 (+29 more); js/shared/buttons.js:33,65; js/shared/conversations.js:19; js/shared/host.js:325,329,348,629; js/shared/mode.js:285; js/shared/results.js:18,232,245,253,268,289,310-312,319,405,422,431,433-434 (+9 more)
+    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:223,225-229; css/cook.css:891; js/cook/coach.js:225; js/cook/flow.js:689,691,697; js/demo/cook-adapter.js:58; js/demo/heal-adapter.js:85
     parked games (out of scope until unparked): css/parked-panels.css:1,6,10-18,20,22-23; css/snap.css:118; js/dress/flow.js:174; js/find/bot.js:69; js/find/flow.js:133; js/snap/flow.js:133
 
 REGRESSION ROWS TO RECHECK (6; * = open or reopened; the contract replay of your flows covers the rest):
