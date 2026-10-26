@@ -49,7 +49,8 @@ export const CLASSIC = [
   "js/clinic/stages/sendoff.js",
   "js/clinic/run.js",
 ];
-export const STYLES = ["css/shared/tokens.css", "css/shared/frame.css", "css/shared/tally.css", "css/shared/focus.css", "css/clinic.css"];
+// the shared kit in its one link (S13-B1: the kit review's shell rule), then the clinic's own sheet
+export const STYLES = ["css/shared/kit.css", "css/clinic.css"];
 /** The healing games in the pipeline, and the three parked ones (tummy, hic, hair: as they are, lab only). */
 export const HEAL = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 export const PARKED = ["tummy", "hic", "hair"];

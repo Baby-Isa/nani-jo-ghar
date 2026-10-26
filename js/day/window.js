@@ -114,7 +114,7 @@ export async function runWindow(el, api, day) {
   const bulbT = G
     ? setInterval(() => {
         if (G.watch) G.watch();
-        G.pulseBulbs(G.idleMs() >= (G.BULB_PULSE || 17000));
+        G.pulseBulbs(G.idleMs() >= G.BULB_PULSE); // (the ONE table's bulbPulseMs, data/shared.json; Infinity until it has loaded)
       }, 250)
     : 0;
   const html = (ln) => {

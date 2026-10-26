@@ -794,9 +794,17 @@ function check21(tl, segs, v, add) {
   }
 }
 // ---- S08 wave 1A: voice and help in every game (PAN-04, PAN-16, SH-94, SH-60, SH-95, SH-96, LNG-16) ----
-// The ladder these measure is data/cook.json calm.helpMs / bulbPulseMs (js/shared/guide.js PAUSE, BULB_PULSE): the help comes only
-// after the child has done nothing for this long (by level), counted from the LAST action.
-export const LADDER = [7000, 8000, 11000, 15000];
+// The ladder these measure is the ONE table, data/shared.json helpMs (js/shared/guide.js PAUSE through Tokens.ladder; S13-A1): the
+// help comes only after the child has done nothing for this long (by level), counted from the LAST action. Read from the table,
+// never a copy of it (S13-B1)
+const SHARED_LADDER = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL("../../../data/shared.json", import.meta.url), "utf8"));
+  } catch (e) {
+    return {};
+  }
+})();
+export const LADDER = Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
 export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
 export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
 export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)

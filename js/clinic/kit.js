@@ -37,7 +37,7 @@
   // decision 84 (CLN-14, S05-G): a placeholder keeps its hidden "to record" tag in the markup (data-rec), as Cook's and the
   // shared Say's do, so the tools can tell it from words the child reads
   const ph = (parent, text) => {
-    const n = h("span", "ph", parent, text);
+    const n = h("span", "njg-ph ph", parent, text); // (the kit's one placeholder class, S13-B1; .ph is the clinic's word-spacing hook, css/clinic.css .cl-words)
     n.dataset.rec = "to record";
     return n;
   };

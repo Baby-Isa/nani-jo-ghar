@@ -1261,7 +1261,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const dishName = (d) => {
     const w = R.dishWord(d.recipe);
     const n = d.count || d.cups || 1;
-    const name = Cook.isPlaceholder(w) ? `<i class="ph" title="To record">${UI.esc(Cook.display(w))}</i>` : UI.esc(Cook.display(w));
+    const name = Cook.isPlaceholder(w) ? `<i class="njg-ph ph" title="To record">${UI.esc(Cook.display(w))}</i>` : UI.esc(Cook.display(w));
     return (n > 1 ? `${n} × ` : "") + name;
   };
   const svg = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1318,7 +1318,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .map((id) => {
         const st = Cook.wordStage(id);
         const ph = Cook.isPlaceholder(id);
-        return `<button class="chip" type="button" data-w="${id}" aria-label="${UI.esc(Cook.english(id))}">${ph ? `<i class="ph">${UI.esc(Cook.display(id))}</i>` : UI.esc(Cook.display(id))}<small><span class="dots" aria-hidden="true">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
+        return `<button class="chip" type="button" data-w="${id}" aria-label="${UI.esc(Cook.english(id))}">${ph ? `<i class="njg-ph ph">${UI.esc(Cook.display(id))}</i>` : UI.esc(Cook.display(id))}<small><span class="dots" aria-hidden="true">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
       })
       .join("");
   }
@@ -1547,7 +1547,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function showFinale() {
     Cook.sfx.fanfare();
     const p = UI.panel(`
-      <h1 class="ph" data-rec>Eid Mubarak!</h1>
+      <h1 class="njg-ph" data-rec>Eid Mubarak!</h1>
       <div class="finale-row">
         <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img class="fin-nani" src="${Cook.v("assets/cook/characters/nani-happy-v3.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>

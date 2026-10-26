@@ -374,7 +374,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const w = !finished && waiting && waiting.landed && !onTawa ? waiting : null;
       if (ghostOn && ghostOn.it !== w) stopGhost();
       if (!w || ghostOn || ghostT) return;
-      const pause = ((global.NaniGuide && global.NaniGuide.PAUSE) || [5000])[Math.min(3, level - 1)] || 5000;
+      // (the help ladder's idle time by level: the ONE table, data/shared.json helpMs through NaniGuide.PAUSE; S13-B1: no copy here)
+      const ladder = (global.NaniGuide && global.NaniGuide.PAUSE) || [];
+      const pause = ladder[Math.min(ladder.length, Math.max(1, level)) - 1];
+      if (!(pause > 0) || !isFinite(pause)) return; // (no help ghost without the table's time)
       ghostT = S.time.delayedCall(pause, () => {
         ghostT = null;
         if (waiting !== w || onTawa || finished) return;

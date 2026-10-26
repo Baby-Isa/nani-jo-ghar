@@ -2480,10 +2480,14 @@
   };
 
   /* ---- the light bulb: the shared one (js/shared/bulb.js; C3, decision 38d: no Cook shim) ---- */
+  // the bulb's time by level: the ONE ladder table (data/shared.json, read through js/shared/tokens.js Tokens.ladder; S13-A1, S13-B1):
+  // no copy here (the shared bulb, js/shared/bulb.js, reads the same table)
   UI.bulbMs = () => {
-    const ms = ((Cook.data && Cook.data.calm) || {}).bulbMs || [8000, 8000, 8000, 8000];
+    const T = global.Tokens;
+    const table = (T && T.ladder && T.ladder.bulbMs) || (global.Bulb && global.Bulb.MS) || [];
     const lv = mission ? mission.level : orderLevel();
-    return ms[Math.min(ms.length, Math.max(1, lv)) - 1];
+    // (a parked page with neither tokens.js nor bulb.js has no table: no bulb time until it loads the kit, S13-A1's shell)
+    return table.length ? table[Math.min(table.length, Math.max(1, lv)) - 1] : 0;
   };
   // English while it's on: the sidebar, and the order card's rows still to do
   function bulbOn() {
@@ -2993,7 +2997,7 @@
       .map((w) => {
         const tag = w.state === "missed" ? `<span class="wr-tag">missed</span>` : w.state === "helped" ? `<span class="wr-tag">help</span>` : "";
         const ph = Cook.isPlaceholder(w.id);
-        return `<button class="wr-pill ${w.state || "ok"}" type="button" data-w="${esc(w.id)}" aria-label="Hear it"><span class="wr-say">${ICON.speaker}</span><b class="${ph ? "ph" : ""}">${esc(Cook.display(w.id))}</b><span class="wr-en">${esc(Cook.english(w.id))}</span>${tag}</button>`;
+        return `<button class="wr-pill ${w.state || "ok"}" type="button" data-w="${esc(w.id)}" aria-label="Hear it"><span class="wr-say">${ICON.speaker}</span><b class="${ph ? "njg-ph" : ""}">${esc(Cook.display(w.id))}</b><span class="wr-en">${esc(Cook.english(w.id))}</span>${tag}</button>`;
       })
       .join("")}</div>`;
   };
@@ -3227,7 +3231,7 @@
     const t = b.querySelector(".njg-next-t") || b.querySelector(".go-t");
     t.textContent = label;
     // a label Mum hasn't given yet is the engine's English placeholder: italic, flagged to record (rule G2)
-    t.classList.toggle("ph", !!opts.rec);
+    t.classList.toggle("njg-ph", !!opts.rec); // (the kit's one placeholder class, css/shared/app.css; S13-B1)
     b.classList.toggle("glow", !!opts.glow);
     const kit = global.NjgButtons;
     // Sprint 11 (Zafar, 22 Oct: "no Next and no Done anywhere"; principle 4): the job between two jobs is complete, so
