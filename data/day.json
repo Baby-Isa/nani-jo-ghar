@@ -140,7 +140,22 @@
     "gapMs": 450,
     "yes": { "meaning": { "fn": "Exclaim", "x": "phrase.yes" }, "en": "Yes!" },
     "come": { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!", "_about": "DOOR-08 (Zafar, 22 Oct: after yes \"she should say come ... and have the face\"): her answer to the child's Ha!, the engine's sentence; her come-here pose when the art run brings one (data/days.json door.poses.come)" },
-    "naniFace": "assets/cook/characters/nani-badge.webp"
+    "naniFace": "assets/cook/characters/nani-badge.webp",
+    "comeHere": {
+      "_about": "DOOR-08 (Zafar, 22-23 Oct; the art run's nw sheet, cut by build/reports/s12-w3a/cut_s12_w3a.py): after Ha! she says come with the come-here gesture: the open palm, then the beckon, in turn every beatMs while she says it (times beckons), then the beckon held. The poses are measured like data/days.json door.nani.poses (body: head top and feet rows; cx: the feet's middle; head: her head's middle, a share of the picture).",
+      "order": ["come-open", "come-beckon"],
+      "beatMs": 420,
+      "times": 2,
+      "poses": {
+        "come-open": { "art": "assets/day/s12/nani-come-open.webp", "w": 335, "h": 900, "body": [0, 899], "cx": 0.528, "head": [0.453, 0.085] },
+        "come-beckon": { "art": "assets/day/s12/nani-come-beckon.webp", "w": 330, "h": 900, "body": [0, 899], "cx": 0.526, "head": [0.445, 0.085] }
+      }
+    },
+    "cardPics": {
+      "_about": "ART-24, ART-25 (Zafar, 22 Oct D6, D7): the door's card pictures from the s12 art run: the sun card is a big sun against the sky (two thirds of the picture, never just sky); the farm card is the farmhouse, the farmer with her pitchfork and a few animals. weather: by the weather key; activity: by the day's lines key. pos: the picture's object-position in the card.",
+      "weather": { "sunny": { "art": "assets/day/s12/door-sun.webp", "pos": "50% 50%" } },
+      "activity": { "farm": { "art": "assets/day/s12/door-farm.webp", "pos": "50% 55%" } }
+    }
   },
   "book": {
     "_about": "The evening (story-by-the-fire.md, the day's fixed shape): the night sky, Nani and the book: today's words as pictures with their Kutchi, said in turn; photos if any; a progress mark (no verdicts); goodnight; tomorrow's door previewed by its sky.",

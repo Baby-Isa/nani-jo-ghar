@@ -1,0 +1,98 @@
+{
+ "door-sun": {
+  "from": "sn-door-sun-v1.png",
+  "crop": [
+   226,
+   40,
+   1306,
+   850
+  ],
+  "size": [
+   640,
+   480
+  ]
+ },
+ "door-farm": {
+  "from": "fm-door-farm-v1.png",
+  "crop": [
+   100,
+   60,
+   1500,
+   1010
+  ],
+  "size": [
+   720,
+   489
+  ]
+ },
+ "nani-come-open": {
+  "art": "assets/day/s12/nani-come-open.webp",
+  "w": 335,
+  "h": 900,
+  "body": [
+   0,
+   899
+  ],
+  "cx": 0.528,
+  "head": [
+   0.453,
+   0.085
+  ]
+ },
+ "nani-come-beckon": {
+  "art": "assets/day/s12/nani-come-beckon.webp",
+  "w": 330,
+  "h": 900,
+  "body": [
+   0,
+   899
+  ],
+  "cx": 0.526,
+  "head": [
+   0.445,
+   0.085
+  ]
+ },
+ "pg1-page-turn-25-v1.png": {
+  "shift": [
+   0,
+   0
+  ],
+  "err": 6.32
+ },
+ "pg2-page-turn-70-v1.png": {
+  "shift": [
+   0,
+   0
+  ],
+  "err": 5.39
+ },
+ "pg3-page-turn-120-v1.png": {
+  "shift": [
+   0,
+   0
+  ],
+  "err": 6.63
+ },
+ "pg4-page-turn-160-v1.png": {
+  "shift": [
+   0,
+   0
+  ],
+  "err": 7.0
+ },
+ "turn": {
+  "frames": [
+   "assets/day/s12/turn-1.webp",
+   "assets/day/s12/turn-2.webp",
+   "assets/day/s12/turn-3.webp",
+   "assets/day/s12/turn-4.webp"
+  ],
+  "box": [
+   248,
+   5,
+   1274,
+   770
+  ]
+ }
+}
