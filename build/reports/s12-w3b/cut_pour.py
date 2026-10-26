@@ -110,6 +110,23 @@ def cut_pans(sheet, suffix):
     return meta
 
 
+def maroon(im):
+    """The black tea's glass in the pan's own maroon-brown (PT2's tea, measured; the judge, 26 Oct: amber in the glass, maroon
+    in the pan): every tea pixel takes PT2's colour at its own relative brightness, so the glass's facets and light stay."""
+    pt = np.asarray(Image.open(os.path.join(OUT, "chai-pan", "pan-tip-0-black-s12.webp")).convert("RGB")).astype(float)
+    target = pt[120:180, 310:370].reshape(-1, 3).mean(0)
+    a = np.asarray(im).astype(float)
+    rgb, al = a[..., :3], a[..., 3]
+    lum = rgb @ np.array([0.3, 0.59, 0.11])
+    tea = (al > 0) & (rgb[..., 0] - rgb[..., 2] > 50)
+    L = lum[tea].mean()
+    k = np.clip(lum / L, 0.5, 1.5)[..., None]
+    out = rgb.copy()
+    out[tea] = np.clip(target * k[tea], 0, 255)
+    a[..., :3] = out
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
+
+
 def cut_glasses():
     a = np.asarray(Image.open(os.path.join(SRC, "gl-chai-glasses-top-v1.png")).convert("RGB")).astype(int)
     al, ground = alpha_of(a, tol=5, soft=5, bg=np.array([126, 126, 126]))
@@ -135,6 +152,8 @@ def cut_glasses():
         im = Image.fromarray(rgba, "RGBA")
         s1 = 240
 
+        if name == "black":
+            im = maroon(im)
         im.resize((s1, s1), Image.LANCZOS).save(os.path.join(OUT, "glass", f"glass-{name}-top-s12.webp"), quality=90, method=6)
         meta[f"glass-{name}"] = {"file": f"glass/glass-{name}-top-s12.webp", "w": s1, "h": s1, "r": round(r / (2 * half), 4), "fit": [round(cx, 1), round(cy, 1), round(r, 1)]}
     return meta

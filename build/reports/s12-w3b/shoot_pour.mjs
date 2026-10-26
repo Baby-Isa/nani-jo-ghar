@@ -51,6 +51,13 @@ try {
     };
     requestAnimationFrame(tick);
   });
+  if (process.env.DBG) {
+    page.on("console", (m) => m.text().startsWith("DBG") && console.log(m.text()));
+    await page.evaluate(() => {
+      const OB = window.Onboard;
+      for (const fn of ["stuck", "spot", "run", "demo"]) if (OB && typeof OB[fn] === "function") { const f = OB[fn]; OB[fn] = function (...a) { console.log("DBG " + fn + " " + String(a[0]).slice(0, 60) + " pour=" + !!(window.Cook && Cook.chaiPour) + " " + (new Error().stack.split("\n").slice(2, 5).join(" | ").replace(/http[^ ]*\/js\//g, ""))); return f.apply(this, a); }; }
+    });
+  }
   const rec = new Recorder({ flow: "pour-frames", size, dir: out, page });
   const P = new CookPlayer(page, rec, { mode: "fair", speed: 3 });
   // "order:<dish>": a customer's order (the served moment); else the station's lab
@@ -60,6 +67,7 @@ try {
   await sleep(500);
   let done = false;
   let servedShots = 0;
+  let after = 0; // (frames after the moment's hook clears: the customer leaving)
   const watcher = (async () => {
     while (!done) {
       try {
@@ -67,17 +75,19 @@ try {
         if (fz) {
           await sleep(80);
           await page.screenshot({ path: join(out, `${tag}-${fz}-${size}.png`) });
+          if (process.env.DBG) console.log(fz, await page.evaluate(() => { const e = document.elementFromPoint(innerWidth * 0.6, innerHeight * 0.4); const c = window.Cook; return [e && (e.id + '.' + e.className), c && c.Coach && c.Coach.active ? 'coach' : '', document.querySelector('.ob-dim, .onboard, #coach, .coach') ? 'ob' : '', JSON.stringify([...document.querySelectorAll('body *')].filter((x) => { const st = getComputedStyle(x); return st.position === 'fixed' && x.offsetWidth > innerWidth * 0.8 && st.display !== 'none' && st.visibility !== 'hidden' && +st.opacity > 0.05; }).map((x) => x.id + '.' + x.className).slice(0, 6))]; }));
           await page.evaluate(() => { window.Cook.scene.tweens.timeScale = 1; window.__frozen = null; });
         }
         // the served moment (SH-121): from its start, a frame every 300 ms
         const sv = await page.evaluate(() => !!(window.Cook && Cook.servedMoment));
         // (from the serve on, real time: the served moment as a child sees it)
-        await page.evaluate(() => { if (window.Cook && Cook.servedN && !window.__slowed) { window.__slowed = true; Cook.speed = 1; } });
+        await page.evaluate(() => { if (window.Cook && Cook.servedN) Cook.speed = 1; });
         if (sv) await page.evaluate(() => (window.__sawServed = true));
-        if (sv && servedShots < 24) {
+        const seen = await page.evaluate(() => !!window.__sawServed);
+        if ((sv || (seen && after++ < 8)) && servedShots < 40) {
           await page.screenshot({ path: join(out, `${tag}-served-${String(servedShots).padStart(2, "0")}-${size}.png`) });
           servedShots++;
-          await sleep(240);
+          await sleep(60);
           continue;
         }
       } catch (e) { /* the page moved on */ }

@@ -892,7 +892,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * the game modes. So then you understand what chaat is and what samosa is"): every order's dish, once it sits on the
    * customer's tray, is named by them ("Ahhh..." and the dish's word: the engine's own lines, the "Ahhh..." still to record,
    * so grey English until Mum records it), while its picture card rises from them to the stage's top left, large; it slides
-   * into the left bar over their order card, they say "barabar" (just right: Mum's word) and a "served" stamp (a tick, no
+   * into the left bar under their order card, they say "barabar" (just right: Mum's word) and a "served" stamp (a tick, no
    * words: non-negotiable 3) lands on it with a soft sound. The caller then has them say thank you and go. One card per
    * dish (an order of two dishes shows two). The cards go when the end screen comes (servedCardsAway).
    */
@@ -924,9 +924,38 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     } catch (e) {
       /* (a character gone: the stage's middle) */
     }
-    const side = $("#mission") && $("#mission").getBoundingClientRect().width > 20 ? $("#mission") : document.querySelector(".njg-side");
-    // the card's size at the top left: a third of the stage's height (two cards side by side for two dishes)
-    const big = Math.max(110, Math.min(sr.height * 0.42, (sr.width * 0.5) / dishes.length));
+    const mission = $("#mission") && $("#mission").getBoundingClientRect().width > 20 ? $("#mission") : null;
+    const side = document.querySelector(".njg-side");
+    // (the judge, 26 Oct: the card covered Nani's head at 1366x768 and all of her at 915x412): it never covers anyone. It
+    // goes at the top of the first gap between the people (from the left: the top left where there is room) that takes it
+    // near its full size, else the widest gap, sized to it
+    const n = dishes.length;
+    const want = Math.min(sr.height * 0.42, (sr.width * 0.5) / n);
+    const spans = [];
+    try {
+      Object.values(S().chars || {}).forEach((ch) => {
+        if (!ch || !ch.active || !ch.visible) return;
+        const b = ch.getBounds();
+        const a = UI.worldToScreen(b.left, b.top);
+        const z = UI.worldToScreen(b.right, b.bottom);
+        // (the picture's transparent margin: its middle 80% is the person)
+        const pad = (z.x - a.x) * 0.1;
+        spans.push([a.x + pad - 8, z.x - pad + 8]);
+      });
+    } catch (e) {
+      /* (no characters: the whole stage is free) */
+    }
+    spans.sort((u, v) => u[0] - v[0]);
+    const gaps = [];
+    let gx = sr.left + 12;
+    spans.forEach(([l, r]) => {
+      if (l > gx) gaps.push([gx, l]);
+      gx = Math.max(gx, r);
+    });
+    if (sr.right - 12 > gx) gaps.push([gx, sr.right - 12]);
+    const fit = (g) => Math.min(want, (g[1] - g[0] - 12 * (n - 1)) / n);
+    const gap = gaps.find((g) => fit(g) >= want * 0.8) || gaps.reduce((m, g) => (!m || fit(g) > fit(m) ? g : m), null) || [sr.left + 12, sr.right - 12];
+    const big = Math.max(60, fit(gap));
     const cards = dishes.map((recipe, i) => {
       const art = Cook.Art.servedArt(Cook.Art.servedName(recipe));
       const word = R.dishWord(recipe);
@@ -967,7 +996,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       document.body.appendChild(el);
       servedCards.push(el);
       // its place at the top left of the stage, then in the left bar (over the order card, stacked)
-      const at = { x: sr.left + 16 + i * (big + 12), y: sr.top + 16 };
+      const at = { x: gap[0] + 4 + i * (big + 12), y: sr.top + 16 };
       return { el, stamp, at, i };
     });
     const place = (c, x, y, k, o, ms) => {
@@ -984,10 +1013,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // "Ahhh..., chai": their own word for it, as it comes up
     const said = Lang.join([Lang.line("phrase.ahhh")].concat(dishes.map((r) => Lang.wordLine(R.dishWord(r)))));
     await Promise.all([S().talk(who, said, { after: "happy" }), Cook.wait(1400)]);
-    // 2. it slides into the left bar, over their order card
+    // 2. it slides into the left bar, under their order card
     Cook.servedMoment.phase = "slide";
-    const tr = side ? side.getBoundingClientRect() : { left: 12, top: sr.top + 12, width: 200 };
-    const k = Math.min(1, (tr.width - 8) / big);
+    // under their order card, never over its words (the judge, 26 Oct), and clear of the bar's buttons at its foot
+    const sb = side ? side.getBoundingClientRect() : { left: 12, top: sr.top + 12, width: 200, bottom: sr.bottom - 12 };
+    const mr = mission ? mission.getBoundingClientRect() : null;
+    const foot = [...document.querySelectorAll(".njg-side button, .njg-side a")].map((b) => b.getBoundingClientRect()).filter((r) => r.height > 0 && r.top > (mr ? mr.bottom : sb.top)).reduce((m, r) => Math.min(m, r.top), sb.bottom);
+    const tr = { left: mr ? mr.left : sb.left + 6, top: (mr ? mr.bottom : sb.top) + 8, width: mr ? mr.width : sb.width - 12 };
+    const cardH = Math.max(...cards.map((c) => c.el.offsetHeight)) || big * 1.12;
+    const k = Math.max(0.2, Math.min(1, (tr.width - 8) / big, (foot - 8 - tr.top - (cards.length - 1) * 14) / cardH));
     Cook.sfx.whoosh();
     cards.forEach((c) => place(c, tr.left + 4 + c.i * 10, tr.top + 4 + c.i * 14, k, 1, 600));
     await Cook.wait(650);

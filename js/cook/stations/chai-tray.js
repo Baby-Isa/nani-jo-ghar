@@ -1181,12 +1181,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       pan.ring.clear();
       setKnob(pan, "low");
       if (over) {
-        // boiled over: foam down the sides and onto the hob
-        for (let j = 0; j < 12; j++) {
-          const a = Math.random() * Math.PI * 2;
-          const f = S.track(S.add.ellipse(pan.x + Math.cos(a) * panR * 0.9, pan.y + Math.sin(a) * panR * 0.9, 46, 32, 0xfff6e6, 1).setDepth(D.item + 0.6));
-          S.tweens.add({ targets: f, x: f.x + Math.cos(a) * 40, y: f.y + Math.sin(a) * 30 + 20, scale: 1.6, alpha: 0.85, duration: 700, ease: "Bounce.easeOut" });
-        }
+        // boiled over: puffs of the painted steam at the rim, gone in a second (s12-w3b: the judge, 26 Oct: the
+        // code-drawn white foam ovals stayed round the burner for the rest of the round)
+        fx("steam", pan.x - rIn * 0.5, pan.y - rIn * 0.9, { w: rIn * 0.7, ms: 900, rise: rIn * 0.3 });
+        fx("steam", pan.x, pan.y - rIn * 1.1, { w: rIn * 0.8, ms: 1000, rise: rIn * 0.4 });
         Cook.sfx.puff();
         zb.oops();
         zb.skill(kBoil.overScore, "boil");
@@ -1374,6 +1372,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (sel !== pan) select(pan);
       finishGen++; // (L4: a second pour in the last beat holds the move-on)
       busy++;
+      coachEnd(); // (no help spotlight over the pour: s12-w3b)
       // Sprint 11 (easy-to-play principle 9: each word heard at the order, at the shelf and at the pour): while their chai
       // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
       if (level <= 2 && !pan.poured && UI.readAlong) {
@@ -1855,7 +1854,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       box.addEventListener("ck-gone", () => global.removeEventListener("resize", onResize));
       if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(hideCallout);
     };
+    const allRungs = new Set();
+    const trackRung = (r) => (r && allRungs.add(r), r);
     const coachStep = (nx, sid) => {
+      // (s12-w3b: never a help spotlight while a pan is off its burner pouring)
+      if (pans.some((q) => q.away)) return coachEnd();
       rungCur = rungOf(nx);
       if (sid === rungKey) {
         if (helpObj && rungCur && helpObj !== rungCur.obj) helpGlow(rungCur.obj);
@@ -1879,7 +1882,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
-      rung = Cook.Coach.rungs("chai-tray", step, Object.assign(
+      rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
         { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
@@ -1900,9 +1903,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               },
             }
           : { line: () => UI.stepHelp && UI.stepHelp() }
-      ));
+      )));
     };
     const coachEnd = () => {
+      // (every rung this station started: one replaced while its first-time spotlight was still to open kept it, over the pour)
+      allRungs.forEach((r) => r && r.done && r.done());
+      allRungs.clear();
       if (rung) rung.done();
       rung = null;
       rungKey = null;
@@ -2006,6 +2012,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (pans.length && pans.every((q) => q.poured > 0)) UI.hideCount();
       if (busy) {
         zb.expect({ kind: "wait" }); // a pour in progress: the player waits for it
+        // s12-w3b (the judge, 26 Oct: a help spotlight dimmed the whole pour): no help rung runs while a pan pours; the next
+        // step's help starts afresh after it
+        coachEnd();
+        helpGlow(null);
         hideMic();
         return;
       }
