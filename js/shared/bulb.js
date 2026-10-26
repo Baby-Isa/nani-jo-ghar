@@ -30,11 +30,28 @@
   const B = {};
   // SH-86 (Zafar, D11 / SH-41): every bulb shows its English for 8 s at every level: the ONE ladder table's bulbMs
   // (data/shared.json, through js/shared/tokens.js; S13-A1), no copy here ([] until it has loaded)
+  // SH-131 (S13-A2): a page without tokens.js (the parked games: Find it, Dress up, Snap) reads the same table itself, from this
+  // script's own address, so its bulb never shows for 0 s
+  const isNode = typeof module === "object" && module.exports && typeof require === "function";
+  let own = null;
+  const tokens = () => root.Tokens || (isNode ? require("./tokens.js") : null);
+  if (!tokens() && !isNode) {
+    const self = root.document && root.document.currentScript && root.document.currentScript.src;
+    const url = (self ? self.replace(/js\/shared\/bulb\.js.*$/, "") : "") + "data/shared.json";
+    B.ready =
+      typeof root.fetch === "function"
+        ? root
+            .fetch(typeof root.njgV === "function" ? root.njgV(url) : url)
+            .then((r) => (r && r.ok ? r.json() : null))
+            .then((j) => (own = j && Array.isArray(j.bulbMs) ? j.bulbMs : own))
+            .catch(() => own)
+        : Promise.resolve(null);
+  } else B.ready = Promise.resolve((tokens() && tokens().ready) || null);
   Object.defineProperty(B, "MS", {
     enumerable: true,
     get: () => {
-      const T = root.Tokens || (typeof module === "object" && module.exports && typeof require === "function" ? require("./tokens.js") : null);
-      return (T && T.ladder && T.ladder.bulbMs) || [];
+      const T = tokens();
+      return (T && T.ladder && T.ladder.bulbMs) || own || [];
     },
   });
   const val = (v) => (typeof v === "function" ? v() : v);

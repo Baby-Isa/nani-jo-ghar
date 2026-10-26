@@ -35,6 +35,7 @@
     "word-card": ["WordCard", "js/shared/word-card.js", "css/shared/word-card.css"],
     conversations: ["Conversations", "js/shared/conversations.js", "css/shared/conversations.css"],
     speech: ["Speech", "js/shared/speech.js", null],
+    bulb: ["Bulb", "js/shared/bulb.js", null],
   };
   const sharedP = {};
   const stamped = (rel) => {
@@ -3347,6 +3348,9 @@
   UI.init = function () {
     // Sprint 11: the word card and the conversations, there by the first order
     ["word-card", "conversations"].forEach((n) => UI.needShared(n));
+    // SH-131 (S13-A2): a parked page (Find it, Dress up, Snap) loads neither tokens.js nor bulb.js: the shared bulb comes in, and
+    // reads data/shared.json's bulbMs itself, so UI.bulbMs is never 0 s there
+    if (!global.Tokens && !global.Bulb) UI.needShared("bulb");
     // every page element here is optional (another page, like find.html, may not have all of them)
     const on = (sel, fn) => {
       const e = $(sel);
