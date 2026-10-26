@@ -16301,7 +16301,8 @@
     "strip:body:5x300"
    ],
    "expect": null,
-   "note": "for the eye: the chop station's first 1.2 s after the tap, 5 frames, each edge green when fully drawn (view up, fade over, asking, sidebar card, nothing loading), orange when not"
+   "note": "for the eye (on a page of its own: its screenshots never slow the trace): the chop station's first 1.2 s after the tap, 5 frames, each edge green when fully drawn (view up, fade over, asking, sidebar card, nothing loading), orange when not",
+   "seed": 2
   },
   {
    "flow": "cook:samosa",
@@ -16321,7 +16322,8 @@
     "strip:body:5x300"
    ],
    "expect": null,
-   "note": "for the eye: the samosa station's first 1.2 s after the tap, 5 frames marked drawn or not"
+   "note": "for the eye (on a page of its own: its screenshots never slow the trace): the samosa station's first 1.2 s after the tap, 5 frames marked drawn or not",
+   "seed": 2
   }
  ],
  "CLN-159": [
