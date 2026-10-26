@@ -13,7 +13,7 @@ Every shared element sits in one central place, so one change reaches every game
 - So a fix passed in one game and failed in the next. Wave 1's help kit needed four fix rounds to look the same in chai, the pantry and the clinic.
 
 ## Budget
-About $120-160 and 2 days (Zafar to confirm before step 2 launches). Rapid-prototype checks: 1366x768 and 915x412.
+About $120-160 and 2 days (confirmed by Zafar, 26 Oct). Rapid-prototype checks: 1366x768 and 915x412.
 
 ## Step 1: the review (Fable, high, about $15-25; one report, no code)
 Its report is build/reports/s13-kit-review (to write). Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).

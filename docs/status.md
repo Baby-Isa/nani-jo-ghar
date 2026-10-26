@@ -12,11 +12,11 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Next steps:**
 1. Step 1, the review (Fable, high, about $20-30), launched 26 Oct: report `build/reports/s13-kit-review.md`. Zafar asked it to be open-minded: every element that could sit shared, not only the sprint file's list.
-2. Put the review's decisions to Zafar as a numbered list; he confirms the budget ($120-160, 2 days) before step 2.
+2. Put the review's decisions to Zafar as a numbered list (budget $120-160, 2 days: confirmed 26 Oct).
 3. Step 2: S13-A tokens and motion, S13-B components (two builders, Opus high, judged), then every game replayed at both sizes, `/review`, publish on his OK, his play, `/feedback`.
 4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
 
-**Open questions to Zafar:** the sprint budget (before step 2).
+**Open questions to Zafar:** none until the review lands.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 13 is open; carry on from "Next steps". Tell me before launching anything new.
