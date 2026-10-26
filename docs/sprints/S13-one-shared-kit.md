@@ -16,7 +16,7 @@ Every shared element sits in one central place, so one change reaches every game
 About $120-160 and 2 days (Zafar to confirm at the start). Rapid-prototype checks: 1366x768 and 915x412.
 
 ## Step 1: the review (Fable, high, about $15-25; one report, no code)
-`build/reports/s13-kit-review.md`. Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).
+Its report is build/reports/s13-kit-review (to write). Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).
 
 Answer:
 1. **What should be central, and how.** Design tokens (colour, type, space, radius, shadow, motion: the bob, glow, timings), one component per element with a data-only API (games pass words and items, never styles), and where each lives. Check it against best practice (design tokens, a component library, contract or visual tests); keep the approach only if the review agrees it's best for a game this size, and say why.
