@@ -16222,43 +16222,106 @@
  "CK-48": [
   {
    "flow": "cook:chop",
-   "path": "tap-through-popup",
+   "path": "tap-card-1s",
    "level": 1,
    "sizes": [
-    "1366x768"
+    "1280x665"
    ],
    "profile": "seen",
    "want": null,
    "throttle": "slow",
-   "mark": "drawn",
    "kind": "layout",
    "at": "tapped-through",
    "after": null,
    "capture": [
-    "strip:body:24x200"
+    "trace:station:5000"
    ],
-   "expect": null,
-   "note": "on the slow line (Lighthouse mobile: 1600 kbit/s, 150 ms, the processor 4x slower, from the player's first state on), the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the chop station's first 4.6 s at 200 ms slots, each frame's edge green when the station is fully drawn (view up, faded in, nothing loading, no missing picture), orange when not: one smooth load, no zoomed-in board that goes away, no late sidebar"
+   "expect": [
+    "drawnWithin:1000"
+   ],
+   "note": "Lighthouse mobile run (1600 kbit/s, 150 ms, the processor 4x slower, from the player's first state); the order card tapped through 1 s after it opens (the Check); every 50 ms from the tap, the chop station's state (view, fade, stage opacity, the pop-up's veil, the sidebar card, the first ask, missing pictures, the loader, requests in flight): fully drawn and staying so within 1 s of the tap"
   },
   {
    "flow": "cook:samosa",
-   "path": "tap-through-popup",
+   "path": "tap-card-1s",
    "level": 1,
    "sizes": [
-    "1366x768"
+    "1280x665"
    ],
    "profile": "seen",
    "want": null,
    "throttle": "slow",
-   "mark": "drawn",
    "kind": "layout",
    "at": "tapped-through",
    "after": null,
    "capture": [
-    "strip:body:24x200"
+    "trace:station:5000"
+   ],
+   "expect": [
+    "drawnWithin:1000"
+   ],
+   "note": "the same for the samosa station: nothing half-drawn, nothing still loading 1 s after the tap"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "tap-card-1s",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "throttle": "slow",
+   "kind": "layout",
+   "at": "tapped-through",
+   "after": null,
+   "capture": [
+    "trace:station:5000"
+   ],
+   "expect": [
+    "drawnWithin:1000"
+   ],
+   "note": "the eye test (Zafar 22 Oct: 'still just a light brown screen'): from the tap through its card, the heal game's stage drawn and asking within 1 s"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "tap-card-1s",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "throttle": "slow",
+   "kind": "layout",
+   "at": "tapped-through",
+   "after": null,
+   "mark": "drawn",
+   "capture": [
+    "strip:body:5x300"
    ],
    "expect": null,
-   "note": "on the slow line, the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the samosa station's first 4.6 s at 200 ms slots, each frame marked drawn or not: nothing half-drawn, nothing still loading"
+   "note": "for the eye: the chop station's first 1.2 s after the tap, 5 frames, each edge green when fully drawn (view up, fade over, asking, sidebar card, nothing loading), orange when not"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "tap-card-1s",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "throttle": "slow",
+   "kind": "layout",
+   "at": "tapped-through",
+   "after": null,
+   "mark": "drawn",
+   "capture": [
+    "strip:body:5x300"
+   ],
+   "expect": null,
+   "note": "for the eye: the samosa station's first 1.2 s after the tap, 5 frames marked drawn or not"
   }
  ],
  "CLN-159": [
