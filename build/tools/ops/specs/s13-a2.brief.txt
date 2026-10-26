@@ -6,7 +6,7 @@ BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; com
 
 MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
 
-CONTEXT PACK: build/tools/ops/specs/s13-a2.context.md (853 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+CONTEXT PACK: build/tools/ops/specs/s13-a2.context.md (886 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
@@ -57,18 +57,20 @@ TASKS (each with its acceptance criterion):
      Accept: contract-34 0 breaks on your flows; the buttons kit sheet shows one look
   7. SH-131: bulb.js falls back to data/shared.json's ladder values when js/shared/tokens.js isn't loaded (the parked games), so their bulb shows again; a unit test without Tokens.
      Accept: the unit test green
+  8. SH-134: the dotted rows' speaker buttons on the phone have a 48x32 px tap area (rows ~20 px apart after S13-B1); every tap target is at least 48x48 CSS px without covering a neighbour's (grow the row spacing on the phone or let the speaker's hit area extend sideways, never over the next speaker).
+     Accept: a tap-size check over every order-card speaker at 915x412 and 1280x665: all >= 48x48, none overlapping
 
 PLACES (build/tools/review/kitmap.mjs --elem face circle,buttons,finger,glow,? pop-up,help box: where each element is drawn or styled today; one place to fix, the copies go):
   face circle (.njg-rq-card .oc-face, #intro .ic-face, .ng-face, .cl-card-face, .njg-face):
-    the kit: css/shared/app.css:58; css/shared/conversations.css:61,172,194; css/shared/frame.css:35; css/shared/guide.css:6,15,35-42,44-53,90,93,105; css/shared/order-card.css:29,61-78,81-82,88-91,93-95,98,101,104-105,116,120-127,352,366 (+1 more); css/shared/tokens.css:52,105,117,135; js/shared/conversations.js:749,754,1040; js/shared/guide.js:313,319; js/shared/order-card.js:402,464,528,624-625
-    outside the kit (16 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:168-170,224-228,245,251,350,356,370-372,392,413,420,425,453 (+4 more); css/cook-side-v2.css:41,60,84-86,131-132,137-138; css/cook.css:126,150,318,343-344,353,394-395,409,417,481,485,501-502,506 (+13 more); css/day.css:115; js/clinic/figure.js:62; js/clinic/heal/host.js:613; js/clinic/kit.js:182,932; js/clinic/screen.js:51,167; js/clinic/stages/common.js:237,254; js/clinic/stages/sendoff.js:259,293,316; js/clinic/stages/waiting.js:52,350; js/cook/dom.js:45,56,75; js/cook/station-lib.js:916,925; js/cook/stations/chai-tray.js:1592; js/cook/ui.js:966,988,1145-1146,1302,1353,1409,1558,1580,1603,1654,1661,1692 (+5 more); js/cook/words.js:530
+    the kit: css/shared/app.css:58; css/shared/conversations.css:61,172,194; css/shared/frame.css:35; css/shared/guide.css:6,15,35-42,44-53,90,93,105; css/shared/order-card.css:29,61-78,81-82,88-91,93-95,98,101,104-105,116,120-127,354,368 (+1 more); css/shared/tokens.css:52,105,117,135; js/shared/conversations.js:736,741,1027; js/shared/guide.js:313,319; js/shared/order-card.js:403,465,529,639-640
+    outside the kit (16 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:168-170,224-228,245,251,350,356,370-372,392,413,420,425,453 (+4 more); css/cook-side-v2.css:41,60,84-86,131-132,137-138; css/cook.css:126,150,318,343-344,353,394-395,409,417,481,485,501-502,506 (+13 more); css/day.css:115; js/clinic/figure.js:62; js/clinic/heal/host.js:613; js/clinic/kit.js:182,895; js/clinic/screen.js:51,167; js/clinic/stages/common.js:237,254; js/clinic/stages/sendoff.js:259,293,316; js/clinic/stages/waiting.js:52,350; js/cook/dom.js:45,56,75; js/cook/station-lib.js:916,925; js/cook/stations/chai-tray.js:1594; js/cook/ui.js:966,988,1145-1146,1302,1353,1409,1560,1582,1605,1656,1663,1694 (+5 more); js/cook/words.js:530
     parked games (out of scope until unparked): css/dress.css:29-30; css/find.css:78; css/monsoon.css:125,155,227; css/who.css:39-40,140; dress.html:32; find.html:39,53,67; js/dress/core.js:277; js/find/round.js:40; js/monsoon/ui.js:215; js/snap/round.js:31; js/who/ui.js:114; monsoon.html:43; snap.html:68,80,93; who.html:29
   buttons (.njg-btn, #done-btn, #go-btn, .cl-go):
     the kit: css/shared/buttons.css:7-8,10,43,89; js/shared/buttons.js:6-7,11,15-16,21,24-27,29-30,32-33,35,106,191,195,290; js/shared/mode.js:286; js/shared/word-card.js:49,51
-    outside the kit (24 files: a call to the kit stays; a game's own copy moves to the kit or goes): clinic.html:285; css/clinic.css:83,85-87,89-99,153,267,383; css/cook-side-v2.css:126,146; css/cook.css:87-90,167,169-177,799-807,810-820,988-994,1023-1024; js/clinic/heal/games/cut.js:491; js/clinic/heal/games/eye.js:21; js/clinic/heal/scene.js:707; js/clinic/kit.js:1333-1334,1344,1349; js/clinic/run.js:104; js/clinic/screen.js:173; js/cook/dom.js:26,62-64; js/cook/flow.js:1283,1291,1861; js/cook/mechanics/count.js:126; js/cook/mechanics/fill-fold.js:567; js/cook/mechanics/fry.js:204,215; js/cook/mechanics/grill.js:1070,1076,1201,1205,1900; js/cook/mechanics/stir.js:406; js/cook/mechanics/thread.js:295; js/cook/station-lib.js:910; js/cook/stations/chai-tray.js:1577,1583; js/cook/stations/daar.js:1346; js/cook/stations/samosa.js:682; js/cook/ui.js:807-808,3172,3181,3219,3228,3246,3248,3253,3352-3355; lab.html:278
+    outside the kit (24 files: a call to the kit stays; a game's own copy moves to the kit or goes): clinic.html:285; css/clinic.css:83,85-87,89-99,153,267,383; css/cook-side-v2.css:126,146; css/cook.css:87-90,167,169-177,799-807,810-820,988-994,1023-1024; js/clinic/heal/games/cut.js:491; js/clinic/heal/games/eye.js:21; js/clinic/heal/scene.js:707; js/clinic/kit.js:1296-1297,1307,1312; js/clinic/run.js:104; js/clinic/screen.js:173; js/cook/dom.js:26,62-64; js/cook/flow.js:1283,1291,1861; js/cook/mechanics/count.js:126; js/cook/mechanics/fill-fold.js:567; js/cook/mechanics/fry.js:204,215; js/cook/mechanics/grill.js:1070,1076,1201,1205,1900; js/cook/mechanics/stir.js:406; js/cook/mechanics/thread.js:295; js/cook/station-lib.js:910; js/cook/stations/chai-tray.js:1579,1585; js/cook/stations/daar.js:1346; js/cook/stations/samosa.js:682; js/cook/ui.js:807-808,3190,3199,3237,3246,3264,3266,3271,3370-3373; lab.html:278
     parked games (out of scope until unparked): css/find.css:73,75,99; css/monsoon.css:147; css/tidy.css:39,138,140-145; dress.html:64-65; find.html:76-80; js/dress/flow.js:145,209; js/find/flow.js:107; js/snap/flow.js:162; monsoon.html:57-58; snap.html:98-99; tidy.html:51-53
   finger (.ob-finger, .ob-finger svg, .co-finger):
-    the kit: css/shared/onboard.css:21,24,26-30,32-34,36-37,39; js/shared/conversations.js:813,826; js/shared/onboard.js:30,195,469,473,475,795,1121,1167
+    the kit: css/shared/onboard.css:21,24,26-30,32-34,36-37,39; js/shared/conversations.js:800,813; js/shared/onboard.js:30,195,469,473,475,795,1121,1167
     outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/cook.css:782-791; js/cook/coach.js:304-305; js/cook/dom.js:83; js/cook/hands.js:563; js/cook/mechanics/chop.js:518; js/cook/stations.js:1038,1052,1081,1084,1089
   glow (.njg-glow, .ob-item-glow, .ob-lit):
     the kit: css/shared/buttons.css:24,58; css/shared/focus.css:2,4-5,8,12,17-18,20,25-32,39-40,43; css/shared/onboard.css:15,20-21,96-97,105; css/shared/order-card.css:289-290; css/shared/results.css:373; css/shared/tokens.css:78,89; js/shared/focus.js:6; js/shared/onboard.js:587; js/shared/say.js:179; js/shared/window-ride.js:726
@@ -76,14 +78,14 @@ PLACES (build/tools/review/kitmap.mjs --elem face circle,buttons,finger,glow,? p
     parked games (out of scope until unparked): css/dress.css:12-13; css/find.css:44-45; css/monsoon.css:135; css/tidy.css:165; css/who.css:117,121
   ? pop-up (#help-pop, .cl-help-pop, #grownups, .njg-grownup):
     the kit: css/shared/buttons.css:91,93; js/shared/buttons.js:30,287,296
-    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:363-364,504; css/cook.css:96-104,1019,1052; css/home.css:41-49; js/clinic/screen.js:65,190; js/cook/ui.js:800,835,840,3368; js/home.js:293
+    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:363-364,504; css/cook.css:96-104,1019,1052; css/home.css:41-49; js/clinic/screen.js:65,190; js/cook/ui.js:800,835,840,3386; js/home.js:293
     parked games (out of scope until unparked): css/monsoon.css:148; js/monsoon/ui.js:49,54
   help box (.njg-spot .ob-box, .njg-onboard .ob-box):
     the kit: css/shared/onboard.css:5-16,18,20-21,27,42-67,70-89,104-108; js/shared/onboard.js:29,189,282,534,537,720,725,738,1003,1102,1109,1144 (+4 more); js/shared/word-card.js:42,45
-    outside the kit (7 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/day.css:288; js/clinic/heal/games/eye.js:61,780,790,880,883,985,989; js/clinic/heal/games/tooth.js:13,1026-1027,1033,1040,1044; js/cook/coach.js:137,148,154,157; js/cook/flow.js:2246; js/cook/stations/chai-tray.js:1685; js/day/window.js:170
+    outside the kit (7 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/day.css:288; js/clinic/heal/games/eye.js:61,780,790,880,883,985,989; js/clinic/heal/games/tooth.js:13,1026-1027,1033,1040,1044; js/cook/coach.js:137,148,154,157; js/cook/flow.js:2246; js/cook/stations/chai-tray.js:1687; js/day/window.js:170
 
-REGRESSION ROWS TO RECHECK (20; * = open or reopened; the contract replay of your flows covers the rest):
-  the rows the tasks name (4): ART-08*, SH-129*, SH-130*, SH-131*
+REGRESSION ROWS TO RECHECK (21; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (5): ART-08*, SH-129*, SH-130*, SH-131*, SH-134*
   face circle (its open rows, 0): none
   buttons (its open rows, 7): SH-12*, SH-106*, SH-53*, CLN-107*, CLN-158*, SH-51*, SH-110*
   finger (its open rows, 3): CK-46*, SH-19*, CLN-118*

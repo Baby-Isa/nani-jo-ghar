@@ -9,8 +9,21 @@
   "kind": "shared",
   "browser": true,
   "specsByBuilder": true,
-  "rows": ["ART-08", "SH-129", "SH-130", "SH-131"],
-  "elements": ["face circle", "buttons", "finger", "glow", "? pop-up", "help box"],
+  "rows": [
+    "ART-08",
+    "SH-129",
+    "SH-130",
+    "SH-131",
+    "SH-134"
+  ],
+  "elements": [
+    "face circle",
+    "buttons",
+    "finger",
+    "glow",
+    "? pop-up",
+    "help box"
+  ],
   "read": [
     "docs/sprints/S13-one-shared-kit.md (goal, 'Small decisions (Zafar, 26 Oct)')",
     "build/reports/s13-kit-review.md sections 2-4 (Face circles, Buttons, Finger, Help box, '?' pop-up) and its 'Orchestrator's check'",
@@ -27,18 +40,60 @@
     "build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)",
     "build/reports/s13-a2.md"
   ],
-  "readOnly": ["js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js, save, results.js, story.js (S13-V); conversations.js and results.js bodies (S13-B2 next)", "build/tools/**, build/lint/**, .claude/**", "the parked games' pages and CSS (bar SH-131's fallback in bulb.js)", "CLAUDE.md", "art: no new art; only cuts of the passed S12 sheet"],
+  "readOnly": [
+    "js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js, save, results.js, story.js (S13-V); conversations.js and results.js bodies (S13-B2 next)",
+    "build/tools/**, build/lint/**, .claude/**",
+    "the parked games' pages and CSS (bar SH-131's fallback in bulb.js)",
+    "CLAUDE.md",
+    "art: no new art; only cuts of the passed S12 sheet"
+  ],
   "stubs": "none",
   "tasks": [
-    { "do": "Delete before you build: Cook's dead finger (#coach .co-finger, cook.css:795-804, coach.js:304-305); the old buttons (#done-btn/#go-btn custom looks, the :not(.njg-btn) blocks in cook.css, .cl-go and the clinic's own button rules); the games' own '?' pop-ups (Cook #help-pop, clinic .cl-help-pop, the house's #grownups look).", "accept": "kitmap.mjs for finger, buttons and '? pop-up' prints no game copies outside the kit (parked games aside); static.mjs green with lower kit counts" },
-    { "do": "ART-08: one face maker, Face.circle(who, size) from data/faces.json (the passed S12 circles: one centred crop per person, eyes at the same height, filling the circle), three sizes only (row, guide, big) as tokens; the 11 makers (oc-face, ng-face, cl-card-face, cl-face doctor/person, m-face, lface, ic-face, nc-face, pm-face, cv-face's emoji) all call it; --oc-face and --sb-face go. Keep each face's talk bob (njg-talk).", "accept": "contract-42 (new): every face circle on screen is .njg-face at one of three sizes, width within 1 px of its token, 0 breaks; the face-circle kit sheet shows one crop, eyes level, in every game at 1280x665 and 915x412" },
-    { "do": "SH-129: one glow look in every game: the clinic's white flood inside a gold border and the day's ring round a pill become the kit's orange halo round the item (focus.css's njg-glow; canvas things through Focus/Motion).", "accept": "the glow kit sheet after shows one look in first, day, cook, clinic and lab at both sizes" },
-    { "do": "SH-130: the eye test's card step at the laptop size shows the dim and the lit ha/na/mic box but no ghost finger (915x412 shows it); first-time help always has its finger, at every size. One finger on screen at a time, the kit's .ob-finger only.", "accept": "contract-44 (new): exactly one .ob-finger while first-time help shows, 0 breaks; SH-130's before/after at both sizes" },
-    { "do": "One '?' pop-up for grown-ups: NjgButtons.grownUpPop(anchor, {goal, actions}) in buttons.js/.css (non-negotiable 3: all grown-ups' English lives here); Cook, the clinic and the house use it; contract-16's grown-up tag read from it.", "accept": "the '? pop-up' kit sheet after shows one look in cook, clinic and the house; contract-16 0 breaks" },
-    { "do": "Buttons: every visible go-on, done, picture and pill button is the kit's .njg-btn (NjgButtons.done/next/pic/pills); widen contract-34 to check it on every live page.", "accept": "contract-34 0 breaks on your flows; the buttons kit sheet shows one look" },
-    { "do": "SH-131: bulb.js falls back to data/shared.json's ladder values when js/shared/tokens.js isn't loaded (the parked games), so their bulb shows again; a unit test without Tokens.", "accept": "the unit test green" }
+    {
+      "do": "Delete before you build: Cook's dead finger (#coach .co-finger, cook.css:795-804, coach.js:304-305); the old buttons (#done-btn/#go-btn custom looks, the :not(.njg-btn) blocks in cook.css, .cl-go and the clinic's own button rules); the games' own '?' pop-ups (Cook #help-pop, clinic .cl-help-pop, the house's #grownups look).",
+      "accept": "kitmap.mjs for finger, buttons and '? pop-up' prints no game copies outside the kit (parked games aside); static.mjs green with lower kit counts"
+    },
+    {
+      "do": "ART-08: one face maker, Face.circle(who, size) from data/faces.json (the passed S12 circles: one centred crop per person, eyes at the same height, filling the circle), three sizes only (row, guide, big) as tokens; the 11 makers (oc-face, ng-face, cl-card-face, cl-face doctor/person, m-face, lface, ic-face, nc-face, pm-face, cv-face's emoji) all call it; --oc-face and --sb-face go. Keep each face's talk bob (njg-talk).",
+      "accept": "contract-42 (new): every face circle on screen is .njg-face at one of three sizes, width within 1 px of its token, 0 breaks; the face-circle kit sheet shows one crop, eyes level, in every game at 1280x665 and 915x412"
+    },
+    {
+      "do": "SH-129: one glow look in every game: the clinic's white flood inside a gold border and the day's ring round a pill become the kit's orange halo round the item (focus.css's njg-glow; canvas things through Focus/Motion).",
+      "accept": "the glow kit sheet after shows one look in first, day, cook, clinic and lab at both sizes"
+    },
+    {
+      "do": "SH-130: the eye test's card step at the laptop size shows the dim and the lit ha/na/mic box but no ghost finger (915x412 shows it); first-time help always has its finger, at every size. One finger on screen at a time, the kit's .ob-finger only.",
+      "accept": "contract-44 (new): exactly one .ob-finger while first-time help shows, 0 breaks; SH-130's before/after at both sizes"
+    },
+    {
+      "do": "One '?' pop-up for grown-ups: NjgButtons.grownUpPop(anchor, {goal, actions}) in buttons.js/.css (non-negotiable 3: all grown-ups' English lives here); Cook, the clinic and the house use it; contract-16's grown-up tag read from it.",
+      "accept": "the '? pop-up' kit sheet after shows one look in cook, clinic and the house; contract-16 0 breaks"
+    },
+    {
+      "do": "Buttons: every visible go-on, done, picture and pill button is the kit's .njg-btn (NjgButtons.done/next/pic/pills); widen contract-34 to check it on every live page.",
+      "accept": "contract-34 0 breaks on your flows; the buttons kit sheet shows one look"
+    },
+    {
+      "do": "SH-131: bulb.js falls back to data/shared.json's ladder values when js/shared/tokens.js isn't loaded (the parked games), so their bulb shows again; a unit test without Tokens.",
+      "accept": "the unit test green"
+    },
+    {
+      "do": "SH-134: the dotted rows' speaker buttons on the phone have a 48x32 px tap area (rows ~20 px apart after S13-B1); every tap target is at least 48x48 CSS px without covering a neighbour's (grow the row spacing on the phone or let the speaker's hit area extend sideways, never over the next speaker).",
+      "accept": "a tap-size check over every order-card speaker at 915x412 and 1280x665: all >= 48x48, none overlapping"
+    }
   ],
-  "flows": ["cook:chai-tray", "cook:fetch", "cook:samosa", "clinic:waiting", "clinic:diagnosis", "clinic:heal-eye", "clinic:pharmacy", "first", "house", "lab:cook/chai-tray"],
+  "flows": [
+    "cook:chai-tray",
+    "cook:fetch",
+    "cook:samosa",
+    "clinic:waiting",
+    "clinic:diagnosis",
+    "clinic:heal-eye",
+    "clinic:pharmacy",
+    "first",
+    "house",
+    "lab:cook/chai-tray"
+  ],
   "port": 8865,
   "report": "s13-a2",
   "publish": false
