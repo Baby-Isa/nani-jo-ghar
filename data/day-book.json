@@ -530,7 +530,7 @@
     }
   },
   "places": {
-    "_about": "One place per activity: its things (word = engine lexicon id; ids = what the day log may call it; art or a placeholder shape; h = height on the find page as a share of the page), find it (the backdrop, the things shown, how many asked, the spots: page l/r, x and y of the thing's foot as shares of the page; things are dealt to spots at random), name it and stick in the photo (the pool of things; the day's sentence per thing), our day (the day's things in order) and told (her line for each of our day's photos). Only things the engine can say are asked; only today's words when the log has enough of them.",
+    "_about": "One place per activity: its things (word = engine lexicon id; ids = what the day log may call it; art or a placeholder shape), find it (BOOK-12: the things it may show, how many asked (ask: one a round), cards: the cards a round shows (the asked one and the decoys, learned words first); the backdrop is no longer drawn: plain picture cards, Zafar 22 Oct F6), name it and stick in the photo (the pool of things; the day's sentence per thing: short, Zafar 23 Oct decision 9), our day (the day's things in order) and told (her line for each of our day's photos). Only things the engine can say are asked; only today's words when the log has enough of them; the spaced words (1, 3, 7 days ago) come from any place.",
     "farm": {
       "things": {
         "door": {
@@ -598,28 +598,7 @@
           "bird"
         ],
         "ask": 2,
-        "spots": [
-          {
-            "page": "l",
-            "x": 0.34,
-            "y": 0.86
-          },
-          {
-            "page": "l",
-            "x": 0.72,
-            "y": 0.66
-          },
-          {
-            "page": "r",
-            "x": 0.3,
-            "y": 0.68
-          },
-          {
-            "page": "r",
-            "x": 0.7,
-            "y": 0.88
-          }
-        ]
+        "cards": 4
       },
       "nameit": {
         "pool": [
@@ -664,10 +643,10 @@
             {
               "meaning": {
                 "fn": "Say",
-                "x": "phrase.then-we-saw-a-big-x",
+                "x": "phrase.we-saw-a-x",
                 "thing": "{x}"
               },
-              "en": "Then we saw a big {en}."
+              "en": "We saw a {en}."
             }
           ]
         }
@@ -769,28 +748,7 @@
           "maani"
         ],
         "ask": 2,
-        "spots": [
-          {
-            "page": "l",
-            "x": 0.3,
-            "y": 0.72
-          },
-          {
-            "page": "l",
-            "x": 0.72,
-            "y": 0.78
-          },
-          {
-            "page": "r",
-            "x": 0.28,
-            "y": 0.78
-          },
-          {
-            "page": "r",
-            "x": 0.7,
-            "y": 0.72
-          }
-        ]
+        "cards": 4
       },
       "nameit": {
         "pool": [
@@ -824,10 +782,10 @@
             {
               "meaning": {
                 "fn": "Say",
-                "x": "phrase.then-we-used-the-x",
+                "x": "phrase.we-used-the-x",
                 "thing": "{x}"
               },
-              "en": "Then we used the {en}."
+              "en": "We used the {en}."
             }
           ]
         }
@@ -917,28 +875,7 @@
           "cotton"
         ],
         "ask": 2,
-        "spots": [
-          {
-            "page": "l",
-            "x": 0.3,
-            "y": 0.72
-          },
-          {
-            "page": "l",
-            "x": 0.72,
-            "y": 0.78
-          },
-          {
-            "page": "r",
-            "x": 0.28,
-            "y": 0.78
-          },
-          {
-            "page": "r",
-            "x": 0.7,
-            "y": 0.72
-          }
-        ]
+        "cards": 4
       },
       "nameit": {
         "pool": [
@@ -972,10 +909,10 @@
             {
               "meaning": {
                 "fn": "Say",
-                "x": "phrase.then-we-used-the-x",
+                "x": "phrase.we-used-the-x",
                 "thing": "{x}"
               },
-              "en": "Then we used the {en}."
+              "en": "We used the {en}."
             }
           ]
         }

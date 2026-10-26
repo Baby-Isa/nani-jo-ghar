@@ -97,10 +97,14 @@ for (const [logKey, log] of Object.entries(D.lab)) {
     for (const p of plan.pages) {
       if (p.game === "find") {
         // the things in the page's order (the order they are drawn); --plant: the asked one always first
-        const things = PLANT ? [...p.asks, ...p.things.map((x) => x.key).filter((k) => !p.asks.includes(k))] : p.things.map((x) => x.key);
-        if (p.asks.length >= things.length) problems.push(`find (${logKey}): asks for all ${things.length} things shown`);
-        const found = [];
-        for (const ask of p.asks) {
+        // BOOK-12: each round one ask among its cards (the grid's slots in its order). The first round opens on the asked word's
+        // card and shuffles it in: a child can follow the shuffle, so that round is study (book-play.js records it study: true)
+        for (const r of p.rounds) {
+          if (r.intro && !PLANT) continue;
+          const ask = r.ask;
+          const things = PLANT ? [ask, ...r.cards.filter((k) => k !== ask)] : r.cards;
+          if (things.length < 3) problems.push(`find (${logKey}): a round shows only ${things.length} cards`);
+          const found = [];
           const left = things.filter((k) => !found.includes(k));
           tally.find = tally.find || { chance: { sum: 0, n: 0 } };
           tally.find.chance.sum += 1 / left.length;
