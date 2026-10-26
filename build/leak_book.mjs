@@ -96,7 +96,7 @@ for (const [logKey, log] of Object.entries(D.lab)) {
     const pastAnswers = { nameit: [], photo: [] };
     for (const p of plan.pages) {
       if (p.game === "find") {
-        // the things in the page's order (the order they are drawn); --plant: the asked one always first
+        // --plant: the asked one always first (the bot must catch it)
         // BOOK-12: each round one ask among its cards (the grid's slots in its order). The first round opens on the asked word's
         // card and shuffles it in: a child can follow the shuffle, so that round is study (book-play.js records it study: true)
         for (const r of p.rounds) {

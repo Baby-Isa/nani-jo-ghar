@@ -19515,5 +19515,252 @@
    "expect": null,
    "note": "chai's list: the sidebar rows keep the shared row size; English blank past support (contract-39)"
   }
+ ],
+ "BOOK-10": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "farm",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "host:day/book/open",
+   "capture": [
+    "strip:.day-book-scene:6x300"
+   ],
+   "note": "the evening opens on the book: the pages fade up and she greets from her face on the page (no zoom to her face first)"
+  }
+ ],
+ "BOOK-11": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "farm",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "host:day/book/find",
+   "capture": [
+    "shot"
+   ],
+   "note": "each game teaches itself (find it: the card first; name it: say it, then the three words; stick in: the kit shows the drag) and has one job (s12-answers section 10)"
+  },
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "flow": "repo",
+   "path": "fair",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "now",
+   "capture": [
+    "cmd:node --test build/test_day_book.mjs"
+   ],
+   "note": "the plan: find it in rounds with learned decoys; the spaced words (decision 9): a save spanning 8 days brings back what was met 1, 3 and 7 days ago"
+  }
+ ],
+ "BOOK-12": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "find",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "visible:.day-fintro.in",
+   "capture": [
+    "strip:.day-book:14x350"
+   ],
+   "note": "find it: the asked word's card big (picture, Kutchi, English while supported; she says it), it shrinks to its place, three more plain picture cards dealt one by one, a two-second shuffle, then 'Kutro kida ai?'"
+  },
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "find",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "visible:.day-pcard.live",
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "note": "the question with the cards live; said again every few seconds; later rounds skip the card and the shuffle"
+  },
+  {
+   "level": 1,
+   "profile": "fresh",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "find",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "visible:.day-pcard.live",
+   "capture": [
+    "shot"
+   ],
+   "note": "a new player's first ask: the kit's box and finger on the card"
+  }
+ ],
+ "BOOK-13": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "nameit",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "visible:.day-mic",
+   "capture": [
+    "strip:.day-book:8x400"
+   ],
+   "note": "name it: the picture and 'Hi kuro ai?', the mic first (Say it); after a try the three words come, each a speaker at its start"
+  },
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "nameit",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "visible:.day-picks.in",
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "note": "the three Kutchi words as pills, each speaker playing its own word at once (never queued, never dropped); a miss a shrug"
+  }
+ ],
+ "BOOK-14": [
+  {
+   "level": 1,
+   "profile": "fresh",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "photo",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "visible:.day-photo-loose",
+   "capture": [
+    "strip:.day-book:10x400"
+   ],
+   "note": "stick in the photo, a new player's first time: the kit's box and the card showing the drag into the frame"
+  },
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "photo",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "visible:.day-photo-loose",
+   "capture": [
+    "shot"
+   ],
+   "note": "three pictures as word cards (picture, speaker, Kutchi, English by stage); the sentence with its word a gap and a speaker at its start"
+  }
+ ],
+ "ART-24": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:door",
+   "path": "fair",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "visible:.day-wcard[data-card=activity].in",
+   "capture": [
+    "crop:.day-side"
+   ],
+   "note": "the sun card: a big sun against the sky, two thirds of the picture"
+  }
+ ],
+ "ART-25": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:door",
+   "path": "fair",
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "at": "visible:.day-wcard[data-card=activity].in",
+   "capture": [
+    "crop:.day-side"
+   ],
+   "note": "the farm card (a farm day): the farmhouse, the farmer with her pitchfork and the animals"
+  }
+ ],
+ "ART-27": [
+  {
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "day:book",
+   "path": "farm",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "drv:page-turn",
+   "capture": [
+    "strip:.day-book:6x200"
+   ],
+   "note": "the page turn from the art run's four pictures (pg1-pg4, in order) over the pages"
+  }
  ]
 }

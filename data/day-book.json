@@ -47,6 +47,12 @@
       497
     ],
     "minPageW": 330,
+    "turn": {
+      "_about": "ART-27 (Zafar, 22 Oct F7; the s12 art run's pg1-pg4: the right page at 25, 70, 120 and 160 degrees): each registered on the pages picture (build/reports/s12-w3a/cut_s12_w3a.py) and cut to box (pages px: x, y, w, h), shown over the pages in this order, ms in all",
+      "frames": ["assets/day/s12/turn-1.webp", "assets/day/s12/turn-2.webp", "assets/day/s12/turn-3.webp", "assets/day/s12/turn-4.webp"],
+      "box": [248, 5, 1274, 770],
+      "ms": 1200
+    },
     "lapBook": {
       "room": [
         442,
