@@ -212,18 +212,24 @@
           "none": "no one speaks in a bubble in the house (its lines are the guide box's)"
         },
         "first": {
-          "at": "bubble"
+          "at": "visible:.cv-line.in",
+          "delay": 300,
+          "tries": 3
         },
         "day": {
           "at": "visible:.cv-bubble.in",
+          "sel": ".day-door-cv .cv-bubble.in, .day-nani-wrap img.day-nani",
+          "delay": 500,
           "tries": 3
         },
         "cook": {
           "at": "bubble"
         },
         "clinic": {
-          "at": "bubble",
-          "tries": 3
+          "flow": "clinic:heal-eye#real-pace",
+          "at": "visible:.cv-line.in",
+          "delay": 300,
+          "tries": 4
         },
         "lab": {
           "at": "bubble"
@@ -442,19 +448,23 @@
           "none": "the house has no round to end"
         },
         "first": {
-          "at": "visible:.njg-results"
+          "at": "visible:.njg-results .rs-last",
+          "delay": 800
         },
         "day": {
           "none": "the door hands off; its day ends in the book"
         },
         "cook": {
-          "at": "visible:.njg-results"
+          "at": "visible:.njg-results .rs-last",
+          "delay": 800
         },
         "clinic": {
-          "at": "visible:.njg-results"
+          "at": "visible:.njg-results .rs-last",
+          "delay": 800
         },
         "lab": {
-          "at": "visible:.njg-results"
+          "at": "visible:.njg-results .rs-last",
+          "delay": 800
         }
       }
     },

@@ -671,7 +671,8 @@
           }
         })
         .filter((el) => el && el.isConnected && el.getBoundingClientRect);
-    const b = C.bubble(anchor || null, { who, text: Kit.text(w), en: w && w.english, layer, avoid: others });
+    // its speaker button (the kit's, at the bubble's start) says the line again
+    const b = C.bubble(anchor || null, { who, text: Kit.text(w), en: w && w.english, layer, avoid: others, hear: () => Voice.say(w, { who }) });
     Voice.bubbles.forEach((x) => !x.isConnected && Voice.bubbles.delete(x));
     Voice.bubbles.add(b);
     return b;
