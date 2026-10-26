@@ -37,7 +37,7 @@ export const TOP = [
 
 /**
  * The New player toggle (Sprint 11, Zafar 22 Oct), the page's own logic, embedded in labs.html as written here (so the unit test
- * runs the same code). Save: js/shared/save.js; store: a localStorage-like object (every access wrapped). On: before a launch the
+ * runs the same code). Save: js/core/save.js (the one save, S13-V); store: a localStorage-like object (every access wrapped). On: before a launch the
  * dedicated "New player" profile (made once with Save.addPlayer, its id remembered) is selected and reset (Save.resetPlayer). Off:
  * the grown-up's own player (remembered when the toggle goes on) is selected again; it is never reset.
  */
@@ -332,8 +332,9 @@ ${hidden.map(sub).join("\n\n")}
   <p class="note">Speaking moments ask for the microphone; if you say no, word pills appear instead. Nothing you say leaves the device.</p>
 </main>
 <script src="js/version.js?v=${V}"></script>
-<script src="js/shared/save.js?v=${V}"></script>
-<script>
+<!-- S13-V: the one save is the core's (js/core/save.js, a module that becomes window.Save); this page's own script is a module after it -->
+<script type="module" src="js/core/save.js?v=${V}"></script>
+<script type="module">
   // Play: the level (or weather, or day) picked goes into the link
   document.querySelectorAll(".game").forEach(function (g) {
     var sel = g.querySelector("select"), a = g.querySelector("a.play"), tpl = g.getAttribute("data-tpl");

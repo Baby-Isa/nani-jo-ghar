@@ -769,7 +769,7 @@
       try {
         if (opts.audio) opts.audio(st, i);
         if (typeof st.audio === "function") st.audio(st, i);
-        else if (typeof st.audio === "string") new Audio(st.audio).play().catch(() => {});
+        else if (typeof st.audio === "string" && root.NjgVoice) root.NjgVoice.clip(st.audio); // S13-V: the one voice
       } catch (e) { /* audio is optional */ }
     };
     const stopFinger = () => {

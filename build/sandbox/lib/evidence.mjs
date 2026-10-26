@@ -29,7 +29,12 @@ export const ladderMs = (level, root = join(new URL("../../..", import.meta.url)
 export const afterPauseMs = (level) => ladderMs(level) + AFTER_PAUSE_EXTRA;
 export const PHONE_SIZES = ["844x390", "800x360"];
 export const MAX_EVERY = 8;      // an every:<moment> probe captures at most this many times (a probe's "max" changes it)
-export const MAX_STRIP = 12;     // frames in one filmstrip
+export const MAX_STRIP = 30;     // frames in one filmstrip (S13-V: CK-48 films a station's first 4-6 s at 200 ms slots)
+// throttle: the network a page plays on (S13-V, CK-48 "on a throttled run"): "slow" is build/sandbox/slowload.mjs's line
+export const THROTTLES = { slow: { kbps: 1600, latency: 150, cpu: 4 } }; // Lighthouse's mobile run: slow 4G and a 4x slower processor
+// mark: what each frame of a probe's filmstrips is marked with (its edge and the strip's text): "drawn" = Cook's station fully
+// drawn (its view up, faded in, nothing of it still loading, no missing picture)
+export const MARKS = ["drawn"];
 export const PROFILES = ["fresh", "seen", "second-play", "numbers-known"]; // numbers-known: help seen, and every number word already heard 3 times (decision 57: then L3 drops the written number; SH-13)
 export const KINDS = ["layout", "detail", "art", "motion", "text", "voice"];
 
@@ -52,6 +57,9 @@ export function parseCapture(s) {
 function parseOne(t) {
   if (t === "shot") return { kind: "shot", raw: t };
   if (t === "voice") return { kind: "voice", raw: t };
+  // utter: the device voice's utterances (speak, start, end, cut, dropped by a cancel and who cancelled), on a page given the device
+  // voice model (lib/device-voice.mjs: the sandbox's browser has no voice of its own; S13-V, LNG-16)
+  if (t === "utter") return { kind: "utter", raw: t };
   if (t === "text") return { kind: "dom", sel: "body", raw: t };
   let m;
   if ((m = /^strip:(.+):(\d+)x(\d+)$/.exec(t))) {
@@ -77,7 +85,7 @@ function parseOne(t) {
   if ((m = /^js:([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)$/.exec(t))) return { kind: "js", path: m[1], raw: t };
   if (/^js:/.test(t)) return { error: `js capture "${t}": write js:<Global.path>, e.g. js:Cook.maaniWindow (property reads only)` };
   if ((m = /^(crop|zoom2|dom|text):(.+)$/.exec(t))) return m[2].trim() ? { kind: m[1] === "text" ? "dom" : m[1], sel: m[2].trim(), raw: t } : { error: `"${t}": no selector` };
-  return { error: `unknown capture "${t}" (shot, crop:, zoom2:, strip:<sel>:<n>x<ms>, trace:<sel>:<ms>, voice, dom:, contract:<n>, ref:, cmd:, js:<Global.path>)` };
+  return { error: `unknown capture "${t}" (shot, crop:, zoom2:, strip:<sel>:<n>x<ms>, trace:<sel>:<ms>, voice, utter, dom:, contract:<n>, ref:, cmd:, js:<Global.path>)` };
 }
 // a cmd capture: the repo's own read-only scripts, no shell (quotes are honoured; ; | & > < ` $( are refused)
 const CMD_OK = new Set(["node", "python3", "grep", "ls"]);
@@ -104,7 +112,7 @@ export function parseCmd(s) {
 // The words of the spec file's _expect list. "!" in front negates (true <-> false; undecided stays undecided).
 // the layout lint's checks (build/lint/layout.mjs), for noFinding:<check>
 export const LINT_CHECKS = ["text-clipped", "ellipsis", "text-small", "tap-small", "text-offscreen", "tap-offscreen", "page-scroll", "scroll-container", "covered", "covers-play-area", "word-broken"];
-export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "noFinding:", "liveInput", "pass"];
+export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "noFinding:", "heardWhole:", "liveInput", "pass"];
 const OP = "(>=|<=|=|<|>)";
 export function parseExpect(s, { contractChecks = null } = {}) {
   let t = String(s || "").trim(), not = false;
@@ -146,6 +154,9 @@ function parseExpectOne(t, contractChecks) {
   if ((m = new RegExp(`^lastsMs:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "lastsMs", sel: m[1].trim(), op: m[2], n: +m[3] };
   if ((m = new RegExp(`^(traceAmp|tracePeriod|traceRepeats|traceRot|amp|period):(.+?)${OP}(\\d+(?:\\.\\d+)?)$`).exec(t))) return { kind: { amp: "traceAmp", period: "tracePeriod" }[m[1]] || m[1], sel: m[2].trim(), op: m[3], n: +m[4] };
   if ((m = /^clipClass:([\w-]+)$/.exec(t))) return { kind: "clipClass", cls: m[1] };
+  // heardWhole:<moment>[<=ms] (S13-V, LNG-16): after each time the moment comes, the first line said starts within ms (1000 by
+  // default) and is heard whole: every device-voice part started and ended (none cut, none dropped by a cancel), every clip ran out
+  if ((m = /^heardWhole:(.+?)(?:<=(\d+))?$/.exec(t))) return { kind: "heardWhole", moment: m[1].trim(), ms: m[2] ? +m[2] : 1000 };
   // noFinding:<check>: the layout lint (build/lint/layout.mjs) finds none of this check on the page at the moment (SH-81: a tap
   // area 2 px off screen that no picture can show)
   if ((m = /^noFinding:(.+)$/.exec(t))) return LINT_CHECKS.includes(m[1].trim()) ? { kind: "noFinding", check: m[1].trim() } : { error: `noFinding: unknown lint check "${m[1].trim()}" (${LINT_CHECKS.join(" ")})` };
@@ -210,7 +221,7 @@ export function defaultsFromRow(text) {
 // ---------- the spec ----------
 // ctx: {resolve(flowId) -> flow|null, kindOf(base) -> {levels, paths}|null, sizes: SIZES, contractChecks, moments(flowId) -> patterns,
 //       reachable(want, patterns), drivers: [names in _drivers], rowText: {ID: Check text}}
-const FIELDS = new Set(["flow", "path", "level", "levels", "sizes", "at", "after", "capture", "expect", "note", "delay", "max", "profile", "want", "seed", "webgl", "kind", "afterPause"]);
+const FIELDS = new Set(["flow", "path", "level", "levels", "sizes", "at", "after", "capture", "expect", "note", "delay", "max", "profile", "want", "seed", "webgl", "kind", "afterPause", "throttle", "mark"]);
 export function normalizeProbe(p, ctx, where, rowText = "") {
   const errors = [], warnings = [];
   const err = (s) => errors.push(`${where}: ${s}`);
@@ -235,7 +246,13 @@ export function normalizeProbe(p, ctx, where, rowText = "") {
   const exps = p.expect == null ? [] : Array.isArray(p.expect) ? p.expect : [p.expect];
   for (const e of exps) { if (e == null || e === "") continue; const x = parseExpect(e, ctx); if (x.error) err(x.error); else { if (x.warning) warnings.push(`${where}: ${x.warning}`); expect.push(x); } }
   for (const e of expect) if (/^trace/.test(e.kind) && !capture.some((c) => c.kind === "trace" && c.sel === e.sel)) err(`${e.raw} needs a trace:${e.sel}:<ms> capture`);
-  if (expect.some((e) => ["sameOrder", "movesOn", "familyOnly", "silentAfter", "clipClass", "gapMs"].includes(e.kind)) && !capture.some((c) => c.kind === "voice")) capture.push(parseCapture("voice"));
+  if (expect.some((e) => ["sameOrder", "movesOn", "familyOnly", "silentAfter", "clipClass", "gapMs", "heardWhole"].includes(e.kind)) && !capture.some((c) => c.kind === "voice")) capture.push(parseCapture("voice"));
+  if (expect.some((e) => e.kind === "heardWhole") && !capture.some((c) => c.kind === "utter")) capture.push(parseCapture("utter"));
+  const throttle = p.throttle == null ? null : String(p.throttle);
+  if (throttle && !THROTTLES[throttle]) err(`unknown throttle "${throttle}" (${Object.keys(THROTTLES).join(", ")})`);
+  const mark = p.mark == null ? null : String(p.mark);
+  if (mark && !MARKS.includes(mark)) err(`unknown mark "${mark}" (${MARKS.join(", ")})`);
+  if (mark && !capture.some((c) => c.kind === "strip")) err(`mark "${mark}" marks a filmstrip's frames: the probe has no strip:`);
   const kind = p.kind == null ? inferKind(capture) : String(p.kind);
   if (!KINDS.includes(kind)) err(`unknown kind "${kind}" (${KINDS.join(", ")})`);
   if (base === "repo") {
@@ -283,7 +300,7 @@ export function normalizeProbe(p, ctx, where, rowText = "") {
       const pats = ctx.moments(flowId);
       for (const [f, v] of [["at", at.at], ["after", p.after], ...capture.filter((c) => c.atMoment).map((c) => [`${c.raw}'s @`, c.atMoment])]) if (v && !ctx.reachable(v, pats)) err(`${f} "${v}": no driver of ${flowId} reaches it (add it to the driver and lib/moments.mjs first)`);
     }
-    out.push({ flow: base, level: L, path, flowId, sizes, at: at.at, every: at.every, after: p.after ? String(p.after) : null, capture, expect, note: p.note ? String(p.note) : "", delay: delay + (p.afterPause ? afterPauseMs(L) : 0), ...(p.afterPause ? { afterPause: true } : {}), max, profile, want, seed, webgl: !!p.webgl, kind, dpr: capture.some((c) => c.kind === "zoom2") ? 2 : 1, raw: p });
+    out.push({ flow: base, level: L, path, flowId, sizes, at: at.at, every: at.every, after: p.after ? String(p.after) : null, capture, expect, note: p.note ? String(p.note) : "", delay: delay + (p.afterPause ? afterPauseMs(L) : 0), ...(p.afterPause ? { afterPause: true } : {}), max, profile, want, seed, webgl: !!p.webgl, kind, dpr: capture.some((c) => c.kind === "zoom2") ? 2 : 1, dv: capture.some((c) => c.kind === "utter"), throttle, mark, raw: p });
   }
   return { errors, warnings, probes: errors.length ? [] : out };
 }
@@ -291,7 +308,7 @@ export function inferKind(capture) {
   const k = new Set(capture.map((c) => c.kind));
   if (k.has("strip") || k.has("trace")) return "motion";
   if (k.has("zoom2")) return "detail";
-  if ([...k].every((x) => ["voice", "dom", "cmd", "contract", "ref", "js"].includes(x))) return k.has("voice") && !k.has("dom") ? "voice" : "text";
+  if ([...k].every((x) => ["voice", "utter", "dom", "cmd", "contract", "ref", "js"].includes(x))) return (k.has("voice") || k.has("utter")) && !k.has("dom") ? "voice" : "text";
   return "layout";
 }
 export function normalizeSpec(spec, ctx) {
@@ -331,7 +348,7 @@ export function loadSpec(root) {
 // ---------- the plan: probes -> page runs ----------
 // a page is one (flow id, size) played one way: the profile, seed, wanted order, renderer and pixel ratio are part of it.
 // clinic flows play with the first-time help off already, so "seen" is their default (they share the plain page)
-export const variantOf = (p) => [p.profile && !(p.profile === "seen" && /^clinic:(?!patient)/.test(p.flowId) && !/#hint/.test(p.flowId)) ? `p-${p.profile}` : "", p.seed != null ? `s${p.seed}` : "", p.want ? `w-${p.want.join("+").toLowerCase().replace(/[^a-z0-9+]+/g, "-").slice(0, 40)}` : "", p.webgl ? "gl" : "", p.dpr > 1 ? `x${p.dpr}` : ""].filter(Boolean).join("_");
+export const variantOf = (p) => [p.profile && !(p.profile === "seen" && /^clinic:(?!patient)/.test(p.flowId) && !/#hint/.test(p.flowId)) ? `p-${p.profile}` : "", p.seed != null ? `s${p.seed}` : "", p.want ? `w-${p.want.join("+").toLowerCase().replace(/[^a-z0-9+]+/g, "-").slice(0, 40)}` : "", p.webgl ? "gl" : "", p.dpr > 1 ? `x${p.dpr}` : "", p.dv ? "dv" : "", p.throttle ? p.throttle : ""].filter(Boolean).join("_");
 export const pageKey = (flowId, size, variant = "") => `${flowId}@@${size}${variant ? `@@${variant}` : ""}`;
 // the probe's id in the outputs: ROW-p<probe>-L<level>-<size>
 export const probeId = (row, i, level, size) => `${row}-p${i + 1}-L${level}-${size}`;
@@ -347,9 +364,9 @@ export function planPages(rowIds, rows) {
       for (const size of p.sizes) {
         const variant = variantOf(p);
         const k = pageKey(p.flowId, size, variant);
-        if (!pages.has(k)) pages.set(k, { key: k, flow: p.flowId, size, variant, profile: variant.includes("p-") ? p.profile : null, seed: p.seed, want: p.want, webgl: p.webgl, dpr: p.dpr, probes: [] });
+        if (!pages.has(k)) pages.set(k, { key: k, flow: p.flowId, size, variant, profile: variant.includes("p-") ? p.profile : null, seed: p.seed, want: p.want, webgl: p.webgl, dpr: p.dpr, ...(p.dv ? { dv: true } : {}), ...(p.throttle ? { throttle: p.throttle } : {}), probes: [] });
         const own = p.capture.filter((c) => !c.atMoment);
-        pages.get(k).probes.push({ row: id, i: p.i, level: p.level, at: p.at, every: p.every, after: p.after, capture: own, expect: p.expect, delay: p.delay, max: p.max, note: p.note, kind: p.kind });
+        pages.get(k).probes.push({ row: id, i: p.i, level: p.level, at: p.at, every: p.every, after: p.after, capture: own, expect: p.expect, delay: p.delay, max: p.max, note: p.note, kind: p.kind, ...(p.mark ? { mark: p.mark } : {}) });
         for (const c of p.capture.filter((c) => c.atMoment)) pages.get(k).probes.push({ row: id, i: p.i, level: p.level, sub: c.atMoment, at: c.atMoment, every: false, after: null, capture: [c], expect: [], delay: 0, max: 1, note: `${c.raw}`, kind: p.kind });
       }
     }

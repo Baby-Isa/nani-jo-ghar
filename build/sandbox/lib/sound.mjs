@@ -91,16 +91,25 @@ export const SOUND_HOOK = `(() => {
         try {
           const pid = ++pidSeq, text = String(u && u.text || "");
           open.add(pid);
+          try { if (u) u.__njgPid = pid; } catch (e) {} // (the device voice model's lifecycle names its play: lib/device-voice.mjs)
           // the device voice has no file: about 0.4 s a word at its rate (an estimate, marked so)
           log({ type: "play", via: "speechSynthesis", text, pid, dur: Math.max(0.6, text.split(/\\s+/).length * 0.4 / ((u && u.rate) || 1)), est: true });
           if (u && u.addEventListener) u.addEventListener("end", () => { if (open.delete(pid)) log({ type: "play-end", pid, why: "ended" }); });
         } catch (e) {}
-        return sp.apply(this, arguments);
+        // S13-V (LNG-16): a page given the device voice model (an evidence probe's utter capture) speaks through it
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.speak(u) : sp.apply(this, arguments);
       };
       const cancel = window.speechSynthesis.cancel;
       window.speechSynthesis.cancel = function () {
         try { open.forEach((pid) => log({ type: "play-end", pid, why: "cancel" })); open.clear(); } catch (e) {}
-        return cancel.apply(this, arguments);
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.cancel() : cancel.apply(this, arguments);
+      };
+      const voices = window.speechSynthesis.getVoices;
+      window.speechSynthesis.getVoices = function () {
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.getVoices() : voices.apply(this, arguments);
       };
     }
   } catch (e) {}
@@ -117,6 +126,43 @@ export const SOUND_HOOK = `(() => {
       } catch (x) {}
     });
   } catch (e) {}
+  // 3c. (S13-V) the other sound effects: the shared Sfx.play by its name (wrapped below), and any oscillator or generated buffer a
+  // game starts by itself, named by the file that made it ("sfx/osc:js/cook/core.js"; one row per file per 150 ms), so a sound
+  // log lists every effect before and after the effects move into js/shared/sfx.js
+  let inSfx = 0;
+  const fxLast = {};
+  const fxFile = (kind) => {
+    try {
+      if (inSfx) return;
+      const st = String(new Error().stack || "").split("\\n").slice(2).join("\\n");
+      const m = /\\/(js\\/[^\\s:)?]+\\.js)/.exec(st);
+      const f = m ? m[1] : "?", now = Date.now();
+      if (f === "js/core/voice.js" || fxLast[kind + f] > now - 150) return;
+      fxLast[kind + f] = now;
+      const pid = ++pidSeq;
+      log({ type: "play", via: "sfx", url: "sfx/" + kind + ":" + f, pid, dur: null });
+      setTimeout(() => log({ type: "play-end", pid, why: "ended" }), 150);
+    } catch (e) {}
+  };
+  try {
+    const co = BaseAudioContext.prototype.createOscillator;
+    BaseAudioContext.prototype.createOscillator = function () { fxFile("osc"); return co.apply(this, arguments); };
+    const cb = BaseAudioContext.prototype.createBuffer;
+    BaseAudioContext.prototype.createBuffer = function () { fxFile("noise"); return cb.apply(this, arguments); };
+  } catch (e) {}
+  function wrapSfx(S) {
+    if (!S || typeof S.play !== "function" || S.play.__njgSfx) return;
+    const orig = S.play;
+    const w = function (name) {
+      let r;
+      inSfx++;
+      try { r = orig.apply(this, arguments); } finally { inSfx--; }
+      try { if (r !== false) { const pid = ++pidSeq; log({ type: "play", via: "sfx", url: "sfx/" + String(name), pid, dur: null }); setTimeout(() => log({ type: "play-end", pid, why: "ended" }), 150); } } catch (e) {}
+      return r;
+    };
+    w.__njgSfx = true;
+    S.play = w;
+  }
   // 4. lines: wrap the games' own "say a line" functions as they appear
   let seq = 0;
   function wrapLine(obj, name, who, textOf) {
@@ -152,6 +198,7 @@ export const SOUND_HOOK = `(() => {
     obj[name] = w;
   }
   const wrapAll = () => {
+    try { wrapSfx(window.Sfx); } catch (e) {}
     try {
       wrapStop(window.VoiceStop, "stop", "VoiceStop.stop");
       const CV = window.Cook && window.Cook.core && window.Cook.core.voice;

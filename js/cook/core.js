@@ -273,30 +273,11 @@
   };
 
   /* ---------------- audio: recordings only ---------------- */
-  const audioCache = {};
+  // (parked modes only: Who's tell) an older word recording, through the one voice (js/core/voice.js, window.NjgVoice; S13-V)
   Cook.playRecording = function (id) {
-    if (!Cook.hasAudio(id)) return null;
-    return new Promise((resolve) => {
-      let a = audioCache[id];
-      if (!a) a = audioCache[id] = new Audio(Cook.v(`assets/audio/word/${id}.mp3`));
-      let done = false;
-      const finish = () => {
-        if (!done) {
-          done = true;
-          resolve(true);
-        }
-      };
-      a.onended = finish;
-      a.onerror = finish;
-      setTimeout(finish, 4000);
-      try {
-        a.currentTime = 0;
-        const p = a.play();
-        if (p && p.catch) p.catch(finish);
-      } catch (e) {
-        finish();
-      }
-    });
+    if (!Cook.hasAudio(id) || !global.NjgVoice) return null;
+    const h = global.NjgVoice.clip(Cook.v(`assets/audio/word/${id}.mp3`));
+    return Promise.race([h.done, new Promise((r) => setTimeout(r, 4000))]).then(() => true);
   };
   /* ---------------- placeholder voice (Gujarati TTS, about half speed) ----
    * Every line the game can say has a file, keyed by its normalised
@@ -428,6 +409,7 @@
     } catch (e) {
       ctx = null;
     }
+    if (global.Sfx && global.Sfx.unlock) global.Sfx.unlock(); // (the effects' own context, js/shared/sfx.js)
   };
   /** C4: Cook is unmounted: the voice stops and the sound goes (the next mount unlocks a new one on its first tap). */
   Cook.closeAudio = function () {
@@ -437,118 +419,6 @@
     Object.keys(bufCache).forEach((k) => delete bufCache[k]);
     if (c && c.close) c.close().catch(() => {});
   };
-  function tone(freq, dur, { type = "sine", gain = 0.3, when = 0, slide = 0 } = {}) {
-    if (!ctx) return;
-    const t = ctx.currentTime + when;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = type;
-    o.frequency.setValueAtTime(freq, t);
-    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, freq + slide), t + dur);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(gain, t + 0.012);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(master);
-    o.start(t);
-    o.stop(t + dur + 0.02);
-  }
-  function noise(dur, { gain = 0.2, when = 0, freq = 2000, q = 0.8, type = "bandpass" } = {}) {
-    if (!ctx) return null;
-    const t = ctx.currentTime + when;
-    const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const f = ctx.createBiquadFilter();
-    f.type = type;
-    f.frequency.value = freq;
-    f.Q.value = q;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(gain, t + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    src.connect(f).connect(g).connect(master);
-    src.start(t);
-    return { src, g };
-  }
-  /*
-   * TEST HOOK (s04-hooks, MAA-11; read-only: what plays is unchanged): a synthesized loop has no file, so the sandbox's
-   * sound hook cannot see it. Its start and its stop go out as a window "njg-sfx" event ({name, id, on, quiet: no audio
-   * context}); the sound hook logs them as a play of "sfx/<name>" and its end, like the other sound events.
-   */
-  let sfxSeq = 0;
-  function sfxEvent(name, h) {
-    try {
-      const id = ++sfxSeq;
-      const quiet = !ctx;
-      const tell = (on) => global.dispatchEvent(new CustomEvent("njg-sfx", { detail: { name, id, on, quiet } }));
-      tell(true);
-      const stop = h.stop;
-      let told = false;
-      h.stop = function () {
-        if (!told) {
-          told = true;
-          try {
-            tell(false);
-          } catch (e) {
-            /* only a log */
-          }
-        }
-        return stop.apply(this, arguments);
-      };
-    } catch (e) {
-      /* only a log */
-    }
-    return h;
-  }
-  // a looping noise (pouring, sizzling) that the caller stops
-  function loopNoise({ gain = 0.15, freq = 1200, q = 1, type = "bandpass", wobble = 0 } = {}) {
-    if (!ctx) return { stop() {} };
-    const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    src.loop = true;
-    const f = ctx.createBiquadFilter();
-    f.type = type;
-    f.frequency.value = freq;
-    f.Q.value = q;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + 0.08);
-    let lfo = null;
-    if (wobble) {
-      lfo = ctx.createOscillator();
-      const lg = ctx.createGain();
-      lfo.frequency.value = wobble;
-      lg.gain.value = freq * 0.3;
-      lfo.connect(lg).connect(f.frequency);
-      lfo.start();
-    }
-    src.connect(f).connect(g).connect(master);
-    src.start();
-    return {
-      // pouring rises in pitch as the vessel fills, like the real thing
-      pitch(level) {
-        try {
-          f.frequency.setTargetAtTime(freq * (0.7 + level * 1.6), ctx.currentTime, 0.05);
-        } catch (e) {}
-      },
-      stop() {
-        try {
-          g.gain.cancelScheduledValues(ctx.currentTime);
-          g.gain.setValueAtTime(g.gain.value, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.12);
-          src.stop(ctx.currentTime + 0.15);
-          if (lfo) lfo.stop(ctx.currentTime + 0.15);
-        } catch (e) {}
-      },
-    };
-  }
-
   /**
    * R6 (decision 61): a real mistake at level 1, once a round: the family's "oh oh oh" when Mum has recorded it
    * (the engine's line cook.line.oh-oh, played only from a family clip), else the soft sound. Never on a right move,
@@ -562,78 +432,31 @@
     Cook.sfx.oops();
     return Cook.wait ? Cook.wait(450) : Promise.resolve();
   };
+  /*
+   * S13-V: Cook's effects are the shared player's (js/shared/sfx.js), by name: the same sounds, moved there. Before Cook's first
+   * tap has turned its sound on (Cook.unlockAudio), an effect is quiet, as before (the test hook's "njg-sfx" event still says so).
+   */
+  const fx = (name, o) => (global.Sfx ? global.Sfx.play(name, Object.assign({ quiet: !ctx }, o || {})) : false);
+  const fxLoop = (name) => (global.Sfx && global.Sfx.loop ? global.Sfx.loop(name, { quiet: !ctx }) : { stop() {}, pitch() {} });
   Cook.sfx = {
-    right() {
-      tone(784, 0.14, { type: "triangle", gain: 0.25 });
-      tone(1175, 0.22, { type: "triangle", gain: 0.2, when: 0.08 });
-    },
-    // warm, low, short: never a buzzer
-    soft() {
-      tone(330, 0.16, { type: "sine", gain: 0.18, slide: -60 });
-    },
-    // R6 (decision 61): the soft "oh-oh" that stands in for Mum's "oh oh oh" until she records it (arre re is gone)
-    oops() {
-      tone(440, 0.14, { type: "sine", gain: 0.14, slide: -20 });
-      tone(370, 0.22, { type: "sine", gain: 0.14, slide: -40, when: 0.17 });
-    },
-    pop() {
-      tone(520, 0.08, { type: "sine", gain: 0.2, slide: 300 });
-    },
-    whoosh() {
-      noise(0.22, { gain: 0.18, freq: 1800, q: 0.6 });
-    },
-    chop() {
-      noise(0.06, { gain: 0.35, freq: 900, q: 1.2 });
-      tone(160, 0.07, { type: "square", gain: 0.06 });
-    },
-    sizzle(dur = 0.7) {
-      noise(dur, { gain: 0.16, freq: 5200, q: 0.5, type: "highpass" });
-    },
-    // SH-51: the coin's "ching" (in the sound log as "sfx/ching", the njg-sfx event, as the stir's lap is)
-    coin() {
-      tone(1320, 0.08, { type: "square", gain: 0.07 });
-      tone(1760, 0.18, { type: "square", gain: 0.07, when: 0.07 });
-      const h = sfxEvent("ching", { stop() {} });
-      setTimeout(() => h.stop(), 250);
-    },
-    star(i = 0) { // parked modes only (Find it, Snap: their legacy stars); Cook never plays it
-      tone(880 * Math.pow(1.26, i), 0.25, { type: "triangle", gain: 0.2 });
-    },
-    puff() {
-      tone(300, 0.35, { type: "sine", gain: 0.2, slide: 500 });
-      noise(0.3, { gain: 0.08, freq: 800 });
-    },
-    flip() {
-      noise(0.1, { gain: 0.15, freq: 600 });
-      tone(420, 0.1, { type: "sine", gain: 0.12, slide: 200 });
-    },
-    bubble() {
-      tone(300 + Math.random() * 300, 0.06, { type: "sine", gain: 0.06, slide: 200 });
-    },
-    click() {
-      tone(1200, 0.03, { type: "square", gain: 0.05 });
-    },
-    // DAAR-30 (P49, Zafar 17 Oct: "a sound, she says the number and the number changes"): the stir's flag as the ladle passes
-    // it, a short bright ding heard over the sizzle (the old 30 ms click at 0.05 was lost under it); in the sound log as
-    // "sfx/lap" (the njg-sfx event, as the sizzle loop), so the evidence voice timeline shows it at each lap
-    lap() {
-      tone(1047, 0.12, { type: "triangle", gain: 0.16 });
-      tone(1568, 0.16, { type: "triangle", gain: 0.1, when: 0.05 });
-      const h = sfxEvent("lap", { stop() {} });
-      setTimeout(() => h.stop(), 220);
-    },
-    fanfare() {
-      [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.3, { type: "triangle", gain: 0.2, when: i * 0.12 }));
-    },
-    pourLoop() {
-      return loopNoise({ gain: 0.12, freq: 900, q: 0.7, wobble: 7 });
-    },
-    sizzleLoop() {
-      return sfxEvent("sizzle-loop", loopNoise({ gain: 0.07, freq: 6000, q: 0.4, type: "highpass" }));
-    },
-    boilLoop() {
-      return loopNoise({ gain: 0.05, freq: 400, q: 2, wobble: 5 });
-    },
+    right: () => fx("cook-right"),
+    soft: () => fx("cook-soft"),
+    oops: () => fx("cook-oops"),
+    pop: () => fx("cook-pop"),
+    whoosh: () => fx("cook-whoosh"),
+    chop: () => fx("chop"),
+    sizzle: (dur = 0.7) => fx("sizzle", { dur }),
+    coin: () => fx("coin"),
+    star: (i = 0) => fx("star", { i }), // parked modes only (Find it, Snap: their legacy stars); Cook never plays it
+    puff: () => fx("puff"),
+    flip: () => fx("flip"),
+    bubble: () => fx("bubble"),
+    click: () => fx("click"),
+    lap: () => fx("lap"),
+    fanfare: () => fx("fanfare"),
+    pourLoop: () => fxLoop("pour"),
+    sizzleLoop: () => fxLoop("sizzle"),
+    boilLoop: () => fxLoop("boil"),
   };
 
   /* ---------------- misc ---------------- */

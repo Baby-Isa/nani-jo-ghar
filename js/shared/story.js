@@ -57,64 +57,31 @@
     await FamilyVoice.load();
     return (k.clip && FamilyVoice.byId(k.clip, k.speaker)) || FamilyVoice.match(k.text);
   }
+  // S13-V: every clip and device-voice word through the one voice (js/core/voice.js, window.NjgVoice): the store app plays only
+  // OK family clips and never the device voice; the test build keeps its stand-ins
   let blocked = false;
-  let current = null; // the <audio> or utterance playing, to stop it
+  let current = null; // the clip playing, to stop it
+  const NV = () => global.NjgVoice || null;
   function stopVoice() {
     try {
-      if (current && current.pause) current.pause();
-      if (global.speechSynthesis) global.speechSynthesis.cancel();
+      if (current) current.cut();
+      if (NV()) NV().stop();
     } catch (e) {
       /* ignore */
     }
     current = null;
   }
   function playFile(file) {
-    return new Promise((resolve) => {
-      const a = new global.Audio(v(file));
-      current = a;
-      let done = false;
-      const end = (ok) => {
-        if (done) return;
-        done = true;
-        resolve(ok);
-      };
-      a.addEventListener("ended", () => end(true));
-      a.addEventListener("error", () => end(false));
-      setTimeout(() => end(true), 8000);
-      const p = a.play();
-      if (p && p.catch)
-        p.catch((e) => {
-          if (e && e.name === "NotAllowedError") blocked = true;
-          end(false);
-        });
+    if (!NV()) return Promise.resolve(false);
+    const h = (current = NV().clip(v(file)));
+    return Promise.race([h.done, new Promise((r) => setTimeout(() => r(true), 8000))]).then((ok) => {
+      if (h.blocked) blocked = true;
+      return ok;
     });
-  }
-  function voices() {
-    try {
-      return (global.speechSynthesis && global.speechSynthesis.getVoices()) || [];
-    } catch (e) {
-      return [];
-    }
   }
   function tts(text, lang) {
-    const vs = voices();
-    if (!vs.length || !global.SpeechSynthesisUtterance) return Promise.resolve(false);
-    const want = lang === "en" ? ["en-GB", "en-IN", "en"] : ["gu-IN", "hi-IN", "en-IN"];
-    let voice = null;
-    for (const w of want) if ((voice = vs.find((x) => x.lang && x.lang.replace("_", "-").startsWith(w)))) break;
-    return new Promise((resolve) => {
-      const u = new global.SpeechSynthesisUtterance(text);
-      if (voice) u.voice = voice;
-      u.lang = voice ? voice.lang : lang === "en" ? "en-GB" : "hi-IN";
-      u.rate = lang === "en" ? 0.95 : 0.85;
-      let done = false;
-      const end = (ok) => !done && ((done = true), resolve(ok));
-      u.onend = () => end(true);
-      u.onerror = () => end(false);
-      setTimeout(() => end(true), 1500 + text.split(/\s+/).length * 700);
-      current = { pause: () => global.speechSynthesis.cancel() };
-      global.speechSynthesis.speak(u);
-    });
+    if (!NV()) return Promise.resolve(false);
+    return Promise.race([NV().device(text, { lang: lang === "en" ? "en" : "k", rate: lang === "en" ? 0.95 : 0.85 }), new Promise((r) => setTimeout(() => r(true), 1500 + text.split(/\s+/).length * 700))]);
   }
   const estimate = (text) => 500 + String(text).split(/\s+/).length * 330;
 

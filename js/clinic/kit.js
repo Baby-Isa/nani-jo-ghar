@@ -435,25 +435,16 @@
     log: [],
   });
   const estimate = (text) => Math.max(900, Math.min(4200, 420 + 330 * String(text || "").split(/\s+/).length));
+  // S13-V: every clip and device-voice word through the one voice (js/core/voice.js, window.NjgVoice): the store app plays only
+  // OK family clips and never the device voice; the test build keeps its stand-ins. Before the core has loaded: silent.
+  const NV = () => global.NjgVoice || null;
   Voice.tts = function (text, o = {}) {
     if (!live(o.gen)) return Promise.resolve(true);
-    if (Voice.quiet || !text || !global.speechSynthesis) return Promise.resolve(false);
-    return new Promise((res) => {
-      try {
-        const u = new global.SpeechSynthesisUtterance(text);
-        u.rate = 0.9;
-        if (o.soft) u.volume = 0.5;
-        let done = false;
-        const end = () => !done && ((done = true), res(true));
-        u.onend = end;
-        u.onerror = end;
-        global.speechSynthesis.cancel();
-        global.speechSynthesis.speak(u);
-        setTimeout(end, estimate(text) + 1500);
-      } catch (e) {
-        res(false);
-      }
-    });
+    if (Voice.quiet || !text || !NV()) return Promise.resolve(false);
+    // (the device's own voice, a little slow; the cancel before it is waited out, LNG-16's race)
+    return Promise.race([NV().device(text, { rate: 0.9, volume: o.soft ? 0.5 : 1, lang: null, cancel: true }), new Promise((r) => setTimeout(r, estimate(text) + 1500))])
+      .then(() => true)
+      .catch(() => false);
   };
   /*
    * The voice stop (S03-A; SH-64, CLN-109; S04-B, SH-66): the clinic's voice is part of the shared lifecycle's one voice
@@ -479,7 +470,7 @@
     Voice.playing.forEach((a) => a._cut && a._cut());
     Voice.playing.clear();
     try {
-      global.speechSynthesis && global.speechSynthesis.cancel();
+      if (NV()) NV().stop();
     } catch (e) {
       /* no voice */
     }
@@ -494,37 +485,15 @@
   });
   Voice.audio = function (src, o = {}) {
     if (!live(o.gen)) return Promise.resolve(true);
-    return new Promise((res) => {
-      try {
-        const a = new Audio(Kit.url(src));
-        if (o.soft) a.volume = 0.45; // a whisper (the ear's hearing check): the same family clip, quieter
-        let done = false;
-        let untrack = () => {};
-        const end = (ok) => {
-          if (done) return;
-          done = true;
-          Voice.playing.delete(a);
-          untrack();
-          res(ok);
-        };
-        // stopped: the clip pauses and the line counts as said (no device voice in its place)
-        a._cut = () => {
-          try {
-            a.pause();
-          } catch (e) {
-            /* gone */
-          }
-          end(true);
-        };
-        Voice.playing.add(a);
-        if (VS()) untrack = VS().track(a, a._cut);
-        a.onended = () => end(true);
-        a.onerror = () => end(false);
-        a.play().catch(() => end(false));
-        setTimeout(() => end(true), 8000);
-      } catch (e) {
-        res(false);
-      }
+    if (!NV()) return Promise.resolve(false);
+    // a whisper (the ear's hearing check): the same family clip, quieter. Stopped: the clip pauses and the line counts as said
+    // (no device voice in its place); the one voice tracks it with the lifecycle's voice stop
+    const h = NV().clip(Kit.url(src), { volume: o.soft ? 0.45 : 1 });
+    const a = { _cut: () => h.cut() };
+    Voice.playing.add(a);
+    return Promise.race([h.done, new Promise((r) => setTimeout(() => r(true), 8000))]).then((ok) => {
+      Voice.playing.delete(a);
+      return ok;
     });
   };
   /**
@@ -626,15 +595,7 @@
     let played = false;
     const c = w && w.plan && w.plan.length === 1 ? w.plan[0] : null;
     if (c && c.file) played = await Voice.audio(c.file, { gen: Voice.gen });
-    if (!played && !Voice.quiet && global.speechSynthesis) {
-      try {
-        const u = new global.SpeechSynthesisUtterance(Kit.plain(w));
-        u.rate = 0.95;
-        global.speechSynthesis.speak(u);
-      } catch (e) {
-        /* no voice */
-      }
-    }
+    if (!played && !Voice.quiet && NV()) NV().device(Kit.plain(w), { rate: 0.95, lang: null }).catch(() => {});
   };
   /**
    * The voice stop: nothing queued or playing is heard any more (CLN-109: no heal-game line carries into the send-off).

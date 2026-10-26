@@ -1,4 +1,9 @@
 /*
+ * PARKED GAMES ONLY (S13-V, 26 Oct): every live page (index, first, labs, day, Cook, the clinic, lab) and build/host/helpers.mjs
+ * use the one save, js/core/save.js (same keys, schema 2; build/core/save-one.test.mjs). This classic copy stays only because the
+ * parked games' pages (dress, find, monsoon, snap, tidy, who: out of scope) load it as a plain script; delete it when they are
+ * unparked and switch to the core's (as index.html does).
+ *
  * One save for the whole game ("one app, one save", phase B, 26 Sept 2026).
  * docs/architecture/shared-api.md section 11 is the contract.
  *

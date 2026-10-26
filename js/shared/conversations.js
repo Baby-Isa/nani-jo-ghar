@@ -633,31 +633,18 @@
   /** Say a resolved line in a voice: the family clips in order, else a quiet read-along wait (never TTS Kutchi). */
   C.say = async function (line, voice, o = {}) {
     if (!line) return { played: false };
-    const got = !C.silent && line.complete && root.Audio ? C.clipFiles(line.chunks, voice) : null;
+    // S13-V: the clips through the one voice (js/core/voice.js, window.NjgVoice: only OK family clips in the store app)
+    const NV = root.NjgVoice;
+    const got = !C.silent && line.complete && NV ? C.clipFiles(line.chunks, voice) : null;
     if (!got) {
       await wait(o.ms || textMs(line.k || line.en));
       return { played: false };
     }
     const v = (u) => (root.njgV ? root.njgV(u) : u);
     for (const f of got.files) {
-      await new Promise((resolve) => {
-        const a = new root.Audio(v((o.base || C.base || "") + f));
-        current = a;
-        if (o.rate) {
-          a.playbackRate = o.rate;
-          try {
-            a.preservesPitch = false;
-          } catch (e) {
-            /* ignore */
-          }
-        }
-        const done = () => resolve();
-        a.onended = done;
-        a.onerror = done;
-        const p = a.play();
-        if (p && p.catch) p.catch(done);
-        setTimeout(done, 6000); // a stuck clip never blocks the game
-      });
+      const h = NV.clip(v((o.base || C.base || "") + f), { rate: o.rate || null });
+      current = { pause: h.cut };
+      await Promise.race([h.done, new Promise((r) => setTimeout(r, 6000))]); // a stuck clip never blocks the game
       await wait(90);
     }
     current = null;

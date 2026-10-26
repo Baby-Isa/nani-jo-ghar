@@ -1,8 +1,8 @@
 /*
  * The one save (target-model § 3.4; rule J3), as an ES module: today's js/shared/save.js with the same API
- * and the same storage keys, at schema 2. The classic js/shared/save.js stays on the live pages until each
- * page moves to modules (R4 Cook, R5 the clinic); both read and write the same keys, and the classic one
- * reads a schema-2 save without changing it (build/core/save.test.mjs checks that).
+ * and the same storage keys, at schema 2. Every live page loads this one (S13-V: index, first and labs moved
+ * last; their classic scripts are deferred after it); the classic js/shared/save.js is left for the parked
+ * games' pages only, reading a schema-2 save without changing it (build/core/save.test.mjs checks that).
  *
  * LAYOUT (localStorage; synchronous):
  *   "njg-save"                 the root: {schema, current, players: [...], migrated: {...}, settings?, lang, content}

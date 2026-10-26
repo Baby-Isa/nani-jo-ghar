@@ -645,7 +645,8 @@ async function boot() {
   const load = (p) => loadJSON(p, { base: ROOT });
   const [data, days, core] = await Promise.all([load("data/day.json"), load("data/days.json"), loadCore({ base: ROOT })]);
   const langData = {};
-  const [audio] = await Promise.all([load("data/family-audio.json").catch(() => []), ...DATA_FILES.map(async (f) => (langData[f] = await load(`data/lang/${f}.json`)))]);
+  // CK-48 (S13-V): the family's clip list is the core's (loaded once per page), never fetched a second time here
+  const [audio] = await Promise.all([Promise.resolve(core.data && core.data.familyAudio ? core.data.familyAudio : load("data/family-audio.json")).catch(() => []),...DATA_FILES.map(async (f) => (langData[f] = await load(`data/lang/${f}.json`)))]);
   const E = createEngine({ data: langData, audio: audio || [], voice: core.voice });
   const api = makeApi({ data, days, core, E });
   // the sound hook's seam: every line is said through window.Day.say (one line in the sandbox's sound log)

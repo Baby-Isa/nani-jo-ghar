@@ -29,6 +29,8 @@ async function setup() {
   win.SpeechSynthesisUtterance = function (t) {
     this.text = t;
   };
+  // S13-V: Cook's device voice is the one voice's (js/core/voice.js window.NjgVoice), the test path here
+  win.NjgVoice = { path: () => "test", device: async () => (played.push("device"), true) };
   const fam = JSON.parse(readFileSync(ROOT + "data/family-audio.json", "utf8"));
   const index = clipIndex(fam, { tts: Cook.tts });
   const sayOf = (id) => (id && Cook.data.words[id] && Cook.data.words[id].say) || null;
