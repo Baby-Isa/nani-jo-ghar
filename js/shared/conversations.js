@@ -1041,6 +1041,7 @@
    *   z       its stacking order in its layer (default the kit's, 60)
    *   avoid   other speakers it must not cover: elements, or a function giving them
    *   face    true: the speaker's face circle at its start (js/shared/face.js, the row size)
+   *   hear    () => say the line again: the kit's speaker button at the bubble's start (left), as on every bubble
    * bubble.njgPlace() places it again now. Take it off with bubble.remove().
    */
   C.bubble = function (anchor, o = {}) {
@@ -1056,6 +1057,17 @@
     if (o.en) b.dataset.en = String(o.en);
     if (o.tap) b.classList.add("cv-tap");
     if (o.z != null) b.style.zIndex = String(o.z);
+    // the speaker button, at the bubble's start as in every bubble (css: .cv-spk first; "🔊 word", ui-design-system 4): it says
+    // the line again (o.hear). A line whose words are a game's own pill with its speaker in it (Cook's) passes none
+    if (typeof o.hear === "function") {
+      const s = b.appendChild(mk("button", "cv-spk", SPEAKER_SVG));
+      s.type = "button";
+      s.setAttribute("aria-label", "Hear it again");
+      s.addEventListener("click", (e) => {
+        e.stopPropagation();
+        o.hear();
+      });
+    }
     if (o.face && who) b.appendChild(mk("span", "cv-face", faceOf({ id: who }))).setAttribute("aria-hidden", "true");
     const t = b.appendChild(mk("span", "cv-text"));
     if (o.text && o.text.nodeType) t.appendChild(o.text);

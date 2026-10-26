@@ -207,7 +207,11 @@
 .cv-bubble:not(.in) { visibility: hidden; } /* (a bubble on its way in is not on screen yet, for the checks either; was the day's own rule) */
 /* (it fades in where it is placed: never slides from the conversation bubble's own offset to its place, a tail away from the head) */
 .cv-line { z-index: 60; pointer-events: none; font-family: var(--njg-font); transition: opacity .22s; }
-.cv-line.cv-tap { pointer-events: auto; }
+.cv-line.cv-tap, .cv-line .cv-spk { pointer-events: auto; }
+/* S13-B2 fix round (the judge: the day's speaker sat on the right, Cook's on the left): every bubble's speaker button is at its
+   start, on the left, whatever order a page builds it in ("🔊 word", docs/design-language/ui-design-system.md 4; Cook's pill, the
+   card rows' speakers, SH-125's replies: the speaker always comes first) */
+.cv-bubble > .cv-spk { order: -1; }
 .cv-line[data-njg-place], .cv-line[data-njg-place].in { transform: none; }
 .cv-line.cv-top, .cv-line.cv-top.in { left: 50%; top: max(calc(var(--njg-u) * 12), env(safe-area-inset-top)); transform: translateX(-50%); }
 .cv-bubble[data-njg-place]::before {
