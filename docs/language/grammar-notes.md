@@ -810,16 +810,16 @@ Who said what: Mum answers and Masi joins in, sometimes with her own version. Ta
 ### 57. C85: "I saw you": the ending is the speaker's gender
 | English | A man says it · a woman says it | Confidence (time) |
 |---|---|---|
-| I saw you (to a child) | ***Aau toke naryos*** · ***Aau toke naryis*** | clear (s1 6:33–6:38; a first round 4:06–6:14) |
+| I saw you (to a child) | ***Aau toke naryos*** · ***Aau toke naris*** | clear (s1 6:33–6:38; a first round 4:06–6:14) |
 | I see you (to a child) | ***Aau toke narato*** · ***Aau toke narati*** | clear (s1 6:45–6:49) |
 | I'll see you (to a child) | ***Aau toke nardos*** · ***Aau toke nardis*** | clear (s1 6:40, 6:57–7:01) |
-| I saw you (to an elder) | ***Aau anke naryos*** · ***Aau anke naryis*** ("*toke* would become *anke*, that's the only difference, for all of them") | clear (s1 7:17–7:43) |
-| I saw him · I saw her | ***Aau inke naryos*** · ***Aau inke naryis*** | ⚠ the takes came before the ruling below (s1 8:20–8:40) |
-| I saw Hana yesterday (sitting-3) | Zafar: ***Aau gaykal Hana ke naryos*** ⚠ (*gaykal* heard as *wikal*); Mum: ***… Hana ke naryis***, ***… Muhammad ke naryis*** ("*naryis* for both because I'm a female") | ⚠ (s3 1:07–1:42) |
+| I saw you (to an elder) | ***Aau anke naryos*** · ***Aau anke naris*** ("*toke* would become *anke*, that's the only difference, for all of them") | clear (s1 7:17–7:43) |
+| I saw him · I saw her | ***Aau inke naryos*** · ***Aau inke naris*** | ⚠ the takes came before the ruling below (s1 8:20–8:40) |
+| I saw Hana yesterday (sitting-3) | Zafar: ***Aau gaykal Hana ke naryos*** ⚠ (*gaykal* heard as *wikal*); Mum: ***… Hana ke naris***, ***… Muhammad ke naris*** ("*naris* for both because I'm a female") | ⚠ (s3 1:07–1:42) |
 
-- **Debated, then ruled:** Mum and Masi went back and forth (s1 8:40–10:20: does the ending follow the speaker or the person seen? With a name Mum kept *naryis*, roughly "*Zafar bhai ke naryis, Hana ke naryis*"). In sitting-3 they agreed "it's on the speaker". **Zafar 26 Oct (decision 1): the verb follows the SPEAKER's gender**: past *-naryos* (man) / *-naryis* (woman), present *-narato / -narati*, future *-nardos / -nardis*; *toke* to a child, *anke* to an elder.
+- **Debated, then ruled:** Mum and Masi went back and forth (s1 8:40–10:20: does the ending follow the speaker or the person seen? With a name Mum kept *naris*, roughly "*Zafar bhai ke naris, Hana ke naris*"). In sitting-3 they agreed "it's on the speaker". **Zafar 26 Oct (decision 1): the verb follows the SPEAKER's gender**: past *-naryos* (man) / *-naris* (woman), present *-narato / -narati*, future *-nardos / -nardis*; *toke* to a child, *anke* to an elder.
 - *nar* is "look" (§20) and *naryos* its past. *nardos / nardis* match *dos / dis* (I'll give, §32 S8).
-- A name takes ***ke*** where a pronoun has its *-ke* form: *Hana ke naryis*.
+- A name takes ***ke*** where a pronoun has its *-ke* form: *Hana ke naris*.
 - **Inconclusive, not used:** C85's "Nana saw me" (*Nana muke naryo*?; Mum then: "that's just me corrupting Kutchi", s1 3:43–3:58) and "I saw them".
 
 ### 58. C86–C93: "need" is *… ji jaruri*; "want" is *khapeti / khapeto*
@@ -837,34 +837,34 @@ Who said what: Mum answers and Masi joins in, sometimes with her own version. Ta
 - **Need and want differ** (s1 11:50–13:10): ***jaruri*** is need, and strong ("I really need it, like I need my caffeine now"); the everyday ask is the want. "I can't tell somebody what they want; I can tell them what they need" (s1 13:47).
 - **The want ending follows the thing, never the person** (s1 10:50–12:20, 16:47–17:05): ***khapeti*** for a she-thing (*chai*), ***khapeto*** for a he-thing ("*muke hi khapeto*: of the two, I want this one"). Plain ***khape*** is the short form ("chai khape sounds half"), as §1 found. Zafar: "I used to change them all to male endings because I'm a boy: it's like French, it's the object."
 - **A question is the same words with the voice rising at the end** (s1 14:30–14:44): *Anke chai khapeti?*
-- *ji* stays *ji* with *chai*, *dawa* and *vinnu* (§60). Claude reads it as the "of" word agreeing with *jaruri*: a reading, not Mum's words.
+- *ji* stays *ji* with *chai*, *dawa* and *winnu* (§60). Claude reads it as the "of" word agreeing with *jaruri*: a reading, not Mum's words.
 
-### 59. C94: "I like chai": *wareti* ⚠
-- ***Muke chai wareti*** (I like chai), ***Inke chai wareti*** (she likes), ***Iloka ke chai wareti*** (they like) (s1 16:46–17:25). The same for a boy: "it's based on the chai". ⚠ spelling: Whisper hears *yaareti*, *areti* and *warati*.
+### 59. C94: "I like chai": *arreti* ⚠
+- ***Muke chai arreti*** (I like chai), ***Inke chai arreti*** (she likes), ***Iloka ke chai arreti*** (they like) (s1 16:46–17:25). The same for a boy: "it's based on the chai". ⚠ spelling: Whisper hears *yaareti*, *areti* and *warati*.
 
-### 60. C95: "want to", "have to", "need to" go: *vinnu aaye*, *vinnu khapdo*, *vinnu ji jaruri*
+### 60. C95: "want to", "have to", "need to" go: *winnu aaye*, *winnu khapdo*, *winnu ji jaruri*
 | English | What Mum said | Confidence (time) |
 |---|---|---|
-| I want to go | ***Muke vinnu aaye*** | clear (s1 19:04–19:11, 20:45) |
-| I need to go (to that appointment) | ***Muke vinnu ji jaruri*** (Whisper: *winanji*); now: ***Muke hever vinnu ji jaruri***; tomorrow: ***Muke saware vinnu ji jaruri*** | clear; *hever* and *saware* ⚠ (s1 19:12–19:37, 20:49) |
-| I have to go (no choice: "a wedding, because you're related") | ***Muke vinnu khapdo*** | clear (s1 19:57–21:16) |
-| She has to · wants to · needs to go | ***Inke vinnu khapdo · Inke vinnu aaye · Inke vinnu ji jaruri***; the same for he | clear (s2 0:46–1:10) |
-| They want to · have to go | ***Iloka ke vinnu aaye · Iloka ke vinnu khapdo***; need: *Iloka ke vinnu ji jaruri* | clear (s2 1:17–2:10) |
+| I want to go | ***Muke winnu aaye*** | clear (s1 19:04–19:11, 20:45) |
+| I need to go (to that appointment) | ***Muke winnu ji jaruri*** (Whisper: *winanji*); now: ***Muke hever winnu ji jaruri***; tomorrow: ***Muke saware winnu ji jaruri*** | clear; *hever* and *saware* ⚠ (s1 19:12–19:37, 20:49) |
+| I have to go (no choice: "a wedding, because you're related") | ***Muke winnu khapdo*** | clear (s1 19:57–21:16) |
+| She has to · wants to · needs to go | ***Inke winnu khapdo · Inke winnu aaye · Inke winnu ji jaruri***; the same for he | clear (s2 0:46–1:10) |
+| They want to · have to go | ***Iloka ke winnu aaye · Iloka ke winnu khapdo***; need: *Iloka ke winnu ji jaruri* | clear (s2 1:17–2:10) |
 
 - Mum and Masi: "*khapdo* isn't want to, it's ought to … a mixture between obliged and ought to; there's not one for one" (s2 1:49–2:20). A *vinnan jo aaye* (s2 1:24) was dropped in the talk.
-- **Zafar 26 Oct (decision 2):** *vinnu aaye* = want to go; *vinnu khapdo* = ought to / has to; *vinnu ji jaruri* = need to; the same for he, she and they. Time is a word (*hever*, *saware*), not a verb ending: "it's neutral" (s1 22:09).
+- **Zafar 26 Oct (decision 2):** *winnu aaye* = want to go; *winnu khapdo* = ought to / has to; *winnu ji jaruri* = need to; the same for he, she and they. Time is a word (*hever*, *saware*), not a verb ending: "it's neutral" (s1 22:09).
 - The pattern of *Panke randhnu khapdo* (we need to cook, §33 S6): *khapdo* is now heard four times.
 
-### 61. C96: "can": *vinni sakati / sakanto*; "can't": *nati / nato … saka*
+### 61. C96: "can": *winni sakati / sakanto*; "can't": *nati / nato … saka*
 | English | What Mum said | Confidence (time) |
 |---|---|---|
-| I can go | a woman: ***Aau vinni sakati***; a man: ***Aau vinni sakanto*** | clear (s2 2:21–2:31) |
-| She can go · he can go | ***E vinni saketi*** · ***E vinni saketo*** ("such a hard one", said several times) | clear (s2 2:34–3:04) |
-| They can go | ***Iloka vinni sakanto*** ("no gender there") | clear (s2 3:08) |
-| I can't go | a woman: ***Aau nati vinni saka***; a man: ***Aau nato vinni saka*** | clear (s2 3:16–3:27) |
+| I can go | a woman: ***Aau winni sakati***; a man: ***Aau winni sakanto*** | clear (s2 2:21–2:31) |
+| She can go · he can go | ***E winni saketi*** · ***E winni saketo*** ("such a hard one", said several times) | clear (s2 2:34–3:04) |
+| They can go | ***Iloka winni sakanto*** ("no gender there") | clear (s2 3:08) |
+| I can't go | a woman: ***Aau nati winni saka***; a man: ***Aau nato winni saka*** | clear (s2 3:16–3:27) |
 
 - Mum: literally "able to"; "I can cook" takes the same pattern (s2 3:29–4:13). *nati / nato* is the *na* that agrees (§11, §24 B1).
-- "I" (a man) and "they" share *sakanto*. *vinni* (go, before *saka*) is the form before a helper, like *kari* and *khai* (§38).
+- "I" (a man) and "they" share *sakanto*. *winni* (go, before *saka*) is the form before a helper, like *kari* and *khai* (§38).
 
 ### 62. C97–C103: "eat maani every day": *roj … kianto / khaito / kianta / kenta*
 | ID | English | What Mum said | Confidence (time) |
@@ -884,30 +884,30 @@ Who said what: Mum answers and Masi joins in, sometimes with her own version. Ta
 - **Zafar 26 Oct (decision 4):** *iloka* = they in general (the game uses it); *hiloka* = these (near); *huloka* = those (far); *iloka* is one word. *hi / hu* are *hi* (this) and *hu* (that) again (§13).
 
 ### Also talked about (not asked)
-- How to say "it's gone cold" differs between Mum's and Dad's families (s2 8:55–10:58), and Mum: "in Kutchi we don't begin a word with V, it's W most times" (s2 12:06): so *vinnu* may be *winnu*, as in *winja* (§52). Both for Zafar's ear; nothing entered.
+- How to say "it's gone cold" differs between Mum's and Dad's families (s2 8:55–10:58), and Mum: "in Kutchi we don't begin a word with V, it's W most times" (s2 12:06): so *winnu* may be *winnu*, as in *winja* (§52). Both for Zafar's ear; nothing entered.
 
 ### Is the grammar "nailed down" now?
-**Settled in this sitting:** the "to me / you / him / us / them" forms (*muke, toke, anke, inke, panke, iloka ke*); a verb's ending follows its subject's gender, and for "I" the speaker's (*dinos / dinis*, *naryos / naryis*, *kianto / kianti*, *sakanto / sakati*); the want and like endings follow the thing; need is *… ji jaruri*; want to, have to and need to go; can and can't; the elder "you" and "we" share a form again (*kianta*, like *aayo*).
+**Settled in this sitting:** the "to me / you / him / us / them" forms (*muke, toke, anke, inke, panke, iloka ke*); a verb's ending follows its subject's gender, and for "I" the speaker's (*dinos / dinis*, *naryos / naris*, *kianto / kianti*, *sakanto / sakati*); the want and like endings follow the thing; need is *… ji jaruri*; want to, have to and need to go; can and can't; the elder "you" and "we" share a form again (*kianta*, like *aayo*).
 
-**Still open:** "he saw", "she saw", "Nana saw me" (C85); she can't, they can't; *wareti*'s spelling and its he-thing form; whether *vinnu* changes before *ji* (*vinnan ji*?); whether *aaye* is *ai* (is).
+**Still open:** "he saw", "she saw", "Nana saw me" (C85); she can't, they can't; *arreti*'s spelling and its he-thing form; whether *winnu* changes before *ji* (*vinnan ji*?); whether *aaye* is *ai* (is).
 
 ### Claude's check against Sindhi and Gujarati (not evidence; leads for Masi)
 - *dino / dini* (gave, by the giver's gender) matches Sindhi *ḏino / ḏinī*; Gujarati's "gave" does not change for the giver. So this, like the possessives (§54), is on the Sindhi side.
 - *jaruri* is Gujarati and Hindi *jarūrī* (necessary). *saka* matches Gujarati *śakvuṁ* and Sindhi *sagaṇu* (can).
-- *Muke vinnu aaye* has the shape of Hindi *mujhe jānā hai* ("I have to go", literally "to me going is"): *aaye* may be *ai* (is). A lead only.
+- *Muke winnu aaye* has the shape of Hindi *mujhe jānā hai* ("I have to go", literally "to me going is"): *aaye* may be *ai* (is). A lead only.
 
 ### What this means for the engine (built through the importers, all draft)
-1. New meanings: **GaveTo**, **See** (past, present, future; "I" only), **NeedThing** (*… ji jaruri*), **Likes** (*wareti*), **WantTo / HaveTo / NeedTo** (*vinnu aaye / khapdo / ji jaruri*), **CanDo**, **CantDo** ("I" only), **EveryDay** (*roj … kianto*).
+1. New meanings: **GaveTo**, **See** (past, present, future; "I" only), **NeedThing** (*… ji jaruri*), **Likes** (*arreti*), **WantTo / HaveTo / NeedTo** (*winnu aaye / khapdo / ji jaruri*), **CanDo**, **CantDo** ("I" only), **EveryDay** (*roj … kianto*).
 2. A verb that follows the speaker reads the speaker's gender (`ctx.speaker`) or the meaning's own `g`; a child "you", he and she need `g` (no guess: a gap otherwise).
-3. Words: the *-ke* forms of *e* (*inke*), *pa* (*panke*) and *iloka* (*iloka ke*); *hiloka*, *huloka*; *roj*, *jaruri*, *dawa*, *vinnu*, *vinni*, *saka*, *aaye*, *wareti*; the past, present and future endings of *de* and *nar*, and the every-day endings of *kha*.
+3. Words: the *-ke* forms of *e* (*inke*), *pa* (*panke*) and *iloka* (*iloka ke*); *hiloka*, *huloka*; *roj*, *jaruri*, *dawa*, *winnu*, *winni*, *saka*, *aaye*, *arreti*; the past, present and future endings of *de* and *nar*, and the every-day endings of *kha*.
 
 ### For Mum next time
 1. "He saw me", "she saw me", "Nana saw me" (*Nana muke naryo*?): does the ending follow Nana?
 2. "She can't go", "they can't go".
-3. "I like mangoes" (a he-thing): what replaces *wareti*?
-4. "I need to go": *vinnu ji jaruri* or *vinnan ji jaruri*?
-5. Is *aaye* (*muke vinnu aaye*) the same word as *ai* (is)?
-6. "I saw them": *Aau iloka ke naryis*?
+3. "I like mangoes" (a he-thing): what replaces *arreti*?
+4. "I need to go": *winnu ji jaruri* or *vinnan ji jaruri*?
+5. Is *aaye* (*muke winnu aaye*) the same word as *ai* (is)?
+6. "I saw them": *Aau iloka ke naris*?
 
 ---
 

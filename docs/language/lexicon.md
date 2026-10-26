@@ -10,6 +10,8 @@ This file will become the source for the language engine's word list (see `langu
 
 > from: docs/archive/language/cook-word-changes-B.md (whole file, headings demoted one level; its "Where Cook keeps its words" intro is included as written)
 
+**Spelling: W, not V, at the start of a word (Zafar, 26 Oct):** "Kutchi in our dialect rarely starts a word with V; rather it's usually W" (*winnu*, *winni*, *winja*). Words already in the lexicon that start with v are listed for Zafar to tick one by one (rarely is not never), not changed by rule.
+
 ## Cook with Nani: word changes from Mum's A8 and Section B answers (26 Sept 2026)
 
 **Source:** `docs/language/grammar-notes.md`, mainly §23–§28, plus §10–§22 (A4–A7), Zafar's spelling corrections (including his corrections to this list on 26 Sept: *chundo*, *aako cup*, *aau theek ai*, *hever*), and the spelling rules:
@@ -427,19 +429,19 @@ Source: `grammar-notes.md` §56–§63; recordings in `sources/audio/mum-2026-10
 | ***hiloka*** | these (people), this lot (near) | Zafar 26 Oct, decision 4 | s2 17:22–18:30 | ⚠ draft |
 | ***huloka*** | those (people), that lot (far) | *Huloka roj maani kenta* | s2 17:13, 18:30 | ⚠ draft |
 | ***dino · dini · dinos · dinis*** | gave (he · she · I, a man · I, a woman) | the giver's gender; for "I" the speaker's | s1 0:07–2:56 | ⚠ draft |
-| ***naryos · naryis*** | (I) saw (a man · a woman) | past of *nar* (look); the speaker's gender (Zafar 26 Oct, decision 1) | s1 6:33–6:38 | ⚠ draft |
+| ***naryos · naris*** | (I) saw (a man · a woman) | past of *nar* (look); the speaker's gender (Zafar 26 Oct, decision 1) | s1 6:33–6:38 | ⚠ draft |
 | ***narato · narati*** | (I) see (a man · a woman) | | s1 6:45–6:49 | ⚠ draft |
 | ***nardos · nardis*** | (I) will see (a man · a woman) | like *dos / dis* (§32 S8) | s1 6:40, 7:00 | ⚠ draft |
 | ***jaruri*** | need (*… ji jaruri*) | *Muke chai ji jaruri*: strong, like medicine | s1 12:31–15:33 | ⚠ draft |
 | ***dawa*** | medicine | *Toke dawa ji jaruri*; gender unheard | s1 14:05 | ⚠ draft |
 | ***khapeti · khapeto*** | (is) wanted: a she-thing · a he-thing | follows the thing, never the person (§1, §58) | s1 10:50–12:20 | confirmed (§1) |
-| ***wareti*** | (is) liked: a she-thing | *Muke chai wareti*; Whisper: *yaareti, areti, warati* | s1 16:46–17:25 | ⚠ spelling |
-| ***vinnu*** | to go (the "to do" word) | perhaps *winnu* (Mum: Kutchi words mostly start with w) | s1 19:04; s2 0:46 | ⚠ draft |
-| ***aaye*** | want to (*vinnu aaye*) | perhaps the same as *ai* (is): to ask | s1 19:10; s2 0:53 | ⚠ draft |
-| ***khapdo*** | has to, ought to (*vinnu khapdo*) | as in *panke randhnu khapdo* (§33 S6) | s1 21:15; s2 0:49, 1:22 | ⚠ draft |
-| ***vinni*** | go (before *saka*) | | s2 2:26 | ⚠ draft |
+| ***arreti*** | (is) liked: a she-thing | *Muke chai arreti*; Whisper: *yaareti, areti, warati* | s1 16:46–17:25 | ⚠ spelling |
+| ***winnu*** | to go (the "to do" word) | perhaps *winnu* (Mum: Kutchi words mostly start with w) | s1 19:04; s2 0:46 | ⚠ draft |
+| ***aaye*** | want to (*winnu aaye*) | perhaps the same as *ai* (is): to ask | s1 19:10; s2 0:53 | ⚠ draft |
+| ***khapdo*** | has to, ought to (*winnu khapdo*) | as in *panke randhnu khapdo* (§33 S6) | s1 21:15; s2 0:49, 1:22 | ⚠ draft |
+| ***winni*** | go (before *saka*) | | s2 2:26 | ⚠ draft |
 | ***sakati · sakanto · saketi · saketo · sakanto*** | can: I (a woman) · I (a man) · she · he · they | | s2 2:26–3:08 | ⚠ draft |
-| ***nati / nato … saka*** | can't (I, a woman / a man) | *Aau nati vinni saka* | s2 3:16–3:27 | ⚠ draft |
+| ***nati / nato … saka*** | can't (I, a woman / a man) | *Aau nati winni saka* | s2 3:16–3:27 | ⚠ draft |
 | ***roj*** | every day | *Aau roj maani kianto* | s2 4:39 | ⚠ draft |
 | ***kianto · kianti*** | (I) eat (a man · a woman) | | s2 4:39–5:00 | ⚠ draft |
 | ***khaito · khaiti*** | (you, a child; he · she) eat(s) | Whisper hears *khaito* alone, *kianto* in context | s2 5:21–5:31, 14:52–15:02 | ⚠ draft |

@@ -57,6 +57,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 - Toothbrushing directions (Zafar, 21 Oct): up *mathe* ("Mutt-Hair") and down *niche* ("Knee-Chair") are Zafar's; please record them with *dabo* (left), *jamno* (right: is that right?), brush and toothbrush.
 - From the 22 Oct play-test (Zafar; Masi or Mum, English meanings only): (1) *Salaam alaikum* in Nani's voice, for the kitchen greeting (LNG-19). (2) The doctor's three set sentences, said with the eye and then each body part: "the eye isn't right", "we will heal the eye", "we'll use this medicine", plus the word *medicine* on its own (CLN-199). (3) Nani's "come!" at the door, after the child says yes (DOOR-08). (4) The customer's line when the dish is served, "aah, chai" (and *baraba*), then "thank you" (SH-121): check whether these are already recorded first.
 - Questions for "Choose the reply" (Zafar, 23 Oct; English meanings only): about a dozen of Nani's everyday questions to a child, each as a whole sentence, with two or three natural short answers: what is this?, where is the cat?, do you want chai?, are you hungry?, what colour is it?, how many are there?, who is that?, did you like it? (Mum may change the list to what Nani would really ask.)
+- From the 24 Oct sitting, still to settle (Zafar, 26 Oct): (1) "You eat maani every day" to a boy and to a girl, "He eats maani every day", "She eats maani every day": is it *khaito / khaiti* or *kianto / kianti*? (2) "Like" with *arre*: "I like chai" (a man says it, a woman says it), "I like the mango" (a he-word), "She likes chai": does *arreti / arreto* follow the speaker or the thing? (3) "I can't go": *Aau nato winni sakanto / Aau nati winni saketi* (Zafar) or *... winni saka* (the 24 Oct takes)? (4) *aiye* or *aaye* in "mukhe winnu aaye" (I want to go)? (5) "Nana saw me" and "I saw them" (left open on 24 Oct).
 
 ## 2. Cook
 
@@ -392,7 +393,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | What's wrong with knee? | Clinic line: What's wrong with {x}? | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | X-ray the leg, then clonk the bone two times | Clinic line: X-ray the leg, then clonk the bone {n} times | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 
-### 3c. Words (285): 252 with no Kutchi yet, 33 with Kutchi but no recording
+### 3c. Words (288): 255 with no Kutchi yet, 33 with Kutchi but no recording
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -646,6 +647,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | That's it. Will you help me? | Clinic line: That's it. Will you help me? | 1 line | No Kutchi yet (grey English). |
 | The chart. | Clinic line: The chart. | 1 line | No Kutchi yet (grey English). |
 | the doctor’s syringe | Clinic: the doctor’s syringe | 1 line | No Kutchi yet (grey English). |
+| The eye isn't right. | Clinic line: The eye isn't right. | 1 line | No Kutchi yet (grey English). |
 | the eye test | Clinic: the eye test | 1 line | No Kutchi yet (grey English). |
 | The jab before the trip. | Clinic line: The jab before the trip. | 1 line | No Kutchi yet (grey English). |
 | The temperature: | Clinic line: The temperature: | 1 line | No Kutchi yet (grey English). |
@@ -667,6 +669,8 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | Use the torch | Clinic line: Use the torch | 1 line | No Kutchi yet (grey English). |
 | Use your hand | Clinic line: Use your hand | 1 line | No Kutchi yet (grey English). |
 | wax | Clinic: wax | 1 line | No Kutchi yet (grey English). |
+| We will heal the eye. | Clinic line: We will heal the eye. | 1 line | No Kutchi yet (grey English). |
+| We'll use this medicine. | Clinic line: We'll use this medicine. | 1 line | No Kutchi yet (grey English). |
 | Well done, my helper. | Clinic line: Well done, my helper. | 1 line | No Kutchi yet (grey English). |
 | what | Clinic line: What's this? | 1 line | Kutchi known (kuro); no family recording. |
 | What will help? | Clinic line: What will help? | 1 line | No Kutchi yet (grey English). |
@@ -880,4 +884,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (163 Cook and 339 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (163 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

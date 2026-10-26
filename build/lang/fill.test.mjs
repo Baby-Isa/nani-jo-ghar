@@ -340,10 +340,10 @@ test("Round 5 C80-C103 (24 Oct): the speaker's gender, the giver's, the eater's 
   assert.equal(say({ fn: "See", who: "p1", whom: "p2" }, he), "aau toke naryos", "§57 C85 past");
   assert.equal(say({ fn: "See", who: "p1", whom: "p2", tense: "fut" }, she), "aau toke nardis", "§57 C85 future");
   assert.equal(say({ fn: "NeedThing", who: "p2", thing: "n.medicine" }), "toke dawa ji jaruri", "§58 C87");
-  assert.equal(say({ fn: "Likes", who: "p3pl", thing: "n.tea" }), "iloka ke chai wareti", "§59 C94");
-  assert.equal(say({ fn: "HaveTo", who: "p3", verb: "v.to-go" }), "inke vinnu khapdo", "§60 C95");
-  assert.equal(say({ fn: "CanDo", who: "p3pl", verb: "v.go" }), "iloka vinni sakanto", "§61 C96");
-  assert.equal(say({ fn: "CantDo", who: "p1", verb: "v.go" }, he), "aau nato vinni saka", "§61 C96");
+  assert.equal(say({ fn: "Likes", who: "p3pl", thing: "n.tea" }), "iloka ke chai arreti", "§59 C94");
+  assert.equal(say({ fn: "HaveTo", who: "p3", verb: "v.to-go" }), "inke winnu khapdo", "§60 C95");
+  assert.equal(say({ fn: "CanDo", who: "p3pl", verb: "v.go" }), "iloka winni sakanto", "§61 C96");
+  assert.equal(say({ fn: "CantDo", who: "p1", verb: "v.go" }, he), "aau nato winni sakanto", "Zafar 26 Oct");
   assert.equal(say({ fn: "EveryDay", who: "p2", thing: "n.chapati", verb: "v.eat", g: "she" }), "tu roj maani khaiti", "§62 C98");
   assert.equal(say({ fn: "EveryDay", who: "p2", thing: "n.chapati", verb: "v.eat" }, { addressee: { elder: true } }), "aai roj maani kianta", "§62 C99 (Mum's, decision 3)");
   assert.equal(say({ fn: "EveryDay", who: "p1pl.incl", thing: "n.chapati", verb: "v.eat" }), "pa roj maani kianta", "§62 C102");

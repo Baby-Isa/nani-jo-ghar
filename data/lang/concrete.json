@@ -1277,7 +1277,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §57 C85 (Aau toke naryos / naryis, narato / narati, nardos / nardis; Aau anke naryos; Aau inke naryos / naryis)",
+   "src": "grammar-notes §57 C85 (Aau toke naryos / naris, narato / narati, nardos / nardis; Aau anke naryos; Aau inke naryos / naris)",
    "notes": [
     "The ending is the speaker's gender, not the person seen (Zafar 26 Oct, decision 1); toke to a child, anke to an elder, inke for him or her. The meaning's tense field picks past (default), pres or fut."
    ]
@@ -1304,7 +1304,7 @@
    "status": "draft",
    "src": "grammar-notes §58 C86-C92 (Muke chai ji jaruri; Toke dawa ji jaruri; Anke chai ji jaruri; Iloka ke chai ji jaruri)",
    "notes": [
-    "ji stays ji with chai, dawa and vinnu (§58, §60): Claude reads it as the 'of' word agreeing with jaruri, not with the thing (a reading, not Mum's words). 'Need' is strong (Mum: 'I really need it'); the everyday ask is the want (PredDat, khapeti)."
+    "ji stays ji with chai, dawa and winnu (§58, §60): Claude reads it as the 'of' word agreeing with jaruri, not with the thing (a reading, not Mum's words). 'Need' is strong (Mum: 'I really need it'); the everyday ask is the want (PredDat, khapeti)."
    ]
   },
   "Likes": {
@@ -1324,7 +1324,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §59 C94 (Muke chai wareti; Inke chai wareti; Iloka ke chai wareti: ⚠ spelling)",
+   "src": "grammar-notes §59 C94 (Muke chai arreti; Inke chai arreti; Iloka ke chai arreti; root arre, Zafar 26 Oct)",
    "notes": [
     "Like khapeti, the ending follows the thing liked (chai is a she-word), not the person (Mum: 'it's like French')."
    ]
@@ -1346,7 +1346,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §60 C95 (Muke vinnu aaye; Inke vinnu aaye; Iloka ke vinnu aaye; Zafar 26 Oct, decision 2)"
+   "src": "grammar-notes §60 C95 (Muke winnu aaye; Inke winnu aaye; Iloka ke winnu aaye; Zafar 26 Oct, decision 2)"
   },
   "HaveTo": {
    "slots": [
@@ -1365,7 +1365,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §60 C95 (Muke vinnu khapdo; Inke vinnu khapdo; Iloka ke vinnu khapdo: ought to, obliged, 'like a wedding because you're related'; Zafar 26 Oct, decision 2), §33 S6 (Panke randhnu khapdo)"
+   "src": "grammar-notes §60 C95 (Muke winnu khapdo; Inke winnu khapdo; Iloka ke winnu khapdo: ought to, obliged, 'like a wedding because you're related'; Zafar 26 Oct, decision 2), §33 S6 (Panke randhnu khapdo)"
   },
   "NeedTo": {
    "slots": [
@@ -1387,7 +1387,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §60 C95 (Muke vinnu ji jaruri; Inke vinnu ji jaruri; Zafar 26 Oct, decision 2)",
+   "src": "grammar-notes §60 C95 (Muke winnu ji jaruri; Inke winnu ji jaruri; Zafar 26 Oct, decision 2)",
    "notes": [
     "Whisper hears vinan ji / winanji here: whether the 'to go' word changes before ji is for Zafar's ear (§60)."
    ]
@@ -1409,7 +1409,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §61 C96 (Aau vinni sakati / sakanto; E vinni saketi / saketo; Iloka vinni sakanto)",
+   "src": "grammar-notes §61 C96 (Aau winni sakati / sakanto; E winni saketi / saketo; Iloka winni sakanto)",
    "exceptions": [
     {
      "only": {
@@ -1432,7 +1432,7 @@
       }
      ],
      "status": "draft",
-     "src": "grammar-notes §61 C96 (Iloka vinni sakanto: no gender)"
+     "src": "grammar-notes §61 C96 (Iloka winni sakanto: no gender)"
     },
     {
      "only": {
@@ -1455,7 +1455,7 @@
       }
      ],
      "status": "draft",
-     "src": "grammar-notes §61 C96 (Aau vinni sakati: a woman; sakanto: a man)"
+     "src": "grammar-notes §61 C96 (Aau winni sakati: a woman; sakanto: a man)"
     }
    ]
   },
@@ -1475,7 +1475,7 @@
     },
     {
      "lex": "v.can",
-     "cell": "neg"
+     "cell": "neg.p1.{$g|speaker}"
     }
    ],
    "only": {
@@ -1488,7 +1488,7 @@
    ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §61 C96 (Aau nati vinni saka: a woman; Aau nato vinni saka: a man)"
+   "src": "grammar-notes §61 C96 (Zafar 26 Oct: Aau nati winni saketi, a woman; Aau nato winni sakanto, a man; Mum's takes say saka: to ask)"
   },
   "EveryDay": {
    "slots": [

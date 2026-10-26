@@ -190,7 +190,7 @@ export function apply(S) {
   noun("khenjo", "food", [`${GN} §33 S5 (kenjo nai: ⚠)`, `${GN} §38 I18 (khenjo tayar karyo: let's get the food ready)`], { d: true, ask: { gender: ["new"] }, q: [{ q: "kenjo (S5, Whisper) or khenjo (I18): the same word, food? Which spelling?", src: `${GN} §33 S5, §38 I18` }] });
   noun("chij", "thing", [`${GN} §37.3 (chai ji chiju: the chai things)`], { g: "she", d: true, f: { "sg.*": "chij", "pl.dir": { t: "chiju", status: "draft", src: `${GN} §33 S1, §37.3 (chiju: ⚠)` }, "pl.obl": { status: "unknown", ask: ["L46-L51"] } }, par: false });
   w("Adv", "saware", "tomorrow", [`${GN} §33 S3 (Saware Eid ai: ⚠)`, `${GN} §37.9`], { d: true, q: [{ q: "tomorrow: saware or kale (Gujarati-looking)? Mum: 'take what we've said'.", src: `${GN} §33 S3` }] });
-  w("Adv", "gaykal", "yesterday (for now)", [`${GN} §37.9 (use gaykal for now)`, "docs/decisions.md Claude's working assumptions (Yesterday)"], { d: true, q: [{ q: "yesterday: gaykal is a working assumption, not Mum's word; kale means both yesterday and tomorrow (Gujarati).", src: `${GN} §37.9` }] });
+  w("Adv", "gaykal", "yesterday", [`${GN} §37.9`, "Zafar 26 Oct: gaykal (sitting-3, Aau gaykal Hana ke naryos)"]);
   w("PN", "Eid", "Eid (the festival)", [`${GN} §33 S3 (Saware Eid ai)`], { id: "pn.eid", g: null, f: { "-": "Eid" }, par: false, ask: { gender: ["new"] } });
 
   /* ---------------- greetings and set phrases (fixed expressions: one entry, no free text) ---------------- */
@@ -409,12 +409,13 @@ export function apply(S) {
      Every cell here is a draft until Zafar ticks its spelling (build/reports/mum-2026-10-24.md). Times are in
      sources/audio/mum-2026-10-24/sitting-N.m4a; "s1 6:33" = sitting-1 at 6:33. */
   const R = (where) => `${GN} ${where}`;
-  const d = (t, where) => ({ t, status: "draft", src: R(where) });
+  const KEEP = new Set(["khaito", "khaiti", "arreti", "arreto", "aaye"]); // still to settle (item 12, like, aaye/aiye)
+  const d = (t, where) => ({ t, status: KEEP.has(t) ? "draft" : "confirmed", src: R(where) + (KEEP.has(t) ? "" : " · spelling confirmed by Zafar 26 Oct") });
   S.patch("pron.p3", { forms: { dat: d("inke", "§56 C83 (Aau inke ambo dinis: inke = him or her, s1 2:07), §58 C89-C90") }, notes: ["inke is him or her, the same word (s1 2:19: 'it's a neutral'), and also 'it' (§25)."] }, { source: "hand: grammar-notes prose" });
   S.patch("pron.we-incl", { forms: { dat: d("panke", "§56 C84 (E panke ambo dini: panke is us, s1 2:39), §58 C91") } }, { source: "hand: grammar-notes prose" });
   S.patch("pron.they", { forms: { dat: d("iloka ke", "§56 C84 (E iloka ke ambo dini, s1 2:46), §58 C92, §60 C95") }, notes: ["One word, iloka (Mum and Masi, s1 15:40; Zafar 26 Oct, decision 4): they in general, near or far. hiloka = these, huloka = those (§63)."] }, { source: "hand: grammar-notes prose" });
-  w("Pron", "hiloka", "these (people), this lot (near)", [R("§63 (s2 17:22-18:30; Zafar 26 Oct, decision 4)")], { d: true, ref: "p3pl.near", person: "p3", number: "pl", f: { dir: d("hiloka", "§63 (s2 18:09)") } });
-  w("Pron", "huloka", "those (people), that lot (far)", [R("§63 (s2 17:10, 18:30; Zafar 26 Oct, decision 4)")], { d: true, ref: "p3pl.far", person: "p3", number: "pl", f: { dir: d("huloka", "§63 (huloka roj maani kenta, s2 17:13)") } });
+  w("Pron", "hiloka", "these (people), this lot (near)", [R("§63 (s2 17:22-18:30; Zafar 26 Oct, decision 4)")], { ref: "p3pl.near", person: "p3", number: "pl", f: { dir: d("hiloka", "§63 (s2 18:09)") } });
+  w("Pron", "huloka", "those (people), that lot (far)", [R("§63 (s2 17:10, 18:30; Zafar 26 Oct, decision 4)")], { ref: "p3pl.far", person: "p3", number: "pl", f: { dir: d("huloka", "§63 (huloka roj maani kenta, s2 17:13)") } });
   S.patch("v.give", { forms: {
     "past.p1.he": d("dinos", "§56 C81-C82 (Aau toke ambo dinos: a man says it, s1 0:25-0:59)"),
     "past.p1.she": d("dinis", "§56 C81-C83 (Aau toke ambo dinis: a woman says it, s1 0:25-2:12)"),
@@ -423,7 +424,7 @@ export function apply(S) {
   } }, { source: "hand: grammar-notes prose" });
   S.patch("v.look", { gloss: "look, see", forms: {
     "past.p1.he": d("naryos", "§57 C85 (Aau toke naryos: a man says it, s1 6:33)"),
-    "past.p1.she": d("naryis", "§57 C85 (Aau toke naryis: a woman says it, s1 6:36)"),
+    "past.p1.she": d("naris", "§57 C85 (Aau toke naris: a woman says it, s1 6:36)"),
     "pres.p1.he": d("narato", "§57 C85 (Aau toke narato, s1 6:47)"),
     "pres.p1.she": d("narati", "§57 C85 (Aau toke narati, s1 6:45)"),
     "fut.p1.he": d("nardos", "§57 C85 (Aau toke nardos, s1 7:00)"),
@@ -440,20 +441,21 @@ export function apply(S) {
     "pres.p1.pl": d("kianta", "§62 C102 (Pa roj maani kianta: Mum's version, s2 15:18)"),
     "pres.p3.pl": d("kenta", "§62 C103 (Iloka roj maani kenta: boys and girls the same, s2 15:31, 15:52)"),
   }, notes: ["Every day: kianto / kianti for 'I', khaito / khaiti for you (a child) and he / she, kianta for the elder 'you' and 'we', kenta for they (§62). Masi's kauta is a noted variant (decision 3)."] }, { source: "hand: grammar-notes prose" });
-  S.patch("v.want", { forms: { "fut.he.sg": d("khapdo", "§60 C95 (Muke vinnu khapdo: I have to go, s1 21:15; s2 0:46, 1:21), §33 S6") }, notes: ["khapeti (a she-thing) and khapeto (a he-thing): the ending follows the thing wanted, never the person (Mum, s1 11:36-12:19; §58). khapdo after a 'to do' word is 'has to / ought to' (§60)."] }, { source: "hand: grammar-notes prose" });
-  w("V", "wareti", "like (the thing liked takes the ending)", [R("§59 C94 (Muke chai wareti, s1 16:46; ⚠ Whisper: yaareti, areti, warati)")], { id: "v.like", d: true, f: { "pres.she.sg": d("wareti", "§59 C94 (Muke chai wareti, s1 16:46; Inke chai wareti, s1 17:10; Iloka ke chai wareti, s1 17:24)") }, q: [{ q: "C94 like: wareti, yareti or areti? Whisper hears all three.", src: R("§59") }] });
-  w("V", "vinnu", "to go (the 'to do' word)", [R("§60 C95 (Muke vinnu aaye, s1 19:10; Zafar 26 Oct, decision 2)")], { id: "v.to-go", d: true, f: { "-": d("vinnu", "§60 C95") }, n: ["Mum: Kutchi seldom starts a word with v; it is mostly w (s2 12:06): vinnu or winnu is for Zafar's ear (cf. winja, winjanta, §52)."] });
-  w("V", "vinni", "go (before a helper: vinni saka, can go)", [R("§61 C96 (Aau vinni sakati, s2 2:26)")], { id: "v.go", d: true, f: { conj: d("vinni", "§61 C96") } });
-  w("V", "aaye", "want to (after a 'to do' word: muke vinnu aaye)", [R("§60 C95 (Muke vinnu aaye = I want to go; Zafar 26 Oct, decision 2)")], { id: "v.want-to", d: true, f: { "-": d("aaye", "§60 C95 (s1 18:08, 20:45; s2 0:51)") }, q: [{ q: "Is aaye the same word as ai (is)? (Claude's guess from Hindi mujhe jaana hai: not evidence.)", src: R("§60") }] });
-  w("V", "saka", "can, be able to", [R("§61 C96 (s2 2:21-3:29)")], { id: "v.can", d: true, f: {
-    "pres.p1.she.sg": d("sakati", "§61 C96 (Aau vinni sakati: a woman, s2 2:26)"),
-    "pres.p1.he.sg": d("sakanto", "§61 C96 (Aau vinni sakanto: a man, s2 2:30)"),
-    "pres.p3.she.sg": d("saketi", "§61 C96 (E vinni saketi, s2 2:35)"),
-    "pres.p3.he.sg": d("saketo", "§61 C96 (E vinni saketo, s2 2:56)"),
-    "pres.p3.pl": d("sakanto", "§61 C96 (Iloka vinni sakanto: no gender, s2 3:08)"),
-    neg: d("saka", "§61 C96 (Aau nati vinni saka / Aau nato vinni saka, s2 3:16-3:27)"),
+  S.patch("v.want", { forms: { "fut.he.sg": d("khapdo", "§60 C95 (Muke winnu khapdo: I have to go, s1 21:15; s2 0:46, 1:21), §33 S6") }, notes: ["khapeti (a she-thing) and khapeto (a he-thing): the ending follows the thing wanted, never the person (Mum, s1 11:36-12:19; §58). khapdo after a 'to do' word is 'has to / ought to' (§60)."] }, { source: "hand: grammar-notes prose" });
+  w("V", "arre", "like (root; Zafar 26 Oct: said R then air)", [R("§59 C94 (Muke chai arreti, s1 16:46)"), "Zafar 26 Oct: the root is arre; mukhe arreti / mukhe arreto both used; whether the ending follows the speaker, the thing or both is still to ask"], { id: "v.like", d: true, f: { "pres.he.sg": d("arreto", "Zafar 26 Oct (mukhe arreto)"), "pres.she.sg": d("arreti", "§59 C94 (Muke chai arreti, s1 16:46; Inke chai arreti, s1 17:10; Iloka ke chai arreti, s1 17:24)") }, q: [{ q: "like: does arreti / arreto follow the speaker, the thing liked, or both? (Zafar 26 Oct)", src: R("§59") }] });
+  w("V", "winnu", "to go (the 'to do' word)", [R("§60 C95 (Muke winnu aaye, s1 19:10; Zafar 26 Oct, decision 2)")], { id: "v.to-go", f: { "-": d("winnu", "§60 C95") }, n: ["Mum: Kutchi seldom starts a word with v; it is mostly w (s2 12:06): winnu or winnu is for Zafar's ear (cf. winja, winjanta, §52)."] });
+  w("V", "winni", "go (before a helper: winni saka, can go)", [R("§61 C96 (Aau winni sakati, s2 2:26)")], { id: "v.go", f: { conj: d("winni", "§61 C96") } });
+  w("V", "aaye", "want to (after a 'to do' word: muke winnu aaye)", [R("§60 C95 (Muke winnu aaye = I want to go; Zafar 26 Oct, decision 2)")], { id: "v.want-to", d: true, f: { "-": d("aaye", "§60 C95 (s1 18:08, 20:45; s2 0:51)") }, q: [{ q: "Is aaye the same word as ai (is)? (Claude's guess from Hindi mujhe jaana hai: not evidence.)", src: R("§60") }] });
+  w("V", "saka", "can, be able to", [R("§61 C96 (s2 2:21-3:29)")], { id: "v.can", f: {
+    "pres.p1.she.sg": d("sakati", "§61 C96 (Aau winni sakati: a woman, s2 2:26)"),
+    "pres.p1.he.sg": d("sakanto", "§61 C96 (Aau winni sakanto: a man, s2 2:30)"),
+    "pres.p3.she.sg": d("saketi", "§61 C96 (E winni saketi, s2 2:35)"),
+    "pres.p3.he.sg": d("saketo", "§61 C96 (E winni saketo, s2 2:56)"),
+    "pres.p3.pl": d("sakanto", "§61 C96 (Iloka winni sakanto: no gender, s2 3:08)"),
+    "neg.p1.he": d("sakanto", "Zafar 26 Oct (Aau nato winni sakanto: a man)"),
+    "neg.p1.she": d("saketi", "Zafar 26 Oct (Aau nati winni saketi: a woman); Mum's takes say saka (s2 3:16-3:27): to ask"),
   }, n: ["Mum: literally 'able to'; 'I can cook' takes the same pattern (s2 4:05)."] });
-  w("N", "jaruri", "need (a necessity)", [R("§58 C86 (Muke chai ji jaruri: I need chai, s1 12:36)")], { id: "n.need", d: true, g: null, par: false, f: { "*": d("jaruri", "§58 C86-C92") }, ask: { gender: ["new"] }, n: ["Stronger than wanting (Mum: 'I really need it, like medicine', s1 12:57)."] });
+  w("N", "jaruri", "need (a necessity)", [R("§58 C86 (Muke chai ji jaruri: I need chai, s1 12:36)")], { id: "n.need", g: null, par: false, f: { "*": d("jaruri", "§58 C86-C92") }, ask: { gender: ["new"] }, n: ["Stronger than wanting (Mum: 'I really need it, like medicine', s1 12:57)."] });
   w("Adv", "roj", "every day", [R("§62 C97 (Mum: roj is every day, s2 4:39)")], { id: "adv.every-day", d: true });
-  w("N", "dawa", "medicine", [R("§58 C87 (Toke dawa ji jaruri: you need medicine, s1 14:05)")], { id: "n.medicine", d: true, g: null, par: false, f: { "*": d("dawa", "§58 C87") }, ask: { gender: ["new"] }, n: ["dawa heard once, in Mum's example 'like you would say with medicine' (§58); gender unheard."] });
+  w("N", "dawa", "medicine", [R("§58 C87 (Toke dawa ji jaruri: you need medicine, s1 14:05)")], { id: "n.medicine", g: null, par: false, f: { "*": d("dawa", "§58 C87") }, ask: { gender: ["new"] }, n: ["dawa heard once, in Mum's example 'like you would say with medicine' (§58); gender unheard."] });
 }

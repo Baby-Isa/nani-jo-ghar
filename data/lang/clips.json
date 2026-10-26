@@ -1844,11 +1844,11 @@
    "meaning": "GaveTo(pron.p1,p3,n.mango,g=she)"
   },
   {
-   "clip": "aau-toke-naryis",
+   "clip": "aau-toke-naris",
    "meaning": "See(p1,p2,g=she,tense=past)"
   },
   {
-   "clip": "aau-anke-naryis",
+   "clip": "aau-anke-naris",
    "meaning": "See(p1,p2resp,g=she,tense=past)"
   },
   {
@@ -1860,20 +1860,16 @@
    "meaning": "See(p1,p2,g=she,tense=fut)"
   },
   {
-   "clip": "aau-inke-naryis",
+   "clip": "aau-inke-naris",
    "meaning": "See(p1,p3,g=she,tense=past)"
   },
   {
-   "clip": "aau-vinni-sakati",
+   "clip": "aau-winni-sakati",
    "meaning": "CanDo(p1,v.go,g=she)"
   },
   {
-   "clip": "e-vinni-saketi",
+   "clip": "e-winni-saketi",
    "meaning": "CanDo(p3,v.go,g=she)"
-  },
-  {
-   "clip": "aau-nati-vinni-saka",
-   "meaning": "CantDo(p1,v.go,g=she)"
   },
   {
    "clip": "aau-roj-maani-kianti",
@@ -1916,16 +1912,12 @@
    "meaning": "See(p1,p3,g=he,tense=past)"
   },
   {
-   "clip": "aau-vinni-sakanto",
+   "clip": "aau-winni-sakanto",
    "meaning": "CanDo(p1,v.go,g=he)"
   },
   {
-   "clip": "e-vinni-saketo",
+   "clip": "e-winni-saketo",
    "meaning": "CanDo(p3,v.go,g=he)"
-  },
-  {
-   "clip": "aau-nato-vinni-saka",
-   "meaning": "CantDo(p1,v.go,g=he)"
   },
   {
    "clip": "aau-roj-maani-kianto",
@@ -2016,51 +2008,51 @@
    "meaning": "Need(p3pl,n.tea)|polite|"
   },
   {
-   "clip": "muke-chai-wareti",
+   "clip": "muke-chai-arreti",
    "meaning": "Likes(p1,n.tea)"
   },
   {
-   "clip": "muke-vinnu-aaye",
+   "clip": "muke-winnu-aaye",
    "meaning": "WantTo(p1,v.to-go)"
   },
   {
-   "clip": "muke-vinnu-khapdo",
+   "clip": "muke-winnu-khapdo",
    "meaning": "HaveTo(p1,v.to-go)"
   },
   {
-   "clip": "muke-vinnu-ji-jaruri",
+   "clip": "muke-winnu-ji-jaruri",
    "meaning": "NeedTo(p1,v.to-go)"
   },
   {
-   "clip": "inke-chai-wareti",
+   "clip": "inke-chai-arreti",
    "meaning": "Likes(p3,n.tea)"
   },
   {
-   "clip": "inke-vinnu-aaye",
+   "clip": "inke-winnu-aaye",
    "meaning": "WantTo(p3,v.to-go)"
   },
   {
-   "clip": "inke-vinnu-khapdo",
+   "clip": "inke-winnu-khapdo",
    "meaning": "HaveTo(p3,v.to-go)"
   },
   {
-   "clip": "inke-vinnu-ji-jaruri",
+   "clip": "inke-winnu-ji-jaruri",
    "meaning": "NeedTo(p3,v.to-go)"
   },
   {
-   "clip": "iloka-ke-chai-wareti",
+   "clip": "iloka-ke-chai-arreti",
    "meaning": "Likes(p3pl,n.tea)"
   },
   {
-   "clip": "iloka-ke-vinnu-aaye",
+   "clip": "iloka-ke-winnu-aaye",
    "meaning": "WantTo(p3pl,v.to-go)"
   },
   {
-   "clip": "iloka-ke-vinnu-khapdo",
+   "clip": "iloka-ke-winnu-khapdo",
    "meaning": "HaveTo(p3pl,v.to-go)"
   },
   {
-   "clip": "iloka-vinni-sakanto",
+   "clip": "iloka-winni-sakanto",
    "meaning": "CanDo(p3pl,v.go)"
   },
   {
