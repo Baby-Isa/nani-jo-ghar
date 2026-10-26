@@ -16176,37 +16176,43 @@
  "CK-48": [
   {
    "flow": "cook:chop",
-   "path": "fair",
+   "path": "tap-through-popup",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "throttle": "slow",
+   "mark": "drawn",
+   "kind": "layout",
+   "at": "tapped-through",
    "after": null,
    "capture": [
-    "strip:#stage:8x200"
+    "strip:body:24x200"
    ],
    "expect": null,
-   "note": "going into the chop station: one smooth load, no zoomed-in board that goes away and then the game loading"
+   "note": "on the slow line (1600 kbit/s, 150 ms; the whole page throttled), the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the chop station's first 4.6 s at 200 ms slots, each frame's edge green when the station is fully drawn (view up, faded in, nothing loading, no missing picture), orange when not: one smooth load, no zoomed-in board that goes away, no late sidebar"
   },
   {
    "flow": "cook:samosa",
-   "path": "fair",
+   "path": "tap-through-popup",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "throttle": "slow",
+   "mark": "drawn",
+   "kind": "layout",
+   "at": "tapped-through",
    "after": null,
    "capture": [
-    "strip:#stage:8x200"
+    "strip:body:24x200"
    ],
    "expect": null,
-   "note": "going into the samosa station: nothing half-drawn, nothing still loading in the first seconds"
+   "note": "on the slow line, the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the samosa station's first 4.6 s at 200 ms slots, each frame marked drawn or not: nothing half-drawn, nothing still loading"
   }
  ],
  "CLN-159": [
@@ -17412,7 +17418,7 @@
  "LNG-16": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -17422,17 +17428,19 @@
    "at": "page:end",
    "after": null,
    "capture": [
-    "contract:26",
-    "voice"
+    "utter",
+    "voice",
+    "contract:26"
    ],
    "expect": [
+    "heardWhole:life:request",
     "pass"
    ],
-   "note": "chai L1: every word of the customer's opening line, 'muke' included, has a sound (a family clip or the device voice), every order"
+   "note": "chai L1 at a child's pace (speed 1) on the device voice model (a phone's voice: queued, about 0.38 s a word, a cancel cuts the one speaking and drops the rest): the customer's opening line, 'muke' included, starts within 1 s of the order and every word of it is heard whole, every order"
   },
   {
    "flow": "cook:maani-line",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -17442,17 +17450,19 @@
    "at": "page:end",
    "after": null,
    "capture": [
-    "contract:26",
-    "voice"
+    "utter",
+    "voice",
+    "contract:26"
    ],
    "expect": [
+    "heardWhole:life:request",
     "pass"
    ],
-   "note": "maani L1: the opening line is heard whole, every order"
+   "note": "maani L1 at a child's pace (speed 1) on the device voice model: the opening line starts within 1 s of each order and is heard whole (no word cancelled before it starts), every order"
   },
   {
    "flow": "cook:chaat",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -17462,13 +17472,15 @@
    "at": "page:end",
    "after": null,
    "capture": [
-    "contract:26",
-    "voice"
+    "utter",
+    "voice",
+    "contract:26"
    ],
    "expect": [
+    "heardWhole:life:request",
     "pass"
    ],
-   "note": "chaat L1: the opening line is heard whole, every order"
+   "note": "chaat L1 at a child's pace (speed 1) on the device voice model: the opening line starts within 1 s of the order and is heard whole, every order"
   }
  ],
  "CLN-198": [

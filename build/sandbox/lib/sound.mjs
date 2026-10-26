@@ -91,16 +91,25 @@ export const SOUND_HOOK = `(() => {
         try {
           const pid = ++pidSeq, text = String(u && u.text || "");
           open.add(pid);
+          try { if (u) u.__njgPid = pid; } catch (e) {} // (the device voice model's lifecycle names its play: lib/device-voice.mjs)
           // the device voice has no file: about 0.4 s a word at its rate (an estimate, marked so)
           log({ type: "play", via: "speechSynthesis", text, pid, dur: Math.max(0.6, text.split(/\\s+/).length * 0.4 / ((u && u.rate) || 1)), est: true });
           if (u && u.addEventListener) u.addEventListener("end", () => { if (open.delete(pid)) log({ type: "play-end", pid, why: "ended" }); });
         } catch (e) {}
-        return sp.apply(this, arguments);
+        // S13-V (LNG-16): a page given the device voice model (an evidence probe's utter capture) speaks through it
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.speak(u) : sp.apply(this, arguments);
       };
       const cancel = window.speechSynthesis.cancel;
       window.speechSynthesis.cancel = function () {
         try { open.forEach((pid) => log({ type: "play-end", pid, why: "cancel" })); open.clear(); } catch (e) {}
-        return cancel.apply(this, arguments);
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.cancel() : cancel.apply(this, arguments);
+      };
+      const voices = window.speechSynthesis.getVoices;
+      window.speechSynthesis.getVoices = function () {
+        const dv = window.__njgDeviceVoice;
+        return dv ? dv.getVoices() : voices.apply(this, arguments);
       };
     }
   } catch (e) {}

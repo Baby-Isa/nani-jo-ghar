@@ -11,6 +11,19 @@ export const isHelpMoment = (name) => HELP_MOMENT.test(String(name || ""));
 export const MARK_RGB = [220, 30, 30];
 const EDGE = 6; // px of the red frame
 
+// S13-V (CK-48): a frame's edge in one colour (a probe's per-frame mark: green = the station fully drawn, orange = not yet)
+export const DRAWN_RGB = [30, 160, 60];
+export const NOT_DRAWN_RGB = [240, 140, 0];
+export function edge(buf, rgb, px = EDGE) {
+  const img = decodePng(buf);
+  for (let y = 0; y < img.h; y++) for (let x = 0; x < img.w; x++) {
+    if (x >= px && x < img.w - px && y >= px && y < img.h - px) continue;
+    const o = (y * img.w + x) * 4;
+    img.data[o] = rgb[0]; img.data[o + 1] = rgb[1]; img.data[o + 2] = rgb[2]; img.data[o + 3] = 255;
+  }
+  return encodePng(img);
+}
+
 // bufs: PNG buffers; times: ms of each frame from the strip's start; moments: [{name, ms}] (ms from the strip's start).
 // Returns {bufs, marks: [{name, ms, frame}]}: marks only for a moment inside the strip (not after its last frame's time + one gap)
 export function markStrip(bufs, times, moments) {

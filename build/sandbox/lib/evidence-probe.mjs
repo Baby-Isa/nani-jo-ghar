@@ -11,10 +11,11 @@
 // colour, a text capture is not empty, a filmstrip changed between frames. A failed check is a TOOL failure, never evidence.
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
+import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL, THROTTLES } from "./evidence.mjs";
 import { decodePng, encodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
-import { markStrip, isHelpMoment } from "./strip-mark.mjs";
+import { markStrip, isHelpMoment, edge, DRAWN_RGB, NOT_DRAWN_RGB } from "./strip-mark.mjs";
+import { DEVICE_VOICE, utterances, uttOfPlay } from "./device-voice.mjs";
 import { lintPage } from "../../lint/layout.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -223,10 +224,70 @@ export class EvidenceProbe {
     this.chain = Promise.resolve();
     this.want = spec.want ? { list: spec.want, ok: null, text: "", people: 0, asked: false } : null;
     this.spoken = [];             // every line said on the page so far (the wanted order is heard from level 3: a closed card)
+    this.utts = [];               // the device voice model's utterance events (lib/device-voice.mjs; S13-V, LNG-16)
+    this.ready = this.setup();    // the page's own set-up, done before its first navigation (page:start waits for it)
     this.abort = new Promise((_, rej) => { this.reject = rej; });
     this.abort.catch(() => {});
     this.state = spec.probes.map((p) => ({ p, id: probeId(p.row, p.i, p.level, spec.size) + (p.sub ? `@${p.sub}` : ""), armed: !p.after, hits: [], afterAt: null }));
     page.__njgEvidence = this;
+  }
+  // S13-V: a page given the device voice model (an utter capture: the sandbox's browser has no voice, so every device-voice line
+  // looked heard), and the pictures in flight (for a strip marked "drawn")
+  async setup() {
+    const page = this.page, spec = this.spec;
+    if (spec.dv) await page.context().addInitScript(DEVICE_VOICE);
+    if (spec.probes.some((p) => p.mark === "drawn")) {
+      this.inflight = new Map();
+      const art = (r) => ["xhr", "fetch", "image"].includes(r.resourceType()) && /\/assets\/.+\.(webp|png|jpe?g)(\?|$)/.test(r.url());
+      page.on("request", (r) => { if (art(r)) this.inflight.set(r.url(), Date.now()); });
+      const done = (r) => this.inflight.delete(r.url());
+      page.on("requestfinished", done);
+      page.on("requestfailed", done);
+    }
+  }
+  // the slow line (CK-48 "on a throttled run"), as build/sandbox/slowload.mjs plays it: the page itself loads at full speed (the
+  // flow's own waits are for a page that is up), and from the player's first state on (the title is in: the greeting, the order
+  // and the station that follow, with every picture they fetch) the network is the slow one
+  async throttle() {
+    if (this.throttled || !this.spec.throttle || !THROTTLES[this.spec.throttle]) return;
+    this.throttled = true;
+    const T = THROTTLES[this.spec.throttle];
+    try {
+      const cdp = await this.page.context().newCDPSession(this.page);
+      await cdp.send("Network.enable");
+      await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: T.latency, downloadThroughput: (T.kbps * 1024) / 8, uploadThroughput: (T.kbps * 1024) / 8 });
+      if (T.cpu > 1) await cdp.send("Emulation.setCPUThrottlingRate", { rate: T.cpu });
+      this.throttledAt = Date.now() - this.t0;
+    } catch (e) { this.throttleError = String(e.message || e).split("\n")[0]; }
+  }
+  // Cook's station at this instant (CK-48): its view, the camera's fade, missing pictures, Phaser's loader, the pictures in flight
+  async drawnState() {
+    const p = await this.page.evaluate(`(() => {
+      const C = window.Cook, s = C && C.scene;
+      const ov = document.querySelector("#overlay"), overlay = !!(ov && !ov.classList.contains("hidden") && ov.getBoundingClientRect().height > 1);
+      // the page over the stage: the request pop-up's veil still there, the stage's canvas faded (its own or an ancestor's opacity)
+      const veil = Array.from(document.querySelectorAll(".njg-rq-veil")).some((v) => !v.classList.contains("hidden") && v.getBoundingClientRect().height > 1 && parseFloat(getComputedStyle(v).opacity) > 0.05);
+      const cv = document.querySelector("#stage canvas") || document.querySelector("canvas");
+      let alpha = 1; for (let x = cv; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") { alpha = 0; break; } alpha *= parseFloat(cs.opacity); }
+      alpha = Math.round(alpha * 100) / 100;
+      if (!s || !s.cameras || !s.children) return { view: null, overlay, veil, alpha };
+      const cam = s.cameras.main, fx = cam.fadeEffect, list = s.children.list || [];
+      return { view: s.viewName || null, bg: s.bg && s.bg.texture ? s.bg.texture.key : null, zoom: +cam.zoom.toFixed(3), fading: !!(fx && fx.isRunning), fadeAlpha: fx ? +fx.alpha.toFixed(2) : 0,
+        missing: list.filter((o) => o.visible && o.texture && o.texture.key === "__MISSING").length, objects: list.filter((o) => o.visible).length, inStation: !!C.inStation, overlay, veil, alpha,
+        loading: !!(s.load && s.load.isLoading && s.load.isLoading()) };
+    })()`).catch(() => null);
+    const open = [...(this.inflight || new Map()).keys()].map((u) => u.replace(/^https?:\/\/[^/]+\//, "").replace(/\?.*$/, ""));
+    const x = p || { view: null };
+    const why = [];
+    if (!x.view || x.view === "service") why.push(x.view === "service" ? "the counter, not the station" : "no station view");
+    if (x.overlay) why.push("the order card is up");
+    if (x.veil) why.push("the request pop-up's veil over it");
+    if (x.alpha != null && x.alpha < 0.98) why.push(`the stage faded (opacity ${x.alpha})`);
+    if (x.fadeAlpha >= 0.05) why.push(`the camera fading (cover ${x.fadeAlpha})`);
+    if (x.missing) why.push(`${x.missing} missing picture${x.missing > 1 ? "s" : ""}`);
+    if (x.loading) why.push("Phaser's loader busy");
+    if (open.length) why.push(`${open.length} picture${open.length > 1 ? "s" : ""} loading (${open.slice(0, 2).map((u) => u.split("/").pop()).join(", ")}${open.length > 2 ? " ..." : ""})`);
+    return { ...x, open: open.length, drawn: !why.length, why };
   }
   // SH-10, PAN-10: whether a probe on this page is about the grown-ups' "?" or the bulb (its moment, what came before, its captures
   // or expects name help or the bulb). The fair Cook player's "?" and bulb round (CookPlayer.tryHelp) runs only then: otherwise the
@@ -238,6 +299,7 @@ export class EvidenceProbe {
   // a sound-log event (run.mjs chains it after the recorder's contract shots)
   onEvent(e) {
     if (!e) return;
+    if (e.type === "utt") { if (this.utts.length < 4000) this.utts.push(e); return; }
     // a line starts (its speaker: line:<who>, the moment the read-along runs)
     if (e.type === "line" && e.text) { this.spoken.push(String(e.text)); this.moment(`line:${String(e.who || "x").toLowerCase().replace(/[^a-z0-9-]+/g, "-")}`); }
     if (e.type === "m") this.moment(e.name);
@@ -250,6 +312,8 @@ export class EvidenceProbe {
     else if (e.type === "c" && e.k === "bubble" && e.list && e.list.length) this.moment("bubble", { settle: 250 });
   }
   async moment(name, { block = false, settle = 0 } = {}) {
+    if (name === "page:start") await this.ready;
+    else if (this.spec.throttle && !this.throttled && /^rec:/.test(name)) await this.throttle();
     const t = Date.now() - this.t0;
     if (this.seen[this.seen.length - 1]?.name !== name && this.seen.length < 800) this.seen.push({ name, t });
     // Nani's help being given (the SH-60 strip marks it): its time on the wall clock, for a strip that is filming then
@@ -459,6 +523,7 @@ export class EvidenceProbe {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
               raws.push(await this.surface({ fast: true }));
+              if (s.p.mark === "drawn") (out.states = out.states || []).push(await this.drawnState());
             }
             out.slots = Array.from({ length: c.n }, (_, k) => k * c.ms);
             for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
@@ -474,6 +539,13 @@ export class EvidenceProbe {
               const mk = markStrip(bufs, out.times, helps);
               mk.bufs.forEach((b, k) => { if (b !== bufs[k]) writeFileSync(join(this.dir, out.files[k]), b); });
               if (mk.marks.length) out.marks = mk.marks;
+            }
+            // S13-V (CK-48): each frame's edge says whether the station was fully drawn then (green) or not yet (orange); the
+            // strip's text lists why, frame by frame, and whether the view was rebuilt after it was first drawn (a zoom or picture change)
+            if (s.p.mark === "drawn" && out.states) {
+              out.states.forEach((st, k) => { try { writeFileSync(join(this.dir, out.files[k]), edge(bufs[k], st.drawn ? DRAWN_RGB : NOT_DRAWN_RGB)); } catch (e) { /* the frame as filmed */ } });
+              const T = THROTTLES[this.spec.throttle];
+              out.text = `${T ? (this.throttledAt != null ? `the slow line (${T.kbps} kbit/s, ${T.latency} ms${T.cpu > 1 ? `, the processor ${T.cpu}x slower` : ""}) from ${(this.throttledAt / 1000).toFixed(1)} s of the page; this strip from ${((t0 - this.t0) / 1000).toFixed(1)} s\n` : `NOT THROTTLED (${this.throttleError || "the player's first state never came"})\n`) : ""}${drawnText(out.states, out.times, c.ms)}`;
             }
             // (a mean difference over the clip, 0-255: a short red flash or a foot vibrating on a small clip is a fraction of a point; frames that are the same picture are 0)
             let moved = 0;
@@ -532,8 +604,14 @@ export class EvidenceProbe {
       // was not on screen (a count badge only while counting, a bubble only while someone speaks) it is a note, not a tool failure
       const worked = new Set(s.hits.flatMap((h) => h.captures.filter((c) => !c.fail).map((c) => c.raw)));
       for (const h of s.hits) for (const c of h.captures) if (c.fail) (p.every && worked.has(c.raw) ? notes : tool).push(`${c.raw} at ${h.name} (hit ${h.n}): ${c.fail}`);
+      const U = utterances(this.utts);
+      if (p.capture.some((c) => c.kind === "utter")) {
+        const text = this.spec.dv ? utterText(U, this.utts, Contract.voice(tl, { root }), T0) : "(this page had no device voice model)";
+        for (const h of s.hits) for (const c of h.captures) if (c.kind === "utter") c.text = text;
+        if (this.spec.dv && !U.length) notes.push("utter: the device voice was never asked to speak on this page");
+      }
       if (p.capture.some((c) => c.kind === "voice")) {
-        res.voice = voiceText(r, tl, s.hits, { root, T0 });
+        res.voice = voiceText(r, tl, s.hits, { root, T0, utts: this.spec.dv ? U : null });
         if (!res.voice.lines) tool.push("voice: no line was said on this page");
       }
       for (const c of p.capture.filter((c) => c.kind === "contract")) {
@@ -567,6 +645,7 @@ export class EvidenceProbe {
           const o = voiceOrder(h.rows[e.raw], spoken.map((l) => l.text));
           put({ ok: o.ok, why: `${o.why} (rows: ${h.rows[e.raw].map((x) => x.replace(/\s+/g, " ").slice(0, 30)).join(" | ")})` });
         } else if (e.kind === "movesOn") put(movesOn(tl, e.min, e.max, s.hits.length ? T0 + s.hits[0].t - 50 : 0));
+        else if (e.kind === "heardWhole") put(this.spec.dv ? heardWhole(Contract.voice(tl, { root }), U, timesOf(e.moment), e.ms, T0) : { ok: null, why: "heardWhole needs the device voice model (an utter capture)" });
         else if (e.kind === "silentAfter") put(silentAfter(plays, timesOf(e.moment), 150, [...timesOf("life:stage-start"), ...timesOf("life:request")]));
         else if (e.kind === "times") { const n = Object.entries(this.counts).filter(([k]) => momentMatches(e.moment, k)).reduce((a, [, v]) => a + v, 0); put({ ok: cmp(n, e.op, e.n), why: `${e.moment} came ${n} times` }); }
         else if (e.kind === "gapMs") { const g = gapMs(this.seen, e.a, e.b, momentMatches); put(g.ms == null ? { ok: null, why: g.why } : { ok: cmp(g.ms, e.op, e.n), why: g.why }); }
@@ -601,7 +680,73 @@ function traceTable(r) {
   return `amplitude ${s.amp ?? "none"} px, period ${s.period ?? "none"} ms, ${s.repeats ?? 0} repeats, ${s.n} samples\n${rows.join("\n")}`;
 }
 // the voice timeline as text: seconds from the page's start; every line with its clip and its class, lifecycle steps, taps, moments
-function voiceText(r, tl, hits, { root, T0 }) {
+// a line's parts as heard: each play's outcome. A device-voice part from the model's utterance (heard, cut, silent: cancelled or
+// dropped before it started, pending: never started); a clip "cut" when it stopped well before its own end
+function partsOf(l, utts) {
+  return l.plays.map((p) => {
+    if (p.via === "speechSynthesis") {
+      const u = utts ? uttOfPlay(utts, p) : null;
+      return { p, u, outcome: u ? u.outcome : null, label: `device "${p.text || ""}"${u ? ` ${u.outcome}` : ""}` };
+    }
+    const ran = p.end != null ? p.end - p.t0 : null, full = (p.dur || 0) * 1000;
+    const cut = ran != null && /stop|pause|cancel/.test(p.why || "") && ran < full - 150;
+    return { p, outcome: cut ? "cut" : "heard", label: `${p.url ? p.url.split("/").slice(-2).join("/") : p.via}${cut ? " cut" : ""}` };
+  });
+}
+// heardWhole (S13-V, LNG-16): after each moment, the first line said starts within ms and every part of it is heard whole
+export function heardWhole(v, utts, times, ms = 1000, T0 = 0) {
+  if (!times.length) return { ok: null, why: "the moment never came" };
+  const lines = v.lines.filter((l) => (l.text || "").trim()).sort((a, b) => a.t0 - b.t0);
+  const S = (t) => ((t - T0) / 1000).toFixed(2);
+  const bad = [], good = [];
+  for (const t of times) {
+    // (the line can start a beat before the request is logged: the pop-up logs it as it opens)
+    const l = lines.find((x) => x.t0 >= t - 300);
+    if (!l) { bad.push(`at ${S(t)} s: no line after it`); continue; }
+    const late = l.t0 - t;
+    const parts = partsOf(l, utts);
+    // a part cut or dropped by the child's own tap through the card (the request pop-up's stop, CLN-109) is the design, not a loss
+    const tapped = (x) => x.u && /request-popup/.test(x.u.by || "");
+    const lost = parts.filter((x) => x.outcome !== "heard" && !tapped(x));
+    const why = [];
+    if (late > ms) why.push(`starts ${late} ms after it`);
+    if (!parts.length) why.push("nothing played");
+    if (lost.length) why.push(lost.map((x) => `${x.label}${x.u && x.u.by ? ` (by ${x.u.by})` : ""}${x.outcome == null ? " (no utterance seen)" : ""}`).join(", "));
+    const tap = parts.filter((x) => x.outcome !== "heard" && tapped(x)).length;
+    (why.length ? bad : good).push(`at ${S(t)} s "${l.text}" ${why.length ? why.join("; ") : `heard whole, ${late} ms after it${tap ? ` (until the tap through the card: ${tap} part${tap > 1 ? "s" : ""} after it)` : ""}`}`);
+  }
+  return { ok: !bad.length, why: bad.length ? `${bad.length} of ${times.length} not heard whole: ${bad.slice(0, 3).join(" | ")}` : `${times.length} of ${times.length} heard whole: ${good.slice(0, 2).join(" | ")}` };
+}
+// the utterances, one row each, and every cancel (who made it, what it took)
+function utterText(U, raw, v, T0) {
+  const T = (t) => ((t - T0) / 1000).toFixed(2).padStart(6);
+  const lineOf = (u) => v.lines.find((l) => l.plays.some((p) => p.via === "speechSynthesis" && uttOfPlay([u], p)));
+  const rows = [];
+  for (const u of U) {
+    const l = lineOf(u);
+    const what = u.outcome === "heard" ? `heard ${T(u.start).trim()}-${T(u.end).trim()}` : u.outcome === "cut" ? `CUT at ${T(u.end).trim()} after ${((u.end - u.start) / 1000).toFixed(2)} s` : u.outcome === "silent" ? `SILENT: ${/before the device|same breath/.test(u.by || "") ? "never heard" : "cancelled before it started"} (${T(u.end).trim()})` : "SILENT: never started";
+    rows.push([u.speak, `${T(u.speak)}  speak "${u.text}"  [${what}]${u.by ? ` by ${u.by}` : ""}${l ? `  (line "${l.text}")` : ""}`]);
+  }
+  for (const e of raw || []) if (e.type === "utt" && e.ev === "cancel") rows.push([e.t, `${T(e.t)}  cancel (${e.n || 0} speaking or waiting)${e.by ? ` by ${e.by}` : ""}`]);
+  for (const e of raw || []) if (e.type === "utt" && e.ev === "voices-asked") rows.push([e.t, `${T(e.t)}  the page first asks for the device's voices (in at ${T(e.at).trim()})`]);
+  rows.sort((a, b) => a[0] - b[0]);
+  const n = (o) => U.filter((u) => u.outcome === o).length;
+  return `the device voice (the sandbox's model of a phone's voice, lib/device-voice.mjs): ${U.length} utterances, ${n("heard")} heard whole, ${n("cut")} cut, ${n("silent")} never heard (dropped or cancelled before they started), ${n("pending")} never started\n${rows.map((x) => x[1]).join("\n")}`;
+}
+// the strip's frames marked "drawn" (CK-48), as text: each frame's state, the first drawn frame, a view rebuilt after it
+function drawnText(states, times, ms) {
+  const first = states.findIndex((x) => x.drawn);
+  const rows = states.map((x, k) => `${String(times[k]).padStart(5)} ms  ${x.drawn ? "DRAWN" : "not drawn"}${x.view ? `  view ${x.view}` : ""}${x.bg ? `, ${x.bg}` : ""}${x.zoom != null ? `, zoom ${x.zoom}` : ""}${x.drawn ? "" : `: ${x.why.join("; ")}`}`);
+  const re = [];
+  if (first >= 0) for (let k = first + 1; k < states.length; k++) {
+    const a = states[first], b = states[k];
+    if (b.view === a.view && (b.bg !== a.bg || b.zoom !== a.zoom)) re.push(`${times[k]} ms: ${b.bg !== a.bg ? `picture ${a.bg} -> ${b.bg}` : ""}${b.zoom !== a.zoom ? ` zoom ${a.zoom} -> ${b.zoom}` : ""}`.trim());
+    if (!b.drawn) re.push(`${times[k]} ms: not drawn again (${b.why.join("; ")})`);
+  }
+  const head = first < 0 ? `the station was not fully drawn in any of ${states.length} frames (${ms} ms apart; edge orange = not drawn)` : `the station fully drawn from ${times[first]} ms (frame ${first + 1} of ${states.length}; edge green = drawn, orange = not yet)${re.length ? `; after that: ${re.slice(0, 4).join("; ")}` : "; nothing changed under it after that"}`;
+  return `${head}\n${rows.join("\n")}`;
+}
+function voiceText(r, tl, hits, { root, T0, utts = null }) {
   const v = Contract.voice(tl, { root });
   const fam = new Map(((r.sound && r.sound.lines) || []).map((l) => [String(l.text || "").trim().toLowerCase(), l.status]));
   const T = (t) => ((t - T0) / 1000).toFixed(2).padStart(6);
@@ -620,6 +765,14 @@ function voiceText(r, tl, hits, { root, T0 }) {
     n++;
     const end = l.plays.length ? Math.max(...l.plays.map((p) => p.t1 || p.t0)) : l.t1 || l.t0;
     const clips = l.plays.map((p) => (p.url ? p.url.split("/").slice(-2).join("/") : p.via)).join(" + ") || "nothing played";
+    // with the device voice model (S13-V, LNG-16): each part as heard, and the line [silent] when a part was never heard (cancelled
+    // before it started) or [cut] when one stopped part way
+    if (utts) {
+      const parts = partsOf(l, utts);
+      const tag = !parts.length ? "silent" : parts.some((x) => x.outcome === "silent" || x.outcome === "pending") ? "silent" : parts.some((x) => x.outcome === "cut") ? "cut" : fam.get(String(l.text).trim().toLowerCase()) || "heard";
+      rows.push([l.t0, `${T(l.t0)}-${T(end).trim()}  ${l.who || "?"}: "${l.text}"  [${tag}: ${parts.map((x) => x.label).join(" + ") || "nothing played"}]`]);
+      continue;
+    }
     rows.push([l.t0, `${T(l.t0)}-${T(end).trim()}  ${l.who || "?"}: "${l.text}"  [${fam.get(String(l.text).trim().toLowerCase()) || (l.plays.length ? "?" : "silent")}: ${clips}]`]);
   }
   for (const h of hits) rows.push([T0 + h.t, `${T(T0 + h.t)}  >>>> moment ${h.name}${h.n > 1 ? ` (${h.n})` : ""}`]);
