@@ -3,13 +3,42 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown } from "./static.mjs";
+import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown, shellFindings, kitImportFindings, motionFindings, jscolourFindings, ladderCopyFindings } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
   assert.equal(kitFindings("css/clinic.css", ".cl-card.oc-card { padding: 2px; }").length, 1);
   assert.equal(kitFindings("css/cook.css", "#done-btn:not(.njg-btn) { color: red; }").length, 0);
   assert.equal(kitFindings("css/shared/order-card.css", ".oc-card { padding: 2px; }").length, 0);
   assert.equal(kitFindings("css/clinic.css", "/* .oc-card { } */\n.cl-x { }").length, 0);
+});
+test("kit (S13-A1): the widened prefixes: the word card, the guide, the onboarding kit, the bubbles, the fitter, Say it", () => {
+  for (const sel of [".day-x .wc-pic", ".cl-x .ng-face", ".ob-box.cl", ".cv-bubble.day-bubble", "#side .fit2", ".a .fit", ".say-pill.x"]) assert.equal(kitFindings("css/day.css", `${sel} { color: red; }`).length, 1, sel);
+  assert.equal(kitFindings("css/day.css", ".fitted, .profit, .day-x:not(.wc-card) { color: red; }").length, 0);
+});
+test("shell (S13-A1): one kit link per live page, no shared sheet linked directly; kit.css imports every shared sheet", () => {
+  assert.deepEqual(shellFindings("cook.html", '<link rel="stylesheet" href="css/shared/kit.css?v=1">\n<link rel="stylesheet" href="css/cook.css?v=1">'), []);
+  assert.deepEqual(shellFindings("cook.html", '<link rel="stylesheet" href="css/shared/kit.css?v=1"><link rel="stylesheet" href="css/shared/focus.css?v=1">').map((f) => f.key), ["shell|cook.html|css/shared/focus.css"]);
+  assert.deepEqual(shellFindings("index.html", '<link rel="stylesheet" href="css/shared/app.css">').map((f) => f.key), ["shell|index.html|kit 0", "shell|index.html|css/shared/app.css"]);
+  assert.deepEqual(shellFindings("x.html", '<!-- <link rel="stylesheet" href="css/shared/app.css"> -->\n<link rel="stylesheet" href="css/shared/kit.css">'), []);
+  assert.deepEqual(kitImportFindings('@import url("tokens.css?v=1");\n@import url("app.css?v=1");', ["kit.css", "tokens.css", "app.css", "focus.css"]).map((f) => f.key), ["shell|css/shared/kit.css|misses focus.css"]);
+});
+test("motion (S13-A1): no game keyframes for a kit motion; the kit's own live in css/shared/", () => {
+  assert.deepEqual(motionFindings("css/cook.css", "@keyframes glowPulse { 50% { opacity: 1; } }\n@keyframes ringLow { }\n@keyframes cl-throb-dish { }\n@keyframes stNoShake { }\n@keyframes pop { }").map((f) => f.key), ["motion|css/cook.css|glowPulse", "motion|css/cook.css|cl-throb-dish", "motion|css/cook.css|stNoShake"]);
+  assert.equal(motionFindings("css/shared/focus.css", "@keyframes njgGlow { }").length, 0);
+  assert.equal(motionFindings("css/cook.css", "/* @keyframes glow { } */ .a { animation: var(--njg-glow-anim); }").length, 0);
+});
+test("jscolour (S13-A1): colours in code only through Tokens; an art-only file is one finding, but a kit colour in it counts alone", () => {
+  const ui = new Set(["e0a63a"]);
+  assert.equal(jscolourFindings("js/x.js", "obj.setTint(0x123456); el.style.color = '#abcdef'; ctx.fillStyle = 'rgba(1, 2, 3, .5)';", { ui }).length, 3);
+  assert.equal(jscolourFindings("js/x.js", "// 0x123456 in a comment\nconst c = Tokens.int('focus');", { ui }).length, 0);
+  const art = jscolourFindings("js/cook/mechanics/x.js", "g.fillStyle(0x112233); g.fillStyle(0x445566);\nhalo.setTint(0xe0a63a);", { ui, artOnly: true });
+  assert.deepEqual(art.map((f) => f.key.split("|").slice(2).join("|")), ["ui halo.setTint(0xe0a63a);", "art-only"]);
+  assert.equal(jscolourFindings("js/shared/tokens.js", "const x = 0x123456;", { ui }).length, 0);
+});
+test("bulb (S13-A1): one ladder table; a second one in data or a ladder number in code is a finding", () => {
+  assert.deepEqual(ladderCopyFindings("data/cook.json", { calm: { helpMs: [1], repeatMs: 10000, _help: "helpMs" } }).map((f) => f.key), ["bulb|data/cook.json|calm.helpMs"]);
+  assert.equal(ladderCopyFindings("data/shared.json", { helpMs: [7000] }).length, 0);
+  assert.equal(ladderCopyFindings("js/x.js", "G.PAUSE = [7000, 8000];\nconst ms = G.PAUSE[lv - 1];\n// BULB_MS = 8000").length, 1);
 });
 test("tokens: no hex, rgb, gradient or text-shadow outside tokens.css", () => {
   assert.deepEqual(tokenFindings("css/clinic.css", ".a { color: #fff; background: linear-gradient(red, blue); text-shadow: 0 1px 0 x; }").map((f) => f.text.split(":")[0]).sort(), ["gradient", "hex colour", "text-shadow"]);

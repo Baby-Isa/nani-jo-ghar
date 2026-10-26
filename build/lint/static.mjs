@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Static checks (checks-to-build 9, 10, 11, 13, 17, 18, 21; Sprint 6): rules that read the code and data, no browser.
-//   kit       shared-kit identity: no CSS outside css/shared/ selects the shared components' classes (.njg-*, .oc-*, .rs-*,
-//             .gb-*): one look in every mode (non-negotiable 8)
+//   kit       shared-kit identity: no CSS outside css/shared/ selects the shared components' classes (.njg-*, .oc-*, .rs-*, .gb-*,
+//             .wc-*, .ng-*, .ob-*, .cv-*, .say-*, .fit, .fit2, .fit-*; S13-A1 widened them), but :not() may keep its own element apart;
+//             one look in every mode (non-negotiable 8)
 //   tokens    design tokens: colours only from css/shared/tokens.css (no hex or rgb() elsewhere), no gradients, no text-shadow
 //   ladder    level ladders: Cook's timers ~15% quicker per level (timing.levelSpeed 0.13-0.17); each heal game's levels add at
 //             most one new knob per level and no count goes down (L1 the smallest round)
@@ -113,8 +114,12 @@ export function motionFindings(file, text) {
 // its art colours fold into that one finding, but a UI token's colour in it (any --njg-* colour of tokens.css) still counts alone
 const JS_COLOUR = /\b0x[0-9a-f]{6}\b|["'`]#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})\b|\brgba?\(\s*\d/gi;
 export function uiColours(tokensCss) {
+  // the kit's own colours (not the games' aliased palettes, nor white and black, which Phaser uses as "no tint")
+  const kit = String(tokensCss).split("the live games' own colours")[0];
   const set = new Set();
-  for (const m of String(tokensCss).matchAll(/--njg-[\w-]+\s*:\s*#([0-9a-f]{6})\b/gi)) set.add(m[1].toLowerCase());
+  for (const m of kit.matchAll(/--njg-[\w-]+\s*:\s*#([0-9a-f]{6})\b/gi)) set.add(m[1].toLowerCase());
+  set.delete("ffffff");
+  set.delete("000000");
   return set;
 }
 export function jscolourFindings(file, text, { artOnly = false, ui = new Set() } = {}) {
