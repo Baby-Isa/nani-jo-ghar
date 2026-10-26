@@ -1,7 +1,7 @@
 # Sprint 13: One shared kit
 
-**Status:** planned (agreed with Zafar 23 Oct; written 26 Oct). Starts when Sprint 12 is published.
-**Opened:** - · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
+**Status:** open (agreed with Zafar 23 Oct; written 26 Oct)
+**Opened:** 26 Oct · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
 Every shared element sits in one central place, so one change reaches every game, quickly and cheaply. The elements: colours, textures, outlines, the bob and glow, cards (word, order, recipe), the order screen, end screens, the finger and help box, bubbles and buttons. And every future fix works first time across all areas.
@@ -13,7 +13,7 @@ Every shared element sits in one central place, so one change reaches every game
 - So a fix passed in one game and failed in the next. Wave 1's help kit needed four fix rounds to look the same in chai, the pantry and the clinic.
 
 ## Budget
-About $120-160 and 2 days (Zafar to confirm at the start). Rapid-prototype checks: 1366x768 and 915x412.
+About $120-160 and 2 days (Zafar to confirm before step 2 launches). Rapid-prototype checks: 1366x768 and 915x412.
 
 ## Step 1: the review (Fable, high, about $15-25; one report, no code)
 Its report is build/reports/s13-kit-review (to write). Read `js/shared/`, `css/shared/`, the static check's known list (`build/lint/static.mjs`), the contract checks (`build/sandbox/lib/contract.mjs`) and each game's own copies (grep for glow, finger, bubble, end screen, card, button).
@@ -30,6 +30,9 @@ Answer:
    - **Model choice by kind of work:** the top model for judgement and design, a mid-tier model for capture, plumbing and mechanical moves.
    - **Smaller, single-purpose builders, with one fix round in their budget.**
    - **A rule for "done":** the judge's PASS on every game the element appears in, not only the one the builder looked at.
+
+## Sessions
+- **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`.
 
 ## Step 2: the build (two builders at a time, Opus high; judge each)
 - **S13-A: tokens and motion.** Colours, outlines, the bob, glow and finger timings, as tokens used everywhere. The 883 raw values shrink.

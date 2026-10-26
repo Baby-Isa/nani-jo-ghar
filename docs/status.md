@@ -8,25 +8,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (23 Oct 2026, evening UK; paused, Zafar out of tokens for the week):** Sprint 11 is live on `main`. Sprint 12 "Polish" (`docs/sprints/S12-polish.md`) runs on `claude/exciting-pasteur-usf3d2`:
-- **Wave 1 merged, judged and green** (the shared help kit and chai; the door, the ride, labs). checks.mjs and 522 unit tests pass.
-- **Wave 2 stopped mid-round, saved, not judged and not merged:** `claude/s12-w2a-wip` (shared UI: the end screen's third page off by one switch, replies with speakers and one tap, word cards, slower talking faces, the new face circles; its last fix round was half done: the circles' one crop, word size, the door kit patch) and `claude/s12-w2b-wip` (the eye test: the doctor's start, drops before the word, the mic; partway). W2-A's first judge: PASS SH-125, SH-126, ART-19, EASY-08; FAIL SH-123 (words too small, a learned word shows English), ART-08 (head sizes differ, the badge covers an ear); SH-124's bounce not captured.
-- **Wave 3 not started:** the book (with spaced words and Say it), loading, the served moment, the pour (mirrored pan, spout-first) and the door's sun, farm and come-here art.
-- The s12 art is judged and in `sources/art/s12/`; Zafar passed the likenesses. Next art block: FC2 (moods and mouths for the circles).
-- Answers and research: `build/reports/s12-answers.md`, `s12-research-cefr-and-book.md`, `s12-research-a1-to-native.md`. Zafar likes the talking day, the story library, and describe and deduce (`docs/ideas.md` 61-65).
+**Where things stand (26 Oct 2026):** Sprint 12 "Polish" is published and live on `main` (its outcome and look back are in `docs/sprints/S12-polish.md`). **Sprint 13 "One shared kit" is open** (`docs/sprints/S13-one-shared-kit.md`), on `claude/funny-carson-oxxdkw`.
 
 **Next steps:**
-1. Resume wave 2 from the two wip branches (same briefs `build/tools/ops/specs/s12-w2a.json`, `s12-w2b.json`): finish W2-A's fix round, judge, merge; finish W2-B, judge, merge.
-2. Publish option: wave 1 alone can go to `main` after `/review` and Zafar's OK (it is merged and green).
-3. Wave 3, then `/review`, publish on his OK, his play, `/feedback`.
+1. Step 1, the review (Fable, high, about $20-30), launched 26 Oct: report `build/reports/s13-kit-review.md`. Zafar asked it to be open-minded: every element that could sit shared, not only the sprint file's list.
+2. Put the review's decisions to Zafar as a numbered list; he confirms the budget ($120-160, 2 days) before step 2.
+3. Step 2: S13-A tokens and motion, S13-B components (two builders, Opus high, judged), then every game replayed at both sizes, `/review`, publish on his OK, his play, `/feedback`.
 4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
 
-**Next sprint (S13): "One shared kit", planned in `docs/sprints/S13-one-shared-kit.md`** (agreed with Zafar 23 Oct; written 26 Oct). It starts with a Fable review of what should be central and how (checked against best practice), plus what else speeds development, cuts tokens and makes fixes work first time; then two builders move every game onto the kit.
-
-**Open questions to Zafar:** none.
+**Open questions to Zafar:** the sprint budget (before step 2).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 12 is paused mid wave 2; carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 13 is open; carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
