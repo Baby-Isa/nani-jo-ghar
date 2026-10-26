@@ -8,7 +8,10 @@ import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
 import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds, changedRows } from "./lib/evidence.mjs";
-import { briefRows, briefSizes, briefSlug, briefProbes, panelKey, pairPanels, beforeNote } from "./lib/brief.mjs";
+import { briefRows, briefSizes, briefSlug, briefProbes, panelKey, beforeNote, unitsOf, pairUnits, stripMotion, offSlots, capMs, SLOT_TOL } from "./lib/brief.mjs";
+import { decodePng } from "./lib/png.mjs";
+// a strip's frames -> stripMotion (lib/brief.mjs): no motion is flagged on the sheet and in the .md
+const stripMotionOf = (files) => { try { return stripMotion(files.map((f) => decodePng(readFileSync(f)))); } catch (e) { return { moving: true, note: "" }; } };
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
@@ -66,8 +69,7 @@ const PORT = process.env.COOK_TEST_PORT || "8843";
 const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser.lock";
 // ---------- a brief (the one loop): its rows, sizes, folder ----------
 const BRIEF_DIR = join(ROOT, "build", "screenshots", "brief");
-function loadBrief() {
-  const f = a.val("brief");
+function loadBrief(f = a.val("brief"), phaseOf = null) {
   if (!f) return null;
   const file = existsSync(f) ? resolve(f) : resolve(ROOT, f);
   if (!existsSync(file)) die(`--brief ${f}: no such spec file.`);
@@ -77,10 +79,10 @@ function loadBrief() {
   if (B.unknown.length) die(`--brief ${rel(file)}: rows not on the fix list or its archive: ${B.unknown.join(", ")}`);
   if (!B.rows.length) die(`--brief ${rel(file)}: names no fix-list row (spec.rows, or a row id in its tasks' words).`);
   const slug = briefSlug(spec, file), dir = join(BRIEF_DIR, slug);
-  const phase = a.has("before") ? "before" : a.has("after") ? "after" : null;
+  const phase = phaseOf || (a.has("before") ? "before" : a.has("after") ? "after" : null);
   return { file, spec, slug, dir, rows: B.rows, newRows: B.newRows, sizes: briefSizes(spec), phase };
 }
-const BRIEF = loadBrief();
+let BRIEF = loadBrief();
 const briefState = () => { try { return JSON.parse(readFileSync(join(BRIEF.dir, "brief.json"), "utf8")); } catch (e) { return {}; } };
 const saveBriefState = (s) => { mkdirSync(BRIEF.dir, { recursive: true }); writeFileSync(join(BRIEF.dir, "brief.json"), JSON.stringify(s, null, 1) + "\n"); };
 const OUT = join(ROOT, "build", "screenshots", "evidence");
@@ -187,7 +189,8 @@ async function makePlan() {
     const why = (id) => (norm.human[id] ? "Zafar's ear or feel (no probe)" : norm.decision[id] ? "needs a decision (no probe)" : (norm.obsolete || {})[id] ? "obsolete probe" : norm.rowErrors[id] ? `spec error: ${norm.rowErrors[id][0]}` : !norm.rows[id] ? "no evidence spec" : null);
     const bad = BRIEF.rows.map((id) => [id, why(id)]).filter(([, w]) => w);
     if (bad.length) die(`--brief ${rel(BRIEF.file)} refused: every row it names needs a probe in build/sandbox/data/evidence.json first:\n${bad.map(([id, w]) => `  ${id}: ${w}`).join("\n")}`);
-    for (const id of BRIEF.rows) norm.rows[id] = briefProbes(norm.rows[id], BRIEF.spec, S.parseCapture);
+    const words = (id) => { const r = all.find((x) => x.id === id); return r ? `${plain(r.issue)} ${plain(r.check)}` : ""; };
+    for (const id of BRIEF.rows) norm.rows[id] = briefProbes(norm.rows[id], BRIEF.spec, S.parseCapture, words(id));
     brief = { slug: BRIEF.slug, file: rel(BRIEF.file), phase: BRIEF.phase, rows: BRIEF.rows, newRows: BRIEF.newRows, sizes: BRIEF.sizes, flows: BRIEF.spec.flows || [] };
   }
   const { pages, repo, noSpec } = S.planPages(playable, norm.rows);
@@ -326,16 +329,21 @@ function briefStore(dir) {
     for (const s of r.sheets || []) if (existsSync(join(ROOT, s))) copyFileSync(join(ROOT, s), join(out, s.split("/").pop()));
     if (r.md && existsSync(join(ROOT, r.md))) copyFileSync(join(ROOT, r.md), join(out, `${id}.md`));
     const isNew = BRIEF.newRows.includes(id);
-    const shows = panels.length > 0;
-    const note = !shows && phase === "before" ? beforeNote(isNew, r.tool || []) : null;
-    writeFileSync(join(out, "panels.json"), JSON.stringify({ row: id, phase, run: P.run, commit: index.commit, isNew, tool: r.tool || [], expect: r.expect || null, expectLine: r.expectLine || "", note, panels }, null, 1) + "\n");
-    lines.push(`${id}: ${panels.length} panels${(r.tool || []).length ? `, TOOL FAILURE (${r.tool[0].slice(0, 140)})` : ""}${note ? ` -> ${note}` : ""} -> ${rel(out)}`);
+    // a text capture (a voice timeline, dom text, a script's output) is evidence too (fix round, 26 Oct: LNG-16, a sound row, was
+    // called a probe fault for having no picture): only a row with neither, or a tool failure, shows nothing
+    const texts = textCount(join(out, `${id}.md`));
+    const shows = panels.length > 0 || (texts > 0 && !(r.tool || []).length);
+    const note = !shows && phase === "before" ? beforeNote(isNew, r.tool || []) : !panels.length && texts ? `text only: ${texts} text captures (the voice timeline, dom text, script output) in ${id}.md` : null;
+    writeFileSync(join(out, "panels.json"), JSON.stringify({ row: id, phase, run: P.run, commit: index.commit, isNew, tool: r.tool || [], expect: r.expect || null, expectLine: r.expectLine || "", texts, note, panels }, null, 1) + "\n");
+    lines.push(`${id}: ${panels.length} panels${texts ? `, ${texts} text captures` : ""}${(r.tool || []).length ? `, TOOL FAILURE (${r.tool[0].slice(0, 140)})` : ""}${note ? ` -> ${note}` : ""} -> ${rel(out)}`);
   }
   saveBriefState(st);
   console.log(`\n${phase} of brief ${BRIEF.slug} (run ${P.run}):\n${lines.map((l) => `  ${l}`).join("\n")}`);
   if (phase === "before") console.log(`\nNext: the judge's before check (--before --check --reuse --brief ${rel(BRIEF.file)}), then the build, then --after --brief ${rel(BRIEF.file)}.`);
   else console.log(`\nNext (the orchestrator): node build/tools/review/evidence.mjs --judge --brief ${rel(BRIEF.file)}`);
 }
+// the text captures of a row's .md: its "#### " headings (each a dom text, a voice timeline, a contract or a script's output)
+const textCount = (md) => { try { return (readFileSync(md, "utf8").match(/^#### /gm) || []).length; } catch (e) { return 0; } };
 const rowOf = (P, id) => P.rows.find((x) => x.id === id) || { id, issue: "", check: "", source: "", status: "", kind: "", section: "" };
 const briefPanels = (id, phase) => { try { return JSON.parse(readFileSync(join(BRIEF.dir, id, phase, "panels.json"), "utf8")); } catch (e) { return null; } };
 // --before --check (mode "check": the before sheets alone, to the judge at launch: do the probes see the problem before the builder
@@ -368,21 +376,30 @@ async function briefJudge(mode) {
     if (mode === "judge" && !af) { skipped.push(`${id}: no after copy (play --after again)`); continue; }
     if (mode === "judge" && af.tool.length) { skipped.push(`${id}: the after is a TOOL FAILURE (${af.tool[0].slice(0, 160)}): fix the probe or the driver, never a verdict`); continue; }
     const isNew = BRIEF.newRows.includes(id);
-    const pairs = mode === "judge" ? pairPanels(b.panels, af.panels) : b.panels.map((p) => ({ key: p.key, before: p, after: null }));
-    pairs.forEach((x, k) => (x.letter = "ABCDEFGHIJKL"[k] || null));
+    // (a copy made before the fix round called a text-only row a probe fault: its .md decides now)
+    for (const [x, ph] of [[b, "before"], [af, "after"]]) if (x && !x.panels.length && !(x.tool || []).length) { const n = textCount(join(BRIEF.dir, id, ph, `${id}.md`)); if (n) x.note = `text only: ${n} text captures (the voice timeline, dom text, script output) in ${join(BRIEF.dir, id, ph, `${id}.md`)}`; }
+    // pairs by moment (lib/brief.mjs unitsOf, pairUnits): the same panel, moment and occurrence, frame by frame; anything else alone
+    const prep = (panels, phase) => unitsOf(panels).map((u) => ({ ...u, phase, dir: join(BRIEF.dir, id, phase), dims: dimsOf(join(BRIEF.dir, id, phase, (u.files[0] || {}).file || "")), ...(u.type === "strip" ? { motion: stripMotionOf(u.files.map((f) => join(BRIEF.dir, id, phase, f.file))) } : {}) }));
+    const bu = prep(b.panels, "before"), au = af ? prep(af.panels, "after") : [];
+    const pairs = mode === "judge" ? pairUnits(bu, au) : bu.map((u) => ({ key: u.key, before: u, after: null }));
+    pairs.forEach((x, k) => (x.letter = LETTERS[k] || null));
     const shown = pairs.filter((x) => x.letter);
     const sheetsOut = [];
     // an earlier draw's sheets go first (a sheet left from a longer row would stand beside the new ones)
     const stem = `${id}-${mode === "judge" ? "before-after" : "before"}`;
     for (const f of readdirSync(join(BRIEF.dir, id))) if (new RegExp(`^${stem}(-\\d+)?\\.(png|html)$`).test(f)) rmSync(join(BRIEF.dir, id, f), { force: true });
-    // at most four pairs to a sheet (each pair is two pictures side by side)
-    for (let k = 0; k < Math.max(1, Math.ceil(shown.length / 4)); k++) {
-      const part = shown.slice(k * 4, k * 4 + 4), n = Math.ceil(shown.length / 4);
-      const name = `${id}-${mode === "judge" ? "before-after" : "before"}${k ? `-${k + 1}` : ""}`;
-      sheetsOut.push(await htmlToPng(page, join(BRIEF.dir, id, `${name}.html`), briefSheetHtml(row, part, { mode, isNew, before: b, after: af, shotUrl, part: n > 1 ? `sheet ${k + 1} of ${n}` : "" })));
+    // sheets of at most about 1500 px: a whole screen is drawn 1136 px wide (its sidebar readable), so a whole-screen pair has a sheet
+    // of its own; crops stay 1:1 where they fit their column
+    const groups = []; let cur = [], h = 0;
+    for (const x of shown) { const c = pairHeight(x, mode); if (cur.length && h + c > 1450) { groups.push(cur); cur = []; h = 0; } cur.push(x); h += c; }
+    if (cur.length || !groups.length) groups.push(cur);
+    for (let k = 0; k < groups.length; k++) {
+      const name = `${stem}${k ? `-${k + 1}` : ""}`;
+      sheetsOut.push(await htmlToPng(page, join(BRIEF.dir, id, `${name}.html`), briefSheetHtml(row, groups[k], { mode, isNew, before: b, shotUrl, part: groups.length > 1 ? `sheet ${k + 1} of ${groups.length}` : "" })));
     }
     todo.push({ id, row, isNew, b, af, pairs, sheets: sheetsOut });
   }
+
   await page.close(); await browser.close(); server.close();
   // --collect on this run reads it: a verdict on a before|after pair also logs the before's red (the judge saw the before)
   if (mode === "judge") writeFileSync(join(jdir, "brief.json"), JSON.stringify({ brief: BRIEF.slug, before: st.before, after: st.after }, null, 1) + "\n");
@@ -395,7 +412,10 @@ async function briefJudge(mode) {
     for (const x of part) {
       t += `## ${x.id} ${x.row.section}${x.isNew ? " (new feature)" : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.sheets.map((s) => s).join(" and ")}\n- Text: before ${join(BRIEF.dir, x.id, "before", `${x.id}.md`)}${mode === "judge" ? `, after ${join(BRIEF.dir, x.id, "after", `${x.id}.md`)}` : ""}\n`;
       if (!x.b.panels.length) t += `- Before: ${x.b.note || beforeNote(x.isNew, x.b.tool)}\n`;
-      t += x.pairs.filter((p) => p.letter).map((p) => `- Pair ${p.letter}: ${(p.after || p.before).label}${mode === "judge" && !p.before ? " (no before)" : ""}${mode === "judge" && !p.after ? " (no after)" : ""}`).join("\n") + "\n\n";
+      const still = (u, w) => (u && u.motion && !u.motion.moving ? ` · ${w} strip: NO MOTION CAPTURED (never proof of movement)` : "");
+      t += x.pairs.filter((p) => p.letter).map((p) => `- Pair ${p.letter}: ${(p.after || p.before).label}${mode === "judge" && (!p.before || !p.after) ? ` (no match: only in the ${p.before ? "before" : "after"}; never compare it with another moment)` : ""}${still(p.before, "BEFORE")}${still(p.after, "AFTER")}`).join("\n") + "\n";
+      if (x.pairs.some((p) => !p.letter)) t += `- (${x.pairs.filter((p) => !p.letter).length} more pairs not on the sheet: in the before and after folders)\n`;
+      t += "\n";
     }
     writeFileSync(join(jdir, `${name}.md`), t);
     if (!existsSync(vf)) writeFileSync(vf, `judge: \n${part.map((x) => `${x.id} | `).join("\n")}\n`);
@@ -405,26 +425,57 @@ async function briefJudge(mode) {
   for (const n of names) console.log(`  ${n}`);
   if (names.length) console.log(`\nOne judge call per batch file (never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id ${runId}${mode === "judge" ? ` and --apply --run-id ${runId}` : ""}`);
 }
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// a PNG's size from its header (0 x 0 when it cannot be read)
+function dimsOf(file) { try { const b = readFileSync(file); return b.length > 24 && b.readUInt32BE(12) === 0x49484452 ? { w: b.readUInt32BE(16), h: b.readUInt32BE(20) } : { w: 0, h: 0 }; } catch (e) { return { w: 0, h: 0 }; } }
+// a whole screen (a shot, the room, a crop as wide as a phone screen): drawn full width, never a thumbnail (fix round, 26 Oct)
+const WIDE = 1136, COL = 560;
+const wideUnit = (u) => !!u && (u.whole || u.dims.w / ((u.from && u.from.dpr) || 1) >= 700);
+const unitDpr = (u) => (u && u.from && u.from.dpr && !u.from.zoom ? u.from.dpr : 1);
+// the drawn height of a pair (the sheet splits at about 1500 px)
+function pairHeight(x, mode) {
+  const us = [x.before, x.after].filter(Boolean);
+  const ratio = (u) => u.dims.h / Math.max(1, u.dims.w);
+  // a strip: its frames four to a line (wide) or two (a column), each at most a quarter or half of the width
+  if (us.every((u) => u.type === "strip")) { const wide = us.some(wideUnit), per = wide ? 4 : 2, fw = wide ? WIDE / 4 - 6 : COL / 2 - 4; const one = (u) => Math.ceil(u.files.length / per) * (Math.min(fw, u.dims.w) * ratio(u) + 22) + 60; return 40 + (wide ? us.reduce((s, u) => s + one(u), 0) : Math.max(...us.map(one))); }
+  if (us.some(wideUnit)) return 60 + us.length * (Math.min(WIDE, Math.max(...us.map((u) => u.dims.w / unitDpr(u)))) * Math.max(...us.map((u) => u.dims.h / Math.max(1, u.dims.w))) + 40) + (mode === "judge" && us.length < 2 ? 120 : 0);
+  const one = (u) => (u.type === "strip" ? Math.ceil(u.files.length / 2) * (Math.min(COL / 2, u.dims.w) * (u.dims.h / Math.max(1, u.dims.w)) + 22) + 30 : Math.min(COL, u.dims.w / unitDpr(u)) * (u.dims.h / Math.max(1, u.dims.w)));
+  return 70 + Math.max(...us.map(one), 60);
+}
 function briefSheetHtml(row, pairs, { mode, isNew, before, shotUrl, part }) {
   const two = mode === "judge";
-  const pic = (p, phase) => {
-    if (!p) return `<div class="none">${phase === "before" ? esc(before && !before.panels.length ? before.note || beforeNote(isNew, before.tool) : isNew ? "not there yet (a new feature)" : "no before of this panel: PROBE FAULT") : "no after of this panel (not captured)"}</div>`;
-    const dir = join(BRIEF.dir, row.id, phase);
-    if (p.type === "frames") return `<div class="frames" style="--c:${Math.min(p.files.length, two ? 2 : 4)}">${p.files.map((f) => `<figure><img src="${esc(shotUrl(join(dir, f.file)))}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
-    return `<img class="one" src="${esc(shotUrl(join(dir, (p.files[0] || {}).file || "")))}">`;
+  const missing = (phase, other) => phase === "before"
+    ? (before && !before.panels.length ? before.note || beforeNote(isNew, before.tool) : isNew ? "not there yet (a new feature)" : `no match: the before has no ${other ? `"${other.label.replace(/^.* · /, "")}"` : "frame at this moment"}`)
+    : `no match: the after has no ${other ? `"${other.label.replace(/^.* · /, "")}"` : "frame at this moment"}`;
+  const img = (u, f, w) => `<img src="${esc(shotUrl(join(u.dir, f.file)))}" style="width:${Math.round(w)}px">`;
+  const pic = (u, phase, other, wide) => {
+    if (!u) return `<div class="none">${esc(missing(phase, other))}</div>`;
+    if (u.type === "strip") {
+      const ms = +((/x(\d+)(?:@|$)/.exec(u.key) || [])[1] || 0);
+      const w = Math.min(wide ? WIDE / 4 - 6 : COL / 2 - 4, u.dims.w / unitDpr(u));
+      return `${u.motion && !u.motion.moving ? `<div class="still">NO MOTION CAPTURED: ${esc(u.motion.note)}</div>` : ""}<div class="frames">${u.files.map((f, k) => { const t = capMs(f.cap); const off = t != null && ms && Math.abs(t - k * ms) > SLOT_TOL; return `<figure>${img(u, f, w)}<figcaption class="${off ? "off" : ""}">${t != null ? `${t} ms${off ? ` (slot ${k * ms} ms: ${t - k * ms > 0 ? "+" : ""}${t - k * ms})` : ""}` : esc(f.cap)}</figcaption></figure>`; }).join("")}</div>`;
+    }
+    const w = Math.min(wide ? WIDE : COL, u.dims.w / unitDpr(u)) || COL;
+    return `${img(u, u.files[0] || {}, w)}${u.files[0] && u.files[0].cap ? `<div class="cap">${esc(u.files[0].cap)}</div>` : ""}`;
   };
-  const cells = pairs.map((x) => `<section><div class="lab"><b>${esc(x.letter)}</b> ${esc((x.after || x.before).label)}</div><div class="cols${two ? " two" : ""}"><div class="col"><div class="ph">BEFORE</div>${pic(x.before, "before")}</div>${two ? `<div class="col"><div class="ph after">AFTER</div>${pic(x.after, "after")}</div>` : ""}</div></section>`).join("\n");
+  const cells = pairs.map((x) => {
+    const wide = [x.before, x.after].some(wideUnit), lab = (x.after || x.before).label;
+    const unmatched = two && (!x.before || !x.after) ? ` <span class="nm">no match</span>` : "";
+    const b = `<div class="col"><div class="ph">BEFORE</div>${pic(x.before, "before", x.after, wide)}</div>`, a = two ? `<div class="col"><div class="ph after">AFTER</div>${pic(x.after, "after", x.before, wide)}</div>` : "";
+    return `<section><div class="lab"><b>${esc(x.letter)}</b> ${esc(lab)}${unmatched}</div><div class="cols${two && !wide ? " two" : ""}">${b}${a}</div></section>`;
+  }).join("\n");
   const empty = !pairs.length ? `<section><div class="none">${esc(before && before.note ? before.note : beforeNote(isNew, (before && before.tool) || []))}</div></section>` : "";
   return `<!doctype html><meta charset="utf-8"><style>
     body{margin:0;padding:12px 16px;background:#f3ece0;font:15px/1.3 Nunito,system-ui,sans-serif;color:#2a1f14;width:1168px}
     header{background:#fff;border:2px solid #2a1f14;border-radius:8px;padding:6px 12px;margin-bottom:8px}
     h1{font-size:22px;margin:0 0 2px} h1 small{font-size:14px;font-weight:600;color:#6b5a45;margin-left:8px} header p{margin:1px 0;font-size:14px} .k{font-weight:800}
     section{background:#fff;border:2px solid #cdbfa8;border-radius:8px;padding:4px 6px;margin-bottom:8px}
-    .lab{font-size:13px;font-weight:700;color:#4a3a28} .lab b{font-size:22px;font-weight:900;margin-right:6px;color:#2a1f14}
-    .cols{display:grid;grid-template-columns:1fr;gap:8px} .cols.two{grid-template-columns:1fr 1fr} .col{min-width:0}
+    .lab{font-size:13px;font-weight:700;color:#4a3a28} .lab b{font-size:22px;font-weight:900;margin-right:6px;color:#2a1f14} .nm{background:#8a4a1a;color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px}
+    .cols{display:grid;grid-template-columns:1fr;gap:6px} .cols.two{grid-template-columns:1fr 1fr} .col{min-width:0}
     .ph{font-size:18px;font-weight:900;letter-spacing:.06em;color:#6b5a45;margin:2px 0} .ph.after{color:#2f6b3a}
-    img.one{display:block;max-width:100%;max-height:520px;object-fit:contain}
-    .frames{display:grid;grid-template-columns:repeat(var(--c,2),minmax(0,1fr));gap:4px} .frames figure{margin:0} .frames img{width:100%;max-height:300px;object-fit:contain} figcaption{font-size:13px;font-weight:800;text-align:center}
+    img{display:block;max-width:100%} .cap{font-size:13px;font-weight:800}
+    .frames{display:flex;flex-wrap:wrap;gap:4px} .frames figure{margin:0} figcaption{font-size:13px;font-weight:800;text-align:center} figcaption.off{color:#c0443c}
+    .still{background:#c0443c;color:#fff;font-weight:900;padding:4px 8px;border-radius:6px;margin:2px 0 4px;font-size:14px}
     .none{padding:18px;font-size:16px;font-weight:800;color:#8a4a1a;background:#fbf3e6;border:2px dashed #cdbfa8;border-radius:8px}
   </style><header><h1>${esc(row.id)}<small>${esc(row.section || "")} · ${two ? "before | after" : "before"}${isNew ? " · new feature" : ""}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(String(row.issue).slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(String(row.check).slice(0, 220))}</p></header>
   ${cells}${empty}`;
@@ -542,12 +593,17 @@ async function sheets(dirArg) {
       if (p.every && crops.length > 1) {
         // every turn: the crops side by side, one frame per moment
         const byCap = new Map(); for (const x of crops) { if (!byCap.has(x.c.raw)) byCap.set(x.c.raw, []); byCap.get(x.c.raw).push(x); }
-        for (const [raw, list] of byCap) addPanel({ key: key(raw, "frames"), type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
+        for (const [raw, list] of byCap) addPanel({ key: key(raw, "frames"), type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ moment: x.h.name, n: x.h.n, src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
       } else for (const x of crops) {
-        if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ key: key(x.c.raw, "room"), type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
-        addPanel({ key: key(x.c.raw, "img"), type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
+        if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ key: key(x.c.raw, "room"), moment: x.h.name, type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
+        addPanel({ key: key(x.c.raw, "img"), moment: x.h.name, type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
       }
-      for (const x of strips) addPanel({ key: key(x.c.raw, "strip"), type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
+      for (const x of strips) {
+        // a strip whose frames are one picture is flagged (never proof of movement), and a frame far off its slot says so
+        const mo = stripMotionOf(x.c.files.map((f) => fileOf(p, f)));
+        const ms = +((/x(\d+)$/.exec(x.c.raw) || [])[1] || 0), off = offSlots(x.c.times || [], ms);
+        addPanel({ key: key(x.c.raw, "strip"), moment: x.h.name, ms: x.c.times, type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}${mo.moving ? "" : " · NO MOTION CAPTURED"}`, motion: mo, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms${off[k] ? ` (slot ${k * ms}: off)` : ""}`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
+      }
       // refs (Fable 12) and script output (Fable 13), from the spec
       for (const c of p.contract || []) texts.push(`#### ${p.id} · ${c.check} (contract)\n\n\`\`\`\n${c.text}\n\`\`\``);
       const specP = Array.isArray(P.spec[row.id]) ? P.spec[row.id][p.i] : P.spec[row.id] && P.spec[row.id].probes ? P.spec[row.id].probes[p.i] : P.spec[row.id];
@@ -596,7 +652,7 @@ async function sheets(dirArg) {
     writeFileSync(join(dir, `${row.id}.md`), md);
     index.rows[row.id] = { kind: TEXT_KINDS.has(kind) ? kind : kind, png: png ? rel(png) : null, sheets: sheets.map(rel), md: rel(join(dir, `${row.id}.md`)), panels: panels.map((p) => `${p.letter}: ${p.label}`), tool: outcome.tool, expect: outcome.expect, expectLine: outcome.line, fp, probes: probes.length, reached: probes.filter((p) => p.reached).length,
       // every panel's files (the extra ones too), for a brief's before|after sheet (lib/brief.mjs pairPanels; briefStore copies them)
-      frames: [...panels, ...extra].map((pl) => ({ key: pl.key || pl.label, label: pl.label, type: pl.type, zoom: !!pl.zoom, dpr: pl.dpr || 1, box: pl.box || null, files: pl.type === "frames" ? pl.frames.map((f) => ({ src: rel(f.src), cap: f.cap })) : [{ src: rel(pl.src), cap: "" }] })) };
+      frames: [...panels, ...extra].map((pl) => ({ key: pl.key || pl.label, label: pl.label, type: pl.type, moment: pl.moment || null, ...(pl.ms ? { ms: pl.ms } : {}), ...(pl.motion ? { motion: pl.motion } : {}), zoom: !!pl.zoom, dpr: pl.dpr || 1, box: pl.box || null, files: pl.type === "frames" ? pl.frames.map((f) => ({ src: rel(f.src), cap: f.cap, ...(f.moment ? { moment: f.moment, n: f.n } : {}) })) : [{ src: rel(pl.src), cap: "" }] })) };
     console.log(`${row.id}: ${outcome.tool.length ? `TOOL FAILURE (${outcome.tool.length})` : outcome.expect ? `machine ${outcome.expect}` : `${panels.length} panels${texts.length ? `, ${texts.length} text` : ""}`}${png ? ` -> ${rel(png)}` : ""}`);
   }
   await page.close(); await browser.close(); server.close();
@@ -842,7 +898,14 @@ if (a.has("lint-specs")) {
   console.log(`lint-specs: ${found.length} flagged, ${found.length - fresh.length} known, ${fresh.length} new${fresh.length ? ":\n" + fresh.map((f) => `  NEW ${f.row} p${f.probe} ${f.kind}: ${f.msg}`).join("\n") : ""}`);
   process.exit(fresh.length ? 1 : 0);
 }
-if (a.has("sheets")) { const dir = runFolder(a.val("run-id")); const s = await sheets(dir); if (BRIEF && BRIEF.phase && s !== "spawned") briefStore(dir); }
+if (a.has("sheets")) {
+  // a brief's run redraws as one: its sheets from the run's stored captures (no replay), then its rows' copies again
+  const dir = runFolder(a.val("run-id"));
+  const P0 = loadPlan(dir);
+  if (!BRIEF && P0.brief && P0.brief.file) BRIEF = loadBrief(P0.brief.file, P0.brief.phase);
+  if (BRIEF && !existsSync(join(SANDBOX, P0.sandboxRun || "", "data"))) die(`The captures of ${P0.run} are gone (sandbox run ${P0.sandboxRun} pruned): the brief's own copies stand. Redraw them with --before --check --reuse --brief ${rel(BRIEF.file)} or --judge --brief ${rel(BRIEF.file)}.`);
+  const s = await sheets(dir); if (BRIEF && BRIEF.phase && s !== "spawned") briefStore(dir);
+}
 else if (BRIEF && (a.has("before") || a.has("after"))) {
   // the one loop: --before (then --check: the judge's before check) or --after, for the brief's rows only
   if (!(a.has("before") && a.has("reuse"))) await run();

@@ -447,3 +447,37 @@ test("the one loop (S13-T): a brief's rows, sizes and probes; before|after pairs
   const fail = redGreen(new Map([["A-1", { verdict: "FAIL" }]]), { kinds: { "A-1": "reopened" }, specs: { "A-1": s }, log: [...log, { id: "A-1", run: "br-after", verdict: "FAIL", spec: s }], run: "br-after" });
   assert.deepEqual(fail.strikes, [], "a before red is the probe seeing the problem, not a failed fix: one FAIL, no two strikes");
 });
+
+test("fix round (26 Oct): before and after pair by moment and occurrence, frame by frame; the rest is 'no match'", async () => {
+  const { unitsOf, pairUnits } = await import("./lib/brief.mjs");
+  const every = (n, extra = {}) => ({ key: "p5|L1|1366x768|shot", label: `clinic:heal-eye L1 1366x768 · shot at every visible:.njg-spot (${n})`, type: "frames", files: Array.from({ length: n }, (_, k) => ({ file: `A-0${k + 1}.png`, cap: `${k + 1} · ${k * 3}.0 s`, ...extra })) });
+  // an old copy (no moment per frame: read from the label and the caption) against a new one (moment and n per frame)
+  const b = unitsOf([every(5)]), a = unitsOf([{ ...every(2), files: [{ file: "A-01.png", cap: "1 · 1 s", moment: "visible:.njg-spot", n: 1 }, { file: "A-02.png", cap: "2 · 2 s", moment: "visible:.njg-spot", n: 2 }] }]);
+  assert.equal(b.length, 5, "one unit per frame");
+  const pairs = pairUnits(b, a);
+  assert.deepEqual(pairs.map((p) => [p.key.split("@")[1], !!p.before, !!p.after]), [["visible:.njg-spot#1", true, true], ["visible:.njg-spot#2", true, true], ["visible:.njg-spot#3", true, false], ["visible:.njg-spot#4", true, false], ["visible:.njg-spot#5", true, false]], "frames 3-5 of the before stand alone, never beside a different moment");
+  // strips: one per moment, the same capture at different moments never paired
+  const strip = (m) => ({ key: "p1|L1|1366x768|strip:.cl-heal:3x350", label: `clinic:heal-fever L1 1366x768 · strip:.cl-heal:3x350 at ${m}`, type: "frames", files: [{ file: "x.png", cap: "0 ms" }] });
+  const sp = pairUnits(unitsOf([strip("heal-done:thermometer"), strip("heal-done:patient")]), unitsOf([strip("heal-done:patient"), strip("heal-done:window")]));
+  assert.deepEqual(sp.map((p) => [p.key.split("@")[1], !!p.before, !!p.after]), [["heal-done:thermometer#1", true, false], ["heal-done:patient#1", true, true], ["heal-done:window#1", false, true]]);
+  // the second time the same moment comes is its own occurrence
+  const two = unitsOf([strip("heal-done:patient"), strip("heal-done:patient")]);
+  assert.deepEqual(two.map((u) => u.key.split("@")[1]), ["heal-done:patient#1", "heal-done:patient#2"]);
+});
+
+test("fix round (26 Oct): a still strip is flagged 'no motion captured'; frames off their slot are flagged", async () => {
+  const { stripMotion, offSlots, capMs } = await import("./lib/brief.mjs");
+  const { decodePng } = await import("./lib/png.mjs");
+  const img = (fill, dot = null) => { const w = 100, h = 60, data = Buffer.alloc(w * h * 4, 0); for (let i = 0; i < w * h; i++) { data[i * 4] = fill; data[i * 4 + 1] = fill; data[i * 4 + 2] = fill; data[i * 4 + 3] = 255; } if (dot) for (let y = dot.y; y < dot.y + dot.s; y++) for (let x = dot.x; x < dot.x + dot.s; x++) { const o = (y * w + x) * 4; data[o] = 250; data[o + 1] = 200; data[o + 2] = 40; } return decodePng(encodePng({ w, h, data })); };
+  const still = stripMotion([img(120), img(120), img(121), img(120)]);
+  assert.equal(still.moving, false, "one picture (a 1-level wobble) is no motion");
+  assert.match(still.note, /no motion captured/);
+  const glint = stripMotion([img(120), img(120, { x: 10, y: 10, s: 3 })]);
+  assert.equal(glint.moving, false, "a few changed pixels (0.15 % of the crop) prove no glow");
+  const glow = stripMotion([img(120), img(120, { x: 20, y: 10, s: 20 }), img(120, { x: 22, y: 12, s: 22 })]);
+  assert.equal(glow.moving, true, "a glow over 6-8 % of the crop moves");
+  assert.equal(stripMotion([img(120)]).moving, false, "one frame shows no motion");
+  assert.deepEqual(offSlots([0, 452, 738, 1144], 250), [false, true, true, true], "0/452/738/1144 against 0/250/500/750");
+  assert.deepEqual(offSlots([0, 262, 531, 790], 250), [false, false, false, false], "within 60 ms is on the clock");
+  assert.equal(capMs("452 ms (slot 250: off)"), 452);
+});
