@@ -36,7 +36,7 @@
    screen size and the card size"): on the big card the speaker, the Kutchi and the English sit centred as one group in their half
    (under the picture, or beside it where a game lays the card out across), and grow with the strip's own width (container units),
    never under the shared sizes. The sidebar row keeps its size. */
-.wc-card .wc-strip { container-type: inline-size; justify-content: center; }
+.wc-card .wc-strip { container-type: inline-size; justify-content: center; box-sizing: border-box; padding-inline: 8%; } /* a safe inset: clear of hands holding the card (the eye test) */
 .wc-card .wc-strip > .wc-spk, .wc-card .wc-strip > .wc-words { align-self: center; }
 .wc-card .wc-spk { width: clamp(var(--njg-tap), 27cqi, calc(var(--njg-tap) * 1.8)); height: clamp(var(--njg-tap), 27cqi, calc(var(--njg-tap) * 1.8)); }
 .wc-card .wc-spk svg { width: 50%; height: 50%; }

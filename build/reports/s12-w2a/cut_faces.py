@@ -18,12 +18,15 @@ SRC = os.path.join(ROOT, "sources/art/s12/fc-face-circles-v1.png")
 OUT = os.path.join(ROOT, "assets/shared/faces")
 SIZE = 128  # drawn at 44-83 px (decision 68: never over 3x the smallest drawn size)
 # cell origin, nose (in the cell), head top and chin (y in the cell)
+# eyes: the two pupils' x (the judge, 23 Oct: one head size in every circle; the girl's hair and Nana's beard made a head-height
+# rule frame them differently): the circle is EYE_K times the distance between the pupils, round the nose
 FACES = {
-    "doctor": {"cell": (0, 0), "nose": (398, 232), "top": 42, "chin": 338},
-    "girl": {"cell": (768, 0), "nose": (380, 275), "top": 55, "chin": 350},
-    "nani": {"cell": (0, 512), "nose": (400, 228), "top": 22, "chin": 315},
-    "nana": {"cell": (768, 512), "nose": (376, 215), "top": 20, "chin": 330},
+    "doctor": {"cell": (0, 0), "nose": (398, 232), "top": 42, "chin": 338, "eyes": (345, 450)},
+    "girl": {"cell": (768, 0), "nose": (380, 275), "top": 55, "chin": 350, "eyes": (333, 428)},
+    "nani": {"cell": (0, 512), "nose": (400, 228), "top": 22, "chin": 315, "eyes": (340, 445)},
+    "nana": {"cell": (768, 512), "nose": (376, 215), "top": 20, "chin": 330, "eyes": (336, 426)},
 }
+EYE_K = 3.9
 GREY = (118, 118, 119)  # the sheet's flat ground as drawn (asked for #808080)
 
 
@@ -87,7 +90,7 @@ def main():
         rgba = cell.convert("RGBA")
         rgba.putalpha(key_ground(cell))
         head = f["chin"] - f["top"]
-        d = round(1.35 * head)  # the judge, 23 Oct: the head fills the circle (its top is 0.64 head above the nose: 1.35 keeps it in)
+        d = round(EYE_K * (f["eyes"][1] - f["eyes"][0]))
         nx, ny = f["nose"]
         box = (nx - d // 2, ny - d // 2, nx - d // 2 + d, ny - d // 2 + d)
         sq = Image.new("RGBA", (d, d), (0, 0, 0, 0))

@@ -1,6 +1,6 @@
-1366x768 nani-guide-box: 56 px, assets/shared/faces/nani.webp?v=20261022T161039Z
-1366x768 nana-order-card: 48 px, assets/shared/faces/nana.webp?v=20261022T161039Z
-1366x768 nana-talk-bubble: 82 px, assets/shared/faces/nana.webp?v=20261022T161039Z
-1366x768 doctor-request-popup: 72 px, assets/shared/faces/doctor.webp?v=20261022T161039Z
-1366x768 doctor-card: 48 px, assets/shared/faces/doctor.webp?v=20261022T161039Z
-1366x768 girl-clinic-circle: 86 px, assets/shared/faces/girl.webp?v=20261022T161039Z
+1366x768 nani-guide-box: box 56x56, img [0,0,56,56] tf none fit cover pos 50% 0% rad 50%
+1366x768 nana-order-card: box 48x48, img [2,2,44,44] tf none fit cover pos 50% 50% rad 50%
+1366x768 nana-talk-bubble: box 82x82, img [0,0,82,82] tf none fit cover pos 50% 50% rad 50%
+1366x768 doctor-request-popup: box 72x72, img [0,0,72,72] tf matrix(1, 0, 0, 1, 0, 0) fit cover pos 50% 50% rad 50%
+1366x768 doctor-card: box 48x48, img [2,2,44,44] tf matrix(1, 0, 0, 1, 0, 0) fit cover pos 50% 50% rad 50%
+1366x768 girl-clinic-circle: box 86x86, img [4,4,78,78] tf none fit cover pos 50% 50% rad 0px
