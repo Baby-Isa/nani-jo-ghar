@@ -18,7 +18,7 @@ import { startServer, launch, newPage, BASE } from "../../../sandbox/lib/env.mjs
 
 const server = await startServer();
 const browser = await launch();
-const { page, errors } = await newPage(browser, "1366x768");
+const { page, errors } = await newPage(browser, "1280x665");
 let code = 1;
 try {
   await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });

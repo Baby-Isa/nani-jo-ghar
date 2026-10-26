@@ -453,14 +453,19 @@ export class EvidenceProbe {
             const bufs = [], t0 = Date.now();
             // on the clock: every frame is the whole surface at its slot (t0 + k x ms), cut only once all are taken; each frame's real
             // ms is kept (the sheet flags one more than 60 ms off its slot)
-            // every frame is the whole surface (the quick encoder) taken on its slot, cut to the clip once all are taken
-            const raws = [];
+            // every frame is the whole surface (the quick encoder) taken on its slot, cut once all are taken to ONE clip: the union of
+            // the element's boxes over every frame and a margin, so a thing that moves (the finger) is whole in every frame (round 3)
+            const raws = [], seen = [b];
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
               raws.push(await this.surface({ fast: true }));
+              if (k) { const bk = await this.boxes(c.sel).catch(() => null); const u = bk && !bk.error ? union(bk) : null; if (u) seen.push(u); }
             }
             out.slots = Array.from({ length: c.n }, (_, k) => k * c.ms);
+            const all = { l: Math.min(...seen.map((x) => x.l)), t: Math.min(...seen.map((x) => x.t)), r: Math.max(...seen.map((x) => x.r)), b: Math.max(...seen.map((x) => x.b)) };
+            const wide = clipOf(all, vw, vh, 24);
+            if (wide) { clip = wide; out.box = clip; }
             for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
             for (let k = 0; k < c.n; k++) {
               const buf = raws[k] || (await this.shot(clip)); bufs.push(buf);

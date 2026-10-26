@@ -169,7 +169,7 @@ export function planRows(rows, allRows, { allIds, sizes: SIZES = {}, route = [] 
 
 // ---------- 4. the run: one run.mjs invocation per size set ----------
 // flowInfo(id) -> {sizes: [...default sizes], upright: bool}. quick/sizes override the rows' own sizes (upright flows keep theirs)
-export function groupJobs(plan, flowInfo, { quick = false, sizes = null, quickSize = "1366x768" } = {}) {
+export function groupJobs(plan, flowInfo, { quick = false, sizes = null, quickSize = "1280x665" } = {}) {
   const want = new Map(); // flow id -> Set of size keys ("" = the flow's own sizes)
   const add = (f, key) => { if (!want.has(f)) want.set(f, new Set()); want.get(f).add(key); };
   for (const p of plan) for (const f of p.flows) {

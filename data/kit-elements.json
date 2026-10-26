@@ -1,5 +1,5 @@
 {
-  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). An element may set dom: true (its text is read too: the to-record text). A place is {at, sel?, delay?, flow?, profile?, every?, tries?} (tries: N: the first of the moment's first N times where the crop worked: a thing that flies in and out) (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
+  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1280x665 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). An element may set dom: true (its text is read too: the to-record text). A place is {at, sel?, delay?, flow?, profile?, every?, tries?, afterPause?} (afterPause: the help ladder's pause for the level, data/shared.json helpMs, and 300 ms after the moment) (tries: N: the first of the moment's first N times where the crop worked: a thing that flies in and out) (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
   "pages": {
     "index": {
       "flow": "house",
@@ -86,12 +86,30 @@
       ],
       "rowWords": "word card|word-card|\\bwc-",
       "places": {
-        "index": { "none": "the house shows no word card" },
-        "first": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card" },
-        "day": { "at": "visible:.wc-card" },
-        "cook": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "cook:chai-tray#speed1", "profile": "seen" },
-        "clinic": { "at": "visible:.wc-card" },
-        "lab": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "lab:cook/chai-tray#speed1" }
+        "index": {
+          "none": "the house shows no word card"
+        },
+        "first": {
+          "at": "visible:.njg-rq-card .wc-card",
+          "sel": ".njg-rq-card .wc-card"
+        },
+        "day": {
+          "at": "visible:.wc-card"
+        },
+        "cook": {
+          "at": "visible:.njg-rq-card .wc-card",
+          "sel": ".njg-rq-card .wc-card",
+          "flow": "cook:chai-tray#speed1",
+          "profile": "seen"
+        },
+        "clinic": {
+          "at": "visible:.wc-card"
+        },
+        "lab": {
+          "at": "visible:.njg-rq-card .wc-card",
+          "sel": ".njg-rq-card .wc-card",
+          "flow": "lab:cook/chai-tray#speed1"
+        }
       }
     },
     "order card": {
@@ -143,12 +161,31 @@
       ],
       "rowWords": "pop-up|popup|order screen|request",
       "places": {
-        "index": { "none": "no order on the house page" },
-        "first": { "at": "life:popup-open", "delay": 300 },
-        "day": { "none": "the door has no order pop-up" },
-        "cook": { "at": "life:popup-open", "delay": 300, "flow": "cook:samosa", "profile": "seen" },
-        "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "life:popup-open", "delay": 300, "flow": "lab:cook/samosa" }
+        "index": {
+          "none": "no order on the house page"
+        },
+        "first": {
+          "at": "life:popup-open",
+          "delay": 300
+        },
+        "day": {
+          "none": "the door has no order pop-up"
+        },
+        "cook": {
+          "at": "life:popup-open",
+          "delay": 300,
+          "flow": "cook:samosa",
+          "profile": "seen"
+        },
+        "clinic": {
+          "at": "life:popup-open",
+          "delay": 300
+        },
+        "lab": {
+          "at": "life:popup-open",
+          "delay": 300,
+          "flow": "lab:cook/samosa"
+        }
       }
     },
     "bubble": {
@@ -220,7 +257,7 @@
       }
     },
     "finger": {
-      "sel": ".ob-finger, .co-finger",
+      "sel": ".ob-finger, .ob-finger svg, .co-finger",
       "moves": true,
       "grep": [
         "\\bob-finger\\b",
@@ -325,7 +362,8 @@
           "tries": 3
         },
         "cook": {
-          "at": "rec:stuck-12s",
+          "at": "placed",
+          "afterPause": true,
           "sel": "hook:cook.glowing"
         },
         "clinic": {
@@ -333,7 +371,8 @@
           "sel": "hook:heal.glowing"
         },
         "lab": {
-          "at": "cook:tap",
+          "at": "placed",
+          "afterPause": true,
           "sel": "hook:cook.glowing"
         }
       }

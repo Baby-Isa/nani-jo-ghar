@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { BASE, startServer, launch, newPage } from "../../sandbox/lib/env.mjs";
 const out = process.argv[2] || "build/screenshots/knee-wrap";
 const level = +(process.argv[3] || 3);
-const size = process.argv[4] || "1366x768";
+const size = process.argv[4] || "1280x665";
 mkdirSync(out, { recursive: true });
 const srv = await startServer();
 const browser = await launch();

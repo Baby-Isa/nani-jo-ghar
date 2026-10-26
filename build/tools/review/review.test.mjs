@@ -127,7 +127,7 @@ test("sprintcheck: one run.mjs invocation per size set; shots: contract breaks f
   const plan = [{ flows: ["clinic:heal-knee", "rotate-card"], sizes: [] }, { flows: ["cook:chai@L2#mistake", "clinic:heal-knee"], sizes: ["800x360"] }];
   const g = groupJobs(plan, info);
   assert.deepEqual(g, [{ sizes: null, flows: ["clinic:heal-knee", "rotate-card"] }, { sizes: ["800x360"], flows: ["clinic:heal-knee", "cook:chai@L2#mistake"] }], "the knee at its own sizes, and at 800x360 (which it lacks) with the chai row's flow");
-  assert.deepEqual(groupJobs(plan, info, { quick: true }), [{ sizes: ["1366x768"], flows: ["clinic:heal-knee", "cook:chai@L2#mistake"] }, { sizes: null, flows: ["rotate-card"] }], "--quick: laptop only, the rotate card at its own size");
+  assert.deepEqual(groupJobs(plan, info, { quick: true }), [{ sizes: ["1280x665"], flows: ["clinic:heal-knee", "cook:chai@L2#mistake"] }, { sizes: null, flows: ["rotate-card"] }], "--quick: laptop only, the rotate card at its own size");
   const states = ["stage-heal", "heal-knee-start", "wrap-turn-1", "heal-knee-mid", "results-badges", "end"].map((n, i) => ({ name: n, shot: `0${i + 1}-${n}.png` }));
   const p = { words: ["bandage", "wrap", "turn"] };
   assert.deepEqual(pickShots(p, { states }, [{ check: "contract-4", state: "x", shot: "c03-bubble.png" }]).map((s) => s.shot), ["c03-bubble.png", "03-wrap-turn-1.png"]);

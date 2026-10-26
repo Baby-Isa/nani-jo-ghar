@@ -24,7 +24,7 @@ node build/tools/ops/publish.mjs --pages <sha|main> [--timeout 900]     only wai
                commit until it completes; success means Pages deployed it. Works where github.io is blocked (a container's proxy
                blocks github.io and /pages/builds, but not /actions/runs). It does not fetch the site: still look at it after a hard refresh.
          auto: the site first; if github.io can't be reached, the API
-    4. screenshots <site>/labs.html at 1366x768 into build/screenshots/publish/<stamp>-labs.png: look at it before telling Zafar
+    4. screenshots <site>/labs.html at 1280x665 (Zafar's laptop) into build/screenshots/publish/<stamp>-labs.png: look at it before telling Zafar
   --site     the Pages URL (default from the origin remote: https://<owner>.github.io/<repo>)
   --trailer  the commit's closing lines (default: Co-Authored-By, plus Claude-Session when
              CLAUDE_CODE_REMOTE_SESSION_ID is set; pass the session's own lines to be sure)
@@ -131,7 +131,7 @@ if (ok && how === "site") {
     const require = createRequire(import.meta.url);
     let pw; try { pw = require("playwright"); } catch { pw = require(join(sh("npm", ["root", "-g"]), "playwright")); }
     const browser = await pw.chromium.launch({ executablePath: "/opt/pw-browsers/chromium", args: ["--no-sandbox"] });
-    const page = await browser.newPage({ viewport: { width: 1366, height: 768 } });
+    const page = await browser.newPage({ viewport: { width: 1280, height: 665 } });
     await page.goto(`${SITE}/labs.html?v=${stamp}`, { waitUntil: "networkidle", timeout: 60000 });
     const dir = join(ROOT, "build", "screenshots", "publish"); mkdirSync(dir, { recursive: true });
     const shot = join(dir, `${stamp}-labs.png`);

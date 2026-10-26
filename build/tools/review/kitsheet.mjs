@@ -64,7 +64,7 @@ for (const el of elems) {
     const capture = cell.sel === "screen" ? ["shot"] : [`crop:${cell.sel}`, ...(E.moves ? [`strip:${cell.sel}:4x250`] : []), ...(E.dom ? [`dom:${cell.sel}`] : [])];
     cell.every = pl.every || 0;
     const times = pl.every || pl.tries || 0; // every: a frame each time; tries: the first time the crop worked
-    spec[cell.id] = [{ flow: cell.flow, at: times ? `every:${cell.at}` : cell.at, ...(times ? { max: times } : {}), sizes: SIZES_WANTED, capture, delay: pl.delay || 0, ...(pl.profile ? { profile: pl.profile } : {}), note: `${el} on ${pg}` }];
+    spec[cell.id] = [{ flow: cell.flow, at: times ? `every:${cell.at}` : cell.at, ...(times ? { max: times } : {}), sizes: SIZES_WANTED, capture, delay: pl.delay || 0, ...(pl.profile ? { profile: pl.profile } : {}), ...(pl.afterPause ? { afterPause: true } : {}), note: `${el} on ${pg}` }];
   }
 }
 const norm = S.normalizeSpec(spec, ctx);
@@ -160,6 +160,7 @@ for (const el of elems) {
                 const ms = cap.n && cap.times ? +((/x(\d+)$/.exec(cap.raw) || [])[1] || 0) : 0, off = offSlots(cap.times || [], ms);
                 cap.files.forEach((x, k) => { const f = `${slugOf(c.page)}-${size}-strip-${k + 1}.png`; copyFileSync(join(dir, x), join(out, f)); cell.strip.push({ file: f, ms: cap.times[k], slot: k * ms, off: off[k] }); });
                 cell.motion = motionOf(cap.files.map((x) => join(dir, x)));
+                if (cap.box) cell.stripBox = cap.box; // the element's boxes over the whole strip (lib/evidence-probe.mjs)
               }
               if (cap.kind === "dom" && cap.text) cell.text = cap.text.slice(0, 300);
             }
@@ -172,12 +173,14 @@ for (const el of elems) {
       // the same box for every game at this size: as big as the largest element's, round each element's centre, from its screen
       // (the screen is used only when it still shows the crop: a finger has moved on by the time the probe takes the whole screen,
       // and then the crop itself is centred in the box on a plain ground instead)
+      // (a moving element: the box holds it at every frame of its strip too, round 3)
+      const span = (x) => { const a = x.box, c = x.stripBox; if (!c) return a; const l = Math.min(a.x, c.x), t = Math.min(a.y, c.y); return { x: l, y: t, width: Math.max(a.x + a.width, c.x + c.width) - l, height: Math.max(a.y + a.height, c.y + c.height) - t }; };
       const boxed = row.filter((x) => x.box && x.src && !x.frames);
-      const W = Math.max(0, ...boxed.map((x) => x.box.width)), H = Math.max(0, ...boxed.map((x) => x.box.height));
+      const W = Math.max(0, ...boxed.map((x) => span(x).width)), H = Math.max(0, ...boxed.map((x) => span(x).height));
       for (const x of row) {
         if (!x.crop || x.frames) continue;
         try {
-          const cx = x.box.x + x.box.width / 2, cy = x.box.y + x.box.height / 2;
+          const sp = span(x), cx = sp.x + sp.width / 2, cy = sp.y + sp.height / 2;
           const same = x.room && existsSync(x.room) && sameAs(cutPng(x.room, x.box), readFileSync(x.src));
           writeFileSync(join(out, x.crop), same ? cutPng(x.room, { x: cx - W / 2, y: cy - H / 2, width: W, height: H }) : padPng(readFileSync(x.src), W, H));
           x.fixed = `${Math.round(W)} x ${Math.round(H)} px round the centre${same ? "" : " (the crop on a plain ground: the screen had moved on)"}`;
