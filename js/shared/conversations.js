@@ -661,6 +661,9 @@
     return e;
   };
   const FACES = { talk: "", happy: "😊", embarrassed: "😳", scratch: "🤔", puzzled: "😕", sigh: "😮‍💨" };
+  // ART-08 (S13-A2): a speaker with a face circle (js/shared/face.js, data/faces.json) shows it, the row size, as on their card;
+  // anyone else keeps their emoji until their cut lands
+  const faceOf = (sp) => (root.Face && root.Face.person(sp.id) ? root.Face.html(sp.id, "row") : esc(sp.face || ""));
   const SPEAKER_SVG =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
   // a reply with its words hidden (past the written rung): a speech balloon with dots, never a second speaker
@@ -734,7 +737,7 @@
     const ask = C.resolve(askA.line, { noun: askA.noun });
     const layer = layerFor(ctx);
     const bubble = mk("div", "cv-bubble cv-say");
-    bubble.innerHTML = `<span class="cv-face" aria-hidden="true">${esc(sp.face || "")}</span><span class="cv-text"></span><button type="button" class="cv-spk" aria-label="Hear it again">${SPEAKER_SVG}</button><button type="button" class="cv-skip" aria-label="Skip">✋</button>`;
+    bubble.innerHTML = `<span class="cv-face" aria-hidden="true">${faceOf(sp)}</span><span class="cv-text"></span><button type="button" class="cv-spk" aria-label="Hear it again">${SPEAKER_SVG}</button><button type="button" class="cv-skip" aria-label="Skip">✋</button>`;
     bubble.dataset.speaker = sp.id;
     layer.appendChild(bubble);
     placeBubble(bubble, ctx, sp.id, layer);
@@ -742,7 +745,7 @@
     const face = bubble.querySelector(".cv-face");
     const mood = (kind) => {
       bubble.dataset.mood = kind;
-      face.textContent = FACES[kind] ? `${sp.face || ""}${FACES[kind]}` : sp.face || "";
+      if (!face.querySelector(".njg-face")) face.textContent = FACES[kind] ? `${sp.face || ""}${FACES[kind]}` : sp.face || ""; // (a circle keeps its one face: the moods are the FC2 art, to come)
       hook("mood", sp.id, kind);
     };
     const showAsk = (english) => (text.innerHTML = lineHTML(ask, english));
@@ -1025,7 +1028,7 @@
     const layer = layerFor(o);
     const b = mk("div", "cv-bubble cv-say cv-heard");
     b.dataset.speaker = sp.id;
-    b.innerHTML = `<span class="cv-face" aria-hidden="true">${esc(sp.face || "")}</span><span class="cv-text">${lineHTML(line, false)}</span>`;
+    b.innerHTML = `<span class="cv-face" aria-hidden="true">${faceOf(sp)}</span><span class="cv-text">${lineHTML(line, false)}</span>`;
     layer.appendChild(b);
     placeBubble(b, o, sp.id, layer);
     requestAnimationFrame(() => b.classList.add("in"));

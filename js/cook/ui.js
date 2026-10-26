@@ -35,6 +35,8 @@
     "word-card": ["WordCard", "js/shared/word-card.js", "css/shared/word-card.css"],
     conversations: ["Conversations", "js/shared/conversations.js", "css/shared/conversations.css"],
     speech: ["Speech", "js/shared/speech.js", null],
+    bulb: ["Bulb", "js/shared/bulb.js", null],
+    buttons: ["NjgButtons", "js/shared/buttons.js", "css/shared/buttons.css"],
   };
   const sharedP = {};
   const stamped = (rel) => {
@@ -795,49 +797,36 @@
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
   };
   UI.hideTopGist = () => $("#gist").classList.add("hidden");
-  /** The "?" pops the goal out beside itself (over the sidebar, or just into the picture on a narrow one). */
-  UI.openHelp = function () {
-    const pop = $("#help-pop");
+  /**
+   * The "?" pops the goal out beside itself: the kit's one grown-ups' pop-up (js/shared/buttons.js NjgButtons.grownUpPop; S13-A2,
+   * non-negotiable 3), with the grown-ups' "Play as new" (SH-60) and, while the first-time help runs, its skip (G7 / CQ15).
+   */
+  let guPop = null;
+  const guPopNow = () => {
     const btn = $("#btn-help");
-    if (!pop || !btn) return;
-    pop.querySelector(".hp-text").textContent = helpText;
-    // the grown-ups' skip lives here now (G7 / CQ15), only while the first-time help runs
-    pop.querySelectorAll(".ob-skip-row, .hp-new").forEach((x) => x.remove());
-    // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
-    // S02-G (gate): the shared grown-ups' button (NjgButtons.grownUp), at tap height, not a small link
-    global.NjgButtons.playAsNew(pop, () => {
+    if (!btn || !global.NjgButtons || !global.NjgButtons.grownUpPop) return null;
+    if (guPop && guPop.anchor === btn) return guPop;
+    guPop = global.NjgButtons.grownUpPop(btn, {
+      goal: () => helpText,
+      toggle: false, // (UI.init's own tap on the "?" opens and closes it)
+      upgrades: true,
       // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic, story, conversations), then this page's own copy
-      if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
-      Cook.resetSave({ fresh: true });
-      UI.closeHelp();
-      if (mission) renderOrder();
-    }, { cls: "hp-new", upgrades: true });
-    if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
-      const sk = global.Onboard.skipButton(pop);
-      if (sk) sk.addEventListener("skipped", () => UI.closeHelp());
-    }
-    pop.classList.remove("hidden");
-    btn.classList.remove("fresh");
-    btn.setAttribute("aria-expanded", "true");
-    const b = btn.getBoundingClientRect();
-    const vw = global.innerWidth;
-    const vh = global.innerHeight;
-    const w = Math.min(340, vw - 16);
-    pop.style.width = `${w}px`;
-    // above the button, opening towards the picture (the sidebar is on the left in Wave 6)
-    const onLeft = b.left + b.width / 2 < vw / 2;
-    const left = Cook.clamp(onLeft ? b.left : b.right - w, 8, vw - w - 8);
-    pop.style.left = `${left}px`;
-    pop.style.bottom = `${Math.max(8, vh - b.top + 8)}px`;
-    pop.style.setProperty("--tail-x", `${Cook.clamp(b.left + b.width / 2 - left - 8, 12, w - 24)}px`);
+      playAsNew: () => {
+        if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
+        Cook.resetSave({ fresh: true });
+        if (mission) renderOrder();
+      },
+    });
+    return guPop;
+  };
+  UI.openHelp = function () {
+    const p = guPopNow();
+    if (p) p.open();
   };
   UI.closeHelp = function () {
-    const pop = $("#help-pop");
-    if (!pop) return;
-    pop.classList.add("hidden");
-    if ($("#btn-help")) $("#btn-help").setAttribute("aria-expanded", "false");
+    if (guPop) guPop.close();
   };
-  UI.helpOpen = () => !!$("#help-pop") && !$("#help-pop").classList.contains("hidden");
+  UI.helpOpen = () => !!(guPop && guPop.isOpen());
 
   /* ---------------- choices (small talk), as big pills ---------------- */
   let lastChoose = 0; // (Sprint 11: the flow's own small talk just ran: the kitchen conversation isn't played on top of it)
@@ -940,6 +929,14 @@
     if (stage && opts.onScreen !== false) {
       stage.appendChild(box);
       box.classList.add("onscreen");
+      // ART-08 (S13-A2): on the stage her circle is the kit's big one (one of its three sizes); in the sidebar, the row
+      if (global.Face) global.Face.size(box.querySelector(".pm-face"), "big");
+    }
+    // her nod as she asks (the kit's talk, css/shared/face.css .talk)
+    const pmFace = box.querySelector(".pm-face");
+    if (pmFace) {
+      pmFace.classList.add("talk");
+      setTimeout(() => pmFace.classList.remove("talk"), 1800);
     }
     let ring = box.querySelector(".pm-ring");
     if (!ring) {
@@ -963,6 +960,7 @@
     };
     const putBack = () => {
       box.classList.remove("onscreen", "late");
+      if (global.Face) global.Face.size(box.querySelector(".pm-face"), "row");
       const fi = box.querySelector(".pm-face img");
       if (fi && fi.dataset.home) {
         fi.src = fi.dataset.home;
@@ -1407,17 +1405,13 @@
             // CHAI-31 (the judge: "a generic emoji face, not Nana's portrait"): the bubble's face is the speaker's own,
             // as on the order's card (the module redraws its face on every mood: it is put back each time)
             document.querySelectorAll(`.cv-bubble[data-speaker="${id}"] .cv-face`).forEach((f) => {
+              // ART-08 (S13-A2): the kit's one face circle (js/shared/face.js), the row size, as on the card
               const src = faceUrl(cw, kind === "happy" ? "happy" : undefined);
-              if (f.querySelector("img") && f.dataset.face === src) return;
+              if (f.querySelector(".njg-face") && f.dataset.face === src) return;
               f.dataset.face = src;
-              f.textContent = "";
-              const im = document.createElement("img");
-              im.alt = "";
-              im.src = src;
-              im.onerror = () => (im.src = faceUrl(cw));
-              const short = (global.innerHeight || 800) < 520;
-              Object.assign(im.style, { width: short ? "1.8em" : "2.4em", height: short ? "1.8em" : "2.4em", borderRadius: "50%", objectFit: "cover", display: "block" });
-              f.appendChild(im);
+              f.innerHTML = global.Face.html(cw, "row", { src, alt: "" });
+              const im = f.querySelector("img");
+              im.onerror = () => (im.onerror = null, (im.src = faceUrl(cw)));
               // CHAI-31 (the judge: the bubble cut off at the top at 915x412): the face makes it taller than the module placed
               // it for, so it comes down into the screen if it reaches past the top (never clipped: non-negotiable 9)
               const b = f.closest(".cv-bubble");
@@ -3347,6 +3341,9 @@
   UI.init = function () {
     // Sprint 11: the word card and the conversations, there by the first order
     ["word-card", "conversations"].forEach((n) => UI.needShared(n));
+    // SH-131 (S13-A2): a parked page (Find it, Dress up, Snap) loads neither tokens.js nor bulb.js: the shared bulb comes in, and
+    // reads data/shared.json's bulbMs itself, so UI.bulbMs is never 0 s there
+    if (!global.Tokens && !global.Bulb) UI.needShared("bulb");
     // every page element here is optional (another page, like find.html, may not have all of them)
     const on = (sel, fn) => {
       const e = $(sel);
@@ -3373,21 +3370,15 @@
     else on("#go-btn", () => (Cook.sfx.click(), pressGo()));
     if (Cook.life) pageWide();
     onPage(document, "pointerdown", () => Cook.unlockAudio(), { passive: true });
-    // the "?": the goal pops out; any tap elsewhere puts it away
+    // the "?": the goal pops out (the kit's grown-ups' pop-up: a tap elsewhere, or the screen turning, puts it away itself)
+    // (a parked page without the kit's buttons gets them, so its "?" is the same pop-up: S13-A2)
+    if (global.NjgButtons) guPopNow();
+    else UI.needShared("buttons").then(() => guPopNow());
     on("#btn-help", () => {
       Cook.sfx.click();
       if (UI.helpOpen()) UI.closeHelp();
       else UI.openHelp();
     });
-    onPage(
-      document,
-      "pointerdown",
-      (ev) => {
-        if (UI.helpOpen() && !ev.target.closest("#btn-help, #help-pop")) UI.closeHelp();
-      },
-      true
-    );
-    onPage(global, "resize", () => UI.closeHelp());
     const tr = on("#mission .m-tr", () => UI.mission.translate());
     if (tr) tr.innerHTML = ICON.translate;
     // 28 Sept: Nani's guide box carries the light bulb (a page without it keeps its own #btn-bulb)

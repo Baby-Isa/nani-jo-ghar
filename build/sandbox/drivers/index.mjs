@@ -82,6 +82,28 @@ export async function watchVoice(page) {
 // counted from the stop on the wall clock, so a slow screenshot never pushes the next one later. Nothing is tapped or moved.
 export const STUCK_AT = [5500, 12500, 18500];
 export const stuckName = (ms) => `stuck-${Math.floor(ms / 1000)}s`;
+// S13-A2: a probe about the grown-ups' "?" (lib/evidence-probe.mjs wantsHelp) sees the kit's pop-up: the page's "?" opened once
+// (rec "help-open"), then put away
+export async function openGrownUps(page, rec, sel = ".njg-gu-btn") {
+  const ev = page.__njgEvidence;
+  if (!(ev && ev.wantsHelp && ev.wantsHelp())) return false;
+  const b = await page.$(sel);
+  if (!b || !(await b.isVisible().catch(() => false))) return false;
+  // (a station that begins as it opens puts it away again, Cook's UI.gist: tried again a moment later, three times at most)
+  let open = false;
+  for (let i = 0; i < 3 && !open; i++) {
+    if (i) await sleep(1500);
+    // (the button's own click: an order pop-up's veil may lie over the sidebar for a moment)
+    if (!(await page.$(".njg-gu-pop:not(.hidden)"))) await page.$eval(sel, (b) => b.click()).catch(() => {});
+    await sleep(350);
+    open = !!(await page.$(".njg-gu-pop:not(.hidden)"));
+  }
+  if (!open) return false;
+  await rec.state("help-open", { settle: 0 });
+  await page.$eval(sel, (b) => b.click()).catch(() => {});
+  await sleep(200);
+  return true;
+}
 export async function stuckWait(page, once, { at = STUCK_AT, tail = 1200 } = {}) {
   const t0 = Date.now();
   await mark(page, "stuck", { block: false });

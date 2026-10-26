@@ -5,7 +5,7 @@
 // &quiet=1 (no device voice) &fast=1 (short waits) &onboard=0 (no first-time ghost finger) &seed=7 (the same people every run).
 import { BASE, sleep } from "../lib/env.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
-import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait } from "../drivers/index.mjs";
+import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait, openGrownUps } from "../drivers/index.mjs";
 
 const SEED = 7;
 // the evidence loop's named drivers on the clinic (drivers/catalog.mjs; build/sandbox/data/evidence.json _drivers): each plays fair
@@ -458,6 +458,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in njgTest.clinic
       await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.njgTest?.clinic.Stages.heal.current; }, get result() { return window.njgTest?.clinic.last; } } }); });
       await sleep(500);
+      await openGrownUps(page, rec, ".cl-dock .njg-gu-btn");
       const P = new ClinicPlayer(page, rec, { mode });
       if (mode === "lab-log-on") await rec.state("lab-log-on", { settle: 300 });
       try {

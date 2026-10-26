@@ -1,0 +1,48 @@
+/* The face circle (js/shared/face.js; S13-A2, ART-08): ONE look and three sizes for every face circle in every game. The picture is
+   the person's one centred crop (data/faces.json), filling the circle; the circle is a token size: row (--njg-face), guide
+   (--njg-guide-face), big (--njg-big-face). Its tap area (.njg-face-btn) is never under 48 px (--njg-face-hit), the circle centred
+   in it, the speaker badge on the circle's lower-right edge (ART-08: never over the face or an ear). No game sizes, crops or rings
+   a face of its own (contract-42). */
+.njg-face {
+  --njg-face-d: var(--njg-face);
+  position: relative; display: block; flex: none; box-sizing: border-box;
+  width: var(--njg-face-d); height: var(--njg-face-d); border-radius: 50%; overflow: hidden;
+  background: var(--njg-face-bg); box-shadow: 0 0 0 var(--njg-line) var(--njg-edge);
+}
+.njg-face-guide { --njg-face-d: var(--njg-guide-face); }
+.njg-face-big { --njg-face-d: var(--njg-big-face); }
+/* in its tap area the circle is always its token size, whatever a page's older rule for its role class said (.cl-face) */
+.njg-face-btn > .njg-face { width: var(--njg-face-d); height: var(--njg-face-d); margin: 0; }
+.njg-face-emoji { display: grid; place-items: center; width: 100%; height: 100%; font-size: calc(var(--njg-face-d) * 0.6); line-height: 1; }
+.njg-face .njg-face-img {
+  display: block; width: 100%; height: 100%; margin: 0; border-radius: 50%;
+  object-fit: cover; object-position: center; -webkit-user-drag: none; user-select: none;
+}
+.njg-face-own .njg-face-img { object-position: top; } /* a person with no cut yet: the game's close-up, framed from the top */
+
+/* the tap area: the circle centred in it, never under 48 px; the badge on the circle's edge */
+.njg-face-btn {
+  --njg-face-d: var(--njg-face);
+  --njg-face-tap: max(var(--njg-face-d), var(--njg-face-hit));
+  position: relative; flex: none; box-sizing: border-box; display: grid; place-items: center;
+  width: var(--njg-face-tap); height: var(--njg-face-tap); padding: 0; margin: 0; border: 0; border-radius: 50%;
+  background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.njg-face-btn-guide { --njg-face-d: var(--njg-guide-face); }
+.njg-face-btn-big { --njg-face-d: var(--njg-big-face); }
+.njg-face-btn:active { transform: scale(0.95); }
+.njg-face-btn .say-badge {
+  position: absolute; pointer-events: none; border-radius: 50%; aspect-ratio: 1;
+  right: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2); bottom: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2);
+  width: calc(var(--njg-face-d) * 0.38); min-width: var(--njg-s4); transform: translate(34%, 34%);
+  background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card);
+}
+.njg-face-btn.on .say-badge { background-color: var(--njg-gold); }
+/* a page's wider tap area (Cook's .face-say::after) stays inside the button's own box (SH-09) */
+.njg-face-btn::after { inset: 0; }
+
+/* the talk: the kit's one nod (ART-18) on the circle while its person speaks (the circle, its button or the card round it talks) */
+.njg-face.talk, .talk > .njg-face, .talk > .njg-face-btn > .njg-face { animation: var(--njg-talk-anim); }
+/* a face that is its replay with no badge (the book's): the gold ring while it speaks */
+.njg-face-btn.on:not(:has(.say-badge)) > .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }

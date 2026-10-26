@@ -27,7 +27,7 @@
  *   const row = NjgButtons.pills(parent, [{id, label | html | node}], onPick, {cls}) -> <div class="njg-pills">
  *            row.pill(id) the button, row.lock(on), row.fresh() (a new question: no double-tap guard left), row.remove()
  *   NjgButtons.glow(btn, on)
- *   const row = NjgButtons.grownUp(parent, label, note, onPress, {ask, cls}) -> <p class="njg-grownup"> (the "?" pop-up's
+ *   const row = NjgButtons.grownUp(parent, label, note, onPress, {ask, cls}) -> <p class="njg-grownup-row"> (the "?" pop-up's
  *            grown-ups' action, e.g. "Play as new": the .njg-act look at tap height; row.btn is the button)
  *   NjgButtons.playAsNew(parent, onPress, {upgrades, cls})  the "?" pop-up's "Play as new" (SH-60), one wording
  *   NjgButtons.endActions({again, next, list, home})  Results.show's `actions`, in the one order:
@@ -258,7 +258,7 @@
     (choices || []).forEach((c) => {
       const b = doc().createElement("button");
       b.type = "button";
-      b.className = "njg-pill";
+      b.className = "njg-btn njg-pill"; // (S13-A2: a pill is one of the kit's buttons, contract-34)
       b.dataset.choice = c.id;
       if (c.node) b.appendChild(c.node);
       else if (c.html != null) b.innerHTML = c.html;
@@ -284,7 +284,7 @@
    */
   B.grownUp = function (parent, label, note, onPress, o = {}) {
     const row = doc().createElement("p");
-    row.className = `njg-grownup${o.cls ? ` ${o.cls}` : ""}`;
+    row.className = `njg-grownup-row${o.cls ? ` ${o.cls}` : ""}`;
     const b = doc().createElement("button");
     b.type = "button";
     b.className = "njg-btn njg-act njg-act-s";
@@ -316,6 +316,99 @@
       cls: o.cls,
       ask: `Play as new? Every word shows again as on a first play, and the first-time help comes back. ${keeps}`,
     });
+  };
+  /**
+   * S13-A2 (the kit review 2, decision 7; non-negotiable 3: all grown-ups' English lives here): THE "?" pop-up for grown-ups,
+   * one look in every game (css/shared/buttons.css .njg-gu-pop). It opens beside its anchor (the page's "?" or the house's cog)
+   * towards the middle of the screen, with a tail at the anchor; a tap anywhere else, or the screen turning, puts it away.
+   *   const pop = NjgButtons.grownUpPop(anchor, {goal, actions, playAsNew, upgrades, skip, onOpen, onClose, toggle})
+   *     goal: the grown-ups' line (a string, or a function asked each time it opens); actions: more grown-up rows
+   *     [{label, note, ask, onPress}] (NjgButtons.grownUp); playAsNew: a function: the one "Play as new" row (upgrades: true
+   *     when the mode keeps upgrades too); skip: false for no "Skip the help" row while the first-time help runs (on by default);
+   *     toggle: false when the anchor opens it some other way (the house's cog: press and hold)
+   *   pop.open() / pop.close() / pop.toggle() / pop.isOpen() / pop.el / pop.anchor
+   * The anchor gets the kit's "?" look (.njg-gu-btn) unless o.anchorLook is false, aria-expanded and data-ob-pass.
+   */
+  B.grownUpPop = function (anchor, o = {}) {
+    const d = doc();
+    const el = d.createElement("div");
+    el.className = `njg-grownup njg-gu-pop hidden${o.cls ? ` ${o.cls}` : ""}`;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "For grown-ups");
+    el.setAttribute("data-ob-pass", "");
+    el.setAttribute("data-grown", ""); // (contract-16 reads the grown-ups' English from here)
+    el.dataset.njgKeep = ""; // (a page's one pop-up: kept between a host's stages)
+    d.body.appendChild(el);
+    if (anchor) {
+      if (o.anchorLook !== false) anchor.classList.add("njg-gu-btn");
+      anchor.setAttribute("aria-expanded", "false");
+      anchor.setAttribute("data-ob-pass", "");
+    }
+    const pop = { el, anchor };
+    pop.isOpen = () => !el.classList.contains("hidden");
+    const place = () => {
+      if (!anchor || !anchor.getBoundingClientRect) return;
+      const a = anchor.getBoundingClientRect();
+      const vw = root.innerWidth;
+      const vh = root.innerHeight;
+      const gap = 8;
+      const w = Math.min(el.offsetWidth || 320, vw - 2 * gap);
+      const onLeft = a.left + a.width / 2 < vw / 2;
+      const left = Math.max(gap, Math.min(vw - w - gap, onLeft ? a.left : a.right - w));
+      el.style.left = `${Math.round(left)}px`;
+      // above the anchor when it sits low on the screen, else below it
+      const up = a.top + a.height / 2 > vh / 2;
+      el.classList.toggle("njg-gu-down", !up);
+      if (up) {
+        el.style.top = "";
+        el.style.bottom = `${Math.round(Math.max(gap, vh - a.top + gap))}px`;
+      } else {
+        el.style.bottom = "";
+        el.style.top = `${Math.round(a.bottom + gap)}px`;
+      }
+      el.style.setProperty("--njg-gu-tail", `${Math.round(Math.max(12, Math.min(w - 24, a.left + a.width / 2 - left - 8)))}px`);
+    };
+    pop.open = function () {
+      el.innerHTML = "";
+      const g = typeof o.goal === "function" ? o.goal() : o.goal;
+      if (g) {
+        const p = d.createElement("p");
+        p.className = "njg-gu-goal";
+        p.textContent = g;
+        el.appendChild(p);
+      }
+      (o.actions || []).forEach((x) => B.grownUp(el, x.label, x.note || "", (e, b) => x.onPress && x.onPress(e, b, pop), { ask: x.ask }));
+      if (typeof o.playAsNew === "function") B.playAsNew(el, (e, b) => (o.playAsNew(e, b, pop), pop.close()), { upgrades: !!o.upgrades, cls: "njg-gu-new" });
+      const OB = root.Onboard;
+      if (o.skip !== false && OB && OB.active && OB.active() && OB.skipButton) {
+        const sk = OB.skipButton(el);
+        if (sk) sk.addEventListener("skipped", () => pop.close());
+      }
+      el.classList.remove("hidden");
+      if (anchor) {
+        anchor.setAttribute("aria-expanded", "true");
+        anchor.classList.remove("fresh");
+      }
+      place();
+      if (o.onOpen) o.onOpen(pop);
+      return pop;
+    };
+    pop.close = function () {
+      if (!pop.isOpen()) return pop;
+      el.classList.add("hidden");
+      if (anchor) anchor.setAttribute("aria-expanded", "false");
+      if (o.onClose) o.onClose(pop);
+      return pop;
+    };
+    pop.toggle = () => (pop.isOpen() ? pop.close() : pop.open());
+    if (anchor && o.toggle !== false)
+      anchor.addEventListener("click", () => {
+        sfx();
+        pop.toggle();
+      });
+    d.addEventListener("pointerdown", (e) => pop.isOpen() && !(e.target.closest && (e.target.closest(".njg-gu-pop") || (anchor && anchor.contains(e.target)))) && pop.close(), true);
+    if (root.addEventListener) root.addEventListener("resize", () => pop.close());
+    return pop;
   };
   return B;
 });

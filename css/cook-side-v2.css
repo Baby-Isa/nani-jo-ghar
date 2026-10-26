@@ -38,7 +38,6 @@
   --sb-p: var(--njg-side-p);
   --sb-s: var(--njg-side-s);
   --sb-pill-h: var(--njg-row-h);
-  --sb-face: var(--njg-face);
   --fit-min: var(--njg-t4);
 }
 
@@ -81,7 +80,7 @@ body.w6 :is(#mission, .m-card) {
 @media (max-height: 430px) { body.w6 :is(#mission, .m-card) { padding: 6px; gap: 6px; border-radius: 12px; } }
 body.w6 :is(#mission, .m-card) .m-head { display: flex; align-items: center; gap: 10px; padding: 0; min-width: 0; }
 body.w6 :is(#mission, .m-card) .m-who { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
-body.w6 :is(#mission, .m-card) .m-ring { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
+body.w6 :is(#mission, .m-card) .m-ring { width: max(var(--njg-face), var(--njg-face-hit)); height: max(var(--njg-face), var(--njg-face-hit)); }
 body.w6 :is(#mission, .m-card) .m-ring .m-face { box-shadow: 0 0 0 1px var(--sb-line); }
 body.w6 :is(#mission, .m-card) .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
 body.w6 :is(#mission, .m-card) .m-dish { font-size: var(--sb-h); line-height: 1.2; min-width: 0; }
@@ -124,18 +123,13 @@ body.w6 #mission.stamped .face-say.card-say { visibility: visible; }
 
 /* ---------- the rail at the bottom: the same flat buttons ---------- */
 body.w6 :is(#side, .sb2) .rail-btn { border-radius: 12px; background: var(--sb-card); border: 1px solid var(--sb-line); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.08); }
-body.w6 :is(#side, .sb2) #btn-help { background: #ffe3a3; border-color: #efcf86; }
 
 /* ---------- speech cards in the sidebar (a customer at the tray, Nani's "pass me"): the same card; the face hears it again ---------- */
 body.w6 #nani-card { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: var(--sb-shadow); padding: 10px; gap: 10px; }
-body.w6 #nani-card .nc-say { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
-body.w6 #nani-card .nc-face { width: 100%; height: 100%; border: none; }
-body.w6 #nani-card.talk .nc-say img { animation: var(--njg-talk-anim); }
+/* (her face, and a customer's, is the kit's circle: css/shared/face.css; ART-08, S13-A2) */
 body.w6 #nani-card .say-slot .wp-say, body.w6 #passme .pm-say .wp-say { display: none; }
 body.w6 #nani-card .wp .wp-text { font-size: var(--sb-p); line-height: 1.25; }
 body.w6 #passme { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: 0 -4px 24px rgba(40, 25, 10, 0.22), 0 0 0 2px var(--sb-next-edge); }
-body.w6 #passme .pm-face { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
-body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: njgTalk var(--njg-talk-ms) ease-in-out 4 alternate; }
 body.w6 #passme .pm-item { background: var(--njg-white); border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
 body.w6 #passme .pm-item .wp-say { width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s3); background: var(--njg-page); border: 1px solid var(--sb-line); }
 body.w6 #passme .pm-item.right { background: var(--njg-white); border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
@@ -144,7 +138,6 @@ body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
 /* short landscape phones: every gap tighter, so a full order and the rail fit the 390px-high sidebar */
 @media (max-height: 430px) {
   body.w6 :is(#side, .sb2) .rail-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); }
-  body.w6 #btn-help { font-size: 22px; }
   body.w6 #nani-card { padding: 6px; gap: 6px; border-radius: 12px; }
 
 }

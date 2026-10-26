@@ -488,8 +488,8 @@
     ctx.on(layer, "pointercancel", endDrag);
 
     // ---- Done (closes an open counted step; ends the game after the last one) ----
-    const doneBtn = ctx.button ? ctx.button("✓", () => onDone(), "done") : h("button", "cl-go", stage, "✓");
-    if (!ctx.button) ctx.on(doneBtn, "click", () => onDone());
+    // (S13-A2: always the kit's ✓, through the host's button: no button of its own)
+    const doneBtn = ctx.button ? ctx.button("✓", () => onDone(), "done") : root.NjgButtons.done(stage, () => onDone());
     doneBtn.setAttribute("aria-label", "Done");
     const onDone = () => {
       state.lastAct = Date.now();

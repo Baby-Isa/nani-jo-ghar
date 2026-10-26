@@ -301,12 +301,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     hole.style.left = `${t.x - t.r}px`;
     hole.style.top = `${t.y - t.r}px`;
     hole.style.width = hole.style.height = `${t.r * 2}px`;
-    const f = box.querySelector(".co-finger");
-    f.className = `co-finger m-${t.move}`;
-    f.style.left = `${t.x}px`;
-    f.style.top = `${t.y}px`;
-    f.style.setProperty("--dx", `${t.dx || 0}px`);
-    f.style.setProperty("--dy", `${t.dy || 0}px`);
-    f.style.setProperty("--rr", `${Math.max(20, t.rr || 40)}px`);
+    // (S13-A2: its own finger went: one finger in every game, the kit's .ob-finger, SH-119)
   }
 })(window);

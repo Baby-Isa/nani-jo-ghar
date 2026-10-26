@@ -58,13 +58,8 @@
     if (!heads) return Clinic.Stages.personFace(kind, mood);
     const F = { ouch: "pain", sore: "pain", giggle: "happy", relief: "happy", scared: "sad" };
     const m = F[mood] || mood || "neutral";
-    const f = document.createElement("div");
-    f.className = "cl-face person art";
-    const img = document.createElement("img");
-    img.alt = "";
-    img.src = Kit.url(heads[m] || heads.neutral);
-    f.appendChild(img);
-    return f;
+    // ART-08 (S13-A2): the kit's one face maker (Kit.faceCircle, js/shared/face.js)
+    return Kit.faceCircle(kind, Kit.url(heads[m] || heads.neutral), "cl-face person art");
   };
 
   const el = (tag, attrs, parent) => {

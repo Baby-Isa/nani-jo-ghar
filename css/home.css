@@ -38,12 +38,9 @@ button { font: inherit; color: inherit; }
   box-shadow: inset 0 -3px 0 rgba(var(--njg-black-rgb), .15);
 }
 #who .nm { font-weight: 800; max-width: 30vw; overflow-wrap: anywhere; } /* F7: wraps, never "..." (R3a) */
-#grownups {
-  position: relative; width: 44px; height: 44px; border: none; border-radius: 50%;
-  background: transparent; cursor: pointer; opacity: .55; touch-action: none;
-}
-#grownups .cog { font-size: 24px; line-height: 44px; }
-#grownups svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+/* the grown-ups' "?": the kit's look (css/shared/buttons.css .njg-gu-btn; S13-A2), pressed and held (its ring fills) */
+#grownups { position: relative; touch-action: none; }
+#grownups svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); pointer-events: none; }
 #grownups .ring { fill: none; stroke: var(--roof); stroke-width: 3; stroke-dasharray: 100; stroke-dashoffset: 100; }
 #grownups.holding { opacity: 1; }
 #grownups.holding .ring { stroke-dashoffset: 0; transition: stroke-dashoffset 1.5s linear; }

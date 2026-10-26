@@ -53,26 +53,25 @@ export const screenHTML = () => `
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">
       <div id="nani-card" class="card hidden" role="status" aria-live="polite">
-        <button class="nc-say face-say" type="button" aria-label="Hear it again"><img class="nc-face" src="${v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button>
+        ${window.Face.buttonHtml("nani", "row", { cls: "nc-say", imgCls: "nc-face", alt: "Nani" })}
         <div class="say-slot"></div>
       </div>
     </div>
     <!-- 3. the rail: "?" (what do I do here?), menu, recipe book -->
     <div class="side-rail">
-      <button id="btn-help" class="rail-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
+      <button id="btn-help" type="button" class="njg-gu-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
       <button id="btn-home" class="rail-btn" title="Menu" aria-label="Menu">&#8962;</button>
       <button id="btn-book" class="rail-btn" title="Nani's recipe book" aria-label="Nani's recipe book">&#128214;</button>
     </div>
   </aside>
 
-  <!-- the "?" pops out the goal for this station (never shown on its own) -->
-  <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?" data-ob-pass><div class="hp-text"></div></div>
+  <!-- (the "?" pops out the goal for this station: the kit's grown-ups' pop-up, made by js/shared/buttons.js; S13-A2) -->
 
   <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area. MAA-14 (s08 w8A): her face
        sheet's close-up (nani-face, as in the guide box), so her impatient frown swaps in at the same framing, never the
        half-length badge turning into a tight close-up that reads as someone else -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
-    <div class="pm-nani"><button class="pm-face face-say" type="button" aria-label="Hear it again"><img src="${v("assets/shared/faces/nani.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button><div class="pm-say"></div></div>
+    <div class="pm-nani">${window.Face.buttonHtml("nani", "row", { cls: "pm-face", alt: "Nani" })}<div class="pm-say"></div></div>
     <div class="pm-tray"></div>
   </div>
 </div>
@@ -80,7 +79,7 @@ export const screenHTML = () => `
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
 <!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
-<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div><div class="co-finger"></div></div>
+<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div></div>
 `;
 
 /** Make Cook's screen inside el; returns the nodes made (unmount removes them). */

@@ -88,20 +88,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
   font-size: calc(var(--njg-rail) * 0.46); box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;
 }
-/* the "?": the goal pops out when pressed; it pulses the first time you meet a station */
-#btn-help { background: #ffd98a; font-family: var(--kutchi-font); font-weight: 800; font-size: 26px; line-height: 1; color: var(--ink); }
-#btn-help[aria-expanded="true"] { background: var(--ink); color: #ffd98a; }
-#btn-help.fresh { animation: var(--njg-glow-anim); } /* the kit's glow (css/shared/focus.css; S13-A1) */
+/* (the "?" and its pop-up are the kit's: css/shared/buttons.css .njg-gu-btn, .njg-gu-pop; S13-A2) */
 .side-rail .close-kitchen { margin-left: auto; }
-#help-pop {
-  position: fixed; z-index: 960; background: var(--ink); color: var(--njg-bubble); border-radius: 16px;
-  padding: 12px 16px; box-shadow: var(--shadow); font-weight: 700; line-height: 1.35;
-  font-size: clamp(15px, 1.5vw, 19px); animation: pop .18s ease-out; transform-origin: bottom right;
-}
-#help-pop::after {
-  content: ""; position: absolute; bottom: -7px; left: var(--tail-x, 20px); width: 16px; height: 16px;
-  background: var(--ink); transform: rotate(45deg); border-radius: 3px;
-}
 
 /* ---------- Nani's card: her current line, short ---------- */
 #nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; animation: pop .22s ease-out; }
@@ -162,19 +150,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #count-badge:not(.njg-tally) .count-digit { font-size: clamp(26px, 3.6vw, 48px); color: var(--madder); }
 #count-badge:not(.njg-tally).bump { animation: bump .3s; }
 
-/* Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
-   option A, the gold-metal tick (the end-of-round screen's) on a round cream button. It replaced the green tick.
-   R4: cook.html's Done and Next are the shared kit's (js/shared/buttons.js, .njg-btn); these rules are for the
-   parked pages that borrow this file with their own buttons. */
-#done-btn:not(.njg-btn) {
-  position: absolute; z-index: 8; right: 2.5%; bottom: 4%;
-  width: clamp(58px, 8vw, 96px); aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: var(--njg-cream) no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
-  border: 1px solid var(--njg-cream-edge); color: transparent; font-size: 0; overflow: hidden;
-  box-shadow: 0 4px 0 var(--njg-cream-lip), 0 8px 18px rgba(70, 45, 20, 0.22);
-}
-#done-btn:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2); }
-#done-btn:not(.njg-btn).glow { animation: var(--njg-glow-anim); }
+/* (✓ Done and → Next are the kit's buttons, js/shared/buttons.js: Cook's own #done-btn and #go-btn looks went, S13-A2) */
 /* SH-96, SH-53 (17 Oct): the bulbs pulse (class help-pulse, js/shared/guide.js pulseBulbs) once the child has been stuck 15-20 s:
    the kit's glow (css/shared/focus.css; its numbers css/shared/tokens.css --njg-glow-*, which Cook.GLOW reads for the item glow),
    so the item glow, the pulsing bulbs and the tick beat together (S13-A1) */
@@ -294,7 +270,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #side { padding: var(--njg-side-pad); gap: var(--njg-side-gap); }
   #nani-card { padding: 6px; gap: 6px; }
   .card { padding: 6px 8px; }
-  #btn-help { font-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -340,8 +315,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---- Nani's card: one short line (two rows at most for her usual lines) ---- */
 #nani-card .say-slot { min-width: 0; }
-#nani-card .nc-face { width: clamp(34px, 3.4vw, 48px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid var(--njg-white); }
-#nani-card.talk .nc-face { animation: var(--njg-talk-anim); }
+/* (her face, talking or not, is the kit's circle: css/shared/face.css; ART-08, S13-A2) */
 #nani-card .wp .wp-text { font-size: clamp(16px, 1.45vw, 21px); line-height: 1.25; }
 
 /* ---- choices (small talk) ---- */
@@ -634,7 +608,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   .lr .wp .wp-gap { width: 28px; }
   .lsec.late { padding-top: 2px; }
   #mission .ladder { gap: 2px; }
-  #nani-card .nc-face { width: 30px; }
   #nani-card .wp .wp-text { font-size: 15px; }
   .lsec.lfor { gap: 4px; }
   .lsec.lfor .lface { width: 26px; height: 26px; }
@@ -771,7 +744,7 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
   #intro .icard .card-say { width: 30px; height: 30px; }
 }
 
-/* 8. first-time onboarding (js/cook/coach.js): dim all but one thing, a ghost finger shows the move; never takes a tap */
+/* 8. first-time onboarding (js/cook/coach.js): its fallback dim with one hole (no kit on the page); the finger is the kit's, never its own (S13-A2) */
 #coach { position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
 #coach .co-hole {
   position: absolute; border-radius: 50%; pointer-events: none;
@@ -779,45 +752,7 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
   transition: left .35s ease, top .35s ease, width .35s ease, height .35s ease;
   animation: fadeIn .4s ease-out;
 }
-#coach .co-finger {
-  position: absolute; width: 58px; height: 58px; margin: -8px 0 0 -18px; pointer-events: none;
-  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M22 30V10a5 5 0 0 1 10 0v16l2-1a5 5 0 0 1 6 2l1 1a5 5 0 0 1 7 1l1 2a5 5 0 0 1 7 3v11c0 9-6 16-15 16h-4c-6 0-10-3-13-8l-9-14a5 5 0 0 1 8-6z' fill='%23fffaf1' stroke='%232d2018' stroke-width='3' stroke-linejoin='round' opacity='.95'/%3E%3C/svg%3E");
-  filter: drop-shadow(0 4px 6px rgba(var(--njg-black-rgb), .35));
-  animation: coTap 2.4s ease-in-out infinite;
-}
-#coach .co-finger.m-hold { animation: coHold 2.8s ease-in-out infinite; }
-#coach .co-finger.m-swipe { animation: coSwipe 2.2s ease-in-out infinite; }
-#coach .co-finger.m-roll { animation: coRoll 2.2s ease-in-out infinite; }
-#coach .co-finger.m-stir { animation: coStir 2.4s linear infinite; }
-@keyframes coTap { 0%, 55%, 100% { transform: translate(18px, 30px) scale(1); opacity: .9; } 15% { transform: translate(0, 0) scale(.88); opacity: 1; } 25% { transform: translate(8px, 12px) scale(1); } }
-@keyframes coHold { 0%, 100% { transform: translate(18px, 30px); opacity: .85; } 15%, 70% { transform: translate(0, 0) scale(.86); opacity: 1; } }
-@keyframes coSwipe { 0% { transform: translate(calc(var(--dx) * -.5), calc(var(--dy) * -.5)); opacity: 0; } 12% { opacity: 1; } 60% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 1; } 75%, 100% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 0; } }
-@keyframes coRoll { 0%, 100% { transform: translate(0, calc(var(--rr) * .7)); } 50% { transform: translate(0, calc(var(--rr) * -.7)); } }
-@keyframes coStir { 0% { transform: rotate(0deg) translateX(var(--rr)) rotate(0deg); } 100% { transform: rotate(360deg) translateX(var(--rr)) rotate(-360deg); } }
 
-/* 5. the big button between two jobs ("Go to the barbecue"), bottom right under the thumb */
-#go-btn:not(.njg-btn) {
-  position: absolute; z-index: 8; right: 2.5%; bottom: 4%; display: inline-flex; align-items: center; gap: 8px;
-  border: none; border-radius: 999px; padding: clamp(10px, 1.6vw, 18px) clamp(16px, 2.4vw, 30px);
-  background: var(--madder); color: var(--njg-white); box-shadow: 0 5px 0 #86362a, var(--shadow);
-  font-family: var(--ui-font); font-weight: 800; font-size: clamp(17px, 2.2vw, 28px);
-}
-#go-btn:not(.njg-btn) .go-arrow { font-size: 1.2em; line-height: 1; }
-#go-btn:not(.njg-btn).glow { animation: var(--njg-glow-anim); }
-#go-btn:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #86362a, var(--shadow); }
-/* Sekelo v2 (design system §15): the flat design-system phase button ("to the grill" + a gold icon):
-   a white card, charcoal text, radius 12, the one soft shadow; no gradient, bevel or red */
-#go-btn:not(.njg-btn).ds {
-  right: 2.5%; bottom: 5%; gap: 8px; border-radius: 12px; min-height: 48px;
-  padding: clamp(8px, 1.1vw, 14px) clamp(14px, 1.8vw, 22px);
-  background: var(--njg-white); color: var(--njg-ink); border: 2px solid var(--njg-gold);
-  box-shadow: 0 2px 8px rgba(40, 25, 10, .10);
-  font-family: Nunito, sans-serif; font-weight: 800; font-size: clamp(15px, 1.5vw, 20px);
-}
-#go-btn:not(.njg-btn).ds .go-icon { display: inline-flex; width: 1.5em; height: 1.5em; }
-#go-btn:not(.njg-btn).ds .go-icon svg { width: 100%; height: 100%; }
-#go-btn:not(.njg-btn).ds:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(40, 25, 10, .10); }
-#go-btn:not(.njg-btn).ds.glow { animation: var(--njg-glow-anim); }
 
 /* ---------- Wave 6b: the picture tally (top right), Nani's voice, the throbbing hint ---------- */
 /* the tally: a picture of each thing and how many you've done so far (never the target); it never takes a tap */
@@ -985,13 +920,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .gu-pop .seg-help { font-size: var(--njg-t3); }
 .gu-pop .gu-small a { display: inline-block; min-height: var(--njg-tap); line-height: var(--njg-tap); }
 .pic-row { align-items: center; }
-.btn.pic-btn {
   display: inline-grid; place-items: center; padding: 0; min-height: 0;
   width: calc(var(--njg-tap) * 1.4); height: calc(var(--njg-tap) * 1.4); border-radius: 50%;
 }
-.btn.pic-btn svg { width: 56%; height: 56%; }
-.btn.pic-btn.big { width: calc(var(--njg-tap) * 2); height: calc(var(--njg-tap) * 2); }
-.btn.pic-btn.big svg { width: 50%; height: 50%; margin-left: 8%; }
 .title-wrap .purse, .title-wrap .day-dots { margin-right: calc(var(--njg-tap) + var(--njg-s2)); }
 .day-dot b svg { width: 50%; height: 50%; vertical-align: middle; }
 .day-dot .st { display: inline-grid; place-items: center; color: var(--sage); }
@@ -1016,12 +947,10 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
    the child's cards, boxes and pop-ups only a hidden word is dotted, so the flag is in the markup only there (as decision 84's
    "to record"); the grown-ups' word book and "?" pop-up still underline it */
 .to-check { text-decoration: none; }
-:is(#panel:has(#book-close), #help-pop) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+#panel:has(#book-close) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
 .book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }
-.btn.pic-btn:not(.primary) { background: var(--njg-card); color: var(--njg-ink); border: var(--njg-line-2) solid var(--njg-gold); box-shadow: var(--njg-shadow); }
-.btn.pic-btn.primary { color: var(--njg-white); }
 .shop-item .shop-price { min-height: var(--njg-tap); box-sizing: border-box; display: inline-flex; align-items: center; gap: var(--njg-s1); opacity: .8; }
 .sum-card .cc-dish .ph, #panel .chip .ph { font-weight: 700; }
 /* the panel's picture buttons stay in view at its foot while its content scrolls (a short phone's shop, the finale) */
@@ -1048,8 +977,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   #panel > .shop-grid .shop-item.pic .shop-img, #panel > .shop-grid .shop-item.pic .shop-img img { width: var(--njg-tap); height: var(--njg-tap); }
 }
 
-/* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
-#help-pop .hp-new .njg-grownup-note { color: inherit; opacity: .85; }
 
 /* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
    coins beside it and the jar's total under it */
@@ -1101,8 +1028,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage #passme.onscreen { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(560px, 92%); padding: 16px; background: var(--njg-paper); border-radius: 22px; box-shadow: 0 18px 50px rgba(40, 25, 10, 0.35); animation: pmCross .7s cubic-bezier(.2,.8,.3,1); }
 #stage #passme.onscreen.hidden { display: none; }
 #stage #passme.onscreen .pm-nani { display: flex; align-items: center; gap: 12px; position: relative; }
-#stage #passme.onscreen .pm-face { width: 84px; height: 84px; flex: none; }
-#stage #passme.onscreen .pm-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; }
 #stage #passme.onscreen .pm-say { background: var(--njg-white); border-radius: 16px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(40, 25, 10, 0.12); position: relative; }
 #stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: var(--njg-s3); margin-top: var(--njg-s3); }
 #stage #passme.onscreen .pm-tray .pm-item { width: 30%; max-width: 150px; }
@@ -1117,7 +1042,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage #passme.onscreen .pm-tray .pm-item .wp-say { flex: none; }
 #stage #passme.onscreen.late .pm-face { animation: pmHuff .18s ease-in-out 4 alternate; }
 #stage #passme.onscreen.leaving { opacity: 0; transition: opacity .3s; }
-#passme .pm-ring { position: absolute; left: -6px; top: -6px; width: 96px; height: 96px; pointer-events: none; }
+#passme .pm-ring { position: absolute; left: -6px; top: -6px; width: calc(var(--njg-big-face) + 12px); height: calc(var(--njg-big-face) + 12px); pointer-events: none; }
 #passme:not(.onscreen) .pm-ring { display: none; }
 #passme .pm-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 #passme .pm-ring circle { fill: none; stroke-width: 3.2; }

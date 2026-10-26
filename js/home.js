@@ -290,7 +290,18 @@
     }
     render();
     $("#who").addEventListener("click", () => openPicker());
-    holdToOpen($("#grownups"), 1500, openGrown);
+    // S13-A2 (non-negotiable 3): the grown-ups' "?" opens the kit's one grown-ups' pop-up (js/shared/buttons.js), pressed and
+    // held as before; its action opens the grown-ups' sheet (names, colours, story help, the save)
+    const NB = global.NjgButtons;
+    const gu = NB && NB.grownUpPop
+      ? NB.grownUpPop($("#grownups"), {
+          toggle: false,
+          skip: false,
+          goal: "For grown-ups: who plays here, story help, and a copy of the save.",
+          actions: [{ label: "Players and the save", onPress: (e, b, pop) => (pop.close(), openGrown()) }],
+        })
+      : null;
+    holdToOpen($("#grownups"), 1500, () => (gu ? gu.open() : openGrown()));
     // more than one child: ask who's playing, once a visit (not when coming back from a room)
     if (Save.players().length > 1 && !session.get("njg-who") && !params.get("from")) openPicker({ must: true });
     else session.set("njg-who", cur);

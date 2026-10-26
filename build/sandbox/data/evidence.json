@@ -1396,13 +1396,13 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-finger, .co-finger",
+   "at": "every:visible:.ob-finger",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": [
-    "count:.ob-finger,.co-finger>=1"
+    "count:.ob-finger>=1"
    ],
    "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (counted once the ghost is visible, not at its 0-opacity first frame)",
    "delay": 0,
@@ -1417,7 +1417,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-finger, .co-finger",
+   "at": "every:visible:.ob-finger",
    "after": null,
    "capture": [
     "shot",
@@ -20170,6 +20170,132 @@
     "contract:36"
    ],
    "note": "chai at L4: every step Nani's stepper opens is called once (or its skip logged); the help rungs armed again for an open step are not a new opening"
+  }
+ ],
+ "SH-129": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "stuck",
+   "level": 1,
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "rec:stuck-12s",
+   "after": null,
+   "capture": [
+    "crop:hook:heal.glowing",
+    "strip:hook:heal.glowing:4x250"
+   ],
+   "expect": null,
+   "note": "the clinic's glow, the stuck player (nothing tapped through every help rung): the next tool lit; one look with Cook's and the door's (the kit's orange halo round the item, njg-glow), never a white flood inside a gold border"
+  },
+  {
+   "flow": "day:door",
+   "path": "stuck",
+   "level": 1,
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "rec:stuck-5s",
+   "after": null,
+   "capture": [
+    "crop:.ob-lit, .ob-item-glow",
+    "strip:.ob-lit, .ob-item-glow:4x250"
+   ],
+   "expect": null,
+   "note": "the door's glow on Ha!, the stuck player: the kit's orange halo round the pill, never a ring of its own"
+  },
+  {
+   "flow": "lab:cook/fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "placed",
+   "after": null,
+   "capture": [
+    "crop:hook:cook.glowing",
+    "strip:hook:cook.glowing:4x250"
+   ],
+   "expect": null,
+   "note": "Cook's glow on the game host's pantry after the help pause (the kit's look the others match: the orange halo round the item)",
+   "afterPause": true
+  }
+ ],
+ "SH-130": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:visible:.njg-spot",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the eye test's first-time help, a new player: the dim, the one box round haa, na and the mic (each lit), and the kit's finger tapping by them on every card step, at the laptop size as at the phone; the drops step too; one finger only",
+   "delay": 600,
+   "max": 8
+  }
+ ],
+ "SH-131": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_shared_bulb.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the bulb on a page without js/shared/tokens.js (the parked games) reads data/shared.json's bulbMs itself: 8 s at every level, never 0 s"
+  }
+ ],
+ "SH-134": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-fold",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "minSize:#mission .oc-card .oc-spk>=48"
+   ],
+   "note": "chai at L3 (the items dotted, each row with its speaker): every speaker's tap box at least 48 x 48 CSS px, at the phone as at the laptop, none over the next row's speaker",
+   "delay": 1500
   }
  ]
 }

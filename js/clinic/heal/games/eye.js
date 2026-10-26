@@ -786,6 +786,9 @@
       const room = (root.innerWidth || 0) - judgeBox.getBoundingClientRect().right;
       const row = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
       const live = room > 120 ? row.slice().reverse() : row;
+      // SH-130 (S13-A2): the hand lies on that side, pointing across at the row (at a laptop's size no side was "clear" of the
+      // pictures round it, and the hand went below the row, off the screen)
+      const side = room > 120 ? "right" : "left";
       // the rungs count from this card coming up (her guess, not the child, was the last thing)
       if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
       const first = c.demo || (P.level === 1 && firstRound());
@@ -795,6 +798,7 @@
         first,
         target: live,
         live,
+        fingerFrom: side,
         line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(st.awaiting.said || c.said), { who: "patient", noBubble: true }) : null),
       });
     };

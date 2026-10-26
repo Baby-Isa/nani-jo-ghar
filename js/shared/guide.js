@@ -310,7 +310,7 @@
     const who = esc(opts.name || "Nani");
     el.setAttribute("aria-label", opts.name || "Nani");
     el.innerHTML = `
-      <button class="ng-face face-say" type="button" aria-label="Hear ${who} again" title="Hear ${who} again"><img alt="${who}" src="${esc(opts.face || "")}"><span class="say-badge" aria-hidden="true"></span></button>
+      ${root.Face ? root.Face.buttonHtml(opts.name || "Nani", "guide", { cls: "ng-face", label: `Hear ${opts.name || "Nani"} again`, title: `Hear ${opts.name || "Nani"} again`, src: opts.face || null, alt: opts.name || "Nani" }) : `<button class="ng-face face-say" type="button" aria-label="Hear ${who} again" title="Hear ${who} again"><img alt="${who}" src="${esc(opts.face || "")}"><span class="say-badge" aria-hidden="true"></span></button>`}
       <span class="ng-say"></span>
       <span class="ng-tools">
         ${opts.bulb || opts.onBulb ? `<button class="ng-bulb" type="button"${opts.bulbId ? ` id="${esc(opts.bulbId)}"` : ""} aria-label="Show it in English for a moment" title="Show it in English for a moment">${opts.bulb ? `<img alt="" src="${esc(opts.bulb)}">` : ""}<span class="bulb-t"></span></button>` : ""}

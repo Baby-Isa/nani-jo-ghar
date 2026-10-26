@@ -91,9 +91,9 @@ async function startOver(ctx, { labKey, level, speed }) {
     if (await page.$("#btn-help")) {
       await page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(300);
-      const b = await page.$("#help-pop .hp-new button");
+      const b = await page.$(".njg-gu-pop .njg-gu-new button"); // (the kit's grown-ups' pop-up, S13-A2)
       if (b) { await b.click().catch(() => {}); await sleep(600); } else rec.note("start-over: no \"Play as new\" in the \"?\" pop-up");
-      if (await page.$("#help-pop:not(.hidden)")) await page.click("#btn-help", { force: true }).catch(() => {});
+      if (await page.$(".njg-gu-pop:not(.hidden)")) await page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(300);
     } else rec.note("start-over: no \"?\" (#btn-help) in the round");
     await rec.state("after-start-over");

@@ -93,8 +93,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-spine { position: absolute; display: block; border-radius: 3px 3px 1px 1px; box-shadow: var(--njg-shadow); transform-origin: 50% 100%; }
 .day-spine::after { content: ""; position: absolute; left: 0; right: 0; top: 16%; height: 7%; background: var(--njg-gold); }
 .day-spine.go { transition: transform 1.4s cubic-bezier(.3, .7, .3, 1); z-index: 2; }
-.day-spine.landed { animation: day-spine-glow 1.2s ease-in-out 2; outline: 3px solid var(--njg-gold); outline-offset: 2px; }
-@keyframes day-spine-glow { 50% { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); } }
+.day-spine.landed { animation: var(--njg-glow-anim); animation-iteration-count: 2; } /* SH-129: the kit's one glow, twice (was a ring of its own) */
 .day-cv .day-bubble { visibility: hidden; }
 .day-cv .day-bubble.in { visibility: visible; }
 .day-book { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; opacity: 0; transform-origin: 0 0; pointer-events: none; touch-action: none; }
@@ -111,10 +110,8 @@ canvas.day-layer { width: 100%; height: 100%; }
 
 /* her face on the left page's corner (the replay), her line beside it */
 .day-head { position: absolute; display: flex; align-items: center; gap: var(--njg-s2); z-index: 4; pointer-events: none; }
-.day-face { flex: none; width: 64px; height: 64px; padding: 0; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-card); background: var(--njg-cream); box-shadow: var(--njg-shadow); overflow: hidden; cursor: pointer; pointer-events: auto; }
-/* her face as in every guide circle (css/shared/guide.css .ng-face img: Cook's nani-face.webp, cover, from the top) */
-.day-face img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
-.day-face.on { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); }
+/* her face: the kit's circle, the big size (js/shared/face.js; ART-08, S13-A2) */
+.day-face { pointer-events: auto; }
 .day-head-line { min-width: 0; background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s2) var(--njg-s3); }
 .day-head-line:empty { display: none; }
 .day-head-line.day-again { animation: day-again 1.5s ease-in-out 1; }
