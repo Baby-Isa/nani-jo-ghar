@@ -109,8 +109,8 @@ export function parseVerdicts(text, labelsOf = null) {
     const [, id, verdict, line] = m;
     // a text-only row cites its text capture: "PASS: text, ...", or by its label in the .md ("SH-45-p1-L1-1366x768 dom: ...",
     // "p1-L2 voice, ..."); passFor() below keeps the A-L rule for a row that has a sheet
-    const pm = /^(?:panel\s+)?([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*(?![\w-])|(?:[A-Z]+-\d+-)?p\d+(?:-L\d+)?(?:-(?:\d+x\d+|repo))?(?:\s+(?:dom|voice|cmd|contract|text|stage list))?|(?:the\s+)?(?:text|voice|dom|cmd|t)(?:\s+(?:capture|timeline))?)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line);
-    let panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
+    const pm = /^(?:panel\s+)?([A-Z](?:\s*(?:,|and|\+|&)\s*[A-Z])*(?![\w-])|(?:[A-Z]+-\d+-)?p\d+(?:-L\d+)?(?:-(?:\d+x\d+|repo))?(?:\s+(?:dom|voice|cmd|contract|text|stage list))?|(?:the\s+)?(?:text|voice|dom|cmd|t)(?:\s+(?:capture|timeline))?)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line);
+    let panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-Z](?:\s*(?:,|and|\+|&)\s*[A-Z])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
     // a text-only row's PASS that opens with a capture label from its .md (a script's command, a probe id): "PASS: grep -n ... data/x.json, all four ..."
     if (!panel && verdict === "PASS" && labelsOf) panel = labelOf(line, labelsOf(id) || []);
     if (verdict === "PASS" && !panel) { out.rejected.push({ id, why: "a PASS must name the panel it saw first (\"PASS: B, ...\")", line }); continue; }
@@ -119,14 +119,14 @@ export function parseVerdicts(text, labelsOf = null) {
   return out;
 }
 
-// A PASS stands on what it cites: a row with a sheet (a PNG) names a panel A-D (to A-L on a row with more probes); a text-only row (no sheet) names its text
+// A PASS stands on what it cites: a row with a sheet (a PNG) names a panel A-D (to A-Z on a row with more probes); a text-only row (no sheet) names its text
 // capture (decision 96, S05-C3: the text judge's PASSes on SH-45, CLN-120 were refused for naming no panel that could exist).
 // -> null when it stands, else why not
 export function passRefusal(l, hasSheet) {
   if (!l || l.verdict !== "PASS") return null;
   if (!l.panel) return "a PASS must name the panel it saw first (\"PASS: B, ...\")";
-  const lettered = /^[A-L](?:[,&+]|AND|$)/.test(l.panel);
-  if (hasSheet && !lettered) return `the row has a sheet: a PASS names its panel A-D (to A-L on a row with more probes), not "${l.panel}"`;
+  const lettered = /^[A-Z](?:[,&+]|AND|$)/.test(l.panel);
+  if (hasSheet && !lettered) return `the row has a sheet: a PASS names its panel A-D (to A-Z on a row with more probes), not "${l.panel}"`;
   if (!hasSheet && lettered) return `the row has no sheet (text only): a PASS names its text capture, not panel ${l.panel}`;
   return null;
 }

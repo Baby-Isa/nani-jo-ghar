@@ -318,13 +318,26 @@ export class EvidenceProbe {
   // a filmstrip frame: straight from the compositor (CDP; optimizeForSpeed dropped: a judge saw a tiled frame), ~30-80 ms instead of Playwright's 0.5-1.8 s
   // screenshot, so a 4x100 ms strip's frames land about 100 ms apart (CK-27: a short puff fell between frames). Falls back to shot().
   async fastShot(clip) {
+    const raw = await this.surface();
+    return raw ? this.cut(raw, clip) : this.shot(clip);
+  }
+  // the whole surface as PNG bytes, nothing decoded (fix round, 26 Oct: decoding and cutting each frame between captures made a
+  // 4x250 strip land at 0/452/738/1144 ms; a strip now takes every frame first and cuts them after): null when CDP is not there
+  // fast: PNG with the quick encoder (about 100 ms for 1366x768 against 300-400 ms; lossless either way), for a strip on its clock.
+  // (A clip straight from the compositor is quicker still, but on 26 Oct it came back blank or wrongly sized: never used.)
+  async surface({ fast = false } = {}) {
     try {
       if (this._cdp === undefined) this._cdp = await this.page.context().newCDPSession(this.page).catch(() => null);
-      if (!this._cdp) return this.shot(clip);
-      // the whole surface, cut here: with a clip, the compositor now and then returned the page's top-left corner at the
-      // clip's size (CLN-126, CLN-127: the doctor's box where her bubble should be)
-      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
-      const img = decodePng(Buffer.from(r.data, "base64"));
+      if (!this._cdp) return null;
+      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, ...(fast ? { optimizeForSpeed: true } : {}) });
+      return Buffer.from(r.data, "base64");
+    } catch (e) { return null; }
+  }
+  // the whole surface, cut here: with a clip, the compositor now and then returned the page's top-left corner at the
+  // clip's size (CLN-126, CLN-127: the doctor's box where her bubble should be)
+  async cut(raw, clip) {
+    try {
+      const img = decodePng(raw);
       const k = img.w / (this.page.viewportSize().width || img.w);
       const x0 = Math.max(0, Math.round(clip.x * k)), y0 = Math.max(0, Math.round(clip.y * k));
       const w = Math.min(img.w - x0, Math.round(clip.width * k)), h = Math.min(img.h - y0, Math.round(clip.height * k));
@@ -438,10 +451,19 @@ export class EvidenceProbe {
           } else {
             out.times = [];
             const bufs = [], t0 = Date.now();
+            // on the clock: every frame is the whole surface at its slot (t0 + k x ms), cut only once all are taken; each frame's real
+            // ms is kept (the sheet flags one more than 60 ms off its slot)
+            // every frame is the whole surface (the quick encoder) taken on its slot, cut to the clip once all are taken
+            const raws = [];
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
-              const buf = c.ms < 400 ? await this.fastShot(clip) : await this.shot(clip); bufs.push(buf);
+              raws.push(await this.surface({ fast: true }));
+            }
+            out.slots = Array.from({ length: c.n }, (_, k) => k * c.ms);
+            for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
+            for (let k = 0; k < c.n; k++) {
+              const buf = raws[k] || (await this.shot(clip)); bufs.push(buf);
               const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             }
             // (s08 w6E, SH-60) the frame where Nani's help was logged while this strip filmed gets a red frame, so the sheet shows the

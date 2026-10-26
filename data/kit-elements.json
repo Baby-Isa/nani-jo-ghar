@@ -1,194 +1,525 @@
 {
-  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). A place is {at, sel?, delay?, flow?, profile?, every?} (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
+  "_about": "S13-T (the one loop): every shared element of the kit, where it shows and where its code lives. build/tools/review/kitsheet.mjs crops each element from every LIVE page (the parked games are out) at 1366x768 and 915x412 into one side-by-side sheet (the judge passes the element on that sheet: the same look in every game; the help ladder is the stuck player's screen at each rung, not an element); build/tools/review/kitmap.mjs prints, per element, every file:line its grep rules find (the kit's home first, then the copies a builder must delete), and build/tools/ops/brief.mjs pastes it under PLACES for a brief naming the element (spec field elements). An element may set dom: true (its text is read too: the to-record text). A place is {at, sel?, delay?, flow?, profile?, every?, tries?} (tries: N: the first of the moment's first N times where the crop worked: a thing that flies in and out) (every: one frame at each time the moment comes, e.g. each rung of the stuck player) (at: an evidence moment, build/sandbox/lib/moments.mjs; sel: a CSS selector, canvas:<name> or hook:cook.<fn>/hook:heal.<fn>) or {none: why} (the element is not on that page by design). A place no driver reaches is listed as such on the sheet, never dropped. rowWords: the fix-list rows about the element (regress by element, for a brief's REGRESSION ROWS).",
   "pages": {
-    "index": { "flow": "house", "title": "the house (index.html)" },
-    "first": { "flow": "first", "title": "first launch (first.html and its first Cook rounds)" },
-    "day": { "flow": "day:door#stuck", "title": "a day at Nani's: the door (day.html)" },
-    "cook": { "flow": "cook:chai-tray#stuck", "title": "Cook: chai (cook.html)" },
-    "clinic": { "flow": "clinic:heal-eye#stuck", "title": "the clinic: the eye test (clinic.html)" },
-    "lab": { "flow": "lab:cook/chai-tray", "title": "Cook on the game host (lab.html)" }
+    "index": {
+      "flow": "house",
+      "title": "the house (index.html)"
+    },
+    "first": {
+      "flow": "first",
+      "title": "first launch (first.html and its first Cook rounds)"
+    },
+    "day": {
+      "flow": "day:door#stuck",
+      "title": "a day at Nani's: the door (day.html)"
+    },
+    "cook": {
+      "flow": "cook:chai-tray#stuck",
+      "title": "Cook: chai (cook.html)"
+    },
+    "clinic": {
+      "flow": "clinic:heal-eye#stuck",
+      "title": "the clinic: the eye test (clinic.html)"
+    },
+    "lab": {
+      "flow": "lab:cook/chai-tray",
+      "title": "Cook on the game host (lab.html)"
+    }
   },
   "elements": {
     "face circle": {
       "sel": ".njg-rq-card .oc-face, #intro .ic-face, .ng-face, .cl-card-face, .njg-face",
       "moves": false,
-      "grep": ["\\boc-face\\b", "\\bng-face\\b", "\\bcl-card-face\\b", "\\bcl-face\\b", "\\bcv-face\\b", "\\bpm-face\\b", "\\bic-face\\b", "\\bnc-face\\b", "\\bm-face\\b", "\\blface\\b", "--njg-(big-|guide-)?face\\b", "--oc-face\\b", "--sb-face\\b"],
+      "grep": [
+        "\\boc-face\\b",
+        "\\bng-face\\b",
+        "\\bcl-card-face\\b",
+        "\\bcl-face\\b",
+        "\\bcv-face\\b",
+        "\\bpm-face\\b",
+        "\\bic-face\\b",
+        "\\bnc-face\\b",
+        "\\bm-face\\b",
+        "\\blface\\b",
+        "--njg-(big-|guide-)?face\\b",
+        "--oc-face\\b",
+        "--sb-face\\b"
+      ],
       "rowWords": "face circle|face in the|the face|faces? (size|ring)|ART-08",
       "places": {
-        "index": { "none": "the house shows no face circle" },
-        "first": { "at": "life:popup-open", "delay": 300 },
-        "day": { "at": "rec:first-line", "sel": ".ng-face, .day-face, .njg-face" },
-        "cook": { "at": "life:popup-open", "delay": 300 },
-        "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "life:popup-open", "delay": 300 }
+        "index": {
+          "none": "the house shows no face circle"
+        },
+        "first": {
+          "at": "life:popup-open",
+          "delay": 300,
+          "tries": 3
+        },
+        "day": {
+          "at": "visible:.ng-face, .day-face, .njg-face",
+          "sel": ".ng-face, .day-face, .njg-face",
+          "delay": 300
+        },
+        "cook": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "cook:day1"
+        },
+        "clinic": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "clinic:waiting"
+        },
+        "lab": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "lab:cook/round"
+        }
       }
     },
     "word card": {
       "sel": ".wc-card",
       "moves": false,
-      "grep": ["\\bwc-[a-z-]+", "WordCard\\."],
+      "grep": [
+        "\\bwc-[a-z-]+",
+        "WordCard\\."
+      ],
       "rowWords": "word card|word-card|\\bwc-",
       "places": {
-        "index": { "none": "the house shows no word card" },
-        "first": { "at": "visible:.wc-card" },
-        "day": { "at": "visible:.wc-card" },
-        "cook": { "at": "visible:.wc-card" },
-        "clinic": { "at": "visible:.wc-card" },
-        "lab": { "at": "visible:.wc-card" }
+        "index": {
+          "none": "the house shows no word card"
+        },
+        "first": {
+          "at": "visible:.wc-card",
+          "tries": 4
+        },
+        "day": {
+          "at": "visible:.wc-card",
+          "tries": 4
+        },
+        "cook": {
+          "at": "visible:.wc-card",
+          "tries": 4
+        },
+        "clinic": {
+          "at": "visible:.wc-card",
+          "tries": 4
+        },
+        "lab": {
+          "at": "visible:.wc-card",
+          "tries": 4
+        }
       }
     },
     "order card": {
       "sel": "#mission .oc-card, .cl-side .oc-card, .njg-side .oc-card",
       "moves": false,
-      "grep": ["\\boc-(card|row|head|headline|face|items|item|parts|part|done-tk|fold|closed-big|big)\\b", "OrderCard\\.", "\\bcl-card\\b", "\\.ladder\\b|\\.lsec\\b|\\.r6\\b"],
+      "grep": [
+        "\\boc-(card|row|head|headline|face|items|item|parts|part|done-tk|fold|closed-big|big)\\b",
+        "OrderCard\\.",
+        "\\bcl-card\\b",
+        "\\.ladder\\b|\\.lsec\\b|\\.r6\\b"
+      ],
       "rowWords": "order card|the card's|sidebar card|card rows?|recipe card|\\bladder\\b",
       "places": {
-        "index": { "none": "no order on the house page" },
-        "first": { "at": "life:popup-fold", "delay": 900 },
-        "day": { "none": "the door asks a question, it has no order card" },
-        "cook": { "at": "life:popup-fold", "delay": 900, "flow": "cook:chai-tray", "profile": "seen" },
-        "clinic": { "at": "life:popup-fold", "delay": 900, "flow": "clinic:heal-eye" },
-        "lab": { "at": "life:popup-fold", "delay": 900 }
+        "index": {
+          "none": "no order on the house page"
+        },
+        "first": {
+          "at": "life:popup-fold",
+          "delay": 900
+        },
+        "day": {
+          "none": "the door asks a question, it has no order card"
+        },
+        "cook": {
+          "at": "life:popup-fold",
+          "delay": 900,
+          "flow": "cook:chai-tray",
+          "profile": "seen"
+        },
+        "clinic": {
+          "at": "life:popup-fold",
+          "delay": 900,
+          "flow": "clinic:heal-eye"
+        },
+        "lab": {
+          "at": "life:popup-fold",
+          "delay": 900
+        }
       }
     },
     "order pop-up": {
       "sel": ".njg-rq-card, #intro .ic-card",
       "moves": false,
-      "grep": ["\\bnjg-rq(-[a-z]+)?\\b", "RequestPopup\\.", "#intro\\b", "\\bic-card\\b"],
+      "grep": [
+        "\\bnjg-rq(-[a-z]+)?\\b",
+        "RequestPopup\\.",
+        "#intro\\b",
+        "\\bic-card\\b"
+      ],
       "rowWords": "pop-up|popup|order screen|request",
       "places": {
-        "index": { "none": "no order on the house page" },
-        "first": { "at": "life:popup-open", "delay": 300 },
-        "day": { "none": "the door has no order pop-up" },
-        "cook": { "at": "life:popup-open", "delay": 300 },
-        "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "life:popup-open", "delay": 300 }
+        "index": {
+          "none": "no order on the house page"
+        },
+        "first": {
+          "at": "life:popup-open",
+          "delay": 300,
+          "tries": 3
+        },
+        "day": {
+          "none": "the door has no order pop-up"
+        },
+        "cook": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "cook:day1"
+        },
+        "clinic": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "clinic:waiting"
+        },
+        "lab": {
+          "at": "visible:.njg-rq-card, #intro .ic-card",
+          "tries": 3,
+          "flow": "lab:cook/round"
+        }
       }
     },
     "bubble": {
       "sel": ".cv-bubble, .cl-bubble, #bubble, .day-bubble, .say-bubble",
       "moves": false,
-      "grep": ["\\bcv-bubble\\b", "\\bcl-bubble\\b", "#bubble\\b", "\\bday-bubble\\b", "\\bsay-bubble\\b", "Conversations\\.bubble"],
+      "grep": [
+        "\\bcv-bubble\\b",
+        "\\bcl-bubble\\b",
+        "#bubble\\b",
+        "\\bday-bubble\\b",
+        "\\bsay-bubble\\b",
+        "Conversations\\.bubble"
+      ],
       "rowWords": "bubble",
       "places": {
-        "index": { "at": "bubble" },
-        "first": { "at": "bubble" },
-        "day": { "at": "bubble" },
-        "cook": { "at": "bubble" },
-        "clinic": { "at": "bubble" },
-        "lab": { "at": "bubble" }
+        "index": {
+          "at": "bubble"
+        },
+        "first": {
+          "at": "bubble"
+        },
+        "day": {
+          "at": "bubble"
+        },
+        "cook": {
+          "at": "bubble"
+        },
+        "clinic": {
+          "at": "bubble"
+        },
+        "lab": {
+          "at": "bubble"
+        }
       }
     },
     "buttons": {
       "sel": ".njg-btn, #done-btn, #go-btn, .cl-go",
       "moves": false,
-      "grep": ["\\bnjg-btn\\b", "#done-btn\\b", "#go-btn\\b", "\\bcl-go\\b", "\\bpic-btn\\b", "\\brail-btn\\b", "NjgButtons\\.", ":not\\(\\.njg-btn\\)"],
+      "grep": [
+        "\\bnjg-btn\\b",
+        "#done-btn\\b",
+        "#go-btn\\b",
+        "\\bcl-go\\b",
+        "\\bpic-btn\\b",
+        "\\brail-btn\\b",
+        "NjgButtons\\.",
+        ":not\\(\\.njg-btn\\)"
+      ],
       "rowWords": "button|go-on|tick button|the arrow",
       "places": {
-        "index": { "at": "visible:.njg-btn" },
-        "first": { "at": "visible:.njg-btn" },
-        "day": { "at": "visible:.njg-btn" },
-        "cook": { "at": "visible:.njg-btn" },
-        "clinic": { "at": "visible:.njg-btn" },
-        "lab": { "at": "visible:.njg-btn" }
+        "index": {
+          "at": "visible:.njg-btn"
+        },
+        "first": {
+          "at": "visible:.njg-btn"
+        },
+        "day": {
+          "at": "visible:.njg-btn"
+        },
+        "cook": {
+          "at": "visible:.njg-btn"
+        },
+        "clinic": {
+          "at": "visible:.njg-btn"
+        },
+        "lab": {
+          "at": "visible:.njg-btn"
+        }
       }
     },
     "finger": {
       "sel": ".ob-finger, .co-finger",
       "moves": true,
-      "grep": ["\\bob-finger\\b", "\\bco-finger\\b", "Onboard\\.finger\\b", "\\bOB\\.finger\\b", "\\bO\\.finger\\b"],
+      "grep": [
+        "\\bob-finger\\b",
+        "\\bco-finger\\b",
+        "Onboard\\.finger\\b",
+        "\\bOB\\.finger\\b",
+        "\\bO\\.finger\\b"
+      ],
       "rowWords": "finger|ghost hand|the hand tapping",
       "places": {
-        "index": { "at": "visible:.ob-finger", "delay": 400 },
-        "first": { "at": "visible:.ob-finger", "delay": 400 },
-        "day": { "at": "visible:.ob-finger", "delay": 400 },
-        "cook": { "at": "visible:.ob-finger", "delay": 400 },
-        "clinic": { "at": "visible:.ob-finger", "delay": 400 },
-        "lab": { "at": "visible:.ob-finger", "delay": 400 }
+        "index": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        },
+        "first": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        },
+        "day": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        },
+        "cook": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        },
+        "clinic": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        },
+        "lab": {
+          "at": "visible:.ob-finger",
+          "delay": 400,
+          "tries": 3
+        }
       }
     },
     "help box": {
       "sel": ".njg-spot .ob-box, .njg-onboard .ob-box",
       "moves": false,
-      "grep": ["\\bnjg-spot\\b", "\\bob-box\\b", "\\bnjg-onboard\\b", "Onboard\\.(spot|stuck|demo)\\b", "\\bday-help-box\\b"],
+      "grep": [
+        "\\bnjg-spot\\b",
+        "\\bob-box\\b",
+        "\\bnjg-onboard\\b",
+        "Onboard\\.(spot|stuck|demo)\\b",
+        "\\bday-help-box\\b"
+      ],
       "rowWords": "help box|spotlight|the box round|dim all but",
       "places": {
-        "index": { "at": "visible:.njg-spot" },
-        "first": { "at": "visible:.njg-spot" },
-        "day": { "at": "visible:.njg-spot" },
-        "cook": { "at": "visible:.njg-spot" },
-        "clinic": { "at": "visible:.njg-spot" },
-        "lab": { "at": "visible:.njg-spot" }
+        "index": {
+          "at": "visible:.njg-spot"
+        },
+        "first": {
+          "at": "visible:.njg-spot"
+        },
+        "day": {
+          "at": "visible:.njg-spot"
+        },
+        "cook": {
+          "at": "visible:.njg-spot"
+        },
+        "clinic": {
+          "at": "visible:.njg-spot"
+        },
+        "lab": {
+          "at": "visible:.njg-spot"
+        }
       }
     },
     "glow": {
       "sel": ".njg-glow, .ob-item-glow, .ob-lit",
       "moves": true,
-      "grep": ["\\bnjg-glow\\b", "\\bob-item-glow\\b", "\\bnjgGlow\\b", "\\bglowPulse\\b", "Cook\\.GLOW\\b", "--(njg-)?glow-[a-z]+", "@keyframes\\s+[\\w-]*([Gg]low|[Tt]hrob|[Pp]ulse)", "animation:[^;]*([Tt]hrob|[Gg]low)", "Focus\\.(pulse|phaser)"],
+      "grep": [
+        "\\bnjg-glow\\b",
+        "\\bob-item-glow\\b",
+        "\\bnjgGlow\\b",
+        "\\bglowPulse\\b",
+        "Cook\\.GLOW\\b",
+        "--(njg-)?glow-[a-z]+",
+        "@keyframes\\s+[\\w-]*([Gg]low|[Tt]hrob|[Pp]ulse)",
+        "animation:[^;]*([Tt]hrob|[Gg]low)",
+        "Focus\\.(pulse|phaser)"
+      ],
       "rowWords": "glow|throb|highlight",
       "places": {
-        "index": { "at": "visible:.njg-glow" },
-        "first": { "at": "visible:.ob-finger", "sel": "hook:cook.glowing", "delay": 300 },
-        "day": { "at": "rec:stuck-5s", "sel": ".ob-lit, .ob-item-glow" },
-        "cook": { "at": "rec:stuck-12s", "sel": "hook:cook.glowing" },
-        "clinic": { "at": "rec:stuck-12s", "sel": "hook:heal.glowing" },
-        "lab": { "at": "cook:tap", "sel": "hook:cook.glowing" }
+        "index": {
+          "at": "visible:.njg-glow"
+        },
+        "first": {
+          "at": "visible:.ob-finger",
+          "sel": "hook:cook.glowing",
+          "delay": 300
+        },
+        "day": {
+          "at": "rec:stuck-5s",
+          "sel": ".ob-lit, .ob-item-glow",
+          "tries": 3
+        },
+        "cook": {
+          "at": "rec:stuck-12s",
+          "sel": "hook:cook.glowing"
+        },
+        "clinic": {
+          "at": "rec:stuck-12s",
+          "sel": "hook:heal.glowing"
+        },
+        "lab": {
+          "at": "cook:tap",
+          "sel": "hook:cook.glowing"
+        }
       }
     },
     "? pop-up": {
       "sel": "#help-pop, .cl-help-pop, #grownups, .njg-grownup",
       "moves": false,
-      "grep": ["#help-pop\\b", "\\bcl-help-pop\\b", "#grownups\\b", "\\bnjg-grownup\\b", "grownUpPop"],
+      "grep": [
+        "#help-pop\\b",
+        "\\bcl-help-pop\\b",
+        "#grownups\\b",
+        "\\bnjg-grownup\\b",
+        "grownUpPop"
+      ],
       "rowWords": "\"\\?\"|the \\? |grown-ups' (menu|pop)|play as new",
       "places": {
-        "index": { "at": "rec:grown-ups-panel", "sel": "#grownups, .njg-grownup" },
-        "first": { "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup" },
-        "day": { "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup" },
-        "cook": { "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup" },
-        "clinic": { "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup" },
-        "lab": { "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup" }
+        "index": {
+          "at": "rec:grown-ups-panel",
+          "sel": "#grownups, .njg-grownup"
+        },
+        "first": {
+          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+        },
+        "day": {
+          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+        },
+        "cook": {
+          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+        },
+        "clinic": {
+          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+        },
+        "lab": {
+          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+        }
       }
     },
     "end screen": {
       "sel": ".njg-results .rs-card, .njg-results",
       "moves": false,
-      "grep": ["\\bnjg-results\\b", "\\brs-(card|badge|badges|words|actions|steps)\\b", "Results\\.show", "\\bres-card\\b"],
+      "grep": [
+        "\\bnjg-results\\b",
+        "\\brs-(card|badge|badges|words|actions|steps)\\b",
+        "Results\\.show",
+        "\\bres-card\\b"
+      ],
       "rowWords": "end screen|end card|word review|badges?",
       "places": {
-        "index": { "none": "the house has no round to end" },
-        "first": { "at": "visible:.njg-results" },
-        "day": { "none": "the door hands off; its day ends in the book" },
-        "cook": { "at": "visible:.njg-results" },
-        "clinic": { "at": "visible:.njg-results" },
-        "lab": { "at": "visible:.njg-results" }
+        "index": {
+          "none": "the house has no round to end"
+        },
+        "first": {
+          "at": "visible:.njg-results"
+        },
+        "day": {
+          "none": "the door hands off; its day ends in the book"
+        },
+        "cook": {
+          "at": "visible:.njg-results"
+        },
+        "clinic": {
+          "at": "visible:.njg-results"
+        },
+        "lab": {
+          "at": "visible:.njg-results"
+        }
       }
     },
     "to-record text": {
-      "sel": ".njg-ph, .ph, .oc-rec, .rs-ph, .cv-ph, .ng-rec",
+      "sel": ".njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
       "moves": false,
-      "grep": ["\\.ph\\b", "\\bnjg-ph\\b", "\\boc-rec\\b", "\\brs-ph\\b", "\\bcv-ph\\b", "\\bng-rec\\b"],
+      "grep": [
+        "\\.ph\\b",
+        "\\bnjg-ph\\b",
+        "\\boc-rec\\b",
+        "\\brs-ph\\b",
+        "\\bcv-ph\\b",
+        "\\bng-rec\\b"
+      ],
       "rowWords": "to record|grey italic|placeholder",
       "places": {
-        "index": { "none": "the house says nothing to record" },
-        "first": { "at": "life:popup-open", "delay": 300 },
-        "day": { "at": "rec:first-line" },
-        "cook": { "at": "life:popup-open", "delay": 300 },
-        "clinic": { "at": "life:popup-open", "delay": 300 },
-        "lab": { "at": "life:popup-open", "delay": 300 }
-      }
+        "index": {
+          "none": "the house says nothing to record"
+        },
+        "first": {
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
+        },
+        "day": {
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
+        },
+        "cook": {
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3,
+          "flow": "cook:day1"
+        },
+        "clinic": {
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3
+        },
+        "lab": {
+          "at": "visible:.njg-ph, .ph, .to-record, .rs-ph, .cv-ph, .oc-headline.rec, .oc-rec, [data-rec]",
+          "delay": 200,
+          "tries": 3,
+          "flow": "lab:cook/round"
+        }
+      },
+      "dom": true
     },
     "help ladder": {
       "sel": "screen",
       "moves": false,
-      "grep": ["Onboard\\.RUNGS\\b", "Onboard\\.stuck\\b", "\\bG\\.PAUSE\\b", "\\bBULB_PULSE\\b", "\\bhelpMs\\b", "\\bbulbPulseMs\\b", "\\bLADDER\\b"],
+      "grep": [
+        "Onboard\\.RUNGS\\b",
+        "Onboard\\.stuck\\b",
+        "\\bG\\.PAUSE\\b",
+        "\\bBULB_PULSE\\b",
+        "\\bhelpMs\\b",
+        "\\bbulbPulseMs\\b",
+        "\\bLADDER\\b"
+      ],
       "rowWords": "help ladder|after the pause|stuck|hint rung|bulbs? pulse",
       "places": {
-        "index": { "none": "no step to be stuck at in the house" },
-        "first": { "none": "no stuck path on the first launch yet (its Cook rounds are Cook's: see cook)" },
-        "day": { "at": "rec:stuck", "every": 4 },
-        "cook": { "at": "rec:stuck", "every": 4 },
-        "clinic": { "at": "rec:stuck", "every": 4 },
-        "lab": { "none": "no stuck path on the game host yet (its Cook is Cook's: see cook)" }
+        "index": {
+          "none": "no step to be stuck at in the house"
+        },
+        "first": {
+          "none": "no stuck path on the first launch yet (its Cook rounds are Cook's: see cook)"
+        },
+        "day": {
+          "at": "rec:stuck",
+          "every": 4
+        },
+        "cook": {
+          "at": "rec:stuck",
+          "every": 4
+        },
+        "clinic": {
+          "at": "rec:stuck",
+          "every": 4
+        },
+        "lab": {
+          "none": "no stuck path on the game host yet (its Cook is Cook's: see cook)"
+        }
       }
     }
   }
