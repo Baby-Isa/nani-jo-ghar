@@ -430,6 +430,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .mstar.pop { transform: scale(1.3); }
 /* Busy: the lightning star is full of gold and drains with the patience ring */
 .mstar.drain.pending { border-style: solid; border-color: #d9b45a; color: #8a6412; background: linear-gradient(to top, #ffd86b var(--fill, 100%), var(--njg-page) var(--fill, 100%)); }
+/* (the parked pages only: find.html and snap.html still carry their own .m-stamp; Cook's served stamp is the kit's OrderCard.stamp, S13-B1) */
 #mission .m-stamp {
   position: absolute; right: 10px; bottom: 10px; transform: rotate(-12deg) scale(2); opacity: 0; pointer-events: none;
   border: 3px solid var(--madder); color: var(--madder); font-family: var(--kutchi-font); font-weight: 800; padding: 0 10px; border-radius: 8px;
@@ -841,10 +842,6 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 }
 #voice .vc-say { flex: none; width: 1.4em; height: 1.4em; display: inline-flex; color: var(--brass, var(--njg-cook-brass)); animation: var(--njg-talk-anim); }
 #voice .vc-say svg { width: 100%; height: 100%; }
-/* the throbbing hint: the row (or card) of the order she's talking about */
-body.w6 #mission .throb { animation: throb .7s ease-in-out infinite alternate; border-radius: 10px; }
-@keyframes throb { from { box-shadow: 0 0 0 0 rgba(201,151,58,0); background-color: transparent; } to { box-shadow: 0 0 0 4px rgba(201,151,58,.45); background-color: rgba(var(--njg-gold-pale-rgb), .45); } }
-@media (prefers-reduced-motion: reduce) { body.w6 #mission .throb { animation: none; background-color: rgba(var(--njg-gold-pale-rgb), .5); } }
 @media (max-height: 500px) {
   #count-badge:not(.njg-tally) { padding: 4px 8px; gap: 4px 8px; }
   #count-badge:not(.njg-tally) .tl img { width: 26px; height: 26px; }
@@ -1151,17 +1148,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   .patch { width: 80px; height: 80px; margin: 4px auto; }
 }
 
-/* ---- Sprint 11 (B-cook): the order said item by item (js/cook/ui.js introduceAlong): see-through, nothing over a face.
-   The item said now is its word card, big, at the top left of the play area by the guide box; it flies into its row ---- */
-#intro.along { background: transparent; align-items: flex-start; justify-content: flex-start; padding: var(--njg-s3, 12px); animation: none; cursor: default; }
-#intro.along .ic-card, body.w6 #intro.along .ic-card { width: auto; max-width: none; max-height: none; background: transparent; border: none; box-shadow: none; border-radius: 0; padding: 0; overflow: visible; animation: none; }
-#intro.along .ic-head, #intro.along .ic-go, #intro.along .ic-how { display: none; }
-#intro.along .ic-order, body.w6 #intro.along .ic-order { display: block; }
-#intro.along .wc-card.ic-word { width: clamp(168px, min(19vw, 42vh), 230px); animation: icWordIn .3s cubic-bezier(.2, 1.3, .4, 1); }
-/* (the word said now never breaks inside a word: a short phone's card is wide enough for "dudh na") */
-#intro.along .wc-card.ic-word p { overflow-wrap: normal; word-break: normal; }
+/* (S13-B1: the order said item by item is the kit's see-through pop-up, RequestPopup along, and its word card WordCard.pop: css/shared/order-card.css, word-card.css.
+   icWordIn stays for chai-tray.js's call-out card until that file calls WordCard.pop) */
 @keyframes icWordIn { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { #intro.along .wc-card.ic-word { animation: none; } }
 /* (a row not said yet, and a word card inside an order card row: js/shared/order-card.js keeps those with the component) */
 
 /* ---- Sprint 11 (B-cook, task 6): call "chai" to serve: a round microphone by the ready pan's glass (js/cook/stations/chai-tray.js).

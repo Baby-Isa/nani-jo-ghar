@@ -26,11 +26,16 @@
  *     opts: { stage,                              1-5; else progress.stage(id); else 1
  *             progress,                           anything with stage(id), support(id, o), reveal(id, slot) (core.progress)
  *             slots,                              force the slots {picture, english, kutchiText} (the lab, a test)
- *             onReveal(slot, el), cls, id }
- *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak() }   cue(): the cue a judged answer carries
+ *             onReveal(slot, el), cls, id,
+ *             layout: "across",                   (S13-B1: options, never a game's CSS) the picture left, the strip right
+ *             bare, fill, inset,                  no card box; filling its holder; the picture contained with a margin
+ *             shape: "side" }                     a card in the sidebar: its picture sized to the sidebar's width
+ *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak(), hush(on), lit(on), photo(on) }   cue(): the cue a judged answer carries
  *            ("kutchi" unless the child opened a slot on this card)
- *   WordCard.pop(fromEl, toEl, {fast}) -> Promise   a card flies from the guide box (#guide) into its row (RequestPopup.fly):
- *            toEl is hidden until the flight lands, so the word arrives once
+ *   WordCard.pop(el, word, opts) -> el              the one entrance (S13-B1): a big card of the word said now, made in el (the
+ *            order pop-up's along body), popping in (.wc-pop)
+ *   WordCard.fly(fromEl, toEl, {fast}) -> Promise   a card flies from the big one into its row (RequestPopup.fly): toEl is
+ *            hidden until the flight lands, so the word arrives once (WordCard.pop(fromEl, toEl) is its older name)
  *   WordCard.slots(stage, {placeholder, support}) -> {stage, picture, english, kutchi, speaker: true}   (pure; Node tests)
  *   WordCard.useCss(href)   adds css/shared/word-card.css once (a page that imports this as a module)
  *
@@ -173,7 +178,9 @@
   function build(kind, parent, word, opts) {
     word = word || {};
     opts = opts || {};
-    const c = el(kind === "row" ? "div" : "section", `wc wc-${kind}${opts.cls ? ` ${opts.cls}` : ""}`);
+    // S13-B1 (the games' own .wc- restyles went): the card's few looks are options, never a game's CSS (css/shared/word-card.css)
+    const look = [opts.layout === "across" ? "wc-across" : "", opts.bare ? "wc-bare" : "", opts.fill ? "wc-fill" : "", opts.inset ? "wc-inset" : "", opts.shape === "side" ? "wc-side" : ""].filter(Boolean);
+    const c = el(kind === "row" ? "div" : "section", [`wc wc-${kind}`, ...look, opts.cls || ""].filter(Boolean).join(" "));
     if (opts.id) c.id = opts.id;
     if (word.id != null) c.dataset.word = String(word.id);
     const pic = el("div", "wc-slot wc-pic", c);
@@ -277,6 +284,18 @@
         if (revealed.has("text")) return "text";
         return "kutchi";
       },
+      /** S13-B1: the strip (speaker, Kutchi, English) held back while the word waits to be judged (the eye test past support) */
+      hush(on = true) {
+        c.classList.toggle("wc-hush", !!on);
+      },
+      /** S13-B1: the word has been named: its speaker ringed in the focus colour until the next card (the eye test) */
+      lit(on = true) {
+        c.classList.toggle("wc-lit", !!on);
+      },
+      /** S13-B1: the picture alone, filling the card (the book's photo once it is in its frame) */
+      photo(on = true) {
+        c.classList.toggle("wc-photo", !!on);
+      },
       speak() {
         const say = word.say || opts.say;
         if (!say) return Promise.resolve();
@@ -320,7 +339,7 @@
    * of the row starts over `fromEl` and shrinks into `toEl` (RequestPopup.fly, the one fold animation); toEl is hidden
    * until it lands. Resolves when the word is in its place.
    */
-  W.pop = async function (fromEl, toEl, o = {}) {
+  W.fly = async function (fromEl, toEl, o = {}) {
     if (!toEl) return;
     const RP = root.RequestPopup || (root.Lifecycle && { fly: root.Lifecycle.fly });
     const a = fromEl && fromEl.getBoundingClientRect ? fromEl.getBoundingClientRect() : null;
@@ -346,6 +365,18 @@
       toEl.classList.add("wc-landed");
       setTimeout(() => toEl.classList.remove("wc-landed"), 500);
     }
+  };
+  /**
+   * S13-B1 (one entrance; was Cook's icWordIn and the clinic's cl-intro-in): the word said now comes up as a big word card in el
+   * (the order pop-up's along body, js/shared/request-popup.js), popping in from the left (.wc-pop, css/shared/word-card.css).
+   * Returns the card. (Called with two elements it is the fly above, its older name.)
+   */
+  W.pop = function (el, word, o = {}) {
+    if (word && word.nodeType) return W.fly(el, word, o);
+    if (!el) return null;
+    const c = build("card", el, word, o);
+    c.classList.add("wc-pop");
+    return c;
   };
   return W;
 });

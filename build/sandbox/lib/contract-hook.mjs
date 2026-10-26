@@ -673,6 +673,28 @@ export const CONTRACT_HOOK = `(() => {
   };
 
   // ---- the sampler ----
+  // contract-40 (S13-B1; one card markup): every order card on screen, sidebar or pop-up, and its own parts (head, face, items,
+  // rows) carry only the kit's classes (oc-, wc, njg-, fit and the card's state words); a game's own class on them is a break.
+  // SH-110: a blanked row (a dotted word showing, or OrderCard's oc-blank) starts with its speaker (.oc-spk). contract-41: the
+  // request pop-up on screen is the kit's (.njg-rq-card), never Cook's #intro
+  const KIT_STATE = "done next next-up no miss wrong reading later now pulse folded still closed peek english direct tint foldable reopened bulb-open speaking on face-say tk-seen landed arriving people away oc-away in big".split(" ");
+  const kitClass = (c) => /^(oc-|wc|njg-|fit)/.test(c) || KIT_STATE.includes(c);
+  const kitCards = () => {
+    const cards = [...document.querySelectorAll(".oc-card")].filter(shown);
+    const bad = [];
+    for (const c of cards) {
+      for (const el of [c, ...c.querySelectorAll(":scope .oc-head, :scope .oc-face, :scope .oc-item, :scope .oc-row")]) {
+        const own = [...el.classList].filter((x) => !kitClass(x));
+        if (own.length) bad.push((el === c ? "card" : el.classList.contains("oc-row") ? "row" : el.classList.contains("oc-face") ? "face" : el.classList.contains("oc-item") ? "item" : "head") + ": " + own.join(" "));
+      }
+    }
+    const blank = cards.flatMap((c) => [...c.querySelectorAll(".oc-row")].filter((r) => shown(r) && !r.classList.contains("done") && (r.classList.contains("oc-blank") || [...r.querySelectorAll(".dots")].some(shown))));
+    const mute = blank.filter((r) => { const f = r.firstElementChild; return !(f && f.classList.contains("oc-spk") && shown(f)); }).map((r) => (r.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 40));
+    const intro = document.querySelector("#intro");
+    const pops = [...document.querySelectorAll(".njg-rq-open, .njg-rq-veil:not(.hidden), #intro:not(.hidden)")].filter(shown);
+    const ownPop = pops.filter((p) => !p.querySelector(".njg-rq-card") && !p.matches(".njg-rq-card")).map((p) => (p.id ? "#" + p.id : "") + "." + [...p.classList].join("."));
+    return { n: cards.length, bad: [...new Set(bad)].slice(0, 12), blank: blank.length, mute: mute.slice(0, 8), pops: pops.length, ownPop, intro: !!(intro && shown(intro)) };
+  };
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
   const sample = () => {
@@ -706,7 +728,7 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("side", sd)) emit({ k: "side", ...sd });
     // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek; a [data-howto] line is the doctor's spoken strip, "One more thing.", not a written row, s08 w6L):
     // each row's and headline's Kutchi words and every count chip, the bulb's English aside
-    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count")].filter((x) => !x.closest(".cl-row-en") && !x.closest("[data-howto]")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
+    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count, .oc-k, .oc-count")].filter((x) => !x.closest(".cl-row-en") && !x.closest(".oc-en") && !x.closest("[data-howto]")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
     const cwu = [...new Set(cw)].slice(0, 60);
     if (!same("card", cwu)) emit({ k: "card", words: cwu });
     // contract-28 (SH-100): the light bulbs on screen and what each is drawn with
@@ -720,9 +742,12 @@ export const CONTRACT_HOOK = `(() => {
     if (ep && !same("endpages", ep)) emit({ k: "endpages", ...ep });
     const hd = safe(heads, []);
     if (!same("heads", hd.map((x) => [x.size, x.lines, x.text]))) emit({ k: "heads", list: hd });
+    // contract-40, contract-41 (S13-B1): one card markup and one pop-up
+    const kc = safe(kitCards, null);
+    if (kc && !same("kitcard", kc)) emit({ k: "kitcard", ...kc });
     // contract-18: each sidebar card row, by its key (the order card's data-key, the clinic's data-row) or its place, with its
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
-    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english"), no: x.classList.contains("no") }; }));
+    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text, .oc-k") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english"), no: x.classList.contains("no") }; }));
     if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
     if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });

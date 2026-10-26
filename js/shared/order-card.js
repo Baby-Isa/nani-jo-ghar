@@ -32,6 +32,9 @@
  *     done?: bool }                               default: every item done
  *
  *   `key` is anything the host wants handed back with the element drawn for it (read-along).
+ *   A part's (or item's) `say(btn)` and `blank` (SH-110, Zafar 26 Oct: never a memory test): a row whose words are blanked
+ *   (`blank`, or a dotted word in its label: Lang.html's .dots) starts with a clear speaker (.oc-spk) that calls say(): the
+ *   word heard as often as tapped, free (the host's own voice path; never a hint, never a mark on the word).
  *   A part's (or item's) `word` and `wordOpts` (Sprint 11): the row is drawn as the shared word card's row
  *   (WordCard.row(word, wordOpts), js/shared/word-card.js: picture, speaker, Kutchi, English by the word's stage), inside
  *   the order card's own row frame and tick; `label` is then unused. Without them (or without the word card) as before.
@@ -59,7 +62,10 @@
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
+ *   OrderCard.update(old, data, opts)    a card drawn again from new data, in the old one's place, its decoded face kept
+ *       opts.stamped    the order is served: the card wears the one stamp (OrderCard.stamp)
  *   OrderCard.closeBig(cardEl)       a big card drawn open, closed as {big, closed} draws it (the pop-up from level 3, SH-72)
+ *   OrderCard.stamp(cardEl)          the one served stamp on a card (S13-B1; T20, SH-54), drawn inside it
  *   OrderCard.CHECK                  the small flat gold check (svg)
  *   OrderCard.redo({max})            decision 51 (CK-23), one rule for every game: a wrong item is redone on the spot.
  *       r.wrong(key) -> {tries, action}  action "redo" (empty that item, reopen its row, try again with help) or, at
@@ -199,6 +205,34 @@
     (document.head || document.body).appendChild(st);
   }
 
+  /*
+   * SH-110 (Zafar, 26 Oct: "each item should have a clear speaker button, probably at the beginning to the left of it, so you can
+   * easily just play each item and just hear what that word is ... and that shouldn't penalise you"): a blanked row's first thing
+   * is its speaker. It plays the row's word through the host's own voice path (node.say: Cook's Lang.speak, the clinic's
+   * Kit.Voice), as often as it is tapped, and is never a hint, never a mark on the word. A word row (WordCard.row) has its own
+   * speaker already: that one moves to the row's start, so the row keeps one speaker.
+   */
+  OC.SPK = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+  function speakerFirst(r, node) {
+    r.classList.add("oc-blank");
+    let b = r.querySelector(".wc-spk");
+    if (!b) {
+      if (typeof node.say !== "function") return; // (no voice for this row: contract-40 reports a blanked row with no speaker)
+      b = el("button", "oc-spk", OC.SPK);
+      b.type = "button";
+      b.setAttribute("aria-label", "Hear it");
+      b.addEventListener("click", (ev) => {
+        ev.stopPropagation(); // never a tap on the card (a peek, a fold)
+        b.classList.add("on");
+        Promise.resolve()
+          .then(() => node.say(b))
+          .catch(() => {})
+          .then(() => b.classList.remove("on"));
+      });
+    } else b.classList.add("oc-spk");
+    r.insertBefore(b, r.firstChild);
+  }
+
   function rowEl(node, cls, opts) {
     // Sprint 11 (B-cook; rule 8, one card everywhere): a row that carries its word (node.word, node.wordOpts: the shared
     // word card's word and options, js/shared/word-card.js) IS the word card's row: picture, speaker, Kutchi, English, faded
@@ -214,6 +248,8 @@
       if (k) k.classList.add("oc-t");
       r.insertAdjacentHTML("beforeend", tick(node.done && !node.wrong));
     } else r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done && !node.wrong)}`;
+    // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): a row whose words are blanked (dotted) starts with a clear speaker
+    if (!node.done && (node.blank || r.querySelector(".dots"))) speakerFirst(r, node);
     const id = keyId(node.key);
     if (id != null) r.dataset.key = id;
     if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);
@@ -543,6 +579,7 @@
       held.appendChild(list);
       c.appendChild(held);
     }
+    if (opts.stamped && !opts.big) OC.stamp(c);
     if (opts.fold && !opts.big && sh.items.length) {
       opts.fold.el = c;
       if (opts.closed && !sh.done) closable(c, opts.fold, opts);
@@ -574,6 +611,38 @@
     body.appendChild(inner);
     c.appendChild(body);
     return c;
+  };
+
+  /**
+   * A host's card drawn again from new data (S13-B1: Cook's recipe ladder draws through the kit). The new card takes the old one's
+   * place when that is still on the page, and keeps the old one's face picture once it has decoded (DAAR-04, DAAR-18, CHT-06: a
+   * fresh <img> on every redraw showed a blank circle for a few frames). Returns the new card. old may be null (a first drawing).
+   */
+  OC.update = function (old, data, opts = {}) {
+    const c = OC.card(data, opts);
+    if (!old || !old.querySelector) return c;
+    const oi = old.querySelector(":scope > .oc-head > .oc-face img");
+    const ni = c.querySelector(":scope > .oc-head > .oc-face img");
+    if (oi && ni && oi !== ni && oi.getAttribute("src") === ni.getAttribute("src") && oi.complete && oi.naturalWidth) {
+      oi.alt = ni.alt;
+      ni.replaceWith(oi);
+    }
+    if (old.parentNode) old.replaceWith(c);
+    return c;
+  };
+
+  /**
+   * One stamp (S13-B1; T20, SH-54: the S12 served stamp is the reference): a served card's picture stamp, a gold ring with a
+   * covered dish, tilted, drawn inside the card so nothing clips it; the card keeps the stamp's room at its right (.oc-stamped,
+   * css/shared/order-card.css). OrderCard.card draws it again for opts.stamped. Returns the card.
+   */
+  OC.stamp = function (card) {
+    if (!card || !card.classList || card.querySelector(":scope > .oc-stamp")) return card;
+    card.classList.add("oc-stamped");
+    const s = el("span", "oc-stamp");
+    s.setAttribute("aria-hidden", "true");
+    card.appendChild(s);
+    return card;
   };
 
   /** Several cards into box: [{data, opts}] or data objects (sharing `opts`). */

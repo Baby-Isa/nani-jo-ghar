@@ -456,7 +456,7 @@
       dots = false;
       close();
       const flag = s.check && Lang.flagGuesses();
-      const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : "", flag ? "to-check" : ""].filter(Boolean).join(" ");
+      const cls = [s.w ? "word" : "", s.lang === "e" ? "njg-ph ph" : "", flag ? "to-check" : ""].filter(Boolean).join(" ");
       const tip = flag ? ` title="To check: ${esc(Cook.english(s.check))}'s gender isn't confirmed (Mum), so this is the he-form"` : "";
       // decision 84: a placeholder (grey italic English) keeps its hidden "to record" tag in the markup (data-rec), so the
       // tools and Mum's list find every one and no checker reads it as English for the child (LNG-03)

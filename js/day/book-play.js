@@ -188,7 +188,7 @@ async function findRound(g, round, ri) {
     const card = W.card(
       wrap,
       { id: g.wordOf(key), kutchi: kt, english: wl.en, rec: !wl.ok, picture: (box) => box.appendChild(g.thing(key)), say: () => g.sayNow(wl, kt) },
-      { progress: g.progress, cls: "day-fintro", slots: { picture: true, english: g.stageOf(key) <= 2, kutchiText: true } },
+      { progress: g.progress, cls: "day-fintro", inset: true, slots: { picture: true, english: g.stageOf(key) <= 2, kutchiText: true } },
     );
     const P = g.L;
     const w = Math.min(P.offsetWidth * 0.62, 340);
@@ -540,7 +540,7 @@ async function photo(g, page) {
     const p = W.row(
       loose,
       { id: g.wordOf(key), kutchi: kt, english: wl.en, rec: !wl.ok, picture: (box) => box.appendChild(g.thing(key, { photo: true })), say: () => g.sayNow(wl, kt) },
-      { progress: g.progress, cls: "day-photo-loose", slots: { picture: true, english: g.stageOf(key) <= 2, kutchiText: g.stageOf(key) < 5 } },
+      { progress: g.progress, cls: "day-photo-loose", inset: true, slots: { picture: true, english: g.stageOf(key) <= 2, kutchiText: g.stageOf(key) < 5 } },
     );
     p.dataset.k = String(i);
     p.dataset.thing = key;
@@ -607,6 +607,7 @@ async function photo(g, page) {
             p.style.transform = "";
             frame.appendChild(p);
             p.classList.add("day-in");
+            if (p.wc && p.wc.photo) p.wc.photo(true); // (S13-B1: the kit's picture-only state)
             frame.classList.add("day-mounted");
             fillGap(true);
             placed = p;
@@ -624,6 +625,7 @@ async function photo(g, page) {
             if (p === placed) {
               placed = null;
               p.classList.remove("day-in");
+              if (p.wc && p.wc.photo) p.wc.photo(false);
               frame.classList.remove("day-mounted");
               fillGap(false);
               g.turnOn(false);

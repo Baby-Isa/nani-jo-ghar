@@ -59,10 +59,10 @@ canvas.day-layer { width: 100%; height: 100%; }
    door's own picture layers are the door's */
 .day-wcard.wc { flex: 0 1 auto; min-height: 0; visibility: hidden; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .4s, transform .4s, visibility 0s .4s; }
 .day-wcard.wc.in { visibility: visible; opacity: 1; transform: none; transition: opacity .4s, transform .4s; }
-.day-wcard .wc-pic > img.day-wbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.day-wcard .wc-pic > img.day-wbg.contain { object-fit: contain; }
-.day-wcard .wc-pic > img.day-wsprite { position: absolute; width: auto; transform: translate(-50%, -100%); display: block; }
-.day-wcard .wc-pic > canvas.day-rain { position: absolute; inset: 0; width: 100%; height: 100%; }
+.day-wcard img.day-wbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.day-wcard img.day-wbg.contain { object-fit: contain; }
+.day-wcard img.day-wsprite { position: absolute; width: auto; transform: translate(-50%, -100%); display: block; }
+.day-wcard canvas.day-rain { position: absolute; inset: 0; width: 100%; height: 100%; }
 .day-wcard .day-wline { min-width: 0; }
 .day-wcard .day-wline .day-k { margin: 0; font-size: inherit; } /* S12 W2-A (SH-123): the card size, growing with it */
 
@@ -151,7 +151,7 @@ canvas.day-layer { width: 100%; height: 100%; }
    shuffled, then the question; the cards are buttons only while she asks */
 .day-fintro { position: absolute; z-index: 3; pointer-events: auto; opacity: 0; transform: scale(.92); transition: opacity .35s, transform .35s; }
 .day-fintro.in { opacity: 1; transform: none; }
-.day-fintro .wc-pic > img, .day-fintro .wc-pic > svg { position: absolute; left: 6%; top: 6%; width: 88%; height: 88%; object-fit: contain; }
+/* (its picture, contained with a margin: the word card's inset option, S13-B1) */
 .day-pcard { position: absolute; box-sizing: border-box; padding: 7%; border: 0; border-radius: var(--njg-radius); background: var(--njg-card); box-shadow: var(--njg-shadow); cursor: pointer; pointer-events: none; opacity: 0; scale: .8; display: flex; align-items: center; justify-content: center; touch-action: manipulation; z-index: 1; }
 .day-pcard.in { opacity: 1; scale: 1; transition: scale .3s cubic-bezier(.3, .7, .3, 1), opacity .3s; }
 .day-pcard.live { pointer-events: auto; }
@@ -224,9 +224,8 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-photo-loose.day-lifted { z-index: 9; cursor: grabbing; box-shadow: var(--njg-shadow-lift); }
 .day-photo-loose.day-back { transition: transform .45s cubic-bezier(.3, .7, .3, 1); }
 .day-photo-loose.day-in { position: absolute; inset: 0; width: auto; max-width: none; padding: 5%; transform: none; }
-.day-photo-loose.day-in .wc-strip { display: none; }
-.day-photo-loose.day-in .wc-pic { width: 100%; height: 100%; }
-.day-photo-loose .wc-pic > img, .day-photo-loose .wc-pic > svg { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; }
+/* (in its frame the photo is the picture alone, and every photo's picture is contained with a margin: the word card's photo state
+   and inset option, S13-B1) */
 .day-photo-loose.day-demo-home { opacity: .45; }
 .day-demo-double { transform: none !important; box-shadow: var(--njg-shadow-lift); }
 .day-sentline { display: flex; align-items: center; justify-content: center; gap: var(--njg-s2); }
@@ -275,7 +274,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-window .day-side { display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box; }
 .day-find { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s2); margin-top: var(--njg-s2); padding: var(--njg-s1); }
 .day-find-card.wc { flex: 0 1 auto; min-height: 0; transition: box-shadow .3s; }
-.day-find-card.wc .wc-pic { aspect-ratio: auto; flex: 1 1 auto; min-height: var(--njg-tap); height: calc(var(--njg-side-w, 240px) * .62); max-height: calc(var(--njg-side-w, 240px) * .75); }
+/* (its picture sized to the sidebar's width: the word card's side shape, S13-B1) */
 .day-find-card .day-wline .day-k { margin: 0; font-size: var(--njg-t2); }
 .day-find-row { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--njg-s2); min-height: var(--njg-tap); padding: var(--njg-s1) var(--njg-s3); box-sizing: border-box; background: var(--njg-card); border: 0; border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); color: var(--njg-ink); font: inherit; text-align: left; cursor: pointer; touch-action: manipulation; }
 .day-find-row .day-line { min-width: 0; }
@@ -287,7 +286,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-window .help-pulse { animation: var(--njg-glow-anim); } /* the kit's glow (css/shared/focus.css; S13-A1) */
 /* RIDE-10: the first-time help's box round the open card (not dimmed, never bouncing: the thing in the view is what bounces) */
 .day-find-card.day-help-box { box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), 0 0 0 calc(var(--njg-line-2) + var(--njg-s1)) var(--njg-focus), var(--njg-shadow); }
-@media (max-height: 499.98px) { .day-find { gap: var(--njg-s1); margin-top: var(--njg-s1); } .day-find-card.wc .wc-pic { height: calc(var(--njg-side-w, 240px) * .42); } }
+@media (max-height: 499.98px) { .day-find { gap: var(--njg-s1); margin-top: var(--njg-s1); } }
 .wr-window { position: absolute; inset: 0; overflow: hidden; background: var(--njg-panel); touch-action: manipulation; }
 .wr-scene { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .wr-sky { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; }

@@ -161,7 +161,7 @@
    "after": null,
    "capture": [
     "dom:.rs-words",
-    "dom:#intro .ic-card@request"
+    "dom:.njg-rq-card@request"
    ],
    "expect": null,
    "note": "the review writes each word in the form the order used (hakri, not hakro; hakri lakri): compare the two texts"
@@ -179,7 +179,7 @@
    "after": null,
    "capture": [
     "dom:.rs-words",
-    "dom:#intro .ic-card@request"
+    "dom:.njg-rq-card@request"
    ],
    "expect": null,
    "note": "hakri maani: the review keeps hakri"
@@ -470,10 +470,10 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
-    "sameOrder:#intro .ic-card .oc-row"
+    "sameOrder:.njg-rq-card .oc-row"
    ],
    "note": "Nani reads the rows top to bottom"
   },
@@ -510,10 +510,10 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
-    "sameOrder:#intro .ic-card .oc-row"
+    "sameOrder:.njg-rq-card .oc-row"
    ],
    "note": "two people: each card in spoken order"
   }
@@ -782,7 +782,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:#intro .ic-card",
+    "dom:.njg-rq-card",
     "voice"
    ],
    "expect": [
@@ -802,7 +802,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
     "hasWord:number"
@@ -925,13 +925,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#intro .ic-card .reading",
+   "at": "visible:.njg-rq-card .reading",
    "after": null,
    "capture": [
-    "strip:#intro .ic-card:6x400"
+    "strip:.njg-rq-card:6x400"
    ],
    "expect": [
-    "lastsMs:#intro .ic-card .reading>=200"
+    "lastsMs:.njg-rq-card .reading>=200"
    ],
    "note": "the read-along underline moves word by word in the pop-up (at a child's pace: at test speed a line is over in 56 ms)"
   },
@@ -3002,7 +3002,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
     "lexicon",
@@ -3026,7 +3026,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
     "lexicon"
@@ -5059,7 +5059,7 @@
    "capture": [
     "voice",
     "contract:1",
-    "strip:#intro .ic-card:4x600"
+    "strip:.njg-rq-card:4x600"
    ],
    "expect": [
     "pass"
@@ -5102,7 +5102,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
     "!textMatches:\\band\\b"
@@ -5599,7 +5599,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:#intro .ic-card",
+    "dom:.njg-rq-card",
     "cmd:python3 build/test_cook.py --orders"
    ],
    "expect": [
@@ -10953,7 +10953,7 @@
    "after": null,
    "capture": [
     "crop:.hs-face",
-    "crop:#side .cl-card-face",
+    "crop:.cl-side .oc-face",
     "ref:sources/art/s12/fc-face-circles-v1.png"
    ],
    "expect": null,
@@ -12042,11 +12042,11 @@
    "at": "popup-open",
    "after": null,
    "capture": [
-    "crop:#intro .ic-card",
-    "dom:#intro .ic-card"
+    "crop:.njg-rq-card",
+    "dom:.njg-rq-card"
    ],
    "expect": [
-    "count:#intro .ic-card .oc-row:not(.oc-ph-row)=0"
+    "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
    "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9) (s08 w8A: the level table, Zafar 19 Oct, opens the L3 card with its item words dotted; only L4 hides it, so only L4's pop-up writes no row)",
    "delay": 300
@@ -14694,7 +14694,7 @@
    "at": "popup-open",
    "after": null,
    "capture": [
-    "crop:#intro .ic-card",
+    "crop:.njg-rq-card",
     "contract:33"
    ],
    "expect": [
@@ -15273,6 +15273,52 @@
     "pass"
    ],
    "note": "maani: the card ladder and the step calls at L2-L4 (big and small from L2, the tightest flip window at L4)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-fold",
+   "after": null,
+   "delay": 1500,
+   "capture": [
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "SH-110 (Zafar, 26 Oct: never a memory test): chai's order card in the sidebar just after the order pop-up folds into it, at L3 and L4: every row written in Kutchi when the order first comes, and any blanked (dotted or folded) row starts with a clear speaker button at its left that plays the word"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-fold",
+   "after": null,
+   "delay": 1500,
+   "capture": [
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "SH-110 (Zafar, 26 Oct: never a memory test): samosa's order card in the sidebar just after the order pop-up folds into it, at L3 and L4: every row written in Kutchi when the order first comes, and any blanked (dotted or folded) row starts with a clear speaker button at its left that plays the word"
   }
  ],
  "SH-111": [
@@ -19536,7 +19582,7 @@
   },
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768",
@@ -19545,13 +19591,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#side .oc-card .wc-row",
+   "at": "visible:.wc-card",
    "after": null,
    "capture": [
-    "crop:#side .oc-card"
+    "crop:.wc-card"
    ],
    "expect": null,
-   "note": "chai's list: the sidebar rows keep the shared row size; English blank past support (contract-39)"
+   "note": "chai's big word card as each item of the order is said (the one word card the eye test and the door draw): the speaker, the Kutchi and the English centred as one group in its half, English only while the word is supported"
   }
  ],
  "CLN-199": [

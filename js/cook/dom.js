@@ -26,16 +26,8 @@ export const screenHTML = () => `
          made by Cook's UI.init as #done-btn and #go-btn, bottom right under the thumb -->
     <div id="toast" class="hidden"></div>
 
-    <!-- the intro order card: when someone orders it comes up big in the middle (nothing is live yet), then flies into the sidebar -->
-    <div id="intro" class="hidden" role="dialog" aria-label="The order">
-      <div class="ic-card">
-        <!-- 28 Sept: face | the overall request | speaker; then what's asked for, one row each. No name, no English instructions -->
-        <!-- Sidebar v2 (28 Sept evening): the face is the replay button (a small speaker badge on its corner); the summary of several (skewers) under the headline -->
-        <div class="ic-head"><button class="ic-say face-say" type="button" aria-label="Hear it again"><img class="ic-face" alt=""><span class="say-badge" aria-hidden="true"></span></button><div class="ic-head-text"><div class="ic-dish"></div><div class="m-sum"></div></div></div>
-        <div class="ic-order"></div>
-        <div class="ic-go" aria-label="Tap to start"></div>
-      </div>
-    </div>
+    <!-- (the order pop-up is the shared kit's, made over this play area when someone orders: js/shared/request-popup.js;
+         S13-B1, Cook's own #intro went) -->
 
   </main>
 
@@ -57,7 +49,6 @@ export const screenHTML = () => `
         <div class="m-who"><div class="m-dish"></div><div class="m-sum"></div></div>
       </div>
       <div class="m-order"></div>
-      <div class="m-stamp" aria-hidden="true"></div>
     </div>
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">

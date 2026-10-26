@@ -88,8 +88,11 @@
 .cl-face img { transform-origin: 50% var(--face-y, 50%); transform: translateY(calc(50% - var(--face-y, 50%))) scale(var(--face-zoom, 1)); }
 /* SH-113, s08 w6E: the circle's SIZE too. Cook's face is --oc-face (44 px) centred in its 48 px tap area; the clinic's button was itself the
    circle, so its face drew at the tap area's 48 px. The tap area stays; the circle inside it is --oc-face, with Cook's edge ring */
-.cl-card .oc-card .oc-face.cl-card-face { background: transparent; display: grid; place-items: center; }
-.cl-card .oc-card .oc-face.cl-card-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
+/* S13-B1 (one card markup): a face drawn by the host as an element (the clinic's .cl-face figure) sits in the same circle, the
+   button carrying only the kit's classes */
+.oc-card .oc-face:has(> .cl-face) { background: transparent; display: grid; place-items: center; }
+.oc-card .oc-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
+.oc-card .oc-face > .cl-face :is(svg, img) { width: 100%; height: 100%; object-fit: cover; }
 /* SH-113 (s08 w6M; the judge, 20 Oct: the doctor's circle "clearly more zoomed out than A's Cook customer", the girl's "whole head with
    pigtails and shoulders"): the crop rule follows the PICTURE wherever its circle is drawn, so every circle of one face is zoomed the
    same: the shared order card's face (the clinic gives it the doctor's or the girl's picture), the clinic's own .cl-face and the heal
@@ -170,12 +173,22 @@
 .oc-card.closed { position: relative; }
 /* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
    order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
-.stamped .oc-card { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+.oc-card.oc-stamped { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
 /* PAN-01 (800x360: "Bring me these" and the tick ran under the stamp on a folded served card): the stamp's room holds on every size
    (:root: the phones' tighter card padding below no longer wins over it), and a folded card's stamp is the tick's size, centred
-   in its head beside the tick (the stamp reads these, css/cook-side-v2.css), so the headline keeps a line's room (shrink, then wrap) */
-:root .stamped .oc-card:not(.oc-big):not(.oc-mini) { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
-:root .stamped .oc-card.folded:not(.oc-big):not(.oc-mini) {
+   in its head beside the tick (the stamp reads these, .oc-stamp below), so the headline keeps a line's room (shrink, then wrap) */
+:root .oc-card.oc-stamped:not(.oc-big):not(.oc-mini) { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+/* One stamp (S13-B1; OrderCard.stamp; SH-54, R5, T20: "served" is a picture, never a word): a gold ring with a covered dish,
+   tilted like a stamp, inside the card so nothing clips it (was Cook's #mission.stamped .oc-card::after and .m-stamp) */
+.oc-card .oc-stamp {
+  position: absolute; z-index: 4; pointer-events: none; right: var(--njg-s2); bottom: var(--oc-stamp-b, var(--njg-s2)); top: var(--oc-stamp-t, auto);
+  width: var(--oc-stamp, calc(var(--njg-icon) * 1.6)); height: var(--oc-stamp, calc(var(--njg-icon) * 1.6)); margin-top: var(--oc-stamp-mt, 0);
+  transform: rotate(-12deg); opacity: 0.9; animation: ocStampIn 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E");
+}
+@keyframes ocStampIn { from { transform: rotate(-12deg) scale(1.6); opacity: 0; } }
+.oc-card.still .oc-stamp { animation: none; }
+:root .oc-card.oc-stamped.folded:not(.oc-big):not(.oc-mini) {
   --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75);
   padding-right: calc(var(--oc-tick) * 1.5 + var(--njg-s2) * 1.5);
 }
@@ -262,6 +275,52 @@
 }
 .oc-card .oc-row.no.done { border-style: solid; border-color: var(--oc-gold); }
 .oc-card .oc-row.no .word { color: inherit; }
+/* S13-B1 (one card markup; the clinic's copies in css/clinic.css went): the states and parts a host gives a row, drawn here only.
+   later: a step still to come, greyed until it opens (T29); next-up: that step named by the help; now: the step being worked on;
+   pulse: the free hint's throb; .oc-count: a running count on a row (G6, the Kutchi number word); a label in two parts,
+   .oc-k (the Kutchi) and .oc-en (the bulb's English, shown only while the card is .english: D11, CLN-76); .oc-empty: a card with
+   nothing to show yet */
+.oc-card .oc-row.later { opacity: 0.45; }
+.oc-card .oc-row.later.next-up { opacity: 1; }
+.oc-card .oc-row.now { background: var(--njg-chosen); }
+.oc-card .oc-row.pulse { animation: var(--njg-pulse-anim); }
+/* SH-53, SH-55 (Cook's station voice): the row a guide's line names, while she says it: the one highlight, the gold token drawn
+   INSIDE the row, so no card or sidebar edge can clip it (was Cook's #mission .throb) */
+.oc-card .oc-throb { border-radius: var(--njg-radius); animation: ocThrob 0.7s ease-in-out infinite alternate !important; }
+@keyframes ocThrob { from { box-shadow: inset 0 0 0 var(--njg-line) var(--njg-gold); background-color: var(--njg-card); } to { box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); background-color: color-mix(in srgb, var(--njg-gold) 16%, var(--njg-card)); } }
+@media (prefers-reduced-motion: reduce) { .oc-card .oc-throb { animation: none !important; box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); } }
+.oc-card .oc-count {
+  flex: none; margin-left: var(--njg-s2); padding: var(--njg-s1) var(--njg-s2); border-radius: var(--njg-radius);
+  background: var(--njg-chosen); color: var(--oc-word); font-weight: 800; font-size: var(--oc-p); line-height: 1.2;
+}
+.oc-card .oc-count:empty { display: none; }
+.oc-card .oc-row.done .oc-count { background: none; }
+.oc-card .oc-count.bump { animation: ocCount 0.3s; }
+@keyframes ocCount { 50% { transform: scale(1.2); } }
+.oc-card :is(.oc-k, .oc-t, .oc-headline) .word { color: var(--oc-word); }
+.oc-card .oc-en { display: none; }
+.oc-card.english .oc-k:has(+ .oc-en) { display: none; }
+.oc-card.english .oc-en { display: inline; color: var(--njg-cook-indigo); font-family: var(--njg-font); font-weight: 600; font-style: normal; }
+.oc-card.oc-empty { display: none; }
+/* SH-110 (Zafar, 26 Oct: never a memory test): a blanked row starts with a clear speaker (js/shared/order-card.js speakerFirst):
+   the round speaker drawn at the row's size, its tap area never under the tap floor (it overhangs the row, so the row keeps its
+   height); a word row's own speaker (.wc-spk) is the same button, moved to the row's start */
+.oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); }
+.oc-card .oc-spk {
+  --oc-spk-vis: calc(var(--oc-part-h) * 0.8); --oc-spk-hit: max(var(--oc-spk-vis), var(--njg-tap));
+  position: relative; z-index: 1; flex: none; order: -2; box-sizing: border-box;
+  width: var(--oc-spk-hit); height: var(--oc-spk-hit); padding: 0; border: 0; border-radius: var(--njg-round);
+  margin-block: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2); margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2);
+  display: grid; place-items: center; background: none; box-shadow: none; color: var(--oc-ink); cursor: pointer; touch-action: manipulation;
+}
+.oc-card .oc-spk::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: var(--oc-spk-vis); height: var(--oc-spk-vis); transform: translate(-50%, -50%);
+  box-sizing: border-box; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--oc-gold); background: var(--njg-cream);
+}
+.oc-card .oc-spk svg { position: relative; width: calc(var(--oc-spk-vis) * 0.62); height: calc(var(--oc-spk-vis) * 0.62); display: block; }
+.oc-card .oc-spk.on { box-shadow: none; }
+.oc-card .oc-spk.on::before { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
+.oc-card .oc-spk:active { transform: scale(0.95); }
 /* one casing on the card: rows start lower case mid-card (the headline is the sentence) */
 .oc-card .oc-row .oc-t::first-letter { text-transform: lowercase; }
 
@@ -406,6 +465,26 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
   .njg-rq-card { padding: var(--njg-s3) var(--njg-s4); }
 }
 .njg-rq-card[data-fit] .face-say { zoom: calc(1 / var(--rq-k, 1)); }
+/* S13-B1 (one order pop-up; Cook's #intro and its 13 restyles went): what the host drew, laid out by request-popup.js layout().
+   Several cards one under another with a thin line between; several people side by side, one column each (two by two at four:
+   decision 53, CHAI-15); one long order in two columns, so nothing runs off the screen */
+.njg-rq-body > .oc-card + .oc-card { padding-top: var(--njg-s4); border-top: var(--njg-line) solid var(--njg-line-soft); }
+.njg-rq-card.njg-rq-crowd { width: min(calc(var(--njg-s7) * 28), 94%); }
+.njg-rq-card.njg-rq-crowd .njg-rq-body { display: grid; grid-template-columns: repeat(var(--njg-rq-cols, 2), minmax(0, 1fr)); align-items: start; gap: var(--njg-s4); }
+.njg-rq-card.njg-rq-crowd .njg-rq-body > :is(.oc-card, .oc-person) { padding-top: 0; border-top: 0; padding-left: var(--njg-s4); border-left: var(--njg-line) solid var(--njg-line-soft); }
+.njg-rq-card.njg-rq-crowd .njg-rq-body > :is(.oc-card, .oc-person):first-child,
+.njg-rq-card.njg-rq-c4 .njg-rq-body > :is(.oc-card, .oc-person):nth-child(3) { border-left: 0; padding-left: 0; }
+.njg-rq-card.njg-rq-wide { width: min(calc(var(--njg-s7) * 19), 94%); }
+.njg-rq-card.njg-rq-wide .oc-items { display: block; column-count: 2; column-gap: var(--njg-s3); }
+.njg-rq-card.njg-rq-wide .oc-item { break-inside: avoid; margin-bottom: var(--njg-s2); }
+/* along (Cook's people orders, the clinic's heal start): see-through, nothing over a face; the word card said now, big, at the
+   top left of the play area (WordCard.pop's entrance), then it flies into its row */
+.njg-rq-veil.njg-rq-along { background: transparent; align-items: flex-start; justify-content: flex-start; padding: var(--njg-s4); cursor: default; animation: none; }
+.njg-rq-along .njg-rq-card { width: clamp(calc(var(--njg-s7) * 4.2), min(22vw, 40vh), calc(var(--njg-s7) * 6.5)); max-height: none; padding: 0; overflow: visible; border-radius: 0; background: none; box-shadow: none; animation: none; pointer-events: none; }
+.njg-rq-along .njg-rq-body > .wc-card { width: 100%; }
+/* a person reading their card out (Cook's read-along): their card's edge and face in the gold */
+.oc-card.speaking:not(.oc-big) { border-color: var(--oc-gold); box-shadow: 0 0 0 var(--njg-line) var(--oc-gold), var(--oc-shadow); }
+.oc-card.speaking .oc-face img { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold); }
 
 /* ---------- the one bubble placement (S04-B; SH-68, CLN-86): Lifecycle.bubble.place sets data-njg-place ----------
    above the speaker's head: the tail points down at it; below (no room above): the tail points up. Cook's #bubble and

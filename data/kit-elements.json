@@ -86,29 +86,12 @@
       ],
       "rowWords": "word card|word-card|\\bwc-",
       "places": {
-        "index": {
-          "none": "the house shows no word card"
-        },
-        "first": {
-          "at": "visible:.wc-card",
-          "tries": 4
-        },
-        "day": {
-          "at": "visible:.wc-card",
-          "tries": 4
-        },
-        "cook": {
-          "at": "visible:.wc-card",
-          "tries": 4
-        },
-        "clinic": {
-          "at": "visible:.wc-card",
-          "tries": 4
-        },
-        "lab": {
-          "at": "visible:.wc-card",
-          "tries": 4
-        }
+        "index": { "none": "the house shows no word card" },
+        "first": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card" },
+        "day": { "at": "visible:.wc-card" },
+        "cook": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "cook:chai-tray#speed1", "profile": "seen" },
+        "clinic": { "at": "visible:.wc-card" },
+        "lab": { "at": "visible:.njg-rq-card .wc-card", "sel": ".njg-rq-card .wc-card", "flow": "lab:cook/chai-tray#speed1" }
       }
     },
     "order card": {
@@ -160,32 +143,12 @@
       ],
       "rowWords": "pop-up|popup|order screen|request",
       "places": {
-        "index": {
-          "none": "no order on the house page"
-        },
-        "first": {
-          "at": "life:popup-open",
-          "delay": 300,
-          "tries": 3
-        },
-        "day": {
-          "none": "the door has no order pop-up"
-        },
-        "cook": {
-          "at": "visible:.njg-rq-card, #intro .ic-card",
-          "tries": 3,
-          "flow": "cook:day1"
-        },
-        "clinic": {
-          "at": "visible:.njg-rq-card, #intro .ic-card",
-          "tries": 3,
-          "flow": "clinic:waiting"
-        },
-        "lab": {
-          "at": "visible:.njg-rq-card, #intro .ic-card",
-          "tries": 3,
-          "flow": "lab:cook/round"
-        }
+        "index": { "none": "no order on the house page" },
+        "first": { "at": "life:popup-open", "delay": 300 },
+        "day": { "none": "the door has no order pop-up" },
+        "cook": { "at": "life:popup-open", "delay": 300, "flow": "cook:samosa", "profile": "seen" },
+        "clinic": { "at": "life:popup-open", "delay": 300 },
+        "lab": { "at": "life:popup-open", "delay": 300, "flow": "lab:cook/samosa" }
       }
     },
     "bubble": {

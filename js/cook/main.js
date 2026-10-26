@@ -38,21 +38,9 @@ export const NEEDS = {
     "js/shared/request-popup.js",
     "js/shared/buttons.js",
   ],
-  // all of cook.html's, in its order (the shared ones again after css/cook.css, so they win where they did there)
-  styles: [
-    "css/shared/app.css",
-    "css/shared/tokens.css",
-    "css/shared/frame.css",
-    "css/cook.css",
-    "css/shared/results.css",
-    "css/shared/onboard.css",
-    "css/shared/guide.css",
-    "css/shared/order-card.css",
-    "css/shared/buttons.css",
-    "css/shared/tally.css",
-    "css/shared/focus.css",
-    "css/cook-side-v2.css",
-  ],
+  // cook.html's, in its order: Cook's own sheet, the shared kit in its one link after it (so the kit wins where it did there:
+  // S13-B1, the kit review's shell rule), then the sidebar's
+  styles: ["css/cook.css", "css/shared/kit.css", "css/cook-side-v2.css"],
 };
 
 /** The Station lab's kept stations (data/cook.json lab.stations), with the gestures each declares (E13). */

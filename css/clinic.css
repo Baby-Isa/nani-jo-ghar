@@ -42,29 +42,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-hint-n { display: none !important; }
 
 /* ---------- the instruction card ---------- */
-.cl-card { background: var(--njg-white); border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: var(--njg-s2) var(--njg-s2) var(--njg-s2); flex: 0 1 auto; min-height: 0; overflow: auto; }
-.cl-card-head { display: flex; align-items: center; gap: var(--njg-s2); margin-bottom: var(--njg-s1); }
-.cl-card-face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex: none; background: #d6b08c; }
-.cl-card-face:empty { display: none; }
-.cl-card-face svg, .cl-card-face .cl-fig { width: 100%; height: 100%; }
-.cl-card-title { flex: 1; font: 700 15px var(--cl-head); color: var(--cl-soft); line-height: 1.1; }
-.cl-card-speak { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--njg-step-edge); background: var(--njg-cream); font-size: 20px; cursor: pointer; flex: none; }
-.cl-card-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
-.cl-row { display: flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 700 clamp(15px, 1.7vw, 22px) var(--cl-head); line-height: 1.15; }
-.cl-row.now { background: var(--njg-chosen); }
-.cl-row.reading { background: #ffe9b3; }
-.cl-row.pulse { animation: cl-throb 1s ease-in-out infinite; }
-.cl-tick { width: 24px; height: 24px; border-radius: 50%; border: 3px solid #dccbb2; flex: none; position: relative; }
-.cl-row.done .cl-tick { background: var(--cl-good); border-color: var(--cl-good); }
-.cl-row.done .cl-tick::after { content: ""; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid var(--njg-white); border-width: 0 3px 3px 0; transform: rotate(45deg); }
-.cl-row.done .cl-row-text { opacity: .6; }
-.cl-row-en { display: none; }
-.cl-card.english .cl-row-text { display: none; }
-/* the bulb (E25): the same English look as Cook's sidebar under its bulb (its indigo, the UI font, never bold): CLN-76 */
-.cl-card.english .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
 .cl-words .ku { color: var(--cl-ink); }
 .cl-words .ph + .ku, .cl-words .ku + .ph, .cl-words .ph + .ph { margin-left: .25em; }
-@keyframes cl-throb { 0%, 100% { transform: scale(1); background: var(--njg-chosen); } 50% { transform: scale(1.04); background: #ffe2a6; } }
 
 /* ---------- the tray (fixed slots) ---------- */
 .cl-side-tray { flex: 0 0 auto; }
@@ -171,9 +150,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
 @media (max-height: 460px) {
-  .cl-row { padding: var(--njg-s1) var(--njg-s1); font-size: 15px; }
   .cl-go:not(.njg-btn) { min-height: 56px; }
-  .cl-card-face, .cl-card-speak, .cl-bulb { width: 36px; height: 36px; }
+  .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
 }
 /* CLN-151: a short landscape phone lays the sidebar's tray in a row (three to a line) so the doctor's card above it
@@ -183,7 +161,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
   .cl-side .cl-tray .cl-dish { flex: 1 1 calc((100% - 2 * var(--njg-s1)) / 3); width: auto; min-width: var(--njg-tap); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cl-row.pulse, .cl-fig .fig-swirl { animation: none; }
+  .cl-fig .fig-swirl { animation: none; }
 }
 
 /* ================= the pipeline's stages (js/clinic/stages/*.js) ================= */
@@ -199,13 +177,6 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-fx > * { pointer-events: auto; }
 
 /* the request card: a big copy over the play area, then it flies into the sidebar (UX s1) */
-.cl-card-big { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -55%); width: min(86%, 560px); max-height: 80%; z-index: 120; font-size: 1.25em; box-shadow: 0 10px 40px rgba(60, 40, 20, .25); }
-.cl-card-big:not([style*="transform"]) { animation: cl-card-in .3s ease-out; }
-.cl-card-big .cl-row { font-size: clamp(20px, 3vw, 34px); }
-.cl-card-big .cl-card-face { width: 64px; height: 64px; }
-.cl-card-waiting { visibility: hidden; }
-@keyframes cl-card-in { from { opacity: 0; transform: translate(-50%, -45%) scale(.9); } }
-.cl-card-face .cl-face { border-radius: 50%; }
 
 /* stage 1: the bench */
 .cl-bench { position: absolute; left: 3%; right: 26%; bottom: 4%; height: 58%; display: flex; align-items: flex-end; justify-content: center; gap: 1.5%; }
@@ -385,11 +356,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-ask-card .cl-face { width: 100%; height: 100%; }
 .cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: var(--njg-white); font: 800 24px var(--cl-head); display: grid; place-items: center; }
 .cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
-/* G6: the running count on a row (level 1), the Kutchi number word */
-.cl-row-count { margin-left: auto; padding: var(--njg-s1) var(--njg-s2); border-radius: 12px; background: var(--njg-chosen); color: var(--njg-word); font: 800 17px var(--cl-head); }
-.cl-row-count:empty { display: none; }
-.cl-row-count.bump { animation: cl-bump .3s; }
-.cl-row.done .cl-row-count { background: none; }
 
 /* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
 .cl-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
@@ -401,20 +367,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
 .cl-nani .ng-tools { position: relative; }
 .cl-nani .cl-hint-n { position: absolute; left: calc(var(--njg-tool) - var(--njg-s3)); top: calc(var(--njg-s1) * -1); font-size: var(--njg-t3); line-height: 1; min-width: 0; pointer-events: none; }
-.cl-card.oc-card { padding: var(--njg-s2) var(--njg-s3); border-radius: 12px; }
-.cl-card.oc-card .cl-card-head { margin-bottom: var(--njg-s2); }
-.cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
-.cl-card.oc-card .cl-row { justify-content: space-between; padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: var(--njg-ink); }
-.cl-card.oc-card .cl-row + .cl-row { border-top: 1px solid #efe8dc; }
-.cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid var(--njg-grey); border-radius: 50%; background: none; flex: none; order: 3; }
-.cl-card.oc-card .cl-row.done .cl-tick { border: 0; background: none; }
-.cl-card.oc-card .cl-row.done .cl-tick::after { display: none; }
-.cl-card.oc-card .cl-row.done .cl-tick svg { width: 100%; height: 100%; display: block; }
-.cl-card.oc-card .cl-row.done .cl-row-text { opacity: .55; }
-.cl-card.oc-card .cl-row-count { order: 2; }
-.cl-card.oc-card .cl-row-text { flex: 1 1 auto; min-width: 0; }
-.cl-card.oc-card .cl-words .ku { color: var(--njg-word); }
-.cl-card .oc-row .oc-t::first-letter { text-transform: none; }
 .cl-nani .ng-face { position: relative; flex: none; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
 .cl-nani .ng-face img { display: block; border-radius: 50%; object-fit: cover; object-position: top; }
 .cl-nani .ng-face .say-badge { position: absolute; width: calc(var(--njg-guide-face) * 0.36); height: calc(var(--njg-guide-face) * 0.36); border-radius: 50%; background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px var(--njg-white); }
@@ -432,16 +384,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @media (max-width: 700px) and (orientation: portrait) { .cl-app { grid-template-rows: auto 1fr; } }
 /* 13c: the card is the shared order card; its box is only the frame */
 .cl-card { background: none; box-shadow: none; padding: 0; border-radius: 0; flex: 0 1 auto; min-height: 0; overflow: auto; }
-.cl-card .oc-card { --oc-p: var(--njg-side-p); }
-.cl-card .cl-empty { display: none; }
-.cl-card .oc-face.cl-card-face { width: max(var(--oc-face), var(--njg-face-hit)); height: max(var(--oc-face), var(--njg-face-hit)); margin: 0; padding: 0; border: 0; background: #d6b08c; border-radius: 50%; position: relative; overflow: visible; cursor: pointer; flex: none; }
-.cl-card .oc-face.cl-card-face > .cl-face { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
-.cl-card .oc-face.cl-card-face > .cl-face svg, .cl-card .oc-face.cl-card-face > .cl-face img { width: 100%; height: 100%; object-fit: cover; }
-.cl-card .cl-row { font: inherit; }
-.cl-card .cl-row .cl-row-text .ku { color: var(--njg-word); }
-.cl-card .cl-row-count { margin-left: var(--njg-s2); font-size: 15px; }
-.cl-card .oc-row .oc-t::first-letter { text-transform: none; }
-.cl-card .oc-card.closed { cursor: pointer; }
 /* S05-D2 (SH-09, rule 8): the clinic's own "···" column after a closed card's head is gone: it narrowed the headline to
    four lines on a phone (the eye test's "Drops first, then let's test your eyes."); the shared card's small bulb, at
    the end of the headline's last line, is the closed card's one sign, as in Cook */
@@ -466,11 +408,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @keyframes cl-pose-fade { 0% { opacity: .85; } 100% { opacity: 1; } }
 .cl-staged[data-pose="talk"][data-facing="left"] > svg, .cl-staged[data-pose="talk"][data-facing="left"] > img { transform: scaleX(-1); }
 .cl-staged[data-pose="talk"] { filter: saturate(.92); }
-.cl-card .oc-headline.reading { box-shadow: inset 0 -3px 0 var(--njg-gold); }
-.cl-card .oc-headline .cl-row-en { display: none; }
-.cl-card.english .oc-headline .cl-row-text { display: none; }
-.cl-card.english .oc-headline .cl-row-en { display: inline; color: var(--njg-cook-indigo); font-family: "Nunito", system-ui, sans-serif; font-weight: 600; font-style: normal; }
-/* CLN-76: a placeholder (no Kutchi yet) keeps its grey italic under the bulb; only a real translation turns blue */
 /* 13d: the feeling cards in a thought bubble rising from the patient's head, opening out to the right */
 .cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: var(--njg-s2); padding: var(--njg-s4) var(--njg-s4); background: var(--njg-white); border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
 .cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: var(--njg-s1); border-radius: 50%; border: 3px solid var(--njg-step-edge); }
@@ -562,10 +499,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-fig.has-art.react .fig-art-in { animation: cl-wobble .35s; transform-origin: 50% 100%; }
 .cl-fig.has-art.pose-shake .fig-art-in { animation: cl-shiver .5s 2; }
 
-/* T29 (decision 55): a heal game's whole step list is on the card from the start; the steps still to come are greyed
-   until they open (the one highlight is the open step's) */
-.cl-row.later { opacity: .45; }
-.cl-row.later.next-up { opacity: 1; }
 
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up */
 .cl-help-new .njg-grownup-note { color: inherit; opacity: .85; }
@@ -645,7 +578,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-stand { position: absolute; z-index: 6; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
 .eye-stand.hidden { display: none; }
 .eye-holder { position: relative; z-index: 2; flex: none; pointer-events: auto; }
-.eye-holder > .wc { width: 100%; }
 .eye-easel { position: relative; z-index: 1; flex: 1 1 auto; width: 112%; margin-top: calc(var(--njg-s1) * -1); border-top: var(--njg-s3) solid var(--njg-gold); border-radius: var(--njg-s1); }
 .eye-easel::before, .eye-easel::after { content: ""; position: absolute; top: 0; bottom: 0; width: var(--njg-s3); background: var(--njg-cream-lip); border: 2px solid var(--njg-gold); border-top: 0; }
 .eye-easel::before { left: 22%; transform: skewX(8deg); transform-origin: top; }
@@ -655,15 +587,10 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-stand.eye-doc.hidden { display: none; }
 .eye-doc-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
 .eye-doc .eye-holder { position: absolute; display: flex; }
-.eye-doc .eye-holder > .wc { width: 100%; height: 100%; flex-direction: row; align-items: center; box-shadow: none; background: transparent; }
-.eye-doc .eye-holder .wc-pic { flex: none; width: auto; height: 100%; max-width: 58%; aspect-ratio: 4 / 3; background: transparent; }
-.eye-doc .eye-holder .wc-strip { flex: 1 1 auto; flex-direction: column; align-items: flex-start; justify-content: center; }
-.eye-card.eye-hush .wc-strip { visibility: hidden; }
 .eye-card.eye-in { animation: eye-up .45s ease-out; }
 @keyframes eye-up { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }
 .eye-card.eye-shake { animation: eye-shake .45s; }
 @keyframes eye-shake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
-.eye-card.eye-named .wc-spk { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } /* the doctor names it: its speaker lit until the next card */
 .eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
 .eye-judge { align-items: center; bottom: var(--njg-s5); } /* SH-19: clear of the bottom edge, so the help's box round the pills is whole */
 .eye-pill-t { display: inline-block; min-width: var(--njg-tap); text-align: center; } /* CLN-202: the pill keeps the shared size; the row fits his half on a phone */
@@ -671,22 +598,12 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-mic svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
 .eye-mic.listening { background: var(--njg-flag-bg); animation: var(--njg-glow-anim); }
 .eye-mic.shrug { animation: eye-shake .45s; }
-/* CLN-199: the doctor's start (js/clinic/heal/host.js runIntro): see-through over the wide shot (a tap anywhere goes on), the
-   word card of the thing he names big at the top left of the play area, as Cook's people's orders (css/cook.css #intro.along) */
-.cl-intro { position: absolute; inset: 0; z-index: 25; background: transparent; cursor: default; }
-.cl-intro-card { position: absolute; left: var(--njg-s4); top: var(--njg-s4); width: clamp(168px, min(22vw, 40vh), 260px); pointer-events: none; }
-.cl-intro-card:empty { display: none; }
-.cl-intro-card .wc-card.cl-intro-word { width: 100%; animation: cl-intro-in .3s cubic-bezier(.2, 1.3, .4, 1); }
-@keyframes cl-intro-in { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .cl-intro-card .wc-card.cl-intro-word { animation: none; } }
 /* EASY-08, CLN-203: the bottle over her eye glows while the help shows it (the focal glow's colour, on its own shape) */
 .eye-drop-lit { animation: var(--njg-glow-anim); } /* the kit's glow (S13-A1) */
 @media (prefers-reduced-motion: reduce) { .eye-card.eye-in, .eye-card.eye-shake, .eye-mic.listening, .eye-mic.shrug { animation: none; } }
 /* Sprint 11 (s11-clinic): the brushing's direction card (the shared word card: an arrow and the word), top left */
 .tooth-dir { position: absolute; left: var(--njg-s3); top: var(--njg-s3); z-index: 7; width: calc(var(--njg-tap) * 3.6); }
 .tooth-dir.hidden { display: none; }
-.tooth-dir > .wc { width: 100%; }
-.tooth-dir .wc-pic { background: var(--njg-cream); }
 .tooth-arrow { position: absolute; inset: 8%; width: 84%; height: 84%; display: block; }
 .tooth-dcard.tooth-din { animation: cl-pop .4s ease-out; } /* a fade only: it never moves over the cross (BRUSH-01) */
 .tooth-dcard.tooth-dshake { animation: eye-shake .45s; }

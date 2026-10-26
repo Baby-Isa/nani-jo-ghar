@@ -16,7 +16,8 @@
 //
 //   contract-7 one-voice    one voice at a time: no two lines' clips sound over each other (PAN-04)
 //   contract-8 highlight    one next-thing highlight at a time, in one colour: the stage's glows and every lit thing on a card (SH-53)
-//   contract-9 closed-card  from L3 the card is closed in the waiting room, the pharmacy and every heal game (CLN-114)
+//   contract-9 closed-card  from L3 the card in the waiting room, the pharmacy and every heal game is open, its words blanked, never
+//                           folded (SH-110, Zafar 26 Oct, overrides CLN-114's closed card; each blanked row's speaker: contract-40)
 //   contract-10 your-turn   the staged talkers face the player when it is the child's turn (SH-71); in the examination the doctor faces her (CLN-157)
 //   contract-11 background  no background stretched out of proportion (PAN-14) or drawn low-res (ART-05)
 //   contract-12 greyed      a ✓ / Next / stage button is hidden until usable, never shown greyed (SH-23)
@@ -39,11 +40,14 @@
 //   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
 //   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106)
-//   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3, hidden (folded) at L4 (SH-110)
+//   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3 and L4, never folded (SH-110, 26 Oct)
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
 //   contract-38 two-pages    the end screen has two pages in every game: the badges and the word review, never the steps page (SH-104)
 //   contract-39 card-english the word card's English only while the word is supported (stage 1-2), then only when tapped open (SH-123)
+//   contract-40 one-card     every order card on screen carries only the kit's classes (no game's own on it or its rows); SH-110:
+//                            every blanked (dotted) row starts with its speaker (S13-B1)
+//   contract-41 one-popup    the request pop-up on screen is the kit's (.njg-rq-card), never Cook's own #intro (S13-B1)
 //   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
 //   contract-70 slow-at-green  chai: "Slow kar" as the heat bar enters the green, never before it (CHAI-24; lib/contract-chai.mjs)
 //   contract-71 once-each      chai: milk, water and tea go into a pan once each; a second tap adds nothing (CHAI-22)
@@ -91,7 +95,7 @@ export const CHECKS = {
   "contract-6": { item: "old-art", title: "no retired art", how: "Every image drawn (canvas drawImage, offscreen canvases a rig draws from, <img>, CSS backgrounds, Phaser WebGL textures) by file; a file on the retired list with the same content (sha256), in its scope, is a break." },
   "contract-7": { item: "one-voice", title: "one voice at a time", how: "Every clip said for a line (the sound log, its real start and stop as contract-3 reads them); two clips of different lines sounding together for more than 150 ms is a break (PAN-04: the count words, the next-thing line and the order never overlap). Clips whose length is only estimated are not judged." },
   "contract-8": { item: "highlight", title: "one highlight at a time", how: "Sampled on every change: Cook's pictures carrying the shared glow (glowFx) and the clinic's next-up or pulsing tools (a tool family, all the plasters, is one highlight). More than one at once for 300 ms or more is a break (SH-53)." },
-  "contract-9": { item: "closed-card", title: "closed card from L3", how: "At the first play tap of the waiting room, the pharmacy or a heal game at level 3 or more: every order card in the sidebar must be closed (OrderCard 'closed': folded, peeking or open for the bulb's time). An open card is a break (CLN-114)." },
+  "contract-9": { item: "closed-card", title: "no folded card from L3", how: "At the first play tap of the waiting room, the pharmacy or a heal game at level 3 or more: no order card in the sidebar may be closed (OrderCard 'closed': folded to face + headline). SH-110 (Zafar, 26 Oct: 'we can't just have fully blanked out order cards'; overrides CLN-114's closed card): the card stays open, its rows' words blanked (dotted), each blanked row starting with its speaker (contract-40). A closed card is a break." },
   "contract-10": { item: "your-turn", title: "faces the player on the child's turn", how: "At every play tap the clinic asked for (it expected a tap or a pick, not 'wait'), every staged talker on screen (the staging hook's .cl-staged, data-pose) must face the player (data-pose 'front'); still turned to the other talker is a break (SH-71, rules E20, F26). In the examination (clinic/diagnosis) the doctor stays three-quarter to her instead, and front is the break (CLN-157). Cook has no poses yet: an eye check." },
   "contract-11": { item: "background", title: "backgrounds in proportion and sharp", how: "Every picture covering half the screen or Cook's canvas (<img>, CSS background, Phaser image): screen px per source px across and down. Across and down differing by more than 3% is stretched (PAN-14); more than 1.5 screen px per source px (times the page's pixel ratio) is low-res (ART-05). Either is a break." },
   "contract-12": { item: "greyed", title: "buttons hidden until usable", how: "A ✓, Next or stage button on screen while disabled, aria-disabled, dimmed under 60% or greyscale, for 400 ms or more and not just pressed (1.5 s before), is a break: hidden until usable, never greyed (SH-23)." },
@@ -99,7 +103,9 @@ export const CHECKS = {
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
   "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
-  "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted; L4 every order card closed (face + headline folded). Was closedFrom 3 (SH-110, the level table, Zafar 19 Oct)." },
+  "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 and L4 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted (each dotted row with its speaker: contract-40). SH-110 (Zafar, 26 Oct: never a memory test, no fully blanked card) replaces L4's folded card (face + headline); was closedFrom 3 (the level table, Zafar 19 Oct)." },
+  "contract-40": { item: "one-card", title: "one card markup; a blanked row has its speaker", how: "Every kitcard sample (lib/contract-hook.mjs): each order card on screen (.oc-card, sidebar or pop-up) and its head, face, items and rows may carry only the kit's classes (oc-, wc, njg-, fit and the card's state words: done, next, reading ...); a game's own class (cl-row, cl-card-face, r6, icard ...) is a break (S13: the clinic's and Cook's copies go, one card everywhere). SH-110 (Zafar, 26 Oct: a card is never a memory test): a row not done whose words are blanked (a dotted word showing, or OrderCard's oc-blank) must start with its speaker (.oc-spk, the row's first element); one without it is a break." },
+  "contract-41": { item: "one-popup", title: "one order pop-up", how: "Every kitcard sample: a request pop-up on screen (.njg-rq-open, .njg-rq-veil, Cook's #intro) must be the kit's (js/shared/request-popup.js: a .njg-rq-card inside the veil). Cook's own #intro shown, or a pop-up with no .njg-rq-card, is a break (S13-B1: Cook on the kit's pop-up, like the clinic and the day)." },
   "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
   "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
@@ -528,7 +534,7 @@ function check15(tl, segs, add, tEnd = tl[tl.length - 1].t) {
     add("contract-15", e.t, `${s ? s.key : "?"}: ${e.n} word${e.n > 1 ? "s" : ""} broken across lines for ${Math.round(until - e.t)} ms (${e.list.slice(0, 6).join(", ")})`);
   });
 }
-// 9 (CLN-114): from L3 the card is closed in the waiting room, the pharmacy and every heal game
+// 9 (SH-110, overriding CLN-114): from L3 the card in the waiting room, the pharmacy and every heal game is open (its words blanked), never folded
 const CLOSED_FROM_L3 = /(^|\|)host:clinic\/(waiting|pharmacy|heal)|(^|\|)host:heal\//;
 function check9(tl, segs, level, add) {
   if (level < 3) return;
@@ -542,7 +548,7 @@ function check9(tl, segs, level, add) {
     if (!first) continue;
     const c = sideAt(first.t);
     if (!c || !c.n || c.closed == null) continue;
-    if (c.closed < c.n) add("contract-9", first.t, `${s.key} at L${level}: ${c.n - c.closed} of ${c.n} sidebar cards open at the first play tap (from L3 the card is closed)`);
+    if (c.closed > 0) add("contract-9", first.t, `${s.key} at L${level}: ${c.closed} of ${c.n} sidebar cards folded at the first play tap (SH-110: from L3 the card stays open, its words blanked, each with its speaker)`);
   }
 }
 // 10 (SH-71): on the child's turn (a tap the clinic asked for), every staged talker faces the player. In the examination
@@ -789,9 +795,17 @@ function check21(tl, segs, v, add) {
   }
 }
 // ---- S08 wave 1A: voice and help in every game (PAN-04, PAN-16, SH-94, SH-60, SH-95, SH-96, LNG-16) ----
-// The ladder these measure is data/cook.json calm.helpMs / bulbPulseMs (js/shared/guide.js PAUSE, BULB_PULSE): the help comes only
-// after the child has done nothing for this long (by level), counted from the LAST action.
-export const LADDER = [7000, 8000, 11000, 15000];
+// The ladder these measure is the ONE table, data/shared.json helpMs (js/shared/guide.js PAUSE through Tokens.ladder; S13-A1): the
+// help comes only after the child has done nothing for this long (by level), counted from the LAST action. Read from the table,
+// never a copy of it (S13-B1)
+const SHARED_LADDER = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL("../../../data/shared.json", import.meta.url), "utf8"));
+  } catch (e) {
+    return {};
+  }
+})();
+export const LADDER = Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
 export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
 export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
 export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
@@ -1244,17 +1258,13 @@ function check35(r, tl, segs, add, root) {
     if (side.peek > 0) continue;
     const level = realLevel(tl, first.t, levelOf(r.flow || ""));
     const at = `${s.key} at L${level}`;
-    if (level >= 4) {
-      // (s08 w6L, wave 6J) the daal's chop card, Nani's, stays open at L4: the other items show dotted so the child sees there are three (DAAR-34)
-      const chopCard = /daar|daal/.test(r.flow || "") ? 1 : 0;
-      if (side.n - side.closed > chopCard) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded${chopCard ? "; the chop card may stay" : ""})`);
-      continue;
-    }
+    // SH-110 (Zafar, 26 Oct: "we can't just have fully blanked out order cards on the left when the game starts"): L4 is as L3 now,
+    // open with its item words dotted (each dotted row with its speaker, contract-40); was: every card folded at L4
     const all = ((rows && rows.list) || []).filter((x) => !x.en);
     const open = all.filter((x) => !x.done && !/\bna$/.test((x.text || "").trim())); // (a "no" row, "dhania na", is never ticked)
     // the card you work from is open: a second card may fold for a phase it can't be acted on (the order card under Nani's
     // chop card, design system 13), and a card whose rows are all ticked may fold (samosa's fry); every card closed is a break
-    if (side.closed >= side.n && !(all.length && !open.length)) add("contract-35", first.t, `${at}: ${side.closed} of ${side.n} sidebar cards closed at the first play tap (open until L4; L3 dots the items instead)`);
+    if (side.closed >= side.n && !(all.length && !open.length)) add("contract-35", first.t, `${at}: ${side.closed} of ${side.n} sidebar cards closed at the first play tap (open at every level; L3-L4 dot the items instead: SH-110)`);
     // (s08 w6L, wave 6J) a #hint player pressed the bulb or peeked: the rows it paid to reveal are not the card at rest
     if (/#hint/.test(r.flow || "")) continue;
     if (level <= 2) {
@@ -1262,7 +1272,36 @@ function check35(r, tl, segs, add, root) {
       if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);
     } else {
       const shown = open.filter((x) => wordsOf(x.text).some((w) => items.has(w)));
-      if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3 the item words are dotted (frames, verbs and numbers written)`);
+      if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3-L4 the item words are dotted (frames, verbs and numbers written)`);
+    }
+  }
+}
+// 40 (S13-B1): one card markup (only the kit's classes on a card and its rows); SH-110: every blanked row starts with its speaker.
+// 41: the request pop-up is the kit's (.njg-rq-card), never Cook's #intro. Each break is reported once per page (its first sample)
+export function check40(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "kitcard") continue;
+    for (const b of e.bad || []) {
+      if (seen.has(`b|${b}`)) continue;
+      seen.add(`b|${b}`);
+      add("contract-40", e.t, `a card's ${String(b).replace(/:/, " carries a game's own class:")} (one card everywhere: only the kit's classes)`);
+    }
+    for (const m of e.mute || []) {
+      if (seen.has(`m|${m}`)) continue;
+      seen.add(`m|${m}`);
+      add("contract-40", e.t, `a blanked row ("${m}") with no speaker at its start (SH-110: never a memory test)`);
+    }
+  }
+}
+export function check41(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "kitcard") continue;
+    for (const p of [...(e.ownPop || []), ...(e.intro ? ["#intro"] : [])]) {
+      if (seen.has(p)) continue;
+      seen.add(p);
+      add("contract-41", e.t, `a pop-up of the game's own (${p}) on screen: the order pop-up is the kit's .njg-rq-card`);
     }
   }
 }
@@ -1415,6 +1454,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check33(tl, add);
   check38(tl, add);
   check39(tl, add);
+  check40(tl, add);
+  check41(tl, add);
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
   check37(r, tl, segs, add);

@@ -37,7 +37,7 @@
   // decision 84 (CLN-14, S05-G): a placeholder keeps its hidden "to record" tag in the markup (data-rec), as Cook's and the
   // shared Say's do, so the tools can tell it from words the child reads
   const ph = (parent, text) => {
-    const n = h("span", "ph", parent, text);
+    const n = h("span", "njg-ph ph", parent, text); // (the kit's one placeholder class, S13-B1; .ph is the clinic's word-spacing hook, css/clinic.css .cl-words)
     n.dataset.rec = "to record";
     return n;
   };
@@ -179,7 +179,7 @@
     const talk = Kit.doctorFace("talk");
     const rest = Kit.doctorFace("neutral");
     if (!talk || talk === rest) return null;
-    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .cl-card-face .cl-face.doctor img")).filter((i) => i.isConnected);
+    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .oc-face .cl-face.doctor img")).filter((i) => i.isConnected);
     // decoded once, so a flap never shows a blank face while the picture loads
     if (!Kit.cardTalk.pre && global.Image) (Kit.cardTalk.pre = new global.Image()).src = talk;
     let open = false;
@@ -773,7 +773,7 @@
    * ordered(on): every row is one ordered job (the heal games' steps, the pharmacy's pela ... ne poi ...)
    * rows sharing a `seq` key are one ordered job too; other rows are plain rows
    * close(on, {onPeek}) the closed card (the call is heard, not read): a tap peeks for 3.5 s and counts a hint
-   * row(id).el is the row's element as drawn now (tests: .cl-row[data-row=id]).
+   * row(id).el is the row's element as drawn now (tests: .oc-row[data-row=id]). The card carries only the kit's classes (S13-B1).
    */
   Kit.Card = function (el, opts = {}) {
     this.el = el;
@@ -796,18 +796,30 @@
     if (opts.title) this.setTitle(opts.title);
   };
   const esc = (t) => String(t == null ? "" : t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  /** SH-110: a row's label blanked (L3+): its words as dots (the said words kept for a peek: data-said), its English for the bulb. */
+  Kit.rowBlank = function (r) {
+    if (!r.kutchi || r.placeholder === true) return Kit.rowHtml(r); // (a line still to record is never blanked: decision 84)
+    const en = document.createElement("div");
+    en.innerHTML = Kit.rowHtml(r);
+    const k = en.querySelector(".oc-k");
+    if (k) k.innerHTML = `<span class="dots" data-said="${esc(Kit.plain(r))}">\u2022\u2022\u2022</span>`;
+    return en.innerHTML;
+  };
   /** A row's label for the order card: the Kutchi (placeholders grey italic) and its English for the bulb. */
   Kit.rowHtml = function (r) {
     const t = document.createElement("span");
-    t.className = "cl-row-text";
+    // S13-B1 (one card markup): the kit's label parts, .oc-k (the Kutchi) and .oc-en (the bulb's English, css/shared/order-card.css);
+    // each Kutchi word is the kit's .word (its colour on the card)
+    t.className = "oc-k";
     Kit.text(r, t);
+    t.querySelectorAll(".ku").forEach((k) => k.classList.add("word"));
     // CLN-76 (E1, G2): a line with no Kutchi yet stays a flagged placeholder under the bulb too (grey italic), never
     // the bulb's dark translation colour: there is nothing to translate. Boing (S06 r2): so does a row only part Kutchi
     // ("[Wipe], ba": its English "Wipe, two" read as a whole translation, with no to-record tag): the same rule as the
     // guide's box (screen.js setGuide: a line with a bracketed placeholder is to record). The tag is the hidden one
     // (data-rec, decision 84); data-bulb-en marks the bulb's English for the tools
     const ph = !r.kutchi || r.placeholder === true || /\[/.test(String(r.kutchi));
-    return `${t.outerHTML}<span class="cl-row-en${ph ? " ph" : ""}" aria-hidden="true" data-bulb-en=""${ph ? ' data-rec="to record"' : ""}>${esc(r.english || "")}</span>`;
+    return `${t.outerHTML}<span class="oc-en${ph ? " njg-ph" : ""}" aria-hidden="true" data-bulb-en=""${ph ? ' data-rec="to record"' : ""}>${esc(r.english || "")}</span>`;
   };
   Kit.Card.prototype.render = function () {
     const card = this;
@@ -819,7 +831,14 @@
     // still to come greyed ("later") until their step opens, so the child sees what's coming
     const rows = this.rows;
     const pending = this.progressive && this.shown < this.rows.length - 1;
-    const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
+    // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): from level 3 (close()) the sidebar card stays open; a row not yet
+    // ticked is blanked (its words dotted, Kit.rowBlank) and starts with its speaker (OrderCard speakerFirst), which says it on the
+    // card's own voice path, free (never a hint). The pop-up (big) writes every word: the order is written when it first comes
+    const blank = !!this.closed && !this.big && !this.bulbOn;
+    const card0 = this;
+    const label = (r) => (blank && !st.done.has(r.id) ? Kit.rowBlank(r) : Kit.rowHtml(r));
+    const say = (r) => () => Voice.say(r, { who: r.who || card0.who, noBubble: true });
+    const part = (r) => ({ label: label(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id), say: say(r) });
     const items = [];
     const groups = {};
     // CLN-54 (P47): a row marked `head` names its `seq` group (a drink, its recipe rows under it: the order card's
@@ -835,11 +854,11 @@
         }
         if (r.head) {
           headed = true;
-          Object.assign(groups[g], { label: Kit.rowHtml(r), key: r.id, done: st.done.has(r.id), miss: st.miss.has(r.id), headed: true });
+          Object.assign(groups[g], { label: label(r), key: r.id, done: st.done.has(r.id), miss: st.miss.has(r.id), headed: true, say: say(r) });
           return;
         }
         groups[g].parts.push(part(r));
-      } else items.push({ label: Kit.rowHtml(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
+      } else items.push({ label: label(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id), say: say(r) });
     });
     // a job with a single step is a plain row (no sequence line for one thing)
     items.forEach((it, i) => {
@@ -875,7 +894,7 @@
         if (node.key == null) return;
         const r = card.row(node.key);
         if (!r) return;
-        rowEl.classList.add("cl-row");
+        // (S13-B1, one card markup: the row carries only the kit's classes; the clinic finds it by its data-row)
         rowEl.dataset.row = r.id;
         rowEl.classList.toggle("later", !!card.progressive && card.rows.indexOf(r) > card.shown);
         rowEl.classList.toggle("pulse", st.pulse === r.id);
@@ -888,20 +907,14 @@
         const n = st.counts[r.id];
         if (n > 0) {
           const chip = document.createElement("span");
-          chip.className = "cl-row-count";
+          chip.className = "oc-count";
           chip.textContent = Kit.num(n);
           rowEl.insertBefore(chip, rowEl.querySelector(".oc-tk"));
         }
       },
     };
-    if (this.closed) {
-      opts.closed = true;
-      opts.onPeek = this.closed.onPeek || null;
-      opts.look = this.closed.look || null; // decision 57: a spoken card's look is a small bulb
-      opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
-      opts.peekMs = Kit.peekMs(Kit.Bulb && Kit.Bulb.last ? Kit.Bulb.last.level : 3); // SH-101: the peek's time by level
-      this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
-    }
+    // (SH-110: no card folds for memory any more, so no peek; the round still had its words heard, not read: D12's badge)
+    if (this.closed) this.closedSeen = true;
     this.el.innerHTML = "";
     if (!OC) return this;
     const c = OC.card(data, opts);
@@ -916,7 +929,7 @@
     if (faceEl) {
       const f = document.createElement("button");
       f.type = "button";
-      f.className = "oc-face face-say cl-card-face";
+      f.className = "oc-face face-say";
       f.setAttribute("aria-label", "Hear it again");
       f.appendChild(faceEl);
       f.insertAdjacentHTML("beforeend", '<span class="say-badge" aria-hidden="true"></span>');
@@ -928,7 +941,7 @@
       const head = c.querySelector(".oc-head");
       head.insertBefore(f, head.firstChild);
     }
-    if (!rows.length && !faceEl && !this.titleText) c.classList.add("cl-empty");
+    if (!rows.length && !faceEl && !this.titleText) c.classList.add("oc-empty");
     // CLN-140 (decision 80): a card that only says the doctor's goal, while he asks on screen in his own bubble (the
     // send-off), is his how-to line, not an order: no request pop-up is owed for it (contract-1)
     if (this.howto && !rows.length) c.dataset.howto = "";
@@ -1081,7 +1094,7 @@
     if (!r) return null;
     this.st.counts[r.id] = n;
     this.render();
-    const chip = r.el && r.el.querySelector(".cl-row-count");
+    const chip = r.el && r.el.querySelector(".oc-count");
     if (chip) chip.classList.add("bump");
     return r.id;
   };
