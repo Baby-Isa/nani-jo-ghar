@@ -1,0 +1,105 @@
+SESSION NAME / MODE:  s13-a2: faces, buttons, the finger, the '?' pop-up and one glow (Sprint 13, pair 3)
+MODEL AND EFFORT:     Opus, high effort (the faces and the glow are visual judgement across every game; buttons and the '?' pop-up are careful moves)
+COST ESTIMATE:        about $40-50
+HARD STOP:            27 Oct 2026, 02:00 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s13-a2.context.md (853 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S13-one-shared-kit.md (goal, 'Small decisions (Zafar, 26 Oct)')
+     build/reports/s13-kit-review.md sections 2-4 (Face circles, Buttons, Finger, Help box, '?' pop-up) and its 'Orchestrator's check'
+     docs/architecture/evidence-loop.md 'The one loop (S13)'
+     docs/design-language/ui-design-system.md (its 'Kit' section), docs/design-language/guide-and-card.md
+     build/reports/s13-a1.md, build/reports/s13-b1.md (what pairs 1 and 2 left: the kit's tokens, motion and cards)
+     sources/art/s12/fc-face-circles-v1.png and the S12 face-circle cuts (Zafar passed the likenesses, 23 Oct)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/face.js and css/shared/face.css (new), data/faces.json (new), css/shared/kit.css (add face.css)
+  - js/shared/buttons.js, css/shared/buttons.css, js/shared/onboard.js, css/shared/onboard.css, js/shared/focus.js, css/shared/focus.css, js/shared/bulb.js, js/shared/guide.js, css/shared/guide.css
+  - the face, button, finger, glow and '?' lines of: js/cook/ui.js, js/cook/coach.js, css/cook.css, css/cook-side-v2.css, js/clinic/kit.js (:919 and its face makers), js/clinic/screen.js (:65-187, the '?' pop-up), js/clinic/heal/host.js (:600-620), js/clinic/figure.js (:55-70), css/clinic.css, js/clinic/heal/games/eye.js and its card step (SH-130), js/day/*.js and css/day.css (glow and face lines), js/shared/order-card.js (its face only: call Face.circle), js/shared/conversations.js (its face only), index.html and js/home.js (the house's grown-ups '?')
+  - build/sandbox/lib/contract.mjs (contract-42 faces, contract-44 one finger; widen contract-34 buttons) and its tests
+  - build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others)
+  - build/reports/s13-a2.md
+READ-ONLY (never edit):
+  - js/core/voice.js, js/shared/family-voice.js, js/shared/sfx.js, save, results.js, story.js (S13-V); conversations.js and results.js bodies (S13-B2 next)
+  - build/tools/**, build/lint/**, .claude/**
+  - the parked games' pages and CSS (bar SH-131's fallback in bulb.js)
+  - CLAUDE.md
+  - art: no new art; only cuts of the passed S12 sheet
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Delete before you build: Cook's dead finger (#coach .co-finger, cook.css:795-804, coach.js:304-305); the old buttons (#done-btn/#go-btn custom looks, the :not(.njg-btn) blocks in cook.css, .cl-go and the clinic's own button rules); the games' own '?' pop-ups (Cook #help-pop, clinic .cl-help-pop, the house's #grownups look).
+     Accept: kitmap.mjs for finger, buttons and '? pop-up' prints no game copies outside the kit (parked games aside); static.mjs green with lower kit counts
+  2. ART-08: one face maker, Face.circle(who, size) from data/faces.json (the passed S12 circles: one centred crop per person, eyes at the same height, filling the circle), three sizes only (row, guide, big) as tokens; the 11 makers (oc-face, ng-face, cl-card-face, cl-face doctor/person, m-face, lface, ic-face, nc-face, pm-face, cv-face's emoji) all call it; --oc-face and --sb-face go. Keep each face's talk bob (njg-talk).
+     Accept: contract-42 (new): every face circle on screen is .njg-face at one of three sizes, width within 1 px of its token, 0 breaks; the face-circle kit sheet shows one crop, eyes level, in every game at 1280x665 and 915x412
+  3. SH-129: one glow look in every game: the clinic's white flood inside a gold border and the day's ring round a pill become the kit's orange halo round the item (focus.css's njg-glow; canvas things through Focus/Motion).
+     Accept: the glow kit sheet after shows one look in first, day, cook, clinic and lab at both sizes
+  4. SH-130: the eye test's card step at the laptop size shows the dim and the lit ha/na/mic box but no ghost finger (915x412 shows it); first-time help always has its finger, at every size. One finger on screen at a time, the kit's .ob-finger only.
+     Accept: contract-44 (new): exactly one .ob-finger while first-time help shows, 0 breaks; SH-130's before/after at both sizes
+  5. One '?' pop-up for grown-ups: NjgButtons.grownUpPop(anchor, {goal, actions}) in buttons.js/.css (non-negotiable 3: all grown-ups' English lives here); Cook, the clinic and the house use it; contract-16's grown-up tag read from it.
+     Accept: the '? pop-up' kit sheet after shows one look in cook, clinic and the house; contract-16 0 breaks
+  6. Buttons: every visible go-on, done, picture and pill button is the kit's .njg-btn (NjgButtons.done/next/pic/pills); widen contract-34 to check it on every live page.
+     Accept: contract-34 0 breaks on your flows; the buttons kit sheet shows one look
+  7. SH-131: bulb.js falls back to data/shared.json's ladder values when js/shared/tokens.js isn't loaded (the parked games), so their bulb shows again; a unit test without Tokens.
+     Accept: the unit test green
+
+PLACES (build/tools/review/kitmap.mjs --elem face circle,buttons,finger,glow,? pop-up,help box: where each element is drawn or styled today; one place to fix, the copies go):
+  face circle (.njg-rq-card .oc-face, #intro .ic-face, .ng-face, .cl-card-face, .njg-face):
+    the kit: css/shared/app.css:58; css/shared/conversations.css:61,172,194; css/shared/frame.css:35; css/shared/guide.css:6,15,35-42,44-53,90,93,105; css/shared/order-card.css:29,61-78,81-82,88-91,93-95,98,101,104-105,116,120-127,352,366 (+1 more); css/shared/tokens.css:52,105,117,135; js/shared/conversations.js:749,754,1040; js/shared/guide.js:313,319; js/shared/order-card.js:402,464,528,624-625
+    outside the kit (16 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:168-170,224-228,245,251,350,356,370-372,392,413,420,425,453 (+4 more); css/cook-side-v2.css:41,60,84-86,131-132,137-138; css/cook.css:126,150,318,343-344,353,394-395,409,417,481,485,501-502,506 (+13 more); css/day.css:115; js/clinic/figure.js:62; js/clinic/heal/host.js:613; js/clinic/kit.js:182,932; js/clinic/screen.js:51,167; js/clinic/stages/common.js:237,254; js/clinic/stages/sendoff.js:259,293,316; js/clinic/stages/waiting.js:52,350; js/cook/dom.js:45,56,75; js/cook/station-lib.js:916,925; js/cook/stations/chai-tray.js:1592; js/cook/ui.js:966,988,1145-1146,1302,1353,1409,1558,1580,1603,1654,1661,1692 (+5 more); js/cook/words.js:530
+    parked games (out of scope until unparked): css/dress.css:29-30; css/find.css:78; css/monsoon.css:125,155,227; css/who.css:39-40,140; dress.html:32; find.html:39,53,67; js/dress/core.js:277; js/find/round.js:40; js/monsoon/ui.js:215; js/snap/round.js:31; js/who/ui.js:114; monsoon.html:43; snap.html:68,80,93; who.html:29
+  buttons (.njg-btn, #done-btn, #go-btn, .cl-go):
+    the kit: css/shared/buttons.css:7-8,10,43,89; js/shared/buttons.js:6-7,11,15-16,21,24-27,29-30,32-33,35,106,191,195,290; js/shared/mode.js:286; js/shared/word-card.js:49,51
+    outside the kit (24 files: a call to the kit stays; a game's own copy moves to the kit or goes): clinic.html:285; css/clinic.css:83,85-87,89-99,153,267,383; css/cook-side-v2.css:126,146; css/cook.css:87-90,167,169-177,799-807,810-820,988-994,1023-1024; js/clinic/heal/games/cut.js:491; js/clinic/heal/games/eye.js:21; js/clinic/heal/scene.js:707; js/clinic/kit.js:1333-1334,1344,1349; js/clinic/run.js:104; js/clinic/screen.js:173; js/cook/dom.js:26,62-64; js/cook/flow.js:1283,1291,1861; js/cook/mechanics/count.js:126; js/cook/mechanics/fill-fold.js:567; js/cook/mechanics/fry.js:204,215; js/cook/mechanics/grill.js:1070,1076,1201,1205,1900; js/cook/mechanics/stir.js:406; js/cook/mechanics/thread.js:295; js/cook/station-lib.js:910; js/cook/stations/chai-tray.js:1577,1583; js/cook/stations/daar.js:1346; js/cook/stations/samosa.js:682; js/cook/ui.js:807-808,3172,3181,3219,3228,3246,3248,3253,3352-3355; lab.html:278
+    parked games (out of scope until unparked): css/find.css:73,75,99; css/monsoon.css:147; css/tidy.css:39,138,140-145; dress.html:64-65; find.html:76-80; js/dress/flow.js:145,209; js/find/flow.js:107; js/snap/flow.js:162; monsoon.html:57-58; snap.html:98-99; tidy.html:51-53
+  finger (.ob-finger, .ob-finger svg, .co-finger):
+    the kit: css/shared/onboard.css:21,24,26-30,32-34,36-37,39; js/shared/conversations.js:813,826; js/shared/onboard.js:30,195,469,473,475,795,1121,1167
+    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/cook.css:782-791; js/cook/coach.js:304-305; js/cook/dom.js:83; js/cook/hands.js:563; js/cook/mechanics/chop.js:518; js/cook/stations.js:1038,1052,1081,1084,1089
+  glow (.njg-glow, .ob-item-glow, .ob-lit):
+    the kit: css/shared/buttons.css:24,58; css/shared/focus.css:2,4-5,8,12,17-18,20,25-32,39-40,43; css/shared/onboard.css:15,20-21,96-97,105; css/shared/order-card.css:289-290; css/shared/results.css:373; css/shared/tokens.css:78,89; js/shared/focus.js:6; js/shared/onboard.js:587; js/shared/say.js:179; js/shared/window-ride.js:726
+    outside the kit (9 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:476,544,599,602,615; css/cook.css:94,152,177,179,181,358,556,806,820,1092; css/day.css:96-97,286; js/clinic/heal/games/fever.js:162,165,173; js/clinic/heal/games/hair.js:190; js/clinic/heal/games/hic.js:185; js/clinic/heal/games/tummy.js:175; js/clinic/heal/scene.js:178,656; js/cook/station-lib.js:178,185,187
+    parked games (out of scope until unparked): css/dress.css:12-13; css/find.css:44-45; css/monsoon.css:135; css/tidy.css:165; css/who.css:117,121
+  ? pop-up (#help-pop, .cl-help-pop, #grownups, .njg-grownup):
+    the kit: css/shared/buttons.css:91,93; js/shared/buttons.js:30,287,296
+    outside the kit (6 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/clinic.css:363-364,504; css/cook.css:96-104,1019,1052; css/home.css:41-49; js/clinic/screen.js:65,190; js/cook/ui.js:800,835,840,3368; js/home.js:293
+    parked games (out of scope until unparked): css/monsoon.css:148; js/monsoon/ui.js:49,54
+  help box (.njg-spot .ob-box, .njg-onboard .ob-box):
+    the kit: css/shared/onboard.css:5-16,18,20-21,27,42-67,70-89,104-108; js/shared/onboard.js:29,189,282,534,537,720,725,738,1003,1102,1109,1144 (+4 more); js/shared/word-card.js:42,45
+    outside the kit (7 files: a call to the kit stays; a game's own copy moves to the kit or goes): css/day.css:288; js/clinic/heal/games/eye.js:61,780,790,880,883,985,989; js/clinic/heal/games/tooth.js:13,1026-1027,1033,1040,1044; js/cook/coach.js:137,148,154,157; js/cook/flow.js:2246; js/cook/stations/chai-tray.js:1685; js/day/window.js:170
+
+REGRESSION ROWS TO RECHECK (20; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (4): ART-08*, SH-129*, SH-130*, SH-131*
+  face circle (its open rows, 0): none
+  buttons (its open rows, 7): SH-12*, SH-106*, SH-53*, CLN-107*, CLN-158*, SH-51*, SH-110*
+  finger (its open rows, 3): CK-46*, SH-19*, CLN-118*
+  glow (its open rows, 5): SH-53*, SH-60*, PAN-01*, CLN-82*, CLN-57*
+  ? pop-up (its open rows, 3): SH-60*, MOD-10*, LNG-01*
+  help box (its open rows, 1): SH-19*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s13-a2.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8865 NJG_LOCK=/tmp/njg-browser-8865.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s13-a2.json`.
+  - The elements this brief names, side by side in every game: `COOK_TEST_PORT=8865 NJG_LOCK=/tmp/njg-browser-8865.lock node build/tools/review/kitsheet.mjs --elem face-circle,buttons,finger,glow,?-pop-up,help-box --after`.
+  - BEFORE THE FINISH, your own flows at 1280x665 and 915x412 under your lock: `flock -w 3600 /tmp/njg-browser-8865.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:fetch,cook:samosa,clinic:waiting,clinic:diagnosis,clinic:heal-eye,clinic:pharmacy,first,house,lab:cook/chai-tray --sizes 1280x665,915x412 --run-id s13-a2-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s13-a2.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s13-a2.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8865.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8865; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s13-a2.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

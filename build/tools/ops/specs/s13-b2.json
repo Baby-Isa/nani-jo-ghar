@@ -1,0 +1,39 @@
+{
+  "name": "s13-b2: bubbles and the end screen (Sprint 13, pair 3)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the speech bubble sits on every talking moment; careful moves judged on side-by-side sheets",
+  "cost": "about $30-40",
+  "stop": "27 Oct 2026, 02:00 UK",
+  "branch": "claude/funny-carson-oxxdkw (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": [],
+  "elements": ["bubble", "end screen"],
+  "read": [
+    "docs/sprints/S13-one-shared-kit.md (goal, 'Small decisions (Zafar, 26 Oct)')",
+    "build/reports/s13-kit-review.md sections 2-4 (Bubbles, End screens) and its 'Orchestrator's check'",
+    "docs/architecture/evidence-loop.md 'The one loop (S13)'",
+    "docs/design-language/ui-design-system.md (its 'Kit' section)",
+    "build/reports/s13-v.md (S13-V moved every voice onto js/core/voice.js; your bubbles show what it says)"
+  ],
+  "owns": [
+    "js/shared/conversations.js and css/shared/conversations.css (Conversations.bubble(anchor, {who, text, en, mood}) as the one bubble; its voice calls stay as S13-V left them)",
+    "js/shared/results.js and css/shared/results.css (the receipt as a data slot: Results.show({badges, words, receipt:[{face, item, ok, coins}]}))",
+    "the bubble lines of: js/clinic/kit.js (:649-669, cl-bubble) and every cl-bubble caller in js/clinic/stages/*.js and js/clinic/heal/games/*.js, css/clinic.css (:128-138, :722 and the receipt :276-282), js/cook/ui.js (:252-312, #bubble), css/cook.css (:112-131, :337-369, :1155, :974), js/day/book.js (:290, the day-bubble class) and css/day.css (:98-99)",
+    "build/sandbox/lib/contract.mjs (contract-4: every bubble is .cv-bubble; new contract-41b: nothing inside .njg-results carries a non-kit class) and its tests",
+    "build/sandbox/data/evidence.json (entries for this brief's elements only; add, never rewrite others)",
+    "build/reports/s13-b2.md"
+  ],
+  "readOnly": ["js/core/voice.js, family-voice.js, sfx.js, save (S13-V)", "face, button, finger, glow, '?' and onboard files and lines (S13-A2, running alongside)", "build/tools/**, build/lint/**, .claude/**", "the parked games (Who's say-bubble stays until it is unparked)", "CLAUDE.md"],
+  "stubs": "Faces inside a bubble or the receipt: call whatever conversations.js/results.js call today; S13-A2 points them at Face.circle.",
+  "tasks": [
+    { "do": "Delete before you build: the clinic's cl-bubble maker and its CSS, Cook's #bubble and its CSS, the day's day-bubble class; every caller uses Conversations.bubble. The bubble's tail comes from its speaker's head (contract-4), its text is the engine's line (grey italic to record where unrecorded).", "accept": "contract-4 (every bubble is .cv-bubble, tail inside its speaker's head box) 0 breaks on your flows at 1280x665 and 915x412; the bubble kit sheet shows one look in cook, clinic, day, first and lab" },
+    { "do": "The end screen: the clinic's receipt and Cook's overlay rules move into results.js/.css as the receipt data slot; nothing inside .njg-results carries a game class. Same pages as today (the third page off by its one switch, S12).", "accept": "new contract (nothing non-kit inside .njg-results) 0 breaks; the end-screen kit sheet shows one look in Cook and the clinic at both sizes" }
+  ],
+  "flows": ["cook:chai-tray", "cook:samosa", "clinic:waiting", "clinic:diagnosis", "clinic:sendoff", "clinic:heal-cut", "day:door", "first", "lab:cook/chai-tray"],
+  "port": 8866,
+  "report": "s13-b2",
+  "publish": false
+}
