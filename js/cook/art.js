@@ -23,6 +23,47 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 (function (global) {
   const Cook = CookNS;
   const Art = (Cook.Art = {});
+  /*
+   * CK-48 (S13-V fix round; Zafar 22 Oct: "it's taking really long to load"): a picture decodes the first time the game's canvas
+   * draws it (Chrome's lazy decode: up to 185 ms a picture at a phone's speed, six of them as the samosa station first drew,
+   * 0.6 s in all). Each picture that arrives is drawn once, small, onto a scratch canvas in a quiet moment of its own (behind
+   * the order's card), so the decoded picture is in the browser's cache before the station shows it.
+   */
+  const toDecode = [];
+  let decoding = false;
+  let scratch = null;
+  const idle = (fn) => (global.requestIdleCallback ? global.requestIdleCallback(fn, { timeout: 400 }) : setTimeout(fn, 16));
+  function decodeNext() {
+    const img = toDecode.shift();
+    if (!img) return void (decoding = false);
+    try {
+      scratch = scratch || document.createElement("canvas");
+      scratch.width = scratch.height = 1;
+      const g = scratch.getContext("2d");
+      g.drawImage(img, 0, 0, 1, 1);
+    } catch (e) {
+      /* a picture that can't be drawn: the game draws it as before */
+    }
+    idle(decodeNext);
+  }
+  /** Run fn in a quiet moment (an idle slice; at most 400 ms later). */
+  Art.whenQuiet = (fn) => idle(() => {
+    try {
+      fn();
+    } catch (e) {
+      /* the caller's problem */
+    }
+  });
+  Art.predecode = function (img) {
+    if (!img || typeof document === "undefined" || !(img.width > 1)) return;
+    if (img.__njgPre) return;
+    img.__njgPre = true;
+    toDecode.push(img);
+    if (!decoding) {
+      decoding = true;
+      idle(decodeNext);
+    }
+  };
   const cache = {};
 
   function canvas(w, h) {
@@ -744,6 +785,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.onload = () => {
         const add = () => {
           if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          Art.predecode(img);
           resolve(true);
         };
         // decode off the main thread where the browser can, so adding it doesn't stall a frame
@@ -769,6 +811,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.onload = () => {
         const add = () => {
           if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          Art.predecode(img);
           resolve(true);
         };
         if (img.decode) img.decode().then(add, add);
@@ -814,7 +857,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!scene) return;
     [].concat(names || []).forEach((n) => {
       if (String(n).startsWith("served:")) Art.loadServed(scene, n.slice(7));
-      else Art.loadStation(scene, n);
+      else {
+        Art.loadStation(scene, n);
+        // CK-48 (S13-V fix round): its worktop too (the mechanic's view), made in a quiet moment while the order is up
+        const def = Cook.Mech && Cook.Mech.defs && Cook.Mech.defs[n];
+        if (def && def.view && scene.prewarmView) Art.whenQuiet(() => scene.prewarmView(def.view));
+      }
     });
   };
   /** A dish's served picture (art.s02 "served-dishes", meta.dishes recipe -> file) as texture "s02-served-<recipe>". */

@@ -106,10 +106,11 @@
           /* the player's problem */
         }
       });
+      // the device voice is the one voice's (js/core/voice.js, window.NjgVoice; S13-V): its stop silences it
       try {
-        if (root.speechSynthesis) root.speechSynthesis.cancel();
+        if (root.NjgVoice && root.NjgVoice.stop) root.NjgVoice.stop();
       } catch (e) {
-        /* no device voice */
+        /* no voice on this page */
       }
       hooks.forEach((fn) => {
         try {
