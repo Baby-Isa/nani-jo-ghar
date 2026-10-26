@@ -334,10 +334,51 @@ function watchCancel(S) {
   }
   return S;
 }
+/**
+ * LNG-16 (S13-V): a phone's Chrome loads its voices lazily: getVoices() is empty until a beat after the page first asks, and an
+ * utterance spoken before they are in is never heard. The opening "muke" was the page's first device-voice word, so it was the
+ * one lost. The voices are asked for as this module loads (long before the first order), and deviceSpeak waits for them, at most
+ * VOICES_WAIT_MS from that first ask (a device with no voice at all is never waited on again).
+ */
+export const VOICES_WAIT_MS = 1200;
+function warmVoices(S) {
+  if (!S || S.__njgVoicesAsked) return S;
+  try {
+    S.__njgVoicesAsked = Date.now();
+    const seen = () => {
+      try {
+        if (((S.getVoices && S.getVoices()) || []).length) S.__njgVoicesIn = true;
+      } catch (e) {
+        /* no voices */
+      }
+    };
+    if (S.addEventListener) S.addEventListener("voiceschanged", seen);
+    seen();
+  } catch (e) {
+    /* a synth without voices */
+  }
+  return S;
+}
+async function voicesIn(S) {
+  warmVoices(S);
+  const until = (S.__njgVoicesAsked || Date.now()) + VOICES_WAIT_MS;
+  for (;;) {
+    try {
+      if (S.__njgVoicesIn || ((S.getVoices && S.getVoices()) || []).length) return (S.__njgVoicesIn = true);
+    } catch (e) {
+      return false;
+    }
+    if (Date.now() >= until) return false;
+    await new Promise((r) => setTimeout(r, 50));
+  }
+}
 export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   const S = globalThis.speechSynthesis;
   if (!S || !globalThis.SpeechSynthesisUtterance) return Promise.resolve(false);
   watchCancel(S);
+  return voicesIn(S).then(() => speakNow(S, text, { rate, voice, wait }));
+}
+function speakNow(S, text, { rate, voice, wait }) {
   return new Promise((resolve) => {
     let done = false;
     const fin = (v) => !done && ((done = true), resolve(v));
@@ -369,6 +410,7 @@ export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms
 
 try {
   watchCancel(globalThis.speechSynthesis); // note every cancel from the start, whoever makes it (the request pop-up's stop)
+  warmVoices(globalThis.speechSynthesis); // LNG-16: the voices asked for now, so they are in before the first order
 } catch (e) {
   /* no device voice */
 }

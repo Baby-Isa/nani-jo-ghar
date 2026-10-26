@@ -70,9 +70,14 @@
     if (byText) return Promise.resolve();
     if (loading) return loading;
     const v = (u) => (root.njgV ? root.njgV(u) : u);
-    loading = root
-      .fetch(v(base + "data/family-audio.json"))
-      .then((r) => (r.ok ? r.json() : []))
+    // CK-48 (S13-V): the list once per page: the engine core's loader (js/core/index.js familyAudio) and this one share one
+    // promise on root.njgFamilyAudio, whichever asks first
+    if (!root.njgFamilyAudio)
+      root.njgFamilyAudio = root
+        .fetch(v(base + "data/family-audio.json"))
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => []);
+    loading = Promise.resolve(root.njgFamilyAudio)
       .catch(() => [])
       .then((list) => {
         const built = build(list);
