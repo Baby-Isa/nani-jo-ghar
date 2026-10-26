@@ -10933,10 +10933,11 @@
    "capture": [
     "crop:#guide .ng-face",
     "crop:#side .oc-card .oc-face",
+    "crop:.cv-bubble@visible:.cv-bubble .njg-face",
     "ref:sources/art/s12/fc-face-circles-v1.png"
    ],
    "expect": null,
-   "note": "Nani's guide box and Nana's order card: the passport circles (assets/shared/faces/), centred on the nose, the same head size, both ears or both sides of the scarf, no second crop"
+   "note": "Nani's guide box and Nana's order card: the passport circles (assets/shared/faces/), centred on the nose, the same head size, both ears or both sides of the scarf, no second crop; and Nana's greeting bubble (the kitchen conversation, before the order): his circle the row size, as on his card (S13-A2 fix round: the after never caught the bubble at the card's moment)"
   },
   {
    "flow": "clinic:heal-eye",

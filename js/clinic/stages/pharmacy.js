@@ -73,7 +73,7 @@
           const im = h("img", "hs-face-art", who);
           im.alt = "";
           im.src = Kit.url(head);
-        } else who.appendChild(Clinic.Figure.face(kind, "neutral"));
+        } else who.appendChild(global.Face.size(Clinic.Figure.face(kind, "neutral"), "big")); // ART-08 (S13-A2)
       }
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
