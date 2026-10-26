@@ -13,6 +13,7 @@
 import { BASE, sleep } from "../lib/env.mjs";
 import { dayWindowFlow } from "./day-window.mjs";
 import { dayBookFlow } from "./day-book.mjs";
+import { stuckWait } from "../drivers/index.mjs";
 
 const SPEED = 3;
 const expect = (page) => page.evaluate(() => (window.njgTest && window.njgTest.expect ? window.njgTest.expect() : null)).catch(() => null);
@@ -40,7 +41,7 @@ async function tapExpected(page, rec, e) {
 
 // ---------------------------------------------------------------- the morning door
 /** Play the door already opened (or open `query` first): its first line, every line and the pills, then Ha!. */
-async function playDoor(ctx, query, prefix) {
+async function playDoor(ctx, query, prefix, { stuck = false } = {}) {
   const { page, rec } = ctx;
   if (query) await open(page, query);
   await page.waitForSelector(".day-lines .day-line", { timeout: 20000 });
@@ -53,6 +54,8 @@ async function playDoor(ctx, query, prefix) {
   await rec.state(`${prefix}lines-and-yes`);
   const e = await expect(page);
   if (!e || e.kind !== "tap") throw new Error(`the door did not ask for Ha! (${JSON.stringify(e)})`);
+  // #stuck (S13-T): Ha! left alone through every help rung (drivers/index.mjs stuckWait), then tapped
+  if (stuck) await stuckWait(page, (n, o) => rec.state(n, o));
   await tapExpected(page, rec, e);
   // the answer chosen, the child's Ha! heard (a trip goes straight on to the ride after it)
   await page.waitForFunction(() => window.njgTest.expect().kind === "end" || document.querySelector(".day-thought.go") || window.njgTest.state() !== "day/door", null, { timeout: 20000 });
@@ -83,6 +86,8 @@ const DOOR_PATHS = {
   cloudy: { q: "stage=door&day=5&weather=cloudy&activity=clinic", what: "a cloudy clinic day", to: "clinic.html" },
   raining: { q: "stage=door&day=4&weather=raining&activity=trip&trip=shops", what: "a raining day to the shops (the ride starts after Ha!)" },
   night: { q: "stage=door&day=1&weather=night&activity=kitchen", what: "the kitchen day in the night sky", to: "cook.html" },
+  // the stuck player (S13-T, drivers/catalog.mjs): the sunny kitchen door, Ha! left alone through every help rung, then tapped
+  stuck: { q: "stage=door&day=1&weather=sunny&activity=kitchen", what: "the sunny kitchen door with Ha! left alone (the stuck player)", to: "cook.html", stuck: true },
 };
 export const DAY_DOOR_PATHS = ["fair", ...Object.keys(DOOR_PATHS)];
 export function dayDoorFlow(level, path) {
@@ -93,7 +98,7 @@ export function dayDoorFlow(level, path) {
     ...dayDoor,
     title: `A day at Nani's: the morning door, ${d.what}`,
     async run(ctx) {
-      await playDoor(ctx, d.q, `${path}-`);
+      await playDoor(ctx, d.q, d.stuck ? "" : `${path}-`, { stuck: !!d.stuck });
       if (d.to) await handoffOf(ctx.page, d.to);
       ctx.reachedEnd = true;
     },

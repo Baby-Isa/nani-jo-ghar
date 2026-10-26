@@ -227,6 +227,7 @@ if (fromRun) {
         await Promise.race([play(), new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`flow timed out after ${Math.round(c.timeoutMs / 1000)} s`)), c.timeoutMs); }), ...(probe ? [probe.abort] : [])]);
       } catch (e) {
         if (e && e.wantMiss) wantMiss = e.message;
+        else if (e && e.probesDone) { c.earlyDone = true; rec.note(`evidence: ${e.message}; the page stopped early (an evidence-only page, kitsheet.mjs)`); }
         else {
           rec.stop(String(e.message || e).split("\n")[0].slice(0, 300));
           try { await Promise.race([rec.state("stopped-here"), new Promise((r) => setTimeout(r, 20000))]); } catch (e2) { /* the page is gone */ }
@@ -240,7 +241,7 @@ if (fromRun) {
       if (probe) { r.evidence = await probe.finish(r, { root: ROOT }); r.moments = probe.seen; }
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
-      log(`${flow.id} @ ${size}${ev && ev.variant ? ` (${ev.variant})` : ""}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s${r.evidence ? ` | evidence: ${r.evidence.filter((x) => x.reached).length}/${r.evidence.length} probes reached their moment` : ""}`);
+      log(`${flow.id} @ ${size}${ev && ev.variant ? ` (${ev.variant})` : ""}: ${r.complete ? "end reached" : c.earlyDone ? "every probe captured (stopped early)" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s${r.evidence ? ` | evidence: ${r.evidence.filter((x) => x.reached).length}/${r.evidence.length} probes reached their moment` : ""}`);
       return r;
     };
     const worker = async () => {

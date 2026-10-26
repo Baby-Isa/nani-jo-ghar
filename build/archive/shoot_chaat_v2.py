@@ -158,7 +158,7 @@ def run(vp, out, level, speed, guided=True, wrong=False, demo=True, takeback=Fal
             page.evaluate("() => { Cook.save.coached = Object.assign(Cook.save.coached || {}, {'assemble-v2': true}); }")
         # recipe: the whole chaat (its chop, then the bowl), as a day plays it
         key = "recipe:chaat" if recipe else "assemble"
-        page.evaluate(f"() => {{ __cook.lab('{key}', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('{key}', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if vp["height"] > vp["width"]:
             # Cook is landscape only: a phone held upright shows "turn your phone sideways"

@@ -3,7 +3,7 @@
 
 Plays through REAL pointer events at screen coordinates: taps, holds,
 swipes, vertical rolling drags, circles at a given speed, and quick
-slices through moving vegetables, read from window.__cook.expectation()
+slices through moving vegetables, read from window.njgTest?.cook.expectation()
 (what the game wants next). It never calls game handlers directly.
 
 Before every tap it checks that the game canvas is the topmost element at
@@ -110,10 +110,10 @@ class Player:
 
     def exp(self):
         self.t_exp = time.time()
-        return self.page.evaluate("__cook.expectation()")
+        return self.page.evaluate("njgTest.cook.expectation()")
 
     def gauge(self):
-        return self.page.evaluate("__cook.gauge()")
+        return self.page.evaluate("njgTest.cook.gauge()")
 
     def uncovered(self, x, y, what):
         tag = self.page.evaluate(
@@ -446,7 +446,7 @@ class Player:
             # customers have been served, instead of waiting forever
             if close_kitchen_after is not None and not closed:
                 try:
-                    served = self.page.evaluate("__cook.state().dayCards")
+                    served = self.page.evaluate("njgTest.cook.state().dayCards")
                 except Exception:
                     served = 0
                 if served >= close_kitchen_after and self.page.query_selector("#close-kitchen:not([disabled])"):
@@ -455,7 +455,7 @@ class Player:
                     closed = True
                     time.sleep(0.2)
             try:
-                view = self.page.evaluate("__cook.state().view")
+                view = self.page.evaluate("njgTest.cook.state().view")
             except Exception:
                 view = None
             if view != last_view:
@@ -591,7 +591,7 @@ def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False,
             }""", EXAMPLE)
             stations = ["recipe:chips-mayai"]
         for key in stations:
-            page.evaluate(f"() => {{ __cook.lab('{key}', {'true' if guided else 'false'}, {opts}); }}")
+            page.evaluate(f"() => {{ njgTest.cook.lab('{key}', {'true' if guided else 'false'}, {opts}); }}")
             page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
             time.sleep(0.5)
             P.shot(f"{key}-start")
@@ -832,7 +832,7 @@ def run_days(vp, days, speed, busy, shots_root):
             # closed): close it ourselves after a couple of customers so the
             # run doesn't wait forever
             P.play(lambda: page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), timeout=1500, close_kitchen_after=2 if free else None)
-            st = page.evaluate("__cook.state()")
+            st = page.evaluate("njgTest.cook.state()")
             print(f"  {name}: day {d} done, coins {st['coins']}, cards {[(c['who'], sum(c['stars'].values()), c['reasons'][:1]) for c in st['cards']][-4:]}")
             P.shot(f"day{d}-summary")
             if page.query_selector("#sum-finale"):
@@ -874,7 +874,7 @@ def run_open_kitchen(vp, speed, busy, shots_root, customers=2):
         page.wait_for_selector("#close-kitchen", timeout=15000)
         P.shot("kitchen-open")
         P.play(lambda: page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), timeout=1200, close_kitchen_after=customers)
-        st = page.evaluate("__cook.state()")
+        st = page.evaluate("njgTest.cook.state()")
         served = len(st["cards"])
         if served < customers:
             raise AssertionError(f"open kitchen: only {served} of {customers} customers served before closing")

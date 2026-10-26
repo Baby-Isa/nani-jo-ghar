@@ -43,7 +43,7 @@ const errors = [];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 async function tapExpected(page, settle = 1400) {
   for (let i = 0; i < 60; i++) {
-    const e = await page.evaluate(() => window.__cook.expectation());
+    const e = await page.evaluate(() => window.njgTest?.cook.expectation());
     if (process.env.DBG) console.log(JSON.stringify(e));
     if (e && e.selector) {
       // Nani's "pass me" pop-up: answer it, then go on with the list
@@ -68,9 +68,9 @@ try {
     page.on("console", (m) => m.type() === "error" && errors.push(`${s.name} console: ${m.text()}`));
     for (const level of [1, 4]) {
       await page.goto(`http://localhost:${PORT}/cook.html?speed=2`);
-      await page.waitForFunction(() => window.__cook && window.Cook && Cook.scene, null, { timeout: 20000 });
+      await page.waitForFunction(() => window.njgTest?.cook && window.Cook && Cook.scene, null, { timeout: 20000 });
       await wait(800);
-      page.evaluate((lv) => window.__cook.lab("fetch", false, { level: lv }), level).catch(() => {});
+      page.evaluate((lv) => window.njgTest?.cook.lab("fetch", false, { level: lv }), level).catch(() => {});
       await page.waitForFunction(() => window.Cook.scene.viewName === "pantry", null, { timeout: 20000 });
       await wait(2600);
       await page.screenshot({ path: `${OUT}/${s.name}-L${level}-0-empty.png` });

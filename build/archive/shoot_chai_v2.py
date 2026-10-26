@@ -142,7 +142,7 @@ def run(vp, out, level, speed, guided=False, cups=None, right=False):
             # (the family list is Nana, Ma and Ali: a fourth cup needs a fourth person, so Isa joins)
             page.evaluate(f"() => {{ const r = Cook.data.recipes.chai; r.slots.cups.count = {{ byLevel: [{cups}, {cups}, {cups}, {cups}] }}; if (!r.lists.family.includes('isa')) r.lists.family.push('isa'); }}")
         page.evaluate("() => { Cook.tasteHold = 900; }")
-        page.evaluate(f"() => {{ __cook.lab('chai-tray', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('chai-tray', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=1500)
         time.sleep(1.0)

@@ -409,3 +409,41 @@ test("--changed: a row is replayed only when a probe's flow is reached by the ch
   assert.deepEqual(changedRows(["A-1"], norm, ["cook:chai-tray"]).keep, ["A-1"], "a path of a flow counts as the flow");
   assert.deepEqual(changedRows(["A-1", "A-2", "A-3"], norm, []).keep, [], "nothing changed: nothing replayed");
 });
+
+test("the one loop (S13-T): a brief's rows, sizes and probes; before|after pairs; a before red is never a strike", async () => {
+  const { briefRows, briefSizes, briefSlug, briefProbes, panelKey, pairPanels, beforeNote } = await import("./lib/brief.mjs");
+  const known = ["SH-19", "CLN-57", "SH-60", "CK-48"];
+  const spec = { name: "s13-x: the finger", rows: ["SH-60"], tasks: [{ do: "fix SH-19 (the finger) and CLN-57's glow; S13-A1 owns css, see F7", accept: "SH-19 judged; CK-48 untouched" }], newRows: ["CLN-57", "NOPE-1"] };
+  const b = briefRows(spec, known);
+  assert.deepEqual(b.rows, ["SH-60", "SH-19", "CLN-57", "CK-48"], "spec.rows first, then every row id in the tasks' words, in order");
+  assert.deepEqual(b.unknown, [], "a build id in the words (S13-A1, F7) is not a row and not an error");
+  assert.deepEqual(b.newRows, ["CLN-57"], "new features: only rows the brief names");
+  assert.deepEqual(briefRows({ rows: ["ZZ-9"] }, known).unknown, ["ZZ-9"], "a listed row the fix list lacks is refused");
+  assert.deepEqual(briefSizes({}), ["1366x768", "915x412"]);
+  assert.deepEqual(briefSizes({ sizes: ["800x360"] }), ["800x360"]);
+  assert.equal(briefSlug({ report: "s13-t" }, "x.json"), "s13-t");
+  assert.equal(briefSlug({}, "build/tools/ops/specs/s13-t-example.json"), "s13-t-example");
+  const cap = (raw) => parseCapture(raw);
+  const probes = [
+    { flowId: "clinic:heal-eye", kind: "motion", sizes: ["1366x768"], capture: [cap("strip:.cl-heal:5x250")] },
+    { flowId: "cook:samosa", kind: "layout", sizes: ["1366x768"], capture: [cap("shot")] },
+    { repo: true, capture: [cap("cmd:node build/check_onboard.mjs")] },
+  ];
+  const mine = briefProbes(probes, { flows: ["clinic:heal-eye#stuck"] }, parseCapture);
+  assert.deepEqual(mine.map((p) => p.flowId || "repo"), ["clinic:heal-eye", "repo"], "only the probes on the brief's flows (a script probe always)");
+  assert.deepEqual(mine[0].sizes, ["1366x768", "915x412"], "at the brief's sizes");
+  assert.deepEqual(mine[0].capture.map((c) => c.raw), ["strip:.cl-heal:5x250", "strip:.cl-heal:4x250", "strip:.cl-heal:4x500"], "a moving thing filmed at 250 and 500 ms too");
+  assert.equal(briefProbes(probes, { flows: ["day:door"] }, parseCapture).length, 3, "none on the brief's flows: all of the row's probes");
+  assert.equal(panelKey(0, 1, "915x412", "crop:.x"), "p1|L1|915x412|crop:.x");
+  const before = [{ key: "a" }, { key: "gone" }], after = [{ key: "a" }, { key: "new" }];
+  assert.deepEqual(pairPanels(before, after).map((p) => [p.key, !!p.before, !!p.after]), [["a", true, true], ["new", false, true], ["gone", true, false]]);
+  assert.match(beforeNote(true), /not there yet/);
+  assert.match(beforeNote(false, ["the moment never came"]), /PROBE FAULT.*never came/);
+  const { redGreen, specHash } = await import("./lib/evidence.mjs");
+  const s = specHash([{ flow: "x" }]);
+  const log = [{ id: "A-1", run: "br-before", verdict: "FAIL", spec: s, before: true }];
+  const pass = redGreen(new Map([["A-1", { verdict: "PASS" }]]), { kinds: { "A-1": "reopened" }, specs: { "A-1": s }, log: [...log, { id: "A-1", run: "br-after", verdict: "PASS", spec: s }], run: "br-after" });
+  assert.equal(pass.verdicts.get("A-1").verdict, "PASS", "the before's red lets the after's PASS stand");
+  const fail = redGreen(new Map([["A-1", { verdict: "FAIL" }]]), { kinds: { "A-1": "reopened" }, specs: { "A-1": s }, log: [...log, { id: "A-1", run: "br-after", verdict: "FAIL", spec: s }], run: "br-after" });
+  assert.deepEqual(fail.strikes, [], "a before red is the probe seeing the problem, not a failed fix: one FAIL, no two strikes");
+});

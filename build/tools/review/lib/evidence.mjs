@@ -208,7 +208,8 @@ export function redGreen(verdicts, { kinds, specs, log, run, legacy = [] }) {
     }
     if (v.verdict === "FAIL") {
       let b = -1; mine.forEach((e, i) => { if (e.event === "built") b = i; });
-      const runs = new Set(mine.slice(b + 1).filter((e) => e.verdict === "FAIL").map((e) => e.run)); runs.add(run);
+      // a brief's before red (before: true, the one loop) is the probe seeing the problem, not a failed fix: never a strike
+      const runs = new Set(mine.slice(b + 1).filter((e) => e.verdict === "FAIL" && !e.before).map((e) => e.run)); runs.add(run);
       if (runs.size >= 2) { strikes.push(id); out.set(id, { ...v, twoStrikes: true }); continue; }
     }
     out.set(id, v);

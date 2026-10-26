@@ -1,0 +1,22 @@
+{
+  "name": "s13-t-example: the one loop's worked example (the finger, the glow, the help box)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the worked example of evidence.mjs --before/--after/--judge --brief (S13-T task 1 and 2); nothing is built",
+  "cost": "none (a tool test)",
+  "stop": "26 Oct 2026, 21:00 UK",
+  "branch": "claude/funny-carson-oxxdkw",
+  "kind": "tools",
+  "browser": true,
+  "elements": ["finger", "glow", "help box"],
+  "owns": ["nothing: the example plays three rows before and after"],
+  "tasks": [
+    { "do": "SH-19, the finger: first-time help in the eye test's first round (the dim, the box, the ghost finger)", "accept": "SH-19's before and after at 1366x768 and 915x412" },
+    { "do": "CLN-57, the glow: the fever's next thing glows after a pause", "accept": "CLN-57's before and after, with the glow filmed" },
+    { "do": "EASY-08, the help box: one box round the live control only, the item glowing and bouncing in it", "accept": "EASY-08's before and after" }
+  ],
+  "flows": ["cook:chai-tray", "clinic:heal-eye", "clinic:heal-fever"],
+  "port": 8861,
+  "report": "s13-t-example",
+  "publish": false
+}

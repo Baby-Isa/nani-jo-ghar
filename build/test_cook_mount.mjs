@@ -8,7 +8,7 @@
  *   - canvases, Cook's screen (#app, #overlay, #coach), the element's children, new <body> children
  *   - Cook's lifetime (js/cook/life.js open()) empty; audio contexts closed; <body> classes as before
  *   - no page errors
- * And: no Cook global (window.Cook, window.__cook) on the host page; no iframe.
+ * And: no Cook global (window.Cook, window.njgTest?.cook) on the host page; no iframe.
  *   COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/test_cook_mount.mjs [--times 5] [--station fetch]
  */
 import { BASE, startServer, launch, newPage, sleep } from "./sandbox/lib/env.mjs";
@@ -103,7 +103,7 @@ const PROBE = () => {
         body: [...document.body.children].map((n) => n.tagName + (n.id ? "#" + n.id : "")).filter((t) => t !== "SCRIPT"),
         bodyClass: document.body.className,
         cookScreen: ["app", "overlay", "coach", "side", "stage"].filter((id) => document.getElementById(id)).length,
-        globals: ["Cook", "__cook", "__njgCookLoading"].filter((k) => k in window),
+        globals: [..."Cook" in window ? ["Cook"] : [], ...["cook", "loading"].filter((k) => window.njgTest && k in window.njgTest).map((k) => `njgTest.${k}`)],
       };
     },
   };

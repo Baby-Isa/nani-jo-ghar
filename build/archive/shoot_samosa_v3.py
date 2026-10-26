@@ -162,7 +162,7 @@ def run(vp, out, level, speed, guided=True, wrong=False):
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag, wrong=wrong)
         # (--two, 30 Sept: an order with two different samosas, from level 3)
-        page.evaluate(f"() => {{ Cook.samosaTwo = {'1' if TWO else 'null'}; __cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ Cook.samosaTwo = {'1' if TWO else 'null'}; njgTest.cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if wrong:
             # the frown's look (Kit.review's screenshot switch; the station's own verdict still decides)

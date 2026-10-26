@@ -63,7 +63,7 @@ def run(vp, out, level, speed):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, vp["name"] if level == 1 else f"{vp['name']}-l{level}")
-        page.evaluate(f"() => {{ __cook.lab('chai-tray', true, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('chai-tray', true, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         time.sleep(1.2)
         P.snap("start")

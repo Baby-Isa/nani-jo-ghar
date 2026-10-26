@@ -118,12 +118,12 @@ async function pantryLeak(page, rounds) {
         Cook.save.words = Cook.save.words || {};
         asked.forEach((id) => (Cook.save.words[id] = { seen: 6, right: 5, miss: 0 }));
         Cook.writeSave();
-        if (window.__cook.coachesSeen) window.__cook.coachesSeen();
+        if (window.njgTest?.cook.coachesSeen) window.njgTest?.cook.coachesSeen();
         let need = null, S = null;
         const def = Cook.Mech.defs.fetch;
         const run = def.run;
         def.run = function (z, p) { need = p.need.slice(); S = z.S; return run.apply(this, arguments); };
-        window.__cook.lab("fetch", false, { level: lv });
+        window.njgTest?.cook.lab("fetch", false, { level: lv });
         const t0 = Date.now();
         while (Date.now() - t0 < 15000) {
           await new Promise((res) => setTimeout(res, 150));

@@ -3,11 +3,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, args, help, die, sh } from "./lib.mjs";
-import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS, proofLines, missingEvidence, EVIDENCE_FILE } from "./briefpack.mjs";
-import { loadRegressions } from "../review/lib/regressions.mjs";
+import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS, proofLines, missingEvidence, EVIDENCE_FILE, briefRegressionRows } from "./briefpack.mjs";
+import { loadRegressions, statusKind } from "../review/lib/regressions.mjs";
+import { kitMap, kitMapText, loadKit } from "../review/kitmap.mjs";
 
 const HELP = `
-node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack]
+node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack] [--flow-rows]
 node build/tools/ops/brief.mjs --live-check
 node build/tools/ops/brief.mjs --audit <spec.json> <git range>   every file the session's commits touched is in its owns; anything
                                                                   else is listed as a request and /review fails on it (exit 1)
@@ -20,7 +21,11 @@ node build/tools/ops/brief.mjs --audit <spec.json> <git range>   every file the 
     owns: [...], readOnly: [...], stubs                     files
     permissions                                             what to grant up front
     tasks: [{do, accept}]                                   numbered, each with its acceptance criterion
-    flows: ["clinic:heal-cut", ...], shared: true          regression rows to list (regress.mjs); "touched" lets the session map them
+    flows: ["clinic:heal-cut", ...]                         the flows the builder replays (the contract run at 1366x768 and 915x412)
+    elements: ["finger", "glow", ...]                       shared elements (data/kit-elements.json): PLACES (kitmap.mjs: every file:line that
+                                                             draws or styles each), their open rows, and the kitsheet proof line
+    rows: [...]                                              fix-list rows beyond the ones the tasks name. REGRESSION ROWS: the rows the tasks
+                                                             name plus the open rows of the elements named (--flow-rows: the old per-flow list)
     kind: art|design|review|code|shared|spec|driver|tools|docs|verdicts|report|text|counts|logs   picks the default model and effort
                           from the table (Fable: art, design, the review before main; Opus high: code, shared; Sonnet medium: specs,
                           drivers, docs, verdicts, reports; Haiku: text-only expects, counts, logs). "model" in the spec still wins.
@@ -52,6 +57,7 @@ if (a.has("audit")) {
 }
 if (!a.pos[0]) die("Give a spec file. --help shows the fields.");
 const s = JSON.parse(readFileSync(a.pos[0], "utf8"));
+s.specFile = a.pos[0].startsWith(ROOT + "/") ? a.pos[0].slice(ROOT.length + 1) : a.pos[0].replace(/^\.\//, "");
 if (!s.model && s.kind) { const m = modelFor(s.kind); if (!m) die(`Unknown kind "${s.kind}". Known: ${Object.keys(MODEL_TABLE).join(", ")}.`); s.model = m.model; s.effort = s.effort || m.effort; s.why = s.why || m.why; }
 for (const k of ["name", "model", "cost", "stop", "branch", "owns", "tasks"]) if (s[k] == null) die(`Spec is missing "${k}" (or give "kind" for the model).`);
 if (NAMES_HELPERS(JSON.stringify(s.tasks) + " " + (s.extra || []).join(" "))) die("The spec sets up helper sessions: one build session at a time (two at most on different files), no helpers.");
@@ -67,7 +73,7 @@ const report = s.report || s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").repl
 add(`SESSION NAME / MODE:  ${s.name}`,
   `MODEL AND EFFORT:     ${s.model}${s.effort ? `, ${s.effort} effort` : ""}${s.why ? ` (${s.why})` : ""}`,
   `COST ESTIMATE:        ${s.cost}`,
-  `HARD STOP:            ${s.stop}. Push the branch every 30-40 minutes.`,
+  `HARD STOP:            ${s.stop}. Commit every 30-40 minutes${s.publish ? "" : " (builders never push: the orchestrator merges)"}.`,
   `BRANCH:               ${s.branch}. ${s.publish ? "Push to main only as the last step, per FINISH." : "Never push to main."}`, "");
 
 add(`MODEL TABLE (defaults by kind of work): ${modelTableText()}`, "");
@@ -98,8 +104,23 @@ add("TASKS (each with its acceptance criterion):");
 s.tasks.forEach((t, i) => add(`  ${i + 1}. ${t.do}`, `     Accept: ${t.accept || "looked at, not just tests passed"}`));
 add("");
 
-// regression rows for the flows the brief touches
-if (s.flows?.length && !a.has("no-rows")) {
+// PLACES (S13-T): every file:line that draws or styles each element the brief names (kitmap.mjs; the kit's home first, then the copies)
+if ((s.elements || []).length) {
+  add(`PLACES (build/tools/review/kitmap.mjs --elem ${s.elements.join(",")}: where each element is drawn or styled today; one place to fix, the copies go):`, kitMapText(kitMap(s.elements)), "");
+}
+
+// REGRESSION ROWS (S13-T): the rows the tasks name and the open rows of the elements named, never a flow's whole list (S12's 190+)
+if (!a.has("no-rows") && !a.has("flow-rows")) {
+  let kit = { elements: {} }; try { kit = loadKit(); } catch (e) { /* no element map: element rows are listed as unknown */ }
+  const R = briefRegressionRows(s, loadRegressions().map((r) => ({ id: r.id, issue: r.issue, check: r.check, open: /^(open|reopened)$/.test(statusKind(r.status)) })), kit);
+  const total = new Set([...R.named, ...R.elements.flatMap((e) => e.ids)]).size;
+  add(`REGRESSION ROWS TO RECHECK (${total}; * = open or reopened; the contract replay of your flows covers the rest):`);
+  add(`  the rows the tasks name (${R.named.length}): ${R.named.join(", ") || "none"}`);
+  for (const e of R.elements) add(`  ${e.name} (its open rows, ${e.ids.length}): ${e.unknown ? "not in data/kit-elements.json" : e.ids.join(", ") || "none"}`);
+  add("");
+}
+// the old list (--flow-rows): every regression row of the flows the brief touches
+if (s.flows?.length && !a.has("no-rows") && a.has("flow-rows")) {
   const out = sh("node", ["build/tools/review/regress.mjs", s.flows.join(","), "--max", "999", ...(s.shared ? ["--shared"] : [])], { soft: true });
   const groups = [];
   for (const line of out.split("\n")) {
@@ -121,10 +142,10 @@ if (s.flows?.length && !a.has("no-rows")) {
 
 add(...proofLines(s, report));
 add(
-  `TESTS: ${s.browser === false ? "no browser needed" : `your own browser lock (\`flock -w 1800 /tmp/njg-browser-${s.port || "PORT"}.lock timeout ...\`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}; batch proofs: fix several rows, then one evidence run (--rows a,b,c) and one contract replay`}.`, "");
+  `TESTS: ${s.browser === false ? "no browser needed" : `your own browser lock (\`flock -w 1800 /tmp/njg-browser-${s.port || "PORT"}.lock timeout ...\`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay`}.`, "");
 
 add("GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.",
-  `FINISH: build/reports/${report}.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch.` +
+  `FINISH: build/reports/${report}.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch${s.publish ? " and push it" : " (never push)"}.` +
   (s.publish ? " Then `python3 build/bump_version.py` and ONE push of HEAD:main (or `node build/tools/ops/publish.mjs --go`)." : " No bump_version, no push to main."));
 (s.extra || []).forEach((x) => add(x));
 

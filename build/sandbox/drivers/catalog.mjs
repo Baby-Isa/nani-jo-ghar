@@ -2,7 +2,7 @@
 // plays on (flows/index.mjs flowKind adds them as paths) and the moments it records (lib/moments.mjs adds them to what that
 // path can reach). Pure data: no browser, no imports, so the moment catalogue and the flow index can both read it.
 //
-// A driver plays the game through its own test hooks only (Cook's __cook.expectation(), the clinic's __clinic.expect() and the
+// A driver plays the game through its own test hooks only (Cook's njgTest.cook.expectation(), the clinic's njgTest.clinic.expect() and the
 // heal games' debug.next()/slip(), the shared Lifecycle and RequestPopup, njgTest): never a game file changed. Moments a driver
 // records are either a player state (rec:<name>, a screenshot and lint like every state) or a bare evidence moment
 // (drv:<name>, drivers/index.mjs mark(): nothing recorded, only probes that ask for it capture).
@@ -36,6 +36,11 @@ export const DRIVERS = {
   "tap-quick": { kinds: ["cook"], moments: ["drv:count-word"] },
   "tawa-empty-then-off": { kinds: ["cook"], moments: ["rec:tawa-empty", "rec:knob-off", "drv:knob-off", "drv:tawa-empty"] },
   "idle-twice": { kinds: ["cook", "heal"], moments: ["rec:idle-hint", "rec:idle-again"] },
+  // the stuck player (S13-T, generalising idle-twice): at the first move it waits, taps nothing, through every help rung, then
+  // plays fair. rec:stuck-start as it stops, then rec:stuck-5s, rec:stuck-12s, rec:stuck-18s at that much idle time (the kit's
+  // rungs at 0, 5 and 15 s, Nani's line at 7-15 s by level, the bulbs' pulse at 17 s: js/shared/onboard.js RUNGS, guide.js PAUSE);
+  // each rung the kit logs is life:rung, each help Nani gives life:help. drivers/index.mjs stuckWait plays it on every kind below
+  stuck: { kinds: ["cook", "heal", "clinic-stage", "day-door"], moments: ["rec:stuck-start", "rec:stuck-5s", "rec:stuck-12s", "rec:stuck-18s", "drv:stuck", "life:rung", "life:help"] },
   "force-passme": { kinds: ["cook-other"], moments: ["rec:passme-forced"] },
   "wrong-spice-thrice": { kinds: ["cook"], moments: ["rec:wrong-1", "rec:wrong-2", "rec:wrong-3", "rec:shown-right"] },
   "turn-early-late": { kinds: ["cook"], moments: ["rec:wrong-early", "rec:wrong-late", "rec:turned-early", "rec:turned-late"] },

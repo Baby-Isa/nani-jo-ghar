@@ -103,7 +103,7 @@
     return env === "learned" ? 3 : 1;
   };
   /** The player's word progress (the core's), or null (a lab page, Node). */
-  HS.progress = () => (global.__clinic && global.__clinic.core && global.__clinic.core.progress) || null;
+  HS.progress = () => (global.njgTest && global.njgTest.clinic && global.njgTest.clinic.core && global.njgTest.clinic.core.progress) || null;
   /** Rule 10: a word the family has recorded on its own (every piece of the engine's clip plan a family clip). */
   HS.recorded = function (id) {
     try {

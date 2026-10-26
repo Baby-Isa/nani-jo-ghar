@@ -120,7 +120,8 @@ await import("./flow.js");
 await import("./frame-hookup.js");
 
 // the classic-compatible files have run: close the load-time handoff (js/cook/ns.js)
-delete globalThis.__njgCookLoading;
+// (and the hook object too when the handoff was all it held: no njgTest is left on a page that had none)
+if (globalThis.njgTest) { delete globalThis.njgTest.loading; if (!Object.keys(globalThis.njgTest).length) delete globalThis.njgTest; }
 
 export { Cook };
 export default Cook;

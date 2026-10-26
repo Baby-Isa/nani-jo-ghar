@@ -42,18 +42,48 @@ test("session scope (checks-to-build 14): files outside the spec's owns are list
   assert.equal(NAMES_HELPERS("NO helper sessions or background helpers."), false);
 });
 
-test("every brief's PROOF asks for the size-matrix replay of its own flows before the finish (Zafar, 20 Oct)", async () => {
-  const { proofLines, matrixCommand, MATRIX_SIZES } = await import("./briefpack.mjs");
-  assert.equal(MATRIX_SIZES, "800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900");
+test("every brief's PROOF is the one loop: checks, --after --brief, the contract run at two sizes, no frames of its own (S13-T)", async () => {
+  const { proofLines, matrixCommand, PROOF_SIZES } = await import("./briefpack.mjs");
+  assert.equal(PROOF_SIZES, "1366x768,915x412", "rapid prototype (Zafar, 22 Oct): laptop and phone");
   assert.equal(matrixCommand(["clinic:heal-eye", "cook:chai-tray"], "s09-x"),
-    "node build/sandbox/run.mjs --contract --flow clinic:heal-eye,cook:chai-tray --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s09-x-matrix --no-sheets");
-  const text = proofLines({ flows: ["clinic:heal-eye"] }, "s09-x").join("\n");
-  assert.ok(text.includes("flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye --sizes " + MATRIX_SIZES + " --run-id s09-x-matrix --no-sheets"));
+    "node build/sandbox/run.mjs --contract --flow clinic:heal-eye,cook:chai-tray --sizes 1366x768,915x412 --run-id s09-x-contract --no-sheets");
+  const text = proofLines({ flows: ["clinic:heal-eye"], port: 8870, specFile: "build/tools/ops/specs/s09-x.json", elements: ["finger", "order card"] }, "s09-x").join("\n");
+  assert.ok(text.includes("flock -w 3600 /tmp/njg-browser-8870.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye --sizes 1366x768,915x412 --run-id s09-x-contract --no-sheets"));
+  assert.ok(text.includes("node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s09-x.json"), "the builder plays its rows after with the brief's own spec");
+  assert.ok(text.includes("kitsheet.mjs --elem finger,order-card --after"), "a brief naming elements films them side by side");
+  assert.match(text, /checks\.mjs/);
+  assert.match(text, /never shoot your own frames/);
+  assert.match(text, /lists only the after folder/);
   assert.match(text, /0 contract breaks the report doesn't explain/);
-  assert.match(text, /rises to 30/);
-  assert.doesNotMatch(text, /1366x768 only, one shot/, "the old 1366x768-only line is gone");
-  assert.doesNotMatch(text, /HARD LIMIT/);
+  assert.doesNotMatch(text, /shotdiff|skeleton\.mjs|800x360,844x390/, "the old matrix, shotdiff and skeleton lines are gone");
   assert.match(proofLines({}, "r").join("\n"), /--flow <the spec's flows>/, "a spec with no flows says so");
+  assert.doesNotMatch(proofLines({}, "r").join("\n"), /kitsheet/, "no elements, no kitsheet line");
+});
+
+test("REGRESSION ROWS: the rows the tasks name and the open rows of the elements named, not a flow's whole list (S13-T)", async () => {
+  const { briefRegressionRows } = await import("./briefpack.mjs");
+  const rows = [
+    { id: "SH-19", issue: "First-time help: the ghost finger", check: "", open: true },
+    { id: "CK-46", issue: "her point pose's finger goes behind the counter", check: "", open: true },
+    { id: "EASY-08", issue: "The spotlight box", check: "", open: false },
+    { id: "SH-53", issue: "one shared glow", check: "", open: true },
+    { id: "OLD-1", issue: "a finger row long built", check: "", open: false },
+  ];
+  const kit = { elements: { finger: { rowWords: "finger" }, glow: { rowWords: "glow" } } };
+  const r = briefRegressionRows({ tasks: [{ do: "fix SH-19", accept: "EASY-08 still passes" }], elements: ["finger", "nope"] }, rows, kit);
+  assert.deepEqual(r.named, ["SH-19*", "EASY-08"]);
+  assert.deepEqual(r.elements, [{ name: "finger", ids: ["CK-46*"] }, { name: "nope", ids: [], unknown: true }], "an element's open rows, never a row the tasks name twice, never a built one");
+});
+
+test("kitmap: every place an element is drawn or styled, the kit first, a CSS rule to its closing brace (S13-T)", async () => {
+  const { kitMap, kitMapText, fmtSpan } = await import("../review/kitmap.mjs");
+  assert.equal(fmtSpan([795, 804]), "795-804");
+  const [finger] = kitMap(["finger"]);
+  assert.ok(finger.kit.some((x) => x.file === "js/shared/onboard.js"), "the kit's own finger");
+  const cook = finger.copies.find((x) => x.file === "css/cook.css");
+  assert.ok(cook && cook.spans.some(([a, b]) => b > a), "Cook's dead copy is a whole rule (s13-kit-review.md: cook.css:795-804)");
+  assert.ok(finger.copies.some((x) => x.file === "js/cook/coach.js"), "and where coach.js still sets it (coach.js:304-305)");
+  assert.match(kitMapText([finger]), /the kit: .*onboard/);
 });
 
 test("a spec naming fix-list rows with no evidence spec is refused unless the builder owns evidence.json (Sprint 8)", async () => {

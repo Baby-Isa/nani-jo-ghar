@@ -7,6 +7,7 @@ description: Review a finished build session or any change before it goes to Zaf
 **For:** whoever did not build it. The checks are the rules (`docs/tools.md`); checklist `docs/process/qa-checklist.md`.
 
 ## Steps
+**A builder's rows: the one loop first** (`docs/architecture/evidence-loop.md` "The one loop (S13)"). Its before was played at launch (`evidence.mjs --before --check --brief <spec>`); the builder played `--after`. Run `node build/tools/review/evidence.mjs --judge --brief <spec>`, one `judge` call per `judge/brief-NN.md`, then `--collect` and `--apply --run-id <after run>`. A shared element the brief names: `kitsheet.mjs --elem <name> --after` to the judge (the same look in every game). Machine checks before any of it; the steps below are the one broad sweep.
 0. The fast checks, docs limits included: `node build/tools/review/checks.mjs` (exit 1 stops the review).
 0b. A build session's scope: `node build/tools/ops/brief.mjs --audit <its spec.json> <base>..<head>` (exit 1: a file outside its owns; the review fails until it is undone or agreed).
 1. What the change reaches:

@@ -64,7 +64,7 @@ try {
     await sleep(2500);
     if (how === "station") {
       // a Cook station: its Phaser scene loads its art through the stamp
-      await page.evaluate(() => window.__cook && __cook.lab && __cook.lab("chai-tray", true, { level: 1 })).catch(() => {});
+      await page.evaluate(() => window.njgTest?.cook && njgTest.cook.lab && njgTest.cook.lab("chai-tray", true, { level: 1 })).catch(() => {});
       await sleep(4000);
     }
     const miss = [...new Set(reqs.filter((u) => !u.includes(`v=${STAMP}`)))];

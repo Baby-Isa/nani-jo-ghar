@@ -15,12 +15,12 @@ try {
   await page.goto(`${BASE}/clinic.html?stage=heal&game=knee&level=${level}&speed=3`, { waitUntil: "load" });
   await page.evaluate(() => { if (window.UIStore) UIStore.set("onboarded", "clinic/heal-knee", true); });
   const ev = (f, a) => page.evaluate(f, a);
-  await page.waitForFunction(() => window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal.current && window.__clinic.Stages.heal.current.controller, null, { timeout: 30000 });
+  await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal.current && window.njgTest?.clinic.Stages.heal.current.controller, null, { timeout: 30000 });
   const m = page.mouse;
   let turns = 0, n = 0;
   const t0 = Date.now();
   while (Date.now() - t0 < 120000) {
-    const a = await ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : null; });
+    const a = await ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : null; });
     if (!a) break;
     if (a.do === "tap") { await m.move(a.x, a.y); await m.down(); await m.up(); await page.waitForTimeout(250); }
     else if (a.do === "button") { const v = page.locator(".cl-go:not(.hidden)"); if (await v.count()) await v.last().click().catch(() => {}); await page.waitForTimeout(400); }
@@ -28,7 +28,7 @@ try {
     else await page.waitForTimeout(250);
     const t = await ev(() => document.querySelectorAll(".knee-turn").length + document.querySelectorAll(".knee-wrap-behind path").length);
     if (t > turns) { turns = t; await page.screenshot({ path: join(out, `L${level}-turn${String(++n).padStart(2, "0")}.png`) }); }
-    if (await ev(() => !!window.__clinic.last)) break;
+    if (await ev(() => !!window.njgTest?.clinic.last)) break;
   }
   console.log(`turns drawn: ${turns}, shots in ${out}`);
 } finally { await browser.close(); srv.close(); }

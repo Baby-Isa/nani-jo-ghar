@@ -493,7 +493,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const b = BREW8[k];
       return b ? im.setOrigin(b.cx / b.w, b.cy / b.h).setScale((rIn * 1.03) / b.r) : im.setOrigin(pm.cx, pm.cy).setScale(discScale);
     };
-    // where a pan's heat ring is (the gauge's place for the test hook __cook.gauge().box; s04-hooks): the ring and its track
+    // where a pan's heat ring is (the gauge's place for the test hook njgTest.cook.gauge().box; s04-hooks): the ring and its track
     const ringAt = (pan) => ({ x: pan.x, y: pan.y, r: rimR + 10 });
     // CHAI-25 (P57): the pan's highlight is a ring on the rim's centre (never the picture's box with its handle)
     if (!S.textures.exists(RING)) {

@@ -57,7 +57,7 @@ def run(vp, station, mood, coach, level, speed):
             else:
                 page.evaluate(f"Cook.forceReview = {'true' if mood == 'happy' else 'false'}")
             page.evaluate("Cook.tasteHold = 2600")
-        page.evaluate(f"() => {{ __cook.lab('{station}', {'true' if coach else 'false'}, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ njgTest.cook.lab('{station}', {'true' if coach else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=20000)
         want = list(COACH.get(station, [])) if coach else None
         done = {"shot": False}

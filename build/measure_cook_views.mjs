@@ -36,7 +36,7 @@ for (const key of keys) for (const level of levels) {
     P.helped = true;
     // measure on every expectation, not only once per name
     P.once = async () => rec.state();
-    await page.evaluate(([k, l]) => { __cook.lab(k, true, { level: l }); }, [key, level]);
+    await page.evaluate(([k, l]) => { njgTest.cook.lab(k, true, { level: l }); }, [key, level]);
     await P.play(() => page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), { timeout: 300000 });
     console.error(`${key}@L${level}: ok${errors.length ? " errors " + errors.join(";") : ""}`);
   } catch (e) {

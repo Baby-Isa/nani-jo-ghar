@@ -31,7 +31,7 @@
     &grandparent=1                         the speaking moments show the grown-up's tick ("They said it")
   The index of every entry: lab/clinic-core.html.
   Runs through the one game host (js/clinic/main.js, js/shared/host.js). Add &nonav=1 so the end screen's buttons stay on the page (tests).
-  window.__clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready, host}; window.njgTest (target-model § 8.1).
+  window.njgTest.clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready, host}; window.njgTest is the one hook (target-model § 8.1).
 -->
 <script type="importmap" data-njg="core">
 {
@@ -256,10 +256,10 @@
 <script src="js/clinic/run.js?v=20261026T131724Z"></script>
 <script type="module">
   // R5: the clinic runs through the one game host (js/shared/host.js) as a mode plug-in (js/clinic/main.js).
-  // The URL entries below are the same as before; window.__clinic keeps its calls for the tests, next to window.njgTest.
+  // The URL entries below are the same as before; window.njgTest.clinic keeps its calls for the tests (the host keeps it when it sets window.njgTest).
   const Q = new URLSearchParams(location.search);
   const $ = (id) => document.getElementById(id);
-  const C = (window.__clinic = { expect: () => (window.Clinic && Clinic.Stages ? Clinic.Stages.expect() : null), finishHeal: () => Clinic.Stages.heal.finish(), last: null, ready: false, errors: [] });
+  const C = ((window.njgTest = window.njgTest || {}).clinic = { expect: () => (window.Clinic && Clinic.Stages ? Clinic.Stages.expect() : null), finishHeal: () => Clinic.Stages.heal.finish(), last: null, ready: false, errors: [] });
   window.addEventListener("error", (e) => C.errors.push(String(e.message)));
   window.addEventListener("unhandledrejection", (e) => C.errors.push(String(e.reason && e.reason.message ? e.reason.message : e.reason)));
   const out = $("lab-out");

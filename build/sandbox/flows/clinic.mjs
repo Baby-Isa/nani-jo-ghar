@@ -1,15 +1,15 @@
 // The clinic, through its real page and lab URLs (labs.html: clinic.html?stage=...&level=...&variant=...; the lab
-// bar is left off, it is developer chrome). The driver follows window.__clinic.expect() (what the stage wants next)
+// bar is left off, it is developer chrome). The driver follows window.njgTest?.clinic.expect() (what the stage wants next)
 // with real pointer events, like build/test_clinic.py; the healing games are driven through the controller's own
 // debug.next() (what a child who understood would do), like build/heal_play.py. Fair player only.
 // &quiet=1 (no device voice) &fast=1 (short waits) &onboard=0 (no first-time ghost finger) &seed=7 (the same people every run).
 import { BASE, sleep } from "../lib/env.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
-import { mark, watchVoice, until, popupOpen, tapPopup } from "../drivers/index.mjs";
+import { mark, watchVoice, until, popupOpen, tapPopup, stuckWait } from "../drivers/index.mjs";
 
 const SEED = 7;
 // the evidence loop's named drivers on the clinic (drivers/catalog.mjs; build/sandbox/data/evidence.json _drivers): each plays fair
-// except for its one move, always through __clinic.expect(), the heal games' debug.next()/slip() and real taps
+// except for its one move, always through njgTest.clinic.expect(), the heal games' debug.next()/slip() and real taps
 //   tap-during-speech   a heal game's first move made while the doctor's line is still being said (SH-20, CLN-35)
 //   tap-through-popup   the request pop-up tapped as soon as its card is up (SH-64)
 //   idle-twice          8 s with no move at the heal game's first step, then 8 s more (the ghost finger, SH-46, CLN-101)
@@ -21,6 +21,7 @@ const SEED = 7;
 //                       and count no hint (SH-102, SH-114: contract-31); 7.5 s are given for the next lines to be said
 //   grab-hold           the ear's first wax drag held on the way while the zoom crops of the tweezers are taken (CLN-173: one prong behind the wax, one over it)
 //   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
+//   stuck               the first ask (a stage's tap, a heal game's first step) left alone through every help rung, help on (S13-T)
 //   mistake-real        the mistake player at real pace (no &fast=1): the wrong answer's shake, red and flash last their real time (CLN-107 at L3, CLN-194)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
@@ -194,7 +195,7 @@ export class ClinicPlayer {
     } else throw new Error(`unknown heal action ${JSON.stringify(a)}`);
   }
 
-  async play({ done = () => !!(window.__clinic && window.__clinic.last), timeout = 240000, label = "" } = {}) {
+  async play({ done = () => !!(window.njgTest?.clinic && window.njgTest?.clinic.last), timeout = 240000, label = "" } = {}) {
     const page = this.page;
     const t0 = Date.now();
     let lastStage = null;
@@ -202,7 +203,7 @@ export class ClinicPlayer {
     while (Date.now() - t0 < timeout) {
       if (await this.tapThrough()) continue;
       // "ResizeObserver loop completed with undelivered notifications" is a browser notice, not a bug: it fires now and then on layout
-      const errs = (await this.ev(() => (window.__clinic ? window.__clinic.errors : []))).filter((e) => !/ResizeObserver loop/.test(e));
+      const errs = (await this.ev(() => (window.njgTest?.clinic ? window.njgTest?.clinic.errors : []))).filter((e) => !/ResizeObserver loop/.test(e));
       if (errs.length) throw new Error(`page errors ${JSON.stringify(errs)}`);
       if (await this.ev(done)) {
         if (await this.resultsVisible()) { await this.once("results-end"); await this.results(); continue; }
@@ -217,7 +218,7 @@ export class ClinicPlayer {
         await this.results();
         continue;
       }
-      const e = await this.ev(() => (window.__clinic && window.__clinic.expect ? window.__clinic.expect() : null));
+      const e = await this.ev(() => (window.njgTest?.clinic && window.njgTest?.clinic.expect ? window.njgTest?.clinic.expect() : null));
       const stage = e && e.stage;
       if (stage && stage !== lastStage) { lastStage = stage; await sleep(200); await this.once(`stage-${stage}`); }
       if (!e) {
@@ -232,6 +233,8 @@ export class ClinicPlayer {
       if (["tap", "act", "point", "say", "belt"].includes(k) && !this.drv.turns.has(`${stage}-${k}`)) { this.drv.turns.add(`${stage}-${k}`); await mark(page, `your-turn-${stage}-${k}`); }
       if (this.hints && ["tap", "act", "point", "belt"].includes(k) && !(await this.page.evaluate(() => !!document.querySelector(".njg-onboard.on")))) await this.hintMoves(stage);
       if (this.mistakes && ["tap", "act", "belt"].includes(k) && (await this.mistakeMoves(stage, e))) continue;
+      // stuck (S13-T): the stage's first ask left alone through every help rung (drivers/index.mjs stuckWait), then fair
+      if (this.mode === "stuck" && !this.drv.stuck && ["tap", "act", "point", "belt"].includes(k)) { this.drv.stuck = true; await stuckWait(page, (n, o) => this.once(n, o)); continue; }
       if (k === "tap" || k === "act") {
         await this.once(`${stage}-${k}`);
         if (!(await this.tapSel(e.target))) await sleep(100); else { await sleep(250); await this.stageTakeBack(e.target); await this.replayTap(); }
@@ -256,46 +259,46 @@ export class ClinicPlayer {
       } else await sleep(100);
     }
     await this.once("timeout");
-    throw new Error(`${label}: timed out (last expect ${JSON.stringify(await this.ev(() => window.__clinic.expect()))})`);
+    throw new Error(`${label}: timed out (last expect ${JSON.stringify(await this.ev(() => window.njgTest?.clinic.expect()))})`);
   }
 
   async healGame(stage, e) {
     const game = e.game;
-    const has = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return !!(r && r.controller && r.controller.debug); });
-    if (!has) { await this.once(`heal-${game}-no-driver`); await this.rec.stop(`heal ${game}: no debug driver; ended with the test's finishHeal()`); await this.ev(() => window.__clinic.finishHeal()); await sleep(400); return; }
+    const has = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return !!(r && r.controller && r.controller.debug); });
+    if (!has) { await this.once(`heal-${game}-no-driver`); await this.rec.stop(`heal ${game}: no debug driver; ended with the test's finishHeal()`); await this.ev(() => window.njgTest?.clinic.finishHeal()); await sleep(400); return; }
     await this.once(`heal-${game}-start`, { settle: 300 });
     // D13: a fresh child's first round of a heal game is taught (shown, then copied; nothing scored): CLN-118's "taught"
-    if (await this.ev(() => { const r = window.__clinic.Stages.heal.current; return !!(r && r.ctx && r.ctx.taught); }).catch(() => false)) await this.once(`taught-${game}`, { settle: 300 });
+    if (await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return !!(r && r.ctx && r.ctx.taught); }).catch(() => false)) await this.once(`taught-${game}`, { settle: 300 });
     const t0 = Date.now();
     let steps = 0, mid = false, lastA = null;
     const tools = () => this.ev(() => Array.from(document.querySelectorAll(".hs-tool[data-tool]")).map((t) => t.dataset.tool)).catch(() => []);
-    while (!(await this.ev(() => !!window.__clinic.last)) && (await this.ev(() => !!window.__clinic.Stages.heal.current))) {
+    while (!(await this.ev(() => !!window.njgTest?.clinic.last)) && (await this.ev(() => !!window.njgTest?.clinic.Stages.heal.current))) {
       if (await this.tapThrough()) continue;
       if (Date.now() - t0 > 90000) {
         // what the game and the first-time help were doing when it stalled (F2: so a stall names its cause)
         const why = await this.ev(() => {
-          const r = window.__clinic.Stages.heal.current, ob = window.Onboard && Onboard.active && Onboard.active();
+          const r = window.njgTest?.clinic.Stages.heal.current, ob = window.Onboard && Onboard.active && Onboard.active();
           const lay = document.querySelector(".njg-onboard");
           return { next: r && r.controller.debug ? r.controller.debug.next() : null, onboard: ob ? ob.id : null, layer: lay ? lay.className : null };
         }).catch(() => null);
         throw new Error(`heal ${game}: timed out playing (last ${JSON.stringify(lastA)}; ${JSON.stringify(why)})`);
       }
       if (this.mistakes && !this.made.has("heal-slip")) {
-        const slip = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; });
+        const slip = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; });
         if (slip) { this.made.add("heal-slip"); await this.healAct(slip); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
       }
       if (this.hints && steps > 3 && !this.bulbs.has("heal")) await this.hintMoves("heal");
-      const next = () => this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
+      const next = () => this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
       let a = await next();
       // (s08 w6L, CLN-107 at L2) the slip is looked for once more as the move is chosen: at the game's real pace a row can open between the
       // look above and next(), and the player then judged it right and never made its mistake
       if (this.mistakes && !this.made.has("heal-slip") && a.do !== "wait") {
-        const slip2 = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
+        const slip2 = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
         if (slip2) { this.made.add("heal-slip"); await this.healAct(slip2); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
       }
       // CLN-184: the mistake player's tooth is overfilled once (the game's own debug.over(): hold past the green), then filled fair
       if (this.mistakes && game === "tooth" && a.what === "fill" && !this.made.has("heal-over")) {
-        const o = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.over ? r.controller.debug.over() : null; }).catch(() => null);
+        const o = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.over ? r.controller.debug.over() : null; }).catch(() => null);
         if (o) { this.made.add("heal-over"); a = o; }
       }
       if (a.do !== "wait" && this.mode !== "fair" && (await this.healDriver(game, a, next, tools))) continue;
@@ -361,6 +364,7 @@ export class ClinicPlayer {
       await this.once("idle-again", { settle: 0 });
       return true;
     }
+    if (m === "stuck" && !d.stuck) { d.stuck = true; await stuckWait(this.page, (n, o) => this.once(n, o)); return true; }
     if (m === "tap-during-speech" && !d.spoke) {
       // the doctor speaks between moves: at each move, up to 1.5 s for her next line (twenty moves at most), then the move at once
       d.tries = (d.tries || 0) + 1;
@@ -378,7 +382,7 @@ export class ClinicPlayer {
       return true;
     }
     if (m === "wrong-thrice" && d.wrongs < 3) {
-      let w = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
+      let w = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
       if (!w && a.do === "tap") {
         const ids = await tools();
         const other = ids.includes(a.what) ? ids.find((t) => t !== a.what) : null;
@@ -397,7 +401,7 @@ export class ClinicPlayer {
   }
   // CLN-62 evidence (s04-r2k2): the dropper over her eye after a "na", and the "I can see" moment before the pull-out
   async eyeMoments() {
-    const s = await this.ev(() => { const r = window.__clinic.Stages.heal.current; const d = r && r.controller.debug; return d ? { redrop: !!d.redrop, seeing: !!d.seeing } : {}; });
+    const s = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; const d = r && r.controller.debug; return d ? { redrop: !!d.redrop, seeing: !!d.seeing } : {}; });
     if (s.redrop) await this.once("heal-eye-redrop", { settle: 0 });
     if (s.seeing) { await sleep(150); await this.once("heal-eye-can-see", { settle: 0 }); }
   }
@@ -437,19 +441,19 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off);
       // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
       // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
-      const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
+      const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" || mode === "stuck" ? 1 : 0;
       const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "mistake-real" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {
         await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1&fast=1`, { waitUntil: "load" });
-        await page.waitForFunction(() => window.__clinic && window.__clinic.ready && window.Clinic && Clinic.Run, null, { timeout: 30000 });
+        await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.ready && window.Clinic && Clinic.Run, null, { timeout: 30000 });
         await page.evaluate((L) => { const s = Clinic.Run.state(); Clinic.Run.save({ ...s, levels: { waiting: L, diagnosis: L, pharmacy: L, heal: L, sendoff: L } }); }, levels);
       }
       await page.goto(`${BASE}/clinic.html?${q}`, { waitUntil: "load" });
-      await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
-      // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in __clinic
-      await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.__clinic.Stages.heal.current; }, get result() { return window.__clinic.last; } } }); });
+      await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.ready, null, { timeout: 30000 });
+      // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in njgTest.clinic
+      await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.njgTest?.clinic.Stages.heal.current; }, get result() { return window.njgTest?.clinic.last; } } }); });
       await sleep(500);
       const P = new ClinicPlayer(page, rec, { mode });
       if (mode === "lab-log-on") await rec.state("lab-log-on", { settle: 300 });

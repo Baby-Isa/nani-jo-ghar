@@ -75,8 +75,8 @@ export function contextPack(spec, { maxWords = 2000 } = {}) {
   if (named.length) L.push("## Rules this task names (their text now lives in the design docs)", ...named, "");
   L.push("## The checks this session must pass (they are the rules; docs/tools.md)",
     "- `node build/tools/review/checks.mjs` before every push (unit tests, words, bump, specs, docs limits, picture loads).",
-    "- Red then green per fix-list row: `node build/tools/review/evidence.mjs --run --rows <ID>` fails before the fix and passes after; the judge is never you.",
-    "- The sandbox with its contract checks on the flows you touched: `node build/tools/review/touched.mjs` prints the command.", "");
+    "- The one loop (S13): the brief's rows were played BEFORE at launch; you play them AFTER with `node build/tools/review/evidence.mjs --after --brief <this spec>`; the judge, never you, gets the script-made before|after batch.",
+    "- Your flows' contract run at 1366x768 and 915x412 (the PROOF line); `node build/tools/review/touched.mjs` maps what else you touched.", "");
   if (spec.rules && spec.rules.length) { const used = words(L.join("\n")).length; L.push("## Archived rulebook sections this spec asks for", ...ruleSections(spec.rules.map(String), Math.max(120, maxWords - used - 60))); }
   let out = L.join("\n") + "\n";
   while (words(out).length > maxWords && L.length > 8) { L.splice(L.length - 1, 1); out = L.join("\n") + "\n"; } // never over budget
@@ -150,24 +150,53 @@ export function outsideScope(owns, files, { report } = {}) {
 // a brief that sets up helper sessions breaks the one-or-two-sessions rule
 export const NAMES_HELPERS = (text) => /\b(spawn|launch|start|use|open)\b[^.\n]{0,40}\bhelper (session|agent)s?\b/i.test(String(text || ""));
 
-// The PROOF section every brief carries (rule C8, decisions 48 and 50; Zafar, 20 Oct: builders replay their own flows at every size
-// before reporting, so the review round finds nothing the matrix would have shown).
-export const MATRIX_SIZES = "800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900";
+// The PROOF section every brief carries: the one loop (S13-T; docs/architecture/evidence-loop.md "The one loop (S13)"). Machine
+// checks first; the orchestrator plays the brief's rows BEFORE at launch (evidence.mjs --before --brief, the judge's before check);
+// the builder plays them AFTER with the same command and replays its own flows at the two rapid-prototype sizes (Zafar, 22 Oct);
+// it never shoots its own frames and never dumps runs into its report; the judge gets the script-made before|after batch.
+export const PROOF_SIZES = "1366x768,915x412";
+// (the store matrix comes back before the app-store run: run.mjs --every-size)
+export const MATRIX_SIZES = PROOF_SIZES;
 export function matrixCommand(flows, report) {
   const fl = flows && flows.length ? flows.join(",") : "<the spec's flows>";
-  return `node build/sandbox/run.mjs --contract --flow ${fl} --sizes ${MATRIX_SIZES} --run-id ${report}-matrix --no-sheets`;
+  return `node build/sandbox/run.mjs --contract --flow ${fl} --sizes ${PROOF_SIZES} --run-id ${report}-contract --no-sheets`;
 }
+// the brief's spec file as the builder runs it (the spec's own path when brief.mjs knows it)
+export const specPath = (s, report) => s.specFile || `build/tools/ops/specs/${report}.json`;
 export function proofLines(s, report) {
+  const spec = specPath(s, report), port = s.port || "PORT";
+  const lock = `/tmp/njg-browser-${port}.lock`;
+  const elems = (s.elements || []).map(String);
   return [
-    "PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):",
-    "  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.",
-    "  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).",
-    "  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.",
-    `  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: \`flock -w 3600 /tmp/njg-browser.lock timeout 1800 ${matrixCommand(s.flows, report)}\`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).`,
-    "  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).",
-    "  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.",
-    "  - `node build/tools/review/skeleton.mjs " + report + "` starts the report's proof section.",
+    "PROOF (the one loop, S13: docs/architecture/evidence-loop.md \"The one loop (S13)\"; machine checks first, then pictures the script makes):",
+    "  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.",
+    "  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.",
+    `  - The rows' BEFORE was played at launch (\`node build/tools/review/evidence.mjs --before --brief ${spec}\`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.`,
+    `  - AFTER the build, the same rows, probes and sizes: \`COOK_TEST_PORT=${port} NJG_LOCK=${lock} node build/tools/review/evidence.mjs --after --brief ${spec}\`.`,
+    ...(elems.length ? [`  - The elements this brief names, side by side in every game: \`COOK_TEST_PORT=${port} NJG_LOCK=${lock} node build/tools/review/kitsheet.mjs --elem ${elems.map((e) => e.replace(/[^a-z0-9?]+/gi, "-").toLowerCase()).join(",")} --after\`.`] : []),
+    `  - BEFORE THE FINISH, your own flows at 1366x768 and 915x412 under your lock: \`flock -w 3600 ${lock} timeout 1800 ${matrixCommand(s.flows, report)}\`. Every flow must reach its end with 0 contract breaks the report doesn't explain.`,
+    `  - The report (build/reports/${report}.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (\`evidence.mjs --judge --brief ${spec}\`).`,
   ];
+}
+
+// The REGRESSION ROWS a brief lists (S13-T: S12 briefs pasted 190+ rows by flow that nobody rechecked): the rows its tasks name
+// (and spec.rows), then, per element the spec names (spec.elements, data/kit-elements.json), the open fix-list rows about that
+// element (its rowWords in the row's words). rows: parsed fix-list rows [{id, issue, check, status, open}] (live list and archive);
+// kit: data/kit-elements.json. -> {named: [id or id*], elements: [{name, ids}], unknown: [ids]}
+export function briefRegressionRows(spec, rows, kit = { elements: {} }) {
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  const star = (id) => (byId.get(id) && byId.get(id).open ? `${id}*` : id);
+  const text = [...(spec.rows || []), ...(spec.tasks || []).map((t) => `${t.do || ""} ${t.accept || ""}`)].join("\n");
+  const ids = rowIdsIn(text, new Set(byId.keys()));
+  const elements = [];
+  for (const name of spec.elements || []) {
+    const key = Object.keys(kit.elements || {}).find((n) => n === name || n.replace(/[^a-z0-9]+/gi, "-").toLowerCase() === String(name).replace(/[^a-z0-9?]+/gi, "-").toLowerCase());
+    const E = key && kit.elements[key];
+    if (!E || !E.rowWords) { elements.push({ name, ids: [], unknown: true }); continue; }
+    const re = new RegExp(E.rowWords, "i");
+    elements.push({ name: key, ids: rows.filter((r) => r.open && !ids.includes(r.id) && re.test(`${r.issue} ${r.check}`)).map((r) => r.id) });
+  }
+  return { named: ids.map(star), elements: elements.map((e) => ({ ...e, ids: e.ids.map(star) })) };
 }
 
 // Sprint 8's learning, built in (Zafar, 20 Oct): a spec whose tasks name fix-list rows needs those rows' evidence specs before the

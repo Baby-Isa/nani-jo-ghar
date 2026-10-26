@@ -172,7 +172,7 @@
         // SH-60: the grown-ups' "play as new" (the same as Cook's): every word is new again, the first-time help too
         global.NjgButtons.playAsNew(helpPop, () => {
           // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic levels, story, conversations)
-          const core = global.__clinic && global.__clinic.core;
+          const core = global.njgTest && global.njgTest.clinic && global.njgTest.clinic.core;
           if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
           if (core && core.progress && core.progress.reset) core.progress.reset();
           scr.closeHelp();

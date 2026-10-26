@@ -15,7 +15,7 @@ after(async () => {
   srv.close();
 });
 
-async function open(size, query, wait = "window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal.current && window.__clinic.Stages.heal.current.controller") {
+async function open(size, query, wait = "window.njgTest?.clinic && window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal.current && window.njgTest?.clinic.Stages.heal.current.controller") {
   const p = await newPage(browser, size, { seed: 1 });
   const page = p.page || p;
   await page.goto(`${BASE}/clinic.html?${query}&quiet=1&fast=1&nonav=1`, { waitUntil: "load" });
@@ -29,7 +29,7 @@ async function playUntil(page, until, max = 120) {
   for (let i = 0; i < max; i++) {
     if (await page.evaluate(until)) return true;
     const a = await page.evaluate(() => {
-      const r = window.__clinic.Stages.heal.current;
+      const r = window.njgTest?.clinic.Stages.heal.current;
       return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" };
     });
     if (!a || a.do === "wait") await sleep(200);
@@ -94,7 +94,7 @@ test("CLN-60: the eye's first-time help shows the right answer for the first row
   let found = null;
   for (let seed = 1; seed < 40 && !found; seed++) {
     const { page, close } = await open("1366x768", `stage=heal&game=eye&level=1&seed=${seed}&onboard=1&cues=1`);
-    const wrong = await page.evaluate(() => window.__clinic.Stages.heal.current.controller.debug.plan.chart[0].wrong);
+    const wrong = await page.evaluate(() => window.njgTest?.clinic.Stages.heal.current.controller.debug.plan.chart[0].wrong);
     if (!wrong) {
       await close();
       continue;
@@ -122,11 +122,11 @@ test("CLN-60: the eye's first-time help shows the right answer for the first row
 test("CLN-51: the drill's tip is under the finger", async () => {
   const { page, close } = await open("1366x768", "stage=heal&game=tooth&level=1&seed=7&onboard=0");
   const at = await playUntil(page, () => {
-    const c = window.__clinic.Stages.heal.current.controller.debug.next();
+    const c = window.njgTest?.clinic.Stages.heal.current.controller.debug.next();
     return c && c.what === "drill";
   }, 80);
   assert.ok(at, "reached the drill");
-  const a = await page.evaluate(() => window.__clinic.Stages.heal.current.controller.debug.next());
+  const a = await page.evaluate(() => window.njgTest?.clinic.Stages.heal.current.controller.debug.next());
   const [x, y] = a.pts[0];
   await page.mouse.move(x, y);
   await page.mouse.down();
@@ -149,7 +149,7 @@ test("SH-09: the drinks game's card rows are never cut off at level 3 (phone)", 
   const { page, close } = await open("844x390", "stage=heal&game=taste&level=3&seed=7&onboard=0");
   // open every step so every row is drawn
   await page.evaluate(() => {
-    const card = window.Clinic.Stages && window.__clinic.Run && document.querySelector(".cl-card");
+    const card = window.Clinic.Stages && window.njgTest?.clinic.Run && document.querySelector(".cl-card");
     void card;
   });
   const cut = await page.evaluate(() =>
@@ -168,7 +168,7 @@ test("SH-09: the drinks game's card rows are never cut off at level 3 (phone)", 
 });
 
 test("D11, D12: at a closed-card level the bulb opens the card, and a look isn't counted as a bulb", async () => {
-  const { page, close } = await open("1366x768", "stage=pharmacy&level=3&seed=7&onboard=0", "window.__clinic && window.__clinic.expect && window.__clinic.expect() && document.querySelector('.cl-card .oc-card.closed')");
+  const { page, close } = await open("1366x768", "stage=pharmacy&level=3&seed=7&onboard=0", "window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect() && document.querySelector('.cl-card .oc-card.closed')");
   // a look: tap the closed card
   await page.click(".cl-card .oc-card.closed .oc-head", { force: true });
   await sleep(200);
@@ -179,7 +179,7 @@ test("D11, D12: at a closed-card level the bulb opens the card, and a look isn't
   await page.click(".ng-bulb", { force: true });
   await sleep(60); // the lab's fast mode makes the bulb's time 0.3 s
   const open1 = await page.evaluate(() => !!document.querySelector(".cl-card .oc-card.bulb-open"));
-  const counts = await page.evaluate(() => ({ hints: window.__clinic.Stages && window.Clinic && document.querySelector(".cl-hint-n").textContent }));
+  const counts = await page.evaluate(() => ({ hints: window.njgTest?.clinic.Stages && window.Clinic && document.querySelector(".cl-hint-n").textContent }));
   await close();
   assert.ok(open1, "the bulb opened the closed card");
   assert.equal(counts.hints, "1", "one bulb");

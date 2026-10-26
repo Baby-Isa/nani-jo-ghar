@@ -56,7 +56,7 @@ for (const st of STATIONS) {
   await page.evaluate(() => localStorage.clear());
   await page.goto(`${BASE}/cook.html?speed=1`, { waitUntil: "load" });
   await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
-  await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
+  await page.evaluate(() => window.njgTest?.cook.coachesSeen && window.njgTest?.cook.coachesSeen());
   await sleep(1500);
   // the slow connection from here (the title is in; the station's own pictures are not)
   const cdp = await ctx.newCDPSession(page);
@@ -64,7 +64,7 @@ for (const st of STATIONS) {
   await cdp.send("Network.setCacheDisabled", { cacheDisabled: true });
   await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: LATENCY, downloadThroughput: (KBPS * 1024) / 8, uploadThroughput: (KBPS * 1024) / 8 });
   T0 = Date.now();
-  await page.evaluate((k) => { window.__cook.lab(k, true, { level: 1 }); }, st); // (not awaited: the lab round runs on)
+  await page.evaluate((k) => { window.njgTest?.cook.lab(k, true, { level: 1 }); }, st); // (not awaited: the lab round runs on)
   const frames = [];
   let tapped = false;
   let shownAt = null; // the first frame the station's view is on screen

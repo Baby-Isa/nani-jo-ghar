@@ -55,7 +55,7 @@ def run(vp, out, names, speed):
             key, level, n = STATIONS[name]
             browser, page, errors = T.open_page(pw, vp, speed, False)
             P = Shooter(page, out, speed)
-            page.evaluate(f"() => {{ __cook.lab('{key}', false, {{level: {level}}}); }}")
+            page.evaluate(f"() => {{ njgTest.cook.lab('{key}', false, {{level: {level}}}); }}")
             page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=15000)
             time.sleep(3.5)
             tag = f"{vp['name']}-{name}"

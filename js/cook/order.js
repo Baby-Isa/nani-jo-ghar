@@ -26,7 +26,7 @@
 (function (global) {
   // C4: Cook's namespace (js/cook/ns.js) when Cook loads as modules; the parked pages' and Node harnesses' marked window.Cook
   // when this file runs as a classic script. Timers go through Cook's lifetime (js/cook/life.js) when it is there.
-  const Cook = global.__njgCookLoading || (global.Cook = global.Cook || {});
+  const Cook = (global.njgTest && global.njgTest.loading) || (global.Cook = global.Cook || {});
   const { setTimeout, clearTimeout, setInterval, clearInterval } = Cook.life || global;
   const Lang = Cook.Lang;
   const O = (Cook.Order = {});

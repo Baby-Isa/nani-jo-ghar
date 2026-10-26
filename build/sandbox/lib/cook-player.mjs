@@ -1,9 +1,9 @@
-// A fair Cook player: reads __cook.expectation() (what the game wants next) and does it with real pointer
+// A fair Cook player: reads njgTest.cook.expectation() (what the game wants next) and does it with real pointer
 // events at screen coordinates. A Node port of build/test_cook.py's Player, without the deliberate mistakes.
 // It records each new view and each new kind of expectation as a state, once.
 import { sleep, ROOT } from "./env.mjs";
 import { waitBadges, readBadges } from "./results.mjs";
-import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine } from "../drivers/index.mjs";
+import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine, stuckWait } from "../drivers/index.mjs";
 
 // the evidence loop's named drivers this player plays (drivers/catalog.mjs, build/sandbox/data/evidence.json _drivers): each plays
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
@@ -25,7 +25,7 @@ export class CookPlayer {
     this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix; this.mode = mode;
     this.mistakes = mode === "mistake" || mode === "open-steps";
     // "takeback" (E14, R4): once something has been placed and the station offers to take it back
-    // (__cook.expectation().undo), tap it back, then carry on to the end
+    // (njgTest.cook.expectation().undo), tap it back, then carry on to the end
     this.takeback = mode === "takeback";
     this.tookBack = 0;
     this.hints = mode === "hint";
@@ -144,6 +144,12 @@ export class CookPlayer {
       await this.once("idle-hint", { settle: 0 });
       await sleep(8000);
       await this.once("idle-again", { settle: 0 });
+      return true;
+    }
+    // stuck (S13-T): at the first move, nothing tapped through every help rung (drivers/index.mjs stuckWait), then fair
+    if (m === "stuck" && !d.stuck && CALM.includes(e.kind)) {
+      d.stuck = true;
+      await stuckWait(p, (n, o) => this.once(n, o));
       return true;
     }
     // serve-wrong (CK-31, CK-32): a dish served wrong. At the first step that offers a look-alike (chai's sugar: the salt jar
@@ -321,8 +327,8 @@ export class CookPlayer {
     }
     return false;
   }
-  exp() { this.tExp = Date.now(); return this.page.evaluate("__cook.expectation()"); }
-  gauge() { return this.page.evaluate("__cook.gauge()"); }
+  exp() { this.tExp = Date.now(); return this.page.evaluate("njgTest.cook.expectation()"); }
+  gauge() { return this.page.evaluate("njgTest.cook.gauge()"); }
   // record a state once per flow
   async once(name, opts) { if (this.seen.has(name)) return; this.seen.add(name); await this.rec.state(this.prefix + name, opts); }
 
@@ -685,7 +691,7 @@ export class CookPlayer {
     while (!(await until())) {
       // open kitchen (free cooking): close it ourselves once enough customers have been served
       if (closeKitchenAfter != null && !closed) {
-        const served = await this.page.evaluate("__cook.state().dayCards").catch(() => 0);
+        const served = await this.page.evaluate("njgTest.cook.state().dayCards").catch(() => 0);
         if (served >= closeKitchenAfter && (await this.page.$("#close-kitchen:not([disabled])"))) {
           await this.once("close-kitchen");
           await this.page.click("#close-kitchen");
@@ -695,7 +701,7 @@ export class CookPlayer {
       }
       if (Date.now() - t0 > timeout) { await this.once("timeout"); throw new Error(`timed out after ${Math.round((Date.now() - t0) / 1000)}s playing (last expectation ${JSON.stringify(lastKind)}, view ${lastView})`); }
       let view = null;
-      try { view = await this.page.evaluate("__cook.state().view"); } catch (e) { /* navigating */ }
+      try { view = await this.page.evaluate("njgTest.cook.state().view"); } catch (e) { /* navigating */ }
       if (view !== lastView) {
         lastView = view;
         await sleep(300);

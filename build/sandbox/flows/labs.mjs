@@ -51,7 +51,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
         if (/\/playing/.test(st)) {
           const game = st.split("/").slice(0, -1).join("/");
           stages++;
-          await page.evaluate(() => import("./js/cook/mount.js").then((m) => { window.__cook = m.Cook.testHook; window.Cook = m.Cook; }));
+          await page.evaluate(() => import("./js/cook/mount.js").then((m) => { (window.njgTest = window.njgTest || {}).cook = m.Cook.testHook; window.Cook = m.Cook; }));
           await sleep(400);
           await rec.state(`${game.split("/").pop()}-start`, { settle: 200 });
           if (mode === "mute-across-modes" && !muted) { muted = true; await muteAcross(ctx, `${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`); continue; }
@@ -103,9 +103,9 @@ async function muteAcross(ctx, backUrl) {
   await sleep(500);
   await rec.state("muted-in-cook");
   await page.goto(`${BASE}/clinic.html?stage=heal&game=cut&level=1&seed=7&quiet=1&fast=1&nonav=1&onboard=0`, { waitUntil: "load" });
-  await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
+  await page.waitForFunction(() => window.njgTest?.clinic && window.njgTest?.clinic.ready, null, { timeout: 30000 });
   // the first heal step: the game's debug driver asks for its first move
-  await page.waitForFunction(() => { const r = window.__clinic.Stages && window.__clinic.Stages.heal && window.__clinic.Stages.heal.current; const a = r && r.controller && r.controller.debug ? r.controller.debug.next() : null; return !!a && a.do !== "wait"; }, null, { timeout: 30000 }).catch(() => rec.note("mute-across-modes: the scrape's first step did not come in 30 s"));
+  await page.waitForFunction(() => { const r = window.njgTest?.clinic.Stages && window.njgTest?.clinic.Stages.heal && window.njgTest?.clinic.Stages.heal.current; const a = r && r.controller && r.controller.debug ? r.controller.debug.next() : null; return !!a && a.do !== "wait"; }, null, { timeout: 30000 }).catch(() => rec.note("mute-across-modes: the scrape's first step did not come in 30 s"));
   await sleep(600);
   await rec.state("after-mute");
   await page.goto(backUrl, { waitUntil: "load" });
