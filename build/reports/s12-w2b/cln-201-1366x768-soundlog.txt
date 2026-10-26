@@ -1,0 +1,7 @@
+CLN-201: the eye test's first judged card, nobody tapping, 14 s from the card coming up (real pace, 1366x768)
+  2126 ms  start    2794 ms end  (pause)  gap from the last clip's end: -  assets/audio/family/mum/limu.mp3
+  4278 ms  start    4930 ms end  (pause)  gap from the last clip's end: 1484 ms  assets/audio/family/mum/limu.mp3
+  6430 ms  start    7090 ms end  (pause)  gap from the last clip's end: 1500 ms  assets/audio/family/mum/limu.mp3
+  8584 ms  start    9249 ms end  (pause)  gap from the last clip's end: 1494 ms  assets/audio/family/mum/limu.mp3
+ 10745 ms  start   11408 ms end  (pause)  gap from the last clip's end: 1496 ms  assets/audio/family/mum/limu.mp3
+ 12898 ms  start   13545 ms end  (pause)  gap from the last clip's end: 1490 ms  assets/audio/family/mum/limu.mp3

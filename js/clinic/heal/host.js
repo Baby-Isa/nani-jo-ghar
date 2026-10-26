@@ -310,6 +310,20 @@
     const play = (el, frames, opts) => (el.animate && !reduced ? el.animate(frames, opts).finished.catch(() => {}) : Promise.resolve());
     const z = {
       wide,
+      /**
+       * CLN-199 (Zafar, 22 Oct: "the doctor should be standing next to the girl as she sits on her bench ... then it zooms into
+       * her, so you've got continuity"): the wide shot at rest before the push-in, the doctor standing beside her in the room
+       * (the exam room's own place for him, scenes-v2 exam.doctor; he goes in and out with the room). -> his element
+       */
+      show(view) {
+        seat();
+        wide.classList.add("on");
+        if (!z.doc && cfg.doctor && Clinic.Stages.doctor) {
+          z.doc = Clinic.Stages.doctor(box, cfg.doctor, "cl-doc-stand cl-heal-doc", view || "front");
+          if (Clinic.Stages.pose) Clinic.Stages.pose(z.doc, "front");
+        }
+        return z.doc || null;
+      },
       /** The push-in: the room scales about the part and blurs; at the peak it fades to the close-up below. */
       async in() {
         seat();
@@ -361,6 +375,7 @@
         // measure on the unscaled room: the push-in's last frame (scaled, blurred) is still held
         [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         layer.appendChild(fig.el);
+        if (z.doc) z.doc.style.opacity = ""; // (CLN-199: the doctor stepped out of the zoom; he is back for the pull-out)
         fig.pose("sit");
         fig.react("happy", 0);
         healed();
@@ -433,6 +448,7 @@
         else fig.el.remove();
         restore();
         layer.insertBefore(still, layer.firstChild);
+        if (z.doc) z.doc.style.opacity = ""; // (CLN-199: the doctor, out of the zoom, is back in the kept room)
         z.kept = true;
       },
       destroy() {
@@ -1042,7 +1058,10 @@
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
     // (a late goal, def.why.goalAfter: the game's first step is the pop-up's whole content; its rows come at mount)
-    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText || lateGoal);
+    // CLN-199 (Zafar, 22 Oct: "maybe we move away from the pop-ups"): a game whose data has an intro opens instead with the
+    // doctor standing beside her in the room, saying its set sentences (runIntro, below)
+    const introOn = v2 && opts.popup !== false && opts.intro !== false && !!global.Lifecycle && !!staging && !!staging.show && !!(data && Array.isArray(data.intro) && data.intro.length);
+    const popup = !introOn && v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText || lateGoal);
     const popRead = new Set();
     let popped = false; // the pop-up has read the card
     let popAt = 0;
@@ -1098,6 +1117,107 @@
         popAt = Date.now();
       });
     };
+    /*
+     * CLN-199 (Zafar, 22 Oct; sprint decision 7): the doctor's start, one formula for every heal game that names it in its data
+     * (`intro`: [{line, card, pic}], the eye's today; the knee's, the ear's later by data alone). The wide shot at rest: she sits
+     * on the bed's edge and the doctor stands beside her (HOST.stage show), turned to the player. He says each set sentence in
+     * his own bubble ("the eye isn't right", "we will heal the eye", "we'll use this medicine"), each a line of the game's data
+     * through the engine (a line Mum hasn't recorded is its English in grey italic, device-spoken on the test path only); as he
+     * names a thing its word card shows big at the top left of the play area (the eye's, then the medicine's: the dropper), as
+     * Cook's people say their orders (js/cook/ui.js introduceAlong). Then the push-in to the close-up. It is the shared request
+     * phase, see-through (Lifecycle.request with its own element: no veil, nothing over a face): a tap anywhere stops his voice
+     * and the push-in starts at once (never wait for speech, non-negotiable 7).
+     */
+    const runIntro = () => {
+      Kit.Voice.clear();
+      const spk = Kit.Voice.speakers.doctor;
+      const doc = staging.show("front");
+      // (the judge, 26 Oct: at 915x412 his bubble, with no room above his head, sat on her braid): his bubbles come from just
+      // right of his head, away from her (she sits on his left)
+      const head = doc && doc.__doc && doc.__doc.head;
+      if (head) {
+        const ank = h("i", "cl-doc-head cl-intro-ank", doc);
+        Object.assign(ank.style, { position: "absolute", display: "block", pointerEvents: "none", top: head.style.top, width: head.style.width, height: head.style.height, left: `calc(${head.style.left} + ${head.style.width} * 0.9)` });
+        Kit.Voice.speakers.doctor = () => ank;
+      }
+      const el = h("div", "cl-intro", stage);
+      const box = h("div", "cl-intro-card", el);
+      let skipped = false;
+      const HS = Clinic.HealScene;
+      const wordOf = (it) => {
+        const w = HOST.word(it.card, data) || { kutchi: null, english: it.card, placeholder: true, plan: [] };
+        const ln = { kutchi: w.kutchi, english: w.english, placeholder: !!w.placeholder, plan: w.plan || [], rec: !!w.placeholder };
+        return {
+          id: it.card,
+          kutchi: w.kutchi || w.english,
+          english: w.english,
+          rec: !!w.placeholder,
+          picture: it.pic ? { src: Kit.url(it.pic), fit: "contain" } : null,
+          say: () => Kit.Voice.say(ln, { who: "doctor", noBubble: true }),
+        };
+      };
+      let shown = null;
+      const showCard = (it) => {
+        if (!it.card) {
+          box.innerHTML = "";
+          shown = null;
+          return;
+        }
+        if (shown === it.card) return; // (the same thing named again: its card stays up)
+        box.innerHTML = "";
+        shown = it.card;
+        const WC = global.WordCard;
+        if (!WC || !WC.card) return;
+        const word = wordOf(it);
+        const stg = HS && HS.stageOf ? HS.stageOf(it.card) : 1;
+        const sl = WC.slots ? WC.slots(stg, { placeholder: word.rec }) : { english: true, kutchi: true };
+        const c = WC.card(box, word, { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi }, cls: "cl-intro-word" });
+        c.classList.add("in");
+      };
+      return global.Lifecycle.request({
+        reason: `clinic:heal/${def.id}`,
+        el,
+        card: box,
+        target: () => card.el,
+        fast: Kit.fast,
+        lead: 0,
+        hold: 250,
+        wait: (ms) => Kit.wait(ms),
+        onTap: () => (skipped = true),
+        onStop: () => Kit.Voice.clear(),
+        read: async () => {
+          for (const it of data.intro) {
+            if (skipped || finished) break;
+            showCard(it);
+            try {
+              await ctx.say(it.line, { who: "doctor" });
+            } catch (e) {
+              /* a line that could not play: the next one */
+            }
+            if (!skipped) await Kit.wait(Kit.fast ? 20 : 300);
+          }
+          box.innerHTML = "";
+        },
+        onFold: () => {
+          // he turns to her as the camera goes in, and his bubbles come from his card again once the room has gone
+          if (doc && Clinic.Stages.pose) Clinic.Stages.pose(doc, "talk", { facing: "left" });
+          // (the judge, 26 Oct: the mid-zoom frames cut his head at the top): he steps out of the shot as the camera goes in
+          // to her eye, and is back for the pull-out (HOST.stage out)
+          if (doc) {
+            doc.style.transition = Kit.fast ? "none" : "opacity .35s ease-out";
+            doc.style.opacity = "0";
+          }
+          zoomIn();
+          Promise.resolve(ctx.zoomed).then(() => {
+            if (Kit.Voice.speakers.doctor !== spk) Kit.Voice.speakers.doctor = spk;
+          });
+        },
+      }).then(() => {
+        el.remove();
+        popped = true;
+        popAt = Date.now();
+      });
+    };
     // the push-in, once (at the pop-up's fold, or after it when there is no pop-up)
     let zoomStarted = false;
     const zoomIn = () => {
@@ -1107,7 +1227,7 @@
     };
     // start() may run for a while (the doctor reads the card): mount returns at once. The zoom in plays over the
     // game's opening (the close-up is live underneath: input never waits for it, E5)
-    const started = showPopup()
+    const started = (introOn ? runIntro() : showPopup())
       .then(() => {
         if (finished) return null;
         // CLN-133 (S05-D3): the first-time help's ghost finger waits for the close-up (ctx.zoomed): played during the

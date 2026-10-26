@@ -468,6 +468,12 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
   background: #b08a5a; border-radius: var(--njg-line);
 }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }
+/* CLN-204 (Zafar, 22 Oct: "a stray f on its own line" under the clinic card's last row): upright, the stub and the pointed
+   tip under the last pill read as a letter; the upright list ends at its last pill (the stick between the pills still reads
+   them in order, top to bottom). Lying flat a skewer keeps its tip */
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding-bottom: 0; }
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after,
+.oc-card .oc-item.oc-skewer.oc-stack .oc-part:last-child::after { display: none; }
 
 /* CK-40 (R4: one card per person): a person who orders two dishes has one card: the first dish's card (their face) and
    each later dish's continuation (its headline and rows, no face) in one outline, a dashed line between the dishes */

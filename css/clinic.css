@@ -674,12 +674,23 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @keyframes eye-shake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
 .eye-card.eye-named .wc-spk { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } /* the doctor names it: its speaker lit until the next card */
 .eye-card.eye-ok { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold), var(--njg-shadow); }
-.eye-judge { align-items: center; }
-.eye-pill-t { display: inline-block; min-width: calc(var(--njg-tap) * 1.7); text-align: center; }
+.eye-judge { align-items: center; bottom: var(--njg-s5); } /* SH-19: clear of the bottom edge, so the help's box round the pills is whole */
+.eye-pill-t { display: inline-block; min-width: var(--njg-tap); text-align: center; } /* CLN-202: the pill keeps the shared size; the row fits his half on a phone */
 .eye-mic { flex: none; width: calc(var(--njg-tap) + var(--njg-s2)); height: calc(var(--njg-tap) + var(--njg-s2)); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-card); color: var(--njg-ink); box-shadow: var(--njg-shadow); cursor: pointer; touch-action: manipulation; }
 .eye-mic svg { width: var(--njg-icon); height: var(--njg-icon); display: block; }
 .eye-mic.listening { background: var(--njg-flag-bg); animation: njgGlow var(--glow-ms, 1200ms) ease-in-out infinite; }
 .eye-mic.shrug { animation: eye-shake .45s; }
+/* CLN-199: the doctor's start (js/clinic/heal/host.js runIntro): see-through over the wide shot (a tap anywhere goes on), the
+   word card of the thing he names big at the top left of the play area, as Cook's people's orders (css/cook.css #intro.along) */
+.cl-intro { position: absolute; inset: 0; z-index: 25; background: transparent; cursor: default; }
+.cl-intro-card { position: absolute; left: var(--njg-s4); top: var(--njg-s4); width: clamp(168px, min(22vw, 40vh), 260px); pointer-events: none; }
+.cl-intro-card:empty { display: none; }
+.cl-intro-card .wc-card.cl-intro-word { width: 100%; animation: cl-intro-in .3s cubic-bezier(.2, 1.3, .4, 1); }
+@keyframes cl-intro-in { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cl-intro-card .wc-card.cl-intro-word { animation: none; } }
+/* EASY-08, CLN-203: the bottle over her eye glows while the help shows it (the focal glow's colour, on its own shape) */
+.eye-drop-lit { animation: eye-drop-glow 1.2s ease-in-out infinite; }
+@keyframes eye-drop-glow { 0%, 100% { filter: drop-shadow(0 0 3px var(--njg-focus)) drop-shadow(0 0 6px var(--njg-focus)); } 50% { filter: drop-shadow(0 0 6px var(--njg-focus)) drop-shadow(0 0 14px var(--njg-focus)); } }
 @media (prefers-reduced-motion: reduce) { .eye-card.eye-in, .eye-card.eye-shake, .eye-mic.listening, .eye-mic.shrug { animation: none; } }
 /* Sprint 11 (s11-clinic): the brushing's direction card (the shared word card: an arrow and the word), top left */
 .tooth-dir { position: absolute; left: var(--njg-s3); top: var(--njg-s3); z-index: 7; width: calc(var(--njg-tap) * 3.6); }

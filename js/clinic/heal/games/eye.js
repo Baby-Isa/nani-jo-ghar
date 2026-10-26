@@ -11,19 +11,22 @@
  *    She sits close up on the left covering one eye (art testA); the doctor holds up ONE big word card at a time
  *    (js/shared/word-card.js WordCard.card) on a stand on the right (the hand-held card art comes from the art run).
  *    The cards are Cook's words the family has recorded (rule 10: chai, dudh, paani and the rest join by themselves once
- *    Mum records them: WAITING below). She says her guess every 1.5 s until the child taps big haa or na (or says it:
- *    js/shared/speech.js Speech.listen, the mic beside the pills; the pills always work). She is right or wrong, half
- *    and half. The first card is the demo (she is right; unscored); four judged cards follow (a blind "always haa" wins
- *    1 in 16, 6.25%). A wrong judgement: the pill shakes red, the card shakes gently and the doctor names the card. A
- *    misread (judged na, or a haa put right) brings the dropper over her open eye (CLN-62, the redrop Zafar liked): one
- *    tap and she says it right. No Next, no Done: each card moves on by itself (NjgButtons.moveOn).
+ *    Mum records them: WAITING below). She says her guess, 1.5 s of quiet from the end of each clip (CLN-201), until the
+ *    child taps big haa or na (or says it: js/shared/speech.js Speech.listen and its listening pop-up, Speech.panel, the
+ *    mic beside the pills, SH-127/SH-128; the pills always work). She is right or wrong, half and half. The first card is
+ *    the demo (she is right; unscored); four judged cards follow (a blind "always haa" wins 1 in 16, 6.25%). A wrong
+ *    judgement shakes the pill red and the card gently; on a card she read right the doctor names it. A misread (judged
+ *    na, or a haa put right) brings the dropper over her open eye (CLN-62); nobody says the card's word before the drops
+ *    (CLN-200): one tap, she reads it right, and the child judges again (haa), the first judgement the one scored. No
+ *    Next, no Done: each card moves on by itself (NjgButtons.moveOn). The game opens with the doctor's start in the room
+ *    (CLN-199: data intro, js/clinic/heal/host.js runIntro); her panel takes all but the doctor's own width (CLN-202).
  *    The card's slots fade by the word's stage (English, then the Kutchi text; the speaker always). The picture is the
  *    eye test itself, so it always shows. Rule 6 (the leak test past support): while the word is past support (stage
  *    3+) the card's strip (its Kutchi, its English and its speaker, which would say the answer) is held back until the
  *    card is judged, and her guess is heard only (dots in her bubble); while supported, matching text is study.
- * 3. Onboarding (Sprint 11, principle 3): the demo card's haa pill shows itself the first time (Onboard.stuck's 0 s
- *    rung: the real pill lifts); stuck, the 5 s rung spotlights the pills (all else inert) and the whole pill row lifts
- *    (never the answer), the 15 s rung lifts it again and she says her guess again.
+ * 3. Onboarding (principle 3; Sprint 12 SH-19, EASY-08): haa, na and the mic in ONE box, each glowing and hopping (never the
+ *    answer alone), at once on the demo card and, in the taught first round, on every card; else the 5 s rung, and the 15 s
+ *    rung says her guess again. The drops step boxes the eye and the bottle over it; the redrop has its own help (CLN-203).
  * Rows (the words decide): each judged card. The drops are hand-skill rows.
  * Art swaps in by file name: data art.* (the art plan's Y1-Y3 eyes, T1 eye test) once ready.
  */
@@ -34,8 +37,10 @@
 
   // the cards' pictures: Cook's words, each by its lexicon id (HS.pic: the clinic's art where it has the thing, CLN-78)
   // EY10 (CLN-107): water is Cook's blue drop (the steel jug read as milk next to the milk jug)
-  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon (s08b LM1)
-  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp", "fru-02": "assets/clinic/items-s08b/lemon-whole-s08b.webp" };
+  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon. SH-115, CLN-204 (Zafar, 22 Oct: "cut out
+  // very badly ... a shadow ... it overlaps the doctor's hand"): the s12 lemon, keyed off its magenta with no shadow, on a square
+  // canvas with the fruit as wide as Cook's fruit icons fill theirs (84 %), so it sits on the card at their size, clear of his hands
+  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp", "fru-02": "assets/clinic/s12/lemon-whole-s12.webp" };
   // Sprint 11: the words the family has recorded on their own (rule 10), and the kitchen words that join by themselves the
   // day the engine has a family clip for them (HS.recorded). cook-chai waits for a picture too (its icon reads green to the
   // colour check, CLN-189)
@@ -50,7 +55,8 @@
   // CLN-187 (clinic decision 8): from bothFrom a count for each eye. wrongP (Sprint 11): she misreads half the cards, so a
   // blind "always haa" (or "always na", or a coin) wins 1 in 16 rounds (0.5^4 = 6.25%: under the leak test's 10% with room
   // at the checks' 500 rounds; 0.45 gave 9.15%, a coin's toss from the line)
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, bothFrom: 2, cards: 4, wrongP: 0.5, sayEveryMs: 1500 };
+  // gapMs (CLN-201): the quiet between the end of her clip and the start of the next
+  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, bothFrom: 2, cards: 4, wrongP: 0.5, gapMs: 1500 };
   const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: drops keep the ghost finger (S.cue); the card's help is the real pill (Onboard.stuck), so its cue only
   // names the step (watch: S.cue logs it, nothing more)
@@ -125,7 +131,7 @@
       const two = a.has2x && (a.always2x || (root.devicePixelRatio || 1) > 1.25);
       return Object.assign({}, a, { src: a.src.replace("{kind}", kind).replace(two ? /\.webp$/ : /$^/, "@2x.webp") });
     };
-    const st = { i: 0, drops: 0, n: { right: 0, left: 0 }, nowEye: "right", judged: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false, listening: false };
+    const st = { i: 0, drops: 0, n: { right: 0, left: 0 }, nowEye: "right", judged: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false, listening: false, judgeSeq: 0 };
     const cur = () => P.steps[st.i] || null;
     ctx.card.setRows(P.steps.filter((x) => x.kind === "drops").flatMap((x) => x.cardRows || [x.row]).concat([Object.assign({}, HS.L.w("eye-test", { cap: true }), { id: "chart" })]));
     const skin = S.skin || "#c99a74";
@@ -176,6 +182,18 @@
         if ((d <= 140 || onDropper(p, e)) && (!best || d < best.d)) best = { sd, d };
       });
       return best ? best.sd : null;
+    };
+    // EASY-08: the help's box round one eye and the bottle hanging over it (an unseen frame the kit measures): the bottle is
+    // tapped as often as the eye, so it is inside the light (a tap outside it is blocked), and its glow shows
+    const frames = {};
+    const eyeFrame = (sd) => {
+      if (frames[sd]) return frames[sd];
+      const e = EY[sd];
+      const r = EYA && EYA.eyeR ? EYA.eyeR : [92, 54];
+      const k = (EYA && EYA.dropK) || 1;
+      const top = e.y - (34 + 0.818 * 118 + 10) * k - 8; // its lift, the bottle down to its nozzle, the bob
+      frames[sd] = s("rect", { x: e.x - r[0] - 14, y: top, width: 2 * r[0] + 28, height: e.y + r[1] + 10 - top, fill: "none", stroke: "none", "pointer-events": "none" }, dropsG);
+      return frames[sd];
     };
     // Y2 has the sore eye on the viewer's right (the patient's left): mirrored for the patient's right
     const eyesArt = art("eyesSore");
@@ -317,12 +335,15 @@
 
     /* ---------------- 2. the eye test: her close-up on the left, the card on its stand on the right ---------------- */
     const testG = s("g", { opacity: 0 }, S.layer);
-    const SPLIT = (data.test && data.test.split) || 200;
+    // CLN-202 (Zafar, 22 Oct: "she's very squished ... the doctor has space either side of him"): the split moves with the
+    // doctor's own width (place(), below): his panel is as wide as he is, and she has the rest
+    let SPLIT = (data.test && data.test.split) || 200;
     const a = art("testA");
     // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
     const pan = s("g", {}, testG);
-    s("rect", { x: -400, y: -300, width: SPLIT + 400, height: 1100, fill: "#e9dcc6" }, pan);
-    if (a) s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
+    const panBg = s("rect", { x: -400, y: -300, width: SPLIT + 400, height: 1100, fill: "#e9dcc6" }, pan);
+    let herImg = null;
+    if (a) herImg = s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
     else {
       s("path", { d: "M40 520 Q60 380 200 360 Q340 380 360 520Z", fill: clothes }, pan); // shoulders
       s("rect", { x: 175, y: 300, width: 50, height: 70, fill: skinDark }, pan); // neck
@@ -339,10 +360,41 @@
     const readEye = a && a.eye ? { x: a.eye[0], y: a.eye[1] } : { x: 160, y: 205 };
     // the split, then the room on the right (the wall's own colours: the card stands in front of it)
     const WALLC = (data.art && data.art.wall) || {};
-    s("rect", { x: SPLIT, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
-    s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALLC.fill || "#a9b4b8" }, testG);
-    s("rect", { x: SPLIT + 14, y: 430, width: 1000, height: 700, fill: WALLC.floor || "#c3b6a6" }, testG);
-    s("rect", { x: SPLIT + 14, y: 424, width: 1000, height: 8, fill: "#fffaf1", opacity: 0.55 }, testG); // the skirting
+    const splitEls = [
+      [s("rect", { x: SPLIT, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG), 0],
+      [s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALLC.fill || "#a9b4b8" }, testG), 14],
+      [s("rect", { x: SPLIT + 14, y: 430, width: 1000, height: 700, fill: WALLC.floor || "#c3b6a6" }, testG), 14],
+      [s("rect", { x: SPLIT + 14, y: 424, width: 1000, height: 8, fill: "#fffaf1", opacity: 0.55 }, testG), 14], // the skirting
+    ];
+    // CLN-202: the split at x (close-up units): her panel's ground and her picture fill [the view's left edge, x], her picture
+    // centred in it (slice-fitted at its height: up to its own width only more of her shows, never a bigger crop), her open
+    // eye (the redrop's target) moves with it (art testA.src_size and eye_src: where the eye is in the source)
+    const setSplit = (x, viewL, viewT, viewB) => {
+      SPLIT = x;
+      panBg.setAttribute("width", String(x + 400));
+      splitEls.forEach(([el, d]) => el.setAttribute("x", String(x + d)));
+      if (!herImg || !a || !a.src_size || !a.eye_src) return;
+      // the judge (26 Oct: "both braids and a bow cut off"): all of her shows: her cut-out as wide as the panel (a little
+      // margin), or as tall as the view when that is smaller, the top of her hair (art testA.top_src) just under the view's
+      // top; only the foot of her jumper runs off the bottom
+      const [sw, sh] = a.src_size;
+      const top = a.top_src || 0;
+      const vt = viewT != null ? viewT : a.box[1];
+      const vb = viewB != null ? viewB : a.box[1] + a.box[3];
+      const m = 8;
+      const w = x - viewL;
+      const k = Math.min((w - 2 * m) / sw, (vb - vt - m) / (sh - top));
+      const x0 = viewL + (w - sw * k) / 2;
+      const y0 = vt + m - top * k;
+      herImg.setAttribute("preserveAspectRatio", "none");
+      herImg.setAttribute("x", x0.toFixed(1));
+      herImg.setAttribute("y", y0.toFixed(1));
+      herImg.setAttribute("width", (sw * k).toFixed(1));
+      herImg.setAttribute("height", (sh * k).toFixed(1));
+      readEye.x = x0 + k * a.eye_src[0];
+      readEye.y = y0 + k * a.eye_src[1];
+      readEye.s = (k * sh) / a.box[3]; // her size against the data box's (her mouth bubble is placed by it)
+    };
 
     // the stand and the card (HTML over the drawing: the shared word card), the big pills and the mic under it
     // Sprint 11 art (s11 pack, data art.doctorCard): the doctor standing, holding a big blank card; the word card sits in
@@ -392,10 +444,11 @@
       mic.type = "button";
       mic.setAttribute("aria-label", "");
       mic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>';
-      // the family's clips of haa and na (the engine's clip plan) are the templates, loaded as the test opens
+      // the family's clips of haa and na are the templates, loaded as the test opens. SH-127 ("use every family take of each
+      // word"): every take of the word on its own in the family's recordings (Speech.familyTakes), with the engine's own clip
       const clips = (id) => {
         try {
-          return (HS.L.w(id).plan || []).filter((p) => p.file).map((p) => url(p.file));
+          return (HS.L.w(id).plan || []).filter((p) => p.file).map((p) => p.file);
         } catch (e) {
           return [];
         }
@@ -403,27 +456,58 @@
       st.loadVoice = () => {
         if (st.voiceAsked || !SP.loadTemplates) return;
         st.voiceAsked = true;
-        [[VOICE.yes, HS.L.yesId()], [VOICE.no, HS.L.noId()]].forEach(([k, id]) => SP.hasTemplates && !SP.hasTemplates([k]) && SP.loadTemplates(k, clips(id)).catch(() => 0));
+        const list = Kit0 && Kit0.loadJSON ? Kit0.loadJSON("data/family-audio.json").catch(() => null) : Promise.resolve(null);
+        list.then((fam) => {
+          if (st.gone) return;
+          [[VOICE.yes, HS.L.yesId(), yesNo.yes], [VOICE.no, HS.L.noId(), yesNo.no]].forEach(([k, id, said]) => {
+            if (SP.hasTemplates && SP.hasTemplates([k])) return;
+            const files = clips(id).concat(SP.familyTakes ? SP.familyTakes(fam || [], [said]) : []).filter((f, i, a) => a.indexOf(f) === i);
+            SP.loadTemplates(k, files.map(url)).catch(() => 0);
+          });
+        });
+      };
+      // SH-128 (Zafar's decision 1): tap once and everything dims but the pills and the mic; a pop-up over the pills shows a live
+      // wave that grows with her voice; it stops by itself after a second of quiet, or a second tap (the mic, the pop-up, the
+      // dim) sends; a pill tap still answers (it ends the listen). A miss is a shrug, never a verdict
+      let panel = null;
+      const sendNow = () => SP.stop && SP.stop();
+      // (the judge, 23 Oct: the pop-up never covers the card): it stands in her panel, level with the pills
+      const popAt = () => {
+        const rr = S.root.getBoundingClientRect();
+        const jr = judgeBox.getBoundingClientRect();
+        return { x: (rr.left + S.client(SPLIT, 0).x) / 2, y: jr.bottom };
       };
       ctx.on(mic, "click", () => {
-        if (!st.awaiting || st.busy || st.over || st.listening) return;
+        if (st.listening) return sendNow();
+        if (!st.awaiting || st.busy || st.over) return;
         ctx.act && ctx.act();
         st.listening = true;
+        const seq = st.judgeSeq;
         mic.classList.add("listening");
+        S.root.querySelectorAll(".eye-said").forEach((n) => n.remove());
+        // (her voice stops for the listen: never her line inside the child's take)
+        if (Kit0 && Kit0.Voice && Kit0.Voice.clear) Kit0.Voice.clear();
+        panel = SP.panel ? SP.panel({ keep: [haaBtn, naBtn, mic], near: judgeBox, at: popAt, onTap: sendNow }) : null;
         // listen() starts inside this tap (iOS): no await before it
-        const p = SP.listen({ choices: [VOICE.yes, VOICE.no], timeoutMs: 3500 });
+        const p = SP.listen({ choices: [VOICE.yes, VOICE.no], timeoutMs: 3500, silenceMs: SP.SILENCE_MS || 1000, onLevel: (v) => panel && panel.level(v) });
         Promise.resolve(p)
           .catch(() => null)
           .then((res) => {
             st.listening = false;
             mic.classList.remove("listening");
-            if (st.gone) return;
+            if (panel) panel.close();
+            panel = null;
+            if (st.gone || st.judgeSeq !== seq) return; // a pill answered while it listened
             if (res && res.choice) return onJudge(res.choice === VOICE.yes, "voice");
             // a shrug: nothing heard, nothing wrong
             mic.classList.remove("shrug");
             void mic.offsetWidth;
             mic.classList.add("shrug");
           });
+      });
+      // CLN-203: a screen that sleeps or a tab put away ends a listen (its audio stops coming): never a mic left open
+      ctx.on(root.document, "visibilitychange", () => {
+        if (root.document.hidden && st.listening && SP.cancel) SP.cancel();
       });
     }
     const showJudge = (on) => {
@@ -434,28 +518,60 @@
     showJudge(false);
     // where the card stands: the middle of the room's panel, as big as the screen allows above the pills
     const px = (v) => `${Math.round(v)}px`;
-    const place = () => {
-      if (st.view !== "test" && !stand.classList.contains("on")) return;
+    // CLN-202: the doctor is never wider than this share of the play area (the tablets' tall screens): she keeps the rest
+    const DOC_MAX = 0.48;
+    const place = (force) => {
+      if (!force && st.view !== "test" && !stand.classList.contains("on")) return;
       const rr = S.root.getBoundingClientRect();
       if (!rr.width || !rr.height) return;
       const x0 = Math.max(0, S.client(SPLIT + 14, 0).x - rr.left);
       const x1 = rr.width;
-      const gap = parseFloat(root.getComputedStyle ? root.getComputedStyle(S.root).getPropertyValue("--njg-s3") : "") || 12;
+      const cs = root.getComputedStyle ? root.getComputedStyle(S.root) : null;
+      const gap = (cs && parseFloat(cs.getPropertyValue("--njg-s3"))) || 12;
       const jh = judgeBox.offsetHeight || 64;
+      // SH-19 / EASY-08 (Zafar, 22 Oct: the help's box round the pills touched the screen's bottom edge): the pills stand
+      // clear of the bottom by their own CSS (.eye-judge), so the box round them is whole
+      const jb = (root.getComputedStyle && parseFloat(root.getComputedStyle(judgeBox).bottom)) || gap;
       const top = gap;
-      const room = rr.height - jh - gap * 3 - top; // the card and its ledge, above the pills
+      const room = rr.height - jh - jb - gap * 2 - top; // the card and its ledge, above the pills
       const card = holder.firstElementChild;
       if (DOC) {
-        // the doctor as tall as lets the card's face end above the pills (his legs go off the bottom), no wider than the
-        // room's panel; the word card fills the face, its picture and its strip side by side
+        // the doctor as tall as lets the card's face end above the pills (his legs go off the bottom), no wider than
+        // DOC_MAX of the play area; the word card fills the face, its picture and its strip side by side
         const [iw, ih] = DOC.size;
         const f = DOC.card;
-        const H = Math.min(room / (f.y + f.h), ((x1 - x0) * 0.96 * ih) / iw);
-        const Wd = (H * iw) / ih;
-        const cx = (x0 + x1) / 2;
-        Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top), width: px(Wd), height: px(H) });
+        // CLN-202 (the judge, 23 Oct: "her panel ~380 px ... the doctor's ~700 px with wall either side"): his panel is at
+        // most DOC_MAX of the play area (she has at least half), never narrower than the pills' row; he is as tall as fits it
+        let jw = judgeBox.offsetWidth;
+        if (!jw) {
+          const was = judgeBox.classList.contains("hidden");
+          judgeBox.style.visibility = "hidden";
+          judgeBox.classList.remove("hidden");
+          jw = judgeBox.offsetWidth;
+          if (was) judgeBox.classList.add("hidden");
+          judgeBox.style.visibility = "";
+        }
+        const panelW = Math.max(jw + 2 * gap, Math.min((room / (f.y + f.h)) * (iw / ih) + 2 * gap, rr.width * DOC_MAX));
+        const Wd = Math.min(panelW - 2 * gap, ((room / (f.y + f.h)) * iw) / ih);
+        const H = (Wd * ih) / iw;
+        // (a shorter doctor stands lower: his card's foot just above the pills, as when he is height-bound)
+        const drop = Math.max(0, room - (f.y + f.h) * H);
+        const want = rr.width - panelW;
+        const key = `${Math.round(want)},${Math.round(rr.width)},${Math.round(rr.height)},${S.svg.getAttribute("viewBox")}`;
+        if (herImg && key !== st.splitKey) {
+          st.splitKey = key;
+          const sx = S.pt({ clientX: rr.left + want, clientY: rr.top }).x - 14;
+          const p0 = S.pt({ clientX: rr.left, clientY: rr.top });
+          const p1 = S.pt({ clientX: rr.left, clientY: rr.bottom });
+          if (isFinite(sx) && isFinite(p0.x)) setSplit(sx, p0.x, p0.y, p1.y);
+          mouthPlace();
+        }
+        const cx = rr.width - panelW / 2;
+        Object.assign(stand.style, { left: px(cx - Wd / 2), top: px(top + drop), width: px(Wd), height: px(H) });
         Object.assign(holder.style, { left: px(f.x * Wd), top: px(f.y * H), width: px(f.w * Wd), height: px(f.h * H) });
-        judgeBox.style.left = px(cx);
+        // (the pills under his card, whole inside his panel: never across the divider, never past the edge)
+        const pl = rr.width - panelW;
+        judgeBox.style.left = px(jw ? Math.max(pl + jw / 2 + gap, Math.min(cx, rr.width - jw / 2 - gap)) : cx);
         judgeBox.style.width = "max-content";
         return;
       }
@@ -500,6 +616,10 @@
       if (st.loadVoice) st.loadVoice();
       const wide = testSafe();
       const cam = wide ? camera(wide) : null;
+      // CLN-202: the split for this screen is laid before the test fades in (at the camera's end), never a jump after it
+      if (cam) cam(1);
+      place(true);
+      if (cam) cam(0);
       await tween(450, (u) => {
         dropsG.setAttribute("opacity", 1 - u);
         testG.setAttribute("opacity", u);
@@ -515,7 +635,7 @@
     const after = (prev, fn) => Promise.resolve(prev).catch(() => {}).then(() => (st.gone ? null : fn()));
     const lineOf = (id) => HS.L.show(HS.L.join([BY[id].lex]));
     // her bubble under her mouth: her guess written while the word is supported (stage 1-2: study), else talking dots
-    const mouthAt = () => (readEye ? { x: readEye.x + 40, y: readEye.y + 92 } : null);
+    const mouthAt = () => (readEye ? { x: readEye.x + 40 * (readEye.s || 1), y: readEye.y + 92 * (readEye.s || 1) } : null);
     let mouthEl = null;
     const mouthPlace = () => {
       const m = mouthAt();
@@ -594,60 +714,81 @@
       st.reading = after(st.reading, () => (cardEl && cardEl.wc ? cardEl.wc.speak() : ctx.say(lineOf(c.id), { who: "doctor", noBubble: true })));
       return st.reading;
     };
-    // she says her guess every 1.5 s until it is judged (never while the mic listens)
+    // she says her guess until it is judged (never while the mic listens); CLN-201 (Zafar, 22 Oct: "time the pause between
+    // the end of them saying it and the start of them saying it again"): K.gapMs of quiet after each clip ends. After the
+    // drops (CLN-200) her guess is the card's own word (st.awaiting.said)
     const guessLoop = async (c) => {
       const me = c;
-      while (!st.gone && st.awaiting && st.awaiting.c === me) {
+      const mine = () => !st.gone && st.awaiting && st.awaiting.c === me;
+      while (mine()) {
         if (st.listening || st.busy) {
           await wait(200);
           continue;
         }
-        const t0 = Date.now();
+        const said = st.awaiting.said || me.said;
         S.face("read");
-        mouthSay(supported(me.id) && supported(me.said) ? String(W(BY[me.said]).kutchi || "") : null);
-        await (st.reading = after(st.reading, () => ctx.say(lineOf(me.said), { who: "patient", noBubble: true })));
+        mouthSay(supported(me.id) && supported(said) ? String(W(BY[said]).kutchi || "") : null);
+        // (the clip's real end: the voice path holds a short line a little past its clip, so the quiet is timed from the last
+        // moment a family clip was sounding; a line still to record is timed from its end)
+        let sounded = 0;
+        const V = Kit0 && Kit0.Voice;
+        const ear = setInterval(() => {
+          if (V && V.playing && V.playing.size) sounded = Date.now();
+        }, 25);
+        await (st.reading = after(st.reading, () => ctx.say(lineOf(said), { who: "patient", noBubble: true })));
+        clearInterval(ear);
         S.face("neutral");
-        await wait(fast() ? 400 : Math.max(600, K.sayEveryMs - (Date.now() - t0)));
+        // (the quiet counts again from zero if the mic was opened in it: never her voice right after a listen)
+        const gap = fast() ? 400 : K.gapMs;
+        let from = sounded && Date.now() - sounded < gap ? sounded : Date.now();
+        while (mine() && Date.now() - from < gap) {
+          await wait(Math.min(100, Math.max(10, gap - (Date.now() - from))));
+          if (st.listening) from = Date.now();
+        }
       }
     };
     const openCard = async (c) => {
       if (st.view !== "test") await toTest();
       if (st.gone) return;
       if (c.i === 0) ctx.card.now("chart");
+      // (the judge, 26 Oct: a stale "limu" under her chin while the card showed tameto): the last card's word bubble goes
+      S.root.querySelectorAll(".eye-said").forEach((n) => n.remove());
       cardEl = await makeCard(c);
       if (st.gone) return;
       place();
       st.awaiting = { c, wrong: c.wrong };
       showJudge(true);
       S.cue("card", Object.assign({ watch: true }, CUES.card), haaBtn); // (the step's name for the help log: the demo is the real pill)
-      // principle 3: the rungs. The demo card's haa shows itself the first time (it is right: never haa on a misread, CLN-60);
-      // a judged card's rungs lift the whole pill row, never the answer (the leak test: no winning by waiting)
-      if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
-        if (stuck) stuck.stop();
-        // each live control has its own hole and glow (Zafar, 22 Oct): never one box round the row (the doctor's trousers lit in the gaps)
-        const live = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
-        // the rungs count from this card coming up (her guess, not the child, was the last thing)
-        if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
-        // the real pill (or row) lifts; the ghost hand rides at its lower right corner, never over its word (EASY-09)
-        const mover = c.demo ? haaBtn : judgeBox;
-        const mr = mover.getBoundingClientRect();
-        stuck = root.Onboard.stuck(c.demo ? "eye-card-demo" : "eye-card", {
-          id: c.demo ? "clinic/heal-eye-card-demo" : "clinic/heal-eye-card",
-          first: c.demo,
-          target: live,
-          live,
-          item: { x: mr.right - Math.min(14, mr.width * 0.1), y: mr.bottom - Math.min(8, mr.height * 0.15) },
-          move: (dx, dy, t) => {
-            const lift = t > 0.06 && t < 0.94 ? 1.06 : 1;
-            mover.style.translate = dx || dy ? `${dx.toFixed(1)}px ${dy.toFixed(1)}px` : "";
-            mover.style.scale = lift === 1 ? "" : String(lift);
-          },
-          path: { dx: 0, dy: -22 },
-          hand: true,
-          line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(c.said), { who: "patient", noBubble: true }) : null),
-        });
-      }
+      helpPills(c);
       guessLoop(c);
+    };
+    // SH-19 (Zafar, 22 Oct: "this is level one so you need to be onboarded throughout the game"): the taught first round (and a
+    // New player's visit) shows the help at once on every card, not only the demo's; past it the rungs wait for a pause
+    const firstRound = () => !!ctx.taught || !!(root.Onboard && root.Onboard.newPlayer && root.Onboard.newPlayer());
+    // principle 3, EASY-08 (Zafar, 22 Oct: "one rectangle encompassing all three buttons", each glowing and bouncing): the haa,
+    // na and the mic in ONE box, each lit (the kit's ob-lit: its glow and hop), the finger on the row; never the answer alone
+    // (a judged card's help lifts the whole row: the leak test, no winning by waiting)
+    const helpPills = (c, o = {}) => {
+      if (stuck) stuck.stop();
+      stuck = null;
+      if (!root.Onboard || !root.Onboard.stuck || ctx.onboardOn === false) return;
+      // (the judge, 23 Oct: the finger never over the card's picture): the kit lays the hand beside the first of the group, on
+      // the first side that is clear; above the row is the card, so it lies to the right of the row's last control where there
+      // is room, else to the left of the first
+      const room = (root.innerWidth || 0) - judgeBox.getBoundingClientRect().right;
+      const row = mic ? [haaBtn, naBtn, mic] : [haaBtn, naBtn];
+      const live = room > 120 ? row.slice().reverse() : row;
+      // the rungs count from this card coming up (her guess, not the child, was the last thing)
+      if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
+      const first = c.demo || (P.level === 1 && firstRound());
+      stuck = root.Onboard.stuck(c.demo ? "eye-card-demo" : "eye-card", {
+        // (each card its own first time in the taught round: the kit shows a step's first time once per id)
+        id: c.demo ? "clinic/heal-eye-card-demo" : `clinic/heal-eye-card${first ? `-${c.i}${o.again ? "-again" : ""}` : ""}`,
+        first,
+        target: live,
+        live,
+        line: () => (st.awaiting && st.awaiting.c === c ? ctx.say(lineOf(st.awaiting.said || c.said), { who: "patient", noBubble: true }) : null),
+      });
     };
     const nextCard = () => {
       if (stuck) stuck.done();
@@ -662,6 +803,9 @@
     const onJudge = async (saysRight, via = "pill") => {
       if (!st.awaiting || st.busy || st.over || st.redrop) return;
       const { c, wrong } = st.awaiting;
+      // SH-128: a pill answers even while the mic listens (the listen ends, no shrug after it)
+      st.judgeSeq++;
+      if (st.listening && SP && SP.cancel) SP.cancel();
       S.uncue();
       S.did();
       const ok = saysRight === !wrong;
@@ -670,25 +814,38 @@
         judge(RID(k), ok, { said: saysRight ? yesNo.yes : yesNo.no, via, cue: supported(c.id) ? "text" : cardEl && cardEl.wc ? cardEl.wc.cue() : "kutchi" });
       }
       if (!ok) {
-        // EY13, decision 59 (CLN-107): a wrong yes / no shakes red, the card shakes gently and the doctor names it; the
-        // child judges again (the first judgement is what's scored); a misread then gets the drop
+        // EY13, decision 59 (CLN-107): a wrong yes / no shakes red and the card shakes gently; the child judges again (the
+        // first judgement is what's scored). She read it right: the doctor names it and the pills stay live. She misread:
+        // CLN-200 (Zafar, 22 Oct: "she immediately says the correct word, but that's too early"): nobody says the right word
+        // yet: the drops first, then she reads it right
         const b = saysRight ? haaBtn : naBtn;
         b.classList.remove("nope-red");
         void b.offsetWidth;
         b.classList.add("nope-red");
         ctx.after(fast() ? 200 : 600, () => b.classList.remove("nope-red"));
         shakeCard();
-        nameCard(c);
-        if (!wrong) return; // she read it right: the pills stay live
+        if (!wrong) {
+          nameCard(c);
+          return;
+        }
         st.awaiting = null;
         showJudge(false);
         return redropFor(c);
       }
+      const again = !!st.awaiting.again;
       st.awaiting = null;
-      showJudge(false);
-      if (wrong) {
-        // CLN-62: she misread and the child said na: the doctor names it, then the dropper for her eye, then she says it right
-        nameCard(c);
+      // (the judge, 23 Oct: the right press shows gold for a moment, then the pills go)
+      const pressed = saysRight ? haaBtn : naBtn;
+      pressed.classList.add("right");
+      if (stuck) stuck.stop();
+      stuck = null;
+      ctx.after(fast() ? 100 : 550, () => {
+        pressed.classList.remove("right");
+        if (!st.awaiting) showJudge(false);
+      });
+      if (wrong && !again) {
+        // CLN-62, CLN-200: she misread and the child said na: the dropper for her eye, then she reads it right (nobody names
+        // it before the drops)
         return redropFor(c);
       }
       // she said it right and the child said so: the card glows gold, its word shows, and the next one comes up
@@ -697,19 +854,47 @@
       S.face("happy", 700);
       nextCard();
     };
+    // CLN-203 (Zafar, 22 Oct: "it's not clear why I'm clicking ... I'm clicking everywhere and it's not working"): the card's
+    // help is put away as the dropper comes (its spotlight left only the pills live: every tap on her eye was blocked), and the
+    // eye has its own: ONE rounded box round her open eye and the bottle's nozzle (EASY-08: never a big round light), the
+    // bottle glowing, the kit's finger tapping by it; at once in the taught round, else after a pause
+    const eyeBox = () => {
+      const h = HANG.redrop;
+      const p0 = S.client(readEye.x - 38, readEye.y - (h.lift + 0.818 * BH + 10) * h.k - 8); // the bottle hanging over it too
+      const p1 = S.client(readEye.x + 38, readEye.y + 24);
+      return [p0.x, p0.y, p1.x - p0.x, p1.y - p0.y];
+    };
+    const glowDropper = (on) => dropper.classList.toggle("eye-drop-lit", !!on);
     const redropFor = (c) => {
+      if (stuck) stuck.stop();
+      stuck = null;
       st.redrop = { c };
-      showDropper(readEye, true, HANG.redrop);
-      S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - tipOf(HANG.redrop) / 2, r: 52 });
+      showDropper(readEye, false, HANG.redrop);
+      S.cue("redrop", Object.assign({ watch: true }, CUES.redrop), { x: readEye.x, y: readEye.y }); // (the help log's step name)
+      if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
+        if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
+        const first = P.level === 1 && firstRound();
+        stuck = root.Onboard.stuck("eye-redrop", {
+          id: first ? `clinic/heal-eye-redrop-${c.i}` : "clinic/heal-eye-redrop",
+          first: first || undefined,
+          target: eyeBox,
+          live: eyeBox,
+          item: () => S.client(readEye.x, readEye.y + 14), // (the finger from below, up at her eye)
+          light: glowDropper,
+          at: [0, 5000, null],
+        });
+      }
     };
     const readAgain = async (c) => {
-      // after the drop she sees it: she says the card's own word, then the next card
-      S.face("read");
-      mouthSay(supported(c.id) ? String(W(BY[c.id]).kutchi || "") : null);
-      await (st.reading = after(st.reading, () => ctx.say(lineOf(c.id), { who: "patient", noBubble: true })));
-      S.face("happy", 700);
-      if (cardEl) cardEl.classList.add("eye-ok");
-      nextCard();
+      // after the drop she sees it: she says the card's own word (CLN-200: the first time anyone says it), and the child
+      // judges it again: haa, then the next card (the first judgement is the one scored)
+      if (stuck) stuck.stop();
+      stuck = null;
+      unhush();
+      st.awaiting = { c, wrong: false, said: c.id, again: true };
+      showJudge(true);
+      helpPills(c, { again: true });
+      guessLoop(c);
     };
     const advance = () => {
       st.i++;
@@ -721,8 +906,11 @@
       const c = cur();
       if (c.kind === "drops") {
         ctx.card.now(c.both ? "drops-right" : "drops", c.strip ? { strip: c.strip } : {});
-        const te = c.both ? EY.right : sore; // CLN-187: from level 2 the first row's eye (the patient's right)
-        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: te.x, y: te.y - 55, r: 110 } }); // S02-G: the dropper and the eye
+        const te = c.both ? "right" : soreSide; // CLN-187: from level 2 the first row's eye (the patient's right)
+        // S02-G: the dropper, then the eye; EASY-08 (Zafar, 22 Oct: "the brightness radius is too big ... a square box of
+        // rounded corners just isolating the eye"): the second box is the eye and the nozzle over it, no more
+        // (the eye's own help comes as the bottle is picked, helpEye: the finger on her eye, not the bottle's cap)
+        return S.cue("drops", CUES.drops, () => S.toolEls.drops, null);
       }
       if (c.kind === "card") return openCard(c.card);
     };
@@ -776,8 +964,32 @@
 
     // CLN-186: the re-cut bottle in the strip too (data art.drop.tool)
     S.tools([{ id: "drops", glyph: "💧", img: (DA && DA.tool) || "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
-      if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
+      if (id !== "drops" || !cur() || cur().kind !== "drops") return;
+      showDropper(sore, false);
+      // EASY-08 (Zafar, 22 Oct: "the medicine thing needs to glow the bottle"): in the taught round the bottle glows over the
+      // eye until the first drop
+      glowDropper(st.drops === 0 && P.level === 1 && firstRound());
+      if (st.drops === 0) helpEye(cur().both ? "right" : soreSide);
     });
+    // EASY-08, the judge (23 Oct: "points at her eye, not the bottle cap"): ONE box round the eye and the bottle over it, the
+    // bottle glowing, the kit's finger from below pointing up at the eye; at once in the taught round, else after a pause
+    const helpEye = (sd) => {
+      if (stuck) stuck.stop();
+      stuck = null;
+      if (!root.Onboard || !root.Onboard.stuck || ctx.onboardOn === false) return;
+      const e = EY[sd];
+      const r = EYA && EYA.eyeR ? EYA.eyeR : [92, 54];
+      const first = P.level === 1 && firstRound();
+      stuck = root.Onboard.stuck("eye-drops", {
+        id: first ? "clinic/heal-eye-drops-taught" : "clinic/heal-eye-drops",
+        first: first || undefined,
+        target: eyeFrame(sd),
+        live: eyeFrame(sd),
+        item: () => S.client(e.x, e.y + r[1] * 0.6),
+        light: glowDropper,
+        at: [0, 5000, null],
+      });
+    };
     const dropIn = async (at, hang) => {
       await fallDrop(at, hang);
       S.face("wince", 400);
@@ -794,6 +1006,8 @@
         const cc = st.redrop.c;
         st.redrop = null;
         S.uncue();
+        if (stuck) stuck.done();
+        stuck = null;
         st.busy = true;
         dropIn(readEye, HANG.redrop).then(() => {
           showDropper(null);
@@ -809,6 +1023,11 @@
       // principle 4: a count ends at the right number; an extra drop on a full eye doesn't land
       if (full(c, sd)) return;
       const eye = EY[sd];
+      glowDropper(false);
+      if (stuck && st.drops === 0) {
+        stuck.done();
+        stuck = null;
+      }
       st.drops++;
       st.n[sd]++;
       if (c.both) {
@@ -867,7 +1086,8 @@
           const a0 = st.awaiting;
           if (!a0) return null;
           const c = a0.c;
-          return { i: c.i, id: c.id, said: c.said, wrong: c.wrong, demo: c.demo, hushed: !!(cardEl && cardEl.classList.contains("eye-hush")) };
+          // (again: after the drops she reads it right and the child judges again, CLN-200; saying: the word she says now)
+          return { i: c.i, id: c.id, said: c.said, wrong: c.wrong, demo: c.demo, hushed: !!(cardEl && cardEl.classList.contains("eye-hush")), again: !!a0.again, saying: a0.said || c.said };
         },
         /** TEST HOOK (s11-clinic; read-only): client px boxes of the card, each pill and the mic */
         layout() {

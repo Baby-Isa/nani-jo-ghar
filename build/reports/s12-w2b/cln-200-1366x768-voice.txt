@@ -1,0 +1,8 @@
+CLN-200 (1366x768, real pace): the child taps na at 0 ms, the drop at 1900 ms, haa at 3925 ms. Card {"i":1,"id":"veg-03","said":"fru-02","wrong":true,"demo":false,"hushed":false,"again":true,"saying":"veg-03"}
+-2241 ms play  assets/audio/family/mum/dungri-rc.mp3
+-416 ms line clinic:patient limu
+-416 ms play  assets/audio/family/mum/limu.mp3
+2221 ms line clinic:patient tameto
+2221 ms play  assets/audio/family/mum/tameto-rc.mp3
+4841 ms line clinic:patient limu
+4842 ms play  assets/audio/family/mum/limu.mp3
