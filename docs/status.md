@@ -8,25 +8,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (23 Oct 2026, evening UK; paused, Zafar out of tokens for the week):** Sprint 11 is live on `main`. Sprint 12 "Polish" (`docs/sprints/S12-polish.md`) runs on `claude/exciting-pasteur-usf3d2`:
-- **Wave 1 merged, judged and green** (the shared help kit and chai; the door, the ride, labs). checks.mjs and 522 unit tests pass.
-- **Wave 2 stopped mid-round, saved, not judged and not merged:** `claude/s12-w2a-wip` (shared UI: the end screen's third page off by one switch, replies with speakers and one tap, word cards, slower talking faces, the new face circles; its last fix round was half done: the circles' one crop, word size, the door kit patch) and `claude/s12-w2b-wip` (the eye test: the doctor's start, drops before the word, the mic; partway). W2-A's first judge: PASS SH-125, SH-126, ART-19, EASY-08; FAIL SH-123 (words too small, a learned word shows English), ART-08 (head sizes differ, the badge covers an ear); SH-124's bounce not captured.
-- **Wave 3 not started:** the book (with spaced words and Say it), loading, the served moment, the pour (mirrored pan, spout-first) and the door's sun, farm and come-here art.
-- The s12 art is judged and in `sources/art/s12/`; Zafar passed the likenesses. Next art block: FC2 (moods and mouths for the circles).
-- Answers and research: `build/reports/s12-answers.md`, `s12-research-cefr-and-book.md`, `s12-research-a1-to-native.md`. Zafar likes the talking day, the story library, and describe and deduce (`docs/ideas.md` 61-65).
+**Where things stand (26 Oct 2026, UK):** Sprint 12 "Polish" is closed and live on `main` (fce6b1a3; outcome and look back in `docs/sprints/S12-polish.md`). Mum's 24 Oct sitting is in the engine with Zafar's spellings (`build/reports/mum-2026-10-24.md`); 64 new clips wait for his ear in `lab/family-audio.html` (listen for any that are Masi).
 
 **Next steps:**
-1. Resume wave 2 from the two wip branches (same briefs `build/tools/ops/specs/s12-w2a.json`, `s12-w2b.json`): finish W2-A's fix round, judge, merge; finish W2-B, judge, merge.
-2. Publish option: wave 1 alone can go to `main` after `/review` and Zafar's OK (it is merged and green).
-3. Wave 3, then `/review`, publish on his OK, his play, `/feedback`.
-4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
+1. Sprint 13 "One shared kit": `docs/sprints/S13-one-shared-kit.md` (a Fable review first, then two builders move every game onto the kit). Confirm its budget with Zafar, then `/sprint`.
+2. The next sitting with Mum: the "still to settle" list in `docs/language/mum-questions/README.md` (item 12 eat, "like" with arre, can't saka vs sakanto, aiye/aaye, Nana saw me) and the questions for "Choose the reply"; build the Mum-facing sheet with `mumsheet.mjs --docx`.
+3. The next art block: FC2 (the face circles' moods and mouths) and CHT-16 (the chop background).
+4. Small reshoots on the fix list (SH-123, SH-19 eye, BOOK-10, ART-27: "to fix: check").
 
-**Next sprint (S13): "One shared kit", planned in `docs/sprints/S13-one-shared-kit.md`** (agreed with Zafar 23 Oct; written 26 Oct). It starts with a Fable review of what should be central and how (checked against best practice), plus what else speeds development, cuts tokens and makes fixes work first time; then two builders move every game onto the kit.
-
-**Open questions to Zafar:** none.
+**Open questions to Zafar:** the four Kutchi words that start with v (*vai, variyali, vya, vyo*): W or V?
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 12 is paused mid wave 2; carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 12 is live. Start Sprint 13 from `docs/sprints/S13-one-shared-kit.md`. Tell me before launching anything new.
 
 ## The fix list
 
@@ -46,6 +39,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+26 Oct 2026, published 13:20 UK (fce6b1a3, 20261026T131724Z): Sprint 12 "Polish" (one help look in every game, chai's ladder and recipe card, the mirrored pour and the served moment, the end screen's third page gone everywhere, replies with speakers and one tap, the eye test rebuilt with a mic that hears, the door, the ride, the book's games, the new art, Mum's 24 Oct sitting), on Zafar's word past the publish gate (`--force`; checks.mjs, 532 unit tests and a 15-flow contract replay at 1366x768 and 915x412 green; the full matrix and evidence run not done).
 
 22 Oct 2026, published about 02:45 UK (7ff52b9, 20261022T014206Z): Sprint 10 "Show it" (labs, day builder, New player, girl patient, tooth drill, effects off), judged row by row.
 
