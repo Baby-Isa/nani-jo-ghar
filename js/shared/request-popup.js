@@ -176,9 +176,12 @@
    * order card in the pop-up is the closed big card (OrderCard.closeBig: face, headline, one row of dots), whatever the
    * host drew, and stays so if the host redraws it while it's up. Returns the undo (stops watching).
    */
+  // SH-110 (Zafar, 26 Oct: "when the order first comes ... you should see it written in Kutchi"): overrides SH-72 above. The pop-up
+  // writes the order at every level; from level 3 the sidebar card blanks its words instead, each blanked row with its speaker
+  // (js/shared/order-card.js speakerFirst). Kept only for a host that asks for it by name (opts.closed === "dots")
   function closeOrder(cardEl, opts) {
     const OC = root.OrderCard;
-    const on = !!opts.closed || (opts.level != null && Number(opts.level) >= 3);
+    const on = opts.closed === "dots";
     if (!on || !cardEl || !OC || !OC.closeBig) return () => {};
     const sweep = () => cardEl.querySelectorAll(".oc-card.oc-big:not(.oc-closed-big)").forEach((c) => OC.closeBig(c));
     sweep();

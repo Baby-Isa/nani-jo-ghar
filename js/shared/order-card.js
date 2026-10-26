@@ -62,6 +62,7 @@
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
+ *   OrderCard.update(old, data, opts)    a card drawn again from new data, in the old one's place, its decoded face kept
  *       opts.stamped    the order is served: the card wears the one stamp (OrderCard.stamp)
  *   OrderCard.closeBig(cardEl)       a big card drawn open, closed as {big, closed} draws it (the pop-up from level 3, SH-72)
  *   OrderCard.stamp(cardEl)          the one served stamp on a card (S13-B1; T20, SH-54), drawn inside it
@@ -609,6 +610,24 @@
     inner.appendChild(list);
     body.appendChild(inner);
     c.appendChild(body);
+    return c;
+  };
+
+  /**
+   * A host's card drawn again from new data (S13-B1: Cook's recipe ladder draws through the kit). The new card takes the old one's
+   * place when that is still on the page, and keeps the old one's face picture once it has decoded (DAAR-04, DAAR-18, CHT-06: a
+   * fresh <img> on every redraw showed a blank circle for a few frames). Returns the new card. old may be null (a first drawing).
+   */
+  OC.update = function (old, data, opts = {}) {
+    const c = OC.card(data, opts);
+    if (!old || !old.querySelector) return c;
+    const oi = old.querySelector(":scope > .oc-head > .oc-face img");
+    const ni = c.querySelector(":scope > .oc-head > .oc-face img");
+    if (oi && ni && oi !== ni && oi.getAttribute("src") === ni.getAttribute("src") && oi.complete && oi.naturalWidth) {
+      oi.alt = ni.alt;
+      ni.replaceWith(oi);
+    }
+    if (old.parentNode) old.replaceWith(c);
     return c;
   };
 

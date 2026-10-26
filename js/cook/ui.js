@@ -1282,6 +1282,8 @@
   function renderOrder() {
     if (!mission) return;
     if (UI.w6()) return renderOrder6();
+    // (S13-B1: below is the parked pages' old ladder only, Find it, Dress up and Snap with no body.w6; Cook draws every card, the
+    // sidebar's and the pop-up's, through the kit: renderOrder6 -> drawCards -> OrderCard.update)
     const box = $("#mission .m-order");
     box.innerHTML = "";
     renderDish();
@@ -2165,24 +2167,10 @@
   function drawCards(box, map, { big = false } = {}) {
     map.clear();
     const OC = OCard();
-    // DAAR-04, DAAR-18, CHT-06 (s08 w8A; the judges: "Nani's face is a blank circle" for a few frames): every redraw made
-    // each face a new picture, blank until it decoded again. The faces already drawn are kept and put back in the new cards
-    const oldFaces = new Map();
-    box.querySelectorAll(".oc-face img").forEach((im) => {
-      const k = im.getAttribute("src");
-      if (k && im.complete && im.naturalWidth && !oldFaces.has(k)) oldFaces.set(k, im);
-    });
-    const keepFaces = (out) => {
-      if (oldFaces.size)
-        box.querySelectorAll(".oc-face img").forEach((im) => {
-          const o = oldFaces.get(im.getAttribute("src"));
-          if (!o || o === im) return;
-          oldFaces.delete(im.getAttribute("src"));
-          o.alt = im.alt;
-          im.replaceWith(o);
-        });
-      return out;
-    };
+    // S13-B1 (the recipe ladder through the kit): each card is drawn again by OrderCard.update from the one drawn before it (its
+    // key, data-ck), which keeps its decoded face (DAAR-04, DAAR-18, CHT-06: a fresh face was a blank circle for a few frames)
+    const before = new Map([...box.querySelectorAll(".oc-card[data-ck]")].map((c) => [c.dataset.ck, c]));
+    const keepFaces = (out) => out;
     box.innerHTML = "";
     if (!OC) return [];
     const folds = (mission.folds = mission.folds || {});
@@ -2201,8 +2189,9 @@
               .then(() => face && face.classList.remove("on"));
           }
         : null;
-      const e = OC.card(x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
+      const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
       e.dataset.extra = x.key;
+      e.dataset.ck = `x:${x.key}`;
       if ((mission.compact || 0) >= 3) e.classList.add("oc-pills");
       box.appendChild(e);
       return e;
@@ -2230,7 +2219,7 @@
       // A phase fold (a card you can't act on now) is still drawn open in the pop-up
       // SH-110: a card closed for memory (closed.peek) is drawn open, dotted, each dotted row with its speaker; the pop-up never closed
       const phase = !!closed && !big && !memoryClosed(closed) && (!closed.who || closed.who === c.who);
-      const el = OC.card(lead ? Object.assign({}, c.data, { person: null }) : c.data, {
+      const el = OC.update(before.get(c.key) || null, lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
         stamped: !big && !!mission.stamped,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
@@ -2268,6 +2257,7 @@
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
+      el.dataset.ck = c.key; // (the next redraw finds it: OrderCard.update)
       // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
       if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add("oc-pills");
       if (minis.has(c.key)) {

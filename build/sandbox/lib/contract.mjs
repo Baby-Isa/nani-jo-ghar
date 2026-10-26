@@ -16,7 +16,8 @@
 //
 //   contract-7 one-voice    one voice at a time: no two lines' clips sound over each other (PAN-04)
 //   contract-8 highlight    one next-thing highlight at a time, in one colour: the stage's glows and every lit thing on a card (SH-53)
-//   contract-9 closed-card  from L3 the card is closed in the waiting room, the pharmacy and every heal game (CLN-114)
+//   contract-9 closed-card  from L3 the card in the waiting room, the pharmacy and every heal game is open, its words blanked, never
+//                           folded (SH-110, Zafar 26 Oct, overrides CLN-114's closed card; each blanked row's speaker: contract-40)
 //   contract-10 your-turn   the staged talkers face the player when it is the child's turn (SH-71); in the examination the doctor faces her (CLN-157)
 //   contract-11 background  no background stretched out of proportion (PAN-14) or drawn low-res (ART-05)
 //   contract-12 greyed      a ✓ / Next / stage button is hidden until usable, never shown greyed (SH-23)
@@ -94,7 +95,7 @@ export const CHECKS = {
   "contract-6": { item: "old-art", title: "no retired art", how: "Every image drawn (canvas drawImage, offscreen canvases a rig draws from, <img>, CSS backgrounds, Phaser WebGL textures) by file; a file on the retired list with the same content (sha256), in its scope, is a break." },
   "contract-7": { item: "one-voice", title: "one voice at a time", how: "Every clip said for a line (the sound log, its real start and stop as contract-3 reads them); two clips of different lines sounding together for more than 150 ms is a break (PAN-04: the count words, the next-thing line and the order never overlap). Clips whose length is only estimated are not judged." },
   "contract-8": { item: "highlight", title: "one highlight at a time", how: "Sampled on every change: Cook's pictures carrying the shared glow (glowFx) and the clinic's next-up or pulsing tools (a tool family, all the plasters, is one highlight). More than one at once for 300 ms or more is a break (SH-53)." },
-  "contract-9": { item: "closed-card", title: "closed card from L3", how: "At the first play tap of the waiting room, the pharmacy or a heal game at level 3 or more: every order card in the sidebar must be closed (OrderCard 'closed': folded, peeking or open for the bulb's time). An open card is a break (CLN-114)." },
+  "contract-9": { item: "closed-card", title: "no folded card from L3", how: "At the first play tap of the waiting room, the pharmacy or a heal game at level 3 or more: no order card in the sidebar may be closed (OrderCard 'closed': folded to face + headline). SH-110 (Zafar, 26 Oct: 'we can't just have fully blanked out order cards'; overrides CLN-114's closed card): the card stays open, its rows' words blanked (dotted), each blanked row starting with its speaker (contract-40). A closed card is a break." },
   "contract-10": { item: "your-turn", title: "faces the player on the child's turn", how: "At every play tap the clinic asked for (it expected a tap or a pick, not 'wait'), every staged talker on screen (the staging hook's .cl-staged, data-pose) must face the player (data-pose 'front'); still turned to the other talker is a break (SH-71, rules E20, F26). In the examination (clinic/diagnosis) the doctor stays three-quarter to her instead, and front is the break (CLN-157). Cook has no poses yet: an eye check." },
   "contract-11": { item: "background", title: "backgrounds in proportion and sharp", how: "Every picture covering half the screen or Cook's canvas (<img>, CSS background, Phaser image): screen px per source px across and down. Across and down differing by more than 3% is stretched (PAN-14); more than 1.5 screen px per source px (times the page's pixel ratio) is low-res (ART-05). Either is a break." },
   "contract-12": { item: "greyed", title: "buttons hidden until usable", how: "A ✓, Next or stage button on screen while disabled, aria-disabled, dimmed under 60% or greyscale, for 400 ms or more and not just pressed (1.5 s before), is a break: hidden until usable, never greyed (SH-23)." },
@@ -533,7 +534,7 @@ function check15(tl, segs, add, tEnd = tl[tl.length - 1].t) {
     add("contract-15", e.t, `${s ? s.key : "?"}: ${e.n} word${e.n > 1 ? "s" : ""} broken across lines for ${Math.round(until - e.t)} ms (${e.list.slice(0, 6).join(", ")})`);
   });
 }
-// 9 (CLN-114): from L3 the card is closed in the waiting room, the pharmacy and every heal game
+// 9 (SH-110, overriding CLN-114): from L3 the card in the waiting room, the pharmacy and every heal game is open (its words blanked), never folded
 const CLOSED_FROM_L3 = /(^|\|)host:clinic\/(waiting|pharmacy|heal)|(^|\|)host:heal\//;
 function check9(tl, segs, level, add) {
   if (level < 3) return;
@@ -547,7 +548,7 @@ function check9(tl, segs, level, add) {
     if (!first) continue;
     const c = sideAt(first.t);
     if (!c || !c.n || c.closed == null) continue;
-    if (c.closed < c.n) add("contract-9", first.t, `${s.key} at L${level}: ${c.n - c.closed} of ${c.n} sidebar cards open at the first play tap (from L3 the card is closed)`);
+    if (c.closed > 0) add("contract-9", first.t, `${s.key} at L${level}: ${c.closed} of ${c.n} sidebar cards folded at the first play tap (SH-110: from L3 the card stays open, its words blanked, each with its speaker)`);
   }
 }
 // 10 (SH-71): on the child's turn (a tap the clinic asked for), every staged talker faces the player. In the examination

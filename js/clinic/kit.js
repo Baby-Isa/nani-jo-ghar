@@ -796,6 +796,15 @@
     if (opts.title) this.setTitle(opts.title);
   };
   const esc = (t) => String(t == null ? "" : t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  /** SH-110: a row's label blanked (L3+): its words as dots (the said words kept for a peek: data-said), its English for the bulb. */
+  Kit.rowBlank = function (r) {
+    if (!r.kutchi || r.placeholder === true) return Kit.rowHtml(r); // (a line still to record is never blanked: decision 84)
+    const en = document.createElement("div");
+    en.innerHTML = Kit.rowHtml(r);
+    const k = en.querySelector(".oc-k");
+    if (k) k.innerHTML = `<span class="dots" data-said="${esc(Kit.plain(r))}">\u2022\u2022\u2022</span>`;
+    return en.innerHTML;
+  };
   /** A row's label for the order card: the Kutchi (placeholders grey italic) and its English for the bulb. */
   Kit.rowHtml = function (r) {
     const t = document.createElement("span");
@@ -822,7 +831,14 @@
     // still to come greyed ("later") until their step opens, so the child sees what's coming
     const rows = this.rows;
     const pending = this.progressive && this.shown < this.rows.length - 1;
-    const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
+    // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): from level 3 (close()) the sidebar card stays open; a row not yet
+    // ticked is blanked (its words dotted, Kit.rowBlank) and starts with its speaker (OrderCard speakerFirst), which says it on the
+    // card's own voice path, free (never a hint). The pop-up (big) writes every word: the order is written when it first comes
+    const blank = !!this.closed && !this.big && !this.bulbOn;
+    const card0 = this;
+    const label = (r) => (blank && !st.done.has(r.id) ? Kit.rowBlank(r) : Kit.rowHtml(r));
+    const say = (r) => () => Voice.say(r, { who: r.who || card0.who, noBubble: true });
+    const part = (r) => ({ label: label(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id), say: say(r) });
     const items = [];
     const groups = {};
     // CLN-54 (P47): a row marked `head` names its `seq` group (a drink, its recipe rows under it: the order card's
@@ -838,11 +854,11 @@
         }
         if (r.head) {
           headed = true;
-          Object.assign(groups[g], { label: Kit.rowHtml(r), key: r.id, done: st.done.has(r.id), miss: st.miss.has(r.id), headed: true });
+          Object.assign(groups[g], { label: label(r), key: r.id, done: st.done.has(r.id), miss: st.miss.has(r.id), headed: true, say: say(r) });
           return;
         }
         groups[g].parts.push(part(r));
-      } else items.push({ label: Kit.rowHtml(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
+      } else items.push({ label: label(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id), say: say(r) });
     });
     // a job with a single step is a plain row (no sequence line for one thing)
     items.forEach((it, i) => {
@@ -897,14 +913,8 @@
         }
       },
     };
-    if (this.closed) {
-      opts.closed = true;
-      opts.onPeek = this.closed.onPeek || null;
-      opts.look = this.closed.look || null; // decision 57: a spoken card's look is a small bulb
-      opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
-      opts.peekMs = Kit.peekMs(Kit.Bulb && Kit.Bulb.last ? Kit.Bulb.last.level : 3); // SH-101: the peek's time by level
-      this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
-    }
+    // (SH-110: no card folds for memory any more, so no peek; the round still had its words heard, not read: D12's badge)
+    if (this.closed) this.closedSeen = true;
     this.el.innerHTML = "";
     if (!OC) return this;
     const c = OC.card(data, opts);

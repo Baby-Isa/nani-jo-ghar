@@ -87,12 +87,12 @@ test("contract-8 highlight: two highlights at once for a while (SH-53); a swap c
   assert.equal(of(run(page("cook:fetch", quick)), "contract-8").length, 0);
 });
 
-test("contract-9 closed-card: an open card at the first play tap from L3 (CLN-114); closed, or below L3, passes", () => {
-  const tl = [stage(T, "host:clinic/pharmacy"), C(T + 50, "side", { n: 1, rows: 3, done: 0, closed: 0 }), C(T + 800, "input", { x: 300, y: 300, exp: { clinic: { kind: "tap" } } })];
-  assert.match(of(run(page("clinic:pharmacy@L3", tl)), "contract-9")[0].measured, /1 of 1 sidebar cards open/);
+test("contract-9 closed-card (SH-110, overriding CLN-114): a folded card at the first play tap from L3 is the break; open, or below L3, passes", () => {
+  const tl = [stage(T, "host:clinic/pharmacy"), C(T + 50, "side", { n: 1, rows: 3, done: 0, closed: 1 }), C(T + 800, "input", { x: 300, y: 300, exp: { clinic: { kind: "tap" } } })];
+  assert.match(of(run(page("clinic:pharmacy@L3", tl)), "contract-9")[0].measured, /1 of 1 sidebar cards folded/);
   assert.equal(of(run(page("clinic:pharmacy@L2", tl)), "contract-9").length, 0);
   const ok = clone(tl);
-  ok[1].closed = 1;
+  ok[1].closed = 0;
   assert.equal(of(run(page("clinic:pharmacy@L3", ok)), "contract-9").length, 0);
   // the diagnosis is not one of them
   const dx = clone(tl);
