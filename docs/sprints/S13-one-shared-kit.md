@@ -32,7 +32,7 @@ Answer:
    - **A rule for "done":** the judge's PASS on every game the element appears in, not only the one the builder looked at.
 
 ## Sessions
-- **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`.
+- **S13-R, the review** (Fable, high, about $20-30): launched 26 Oct; widened by Zafar (26 Oct) to every element that could sit shared, not only the list above. Report `build/reports/s13-kit-review.md`: done 26 Oct; 15 decisions to Zafar (decision 10 withdrawn: `input.js` has callers).
 
 ## Step 2: the build (two builders at a time, Opus high; judge each)
 - **S13-A: tokens and motion.** Colours, outlines, the bob, glow and finger timings, as tokens used everywhere. The 883 raw values shrink.
