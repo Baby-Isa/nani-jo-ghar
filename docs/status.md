@@ -13,7 +13,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Next steps:**
 1. Step 1, the review, is done (26 Oct): report `build/reports/s13-kit-review.md`. Zafar asked it to be open-minded: every element that could sit shared, not only the sprint file's list.
 2. Put the review's decisions to Zafar as a numbered list (budget $120-160, 2 days: confirmed 26 Oct).
-3. Step 2: S13-A tokens and motion, S13-B components (two builders, Opus high, judged), then every game replayed at both sizes, `/review`, publish on his OK, his play, `/feedback`.
+3. Step 2: pair 1 (S13-T the checking loop, S13-A1 colours, motion, page setup) launched 26 Oct 14:30 UK as in-chat worktree builders; then pair 2 (B1 cards, V voice/sfx/save), pair 3 (A2 faces/buttons/finger/"?", B2 bubbles/end screen), then every game replayed at both sizes, `/review`, publish on his OK, his play, `/feedback`.
 4. Zafar records at Masi's from `docs/language/recording-sheet.md`.
 
 **Open questions to Zafar:** the review's 15 decisions (its section 7; 10 withdrawn).
