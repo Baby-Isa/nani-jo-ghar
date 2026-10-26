@@ -356,7 +356,7 @@
     S.child = ["girl", "boy", "baby", "ali", "cousin"].includes(kindId);
 
     /* ---- the patient's round face ---- */
-    const faceBox = h("div", "hs-face njg-face njg-face-big", root); // ART-08 (S13-A2): the kit's circle, the big size
+    const faceBox = global.Face.size(h("div", "hs-face", root), "big"); // ART-08 (S13-A2): the kit's circle, the big size
     faceBox.dataset.kind = kindId;
     const fs = s("svg", { viewBox: "0 0 100 100" }, faceBox);
     const skin = S.skin;

@@ -118,3 +118,4 @@
 .njg-gu-pop .njg-gu-goal { margin: 0; overflow-wrap: anywhere; }
 .njg-gu-pop .njg-grownup-note { color: inherit; opacity: .85; }
 .njg-gu-pop .ob-skip-row { color: var(--njg-ink); }
+.njg-gu-pop .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: var(--njg-line-2); text-underline-offset: .2em; } /* (decision 21: the grown-ups see the flag) */

@@ -1396,13 +1396,13 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-finger, .co-finger",
+   "at": "every:visible:.ob-finger",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": [
-    "count:.ob-finger,.co-finger>=1"
+    "count:.ob-finger>=1"
    ],
    "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (counted once the ghost is visible, not at its 0-opacity first frame)",
    "delay": 0,
@@ -1417,7 +1417,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:visible:.ob-finger, .co-finger",
+   "at": "every:visible:.ob-finger",
    "after": null,
    "capture": [
     "shot",

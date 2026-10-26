@@ -929,6 +929,14 @@
     if (stage && opts.onScreen !== false) {
       stage.appendChild(box);
       box.classList.add("onscreen");
+      // ART-08 (S13-A2): on the stage her circle is the kit's big one (one of its three sizes); in the sidebar, the row
+      if (global.Face) global.Face.size(box.querySelector(".pm-face"), "big");
+    }
+    // her nod as she asks (the kit's talk, css/shared/face.css .talk)
+    const pmFace = box.querySelector(".pm-face");
+    if (pmFace) {
+      pmFace.classList.add("talk");
+      setTimeout(() => pmFace.classList.remove("talk"), 1800);
     }
     let ring = box.querySelector(".pm-ring");
     if (!ring) {
@@ -952,6 +960,7 @@
     };
     const putBack = () => {
       box.classList.remove("onscreen", "late");
+      if (global.Face) global.Face.size(box.querySelector(".pm-face"), "row");
       const fi = box.querySelector(".pm-face img");
       if (fi && fi.dataset.home) {
         fi.src = fi.dataset.home;

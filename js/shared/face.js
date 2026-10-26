@@ -123,6 +123,24 @@
     circle.__njgFaceBtn = b;
     return b;
   };
+  /**
+   * Make an element a circle of one of the three sizes (a host's own box that holds a picture: the heal corner face), or give a
+   * circle (or a button holding one) another of the three (Nani's pass-me card, big when it comes onto the stage).
+   */
+  F.size = function (el, size) {
+    if (!el || !el.classList) return el;
+    const s = sizeOf(size);
+    const put = (x, pre) => {
+      F.SIZES.forEach((k) => x.classList.remove(`${pre}-${k}`));
+      x.classList.add(pre, `${pre}-${s}`);
+    };
+    if (el.classList.contains("njg-face-btn")) {
+      put(el, "njg-face-btn");
+      const c = el.querySelector(".njg-face");
+      if (c) put(c, "njg-face");
+    } else put(el, "njg-face");
+    return el;
+  };
   /** Point a circle (or a button holding one) at another person or picture. */
   F.set = function (el, who, o = {}) {
     if (!el) return null;

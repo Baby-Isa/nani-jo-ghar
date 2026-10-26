@@ -112,7 +112,6 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-head { position: absolute; display: flex; align-items: center; gap: var(--njg-s2); z-index: 4; pointer-events: none; }
 /* her face: the kit's circle, the big size (js/shared/face.js; ART-08, S13-A2) */
 .day-face { pointer-events: auto; }
-.day-face.on .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
 .day-head-line { min-width: 0; background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s2) var(--njg-s3); }
 .day-head-line:empty { display: none; }
 .day-head-line.day-again { animation: day-again 1.5s ease-in-out 1; }

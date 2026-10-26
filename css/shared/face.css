@@ -42,5 +42,7 @@
 /* a page's wider tap area (Cook's .face-say::after) stays inside the button's own box (SH-09) */
 .njg-face-btn::after { inset: 0; }
 
-/* the talk: the kit's one nod (ART-18) on the circle while its person speaks */
-.njg-face.talk, .talk > .njg-face, .njg-face-btn.talk > .njg-face { animation: var(--njg-talk-anim); }
+/* the talk: the kit's one nod (ART-18) on the circle while its person speaks (the circle, its button or the card round it talks) */
+.njg-face.talk, .talk > .njg-face, .talk > .njg-face-btn > .njg-face { animation: var(--njg-talk-anim); }
+/* a face that is its replay with no badge (the book's): the gold ring while it speaks */
+.njg-face-btn.on:not(:has(.say-badge)) > .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }

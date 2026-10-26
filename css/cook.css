@@ -315,7 +315,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---- Nani's card: one short line (two rows at most for her usual lines) ---- */
 #nani-card .say-slot { min-width: 0; }
-#nani-card.talk .nc-say .njg-face { animation: var(--njg-talk-anim); } /* (her face: the kit's circle, css/shared/face.css; ART-08) */
+/* (her face, talking or not, is the kit's circle: css/shared/face.css; ART-08, S13-A2) */
 #nani-card .wp .wp-text { font-size: clamp(16px, 1.45vw, 21px); line-height: 1.25; }
 
 /* ---- choices (small talk) ---- */
@@ -947,7 +947,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
    the child's cards, boxes and pop-ups only a hidden word is dotted, so the flag is in the markup only there (as decision 84's
    "to record"); the grown-ups' word book and "?" pop-up still underline it */
 .to-check { text-decoration: none; }
-:is(#panel:has(#book-close), .njg-gu-pop) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+#panel:has(#book-close) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
 .book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }
@@ -1028,8 +1028,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage #passme.onscreen { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(560px, 92%); padding: 16px; background: var(--njg-paper); border-radius: 22px; box-shadow: 0 18px 50px rgba(40, 25, 10, 0.35); animation: pmCross .7s cubic-bezier(.2,.8,.3,1); }
 #stage #passme.onscreen.hidden { display: none; }
 #stage #passme.onscreen .pm-nani { display: flex; align-items: center; gap: 12px; position: relative; }
-/* on the stage her circle is the kit's big one (css/shared/face.css: one of its three sizes; ART-08, S13-A2) */
-#stage #passme.onscreen .pm-face, #stage #passme.onscreen .pm-face .njg-face { --njg-face-d: var(--njg-big-face); }
 #stage #passme.onscreen .pm-say { background: var(--njg-white); border-radius: 16px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(40, 25, 10, 0.12); position: relative; }
 #stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: var(--njg-s3); margin-top: var(--njg-s3); }
 #stage #passme.onscreen .pm-tray .pm-item { width: 30%; max-width: 150px; }

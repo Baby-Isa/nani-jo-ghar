@@ -63,7 +63,7 @@
       const kind = env.fig && env.fig.kind;
       let faceHeads = null;
       if (kind) {
-        const who = h("div", "hs-face cl-ph-face njg-face njg-face-big", stage); // ART-08 (S13-A2): the kit's circle, the big size
+        const who = global.Face.size(h("div", "hs-face cl-ph-face", stage), "big"); // ART-08 (S13-A2): the kit's circle, the big size
         who.dataset.kind = kind;
         const art = await S.artFor(kind);
         faceHeads = (art && art.heads) || null;
