@@ -223,6 +223,10 @@
 .cv-bubble[data-njg-place^="face-"]::before { width: calc(var(--njg-u) * 22); height: calc(var(--njg-u) * 36); transform: none; top: auto; bottom: calc(var(--njg-u) * -10); }
 .cv-bubble[data-njg-place="face-right"]::before { left: calc(var(--njg-u) * -19); right: auto; clip-path: polygon(0 100%, 100% 0, 100% 50%); }
 .cv-bubble[data-njg-place="face-left"]::before { left: auto; right: calc(var(--njg-u) * -19); clip-path: polygon(100% 100%, 0 0, 0 50%); }
+/* a head too near the top: the bubble beside it from the eye line down, the tail out of the near side's top at the cheek */
+.cv-bubble[data-njg-place$="-low"]::before { top: calc(var(--njg-u) * -10); bottom: auto; }
+.cv-bubble[data-njg-place="face-right-low"]::before { left: calc(var(--njg-u) * -19); right: auto; clip-path: polygon(0 0, 100% 100%, 100% 50%); }
+.cv-bubble[data-njg-place="face-left-low"]::before { left: auto; right: calc(var(--njg-u) * -19); clip-path: polygon(100% 0, 0 100%, 0 50%); }
 @media (max-height: 499.98px) {
   .cv-line { padding: calc(var(--njg-u) * 8) calc(var(--njg-u) * 12); }
   .cv-line .cv-text { font-size: calc(var(--njg-u) * 19); }

@@ -84,9 +84,10 @@
 .rs-card[data-step="3"] :is(.rs-p1, .rs-p2) { display: none; }
 .rs-card { overflow: hidden; }
 /* SH-75: a page narrower than three badges (the steps list, two badges, a body such as the clinic's receipt) takes its own
-   width, never the three-badge width with wide empty bands either side; never narrower than its action buttons */
+   width, never the three-badge width with wide empty bands either side; never narrower than its action buttons.
+   S13-B2 (the judge, 26 Oct: one end screen in every game): the word review is one width everywhere, the card's own
+   (--njg-end-card), a taught round's one group centred in it (it took its own narrower width before) */
 .rs-card[data-step="3"],
-.rs-card.taught[data-step="2"],
 .rs-card[data-step="1"]:has(> .rs-steps .rs-badges.n2),
 .rs-card[data-step="1"]:has(> .rs-steps .rs-body) {
   width: auto;
@@ -446,6 +447,9 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .njg-results .rs-p2 .rs-words:not(.dense) .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
   /* and the halves give the tiles their side padding (still the same width each, SH-03): "cardamom" fits a tile whole */
   .njg-results .rs-words:not(.dense) .rs-words-col { padding: 0 var(--njg-s1); }
+  /* S13-B2 (the judge, 26 Oct: at 915x412 the right-hand tiles nearly touched the card's edge): the words panel keeps a margin on
+     both sides, the card's own spacing step, whatever the halves give back */
+  .njg-results .rs-p2 .rs-words { padding-left: var(--njg-s3); padding-right: var(--njg-s3); }
   .njg-results .rs-p2 .rs-words:not(.dense) .rs-word { padding-left: var(--njg-s1); padding-right: var(--njg-s1); }
   /* a word still to record: its flag takes the second line, the speaker sits on the tile's corner as a small badge */
   .njg-results .rs-words.dense .rs-word:has(.rs-rec) .rs-say { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s3) * -1); box-shadow: var(--njg-shadow); }
