@@ -257,7 +257,7 @@
       }
     },
     "finger": {
-      "sel": ".ob-finger, .co-finger",
+      "sel": ".ob-finger, .ob-finger svg, .co-finger",
       "moves": true,
       "grep": [
         "\\bob-finger\\b",
@@ -367,8 +367,7 @@
           "sel": "hook:cook.glowing"
         },
         "clinic": {
-          "at": "placed",
-          "afterPause": true,
+          "at": "rec:stuck-12s",
           "sel": "hook:heal.glowing"
         },
         "lab": {
