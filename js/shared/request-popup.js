@@ -348,6 +348,10 @@
     if (!r0 || ![r0.left, r0.top, r0.width, r0.height].every(Number.isFinite) || (!r0.width && !r0.height && !r0.left && !r0.top)) return null;
     // a point (an anchor with no size) is a head of one pixel there
     let r = { left: r0.left, top: r0.top, width: Math.max(1, r0.width), height: Math.max(1, r0.height) };
+    // S13-B2 (the judge, 26 Oct: the doctor's figure starts above the screen, so his bubble found no room above and sat on his
+    // chest): placed by what of the speaker is on the screen, the box clamped to the layer's top
+    const top0 = Math.max(r.top, lr.top);
+    if (top0 > r.top && r.top + r.height - top0 > 1) r = { left: r.left, top: top0, width: r.width, height: r.top + r.height - top0 };
     // a speaker given as a whole standing figure (taller than half again its width): its head is the top of it
     if (r.height > r.width * 1.5) {
       const hw = r.width * 0.6;
@@ -377,6 +381,13 @@
     const below = hy + r.height + gap;
     const fitsAbove = above >= M;
     const fitsBelow = below + bh <= H - M;
+    // S13-B2: no room above the head: beside it (its bottom at the eye line, its tail out of the near side at the head) before
+    // below it, so a bubble never sits on the speaker's chest while there is room at their head
+    if (!fitsAbove && !face) {
+      const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr, m: Math.max(3, Math.round(r.width * 0.15)) }, (o.avoid || []).concat(marked));
+      if (sd) return sd;
+    }
     let side = fitsAbove || !fitsBelow ? "above" : "below";
     const x = Math.max(M, Math.min(W - bw - M, cx - bw / 2));
     const yOf = (sd) => Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
@@ -414,10 +425,16 @@
     const tw = (cs && parseFloat(cs.width)) || 22;
     const off = cs && isFinite(parseFloat(cs.left)) ? -parseFloat(cs.left) - ((bs && parseFloat(bs.borderLeftWidth)) || 0) - tw / 2 : 5;
     // the tail's middle just inside her head's edge
-    const m = 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek
+    const m = g.m || 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek (S13-B2: beside a head that is not a painted face, a little further in: the tail well inside the head's column)
     const cy = hy + h / 2; // her eye line (the head anchor's centre)
-    const y = Math.round(cy - 2 - bh);
-    if (y < M || cy - 2 > H - M) return null;
+    // S13-B2: a head too near the top for the bubble to end at the eye line (the doctor at 915x412) gets it beside the head from
+    // the eye line down instead, its tail out of the near side's top at the cheek ("-low"); never on the chest under the head
+    const low = Math.round(cy - 2 - bh) < M;
+    const y = low ? Math.round(cy + 2) : Math.round(cy - 2 - bh);
+    if (y < M || y + bh > H - M || cy - 2 > H - M) {
+      delete b.dataset.njgPlace;
+      return null;
+    }
     const xs = { "face-right": hx + w - m + off, "face-left": hx + m - off - bw };
     const fits = (sd) => xs[sd] >= M && xs[sd] + bw <= W - M;
     const hits = (sd) =>
@@ -437,8 +454,8 @@
     }
     b.style.left = `${Math.round(xs[sd])}px`;
     b.style.top = `${y}px`;
-    b.dataset.njgPlace = sd;
-    return sd;
+    b.dataset.njgPlace = low ? `${sd}-low` : sd;
+    return b.dataset.njgPlace;
   }
 
   /*
