@@ -298,6 +298,7 @@
       img.srcset = `${u} 1x, ${Kit.url(String(src).replace(/\.webp$/, "@2x.webp"))} 2x`;
     };
     const st = { view: null, name: null, talking: false, flap: null, blink: null };
+    const preloaded = new Set();
     const rest = () => {
       const V = st.view;
       const f = (V && V.faces) || {};
@@ -324,6 +325,16 @@
       Object.assign(head.style, { left: `${(V.head[0] - rw) * 100}%`, top: `${(V.head[1] - r) * 100}%`, width: `${rw * 200}%`, height: `${r * 200}%` });
       Kit.contactShadows(d, V.file, V.w / V.h);
       rest();
+      // CK-48 (S13-V): this view's other faces (the blink, the talking mouth) load and decode now, with the view, so his first
+      // blink never waits on a picture still loading
+      Object.values(V.faces || {}).forEach((src) => {
+        if (!src || preloaded.has(src)) return;
+        preloaded.add(src);
+        const im = new Image();
+        im.srcset = `${Kit.url(src)} 1x, ${Kit.url(String(src).replace(/\.webp$/, "@2x.webp"))} 2x`;
+        im.src = Kit.url(src);
+        if (im.decode) im.decode().catch(() => {});
+      });
     };
     const blinkLoop = () => {
       if (Kit.fast || st.blink) return;
