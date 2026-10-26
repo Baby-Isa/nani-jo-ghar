@@ -105,7 +105,8 @@
       get("data/conversations/exchanges.json", {}),
       get("data/conversations/speakers.json", {}),
       get("data/conversations/placements.json", {}),
-      get("data/family-audio.json", []),
+      // CK-48 (S13-V): the family's clip list once per page (the core's or family-voice's promise, whichever came first)
+      root.njgFamilyAudio ? Promise.resolve(root.njgFamilyAudio).catch(() => []) : (root.njgFamilyAudio = get("data/family-audio.json", [])),
     ]).then(([lines, exchanges, speakers, placements, clips]) => (C.use({ lines, exchanges, speakers, placements, clips }), D));
     return loading;
   };
