@@ -5,16 +5,7 @@ The single source of truth for how Cook looks and behaves. It merges Zafar's fee
 *§1 Moved to `docs/game-design/modes/cook.md` (Part 1: station specs).*
 
 ## 2. Tokens (every screen uses only these)
-- **Colours:**
-  - page `#F4ECDF` (parchment);
-  - panel `#EFE5D6`;
-  - card `#FFFFFF`;
-  - text `#2A2522` (charcoal: body text is never rust);
-  - Kutchi keyword `#8C2F2F` (muted maroon, only on the Kutchi word);
-  - gold `#C9962E` (flat: outlines and icons);
-  - grey `#D9D2C7`;
-  - sage (Nani) `#DDE6D5`, with the band `#7E9A76`;
-  - wrong `#C0443C` (the end review only).
+- **Colours:** `css/shared/tokens.css` is the truth (S13-A1, decision 14: the hex list that stood here went). Body text is charcoal (`--njg-ink`, never rust); the Kutchi keyword `--njg-word` only on the Kutchi word; flat gold `--njg-gold` for outlines and icons; `--njg-focus` the one highlight; Nani's box mixed from `--njg-sage`; `--njg-wrong` only on the end review.
 - **Type:** Nunito throughout.
   - L1 lesson line: 22 px / 800.
   - L2 Kutchi target: 20 px / 800.
@@ -30,6 +21,14 @@ The single source of truth for how Cook looks and behaves. It merges Zafar's fee
 - **Radii:** 12 for cards and pills, full circle for round buttons. Nothing else.
 - **Shadow:** one soft shadow, `0 2px 8px rgba(40,25,10,.10)`. The UI is flat: no gradients, bevels or 3D text.
 - **Tap targets:** at least 48 px, even when the icon is 24 px. The whole inventory slot is tappable.
+
+## Kit (S13-A1, 26 Oct): where the shared look lives
+- **One link per page.** Every live page links `css/shared/kit.css` (it imports every shared sheet in order) and no shared sheet directly; a game's own sheet follows it (Cook's `cook.css` precedes it). `js/shared/tokens.js` loads on every game page. Check: `static.mjs shell`.
+- **Colours:** `--njg-*` in `tokens.css` (the kit's, then each live game's own colours, aliased once by its `:root` palette). Colours with an alpha: `rgba(var(--njg-<name>-rgb), a)`. In code: `Tokens.hex("focus")`, `Tokens.int("focus")` (Phaser), `Tokens.rgb(...)`. Checks: `tokens` (none in `css/shared/`), `jscolour`.
+- **Motion:** the glow, pulse, hop and talk are drawn only in `css/shared/focus.css`: classes `.njg-glow`, `.njg-pulse`, `.njg-hop`, `.njg-talk`, or, where a game's code sets its own class, `animation: var(--njg-glow-anim)` (`-pulse-`, `-hop-`, `-talk-`). Numbers: `--njg-glow-ms` 1200, `-radius` (s3), `-rgb` (focus), `-alpha` .85; `--njg-pulse-ms` 1200, `-scale` 1.06, `-alpha` .75; `--njg-hop-ms` 900, `-lift` -10%; `--njg-talk-ms` 450, `-lift` (line-2), `-tilt` -3deg. Phaser reads them through `Motion` (`Cook.GLOW`). Check: `motion`.
+- **Ladders:** help, bulb and bulb-pulse times are `data/shared.json` alone (`Tokens.ladder`; `NaniGuide.PAUSE`, `BULB_PULSE`, `Bulb.MS`, `Kit.BULB_MS` read it). Check: `bulb`.
+- **To record:** one rule, `.njg-ph` in `css/shared/app.css` (grey italic; `.ph` and `.to-record` its older names until every renderer emits `.njg-ph`).
+- **Shared classes:** no CSS outside `css/shared/` selects `.njg-`, `.oc-`, `.rs-`, `.gb-`, `.wc-`, `.ng-`, `.ob-`, `.cv-`, `.say-` or `.fit` classes (`:not()` allowed). Check: `kit`. Every check's known list only shrinks.
 
 ## 3. The screen grid
 - **The left panel, about 22%.** One continuous surface. There are no cards inside cards.
