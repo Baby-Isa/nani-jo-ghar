@@ -41,6 +41,7 @@ Answer:
 - **S13-B2, bubbles and the end screen** (Opus, high, about $30-40): launched 26 Oct ~21:50 UK (with first launch's two buttons). Report build/reports/s13-b2 (to write).
 
 ## Small decisions (Zafar, 26 Oct)
+- The house's '?': holding it opens the shared grown-ups' pop-up; 'Players and the save' is one tap inside (Zafar, 26 Oct: yes).
 - Publishing: Zafar's go (26 Oct, evening) to publish to `main` when the orchestrator judges the sprint done, after `/review`; overriding what is needed.
 - Also shared this sprint: the voice player (the built `js/core/voice.js` path, wired everywhere), sound effects, saving (one copy) and the test hooks. Not shared: tap and drag handling (one open row; every mechanic at risk) and Cook's round runner (a rewrite of Cook's core); parked games out of scope.
 - The checking loop: one command takes "before" shots of a builder's rows (the probe must show the problem first) and "after" shots; the script builds the judge's before/after batch, plus one side-by-side sheet per shared piece across every game (that sheet is "done"); builders never shoot their own frames; machine checks first; one broad sweep at `/review`. The existing evidence tool gains this; no second capture tool.
