@@ -21,7 +21,7 @@ const READ = () => {
     module: S.lang ? "js/core/save.js (schema " + JSON.parse(localStorage.getItem("njg-save") || "{}").schema + ")" : "classic js/shared/save.js",
     player: p && p.name, players: S.players().length, firstDone: S.flag("firstDone"), character: Object.keys(S.get("character") || {}).length,
     cookCoins: cook.coins || 0, cookWords: Object.keys(cook.words || {}).length, words: Object.keys(S.get("words") || {}).length,
-    wallet: (S.get("wallet") || {}).coins, clinic: ((S.get("ui") || {}).clinic || {}).state || null, story: Object.keys(S.get("story") || {}).length,
+    wallet: (S.get("wallet") || {}).coins, clinic: (S.get("clinic") || {}).state || ((S.get("ui") || {}).clinic || {}).state || null, story: Object.keys(S.get("story") || {}).length,
   };
 };
 const server = await startServer();
