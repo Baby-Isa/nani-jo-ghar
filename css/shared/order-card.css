@@ -262,6 +262,25 @@
 }
 .oc-card .oc-row.no.done { border-style: solid; border-color: var(--oc-gold); }
 .oc-card .oc-row.no .word { color: inherit; }
+/* SH-110 (Zafar, 26 Oct: never a memory test): a blanked row starts with a clear speaker (js/shared/order-card.js speakerFirst):
+   the round speaker drawn at the row's size, its tap area never under the tap floor (it overhangs the row, so the row keeps its
+   height); a word row's own speaker (.wc-spk) is the same button, moved to the row's start */
+.oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); }
+.oc-card .oc-spk {
+  --oc-spk-vis: calc(var(--oc-part-h) * 0.8); --oc-spk-hit: max(var(--oc-spk-vis), var(--njg-tap));
+  position: relative; z-index: 1; flex: none; order: -2; box-sizing: border-box;
+  width: var(--oc-spk-hit); height: var(--oc-spk-hit); padding: 0; border: 0; border-radius: var(--njg-round);
+  margin-block: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2); margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2);
+  display: grid; place-items: center; background: none; box-shadow: none; color: var(--oc-ink); cursor: pointer; touch-action: manipulation;
+}
+.oc-card .oc-spk::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: var(--oc-spk-vis); height: var(--oc-spk-vis); transform: translate(-50%, -50%);
+  box-sizing: border-box; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--oc-gold); background: var(--njg-cream);
+}
+.oc-card .oc-spk svg { position: relative; width: calc(var(--oc-spk-vis) * 0.62); height: calc(var(--oc-spk-vis) * 0.62); display: block; }
+.oc-card .oc-spk.on { box-shadow: none; }
+.oc-card .oc-spk.on::before { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
+.oc-card .oc-spk:active { transform: scale(0.95); }
 /* one casing on the card: rows start lower case mid-card (the headline is the sentence) */
 .oc-card .oc-row .oc-t::first-letter { text-transform: lowercase; }
 

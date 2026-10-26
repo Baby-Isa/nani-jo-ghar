@@ -1171,8 +1171,11 @@
   // level table hangs the dotted L3 card on dotsOk: it says whether a card may show its well-known words as dots (an open card
   // may; the peek never does)
   let peekCard = false;
+  // SH-110 (Zafar, 26 Oct: "when the order first comes ... you should see it written in Kutchi"): the pop-up's card (drawCards big,
+  // the people order's big word card) writes every word; the sidebar's card may dot them, each dotted row with its speaker
+  let writtenCard = false;
   M.dotsHook = null; // wave 2A's level table: (mission) => false makes the open card at that level show no dotted words (the L3 card with some dotted is the other way round); null: as before
-  const dotsOk = () => !peekCard && (typeof M.dotsHook !== "function" || M.dotsHook(mission) !== false);
+  const dotsOk = () => !peekCard && !writtenCard && (typeof M.dotsHook !== "function" || M.dotsHook(mission) !== false);
   const rowHide = (r) => (id) => dotsOk() && !r.done && !r.revealed && (r.dots || hideWord(id));
   // SH-101 (Zafar, 17 Oct): the peek lasts the level's time, from data (data/cook.json calm.peekMs: 7 s at level 3, the 3.5 s added to the others)
   const peekMsOf = () => {
@@ -1180,7 +1183,12 @@
     const lv = Math.min(4, Math.max(1, mission ? mission.level : 1));
     return (t[lv] != null ? t[lv] : 7000) / (Cook.speed || 1);
   };
-  const peeksFor = (who) => !!(mission && mission.closed && mission.closed.peek && (!mission.closed.who || mission.closed.who === who));
+  // SH-110 (Zafar, 26 Oct: "we can't just have fully blanked out order cards on the left when the game starts"): a card closed for
+  // the order to be remembered (closed.peek: the level table's L4 card, a station's closedFrom) is drawn open, its item words
+  // dotted and each dotted row starting with its speaker (OrderCard speakerFirst); so no card peeks any more. A phase fold (a card
+  // you can't act on now, closed without peek) still folds. Was: L4 folded to face + headline, a peek (a hint) to look
+  const peeksFor = () => false;
+  const memoryClosed = (closed) => !!(closed && closed.peek);
   const anyHidden = (L) => Order().rows(L).some(rowHidden);
   const hasRows = (m) => m.ladders.some((L) => L.sections.some((s) => s.groups.some((g) => g.length)));
   /**
@@ -1473,7 +1481,7 @@
           const item = r && m.away.has(r);
           box.innerHTML = "";
           if (item) {
-            const w = UI.wordOf(r, { size: 240 });
+            const w = UI.wordOf(r, { size: 240, written: true });
             if (w) {
               const big = global.WordCard.card(box, w.word, Object.assign({}, w.wordOpts, { cls: "ic-word" }));
               big.classList.add("in");
@@ -1883,7 +1891,9 @@
     const t = r && r.pic ? thumbOf(r.pic) : null;
     return t ? `<img class="ck-step-pic" src="${t}" alt="" aria-hidden="true">` : "";
   };
-  const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
+  // SH-110: a dotted row's speaker says the row (Lang.speak, the card's one voice path: free, never a hint, never a mark on a word)
+  const sayRow = (r) => () => Lang.speak(r.line);
+  const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false, say: sayRow(r) });
   /*
    * Sprint 11 (B-cook, task 2): a people order's row is the shared word card's row (js/shared/word-card.js through
    * OrderCard's rowEl): the item's picture (its own shelf art, drawn small: a copy at the row's size, as rowPic's), its
@@ -1903,7 +1913,7 @@
       return 1;
     }
   };
-  UI.wordOf = function (r, { size = 96 } = {}) {
+  UI.wordOf = function (r, { size = 96, written = false } = {}) {
     const W = global.WordCard;
     if (!W || !r || r.head) return null;
     // (a sidebar too short for every card, G1's second step and on: the rows go back to the plain one-line rows, so the
@@ -1911,14 +1921,15 @@
     if (mission && (mission.compact || 0) >= 2 && size < 200) return null;
     const id = wcWordId(r);
     const src = wcPicSrc(id);
-    const hidden = rowHidden(r) && dotsOk();
+    // (written: the word said now, big, as the order first comes: always written in Kutchi, SH-110)
+    const hidden = !written && rowHidden(r) && dotsOk();
     const base = W.slots(wcStage(id), { placeholder: !!r.rec });
     const pic = src ? thumbOf(Cook.v(src), size) : null;
     return {
       word: {
         id,
         // (one span: the slot lays its children out as flex items, which would drop the spaces between the words)
-        kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), rowHide(r)))}</span>` },
+        kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), written ? () => false : rowHide(r)))}</span>` },
         english: r.line.en || "",
         rec: !!r.rec,
         // (the big card said now: its own picture while the small copy is still being made)
@@ -1987,7 +1998,7 @@
             // SH-53 (Zafar, 21 Oct: yes): the kind's row ("trae samosa") over one box per samosa, its fillings in it; a box's
             // pieces tick as that samosa is made (filled and left for the next strip: progress, never which spoonful was
             // right, so the counting rule holds); the kind's row ticks only when all of them are made (SAM-24: closeItem)
-            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: !!s.head.done, key: s.head, src: [] });
+            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: !!s.head.done, key: s.head, src: [], say: sayRow(s.head) });
             for (let u = 0; u < n; u++) {
               const made = !!s.head.done || u < s.head.made;
               items.push({ label: null, count: 1, parts: parts.map((p) => Object.assign({}, p, { done: made || p.done, next: false })), ordered: false, group: true, done: made, src: [] });
@@ -1995,7 +2006,7 @@
             rowsShown.push(s.head, ...flat.map((x) => x.r));
             return;
           }
-          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true });
+          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true, say: sayRow(s.head) });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
@@ -2012,7 +2023,7 @@
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
-            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, wrong: !!r.wrong, key: r, src: ps ? src(ps) : [] });
+            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, wrong: !!r.wrong, key: r, src: ps ? src(ps) : [], say: sayRow(r) });
             rowsShown.push(r);
             // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
             // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
@@ -2023,7 +2034,7 @@
             else if (mixes.length === 1 && mixes[0].seq) {
               // contract-30 (SH-99; s08 w3B): the same mix several times is said with its number ("ba lakri mixed"), so the
               // number is written too: the kind's own row over its boxes (one is the bare item: Zafar, 19 Oct, no row for one)
-              if ((r.qty || 1) > 1) items.push({ label: rowText(text6(fullLine(r), rowHide(r))), count: 1, parts: [], ordered: false, done: !!r.done, wrong: !!r.wrong, key: r, src: [] });
+              if ((r.qty || 1) > 1) items.push({ label: rowText(text6(fullLine(r), rowHide(r))), count: 1, parts: [], ordered: false, done: !!r.done, wrong: !!r.wrong, key: r, src: [], say: sayRow(r) });
               for (let u = 0; u < (r.qty || 1); u++) {
                 const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
                 const unit = !!(r.units && r.units[u]) || !!r.done;
@@ -2113,7 +2124,13 @@
       return e;
     });
     const closed = mission.closed || null;
-    const cards = orderCards();
+    writtenCard = big; // SH-110: the pop-up writes the order (the sidebar's card may dot it)
+    let cards;
+    try {
+      cards = orderCards();
+    } finally {
+      writtenCard = false;
+    }
     const idle = big ? new Set() : idlePeople(cards);
     const minis = big ? new Set() : miniPeople(cards);
     // CK-40 (R4, contract-20: one card and one face per person): a person who orders two dishes (day 6: the cousin's
@@ -2127,7 +2144,8 @@
       // peek: the order is to be remembered) is the shared closed big card there (js/shared/order-card.js big + closed:
       // face, headline, one row of dots; the order is heard in full, never written; non-negotiable 6, as the clinic).
       // A phase fold (a card you can't act on now) is still drawn open in the pop-up
-      const phase = !!closed && (!big || !!closed.peek) && (!closed.who || closed.who === c.who);
+      // SH-110: a card closed for memory (closed.peek) is drawn open, dotted, each dotted row with its speaker; the pop-up never closed
+      const phase = !!closed && !big && !memoryClosed(closed) && (!closed.who || closed.who === c.who);
       const el = OC.card(lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),

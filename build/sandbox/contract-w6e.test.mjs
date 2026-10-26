@@ -31,20 +31,22 @@ const dayCard = (level, closed) => sorted([stage(T, ST), life(T + 10, "stage-sta
   C(T + 600, "rows", { list: [{ id: "r1", key: "k", text: "Muke bhar", done: false, en: false, no: false }] }),
   C(T + 1000, "input", { x: 400, y: 300, on: "canvas", next: false, btn: null, popup: false, side: false, play: true })]);
 
-test("contract-35: a day flow's L4 order under an L1 label: the closed card is right (the order's own level), not a break", () => {
-  assert.equal(of(run(page("cook:day3", dayCard(0, 1))), "contract-35").length, 1, "red: the label's L1 wants the card open");
-  assert.equal(of(run(page("cook:day3", dayCard(4, 1))), "contract-35").length, 0, "green: the order-level note says L4");
+// SH-110 (Zafar, 26 Oct): no level folds the card any more; L4 is L3's dotted card (each dotted row with its speaker, contract-40)
+const dotted = (level, closed) => { const tl = dayCard(level, closed); tl.find((e) => e.k === "rows").list[0].text = "Muke •••"; return tl; };
+test("contract-35: a day flow's L4 order under an L1 label: its dotted card is right (the order's own level), not a break", () => {
+  assert.equal(of(run(page("cook:day3", dotted(0, 0))), "contract-35").length, 1, "red: the label's L1 wants every word written");
+  assert.equal(of(run(page("cook:day3", dotted(4, 0))), "contract-35").length, 0, "green: the order-level note says L4");
 });
 
-test("contract-35: an open card at the order's own L4 is the break, and it names L4", () => {
-  const b = of(run(page("cook:day6", dayCard(4, 0))), "contract-35");
+test("contract-35: a folded card at the order's own L4 is the break (SH-110: never a fully blanked card), and it names L4", () => {
+  const b = of(run(page("cook:day6", dayCard(4, 1))), "contract-35");
   assert.equal(b.length, 1);
   assert.match(b[0].measured, /at L4/);
   assert.equal(b[0].level, 4);
 });
 
 test("contract-35: #side's data-level (the side sample's lv) is read when no note was logged", () => {
-  const tl = dayCard(0, 1);
+  const tl = dotted(0, 0);
   tl.find((e) => e.k === "side").lv = "4";
   assert.equal(of(run(page("cook:day3", tl)), "contract-35").length, 0);
   assert.equal(realLevel(tl, T + 900, 1), 4);

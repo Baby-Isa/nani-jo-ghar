@@ -32,6 +32,9 @@
  *     done?: bool }                               default: every item done
  *
  *   `key` is anything the host wants handed back with the element drawn for it (read-along).
+ *   A part's (or item's) `say(btn)` and `blank` (SH-110, Zafar 26 Oct: never a memory test): a row whose words are blanked
+ *   (`blank`, or a dotted word in its label: Lang.html's .dots) starts with a clear speaker (.oc-spk) that calls say(): the
+ *   word heard as often as tapped, free (the host's own voice path; never a hint, never a mark on the word).
  *   A part's (or item's) `word` and `wordOpts` (Sprint 11): the row is drawn as the shared word card's row
  *   (WordCard.row(word, wordOpts), js/shared/word-card.js: picture, speaker, Kutchi, English by the word's stage), inside
  *   the order card's own row frame and tick; `label` is then unused. Without them (or without the word card) as before.
@@ -199,6 +202,34 @@
     (document.head || document.body).appendChild(st);
   }
 
+  /*
+   * SH-110 (Zafar, 26 Oct: "each item should have a clear speaker button, probably at the beginning to the left of it, so you can
+   * easily just play each item and just hear what that word is ... and that shouldn't penalise you"): a blanked row's first thing
+   * is its speaker. It plays the row's word through the host's own voice path (node.say: Cook's Lang.speak, the clinic's
+   * Kit.Voice), as often as it is tapped, and is never a hint, never a mark on the word. A word row (WordCard.row) has its own
+   * speaker already: that one moves to the row's start, so the row keeps one speaker.
+   */
+  OC.SPK = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+  function speakerFirst(r, node) {
+    r.classList.add("oc-blank");
+    let b = r.querySelector(".wc-spk");
+    if (!b) {
+      if (typeof node.say !== "function") return; // (no voice for this row: contract-40 reports a blanked row with no speaker)
+      b = el("button", "oc-spk", OC.SPK);
+      b.type = "button";
+      b.setAttribute("aria-label", "Hear it");
+      b.addEventListener("click", (ev) => {
+        ev.stopPropagation(); // never a tap on the card (a peek, a fold)
+        b.classList.add("on");
+        Promise.resolve()
+          .then(() => node.say(b))
+          .catch(() => {})
+          .then(() => b.classList.remove("on"));
+      });
+    } else b.classList.add("oc-spk");
+    r.insertBefore(b, r.firstChild);
+  }
+
   function rowEl(node, cls, opts) {
     // Sprint 11 (B-cook; rule 8, one card everywhere): a row that carries its word (node.word, node.wordOpts: the shared
     // word card's word and options, js/shared/word-card.js) IS the word card's row: picture, speaker, Kutchi, English, faded
@@ -214,6 +245,8 @@
       if (k) k.classList.add("oc-t");
       r.insertAdjacentHTML("beforeend", tick(node.done && !node.wrong));
     } else r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done && !node.wrong)}`;
+    // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): a row whose words are blanked (dotted) starts with a clear speaker
+    if (!node.done && (node.blank || r.querySelector(".dots"))) speakerFirst(r, node);
     const id = keyId(node.key);
     if (id != null) r.dataset.key = id;
     if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);

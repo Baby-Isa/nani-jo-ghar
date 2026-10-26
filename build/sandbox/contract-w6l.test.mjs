@@ -43,12 +43,13 @@ test("contract-3: a clip belongs to the line its turn said (by id), not to an ea
 const card = (t, n, closed, peek = 0) => C(t, "side", { n, rows: n, done: 0, closed, peek, dots: 0, words: [] });
 const rows = (t, list) => C(t, "rows", { list: list.map((text, i) => ({ id: `r${i}`, key: "k", text, done: false, en: false, no: false })) });
 const firstTap = (t) => C(t, "input", { x: 400, y: 300, on: "canvas", next: false, btn: null, popup: false, side: false, play: true });
-const l4 = (flow, n, closed) => sorted([stage(T, "cook:station1:" + flow.split(":")[1]), life(T, "stage-start", "cook:station"), life(T + 10, "order-level", "", { level: 4 }), card(T + 500, n, closed), rows(T + 600, ["Muke dhania"]), firstTap(T + 1000)]);
+const l4 = (flow, n, closed) => sorted([stage(T, "cook:station1:" + flow.split(":")[1]), life(T, "stage-start", "cook:station"), life(T + 10, "order-level", "", { level: 4 }), card(T + 500, n, closed), rows(T + 600, ["Muke •••"]), firstTap(T + 1000)]);
 
-test("contract-35: at L4 the daal's chop card (Nani's, with the other items dotted so the child sees there are three) may stay open; another station's open card is still a break", () => {
-  assert.equal(of(run(page("cook:daar@L4", l4("cook:daar", 2, 1))), "contract-35").length, 0, "green: the order card folded, the chop card open");
-  assert.equal(of(run(page("cook:chai-tray@L4", l4("cook:chai-tray", 2, 1))), "contract-35").length, 1, "red: chai's second card open at L4");
-  assert.equal(of(run(page("cook:daar@L4", l4("cook:daar", 2, 0))), "contract-35").length, 1, "red: at L4 even the daal's order card must be folded");
+// SH-110 (Zafar, 26 Oct: "we can't just have fully blanked out order cards on the left when the game starts"): L4 folds no card
+test("contract-35: at L4 every card is open (SH-110); a second card folded for its phase may stay so, every card folded is a break", () => {
+  assert.equal(of(run(page("cook:daar@L4", l4("cook:daar", 2, 0))), "contract-35").length, 0, "green: the order card and the chop card open");
+  assert.equal(of(run(page("cook:chai-tray@L4", l4("cook:chai-tray", 2, 1))), "contract-35").length, 0, "green: one card folded for its phase, one open");
+  assert.equal(of(run(page("cook:chai-tray@L4", l4("cook:chai-tray", 2, 2))), "contract-35").length, 1, "red: every card folded at L4");
 });
 
 test("contract-35: the rows a #hint player paid to reveal (the bulb, a peek) are not the card at rest", () => {
