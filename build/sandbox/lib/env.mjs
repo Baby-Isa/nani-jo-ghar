@@ -32,7 +32,7 @@ export const SIZES = {
   "390x844": { width: 390, height: 844, label: "phone upright (the rotate card)", touch: true, upright: true },
 };
 // Rapid prototype (Zafar, 26 Oct): every flow runs at two sizes, his laptop (1280x665, measured in his Chrome) and his Z Flip 5
-// phone; the tablet is close enough to the laptop. Every size (STORE_SIZES) before a publish.
+// phone; the tablet is close enough to the laptop. Every size (STORE_SIZES) before the app stores.
 // The full set (STORE_SIZES, `run.mjs --every-size`) comes back before the app stores. The upright phone is only for the rotate card.
 export const ALL_SIZES = ["1280x665", "915x412"];
 export const STORE_SIZES = ["1280x665", "844x390", "800x360", "915x412", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024", "1480x924"];
