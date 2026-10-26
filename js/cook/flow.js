@@ -996,7 +996,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       document.body.appendChild(el);
       servedCards.push(el);
       // its place at the top left of the stage, then in the left bar (over the order card, stacked)
-      const at = { x: gap[0] + 4 + i * (big + 12), y: sr.top + 16 };
+      // (the top left where it fits; in a gap past the people, at its far edge, clear of the customer's bubble by their head)
+      const x0 = gap[0] <= sr.left + 12 ? gap[0] + 4 : gap[1] - 4 - n * big - (n - 1) * 12;
+      const at = { x: x0 + i * (big + 12), y: sr.top + 16 };
       return { el, stamp, at, i };
     });
     const place = (c, x, y, k, o, ms) => {
@@ -1015,10 +1017,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await Promise.all([S().talk(who, said, { after: "happy" }), Cook.wait(1400)]);
     // 2. it slides into the left bar, under their order card
     Cook.servedMoment.phase = "slide";
-    // under their order card, never over its words (the judge, 26 Oct), and clear of the bar's buttons at its foot
+    // under their order card, never over its words (the judge, 26 Oct), and clear of the bar's buttons at its foot (the ? and
+    // home, in its lowest 40%)
     const sb = side ? side.getBoundingClientRect() : { left: 12, top: sr.top + 12, width: 200, bottom: sr.bottom - 12 };
     const mr = mission ? mission.getBoundingClientRect() : null;
-    const foot = [...document.querySelectorAll(".njg-side button, .njg-side a")].map((b) => b.getBoundingClientRect()).filter((r) => r.height > 0 && r.top > (mr ? mr.bottom : sb.top)).reduce((m, r) => Math.min(m, r.top), sb.bottom);
+    const foot = [...document.querySelectorAll(".njg-side button, .njg-side a")].map((b) => b.getBoundingClientRect()).filter((r) => r.height > 0 && r.top > (mr ? mr.bottom : sb.top) && r.top > sb.top + sb.height * 0.6).reduce((m, r) => Math.min(m, r.top), sb.bottom);
     const tr = { left: mr ? mr.left : sb.left + 6, top: (mr ? mr.bottom : sb.top) + 8, width: mr ? mr.width : sb.width - 12 };
     const cardH = Math.max(...cards.map((c) => c.el.offsetHeight)) || big * 1.12;
     const k = Math.max(0.2, Math.min(1, (tr.width - 8) / big, (foot - 8 - tr.top - (cards.length - 1) * 14) / cardH));

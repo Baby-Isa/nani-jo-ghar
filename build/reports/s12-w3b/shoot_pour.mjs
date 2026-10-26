@@ -95,7 +95,7 @@ try {
     }
   })();
   try {
-    await P.play(() => page.evaluate("(() => { if (window.__orderDone) return true; const b = document.querySelector('.njg-results #lab-list, .njg-results'); return !!b && b.offsetParent !== null && (!!document.querySelector('.njg-results #lab-list') || !window.Cook.servedMoment && document.querySelectorAll('.njg-served-card').length === 0 && window.__sawServed); })()"), { timeout: 240000 });
+    await P.play(() => page.evaluate("(() => { if (window.__orderDone) return true; const b = document.querySelector('.njg-results #lab-list'); return (!!b && b.offsetParent !== null) || (!!window.__sawServed && !window.Cook.servedMoment && document.querySelectorAll('.njg-served-card').length === 0 && !!document.querySelector('.njg-results')); })()"), { timeout: 240000 });
   } finally {
     done = true;
     await watcher;
