@@ -38,7 +38,7 @@ export function callerOf(stack) {
 export function utterances(utts) {
   const by = new Map();
   for (const e of utts || []) {
-    if (!e || e.type !== "utt" || e.ev === "cancel") continue;
+    if (!e || e.type !== "utt" || !["speak", "start", "end", "cut", "dropped"].includes(e.ev)) continue;
     const k = `${e.load}|${e.uid}`;
     if (!by.has(k)) by.set(k, { uid: e.uid, pid: e.pid, load: e.load, page: e.page, text: e.text, speak: null, start: null, end: null, outcome: "pending", by: null });
     const u = by.get(k);

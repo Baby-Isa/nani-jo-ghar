@@ -645,7 +645,7 @@ export class EvidenceProbe {
           const o = voiceOrder(h.rows[e.raw], spoken.map((l) => l.text));
           put({ ok: o.ok, why: `${o.why} (rows: ${h.rows[e.raw].map((x) => x.replace(/\s+/g, " ").slice(0, 30)).join(" | ")})` });
         } else if (e.kind === "movesOn") put(movesOn(tl, e.min, e.max, s.hits.length ? T0 + s.hits[0].t - 50 : 0));
-        else if (e.kind === "heardWhole") put(this.spec.dv ? heardWhole(Contract.voice(tl, { root }), U, timesOf(e.moment), e.ms, T0) : { ok: null, why: "heardWhole needs the device voice model (an utter capture)" });
+        else if (e.kind === "heardWhole") put(this.spec.dv ? heardWhole(Contract.voice(tl, { root }), U, timesOf(e.moment), e.ms, T0, this.utts) : { ok: null, why: "heardWhole needs the device voice model (an utter capture)" });
         else if (e.kind === "silentAfter") put(silentAfter(plays, timesOf(e.moment), 150, [...timesOf("life:stage-start"), ...timesOf("life:request")]));
         else if (e.kind === "times") { const n = Object.entries(this.counts).filter(([k]) => momentMatches(e.moment, k)).reduce((a, [, v]) => a + v, 0); put({ ok: cmp(n, e.op, e.n), why: `${e.moment} came ${n} times` }); }
         else if (e.kind === "gapMs") { const g = gapMs(this.seen, e.a, e.b, momentMatches); put(g.ms == null ? { ok: null, why: g.why } : { ok: cmp(g.ms, e.op, e.n), why: g.why }); }
@@ -694,7 +694,9 @@ function partsOf(l, utts) {
   });
 }
 // heardWhole (S13-V, LNG-16): after each moment, the first line said starts within ms and every part of it is heard whole
-export function heardWhole(v, utts, times, ms = 1000, T0 = 0) {
+export function heardWhole(v, utts, times, ms = 1000, T0 = 0, raw = []) {
+  // the child's taps through the card (the request pop-up's stop, logged by the device voice model's cancel)
+  const taps = (raw || []).filter((e) => e && e.type === "utt" && e.ev === "cancel" && /request-popup/.test(e.by || "")).map((e) => e.t);
   if (!times.length) return { ok: null, why: "the moment never came" };
   const lines = v.lines.filter((l) => (l.text || "").trim()).sort((a, b) => a.t0 - b.t0);
   const S = (t) => ((t - T0) / 1000).toFixed(2);
@@ -706,7 +708,7 @@ export function heardWhole(v, utts, times, ms = 1000, T0 = 0) {
     const late = l.t0 - t;
     const parts = partsOf(l, utts);
     // a part cut or dropped by the child's own tap through the card (the request pop-up's stop, CLN-109) is the design, not a loss
-    const tapped = (x) => x.u && /request-popup/.test(x.u.by || "");
+    const tapped = (x) => (x.u ? /request-popup/.test(x.u.by || "") : x.p.end != null && taps.some((t) => Math.abs(t - x.p.end) <= 80));
     const lost = parts.filter((x) => x.outcome !== "heard" && !tapped(x));
     const why = [];
     if (late > ms) why.push(`starts ${late} ms after it`);

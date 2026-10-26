@@ -16192,7 +16192,7 @@
     "strip:body:24x200"
    ],
    "expect": null,
-   "note": "on the slow line (1600 kbit/s, 150 ms; the whole page throttled), the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the chop station's first 4.6 s at 200 ms slots, each frame's edge green when the station is fully drawn (view up, faded in, nothing loading, no missing picture), orange when not: one smooth load, no zoomed-in board that goes away, no late sidebar"
+   "note": "on the slow line (Lighthouse mobile: 1600 kbit/s, 150 ms, the processor 4x slower, from the player's first state on), the order card tapped through 0.2 s into its first line (the Check: click through the card after 1 s), from that tap: the chop station's first 4.6 s at 200 ms slots, each frame's edge green when the station is fully drawn (view up, faded in, nothing loading, no missing picture), orange when not: one smooth load, no zoomed-in board that goes away, no late sidebar"
   },
   {
    "flow": "cook:samosa",
