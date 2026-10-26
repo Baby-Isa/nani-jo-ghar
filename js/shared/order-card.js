@@ -282,7 +282,8 @@
     if (it.group) return groupEl(it, opts);
     // SEK-03, SEK-17 (S05-C3): a dish's own ordered steps (no row of their own: chaat's layers, the clinic's instruction
     // list) are shown as the little skewer in a plain group box, as a skewer is, never a bracket line down the side
-    if (!it.row && it.ordered && it.parts.filter((p) => !p.no).length > 1) return groupEl(it, opts);
+    // (S13-B1: an item marked steps, the clinic's doctor's steps, keeps its rows, the sequence line joining them: one card anatomy)
+    if (!it.row && it.ordered && !it.steps && it.parts.filter((p) => !p.no).length > 1) return groupEl(it, opts);
     // SEK-03 (S05-C3): a kind of several (it.box: samosa's "trae samosa" and its fillings) sits in a plain group box, its
     // count row kept (SAM-11: the number is heard and read there)
     const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.box ? "oc-box" : "", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
@@ -541,6 +542,20 @@
       head.appendChild(t);
     }
     head.insertAdjacentHTML("beforeend", `<span class="oc-done-tk">${OC.CHECK}</span>`);
+    // SH-110 (the judge, 26 Oct: a person folded to their face on a short sidebar showed "avatars with a small speaker under them, not
+    // the left speaker"): a card drawn as its face alone (opts.mini, G1's second step) starts with the same clear speaker as a
+    // blanked row, which says that person's order (opts.onFace: the face's own replay)
+    if (opts.mini && !opts.big) {
+      c.classList.add("oc-mini");
+      const s = el("button", "oc-spk", OC.SPK);
+      s.type = "button";
+      s.setAttribute("aria-label", "Hear it");
+      s.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        if (opts.onFace) opts.onFace(ev, c);
+      });
+      head.insertBefore(s, head.firstChild);
+    }
     // D12 (1 Oct, decision 27): on a closed card a small eye says "tap to look" (a look has its own badge)
     // decision 57 (CLN-91), decision 89 (SH-16): on a spoken card the peek is a small bulb with no counter, not the eye.
     // A closed order is a spoken one (rules F9, E12: from level 3 nothing is written, the order is heard), so the bulb is

@@ -1317,6 +1317,11 @@ function check36(r, tl, segs, v, add) {
   opens.forEach((o, i) => {
     const s = segAt(segs, o.t);
     if (!s || !isPlayStage(s.key)) return;
+    // SH-133 (S13-B1): the same step logged open again with no other step opened in between (the help's hint rungs armed again
+    // for it, js/shared/onboard.js Onboard.stuck, after a card row ticked) is that step still open, not a new opening: it was
+    // judged at its first (its call, or the skip logged then)
+    const prev = opens[i - 1];
+    if (prev && prev.reason === o.reason && segAt(segs, prev.t) === s) return;
     const next = opens[i + 1];
     const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
     // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)

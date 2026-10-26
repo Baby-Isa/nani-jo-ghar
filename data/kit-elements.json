@@ -91,7 +91,8 @@
         },
         "first": {
           "at": "visible:.njg-rq-card .wc-card",
-          "sel": ".njg-rq-card .wc-card"
+          "sel": ".njg-rq-card .wc-card",
+          "tries": 6
         },
         "day": {
           "at": "visible:.wc-card"
@@ -100,7 +101,8 @@
           "at": "visible:.njg-rq-card .wc-card",
           "sel": ".njg-rq-card .wc-card",
           "flow": "cook:chai-tray#speed1",
-          "profile": "seen"
+          "profile": "seen",
+          "tries": 6
         },
         "clinic": {
           "at": "visible:.wc-card"
@@ -108,7 +110,8 @@
         "lab": {
           "at": "visible:.njg-rq-card .wc-card",
           "sel": ".njg-rq-card .wc-card",
-          "flow": "lab:cook/chai-tray#speed1"
+          "flow": "lab:cook/chai-tray#speed1",
+          "tries": 6
         }
       }
     },
@@ -179,7 +182,8 @@
         },
         "clinic": {
           "at": "life:popup-open",
-          "delay": 300
+          "delay": 300,
+          "flow": "clinic:waiting"
         },
         "lab": {
           "at": "life:popup-open",

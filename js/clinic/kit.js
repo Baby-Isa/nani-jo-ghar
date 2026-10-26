@@ -849,7 +849,9 @@
       const g = r.seq || (this.isOrdered ? "__all" : null);
       if (g) {
         if (!groups[g]) {
-          groups[g] = { label: null, ordered: true, parts: [] };
+          // (S13-B1, the judge: one card anatomy: the doctor's ordered steps are rows like Cook's, joined by the sequence line
+          // (CLN-113's order is the rows' own words and that line), never the little skewer's group box)
+          groups[g] = { label: null, ordered: true, steps: true, parts: [] };
           items.push(groups[g]);
         }
         if (r.head) {

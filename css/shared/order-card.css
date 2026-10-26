@@ -308,9 +308,11 @@
 .oc-card .oc-row.oc-blank { padding-left: var(--njg-s2); }
 .oc-card .oc-spk {
   --oc-spk-vis: calc(var(--oc-part-h) * 0.8); --oc-spk-hit: max(var(--oc-spk-vis), var(--njg-tap));
+  /* (its tap area may overlap the next row's, never reach that speaker's middle: under two rows' pitch tall; the covered check) */
+  --oc-spk-hit-h: min(var(--oc-spk-hit), calc(2 * var(--oc-part-h) - var(--njg-s2)));
   position: relative; z-index: 1; flex: none; order: -2; box-sizing: border-box;
-  width: var(--oc-spk-hit); height: var(--oc-spk-hit); padding: 0; border: 0; border-radius: var(--njg-round);
-  margin-block: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2); margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2);
+  width: var(--oc-spk-hit); height: var(--oc-spk-hit-h); padding: 0; border: 0; border-radius: var(--njg-round);
+  margin-block: calc((var(--oc-spk-vis) - var(--oc-spk-hit-h)) / 2); margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2);
   display: grid; place-items: center; background: none; box-shadow: none; color: var(--oc-ink); cursor: pointer; touch-action: manipulation;
 }
 .oc-card .oc-spk::before {
@@ -562,3 +564,15 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 /* CK-38: a card folded to pills on a short sidebar (ui.js checkFit) packs an upright skewer's pieces closer (sekelo L3's
    two upright skewers, opened by a peek at 800x360, ran 9 px past the sidebar) */
 .oc-card.oc-pills .oc-item.oc-group.oc-stack .oc-group-parts { gap: var(--njg-line-2); }
+
+/* S13-B1 (SH-110, the judge: a card with blanked rows keeps one row a line, never pills): on a sidebar still too short for it
+   (Cook's G1 third step, js/cook/ui.js checkFit), its rows and the gaps between them give back a little height instead */
+:root .oc-card.oc-tight:not(.oc-big) { --oc-part-h: calc(var(--njg-part-h) - var(--njg-s1)); --oc-gap: var(--njg-line-2); }
+:root .oc-card.oc-tight:not(.oc-big) .oc-items { gap: var(--njg-line-2); margin-top: var(--njg-s1); }
+:root .oc-card.oc-tight:not(.oc-big) .oc-row .oc-t { padding-block: 0; }
+/* (a card that is its face alone, at the screen's edge: its speaker's tap area moves a step in, never past the screen; the
+   same width, so the face beside it keeps its place) */
+.oc-card.oc-mini .oc-spk {
+  --oc-spk-hit-h: var(--oc-spk-hit); /* (no row under it to reach into: a full tap) */
+  margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 + var(--njg-s2)) calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 - var(--njg-s2));
+}

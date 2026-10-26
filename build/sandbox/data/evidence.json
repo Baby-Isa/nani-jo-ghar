@@ -20050,5 +20050,49 @@
    ],
    "note": "the page turn from the art run's four pictures (pg1-pg4, in order) over the pages"
   }
+ ],
+ "SH-132": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "level": 3,
+   "capture": [
+    "contract:37"
+   ],
+   "note": "chai at L3: the decoys the level table wants (3), whatever the cups ask for (the spice row narrows to fit)"
+  }
+ ],
+ "SH-133": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "sizes": [
+    "1280x665",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "level": 4,
+   "capture": [
+    "contract:36"
+   ],
+   "note": "chai at L4: every step Nani's stepper opens is called once (or its skip logged); the help rungs armed again for an open step are not a new opening"
+  }
  ]
 }
