@@ -164,7 +164,7 @@
       scr.card.onReplay = () => {
         if (!scr.card.rows.length && !scr.card.titleText && scr.naniLine) Kit.Voice.say(scr.naniLine, { who: "guide", noBubble: true });
       };
-      Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => cardEl.querySelector(".cl-card-face") || bulbRow;
+      Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => cardEl.querySelector(".oc-face") || bulbRow;
       scr.closeHelp = () => helpPop.classList.add("hidden");
       scr.openHelp = () => {
         helpPop.innerHTML = "";

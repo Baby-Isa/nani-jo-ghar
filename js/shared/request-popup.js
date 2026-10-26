@@ -38,7 +38,10 @@
  *
  *   const r = await RequestPopup.open({
  *     host,          // the play area the veil covers (made by the pop-up). Or:
- *     el,            // an existing pop-up (Cook's #intro): shown (class "hidden" off) and hidden again
+ *     along,         // with host: see-through (no tint, nothing under it hidden): the word card said now big at the top left
+ *                    //   (Cook's people orders, the clinic's heal start; WordCard.pop draws it)
+ *     el,            // an existing pop-up of a parked page's own (Find it's #intro): shown (class "hidden" off) and hidden
+ *                    //   again. Every live game draws the kit's (S13-B1: contract-41)
  *     card,          // with el: the element that flies into the sidebar (default el.firstElementChild)
  *     build(body),   // with host: draw the card into the pop-up's card box (OrderCard.card(data, {big: true}) or a
  *                    //   Kit.Card made with {big: true})
@@ -67,7 +70,7 @@
  *
  * Plain <script>: window.Lifecycle, window.RequestPopup, window.VoiceStop (and Shared.lifecycle, Shared.requestPopup,
  * Shared.voiceStop). Styles:
- * css/shared/order-card.css ("the request pop-up"), the same look as Cook's #intro.
+ * css/shared/order-card.css ("the request pop-up"): one look in Cook, the clinic and the day (S13-B1).
  */
 (function (root) {
   "use strict";
@@ -185,6 +188,29 @@
     return () => mo.disconnect();
   }
 
+  /**
+   * S13-B1 (one order pop-up for every game; Cook's #intro went): the pop-up lays out what the host drew, never a host's class.
+   * Several people's cards (.oc-card[data-who], CK-40's .oc-person) sit side by side, one column each, two by two at four
+   * (decision 53, CHAI-15); one long order (more than 8 rows) takes two columns. Again whenever the host draws it again.
+   * Returns the undo (stops watching).
+   */
+  function layout(cardEl) {
+    const body = (cardEl && cardEl.querySelector(".njg-rq-body")) || cardEl;
+    if (!body) return () => {};
+    const lay = () => {
+      const people = body.querySelectorAll(":scope > .oc-card[data-who], :scope > .oc-person").length;
+      cardEl.classList.toggle("njg-rq-crowd", people >= 2);
+      cardEl.classList.toggle("njg-rq-c4", people >= 4);
+      cardEl.style.setProperty("--njg-rq-cols", String(people >= 4 ? 2 : Math.max(1, people)));
+      cardEl.classList.toggle("njg-rq-wide", people < 2 && body.querySelectorAll(".oc-row").length > 8);
+    };
+    lay();
+    if (!root.MutationObserver) return () => {};
+    const mo = new root.MutationObserver(lay);
+    mo.observe(body, { childList: true });
+    return () => mo.disconnect();
+  }
+
   function open(opts = {}) {
     if (current) current.fold(false);
     serialN++;
@@ -192,10 +218,13 @@
     const fast = !!opts.fast;
     let veil;
     let cardEl;
+    let unlayout = () => {};
     const made = !opts.el;
     if (made) {
       veil = document.createElement("div");
-      veil.className = "njg-rq-veil";
+      // along (S13-B1: Cook's people orders, the clinic's heal start): see-through, no veil's tint, nothing over a face; the
+      // word card said now big at the top left of the play area (WordCard.pop), flying into its row as it lands
+      veil.className = `njg-rq-veil${opts.along ? " njg-rq-along" : ""}`;
       cardEl = document.createElement("div");
       cardEl.className = "njg-rq-card";
       veil.appendChild(cardEl);
@@ -205,6 +234,7 @@
       cardEl.appendChild(body);
       (opts.host || document.body).appendChild(veil);
       if (opts.build) opts.build(body);
+      unlayout = layout(cardEl);
     } else {
       veil = opts.el;
       cardEl = opts.card || veil.firstElementChild;
@@ -222,6 +252,7 @@
           if (over) return;
           over = true;
           unclose();
+          unlayout();
           veil.removeEventListener("click", onTap);
           if (current === me) current = null;
           veil.classList.add("going");
@@ -502,7 +533,9 @@
       note("request", opts.reason || "");
       if (opts.level != null) log[log.length - 1].level = Number(opts.level);
       asks = ends;
-      const host = opts.host || null;
+      // (along: see-through, the person saying it stays in view with their bubble, so nothing under it is hidden; a tap
+      // anywhere on the veil still lands it all at once)
+      const host = opts.along ? null : opts.host || null;
       const held = [];
       if (host && host.classList) {
         host.__njgRq = (host.__njgRq || 0) + 1;

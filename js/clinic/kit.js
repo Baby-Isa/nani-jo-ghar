@@ -179,7 +179,7 @@
     const talk = Kit.doctorFace("talk");
     const rest = Kit.doctorFace("neutral");
     if (!talk || talk === rest) return null;
-    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .cl-card-face .cl-face.doctor img")).filter((i) => i.isConnected);
+    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .oc-face .cl-face.doctor img")).filter((i) => i.isConnected);
     // decoded once, so a flap never shows a blank face while the picture loads
     if (!Kit.cardTalk.pre && global.Image) (Kit.cardTalk.pre = new global.Image()).src = talk;
     let open = false;
@@ -773,7 +773,7 @@
    * ordered(on): every row is one ordered job (the heal games' steps, the pharmacy's pela ... ne poi ...)
    * rows sharing a `seq` key are one ordered job too; other rows are plain rows
    * close(on, {onPeek}) the closed card (the call is heard, not read): a tap peeks for 3.5 s and counts a hint
-   * row(id).el is the row's element as drawn now (tests: .cl-row[data-row=id]).
+   * row(id).el is the row's element as drawn now (tests: .oc-row[data-row=id]). The card carries only the kit's classes (S13-B1).
    */
   Kit.Card = function (el, opts = {}) {
     this.el = el;
@@ -799,15 +799,18 @@
   /** A row's label for the order card: the Kutchi (placeholders grey italic) and its English for the bulb. */
   Kit.rowHtml = function (r) {
     const t = document.createElement("span");
-    t.className = "cl-row-text";
+    // S13-B1 (one card markup): the kit's label parts, .oc-k (the Kutchi) and .oc-en (the bulb's English, css/shared/order-card.css);
+    // each Kutchi word is the kit's .word (its colour on the card)
+    t.className = "oc-k";
     Kit.text(r, t);
+    t.querySelectorAll(".ku").forEach((k) => k.classList.add("word"));
     // CLN-76 (E1, G2): a line with no Kutchi yet stays a flagged placeholder under the bulb too (grey italic), never
     // the bulb's dark translation colour: there is nothing to translate. Boing (S06 r2): so does a row only part Kutchi
     // ("[Wipe], ba": its English "Wipe, two" read as a whole translation, with no to-record tag): the same rule as the
     // guide's box (screen.js setGuide: a line with a bracketed placeholder is to record). The tag is the hidden one
     // (data-rec, decision 84); data-bulb-en marks the bulb's English for the tools
     const ph = !r.kutchi || r.placeholder === true || /\[/.test(String(r.kutchi));
-    return `${t.outerHTML}<span class="cl-row-en${ph ? " ph" : ""}" aria-hidden="true" data-bulb-en=""${ph ? ' data-rec="to record"' : ""}>${esc(r.english || "")}</span>`;
+    return `${t.outerHTML}<span class="oc-en${ph ? " njg-ph" : ""}" aria-hidden="true" data-bulb-en=""${ph ? ' data-rec="to record"' : ""}>${esc(r.english || "")}</span>`;
   };
   Kit.Card.prototype.render = function () {
     const card = this;
@@ -875,7 +878,7 @@
         if (node.key == null) return;
         const r = card.row(node.key);
         if (!r) return;
-        rowEl.classList.add("cl-row");
+        // (S13-B1, one card markup: the row carries only the kit's classes; the clinic finds it by its data-row)
         rowEl.dataset.row = r.id;
         rowEl.classList.toggle("later", !!card.progressive && card.rows.indexOf(r) > card.shown);
         rowEl.classList.toggle("pulse", st.pulse === r.id);
@@ -888,7 +891,7 @@
         const n = st.counts[r.id];
         if (n > 0) {
           const chip = document.createElement("span");
-          chip.className = "cl-row-count";
+          chip.className = "oc-count";
           chip.textContent = Kit.num(n);
           rowEl.insertBefore(chip, rowEl.querySelector(".oc-tk"));
         }
@@ -916,7 +919,7 @@
     if (faceEl) {
       const f = document.createElement("button");
       f.type = "button";
-      f.className = "oc-face face-say cl-card-face";
+      f.className = "oc-face face-say";
       f.setAttribute("aria-label", "Hear it again");
       f.appendChild(faceEl);
       f.insertAdjacentHTML("beforeend", '<span class="say-badge" aria-hidden="true"></span>');
@@ -928,7 +931,7 @@
       const head = c.querySelector(".oc-head");
       head.insertBefore(f, head.firstChild);
     }
-    if (!rows.length && !faceEl && !this.titleText) c.classList.add("cl-empty");
+    if (!rows.length && !faceEl && !this.titleText) c.classList.add("oc-empty");
     // CLN-140 (decision 80): a card that only says the doctor's goal, while he asks on screen in his own bubble (the
     // send-off), is his how-to line, not an order: no request pop-up is owed for it (contract-1)
     if (this.howto && !rows.length) c.dataset.howto = "";
@@ -1081,7 +1084,7 @@
     if (!r) return null;
     this.st.counts[r.id] = n;
     this.render();
-    const chip = r.el && r.el.querySelector(".cl-row-count");
+    const chip = r.el && r.el.querySelector(".oc-count");
     if (chip) chip.classList.add("bump");
     return r.id;
   };

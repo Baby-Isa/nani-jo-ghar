@@ -62,7 +62,9 @@
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
+ *       opts.stamped    the order is served: the card wears the one stamp (OrderCard.stamp)
  *   OrderCard.closeBig(cardEl)       a big card drawn open, closed as {big, closed} draws it (the pop-up from level 3, SH-72)
+ *   OrderCard.stamp(cardEl)          the one served stamp on a card (S13-B1; T20, SH-54), drawn inside it
  *   OrderCard.CHECK                  the small flat gold check (svg)
  *   OrderCard.redo({max})            decision 51 (CK-23), one rule for every game: a wrong item is redone on the spot.
  *       r.wrong(key) -> {tries, action}  action "redo" (empty that item, reopen its row, try again with help) or, at
@@ -576,6 +578,7 @@
       held.appendChild(list);
       c.appendChild(held);
     }
+    if (opts.stamped && !opts.big) OC.stamp(c);
     if (opts.fold && !opts.big && sh.items.length) {
       opts.fold.el = c;
       if (opts.closed && !sh.done) closable(c, opts.fold, opts);
@@ -607,6 +610,20 @@
     body.appendChild(inner);
     c.appendChild(body);
     return c;
+  };
+
+  /**
+   * One stamp (S13-B1; T20, SH-54: the S12 served stamp is the reference): a served card's picture stamp, a gold ring with a
+   * covered dish, tilted, drawn inside the card so nothing clips it; the card keeps the stamp's room at its right (.oc-stamped,
+   * css/shared/order-card.css). OrderCard.card draws it again for opts.stamped. Returns the card.
+   */
+  OC.stamp = function (card) {
+    if (!card || !card.classList || card.querySelector(":scope > .oc-stamp")) return card;
+    card.classList.add("oc-stamped");
+    const s = el("span", "oc-stamp");
+    s.setAttribute("aria-hidden", "true");
+    card.appendChild(s);
+    return card;
   };
 
   /** Several cards into box: [{data, opts}] or data objects (sharing `opts`). */

@@ -65,7 +65,11 @@
 .wc-en .wc-reveal { --wc-vis: calc(var(--njg-t4) * 1.25); }
 .wc-en .wc-reveal::before { border-width: var(--njg-line); }
 
-/* WordCard.pop: the copy in flight, and the row waiting for it */
+/* WordCard.pop: the one entrance of the word said now (S13-B1; was Cook's icWordIn and the clinic's cl-intro-in) */
+.wc.wc-pop { animation: wc-pop .3s cubic-bezier(.2, 1.3, .4, 1); }
+@keyframes wc-pop { from { transform: translateX(-30%) scale(.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .wc.wc-pop { animation: none; } }
+/* WordCard.fly: the copy in flight, and the row waiting for it */
 .wc.wc-away { visibility: hidden; }
 .wc.wc-flying { box-shadow: var(--njg-shadow-lift); }
 .wc.wc-landed { animation: wc-land .45s ease-out; }

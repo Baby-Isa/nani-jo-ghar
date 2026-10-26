@@ -29,8 +29,10 @@
  *             onReveal(slot, el), cls, id }
  *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak() }   cue(): the cue a judged answer carries
  *            ("kutchi" unless the child opened a slot on this card)
- *   WordCard.pop(fromEl, toEl, {fast}) -> Promise   a card flies from the guide box (#guide) into its row (RequestPopup.fly):
- *            toEl is hidden until the flight lands, so the word arrives once
+ *   WordCard.pop(el, word, opts) -> el              the one entrance (S13-B1): a big card of the word said now, made in el (the
+ *            order pop-up's along body), popping in (.wc-pop)
+ *   WordCard.fly(fromEl, toEl, {fast}) -> Promise   a card flies from the big one into its row (RequestPopup.fly): toEl is
+ *            hidden until the flight lands, so the word arrives once (WordCard.pop(fromEl, toEl) is its older name)
  *   WordCard.slots(stage, {placeholder, support}) -> {stage, picture, english, kutchi, speaker: true}   (pure; Node tests)
  *   WordCard.useCss(href)   adds css/shared/word-card.css once (a page that imports this as a module)
  *
@@ -320,7 +322,7 @@
    * of the row starts over `fromEl` and shrinks into `toEl` (RequestPopup.fly, the one fold animation); toEl is hidden
    * until it lands. Resolves when the word is in its place.
    */
-  W.pop = async function (fromEl, toEl, o = {}) {
+  W.fly = async function (fromEl, toEl, o = {}) {
     if (!toEl) return;
     const RP = root.RequestPopup || (root.Lifecycle && { fly: root.Lifecycle.fly });
     const a = fromEl && fromEl.getBoundingClientRect ? fromEl.getBoundingClientRect() : null;
@@ -346,6 +348,18 @@
       toEl.classList.add("wc-landed");
       setTimeout(() => toEl.classList.remove("wc-landed"), 500);
     }
+  };
+  /**
+   * S13-B1 (one entrance; was Cook's icWordIn and the clinic's cl-intro-in): the word said now comes up as a big word card in el
+   * (the order pop-up's along body, js/shared/request-popup.js), popping in from the left (.wc-pop, css/shared/word-card.css).
+   * Returns the card. (Called with two elements it is the fly above, its older name.)
+   */
+  W.pop = function (el, word, o = {}) {
+    if (word && word.nodeType) return W.fly(el, word, o);
+    if (!el) return null;
+    const c = build("card", el, word, o);
+    c.classList.add("wc-pop");
+    return c;
   };
   return W;
 });

@@ -1140,8 +1140,8 @@
         Object.assign(ank.style, { position: "absolute", display: "block", pointerEvents: "none", top: head.style.top, width: head.style.width, height: head.style.height, left: `calc(${head.style.left} + ${head.style.width} * 0.9)` });
         Kit.Voice.speakers.doctor = () => ank;
       }
-      const el = h("div", "cl-intro", stage);
-      const box = h("div", "cl-intro-card", el);
+      // S13-B1 (one order pop-up, one entrance): the kit's see-through pop-up (RequestPopup along) and its word card (WordCard.pop)
+      let box = null;
       let skipped = false;
       const HS = Clinic.HealScene;
       const wordOf = (it) => {
@@ -1158,6 +1158,7 @@
       };
       let shown = null;
       const showCard = (it) => {
+        if (!box) return;
         if (!it.card) {
           box.innerHTML = "";
           shown = null;
@@ -1171,13 +1172,13 @@
         const word = wordOf(it);
         const stg = HS && HS.stageOf ? HS.stageOf(it.card) : 1;
         const sl = WC.slots ? WC.slots(stg, { placeholder: word.rec }) : { english: true, kutchi: true };
-        const c = WC.card(box, word, { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi }, cls: "cl-intro-word" });
-        c.classList.add("in");
+        (WC.pop || WC.card)(box, word, { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi } });
       };
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
-        el,
-        card: box,
+        along: true,
+        host: stage,
+        build: (b) => (box = b),
         target: () => card.el,
         fast: Kit.fast,
         lead: 0,
@@ -1196,7 +1197,7 @@
             }
             if (!skipped) await Kit.wait(Kit.fast ? 20 : 300);
           }
-          box.innerHTML = "";
+          if (box) box.innerHTML = "";
         },
         onFold: () => {
           // he turns to her as the camera goes in, and his bubbles come from his card again once the room has gone
@@ -1213,7 +1214,6 @@
           });
         },
       }).then(() => {
-        el.remove();
         popped = true;
         popAt = Date.now();
       });
