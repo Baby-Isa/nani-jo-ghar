@@ -19,7 +19,12 @@
 /* the item glows and bounces: a canvas thing's soft warm ring (the kit's), an HTML control by its own shape (ob-lit) */
 .njg-onboard .ob-item-glow { fill: none; stroke: var(--njg-focus); stroke-width: 7; animation: ob-item-glow 1.4s ease-in-out infinite; }
 .njg-onboard.between .ob-item-glow, .njg-onboard.between .ob-finger { opacity: 0; }
-.ob-lit { filter: drop-shadow(0 0 var(--njg-s1) var(--njg-focus)) drop-shadow(0 0 var(--njg-s3) var(--njg-focus)); animation: var(--njg-hop-anim); } /* the kit's hop (css/shared/focus.css) */
+/* SH-129 (S13-A2): one glow in every game: the lit control glows with the kit's orange halo (css/shared/focus.css njgGlow: the same
+   pulse and reach as Cook's canvas glow, Motion.glow) and hops; a tile holding its picture (the clinic's tools) glows round the
+   picture, never as a flood of its whole tile */
+.ob-lit { animation: var(--njg-glow-anim), var(--njg-hop-anim); }
+.ob-lit:has(> img) { animation: var(--njg-hop-anim); }
+.ob-lit > img { animation: var(--njg-glow-anim); }
 
 /* SH-119: the one finger (Onboard.finger): its box's top-left is moved so the fingertip lands on the point; it taps in one
    cadence (js/shared/onboard.js Onboard.FINGER) */
@@ -102,7 +107,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .njg-onboard { transition: none; }
-  .njg-onboard .ob-ring, .njg-onboard .ob-item-glow, .ob-lit { animation: none; }
+  .njg-onboard .ob-ring, .njg-onboard .ob-item-glow { animation: none; } /* (.ob-lit: the kit's glow holds still, css/shared/focus.css) */
   .njg-onboard .ob-ghost.pressed { transition: none; }
   .njg-onboard .ob-ghost.on,
   .njg-onboard .ob-ghost.pressed { opacity: 0.95; }

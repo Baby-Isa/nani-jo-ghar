@@ -467,7 +467,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .hs-tool.sel { border-color: var(--njg-cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); }
 .hs-tool.used { opacity: .45; }
 /* SH-53: the next tool's glow is the kit's (css/shared/focus.css: the tick's beat and reach), never a ring of its own */
-.hs-tool.pulse { animation: var(--njg-glow-anim); }
+.hs-tool.pulse > img { animation: var(--njg-glow-anim); } /* SH-129: round its picture, never the whole tile */
 .hs-timer { position: absolute; left: 22%; right: 22%; top: calc(var(--njg-big-face) * 1.3); height: var(--njg-s3); border-radius: var(--njg-s2); background: rgba(255, 255, 255, .7); border: 2px solid #d8c6a8; z-index: 7; overflow: hidden; pointer-events: none; }
 .hs-timer i { position: absolute; left: 0; top: 0; bottom: 0; background: #6bbf8a; transition: width .25s linear; }
 .hs-timer.low i { background: #f0a040; }

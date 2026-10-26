@@ -175,7 +175,7 @@
     ".hs-pic{width:calc(var(--njg-tap) * 2);height:calc(var(--njg-tap) * 2);border-radius:var(--njg-radius);border:6px solid #c8a46e;outline:2px solid #a9824d;background:#fffefb;display:grid;place-items:center;padding:var(--njg-s1);cursor:pointer;box-shadow:var(--njg-shadow)}",
     ".hs-pic img{width:80%;height:80%;object-fit:contain;pointer-events:none}",
     ".hs-pic.picked{border-color:var(--njg-gold)}",
-    ".hs-pic.pulse{animation:njgGlow var(--glow-ms, 1200ms) ease-in-out infinite}", // SH-53: the shared glow (css/shared/focus.css)
+    ".hs-pic.pulse{animation:var(--njg-glow-anim)}", // SH-53, SH-129: the kit's one glow (css/shared/focus.css)
   ].join("\n");
   /** A colour lighter (k > 0) or darker (k < 0): "#c99a74", 0.12 -> a hex. */
   HS.shade = function (hex, k) {

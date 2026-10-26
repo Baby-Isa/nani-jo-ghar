@@ -159,18 +159,17 @@
     ".fv-thing img{object-fit:contain}",
     // CLN-130 (S05-D3): the hint glow follows the thing's own shape (the one focal glow's colour), never a flat yellow
     // rectangle round its button; a thing painted on the room (no picture of its own) glows as a soft round light
-    ".fv-thing.pulse{animation:fv-glow 1s ease-in-out infinite}",
+    ".fv-thing.pulse{animation:var(--njg-glow-anim)}", // SH-129 (S13-A2): the kit's one glow (css/shared/focus.css: its pulse, reach and colour)
     // CLN-57 (s09; the judge: no glow seen on the next thing; SH-53, Zafar 17 Oct: "make it glow even more, kind of extend a
     // little bit further out ... pulsating quite strongly"): wider and never fully out between its beats
-    "@keyframes fv-glow{0%,100%{filter:drop-shadow(0 0 4px var(--njg-focus,#e0a63a))}50%{filter:drop-shadow(0 0 16px var(--njg-focus,#e0a63a)) drop-shadow(0 0 6px var(--njg-focus,#e0a63a))}}",
     ".fv-thing.painted.pulse::after{content:'';position:absolute;inset:-22%;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(224,166,58,.6),rgba(224,166,58,0));animation:fv-soft 1s ease-in-out infinite}",
     "@keyframes fv-soft{0%,100%{opacity:.45}50%{opacity:1}}",
-    "@media (prefers-reduced-motion: reduce){.fv-thing.pulse{animation:none;filter:drop-shadow(0 0 6px var(--njg-focus,#e0a63a))}.fv-thing.painted.pulse::after{animation:none}}",
+    "@media (prefers-reduced-motion: reduce){.fv-thing.painted.pulse::after{animation:none}}",
     ".fv-thing.held,.hs-tool.held{filter:drop-shadow(0 0 6px #2e8b7a)}",
     ".fv-mood{position:absolute;z-index:6;width:clamp(26px,3.2vw,44px);aspect-ratio:1;transform:translate(-20%,-60%);pointer-events:none}",
     ".fv-mood svg{display:none;width:100%;height:100%}",
     ".fv-mood[data-state=hot] .fv-hot,.fv-mood[data-state=cold] .fv-cold{display:block;animation:cl-pop .25s}",
-    ".cl-patient-layer.pulse{animation:fv-glow 1s ease-in-out infinite}", // CLN-130: round her shape, not a box
+    ".cl-patient-layer.pulse{animation:var(--njg-glow-anim)}", // CLN-130: round her shape, not a box (the kit's glow)
     ".fv-thing.gone{visibility:hidden}",
     // FV4, FV5 (CLN-105): a thing that lies on the bed (the hand fan) is tipped back flat, its handle towards us
     ".fv-thing.flip>img,.fv-thing.flip>svg{transform:scaleX(-1)}", // FV5: the heater turned to face her
