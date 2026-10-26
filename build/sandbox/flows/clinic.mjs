@@ -233,6 +233,20 @@ export class ClinicPlayer {
       if (["tap", "act", "point", "say", "belt"].includes(k) && !this.drv.turns.has(`${stage}-${k}`)) { this.drv.turns.add(`${stage}-${k}`); await mark(page, `your-turn-${stage}-${k}`); }
       if (this.hints && ["tap", "act", "point", "belt"].includes(k) && !(await this.page.evaluate(() => !!document.querySelector(".njg-onboard.on")))) await this.hintMoves(stage);
       if (this.mistakes && ["tap", "act", "belt"].includes(k) && (await this.mistakeMoves(stage, e))) continue;
+      // S13-A2: a probe about the grown-ups' "?" (lib/evidence-probe.mjs wantsHelp): the kit's "?" opened once, then put away
+      if (!this.drv.helped && ["tap", "act", "point", "belt"].includes(k)) {
+        this.drv.helped = true;
+        const ev = page.__njgEvidence;
+        if (ev && ev.wantsHelp && ev.wantsHelp() && (await page.$(".cl-dock .njg-gu-btn"))) {
+          await page.click(".cl-dock .njg-gu-btn", { force: true }).catch(() => {});
+          await sleep(300);
+          if (await page.$(".njg-gu-pop:not(.hidden)")) {
+            await this.once("help-open");
+            await page.click(".cl-dock .njg-gu-btn", { force: true }).catch(() => {});
+            await sleep(200);
+          }
+        }
+      }
       // stuck (S13-T): the stage's first ask left alone through every help rung (drivers/index.mjs stuckWait), then fair
       if (this.mode === "stuck" && !this.drv.stuck && ["tap", "act", "point", "belt"].includes(k)) { this.drv.stuck = true; await stuckWait(page, (n, o) => this.once(n, o)); continue; }
       if (k === "tap" || k === "act") {

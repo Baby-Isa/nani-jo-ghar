@@ -382,35 +382,43 @@
       }
     },
     "? pop-up": {
-      "sel": "#help-pop, .cl-help-pop, #grownups, .njg-grownup",
+      "sel": ".njg-gu-pop, #help-pop, .cl-help-pop",
       "moves": false,
       "grep": [
         "#help-pop\\b",
         "\\bcl-help-pop\\b",
         "#grownups\\b",
         "\\bnjg-grownup\\b",
-        "grownUpPop"
+        "grownUpPop",
+        "\\bnjg-gu-(pop|btn)\\b"
       ],
       "rowWords": "\"\\?\"|the \\? |grown-ups' (menu|pop)|play as new",
       "places": {
         "index": {
-          "at": "rec:grown-ups-panel",
-          "sel": "#grownups, .njg-grownup"
+          "at": "rec:grown-ups-pop",
+          "sel": ".njg-gu-pop"
         },
         "first": {
-          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+          "none": "first launch's own screens have no grown-ups' \"?\" (its Cook rounds are Cook's page)"
         },
         "day": {
-          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+          "none": "the door has no grown-ups' \"?\""
         },
         "cook": {
-          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+          "at": "rec:help-open",
+          "sel": ".njg-gu-pop",
+          "flow": "cook:chai-tray",
+          "profile": "seen"
         },
         "clinic": {
-          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+          "at": "rec:help-open",
+          "sel": ".njg-gu-pop",
+          "flow": "clinic:heal-eye"
         },
         "lab": {
-          "at": "visible:#help-pop, .cl-help-pop, #grownups, .njg-grownup"
+          "at": "rec:help-open",
+          "sel": ".njg-gu-pop",
+          "flow": "lab:cook/chai-tray"
         }
       }
     },

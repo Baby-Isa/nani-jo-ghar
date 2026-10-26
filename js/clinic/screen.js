@@ -52,14 +52,9 @@
       const trayEl = h("div", "", trayWrap);
       // the ? (what do I do here?): the goal for grown-ups, and the first-time help's skip (G7 / CQ15)
       const dock = h("div", "cl-dock", side);
-      const helpBtn = h("button", "cl-help-btn", dock, "?");
+      const helpBtn = h("button", "", dock, "?");
       helpBtn.type = "button";
       helpBtn.setAttribute("aria-label", "What do I do here?");
-      helpBtn.setAttribute("data-ob-pass", "");
-      const helpPop = h("div", "cl-help-pop hidden", document.body);
-      helpPop.dataset.njgKeep = ""; // the page's one pop-up: kept between stages (the host's E17 check)
-      helpPop.setAttribute("data-ob-pass", "");
-      helpPop.setAttribute("role", "dialog");
       const main = h("main", "cl-main", app);
       const play = h("div", "cl-play", main);
       const tallyEl = h("div", "cl-tally empty", main);
@@ -159,31 +154,21 @@
         if (!scr.card.rows.length && !scr.card.titleText && scr.naniLine) Kit.Voice.say(scr.naniLine, { who: "guide", noBubble: true });
       };
       Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => cardEl.querySelector(".oc-face") || bulbRow;
-      scr.closeHelp = () => helpPop.classList.add("hidden");
-      scr.openHelp = () => {
-        helpPop.innerHTML = "";
-        h("div", "cl-help-text", helpPop, scr.goal || "Listen to the doctor, then do what the card says.");
-        // SH-60: the grown-ups' "play as new" (the same as Cook's): every word is new again, the first-time help too
-        global.NjgButtons.playAsNew(helpPop, () => {
-          // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic levels, story, conversations)
+      // the ? (what do I do here?): the kit's one grown-ups' pop-up (js/shared/buttons.js NjgButtons.grownUpPop; S13-A2,
+      // non-negotiable 3): the goal for grown-ups, SH-60's "Play as new" (the same as Cook's) and the first-time help's skip
+      const gu = global.NjgButtons.grownUpPop(helpBtn, {
+        goal: () => scr.goal || "Listen to the doctor, then do what the card says.",
+        // Sprint 10 (Zafar, 21 Oct): the one fresh start (words, first-time help, Cook, clinic levels, story, conversations)
+        playAsNew: () => {
           const core = global.njgTest && global.njgTest.clinic && global.njgTest.clinic.core;
           if (global.Save && global.Save.resetPlayer) global.Save.resetPlayer();
           if (core && core.progress && core.progress.reset) core.progress.reset();
-          scr.closeHelp();
-        }, { cls: "cl-help-new" });
-        if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
-          const sk = global.Onboard.skipButton(helpPop);
-          if (sk) sk.addEventListener("skipped", scr.closeHelp);
-        }
-        const r = helpBtn.getBoundingClientRect();
-        helpPop.style.left = `${Math.round(r.left)}px`;
-        helpPop.style.bottom = `${Math.round(global.innerHeight - r.top + 8)}px`;
-        helpPop.classList.remove("hidden");
-      };
-      helpBtn.addEventListener("click", () => (helpPop.classList.contains("hidden") ? scr.openHelp() : scr.closeHelp()));
-      document.addEventListener("pointerdown", (e) => !helpPop.classList.contains("hidden") && !e.target.closest(".cl-help-pop, .cl-help-btn") && scr.closeHelp(), true);
+        },
+      });
+      scr.closeHelp = () => gu.close();
+      scr.openHelp = () => gu.open();
       scr.helpBtn = helpBtn;
-      scr.helpPop = helpPop;
+      scr.helpPop = gu.el;
       scr.clearStage();
       return scr;
     },

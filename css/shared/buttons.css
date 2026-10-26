@@ -88,6 +88,33 @@
 
 /* S02-G (SH-60): the grown-ups' action in the "?" pop-up ("Play as new", NjgButtons.grownUp): the action button at tap
    height (a label, for grown-ups only), the note beside it wrapping under when the pop-up is narrow */
-.njg-grownup { display: flex; flex-wrap: wrap; align-items: center; gap: var(--njg-s2); margin: var(--njg-s2) 0 0; }
+.njg-grownup-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--njg-s2); margin: var(--njg-s2) 0 0; }
 .njg-act.njg-act-s { color: var(--njg-ink); height: auto; min-height: var(--njg-tap); min-width: calc(var(--njg-tap) * 2); padding: var(--njg-s1) var(--njg-s4); font-size: var(--njg-t3); line-height: 1.15; }
 .njg-grownup-note { flex: 1 1 10em; min-width: 0; font-size: var(--njg-t4); font-weight: 600; line-height: 1.3; }
+
+/* S13-A2 (the kit review 2, decision 7; non-negotiable 3): THE "?" for grown-ups and its pop-up (NjgButtons.grownUpPop), one look in
+   every game: the "?" a round cream button at tap size with the gold edge; the pop-up the dark card with its tail at the "?", the
+   grown-ups' goal in plain English, then the grown-ups' actions (Play as new, Skip the help) at tap height. No game draws its own. */
+.njg-gu-btn {
+  width: var(--njg-rail); height: var(--njg-rail); flex: none; padding: 0; margin: 0; border-radius: 50%; cursor: pointer;
+  background: var(--njg-cream); border: var(--njg-line-2) solid var(--njg-gold); color: var(--njg-ink); box-shadow: var(--njg-shadow);
+  font: 800 calc(var(--njg-rail) * 0.46) / 1 var(--njg-font); -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.njg-gu-btn[aria-expanded="true"] { background: var(--njg-ink); color: var(--njg-cream); }
+.njg-gu-btn.fresh { animation: var(--njg-glow-anim); } /* it glows the first time a station is met (the kit's glow) */
+.njg-gu-btn:active { transform: scale(0.95); }
+.njg-gu-pop {
+  --njg-gu-tail: 20px;
+  position: fixed; z-index: 960; box-sizing: border-box; width: min(calc(var(--njg-tap) * 7), calc(100vw - 2 * var(--njg-s3)));
+  padding: var(--njg-s3) var(--njg-s4); border-radius: var(--njg-radius); background: var(--njg-ink); color: var(--njg-bubble);
+  box-shadow: var(--njg-shadow); font: 700 var(--njg-t3) / 1.35 var(--njg-font); text-align: left;
+}
+.njg-gu-pop.hidden { display: none; }
+.njg-gu-pop::after {
+  content: ""; position: absolute; bottom: calc(var(--njg-s2) * -1); left: var(--njg-gu-tail); width: var(--njg-s4); height: var(--njg-s4);
+  background: inherit; transform: rotate(45deg); border-radius: var(--njg-s1);
+}
+.njg-gu-pop.njg-gu-down::after { bottom: auto; top: calc(var(--njg-s2) * -1); }
+.njg-gu-pop .njg-gu-goal { margin: 0; overflow-wrap: anywhere; }
+.njg-gu-pop .njg-grownup-note { color: inherit; opacity: .85; }
+.njg-gu-pop .ob-skip-row { color: var(--njg-ink); }

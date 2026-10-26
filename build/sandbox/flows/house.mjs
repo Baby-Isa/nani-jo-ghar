@@ -53,7 +53,12 @@ export const houseFlow = {
     await page.mouse.down();
     await sleep(1800);
     await page.mouse.up();
-    await page.waitForSelector("#grown:not([hidden])", { timeout: 5000 }).catch(() => rec.stop("the grown-ups' panel did not open on a 1.5 s hold"));
+    // S13-A2: the hold opens the kit's grown-ups' pop-up; its "Players and the save" opens the panel
+    await page.waitForSelector(".njg-gu-pop:not(.hidden)", { timeout: 5000 }).catch(() => rec.stop("the grown-ups' pop-up did not open on a 1.5 s hold"));
+    await sleep(300);
+    await rec.state("grown-ups-pop");
+    await page.click(".njg-gu-pop .njg-act", { force: true }).catch(() => rec.stop("no \"Players and the save\" in the grown-ups' pop-up"));
+    await page.waitForSelector("#grown:not([hidden])", { timeout: 5000 }).catch(() => rec.stop("the grown-ups' panel did not open from the pop-up"));
     await sleep(400);
     await rec.state("grown-ups-panel");
     // the evidence loop's "labs" (DAAR-15, CK-25, CK-28, CLN-89): the grown-ups' panel's "Game labs" link, labs.html open. Only

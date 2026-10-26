@@ -404,7 +404,7 @@ export class CookPlayer {
     this.helped = true;
     await this.page.click("#btn-help", { force: true }).catch(() => {});
     await sleep(300);
-    if (await this.page.$("#help-pop:not(.hidden)")) {
+    if (await this.page.$(".njg-gu-pop:not(.hidden)")) { // (the kit's grown-ups' pop-up, S13-A2)
       await this.once("help-open");
       await this.page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(200);

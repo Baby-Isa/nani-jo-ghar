@@ -61,7 +61,7 @@ const COOK_PATH = {
   mistake: ["rec:wrong-choice", "rec:wrong-tap", "drv:bad-item-going-in", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"],
   takeback: ["rec:before-takeback", "rec:after-takeback"],
 };
-const CLINIC_REC = ["rec:stage-*", "rec:*-tap", "rec:*-act", "rec:*-point", "rec:*-belt", "rec:*-say", "rec:say-pills", "rec:between-stages", "rec:results-badges", "rec:results-words", "rec:results-end", "rec:end", "clinic:*", "clinic:*/*"];
+const CLINIC_REC = ["rec:help-open", "rec:stage-*", "rec:*-tap", "rec:*-act", "rec:*-point", "rec:*-belt", "rec:*-say", "rec:say-pills", "rec:between-stages", "rec:results-badges", "rec:results-words", "rec:results-end", "rec:end", "clinic:*", "clinic:*/*"];
 const CLINIC_PATH = { hint: ["rec:idle-hint-*", "rec:peek-*", "rec:bulb-*"], mistake: ["rec:wrong-*"] };
 const HEAL_REC = ["rec:heal-*-start", "rec:heal-*-mid", "rec:heal-*-slip", "rec:heal-eye-redrop", "rec:heal-eye-can-see", "rec:heal-knee-turn-*", "rec:heal-fever-change-*"]; // the eye's two (flows/clinic.mjs eyeMoments)
 
@@ -120,7 +120,7 @@ export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = 
     const games = kind === "heal" ? [base.slice("clinic:heal-".length)] : readdirSync(join(root, "js", "clinic", "heal", "games")).map((f) => f.replace(/\.js$/, ""));
     for (const g of games) for (const s of healSteps(root, g)) out.push(`heal:${s}`, `heal-done:${s}`, `step:${s}`);
   } else if (kind === "heal-extra") out.push("rec:heal-*-start", "rec:heal-*-mid", "rec:heal-*-*", "rec:end");
-  else if (kind === "house") out.push("rec:whos-playing", "rec:house", "rec:house-lab-doors", "rec:picker", "rec:picker-add-player", "rec:grown-ups-panel");
+  else if (kind === "house") out.push("rec:whos-playing", "rec:house", "rec:house-lab-doors", "rec:picker", "rec:picker-add-player", "rec:grown-ups-pop", "rec:grown-ups-panel");
   else if (kind === "first") out.push("rec:yes-no", "rec:yes", "rec:no-shakes", "rec:house-with-character", "rec:*-start", "rec:*-made", "rec:*-tab-*", "rec:*-round-play-button");
   else if (kind === "mode") out.push("rec:title", "rec:lab", "rec:result", "rec:results-badges");
   // the evening book (s09-book, flows/day.mjs playBook): each state is "<path or log>-<state>"; after-wrong is the find-wrong

@@ -88,20 +88,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
   font-size: calc(var(--njg-rail) * 0.46); box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;
 }
-/* the "?": the goal pops out when pressed; it pulses the first time you meet a station */
-#btn-help { background: #ffd98a; font-family: var(--kutchi-font); font-weight: 800; font-size: 26px; line-height: 1; color: var(--ink); }
-#btn-help[aria-expanded="true"] { background: var(--ink); color: #ffd98a; }
-#btn-help.fresh { animation: var(--njg-glow-anim); } /* the kit's glow (css/shared/focus.css; S13-A1) */
+/* (the "?" and its pop-up are the kit's: css/shared/buttons.css .njg-gu-btn, .njg-gu-pop; S13-A2) */
 .side-rail .close-kitchen { margin-left: auto; }
-#help-pop {
-  position: fixed; z-index: 960; background: var(--ink); color: var(--njg-bubble); border-radius: 16px;
-  padding: 12px 16px; box-shadow: var(--shadow); font-weight: 700; line-height: 1.35;
-  font-size: clamp(15px, 1.5vw, 19px); animation: pop .18s ease-out; transform-origin: bottom right;
-}
-#help-pop::after {
-  content: ""; position: absolute; bottom: -7px; left: var(--tail-x, 20px); width: 16px; height: 16px;
-  background: var(--ink); transform: rotate(45deg); border-radius: 3px;
-}
 
 /* ---------- Nani's card: her current line, short ---------- */
 #nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; animation: pop .22s ease-out; }
@@ -294,7 +282,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #side { padding: var(--njg-side-pad); gap: var(--njg-side-gap); }
   #nani-card { padding: 6px; gap: 6px; }
   .card { padding: 6px 8px; }
-  #btn-help { font-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -769,7 +756,7 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
   #intro .icard .card-say { width: 30px; height: 30px; }
 }
 
-/* 8. first-time onboarding (js/cook/coach.js): dim all but one thing, a ghost finger shows the move; never takes a tap */
+/* 8. first-time onboarding (js/cook/coach.js): its fallback dim with one hole (no kit on the page); the finger is the kit's, never its own (S13-A2) */
 #coach { position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
 #coach .co-hole {
   position: absolute; border-radius: 50%; pointer-events: none;
@@ -777,21 +764,6 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
   transition: left .35s ease, top .35s ease, width .35s ease, height .35s ease;
   animation: fadeIn .4s ease-out;
 }
-#coach .co-finger {
-  position: absolute; width: 58px; height: 58px; margin: -8px 0 0 -18px; pointer-events: none;
-  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M22 30V10a5 5 0 0 1 10 0v16l2-1a5 5 0 0 1 6 2l1 1a5 5 0 0 1 7 1l1 2a5 5 0 0 1 7 3v11c0 9-6 16-15 16h-4c-6 0-10-3-13-8l-9-14a5 5 0 0 1 8-6z' fill='%23fffaf1' stroke='%232d2018' stroke-width='3' stroke-linejoin='round' opacity='.95'/%3E%3C/svg%3E");
-  filter: drop-shadow(0 4px 6px rgba(var(--njg-black-rgb), .35));
-  animation: coTap 2.4s ease-in-out infinite;
-}
-#coach .co-finger.m-hold { animation: coHold 2.8s ease-in-out infinite; }
-#coach .co-finger.m-swipe { animation: coSwipe 2.2s ease-in-out infinite; }
-#coach .co-finger.m-roll { animation: coRoll 2.2s ease-in-out infinite; }
-#coach .co-finger.m-stir { animation: coStir 2.4s linear infinite; }
-@keyframes coTap { 0%, 55%, 100% { transform: translate(18px, 30px) scale(1); opacity: .9; } 15% { transform: translate(0, 0) scale(.88); opacity: 1; } 25% { transform: translate(8px, 12px) scale(1); } }
-@keyframes coHold { 0%, 100% { transform: translate(18px, 30px); opacity: .85; } 15%, 70% { transform: translate(0, 0) scale(.86); opacity: 1; } }
-@keyframes coSwipe { 0% { transform: translate(calc(var(--dx) * -.5), calc(var(--dy) * -.5)); opacity: 0; } 12% { opacity: 1; } 60% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 1; } 75%, 100% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 0; } }
-@keyframes coRoll { 0%, 100% { transform: translate(0, calc(var(--rr) * .7)); } 50% { transform: translate(0, calc(var(--rr) * -.7)); } }
-@keyframes coStir { 0% { transform: rotate(0deg) translateX(var(--rr)) rotate(0deg); } 100% { transform: rotate(360deg) translateX(var(--rr)) rotate(-360deg); } }
 
 /* 5. the big button between two jobs ("Go to the barbecue"), bottom right under the thumb */
 #go-btn:not(.njg-btn) {
@@ -1014,7 +986,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
    the child's cards, boxes and pop-ups only a hidden word is dotted, so the flag is in the markup only there (as decision 84's
    "to record"); the grown-ups' word book and "?" pop-up still underline it */
 .to-check { text-decoration: none; }
-:is(#panel:has(#book-close), #help-pop) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+:is(#panel:has(#book-close), .njg-gu-pop) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
 .book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }
@@ -1046,8 +1018,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   #panel > .shop-grid .shop-item.pic .shop-img, #panel > .shop-grid .shop-item.pic .shop-img img { width: var(--njg-tap); height: var(--njg-tap); }
 }
 
-/* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
-#help-pop .hp-new .njg-grownup-note { color: inherit; opacity: .85; }
 
 /* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
    coins beside it and the jar's total under it */

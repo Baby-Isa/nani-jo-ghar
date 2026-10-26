@@ -59,14 +59,13 @@ export const screenHTML = () => `
     </div>
     <!-- 3. the rail: "?" (what do I do here?), menu, recipe book -->
     <div class="side-rail">
-      <button id="btn-help" class="rail-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
+      <button id="btn-help" type="button" class="njg-gu-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
       <button id="btn-home" class="rail-btn" title="Menu" aria-label="Menu">&#8962;</button>
       <button id="btn-book" class="rail-btn" title="Nani's recipe book" aria-label="Nani's recipe book">&#128214;</button>
     </div>
   </aside>
 
-  <!-- the "?" pops out the goal for this station (never shown on its own) -->
-  <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?" data-ob-pass><div class="hp-text"></div></div>
+  <!-- (the "?" pops out the goal for this station: the kit's grown-ups' pop-up, made by js/shared/buttons.js; S13-A2) -->
 
   <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area. MAA-14 (s08 w8A): her face
        sheet's close-up (nani-face, as in the guide box), so her impatient frown swaps in at the same framing, never the
@@ -80,7 +79,7 @@ export const screenHTML = () => `
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
 <!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
-<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div><div class="co-finger"></div></div>
+<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div></div>
 `;
 
 /** Make Cook's screen inside el; returns the nodes made (unmount removes them). */

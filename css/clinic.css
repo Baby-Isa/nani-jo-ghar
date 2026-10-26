@@ -359,9 +359,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 
 /* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
 .cl-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
-.cl-help-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: 2px solid var(--njg-cream-edge); background: var(--njg-cream); font: 800 22px var(--cl-head); color: var(--njg-ink); cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: var(--njg-ink); color: var(--njg-bubble); border-radius: 16px; padding: var(--njg-s3) var(--njg-s3); box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
-.cl-help-pop .ob-skip-row { color: var(--njg-ink); }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
 /* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
@@ -498,7 +495,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 
 
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up */
-.cl-help-new .njg-grownup-note { color: inherit; opacity: .85; }
 
 /* ---------------- S02-C (Session C, 7 Oct): the clinic's own game rules ---------------- */
 /* CLN-81: the girl's art on the bench (her seat line on the cushion; no stool, no tint) */
