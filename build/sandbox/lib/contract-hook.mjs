@@ -8,7 +8,7 @@
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
 //   k: "side"    {n, rows, done, closed, words, lv}   order cards in the sidebar (not the pop-up's), their rows done, how many closed, #side's data-level (the order's own level)
-//   k: "buttons" {list: [{sel, text, box, go, arrow}], exp}   the ✓ / Next / stage buttons on screen, with what the game
+//   k: "buttons" {list: [{sel, text, box, go, arrow, kit}], pills: [{sel, text, box, kit}], exp}   the ✓ / Next / stage buttons on screen, with what the game
 //                                          expects; go: a go-on (→ Next) button, arrow: its arrow is drawn (contract-27)
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
@@ -554,6 +554,31 @@ export const CONTRACT_HOOK = `(() => {
     if (cf && cf.classList.contains("patient")) return "patient";
     return null; // a face whose person the page doesn't say (the morning's end lists several patients): not judged
   });
+  // contract-42 (S13-A2, ART-08): every face circle of a person on screen (a card's, the guide's, a bubble's speaker, the heal
+  // corner face, Nani's card and pass-me, the book's) is the kit's .njg-face, of one of three sizes (row, guide, big), drawn at its
+  // token's width (the token as the element itself reads it: a sidebar stepped down for a short screen reads its own value)
+  const FACE_ROLES = ".oc-face, .ng-face, .hs-face, .cv-face, .nc-say, .pm-face, .day-face, .cl-card-face, .njg-face";
+  const faceKit = () => {
+    const out = [];
+    const seen = new Set();
+    for (const el of document.querySelectorAll(FACE_ROLES)) {
+      const c = el.matches(".njg-face") ? el : el.querySelector(".njg-face");
+      const k = c || el;
+      if (seen.has(k) || !shown(k)) continue;
+      const r = k.getBoundingClientRect();
+      if (r.width < 16) continue;
+      seen.add(k);
+      if (!c) { out.push({ sel: desc(el), kit: false, size: null, w: r.width, h: r.height, tok: 0 }); continue; }
+      const m = /njg-face-(row|guide|big)\\b/.exec(c.className || "");
+      const size = m ? m[1] : null;
+      const cs = getComputedStyle(c);
+      const tok = parseFloat(cs.getPropertyValue({ row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face")) || 0;
+      out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: r.width, h: r.height, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
+    }
+    return out;
+  };
+  // contract-44 (S13-A2): the fingers on screen (the kit's .ob-finger, a game's own) while help shows
+  const fingers = () => [...document.querySelectorAll(".ob-finger, .co-finger, [class*='finger']:not(.ob-finger-in)")].filter((f) => shown(f) && f.getBoundingClientRect().width > 4 && !(f.parentElement && f.parentElement.closest(".ob-finger"))).map((f) => ({ sel: desc(f), kit: f.matches(".ob-finger"), box: R(f.getBoundingClientRect()) }));
   const faces = () => {
     const all = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16);
     // a face drawn inside another face's button is that one face
@@ -749,12 +774,19 @@ export const CONTRACT_HOOK = `(() => {
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
     const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text, .oc-k") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english"), no: x.classList.contains("no") }; }));
     if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
-    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
-    if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
+    // contract-34 (S13-A2): each one's kit flag (.njg-btn), and the answer pills on screen (the kit's .njg-pill, a game's own
+    // .cl-pill) with theirs; the shared Say and conversation pills are their own components, not counted
+    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null, kit: b.matches(".njg-btn") }));
+    for (const p of [...document.querySelectorAll(".njg-pill, .cl-pill")].filter((x) => shown(x) && !x.closest(".njg-say, .cv-replies"))) bl.push({ sel: desc(p), text: (p.textContent || "").trim().slice(0, 20), box: R(p.getBoundingClientRect()), go: false, arrow: null, kit: p.matches(".njg-btn"), pill: true });
+    if (!same("buttons", bl.map((b) => b.sel + b.arrow + b.kit))) emit({ k: "buttons", list: bl.filter((b) => !b.pill), pills: bl.filter((b) => b.pill), exp: bl.some((b) => !b.pill) ? exp() : null });
     const tx = safe(texts, []);
     if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown + (x.door ? JSON.stringify(x.door) : "")))) emit({ k: "texts", list: tx });
     const fc = safe(faces, null);
     if (fc && !same("faces", [fc.list.map((f) => f.who + f.sel), fc.cards, fc.figFull])) emit({ k: "faces", ...fc });
+    const fk = safe(faceKit, []);
+    if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
+    const fg = safe(fingers, []);
+    if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-onboard.on, .njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-onboard.on, .njg-spot.on") });
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));
     const bsig = bubs.map((b) => [b.who, b.text, Math.round(b.box.l / 6), Math.round(b.box.t / 6)]);
     if (!same("bubble", bsig) && bubs.length) {

@@ -258,7 +258,7 @@
     (choices || []).forEach((c) => {
       const b = doc().createElement("button");
       b.type = "button";
-      b.className = "njg-pill";
+      b.className = "njg-btn njg-pill"; // (S13-A2: a pill is one of the kit's buttons, contract-34)
       b.dataset.choice = c.id;
       if (c.node) b.appendChild(c.node);
       else if (c.html != null) b.innerHTML = c.html;

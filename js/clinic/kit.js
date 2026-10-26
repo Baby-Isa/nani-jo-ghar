@@ -1314,25 +1314,12 @@
     const NB = global.NjgButtons;
     const isDone = label === "✓" || /\bdone\b/.test(cls || "");
     const glow = /\bthrob\b/.test(cls || "");
-    let b;
-    if (NB) {
-      const lab = typeof label === "string" || label == null ? label : Kit.text(label, null);
-      b = isDone ? NB.done(parent, (e) => onPress && onPress(e), { glow }) : NB.next(parent, lab, (e) => onPress && onPress(e), { glow });
-      b.classList.add("cl-go");
-      (cls || "").split(/\s+/).filter((c) => c && c !== "throb").forEach((c) => b.classList.add(c));
-      if (b.parentNode !== parent && parent) parent.appendChild(b);
-      return b;
-    }
-    b = h("button", `cl-go ${cls || ""}`, parent);
-    b.type = "button";
-    if (typeof label === "string") b.textContent = label;
-    else if (label) Kit.text(label, b);
-    b.addEventListener("click", (e) => {
-      if (b.disabled) return;
-      onPress && onPress(e);
-    });
-    // no shared kit on the page (an old lab): the same rule, a go-on button presses itself after a beat
-    if (!isDone) setTimeout(() => b.isConnected && !b.disabled && b.click(), 1000);
+    // S13-A2: always the kit's button (the clinic's own old button went); .cl-go stays on it only as the tests' handle
+    const lab = typeof label === "string" || label == null ? label : Kit.text(label, null);
+    const b = isDone ? NB.done(parent, (e) => onPress && onPress(e), { glow }) : NB.next(parent, lab, (e) => onPress && onPress(e), { glow });
+    b.classList.add("cl-go");
+    (cls || "").split(/\s+/).filter((c) => c && c !== "throb").forEach((c) => b.classList.add(c));
+    if (b.parentNode !== parent && parent) parent.appendChild(b);
     return b;
   };
 

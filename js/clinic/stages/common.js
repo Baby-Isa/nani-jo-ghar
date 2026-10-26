@@ -434,23 +434,25 @@
     return new Promise((res) => {
       const box = h("div", "cl-pills", env.screen.main);
       if (opts.caption) Kit.text({ english: opts.caption }, h("div", "cl-pills-cap", box));
-      opts.choices.forEach((id) => {
-        const b = h("button", "cl-pill", box);
-        b.type = "button";
-        b.dataset.choice = id;
-        Kit.text(opts.word(id), b);
-        b.addEventListener("click", async () => {
-          box.querySelectorAll("button").forEach((x) => (x.disabled = true));
-          if (opts.character && opts.character.act) await opts.character.act(id, "pill");
-          const ok = opts.accept ? opts.accept(id, "pill") : true;
-          if (ok === false) {
-            box.querySelectorAll("button").forEach((x) => (x.disabled = false));
-            return;
-          }
-          box.remove();
-          res({ choice: id, via: "pill", tries: 1 });
-        });
+      // S13-A2: the kit's pills (js/shared/buttons.js NjgButtons.pills: one look); .cl-pill stays on each as the stages' and
+      // the tests' handle (the waiting room puts a face on its pills)
+      const word = (id) => {
+        const n = document.createElement("span");
+        Kit.text(opts.word(id), n);
+        return n;
+      };
+      global.NjgButtons.pills(box, opts.choices.map((id) => ({ id, node: word(id) })), async (id) => {
+        box.querySelectorAll("button").forEach((x) => (x.disabled = true));
+        if (opts.character && opts.character.act) await opts.character.act(id, "pill");
+        const ok = opts.accept ? opts.accept(id, "pill") : true;
+        if (ok === false) {
+          box.querySelectorAll("button").forEach((x) => (x.disabled = false));
+          return;
+        }
+        box.remove();
+        res({ choice: id, via: "pill", tries: 1 });
       });
+      box.querySelectorAll(".njg-pill").forEach((b) => b.classList.add("cl-pill"));
     });
   };
 

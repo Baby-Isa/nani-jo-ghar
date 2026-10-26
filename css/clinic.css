@@ -79,24 +79,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-tally-chip.bump { animation: cl-bump .3s; }
 @keyframes cl-bump { 50% { transform: scale(1.2); } }
 
-/* ---------- the big buttons (right) ----------
-   S02-A (non-negotiable 8, SH-61): the shared kit's buttons (.njg-btn: ✓ Done, → Next, the pills) are styled by
-   css/shared/buttons.css alone; these rules are only for the clinic's own old buttons */
-.cl-go:not(.njg-btn) { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: var(--njg-white) !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
-.cl-go:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
-.cl-go:not(.njg-btn) .ph { color: #e8fff9 !important; } /* (light on the old teal button, over the kit's placeholder grey) */
-/* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
-.cl-go:not(.njg-btn).done {
-  align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: var(--njg-cream) no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261026T131724Z");
-  border: 1px solid var(--njg-cream-edge); color: transparent !important; font-size: 0; overflow: hidden;
-  box-shadow: 0 4px 0 var(--njg-cream-lip), 0 8px 18px rgba(70, 45, 20, 0.2);
-}
-.cl-go:not(.njg-btn).done.throb { animation: var(--njg-pulse-anim); }
-.cl-go:not(.njg-btn).done:active { box-shadow: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2); }
-.cl-go:not(.njg-btn).alt { background: var(--njg-white); color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
-.cl-go:not(.njg-btn).throb { animation: var(--njg-pulse-anim); }
-.cl-go:not(.njg-btn):disabled { opacity: .35; animation: none; cursor: default; }
+/* ---------- the big buttons (right): the shared kit's alone (.njg-btn, css/shared/buttons.css; S02-A, SH-61); the clinic's own
+   old buttons and their looks went (S13-A2) ---------- */
 
 /* ---------- speech bubbles ---------- */
 .cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: var(--njg-white); border-radius: 18px; padding: var(--njg-s2) var(--njg-s3); font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(var(--njg-black-rgb), .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
@@ -150,7 +134,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
 @media (max-height: 460px) {
-  .cl-go:not(.njg-btn) { min-height: 56px; }
   .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
 }
@@ -233,7 +216,6 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 /* speaking: the pills without a mic (the shared Say panel draws its own) */
 .cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s2); max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: var(--njg-s3); border-radius: 22px; box-shadow: 0 6px 20px rgba(var(--njg-black-rgb), .15); }
 .cl-pills-cap { width: 100%; text-align: center; font: 700 16px var(--cl-head); color: var(--cl-soft); }
-.cl-pill { min-height: 64px; padding: var(--njg-s2) var(--njg-s4); border-radius: 32px; border: 3px solid #d8c6a8; background: var(--njg-white); font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
 
 /* close the clinic: the receipt */
 .cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: var(--njg-white); border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(var(--njg-black-rgb), .15); text-align: center; }
@@ -264,7 +246,6 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
   .cl-side .cl-tray { flex-direction: row; }
   .cl-side .cl-tray .cl-dish { width: 64px; height: 56px; }
   .cl-actions { flex-direction: row; justify-content: flex-end; padding: var(--njg-s2); }
-  .cl-go:not(.njg-btn) { min-width: 140px; }
   .cl-lab-bar { left: 0; right: 0; }
 }
 .cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: var(--njg-white); font-size: 30px; cursor: pointer; z-index: 25; }

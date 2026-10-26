@@ -39,7 +39,12 @@
 //   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
 //   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
-//   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106)
+//   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106); S13-A2: every go-on, done and
+//                            answer-pill button on screen is the kit's .njg-btn
+//   contract-42 face-circle  every face circle of a person on screen is the kit's .njg-face, of one of three sizes, drawn at its
+//                            token's width within 1 px (ART-08, S13-A2)
+//   contract-44 one-finger   one finger on screen at a time, the kit's .ob-finger only; first-time help always has its finger
+//                            (SH-130, S13-A2)
 //   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3 and L4, never folded (SH-110, 26 Oct)
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
@@ -102,7 +107,9 @@ export const CHECKS = {
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
-  "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
+  "contract-34": { item: "go-arrow", title: "every go-on button has the arrow; every button the kit's", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\"). S13-A2 (the kit review, decision 6): every go-on or done button on screen and every answer pill (.njg-pill, a game's .cl-pill; not the Say or conversation replies, their own components) must be the kit's .njg-btn (js/shared/buttons.js NjgButtons.done/next/pills); one that is not is a break." },
+  "contract-42": { item: "face-circle", title: "one face circle, three sizes", how: "Every facekit sample (lib/contract-hook.mjs): each face circle of a person on screen (a card's .oc-face, the guide's .ng-face, the heal corner .hs-face, a bubble's .cv-face, Cook's Nani card and pass-me, the book's .day-face, any .njg-face) must be the kit's circle (js/shared/face.js: .njg-face) with one of the three size classes (njg-face-row, -guide, -big) and drawn at that size's token (--njg-face, --njg-guide-face, --njg-big-face, as the element reads it) within 1 px. A face that is not the kit's, has no size, or is drawn at another width is a break (ART-08, S13-A2: Nana and the doctor the same size in every place)." },
+  "contract-44": { item: "one-finger", title: "one finger, the kit's", how: "Every fingers sample (lib/contract-hook.mjs): a finger on screen must be the kit's .ob-finger (js/shared/onboard.js Onboard.finger; a game's own, Cook's old .co-finger, is a break) and there is never more than one at a time; while the stuck help's spotlight (.njg-spot.on) shows, its finger must come: a spotlight on screen 2 s or more with no finger is a break (SH-130: the eye test's card step at the laptop size had no finger; SH-19: first-time help always has its finger)." },
   "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 and L4 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted (each dotted row with its speaker: contract-40). SH-110 (Zafar, 26 Oct: never a memory test, no fully blanked card) replaces L4's folded card (face + headline); was closedFrom 3 (the level table, Zafar 19 Oct)." },
   "contract-40": { item: "one-card", title: "one card markup; a blanked row has its speaker", how: "Every kitcard sample (lib/contract-hook.mjs): each order card on screen (.oc-card, sidebar or pop-up) and its head, face, items and rows may carry only the kit's classes (oc-, wc, njg-, fit and the card's state words: done, next, reading ...); a game's own class (cl-row, cl-card-face, r6, icard ...) is a break (S13: the clinic's and Cook's copies go, one card everywhere). SH-110 (Zafar, 26 Oct: a card is never a memory test): a row not done whose words are blanked (a dotted word showing, or OrderCard's oc-blank) must start with its speaker (.oc-spk, the row's first element); one without it is a break." },
   "contract-41": { item: "one-popup", title: "one order pop-up", how: "Every kitcard sample: a request pop-up on screen (.njg-rq-open, .njg-rq-veil, Cook's #intro) must be the kit's (js/shared/request-popup.js: a .njg-rq-card inside the veil). Cook's own #intro shown, or a pop-up with no .njg-rq-card, is a break (S13-B1: Cook on the kit's pop-up, like the clinic and the day)." },
@@ -627,6 +634,67 @@ function check34(tl, segs, add) {
       add("contract-34", e.t, `${s ? s.key : "?"}: ${b.sel} has no arrow`);
     }
   }
+}
+// 34, S13-A2: every go-on, done and pill button on screen is the kit's .njg-btn
+function check34kit(tl, segs, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "buttons") continue;
+    for (const b of [...(e.list || []), ...(e.pills || [])]) {
+      if (b.kit !== false) continue;
+      const s = segAt(segs, e.t), k = `${s && s.key}|${b.sel}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      add("contract-34", e.t, `${s ? s.key : "?"}: ${b.sel}${b.text ? ` "${b.text}"` : ""} is not the kit's button (.njg-btn)`);
+    }
+  }
+}
+// 42 (ART-08, S13-A2): every face circle is the kit's .njg-face at one of three sizes, its token's width within 1 px
+export function check42(tl, segs, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "facekit") continue;
+    for (const f of e.list || []) {
+      const s = segAt(segs, e.t);
+      let why = null;
+      if (!f.kit) why = `is not the kit's face circle (.njg-face, js/shared/face.js), ${Math.round(f.w)} px`;
+      else if (!f.size) why = "has no size (njg-face-row, -guide or -big)";
+      else if (!(f.tok > 0) || Math.abs(f.w - f.tok) > 1 || Math.abs(f.h - f.tok) > 1) why = `drawn ${Math.round(f.w)} x ${Math.round(f.h)} px, its size (${f.size}) is ${Math.round(f.tok)} px`;
+      if (!why) continue;
+      const k = `${s && s.key}|${f.sel}|${why.replace(/\d+/g, "#")}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      add("contract-42", e.t, `${s ? s.key : "?"}: ${f.sel} ${why}`);
+    }
+  }
+}
+// 44 (SH-130, S13-A2): one finger at a time, the kit's; a stuck help's spotlight always gets its finger
+export const SPOT_NO_FINGER_MS = 2000;
+export function check44(tl, segs, add, tEnd = tl.length ? tl[tl.length - 1].t : 0) {
+  const seen = new Set();
+  let since = null; // the spotlight on with no finger since
+  const flush = (t) => {
+    if (since == null || t - since < SPOT_NO_FINGER_MS) return;
+    const s = segAt(segs, since), k = `${s && s.key}|none`;
+    if (!seen.has(k)) { seen.add(k); add("contract-44", since, `${s ? s.key : "?"}: the help's spotlight showed ${Math.round((t - since) / 100) / 10} s with no finger`); }
+  };
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "fingers") continue;
+    const s = segAt(segs, e.t);
+    const list = e.list || [];
+    for (const f of list.filter((x) => !x.kit)) {
+      const k = `${s && s.key}|own|${f.sel}`;
+      if (!seen.has(k)) { seen.add(k); add("contract-44", e.t, `${s ? s.key : "?"}: ${f.sel} is a finger of its own (the kit's is .ob-finger)`); }
+    }
+    const kit = list.filter((x) => x.kit).length;
+    if (kit > 1) {
+      const k = `${s && s.key}|many`;
+      if (!seen.has(k)) { seen.add(k); add("contract-44", e.t, `${s ? s.key : "?"}: ${kit} fingers on screen at once`); }
+    }
+    if (e.help && !list.length) { if (since == null) since = e.t; }
+    else { flush(e.t); since = null; }
+  }
+  flush(tEnd);
 }
 // 13 (CLN-06): a reply pill from an earlier stage still on screen in a later play stage
 function check13(tl, add) {
@@ -1437,6 +1505,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check12(tl, segs, add, tEnd);
   check13(tl, add);
   check34(tl, segs, add);
+  check34kit(tl, segs, add);
+  check42(tl, segs, add);
+  check44(tl, segs, add, tEnd);
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
