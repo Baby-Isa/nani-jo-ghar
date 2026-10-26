@@ -270,27 +270,33 @@
       "places": {
         "index": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         },
         "first": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         },
         "day": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         },
         "cook": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         },
         "clinic": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         },
         "lab": {
           "at": "visible:.ob-finger",
-          "delay": 400
+          "delay": 400,
+          "tries": 3
         }
       }
     },
@@ -352,7 +358,8 @@
         },
         "day": {
           "at": "rec:stuck-5s",
-          "sel": ".ob-lit, .ob-item-glow"
+          "sel": ".ob-lit, .ob-item-glow",
+          "tries": 3
         },
         "cook": {
           "at": "rec:stuck-12s",
