@@ -186,7 +186,14 @@
   .cv-reply { gap: calc(var(--njg-u) * 8); }
   .cv-hear { width: var(--njg-tap); height: var(--njg-tap); }
   .cv-pill { min-height: var(--njg-tap); gap: calc(var(--njg-u) * 8); padding: calc(var(--njg-u) * 4) calc(var(--njg-u) * 12); }
-  .cv-replies.cv-helping { max-width: calc(100vw - var(--njg-side-w) - calc(var(--njg-u) * 24) - var(--njg-hand-h) - var(--njg-s6)); }
+  .cv-replies, .cv-replies.cv-helping { right: max(calc(var(--njg-u) * 40), env(safe-area-inset-right)); } /* room for the hand from above at the right end */
   .cv-pill .cv-pic { font-size: calc(var(--njg-u) * 22); }
   .cv-pill .cv-words { font-size: calc(var(--njg-u) * 19); }
 }
+
+/* ART-08 (the judge, 23 Oct): the speaker's face in the bubble is a circle like every other face circle, never a square tile */
+.cv-face img { border-radius: 50%; background: var(--njg-card); box-shadow: 0 0 0 var(--njg-line-2) var(--cv-line); }
+/* SH-124 (the judge, 23 Oct: the bounce was 1-2 px): the reply to pick hops a clear 10% of its height and rests at the top a moment
+   (translate only: its size never changes) */
+.cv-pill.cv-pick.ob-lit { animation: cv-pick-hop 1s ease-in-out infinite; }
+@keyframes cv-pick-hop { 0%, 100% { translate: 0 0; } 30%, 55% { translate: 0 -10%; } }

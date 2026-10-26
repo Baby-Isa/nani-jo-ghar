@@ -808,13 +808,16 @@
         try {
           // the hand lies to the RIGHT of the reply, pointing at its right end (the replies make room for it), so it covers
           // neither the reply's words, its speaker nor the reply above or below it
-          box.classList.add("cv-helping");
+          // (a phone: the replies stand in one row along the bottom, so the hand comes from above onto the reply's right end,
+          // over the counter, never over a reply's words; the judge, 23 Oct)
+          const phone = Math.min(root.innerWidth || 1e4, root.innerHeight || 1e4) < 500;
+          if (!phone) box.classList.add("cv-helping");
           const tip = () => {
             if (!p.isConnected || p.classList.contains("chosen")) return null;
             const r = p.getBoundingClientRect();
-            return { x: r.right - Math.min(10, r.width * 0.05), y: r.top + r.height / 2 };
+            return phone ? { x: r.right - Math.min(14, r.width * 0.06), y: r.top + 2 } : { x: r.right + 2, y: r.top + r.height / 2 };
           };
-          finger = O.finger(tip, { from: "right", step: "conversation:pill" });
+          finger = O.finger(tip, { from: phone ? "above" : "right", step: "conversation:pill" });
         } catch (e) {
           finger = null;
         }
