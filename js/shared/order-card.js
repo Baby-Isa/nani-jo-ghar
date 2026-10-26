@@ -526,7 +526,9 @@
     if (cardStrip(data.strip) && !opts.big) c.appendChild(OC.stripEl(data.strip));
     const head = el("div", "oc-head");
     if (p && p.face) {
-      const f = el("button", "oc-face face-say", `<img src="${esc(p.face)}" alt="${esc(p.name || "")}"><span class="say-badge" aria-hidden="true"></span>`);
+      // ART-08 (S13-A2): the kit's one face circle (js/shared/face.js), the row size on a card, the big one on the order pop-up
+      const F = root.Face;
+      const f = F ? F.button(p.id || p.name, opts.big ? "big" : "row", { cls: "oc-face", src: typeof p.face === "string" ? p.face : null, alt: p.name || "" }) : el("button", "oc-face face-say", `<img src="${esc(p.face)}" alt="${esc(p.name || "")}"><span class="say-badge" aria-hidden="true"></span>`);
       f.type = "button";
       f.setAttribute("aria-label", "Hear it again");
       if (opts.onFace) f.addEventListener("click", (ev) => opts.onFace(ev, c));

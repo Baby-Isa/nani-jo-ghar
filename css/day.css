@@ -111,10 +111,9 @@ canvas.day-layer { width: 100%; height: 100%; }
 
 /* her face on the left page's corner (the replay), her line beside it */
 .day-head { position: absolute; display: flex; align-items: center; gap: var(--njg-s2); z-index: 4; pointer-events: none; }
-.day-face { flex: none; width: 64px; height: 64px; padding: 0; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-card); background: var(--njg-cream); box-shadow: var(--njg-shadow); overflow: hidden; cursor: pointer; pointer-events: auto; }
-/* her face as in every guide circle (css/shared/guide.css .ng-face img: Cook's nani-face.webp, cover, from the top) */
-.day-face img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
-.day-face.on { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); }
+/* her face: the kit's circle, the big size (js/shared/face.js; ART-08, S13-A2) */
+.day-face { pointer-events: auto; }
+.day-face.on .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); }
 .day-head-line { min-width: 0; background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s2) var(--njg-s3); }
 .day-head-line:empty { display: none; }
 .day-head-line.day-again { animation: day-again 1.5s ease-in-out 1; }

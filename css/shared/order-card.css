@@ -26,7 +26,6 @@
   --oc-p: var(--njg-side-p);
   --oc-row-h: var(--njg-row-h);
   --oc-part-h: var(--njg-part-h);
-  --oc-face: var(--njg-face);
   --oc-pad: var(--njg-card-pad);
   --oc-gap: var(--njg-s1);
   --oc-indent: var(--njg-indent);
@@ -58,73 +57,20 @@
 
 /* ---------- the head: face (= replay) + the headline; a folded card adds the check ---------- */
 .oc-card .oc-head { display: flex; align-items: center; gap: var(--njg-s2); min-width: 0; }
-/* the face button is its tap area (never under 48 px); the face itself is --oc-face, centred in it */
-.oc-card .oc-face {
-  position: relative; flex: none;
-  width: max(var(--oc-face), var(--njg-face-hit)); height: max(var(--oc-face), var(--njg-face-hit));
-  margin: calc((var(--oc-face) - max(var(--oc-face), var(--njg-face-hit))) / 2);
-  /* SH-81 (S06): the tap area may reach into the card's padding but never past the card's own edge (at 800x360 the face
-     is small, its 48 px tap area hung 2 px off the screen's left edge, peeked open or not) */
-  margin-left: max(calc((var(--oc-face) - max(var(--oc-face), var(--njg-face-hit))) / 2), calc(-1 * var(--oc-pad)));
-  padding: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
-  border: none; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
-}
-.oc-card .oc-face img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: var(--njg-face-bg); box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
-.oc-card .oc-face .say-badge {
-  position: absolute; right: 0; bottom: 0; width: calc(var(--oc-face) * 0.4); min-width: var(--njg-s4); aspect-ratio: 1; border-radius: 50%;
-  background: var(--oc-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card); pointer-events: none;
-}
+/* ART-08 (S13-A2): the face is the kit's circle in its tap area (js/shared/face.js, css/shared/face.css: one crop, three sizes, the
+   badge on its edge); the card only places it. SH-81 (S06): the tap area may reach into the card's padding but never past the card's
+   own edge (at 800x360 the 48 px tap area round a small face hung 2 px off the screen's left edge) */
+.oc-card .oc-face { margin: calc((var(--njg-face-d) - var(--njg-face-tap)) / 2); margin-left: max(calc((var(--njg-face-d) - var(--njg-face-tap)) / 2), calc(-1 * var(--oc-pad))); }
+.oc-card .oc-face .njg-face { box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
 .oc-card .oc-face.on .say-badge { background-color: var(--oc-gold); }
-/* SH-09 (S05-S2): the face's tap area is its own box (48 px, the badge inside it); a page's wider tap area (Cook's
-   .face-say::after reached 10 px below) poked past the last card and scrolled a short phone's sidebar 7 px */
-.oc-card .oc-face::after { inset: 0; }
-.oc-card .oc-face:active { transform: scale(0.95); }
-/* SH-113 (Zafar, 18 Oct: "all the characters where you just see a circle of their face need to be zoomed in by the same amount"): ONE face
-   size in every circle. Cook's faces are cut as close-ups framed by the eyes (the face fills the circle: zoom 1); the clinic's are whole
-   heads or a bust (the doctor's 144 px one), so a clinic face circle zooms in on its face to the same size. --face-zoom is the scale and
-   --face-y where the face sits in its picture (the point that lands at the circle's centre); the per-face tweak is the rule for its
-   picture, set by eye on the side-by-side sheet (build/reports/s08-w1b-card.md) */
+/* SH-113: a clinic person with no cut yet (a whole head or a bust) is zoomed on its face to the same size as a cut; the S12 cuts
+   (assets/shared/faces/) and Cook's close-ups are never cropped again */
 .cl-face img { transform-origin: 50% var(--face-y, 50%); transform: translateY(calc(50% - var(--face-y, 50%))) scale(var(--face-zoom, 1)); }
-/* SH-113, s08 w6E: the circle's SIZE too. Cook's face is --oc-face (44 px) centred in its 48 px tap area; the clinic's button was itself the
-   circle, so its face drew at the tap area's 48 px. The tap area stays; the circle inside it is --oc-face, with Cook's edge ring */
-/* S13-B1 (one card markup): a face drawn by the host as an element (the clinic's .cl-face figure) sits in the same circle, the
-   button carrying only the kit's classes */
-.oc-card .oc-face:has(> .cl-face) { background: transparent; display: grid; place-items: center; }
-.oc-card .oc-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
-.oc-card .oc-face > .cl-face :is(svg, img) { width: 100%; height: 100%; object-fit: cover; }
-/* SH-113 (s08 w6M; the judge, 20 Oct: the doctor's circle "clearly more zoomed out than A's Cook customer", the girl's "whole head with
-   pigtails and shoulders"): the crop rule follows the PICTURE wherever its circle is drawn, so every circle of one face is zoomed the
-   same: the shared order card's face (the clinic gives it the doctor's or the girl's picture), the clinic's own .cl-face and the heal
-   games' and pharmacy's corner face (.hs-face). Set by measure against Cook's close-ups (Nana: the cheeks across 0.8 of the circle, the
-   eyes 0.05 above its middle, the chin at 0.95): the doctor's 144 px bust and the girl's 512 px head */
 .cl-face.person img:not([src*="/shared/faces/"]) { --face-zoom: 1.25; --face-y: 44%; }
-/* ART-08 (S12): the shared face circles (assets/shared/faces/: the doctor, the girl, Nani, Nana) are cut as circles round the nose,
-   so they are never cropped again: no zoom, centred */
 .cl-face img[src*="/shared/faces/"], .hs-face .hs-face-art[src*="/shared/faces/"] { --face-zoom: 1; --face-y: 50%; object-position: center; }
-.oc-card .oc-face img[src*="/shared/faces/"] { object-position: center; }
 /* ART-08 (the judge, 23 Oct: "the speaker badge covers the right ear"): every face circle's speaker badge sits ON the circle's
-   lower-right edge, mostly outside it, never over the face or an ear (the order cards, the guide box, the clinic, Cook's cards) */
+   lower-right edge, mostly outside it, never over the face or an ear */
 .say-badge { transform: translate(34%, 34%); }
-/* (s09, the judge on 20 Oct: her circle "brows to chin fill the circle, no hair or ears" beside Nana's and the doctor's whole heads with a
-   margin: hers zooms out to her whole face, ears and the top of her hair inside the circle, as theirs are) */
-/* (shared2, the orchestrator on 21 Oct: at 1.3 her circle showed her whole head and shoulders, far wider than Nana's and the doctor's.
-   Measured on her 512 px head: cheeks 0.55 of the picture wide, eyes at 0.43, chin at 0.69. shared3 (the judge, 21 Oct: at 1.5 / 46 %
-   the cut's transparent edges beside her chin showed as white blotches, and her face sat tighter than the doctor's whole head): the
-   largest circle about 34 % down with no transparent pixel in it and inside the picture (measured on all six moods) has a radius of 0.334,
-   so zoom 1.5: her whole head from the crown, her chin at the circle's foot, nothing of the cut's edge inside) */
-.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.5; --face-y: 34%; }
-.hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
-/* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
-   zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */
-.oc-card .oc-face img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]) {
-  transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom));
-  clip-path: circle(calc(50% / var(--face-zoom)) at 50% var(--face-y)); box-shadow: none;
-}
-.oc-card .oc-face:has(> img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]))::before {
-  content: ""; position: absolute; pointer-events: none; border-radius: 50%; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge);
-  inset: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
-}
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
 /* the headline is the family's line and can't be shortened: shrink, then wrap, never "..." */
 .oc-card .oc-headline.fit-wrap, .oc-card .oc-rec-line.fit-wrap { --fit-min: var(--njg-t4); }
@@ -351,7 +297,6 @@
   --oc-p: var(--njg-big-s);
   --oc-row-h: var(--njg-big-row-h);
   --oc-part-h: var(--njg-big-part-h);
-  --oc-face: var(--njg-big-face);
   --oc-gap: var(--njg-s2);
   --oc-indent: calc(var(--njg-indent) * 1.3);
   --oc-tick: var(--njg-tick);
@@ -365,7 +310,7 @@
 .oc-card.oc-closed-big { cursor: inherit; }
 .oc-card.oc-closed-big .oc-ph-row { justify-content: center; padding: 0 var(--njg-s4); background: var(--oc-tint, var(--oc-card)); border-style: dashed; }
 .oc-card.oc-closed-big .oc-ph-row .oc-t { flex: none; font-size: calc(var(--oc-i) * 1.4); line-height: 1; letter-spacing: 0.2em; color: var(--njg-ink-soft); }
-.oc-card.oc-closed-big .oc-head:not(:has(.oc-headline)) { min-height: var(--oc-face); }
+.oc-card.oc-closed-big .oc-head:not(:has(.oc-headline)) { min-height: var(--njg-big-face); }
 
 /* phones (<html data-ff="phone">, js/shared/frame.js): a long part list (a mixed skewer's four pieces) takes two
    columns, read left to right, so the order fits without scrolling */
@@ -486,7 +431,7 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 .njg-rq-along .njg-rq-body > .wc-card { width: 100%; }
 /* a person reading their card out (Cook's read-along): their card's edge and face in the gold */
 .oc-card.speaking:not(.oc-big) { border-color: var(--oc-gold); box-shadow: 0 0 0 var(--njg-line) var(--oc-gold), var(--oc-shadow); }
-.oc-card.speaking .oc-face img { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold); }
+.oc-card.speaking .oc-face .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold); }
 
 /* ---------- the one bubble placement (S04-B; SH-68, CLN-86): Lifecycle.bubble.place sets data-njg-place ----------
    above the speaker's head: the tail points down at it; below (no room above): the tail points up. Cook's #bubble and

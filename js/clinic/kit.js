@@ -154,6 +154,17 @@
     if (!host) return;
     host.querySelectorAll(":scope > .cl-shadow").forEach((n) => n.remove());
   };
+  /**
+   * ART-08 (S13-A2): a person's face circle for a card, the kit's one maker (js/shared/face.js Face.circle, the row size): who
+   * (doctor, girl, patient ...), src (the picture for a person with no cut yet), cls (the clinic's role classes: "cl-face doctor",
+   * "cl-face person", read by the talk and the contract hook). A person with neither a cut nor a picture shows its emoji.
+   */
+  Kit.faceCircle = function (who, src, cls, emoji) {
+    const F = global.Face;
+    const c = F.circle(who, "row", { src: src || null, cls });
+    if (!c.querySelector("img").getAttribute("src") && emoji) c.querySelector("img").replaceWith(Object.assign(global.document.createElement("span"), { className: "njg-face-emoji", textContent: emoji }));
+    return c;
+  };
   /** His face for a box or a card (neutral, talk, laugh, think), as a URL. */
   Kit.doctorFace = function (mood) {
     const A = Kit.doctorArt();
@@ -890,19 +901,22 @@
     if (this.defaultFace && !this.defFaceEl) this.defFaceEl = this.defaultFace();
     const faceEl = this.faceEl || (this.defFaceEl && this.who === "doctor" ? this.defFaceEl : null);
     if (faceEl) {
-      const f = document.createElement("button");
-      f.type = "button";
-      f.className = "oc-face face-say";
-      f.setAttribute("aria-label", "Hear it again");
-      f.appendChild(faceEl);
-      f.insertAdjacentHTML("beforeend", '<span class="say-badge" aria-hidden="true"></span>');
-      f.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (card.onReplay) card.onReplay();
-        card.speak();
-      });
+      // ART-08 (S13-A2): the kit's face circle (js/shared/face.js) in the kit's tap area, the one button kept between redraws
+      // (the request pop-up's big card wears the big circle: one of the three sizes, never its own)
+      if (this.big && faceEl.classList.contains("njg-face-row")) faceEl.classList.replace("njg-face-row", "njg-face-big");
+      const f = global.Face ? global.Face.wrap(faceEl, { cls: "oc-face" }) : null;
+      if (f && !f.__njgCard) {
+        f.__njgCard = card;
+        f.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const k = f.__njgCard;
+          if (k.onReplay) k.onReplay();
+          k.speak();
+        });
+      }
+      if (f) f.__njgCard = card;
       const head = c.querySelector(".oc-head");
-      head.insertBefore(f, head.firstChild);
+      if (f) head.insertBefore(f, head.firstChild);
     }
     if (!rows.length && !faceEl && !this.titleText) c.classList.add("oc-empty");
     // CLN-140 (decision 80): a card that only says the doctor's goal, while he asks on screen in his own bubble (the

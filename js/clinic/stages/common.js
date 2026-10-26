@@ -233,13 +233,7 @@
   };
 
   /** The doctor's face for a card (CLN-150: the real man's face, Kit.doctorFace; neutral, talk, laugh or think). */
-  S.doctorFace = function (mood) {
-    const f = h("div", "cl-face doctor");
-    const img = h("img", "", f);
-    img.alt = "";
-    img.src = Kit.doctorFace(mood || "neutral");
-    return f;
-  };
+  S.doctorFace = (mood) => Kit.faceCircle("doctor", Kit.doctorFace(mood || "neutral"), "cl-face doctor"); // ART-08 (S13-A2): the kit's one face maker
   /**
    * The doctor standing in a room (CLN-150): his real art (Kit.doctorFigure) placed by his feet at cfg {x, y (the feet
    * line), h (his height), z}, as shares of the room picture; his bubbles come from his head. Returns the element.
@@ -251,14 +245,9 @@
   };
   /** A person's face for the card or a bench seat: the rough sprite, else a small greybox figure. */
   S.personFace = function (kind, mood) {
-    const f = h("div", "cl-face person");
+    // ART-08 (S13-A2): the kit's one face maker (Kit.faceCircle, js/shared/face.js); a person with no picture shows its emoji
     const src = Kit.person(kind, mood || "neutral");
-    if (src) {
-      const img = h("img", "", f);
-      img.alt = "";
-      img.src = Kit.url(src);
-    } else f.textContent = { baby: "👶", "old-man": "👴", "old-woman": "👵", girl: "👧", boy: "👦", auntie: "👩", uncle: "👨" }[kind] || "🙂";
-    return f;
+    return Kit.faceCircle(kind, src ? Kit.url(src) : null, "cl-face person", { baby: "👶", "old-man": "👴", "old-woman": "👵", girl: "👧", boy: "👦", auntie: "👩", uncle: "👨" }[kind] || "🙂");
   };
 
   /**

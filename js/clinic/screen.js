@@ -47,13 +47,7 @@
       if (nani && nani.strip) nani.strip(true);
       const cardEl = h("section", "", side);
       /** The doctor's face on his card (= replay): the real man's face (CLN-150, Kit.doctorFace). */
-      const doctorFace = () => {
-        const f = h("div", "cl-face doctor");
-        const img = h("img", "", f);
-        img.alt = "";
-        img.src = Kit.doctorFace("neutral");
-        return f;
-      };
+      const doctorFace = () => Kit.faceCircle("doctor", Kit.doctorFace("neutral"), "cl-face doctor");
       const trayWrap = h("div", "cl-side-tray", side);
       const trayEl = h("div", "", trayWrap);
       // the ? (what do I do here?): the goal for grown-ups, and the first-time help's skip (G7 / CQ15)

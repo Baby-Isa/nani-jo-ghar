@@ -53,7 +53,7 @@ export const screenHTML = () => `
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">
       <div id="nani-card" class="card hidden" role="status" aria-live="polite">
-        <button class="nc-say face-say" type="button" aria-label="Hear it again"><img class="nc-face" src="${v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button>
+        ${window.Face.buttonHtml("nani", "row", { cls: "nc-say", imgCls: "nc-face", alt: "Nani" })}
         <div class="say-slot"></div>
       </div>
     </div>
@@ -72,7 +72,7 @@ export const screenHTML = () => `
        sheet's close-up (nani-face, as in the guide box), so her impatient frown swaps in at the same framing, never the
        half-length badge turning into a tight close-up that reads as someone else -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
-    <div class="pm-nani"><button class="pm-face face-say" type="button" aria-label="Hear it again"><img src="${v("assets/shared/faces/nani.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button><div class="pm-say"></div></div>
+    <div class="pm-nani">${window.Face.buttonHtml("nani", "row", { cls: "pm-face", alt: "Nani" })}<div class="pm-say"></div></div>
     <div class="pm-tray"></div>
   </div>
 </div>

@@ -610,10 +610,7 @@
     const card = screen.card;
     // the doctor's card (his face = replay); from level 3 it's closed: the counts are heard, not read (13c, Cook's
     // rule Q7: written and heard at L1, written at L2, heard only from L3); a tap peeks and counts a hint
-    const face = h("div", "cl-face doctor");
-    const fimg = h("img", "", face);
-    fimg.alt = "";
-    fimg.src = Kit.DOCTOR_FACE;
+    const face = Kit.faceCircle("doctor", Kit.DOCTOR_FACE, "cl-face doctor"); // ART-08 (S13-A2): the kit's one face maker
     card.closed = level >= 3 ? { onPeek: () => (screen.peek ? screen.peek("heal-card") : screen.bulb.use()) } : null;
     card.fold = {};
     // D9 (1 Oct, CLN-44): the card's headline is the doctor's goal (a line to record); the card folds to it with

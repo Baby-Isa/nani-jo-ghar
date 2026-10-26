@@ -345,12 +345,9 @@ export async function runBook(host, api, day) {
   const pg = { l: el("div", "day-pg-box l", book), r: el("div", "day-pg-box r", book) };
   const headRow = el("div", "day-head", book);
   headRow.style.visibility = "hidden"; // (her face shows only with a line: never the circle alone)
-  const face = el("button", "day-face", headRow);
-  face.type = "button";
-  face.setAttribute("aria-label", "");
-  const faceImg = el("img", "", face);
-  faceImg.alt = "";
-  faceImg.src = url(A.face);
+  // ART-08 (S13-A2): her face is the kit's one circle (js/shared/face.js), the big size, in its tap area
+  const face = window.Face.button("nani", "big", { cls: "day-face", src: url(A.face), alt: "", label: "", badge: false });
+  headRow.appendChild(face);
   const headLine = el("div", "day-head-line", headRow);
   const turnBtn = el("button", "day-turn", book);
   turnBtn.type = "button";

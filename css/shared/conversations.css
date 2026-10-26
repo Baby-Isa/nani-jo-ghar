@@ -190,8 +190,8 @@
   .cv-pill .cv-words { font-size: calc(var(--njg-u) * 19); }
 }
 
-/* ART-08 (the judge, 23 Oct): the speaker's face in the bubble is a circle like every other face circle, never a square tile */
-.cv-face img { border-radius: 50%; background: var(--njg-card); box-shadow: 0 0 0 var(--njg-line-2) var(--cv-line); }
+/* ART-08 (S13-A2): the speaker's face in the bubble is the kit's circle (css/shared/face.css), the row size, as on their card */
+.cv-face .njg-face { font-size: initial; }
 /* SH-124 (the judge, 23 Oct: the bounce was 1-2 px): the reply to pick hops a clear 10% of its height and rests at the top a moment
    (translate only: its size never changes) */
 .cv-pill.cv-pick.ob-lit { animation: cv-pick-hop 1s ease-in-out infinite; }

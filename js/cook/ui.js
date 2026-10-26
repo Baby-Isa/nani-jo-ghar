@@ -1408,17 +1408,13 @@
             // CHAI-31 (the judge: "a generic emoji face, not Nana's portrait"): the bubble's face is the speaker's own,
             // as on the order's card (the module redraws its face on every mood: it is put back each time)
             document.querySelectorAll(`.cv-bubble[data-speaker="${id}"] .cv-face`).forEach((f) => {
+              // ART-08 (S13-A2): the kit's one face circle (js/shared/face.js), the row size, as on the card
               const src = faceUrl(cw, kind === "happy" ? "happy" : undefined);
-              if (f.querySelector("img") && f.dataset.face === src) return;
+              if (f.querySelector(".njg-face") && f.dataset.face === src) return;
               f.dataset.face = src;
-              f.textContent = "";
-              const im = document.createElement("img");
-              im.alt = "";
-              im.src = src;
-              im.onerror = () => (im.src = faceUrl(cw));
-              const short = (global.innerHeight || 800) < 520;
-              Object.assign(im.style, { width: short ? "1.8em" : "2.4em", height: short ? "1.8em" : "2.4em", borderRadius: "50%", objectFit: "cover", display: "block" });
-              f.appendChild(im);
+              f.innerHTML = global.Face.html(cw, "row", { src, alt: "" });
+              const im = f.querySelector("img");
+              im.onerror = () => (im.onerror = null, (im.src = faceUrl(cw)));
               // CHAI-31 (the judge: the bubble cut off at the top at 915x412): the face makes it taller than the module placed
               // it for, so it comes down into the screen if it reaches past the top (never clipped: non-negotiable 9)
               const b = f.closest(".cv-bubble");

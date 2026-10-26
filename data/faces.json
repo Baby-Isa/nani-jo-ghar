@@ -1,0 +1,17 @@
+{
+  "_about": "S13-A2 (ART-08; the kit review 2, decision 5, Zafar 26 Oct): the ONE table of face circles. js/shared/face.js Face.circle(who, size) draws every face circle in every game from it: one centred crop per person (the S12 passport sheet sources/art/s12/fc-face-circles-v1.png, cut by one rule round the nose; Zafar passed the likenesses, 23 Oct), three sizes only (row, guide, big: the tokens --njg-face, --njg-guide-face, --njg-big-face). eyeY = the pupils' height as a share of the circle (measured on the cuts; build/sandbox/lib/contract.mjs contract-42 holds it at 0.36-0.48). A person with no cut yet (Cook's other customers) is drawn from the picture the game gives, in the same circle. Moods and mouths (FC2) join here when that art lands.",
+  "sizes": {
+    "row": "face",
+    "guide": "guide-face",
+    "big": "big-face"
+  },
+  "people": {
+    "nani": { "name": "Nani", "src": "assets/shared/faces/nani.webp", "eyeY": 0.40 },
+    "nana": { "name": "Nana", "src": "assets/shared/faces/nana.webp", "eyeY": 0.38 },
+    "doctor": { "name": "Doctor", "src": "assets/shared/faces/doctor.webp", "eyeY": 0.39 },
+    "girl": { "name": "the girl", "src": "assets/shared/faces/girl.webp", "eyeY": 0.41 }
+  },
+  "aliases": {
+    "patient": "girl"
+  }
+}

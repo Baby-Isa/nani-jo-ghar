@@ -12,7 +12,6 @@
   --ng-band: color-mix(in srgb, var(--ng-sage) 88%, var(--njg-black));
   --ng-deep: color-mix(in srgb, var(--ng-sage) 50%, var(--njg-forest));
   --ng-ink: var(--njg-ink);
-  --ng-face: var(--njg-guide-face);
   --ng-band-w: var(--njg-s2);
   position: relative;
   display: grid;
@@ -32,25 +31,12 @@
   box-shadow: var(--njg-shadow);
 }
 .njg-guide::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: var(--ng-band-w); background: var(--ng-band); }
-/* the face: the visible face is --njg-guide-face; the button (its tap area) never under 48 px */
-.njg-guide .ng-face {
-  grid-area: face;
-  width: max(var(--ng-face), var(--njg-face-hit)); height: max(var(--ng-face), var(--njg-face-hit));
-  display: grid; place-items: center;
-}
-.njg-guide .ng-face { position: relative; padding: 0; margin: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.njg-guide .ng-face img { display: block; width: var(--ng-face); height: var(--ng-face); border-radius: 50%; object-fit: cover; object-position: top; background: var(--njg-card); box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card); }
-/* the face = replay: a small speaker badge on its corner (the same as every card's) */
-.njg-guide .ng-face .say-badge {
-  position: absolute; z-index: 3; pointer-events: none;
-  right: calc((max(var(--ng-face), var(--njg-face-hit)) - var(--ng-face)) / 2 - var(--njg-line-2));
-  bottom: calc((max(var(--ng-face), var(--njg-face-hit)) - var(--ng-face)) / 2 - var(--njg-line-2));
-  width: calc(var(--ng-face) * 0.38); aspect-ratio: 1; border-radius: 50%;
-  background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card);
-}
+/* the face: the kit's circle at the guide size in its tap area (js/shared/face.js, css/shared/face.css; ART-08, S13-A2) */
+.njg-guide .ng-face { grid-area: face; }
+.njg-guide .ng-face .njg-face { box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card); }
+.njg-guide .ng-face .say-badge { z-index: 3; }
 .njg-guide .ng-face.on .say-badge { background-color: var(--njg-gold); }
-.njg-guide.talk .ng-face img { animation: var(--njg-talk-anim); } /* the kit's talk (css/shared/focus.css; ART-18) */
+.njg-guide.talk .ng-face .njg-face { animation: var(--njg-talk-anim); } /* the kit's talk (css/shared/focus.css; ART-18) */
 .njg-guide .ng-say { grid-area: say; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
 /* up to 2 lines, shrunk to fit then wrapped (js/shared/fit.js "fit2"), never an ellipsis */
 .njg-guide .ng-line {
@@ -87,10 +73,10 @@
 .njg-guide.muted .ng-mute { background: var(--ng-deep); border-color: var(--ng-deep); color: var(--njg-card); }
 .njg-guide.muted .ng-waves { display: none; }
 .njg-guide.muted .ng-slash { display: inline; }
-.njg-guide.muted .ng-face img { filter: grayscale(.5); opacity: .85; }
+.njg-guide.muted .ng-face .njg-face-img { filter: grayscale(.5); opacity: .85; }
 .njg-guide .ng-mute.flash { animation: ngFlash .35s ease-out; }
 @keyframes ngFlash { 40% { transform: scale(.88); } }
-@media (prefers-reduced-motion: reduce) { .njg-guide.talk .ng-face img, .njg-guide.new .ng-say { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .njg-guide.talk .ng-face .njg-face, .njg-guide.new .ng-say { animation: none; } }
 /* R5: on a phone the top line is tight (the face and two tools in ~190 px): closer gaps first, so the tools only wrap
    under each other when even that isn't enough */
 @media (max-height: 420px) {
@@ -109,5 +95,3 @@
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
 .njg-guide .ng-rec { display: none !important; }
 
-/* ART-08: the speaker badge on the circle's edge, never over the face (as css/shared/order-card.css) */
-.say-badge { transform: translate(34%, 34%); }
