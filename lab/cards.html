@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Card lab: the new word cards in chai</title>
+<!-- Sprint 14 card lab (Zafar, 27 Oct): a mock of chai's screen to try the new word card, order card, helper card and pop-out on
+     a phone and a laptop. Rough on purpose: nothing here is wired to the game. Two layouts switched by height (500 px), each
+     scaling smoothly; drag a laptop window small to see the phone layout. The gear (bottom left) holds the options, numbered. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="../css/shared/tokens.css">
+<style>
+  :root {
+    --maroon: #7d2234; --maroon-hi: #9a2c43; --maroon-lo: #5e1726;
+    --ink: #2a2522; --ink-soft: #7a6857; --cream: #fffaf0; --cream-2: #fbf3e6; --edge: #e9dcc6; --page: #f3ebde;
+    --gold: #c9962e; --nani-bg: #e3ece0; --nani-edge: #9db48a;
+    --kfont: "Fraunces", Georgia, serif;
+    --side-w: clamp(270px, 27vw, 410px);
+    --pad: clamp(8px, 1.1vw, 16px);
+    --gap: clamp(6px, 0.8vw, 12px);
+    --tap: 44px;
+  }
+  html.font-b { --kfont: "Baloo 2", system-ui, sans-serif; }
+  html.phone { --side-w: clamp(250px, 34vw, 340px); --pad: 6px; --gap: 6px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--page); color: var(--ink); font: 600 15px/1.3 Nunito, system-ui, sans-serif; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+  button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+  .app { display: grid; grid-template-columns: var(--side-w) 1fr; height: 100dvh; }
+
+  /* ---------- the side panel ---------- */
+  .side { display: flex; flex-direction: column; gap: var(--gap); padding: var(--pad); min-height: 0; background: var(--page); border-right: 1px solid var(--edge); position: relative; }
+  .face { --d: clamp(40px, 4.2vw, 60px); position: relative; flex: none; width: var(--d); height: var(--d); padding: 0; border: 0; background: none; border-radius: 50%; }
+  html.phone .face { --d: 40px; }
+  .face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 0 3px #fff, 0 2px 6px rgba(60, 40, 20, 0.18); }
+  /* the speaker badge: its centre exactly on the face circle's edge, lower left (SH-140) */
+  .face .badge { --b: calc(var(--d) * 0.42); position: absolute; width: var(--b); height: var(--b); left: calc(var(--d) * 0.1464 - var(--b) / 2); top: calc(var(--d) * 0.8536 - var(--b) / 2); border-radius: 50%; background: var(--ink) no-repeat center / 58% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+  .k-word { color: var(--maroon); }
+
+  /* Nani's box and the helper card (SH-149): her line beside her head; the arrow opens the hint in place */
+  .nani { flex: none; background: var(--nani-bg); border-left: 6px solid var(--nani-edge); border-radius: 16px; padding: var(--pad); box-shadow: 0 6px 16px rgba(60, 70, 50, 0.1); }
+  .nani-head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--gap); }
+  .nani-line { margin: 0; font: 800 clamp(16px, 1.6vw, 24px)/1.15 "Baloo 2", system-ui, sans-serif; color: var(--ink); text-wrap: balance; }
+  .arrow { width: var(--tap); height: var(--tap); border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.75); display: grid; place-items: center; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+  .arrow svg { width: 22px; height: 22px; transition: transform 0.35s; }
+  .nani.open .arrow svg { transform: rotate(180deg); }
+  .nani-help { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.3, 0.7, 0.2, 1); }
+  .nani.open .nani-help { grid-template-rows: 1fr; }
+  .nani-help > div { min-height: 0; overflow: hidden; }
+  .nani-help .wc { margin-top: var(--gap); opacity: 0; transform: translateY(-8px); transition: opacity 0.3s 0.1s, transform 0.3s 0.1s; }
+  .nani.open .nani-help .wc { opacity: 1; transform: none; }
+
+  /* ---------- the orders: one under the other, the next one peeking; scroll without a bar ---------- */
+  .orders { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: var(--gap); padding-bottom: 18px; -webkit-mask-image: linear-gradient(#000 calc(100% - 22px), transparent); mask-image: linear-gradient(#000 calc(100% - 22px), transparent); }
+  .orders::-webkit-scrollbar, .items::-webkit-scrollbar { display: none; }
+  .order { flex: none; background: #fffdf9; border-radius: 16px; padding: var(--pad); box-shadow: 0 6px 16px rgba(80, 50, 20, 0.08); }
+  .order-head { display: flex; align-items: center; gap: var(--gap); }
+  .order-line { margin: 0; flex: 1; font: 800 clamp(16px, 1.55vw, 23px)/1.15 "Baloo 2", system-ui, sans-serif; text-wrap: balance; }
+  .order .tick { display: none; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--gold) no-repeat center / 60% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  .order.done .tick { display: block; }
+  .order.done .items { display: none; }
+  .order.done { padding-block: calc(var(--pad) * 0.6); }
+  .items { margin-top: var(--gap); }
+
+  /* the word card's parts, shared by every card (SH-147) */
+  .wc, .it { container-type: inline-size; position: relative; }
+  .pic { position: relative; overflow: hidden; border-radius: 14px; background: radial-gradient(120% 90% at 50% 35%, #fffaf1, #f1e4cd); }
+  .pic img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; transition: filter 0.35s, transform 0.35s; filter: drop-shadow(0 6px 8px rgba(80, 50, 20, 0.18)); }
+  .k { font-family: var(--kfont); font-weight: 700; color: var(--maroon); line-height: 1.04; text-wrap: balance; overflow-wrap: normal; margin: 0; }
+  .en { font-family: Nunito, system-ui, sans-serif; font-weight: 700; color: var(--ink); line-height: 1.15; white-space: nowrap; margin: 0; }
+  .en.wrap { white-space: normal; }
+  .spk { border: 0; padding: 0; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, var(--maroon-hi), var(--maroon) 55%, var(--maroon-lo)); color: #fff; }
+  .spk svg { width: 46%; height: 46%; }
+  .spk:active { transform: scale(0.94); }
+  .spk.on { animation: spkPulse 0.9s ease-out; }
+  @keyframes spkPulse { 0% { box-shadow: 0 0 0 0 rgba(125, 34, 52, 0.45); } 100% { box-shadow: 0 0 0 18px rgba(125, 34, 52, 0); } }
+  /* hidden (SH-147): a strong blur, the picture's frosted eye; round dots for a word, a tap on the dots shows it for 3 s */
+  .hide-pic .pic img { filter: blur(16px) saturate(0.55) brightness(1.06); transform: scale(1.12); }
+  .hide-pic .pic.peek img { filter: drop-shadow(0 6px 8px rgba(80, 50, 20, 0.18)); transform: none; }
+  .eye { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: 60px; min-height: var(--tap); width: 34%; aspect-ratio: 1.6; border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); place-items: center; box-shadow: 0 4px 14px rgba(80, 50, 20, 0.12); }
+  .eye svg { width: 46%; max-width: 40px; opacity: 0.7; }
+  .hide-pic .pic:not(.peek) .eye { display: grid; }
+  .dots { display: none; border: 0; background: none; padding: 4px 6px; gap: 0.32em; align-items: center; justify-content: center; min-height: var(--tap); }
+  .dots i { display: block; width: 0.42em; height: 0.42em; border-radius: 50%; background: currentColor; }
+  .hide-k .k:not(.peek) { display: none; }
+  .hide-k .dots.k-dots:not(.gone) { display: flex; }
+  .hide-en .en:not(.peek) { display: none; }
+  .hide-en .dots.en-dots:not(.gone) { display: flex; }
+  .k-dots { color: var(--maroon); }
+  .en-dots { color: #9a8b78; font-size: 0.8em; }
+
+  /* the default card (his image 1): the pop-out and the helper card */
+  .wc { background: linear-gradient(#fffdf8, var(--cream-2)); border-radius: 22px; box-shadow: 0 12px 30px rgba(80, 50, 20, 0.16), 0 2px 6px rgba(80, 50, 20, 0.08); text-align: center; }
+  /* (cq units measure the nearest container ABOVE an element: the card is the container, so its padding lives on .in) */
+  .wc > .in { padding: 5cqi; display: flex; flex-direction: column; align-items: center; gap: 2.4cqi; }
+  .wc .pic { width: 100%; aspect-ratio: 4 / 3; }
+  .wc .lab { display: flex; align-items: center; justify-content: center; gap: 3cqi; width: 100%; font: 800 clamp(9px, 3.4cqi, 14px)/1 Nunito, sans-serif; letter-spacing: 0.22em; color: #6e5f50; }
+  .wc .lab::before, .wc .lab::after { content: ""; flex: 0 0 11cqi; height: 1.5px; background: #dccbae; }
+  .wc .lab span { background: #f1e7d6; border-radius: 999px; padding: 0.55em 1.1em 0.5em; }
+  .wc .k { font-size: clamp(22px, 15cqi, 64px); }
+  .wc .en { font-size: clamp(14px, 7.4cqi, 30px); }
+  .wc .k-dots { font-size: clamp(22px, 13cqi, 56px); }
+  .wc .spk { width: clamp(48px, 25cqi, 112px); aspect-ratio: 1; border-radius: 50%; margin-top: 1.5cqi; box-shadow: 0 0 0 6px #fff7ea, 0 0 0 7.5px var(--edge), 0 10px 22px rgba(125, 34, 52, 0.32); }
+  /* small: no labels, a shorter picture, room for the Kutchi to wrap */
+  .wc.small .lab { display: none; }
+  .wc.small .pic { aspect-ratio: 16 / 10; }
+  /* side by side (the phone's helper card): picture left, words and speaker right */
+  .wc.side { text-align: left; border-radius: 16px; }
+  .wc.side > .in { display: grid; grid-template-columns: 34% 1fr auto; align-items: center; padding: 3cqi; gap: 3cqi; }
+  .wc.side .lab { display: none; }
+  .wc.side .pic { aspect-ratio: 1; }
+  .wc.side .words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }
+  .wc.side .k { font-size: clamp(18px, 9cqi, 40px); }
+  .wc.side .en { font-size: clamp(13px, 5.2cqi, 22px); }
+  .wc.side .k-dots { font-size: clamp(18px, 8cqi, 36px); justify-content: flex-start; }
+  .wc.side .en-dots { justify-content: flex-start; }
+  .wc.side .spk { width: clamp(44px, 16cqi, 72px); margin: 0 1cqi 0 0; box-shadow: 0 0 0 4px #fff7ea, 0 0 0 5px var(--edge), 0 6px 14px rgba(125, 34, 52, 0.28); }
+  .wc:not(.side) .words { display: contents; }
+
+  /* ---------- the order's item cards (SH-148) ---------- */
+  .it > .in { height: 100%; }
+  .it { background: #fffdf8; border-radius: 14px; box-shadow: 0 3px 10px rgba(80, 50, 20, 0.09); border: 1.5px solid transparent; transition: opacity 0.25s; }
+  .it.slot { visibility: hidden; }
+  .it .k { font-size: clamp(16px, 13cqi, 30px); }
+  .it .en { font-size: clamp(12px, 8cqi, 18px); }
+  .it .k-dots { font-size: clamp(16px, 12cqi, 28px); }
+  .it.done::after { content: ""; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold) no-repeat center / 60% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+  .it.done { border-color: rgba(201, 150, 46, 0.55); }
+  .it.no { border: 1.5px dashed #c8b79c; background: transparent; box-shadow: none; }
+  .it.no .pic::after { content: ""; position: absolute; inset: 18%; border: 4px solid rgba(125, 34, 52, 0.7); border-radius: 50%; background: linear-gradient(135deg, transparent calc(50% - 2px), rgba(125, 34, 52, 0.7) calc(50% - 2px), rgba(125, 34, 52, 0.7) calc(50% + 2px), transparent calc(50% + 2px)); }
+  /* big screens: a column; the picture left, the words right, the speaker a bar along the card's foot */
+  html:not(.phone) .items { display: flex; flex-direction: column; gap: var(--gap); }
+  html:not(.phone) .it > .in { display: grid; grid-template-columns: 30% 1fr; grid-template-areas: "pic words" "bar bar"; gap: 3cqi 5cqi; padding: 3.5cqi; }
+  html:not(.phone) .it .pic { grid-area: pic; aspect-ratio: 1; }
+  html:not(.phone) .it .words { grid-area: words; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 1.5cqi; }
+  html:not(.phone) .it .dots { justify-content: flex-start; padding-left: 0; }
+  html:not(.phone) .it .spk { grid-area: bar; height: clamp(36px, 12cqi, 50px); border-radius: 12px; }
+  html:not(.phone) .it .spk svg { width: auto; height: 62%; }
+  /* phones: a sideways row that scrolls, the third card going behind a soft shadow (no scroll bar) */
+  html.phone .items { display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 4px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); }
+  html.phone .items.at-end { -webkit-mask-image: none; mask-image: none; }
+  html.phone .it { flex: 0 0 calc((100% - 2 * var(--gap)) / 2.45); scroll-snap-align: start; }
+  html.phone .it > .in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2cqi; padding: 5cqi 5cqi 6cqi; }
+  html.phone .it .pic { width: 100%; aspect-ratio: 4 / 3; }
+  html.phone .it .words { display: flex; flex-direction: column; align-items: center; gap: 1cqi; width: 100%; min-width: 0; }
+  html.phone .it .k { font-size: clamp(15px, 15cqi, 24px); }
+  html.phone .it .en { font-size: clamp(11px, 10cqi, 15px); }
+  html.phone .it .spk { width: clamp(38px, 32cqi, 48px); aspect-ratio: 1; border-radius: 50%; }
+
+  /* ---------- the play area: the counter, Nana, his bubble, the pop-out ---------- */
+  .play { position: relative; overflow: hidden; min-width: 0; background: #e9dcc8 url(../assets/cook/bg/service-master-v1.webp) no-repeat 50% 64% / cover; }
+  .nana { position: absolute; transform: translateX(-50%); pointer-events: none; }
+  .bubble { position: absolute; background: #fffdf8; border-radius: 18px; padding: 0.45em 0.8em; font: 800 clamp(17px, 2vw, 30px)/1.1 "Baloo 2", sans-serif; box-shadow: 0 6px 18px rgba(60, 40, 20, 0.18); white-space: nowrap; opacity: 0; transform: scale(0.9); transform-origin: 0 100%; transition: opacity 0.2s, transform 0.2s; display: flex; align-items: center; gap: 0.4em; }
+  .bubble.on { opacity: 1; transform: none; }
+  .bubble::after { content: ""; position: absolute; left: 14px; bottom: -11px; border: 12px solid transparent; border-top-color: #fffdf8; border-bottom: 0; transform: skewX(-25deg); }
+  .bubble .bspk { width: 1.3em; height: 1.3em; border-radius: 50%; background: #f1e7d6; display: grid; place-items: center; border: 0; }
+  .bubble .bspk svg { width: 60%; height: 60%; }
+  .pop { position: absolute; z-index: 20; }
+  .flyer { position: fixed; z-index: 50; pointer-events: none; transform-origin: 0 0; margin: 0; }
+
+  /* ---------- the lab's gear and options (grown-ups only) ---------- */
+  .gear { position: fixed; right: 10px; top: 10px; z-index: 60; width: var(--tap); height: var(--tap); border-radius: 50%; border: 0; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); display: grid; place-items: center; }
+  .gear svg { width: 24px; height: 24px; }
+  .opts { position: fixed; right: 10px; top: calc(var(--tap) + 16px); z-index: 61; width: min(380px, calc(100vw - 2 * var(--pad))); max-height: calc(100dvh - var(--tap) - 26px); overflow: auto; background: #fff; border-radius: 14px; padding: 10px 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); font: 600 13px/1.3 Nunito, sans-serif; display: none; }
+  .opts.on { display: block; }
+  .opts h3 { margin: 10px 0 4px; font-size: 13px; color: var(--ink-soft); }
+  .opts h3:first-child { margin-top: 0; }
+  .opts .row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .opts button { border: 1px solid var(--edge); background: #fffaf2; border-radius: 10px; padding: 6px 10px; min-height: 36px; }
+  .opts button.sel { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .opts .go { background: var(--maroon); color: #fff; border-color: var(--maroon); }
+  .opts .size { font-size: 12px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <section class="nani" id="nani">
+      <div class="nani-head">
+        <button class="face" type="button" aria-label="Hear Nani"><img src="../assets/shared/faces/nani.webp" alt="Nani"><span class="badge"></span></button>
+        <p class="nani-line" id="naniLine"></p>
+        <button class="arrow" id="arrow" type="button" aria-label="Help" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="#2a2522" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+      <div class="nani-help"><div id="helpSlot"></div></div>
+    </section>
+    <div class="orders" id="orders"></div>
+  </aside>
+  <main class="play" id="play">
+    <img class="nana" id="nana" src="../assets/cook/characters/nana-neutral.webp" alt="">
+    <div class="bubble" id="bubble"><button class="bspk" type="button" aria-label="Hear it"><svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#2a2522"/><path d="M15.5 8.5a4.5 4.5 0 0 1 0 7" stroke="#2a2522" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></button><span id="bubbleText"></span></div>
+  </main>
+</div>
+
+<button class="gear" id="gear" type="button" aria-label="Lab options"><svg viewBox="0 0 24 24" fill="none" stroke="#2a2522" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<div class="opts" id="opts"></div>
+
+<script>
+(function () {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const SPK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" fill="currentColor"/><path d="M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
+  const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="#2a2522" stroke-width="2"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3.2"/></svg>';
+  const IT = "../assets/cook/items/";
+  // real words only (data/lang/lexicon.json); the sentences are the game's own (Sprint 13, 27 Oct)
+  const W = {
+    paani: { k: "paani", en: "water", pic: IT + "shelf-cook-paani-bare-f.webp" },
+    chai: { k: "chai", en: "tea", pic: IT + "shelf-cook-chai-bare-f.webp" },
+    dudh: { k: "dudh", en: "milk", pic: IT + "shelf-cook-dudh-bare-f.webp" },
+    khun: { k: "hakro khun", en: "one sugar", pic: IT + "shelf-cook-khun-bare-f.webp" },
+    aadu: { k: "aadu", en: "ginger", pic: IT + "shelf-aadu-jar-v2-f.webp" },
+    nodudh: { k: "dudh na", en: "no milk", pic: IT + "shelf-cook-dudh-bare-f.webp", no: true },
+    long: { k: "fudino ji chutney", en: "mint chutney", pic: "../assets/items/bowl-empty.png" },
+  };
+  const ORDERS = [
+    { who: "nana", face: "../assets/shared/faces/nana.webp", line: 'Muke <span class="k-word">chai</span> khape.', items: ["paani", "chai", "dudh", "khun"] },
+    { who: "ali", face: "../assets/cook/characters/cousin-face.webp", line: 'Muke <span class="k-word">aadu</span> waari <span class="k-word">chai</span> khape.', items: ["paani", "chai", "aadu", "nodudh"] },
+  ];
+  const NANI = { khun: 'Khun wiji chad!' };
+
+  // ---- options (numbered, so Zafar can answer "1B, 3C"); URL ?layout=&font=&stage=&pop=&help=&done=&long= ----
+  const OPTS = [
+    { key: "layout", n: 1, title: "Layout", vals: [["auto", "A by height"], ["phone", "B phone"], ["big", "C big screen"]] },
+    { key: "font", n: 2, title: "Kutchi font", vals: [["a", "A serif (mock-up)"], ["b", "B rounded (today)"]] },
+    { key: "stage", n: 3, title: "Word stage", vals: [["1", "A all shown"], ["2", "B English dotted"], ["3", "C + picture blurred"], ["4", "D + Kutchi dotted"]] },
+    { key: "pop", n: 4, title: "Where the card pops out", vals: [["panel", "A by the side panel"], ["bubble", "B beside the speaker"], ["middle", "C the middle"]] },
+    { key: "help", n: 5, title: "Helper card", vals: [["auto", "A stacked (side by side on a phone)"], ["stack", "B always stacked"], ["side", "C always side by side"]] },
+    { key: "done", n: 6, title: "First order", vals: [["0", "A being made"], ["1", "B done (folded)"]] },
+    { key: "long", n: 7, title: "Longest words test", vals: [["0", "A off"], ["1", "B on"]] },
+  ];
+  const q = new URLSearchParams(location.search);
+  const S = {};
+  OPTS.forEach((o) => (S[o.key] = o.vals.some((v) => v[0] === q.get(o.key)) ? q.get(o.key) : o.vals[0][0]));
+  if (q.get("open") === "1") S.open = true;
+
+  // ---- building the cards ----
+  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+  const dots = (n, cls) => { const b = el("button", "dots " + cls); b.type = "button"; b.setAttribute("aria-label", "Show the word"); for (let i = 0; i < n; i++) b.appendChild(el("i")); return b; };
+  const word = (id) => (S.long === "1" && id === "khun" ? W.long : W[id]);
+  function parts(w, card) {
+    const pic = el("div", "pic", `<img alt="" src="${w.pic}" draggable="false"><button class="eye" type="button" aria-label="Show the picture">${EYE}</button>`);
+    const k = el("p", "k", w.k);
+    const en = el("p", "en", w.en);
+    const kd = dots(Math.max(3, Math.min(6, w.k.replace(/\s/g, "").length - 1)), "k-dots");
+    const ed = dots(Math.max(3, Math.min(6, w.en.replace(/\s/g, "").length - 1)), "en-dots");
+    const spk = el("button", "spk", SPK); spk.type = "button"; spk.setAttribute("aria-label", "Hear the word");
+    spk.addEventListener("click", () => say(w.k, spk));
+    const peek = (a, b) => () => { a.classList.add("peek"); b.classList.add("gone"); fit(card); setTimeout(() => { a.classList.remove("peek"); b.classList.remove("gone"); }, 3000); };
+    kd.addEventListener("click", peek(k, kd));
+    ed.addEventListener("click", peek(en, ed));
+    pic.querySelector(".eye").addEventListener("click", () => { pic.classList.add("peek"); setTimeout(() => pic.classList.remove("peek"), 3000); });
+    return { pic, k, en, kd, ed, spk };
+  }
+  function stageCls(c) {
+    const s = +S.stage;
+    c.classList.toggle("hide-en", s >= 2);
+    c.classList.toggle("hide-pic", s >= 3);
+    c.classList.toggle("hide-k", s >= 4);
+  }
+  /** The default card (image 1): pop-out and helper. variant: "" | "small" | "side". */
+  function bigCard(id, variant) {
+    const w = word(id);
+    const c = el("div", "wc" + (variant ? " " + variant : ""));
+    const p = parts(w, c);
+    const words = el("div", "words");
+    words.append(el("div", "lab", "<span>KUTCHI</span>"), p.k, p.kd, el("div", "lab", "<span>ENGLISH</span>"), p.en, p.ed);
+    const inn = el("div", "in"); inn.append(p.pic, words, p.spk); c.append(inn);
+    stageCls(c);
+    return c;
+  }
+  /** An order's item card: the phone's row card or the big screen's row with the speaker bar. */
+  function itemCard(id) {
+    const w = word(id);
+    const c = el("div", "it" + (w.no ? " no" : ""));
+    c.dataset.id = id;
+    const p = parts(w, c);
+    const words = el("div", "words");
+    words.append(p.k, p.kd, p.en, p.ed);
+    const inn = el("div", "in"); inn.append(p.pic, words, p.spk); c.append(inn);
+    stageCls(c);
+    return c;
+  }
+
+  // ---- fitting: a word shrinks to fit its line and never leaves its card (SH-142); the Kutchi may wrap to two lines ----
+  function fitOne(e, minPx, maxLines) {
+    if (!e || !e.isConnected || !e.offsetParent) return;
+    e.style.fontSize = "";
+    e.classList.remove("wrap");
+    let fs = parseFloat(getComputedStyle(e).fontSize);
+    const lh = () => parseFloat(getComputedStyle(e).lineHeight) || fs * 1.1;
+    const over = () => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().height > lh() * maxLines + 2;
+    let n = 0;
+    while (over() && fs > minPx && n++ < 60) { fs -= 1; e.style.fontSize = fs + "px"; }
+    if (over() && e.classList.contains("en")) e.classList.add("wrap"); // the last resort: wrap, never spill
+  }
+  function fit(root) {
+    (root || document).querySelectorAll(".k").forEach((e) => fitOne(e, 11, 2));
+    (root || document).querySelectorAll(".en").forEach((e) => fitOne(e, 10, 1));
+  }
+
+  // ---- the device voice, testing only (non-negotiable 2: never in a store build) ----
+  function say(text, btn) {
+    if (btn) { btn.classList.remove("on"); void btn.offsetWidth; btn.classList.add("on"); }
+    try { if (S.voice && window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 0.85; speechSynthesis.speak(u); } } catch (e) { /* no voice */ }
+  }
+
+  // ---- the screen ----
+  function layout() {
+    const phone = S.layout === "phone" || (S.layout === "auto" && innerHeight <= 500);
+    document.documentElement.classList.toggle("phone", phone);
+    document.documentElement.classList.toggle("font-b", S.font === "b");
+    return phone;
+  }
+  function buildSide() {
+    $("#naniLine").innerHTML = '<span class="k-word">Khun</span> wiji chad!';
+    const helpVariant = S.help === "stack" ? "" : S.help === "side" ? "side" : document.documentElement.classList.contains("phone") ? "side" : "";
+    const slot = $("#helpSlot"); slot.innerHTML = ""; slot.appendChild(bigCard("khun", helpVariant));
+    $("#nani").classList.toggle("open", !!S.open);
+    $("#arrow").setAttribute("aria-expanded", S.open ? "true" : "false");
+    const box = $("#orders"); box.innerHTML = "";
+    ORDERS.forEach((o, i) => {
+      const card = el("article", "order" + (i === 0 && S.done === "1" ? " done" : ""));
+      card.innerHTML = `<div class="order-head"><button class="face" type="button" aria-label="Hear the order"><img src="${o.face}" alt=""><span class="badge"></span></button><p class="order-line">${o.line}</p><span class="tick"></span></div>`;
+      const items = el("div", "items");
+      o.items.forEach((id, j) => { const c = itemCard(id); if (i === 0 && j < 2) c.classList.add("done"); items.appendChild(c); });
+      items.addEventListener("scroll", () => items.classList.toggle("at-end", items.scrollLeft + items.clientWidth >= items.scrollWidth - 4), { passive: true });
+      card.appendChild(items);
+      box.appendChild(card);
+    });
+  }
+  // the bubble: from Nana's head into the free space to its top right (SH-145's rule, by hand here: one scene)
+  // the background is the kitchen master (2100x1350, cover, at 50% 64%): its island's back edge at y 1058, its middle at x 1050
+  function placeNana() {
+    const play = $("#play"), W = play.clientWidth, H = play.clientHeight, s = Math.max(W / 2100, H / 1350);
+    const ox = (2100 * s - W) * 0.5, oy = (1350 * s - H) * 0.64, n = $("#nana");
+    n.style.height = 520 * s + "px"; n.style.left = 1050 * s - ox + "px"; n.style.top = 1058 * s - oy - 520 * s * 0.93 + "px";
+  }
+  function placeBubble() {
+    const play = $("#play").getBoundingClientRect(), n = $("#nana").getBoundingClientRect(), b = $("#bubble");
+    const headX = n.left + n.width * 0.62 - play.left, headTop = n.top + n.height * 0.04 - play.top;
+    const left = Math.min(headX + 6, play.width - b.offsetWidth - 10);
+    const top = Math.max(8, headTop - b.offsetHeight - 6);
+    b.style.left = left + "px"; b.style.top = top + "px";
+  }
+  function render() {
+    layout();
+    buildSide();
+    requestAnimationFrame(() => { placeNana(); fit(); placeBubble(); });
+    buildOpts();
+  }
+
+  // ---- the order arrives: the bubble says it, each word pops out big, then moves and turns into its card ----
+  let playing = false;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  function popRect(card) {
+    const play = $("#play").getBoundingClientRect(), side = document.querySelector(".side").getBoundingClientRect();
+    const w = Math.min(300, play.height * 0.6, play.width * 0.42);
+    card.style.width = w + "px";
+    const h = card.offsetHeight;
+    const bub = $("#bubble").getBoundingClientRect(), nana = $("#nana").getBoundingClientRect();
+    if (S.pop === "panel") return { left: side.right + 14, top: Math.max(play.top + 10, Math.min(play.top + 10, play.bottom - h - 10)) };
+    if (S.pop === "bubble") {
+      // beside the bubble, never over it or Nana's face: right of the bubble, else left of Nana, else under the bubble
+      const top = Math.max(play.top + 10, Math.min(bub.top, play.bottom - h - 10));
+      if (bub.right + 12 + w <= play.right - 10) return { left: bub.right + 12, top };
+      if (nana.left + nana.width * 0.2 - 12 - w >= play.left + 10) return { left: nana.left + nana.width * 0.2 - 12 - w, top };
+      return { left: play.left + 10, top: play.top + (play.height - h) / 2 }; // a phone: the space left of Nana
+    }
+    return { left: play.left + (play.width - w) / 2, top: play.top + (play.height - h) / 2 };
+  }
+  async function playOrder() {
+    if (playing) return;
+    playing = true;
+    S.done = "0"; render();
+    const order = document.querySelector(".order");
+    const slots = [...order.querySelectorAll(".it")];
+    slots.forEach((s) => { s.classList.add("slot"); s.classList.remove("done"); });
+    const bubble = $("#bubble"), bt = $("#bubbleText");
+    bt.innerHTML = 'Muke <span class="k-word">chai</span> khape,'; bubble.classList.add("on"); placeBubble();
+    say("Muke chai khape"); await wait(1300);
+    for (const s of slots) {
+      const w = word(s.dataset.id);
+      bt.innerHTML = `<span class="k-word">${w.k}</span>,`; placeBubble(); say(w.k);
+      const big = bigCard(s.dataset.id, ""); big.classList.add("pop");
+      document.body.appendChild(big); big.style.position = "fixed";
+      const r = popRect(big); big.style.left = r.left + "px"; big.style.top = r.top + "px";
+      fit(big);
+      big.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380, easing: "cubic-bezier(.2,.8,.2,1)" });
+      await wait(1500);
+      // SH-144: one move, the big card turning into the row card as it travels (never a fade out and in again)
+      s.scrollIntoView({ block: "nearest", inline: "nearest" });
+      await morph(big, s);
+      big.remove(); s.classList.remove("slot");
+    }
+    bt.innerHTML = 'Muke <span class="k-word">chai</span> khape.'; placeBubble();
+    await wait(1600); bubble.classList.remove("on");
+    playing = false;
+  }
+  async function morph(from, to) {
+    const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+    const ghost = to.cloneNode(true); ghost.classList.remove("slot"); ghost.classList.add("flyer");
+    Object.assign(ghost.style, { left: b.left + "px", top: b.top + "px", width: b.width + "px", height: b.height + "px" });
+    document.body.appendChild(ghost);
+    const sx = a.width / b.width, sy = a.height / b.height, dx = a.left - b.left, dy = a.top - b.top;
+    const ease = "cubic-bezier(.45,.05,.2,1)", dur = 650;
+    from.style.transformOrigin = "0 0";
+    const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 0.85, offset: 0.35 }, { transform: `translate(${-dx}px, ${-dy}px) scale(${1 / sx}, ${1 / sy})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
+    const g = ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
+    await Promise.all([f.finished, g.finished]);
+    ghost.remove();
+  }
+
+  // ---- the helper card: the arrow, or a hint after the wait ----
+  $("#arrow").addEventListener("click", () => { S.open = !S.open; $("#nani").classList.toggle("open", S.open); $("#arrow").setAttribute("aria-expanded", S.open ? "true" : "false"); setTimeout(() => fit($("#helpSlot")), 60); });
+
+  // ---- the options panel ----
+  function buildOpts() {
+    const box = $("#opts");
+    const phone = document.documentElement.classList.contains("phone");
+    box.innerHTML = `<div class="size">Screen ${innerWidth}×${innerHeight}: ${phone ? "phone" : "big-screen"} layout. Tell me the numbers you like, e.g. "2A, 4B".</div>`;
+    OPTS.forEach((o) => {
+      box.appendChild(el("h3", null, `${o.n}. ${o.title}`));
+      const row = el("div", "row");
+      o.vals.forEach(([v, label]) => {
+        const b = el("button", S[o.key] === v ? "sel" : "", label); b.type = "button";
+        b.addEventListener("click", () => { S[o.key] = v; render(); });
+        row.appendChild(b);
+      });
+      box.appendChild(row);
+    });
+    box.appendChild(el("h3", null, "Try it"));
+    const row = el("div", "row");
+    const btn = (label, fn, cls) => { const b = el("button", cls || "", label); b.type = "button"; b.addEventListener("click", fn); row.appendChild(b); };
+    btn("▶ Play the order", () => { $("#opts").classList.remove("on"); playOrder(); }, "go");
+    btn("Nani's hint", () => { S.open = !S.open; render(); });
+    btn(S.voice ? "Voice: on (device, testing)" : "Voice: off", () => { S.voice = !S.voice; buildOpts(); });
+    box.appendChild(row);
+  }
+  $("#gear").addEventListener("click", () => $("#opts").classList.toggle("on"));
+  let rz = 0;
+  addEventListener("resize", () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(render); });
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(render);
+  render();
+  window.CardLab = { S, render, playOrder };
+})();
+</script>
+</body>
+</html>
