@@ -50,6 +50,16 @@ one place, the shared tokens (`css/shared/tokens.css`, "type"); the modes move o
 Next, in this order: (1) chai's onboarding, redone in the same lab way at the four sizes; (2) the principles from chai locked as
 the rulebook; (3) a plan to adapt and roll the new styling out to the other Cook stations and the clinic.
 
+## Card lab round 4 and the onboarding lab (Zafar, 27 Oct night)
+Kept: the Kutchi sits on its English (option 8A). Fixed: a hidden word keeps its place and size, its dots drawn over it (the big
+card's style: big maroon dots for Kutchi, small grey for English), so a peek moves nothing; even spacing in the item card (padding =
+picture to Kutchi = speaker to foot); every speaker, face and bubble plays (the game's stand-in testing voice, word by word, the
+device voice for the rest; testing only). The onboarding lab ("Play chai" in the gear): the gold ripple target in place of the
+hand, sized to its thing; the light hugs the picture; the first two items lit, then the light moves to the order card for a
+moment (CHAI-37); the child alone after that, Nani's hint after the level's wait, the first hint teaching the arrow; the knob lit
+to light the cooker, and again only once the chai reaches the green (CHAI-36); the glass lit for the pour; the first time words are
+dotted, the help shows "tap the dots" once. A wrong pick shakes, no verdict. Options 9 (new or returning player) and 10 (level).
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 

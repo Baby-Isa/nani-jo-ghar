@@ -87,14 +87,17 @@
   .eye { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: 60px; min-height: var(--tap); width: 34%; aspect-ratio: 1.6; border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); place-items: center; box-shadow: 0 4px 14px rgba(80, 50, 20, 0.12); }
   .eye svg { width: 46%; max-width: 40px; opacity: 0.7; }
   .hide-pic .pic:not(.peek) .eye { display: grid; }
-  .dots { display: none; border: 0; background: none; padding: 4px 6px; gap: 0.32em; align-items: center; justify-content: center; min-height: var(--tap); }
-  .dots i { display: block; width: 0.42em; height: 0.42em; border-radius: 50%; background: currentColor; }
-  .hide-k .k:not(.peek) { display: none; }
-  .hide-k .dots.k-dots:not(.gone) { display: flex; }
-  .hide-en .en:not(.peek) { display: none; }
-  .hide-en .dots.en-dots:not(.gone) { display: flex; }
-  .k-dots { color: var(--maroon); }
-  .en-dots { color: #9a8b78; font-size: 0.8em; }
+  /* a word's slot: the word keeps its place and size when hidden; its dots draw over that same place (no jump on a peek) */
+  .slot { position: relative; display: grid; place-items: center; max-width: 100%; min-width: 0; }
+  .dots { display: none; position: absolute; inset: -8px -2px; border: 0; background: none; padding: 0; gap: 0.3em; align-items: center; justify-content: center; }
+  .dots i { display: block; flex: none; border-radius: 50%; background: currentColor; }
+  .k-dots { color: var(--c-kutchi); z-index: 2; } /* the Kutchi's tap area wins over the English's just below it */
+  .en-dots { inset: -2px -2px -8px; }
+  .k-dots i { width: 0.5em; height: 0.5em; }
+  .en-dots { color: #8f8070; gap: 0.38em; }
+  .en-dots i { width: 0.36em; height: 0.36em; }
+  .hide-k .slot-k > .k:not(.peek), .hide-en .slot-e > .en:not(.peek) { visibility: hidden; }
+  .hide-k .slot-k > .k-dots:not(.gone), .hide-en .slot-e > .en-dots:not(.gone) { display: flex; }
 
   /* the default card (his image 1): the pop-out and the helper card */
   .wc { background: linear-gradient(#fffdf8, var(--cream-2)); border-radius: 22px; box-shadow: 0 12px 30px rgba(80, 50, 20, 0.16), 0 2px 6px rgba(80, 50, 20, 0.08); text-align: center; }
@@ -106,7 +109,6 @@
   .wc .lab span { background: #f1e7d6; border-radius: 999px; padding: 0.55em 1.1em 0.5em; }
   .wc .k { font-size: clamp(22px, 15cqi, 64px); }
   .wc .en { font-size: clamp(14px, 7.4cqi, 30px); }
-  .wc .k-dots { font-size: clamp(22px, 13cqi, 56px); }
   .wc .spk { width: clamp(48px, 25cqi, 112px); aspect-ratio: 1; border-radius: var(--spk-r); margin-top: 1.5cqi; box-shadow: 0 0 0 6px #fff7ea, 0 0 0 7.5px var(--edge), 0 10px 22px rgba(125, 34, 52, 0.32); }
   /* small: no labels, a shorter picture, room for the Kutchi to wrap */
   .wc.small .lab { display: none; }
@@ -119,8 +121,8 @@
   .wc.side .words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }
   .wc.side .k { font-size: clamp(18px, 9cqi, 40px); }
   .wc.side .en { font-size: clamp(13px, 5.2cqi, 22px); }
-  .wc.side .k-dots { font-size: clamp(18px, 8cqi, 36px); justify-content: flex-start; }
-  .wc.side .en-dots { justify-content: flex-start; }
+  .wc.side .slot { place-items: center start; }
+  .wc.side .dots { justify-content: flex-start; }
   .wc.side .spk { width: clamp(44px, 15cqi, 72px); margin: 0; box-shadow: 0 0 0 4px #fff7ea, 0 0 0 5px var(--edge), 0 6px 14px rgba(125, 34, 52, 0.28); }
   .wc:not(.side) .words { display: contents; }
 
@@ -128,7 +130,6 @@
   .it > .in { height: 100%; }
   .it { background: #fffdf8; border-radius: 14px; box-shadow: 0 3px 10px rgba(80, 50, 20, 0.09); border: 1.5px solid transparent; transition: opacity 0.25s; }
   .it.slot { visibility: hidden; }
-    .it .k-dots { font-size: clamp(16px, 12cqi, 28px); }
   .it.done::after { content: ""; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold) no-repeat center / 60% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
   .it.done { border-color: rgba(201, 150, 46, 0.55); }
   .it.no { border: 1.5px dashed #c8b79c; background: transparent; box-shadow: none; }
@@ -137,12 +138,14 @@
   .items { display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 4px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); }
   .items.at-end { -webkit-mask-image: none; mask-image: none; }
   .it { flex: 0 0 calc((100% - 2 * var(--gap)) / 2.3); scroll-snap-align: start; }
-  .it > .in { display: grid; grid-template-rows: auto 1fr auto auto; justify-items: center; text-align: center; row-gap: 2.5cqi; padding: 7cqi 7cqi 8cqi; }
-  .it .k, .it .k-dots { grid-row: 2; align-self: center; }
-  .it .en, .it .en-dots { grid-row: 3; }
-  .it .spk { grid-row: 4; margin-top: 2cqi; }
-  html.al-low .it .k, html.al-low .it .k-dots { align-self: end; }
-  html.al-top .it .k, html.al-top .it .k-dots { align-self: start; }
+  /* even spacing (Zafar, 27 Oct): the card's padding = picture to Kutchi = speaker to the card's foot; a row's spare height
+     (a two-line word beside a one-line one) goes above the one-line word, which sits on its English (option 8A, his pick) */
+  .it > .in { display: grid; grid-template-rows: auto 1fr auto auto; justify-items: center; text-align: center; row-gap: 0; padding: 6cqi; }
+  .it .slot-k { grid-row: 2; align-self: end; margin-top: 6cqi; }
+  .it .slot-e { grid-row: 3; margin-top: 0.5cqi; }
+  .it .spk { grid-row: 4; margin-top: 5cqi; }
+  html.al-mid .it .slot-k { align-self: center; }
+  html.al-top .it .slot-k { align-self: start; }
   .it .pic { width: 100%; aspect-ratio: 4 / 3; }
   .it .words { display: contents; }
   .it .k { max-width: 100%; }
@@ -160,6 +163,41 @@
   .bubble .bspk svg { width: 60%; height: 60%; }
   .pop { position: absolute; z-index: 20; }
   .flyer { position: fixed; z-index: 50; pointer-events: none; transform-origin: 0 0; margin: 0; }
+
+  /* ---------- the chai station (a rough mock for the onboarding lab): the marble, the hob and pan, the tray, the shelf ---------- */
+  .station { position: absolute; inset: 0; display: none; background: #efe7dc url(../assets/cook/worktop-s08c/marble-tile-s08c.webp) center / cover; }
+  .play.at-station .station { display: block; }
+  .play.at-station .nana, .play.at-station .bubble { display: none; }
+  .station > * { position: absolute; }
+  .station img { display: block; width: 100%; height: auto; pointer-events: none; -webkit-user-drag: none; user-select: none; }
+  .st-shelf { left: 0; right: 0; bottom: 0; background: rgba(239, 229, 214, 0.92); border-top: 1px solid var(--edge); display: flex; justify-content: center; align-items: flex-end; gap: 3%; padding: 0 3% 2%; }
+  .thing { position: relative; border: 0; background: none; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .thing img { height: var(--th, 64px); width: auto; filter: drop-shadow(0 5px 6px rgba(60, 40, 20, 0.2)); transition: transform 0.2s; }
+  .thing.used img { opacity: 0.35; }
+  .thing.shake img { animation: shake 0.4s; }
+  @keyframes shake { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+  .chip { display: flex; align-items: center; gap: 4px; background: #fff; border-radius: 10px; padding: 2px 8px; font: 700 clamp(12px, 1.4vw, 17px)/1.3 var(--font-display); color: var(--c-kutchi); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); white-space: nowrap; }
+  .chip svg { width: 1em; height: 1em; color: var(--ink); }
+  .pan-fill { border-radius: 50%; opacity: 0; transition: background 0.6s, opacity 0.6s; pointer-events: none; }
+  .heat { pointer-events: none; overflow: visible; }
+  .heat circle { fill: none; stroke-width: 6; }
+  .heat .track { stroke: rgba(255, 255, 255, 0.35); }
+  .heat .zone { stroke: #6fbf73; stroke-linecap: round; }
+  .heat .prog { stroke: var(--gold); stroke-linecap: round; transition: stroke-dasharray 0.25s linear; }
+  .flame { border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 150, 40, 0.0); transition: box-shadow 0.4s; pointer-events: none; }
+  .flame.on { box-shadow: 0 0 18px 8px rgba(255, 140, 30, 0.55), inset 0 0 14px 6px rgba(255, 120, 20, 0.5); }
+  .knob, .glass-btn { border: 0; padding: 0; background: none; border-radius: 50%; }
+  .rec { font-family: var(--font-body); font-style: italic; color: #8a7a6a; font-weight: 700; }
+
+  /* ---------- the first-time help (the onboarding): the dim, the light around one thing, the gold tap target ---------- */
+  .ob-dim { position: fixed; z-index: 40; pointer-events: none; border-radius: 16px; box-shadow: 0 0 0 200vmax rgba(28, 18, 8, 0.45); transition: left 0.5s cubic-bezier(.3,.7,.2,1), top 0.5s cubic-bezier(.3,.7,.2,1), width 0.5s cubic-bezier(.3,.7,.2,1), height 0.5s cubic-bezier(.3,.7,.2,1), opacity 0.35s; opacity: 0; outline: 3px solid rgba(201, 150, 46, 0.9); outline-offset: 0; }
+  .ob-dim.on { opacity: 1; }
+  /* the tap target (Zafar, 27 Oct: in place of the hand): a gold ring, a maroon centre, one soft ripple every 1.6 s */
+  .tt { position: fixed; z-index: 41; width: 46px; height: 46px; margin: -23px 0 0 -23px; pointer-events: none; border-radius: 50%; border: 3px solid var(--gold); background: rgba(255, 250, 240, 0.55); display: none; transition: left 0.5s cubic-bezier(.3,.7,.2,1), top 0.5s cubic-bezier(.3,.7,.2,1); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25); }
+  .tt.on { display: block; }
+  .tt::before { content: ""; position: absolute; left: 50%; top: 50%; width: 30%; height: 30%; transform: translate(-50%, -50%); border-radius: 50%; background: var(--maroon); box-shadow: 0 0 0 3px #fff; }
+  .tt::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid var(--gold); animation: ripple 1.6s ease-out infinite; }
+  @keyframes ripple { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
 
   /* ---------- the lab's gear and options (grown-ups only) ---------- */
   .gear { position: fixed; right: 10px; top: 10px; z-index: 60; width: var(--tap); height: var(--tap); border-radius: 50%; border: 0; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); display: grid; place-items: center; }
@@ -190,12 +228,24 @@
   </aside>
   <main class="play" id="play">
     <img class="nana" id="nana" src="../assets/cook/characters/nana-neutral.webp?v=20261027T223905Z" alt="">
+    <div class="station" id="station">
+      <img class="st-hob" id="hob" src="../assets/cook/items/v3/hob/hob-1.webp" alt="">
+      <div class="flame" id="flame"></div>
+      <img class="st-pan" id="pan" src="../assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp" alt="">
+      <div class="pan-fill" id="panFill"></div>
+      <svg class="heat" id="heat" viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="46"/><circle class="zone" id="heatZone" cx="50" cy="50" r="46" pathLength="100"/><circle class="prog" id="heatProg" cx="50" cy="50" r="46" pathLength="100" stroke-dasharray="0 100"/></svg>
+      <button class="knob" id="knob" type="button" aria-label="The cooker's knob"><img id="knobImg" src="../assets/cook/items/v3/hob/knob-off-v2.webp" alt=""></button>
+      <img class="st-tray" id="tray" src="../assets/cook/items/chai-v2/tray-4-cutout-t.webp" alt="">
+      <button class="glass-btn" id="glassBtn" type="button" aria-label="The glass"><img id="glass" src="../assets/cook/items-s12/glass/glass-empty-top-s12.webp" alt=""></button>
+      <div class="st-shelf" id="shelf"></div>
+    </div>
     <div class="bubble" id="bubble"><button class="bspk" type="button" aria-label="Hear it"><svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#2a2522"/><path d="M15.5 8.5a4.5 4.5 0 0 1 0 7" stroke="#2a2522" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></button><span id="bubbleText"></span></div>
   </main>
 </div>
 
 <button class="gear" id="gear" type="button" aria-label="Lab options"><svg viewBox="0 0 24 24" fill="none" stroke="#2a2522" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <div class="opts" id="opts"></div>
+<div class="ob-dim" id="obDim"></div><div class="tt" id="tt"></div>
 
 <script>
 (function () {
@@ -229,12 +279,15 @@
     { key: "help", n: 5, title: "Helper card", vals: [["auto", "A stacked (side by side on a phone)"], ["stack", "B always stacked"], ["side", "C always side by side"]] },
     { key: "done", n: 6, title: "First order", vals: [["0", "A being made"], ["1", "B done (folded)"]] },
     { key: "long", n: 7, title: "Longest words test", vals: [["0", "A off"], ["1", "B on"]] },
-    { key: "align", n: 8, title: "One line next to two (the Kutchi)", vals: [["mid", "A middle (speakers and English level)"], ["low", "B sits on the English"], ["one", "C one size, one line"], ["top", "D top (before)"]] },
+    { key: "newp", n: 9, title: "Player (for the first-time help)", vals: [["1", "A new (every first-time help)"], ["0", "B returning (none)"]] },
+    { key: "level", n: 10, title: "Level (the wait before Nani's hint)", vals: [["1", "A L1, 7 s"], ["2", "B L2, 8 s"], ["3", "C L3, 11 s"], ["4", "D L4, 15 s"]] },
+    { key: "align", n: 8, title: "One line next to two (the Kutchi)", vals: [["low", "A sits on the English (chosen)"], ["mid", "B middle"], ["one", "C one size, one line"], ["top", "D top (before)"]] },
   ];
   const q = new URLSearchParams(location.search);
   const S = {};
   OPTS.forEach((o) => (S[o.key] = o.vals.some((v) => v[0] === q.get(o.key)) ? q.get(o.key) : o.vals[0][0]));
   if (q.get("open") === "1") S.open = true;
+  S.voice = q.get("voice") !== "0";
 
   // ---- building the cards ----
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -252,7 +305,9 @@
     kd.addEventListener("click", peek(k, kd));
     ed.addEventListener("click", peek(en, ed));
     pic.querySelector(".eye").addEventListener("click", () => { pic.classList.add("peek"); setTimeout(() => pic.classList.remove("peek"), 3000); });
-    return { pic, k, en, kd, ed, spk };
+    const ks = el("div", "slot slot-k"); ks.append(k, kd);
+    const es = el("div", "slot slot-e"); es.append(en, ed);
+    return { pic, k, en, kd, ed, spk, ks, es };
   }
   function stageCls(c) {
     const s = +S.stage;
@@ -266,7 +321,7 @@
     const c = el("div", "wc" + (variant ? " " + variant : ""));
     const p = parts(w, c);
     const words = el("div", "words");
-    words.append(el("div", "lab", "<span>KUTCHI</span>"), p.k, p.kd, el("div", "lab", "<span>ENGLISH</span>"), p.en, p.ed);
+    words.append(el("div", "lab", "<span>KUTCHI</span>"), p.ks, el("div", "lab", "<span>ENGLISH</span>"), p.es);
     const inn = el("div", "in"); inn.append(p.pic, words, p.spk); c.append(inn);
     stageCls(c);
     return c;
@@ -278,7 +333,7 @@
     c.dataset.id = id;
     const p = parts(w, c);
     const words = el("div", "words");
-    words.append(p.k, p.kd, p.en, p.ed);
+    words.append(p.ks, p.es);
     const inn = el("div", "in"); inn.append(p.pic, words, p.spk); c.append(inn);
     stageCls(c);
     return c;
@@ -295,6 +350,7 @@
     let n = 0;
     while (over() && fs > minPx && n++ < 60) { fs -= 1; e.style.fontSize = fs + "px"; }
     if (over() && e.classList.contains("en")) e.classList.add("wrap"); // the last resort: wrap, never spill
+    const d = e.parentNode && e.parentNode.querySelector(".dots"); if (d) d.style.fontSize = getComputedStyle(e).fontSize;
   }
   function fit(root) {
     const one = S.align === "one";
@@ -304,9 +360,31 @@
   }
 
   // ---- the device voice, testing only (non-negotiable 2: never in a store build) ----
-  function say(text, btn) {
+  // the testing voice: the game's own stand-in clips (data/cook-tts.json, one word at a time; not the family's voices), the
+  // device voice for a word with no clip. Testing only: a store build plays only family clips (non-negotiable 2).
+  let TTS = null, playingAudio = null, sayGen = 0;
+  fetch("../data/cook-tts.json").then((r) => r.json()).then((d) => (TTS = d.lines || {})).catch(() => (TTS = {}));
+  const clip = (w) => TTS && (TTS[w] || TTS[w.replace(/-/g, " ")]);
+  function playFile(src, gen) {
+    return new Promise((res) => {
+      if (gen !== sayGen) return res();
+      const a = new Audio("../" + src); playingAudio = a;
+      a.onended = a.onerror = () => res(); a.play().catch(() => res());
+    });
+  }
+  function device(text) {
+    return new Promise((res) => {
+      try { if (!window.speechSynthesis) return res(); const u = new SpeechSynthesisUtterance(text); u.rate = 0.85; u.onend = u.onerror = res; speechSynthesis.speak(u); setTimeout(res, 2500); } catch (e) { res(); }
+    });
+  }
+  async function say(text, btn) {
     if (btn) { btn.classList.remove("on"); void btn.offsetWidth; btn.classList.add("on"); }
-    try { if (S.voice && window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 0.85; speechSynthesis.speak(u); } } catch (e) { /* no voice */ }
+    if (!S.voice) return;
+    const gen = ++sayGen;
+    try { if (playingAudio) playingAudio.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { /* none */ }
+    const plain = text.replace(/<[^>]+>/g, "").toLowerCase().replace(/[.,!?]/g, "").trim();
+    if (clip(plain)) return playFile(clip(plain), gen);
+    for (const w of plain.split(/\s+/)) { if (gen !== sayGen) return; if (clip(w)) await playFile(clip(w), gen); else await device(w); }
   }
 
   // ---- the screen ----
@@ -416,8 +494,184 @@
     ghost.remove();
   }
 
+  // ---- the faces and the bubble say their lines (the speaker badge on a face is its replay) ----
+  document.addEventListener("click", (e) => {
+    const f = e.target.closest(".face, .bspk");
+    if (!f) return;
+    const line = f.closest(".nani") ? $("#naniLine") : f.closest(".order") ? f.closest(".order").querySelector(".order-line") : $("#bubbleText");
+    if (line) say(line.textContent);
+  });
   // ---- the helper card: the arrow, or a hint after the wait ----
   $("#arrow").addEventListener("click", () => { S.open = !S.open; $("#nani").classList.toggle("open", S.open); $("#arrow").setAttribute("aria-expanded", S.open ? "true" : "false"); setTimeout(() => fit($("#helpSlot")), 60); });
+
+  // ======== the chai station and its first-time help (the onboarding lab; Zafar, 27 Oct) ========
+  // Nani's lines are the game's own (Sprint 13): the Kutchi the engine says today, else its English in grey italic, to record.
+  const STEP_LINE = {
+    paani: '<span class="rec">Put water in the pan.</span>',
+    chai: '<span class="rec">Put the chai in the pan.</span>',
+    dudh: '<span class="k-word">Dudh</span> wiji chad!',
+    khun: '<span class="k-word">Khun</span> wiji chad!',
+    light: '<span class="rec">Light the cooker.</span>',
+    off: '<span class="rec">Turn it off now.</span>',
+    pour: '<span class="rec">Pour it in the glass.</span>',
+  };
+  const SHELF = [["paani", IT + "shelf-cook-paani-bare-f.webp"], ["dudh", IT + "shelf-cook-dudh-bare-f.webp"], ["chai", IT + "shelf-cook-chai-bare-f.webp"], ["khun", IT + "shelf-cook-khun-bare-f.webp"], ["loon", IT + "shelf-loon-jar-v2-f.webp"]];
+  const SHELF_WORD = { paani: "paani", dudh: "dudh", chai: "chai", khun: "khun", loon: "loon" };
+  const FILL = { paani: "rgba(196, 214, 222, 0.75)", chai: "rgba(122, 64, 30, 0.82)", dudh: "rgba(201, 141, 84, 0.9)", khun: "rgba(205, 146, 90, 0.92)" };
+  function buildShelf() {
+    const sh = $("#shelf"); sh.innerHTML = "";
+    SHELF.forEach(([id, src]) => {
+      const b = el("button", "thing"); b.type = "button"; b.dataset.id = id;
+      b.innerHTML = `<img src="${src}" alt=""><span class="chip">${SPK}${+S.stage <= 1 ? SHELF_WORD[id] : ""}</span>`;
+      b.querySelector(".chip").addEventListener("click", (e) => { e.stopPropagation(); say(SHELF_WORD[id]); });
+      sh.appendChild(b);
+    });
+  }
+  // the station from the play area's size: the shelf band at the foot, the hob and its pan left of middle, the tray right
+  function placeStation() {
+    const play = $("#play"), W = play.clientWidth, H = play.clientHeight;
+    const sh = Math.round(Math.min(H * 0.32, 190)), wh = H - sh;
+    const shelf = $("#shelf"); shelf.style.height = sh + "px"; shelf.style.setProperty("--th", Math.round(Math.min(sh * 0.58, (W * 0.94 / 5 - 8) / 0.69)) + "px"); // five things always fit across
+    const hobH = Math.min(wh * 0.84, W * 0.42 * 658 / 465), hobW = hobH * 465 / 658, hobL = W * 0.36 - hobW / 2, hobT = (wh - hobH) * 0.45; // fits a wide or a narrow play area
+    Object.assign($("#hob").style, { left: hobL + "px", top: hobT + "px", width: hobW + "px" });
+    const bx = hobL + hobW * 0.49, by = hobT + hobH * 0.355;
+    const panW = hobW * 1.3, panH = panW * 286 / 531;
+    Object.assign($("#pan").style, { left: bx - panW * 180.3 / 531 + "px", top: by - panH * 134.3 / 286 + "px", width: panW + "px" });
+    const fr = panW * 0.17, rr = panW * 0.235;
+    Object.assign($("#panFill").style, { left: bx - fr + "px", top: by - fr + "px", width: 2 * fr + "px", height: 2 * fr + "px" });
+    Object.assign($("#heat").style, { left: bx - rr + "px", top: by - rr + "px", width: 2 * rr + "px", height: 2 * rr + "px" });
+    Object.assign($("#flame").style, { left: bx - rr * 0.9 + "px", top: by - rr * 0.9 + "px", width: rr * 1.8 + "px", height: rr * 1.8 + "px" });
+    const kn = Math.max(44, hobW * 0.24);
+    Object.assign($("#knob").style, { left: hobL + hobW * 0.5 - kn / 2 + "px", top: hobT + hobH * 0.8 - kn / 2 + "px", width: kn + "px", height: kn + "px" });
+    const tr = Math.min(wh * 0.7, W * 0.3), tx = Math.min(W * 0.76 - tr / 2, W - tr - 8), ty = wh * 0.5 - tr / 2;
+    Object.assign($("#tray").style, { left: tx + "px", top: ty + "px", width: tr + "px" });
+    const g = tr * 0.36;
+    Object.assign($("#glassBtn").style, { left: tx + tr * 0.31 - g / 2 + "px", top: ty + tr * 0.31 - g / 2 + "px", width: g + "px", height: g + "px" });
+  }
+
+  // ---- the light: the dim with one hole hugging a thing, and the tap target on it; only that thing takes a tap ----
+  const OB = { el: null, pad: 6, target: true, only: true };
+  function spot(elm, o = {}) {
+    OB.el = elm; OB.pad = o.pad != null ? o.pad : 6; OB.target = o.target !== false; OB.only = o.only !== false;
+    $("#obDim").classList.toggle("on", !!elm); $("#tt").classList.toggle("on", !!elm && OB.target);
+    trackSpot();
+  }
+  function trackSpot() {
+    if (!OB.el) return;
+    const r = OB.el.getBoundingClientRect(), d = $("#obDim"), p = OB.pad;
+    Object.assign(d.style, { left: r.left - p + "px", top: r.top - p + "px", width: r.width + 2 * p + "px", height: r.height + 2 * p + "px" });
+    // the target fits the thing: never bigger than it (plus a little), so it never hides a small thing's neighbours
+    const s = Math.max(26, Math.min(46, Math.min(r.width, r.height) + 14));
+    Object.assign($("#tt").style, { left: r.left + r.width / 2 + "px", top: r.top + r.height / 2 + "px", width: s + "px", height: s + "px", margin: -s / 2 + "px 0 0 " + -s / 2 + "px" });
+    requestAnimationFrame(trackSpot);
+  }
+  // while the light is on, a tap anywhere but the lit thing does nothing (the gear always works)
+  ["pointerdown", "click"].forEach((ev) => document.addEventListener(ev, (e) => {
+    if (!OB.el || !OB.only || e.target.closest(".gear, .opts")) return;
+    const r = OB.el.getBoundingClientRect(), p = OB.pad;
+    if (e.clientX < r.left - p || e.clientX > r.right + p || e.clientY < r.top - p || e.clientY > r.bottom + p) { e.preventDefault(); e.stopPropagation(); }
+  }, true));
+  const tapOn = (elm) => new Promise((res) => elm.addEventListener("click", function h() { elm.removeEventListener("click", h); res(); }));
+
+  // ---- Nani's box: her line, and the helper card for the step ----
+  function setNani(html) { $("#naniLine").innerHTML = html; say($("#naniLine").textContent); }
+  function setHelp(id) {
+    const slot = $("#helpSlot"); slot.innerHTML = "";
+    if (!id) return;
+    const v = S.help === "stack" ? "" : S.help === "side" ? "side" : document.documentElement.classList.contains("phone") ? "side" : "";
+    slot.appendChild(bigCard(id, v)); requestAnimationFrame(() => fit(slot));
+  }
+  function openHelp(on) { S.open = on; $("#nani").classList.toggle("open", on); $("#arrow").setAttribute("aria-expanded", on ? "true" : "false"); }
+
+  const seen = {}; // the first-time help shown this play (a returning player: all of it seen already)
+  const first = (k) => { if (S.newp !== "1" || seen[k]) return false; seen[k] = true; return true; };
+  const HINT_MS = { 1: 7000, 2: 8000, 3: 11000, 4: 15000 }; // the game's wait before help, by level (data/cook.json calm.helpMs)
+
+  // one item into the pan: the first two with the light on the picture; then the child alone, with Nani's hint after the wait
+  async function addItem(id, i, gen) {
+    setNani(STEP_LINE[id]); setHelp(id);
+    const thing = document.querySelector(`.thing[data-id="${id}"]`);
+    if (i < 2 && first("item" + i)) spot(thing.querySelector("img"), { pad: 8 });
+    let hintT = null;
+    const armHint = () => { clearTimeout(hintT); hintT = setTimeout(async () => {
+      if (gen !== chaiGen || OB.el) return;
+      if (first("hint")) { spot($("#arrow"), { pad: 4 }); await tapOn($("#arrow")); spot(null); } // the first hint: the help shows the arrow
+      else openHelp(true);
+    }, HINT_MS[S.level || 1]); };
+    if (!OB.el) armHint();
+    await new Promise((res) => {
+      const onTap = (e) => {
+        const b = e.target.closest(".thing"); if (!b || gen !== chaiGen) return;
+        if (b.dataset.id !== id) { b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); say(SHELF_WORD[b.dataset.id]); armHint(); return; } // a wrong pick: a shake, never a verdict
+        $("#shelf").removeEventListener("click", onTap); res();
+      };
+      $("#shelf").addEventListener("click", onTap);
+    });
+    clearTimeout(hintT); spot(null); openHelp(false);
+    await flyTo(thing.querySelector("img"), $("#panFill"));
+    thing.classList.add("used");
+    const pf = $("#panFill"); pf.style.background = FILL[id]; pf.style.opacity = 1;
+    const card = document.querySelector(`.order .it[data-id="${id}"]`); if (card) { card.classList.add("done"); card.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+    // CHAI-37: after the first two, the light moves to the order card for a moment, so the eye knows where to look next
+    if (i === 1 && first("toCard")) {
+      const next = document.querySelector('.order .it:not(.done)');
+      if (next) { next.scrollIntoView({ block: "nearest", inline: "nearest" }); spot(next, { target: false, pad: 4 }); await wait(2400); spot(null); }
+    }
+  }
+  function flyTo(img, to) {
+    const a = img.getBoundingClientRect(), b = to.getBoundingClientRect();
+    const c = img.cloneNode(); Object.assign(c.style, { position: "fixed", left: a.left + "px", top: a.top + "px", width: a.width + "px", height: a.height + "px", zIndex: 45, margin: 0, pointerEvents: "none" });
+    document.body.appendChild(c);
+    const dx = b.left + b.width / 2 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    return c.animate([{ transform: "none" }, { transform: `translate(${dx * 0.6}px, ${dy * 0.6 - 40}px) rotate(-20deg) scale(0.8)`, offset: 0.6 }, { transform: `translate(${dx}px, ${dy}px) rotate(-35deg) scale(0.5)`, opacity: 0 }], { duration: 700, easing: "ease-in-out" }).finished.then(() => c.remove());
+  }
+
+  let chaiGen = 0;
+  async function playChai() {
+    const gen = ++chaiGen;
+    Object.keys(seen).forEach((k) => delete seen[k]);
+    spot(null); openHelp(false);
+    await playOrder();
+    if (gen !== chaiGen) return;
+    // the first time words are dotted: the help shows "tap the dots" once, on the order card
+    if (+S.stage >= 2 && first("dots")) {
+      const d = [...document.querySelectorAll(".order .it .dots")].find((x) => x.offsetParent);
+      if (d) { d.closest(".it").scrollIntoView({ block: "nearest", inline: "nearest" }); spot(d, { pad: 6 }); await tapOn(d); spot(null); await wait(1200); }
+    }
+    document.querySelectorAll(".items").forEach((r) => (r.scrollLeft = 0)); // the order from its first card
+    $("#play").classList.add("at-station"); buildShelf(); placeStation();
+    $("#panFill").style.opacity = 0; $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
+    $("#glass").src = "../assets/cook/items-s12/glass/glass-empty-top-s12.webp"; heat(0);
+    const items = ORDERS[0].items;
+    for (let i = 0; i < items.length; i++) { if (gen !== chaiGen) return; await addItem(items[i], i, gen); }
+    // light the cooker (the knob), then the heat climbs to the green; the light comes to the knob only once the chai is ready (CHAI-36)
+    setNani(STEP_LINE.light); setHelp(null);
+    if (first("light")) spot($("#knob"), { pad: 4 });
+    await tapOn($("#knob")); spot(null);
+    $("#knobImg").src = "../assets/cook/items/v3/hob/knob-on-v2.webp"; $("#flame").classList.add("on");
+    for (let p = 0; p <= 80; p += 2) { if (gen !== chaiGen) return; heat(p); await wait(110); }
+    setNani(STEP_LINE.off);
+    if (first("off")) spot($("#knob"), { pad: 4 });
+    await tapOn($("#knob")); spot(null);
+    $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
+    setNani(STEP_LINE.pour);
+    if (first("pour")) spot($("#glassBtn"), { pad: 4 });
+    await tapOn($("#glassBtn")); spot(null);
+    await flyTo($("#panFill"), $("#glassBtn")).catch(() => {});
+    $("#panFill").style.opacity = 0; $("#glass").src = "../assets/cook/items-s12/glass/glass-chai-top-s12.webp"; heat(0);
+    await wait(900);
+    document.querySelector(".order").classList.add("done");
+    $("#play").classList.remove("at-station");
+    const bt = $("#bubbleText"); bt.textContent = "Thank you!"; $("#bubble").classList.add("on"); placeBubble(); say("Thank you!");
+    await wait(2200); $("#bubble").classList.remove("on");
+    setNani('<span class="k-word">Khun</span> wiji chad!');
+  }
+  function heat(p) {
+    $("#heatProg").setAttribute("stroke-dasharray", `${p} 100`);
+    $("#heatZone").setAttribute("stroke-dasharray", "0 78 14 8");
+    $("#heat").style.opacity = p > 0 ? 1 : 0;
+  }
+  addEventListener("resize", () => { if ($("#play").classList.contains("at-station")) placeStation(); });
 
   // ---- the options panel ----
   function buildOpts() {
@@ -437,9 +691,10 @@
     box.appendChild(el("h3", null, "Try it"));
     const row = el("div", "row");
     const btn = (label, fn, cls) => { const b = el("button", cls || "", label); b.type = "button"; b.addEventListener("click", fn); row.appendChild(b); };
-    btn("▶ Play the order", () => { $("#opts").classList.remove("on"); playOrder(); }, "go");
+    btn("▶ Play chai (the onboarding)", () => { $("#opts").classList.remove("on"); playChai(); }, "go");
+    btn("▶ Play the order only", () => { $("#opts").classList.remove("on"); chaiGen++; spot(null); $("#play").classList.remove("at-station"); playOrder(); });
     btn("Nani's hint", () => { S.open = !S.open; render(); });
-    btn(S.voice ? "Voice: on (device, testing)" : "Voice: off", () => { S.voice = !S.voice; buildOpts(); });
+    btn(S.voice ? "Voice: on (stand-in, testing)" : "Voice: off", () => { S.voice = !S.voice; buildOpts(); });
     box.appendChild(row);
   }
   $("#gear").addEventListener("click", () => $("#opts").classList.toggle("on"));
@@ -447,7 +702,7 @@
   addEventListener("resize", () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(render); });
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(render);
   render();
-  window.CardLab = { S, render, playOrder };
+  window.CardLab = { S, render, playOrder, playChai };
 })();
 </script>
 </body>
