@@ -330,6 +330,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
    sidebar is still too tall after its other folds (.oc-two: Cook's fit ladder, js/cook/ui.js checkFit) */
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) { flex-direction: row; flex-wrap: wrap; column-gap: var(--njg-s1); }
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row { flex: 1 1 calc(50% - var(--njg-s1)); min-width: 0; }
+html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row:not(.oc-blank) { min-width: min-content; } /* (a row with its word never narrower than the word: a word is never split, contract-15) */
 /* (the same for a card's single-row items, a group of parts, a skewer, taking a whole line of its own) */
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) { flex-direction: row; flex-wrap: wrap; column-gap: var(--njg-s1); }
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item { flex: 1 1 100%; min-width: 0; }
@@ -340,6 +341,7 @@ html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) :is(.oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row, .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group) > .oc-irow) > .oc-spk { margin-inline-start: calc(-1 * var(--njg-s2)); }
 /* the last fold (.oc-three, Cook's fit ladder): three to a line, each cell still wider than a speaker's tap area */
 html:not([data-oc-rows="pills"]) .oc-card.oc-two.oc-three:not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row { flex-basis: calc(33.33% - var(--njg-s1)); min-width: calc(var(--njg-tap) + var(--njg-s1)); }
+html:not([data-oc-rows="pills"]) .oc-card.oc-two.oc-three:not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row:not(.oc-blank) { min-width: min-content; } /* (a row with its word: never narrower than the word, contract-15; a blank row's dots fit beside its speaker) */
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk)::before,
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row::before { display: none; }
 @media (prefers-reduced-motion: reduce) {
