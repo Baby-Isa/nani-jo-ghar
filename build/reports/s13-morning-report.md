@@ -23,3 +23,8 @@ In `docs/status.md` "Next chat" (seven points, about 20 minutes on the Z Flip an
 
 ## The night
 Three container restarts (about 23:10, 00:10, 01:29) cost roughly an hour; no work was lost. Spend: roughly $350-450 against the $250-300 estimate (see the sprint file's look back).
+
+## Proof
+- Final contract replay `s13-final2` (34 main flows plus chaat#hint, 1280x665 and 915x412): 70 pages reached their end; 2 breaks, both contract-50 on samosa L3 (SAM-27).
+- Final kit judge: `build/reports/s13-verdicts/s13-final-kit.verdicts.md` (7 of 12 one look); every round's verdicts in `build/reports/s13-verdicts/`.
+- `node build/tools/review/checks.mjs`: green before the publish (570 unit tests, leak bots, load 29/29).
