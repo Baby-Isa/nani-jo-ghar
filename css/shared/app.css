@@ -1,7 +1,7 @@
 /* the design tokens and the kit's motion: every page that has the app frame has them (css/shared/tokens.css, css/shared/focus.css;
    a live page links css/shared/kit.css, which imports this; a parked game's page links this alone) */
-@import url("tokens.css?v=20261027T164015Z");
-@import url("focus.css?v=20261027T164015Z");
+@import url("tokens.css?v=20261027T185444Z");
+@import url("focus.css?v=20261027T185444Z");
 
 /* The app frame (js/shared/app.js): loaded, render-blocking, in the head of
    every page of the app, so the first paint is already the house colour. */

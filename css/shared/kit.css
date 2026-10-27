@@ -4,16 +4,16 @@
    comes before it (cook.html: the kit's components win over Cook's older rules, as they did when the sheets were listed one by
    one). The word card and the conversations are imported here too; their scripts may add their sheet again when they first
    draw (js/shared/word-card.js useCss), which is harmless. build/bump_version.py stamps every @import below. */
-@import url("tokens.css?v=20261027T164015Z");
-@import url("app.css?v=20261027T164015Z");
-@import url("focus.css?v=20261027T164015Z");
-@import url("frame.css?v=20261027T164015Z");
-@import url("face.css?v=20261027T164015Z");
-@import url("results.css?v=20261027T164015Z");
-@import url("onboard.css?v=20261027T164015Z");
-@import url("guide.css?v=20261027T164015Z");
-@import url("order-card.css?v=20261027T164015Z");
-@import url("buttons.css?v=20261027T164015Z");
-@import url("tally.css?v=20261027T164015Z");
-@import url("conversations.css?v=20261027T164015Z");
-@import url("word-card.css?v=20261027T164015Z");
+@import url("tokens.css?v=20261027T185444Z");
+@import url("app.css?v=20261027T185444Z");
+@import url("focus.css?v=20261027T185444Z");
+@import url("frame.css?v=20261027T185444Z");
+@import url("face.css?v=20261027T185444Z");
+@import url("results.css?v=20261027T185444Z");
+@import url("onboard.css?v=20261027T185444Z");
+@import url("guide.css?v=20261027T185444Z");
+@import url("order-card.css?v=20261027T185444Z");
+@import url("buttons.css?v=20261027T185444Z");
+@import url("tally.css?v=20261027T185444Z");
+@import url("conversations.css?v=20261027T185444Z");
+@import url("word-card.css?v=20261027T185444Z");
