@@ -80,3 +80,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-26 23:17 UK · The container restarted (~23:10) and stopped s13-a2 and s13-b2 mid round; both worktrees intact with uncommitted work; both resumed with their context.
 - 2026-10-26 23:31 UK · Check-in: s13-b2 round 3 committed (one end-screen width, margins on the phone, the clinic's bubble beside the head), re-taking sheets; s13-a2 resumed, finishing its fix round.
 - 2026-10-27 00:00 UK · s13-b2 round 3 merged (one end-screen width; margins; the clinic's bubble beside the head; the empty left half is SH-103's wrong-words space by Zafar's design, kept); contract-42's 2 breaks (sendoff face) are s13-a2's, in its round.
+- 2026-10-27 00:12 UK · The container restarted again (~00:10) and stopped s13-a2's proof chain (its fixes are committed: 85f8524); resumed with lighter, step-by-step runs.
