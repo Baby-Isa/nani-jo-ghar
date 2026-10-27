@@ -1,0 +1,223 @@
+# Transcript: 89b22c78-Kutchi_game_feedback_27_Oct_1.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:01** Okay, this is feedback for the Kutchi game on the 27th of October.
+- **0:06** The first point that I want to make...
+- **0:10** The first point that I want to make is that
+- **0:13** the immediate priority for the sprint
+- **0:16** is to rapidly test and prototype
+- **0:20** in whichever sandbox environment makes it easier and quicker for you to rapidly show me different layout options and for me to feedback.
+- **0:29** Our primary aim is in the chai game for mobile and for laptop.
+- **0:36** to try to land on a finalized design and layout for the language learning elements aka the word
+- **0:48** cards in the various different formats when they pop out when people are talking
+- **0:53** and when they are in the sidebar and when there's tips so we just want to make sure that
+- **1:01** words are introduced words can be read words can be learned
+- **1:05** that's the first aim the layout and the style and the look of that is
+- **1:09** what we're going to nail down on a small format screen and a large format screen
+- **1:15** that's the first objective the second objective is then once we've nailed that down we'll probably
+- **1:21** work on the onboarding element i would say for the game the chai game again big and small screen
+- **1:31** because then we'll have locked down the language element that will lock down the playability how
+- **1:35** do i play ease of use element
+- **1:38** and if we've done those two then we can probably do some of the general bug fixing
+- **1:53** so i'm going to go through and just list out a whole bunch of bugs and problems
+- **1:58** we can probably tidy those up and then
+- **2:03** based on the new agreed-upon onboarding and word card language layout for the
+- **2:10** chai game we can try establish some principles for how this may look in
+- **2:13** other games maybe starting with the clinic toothbrush game or maybe even
+- **2:28** just the eye game I don't know we'll pick another game
+- **2:30** we'll pick another game and and if the principles work i.e. they suggest
+- **2:39** specific recommendations that are then well implemented in this other game mode
+- **2:44** that we use to test like the eye game then we'll establish those principles
+- **2:50** for the games and lock down the other principles I think there's some
+- **2:54** information on it
+- **2:56** in the handover or the other design notes for this sprint so that's the
+- **3:02** general plan what I'm going to do now is I'm going to just fire off specific
+- **3:07** feedback most of it will probably go into the bugs kind of category so like
+- **3:15** we won't fix it immediately we'll work on the word cards but then we'll just
+- **3:19** make sure we've tidied swept this all up
+- **3:23** after I go through that I'll be referring to the screenshots I've posted in the chat today
+- **3:27** after I've gone through that I will post some images from
+- **3:36** from ChatGPT where I've kind of rapidly prototyped some different looks and feels
+- **3:43** they're not perfect but I'll walk you through those and in doing so explain how I want the
+- **3:49** word cards to look and function
+- **3:53** so starting now with feedback I'm looking at the first screenshot we're on
+- **3:58** mobile again list all these issues what we'll do is we'll come back and yeah
+- **4:09** we'll just review before we fix these whether make a note of this whether any
+- **4:14** of them are not redundant having done
+- **4:19** the onboarding and layout changes but firstly the pan I'm so fed up with the pan I've attached
+- **4:26** a picture a reference image of a chai pan which is top down so either use that image or recreate
+- **4:32** it in the style of the game but maybe use that as an as a reference image for chat gpt to create
+- **4:37** the right top down image it's just so annoying um I can't really think about the poor animation
+- **4:43** for now I just I just want the chai to sit nicely in the pan that's exactly top down so number one
+- **4:49** let's make that pan top down correctly in the white artwork let's use the reference image I've
+- **4:54** given to help support that number two I think the face icons next to the glass
+- **5:03** and on the cooker need to be bigger for mobile as does the um button to light the
+- **5:12** the hob so the button to ignite the hob needs to be bigger
+- **5:16** and the face icon needs to be bigger again what's the rule around this like
+- **5:19** do these automatically scale with screen size are they fixed how does it work um
+- **5:26** because eventually when we expand this to all different screen sizes you know we don't want
+- **5:30** to have to pick it one by one um so tell me how that's going to work think about the best way of
+- **5:37** of making it dynamic and scaling but what I would say is
+- **5:41** on this screen size which is probably one of the smallest you'll get um those icons are too small
+- **5:50** uh number three the speaker icons on the left sidebar
+- **5:57** they're not like done properly like the speaker icon should um
+- **6:07** sit more on the image icon like the image icon should like cut exactly
+- **6:16** halfway it should cut exactly halfway through like to the middle point of the
+- **6:19** circle of the speaker icon anyway that might get changed but it's important to
+- **6:26** understand why these things just go wrong
+- **6:31** the finger the hand for the onboarding
+- **6:34** it actually works well in terms of its placement and what it's showing it's
+- **6:38** just looks like the wrong type of hand as in it doesn't fit the theme and the
+- **6:44** style I don't really know what would fit the theme in the style maybe I'll just
+- **6:49** ask chai GPT to give me a version but if you have some thoughts on what would
+- **6:55** work well then let me know
+- **6:59** and then what was going on with onboarding the what was what's going on
+- **7:16** with why is the question mark the home button and the book button where they
+- **7:20** are like they're off to the side they're meant to be in the sidebar they're also
+- **7:24** overlapping the bottle my question is how on earth did this pass quality
+- **7:28** control how on earth was this screenshotted and deemed to have passed you can't see
+- **7:32** the water bottle was covered behind the book
+- **7:35** icon and the question mark and house button and book button are way off in
+- **7:40** the space they shouldn't be and the question mark is somehow pulsing and
+- **7:45** highlighted yellow at the same time the water bottle is it doesn't make any
+- **7:49** sense to me obviously something's gone haywire but what's yeah what's worse is
+- **7:55** that somehow it passed quality control anyway I think for now we could move the
+- **7:59** question mark home button and book button I think on a screen where width
+- **8:03** where you've got the width
+- **8:04** I think this there should probably be a little tab button on the right hand side of this screen
+- **8:12** if you press the tab button or you press the hamburger icon at the top right and you get a
+- **8:18** few menu options or incorporate it in the sidebar on the left at the bottom but smaller
+- **8:25** like just like a settings cog or something which opens up more
+- **8:30** this doesn't take up the space tbc for now just remove them and explain to me
+- **8:37** how this passed quality control and how it won't pass quality control again
+- **8:46** um the rest will probably come under the
+- **8:51** on onboarding and language card layouts
+- **8:53** oh also look at the
+- **8:59** look at the um the onboarding highlighted box why is it why is it so
+- **9:05** big it covers like three different items looking at the second image now two of
+- **9:10** three it covers the chai the milk and the water and less space to the right
+- **9:14** the box for onboarding is meant to be you know just around the image that
+- **9:19** needs to be highlighted or just around the picture that needs to be highlighted
+- **9:23** so again don't know how that passed
+- **9:26** quality control it makes no sense right you just want to highlight the image that
+- **9:32** you're they want to highlight clearly and not the images you don't highlight
+- **9:37** very strange please fix and then looking at the third image again this this will
+- **9:46** not get fixed in the in the word layout but look at the hakro khan look at the
+- **9:52** one sugar
+- **9:53** pop-out word card why does the one sugar not fit in the in the box it's
+- **10:04** literally out of the box how did that pass quality control I don't understand
+- **10:07** and why does it happen like I think there's some I asked Gemini it's it's
+- **10:10** there's something like in in in the CSS rules or something about cascading or
+- **10:16** overlapping or wrapping or something you just take a look and understand why
+- **10:20** these things happen
+- **10:22** and then also why it passed why I didn't pass quality control I really don't know
+- **10:26** why I bother with quality control it takes time it slows us down it doesn't
+- **10:29** seem to catch anything also look at the reveal button below where it says sugar
+- **10:34** in the pop-up card like the eye isn't aligned with the dotted the dashed grade
+- **10:44** section can you tell me if can you see this or not can you not see this like in
+- **10:48** the screenshots I'm providing like you understand
+- **10:51** how it's messy unaligned not even in the same box it's terrible
+- **10:57** um again like we're going to change the word box but I don't want to run into the same issues again
+- **11:04** like I want to know why this is happening and how we fix it for all these kind of CSS
+- **11:09** or design elements right moving on to the next image so the next set of five I sent image 105
+- **11:17** so before I forget I think I want to change the I want to change the kitchen I
+- **11:27** think we don't need the light hanging from the ceiling we don't need the three
+- **11:32** shelves that's a relic from when we're going to use the pantry like that we
+- **11:41** don't need the gold thing we don't need the thing hanging from the wall I think
+- **11:46** let's keep it plain and clear so it's less visually cluttered and there's more
+- **11:50** nice space to see and understand the speech bubbles
+- **11:55** yeah maybe we just extend the cooker this is a little bit wider maybe like you
+- **12:08** see the two drawers the two under-the-counter kitchen units either
+- **12:15** side of the cooker maybe extend the cooker to be this to the outer left and
+- **12:21** outer right edge of those
+- **12:23** so that even if some characters partly stand in front of the cooker you can still see the
+- **12:28** cooker because it's now one of the fewer elements that are clearly showing that it's a kitchen
+- **12:35** and if you remove the gold thing then the backsplash should go all the way
+- **12:39** and i think that's fine i know it's less culturally significant but i think we have enough there
+- **12:46** so make make a note of that one if we're running an artwork we can may as well try it i guess
+- **12:52** um
+- **12:55** again the buttons in the wrong place but look at this as well like do you not do you see like
+- **13:02** in the bottom left card that says muke, adu, wari, chai, khape the little kid ali his language box
+- **13:11** in he's got one item there why is there a little gray ghosted dot dot dot na above the black dot dot
+- **13:20** it just doesn't make sense like how can this pass quality control it's just
+- **13:25** it's ridiculous next screenshot two or five so look here this one look at the
+- **13:34** look at the speech bubble from Nana it completely covers Ali's face the kids
+- **13:44** face and covers most of Nana it's bonkers why would you place it out and
+- **13:49** it even covers the left
+- **13:52** the left panel why would you not put the speech bubble to the top right of his
+- **14:01** head above Ali where there's clear space so I think and what I need is I need to
+- **14:08** understand how was this built like we can't place speech bubbles hand by hand
+- **14:14** for every single game mode for every single screen size like we probably need
+- **14:18** to dynamically and maybe not in during the game because I want the game to be
+- **14:25** lightweight but maybe when you design or maybe during the game I don't know you
+- **14:29** have to tell me here you're the game designer you have access to the whole
+- **14:31** entire human knowledge tell me how this should be done my random idea is that on
+- **14:37** the screen the computer kind of recognizes whether people objects
+- **14:44** and where there's it's got some rules to draw like kind of usable free space
+- **14:51** right so it would look at this image it would say right well nothing on the
+- **14:55** countertop or below is usable everything else is usable except and subtract a
+- **15:01** block for Nana and to subtract a human-sized block for Ali the kid and I
+- **15:09** need to subtract the left panel
+- **15:12** and then everything else with some padding is usable space right and then
+- **15:17** you sit down dynamically like have some logic to think either some logic or just
+- **15:21** use an AI agent to think right given this space what is the logical place to
+- **15:27** put the speech bubble like where would it fit and then which is the most
+- **15:31** appropriate given that the speech bubble should come from the person's head and
+- **15:35** ideally
+- **15:37** you know be fairly close to the person who's speaking and then the obvious
+- **15:42** answer if you have those rules well it should come from it should come out to
+- **15:46** the top right of Nana above Ali's head with the speech bubble coming from
+- **15:50** Nana's head and that way Ali's got space also to talk if you wanted to to
+- **15:54** the right of Ali lower down in line with Ali's head not above his head would be
+- **15:58** his space to talk so I think it just we need something like that to make it
+- **16:03** clear and obvious
+- **16:04** where speech bubble should go but and again tell me how did it pass quality
+- **16:08** control it's nonsensical the replies are really good though like the replies
+- **16:14** with little icons I mean might we do the icons but it's kind of clear and nice
+- **16:18** and speech bubbles are good speech bubbles maybe need to be slightly closer
+- **16:22** to the sorry the speaker buttons probably need to be slightly closer to
+- **16:27** the speech bubbles so it's clear which speech
+- **16:31** which speaker is related to which speech bubble but it's good so let's keep that
+- **16:39** element again image three or five on the phone there's two chai pans now why okay
+- **16:49** we're changing this layout anyway I won't keep going about this but but how
+- **16:52** has Nani's call-out card gone down
+- **16:58** in the sidebar covering up other elements what happened to putting in the
+- **17:02** top right or what happened to telling me oh on the phone there's no space on the
+- **17:07** top right so we're moving it below and it's covering other elements is that okay
+- **17:12** and this question mark shouldn't be highlighted very frustrating again image
+- **17:25** four or five the speech bubble does not point to
+- **17:30** the doctor in the clinic game with the girl it's pointing off to the right of
+- **17:34** his face it's literally not pointing at him and and the speech bubble covers the
+- **17:39** girl's face completely like it doesn't make sense
+- **17:43** well how could I pass quality control I've spoken about speech bubbles before
+- **17:48** so let's apply the same knowledge there and then image five or five again we're
+- **17:55** going to read you that the word cards
+- **17:57** but look at tomato it's not even on the card the t and the o are completely off the card
+- **18:05** and the rest of it overlaps the speaker icon and then there's a random eye reveal card not aligned
+- **18:10** to the dashed line below like how you spent all day on this I wasted 25 of my weekly allowance
+- **18:17** and like this is what you come up with like it just it doesn't make sense how this could pass
+- **18:22** quality control and how this is can be considered like good quality design like how did you design
+- **18:26** these elements like did you not like
+- **18:29** I don't know what you did I've never done it but you have access to an opus
+- **18:35** high 5.5 there's just no way like something has gone wrong for these
+- **18:42** things to come through and it's not I'm using a low model why I'm not going to
+- **18:47** the next lot of screenshots again it's on the set of five again this is where
+- **18:54** the speech bubble Muke, chai, khape is miles away from the speaker complete
+- **19:00** absolutely terrible and then that's a bit of a bug here in the onboarding like
+- **19:07** look at the next screenshot image two or five the whole screens gone dark but
+- **19:12** nothing's highlighted and the tea isn't ready to be turned off it's not in the
+- **19:20** green zone or close to it so don't you know what was meant to be highlighted
+- **19:24** next here but yeah I don't know I don't know what's I've no idea what's going on
+- **19:29** here the whole screen just went dark I think it wasn't in anticipation of
+- **19:33** saying to turn the cooker off but way too early and then screenshot three or
+- **19:41** five I think this is in these screenshots are now from the laptop same
+- **19:44** issue why is the onboarding highlight
+- **19:48** so massive the water bottles on the right hand side of it and then on the left hand side they're
+- **19:52** just empty space it's probably two and a half times bigger than it needs to be
+- **19:58** and yet height-wise it cuts the speaker button below the water bottle
+- **20:03** this is bizarre don't know how it passed quality control or what the logic was in designing this
+- **20:11** next screenshot shows the same again but even more grerious
+- **20:14** and then image 505 is the reference
+- **20:19** teapot okay so to take these notes and yeah include them all but wait for my
+- **20:36** wait for my feedback on the language card
