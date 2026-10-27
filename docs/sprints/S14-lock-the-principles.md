@@ -15,6 +15,16 @@ The game grew game by game; Sprint 13 made the look shared, not the rules. Zafar
 - **Builders** only for new mechanics or screens, one per game area, design settled first.
 - Checks at two sizes: 1280x665 (his laptop) and 915x412 (his Z Flip 5).
 
+## Decisions, 27 Oct (Zafar: "I agree with all except number four")
+Order: the word cards in chai (phone and laptop, a gallery page, then behind a labs switch), then chai's onboarding, then the bug
+sweep (each row re-read first in case the cards made it redundant), then the principles tried on the eye test. Rough publishes to
+`main` behind the labs switch, the default unchanged. Tapping the dots or the eye is help and never moves a word on. The gold ripple
+target replaces the hand everywhere. ?, home and book off the play screen now; one menu button later (a small cog at the sidebar's
+foot). Nani's speaker goes; a tap on her face replays her. The highlight goes just around the picture. The next order is open
+below. Both fonts shown in the gallery. Bubbles from a free-space map, worked out while playing. The pan and kitchen art run when he
+says. No English line under Nani's instruction in normal play: "take it out for now". Open: how the screen sizes are tested (the
+range proposal, 27 Oct), and whether the item card's English (water, tea) shows while a word is supported, as in his mock-up.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
