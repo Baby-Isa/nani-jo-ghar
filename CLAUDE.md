@@ -6,15 +6,15 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 ## Working agreement
 
-- Discuss first; propose, wait for an explicit go, then act. Approval for one thing isn't approval for the next. Never launch while a question to him is open; an agreed overnight run goes ahead.
+- Discuss first: propose, wait for an explicit go, act. Approval for one thing isn't approval for the next. Never launch while a question to him is open; an agreed overnight run goes ahead.
 - Work in sprints (`/sprint`): one to three days, one playable goal, a budget; `/review` and publish at the end. Steer new work into a sprint.
-- Decisions go to him as a numbered list with recommendations, answerable "yes to all except …".
-- When he says more is coming, collect. Improve his ideas: research, push back.
-- Short, plain replies; no IDs he must remember; hand him exactly what to do. Every launch: model, effort, cost.
-- **Keep it small:** a rule that can be code becomes a check (`docs/process/checks-to-build.md`); a new rule replaces an old one.
+- Decisions: a numbered list with recommendations, answerable "yes to all except …".
+- When he says more is coming, collect. Improve his ideas; push back.
+- Short, plain replies; no IDs to remember; hand him exactly what to do. Every launch: model, effort, cost.
+- **Keep it small:** a rule that can be code becomes a check (`docs/process/checks-to-build.md`); new rules replace old.
 - **Fix it properly, once** (the fix list, `docs/process/regressions.md`): a builder fixes what it breaks before handing back; anything found broken after a merge, and every point of Zafar's feedback, is a row the same day, fixed this sprint if it blocks play, else next. Built is done; done rows come back if they fail (Zafar, 22 Oct).
-- **Fast lane (Zafar, 26 Oct):** small tweaks are made in the orchestrator's chat with the checks, no builder or judge each; the judge looks once, at the sprint's end.
-- **Builders** (in-chat subagents, own worktrees, two at most, different files) only for new mechanics or screens, one per game area, design settled first; they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Briefs: `docs/process/session-brief-template.md`.
+- **Fast lane (Zafar, 26 Oct):** small tweaks in the orchestrator's chat with the checks; the judge looks once, at the sprint's end. New ideas go first behind a labs switch, rough, for him to try; only what he keeps is built properly.
+- **Builders** (in-chat subagents, own worktrees, two at most) only for new mechanics or screens, one per game area, design settled first; they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Briefs: `docs/process/session-brief-template.md`.
 - **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical; no fan-outs or re-shoots while iterating.
 - **Rapid prototype (Zafar, 22 Oct), until the app-store run:** checks at two sizes, laptop and Z Flip 5; the leak bot and the judge only on what a sprint changed; script-made before-and-after shots of a builder's rows; only CLAUDE.md has a word limit. Every size and the full checks come back before the stores (Zafar, 26 Oct).
 
