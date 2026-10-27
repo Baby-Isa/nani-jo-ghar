@@ -3279,7 +3279,7 @@
     },
     "knife": {
      "tool": {
-      "file": "tool-knife-t",
+      "file": "tool-knife-t-v2",
       "max": 400
      }
     },
@@ -4998,7 +4998,6 @@
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/shelf-*",
       "assets/cook/items/tool-knife-t-v2.webp",
-      "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items-s08c/kadchi/*",
       "assets/cook/items-s08c/daar-in/*"
@@ -5010,8 +5009,6 @@
       "assets/cook/items/shelf-spi-02-bare-f.webp",
       "assets/cook/items/shelf-veg-12-bare-f.webp",
       "assets/cook/items/tool-knife-t-v2.webp",
-      "assets/cook/items/tool-knife-t.png",
-      "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/v3/daar/chop-heap-chilli.webp",
       "assets/cook/items/v3/daar/chop-heap-onion.webp",
       "assets/cook/items/v3/daar/chop-heap-tomato.webp",
@@ -5072,13 +5069,11 @@
      ],
      "files": [
       "assets/cook/items/tool-knife-t-v2.webp",
-      "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/shelf-veg-*-bare-f.webp"
      ],
      "prefetch": [
       "assets/cook/items/tool-knife-t-v2.webp",
-      "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/veg-aadu-whole-t.webp",
       "assets/cook/items/veg-bataato-whole-t.webp",
       "assets/cook/items/veg-dungri-whole-t.webp",
