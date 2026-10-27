@@ -89,6 +89,15 @@
   --njg-glow-gold: 0 0 0 8px rgba(217, 164, 65, 0.35);
   --njg-contact: rgba(0, 0, 0, 0.30); /* a figure's contact shadow under each foot (the clinic; s08-placement-judge, s08-rejudge-fixes: 0.18 did not show on phones) */
   --njg-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* ---------- type: the one place every game takes its fonts and text colours from (Zafar, 27 Oct). A game names a role
+     (display, body; Kutchi, text, English), never a font or a colour; change one line here and every mode follows. The card
+     lab (lab/cards.html) uses these first; the modes move onto them in Sprint 14 (SH-151). ---------- */
+  --njg-font-display: "Fraunces", Georgia, serif;  /* Kutchi words, card titles, bubbles, Nani's line, the order line */
+  --njg-font-body: "Nunito", system-ui, sans-serif; /* English, labels, buttons */
+  --njg-ink-kutchi: #7d2234;                        /* a Kutchi word (the mock-up's maroon) */
+  --njg-ink-text: #2a2522;                          /* a sentence's other words */
+  --njg-ink-english: #2a2522;                       /* English on a word card */
+  --njg-helper-bg: #e6efe2;                         /* Nani's box and her helper card, every mode */
   --njg-round: 999px;         /* the full circle / pill radius (CDS 2: 12 or full) */
 
   /* ---------- sizes: laptop, scale 1 (fallback; frame.js writes the real ones) ---------- */

@@ -35,6 +35,21 @@ panel; the helper card stacked on tall screens, side by side on short ones; the 
 Nani's box, which is one helper colour in every mode (Cook, clinic); no hard dark corners; more room for long words in the side-by-
 side helper; a rounded-square speaker to compare (option 8).
 
+## The way we build a screen now (Zafar, 27 Oct: "This is the way we should be doing things")
+1. Design first: his mock-up, or we talk, I write him prompts and he mocks it up in ChatGPT; he decides.
+2. A lab page (`lab/`, a labs tile): fresh code on the shared tokens, nothing wired to the game.
+3. My own check before he sees it: the four sizes (and a phone upright), every screenshot looked at, a script measuring every
+   word inside its card (nothing spills); I fix what I find first.
+4. A rough publish behind labs; he answers by number ("2A, 4B"); repeat.
+5. Only then into the game, with the same check made automatic.
+
+## Card lab, round 3 (Zafar, 27 Oct night)
+Round speakers (the square went). The item card a little roomier. When one card's Kutchi wraps to two lines next to a one-line
+one: option 8 shows A middle (his), B sitting on the English, C one size one line, D top. Fonts and text colours now come from
+one place, the shared tokens (`css/shared/tokens.css`, "type"); the modes move onto them (SH-151).
+Next, in this order: (1) chai's onboarding, redone in the same lab way at the four sizes; (2) the principles from chai locked as
+the rulebook; (3) a plan to adapt and roll the new styling out to the other Cook stations and the clinic.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 

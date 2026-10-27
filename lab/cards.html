@@ -16,19 +16,18 @@
     --ink: #2a2522; --ink-soft: #7a6857; --cream: #fffaf0; --cream-2: #fbf3e6; --edge: #e9dcc6; --page: #f3ebde;
     --gold: #c9962e; 
     /* one place for type and colour (Zafar, 27 Oct: serif everywhere, easy to change): every text below uses these */
-    --font-display: "Fraunces", Georgia, serif;   /* Kutchi words, card titles, bubbles, Nani's line, the order line */
-    --font-body: Nunito, system-ui, sans-serif;    /* English and small labels */
+    /* the type and its colours come from the shared tokens (css/shared/tokens.css, "type"): change them there */
+    --font-display: var(--njg-font-display); --font-body: var(--njg-font-body);
     --kfont: var(--font-display);
-    --c-kutchi: var(--maroon); --c-text: var(--ink); --c-english: var(--ink);
-    --helper-bg: #e6efe2;                          /* Nani's box and her helper card: one colour in every mode */
-    --spk-r: 50%;                                  /* the speaker's shape: 50% round, 28% a rounded square */
+    --c-kutchi: var(--njg-ink-kutchi); --c-text: var(--njg-ink-text); --c-english: var(--njg-ink-english);
+    --helper-bg: var(--njg-helper-bg);
+    --spk-r: 50%;
     --side-w: clamp(270px, 27vw, 410px);
     --pad: clamp(8px, 1.1vw, 16px);
     --gap: clamp(6px, 0.8vw, 12px);
     --tap: 44px;
   }
   html.font-b { --font-display: "Baloo 2", system-ui, sans-serif; }
-  html.spk-sq { --spk-r: 28%; }
   html.phone { --side-w: clamp(250px, 34vw, 340px); --pad: 6px; --gap: 6px; }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -137,10 +136,16 @@
   /* every screen: a sideways row that scrolls, the third card going behind a soft shadow (no scroll bar; Zafar, 27 Oct) */
   .items { display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 4px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); }
   .items.at-end { -webkit-mask-image: none; mask-image: none; }
-  .it { flex: 0 0 calc((100% - 2 * var(--gap)) / 2.45); scroll-snap-align: start; }
-  .it > .in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2cqi; padding: 5cqi 5cqi 6cqi; }
+  .it { flex: 0 0 calc((100% - 2 * var(--gap)) / 2.3); scroll-snap-align: start; }
+  .it > .in { display: grid; grid-template-rows: auto 1fr auto auto; justify-items: center; text-align: center; row-gap: 2.5cqi; padding: 7cqi 7cqi 8cqi; }
+  .it .k, .it .k-dots { grid-row: 2; align-self: center; }
+  .it .en, .it .en-dots { grid-row: 3; }
+  .it .spk { grid-row: 4; margin-top: 2cqi; }
+  html.al-low .it .k, html.al-low .it .k-dots { align-self: end; }
+  html.al-top .it .k, html.al-top .it .k-dots { align-self: start; }
   .it .pic { width: 100%; aspect-ratio: 4 / 3; }
-  .it .words { display: flex; flex-direction: column; align-items: center; gap: 1cqi; width: 100%; min-width: 0; }
+  .it .words { display: contents; }
+  .it .k { max-width: 100%; }
   .it .k { font-size: clamp(15px, 16cqi, 32px); }
   .it .en { font-size: clamp(11px, 10cqi, 19px); }
   .it .spk { width: clamp(38px, 32cqi, 60px); aspect-ratio: 1; border-radius: var(--spk-r); }
@@ -224,7 +229,7 @@
     { key: "help", n: 5, title: "Helper card", vals: [["auto", "A stacked (side by side on a phone)"], ["stack", "B always stacked"], ["side", "C always side by side"]] },
     { key: "done", n: 6, title: "First order", vals: [["0", "A being made"], ["1", "B done (folded)"]] },
     { key: "long", n: 7, title: "Longest words test", vals: [["0", "A off"], ["1", "B on"]] },
-    { key: "spk", n: 8, title: "Speaker shape", vals: [["round", "A round"], ["square", "B rounded square"]] },
+    { key: "align", n: 8, title: "One line next to two (the Kutchi)", vals: [["mid", "A middle (speakers and English level)"], ["low", "B sits on the English"], ["one", "C one size, one line"], ["top", "D top (before)"]] },
   ];
   const q = new URLSearchParams(location.search);
   const S = {};
@@ -292,7 +297,9 @@
     if (over() && e.classList.contains("en")) e.classList.add("wrap"); // the last resort: wrap, never spill
   }
   function fit(root) {
-    (root || document).querySelectorAll(".k").forEach((e) => fitOne(e, 11, 2));
+    const one = S.align === "one";
+    (root || document).querySelectorAll(".k").forEach((e) => fitOne(e, 11, one && e.closest(".it") ? 1 : 2));
+    if (one) document.querySelectorAll(".items").forEach((row) => { const ks = [...row.querySelectorAll(".it .k")].filter((e) => e.offsetParent); const min = Math.min(...ks.map((e) => parseFloat(getComputedStyle(e).fontSize))); ks.forEach((e) => (e.style.fontSize = min + "px")); });
     (root || document).querySelectorAll(".en").forEach((e) => fitOne(e, 10, 1));
   }
 
@@ -307,7 +314,7 @@
     const phone = S.layout === "phone" || (S.layout === "auto" && innerHeight <= 500);
     document.documentElement.classList.toggle("phone", phone);
     document.documentElement.classList.toggle("font-b", S.font === "b");
-    document.documentElement.classList.toggle("spk-sq", S.spk === "square");
+    ["mid", "low", "one", "top"].forEach((v) => document.documentElement.classList.toggle("al-" + v, S.align === v));
     return phone;
   }
   function buildSide() {
