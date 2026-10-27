@@ -90,3 +90,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-27 04:07 UK · Published 20261027T040444Z to main (958335e0); Pages serving it.
 - 2026-10-27 16:45 UK · Published 20261027T164015Z to main (19b5c255); Pages serving it.
 - 2026-10-27 18:59 UK · Published 20261027T185444Z to main (238f365a); Pages serving it.
+- 2026-10-27 22:42 UK · Published 20261027T223905Z to main (233e44e4); Pages serving it.
