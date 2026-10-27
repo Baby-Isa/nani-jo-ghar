@@ -52,7 +52,10 @@
    shows is drawn at the slot's own size (--wc-vis); in a text slot the big button overhangs the line (negative margins), so
    the slot keeps its height */
 .wc-reveal { --wc-vis: calc(var(--njg-tap) * 0.75); --wc-hit: max(var(--wc-vis), calc(var(--njg-tap) - var(--njg-s1))); position: relative; flex: none; width: var(--wc-hit); height: var(--wc-hit); margin-block: calc((var(--wc-vis) - var(--wc-hit)) / 2); padding: 0; display: grid; place-items: center; border: 0; border-radius: var(--njg-round); background: none; color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
-.wc-reveal::before { content: ""; position: absolute; left: 50%; top: 50%; width: var(--wc-vis); height: var(--wc-vis); transform: translate(-50%, -50%); box-sizing: border-box; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); }
+.wc-reveal::before { content: ""; position: absolute; left: 50%; top: 50%; width: var(--wc-vis); height: var(--wc-vis); transform: translate(-50%, -50%); box-sizing: border-box; border-radius: var(--njg-round); border: var(--njg-line) solid var(--njg-grey); background: transparent; }
+/* S13-A2 (the judge, 27 Oct: five gold rings at once all looked lit): the eye is plain at rest; only the one the help points at
+   (ob-lit) or the child presses is lit */
+.wc-reveal:is(.ob-lit, .njg-glow, :active)::before { border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-cream); }
 .wc-reveal svg { position: relative; width: calc(var(--wc-vis) * 0.7); height: calc(var(--wc-vis) * 0.7); display: block; }
 .wc-pic .wc-reveal { --wc-vis: var(--njg-tap); }
 .wc-row .wc-pic .wc-reveal { --wc-vis: calc(var(--njg-tap) * 0.75); }
