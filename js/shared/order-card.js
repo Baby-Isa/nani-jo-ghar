@@ -254,6 +254,16 @@
     // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): a row whose words are blanked (dotted) starts with a clear speaker
     // (S13-B1, the judge: every item row, written or dotted, done or not, starts with its speaker: one row anatomy)
     speakerFirst(r, node, !node.done && !!(node.blank || r.querySelector(".dots")));
+    // S13-F (contract-15): a dotted row that still writes a word ("trae •••") is .oc-worded, so a fold that puts rows two or three
+    // to a line keeps it as wide as its words (css/shared/order-card.css), never breaking "trae" across lines
+    if (r.classList.contains("oc-blank")) {
+      const t = r.querySelector(".oc-t");
+      if (t) {
+        const c = t.cloneNode(true);
+        c.querySelectorAll(".dots").forEach((d) => d.remove());
+        if (/[^\s•·.]/.test(c.textContent || "")) r.classList.add("oc-worded");
+      }
+    }
     const id = keyId(node.key);
     if (id != null) r.dataset.key = id;
     if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);

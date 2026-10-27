@@ -385,7 +385,7 @@
     // below it, so a bubble never sits on the speaker's chest while there is room at their head
     if (!fitsAbove && !face) {
       const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
-      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr, m: Math.max(3, Math.round(r.width * 0.15)) }, (o.avoid || []).concat(marked));
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr, m: Math.max(3, Math.round(r.width * 0.15)), eye: 0.1 }, (o.avoid || []).concat(marked));
       if (sd) return sd;
     }
     let side = fitsAbove || !fitsBelow ? "above" : "below";
@@ -427,10 +427,14 @@
     // the tail's middle just inside her head's edge
     const m = g.m || 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek (S13-B2: beside a head that is not a painted face, a little further in: the tail well inside the head's column)
     const cy = hy + h / 2; // her eye line (the head anchor's centre)
+    // S13-F (contract-4: the bubble above the head's middle or below it, never level with it): beside a head that is not a
+    // painted face (a Cook character's picture top, g.eye), the bubble ends higher, at the top of the head, its tail still
+    // out of its near side at the head; a painted face keeps it at her eye line (CLN-127)
+    const end = hy + h * (g.eye != null ? g.eye : 0.5);
     // S13-B2: a head too near the top for the bubble to end at the eye line (the doctor at 915x412) gets it beside the head from
     // the eye line down instead, its tail out of the near side's top at the cheek ("-low"); never on the chest under the head
-    const low = Math.round(cy - 2 - bh) < M;
-    const y = low ? Math.round(cy + 2) : Math.round(cy - 2 - bh);
+    const low = Math.round(end - 2 - bh) < M;
+    const y = low ? Math.round(cy + 2) : Math.round(end - 2 - bh);
     if (y < M || y + bh > H - M || cy - 2 > H - M) {
       delete b.dataset.njgPlace;
       return null;

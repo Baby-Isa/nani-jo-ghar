@@ -465,7 +465,10 @@
    * above, pointing down: for a thing with its word label under it, so the hand never covers the label), hold (pressed, no
    * taps: the finger of a drag or a swipe, `at` moving along the move; `at` giving null hides it)}. -> {el, stop()}
    * Wave 2's games (the conversations' emoji finger) switch to this one.
+   * S13-F (contract-44: one finger at a time): the newest finger up is the one drawn; one made while another is up hides that
+   * one (its owner still holds it) until the newer one stops, so a help handing over to the next never shows two hands.
    */
+  const liveFingers = [];
   Onboard.finger = function (at, o) {
     o = o || {};
     const host = o.container || document.body;
@@ -489,9 +492,13 @@
     };
     let raf = 0;
     let stopped = false;
+    liveFingers.push(el);
+    liveFingers.forEach((f) => f !== el && (f.style.display = "none"));
     const place = () => {
       if (stopped) return;
-      const p = pointOf();
+      // (only the newest finger up is drawn: S13-F, contract-44; one whose layer went without its stop() no longer counts)
+      for (let i = liveFingers.length - 1; i >= 0; i--) if (!liveFingers[i].isConnected) liveFingers.splice(i, 1);
+      const p = liveFingers[liveFingers.length - 1] === el ? pointOf() : null;
       el.style.display = p ? "" : "none";
       if (p) {
         // the fingertip (HOTSPOT in the 64x80 hand) on the point, at whatever size the page draws the hand
@@ -521,6 +528,8 @@
         cancelAnimationFrame(raf);
         anims.forEach((a) => a.cancel());
         el.remove();
+        const i = liveFingers.indexOf(el);
+        if (i >= 0) liveFingers.splice(i, 1);
       },
     };
   };
