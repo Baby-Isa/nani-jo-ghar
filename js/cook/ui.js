@@ -2203,6 +2203,8 @@
       e.dataset.extra = x.key;
       e.dataset.ck = `x:${x.key}`;
       if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
+      if ((mission.compact || 0) >= 4) e.classList.add("oc-two");
+      if ((mission.compact || 0) >= 5) e.classList.add("oc-three");
       box.appendChild(e);
       return e;
     });
@@ -2272,6 +2274,8 @@
       // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
       // (SH-110, the judge: a card with blanked rows keeps one row a line, each with its speaker at its left, never pills)
       if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add(el.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
+      if (!big && (mission.compact || 0) >= 4 && !minis.has(c.key)) el.classList.add("oc-two");
+      if (!big && (mission.compact || 0) >= 5 && !minis.has(c.key)) el.classList.add("oc-three");
       if (minis.has(c.key)) {
         // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
         // (each face still the replay; a tap beside it brings that person forward)
@@ -2351,14 +2355,16 @@
     raf(() =>
       raf(() => {
         if (mission && side.clientHeight > 0) peekFold(side); // CK-38: a peek on a short sidebar folds her box meanwhile
-        if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
+        if (!mission || (mission.compact || 0) >= 6 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
         // 3 flows the open card's rows as pills. With fewer than two people steps 1 and 2 fold nothing: one person (and a
         // station's card) go straight to pills. CK-38: that step was never taken (it returned), so one person's order
         // opened by a peek (sekelo L3: both skewers) ran past a 360 px sidebar
         const one = orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2;
-        mission.compact = one ? 3 : (mission.compact || 0) + 1;
+        // 4, 5 (S13-A2 fix round: every speaker row is a tap tall, SH-134): the rows two, then three, to a line (the kit's .oc-two, .oc-three);
+        // 6: the rail (?, home, the book) steps out of the sidebar to the play area's bottom-left corner (a phone's sekelo L3-L4)
+        mission.compact = one && (mission.compact || 0) < 3 ? 3 : (mission.compact || 0) + 1;
         renderOrder();
       })
     );
@@ -2445,6 +2451,7 @@
     drawCards(box, sideEls);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
     if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
+    $("#side").classList.toggle("rail-out", (mission.compact || 0) >= 6);
     checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
     $("#mission").classList.add("people");

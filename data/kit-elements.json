@@ -252,19 +252,26 @@
       "rowWords": "button|go-on|tick button|the arrow",
       "places": {
         "index": {
-          "at": "visible:.njg-btn"
+          "none": "the house has no child's button (its doors are pictures); the grown-ups' pop-up's action is on the \"? pop-up\" sheet"
         },
         "first": {
           "at": "visible:.njg-btn"
         },
         "day": {
-          "at": "visible:.njg-btn"
+          "at": "visible:.njg-pill",
+          "sel": ".njg-pills",
+          "flow": "day:door",
+          "profile": "seen"
         },
         "cook": {
           "at": "visible:.njg-btn"
         },
         "clinic": {
-          "at": "visible:.njg-btn"
+          "at": "visible:.njg-pill",
+          "sel": ".njg-pills",
+          "flow": "clinic:heal-eye",
+          "profile": "seen",
+          "tries": 3
         },
         "lab": {
           "at": "visible:.njg-btn"

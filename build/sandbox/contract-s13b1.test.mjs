@@ -51,5 +51,6 @@ test("contract-39: an order card row's English untapped is a break at any stage;
   const en = (list) => page([C(T, "card-en", { list })]);
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "two onions", oc: true }])), "contract-39").length, 1, "red: a row's English at stage 1, untapped");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "two onions", oc: true }])), "contract-39").length, 0, "green: the child tapped it open");
-  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "onion", oc: false }])), "contract-39").length, 0, "green: the big word card while supported");
+  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "onion", oc: false }])), "contract-39").length, 1, "red (S13-A2 fix round): the big word card too, untapped, even while supported");
+  assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "onion", oc: false }])), "contract-39").length, 0, "green: the big word card tapped open");
 });

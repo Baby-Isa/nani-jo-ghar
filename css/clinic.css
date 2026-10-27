@@ -137,8 +137,9 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 }
 
 /* ================= the pipeline's stages (js/clinic/stages/*.js) ================= */
-.cl-face { width: 100%; height: 100%; display: grid; place-items: center; font-size: 26px; overflow: hidden; border-radius: 50%; background: #f1e3cc; }
-.cl-face img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+/* (ART-08, S13-A2: a face that is the kit's circle, .njg-face, keeps its token size and look: these are only for the others) */
+.cl-face:not(.njg-face) { width: 100%; height: 100%; display: grid; place-items: center; font-size: 26px; overflow: hidden; border-radius: 50%; background: #f1e3cc; }
+.cl-face:not(.njg-face) img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
 .cl-face svg { width: 100%; height: 100%; }
 
 /* the rooms */
@@ -303,7 +304,8 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
 .cl-fly-help { position: fixed; z-index: 300; transition: transform .45s ease-in; pointer-events: none; }
 .cl-ask-card { transform: translate(-50%, -100%); width: 86px; height: 86px; border-radius: 50%; background: var(--njg-white); box-shadow: 0 4px 14px rgba(40, 25, 10, .2); border: 4px solid #dde6d5; }
-.cl-ask-card .cl-face { width: 100%; height: 100%; }
+.cl-ask-card .cl-face:not(.njg-face) { width: 100%; height: 100%; }
+.cl-ask-card { display: grid; place-items: center; } /* (her question card holds the kit's big circle, centred) */
 .cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: var(--njg-white); font: 800 24px var(--cl-head); display: grid; place-items: center; }
 .cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
 
@@ -454,7 +456,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-room-pic { display: block; width: clamp(56px, 6vw, 84px); aspect-ratio: 1.5; border-radius: 8px; background-size: cover; background-position: 50% 55%; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7); }
 /* CLN-14: the call-them pills are faces with a speaker, no words */
 .cl-face-pill { display: inline-flex !important; align-items: center; gap: var(--njg-s1); padding: 4px 12px 4px 4px !important; }
-.cl-face-pill .cl-face { width: 48px; height: 48px; flex: none; }
+.cl-face-pill .cl-face:not(.njg-face) { width: 48px; height: 48px; flex: none; }
 .cl-pill-say { display: grid; place-items: center; width: 32px; height: 32px; color: #1f6f62; }
 .cl-pill-say svg { width: 22px; height: 22px; }
 /* the colour rung on her art: only her dress (37-70% of her height) takes the colour */
@@ -503,7 +505,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-heal .hs-face { left: auto; right: var(--njg-s2); }
 /* CLN-85 (S05-D): the pharmacy's patient face sits where the heal games' does: the top right of the play area */
 .cl-pharmacy .cl-ph-face { left: auto; right: var(--njg-s2); }
-.cl-ph-face .cl-face { width: 100%; height: 100%; }
+.cl-ph-face .cl-face:not(.njg-face) { width: 100%; height: 100%; }
 .cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
 /* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
 .eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-cream); border: 2px solid var(--njg-step-edge); border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }

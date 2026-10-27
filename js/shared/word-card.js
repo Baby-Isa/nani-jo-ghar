@@ -30,7 +30,7 @@
  *             layout: "across",                   (S13-B1: options, never a game's CSS) the picture left, the strip right
  *             bare, fill, inset,                  no card box; filling its holder; the picture contained with a margin
  *             shape: "side",                      a card in the sidebar: its picture sized to the sidebar's width
-             enTap: true }                       the English only when tapped open, at every stage (an order card's rows)
+             enTap: true }                       (kept for callers: every card's English is tapped open now, S13-A2)
  *     el.wc: { stage, slots, reveal(slot), restage(n), cue(), speak(), hush(on), lit(on), photo(on) }   cue(): the cue a judged answer carries
  *            ("kutchi" unless the child opened a slot on this card)
  *   WordCard.pop(el, word, opts) -> el              the one entrance (S13-B1): a big card of the word said now, made in el (the
@@ -166,9 +166,9 @@
   }
   function slotsOf(word, opts, stage) {
     const s = slotsFor(word, opts, stage);
-    // S13-B1 (CLAUDE.md non-negotiable 3, Zafar 21 Oct: a word card's English "only when tapped"): enTap (an order card's rows)
-    // never shows the English by itself; it is the slot's free tap-to-reveal
-    if (opts.enTap) s.english = false;
+    // S13-B1, S13-A2 fix round (CLAUDE.md non-negotiable 3, Zafar 21 Oct: a word card's English "only while supported, then only
+    // when tapped"): no card shows its English by itself, the big card too; it is the slot's free tap-to-reveal (contract-39)
+    s.english = false;
     return s;
   }
   function slotsFor(word, opts, stage) {
@@ -223,6 +223,9 @@
     const filled = {};
     const draw = () => {
       const shows = showsOf(st.slots);
+      // S13-A2 fix round (the judge, 26 Oct: a row showed the picture's big eye AND the English's small eye): a row has ONE reveal,
+      // on its first blank slot, opening every blank slot of the row; a big card keeps one on each blank slot
+      const blanks = Object.keys(boxes).filter((k) => !(shows[k] || revealed.has(k)) && !(k === "english" && word.rec));
       Object.keys(boxes).forEach((k) => {
         const b = boxes[k];
         const on = shows[k] || revealed.has(k);
@@ -240,6 +243,7 @@
         filled[k] = false;
         b.innerHTML = "";
         if (none) return;
+        if (kind === "row" && blanks[0] !== k) return;
         const r = el("button", "wc-reveal", b);
         r.type = "button";
         r.dataset.reveal = k;
@@ -247,7 +251,8 @@
         r.innerHTML = EYE;
         r.addEventListener("click", (ev) => {
           ev.stopPropagation();
-          api.reveal(k);
+          if (kind === "row") blanks.forEach((x) => api.reveal(x));
+          else api.reveal(k);
         });
       });
       c.dataset.stage = String(st.stage);

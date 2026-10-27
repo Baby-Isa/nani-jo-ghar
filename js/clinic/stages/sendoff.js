@@ -152,7 +152,7 @@
         if (env.onboard && !seen) {
           qcard = h("div", "cl-ask-card", box);
           S.place(qcard, { x: cfg.patient.x, y: cfg.patient.y - cfg.patient.h - 0.02, z: 30 });
-          qcard.appendChild(Clinic.Figure.face(patient.kind, "neutral"));
+          qcard.appendChild(global.Face.size(Clinic.Figure.face(patient.kind, "neutral"), "big")); // ART-08 (S13-A2): one of the three sizes
           h("span", "cl-ask-q", qcard, "?");
           S.say(S.line(env, "whisper-ask"), "guide");
         }
@@ -411,7 +411,7 @@
       S.endOnboard();
       // the sticker for the album
       const sticker = h("div", "cl-sticker", stage);
-      sticker.appendChild(Clinic.Figure.face(patient.kind, "happy"));
+      sticker.appendChild(global.Face.size(Clinic.Figure.face(patient.kind, "happy"), "big")); // ART-08 (S13-A2): one of the three sizes
       if (global.Sfx && global.Sfx.gold) try { global.Sfx.gold(); } catch (e) { /* no sound */ }
       await Kit.wait(Kit.fast ? 60 : 1100);
       res.words.push(global.ClinicLang.w(PL().pword("feeling", plan.feeling)));
