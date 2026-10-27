@@ -1,7 +1,7 @@
 # Feedback 27 Oct 2026: Sprint 13 play, the new language cards, the helper card
 
 **Source:** four parts in `build/reports/voice/`: part 0 (typed notes in the chat, 13 screenshots), part 1 (the 20-minute voice
-note, Whisper), parts 2-3 (typed messages with ChatGPT mock-ups, verbatim). Pictures: `build/reports/voice/feedback-2026-10-27-refs/`.
+note, Whisper), parts 2-3 (typed messages with ChatGPT mock-ups, verbatim). Pictures: `sources/art/refs/2026-10-27-cards/`.
 **Played:** chai L1 and L3 on the Z Flip 5, chai L1 on the laptop, the eye test L1 on the phone. **Replayed here:** chai L1, chai
 L3 and the eye test L1 at his phone's real game area (971x318, measured from his shots) and 1280x665 (run `fb27-real`).
 
@@ -30,7 +30,7 @@ L3 and the eye test L1 at his phone's real game area (971x318, measured from his
 
 | Point | Time | What Zafar said | Screen | Cause (checked in code) | Fix |
 |---|---|---|---|---|---|
-| P1 | 2:0:01-3:49; 3:0:01-0:02; 4:0:12-0:13 | "the immediate priority for the sprint is to rapidly test and prototype ... to land on a finalized design and layout for the language learning elements aka the word cards"; then onboarding (chai, big and small screen); then the bugs; then principles tried on one other game (eye or toothbrush) and locked. "Does it make the game easier to learn the language? And does it make the game easier to play? ... that's the litmus test." | sprint | not code: Zafar's sprint plan | The sprint file (S14) takes his order; the plan in the reply |
+| P1 | 2:0:01-3:49; 3:0:01-0:02; 4:0:12-0:13 | "the immediate priority for the sprint is to rapidly test and prototype ... to land on a finalized design and layout for the language learning elements aka the word cards"; then onboarding (chai, big and small screen); then the bugs; then principles tried on one other game (eye or toothbrush) and locked. "Does it make the game easier to learn the language? And does it make the game easier to play? ... that's the litmus test." | sprint | not code: Zafar's sprint plan | The sprint file (S14) takes his order; before any bug row is fixed it is re-read against the new cards and onboarding ("whether any of them are not redundant", 2:3:58-4:14); nothing is coded or launched before his go (4:0:12) |
 | P2 | 2:7:28-8:37; 2:9:23; 2:10:22; 2:13:20; 2:16:04; 2:17:43; 2:18:17; 2:20:03 | "how on earth did this pass quality control ... explain to me how this passed quality control and how it won't pass quality control again"; "I really don't know why I bother with quality control it takes time it slows us down it doesn't seem to catch anything" | the checks | build/sandbox/lib/env.mjs:23 (the phone check is 915x412; his phone's game area in Chrome is about 971x318: every phone bug below shows only there); build/sandbox/flows/cook.mjs:186 (chai L3 runs at 800x360, L2/L4 at tablet sizes); build/lint/layout.mjs:166 (text is a finding only when clipped or "…": text spilling past its card passes); build/sandbox/lib/contract.mjs:10 (contract-4: a bubble "above its speaker's head" passes while it covers the face); the replay plays a new player, so a learned word's speaker-only chip (P8) is never seen | SH-138: his real screen, L1-L4 at both sizes, a returning player, four new checks |
 | P3 | 1:0:06; 2:4:19-4:54; 4:0:13 (picture 5) | "the pan I'm so fed up with the pan ... a reference image of a chai pan which is top down ... I just want the chai to sit nicely in the pan that's exactly top down" | chai | not code: art (told before: "needs re-doing again") | CHAI-34, art run with his reference |
 | P4 | 2:4:54-5:50 | "the face icons next to the glass and on the cooker need to be bigger for mobile as does the ... button to ignite the hob ... what's the rule ... do these automatically scale with screen size ... think about the best way of making it dynamic" | chai, every game | js/cook/flow.js:2194 (Phaser EXPAND: the whole play area is one picture scaled to the screen; a face or knob is design px, with no smallest size on screen) | SH-139: a smallest on-screen size for taps and faces, every game, checked |
@@ -120,7 +120,7 @@ at 971x318 and 1280x665; the eye test L1-L4.
 | 4:0:11 | P6 |
 | 4:0:12-0:13 | P1 |
 
-Lines: every line mapped; chatter 5 ranges; unmapped 0. Readers: the orchestrator; the second reader's result is in §5.
+Lines: every line mapped; chatter 5 ranges; unmapped 0. Readers: the orchestrator, then a second reader (fresh agent, transcripts and rows only): 5 missing and 8 weakened, all fixed in the rows the same day (bubble timing, the hint time to agree, re-read rows for redundancy, the pour animation, nothing before his go; the menu options, the box around the picture only, tap-her-face marked a proposal, the English line's style, tweaks to him first, the small card's room, one hiding rule, the fold's check on every station). 0 unmapped, 0 weakened.
 
 ## 5. Second reader and why things slipped
 

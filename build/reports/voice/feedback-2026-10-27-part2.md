@@ -1,6 +1,6 @@
 # Feedback 27 Oct, part 2: the language cards (Zafar's typed message, verbatim, with 5 ChatGPT mock-ups)
 
-Pictures (refs/ beside this file): card-1-default, card-2-hidden, card-3-small, card-4-phone-recipe-row, card-5-laptop-recipe-column.
+Pictures (sources/art/refs/2026-10-27-cards/): card-1-default, card-2-hidden, card-3-small, card-4-phone-recipe-row, card-5-laptop-recipe-column.
 
 [0:00:01] Okay, so onto the language cards and language element layout, which is something that I want to begin this sprint with, just rapidly prototyping, testing on the Chai game for laptop and for mobile, not worrying about loads of checks, just getting it in front of me as quickly as possible so we can lock these elements down.
 [0:00:02] I'm going to talk you through the approach. So the approach is, I think we should lock down the elements, how they look, how they function, where they sit. So I'm going to walk you through now the five images attached.

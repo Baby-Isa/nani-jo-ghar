@@ -1,6 +1,6 @@
 # Feedback 27 Oct, part 3: the helper card and the finger (Zafar's typed message, verbatim, with 5 pictures)
 
-Pictures (refs/ beside this file): helper-1-nani-line, helper-2-expanding, helper-3-expanded, helper-4-arrow-phone, finger-options-chatgpt.
+Pictures (sources/art/refs/2026-10-27-cards/): helper-1-nani-line, helper-2-expanding, helper-3-expanded, helper-4-arrow-phone, finger-options-chatgpt.
 
 [0:00:01] Okay, next set of images. this message and these messages, sorry, these images relate to the helper card. That's what I'll refer to it, the helper card. Basically, when you need a hint after a few seconds, or I can't remember now when the helper card comes, if it's at the beginning when you're onboarding or after a few seconds. But basically, what would pop out the top right of the left panel with Nani's suggestion, I think now moves in line as an expanded card to not complicate the game space.
 [0:00:02] And the first two images just show that animation. So you can see in the first one, there's just a single instruction from Nani. The second one, the game's decided that a hint is needed, and it starts to nicely expand Nani's green card, and you can see the hint being revealed, and you can see the recipe card below being pushed down to accommodate the space. Then in the third image, you can see that the hint card is, helper card is fully displayed, and the recipe card subsequently has been pushed down.

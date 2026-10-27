@@ -1,4 +1,4 @@
-# Feedback 27 Oct, part 0: Zafar's typed notes in the chat, with his 13 screenshots (refs/ beside this file)
+# Feedback 27 Oct, part 0: Zafar's typed notes in the chat, with his 13 screenshots (his phone and laptop shots, in the chat; not kept in git)
 
 [0:00:01] (08:56-08:58, phone, chai L1: three screenshots, no words)
 [0:00:02] (09:20-09:27, phone: chai L3 x3, the eye test L1 x2, no words)
