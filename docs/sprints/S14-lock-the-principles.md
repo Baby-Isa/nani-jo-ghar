@@ -13,7 +13,7 @@ The game grew game by game; Sprint 13 made the look shared, not the rules. Zafar
 - **Fast lane:** small tweaks in the orchestrator's chat with the checks; one judge pass at the end.
 - **Labs switch first:** each new rule that changes play goes behind a labs switch, rough, for Zafar to try on his phone; only what he keeps is built properly.
 - **Builders** only for new mechanics or screens, one per game area, design settled first.
-- Checks at two sizes: 1280x665 (his laptop) and 915x412 (his Z Flip 5).
+- Checks at four edge sizes: 740x320, 930x430, 1280x665, 1920x1080 (Zafar, 27 Oct).
 
 ## Decisions, 27 Oct (Zafar: "I agree with all except number four")
 Order: the word cards in chai (phone and laptop, a gallery page, then behind a labs switch), then chai's onboarding, then the bug
@@ -22,8 +22,11 @@ sweep (each row re-read first in case the cards made it redundant), then the pri
 target replaces the hand everywhere. ?, home and book off the play screen now; one menu button later (a small cog at the sidebar's
 foot). Nani's speaker goes; a tap on her face replays her. The highlight goes just around the picture. The next order is open
 below. Both fonts shown in the gallery. Bubbles from a free-space map, worked out while playing. The pan and kitchen art run when he
-says. No English line under Nani's instruction in normal play: "take it out for now". Open: how the screen sizes are tested (the
-range proposal, 27 Oct), and whether the item card's English (water, tea) shows while a word is supported, as in his mock-up.
+says. No English line under Nani's instruction in normal play: "take it out for now". Screens (Zafar, 27 Oct, yes): two layouts
+(phone, big screen) switched by height at about 500 px, each scaling smoothly; checks at the edges 740x320, 930x430, 1280x665 and
+1920x1080 (replaces 915x412; the sandbox's sizes change in step 0 of the card work). The item card's English follows that word's own
+ladder (Zafar: "each word has its own ladder"); his sketch for the rulebook, to agree: after level 1 the English goes, after level 2
+the picture, after level 3 the written Kutchi (today's ladder, EASY-01: English blank at word stage 3, picture at 4, Kutchi at 5).
 
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
