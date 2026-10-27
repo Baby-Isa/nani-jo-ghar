@@ -16,7 +16,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - **Fast lane (Zafar, 26 Oct):** small tweaks in the orchestrator's chat with the checks; the judge looks once, at the sprint's end. New ideas go first behind a labs switch, rough, for him to try; only what he keeps is built properly.
 - **Builders** (in-chat subagents, own worktrees, two at most) only for new mechanics or screens, one per game area, design settled first; they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Briefs: `docs/process/session-brief-template.md`.
 - **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical; no fan-outs or re-shoots while iterating.
-- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** phone and big-screen layouts, switched by height, scaling smoothly, checked at 740x320, 930x430, 1280x665 and 1920x1080 (Zafar, 27 Oct); the leak bot and the judge only on what a sprint changed; script-made before-and-after shots of a builder's rows; only CLAUDE.md has a word limit. Full checks before the stores.
+- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** phone and big-screen layouts, switched by height, scaling smoothly, checked at 740x320, 930x430, 1280x665, 1920x1080 (Zafar, 27 Oct); the leak bot and the judge only on what a sprint changed; script-made before-and-after shots of a builder's rows; only CLAUDE.md has a word limit. Full checks before the stores.
 
 ## Non-negotiables
 
