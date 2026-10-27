@@ -33,6 +33,7 @@ export const TOP = [
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
   { href: "lab/day.html", title: "The day builder", text: "Pick the stages of a day in order, or one game, and play it." },
+  { href: "lab/cards.html", title: "New word cards (Sprint 14 lab)", text: "Chai's screen with the new word, order and helper cards. Tap the gear for the options; drag a laptop window small to see the phone layout." },
 ];
 
 /**

@@ -26,7 +26,7 @@ test("the generated labs.html keeps every page the hand-kept page linked (R0's p
 test("Sprint 10: the top row, the game grid and one folded Behind the scenes; no clinic game or stage listed twice", async () => {
   const html = await render();
   const top = html.slice(html.indexOf('class="top-row"'), html.indexOf("Play any game"));
-  assert.deepEqual([...top.matchAll(/<b>([^<]+)<\/b>/g)].map((m) => m[1]), ["New player", "Day builder", "Walkthrough", "The house", "The day builder"]);
+  assert.deepEqual([...top.matchAll(/<b>([^<]+)<\/b>/g)].map((m) => m[1]), ["New player", "Day builder", "Walkthrough", "The house", "The day builder", "New word cards (Sprint 14 lab)"]);
   assert.match(top, /id="new-player"/);
   assert.match(top, /href="cook\.html\?app=1&amp;first=pantry&amp;then=cook\.html%3Fapp%3D1%26first%3Dchai%26then%3Dlabs\.html"/, "the walkthrough is Cook's own pantry, then chai chain");
   assert.equal((html.match(/<details/g) || []).length, 1, "one folded section");
