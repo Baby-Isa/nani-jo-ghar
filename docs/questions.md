@@ -2,6 +2,14 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
+### After Sprint 13 (27 Oct): answer "yes to all except …"
+38. **The gold help box** round the lit thing (EASY-08, 22 Oct) now has the kit's orange halo inside it. Keep both, or drop the box now the halo shows? Recommend keep the box for first-time help only, the halo alone when stuck (SH-135).
+39. **Long orders on the phone** show their rows two or three to a line, so every row fits with a full-size speaker; the phone rows also drop the reveal eye. Keep, or one row per line with a scrolling card? Recommend keep, and bring the eye back (SH-136).
+40. **The end screen's empty left half** (the wrong-words space when nothing was wrong, your SH-103 of 17 Oct): keep, or centre the words when none are wrong? Recommend centre.
+41. **Samosa L3** ticks each samosa's box as it is made (SH-53) while the card's rows tick together (contract-50): which wins? Recommend the boxes tick as made, the card rows at the one tick (SAM-27).
+42. **The clinic's order rows** have no pictures (the doctor's steps have no picture data): add them in the next art run? Recommend yes, with the FC2 face moods and CHT-16's chop background.
+43. **Your ear on the Z Flip:** does the customer's opening ("Muke …") now play at the start of every order (LNG-16, fixed on a model of a phone's voice)?
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
