@@ -28,6 +28,13 @@ says. No English line under Nani's instruction in normal play: "take it out for 
 ladder (Zafar: "each word has its own ladder"); his sketch for the rulebook, to agree: after level 1 the English goes, after level 2
 the picture, after level 3 the written Kutchi (today's ladder, EASY-01: English blank at word stage 3, picture at 4, Kutchi at 5).
 
+## The card lab, round 1 (Zafar, 27 Oct evening: "Now we're talking. Feels smooth and looks good")
+Kept: the sideways order row on every screen (phone and big); the serif (Fraunces) for every display text (Kutchi, card titles,
+bubbles, Nani's line, the order line), set in one place with the colours (tokens) so both change easily; cards pop out by the side
+panel; the helper card stacked on tall screens, side by side on short ones; the move into the side panel. Changed: no green bar on
+Nani's box, which is one helper colour in every mode (Cook, clinic); no hard dark corners; more room for long words in the side-by-
+side helper; a rounded-square speaker to compare (option 8).
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
