@@ -429,7 +429,7 @@ test("the one loop (S13-T): a brief's rows, sizes and probes; before|after pairs
   assert.deepEqual(b.unknown, [], "a build id in the words (S13-A1, F7) is not a row and not an error");
   assert.deepEqual(b.newRows, ["CLN-57"], "new features: only rows the brief names");
   assert.deepEqual(briefRows({ rows: ["ZZ-9"] }, known).unknown, ["ZZ-9"], "a listed row the fix list lacks is refused");
-  assert.deepEqual(briefSizes({}), ["1280x665", "915x412"]);
+  assert.deepEqual(briefSizes({}), ["740x320", "930x430", "1280x665", "1920x1080"]);
   assert.deepEqual(briefSizes({ sizes: ["800x360"] }), ["800x360"]);
   assert.equal(briefSlug({ report: "s13-t" }, "x.json"), "s13-t");
   assert.equal(briefSlug({}, "build/tools/ops/specs/s13-t-example.json"), "s13-t-example");
@@ -441,7 +441,7 @@ test("the one loop (S13-T): a brief's rows, sizes and probes; before|after pairs
   ];
   const mine = briefProbes(probes, { flows: ["clinic:heal-eye#stuck"] }, parseCapture);
   assert.deepEqual(mine.map((p) => p.flowId || "repo"), ["clinic:heal-eye", "repo"], "only the probes on the brief's flows (a script probe always)");
-  assert.deepEqual(mine[0].sizes, ["1280x665", "915x412"], "at the brief's sizes");
+  assert.deepEqual(mine[0].sizes, ["740x320", "930x430", "1280x665", "1920x1080"], "at the brief's sizes");
   assert.deepEqual(mine[0].capture.map((c) => c.raw), ["strip:.cl-heal:5x250", "strip:.cl-heal:4x250", "strip:.cl-heal:4x500"], "a moving thing filmed at 250 and 500 ms too");
   assert.equal(briefProbes(probes, { flows: ["day:door"] }, parseCapture).length, 3, "none on the brief's flows: all of the row's probes");
   assert.equal(panelKey(0, 1, "915x412", "crop:.x"), "p1|L1|915x412|crop:.x");

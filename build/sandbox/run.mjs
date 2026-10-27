@@ -83,7 +83,7 @@ if (has("--gate") && !has("--chunk")) {
 
 const live = allFlows();
 if (has("--list")) {
-  for (const f of live) console.log(`${f.id.padEnd(34)} ${(f.sizes ? f.sizes.join(",") : "all sizes").padEnd(26)} ${f.title}`);
+  for (const f of live) console.log(`${f.id.padEnd(34)} ${flowSizes(f).join(",").padEnd(42)} ${f.title}`);
   // what Zafar plays: every labs.html tile and the flows that play it (decision 76)
   console.log("\nlabs.html tiles -> flows");
   for (const t of tiles()) {

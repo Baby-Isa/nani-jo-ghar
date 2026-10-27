@@ -3,12 +3,12 @@
 // unit tested in build/tools/review/evidence.test.mjs. The CLI is build/tools/review/evidence.mjs --before|--after|--judge --brief.
 //   ROW_ID                               a fix-list row id in a text (SH-19, CLN-57, DAAR-11, CHAI-02)
 //   briefRows(spec, knownIds)            the brief's rows: spec.rows, then every row id its tasks name (do and accept), known ones only
-//   briefSizes(spec) / briefSlug(spec)   the sizes it plays (default 1280x665 and 915x412) and its folder name
+//   briefSizes(spec) / briefSlug(spec)   the sizes it plays (default 740x320, 930x430, 1280x665 and 1920x1080) and its folder name
 //   briefProbes(probes, spec)            a row's probes for the brief: on the brief's flows (all when none plays one), at its sizes,
 //                                        and a moving thing filmed at 250 and 500 ms (strip:<sel>:4x<ms>) beside its own strip
 //   panelKey(...) / pairPanels(b, a)     a panel's identity across two runs (probe, level, size, capture) and the before|after pairs
 export const ROW_ID = /\b([A-Z][A-Z]*-(?:[A-Z0-9]+-)*\d+)\b/g;
-export const BRIEF_SIZES = ["1280x665", "915x412"];
+export const BRIEF_SIZES = ["740x320", "930x430", "1280x665", "1920x1080"];
 export const STRIP_MS = [250, 500];
 export const STRIP_FRAMES = 4;
 

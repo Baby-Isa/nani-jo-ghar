@@ -5,7 +5,7 @@
 //   COOK_TEST_PORT=8865 flock -w 900 /tmp/njg-browser-8865.lock node build/check_speaker_taps.mjs
 import { BASE, startServer, launch, newPage, sleep } from "./sandbox/lib/env.mjs";
 const MIN = 48;
-const sizes = (process.env.SIZES || "1280x665,915x412").split(",");
+const sizes = (process.env.SIZES || "740x320,930x430,1280x665,1920x1080").split(",");
 const stations = (process.env.STATIONS || "chai-tray,samosa").split(",");
 const srv = await startServer();
 const browser = await launch();

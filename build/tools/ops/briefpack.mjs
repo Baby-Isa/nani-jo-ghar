@@ -76,7 +76,7 @@ export function contextPack(spec, { maxWords = 2000 } = {}) {
   L.push("## The checks this session must pass (they are the rules; docs/tools.md)",
     "- `node build/tools/review/checks.mjs` before every push (unit tests, words, bump, specs, docs limits, picture loads).",
     "- The one loop (S13): the brief's rows were played BEFORE at launch; you play them AFTER with `node build/tools/review/evidence.mjs --after --brief <this spec>`; the judge, never you, gets the script-made before|after batch.",
-    "- Your flows' contract run at 1280x665 and 915x412 (the PROOF line); `node build/tools/review/touched.mjs` maps what else you touched.", "");
+    "- Your flows' contract run at 740x320, 930x430, 1280x665 and 1920x1080 (the PROOF line); `node build/tools/review/touched.mjs` maps what else you touched.", "");
   if (spec.rules && spec.rules.length) { const used = words(L.join("\n")).length; L.push("## Archived rulebook sections this spec asks for", ...ruleSections(spec.rules.map(String), Math.max(120, maxWords - used - 60))); }
   let out = L.join("\n") + "\n";
   while (words(out).length > maxWords && L.length > 8) { L.splice(L.length - 1, 1); out = L.join("\n") + "\n"; } // never over budget
@@ -154,7 +154,7 @@ export const NAMES_HELPERS = (text) => /\b(spawn|launch|start|use|open)\b[^.\n]{
 // checks first; the orchestrator plays the brief's rows BEFORE at launch (evidence.mjs --before --brief, the judge's before check);
 // the builder plays them AFTER with the same command and replays its own flows at the two rapid-prototype sizes (Zafar, 22 Oct);
 // it never shoots its own frames and never dumps runs into its report; the judge gets the script-made before|after batch.
-export const PROOF_SIZES = "1280x665,915x412";
+export const PROOF_SIZES = "740x320,930x430,1280x665,1920x1080";
 // (the store matrix comes back before the app-store run: run.mjs --every-size)
 export const MATRIX_SIZES = PROOF_SIZES;
 export function matrixCommand(flows, report) {
@@ -174,7 +174,7 @@ export function proofLines(s, report) {
     `  - The rows' BEFORE was played at launch (\`node build/tools/review/evidence.mjs --before --brief ${spec}\`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.`,
     `  - AFTER the build, the same rows, probes and sizes: \`COOK_TEST_PORT=${port} NJG_LOCK=${lock} node build/tools/review/evidence.mjs --after --brief ${spec}\`.`,
     ...(elems.length ? [`  - The elements this brief names, side by side in every game: \`COOK_TEST_PORT=${port} NJG_LOCK=${lock} node build/tools/review/kitsheet.mjs --elem ${elems.map((e) => e.replace(/[^a-z0-9?]+/gi, "-").toLowerCase()).join(",")} --after\`.`] : []),
-    `  - BEFORE THE FINISH, your own flows at 1280x665 and 915x412 under your lock: \`flock -w 3600 ${lock} timeout 1800 ${matrixCommand(s.flows, report)}\`. Every flow must reach its end with 0 contract breaks the report doesn't explain.`,
+    `  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: \`flock -w 3600 ${lock} timeout 1800 ${matrixCommand(s.flows, report)}\`. Every flow must reach its end with 0 contract breaks the report doesn't explain.`,
     `  - The report (build/reports/${report}.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (\`evidence.mjs --judge --brief ${spec}\`).`,
   ];
 }

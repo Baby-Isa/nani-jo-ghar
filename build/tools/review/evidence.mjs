@@ -54,7 +54,7 @@ node build/tools/review/evidence.mjs --after  --brief <spec.json>
 node build/tools/review/evidence.mjs --judge  --brief <spec.json>
   --before   plays only the rows the brief names (spec.rows and every row id in its tasks' words; a row with no probe refuses the
              brief), each row's probes on the brief's flows (all of them when none plays one), at the brief's sizes (spec.sizes,
-             default 1280x665 and 915x412), a moving thing also filmed at 250 and 500 ms (strip:<sel>:4x<ms>; spec.strips changes
+             default 740x320, 930x430, 1280x665 and 1920x1080), a moving thing also filmed at 250 and 500 ms (strip:<sel>:4x<ms>; spec.strips changes
              it); the run is an ordinary --run, and each row's panels are copied to build/screenshots/brief/<brief>/<ROW>/before/.
              spec.newRows: rows that describe something not built yet (their before is "not there yet", never a probe fault).
              --check: then the judge's BEFORE CHECK batch (judge/check-NN.md in the before run): FAIL = the before shows the problem

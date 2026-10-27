@@ -21,7 +21,7 @@ node build/tools/ops/brief.mjs --audit <spec.json> <git range>   every file the 
     owns: [...], readOnly: [...], stubs                     files
     permissions                                             what to grant up front
     tasks: [{do, accept}]                                   numbered, each with its acceptance criterion
-    flows: ["clinic:heal-cut", ...]                         the flows the builder replays (the contract run at 1280x665 and 915x412)
+    flows: ["clinic:heal-cut", ...]                         the flows the builder replays (the contract run at 740x320, 930x430, 1280x665 and 1920x1080)
     elements: ["finger", "glow", ...]                       shared elements (data/kit-elements.json): PLACES (kitmap.mjs: every file:line that
                                                              draws or styles each), their open rows, and the kitsheet proof line
     rows: [...]                                              fix-list rows beyond the ones the tasks name. REGRESSION ROWS: the rows the tasks

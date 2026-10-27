@@ -6,7 +6,7 @@
 //   (STATIONS=chai-tray,fetch LEVELS=1,3 SIZES=915x412 CLINIC=0 narrow it)
 import { BASE, startServer, launch, newPage, sleep } from "./sandbox/lib/env.mjs";
 const env = (k, d) => (process.env[k] || d).split(",").filter(Boolean);
-const sizes = env("SIZES", "1280x665,915x412");
+const sizes = env("SIZES", "740x320,930x430,1280x665,1920x1080");
 const stations = env("STATIONS", "fetch,chai-tray,maani-line,mishkaki-grill,daar,samosa,chaat");
 const levels = env("LEVELS", "1,2,3,4").map(Number);
 const clinic = process.env.CLINIC === "0" ? [] : env("CLINIC_PAGES", "stage=waiting&level=1,stage=diagnosis&level=1,stage=pharmacy&level=1,stage=heal&game=eye&level=1,stage=waiting&level=3,stage=pharmacy&level=3,stage=heal&game=eye&level=3");
