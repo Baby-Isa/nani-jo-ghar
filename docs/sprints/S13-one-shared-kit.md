@@ -1,6 +1,6 @@
 # Sprint 13: One shared kit
 
-**Status:** open (agreed with Zafar 23 Oct; written 26 Oct)
+**Status:** closed (27 Oct, published; agreed with Zafar 23 Oct)
 **Opened:** 26 Oct · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -58,5 +58,18 @@ Answer:
 - **The FC2 art block:** the face circles' moods and mouths. And CHT-16: the chop background.
 
 ## Outcome
+Published 27 Oct (the commit on `main` is in `docs/status.md`). Shipped:
+- **One kit, one link per live page:** colours as tokens (raw values 882 -> 513 known), the glow, hop, pulse and talk only in `focus.css`, one help/bulb timing table, one "to record" style (S13-A1).
+- **One checking loop:** before/after shots by one command, judge batches made by the script, one side-by-side sheet per shared element, the stuck player, briefs listing every place an element is drawn and only their own rows (S13-T, three rounds).
+- **Cards and the order screen:** Cook's ladder through the shared order card; one card, pop-up, stamp and word card in every game; SH-110: written in Kutchi when it first comes, every row its left speaker, nothing hidden for memory (the clinic's closed L3 card retired), English on a row or word card only on tap (S13-B1, three rounds).
+- **Voice, sound, saving, loading:** one voice player (the store path never plays a device voice), one effects player, one save for every live page; LNG-16 the opening waits for the device's voices; CK-48 every station drawn within 1 s at 4x CPU (samosa 1.9 s -> 0.4 s) (S13-V).
+- **Faces, buttons, finger, '?' pop-up, glow:** one face maker at three sizes (ART-08), every go-on/done/pill the kit's button, one finger always on screen, one grown-ups' pop-up, the kit's orange halo in every game, 48 px speakers, the phone sidebar always on screen (S13-A2, three rounds).
+- **Bubbles and the end screen:** one bubble at the speaker's head, one end-screen layout with the receipt as data (S13-B2, three rounds); the last three regressions (S13-F).
+Rows built: SH-110, SH-123, LNG-16, CK-48, ART-08, SH-129 to SH-134 (archived with their verdicts). Moved on: SH-135, SH-136 (looks still differing), SAM-27, CK-52 fixed at the end. Every verdict: `build/reports/s13-verdicts/`.
+Review: the final contract replay of the 34 main flows at 1280x665 and 915x412 (`s13-final2`, result in `docs/status.md`); `checks.mjs` green.
+Spend: roughly $350-450 against the $250-300 estimate (three rounds each for the cards, faces and bubbles; three container restarts; the last regressions).
 
 ## Look back (three lines)
+1. What worked: the before check caught bad probes before any build (SH-110, SH-123, LNG-16, CK-48), and the side-by-side kit sheets caught what passed in one game and failed in the next.
+2. What cost too much: briefs that left design calls open (one speaker per row or per dotted row) and judge findings that were Zafar's own designs (SH-103's empty half, EASY-08's box) cost whole rounds.
+3. One change: the fast lane and labs switches (CLAUDE.md, 26-27 Oct), and every design question settled before a builder starts.
