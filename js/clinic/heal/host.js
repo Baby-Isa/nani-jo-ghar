@@ -958,8 +958,12 @@
         const atHead = () => {
           Kit.Voice.speakers.patient = () => (fig.art && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
         };
-        const outro = staging ? staging.out().then(() => (atHead(), Kit.Voice.say(thanks, { who: "patient" }))) : Promise.resolve();
-        Promise.race([outro, new Promise((r) => setTimeout(r, Kit.fast ? 600 : 4000))]).then(() => resolveResult(out));
+        // CLN-206 (Zafar, 27 Oct: "no speech bubble or anything for the girl saying thank you I feel better ... after the zoom
+        // out"): her bubble stays up long enough to see, even while the line is still to record (a placeholder ends at once: the
+        // results covered it a tenth of a second later)
+        const HOLD = Kit.fast ? 500 : 2400;
+        const outro = staging ? staging.out().then(() => (atHead(), Promise.all([Kit.Voice.say(thanks, { who: "patient" }), new Promise((r) => setTimeout(r, HOLD))]))) : Promise.resolve();
+        Promise.race([outro, new Promise((r) => setTimeout(r, Kit.fast ? 1500 : 6000))]).then(() => resolveResult(out));
       },
       // --- additions ---
       item: (id) => Kit.itemInfo(id),

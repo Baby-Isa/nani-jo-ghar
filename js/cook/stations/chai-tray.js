@@ -67,7 +67,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
    * full one over the empty one at HALF8's strength, composed once in code from the two pictures).
    */
   const S8C = "assets/cook/items-s08c/";
-  const HALF8 = 0.6;
+  const HALF8 = 0.85; // CHAI-31 (the judge, s11: mid-pour the glass was paler than the pan): the half glass near the full one's colour
   /*
    * CK-06 (the s08c redo, CP4 v2): the pan's brewing states (water coming to the boil, the leaves brewing, the milky chai at a
    * rolling boil) are CP4's pictures, each shown only inside this pan's contents circle (its own contents circle measured on
@@ -432,7 +432,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     /* ---------- the scene: the softened marble, the shelf band ---------- */
     // §7: soften the marble so it doesn't compete with the objects
     // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
-    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    // SH-108 reopened (Zafar, 27 Oct: "chai has the old stand in background, not the modern countertop"): a lighter wash, so the
+    // painted marble reads as marble on a phone (at 0.5 it read as the old plain stand-in)
+    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.18).setOrigin(0).setDepth(D.bg + 1));
     const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     band.fillStyle(INK.panel, 1);
     band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 900 - SHELF_TOP + FAR);
@@ -1508,7 +1510,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const a = m.pour || P0.pour;
           const sp = { x: f.x + (a[0] - m.cx) * z * q, y: f.y + (a[1] - m.cy) * z * q };
           const surf = { x: w.x + gd * 0.04, y: w.y + gd * 0.06 };
-          const wd = Math.max(8, rimR * 0.16);
+          const wd = Math.max(12, rimR * 0.24); // CHAI-31 (the judge: "the stream is hair-thin"): a stream you can see
           const col = black ? POUR.blackTea || POUR.black : POUR.milkTea || POUR.milk;
           const sm = NjgPour.stream(sp, surf, wd * (0.4 + 0.6 * f.flow), t / 1000);
           stream.fillStyle(col, 0.94);
