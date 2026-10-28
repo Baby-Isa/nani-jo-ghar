@@ -44,3 +44,7 @@ test("contract-53: a light hugging one thing (its pill too) is no break; over tw
   assert.match(of(run(page([spot(T, { l: 250, t: 190, r: 410, b: 300 }, [bottle, milk])])), "contract-53")[0].measured, /holds 2 things/);
   assert.match(of(run(page([spot(T, { l: 250, t: 150, r: 350, b: 310 }, [bottle, milk])])), "contract-53")[0].measured, /times the size of paani/);
 });
+
+test("contract-53 (CHAI-36): a help layer dimming with nothing lit is a break", () => {
+  assert.match(of(run(page([{ type: "c", k: "spot", t: T, holes: [], things: [bottle], dark: 1 }])), "contract-53")[0].measured, /nothing lit/);
+});

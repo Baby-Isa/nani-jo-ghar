@@ -1586,7 +1586,7 @@ export function check49(tl, add) {
 Object.assign(CHECKS, {
   "contract-51": { item: "inside-card", title: "every word inside its card", how: "Every layout sample (lib/contract-hook.mjs spills: each text's own glyph box, a Range over its letters, against its card's box: a word card, an order row or card, a bubble, the guide box, the request card, a pill, a review word): a word more than 2 px outside its card is a break, once per card and word per page (the hakro khun and tameto spills of 27 Oct; the old text check caught only clipped or ellipsised text)." },
   "contract-52": { item: "bubble-clear", title: "a bubble keeps faces and the side panel clear", how: "Every bubble sample: a bubble covering a quarter or more of any head's box (Cook's figures, the clinic's figures and speakers) or reaching more than 4 px into the side panel's box is a break, once per bubble text per page (CK-18 reopened: Nana's greeting over his face and Ali's at 971x318; the eye test's bubble over the girl)." },
-  "contract-53": { item: "one-in-light", title: "the help's light holds one thing", how: "Every spot sample (the first-time help's drawn box, js/shared/onboard.js data-holes, and Cook's tappable pictures with a word): two or more pictures with their middles inside one box, or a box more than 3.5 times the area of the biggest picture in it (its word pill, often wider than a bottle, allowed: a box round a tall bottle and its pill is about 2.8 times the bottle; the bug was 5.4), is a break, once per page (CHAI-33: the box over three items, two and a half times too big)." },
+  "contract-53": { item: "one-in-light", title: "the help's light holds one thing", how: "Every spot sample (the first-time help's drawn box, js/shared/onboard.js data-holes, and Cook's tappable pictures with a word): two or more pictures with their middles inside one box, or a box more than 3.5 times the area of the biggest picture in it, or a dim with no lit box at all (CHAI-36) (its word pill, often wider than a bottle, allowed: a box round a tall bottle and its pill is about 2.8 times the bottle; the bug was 5.4), is a break, once per page (CHAI-33: the box over three items, two and a half times too big)." },
   "contract-54": { item: "rail-in-side", title: "the side panel's buttons stay in it", how: "Every layout sample (rail: each button inside #side, .cl-side or .ng-side and whether its box sits inside the panel's): a button outside its side panel is a break, once per button per page (CK-53: the ?, home and book over the water bottle)." },
 });
 const overlap = (a, b) => Math.max(0, Math.min(a.r, b.r) - Math.max(a.l, b.l)) * Math.max(0, Math.min(a.b, b.b) - Math.max(a.t, b.t));
@@ -1623,8 +1623,10 @@ export function check52(tl, add) {
   }
 }
 export function check53(tl, add) {
+  let darkSaid = false;
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "spot") continue;
+    if (e.dark && !darkSaid) { darkSaid = true; add("contract-53", e.t, "the help dims the screen with nothing lit in it (CHAI-36: the dim only with its lit thing)"); }
     for (const h of e.holes || []) {
       const inside = (e.things || []).filter((x) => { const cx = (x.l + x.r) / 2, cy = (x.t + x.b) / 2; return cx >= h.l && cx <= h.r && cy >= h.t && cy <= h.b; });
       const big = inside.length ? Math.max(...inside.map(area)) : 0;

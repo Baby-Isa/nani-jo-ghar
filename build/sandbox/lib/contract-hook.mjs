@@ -778,8 +778,14 @@ export const CONTRACT_HOOK = `(() => {
   };
   const spotNow = () => {
     const holes = [];
-    for (const l of document.querySelectorAll(".njg-onboard")) { try { for (const h of JSON.parse(l.dataset.holes || "[]")) holes.push(h); } catch (e) {} }
-    if (!holes.length) return null;
+    let dark = 0; // CHAI-36: a help layer up and dimming (not marked empty) with no lit box in it
+    for (const l of document.querySelectorAll(".njg-onboard")) {
+      let hs = [];
+      try { hs = JSON.parse(l.dataset.holes || "[]"); } catch (e) {}
+      for (const h of hs) holes.push(h);
+      if (!hs.length && l.dataset.holes != null && l.classList.contains("on") && !l.classList.contains("ob-empty") && parseFloat(getComputedStyle(l).opacity) > 0.5) dark++;
+    }
+    if (!holes.length && !dark) return null;
     const things = [];
     for (const g of phaserGames()) {
       const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
@@ -789,7 +795,7 @@ export const CONTRACT_HOOK = `(() => {
         safe(() => walk(sc.children.list));
       }
     }
-    return { holes: holes.map((h) => ({ l: Math.round(h.x), t: Math.round(h.y), r: Math.round(h.x + h.w), b: Math.round(h.y + h.h) })), things: things.slice(0, 24) };
+    return { holes: holes.map((h) => ({ l: Math.round(h.x), t: Math.round(h.y), r: Math.round(h.x + h.w), b: Math.round(h.y + h.h) })), things: things.slice(0, 24), dark };
   };
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
@@ -862,7 +868,7 @@ export const CONTRACT_HOOK = `(() => {
     const sp = safe(spills, []), rl2 = safe(rail, { side: null, list: [] });
     if (!same("layout", [sp.map((x) => x.card + x.text), rl2.list.map((x) => x.sel)])) emit({ k: "layout", spill: sp, rail: rl2.list, side: rl2.side });
     const so = safe(spotNow, null);
-    if (!same("spot", so ? [so.holes, so.things.map((x) => x.id + Math.round(x.l / 8))] : null) && so) emit({ k: "spot", ...so });
+    if (!same("spot", so ? [so.holes, so.dark, so.things.map((x) => x.id + Math.round(x.l / 8))] : null) && so) emit({ k: "spot", ...so });
     // contract-49 (S13-B2): the classes on the end screen that are not the kit's
     const ke = safe(kitEnd, null);
     if (ke && !same("kitend", ke)) emit({ k: "kitend", ...ke });
