@@ -29,6 +29,7 @@ Every tool in one table. Run one when the job needs it; each prints its own `--h
 | `node build/tools/ops/brief.mjs <spec.json>` | A complete session brief from a small spec: the rows its tasks name and the open rows of the `elements` it names, PLACES (kitmap) for those elements, and the one loop's PROOF (checks, `evidence.mjs --after --brief`, its flows' contract run at 1280x665 and 915x412, no frames of its own) | `/brief`, before any launch |
 | `node build/tools/ops/checkin.mjs [--log]` | What landed since the last check-in | `/checkin` |
 | `node build/tools/ops/feedback.mjs <transcript>` | A voice note -> the feedback report skeleton and draft rows (next free IDs) | `/feedback` |
+| `node build/tools/review/labcheck.mjs <lab page> [states...]` | A lab page at the four edge sizes before Zafar sees it: screenshots, page errors, every word that leaves its card, a contact sheet; exit 1 on any (Zafar, 28 Oct: the lab-first way) | the lab-first loop (CLAUDE.md fast lane) |
 | `node build/tools/ops/publish.mjs` | The publish gate first (`publishgate.mjs`: refuses while a fixable row is open, checks are red, or the last contract or evidence run is older than the game files), then bump the version, push to `main`, wait for Pages, shoot the live page | `/publish`, orchestrator only |
 | `node build/tools/ops/mumround.mjs <folder>` | Mum's recordings -> clips, manifest, engine, gap counts | `/mum-round` |
 | `node build/tools/ops/mumsheet.mjs` | The engine's gaps -> the next question sheet for Mum | `/mum-round` |
