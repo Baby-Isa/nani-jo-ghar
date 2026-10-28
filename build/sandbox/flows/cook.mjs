@@ -93,6 +93,7 @@ async function startOver(ctx, { labKey, level, speed }) {
   const P = new CookPlayer(page, rec, { mode: "start-over", speed, prefix: "again-" });
   P.afterIntro = async () => {
     if (await page.$("#btn-help")) {
+      await page.evaluate(() => { const m = document.getElementById("side-menu"); if (m && m.hidden) { const c = document.getElementById("side-cog"); if (c) c.click(); } }).catch(() => {}); // CK-53
       await page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(300);
       const b = await page.$(".njg-gu-pop .njg-gu-new button"); // (the kit's grown-ups' pop-up, S13-A2)

@@ -163,4 +163,5 @@ body.w6 img.ck-step-pic { height: 1.5em; width: auto; vertical-align: middle; ma
 #side.peek-fold .side-rail { display: none; }
 /* S13-A2 fix round: the sidebar still too tall after every fold of its card (a phone's sekelo L3-L4: every speaker row is a tap
    tall, SH-134): the rail stands in the play area's bottom-left corner, beside the sidebar, never off the screen */
+/* (CK-53, 28 Oct: never set any more; the rail stays in the sidebar) */
 #side.rail-out .side-rail { position: fixed; z-index: 30; left: calc(var(--njg-side-w) + var(--njg-s2)); bottom: max(var(--njg-s2), env(safe-area-inset-bottom, 0px)); flex-wrap: nowrap; }

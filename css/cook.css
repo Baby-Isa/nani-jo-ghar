@@ -84,6 +84,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
    going moves nothing else. */
 #live { flex: 1 0 auto; min-height: 0; display: flex; flex-direction: column; }
 .side-rail { display: flex; flex-wrap: wrap; gap: 8px; flex: none; align-items: center; }
+/* CK-53 (Zafar, 27 Oct): one cog; the ?, home and book open beside it, in the sidebar (never over the play area) */
+.side-cog { display: grid; place-items: center; color: var(--njg-ink); }
+.side-cog svg { width: 55%; height: 55%; }
+.side-cog[aria-expanded="true"] { background: var(--njg-ink); color: var(--cream); }
+/* the rail is pinned to the sidebar's foot: a tall card scrolls above it, the cog never leaves the screen (it had stepped into
+   the play area, S13-A2's rail-out); the three open as a small row above the cog, inside the sidebar, over the card a moment */
+.side-rail { position: sticky; bottom: 0; z-index: 5; }
+.side-menu { position: absolute; left: 0; bottom: calc(100% + 6px); display: flex; gap: 8px; align-items: center; padding: 6px; border-radius: var(--njg-radius); background: var(--cream); box-shadow: 0 6px 18px rgba(60, 40, 20, 0.22); }
+.side-menu[hidden] { display: none; }
 .rail-btn {
   width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
   font-size: calc(var(--njg-rail) * 0.46); box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;

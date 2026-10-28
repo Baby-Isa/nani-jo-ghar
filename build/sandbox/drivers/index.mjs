@@ -87,6 +87,8 @@ export const stuckName = (ms) => `stuck-${Math.floor(ms / 1000)}s`;
 export async function openGrownUps(page, rec, sel = ".njg-gu-btn") {
   const ev = page.__njgEvidence;
   if (!(ev && ev.wantsHelp && ev.wantsHelp())) return false;
+  // (CK-53: Cook's ? waits behind the cog at the sidebar's foot: open it first)
+  await page.evaluate(() => { const m = document.getElementById("side-menu"); if (m && m.hidden) { const c = document.getElementById("side-cog"); if (c) c.click(); } }).catch(() => {});
   const b = await page.$(sel);
   if (!b || !(await b.isVisible().catch(() => false))) return false;
   // (a station that begins as it opens puts it away again, Cook's UI.gist: tried again a moment later, three times at most)

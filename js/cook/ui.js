@@ -785,7 +785,9 @@
     if (text !== helpText) UI.closeHelp();
     helpText = text;
     const hb = $("#btn-help");
-    if (hb) hb.classList.toggle("fresh", !!fresh);
+    // CK-53 (Zafar, 27 Oct: "this question mark shouldn't be highlighted"): the ? never glows (it waits behind the cog)
+    if (hb) hb.classList.remove("fresh");
+    void fresh;
   };
   UI.helpText = () => helpText;
   UI.hideGist = () => {
@@ -2451,7 +2453,7 @@
     drawCards(box, sideEls);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
     if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
-    $("#side").classList.toggle("rail-out", (mission.compact || 0) >= 6);
+    $("#side").classList.remove("rail-out"); // CK-53 (Zafar, 27 Oct): the rail never leaves the sidebar for the play area
     checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
     $("#mission").classList.add("people");
@@ -3382,6 +3384,25 @@
     // (a parked page without the kit's buttons gets them, so its "?" is the same pop-up: S13-A2)
     if (global.NjgButtons) guPopNow();
     else UI.needShared("buttons").then(() => guPopNow());
+    // CK-53: the cog opens and closes the ?, home and book beside it; a tap anywhere else (but the grown-ups' pop-up) closes them
+    const cog = $("#side-cog");
+    const menu = $("#side-menu");
+    const setMenu = (open) => {
+      if (!cog || !menu) return;
+      menu.hidden = !open;
+      cog.setAttribute("aria-expanded", open ? "true" : "false");
+      if (!open && UI.helpOpen()) UI.closeHelp();
+    };
+    on("#side-cog", () => {
+      Cook.sfx.click();
+      setMenu(menu.hidden);
+    });
+    onPage(document, "pointerdown", (e) => {
+      if (!menu || menu.hidden) return;
+      if (e.target.closest && e.target.closest(".side-rail, .njg-gu-pop")) return;
+      setMenu(false);
+    }, { passive: true });
+    UI.openMenu = () => setMenu(true);
     on("#btn-help", () => {
       Cook.sfx.click();
       if (UI.helpOpen()) UI.closeHelp();

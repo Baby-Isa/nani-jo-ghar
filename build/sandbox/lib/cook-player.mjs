@@ -405,6 +405,7 @@ export class CookPlayer {
     await sleep(400);
     if (await this.page.$(".njg-onboard")) return;
     this.helped = true;
+    await this.page.evaluate(() => { const m = document.getElementById("side-menu"); if (m && m.hidden) { const c = document.getElementById("side-cog"); if (c) c.click(); } }).catch(() => {}); // CK-53: the ? waits behind the cog
     await this.page.click("#btn-help", { force: true }).catch(() => {});
     await sleep(300);
     if (await this.page.$(".njg-gu-pop:not(.hidden)")) { // (the kit's grown-ups' pop-up, S13-A2)

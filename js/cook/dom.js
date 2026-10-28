@@ -56,11 +56,15 @@ export const screenHTML = () => `
         <div class="say-slot"></div>
       </div>
     </div>
-    <!-- 3. the rail: "?" (what do I do here?), menu, recipe book -->
+    <!-- 3. the rail (CK-53, Zafar 27 Oct: the ?, home and book off the play screen): one cog at the sidebar's foot; it opens the
+         three in the rail, inside the sidebar, never over the play area -->
     <div class="side-rail">
-      <button id="btn-help" type="button" class="njg-gu-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
-      <button id="btn-home" class="rail-btn" title="Menu" aria-label="Menu">&#8962;</button>
-      <button id="btn-book" class="rail-btn" title="Nani's recipe book" aria-label="Nani's recipe book">&#128214;</button>
+      <button id="side-cog" type="button" class="rail-btn side-cog" title="Menu" aria-label="Menu" aria-expanded="false" aria-controls="side-menu" data-ob-pass><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+      <div class="side-menu" id="side-menu" hidden>
+        <button id="btn-help" type="button" class="njg-gu-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
+        <button id="btn-home" class="rail-btn" title="Home" aria-label="Home" data-ob-pass>&#8962;</button>
+        <button id="btn-book" class="rail-btn" title="Nani's recipe book" aria-label="Nani's recipe book" data-ob-pass>&#128214;</button>
+      </div>
     </div>
   </aside>
 
