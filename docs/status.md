@@ -13,11 +13,11 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 row everywhere, the helper card in Nani's box, glow and bounce, no target). Overnight (his yes, 27 Oct): the central type
 (SH-151), centred speaker badges (SH-140), chai's help light and dim (CHAI-33, CHAI-36), Cook's cog (CK-53), chai's marble, pour
 and the eye test's thank-you (SH-108, CHAI-31, CLN-206), and the checks that would have caught last sprint (contract-51 to 54, a
-returning player, the four sizes, the lab check). **Not published:** on the branch, waiting for his word. Report:
+returning player, the four sizes, the lab check). **Published** 28 Oct 11:33 UK (20261028T113000Z). Report:
 `build/reports/s14-night-report.md`.
 
 **Next steps:**
-1. Zafar reads the morning report; one word publishes the overnight fixes (`/publish`, `--force`: the sprint's rows are open).
+1. Wire the new cards and onboarding into the real chai game behind a labs switch (proposed: one builder, Opus high, about $40-60; or here in the chat), for Zafar to play and lock before the principles and the roll-out.
 2. The onboarding lab, his next round of numbered notes; then the principles from chai locked as the rulebook
    (`docs/sprints/S14-lock-the-principles.md`), then the plan to roll the new cards and onboarding out (Cook, clinic).
 3. Found overnight for that roll-out: the help's light too big in daar, samosa, the grill and the pantry; bubbles over faces
@@ -45,6 +45,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+28 Oct 2026, published 11:33 UK (be3aa32f, 20261028T113000Z): the overnight fixes (the central type SH-151, centred badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you SH-108/CHAI-31/CLN-206) and the new checks; `--force` on Zafar's word (28 Oct: "Yes publish"). Checked live: chai at 740x320, no errors, the light round the bottle and its pill, the cog in the sidebar.
 
 28 Oct 2026, published after midnight UK (20261028T004936Z): the onboarding lab, round 5 (glow and bounce in a lit box, the order card lit, the helper unhidden, the self-scrolling order row, the no-sign); the game unchanged; `--force` per decision 3.
 
