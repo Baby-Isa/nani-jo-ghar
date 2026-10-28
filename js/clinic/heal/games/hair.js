@@ -188,7 +188,7 @@
 .hc-hair [data-heal]{cursor:pointer}
 .hc-hair .hc-pulse{animation:hcHairPulse 1s ease-in-out infinite}
 @keyframes hcHairPulse{0%,100%{opacity:1}50%{opacity:.45}}
-.hc-hair .hc-bubble{font:800 30px/1 "Baloo 2",system-ui,sans-serif;fill:#3a2e28}
+.hc-hair .hc-bubble{font:800 30px/1 var(--njg-font-display,"Baloo 2",system-ui,sans-serif);fill:#3a2e28}
 `;
   const SKIN_DEF = "#c99a74";
   const ALI_HAIR = "#1e1510"; // a bald patient borrows Ali's hair for the game

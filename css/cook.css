@@ -20,8 +20,8 @@
   --indigo: var(--njg-cook-indigo);
   --shadow: 0 6px 20px rgba(60, 40, 20, 0.18);
   --radius: 18px;
-  --kutchi-font: "Baloo 2", "Nunito", system-ui, sans-serif;
-  --ui-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kutchi-font: var(--njg-font-display, "Baloo 2", "Nunito", system-ui, sans-serif);
+  --ui-font: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
 }
 /* (4:3 tablets: the frame sizes the sidebar and everything in it, data/layout.json `sidebar.tablet`) */
 

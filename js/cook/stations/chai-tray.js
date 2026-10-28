@@ -131,8 +131,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const WELLS = [[0.283, 0.29], [0.717, 0.29], [0.283, 0.708], [0.717, 0.708]];
   const WELL_D = 0.33;
   const COL = { water: St.WATER, chai: 0x8a4a22, milk: 0xf6f1e7, glass: 0xc98a52 };
-  const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
-  const FONT = "Nunito, sans-serif";
+  const INK = { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; } }; // the central tokens (SH-151)
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
   const jarUrl = (id) => `assets/cook/items/shelf-${id}-bare-f.webp`;
   // the small-jar family for every spice slot: the art run's jars with lids that differ (art.s02 "spice-jar-*", C5; the
   // ginger jar replaces the old one that read as gummies, C24) once they land, else the v2 jars
@@ -657,7 +657,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       chip.add(bg);
       const icon = S.add.graphics();
       if (showWord) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "25px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
         const maxT = CHIP.w - 52;
         if (t.width > maxT) t.setScale(maxT / t.width);
         const w = 22 + 8 + t.displayWidth;
@@ -894,7 +894,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
       const c = S.track(S.add.container(0, 0).setDepth(D.fx + 3).setAlpha(0).setScale(k));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
       const w = 34 + 10 + t.width + 36;
       const g = S.add.graphics();
       g.fillStyle(0x28190a, 0.1);

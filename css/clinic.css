@@ -14,7 +14,7 @@
   --cl-side-w: var(--njg-side-w);
   --cl-act-w: clamp(96px, 11vw, 150px);
   --cl-r: 16px;
-  --cl-font: "Nunito", system-ui, sans-serif;
+  --cl-font: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
   --cl-head: "Baloo 2", "Nunito", system-ui, sans-serif;
 }
 * { box-sizing: border-box; }

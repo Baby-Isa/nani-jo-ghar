@@ -65,8 +65,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   // SH-112 (Zafar 20 Oct): the taller band's crates and jars a quarter bigger (St.shelfFit keeps the band's top gap)
   const PITCH = 180;
   const SLOT_W = 140;
-  const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
-  const FONT = "Nunito, sans-serif";
+  const INK = { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; } }; // the central tokens (SH-151)
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
   // the vegetables' own art: word id -> file stem
   const VEG = { "veg-01": "bataato", "veg-02": "dungri", "veg-03": "tameto", "veg-12": "marcha", "veg-13": "lasan", "veg-14": "aadu" };
   const CHOPPED = { "veg-01": "veg-bataato-cubed-v2-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
@@ -547,7 +547,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1500 } = {}) {
     const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(z.k * 0.8));
-    const t = S.add.text(0, 0, text, { fontFamily: FONT, fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+    const t = S.add.text(0, 0, text, { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
     const w = 34 + 10 + t.width + 36;
     const g = S.add.graphics();
     g.fillStyle(0x28190a, 0.1);
@@ -1170,7 +1170,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const needle = put(S.add.graphics(), 0, 0, 0.03);
     // the laps: the Kutchi word on a white chip in the face's lower half
     const cg = put(S.add.graphics(), 0, 104, 0.04);
-    const ct = put(S.add.text(0, 0, "", { fontFamily: FONT, fontSize: "40px", fontStyle: "800", color: INK.kutchi }).setOrigin(0.5), 0, 104, 0.05);
+    const ct = put(S.add.text(0, 0, "", { fontFamily: FONT(), fontSize: "40px", fontStyle: "800", color: INK.kutchi }).setOrigin(0.5), 0, 104, 0.05);
     const chip = [cg, ct];
     S.tweens.add({ targets: parts.filter((o) => !chip.includes(o)), alpha: 1, duration: 300 });
     let shown = -1;

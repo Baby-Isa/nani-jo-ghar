@@ -94,8 +94,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // SAM-14 (A8, decision 56): every samosa stays inside the oil's flat surface: its spot (r, a fraction of the oil's
   // radius) plus half its size stays within 0.8 of the oil (was up to 0.94: they reached the karahi's sides)
   const OIL = (n) => (n <= 3 ? { size: 170, r: 0.42, at: [-90, 30, 150] } : n <= 4 ? { size: 150, r: 0.47, at: [-135, -45, 45, 135] } : { size: 128, r: 0.52, at: [-90, 30, 150, -30, 90, 210] });
-  const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
-  const FONT = "Nunito, sans-serif";
+  const INK = { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; }, glow: 0xffe3a0 }; // the central tokens (SH-151)
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
 
   /** A frame's length in ms, for a tick (the scene's ticks get no dt). */
   const clock = () => {
@@ -308,7 +308,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1700 } = {}) {
     const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(z.k * 0.8));
-    const t = S.add.text(0, 0, text, { fontFamily: FONT, fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+    const t = S.add.text(0, 0, text, { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
     const w = 34 + 10 + t.width + 36;
     const g = S.add.graphics();
     g.fillStyle(0x28190a, 0.1);

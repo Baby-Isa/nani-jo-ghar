@@ -31,6 +31,11 @@
 //   k: "faces"   {list: [{who, sel, doctor}], cards, figFull, clinic}   face circles on screen and whose (contract-20)
 //   k: "card-en"  {list: [{word, stage, revealed, text}]}   the word cards' English on screen, by the card's stage (contract-39)
 //   k: "endpages" {pages, step, steps}     the end screen's pages (data-page), the one shown, and how many step rows it holds (contract-38)
+//   k: "layout"  {spill, rail, side}        SH-138 (Zafar, 27 Oct): words that leave their card (each text's own glyph box against
+//                                          its card's box: contract-51), the sidebar's buttons and whether each sits inside the
+//                                          sidebar (contract-54), the sidebar's box
+//   k: "spot"    {holes, things}           SH-138: the first-time help's light (js/shared/onboard.js Onboard.spot: its drawn holes,
+//                                          data-holes) and the tappable things on screen (Cook's pictures with a word): contract-53
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
 //
@@ -735,6 +740,51 @@ export const CONTRACT_HOOK = `(() => {
     const ownPop = pops.filter((p) => !p.querySelector(".njg-rq-card") && !p.matches(".njg-rq-card")).map((p) => (p.id ? "#" + p.id : "") + "." + [...p.classList].join("."));
     return { n: cards.length, bad: [...new Set(bad)].slice(0, 12), blank: blank.length, mute: mute.slice(0, 8), pops: pops.length, ownPop, intro: !!(intro && shown(intro)) };
   };
+  // ---- SH-138: a word outside its card; a sidebar button outside the sidebar; the help's light on more than one thing ----
+  const CARD = ".wc-card, .wc-row, .oc-row, .oc-card, .cv-bubble, .njg-bubble, .njg-guide, .njg-rq-card, .njg-pill, .rs-word";
+  const spills = () => {
+    const out = [];
+    for (const card of document.querySelectorAll(CARD)) {
+      if (!shown(card)) continue;
+      const cr = card.getBoundingClientRect();
+      if (cr.width < 4 || cr.height < 4) continue;
+      const w = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
+      for (let n = w.nextNode(); n; n = w.nextNode()) {
+        const s = (n.nodeValue || "").trim();
+        if (!s || !n.parentElement || !shown(n.parentElement) || n.parentElement.closest(CARD) !== card) continue;
+        if (getComputedStyle(n.parentElement).visibility === "hidden") continue;
+        const rg = document.createRange(); rg.selectNodeContents(n);
+        const r = rg.getBoundingClientRect();
+        if (r.width < 1) continue;
+        const over = Math.max(cr.left - r.left, r.right - cr.right, cr.top - r.top, r.bottom - cr.bottom);
+        if (over > 2) out.push({ card: desc(card), text: s.slice(0, 30), over: Math.round(over) });
+      }
+    }
+    return out.slice(0, 20);
+  };
+  const SIDE = "#side, .cl-side, .ng-side";
+  const rail = () => {
+    const side = document.querySelector(SIDE);
+    if (!side || !shown(side)) return { side: null, list: [] };
+    const sr = side.getBoundingClientRect();
+    const list = [...side.querySelectorAll("button, .njg-gu-btn, .rail-btn")].filter(shown).map((b) => { const r = b.getBoundingClientRect(); return { sel: desc(b), out: r.left < sr.left - 1 || r.right > sr.right + 1 || r.top < sr.top - 1 || r.bottom > sr.bottom + 1 }; });
+    return { side: R(sr), list: list.filter((x) => x.out).slice(0, 8) };
+  };
+  const spotNow = () => {
+    const holes = [];
+    for (const l of document.querySelectorAll(".njg-onboard")) { try { for (const h of JSON.parse(l.dataset.holes || "[]")) holes.push(h); } catch (e) {} }
+    if (!holes.length) return null;
+    const things = [];
+    for (const g of phaserGames()) {
+      const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+      for (const sc of g.scene.getScenes(true)) {
+        const cam = sc.cameras.main;
+        const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list); if (o.wordId && o.getBounds && o.input && o.input.enabled) { const b = safe(() => o.getBounds()); if (b) things.push({ id: o.wordId, l: Math.round(cr.left + (b.x - cam.worldView.x) * kx * cam.zoom), t: Math.round(cr.top + (b.y - cam.worldView.y) * ky * cam.zoom), r: Math.round(cr.left + (b.right - cam.worldView.x) * kx * cam.zoom), b: Math.round(cr.top + (b.bottom - cam.worldView.y) * ky * cam.zoom) }); } } };
+        safe(() => walk(sc.children.list));
+      }
+    }
+    return { holes: holes.map((h) => ({ l: Math.round(h.x), t: Math.round(h.y), r: Math.round(h.x + h.w), b: Math.round(h.y + h.h) })), things: things.slice(0, 24) };
+  };
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
   const sample = () => {
@@ -802,6 +852,11 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
     const fg = safe(fingers, []);
     if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on") });
+    // SH-138: words outside their card, sidebar buttons outside the sidebar, the help's light
+    const sp = safe(spills, []), rl2 = safe(rail, { side: null, list: [] });
+    if (!same("layout", [sp.map((x) => x.card + x.text), rl2.list.map((x) => x.sel)])) emit({ k: "layout", spill: sp, rail: rl2.list, side: rl2.side });
+    const so = safe(spotNow, null);
+    if (!same("spot", so ? [so.holes, so.things.map((x) => x.id + Math.round(x.l / 8))] : null) && so) emit({ k: "spot", ...so });
     // contract-49 (S13-B2): the classes on the end screen that are not the kit's
     const ke = safe(kitEnd, null);
     if (ke && !same("kitend", ke)) emit({ k: "kitend", ...ke });
@@ -809,7 +864,7 @@ export const CONTRACT_HOOK = `(() => {
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => { const kit = b.matches(".cv-bubble"); return { who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b), kit, ...(kit ? {} : { sel: desc(b) }) }; });
     const bsig = bubs.map((b) => [b.who, b.text, Math.round(b.box.l / 6), Math.round(b.box.t / 6)]);
     if (!same("bubble", bsig) && bubs.length) {
-      emit({ k: "bubble", list: bubs, heads: [...phaserHeads(), ...domHeads()], play: playArea(), vw: innerWidth, vh: innerHeight });
+      emit({ k: "bubble", list: bubs, heads: [...phaserHeads(), ...domHeads()], play: playArea(), side: safe(() => { const s = document.querySelector(SIDE); return s && shown(s) ? R(s.getBoundingClientRect()) : null; }, null), vw: innerWidth, vh: innerHeight });
     }
   };
   setInterval(() => { try { sample(); } catch (e) {} }, 100);

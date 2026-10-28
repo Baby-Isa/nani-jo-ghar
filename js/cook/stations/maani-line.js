@@ -324,7 +324,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /** The word pops by the action (§4), and the family clip plays. */
     const wordPop = (id, x, y) => {
       const pop = S.track(S.add.container(x, y).setDepth(D.fx + 4).setAlpha(0));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: "Nunito, sans-serif", fontSize: "34px", fontStyle: "800", color: "#8C2F2F" }).setOrigin(0, 0.5);
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif", fontSize: "34px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0, 0.5);
       const w = t.width + 64;
       const bg = S.add.graphics();
       bg.fillStyle(0x28190a, 0.1);

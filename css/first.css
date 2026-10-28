@@ -14,7 +14,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; }
 body.first {
   background: var(--house);
   color: var(--ink);
-  font-family: "Nunito", system-ui, sans-serif;
+  font-family: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
@@ -177,7 +177,7 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
 .st-text { min-width: 0; }
 .st-text .chunk {
   margin: 0; padding: 1px 8px; border-radius: 10px;
-  font-family: "Baloo 2", "Nunito", sans-serif; font-weight: 800; line-height: 1.2;
+  font-family: var(--njg-font-display, "Baloo 2", "Nunito", system-ui, sans-serif); font-weight: 800; line-height: 1.2;
   font-size: clamp(17px, 3.4vmin, 28px);
   color: rgba(58, 36, 24, .5); transition: color .2s, background .2s;
 }

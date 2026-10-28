@@ -47,6 +47,16 @@
     return m ? [+m[1], +m[2], +m[3]] : null;
   };
   T.rgbOf = rgbOf;
+  // a font role from the central type (css/shared/tokens.css "type": display, body, word), for drawn (Phaser) text
+  T.font = (role, fallback) => T.css(`font-${role}`) || fallback || "";
+  // the drawn games' palette (Cook's stations: text, the Kutchi word, card, grey, gold, panel, page), read once the sheet is in
+  let pal = null;
+  T.cookInk = () => {
+    if (pal) return pal;
+    const p = { text: T.hex("ink-text"), kutchi: T.hex("ink-kutchi"), grey: T.int("grey"), gold: T.int("gold"), panel: T.int("panel"), page: T.int("page") };
+    if (p.text) pal = p;
+    return p;
+  };
   T.hex = (name) => {
     const c = rgbOf(T.css(name));
     return c ? "#" + c.map((x) => x.toString(16).padStart(2, "0")).join("") : null;

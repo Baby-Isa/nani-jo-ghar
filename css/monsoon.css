@@ -16,8 +16,8 @@
   --storm: #3d4a5c;
   --shadow: 0 6px 20px rgba(20, 20, 40, 0.25);
   --radius: 16px;
-  --kutchi-font: "Baloo 2", "Nunito", system-ui, sans-serif;
-  --ui-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kutchi-font: var(--njg-font-display, "Baloo 2", "Nunito", system-ui, sans-serif);
+  --ui-font: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; overflow: hidden; background: #1d232b; color: var(--ink); font-family: var(--ui-font); -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }

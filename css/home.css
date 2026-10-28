@@ -10,7 +10,7 @@ html, body { margin: 0; height: 100%; }
 body.home {
   background: linear-gradient(#cfe6ef, #e8efe0 55%, var(--paper) 56%);
   color: var(--ink);
-  font-family: "Nunito", system-ui, sans-serif;
+  font-family: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
   display: flex; flex-direction: column;
   overflow: hidden;
   -webkit-user-select: none; user-select: none;

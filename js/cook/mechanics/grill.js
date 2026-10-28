@@ -952,8 +952,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     BOWL_W: 168, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
     CHIP: { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 },
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
-    INK: { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, sage: 0x7e9a76, wrong: 0xb24a3a },
-    FONT: "Nunito, sans-serif",
+    INK: { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; }, sage: 0x7e9a76, wrong: 0xb24a3a }, // the central tokens (SH-151)
+    get FONT() { return global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"; },
     DIR: "assets/cook/items/sekelo/",
   });
   /** The piece that is meat (ph-meat, gos: SEK-19, decision 11; the cooked all-meat skewer is mishkaki) and a piece's word. */

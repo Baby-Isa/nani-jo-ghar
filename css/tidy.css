@@ -17,7 +17,7 @@
   --side: clamp(190px, 23vw, 330px);
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--cream); color: var(--ink); font-family: "Nunito", system-ui, sans-serif; overflow: hidden; -webkit-user-select: none; user-select: none; touch-action: none; }
+html, body { margin: 0; height: 100%; background: var(--cream); color: var(--ink); font-family: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif); overflow: hidden; -webkit-user-select: none; user-select: none; touch-action: none; }
 button { font: inherit; color: inherit; cursor: pointer; }
 .hidden { display: none !important; }
 
@@ -173,7 +173,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .btn { border: 0; border-radius: 12px; padding: 8px 14px; font-weight: 800; background: #f1e3cc; }
 .btn.primary, .btn.yes { background: var(--good); color: #fff; }
 .btn.no { background: #e4c9c0; }
-.h-card h3, #panel h2, #panel h3 { font-family: "Baloo 2"; margin: 4px 0; }
+.h-card h3, #panel h2, #panel h3 { font-family: var(--njg-font-display, "Baloo 2", "Nunito", system-ui, sans-serif); margin: 4px 0; }
 .h-card .rung { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
 .h-card .rung button { flex: 1; text-align: left; }
 .h-card .cost { font-size: 13px; color: var(--muted); }

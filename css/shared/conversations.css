@@ -19,7 +19,7 @@
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  font-family: "Nunito", system-ui, -apple-system, sans-serif;
+  font-family: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
   transition: opacity .25s;
 }
 .cv-layer.out { opacity: 0; }

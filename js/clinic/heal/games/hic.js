@@ -183,7 +183,7 @@
 .hc-hic [data-heal]{cursor:pointer}
 .hc-hic .hc-pulse{animation:hcHicPulse 1s ease-in-out infinite}
 @keyframes hcHicPulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hc-hic .hc-bubble{font:800 30px/1 "Baloo 2",system-ui,sans-serif;fill:#3a2e28}
+.hc-hic .hc-bubble{font:800 30px/1 var(--njg-font-display,"Baloo 2",system-ui,sans-serif);fill:#3a2e28}
 .hc-hic .hc-puff{transition:transform .25s cubic-bezier(.5,1.8,.5,1);transform-box:fill-box;transform-origin:center}
 .hc-hic .hc-water{transition:y .3s,height .3s}
 `;

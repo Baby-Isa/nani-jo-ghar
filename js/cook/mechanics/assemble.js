@@ -195,14 +195,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   const INK = {
     text: "#2A2522",
-    kutchi: "#8C2F2F",
+    get kutchi() { return global.Tokens.hex("ink-kutchi"); },
     card: 0xffffff,
     grey: 0xd9d2c7,
     gold: 0xc9962e,
     panel: 0xefe5d6,
     page: 0xf4ecdf,
   };
-  const FONT = "Nunito, sans-serif";
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
   // a layer's thickness, as a share of a full one: a chutney is drizzled (thin, over the layer below)
   const THIN = {
     "ph-amli": 0.5,
@@ -990,7 +990,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * drew 13.1px at 1366x768 and 7px on a phone before S05-G.
        */
       function chipLabel(id) {
-        const style = (px) => ({ fontFamily: FONT, fontSize: `${px}px`, fontStyle: "800", color: INK.kutchi, align: "left", lineSpacing: -4 });
+        const style = (px) => ({ fontFamily: FONT(), fontSize: `${px}px`, fontStyle: "800", color: INK.kutchi, align: "left", lineSpacing: -4 });
         const maxT = CHIP.w - 44;
         const word = Cook.display(id);
         const make = (text, px) => {
@@ -1105,7 +1105,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         );
         const t = S.add
           .text(0, 0, text, {
-            fontFamily: FONT,
+            fontFamily: FONT(),
             fontSize: "36px",
             fontStyle: "800",
             color: INK.kutchi,

@@ -606,6 +606,8 @@
           put(g, { x: r.x - 2, y: r.y - 2, w, h, r: Math.min(w, h) / 2 });
         });
         lit(b ? o.els || [] : []);
+        // (the sandbox's probe reads the drawn box: contract-53, one thing in the light; SH-138)
+        try { layer.dataset.holes = JSON.stringify(b ? [{ x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.w), h: Math.round(b.h) }] : []); } catch (e) { /* none */ }
         return b;
       },
       clear() {

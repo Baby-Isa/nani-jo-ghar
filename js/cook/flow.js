@@ -984,7 +984,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       } catch (e) {
         w.textContent = "";
       }
-      Object.assign(w.style, { font: `800 ${Math.round(big * 0.15)}px Nunito, sans-serif`, color: "#8C2F2F", lineHeight: "1.1", textAlign: "center", overflowWrap: "anywhere", marginTop: `${big * 0.02}px` });
+      Object.assign(w.style, { font: `800 ${Math.round(big * 0.15)}px ${global.Tokens.font("word", "Nunito, sans-serif")}`, color: global.Tokens.hex("ink-kutchi"), lineHeight: "1.1", textAlign: "center", overflowWrap: "anywhere", marginTop: `${big * 0.02}px` });
       el.appendChild(w);
       const stamp = document.createElement("div");
       stamp.className = "njg-served-stamp";

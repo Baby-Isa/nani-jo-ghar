@@ -69,7 +69,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // Anyone else keeps their old badge (one mood).
   const FACES = Cook.FACES;
   const MOODS = ["neutral", "happy", "frown"];
-  const FONT = "Nunito, sans-serif";
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
 
   const Kit = {
     /** the shared ring and badge colours (the heat ring's; CHT-05: the chop timer uses them too) */
@@ -206,7 +206,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: face, y: y - size * 0.06, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeOut" });
         const said = line === false ? null : line || Cook.Lang.line("welldone");
         if (said) {
-          const t = S.add.text(0, 0, Cook.Lang.plain(said).trim(), { fontFamily: FONT, fontSize: "34px", fontStyle: "800", color: "#8C2F2F" }).setOrigin(0.5);
+          const t = S.add.text(0, 0, Cook.Lang.plain(said).trim(), { fontFamily: FONT(), fontSize: "34px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0.5);
           const w = t.width + 44;
           const h = 58;
           const dir = side === "right" ? 1 : -1;
@@ -333,7 +333,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       chip.add(bg);
       const icon = S.add.graphics();
       if (word) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "25px", fontStyle: "800", color: "#8C2F2F" }).setOrigin(0, 0.5);
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0, 0.5);
         const maxT = w - 52;
         if (t.width > maxT) t.setScale(maxT / t.width);
         const tw = 22 + 8 + t.displayWidth;

@@ -432,7 +432,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const cont = this.track(this.add.container(c.x, c.y + c.h / 2 + 4).setDepth(D.fx + 2));
       const t = text
         ? this.add
-            .text(0, 0, text, { fontFamily: ph ? "Nunito, sans-serif" : '"Baloo 2", Nunito, sans-serif', fontSize: "34px", fontStyle: ph ? "italic bold" : "bold", color: ph ? "#6b5a4c" : "#2d2018" })
+            .text(0, 0, text, { fontFamily: ph ? (global.Tokens && global.Tokens.font ? global.Tokens.font("body", "Nunito, sans-serif") : "Nunito, sans-serif") : (global.Tokens && global.Tokens.font ? global.Tokens.font("display", '"Baloo 2", Nunito, sans-serif') : '"Baloo 2", Nunito, sans-serif'), fontSize: "34px", fontStyle: ph ? "italic bold" : "bold", color: ph ? global.Tokens.hex("ink-rec") : global.Tokens.hex("ink-said") })
             .setOrigin(0, 0.5)
         : null;
       const iconW = 30;
@@ -697,7 +697,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     floatText(x, y, text, color = "#ffffff", size = 54) {
       const t = this.track(
         this.add
-          .text(x, y, text, { fontFamily: '"Baloo 2", Nunito, sans-serif', fontSize: `${size}px`, fontStyle: "bold", color, stroke: "#3a2410", strokeThickness: 8 })
+          .text(x, y, text, { fontFamily: (global.Tokens && global.Tokens.font ? global.Tokens.font("display", '"Baloo 2", Nunito, sans-serif') : '"Baloo 2", Nunito, sans-serif'), fontSize: `${size}px`, fontStyle: "bold", color, stroke: global.Tokens.hex("ink-outline"), strokeThickness: 8 })
           .setOrigin(0.5)
           .setDepth(D.top)
       );
