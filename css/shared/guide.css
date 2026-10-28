@@ -37,7 +37,7 @@
 .njg-guide .ng-face .say-badge { z-index: 3; }
 /* (the judge, 27 Oct: the badge sat over the "C" of her line under the face) her line starts under the badge, never under it:
    the face keeps the room the badge hangs below its tap area (css/shared/face.css: 34% of the badge, less the tap area's margin) */
-.njg-guide .ng-face { margin-bottom: max(0px, calc(max(var(--njg-face-d) * 0.38, var(--njg-s4)) * 0.34 - (var(--njg-face-tap) - var(--njg-face-d)) / 2 + var(--njg-s1))); }
+.njg-guide .ng-face { margin-bottom: max(0px, calc(max(var(--njg-face-d) * 0.38, var(--njg-s4)) * 0.5 - var(--njg-face-d) * 0.1464 - (var(--njg-face-tap) - var(--njg-face-d)) / 2 + var(--njg-s1))); }
 .njg-guide .ng-face.on .say-badge { background-color: var(--njg-gold); }
 .njg-guide.talk .ng-face .njg-face { animation: var(--njg-talk-anim); } /* the kit's talk (css/shared/focus.css; ART-18) */
 .njg-guide .ng-say { grid-area: say; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }

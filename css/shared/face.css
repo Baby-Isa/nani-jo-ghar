@@ -31,16 +31,20 @@
 .njg-face-btn-guide { --njg-face-d: var(--njg-guide-face); }
 .njg-face-btn-big { --njg-face-d: var(--njg-big-face); }
 .njg-face-btn:active { transform: scale(0.95); }
-.njg-face-btn .say-badge {
+.njg-face-btn .say-badge, .njg-face-btn.face-say .say-badge {
   position: absolute; pointer-events: none; border-radius: 50%; aspect-ratio: 1;
-  /* (S13-A2 fix round, the judge: on the lower-right edge it covered the headline's first word: on the lower-LEFT edge, away from
-     every face's words, still mostly outside the circle, never over the face) */
-  left: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2); bottom: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2);
-  width: calc(var(--njg-face-d) * 0.38); min-width: var(--njg-s4); transform: translate(-34%, 34%);
+  /* SH-140 (Zafar, 27 Oct: "the image icon should cut exactly halfway through ... to the middle point of the circle of the
+     speaker icon"): the badge's centre sits exactly on the face circle's edge, lower left (45 degrees: 0.1464 and 0.8536 of the
+     circle across and down), in every game; (S13-A2: lower LEFT, away from every face's words) */
+  left: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2 + var(--njg-face-d) * 0.1464); top: calc((var(--njg-face-tap) - var(--njg-face-d)) / 2 + var(--njg-face-d) * 0.8536);
+  right: auto; bottom: auto; z-index: 3;
+  width: calc(var(--njg-face-d) * 0.38); min-width: var(--njg-s4); max-width: none; transform: translate(-50%, -50%);
   background: var(--njg-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card);
 }
 .njg-face-btn.on .say-badge { background-color: var(--njg-gold); }
+.njg-face-btn.face-say.on .say-badge { animation: njgBadge 0.8s ease-in-out infinite; } /* the pulse keeps the badge on the edge */
+@keyframes njgBadge { 50% { transform: translate(-50%, -50%) scale(1.18); } }
 /* a page's wider tap area (Cook's .face-say::after) stays inside the button's own box (SH-09) */
 .njg-face-btn::after { inset: 0; }
 
