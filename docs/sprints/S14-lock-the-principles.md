@@ -70,6 +70,13 @@ card slides to just after the other ticked ones; "no" cards wait at the end; it 
 child's own scroll is left alone until the next tick; the current card is not marked. Drag moves in other games (stir, roll,
 swipe): the item itself makes the move once (his yes). The "no" card: a faded picture and a no-sign badge where a tick goes.
 
+## Chai onboarding lab, round 1 (Zafar, 28 Oct)
+
+His notes: `docs/feedback/chai-onboarding-2026-10-28.md`. "Yes to all, include the pour frames" (Zafar, 28 Oct): the lab's fixes
+published as they are; the small art run (the pan exactly overhead in every state, its pour frames, the three glasses, the plainer
+kitchen) before the next publish of the game; then the roll-out into the real chai behind a labs switch (its heat, ring and pour
+kept), one builder, Opus high, about $40-60; the second reader run (5 fixes).
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 

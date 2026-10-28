@@ -25,8 +25,8 @@ screen: mock-up, lab page, my four-size check, Zafar's numbered choices, then th
 1. **The chai onboarding, the quick lab way** (Zafar, 28 Oct): he plays "Play chai" in `lab/cards.html` (the gear: options 9 new or
    returning player, 10 level) and sends numbered notes; fix them in this chat round by round, `labcheck.mjs` before each publish
    (rough publishes, `--force`, decision 3). No launch. **Round 1 done on the branch** (`docs/feedback/chai-onboarding-2026-10-28.md`:
-   the card light 1.2 s, the row glides, a tap skips the order, a bigger bubble speaker, the pan's painted states); not published:
-   questions 44-47 wait on him (publish the lab, the small art run, the roll-out, the second reader). His rule ART-29: one paste
+   the card light 1.2 s, the row glides, a tap skips the order, a bigger bubble speaker, the pan's painted states); his yes to all (28 Oct, the
+   sprint file): the lab published; the small art run with the pour frames next; then the roll-out builder. His rule ART-29: one paste
    block, every reference pushed, nothing for him to upload (`artblock.py --check`).
 2. **Into the real chai game behind a labs switch** once he keeps it: the new cards, the helper card and the onboarding. Proposed:
    one builder, Opus high, about $40-60, half a day (or in the chat); his go first.

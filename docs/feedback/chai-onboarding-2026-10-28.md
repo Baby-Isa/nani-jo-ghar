@@ -63,6 +63,8 @@ CHAI-08. Levels: the lab's chai is one level at a time (option 10); its rows are
 
 Lines: 11; in a point 10; chatter 1; unmapped 0.
 
+**Second reader** (a fresh Fable agent, 28 Oct, the transcript and rows only): 0 missing; 3 weakened (CHAI-08 and CHAI-34 lacked "before we push to main"; SH-153 set no growth in the game and lacked his shot), 2 claiming more (CHAI-34's pour frames, now his word: "include the pour frames"; ART-29's "never downloads"): all five fixed. Now 0 unmapped, 0 weakened.
+
 ## 5. Told before, and why it slipped
 
 - **The glasses (CHAI-08, 22 Oct):** "the tea glass is ... not exactly top down". Marked built on a judge's sheet that checked the
