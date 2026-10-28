@@ -8,31 +8,24 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (27 Oct 2026, morning UK):** Sprint 13 "One shared kit" is closed and published on `main` (958335e0, 20261027T040444Z, 27 Oct 04:07 UK; outcome and look back in `docs/sprints/S13-one-shared-kit.md`, verdicts in `build/reports/s13-verdicts/`). Every game now draws from one kit (cards, faces, buttons, finger, glow, bubbles, end screen, voice, save, loading), checked by one loop (`docs/architecture/evidence-loop.md` "The one loop"). Final replay (`s13-final2`: the 34 main flows plus chaat#hint at 1280x665 and 915x412): all 70 pages reached their end; 2 contract breaks, both samosa L3 (SAM-27, older; question 41). Final kit judge (`build/reports/s13-verdicts/s13-final-kit.verdicts.md`): 7 of 12 one look; the clinic's face, word card and order card still its own (SH-137), buttons unreadable (probe), first launch's end tick by design. Nothing is running.
-
-**How we work now (Zafar, 26-27 Oct; CLAUDE.md):** the fast lane (small tweaks in this chat with the checks, one judge pass at the sprint's end); new ideas first behind a labs switch, rough, for Zafar to try; builders only for new mechanics or screens, design settled first; checks at 1280x665 (his laptop) and 915x412 (his Z Flip 5), every size only before the stores.
+**Where things stand (28 Oct 2026, morning UK):** Sprint 14 is open: the card lab and the chai onboarding lab are live
+(`lab/cards.html`, round 5, 20261028T004936Z); Zafar has chosen the card (the serif, the Kutchi on its English, the sideways order
+row everywhere, the helper card in Nani's box, glow and bounce, no target). Overnight (his yes, 27 Oct): the central type
+(SH-151), centred speaker badges (SH-140), chai's help light and dim (CHAI-33, CHAI-36), Cook's cog (CK-53), chai's marble, pour
+and the eye test's thank-you (SH-108, CHAI-31, CLN-206), and the checks that would have caught last sprint (contract-51 to 54, a
+returning player, the four sizes, the lab check). **Not published:** on the branch, waiting for his word. Report:
+`build/reports/s14-night-report.md`.
 
 **Next steps:**
-1. **Zafar plays Sprint 13** (his checklist below) and sends feedback: run `/feedback` on it, rows the same day; the fast lane fixes what blocks play, and spreads a fix made in one Cook or clinic game to the others (one kit now: fix once, check every game on the kit sheets).
-2. **Answer questions 38-43** (`docs/questions.md`: the gold help box, phone rows, the end screen's empty half, samosa's ticks, clinic row pictures, his ear on "Muke …").
-3. **Sprint 14 "Lock the principles"** (`docs/sprints/S14-lock-the-principles.md`, planned): plan with Zafar first: the seven areas (how an order arrives, what a level means, help, words and English, moving on, voice, the screen), how each is decided (a numbered list, then a check), and the chai-style order everywhere behind a labs switch first. Propose its budget and the first step before launching anything.
-4. Zafar records at Masi's from `docs/language/recording-sheet.md`; the next art run (FC2 face moods, CHT-16, clinic row pictures) when he says.
-
-**Phases after S13 (Zafar, 26 Oct; each a few sprints):** 1. lock the principles; 2. finalise each Cook and clinic game; 3. the book (very important) and the morning scene; 4. the farm trip; 5. the stitching (transitions, scenes, zooms).
-
-**Zafar's checklist for Sprint 13 (Z Flip 5 and laptop, about 20 minutes):**
-1. Chai and samosa at L3-L4, the clinic at L3: the order written in Kutchi when it comes; every row with a speaker at its left; nothing hidden for memory; English only on tap.
-2. Chop, samosa, the eye test: the station within about a second of tapping the card, no light-brown screen.
-3. On the phone: the customer's opening "Muke …" plays every order.
-4. One look across Cook, the clinic, the door and first launch: glow, finger, faces, buttons, bubbles, "?" pop-up, end screen (known left-overs: SH-135, SH-136).
-5. The eye test on the laptop: the help finger on the card step.
-6. His saved player keeps its progress.
-7. Feel: anything slower or odder than before.
-
-**Open questions to Zafar:** 38-43 in `docs/questions.md`.
+1. Zafar reads the morning report; one word publishes the overnight fixes (`/publish`, `--force`: the sprint's rows are open).
+2. The onboarding lab, his next round of numbered notes; then the principles from chai locked as the rulebook
+   (`docs/sprints/S14-lock-the-principles.md`), then the plan to roll the new cards and onboarding out (Cook, clinic).
+3. Found overnight for that roll-out: the help's light too big in daar, samosa, the grill and the pantry; bubbles over faces
+   (SH-145); long words off the old cards (SH-142); two L3 rules gaps for a returning player (written learned words, 2 decoys).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 13 is live; I'll send my feedback on it. Then help me plan Sprint 14's principles. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the card and onboarding labs are live; the
+> overnight fixes wait on the branch. Tell me before launching anything new.
 
 ## The fix list
 

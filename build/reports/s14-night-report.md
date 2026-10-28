@@ -39,6 +39,25 @@ previous sprint that makes sense to do as well." Done in the orchestrator's chat
   was likely a frame mid-fade or under the help's dim: to re-shoot, not to change. **SH-137's square face tile:** the clinic draws
   the kit's round face (the badge measured on its edge); also to re-shoot.
 
-## The final replay
+## The final replay (`s14-night`)
 
-(filled in below)
+The 37 main flows, plus chai and the chai tray as a returning player (L1, L3) and chai L3's hint player, at all four sizes:
+**168 pages, every one reached its end.** Page errors: only first launch's three "view transition aborted", the same three as before
+tonight's changes. Contract: 69 breaks, all the new checks finding problems that were already there (none caused tonight):
+
+- contract-52 (27): bubbles over faces: Cook's customers and the eye test's doctor (SH-145, CK-18: the free-space placement).
+- contract-53 (17): the help's light too big in daar, samosa, the grill and the pantry (the chai one is fixed): the onboarding
+  roll-out ("just around the picture").
+- contract-51 (15): long words leaving their card: chop's and the eye test's word cards ("tameto", "dungri", "mirchi"), a headline
+  in chaat and samosa (SH-142: the new card).
+- contract-35 and 37 (4 each), returning player only: at L3 the chai tray writes item words a returning player has learned, and
+  its spice round has 2 decoys where the level table wants 3: two rules gaps the new replay exposed; for the rulebook.
+- contract-1 (1): daar's order pop-up missed once; replayed, it does not come back (a timing one-off).
+
+The replay's baseline now holds the four sizes (368 findings added, nothing else touched). The quick checks are green (unit,
+static, words, leak, docs, fix list, bump, specs, recordings, size).
+
+## Not published
+
+Tonight's changes are on the branch (`ccr-dfbb763e-fd6lh9`), not on `main`: they change the game itself, and Zafar's yes was to
+the fixes, not to publishing them. One word from him publishes them (the publish gate needs `--force`: the sprint's rows are open).
