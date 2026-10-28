@@ -1715,7 +1715,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const gy = b.height * 0.1 + 10;
       let [x0, y0, x1, y1] = [b.x - gx, b.y - dy - gy, b.right + gx, b.bottom - dy + gy];
       if (o.chip && o.chip.active) {
-        const c = o.chip.getBounds();
+        // CHAI-33 (Zafar, 27 Oct: the box "covers like three different items ... yet height-wise it cuts the speaker button"):
+        // the chip's box is its drawn card (CHIP), never Container.getBounds: a speaker-only chip holds only graphics, which
+        // have no bounds, so Phaser gave an empty box at the world's corner and the light stretched to the play area's edge
+        const ch = o.chip, sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1);
+        const c = { x: ch.x - (CHIP.w / 2) * sx, right: ch.x + (CHIP.w / 2) * sx, bottom: ch.y + (CHIP.h / 2 + 2) * sy };
         [x0, x1, y1] = [Math.min(x0, c.x), Math.max(x1, c.right), Math.max(y1, c.bottom)];
       }
       const a = UI.worldToScreen(x0, y0);

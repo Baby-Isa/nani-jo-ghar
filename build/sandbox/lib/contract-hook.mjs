@@ -742,10 +742,12 @@ export const CONTRACT_HOOK = `(() => {
   };
   // ---- SH-138: a word outside its card; a sidebar button outside the sidebar; the help's light on more than one thing ----
   const CARD = ".wc-card, .wc-row, .oc-row, .oc-card, .cv-bubble, .njg-bubble, .njg-guide, .njg-rq-card, .njg-pill, .rs-word";
+  // (a card mid-move or mid-fold is judged once it has settled: no running animation or transition on it or above it)
+  const still = (el) => { for (let x = el; x && x.getAnimations; x = x.parentElement) if (x.getAnimations().some((a) => a.playState === "running")) return false; return true; };
   const spills = () => {
     const out = [];
     for (const card of document.querySelectorAll(CARD)) {
-      if (!shown(card)) continue;
+      if (!shown(card) || !still(card)) continue;
       const cr = card.getBoundingClientRect();
       if (cr.width < 4 || cr.height < 4) continue;
       const w = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
@@ -753,6 +755,10 @@ export const CONTRACT_HOOK = `(() => {
         const s = (n.nodeValue || "").trim();
         if (!s || !n.parentElement || !shown(n.parentElement) || n.parentElement.closest(CARD) !== card) continue;
         if (getComputedStyle(n.parentElement).visibility === "hidden") continue;
+        // (a word a box clips, the card or a box inside it with overflow hidden, is cut, not spilled: the text-clipped lint's)
+        let cut = false;
+        for (let x = n.parentElement; x && !cut; x = x === card ? null : x.parentElement) { const o = getComputedStyle(x); if (/hidden|clip|auto|scroll/.test(o.overflowX + o.overflowY)) cut = true; }
+        if (cut) continue;
         const rg = document.createRange(); rg.selectNodeContents(n);
         const r = rg.getBoundingClientRect();
         if (r.width < 1) continue;
@@ -767,7 +773,7 @@ export const CONTRACT_HOOK = `(() => {
     const side = document.querySelector(SIDE);
     if (!side || !shown(side)) return { side: null, list: [] };
     const sr = side.getBoundingClientRect();
-    const list = [...side.querySelectorAll("button, .njg-gu-btn, .rail-btn")].filter(shown).map((b) => { const r = b.getBoundingClientRect(); return { sel: desc(b), out: r.left < sr.left - 1 || r.right > sr.right + 1 || r.top < sr.top - 1 || r.bottom > sr.bottom + 1 }; });
+    const list = [...side.querySelectorAll("#btn-help, #btn-home, #btn-book, .rail-btn, .side-rail .njg-gu-btn, .side-cog, .side-menu button")].filter(shown).map((b) => { const r = b.getBoundingClientRect(); return { sel: desc(b), out: r.left < sr.left - 1 || r.right > sr.right + 1 || r.top < sr.top - 1 || r.bottom > sr.bottom + 1 }; });
     return { side: R(sr), list: list.filter((x) => x.out).slice(0, 8) };
   };
   const spotNow = () => {

@@ -608,6 +608,9 @@
         lit(b ? o.els || [] : []);
         // (the sandbox's probe reads the drawn box: contract-53, one thing in the light; SH-138)
         try { layer.dataset.holes = JSON.stringify(b ? [{ x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.w), h: Math.round(b.h) }] : []); } catch (e) { /* none */ }
+        // CHAI-36 (Zafar, 27 Oct: "the whole screen's gone dark but nothing's highlighted ... way too early"): no dim without its
+        // lit thing, in every game: while the step's target is not on screen yet, the layer stays clear (and blocks nothing)
+        layer.classList.toggle("ob-empty", !b);
         return b;
       },
       clear() {
@@ -1199,6 +1202,7 @@
         return;
       }
       if (e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
+      if (!shown) return; // (no lit thing yet: no dim, so nothing is in the dark; CHAI-36)
       if (liveRects().some((r) => on(pt(e), r))) return;
       if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
       if (e.type === "touchstart") dark.add("t");

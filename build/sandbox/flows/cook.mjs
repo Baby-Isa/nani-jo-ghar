@@ -41,13 +41,17 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       const { page, rec } = ctx;
       await openCook(ctx, { speed });
       // start-over (SH-60): this first round is played fair; then the grown-ups' "Start over" and the station again (below)
-      const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode, speed });
+      // #returning (SH-138, Zafar 27 Oct: "how it won't pass quality control again"): a player who has played before: every
+      // first-time help seen, every word used right (a shelf chip is its speaker alone), playing like the hint player so the help's
+      // light comes on learned words (CHAI-33 only showed for such a player)
+      const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode === "returning" ? "hint" : mode, speed });
+      if (mode === "returning") await page.evaluate(() => { const C = window.Cook; if (window.njgTest?.cook.coachesSeen) window.njgTest.cook.coachesSeen(); for (const id of Object.keys((C.data && C.data.words) || {})) { C.markRight(id); C.markRight(id.replace(/^cook-/, "")); } });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
       if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.njgTest?.cook.coachesSeen && window.njgTest?.cook.coachesSeen());
       // ctx.profile "numbers-known" (SH-13, decision 57): every number word has been heard three times, as after a few plays
       if (ctx.profile === "numbers-known") await page.evaluate(() => { const C = window.Cook; for (let n = 1; n <= 12; n++) for (let i = 0; i < 3; i++) C.markSeen(C.numId(n)); });
-      await page.evaluate(([k, l, g]) => { njgTest.cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
+      await page.evaluate(([k, l, g]) => { njgTest.cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint" && mode !== "returning"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);
       await rec.state("start");

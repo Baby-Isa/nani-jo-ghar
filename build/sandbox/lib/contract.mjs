@@ -1586,22 +1586,27 @@ export function check49(tl, add) {
 Object.assign(CHECKS, {
   "contract-51": { item: "inside-card", title: "every word inside its card", how: "Every layout sample (lib/contract-hook.mjs spills: each text's own glyph box, a Range over its letters, against its card's box: a word card, an order row or card, a bubble, the guide box, the request card, a pill, a review word): a word more than 2 px outside its card is a break, once per card and word per page (the hakro khun and tameto spills of 27 Oct; the old text check caught only clipped or ellipsised text)." },
   "contract-52": { item: "bubble-clear", title: "a bubble keeps faces and the side panel clear", how: "Every bubble sample: a bubble covering a quarter or more of any head's box (Cook's figures, the clinic's figures and speakers) or reaching more than 4 px into the side panel's box is a break, once per bubble text per page (CK-18 reopened: Nana's greeting over his face and Ali's at 971x318; the eye test's bubble over the girl)." },
-  "contract-53": { item: "one-in-light", title: "the help's light holds one thing", how: "Every spot sample (the first-time help's drawn box, js/shared/onboard.js data-holes, and Cook's tappable pictures with a word): two or more pictures with their middles inside one box, or a box more than 2.5 times the area of the biggest picture in it (its word pill allowed), is a break, once per page (CHAI-33: the box over three items, two and a half times too big)." },
+  "contract-53": { item: "one-in-light", title: "the help's light holds one thing", how: "Every spot sample (the first-time help's drawn box, js/shared/onboard.js data-holes, and Cook's tappable pictures with a word): two or more pictures with their middles inside one box, or a box more than 3.5 times the area of the biggest picture in it (its word pill, often wider than a bottle, allowed: a box round a tall bottle and its pill is about 2.8 times the bottle; the bug was 5.4), is a break, once per page (CHAI-33: the box over three items, two and a half times too big)." },
   "contract-54": { item: "rail-in-side", title: "the side panel's buttons stay in it", how: "Every layout sample (rail: each button inside #side, .cl-side or .ng-side and whether its box sits inside the panel's): a button outside its side panel is a break, once per button per page (CK-53: the ?, home and book over the water bottle)." },
 });
 const overlap = (a, b) => Math.max(0, Math.min(a.r, b.r) - Math.max(a.l, b.l)) * Math.max(0, Math.min(a.b, b.b) - Math.max(a.t, b.t));
 const area = (a) => Math.max(0, a.r - a.l) * Math.max(0, a.b - a.t);
 export function check51(tl, add) {
   const seen = new Set();
-  for (const e of tl) {
-    if (e.type !== "c" || e.k !== "layout") continue;
+  const lays = tl.filter((e) => e.type === "c" && e.k === "layout");
+  const end = tl.length ? tl[tl.length - 1].t : 0;
+  lays.forEach((e, i) => {
+    const next = lays[i + 1];
     for (const s of e.spill || []) {
       const k = s.card + "|" + s.text;
       if (seen.has(k)) continue;
+      // (a spill seen for less than 300 ms, a headline mid-fit or a card mid-pop, is a moment, not a word left outside its card)
+      const stays = next ? (next.spill || []).some((x) => x.card + "|" + x.text === k) || next.t - e.t >= 300 : end - e.t >= 300;
+      if (!stays) continue;
       seen.add(k);
       add("contract-51", e.t, `"${s.text}" runs ${s.over} px outside its card (${s.card})`);
     }
-  }
+  });
 }
 export function check52(tl, add) {
   const seen = new Set();
@@ -1623,9 +1628,9 @@ export function check53(tl, add) {
     for (const h of e.holes || []) {
       const inside = (e.things || []).filter((x) => { const cx = (x.l + x.r) / 2, cy = (x.t + x.b) / 2; return cx >= h.l && cx <= h.r && cy >= h.t && cy <= h.b; });
       const big = inside.length ? Math.max(...inside.map(area)) : 0;
-      // (a picture's word pill sits under it: the light may hold the pill too, so twice the picture's area is fine; 2.5x is not)
+      // (a picture's word pill sits under it, often wider than the picture: up to 3.5 times its area; CHAI-33's box was 5.4)
       if (inside.length >= 2) { add("contract-53", e.t, `the help's light holds ${inside.length} things (${inside.map((x) => x.id).join(", ")}): it should hold one`); return; }
-      if (big && area(h) > 2.5 * big) { add("contract-53", e.t, `the help's light is ${(area(h) / big).toFixed(1)} times the size of ${inside[0].id}: it should hug it`); return; }
+      if (big && area(h) > 3.5 * big) { add("contract-53", e.t, `the help's light is ${(area(h) / big).toFixed(1)} times the size of ${inside[0].id}: it should hug it`); return; }
     }
   }
 }
