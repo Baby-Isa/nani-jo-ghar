@@ -14,11 +14,11 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artblock.py --spec build/tools/art/specs/<pack>.run.yaml
    ```
    A redo: `--redo docs/design-language/art-plans/<pack>-redo-list.yaml` gives a block of just those lines.
-3. Put it to Zafar: image count, expected redos, time; the block is pasted into Chrome by him, ready as is. No art run without his go.
+3. **One paste block, nothing else for him to do** (ART-29, Zafar, 28 Oct: "all artworks are given to me a single paste blocks for claude in chrome will all images and things it needs uploaded to github or wherever it can access"): every reference is pushed to the branch the block reads (`--check` refuses one that isn't, and `refs_from: library`). Put it to Zafar: image count, expected redos, time; he pastes it into Chrome as is. No art run without his go.
 
 ## While it runs
 - The runner loop in the block keeps N windows generating and commits kept images straight to `sources/art/<pack>/` on `main` (no downloads, no manual steps).
-- The block fetches the references from GitHub itself. If Chrome refuses the attach, switch the run spec to `refs_from: library` (with `refs_chat:`; Zafar uploads the references to that one chat) and rebuild the block.
+- The block fetches the references from GitHub itself. If Chrome refuses the attach, find another route that needs nothing from Zafar (ART-29: never ask him to upload); `refs_from: library` is retired.
 - Count landed images at each check-in: `node build/tools/ops/checkin.mjs --art sources/art/<pack> --art-target <n>`.
 
 ## When images land

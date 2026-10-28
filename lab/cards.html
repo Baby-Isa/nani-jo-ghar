@@ -162,8 +162,8 @@
   .bubble { position: absolute; background: #fffdf8; border-radius: 18px; padding: 0.45em 0.8em; font: 700 clamp(17px, 2vw, 30px)/1.1 var(--font-display); color: var(--c-text); box-shadow: 0 6px 18px rgba(60, 40, 20, 0.18); white-space: nowrap; opacity: 0; transform: scale(0.9); transform-origin: 0 100%; transition: opacity 0.2s, transform 0.2s; display: flex; align-items: center; gap: 0.4em; }
   .bubble.on { opacity: 1; transform: none; }
   .bubble::after { content: ""; position: absolute; left: 14px; bottom: -11px; border: 12px solid transparent; border-top-color: #fffdf8; border-bottom: 0; transform: skewX(-25deg); }
-  .bubble .bspk { width: 1.3em; height: 1.3em; border-radius: 50%; background: #f1e7d6; display: grid; place-items: center; border: 0; }
-  .bubble .bspk svg { width: 60%; height: 60%; }
+  .bubble .bspk { width: 1.8em; height: 1.8em; flex: none; border-radius: 50%; background: #f1e7d6; display: grid; place-items: center; border: 0; }
+  .bubble .bspk svg { width: 66%; height: 66%; } /* Zafar, 28 Oct: "increase the icon size in the speech bubble" */
   .pop { position: absolute; z-index: 20; }
   .flyer { position: fixed; z-index: 50; pointer-events: none; transform-origin: 0 0; margin: 0; }
 
@@ -181,7 +181,7 @@
   @keyframes shake { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
   .chip { display: flex; align-items: center; gap: 4px; background: #fff; border-radius: 10px; padding: 2px 8px; font: 700 clamp(12px, 1.4vw, 17px)/1.3 var(--font-display); color: var(--c-kutchi); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); white-space: nowrap; }
   .chip svg { width: 1em; height: 1em; color: var(--ink); }
-  .pan-fill { border-radius: 50%; opacity: 0; transition: background 0.6s, opacity 0.6s; pointer-events: none; }
+  .pan-fill { opacity: 0; transition: opacity 0.5s; pointer-events: none; } /* a painted pan state, shown inside the contents circle (CK-06) */
   .heat { pointer-events: none; overflow: visible; }
   .heat circle { fill: none; stroke-width: 6; }
   .heat .track { stroke: rgba(255, 255, 255, 0.35); }
@@ -237,7 +237,8 @@
       <img class="st-hob" id="hob" src="../assets/cook/items/v3/hob/hob-1.webp?v=20261028T113000Z" alt="">
       <div class="flame" id="flame"></div>
       <img class="st-pan" id="pan" src="../assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp?v=20261028T113000Z" alt="">
-      <div class="pan-fill" id="panFill"></div>
+      <img class="pan-fill" id="panFill" src="../assets/cook/items-s08b/chai-pan/pan-top-milk-s08b.webp?v=20261028T113000Z" alt="">
+      <div id="panMid" style="pointer-events: none"></div>
       <svg class="heat" id="heat" viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="46"/><circle class="zone" id="heatZone" cx="50" cy="50" r="46" pathLength="100"/><circle class="prog" id="heatProg" cx="50" cy="50" r="46" pathLength="100" stroke-dasharray="0 100"/></svg>
       <button class="knob" id="knob" type="button" aria-label="The cooker's knob"><img id="knobImg" src="../assets/cook/items/v3/hob/knob-off-v2.webp?v=20261028T113000Z" alt=""></button>
       <img class="st-tray" id="tray" src="../assets/cook/items/chai-v2/tray-4-cutout-t.webp?v=20261028T113000Z" alt="">
@@ -465,9 +466,16 @@
     const slots = [...order.querySelectorAll(".it")];
     slots.forEach((s) => { s.classList.add("slot"); s.classList.remove("done"); });
     const bubble = $("#bubble"), bt = $("#bubbleText");
+    // Zafar, 28 Oct: "a way to click on the kitchen during the order and skip the slow ordering into playing the game"
+    let skipped = false, skip;
+    const skipP = new Promise((r) => (skip = () => { skipped = true; r(); }));
+    const pause = (ms) => Promise.race([wait(ms), skipP]);
+    const onKitchen = (e) => { if (!e.target.closest(".bspk")) skip(); };
+    $("#play").addEventListener("pointerdown", onKitchen);
     bt.innerHTML = 'Muke <span class="k-word">chai</span> khape,'; bubble.classList.add("on"); placeBubble();
-    say("Muke chai khape"); await wait(1300);
+    say("Muke chai khape"); await pause(1300);
     for (const s of slots) {
+      if (skipped) break;
       const w = word(s.dataset.id);
       bt.innerHTML = `<span class="k-word">${w.k}</span>,`; placeBubble(); say(w.k);
       const big = bigCard(s.dataset.id, ""); big.classList.add("pop");
@@ -475,15 +483,30 @@
       const r = popRect(big); big.style.left = r.left + "px"; big.style.top = r.top + "px";
       fit(big);
       big.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380, easing: "cubic-bezier(.2,.8,.2,1)" });
-      await wait(1500);
+      glideTo(s); // Zafar, 28 Oct: the row glides to the next card while the big one is up, like its scroll (never a jump)
+      await pause(1500);
       // SH-144: one move, the big card turning into the row card as it travels (never a fade out and in again)
-      s.scrollIntoView({ block: "nearest", inline: "nearest" });
-      await morph(big, s);
+      if (!skipped) await Promise.race([morph(big, s), skipP]);
       big.remove(); s.classList.remove("slot");
     }
-    bt.innerHTML = 'Muke <span class="k-word">chai</span> khape.'; placeBubble();
-    await wait(1600); bubble.classList.remove("on");
+    if (!skipped) { bt.innerHTML = 'Muke <span class="k-word">chai</span> khape.'; placeBubble(); await pause(1600); }
+    $("#play").removeEventListener("pointerdown", onKitchen);
+    if (skipped) { // the whole order at once: every card in its row, no voice left talking
+      document.querySelectorAll(".flyer, .wc.pop").forEach((x) => x.remove());
+      slots.forEach((x) => x.classList.remove("slot"));
+      sayGen++; try { if (playingAudio) playingAudio.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { /* none */ }
+      order.querySelector(".items").scrollTo({ left: 0, behavior: "smooth" });
+    }
+    bubble.classList.remove("on");
     playing = false;
+  }
+  // the row scrolls (smoothly) just enough to show the whole card, the way settleRow moves it
+  function glideTo(card) {
+    const row = card.parentNode, l = card.offsetLeft - row.offsetLeft, r = l + card.offsetWidth;
+    let x = row.scrollLeft;
+    if (l < x) x = l - 2; else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
+    if (Math.abs(x - row.scrollLeft) > 1) row.scrollTo({ left: x, behavior: "smooth" });
+    card.closest(".order").scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
   async function morph(from, to) {
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
@@ -522,7 +545,25 @@
   };
   const SHELF = [["paani", IT + "shelf-cook-paani-bare-f.webp"], ["dudh", IT + "shelf-cook-dudh-bare-f.webp"], ["chai", IT + "shelf-cook-chai-bare-f.webp"], ["khun", IT + "shelf-cook-khun-bare-f.webp"], ["loon", IT + "shelf-loon-jar-v2-f.webp"]];
   const SHELF_WORD = { paani: "paani", dudh: "dudh", chai: "chai", khun: "khun", loon: "loon" };
-  const FILL = { paani: "rgba(196, 214, 222, 0.75)", chai: "rgba(122, 64, 30, 0.82)", dudh: "rgba(201, 141, 84, 0.9)", khun: "rgba(205, 146, 90, 0.92)" };
+  // the pan's contents (Zafar, 28 Oct: "no code drawn anything like chai in various states"): the real chai's painted states
+  // (js/cook/stations/chai-tray.js TOP and BREW8), each shown inside its own contents circle (cx, cy, r: its source px)
+  const PAN = "../assets/cook/items-s08b/chai-pan/", BREW = "../assets/cook/items-s08c/chai-pan/";
+  const POT = {
+    water: { src: BREW + "pan-water-s08c.webp", w: 497, cx: 161.5, cy: 150.5, r: 130 },
+    leaves: { src: BREW + "pan-leaves-s08c.webp", w: 502, cx: 160.5, cy: 148.5, r: 122 },
+    milk: { src: PAN + "pan-top-milk-s08b.webp", w: 531, cx: 169.3, cy: 134.3, r: 117 },
+    boil: { src: BREW + "pan-boil-milky-s08c.webp", w: 508, cx: 162.5, cy: 148.5, r: 122 },
+  };
+  const AFTER = { paani: "water", chai: "leaves", dudh: "milk", khun: "milk" };
+  let potState = null;
+  function setPot(k) {
+    const pf = $("#panFill"); potState = k;
+    if (!k) { pf.style.opacity = 0; return; }
+    const st = POT[k], pan = $("#pan"), sc = (pan.offsetWidth / 531) * 117 / st.r; // its contents circle on the empty pan's
+    const bx = pan.offsetLeft + pan.offsetWidth * 180.3 / 531, by = pan.offsetTop + pan.offsetWidth * 134.3 / 531;
+    if (!pf.src.includes(st.src.slice(3))) pf.src = st.src;
+    Object.assign(pf.style, { width: st.w * sc + "px", left: bx - st.cx * sc + "px", top: by - st.cy * sc + "px", clipPath: `circle(${st.r * sc}px at ${st.cx * sc}px ${st.cy * sc}px)`, opacity: 1 });
+  }
   function buildShelf() {
     const sh = $("#shelf"); sh.innerHTML = "";
     SHELF.forEach(([id, src]) => {
@@ -542,8 +583,9 @@
     const bx = hobL + hobW * 0.49, by = hobT + hobH * 0.355;
     const panW = hobW * 1.3, panH = panW * 286 / 531;
     Object.assign($("#pan").style, { left: bx - panW * 180.3 / 531 + "px", top: by - panH * 134.3 / 286 + "px", width: panW + "px" });
-    const fr = panW * 0.17, rr = panW * 0.235;
-    Object.assign($("#panFill").style, { left: bx - fr + "px", top: by - fr + "px", width: 2 * fr + "px", height: 2 * fr + "px" });
+    const fr = panW * 0.17, rr = panW * 0.235; // panMid: the contents' circle, where an item lands
+    Object.assign($("#panMid").style, { left: bx - fr + "px", top: by - fr + "px", width: 2 * fr + "px", height: 2 * fr + "px" });
+    if (potState) requestAnimationFrame(() => setPot(potState));
     Object.assign($("#heat").style, { left: bx - rr + "px", top: by - rr + "px", width: 2 * rr + "px", height: 2 * rr + "px" });
     Object.assign($("#flame").style, { left: bx - rr * 0.9 + "px", top: by - rr * 0.9 + "px", width: rr * 1.8 + "px", height: rr * 1.8 + "px" });
     const kn = Math.max(44, hobW * 0.24);
@@ -613,13 +655,13 @@
       $("#shelf").addEventListener("click", onTap);
     });
     clearTimeout(hintT); spot(null); openHelp(false);
-    await flyTo(thing.querySelector("img"), $("#panFill"));
+    await flyTo(thing.querySelector("img"), $("#panMid"));
     thing.classList.add("used");
-    const pf = $("#panFill"); pf.style.background = FILL[id]; pf.style.opacity = 1;
+    setPot(AFTER[id]);
     const card = document.querySelector(`.order .it[data-id="${id}"]`); if (card) { card.classList.add("done"); await settleRow(card.parentNode, card); }
     // CHAI-37: after the first two, the light moves to the order card for a moment, so the eye knows where to look next
     if (i === 1 && first("toCard")) {
-      spot(document.querySelector(".order"), { pad: 4 }); await wait(2400); spot(null); // the whole order card, lit for a moment
+      spot(document.querySelector(".order"), { pad: 4 }); await wait(1200); spot(null); // the whole order card, lit for a moment (Zafar, 28 Oct: "maybe half the time")
     }
   }
   // Zafar, 28 Oct: the order row keeps one ticked card at its left, then the current item; a ticked card slides to just after
@@ -663,7 +705,7 @@
     }
     document.querySelectorAll(".items").forEach((r) => (r.scrollLeft = 0)); // the order from its first card
     $("#play").classList.add("at-station"); buildShelf(); placeStation();
-    $("#panFill").style.opacity = 0; $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
+    setPot(null); $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
     $("#glass").src = "../assets/cook/items-s12/glass/glass-empty-top-s12.webp"; heat(0);
     const items = ORDERS[0].items;
     for (let i = 0; i < items.length; i++) { if (gen !== chaiGen) return; await addItem(items[i], i, gen); }
@@ -672,16 +714,16 @@
     if (first("light")) spot($("#knob"), { pad: 6, look: "glow" });
     await tapOn($("#knob")); spot(null);
     $("#knobImg").src = "../assets/cook/items/v3/hob/knob-on-v2.webp"; $("#flame").classList.add("on");
-    for (let p = 0; p <= 80; p += 2) { if (gen !== chaiGen) return; heat(p); await wait(110); }
+    for (let p = 0; p <= 80; p += 2) { if (gen !== chaiGen) return; heat(p); if (p === 40) setPot("boil"); await wait(110); }
     setNani(STEP_LINE.off);
     if (first("off")) spot($("#knob"), { pad: 6, look: "glow" });
     await tapOn($("#knob")); spot(null);
-    $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
+    $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on"); setPot("milk");
     setNani(STEP_LINE.pour);
     if (first("pour")) spot($("#glassBtn"), { pad: 6, look: "glow" });
     await tapOn($("#glassBtn")); spot(null);
     await flyTo($("#panFill"), $("#glassBtn")).catch(() => {});
-    $("#panFill").style.opacity = 0; $("#glass").src = "../assets/cook/items-s12/glass/glass-chai-top-s12.webp"; heat(0);
+    setPot(null); $("#glass").src = "../assets/cook/items-s12/glass/glass-chai-top-s12.webp"; heat(0);
     await wait(900);
     document.querySelector(".order").classList.add("done");
     $("#play").classList.remove("at-station");

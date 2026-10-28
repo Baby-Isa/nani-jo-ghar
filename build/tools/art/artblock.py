@@ -13,6 +13,7 @@ Inputs: build/tools/art/specs/<pack>.run.yaml (people, templates, run order, che
 table and prompt headings (a line whose prompt is missing from the plan is refused), and templates/block.txt +
 templates/runner-loop.txt (the generic text). Prints a one-line summary; the block is a file, never a dump."""
 import argparse
+import subprocess
 import os
 import re
 import sys
@@ -314,6 +315,21 @@ def sync_doc():
     print("art-pipeline.md: runner loop synced (%d lines)" % loop.count("\n"))
 
 
+# ART-29 (Zafar, 28 Oct): "all artworks are given to me a single paste blocks for claude in chrome will all images and things it
+# needs uploaded to github or wherever it can access": no reference waits on Zafar to upload it, and every one is on the pushed
+# branch the block's RAW links read, before he gets the block.
+def reachable(spec):
+    bad = []
+    if spec.get("refs_from", "upload") != "upload":
+        bad.append("refs_from: %s asks Zafar to upload the references himself (ART-29): fetch them from RAW" % spec["refs_from"])
+    br = spec["raw_branch"]
+    for k, v in spec["refs"].items():
+        ok = subprocess.run(["git", "-C", REPO, "cat-file", "-e", "origin/%s:%s" % (br, v)], capture_output=True).returncode == 0
+        if not ok:
+            bad.append("reference %s: %s is not on origin/%s, where the block fetches it (push it, then git fetch)" % (k, v, br))
+    return bad
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], epilog=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--spec", default=SPEC)
@@ -330,6 +346,7 @@ def main():
     for k, v in spec["refs"].items():
         if not os.path.exists(os.path.join(REPO, v)):
             bad.append("reference %s: %s is not in the repo" % (k, v))
+    bad += reachable(spec)
     if bad:
         print("%d problem(s) in the spec:" % len(bad))
         for b in bad:

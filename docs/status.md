@@ -24,7 +24,10 @@ screen: mock-up, lab page, my four-size check, Zafar's numbered choices, then th
 **Next steps, in order:**
 1. **The chai onboarding, the quick lab way** (Zafar, 28 Oct): he plays "Play chai" in `lab/cards.html` (the gear: options 9 new or
    returning player, 10 level) and sends numbered notes; fix them in this chat round by round, `labcheck.mjs` before each publish
-   (rough publishes, `--force`, decision 3). No launch.
+   (rough publishes, `--force`, decision 3). No launch. **Round 1 done on the branch** (`docs/feedback/chai-onboarding-2026-10-28.md`:
+   the card light 1.2 s, the row glides, a tap skips the order, a bigger bubble speaker, the pan's painted states); not published:
+   questions 44-47 wait on him (publish the lab, the small art run, the roll-out, the second reader). His rule ART-29: one paste
+   block, every reference pushed, nothing for him to upload (`artblock.py --check`).
 2. **Into the real chai game behind a labs switch** once he keeps it: the new cards, the helper card and the onboarding. Proposed:
    one builder, Opus high, about $40-60, half a day (or in the chat); his go first.
 3. **Lock the principles** from chai as the rulebook, then **plan the roll-out** to the other Cook stations and the clinic. Found
@@ -45,13 +48,13 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 35 | 83 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 37 | 83 |
 | Cook: pantry | 5 | 9 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 7 / 3 / 3 / 2 / 1 / 3 / 7 | 18 / 14 / 28 / 12 / 22 / 17 / 33 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 9 / 3 / 3 / 2 / 1 / 3 / 8 | 18 / 14 / 28 / 12 / 22 / 17 / 33 |
 | Clinic | 29 | 164 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
-| Art | 8 | 9 |
+| Art | 9 | 9 |
 | Language and audio | 8 | 7 |
 
 ---

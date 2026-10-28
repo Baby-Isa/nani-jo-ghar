@@ -8,6 +8,12 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 42. **The clinic's order rows** have no pictures (the doctor's steps have no picture data): add them in the next art run? Recommend yes, with the FC2 face moods and CHT-16's chop background.
 43. **Your ear on the Z Flip:** does the customer's opening ("Muke …") now play at the start of every order (LNG-16, fixed on a model of a phone's voice)?
 
+### The chai onboarding lab, round 1 (28 Oct): answer "yes to all except …"
+44. **The lab's round 1 fixes go live now** (only `lab/cards.html` changes; the game itself waits for the art). Recommend yes.
+45. **The small art run:** the pan exactly overhead in its six states, the three glasses, the decluttered kitchen (about 10 images); the pour frames a second part. Recommend yes, the pour too.
+46. **The roll-out into the real chai** (its heat, ring and pan states kept), behind a labs switch, after the art: one builder, Opus high, about $40-60. Recommend yes.
+47. **The second reader on these notes** (a small Fable check, cents). Recommend yes.
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.

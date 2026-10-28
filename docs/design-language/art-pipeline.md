@@ -51,7 +51,7 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 ### Grounds: magenta for food, grey for everything else
 
-- **Art is made in ChatGPT via Claude in Chrome (D1, D3), which gives no alpha.** Every prompt asks for a flat ground, which is then keyed out (D22): magenta `#FF00FF` for food, neutral grey `#808080` for steel, brass, glass, wood, tools, characters and badges. No image-API art without Zafar's say-so (decision 77, non-negotiable 13).
+- **Art is made in ChatGPT via Claude in Chrome (D1, D3), which gives no alpha.** Every prompt asks for a flat ground, which is then keyed out (D22): magenta `#FF00FF` for food, neutral grey `#808080` for steel, brass, glass, wood, tools, characters and badges. No image-API art without Zafar's say-so (decision 77, non-negotiable 13). **Zafar gets one paste block and nothing else to do** (ART-29, Zafar, 28 Oct): every reference it needs is pushed where the runner fetches it itself; he never uploads a reference (`artblock.py --check` enforces it).
 - **Never use magenta for steel, brass, glass, glowing or wispy items:** the 3D look makes metal and glass pick up a magenta tint in their reflections. Use the grey ground.
 - **Glass and steam need partial alpha,** so they are cut with colour-to-alpha against the measured grey ground, never a hard key. Slice sheets with the method in the Naming Convention (`build/cut_tick_v2.py`; whole blobs by centroid, 2 px erode).
 
