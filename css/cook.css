@@ -91,7 +91,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* the rail is pinned to the sidebar's foot: a tall card scrolls above it, the cog never leaves the screen (it had stepped into
    the play area, S13-A2's rail-out); the three open as a small row above the cog, inside the sidebar, over the card a moment */
 .side-rail { position: sticky; bottom: 0; z-index: 5; }
-.side-menu { position: absolute; left: 0; bottom: calc(100% + 6px); display: flex; gap: 8px; align-items: center; padding: 6px; border-radius: var(--njg-radius); background: var(--cream); box-shadow: 0 6px 18px rgba(60, 40, 20, 0.22); }
+.side-menu { position: absolute; left: 0; bottom: calc(100% + 6px); display: flex; gap: 8px; align-items: center; padding: 6px; border-radius: var(--njg-radius); background: var(--cream); box-shadow: var(--njg-shadow-lift); }
 .side-menu[hidden] { display: none; }
 .rail-btn {
   width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
