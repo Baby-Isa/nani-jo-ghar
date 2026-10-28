@@ -9,7 +9,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 ## Next chat
 
 **Where things stand (28 Oct 2026, about 11:45 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`
-holds every decision of 27-28 Oct). Live on `main` (be3aa32f, 20261028T113000Z): the overnight fixes (central type SH-151, centred
+holds every decision of 27-28 Oct). Live on `main` (b194da19, 20261028T230138Z, 28 Oct evening): the chai lab's round 1 fixes, on top of the overnight fixes (central type SH-151, centred
 badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you) and the new
 checks (contract-51 to 54, a returning player, the four sizes, `build/tools/review/labcheck.mjs`); report
 `build/reports/s14-night-report.md`. Also live: the card and onboarding lab, `lab/cards.html` (a labs tile), round 5. Nothing running.
@@ -26,7 +26,8 @@ screen: mock-up, lab page, my four-size check, Zafar's numbered choices, then th
    returning player, 10 level) and sends numbered notes; fix them in this chat round by round, `labcheck.mjs` before each publish
    (rough publishes, `--force`, decision 3). No launch. **Round 1 done on the branch** (`docs/feedback/chai-onboarding-2026-10-28.md`:
    the card light 1.2 s, the row glides, a tap skips the order, a bigger bubble speaker, the pan's painted states); his yes to all (28 Oct, the
-   sprint file): the lab published; the small art run with the pour frames next; then the roll-out builder. His rule ART-29: one paste
+   sprint file): the lab published (20261028T230138Z); the small art run is ready for him (`docs/design-language/art-plans/s14-chrome-block.txt`,
+   pack s14: 5 sheets); when its pictures land, judge, cut, wire into the lab, his look, then the roll-out builder. His rule ART-29: one paste
    block, every reference pushed, nothing for him to upload (`artblock.py --check`).
 2. **Into the real chai game behind a labs switch** once he keeps it: the new cards, the helper card and the onboarding. Proposed:
    one builder, Opus high, about $40-60, half a day (or in the chat); his go first.
