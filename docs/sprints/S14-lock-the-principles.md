@@ -60,6 +60,16 @@ moment (CHAI-37); the child alone after that, Nani's hint after the level's wait
 to light the cooker, and again only once the chai reaches the green (CHAI-36); the glass lit for the pour; the first time words are
 dotted, the help shows "tap the dots" once. A wrong pick shakes, no verdict. Options 9 (new or returning player) and 10 (level).
 
+## Onboarding lab round 5 (Zafar, 28 Oct)
+The ripple target went ("doesn't look good"): the rule, every game: a thing to tap is always lit (a breathing gold glow) in a lit
+rounded box that takes in its word pill, everything else dimmed; an ingredient also bounces; a control (a knob, a glass, the
+arrow) only glows; no finger, no target. After the first two items the whole order card is lit for a moment (no glow, no bounce).
+Nani's helper card always shows everything (picture, Kutchi, English), never dotted: the order card's dots and eye are the small
+help, the helper card the full answer. The order row scrolls itself: one ticked card at its left, then the current item; a ticked
+card slides to just after the other ticked ones; "no" cards wait at the end; it stops once the last card is fully in view; a
+child's own scroll is left alone until the next tick; the current card is not marked. Drag moves in other games (stir, roll,
+swipe): the item itself makes the move once (his yes). The "no" card: a faded picture and a no-sign badge where a tick goes.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 

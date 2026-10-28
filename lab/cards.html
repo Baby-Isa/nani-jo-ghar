@@ -133,9 +133,10 @@
   .it.done::after { content: ""; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold) no-repeat center / 60% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
   .it.done { border-color: rgba(201, 150, 46, 0.55); }
   .it.no { border: 1.5px dashed #c8b79c; background: transparent; box-shadow: none; }
-  .it.no .pic::after { content: ""; position: absolute; inset: 18%; border: 4px solid rgba(125, 34, 52, 0.7); border-radius: 50%; background: linear-gradient(135deg, transparent calc(50% - 2px), rgba(125, 34, 52, 0.7) calc(50% - 2px), rgba(125, 34, 52, 0.7) calc(50% + 2px), transparent calc(50% + 2px)); }
+  .it.no .pic img { opacity: 0.5; filter: grayscale(0.7); }
+  .it.no:not(.done)::after { content: ""; position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(0, 0, 0, 0.18); background: #fff no-repeat center / 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.6' fill='none' stroke='%237d2234' stroke-width='2.6'/%3E%3Cpath d='M6.2 17.8L17.8 6.2' stroke='%237d2234' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
   /* every screen: a sideways row that scrolls, the third card going behind a soft shadow (no scroll bar; Zafar, 27 Oct) */
-  .items { display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 4px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); }
+  .items { position: relative; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 4px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent); }
   .items.at-end { -webkit-mask-image: none; mask-image: none; }
   .it { flex: 0 0 calc((100% - 2 * var(--gap)) / 2.3); scroll-snap-align: start; }
   /* even spacing (Zafar, 27 Oct): the card's padding = picture to Kutchi = speaker to the card's foot; a row's spare height
@@ -192,12 +193,14 @@
   /* ---------- the first-time help (the onboarding): the dim, the light around one thing, the gold tap target ---------- */
   .ob-dim { position: fixed; z-index: 40; pointer-events: none; border-radius: 16px; box-shadow: 0 0 0 200vmax rgba(28, 18, 8, 0.45); transition: left 0.5s cubic-bezier(.3,.7,.2,1), top 0.5s cubic-bezier(.3,.7,.2,1), width 0.5s cubic-bezier(.3,.7,.2,1), height 0.5s cubic-bezier(.3,.7,.2,1), opacity 0.35s; opacity: 0; outline: 3px solid rgba(201, 150, 46, 0.9); outline-offset: 0; }
   .ob-dim.on { opacity: 1; }
-  /* the tap target (Zafar, 27 Oct: in place of the hand): a gold ring, a maroon centre, one soft ripple every 1.6 s */
-  .tt { position: fixed; z-index: 41; width: 46px; height: 46px; margin: -23px 0 0 -23px; pointer-events: none; border-radius: 50%; border: 3px solid var(--gold); background: rgba(255, 250, 240, 0.55); display: none; transition: left 0.5s cubic-bezier(.3,.7,.2,1), top 0.5s cubic-bezier(.3,.7,.2,1); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25); }
-  .tt.on { display: block; }
-  .tt::before { content: ""; position: absolute; left: 50%; top: 50%; width: 30%; height: 30%; transform: translate(-50%, -50%); border-radius: 50%; background: var(--maroon); box-shadow: 0 0 0 3px #fff; }
-  .tt::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid var(--gold); animation: ripple 1.6s ease-out infinite; }
-  @keyframes ripple { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
+  /* Zafar, 28 Oct (the ripple target went): a thing to tap is always lit, a soft gold glow that breathes; an ingredient also
+     bounces; a control (the knob, the glass, the arrow) only glows. The order card, lit for a moment, neither glows nor bounces. */
+  .lit-glow img, img.lit-glow { animation: glowImg 1.4s ease-in-out infinite; }
+  button.lit-glow:not(.thing) { animation: glowBox 1.4s ease-in-out infinite; }
+  .lit-bob img { animation: glowImg 1.4s ease-in-out infinite, bob 0.9s ease-in-out infinite; }
+  @keyframes glowImg { 0%, 100% { filter: drop-shadow(0 0 6px rgba(247, 213, 122, 0.95)) drop-shadow(0 0 2px rgba(201, 150, 46, 0.9)); } 50% { filter: drop-shadow(0 0 16px rgba(247, 213, 122, 1)) drop-shadow(0 0 4px rgba(201, 150, 46, 1)); } }
+  @keyframes glowBox { 0%, 100% { box-shadow: 0 0 0 3px rgba(247, 213, 122, 0.9), 0 0 10px 4px rgba(201, 150, 46, 0.5); } 50% { box-shadow: 0 0 0 5px rgba(247, 213, 122, 1), 0 0 20px 8px rgba(201, 150, 46, 0.6); } }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9%); } }
 
   /* ---------- the lab's gear and options (grown-ups only) ---------- */
   .gear { position: fixed; right: 10px; top: 10px; z-index: 60; width: var(--tap); height: var(--tap); border-radius: 50%; border: 0; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); display: grid; place-items: center; }
@@ -245,7 +248,7 @@
 
 <button class="gear" id="gear" type="button" aria-label="Lab options"><svg viewBox="0 0 24 24" fill="none" stroke="#2a2522" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <div class="opts" id="opts"></div>
-<div class="ob-dim" id="obDim"></div><div class="tt" id="tt"></div>
+<div class="ob-dim" id="obDim"></div>
 
 <script>
 (function () {
@@ -316,14 +319,14 @@
     c.classList.toggle("hide-k", s >= 4);
   }
   /** The default card (image 1): pop-out and helper. variant: "" | "small" | "side". */
-  function bigCard(id, variant) {
+  function bigCard(id, variant, all) {
     const w = word(id);
     const c = el("div", "wc" + (variant ? " " + variant : ""));
     const p = parts(w, c);
     const words = el("div", "words");
     words.append(el("div", "lab", "<span>KUTCHI</span>"), p.ks, el("div", "lab", "<span>ENGLISH</span>"), p.es);
     const inn = el("div", "in"); inn.append(p.pic, words, p.spk); c.append(inn);
-    stageCls(c);
+    if (!all) stageCls(c);
     return c;
   }
   /** An order's item card: the phone's row card or the big screen's row with the speaker bar. */
@@ -398,7 +401,7 @@
   function buildSide() {
     $("#naniLine").innerHTML = '<span class="k-word">Khun</span> wiji chad!';
     const helpVariant = S.help === "stack" ? "" : S.help === "side" ? "side" : document.documentElement.classList.contains("phone") ? "side" : "";
-    const slot = $("#helpSlot"); slot.innerHTML = ""; slot.appendChild(bigCard("khun", helpVariant));
+    const slot = $("#helpSlot"); slot.innerHTML = ""; slot.appendChild(bigCard("khun", helpVariant, true));
     $("#nani").classList.toggle("open", !!S.open);
     $("#arrow").setAttribute("aria-expanded", S.open ? "true" : "false");
     const box = $("#orders"); box.innerHTML = "";
@@ -549,20 +552,20 @@
     Object.assign($("#glassBtn").style, { left: tx + tr * 0.31 - g / 2 + "px", top: ty + tr * 0.31 - g / 2 + "px", width: g + "px", height: g + "px" });
   }
 
-  // ---- the light: the dim with one hole hugging a thing, and the tap target on it; only that thing takes a tap ----
-  const OB = { el: null, pad: 6, target: true, only: true };
+  // ---- the light: the dim with one lit rounded box around a thing (its word pill too); only that thing takes a tap.
+  //      look: "bob" (an ingredient: glows and bounces), "glow" (a control: glows), "" (the order card: lit, nothing more) ----
+  const OB = { el: null, pad: 6, only: true, lit: null };
   function spot(elm, o = {}) {
-    OB.el = elm; OB.pad = o.pad != null ? o.pad : 6; OB.target = o.target !== false; OB.only = o.only !== false;
-    $("#obDim").classList.toggle("on", !!elm); $("#tt").classList.toggle("on", !!elm && OB.target);
+    if (OB.lit) OB.lit.classList.remove("lit-glow", "lit-bob");
+    OB.el = elm; OB.pad = o.pad != null ? o.pad : 6; OB.only = o.only !== false; OB.lit = null;
+    if (elm && o.look) { OB.lit = elm; elm.classList.add(o.look === "bob" ? "lit-bob" : "lit-glow"); }
+    $("#obDim").classList.toggle("on", !!elm);
     trackSpot();
   }
   function trackSpot() {
     if (!OB.el) return;
     const r = OB.el.getBoundingClientRect(), d = $("#obDim"), p = OB.pad;
     Object.assign(d.style, { left: r.left - p + "px", top: r.top - p + "px", width: r.width + 2 * p + "px", height: r.height + 2 * p + "px" });
-    // the target fits the thing: never bigger than it (plus a little), so it never hides a small thing's neighbours
-    const s = Math.max(26, Math.min(46, Math.min(r.width, r.height) + 14));
-    Object.assign($("#tt").style, { left: r.left + r.width / 2 + "px", top: r.top + r.height / 2 + "px", width: s + "px", height: s + "px", margin: -s / 2 + "px 0 0 " + -s / 2 + "px" });
     requestAnimationFrame(trackSpot);
   }
   // while the light is on, a tap anywhere but the lit thing does nothing (the gear always works)
@@ -579,7 +582,7 @@
     const slot = $("#helpSlot"); slot.innerHTML = "";
     if (!id) return;
     const v = S.help === "stack" ? "" : S.help === "side" ? "side" : document.documentElement.classList.contains("phone") ? "side" : "";
-    slot.appendChild(bigCard(id, v)); requestAnimationFrame(() => fit(slot));
+    slot.appendChild(bigCard(id, v, true)); requestAnimationFrame(() => fit(slot)); // the helper shows everything, never dotted
   }
   function openHelp(on) { S.open = on; $("#nani").classList.toggle("open", on); $("#arrow").setAttribute("aria-expanded", on ? "true" : "false"); }
 
@@ -591,11 +594,11 @@
   async function addItem(id, i, gen) {
     setNani(STEP_LINE[id]); setHelp(id);
     const thing = document.querySelector(`.thing[data-id="${id}"]`);
-    if (i < 2 && first("item" + i)) spot(thing.querySelector("img"), { pad: 8 });
+    if (i < 2 && first("item" + i)) spot(thing, { pad: 8, look: "bob" });
     let hintT = null;
     const armHint = () => { clearTimeout(hintT); hintT = setTimeout(async () => {
       if (gen !== chaiGen || OB.el) return;
-      if (first("hint")) { spot($("#arrow"), { pad: 4 }); await tapOn($("#arrow")); spot(null); } // the first hint: the help shows the arrow
+      if (first("hint")) { spot($("#arrow"), { pad: 4, look: "glow" }); await tapOn($("#arrow")); spot(null); } // the first hint: the help shows the arrow
       else openHelp(true);
     }, HINT_MS[S.level || 1]); };
     if (!OB.el) armHint();
@@ -611,12 +614,30 @@
     await flyTo(thing.querySelector("img"), $("#panFill"));
     thing.classList.add("used");
     const pf = $("#panFill"); pf.style.background = FILL[id]; pf.style.opacity = 1;
-    const card = document.querySelector(`.order .it[data-id="${id}"]`); if (card) { card.classList.add("done"); card.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+    const card = document.querySelector(`.order .it[data-id="${id}"]`); if (card) { card.classList.add("done"); await settleRow(card.parentNode, card); }
     // CHAI-37: after the first two, the light moves to the order card for a moment, so the eye knows where to look next
     if (i === 1 && first("toCard")) {
-      const next = document.querySelector('.order .it:not(.done)');
-      if (next) { next.scrollIntoView({ block: "nearest", inline: "nearest" }); spot(next, { target: false, pad: 4 }); await wait(2400); spot(null); }
+      spot(document.querySelector(".order"), { pad: 4 }); await wait(2400); spot(null); // the whole order card, lit for a moment
     }
+  }
+  // Zafar, 28 Oct: the order row keeps one ticked card at its left, then the current item; a ticked card slides to just after
+  // the other ticked ones (done in any order, the row still reads done, then to do); "no" cards wait at the end; the row stops
+  // once its last card is fully in view; a child's own scroll is left alone until the next tick
+  async function settleRow(row, card) {
+    const cards = [...row.querySelectorAll(".it")];
+    const doneBefore = cards.filter((c) => c.classList.contains("done") && c !== card);
+    const after = doneBefore.length ? doneBefore[doneBefore.length - 1] : null;
+    const want = after ? after.nextElementSibling : row.firstElementChild;
+    if (want !== card) {
+      const first = new Map(cards.map((c) => [c, c.getBoundingClientRect().left]));
+      if (after) after.after(card); else row.prepend(card);
+      cards.forEach((c) => { const dx = first.get(c) - c.getBoundingClientRect().left; if (dx) c.animate([{ transform: `translateX(${dx}px)` }, { transform: "none" }], { duration: 380, easing: "cubic-bezier(.3,.7,.2,1)" }); });
+      await wait(390);
+    }
+    const lead = [...row.querySelectorAll(".it.done")].pop();
+    const max = row.scrollWidth - row.clientWidth;
+    row.scrollTo({ left: lead ? Math.min(max, lead.offsetLeft - row.offsetLeft - 2) : 0, behavior: "smooth" });
+    await wait(350);
   }
   function flyTo(img, to) {
     const a = img.getBoundingClientRect(), b = to.getBoundingClientRect();
@@ -636,7 +657,7 @@
     // the first time words are dotted: the help shows "tap the dots" once, on the order card
     if (+S.stage >= 2 && first("dots")) {
       const d = [...document.querySelectorAll(".order .it .dots")].find((x) => x.offsetParent);
-      if (d) { d.closest(".it").scrollIntoView({ block: "nearest", inline: "nearest" }); spot(d, { pad: 6 }); await tapOn(d); spot(null); await wait(1200); }
+      if (d) { d.closest(".it").scrollIntoView({ block: "nearest", inline: "nearest" }); spot(d, { pad: 6, look: "glow" }); await tapOn(d); spot(null); await wait(1200); }
     }
     document.querySelectorAll(".items").forEach((r) => (r.scrollLeft = 0)); // the order from its first card
     $("#play").classList.add("at-station"); buildShelf(); placeStation();
@@ -646,16 +667,16 @@
     for (let i = 0; i < items.length; i++) { if (gen !== chaiGen) return; await addItem(items[i], i, gen); }
     // light the cooker (the knob), then the heat climbs to the green; the light comes to the knob only once the chai is ready (CHAI-36)
     setNani(STEP_LINE.light); setHelp(null);
-    if (first("light")) spot($("#knob"), { pad: 4 });
+    if (first("light")) spot($("#knob"), { pad: 6, look: "glow" });
     await tapOn($("#knob")); spot(null);
     $("#knobImg").src = "../assets/cook/items/v3/hob/knob-on-v2.webp"; $("#flame").classList.add("on");
     for (let p = 0; p <= 80; p += 2) { if (gen !== chaiGen) return; heat(p); await wait(110); }
     setNani(STEP_LINE.off);
-    if (first("off")) spot($("#knob"), { pad: 4 });
+    if (first("off")) spot($("#knob"), { pad: 6, look: "glow" });
     await tapOn($("#knob")); spot(null);
     $("#knobImg").src = "../assets/cook/items/v3/hob/knob-off-v2.webp"; $("#flame").classList.remove("on");
     setNani(STEP_LINE.pour);
-    if (first("pour")) spot($("#glassBtn"), { pad: 4 });
+    if (first("pour")) spot($("#glassBtn"), { pad: 6, look: "glow" });
     await tapOn($("#glassBtn")); spot(null);
     await flyTo($("#panFill"), $("#glassBtn")).catch(() => {});
     $("#panFill").style.opacity = 0; $("#glass").src = "../assets/cook/items-s12/glass/glass-chai-top-s12.webp"; heat(0);
