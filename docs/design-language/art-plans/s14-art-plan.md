@@ -118,12 +118,12 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 
 - **ST:** grid 3×2 on grey, `cell_align` on the rim; per cell the rim's centre and radius and the contents' radius into
   `cut-data.json`. Names: `pan-top-empty`, `pan-water`, `pan-leaves`, `pan-top-milk`, `pan-boil-milky`, `pan-top-black` (`-s14`), in
-  `assets/cook/items-s14/chai-pan/`. **Wiring:** `js/cook/stations/chai-tray.js` TOP and BREW8 point at them (one registration, so
+  assets/cook/items-s14/chai-pan/ (made at the cut). **Wiring:** `js/cook/stations/chai-tray.js` TOP and BREW8 point at them (one registration, so
   the brew states need no contents-circle crop); the lab's POT the same.
 - **PT1, PT2:** as s12 (grid 3×2, `cell_align`, the lip's point per cell for the stream): `pan-tip-0`, `-20`, `-40`, `-60`,
-  `pan-pour`, `pan-pour-end` (+ `-black`) in `assets/cook/items-s14/chai-pan/`; FRAMES in `chai-tray.js` re-measured.
+  `pan-pour`, `pan-pour-end` (+ `-black`) in assets/cook/items-s14/chai-pan/ (made at the cut); FRAMES in `chai-tray.js` re-measured.
 - **GL:** grid 3×1, `glass` + `soft_floor` as GL1; `glass-empty-top`, `glass-chai-top`, `glass-black-top` (`-s14`) in
-  `assets/cook/items-s14/glass/`; kept only if the judge finds the floor centred and the facets even (plainly better than s12's).
-- **KT:** no key; upscaled as K1 to the 2100×1350 master, `assets/cook/bg/service-master-v2.webp`, its island edge measured against
+  assets/cook/items-s14/glass/ (made at the cut); kept only if the judge finds the floor centred and the facets even (plainly better than s12's).
+- **KT:** no key; upscaled as K1 to the 2100×1350 master, assets/cook/bg/service-master-v2.webp (made at the cut), its island edge measured against
   v1 (y 1058 on the master); if it moved, the game's anchors move with it. Every Cook order scene and the lab point at it.
 - **Before main** (Zafar, 28 Oct): the cut, the lab with the new art, `labcheck.mjs`, his look; then the roll-out builder.
