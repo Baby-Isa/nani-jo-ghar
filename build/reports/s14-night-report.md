@@ -61,3 +61,15 @@ static, words, leak, docs, fix list, bump, specs, recordings, size).
 
 Tonight's changes are on the branch (`ccr-dfbb763e-fd6lh9`), not on `main`: they change the game itself, and Zafar's yes was to
 the fixes, not to publishing them. One word from him publishes them (the publish gate needs `--force`: the sprint's rows are open).
+
+## Proof
+
+- The final replay: `build/screenshots/sandbox/s14-night/` (`summary.md`, `contract.md`); the run log's last line: 168 pages, 0 not
+  reaching their end, 69 contract breaks (listed above).
+- The font repoint: `fonts-before` and `fonts-after` replays (8 flows at 1280x665 and 740x320), and the computed-style comparison
+  of 11 pages with and without the change (identical but the fallback list after "Nunito").
+- CHAI-33 and the new checks: `ret-old` (the old chai code: the light 5.4 times the bottle, three buttons outside the sidebar) and
+  `ret-new3` (fixed); the cog: `cog2` (10 pages, no button outside the sidebar); the thank-you bubble: `eye`.
+- The lab check: `build/screenshots/labcheck/cards/` (12 shots, nothing spills) and `build/screenshots/labcheck/fixture/` (the
+  fixture's "tameto" caught 33 px outside its card).
+- Tests: `node --test build/sandbox/contract-sh138.test.mjs` (5 pass); `checks.mjs` unit 570 pass with the quick checks green.
