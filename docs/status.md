@@ -8,24 +8,36 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (28 Oct 2026, morning UK):** Sprint 14 is open: the card lab and the chai onboarding lab are live
-(`lab/cards.html`, round 5, 20261028T004936Z); Zafar has chosen the card (the serif, the Kutchi on its English, the sideways order
-row everywhere, the helper card in Nani's box, glow and bounce, no target). Overnight (his yes, 27 Oct): the central type
-(SH-151), centred speaker badges (SH-140), chai's help light and dim (CHAI-33, CHAI-36), Cook's cog (CK-53), chai's marble, pour
-and the eye test's thank-you (SH-108, CHAI-31, CLN-206), and the checks that would have caught last sprint (contract-51 to 54, a
-returning player, the four sizes, the lab check). **Published** 28 Oct 11:33 UK (20261028T113000Z). Report:
-`build/reports/s14-night-report.md`.
+**Where things stand (28 Oct 2026, about 11:45 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`
+holds every decision of 27-28 Oct). Live on `main` (be3aa32f, 20261028T113000Z): the overnight fixes (central type SH-151, centred
+badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you) and the new
+checks (contract-51 to 54, a returning player, the four sizes, `build/tools/review/labcheck.mjs`); report
+`build/reports/s14-night-report.md`. Also live: the card and onboarding lab, `lab/cards.html` (a labs tile), round 5. Nothing running.
 
-**Next steps:**
-1. Wire the new cards and onboarding into the real chai game behind a labs switch (proposed: one builder, Opus high, about $40-60; or here in the chat), for Zafar to play and lock before the principles and the roll-out.
-2. The onboarding lab, his next round of numbered notes; then the principles from chai locked as the rulebook
-   (`docs/sprints/S14-lock-the-principles.md`), then the plan to roll the new cards and onboarding out (Cook, clinic).
-3. Found overnight for that roll-out: the help's light too big in daar, samosa, the grill and the pantry; bubbles over faces
-   (SH-145); long words off the old cards (SH-142); two L3 rules gaps for a returning player (written learned words, 2 decoys).
+**Decided (the sprint file has the detail):** the word card (serif, maroon Kutchi sitting on its English, big round speaker, no
+flowers, dots in the word's own place, a stronger blur); the order card a sideways row everywhere that scrolls itself (one ticked
+card leads); Nani's helper card grows in her box, always unhidden, the arrow in place of the bulb, no speaker; cards pop out by the
+side panel; the help: glow and bounce in a lit box with the word pill (controls only glow), the whole order card lit after two
+items, no finger or target; screens: two layouts by height, checked at 740x320, 930x430, 1280x665, 1920x1080; the way we build a
+screen: mock-up, lab page, my four-size check, Zafar's numbered choices, then the game.
+
+**Next steps, in order:**
+1. **The chai onboarding, the quick lab way** (Zafar, 28 Oct): he plays "Play chai" in `lab/cards.html` (the gear: options 9 new or
+   returning player, 10 level) and sends numbered notes; fix them in this chat round by round, `labcheck.mjs` before each publish
+   (rough publishes, `--force`, decision 3). No launch.
+2. **Into the real chai game behind a labs switch** once he keeps it: the new cards, the helper card and the onboarding. Proposed:
+   one builder, Opus high, about $40-60, half a day (or in the chat); his go first.
+3. **Lock the principles** from chai as the rulebook, then **plan the roll-out** to the other Cook stations and the clinic. Found
+   overnight for it: the help light too big in daar, samosa, the grill and the pantry; bubbles over faces (SH-145, free-space
+   placement); long words off the old cards; two L3 gaps for a returning player (learned words written, 2 decoys not 3).
+4. Art run when he says: the pan from his top-down reference (CHAI-34), the decluttered kitchen (ART-28).
+
+**Open questions to Zafar:** 40-43 in `docs/questions.md`.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the card and onboarding labs are live; the
-> overnight fixes wait on the branch. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the overnight fixes are live. I want to start by
+> testing the new chai onboarding in `lab/cards.html` the quick lab way, as we did the cards. Work on branch
+> `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
