@@ -544,6 +544,8 @@ body.njg-s14 #guide.ng-s14 .ng-bulb, body.njg-s14 #guide.ng-s14 .ng-mute { displ
 body.njg-s14 #guide.ng-s14 .ng-tools { grid-area: tools; display: flex; align-items: center; }
 body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }
+/* (non-negotiable 2: a line still to record keeps the grey italic on the s14 look; the judge, 29 Oct) */
+body.njg-s14 #guide.ng-s14 .ng-say.rec .ng-line, body.njg-s14 #guide.ng-s14 .ng-line .rec { color: var(--njg-ink-soft); font-style: italic; }
 .njg-guide .ng-arrow { display: none; }
 .njg-guide .ng-help { display: none; }
 body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap); height: var(--njg-tap); border-radius: 50%; border: 0; padding: 0; background: var(--njg-card14-arrow-bg); display: grid; place-items: center; box-shadow: var(--njg-card14-arrow-shadow); color: var(--njg-card14-text); cursor: pointer; touch-action: manipulation; }
@@ -580,7 +582,7 @@ body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
 .oc-card.oc-s14 .oc-row.oc-it14.wrong { border-color: var(--njg-wrong); }
 /* the orders one under the other in a list that scrolls by itself (no bar), the next one peeking under a soft fade; Nani's box stays put */
 body.w6.njg-s14 #side { overflow-y: hidden; }
-body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: var(--njg-card14-u18); -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
+body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: calc(var(--njg-rail, 44px) + var(--njg-card14-u18)); /* (the judge, 29 Oct: the pinned cog sat over the last card's foot on a phone: the last card scrolls clear of it) */ -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
 body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
 /* the item card's speaker is the s14 card's own (the round maroon one), never the kit row's ringed one (.oc-spk's look) */
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 4; justify-self: center; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); height: auto; aspect-ratio: 1; margin: 5cqi 0 0; padding: 0; border: 0; border-radius: 50%; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); }

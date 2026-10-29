@@ -2173,7 +2173,7 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp" };
+  const WC_PIC = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
   const WC_ID = /^(cook-(paani|dudh|chai|khun)|spi-[0-9]+|veg-[0-9]+)$/;
   const wcPicSrc = (id) => WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
@@ -2212,7 +2212,8 @@
           kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), () => false))}</span>` },
           english: r.line.en || "",
           rec: !!r.rec,
-          picture: picB ? { src: picB, fit: "contain" } : srcB && size >= 200 ? { src: Cook.v(srcB), fit: "contain" } : null,
+          // (the big card: the picture itself, already loaded by the shelf; a thumbnail not yet made left "hakro khun" blank: the judge, 29 Oct)
+          picture: srcB && size >= 200 ? { src: Cook.v(srcB), fit: "contain" } : picB ? { src: picB, fit: "contain" } : srcB ? { src: Cook.v(srcB), fit: "contain" } : null,
           say: () => Lang.speak(r.line),
         },
         wordOpts: {
