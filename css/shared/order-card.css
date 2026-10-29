@@ -587,3 +587,5 @@ body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk svg { width: 46%; height: 46%; }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk.on { animation: wc14-pulse .9s ease-out; }
+/* a row waiting to be said keeps its place unseen (the pop-out turns into it as it lands) */
+.oc-card.oc-s14 .oc-row.oc-it14.oc-away { visibility: hidden; }

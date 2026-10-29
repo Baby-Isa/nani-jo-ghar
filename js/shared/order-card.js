@@ -304,6 +304,7 @@
   function row14(node, opts) {
     const W = root.WordCard;
     const r = el("div", ["oc-row", "oc-part", "oc-it14", node.done && !node.wrong ? "done" : "", node.no ? "no" : "", node.wrong ? "wrong" : "", node.miss ? "miss" : ""].filter(Boolean).join(" "));
+    wcCss(); // (the kit row states, oc-away among them: a row waiting to be said stays unseen)
     W.item14(r, node.word, Object.assign({}, node.wordOpts || {}));
     const k = r.querySelector(".wc-k");
     if (k) k.classList.add("oc-t");
