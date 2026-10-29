@@ -98,3 +98,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-29 02:00 UK · s14-chai builder (Opus): chai on the s14 cards, order row, helper card, light, the s14 pan and the new pour, Zafar's chai level rules; committed in its worktree, not pushed (build/reports/s14-chai.md).
 - 2026-10-29 05:14 UK · Published 20261029T051056Z to main (8502301c); Pages serving it.
 - 2026-10-29 11:24 UK · Published 20261029T112029Z to main (6d37a991); Pages serving it.
+- 2026-10-29 21:30 UK · s14-rules builder (Opus): the central rules file (data/rules.json, js/shared/rules.js) with chai on it, the cog top right in every Cook game, the skip zones, 'no' said last, the pop-out off faces, the first-time heat hold, the word pill, the level-up; committed in its worktree, not pushed (build/reports/s14-rules.md).
