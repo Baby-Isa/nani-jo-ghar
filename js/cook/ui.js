@@ -580,8 +580,13 @@
       if (!s.callWaiting) return null; // (already logged skip-closed as its step closed)
       s.callWaiting = false;
       if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
-      if (guide) guide.talk(true);
-      return Lang.speak(line).finally(() => guide && guide.talk(false));
+      // (s14, Zafar 29 Oct: "Chulo bar is spoken early, before the visual help": the call a beat after the step opens, its light first)
+      const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? global.Rules.callAfterLightMs() / (Cook.speed || 1) : 0;
+      return (lag ? Cook.wait(lag) : Promise.resolve()).then(() => {
+        if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
+        if (guide) guide.talk(true);
+        return Lang.speak(line).finally(() => guide && guide.talk(false));
+      });
     }).catch(() => {});
   }
   function makeStepper() {
@@ -1673,7 +1678,17 @@
       };
       // the play area beside the side panel first; then, a phone with three people at the counter and no face-free spot there,
       // over the side panel (the order card the big card is about to turn into), still never over a face (contract-76: 740x320)
-      scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], 0);
+      // (Zafar, 29 Oct: "If there's three, put the cards bottom left under the face": from the central rules' popBelowFacesFrom
+      // people on, the space under the people's heads, from the left, comes first)
+      const heads = (() => {
+        const S = Cook.scene;
+        return Object.values((S && S.chars) || {}).filter((img) => img && img.active && img.visible !== false);
+      })();
+      if (global.Rules && heads.length >= global.Rules.popBelowFacesFrom()) {
+        const under = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom), play.top);
+        scan(sr.right + 14, play.right - pad, under + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], 0);
+      }
+      if (!perfect()) scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], best ? 1 : 0);
       if (best && best.onFace > 0) scan(sr.left + 8, sr.right - 8, Math.max(play.top, sr.top) + pad, Math.min(play.bottom, sr.bottom) - pad, [Math.min(wd, sr.width - 16), 160, 130, 110], 1e6);
       if (!best) return;
       c.style.width = `${best.w}px`;

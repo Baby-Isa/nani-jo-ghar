@@ -774,10 +774,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Art.refUrl = refUrl;
   const loading = {};
   /** Load one sprite into the texture manager; resolves true once it's there. */
+  // (Zafar, 29 Oct: "when you press replay ... the chai background becomes the low res coded version": a replay builds a new game
+  // with its own texture store, but the cached promises below stayed, so a picture was never added to the new store and the
+  // worktop fell back to the code-drawn one: each loaded image is kept and added to any scene that lacks it)
+  const imgs = {};
+  const reuse = (scene, key, img) => (img && !scene.textures.exists(key) && scene.textures.addImage(key, img), true);
   function load(scene, ref) {
     const key = sprKey(ref);
     if (scene.textures.exists(key)) return Promise.resolve(true);
-    if (loading[ref]) return loading[ref];
+    if (imgs[key]) return Promise.resolve(reuse(scene, key, imgs[key]));
+    if (loading[ref]) return loading[ref].then((ok) => (ok ? reuse(scene, key, imgs[key]) : ok));
     const url = refUrl(ref);
     if (!url) return Promise.resolve(false);
     loading[ref] = new Promise((resolve) => {
@@ -785,6 +791,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.onload = () => {
         const add = () => {
           if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          imgs[key] = img;
           Art.predecode(img);
           resolve(true);
         };
@@ -805,12 +812,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const files = {};
   Art.loadFile = function (scene, key, url, alt) {
     if (!scene || scene.textures.exists(key)) return Promise.resolve(true);
-    if (files[key]) return files[key];
+    if (imgs[key]) return Promise.resolve(reuse(scene, key, imgs[key]));
+    if (files[key]) return files[key].then((ok) => (ok ? reuse(scene, key, imgs[key]) : ok));
     files[key] = new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
         const add = () => {
           if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          imgs[key] = img;
           Art.predecode(img);
           resolve(true);
         };

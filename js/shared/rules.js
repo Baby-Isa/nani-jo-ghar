@@ -12,6 +12,9 @@
  *   Rules.wordState(rec)        "new" | "learning" | "known" for a word (rec: {right, pillEarned} as js/core/progress.js keeps)
  *   Rules.hold(state)           the big card's hold in ms for a word state
  *   Rules.pointMs()             the order card's light after the showing
+ *   Rules.counterSpot(i, n)     the counter spot of person i of n; Rules.popBelowFacesFrom() from how many people the card goes under the faces
+ *   Rules.callAfterLightMs()    a step's call this long after the step opens (its light seen first)
+ *   Rules.pointAfterMoveMs()    the order card's light this long after the last thing stops moving
  *   Rules.pillRun()             right picks in a row that hide a word's Kutchi
  *   Rules.firstTimeHold()       does a timed control hold in the green the first time
  *   Rules.noLast()              are "no" items said last
@@ -112,6 +115,15 @@
 
   /* ---------------- the showing, timed controls, the order ---------------- */
   R.pointMs = () => Number(sec("showing").pointMs) || 0;
+  R.callAfterLightMs = () => Number(sec("showing").callAfterLightMs) || 0;
+  R.pointAfterMoveMs = () => Number(sec("showing").pointAfterMoveMs) || 0;
+  R.lightHelpArrow = () => sec("showing").lightHelpArrow === true;
+  /** The counter's spot (0 left, 1 middle, 2 right) of person i of n (the central rules' scene.counterSpots). */
+  R.counterSpot = (i, n) => {
+    const t = (sec("scene").counterSpots || {})[String(n)];
+    return Array.isArray(t) && t[i] != null ? t[i] : n === 1 ? 1 : i;
+  };
+  R.popBelowFacesFrom = () => Number(sec("scene").popBelowFacesFrom) || 99;
   R.firstTimeHold = () => sec("timed").firstTimeHold !== false;
   R.noLast = () => sec("order").noLast !== false;
 

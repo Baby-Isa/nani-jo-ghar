@@ -128,7 +128,7 @@
 /* Sprint 14 (the light rule, Zafar 28 Oct; lab/cards.html .ob-dim, .lit-glow): the s14 look (Onboard.look "s14", chai): no finger, a
    lighter dim, the lit box's gold edge; a control (the knob, the glass, the arrow, the dots) only glows, a soft gold glow that breathes;
    an ingredient glows and bounces (the kit's ob-lit) */
-.njg-onboard.ob-s14 .ob-box { stroke: var(--njg-card14-light-edge); }
+.njg-onboard.ob-s14 .ob-box { stroke: var(--njg-card14-light-edge); stroke-width: 4; fill: var(--njg-card14-light-fill); } /* (Zafar, 29 Oct: "the burner is black so it's not highlighted enough": a soft warm fill inside every lit box) */
 .ob-lit.ob-lit-glow, .ob-lit.ob-lit-glow:has(> img) { animation: ob14-glowbox 1.4s ease-in-out infinite; }
 .ob-lit.ob-lit-glow > img, img.ob-lit.ob-lit-glow { animation: ob14-glowimg 1.4s ease-in-out infinite; }
 @keyframes ob14-glowbox { 0%, 100% { box-shadow: var(--njg-card14-glowbox-a); } 50% { box-shadow: var(--njg-card14-glowbox-b); } }

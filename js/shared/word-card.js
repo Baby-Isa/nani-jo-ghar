@@ -603,17 +603,19 @@
     ghost.classList.add("wc14-flyer");
     ghost.removeAttribute("id");
     ghost.removeAttribute("data-key");
-    Object.assign(ghost.style, { position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", zIndex: "60", pointerEvents: "none", transformOrigin: "0 0", visibility: "visible" });
+    Object.assign(ghost.style, { position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", zIndex: "60", pointerEvents: "none", transformOrigin: "50% 50%", visibility: "visible" });
     doc.body.appendChild(ghost);
-    const sx = a.width / b.width;
-    const sy = a.height / b.height;
-    const dx = a.left - b.left;
-    const dy = a.top - b.top;
+    // (Zafar, 29 Oct: "when the big item card goes into the left menu card, the text goes funky as it transitions": one even scale,
+    // centre to centre, so no letter is stretched; and the two cards' words never show at once: the big one is gone before the
+    // small one comes, so they never double up)
+    const k = Math.sqrt((a.width * a.height) / (b.width * b.height));
+    const dx = a.left + a.width / 2 - (b.left + b.width / 2);
+    const dy = a.top + a.height / 2 - (b.top + b.height / 2);
     const ease = "cubic-bezier(.45,.05,.2,1)";
     const dur = (o.ms || 650) / ((root.Cook && root.Cook.speed) || 1);
-    from.style.transformOrigin = "0 0";
-    const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 0.85, offset: 0.35 }, { transform: `translate(${-dx}px, ${-dy}px) scale(${1 / sx}, ${1 / sy})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
-    const g = ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
+    from.style.transformOrigin = "50% 50%";
+    const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.2 }, { opacity: 0, offset: 0.5 }, { transform: `translate(${-dx}px, ${-dy}px) scale(${1 / k})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
+    const g = ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${k})`, opacity: 0 }, { opacity: 0, offset: 0.42 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
     try {
       await Promise.all([f.finished, g.finished]);
     } catch (e) {

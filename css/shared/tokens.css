@@ -133,7 +133,7 @@
   --njg-card14-bubble-spk: #f1e7d6;
   --njg-card14-nosign: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.6' fill='none' stroke='%237d2234' stroke-width='2.6'/%3E%3Cpath d='M6.2 17.8L17.8 6.2' stroke='%237d2234' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
   /* the s14 light (Zafar, 28 Oct: a thing to tap is lit, a soft gold glow that breathes, in a lit rounded box; the rest dimmed) */
-  --njg-card14-dim: rgba(28, 18, 8, 0.45); --njg-card14-light-edge: rgba(201, 150, 46, 0.9);
+  --njg-card14-dim: rgba(28, 18, 8, 0.45); --njg-card14-light-edge: rgba(201, 150, 46, 0.9); --njg-card14-light-fill: rgba(255, 243, 214, 0.2); --njg-card14-spk-gap: var(--njg-s3);
   --njg-card14-glow-a: drop-shadow(0 0 6px rgba(247, 213, 122, 0.95)) drop-shadow(0 0 2px rgba(201, 150, 46, 0.9));
   --njg-card14-glow-b: drop-shadow(0 0 16px rgba(247, 213, 122, 1)) drop-shadow(0 0 4px rgba(201, 150, 46, 1));
   --njg-card14-glowbox-a: 0 0 0 3px rgba(247, 213, 122, 0.9), 0 0 10px 4px rgba(201, 150, 46, 0.5);

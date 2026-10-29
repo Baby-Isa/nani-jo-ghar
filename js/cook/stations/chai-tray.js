@@ -197,12 +197,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   ]
     // the s14 pour: the pan emptying and the glass filling, milky and black (the half glass is the fill's frame 4, the full one
     // its frame 6, so a glass rests as the pour left it; the run's full glasses, glass-chai-top and glass-black-top, are not needed)
-    .concat(Object.keys(S14F).map((k) => [S14_KEY(k), `${S14}${k.startsWith("pe-") ? "chai-pan/pan-empty-" : "glass/glass-fill-"}${k.slice(3)}-s14.webp`]))
+    .concat(Object.keys(S14F).filter((k) => /^gf-(milky|black)-[46]$/.test(k)).map((k) => [S14_KEY(k), `${S14}glass/glass-fill-${k.slice(3)}-s14.webp`]))
     .concat(Object.values(TOP.looks).map((t) => [t.key, t.file]))
     .concat(DISCS.map((k) => [`v3-pan-${k}`, `${V3}pan-${k}.webp`]))
     .concat(...[1, 2, 3, 4].map((n) => Cook.Kit.art(n, []))) // the shared kitchen kit: hobs, knobs, flames
     .filter(([key], i, a) => a.findIndex(([k2]) => k2 === key) === i);
 
+  // the 24 pour frames (about 1.5 MB) are needed only at the pour: loaded after the station starts, so a new level is not held for
+  // them (Zafar, 29 Oct: "the loading on a new level takes extra long"); the pour waits for them only if they are not in yet
+  // (the half and full glasses, fill frames 4 and 6, rest on the tray from the start: they load with the station)
+  const REST14 = /^gf-(milky|black)-[46]$/;
+  const ART_POUR = Object.keys(S14F).filter((k) => !REST14.test(k)).map((k) => [S14_KEY(k), `${S14}${k.startsWith("pe-") ? "chai-pan/pan-empty-" : "glass/glass-fill-"}${k.slice(3)}-s14.webp`]);
   // CHAI-14 / CHAI-07 (C9): a cup with no milk is black tea, in the pan, the stream and the glass. The art run's glasses
   // (art.s02) replace the stand-in: until then the glass is tinted darker.
   // CHAI-22 (P33): milk, water and the leaves go in once each; a second tap wiggles
@@ -374,6 +379,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         [].concat(...shelfIds).map((id) => [`jar-${id}`, spiceJar(id)])
       )
     );
+    const pourArt = St.loadArt(S, ART_POUR).catch(() => {});
     /*
      * CHAI-08, CHAI-34 (s14): a glass's picture by its own rim: its rim's centre on the well's middle, its rim's radius the
      * well's (every s14 glass and fill frame is cut a little differently, so each is placed by its own measure). The half
@@ -551,7 +557,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const bits = S.track(S.add.graphics().setDepth(D.item + 0.3));
       layers.bits = bits;
       const bubbles = S.track(S.add.graphics().setDepth(D.item + 0.5));
-      const heatRing = Cook.Kit.heatRing(S);
+      // (Zafar, 29 Oct: "part of the handle looks like it covers the loading circle, by the green area": the ring over the handle,
+      // which is drawn again at D.fx - 1.9 over every pan state)
+      const heatRing = Cook.Kit.heatRing(S, { depth: D.fx - 1.85 });
       const sel = S.track(S.add.graphics().setDepth(D.item - 0.5));
       const selRing = S.track(S.add.graphics().setDepth(D.item + 0.95));
       const pan = {
@@ -1430,6 +1438,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
        * (empty after a full pour). No tipping, no drawn stream. At level 4 one tap pours half (frames 1-4), a second the rest
        * (4-6). The times: data/stations/chai-tray.json pour (liftMs the carry, pourMs each half glass, backMs).
        */
+      await pourArt; // (the pour frames, loaded behind the station's start: in long before a child reaches the pour)
       const P = Object.assign({ liftMs: 520, pourMs: 700, backMs: 420 }, K.pour || {});
       const to = halves ? pan.poured + 1 : 2;
       const from = pan.poured;
@@ -1707,6 +1716,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
+    // two page rects' union (either may be missing)
+    const unionRect = (f, g) => () => {
+      const a = f && f(), c = g && g();
+      if (!a || !c) return a || c || null;
+      const x = Math.min(a[0], c[0]), y = Math.min(a[1], c[1]);
+      return [x, y, Math.max(a[0] + a[2], c[0] + c[2]) - x, Math.max(a[1] + a[3], c[1] + c[3]) - y];
+    };
     const shelfBut = (obj) => Object.values(shelf).filter((o) => o !== obj && o.active).map((o) => pageRect(o));
     // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests
     // (not where its bounce has it), with room for its own glow (the station's halo, Cook.Stations glowDraw) and its word chip
@@ -1758,7 +1774,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (nx.phase === "pour" && /^pour-/.test(key)) {
         const pan = pans.find((q) => `pour-${q.who}` === key);
         // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
-        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: pageRect(pan.well.hit), also: pageRect(pan.glowRing) };
+        // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top and
+        // doesn't get a line over the face": the glass's box takes in its face badge, so no edge crosses the face)
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(pageRect(pan.well.hit), pan.well.face ? pageRect(pan.well.face, 3) : null), also: pageRect(pan.glowRing) };
         return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
       }
       if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob, 4) };
@@ -1793,8 +1811,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const showCallout = (pid) => {
       hideCallout();
       if (s14 && UI.helperOpen) {
-        // the first hint teaches the arrow (lit until it is tapped, a few seconds at most, then it opens by itself)
-        if (first14("arrow")) {
+        // the first hint teaches the arrow only where the central rules ask (Zafar, 29 Oct: "There's no need to highlight the down
+        // arrow on the help card, it's obvious when it opens": showing.lightHelpArrow false, so the card simply opens)
+        if (RULES() && RULES().lightHelpArrow && RULES().lightHelpArrow() && first14("arrow")) {
           const a = document.querySelector("#guide .ng-arrow");
           if (a && !a.hidden) {
             // (tapped: the arrow's own tap opens the card; untapped, it opens by itself as the light goes)
@@ -1903,7 +1922,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const st = nx && nx.phase;
         // CHAI-37 (Zafar, 27-28 Oct): after the first two items (the water, the tea), the whole order card lit for a moment (1.2 s;
         // no glow, no bounce), so the eye knows where to look next; once, for a new player
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / (Cook.speed || 1));
+        // (Zafar, 29 Oct: "start its timer after the last animation action ... when the tea has finished going in": the light waits
+        // until nothing is in flight, then a beat, then its time)
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) {
+          const sp = Cook.speed || 1;
+          const go = () => (busy || pans.some((q) => q.away) ? setTimeout(go, 60) : setTimeout(() => light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp), (RULES() ? RULES().pointAfterMoveMs() : 0) / sp));
+          go();
+        }
         lastStep14 = st || lastStep14;
         // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
         if (sid !== rungKey && UI.helper) UI.helper(rungCur && rungCur.id && ITEM_STEPS.has(st) ? helperOf(rungCur.id, st === "cups") : null);

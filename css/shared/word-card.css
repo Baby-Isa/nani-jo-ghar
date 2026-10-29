@@ -154,7 +154,11 @@
 .wc14-big.wc14-small .wc14-pic { aspect-ratio: 16 / 10; }
 /* side by side (a phone's helper card): the picture left, the words and the speaker right */
 .wc.wc14-big.wc14-side { text-align: left; border-radius: var(--njg-card14-u16); }
-.wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 30% 1fr auto; align-items: center; padding: 2cqi; gap: 2.5cqi; }
+/* (Zafar, 29 Oct: "the speaker shouldn't sit so far over to the right. Make it padded to the right of the item card the same amount the
+   speaker is padded to the bottom of the item cards ... If needed though it can move over when the word requires": the speaker follows
+   the words at one fixed gap, the item card's speaker gap, never pushed to the card's far edge; a long word moves it on) */
+.wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 30% minmax(0, max-content) auto; justify-content: start; align-items: center; padding: 2cqi; column-gap: 2.5cqi; }
+.wc14-big.wc14-side > .wc14-in > .wc14-spk { margin-left: var(--njg-card14-spk-gap); }
 .wc14-big.wc14-side .wc14-lab { display: none; }
 .wc14-big.wc14-side .wc14-pic { aspect-ratio: 1; }
 .wc14-big.wc14-side .wc14-words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }
