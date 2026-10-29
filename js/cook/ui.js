@@ -828,7 +828,8 @@
     e.slot.innerHTML = "";
     if (!want || !global.WordCard || !global.WordCard.big14) return;
     // (a phone: side by side; a big screen: stacked, as the lab's option 5A)
-    const phone = global.innerHeight <= 500;
+    // (side by side wherever the stacked card would push the order card out of the side panel: a phone, a short laptop)
+    const phone = global.innerHeight < 760;
     global.WordCard.big14(e.slot, want.word, Object.assign({}, want.wordOpts || {}, { all: true, variant: phone ? "side" : "small", cls: "ng-helper-card" }));
     const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame;
     raf(() => global.WordCard.fit14(e.slot));
@@ -1712,7 +1713,8 @@
         m.away.clear();
         renderOrder();
         // (the row from its first card)
-        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.scrollTo({ left: 0, behavior: "smooth" }));
+        // (as a glide, so a redraw carries it on: never back to the order's last card)
+        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild));
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
