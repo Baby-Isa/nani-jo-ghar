@@ -1,0 +1,102 @@
+{
+ "_about": "Sprint 14 (Zafar, 29 Oct: his run of docs/design-language/art-plans/s14-art-plan.md, uploaded 984fce5): the chai pan exactly overhead in six states; the pour as the pan emptying above the glass while the glass fills (his switch, 29 Oct: 'the pouring pans didn't work so now I'm switching to just having the pans move above the glasses and empty and the glasses fill up'), milky, black and pink; the three glasses; the plain kitchen (a background, cut by s14-kitchen in build/tools/art/s14_post.py).",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "pan-empty-milky-1-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-1-s14.webp",
+   "w": 494,
+   "h": 328
+  },
+  "pan-empty-milky-2-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-2-s14.webp",
+   "w": 497,
+   "h": 327
+  },
+  "pan-empty-milky-3-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-3-s14.webp",
+   "w": 495,
+   "h": 329
+  },
+  "pan-empty-milky-4-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-4-s14.webp",
+   "w": 494,
+   "h": 328
+  },
+  "pan-empty-milky-5-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-5-s14.webp",
+   "w": 497,
+   "h": 327
+  },
+  "pan-empty-milky-6-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-milky-6-s14.webp",
+   "w": 496,
+   "h": 328
+  },
+  "pan-empty-black-1-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-1-s14.webp",
+   "w": 492,
+   "h": 325
+  },
+  "pan-empty-black-2-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-2-s14.webp",
+   "w": 495,
+   "h": 326
+  },
+  "pan-empty-black-3-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-3-s14.webp",
+   "w": 494,
+   "h": 326
+  },
+  "pan-empty-black-4-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-4-s14.webp",
+   "w": 494,
+   "h": 326
+  },
+  "pan-empty-black-5-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-5-s14.webp",
+   "w": 496,
+   "h": 327
+  },
+  "pan-empty-black-6-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-black-6-s14.webp",
+   "w": 495,
+   "h": 326
+  },
+  "pan-empty-pink-1-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-1-s14.webp",
+   "w": 491,
+   "h": 326
+  },
+  "pan-empty-pink-2-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-2-s14.webp",
+   "w": 495,
+   "h": 327
+  },
+  "pan-empty-pink-3-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-3-s14.webp",
+   "w": 494,
+   "h": 327
+  },
+  "pan-empty-pink-4-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-4-s14.webp",
+   "w": 492,
+   "h": 328
+  },
+  "pan-empty-pink-5-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-5-s14.webp",
+   "w": 496,
+   "h": 326
+  },
+  "pan-empty-pink-6-s14": {
+   "file": "cook/items-s14/chai-pan/pan-empty-pink-6-s14.webp",
+   "w": 494,
+   "h": 328
+  }
+ },
+ "_report": [
+  "pe-milky: 6 piece(s) by box for 6 name(s)",
+  "pb-black: 6 piece(s) by box for 6 name(s)",
+  "pp-pink: 6 piece(s) by box for 6 name(s)"
+ ]
+}

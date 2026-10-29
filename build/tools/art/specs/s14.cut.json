@@ -1,0 +1,319 @@
+{
+ "pack": "s14",
+ "about": "Sprint 14 (Zafar, 29 Oct: his run of docs/design-language/art-plans/s14-art-plan.md, uploaded 984fce5): the chai pan exactly overhead in six states; the pour as the pan emptying above the glass while the glass fills (his switch, 29 Oct: 'the pouring pans didn't work so now I'm switching to just having the pans move above the glasses and empty and the glasses fill up'), milky, black and pink; the three glasses; the plain kitchen (a background, cut by s14-kitchen in build/tools/art/s14_post.py).",
+ "src": "sources/art/s14",
+ "out": "assets",
+ "data": "assets/cook/items-s14/cut-data.json",
+ "jobs": [
+  {
+   "id": "st-states",
+   "type": "grid",
+   "src": "st-chai-pan-states-overhead-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "pan-empty-s14",
+    "pan-water-s14",
+    "pan-leaves-s14",
+    "pan-milk-s14",
+    "pan-boil-milky-s14",
+    "pan-black-s14"
+   ],
+   "outdir": "cook/items-s14/chai-pan",
+   "tol": 5,
+   "cell_align": true,
+   "max": 560,
+   "pad": 4,
+   "_note": "CHAI-34, CK-06: one pan, six states, one registration (cell_align); no shadow option (it takes the black handle for a shadow)"
+  },
+  {
+   "id": "pe-milky",
+   "type": "grid",
+   "src": "pe-chai-pan-emptying-milky-v1.png",
+   "names": [
+    "pan-empty-milky-1-s14",
+    "pan-empty-milky-2-s14",
+    "pan-empty-milky-3-s14",
+    "pan-empty-milky-4-s14",
+    "pan-empty-milky-5-s14",
+    "pan-empty-milky-6-s14"
+   ],
+   "outdir": "cook/items-s14/chai-pan",
+   "tol": 5,
+   "max": 560,
+   "pad": 4,
+   "_note": "the milky chai leaving the pan, full to empty, over the glass",
+   "boxes": {
+    "pan-empty-milky-1-s14": [
+     30,
+     0,
+     535,
+     512
+    ],
+    "pan-empty-milky-2-s14": [
+     535,
+     0,
+     1037,
+     512
+    ],
+    "pan-empty-milky-3-s14": [
+     1037,
+     0,
+     1536,
+     512
+    ],
+    "pan-empty-milky-4-s14": [
+     30,
+     512,
+     535,
+     1024
+    ],
+    "pan-empty-milky-5-s14": [
+     535,
+     512,
+     1037,
+     1024
+    ],
+    "pan-empty-milky-6-s14": [
+     1037,
+     512,
+     1536,
+     1024
+    ]
+   },
+   "_boxes": "pan 4 handle crosses the cell line (x 512): boxes at the measured gaps (x 529-540, 1022-1044); the pan outline is the same in every frame, so the trimmed pieces register"
+  },
+  {
+   "id": "pb-black",
+   "type": "grid",
+   "src": "pb-chai-pan-emptying-black-v1.png",
+   "names": [
+    "pan-empty-black-1-s14",
+    "pan-empty-black-2-s14",
+    "pan-empty-black-3-s14",
+    "pan-empty-black-4-s14",
+    "pan-empty-black-5-s14",
+    "pan-empty-black-6-s14"
+   ],
+   "outdir": "cook/items-s14/chai-pan",
+   "tol": 5,
+   "max": 560,
+   "pad": 4,
+   "boxes": {
+    "pan-empty-black-1-s14": [
+     30,
+     0,
+     535,
+     512
+    ],
+    "pan-empty-black-2-s14": [
+     535,
+     0,
+     1037,
+     512
+    ],
+    "pan-empty-black-3-s14": [
+     1037,
+     0,
+     1536,
+     512
+    ],
+    "pan-empty-black-4-s14": [
+     30,
+     512,
+     535,
+     1024
+    ],
+    "pan-empty-black-5-s14": [
+     535,
+     512,
+     1037,
+     1024
+    ],
+    "pan-empty-black-6-s14": [
+     1037,
+     512,
+     1536,
+     1024
+    ]
+   },
+   "_boxes": "pan 4 handle crosses the cell line (x 512): boxes at the measured gaps (x 529-540, 1022-1044); the pan outline is the same in every frame, so the trimmed pieces register"
+  },
+  {
+   "id": "pp-pink",
+   "type": "grid",
+   "src": "pp-chai-pan-emptying-pink-v1.png",
+   "names": [
+    "pan-empty-pink-1-s14",
+    "pan-empty-pink-2-s14",
+    "pan-empty-pink-3-s14",
+    "pan-empty-pink-4-s14",
+    "pan-empty-pink-5-s14",
+    "pan-empty-pink-6-s14"
+   ],
+   "outdir": "cook/items-s14/chai-pan",
+   "tol": 5,
+   "max": 560,
+   "pad": 4,
+   "_note": "pink (Kashmiri) chai: no recipe uses it yet; cut and kept, not wired",
+   "boxes": {
+    "pan-empty-pink-1-s14": [
+     30,
+     0,
+     535,
+     512
+    ],
+    "pan-empty-pink-2-s14": [
+     535,
+     0,
+     1037,
+     512
+    ],
+    "pan-empty-pink-3-s14": [
+     1037,
+     0,
+     1536,
+     512
+    ],
+    "pan-empty-pink-4-s14": [
+     30,
+     512,
+     535,
+     1024
+    ],
+    "pan-empty-pink-5-s14": [
+     535,
+     512,
+     1037,
+     1024
+    ],
+    "pan-empty-pink-6-s14": [
+     1037,
+     512,
+     1536,
+     1024
+    ]
+   },
+   "_boxes": "pan 4 handle crosses the cell line (x 512): boxes at the measured gaps (x 529-540, 1022-1044); the pan outline is the same in every frame, so the trimmed pieces register"
+  },
+  {
+   "id": "gf-milky",
+   "type": "grid",
+   "src": "gf-glass-filling-milky-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "glass-fill-milky-1-s14",
+    "glass-fill-milky-2-s14",
+    "glass-fill-milky-3-s14",
+    "glass-fill-milky-4-s14",
+    "glass-fill-milky-5-s14",
+    "glass-fill-milky-6-s14"
+   ],
+   "outdir": "cook/items-s14/glass",
+   "glass": [
+    "glass-fill-milky-1-s14"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.5,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4
+  },
+  {
+   "id": "gb-black",
+   "type": "grid",
+   "src": "gb-glass-filling-black-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "glass-fill-black-1-s14",
+    "glass-fill-black-2-s14",
+    "glass-fill-black-3-s14",
+    "glass-fill-black-4-s14",
+    "glass-fill-black-5-s14",
+    "glass-fill-black-6-s14"
+   ],
+   "outdir": "cook/items-s14/glass",
+   "glass": [
+    "glass-fill-black-1-s14",
+    "glass-fill-black-2-s14",
+    "glass-fill-black-3-s14",
+    "glass-fill-black-4-s14",
+    "glass-fill-black-5-s14",
+    "glass-fill-black-6-s14"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.5,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4
+  },
+  {
+   "id": "gp-pink",
+   "type": "grid",
+   "src": "gp-glass-filling-pink-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "glass-fill-pink-1-s14",
+    "glass-fill-pink-2-s14",
+    "glass-fill-pink-3-s14",
+    "glass-fill-pink-4-s14",
+    "glass-fill-pink-5-s14",
+    "glass-fill-pink-6-s14"
+   ],
+   "outdir": "cook/items-s14/glass",
+   "glass": [
+    "glass-fill-pink-1-s14"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.5,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4,
+   "_note": "not wired (no pink recipe yet)"
+  },
+  {
+   "id": "gl-three",
+   "type": "grid",
+   "src": "gl-chai-glasses-overhead-v1.png",
+   "cells": [
+    3,
+    1
+   ],
+   "names": [
+    "glass-empty-top-s14",
+    "glass-chai-top-s14",
+    "glass-black-top-s14"
+   ],
+   "outdir": "cook/items-s14/glass",
+   "glass": [
+    "glass-empty-top-s14",
+    "glass-black-top-s14"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.5,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4,
+   "_note": "CHAI-08: the glasses overhead (the base centred), as GL1's cut"
+  }
+ ]
+}

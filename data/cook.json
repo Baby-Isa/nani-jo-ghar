@@ -3864,8 +3864,9 @@
   "s02": {
    "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
    "kitchen-trays": {
-    "line": "K1 (s07; was A1's service-v2.webp)",
-    "file": "assets/cook/bg/service-master-v1.webp",
+    "line": "KT (s14, ART-28: the kitchen decluttered; was K1's service-master-v1.webp)",
+    "file": "assets/cook/bg/service-master-v2.webp",
+    "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Lanczos for now, Real-ESRGAN later); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
     "ready": true,
     "core": [
      250,
