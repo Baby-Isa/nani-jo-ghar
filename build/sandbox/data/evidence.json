@@ -20353,7 +20353,7 @@
  "SH-147": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": [
     1,
     3
@@ -20371,7 +20371,7 @@
    ],
    "expect": null,
    "note": "s14 word card (lab/cards.html bigCard): the serif, the maroon Kutchi sitting on its English (dotted from L2), the big round speaker; every word inside the card",
-   "delay": 450
+   "delay": 500
   },
   {
    "flow": "cook:chai-tray",
@@ -20444,7 +20444,7 @@
  "SH-152": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "930x430",
@@ -20455,7 +20455,7 @@
    "at": "visible:.wc14-pop",
    "after": null,
    "capture": [
-    "strip:#mission:8x90"
+    "strip:#mission:8x150"
    ],
    "expect": null,
    "note": "while the order is given the row glides to the next card (never a jump, never more than a card width a frame)",
@@ -20465,7 +20465,7 @@
  "SH-150": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "930x430",
@@ -20480,13 +20480,13 @@
    ],
    "expect": null,
    "note": "each word pops out big by the side panel (top left of the play area), clear of the speaker's face and bubble",
-   "delay": 300
+   "delay": 500
   }
  ],
  "SH-144": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "930x430",
@@ -20497,7 +20497,7 @@
    "at": "visible:.wc14-flyer",
    "after": null,
    "capture": [
-    "strip:body:6x40"
+    "strip:body:8x90"
    ],
    "expect": null,
    "note": "the big card moves and turns into its row card in one move (no fade out and in, no second copy of a card left behind)",
@@ -20507,7 +20507,7 @@
  "SH-153": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "740x320",
@@ -20522,7 +20522,7 @@
    ],
    "expect": null,
    "note": "the bubble's speaker 1.8 em of its words, its icon 66%, never under the 48 px tap",
-   "delay": 300
+   "delay": 200
   }
  ],
  "SH-149": [
