@@ -3,7 +3,7 @@
 ## What changed
 - **SH-155** `data/rules.json` (named by `data/shared.json`), read only through `js/shared/rules.js` (tokens.js loads it). Chai
   takes its cups, decoys, card, hint waits (moved from `helpMs`), holds, light, timed hold, pill and level-up from it.
-- **SH-156** cog top right of the play area in every Cook game; its menu order from the file; its taps never reach the game.
+- **SH-156** cog top right of the play area in every Cook game; its menu order from the file.
 - **SH-157** skip zones in the shared pop-up (chai asks for them); a `tap-zones` driver.
 - **CHAI-39/SH-152** "no" items said last (the engine's sentence from reordered rows). **SH-154** pop-out kept off every face;
   waiting slots faint. **SH-158** first-time heat hold. **SH-159** per-word pill flag. **SH-160** level-up.
@@ -19,7 +19,7 @@
 - SH-158: new player held 10.9 s at 0.760 until the tap; a returning player boiled over (1.0).
 - SH-159 scripted save: right x3 hides; a miss or a peek leaves it written.
 - SH-160: three good rounds, the next self-picked order L2 (2 cups); a grown-up's L4 plays L4 (3 cups).
-- QA: TXT ✅ LAY ✅ LNG ✅ CMP ⚠ (Cook only) ART n/a.
+- QA: TXT ✅ LAY ✅ LNG ✅ CMP ⚠ (Cook only).
 
 ## For Mum
 "Muke aadu waari chai khape, ba khun, dudh na." · "…, hakro khun, aako, dudh na." · "…, dudh, adh, khun na."
