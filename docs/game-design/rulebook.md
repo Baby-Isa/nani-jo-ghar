@@ -66,3 +66,16 @@ of the level rule applies. Today's level shapes are each game's own (`data/clini
 4. Chaat's L4 today drops to 1-2 toppings to add another difficulty: follow the rule (4) instead?
 5. The clinic keeps its numbers from L1 (counting is its task): agree?
 6. Fever and a few clinic shapes are conversations, not counts: their "most at L4" to decide when they are rolled out.
+
+## 5. Fable's review (29 Oct) and what was done with it
+
+A Fable review against `docs/architecture/target-model.md` and CLAUDE.md, 15 findings. Settled for the chai build: the central
+file is one data file (a new data/rules.json: levels, advance, showing, words, order, skip, menu) read through one reader, never by a
+game itself; the cog's place per screen size is shared CSS, its menu's items and order are data; level-up counts 3 consecutive
+rounds and only the guide's hint; a tap never skips a first-time showing; the timed hold is only for a control the child
+operates; the hint waits have one owner (the level rules). For the roll-out: "no" asks, decoys and the order card are per game
+with the rule as the default (a game with no order card, most heal games, skips those rows); the clinic gives each game its own
+L1 count instead of the formula's 1; one repeating unit per game (chai: cups); the old word stages (`data/progress.json`) fold
+into the pill ladder or stay, decided after chai; `onboard.js`'s ghost finger goes when each game takes the light. The helper
+card's English (Zafar, 28 Oct: "always shows everything") is now in non-negotiable 3. Open for Zafar: the bulb's timed English
+lines in the games not yet on the new kit (retire them at the roll-out?).
