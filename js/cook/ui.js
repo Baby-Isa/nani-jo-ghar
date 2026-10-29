@@ -3722,6 +3722,9 @@
       cog.dataset.njgZone = "cog"; // (the central rules' skip zones know it by this: data/rules.json skip)
       if (menu) menu.dataset.njgZone = "menu";
       stageEl.appendChild(rail);
+      // (over the play area its taps are its own: they never reach the game under it, as a tap on the pantry's "?" reached the
+      // jar under it, a wrong pick; contract-24 at 930x430. The idle clock still sees them: it listens on the page's capture)
+      ["pointerdown", "pointerup", "mousedown", "mouseup", "touchstart", "touchend", "click"].forEach((ev) => rail.addEventListener(ev, (e) => e.stopPropagation()));
       const order = () => {
         if (!menu || !global.Rules || !global.Rules.menu) return;
         global.Rules.menu().forEach((id) => {
