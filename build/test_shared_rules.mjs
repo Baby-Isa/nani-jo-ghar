@@ -155,7 +155,7 @@ test("a change in the file is seen by chai: the numbers chai asks for follow the
   const chai = read("js/cook/stations/chai-tray.js");
   for (const ask of ["rulesAt(level)", "RULES().pointMs()", "R.counts(cups.count.rules)", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
   const ui = read("js/cook/ui.js");
-  for (const ask of ["global.Rules.level(mission.level || 1)", "global.Rules.hold(", "global.Rules.skips("]) assert.ok(ui.includes(ask), `the order asks the rules: ${ask}`);
+  for (const ask of ["global.Rules.level(mission.level || 1)", "global.Rules.hold(", "zones: s14 && !!global.Rules"]) assert.ok(ui.includes(ask), `the order asks the rules: ${ask}`);
 });
 
 test("chai keeps no copy of a rule's number (its code, its data, its rows in data/cook.json)", () => {

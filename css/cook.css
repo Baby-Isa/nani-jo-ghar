@@ -93,6 +93,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .side-rail { position: sticky; bottom: 0; z-index: 5; }
 .side-menu { position: absolute; left: 0; bottom: calc(100% + 6px); display: flex; gap: 8px; align-items: center; padding: 6px; border-radius: var(--njg-radius); background: var(--cream); box-shadow: var(--njg-shadow-lift); }
 .side-menu[hidden] { display: none; }
+/* SH-156 (Zafar, 29 Oct, round 4): the cog top right of the play area in every Cook game (js/cook/ui.js moves the rail into
+   #stage), above the order's see-through veil (110) so it always opens; its menu (the central rules' items, in their order)
+   drops below it in a column, inside the play area. Its place by screen size: phones (under 500 px tall) a small gap, big
+   screens a larger one */
+#stage > .side-rail.njg-cog-rail { position: absolute; top: var(--njg-cog-gap, var(--njg-s2)); right: var(--njg-cog-gap, var(--njg-s2)); bottom: auto; left: auto; z-index: 120; flex-wrap: nowrap; gap: var(--njg-s2); }
+#stage > .side-rail.njg-cog-rail .njg-cog { box-shadow: var(--njg-shadow); }
+#stage > .side-rail.njg-cog-rail .side-menu { left: auto; right: 0; top: calc(100% + var(--njg-s2)); bottom: auto; flex-direction: column; }
+#stage > .side-rail.njg-cog-rail .close-kitchen { margin-left: 0; }
+@media (min-height: 500px) { #stage > .side-rail.njg-cog-rail { --njg-cog-gap: var(--njg-s3); } }
 .rail-btn {
   width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
   font-size: calc(var(--njg-rail) * 0.46); box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;

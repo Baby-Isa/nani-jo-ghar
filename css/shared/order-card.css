@@ -582,14 +582,16 @@ body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
 .oc-card.oc-s14 .oc-row.oc-it14.wrong { border-color: var(--njg-wrong); }
 /* the orders one under the other in a list that scrolls by itself (no bar), the next one peeking under a soft fade; Nani's box stays put */
 body.w6.njg-s14 #side { overflow-y: hidden; }
-body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: calc(var(--njg-rail) + var(--njg-card14-u18)); /* (the judge, 29 Oct: the pinned cog sat over the last card's foot on a phone: the last card scrolls clear of it) */ -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
+body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: var(--njg-card14-u18); /* (SH-156, 29 Oct: the cog moved to the play area's top right, so the side panel's foot is the orders' again) */ -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
 body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
 /* the item card's speaker is the s14 card's own (the round maroon one), never the kit row's ringed one (.oc-spk's look) */
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 4; justify-self: center; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); height: auto; aspect-ratio: 1; margin: 5cqi 0 0; padding: 0; border: 0; border-radius: 50%; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk svg { width: 46%; height: 46%; }
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk.on { animation: wc14-pulse .9s ease-out; }
-/* a row waiting to be said keeps its place unseen (the pop-out turns into it as it lands) */
-.oc-card.oc-s14 .oc-row.oc-it14.oc-away { visibility: hidden; }
+/* a row waiting to be said keeps its place, its slot faint (SH-154, Zafar 29 Oct: never a large empty white box before the first
+   word): a dashed outline and nothing in it; the pop-out turns into it as it lands */
+.oc-card.oc-s14 .oc-row.oc-it14.oc-away { visibility: visible; background: transparent !important; box-shadow: none !important; border: var(--njg-card14-u1p5) dashed var(--njg-line-soft) !important; opacity: .55; }
+.oc-card.oc-s14 .oc-row.oc-it14.oc-away > *, .oc-card.oc-s14 .oc-row.oc-it14.oc-away::after { visibility: hidden; }
 /* (in the scrolling list the cards keep their own height: the list scrolls, a card is never squeezed, so its words never leave it) */
 body.w6.njg-s14 #mission.people > *, body.w6.njg-s14 #mission.people .m-order > * { flex-shrink: 0; }
