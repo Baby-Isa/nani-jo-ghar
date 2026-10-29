@@ -284,7 +284,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const OB14 = global.Onboard;
     if (s14 && OB14) {
       OB14.look = "s14";
-      if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(() => (OB14.look = null));
+      // (reset by UI.applyS14 when a round without the s14 look starts: the service scene after the tray keeps chai's look)
     }
     const seen14 = (Cook.save.seenStation = Cook.save.seenStation || {});
     const STATION14 = "chai-tray";

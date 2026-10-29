@@ -101,6 +101,8 @@
       l.dataset.njgCard14Font = "";
       document.head.appendChild(l);
     }
+    // the light's look for the whole chai round, the counter's conversation too (its reply had the old finger: contract-44)
+    if (global.Onboard) global.Onboard.look = on ? "s14" : global.Onboard.look === "s14" ? null : global.Onboard.look;
     if (document.body.classList.contains("njg-s14") === on) return;
     document.body.classList.toggle("njg-s14", on);
     guideS14(on);
