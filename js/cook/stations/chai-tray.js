@@ -1177,6 +1177,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     pans.forEach((pan) => {
       S.tappable(pan.knobHit, () => knobTap(pan));
       S.tappable(pan.img, () => panTap(pan));
+      // Sprint 14 (lab/cards.html: "the glass lit for the pour"): on the s14 look the glass takes the tap too (its pan pours),
+      // as well as the pan itself (kept)
+      if (s14 && pan.well) {
+        const w = pan.well;
+        w.hit = S.track(S.add.zone(w.x, w.y, w.r * 2.1, w.r * 2.1).setDepth(D.item + 2));
+        S.tappable(w.hit, () => panTap(pan));
+      }
       S.tappable(pan.face, () => {
         if (finished) return;
         if (sel !== pan) select(pan);
@@ -1692,6 +1699,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const key = nx.e.key || "";
       if (nx.phase === "pour" && /^pour-/.test(key)) {
         const pan = pans.find((q) => `pour-${q.who}` === key);
+        // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: pageRect(pan.well.hit), also: pageRect(pan.glowRing) };
         return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
       }
       if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob, 4) };
@@ -1857,7 +1866,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const items = ITEM_STEPS.has(step);
       const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
       // (under the spotlight the live thing takes a tap, and so do the bulbs and the "?": the help stays everyone's, Zafar, 21 Oct)
-      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"];
+      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"].concat(cur.also ? [cur.also] : []);
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
