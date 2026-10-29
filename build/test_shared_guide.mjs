@@ -21,8 +21,8 @@ const make = (level = 1) => {
 };
 const kinds = (log) => log.map((x) => x[0]).filter((k) => k !== "clear");
 
-test("the ladder's table: 7, 8, 11 and 15 s by level; a repeat after 10 s; the bulbs pulse at 17 s (2 s later than before at level 1)", () => {
-  assert.deepEqual(G.PAUSE, [7000, 8000, 11000, 15000]);
+test("the ladder's table: 7, 9, 11 and 13 s by level (Zafar, 29 Oct); a repeat after 10 s; the bulbs pulse at 17 s (2 s later than before at level 1)", () => {
+  assert.deepEqual(G.PAUSE, [7000, 9000, 11000, 13000]);
   assert.equal(G.REPEAT, 10000);
   assert.ok(G.BULB_PULSE >= 15000 && G.BULB_PULSE <= 20000);
 });

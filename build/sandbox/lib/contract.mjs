@@ -678,7 +678,7 @@ export function check42(tl, segs, add) {
 }
 // 44 (SH-130, S13-A2): one finger at a time, the kit's; a stuck help's spotlight always gets its finger
 export const SPOT_NO_FINGER_MS = 2000;
-export function check44(tl, segs, add, tEnd = tl.length ? tl[tl.length - 1].t : 0) {
+export function check44(tl, segs, add, tEnd = tl.length ? tl[tl.length - 1].t : 0, noFinger = false) {
   const seen = new Set();
   let since = null; // the spotlight on with no finger since
   const flush = (t) => {
@@ -698,6 +698,10 @@ export function check44(tl, segs, add, tEnd = tl.length ? tl[tl.length - 1].t : 
     if (kit > 1) {
       const k = `${s && s.key}|many`;
       if (!seen.has(k)) { seen.add(k); add("contract-44", e.t, `${s ? s.key : "?"}: ${kit} fingers on screen at once`); }
+    }
+    if (noFinger) { // chai (Zafar, 28 Oct): the lit box and its glow, never a finger
+      if (list.length && !seen.has(`${s && s.key}|any`)) { seen.add(`${s && s.key}|any`); add("contract-44", e.t, `${s ? s.key : "?"}: a finger on screen (chai's light has none: Zafar, 28 Oct)`); }
+      continue;
     }
     if (e.help && !list.length) { if (since == null) since = e.t; }
     else { flush(e.t); since = null; }
@@ -1251,7 +1255,7 @@ export function check38(tl, add) {
   }
 }
 // 39 (SH-123): a word card's English shows only while its word is supported (stage 1-2), past that only when the child opens it
-export function check39(tl, add) {
+export function check39(tl, add, enAtL1 = false) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "card-en") continue;
@@ -1260,6 +1264,7 @@ export function check39(tl, add) {
       // English untapped, at any stage
       // (S13-A2 fix round: the big word card too: its English only when tapped, at every stage)
       if (x.revealed || seen.has(x.word + (x.oc ? "|oc" : ""))) continue;
+      if (enAtL1) continue; // chai at L1 (Zafar, 29 Oct): the order card and its big cards show their English, dotted from L2
       seen.add(x.word + (x.oc ? "|oc" : ""));
       if (x.oc) add("contract-39", e.t, `the order card's row for ${x.word} (stage ${x.stage}) shows its English "${x.text}" without the child tapping it open`);
       else add("contract-39", e.t, `the word card for ${x.word} (stage ${x.stage}) shows its English "${x.text}" without the child tapping it open`);
@@ -1350,7 +1355,7 @@ function check35(r, tl, segs, add, root) {
     if (level <= 2) {
       const dotted = open.filter((x) => /•/.test(x.text || ""));
       if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);
-    } else {
+    } else if (!CHAI_ROW.test(stationOf(r.flow) || "")) {
       const shown = open.filter((x) => wordsOf(x.text).some((w) => items.has(w)));
       if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3-L4 the item words are dotted (frames, verbs and numbers written)`);
     }
@@ -1417,6 +1422,10 @@ function check36(r, tl, segs, v, add) {
 }
 // 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
 export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
+// Zafar, 29 Oct (chai level rules 5, 7: data/cook.json levelTable.stations["chai-tray"]): chai's decoys 1, 2, 3, 4; its order card's
+// Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
+export const CHAI_ROW = /^chai-tray$/;
+export const CHAI_DECOYS = { 1: 1, 2: 2, 3: 3, 4: 4 };
 const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
 const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
 function check37(r, tl, segs, add) {
@@ -1424,7 +1433,7 @@ function check37(r, tl, segs, add) {
   const st = stationOf(r.flow);
   if (!st || !DECOY_STATIONS.test(st)) return;
   const level = levelOf(r.flow || "");
-  const want = DECOYS[Math.min(4, level)];
+  const want = (/^(chai-tray|chai)$/.test(st) ? CHAI_DECOYS : DECOYS)[Math.min(4, level)];
   const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
   if (!notes.length) {
     const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
@@ -1440,7 +1449,7 @@ function check37(r, tl, segs, add) {
       const what = (n.by || "").replace(/\s*lookalike:\d/, "");
       const ok = DECOY_AT_LEAST.test(st) ? got >= want : got === want;
       if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
-      if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: 3 + a lookalike variant)`);
+      if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: the table's count with a lookalike variant)`);
     }
   }
 }
@@ -1519,7 +1528,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check34(tl, segs, add);
   check34kit(tl, segs, add);
   check42(tl, segs, add);
-  check44(tl, segs, add, tEnd);
+  check44(tl, segs, add, tEnd, isCookFlow(r.flow) && CHAI_ROW.test(stationOf(r.flow) || ""));
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
@@ -1541,7 +1550,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check32(tl, add);
   check33(tl, add);
   check38(tl, add);
-  check39(tl, add);
+  check39(tl, add, isCookFlow(r.flow) && CHAI_ROW.test(stationOf(r.flow) || "") && levelOf(r.flow || "") <= 1);
   check40(tl, add);
   check41(tl, add);
   check35(r, tl, segs, add, root);

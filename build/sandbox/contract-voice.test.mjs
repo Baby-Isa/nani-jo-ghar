@@ -141,7 +141,7 @@ test("contract-24: the help (voice and glow) before the idle time of its level i
   assert.equal(of(run(page("cook:chai-tray@L4", sorted(clone(ok)))), "contract-24").length, 1);
   // a glow switching on at the start of a level 4 station (chaat L4: "still highlighting the first item") breaks
   const glow = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), C(T + 300, "hl", { n: 1, list: ["cook:bowl"] }), C(T + 4000, "hl", { n: 0, list: [] })]);
-  assert.match(of(run(page("cook:assemble@L4", glow)), "contract-24")[0].measured, /the glow on bowl came 300 ms after the last action \(L4 waits 15000 ms\)/);
+  assert.match(of(run(page("cook:assemble@L4", glow)), "contract-24")[0].measured, /the glow on bowl came 300 ms after the last action \(L4 waits 13000 ms\)/);
   glow[2].t = T + 16000; glow[3].t = T + 19000;
   assert.equal(of(run(page("cook:assemble@L4", glow)), "contract-24").length, 0);
   // a step line of hers said at once (L1 said it as the step opened)

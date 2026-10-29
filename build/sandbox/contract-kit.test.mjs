@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { analyse, CHECKS, SPOT_NO_FINGER_MS } from "./lib/contract.mjs";
 
-const run = (timeline, check, flow = "cook:chai-tray") =>
+const run = (timeline, check, flow = "cook:samosa") =>
   analyse({ flow, size: "1280x665", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station1:tray", t: 1000 }, ...timeline] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === check);
 
 test("the new checks are listed", () => {
@@ -46,6 +46,13 @@ test("contract-44 (SH-130): the help's spotlight with no finger for 2 s or more 
   assert.match(red[0].measured, /spotlight showed 3\.5 s with no finger/);
   // the finger comes 300 ms after the box
   assert.equal(run([fg([], true, 1200), fg([kit], true, 1500), fg([], false, 9000)], "contract-44").length, 0);
+});
+
+test("contract-44 in chai (Zafar, 28 Oct: no finger, no target): the lit box alone passes; any finger is a break", () => {
+  const kit = { sel: "div.ob-finger", kit: true };
+  const fg = (list, help, t) => ({ type: "c", k: "fingers", t, list, help });
+  assert.equal(run([fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:chai-tray").length, 0);
+  assert.match(run([fg([kit], true, 1200)], "contract-44", "cook:chai-tray")[0].measured, /a finger on screen/);
 });
 
 test("contract-34 (S13-A2): a done, go-on or pill button that is not the kit's .njg-btn is a break; the kit's pass", () => {

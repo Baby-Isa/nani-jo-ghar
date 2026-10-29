@@ -1,3 +1,4 @@
-pe-milky: 6 piece(s) by box for 6 name(s)
-pb-black: 6 piece(s) by box for 6 name(s)
-pp-pink: 6 piece(s) by box for 6 name(s)
+gp-pink: 6 piece(s) by cell for 6 name(s)
+  gp-pink: 6 piece(s) on one window 469x494 (cell_align)
+gl-three: 3 piece(s) by cell for 3 name(s)
+  gl-three: 3 piece(s) on one window 476x465 (cell_align)

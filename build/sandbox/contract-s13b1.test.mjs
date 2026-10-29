@@ -11,7 +11,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const run = (r) => analyse(r, { root: ROOT, retired: [], clip: () => 0.6, lexicon: new Set(["muke", "chai", "khape"]), numbers: new Set(["ek", "ba"]) });
 const of = (out, c) => out.filter((b) => b.check === c);
 const T = 1e6;
-const page = (timeline, flow = "cook:chai-tray") => ({ flow, size: "1366x768", t0: T, states: [{ name: "01-start", at: 0, shot: "01-start.png" }], timeline });
+const page = (timeline, flow = "cook:samosa") => ({ flow, size: "1366x768", t0: T, states: [{ name: "01-start", at: 0, shot: "01-start.png" }], timeline });
 const kc = (t, o = {}) => ({ type: "c", k: "kitcard", t, n: 1, bad: [], blank: 0, mute: [], pops: 0, ownPop: [], intro: false, ...o });
 
 test("contract-40: a card and its rows with only kit classes is no break; a game's own class on them is, once per page", () => {
@@ -53,4 +53,8 @@ test("contract-39: an order card row's English untapped is a break at any stage;
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "two onions", oc: true }])), "contract-39").length, 0, "green: the child tapped it open");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "onion", oc: false }])), "contract-39").length, 1, "red (S13-A2 fix round): the big word card too, untapped, even while supported");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "onion", oc: false }])), "contract-39").length, 0, "green: the big word card tapped open");
+  // chai (Zafar, 29 Oct): its order card shows the English at L1, dotted from L2
+  const chai = (list, lv) => page([C(T, "card-en", { list })], `cook:chai-tray@L${lv}`);
+  assert.equal(of(run(chai([{ word: "cook-dudh", stage: 1, revealed: false, text: "milk", oc: true }], 1)), "contract-39").length, 0, "green: chai L1 shows its English");
+  assert.equal(of(run(chai([{ word: "cook-dudh", stage: 1, revealed: false, text: "milk", oc: true }], 2)), "contract-39").length, 1, "red: chai L2 dots it");
 });

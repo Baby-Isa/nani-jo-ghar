@@ -244,12 +244,7 @@
    ],
    "outdir": "cook/items-s14/glass",
    "glass": [
-    "glass-fill-black-1-s14",
-    "glass-fill-black-2-s14",
-    "glass-fill-black-3-s14",
-    "glass-fill-black-4-s14",
-    "glass-fill-black-5-s14",
-    "glass-fill-black-6-s14"
+    "glass-fill-black-1-s14"
    ],
    "soft_floor": 0.25,
    "soft_gain": 2.5,
@@ -257,7 +252,8 @@
    "cell_align": true,
    "max": 480,
    "x2": true,
-   "pad": 4
+   "pad": 4,
+   "_glass": "only the empty cell keyed as glass (cells 2-6 kept their soft rims 10-24 px wide: artcheck), as the milky sheet"
   },
   {
    "id": "gp-pink",
@@ -280,13 +276,14 @@
     "glass-fill-pink-1-s14"
    ],
    "soft_floor": 0.25,
-   "soft_gain": 2.5,
+   "soft_gain": 2.0,
    "shadow": true,
    "cell_align": true,
    "max": 480,
    "x2": true,
    "pad": 4,
-   "_note": "not wired (no pink recipe yet)"
+   "_note": "not wired (no pink recipe yet)",
+   "_soft": "2.0: the clear glass within artcheck (2.5 left a 10.7 px rim, 3.2 wider)"
   },
   {
    "id": "gl-three",
@@ -307,13 +304,14 @@
     "glass-black-top-s14"
    ],
    "soft_floor": 0.25,
-   "soft_gain": 2.5,
+   "soft_gain": 2.0,
    "shadow": true,
    "cell_align": true,
    "max": 480,
    "x2": true,
    "pad": 4,
-   "_note": "CHAI-08: the glasses overhead (the base centred), as GL1's cut"
+   "_note": "CHAI-08: the glasses overhead (the base centred), as GL1's cut",
+   "_soft": "2.0: the clear glass within artcheck (2.5 left a 10.7 px rim, 3.2 wider)"
   }
  ]
 }

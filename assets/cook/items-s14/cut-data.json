@@ -3,100 +3,65 @@
  "patients": {},
  "closeups": {},
  "props": {
-  "pan-empty-milky-1-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-1-s14.webp",
-   "w": 494,
-   "h": 328
+  "glass-fill-pink-1-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-1-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-1-s14@2x.webp"
   },
-  "pan-empty-milky-2-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-2-s14.webp",
-   "w": 497,
-   "h": 327
+  "glass-fill-pink-2-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-2-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-2-s14@2x.webp"
   },
-  "pan-empty-milky-3-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-3-s14.webp",
-   "w": 495,
-   "h": 329
+  "glass-fill-pink-3-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-3-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-3-s14@2x.webp"
   },
-  "pan-empty-milky-4-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-4-s14.webp",
-   "w": 494,
-   "h": 328
+  "glass-fill-pink-4-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-4-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-4-s14@2x.webp"
   },
-  "pan-empty-milky-5-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-5-s14.webp",
-   "w": 497,
-   "h": 327
+  "glass-fill-pink-5-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-5-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-5-s14@2x.webp"
   },
-  "pan-empty-milky-6-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-milky-6-s14.webp",
-   "w": 496,
-   "h": 328
+  "glass-fill-pink-6-s14": {
+   "file": "cook/items-s14/glass/glass-fill-pink-6-s14.webp",
+   "w": 456,
+   "h": 480,
+   "file2x": "cook/items-s14/glass/glass-fill-pink-6-s14@2x.webp"
   },
-  "pan-empty-black-1-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-1-s14.webp",
-   "w": 492,
-   "h": 325
+  "glass-empty-top-s14": {
+   "file": "cook/items-s14/glass/glass-empty-top-s14.webp",
+   "w": 480,
+   "h": 469,
+   "file2x": "cook/items-s14/glass/glass-empty-top-s14@2x.webp"
   },
-  "pan-empty-black-2-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-2-s14.webp",
-   "w": 495,
-   "h": 326
+  "glass-chai-top-s14": {
+   "file": "cook/items-s14/glass/glass-chai-top-s14.webp",
+   "w": 480,
+   "h": 469,
+   "file2x": "cook/items-s14/glass/glass-chai-top-s14@2x.webp"
   },
-  "pan-empty-black-3-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-3-s14.webp",
-   "w": 494,
-   "h": 326
-  },
-  "pan-empty-black-4-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-4-s14.webp",
-   "w": 494,
-   "h": 326
-  },
-  "pan-empty-black-5-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-5-s14.webp",
-   "w": 496,
-   "h": 327
-  },
-  "pan-empty-black-6-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-black-6-s14.webp",
-   "w": 495,
-   "h": 326
-  },
-  "pan-empty-pink-1-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-1-s14.webp",
-   "w": 491,
-   "h": 326
-  },
-  "pan-empty-pink-2-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-2-s14.webp",
-   "w": 495,
-   "h": 327
-  },
-  "pan-empty-pink-3-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-3-s14.webp",
-   "w": 494,
-   "h": 327
-  },
-  "pan-empty-pink-4-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-4-s14.webp",
-   "w": 492,
-   "h": 328
-  },
-  "pan-empty-pink-5-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-5-s14.webp",
-   "w": 496,
-   "h": 326
-  },
-  "pan-empty-pink-6-s14": {
-   "file": "cook/items-s14/chai-pan/pan-empty-pink-6-s14.webp",
-   "w": 494,
-   "h": 328
+  "glass-black-top-s14": {
+   "file": "cook/items-s14/glass/glass-black-top-s14.webp",
+   "w": 480,
+   "h": 469,
+   "file2x": "cook/items-s14/glass/glass-black-top-s14@2x.webp"
   }
  },
  "_report": [
-  "pe-milky: 6 piece(s) by box for 6 name(s)",
-  "pb-black: 6 piece(s) by box for 6 name(s)",
-  "pp-pink: 6 piece(s) by box for 6 name(s)"
+  "gp-pink: 6 piece(s) by cell for 6 name(s)",
+  "  gp-pink: 6 piece(s) on one window 469x494 (cell_align)",
+  "gl-three: 3 piece(s) by cell for 3 name(s)",
+  "  gl-three: 3 piece(s) on one window 476x465 (cell_align)"
  ]
 }
