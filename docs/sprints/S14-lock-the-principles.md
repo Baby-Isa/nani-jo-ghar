@@ -77,6 +77,15 @@ published as they are; the small art run (the pan exactly overhead in every stat
 kitchen) before the next publish of the game; then the roll-out into the real chai behind a labs switch (its heat, ring and pour
 kept), one builder, Opus high, about $40-60; the second reader run (5 fixes).
 
+## The principles, round 1 (Zafar, 29 Oct, night)
+Yes: the cards (one card everywhere, big where taught; dots and the eye are help only; the sideways order row; the helper card
+always the full answer); the light (a lit box and a gold glow, an item bounces, a control glows, no finger). Hint waits 7, 9, 11,
+13 s (`data/shared.json` helpMs, was 7, 8, 11, 15). Decoys from L1, one more a level where the space allows. The pink chai art is
+a spare. To spell out next, as tables with a general-rule column: chai level by level; the word ladder's criteria per rung
+(his idea: three right in a row and one in the book's review); chai's onboarding. The roll-out learns from chai going live
+first. The rulebook is reviewed by Fable alongside `docs/architecture/target-model.md`. Later: the end card (time per level, ticks,
+the bulb; show progress, not a score).
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
