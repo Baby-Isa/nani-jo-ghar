@@ -391,5 +391,240 @@
     c.classList.add("wc-pop");
     return c;
   };
+
+  /*
+   * ---- THE S14 CARD (Sprint 14; lab/cards.html, the reference Zafar played and kept, 27-28 Oct) ----
+   * The kit's new word card, on for a game through one option (opts.s14 / OrderCard's opts.s14; chai first, every other game
+   * keeps the card above until the roll-out). SH-147, SH-142: the serif from the tokens (--njg-card14-*), the maroon Kutchi
+   * sitting on its English, the big round speaker; a hidden word keeps its place and size, its dots drawn over that same place
+   * (big maroon dots for the Kutchi, small grey for the English), so a peek moves nothing; the hidden picture is strongly
+   * blurred with a frosted eye. Every word shrinks to fit inside its card, the Kutchi may wrap to two lines, the English wraps
+   * only as the last resort (never clipped, never spilling: W.fit14).
+   *
+   *   WordCard.big14(parent, word, {variant: "" | "small" | "side", all, stage, progress, ...}) -> el   the pop-out and the
+   *            helper card (all: everything shown, never dotted: Nani's helper card, Zafar 28 Oct)
+   *   WordCard.item14(el, word, opts)   fills el (an order card's row) as the order's item card: picture, Kutchi, English, speaker
+   *            (the speaker first in the markup: a dotted row starts with its speaker, contract-40; drawn at the card's foot)
+   *   WordCard.fit14(root)              every s14 card's words fitted (again after a resize or a peek)
+   *   WordCard.morph(from, to) -> Promise   SH-144: the big card moves and turns into its row card as it travels (never a fade
+   *            out and in): the big card shrinks into the row card's box while a copy of the row card grows out of it
+   * The English (non-negotiable 3): only when tapped (a tap on its dots shows it for 3 s), except on the helper card (all).
+   */
+  // (the lab's speaker: a solid cone and two arcs, white on the maroon)
+  const SPK14 = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" fill="currentColor"/><path d="M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
+  const DOTS14 = (n) => Array.from({ length: n }, () => "<i></i>").join("");
+  const plainOf = (k) => (k == null ? "" : typeof k === "string" ? k : k.nodeType ? k.textContent || "" : String(k.html || "").replace(/<[^>]*>/g, ""));
+  function parts14(c, word, opts, all) {
+    const stage = stageOf(word, opts);
+    const s = slotsFor(word, opts, stage);
+    // (all: the helper card shows everything; else the English only when tapped, the picture and Kutchi by the word's stage)
+    const show = all ? { picture: true, kutchi: true, english: !word.rec } : { picture: s.picture, kutchi: s.kutchi, english: false };
+    c.dataset.stage = String(stage);
+    if (word.id != null) c.dataset.word = String(word.id);
+    c.classList.toggle("wc14-hide-pic", !show.picture && !!word.picture);
+    c.classList.toggle("wc14-hide-en", !show.english);
+    c.classList.toggle("wc14-hide-k", !show.kutchi);
+    const pic = el("div", "wc-slot wc-pic wc14-pic");
+    pic.dataset.slot = "picture";
+    fillPicture(pic, word.picture);
+    const eye = el("button", "wc14-eye", pic);
+    eye.type = "button";
+    eye.setAttribute("aria-label", "");
+    eye.innerHTML = EYE;
+    const k = el("p", "wc-slot wc-k wc14-k");
+    k.dataset.slot = "text";
+    fillKutchi(k, word);
+    const kd = el("button", "wc14-dots wc14-k-dots");
+    kd.type = "button";
+    kd.setAttribute("aria-label", "");
+    kd.innerHTML = DOTS14(Math.max(3, Math.min(6, plainOf(word.kutchi).replace(/\s/g, "").length - 1)));
+    const en = el("p", "wc-slot wc-en english wc14-en");
+    en.dataset.wordEn = "";
+    en.dataset.slot = "english";
+    en.lang = "en";
+    en.textContent = word.rec ? "" : word.english || "";
+    if (word.rec) en.classList.add("none");
+    if (all && !word.rec) en.classList.add("revealed"); // (the helper card: the child asked for help, the arrow or the wait)
+    const ed = el("button", "wc14-dots wc14-en-dots");
+    ed.type = "button";
+    ed.setAttribute("aria-label", "");
+    ed.innerHTML = DOTS14(Math.max(3, Math.min(6, (word.english || "").replace(/\s/g, "").length - 1)));
+    const spk = el("button", "wc-spk wc14-spk");
+    spk.type = "button";
+    spk.setAttribute("aria-label", "");
+    spk.dataset.slot = "speaker";
+    spk.innerHTML = SPK14;
+    const ks = el("div", "wc14-slot wc14-slot-k");
+    ks.append(k, kd);
+    const es = el("div", "wc14-slot wc14-slot-e");
+    es.append(en, ed);
+    const revealed = new Set();
+    const api = {
+      stage,
+      revealed: () => [...revealed],
+      // a peek (free help, never recall): the hidden thing shows for 3 s in its own place, logged as its cue
+      reveal(slot) {
+        const box = slot === "picture" ? pic : slot === "english" ? en : k;
+        const dots = slot === "picture" ? null : slot === "english" ? ed : kd;
+        box.classList.add("wc14-peek", "revealed");
+        if (dots) dots.classList.add("wc14-gone");
+        revealed.add(slot);
+        W.fit14(c);
+        clearTimeout(box._peekT);
+        box._peekT = setTimeout(() => {
+          box.classList.remove("wc14-peek");
+          if (slot !== "picture" || !all) box.classList.remove("revealed");
+          if (dots) dots.classList.remove("wc14-gone");
+        }, 3000 / ((root.Cook && root.Cook.speed) || 1));
+        try {
+          if (opts.progress && opts.progress.reveal && word.id != null) opts.progress.reveal(word.id, slot);
+        } catch (e) {
+          /* the log is not play */
+        }
+        try {
+          if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("reveal", { step: String(word.id == null ? "" : word.id), slot, word: word.id });
+        } catch (e) {
+          /* only a log */
+        }
+        if (opts.onReveal) opts.onReveal(slot, c);
+        c.dispatchEvent(new CustomEvent("wc-reveal", { bubbles: true, detail: { word: word.id, slot } }));
+        return true;
+      },
+      cue() {
+        if (revealed.has("picture")) return "picture";
+        if (revealed.has("english")) return "english";
+        if (revealed.has("text")) return "text";
+        return "kutchi";
+      },
+      speak() {
+        const say = word.say || opts.say;
+        spk.classList.remove("on");
+        void spk.offsetWidth;
+        spk.classList.add("on");
+        if (!say) return Promise.resolve();
+        return Promise.resolve()
+          .then(() => say(k, c))
+          .catch(() => {})
+          .then(() => spk.classList.remove("on"));
+      },
+      restage() {},
+      hush() {},
+      lit() {},
+      photo() {},
+    };
+    const stop = (fn) => (ev) => {
+      ev.stopPropagation();
+      fn();
+    };
+    spk.addEventListener("click", stop(() => api.speak()));
+    kd.addEventListener("click", stop(() => api.reveal("text")));
+    ed.addEventListener("click", stop(() => api.reveal("english")));
+    eye.addEventListener("click", stop(() => api.reveal("picture")));
+    // a word dotted inside its Kutchi line (Cook's level dotting, L3+: "ba •••"): a tap on those dots is a peek too, the words
+    // the line hides (its data-said) shown in their place for 3 s
+    k.addEventListener("click", (ev) => {
+      const d = ev.target.closest && ev.target.closest(".dots");
+      if (!d || !d.dataset.said) return;
+      ev.stopPropagation();
+      const was = d.textContent;
+      d.textContent = d.dataset.said;
+      d.classList.add("wc14-said");
+      api.reveal("text");
+      setTimeout(() => {
+        d.textContent = was;
+        d.classList.remove("wc14-said");
+      }, 3000 / ((root.Cook && root.Cook.speed) || 1));
+    });
+    c.wc = api;
+    return { pic, k, kd, en, ed, spk, ks, es, api };
+  }
+  W.big14 = function (parent, word, opts = {}) {
+    word = word || {};
+    const v = opts.variant || "";
+    const c = el("section", ["wc", "wc14", "wc14-big", v ? `wc14-${v}` : "", opts.cls || ""].filter(Boolean).join(" "));
+    const p = parts14(c, word, opts, !!opts.all);
+    const inn = el("div", "wc14-in", c);
+    const words = el("div", "wc14-words");
+    const lab = (t) => {
+      const l = el("div", "wc14-lab");
+      l.setAttribute("aria-hidden", "true");
+      l.innerHTML = `<span>${t}</span>`;
+      return l;
+    };
+    // (the labels, grown-ups' signposts in the mock-up: shown only where the card has room; never on a phone's side card)
+    words.append(lab("KUTCHI"), p.ks, lab("ENGLISH"), p.es);
+    inn.append(p.pic, words, p.spk);
+    if (parent) parent.appendChild(c);
+    return c;
+  };
+  W.item14 = function (row, word, opts = {}) {
+    word = word || {};
+    row.classList.add("wc", "wc14", "wc14-it");
+    const p = parts14(row, word, opts, false);
+    // (the speaker first: a dotted row starts with its speaker, contract-40; the grid puts it at the card's foot)
+    row.append(p.spk, p.pic, p.ks, p.es);
+    return row;
+  };
+  /** A word shrinks to fit its line and never leaves its card (SH-142); the Kutchi may wrap to two lines, the English only as a last resort. */
+  function fitOne14(e, minPx, maxLines) {
+    if (!e || !e.isConnected || !e.offsetParent) return;
+    e.style.fontSize = "";
+    e.classList.remove("wc14-wrap");
+    let fs = parseFloat(root.getComputedStyle(e).fontSize) || 16;
+    const lh = () => parseFloat(root.getComputedStyle(e).lineHeight) || fs * 1.1;
+    const box = e.parentNode && e.parentNode.getBoundingClientRect ? e.parentNode : e;
+    const over = () => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().height > lh() * maxLines + 2 || e.getBoundingClientRect().width > box.getBoundingClientRect().width + 1;
+    let n = 0;
+    while (over() && fs > minPx && n++ < 60) {
+      fs -= 1;
+      e.style.fontSize = `${fs}px`;
+    }
+    if (over() && e.classList.contains("wc14-en")) e.classList.add("wc14-wrap");
+    const d = e.parentNode && e.parentNode.querySelector(".wc14-dots");
+    if (d) d.style.fontSize = root.getComputedStyle(e).fontSize;
+  }
+  W.fit14 = function (rootEl) {
+    const r = rootEl || doc;
+    const all = (sel) => (r.matches && r.matches(sel) ? [r] : []).concat([...r.querySelectorAll(sel)]);
+    all(".wc14 .wc14-k").forEach((e) => fitOne14(e, 11, 2));
+    all(".wc14 .wc14-en").forEach((e) => fitOne14(e, 10, 1));
+  };
+  W.morph = async function (from, to, o = {}) {
+    if (!from || !to) return;
+    const a = from.getBoundingClientRect();
+    const b = to.getBoundingClientRect();
+    const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    if (o.fast || reduced || !a.width || !b.width || !from.animate) return;
+    const ghost = to.cloneNode(true);
+    ghost.classList.remove("oc-away");
+    ghost.classList.add("wc14-flyer");
+    ghost.removeAttribute("id");
+    ghost.removeAttribute("data-key");
+    Object.assign(ghost.style, { position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", zIndex: "60", pointerEvents: "none", transformOrigin: "0 0", visibility: "visible" });
+    doc.body.appendChild(ghost);
+    const sx = a.width / b.width;
+    const sy = a.height / b.height;
+    const dx = a.left - b.left;
+    const dy = a.top - b.top;
+    const ease = "cubic-bezier(.45,.05,.2,1)";
+    const dur = (o.ms || 650) / ((root.Cook && root.Cook.speed) || 1);
+    from.style.transformOrigin = "0 0";
+    const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 0.85, offset: 0.35 }, { transform: `translate(${-dx}px, ${-dy}px) scale(${1 / sx}, ${1 / sy})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
+    const g = ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
+    try {
+      await Promise.all([f.finished, g.finished]);
+    } catch (e) {
+      /* cancelled: the card lands anyway */
+    } finally {
+      ghost.remove();
+    }
+  };
+  if (root.addEventListener) {
+    let rz = 0;
+    root.addEventListener("resize", () => {
+      cancelAnimationFrame(rz);
+      rz = requestAnimationFrame(() => W.fit14());
+    });
+  }
   return W;
 });

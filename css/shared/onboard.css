@@ -124,3 +124,13 @@
 .ob-skip-ic svg { width: 100%; height: 100%; display: block; position: relative; z-index: 1; }
 .ob-skip-row.holding .ob-hold { animation: ob-hold 1s linear forwards; }
 .ob-skip-ic .ob-hold { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--njg-focus) var(--p, 0%), transparent 0); opacity: 0.8; }
+
+/* Sprint 14 (the light rule, Zafar 28 Oct; lab/cards.html .ob-dim, .lit-glow): the s14 look (Onboard.look "s14", chai): no finger, a
+   lighter dim, the lit box's gold edge; a control (the knob, the glass, the arrow, the dots) only glows, a soft gold glow that breathes;
+   an ingredient glows and bounces (the kit's ob-lit) */
+.njg-onboard.ob-s14 .ob-box { stroke: var(--njg-card14-light-edge); }
+.ob-lit.ob-lit-glow, .ob-lit.ob-lit-glow:has(> img) { animation: ob14-glowbox 1.4s ease-in-out infinite; }
+.ob-lit.ob-lit-glow > img, img.ob-lit.ob-lit-glow { animation: ob14-glowimg 1.4s ease-in-out infinite; }
+@keyframes ob14-glowbox { 0%, 100% { box-shadow: var(--njg-card14-glowbox-a); } 50% { box-shadow: var(--njg-card14-glowbox-b); } }
+@keyframes ob14-glowimg { 0%, 100% { filter: var(--njg-card14-glow-a); } 50% { filter: var(--njg-card14-glow-b); } }
+@media (prefers-reduced-motion: reduce) { .ob-lit.ob-lit-glow, .ob-lit.ob-lit-glow > img { animation: none; } }

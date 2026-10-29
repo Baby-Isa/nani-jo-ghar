@@ -195,10 +195,22 @@
    *   the finger    the kit's one drawn hand (Onboard.finger), tapping in one cadence: in, press, lift off, wait half a second,
    *                 again, for as long as the help is up (Onboard.FINGER).
    */
-  Onboard.DIM = 0.72;
+  let dim = 0.72;
+  // (the s14 look's lighter dim, DIM14, while Onboard.look is "s14": the one dimFill below reads it)
+  Object.defineProperty(Onboard, "DIM", { enumerable: true, get: () => (Onboard.look === "s14" ? Onboard.DIM14 : dim), set: (v) => (dim = v) });
   /** The lit thing's hop, a share of its own height (the judge, 23 Oct: a clear hop up and back, not a dip): every game. */
   Onboard.HOP = 0.1;
   Onboard.dimFill = () => `rgba(30,18,10,${Onboard.DIM})`;
+  /*
+   * Sprint 14 (the light rule, Zafar 28 Oct: "the ripple target went ... doesn't look good"; lab/cards.html spot): the kit's s14
+   * look, on for chai (Onboard.look = "s14", set by the game while it plays): a thing to tap is always lit, a soft gold glow that
+   * breathes, in a lit rounded box that takes in its word pill, everything else dimmed (lighter: DIM14); an ingredient also
+   * bounces, a control (a knob, a glass, the arrow) only glows; no finger, no target. Every other game keeps the finger.
+   *   Onboard.light(target, {look: "bob" | "glow" | "", pad, live}) -> {close(), box()}   a DOM thing lit alone (the arrow, the
+   *        order card for a moment, the first dots): "" lights it with no glow and no bounce (the order card, CHAI-37)
+   */
+  Onboard.look = null;
+  Onboard.DIM14 = 0.45;
   /**
    * EASY-08 (Sprint 11): the light hugs the control's own box: a rounded rect with a small, even pad, never an oval that spills
    * over its neighbours. When two lit things, or a thing and a neighbour to keep dark (avoid), are close, the pad shrinks to
@@ -564,7 +576,12 @@
       return a.width * a.height >= 0.2 * b.width * b.height ? im : e;
     };
     const lit = (targets) => {
+      // (the s14 light: a control only glows, ob-lit-glow; "" lights nothing more than the box)
+      if (layer.dataset.look === "") targets = [];
+      const glowOnly = layer.dataset.look === "glow";
       const els = targets.map(litOf);
+      els.forEach((e) => e.classList.toggle("ob-lit-glow", glowOnly));
+      litEls.filter((e) => !els.includes(e)).forEach((e) => e.classList.remove("ob-lit-glow"));
       litEls.filter((e) => !els.includes(e)).forEach((e) => e.classList.remove("ob-lit"));
       els.forEach((e) => e.classList.add("ob-lit"));
       litEls = els.slice();
@@ -809,7 +826,7 @@
       if (st.ghost.gesture === "tap") {
         // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
         const from = Onboard.fingerFrom(st.spotlight, st.ghost.down || opts.fingerDown ? "above" : "auto");
-        if (!finger) finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), from), { container: layer, from });
+        if (!finger && Onboard.look !== "s14") finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), from), { container: layer, from });
         setTimeout(() => {
           if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
         }, Onboard.fingerMs());
@@ -1162,7 +1179,8 @@
     o = o || {};
     const sid = `sp${Math.random().toString(36).slice(2, 8)}`;
     const layer = document.createElement("div");
-    layer.className = "njg-onboard njg-spot";
+    layer.className = `njg-onboard njg-spot${Onboard.look === "s14" ? " ob-s14" : ""}`;
+    if (o.look != null) layer.dataset.look = o.look;
     layer.innerHTML = lightSvg(sid);
     (o.container || document.body).appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
@@ -1181,7 +1199,8 @@
     const firstRect = () => rectsOf(target)[0] || null;
     // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
     const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerFrom || (o.fingerDown ? "above" : "auto"));
-    const finger = o.finger === false ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold" });
+    // (the s14 look: no finger, no target; the lit thing itself shows what to tap)
+    const finger = o.finger === false || Onboard.look === "s14" ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold" });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
@@ -1228,6 +1247,11 @@
         setTimeout(() => layer.remove(), reduced() ? 0 : 300);
       },
     };
+  };
+
+  Onboard.light = function (target, o) {
+    o = o || {};
+    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container });
   };
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */

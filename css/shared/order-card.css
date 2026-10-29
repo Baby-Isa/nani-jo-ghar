@@ -528,3 +528,62 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
   margin-inline: calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 + var(--njg-s2)) calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 - var(--njg-s2));
   margin-inline-start: max(calc((var(--oc-spk-vis) - var(--oc-spk-hit)) / 2 + var(--njg-s2)), calc(-1 * var(--njg-s1))); /* (SH-81: never off the screen's edge) */
 }
+
+/* ---------- the s14 look (Sprint 14: lab/cards.html, the reference Zafar played and kept, 27-28 Oct) ----------
+   On for chai through the kit's one option (js/cook/ui.js UI.applyS14: body.njg-s14; OrderCard's opts.s14: .oc-card.oc-s14);
+   every other game keeps the card above until the roll-out. The page: the lab's wider side panel (its two layouts by height).
+   Nani's box: the arrow in the bulb's place, no speaker of her own (a tap on her face replays her), no green bar, one helper
+   colour; the arrow opens her helper card in place (the order card below is pushed down, never covered). The order card: its
+   headline in the serif, its items one sideways row of item cards that scrolls (no scroll bar, the third card going behind a
+   soft shadow), a gold tick on a done card, a no-sign badge on a "no" card. */
+body.w6.njg-s14 { --njg-side-w: clamp(var(--njg-card14-u270), 27vw, var(--njg-card14-u410)); --side-w: var(--njg-side-w); }
+@media (max-height: 500px) { body.w6.njg-s14 { --njg-side-w: clamp(var(--njg-card14-u250), 34vw, var(--njg-card14-u340)); } }
+body.njg-s14 #guide.ng-s14 { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "face say tools" "help help help"; background: var(--njg-helper-bg); border: 0; border-radius: var(--njg-card14-u16); padding: var(--njg-card-pad); box-shadow: var(--njg-card14-shadow-box); overflow: visible; }
+body.njg-s14 #guide.ng-s14::before { display: none; }
+body.njg-s14 #guide.ng-s14 .ng-bulb, body.njg-s14 #guide.ng-s14 .ng-mute { display: none; }
+body.njg-s14 #guide.ng-s14 .ng-tools { grid-area: tools; display: flex; align-items: center; }
+body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
+body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }
+.njg-guide .ng-arrow { display: none; }
+.njg-guide .ng-help { display: none; }
+body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap); height: var(--njg-tap); border-radius: 50%; border: 0; padding: 0; background: var(--njg-card14-arrow-bg); display: grid; place-items: center; box-shadow: var(--njg-card14-arrow-shadow); color: var(--njg-card14-text); cursor: pointer; touch-action: manipulation; }
+body.njg-s14 #guide.ng-s14 .ng-arrow[hidden] { display: none; }
+body.njg-s14 #guide.ng-s14 .ng-arrow svg { width: var(--njg-card14-u22); height: var(--njg-card14-u22); transition: transform .35s; }
+body.njg-s14 #guide.ng-s14.ng-open .ng-arrow svg { transform: rotate(180deg); }
+body.njg-s14 #guide.ng-s14 .ng-help { grid-area: help; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.3, .7, .2, 1); min-width: 0; }
+body.njg-s14 #guide.ng-s14.ng-open .ng-help { grid-template-rows: 1fr; }
+body.njg-s14 #guide.ng-s14 .ng-help-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--njg-card14-u6)) calc(-1 * var(--njg-card14-u6)); padding: 0 var(--njg-card14-u6) var(--njg-card14-u6); } /* room for the card's shadow: no hard, dark corner */
+body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
+@media (prefers-reduced-motion: reduce) { body.njg-s14 #guide.ng-s14 .ng-help { transition: none; } }
+
+.oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
+.oc-card.oc-s14 .oc-headline { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
+.oc-card.oc-s14 .oc-headline .word { color: var(--njg-card14-kutchi); }
+.oc-card.oc-s14 .oc-items14 { margin-top: var(--njg-s2); }
+.oc-card.oc-s14 .oc-row14 { container-type: inline-size; position: relative; display: flex; flex-direction: row !important; flex-wrap: nowrap !important; column-gap: var(--njg-s2) !important; gap: var(--njg-s2); margin-top: 0; align-items: stretch; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; padding: var(--njg-card14-u2) var(--njg-card14-u2) var(--njg-card14-u4); -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
+.oc-card.oc-s14 .oc-row14::-webkit-scrollbar { display: none; }
+.oc-card.oc-s14 .oc-row14.oc-at-end { -webkit-mask-image: none; mask-image: none; }
+/* (the row is the container: a card is 1/2.3 of it, so its padding, 6% of the card, is 2.6cqi of the row) */
+.oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex: 0 0 calc((100% - 2 * var(--njg-s2)) / 2.3) !important; min-width: 0 !important; max-width: none; scroll-snap-align: start; display: grid; min-height: 0; padding: 2.6cqi; gap: 0; border-radius: var(--njg-card14-u14); background: var(--njg-card14-card); border: var(--njg-card14-u1p5) solid transparent; box-shadow: var(--njg-card14-shadow-it); align-items: stretch; }
+.oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14::before { display: none; }
+.oc-card.oc-s14 .oc-row.oc-it14 .oc-t { flex: none; padding: 0; font-size: clamp(var(--njg-card14-u15), 16cqi, var(--njg-card14-u32)); font-weight: 700; line-height: 1.04; }
+.oc-card.oc-s14 .oc-row.oc-it14 .oc-t::first-letter { text-transform: none; }
+.oc-card.oc-s14 .oc-row.oc-it14 .word { color: var(--njg-card14-kutchi); }
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-badge14 { position: absolute; top: var(--njg-card14-u6); right: var(--njg-card14-u6); width: var(--njg-card14-u22); height: var(--njg-card14-u22); z-index: 3; border-radius: 50%; box-shadow: 0 0 0 var(--njg-card14-u2) var(--njg-card14-white); }
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-badge14:empty { display: none; }
+.oc-card.oc-s14 .oc-row.oc-it14.done { border-color: var(--njg-card14-done-edge); background: var(--njg-card14-card); box-shadow: var(--njg-card14-shadow-it); }
+.oc-card.oc-s14 .oc-row.oc-it14.no { border: var(--njg-card14-u1p5) dashed var(--njg-card14-no-edge); background: transparent; box-shadow: none; color: inherit; }
+.oc-card.oc-s14 .oc-row.oc-it14.no .wc14-pic > img.wc-img { opacity: .5; filter: grayscale(.7); }
+.oc-card.oc-s14 .oc-row.oc-it14.no::after { content: ""; order: 0; position: absolute; top: var(--njg-card14-u5); right: var(--njg-card14-u5); width: var(--njg-card14-u26); height: var(--njg-card14-u26); border-radius: 50%; box-shadow: 0 0 0 var(--njg-card14-u2) var(--njg-card14-white); background: var(--njg-card14-white) no-repeat center / 100% var(--njg-card14-nosign); }
+.oc-card.oc-s14 .oc-row.oc-it14.no.done::after { display: none; }
+.oc-card.oc-s14 .oc-row.oc-it14.reading { border-color: var(--njg-focus) !important; box-shadow: var(--njg-card14-shadow-it), 0 0 0 var(--njg-card14-u2) var(--njg-focus) !important; background: var(--njg-card14-card) !important; }
+.oc-card.oc-s14 .oc-row.oc-it14.wrong { border-color: var(--njg-wrong); }
+/* the orders one under the other in a list that scrolls by itself (no bar), the next one peeking under a soft fade; Nani's box stays put */
+body.w6.njg-s14 #side { overflow-y: hidden; }
+body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: var(--njg-card14-u18); -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
+body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
+/* the item card's speaker is the s14 card's own (the round maroon one), never the kit row's ringed one (.oc-spk's look) */
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 4; justify-self: center; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); height: auto; aspect-ratio: 1; margin: 5cqi 0 0; padding: 0; border: 0; border-radius: 50%; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); }
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: none; }
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk svg { width: 46%; height: 46%; }
+.oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk.on { animation: wc14-pulse .9s ease-out; }

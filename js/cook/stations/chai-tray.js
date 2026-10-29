@@ -272,6 +272,53 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const kBoil = Mech.knobs("boil", { level: K.boilLevel || level, profile: "tray" });
     const kCount = Mech.knobs("count", { level });
     const halves = people.some((p) => p.amount); // level 4: half or full
+    /*
+     * Sprint 14 (the kit's s14 look, on for chai: lab/cards.html, Zafar 27-28 Oct): the light (Onboard.look "s14": no finger, a
+     * thing to tap lit in a lighter dim), Nani's helper card in place of the call-out card (CHAI-35, SH-149), and the first-time
+     * steps (a new player sees all of them, a returning player none): after the first two items the whole order card lit for
+     * 1.2 s (CHAI-37); the first hint teaches the arrow; the first time words are dotted, the dots lit once ("tap the dots").
+     */
+    const s14 = !!(UI.s14 && UI.s14());
+    const OB14 = global.Onboard;
+    if (s14 && OB14) {
+      OB14.look = "s14";
+      if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(() => (OB14.look = null));
+    }
+    const seen14 = (Cook.save.seenStation = Cook.save.seenStation || {});
+    const STATION14 = "chai-tray";
+    const S14_TAG = "s14-";
+    const fresh14 = s14 && ((OB14 && OB14.newPlayer && OB14.newPlayer()) || !(Cook.save.coached || {})["chai-tray"]);
+    const first14 = (k) => {
+      const key = `${STATION14}:${S14_TAG}${k}`;
+      if (!fresh14 || seen14[key]) return false;
+      seen14[key] = true;
+      return true;
+    };
+    // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
+    const light14 = (el, look, ms, onTap) => {
+      if (!el || !OB14 || !OB14.light) return Promise.resolve();
+      const h = OB14.light(el, { look, pad: 4 });
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}light`, rung: 0, coach: true });
+      } catch (e) {
+        /* only a log */
+      }
+      return new Promise((res) => {
+        let t = 0;
+        const end = () => {
+          clearTimeout(t);
+          el.removeEventListener("click", tap, true);
+          h.close();
+          res();
+        };
+        const tap = () => {
+          if (onTap) onTap();
+          end();
+        };
+        if (onTap) el.addEventListener("click", tap, true);
+        t = setTimeout(end, ms);
+      });
+    };
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
     // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
@@ -1569,6 +1616,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      * redo, or the word still supported, stage 1-2), and a word shown that way is not counted as known (non-negotiable 4).
      */
     const LADDER = { glowAt: 5000, boxAt: 12000 };
+    // the level's wait before Nani's hint (the one ladder table, data/shared.json helpMs, by level 1-4)
+    const helpMs14 = () => {
+      const T = global.Tokens;
+      const lad = T && (typeof T.ladder === "function" ? T.ladder() : T.ladder);
+      const hm = lad && lad.helpMs;
+      return hm && hm.length ? hm[Math.max(0, Math.min(hm.length - 1, (level || 1) - 1))] : LADDER.glowAt;
+    };
     const ITEM_STEPS = new Set(["water", "tea", "cups"]);
     // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above)
     const pageRect = (o, pad = 0) => () => {
@@ -1643,13 +1697,35 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
        tail towards her box */
     let callout = null;
     const rowFor = (pid) => (sel ? personRows(L(), sel.who).find((r) => !r.no && r.ids.includes(pid)) : null);
+    // (s14: Nani's helper card, in her box: UI.helper names the item, UI.helperOpen opens it)
+    const helperOf = (pid, answer) => {
+      const r = rowFor(pid);
+      const w = r && UI.wordOf ? UI.wordOf(r, { size: 240, written: true }) : null;
+      if (!w) return null;
+      // (the full answer is help: counted as a hint for an asked-for word, never as known; non-negotiable 4)
+      w.onOpen = () => answer && !helped.has(pid) && (helped.add(pid), Cook.onHelp && Cook.onHelp("hint", { ids: [pid] }));
+      return w;
+    };
     const hideCallout = () => {
+      if (s14 && UI.helperOpen) UI.helperOpen(false);
       if (callout) callout.dispatchEvent(new Event("ck-gone"));
       if (callout) callout.remove();
       callout = null;
     };
     const showCallout = (pid) => {
       hideCallout();
+      if (s14 && UI.helperOpen) {
+        // the first hint teaches the arrow (lit until it is tapped, a few seconds at most, then it opens by itself)
+        if (first14("arrow")) {
+          const a = document.querySelector("#guide .ng-arrow");
+          if (a && !a.hidden) {
+            light14(a, "glow", 6000 / (Cook.speed || 1), () => {}).then(() => UI.helperOpen(true, { by: "hint" }));
+            return;
+          }
+        }
+        UI.helperOpen(true, { by: "hint" });
+        return;
+      }
       const r = rowFor(pid);
       const side = document.querySelector("#side");
       const guide = document.querySelector("#guide");
@@ -1737,10 +1813,21 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     };
     const allRungs = new Set();
     const trackRung = (r) => (r && allRungs.add(r), r);
+    let lastStep14 = null;
+    const firstLit14 = {};
     const coachStep = (nx, sid) => {
       // (s12-w3b: never a help spotlight while a pan is off its burner pouring)
       if (pans.some((q) => q.away)) return coachEnd();
       rungCur = rungOf(nx);
+      if (s14) {
+        const st = nx && nx.phase;
+        // CHAI-37 (Zafar, 27-28 Oct): after the first two items (the water, the tea), the whole order card lit for a moment (1.2 s;
+        // no glow, no bounce), so the eye knows where to look next; once, for a new player
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) light14(document.querySelector("#mission .oc-card"), "", 1200 / (Cook.speed || 1));
+        lastStep14 = st || lastStep14;
+        // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
+        if (sid !== rungKey && UI.helper) UI.helper(rungCur && rungCur.id && ITEM_STEPS.has(st) ? helperOf(rungCur.id, st === "cups") : null);
+      }
       if (sid === rungKey) {
         if (helpObj && rungCur && helpObj !== rungCur.obj) helpGlow(rungCur.obj);
         return;
@@ -1765,13 +1852,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
       rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
-        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? ((firstLit14[step] = true), mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
           ? {
-              at: [0, LADDER.boxAt, null],
-              glowAt: LADDER.glowAt,
+              // (s14: the child alone after the first two, Nani's hint after the level's wait, data/shared.json helpMs; no heavy box)
+              at: s14 ? [0, null, null] : [0, LADDER.boxAt, null],
+              glowAt: s14 ? helpMs14() : LADDER.glowAt,
               glow: (on) => {
                 if (on) {
                   mark();
@@ -1940,6 +2028,24 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       await personSay(pan);
       speaking = false;
       await Cook.wait(K.speakGapMs || 300);
+    }
+    // Sprint 14 (lab/cards.html playChai): the first time words are dotted on the order card, the dots are lit once ("tap the
+    // dots": a tap shows the word in its place, free help); a few seconds at most, then the game goes on
+    if (s14) {
+      // (the Kutchi dotted: the level's dotting from L3, Lang's dots, or a word past its Kutchi; the English is always tapped open)
+      const d = [...document.querySelectorAll("#mission .oc-row14 .wc14-k .dots, #mission .oc-row14 .wc14-k-dots")].find((x) => x.offsetParent && getComputedStyle(x).display !== "none");
+      if (d && first14("dots")) {
+        const row = d.closest(".oc-row");
+        if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
+        await Cook.wait(400);
+        d.classList.add("ob-dots-now");
+        const prevExpect = Cook.expect;
+        const wait14 = { kind: "wait", dots: true };
+        Cook.expect = wait14;
+        await light14(d, "glow", 6000 / (Cook.speed || 1), () => {});
+        d.classList.remove("ob-dots-now");
+        if (Cook.expect === wait14) Cook.expect = prevExpect || null;
+      }
     }
     talked = true;
     refresh();
