@@ -20914,7 +20914,7 @@
    "after": null,
    "capture": [
     "crop:#stage",
-    "cmd:node --test build/test_shared_rules.mjs",
+    "cmd:node build/test_shared_rules.mjs",
     "contract:37"
    ],
    "expect": [
@@ -20938,7 +20938,7 @@
    "after": null,
    "capture": [
     "crop:#stage",
-    "cmd:node --test build/test_shared_rules.mjs"
+    "cmd:node build/test_shared_rules.mjs"
    ],
    "expect": [
     "pass"
@@ -20960,7 +20960,7 @@
    "at": "view-marble",
    "after": null,
    "capture": [
-    "cmd:node --test build/test_shared_rules.mjs"
+    "cmd:node build/test_shared_rules.mjs"
    ],
    "expect": [
     "pass"
