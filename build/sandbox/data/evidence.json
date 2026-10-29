@@ -20666,6 +20666,7 @@
    "after": null,
    "capture": [
     "crop:#side",
+    "contract:74",
     "contract:1"
    ],
    "expect": null,
