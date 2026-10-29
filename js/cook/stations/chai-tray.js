@@ -299,7 +299,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
     const light14 = (el, look, ms, onTap) => {
       if (!el || !OB14 || !OB14.light) return Promise.resolve();
-      const h = OB14.light(el, { look, pad: 4 });
+      // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
+      const h = OB14.light(el, { look, pad: 4, pass: true });
       try {
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}light`, rung: 0, coach: true });
       } catch (e) {
@@ -326,7 +327,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
     const askedX = [...new Set(people.map((p) => p.extra).filter(Boolean))];
     const SALT = "spi-16";
-    const spicePool = (K.extras || []).concat(K.decoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
+    // (Zafar, 29 Oct, rule 5: up to 4 decoys and no salt before L4: the station's other spice jars, its teaDecoys spi-02 and spi-05, join the pool)
+    const spicePool = (K.extras || []).concat(K.decoys || [], K.teaDecoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
     // SH-132 (contract-37: L3 put out 2 where the table wants 3): the decoys are the table's whatever the cups ask for; the row may hold
     // up to seven jars (the shelf's slots narrow to fit, below: slotW). Was: at most five jars, so three asked extras left room for two
     // Zafar, 29 Oct (chai level rules 5): chai's own row (data/cook.json levelTable.stations chai-tray): 1, 2, 3, 4 decoys, capped by
@@ -1739,7 +1741,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (first14("arrow")) {
           const a = document.querySelector("#guide .ng-arrow");
           if (a && !a.hidden) {
-            light14(a, "glow", 6000 / (Cook.speed || 1), () => {}).then(() => UI.helperOpen(true, { by: "hint" }));
+            // (tapped: the arrow's own tap opens the card; untapped, it opens by itself as the light goes)
+            let tapped = false;
+            light14(a, "glow", 4000 / (Cook.speed || 1), () => (tapped = true)).then(() => !tapped && UI.helperOpen(true, { by: "hint" }));
             return;
           }
         }

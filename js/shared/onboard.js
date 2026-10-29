@@ -206,8 +206,9 @@
    * look, on for chai (Onboard.look = "s14", set by the game while it plays): a thing to tap is always lit, a soft gold glow that
    * breathes, in a lit rounded box that takes in its word pill, everything else dimmed (lighter: DIM14); an ingredient also
    * bounces, a control (a knob, a glass, the arrow) only glows; no finger, no target. Every other game keeps the finger.
-   *   Onboard.light(target, {look: "bob" | "glow" | "", pad, live}) -> {close(), box()}   a DOM thing lit alone (the arrow, the
-   *        order card for a moment, the first dots): "" lights it with no glow and no bounce (the order card, CHAI-37)
+   *   Onboard.light(target, {look: "bob" | "glow" | "", pad, live, pass}) -> {close(), box()}   a DOM thing lit alone (the arrow,
+   *        the order card for a moment, the first dots): "" lights it with no glow and no bounce (the order card, CHAI-37); pass: the
+   *        dim blocks no tap (the child is never held)
    */
   Onboard.look = null;
   Onboard.DIM14 = 0.45;
@@ -1221,6 +1222,7 @@
         return;
       }
       if (e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
+      if (o.pass) return; // (Onboard.light's pass: the light shows the way, every tap still goes through: never a wait)
       if (!shown) return; // (no lit thing yet: no dim, so nothing is in the dark; CHAI-36)
       if (liveRects().some((r) => on(pt(e), r))) return;
       if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
@@ -1251,7 +1253,7 @@
 
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container });
+    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass });
   };
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
