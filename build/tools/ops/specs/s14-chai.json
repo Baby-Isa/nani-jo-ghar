@@ -1,0 +1,44 @@
+{
+  "name": "s14-chai: the live chai game on the new cards and onboarding, with the s14 art and the new pour (Sprint 14)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the new screen pieces are visual work across the shared kit and chai's station, every one judged by eye at four sizes",
+  "cost": "about $40-60",
+  "stop": "29 Oct 2026, 05:30 UK",
+  "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": ["SH-147", "SH-148", "SH-149", "SH-150", "SH-144", "SH-152", "SH-153", "SH-142", "CHAI-35", "CHAI-37", "CHAI-36", "CK-54", "CHAI-34", "CHAI-08", "CK-06", "CHAI-38"],
+  "read": [
+    "docs/sprints/S14-lock-the-principles.md (every decision of 27-29 Oct: the card, the order row, the helper card, the light, the screens)",
+    "lab/cards.html: the reference build Zafar played and kept (bigCard, itemCard, buildSide, playOrder, glideTo, morph, settleRow, spot, addItem, playChai); port its behaviour, never its stand-ins (its drawn heat ring and its flyTo are not the game's)",
+    "docs/feedback/chai-onboarding-2026-10-28.md and docs/feedback/chai-cards-2026-10-27.md (his words for every row)",
+    "assets/cook/items-s14/meta.json (each new picture's rim centre and radius, source px) and build/tools/art/specs/s14.cut.json's notes",
+    "js/cook/stations/chai-tray.js's header (TOP, BREW8, FRAMES, POUR, the heat and ring: keep them working)"
+  ],
+  "owns": [
+    "js/shared/word-card.js, js/shared/order-card.js, js/shared/onboard.js, js/shared/request-popup.js and their css/shared/*.css (the new card as the kit's own look, on for chai through one kit option; every other game keeps today's look until the roll-out)",
+    "js/cook/ui.js (the sidebar: Nani's box and helper card, the order card, the pop-out), js/cook/stations/chai-tray.js, data/stations/chai-tray.json, the chai parts of data/cook.json",
+    "css/shared/tokens.css (type and colour tokens only, for the new card)",
+    "build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others), build/sandbox/lib/contract.mjs (new checks for SH-152, SH-153, CK-54 only), new unit tests under build/",
+    "build/reports/s14-chai.md and build/reports/s14-chai/ (your shots)"
+  ],
+  "readOnly": ["lab/** (the reference; the orchestrator keeps it)", "js/clinic/**, data/clinic/**, the other Cook stations' own files (js/cook/stations/*.js except chai-tray.js)", "assets/** (the art is cut; use it, never redraw or recolour it)", "build/tools/**, .claude/**, docs/** except your report", "CLAUDE.md"],
+  "stubs": "none: a picture that is missing or wrong goes in your report, never a drawn stand-in (Zafar, 28 Oct: 'no code drawn anything like chai in various states')",
+  "tasks": [
+    { "do": "The word card (SH-147, SH-142) as the kit's card for chai: lab/cards.html's bigCard and itemCard (the serif from the tokens, maroon Kutchi sitting on its English, the big round speaker, dots drawn over a hidden word in its own place, the stronger blur), every word inside its card, headlines shrink then wrap, never clipped.", "accept": "chai L1-L4 at 740x320, 930x430, 1280x665 and 1920x1080: every card's words inside the card (`node build/tools/review/labcheck.mjs`'s spill measure run on cook.html chai, or the same measure in your own script), with the longest words; side-by-side shots against the lab's" },
+    { "do": "The order card (SH-148, SH-152, SH-144): the sideways row on every screen that scrolls itself as the lab's settleRow (one ticked card at its left, then the current item; ticked cards slide in after the ticked ones; 'no' cards at the end; a child's own scroll left alone until the next tick); while the order is given each word pops big by the side panel (SH-150), the row glides to its card (never a jump), and the big card moves and turns into the row card (no fade out and in).", "accept": "a filmstrip of the order at 930x430 and 1920x1080 (no frame where the row moves more than a card width, no second copy of a card); chai L1-L4 at the four sizes" },
+    { "do": "A tap on the kitchen while the order is given lands every card at once and the game starts (CK-54): keep the game's (js/cook/ui.js:1444), check it with the new pop-out.", "accept": "a contract check: a tap 1 s into the order, every card in its row and the station within 1 s, chai L1-L4" },
+    { "do": "Nani's helper card (SH-149, CHAI-35): her box grows in place (the order card pushed down, never covered) and shows the item's card with everything shown (picture, Kutchi, English; never dotted); the arrow in place of the bulb; no speaker on her box (a tap on her face replays her); no green bar; one helper colour.", "accept": "shots open and closed at the four sizes; nothing falls over the order card" },
+    { "do": "The onboarding (CHAI-37, CHAI-36, the light rule of 28 Oct): a thing to tap is lit (a breathing gold glow) in a lit rounded box that takes in its word pill, everything else dimmed; an ingredient also bounces, a control only glows; no finger, no target. The first two items lit; after the second the whole order card lit 1.2 s; then the child alone with Nani's hint after the level's wait (data/cook.json calm.helpMs), the first hint teaching the arrow; the knob lit to light the cooker and again only once the chai reaches the green; the glass lit for the pour; the first time words are dotted, 'tap the dots' once. A new player sees all of it, a returning player none. A wrong pick shakes, no verdict.", "accept": "a new player and a returning player through chai L1 and L3 at 930x430 and 1920x1080 (shots of every lit step); no dim without its lit thing (contract)" },
+    { "do": "The bubble's speaker bigger (SH-153): the icon in every chai bubble grown to the lab's size (1.8 em, the icon 66%), never under the tap size.", "accept": "the new contract check; shots at 740x320 and 1920x1080" },
+    { "do": "The s14 art (CHAI-34, CHAI-08, CK-06): the pan's six states from assets/cook/items-s14/chai-pan/ (pan-empty, pan-water, pan-leaves, pan-milk, pan-boil-milky, pan-black) in place of TOP and BREW8, positioned by their measured rims; the glasses from assets/cook/items-s14/glass/; nothing in a pan or glass drawn in code.", "accept": "chai L1 and L4 (milky and black) at the four sizes: each state's shot; the pan centred on its burner, the glass in its well" },
+    { "do": "The new pour (Zafar, 29 Oct: 'the pouring pans didn't work so now I'm switching to just having the pans move above the glasses and empty and the glasses fill up'): the pan lifts and moves to sit just above its glass, then pan-empty-{milky|black}-1..6 play in step with glass-fill-{milky|black}-1..6 (the glass's rim centre fixed, the pan's rim centre fixed), then the pan goes back empty. No tipping frames, no drawn stream. The half glass of L4 stops at frame 3-4. Pink (pan-empty-pink, glass-fill-pink) is cut but has no recipe: leave it.", "accept": "a filmstrip of the pour, milky and black, at 930x430 and 1920x1080; the glass never jumps; L4's half glass" },
+    { "do": "Keep everything else in chai (CHAI-38): its heat, heat ring, boil, levels, order logic, ticks and end. Other games unchanged.", "accept": "the contract run on cook:chai-tray at the four sizes, 0 new breaks; cook:maani-line and clinic:heal-eye shots unchanged (shotdiff)" }
+  ],
+  "flows": ["cook:chai-tray", "cook:maani-line", "clinic:heal-eye"],
+  "port": 8871,
+  "report": "s14-chai",
+  "publish": false
+}

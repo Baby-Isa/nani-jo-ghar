@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s14-chai: the live chai game on the new cards and onboarding, with the s14 art and the new pour (Sprint 14)
+MODEL AND EFFORT:     Opus, high effort (the new screen pieces are visual work across the shared kit and chai's station, every one judged by eye at four sizes)
+COST ESTIMATE:        about $40-60
+HARD STOP:            29 Oct 2026, 05:30 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s14-chai.context.md (861 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S14-lock-the-principles.md (every decision of 27-29 Oct: the card, the order row, the helper card, the light, the screens)
+     lab/cards.html: the reference build Zafar played and kept (bigCard, itemCard, buildSide, playOrder, glideTo, morph, settleRow, spot, addItem, playChai); port its behaviour, never its stand-ins (its drawn heat ring and its flyTo are not the game's)
+     docs/feedback/chai-onboarding-2026-10-28.md and docs/feedback/chai-cards-2026-10-27.md (his words for every row)
+     assets/cook/items-s14/meta.json (each new picture's rim centre and radius, source px) and build/tools/art/specs/s14.cut.json's notes
+     js/cook/stations/chai-tray.js's header (TOP, BREW8, FRAMES, POUR, the heat and ring: keep them working)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/word-card.js, js/shared/order-card.js, js/shared/onboard.js, js/shared/request-popup.js and their css/shared/*.css (the new card as the kit's own look, on for chai through one kit option; every other game keeps today's look until the roll-out)
+  - js/cook/ui.js (the sidebar: Nani's box and helper card, the order card, the pop-out), js/cook/stations/chai-tray.js, data/stations/chai-tray.json, the chai parts of data/cook.json
+  - css/shared/tokens.css (type and colour tokens only, for the new card)
+  - build/sandbox/data/evidence.json (entries for this brief's rows only; add, never rewrite others), build/sandbox/lib/contract.mjs (new checks for SH-152, SH-153, CK-54 only), new unit tests under build/
+  - build/reports/s14-chai.md and build/reports/s14-chai/ (your shots)
+READ-ONLY (never edit):
+  - lab/** (the reference; the orchestrator keeps it)
+  - js/clinic/**, data/clinic/**, the other Cook stations' own files (js/cook/stations/*.js except chai-tray.js)
+  - assets/** (the art is cut; use it, never redraw or recolour it)
+  - build/tools/**, .claude/**, docs/** except your report
+  - CLAUDE.md
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a picture that is missing or wrong goes in your report, never a drawn stand-in (Zafar, 28 Oct: 'no code drawn anything like chai in various states')
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The word card (SH-147, SH-142) as the kit's card for chai: lab/cards.html's bigCard and itemCard (the serif from the tokens, maroon Kutchi sitting on its English, the big round speaker, dots drawn over a hidden word in its own place, the stronger blur), every word inside its card, headlines shrink then wrap, never clipped.
+     Accept: chai L1-L4 at 740x320, 930x430, 1280x665 and 1920x1080: every card's words inside the card (`node build/tools/review/labcheck.mjs`'s spill measure run on cook.html chai, or the same measure in your own script), with the longest words; side-by-side shots against the lab's
+  2. The order card (SH-148, SH-152, SH-144): the sideways row on every screen that scrolls itself as the lab's settleRow (one ticked card at its left, then the current item; ticked cards slide in after the ticked ones; 'no' cards at the end; a child's own scroll left alone until the next tick); while the order is given each word pops big by the side panel (SH-150), the row glides to its card (never a jump), and the big card moves and turns into the row card (no fade out and in).
+     Accept: a filmstrip of the order at 930x430 and 1920x1080 (no frame where the row moves more than a card width, no second copy of a card); chai L1-L4 at the four sizes
+  3. A tap on the kitchen while the order is given lands every card at once and the game starts (CK-54): keep the game's (js/cook/ui.js:1444), check it with the new pop-out.
+     Accept: a contract check: a tap 1 s into the order, every card in its row and the station within 1 s, chai L1-L4
+  4. Nani's helper card (SH-149, CHAI-35): her box grows in place (the order card pushed down, never covered) and shows the item's card with everything shown (picture, Kutchi, English; never dotted); the arrow in place of the bulb; no speaker on her box (a tap on her face replays her); no green bar; one helper colour.
+     Accept: shots open and closed at the four sizes; nothing falls over the order card
+  5. The onboarding (CHAI-37, CHAI-36, the light rule of 28 Oct): a thing to tap is lit (a breathing gold glow) in a lit rounded box that takes in its word pill, everything else dimmed; an ingredient also bounces, a control only glows; no finger, no target. The first two items lit; after the second the whole order card lit 1.2 s; then the child alone with Nani's hint after the level's wait (data/cook.json calm.helpMs), the first hint teaching the arrow; the knob lit to light the cooker and again only once the chai reaches the green; the glass lit for the pour; the first time words are dotted, 'tap the dots' once. A new player sees all of it, a returning player none. A wrong pick shakes, no verdict.
+     Accept: a new player and a returning player through chai L1 and L3 at 930x430 and 1920x1080 (shots of every lit step); no dim without its lit thing (contract)
+  6. The bubble's speaker bigger (SH-153): the icon in every chai bubble grown to the lab's size (1.8 em, the icon 66%), never under the tap size.
+     Accept: the new contract check; shots at 740x320 and 1920x1080
+  7. The s14 art (CHAI-34, CHAI-08, CK-06): the pan's six states from assets/cook/items-s14/chai-pan/ (pan-empty, pan-water, pan-leaves, pan-milk, pan-boil-milky, pan-black) in place of TOP and BREW8, positioned by their measured rims; the glasses from assets/cook/items-s14/glass/; nothing in a pan or glass drawn in code.
+     Accept: chai L1 and L4 (milky and black) at the four sizes: each state's shot; the pan centred on its burner, the glass in its well
+  8. The new pour (Zafar, 29 Oct: 'the pouring pans didn't work so now I'm switching to just having the pans move above the glasses and empty and the glasses fill up'): the pan lifts and moves to sit just above its glass, then pan-empty-{milky|black}-1..6 play in step with glass-fill-{milky|black}-1..6 (the glass's rim centre fixed, the pan's rim centre fixed), then the pan goes back empty. No tipping frames, no drawn stream. The half glass of L4 stops at frame 3-4. Pink (pan-empty-pink, glass-fill-pink) is cut but has no recipe: leave it.
+     Accept: a filmstrip of the pour, milky and black, at 930x430 and 1920x1080; the glass never jumps; L4's half glass
+  9. Keep everything else in chai (CHAI-38): its heat, heat ring, boil, levels, order logic, ticks and end. Other games unchanged.
+     Accept: the contract run on cook:chai-tray at the four sizes, 0 new breaks; cook:maani-line and clinic:heal-eye shots unchanged (shotdiff)
+
+REGRESSION ROWS TO RECHECK (16; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (16): SH-147*, SH-148*, SH-149*, SH-150*, SH-144*, SH-152*, SH-153*, SH-142*, CHAI-35*, CHAI-37*, CHAI-36*, CK-54*, CHAI-34*, CHAI-08*, CK-06*, CHAI-38*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s14-chai.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8871 NJG_LOCK=/tmp/njg-browser-8871.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s14-chai.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8871.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:maani-line,clinic:heal-eye --sizes 740x320,930x430,1280x665,1920x1080 --run-id s14-chai-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s14-chai.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s14-chai.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8871.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8871; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s14-chai.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.
