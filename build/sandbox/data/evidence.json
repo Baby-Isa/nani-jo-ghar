@@ -3720,6 +3720,24 @@
    ],
    "expect": null,
    "note": "the pour: the pan tilts over the glass and the liquid shows in the top-down glasses (the reference panel is the v2 mock-up, shot by build/tools/review/shoot_ref.mjs)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:pour",
+   "after": null,
+   "capture": [
+    "strip:#stage:10x200"
+   ],
+   "expect": null,
+   "note": "s14: the glasses from exactly above in their wells; L4's half glass stops at the fill's frame 4"
   }
  ],
  "CHAI-09": [
@@ -5981,6 +5999,23 @@
    ],
    "expect": null,
    "note": "chai liquid"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan"
+   ],
+   "expect": null,
+   "note": "s14: the pan's painted states (black tea, milky chai), nothing drawn in code"
   }
  ],
  "CK-07": [
@@ -20313,6 +20348,376 @@
    ],
    "note": "chai at L3 (the items dotted, each row with its speaker): every speaker's tap box at least 48 x 48 CSS px, at the phone as at the laptop, none over the next row's speaker",
    "delay": 1500
+  }
+ ],
+ "SH-147": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-big",
+   "after": null,
+   "capture": [
+    "crop:.wc14-pop"
+   ],
+   "expect": null,
+   "note": "s14 word card (lab/cards.html bigCard): the serif, the maroon Kutchi sitting on its English (dotted from L2), the big round speaker; every word inside the card",
+   "delay": 600
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "the order's item cards (lab itemCard): picture, Kutchi on its English, speaker at the foot; a hidden word's dots in its own place; the blurred picture with its eye from L3"
+  }
+ ],
+ "SH-142": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "every word inside its card, the longest words (hakro khun, trae khun, elchi waari chai) at the smallest phone and the big screen: shrunk, then wrapped, never clipped or spilling"
+  }
+ ],
+ "SH-148": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "the sideways order row on every screen: the ticked card at its left, then the current item, the 'no' card at the end (faded picture, no-sign badge), the next order peeking below"
+  }
+ ],
+ "SH-152": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-big",
+   "after": null,
+   "capture": [
+    "strip:#mission:8x250"
+   ],
+   "expect": null,
+   "note": "while the order is given the row glides to the next card (never a jump, never more than a card width a frame)",
+   "delay": 200
+  }
+ ],
+ "SH-150": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-big",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "each word pops out big by the side panel (top left of the play area), clear of the speaker's face and bubble",
+   "delay": 600
+  }
+ ],
+ "SH-144": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-big",
+   "after": null,
+   "capture": [
+    "strip:body:8x110"
+   ],
+   "expect": null,
+   "note": "the big card moves and turns into its row card in one move (no fade out and in, no second copy of a card left behind)",
+   "delay": 1300
+  }
+ ],
+ "SH-153": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-big",
+   "after": null,
+   "capture": [
+    "zoom2:.cv-bubble"
+   ],
+   "expect": null,
+   "note": "the bubble's speaker 1.8 em of its words, its icon 66%, never under the 48 px tap",
+   "delay": 300
+  }
+ ],
+ "SH-149": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "Nani's helper card open: her box grown in place, the order card pushed down (never covered), the item's card with picture, Kutchi and English; the arrow (no bulb), no speaker on her box, no green bar",
+   "delay": 900
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": null,
+   "note": "Nani's box closed: her face, her line beside it, the arrow; no bulb, no speaker, no green bar"
+  }
+ ],
+ "CHAI-35": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the hint is Nani's helper card in her box (never a call-out card over the sidebar or the play area)",
+   "delay": 900
+  }
+ ],
+ "CHAI-37": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a new player: the first two items lit (a breathing gold glow in a lit rounded box with its word pill, the rest dimmed; no finger), then the whole order card lit for 1.2 s; then the child alone",
+   "delay": 300,
+   "max": 6
+  }
+ ],
+ "CHAI-36": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "phase:slow",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the knob lit again only once the chai reaches the green; never a dim with nothing lit",
+   "delay": 300
+  }
+ ],
+ "CK-54": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "tap-through-popup",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "contract:1"
+   ],
+   "expect": null,
+   "note": "a tap on the kitchen 1 s into the order: every card in its row at once, no big card or copy left, the station within 1 s"
+  }
+ ],
+ "CHAI-34": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan"
+   ],
+   "expect": null,
+   "note": "the s14 pan exactly overhead, its state painted (milky at L1, black and milky at L4), centred on its burner; nothing in it drawn in code"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:pour",
+   "after": null,
+   "capture": [
+    "strip:#stage:10x200"
+   ],
+   "expect": null,
+   "note": "the new pour: the pan lifts to sit just above its glass, empties (six frames) while the glass fills in step; no tipping, no drawn stream; the glass never jumps",
+   "delay": 100
+  }
+ ],
+ "CHAI-38": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the rest of chai kept: heat, heat ring, boil, levels, ticks and the end"
   }
  ]
 }

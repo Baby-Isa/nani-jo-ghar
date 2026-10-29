@@ -375,6 +375,12 @@
     else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
     const c = row.closest(".oc-card");
     if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
+    // SH-152's check (contract-72): each glide, how far and how (always smooth), against a card's width
+    try {
+      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note("row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth` });
+    } catch (e) {
+      /* only a log */
+    }
     if (Math.abs(x - row.scrollLeft) > 1) {
       row._auto = true;
       row.scrollTo({ left: x, behavior: "smooth" });

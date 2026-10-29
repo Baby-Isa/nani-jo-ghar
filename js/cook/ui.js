@@ -341,6 +341,24 @@
       // its speaker (data-who): the one named, else "cook" (the contract's Cook speaker: the nearest character's head)
       bubbleEl = target = C.bubble(headBox(anchor), { who: (anchor && anchor.who) || "cook", text: pill, layer: $("#stage"), tap: true, z: 10 });
       slot = target.querySelector(".cv-text");
+      // SH-153's check (contract-73): on the s14 look, the bubble's speaker as drawn (its size and 1.8 em of its words), for the checks
+      if (UI.s14()) {
+        const b = target;
+        requestAnimationFrame(() => {
+          const sp = b.querySelector(".wp-say");
+          const tx = b.querySelector(".wp-text");
+          if (!sp || !b.isConnected) return;
+          const r = sp.getBoundingClientRect();
+          const em = parseFloat(getComputedStyle(sp).fontSize) || 0;
+          const ic = sp.querySelector("svg");
+          const ir = ic ? ic.getBoundingClientRect() : null;
+          try {
+            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("bubble-spk", { step: String(Math.round(Math.min(r.width, r.height))), by: `em:${(em * 1.8).toFixed(1)} icon:${ir ? Math.round(ir.width) : 0} text:${tx ? (parseFloat(getComputedStyle(tx).fontSize) || 0).toFixed(1) : 0}` });
+          } catch (e) {
+            /* only a log */
+          }
+        });
+      }
     }
     let skip;
     let offSkip = null;
@@ -1574,6 +1592,7 @@
     // and turns into the row's card (WordCard.morph: no fade out and in)
     const s14 = UI.s14() && global.WordCard && global.WordCard.big14 && global.WordCard.morph;
     let big14 = null;
+    let tapAt = 0;
     const pop14 = (w) => {
       if (big14) big14.remove();
       const side = $("#side");
@@ -1674,7 +1693,7 @@
           hold: 300,
           wait: (ms) => Cook.wait(ms),
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
-          onTap: () => (skipped = true),
+          onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true)),
           onStop: () => UI.hush(),
           read,
         },
@@ -1694,6 +1713,16 @@
         renderOrder();
         // (the row from its first card)
         if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.scrollTo({ left: 0, behavior: "smooth" }));
+      }
+      // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
+      // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
+      if (tapAt && s14) {
+        const left = document.querySelectorAll("#mission .oc-row.oc-away, .wc14-pop, .wc14-flyer").length;
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-skip", { step: String(Date.now() - tapAt), by: `left:${left}` });
+        } catch (e) {
+          /* only a log */
+        }
       }
       if (M.focus && m === mission) M.focus(null);
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
