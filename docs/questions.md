@@ -19,6 +19,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - Green chutney is the mint one (*fudino ji chutney*, a she-word); chutneys as she-words by inference from *ji*; *chundo*'s gender unknown.
 - *lakri* (skewer) goes before *gos*, *boga* and *mixed*, though Mum said it only with *mishkaki*; *{x} hane kadh* and *{x} chadi de* name the thing instead of Mum's *inke*.
 - Drop green pepper from the skewers at the next recipe or art change (no Kutchi word; do not call it *mirchi*).
+- Chai's orders now say the "no" items last (Zafar, 29 Oct: so the order card's row only moves forward): *Muke aadu waari chai khape, ba khun, dudh na.* / *..., hakro khun, aako, dudh na.* / *..., dudh, adh, khun na.* Does that order sound natural? (`build/reports/s14-rules.md`)
 - Pantry jars stay bare (no labels) for now.
 - *gaykal* for "yesterday"; "tomorrow" (*saware* or *kale*) undecided.
 - *Muke sekelo khape.* is kept while Zafar checks it with Mum; "with" join word stays a placeholder until Mum answers.
