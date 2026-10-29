@@ -26,7 +26,7 @@ suggestions; the kitchen is a plain resize for now (Real-ESRGAN later); pink cha
 **Next steps, in order:**
 1. Zafar plays chai L1-L4 as a new player (`labs.html`: New player on, Chai tray, each level) and sends notes: `/feedback`.
 2. The principles: his answers to round 2 (A levels, B the ladder, C onboarding with the pop-out times, E the non-negotiable 4
-   wording), then the games-as-columns table, then the rulebook (`docs/game-design/rulebook.md`) and Fable's review of it against
+   wording), then the games-as-columns table, then the rulebook (a new docs/game-design/rulebook.md) and Fable's review of it against
    `docs/architecture/target-model.md`.
 3. What chai taught us (from his play), then the roll-out plan to the other Cook stations and the clinic.
 
