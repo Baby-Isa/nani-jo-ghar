@@ -22,7 +22,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 1. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his OK.
 2. **Never invent Kutchi; only real family voices ship.** Mum is the authority (Masi second; Zafar confirms spellings); two AIs agreeing is not evidence. Every line is a full, natural sentence built by the language engine from recorded phrases and words; no hand-written fragments: if the engine can't say it, report the gap. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (decision 84), device-spoken while testing, never in a store build.
-3. **No written English for the child,** except under Nani's lines at the door and on a word card while the word is supported, then only when tapped (Zafar, 21 Oct). Spoken English only in story mode, rare and simple. Grown-ups' English lives only in the "?" pop-up and the end-of-round review.
+3. **No written English for the child,** except under Nani's lines at the door, on the order card at L1 (Zafar, 29 Oct) and on a supported word card, tapped (21 Oct). Spoken English: story mode only, rare and simple. Grown-ups' English lives only in the "?" pop-up and the end-of-round review.
 4. **The Kutchi leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting. While supported, matching is study and never advances a word.
 5. **Done means an independent picture:** the `judge` agent, never the builder, passes the changed screens, flaws first.
 6. **The same shared screens and buttons in every mode** (`js/shared/`, never restyled per mode); **no clipped or ellipsised text** (headlines shrink, then wrap).
