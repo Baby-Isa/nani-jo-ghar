@@ -20739,5 +20739,234 @@
    "expect": null,
    "note": "the rest of chai kept: heat, heat ring, boil, levels, ticks and the end"
   }
+ ],
+ "SH-154": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 4,
+   "sizes": [
+    "930x430",
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wc14-pop",
+   "after": null,
+   "capture": [
+    "strip:body:8x150",
+    "contract:76"
+   ],
+   "expect": null,
+   "note": "the order filmed at the phone sizes (chai L4): the big pop-out card in free space beside the side panel, never over a face (Nana's, anyone's); the order card's slots faint while they wait, never a large empty white box",
+   "delay": 0
+  }
+ ],
+ "SH-156": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "shot"
+   ],
+   "expect": null,
+   "note": "the cog at the top right of the play area, clear of the tray, the hob, bubbles and cards; the side panel's foot free (no cog there)",
+   "delay": 0
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "every Cook station: the cog top right of the play area, nothing under it, the side panel's foot free",
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "every Cook station: the cog top right of the play area, nothing under it, the side panel's foot free",
+   "delay": 0
+  }
+ ],
+ "SH-157": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "tap-zones",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zone-play",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "contract:75",
+    "contract:74"
+   ],
+   "expect": null,
+   "note": "during chai's order a tap on the speaker's bubble, the side panel and the cog leave the order going (zone-*-kept); then a tap in the play area lands every card at once",
+   "delay": 0
+  }
+ ],
+ "SH-158": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan",
+    "contract:77"
+   ],
+   "expect": null,
+   "note": "a new player's first boil: the heat waits in the middle of the green while the knob is lit, until the knob is tapped (the timed-hold notes: start, end at the tap)",
+   "delay": 0
+  }
+ ],
+ "CHAI-39": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wc14-pop",
+   "after": null,
+   "capture": [
+    "strip:#mission:8x150",
+    "contract:72"
+   ],
+   "expect": null,
+   "note": "the 'no' items said last (the engine's line: '..., ba khun, dudh na.'), so the order row only moves forward while the order is given; it goes back to its first card only once the order is given",
+   "delay": 0
+  }
+ ],
+ "SH-155": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "cmd:node build/test_shared_rules.mjs",
+    "contract:37"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai on the central rules (data/rules.json through js/shared/rules.js): L1 one cup and 1 decoy, L4 three cups, 4 decoys with the salt; the unit tests (each rule, a change in the file seen by chai, chai keeps no copy) pass",
+   "delay": 0
+  }
+ ],
+ "SH-159": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "cmd:node build/test_shared_rules.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the shelf's word pills: written under each item (a new player); the rule's own tests (three right hide, a miss shows, one right hides again, a peek never counts) pass; a scripted save's chips are in build/reports/s14-rules.md",
+   "delay": 0
+  }
+ ],
+ "SH-160": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_shared_rules.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the level-up rule's tests pass (3 rounds in a row with the hint at most once; never down; a grown-up's pick never counts); a scripted save's next self-picked order at L2 is in build/reports/s14-rules.md",
+   "delay": 0
+  }
  ]
 }

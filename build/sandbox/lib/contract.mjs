@@ -885,7 +885,15 @@ const SHARED_LADDER = (() => {
     return {};
   }
 })();
-export const LADDER = Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
+// SH-155 (Zafar, 29 Oct): the hint waits moved to the central rules (data/rules.json levels.hintS, in seconds; move, never copy)
+const RULES_FILE = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL("../../../data/rules.json", import.meta.url), "utf8"));
+  } catch (e) {
+    return {};
+  }
+})();
+export const LADDER = Array.isArray(((RULES_FILE || {}).levels || {}).hintS) ? RULES_FILE.levels.hintS.map((s) => Math.round(s * 1000)) : Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
 export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
 export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
 export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
@@ -1422,10 +1430,10 @@ function check36(r, tl, segs, v, add) {
 }
 // 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
 export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
-// Zafar, 29 Oct (chai level rules 5, 7: data/cook.json levelTable.stations["chai-tray"]): chai's decoys 1, 2, 3, 4; its order card's
-// Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
+// Zafar, 29 Oct (chai level rules 5, 7; SH-155: the central rules, data/rules.json levels.decoys): chai's decoys 1, 2, 3, 4; its order
+// card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
 export const CHAI_ROW = /^chai-tray$/;
-export const CHAI_DECOYS = { 1: 1, 2: 2, 3: 3, 4: 4 };
+export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
 const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
 const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
 function check37(r, tl, segs, add) {
@@ -1573,6 +1581,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check72(tl, add);
   check73(tl, add);
   check74(r, tl, segs, add);
+  check75(tl, add);
+  check76(tl, add);
+  check77(r, tl, add);
   return out;
 }
 
@@ -1692,7 +1703,38 @@ Object.assign(CHECKS, {
   "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Every order-skip note (js/cook/ui.js, a tap on the kitchen while the order is given, s14): every card in its row, no big card or copy of one left (left:0), within 1 s of the tap (the note's ms), and the station's stage starting within 1 s of it (scaled by the test speed). Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game')." },
 });
 const lifeNotes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);
+// ---- Sprint 14 (s14-rules; the central rules, Zafar 29 Oct round 4): the skip zones, the pop-out off faces, the first-time hold ----
+Object.assign(CHECKS, {
+  "contract-75": { item: "skip-zone", title: "a tap on a bubble, the side panel or the cog never skips the order", how: "Every skip-zone note (js/shared/request-popup.js, a tap on the order's see-through pop-up on the central rules' zones: data/rules.json skip): a tap on a zone that never skips (bubble, side, cog, menu) followed by an order-skip within 300 ms is a break; a tap in the play area (zone play) with no order-skip within 1.5 s is a break (SH-157, Zafar 29 Oct: 'if you tap on the speech bubbles or the side bar' it should not skip)." },
+  "contract-76": { item: "pop-face", title: "the big pop-out card is never over a face", how: "Every pop-face note (js/cook/ui.js, the big card placed as a word of the order is said, s14: how much of it, in px squared, sits over a face on screen, a head in the kitchen or a face circle in the play area, with a small margin): more than 0 is a break, once per page (SH-154, non-negotiable: nothing over a face)." },
+  "contract-77": { item: "timed-hold", title: "the first-time hold is a new player's only, and ends at the tap", how: "Every timed-hold note (js/cook/stations/chai-tray.js, the central rules' timed.firstTimeHold): a hold on a returning player's page (a #returning flow) is a break; a hold that starts and never ends (no 'end' note: the knob tap) is a break (SH-158, Zafar 29 Oct: the timer holds in the green the first time, until the child taps)." },
+});
+export function check75(tl, add) {
+  const skips = lifeNotes(tl, "order-skip").map((n) => n.t - Number(n.reason || 0));
+  for (const n of lifeNotes(tl, "skip-zone")) {
+    const zone = n.reason || "";
+    const near = (ms) => skips.some((t) => t >= n.t - 50 && t <= n.t + ms);
+    if (zone !== "play" && near(300)) { add("contract-75", n.t, `a tap on the ${zone} skipped the order (it should do its own thing)`); return; }
+    if (zone === "play" && !near(1500) && !lifeNotes(tl, "order-skip").length) { add("contract-75", n.t, "a tap in the play area during the order did not skip it"); return; }
+  }
+}
+export function check76(tl, add) {
+  for (const n of lifeNotes(tl, "pop-face")) {
+    const over = Number(n.reason || 0);
+    if (over > 0) { add("contract-76", n.t, `the big pop-out card sits over a face (${over} px\u00b2 of it; ${n.by || ""})`); return; }
+  }
+}
+export function check77(r, tl, add) {
+  const holds = lifeNotes(tl, "timed-hold");
+  if (!holds.length) return;
+  if (/#returning/.test((r && r.flow) || "")) { add("contract-77", holds[0].t, "a returning player's heat held in the green (the first-time hold is a new player's only)"); return; }
+  const starts = holds.filter((n) => n.reason === "start").length;
+  const ends = holds.filter((n) => n.reason === "end").length;
+  if (starts > ends) add("contract-77", holds[holds.length - 1].t, "the first-time hold started and never ended at a tap");
+}
 export function check72(tl, add) {
+  // (s14-rules: the row's glide back to its first card once the order has been given is a row-home note: never a jump, any length)
+  for (const n of lifeNotes(tl, "row-home")) if (!/smooth/.test(n.by || "") && Number(n.reason) > 2) { add("contract-72", n.t, `the order row went back to its first card in one jump (${n.reason} px, never smooth)`); return; }
   for (const n of lifeNotes(tl, "row-glide")) {
     const d = Number(n.reason);
     const m = /card:(\d+)/.exec(n.by || "");

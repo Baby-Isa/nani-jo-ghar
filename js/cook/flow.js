@@ -342,9 +342,72 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---------------- building an order ---------------- */
   /** An order's "level": one number for every dish, or per dish ({"maani": 2}). */
   function buildOrder(spec, { usual } = {}) {
-    const levelOf = (r) => (spec.level && typeof spec.level === "object" ? spec.level[r] : spec.level);
-    return { who: spec.who, dishes: spec.dishes.map((r) => R[r].make(spec.who, { usual, level: levelOf(r) })) };
+    // SH-160 (Zafar, 29 Oct, round 4): where nobody picked the level (free play, an order without a level), a game on the central
+    // rules plays at its own level (the save's count, js/shared/rules.js Rules.advance); a grown-up's pick always wins
+    const auto = spec.level == null ? autoLevels(spec.dishes) : null;
+    const level = auto || spec.level;
+    const levelOf = (r) => (level && typeof level === "object" ? level[r] : level);
+    return {
+      who: spec.who,
+      dishes: spec.dishes.map((r) => {
+        const d = R[r].make(spec.who, { usual, level: levelOf(r) });
+        if (auto && auto[r] && d) d.autoLevel = true;
+        return d;
+      }),
+    };
   }
+  /*
+   * SH-155 (Zafar, 29 Oct, round 4): a recipe slot's count that names a game on the central rules ({"rules": "chai-tray"}: chai's
+   * cups) is that game's count by level (js/shared/rules.js Rules.counts: 1 + (most - 1)(level - 1)/3, its most at L4), filled in
+   * as Cook's data loads (here, before any station's own file: a station loads only when it is chosen)
+   */
+  if (Cook.onLoad)
+    Cook.onLoad.push(async (data) => {
+      const T = global.Tokens;
+      const R = (T && T.rulesReady ? await T.rulesReady.catch(() => null) : null) || global.Rules || null;
+      Object.values((data && data.recipes) || {}).forEach((rec) =>
+        Object.values((rec && rec.slots) || {}).forEach((slot) => {
+          const c = slot && slot.count;
+          if (!c || typeof c !== "object" || !c.rules) return;
+          const list = R && R.counts ? R.counts(c.rules) : null;
+          if (list) slot.count = { rules: c.rules, byLevel: list };
+        })
+      );
+    });
+  /** SH-160: the games on the central rules and their key in the save's level count (Cook.save.levelUp; chai first). */
+  const RULES_GAMES = { chai: "chai-tray" };
+  Cook.rulesGame = (recipe) => RULES_GAMES[recipe] || null;
+  /** SH-160: the level a game on the rules picks for itself (null: not on the rules yet). */
+  Cook.autoLevel = (recipe) => {
+    const key = Cook.rulesGame(recipe);
+    if (!key || !global.Rules) return null;
+    return global.Rules.startLevel((Cook.save.levelUp || {})[key]);
+  };
+  function autoLevels(dishes) {
+    const out = {};
+    (dishes || []).forEach((r) => {
+      const lv = Cook.autoLevel(r);
+      if (lv) out[r] = lv;
+    });
+    return Object.keys(out).length ? out : null;
+  }
+  /**
+   * SH-160: a finished round of a game on the rules counts towards its level-up (Rules.advance: 3 rounds in a row at the level
+   * with the guide's hint at most once a round); only a round at the level the game picked counts (a grown-up's pick never).
+   */
+  Cook.roundDone = function (recipe, { level, hints = 0, grownUp = false } = {}) {
+    const key = Cook.rulesGame(recipe);
+    if (!key || !global.Rules) return null;
+    const all = (Cook.save.levelUp = Object.assign({}, Cook.save.levelUp));
+    all[key] = global.Rules.advance(all[key], { level, hints, grownUp });
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("level-up", { step: String(all[key].level), by: `${key} streak:${all[key].streak} hints:${hints}${grownUp ? " grown-up" : ""}` });
+    } catch (e) {
+      /* only a log */
+    }
+    if (Cook.writeSave) Cook.writeSave();
+    return all[key];
+  };
   /** Step chips (data.recipes[r].steps): the same for every order of a dish, so they never answer the order. */
   const chipsFor = (d) => R[d.recipe].steps(d);
   /** Ladders for the mission card; the words are met as they're said. */
@@ -1996,7 +2059,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return { tasks: card ? card.total : undefined };
     }
     const spec = o.free || !o.dish ? generateCustomer() : { who: o.who || Cook.pick(["nana", "ma", "cousin"]), dishes: [o.dish] };
-    spec.level = level;
+    // (SH-160: no level asked for: a game on the central rules picks its own, buildOrder; the others play at 1 as before)
+    spec.level = o.level || null;
     await serviceView(null);
     const card = await runOrder(buildOrder(spec), null);
     return { tasks: card ? card.total : undefined };

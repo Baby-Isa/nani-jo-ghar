@@ -1604,18 +1604,101 @@
       const play = st.getBoundingClientRect();
       const sr = side.getBoundingClientRect();
       const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: "wc14-pop" }));
-      let wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
-      // (never over the speaker's bubble: narrower, down to 160 px, to end short of it)
-      const bub = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).find((b) => b.width > 0 && b.left > sr.right);
-      if (bub && bub.left - (sr.right + 14) - 12 < wd) wd = Math.max(160, Math.round(bub.left - (sr.right + 14) - 12));
+      const wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
       Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
       document.body.appendChild(c);
       global.WordCard.fit14(c);
       // (shorter screens: the card keeps inside the play area, its picture shorter first)
       if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
+      // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
+      // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
+      placeFree14(c, play, sr, wd);
       if (c.animate) c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
       big14 = c;
       return c;
+    };
+    // SH-154: the faces on screen (page px): every character's head in the scene (Cook.scene headBox), every face circle in the
+    // play area (DOM), each with a small margin
+    const faces14 = () => {
+      const out = [];
+      const S = Cook.scene;
+      try {
+        Object.values((S && S.chars) || {}).forEach((img) => {
+          if (!img || !img.active || img.visible === false || !S.headBox) return;
+          const hb = S.headBox(img);
+          const a = UI.worldToScreen(hb.x, hb.y);
+          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+          out.push({ left: a.x - 8, top: a.y - 8, right: z.x + 8, bottom: z.y + 8 });
+        });
+      } catch (e) {
+        /* no scene */
+      }
+      // (every face circle on the page: the play area's and the side panel's, Nani's and the order card's)
+      document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+        if (f.closest(".wc14-pop, .wc14-flyer")) return;
+        const b = f.getBoundingClientRect();
+        if (b.width > 0) out.push({ left: b.left - 6, top: b.top - 6, right: b.right + 6, bottom: b.bottom + 6 });
+      });
+      return out;
+    };
+    const overlap14 = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
+    function placeFree14(c, play, sr, wd) {
+      const faces = faces14();
+      const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
+      const pad = 10;
+      const smallAt = c.classList.contains("wc14-small");
+      let best = null;
+      const perfect = () => best && best.onFace === 0 && best.onBub === 0;
+      // one area (x from x0 to x1, y from y0 to y1), at each width from the full card down (a smaller picture from 160 px): the spots
+      // from its top left outwards; the best is the one over no face, then over the fewest bubbles, then the nearest the side panel
+      const scan = (x0, x1, y0, y1, widths, cost) => {
+        for (const w of widths.map(Math.round)) {
+          if (w < 100 || w > x1 - x0) continue;
+          c.style.width = `${w}px`;
+          c.classList.toggle("wc14-small", smallAt || w <= 160);
+          global.WordCard.fit14(c);
+          const h = c.offsetHeight;
+          for (let y = y0; y + h <= y1 + 0.5 || y === y0; y += 12) {
+            for (let x = x0; x + w <= x1 + 0.5 || x === x0; x += 16) {
+              const r = { left: x, top: y, right: x + w, bottom: y + h };
+              const onFace = overlap14(r, faces);
+              const onBub = overlap14(r, bubs);
+              const score = cost + onBub + (x - x0) * 0.5 + (y - y0) * 0.25;
+              if (!best || onFace < best.onFace || (onFace === best.onFace && score < best.score)) best = { x, y, w, h, score, onFace, onBub, small: c.classList.contains("wc14-small") };
+              if (onFace === 0 && onBub === 0) break;
+            }
+            if (perfect()) return;
+          }
+        }
+      };
+      // the play area beside the side panel first; then, a phone with three people at the counter and no face-free spot there,
+      // over the side panel (the order card the big card is about to turn into), still never over a face (contract-76: 740x320)
+      scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], 0);
+      if (best && best.onFace > 0) scan(sr.left + 8, sr.right - 8, Math.max(play.top, sr.top) + pad, Math.min(play.bottom, sr.bottom) - pad, [Math.min(wd, sr.width - 16), 160, 130, 110], 1e6);
+      if (!best) return;
+      c.style.width = `${best.w}px`;
+      c.classList.toggle("wc14-small", !!best.small);
+      global.WordCard.fit14(c);
+      Object.assign(c.style, { left: `${Math.round(best.x)}px`, top: `${Math.round(best.y)}px` });
+      // (SH-154's check: how much of the card sits over a face, for the contract checks only)
+      try {
+        const f0 = faces[0];
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(best.onFace)), by: JSON.stringify({ faces: faces.length, w: best.w, x: Math.round(best.x), y: Math.round(best.y), f: f0 ? [f0.left, f0.top, f0.right, f0.bottom].map(Math.round) : null }) });
+      } catch (e) {
+        /* only a log */
+      }
+    }
+    // SH-155: the big card's hold by the word's state (the central rules: new 1.5 s, learning 1.0 s, known 0.6 s), its line said meanwhile
+    const hold14 = (r) => {
+      if (!global.Rules) return 0;
+      let rec = null;
+      try {
+        const P = Cook.core && Cook.core.progress;
+        rec = P && P.get ? P.get(wcWordId(r)) : null;
+      } catch (e) {
+        rec = null;
+      }
+      return global.Rules.hold(global.Rules.wordState(rec));
     };
     const land = (r, who, fast) => {
       if (s14) {
@@ -1675,7 +1758,8 @@
             } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
           }
           try {
-            await sayPart(who, p.line);
+            // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
+            await Promise.all([sayPart(who, p.line), item && s14 ? Cook.wait(hold14(r)) : null]);
           } catch (e) {
             if (!(e instanceof Cook.Abort)) throw e;
           }
@@ -1696,6 +1780,9 @@
           hold: 300,
           wait: (ms) => Cook.wait(ms),
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
+          // (SH-157: on the central rules, a tap on a bubble, the cog or its menu does its own thing and never skips:
+          // global.Rules.skips(target), through the pop-up's zones)
+          zones: s14 && !!global.Rules && typeof global.Rules.skips === "function",
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true)),
           onStop: () => UI.hush(),
           read,
@@ -1716,7 +1803,7 @@
         renderOrder();
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
-        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild));
+        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild, { home: true }));
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
@@ -2197,15 +2284,13 @@
     // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
     if (head && !src) return null;
     // Zafar, 29 Oct (chai level rules 7): on the s14 look (chai) the card by chai's own row: its Kutchi always written, its English
-    // shown at L1 and dotted from L2, its picture blurred from L3 (data/cook.json levelTable.stations chai-tray en, pic)
+    // shown at L1 and dotted from L2, its picture blurred from L3 (SH-155: the central rules, data/rules.json levels cardEnglish,
+    // cardPicture, through js/shared/rules.js)
     if (UI.s14()) {
-      const row = Cook.levelRow ? Cook.levelRow(mission.level, "chai-tray") : {};
-      const T = ((Cook.data.levelTable || {}).stations || {})["chai-tray"] || {};
-      const lv = Math.max(1, Math.min(4, mission.level || 1)) - 1;
-      const at = (k, d) => (Array.isArray(T[k]) ? T[k][Math.min(lv, T[k].length - 1)] : d);
+      const RL = global.Rules ? global.Rules.level(mission.level || 1) : { cardEnglish: false, cardPicture: true };
+      const at = (k) => (k === "pic" ? RL.cardPicture : RL.cardEnglish);
       const srcB = wcPicSrc(wcWordId(r));
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
-      void row;
       return {
         word: {
           id: wcWordId(r),
@@ -2217,8 +2302,8 @@
           say: () => Lang.speak(r.line),
         },
         wordOpts: {
-          slots: { picture: at("pic", true) !== false && !!srcB, english: at("en", false) === true, kutchiText: true },
-          enShown: at("en", false) === true,
+          slots: { picture: at("pic") !== false && !!srcB, english: at("en") === true, kutchiText: RL.cardKutchi !== false },
+          enShown: at("en") === true,
           progress: Cook.core && Cook.core.progress,
           onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
         },
@@ -2489,7 +2574,12 @@
         // SH-102, SH-114: left: a replay reads the steps not yet done only, once any is (never the headline then); all of it otherwise
         const body = c.rows.filter((r) => !r.head);
         const part = left && body.some((r) => r.done) && body.some((r) => !r.done);
-        const rowsSaid = part ? c.rows.filter((r) => !r.head && !r.done) : c.rows;
+        const rowsIn = part ? c.rows.filter((r) => !r.head && !r.done) : c.rows;
+        // CHAI-39, SH-152 (Zafar, 29 Oct, round 4; the central rules' order.noLast): on the s14 look a person's "no" items are said
+        // after everything they asked for, as their cards sit at the row's end, so the row only moves forward while the order
+        // is given; the engine builds the sentence from the rows in that order (Order.sentence), never a hand-written line
+        const noLast = s14 && global.Rules && global.Rules.noLast && global.Rules.noLast();
+        const rowsSaid = noLast ? rowsIn.filter((r) => r.head || !r.no).concat(rowsIn.filter((r) => !r.head && r.no)) : rowsIn;
         const headSaid = part ? null : head;
         const line = c.who && c.L && c.L.sections.some((s) => s.for === c.who)
           ? Order().sentence(headSaid, rowsSaid, { join: Order().joinOf(c.L) })
@@ -3618,6 +3708,34 @@
     // CK-53: the cog opens and closes the ?, home and book beside it; a tap anywhere else (but the grown-ups' pop-up) closes them
     const cog = $("#side-cog");
     const menu = $("#side-menu");
+    /*
+     * SH-156 (Zafar, 29 Oct, round 4: "the cog top right of the play area"; lessons round 1, 8: the pinned cog took the side
+     * panel's foot): the cog and its menu move to the top right of the play area in every Cook game, the side panel's foot
+     * freed for the orders; its place at each screen size is css/cook.css (.ck-cog-rail), its menu's items and their order
+     * the central rules' (data/rules.json menu, js/shared/rules.js Rules.menu)
+     */
+    const rail = cog && cog.closest(".side-rail");
+    const stageEl = $("#stage");
+    if (rail && stageEl && UI.w6()) {
+      rail.classList.add("ck-cog-rail");
+      cog.classList.add("ck-cog");
+      cog.dataset.njgZone = "cog"; // (the central rules' skip zones know it by this: data/rules.json skip)
+      if (menu) menu.dataset.njgZone = "menu";
+      stageEl.appendChild(rail);
+      // (over the play area its taps are its own: they never reach the game under it, as a tap on the pantry's "?" reached the
+      // jar under it, a wrong pick; contract-24 at 930x430. The idle clock still sees them: it listens on the page's capture)
+      ["pointerdown", "pointerup", "mousedown", "mouseup", "touchstart", "touchend", "click"].forEach((ev) => rail.addEventListener(ev, (e) => e.stopPropagation()));
+      const order = () => {
+        if (!menu || !global.Rules || !global.Rules.menu) return;
+        global.Rules.menu().forEach((id) => {
+          const b = document.getElementById(id);
+          if (b && b.parentElement === menu) menu.appendChild(b);
+        });
+      };
+      order();
+      const T = global.Tokens;
+      if (T && T.rulesReady) T.rulesReady.then(order).catch(() => {});
+    }
     const setMenu = (open) => {
       if (!cog || !menu) return;
       menu.hidden = !open;

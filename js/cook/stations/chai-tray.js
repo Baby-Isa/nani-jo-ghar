@@ -218,6 +218,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     }
   };
 
+  /*
+   * SH-155 (Zafar, 29 Oct, round 4): chai's level rules are the central rules' (data/rules.json, read only through js/shared/rules.js:
+   * window.Rules, loaded with the tokens): its cups by level (Rules.counts), decoys and lookalike, the order card's English and
+   * picture, the hint waits, the order card's light, the big card's holds, the first-time hold of the knob, the word pill and the
+   * level-up. None of those numbers is kept here or in chai's data (build/test_shared_rules.mjs checks it).
+   */
+  const RULES = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
+  const rulesAt = (lv) => (RULES() ? RULES().level(lv) : { decoys: 1, lookalike: false, hintMs: 0 });
+  // (the cups by level: the recipe's count is the rules' count for chai, filled in as Cook's data loads: js/cook/flow.js rulesCounts)
+
   Mech.combined("chai-tray", {
     station: "chai-tray",
     view: "marble",
@@ -287,6 +297,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // (reset by UI.applyS14 when a round without the s14 look starts: the service scene after the tray keeps chai's look)
     }
     const seen14 = (Cook.save.seenStation = Cook.save.seenStation || {});
+    // SH-159: the word pill (the s14 look): the core's per-word flag; elsewhere the chip as before (Cook.chipWord)
+    const P14 = () => (s14 && Cook.core && Cook.core.progress && Cook.core.progress.pillShows ? Cook.core.progress : null);
+    const pillShows14 = (id) => (P14() ? P14().pillShows(id) : Cook.chipWord(id, ctx));
+    const pillNote = (id) => {
+      try {
+        const r = P14() && P14().get(id);
+        if (r && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pill", { step: id, by: JSON.stringify({ n: r.pillRun || 0, e: r.pillEarned ? 1 : 0, s: r.pillHidden ? 0 : 1 }) });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     const STATION14 = "chai-tray";
     const S14_TAG = "s14-";
     const fresh14 = s14 && ((OB14 && OB14.newPlayer && OB14.newPlayer()) || !(Cook.save.coached || {})["chai-tray"]);
@@ -331,10 +352,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const spicePool = (K.extras || []).concat(K.decoys || [], K.teaDecoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
     // SH-132 (contract-37: L3 put out 2 where the table wants 3): the decoys are the table's whatever the cups ask for; the row may hold
     // up to seven jars (the shelf's slots narrow to fit, below: slotW). Was: at most five jars, so three asked extras left room for two
-    // Zafar, 29 Oct (chai level rules 5): chai's own row (data/cook.json levelTable.stations chai-tray): 1, 2, 3, 4 decoys, capped by
-    // the shelf's space; the salt (sugar's lookalike) only at L4, as its lookalike: at L1-L3 every decoy looks clearly unlike what
-    // was asked (it made L1 harder)
-    const row14 = Cook.levelRow(level, "chai-tray");
+    // Zafar, 29 Oct (chai level rules 5; SH-155): the decoys by level from the central rules (data/rules.json levels.decoys and
+    // lookalike, through js/shared/rules.js), capped by the shelf's space; the salt (sugar's lookalike) only where the rules
+    // want a lookalike (L4): at L1-L3 every decoy looks clearly unlike what was asked (it made L1 harder)
+    const row14 = rulesAt(level);
     const nSpice = Math.max(1, Math.min(row14.decoys, 7 - askedX.length));
     const salted = !!row14.lookalike;
     const spiceIds = Cook.shuffle(
@@ -609,6 +630,27 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       return 1;
     }
+    // SH-159: the pill's face (the word and its speaker, or the speaker alone), drawn again when the word's pill changes
+    function chipFace(chip, id, showWord) {
+      (chip.face || []).forEach((o) => chip.remove(o, true));
+      const icon = S.add.graphics();
+      if (showWord) {
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+        const maxT = CHIP.w - 52;
+        if (t.width > maxT) t.setScale(maxT / t.width);
+        const w = 22 + 8 + t.displayWidth;
+        speaker(icon, -w / 2 + 10, 0, 24);
+        t.x = -w / 2 + 30;
+        chip.add([icon, t]);
+        chip.face = [icon, t];
+      } else {
+        speaker(icon, 1, 0, 26);
+        chip.add(icon);
+        chip.face = [icon];
+      }
+      chip.showsWord = !!showWord;
+      chip.pillId = id;
+    }
     function slot(id, x, K) {
       const key = `jar-${id}`;
       let img;
@@ -622,7 +664,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       img.home = { x: img.x, y: img.y };
       // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
       // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
-      const showWord = Cook.chipWord(id, ctx);
+      // SH-159 (Zafar, 29 Oct, round 3): on the s14 look the word pill's own ladder (js/core/progress.js pill, the central rules'
+      // words.pill): written until picked right three times in a row (first try, no peek); a miss brings it back
+      const showWord = pillShows14(id);
       const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
       const bg = S.add.graphics();
       bg.fillStyle(0x28190a, 0.1);
@@ -630,19 +674,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       bg.fillStyle(INK.card, 1);
       bg.fillRoundedRect(-CHIP.w / 2, -CHIP.h / 2, CHIP.w, CHIP.h, 12);
       chip.add(bg);
-      const icon = S.add.graphics();
-      if (showWord) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
-        const maxT = CHIP.w - 52;
-        if (t.width > maxT) t.setScale(maxT / t.width);
-        const w = 22 + 8 + t.displayWidth;
-        speaker(icon, -w / 2 + 10, 0, 24);
-        t.x = -w / 2 + 30;
-        chip.add([icon, t]);
-      } else {
-        speaker(icon, 1, 0, 26);
-        chip.add(icon);
-      }
+      chipFace(chip, id, showWord);
       chip.setSize(CHIP.hitW, CHIP.hitH);
       chip.setInteractive(new Phaser.Geom.Rectangle(-CHIP.hitW / 2, -CHIP.hitH / 2 + 8, CHIP.hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
       chip.on("pointerdown", (ptr, lx, ly, ev) => {
@@ -668,6 +700,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     let doneP = new Promise((r) => (finishUp = r));
     const dishNo = () => ctx.dishAt || 0;
     const [lo, hi] = kBoil.band;
+    /*
+     * SH-158 (Zafar, 29 Oct, round 4; the central rules' timed.firstTimeHold): the first time a child meets the boil (a new player,
+     * once ever), the heat holds in the green while the knob is lit, until the knob is tapped; after that, normal timing. Only the
+     * knob the child turns holds (never a thing that moves by itself). A returning player's heat never holds.
+     */
+    const HOLD14 = `${STATION14}:${S14_TAG}boil-hold`;
+    let hold14 = !!(fresh14 && RULES() && RULES().firstTimeHold() && !seen14[HOLD14]);
+    const holdAt14 = lo + (hi - lo) * 0.5;
+    let holding14 = null;
 
     // C8: which picture the pan shows: [the stage, the next one fading in over it, how far]. The leaves
     // steep to black tea as it heats; near the green it comes to the boil; past the green milky chai
@@ -1150,7 +1191,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         pan.state = "heating";
         setKnob(pan, "high");
         refresh();
-      } else if (pan.state === "heating") turnDown(pan, false);
+      } else if (pan.state === "heating") {
+        // (SH-158: the tap ends the first-time hold, for good)
+        if (hold14 && pan.heat >= lo) {
+          hold14 = false;
+          seen14[HOLD14] = true;
+          if (holding14) note("timed-hold", "end", `${pan.who} ${pan.heat.toFixed(3)} ${Date.now() - holding14}ms`);
+          holding14 = null;
+        }
+        turnDown(pan, false);
+      }
     };
     const turnDown = (pan, over) => {
       note("chai-down", pan.heat.toFixed(3), `${lo}/${hi}/${pan.who}`); // (contract-70)
@@ -1211,6 +1261,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const was = pan.heat >= lo && pan.heat <= hi;
           // CHAI-10: twice as fast to the green; in the green it slows to half, so the turn-down keeps its old time
           pan.heat += kBoil.rate * (pan.heat >= lo ? 0.5 : 1) * dt;
+          // (SH-158: the first time, the heat waits in the middle of the green until the knob is tapped)
+          if (hold14 && pan.heat > holdAt14) {
+            pan.heat = holdAt14;
+            if (!holding14) {
+              holding14 = Date.now();
+              note("timed-hold", "start", `${pan.who} ${pan.heat.toFixed(3)}`);
+            }
+          }
           const inBand = pan.heat >= lo && pan.heat <= hi;
           if (inBand && !was) {
             Cook.sfx.click();
@@ -1638,13 +1696,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      * redo, or the word still supported, stage 1-2), and a word shown that way is not counted as known (non-negotiable 4).
      */
     const LADDER = { glowAt: 5000, boxAt: 12000 };
-    // the level's wait before Nani's hint (the one ladder table, data/shared.json helpMs, by level 1-4)
-    const helpMs14 = () => {
-      const T = global.Tokens;
-      const lad = T && (typeof T.ladder === "function" ? T.ladder() : T.ladder);
-      const hm = lad && lad.helpMs;
-      return hm && hm.length ? hm[Math.max(0, Math.min(hm.length - 1, (level || 1) - 1))] : LADDER.glowAt;
-    };
+    // the level's wait before Nani's hint (SH-155: the central rules, data/rules.json levels.hintS, through js/shared/rules.js)
+    const hintMs14 = () => rulesAt(level).hintMs || LADDER.glowAt;
     const ITEM_STEPS = new Set(["water", "tea", "cups"]);
     // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above)
     const pageRect = (o, pad = 0) => () => {
@@ -1687,6 +1740,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     };
     const supported = (id) => !!id && Cook.wordStage(id) <= 2;
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
+    let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek, the bulb or the arrow's card never counts)
     let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
     const helpGlow = (obj) => {
       if (helpObj === obj) return;
@@ -1849,7 +1903,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const st = nx && nx.phase;
         // CHAI-37 (Zafar, 27-28 Oct): after the first two items (the water, the tea), the whole order card lit for a moment (1.2 s;
         // no glow, no bounce), so the eye knows where to look next; once, for a new player
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) light14(document.querySelector("#mission .oc-card"), "", 1200 / (Cook.speed || 1));
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / (Cook.speed || 1));
         lastStep14 = st || lastStep14;
         // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
         if (sid !== rungKey && UI.helper) UI.helper(rungCur && rungCur.id && ITEM_STEPS.has(st) ? helperOf(rungCur.id, st === "cups") : null);
@@ -1883,11 +1937,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         answer ? { first: false } : {},
         items
           ? {
-              // (s14: the child alone after the first two, Nani's hint after the level's wait, data/shared.json helpMs; no heavy box)
+              // (s14: the child alone after the first two, Nani's hint after the level's wait, the central rules' hintS; no heavy box)
               at: s14 ? [0, null, null] : [0, LADDER.boxAt, null],
-              glowAt: s14 ? helpMs14() : LADDER.glowAt,
+              glowAt: s14 ? hintMs14() : LADDER.glowAt,
               glow: (on) => {
                 if (on) {
+                  hints14++; // (SH-160: the guide's hint came)
                   mark();
                   showCallout(cur.id);
                   helpGlow(lightObj());
@@ -1897,7 +1952,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
                 }
               },
             }
-          : { line: () => UI.stepHelp && UI.stepHelp() }
+          : { line: () => (hints14++, UI.stepHelp && UI.stepHelp()) }
       )));
     };
     const coachEnd = () => {
@@ -2232,6 +2287,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (p.khun && !pan.capped) (got.sugar ? right : Cook.markMiss)(Cook.numId(p.khun), "cook-khun");
           (got.sugar ? right : Cook.markMiss)("cook-khun");
           if (p.extra) (got.extra ? right : Cook.markMiss)(p.extra);
+          // SH-159: each asked-for thing's word pill: right on the first try (no wrong spoonful for it) and no peek or help
+          if (P14()) {
+            const wrongFirst = (id) => (pan.firstWrong || []).some((w) => w.row === id);
+            const peeked = (id) => helped.has(id) || !!(ctx.wordHelp && ctx.wordHelp.has(id));
+            const asked = [["cook-paani", got.chai], ["cook-chai", got.chai]].concat(p.dudh ? [["cook-dudh", got.milk]] : [], p.khun ? [["cook-khun", got.sugar]] : [], p.extra ? [[p.extra, got.extra]] : []);
+            asked.forEach(([id, ok]) => {
+              P14().pill(id, { ok: !!ok, firstTry: !wrongFirst(id), peek: peeked(id) });
+              pillNote(id);
+            });
+            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && chipFace(o.chip, o.chip.pillId, pillShows14(o.chip.pillId)));
+          }
         }
         if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
         else {
@@ -2278,6 +2344,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     await Cook.wait(500);
     zb.close();
     zt.close();
+    // SH-160: a finished round counts towards chai's level-up (the central rules); a grown-up's pick (the labs level, a story
+    // day's level) plays at its own level and never moves the count
+    if (Cook.roundDone && !guided) {
+      const dsh = ctx.order && ctx.order.dishes ? ctx.order.dishes[ctx.dishAt || 0] : null;
+      Cook.roundDone("chai", { level: Cook.roundLevel(ctx), hints: hints14, grownUp: !!ctx.lab || !(dsh && dsh.autoLevel) });
+    }
     return {
       served: pans.filter((q) => q.poured > 0).length,
       cups: pans.map((q) => ({ who: q.who, milk: q.has.milk > 0, sugar: q.sugar, salt: q.salt, extras: q.extras, level: q.poured / 2 })),

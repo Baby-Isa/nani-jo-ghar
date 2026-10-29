@@ -27,6 +27,8 @@ export const DRIVERS = {
   "mute-across-modes": { kinds: ["lab-cook"], moments: ["rec:muted-in-cook", "rec:after-mute", "rec:after-mute-cook"] },
   "start-over": { kinds: ["cook"], moments: ["rec:started-over", "rec:after-start-over"] },
   "tap-through-popup": { kinds: ["cook", "heal", "clinic-stage"], moments: ["rec:tapped-through", "drv:tapped-through"] },
+  // SH-157 (s14-rules): while the order is given, a tap on the bubble, the side panel and the cog (each must not skip), then the play area (it skips)
+  "tap-zones": { kinds: ["cook"], moments: ["rec:zone-bubble-kept", "rec:zone-bubble-skipped", "rec:zone-side-kept", "rec:zone-side-skipped", "rec:zone-cog-kept", "rec:zone-cog-skipped", "rec:zone-play"] },
   // CK-48's Check (S13-V): the request pop-up tapped through 1 s after it opens, at a child's pace (then the station must be
   // fully drawn within 1 s of the tap)
   "tap-card-1s": { kinds: ["cook", "heal", "clinic-stage"], moments: ["rec:tapped-through", "drv:tapped-through"] },

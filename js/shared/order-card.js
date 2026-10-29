@@ -365,7 +365,8 @@
   };
   /** The row glides (smoothly) just enough to show the whole card (the lab's glideTo: never a jump). */
   const glideWant = new Map(); // (a card's row glide in flight, by its data-ck: a redraw carries it on)
-  OC.glideTo = function (card) {
+  // (opts.home: the row back to its first card once the order has been given, logged apart: row-home, not row-glide)
+  OC.glideTo = function (card, opts = {}) {
     const row = card && card.parentNode;
     if (!row || !row.classList || !row.classList.contains("oc-row14")) return;
     // (in the row's own scrolled coordinates)
@@ -378,7 +379,7 @@
     if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
     // SH-152's check (contract-72): each glide, how far and how (always smooth), against a card's width
     try {
-      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note("row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
+      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note(opts.home ? "row-home" : "row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
     } catch (e) {
       /* only a log */
     }

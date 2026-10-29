@@ -51,6 +51,7 @@
  *     wait(ms),      // the host's timer (test speed); default setTimeout
  *     fast,          // test speed: no fly, short beats
  *     ignore(ev),    // true: this tap is not a tap-through (Cook's face = replay)
+ *     zones,         // SH-157: true: the central rules' skip zones (a bubble, the side panel, the cog, its menu never skip)
  *     onStop(),      // a tap-through: the host's own stop (its read-along token) besides VoiceStop.stop()
  *     onTap(ev),     // any tap on it (before the fold)
  *     onFold(),      // the fold starts (before the card flies): what the host plays next can start with it (CLN-87)
@@ -282,9 +283,46 @@
       };
       current = me;
       // a tap anywhere is a tap-through: the voice stops at once, then the card folds (CLN-109, SH-64)
+      // SH-157 (Zafar, 29 Oct, round 4): the skip zones, central (data/rules.json skip, js/shared/rules.js Rules.zoneOf): a tap in
+      // the play area skips and lands the order; a tap on a speech bubble (its speaker replays), the side panel, the cog or its
+      // menu does its own thing and never skips. The veil lies over the play area, so the thing under the tap is looked up.
+      const under = (ev) => {
+        const t = ev && ev.target;
+        if (t && t !== veil && !veil.contains(t)) return t;
+        const d = root.document;
+        if (!d || ev.clientX == null) return null;
+        // (a speech bubble by where it is drawn: a line's bubble lets taps through to the game, so no hit test finds it)
+        const bub = [...d.querySelectorAll(".cv-bubble, .njg-bubble")].find((b) => {
+          const r = b.getBoundingClientRect();
+          return r.width > 0 && ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
+        });
+        if (bub) return bub;
+        if (!d.elementsFromPoint) return null;
+        return d.elementsFromPoint(ev.clientX, ev.clientY).find((el) => el !== veil && !veil.contains(el)) || null;
+      };
+      const zoneTap = (ev) => {
+        const R = root.Rules;
+        if (!opts.zones || !R || !R.zoneOf) return false; // (a game on the central rules asks for them: Cook's chai order)
+        const el = under(ev);
+        const zone = el ? R.zoneOf(el) : "play";
+        try {
+          if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("skip-zone", { step: zone, by: `skipped:${zone === "play" ? 1 : 0}` });
+        } catch (e) {
+          /* only a log */
+        }
+        if (zone === "play") return false;
+        // (it does its own thing: a bubble's speaker replays, a button presses; never a skip)
+        if (el && el !== ev.target) {
+          const bub = zone === "bubble" && el.closest ? el.closest(".cv-bubble, .njg-bubble") : null;
+          const hit = (bub && bub.querySelector(".cv-spk, .wp-say")) || (el.closest && el.closest("button, [role=button]")) || el;
+          if (hit && typeof hit.click === "function") hit.click();
+        }
+        return true;
+      };
       const onTap = (ev) => {
         if (over) return;
         if (opts.ignore && opts.ignore(ev)) return;
+        if (zoneTap(ev)) return;
         if (opts.onTap) opts.onTap(ev);
         VoiceStop.stop("request-popup");
         if (opts.onStop) opts.onStop();
