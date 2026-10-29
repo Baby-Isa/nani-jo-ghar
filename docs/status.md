@@ -8,40 +8,31 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (28 Oct 2026, about 11:45 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`
-holds every decision of 27-28 Oct). Live on `main` (b194da19, 20261028T230138Z, 28 Oct evening): the chai lab's round 1 fixes, on top of the overnight fixes (central type SH-151, centred
-badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you) and the new
-checks (contract-51 to 54, a returning player, the four sizes, `build/tools/review/labcheck.mjs`); report
-`build/reports/s14-night-report.md`. Also live: the card and onboarding lab, `lab/cards.html` (a labs tile), round 5. Nothing running.
+**Where things stand (29 Oct 2026, 05:15 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`).
+**Live on `main` (8502301c, 20261029T051056Z):** the real chai game on the new kit (the s14 word card, the sideways order row that
+glides and settles itself, the pop-out cards that turn into their row cards, Nani's helper card, the lit-box light with no finger,
+a tap on the kitchen skips the order, the bigger bubble speaker); Zafar's s14 art (the pan exactly overhead in six states, the new
+pour: the pan over its glass emptying while the glass fills, the overhead glasses, the decluttered kitchen in every Cook scene);
+his chai level rules (no "no" asks at L1, kari/mori from L3, decoys 1-4 with salt only at L4, the order card always open with its
+Kutchi, English dotted from L2, picture blurred from L3, the heat quicker at L2 and narrower at L3; hint waits 7, 9, 11, 13 s).
+Other games unchanged. Builder report `build/reports/s14-chai.md`; judge verdicts
+`build/screenshots/evidence/br-s14-chai-after-20261029-043226-bf9/judge/` (3 pass, 3 fail on rows his newer words had replaced:
+rows updated; the rest probe faults). Nothing running.
 
-**Decided (the sprint file has the detail):** the word card (serif, maroon Kutchi sitting on its English, big round speaker, no
-flowers, dots in the word's own place, a stronger blur); the order card a sideways row everywhere that scrolls itself (one ticked
-card leads); Nani's helper card grows in her box, always unhidden, the arrow in place of the bulb, no speaker; cards pop out by the
-side panel; the help: glow and bounce in a lit box with the word pill (controls only glow), the whole order card lit after two
-items, no finger or target; screens: two layouts by height, checked at 740x320, 930x430, 1280x665, 1920x1080; the way we build a
-screen: mock-up, lab page, my four-size check, Zafar's numbered choices, then the game.
+**Known, for Zafar's look:** at L3-L4 the order row glides far to the "no" cards at the end and back (contract-72); the order
+card is a large empty white box until the first word is said; the boil-over foam is still the old picture; the heat values are
+suggestions; the kitchen is a plain resize for now (Real-ESRGAN later); pink chai art cut and spare.
 
 **Next steps, in order:**
-1. **The chai onboarding, the quick lab way** (Zafar, 28 Oct): he plays "Play chai" in `lab/cards.html` (the gear: options 9 new or
-   returning player, 10 level) and sends numbered notes; fix them in this chat round by round, `labcheck.mjs` before each publish
-   (rough publishes, `--force`, decision 3). No launch. **Round 1 done on the branch** (`docs/feedback/chai-onboarding-2026-10-28.md`:
-   the card light 1.2 s, the row glides, a tap skips the order, a bigger bubble speaker, the pan's painted states); his yes to all (28 Oct, the
-   sprint file): the lab published (20261028T230138Z); the small art run is ready for him (`docs/design-language/art-plans/s14-chrome-block.txt`,
-   pack s14: 5 sheets); when its pictures land, judge, cut, wire into the lab, his look, then the roll-out builder. His rule ART-29: one paste
-   block, every reference pushed, nothing for him to upload (`artblock.py --check`).
-2. **Into the real chai game behind a labs switch** once he keeps it: the new cards, the helper card and the onboarding. Proposed:
-   one builder, Opus high, about $40-60, half a day (or in the chat); his go first.
-3. **Lock the principles** from chai as the rulebook, then **plan the roll-out** to the other Cook stations and the clinic. Found
-   overnight for it: the help light too big in daar, samosa, the grill and the pantry; bubbles over faces (SH-145, free-space
-   placement); long words off the old cards; two L3 gaps for a returning player (learned words written, 2 decoys not 3).
-4. Art run when he says: the pan from his top-down reference (CHAI-34), the decluttered kitchen (ART-28).
-
-**Open questions to Zafar:** 40-43 in `docs/questions.md`.
+1. Zafar plays chai L1-L4 as a new player (`labs.html`: New player on, Chai tray, each level) and sends notes: `/feedback`.
+2. The principles: his answers to round 2 (A levels, B the ladder, C onboarding with the pop-out times, E the non-negotiable 4
+   wording), then the games-as-columns table, then the rulebook (`docs/game-design/rulebook.md`) and Fable's review of it against
+   `docs/architecture/target-model.md`.
+3. What chai taught us (from his play), then the roll-out plan to the other Cook stations and the clinic.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the overnight fixes are live. I want to start by
-> testing the new chai onboarding in `lab/cards.html` the quick lab way, as we did the cards. Work on branch
-> `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the new chai is live. I've played it: here are my
+> notes. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
