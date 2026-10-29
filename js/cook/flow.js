@@ -356,6 +356,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }),
     };
   }
+  /*
+   * SH-155 (Zafar, 29 Oct, round 4): a recipe slot's count that names a game on the central rules ({"rules": "chai-tray"}: chai's
+   * cups) is that game's count by level (js/shared/rules.js Rules.counts: 1 + (most - 1)(level - 1)/3, its most at L4), filled in
+   * as Cook's data loads (here, before any station's own file: a station loads only when it is chosen)
+   */
+  if (Cook.onLoad)
+    Cook.onLoad.push(async (data) => {
+      const T = global.Tokens;
+      const R = (T && T.rulesReady ? await T.rulesReady.catch(() => null) : null) || global.Rules || null;
+      Object.values((data && data.recipes) || {}).forEach((rec) =>
+        Object.values((rec && rec.slots) || {}).forEach((slot) => {
+          const c = slot && slot.count;
+          if (!c || typeof c !== "object" || !c.rules) return;
+          const list = R && R.counts ? R.counts(c.rules) : null;
+          if (list) slot.count = { rules: c.rules, byLevel: list };
+        })
+      );
+    });
   /** SH-160: the games on the central rules and their key in the save's level count (Cook.save.levelUp; chai first). */
   const RULES_GAMES = { chai: "chai-tray" };
   Cook.rulesGame = (recipe) => RULES_GAMES[recipe] || null;

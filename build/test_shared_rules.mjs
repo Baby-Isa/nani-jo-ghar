@@ -77,8 +77,8 @@ test("skip zones: a tap in the play area skips; a bubble, the side panel, the co
   assert.equal(R.zoneOf(el("#stage")), "play");
   assert.equal(R.zoneOf(el(".cv-bubble")), "bubble");
   assert.equal(R.zoneOf(el("#side")), "side");
-  assert.equal(R.zoneOf(el(".njg-cog")), "cog");
-  assert.equal(R.zoneOf(el(".njg-cog-menu")), "menu");
+  assert.equal(R.zoneOf(el("[data-njg-zone=cog]")), "cog");
+  assert.equal(R.zoneOf(el("[data-njg-zone=menu]")), "menu");
   assert.equal(R.skips(el(".cv-bubble")), false);
   assert.equal(R.skips(null), true);
 });
@@ -153,7 +153,8 @@ test("a change in the file is seen by chai: the numbers chai asks for follow the
   assert.deepEqual(R.counts("chai-tray"), [1, 2, 3, 4]);
   assert.equal(R.pointMs(), 900);
   const chai = read("js/cook/stations/chai-tray.js");
-  for (const ask of ["rulesAt(level)", "RULES().pointMs()", "R.counts(cups.count.rules)", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
+  for (const ask of ["rulesAt(level)", "RULES().pointMs()", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
+  assert.ok(read("js/cook/flow.js").includes("R.counts(c.rules)"), "chai's cups: the rules' count, filled in as Cook's data loads");
   const ui = read("js/cook/ui.js");
   for (const ask of ["global.Rules.level(mission.level || 1)", "global.Rules.hold(", "zones: s14 && !!global.Rules"]) assert.ok(ui.includes(ask), `the order asks the rules: ${ask}`);
 });

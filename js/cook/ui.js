@@ -1671,7 +1671,8 @@
       Object.assign(c.style, { left: `${Math.round(best.x)}px`, top: `${Math.round(best.y)}px` });
       // (SH-154's check: how much of the card sits over a face, for the contract checks only)
       try {
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(best.onFace)), by: `faces:${faces.length} w:${best.w}` });
+        const f0 = faces[0];
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(best.onFace)), by: JSON.stringify({ faces: faces.length, w: best.w, x: Math.round(best.x), y: Math.round(best.y), f: f0 ? [f0.left, f0.top, f0.right, f0.bottom].map(Math.round) : null }) });
       } catch (e) {
         /* only a log */
       }
@@ -3699,15 +3700,16 @@
     /*
      * SH-156 (Zafar, 29 Oct, round 4: "the cog top right of the play area"; lessons round 1, 8: the pinned cog took the side
      * panel's foot): the cog and its menu move to the top right of the play area in every Cook game, the side panel's foot
-     * freed for the orders; its place at each screen size is css/cook.css (.njg-cog-rail), its menu's items and their order
+     * freed for the orders; its place at each screen size is css/cook.css (.ck-cog-rail), its menu's items and their order
      * the central rules' (data/rules.json menu, js/shared/rules.js Rules.menu)
      */
     const rail = cog && cog.closest(".side-rail");
     const stageEl = $("#stage");
     if (rail && stageEl && UI.w6()) {
-      rail.classList.add("njg-cog-rail");
-      cog.classList.add("njg-cog");
-      if (menu) menu.classList.add("njg-cog-menu");
+      rail.classList.add("ck-cog-rail");
+      cog.classList.add("ck-cog");
+      cog.dataset.njgZone = "cog"; // (the central rules' skip zones know it by this: data/rules.json skip)
+      if (menu) menu.dataset.njgZone = "menu";
       stageEl.appendChild(rail);
       const order = () => {
         if (!menu || !global.Rules || !global.Rules.menu) return;

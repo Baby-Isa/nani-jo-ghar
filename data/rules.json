@@ -51,12 +51,12 @@
   "never": {
    "bubble": [".cv-bubble", ".njg-bubble", ".cl-bubble", ".speech-bubble"],
    "side": ["#side", ".side-panel", "#ng-helper", ".ng-helper"],
-   "cog": [".njg-cog", "#side-cog"],
-   "menu": [".njg-cog-menu", "#side-menu", ".njg-gu-pop"]
+   "cog": ["[data-njg-zone=cog]", "#side-cog"],
+   "menu": ["[data-njg-zone=menu]", "#side-menu", ".njg-gu-pop"]
   }
  },
  "menu": {
-  "_about": "The cog and its menu (SH-156; Zafar 29 Oct round 4): one cog, top right of the play area, in every game; a tap opens its menu, these items in this order (each the page's own button, by id; the '?' is the goal for grown-ups, home leaves the game, the book is Nani's recipe book). Where the cog sits at each screen size is the shared frame's CSS (css/shared/frame.css .njg-cog), not a number here.",
+  "_about": "The cog and its menu (SH-156; Zafar 29 Oct round 4): one cog, top right of the play area, in every game; a tap opens its menu, these items in this order (each the page's own button, by id; the '?' is the goal for grown-ups, home leaves the game, the book is Nani's recipe book). Where the cog sits at each screen size is the shared frame's CSS (a game's own CSS: Cook's css/cook.css .ck-cog-rail; the kit's shared frame when every game has the cog), not a number here.",
   "items": [
    { "id": "btn-help", "what": "the ?: what to do here (grown-ups)" },
    { "id": "btn-home", "what": "home" },

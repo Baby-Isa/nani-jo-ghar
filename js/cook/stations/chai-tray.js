@@ -226,15 +226,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
    */
   const RULES = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
   const rulesAt = (lv) => (RULES() ? RULES().level(lv) : { decoys: 1, lookalike: false, hintMs: 0 });
-  // the cups by level: the recipe's count is the rules' count for chai (data/cook.json recipes.chai.slots.cups.count names it)
-  if (Cook.onLoad)
-    Cook.onLoad.push(async (data) => {
-      const R = (global.Tokens && global.Tokens.rulesReady ? await global.Tokens.rulesReady : null) || RULES();
-      const cups = data && data.recipes && data.recipes.chai && data.recipes.chai.slots && data.recipes.chai.slots.cups;
-      if (!cups || !cups.count || !cups.count.rules) return;
-      const list = R && R.counts ? R.counts(cups.count.rules) : null;
-      cups.count = { rules: cups.count.rules, byLevel: list || [1] };
-    });
+  // (the cups by level: the recipe's count is the rules' count for chai, filled in as Cook's data loads: js/cook/flow.js rulesCounts)
 
   Mech.combined("chai-tray", {
     station: "chai-tray",
@@ -311,7 +303,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const pillNote = (id) => {
       try {
         const r = P14() && P14().get(id);
-        if (r && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pill", { step: id, by: `run:${r.pillRun || 0} earned:${r.pillEarned ? 1 : 0} shows:${r.pillHidden ? 0 : 1}` });
+        if (r && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pill", { step: id, by: JSON.stringify({ n: r.pillRun || 0, e: r.pillEarned ? 1 : 0, s: r.pillHidden ? 0 : 1 }) });
       } catch (e) {
         /* only a log */
       }

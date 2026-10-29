@@ -45,7 +45,7 @@
     timed: { firstTimeHold: true },
     words: { pill: { rightInARow: 3 }, holdMs: { new: 1500, learning: 1000, known: 600 } },
     order: { noLast: true },
-    skip: { never: { bubble: [".cv-bubble", ".njg-bubble"], side: ["#side"], cog: [".njg-cog", "#side-cog"], menu: [".njg-cog-menu", "#side-menu", ".njg-gu-pop"] } },
+    skip: { never: { bubble: [".cv-bubble", ".njg-bubble"], side: ["#side"], cog: ["[data-njg-zone=cog]", "#side-cog"], menu: ["[data-njg-zone=menu]", "#side-menu", ".njg-gu-pop"] } },
     menu: { items: [{ id: "btn-help" }, { id: "btn-home" }, { id: "btn-book" }] },
   };
   R.DEFAULT = DEFAULT;
