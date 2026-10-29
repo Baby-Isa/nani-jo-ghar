@@ -86,6 +86,15 @@ a spare. To spell out next, as tables with a general-rule column: chai level by 
 first. The rulebook is reviewed by Fable alongside `docs/architecture/target-model.md`. Later: the end card (time per level, ticks,
 the bulb; show progress, not a score).
 
+## The principles, round 2 (Zafar, 29 Oct, 01:00)
+Chai (into tonight's build): no "no" asks at L1 (from L2); numbers and extras (ginger) at L2; naming variants (kari, mori) at L3;
+half or full at L4 ("a maybe"); decoys 1, 2, 3, 4 as space allows, salt not before L4 (too like sugar); the active order card
+always open, its Kutchi always shown, the English dotted from L2, the picture blurred from L3; the heat quicker at L2, the green
+narrower at L3, a little of both at L4 (to review). The general rule per level: L2 more and "no", L3 other ways of saying or
+naming, L4 added complexity. The hint is the guide's (Nani in Cook, the doctor in the clinic). The ladder counts correct uses,
+no days; its last rung sound only. Onboarding: every item not on the order card is shown; otherwise each new action once; the
+order's pop-outs may quicken with exposure. Next: the principles again with these, then a games-as-columns table.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
