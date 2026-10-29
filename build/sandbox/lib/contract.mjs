@@ -885,7 +885,15 @@ const SHARED_LADDER = (() => {
     return {};
   }
 })();
-export const LADDER = Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
+// SH-155 (Zafar, 29 Oct): the hint waits moved to the central rules (data/rules.json levels.hintS, in seconds; move, never copy)
+const RULES_FILE = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL("../../../data/rules.json", import.meta.url), "utf8"));
+  } catch (e) {
+    return {};
+  }
+})();
+export const LADDER = Array.isArray(((RULES_FILE || {}).levels || {}).hintS) ? RULES_FILE.levels.hintS.map((s) => Math.round(s * 1000)) : Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
 export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
 export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
 export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
@@ -1422,10 +1430,10 @@ function check36(r, tl, segs, v, add) {
 }
 // 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
 export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
-// Zafar, 29 Oct (chai level rules 5, 7: data/cook.json levelTable.stations["chai-tray"]): chai's decoys 1, 2, 3, 4; its order card's
-// Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
+// Zafar, 29 Oct (chai level rules 5, 7; SH-155: the central rules, data/rules.json levels.decoys): chai's decoys 1, 2, 3, 4; its order
+// card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
 export const CHAI_ROW = /^chai-tray$/;
-export const CHAI_DECOYS = { 1: 1, 2: 2, 3: 3, 4: 4 };
+export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
 const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
 const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
 function check37(r, tl, segs, add) {

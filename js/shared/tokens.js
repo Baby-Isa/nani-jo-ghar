@@ -12,9 +12,11 @@
  *   Motion              the kit's four moves, read when asked (css/shared/focus.css draws them):
  *                         Motion.glow  {ms, radius, rgb, alpha, color}   (color: Phaser's 0xRRGGBB)
  *                         Motion.pulse {ms, scale}   Motion.hop {ms}   Motion.talk {ms, tilt}
- *   Tokens.ladder       {helpMs: [L1..L4], bulbMs: [L1..L5], bulbPulseMs} from data/shared.json; until it has loaded every
- *                       field is null (the readers then wait: no help, no pulse; the page loads it at once)
- *   Tokens.ready        a Promise of the ladder
+ *   Tokens.ladder       {helpMs: [L1..L4], bulbMs: [L1..L5], bulbPulseMs}: bulb and pulse from data/shared.json, helpMs from the
+ *                       central rules (data/rules.json levels.hintS through js/shared/rules.js; SH-155); until they have loaded
+ *                       every field is null (the readers then wait: no help, no pulse; the page loads them at once)
+ *   Tokens.ready        a Promise of the ladder (both files in)
+ *   Tokens.rules        the central rules' reader (window.Rules) once loaded; Tokens.rulesReady a Promise of it
  *
  * Plain <script> (window.Tokens, window.Motion; Shared.tokens) and CommonJS (node: the ladder is read from disk at once).
  */
@@ -91,37 +93,63 @@
     talk: { enumerable: true, get: () => ({ ms: T.ms("talk-ms"), tilt: num("talk-tilt") }) },
   });
 
-  /* ---------------- the ladders: data/shared.json ---------------- */
+  /* ---------------- the ladders: data/shared.json, the hint waits from the central rules ---------------- */
+  // SH-155 (Zafar, 29 Oct): the guide's hint waits moved to the central rules (data/rules.json levels.hintS, read through
+  // js/shared/rules.js, their one reader); helpMs here is filled from it, so every reader of Tokens.ladder is unchanged
   const EMPTY = { helpMs: null, bulbMs: null, bulbPulseMs: null };
   T.ladder = Object.assign({}, EMPTY);
   const take = (j) => {
-    if (j && typeof j === "object") for (const k of Object.keys(EMPTY)) if (j[k] != null) T.ladder[k] = j[k];
+    if (j && typeof j === "object") for (const k of Object.keys(EMPTY)) if (k !== "helpMs" && j[k] != null) T.ladder[k] = j[k];
     return T.ladder;
   };
+  const takeRules = (R) => {
+    if (R && R.loaded && R.hintList) T.ladder.helpMs = R.hintList();
+    return R || null;
+  };
   T.LADDER_FILE = "data/shared.json";
+  T.rules = null;
   if (typeof module === "object" && module.exports && typeof require === "function") {
-    // node (the unit tests): the table from disk, at once
+    // node (the unit tests): the table and the rules from disk, at once
     try {
       take(JSON.parse(require("fs").readFileSync(require("path").join(__dirname, "..", "..", T.LADDER_FILE), "utf8")));
     } catch (e) {
       /* no table: the readers wait */
     }
+    try {
+      T.rules = takeRules(require("./rules.js"));
+    } catch (e) {
+      /* no rules: the hint waits wait */
+    }
+    T.rulesReady = Promise.resolve(T.rules);
     T.ready = Promise.resolve(T.ladder);
   } else {
     // the page: this script's own address finds the table (a page in lab/ too); njgV stamps it (B7)
     const self = root.document && root.document.currentScript && root.document.currentScript.src;
     const base = self ? self.replace(/js\/shared\/tokens\.js.*$/, "") : "";
-    let url = base + T.LADDER_FILE;
-    if (typeof root.njgV === "function") url = root.njgV(url);
-    else if (root.NJG_V) url += (url.includes("?") ? "&" : "?") + "v=" + root.NJG_V;
-    T.ready =
+    const stamp = (u) => (typeof root.njgV === "function" ? root.njgV(u) : root.NJG_V ? u + (u.includes("?") ? "&" : "?") + "v=" + root.NJG_V : u);
+    // the rules' reader: the page's own copy if it loaded one, else loaded here (every page with the tokens has the rules)
+    T.rulesReady = new Promise((res) => {
+      if (root.Rules && root.Rules.ready) return res(root.Rules.ready);
+      const d = root.document;
+      if (!d || !d.createElement) return res(null);
+      root.NJG_RULES_BASE = base;
+      const s = d.createElement("script");
+      s.src = stamp(base + "js/shared/rules.js");
+      s.onload = () => res(root.Rules ? root.Rules.ready : null);
+      s.onerror = () => res(null);
+      (d.head || d.documentElement).appendChild(s);
+    })
+      .then((R) => (T.rules = takeRules(R)))
+      .catch(() => null);
+    const shared =
       typeof root.fetch === "function"
         ? root
-            .fetch(url)
+            .fetch(stamp(base + T.LADDER_FILE))
             .then((r) => (r.ok ? r.json() : null))
             .then(take)
             .catch(() => T.ladder)
         : Promise.resolve(T.ladder);
+    T.ready = Promise.all([shared, T.rulesReady]).then(() => T.ladder);
   }
   return T;
 });

@@ -861,12 +861,9 @@
      "type": "people",
      "who": "$family",
      "count": {
-      "byLevel": [
-       1,
-       2,
-       2,
-       3
-      ]
+      "rules": "chai-tray",
+      "byLevel": [1],
+      "_byLevel": "one cup only until the central rules have loaded (a page or test without js/shared/rules.js); in the game js/cook/stations/chai-tray.js replaces it with Rules.counts(\"chai-tray\")"
      },
      "tastes": "chai",
      "each": {
@@ -951,7 +948,7 @@
        ]
       }
      },
-     "_count": "s08 w2A (Zafar, 19 Oct): 1, 2, 2, 3 cups; half/full stays L4's (chai-tray.json halfLine), never L3"
+     "_count": "SH-155 (Zafar, 29 Oct): the cups by level are the central rules' count for chai-tray (data/rules.json count.games: most 3 at L4, so 1, 2, 2, 3), filled in by js/cook/stations/chai-tray.js as the data loads; half/full stays L4's (chai-tray.json halfLine), never L3"
     }
    },
    "say": [
@@ -1029,14 +1026,6 @@
        "when": "chai-tray"
       },
       {
-       "if": "!it.dudh",
-       "frame": "no",
-       "x": [
-        "cook-dudh"
-       ],
-       "when": "chai-tray"
-      },
-      {
        "if": "it.khun",
        "frame": "sugar",
        "x": [
@@ -1044,14 +1033,6 @@
          "n": "$it.khun",
          "of": "cook-khun"
         }
-       ],
-       "when": "chai-tray"
-      },
-      {
-       "if": "!it.khun",
-       "frame": "no",
-       "x": [
-        "cook-khun"
        ],
        "when": "chai-tray"
       },
@@ -1068,6 +1049,23 @@
        "frame": "and",
        "x": [
         "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "!it.dudh",
+       "frame": "no",
+       "x": [
+        "cook-dudh"
+       ],
+       "when": "chai-tray",
+       "_s14": "CHAI-39, SH-152 (Zafar, 29 Oct, round 4: 'no items said last for now'; data/rules.json order.noLast): every 'no' item is said after everything asked for, so the order row only moves forward while it is given"
+      },
+      {
+       "if": "!it.khun",
+       "frame": "no",
+       "x": [
+        "cook-khun"
        ],
        "when": "chai-tray"
       }
@@ -5956,14 +5954,6 @@
    true
   ],
   "stations": {
-   "chai-tray": {
-    "_about": "Zafar, 29 Oct (chai level rules 5, 7): chai's own row. decoys 1, 2, 3, 4 by level (capped by the shelf's space), the lookalike (the salt, sugar's) only at L4; never salt before L4. The card: the active order card always open, its Kutchi always written (never folded at L4, never dotted); its English dotted from L2 (en), its picture blurred from L3 (pic). Nani's helper card still shows everything.",
-    "card": ["open", "open", "open", "open"],
-    "decoys": [1, 2, 3, 4],
-    "lookalike": [false, false, false, true],
-    "en": [true, false, false, false],
-    "pic": [true, true, false, false]
-   },
    "daar-chop": {
     "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",
     "card": [
@@ -5979,7 +5969,8 @@
      true
     ]
    }
-  }
+  },
+  "_chai": "SH-155 (Zafar, 29 Oct, round 4): chai's level row moved to the central rules (data/rules.json levels: decoys 1, 2, 3, 4 with the lookalike at L4, the order card's Kutchi always written, its English dotted from L2, its picture blurred from L3; read through js/shared/rules.js). The other stations keep this table until their roll-out."
  },
  "timing": {
   "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",

@@ -2197,15 +2197,13 @@
     // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
     if (head && !src) return null;
     // Zafar, 29 Oct (chai level rules 7): on the s14 look (chai) the card by chai's own row: its Kutchi always written, its English
-    // shown at L1 and dotted from L2, its picture blurred from L3 (data/cook.json levelTable.stations chai-tray en, pic)
+    // shown at L1 and dotted from L2, its picture blurred from L3 (SH-155: the central rules, data/rules.json levels cardEnglish,
+    // cardPicture, through js/shared/rules.js)
     if (UI.s14()) {
-      const row = Cook.levelRow ? Cook.levelRow(mission.level, "chai-tray") : {};
-      const T = ((Cook.data.levelTable || {}).stations || {})["chai-tray"] || {};
-      const lv = Math.max(1, Math.min(4, mission.level || 1)) - 1;
-      const at = (k, d) => (Array.isArray(T[k]) ? T[k][Math.min(lv, T[k].length - 1)] : d);
+      const RL = global.Rules ? global.Rules.level(mission.level || 1) : { cardEnglish: false, cardPicture: true };
+      const at = (k) => (k === "pic" ? RL.cardPicture : RL.cardEnglish);
       const srcB = wcPicSrc(wcWordId(r));
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
-      void row;
       return {
         word: {
           id: wcWordId(r),
@@ -2217,8 +2215,8 @@
           say: () => Lang.speak(r.line),
         },
         wordOpts: {
-          slots: { picture: at("pic", true) !== false && !!srcB, english: at("en", false) === true, kutchiText: true },
-          enShown: at("en", false) === true,
+          slots: { picture: at("pic") !== false && !!srcB, english: at("en") === true, kutchiText: RL.cardKutchi !== false },
+          enShown: at("en") === true,
           progress: Cook.core && Cook.core.progress,
           onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
         },

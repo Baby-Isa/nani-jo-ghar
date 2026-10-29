@@ -129,7 +129,9 @@ test("the plan: one page serves every probe on the same flow, size and variant; 
 
 test("round 3: afterPause waits the help ladder's pause for the level (data/shared.json helpMs) and 300 ms after the moment", async () => {
   const { afterPauseMs, ladderMs } = await import("../../sandbox/lib/evidence.mjs");
-  const shared = JSON.parse((await import("node:fs")).readFileSync(new URL("../../../data/shared.json", import.meta.url), "utf8"));
+  // (SH-155, 29 Oct: the hint waits moved from data/shared.json helpMs to the central rules, data/rules.json levels.hintS)
+  const rules = JSON.parse((await import("node:fs")).readFileSync(new URL("../../../data/rules.json", import.meta.url), "utf8"));
+  const shared = { helpMs: rules.levels.hintS.map((s) => s * 1000) };
   assert.equal(ladderMs(1), shared.helpMs[0]);
   assert.equal(afterPauseMs(2), shared.helpMs[1] + 300);
   const n = normalizeSpec({ "A-01": [{ flow: "cook:fetch", level: [1, 2], at: "request", afterPause: true, delay: 100, capture: ["crop:.x"] }] }, ctx);

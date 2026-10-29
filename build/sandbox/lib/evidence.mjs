@@ -23,7 +23,8 @@ export const DEFAULT_SIZE = "1280x665"; // Zafar's laptop (lib/env.mjs QUICK_SIZ
 export const AFTER_PAUSE_EXTRA = 300;
 let LADDER = null;
 export const ladderMs = (level, root = join(new URL("../../..", import.meta.url).pathname)) => {
-  if (!LADDER) { try { LADDER = JSON.parse(readFileSync(join(root, "data", "shared.json"), "utf8")).helpMs; } catch (e) { LADDER = [7000, 8000, 11000, 15000]; } }
+  // (SH-155, 29 Oct: the hint waits moved to the central rules, data/rules.json levels.hintS, in seconds)
+  if (!LADDER) { try { LADDER = JSON.parse(readFileSync(join(root, "data", "rules.json"), "utf8")).levels.hintS.map((s) => Math.round(s * 1000)); } catch (e) { LADDER = []; } }
   return LADDER[Math.min(LADDER.length, Math.max(1, level)) - 1];
 };
 export const afterPauseMs = (level) => ladderMs(level) + AFTER_PAUSE_EXTRA;

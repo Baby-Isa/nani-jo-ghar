@@ -40,10 +40,12 @@ test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1
   assert.equal(each.dudh.byLevel[0].chance, 1, "every cup has milk at L1");
   assert.equal(each.khun.byLevel[0].zero, 0, "one sugar at L1, never none");
   assert.deepEqual(each.named.byLevel.map((x) => x.chance), [0, 0, 0.5], "kari / mori chai from L3");
-  const row = cook.levelTable.stations["chai-tray"];
+  // (SH-155, 29 Oct: chai's level row moved to the central rules, data/rules.json levels; the active card's Kutchi always written)
+  const row = JSON.parse(readFileSync(new URL("../../data/rules.json", import.meta.url), "utf8")).levels;
+  assert.equal(cook.levelTable.stations["chai-tray"], undefined, "no copy of the rules in cook.json");
   assert.deepEqual(row.decoys, [1, 2, 3, 4]);
   assert.deepEqual(row.lookalike, [false, false, false, true]);
-  assert.ok(row.card.every((c) => c === "open"), "the active card never folds");
+  assert.ok(row.cardKutchi.every((c) => c === true), "the active card's Kutchi always written");
   const st = JSON.parse(readFileSync(new URL("../../data/stations/chai-tray.json", import.meta.url), "utf8"));
   const lv = st.mechanic ? st.mechanic.levels : st.levels || [];
   assert.ok(lv.length >= 4 || JSON.stringify(st).includes('"heat"'), "chai's heat by level");

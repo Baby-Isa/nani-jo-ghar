@@ -1,0 +1,66 @@
+{
+ "_about": "The central rules (SH-155; docs/game-design/rulebook.md section 1; Zafar 29 Oct, round 4: 'timings, level rules, the ladder, onboarding and layout rules central, each game's content, scene and feel its own'). ONE file every game reads, through ONE reader, js/shared/rules.js (window.Rules; Rules.count(), Rules.level(), Rules.hold(), ...): a game never reads this file itself and never keeps a copy of a number here (build/test_shared_rules.mjs checks chai). Change a number here and every game on the rules follows. data/shared.json names this file (rulesFile). Chai is the first game on it (Sprint 14); the other games move on at the roll-out. Each section says what it is; '_' keys are notes for people.",
+ "version": 1,
+ "levels": {
+  "_about": "What a level means, every game (rulebook: L1 the core, L2 more of it, L3 other ways of saying it, L4 added complexity). Each list is L1..L4. decoys: things on offer nobody asked for (Zafar 29 Oct round 1: 'from L1, one more a level where the space allows'; a game caps it by its space); lookalike: one decoy a lookalike of a wanted thing (L4 only; chai: the salt, sugar's); noAsks: 'no' asks (dudh na) allowed (from L2); cardKutchi: the active order card's Kutchi written (always); cardEnglish: its English shown, else dotted (shown at L1 only); cardPicture: its picture shown, else blurred (shown at L1-L2); hintS: the guide's hint (Nani in Cook, the doctor in the clinic) after this many seconds from the last action (7, 9, 11, 13 s, Zafar 29 Oct; moved here from data/shared.json helpMs, which js/shared/tokens.js now fills from this list).",
+  "decoys": [1, 2, 3, 4],
+  "lookalike": [false, false, false, true],
+  "noAsks": [false, true, true, true],
+  "cardKutchi": [true, true, true, true],
+  "cardEnglish": [true, false, false, false],
+  "cardPicture": [true, true, false, false],
+  "hintS": [7, 9, 11, 13]
+ },
+ "count": {
+  "_about": "How many of a game's one repeating thing (cups, skewers, samosas...) by level: L1 is 1, L4 the game's most, L2 and L3 even steps between, rounded: 1 + (most - 1) x (level - 1) / 3 (Zafar, 29 Oct round 4). A game may override a level: levels {\"2\": n}. most: the proposed values of the rulebook's section 2 (a game not yet rolled out keeps its own count until its roll-out reads this).",
+  "games": {
+   "chai-tray": { "most": 3, "what": "cups (three burners)" },
+   "fetch": { "most": 6, "what": "items to fetch" },
+   "maani-line": { "most": 4, "what": "rotis" },
+   "mishkaki-grill": { "most": 4, "what": "skewers" },
+   "samosa": { "most": 6, "what": "samosas (if the pan fits six)" },
+   "chaat": { "most": 4, "what": "toppings" }
+  }
+ },
+ "advance": {
+  "_about": "Moving up a level (Zafar 29 Oct round 4, 'for now, make it easy to change'; the Fable review 29 Oct): up one level after `rounds` CONSECUTIVE finished rounds at a level in which the guide's hint came at most `maxGuideHints` times a round (only the guide's hint counts: a peek at the dots or the eye, the arrow's helper card the child opened and the bulb never count); a round with more hints starts the count again; never down by itself (down: false); a grown-up's pick (the labs level, a story day's level) always wins and never moves the count. Kept per game in the save (Cook: save.levelUp[game] = {level, streak}). Story mode and free play may set their own later.",
+  "rounds": 3,
+  "maxGuideHints": 1,
+  "down": false,
+  "top": 4
+ },
+ "showing": {
+  "_about": "Showing what to do (rulebook): every item not on the order card is shown at the start; otherwise each new action once; each level's new thing once; once ever per player ('New player' resets it). pointMs: when the showing stops, the order card is lit this long, once, so the eye knows where to look next (CHAI-37: 1.2 s).",
+  "pointMs": 1200
+ },
+ "timed": {
+  "_about": "Timed controls (SH-158; Zafar 29 Oct round 4; the Fable review: only a control the child operates, never a thing that moves by itself): the first time a child meets one (a new player: chai's boil knob, later the tawa flip, the grill turn, the fry lift), its timer holds in the green while the light shows the control, until the child taps it; after that, normal timing. firstTimeHold: on or off for every game.",
+  "firstTimeHold": true
+ },
+ "words": {
+  "_about": "The word ladder (SH-159; Zafar 29 Oct round 3): a word's Kutchi shows under its item (the word pill, with its speaker) until it is picked right `pill.rightInARow` times in a row (first try, no peek: the dots, the eye and the guide's help are help, never a right pick); then the speaker only. A miss brings the Kutchi back until the next right pick (one is enough once it has been earned). The big card's hold (holdMs: how long a word's card stays big as the order is said, from its pop, its line said meanwhile): new (never picked right), learning, known (its pill earned: speaker only).",
+  "pill": { "rightInARow": 3 },
+  "holdMs": { "new": 1500, "learning": 1000, "known": 600 }
+ },
+ "order": {
+  "_about": "The order said (CHAI-39, SH-152; Zafar 29 Oct round 4: 'no items said last for now'): noLast: a person's 'no' items (dudh na, khun na) are said last, so the order row only moves forward while it is given. A game's say list follows it (chai: data/cook.json recipes.chai.say; the language engine builds each line).",
+  "noLast": true
+ },
+ "skip": {
+  "_about": "Skipping (SH-157; Zafar 29 Oct round 4; the Fable review): while the order (or any line) is said, a tap in the play area skips what is said and lands every card; a tap on one of the `never` zones does its own thing and never skips: a speech bubble (its speaker replays), the side panel (its cards and speakers), the cog and its menu. A first-time showing (the light) is never skipped. Each zone is a list of CSS selectors; Rules.skips(target) answers for a tapped element.",
+  "never": {
+   "bubble": [".cv-bubble", ".njg-bubble", ".cl-bubble", ".speech-bubble"],
+   "side": ["#side", ".side-panel", "#ng-helper", ".ng-helper"],
+   "cog": [".njg-cog", "#side-cog"],
+   "menu": [".njg-cog-menu", "#side-menu", ".njg-gu-pop"]
+  }
+ },
+ "menu": {
+  "_about": "The cog and its menu (SH-156; Zafar 29 Oct round 4): one cog, top right of the play area, in every game; a tap opens its menu, these items in this order (each the page's own button, by id; the '?' is the goal for grown-ups, home leaves the game, the book is Nani's recipe book). Where the cog sits at each screen size is the shared frame's CSS (css/shared/frame.css .njg-cog), not a number here.",
+  "items": [
+   { "id": "btn-help", "what": "the ?: what to do here (grown-ups)" },
+   { "id": "btn-home", "what": "home" },
+   { "id": "btn-book", "what": "Nani's recipe book" }
+  ]
+ }
+}

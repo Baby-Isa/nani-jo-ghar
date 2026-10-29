@@ -219,6 +219,38 @@ export function reveal(rec, slot, data, now = Date.now()) {
   return r;
 }
 
+/*
+ * SH-159 (Zafar, 29 Oct, round 3): the word pill, a per-word flag of its own (the stages above stay as they are for the other
+ * games). A word's Kutchi shows under its item until it is picked right `run` times in a row (first try, no peek), then the
+ * speaker only; a miss brings the Kutchi back until the next right pick (once earned, one right pick hides it again). A peek
+ * (the dots, the eye, the guide's help) is never a right pick: it neither counts nor breaks the run. The number is the central
+ * rules' (data/rules.json words.pill.rightInARow, through js/shared/rules.js); pass it, or the page's Rules is asked.
+ * On the record: pillRun (right picks in a row), pillEarned (the run was reached once), pillHidden (speaker only now).
+ */
+const pillNeed = (run) => {
+  if (typeof run === "number" && run > 0) return run;
+  const R = typeof globalThis !== "undefined" ? globalThis.Rules : null;
+  return R && R.pillRun ? R.pillRun() : 3;
+};
+export function pillPick(rec, { ok, firstTry = true, peek = false } = {}, run, now = Date.now()) {
+  const r = fresh(rec);
+  if (ok && (peek || !firstTry)) return r; // help, or a second try: never a right pick, never a miss
+  r.last = now;
+  if (ok) {
+    r.pillRun = num(r.pillRun) + 1;
+    if (r.pillEarned || r.pillRun >= pillNeed(run)) {
+      r.pillEarned = true;
+      r.pillHidden = true;
+    }
+  } else {
+    r.pillRun = 0;
+    r.pillHidden = false;
+  }
+  return r;
+}
+/** Does the word's pill show its Kutchi (true) or the speaker only (false)? */
+export const pillShows = (rec) => !(rec && rec.pillHidden);
+
 /** The progress service over the one save's `words` namespace. */
 export function createProgress({ save, data, followCook = true } = {}) {
   const D = rules(data);
@@ -256,6 +288,9 @@ export function createProgress({ save, data, followCook = true } = {}) {
     said: (id, ev) => put(id, said(all()[id], ev, D)),
     support: (id, o) => support(all()[id], D, o),
     reveal: (id, slot) => put(id, reveal(all()[id], slot, D)),
+    /** SH-159: a pick on the word's item ({ok, firstTry, peek}): the pill's own flag; shows(id): its Kutchi still written */
+    pill: (id, ev, run) => put(id, pillPick(all()[id], ev, run)),
+    pillShows: (id) => pillShows(all()[id]),
     importCook: (cookWords) => save && save.set("words", importCook(all(), cookWords, D)),
     /** SH-60 (PA5): forget every learned word ("Start over", the grown-ups' "play as new"): each word is new again. */
     reset: () => {
