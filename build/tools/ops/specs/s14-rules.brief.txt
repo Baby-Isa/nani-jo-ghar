@@ -1,0 +1,78 @@
+SESSION NAME / MODE:  s14-rules: one central rules file, and chai on it (Sprint 14, the roll-out's first game)
+MODEL AND EFFORT:     Opus, high effort (the central file is the shape every game will follow; its design and chai's wiring need judgement, and the screens are checked by eye)
+COST ESTIMATE:        about $40-60
+HARD STOP:            30 Oct 2026, 00:30 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s14-rules.context.md (855 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s14-chai-lessons.md FIRST (what the last chai build taught: every point applies to you)
+     docs/game-design/rulebook.md (the rules, section 1, and chai's column; the other games' columns are for later: do not change those games beyond the cog)
+     docs/sprints/S14-lock-the-principles.md rounds 1-4 (Zafar's words for every rule)
+     data/shared.json and js/shared/tokens.js (the one help ladder today: the pattern the central file grows from), data/cook.json levelTable (chai's row)
+     build/reports/s14-chai.md (the last build: what the kit's s14 option is and where it lives)
+
+FILES THIS SESSION OWNS (edit only these):
+  - the central rules: data/shared.json (a new rules section, or one new data file it names) and the one module that reads it (js/shared/tokens.js or a new js/shared/rules.js); unit tests for both
+  - js/cook/ui.js, js/cook/flow.js, js/cook/stations/chai-tray.js, data/cook.json (chai and the level table only), data/stations/chai-tray.json
+  - js/shared/word-card.js, js/shared/order-card.js, js/shared/onboard.js, js/shared/request-popup.js, js/shared/conversations.js (the skip zone and the cog only) and their css/shared/*.css, css/cook.css (the cog), cook.html (the cog's markup only)
+  - js/core/progress.js (the word pill's rule only: a new per-word flag; the stages stay as they are for the other games)
+  - build/sandbox/lib/contract.mjs and its tests (new checks for this brief's rows only), build/sandbox/data/evidence.json (this brief's rows only)
+  - build/reports/s14-rules.md and build/reports/s14-chai-lessons.md (append a 'Round 2' section: what this build taught)
+READ-ONLY (never edit):
+  - lab/**
+  - js/clinic/**, data/clinic/**
+  - the other Cook stations' own files (js/cook/stations/*.js except chai-tray.js) and their data: they read the central file only where this brief says (the hint waits, the cog)
+  - assets/**
+  - build/tools/**, .claude/**, docs/** except the two reports above
+  - CLAUDE.md
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a rule the code cannot follow yet is listed in the report, never faked
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-155: one central rules file, documented in place, with every rule of docs/game-design/rulebook.md section 1 as data: each game's most at L4 and the count formula (L1 is 1, even steps between, rounded; a per-game override), the decoys by level, the order card by level (English dotted from L2, picture blurred from L3, the Kutchi always), the hint waits (7, 9, 11, 13 s: move, never copy, data/shared.json helpMs), the order's big-card hold by the word's state (1.5 s new, 1.0 s learning, 0.6 s known), the order card's light after the showing (1.2 s), the level-up rule, the word ladder, the skip zones, the cog's place per screen size and its menu (what it opens, in what order). One reader module; chai reads every one of its numbers from it (none left in chai's code or data).
+     Accept: unit tests of the reader (each rule, and one change in the file seen by chai); a static check that chai keeps no copy; chai L1-L4 at the four sizes as before (contract run 0 new breaks)
+  2. SH-156: the cog top right of the play area in every Cook game (the sidebar's foot freed, so the second order shows more), its menu (the ?, home, book, and what else it holds today) opening from it, both from the central file. Clear of bubbles, cards and the play's controls at every size.
+     Accept: every Cook station at 740x320 and 1920x1080 and chai at the four sizes: the cog top right, nothing under it (shots), the menu opens and each item works
+  3. SH-157: the skip zone, central: during the order (and any line said) a tap in the play area skips and lands every card; a tap on a speech bubble (its speaker replays), the side panel (its cards and speakers do their own thing), the cog or the menu never skips.
+     Accept: a contract check: a tap on each zone during chai's order at L1 (skip vs not); CK-54's check still green
+  4. CHAI-39 and SH-152: the 'no' items said last in chai's order, so the row only moves forward while the order is given (the say order in data/cook.json; the engine builds the line, never a hand-written one; list the new word order for Mum in your report).
+     Accept: contract-72 green at chai L2-L4 at the four sizes (the row never glides back during the order)
+  5. SH-154: the big pop-out card never over a face (placed in free space beside the side panel, measured against every face on screen, at every size), and the order card is not a large empty white box before its first word (its height follows the cards it will hold, or the slots show faint).
+     Accept: a filmed order at 930x430 and 740x320 (chai L4): no frame with the card over a face; the order card's empty area small
+  6. SH-158: the first time a child meets chai's boil (a new player), the heat holds in the green while the knob is lit, until the knob is tapped; after that, normal timing. The rule central (any timed control can use it later).
+     Accept: chai L1 new player: the heat holds in the green until the tap (a timeline in the report); a returning player's heat never holds
+  7. SH-159: the word pill under each shelf item: the Kutchi written (with its speaker) until the word is picked right three times in a row (first try, no peek), then speaker only; a miss brings the Kutchi back until the next right pick. A per-word flag in js/core/progress.js, central numbers; chai's shelf pills follow it; other games unchanged.
+     Accept: unit tests (three right hides, a miss shows, one right hides again, a peek never counts); chai with a scripted save shows each case (shots)
+  8. SH-160: the level-up rule, central and easy to change: up a level after 3 finished rounds at it where the guide's hint came at most once a round; never down by itself; a grown-up's pick (the labs level, a story day's level) always wins. Store the count per game in the save; chai first.
+     Accept: unit tests; a scripted save after three good chai rounds starts the next round at L2 where the game picks its own level
+  9. Keep everything else (chai's heat, ring, pour, art, cards, light, onboarding as built; other games unchanged but the cog). Append 'Round 2' to build/reports/s14-chai-lessons.md: what this build taught the builders of the other games (what was hard, what surprised, what the central file needs next).
+     Accept: the contract run on cook:chai-tray (L1-L4), cook:maani-line, cook:mishkaki-grill, cook:samosa, cook:fetch at 930x430 and 1920x1080, 0 new breaks the report doesn't explain; checks.mjs green
+
+REGRESSION ROWS TO RECHECK (10; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (10): SH-155*, SH-156*, SH-157*, SH-158*, SH-159*, SH-160*, SH-154*, CHAI-39*, SH-152*, CK-54*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s14-rules.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8875 NJG_LOCK=/tmp/njg-browser-8875.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s14-rules.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8875.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:maani-line,cook:mishkaki-grill,cook:samosa,cook:fetch --sizes 740x320,930x430,1280x665,1920x1080 --run-id s14-rules-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s14-rules.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s14-rules.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8875.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8875; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s14-rules.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

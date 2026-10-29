@@ -1,0 +1,45 @@
+{
+  "name": "s14-rules: one central rules file, and chai on it (Sprint 14, the roll-out's first game)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the central file is the shape every game will follow; its design and chai's wiring need judgement, and the screens are checked by eye",
+  "cost": "about $40-60",
+  "stop": "30 Oct 2026, 00:30 UK",
+  "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": ["SH-155", "SH-156", "SH-157", "SH-158", "SH-159", "SH-160", "SH-154", "CHAI-39", "SH-152"],
+  "read": [
+    "build/reports/s14-chai-lessons.md FIRST (what the last chai build taught: every point applies to you)",
+    "docs/game-design/rulebook.md (the rules, section 1, and chai's column; the other games' columns are for later: do not change those games beyond the cog)",
+    "docs/sprints/S14-lock-the-principles.md rounds 1-4 (Zafar's words for every rule)",
+    "data/shared.json and js/shared/tokens.js (the one help ladder today: the pattern the central file grows from), data/cook.json levelTable (chai's row)",
+    "build/reports/s14-chai.md (the last build: what the kit's s14 option is and where it lives)"
+  ],
+  "owns": [
+    "the central rules: data/shared.json (a new rules section, or one new data file it names) and the one module that reads it (js/shared/tokens.js or a new js/shared/rules.js); unit tests for both",
+    "js/cook/ui.js, js/cook/flow.js, js/cook/stations/chai-tray.js, data/cook.json (chai and the level table only), data/stations/chai-tray.json",
+    "js/shared/word-card.js, js/shared/order-card.js, js/shared/onboard.js, js/shared/request-popup.js, js/shared/conversations.js (the skip zone and the cog only) and their css/shared/*.css, css/cook.css (the cog), cook.html (the cog's markup only)",
+    "js/core/progress.js (the word pill's rule only: a new per-word flag; the stages stay as they are for the other games)",
+    "build/sandbox/lib/contract.mjs and its tests (new checks for this brief's rows only), build/sandbox/data/evidence.json (this brief's rows only)",
+    "build/reports/s14-rules.md and build/reports/s14-chai-lessons.md (append a 'Round 2' section: what this build taught)"
+  ],
+  "readOnly": ["lab/**", "js/clinic/**, data/clinic/**", "the other Cook stations' own files (js/cook/stations/*.js except chai-tray.js) and their data: they read the central file only where this brief says (the hint waits, the cog)", "assets/**", "build/tools/**, .claude/**, docs/** except the two reports above", "CLAUDE.md"],
+  "stubs": "none: a rule the code cannot follow yet is listed in the report, never faked",
+  "tasks": [
+    { "do": "SH-155: one central rules file, documented in place, with every rule of docs/game-design/rulebook.md section 1 as data: each game's most at L4 and the count formula (L1 is 1, even steps between, rounded; a per-game override), the decoys by level, the order card by level (English dotted from L2, picture blurred from L3, the Kutchi always), the hint waits (7, 9, 11, 13 s: move, never copy, data/shared.json helpMs), the order's big-card hold by the word's state (1.5 s new, 1.0 s learning, 0.6 s known), the order card's light after the showing (1.2 s), the level-up rule, the word ladder, the skip zones, the cog's place per screen size and its menu (what it opens, in what order). One reader module; chai reads every one of its numbers from it (none left in chai's code or data).", "accept": "unit tests of the reader (each rule, and one change in the file seen by chai); a static check that chai keeps no copy; chai L1-L4 at the four sizes as before (contract run 0 new breaks)" },
+    { "do": "SH-156: the cog top right of the play area in every Cook game (the sidebar's foot freed, so the second order shows more), its menu (the ?, home, book, and what else it holds today) opening from it, both from the central file. Clear of bubbles, cards and the play's controls at every size.", "accept": "every Cook station at 740x320 and 1920x1080 and chai at the four sizes: the cog top right, nothing under it (shots), the menu opens and each item works" },
+    { "do": "SH-157: the skip zone, central: during the order (and any line said) a tap in the play area skips and lands every card; a tap on a speech bubble (its speaker replays), the side panel (its cards and speakers do their own thing), the cog or the menu never skips.", "accept": "a contract check: a tap on each zone during chai's order at L1 (skip vs not); CK-54's check still green" },
+    { "do": "CHAI-39 and SH-152: the 'no' items said last in chai's order, so the row only moves forward while the order is given (the say order in data/cook.json; the engine builds the line, never a hand-written one; list the new word order for Mum in your report).", "accept": "contract-72 green at chai L2-L4 at the four sizes (the row never glides back during the order)" },
+    { "do": "SH-154: the big pop-out card never over a face (placed in free space beside the side panel, measured against every face on screen, at every size), and the order card is not a large empty white box before its first word (its height follows the cards it will hold, or the slots show faint).", "accept": "a filmed order at 930x430 and 740x320 (chai L4): no frame with the card over a face; the order card's empty area small" },
+    { "do": "SH-158: the first time a child meets chai's boil (a new player), the heat holds in the green while the knob is lit, until the knob is tapped; after that, normal timing. The rule central (any timed control can use it later).", "accept": "chai L1 new player: the heat holds in the green until the tap (a timeline in the report); a returning player's heat never holds" },
+    { "do": "SH-159: the word pill under each shelf item: the Kutchi written (with its speaker) until the word is picked right three times in a row (first try, no peek), then speaker only; a miss brings the Kutchi back until the next right pick. A per-word flag in js/core/progress.js, central numbers; chai's shelf pills follow it; other games unchanged.", "accept": "unit tests (three right hides, a miss shows, one right hides again, a peek never counts); chai with a scripted save shows each case (shots)" },
+    { "do": "SH-160: the level-up rule, central and easy to change: up a level after 3 finished rounds at it where the guide's hint came at most once a round; never down by itself; a grown-up's pick (the labs level, a story day's level) always wins. Store the count per game in the save; chai first.", "accept": "unit tests; a scripted save after three good chai rounds starts the next round at L2 where the game picks its own level" },
+    { "do": "Keep everything else (chai's heat, ring, pour, art, cards, light, onboarding as built; other games unchanged but the cog). Append 'Round 2' to build/reports/s14-chai-lessons.md: what this build taught the builders of the other games (what was hard, what surprised, what the central file needs next).", "accept": "the contract run on cook:chai-tray (L1-L4), cook:maani-line, cook:mishkaki-grill, cook:samosa, cook:fetch at 930x430 and 1920x1080, 0 new breaks the report doesn't explain; checks.mjs green" }
+  ],
+  "flows": ["cook:chai-tray", "cook:maani-line", "cook:mishkaki-grill", "cook:samosa", "cook:fetch"],
+  "port": 8875,
+  "report": "s14-rules",
+  "publish": false
+}
