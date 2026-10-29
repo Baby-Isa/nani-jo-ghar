@@ -286,7 +286,7 @@
     { key: "done", n: 6, title: "First order", vals: [["0", "A being made"], ["1", "B done (folded)"]] },
     { key: "long", n: 7, title: "Longest words test", vals: [["0", "A off"], ["1", "B on"]] },
     { key: "newp", n: 9, title: "Player (for the first-time help)", vals: [["1", "A new (every first-time help)"], ["0", "B returning (none)"]] },
-    { key: "level", n: 10, title: "Level (the wait before Nani's hint)", vals: [["1", "A L1, 7 s"], ["2", "B L2, 8 s"], ["3", "C L3, 11 s"], ["4", "D L4, 15 s"]] },
+    { key: "level", n: 10, title: "Level (the wait before Nani's hint)", vals: [["1", "A L1, 7 s"], ["2", "B L2, 9 s"], ["3", "C L3, 11 s"], ["4", "D L4, 13 s"]] },
     { key: "align", n: 8, title: "One line next to two (the Kutchi)", vals: [["low", "A sits on the English (chosen)"], ["mid", "B middle"], ["one", "C one size, one line"], ["top", "D top (before)"]] },
   ];
   const q = new URLSearchParams(location.search);
@@ -632,7 +632,7 @@
 
   const seen = {}; // the first-time help shown this play (a returning player: all of it seen already)
   const first = (k) => { if (S.newp !== "1" || seen[k]) return false; seen[k] = true; return true; };
-  const HINT_MS = { 1: 7000, 2: 8000, 3: 11000, 4: 15000 }; // the game's wait before help, by level (data/cook.json calm.helpMs)
+  const HINT_MS = { 1: 7000, 2: 9000, 3: 11000, 4: 13000 }; // the game's wait before help, by level (data/cook.json calm.helpMs)
 
   // one item into the pan: the first two with the light on the picture; then the child alone, with Nani's hint after the wait
   async function addItem(id, i, gen) {

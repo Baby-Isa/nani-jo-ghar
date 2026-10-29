@@ -2,7 +2,7 @@
   "_about": "The ONE ladder table every game reads (S13-A1; the kit review F3, Zafar 26 Oct): js/shared/tokens.js loads it (Tokens.ladder) for js/shared/guide.js, js/shared/bulb.js, js/shared/conversations.js, the clinic (js/clinic/kit.js Kit.BULB_MS) and Cook (js/cook/station-lib.js, js/cook/mechanics/thread.js). No game keeps a copy; build/lint/static.mjs 'bulb' reads this table alone and fails on a second one.",
   "_help": "S08-W1 (the help ladder, SH-60 SH-95 SH-96): helpMs = how long the child must have done nothing, counted from the LAST action (any tap, drag or key), before Nani helps (her word and the glow at the same moment), by level 1-4 (2 s later than before at level 1); bulbPulseMs = stuck this long and both light bulbs pulse (15-20 s, Zafar 17 Oct).",
   "_bulb": "SH-41, D11 (Zafar): bulbMs = how long the light bulb shows English (and opens a closed card), by level 1-5 (the conversations' rungs go to 5): 8 s at every level.",
-  "helpMs": [7000, 8000, 11000, 15000],
+  "helpMs": [7000, 9000, 11000, 13000],
   "bulbPulseMs": 17000,
   "bulbMs": [8000, 8000, 8000, 8000, 8000]
 }
