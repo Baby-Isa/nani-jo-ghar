@@ -2163,6 +2163,33 @@
     const src = wcPicSrc(id);
     // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
     if (head && !src) return null;
+    // Zafar, 29 Oct (chai level rules 7): on the s14 look (chai) the card by chai's own row: its Kutchi always written, its English
+    // shown at L1 and dotted from L2, its picture blurred from L3 (data/cook.json levelTable.stations chai-tray en, pic)
+    if (UI.s14()) {
+      const row = Cook.levelRow ? Cook.levelRow(mission.level, "chai-tray") : {};
+      const T = ((Cook.data.levelTable || {}).stations || {})["chai-tray"] || {};
+      const lv = Math.max(1, Math.min(4, mission.level || 1)) - 1;
+      const at = (k, d) => (Array.isArray(T[k]) ? T[k][Math.min(lv, T[k].length - 1)] : d);
+      const srcB = wcPicSrc(wcWordId(r));
+      const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
+      void row;
+      return {
+        word: {
+          id: wcWordId(r),
+          kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), () => false))}</span>` },
+          english: r.line.en || "",
+          rec: !!r.rec,
+          picture: picB ? { src: picB, fit: "contain" } : srcB && size >= 200 ? { src: Cook.v(srcB), fit: "contain" } : null,
+          say: () => Lang.speak(r.line),
+        },
+        wordOpts: {
+          slots: { picture: at("pic", true) !== false && !!srcB, english: at("en", false) === true, kutchiText: true },
+          enShown: at("en", false) === true,
+          progress: Cook.core && Cook.core.progress,
+          onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
+        },
+      };
+    }
     // (written: the word said now, big, as the order first comes: always written in Kutchi, SH-110)
     const hidden = !written && rowHidden(r) && dotsOk();
     const base = W.slots(wcStage(id), { placeholder: !!r.rec });
@@ -2546,6 +2573,8 @@
    */
   M.closeCards = function (on, opts = {}) {
     if (!mission) return;
+    // Zafar, 29 Oct (chai level rules 7): on the s14 look the active order card is always open, never folded for its level (L4)
+    if (opts.level && on && UI.s14()) return;
     // F9 (S05-C): an order closed for its level (opts.level) stays closed: a station's phase fold opening it again
     // (closeCards(false)) goes back to the level's closed card, never to the written one
     if (opts.level) mission.levelClosed = !!on;

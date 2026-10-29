@@ -418,7 +418,8 @@
     const stage = stageOf(word, opts);
     const s = slotsFor(word, opts, stage);
     // (all: the helper card shows everything; else the English only when tapped, the picture and Kutchi by the word's stage)
-    const show = all ? { picture: true, kutchi: true, english: !word.rec } : { picture: s.picture, kutchi: s.kutchi, english: false };
+    // (opts.enShown: a game's level shows the English written, chai's L1, Zafar 29 Oct; else it is tapped open)
+    const show = all ? { picture: true, kutchi: true, english: !word.rec } : { picture: s.picture, kutchi: s.kutchi, english: !!opts.enShown && !word.rec };
     c.dataset.stage = String(stage);
     if (word.id != null) c.dataset.word = String(word.id);
     c.classList.toggle("wc14-hide-pic", !show.picture && !!word.picture);
@@ -551,8 +552,10 @@
       l.innerHTML = `<span>${t}</span>`;
       return l;
     };
-    // (the labels, grown-ups' signposts in the mock-up: shown only where the card has room; never on a phone's side card)
-    words.append(lab("KUTCHI"), p.ks, lab("ENGLISH"), p.es);
+    // (the mock-up's labels, KUTCHI and ENGLISH, are English words a child would read: left out in the game, non-negotiable 3
+    // and contract-16; opts.labels draws them where a grown-up reads, the lab)
+    if (opts.labels) words.append(lab("KUTCHI"), p.ks, lab("ENGLISH"), p.es);
+    else words.append(p.ks, p.es);
     inn.append(p.pic, words, p.spk);
     if (parent) parent.appendChild(c);
     return c;

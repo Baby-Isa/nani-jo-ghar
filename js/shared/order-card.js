@@ -339,7 +339,12 @@
     list.addEventListener("scroll", () => {
       atEnd();
       // a child's own scroll: kept until the next tick (OC.settle14)
-      if (!list._auto && opts.fold) opts.fold.scroll14 = list.scrollLeft;
+      if (!list._auto && opts.fold) {
+        opts.fold.scroll14 = list.scrollLeft;
+        opts.fold.want14 = null;
+        const c = list.closest(".oc-card");
+        if (c && c.dataset.ck) glideWant.delete(c.dataset.ck);
+      }
     }, { passive: true });
     if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
     box.appendChild(list);
@@ -358,6 +363,7 @@
     return out;
   };
   /** The row glides (smoothly) just enough to show the whole card (the lab's glideTo: never a jump). */
+  const glideWant = new Map(); // (a card's row glide in flight, by its data-ck: a redraw carries it on)
   OC.glideTo = function (card) {
     const row = card && card.parentNode;
     if (!row || !row.classList || !row.classList.contains("oc-row14")) return;
@@ -367,6 +373,8 @@
     let x = row.scrollLeft;
     if (l < x) x = l - 2;
     else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
+    const c = row.closest(".oc-card");
+    if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
     if (Math.abs(x - row.scrollLeft) > 1) {
       row._auto = true;
       row.scrollTo({ left: x, behavior: "smooth" });
@@ -398,9 +406,15 @@
       const lead = [...row.querySelectorAll(":scope > .oc-row.done")].pop();
       // (its place measured once the cards have slid: the offset, not the transform, is where it rests)
       const to = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
-      if (fold) fold.scroll14 = to;
+      if (fold) fold.scroll14 = fold.want14 = to;
       setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
     }
+    // (a redraw in the middle of the row's own glide: it carries on to where it was going)
+    else {
+      const want = fold && fold.want14 != null ? fold.want14 : glideWant.get(card.dataset.ck);
+      if (want != null && Math.abs(want - row.scrollLeft) > 1) row.scrollTo({ left: Math.min(max(), want), behavior: "smooth" });
+    }
+    if (fresh.length) glideWant.delete(card.dataset.ck);
     setTimeout(() => (row._auto = false), 900);
     row.classList.toggle("oc-at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 4);
     if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);

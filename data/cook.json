@@ -871,19 +871,27 @@
      "tastes": "chai",
      "each": {
       "dudh": {
-       "chance": 0.65,
-       "taste": "dudh",
-       "tasteChance": 0.5
+       "_s14": "Zafar, 29 Oct (chai level rules 1): L1 has no \"no\" asks: every cup has milk (never dudh na); from L2 as before",
+       "byLevel": [
+        {
+         "chance": 1
+        },
+        {
+         "chance": 0.65,
+         "taste": "dudh",
+         "tasteChance": 0.5
+        }
+       ]
       },
       "khun": {
-       "_s11": "Sprint 11 (easy-to-play principle 9: chai L1 is four words, chai, dudh, khun, paani): at L1 one sugar or none (one is the bare item, so no number word), never a taste's count",
+       "_s11": "Sprint 11 (easy-to-play principle 9: chai L1 is four words, chai, dudh, khun, paani): at L1 one sugar or none (one is the bare item, so no number word), never a taste's count; Zafar, 29 Oct (chai level rules 1): at L1 always one sugar (never khun na), numbers and no-sugar from L2",
        "byLevel": [
         {
          "int": [
           1,
           1
          ],
-         "zero": 0.3
+         "zero": 0
         },
         {
          "int": [
@@ -916,8 +924,11 @@
        ]
       },
       "named": {
-       "_s11": "Sprint 11 (principle 9): kari / mori chai (two more words) from L2",
+       "_s11": "Sprint 11 (principle 9): kari / mori chai (two more words) from L3 (Zafar, 29 Oct, chai level rules 3; was L2)",
        "byLevel": [
+        {
+         "chance": 0
+        },
         {
          "chance": 0
         },
@@ -5945,6 +5956,14 @@
    true
   ],
   "stations": {
+   "chai-tray": {
+    "_about": "Zafar, 29 Oct (chai level rules 5, 7): chai's own row. decoys 1, 2, 3, 4 by level (capped by the shelf's space), the lookalike (the salt, sugar's) only at L4; never salt before L4. The card: the active order card always open, its Kutchi always written (never folded at L4, never dotted); its English dotted from L2 (en), its picture blurred from L3 (pic). Nani's helper card still shows everything.",
+    "card": ["open", "open", "open", "open"],
+    "decoys": [1, 2, 3, 4],
+    "lookalike": [false, false, false, true],
+    "en": [true, false, false, false],
+    "pic": [true, true, false, false]
+   },
    "daar-chop": {
     "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",
     "card": [

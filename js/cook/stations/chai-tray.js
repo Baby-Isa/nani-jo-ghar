@@ -270,6 +270,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const people = (params.cups || []).slice(0, 4);
     const n = Math.max(1, people.length);
     const kBoil = Mech.knobs("boil", { level: K.boilLevel || level, profile: "tray" });
+    // Zafar, 29 Oct (chai level rules 6): chai's own heat by level over the tray profile (data/stations/chai-tray.json heat)
+    if (K.heat) Object.assign(kBoil, K.heat);
     const kCount = Mech.knobs("count", { level });
     const halves = people.some((p) => p.amount); // level 4: half or full
     /*
@@ -327,8 +329,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const spicePool = (K.extras || []).concat(K.decoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
     // SH-132 (contract-37: L3 put out 2 where the table wants 3): the decoys are the table's whatever the cups ask for; the row may hold
     // up to seven jars (the shelf's slots narrow to fit, below: slotW). Was: at most five jars, so three asked extras left room for two
-    const nSpice = Math.max(1, Math.min(Cook.levelRow(level).decoys, 7 - askedX.length));
-    const spiceIds = Cook.shuffle(askedX.concat(SALT, St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice - 1, also: 1, alsoLook: true, what: "spices" })));
+    // Zafar, 29 Oct (chai level rules 5): chai's own row (data/cook.json levelTable.stations chai-tray): 1, 2, 3, 4 decoys, capped by
+    // the shelf's space; the salt (sugar's lookalike) only at L4, as its lookalike: at L1-L3 every decoy looks clearly unlike what
+    // was asked (it made L1 harder)
+    const row14 = Cook.levelRow(level, "chai-tray");
+    const nSpice = Math.max(1, Math.min(row14.decoys, 7 - askedX.length));
+    const salted = !!row14.lookalike;
+    const spiceIds = Cook.shuffle(
+      salted
+        ? askedX.concat(SALT, St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice - 1, also: 1, alsoLook: true, what: "spices", station: "chai-tray" }))
+        : askedX.concat(St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice, what: "spices", station: "chai-tray" }))
+    );
     const shelfIds = [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], spiceIds];
     // real-time cap (St.loadArt): a Cook.wait cap shrank at test speed and the faces, tip frames and glasses missed it
     // (Phaser's green missing-texture box where Nana's face goes, the pan never tipping: CHAI-25, CK-04, CK-13, CHAI-08)

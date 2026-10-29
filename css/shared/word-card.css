@@ -118,7 +118,7 @@
 .wc14 .wc-slot.wc14-en.wc14-wrap { white-space: normal; }
 .wc14 .wc-slot.wc14-en.none { display: none; }
 .wc14 .wc14-k .dots { color: var(--njg-card14-kutchi); letter-spacing: .08em; cursor: pointer; }
-.wc14 .wc14-spk { border: 0; padding: 0; display: grid; place-items: center; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); border-radius: 50%; aspect-ratio: 1; cursor: pointer; touch-action: manipulation; }
+.wc14 .wc14-spk { height: auto; min-height: 0; border: 0; padding: 0; display: grid; place-items: center; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); border-radius: 50%; aspect-ratio: 1; cursor: pointer; touch-action: manipulation; }
 .wc14 .wc14-spk svg { width: 46%; height: 46%; }
 .wc14 .wc14-spk:active { transform: scale(.94); }
 .wc14 .wc14-spk.on { animation: wc14-pulse .9s ease-out; }
