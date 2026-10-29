@@ -103,6 +103,41 @@
   --njg-ink-rec: #6b5a4c;                           /* a to-record line drawn on the play area (grey italic) */
   --njg-ink-outline: #3a2410;                       /* the outline round a big drawn word */
   --njg-helper-bg: #e6efe2;                         /* Nani's box and her helper card, every mode */
+  /* the s14 card (Sprint 14, lab/cards.html, Zafar 27-28 Oct): the new word card, order row and helper card, on for chai through
+     the kit's option (WordCard.big14 / item14, OrderCard s14); the other games keep the card above until the roll-out. Its type
+     (the serif) and its inks live here, so one line changes them all. */
+  --njg-card14-font: "Fraunces", Georgia, "Times New Roman", serif;   /* the card's Kutchi, its titles, Nani's line, the order line, bubbles */
+  --njg-card14-body: "Nunito", system-ui, sans-serif;                 /* the card's English and labels */
+  --njg-card14-kutchi: #7d2234;                     /* the maroon Kutchi */
+  --njg-card14-text: #2a2522;                       /* a line's other words */
+  --njg-card14-english: #2a2522;                    /* the English under it */
+  --njg-card14-label: #6e5f50; --njg-card14-label-bg: #f1e7d6; --njg-card14-rule: #dccbae; --njg-card14-edge: #e9dcc6;
+  --njg-card14-dots-en: #8f8070; --njg-card14-no-edge: #c8b79c; --njg-card14-card: #fffdf8; --njg-card14-ring: #fff7ea;
+  --njg-card14-white: #fff; --njg-card14-eye-edge: rgba(255, 255, 255, 0.85); --njg-card14-eye-bg: rgba(255, 255, 255, 0.5);
+  /* the s14 card's sizes, the lab's own px (lab/cards.html), in one place: */
+  --njg-card14-u1p5: 1.5px; --njg-card14-u2: 2px; --njg-card14-u4: 4px; --njg-card14-u5: 5px; --njg-card14-u6: 6px; --njg-card14-u8: 8px; --njg-card14-u9: 9px; --njg-card14-u12: 12px; --njg-card14-u13: 13px; --njg-card14-u14: 14px; --njg-card14-u15: 15px; --njg-card14-u16: 16px; --njg-card14-u18: 18px; --njg-card14-u19: 19px; --njg-card14-u22: 22px; --njg-card14-u26: 26px; --njg-card14-u30: 30px; --njg-card14-u32: 32px; --njg-card14-u34: 34px; --njg-card14-u40: 40px; --njg-card14-u60: 60px; --njg-card14-u64: 64px; --njg-card14-u72: 72px; --njg-card14-u112: 112px; --njg-card14-u250: 250px; --njg-card14-u270: 270px; --njg-card14-u340: 340px; --njg-card14-u410: 410px; --njg-card14-u999: 999px;
+  --njg-card14-bg: linear-gradient(#fffdf8, #fbf3e6);
+  --njg-card14-pic-bg: radial-gradient(120% 90% at 50% 35%, #fffaf1, #f1e4cd);
+  --njg-card14-spk-bg: radial-gradient(circle at 35% 30%, #9a2c43, #7d2234 55%, #5e1726);
+  --njg-card14-shadow: 0 12px 30px rgba(80, 50, 20, 0.16), 0 2px 6px rgba(80, 50, 20, 0.08);
+  --njg-card14-shadow-it: 0 3px 10px rgba(80, 50, 20, 0.09);
+  --njg-card14-shadow-box: 0 6px 16px rgba(60, 70, 50, 0.1);
+  --njg-card14-shadow-order: 0 6px 16px rgba(80, 50, 20, 0.08);
+  --njg-card14-shadow-eye: 0 4px 14px rgba(80, 50, 20, 0.12);
+  --njg-card14-pic-drop: drop-shadow(0 6px 8px rgba(80, 50, 20, 0.18));
+  --njg-card14-spk-ring: 0 0 0 6px #fff7ea, 0 0 0 7.5px #e9dcc6, 0 10px 22px rgba(125, 34, 52, 0.32);
+  --njg-card14-spk-ring-s: 0 0 0 4px #fff7ea, 0 0 0 5px #e9dcc6, 0 6px 14px rgba(125, 34, 52, 0.28);
+  --njg-card14-pulse: rgba(125, 34, 52, 0.45); --njg-card14-pulse-0: rgba(125, 34, 52, 0);
+  --njg-card14-done-edge: rgba(201, 150, 46, 0.55);
+  --njg-card14-arrow-bg: rgba(255, 255, 255, 0.75); --njg-card14-arrow-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --njg-card14-bubble-spk: #f1e7d6;
+  --njg-card14-nosign: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.6' fill='none' stroke='%237d2234' stroke-width='2.6'/%3E%3Cpath d='M6.2 17.8L17.8 6.2' stroke='%237d2234' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  /* the s14 light (Zafar, 28 Oct: a thing to tap is lit, a soft gold glow that breathes, in a lit rounded box; the rest dimmed) */
+  --njg-card14-dim: rgba(28, 18, 8, 0.45); --njg-card14-light-edge: rgba(201, 150, 46, 0.9);
+  --njg-card14-glow-a: drop-shadow(0 0 6px rgba(247, 213, 122, 0.95)) drop-shadow(0 0 2px rgba(201, 150, 46, 0.9));
+  --njg-card14-glow-b: drop-shadow(0 0 16px rgba(247, 213, 122, 1)) drop-shadow(0 0 4px rgba(201, 150, 46, 1));
+  --njg-card14-glowbox-a: 0 0 0 3px rgba(247, 213, 122, 0.9), 0 0 10px 4px rgba(201, 150, 46, 0.5);
+  --njg-card14-glowbox-b: 0 0 0 5px rgba(247, 213, 122, 1), 0 0 20px 8px rgba(201, 150, 46, 0.6);
   --njg-round: 999px;         /* the full circle / pill radius (CDS 2: 12 or full) */
 
   /* ---------- sizes: laptop, scale 1 (fallback; frame.js writes the real ones) ---------- */

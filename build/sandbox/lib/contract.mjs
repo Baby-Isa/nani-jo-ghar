@@ -1561,6 +1561,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check52(tl, add);
   check53(tl, add);
   check54(tl, add);
+  check72(tl, add);
+  check73(tl, add);
+  check74(r, tl, segs, add);
   return out;
 }
 
@@ -1669,4 +1672,46 @@ export function report(results, opts = {}) {
   md += `\n| check | flow | level | size | state (shot) | at s | what |\n|---|---|---|---|---|---|---|\n`;
   for (const f of all) md += `| ${f.check} | ${f.flow} | L${f.level} | ${f.size} | ${f.state}${f.shot ? ` (${f.shot})` : ""} | ${f.at} | ${String(f.measured).replace(/\|/g, "/")} |\n`;
   return { breaks: all, md };
+}
+
+// ---- Sprint 14 (s14-chai; lab/cards.html, Zafar 27-29 Oct): the new order row, the bubble's speaker and the skip, checked ----
+// judged from the game's own test notes (Lifecycle.note, only logged: js/shared/order-card.js row-glide, js/cook/ui.js bubble-spk
+// and order-skip), so they hold on chai's s14 look and say nothing where a game does not log them
+Object.assign(CHECKS, {
+  "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every row-glide note (js/shared/order-card.js OrderCard.glideTo, the s14 order row while the order is given: how far it moved, how, and the card's width): a move that is not a smooth scroll (a jump) of more than 2 px is a break, and so is a smooth glide of more than 2.5 card widths (a glide that far reads as a jump: the row should follow the cards as they are said), once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side'; a smooth scroll never moves a card's width in one frame)." },
+  "contract-73": { item: "bubble-speaker", title: "the bubble's speaker is big", how: "Every bubble-spk note (js/cook/ui.js, a bubble shown on the s14 look: the speaker's drawn size, 1.8 em of its words, its icon's width): a speaker under the 48 px tap, more than 2 px under 1.8 em, or an icon under 60% of the speaker is a break, once per page (SH-153, Zafar 28 Oct: 'increase the icon size in the speech bubble')." },
+  "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Every order-skip note (js/cook/ui.js, a tap on the kitchen while the order is given, s14): every card in its row, no big card or copy of one left (left:0), within 1 s of the tap (the note's ms), and the station's stage starting within 1 s of it (scaled by the test speed). Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game')." },
+});
+const lifeNotes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);
+export function check72(tl, add) {
+  for (const n of lifeNotes(tl, "row-glide")) {
+    const d = Number(n.reason);
+    const m = /card:(\d+)/.exec(n.by || "");
+    const w = m ? +m[1] : 0;
+    if (!/smooth/.test(n.by || "") && d > 2) { add("contract-72", n.t, `the order row moved ${d} px in one jump (never smooth)`); return; }
+    if (w > 0 && d > w * 2.5) { add("contract-72", n.t, `the order row glided ${d} px at once, more than 2.5 cards (${w} px each)`); return; }
+  }
+}
+export function check73(tl, add) {
+  for (const n of lifeNotes(tl, "bubble-spk")) {
+    const size = Number(n.reason);
+    const em = Number((/em:([\d.]+)/.exec(n.by || "") || [])[1]);
+    const icon = Number((/icon:(\d+)/.exec(n.by || "") || [])[1]);
+    if (size < 48) { add("contract-73", n.t, `the bubble's speaker is ${size} px, under the 48 px tap`); return; }
+    if (Number.isFinite(em) && size < em - 2) { add("contract-73", n.t, `the bubble's speaker is ${size} px, under 1.8 em of its words (${em.toFixed(1)} px)`); return; }
+    if (Number.isFinite(icon) && icon < size * 0.6) { add("contract-73", n.t, `the bubble's speaker icon is ${icon} px of ${size} px (under 60%)`); return; }
+  }
+}
+export function check74(r, tl, segs, add) {
+  for (const n of lifeNotes(tl, "order-skip")) {
+    const ms = Number(n.reason);
+    const left = Number((/left:(\d+)/.exec(n.by || "") || [])[1] || 0);
+    if (left > 0) add("contract-74", n.t, `a tap during the order left ${left} card${left > 1 ? "s" : ""} away or a big card on screen`);
+    if (ms > 1000) add("contract-74", n.t, `a tap during the order took ${ms} ms to land every card (within 1 s)`);
+    const tap = n.t - ms;
+    const st = segs.find((x) => /(^|\|)cook:station/.test(x.key) && x.t0 >= tap - 50);
+    if (!st) add("contract-74", n.t, "a tap during the order and the station never started");
+    else if (st.t0 - tap > 1000) add("contract-74", st.t0, `the station started ${Math.round(st.t0 - tap)} ms after the tap during the order (within 1 s)`);
+    return;
+  }
 }

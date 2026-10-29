@@ -103,3 +103,80 @@
 .wc.wc-landed { animation: wc-land .45s ease-out; }
 @keyframes wc-land { 0% { box-shadow: 0 0 0 0 var(--njg-focus); } 40% { box-shadow: 0 0 0 var(--njg-s1) var(--njg-focus); } 100% { box-shadow: var(--njg-shadow); } }
 @media (prefers-reduced-motion: reduce) { .wc.wc-landed { animation: none; } }
+
+/* ---------- the s14 card (Sprint 14: lab/cards.html, the reference Zafar played and kept; js/shared/word-card.js big14, item14) ----------
+   SH-147, SH-142: the serif and the inks from the tokens (--njg-card14-*), the maroon Kutchi sitting on its English (option 8A), the big
+   round speaker; a hidden word keeps its place and size, its dots drawn over it (big maroon dots for the Kutchi, small grey for the
+   English); a hidden picture strongly blurred with a frosted eye; even spacing (the card's padding = picture to Kutchi = speaker to foot).
+   (cq units measure the nearest container ABOVE an element: the card is the container, so its padding lives on its inner box) */
+.wc.wc14 { container-type: inline-size; position: relative; display: block; padding: 0; gap: 0; min-width: 0; color: var(--njg-card14-text); font-family: var(--njg-card14-body); }
+.wc14 .wc14-pic { position: relative; overflow: hidden; border-radius: var(--njg-card14-u14); background: var(--njg-card14-pic-bg); border: 0; padding: 0; flex: none; }
+.wc14 .wc14-pic > img.wc-img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; filter: var(--njg-card14-pic-drop); transition: filter .35s, transform .35s; }
+.wc14 .wc-slot.wc14-k { display: block; margin: 0; padding: 0; border: 0; min-height: 0; font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-kutchi); line-height: 1.04; text-wrap: balance; overflow-wrap: normal; word-break: normal; max-width: 100%; }
+.wc14 .wc-slot.wc14-k.to-record { font-family: var(--njg-card14-body); }
+.wc14 .wc-slot.wc14-en { display: block; margin: 0; padding: 0; border: 0; min-height: 0; font-family: var(--njg-card14-body); font-weight: 700; color: var(--njg-card14-english); line-height: 1.15; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.wc14 .wc-slot.wc14-en.wc14-wrap { white-space: normal; }
+.wc14 .wc-slot.wc14-en.none { display: none; }
+.wc14 .wc14-k .dots { color: var(--njg-card14-kutchi); letter-spacing: .08em; cursor: pointer; }
+.wc14 .wc14-spk { height: auto; min-height: 0; border: 0; padding: 0; display: grid; place-items: center; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); border-radius: 50%; aspect-ratio: 1; cursor: pointer; touch-action: manipulation; }
+.wc14 .wc14-spk svg { width: 46%; height: 46%; }
+.wc14 .wc14-spk:active { transform: scale(.94); }
+.wc14 .wc14-spk.on { animation: wc14-pulse .9s ease-out; }
+@keyframes wc14-pulse { 0% { box-shadow: 0 0 0 0 var(--njg-card14-pulse); } 100% { box-shadow: 0 0 0 var(--njg-card14-u18) var(--njg-card14-pulse-0); } }
+/* hidden: a strong blur and the picture's frosted eye; a word's dots over its own place (a tap shows it for 3 s, a free peek) */
+.wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) > img.wc-img { filter: blur(var(--njg-card14-u16)) saturate(.55) brightness(1.06); transform: scale(1.12); }
+.wc14 .wc14-eye { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: var(--njg-tap); min-height: var(--njg-tap); width: 34%; aspect-ratio: 1.6; border-radius: var(--njg-card14-u999); border: var(--njg-card14-u1p5) solid var(--njg-card14-eye-edge); background: var(--njg-card14-eye-bg); -webkit-backdrop-filter: blur(var(--njg-card14-u6)); backdrop-filter: blur(var(--njg-card14-u6)); place-items: center; box-shadow: var(--njg-card14-shadow-eye); padding: 0; color: var(--njg-card14-text); cursor: pointer; }
+.wc14 .wc14-eye svg { width: 46%; max-width: var(--njg-card14-u40); opacity: .7; }
+.wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) .wc14-eye { display: grid; }
+.wc14 .wc14-slot { position: relative; display: grid; place-items: center; max-width: 100%; min-width: 0; }
+.wc14 .wc14-dots { display: none; position: absolute; inset: calc(-1 * var(--njg-card14-u8)) calc(-1 * var(--njg-card14-u2)); border: 0; background: none; padding: 0; gap: .3em; align-items: center; justify-content: center; cursor: pointer; }
+.wc14 .wc14-dots i { display: block; flex: none; border-radius: 50%; background: currentColor; }
+.wc14 .wc14-k-dots { color: var(--njg-card14-kutchi); z-index: 2; }
+.wc14 .wc14-k-dots i { width: .5em; height: .5em; }
+.wc14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u8)); color: var(--njg-card14-dots-en); gap: .38em; }
+.wc14 .wc14-en-dots i { width: .36em; height: .36em; }
+.wc14.wc14-hide-k .wc14-slot-k > .wc14-k:not(.wc14-peek), .wc14.wc14-hide-en .wc14-slot-e > .wc14-en:not(.wc14-peek) { visibility: hidden; }
+.wc14.wc14-hide-k .wc14-slot-k > .wc14-k-dots:not(.wc14-gone), .wc14.wc14-hide-en .wc14-slot-e > .wc14-en-dots:not(.wc14-gone) { display: flex; }
+
+/* the big card (his image 1): the pop-out by the side panel and the helper card */
+.wc.wc14-big { background: var(--njg-card14-bg); border-radius: var(--njg-card14-u22); box-shadow: var(--njg-card14-shadow); text-align: center; }
+.wc14-big > .wc14-in { padding: 5cqi; display: flex; flex-direction: column; align-items: center; gap: 2.4cqi; }
+.wc14-big .wc14-pic { width: 100%; aspect-ratio: 4 / 3; }
+.wc14-big .wc14-words { display: contents; }
+.wc14-big .wc14-lab { display: flex; align-items: center; justify-content: center; gap: 3cqi; width: 100%; font: 800 clamp(var(--njg-card14-u9), 3.4cqi, var(--njg-card14-u14))/1 var(--njg-card14-body); letter-spacing: .22em; color: var(--njg-card14-label); }
+.wc14-big .wc14-lab::before, .wc14-big .wc14-lab::after { content: ""; flex: 0 0 11cqi; height: var(--njg-card14-u1p5); background: var(--njg-card14-rule); }
+.wc14-big .wc14-lab span { background: var(--njg-card14-label-bg); border-radius: var(--njg-card14-u999); padding: .55em 1.1em .5em; }
+.wc14-big .wc14-k { font-size: clamp(var(--njg-card14-u22), 15cqi, var(--njg-card14-u64)); }
+.wc14-big .wc14-en { font-size: clamp(var(--njg-card14-u14), 7.4cqi, var(--njg-card14-u30)); }
+.wc14-big .wc14-spk { width: clamp(var(--njg-tap), 25cqi, var(--njg-card14-u112)); margin-top: 1.5cqi; box-shadow: var(--njg-card14-spk-ring); }
+/* small: no labels, a shorter picture, room for the Kutchi to wrap */
+.wc14-big.wc14-small .wc14-lab { display: none; }
+.wc14-big.wc14-small .wc14-pic { aspect-ratio: 16 / 10; }
+/* side by side (a phone's helper card): the picture left, the words and the speaker right */
+.wc.wc14-big.wc14-side { text-align: left; border-radius: var(--njg-card14-u16); }
+.wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 30% 1fr auto; align-items: center; padding: 2cqi; gap: 2.5cqi; }
+.wc14-big.wc14-side .wc14-lab { display: none; }
+.wc14-big.wc14-side .wc14-pic { aspect-ratio: 1; }
+.wc14-big.wc14-side .wc14-words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }
+.wc14-big.wc14-side .wc14-k { font-size: clamp(var(--njg-card14-u18), 9cqi, var(--njg-card14-u40)); }
+.wc14-big.wc14-side .wc14-en { font-size: clamp(var(--njg-card14-u13), 5.2cqi, var(--njg-card14-u22)); }
+.wc14-big.wc14-side .wc14-slot { place-items: center start; }
+.wc14-big.wc14-side .wc14-dots { justify-content: flex-start; }
+.wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap), 15cqi, var(--njg-card14-u72)); margin: 0; box-shadow: var(--njg-card14-spk-ring-s); }
+
+/* the order's item card (SH-148): picture, Kutchi sitting on its English, the speaker at its foot; even spacing (its padding = picture to
+   Kutchi = speaker to foot); a row's spare height (a two-line word beside a one-line one) goes above the one-line word */
+.wc.wc14-it { display: grid; grid-template-rows: auto 1fr auto auto; justify-items: center; text-align: center; row-gap: 0; padding: 6cqi; background: var(--njg-card14-card); border-radius: var(--njg-card14-u14); box-shadow: var(--njg-card14-shadow-it); border: var(--njg-card14-u1p5) solid transparent; transition: opacity .25s; }
+.wc14-it > .wc14-pic { grid-row: 1; width: 100%; aspect-ratio: 4 / 3; }
+.wc14-it > .wc14-slot-k { grid-row: 2; align-self: end; margin-top: 6cqi; }
+.wc14-it > .wc14-slot-e { grid-row: 3; margin-top: .5cqi; }
+.wc14-it > .wc14-spk { grid-row: 4; margin-top: 5cqi; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); }
+.wc14-it .wc14-k { font-size: clamp(var(--njg-card14-u15), 16cqi, var(--njg-card14-u32)); }
+.wc14-it .wc14-en { font-size: clamp(var(--njg-card14-u12), 10cqi, var(--njg-card14-u19)); }
+/* the copy in flight (WordCard.morph) */
+.wc.wc14-flyer { box-shadow: var(--njg-card14-shadow); }
+/* SH-153 (Zafar, 28 Oct: "increase the icon size in the speech bubble"; lab/cards.html .bspk): on the s14 look every chai bubble's
+   speaker is 1.8 em of its words (the icon 66%), never under the tap size */
+body.njg-s14 .cv-bubble .wp.wp-line .wp-say { font-size: clamp(var(--njg-card14-u18), 2.4vw, var(--njg-card14-u32)); width: max(var(--njg-tap), 1.8em); height: max(var(--njg-tap), 1.8em); min-width: max(var(--njg-tap), 1.8em); min-height: max(var(--njg-tap), 1.8em); padding: 0 !important; display: flex; align-items: center; justify-content: center; }
+body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height: 66%; }
+.wc14 .wc14-k .dots { font-size: 1.15em; letter-spacing: .14em; line-height: 1; }

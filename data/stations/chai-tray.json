@@ -54,16 +54,29 @@
    },
    {
     "tolerance": 0.06,
-    "boilLevel": 2
+    "boilLevel": 2,
+    "heat": {
+     "rate": 0.12,
+     "band": [0.66, 0.86]
+    }
    },
    {
     "tolerance": 0.055,
-    "boilLevel": 3
+    "boilLevel": 3,
+    "heat": {
+     "rate": 0.12,
+     "band": [0.7, 0.84]
+    }
    },
    {
-    "halfLine": true
+    "halfLine": true,
+    "heat": {
+     "rate": 0.13,
+     "band": [0.72, 0.83]
+    }
    }
   ]
  },
+ "_heat": "Zafar, 29 Oct (chai level rules 6; suggested, for his review): the heat by level, over the tray profile (data/cook.json mechanics.boil): L1 as before; L2 quicker (rate 0.12) with L1's band; L3 the green band narrower [0.70, 0.84] at 0.12; L4 a little of both [0.72, 0.83] at 0.13.",
  "_pour": "CHAI-26 (Zafar 23 Oct; s12-w3b): the s12 pour frames (PT1 milky, PT2 black, cut MIRRORED: spout right, handle left; assets/cook/items-s12/): the hob pan lifts and is carried spout-first to just up-left of its glass, the six frames play (tip 0, 20, 40, 60, pour, pour end) and the thin stream (js/shared/pour.js) runs from where the chai leaves the rim; for a right-hand glass the pan hangs over the left column, never past the tray. The times in ms: liftMs the carry, tipMs the four tip frames, pourMs each half glass, untipMs, backMs"
 }

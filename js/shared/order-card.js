@@ -292,8 +292,144 @@
     if (list.lastElementChild) seqRO.observe(list.lastElementChild);
   }
 
+  /*
+   * ---- THE S14 ORDER ROW (Sprint 14; lab/cards.html buildSide, settleRow; Zafar, 27-28 Oct) ----
+   * opts.s14 (the kit's option, on for chai): an item whose parts are words is one sideways row of item cards on every screen
+   * (WordCard.item14: picture, Kutchi on its English, the speaker at the foot), the third card going behind a soft shadow, no
+   * scroll bar. The row keeps one ticked card at its left, then the current item: ticked cards sit first in the order they were
+   * ticked, then the ones to do, the "no" cards at the end (a faded picture and a no-sign badge where a tick goes); the row
+   * scrolls itself after a tick (OC.settle14, called by the host after a redraw with the snapshot OC.snap14 took before it) and
+   * a child's own scroll is left alone until the next tick. The current card is not marked (one light: the stage's).
+   */
+  function row14(node, opts) {
+    const W = root.WordCard;
+    const r = el("div", ["oc-row", "oc-part", "oc-it14", node.done && !node.wrong ? "done" : "", node.no ? "no" : "", node.wrong ? "wrong" : "", node.miss ? "miss" : ""].filter(Boolean).join(" "));
+    wcCss(); // (the kit row states, oc-away among them: a row waiting to be said stays unseen)
+    W.item14(r, node.word, Object.assign({}, node.wordOpts || {}));
+    const k = r.querySelector(".wc-k");
+    if (k) k.classList.add("oc-t");
+    const sp = r.querySelector(".wc14-spk");
+    if (sp) sp.classList.add("oc-spk");
+    r.classList.add("oc-said");
+    if (!node.done && (node.blank || r.querySelector(".dots") || r.classList.contains("wc14-hide-k"))) r.classList.add("oc-blank");
+    // the tick (gold, top right) or the no-sign badge where a tick goes
+    r.insertAdjacentHTML("beforeend", `<span class="oc-tk oc-badge14" aria-hidden="true">${node.done && !node.wrong ? OC.CHECK : ""}</span>`);
+    const id = keyId(node.key);
+    if (id != null) r.dataset.key = id;
+    if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);
+    if (node.key != null && opts.onEl) opts.onEl(node.key, r);
+    if (opts.decorate) opts.decorate(r, node);
+    return r;
+  }
+  function items14(it, opts) {
+    const box = el("div", ["oc-item", "oc-direct", "oc-items14", it.done ? "done" : ""].filter(Boolean).join(" "));
+    const list = el("div", "oc-parts oc-row14");
+    // ticked first, in the order they were ticked (the fold state's ticked set keeps it), then the ones to do, then the "no" cards
+    const seen = (opts.fold && opts.fold.ticked && [...opts.fold.ticked]) || [];
+    const rank = (p) => {
+      const id = keyId(p.key);
+      if (p.done && !p.wrong && !p.no) {
+        const i = seen.indexOf(id);
+        return i < 0 ? 500 : i;
+      }
+      return p.no ? 2000 : 1000;
+    };
+    const parts = it.parts.map((p, i) => ({ p, i })).sort((a, b) => rank(a.p) - rank(b.p) || a.i - b.i).map((x) => x.p);
+    parts.forEach((p) => list.appendChild(row14(p, opts)));
+    const atEnd = () => list.classList.toggle("oc-at-end", list.scrollLeft + list.clientWidth >= list.scrollWidth - 4);
+    list.addEventListener("scroll", () => {
+      atEnd();
+      // a child's own scroll: kept until the next tick (OC.settle14)
+      if (!list._auto && opts.fold) {
+        opts.fold.scroll14 = list.scrollLeft;
+        opts.fold.want14 = null;
+        const c = list.closest(".oc-card");
+        if (c && c.dataset.ck) glideWant.delete(c.dataset.ck);
+      }
+    }, { passive: true });
+    if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
+    box.appendChild(list);
+    return box;
+  }
+  /** Before a redraw: each s14 card's row (by its data-ck): where it was scrolled, where each card stood, which were ticked. */
+  OC.snap14 = function (box) {
+    const out = new Map();
+    if (!box) return out;
+    box.querySelectorAll(".oc-card[data-ck] .oc-row14").forEach((row) => {
+      const c = row.closest(".oc-card");
+      const lefts = new Map();
+      row.querySelectorAll(":scope > .oc-row[data-key]").forEach((r) => lefts.set(r.dataset.key, r.getBoundingClientRect().left));
+      out.set(c.dataset.ck, { scroll: row.scrollLeft, lefts, done: new Set([...row.querySelectorAll(":scope > .oc-row.done[data-key]")].map((r) => r.dataset.key)) });
+    });
+    return out;
+  };
+  /** The row glides (smoothly) just enough to show the whole card (the lab's glideTo: never a jump). */
+  const glideWant = new Map(); // (a card's row glide in flight, by its data-ck: a redraw carries it on)
+  OC.glideTo = function (card) {
+    const row = card && card.parentNode;
+    if (!row || !row.classList || !row.classList.contains("oc-row14")) return;
+    // (in the row's own scrolled coordinates)
+    const l = row.scrollLeft + card.getBoundingClientRect().left - row.getBoundingClientRect().left;
+    const r = l + card.offsetWidth;
+    let x = row.scrollLeft;
+    if (l < x) x = l - 2;
+    else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
+    const c = row.closest(".oc-card");
+    if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
+    // SH-152's check (contract-72): each glide, how far and how (always smooth), against a card's width
+    try {
+      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note("row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
+    } catch (e) {
+      /* only a log */
+    }
+    if (Math.abs(x - row.scrollLeft) > 1) {
+      row._auto = true;
+      row.scrollTo({ left: x, behavior: "smooth" });
+      setTimeout(() => (row._auto = false), 700);
+    }
+  };
+  /**
+   * After a redraw: the s14 row put back where it was (no jump), the cards that moved slide from their old places (FLIP), and
+   * after a new tick the row scrolls itself so the last ticked card is at its left (the lab's settleRow); else a child's own
+   * scroll (fold.scroll14) stays.
+   */
+  OC.settle14 = function (card, snap, fold) {
+    const row = card && card.querySelector(".oc-row14");
+    if (!row) return;
+    const max = () => Math.max(0, row.scrollWidth - row.clientWidth);
+    const was = snap ? snap.scroll : fold && fold.scroll14 != null ? fold.scroll14 : 0;
+    row._auto = true;
+    row.scrollLeft = was;
+    const rows = [...row.querySelectorAll(":scope > .oc-row[data-key]")];
+    const fresh = snap ? rows.filter((r) => r.classList.contains("done") && !snap.done.has(r.dataset.key)) : [];
+    if (snap && row.animate)
+      rows.forEach((r) => {
+        const old = snap.lefts.get(r.dataset.key);
+        if (old == null) return;
+        const dx = old - r.getBoundingClientRect().left;
+        if (Math.abs(dx) > 1) r.animate([{ transform: `translateX(${dx}px)` }, { transform: "none" }], { duration: 380 / ((root.Cook && root.Cook.speed) || 1), easing: "cubic-bezier(.3,.7,.2,1)" });
+      });
+    if (fresh.length) {
+      const lead = [...row.querySelectorAll(":scope > .oc-row.done")].pop();
+      // (its place measured once the cards have slid: the offset, not the transform, is where it rests)
+      const to = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
+      if (fold) fold.scroll14 = fold.want14 = to;
+      setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
+    }
+    // (a redraw in the middle of the row's own glide: it carries on to where it was going)
+    else {
+      const want = fold && fold.want14 != null ? fold.want14 : glideWant.get(card.dataset.ck);
+      if (want != null && Math.abs(want - row.scrollLeft) > 1) row.scrollTo({ left: Math.min(max(), want), behavior: "smooth" });
+    }
+    if (fresh.length) glideWant.delete(card.dataset.ck);
+    setTimeout(() => (row._auto = false), 900);
+    row.classList.toggle("oc-at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 4);
+    if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);
+  };
+
   function itemEl(it, opts) {
     if (it.group) return groupEl(it, opts);
+    if (opts.s14 && !opts.big && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
     // SEK-03, SEK-17 (S05-C3): a dish's own ordered steps (no row of their own: chaat's layers, the clinic's instruction
     // list) are shown as the little skewer in a plain group box, as a skewer is, never a bracket line down the side
     // (S13-B1: an item marked steps, the clinic's doctor's steps, keeps its rows, the sequence line joining them: one card anatomy)
@@ -536,7 +672,7 @@
 
   OC.card = function (data, opts = {}) {
     const sh = OC.shape(data, opts);
-    const c = el("div", ["oc-card", opts.big ? "oc-big" : "", sh.done ? "done" : "", sh.direct ? "direct" : ""].filter(Boolean).join(" "));
+    const c = el("div", ["oc-card", opts.big ? "oc-big" : "", opts.s14 ? "oc-s14" : "", sh.done ? "done" : "", sh.direct ? "direct" : ""].filter(Boolean).join(" "));
     const p = data.person || null;
     if (p && p.id) c.dataset.who = p.id;
     if (cardStrip(data.strip) && !opts.big) c.appendChild(OC.stripEl(data.strip));

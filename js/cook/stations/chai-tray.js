@@ -59,53 +59,50 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // at, 1.087 x the body as with v2's pan, so the flame and heat rings (sized to panR) peek out around it
     panTop: { w: 405, h: 389, cx: 0.3754, cy: 0.6146, r: 0.3525, rIn: 0.3012, body: 0.3243 },
     glassR: 0.94,
-    // CHAI-08 (s08c GL1, s08 w7A): the glasses from exactly above (480 x 466): the rim's radius as a share of half the width
-    glassR8: 0.98, // (the s12 glasses: the rim's radius 0.49 of the width)
   };
+  const POUR = { lift: 1.07, gap: 0.12 };
+  const S14 = "assets/cook/items-s14/";
   /*
-   * CHAI-08 (s08c GL1, s08 w7A): one set of glasses from exactly above, empty, milky chai and black tea (the half glass: the
-   * full one over the empty one at HALF8's strength, composed once in code from the two pictures).
+   * CHAI-34, CHAI-08, CK-06 (Zafar, 29 Oct: "the pouring pans didn't work so now I'm switching to just having the pans move
+   * above the glasses and empty and the glasses fill up"): the s14 pour is two sets of six pictures played in step, the pan
+   * emptying (pe-*-1 full .. 6 empty) over its glass while the glass fills (gf-*-1 empty .. 6 full), milky and black (pink is
+   * cut and kept, no recipe: not loaded). Each picture is placed by its own measured rim (cx, cy, r: source px, copied from
+   * assets/cook/items-s14/meta.json), so the pan's rim centre and the glass's rim centre stay put frame to frame. No tip
+   * frames, no drawn stream.
    */
-  const S8C = "assets/cook/items-s08c/";
-  const HALF8 = 0.85; // CHAI-31 (the judge, s11: mid-pour the glass was paler than the pan): the half glass near the full one's colour
-  /*
-   * CK-06 (the s08c redo, CP4 v2): the pan's brewing states (water coming to the boil, the leaves brewing, the milky chai at a
-   * rolling boil) are CP4's pictures, each shown only inside this pan's contents circle (its own contents circle measured on
-   * the cut: cx, cy, r source px; assets/cook/items-s08c/meta.json brew), in place of v3's (no drawn bubble rings).
-   */
-  const BREW8 = {
-    water: { file: `${S8C}chai-pan/pan-water-s08c.webp`, w: 497, h: 307, cx: 161.5, cy: 150.5, r: 130 },
-    leaves: { file: `${S8C}chai-pan/pan-leaves-s08c.webp`, w: 502, h: 308, cx: 160.5, cy: 148.5, r: 122 },
-    "boil-milky": { file: `${S8C}chai-pan/pan-boil-milky-s08c.webp`, w: 508, h: 308, cx: 162.5, cy: 148.5, r: 122 },
+  const S14F = {
+    "pe-milky-1": { w: 494, h: 328, cx: 179.4, cy: 164.0, r: 159.0 },
+    "pe-milky-2": { w: 497, h: 327, cx: 182.8, cy: 163.0, r: 158.0 },
+    "pe-milky-3": { w: 495, h: 329, cx: 179.1, cy: 164.5, r: 158.5 },
+    "pe-milky-4": { w: 494, h: 328, cx: 178.1, cy: 163.5, r: 158.5 },
+    "pe-milky-5": { w: 497, h: 327, cx: 185.1, cy: 163.5, r: 158.5 },
+    "pe-milky-6": { w: 496, h: 328, cx: 179.1, cy: 163.5, r: 158.5 },
+    "pe-black-1": { w: 492, h: 325, cx: 179.2, cy: 162.0, r: 157.0 },
+    "pe-black-2": { w: 495, h: 326, cx: 182.5, cy: 162.5, r: 157.5 },
+    "pe-black-3": { w: 494, h: 326, cx: 180.5, cy: 162.5, r: 157.5 },
+    "pe-black-4": { w: 494, h: 326, cx: 178.5, cy: 162.5, r: 157.5 },
+    "pe-black-5": { w: 496, h: 327, cx: 183.5, cy: 163.5, r: 157.5 },
+    "pe-black-6": { w: 495, h: 326, cx: 180.5, cy: 162.5, r: 157.5 },
+    "gf-milky-1": { w: 448, h: 464, cx: 236.0, cy: 257.0, r: 206.0 },
+    "gf-milky-2": { w: 448, h: 464, cx: 224.0, cy: 257.0, r: 204.0 },
+    "gf-milky-3": { w: 448, h: 464, cx: 213.0, cy: 257.0, r: 206.0 },
+    "gf-milky-4": { w: 448, h: 464, cx: 236.0, cy: 207.5, r: 207.0 },
+    "gf-milky-5": { w: 448, h: 464, cx: 222.0, cy: 208.0, r: 203.0 },
+    "gf-milky-6": { w: 448, h: 464, cx: 209.5, cy: 207.0, r: 205.5 },
+    "gf-black-1": { w: 480, h: 471, cx: 266.0, cy: 262.0, r: 209.0 },
+    "gf-black-2": { w: 480, h: 471, cx: 237.5, cy: 262.0, r: 207.5 },
+    "gf-black-3": { w: 480, h: 471, cx: 214.0, cy: 262.0, r: 208.0 },
+    "gf-black-4": { w: 480, h: 471, cx: 265.0, cy: 206.0, r: 208.0 },
+    "gf-black-5": { w: 480, h: 471, cx: 235.5, cy: 206.0, r: 206.5 },
+    "gf-black-6": { w: 480, h: 471, cx: 211.5, cy: 206.0, r: 207.5 },
   };
-  /*
-   * CHAI-26 (Zafar, 23 Oct): the pour is the s12 frames (PT1 milky, PT2 black; cut MIRRORED by build/reports/s12-w3b/
-   * cut_pour.py: the spout on the right, the handle on the left), in place of Sprint 11's coded squash. aim: where the
-   * chai leaves the rim, up-left of the glass's middle (shares of the glass: left, up); lift: how much bigger the lifted
-   * pan is drawn (nearer the eye).
-   */
-  const POUR = { aim: [0.4, 0.4], lift: 1.07, milk: 0xd98d4c, black: 0x7a1a0a };
-  const S12 = "assets/cook/items-s12/";
-  // each frame's measures (source px of its canvas: the rim's centre cx, cy; its half height ry; pour: where the chai
-  // leaves the rim), copied from assets/cook/items-s12/meta.json
-  const FRAMES = {
-    "pan-tip-0": { w: 493, h: 304, cx: 341.0, cy: 151.5, ry: 139.5 },
-    "pan-tip-20": { w: 493, h: 304, cx: 340.5, cy: 152.0, ry: 140.0 },
-    "pan-tip-40": { w: 493, h: 304, cx: 341.0, cy: 151.0, ry: 144.0 },
-    "pan-tip-60": { w: 493, h: 304, cx: 341.5, cy: 151.5, ry: 145.5 },
-    "pan-pour": { w: 493, h: 304, cx: 340.5, cy: 151.5, ry: 145.5, pour: [423.0, 200.0] },
-    "pan-pour-end": { w: 493, h: 304, cx: 341.0, cy: 151.5, ry: 145.5, pour: [425.0, 199.6] },
-    "pan-tip-0-black": { w: 503, h: 306, cx: 346.0, cy: 153.0, ry: 139.0 },
-    "pan-tip-20-black": { w: 503, h: 306, cx: 346.0, cy: 153.0, ry: 140.0 },
-    "pan-tip-40-black": { w: 503, h: 306, cx: 346.0, cy: 153.0, ry: 144.0 },
-    "pan-tip-60-black": { w: 503, h: 306, cx: 346.0, cy: 153.0, ry: 146.0 },
-    "pan-pour-black": { w: 503, h: 306, cx: 346.0, cy: 153.0, ry: 146.0, pour: [428.0, 201.8] },
-    "pan-pour-end-black": { w: 503, h: 306, cx: 346.5, cy: 153.0, ry: 146.0, pour: [430.0, 201.4] },
+  const S14_KEY = (name) => `s14-${name}`;
+  // the glass in its well: each picture by its own rim (the s14 glasses and fill frames differ in size and crop)
+  const GLASS = {
+    "v2-glass-empty": { w: 480, h: 469, cx: 243.5, cy: 233.0, r: 230.5 },
   };
-  // a frame's texture (the art's own colours: a recolour by hue caught the steel's warm reflections)
-  const FRAME_KEY = (name) => `s12-${name}`;
   // the handle's end from the contents' centre, in rim radii (the empty picture's), for the spacing of pans on the hob
-  const HANDLE_REACH = (531 - 180.3) / 128;
+  const HANDLE_REACH = (514 - 203.8) / 158; // (s14: the empty picture's handle end over its rim radius)
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
@@ -153,31 +150,34 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
    * to the right; the pans are sized so a handle clears the next burner's pan (HANDLE_REACH).
    * The pour is this pan itself, coded (POUR above), never another picture.
    */
-  const S8 = "assets/cook/items-s08b/chai-pan/";
+  // CHAI-34 (Zafar, 27-29 Oct: "the chai to sit nicely in the pan that's exactly top down"): the s14 pan, exactly overhead,
+  // six pictures on one registration (each placed by its own measured rim: assets/cook/items-s14/meta.json), in place of
+  // s08b's three and the s08c / v3 brew pictures cut to its contents' circle (CK-06: nothing in the pan drawn in code)
   const TOP = {
     looks: {
-      empty: { key: "s08b-pan-empty", file: `${S8}pan-top-empty-s08b.webp`, w: 531, h: 286, cx: 180.3, cy: 134.3 },
-      milk: { key: "s08b-pan-milk", file: `${S8}pan-top-milk-s08b.webp`, w: 531, h: 286, cx: 169.3, cy: 134.3 },
-      black: { key: "s08b-pan-black", file: `${S8}pan-top-black-s08b.webp`, w: 520, h: 286, cx: 143.3, cy: 134.3 },
+      empty: { key: "s14-pan-empty", file: `${S14}chai-pan/pan-empty-s14.webp`, w: 514, h: 405, cx: 203.8, cy: 241.0 },
+      water: { key: "s14-pan-water", file: `${S14}chai-pan/pan-water-s14.webp`, w: 514, h: 405, cx: 184.8, cy: 241.0 },
+      leaves: { key: "s14-pan-leaves", file: `${S14}chai-pan/pan-leaves-s14.webp`, w: 496, h: 405, cx: 181.1, cy: 240.5 },
+      milk: { key: "s14-pan-milk", file: `${S14}chai-pan/pan-milk-s14.webp`, w: 514, h: 405, cx: 204.1, cy: 164.5 },
+      boil: { key: "s14-pan-boil", file: `${S14}chai-pan/pan-boil-milky-s14.webp`, w: 514, h: 405, cx: 186.4, cy: 164.0 },
+      black: { key: "s14-pan-black", file: `${S14}chai-pan/pan-black-s14.webp`, w: 496, h: 405, cx: 179.1, cy: 164.5 },
     },
-    rim: 128,
-    inner: 117,
-    lip: [-134, 4],
+    rim: 158,
+    inner: 140,
     // Sprint 11 (Zafar, 22 Oct): true top-down and centred on its burner: no turn
     turn: 0,
-    // CHAI-26, CHAI-08 (Zafar, 23 Oct): MIRRORED, as the s12 pour frames: the spout on the right, the handle level to the
-    // left (each picture flipped in place: look8)
+    // CHAI-26, CHAI-08 (Zafar, 23 Oct): MIRRORED, the spout on the right, the handle level to the left (each picture flipped
+    // in place: look8), so the handles reach away from the tray
     mirror: true,
-    // the pan's outline (rim and the lower wall that shows) is centred on its burner, not its contents' circle: the
-    // outline's middle is this much below the contents' centre, and its half height (source px, the empty picture)
-    bodyDy: 8.2,
-    outline: 136.5,
-    // the handle's wedge (degrees from the handle's own direction, from 0.86 of the rim out): redrawn over the heat ring
-    handle: [-16, 12],
+    // s14 is exactly overhead: the outline is the rim, centred on the burner
+    bodyDy: 0,
+    outline: 158,
+    // the handle's wedge (degrees from the handle's own direction, from just past the contents out): redrawn over the heat ring
+    handle: [-14, 14],
   };
-  // each stage of the brew (C8, X9): the s08b picture under it and, where the s08b pan has no picture of that stage, the
-  // v3 pan's own picture of it, cut to this pan's contents circle (pictures only, never drawn contents: ART-12, CK-06)
-  const STAGE = { empty: ["empty"], water: ["empty", "water"], leaves: ["empty", "leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk", "spiced"], "boil-tea": ["black", "boil-tea"], "boil-milky": ["milk", "boil-milky"], foam: ["milk", "foam"] };
+  // each stage of the brew: the s14 picture of it; the boil-over's foam is still v3's foam picture over the milky boil (no
+  // s14 picture of it), cut to this pan's contents circle (pictures only, never drawn contents: ART-12, CK-06)
+  const STAGE = { empty: ["empty"], water: ["water"], leaves: ["leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk"], "boil-tea": ["black"], "boil-milky": ["boil"], foam: ["boil", "foam"] };
   const DISCS = PAN_LOOKS.filter((k) => STAGE[k][1]);
   const RING = "chai-pan-ring";
   /*
@@ -192,24 +192,19 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     ["fx-s11-steam", `${FX}steam-s11.webp`],
     ["fx-s11-sparkle", `${FX}sparkle-s11.webp`],
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
-    // CHAI-08 (s12 GL, 23 Oct): the glasses exactly from above, each cut square on its rim's circle (centred in its holder)
-    ["v2-glass-empty", `${S12}glass/glass-empty-top-s12.webp`],
-    ["v2-glass-full", `${S12}glass/glass-chai-top-s12.webp`],
-    // CHAI-31 (the judge, 22 Oct: "dark maroon in the pan but amber in the glass"): black tea's glass is the s08c set's own
-    // black-tea glass, the pan's tea colour (the half glass composed as the milky one's)
-    ["v2-glass-black-full", `${S12}glass/glass-black-top-s12.webp`],
+    // CHAI-08 (s14, Zafar 29 Oct): the glasses exactly from above, each placed by its rim (GLASS)
+    ["v2-glass-empty", `${S14}glass/glass-empty-top-s14.webp`],
   ]
-    // CHAI-26: the s12 pour frames, milky and black
-    .concat(Object.keys(FRAMES).map((k) => [`s12-${k}`, `${S12}chai-pan/${k}-s12.webp`]))
+    // the s14 pour: the pan emptying and the glass filling, milky and black (the half glass is the fill's frame 4, the full one
+    // its frame 6, so a glass rests as the pour left it; the run's full glasses, glass-chai-top and glass-black-top, are not needed)
+    .concat(Object.keys(S14F).map((k) => [S14_KEY(k), `${S14}${k.startsWith("pe-") ? "chai-pan/pan-empty-" : "glass/glass-fill-"}${k.slice(3)}-s14.webp`]))
     .concat(Object.values(TOP.looks).map((t) => [t.key, t.file]))
-    .concat(DISCS.map((k) => [`v3-pan-${k}`, BREW8[k] ? BREW8[k].file : `${V3}pan-${k}.webp`]))
+    .concat(DISCS.map((k) => [`v3-pan-${k}`, `${V3}pan-${k}.webp`]))
     .concat(...[1, 2, 3, 4].map((n) => Cook.Kit.art(n, []))) // the shared kitchen kit: hobs, knobs, flames
     .filter(([key], i, a) => a.findIndex(([k2]) => k2 === key) === i);
 
   // CHAI-14 / CHAI-07 (C9): a cup with no milk is black tea, in the pan, the stream and the glass. The art run's glasses
   // (art.s02) replace the stand-in: until then the glass is tinted darker.
-  const BLACK_ART = ["chai-glass-black-half", "chai-glass-black-full"];
-  const BLACK = { stream: 0x7a3c16, tint: 0xc07a4c };
   // CHAI-22 (P33): milk, water and the leaves go in once each; a second tap wiggles
   const ONCE = { "cook-paani": "water", "cook-dudh": "milk", "cook-chai": "leaves" };
   // Sprint 11 (no Done): at L4 a cup poured half can take its second pour this long after the last pour, then it moves on
@@ -275,126 +270,107 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const people = (params.cups || []).slice(0, 4);
     const n = Math.max(1, people.length);
     const kBoil = Mech.knobs("boil", { level: K.boilLevel || level, profile: "tray" });
+    // Zafar, 29 Oct (chai level rules 6): chai's own heat by level over the tray profile (data/stations/chai-tray.json heat)
+    if (K.heat) Object.assign(kBoil, K.heat);
     const kCount = Mech.knobs("count", { level });
     const halves = people.some((p) => p.amount); // level 4: half or full
+    /*
+     * Sprint 14 (the kit's s14 look, on for chai: lab/cards.html, Zafar 27-28 Oct): the light (Onboard.look "s14": no finger, a
+     * thing to tap lit in a lighter dim), Nani's helper card in place of the call-out card (CHAI-35, SH-149), and the first-time
+     * steps (a new player sees all of them, a returning player none): after the first two items the whole order card lit for
+     * 1.2 s (CHAI-37); the first hint teaches the arrow; the first time words are dotted, the dots lit once ("tap the dots").
+     */
+    const s14 = !!(UI.s14 && UI.s14());
+    const OB14 = global.Onboard;
+    if (s14 && OB14) {
+      OB14.look = "s14";
+      if (Cook.life && Cook.life.onEnd) Cook.life.onEnd(() => (OB14.look = null));
+    }
+    const seen14 = (Cook.save.seenStation = Cook.save.seenStation || {});
+    const STATION14 = "chai-tray";
+    const S14_TAG = "s14-";
+    const fresh14 = s14 && ((OB14 && OB14.newPlayer && OB14.newPlayer()) || !(Cook.save.coached || {})["chai-tray"]);
+    const first14 = (k) => {
+      const key = `${STATION14}:${S14_TAG}${k}`;
+      if (!fresh14 || seen14[key]) return false;
+      seen14[key] = true;
+      return true;
+    };
+    // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
+    const light14 = (el, look, ms, onTap) => {
+      if (!el || !OB14 || !OB14.light) return Promise.resolve();
+      // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
+      const h = OB14.light(el, { look, pad: 4, pass: true });
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}light`, rung: 0, coach: true });
+      } catch (e) {
+        /* only a log */
+      }
+      return new Promise((res) => {
+        let t = 0;
+        const end = () => {
+          clearTimeout(t);
+          el.removeEventListener("click", tap, true);
+          h.close();
+          res();
+        };
+        const tap = () => {
+          if (onTap) onTap();
+          end();
+        };
+        if (onTap) el.addEventListener("click", tap, true);
+        t = setTimeout(end, ms);
+      });
+    };
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
     // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
     const askedX = [...new Set(people.map((p) => p.extra).filter(Boolean))];
     const SALT = "spi-16";
-    const spicePool = (K.extras || []).concat(K.decoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
+    // (Zafar, 29 Oct, rule 5: up to 4 decoys and no salt before L4: the station's other spice jars, its teaDecoys spi-02 and spi-05, join the pool)
+    const spicePool = (K.extras || []).concat(K.decoys || [], K.teaDecoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
     // SH-132 (contract-37: L3 put out 2 where the table wants 3): the decoys are the table's whatever the cups ask for; the row may hold
     // up to seven jars (the shelf's slots narrow to fit, below: slotW). Was: at most five jars, so three asked extras left room for two
-    const nSpice = Math.max(1, Math.min(Cook.levelRow(level).decoys, 7 - askedX.length));
-    const spiceIds = Cook.shuffle(askedX.concat(SALT, St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice - 1, also: 1, alsoLook: true, what: "spices" })));
+    // Zafar, 29 Oct (chai level rules 5): chai's own row (data/cook.json levelTable.stations chai-tray): 1, 2, 3, 4 decoys, capped by
+    // the shelf's space; the salt (sugar's lookalike) only at L4, as its lookalike: at L1-L3 every decoy looks clearly unlike what
+    // was asked (it made L1 harder)
+    const row14 = Cook.levelRow(level, "chai-tray");
+    const nSpice = Math.max(1, Math.min(row14.decoys, 7 - askedX.length));
+    const salted = !!row14.lookalike;
+    const spiceIds = Cook.shuffle(
+      salted
+        ? askedX.concat(SALT, St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice - 1, also: 1, alsoLook: true, what: "spices", station: "chai-tray" }))
+        : askedX.concat(St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice, what: "spices", station: "chai-tray" }))
+    );
     const shelfIds = [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], spiceIds];
     // real-time cap (St.loadArt): a Cook.wait cap shrank at test speed and the faces, tip frames and glasses missed it
     // (Phaser's green missing-texture box where Nana's face goes, the pan never tipping: CHAI-25, CK-04, CK-13, CHAI-08)
     await St.loadArt(
       S,
       ART.concat(
-        St.artLoad(BLACK_ART.concat("teaspoon", "teaspoon-empty", "teaspoon-chai")), // the black-tea glasses; CHAI-13: TP1's three teaspoons
+        St.artLoad(["teaspoon", "teaspoon-empty", "teaspoon-chai"]), // CHAI-13: TP1's three teaspoons
         people.flatMap((p) => Cook.Kit.faceArt(p.who)),
         [].concat(...shelfIds).map((id) => [`jar-${id}`, spiceJar(id)])
       )
     );
-    // CHAI-08: the half glasses (milky and black): the full picture over the empty one at HALF8 (two pictures, composed once)
-    const half8 = (key, fullKey) => {
-      if (!S.textures.exists("v2-glass-empty") || !S.textures.exists(fullKey)) return;
-      if (S.textures.exists(key)) S.textures.remove(key);
-      const e = S.textures.get("v2-glass-empty").getSourceImage();
-      const f = S.textures.get(fullKey).getSourceImage();
-      const ct = S.textures.createCanvas(key, e.width, e.height);
-      const g = ct.getContext();
-      g.drawImage(e, 0, 0);
-      g.globalAlpha = HALF8;
-      g.drawImage(f, 0, 0, e.width, e.height);
-      ct.refresh();
-    };
-    half8("v2-glass-half", "v2-glass-full");
     /*
-     * CHAI-31 (the judge, 22 Oct: "dark maroon-brown in the pan, light golden amber in the glass"): one chai colour per brew.
-     * The served glass is what must look like real chai, so the glass's own tea is measured (its middle, on the picture) and
-     * the pan's tea is recoloured to it, its own light and shade kept (a copy of each pan picture made once, in code); the
-     * stream is drawn in the same colour. Milky chai and black tea each have their own.
+     * CHAI-08, CHAI-34 (s14): a glass's picture by its own rim: its rim's centre on the well's middle, its rim's radius the
+     * well's (every s14 glass and fill frame is cut a little differently, so each is placed by its own measure). The half
+     * glass (L4's adh) is the fill's frame 4, the frame the pour stops on, and the full glass its frame 6 (no picture composed
+     * in code; CHAI-31's recolour went with the s08b pan: the s14 pans and glasses are one run's colours).
      */
-    const teaOf = (key) => {
-      try {
-        const src = S.textures.get(key).getSourceImage();
-        const cv = document.createElement("canvas");
-        cv.width = src.width;
-        cv.height = src.height;
-        const g = cv.getContext("2d", { willReadFrequently: true });
-        g.drawImage(src, 0, 0);
-        const d = g.getImageData(0, 0, cv.width, cv.height).data;
-        let n = 0;
-        const sum = [0, 0, 0];
-        const r0 = cv.width * 0.3;
-        for (let y = 0; y < cv.height; y += 2)
-          for (let x = 0; x < cv.width; x += 2) {
-            if (Math.hypot(x - cv.width / 2, y - cv.height / 2) > r0) continue;
-            const i = (y * cv.width + x) * 4;
-            if (d[i + 3] < 200 || d[i] - d[i + 2] < 40) continue;
-            sum[0] += d[i];
-            sum[1] += d[i + 1];
-            sum[2] += d[i + 2];
-            n++;
-          }
-        return n ? sum.map((v) => v / n) : null;
-      } catch (e) {
-        return null;
-      }
+    const HALF_FULL = { "v2-glass-half": "gf-milky-4", "v2-glass-black-half": "gf-black-4", "v2-glass-full": "gf-milky-6", "v2-glass-black-full": "gf-black-6" };
+    const GL = Object.assign({}, GLASS);
+    Object.keys(HALF_FULL).forEach((k) => (GL[k] = S14F[HALF_FULL[k]]));
+    Object.keys(S14F).forEach((k) => (GL[S14_KEY(k)] = S14F[k]));
+    const glassTex = (key) => (HALF_FULL[key] ? S14_KEY(HALF_FULL[key]) : key);
+    const glassLook = (im, key, R) => {
+      const m = GL[key];
+      const t = glassTex(key);
+      if (im.texture.key !== t) im.setTexture(t);
+      im.glassR = R || im.glassR;
+      return m ? im.setOrigin(m.cx / m.w, m.cy / m.h).setScale(im.glassR / m.r) : im;
     };
-    const TEA = { milk: teaOf("v2-glass-full"), black: teaOf(S.textures.exists("v2-glass-black-full") ? "v2-glass-black-full" : "v2-glass-full") };
-    const hexOf = (c) => (Math.round(c[0]) << 16) | (Math.round(c[1]) << 8) | Math.round(c[2]);
-    const recolour = (name) => {
-      const t = TOP.looks[name];
-      const tea = TEA[name];
-      t.base = t.base || t.key;
-      if (!tea || !S.textures.exists(t.base)) return;
-      const key = `${t.base}-tea`;
-      if (S.textures.exists(key)) S.textures.remove(key);
-      const src = S.textures.get(t.base).getSourceImage();
-      const ct = S.textures.createCanvas(key, src.width, src.height);
-      const g = ct.getContext();
-      g.drawImage(src, 0, 0);
-      const img = g.getImageData(0, 0, src.width, src.height);
-      const d = img.data;
-      const inside = (x, y) => Math.hypot(x - t.cx, y - t.cy) <= TOP.inner * 1.04;
-      const lum = (i) => 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2];
-      // the pan's own tea: its mean brightness, so its shading is kept around the glass's colour
-      let n = 0;
-      let L = 0;
-      for (let y = 0; y < src.height; y++)
-        for (let x = 0; x < src.width; x++) {
-          const i = (y * src.width + x) * 4;
-          if (d[i + 3] > 0 && inside(x, y) && d[i] - d[i + 2] > 40) {
-            L += lum(i);
-            n++;
-          }
-        }
-      if (!n) return;
-      L /= n;
-      for (let y = 0; y < src.height; y++)
-        for (let x = 0; x < src.width; x++) {
-          const i = (y * src.width + x) * 4;
-          if (!(d[i + 3] > 0 && inside(x, y) && d[i] - d[i + 2] > 40)) continue;
-          // (x1.2: the glass's tea is measured with its light in it; the pan's surface reads the same at that)
-          const k = Math.min(1.5, Math.max(0.65, (lum(i) / L) * 1.2));
-          d[i] = Math.min(255, tea[0] * k);
-          d[i + 1] = Math.min(255, tea[1] * k);
-          d[i + 2] = Math.min(255, tea[2] * k);
-        }
-      g.putImageData(img, 0, 0);
-      ct.refresh();
-      t.key = key;
-    };
-    ["milk", "black"].forEach(recolour);
-    if (TEA.milk) POUR.milkTea = hexOf(TEA.milk.map((v) => v * 0.92));
-    if (TEA.black) POUR.blackTea = hexOf(TEA.black.map((v) => v * 0.92));
-    POUR.edge = 0x5a2408;
-    half8("v2-glass-black-half", "v2-glass-black-full");
-    if (St.hasArt(S, "chai-glass-black-full")) half8(St.artKey("chai-glass-black-half"), St.artKey("chai-glass-black-full"));
     let lastPhase = null;
     const steps = St.steps(ctx);
     /*
@@ -492,11 +468,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const rIn = TOP.inner * s8;
     // the v3 contents' pictures, cut to this pan's contents circle: their own contents' radius a little past it
     const discScale = (rIn * 1.03) / (0.3037 * pm.w);
-    // a brew picture on the pan: CP4's by its own contents circle (CK-06), v3's by its registration
-    const regDisc = (im, k) => {
-      const b = BREW8[k];
-      return b ? im.setOrigin(b.cx / b.w, b.cy / b.h).setScale((rIn * 1.03) / b.r) : im.setOrigin(pm.cx, pm.cy).setScale(discScale);
-    };
+    // a brew picture over the pan (only the boil-over's foam now): v3's, by its registration
+    const regDisc = (im) => im.setOrigin(pm.cx, pm.cy).setScale(discScale);
     // where a pan's heat ring is (the gauge's place for the test hook njgTest.cook.gauge().box; s04-hooks): the ring and its track
     const ringAt = (pan) => ({ x: pan.x, y: pan.y, r: rimR + 10 });
     // CHAI-25 (P57): the pan's highlight is a ring on the rim's centre (never the picture's box with its handle)
@@ -528,7 +501,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         mg.fillCircle(x, y, rIn);
         return mg.createGeometryMask();
       })();
-      const disc8 = (depth) => regDisc(S.track(S.add.image(x, y, `v3-pan-${DISCS[0]}`)), DISCS[0]).setDepth(depth).setVisible(false).setMask(discMask);
+      const disc8 = (depth) => regDisc(S.track(S.add.image(x, y, `v3-pan-${DISCS[0]}`))).setDepth(depth).setVisible(false).setMask(discMask);
       const disc = disc8(D.item + 0.02);
       const mix = top8("empty", D.item + 0.05).setAlpha(0);
       const mixDisc = disc8(D.item + 0.07);
@@ -576,10 +549,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const [fx, fy] = WELLS[i];
       const wx = trayX + fx * trayD;
       const wy = trayY + fy * ((trayD * 754) / 768);
-      const d = (WELL_D * trayD) / META.glassR8;
+      const gR = (WELL_D * trayD) / 2; // (the rim's radius: the cut-out's)
       const glass = {};
       // (CHAI-08: 480 x 466, the rim from exactly above filling the cut-out)
-      ["empty", "half", "full"].forEach((st) => (glass[st] = S.track(S.add.image(wx, wy, `v2-glass-${st}`).setDisplaySize(d, d).setDepth(D.item + 0.5).setAlpha(st === "empty" ? 1 : 0))));
+      ["empty", "half", "full"].forEach((st) => (glass[st] = glassLook(S.track(S.add.image(wx, wy, glassTex(`v2-glass-${st}`))), `v2-glass-${st}`, gR).setDepth(D.item + 0.5).setAlpha(st === "empty" ? 1 : 0)));
       // CHAI-18 (S05-C): the orderer's face on the tray's rim beside their glass (the outer rim, level with the cut-out),
       // never over the cup
       const left = fx < 0.5;
@@ -587,7 +560,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // CK-30 (S05-C3): its centre at least its radius in from the tray's edge, so it never hangs half off the tray
       const inset = Math.max(0.058 * trayD, fd / 2 + 6);
       const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
-      return { x: wx, y: wy, glass, face, fill: 0 };
+      return { x: wx, y: wy, r: gR, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
     // for the screenshot script (build/shoot_chai_v2.py): each pan's state; harmless when unused
@@ -790,7 +763,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const disc = (im, k, alpha) => {
       if (!k || alpha <= 0) return im.setVisible(false);
       if (im.texture.key !== `v3-pan-${k}`) {
-        regDisc(im.setTexture(`v3-pan-${k}`), k).setRotation(0); // CK-06 (CP4): its own contents circle
+        regDisc(im.setTexture(`v3-pan-${k}`)).setRotation(0);
       }
       return im.setVisible(true).setAlpha(alpha);
     };
@@ -1206,6 +1179,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     pans.forEach((pan) => {
       S.tappable(pan.knobHit, () => knobTap(pan));
       S.tappable(pan.img, () => panTap(pan));
+      // Sprint 14 (lab/cards.html: "the glass lit for the pour"): on the s14 look the glass takes the tap too (its pan pours),
+      // as well as the pan itself (kept)
+      if (s14 && pan.well) {
+        const w = pan.well;
+        w.hit = S.track(S.add.zone(w.x, w.y, w.r * 2.1, w.r * 2.1).setDepth(D.item + 2));
+        S.tappable(w.hit, () => panTap(pan));
+      }
       S.tappable(pan.face, () => {
         if (finished) return;
         if (sel !== pan) select(pan);
@@ -1223,8 +1203,6 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       last = now;
       steamT += dt;
       pans.forEach((pan) => {
-        const bs = pan.well && pan.well.blackShade;
-        if (bs) bs.setAlpha(Math.max(pan.well.glass.half.alpha, pan.well.glass.full.alpha));
         const hd = pan.layers && pan.layers.handle;
         if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
         if (pan.state === "heating") {
@@ -1256,25 +1234,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     });
 
     /* ---------- pouring: a ready pan tips into its person's glass ---------- */
-    // the glass shows black tea (CHAI-14): the art run's glasses when they've landed, else the milk-tea glass darker
+    // the glass shows black tea (CHAI-14): the s14 black-tea glasses (the fill's frame 4 for the half, the black glass full)
     const blackGlass = (w) => {
       ["half", "full"].forEach((st) => {
         const g = w.glass[st];
         if (!g || g.blackDone) return;
         g.blackDone = true;
-        if (S.textures.exists(`v2-glass-black-${st}`)) {
-          const [dw, dh] = [g.displayWidth, g.displayHeight];
-          g.setTexture(`v2-glass-black-${st}`).setDisplaySize(dw, dh);
-        } else if (St.hasArt(S, `chai-glass-black-${st}`)) {
-          const [dw, dh] = [g.displayWidth, g.displayHeight];
-          g.setTexture(St.artKey(`chai-glass-black-${st}`)).setDisplaySize(dw, dh);
-        }
-        else if (!w.blackShade) {
-          // the stand-in (no tints in the canvas renderer): a darker tea multiplied over the milk tea, faded with it
-          const d = g.displayWidth;
-          w.blackShade = S.track(S.add.circle(g.x, g.y, d * 0.37, BLACK.tint, 1).setDepth(g.depth + 0.01).setAlpha(0));
-          w.blackShade.setBlendMode(Phaser.BlendModes.MULTIPLY);
-        }
+        glassLook(g, `v2-glass-black-${st}`);
       });
     };
     /*
@@ -1397,27 +1363,31 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const black = !(pan.has.milk > 0);
       if (black) blackGlass(w);
       /*
-       * CHAI-26 (Zafar, 23 Oct; the s12 frames PT1 milky, PT2 black, MIRRORED: the spout on the right, the handle on the
-       * left): the hob's pan lifts off its burner and is carried spout-first to the right, to just up-left of its glass in
-       * the tray; there the six pictures play (tip 0, 20, 40, 60 degrees, pouring, the end of the pour: the spout dips
-       * down-right into the glass) and the game's thin stream (js/shared/pour.js) runs from where the chai leaves the rim
-       * (each picture's measured point, assets/cook/items-s12/meta.json). For a right-hand glass the pan hangs over the
-       * left-hand column, never past the tray's edge. Then it tips back and goes home. Every picture is placed by its own
-       * rim's centre, so they register: only the tip moves.
+       * The s14 pour (Zafar, 29 Oct: "just having the pans move above the glasses and empty and the glasses fill up"): the
+       * hob's pan lifts off its burner and moves to sit just above its glass (over the tray, its rim clear of the glass's);
+       * there the pan's emptying pictures (pe-*-1 full .. 6 empty) play in step with the glass's filling ones (gf-*-1 empty ..
+       * 6 full), each placed by its own measured rim, so neither rim's centre moves; then the pan goes back to its burner
+       * (empty after a full pour). No tipping, no drawn stream. At level 4 one tap pours half (frames 1-4), a second the rest
+       * (4-6). The times: data/stations/chai-tray.json pour (liftMs the carry, pourMs each half glass, backMs).
        */
-      const P = Object.assign({ liftMs: 520, tipMs: 480, pourMs: 700, untipMs: 320, backMs: 420 }, K.pour || {});
+      const P = Object.assign({ liftMs: 520, pourMs: 700, backMs: 420 }, K.pour || {});
       const to = halves ? pan.poured + 1 : 2;
       const from = pan.poured;
+      const set = black ? "black" : "milky";
       const body = look8(pan.img, black ? "black" : "milk");
-      const set = black ? "-black" : "";
-      const fr = S.track(S.add.image(pan.x, pan.y, FRAME_KEY("pan-tip-0" + set))).setFlipX(false).setVisible(false);
-      const frame = (name) => {
-        const m = FRAMES[name + set];
-        if (fr.texture.key !== FRAME_KEY(name + set)) fr.setTexture(FRAME_KEY(name + set));
-        fr.setOrigin(m.cx / m.w, m.cy / m.h);
+      // the frame for a glass's fill x (0 empty, 1 half, 2 full): 1..6, the half glass on frame 4
+      const frameOf = (x) => Math.max(1, Math.min(6, 1 + Math.round(x * 2.5)));
+      // the emptying pan: one picture, its rim's centre on the pan's place, drawn the hob pan's rim size times z
+      const fr = S.track(S.add.image(pan.x, pan.y, S14_KEY(`pe-${set}-${frameOf(from)}`))).setFlipX(TOP.mirror).setVisible(false);
+      const frame = (k, z) => {
+        const name = `pe-${set}-${k}`;
+        const m = S14F[name];
+        if (fr.texture.key !== S14_KEY(name)) fr.setTexture(S14_KEY(name));
+        fr.setOrigin(TOP.mirror ? 1 - m.cx / m.w : m.cx / m.w, m.cy / m.h).setScale((TOP.rim * z) / m.r);
         return m;
       };
-      const stream = S.track(S.add.graphics());
+      // the filling glass: one picture over the well's own glasses, its rim on the well's (glassLook)
+      const gf = glassLook(S.track(S.add.image(w.x, w.y, S14_KEY(`gf-${set}-${frameOf(from)}`))), S14_KEY(`gf-${set}-${frameOf(from)}`), w.r).setDepth(D.item + 0.6).setVisible(false);
       // its shadow on the worktop, dropping away as it lifts (the contact shadow's own picture)
       const lsh = S.track(S.add.image(pan.x, pan.y, S.tex("shadow")).setDepth(D.fx + 0.5).setAlpha(0));
       // the pan's off the burner: no flame and no glow on an empty burner while it pours (29 Sept)
@@ -1431,110 +1401,80 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (pan.img.shadow) pan.img.shadow.setVisible(false);
       body.setDepth(D.fx + 1);
       fr.setDepth(D.fx + 1.01);
-      stream.setDepth(D.fx + 1.5);
-      const gd = w.glass.empty.displayWidth;
       const v = Cook.view || {};
-      const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: Math.min((v.right || 1600) - 12, trayX + trayD), b: (v.bottom || 900) - 12 };
-      // the frames drawn as big as the hob's pan (their outlines' heights), q of the hob pan's scale
-      const q = TOP.outline / FRAMES["pan-tip-0" + set].ry;
-      const P0 = FRAMES["pan-pour" + set];
-      // where the chai leaves the rim: just up-left of the glass's middle (it falls down-right into the glass)
-      const aim = { x: w.x - gd * POUR.aim[0], y: w.y - gd * POUR.aim[1] };
-      const holdAt = (z) => ({ x: aim.x - (P0.pour[0] - P0.cx) * z * q, y: aim.y - (P0.pour[1] - P0.cy) * z * q });
-      // the whole held pan (its handle's end included) inside the view and never past the tray's right edge; else drawn
-      // smaller (down to 0.6 of its size)
-      const fits = (z) => {
-        const c = holdAt(z);
-        return ["pan-tip-0", "pan-pour"].every((n) => {
-          const m = FRAMES[n + set];
-          const zq = z * q;
-          return c.x - m.cx * zq >= box.l && c.x + (m.w - m.cx) * zq <= box.r && c.y - m.cy * zq >= box.t && c.y + (m.h - m.cy) * zq <= box.b;
-        });
+      const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: (v.right || 1600) - 12, b: (v.bottom || 900) - 12 };
+      // the pan's whole picture (its handle included) at a place and size, in the view
+      const extent = (c, z) => {
+        const m = S14F[`pe-${set}-1`];
+        const k = (TOP.rim * z) / m.r;
+        const l = TOP.mirror ? c.x - (m.w - m.cx) * k : c.x - m.cx * k;
+        return { l, r: l + m.w * k, t: c.y - m.cy * k, b: c.y + (m.h - m.cy) * k };
+      };
+      const inView = (c, z) => {
+        const e = extent(c, z);
+        return e.l >= box.l && e.r <= box.r && e.t >= box.t && e.b <= box.b;
+      };
+      // where it holds: just above its glass (the rims a small gap apart), else just left of it, else just below; drawn
+      // smaller (down to 0.6 of its size) where none fits
+      const spots = (z) => {
+        const d = w.r + TOP.rim * z * (1 + POUR.gap);
+        return [{ x: w.x, y: w.y - d }, { x: w.x - d, y: w.y }, { x: w.x, y: w.y + d }];
       };
       const zLift = s8 * POUR.lift;
       let zs = zLift;
-      if (!fits(zs)) {
-        let lo2 = zLift * 0.6;
-        let hi2 = zLift;
-        for (let i = 0; i < 12; i++) {
-          const mid = (lo2 + hi2) / 2;
-          if (fits(mid)) lo2 = mid;
-          else hi2 = mid;
-        }
-        zs = lo2;
+      let hold = spots(zs).find((c) => inView(c, zs));
+      for (let i = 0; !hold && i < 8; i++) {
+        zs = zLift * (1 - 0.05 * (i + 1));
+        hold = spots(zs).find((c) => inView(c, zs));
       }
+      if (!hold) hold = spots(zs)[0];
       const plan = NjgPour.plan({
         from: { x: pan.x, y: pan.y },
-        to: holdAt(zs),
-        tilt: 1, // (the plan's angle is read as how far it has tipped, 0..1.15: which picture shows)
-        arc: zs < zLift ? 12 : 40, // (a short screen: no rise past the room it has)
-        ms: { lift: P.liftMs, tip: P.tipMs, pour: P.pourMs * (to - from), untip: P.untipMs, back: P.backMs },
+        to: hold,
+        tilt: 1,
+        arc: 24,
+        ms: { lift: P.liftMs, tip: 0, pour: P.pourMs * (to - from), untip: 0, back: P.backMs },
       });
       const M = plan.marks;
       const st = (x) => (x >= 2 ? "full" : x >= 1 ? "half" : "empty");
       const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
-      const TIPS = ["pan-tip-0", "pan-tip-20", "pan-tip-40", "pan-tip-60"];
       const emptied = to >= 2;
+      const kFrom = frameOf(from);
+      const kTo = frameOf(to);
       const draw = (f) => {
         if (!body.active) return;
         const t = f.t;
-        // up: 0 on the burner, 1 lifted and over the glass (the lift and the way home)
+        // up: 0 on the burner, 1 lifted over the tray (the lift and the way home)
         const up = f.phase === "lift" ? ease(Math.min(1, t / M.lift)) : f.phase === "back" || f.phase === "done" ? 1 - ease(Math.min(1, (t - M.untip) / P.backMs)) : 1;
-        const tip = Math.max(0, Math.min(1, f.angle));
         const z = s8 + (zs - s8) * up;
-        // the chai: how much is left in the pan (from 1 at a full pan to 0 once both halves are poured)
-        const x = from + (to - from) * f.fill;
-        const left = Math.max(0, 1 - x / 2);
-        // which picture: the hob's pan as it lifts (fading into the first frame), the tip frames, the pour, the pour's end
-        // (the last of a full pan), then back to the hob's pan (empty after a full pour) as it tips back and goes home
-        let name = TIPS[Math.min(3, Math.round(tip * 3))];
+        // the frame: in step with the glass, from where this pour starts to where it stops
+        const home = f.phase === "back" || f.phase === "done";
+        const k = f.phase === "lift" ? kFrom : home ? kTo : Math.round(kFrom + (kTo - kFrom) * f.fill);
+        // the hob's pan as it lifts fades into the first frame; going home, the last frame into the hob's pan
         let frameA = 1;
-        if (f.phase === "lift") frameA = Math.min(1, Math.max(0, (t / M.lift - 0.3) / 0.4));
-        else if (f.phase === "pour") name = emptied && left < 0.22 ? "pan-pour-end" : "pan-pour";
-        else if (f.phase === "untip") {
-          if (emptied) {
-            name = "pan-pour-end";
-            frameA = Math.min(1, f.angle / 0.6);
-          }
-        } else if (f.phase === "back" || f.phase === "done") frameA = 0;
-        if (emptied && (f.phase === "untip" || f.phase === "back" || f.phase === "done") && body.texture.key !== TOP.looks.empty.key) look8(body, "empty");
-        const m = frame(name);
-        fr.setVisible(frameA > 0).setAlpha(frameA).setPosition(f.x, f.y).setScale(z * q);
+        if (f.phase === "lift") frameA = Math.min(1, Math.max(0, (t / M.lift - 0.2) / 0.4));
+        else if (home) frameA = Math.min(1, Math.max(0, 1 - ((t - M.untip) / P.backMs - 0.4) / 0.4));
+        if (emptied && home && body.texture.key !== TOP.looks.empty.key) look8(body, "empty");
+        frame(k, z);
+        fr.setVisible(frameA > 0).setAlpha(frameA).setPosition(f.x, f.y);
         body.setVisible(frameA < 1).setAlpha(1).setPosition(f.x, f.y).setScale(z);
         // the shadow: under it on the burner, falling away down and right as it rises
         const sw = TOP.rim * z * 2.1;
         lsh.setPosition(f.x + up * 26, f.y + up * 34).setDisplaySize(sw, sw).setAlpha(0.55 - 0.25 * up);
-        // the stream: thin, translucent tea from where the chai leaves the rim into the glass (js/shared/pour.js)
-        stream.clear();
-        if (f.flow > 0.01 && left > 0.001 && frameA > 0.5) {
-          const a = m.pour || P0.pour;
-          const sp = { x: f.x + (a[0] - m.cx) * z * q, y: f.y + (a[1] - m.cy) * z * q };
-          const surf = { x: w.x + gd * 0.04, y: w.y + gd * 0.06 };
-          const wd = Math.max(12, rimR * 0.24); // CHAI-31 (the judge: "the stream is hair-thin"): a stream you can see
-          const col = black ? POUR.blackTea || POUR.black : POUR.milkTea || POUR.milk;
-          const sm = NjgPour.stream(sp, surf, wd * (0.4 + 0.6 * f.flow), t / 1000);
-          stream.fillStyle(col, 0.94);
-          stream.fillPoints(sm.poly, true);
-          // (its edge a shade darker, so the stream reads against the tea it falls into)
-          stream.lineStyle(Math.max(1.2, wd * 0.12), POUR.edge, 0.55);
-          stream.strokePoints(sm.poly, true);
-          stream.lineStyle(Math.max(1, wd * 0.14), 0xffffff, 0.24);
-          stream.strokePoints(sm.core, false);
-          stream.fillStyle(col, 0.4 * f.flow);
-          stream.fillEllipse(sm.pool.x, sm.pool.y, sm.pool.rx * 2, sm.pool.ry * 2);
-        }
-        // the glass fills: empty -> half -> full cross-fade
-        const a0 = Math.floor(x);
-        const fr2 = x - a0;
-        ["empty", "half", "full"].forEach((s2, j) => w.glass[s2].setAlpha(j === a0 ? 1 - fr2 * (j < 2 ? 1 : 0) : j === a0 + 1 ? fr2 : 0));
-        if (x >= 2) w.glass.full.setAlpha(1);
+        // the glass: its own frame, in step with the pan's (the well's resting glasses under it, hidden while it shows)
+        const gk = S14_KEY(`gf-${set}-${k}`);
+        if (gf.texture.key !== gk) glassLook(gf, gk);
+        // (as the pan comes over, the resting glass gives way to the first frame: the same glass, so nothing jumps)
+        const gA = f.phase === "lift" ? frameA : 1;
+        gf.setVisible(true).setAlpha(gA);
+        ["empty", "half", "full"].forEach((s2) => w.glass[s2].setAlpha(s2 === st(from) ? 1 - gA : 0));
       };
-      // (the test hook: where the pan is in its pour, for the filmstrip)
-      Cook.chaiPour = { total: plan.total, marks: M };
-      // the pour's sound: Cook's soft pour loop while the stream runs, rising as the glass fills
+      // (the test hook: where the pan is in its pour, for the filmstrip; frames: the pan's and the glass's)
+      Cook.chaiPour = { total: plan.total, marks: M, frames: () => ({ pan: fr.texture.key, glass: gf.texture.key, at: { x: fr.x, y: fr.y }, glassAt: { x: gf.x, y: gf.y } }) };
+      // the pour's sound: Cook's soft pour loop while the chai runs, rising as the glass fills
       let loop = null;
       const sound = (f) => {
-        if (f.flow > 0.05 && !loop && f.phase !== "back" && Cook.sfx.pourLoop) loop = Cook.sfx.pourLoop() || { pitch() {}, stop() {} };
+        if (f.phase === "pour" && !loop && Cook.sfx.pourLoop) loop = Cook.sfx.pourLoop() || { pitch() {}, stop() {} };
         if (loop) loop.pitch(f.fill * 0.6);
         if (loop && f.phase === "back") loop = (loop.stop(), null);
       };
@@ -1545,9 +1485,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       draw(plan.at(plan.total));
       Cook.chaiPour = null;
-      stream.destroy();
       lsh.destroy();
       fr.destroy();
+      gf.destroy();
       ["empty", "half", "full"].forEach((s2) => w.glass[s2].setAlpha(s2 === st(to) ? 1 : 0));
       pan.poured = to;
       w.fill = to;
@@ -1696,6 +1636,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      * redo, or the word still supported, stage 1-2), and a word shown that way is not counted as known (non-negotiable 4).
      */
     const LADDER = { glowAt: 5000, boxAt: 12000 };
+    // the level's wait before Nani's hint (the one ladder table, data/shared.json helpMs, by level 1-4)
+    const helpMs14 = () => {
+      const T = global.Tokens;
+      const lad = T && (typeof T.ladder === "function" ? T.ladder() : T.ladder);
+      const hm = lad && lad.helpMs;
+      return hm && hm.length ? hm[Math.max(0, Math.min(hm.length - 1, (level || 1) - 1))] : LADDER.glowAt;
+    };
     const ITEM_STEPS = new Set(["water", "tea", "cups"]);
     // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above)
     const pageRect = (o, pad = 0) => () => {
@@ -1754,6 +1701,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const key = nx.e.key || "";
       if (nx.phase === "pour" && /^pour-/.test(key)) {
         const pan = pans.find((q) => `pour-${q.who}` === key);
+        // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: pageRect(pan.well.hit), also: pageRect(pan.glowRing) };
         return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
       }
       if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob, 4) };
@@ -1770,13 +1719,37 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
        tail towards her box */
     let callout = null;
     const rowFor = (pid) => (sel ? personRows(L(), sel.who).find((r) => !r.no && r.ids.includes(pid)) : null);
+    // (s14: Nani's helper card, in her box: UI.helper names the item, UI.helperOpen opens it)
+    const helperOf = (pid, answer) => {
+      const r = rowFor(pid);
+      const w = r && UI.wordOf ? UI.wordOf(r, { size: 240, written: true }) : null;
+      if (!w) return null;
+      // (the full answer is help: counted as a hint for an asked-for word, never as known; non-negotiable 4)
+      w.onOpen = () => answer && !helped.has(pid) && (helped.add(pid), Cook.onHelp && Cook.onHelp("hint", { ids: [pid] }));
+      return w;
+    };
     const hideCallout = () => {
+      if (s14 && UI.helperOpen) UI.helperOpen(false);
       if (callout) callout.dispatchEvent(new Event("ck-gone"));
       if (callout) callout.remove();
       callout = null;
     };
     const showCallout = (pid) => {
       hideCallout();
+      if (s14 && UI.helperOpen) {
+        // the first hint teaches the arrow (lit until it is tapped, a few seconds at most, then it opens by itself)
+        if (first14("arrow")) {
+          const a = document.querySelector("#guide .ng-arrow");
+          if (a && !a.hidden) {
+            // (tapped: the arrow's own tap opens the card; untapped, it opens by itself as the light goes)
+            let tapped = false;
+            light14(a, "glow", 4000 / (Cook.speed || 1), () => (tapped = true)).then(() => !tapped && UI.helperOpen(true, { by: "hint" }));
+            return;
+          }
+        }
+        UI.helperOpen(true, { by: "hint" });
+        return;
+      }
       const r = rowFor(pid);
       const side = document.querySelector("#side");
       const guide = document.querySelector("#guide");
@@ -1864,10 +1837,21 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     };
     const allRungs = new Set();
     const trackRung = (r) => (r && allRungs.add(r), r);
+    let lastStep14 = null;
+    const firstLit14 = {};
     const coachStep = (nx, sid) => {
       // (s12-w3b: never a help spotlight while a pan is off its burner pouring)
       if (pans.some((q) => q.away)) return coachEnd();
       rungCur = rungOf(nx);
+      if (s14) {
+        const st = nx && nx.phase;
+        // CHAI-37 (Zafar, 27-28 Oct): after the first two items (the water, the tea), the whole order card lit for a moment (1.2 s;
+        // no glow, no bounce), so the eye knows where to look next; once, for a new player
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) light14(document.querySelector("#mission .oc-card"), "", 1200 / (Cook.speed || 1));
+        lastStep14 = st || lastStep14;
+        // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
+        if (sid !== rungKey && UI.helper) UI.helper(rungCur && rungCur.id && ITEM_STEPS.has(st) ? helperOf(rungCur.id, st === "cups") : null);
+      }
       if (sid === rungKey) {
         if (helpObj && rungCur && helpObj !== rungCur.obj) helpGlow(rungCur.obj);
         return;
@@ -1886,19 +1870,20 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const items = ITEM_STEPS.has(step);
       const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
       // (under the spotlight the live thing takes a tap, and so do the bulbs and the "?": the help stays everyone's, Zafar, 21 Oct)
-      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"];
+      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"].concat(cur.also ? [cur.also] : []);
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
       rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
-        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? (mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? ((firstLit14[step] = true), mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
           ? {
-              at: [0, LADDER.boxAt, null],
-              glowAt: LADDER.glowAt,
+              // (s14: the child alone after the first two, Nani's hint after the level's wait, data/shared.json helpMs; no heavy box)
+              at: s14 ? [0, null, null] : [0, LADDER.boxAt, null],
+              glowAt: s14 ? helpMs14() : LADDER.glowAt,
               glow: (on) => {
                 if (on) {
                   mark();
@@ -2068,6 +2053,24 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       speaking = false;
       await Cook.wait(K.speakGapMs || 300);
     }
+    // Sprint 14 (lab/cards.html playChai): the first time words are dotted on the order card, the dots are lit once ("tap the
+    // dots": a tap shows the word in its place, free help); a few seconds at most, then the game goes on
+    if (s14) {
+      // (the Kutchi dotted: the level's dotting from L3, Lang's dots, or a word past its Kutchi; the English is always tapped open)
+      const d = [...document.querySelectorAll("#mission .oc-row14 .wc14-k .dots, #mission .oc-row14 .wc14-k-dots")].find((x) => x.offsetParent && getComputedStyle(x).display !== "none");
+      if (d && first14("dots")) {
+        const row = d.closest(".oc-row");
+        if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
+        await Cook.wait(400);
+        d.classList.add("ob-dots-now");
+        const prevExpect = Cook.expect;
+        const wait14 = { kind: "wait", dots: true };
+        Cook.expect = wait14;
+        await light14(d, "glow", 6000 / (Cook.speed || 1), () => {});
+        d.classList.remove("ob-dots-now");
+        if (Cook.expect === wait14) Cook.expect = prevExpect || null;
+      }
+    }
     talked = true;
     refresh();
     let nudge = setInterval(() => !finished && refresh(), 250);
@@ -2127,12 +2130,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       setLook(pan);
       ["empty", "half", "full"].forEach((s2) => pan.well.glass[s2].setAlpha(s2 === "empty" ? 1 : 0));
       pan.well.fill = 0;
-      if (pan.well.blackShade) pan.well.blackShade = (pan.well.blackShade.destroy(), null);
       ["half", "full"].forEach((st) => {
         const g = pan.well.glass[st];
         g.blackDone = false;
-        const [dw, dh] = [g.displayWidth, g.displayHeight];
-        g.setTexture(`v2-glass-${st}`).setDisplaySize(dw, dh);
+        glassLook(g, `v2-glass-${st}`);
       });
       UI.mission.reopen(null, dishNo(), { for: pan.who });
     };

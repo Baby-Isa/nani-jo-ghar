@@ -85,6 +85,27 @@
    * Other pages that share this file keep the Wave 5 card.
    */
   UI.w6 = () => document.body.classList.contains("w6");
+  /*
+   * Sprint 14: the kit's s14 look, on for chai (mission.s14): body.njg-s14 carries the page-level parts (the lab's wider side
+   * panel, Nani's box with the arrow in place of the bulb and no speaker of her own, the scrolling order list); the order card
+   * and the word cards take it as their option (OrderCard s14, WordCard.big14 / item14). The serif is loaded once, the first time.
+   */
+  UI.s14 = () => !!(mission && mission.s14 && UI.w6());
+  UI.applyS14 = function (on) {
+    if (typeof document === "undefined" || !document.body) return;
+    on = !!on && UI.w6();
+    if (on && !document.querySelector("link[data-njg-card14-font]")) {
+      const l = document.createElement("link");
+      l.rel = "stylesheet";
+      l.href = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap";
+      l.dataset.njgCard14Font = "";
+      document.head.appendChild(l);
+    }
+    if (document.body.classList.contains("njg-s14") === on) return;
+    document.body.classList.toggle("njg-s14", on);
+    guideS14(on);
+    if (!on) UI.helper(null);
+  };
 
   /**
    * PARKED MODES ONLY (Find it, Dress up, Snap borrow this file; H45): their star icons from their own
@@ -320,6 +341,24 @@
       // its speaker (data-who): the one named, else "cook" (the contract's Cook speaker: the nearest character's head)
       bubbleEl = target = C.bubble(headBox(anchor), { who: (anchor && anchor.who) || "cook", text: pill, layer: $("#stage"), tap: true, z: 10 });
       slot = target.querySelector(".cv-text");
+      // SH-153's check (contract-73): on the s14 look, the bubble's speaker as drawn (its size and 1.8 em of its words), for the checks
+      if (UI.s14()) {
+        const b = target;
+        requestAnimationFrame(() => {
+          const sp = b.querySelector(".wp-say");
+          const tx = b.querySelector(".wp-text");
+          if (!sp || !b.isConnected) return;
+          const r = sp.getBoundingClientRect();
+          const em = parseFloat(getComputedStyle(sp).fontSize) || 0;
+          const ic = sp.querySelector("svg");
+          const ir = ic ? ic.getBoundingClientRect() : null;
+          try {
+            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("bubble-spk", { step: String(Math.round(Math.min(r.width, r.height))), by: `em:${(em * 1.8).toFixed(1)} icon:${ir ? Math.round(ir.width) : 0} text:${tx ? (parseFloat(getComputedStyle(tx).fontSize) || 0).toFixed(1) : 0}` });
+          } catch (e) {
+            /* only a log */
+          }
+        });
+      }
     }
     let skip;
     let offSkip = null;
@@ -734,7 +773,91 @@
     };
     blinkT = setTimeout(blink, 2400);
     showGuide();
+    // (Sprint 14: a box mounted again, the next station, keeps chai's look)
+    if (document.body.classList.contains("njg-s14")) guideS14(true);
   }
+  /*
+   * Sprint 14 (SH-149, CHAI-35; lab/cards.html's .nani, Zafar 27-28 Oct): Nani's box on the s14 look. The arrow takes the bulb's
+   * place (the bulb and her own speaker go: a tap on her face replays her; no green bar, one helper colour). The arrow opens her
+   * helper card in place: her box grows (the order card below is pushed down, never covered) and shows the item's card with
+   * everything shown (picture, Kutchi, English; never dotted: the order card's dots are the small help, this the full answer).
+   * UI.helper(w) names what it would show now (a station's current item: UI.wordOf's {word, wordOpts}, or null: the arrow goes);
+   * UI.helperOpen(on, {by}) opens or closes it (a tap on the arrow, or the station's hint after the level's wait: by "hint").
+   */
+  const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+  let helperW = null;
+  let helperOn = false;
+  const helperEls = () => {
+    const g = $("#guide");
+    return g ? { g, arrow: g.querySelector(".ng-arrow"), slot: g.querySelector(".ng-help-in") } : null;
+  };
+  function guideS14(on) {
+    const g = $("#guide");
+    if (!g) return;
+    g.classList.toggle("ng-s14", !!on);
+    let a = g.querySelector(".ng-arrow");
+    if (on && !a) {
+      a = document.createElement("button");
+      a.type = "button";
+      a.className = "ng-arrow";
+      a.setAttribute("aria-label", "Help");
+      a.setAttribute("aria-expanded", "false");
+      a.innerHTML = ARROW;
+      a.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        Cook.unlockAudio();
+        UI.helperOpen(!helperOn, { by: "arrow" });
+      });
+      (g.querySelector(".ng-tools") || g).appendChild(a);
+      const h = document.createElement("div");
+      h.className = "ng-help";
+      h.innerHTML = '<div class="ng-help-in"></div>';
+      g.appendChild(h);
+    }
+    if (on) paintHelper();
+  }
+  function paintHelper() {
+    const e = helperEls();
+    if (!e || !e.arrow) return;
+    e.arrow.hidden = !helperW;
+    e.g.classList.toggle("ng-open", !!(helperOn && helperW));
+    e.arrow.setAttribute("aria-expanded", helperOn && helperW ? "true" : "false");
+    const want = helperOn && helperW ? helperW : null;
+    if (e.slot._w === want) return;
+    e.slot._w = want;
+    e.slot.innerHTML = "";
+    if (!want || !global.WordCard || !global.WordCard.big14) return;
+    // (a phone: side by side; a big screen: stacked, as the lab's option 5A)
+    // (side by side wherever the stacked card would push the order card out of the side panel: a phone, a short laptop)
+    const phone = global.innerHeight < 760;
+    global.WordCard.big14(e.slot, want.word, Object.assign({}, want.wordOpts || {}, { all: true, variant: phone ? "side" : "small", cls: "ng-helper-card" }));
+    const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame;
+    raf(() => global.WordCard.fit14(e.slot));
+    setTimeout(() => global.WordCard && global.WordCard.fit14(e.slot), 480);
+  }
+  UI.helper = function (w) {
+    if (!w) helperOn = false;
+    helperW = w || null;
+    paintHelper();
+  };
+  UI.helperOpen = function (on, o = {}) {
+    if (on && !helperW) return false;
+    const was = helperOn;
+    helperOn = !!on;
+    paintHelper();
+    // the full answer is help: opened by the child or by the hint, it counts as a hint once per item (never recall)
+    if (helperOn && !was && helperW && o.by !== "quiet") {
+      const id = helperW.word && helperW.word.id;
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("helper-open", { step: String(id == null ? "" : id), by: String(o.by || "arrow") });
+      } catch (e) {
+        /* only a log */
+      }
+      if (helperW.onOpen) helperW.onOpen(o.by || "arrow");
+    }
+    return helperOn;
+  };
+  UI.helperIsOpen = () => !!(helperOn && helperW);
   let talking = false;
   let blinkT = 0;
   let restAs = "neutral"; // the mood she rests in (the service view's setMood)
@@ -1115,6 +1238,10 @@
       wordRows: ladders.some((L) => (L.sections || []).some((x) => x.for)),
       away: new Set(),
     };
+    // Sprint 14 (lab/cards.html, Zafar 27-28 Oct): chai's people order on the kit's s14 look (the new word cards, the sideways
+    // order row, the helper card, the light); every other order keeps today's look until the roll-out
+    mission.s14 = mission.wordRows && ladders.length > 0 && ladders.every((L) => L.recipe === "chai");
+    UI.applyS14(mission.s14);
     // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
     // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
     // Lifecycle note "order-level"), never shown to the child
@@ -1461,7 +1588,46 @@
       const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
       return c ? (sideEls.get(r) || []).find((e) => c.contains(e) && e.classList.contains("oc-row")) || null : null;
     };
+    // Sprint 14 (SH-150, SH-144, SH-152; lab/cards.html playOrder): on the s14 look the word said now pops out big by the side
+    // panel (never in the pop-up's box), the order row glides to its card meanwhile (never a jump), and the big card then moves
+    // and turns into the row's card (WordCard.morph: no fade out and in)
+    const s14 = UI.s14() && global.WordCard && global.WordCard.big14 && global.WordCard.morph;
+    let big14 = null;
+    let tapAt = 0;
+    const pop14 = (w) => {
+      if (big14) big14.remove();
+      const side = $("#side");
+      const st = $("#stage");
+      if (!side || !st) return null;
+      const play = st.getBoundingClientRect();
+      const sr = side.getBoundingClientRect();
+      const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: "wc14-pop" }));
+      let wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
+      // (never over the speaker's bubble: narrower, down to 160 px, to end short of it)
+      const bub = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).find((b) => b.width > 0 && b.left > sr.right);
+      if (bub && bub.left - (sr.right + 14) - 12 < wd) wd = Math.max(160, Math.round(bub.left - (sr.right + 14) - 12));
+      Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
+      document.body.appendChild(c);
+      global.WordCard.fit14(c);
+      // (shorter screens: the card keeps inside the play area, its picture shorter first)
+      if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
+      if (c.animate) c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
+      big14 = c;
+      return c;
+    };
     const land = (r, who, fast) => {
+      if (s14) {
+        const to = rowElOf(who, r);
+        const big = big14;
+        big14 = null;
+        const done = () => {
+          m.away.delete(r);
+          if (to) to.classList.remove("oc-away");
+          if (big) big.remove();
+        };
+        if (fast || !big || !to) return Promise.resolve(done());
+        return global.WordCard.morph(big, to).catch(() => {}).then(done);
+      }
       m.away.delete(r);
       const to = rowElOf(who, r);
       if (!to) return Promise.resolve();
@@ -1499,7 +1665,12 @@
           box.innerHTML = "";
           if (item) {
             const w = UI.wordOf(r, { size: 240, written: true });
-            if (w) global.WordCard.pop(box, w.word, w.wordOpts);
+            if (w && s14) {
+              pop14(w);
+              const slot = rowElOf(who, r);
+              if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot);
+              if (slot && slot.closest(".oc-card") && slot.closest(".oc-card").scrollIntoView) slot.closest(".oc-card").scrollIntoView({ block: "nearest", behavior: "smooth" });
+            } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
           }
           try {
             await sayPart(who, p.line);
@@ -1523,7 +1694,7 @@
           hold: 300,
           wait: (ms) => Cook.wait(ms),
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
-          onTap: () => (skipped = true),
+          onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true)),
           onStop: () => UI.hush(),
           read,
         },
@@ -1532,11 +1703,28 @@
     } finally {
       skipped = true;
       if (box) box.innerHTML = "";
+      // (Sprint 14: a tap on the kitchen lands the whole order at once: no big card or copy of one left on screen, CK-54)
+      if (big14) big14.remove();
+      big14 = null;
+      document.querySelectorAll(".wc14-pop, .wc14-flyer").forEach((x) => x.remove());
       UI.hideBubble();
       stopReading();
       if (m === mission) {
         m.away.clear();
         renderOrder();
+        // (the row from its first card)
+        // (as a glide, so a redraw carries it on: never back to the order's last card)
+        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild));
+      }
+      // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
+      // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
+      if (tapAt && s14) {
+        const left = document.querySelectorAll("#mission .oc-row.oc-away, .wc14-pop, .wc14-flyer").length;
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-skip", { step: String(Date.now() - tapAt), by: `left:${left}` });
+        } catch (e) {
+          /* only a log */
+        }
       }
       if (M.focus && m === mission) M.focus(null);
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
@@ -2006,6 +2194,33 @@
     const src = wcPicSrc(id);
     // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
     if (head && !src) return null;
+    // Zafar, 29 Oct (chai level rules 7): on the s14 look (chai) the card by chai's own row: its Kutchi always written, its English
+    // shown at L1 and dotted from L2, its picture blurred from L3 (data/cook.json levelTable.stations chai-tray en, pic)
+    if (UI.s14()) {
+      const row = Cook.levelRow ? Cook.levelRow(mission.level, "chai-tray") : {};
+      const T = ((Cook.data.levelTable || {}).stations || {})["chai-tray"] || {};
+      const lv = Math.max(1, Math.min(4, mission.level || 1)) - 1;
+      const at = (k, d) => (Array.isArray(T[k]) ? T[k][Math.min(lv, T[k].length - 1)] : d);
+      const srcB = wcPicSrc(wcWordId(r));
+      const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
+      void row;
+      return {
+        word: {
+          id: wcWordId(r),
+          kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), () => false))}</span>` },
+          english: r.line.en || "",
+          rec: !!r.rec,
+          picture: picB ? { src: picB, fit: "contain" } : srcB && size >= 200 ? { src: Cook.v(srcB), fit: "contain" } : null,
+          say: () => Lang.speak(r.line),
+        },
+        wordOpts: {
+          slots: { picture: at("pic", true) !== false && !!srcB, english: at("en", false) === true, kutchiText: true },
+          enShown: at("en", false) === true,
+          progress: Cook.core && Cook.core.progress,
+          onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
+        },
+      };
+    }
     // (written: the word said now, big, as the order first comes: always written in Kutchi, SH-110)
     const hidden = !written && rowHidden(r) && dotsOk();
     const base = W.slots(wcStage(id), { placeholder: !!r.rec });
@@ -2182,7 +2397,13 @@
     // S13-B1 (the recipe ladder through the kit): each card is drawn again by OrderCard.update from the one drawn before it (its
     // key, data-ck), which keeps its decoded face (DAAR-04, DAAR-18, CHT-06: a fresh face was a blank circle for a few frames)
     const before = new Map([...box.querySelectorAll(".oc-card[data-ck]")].map((c) => [c.dataset.ck, c]));
-    const keepFaces = (out) => out;
+    // S14 (chai, the kit's s14 option): each card's sideways row as it stood, so the redraw moves nothing until a tick (OC.settle14)
+    const s14 = !big && UI.s14();
+    const snap14 = s14 && OC && OC.snap14 ? OC.snap14(box) : null;
+    const keepFaces = (out) => {
+      if (snap14) out.forEach((e) => e && e.dataset && e.dataset.ck && OC.settle14(e, snap14.get(e.dataset.ck), (mission.folds || {})[e.dataset.ck]));
+      return out;
+    };
     box.innerHTML = "";
     if (!OC) return [];
     const folds = (mission.folds = mission.folds || {});
@@ -2235,6 +2456,7 @@
       const phase = !!closed && !big && !memoryClosed(closed) && (!closed.who || closed.who === c.who);
       const el = OC.update(before.get(c.key) || null, lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
+        s14, // (Sprint 14: the new order row of item cards, chai only)
         stamped: !big && !!mission.stamped,
         mini: minis.has(c.key), // (G1's face alone: OrderCard draws its left speaker, SH-110)
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
@@ -2358,6 +2580,9 @@
       raf(() => {
         if (mission && side.clientHeight > 0) peekFold(side); // CK-38: a peek on a short sidebar folds her box meanwhile
         if (!mission || (mission.compact || 0) >= 6 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
+        // (Sprint 14: on the s14 look the orders are one under the other in a list that scrolls, the next one peeking, every card
+        // open: nothing folds to fit; lab/cards.html .orders)
+        if (UI.s14()) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
         // 3 flows the open card's rows as pills. With fewer than two people steps 1 and 2 fold nothing: one person (and a
@@ -2379,6 +2604,8 @@
    */
   M.closeCards = function (on, opts = {}) {
     if (!mission) return;
+    // Zafar, 29 Oct (chai level rules 7): on the s14 look the active order card is always open, never folded for its level (L4)
+    if (opts.level && on && UI.s14()) return;
     // F9 (S05-C): an order closed for its level (opts.level) stays closed: a station's phase fold opening it again
     // (closeCards(false)) goes back to the level's closed card, never to the written one
     if (opts.level) mission.levelClosed = !!on;
@@ -2918,6 +3145,7 @@
   };
   M.close = function () {
     stopReading();
+    UI.helper(null);
     UI.stepDone();
     if (guide && guide.strip) guide.strip(false);
     $("#mission").classList.add("hidden");
