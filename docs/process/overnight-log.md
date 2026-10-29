@@ -97,3 +97,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-28 23:05 UK · Published 20261028T230138Z to main (b194da19); Pages serving it.
 - 2026-10-29 02:00 UK · s14-chai builder (Opus): chai on the s14 cards, order row, helper card, light, the s14 pan and the new pour, Zafar's chai level rules; committed in its worktree, not pushed (build/reports/s14-chai.md).
 - 2026-10-29 05:14 UK · Published 20261029T051056Z to main (8502301c); Pages serving it.
+- 2026-10-29 11:24 UK · Published 20261029T112029Z to main (6d37a991); Pages serving it.
