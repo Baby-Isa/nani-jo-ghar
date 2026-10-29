@@ -1,9 +1,9 @@
 // Sprint 14 (s14-chai): the new contract checks for the s14 order row, the bubble's speaker and the skip (contract-72, 73, 74),
-// red then green on synthetic notes, and chai's level rules in the data (Zafar, 29 Oct). No browser. Run: node --test build/test_s14_chai.mjs
+// red then green on synthetic notes, and chai's level rules in the data (Zafar, 29 Oct). No browser. Run: node --test build/sandbox/contract-s14.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { check72, check73, check74 } from "./sandbox/lib/contract.mjs";
+import { check72, check73, check74 } from "./lib/contract.mjs";
 
 const life = (t, what, reason, by) => ({ type: "c", k: "life", t, what, reason: String(reason), by });
 const run = (fn, ...a) => {
@@ -35,7 +35,7 @@ test("contract-74: a tap lands every card within 1 s and the station follows wit
 });
 
 test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1-4 with the lookalike at L4, the card always open", () => {
-  const cook = JSON.parse(readFileSync(new URL("../data/cook.json", import.meta.url), "utf8"));
+  const cook = JSON.parse(readFileSync(new URL("../../data/cook.json", import.meta.url), "utf8"));
   const each = cook.recipes.chai.slots.cups.each;
   assert.equal(each.dudh.byLevel[0].chance, 1, "every cup has milk at L1");
   assert.equal(each.khun.byLevel[0].zero, 0, "one sugar at L1, never none");
@@ -44,7 +44,7 @@ test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1
   assert.deepEqual(row.decoys, [1, 2, 3, 4]);
   assert.deepEqual(row.lookalike, [false, false, false, true]);
   assert.ok(row.card.every((c) => c === "open"), "the active card never folds");
-  const st = JSON.parse(readFileSync(new URL("../data/stations/chai-tray.json", import.meta.url), "utf8"));
+  const st = JSON.parse(readFileSync(new URL("../../data/stations/chai-tray.json", import.meta.url), "utf8"));
   const lv = st.mechanic ? st.mechanic.levels : st.levels || [];
   assert.ok(lv.length >= 4 || JSON.stringify(st).includes('"heat"'), "chai's heat by level");
 });
