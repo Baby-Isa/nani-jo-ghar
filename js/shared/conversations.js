@@ -803,7 +803,8 @@
       p.classList.add("ob-lit", "cv-pick");
       let finger = null;
       const O = root.Onboard;
-      if (o.finger !== false && O && O.finger) {
+      // (the s14 look, chai: the lit reply alone shows what to tap, no finger; Zafar, 28 Oct)
+      if (o.finger !== false && O && O.finger && O.look !== "s14") {
         try {
           // the hand lies to the RIGHT of the reply, pointing at its right end (the replies make room for it), so it covers
           // neither the reply's words, its speaker nor the reply above or below it

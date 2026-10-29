@@ -1205,7 +1205,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       pans.forEach((pan) => {
         const hd = pan.layers && pan.layers.handle;
         if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
-        if (pan.state === "heating") {
+        // (s14, contract-70: at L2+ the heat is quicker, so a second pan reached the green mid-pour and "Slow kar" waited for the
+        // pour; one live thing at a time: the other pans hold their heat while a pour or a spoon is in flight)
+        if (pan.state === "heating" && !busy) {
           const was = pan.heat >= lo && pan.heat <= hi;
           // CHAI-10: twice as fast to the green; in the green it slows to half, so the turn-down keeps its old time
           pan.heat += kBoil.rate * (pan.heat >= lo ? 0.5 : 1) * dt;
