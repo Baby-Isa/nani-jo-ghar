@@ -1791,7 +1791,7 @@
         renderOrder();
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
-        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild));
+        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild, { home: true }));
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
@@ -2562,7 +2562,12 @@
         // SH-102, SH-114: left: a replay reads the steps not yet done only, once any is (never the headline then); all of it otherwise
         const body = c.rows.filter((r) => !r.head);
         const part = left && body.some((r) => r.done) && body.some((r) => !r.done);
-        const rowsSaid = part ? c.rows.filter((r) => !r.head && !r.done) : c.rows;
+        const rowsIn = part ? c.rows.filter((r) => !r.head && !r.done) : c.rows;
+        // CHAI-39, SH-152 (Zafar, 29 Oct, round 4; the central rules' order.noLast): on the s14 look a person's "no" items are said
+        // after everything they asked for, as their cards sit at the row's end, so the row only moves forward while the order
+        // is given; the engine builds the sentence from the rows in that order (Order.sentence), never a hand-written line
+        const noLast = s14 && global.Rules && global.Rules.noLast && global.Rules.noLast();
+        const rowsSaid = noLast ? rowsIn.filter((r) => r.head || !r.no).concat(rowsIn.filter((r) => !r.head && r.no)) : rowsIn;
         const headSaid = part ? null : head;
         const line = c.who && c.L && c.L.sections.some((s) => s.for === c.who)
           ? Order().sentence(headSaid, rowsSaid, { join: Order().joinOf(c.L) })

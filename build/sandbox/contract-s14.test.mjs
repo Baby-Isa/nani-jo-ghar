@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { check72, check73, check74 } from "./lib/contract.mjs";
+import { check72, check73, check74, check75, check76, check77 } from "./lib/contract.mjs";
 
 const life = (t, what, reason, by) => ({ type: "c", k: "life", t, what, reason: String(reason), by });
 const run = (fn, ...a) => {
@@ -49,4 +49,30 @@ test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1
   const st = JSON.parse(readFileSync(new URL("../../data/stations/chai-tray.json", import.meta.url), "utf8"));
   const lv = st.mechanic ? st.mechanic.levels : st.levels || [];
   assert.ok(lv.length >= 4 || JSON.stringify(st).includes('"heat"'), "chai's heat by level");
+});
+
+// s14-rules (Zafar, 29 Oct, round 4): the central rules' skip zones, the pop-out off faces, the first-time hold, the row's way home
+test("contract-72 (s14-rules): the row's way back to its first card after the order is a row-home note: any length, never a jump", () => {
+  assert.equal(run(check72, [life(10, "row-home", 400, "card:130 smooth")]).length, 0);
+  assert.equal(run(check72, [life(10, "row-home", 400, "card:130")]).length, 1);
+});
+
+test("contract-75: a tap on a bubble, the side or the cog never skips; a tap in the play area does", () => {
+  assert.equal(run(check75, [life(1000, "skip-zone", "bubble", "skipped:0")]).length, 0);
+  assert.equal(run(check75, [life(1000, "skip-zone", "bubble", "skipped:0"), life(1300, "order-skip", 200, "left:0")]).length, 1, "the bubble skipped");
+  assert.equal(run(check75, [life(1000, "skip-zone", "play", "skipped:1"), life(1500, "order-skip", 500, "left:0")]).length, 0);
+  assert.equal(run(check75, [life(1000, "skip-zone", "play", "skipped:1")]).length, 1, "the play area did not skip");
+});
+
+test("contract-76: the big pop-out card over a face is a break", () => {
+  assert.equal(run(check76, [life(10, "pop-face", 0, "faces:2 w:180")]).length, 0);
+  assert.equal(run(check76, [life(10, "pop-face", 340, "faces:2 w:180")]).length, 1);
+});
+
+test("contract-77: the first-time hold: never a returning player's, always ended by the tap", () => {
+  const hold = [life(10, "timed-hold", "start", "nana 0.76"), life(900, "timed-hold", "end", "nana 0.76 890ms")];
+  assert.equal(run(check77, { flow: "cook:chai-tray" }, hold).length, 0);
+  assert.equal(run(check77, { flow: "cook:chai-tray#returning" }, hold).length, 1);
+  assert.equal(run(check77, { flow: "cook:chai-tray" }, hold.slice(0, 1)).length, 1);
+  assert.equal(run(check77, { flow: "cook:chai-tray" }, []).length, 0);
 });

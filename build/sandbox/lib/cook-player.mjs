@@ -380,6 +380,34 @@ export class CookPlayer {
       if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
       return;
     }
+    // tap-zones (SH-157, s14-rules: the central rules' skip zones): while the order is given (its first big card up), a tap on the
+    // speaker's bubble, the side panel and the cog, each of which must leave the order going (zone-<name>-kept, else
+    // zone-<name>-skipped), then a tap in the play area away from them all, which lands it (zone-play); the game logs each
+    // (skip-zone notes, contract-75)
+    if (this.mode === "tap-zones") {
+      await until(() => popupOpen(p), 3000, 15);
+      await until(async () => !!(await p.$(".wc14-pop")), 6000, 30);
+      for (const [zone, sel] of [["bubble", ".cv-bubble"], ["side", "#side"], ["cog", ".njg-cog"]]) {
+        if (!(await popupOpen(p))) break;
+        const at = await p.evaluate((s) => { const e = [...document.querySelectorAll(s)].find((x) => x.getBoundingClientRect().width > 4); if (!e) return null; const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + Math.min(r.height / 2, 30) }; }, sel).catch(() => null);
+        if (!at) { this.rec.note(`tap-zones: no ${zone} on screen`); continue; }
+        await p.mouse.click(at.x, at.y);
+        await sleep(350);
+        // (the cog's menu, opened by its tap, closed again so the order goes on as it was)
+        if (zone === "cog") await p.evaluate(() => { const m = document.getElementById("side-menu"); const c = document.getElementById("side-cog"); if (m && !m.hidden && c) c.click(); }).catch(() => {});
+        await this.once(`zone-${zone}-${(await popupOpen(p)) ? "kept" : "skipped"}`, { settle: 0 });
+      }
+      if (await popupOpen(p)) {
+        const at = await p.evaluate(() => { const st = document.querySelector("#stage"); if (!st) return null; const r = st.getBoundingClientRect(); const busy = [...document.querySelectorAll(".cv-bubble, .wc14-pop, .njg-cog-rail")].map((e) => e.getBoundingClientRect()); for (const [fx, fy] of [[0.5, 0.75], [0.7, 0.8], [0.3, 0.85], [0.5, 0.5]]) { const x = r.left + r.width * fx, y = r.top + r.height * fy; if (!busy.some((b) => x >= b.left && x <= b.right && y >= b.top && y <= b.bottom)) return { x, y }; } return { x: r.left + r.width / 2, y: r.bottom - 20 }; }).catch(() => null);
+        if (at) await p.mouse.click(at.x, at.y);
+        await sleep(400);
+        await this.once("zone-play", { settle: 0 });
+      }
+      await sleep(600);
+      if (this.intros === 1) await this.once("order-card-in-sidebar");
+      if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
+      return;
+    }
     // tap-during-pause: its tap is the watcher's (pauseWatch); the pop-up may already have folded on it
     if (this.mode === "tap-during-pause" && this.drv.pause) await Promise.race([this.drv.pause, sleep(1500)]);
     if (this.mode === "tap-during-pause" && !(await popupOpen(p))) return;

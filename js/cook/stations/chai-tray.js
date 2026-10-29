@@ -657,7 +657,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         chip.face = [icon];
       }
       chip.showsWord = !!showWord;
-      chip.wordId = id;
+      chip.pillId = id;
     }
     function slot(id, x, K) {
       const key = `jar-${id}`;
@@ -2304,7 +2304,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               P14().pill(id, { ok: !!ok, firstTry: !wrongFirst(id), peek: peeked(id) });
               pillNote(id);
             });
-            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.wordId) && chipFace(o.chip, o.chip.wordId, pillShows14(o.chip.wordId)));
+            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && chipFace(o.chip, o.chip.pillId, pillShows14(o.chip.pillId)));
           }
         }
         if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
