@@ -75,3 +75,21 @@ the table goes; (c) the cog's place into the shared frame's CSS once every game 
 clinic shapes (rulebook section 4); (e) the old word stages (`data/progress.json`): keep them for the clinic and the conversations
 until their roll-out, then fold Cook's `chipWord` into the pill flag everywhere; the stages' card ladder (English, picture by word)
 and the rules' card by level overlap, which needs Zafar's choice ("each word its own ladder", 27 Oct, vs the level table).
+
+## Round 2, the orchestrator's check (29 Oct night)
+
+1. **The evidence tool cannot film yet.** Its 4-frame strips (`strip:...:4x500`) "did not change" on four rows (the glide, the
+   pop-out, the "no" order, the skip zones), so the judge never saw them; a scripted film with the sandbox's own server and
+   browser did (`startServer`, `launch`, `newPage`), and showed the row never moving back and the card off every face.
+   Fix the strip probe before the roll-out; until then, film the motion rows yourself.
+2. **A probe's moment can be early.** The timed hold works (held mid-green until the tap at every level, the timeline's
+   `timed-hold` notes), but the judge's still was taken before the pan reached the green: a FAIL from the probe, not the game.
+   Read the timeline before acting on a verdict about timing.
+3. **The before needs the new rows and probes.** Playing the before on `main`'s code needs the branch's evidence specs, the
+   sandbox's libraries, drivers and flows, the fix list and `data/rules.json` copied in, or it refuses or mis-times.
+4. **There is no hook for the faces' boxes.** A "never over a face" check by script needs the people's face boxes from the game
+   (contract-76 has them inside the game); add a test hook so any script can ask.
+5. **Every Cook game moved at once for the cog.** One shared change (the cog top right) was judged in three games and passed;
+   the roll-out can move shared things this way, game-specific things one game at a time.
+6. **Still open for the roll-out:** the help light too big in samosa, daar, the pantry and the grill (contract-53, unchanged);
+   maani's and the grill's older guide box; `noAsks` at L1 still in `recipes.js`; the old `levelTable` for the other stations.

@@ -8,31 +8,31 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (29 Oct 2026, 05:15 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`).
-**Live on `main` (8502301c, 20261029T051056Z):** the real chai game on the new kit (the s14 word card, the sideways order row that
-glides and settles itself, the pop-out cards that turn into their row cards, Nani's helper card, the lit-box light with no finger,
-a tap on the kitchen skips the order, the bigger bubble speaker); Zafar's s14 art (the pan exactly overhead in six states, the new
-pour: the pan over its glass emptying while the glass fills, the overhead glasses, the decluttered kitchen in every Cook scene);
-his chai level rules (no "no" asks at L1, kari/mori from L3, decoys 1-4 with salt only at L4, the order card always open with its
-Kutchi, English dotted from L2, picture blurred from L3, the heat quicker at L2 and narrower at L3; hint waits 7, 9, 11, 13 s).
-Other games unchanged. Builder report `build/reports/s14-chai.md`; judge verdicts
-`build/screenshots/evidence/br-s14-chai-after-20261029-043226-bf9/judge/` (3 pass, 3 fail on rows his newer words had replaced:
-rows updated; the rest probe faults). Nothing running.
+**Where things stand (29 Oct 2026, 22:00 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`,
+rounds 1-4). The rules are drafted as `docs/game-design/rulebook.md` (every game as a column; Fable's review in its section 5).
+**Live on `main` (89729f48, 20261029T215612Z):** chai on one central rules file (`data/rules.json`, read only through
+`js/shared/rules.js`): its cups, decoys, order card by level, hint waits (7, 9, 11, 13 s), the big card's holds, the 1.2 s light,
+the first-time hold in the green, the word pill (Kutchi off after three right in a row, back after a miss until one right), the
+level-up rule (3 rounds in a row, at most one guide hint each; never down; a grown-up's pick wins); "no" items said last; the
+pop-out never over a face; faint slots on the waiting order card; the skip zones (bubbles, side panel, cog never skip); the cog
+top right in every Cook game. Builder report `build/reports/s14-rules.md`; lessons for the next builders
+`build/reports/s14-chai-lessons.md` (rounds 1 and 2, and my check). Judge: the cog passed; the timed hold works (its probe shot
+early); four rows' film probes fail (I filmed them: fine). Nothing running.
 
-**Known, for Zafar's look:** at L3-L4 the order row glides far to the "no" cards at the end and back (contract-72); the order
-card is a large empty white box until the first word is said; the boil-over foam is still the old picture; the heat values are
-suggestions; the kitchen is a plain resize for now (Real-ESRGAN later); pink chai art cut and spare.
+**For Zafar:** (1) play chai L1-L4 as a new player, then again (the pill and the level-up show over several rounds); (2) at
+740x320 with three people the pop-out card falls back over the side panel's top (Nani's line) for a moment: acceptable?
+(3) Mum: the new word order (`docs/questions.md`); (4) the rulebook's open points (section 4) and the bulb's English lines in
+the games not yet rolled out.
 
 **Next steps, in order:**
-1. Zafar plays chai L1-L4 as a new player (`labs.html`: New player on, Chai tray, each level) and sends notes: `/feedback`.
-2. The principles: his answers to round 2 (A levels, B the ladder, C onboarding with the pop-out times, E the non-negotiable 4
-   wording), then the games-as-columns table, then the rulebook (a new docs/game-design/rulebook.md) and Fable's review of it against
-   `docs/architecture/target-model.md`.
-3. What chai taught us (from his play), then the roll-out plan to the other Cook stations and the clinic.
+1. Zafar's feedback on the new chai (`/feedback`); fix it.
+2. Fix the evidence tool's film probe and add a face-box hook (lessons, my check 1 and 4).
+3. The roll-out, from the lessons: two builders (the other Cook stations; the clinic), each game onto the central file, his
+   numbers in the rulebook; brief, model, effort and cost to him first.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; the new chai is live. I've played it: here are my
-> notes. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; chai on the central rules is live. Here is my
+> feedback. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
