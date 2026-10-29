@@ -20896,5 +20896,77 @@
    "note": "the 'no' items said last (the engine's line: '..., ba khun, dudh na.'), so the order row only moves forward while the order is given; it goes back to its first card only once the order is given",
    "delay": 0
   }
+ ],
+ "SH-155": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "cmd:node --test build/test_shared_rules.mjs",
+    "contract:37"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai on the central rules (data/rules.json through js/shared/rules.js): L1 one cup and 1 decoy, L4 three cups, 4 decoys with the salt; the unit tests (each rule, a change in the file seen by chai, chai keeps no copy) pass",
+   "delay": 0
+  }
+ ],
+ "SH-159": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "cmd:node --test build/test_shared_rules.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the shelf's word pills: written under each item (a new player); the rule's own tests (three right hide, a miss shows, one right hides again, a peek never counts) pass; a scripted save's chips are in build/reports/s14-rules.md",
+   "delay": 0
+  }
+ ],
+ "SH-160": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_shared_rules.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the level-up rule's tests pass (3 rounds in a row with the hint at most once; never down; a grown-up's pick never counts); a scripted save's next self-picked order at L2 is in build/reports/s14-rules.md",
+   "delay": 0
+  }
  ]
 }
