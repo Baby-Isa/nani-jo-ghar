@@ -3877,7 +3877,7 @@
    "kitchen-trays": {
     "line": "KT (s14, ART-28: the kitchen decluttered; was K1's service-master-v1.webp)",
     "file": "assets/cook/bg/service-master-v2.webp",
-    "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Lanczos for now, Real-ESRGAN later); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
+    "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Real-ESRGAN x2, 29 Oct); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
     "ready": true,
     "core": [
      250,

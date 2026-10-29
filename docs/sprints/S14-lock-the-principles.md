@@ -95,6 +95,13 @@ naming, L4 added complexity. The hint is the guide's (Nani in Cook, the doctor i
 no days; its last rung sound only. Onboarding: every item not on the order card is shown; otherwise each new action once; the
 order's pop-outs may quicken with exposure. Next: the principles again with these, then a games-as-columns table.
 
+## The principles, round 3 (Zafar, 29 Oct, morning)
+The word ladder, simpler (replaces round 2's four rungs and the book check): a word's Kutchi shows under its item (with the
+speaker) until the child picks it right three times in a row; then speaker only. A miss brings the Kutchi back, only until the
+next right pick, then it goes again. "Rest is fine": the level table (A), the onboarding list with the pop-out times (C) and the
+non-negotiable 4 wording (E, CLAUDE.md) are agreed. Asked: the cog top right of the play area (as in the lab), the kitchen's
+proper upscale (done), the order row's long glide explained with pictures.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
