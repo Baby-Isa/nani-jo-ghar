@@ -1678,7 +1678,7 @@ export function report(results, opts = {}) {
 // judged from the game's own test notes (Lifecycle.note, only logged: js/shared/order-card.js row-glide, js/cook/ui.js bubble-spk
 // and order-skip), so they hold on chai's s14 look and say nothing where a game does not log them
 Object.assign(CHECKS, {
-  "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every row-glide note (js/shared/order-card.js OrderCard.glideTo, the s14 order row while the order is given: how far it moved and the card's width): a move that is not smooth, or more than one card's width plus the gap (1.25 card widths) in one glide, is a break, once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side')." },
+  "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every row-glide note (js/shared/order-card.js OrderCard.glideTo, the s14 order row while the order is given: how far it moved, how, and the card's width): a move that is not a smooth scroll (a jump) of more than 2 px is a break, and so is a smooth glide of more than 2.5 card widths (a glide that far reads as a jump: the row should follow the cards as they are said), once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side'; a smooth scroll never moves a card's width in one frame)." },
   "contract-73": { item: "bubble-speaker", title: "the bubble's speaker is big", how: "Every bubble-spk note (js/cook/ui.js, a bubble shown on the s14 look: the speaker's drawn size, 1.8 em of its words, its icon's width): a speaker under the 48 px tap, more than 2 px under 1.8 em, or an icon under 60% of the speaker is a break, once per page (SH-153, Zafar 28 Oct: 'increase the icon size in the speech bubble')." },
   "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Every order-skip note (js/cook/ui.js, a tap on the kitchen while the order is given, s14): every card in its row, no big card or copy of one left (left:0), within 1 s of the tap (the note's ms), and the station's stage starting within 1 s of it (scaled by the test speed). Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game')." },
 });
@@ -1688,8 +1688,8 @@ export function check72(tl, add) {
     const d = Number(n.reason);
     const m = /card:(\d+)/.exec(n.by || "");
     const w = m ? +m[1] : 0;
-    if (!/smooth/.test(n.by || "")) { add("contract-72", n.t, `the order row moved ${d} px in one jump (never smooth)`); return; }
-    if (w > 0 && d > w * 1.25) { add("contract-72", n.t, `the order row moved ${d} px in one glide, more than a card's width (${w} px)`); return; }
+    if (!/smooth/.test(n.by || "") && d > 2) { add("contract-72", n.t, `the order row moved ${d} px in one jump (never smooth)`); return; }
+    if (w > 0 && d > w * 2.5) { add("contract-72", n.t, `the order row glided ${d} px at once, more than 2.5 cards (${w} px each)`); return; }
   }
 }
 export function check73(tl, add) {

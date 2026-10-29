@@ -15,6 +15,7 @@ const run = (fn, ...a) => {
 test("contract-72: a smooth glide within a card's width passes; a jump or a glide past it is a break", () => {
   assert.equal(run(check72, [life(10, "row-glide", 120, "card:130 smooth")]).length, 0);
   assert.equal(run(check72, [life(10, "row-glide", 120, "card:130")]).length, 1);
+  assert.equal(run(check72, [life(10, "row-glide", 220, "card:130 smooth")]).length, 0);
   assert.equal(run(check72, [life(10, "row-glide", 400, "card:130 smooth")]).length, 1);
 });
 

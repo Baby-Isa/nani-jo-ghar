@@ -177,6 +177,6 @@
 .wc.wc14-flyer { box-shadow: var(--njg-card14-shadow); }
 /* SH-153 (Zafar, 28 Oct: "increase the icon size in the speech bubble"; lab/cards.html .bspk): on the s14 look every chai bubble's
    speaker is 1.8 em of its words (the icon 66%), never under the tap size */
-body.njg-s14 .cv-bubble .wp.wp-line .wp-say { font-size: clamp(var(--njg-card14-u18), 2.4vw, var(--njg-card14-u32)); width: max(var(--njg-tap), 1.8em); height: max(var(--njg-tap), 1.8em); min-width: max(var(--njg-tap), 1.8em); min-height: max(var(--njg-tap), 1.8em); padding: 0; display: grid; place-items: center; }
+body.njg-s14 .cv-bubble .wp.wp-line .wp-say { font-size: clamp(var(--njg-card14-u18), 2.4vw, var(--njg-card14-u32)); width: max(var(--njg-tap), 1.8em); height: max(var(--njg-tap), 1.8em); min-width: max(var(--njg-tap), 1.8em); min-height: max(var(--njg-tap), 1.8em); padding: 0 !important; display: grid; place-items: center; }
 body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { width: 66%; height: 66%; }
 .wc14 .wc14-k .dots { font-size: 1.15em; letter-spacing: .14em; line-height: 1; }
