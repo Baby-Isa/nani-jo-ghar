@@ -102,6 +102,14 @@ next right pick, then it goes again. "Rest is fine": the level table (A), the on
 non-negotiable 4 wording (E, CLAUDE.md) are agreed. Asked: the cog top right of the play area (as in the lab), the kitchen's
 proper upscale (done), the order row's long glide explained with pictures.
 
+## The principles, round 4 (Zafar, 29 Oct: "for now, yes, agree with everything")
+Agreed: L4 has the most items (each game's own most; L1 is 1; L2-L3 even steps between); the level-up rule for now (3 finished
+rounds with the hint at most once a round; never down; easy to change; story mode and free play may set their own later); the cog
+top right, and its menu and placement from one central file; timings, level rules, the ladder, onboarding and layout rules
+central, each game's content, scene and feel its own; the tap-to-skip zone; a timed control holds in the green the first time;
+"no" items said last for now. The roll-out: chai first on the central rules, tested; what it teaches goes to the builders of the
+rest. The draft rulebook with every game: `docs/game-design/rulebook.md`.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 
