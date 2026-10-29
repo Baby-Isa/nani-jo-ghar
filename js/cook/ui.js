@@ -1633,8 +1633,9 @@
       } catch (e) {
         /* no scene */
       }
-      const st = $("#stage");
-      if (st) st.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+      // (every face circle on the page: the play area's and the side panel's, Nani's and the order card's)
+      document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+        if (f.closest(".wc14-pop, .wc14-flyer")) return;
         const b = f.getBoundingClientRect();
         if (b.width > 0) out.push({ left: b.left - 6, top: b.top - 6, right: b.right + 6, bottom: b.bottom + 6 });
       });
@@ -1644,29 +1645,39 @@
     function placeFree14(c, play, sr, wd) {
       const faces = faces14();
       const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
-      const x0 = sr.right + 14;
       const pad = 10;
+      const smallAt = c.classList.contains("wc14-small");
       let best = null;
-      // widths from the full card down to 160 px; for each, the spots from beside the side panel outwards, top first
-      for (const w of [wd, wd * 0.85, wd * 0.7, Math.min(wd, 160)].map(Math.round)) {
-        c.style.width = `${w}px`;
-        global.WordCard.fit14(c);
-        const h = c.offsetHeight;
-        for (let y = play.top + pad; y + h <= play.bottom - pad + 0.5 || y === play.top + pad; y += 12) {
-          for (let x = x0; x + w <= play.right - pad + 0.5 || x === x0; x += 16) {
-            const r = { left: x, top: y, right: x + w, bottom: y + h };
-            const onFace = overlap14(r, faces);
-            const onBub = overlap14(r, bubs);
-            const score = onBub + (x - x0) * 0.5 + (y - play.top) * 0.25;
-            if (!best || onFace < best.onFace || (onFace === best.onFace && score < best.score)) best = { x, y, w, h, score, onFace, onBub };
-            if (onFace === 0 && onBub === 0) break;
+      const perfect = () => best && best.onFace === 0 && best.onBub === 0;
+      // one area (x from x0 to x1, y from y0 to y1), at each width from the full card down (a smaller picture from 160 px): the spots
+      // from its top left outwards; the best is the one over no face, then over the fewest bubbles, then the nearest the side panel
+      const scan = (x0, x1, y0, y1, widths, cost) => {
+        for (const w of widths.map(Math.round)) {
+          if (w < 100 || w > x1 - x0) continue;
+          c.style.width = `${w}px`;
+          c.classList.toggle("wc14-small", smallAt || w <= 160);
+          global.WordCard.fit14(c);
+          const h = c.offsetHeight;
+          for (let y = y0; y + h <= y1 + 0.5 || y === y0; y += 12) {
+            for (let x = x0; x + w <= x1 + 0.5 || x === x0; x += 16) {
+              const r = { left: x, top: y, right: x + w, bottom: y + h };
+              const onFace = overlap14(r, faces);
+              const onBub = overlap14(r, bubs);
+              const score = cost + onBub + (x - x0) * 0.5 + (y - y0) * 0.25;
+              if (!best || onFace < best.onFace || (onFace === best.onFace && score < best.score)) best = { x, y, w, h, score, onFace, onBub, small: c.classList.contains("wc14-small") };
+              if (onFace === 0 && onBub === 0) break;
+            }
+            if (perfect()) return;
           }
-          if (best && best.onFace === 0 && best.onBub === 0) break;
         }
-        if (best && best.onFace === 0 && best.onBub === 0) break;
-      }
+      };
+      // the play area beside the side panel first; then, a phone with three people at the counter and no face-free spot there,
+      // over the side panel (the order card the big card is about to turn into), still never over a face (contract-76: 740x320)
+      scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], 0);
+      if (best && best.onFace > 0) scan(sr.left + 8, sr.right - 8, Math.max(play.top, sr.top) + pad, Math.min(play.bottom, sr.bottom) - pad, [Math.min(wd, sr.width - 16), 160, 130, 110], 1e6);
       if (!best) return;
       c.style.width = `${best.w}px`;
+      c.classList.toggle("wc14-small", !!best.small);
       global.WordCard.fit14(c);
       Object.assign(c.style, { left: `${Math.round(best.x)}px`, top: `${Math.round(best.y)}px` });
       // (SH-154's check: how much of the card sits over a face, for the contract checks only)
