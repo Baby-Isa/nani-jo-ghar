@@ -100,3 +100,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-29 11:24 UK · Published 20261029T112029Z to main (6d37a991); Pages serving it.
 - 2026-10-29 21:30 UK · s14-rules builder (Opus): the central rules file (data/rules.json, js/shared/rules.js) with chai on it, the cog top right in every Cook game, the skip zones, 'no' said last, the pop-out off faces, the first-time heat hold, the word pill, the level-up; committed in its worktree, not pushed (build/reports/s14-rules.md).
 - 2026-10-29 21:59 UK · Published 20261029T215612Z to main (89729f48); Pages serving it.
+- 2026-10-30 02:35 UK · Published 20261030T023200Z to main (f6036032); Pages serving it.
