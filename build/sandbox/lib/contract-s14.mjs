@@ -183,10 +183,10 @@ export function check85(r, tl, add) {
   const rounds = ev(tl, "replay");
   if (rounds.length < 2) return;
   const first = rounds[0], again = rounds[rounds.length - 1];
-  const lost = (first.keys || []).filter((k) => !(again.keys || []).includes(k));
-  if (lost.length) add("contract-85", again.t, `after Play again ${lost.length} picture${lost.length > 1 ? "s" : ""} of the first round are gone: ${lost.slice(0, 8).join(", ")}`);
+  // (the orchestrator, 30 Oct: a second round with another order loads only its own pictures (daar's garlic), and the pantry never
+  // had the marble: what counts is a picture the second round draws as missing, and the worktop where the first round had it)
   if (again.missing > 0) add("contract-85", again.t, `after Play again ${again.missing} picture${again.missing > 1 ? "s are" : " is"} drawn as the missing-picture texture`);
-  if (again.marble === false) add("contract-85", again.t, "after Play again the worktop is not the painted marble (spr:bg:marble): it is drawn in code");
+  if (first.marble === true && again.marble === false) add("contract-85", again.t, "after Play again the worktop is not the painted marble (spr:bg:marble): it is drawn in code");
   const fx = (first.fx || []).filter((k) => !(again.keys || []).includes(k));
   if (fx.length) add("contract-85", again.t, `after Play again the fx textures are not loaded: ${fx.slice(0, 6).join(", ")}`);
 }

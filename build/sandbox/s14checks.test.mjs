@@ -125,9 +125,11 @@ test("contract-85 (B4, SH-161): after Play again no picture is lost, none missin
   // main: 14 pictures gone, the worktop drawn in code
   const main = [rep(1000), rep(40000, { round: 2, keys: ["s14-pan-empty"], marble: false })];
   const bad = run(check85, {}, main);
-  assert.equal(bad.length, 2);
-  assert.match(bad[0].msg, /3 pictures of the first round are gone: spr:bg:marble, elchi, milk-jug/);
-  assert.match(bad[1].msg, /not the painted marble/);
+  assert.equal(bad.length, 1);
+  assert.match(bad[0].msg, /not the painted marble/);
+  // (the orchestrator, 30 Oct: a second round with another order loads only its own pictures; the pantry never had the marble)
+  assert.equal(run(check85, {}, [rep(1000), rep(40000, { round: 2, keys: ["spr:bg:marble", "milk-jug", "s14-pan-empty"] })]).length, 0, "another order's pictures");
+  assert.equal(run(check85, {}, [rep(1000, { marble: false }), rep(40000, { round: 2, marble: false })]).length, 0, "a station with no marble");
   assert.equal(run(check85, {}, [rep(1000), rep(40000, { round: 2 })]).length, 0, "the branch: the same textures in round two");
   assert.match(run(check85, {}, [rep(1000), rep(40000, { round: 2, missing: 2 })])[0].msg, /2 pictures are drawn as the missing-picture texture/);
   assert.match(run(check85, {}, [rep(1000, { fx: ["fx-s11-splash"] }), rep(2000, { round: 2 })])[0].msg, /fx textures are not loaded: fx-s11-splash/);
