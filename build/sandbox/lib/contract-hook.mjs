@@ -152,7 +152,7 @@ export const CONTRACT_HOOK = `(() => {
   const inPopup = (el) => !!(el && el.closest && el.closest(".njg-rq-veil, #intro, .njg-rq-card"));
   // a clinic card (.cl-card) is the box the shared order card (.oc-card) is drawn in: one card, counted once (the inner
   // one carries "closed"; counting the box too read every closed card as "1 of 2 open", contract-9)
-  const sideCards = () => [...document.querySelectorAll(".oc-card, .cl-card, .ng-card")].filter((c) => !inPopup(c) && !c.closest(".njg-results") && shown(c) && !(c.matches(".cl-card") && c.querySelector(".oc-card")));
+  const sideCards = () => [...document.querySelectorAll(".oc-card, .cl-card, .ng-card")].filter((c) => !inPopup(c) && !c.closest(".njg-results") && !c.closest(".wc14-flyer-frame") && shown(c) && !(c.matches(".cl-card") && c.querySelector(".oc-card")));
 
   // ---- ✓ / Next / stage buttons (not the end screen, the pop-up, the grown-ups' "?", the bulb, word pills) ----
   const BTN = ".cl-go, #done-btn, .njg-go, .njg-next, .stage-go, [data-contract=next]";
@@ -725,7 +725,7 @@ export const CONTRACT_HOOK = `(() => {
   const KIT_STATE = "done next next-up no miss wrong reading later now pulse folded still closed peek english direct tint foldable reopened bulb-open speaking on face-say tk-seen landed arriving people away oc-away in big".split(" ");
   const kitClass = (c) => /^(oc-|wc|njg-|fit)/.test(c) || KIT_STATE.includes(c);
   const kitCards = () => {
-    const cards = [...document.querySelectorAll(".oc-card")].filter(shown);
+    const cards = [...document.querySelectorAll(".oc-card")].filter((c) => !c.closest(".wc14-flyer-frame")).filter(shown);
     const bad = [];
     for (const c of cards) {
       for (const el of [c, ...c.querySelectorAll(":scope .oc-head, :scope .oc-face, :scope .oc-item, :scope .oc-row")]) {

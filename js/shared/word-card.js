@@ -616,13 +616,42 @@
     const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
     if (o.fast || reduced || !a.width || !b.width || !from.animate) return;
     // (Zafar, 29 Oct: "when the big item card goes into the left menu card, the text goes funky as it transitions": one even scale,
-    // so no letter is stretched.) SH-163 (Zafar, 30 Oct: "can't we just have two separate things going on? One, it shrinks from the
-    // bigger card to the small card ... nicely visible and not squashed ... And at the same time, it just needs to physically move into
-    // the right place"): one card, the big one, shrinks (one even scale, to fit the row's box) while it moves centre to centre, whole
-    // and fully seen all the way; only at its landing, where it sits on the row's card at the row's size, does the row's own card take
-    // over: the big card stays on it until the row's card is drawn whole (its picture decoded), then goes in one frame (the 30 Oct
-    // film: a row card shown as the big one faded drew its words low with no picture for a few frames)
-    const s = Math.min(b.width / a.width, b.height / a.height);
+    // so no letter is stretched.) SH-163 (Zafar, 30 Oct: "it shrinks from the bigger card to the small card ... nicely visible and not
+    // squashed ... And at the same time, it just needs to physically move into the right place"; and "it was quite good in the
+    // sandbox chai", lab/cards.html morph): one card on its way: the big card and the row's card travel together on one centre and
+    // one even scale, the big one shrinking to the row's size as the row's grows out of it, and the big one melts into the row's
+    // over most of the flight (the lab's long cross-fade), so it lands as the row's card exactly: nothing to swap at the end
+    const ghost = to.cloneNode(true);
+    ghost.classList.remove("oc-away");
+    ghost.classList.add("wc14-flyer");
+    ghost.removeAttribute("id");
+    ghost.removeAttribute("data-key");
+    // (the row's card is styled by its order card and sized by its row, its container: "funky" in flight was the copy drawn outside
+    // them, its picture box gone and its words tiny (the 30 Oct film); the copy flies in an empty frame with the same classes, the row's
+    // width, nothing drawn and nothing clipped, so it is the row's card to the pixel)
+    const rowEl = to.closest && to.closest(".oc-row14");
+    const cardEl = rowEl && rowEl.closest(".oc-card");
+    let shell = null;
+    if (rowEl && cardEl) {
+      const rr = rowEl.getBoundingClientRect();
+      shell = doc.createElement("div");
+      shell.className = `${cardEl.className} wc14-flyer-frame`; // (a frame for the card in flight, never an order card: the checks skip it)
+      Object.assign(shell.style, { position: "fixed", left: `${rr.left}px`, top: `${rr.top}px`, width: `${rr.width}px`, height: `${rr.height}px`, margin: "0", padding: "0", border: "0", background: "none", boxShadow: "none", overflow: "visible", zIndex: "60", pointerEvents: "none" });
+      const inner = doc.createElement("div");
+      inner.className = rowEl.className;
+      Object.assign(inner.style, { position: "absolute", inset: "0", margin: "0", padding: "0", overflow: "visible", background: "none", maskImage: "none", webkitMaskImage: "none" });
+      shell.appendChild(inner);
+      Object.assign(ghost.style, { position: "absolute", left: `${b.left - rr.left}px`, top: `${b.top - rr.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", transformOrigin: "50% 50%", visibility: "visible", transition: "none", opacity: "0" });
+      inner.appendChild(ghost);
+      doc.body.appendChild(shell);
+    } else {
+      Object.assign(ghost.style, { position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", zIndex: "60", pointerEvents: "none", transformOrigin: "50% 50%", visibility: "visible", transition: "none", opacity: "0" });
+      doc.body.appendChild(ghost);
+    }
+    // (the copy's picture drawn before it is seen: a fresh image decodes late, and the 30 Oct film showed the card land with no
+    // picture for 400 ms; it is the row's own picture, already loaded, so this is a frame or two at most)
+    await Promise.all([...ghost.querySelectorAll("img")].map((im) => Promise.race([im.decode ? im.decode().catch(() => {}) : null, new Promise((r) => setTimeout(r, 300))])));
+    const s = Math.min(b.width / a.width, b.height / a.height); // the big card's end scale (whole, inside the row's box)
     const dx = b.left + b.width / 2 - (a.left + a.width / 2);
     const dy = b.top + b.height / 2 - (a.top + a.height / 2);
     const ease = "cubic-bezier(.45,.05,.2,1)";
@@ -630,25 +659,26 @@
     const dur = (o.ms || 650) / sp;
     from.style.transformOrigin = "50% 50%";
     try {
-      await from.animate([{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }], { duration: dur, easing: ease, fill: "forwards" }).finished;
-      // (laid out and drawn under the big card but not seen: the two never show at once, the 30 Oct film at 930x430)
-      to.style.visibility = "hidden";
+      const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 0.9, offset: 0.35 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
+      // (the row's card starts inside the big one's outline, never reaching past it: the big card is placed off every face, so its copy is too)
+      const g0 = Math.min(a.width / b.width, a.height / b.height);
+      const g = ghost.animate([{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
+      await Promise.all([f.finished, g.finished]);
+      // the row's own card under the copy, shown at once (no fade from its waiting slot), then the copy goes: the same card, one frame
+      const tr = to.style.transition;
+      to.style.transition = "none";
       to.classList.remove("oc-away");
+      void to.offsetWidth;
       const im = to.querySelector("img");
       if (im && im.decode) await Promise.race([im.decode().catch(() => {}), new Promise((r) => setTimeout(r, 300))]);
-      // (the row card's own fade from its waiting slot, .25 s, finishes under the big card)
-      await new Promise((r) => setTimeout(r, 260 / sp));
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-      // (the judge, 30 Oct: a fade here showed the two cards at once; the row's card is drawn under it, so the swap is one frame)
-      to.style.visibility = "";
       from.style.visibility = "hidden";
-      // (the row's card a touch bigger than the big one scaled to fit inside it: it takes over at the big one's size and grows the
-      // last few px, so the hand-over is part of the one motion, never a jump)
-      const k0 = (a.width * s) / b.width;
-      if (k0 < 0.995 && to.animate) await to.animate([{ transform: `scale(${k0})` }, { transform: "none" }], { duration: 160 / sp, easing: "ease-out" }).finished;
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      to.style.transition = tr;
     } catch (e) {
       /* cancelled: the card lands anyway */
-      to.style.visibility = "";
+    } finally {
+      ghost.remove();
+      if (shell) shell.remove();
     }
   };
   if (root.addEventListener) {
