@@ -20,7 +20,10 @@
     build(container, opts = {}) {
       container.innerHTML = "";
       const app = h("div", "cl-app", container);
-      const side = h("aside", "cl-side", app);
+      // S14: the side panel is one of the central rules' skip zones (a tap on it never skips what is said: data/rules.json
+      // skip.never.side, its .side-panel) and out of bounds for a bubble (data-njg-keepout, contract-86)
+      const side = h("aside", "cl-side side-panel", app);
+      side.setAttribute("data-njg-keepout", "");
       // the doctor's box at the top (13f: Nani isn't at the clinic, so the doctor fills her guidance
       // role): the shared guide box with his face (= replay), his line now, the light bulb and mute
       const bulbRow = h("div", "cl-side-top cl-nani cl-docbox", side);
@@ -165,6 +168,77 @@
           if (core && core.progress && core.progress.reset) core.progress.reset();
         },
       });
+      /*
+       * S14 roll-out (the rulebook's helper card; the rollout plan 4a 4 and 4c: "the doctor's box as the helper card"): in a heal
+       * round the doctor's box is the guide's helper card, as Nani's is in Cook: no bulb and no speaker of its own, an arrow
+       * that opens the full answer for the step now (its picture, its Kutchi, its English: WordCard.big14 with everything
+       * shown, side by side), growing in the box; a second tap folds it. The answer is the card's open row (the step's line)
+       * with the picture of the tool the step lights. Opening it is the child's own help: it never counts as the guide's hint.
+       */
+      const help14 = { on: false, open: false, arrow: null, slot: null, key: null };
+      const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const helperWord = () => {
+        const c = scr.card;
+        const r = c && (c.row(c.st.now) || c.rows.find((x) => !c.st.done.has(x.id)));
+        if (!r) return null;
+        // the step's tool: the one lit now (the light, the next-up glow, the pick), else the tool its line names (the tool's
+        // id words in the line's English: "Water lukewarm, three jugs" is jug-lukewarm)
+        let lit = main.querySelector(".hs-tool.ob-lit img, .hs-tool.next-up img, .hs-tool.pulse img, .hs-tool.sel img");
+        if (!lit) {
+          const en = ` ${String(r.english || "").toLowerCase().replace(/[^a-z]+/g, " ")} `;
+          let best = 0;
+          main.querySelectorAll(".hs-tool[data-tool]").forEach((t) => {
+            const img = t.querySelector("img");
+            if (!img) return;
+            const sc = String(t.dataset.tool).toLowerCase().split(/[^a-z]+/).filter((p) => p.length > 2 && (en.includes(` ${p} `) || en.includes(` ${p}s `))).length;
+            if (sc > best) (best = sc), (lit = img);
+          });
+        }
+        return { id: r.id, kutchi: r.kutchi || r.english, english: r.english, rec: !r.kutchi || !!r.placeholder, picture: lit ? { src: lit.currentSrc || lit.src, fit: "contain" } : null, say: () => Kit.Voice.say(r, { who: "guide", noBubble: true }) };
+      };
+      const paint14 = () => {
+        if (!help14.slot) return;
+        const w = help14.open ? helperWord() : null;
+        bulbRow.classList.toggle("cl-help-open", !!w);
+        help14.arrow.setAttribute("aria-expanded", w ? "true" : "false");
+        const key = w ? `${w.id}|${w.picture ? w.picture.src : ""}` : null;
+        if (key === help14.key) return;
+        help14.key = key;
+        help14.slot.innerHTML = "";
+        if (!w || !global.WordCard || !global.WordCard.big14) return;
+        const el = global.WordCard.big14(help14.slot, w, { all: true, variant: "side", cls: "cl-helper-card" });
+        if (global.WordCard.fit14) (global.requestAnimationFrame || setTimeout)(() => global.WordCard.fit14(el));
+      };
+      scr.s14 = (on) => {
+        help14.on = !!on;
+        const tools = [bulbRow.querySelector(".ng-bulb"), bulbRow.querySelector(".ng-mute"), hintN];
+        tools.forEach((t) => t && (t.style.display = on ? "none" : ""));
+        if (on && !help14.arrow) {
+          const a = (help14.arrow = h("button", "cl-help-arrow", bulbRow.querySelector(".ng-tools") || bulbRow));
+          a.type = "button";
+          a.setAttribute("aria-label", "Help");
+          a.innerHTML = ARROW;
+          a.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            help14.open = !help14.open;
+            paint14();
+            try {
+              if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("helper", { step: help14.open ? "open" : "close", by: "arrow" });
+            } catch (e) {
+              /* only a log */
+            }
+          });
+          help14.slot = h("div", "cl-helper", bulbRow);
+          // the card's open row moves on: an open helper card follows it
+          if (global.MutationObserver) new global.MutationObserver(() => help14.open && paint14()).observe(side, { subtree: true, attributes: true, attributeFilter: ["class"] });
+        }
+        if (help14.arrow) help14.arrow.style.display = on ? "" : "none";
+        bulbRow.classList.toggle("cl-s14", !!on);
+        if (!on) {
+          help14.open = false;
+          paint14();
+        }
+      };
       scr.closeHelp = () => gu.close();
       scr.openHelp = () => gu.open();
       scr.helpBtn = helpBtn;

@@ -30,8 +30,6 @@
   const KNOBS = {
     zoom: 2.2,
     throbMs: 8000,
-    dabCounts: { 2: [1, 2, 3, 4], 3: [1, 2, 3, 4] },
-    stitchCounts: { 2: [2, 3, 4, 5], 3: { big: [2, 3, 4], small: [1, 2] } },
     stitchDots: { 1: 3, 2: 6, 3: { big: 5, small: 3 } },
     plasterColours: { 2: ["red", "blue", "green"], 3: ["red", "blue", "green", "yellow"] },
     designs: ["cat", "star", "spots"],
@@ -43,32 +41,36 @@
   function planCut(level, ailmentId, rng, knobs) {
     const K = Object.assign({}, KNOBS, knobs || {});
     const ail = ailmentId === "cut" || ailmentId === "scrape" ? ailmentId : level >= 2 ? "cut" : "scrape";
+    // S14 (CLN-214; the rulebook's section 3, Zafar 29 Oct): the dabs (x) and the stitches (y) are the central rules'
+    // (data/rules.json heal-cut: 1-2+0, 1-3+2, 2-4+3, 2-4+4), drawn through HS.count; from L3 the stitches are shared
+    // between the big gap and the small one (the small never more than the big). L4 plays L3's cut with L4's numbers
     const L = Math.max(1, Math.min(3, level));
+    const L4 = Math.max(1, Math.min(4, level));
     const steps = [];
     const Lg = LG();
     const then = (x) => say(Lg.then(x));
     steps.push({ id: "wash", kind: "wash", item: "paani", row: Object.assign({ id: "wash" }, say(Lg.first("cook-paani"))), tested: false });
     if (ail === "scrape") {
-      const dab = { id: "dab", kind: "dab", item: "cloth", tested: L >= 2 };
-      if (L >= 2) {
-        dab.count = pick(K.dabCounts[L], rng);
-        dab.options = K.dabCounts[L];
-        dab.row = Object.assign({ id: "dab" }, say(Lg.join([Lg.then("cl-cloth"), ".", Lg.item("cl-dabs", { n: dab.count })])));
-      } else dab.row = Object.assign({ id: "dab" }, then("cl-cloth"));
+      // numbers spoken from L1 (the rulebook: the heal games count by design)
+      const dab = { id: "dab", kind: "dab", item: "cloth", tested: true };
+      dab.count = HS.count("cut", "x", L4, rng);
+      dab.options = HS.choices("cut", "x");
+      dab.row = Object.assign({ id: "dab" }, say(Lg.join([Lg.then("cl-cloth"), ".", Lg.item("cl-dabs", { n: dab.count })])));
       steps.push(dab);
     } else {
       const st = { id: "stitch", kind: "stitch", item: "thread", tested: L >= 2 };
-      if (L === 1) {
+      const nSt = HS.count("cut", "y", L4, rng);
+      if (L === 1 || !nSt) {
         st.gaps = [{ size: "one", dots: K.stitchDots[1], count: null }];
         st.row = Object.assign({ id: "stitch" }, then("cl-thread"));
       } else if (L === 2) {
-        st.count = pick(K.stitchCounts[2], rng);
-        st.options = K.stitchCounts[2];
+        st.count = nSt;
+        st.options = HS.choices("cut", "y");
         st.gaps = [{ size: "one", dots: K.stitchDots[2], count: st.count }];
         st.row = Object.assign({ id: "stitch" }, say(Lg.join([Lg.then("cl-thread"), ".", Lg.item("cl-stitches", { n: st.count })])));
       } else {
-        const big = pick(K.stitchCounts[3].big, rng);
-        const small = pick(K.stitchCounts[3].small, rng);
+        const small = 1 + Math.floor(rng() * Math.max(1, Math.floor(nSt / 2)));
+        const big = nSt - small;
         const bigFirst = rng() < 0.5;
         const a = bigFirst ? ["big", big] : ["small", small];
         const b = bigFirst ? ["small", small] : ["big", big];
@@ -100,7 +102,7 @@
       if (s.kind === "dab") rows.push({ id: "dab-count", kind: "count", step: s.id, answer: s.count, options: s.options });
       if (s.kind === "stitch" && s.order) {
         rows.push({ id: "stitch-order", kind: "order", step: s.id, answer: s.order[0], options: ["big", "small"] });
-        s.gaps.forEach((g) => rows.push({ id: `stitch-${g.size}`, kind: "count", step: s.id, answer: g.count, options: K.stitchCounts[3][g.size] }));
+        s.gaps.forEach((g) => rows.push({ id: `stitch-${g.size}`, kind: "count", step: s.id, answer: g.count, options: Array.from({ length: Math.max(1, s.gaps.reduce((a, q) => a + q.count, 0) - 1) }, (_, i) => i + 1) }));
       } else if (s.kind === "stitch") rows.push({ id: "stitch-count", kind: "count", step: s.id, answer: s.count, options: s.options });
       if (s.kind === "plaster") rows.push({ id: "plaster-colour", kind: "colour", step: s.id, answer: s.colour, options: s.options });
     });
@@ -118,6 +120,7 @@
       steps,
       rows,
       upFront: L >= 2,
+      counts: { x: (steps.find((s) => s.kind === "dab") || {}).count, y: (steps.find((s) => s.kind === "stitch") || { gaps: [] }).gaps.reduce((a, g) => a + (g.count || 0), 0) },
       words: words.filter((w) => (seen.has(w.kutchi || w.english) ? false : seen.add(w.kutchi || w.english))),
     };
   }
@@ -565,7 +568,7 @@
    */
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
   const SCRAPE = {
-    dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
+    // the dabs: the central rules' (S14, CLN-214: data/rules.json heal-cut x, 1-2, 1-3, 2-4, 2-4)
     colours: ["red", "blue", "green", "yellow"],
     // CLN-45 (1 Oct, P14/P17; S05-G): at most two things to hold per step at L3, and L2 -> L3 adds one thing (heard only):
     // two plasters at L2 and L3, one colour each, each plaster's row said as it opens (D8)
@@ -601,7 +604,7 @@
   };
   function planScrape(level, rng) {
     const L = Math.max(1, Math.min(4, level));
-    const dab = HS.pick(SCRAPE.dabs[L], rng);
+    const dab = HS.count("cut", "x", L, rng);
     const n = SCRAPE.plasters[L];
     // CLN-45 (S05-G, P17 and §8D: each level adds one thing): L3's one new thing is that it's heard only (the closed card),
     // so its plasters are L2's, one colour each; the two-colour plasters (L3 until S05) made the L2 -> L3 jump two things
@@ -633,12 +636,13 @@
     };
     build([]);
     const rows = [
-      { id: "dab-count", options: SCRAPE.dabs[L], answer: dab },
+      { id: "dab-count", options: HS.choices("cut", "x"), answer: dab },
       // still English while a colour said has no Kutchi yet (yellow, blue: to record)
       { id: "plasters", options: seqs, answer: seq.map(key), placeholder: seq.some((o) => o.some((c) => !Lg.w(col(c)).kutchi)) },
     ];
     const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), Lg.w("cl-plaster")];
-    return { level: L, ailment: "scrape", steps, rows, words, upFront: false, key };
+    // the scrape has no stitches (the cut's, planCut): its counts are the dabs
+    return { level: L, ailment: "scrape", steps, rows, words, upFront: false, key, counts: { x: dab } };
   }
 
   function mountScrape(stage, ctx) {

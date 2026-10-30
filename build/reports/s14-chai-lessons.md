@@ -93,3 +93,27 @@ and the rules' card by level overlap, which needs Zafar's choice ("each word its
    the roll-out can move shared things this way, game-specific things one game at a time.
 6. **Still open for the roll-out:** the help light too big in samosa, daar, the pantry and the grill (contract-53, unchanged);
    maani's and the grill's older guide box; `noAsks` at L1 still in `recipes.js`; the old `levelTable` for the other stations.
+
+## Round 3: the clinic's heal games on the kit (s14-clinic builder, 30 Oct)
+
+1. **Two counts and a range need their own reader.** `Rules.count` only knew one repeating thing; the clinic's x + y with
+   `[lo, hi]` pairs got `Rules.xy(game, lv)` (every per-level table of an entry as `[lo, hi]`), `Rules.draw` and `Rules.span`.
+   The games ask through one helper (`HealScene.count / span / choices`), and say what they drew (`plan.counts`), so one unit
+   test (`js/clinic/heal/counts.test.mjs`) holds all nine to the file over many seeds, both ends of every range seen.
+2. **A game's data file can hold a second copy.** The tooth's `data/clinic/heal/tooth.json` set `chain` and `decay.n` per level
+   and overrode the code; the scrape's `cut.json` knobs held `dabCounts`. Grep the game's JSON too when a number moves.
+3. **A number the scene cannot draw is a gap, not a stand-in.** The foot's fourth splinter needs a fourth toe's channel and word;
+   sore spots' three colours to pop with "not this colour" need a fourth colour (its s03 spot and word). The plan says so
+   (`plan.gaps`), the test lists it, the report names it.
+4. **Narrower L1 ranges change the leak bots.** Zafar's L1 counts (1-2, 1-3) make a blind "first option" or "random" guess win
+   the count row a third to a half of the time; the leak check went red on five games. Widening a row's choices to the
+   game's whole count space is honest (a child can stop at any count); calling auto-closing rows "skill" made it worse (fewer
+   rows, more blind wins) and was reverted. What is left is for Zafar: his L1 ranges against the 10% limit.
+5. **The before must run on the old code while you build.** A 92-page before at four sizes took over an hour; it ran from a
+   copy of the tree at the launch commit (`git archive` plus hard-linked assets) so the build could go on in the worktree.
+6. **The clinic's bubbles were placed by speakers only.** The doctor's opening lines sat on her face because the room's patient
+   was no speaker; the clinic now hands the placement her head's live box as `avoid`. That was not enough at 740x320 (the
+   doctor at the screen's edge): the shared placement (`request-popup.js`) now wraps narrower beside the head, then above or
+   below slides the bubble along its row off the face while its tail still reaches its head. Run chai with it (it passed).
+7. **Hiding a kit control from a game's CSS trips the static lint** (mode CSS may not name kit classes): the doctor's box hides
+   its bulb and speaker from JS, and the clinic's own classes (`.cl-help-arrow`, `.cl-helper`) carry the new look.

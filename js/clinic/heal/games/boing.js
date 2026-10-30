@@ -22,7 +22,12 @@
 
   // CLN-37 (Zafar, 29 Sept / 1 Oct): the dispenser is four coloured tubes with a lever each at EVERY level; at level 1
   // any tube's drop counts (the count is the row); the colours are said from level 2 (COL)
-  const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4] }, colours: ["red", "yellow", "blue", "green"], tubes: 4, maxDrops: 5 };
+  // S14 (CLN-213; the rulebook's section 3, Zafar 29 Oct): the wipes (x), the drops (y) and the dispensers in play are the
+  // central rules' (data/rules.json heal-boing: 1-3+2-3, 2-4+2-4, 2-5+3-5, 3-6+3-6; dispensers 1, 2, 3, 4), drawn through
+  // HS.count. The machine keeps its four tubes (one picture); the tubes not in play are dimmed and their levers do nothing.
+  // maxDrops: the syringe's marks, the most drops the rules ask at any level
+  const K = { colours: ["red", "yellow", "blue", "green"], tubes: 4 };
+  const maxDrops = () => Math.max(...[1, 2, 3, 4].map((L) => HS.rule("boing", L).y[1]));
   // Zafar (13 Oct, the heal ladder): each level adds one thing, all by level 2; level 3 only closes the card. So the
   // drops' colours, in order, are level 2's new thing (they were level 3's, with the closed card: two at once)
   const COL = 2;
@@ -47,20 +52,24 @@
   const ASKED = ["blue", "yellow"];
 
   function plan(level, rng) {
-    const L = Math.max(1, Math.min(3, level));
-    const wipes = HS.pick(K.wipes[L], rng);
+    const L = Math.max(1, Math.min(4, level));
+    const wipes = HS.count("boing", "x", L, rng);
+    const nDrops = HS.count("boing", "y", L, rng);
     let drops;
     // CLN-164 (s07 DM1): the drop machine's four tubes stand in its own order (red, yellow, blue, green, as drawn); the
     // colour asked is the random thing, never the place
     const tubes = K.colours.slice(0, K.tubes);
-    if (L < COL) {
+    // the dispensers in play (S14): that many of the four, at random, in the machine's order
+    const nLive = Math.min(tubes.length, HS.count("boing", "dispensers", L, rng));
+    const live = HS.shuffle(tubes, rng).slice(0, nLive).sort((a, b) => tubes.indexOf(a) - tubes.indexOf(b));
+    if (L < COL || live.length < 2) {
       // level 1: one colour, said and on the card (CLN-169), the count with it
-      drops = Array(HS.pick(K.drops[L], rng)).fill(HS.pick(tubes, rng));
+      drops = Array(nDrops).fill(HS.pick(live, rng));
     } else {
-      const [a, b] = HS.shuffle(tubes, rng);
-      const na = 1 + Math.floor(rng() * 2);
-      const nb = 1 + Math.floor(rng() * 2);
-      drops = Array(na).fill(a).concat(Array(nb).fill(b));
+      // two colours in order, the rules' drops shared between them (each at least one)
+      const [a, b] = HS.shuffle(live, rng);
+      const na = 1 + Math.floor(rng() * (nDrops - 1));
+      drops = Array(na).fill(a).concat(Array(nDrops - na).fill(b));
     }
     const groups = [];
     drops.forEach((c) => (groups.length && groups[groups.length - 1].c === c ? groups[groups.length - 1].n++ : groups.push({ c, n: 1 })));
@@ -85,13 +94,13 @@
       { id: "boing", kind: "boing", row: null },
       { id: "plaster", kind: "plaster", colour: plaster, row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster", { mods: [`col-${plaster}`] }), { cap: true })) },
     ];
-    const rows = [{ id: "wipe-count", options: K.wipes[L], answer: wipes }];
+    const rows = [{ id: "wipe-count", options: HS.choices("boing", "x"), answer: wipes }];
     rows.push({ id: "drop-colours", seq: tubes, answer: drops, placeholder: true }); // (CLN-169: the colour is asked at every level; level 1's is one colour, its count with it)
     rows.push({ id: "plaster-colour", options: PLASTERS, answer: plaster, placeholder: true });
     const words = [Lg.num(wipes), Lg.w("cl-wipe"), Lg.w("cl-drops"), Lg.w("cl-plaster")];
     groups.forEach((g) => words.push(Lg.num(g.n)));
     if (L >= COL) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"));
-    return { level: L, steps, rows, words, tubes };
+    return { level: L, steps, rows, words, tubes, live, counts: { x: wipes, y: drops.length, dispensers: live.length } };
   }
 
   function mount(stage, ctx) {
@@ -228,6 +237,18 @@
         levers[c] = { g: lv, arm, x, kx: x + 14, y: M.y + 150 };
       });
     }
+    // S14 (the rules' dispensers): a tube not in play is dimmed (a frosted cover over its glass, from the spout's top to its
+    // lever), its lever still (pull() ignores it)
+    const tubeGap = P.tubes.length > 1 ? Math.abs(tubeX[P.tubes[1]] - tubeX[P.tubes[0]]) : 40;
+    Object.keys(levers).forEach((c) => {
+      if (P.live.includes(c)) return;
+      levers[c].g.style.opacity = "0.3";
+      levers[c].g.setAttribute("data-off", "1");
+      const tw = tubeGap * 0.86;
+      const top = M.tubeTop - 6;
+      const bot = Math.max(M.tubeBot, levers[c].y) + 10;
+      s("rect", { class: "bo-off", x: (tubeX[c] - tw / 2).toFixed(1), y: top.toFixed(1), width: tw.toFixed(1), height: (bot - top).toFixed(1), rx: (tw / 2).toFixed(1), fill: "#f4efe6", opacity: 0.78, "pointer-events": "none" }, machG);
+    });
 
     /*
      * The syringe (the s02 E11 sheet, CLN-164: its picture, no drawn rects), at about 0.85 of before (CLN-165), standing
@@ -258,7 +279,7 @@
     const liquidG = s("g", { class: "bo-liquid" }, syG);
     liquidG.style.mixBlendMode = "multiply";
     const syEl = syFull || syG;
-    const bandH = (BAR.y1 - BAR.y0) / K.maxDrops;
+    const bandH = (BAR.y1 - BAR.y0) / maxDrops();
     const bandY = (k) => BAR.y1 - (k + 1) * bandH;
     const drawDrops = () => {
       S.clear(liquidG);
@@ -471,7 +492,8 @@
       if (c.kind === "wipe" && st.wipes) close(); // the next action closes the wipe (D7)
       const d = cur();
       if (!d || d.kind !== "drops") return;
-      if (st.drops.length >= K.maxDrops) return;
+      if (st.drops.length >= maxDrops()) return;
+      if (!P.live.includes(colour)) return; // a tube not in play (S14): its lever is dimmed and does nothing
       const lv = levers[colour];
       if (lv.downEl) {
         lv.upEl.setAttribute("opacity", 0);
@@ -674,7 +696,7 @@
     ailments: ["jab"],
     items: ["cotton", "syringe", "plaster"],
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // S14: L4 from the central rules (3-6 wipes, 3-6 drops, four dispensers)
     plan,
     mount,
     bot,

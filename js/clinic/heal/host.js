@@ -63,6 +63,13 @@
       const pj = (await Kit.loadJSON("data/clinic/pipeline.json")) || {};
       Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
     }
+    // S14 roll-out: every heal game's numbers are the central rules' (js/shared/rules.js, which js/shared/tokens.js loads
+    // itself): a game's plan asks them, so they are in before the first game mounts
+    if (!HOST.rulesIn) {
+      for (let k = 0; k < 100 && !global.Rules; k++) await new Promise((r) => setTimeout(r, 30));
+      if (global.Rules && global.Rules.ready) await global.Rules.ready;
+      HOST.rulesIn = !!(global.Rules && global.Rules.loaded);
+    }
     if (Kit.art == null) await Kit.loadArt();
     // the patients' real art and the close-ups (pack clinic-heal-v3, build/cut_clinic_heal_v3.py)
     if (HOST.healArt == null) HOST.healArt = (await Kit.loadJSON("data/clinic/heal-art.json")) || {};
@@ -525,6 +532,20 @@
     };
   };
 
+  /** The s14 look on or off (the heal round's start and end). */
+  HOST.s14 = function (on) {
+    const d = global.document;
+    if (on && d && d.head && !d.querySelector("link[data-njg-card14-font]")) {
+      const l = d.createElement("link");
+      l.rel = "stylesheet";
+      l.href = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap";
+      l.dataset.njgCard14Font = "";
+      d.head.appendChild(l);
+    }
+    if (global.Onboard) global.Onboard.look = on ? "s14" : global.Onboard.look === "s14" ? null : global.Onboard.look;
+    Kit.s14 = !!on;
+  };
+
   /**
    * Mount a registered game on a screen. Returns {ctx, controller, result, destroy}.
    * `screen` is a Clinic.Screen (the lab and the pipeline both build one).
@@ -551,6 +572,11 @@
 
     const stage = screen.clearStage();
     stage.classList.add("cl-heal", `heal-${def.id}`);
+    // S14 roll-out (the s14 kit in the clinic, every heal game): the look for the whole round, set where it starts (the chai
+    // lessons, 1: a shared piece outside the game's file leaks its old look otherwise): the light is the lit box with its warm
+    // fill and no finger (Onboard.look "s14", the conversations' replies too), the card serif loaded once
+    HOST.s14(true);
+    if (screen.s14) screen.s14(true); // the doctor's box as the helper card
     stage.dataset.game = def.id;
     screen.clearActions();
     screen.tally.clear();
@@ -1088,6 +1114,7 @@
       let veil = null;
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
+        zones: true, // S14 (SH-157 in the clinic): a tap on a bubble, the side panel or the menu never skips what is said
         host: screen.main,
         target: () => card.el,
         fast: Kit.fast,
@@ -1173,10 +1200,20 @@
         const word = wordOf(it);
         const stg = HS && HS.stageOf ? HS.stageOf(it.card) : 1;
         const sl = WC.slots ? WC.slots(stg, { placeholder: word.rec }) : { english: true, kutchi: true };
-        (WC.pop || WC.card)(box, word, { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi } });
+        const wopts = { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi } };
+        // S14: the kit's s14 pop-out card (chai's big card: WordCard.big14), as wide as chai's beside the side panel, its words
+        // fitted inside it
+        if (WC.big14) {
+          const pr = (screen.play || stage).getBoundingClientRect();
+          const c = WC.big14(box, word, Object.assign({ cls: "wc14-pop" }, wopts));
+          c.style.width = `${Math.round(Math.min(300, pr.height * 0.6, pr.width * 0.42))}px`;
+          if (WC.fit14) WC.fit14(c);
+          if (c.offsetHeight > pr.height - 20) c.classList.add("wc14-small");
+        } else (WC.pop || WC.card)(box, word, wopts);
       };
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
+        zones: true, // S14 (SH-157 in the clinic): a tap on a bubble, the side panel or the menu never skips what is said
         along: true,
         host: stage,
         build: (b) => (box = b),
@@ -1290,6 +1327,8 @@
         // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)
         card.setProgressive(false);
         card.closed = null;
+        HOST.s14(false);
+        if (screen.s14) screen.s14(false);
       },
     };
     HOST.current = run;

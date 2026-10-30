@@ -654,6 +654,32 @@
    * decision 84). The clinic's own .cl-bubble and its placement went.
    */
   Voice.bubbles = new Set();
+  /*
+   * S14 (contract-52; the eye test's opening: the doctor's three lines sat 39-100% over her face at 740x320 to 1280x665): the
+   * patient's head in the room is never under another speaker's bubble. Each figure's head (its .fig-head, else the top of its
+   * picture: the same box as njgTest.clinic.faces()) is given to the one placement as a box to keep clear (a live box: the
+   * placement measures it when it places).
+   */
+  Voice.patientHeads = function () {
+    if (typeof document === "undefined") return [];
+    return [...document.querySelectorAll(".cl-fig, .fig, [data-fig]")].map((f) => ({
+      isConnected: true,
+      getBoundingClientRect() {
+        if (!f.isConnected) return { left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 };
+        const head = f.querySelector(".fig-head");
+        const hb = head && head.getBoundingClientRect();
+        if (hb && hb.width > 0) return hb;
+        const art = f.querySelector(".fig-art, img, svg");
+        const a = (art || f).getBoundingClientRect();
+        if (!a.width || !a.height) return a;
+        const l = a.left + a.width * 0.25;
+        const t = a.top;
+        const w = a.width * 0.5;
+        const hh = a.height * 0.22;
+        return { left: l, top: t, right: l + w, bottom: t + hh, width: w, height: hh, x: l, y: t };
+      },
+    }));
+  };
   Voice.bubble = function (w, who, opts = {}) {
     const C = global.Conversations;
     if (!C || !C.bubble) return null; // (a page without the kit's conversations script: the line is heard, no bubble)
@@ -670,7 +696,8 @@
             return null;
           }
         })
-        .filter((el) => el && el.isConnected && el.getBoundingClientRect);
+        .filter((el) => el && el.isConnected && el.getBoundingClientRect)
+        .concat(who === "patient" ? [] : Voice.patientHeads());
     // its speaker button (the kit's, at the bubble's start) says the line again
     const b = C.bubble(anchor || null, { who, text: Kit.text(w), en: w && w.english, layer, avoid: others, hear: () => Voice.say(w, { who }) });
     Voice.bubbles.forEach((x) => !x.isConnected && Voice.bubbles.delete(x));
@@ -799,6 +826,7 @@
     card.rows.forEach((r) => (r.el = null));
     const opts = {
       big: this.big,
+      s14: !!Kit.s14, // S14: the kit's s14 card in a heal round (its serif headline, its shape: js/clinic/heal/host.js HOST.s14)
       fold: this.big ? null : this.fold,
       foldAfter: 900,
       onEl: (key, rowEl) => {

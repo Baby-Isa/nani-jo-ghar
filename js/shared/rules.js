@@ -9,6 +9,8 @@
  *   Rules.hintMs(lv)            the guide's hint wait in ms        Rules.hintList()  all four, in ms (Tokens.ladder.helpMs)
  *   Rules.count(game, lv)       how many of the game's repeating thing: 1 + (most - 1)(lv - 1)/3 rounded, or its override
  *   Rules.counts(game)          [L1..L4] of the same
+ *   Rules.xy(game, lv)          a game's per-level counts as [lo, hi] pairs: {x, y, ...} (the clinic's heal-* entries)
+ *   Rules.draw([lo, hi], rng)   a whole number in the range      Rules.span([lo, hi])  every number in it
  *   Rules.wordState(rec)        "new" | "learning" | "known" for a word (rec: {right, pillEarned} as js/core/progress.js keeps)
  *   Rules.hold(state)           the big card's hold in ms for a word state
  *   Rules.pointMs()             the order card's light after the showing
@@ -99,6 +101,45 @@
     return Math.round(1 + ((most - 1) * (n - 1)) / 3);
   };
   R.counts = (game) => (R.count(game, 1) == null ? null : [1, 2, 3, 4].map((n) => R.count(game, n)));
+  // S14 roll-out (the clinic, the rulebook's section 3): a game with two counts (x + y) and other per-level numbers; each a
+  // number or a [lo, hi] pair (a random number in the range, drawn by the game with Rules.draw). Every per-level table of the
+  // game's entry is answered as [lo, hi] (a number n is [n, n]); a game with only `levels` answers it as x. null: no entry.
+  const span = (v) => {
+    if (Array.isArray(v) && v.length) return [Math.round(Number(v[0])), Math.round(Number(v[v.length - 1]))];
+    const n = Math.round(Number(v));
+    return Number.isFinite(n) ? [n, n] : null;
+  };
+  R.xy = function (game, lv) {
+    const g = (sec("count").games || {})[game];
+    if (!g) return null;
+    const n = String(lvOf(lv));
+    const out = {};
+    for (const k of Object.keys(g)) {
+      const t = g[k];
+      if (k.startsWith("_") || !t || typeof t !== "object" || Array.isArray(t) || !(n in t)) continue;
+      const s = span(t[n]);
+      if (s) out[k === "levels" ? "x" : k] = s;
+    }
+    if (!out.x && R.count(game, lv) != null && g.most != null) out.x = [R.count(game, lv), R.count(game, lv)];
+    return out;
+  };
+  /** A whole number in [lo, hi] (both ends included) from rng (a () => [0, 1) function, default Math.random). */
+  R.draw = function (range, rng) {
+    const s = span(range);
+    if (!s) return null;
+    const lo = Math.min(s[0], s[1]);
+    const hi = Math.max(s[0], s[1]);
+    const r = typeof rng === "function" ? rng() : Math.random();
+    return lo + Math.min(hi - lo, Math.floor(r * (hi - lo + 1)));
+  };
+  /** Every whole number in [lo, hi] (a game's choices, such as a count row's options). */
+  R.span = (range) => {
+    const s = span(range);
+    if (!s) return [];
+    const out = [];
+    for (let i = Math.min(s[0], s[1]); i <= Math.max(s[0], s[1]); i++) out.push(i);
+    return out;
+  };
 
   /* ---------------- words ---------------- */
   R.pillRun = () => Math.max(1, Number((sec("words").pill || {}).rightInARow) || DEFAULT.words.pill.rightInARow);

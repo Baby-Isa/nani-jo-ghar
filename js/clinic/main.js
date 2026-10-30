@@ -60,7 +60,7 @@ const STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"];
 const STAGE_LABEL = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (the belt)", heal: "Heal (the patient's game)", sendoff: "Send-off" };
 const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
 // the heal games with a level 4 (their harder variety: Zafar's heal ladder, 13 Oct); the rest stop at 3 (their plans clamp)
-const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear"]; // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
+const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear", "boing"]; // boing: S14 (the central rules' L4) // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
 
 const G = () => globalThis;
 /**
@@ -456,15 +456,17 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
     outs.push(out);
     st.album = Array.from(new Set((st.album || []).concat([`${plan.kind}:${plan.ailment}`])));
   }
-  // level up per stage (a stage whose tested rows were all right this morning)
+  // S14: level up per stage by the central rules (Rules.advance through ClinicPipeline.levelUp): each patient's stage a finished
+  // round, its guide's hints counted (the heal game's own count; the other stages' rows have none: 0)
   const perStage = outs.map((x) => {
     const r = {};
-    Object.entries(x.results).forEach(([s, v]) => (r[s] = s === "heal" ? [{ ok: !v.heal || !v.heal.total || v.heal.right === v.heal.total, tested: !!(v.heal && v.heal.total) }] : v.rows));
+    Object.entries(x.results).forEach(([s, v]) => (r[s] = { hints: Number((s === "heal" ? v && v.heal && v.heal.hints : v && v.hints) || 0) }));
     return r;
   });
   delete st.coins; // the one purse (decision 20)
   if (!noSave) {
-    st.levels = m.entry.levels && n0 <= 2 ? Object.assign({}, st.levels) : P.levelUp(st.levels, perStage);
+    st.levelUp = st.levelUp || {};
+    st.levels = m.entry.levels && n0 <= 2 ? Object.assign({}, st.levels) : P.levelUp(st.levels, perStage, st.levelUp);
     st.session = n0 + 1;
     R.save(st);
   }

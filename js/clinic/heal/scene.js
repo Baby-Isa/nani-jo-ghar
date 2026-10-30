@@ -120,6 +120,24 @@
   HS.taughtWords = (words) => (words || []).filter((w) => w && w.n == null && !/^(side-|a\.(big|small|left|right)$|ph-(big|small)$)/.test(String(w.id || "")));
   HS.cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   HS.pick = (a, rng) => a[Math.floor(rng() * a.length)];
+  /*
+   * S14 roll-out (CLN-207 to CLN-215; the rulebook's section 3, Zafar 29-30 Oct): each heal game's numbers are the central
+   * rules' (data/rules.json count.games["heal-<game>"]), asked through their one reader (js/shared/rules.js), never a copy
+   * here. HS.span(game, axis, L): every number the level allows ([lo..hi]; a count row's options); HS.count(game, axis, L,
+   * rng): one drawn from it. axis: "x", "y" or another per-level table of the entry (boing's "dispensers").
+   */
+  const RulesR = () => global.Rules || (typeof require === "function" ? require("../../shared/rules.js") : null);
+  HS.rule = (game, L) => {
+    const R = RulesR();
+    const xy = R && R.xy(`heal-${game}`, L);
+    if (!xy) throw new Error(`heal-${game}: no counts in data/rules.json (or the rules not loaded yet)`);
+    return xy;
+  };
+  HS.span = (game, axis, L) => RulesR().span(HS.rule(game, L)[axis]);
+  HS.count = (game, axis, L, rng) => RulesR().draw(HS.rule(game, L)[axis], rng);
+  // a count row's choices (the leak bots' blind player): a child can stop at any count, so every number from 1 to the most this
+  // game asks at any level (a level's own range alone made a blind guess too easy at L1's narrow ranges)
+  HS.choices = (game, axis) => RulesR().span([1, Math.max(...[1, 2, 3, 4].map((L) => (HS.rule(game, L)[axis] || [1, 1])[1]))]);
   HS.shuffle = (a, rng) => {
     const b = a.slice();
     for (let k = b.length - 1; k > 0; k--) {

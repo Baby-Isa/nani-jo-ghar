@@ -31,9 +31,9 @@
 
   // the defaults; data/clinic/heal/tooth.json (levels, fill, drill) overrides them in the browser
   const K = {
-    moves: { 1: 2, 2: 4, 3: 4, 4: 6 },
-    // Sprint 10 (Zafar, 21 Oct): bigger cavities, level 1 from 52 to 70 and the others scaled up the same (x1.35)
-    decay: { 1: { n: 1, r: 70 }, 2: { n: 2, r: 51 }, 3: { n: 2, r: 51 }, 4: { n: 4, r: 34 } },
+    // Sprint 10 (Zafar, 21 Oct): bigger cavities, level 1 from 52 to 70 and the others scaled up the same (x1.35); the
+    // number of patches (n) is the central rules' (S14), the size by level here (L3's three patches a little smaller)
+    decay: { 1: { r: 70 }, 2: { r: 51 }, 3: { r: 44 }, 4: { r: 34 } },
     chipAt: 16, // healthy enamel points drilled before the tooth chips
     drillMs: { 4: 16000 },
     fill: { ms: { 1: 3400, 2: 2600, 3: 2600, 4: 2000 }, zone: { 1: [0.55, 0.86], 2: [0.62, 0.82], 3: [0.62, 0.82], 4: [0.67, 0.8] }, max: 1.15 },
@@ -81,7 +81,9 @@
   function plan(level, rng, data) {
     const L = Math.max(1, Math.min(4, level));
     const lv = (data && data.levels && data.levels[L]) || {};
-    const nMoves = lv.chain || K.moves[L];
+    // S14 (CLN-210; the rulebook's section 3, Zafar 29 Oct): the brush moves (x) and the dirty patches (y) are the central
+    // rules' (data/rules.json heal-tooth: 2+1, 3+2, 4+3, 6+4), never the data's or K's
+    const nMoves = HS.count("tooth", "x", L, rng);
     const moves = [];
     for (let i = 0; i < nMoves; i++) {
       let m;
@@ -92,16 +94,25 @@
     const Lg = HS.L;
     const dirM = (m) => Lg.item(DIR_ID[m]);
     // the decay: jagged patches scattered over the crown, never overlapping
-    const dk = Object.assign({}, K.decay[L], lv.decay || {});
+    const dk = Object.assign({}, K.decay[L], lv.decay || {}, { n: HS.count("tooth", "y", L, rng) });
     const patches = [];
     let guard = 0;
-    while (patches.length < dk.n && guard++ < 600) {
-      const cx = CROWN.x0 + dk.r + rng() * (CROWN.x1 - CROWN.x0 - 2 * dk.r);
-      const cy = CROWN.y0 + dk.r + rng() * (CROWN.y1 - CROWN.y0 - 2 * dk.r);
-      // the bigger cavities fill the crown: the gap between two eases (2.3, then 1.9, then 1.5 radii) when they will not fit
-      const gap = guard < 250 ? 2.3 : guard < 450 ? 1.9 : 1.5;
-      if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * gap)) continue;
-      patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, pts: jag(cx, cy, dk.r, rng) });
+    // S14: the rules' number of patches always lands: a first patch in the middle can leave no room for the rest, so the
+    // scatter starts again a little smaller (never fewer patches than the count)
+    for (let tries = 0; patches.length < dk.n && tries < 8; tries++) {
+      if (tries) {
+        patches.length = 0;
+        guard = 0;
+        dk.r = Math.round(dk.r * 0.9);
+      }
+      while (patches.length < dk.n && guard++ < 600) {
+        const cx = CROWN.x0 + dk.r + rng() * (CROWN.x1 - CROWN.x0 - 2 * dk.r);
+        const cy = CROWN.y0 + dk.r + rng() * (CROWN.y1 - CROWN.y0 - 2 * dk.r);
+        // the bigger cavities fill the crown: the gap between two eases (2.3, then 1.9, then 1.5 radii) when they will not fit
+        const gap = guard < 250 ? 2.3 : guard < 450 ? 1.9 : 1.5;
+        if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * gap)) continue;
+        patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, pts: jag(cx, cy, dk.r, rng) });
+      }
     }
     const steps = moves.map((m, i) => ({
       id: `b${i}`,
@@ -121,7 +132,7 @@
       { id: "fill-line", skill: true, answer: true },
     ];
     const words = [Lg.w("tooth-up"), Lg.w("tooth-down"), Lg.w("tooth-left"), Lg.w("tooth-right"), Lg.w("body-tooth"), Lg.w("tooth-brush")];
-    return { level: L, moves, steps, rows, words };
+    return { level: L, moves, steps, rows, words, counts: { x: moves.length, y: patches.length } };
   }
 
   function mount(stage, ctx) {
@@ -1153,6 +1164,26 @@
       if (snap) return putNozzle(hollowMid(p).x, hollowMid(p).y);
       putNozzle(NZ.x + (hollowMid(p).x - NZ.x) * 0.25, NZ.y + (hollowMid(p).y - NZ.y) * 0.25);
     };
+    /*
+     * S14 (SH-158 in the clinic, CLN-210; the central rules' timed.firstTimeHold, Zafar 29 Oct): the fill is a timed control
+     * the child operates. The first time a new player meets it (once ever), the gauge holds in the middle of the green while
+     * the button is held, until they let go (the release is the act); after that, normal timing. A returning player's never
+     * holds. The timeline's timed-hold notes (start, end) are contract-77's.
+     */
+    const HOLD_KEY = "clinic/heal-tooth-fill-hold";
+    const US = root.UIStore;
+    const R0 = root.Rules;
+    const newPlayer = !!ctx.taught || !!(root.Onboard && root.Onboard.newPlayer && root.Onboard.newPlayer()) || !(US && US.get && US.get("onboarded", "clinic/heal-tooth"));
+    let hold1 = !!(R0 && R0.firstTimeHold && R0.firstTimeHold() && newPlayer && !(US && US.get && US.get("onboarded", HOLD_KEY)));
+    const holdAt = zone[0] + (zone[1] - zone[0]) * 0.5;
+    let holding1 = 0;
+    const lifeNote = (step, by) => {
+      try {
+        if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("timed-hold", { step: String(step), by: String(by) });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     const startFill = () => {
       if (st.holding || st.smoothing) return;
       st.holding = true;
@@ -1164,6 +1195,13 @@
         if (!st.holding) return;
         const now = Date.now();
         st.fill = Math.min(FILL.max, st.fill + ((now - t0) / fillMs) * 1);
+        if (hold1 && st.fill >= holdAt) {
+          st.fill = holdAt;
+          if (!holding1) {
+            holding1 = now;
+            lifeNote("start", `tooth fill ${holdAt.toFixed(3)}`);
+          }
+        }
         t0 = now;
         setMarker(st.fill);
         drawPaste();
@@ -1182,6 +1220,16 @@
       if (!st.holding) return;
       st.holding = false;
       pressBtn(false);
+      if (holding1) {
+        lifeNote("end", `tooth fill ${st.fill.toFixed(3)} ${Date.now() - holding1}ms`);
+        holding1 = 0;
+        hold1 = false;
+        try {
+          if (US && US.set) US.set("onboarded", HOLD_KEY, true);
+        } catch (e) {
+          /* a private window: it holds again next time */
+        }
+      }
       const c = cur();
       if (!c || c.kind !== "fill") return;
       if (st.fill < zone[0]) return;
@@ -1303,6 +1351,7 @@
         over() {
           const c = cur();
           if (!S.ready || !c || c.kind !== "fill" || st.busy || st.smoothing || st.holding) return null;
+          if (hold1) return null; // (S14: a new player's first fill holds in the green: it cannot overfill)
           const t = (() => {
             const q = fromD(BTN.x, BTN.y);
             return S.client(q.x, q.y);

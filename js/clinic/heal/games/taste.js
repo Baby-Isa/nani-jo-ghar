@@ -49,12 +49,11 @@
     return d.join === "with" ? Lg.join([head, "cl-waaro", THINGS[d.liquid].lex]) : Lg.join([head, Lg.also(THINGS[d.liquid].lex)]);
   };
   const K = {
-    pop: { 1: 1, 2: 2, 3: 2, 4: 2 }, // colours to pop (from L2: every colour but the one said)
     each: { 1: 3, 2: 2, 3: 2, 4: 2 }, // spots of each popping colour
-    decoys: { 1: 2, 2: 2, 3: 2, 4: 3 }, // spots of each other colour
     upMs: { 1: 2600, 2: 2100, 3: 2100, 4: 1500 },
     maxUp: { 1: 3, 2: 4, 3: 4, 4: 4 },
-    counts: { 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] },
+    // S14 (the rulebook: the heal games count by design, numbers spoken from L1): the drink's spoons are counted at L1 too
+    counts: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] },
   };
   const NA = 2; // the level "not the ... ones" (na) arrives
   const WHY = { problem: "taste-why", goal: "taste-goal" }; // line keys in data/clinic/heal/taste.json (the engine says them)
@@ -71,13 +70,21 @@
     const lv = (data && data.levels && data.levels[L]) || {};
     const Lg = HS.L;
     const colours = HS.shuffle(Object.keys(COLS), rng);
-    const nPop = lv.pop || K.pop[L];
+    // S14 (CLN-212; the rulebook's section 3, Zafar 29 Oct): the colours to pop (x) and the decoy spots of each other colour
+    // (y) are the central rules' (data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4). From L2 the doctor names the one colour
+    // NOT to pop ("not this colour" stays), so x colours to pop take x + 1 colours: the tongue has three (red, green, blue:
+    // their s03 spots), so L3 and L4 pop two until a fourth colour's spot and word come (plan.gaps; the report says so)
+    const want = HS.count("taste", "x", L, rng);
+    const nDecoy = HS.count("taste", "y", L, rng);
+    const nPop = Math.min(want, L >= NA ? colours.length - 1 : colours.length - 1);
     // from L2: the doctor names the one colour NOT to pop
     const not = L >= NA ? colours[0] : null;
-    const targets = L >= NA ? colours.slice(1) : colours.slice(0, nPop);
+    const targets = L >= NA ? colours.slice(1, 1 + nPop) : colours.slice(0, nPop);
+    const decoyCols = L >= NA ? [not] : colours.filter((c) => !targets.includes(c));
     const spots = [];
     colours.forEach((c) => {
-      const n = targets.includes(c) ? lv.each || K.each[L] : lv.decoys || K.decoys[L];
+      if (!targets.includes(c) && !decoyCols.includes(c)) return;
+      const n = targets.includes(c) ? lv.each || K.each[L] : nDecoy;
       for (let k = 0; k < n; k++) spots.push({ colour: c, target: targets.includes(c) });
     });
     const spotWord = (c) => Lg.item("taste-spots", { mods: [COLS[c].lex] });
@@ -109,7 +116,8 @@
     const words = [Lg.w("taste-spots"), ...colours.map((c) => Lg.w(COLS[c].lex)), Lg.w(THINGS[DRINKS[drink].add].lex), Lg.w(THINGS[DRINKS[drink].liquid].lex)];
     if (not) words.push(Lg.w(Lg.noId()));
     if (n != null) words.push(Lg.w("cl-chamchi"), Lg.num(n));
-    return { level: L, colours, targets, not, spots, drink, n, steps, recipe, rows, words, upMs: lv.upMs || K.upMs[L], maxUp: lv.maxUp || K.maxUp[L] };
+    const gaps = nPop < want ? { x: `${want} colours to pop asked, ${nPop} with "not this colour" on a tongue of three colours (a fourth colour's spot and word to come)` } : null;
+    return { level: L, colours, targets, not, spots, drink, n, steps, recipe, rows, words, upMs: lv.upMs || K.upMs[L], maxUp: lv.maxUp || K.maxUp[L], counts: { x: nPop, y: nDecoy }, gaps };
   }
 
   function mount(stage, ctx) {
@@ -483,11 +491,19 @@
       // CLN-144 (decision 95, contract-8): while the nudge glows, the card's next-step band steps back (one thing lit)
       if (ctx.card.hush) ctx.card.hush(false);
       if (!el) return;
-      nudgeT = setTimeout(() => {
+      // (contract-8, S14: the spoon's glow waited only for its pause, and lit while the card still read the add row aloud: two
+      // things lit for half a second, at L2 before and at L1 now the spoons are counted there; it waits for the reading too)
+      const reading = () => !!(root.document && root.document.querySelector(".cl-side .oc-row.reading, .cl-side .reading"));
+      const go = () => {
         if (st.over || !still()) return;
+        if (reading()) {
+          nudgeT = setTimeout(go, 150);
+          return;
+        }
         if (ctx.card.hush) ctx.card.hush(true);
         el.classList.add("pulse");
-      }, fast() ? 200 : 1800);
+      };
+      nudgeT = setTimeout(go, fast() ? 200 : 1800);
     };
     const emptyGlass = () => {
       st.glass = { liquid: null, adds: {}, stirred: false, slip: false };
@@ -596,7 +612,7 @@
       if (THINGS[id]) {
         gl.adds[id] = (gl.adds[id] || 0) + 1;
         gl.stirred = false;
-        if (P.level >= 2) ctx.tally(id, gl.adds[id]);
+        if (counted) ctx.tally(id, gl.adds[id]); // (S14: the spoons are counted from L1, so the running count and the reveal from L1)
         S.uncue();
         await addIn(id);
         if (!counted) {

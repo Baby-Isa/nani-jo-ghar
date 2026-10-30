@@ -42,7 +42,9 @@
   };
   // decision 97 (8), CLN-45: one new thing per level: L3 is L2 heard only; the fix step ("fix it", the child chooses) and the
   // fourth exchange are L4's (decision 91)
-  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [3, 4], 4: [4] }, fixFrom: 4, fixLast: { 4: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false, settleMs: 2000 };
+  // S14 (CLN-215; the rulebook's section 3, Zafar 29 Oct): the exchanges (the things tried before the right temperature) are
+  // the central rules' (data/rules.json heal-fever: 2, 4, 6, 8), through HS.count; the rest is the room's own
+  const K = { zone: 1, max: 8, fixFrom: 4, fixLast: { 4: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false, settleMs: 2000 };
   const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -128,7 +130,7 @@
   function plan(level, rng, data) {
     const Lv = Math.max(1, Math.min(4, level));
     const cfg = cfgOf(data);
-    const n = HS.pick(cfg.k.exchanges[Lv], rng);
+    const n = HS.count("fever", "x", Lv, rng);
     let hot = rng() < 0.5;
     const on = {};
     const ex = [];
@@ -147,7 +149,7 @@
     const used = new Set();
     ex.forEach((e) => e.answer && used.add(e.answer.split(":")[1]));
     const words = [L().w("fever-too-hot"), L().w("fever-too-cold"), L().w("fever-just-right")].concat([...used].map((id) => L().w(cfg.things[id].word)));
-    return { level: Lv, ex, steps, rows, words, cfg };
+    return { level: Lv, ex, steps, rows, words, cfg, counts: { x: n } };
   }
 
   /* ---------------- the browser: the room ---------------- */

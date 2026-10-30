@@ -70,37 +70,29 @@
  },
  "levels": {
   "1": {
-   "chain": 2,
    "decay": {
-    "n": 1,
     "r": 70
    },
-   "_note": "two moves on the cross (up / down / left / right, one at a time, the screen's left and right); dirt only on the order's sides while its words are supported; one big patch; no timer"
+   "_note": "two moves on the cross (up / down / left / right, one at a time, the screen's left and right); dirt only on the order's sides while its words are supported; one big patch; no timer (S14: the moves and patches are data/rules.json heal-tooth's, 2+1, 3+2, 4+3, 6+4)"
   },
   "2": {
-   "chain": 4,
    "decay": {
-    "n": 2,
     "r": 51
    },
-   "_note": "four moves on the cross; dirt only on the order's sides while its words are supported (stage 1-2); two patches"
+   "_note": "three moves on the cross; dirt only on the order's sides while its words are supported (stage 1-2); two patches (S14: the moves and patches are data/rules.json heal-tooth's, 2+1, 3+2, 4+3, 6+4)"
   },
   "3": {
-   "chain": 4,
    "decay": {
-    "n": 2,
-    "r": 51
+    "r": 44
    },
-   "_note": "four moves, dirt on all four sides (listening wins); two patches"
+   "_note": "four moves, dirt on all four sides (listening wins); three patches (S14: the moves and patches are data/rules.json heal-tooth's, 2+1, 3+2, 4+3, 6+4)"
   },
   "4": {
-   "chain": 6,
    "decay": {
-    "n": 4,
     "r": 34
    },
    "drillMs": 16000,
-   "_note": "harder variety (level 4, Zafar 13 Oct): six moves; four small patches scattered; a gentle timer; the narrow green"
+   "_note": "harder variety (level 4, Zafar 13 Oct): six moves; four small patches scattered; a gentle timer; the narrow green (S14: the moves and patches are data/rules.json heal-tooth's, 2+1, 3+2, 4+3, 6+4)"
   }
  },
  "fill": {

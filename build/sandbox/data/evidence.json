@@ -21458,5 +21458,485 @@
    "note": "L4: the third pan's knob step, opened while another pan is in hand, lights the knob with 'Chulo bar!' (the light's Lifecycle rung and the call in the same moment: the contract's timeline)",
    "delay": 0
   }
+ ],
+ "CLN-207": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the eye test filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the eye test at the small phone (today's breaks: contract-51, limu, dungri, tameto, mirchi spilling their cards; contract-52, the doctor's bubble over her face): every word inside its card, every bubble off her face; the chart's cards 4, 5, 6, 7 and the drops a random 2, 2-3, 2-4, 2-5 by level",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the eye test's numbers from data/rules.json through Rules (drops first + chart cards 2+4, 2-3+5, 2-4+6, 2-5+7): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-208": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the ear filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the ear's numbers from data/rules.json through Rules (blobs + drops 3+1-3, 4+2-4, 5+2-5, 6+3-6): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-209": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the knee filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the knee's numbers from data/rules.json through Rules (kicks + turns 1-3+4-5, 2-4+5-6, 2-5+6-7, 3-6+7-8): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-210": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the tooth filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "step:fill",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:12x500"
+   ],
+   "expect": null,
+   "note": "the fill's first-time hold: a new player's first fill holds in the green until the tap (the timeline's timed-hold note)",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the tooth's numbers from data/rules.json through Rules (moves + patches 2+1, 3+2, 4+3, 6+4): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-211": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the foot filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the foot's numbers from data/rules.json through Rules (jugs + splinters 1-3+1, 2-4+2, 2-5+3, 3-6+4; one bit of dirt per jug, the last pour leaves it clean): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-212": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "sore spots filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "sore spots's numbers from data/rules.json through Rules (colours + decoys 1+1, 2+2, 3+3, 3+4): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-213": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "boing filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "boing's numbers from data/rules.json through Rules (wipes + drops 1-3+2-3, 2-4+2-4, 2-5+3-5, 3-6+3-6; dispensers 1-4): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-214": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the scrape filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the scrape's numbers from data/rules.json through Rules (dabs + stitches 1-2+0, 1-3+2, 2-4+3, 2-4+4): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-215": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:40x300",
+    "contract:52",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the fever filmed from its request (a new player, L1 and L4, 12 s every 300 ms, the whole screen): the doctor's box as the helper card, the s14 word card and light (a warm lit box, no finger), the doctor's and her bubbles off her face and off the side panel, every word inside its card; contract-51 and -52 list any break",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs js/clinic/heal/counts.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the fever's numbers from data/rules.json through Rules (things tried before the right temperature 2, 4, 6, 8): the unit test sets each level up many times and holds every count inside the rule's range"
+  }
+ ],
+ "CLN-205": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:50x300"
+   ],
+   "expect": null,
+   "note": "a new player's one onboarded round has a wrong answer, so the dropper and the whole loop are shown once (the light on her eye and the bottle); a second round is not taught",
+   "delay": 0
+  }
+ ],
+ "SH-137": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-mid",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the clinic's kit pieces on the s14 kit: the face is the kit's white-rimmed circle (no square tile with a pale wash), the word card is the kit's (word under its picture; 'mirchi' inside its card), the order card with no teal title bar of its own",
+   "delay": 300
+  }
  ]
 }

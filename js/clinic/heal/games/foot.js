@@ -26,7 +26,11 @@
   // Zafar (13 Oct, the heal ladder): each level adds one thing, all by level 2; level 3 only closes the card; harder
   // variety at level 4. So the toe order (the toes named, three splinters) is level 2's new thing, level 3 is level 2
   // heard only, and the narrow channels (level 3's until now) are level 4's
-  const K = { jugs: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4] }, halfW: { 1: 30, 2: 25, 3: 25, 4: 19 }, slackPx: 8, len: 44 };
+  // S14 (CLN-211; the rulebook's section 3, Zafar 30 Oct): the jugs (x) and the splinters (y) are the central rules' (data/
+  // rules.json heal-foot: 1-3+1, 2-4+2, 2-5+3, 3-6+4), drawn through HS.count; from L2 the splinters come from the named toes
+  // (as many toes as splinters). The sole has three toe channels and three toe words (big, middle, little): L4's fourth
+  // splinter waits for a fourth toe's word and channel (the report says so), so L4 plays three
+  const K = { halfW: { 1: 30, 2: 25, 3: 25, 4: 19 }, slackPx: 8, len: 44 };
   const ORDER = 2;
   const TOES = ["big toe", "middle toe", "little toe"];
   const TOE_ID = { "big toe": "cl-big-toe", "middle toe": "foot-middle-toe", "little toe": "cl-little-toe" };
@@ -80,15 +84,18 @@
   function plan(level, rng) {
     const L = Math.max(1, Math.min(4, level));
     const temp = HS.pick(TEMPS, rng);
-    const jugs = HS.pick(K.jugs[L], rng);
+    const jugs = HS.count("foot", "x", L, rng);
+    const want = HS.count("foot", "y", L, rng);
     const flip = rng() < 0.5;
-    const set = HS.pick(L >= ORDER ? PATHS[3] : PATHS[1], rng); // the toe channels from level 2 (PATHS[2]: the two unnamed splinters, unused since)
+    // the toe channels from level 2 (PATHS[2]: the two unnamed splinters, unused since): as many toes as the rules' splinters
+    const toes3 = PATHS[3][0];
+    const set = L >= ORDER ? HS.shuffle(toes3, rng).slice(0, Math.min(want, toes3.length)).sort((a, b) => toes3.indexOf(a) - toes3.indexOf(b)) : HS.pick(PATHS[1], rng).slice(0, want);
     const splinters = set.map((q, i) => {
       const raw = Array.isArray(q) ? q : q.pts;
       const pts = flip ? mirror(raw) : raw.map((p) => p.slice());
       return { id: `s${i}`, toe: q.toe || null, pts, lens: lens(pts), turns: pts.length - 2 };
     });
-    const order = L >= ORDER ? HS.shuffle(TOES, rng) : null;
+    const order = L >= ORDER ? HS.shuffle(splinters.map((q) => q.toe), rng) : null;
     // words, numbers and joins from data through the seam (R5)
     const Lg = HS.L;
     const say = (m, o) => Lg.show(m, o);
@@ -100,13 +107,15 @@
     // CLN-160: the soak, the toes and the plaster are one sequence on the card (the toe order's own "toes" key made a second box at level 3)
     const rows = [
       { id: "soak-water", options: TEMPS, answer: temp, placeholder: true },
-      { id: "soak-jugs", options: K.jugs[L], answer: jugs },
+      { id: "soak-jugs", options: HS.choices("foot", "x"), answer: jugs },
     ];
-    if (order) rows.push({ id: "toe-order", seq: TOES, answer: order, placeholder: true });
+    if (order) rows.push({ id: "toe-order", seq: TOES.filter((t) => order.includes(t)), answer: order, placeholder: true });
     rows.push({ id: "pull-steady", skill: true }); // the hand: no words in it, so every player can get it
     const words = [Lg.w("cook-paani"), Lg.num(jugs), Lg.w(TEMP_ID[temp]), Lg.w("cl-splinters")];
-    if (order) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), Lg.w("cl-big-toe"), Lg.w("foot-middle-toe"), Lg.w("cl-little-toe"));
-    return { level: L, steps, rows, words, splinters, flip, halfW: K.halfW[L] };
+    if (order) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), ...order.map((t) => Lg.w(TOE_ID[t])));
+    // the rules' splinters past the sole's three toe channels: a gap (L4's fourth), said in plan.gaps for the counts test
+    const gaps = splinters.length < want ? { y: `${want} splinters asked, ${splinters.length} toe channels and toe words on the sole (a fourth toe's word and channel to come)` } : null;
+    return { level: L, steps, rows, words, splinters, flip, halfW: K.halfW[L], jugs, counts: { x: jugs, y: splinters.length }, gaps };
   }
 
   function mount(stage, ctx) {
@@ -284,10 +293,32 @@
         const href = Kit ? Kit.url(`assets/clinic/heal-v3/dirt-${n}.webp`) : `assets/clinic/heal-v3/dirt-${n}.webp`;
         dirt.push({ x, y, el: s("image", { href, x: (x - w / 2).toFixed(1), y: (y - hh / 2).toFixed(1), width: w.toFixed(1), height: hh.toFixed(1), preserveAspectRatio: "none", opacity: op, class: "fo-dirt-bit" }, dirtG) });
       };
-      // thick over every splinter's spot and its channel, so it's hidden until washed
-      P.splinters.forEach((q) => q.pts.forEach((pt, k) => k < 3 && [0, 1, 2, 3].forEach(() => blob(pt[0] + (ctx.rng() - 0.5) * 50, pt[1] + (ctx.rng() - 0.5) * 50, 20 + ctx.rng() * 12))));
-      for (let k = 0; k < 40; k++) blob(200 + ctx.rng() * 400, 80 + ctx.rng() * 380, 8 + ctx.rng() * 14);
+      // S14 (CLN-211; Zafar, 30 Oct: "the sole shows one bit of dirt per jug and each pour clears one, so the last pour leaves
+      // it clean"): one patch of dirt per jug of the count, each a tight clump of grit; the first patches sit on the
+      // splinters' spots (hiding them until washed), the rest on clear parts of the sole
+      const centres = P.splinters.slice(0, P.jugs).map((q) => ({ x: q.pts[0][0], y: q.pts[0][1] }));
+      const FREE = [[400, 150], [330, 250], [470, 330], [400, 410], [320, 380], [480, 190], [400, 280], [350, 160]].map(([x, y]) => ({ x: P.flip ? 800 - x : x, y }));
+      for (const f of FREE) if (centres.length < P.jugs && centres.every((c) => Math.hypot(c.x - f.x, c.y - f.y) > 95)) centres.push(f);
+      for (const f of FREE) if (centres.length < P.jugs && !centres.includes(f)) centres.push(f);
+      centres.forEach((c, i) => {
+        for (let k = 0; k < 5; k++) {
+          blob(c.x + (ctx.rng() - 0.5) * 44, c.y + (ctx.rng() - 0.5) * 34, 16 + ctx.rng() * 8);
+          dirt[dirt.length - 1].patch = i;
+        }
+      });
     }
+    // one pour clears one patch: the first the water meets in this press (or, a pour that met none, the nearest one left)
+    const clearPatch = (i, from) => {
+      dirt.forEach((q) => {
+        if (q.gone || q.patch !== i) return;
+        q.gone = true;
+        q.el.animate([{ transform: "translate(0,0)", opacity: q.el.getAttribute("opacity") }, { transform: `translate(${((q.x - from.x) * 0.5).toFixed(1)}px, 30px)`, opacity: 0 }], { duration: 480, fill: "forwards" });
+      });
+    };
+    const nearestPatch = (p) => {
+      const left = dirt.filter((q) => !q.gone).sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y) - Math.hypot(b.x - p.x, b.y - p.y));
+      return left.length ? left[0].patch : null;
+    };
     const washDirt = (share) => {
       const left = dirt.filter((d) => !d.gone);
       const n = share >= 1 ? left.length : Math.min(left.length, Math.ceil(dirt.length * share));
@@ -328,14 +359,16 @@
       streamF.setAttribute("d", d);
       streamG.setAttribute("opacity", 1);
       let hit = 0;
-      dirt.forEach((q) => {
-        if (q.gone || Math.hypot(q.x - p.x, q.y - p.y) > WASH_R) return;
-        q.gone = true;
-        hit++;
-        // (s08 w6I, CLN-190: the judge saw no dirt clear where the water fell): the bit runs off at its own pace in the fast
-        // test mode too, so a filmstrip of the sweep shows the dirt going where the water passes
-        q.el.animate([{ transform: "translate(0,0)", opacity: q.el.getAttribute("opacity") }, { transform: `translate(${(q.x - p.x) * 0.5}px, 30px)`, opacity: 0 }], { duration: 480, fill: "forwards" });
-      });
+      // S14 (CLN-211): the first patch this pour's water meets runs off whole (each pour clears one patch); the others stay
+      // (s08 w6I, CLN-190: the bits run off at their own pace in the fast test mode too, so a film shows the dirt going)
+      if (st.pourPatch == null) {
+        const q = dirt.find((d) => !d.gone && Math.hypot(d.x - p.x, d.y - p.y) <= WASH_R);
+        if (q) {
+          st.pourPatch = q.patch;
+          clearPatch(q.patch, p);
+          hit = 1;
+        }
+      }
       if (!st.splashT || Date.now() - st.splashT > 260) {
         st.splashT = Date.now();
         // the water meeting the sole: a soft clear ring and a few drops thrown off
@@ -367,6 +400,12 @@
       return hit;
     };
     const endPour = () => {
+      // a pour that met no dirt still clears one patch (the nearest), so the count's last jug always leaves the sole clean
+      if (st.pourPatch == null && st.washFrom) {
+        const i = nearestPatch(st.washFrom);
+        if (i != null) clearPatch(i, st.washFrom);
+      }
+      st.pourPatch = null;
       st.washFrom = null;
       st.pouring = false;
       pourJug.setAttribute("opacity", 0);
