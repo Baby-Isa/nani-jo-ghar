@@ -1624,7 +1624,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const prev = img ? img.getAttribute("src") : null;
       if (img) img.src = Cook.v(Cook.facePath(pan.who));
       const y0 = pan.face.y;
-      const bob = S.tweens.add({ targets: pan.face, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
+      // (contract-14, ART-13: the kit's one talk motion, not a bob of its own (8 px every 200 ms): found 30 Oct when the sandbox's
+      // player tapped a face at L4 to hear the order again)
+      const LC = global.Lifecycle;
+      const bob = LC && LC.talk && LC.talk.phaser ? { stop: LC.talk.phaser(S, pan.face) } : S.tweens.add({ targets: pan.face, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
       try {
         const said = UI.mission.sayPerson ? await UI.mission.sayPerson(pan.who, rows) : false;
         if (!said) await UI.say(personLine(L(), pan.who, rows), { badge: true }, { hide: St.hideKnown(ctx) });

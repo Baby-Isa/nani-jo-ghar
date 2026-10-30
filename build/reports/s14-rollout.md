@@ -28,3 +28,22 @@ server and browser); the contract runs `build/screenshots/sandbox/s14-A-contract
 the pantry; 11 breaks, 3 of them CHAI-48), `s14-A-c52` (CHAI-48 green on chai; the eye test's breaks as on main) and
 `s14-A-final` (chai L1-L4, returning, mistake at the four sizes: 0 breaks over 28 pages). The before for every timing row on
 `main`'s code (89729f48) in a worktree.
+
+## Phase B: the checks (s14-tools, Sonnet), merged 30 Oct 04:20 UK
+
+Its report: `build/reports/s14-tools.md`. Every check but B8 and B9 red on `main`, green or nearly on the branch. Its new checks
+found five more things on the branch, all fixed by the orchestrator the same morning:
+
+| Row | Found by | Fix | Proof |
+|---|---|---|---|
+| CHAI-42 | contract-79 | the card's light waits for a quiet spell (no tween, page animation or row glide in flight or pending, sampled every 60 ms), not a fixed beat | contract-79 green on chai L1-L4 and returning at 740x320, 930x430, 1920x1080, speed 1 and 3 |
+| SH-166 | contract-86 | the conversation bubble's keep-out shift measured at its full size (it was placed while popping in at 90%) | contract-86 green, chai L4 at 930x430 |
+| SH-165 | the card measure | the side card's speaker gap: the grid's gap plus a margin made 18-20 px; now 12, the item card's | `cardmeasure` SPACING: 12 px at 740x320, 930x430, 1280x665 |
+| CHAI-49 (new) | contract-78 | at L3-L4 a pan not in hand opened its knob step as a tap on the pan: nothing was lit with "Chulo bar!"; its knob is lit now | the station's log: light and call in the same ms; contract-78 green at speed 1 |
+| ART-18 | contract-14 | a face badge's own 8 px bob while a person repeats their order; now the kit's one talk motion | contract-14 green, chai L4 at 740x320 |
+
+Two tool faults fixed: contract-84 (the light's lift) measured a light already closing (its layer keeps its box for 300 ms after
+close): it measures only a light still up (the knob reads +36.5 of 255, 12 wanted); contract-79 asked for 500 ms at test speed 3:
+it is judged at the run's speed, as contract-22 and contract-29 are. Left, minor: the big card's flight into the side panel
+brushes Nana's face corner for a frame or two at L4 (contract-83, 4 px at 930x430); contract-74 and -78 at 1035 ms and 219 ms
+under three browsers' load. cook.html's title backdrop still jumps on load (lab.html, what Zafar plays, does not).
