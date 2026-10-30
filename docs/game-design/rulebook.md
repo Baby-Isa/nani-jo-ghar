@@ -43,30 +43,28 @@ before it is final.
 | **Timed control (first-time hold)** | the boil knob (done in the green) | none | the tawa flip | the grill turn | the fry lift | none | the tadka burn |
 | **Shown at the start** | water, tea (not on the card) | to check in each game at the roll-out: every item not on its order card | | | | | |
 
-## 3. The clinic, game by game (today → the rule)
+## 3. The clinic, game by game (Zafar, 29 Oct)
 
-The heal games count by design (drops, wipes, kicks, sips): a number is their basic task, so their numbers stay from L1; the rest
-of the level rule applies. Today's level shapes are each game's own (`data/clinic/heal/*.json` levels).
+The heal games count by design (drops, wipes, kicks, sips): a number is their task, so their numbers are spoken from L1; no "no"
+asks (sore spots' "not this colour" at L2 stays; never in the eye test); L4 is new where a game stopped at L3: one more of
+what repeats, and a lookalike among its decoys. Each game's four numbers (today's from `data/clinic/heal/*.json`):
 
-| | Eye | Ear | Knee | Tooth | Foot | Scrape | Sore spots | Boing | Fever |
-|---|---|---|---|---|---|---|---|---|---|
-| **What repeats; most at L4 (proposed)** | chart rows; 4 | drops; 4 | kicks and turns; 4 | moves on the cross; 6 | toe calls; 4 | to decide | colours to pop; 3 | drops; 5 | to decide |
-| **L2 today** | the side said | a sock to fish out | a second ailment, a list | 4 moves, 2 patches | the salt count, a list | to read | "not this colour" (na) | 4 dispensers, colours | to read |
-| **L3 today** | heard only | as L2 | paths | more moves | more calls | to read | to read | to read | to read |
-| **"No" asks → rule** | none (Zafar, 29 Oct: "don't put a no in the eye test game") | none | none | none | none | none | L2 (as today) | none | none |
-| **Decoys** | the chart's other rows | big and small things | none | none | the other toes | none | 2 (as today) | the other dispensers | none |
-| **Timed control** | none | none | none | none (no timer) | to check | none | the bubbles rise (upMs) | the countdown | none |
-| **Shown at the start** | to check in each game at the roll-out | | | | | | | | |
-
-Zafar's numbers, 29 Oct: "pantry keep 3,4,5,6. maani 2,3,4,5. samosa: 2,3,4,6. chaat ... total items in the bowl ... 3, 4, 5, 6
-including double portions (so 5 could be 4 items and one of those twice). Daar is the number of items cut put into the pan ...
-(X+Y), and the sequence per level is 1+2, 2+2, 3+3, 4+4. Don't put a no in the eye test game." So L1 is not always 1: each game
-lists its four numbers (the formula is the default only where a game has none).
+| Game | What repeats | Today L1-L4 | The rule's L1-L4 |
+|---|---|---|---|
+| **Eye test** | drops to fix the eye first (x, a random number in the range) + chart cards to answer (y), written x+y | drops 1-2, 1-3, 1-3; chart 3, 4, 5 | 2+4, 2-3+5, 2-4+6, 2-5+7 (Zafar) |
+| **Ear** | things to fish out; drops (most) | 2, 3, 3; 3, 4, 4 | 2, 3, 3, 4; 3, 4, 4, 5 |
+| **Knee** | bandage turns (most) | 6, 8, paths | 4, 5, 6, 8 |
+| **Tooth** | moves on the brush cross; dirty patches | 2, 4, 4, 6; 1, 2, 2, 4 | 2, 3, 4, 6; 1, 2, 3, 4 |
+| **Foot** | toe calls: the doctor names which toe to check, by size (the big or the small one, either foot) | 2, 3, 2 + the side | 2, 3, 4, 5 |
+| **Sore spots** | colours to pop; decoys | 1, 2, 2; 2, 2, 2, 3 | 1, 2, 3, 3; 1, 2, 3, 4 |
+| **Boing** | drops (most); dispensers to choose from | 4, 5, 5; 1, 1, 4 | 4, 5, 5, 6; 1, 2, 3, 4 |
+| **Scrape** | stitches (most) | none, 5, 4 | 0, 2, 3, 4 |
+| **Fever** | things tried before the right temperature | a conversation | 2, 4, 6, 8 (Zafar) |
 
 ## 4. Open, for Zafar
 
 1-4. Answered 29 Oct (above). Samosa's 6 at L4 needs the fry pan to fit six (to check at its roll-out).
-5. The clinic's numbers, game by game: proposed in the chat, 29 Oct.
+5. The clinic's numbers: section 3 (Zafar, 29 Oct: the eye test's x+y and the fever's 2, 4, 6, 8; the rest as proposed).
 6. Fever and a few clinic shapes are conversations, not counts: their "most at L4" to decide when they are rolled out.
 
 ## 5. Fable's review (29 Oct) and what was done with it

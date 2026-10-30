@@ -576,13 +576,16 @@
     callNote(s, s.again ? "queued-again" : "queued");
     s.callWaiting = true; // (s08 w6B, contract-36: a call still waiting when its step closes is logged skip-closed then: glow below)
     const line = Lang.role(copyLine(s.line), "call");
+    const queuedAt = Date.now();
     queued(() => {
       if (!s.callWaiting) return null; // (already logged skip-closed as its step closed)
       s.callWaiting = false;
       if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
       // (s14, Zafar 29 Oct: "Chulo bar is spoken early, before the visual help": the call a beat after the step opens, its light first)
-      const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? global.Rules.callAfterLightMs() / (Cook.speed || 1) : 0;
-      return (lag ? Cook.wait(lag) : Promise.resolve()).then(() => {
+      // (only what is left of the beat: a call that waited in the queue behind other speech already comes after its light)
+      const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? Math.max(0, global.Rules.callAfterLightMs() / (Cook.speed || 1) - (Date.now() - queuedAt)) : 0;
+      // (a plain timer: Cook.wait belongs to the station's life and may never resolve once a step ends, which held the queue)
+      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
         if (guide) guide.talk(true);
         return Lang.speak(line).finally(() => guide && guide.talk(false));
@@ -1691,10 +1694,16 @@
         const under = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom), play.top);
         const y0 = under + pad;
         const room = Math.max(40, play.bottom - pad - y0);
-        let w = wd;
-        for (w of [wd, wd * 0.85, wd * 0.7, 160, 130, 110, 95, 80].map(Math.round)) {
-          c.style.width = `${w}px`;
-          c.classList.toggle("wc14-small", smallAt || w <= 160);
+        // (Zafar, 29 Oct: "the item card in the menu box looks like it'll fit just fine in the space under the left head, or at most
+        // need a tiny bit of shrinking. So just use that": the card at the order row's item card size, the speaker kept, a little
+        // narrower only if it must be; the scale below only as the last step)
+        const item = document.querySelector("#mission .oc-card .wc14-it");
+        const itemW = Math.round((item && item.offsetWidth) || 120);
+        let w = itemW;
+        for (const ww of [itemW, itemW * 0.92, itemW * 0.85].map(Math.round)) {
+          w = ww;
+          c.style.width = `${ww}px`;
+          c.classList.add("wc14-small");
           global.WordCard.fit14(c);
           if (c.offsetHeight <= room) break;
         }

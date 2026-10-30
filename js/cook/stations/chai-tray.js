@@ -1914,6 +1914,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const trackRung = (r) => (r && allRungs.add(r), r);
     let lastStep14 = null;
     const firstLit14 = {};
+    const CONTROL14 = new Set(["knob", "slow", "pour"]);
+    let ctl14 = null;
     const coachStep = (nx, sid) => {
       // (s12-w3b: never a help spotlight while a pan is off its burner pouring)
       if (pans.some((q) => q.away)) return coachEnd();
@@ -1935,6 +1937,25 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       if (sid === rungKey) {
         if (helpObj && rungCur && helpObj !== rungCur.obj) helpGlow(rungCur.obj);
+        return;
+      }
+      if (ctl14) ctl14.close();
+      ctl14 = null;
+      // (Zafar, 29 Oct, his video: "it was voice, pause, dim, pause, gold outline": a control's call and its light come together,
+      // for every player: the knob to light the cooker, the knob at the green, the glass for the pour are lit (the dim, the gold
+      // box, the glow) as the step opens and its call is said, until the step moves on; no later hint rungs for them)
+      if (s14 && CONTROL14.has(nx && nx.phase) && rungCur && rungCur.target && OB14 && OB14.light) {
+        if (rung) rung.done();
+        rung = null;
+        rungKey = sid;
+        hideCallout();
+        ctl14 = OB14.light([rungCur.target].concat(rungCur.also ? [rungCur.also] : []), { look: "glow", pad: 4, pass: true });
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
+        } catch (e) {
+          /* only a log */
+        }
+        helpGlow(rungCur.obj);
         return;
       }
       if (rung) rung.done();
@@ -1981,6 +2002,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       )));
     };
     const coachEnd = () => {
+      if (ctl14) ctl14.close();
+      ctl14 = null;
       // (every rung this station started: one replaced while its first-time spotlight was still to open kept it, over the pour)
       allRungs.forEach((r) => r && r.done && r.done());
       allRungs.clear();
