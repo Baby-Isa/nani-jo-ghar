@@ -102,3 +102,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-29 21:59 UK · Published 20261029T215612Z to main (89729f48); Pages serving it.
 - 2026-10-30 02:35 UK · Published 20261030T023200Z to main (f6036032); Pages serving it.
 - 2026-10-30 04:10 UK · s14-tools builder (Sonnet): the evidence film (a whole order filmed, the strip probe fixed), faces hooks, contract-78 to 86 (call and light, the card's light after the last move, no layout jump, gauge, lit edge on a face, card on a face, the light's lift, the replay, bubble keep-out), the load baseline, labcheck on the games, the save-seeding driver; red on main, green on the branch except contract-79, -82, -84, -86 (real findings, build/reports/s14-tools.md); committed in its worktree, not pushed.
+- 2026-10-30 06:13 UK · Published 20261030T061035Z to main (fe1117ee); Pages serving it.
