@@ -712,15 +712,20 @@
       if (r.top < 8 || pt.y < 0) b.classList.add("cv-below");
       // (Zafar, 29 Oct: "It shouldn't overlap the panel almost ever": a side panel marked data-njg-keepout is out of bounds; the
       // bubble moves along beside it while its tail still points at the head)
+      // (measured at its full size, centred on x: placed while it still pops in at 90% it read narrower, and its edge then grew
+      // 11-21 px into the panel: contract-86, chai L4 at 930x430)
       if (root.document && root.document.querySelectorAll) {
         let dx = 0;
+        const w = b.offsetWidth;
+        const bl = x - w / 2;
+        const br = x + w / 2;
         root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
           const q = k.getBoundingClientRect();
           if (!q.width || !q.height) return;
-          if (q.right <= pt.x && r.left < q.right + 8) dx = Math.max(dx, q.right + 8 - r.left);
-          else if (q.left >= pt.x && r.right > q.left - 8) dx = Math.min(dx, q.left - 8 - r.right);
+          if (q.right <= pt.x && bl < q.right + 8) dx = Math.max(dx, q.right + 8 - bl);
+          else if (q.left >= pt.x && br > q.left - 8) dx = Math.min(dx, q.left - 8 - br);
         });
-        if (dx && r.width + 16 < W) {
+        if (dx && w + 16 < W) {
           b.style.left = `${x + dx}px`;
           b.style.setProperty("--cv-tail-dx", `${-dx}px`);
         }

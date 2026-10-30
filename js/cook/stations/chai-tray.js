@@ -1947,11 +1947,46 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
           // then over the sugar: a child who has already moved on to the next thing needs no pointer, so it is skipped, and a pour
           // begun while it is lit ends it)
+          // (contract-79: the order row's own glide and the side panel's slides are moves too: the light waits for a quiet spell of
+          // pointAfterMoveMs with nothing moving at all, sampled every 60 ms)
           const m0 = moves14;
           const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
+          // (anything else in flight that will end: a tween in the kitchen (the leaves fading into the pan), an animation on the page, the
+          // order row's glide, running or about to start after a redraw (its _auto); the people's idling, glows, effects and bubbles
+          // are left out, as the sandbox's contract-79 leaves them)
+          let rowX = null;
+          const sideMoving = () => {
+            const rows = [...document.querySelectorAll("#mission .oc-row14")];
+            const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
+            const was = rowX;
+            rowX = xs;
+            if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
+            const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
+            const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
+            try {
+              if (S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
+            } catch (e) {
+              /* no tween list: the rest still counts */
+            }
+            return !!(document.getAnimations && document.getAnimations().some((a) => {
+              if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
+              const tm = a.effect.getComputedTiming();
+              const el = a.effect.target;
+              return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
+            }));
+          };
           const on = () => moves14 !== m0;
-          const go = (settled) => (on() || finished ? null : moving() ? setTimeout(() => go(false), 60) : settled ? light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on()) : setTimeout(() => go(true), (RULES() ? RULES().pointAfterMoveMs() : 0) / sp));
-          go(false);
+          let quiet = null;
+          const go = () => {
+            if (on() || finished) return;
+            const still = !moving();
+            if (!sideMoving() && still) {
+              if (quiet == null) quiet = Date.now();
+            } else quiet = null;
+            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
+            else setTimeout(go, 60);
+          };
+          go();
         }
         lastStep14 = st || lastStep14;
         // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)

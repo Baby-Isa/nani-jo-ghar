@@ -158,7 +158,7 @@
    speaker is padded to the bottom of the item cards ... If needed though it can move over when the word requires": the speaker follows
    the words at one fixed gap, the item card's speaker gap, never pushed to the card's far edge; a long word moves it on) */
 .wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 30% minmax(0, max-content) auto; justify-content: start; align-items: center; padding: 2cqi; column-gap: 2.5cqi; }
-.wc14-big.wc14-side > .wc14-in > .wc14-spk { margin-left: var(--njg-card14-spk-gap); }
+.wc14-big.wc14-side > .wc14-in > .wc14-spk { margin-left: calc(var(--njg-card14-spk-gap) - 2.5cqi); } /* (the grid's own column gap is part of it: the two together are the item card's gap; the s14-tools card measure, 30 Oct: 18-20 px against 12) */
 .wc14-big.wc14-side .wc14-lab { display: none; }
 .wc14-big.wc14-side .wc14-pic { aspect-ratio: 1; }
 .wc14-big.wc14-side .wc14-words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }

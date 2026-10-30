@@ -75,7 +75,7 @@ import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
 import { CHAI_CHECKS, check70, check71 } from "./contract-chai.mjs";
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
-import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86 } from "./contract-s14.mjs";
+import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
@@ -1588,7 +1588,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check76(tl, add);
   check77(r, tl, add);
   check78(r, tl, v, add);
-  check79(tl, add);
+  // (Cook's test speed shortens the game's beat: the rules' pointAfterMoveMs is a child's time, 500 ms / speed in the run, as contract-22
+  // and contract-29 judge theirs; the orchestrator, 30 Oct: at speed 3 the game waited its 167 ms and the check asked 500)
+  check79(tl, add, { pointAfterMove: POINT_AFTER_MOVE_MS / (/^clinic:/.test(r.flow || "") ? 1 : +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3)) });
   check80(r, tl, add);
   check81(tl, add);
   check82(tl, add);
