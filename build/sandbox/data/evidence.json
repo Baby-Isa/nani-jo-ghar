@@ -21231,24 +21231,24 @@
  ],
  "SH-165": [
   {
-   "flow": "repo",
-   "path": "fair",
-   "level": 1,
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 0,
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 2,
    "sizes": [
-    "1280x665"
+    "740x320",
+    "930x430"
    ],
    "profile": "seen",
-   "want": null,
-   "at": "now",
-   "after": null,
+   "at": "life:helper-open",
    "capture": [
-    "cmd:node build/tools/review/unit.mjs build/sandbox/s14checks.test.mjs"
+    "zoom2:#guide",
+    "crop:#mission"
    ],
-   "expect": [
-    "pass"
-   ],
-   "note": "the side-by-side helper card's speaker sits at the item card's 12 px from its words (the card measure's unit tests; the orchestrator's measure on chai L2 with the card open: 12 px at 740x320, 930x430, 1280x665)",
-   "delay": 0
+   "note": "the helper's side card (a phone): the speaker at the card's right, its gap to the right edge the same as the order's item card's speaker-to-foot gap below (7 px at 740x320, measured 30 Oct); less only where a word needs one line"
   }
  ],
  "SH-166": [
@@ -22389,6 +22389,93 @@
    "expect": null,
    "note": "the grill at L4: every skewer the order asks for threaded before the barbecue, the round played to its end (the badges)",
    "delay": 0
+  }
+ ],
+ "SH-171": [
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 0,
+   "flow": "cook:daar",
+   "path": "order-whole",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "at": "life:request",
+   "capture": [
+    "strip:#mission:40x250",
+    "contract:88"
+   ],
+   "note": "Nana walks in and gives the order: the order card shows only dashed slots until he says each item; no item is seen before it is said, none hidden again (Zafar's 30 Oct case: the onion shown, then a dotted outline at Salaam, then back)"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 0,
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "at": "life:request",
+   "capture": [
+    "strip:#mission:40x250",
+    "contract:88"
+   ],
+   "note": "two people at the phone size: the second person's rows wait in their slots too"
+  }
+ ],
+ "SH-172": [
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 0,
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "at": "life:helper-open",
+   "capture": [
+    "crop:#guide",
+    "voice",
+    "contract:89",
+    "contract:36"
+   ],
+   "note": "Nani says the next item only as her helper card opens to show it (the hint after the wait, or the arrow); never at the step's opening while the card is closed; a control's call (Chulo bar!) still comes with its light"
+  }
+ ],
+ "CHAI-50": [
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 0,
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "at": "kind-timing",
+   "capture": [
+    "shot",
+    "contract:87"
+   ],
+   "note": "a new player at a child's pace through the cooker: one light at a time; the dim and the gold box gone when the knob's step ends (no second dim, none left on the cooker at the tea glass)"
   }
  ]
 }
