@@ -1971,7 +1971,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         rung = null;
         rungKey = sid;
         hideCallout();
-        ctl14 = OB14.light([rungCur.target].concat(rungCur.also ? [rungCur.also] : []), { look: "glow", pad: 4, pass: true });
+        // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
+        // them: the box is the control alone (the glass, which pours at a tap too); its pan keeps its glow and its tap)
+        ctl14 = OB14.light(rungCur.target, { look: "glow", pad: 4, pass: true, live: [rungCur.target].concat(rungCur.also ? [rungCur.also] : []) });
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
         } catch (e) {
