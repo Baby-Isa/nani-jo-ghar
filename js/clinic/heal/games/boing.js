@@ -237,11 +237,17 @@
         levers[c] = { g: lv, arm, x, kx: x + 14, y: M.y + 150 };
       });
     }
-    // S14 (the rules' dispensers): a tube not in play is dimmed, its lever still (pull() ignores it)
+    // S14 (the rules' dispensers): a tube not in play is dimmed (a frosted cover over its glass, from the spout's top to its
+    // lever), its lever still (pull() ignores it)
+    const tubeGap = P.tubes.length > 1 ? Math.abs(tubeX[P.tubes[1]] - tubeX[P.tubes[0]]) : 40;
     Object.keys(levers).forEach((c) => {
       if (P.live.includes(c)) return;
       levers[c].g.style.opacity = "0.3";
       levers[c].g.setAttribute("data-off", "1");
+      const tw = tubeGap * 0.86;
+      const top = M.tubeTop - 6;
+      const bot = Math.max(M.tubeBot, levers[c].y) + 10;
+      s("rect", { class: "bo-off", x: (tubeX[c] - tw / 2).toFixed(1), y: top.toFixed(1), width: tw.toFixed(1), height: (bot - top).toFixed(1), rx: (tw / 2).toFixed(1), fill: "#f4efe6", opacity: 0.78, "pointer-events": "none" }, machG);
     });
 
     /*
