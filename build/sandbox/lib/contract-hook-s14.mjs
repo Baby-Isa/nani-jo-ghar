@@ -47,6 +47,16 @@ function s14hook() {
       const hb = S.headBox(img), a = UI.worldToScreen(hb.x, hb.y), z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
       out.push({ who, kind: "head", box: [a.x, a.y, z.x, z.y].map((v) => Math.round(v * 10) / 10) });
     }));
+    safe(() => {
+      const walk = (list) => (list || []).forEach((o) => {
+        if (!o) return;
+        if (o.list) return walk(o.list);
+        if (o.visible === false || o.active === false || !o.texture || !/-badge$/.test(o.texture.key) || !o.getBounds || !UI) return;
+        const b = o.getBounds(), a = UI.worldToScreen(b.x, b.y), z = UI.worldToScreen(b.right, b.bottom);
+        out.push({ who: o.texture.key.replace(/-badge$/, ""), kind: "badge", box: [a.x, a.y, z.x, z.y].map((v) => Math.round(v * 10) / 10) });
+      });
+      walk(S && S.children && S.children.list);
+    });
     document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
       if (f.closest(".wc14-pop, .wc14-flyer")) return;
       const b = f.getBoundingClientRect();
@@ -81,7 +91,7 @@ function s14hook() {
             if (o.list) walk(o.list);
             if (o.type === "Graphics" || o.visible === false || chars.has(o) || o.glowFx) continue;
             const key = o.texture ? o.texture.key : "";
-            if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow/i.test(key + (o.name || ""))) continue;
+            if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow|spoon|ladle|hand/i.test(key + (o.name || ""))) continue;   // (a tool in the child's own hand moves with the child, not by itself)
             // where the thing rests (its place when it last held still for 300 ms): a bounce stays within a few px of it, a flight goes far
             const t = Date.now(), was = stamp.get(o), now = { x: o.x, y: o.y, a: o.alpha, sx: o.scaleX, rx: o.x, ry: o.y, still: t };
             if (was) {

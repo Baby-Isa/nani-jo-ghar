@@ -2184,8 +2184,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     },
     /**
      * TEST HOOK (S14 tools, B2; read-only): every face on screen, in page px, as {who, kind, left, top, right, bottom, width, height}:
-     * kind "head" = a character in the kitchen (the scene's headBox), kind "circle" = a face circle in the page (the guide's, an order
-     * card's, a speaker's). The checks that say "never over a face" read these (njgTest.cook.faces(); also njgTest.faces() when the
+     * kind "head" = a character in the kitchen (the scene's headBox), kind "badge" = a person's round face on the tray or the hob, kind
+     * "circle" = a face circle in the page (the guide's, an order card's, a speaker's). The checks that say "never over a face" read these (njgTest.cook.faces(); also njgTest.faces() when the
      * page's hook has no other owner).
      */
     faces() {
@@ -2198,6 +2198,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const hb = S.headBox(img);
           put(who, "head", UI.worldToScreen(hb.x, hb.y), UI.worldToScreen(hb.x + hb.w, hb.y + hb.h));
         });
+      } catch (e) {
+        /* no scene yet */
+      }
+      // the round badges a station draws (a person's face on the tray and on the hob: the scene's <who>-badge pictures)
+      try {
+        const walk = (list) =>
+          (list || []).forEach((o) => {
+            if (!o) return;
+            if (o.list) return walk(o.list);
+            if (o.visible === false || o.active === false || !o.texture || !/-badge$/.test(o.texture.key) || !o.getBounds) return;
+            const b = o.getBounds();
+            put(o.texture.key.replace(/-badge$/, ""), "badge", UI.worldToScreen(b.x, b.y), UI.worldToScreen(b.right, b.bottom));
+          });
+        walk(S && S.children && S.children.list);
       } catch (e) {
         /* no scene yet */
       }
