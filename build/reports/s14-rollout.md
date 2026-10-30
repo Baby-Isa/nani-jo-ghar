@@ -47,3 +47,34 @@ close): it measures only a light still up (the knob reads +36.5 of 255, 12 wante
 it is judged at the run's speed, as contract-22 and contract-29 are. Left, minor: the big card's flight into the side panel
 brushes Nana's face corner for a frame or two at L4 (contract-83, 4 px at 930x430); contract-74 and -78 at 1035 ms and 219 ms
 under three browsers' load. cook.html's title backdrop still jumps on load (lab.html, what Zafar plays, does not).
+
+## Phase C: every game on the new kit (two Opus builders, 05:05-09:20 UK)
+
+- **s14-cook** (`build/reports/s14-cook.md`): every Cook station on the s14 look and the central rules (pantry 3-6, maani 2-5, skewers
+  1-4, samosa 2/3/4/6, chaat 3-6, daar 1+2 to 4+4), the first-time holds, the help light hugging its item (contract-53 green).
+- **s14-clinic** (`build/reports/s14-clinic.md`): every heal game on the kit and Zafar's x+y numbers, the doctor's box as the helper
+  card, the eye test's s14 cards (SH-137), bubbles off her face (contract-51 and -52 green), the level-up through `Rules.advance`.
+- Gaps reported, not drawn: the foot's fourth splinter (a fourth toe channel and word), sore spots' third colour (its spot art and
+  word); the clinic's word pill and cog; "items not on the card shown at the start" (Cook).
+
+## Phase D: merge, check, fix (the orchestrator, 08:40-11:00 UK)
+
+Zafar's word during it (30 Oct): "we minimise (fold up) menu boxes once that item is complete ... and then obviously all the
+cards open again when the game starts" (SH-169, built). Found and fixed after the merges, each proven on the contract run:
+
+| Row | What | Fix |
+|---|---|---|
+| SEK-23 | the grill at L2-L4 went to the barbecue after one skewer and waited for ever (on `main` too) | the threading's self-pressing "go" shows once every ordered skewer is made |
+| SH-170 | a phone's order row cut at the card's edge (the foot), words split two to a line (the pharmacy; on `main` too) | the fit lifts the row's word floor while fitting; a word too wide for its half takes a whole line |
+| (contract-21) | the eye test's yes/no pills ignored while the doctor said the word | a tap on a game's own button under a speaking request is the answer as well as the skip |
+| (contract-82, -83) | the order card's light across a face circle; the zoomed three-person card's first frames over Nana | the card whole in view, an overlapping face taken into its box; the zoomed card fades in |
+| (leak) | the heal games' L1 counts (Zafar's new 1-2 / 1-3 ranges) let a blind guess win 10-35% | accepted at L1 only (`byLevel`), the knee at L1-L2 under 13i; L2-L4 keep 10%; question 1 in `docs/questions.md` |
+| (tools) | contract-85 false alarms; the evidence film's scaled frames resized the game mid-film | fixed in the tools |
+
+The full contract run `s14-D-full` (156 pages: every Cook station L1/L4/returning, every heal game L1/L4, the morning, at the four
+sizes): 151 reached their end; the grill at L4 (fixed since: SEK-23) and the pantry once (the player misses pass-me's 3 s ring).
+
+**Known, left (not blocking play):** samosa's guided first round lights each strip at once (contract-24, on `main` too); a card's
+corner over a face circle for a frame (contract-83, about 50 px2, the pantry, daar, the grill); the call's light 200-260 ms after
+"Slow kar!" under load (contract-78); boing L4 once lit two rows together (contract-8, not again in a rerun); the order panel's
+partial card at 930x430 is now folded (SH-169). For Zafar: `docs/questions.md` "From the Sprint 14 roll-out" 1-4.
