@@ -16,3 +16,8 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id s15-chai-ev9`, the 
 ## Tool failures (0): for the tool owner, never a FAIL in regressions.md
 
 none
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- SH-163: the close strips D and E (50 ms slots, not 60 fps) caught no frame of a card in flight: every frame on the sheet is before the pop (1 ms / 2 ms big dudh card) or after the landing (row with dudh and hakro khun), every caption after the first is red (off its slot, E's by up to 16 s); the 250 ms strips A-C show only 2-3 frames per morph (each in-flight frame in C one card, readable, text paler while moving; A at 1920x1080 is too small on the sheet to read), so "every frame one whole readable card" cannot be judged from this sheet. (Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF)
+

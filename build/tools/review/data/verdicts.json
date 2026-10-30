@@ -7122,19 +7122,19 @@
   "date": "2026-10-30"
  },
  "SH-171": {
-  "hash": "33edd83854db1509c0b3",
+  "hash": "5339a5ac844b4cc67bc2",
   "dhash": [
    "0101010101010101",
    "0111010101010101",
    "0121010101010105"
   ],
   "verdict": "PASS",
-  "line": "A, from life:request (11 ms) Nana's card holds only an empty dashed slot; the onion card first appears as the pop-out at 2500 ms, lands as the \"hakro dungri\" row by 3501 ms and stays (highlighted 6252, ticked 6841) with no dashed outline flashing after it; B shows the same at 740x320 (empty slot at 4 ms, row from 2250 ms); C (chai-tray L2) fills each slot only as its card pops out (dudh 2750→3751, trae khun 5470, hakro khun 10423→11695, dudh na 12249) and the fold of Nana's card at 6431 ms is the SH-169 fold, reopened at 13750; contract-88 reports 0 breaks on all three pages. Notes: the Check names every Cook station at L1–L4 new and returning but only daar L1 and chai-tray L2 are filmed (L3, L4 and the other stations are not on this sheet); in C paani, chai and elchi are in Nana's row at game start (14044, 14251) without any frame showing them said or popped (their slots scrolled off-screen at 1000 ms), so that part is not provable from the film; \"Chop these.\" is grey-italic to-record English (allowed).",
+  "line": "A, at 5 ms Nana's \"Muke daar khape.\" card holds one dashed slot and no item; hakro dungri is seen first as the big card in flight at 2249 ms and sits as a row under \"Chop these.\" from 2999 ms on (ticked at 6417 ms), never hidden until the SH-169 fold; B the same at 740x320 (1 ms empty slot, row from 2500 ms, ticked 6798 ms); C chai L2 740x320, two people: all slots dashed at 24 ms, dudh (3000 ms) and trae khun (5001 ms) land only as said, Aadu's hakro khun (8499 ms) and dudh na (11250 ms) likewise, every card open again at 12326 ms; contract-88 reports 0 breaks on all three pages. Coverage: daar L1 and chai L2 only, the other stations and levels are not on this sheet. Flaw noted, off the point: A 6845 ms shows the hakro dungri row cut mid-fold (one transient frame); A 5500 ms and B 5252 ms show the whole mission panel dimmed grey.",
   "panel": "A",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev6",
-  "commit": "6484dc9",
-  "png": "build/screenshots/evidence/s15-chai-ev6/SH-171.png",
+  "run": "s15-chai-ev9",
+  "commit": "0e2831c",
+  "png": "build/screenshots/evidence/s15-chai-ev9/SH-171.png",
   "date": "2026-10-30"
  },
  "SH-172": {
