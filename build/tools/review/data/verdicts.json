@@ -778,6 +778,17 @@
   "commit": "d3e1c0d",
   "date": "2026-10-23"
  },
+ "CHAI-44": {
+  "hash": "e59a8c7cafc99da36376",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/loadtime.mjs --games chai-tray --runs 1: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "date": "2026-10-30"
+ },
  "CHT-01": {
   "hash": "ff0ba1426c907aa7f5b1",
   "dhash": [],
@@ -6551,6 +6562,17 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "SH-165": {
+  "hash": "3e03dce6a3d02430a05f",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/unit.mjs build/sandbox/s14checks.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "date": "2026-10-30"
  },
  "SH-17": {
   "hash": "f925355aa3e72443551d",

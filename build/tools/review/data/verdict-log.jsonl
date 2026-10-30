@@ -1672,3 +1672,5 @@
 {"id":"EASY-08","run":"s12-w1a-ev2","verdict":"PASS","spec":"e55eb8b6e6ec516c082d","judge":"expect","date":"2026-10-23"}
 {"id":"CK-50","run":"s12-w1a-ev2","verdict":"PASS","spec":"4cd2acc29bf421043faf","judge":"expect","date":"2026-10-23"}
 {"id":"CHAI-32","run":"s12-w1a-ev2","verdict":"FAIL","spec":"965a8ac39145b0fc7676","judge":"expect","date":"2026-10-23"}
+{"id":"SH-165","run":"s14-chai-ev","verdict":"PASS","spec":"ec698cd8cd2a7d53420a","judge":"expect","date":"2026-10-30"}
+{"id":"CHAI-44","run":"s14-chai-ev","verdict":"PASS","spec":"10067879db7268624222","judge":"expect","date":"2026-10-30"}
