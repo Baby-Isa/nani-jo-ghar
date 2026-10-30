@@ -296,6 +296,23 @@
       return null;
     }
   };
+  // the other people's heads on the page (contract-52: a long line clamped at the screen's edge slid over the next person's
+  // face): the bubble's placement keeps off them; only for a speaker in the scene (anchor.self)
+  const otherHeads = (an) => () => {
+    const S = Cook.scene;
+    if (!an || !an.self || !S || !S.chars || !S.headBox) return [];
+    return Object.values(S.chars)
+      .filter((img) => img && img !== an.self && img.active && img.visible !== false)
+      .map((img) => ({
+        isConnected: true,
+        getBoundingClientRect: () => {
+          const hb = S.headBox(img);
+          const a = UI.worldToScreen(hb.x, hb.y);
+          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+          return { left: a.x, top: a.y, width: z.x - a.x, height: z.y - a.y };
+        },
+      }));
+  };
   function placeBubble() {
     if (bubbleEl && bubbleEl.isConnected && bubbleEl.njgPlace) bubbleEl.njgPlace();
   }
@@ -341,7 +358,7 @@
       dropBubble(); // (one bubble at a time: a line said while this one's script was loading)
       pill.classList.add("wp-line"); // (Cook's own pill: its words big, its speaker a full tap, css/cook.css .wp-line)
       // its speaker (data-who): the one named, else "cook" (the contract's Cook speaker: the nearest character's head)
-      bubbleEl = target = C.bubble(headBox(anchor), { who: (anchor && anchor.who) || "cook", text: pill, layer: $("#stage"), tap: true, z: 10 });
+      bubbleEl = target = C.bubble(headBox(anchor), { who: (anchor && anchor.who) || "cook", text: pill, layer: $("#stage"), tap: true, z: 10, avoid: otherHeads(anchor) });
       slot = target.querySelector(".cv-text");
       // SH-153's check (contract-73): on the s14 look, the bubble's speaker as drawn (its size and 1.8 em of its words), for the checks
       if (UI.s14()) {

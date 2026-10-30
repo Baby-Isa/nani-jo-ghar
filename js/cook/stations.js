@@ -894,7 +894,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
       // S04-B (SH-68, decision 75 (4)): the bubble sits above the speaker's head (below it with no room), placed by
       // the shared lifecycle; head: the top of the picture, in world px (UI.placeBubble maps it to the page)
-      const anchor = { head: this.headBox(img), x: img.x, y: img.baseY };
+      // (self: the speaker's picture, so the bubble keeps off every other person's head: contract-52)
+      const anchor = { head: this.headBox(img), x: img.x, y: img.baseY, self: img };
       try {
         await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {

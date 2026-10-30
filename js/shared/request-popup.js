@@ -399,8 +399,13 @@
     b.style.left = "0px";
     b.style.top = "0px";
     delete b.dataset.njgPlace;
-    const bw = b.offsetWidth;
-    const bh = b.offsetHeight;
+    // (a narrower wrap set by an earlier placement goes first: measured at its own width each time)
+    if (b.dataset.njgNarrow) {
+      b.style.maxWidth = "";
+      delete b.dataset.njgNarrow;
+    }
+    let bw = b.offsetWidth;
+    let bh = b.offsetHeight;
     const W = lr.width;
     const H = lr.height;
     const hx = r.left - lr.left;
@@ -415,10 +420,10 @@
       if (sd) return sd;
     }
     const gap = o.gap != null ? o.gap : M + 6; // room for the tail
-    const above = hy - gap - bh;
+    let above = hy - gap - bh;
     const below = hy + r.height + gap;
-    const fitsAbove = above >= M;
-    const fitsBelow = below + bh <= H - M;
+    let fitsAbove = above >= M;
+    let fitsBelow = below + bh <= H - M;
     // S13-B2: no room above the head: beside it (its bottom at the eye line, its tail out of the near side at the head) before
     // below it, so a bubble never sits on the speaker's chest while there is room at their head
     if (!fitsAbove && !face) {
@@ -443,7 +448,7 @@
       x0 = M;
       x1 = W - M;
     }
-    const x = Math.max(x0, Math.min(x1 - bw, cx - bw / 2));
+    let x = Math.max(x0, Math.min(x1 - bw, cx - bw / 2));
     const yOf = (sd) => Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
     let y = yOf(side);
     const hits = (yy) =>
@@ -454,6 +459,37 @@
         const qy = q.top - lr.top;
         return !(x >= qx + q.width || x + bw <= qx || yy >= qy + q.height || yy + bh <= qy);
       });
+    // (contract-52: a long line pushed along by the screen's edge or a side panel slid over the next person's face: it wraps
+    // narrower first, still at its own speaker's head, before it tries the head's other side)
+    if (hits(y) && side === "above") {
+      const w0 = bw;
+      for (const k of [0.8, 0.65, 0.5]) {
+        const w = Math.round(w0 * k);
+        if (w < 140) break;
+        b.style.maxWidth = `${w}px`;
+        b.dataset.njgNarrow = "1";
+        bw = b.offsetWidth;
+        bh = b.offsetHeight;
+        above = hy - gap - bh;
+        fitsAbove = above >= M;
+        fitsBelow = below + bh <= H - M;
+        x = Math.max(x0, Math.min(x1 - bw, cx - bw / 2));
+        y = yOf(side);
+        if (!fitsAbove || !hits(y)) break;
+      }
+      // (no narrower wrap clears it, or the taller bubble no longer fits above: back to its own width)
+      if (!fitsAbove || hits(y)) {
+        b.style.maxWidth = "";
+        delete b.dataset.njgNarrow;
+        bw = b.offsetWidth;
+        bh = b.offsetHeight;
+        above = hy - gap - bh;
+        fitsAbove = above >= M;
+        fitsBelow = below + bh <= H - M;
+        x = Math.max(x0, Math.min(x1 - bw, cx - bw / 2));
+        y = yOf(side);
+      }
+    }
     if (hits(y)) {
       const other = side === "above" ? "below" : "above";
       if ((other === "above" ? fitsAbove : fitsBelow) && !hits(yOf(other))) {
