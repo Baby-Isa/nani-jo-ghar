@@ -6684,6 +6684,28 @@
   "png": "build/screenshots/evidence/s14-chai-ev/SH-166.png",
   "date": "2026-10-30"
  },
+ "SH-167": {
+  "hash": "03f72afd9936292898b2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/unit.mjs build/sandbox/film.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "date": "2026-10-30"
+ },
+ "SH-168": {
+  "hash": "b81c9bd4af9f9fb82b62",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/unit.mjs build/sandbox/s14checks.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "date": "2026-10-30"
+ },
  "SH-17": {
   "hash": "f925355aa3e72443551d",
   "dhash": [

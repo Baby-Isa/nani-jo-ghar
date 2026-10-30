@@ -1682,3 +1682,5 @@
 {"id":"SH-161","run":"s14-chai-ev2","verdict":"PASS","spec":"36aff417afb1043961dc","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz","date":"2026-10-30"}
 {"id":"CHAI-43","run":"s14-chai-ev4","verdict":"PASS","spec":"d4f35e909d4f775f4585","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz","date":"2026-10-30"}
 {"id":"CHAI-45","run":"s14-chai-ev4","verdict":"PASS","spec":"101a5cc2b7a6b5cd2289","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz","date":"2026-10-30"}
+{"id":"SH-167","run":"s14-D-ev","verdict":"PASS","spec":"04a56c45e8ea0d498eec","judge":"expect","date":"2026-10-30"}
+{"id":"SH-168","run":"s14-D-ev","verdict":"PASS","spec":"cfb8cfaba908d35b6797","judge":"expect","date":"2026-10-30"}

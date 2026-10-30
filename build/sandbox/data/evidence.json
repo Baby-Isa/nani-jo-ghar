@@ -22048,7 +22048,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22056,8 +22056,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "the pantry for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items 3, 4, 5, 6 by level; the shelf full of decoys; the help light hugs its item (contract-53)",
-   "delay": 0
+   "note": "the pantry for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items 3, 4, 5, 6 by level; the shelf full of decoys; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "MAA-19": [
@@ -22094,7 +22094,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22102,8 +22102,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "maani for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; rotis 2, 3, 4, 5 by level; the tawa flip's first-time hold",
-   "delay": 0
+   "note": "maani for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; rotis 2, 3, 4, 5 by level; the tawa flip's first-time hold (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "SEK-22": [
@@ -22140,7 +22140,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22148,8 +22148,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "the sekelo grill for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; skewers 1, 2, 3, 4 by level; the turn's first-time hold; the help light hugs its item (contract-53)",
-   "delay": 0
+   "note": "the sekelo grill for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; skewers 1, 2, 3, 4 by level; the turn's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "SAM-28": [
@@ -22186,7 +22186,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22194,8 +22194,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "samosa for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; samosas 2, 3, 4, 6 by level (6 only if the pan fits six); 'no' asks from L2; the fry lift's first-time hold; the help light hugs its item (contract-53)",
-   "delay": 0
+   "note": "samosa for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; samosas 2, 3, 4, 6 by level (6 only if the pan fits six); 'no' asks from L2; the fry lift's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "CHT-17": [
@@ -22232,7 +22232,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22240,8 +22240,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "chaat for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items in the bowl 3, 4, 5, 6 (a double portion counts twice); 'no' asks from L2; decoys 1, 2, 3, 4",
-   "delay": 0
+   "note": "chaat for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items in the bowl 3, 4, 5, 6 (a double portion counts twice); 'no' asks from L2; decoys 1, 2, 3, 4 (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "DAAR-36": [
@@ -22278,7 +22278,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "view-marble",
    "after": null,
    "capture": [
     "shot",
@@ -22286,8 +22286,8 @@
     "contract:84"
    ],
    "expect": null,
-   "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53)",
-   "delay": 0
+   "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
+   "delay": 1500
   }
  ],
  "SH-169": [
