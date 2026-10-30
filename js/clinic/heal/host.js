@@ -532,6 +532,19 @@
     };
   };
 
+  /** The s14 look on or off (the heal round's start and end). */
+  HOST.s14 = function (on) {
+    const d = global.document;
+    if (on && d && d.head && !d.querySelector("link[data-njg-card14-font]")) {
+      const l = d.createElement("link");
+      l.rel = "stylesheet";
+      l.href = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap";
+      l.dataset.njgCard14Font = "";
+      d.head.appendChild(l);
+    }
+    if (global.Onboard) global.Onboard.look = on ? "s14" : global.Onboard.look === "s14" ? null : global.Onboard.look;
+  };
+
   /**
    * Mount a registered game on a screen. Returns {ctx, controller, result, destroy}.
    * `screen` is a Clinic.Screen (the lab and the pipeline both build one).
@@ -558,6 +571,10 @@
 
     const stage = screen.clearStage();
     stage.classList.add("cl-heal", `heal-${def.id}`);
+    // S14 roll-out (the s14 kit in the clinic, every heal game): the look for the whole round, set where it starts (the chai
+    // lessons, 1: a shared piece outside the game's file leaks its old look otherwise): the light is the lit box with its warm
+    // fill and no finger (Onboard.look "s14", the conversations' replies too), the card serif loaded once
+    HOST.s14(true);
     stage.dataset.game = def.id;
     screen.clearActions();
     screen.tally.clear();
@@ -1095,6 +1112,7 @@
       let veil = null;
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
+        zones: true, // S14 (SH-157 in the clinic): a tap on a bubble, the side panel or the menu never skips what is said
         host: screen.main,
         target: () => card.el,
         fast: Kit.fast,
@@ -1184,6 +1202,7 @@
       };
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
+        zones: true, // S14 (SH-157 in the clinic): a tap on a bubble, the side panel or the menu never skips what is said
         along: true,
         host: stage,
         build: (b) => (box = b),
@@ -1297,6 +1316,7 @@
         // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)
         card.setProgressive(false);
         card.closed = null;
+        HOST.s14(false);
       },
     };
     HOST.current = run;

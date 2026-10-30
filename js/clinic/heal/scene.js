@@ -135,6 +135,9 @@
   };
   HS.span = (game, axis, L) => RulesR().span(HS.rule(game, L)[axis]);
   HS.count = (game, axis, L, rng) => RulesR().draw(HS.rule(game, L)[axis], rng);
+  // a count row's choices (the leak bots' blind player): a child can stop at any count, so every number from 1 to the most this
+  // game asks at any level (a level's own range alone made a blind guess too easy at L1's narrow ranges)
+  HS.choices = (game, axis) => RulesR().span([1, Math.max(...[1, 2, 3, 4].map((L) => (HS.rule(game, L)[axis] || [1, 1])[1]))]);
   HS.shuffle = (a, rng) => {
     const b = a.slice();
     for (let k = b.length - 1; k > 0; k--) {

@@ -88,7 +88,7 @@
     const rows = [
       ...(L === 1 ? [] : [{ id: "wax-order", options: [["big", "small"], ["small", "big"]], answer: order }]),
       { id: "wipe-gentle", options: [true, false], answer: true, skill: true },
-      { id: "drops-count", options: HS.span("ear", "y", L), answer: drops },
+      { id: "drops-count", options: HS.choices("ear", "y"), answer: drops },
     ];
     let hear = null;
     if (H.on && H.words && H.words.length >= 2) {

@@ -107,7 +107,7 @@
     // CLN-160: the soak, the toes and the plaster are one sequence on the card (the toe order's own "toes" key made a second box at level 3)
     const rows = [
       { id: "soak-water", options: TEMPS, answer: temp, placeholder: true },
-      { id: "soak-jugs", options: HS.span("foot", "x", L), answer: jugs },
+      { id: "soak-jugs", options: HS.choices("foot", "x"), answer: jugs },
     ];
     if (order) rows.push({ id: "toe-order", seq: TOES.filter((t) => order.includes(t)), answer: order, placeholder: true });
     rows.push({ id: "pull-steady", skill: true }); // the hand: no words in it, so every player can get it

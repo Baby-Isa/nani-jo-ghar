@@ -54,7 +54,7 @@
       // numbers spoken from L1 (the rulebook: the heal games count by design)
       const dab = { id: "dab", kind: "dab", item: "cloth", tested: true };
       dab.count = HS.count("cut", "x", L4, rng);
-      dab.options = HS.span("cut", "x", L4);
+      dab.options = HS.choices("cut", "x");
       dab.row = Object.assign({ id: "dab" }, say(Lg.join([Lg.then("cl-cloth"), ".", Lg.item("cl-dabs", { n: dab.count })])));
       steps.push(dab);
     } else {
@@ -65,7 +65,7 @@
         st.row = Object.assign({ id: "stitch" }, then("cl-thread"));
       } else if (L === 2) {
         st.count = nSt;
-        st.options = HS.span("cut", "y", L4);
+        st.options = HS.choices("cut", "y");
         st.gaps = [{ size: "one", dots: K.stitchDots[2], count: st.count }];
         st.row = Object.assign({ id: "stitch" }, say(Lg.join([Lg.then("cl-thread"), ".", Lg.item("cl-stitches", { n: st.count })])));
       } else {
@@ -636,7 +636,7 @@
     };
     build([]);
     const rows = [
-      { id: "dab-count", options: HS.span("cut", "x", L), answer: dab },
+      { id: "dab-count", options: HS.choices("cut", "x"), answer: dab },
       // still English while a colour said has no Kutchi yet (yellow, blue: to record)
       { id: "plasters", options: seqs, answer: seq.map(key), placeholder: seq.some((o) => o.some((c) => !Lg.w(col(c)).kutchi)) },
     ];

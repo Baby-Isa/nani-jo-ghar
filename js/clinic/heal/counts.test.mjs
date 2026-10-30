@@ -39,10 +39,10 @@ test("the reader gives each heal game's x and y per level as [lo, hi] (a number 
 for (const g of GAMES) {
   test(`${g}: every level's counts from the rules (plan.counts inside Rules.xy("heal-${g}"), a range drawn across)`, () => {
     const def = Heal.get(g);
-    assert.ok(def && def.bot, `${g} has a bot`);
+    assert.ok(def && def.bot, `${g} bot`);
     for (const level of [1, 2, 3, 4]) {
       const want = Rules.xy(`heal-${g}`, level);
-      assert.ok(want, `heal-${g} L${level} in data/rules.json`);
+      assert.ok(want, `heal-${g} L${level}`);
       const seen = { x: new Set(), y: new Set() };
       for (let seed = 1; seed <= RUNS; seed++) {
         let plan = def.bot(level, rngFrom(seed * 7919 + level)).plan;
@@ -51,7 +51,7 @@ for (const g of GAMES) {
           const cut = def.plan(level, "cut", rngFrom(seed * 104729 + level));
           plan = Object.assign({}, plan, { counts: Object.assign({}, plan.counts, { y: cut.counts.y }) });
         }
-        assert.ok(plan.counts, `${g} L${level}: the plan says its counts`);
+        assert.ok(plan.counts, `${g} L${level} counts`);
         for (const ax of ["x", "y"]) {
           if (!want[ax]) continue;
           const v = plan.counts[ax];

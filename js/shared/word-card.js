@@ -509,8 +509,16 @@
           .then(() => spk.classList.remove("on"));
       },
       restage() {},
-      hush() {},
-      lit() {},
+      // (S14, the clinic's eye test, rule 6: a card past support holds its words and its speaker back until it is judged; they
+      // keep their place, so nothing moves when they come; chai never hushes)
+      hush(on) {
+        c.classList.toggle("wc14-hush", !!on);
+        if (!on) W.fit14(c);
+      },
+      // (the eye test's doctor names the card: its speaker lit while he says it)
+      lit(on) {
+        spk.classList.toggle("on", !!on);
+      },
       photo() {},
     };
     const stop = (fn) => (ev) => {

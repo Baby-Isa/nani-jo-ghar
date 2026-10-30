@@ -89,9 +89,9 @@
       { id: "wrap", kind: "wrap", count: turns, order, row: Object.assign({ id: "wrap" }, say(Lg.join([Lg.then("cl-bandage"), ",", Lg.item("turns", { n: turns })]))) },
     ];
     const rows = [
-      { id: "kick-count", options: HS.span("knee", "x", L), answer: kicks },
+      { id: "kick-count", options: HS.choices("knee", "x"), answer: kicks },
       // 13i: the flashing stops at the last turn, so the turns are no longer decided by the word alone: a hand-skill row
-      { id: "wrap-turns", options: HS.span("knee", "y", L), answer: turns, skill: true },
+      { id: "wrap-turns", options: HS.choices("knee", "y"), answer: turns, skill: true },
     ];
     const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), Lg.w("body-knee"), Lg.w("cl-bandage")];
     return { level: L, side, steps, rows, words, counts: { x: kicks, y: turns } };

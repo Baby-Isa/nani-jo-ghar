@@ -704,7 +704,16 @@
         say: () => ctx.say(lineOf(t.id), { who: "doctor", noBubble: true }),
       };
       let el;
-      if (WC && WC.card) {
+      if (WC && WC.big14) {
+        // S14 (SH-137, contract-51: limu, dungri, tameto and mirchi ran 4-17 px out of the old landscape card at 740x320): the
+        // kit's s14 word card, side by side on the doctor's held card (its picture, the Kutchi on its English, the speaker),
+        // every word shrunk to fit inside it (WordCard.fit14). The picture is the test itself: always shown
+        const sl = WC.slots(stg, { placeholder: word.rec });
+        el = WC.big14(holder, word, { variant: DOC ? "side" : "", stage: stg, progress: HS.progress() || undefined, slots: { picture: true, english: sl.english, kutchiText: sl.kutchi }, cls: "eye-card" });
+        const fit = () => el.isConnected && WC.fit14 && WC.fit14(el);
+        if (root.requestAnimationFrame) root.requestAnimationFrame(fit);
+        ctx.after(fast() ? 60 : 300, fit);
+      } else if (WC && WC.card) {
         // the picture is the test itself: always shown; the Kutchi text and English fade by the word's stage
         const sl = WC.slots(stg, { placeholder: word.rec });
         el = WC.card(holder, word, { stage: stg, progress: HS.progress() || undefined, slots: { picture: true, english: sl.english, kutchiText: sl.kutchi }, cls: "eye-card", fill: true, ...(DOC ? { layout: "across", bare: true } : {}) });

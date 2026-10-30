@@ -732,12 +732,31 @@
    */
   P.MAX_LEVEL = { waiting: 5, heal: 4 }; // the waiting room's language ladder has five rungs (W4); the heal games' L4 is
   // their harder variety (Zafar, 13 Oct: new things by L2, L3 heard only, e.g. two-colour plasters from L4); the rest stop at 3
-  P.levelUp = function (levels, results) {
+  /*
+   * S14 roll-out (the rulebook's "moving up a level", the central rules' advance, Zafar 29 Oct: "make it easy to change"): each
+   * patient's stage is a finished round at that stage's level; Rules.advance counts them (up one after 3 in a row with the
+   * guide's hint at most once each, never down; a grown-up's pick, a lab's ?level, never counts: the caller saves nothing then).
+   * streaks: the save's {stage: {level, streak}} (kept between mornings, updated in place). A result's stage entry is
+   * {hints} (the guide's hints that round), or the old rows list (no hint count: 0). The stage's own most (MAX_LEVEL) caps it.
+   */
+  const RULES = () => (typeof globalThis !== "undefined" && globalThis.Rules) || (typeof require === "function" ? require("../shared/rules.js") : null);
+  P.levelUp = function (levels, results, streaks) {
     const out = Object.assign({}, levels);
+    const R = RULES();
+    const keep = streaks || {};
     STAGES.forEach((s) => {
-      const rows = [];
-      results.forEach((r) => (r[s] || []).forEach((x) => x.tested !== false && rows.push(x)));
-      if (rows.length && rows.every((x) => x.ok)) out[s] = Math.min(P.MAX_LEVEL[s] || 3, (out[s] || 1) + 1);
+      const lv0 = out[s] || 1;
+      const prev = keep[s] && keep[s].level === lv0 ? keep[s] : { level: lv0, streak: 0 };
+      let cur = { level: lv0, streak: prev.streak || 0 };
+      results.forEach((r) => {
+        const e = r[s];
+        if (!e) return;
+        const hints = Array.isArray(e) ? 0 : Number(e.hints) || 0;
+        cur = R && R.advance ? R.advance(cur, { level: cur.level, hints }) : cur;
+      });
+      cur.level = Math.min(P.MAX_LEVEL[s] || 3, cur.level);
+      out[s] = cur.level;
+      keep[s] = cur;
     });
     return out;
   };

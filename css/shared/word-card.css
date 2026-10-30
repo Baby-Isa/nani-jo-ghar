@@ -166,6 +166,8 @@
 .wc14-big.wc14-side .wc14-en { font-size: clamp(var(--njg-card14-u13), 5.2cqi, var(--njg-card14-u22)); }
 .wc14-big.wc14-side .wc14-slot { place-items: center start; }
 .wc14-big.wc14-side .wc14-dots { justify-content: flex-start; }
+/* (S14, the clinic's eye test, rule 6: a hushed card keeps its words and speaker in place, unseen, until it is judged: WordCard api.hush) */
+.wc14.wc14-hush .wc14-words, .wc14.wc14-hush > .wc14-in > .wc14-spk { visibility: hidden; }
 .wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap), 15cqi, var(--njg-card14-u72)); margin: 0; box-shadow: var(--njg-card14-spk-ring-s); }
 
 /* the order's item card (SH-148): picture, Kutchi sitting on its English, the speaker at its foot; even spacing (its padding = picture to

@@ -94,7 +94,7 @@
       { id: "boing", kind: "boing", row: null },
       { id: "plaster", kind: "plaster", colour: plaster, row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster", { mods: [`col-${plaster}`] }), { cap: true })) },
     ];
-    const rows = [{ id: "wipe-count", options: HS.span("boing", "x", L), answer: wipes }];
+    const rows = [{ id: "wipe-count", options: HS.choices("boing", "x"), answer: wipes }];
     rows.push({ id: "drop-colours", seq: tubes, answer: drops, placeholder: true }); // (CLN-169: the colour is asked at every level; level 1's is one colour, its count with it)
     rows.push({ id: "plaster-colour", options: PLASTERS, answer: plaster, placeholder: true });
     const words = [Lg.num(wipes), Lg.w("cl-wipe"), Lg.w("cl-drops"), Lg.w("cl-plaster")];

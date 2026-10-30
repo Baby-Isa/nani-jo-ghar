@@ -20,7 +20,10 @@
     build(container, opts = {}) {
       container.innerHTML = "";
       const app = h("div", "cl-app", container);
-      const side = h("aside", "cl-side", app);
+      // S14: the side panel is one of the central rules' skip zones (a tap on it never skips what is said: data/rules.json
+      // skip.never.side, its .side-panel) and out of bounds for a bubble (data-njg-keepout, contract-86)
+      const side = h("aside", "cl-side side-panel", app);
+      side.setAttribute("data-njg-keepout", "");
       // the doctor's box at the top (13f: Nani isn't at the clinic, so the doctor fills her guidance
       // role): the shared guide box with his face (= replay), his line now, the light bulb and mute
       const bulbRow = h("div", "cl-side-top cl-nani cl-docbox", side);
