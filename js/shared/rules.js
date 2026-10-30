@@ -11,6 +11,7 @@
  *   Rules.counts(game)          [L1..L4] of the same
  *   Rules.xy(game, lv)          a game's per-level counts as [lo, hi] pairs: {x, y, ...} (the clinic's heal-* entries)
  *   Rules.draw([lo, hi], rng)   a whole number in the range      Rules.span([lo, hi])  every number in it
+ *   Rules.part(game, axis, lv)  a two-count game's x or y at a level (a number, or [lo, hi])
  *   Rules.wordState(rec)        "new" | "learning" | "known" for a word (rec: {right, pillEarned} as js/core/progress.js keeps)
  *   Rules.hold(state)           the big card's hold in ms for a word state
  *   Rules.pointMs()             the order card's light after the showing
@@ -139,6 +140,13 @@
     const out = [];
     for (let i = Math.min(s[0], s[1]); i <= Math.max(s[0], s[1]); i++) out.push(i);
     return out;
+  };
+  /** A two-count game's x or y at a level (count.games[game].x / .y; Cook's daar: chopped + added first): a number, or [lo, hi]. */
+  R.part = function (game, axis, lv) {
+    const g = (sec("count").games || {})[game];
+    const t = g && (axis === "x" || axis === "y") ? g[axis] : null;
+    const v = t ? t[String(lvOf(lv))] : null;
+    return v == null ? null : Array.isArray(v) ? v.slice(0, 2).map(Number) : Number(v);
   };
 
   /* ---------------- words ---------------- */

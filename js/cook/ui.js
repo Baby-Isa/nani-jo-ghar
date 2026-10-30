@@ -91,6 +91,8 @@
    * and the word cards take it as their option (OrderCard s14, WordCard.big14 / item14). The serif is loaded once, the first time.
    */
   UI.s14 = () => !!(mission && mission.s14 && UI.w6());
+  // the S14 roll-out (s14-cook, 30 Oct): the s14 look for every Cook dish and station, not only chai (false: chai alone, as before)
+  UI.S14_ALL = true;
   UI.applyS14 = function (on) {
     if (typeof document === "undefined" || !document.body) return;
     on = !!on && UI.w6();
@@ -1266,8 +1268,9 @@
       away: new Set(),
     };
     // Sprint 14 (lab/cards.html, Zafar 27-28 Oct): chai's people order on the kit's s14 look (the new word cards, the sideways
-    // order row, the helper card, the light); every other order keeps today's look until the roll-out
-    mission.s14 = mission.wordRows && ladders.length > 0 && ladders.every((L) => L.recipe === "chai");
+    // order row, the helper card, the light). The S14 roll-out (s14-cook, 30 Oct; Zafar 29-30 Oct: "change all the cook ... games
+    // to the new chai style"): every Cook order (UI.S14_ALL, flow.js preLook says the same before the kitchen is drawn)
+    mission.s14 = ladders.length > 0 && (UI.S14_ALL || (mission.wordRows && ladders.every((L) => L.recipe === "chai")));
     UI.applyS14(mission.s14);
     // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
     // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
@@ -1777,6 +1780,11 @@
           if (big) big.remove();
         };
         if (fast || !big || !to) return Promise.resolve(done());
+        // (the S14 roll-out, contract-83: a row card that sits against a face circle, the asker's on a short card at the phone size, takes
+        // its word at once: the big card never flies over a face, even its last frames)
+        const tr = to.getBoundingClientRect();
+        // (a dish's own card, not a people order: chai's people cards keep their morph as they were)
+        if (!m.wordRows && faces14().some((f) => Math.min(tr.right, f.right) - Math.max(tr.left, f.left) > 0 && Math.min(tr.bottom, f.bottom) - Math.max(tr.top, f.top) > 0)) return Promise.resolve(done());
         return global.WordCard.morph(big, to).catch(() => {}).then(done);
       }
       m.away.delete(r);
@@ -1987,7 +1995,9 @@
     if (!hasRows(mission)) return;
     // Sprint 11 (B-cook, task 1; Zafar, 14 Oct: "model, then ask"): the kitchen conversation plays before the order (a
     // people order's rows wait off its card meanwhile: they come as they are said)
-    const along = people && !opts.only && mission.wordRows && global.WordCard && OCard() && UI.w6();
+    // (the S14 roll-out: every order on the s14 look is said this way, a dish's own card as its asker's: item by item, each word's
+    // big card popping by the side panel and turning into its row card)
+    const along = !opts.only && global.WordCard && OCard() && UI.w6() && ((people && mission.wordRows) || UI.s14());
     if (along) {
       mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
       renderOrder();
@@ -2337,8 +2347,10 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
-  const WC_ID = /^(cook-(paani|dudh|chai|khun)|spi-[0-9]+|veg-[0-9]+)$/;
+  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
+  // (the S14 roll-out: every Cook station's word cards: the daal and the flour, and the ph- things with a shelf picture, chaat's toppings and
+  // samosa's fillings among them; lesson 6: a word that is said needs its picture)
+  const WC_ID = /^(cook-(paani|dudh|chai|khun|daal|atto)|spi-[0-9]+|veg-[0-9]+|ph-(amli|chana|dahi|dhana|keema|lili|meat|sev|pepper))$/;
   const wcPicSrc = (id) => WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   const wcStage = (id) => {
@@ -2459,7 +2471,9 @@
           // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
           // only block (count 2: never the shared card's "direct" shape, which drops the head)
           const n = s.head.qty || 1;
-          if (n > 1 && s.head.made != null) {
+          // (the S14 roll-out: on the s14 look the kind's row over its fillings' item cards, as every card's sideways row, ticking together at
+          // the one tick (SAM-24, contract-50); the boxes per samosa are the old look's)
+          if (n > 1 && s.head.made != null && !UI.s14()) {
             // SH-53 (Zafar, 21 Oct: yes): the kind's row ("trae samosa") over one box per samosa, its fillings in it; a box's
             // pieces tick as that samosa is made (filled and left for the next strip: progress, never which spoonful was
             // right, so the counting rule holds); the kind's row ticks only when all of them are made (SAM-24: closeItem)
@@ -2479,7 +2493,7 @@
           const all = !!s.head.done || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
           // (the kind's row ticks with its fillings, as the box's row did: SAM-24's one tick, contract-50)
           items.push(Object.assign({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: all, key: s.head, src: [], say: sayRow(s.head) }, UI.wordOf(s.head, { head: true })));
-          const pics = flat.every((x) => !x.r.no && wcPicSrc(wcWordId(x.r)));
+          const pics = flat.every((x) => UI.s14() || (!x.r.no && wcPicSrc(wcWordId(x.r))));
           items.push({ label: null, count: 1, parts: parts.map((p, i) => Object.assign({}, p, { done: all || (n <= 1 && p.done), next: false }, pics ? UI.wordOf(flat[i].r) : null)), ordered: false, done: all, src: [] });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
@@ -2488,7 +2502,9 @@
           // S13-B1 (the judge: one card anatomy): a list whose every row is a thing with its own picture (the pantry's list, the
           // daar's vegetables) is drawn in word-card rows, as a people order is (picture, speaker, Kutchi, English by the word's
           // stage); an ordered list (a skewer, chaat's layers) keeps its little skewer of pills
-          const pics = !seq && flat.every((x) => !x.r.no && !x.r.head && wcPicSrc(wcWordId(x.r)));
+          // (the S14 roll-out: on the s14 look every such row is an item card, its "no" row too, as chai's: a word with no picture
+          // shows its Kutchi and speaker)
+          const pics = !seq && flat.every((x) => !x.r.head && (UI.s14() || (!x.r.no && wcPicSrc(wcWordId(x.r)))));
           const parts = flat.map((x) => Object.assign(partNode(x.r, x.gi), pics ? UI.wordOf(x.r) : null));
           // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
           // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
@@ -2496,8 +2512,17 @@
           items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat, keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
+        // (the S14 roll-out: on the s14 look a dish's cards of plain things, maani's rotis and the grill's plain skewers, are one
+        // sideways row of item cards, each with its count written ("ba wadhi maani"), as chai's; a mixed skewer keeps its little
+        // skewer of pieces)
+        const mixOf = (r) => L.sections.some((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1]);
+        const plain14 = UI.s14() ? rows.filter((x) => x.r.cards && !mixOf(x.r)) : [];
+        if (plain14.length) {
+          items.push({ label: null, parts: plain14.map((x) => Object.assign(partNode(x.r, x.gi), UI.wordOf(x.r))), ordered: false, src: plain14 });
+          rowsShown.push(...plain14.map((x) => x.r));
+        }
         rows
-          .filter((x) => x.r.cards)
+          .filter((x) => x.r.cards && !plain14.includes(x))
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));

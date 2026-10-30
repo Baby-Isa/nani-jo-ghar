@@ -21938,5 +21938,281 @@
    "note": "the clinic's kit pieces on the s14 kit: the face is the kit's white-rimmed circle (no square tile with a pale wash), the word card is the kit's (word under its picture; 'mirchi' inside its card), the order card with no teal title bar of its own",
    "delay": 300
   }
+ ],
+ "PAN-18": [
+  {
+   "flow": "cook:fetch",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "the pantry's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "the pantry for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items 3, 4, 5, 6 by level; the shelf full of decoys; the help light hugs its item (contract-53)",
+   "delay": 0
+  }
+ ],
+ "MAA-19": [
+  {
+   "flow": "cook:maani-line",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "maani's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "maani for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; rotis 2, 3, 4, 5 by level; the tawa flip's first-time hold",
+   "delay": 0
+  }
+ ],
+ "SEK-22": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "the sekelo grill's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "the sekelo grill for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; skewers 1, 2, 3, 4 by level; the turn's first-time hold; the help light hugs its item (contract-53)",
+   "delay": 0
+  }
+ ],
+ "SAM-28": [
+  {
+   "flow": "cook:samosa",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "samosa's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "samosa for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; samosas 2, 3, 4, 6 by level (6 only if the pan fits six); 'no' asks from L2; the fry lift's first-time hold; the help light hugs its item (contract-53)",
+   "delay": 0
+  }
+ ],
+ "CHT-17": [
+  {
+   "flow": "cook:chaat",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "chaat's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "chaat for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items in the bowl 3, 4, 5, 6 (a double portion counts twice); 'no' asks from L2; decoys 1, 2, 3, 4",
+   "delay": 0
+  }
+ ],
+ "DAAR-36": [
+  {
+   "flow": "cook:daar",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200",
+    "contract:52",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "daar's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:53",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53)",
+   "delay": 0
+  }
  ]
 }

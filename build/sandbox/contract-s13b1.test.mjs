@@ -48,7 +48,8 @@ test("contract-36 (SH-133): a step logged open again with nothing between is the
 
 // S13-B1 round 3 (CLAUDE.md non-negotiable 3: a word's English "only when tapped"): an order card's row never shows its English untapped
 test("contract-39: an order card row's English untapped is a break at any stage; tapped open, or a word card while supported, is not", () => {
-  const en = (list) => page([C(T, "card-en", { list })]);
+  // (the S14 roll-out: every Cook card shows its English at L1, as chai's, so the rule is judged at L2)
+  const en = (list) => page([C(T, "card-en", { list })], "cook:samosa@L2");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "two onions", oc: true }])), "contract-39").length, 1, "red: a row's English at stage 1, untapped");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: true, text: "two onions", oc: true }])), "contract-39").length, 0, "green: the child tapped it open");
   assert.equal(of(run(en([{ word: "veg-03", stage: 1, revealed: false, text: "onion", oc: false }])), "contract-39").length, 1, "red (S13-A2 fix round): the big word card too, untapped, even while supported");

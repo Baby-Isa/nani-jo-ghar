@@ -97,7 +97,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const c = document.querySelector("#game canvas");
         return c || null;
       }
-      return rectAround(t, t.r);
+      // the S14 roll-out (contract-53, the rulebook's light: "one lit box", chai's hugs its thing): the box is the thing's own picture
+      // on screen with a small margin (the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
+      // heap or a bottle in samosa, the pantry, daar and the grill); the circle only where the step names no picture
+      const box = Cook.expect && Cook.expect.x != null && Cook.UI.s14 && Cook.UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
+      if (!box) return rectAround(t, t.r);
+      // (the box always takes in the point the step is tapped at: a thing whose tap point sits at its foot, the pantry's carton, was
+      // outside its own picture's box, so the dim took the tap at the bigger sizes)
+      const x0 = Math.min(box[0], t.x - 14);
+      const y0 = Math.min(box[1], t.y - 14);
+      return [x0, y0, Math.max(box[0] + box[2], t.x + 14) - x0, Math.max(box[1] + box[3], t.y + 14) - y0];
     };
     const steps = script.map((st, i) => ({
       spotlight: spot,
@@ -127,8 +136,100 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-119 (Zafar, 22 Oct: one finger in every game): the kit's own finger, in its own cadence (no picture hand, no 6 s gap)
     // (the hand from above: a shelf thing's word chip sits under it, never under the hand; the judge, 23 Oct)
     Onboard.run(obId(key), steps, { fingerDown: true }).then(() => {
-      if (live === state) C.stop(true);
+      if (live !== state) return;
+      C.stop(true);
+      pointCard(key);
     });
+  }
+  /*
+   * The S14 roll-out (CHAI-37, CHAI-42; the rulebook's showing: "when the showing stops, point once at where to look next (the order
+   * card, 1.2 s)"; chai's js/cook/stations/chai-tray.js is the reference): once a station's first-time showing ends, the order card
+   * is lit once, after a quiet spell (nothing moving that will end: a tween in the kitchen but the people's idling, glows and
+   * effects; an animation on the page but the bubbles and the help's own; the order row's glide, running or about to start) of the
+   * central rules' pointAfterMoveMs, for pointMs. Skipped once the child has moved on (Cook.acted: a tap or a gesture), and a move
+   * while it is lit ends it.
+   */
+  const pointed = new Set();
+  function pointCard(key) {
+    const Onboard = OB();
+    const R = global.Rules;
+    if (!Onboard || !Onboard.light || !R || !R.pointMs || !(Cook.UI.s14 && Cook.UI.s14()) || pointed.has(key)) return;
+    pointed.add(key);
+    const sp = Cook.speed || 1;
+    const m0 = Cook.acted || 0;
+    // (moved on: a tap or a gesture, the station over, or a pop-up waiting for its own tap, Nani's pass-me or the order's: never lit
+    // over it, and its light goes if one comes)
+    const moved = () => (Cook.acted || 0) !== m0 || !Cook.inStation || !!(Cook.expect && Cook.expect.kind === "click") || !!document.querySelector("#passme:not(.hidden), .njg-rq-open");
+    let rowX = null;
+    const seenAt = new WeakMap();
+    const moving = () => {
+      const rows = [...document.querySelectorAll("#mission .oc-row14")];
+      const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
+      const was = rowX;
+      rowX = xs;
+      if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
+      const S = Cook.scene;
+      const chars = new Set(Object.values((S && S.chars) || {}));
+      const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
+      try {
+        if (S && S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
+      } catch (e) {
+        /* no tween list: the rest still counts */
+      }
+      // (a picture moved or faded by a station's own code, never a tween: daar's stirred disc fading in, its pieces turning with the
+      // ladle: any that moved or faded since the last look, as the sandbox's contract-79 sees it; a tool in the hand left out)
+      let stirred = false;
+      const walk = (list) =>
+        (list || []).forEach((o) => {
+          if (!o || stirred) return;
+          if (o.list) walk(o.list);
+          if (o.type === "Graphics" || o.visible === false || chars.has(o) || o.glowFx) return;
+          if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow|spoon|ladle|hand/i.test(((o.texture && o.texture.key) || "") + (o.name || ""))) return;
+          const now = { x: o.x, y: o.y, a: o.alpha };
+          const was = seenAt.get(o);
+          seenAt.set(o, now);
+          if (was && (Math.abs(now.x - was.x) > 0.6 || Math.abs(now.y - was.y) > 0.6 || (Math.abs(now.a - was.a) > 0.03 && now.a > 0.02 && now.a < 0.98))) stirred = true;
+        });
+      try {
+        walk(S && S.children && S.children.list);
+      } catch (e) {
+        /* no scene: the rest still counts */
+      }
+      if (stirred) return true;
+      return !!(document.getAnimations && document.getAnimations().some((a) => {
+        if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
+        const tm = a.effect.getComputedTiming();
+        const el = a.effect.target;
+        return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
+      }));
+    };
+    let quiet = null;
+    let tries = 0;
+    const go = () => {
+      if (moved() || ++tries > 500) return;
+      if (!moving()) {
+        if (quiet == null) quiet = Date.now();
+      } else quiet = null;
+      if (quiet == null || Date.now() - quiet < R.pointAfterMoveMs() / sp) return void setTimeout(go, 60);
+      const el = document.querySelector("#mission .oc-card");
+      if (!el) return;
+      const h = Onboard.light(el, { look: "", pad: 4, pass: true });
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${obId(key)}:s14-card`, rung: 0, coach: true });
+      } catch (e) {
+        /* only a log */
+      }
+      let q = 0;
+      let t = 0;
+      const end = () => {
+        clearInterval(q);
+        clearTimeout(t);
+        h.close();
+      };
+      q = setInterval(() => (moved() || moving()) && end(), 60);
+      t = setTimeout(end, R.pointMs() / sp);
+    };
+    go();
   }
 
   /*
@@ -187,6 +288,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
     look(S.children.list);
     return best || hit;
+  }
+  /** A picture's box on screen, [x, y, w, h] in page px with a small margin (null: none, or too small to be the thing). */
+  function hugOf(obj) {
+    if (!obj || !obj.getBounds || !Cook.UI.worldToScreen) return null;
+    const b = obj.getBounds();
+    const a = Cook.UI.worldToScreen(b.x, b.y);
+    const z = Cook.UI.worldToScreen(b.x + b.width, b.y + b.height);
+    const w = z.x - a.x;
+    const h = z.y - a.y;
+    if (!(w > 8 && h > 8)) return null;
+    const pad = Math.max(4, Math.min(10, Math.min(w, h) * 0.08));
+    return [a.x - pad, a.y - pad, w + 2 * pad, h + 2 * pad];
   }
   function lightThing(state, obj) {
     if (state.lit === obj) return;

@@ -184,6 +184,26 @@
       if (spec.shuffle) rest = Cook.shuffle(rest);
       return first.concat(rest);
     },
+    /**
+     * S14 roll-out (daar's X, Zafar 29 Oct: "chopped + added first (X+Y)"): a total shared out among parts, each within its
+     * [min, max]: {"type": "split", "total": n, "into": {"onions": [0, 3], ...}} -> {onions: 2, tomatoes: 1, chillies: 1}; a part
+     * not yet in comes first more often than not (a mix, not three of one). The total is capped by the parts' room.
+     */
+    split(spec, env) {
+      const into = spec.into || {};
+      const keys = Object.keys(into).filter((k) => k[0] !== "_");
+      const out = {};
+      keys.forEach((k) => (out[k] = Number(into[k][0]) || 0));
+      let left = Math.max(0, Number(value(spec.total, env)) || 0) - keys.reduce((a, k) => a + out[k], 0);
+      for (let g = 0; left > 0 && g < 100; g++) {
+        const room = keys.filter((k) => out[k] < Number(into[k][1]));
+        if (!room.length) break;
+        const fresh = room.filter((k) => !out[k]);
+        out[fresh.length && Math.random() < 0.6 ? Cook.pick(fresh) : Cook.pick(room)]++;
+        left--;
+      }
+      return out;
+    },
     /** "No X": the customer's own dislikes, else maybe one at random. */
     no(spec, env) {
       const out = [].concat(fromTaste(Object.assign({ taste: "no" }, spec), env) || []);
@@ -459,6 +479,49 @@
     return r;
   }
 
+  /*
+   * S14 roll-out (SH-155; Zafar, 29 Oct): a list's things add up to a total (recipe "fit": {total, list, qty, max, keep, from,
+   * exclude, twice}): total the count (a rules count by level), list the slot holding the things (chaat's seq), qty a thing's own
+   * count slot ("veg-01": "potatoes", said "ba bataato": two spoons, counting twice) with its max, keep the things at the front
+   * that stay (the base), from the pool more come from (never one in exclude's slots), twice the chance (by level) that a thing
+   * said twice is kept while the total is made (else the extra things go first). The things are only ever ones the recipe's
+   * own slots could have made; the line is built by the engine from them as before.
+   */
+  function fitTotal(F, d, env, lvl) {
+    const target = Number(value(atLevel(F.total, lvl), env)) || 0;
+    const list = d[F.list];
+    if (!target || !Array.isArray(list)) return;
+    const qty = F.qty || {};
+    const max = F.max || {};
+    const keep = Math.min(list.length, Number(F.keep) || 0);
+    const no = [].concat(...[].concat(F.exclude || []).map((s) => [].concat(d[s] || [])));
+    const q = (id) => (qty[id] && d[qty[id]] != null ? Math.max(1, Number(d[qty[id]]) || 1) : 1);
+    const sum = () => list.reduce((a, id) => a + (Array.isArray(id) ? id.length : q(id)), 0);
+    const twice = Math.random() < (Number(atLevel(F.twice, lvl)) || 0);
+    for (let g = 0; g < 60; g++) {
+      const s = sum();
+      if (s === target) break;
+      const twos = list.filter((id) => qty[id] && q(id) > 1);
+      const ups = list.filter((id) => qty[id] && q(id) < (max[id] || 1));
+      if (s > target) {
+        if (twos.length && !(twice && list.length > keep + 1)) {
+          const id = Cook.pick(twos);
+          d[qty[id]] = q(id) - 1;
+        } else if (list.length > keep) list.splice(keep + Math.floor(Math.random() * (list.length - keep)), 1);
+        else break;
+      } else {
+        const add = listOf(F.from || [], env).filter((x) => !list.includes(x) && !no.includes(x));
+        if (ups.length && (!add.length || twice)) {
+          const id = Cook.pick(ups);
+          d[qty[id]] = q(id) + 1;
+        } else if (add.length) list.splice(keep + Math.floor(Math.random() * (list.length - keep + 1)), 0, Cook.pick(add));
+        else break;
+      }
+    }
+    // (every thing said with its count: a qty slot left at 0 or empty for a thing in the list is one)
+    list.forEach((id) => qty[id] && !(Number(d[qty[id]]) > 0) && (d[qty[id]] = 1));
+  }
+
   /* ---------------- a recipe from its data ---------------- */
   function recipe(id) {
     const def = () => Cook.data.recipes[id];
@@ -471,7 +534,9 @@
        */
       make(who, opts = {}) {
         const lvl = opts.level || def().level || 1;
-        if (lvl > 1) return r.makeOnce(who, opts);
+        // (S14 roll-out: the level's "no" asks are the central rules', Rules.level(lv).noAsks: from L2, Zafar 29 Oct)
+        const RR = global.Rules || (global.Shared && global.Shared.rules) || null;
+        if (RR && RR.level ? RR.level(lvl).noAsks : lvl > 1) return r.makeOnce(who, opts);
         const hasNo = (d) => build(def(), d, 0).rows.some((row) => row.kind === "no");
         let d = null;
         for (let n = 0; n < 200; n++) {
@@ -498,6 +563,9 @@
           for (let n = 0; isObj(spec) && spec.differs && n < 12 && JSON.stringify(d[k]) === JSON.stringify(d[spec.differs]); n++) d[k] = value(spec, env);
           if (isObj(spec) && spec.differs && JSON.stringify(d[k]) === JSON.stringify(d[spec.differs])) d[k] = null;
         });
+        // S14 roll-out (chaat, Zafar 29 Oct: "3, 4, 5, 6 including double portions ... so 5 could be 4 items and one of those
+        // twice"): a list's things add up to the rules' count, a thing said twice ("ba bataato": two spoons) counting twice
+        if (D.fit) fitTotal(D.fit, d, env, lvl);
         if (opts.level || D.level) d.level = opts.level || D.level;
         if (D.levels) d.levels = clone(D.levels);
         return d;
@@ -520,6 +588,76 @@
   R.add = (id, def) => {
     Cook.data.recipes[id] = def;
     return (R[id] = recipe(id));
+  };
+
+  /*
+   * SH-155, the S14 roll-out (Zafar, 29 Oct, round 4): a slot value that names a game on the central rules ({"rules": "<game>"},
+   * at any depth of a recipe's slots or its fit) is that game's count by level from js/shared/rules.js, never a copy here. Filled
+   * in as Cook's data loads (js/cook/flow.js, before any station's own file). Its forms: plain (chai's cups, the grill's skewers,
+   * maani's rotis: Rules.counts); "axis": "x" | "y" (a two-count game, daar's chopped + added first: Rules.part); "add": k (a
+   * part of it: the pantry's things after the first); "range": true (a take's [n, n]); "kinds": [by level] with "part": 1 | 2
+   * (samosa's two kinds share the count, the first the larger half).
+   */
+  R.ruleList = function (x, Rules) {
+    if (!Rules || !x || typeof x.rules !== "string") return null;
+    const list = x.axis ? (Rules.part ? [1, 2, 3, 4].map((l) => Rules.part(x.rules, x.axis, l)) : null) : Rules.counts ? Rules.counts(x.rules) : null;
+    if (!list || list.some((n) => typeof n !== "number")) return null;
+    return list.map((n, i) => {
+      if (Array.isArray(x.kinds)) {
+        const k = Math.max(1, Number(x.kinds[Math.min(i, x.kinds.length - 1)]) || 1);
+        const first = Math.ceil(n / k);
+        n = Number(x.part) === 2 ? (k > 1 ? n - first : 0) : first;
+      }
+      n = Math.max(0, n + (Number(x.add) || 0));
+      return x.range ? [n, n] : n;
+    });
+  };
+  R.fromRules = function (data, Rules) {
+    const fill = (v) => {
+      if (Array.isArray(v)) return v.forEach(fill);
+      if (!isObj(v)) return;
+      Object.keys(v).forEach((k) => {
+        const x = v[k];
+        if (isObj(x) && typeof x.rules === "string" && !x.type) {
+          const list = R.ruleList(x, Rules);
+          if (list) v[k] = Object.assign({}, x, { byLevel: list });
+        } else fill(x);
+      });
+    };
+    Object.keys((data && data.recipes) || {}).forEach((id) => {
+      const rec = data.recipes[id];
+      if (rec && rec.slots) fill(rec.slots);
+      if (rec && rec.fit) fill(rec.fit);
+    });
+    return data;
+  };
+
+  /**
+   * The S14 roll-out (for the timeline: a lab's order logs it, js/cook/flow.js): how many of a dish's one repeating thing an order
+   * holds, as the central rules count it (data/rules.json count.games): the pantry's things, maani's rotis, the skewers, the
+   * samosas, chaat's spoons in the bowl (a layer said twice counting twice), daar's "X+Y" (chopped + added first), chai's cups.
+   */
+  R.countOf = function (d) {
+    if (!d || !d.recipe) return null;
+    const sum = (o) => Object.values(o || {}).reduce((a, n) => a + (Number(n) || 0), 0);
+    switch (d.recipe) {
+      case "pantry":
+        return [].concat(d.first || []).length + [].concat(d.rest || []).length;
+      case "maani":
+        return sum(d.maani);
+      case "mishkaki":
+        return sum(d.skewers);
+      case "samosa":
+        return (Number(d.count) || 0) + (Number(d.count2) || 0);
+      case "chaat":
+        return [].concat(d.seq || []).reduce((a, id) => a + (Number({ "veg-01": d.potatoes, "veg-02": d.onions, "veg-03": d.tomatoes }[id]) || 1), 0);
+      case "daal":
+        return `${(Number(d.onions) || 0) + (Number(d.tomatoes) || 0) + (Number(d.chillies) || 0)}+${[].concat(d.tadka || []).flat().length}`;
+      case "chai":
+        return [].concat(d.cups || []).length;
+      default:
+        return null;
+    }
   };
 
   R.dishWord = (id) => Cook.data.recipes[id].name;

@@ -925,7 +925,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (Cook.Coach) Cook.Coach.stop(true);
       // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
       // shelf too and counts as one (it is an ordinary decoy, never the odd one out)
-      if (!pool) pool = St.tableDecoys(decoyPool, flat.concat(exclude), level, { want: flat, n: Math.max(0, knobInt(k.decoys) - exclude.length), also: exclude.length, what: "toppings" });
+      // (the S14 roll-out, CHT-17: 1, 2, 3, 4 by the central rules, Cook.levelRow on Rules.level; was the mechanic's own 1, 2, 3, 3)
+      if (!pool) pool = St.tableDecoys(decoyPool, flat.concat(exclude), level, { want: flat, n: Math.max(0, Cook.levelRow(level).decoys - exclude.length), also: exclude.length, what: "toppings" });
       else St.decoyNote(pool.filter((x) => !flat.includes(x)).length, { what: "toppings" });
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";

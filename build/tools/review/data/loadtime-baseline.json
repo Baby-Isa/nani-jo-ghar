@@ -5,5 +5,47 @@
   "requests": 356,
   "label": "branch-s14-tools",
   "date": "2026-10-30T02:33"
+ },
+ "fetch@L3@930x430@4000/60": {
+  "ms": 18326,
+  "bytes": 7182272,
+  "requests": 253,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
+ },
+ "maani-line@L3@930x430@4000/60": {
+  "ms": 24856,
+  "bytes": 7937521,
+  "requests": 279,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
+ },
+ "mishkaki-grill@L3@930x430@4000/60": {
+  "ms": 26914,
+  "bytes": 8402939,
+  "requests": 314,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
+ },
+ "samosa@L3@930x430@4000/60": {
+  "ms": 25465,
+  "bytes": 8357712,
+  "requests": 271,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
+ },
+ "daar@L3@930x430@4000/60": {
+  "ms": 25909,
+  "bytes": 8348753,
+  "requests": 348,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
+ },
+ "assemble@L3@930x430@4000/60": {
+  "ms": 24897,
+  "bytes": 7108230,
+  "requests": 257,
+  "label": "before-s14-cook",
+  "date": "2026-10-30T05:38"
  }
 }

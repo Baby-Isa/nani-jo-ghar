@@ -770,7 +770,8 @@
     const m = Onboard.machine(script);
     const host = opts.container || document.body;
     const layer = document.createElement("div");
-    layer.className = "njg-onboard";
+    // (the s14 look: the lit box's soft warm fill, as Onboard.spot's: every Cook station's first-time showing runs here, S14 roll-out)
+    layer.className = `njg-onboard${Onboard.look === "s14" ? " ob-s14" : ""}`;
     const sid = `ob${String(id).replace(/[^\w-]/g, "-")}`;
     // (opts.hand, a picture hand, is gone: one finger in every game, SH-119)
     layer.innerHTML = `${lightSvg(sid)}<div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${HAND}</div>${opts.skipButton ? SKIP_HTML : ""}`;

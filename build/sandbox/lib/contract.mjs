@@ -1366,7 +1366,7 @@ function check35(r, tl, segs, add, root) {
     if (level <= 2) {
       const dotted = open.filter((x) => /•/.test(x.text || ""));
       if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);
-    } else if (!CHAI_ROW.test(stationOf(r.flow) || "")) {
+    } else if (!S14_COOK(r.flow) && !CHAI_ROW.test(stationOf(r.flow) || "")) {
       const shown = open.filter((x) => wordsOf(x.text).some((w) => items.has(w)));
       if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3-L4 the item words are dotted (frames, verbs and numbers written)`);
     }
@@ -1436,6 +1436,11 @@ export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
 // Zafar, 29 Oct (chai level rules 5, 7; SH-155: the central rules, data/rules.json levels.decoys): chai's decoys 1, 2, 3, 4; its order
 // card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
 export const CHAI_ROW = /^chai-tray$/;
+// the S14 roll-out (s14-cook, 30 Oct; Zafar 29-30 Oct: "change all the cook ... games to the new chai style"): every Cook station is on
+// the s14 kit and the central rules now, so chai's rows above hold for every Cook flow: the decoys the rules' (1, 2, 3, 4 with the
+// lookalike at L4), the order card's Kutchi always written (never dotted at L3-L4), its English shown at L1, no finger in the light
+export const S14_COOK = (flow) => isCookFlow(flow);
+export const S14_TAPS = /^(chai-tray|chai|fetch|pantry|assemble|chaat|samosa|mishkaki-grill|mishkaki)$/;
 export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
 const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
 const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
@@ -1444,7 +1449,7 @@ function check37(r, tl, segs, add) {
   const st = stationOf(r.flow);
   if (!st || !DECOY_STATIONS.test(st)) return;
   const level = levelOf(r.flow || "");
-  const want = (/^(chai-tray|chai)$/.test(st) ? CHAI_DECOYS : DECOYS)[Math.min(4, level)];
+  const want = (S14_COOK(r.flow) ? CHAI_DECOYS : DECOYS)[Math.min(4, level)];
   const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
   if (!notes.length) {
     const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
@@ -1458,7 +1463,10 @@ function check37(r, tl, segs, add) {
       const got = Number(n.reason);
       const look = /lookalike:1/.test(n.by || "");
       const what = (n.by || "").replace(/\s*lookalike:\d/, "");
-      const ok = DECOY_AT_LEAST.test(st) ? got >= want : got === want;
+      // (the S14 roll-out; the central rules' decoys: "one more a level where the space allows": a station whose pool had no more to
+      // offer says so, room:n, and that many is its most)
+      const room = /room:(\d+)/.exec(n.by || "");
+      const ok = (DECOY_AT_LEAST.test(st) ? got >= want : got === want) || (room && got === Number(room[1]) && got < want);
       if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
       if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: the table's count with a lookalike variant)`);
     }
@@ -1539,7 +1547,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check34(tl, segs, add);
   check34kit(tl, segs, add);
   check42(tl, segs, add);
-  check44(tl, segs, add, tEnd, isCookFlow(r.flow) && CHAI_ROW.test(stationOf(r.flow) || ""));
+  // (a gesture still has the kit's moving finger on the s14 look, js/shared/onboard.js: maani's roll, daar's chop swipe and stir;
+  // only the stations whose showing is all taps have no finger at all)
+  check44(tl, segs, add, tEnd, S14_COOK(r.flow) && S14_TAPS.test(stationOf(r.flow) || ""));
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
@@ -1561,7 +1571,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check32(tl, add);
   check33(tl, add);
   check38(tl, add);
-  check39(tl, add, isCookFlow(r.flow) && CHAI_ROW.test(stationOf(r.flow) || "") && levelOf(r.flow || "") <= 1);
+  check39(tl, add, S14_COOK(r.flow) && levelOf(r.flow || "") <= 1);
   check40(tl, add);
   check41(tl, add);
   check35(r, tl, segs, add, root);

@@ -117,3 +117,26 @@ and the rules' card by level overlap, which needs Zafar's choice ("each word its
    below slides the bubble along its row off the face while its tail still reaches its head. Run chai with it (it passed).
 7. **Hiding a kit control from a game's CSS trips the static lint** (mode CSS may not name kit classes): the doctor's box hides
    its bulb and speaker from JS, and the clinic's own classes (`.cl-help-arrow`, `.cl-helper`) carry the new look.
+## Round 3: every Cook station on the kit (s14-cook builder, 30 Oct morning)
+
+1. **One switch, then shared Cook code, not station by station.** The look went on for every dish in two lines (`ui.js`
+   `UI.S14_ALL`, `flow.js` `preLook`); what each station needs from it lives in Cook's shared code: `introduceAlong` says a dish's
+   own card as it says chai's people (item by item, each big card into its row card), `station-lib.js` gives every station the
+   helper card (from `Cook.expect.key`), the word pill (`Cook.chipWord`, `markRight`), the first-time hold (`St.firstHold`) and
+   the decoys by the rules (`Cook.levelRow` on `Rules.level`); `coach.js` hugs the light to the picture (keeping the tap point
+   inside it) and lights the order card once after a quiet spell.
+2. **Numbers belong to one walker.** `Recipes.fromRules` fills any `{"rules": game}` at any depth of a recipe (plain, `add`,
+   `range`, `axis` x/y, `kinds` with `part`); a recipe `fit` makes chaat's spoons add up (a layer said twice counts twice); a `split`
+   slot shares daar's X among onion, tomato and chilli. The Node harness had no `flow.js`, so it never filled them: it now does
+   what the game does, or every Node test reads the stand-in.
+3. **Chai's branches in the checks were the kit's.** contract-35 (no dots at L3-L4), 37 (decoys 1-4), 39 (English at L1) and 44
+   (no finger) named `chai-tray`; with every Cook game on the kit they name every Cook flow (44 only where the showing is all taps:
+   a swipe or a roll keeps the kit's moving finger). A pool with no more to offer says `room:n` (the rules: "where the space allows").
+4. **A pinned control takes space in every game, not only the one it was judged in.** The cog top right covered the pantry fridge's
+   top slot on a phone: the milk could not be tapped at L2-L3. Ask each station what sits under the pinned things.
+5. **Random draws move when counts move.** New counts change the seeded sandbox's dice, so Nani's pass-me now comes in the pantry at
+   1280x665 and 1920x1080, where the player's click on its item times out (it clicks the same item by script without trouble).
+6. **What a game cannot take stays its own way, said aloud:** daar's tadka has no timer today, so no first-time hold (a burn would be
+   a new mechanic); the samosa boxes per samosa and daar's staged chop-card dots are the old look's (Kutchi always written).
+7. **Plan the browser time first.** The brief's before ran 72 pages (4 sizes for every probe; the grill at a child's pace times out at
+   12 minutes a page) and a background task's 30-minute limit killed it once: resume with `--resume <run id>`.
