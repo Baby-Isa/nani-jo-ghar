@@ -1638,7 +1638,9 @@
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
       // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
       placeFree14(c, play, sr, wd);
-      if (c.animate) c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
+      // (a card scaled to its room with zoom (three people) fades in alone: zoom and a transform together drew its first frames
+      // about 50 px off its place, over Nana's face: contract-83, the orchestrator's film at 930x430, 30 Oct)
+      if (c.animate) c.animate(c.style.zoom ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
       big14 = c;
       return c;
     };
@@ -1800,8 +1802,18 @@
       return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
     };
     const read = async () => {
+      let prev = null;
       for (const who of people.map((c) => c.who)) {
         if (skipped || token !== Cook.run) return;
+        // (Zafar, 30 Oct: "we minimise (fold up) menu boxes once that item is complete ... and then all the cards open again when
+        // the game starts": while the order is given, a person whose order has been said folds to face and headline as the next
+        // one speaks, so no card is ever half under the panel's top; every card opens again as the order ends)
+        if (prev) {
+          m.said = m.said || new Set();
+          m.said.add(prev);
+          renderOrder();
+        }
+        prev = who;
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
         if (!c || !c._parts) continue;
         if (M.focus) M.focus(who);
@@ -1864,6 +1876,7 @@
       stopReading();
       if (m === mission) {
         m.away.clear();
+        m.said = null; // (every card open again as play starts)
         renderOrder();
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
@@ -2615,7 +2628,7 @@
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
         // fold to face + headline too (a tap opens one; the face is still the replay)
-        closed: phase || idle.has(c.key),
+        closed: phase || idle.has(c.key) || !!(mission.said && c.who && mission.said.has(c.who)),
         // D11 (as the clinic): Nani's English bulb opens a closed card for its time, so the English shows each kind and its parts (SAM-23:
         // "three samosas" and its fillings under it); the small bulb's peek is the Kutchi (SH-98)
         open: !!mission.english,

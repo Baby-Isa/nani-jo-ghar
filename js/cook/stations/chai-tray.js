@@ -338,7 +338,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const end = () => {
           clearTimeout(t);
           clearInterval(q);
-          el.removeEventListener("click", tap, true);
+          if (onTap) el.removeEventListener("click", tap, true);
           h.close();
           res();
         };
@@ -1958,6 +1958,22 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // begun while it is lit ends it)
           // (contract-79: the order row's own glide and the side panel's slides are moves too: the light waits for a quiet spell of
           // pointAfterMoveMs with nothing moving at all, sampled every 60 ms)
+          // (contract-82, CHAI-47's rule: no box edge across a face: the card is brought whole into view, and a face circle that
+          // overhangs it (Nani's at 740x320) is taken into its box)
+          const cardLit = () => {
+            const card = document.querySelector("#mission .oc-card");
+            if (!card) return null;
+            if (card.scrollIntoView) card.scrollIntoView({ block: "nearest" });
+            const cb = card.getBoundingClientRect();
+            const cut = [...document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say")].filter((f) => {
+              const b = f.getBoundingClientRect();
+              if (!b.width) return false;
+              const meets = b.right > cb.left && b.left < cb.right && b.bottom > cb.top + 1 && b.top < cb.bottom - 1; // (a face over the card itself, not the next card's below it)
+              const inside = b.left >= cb.left - 4 && b.right <= cb.right + 4 && b.top >= cb.top - 4 && b.bottom <= cb.bottom + 4;
+              return meets && !inside;
+            });
+            return cut.length ? [card].concat(cut) : card;
+          };
           const m0 = moves14;
           const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
           // (anything else in flight that will end: a tween in the kitchen (the leaves fading into the pan), an animation on the page, the
@@ -1992,7 +2008,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
             } else quiet = null;
-            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
+            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) light14(cardLit(), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
             else setTimeout(go, 60);
           };
           go();

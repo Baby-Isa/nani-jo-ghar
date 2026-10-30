@@ -77,7 +77,7 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 **Rules:**
 - **One item, one of it, with a recipe** (a single chai): no item row; the parts sit straight under the headline (as the chai card is now).
 - **Same recipe several times** = one row (*ba lakri mixed*), with the parts shown once. **Different recipes** = separate rows (or group boxes), each with its own parts; the boxes keep them distinct, with no alternating tint (decision 95: one highlight, one colour).
-- **Everything stays fully expanded until it's done** (several people or items may be worked on at once). A finished item row folds to one gold line; a finished person folds to face + headline + ✓.
+- **Everything stays fully expanded until it's done** (several people or items may be worked on at once). A finished item row folds to one gold line; a finished person folds to face + headline + ✓. While the order is given, a person whose order has been said folds to face + headline as the next person speaks, and every card opens again as play starts (Zafar, 30 Oct).
 - **The pop-up uses the same tree** at full size, in the same flat card style: no yellow highlight box, no grey box around a single pill.
 - **§12 applies to every game mode (Zafar, 28 Sept).** Build the person card (headline → item rows → parts, folding), the Nani guide box and the order pop-up as **shared components** (`js/shared/order-card.js` + `css/shared/order-card.css`, with Cook's sidebar as the first user), with a mode-agnostic data shape: `{person, headline, items:[{label, count, parts:[…], ordered}]}`. The clinic and Find it adopt them next; the parked modes adopt them when they're rebuilt. The end pop-up and the Done button are already shared.
 
