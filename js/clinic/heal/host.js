@@ -543,6 +543,7 @@
       d.head.appendChild(l);
     }
     if (global.Onboard) global.Onboard.look = on ? "s14" : global.Onboard.look === "s14" ? null : global.Onboard.look;
+    Kit.s14 = !!on;
   };
 
   /**

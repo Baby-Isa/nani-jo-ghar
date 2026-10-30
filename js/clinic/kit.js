@@ -826,6 +826,7 @@
     card.rows.forEach((r) => (r.el = null));
     const opts = {
       big: this.big,
+      s14: !!Kit.s14, // S14: the kit's s14 card in a heal round (its serif headline, its shape: js/clinic/heal/host.js HOST.s14)
       fold: this.big ? null : this.fold,
       foldAfter: 900,
       onEl: (key, rowEl) => {
