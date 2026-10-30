@@ -867,6 +867,10 @@
     // (side by side wherever the stacked card would push the order card out of the side panel: a phone, a short laptop)
     const phone = global.innerHeight < 760;
     global.WordCard.big14(e.slot, want.word, Object.assign({}, want.wordOpts || {}, { all: true, variant: phone ? "side" : "small", cls: "ng-helper-card" }));
+    // SH-165 (Zafar, 30 Oct): the side card's speaker keeps the order's item card's gap (its speaker to its foot) to its right edge
+    const it = [...document.querySelectorAll("#mission .wc14-it")].find((x) => x.getBoundingClientRect().width > 0);
+    const spk = it && it.querySelector(".wc14-spk");
+    if (spk) e.slot.style.setProperty("--wc14-spk-edge", `${Math.max(4, Math.round(it.getBoundingClientRect().bottom - spk.getBoundingClientRect().bottom))}px`);
     const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame;
     raf(() => global.WordCard.fit14(e.slot));
     setTimeout(() => global.WordCard && global.WordCard.fit14(e.slot), 480);

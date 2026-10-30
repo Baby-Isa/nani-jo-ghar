@@ -1787,7 +1787,11 @@ export function check74(r, tl, segs, add) {
     if (left > 0) add("contract-74", n.t, `a tap during the order left ${left} card${left > 1 ? "s" : ""} away or a big card on screen`);
     if (ms > 1000) add("contract-74", n.t, `a tap during the order took ${ms} ms to land every card (within 1 s)`);
     const tap = n.t - ms;
-    const st = segs.find((x) => /(^|\|)cook:station/.test(x.key) && x.t0 >= tap - 50);
+    // (the station's own stage-start note too: on lab.html the host's stage opens first and the station's segment is dated from it,
+    // so a segment alone never starts after the tap; Sprint 15, a false "never started" on every lab:cook flow)
+    const seg = segs.find((x) => /(^|\|)cook:station/.test(x.key) && x.t0 >= tap - 50);
+    const note = lifeNotes(tl, "stage-start").find((x) => /^cook:station/.test(x.reason || "") && x.t >= tap - 50);
+    const st = [seg, note && { t0: note.t }].filter(Boolean).sort((a, b) => a.t0 - b.t0)[0];
     if (!st) add("contract-74", n.t, "a tap during the order and the station never started");
     else if (st.t0 - tap > 1000) add("contract-74", st.t0, `the station started ${Math.round(st.t0 - tap)} ms after the tap during the order (within 1 s)`);
     return;

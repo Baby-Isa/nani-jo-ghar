@@ -606,30 +606,29 @@
     const b = to.getBoundingClientRect();
     const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
     if (o.fast || reduced || !a.width || !b.width || !from.animate) return;
-    const ghost = to.cloneNode(true);
-    ghost.classList.remove("oc-away");
-    ghost.classList.add("wc14-flyer");
-    ghost.removeAttribute("id");
-    ghost.removeAttribute("data-key");
-    Object.assign(ghost.style, { position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, margin: "0", zIndex: "60", pointerEvents: "none", transformOrigin: "50% 50%", visibility: "visible" });
-    doc.body.appendChild(ghost);
     // (Zafar, 29 Oct: "when the big item card goes into the left menu card, the text goes funky as it transitions": one even scale,
-    // centre to centre, so no letter is stretched; and the two cards' words never show at once: the big one is gone before the
-    // small one comes, so they never double up)
-    const k = Math.sqrt((a.width * a.height) / (b.width * b.height));
-    const dx = a.left + a.width / 2 - (b.left + b.width / 2);
-    const dy = a.top + a.height / 2 - (b.top + b.height / 2);
+    // so no letter is stretched.) SH-163 (Zafar, 30 Oct: "can't we just have two separate things going on? One, it shrinks from the
+    // bigger card to the small card ... nicely visible and not squashed ... And at the same time, it just needs to physically move into
+    // the right place"): one card, the big one, shrinks (one even scale, to fit the row's box) while it moves centre to centre, whole
+    // and fully seen all the way; only at its landing, where it sits on the row's card at the row's size, does the row's own card take
+    // over: the big card stays on it until the row's card is drawn whole (its picture decoded), then fades in a moment (the 30 Oct
+    // film: a row card shown as the big one faded drew its words low with no picture for a few frames)
+    const s = Math.min(b.width / a.width, b.height / a.height);
+    const dx = b.left + b.width / 2 - (a.left + a.width / 2);
+    const dy = b.top + b.height / 2 - (a.top + a.height / 2);
     const ease = "cubic-bezier(.45,.05,.2,1)";
-    const dur = (o.ms || 650) / ((root.Cook && root.Cook.speed) || 1);
+    const sp = (root.Cook && root.Cook.speed) || 1;
+    const dur = (o.ms || 650) / sp;
     from.style.transformOrigin = "50% 50%";
-    const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.2 }, { opacity: 0, offset: 0.5 }, { transform: `translate(${-dx}px, ${-dy}px) scale(${1 / k})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
-    const g = ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${k})`, opacity: 0 }, { opacity: 0, offset: 0.42 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
     try {
-      await Promise.all([f.finished, g.finished]);
+      await from.animate([{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }], { duration: dur, easing: ease, fill: "forwards" }).finished;
+      to.classList.remove("oc-away");
+      const im = to.querySelector("img");
+      if (im && im.decode) await Promise.race([im.decode().catch(() => {}), new Promise((r) => setTimeout(r, 300))]);
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      await from.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140 / sp, fill: "forwards" }).finished;
     } catch (e) {
       /* cancelled: the card lands anyway */
-    } finally {
-      ghost.remove();
     }
   };
   if (root.addEventListener) {

@@ -134,3 +134,6 @@
 @keyframes ob14-glowbox { 0%, 100% { box-shadow: var(--njg-card14-glowbox-a); } 50% { box-shadow: var(--njg-card14-glowbox-b); } }
 @keyframes ob14-glowimg { 0%, 100% { filter: var(--njg-card14-glow-a); } 50% { filter: var(--njg-card14-glow-b); } }
 @media (prefers-reduced-motion: reduce) { .ob-lit.ob-lit-glow, .ob-lit.ob-lit-glow > img { animation: none; } }
+/* SH-141 (Zafar, 30 Oct: "no ripples - the same light focus box with darker outside and gold glow and jump if item logic as chai, no
+   ripple we tried that and failed it. Yes hand for drag is fine"): the hand keeps no ripple anywhere; a tap is shown by the light */
+.ob-finger .ob-ripple, .njg-onboard .ob-ripple { display: none; }

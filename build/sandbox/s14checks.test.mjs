@@ -234,3 +234,12 @@ test("contract-89: a call while the helper names an item and is closed is a brea
   assert.equal(run(check89, r, [hp(1000, true, false), hp(5000, true, true)], v(5200)).length, 0, "said as the card opens");
   assert.equal(run(check89, r, [hp(1000, false, false)], v(2000)).length, 0, "a control's call: no item named");
 });
+
+test("contract-74 on lab.html: the station's own start note counts (the host's segment is dated from the page's stage)", async () => {
+  const { check74 } = await import("./lib/contract.mjs");
+  const life = (t, what, reason, by = "") => c("life", t, { what, reason, by });
+  const tl = [life(1000, "stage-start", "cook/chai-tray"), life(9310, "stage-start", "cook:station"), life(9820, "order-skip", "589", "left:0")];
+  const segs = [{ key: "host:cook/chai-tray|cook:station1:marble", t0: 1000, t1: 20000 }];
+  assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl, segs).length, 0);
+  assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl.slice(0, 1).concat(tl.slice(2)), segs).length, 1, "no station start at all");
+});
