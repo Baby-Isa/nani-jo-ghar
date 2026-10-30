@@ -602,8 +602,8 @@ async function sheets(dirArg) {
       for (const x of strips) {
         // a strip whose frames are one picture is flagged (never proof of movement), and a frame far off its slot says so
         const mo = stripMotionOf(x.c.files.map((f) => fileOf(p, f)));
-        const ms = +((/x(\d+)$/.exec(x.c.raw) || [])[1] || 0), off = offSlots(x.c.times || [], ms);
-        addPanel({ key: key(x.c.raw, "strip"), moment: x.h.name, ms: x.c.times, type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}${mo.moving ? "" : " · NO MOTION CAPTURED"}`, motion: mo, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms${off[k] ? ` (slot ${k * ms}: off)` : ""}`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
+        const ms = +((/x(\d+)$/.exec(x.c.raw) || [])[1] || 0), off = offSlots(x.c.times || [], ms, undefined, x.c.slots || null);
+        addPanel({ key: key(x.c.raw, "strip"), moment: x.h.name, ms: x.c.times, type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}${mo.moving ? "" : " · NO MOTION CAPTURED"}`, motion: mo, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms${off[k] ? ` (slot ${(x.c.slots || [])[k] != null ? x.c.slots[k] : k * ms}: off)` : ""}`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
       }
       // refs (Fable 12) and script output (Fable 13), from the spec
       for (const c of p.contract || []) texts.push(`#### ${p.id} · ${c.check} (contract)\n\n\`\`\`\n${c.text}\n\`\`\``);

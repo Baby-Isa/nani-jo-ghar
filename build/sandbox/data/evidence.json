@@ -20452,13 +20452,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.wc14-pop",
+   "at": "life:request",
    "after": null,
    "capture": [
-    "strip:#mission:8x150"
+    "strip:body:60x200"
    ],
    "expect": null,
-   "note": "while the order is given the row glides to the next card (never a jump, never more than a card width a frame)",
+   "note": "the order filmed whole (from the request, 12 s, every 200 ms, the whole screen): while the order is given the row glides to the next card (never a jump, never more than a card width a frame); the film table lists the row's scroll per frame",
    "delay": 0
   }
  ],
@@ -20751,14 +20751,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.wc14-pop",
+   "at": "life:request",
    "after": null,
    "capture": [
-    "strip:body:8x150",
+    "strip:body:60x200",
     "contract:76"
    ],
    "expect": null,
-   "note": "the order filmed at the phone sizes (chai L4): the big pop-out card in free space beside the side panel, never over a face (Nana's, anyone's); the order card's slots faint while they wait, never a large empty white box",
+   "note": "the order filmed whole at the phone sizes (chai L4): the big pop-out card in free space beside the side panel, never over a face (Nana's, anyone's); the order card's slots faint while they wait, never a large empty white box (the film table lists the pop-out's box and the face boxes per frame)",
    "delay": 0
   }
  ],
@@ -20845,6 +20845,25 @@
    "expect": null,
    "note": "during chai's order a tap on the speaker's bubble, the side panel and the cog leave the order going (zone-*-kept); then a tap in the play area lands every card at once",
    "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "tap-zones",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x200"
+   ],
+   "expect": null,
+   "note": "the order filmed whole while a tap lands on the bubble, the side panel and the cog (they leave the order going), then the play area (it lands every card)",
+   "delay": 0
   }
  ],
  "SH-158": [
@@ -20886,14 +20905,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.wc14-pop",
+   "at": "life:request",
    "after": null,
    "capture": [
-    "strip:#mission:8x150",
+    "strip:body:60x200",
     "contract:72"
    ],
    "expect": null,
-   "note": "the 'no' items said last (the engine's line: '..., ba khun, dudh na.'), so the order row only moves forward while the order is given; it goes back to its first card only once the order is given",
+   "note": "the order filmed whole: the 'no' items said last (the engine's line: '..., ba khun, dudh na.'), so the order row only moves forward while the order is given; it goes back to its first card once the order is given",
    "delay": 0
   }
  ],
@@ -20967,6 +20986,48 @@
    ],
    "note": "the level-up rule's tests pass (3 rounds in a row with the hint at most once; never down; a grown-up's pick never counts); a scripted save's next self-picked order at L2 is in build/reports/s14-rules.md",
    "delay": 0
+  }
+ ],
+ "SH-167": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs build/sandbox/film.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the film probe: the strip records a moving pop-out and order row (unit test of the capture's moment and frames), and the face-box hook is read by a script"
+  }
+ ],
+ "SH-168": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs build/sandbox/s14checks.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the S14 checks (timeline, replay, no layout jump, load, overlaps, the light's contrast, card spacing, the save-seeding driver) each have a unit test that is red on a fixture of the old fault and green on the new"
   }
  ]
 }

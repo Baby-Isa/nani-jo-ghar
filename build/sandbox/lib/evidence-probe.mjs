@@ -17,6 +17,8 @@ import * as Contract from "./contract.mjs";
 import { markStrip, isHelpMoment, edge, DRAWN_RGB, NOT_DRAWN_RGB } from "./strip-mark.mjs";
 import { DEVICE_VOICE, utterances, uttOfPlay } from "./device-voice.mjs";
 import { lintPage } from "../../lint/layout.mjs";
+import { FILM_FACTS, sigOf, sigDiff, cropImg, pickKeys, filmMotion, filmTable } from "./film.mjs";
+import { FILM_FROM, FILM_KEEP } from "./evidence.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80); // no # or @: these are URL paths on the sheets
@@ -527,11 +529,13 @@ export class EvidenceProbe {
             // ms is kept (the sheet flags one more than 60 ms off its slot)
             // every frame is the whole surface (the quick encoder) taken on its slot, cut once all are taken to ONE clip: the union of
             // the element's boxes over every frame and a margin, so a thing that moves (the finger) is whole in every frame (round 3)
-            const raws = [], seen = [b];
+            // S14 tools (SH-167): a long strip is a film (lib/film.mjs): every frame, the sheet keeps the changing ones
+            const film = c.n >= FILM_FROM, facts = [], raws = [], seen = [b];
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
               raws.push(await this.surface({ fast: true }));
+              if (film) facts.push(await page.evaluate(FILM_FACTS).catch(() => ({})));
               if (k) { const bk = await this.boxes(c.sel).catch(() => null); const u = bk && !bk.error ? union(bk) : null; if (u) seen.push(u); }
               if (s.p.mark === "drawn") (out.states = out.states || []).push(await this.drawnState());
             }
@@ -539,10 +543,35 @@ export class EvidenceProbe {
             const all = { l: Math.min(...seen.map((x) => x.l)), t: Math.min(...seen.map((x) => x.t)), r: Math.max(...seen.map((x) => x.r)), b: Math.max(...seen.map((x) => x.b)) };
             const wide = clipOf(all, vw, vh, 24);
             if (wide) { clip = wide; out.box = clip; }
-            for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
-            for (let k = 0; k < c.n; k++) {
-              const buf = raws[k] || (await this.shot(clip)); bufs.push(buf);
-              const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
+            let step = null; // a film: the largest change between neighbouring frames (not against the first)
+            if (film) {
+              const sigs = [], pngs = [];
+              for (let k = 0; k < c.n; k++) {
+                let png = null, sg = null;
+                try {
+                  const img = decodePng(raws[k]), kx = img.w / vw;
+                  const cr = cropImg(img, Math.round(clip.x * kx), Math.round(clip.y * kx), Math.round(clip.width * kx), Math.round(clip.height * kx));
+                  sg = sigOf(cr); png = encodePng(cr);
+                } catch (e) { png = raws[k] ? null : await this.shot(clip); }
+                sigs.push(sg); pngs.push(png); raws[k] = null; // (free the whole screen)
+              }
+              const diffs = sigs.map((sg, k) => (k ? sigDiff(sigs[k - 1], sg) : 0));
+              const keys = pickKeys(diffs, FILM_KEEP);
+              step = filmMotion(diffs);
+              for (const k of keys) {
+                const buf = pngs[k] || (await this.shot(clip)); bufs.push(buf);
+                const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
+              }
+              const allTimes = out.times;
+              out.film = { n: c.n, keys, moving: step.moving, steps: step.steps, max: step.max };
+              out.times = keys.map((k) => allTimes[k]); out.slots = keys.map((k) => k * c.ms);
+              out.text = `a film of ${c.n} frames, every ${c.ms} ms (${(c.n * c.ms / 1000).toFixed(1)} s), from ${hit.name}; the sheet shows the ${keys.length} frames where the picture changed (*)\n${filmTable({ times: allTimes, ms: c.ms, diffs, facts, keys })}`;
+            } else {
+              for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
+              for (let k = 0; k < c.n; k++) {
+                const buf = raws[k] || (await this.shot(clip)); bufs.push(buf);
+                const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
+              }
             }
             // (s08 w6E, SH-60) the frame where Nani's help was logged while this strip filmed gets a red frame, so the sheet shows the
             // moment; "moved" below is judged on the frames as filmed, never the mark
@@ -564,7 +593,8 @@ export class EvidenceProbe {
             let moved = 0;
             for (let k = 1; k < bufs.length; k++) moved = Math.max(moved, frameDiff(bufs[0], bufs[k]) || 0);
             out.moved = Math.round(moved * 100) / 100;
-            if (moved < 0.02) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
+            // (a film is judged on its neighbours: the glide may be over by the last frame)
+            if (step ? !step.moving : moved < 0.02) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
           }
         } else if (c.kind === "trace" && c.sel === "station") {
           // CK-48 (S13-V): the station's own state every 50 ms in the page (its view, the camera's fade, the stage's opacity, the

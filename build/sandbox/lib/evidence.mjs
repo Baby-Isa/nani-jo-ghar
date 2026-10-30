@@ -30,7 +30,9 @@ export const ladderMs = (level, root = join(new URL("../../..", import.meta.url)
 export const afterPauseMs = (level) => ladderMs(level) + AFTER_PAUSE_EXTRA;
 export const PHONE_SIZES = ["844x390", "800x360"];
 export const MAX_EVERY = 8;      // an every:<moment> probe captures at most this many times (a probe's "max" changes it)
-export const MAX_STRIP = 30;     // frames in one filmstrip (S13-V: CK-48 films a station's first 4-6 s at 200 ms slots)
+export const MAX_STRIP = 60;     // frames in one filmstrip (S13-V: CK-48 films a station's first 4-6 s at 200 ms slots); S14-tools: a film of a whole order is up to 60 frames (FILM_KEEP of them go on the sheet)
+export const FILM_FROM = 15;      // a strip of more frames than this is a film: every frame is taken, the sheet keeps the ones where the picture changed (lib/film.mjs)
+export const FILM_KEEP = 14;
 // throttle: the network a page plays on (S13-V, CK-48 "on a throttled run"): "slow" is build/sandbox/slowload.mjs's line
 export const THROTTLES = { slow: { kbps: 1600, latency: 150, cpu: 4 } }; // Lighthouse's mobile run: slow 4G and a 4x slower processor
 // mark: what each frame of a probe's filmstrips is marked with (its edge and the strip's text): "drawn" = Cook's station fully

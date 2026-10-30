@@ -11,6 +11,7 @@ export const ROW_ID = /\b([A-Z][A-Z]*-(?:[A-Z0-9]+-)*\d+)\b/g;
 export const BRIEF_SIZES = ["740x320", "930x430", "1280x665", "1920x1080"];
 export const STRIP_MS = [250, 500];
 export const STRIP_FRAMES = 4;
+export const FILM_MIN = 15; // a strip of this many frames is a film (lib/evidence.mjs FILM_FROM)
 
 const texts = (spec) => [...(spec.tasks || []).flatMap((t) => (typeof t === "string" ? [t] : [t.do, t.accept])), spec.name || ""].filter(Boolean).map(String);
 // -> {rows: [ids in order], named: [every id seen], unknown: [ids not on the fix list or its archive], newRows: [ids]}
@@ -46,7 +47,8 @@ export function briefProbes(probes, spec, parse, rowText = "") {
     const capture = p.capture.slice();
     // (an every: probe films each of its moments already: no more strips for it)
     if (p.kind === "motion" && !p.every && parse) {
-      for (const sel of [...new Set(p.capture.filter((c) => c.kind === "strip" || c.kind === "trace").map((c) => c.sel))]) {
+      // (a film of a whole order, FILM_MIN frames or more, is already the long look: no 1 s and 2 s strips beside it, S14 tools)
+      for (const sel of [...new Set(p.capture.filter((c) => (c.kind === "strip" && !(c.n >= FILM_MIN)) || c.kind === "trace").map((c) => c.sel))]) {
         for (const m of ms) {
           const raw = `strip:${sel}:${STRIP_FRAMES}x${m}`;
           if (!capture.some((c) => c.raw === raw)) { const c = parse(raw); if (!c.error) capture.push(c); }
@@ -107,7 +109,8 @@ export function pairUnits(before = [], after = []) {
 
 // a strip's frames against their slots (k x ms): true where a frame landed more than `tol` ms off (fix round, 26 Oct: 0/452/738/1144)
 export const SLOT_TOL = 60;
-export const offSlots = (times = [], ms = 0, tol = SLOT_TOL) => times.map((t, k) => !!ms && Math.abs(+t - k * ms) > tol);
+// (a film keeps only some frames: `slots` are the kept frames' own slots, S14 tools)
+export const offSlots = (times = [], ms = 0, tol = SLOT_TOL, slots = null) => times.map((t, k) => !!ms && Math.abs(+t - (slots && slots[k] != null ? slots[k] : k * ms)) > tol);
 // a frame caption's ms ("452 ms", "452 ms (slot 250: off)") -> 452, else null
 export const capMs = (cap) => { const m = /^(\d+) ms/.exec(String(cap || "")); return m ? +m[1] : null; };
 

@@ -63,6 +63,34 @@ const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
 const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear"]; // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
 
 const G = () => globalThis;
+/**
+ * TEST HOOK (S14 tools, B2; read-only): every face on screen in page px, {who, kind, left, top, right, bottom, width, height}: the
+ * patient's head (her figure's head, else the top of her picture) and every face circle (the doctor's, a card's, a speaker's).
+ * Published as njgTest.clinic.faces() with the round's plan; the same shape as njgTest.cook.faces().
+ */
+function clinicFaces() {
+  const out = [];
+  const d = G().document;
+  if (!d) return out;
+  const put = (who, kind, l, t, r, b, extra) => out.push(Object.assign({ who, kind, left: l, top: t, right: r, bottom: b, width: r - l, height: b - t }, extra || {}));
+  d.querySelectorAll(".fig, .cl-fig, [data-fig]").forEach((f) => {
+    const fb = f.getBoundingClientRect();
+    if (fb.width < 2 || fb.height < 2) return;
+    const head = f.querySelector(".fig-head");
+    const art = f.querySelector(".fig-art, img, svg");
+    if (head && head.getBoundingClientRect().width > 0) {
+      const h = head.getBoundingClientRect();
+      return put("patient", "head", h.left, h.top, h.right, h.bottom);
+    }
+    const a = art ? art.getBoundingClientRect() : fb;
+    put("patient", "head", a.left + a.width * 0.25, a.top, a.right - a.width * 0.25, a.top + a.height * 0.22);
+  });
+  d.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+    const b = f.getBoundingClientRect();
+    if (b.width > 0 && b.height > 0) put(f.dataset.who || f.dataset.face || null, "circle", b.left, b.top, b.right, b.bottom, { sel: String(f.className || "").slice(0, 40) });
+  });
+  return out;
+}
 /** The page's own query ("" in Node). */
 const search = () => (G().location && G().location.search) || "";
 /**
@@ -243,7 +271,7 @@ function roundFor(ctx, screen) {
   screen.resetHints();
   screen.trayWrap.classList.add("hidden");
   session.round = { token, plan, env, healWords: [], results: {} };
-  if (G().njgTest && G().njgTest.clinic) G().njgTest.clinic.plan = plan;
+  if (G().njgTest && G().njgTest.clinic) { G().njgTest.clinic.plan = plan; G().njgTest.clinic.faces = clinicFaces; }
   return session.round;
 }
 
