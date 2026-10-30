@@ -604,7 +604,7 @@
       if (THINGS[id]) {
         gl.adds[id] = (gl.adds[id] || 0) + 1;
         gl.stirred = false;
-        if (P.level >= 2) ctx.tally(id, gl.adds[id]);
+        if (counted) ctx.tally(id, gl.adds[id]); // (S14: the spoons are counted from L1, so the running count and the reveal from L1)
         S.uncue();
         await addIn(id);
         if (!counted) {
