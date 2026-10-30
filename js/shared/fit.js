@@ -35,7 +35,19 @@
     const held = !!row && !row.style.minWidth;
     if (held) row.style.minWidth = "0px";
     try {
-      return F.fitIn(el);
+      let size = F.fitIn(el);
+      // (a word too wide for its row even at the floor, in a list that wraps two to a line (a phone's order card): the row takes a whole
+      // line of its own before any word is split (TXT-10, contract-15: the pharmacy's "hammer" and "bandage" at 740x320)
+      if (row && el.style.overflowWrap === "break-word") {
+        // (the cell of the wrapping list: the row itself, or the item round it, two to a line in the clinic's pharmacy card)
+        let cell = row;
+        while (cell && cell.parentElement && !cell.classList.contains("oc-card") && getComputedStyle(cell.parentElement).flexWrap !== "wrap") cell = cell.parentElement;
+        if (cell && cell.parentElement && !cell.classList.contains("oc-card") && !cell.style.flexBasis) {
+          cell.style.flexBasis = "100%";
+          size = F.fitIn(el);
+        }
+      }
+      return size;
     } finally {
       if (held) row.style.minWidth = "";
     }
