@@ -1164,6 +1164,26 @@
       if (snap) return putNozzle(hollowMid(p).x, hollowMid(p).y);
       putNozzle(NZ.x + (hollowMid(p).x - NZ.x) * 0.25, NZ.y + (hollowMid(p).y - NZ.y) * 0.25);
     };
+    /*
+     * S14 (SH-158 in the clinic, CLN-210; the central rules' timed.firstTimeHold, Zafar 29 Oct): the fill is a timed control
+     * the child operates. The first time a new player meets it (once ever), the gauge holds in the middle of the green while
+     * the button is held, until they let go (the release is the act); after that, normal timing. A returning player's never
+     * holds. The timeline's timed-hold notes (start, end) are contract-77's.
+     */
+    const HOLD_KEY = "clinic/heal-tooth-fill-hold";
+    const US = root.UIStore;
+    const R0 = root.Rules;
+    const newPlayer = !!ctx.taught || !!(root.Onboard && root.Onboard.newPlayer && root.Onboard.newPlayer()) || !(US && US.get && US.get("onboarded", "clinic/heal-tooth"));
+    let hold1 = !!(R0 && R0.firstTimeHold && R0.firstTimeHold() && newPlayer && !(US && US.get && US.get("onboarded", HOLD_KEY)));
+    const holdAt = zone[0] + (zone[1] - zone[0]) * 0.5;
+    let holding1 = 0;
+    const lifeNote = (step, by) => {
+      try {
+        if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("timed-hold", { step: String(step), by: String(by) });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     const startFill = () => {
       if (st.holding || st.smoothing) return;
       st.holding = true;
@@ -1175,6 +1195,13 @@
         if (!st.holding) return;
         const now = Date.now();
         st.fill = Math.min(FILL.max, st.fill + ((now - t0) / fillMs) * 1);
+        if (hold1 && st.fill >= holdAt) {
+          st.fill = holdAt;
+          if (!holding1) {
+            holding1 = now;
+            lifeNote("start", `tooth fill ${holdAt.toFixed(3)}`);
+          }
+        }
         t0 = now;
         setMarker(st.fill);
         drawPaste();
@@ -1193,6 +1220,16 @@
       if (!st.holding) return;
       st.holding = false;
       pressBtn(false);
+      if (holding1) {
+        lifeNote("end", `tooth fill ${st.fill.toFixed(3)} ${Date.now() - holding1}ms`);
+        holding1 = 0;
+        hold1 = false;
+        try {
+          if (US && US.set) US.set("onboarded", HOLD_KEY, true);
+        } catch (e) {
+          /* a private window: it holds again next time */
+        }
+      }
       const c = cur();
       if (!c || c.kind !== "fill") return;
       if (st.fill < zone[0]) return;
@@ -1314,6 +1351,7 @@
         over() {
           const c = cur();
           if (!S.ready || !c || c.kind !== "fill" || st.busy || st.smoothing || st.holding) return null;
+          if (hold1) return null; // (S14: a new player's first fill holds in the green: it cannot overfill)
           const t = (() => {
             const q = fromD(BTN.x, BTN.y);
             return S.client(q.x, q.y);
