@@ -8,33 +8,29 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (30 Oct 2026, about 01:00 UK):** Sprint 14 "Lock the principles" is open. **Zafar has handed the roll-out to
-the next chat to run without him** (30 Oct: "a handover note for a new chat to launch and manage all that build independently
-without me"; 29 Oct: "run both builders to change all the cook and clinic games to the new chai style"; "set the builders up to
-build all night"). Rough publishes to `main` are allowed (`/publish --force`).
-- **Live on `main`** (89729f48, 20261029T215612Z): chai on the central rules file.
-- **On the branch, not live:** his 29 Oct chai notes fixed (`docs/feedback/chai-rules-2026-10-29.md`; rows CHAI-40, CHAI-42 to
-  CHAI-47, SH-161 to SH-166); his per-game numbers for Cook and the clinic in `data/rules.json` and `docs/game-design/rulebook.md`
-  (final); the roll-out rows (PAN-18, MAA-19, SEK-22, SAM-28, CHT-17, DAAR-36, CLN-207 to CLN-215, SH-167, SH-168).
-- **The plan:** `docs/sprints/S14-rollout-plan.md`, all of it. Briefs ready: `build/tools/ops/specs/s14-tools.brief.txt`,
-  `s14-cook.brief.txt`, `s14-clinic.brief.txt` (regenerate with `node build/tools/ops/brief.mjs <spec>.json` after any spec edit;
-  set each `stop` at launch). Lessons for every builder: `build/reports/s14-chai-lessons.md`.
+**Where things stand (30 Oct 2026, 06:20 UK):** Sprint 14's roll-out is running without Zafar (plan `docs/sprints/S14-rollout-plan.md`;
+his 30 Oct words: "run everything autonomously without me till publish; fix all code-fixable issues first").
+- **Done:** phase A (chai's finish, verified by film; fixed CHAI-42 again, the pour's lit box, CHAI-48 the next person's bubble
+  over Nana) and phase B (the checks builder `s14-tools`, merged; its checks found CHAI-49, the third pan's knob unlit, and four
+  more, all fixed). Report: `build/reports/s14-rollout.md` (phases A and B), `build/reports/s14-tools.md`.
+- **Live on `main`** (fe1117ee, 20261030T061035Z): chai with every fix above; the other games unchanged.
+- **Running:** two in-chat builders in their own worktrees, never pushing: `s14-cook` (Opus, high, about $60-90: every Cook
+  station on the new kit, port 8887) and `s14-clinic` (Opus, high, about $60-90: every heal game, port 8888), hard stop 12:00 UK,
+  reports `build/reports/s14-cook.md` and `s14-clinic.md`. A check-in is scheduled for 12:05 UK.
 
-**Next steps, in order (the plan's sections 1-5):**
-1. **Phase A, in the chat:** verify chai's last tweaks (plan section 2, A1-A11; A1 the three-person card and A10 the replay are
-   unverified), check, publish, note to Zafar.
-2. **Phase B with A:** launch `s14-tools` (Sonnet, high, about $20-30): the checks. Merge, run each on main and the branch.
-3. **Phase C after B merges:** launch `s14-cook` and `s14-clinic` together (Opus, high, about $60-90 each), as in-chat subagents
-   (`Agent`, `isolation: "worktree"`), each with its brief and the lessons; a `send_later` check-in at each hard stop.
-4. **Phase D:** merge one at a time; the checklist (plan section 5) on each; the judge (`evidence.mjs --judge`, one judge per batch);
-   fix what breaks; publish; the report; append Round 3 lessons; hand over with his play list.
-5. **Needs Zafar, not blocking:** Mum's word order (`docs/questions.md`); his play after D.
+**Next steps, in order (the plan's section 5 checklist at every merge):**
+1. Phase D: merge s14-cook, then s14-clinic (one at a time; `git merge --no-ff` of each worktree branch); after each: checks.mjs,
+   the contract run on that area's flows at the four sizes (#speed1 for timing rows), films of each changed order, the replay.
+2. Evidence specs for the 29-30 Oct rows still without one (SH-161 to 166, CHAI-40 to 49), then `evidence.mjs --run` and one
+   judge per batch (`--judge`, the `judge` agent), `--collect`, `--apply`; fix what fails.
+3. `/publish --force` (decision 3), the report's phase C-D sections, Round 3 lessons, this handover, a note to Zafar with his play list.
+
+**Open questions to Zafar:** none blocking; Mum's word order (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S14-rollout-plan.md`. Zafar has handed you the
-> Sprint 14 roll-out to run without him: phase A (chai's finish) and phase B (the checks builder) now, then the Cook and clinic
-> builders, then merge, check, judge, publish and report. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Follow
-> the plan's checklist at every merge.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S14-rollout-plan.md` section 5 and
+> `build/reports/s14-rollout.md`. Continue the Sprint 14 roll-out at phase D without Zafar: merge, check, judge, publish, report.
+> Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site.
 
 ## The fix list
 
