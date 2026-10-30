@@ -778,6 +778,39 @@
   "commit": "d3e1c0d",
   "date": "2026-10-23"
  },
+ "CHAI-40": {
+  "hash": "b52cf31a2e9ceadacda5",
+  "dhash": [
+   "4970b07030303818",
+   "353a7ada3a5a3a18",
+   "0120b03038bc3cb4"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1920x1080 L1 speed 1 the \"Chulo bar!\" bubble and the cooker knob's gold ring are in the same frame (B the same at 930x430; C at L4 \"Slow kar!\" with the first pan's knob gold-ringed), contract-78 0 breaks on all three pages; L2-L3 not probed, and a stray \"khun\" word pill floats above the pan with no jar in A and B",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "png": "build/screenshots/evidence/s14-chai-ev/CHAI-40.png",
+  "date": "2026-10-30"
+ },
+ "CHAI-43": {
+  "hash": "0d319d26d99fb529882c",
+  "dhash": [
+   "5f7efe6aeaee6afb",
+   "2e262e3e3636363f",
+   "2e3e3636363e3637",
+   "2e37322e2e2a3637"
+  ],
+  "verdict": "PASS",
+  "line": "B, three people at 740x320 with the small big-card version under Nana's face at bottom-left (2500-14750 ms: \"trae khun\", \"aako\", \"dudh na\", \"khun na\" each whole on screen, off every face, 571 frames 0 px2 over a face); A (1920x1080) and C (930x430) put the card under the left face the same way, and D (L2 930x430) stands the two people middle and right with the big card at the stage's left (601 frames 0 px2 over a face). Not filmed: L4 at 1280x665 and L2 at the other three sizes. Flaws seen: B 2500 ms the flying card's words pass under the menu's edge mid-morph (transient); none at rest.",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev4",
+  "commit": "57b29fa2",
+  "png": "build/screenshots/evidence/s14-chai-ev4/CHAI-43.png",
+  "date": "2026-10-30"
+ },
  "CHAI-44": {
   "hash": "e59a8c7cafc99da36376",
   "dhash": [],
@@ -787,6 +820,38 @@
   "judge": "expect",
   "run": "s14-chai-ev",
   "commit": "682e5a89",
+  "date": "2026-10-30"
+ },
+ "CHAI-45": {
+  "hash": "121b94ad5d88854a2ed4",
+  "dhash": [
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000"
+  ],
+  "verdict": "PASS",
+  "line": "C, 740x320: the kitchen's first drawn frame at 831 ms keeps the same crop through 1371, 1587, 1653, 1823, 2389 and 2512 ms (ceiling line, stove and three trays in the same place, no zoom jump); A (1280x665, 599-2694 ms), B (1920x1080, 880-3587 ms) and D (930x430, 700-2306 ms) the same. Flaws seen: before the kitchen draws, the shell shows an empty helper bar and empty avatar circle for 200-500 ms (A 201 ms, B 300 ms, C 303-508 ms, D 300 ms), then Nana's row card appears with blank item boxes; load order, not the kitchen jumping.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev4",
+  "commit": "57b29fa2",
+  "png": "build/screenshots/evidence/s14-chai-ev4/CHAI-45.png",
+  "date": "2026-10-30"
+ },
+ "CHAI-48": {
+  "hash": "d15597a25ff26e5e7997",
+  "dhash": [
+   "1b481c1c1c1c1d1c",
+   "26333a2e2e3a363f"
+  ],
+  "verdict": "FAIL",
+  "line": "A, 1280x665 L3: contract-52 on this page still reports three bubbles over Nana's face: \"trae khun,three sugars,\" 27%, \"dudh na.no milk.\" 34% and the next person's long first line \"Muke elchi waari chai khape,...\" at 42% of his head (the row's own case, 41-64% at 1280x665); the film of A is also a tool fault (frames alternate between a zoomed top-left crop and a whole-page thumbnail). B (740x320) is good: Masi's \"dudh,\" and \"hakro khun.\" bubbles sit over her own head, clear of Nana, contract-52 0 breaks.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "png": "build/screenshots/evidence/s14-chai-ev/CHAI-48.png",
   "date": "2026-10-30"
  },
  "CHT-01": {
@@ -6563,6 +6628,36 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "SH-161": {
+  "hash": "af4ecbff5bc738abcf19",
+  "dhash": [
+   "7e6e626a6a6e6a7f",
+   "2e27332e2e2a3637"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 5 (72.2 s, the replayed stove after Play again at frame 3) shows the same painted marble worktop, stove, two pans, dial tray and eight spice jars as the first round's frame 2 (18.9 s): no flat coded fill, no missing texture; B frame 5 (68.1 s, 930x430) the same. Caveats: only chai was probed though the Check names every Cook station; flaws off the point: A frame 2 and B frame 5 the order panel's third word card is cut at the panel's right edge (\"ha\" / a half card), B frame 5 the first order's \"Muke ... khape.\" header has scrolled out of view; A frame 4 and B frame 4 an enlarged word card (khun na / dudh) sits over the order panel's edge, away from Nana's bubble.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev2",
+  "commit": "682e5a89",
+  "png": "build/screenshots/evidence/s14-chai-ev2/SH-161.png",
+  "date": "2026-10-30"
+ },
+ "SH-163": {
+  "hash": "ff7fe3f6126ddd199c68",
+  "dhash": [
+   "1331b9393d3c3d36",
+   "2e3e3636363e3637"
+  ],
+  "verdict": "PASS",
+  "line": "B, 930x430 L4 filmed order: at 3001, 7501, 12768 and 13501 ms one card at a time is in flight (recorder: at most 1 card in flight), its words at a single even scale, no doubled or stretched text in any morph frame; the row cards land as \"trae khun\", \"aako\", \"dudh na\", \"dudh\" cleanly. Flaws: A (1920x1080) is a tool fault, a ~2x zoomed crop of the page's top-left (only the top of Nana's head shows at the crop's bottom edge; the pop-out at y 641-844 is outside it), so the morph is not seen at that size; in B at 5500 ms the scrolled row card shows only \"khun\" cut at the panel's left edge, and from 9258 ms the finished person's cards sit half-hidden under the green heading. Only chai filmed, not every game.",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "png": "build/screenshots/evidence/s14-chai-ev/SH-163.png",
+  "date": "2026-10-30"
+ },
  "SH-165": {
   "hash": "3e03dce6a3d02430a05f",
   "dhash": [],
@@ -6572,6 +6667,21 @@
   "judge": "expect",
   "run": "s14-chai-ev",
   "commit": "682e5a89",
+  "date": "2026-10-30"
+ },
+ "SH-166": {
+  "hash": "d2ff1343540ac7ffb689",
+  "dhash": [
+   "2e262e363636363f",
+   "2e3e3636363e3637"
+  ],
+  "verdict": "PASS",
+  "line": "A, 740x320 L4: every bubble (Nana's \"Muke kari chai khape,\", \"trae khun,\", \"aako,\", \"dudh na.\"; the boy's \"dudh,\", \"khun na.\"; Masi's \"aako,\") sits wholly right of the side panel, each with its tail at its own speaker's head; contract-86 0 breaks at 740x320 and 930x430; B (930x430) the same. Flaws: as SH-163, the finished row's cards sit half-hidden under the heading from 8750 ms. Only chai filmed, two sizes.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-chai-ev",
+  "commit": "682e5a89",
+  "png": "build/screenshots/evidence/s14-chai-ev/SH-166.png",
   "date": "2026-10-30"
  },
  "SH-17": {

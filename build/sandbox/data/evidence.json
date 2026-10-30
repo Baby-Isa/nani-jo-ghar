@@ -21162,15 +21162,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:timed-hold",
+   "at": "exp:knob",
    "after": null,
    "capture": [
+    "crop:.njg-onboard.on .ob-box",
     "shot",
     "contract:84"
    ],
    "expect": null,
    "note": "a new player's first boil, held in the green: the knob lit with 'Slow kar!' on the black burner, the lit box's warm fill lifting it clearly against the dim (contract-84: at least 12 of 255 on a dark thing)",
-   "delay": 400
+   "delay": 300
   }
  ],
  "SH-165": [
@@ -21272,7 +21273,7 @@
    "at": "exp:cook-chai",
    "after": null,
    "capture": [
-    "strip:#side:30x200",
+    "strip:body:30x200",
     "contract:79"
    ],
    "expect": null,
@@ -21378,15 +21379,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:timed-hold",
+   "at": "kind-timing",
    "after": null,
    "capture": [
-    "shot",
+    "crop:canvas:s14-pan",
     "contract:81"
    ],
    "expect": null,
    "note": "the heat ring drawn over the pan's handle while the heat waits in the green: no picture covers the gauge",
-   "delay": 400
+   "delay": 1500
   }
  ],
  "CHAI-47": [
@@ -21405,7 +21406,7 @@
    "at": "exp:pour",
    "after": null,
    "capture": [
-    "zoom2:canvas:v2-tray",
+    "crop:canvas:v2-tray",
     "shot",
     "contract:82"
    ],
@@ -21425,10 +21426,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "life:request",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "strip:body:60x250",
+    "shot",
     "contract:52"
    ],
    "expect": null,
