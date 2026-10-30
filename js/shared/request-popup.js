@@ -497,6 +497,49 @@
         y = yOf(side);
       }
     }
+    // (S14, contract-52 in the clinic at 740x320: the doctor at the screen's edge, her head beside his: no side of his head and no
+    // wrap at its centre cleared her face): last, the bubble slides along its row away from the face it would cover, as far as
+    // its tail can still point at its own head, wrapping narrower if it must; nothing found, it stays where it was
+    if (hits(y) && (o.avoid || []).length) {
+      const keep = { x, y, side, bw, bh, mw: b.style.maxWidth, nar: b.dataset.njgNarrow };
+      const boxes = (o.avoid || []).map((el) => (el && el.getBoundingClientRect ? el.getBoundingClientRect() : null)).filter((q) => q && q.width && q.height);
+      const w0 = bw;
+      let found = false;
+      for (const nw of [w0, 0.8, 0.65, 0.5].map((kk) => (kk > 1 ? kk : Math.round(w0 * kk))).filter((v, i) => i === 0 || v >= 110)) {
+        if (nw !== w0) {
+          b.style.maxWidth = `${nw}px`;
+          b.dataset.njgNarrow = "1";
+        }
+        bw = b.offsetWidth;
+        bh = b.offsetHeight;
+        above = hy - gap - bh;
+        for (const sd of ["above", "below"]) {
+          if (sd === "above" ? above < M : below + bh > H - M) continue;
+          const yy = Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
+          for (const q of boxes) {
+            const qx0 = q.left - lr.left;
+            const qx1 = qx0 + q.width;
+            const xx = qx1 <= cx ? qx1 + M : qx0 >= cx ? qx0 - M - bw : null;
+            if (xx == null || xx < x0 || xx + bw > x1) continue;
+            if (cx < xx + 18 || cx > xx + bw - 30) continue; // its tail must still reach its own head
+            x = xx;
+            if (hits(yy)) continue;
+            y = yy;
+            side = sd;
+            found = true;
+            break;
+          }
+          if (found) break;
+        }
+        if (found) break;
+      }
+      if (!found) {
+        b.style.maxWidth = keep.mw;
+        if (keep.nar) b.dataset.njgNarrow = keep.nar;
+        else delete b.dataset.njgNarrow;
+        ({ x, y, side, bw, bh } = keep);
+      }
+    }
     b.style.left = `${Math.round(x)}px`;
     b.style.top = `${Math.round(y)}px`;
     b.dataset.njgPlace = side;
@@ -541,7 +584,31 @@
       });
     // towards the middle of the play area first (the room the other side may not have)
     const order = hx + w / 2 <= W / 2 ? ["face-right", "face-left"] : ["face-left", "face-right"];
-    const sd = order.find((k) => fits(k) && !hits(k)) || order.find(fits);
+    let sd = order.find((k) => fits(k) && !hits(k));
+    // (S14, contract-52 in the clinic: the doctor beside her with no room above his head; his line, at its full width, fitted
+    // only on her side, over her face): before landing on a face, the line wraps narrower beside its own head, as the
+    // placement above the head does; with no narrower wrap that clears it, back to its own width as before
+    if (!sd && !g.narrowed && (avoid || []).length && order.some((k) => !fits(k) || hits(k))) {
+      const w0 = bw;
+      // (the steps of the placement above the head, and the room each side has, down to a short word's width)
+      const room = order.map((k) => Math.floor(k === "face-right" ? W - M - xs[k] : xs[k] + bw - M));
+      const widths = [...new Set([0.8, 0.65, 0.5].map((kk) => Math.round(w0 * kk)).concat(room))].filter((nw) => nw >= 110 && nw < w0).sort((p, q) => q - p);
+      for (const nw of widths) {
+        b.style.maxWidth = `${nw}px`;
+        b.dataset.njgNarrow = "1";
+        const r2 = placeByFace(b, Object.assign({}, g, { bw: b.offsetWidth, bh: b.offsetHeight, narrowed: true, strict: true }), avoid);
+        if (r2) return r2;
+      }
+      b.style.maxWidth = "";
+      delete b.dataset.njgNarrow;
+      b.dataset.njgPlace = "face-right";
+    }
+    // (beside the head only on a face it must keep clear: the placement above or below, which can slide along, tries next)
+    if (!sd && (g.strict || (avoid || []).length)) {
+      delete b.dataset.njgPlace;
+      return null;
+    }
+    sd = sd || order.find(fits);
     if (!sd) {
       delete b.dataset.njgPlace;
       return null;

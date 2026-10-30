@@ -1200,7 +1200,16 @@
         const word = wordOf(it);
         const stg = HS && HS.stageOf ? HS.stageOf(it.card) : 1;
         const sl = WC.slots ? WC.slots(stg, { placeholder: word.rec }) : { english: true, kutchi: true };
-        (WC.pop || WC.card)(box, word, { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi } });
+        const wopts = { stage: stg, progress: (HS && HS.progress && HS.progress()) || undefined, slots: { picture: !!word.picture, english: sl.english, kutchiText: sl.kutchi } };
+        // S14: the kit's s14 pop-out card (chai's big card: WordCard.big14), as wide as chai's beside the side panel, its words
+        // fitted inside it
+        if (WC.big14) {
+          const pr = (screen.play || stage).getBoundingClientRect();
+          const c = WC.big14(box, word, Object.assign({ cls: "wc14-pop" }, wopts));
+          c.style.width = `${Math.round(Math.min(300, pr.height * 0.6, pr.width * 0.42))}px`;
+          if (WC.fit14) WC.fit14(c);
+          if (c.offsetHeight > pr.height - 20) c.classList.add("wc14-small");
+        } else (WC.pop || WC.card)(box, word, wopts);
       };
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
