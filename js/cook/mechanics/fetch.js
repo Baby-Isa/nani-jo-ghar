@@ -79,7 +79,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // fridge only ever leaves out a decoy.
       const P = Cook.data.mechanics.fetch;
       const fridge = new Set(P.fridge || []);
-      const free = { shelf: Cook.shuffle(P.slots.filter((s) => s.zone === "shelf")), fridge: Cook.shuffle(P.slots.filter((s) => s.zone === "fridge")) };
+      // (the S14 roll-out, PAN-18: the cog sits top right of the play area, lesson 8: "pinned controls take real space": on a phone it
+      // covers the fridge's top right slot, where the milk could not be tapped; a slot under the cog is left empty)
+      const cog = document.querySelector("[data-njg-zone=cog]");
+      const cr = cog && cog.offsetParent ? cog.getBoundingClientRect() : null;
+      const underCog = (s) => {
+        if (!cr || !Cook.UI.worldToScreen) return false;
+        const a = Cook.UI.worldToScreen(z.X(s.x - s.w / 2), z.Y(s.y - s.h / 2));
+        const b = Cook.UI.worldToScreen(z.X(s.x + s.w / 2), z.Y(s.y + s.h / 2));
+        return a.x < cr.right + 6 && b.x > cr.left - 6 && a.y < cr.bottom + 6 && b.y > cr.top - 6;
+      };
+      const free = { shelf: Cook.shuffle(P.slots.filter((s) => s.zone === "shelf" && !underCog(s))), fridge: Cook.shuffle(P.slots.filter((s) => s.zone === "fridge" && !underCog(s))) };
       // a plain decoy needs its side-on container (data.art.sprites.shelf): no top-down plate of chips on a
       // shelf (what the order could ask for always goes up, drawn or not)
       const all = need.concat(Cook.shuffle(decoys).filter((id) => always.includes(id) || Cook.Art.refUrl(`${id}.shelf`)));

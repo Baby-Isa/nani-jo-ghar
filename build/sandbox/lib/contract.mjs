@@ -1463,7 +1463,10 @@ function check37(r, tl, segs, add) {
       const got = Number(n.reason);
       const look = /lookalike:1/.test(n.by || "");
       const what = (n.by || "").replace(/\s*lookalike:\d/, "");
-      const ok = DECOY_AT_LEAST.test(st) ? got >= want : got === want;
+      // (the S14 roll-out; the central rules' decoys: "one more a level where the space allows": a station whose pool had no more to
+      // offer says so, room:n, and that many is its most)
+      const room = /room:(\d+)/.exec(n.by || "");
+      const ok = (DECOY_AT_LEAST.test(st) ? got >= want : got === want) || (room && got === Number(room[1]) && got < want);
       if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
       if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: the table's count with a lookalike variant)`);
     }

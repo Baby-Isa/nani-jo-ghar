@@ -11,7 +11,7 @@
  },
  "mechanic": {
   "levels": [
-   {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12"], "ladder": "words", "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
+   {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12", "spi-10"], "_spiceShelf": "S14 roll-out (DAAR-36): an eighth jar, elchi, so L4 has room for its four spices and four decoys (the central rules)", "ladder": "words", "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
    {"vegDecoys": 2, "spiceDecoys": 2},
    {"vegDecoys": 3, "spiceDecoys": 3},
    {"vegDecoys": 4, "ladder": "closed"}

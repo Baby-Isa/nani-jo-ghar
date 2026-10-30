@@ -462,7 +462,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // table's dotted card keeps the item dotted until its row ticks: data levelTable.stations["daar-chop"].callWritten)
     const own = (((Cook.data && Cook.data.levelTable) || {}).stations || {})["daar-chop"] || {};
     const cw = Array.isArray(own.callWritten) ? !!own.callWritten[Math.min(own.callWritten.length, Math.max(1, cardLv)) - 1] : false;
-    const staged = rounds > 1 && cardAt !== "open";
+    // (the S14 roll-out: on the s14 look a card's Kutchi is always written, Zafar 29 Oct, rule 7; so Nani's chop card writes every row from
+    // the start too, never a dotted row with no speaker, contract-40: DAAR-34's staged dotting is the old look's; for Zafar to confirm)
+    const staged = rounds > 1 && cardAt !== "open" && !(UI.s14 && UI.s14());
     // the rows ticked so far (DAAR-34, the judge's flaw at L3: a ticked row stayed "trae •••"): a ticked row is written whole
     const done = new Set(doneIds);
     const called = new Set(staged ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));

@@ -186,7 +186,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     Cook.shuffle(left).forEach((x) => out.length < need && !out.includes(x) && out.push(x));
     // (also: things on offer that nobody asked for besides these, the 'no' item: an ordinary decoy, counted)
-    S$.decoyNote(out.length + also, { what, lookalike: look || (row.lookalike && alsoLook) });
+    // (the S14 roll-out; the central rules: "one more a level where the space allows": a pool with no more to offer says so, room:n, for contract-37)
+    S$.decoyNote(out.length + also, { what: out.length < need ? `${what} room:${out.length + also}` : what, lookalike: look || (row.lookalike && alsoLook) });
     return out;
   };
   /** CK-49 (contract-37): a station reports how many decoys it put out this round, and whether one is a lookalike. */
