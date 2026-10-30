@@ -491,11 +491,19 @@
       // CLN-144 (decision 95, contract-8): while the nudge glows, the card's next-step band steps back (one thing lit)
       if (ctx.card.hush) ctx.card.hush(false);
       if (!el) return;
-      nudgeT = setTimeout(() => {
+      // (contract-8, S14: the spoon's glow waited only for its pause, and lit while the card still read the add row aloud: two
+      // things lit for half a second, at L2 before and at L1 now the spoons are counted there; it waits for the reading too)
+      const reading = () => !!(root.document && root.document.querySelector(".cl-side .oc-row.reading, .cl-side .reading"));
+      const go = () => {
         if (st.over || !still()) return;
+        if (reading()) {
+          nudgeT = setTimeout(go, 150);
+          return;
+        }
         if (ctx.card.hush) ctx.card.hush(true);
         el.classList.add("pulse");
-      }, fast() ? 200 : 1800);
+      };
+      nudgeT = setTimeout(go, fast() ? 200 : 1800);
     };
     const emptyGlass = () => {
       st.glass = { liquid: null, adds: {}, stirred: false, slip: false };
