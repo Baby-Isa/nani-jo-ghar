@@ -30,6 +30,8 @@ None: the orchestrator fixes in this chat (fast lane), the `judge` agent per gam
 - **The helper says the next item only when her card opens** (SH-172), every game.
 
 ## Small decisions
+- A replay of the order mid-play keeps every card and lights each as it is said again; the cards never go back to slots (Zafar, 30 Oct: "go with your recommendation"). `M.sayCard` already does this; contract-88 judges the order's first giving only.
+- The helper card's speaker gap holds on a laptop too (Zafar, 30 Oct: "this was also an issue on laptop"): the side card (a window under 760 px tall, laptops included) measured 9 px against the item card's 9 px at 1280x665; a tall window stacks the card, its speaker centred as the item card's.
 
 ## Outcome
 

@@ -602,6 +602,15 @@
   };
   W.morph = async function (from, to, o = {}) {
     if (!from || !to) return;
+    // (the judge, 30 Oct: samosa's card flew below the screen's foot to a row the list had scrolled away: the row is brought into
+    // its list's view first, up and down only, so the card always lands where it is seen)
+    const list = to.closest && to.closest("#mission, .oc-list, [data-njg-scroll]");
+    if (list) {
+      const lr = list.getBoundingClientRect();
+      const tr = to.getBoundingClientRect();
+      if (tr.bottom > lr.bottom) list.scrollTop += tr.bottom - lr.bottom + 4;
+      else if (tr.top < lr.top) list.scrollTop -= lr.top - tr.top + 4;
+    }
     const a = from.getBoundingClientRect();
     const b = to.getBoundingClientRect();
     const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -611,7 +620,7 @@
     // bigger card to the small card ... nicely visible and not squashed ... And at the same time, it just needs to physically move into
     // the right place"): one card, the big one, shrinks (one even scale, to fit the row's box) while it moves centre to centre, whole
     // and fully seen all the way; only at its landing, where it sits on the row's card at the row's size, does the row's own card take
-    // over: the big card stays on it until the row's card is drawn whole (its picture decoded), then fades in a moment (the 30 Oct
+    // over: the big card stays on it until the row's card is drawn whole (its picture decoded), then goes in one frame (the 30 Oct
     // film: a row card shown as the big one faded drew its words low with no picture for a few frames)
     const s = Math.min(b.width / a.width, b.height / a.height);
     const dx = b.left + b.width / 2 - (a.left + a.width / 2);
@@ -622,13 +631,24 @@
     from.style.transformOrigin = "50% 50%";
     try {
       await from.animate([{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }], { duration: dur, easing: ease, fill: "forwards" }).finished;
+      // (laid out and drawn under the big card but not seen: the two never show at once, the 30 Oct film at 930x430)
+      to.style.visibility = "hidden";
       to.classList.remove("oc-away");
       const im = to.querySelector("img");
       if (im && im.decode) await Promise.race([im.decode().catch(() => {}), new Promise((r) => setTimeout(r, 300))]);
+      // (the row card's own fade from its waiting slot, .25 s, finishes under the big card)
+      await new Promise((r) => setTimeout(r, 260 / sp));
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-      await from.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140 / sp, fill: "forwards" }).finished;
+      // (the judge, 30 Oct: a fade here showed the two cards at once; the row's card is drawn under it, so the swap is one frame)
+      to.style.visibility = "";
+      from.style.visibility = "hidden";
+      // (the row's card a touch bigger than the big one scaled to fit inside it: it takes over at the big one's size and grows the
+      // last few px, so the hand-over is part of the one motion, never a jump)
+      const k0 = (a.width * s) / b.width;
+      if (k0 < 0.995 && to.animate) await to.animate([{ transform: `scale(${k0})` }, { transform: "none" }], { duration: 160 / sp, easing: "ease-out" }).finished;
     } catch (e) {
       /* cancelled: the card lands anyway */
+      to.style.visibility = "";
     }
   };
   if (root.addEventListener) {

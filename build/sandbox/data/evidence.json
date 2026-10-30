@@ -21204,6 +21204,25 @@
    "expect": null,
    "note": "samosa's order: each big card into its row card with one even scale, no doubled words",
    "delay": 0
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 600,
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "at": "visible:.wc14-pop",
+   "capture": [
+    "strip:body:40x50"
+   ],
+   "note": "the first item's big card filmed every 50 ms from its pop: it shrinks as it moves into its row as one whole card, the row's card taking over in one frame at the end (no two cards on screen, no fade of one over the other)"
   }
  ],
  "SH-164": [
@@ -21234,21 +21253,22 @@
    "want": null,
    "after": null,
    "expect": null,
-   "delay": 0,
+   "delay": 900,
    "flow": "cook:chai-tray",
    "path": "hint",
    "level": 2,
    "sizes": [
     "740x320",
-    "930x430"
+    "930x430",
+    "1280x665"
    ],
    "profile": "seen",
    "at": "life:helper-open",
    "capture": [
     "zoom2:#guide",
-    "crop:#mission"
+    "zoom2:#mission"
    ],
-   "note": "the helper's side card (a phone): the speaker at the card's right, its gap to the right edge the same as the order's item card's speaker-to-foot gap below (7 px at 740x320, measured 30 Oct); less only where a word needs one line"
+   "note": "the helper's side card (a phone and a short laptop): the speaker at the card's right, its gap to the right edge the order's item card's speaker-to-foot gap (measured 30 Oct: 7 px at 740x320, 9 px at 930x430 and 1280x665); both crops at 2x so the two gaps can be read; on a tall screen (1920x1080) the card stacks, its speaker centred as the item card's"
   }
  ],
  "SH-166": [
@@ -21295,43 +21315,88 @@
  ],
  "CHAI-40": [
   {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 900,
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "hint",
    "level": 1,
    "sizes": [
-    "930x430",
-    "1920x1080"
+    "930x430"
    ],
    "profile": "fresh",
-   "want": null,
-   "at": "kind-timing",
-   "after": null,
+   "at": "life:helper-open",
    "capture": [
-    "shot",
-    "contract:78"
+    "voice",
+    "contract:89",
+    "contract:78",
+    "contract:36"
    ],
-   "expect": null,
-   "note": "at a child's pace, every control's call comes with its light (the knob to light the cooker, the knob at the green, the glass for the pour): the dim, the gold box and the call together",
-   "delay": 0
+   "note": "chai L1: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
   },
   {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 900,
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "hint",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "at": "life:helper-open",
+   "capture": [
+    "voice",
+    "contract:89",
+    "contract:78",
+    "contract:36"
+   ],
+   "note": "chai L2: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 900,
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "at": "life:helper-open",
+   "capture": [
+    "voice",
+    "contract:89",
+    "contract:78",
+    "contract:36"
+   ],
+   "note": "chai L3: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 900,
+   "flow": "cook:chai-tray",
+   "path": "hint",
    "level": 4,
    "sizes": [
     "930x430"
    ],
    "profile": "seen",
-   "want": null,
-   "at": "kind-timing",
-   "after": null,
+   "at": "life:helper-open",
    "capture": [
-    "shot",
-    "contract:78"
+    "voice",
+    "contract:89",
+    "contract:78",
+    "contract:36"
    ],
-   "expect": null,
-   "note": "L4, three pans: every 'Chulo bar!' and 'Slow kar!' lit with its call",
-   "delay": 0
+   "note": "chai L4: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
   }
  ],
  "CHAI-42": [
@@ -22437,7 +22502,7 @@
    "want": null,
    "after": null,
    "expect": null,
-   "delay": 0,
+   "delay": 900,
    "flow": "cook:chai-tray",
    "path": "hint",
    "level": 1,
@@ -22453,10 +22518,50 @@
     "contract:89",
     "contract:36"
    ],
-   "note": "Nani says the next item only as her helper card opens to show it (the hint after the wait, or the arrow); never at the step's opening while the card is closed; a control's call (Chulo bar!) still comes with its light"
+   "note": "Nani says the next item only as her helper card opens to show it (the hint after the wait, or the arrow); never at the step's opening while the card is closed; a control's call (Chulo bar!) still comes with its light · Sprint 15 goes game by game: this sheet is chai's part (L1-L4); each game adds its pages at its turn"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": null,
+   "delay": 900,
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "at": "life:helper-open",
+   "capture": [
+    "crop:#guide",
+    "voice",
+    "contract:89"
+   ],
+   "note": "chai L3: the helper's call as her card opens"
   }
  ],
  "CHAI-50": [
+  {
+   "want": null,
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "at": "now",
+   "capture": [
+    "cmd:node build/tools/review/lightfollow.mjs --level 1 --size 930x430 --speed 2 --secs 45"
+   ],
+   "note": "a new player at a child's pace who taps what is lit (build/tools/review/lightfollow.mjs): the light layers every 100 ms with their boxes and each step's opening; it fails on two lights up together over 300 ms or a box left on 1.5 s after the next step opened"
+  },
   {
    "want": null,
    "after": null,
@@ -22466,7 +22571,6 @@
    "path": "speed1",
    "level": 1,
    "sizes": [
-    "930x430",
     "1280x665"
    ],
    "profile": "fresh",
@@ -22475,7 +22579,7 @@
     "shot",
     "contract:87"
    ],
-   "note": "a new player at a child's pace through the cooker: one light at a time; the dim and the gold box gone when the knob's step ends (no second dim, none left on the cooker at the tea glass)"
+   "note": "the cooker's step as a new player: one dim, one gold box (contract-87 over the whole play)"
   }
  ]
 }

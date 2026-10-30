@@ -241,7 +241,9 @@ export function check88(tl, add) {
     if (!(e.away > 0) || !seen.size) continue;
     const prev = ev(tl, "rows14").filter((x) => x.t < e.t).pop();
     const gone = (prev ? prev.shown || [] : []).filter((w) => !(e.shown || []).includes(w));
-    if (!gone.length) continue;
+    // (a said person's card folding to face and headline as the next one speaks, SH-169, hides its rows without a slot: only rows
+    // that went back to their dashed slots count, the slots' number grown)
+    if (!gone.length || !prev || !(e.away > (prev.away || 0))) continue;
     add("contract-88", e.t, `the order card showed ${gone.map((w) => `"${w}"`).join(", ")} and then hid ${gone.length > 1 ? "them" : "it"} again as a dashed slot: the item seen before it was said`);
     return;
   }

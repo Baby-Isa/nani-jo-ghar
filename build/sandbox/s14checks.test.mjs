@@ -224,6 +224,7 @@ test("contract-88: an item shown, then hidden as a dashed slot, then shown is a 
   const rw = (t, shown, away) => c("rows14", t, { shown, away });
   assert.equal(run(check88, [rw(500, ["hakro dungri"], 0), rw(1600, [], 1), rw(4000, ["hakro dungri"], 0)]).length, 1, "main on 30 Oct");
   assert.equal(run(check88, [rw(500, [], 1), rw(4000, ["hakro dungri"], 0)]).length, 0, "the slot first, the item as it is said");
+  assert.equal(run(check88, [rw(500, [], 9), rw(2000, ["dudh"], 8), rw(4000, [], 8)]).length, 0, "a said card folding (SH-169) is not a slot");
 });
 
 test("contract-89: a call while the helper names an item and is closed is a break (SH-172)", () => {
