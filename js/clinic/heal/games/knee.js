@@ -18,12 +18,9 @@
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  const K = {
-    kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
-    // K6 (CLN-100): higher numbers, "the whole fun of it": about 4-6 / 5-8 / 6-10 turns
-    // Zafar's heal ladder (13 Oct): L3 adds only heard (the closed card); the bigger counts are L4's
-    turns: { 1: [4, 5, 6], 2: [5, 6, 7, 8], 3: [5, 6, 7, 8], 4: [6, 7, 8, 9, 10] },
-  };
+  // S14 (CLN-209; the rulebook's section 3, Zafar 29 Oct): the kicks (x) and the bandage turns (y) are the central rules'
+  // (data/rules.json heal-knee: 1-3+4-5, 2-4+5-6, 2-5+6-7, 3-6+7-8), drawn through HS.count (K6's "higher numbers" stay
+  // the fun of it: the turns grow every level)
   const WHY = { problem: "knee-why", goal: "knee-goal" }; // line keys in data/clinic/heal/knee.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -34,8 +31,8 @@
   function plan(level, rng, sideIn) {
     const L = Math.max(1, Math.min(4, level));
     const side = sideIn || (rng() < 0.5 ? "left" : "right");
-    const kicks = HS.pick(K.kicks[L], rng);
-    const turns = HS.pick(K.turns[L], rng);
+    const kicks = HS.count("knee", "x", L, rng);
+    const turns = HS.count("knee", "y", L, rng);
     // the flash order: sides alternate; heights random from level 2. CLN-100 (S05-D): at level 1 the heights step
     // in a fixed order (middle, top, bottom ...), so every turn is a new band across the kneecap and into the crease
     // (on one height each turn lay on the last one and the wrap looked like a single band)
@@ -92,12 +89,12 @@
       { id: "wrap", kind: "wrap", count: turns, order, row: Object.assign({ id: "wrap" }, say(Lg.join([Lg.then("cl-bandage"), ",", Lg.item("turns", { n: turns })]))) },
     ];
     const rows = [
-      { id: "kick-count", options: K.kicks[L], answer: kicks },
+      { id: "kick-count", options: HS.span("knee", "x", L), answer: kicks },
       // 13i: the flashing stops at the last turn, so the turns are no longer decided by the word alone: a hand-skill row
-      { id: "wrap-turns", options: K.turns[L], answer: turns, skill: true },
+      { id: "wrap-turns", options: HS.span("knee", "y", L), answer: turns, skill: true },
     ];
     const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), Lg.w("body-knee"), Lg.w("cl-bandage")];
-    return { level: L, side, steps, rows, words };
+    return { level: L, side, steps, rows, words, counts: { x: kicks, y: turns } };
   }
 
   function mount(stage, ctx) {

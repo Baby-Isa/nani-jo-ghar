@@ -63,6 +63,13 @@
       const pj = (await Kit.loadJSON("data/clinic/pipeline.json")) || {};
       Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
     }
+    // S14 roll-out: every heal game's numbers are the central rules' (js/shared/rules.js, which js/shared/tokens.js loads
+    // itself): a game's plan asks them, so they are in before the first game mounts
+    if (!HOST.rulesIn) {
+      for (let k = 0; k < 100 && !global.Rules; k++) await new Promise((r) => setTimeout(r, 30));
+      if (global.Rules && global.Rules.ready) await global.Rules.ready;
+      HOST.rulesIn = !!(global.Rules && global.Rules.loaded);
+    }
     if (Kit.art == null) await Kit.loadArt();
     // the patients' real art and the close-ups (pack clinic-heal-v3, build/cut_clinic_heal_v3.py)
     if (HOST.healArt == null) HOST.healArt = (await Kit.loadJSON("data/clinic/heal-art.json")) || {};

@@ -23,8 +23,8 @@
   const K = {
     // CLN-45 (Zafar's heal ladder, 13 Oct; 14 Oct: the ear's L3 extras move to a new L4): L3 is L2 heard only (the
     // closed card); the busier ear (more blobs, more pop-outs, more smears, more sore skin, a fourth picture) is L4's
-    drops: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
-    start: { 1: 3, 2: 4, 3: 4, 4: 5 }, // blobs in the ear at the start (big and small among them from L2)
+    // S14 (CLN-208; the rulebook's section 3, Zafar 29 Oct): the blobs in the ear at the start (x; big and small among them
+    // from L2) and the drops (y) are the central rules' (data/rules.json heal-ear: 3+1-3, 4+2-4, 5+2-5, 6+3-6), via HS.count
     spawnCap: { 1: 3, 2: 5, 3: 5, 4: 7 }, // how many more can pop out in all
     smears: { 1: 3, 2: 4, 3: 4, 4: 5 }, // the first blobs out leave a smear each, for the bud
     budR: 20, // the bud's tip, svg units
@@ -71,7 +71,8 @@
     const H = Object.assign({}, hearDefaults(), o.hearing || {});
     const bigFirst = rng() < 0.5;
     const order = bigFirst ? ["big", "small"] : ["small", "big"];
-    const drops = HS.pick(K.drops[L], rng);
+    const drops = HS.count("ear", "y", L, rng);
+    const blobs = HS.count("ear", "x", L, rng);
     const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
     const say = (m, opts) => Lg.show(m, opts);
     // CLN-160: the whole job is one sequence on the card (every row shares the `seq` key; the wax order's own "wax" key made a second box at level 3)
@@ -87,7 +88,7 @@
     const rows = [
       ...(L === 1 ? [] : [{ id: "wax-order", options: [["big", "small"], ["small", "big"]], answer: order }]),
       { id: "wipe-gentle", options: [true, false], answer: true, skill: true },
-      { id: "drops-count", options: K.drops[L], answer: drops },
+      { id: "drops-count", options: HS.span("ear", "y", L), answer: drops },
     ];
     let hear = null;
     if (H.on && H.words && H.words.length >= 2) {
@@ -100,7 +101,7 @@
     }
     const words = (L === 1 ? [] : [Lg.w("lnk-pela"), Lg.w("ph-big"), Lg.w("ph-small")]).concat([Lg.w("lnk-nepoi"), Lg.num(drops), Lg.w("body-ear"), Lg.w("cl-wax")]);
     if (hear) words.push(Object.assign(Lg.w(hear.word), { id: hear.word }));
-    return { level: L, steps, rows, words, hear };
+    return { level: L, steps, rows, words, hear, blobs, counts: { x: blobs, y: drops } };
   }
 
   function mount(stage, ctx) {
@@ -263,7 +264,7 @@
       return b;
     };
     // the ear full from the start (CLN-50): the big and the small one from level 2, the rest middling
-    const startN = K.start[P.level];
+    const startN = P.blobs;
     if (P.level >= 2) {
       addBlob("big");
       addBlob("small");

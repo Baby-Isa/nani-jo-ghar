@@ -50,13 +50,15 @@
   const ALL = POOL.concat(WAITING).map(thing);
   const BY = Object.fromEntries(ALL.map((t) => [t.id, t]));
   const things = () => POOL.concat(WAITING.filter((lex) => HS.recorded(lex))).map((lex) => BY[lex]);
-  const RID = (i) => `card-${"abcdef"[i]}`; // a judged card's scored id (the review lists it under the eye-test row)
+  const RID = (i) => `card-${"abcdefghij"[i]}`; // a judged card's scored id (the review lists it under the eye-test row)
   const W = (t) => HS.L.w(t.lex);
   // CLN-187 (clinic decision 8): from bothFrom a count for each eye. wrongP (Sprint 11): she misreads half the cards, so a
   // blind "always haa" (or "always na", or a coin) wins 1 in 16 rounds (0.5^4 = 6.25%: under the leak test's 10% with room
   // at the checks' 500 rounds; 0.45 gave 9.15%, a coin's toss from the line)
   // gapMs (CLN-201): the quiet between the end of her clip and the start of the next
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, bothFrom: 2, cards: 4, wrongP: 0.5, gapMs: 1500 };
+  // S14 (CLN-207; the rulebook's section 3, Zafar 29 Oct): the drops (x; each eye its own from bothFrom) and the judged cards
+  // (y) are the central rules' (data/rules.json heal-eye: 2+4, 2-3+5, 2-4+6, 2-5+7), drawn through HS.count
+  const K = { bothFrom: 2, wrongP: 0.5, gapMs: 1500 };
   const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: drops keep the ghost finger (S.cue); the card's help is the real pill (Onboard.stuck), so its cue only
   // names the step (watch: S.cue logs it, nothing more)
@@ -70,14 +72,15 @@
     const L = Math.max(1, Math.min(4, level));
     // D10 (1 Oct): sides are said and tested in the diagnosis only: no side row, no "cover the other eye"
     const side = null;
-    const drops = HS.pick(K.drops[L], rng);
+    const drops = HS.count("eye", "x", L, rng);
     // CLN-187: from level 2 a count for each eye (the patient's own right and left); level 1 the sore eye alone
-    const both = L >= K.bothFrom ? { right: drops, left: HS.pick(K.drops[L], rng) } : null;
-    // the cards: the demo, then K.cards judged; never the same thing twice running
+    const both = L >= K.bothFrom ? { right: drops, left: HS.count("eye", "x", L, rng) } : null;
+    const nCards = HS.count("eye", "y", L, rng);
+    // the cards: the demo, then nCards judged; never the same thing twice running
     const pool = things();
     const cards = [];
     let deck = HS.shuffle(pool, rng);
-    for (let i = 0; i <= K.cards; i++) {
+    for (let i = 0; i <= nCards; i++) {
       if (!deck.length) deck = HS.shuffle(pool, rng);
       let k = deck.findIndex((t) => !cards.length || t.id !== cards[cards.length - 1].id);
       if (k < 0) k = 0;
@@ -105,7 +108,7 @@
     const words = (both ? [Lg.num(both.right), Lg.num(both.left), Lg.w(Lg.sideId("right")), Lg.w(Lg.sideId("left"))].filter((w, k, a) => a.findIndex((x) => x.kutchi === w.kutchi && x.english === w.english) === k) : [Lg.num(drops)]).concat([Lg.w(Lg.yesId()), Lg.w(Lg.noId())]);
     const seen = new Set();
     cards.forEach((c) => [c.id, c.said].forEach((id) => !seen.has(id) && seen.add(id) && words.push(W(BY[id]))));
-    return { level: L, side, steps, rows, cards, both, words };
+    return { level: L, side, steps, rows, cards, both, words, counts: { x: drops, y: nCards } };
   }
 
   function mount(stage, ctx) {
@@ -113,6 +116,23 @@
     const P = plan(ctx.level, ctx.rng);
     // CLN-118 (D13), SH-99, CLN-161: the taught first round writes and says every count too, and its word review keeps them
     if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
+    // CLN-205 (Zafar, 27 Oct: "The onboarding for the eye game only needs to run through one round (which includes the wrong
+    // answer so the user can be shown the eye drop and the whole loop)"): a new player's taught round shows its help on the
+    // demo and on ONE judged card, the first, on which she misreads, so the dropper and the whole loop are shown once; the
+    // cards after it wait for a pause like any round's
+    const teach = P.level === 1 && (!!ctx.taught || !!(root.Onboard && root.Onboard.newPlayer && root.Onboard.newPlayer()));
+    const c1 = P.cards.find((c) => !c.demo);
+    if (teach && c1 && !c1.wrong) {
+      const other = things().filter((t) => t.id !== c1.id);
+      if (other.length) {
+        c1.wrong = true;
+        c1.said = HS.pick(other, ctx.rng).id;
+        const row = P.rows.find((r) => r.id === RID(0));
+        if (row) row.answer = false;
+        if (!P.words.some((w) => w && w.english === W(BY[c1.said]).english)) P.words.push(W(BY[c1.said]));
+      }
+    }
+    const teachCard = (c) => teach && (c.demo || (c1 && c.i === c1.i));
     // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
     // wider safe area there keeps both eyes whole
     const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;
@@ -791,7 +811,7 @@
       const side = room > 120 ? "right" : "left";
       // the rungs count from this card coming up (her guess, not the child, was the last thing)
       if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
-      const first = c.demo || (P.level === 1 && firstRound());
+      const first = c.demo || (P.level === 1 && firstRound() && teachCard(c));
       stuck = root.Onboard.stuck(c.demo ? "eye-card-demo" : "eye-card", {
         // (each card its own first time in the taught round: the kit shows a step's first time once per id)
         id: c.demo ? "clinic/heal-eye-card-demo" : `clinic/heal-eye-card${first ? `-${c.i}${o.again ? "-again" : ""}` : ""}`,
@@ -885,7 +905,7 @@
       S.cue("redrop", Object.assign({ watch: true }, CUES.redrop), { x: readEye.x, y: readEye.y }); // (the help log's step name)
       if (root.Onboard && root.Onboard.stuck && ctx.onboardOn !== false) {
         if (root.NaniGuide && root.NaniGuide.poke) root.NaniGuide.poke();
-        const first = P.level === 1 && firstRound();
+        const first = P.level === 1 && firstRound() && teachCard(c);
         stuck = root.Onboard.stuck("eye-redrop", {
           id: first ? `clinic/heal-eye-redrop-${c.i}` : "clinic/heal-eye-redrop",
           first: first || undefined,

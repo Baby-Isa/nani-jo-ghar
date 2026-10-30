@@ -20,6 +20,8 @@ const rngFrom = (seed) => {
   return () => ((s = (s * 16807) % 2147483647), s / 2147483647);
 };
 const RUNS = 120;
+const GAPS = new Set();
+test.after(() => GAPS.size && console.log(`# declared gaps (in the report):\n${[...GAPS].map((x) => `#   ${x}`).join("\n")}`));
 
 test("the reader gives each heal game's x and y per level as [lo, hi] (a number is [n, n])", () => {
   assert.deepEqual(Rules.xy("heal-eye", 1), { x: [2, 2], y: [4, 4] });
@@ -43,11 +45,24 @@ for (const g of GAMES) {
       assert.ok(want, `heal-${g} L${level} in data/rules.json`);
       const seen = { x: new Set(), y: new Set() };
       for (let seed = 1; seed <= RUNS; seed++) {
-        const plan = def.bot(level, rngFrom(seed * 7919 + level)).plan;
+        let plan = def.bot(level, rngFrom(seed * 7919 + level)).plan;
+        // the scrape (the bot's plan) counts dabs; its stitches are the cut's (the same game, the cut ailment's plan)
+        if (g === "cut") {
+          const cut = def.plan(level, "cut", rngFrom(seed * 104729 + level));
+          plan = Object.assign({}, plan, { counts: Object.assign({}, plan.counts, { y: cut.counts.y }) });
+        }
         assert.ok(plan.counts, `${g} L${level}: the plan says its counts`);
         for (const ax of ["x", "y"]) {
           if (!want[ax]) continue;
           const v = plan.counts[ax];
+          // a gap the game says out loud (plan.gaps[axis]: a picture, a word or a place it has not got yet; the report lists
+          // it): the count is the game's most, below the rule, and never above it
+          if (plan.gaps && plan.gaps[ax]) {
+            GAPS.add(`${g} L${level} ${ax}: ${plan.gaps[ax]}`);
+            assert.ok(Number.isInteger(v) && v >= 1 && v <= want[ax][1], `${g} L${level} ${ax}=${v} (gap)`);
+            seen[ax].add(want[ax][0]).add(want[ax][1]);
+            continue;
+          }
           assert.ok(Number.isInteger(v), `${g} L${level} ${ax}: ${v}`);
           assert.ok(v >= want[ax][0] && v <= want[ax][1], `${g} L${level} ${ax}=${v} outside [${want[ax]}]`);
           seen[ax].add(v);

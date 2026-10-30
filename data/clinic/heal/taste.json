@@ -88,17 +88,13 @@
  },
  "levels": {
   "1": {
-   "pop": 1,
    "each": 3,
-   "decoys": 2,
    "upMs": 2600,
    "maxUp": 3,
-   "_note": "one colour to pop (of three), then the drink with no count; the first play is the guided round (D13)"
+   "_note": "one colour to pop (of three), then the drink with no count; the first play is the guided round (D13) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
   },
   "2": {
-   "pop": 2,
    "each": 2,
-   "decoys": 2,
    "upMs": 2100,
    "maxUp": 4,
    "counts": [
@@ -106,12 +102,10 @@
     2,
     3
    ],
-   "_note": "not the colour said (na): pop the other two (the level's one new thing, with the drink's spoon count, written)"
+   "_note": "not the colour said (na): pop the other two (the level's one new thing, with the drink's spoon count, written) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
   },
   "3": {
-   "pop": 2,
    "each": 2,
-   "decoys": 2,
    "upMs": 2100,
    "maxUp": 4,
    "counts": [
@@ -119,11 +113,10 @@
     2,
     3
    ],
-   "_note": "level 2 heard only (the closed card) (Zafar's heal ladder, 13 Oct)"
+   "_note": "level 2 heard only (the closed card) (Zafar's heal ladder, 13 Oct) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
   },
   "4": {
    "each": 2,
-   "decoys": 3,
    "upMs": 1500,
    "maxUp": 4,
    "counts": [
@@ -131,7 +124,7 @@
     2,
     3
    ],
-   "_note": "harder variety (level 4, Zafar 13 Oct): faster, a third decoy of each other colour; heard only"
+   "_note": "harder variety (level 4, Zafar 13 Oct): faster, a third decoy of each other colour; heard only (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
   }
  },
  "colours": {
