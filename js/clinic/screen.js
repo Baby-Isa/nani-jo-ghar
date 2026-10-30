@@ -181,7 +181,19 @@
         const c = scr.card;
         const r = c && (c.row(c.st.now) || c.rows.find((x) => !c.st.done.has(x.id)));
         if (!r) return null;
-        const lit = main.querySelector(".hs-tool.next-up img, .hs-tool.pulse img, .hs-tool.sel img");
+        // the step's tool: the one lit now (the light, the next-up glow, the pick), else the tool its line names (the tool's
+        // id words in the line's English: "Water lukewarm, three jugs" is jug-lukewarm)
+        let lit = main.querySelector(".hs-tool.ob-lit img, .hs-tool.next-up img, .hs-tool.pulse img, .hs-tool.sel img");
+        if (!lit) {
+          const en = ` ${String(r.english || "").toLowerCase().replace(/[^a-z]+/g, " ")} `;
+          let best = 0;
+          main.querySelectorAll(".hs-tool[data-tool]").forEach((t) => {
+            const img = t.querySelector("img");
+            if (!img) return;
+            const sc = String(t.dataset.tool).toLowerCase().split(/[^a-z]+/).filter((p) => p.length > 2 && (en.includes(` ${p} `) || en.includes(` ${p}s `))).length;
+            if (sc > best) (best = sc), (lit = img);
+          });
+        }
         return { id: r.id, kutchi: r.kutchi || r.english, english: r.english, rec: !r.kutchi || !!r.placeholder, picture: lit ? { src: lit.currentSrc || lit.src, fit: "contain" } : null, say: () => Kit.Voice.say(r, { who: "guide", noBubble: true }) };
       };
       const paint14 = () => {
