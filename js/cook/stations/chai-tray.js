@@ -1800,6 +1800,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const pan = pans.find((q) => `knob-on-${q.who}` === key);
         return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
       }
+      // (the orchestrator's film, 30 Oct: at L3-L4 a cold pan that is not the one in hand opens its knob step as a tap on the pan, so
+      // "Chulo bar!" was said with nothing lit (contract-78): its knob is lit, as a tap on the knob takes the pan in hand too)
+      if (nx.phase === "knob" && /^pan-/.test(key)) {
+        const pan = pans.find((q) => `pan-${q.who}` === key);
+        return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
+      }
       const obj = shelf[key];
       if (!obj || !sel) return null;
       return { obj, id: key, target: itemRect(obj), point: itemPt(obj), avoid: () => shelfBut(obj) };
