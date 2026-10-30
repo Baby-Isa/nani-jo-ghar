@@ -39,6 +39,8 @@ export function allFlows() {
   }
   // ---- SH-138: a returning player (help seen, words learned) in chai and the chai tray, L1 and L3 ----
   for (const u of [{ key: "chai", recipe: true }, { key: "chai-tray" }]) for (const L of [1, 3]) flows.push(deep(cookStation(u.key, L, { recipe: !!u.recipe, mode: "returning" })));
+  // (the S14 roll-out, s14-cook: every Cook station on the kit gets its returning player too, L1)
+  for (const key of ["fetch", "maani-line", "mishkaki-grill", "samosa", "assemble", "daar"]) flows.push(deep(cookStation(key, 1, { mode: "returning" })));
   // ---- the rest of live Cook: the parts, the other recipes, the days, the shop, the open kitchen ----
   for (const k of PARTS) flows.push(deep({ ...cookStation(k, 1), group: "cook-parts" }));
   for (const r of ["maani", "daal", "samosa", "mishkaki"]) flows.push(deep({ ...cookStation(r, 1, { recipe: true }), group: "cook-recipes" }));
