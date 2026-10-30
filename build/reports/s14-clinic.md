@@ -1,4 +1,4 @@
-# s14-clinic: the heal games on the s14 kit, Zafar's numbers (30 Oct, Opus)
+# s14-clinic: the heal games on the s14 kit, Zafar's numbers (30 Oct)
 
 ## What changed
 - **Numbers** (CLN-207 to 215): every heal game draws x + y from `data/rules.json` (new readers `Rules.xy / draw / span`,
