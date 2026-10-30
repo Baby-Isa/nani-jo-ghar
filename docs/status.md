@@ -16,7 +16,7 @@ his 30 Oct words: "run everything autonomously without me till publish; fix all 
 - **Live on `main`** (fe1117ee, 20261030T061035Z): chai with every fix above; the other games unchanged.
 - **Running:** two in-chat builders in their own worktrees, never pushing: `s14-cook` (Opus, high, about $60-90: every Cook
   station on the new kit, port 8887) and `s14-clinic` (Opus, high, about $60-90: every heal game, port 8888), hard stop 12:00 UK,
-  reports `build/reports/s14-cook.md` and `s14-clinic.md`. A check-in is scheduled for 12:05 UK.
+  each writing its report (s14-cook, s14-clinic) under build/reports. A check-in is scheduled for 12:05 UK.
 
 **Next steps, in order (the plan's section 5 checklist at every merge):**
 1. Phase D: merge s14-cook, then s14-clinic (one at a time; `git merge --no-ff` of each worktree branch); after each: checks.mjs,
