@@ -13,12 +13,12 @@
 (readers). Flows: every heal game `@L4`; `labs.html` regenerated.
 
 ## Proof
-After: `build/screenshots/brief/s14-clinic/` (before beside it). Contract `s14-clinic-contract`: CONTRACT_LINE.
+After: `build/screenshots/brief/s14-clinic/` (before beside it). Contract `s14-clinic-contract2`, 40 pages, all ended: **CONTRACT FAILED: 1 breaks (contract-78 1)**: chai at 1920, its "Slow kar!" light 261 ms late (chai-tray.js timing; passed in run 1). Clinic: 0.
 Checks: all green but **leak** (7: L1 first/middle-option 10-35%: Zafar's narrower L1 ranges; fever L1's 2 exchanges).
-Tests: `counts.test.mjs` (nine games, every level), `levelup.test.mjs`.
+Tests: `counts.test.mjs`, `levelup.test.mjs`.
 
 ## Open / gaps
 Foot L4's 4th splinter (a 4th toe channel and word); sore spots L3-L4 pop 2 not 3 (a 4th colour's spot); the word pill and the
 cog (the clinic has no home/book; the "?" stays); s14 still plays the ghost hand for drags (Zafar?); order rows clip
 ("paani garam, hakro ju", also before). Fresh: cut@L4 stuck at 930/1920 (also before); fever@L4 1280 stuck once (rerun passed).
-CLN-210's fill strip "did not change" (also before).
+CLN-210's fill strip "did not change" (also before). Taste L2: two rows read at once (contract-8, not in the flows).
