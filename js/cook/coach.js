@@ -101,7 +101,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // on screen with a small margin (the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
       // heap or a bottle in samosa, the pantry, daar and the grill); the circle only where the step names no picture
       const box = Cook.expect && Cook.expect.x != null && Cook.UI.s14 && Cook.UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
-      return box || rectAround(t, t.r);
+      if (!box) return rectAround(t, t.r);
+      // (the box always takes in the point the step is tapped at: a thing whose tap point sits at its foot, the pantry's carton, was
+      // outside its own picture's box, so the dim took the tap at the bigger sizes)
+      const x0 = Math.min(box[0], t.x - 14);
+      const y0 = Math.min(box[1], t.y - 14);
+      return [x0, y0, Math.max(box[0] + box[2], t.x + 14) - x0, Math.max(box[1] + box[3], t.y + 14) - y0];
     };
     const steps = script.map((st, i) => ({
       spotlight: spot,
@@ -152,7 +157,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     pointed.add(key);
     const sp = Cook.speed || 1;
     const m0 = Cook.acted || 0;
-    const moved = () => (Cook.acted || 0) !== m0 || !Cook.inStation;
+    // (moved on: a tap or a gesture, the station over, or a pop-up waiting for its own tap, Nani's pass-me or the order's: never lit
+    // over it, and its light goes if one comes)
+    const moved = () => (Cook.acted || 0) !== m0 || !Cook.inStation || !!(Cook.expect && Cook.expect.kind === "click") || !!document.querySelector("#passme:not(.hidden), .njg-rq-open");
     let rowX = null;
     const seenAt = new WeakMap();
     const moving = () => {

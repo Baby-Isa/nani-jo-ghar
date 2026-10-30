@@ -1778,6 +1778,11 @@
           if (big) big.remove();
         };
         if (fast || !big || !to) return Promise.resolve(done());
+        // (the S14 roll-out, contract-83: a row card that sits against a face circle, the asker's on a short card at the phone size, takes
+        // its word at once: the big card never flies over a face, even its last frames)
+        const tr = to.getBoundingClientRect();
+        // (a dish's own card, not a people order: chai's people cards keep their morph as they were)
+        if (!m.wordRows && faces14().some((f) => Math.min(tr.right, f.right) - Math.max(tr.left, f.left) > 0 && Math.min(tr.bottom, f.bottom) - Math.max(tr.top, f.top) > 0)) return Promise.resolve(done());
         return global.WordCard.morph(big, to).catch(() => {}).then(done);
       }
       m.away.delete(r);
