@@ -575,6 +575,7 @@
     // lessons, 1: a shared piece outside the game's file leaks its old look otherwise): the light is the lit box with its warm
     // fill and no finger (Onboard.look "s14", the conversations' replies too), the card serif loaded once
     HOST.s14(true);
+    if (screen.s14) screen.s14(true); // the doctor's box as the helper card
     stage.dataset.game = def.id;
     screen.clearActions();
     screen.tally.clear();
@@ -1317,6 +1318,7 @@
         card.setProgressive(false);
         card.closed = null;
         HOST.s14(false);
+        if (screen.s14) screen.s14(false);
       },
     };
     HOST.current = run;

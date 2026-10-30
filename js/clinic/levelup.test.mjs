@@ -40,7 +40,7 @@ test("the stage's own most caps it (the heal games' 4, the other stages' 3)", ()
   assert.equal(lv.diagnosis, 3);
 });
 
-test("a stage not played that morning keeps its count", () => {
+test("unplayed stage: count kept", () => {
   const keep = { pharmacy: { level: 1, streak: 2 } };
   const lv = P.levelUp({ pharmacy: 1, heal: 1 }, [round(0)], keep);
   assert.equal(lv.pharmacy, 1);

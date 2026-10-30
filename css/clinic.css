@@ -335,6 +335,17 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
    the end of the headline's last line, is the closed card's one sign, as in Cook */
 /* 13f: the doctor's box (the shared guide box, in the clinic's teal: Nani isn't at the clinic) */
 .cl-docbox { --nani-sage: #4f9a8a; }
+/* S14 (the rulebook's helper card, the rollout plan 4c): in a heal round the doctor's box keeps an arrow (no bulb, no speaker of
+   its own: js/clinic/screen.js scr.s14) and grows in place to show the full answer for the step now, the kit's s14 card side by side */
+.cl-docbox.cl-s14 { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; row-gap: 0; }
+.cl-help-arrow { width: var(--njg-tap); height: var(--njg-tap); border-radius: 50%; border: var(--njg-line-2) solid var(--njg-gold); background: var(--njg-card); color: var(--njg-ink); display: grid; place-items: center; padding: 0; cursor: pointer; box-shadow: var(--njg-shadow); touch-action: manipulation; }
+.cl-help-arrow svg { width: 55%; height: 55%; transition: transform .25s; }
+.cl-help-open .cl-help-arrow svg { transform: rotate(180deg); }
+.cl-helper { flex: 1 0 100%; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; min-width: 0; }
+.cl-help-open > .cl-helper { grid-template-rows: 1fr; }
+.cl-helper > * { min-height: 0; overflow: hidden; }
+.cl-help-open > .cl-helper > * { margin-top: var(--njg-s2); }
+@media (prefers-reduced-motion: reduce) { .cl-helper, .cl-help-arrow svg { transition: none; } }
 /* 13b: a filled dish loses its dashed outline (the pantry's tray); a tap on it takes the item back until ✓ Done */
 .cl-counter-tray .cl-dish.full, .cl-counter-tray.v2 .cl-dish.full { border-color: transparent; background: transparent; box-shadow: none; cursor: pointer; }
 .cl-counter-tray .cl-dish.full:active { transform: scale(.94); }
