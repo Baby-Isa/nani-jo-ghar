@@ -197,3 +197,16 @@ test("the load check (B6, CHAI-44): a growth of 20% in bytes or time fails, nois
   assert.equal(isPlayTap({ kind: "tap", selector: null }), true);
   assert.equal(isPlayTap({ kind: "timing", selector: null }), true);
 });
+
+test("the paths and profiles the evidence loop plays through lab.html at a child's pace (B10) and the film's order-whole (B1)", async () => {
+  const { resolveFlow } = await import("./flows/index.mjs");
+  const { driverPaths } = await import("./drivers/catalog.mjs");
+  // lab.html, speed 1, a returning player: the timing rows play as Zafar plays
+  for (const id of ["lab:cook/chai-tray@L1#speed1", "lab:cook/chai-tray@L3#replay", "lab:cook/order#auto-level", "cook:chai-tray#order-whole", "cook:chai-tray#returning"]) assert.ok(resolveFlow(id), `${id} resolves to a flow`);
+  assert.equal(resolveFlow("lab:cook/chai-tray@L1#speed1").timeoutMs > 400000, true, "a child's pace gets the longer time");
+  assert.ok(driverPaths("cook").includes("order-whole"), "the order-whole driver is catalogued");
+  assert.ok(PROFILES.includes("returning"), "a returning player is an evidence profile");
+  assert.equal(resolveFlow("cook:chai-tray#sideways"), null);
+  // the order-whole path plays at speed 1 (flows/cook.mjs): its id carries no speed of its own
+  assert.equal(resolveFlow("cook:chai-tray#order-whole").id, "cook:chai-tray#order-whole");
+});

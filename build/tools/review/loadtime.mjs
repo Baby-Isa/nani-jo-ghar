@@ -21,7 +21,6 @@ const FILE = join(TOOLS_ROOT, "build", "tools", "review", "data", "loadtime-base
 const [KBPS, LAT] = NET.split("/").map(Number);
 
 // the sandbox's own server and browser, on the checkout asked for
-process.env.NJG_ROOT_OVERRIDE = REPO;
 const env = await import(join(REPO, "build", "sandbox", "lib", "env.mjs"));
 const { startServer, launch, newPage, BASE, sleep } = env;
 
