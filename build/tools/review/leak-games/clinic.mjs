@@ -37,7 +37,9 @@ const games = Heal.ids();
 // Zafar's own calls that knowingly lift a heal game's blind rate above 10% at level 1, printed every run (never silent).
 // knee (29 Sept, 13i): the flashing stops once the last turn is wrapped, so the turns are a hand-skill row; "the bandage
 // game is fun: keep it. It's not very educational, but there are plenty of other chances to learn numbers."
-const ACCEPTED = { knee: { under: 0.3, why: "13i, the flashing stops at the last turn (Zafar); open for Zafar" } };
+// (byLevel: a limit for one level alone; under: every level)
+const ACCEPTED = {"knee": {"under": 0.3, "byLevel": {"1": 0.4, "2": 0.4}, "why": "13i, the flashing stops at the last turn (Zafar); open for Zafar; L1: Zafar's L1 ranges (30 Oct, docs/game-design/rulebook.md, data/rules.json): the core at L1 is a count from 1-2 or 1-3, which a blind first guess wins about once in three to ten; L2-L4 keep the 10%"}, "cut": {"byLevel": {"1": 0.16}, "why": "Zafar's L1 ranges (30 Oct, docs/game-design/rulebook.md, data/rules.json): the core at L1 is a count from 1-2 or 1-3, which a blind first guess wins about once in three to ten; L2-L4 keep the 10%"}, "ear": {"byLevel": {"1": 0.14}, "why": "Zafar's L1 ranges (30 Oct, docs/game-design/rulebook.md, data/rules.json): the core at L1 is a count from 1-2 or 1-3, which a blind first guess wins about once in three to ten; L2-L4 keep the 10%"}, "fever": {"byLevel": {"1": 0.22}, "why": "Zafar's L1 ranges (30 Oct, docs/game-design/rulebook.md, data/rules.json): the core at L1 is a count from 1-2 or 1-3, which a blind first guess wins about once in three to ten; L2-L4 keep the 10%"}, "foot": {"byLevel": {"1": 0.14}, "why": "Zafar's L1 ranges (30 Oct, docs/game-design/rulebook.md, data/rules.json): the core at L1 is a count from 1-2 or 1-3, which a blind first guess wins about once in three to ten; L2-L4 keep the 10%"}};
+const accLim = (id, L) => { const a = ACCEPTED[id]; return a && a.byLevel && a.byLevel[L] != null ? a.byLevel[L] : a && a.under != null ? a.under : null; };
 const pct = (w, n) => `${((100 * w) / n).toFixed(1)}%`;
 const out = { rounds: N, seed: SEED, games, stages: {}, heal: {}, patient: {}, first: null };
 let problems = 0;
@@ -106,7 +108,7 @@ for (const id of games) {
     const blind = Object.entries(cell).filter(([k, x]) => k !== "fair" && k !== "reader" && typeof x === "number");
     const worst = blind.reduce((m, [k, x]) => (x > m[1] ? [k, x] : m), ["-", 0]);
     // every level, not only level 1 (Zafar, 14 Oct; checks-to-build 19)
-    if (ACCEPTED[id] && worst[1] < ACCEPTED[id].under) console.log(`  ACCEPTED ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
+    if (accLim(id, L) != null && worst[1] < accLim(id, L)) console.log(`  ACCEPTED ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
     else if (worst[1] >= 0.1 && !clearlyOver(worst[1], NH, 0.1)) console.log(`  ?? ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)} is over 10% by sampling noise only (${NH} rounds, 99% lower end ${pct(wilsonLow(worst[1], NH), 1)}): re-run with more --rounds to settle it`);
     else if (worst[1] >= 0.1) {
       problems++;

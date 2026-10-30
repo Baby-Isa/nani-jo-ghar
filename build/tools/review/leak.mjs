@@ -90,7 +90,7 @@ for (const id of adapter.games) {
   if (def.problems && def.problems.length) fails.push(`${id}: contract: ${def.problems.join("; ")}`);
   out.games[id] = {};
   console.log(`\n${id} (${def.part}; gestures ${(def.gestures || []).join(", ")})`);
-  if (ACCEPTED[id]) console.log(`  ACCEPTED above ${100 * BLIND}% at level 1: ${ACCEPTED[id].why}`);
+  if (ACCEPTED[id]) console.log(`  ACCEPTED above ${100 * BLIND}%${ACCEPTED[id].byLevel ? ` at L${Object.keys(ACCEPTED[id].byLevel).join(", L")}` : ""}: ${ACCEPTED[id].why}`);
   for (const level of def.levels) {
     const strategies = adapter.strategies(id, level);
     const n = level === 1 ? L1 : ROUNDS;
@@ -108,12 +108,15 @@ for (const id of adapter.games) {
     if (!row.fair || row.fair.win < 1) fails.push(`${id} L${level}: fair wins ${pct(row.fair ? row.fair.win : 0)}, not 100%`);
     // every level, not only level 1 (Zafar, 14 Oct; checks-to-build 19)
     for (const s of strategies.filter((x) => x !== "fair")) {
-      const lim = ACCEPTED[id] ? ACCEPTED[id].under : BLIND;
+      // (accepted.byLevel: a limit for one level alone, the rest keep theirs: Zafar's L1 ranges of 30 Oct, a count from 1-2 or 1-3, which a
+      // blind first guess wins about a third of the time; L2-L4 keep the 10%)
+      const acc = ACCEPTED[id];
+      const lim = acc && acc.byLevel && acc.byLevel[level] != null ? acc.byLevel[level] : acc && acc.under != null ? acc.under : BLIND;
       if (!(row[s].win < lim)) fails.push(`${id} L${level}: ${s} wins ${pct(row[s].win)} blind (must be under ${pct(lim).trim()})`);
     }
   }
 }
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify(out, null, 1));
-const except = Object.entries(ACCEPTED).map(([k, v]) => `${k} under ${pct(v.under).trim()}`).join(", ");
+const except = Object.entries(ACCEPTED).map(([k, v]) => `${k} under ${v.under != null ? pct(v.under).trim() : ""}${v.byLevel ? Object.entries(v.byLevel).map(([l, u]) => ` L${l} ${pct(u).trim()}`).join("") : ""}`).join(", ");
 console.log(fails.length ? `\nFAIL\n  ${fails.join("\n  ")}` : `\nPASS: fair 100% everywhere; every blind strategy under ${100 * BLIND}% at every level${except ? ` (except, as Zafar decided: ${except})` : ""}`);
 process.exit(fails.length ? 1 : 0);

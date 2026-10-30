@@ -2,6 +2,15 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
+### From the Sprint 14 roll-out (30 Oct): answer "yes to all except ..."
+
+1. **The heal games' L1 counts and the leak test.** Your L1 ranges (a count from 1-2 or 1-3) let a child who knows no Kutchi win by
+   always guessing the smallest or middle number: 10-17% in cut, ear, foot and fever at L1, 35% in the knee at L1 and L2 (the rule is
+   under 10%). Recommendation, done for now: keep your numbers and accept it at L1 only (the knee at L1-L2, under your earlier
+   decision 13i), L2-L4 stay at 10% (`build/tools/review/leak-configs/`). Or say "wider L1 ranges" and the builder widens them.
+2. **The ghost hand on drag, hold and swipe demos** (the clinic's swabs, the tooth brush): the s14 rule is "no finger"; today the hand
+   still shows how to drag, as you allowed on 23 Oct. Recommendation: keep it for drags only.
+
 ### After Sprint 13 (27 Oct): answer "yes to all except …"
 40. **The end screen's empty left half** (the wrong-words space when nothing was wrong, your SH-103 of 17 Oct): keep, or centre the words when none are wrong? Recommend centre.
 41. **Samosa L3** ticks each samosa's box as it is made (SH-53) while the card's rows tick together (contract-50): which wins? Recommend the boxes tick as made, the card rows at the one tick (SAM-27).
