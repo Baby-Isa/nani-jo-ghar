@@ -387,22 +387,28 @@ export class CookPlayer {
     if (this.mode === "tap-zones") {
       await until(() => popupOpen(p), 3000, 15);
       await until(async () => !!(await p.$(".wc14-pop")), 6000, 30);
+      // (S14 tools, SH-157: each recorded state takes a screenshot and two lint passes, about a second: the three zone taps and the play
+      // tap came after the order had ended, so "zone-play" never came. The taps go first, quick, and are recorded after.)
+      const outcomes = [];
       for (const [zone, sel] of [["bubble", ".cv-bubble"], ["side", "#side"], ["cog", "#side-cog"]]) {
         if (!(await popupOpen(p))) break;
         const at = await p.evaluate((s) => { const e = [...document.querySelectorAll(s)].find((x) => x.getBoundingClientRect().width > 4); if (!e) return null; const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + Math.min(r.height / 2, 30) }; }, sel).catch(() => null);
         if (!at) { this.rec.note(`tap-zones: no ${zone} on screen`); continue; }
         await p.mouse.click(at.x, at.y);
-        await sleep(350);
+        await sleep(200);
         // (the cog's menu, opened by its tap, closed again so the order goes on as it was)
         if (zone === "cog") await p.evaluate(() => { const m = document.getElementById("side-menu"); const c = document.getElementById("side-cog"); if (m && !m.hidden && c) c.click(); }).catch(() => {});
-        await this.once(`zone-${zone}-${(await popupOpen(p)) ? "kept" : "skipped"}`, { settle: 0 });
+        outcomes.push(`zone-${zone}-${(await popupOpen(p)) ? "kept" : "skipped"}`);
       }
+      let played = false;
       if (await popupOpen(p)) {
         const at = await p.evaluate(() => { const st = document.querySelector("#stage"); if (!st) return null; const r = st.getBoundingClientRect(); const busy = [...document.querySelectorAll(".cv-bubble, .wc14-pop, .side-rail")].map((e) => e.getBoundingClientRect()); for (const [fx, fy] of [[0.5, 0.75], [0.7, 0.8], [0.3, 0.85], [0.5, 0.5]]) { const x = r.left + r.width * fx, y = r.top + r.height * fy; if (!busy.some((b) => x >= b.left && x <= b.right && y >= b.top && y <= b.bottom)) return { x, y }; } return { x: r.left + r.width / 2, y: r.bottom - 20 }; }).catch(() => null);
         if (at) await p.mouse.click(at.x, at.y);
+        played = true;
         await sleep(400);
-        await this.once("zone-play", { settle: 0 });
       }
+      for (const o of outcomes) await this.once(o, { settle: 0 });
+      if (played) await this.once("zone-play", { settle: 0 });
       await sleep(600);
       if (this.intros === 1) await this.once("order-card-in-sidebar");
       if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
@@ -415,7 +421,7 @@ export class CookPlayer {
     if (this.intros === 1) await this.once("order-card-big", { settle: 150 });
     await sleep(400);
     // listen-through (SEK-11): the pop-up is not tapped: the spoken order plays out and the pop-up folds by itself
-    if (this.mode === "listen-through") { await until(async () => !(await popupOpen(p)), 60000, 100); await sleep(300); return; }
+    if (this.mode === "listen-through" || this.mode === "order-whole") { await until(async () => !(await popupOpen(p)), 60000, 100); await sleep(300); return; }
     if (await this.page.$("#intro:not(.hidden) .ic-card")) { try { await this.page.click("#intro .ic-card", { force: true, timeout: 2000 }); } catch (e) { /* it flew in by itself */ } }
     // (S13-B1: Cook's order pop-up is the kit's: a tap on its veil, anywhere but a face, folds it)
     else if (await this.page.$(".njg-rq-veil:not(.going)")) { try { await this.page.click(".njg-rq-veil:not(.going)", { force: true, timeout: 2000, position: { x: 8, y: 8 } }); } catch (e) { /* it flew in by itself */ } }

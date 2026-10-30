@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { seedCook, isSeedProfile } from "../lib/seed.mjs";
 import { openGrownUps } from "../drivers/index.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
 import { MODE_DRIVER_FLOWS } from "./modes.mjs";
@@ -15,6 +16,25 @@ const Q = "nonav=1&seed=7";
 const LONG = { "recipe-maani": 1200, "recipe-daal": 1200, "recipe-chaat": 1200, "recipe-samosa": 1500, "recipe-mishkaki": 1200, samosa: 900, daar: 900, "maani-line": 600 };
 
 const hostState = (page) => page.evaluate("window.njgTest ? String(njgTest.state()) : 'loading'").catch(() => "loading");
+
+// S14 tools, B4 (SH-161): the replay driver. The station's textures a beat into a round (every texture key in the scene, how many drawn
+// pictures are the missing-picture texture, the painted marble worktop, the fx), logged as a k "replay" event in the page's timeline
+// (contract-85 compares the rounds). A round on lab.html, Play again, the same read.
+const TEXTURES = `(() => {
+  const C = window.Cook, S = C && C.scene;
+  if (!S || !S.textures) return null;
+  const keys = S.textures.getTextureKeys().filter((k) => !/^__/.test(k));
+  let missing = 0;
+  const walk = (l) => (l || []).forEach((o) => { if (o.list) walk(o.list); if (o.visible !== false && o.texture && o.texture.key === "__MISSING") missing++; });
+  walk(S.children.list);
+  return { keys: keys.sort(), missing, marble: keys.includes("spr:bg:marble"), fx: keys.filter((k) => /(^|[:-])fx-|splash|steam|spark/.test(k)), view: S.viewName || null };
+})()`;
+export async function logTextures(page, round, rec) {
+  const tex = await page.evaluate(TEXTURES).catch(() => null);
+  if (!tex) { rec.note(`replay: round ${round}: no Cook scene to read`); return null; }
+  await page.evaluate((e) => window.__njgLog && window.__njgLog(e), { type: "c", k: "replay", t: Date.now(), page: "lab.html", round, ...tex, n: tex.keys.length }).catch(() => {});
+  return tex;
+}
 
 // one Cook plan on lab.html: every stage the host runs (the player hands Cook's own hook over, as test_cook_host.mjs does),
 // then the one end screen
@@ -30,8 +50,18 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
     id, group: "labs", title, timeoutMs: timeoutS * 1000 * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
+      let seeded = false;
+      if (isSeedProfile(ctx.profile)) {
+        // a saved player (lib/seed.mjs): cook.html makes the save through the game's own services, lab.html (same origin) plays on it
+        await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });
+        await page.evaluate(() => localStorage.clear());
+        await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });
+        await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
+        rec.note(`seeded save ${ctx.profile}: ${JSON.stringify(await seedCook(page, ctx.profile)).slice(0, 300)}`);
+        seeded = true;
+      }
       await page.goto(`${BASE}/lab.html`, { waitUntil: "load" });
-      if (!ctx.keepStorage) await page.evaluate(() => localStorage.clear());
+      if (!ctx.keepStorage && !seeded) await page.evaluate(() => localStorage.clear());
       if (firstDone) {
         // a story arc opens after the first-launch story (s04-fxc: the cleared save showed the lab's lock, 0 stages played)
         await page.goto(`${BASE}/lab/shared.html`, { waitUntil: "load" }).catch(() => {});
@@ -42,9 +72,11 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           Save.setFlag("firstDone", true);
         });
       }
-      await page.goto(`${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
+      // (path auto-level, S14 tools B11: no level asked for, so a game on the central rules picks its own from the save: SH-160)
+      const q0 = mode === "auto-level" ? query.replace(/&?level=\d/, "") : query;
+      await page.goto(`${BASE}/lab.html?${q0}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
       const t0 = Date.now();
-      let stages = 0, results = 0, muted = false;
+      let stages = 0, results = 0, muted = false, rounds = 0, replayed = false;
       const badges = [];
       while (Date.now() - t0 < ctx.timeoutMs - 30000) {
         await page.waitForFunction(() => /\/playing|results|done|idle/.test(String(window.njgTest && njgTest.state())), null, { timeout: 60000 });
@@ -55,6 +87,8 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           await page.evaluate(() => import("./js/cook/mount.js").then((m) => { (window.njgTest = window.njgTest || {}).cook = m.Cook.testHook; window.Cook = m.Cook; }));
           await sleep(400);
           await rec.state(`${game.split("/").pop()}-start`, { settle: 200 });
+          // the replay driver (SH-161): each round of the game being replayed shows its textures 2.5 s in (the second after Play again)
+          if (mode === "replay") { rounds++; await sleep(2100); await logTextures(page, rounds, rec); if (rounds >= 2) { await rec.state("replay-round-2"); replayed = true; break; } }
           if (stages === 1) await openGrownUps(page, rec, "#btn-help"); // (S13-A2: a probe about the grown-ups' "?")
           if (mode === "mute-across-modes" && !muted) { muted = true; await muteAcross(ctx, `${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`); continue; }
           const P = new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-`, mode: mode === "mistake" ? "mistake" : "fair" });
@@ -79,6 +113,14 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
             if (now === step) break;
             await rec.state(now === "3" ? "results-steps" : "results-words");
           }
+          if (mode === "replay" && rounds === 1) {
+            // Play again (the end screen's own button, the grown-ups' hand-off: data-act="again")
+            const again = await page.$('.njg-results [data-act="again"]');
+            if (!again) { rec.stop("replay: no Play again on the end screen"); break; }
+            await again.click();
+            await sleep(500);
+            continue;
+          }
           const act = (await page.$('.njg-results [data-act="list"]')) || (await page.$(".njg-results .rs-act.primary")) || (await page.$(".njg-results .rs-act"));
           if (act) await act.click();
           await sleep(900);
@@ -86,10 +128,10 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
         }
         await sleep(300);
       }
-      if (!results) rec.stop(`no end screen (${stages} stages played)`);
+      if (!results && !replayed) rec.stop(`no end screen (${stages} stages played)`);
       await rec.state("end");
       ctx.extra = { stages, badges };
-      ctx.reachedEnd = results > 0;
+      ctx.reachedEnd = results > 0 || replayed;
     },
   };
 }

@@ -84,7 +84,7 @@ export function flowKind(base) {
   if (HEAL_GAMES.some((g) => base === `clinic:heal-${g}`)) return { kind: "heal", levels: [1, 2, 3], paths: withDrivers("heal", ["fair", "mistake", "hint"]) };
   if (base === "clinic:patient") return { kind: "patient", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
   if (base === "clinic:morning") return { kind: "morning", levels: [1, 2, 3], paths: withDrivers("morning", ["fair"]) };
-  if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: withDrivers("lab-cook", ["fair", "speed1"]) };
+  if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: withDrivers("lab-cook", ["fair", "speed1", "replay", "auto-level"]) };
   if (base === "day:door") return { kind: "day-door", levels: [1], paths: DAY_DOOR_PATHS };
   if (base === "day:window") return { kind: "day-window", levels: [1, 2, 3], paths: DAY_WINDOW_PATHS };
   if (base === "day:book") return { kind: "day-book", levels: [1], paths: DAY_BOOK_PATHS };

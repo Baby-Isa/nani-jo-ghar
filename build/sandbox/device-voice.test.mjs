@@ -45,10 +45,11 @@ test("heardWhole: the opening is heard whole only when every part started and en
   assert.equal(r.ok, false);
 });
 
-test("the spec words: utter, heardWhole, a strip of up to 30 frames", () => {
+test("the spec words: utter, heardWhole, a strip of up to 60 frames (a film, S14 tools: was 30 until the film of a whole order)", () => {
   assert.deepEqual(parseCapture("utter"), { kind: "utter", raw: "utter" });
   assert.equal(parseExpect("heardWhole:life:request").ms, 1000);
   assert.equal(parseExpect("heardWhole:life:request<=1500").ms, 1500);
   assert.equal(parseCapture("strip:body:24x200").n, 24);
-  assert.ok(parseCapture("strip:body:31x200").error);
+  assert.equal(parseCapture("strip:body:60x200").n, 60);
+  assert.ok(parseCapture("strip:body:61x200").error);
 });

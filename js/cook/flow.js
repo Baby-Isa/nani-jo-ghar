@@ -2182,6 +2182,46 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       return out;
     },
+    /**
+     * TEST HOOK (S14 tools, B2; read-only): every face on screen, in page px, as {who, kind, left, top, right, bottom, width, height}:
+     * kind "head" = a character in the kitchen (the scene's headBox), kind "badge" = a person's round face on the tray or the hob, kind
+     * "circle" = a face circle in the page (the guide's, an order card's, a speaker's). The checks that say "never over a face" read these (njgTest.cook.faces(); also njgTest.faces() when the
+     * page's hook has no other owner).
+     */
+    faces() {
+      const out = [];
+      const S = Cook.scene;
+      const put = (who, kind, a, b, extra) => out.push(Object.assign({ who, kind, left: a.x, top: a.y, right: b.x, bottom: b.y, width: b.x - a.x, height: b.y - a.y }, extra || {}));
+      try {
+        Object.entries((S && S.chars) || {}).forEach(([who, img]) => {
+          if (!img || !img.active || img.visible === false || !S.headBox) return;
+          const hb = S.headBox(img);
+          put(who, "head", UI.worldToScreen(hb.x, hb.y), UI.worldToScreen(hb.x + hb.w, hb.y + hb.h));
+        });
+      } catch (e) {
+        /* no scene yet */
+      }
+      // the round badges a station draws (a person's face on the tray and on the hob: the scene's <who>-badge pictures)
+      try {
+        const walk = (list) =>
+          (list || []).forEach((o) => {
+            if (!o) return;
+            if (o.list) return walk(o.list);
+            if (o.visible === false || o.active === false || !o.texture || !o.texture.key.includes("-badge") || !o.getBounds) return;
+            const b = o.getBounds();
+            put(o.texture.key.split("-badge")[0], "badge", UI.worldToScreen(b.x, b.y), UI.worldToScreen(b.right, b.bottom));
+          });
+        walk(S && S.children && S.children.list);
+      } catch (e) {
+        /* no scene yet */
+      }
+      document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+        if (f.closest(".wc14-pop, .wc14-flyer")) return;
+        const b = f.getBoundingClientRect();
+        if (b.width > 0 && b.height > 0) put(f.dataset.who || f.dataset.face || null, "circle", { x: b.left, y: b.top }, { x: b.right, y: b.bottom }, { sel: String(f.className || "").slice(0, 40) });
+      });
+      return out;
+    },
     state() {
       return {
         view: Cook.scene && Cook.scene.viewName,
@@ -2236,6 +2276,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.paused = false;
     Cook.expect = Cook.gauge = Cook.undoAt = null;
     closeKitchenBtn = null;
+    // (S14 tools, B2: njgTest.faces() on a page whose hook is Cook's own, as njgTest.cook.faces() always)
+    if (global.njgTest && !global.njgTest.faces) global.njgTest.faces = () => Cook.testHook.faces();
     UI.init();
     wireRail();
     // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load

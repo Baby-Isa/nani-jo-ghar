@@ -2,6 +2,7 @@
 // "fetch" is Nani's pantry. "cook:<recipe>" plays a whole recipe (recipe:<id>), every station in turn.
 import { BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { seedCook, isSeedProfile } from "../lib/seed.mjs";
 
 export const KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"];
 export const RECIPES = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"];
@@ -28,7 +29,7 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
   const day = /^day(\d)$/.exec(key);
   if (day) return cookDay(+day[1], { mode });
   // the voice-timing drivers play at a child's pace (speed 1): the lines last as long as they do for a child
-  if (["tap-during-speech", "tap-during-pause", "tap-quick", "tap-through-popup", "tap-card-1s", "tap-zones"].includes(mode) && speed === 3) return { ...cookStation(key, level, { recipe, mode, group, speed: 1 }), id: `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}${level > 1 ? `@L${level}` : ""}#${mode}` };
+  if (["tap-during-speech", "tap-during-pause", "tap-quick", "tap-through-popup", "tap-card-1s", "tap-zones", "order-whole"].includes(mode) && speed === 3) return { ...cookStation(key, level, { recipe, mode, group, speed: 1 }), id: `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}${level > 1 ? `@L${level}` : ""}#${mode}` };
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
   const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "") + (speed !== 3 ? `#speed${speed}` : "");
@@ -46,6 +47,8 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       // light comes on learned words (CHAI-33 only showed for such a player)
       const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode === "returning" ? "hint" : mode, speed });
       if (mode === "returning") await page.evaluate(() => { const C = window.Cook; if (window.njgTest?.cook.coachesSeen) window.njgTest.cook.coachesSeen(); for (const id of Object.keys((C.data && C.data.words) || {})) { C.markRight(id); C.markRight(id.replace(/^cook-/, "")); } });
+      // ctx.profile "returning", "pill-hidden", "pill-miss", "levelup-ready" (S14 tools, lib/seed.mjs): the save a player who has played has
+      if (isSeedProfile(ctx.profile)) { const seeded = await seedCook(page, ctx.profile); rec.note(`seeded save ${ctx.profile}: ${JSON.stringify(seeded).slice(0, 300)}`); }
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
       if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.njgTest?.cook.coachesSeen && window.njgTest?.cook.coachesSeen());
@@ -151,6 +154,7 @@ export function cookDay(n, { mode = "fair" } = {}) {
     async run(ctx) {
       const { page, rec } = ctx;
       await openCook(ctx, { save: saveAt(n, { coins: 20, ...(mode === "force-passme" ? { plays: PLAYED } : {}) }) });
+      if (isSeedProfile(ctx.profile)) rec.note(`seeded save ${ctx.profile}: ${JSON.stringify(await seedCook(page, ctx.profile)).slice(0, 300)}`); // (S14 tools: a story round counts towards the level-up, a lab's never does)
       if (mode === "force-passme") {
         const ok = await page.evaluate(() => { const c = window.Cook && Cook.data && Cook.data.calm; if (!c) return false; c.passMeChance = { relaxed: 1, busy: 1, level1: 1 }; c.passMeAfterPlays = 0; return true; });
         if (!ok) rec.stop("force-passme: Cook.data.calm is not loaded");
