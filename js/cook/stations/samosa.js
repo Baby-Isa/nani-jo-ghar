@@ -1121,6 +1121,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const Kit = Cook.Kit;
     const k = Mech.knobs("fry", { level });
     const [lo, hi] = k.band || [0.62, 0.84];
+    // SH-158, the S14 roll-out (SAM-28; the central rules' timed.firstTimeHold): a new player's first fry holds in the golden
+    // band until a samosa is lifted (js/cook/station-lib.js St.firstHold)
+    const hold14 = St.firstHold(z.ctx, "fry:lift");
     backdrop(z0, S);
     // S19 / Q9: the wide hob (one big landscape burner) and the karahi 1.5x its old size, the plate to its
     // right on the burner's line; the folded samosas wait on thalis on the band
@@ -1230,6 +1233,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       frying.forEach((f) => {
         if (f.out) return;
         f.level += f.rate * s * (fireOn ? 1 : 0); // the fire off: nothing fries
+        f.level = hold14.cap(f.level, lo, hi, "samosa");
         colour(f);
         f.ring.draw(f.a.x, f.y0 + z.L(4), z.L(OL.size * 0.4), Math.min(1.25, f.level), lo, hi);
         // a gentle bob in the oil, and bubbles
@@ -1300,6 +1304,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           frying.push(f);
           const lift = async () => {
             if (f.out) return;
+            if (f.level >= lo) hold14.end("samosa");
             const L = f.level;
             const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
             if (verdict !== "golden") {

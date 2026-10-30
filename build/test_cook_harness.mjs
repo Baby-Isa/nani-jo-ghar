@@ -5,6 +5,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import { createEngine } from "../js/core/lang/engine/index.js";
 import { seeded } from "./core/cook-harness.mjs";
 
@@ -42,6 +43,10 @@ export async function loadCookEngine({ seed = 1, engine = engineFromRepo() } = {
     }
   });
   await Cook.load();
+  // (the S14 roll-out: as the game does, the central rules fill the recipes' counts as Cook's data loads: js/cook/flow.js calls
+  // Recipes.fromRules; a Node harness has no flow.js, so it does the same here)
+  win.Rules = createRequire(import.meta.url)("../js/shared/rules.js");
+  if (Cook.Recipes.fromRules) Cook.Recipes.fromRules(Cook.data, win.Rules);
   return { Cook, win, engine };
 }
 

@@ -144,6 +144,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const rate1 = slower(kTawa.rate * speedUp);
     const rate2 = slower(kTawa.rate2 * speedUp);
     Cook.maaniWindow = { side1: (hi - lo) / rate1, side2: (hi - lo) / rate2, addS }; // (for the test scripts: the green's length, s)
+    // SH-158, the S14 roll-out (MAA-19; the central rules' timed.firstTimeHold): a new player's first flip holds in the green
+    // until the tawa is tapped (js/cook/station-lib.js St.firstHold)
+    const hold14 = St.firstHold(ctx, "maani-line:flip");
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
     await St.loadArt(S, ART.concat(Cook.Kit.faceArt(who)));
@@ -550,6 +553,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       inBand = false;
       const v = t.v;
       const burnt = v >= 1;
+      if (t.side === 1) hold14.end("tawa");
       if (t.side === 1) {
         // the turner flips it: the cooked side comes up, spotted (M5), or burnt if it caught
         await turnerTo(TW.x, TW.y, discR(it));
@@ -620,6 +624,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!t || t.busy || finished) return;
       const rate = (t.side === 1 ? rate1 : rate2) * (heat === "off" ? 0 : heat === "low" ? 0.6 : 1);
       t.v += rate * dt;
+      if (t.side === 1) t.v = hold14.cap(t.v, lo, hi, "tawa");
       const nowIn = t.v >= lo && t.v <= hi;
       if (nowIn !== inBand) {
         inBand = nowIn;

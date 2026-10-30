@@ -9,6 +9,7 @@
  *   Rules.hintMs(lv)            the guide's hint wait in ms        Rules.hintList()  all four, in ms (Tokens.ladder.helpMs)
  *   Rules.count(game, lv)       how many of the game's repeating thing: 1 + (most - 1)(lv - 1)/3 rounded, or its override
  *   Rules.counts(game)          [L1..L4] of the same
+ *   Rules.part(game, axis, lv)  a two-count game's x or y at a level (a number, or [lo, hi])
  *   Rules.wordState(rec)        "new" | "learning" | "known" for a word (rec: {right, pillEarned} as js/core/progress.js keeps)
  *   Rules.hold(state)           the big card's hold in ms for a word state
  *   Rules.pointMs()             the order card's light after the showing
@@ -99,6 +100,13 @@
     return Math.round(1 + ((most - 1) * (n - 1)) / 3);
   };
   R.counts = (game) => (R.count(game, 1) == null ? null : [1, 2, 3, 4].map((n) => R.count(game, n)));
+  /** A two-count game's x or y at a level (count.games[game].x / .y; Cook's daar: chopped + added first): a number, or [lo, hi]. */
+  R.part = function (game, axis, lv) {
+    const g = (sec("count").games || {})[game];
+    const t = g && (axis === "x" || axis === "y") ? g[axis] : null;
+    const v = t ? t[String(lvOf(lv))] : null;
+    return v == null ? null : Array.isArray(v) ? v.slice(0, 2).map(Number) : Number(v);
+  };
 
   /* ---------------- words ---------------- */
   R.pillRun = () => Math.max(1, Number((sec("words").pill || {}).rightInARow) || DEFAULT.words.pill.rightInARow);

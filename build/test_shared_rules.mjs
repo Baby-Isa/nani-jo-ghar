@@ -158,7 +158,9 @@ test("a change in the file is seen by chai: the numbers chai asks for follow the
   assert.equal(R.pointMs(), 900);
   const chai = read("js/cook/stations/chai-tray.js");
   for (const ask of ["rulesAt(level)", "RULES().pointMs()", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
-  assert.ok(read("js/cook/flow.js").includes("R.counts(c.rules)"), "chai's cups: the rules' count, filled in as Cook's data loads");
+  // (the S14 roll-out: every dish's counts filled in by one walker, js/cook/recipes.js Recipes.fromRules, called from flow.js)
+  assert.ok(read("js/cook/flow.js").includes("Cook.Recipes.fromRules(data, R)"), "chai's cups: the rules' count, filled in as Cook's data loads");
+  assert.ok(read("js/cook/recipes.js").includes("Rules.counts(x.rules)"), "the walker asks the rules for a game's counts");
   const ui = read("js/cook/ui.js");
   for (const ask of ["global.Rules.level(mission.level || 1)", "global.Rules.hold(", "zones: s14 && !!global.Rules"]) assert.ok(ui.includes(ask), `the order asks the rules: ${ask}`);
 });

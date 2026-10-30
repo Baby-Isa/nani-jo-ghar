@@ -773,6 +773,10 @@
      },
      "exclude": "first",
      "take": {
+      "rules": "fetch",
+      "add": -1,
+      "range": true,
+      "_rules": "S14 roll-out (PAN-18; Zafar, 29 Oct: 'pantry keep 3,4,5,6'): the things after the first are the pantry's count by level from the central rules (data/rules.json count.games.fetch, through js/shared/rules.js; js/cook/recipes.js Recipes.fromRules) less the first; byLevel is only the stand-in until the rules have loaded",
       "byLevel": [
        [
         2,
@@ -1159,7 +1163,13 @@
         "cook-maani",
         "cook-bajrmaani"
        ],
-       "total": 1
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       }
       },
       {
        "type": "tally",
@@ -1169,7 +1179,13 @@
         "ph-big+cook-bajrmaani",
         "ph-small+cook-bajrmaani"
        ],
-       "total": 2,
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       },
        "max": {
         "ph-big+cook-maani": 1,
         "ph-small+cook-maani": 1,
@@ -1185,7 +1201,13 @@
         "ph-big+cook-bajrmaani",
         "ph-small+cook-bajrmaani"
        ],
-       "total": 3,
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       },
        "oneOfEach": [
         [
          "ph-big+cook-maani",
@@ -1212,10 +1234,11 @@
         "ph-small+cook-bajrmaani"
        ],
        "total": {
-        "int": [
-         2,
-         4
-        ]
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
        },
        "max": {
         "ph-big+cook-maani": 2,
@@ -1294,66 +1317,54 @@
     "tadka": {
      "type": "items",
      "from": "$spices",
-     "take": [
-      2,
-      3
-     ],
+     "take": {
+      "rules": "daar",
+      "axis": "y",
+      "range": true,
+      "_rules": "S14 roll-out (DAAR-36; Zafar, 29 Oct: daar's chopped + added first, X+Y: 1+2, 2+2, 3+3, 4+4): the things that go in first (the tadka's spices, Y) by level from the central rules (count.games.daar.y, js/shared/rules.js Rules.part; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded",
+      "byLevel": [
+       [
+        2,
+        3
+       ]
+      ]
+     },
      "order": "sequence"
     },
+    "chop": {
+     "type": "split",
+     "_about": "S14 roll-out (DAAR-36; Zafar, 29 Oct, X+Y): the chopped things (X: onions, the one tomato, chillies, each a piece to chop) by level from the central rules (count.games.daar.x), shared out among the three at random within each one's room (js/cook/recipes.js split); a vegetable left at 0 is said as its 'no' (dungri na) from L2, never at L1 (CK-50 on Rules.level(1).noAsks)",
+     "total": {
+      "rules": "daar",
+      "axis": "x",
+      "byLevel": [
+       1
+      ]
+     },
+     "into": {
+      "onions": [
+       0,
+       3
+      ],
+      "tomatoes": [
+       0,
+       1
+      ],
+      "chillies": [
+       0,
+       3
+      ]
+     }
+    },
     "onions": {
-     "byLevel": [
-      {
-       "int": [
-        1,
-        3
-       ],
-       "zero": 0.15
-      },
-      {
-       "int": [
-        1,
-        3
-       ],
-       "zero": 0.2
-      }
-     ]
+     "value": "$chop.onions"
     },
     "tomatoes": {
      "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
-     "byLevel": [
-      {
-       "int": [
-        1,
-        1
-       ],
-       "zero": 0.25
-      },
-      {
-       "int": [
-        1,
-        1
-       ],
-       "zero": 0.3
-      }
-     ]
+     "value": "$chop.tomatoes"
     },
     "chillies": {
-     "byLevel": [
-      {
-       "int": [
-        1,
-        2
-       ],
-       "zero": 0.4
-      },
-      {
-       "int": [
-        1,
-        3
-       ],
-       "zero": 0.4
-      }
-     ]
+     "value": "$chop.chillies"
     },
     "laps": {
      "int": [
@@ -1503,11 +1514,10 @@
    "slots": {
     "no": {
      "type": "no",
+     "_s14": "S14 roll-out (CHT-17; the rulebook, Zafar 29 Oct: 'no' asks from L2, were L3); level 1 never has one (js/cook/recipes.js make, on Rules.level(1).noAsks)",
      "tasteChance": {
       "byLevel": [
        0,
-       0,
-       0.7,
        0.7
       ]
      },
@@ -1515,8 +1525,6 @@
       "chance": {
        "byLevel": [
         0,
-        0,
-        1,
         1
        ]
       },
@@ -1548,22 +1556,14 @@
      "from": "$toppings",
      "exclude": "no",
      "take": {
+      "rules": "chaat",
+      "add": -2,
+      "range": true,
+      "_rules": "S14 roll-out (CHT-17; Zafar, 29 Oct: 3, 4, 5, 6 items in the bowl): the toppings after the base (chana and bataato, two) by level from the central rules (count.games.chaat, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); the recipe's fit then makes the bowl add up, a layer said twice counting twice; byLevel is only the stand-in until the rules have loaded",
       "byLevel": [
        [
         1,
         1
-       ],
-       [
-        1,
-        2
-       ],
-       [
-        2,
-        3
-       ],
-       [
-        1,
-        2
        ]
       ]
      },
@@ -1602,6 +1602,37 @@
      "int": [
       1,
       1
+     ]
+    }
+   },
+   "fit": {
+    "_about": "S14 roll-out (CHT-17; Zafar, 29 Oct: '3, 4, 5, 6 including double portions ... so 5 could be 4 items and one of those twice'): the spoons in the bowl add up to the chaat count by level from the central rules (count.games.chaat), a layer said with its number (ba bataato, ba dungri: two spoons, js/cook/mechanics/assemble.js qty) counting twice; keep: the base (chana and bataato) always stays; twice: the chance by level that a layer said twice stays while the total is made (none at L1: one of each, no numbers). js/cook/recipes.js fitTotal",
+    "total": {
+     "rules": "chaat",
+     "byLevel": [
+      3
+     ]
+    },
+    "list": "seq",
+    "qty": {
+     "veg-01": "potatoes",
+     "veg-02": "onions",
+     "veg-03": "tomatoes"
+    },
+    "max": {
+     "veg-01": 2,
+     "veg-02": 2,
+     "veg-03": 1
+    },
+    "keep": 2,
+    "from": "$toppings",
+    "exclude": "no",
+    "twice": {
+     "byLevel": [
+      0,
+      0.4,
+      0.4,
+      0.5
      ]
     }
    },
@@ -1693,16 +1724,12 @@
      "tasteChance": {
       "byLevel": [
        0,
-       0,
-       0,
        0.6
       ]
      },
      "else": {
       "chance": {
        "byLevel": [
-        0,
-        0,
         0,
         1
        ]
@@ -1713,7 +1740,7 @@
        "ph-dhana"
       ]
      },
-     "_no": "s08 w2A (SAM-26): the 'no' filling is L4's one new thing (with the hidden card); never before"
+     "_no": "s08 w2A (SAM-26): the 'no' filling was L4's one new thing. S14 roll-out (SAM-28; the rulebook, Zafar 29 Oct: 'no' asks from L2, were L4): from level 2; level 1 never has one (js/cook/recipes.js make, on Rules.level(1).noAsks)"
     },
     "kinds": {
      "type": "items",
@@ -1782,57 +1809,33 @@
      }
     },
     "count": {
-     "int": {
-      "byLevel": [
-       [
-        1,
-        2
-       ],
-       [
-        1,
-        2
-       ],
-       [
-        1,
-        2
-       ],
-       [
-        1,
-        2
-       ]
-      ]
-     }
+     "rules": "samosa",
+     "kinds": [
+      1,
+      1,
+      2,
+      2
+     ],
+     "part": 1,
+     "_rules": "S14 roll-out (SAM-28; Zafar, 29 Oct: samosas 2, 3, 4, 6, six only if the fry pan fits six: its oil has six places, js/cook/stations/samosa.js OIL, and the fill board six strips): the samosas by level from the central rules (count.games.samosa, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules), one kind at L1-L2, two from L3 sharing the count (part 1: the first kind, the larger half); byLevel is only the stand-in until the rules have loaded",
+     "byLevel": [
+      1
+     ]
     },
     "count2": {
-     "int": {
-      "byLevel": [
-       [
-        0,
-        0
-       ],
-       [
-        0,
-        0
-       ],
-       [
-        1,
-        2
-       ],
-       [
-        1,
-        2
-       ]
-      ]
-     },
-     "zero": {
-      "byLevel": [
-       1,
-       1,
-       0,
-       0
-      ]
-     },
-     "_count2": "s08 w2A (SAM-26, Zafar 19 Oct): two kinds from level 3, always (was half the orders, and L4 was L3); its own block on the card; its first strip starts empty"
+     "rules": "samosa",
+     "kinds": [
+      1,
+      1,
+      2,
+      2
+     ],
+     "part": 2,
+     "_count2": "s08 w2A (SAM-26, Zafar 19 Oct): two kinds from level 3, always (was half the orders, and L4 was L3); its own block on the card; its first strip starts empty",
+     "_rules": "S14 roll-out (SAM-28; Zafar, 29 Oct: samosas 2, 3, 4, 6, six only if the fry pan fits six: its oil has six places, js/cook/stations/samosa.js OIL, and the fill board six strips): the samosas by level from the central rules (count.games.samosa, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules), one kind at L1-L2, two from L3 sharing the count (part 2: the second kind); byLevel is only the stand-in until the rules have loaded",
+     "byLevel": [
+      0
+     ]
     },
     "base1": {
      "value": "$kinds.0"
@@ -2094,21 +2097,10 @@
      },
      "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4). 30 Sept (sekelo session): level 3 may have two mixed (one mix, said once: ba lakri mixed), so half or more are mixed on most orders; level 4 stays at two (two different mixes are graded one of each)",
      "total": {
+      "rules": "mishkaki-grill",
+      "_rules": "S14 roll-out (SEK-22; Zafar, 29 Oct: skewers 1, 2, 3, 4): the skewers by level from the central rules (count.games.mishkaki-grill, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded",
       "byLevel": [
-       1,
-       2,
-       {
-        "int": [
-         2,
-         3
-        ]
-       },
-       {
-        "int": [
-         3,
-         4
-        ]
-       }
+       1
       ]
      },
      "max": {
@@ -4879,6 +4871,7 @@
       "chapati-puffed-bajr"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/maani/*",
@@ -5003,6 +4996,7 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/daar/*",
       "assets/cook/items-s08b/daar-pot-top-s08b.webp",
@@ -5081,6 +5075,7 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/shelf-veg-*-bare-f.webp"
@@ -5113,6 +5108,7 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/*-bowl-t.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-pot-t.webp",
@@ -5148,6 +5144,7 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/tool-ladle-t.webp",
       "assets/cook/items/v3/daar/ladle-v3.webp",
       "assets/cook/items-s08c/kadchi/*",
@@ -5171,6 +5168,7 @@
       "chilli"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/v3/chaat/*",
       "assets/cook/items-s08b/chaat-bowl-side-s08b*",
       "assets/cook/items-s08b/chaat-strips/*"
@@ -5217,6 +5215,7 @@
       "chilli"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/samosa-v2/*",
       "assets/cook/items/v3/hob/*",
@@ -5261,6 +5260,7 @@
       "tomato"
      ],
      "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/sekelo/*",
       "assets/cook/items/v3/sekelo/*",
       "assets/cook/items/mishkaki-*",
@@ -5929,30 +5929,7 @@
  },
  "levelTable": {
   "_about": "s08 wave 2A (SH-110, CK-49, SAM-26, MAA-18; Zafar, 19 Oct: yes to build/reports/research-levels-2026-10-19.md, except chai L3 two cups, no half/full): the level table, one row per level (1-4) for every Cook station, read by js/cook/station-lib.js Cook.levelRow. card: open (L1-L2, every word and number), dotted (L3: the item words dotted, frames, verbs and numbers written), hidden (L4: face + headline folded; a tap on the face replays the order, free). Replaces calm.closedFrom (3) and decision 41's 'heard, never written'. decoys: things on offer nobody asked for, by level (1, 2, 3, 3), lookalike: one of them a lookalike variant (data.lookalikes) at L4. stepCall: Nani calls each step once as it opens (the order in pieces, never help, never costs), every level. stations: a station's own row where it differs (none yet). Each station's one new thing per level is its own data (the recipes' byLevel slots, data/stations/*.json levels).",
-  "card": [
-   "open",
-   "open",
-   "dotted",
-   "hidden"
-  ],
-  "decoys": [
-   1,
-   2,
-   3,
-   3
-  ],
-  "lookalike": [
-   false,
-   false,
-   false,
-   true
-  ],
-  "stepCall": [
-   true,
-   true,
-   true,
-   true
-  ],
+  "_s14": "The S14 roll-out (s14-cook, 30 Oct; SH-155, the rulebook, Zafar 29 Oct round 4): the table's card, decoys, lookalike and stepCall rows are gone: every Cook station's level row is the central rules' (data/rules.json levels, read through js/shared/rules.js Rules.level by js/cook/station-lib.js Cook.levelRow): decoys 1, 2, 3, 4 with the lookalike at L4, the order card's Kutchi always written (open at every level), each step called at every level. Only a station's own card row stays here (stations: daar's chop card, Nani's step card, DAAR-34).",
   "stations": {
    "daar-chop": {
     "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",

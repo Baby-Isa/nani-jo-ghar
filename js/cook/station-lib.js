@@ -45,6 +45,82 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   S$.oops = oops;
 
   /*
+   * SH-159, the S14 roll-out (Zafar, 29 Oct, round 3; the rulebook's word ladder): on the s14 look an item's Kutchi under it (the
+   * chip, the word pill) is the core's pill flag, as chai's: shown until the word is picked right three times in a row (the
+   * central rules' words.pill), then the speaker alone, back after a miss until one right. Every station marks its words right
+   * or missed (Cook.markRight / markMiss); on the s14 look that is also the pill's pick (a word the help showed this round is a
+   * peek, never a right pick). Chai keeps its own (js/cook/stations/chai-tray.js marks its pills itself).
+   */
+  const PROG = () => (Cook.core && Cook.core.progress && Cook.core.progress.pillShows ? Cook.core.progress : null);
+  const s14On = () => !!(Cook.UI && Cook.UI.s14 && Cook.UI.s14());
+  const chip0 = Cook.chipWord;
+  if (chip0) Cook.chipWord = (id, ctx = Cook.ctx) => (s14On() && PROG() ? PROG().pillShows(id) : chip0(id, ctx));
+  const pick14 = (id, ok) => {
+    if (!s14On() || !PROG() || S$.cur === "chai-tray" || !id) return;
+    const help = Cook.ctx && Cook.ctx.wordHelp;
+    try {
+      PROG().pill(id, { ok, firstTry: true, peek: !!(help && help.has && help.has(id)) });
+      const r = PROG().get(id);
+      if (r && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pill", { step: id, by: JSON.stringify({ n: r.pillRun || 0, e: r.pillEarned ? 1 : 0, s: r.pillHidden ? 0 : 1 }) });
+    } catch (e) {
+      /* only the pill */
+    }
+  };
+  /*
+   * SH-158, the S14 roll-out (Zafar, 29 Oct, round 4; the central rules' timed.firstTimeHold; chai's boil knob is the reference):
+   * a timed control's first-time hold. The first time a new player meets this control (once ever: the save's seenStation, which
+   * "New player" resets), its timer waits in the middle of its green until the child acts; after that, normal timing. Only a
+   * control the child operates (maani's tawa flip, the grill's turn, samosa's fry lift, daar's tadka), never a thing that moves
+   * by itself, and never for a returning player. Logged as chai's are (Lifecycle timed-hold start / end) for contract-77.
+   *   const hold = St.firstHold(ctx, "maani-line:flip");   v = hold.cap(v, lo, hi, who) each tick;   hold.end(who) on the tap
+   * (the key starts with the station's coach key, data/cook.json onboard: maani-line, grill, fry, tadka)
+   */
+  S$.firstHold = function (ctx, key) {
+    const R = global.Rules;
+    const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
+    const k = `${key}:s14-hold`;
+    const station = String(key).split(":")[0];
+    const fresh = s14On() && !!(R && R.firstTimeHold && R.firstTimeHold()) && !seen[k] && (newPlayer() || !(Cook.save.coached || {})[station]);
+    let on = fresh;
+    let since = 0;
+    const log = (step, by) => {
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("timed-hold", { step, by: String(by) });
+      } catch (e) {
+        /* only a log */
+      }
+    };
+    return {
+      get on() {
+        return on;
+      },
+      /** The timer's value v with the hold: at most the middle of the green [lo, hi] while it holds. */
+      cap(v, lo, hi, who = key) {
+        if (!on) return v;
+        const mid = lo + (hi - lo) * 0.5;
+        if (v <= mid) return v;
+        if (!since) {
+          since = Date.now();
+          log("start", `${who} ${mid.toFixed(3)}`);
+        }
+        return mid;
+      },
+      /** The child acted on the control: the hold ends for good (once ever per player). */
+      end(who = key) {
+        if (!on) return;
+        on = false;
+        seen[k] = true;
+        if (since) log("end", `${who} ${Date.now() - since}ms`);
+        since = 0;
+      },
+    };
+  };
+  ["markRight", "markMiss"].forEach((k) => {
+    const f = Cook[k];
+    if (typeof f === "function") Cook[k] = (id) => (pick14(id, k === "markRight"), f(id));
+  });
+
+  /*
    * s08 wave 2A (SH-110, CK-49, Zafar 19 Oct: yes to build/reports/research-levels-2026-10-19.md): the level table, one row per
    * level for every Cook station (data/cook.json levelTable; a station's own row overrides it, levelTable.stations[key]):
    *   card      "open" (L1-L2: every word and number), "dotted" (L3: the item words dotted; frames, verbs and numbers written),
@@ -54,13 +130,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * Cook.levelRow(level, station) -> {card, decoys, lookalike, stepCall}; Cook.dotItem(id, level): is this word dotted on the
    * card (and in her box) at that level: an item word (a thing to pick) with a voice, at a dotted or hidden card.
    */
+  /*
+   * The S14 roll-out (SH-155; Zafar, 29 Oct, round 4; the rulebook): the level row is the central rules' (js/shared/rules.js
+   * Rules.level: decoys 1, 2, 3, 4 with a lookalike at L4; the order card's Kutchi always written, so the card is open at every
+   * level, never dotted or folded; each step called at every level). The old table (data/cook.json levelTable's card, decoys,
+   * lookalike and stepCall) is gone; a station's own row (levelTable.stations: daar's chop card, Nani's step card, DAAR-34) still
+   * sets its card. The old numbers stay only as the stand-in until the rules have loaded.
+   */
   const LT_DEFAULT = { card: ["open", "open", "dotted", "hidden"], decoys: [1, 2, 3, 3], lookalike: [false, false, false, true], stepCall: [true, true, true, true] };
   Cook.levelRow = function (level, station) {
     const T = (Cook.data && Cook.data.levelTable) || {};
     const own = (station && (T.stations || {})[station]) || {};
     const lv = Math.min(4, Math.max(1, Math.round(Number(level)) || 1));
+    const RL = global.Rules && global.Rules.level ? global.Rules.level(lv) : null;
+    const base = RL ? { card: RL.cardKutchi ? "open" : "dotted", decoys: RL.decoys, lookalike: RL.lookalike, stepCall: true } : null;
     const pick = (k) => {
-      const v = own[k] != null ? own[k] : T[k] != null ? T[k] : LT_DEFAULT[k];
+      const v = own[k] != null ? own[k] : base ? base[k] : LT_DEFAULT[k];
       return Array.isArray(v) ? v[Math.min(v.length, lv) - 1] : v;
     };
     return { level: lv, card: pick("card"), decoys: pick("decoys"), lookalike: !!pick("lookalike"), stepCall: pick("stepCall") !== false };
@@ -314,7 +399,45 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const lastFoldMs = () => (foldAt ? Date.now() - foldAt : Infinity);
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
+  /*
+   * The S14 roll-out (SH-149, CHAI-35; the rulebook's helper card: "the full answer (picture, Kutchi, English) in the guide's box,
+   * which grows in place"): on the s14 look Nani's box has the arrow in place of the bulb, and the card it opens is the item asked
+   * for now: the station's expectation names it (Cook.expect.key, a thing on the order card), so every station's helper card
+   * follows its step as chai's does (chai keeps its own, js/cook/stations/chai-tray.js). Opening it is help: counted as a hint for
+   * that word once (Cook.onHelp), never a right pick.
+   */
+  let helperT = 0;
+  let helperKey = null;
+  function helperWatch(ctx, key) {
+    clearInterval(helperT);
+    helperT = 0;
+    helperKey = null;
+    if (key === "chai-tray" || !s14On() || !UI.helper || !UI.wordOf) return;
+    const rowOf = (id) => {
+      for (const L of (UI.mission && UI.mission.ladders && UI.mission.ladders()) || []) {
+        const r = Cook.Order.rows(L, { all: true }).find((x) => !x.head && !x.no && (x.ids || []).includes(id));
+        if (r) return r;
+      }
+      return null;
+    };
+    const helped = new Set();
+    helperT = setInterval(() => {
+      if (!s14On() || !Cook.inStation) return;
+      const e = Cook.expect;
+      const id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
+      if (id === helperKey) return;
+      const r = id ? rowOf(id) : null;
+      if (id && !r) return; // (a thing nobody asked for: the helper stays on the last asked item)
+      helperKey = id;
+      const w = r ? UI.wordOf(r, { size: 240, written: true }) : null;
+      if (w) w.onOpen = () => !helped.has(id) && (helped.add(id), Cook.onHelp && Cook.onHelp("hint", { ids: [id] }));
+      UI.helper(w || null);
+    }, 250);
+  }
+  S$.helperWatch = helperWatch;
   async function begin(S, ctx, key, view, { closed = false } = {}) {
+    S$.cur = key; // (the station now playing: the word pill's ladder below leaves chai's own to chai)
+    helperWatch(ctx, key);
     ladderStart(S, ctx);
     Cook.focusBox = null; // the last station's test crop box (flow.js hook focus) goes with it
     // CK-48 (P28: "the time it takes for you to listen to the instruction ... should be enough time to load"): the station's
@@ -355,7 +478,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.save.seenStation[key] = true;
     // a station whose card starts folded at this level (§14a, chaat's L4: Mech.define closedFrom) folds it before the
     // pop-up below, so that pop-up is the shared closed big card: the order heard, never written (non-negotiable 6)
-    if (closed && UI.mission && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true });
+    // (the S14 roll-out: on the s14 look the active order card is always open, never folded for its level: Zafar, 29 Oct, chai level
+    // rules 7, now every station; chaat's L4 fold, Mech.define closedFrom, is the old look's)
+    if (closed && !s14On() && UI.mission && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true });
     // a part of the order that waits for this station comes up in the shared request pop-up before play (S04-B)
     if (ctx.nextStep) await ctx.nextStep(key);
     // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
@@ -381,6 +506,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (global.Lifecycle) global.Lifecycle.stageEnd("cook:station");
     if (Cook.Coach) Cook.Coach.stop();
     Cook.inStation = false;
+    if (helperT) {
+      clearInterval(helperT);
+      helperT = 0;
+      helperKey = null;
+      if (UI.helper) UI.helper(null);
+    }
     ladderStop();
     UI.hideVoice();
     UI.hideGist();
@@ -846,6 +977,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         helped++;
         helpedAt = Date.now();
         if (!guided && Cook.onHelp) Cook.onHelp("hint");
+        // (SH-160, the S14 roll-out: the guide's hint came: the level-up counts these a round, js/cook/flow.js Cook.roundDone)
+        if (Cook.ctx) Cook.ctx.guideHints = (Cook.ctx.guideHints || 0) + 1;
         if (g && g.logHelp) g.logHelp("help", { step: "idle", by: `L${levelOf()} ${expected}` });
         // (a step with no word of its own to say here, the pantry's guided step: the step's line, through the stepper)
         if (sayLine) hint();

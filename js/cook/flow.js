@@ -359,23 +359,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /*
    * SH-155 (Zafar, 29 Oct, round 4): a recipe slot's count that names a game on the central rules ({"rules": "chai-tray"}: chai's
    * cups) is that game's count by level (js/shared/rules.js Rules.counts: 1 + (most - 1)(level - 1)/3, its most at L4), filled in
-   * as Cook's data loads (here, before any station's own file: a station loads only when it is chosen)
+   * as Cook's data loads (here, before any station's own file: a station loads only when it is chosen). The S14 roll-out: every
+   * dish's counts, at any depth of its slots (js/cook/recipes.js Recipes.fromRules: the forms it reads)
    */
   if (Cook.onLoad)
     Cook.onLoad.push(async (data) => {
       const T = global.Tokens;
       const R = (T && T.rulesReady ? await T.rulesReady.catch(() => null) : null) || global.Rules || null;
-      Object.values((data && data.recipes) || {}).forEach((rec) =>
-        Object.values((rec && rec.slots) || {}).forEach((slot) => {
-          const c = slot && slot.count;
-          if (!c || typeof c !== "object" || !c.rules) return;
-          const list = R && R.counts ? R.counts(c.rules) : null;
-          if (list) slot.count = { rules: c.rules, byLevel: list };
-        })
-      );
+      if (R && Cook.Recipes && Cook.Recipes.fromRules) Cook.Recipes.fromRules(data, R);
     });
-  /** SH-160: the games on the central rules and their key in the save's level count (Cook.save.levelUp; chai first). */
-  const RULES_GAMES = { chai: "chai-tray" };
+  /** SH-160: the games on the central rules and their key in the save's level count (Cook.save.levelUp; chai first, every dish at the S14 roll-out). */
+  const RULES_GAMES = { chai: "chai-tray", pantry: "fetch", maani: "maani-line", mishkaki: "mishkaki-grill", samosa: "samosa", chaat: "chaat", daal: "daar" };
   Cook.rulesGame = (recipe) => RULES_GAMES[recipe] || null;
   /** SH-160: the level a game on the rules picks for itself (null: not on the rules yet). */
   Cook.autoLevel = (recipe) => {
@@ -492,8 +486,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ctx.guided = !!demo || !Cook.save.taught[d.recipe];
       ctx.dishAt = i;
       const missesBefore = ctx.kinds.length;
+      ctx.guideHints = 0;
       await R[d.recipe].run(S(), ctx, d);
       finishDish(ctx, i, missesBefore);
+      // SH-160, the S14 roll-out (the rulebook's level-up, every game): a finished round counts towards its game's level (chai
+      // counts its own, js/cook/stations/chai-tray.js); a level nobody picked (free play: d.autoLevel) is the only one that moves
+      if (!demo && !ctx.guided && d.recipe !== "chai" && Cook.rulesGame(d.recipe)) Cook.roundDone(d.recipe, { level: d.level || 1, hints: ctx.guideHints || 0, grownUp: !d.autoLevel });
       if (ctx.guided) {
         Cook.save.taught[d.recipe] = true;
         Cook.writeSave();
@@ -1691,7 +1689,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const preLook = async (ids) => {
     if (!UI.applyS14) return;
     const was = document.body.classList.contains("njg-s14");
-    UI.applyS14(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
+    // (the S14 roll-out: every dish, UI.S14_ALL; chai alone when it is off)
+    UI.applyS14(ids.length > 0 && (UI.S14_ALL || ids.every((id) => CHAI14.has(id))));
     if (document.body.classList.contains("njg-s14") === was) return;
     global.dispatchEvent(new Event("resize"));
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -1717,6 +1716,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     s.setBg("bg-service");
     // a dish's order as a ladder, or a few plain lines for stations with no dish
     const openCard = (what, steps) => {
+      // (the S14 roll-out, for the timeline only: how many of the dish's repeating thing this order holds, by the central rules'
+      // count: Recipes.countOf; the checks read the level's counts in play from it)
+      try {
+        const n = !Array.isArray(what) && Cook.Recipes.countOf ? Cook.Recipes.countOf(what) : null;
+        if (n != null && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-count", { step: String(level), by: `${what.recipe} ${n}` });
+      } catch (e) {
+        /* only a log */
+      }
       if (Array.isArray(what)) {
         ctx.ladders = [Cook.Order.fromLines(what)];
         // said from the rows, so the card's speaker lights each one as it's read (read-along)

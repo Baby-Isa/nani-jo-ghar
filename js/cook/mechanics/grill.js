@@ -1422,6 +1422,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const Y = (y) => z.Y(y) - LIFT;
       const L = (v) => z.L(v);
       const [lo, hi] = k.band;
+      // SH-158, the S14 roll-out (SEK-22; the central rules' timed.firstTimeHold): a new player's first turn holds in the green
+      // until a skewer is tapped (js/cook/station-lib.js St.firstHold); the lift (the last side) never holds
+      const hold14 = Cook.Stations.firstHold(ctx, "grill:turn");
       const nPieces = Mech.knobs("thread", { level: z.level }).pieces;
       const offerChips = params.chips != null;
 
@@ -1645,6 +1648,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* turn it (or lift it) */
       const tapGrill = (g, forced) => {
         if (g.busy || g.out) return;
+        if (!forced && g.phase < k.turns && g.v >= lo) hold14.end("skewer");
         if (line.poke) line.poke();
         if (!forced && g.v < k.ignoreBelow) {
           S.wiggle(g.sk);
@@ -1833,6 +1837,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         ringG.clear();
         grilling.slice().forEach((g) => {
           if (!g.busy) g.v += g.rate * dt;
+          if (!g.busy && g.phase < k.turns) g.v = hold14.cap(g.v, lo, hi, "skewer");
           const inBand = g.v >= lo && g.v <= hi;
           SK.cook(g.sk, (g.phase + Math.min(1, g.v)) / (k.turns + 1), { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0) });
           if (inBand !== !!g.inBand) {
