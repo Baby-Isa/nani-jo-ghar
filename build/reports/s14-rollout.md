@@ -20,3 +20,11 @@ fixable issues at any point, fix them all before publishing."
 
 Known, left for the builders: contract-53 (the help light too big) in samosa and the pantry, contract-24 once in samosa at 740x320
 (s14-cook); the eye test's contract-51 and contract-52 (s14-clinic).
+
+### Proof (phase A)
+
+The films and their frames: the orchestrator's scratch scripts (`film.mjs`, `replay.mjs`, `loadtime.mjs` on the sandbox's own
+server and browser); the contract runs `build/screenshots/sandbox/s14-A-contract` (36 pages: chai L1-L4, returning, maani, samosa,
+the pantry; 11 breaks, 3 of them CHAI-48), `s14-A-c52` (CHAI-48 green on chai; the eye test's breaks as on main) and
+`s14-A-final` (chai L1-L4, returning, mistake at the four sizes: 0 breaks over 28 pages). The before for every timing row on
+`main`'s code (89729f48) in a worktree.
