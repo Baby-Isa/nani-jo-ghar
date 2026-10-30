@@ -21360,43 +21360,43 @@
    "want": null,
    "after": null,
    "expect": null,
-   "delay": 900,
+   "delay": 0,
    "flow": "cook:chai-tray",
-   "path": "hint",
+   "path": "speed1",
    "level": 3,
    "sizes": [
     "930x430"
    ],
    "profile": "seen",
-   "at": "life:helper-open",
+   "at": "kind-timing",
    "capture": [
     "voice",
     "contract:89",
     "contract:78",
     "contract:36"
    ],
-   "note": "chai L3: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
+   "note": "chai L3: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light (L3-L4: the whole play at a child's pace, contract-89 over all of it; the hint path does not reach the helper's opening at these levels)"
   },
   {
    "want": null,
    "after": null,
    "expect": null,
-   "delay": 900,
+   "delay": 0,
    "flow": "cook:chai-tray",
-   "path": "hint",
+   "path": "speed1",
    "level": 4,
    "sizes": [
     "930x430"
    ],
    "profile": "seen",
-   "at": "life:helper-open",
+   "at": "kind-timing",
    "capture": [
     "voice",
     "contract:89",
     "contract:78",
     "contract:36"
    ],
-   "note": "chai L4: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light"
+   "note": "chai L4: the voice timeline (each line's start) beside the step openings and the helper's opening: no item called at its step's opening while her card is closed; called as it opens; the knob's calls with their light (L3-L4: the whole play at a child's pace, contract-89 over all of it; the hint path does not reach the helper's opening at these levels)"
   }
  ],
  "CHAI-42": [
@@ -22524,21 +22524,21 @@
    "want": null,
    "after": null,
    "expect": null,
-   "delay": 900,
+   "delay": 0,
    "flow": "cook:chai-tray",
-   "path": "hint",
+   "path": "speed1",
    "level": 3,
    "sizes": [
     "930x430"
    ],
    "profile": "seen",
-   "at": "life:helper-open",
+   "at": "kind-timing",
    "capture": [
     "crop:#guide",
     "voice",
     "contract:89"
    ],
-   "note": "chai L3: the helper's call as her card opens"
+   "note": "chai L3: the helper's call as her card opens (L3-L4: the whole play at a child's pace, contract-89 over all of it; the hint path does not reach the helper's opening at these levels)"
   }
  ],
  "CHAI-50": [
