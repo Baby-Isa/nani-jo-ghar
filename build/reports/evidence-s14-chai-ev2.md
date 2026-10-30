@@ -13,3 +13,9 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id s14-chai-ev2`, the 
 ## Tool failures (0): for the tool owner, never a FAIL in regressions.md
 
 none
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- CHAI-45: the sheet has one still per size at stage-start, not a filmed load or frame strip, so a jump in zoom or layout after the first frame can neither be seen nor ruled out; also only Nana is drawn at the counter in B and C while A and D show an empty counter at the same moment, which is itself the kind of change the row is about and is not explained. (Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz)
+- CHAI-47: the tray is drawn about 85 px wide in B (930x430) and smaller in A (1920x1080), face circles a few pixels across, no crop of the tray, so whether the lit box's edge crosses a face circle cannot be read; the Check names four sizes and the sheet has two. Flaw off the point: B the order panel's third word card is clipped at the panel's right edge. (Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz)
+
