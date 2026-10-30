@@ -1,7 +1,7 @@
 SESSION NAME / MODE:  s14-clinic: every clinic heal game on the new chai kit, Zafar's numbers (Sprint 14 roll-out, phase C2)
 MODEL AND EFFORT:     Opus, high effort (nine heal games moved onto the shared kit and rules; the clinic's own looks go; each judged by eye at four sizes)
 COST ESTIMATE:        about $60-90
-HARD STOP:            set at launch: 7 h after it (UK). Commit every 30-40 minutes (builders never push: the orchestrator merges).
+HARD STOP:            12:00 UK, 30 Oct (7 h after launch). Commit every 30-40 minutes (builders never push: the orchestrator merges).
 BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
 
 MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low

@@ -4,7 +4,7 @@
   "effort": "high",
   "why": "nine heal games moved onto the shared kit and rules; the clinic's own looks go; each judged by eye at four sizes",
   "cost": "about $60-90",
-  "stop": "set at launch: 7 h after it (UK)",
+  "stop": "12:00 UK, 30 Oct (7 h after launch)",
   "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "shared",
   "browser": true,
