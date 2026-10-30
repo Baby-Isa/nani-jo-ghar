@@ -2,23 +2,7 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### From the Sprint 14 roll-out (30 Oct): answer "yes to all except ..."
-
-1. **The heal games' L1 counts and the leak test.** Your L1 ranges (a count from 1-2 or 1-3) let a child who knows no Kutchi win by
-   always guessing the smallest or middle number: 10-17% in cut, ear, foot and fever at L1, 35% in the knee at L1 and L2 (the rule is
-   under 10%). Recommendation, done for now: keep your numbers and accept it at L1 only (the knee at L1-L2, under your earlier
-   decision 13i), L2-L4 stay at 10% (`build/tools/review/leak-configs/`). Or say "wider L1 ranges" and the builder widens them.
-2. **The ghost hand on drag, hold and swipe demos** (the clinic's swabs, the tooth brush): the s14 rule is "no finger"; today the hand
-   still shows how to drag, as you allowed on 23 Oct. Recommendation: keep it for drags only.
-3. **Daar's staged dots on Nani's chop card (DAAR-34)** are off on the new look, where a card's Kutchi is always written (rulebook 4a).
-   Recommendation: leave them off (the word pill does the hiding now). Or say "dots back".
-4. **Samosa's one box per samosa ticking (SH-53)** is off on the new look: the card ticks once, at the one tick, like chai.
-   Recommendation: keep the one tick. Or say "per samosa".
-
-### After Sprint 13 (27 Oct): answer "yes to all except …"
-40. **The end screen's empty left half** (the wrong-words space when nothing was wrong, your SH-103 of 17 Oct): keep, or centre the words when none are wrong? Recommend centre.
-41. **Samosa L3** ticks each samosa's box as it is made (SH-53) while the card's rows tick together (contract-50): which wins? Recommend the boxes tick as made, the card rows at the one tick (SAM-27).
-42. **The clinic's order rows** have no pictures (the doctor's steps have no picture data): add them in the next art run? Recommend yes, with the FC2 face moods and CHT-16's chop background.
+### After Sprint 13 (27 Oct)
 43. **Your ear on the Z Flip:** does the customer's opening ("Muke …") now play at the start of every order (LNG-16, fixed on a model of a phone's voice)?
 
 ### Deferred (Zafar, 14 Oct)
