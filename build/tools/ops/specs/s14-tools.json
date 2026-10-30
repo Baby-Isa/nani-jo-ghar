@@ -4,7 +4,7 @@
   "effort": "high",
   "why": "test tooling, but the checks judge timing, layout and pictures: they must be right the first time",
   "cost": "about $20-30",
-  "stop": "set at launch: 5 h after it (UK)",
+  "stop": "06:00 UK, 30 Oct (5 h after launch)",
   "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "tools",
   "browser": true,

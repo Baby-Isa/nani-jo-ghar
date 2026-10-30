@@ -1,7 +1,7 @@
 SESSION NAME / MODE:  s14-tools: the checks that catch what Zafar found on 29 Oct (Sprint 14 roll-out, phase B)
 MODEL AND EFFORT:     Sonnet, high effort (test tooling, but the checks judge timing, layout and pictures: they must be right the first time)
 COST ESTIMATE:        about $20-30
-HARD STOP:            set at launch: 5 h after it (UK). Commit every 30-40 minutes (builders never push: the orchestrator merges).
+HARD STOP:            06:00 UK, 30 Oct (5 h after launch). Commit every 30-40 minutes (builders never push: the orchestrator merges).
 BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
 
 MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
