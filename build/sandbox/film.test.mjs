@@ -78,6 +78,11 @@ test("filmSummary: a card that jumps 110 px in one frame is a break; a smooth sl
   const over = [row(0, {}, [[10, 10, 60, 60]], [[0, 0, 50, 50]])];
   assert.equal(filmSummary(over).maxOnFace, 1600, "a card over a face: the overlap in px squared");
   assert.match(FILM_REC_START, /njgTest/, "the recorder reads the page's face hook");
+  // the recorder keeps each face's kind: a card over a hob's round badge is the station's own behind the veil, not a card over a person
+  const k = (kind) => [row(0, {}, [[10, 10, 60, 60]], [{ b: [0, 0, 50, 50], k: kind }])];
+  assert.equal(filmSummary(k("head")).maxOnFace, 1600);
+  assert.equal(filmSummary(k("circle")).maxOnFace, 1600);
+  assert.equal(filmSummary(k("badge")).maxOnFace, 0);
 });
 
 test("the face-box hook exists in Cook's and the clinic's test hooks (B2) and has the shape the checks read", () => {

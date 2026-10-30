@@ -93,7 +93,7 @@ export const FILM_REC_START = `(() => {
     if (R.rows.length < 4000) {
       const row = document.querySelector(".oc-row14");
       let faces = null;
-      try { const T = window.njgTest; const h = T && (T.faces ? T : T.cook && T.cook.faces ? T.cook : T.clinic && T.clinic.faces ? T.clinic : null); faces = h ? h.faces().map((x) => [x.left, x.top, x.right, x.bottom].map((v) => Math.round(v * 10) / 10)) : null; } catch (e) { faces = null; }
+      try { const T = window.njgTest; const h = T && (T.faces ? T : T.cook && T.cook.faces ? T.cook : T.clinic && T.clinic.faces ? T.clinic : null); faces = h ? h.faces().map((x) => ({ b: [x.left, x.top, x.right, x.bottom].map((v) => Math.round(v * 10) / 10), k: x.kind })) : null; } catch (e) { faces = null; }
       // where each card of the order row is drawn (its left edge, by its key): the row's scroll and the cards' own slide (FLIP) both show here
       const cards = {};
       if (row) row.querySelectorAll(":scope > .oc-row[data-key]").forEach((c) => { cards[c.dataset.key] = Math.round(c.getBoundingClientRect().left * 10) / 10; });
@@ -124,7 +124,8 @@ export function filmSummary(rows = []) {
     if (s.pop.length) popFrames++;
     maxFly = Math.max(maxFly, s.fly.length);
     if (s.faces) faceFrames++;
-    for (const c of [...s.pop, ...s.fly]) for (const f of s.faces || []) { const o = over(c, f); if (o > maxOnFace) { maxOnFace = o; onFaceAt = { t: s.t, card: c, face: f }; } }
+    // (the people: heads and face circles; a hob's or tray's round badge is the station's own, behind the veil as it folds: contract-83)
+    for (const c of [...s.pop, ...s.fly]) for (const f of s.faces || []) { if (!Array.isArray(f) && f.k === "badge") continue; const fb = Array.isArray(f) ? f : f.b; const o = over(c, fb); if (o > maxOnFace) { maxOnFace = o; onFaceAt = { t: s.t, card: c, face: fb }; } }
   });
   return { frames: rows.length, maxCardStep: Math.round(maxCardStep * 10) / 10, cardStepAt, cardMoves, maxRowStep: Math.round(maxRowStep * 10) / 10, rowMoves, rowMs: rowT0 != null ? rowT1 - rowT0 : 0, maxOnFace: Math.round(maxOnFace), onFaceAt, popFrames, maxFly, faceFrames };
 }
