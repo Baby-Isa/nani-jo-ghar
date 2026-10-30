@@ -21545,5 +21545,26 @@
    "note": "a new player's one onboarded round has a wrong answer, so the dropper and the whole loop are shown once (the light on her eye and the bottle); a second round is not taught",
    "delay": 0
   }
+ ],
+ "SH-137": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:yes",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the clinic's kit pieces on the s14 kit: the face is the kit's white-rimmed circle (no square tile with a pale wash), the word card is the kit's (word under its picture; 'mirchi' inside its card), the order card with no teal title bar of its own",
+   "delay": 300
+  }
  ]
 }

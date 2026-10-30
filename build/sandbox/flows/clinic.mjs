@@ -550,11 +550,9 @@ export function clinicFlows() {
   // levels: 1-3 for every stage; the waiting room goes on to 4 and 5 (the lab bar says so: "the waiting room only")
   for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) D({ id: `clinic:${st}@L2`, title: `Clinic: ${STAGE_NAME[st]}, level 2`, query: `stage=${st}&level=2`, level: 2 });
   for (const L of [4, 5]) D({ id: `clinic:waiting@L${L}`, title: `Clinic: Waiting room, level ${L} (the waiting room's own levels)`, query: `stage=waiting&level=${L}`, level: L });
-  for (const g of HEAL_GAMES) for (const L of [2, 3]) D({ id: `clinic:heal-${g}@L${L}`, title: `Clinic: heal game ${g}, level ${L}`, query: `stage=heal&game=${g}&level=${L}`, level: L, timeoutMs: 200000 });
-  // CLN-45 (Zafar, 14 Oct): the ear's busier round moved to a new level 4 (L3 is L2 heard only)
-  D({ id: "clinic:heal-ear@L4", title: "Clinic: heal game ear, level 4", query: "stage=heal&game=ear&level=4", level: 4, timeoutMs: 200000 });
-  // the eye test's level 4 (four chart rows; js/clinic/heal/games/eye.js plan): its judging pills under contract-21 too
-  D({ id: "clinic:heal-eye@L4", title: "Clinic: heal game eye, level 4", query: "stage=heal&game=eye&level=4", level: 4, timeoutMs: 200000 });
+  // S14 roll-out (the rulebook's section 3, Zafar 29-30 Oct): every heal game has its own L4 numbers, so each has an @L4 flow
+  // (the ear's busier round, CLN-45, and the eye test's L4 had theirs before)
+  for (const g of HEAL_GAMES) for (const L of [2, 3, 4]) D({ id: `clinic:heal-${g}@L${L}`, title: `Clinic: heal game ${g}, level ${L}`, query: `stage=heal&game=${g}&level=${L}`, level: L, timeoutMs: 200000 });
   for (const g of HEAL_EXTRA) f.push({ ...healExtraFlow(g), deep: true });
   // the end card with its grey ticks (mistakes) and dimmed bulb (hints) comes from a whole patient
   D({ id: "clinic:patient#mistake", title: "Clinic: One patient, level 1, mistake player (the end review with its wrong words)", query: "patient=1&level=1&results=1", mode: "mistake", timeoutMs: 600000 });
