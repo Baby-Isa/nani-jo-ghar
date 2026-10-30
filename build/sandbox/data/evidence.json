@@ -21107,6 +21107,25 @@
    "expect": null,
    "note": "a round on the game host, Play again: the second round's kitchen has every picture of the first, the painted marble worktop, the fx; the shot is the replayed station",
    "delay": 2500
+  },
+  {
+   "flow": "lab:cook/samosa",
+   "path": "replay",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:85"
+   ],
+   "expect": null,
+   "note": "samosa on the game host, Play again: the replayed station has every picture",
+   "delay": 2500
   }
  ],
  "SH-162": [
@@ -21128,6 +21147,24 @@
    "expect": null,
    "note": "the guide box's helper card: its down arrow is never lit (no gold box, no glow on the arrow) while the first-time lights come and go",
    "delay": 0
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "maani: the guide box's helper arrow never lit",
+   "delay": 0
   }
  ],
  "SH-163": [
@@ -21148,6 +21185,24 @@
    ],
    "expect": null,
    "note": "the order filmed whole: each big card moves and turns into its row card with one even scale, its words never doubled during the morph",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "order-whole",
+   "level": 3,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250"
+   ],
+   "expect": null,
+   "note": "samosa's order: each big card into its row card with one even scale, no doubled words",
    "delay": 0
   }
  ],
@@ -21216,6 +21271,26 @@
    "expect": null,
    "note": "the greeting and each line's bubble keep off the side panel while the play area has room (never more than 4 px into #side)",
    "delay": 0
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:86"
+   ],
+   "expect": null,
+   "note": "the eye test: the doctor's bubbles keep off the side panel",
+   "delay": 1500
   }
  ],
  "CHAI-40": [
@@ -22212,6 +22287,107 @@
    ],
    "expect": null,
    "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53)",
+   "delay": 0
+  }
+ ],
+ "SH-169": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250"
+   ],
+   "expect": null,
+   "note": "two people order: once Nana's order is said his card folds to face and headline while Ma speaks, so no card sits cut under the side panel's top; both cards open again as the station starts",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "at play: every person's card open again",
+   "delay": 0
+  }
+ ],
+ "SH-170": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-pharmacy",
+   "after": null,
+   "capture": [
+    "crop:.cl-side",
+    "contract:15"
+   ],
+   "expect": null,
+   "note": "the pharmacy's order card at the phone sizes: hammer and bandage each whole, a word too wide for half a line on a line of its own",
+   "delay": 2500
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-side",
+    "contract:51"
+   ],
+   "expect": null,
+   "note": "the foot's order row 'Paani lukewarm, trae jugs' shrunk then wrapped inside its card, never cut at the card's edge",
+   "delay": 2500
+  }
+ ],
+ "SEK-23": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the grill at L4: every skewer the order asks for threaded before the barbecue, the round played to its end (the badges)",
    "delay": 0
   }
  ]
