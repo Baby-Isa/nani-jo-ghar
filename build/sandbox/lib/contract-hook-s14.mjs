@@ -82,10 +82,20 @@ function s14hook() {
             if (o.type === "Graphics" || o.visible === false || chars.has(o) || o.glowFx) continue;
             const key = o.texture ? o.texture.key : "";
             if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow/i.test(key + (o.name || ""))) continue;
-            const was = stamp.get(o), now = { x: o.x, y: o.y, a: o.alpha, sx: o.scaleX };
+            // where the thing rests (its place when it last held still for 300 ms): a bounce stays within a few px of it, a flight goes far
+            const t = Date.now(), was = stamp.get(o), now = { x: o.x, y: o.y, a: o.alpha, sx: o.scaleX, rx: o.x, ry: o.y, still: t };
+            if (was) {
+              const moved = Math.abs(now.x - was.x) > 0.6 || Math.abs(now.y - was.y) > 0.6;
+              now.rx = was.rx; now.ry = was.ry; now.still = was.still;
+              if (moved) {
+                now.still = 0;
+                if (was.still && t - was.still >= 300) { now.rx = was.x; now.ry = was.y; }   // it was at rest: the rest is where it was
+                const far = Math.hypot(now.x - now.rx, now.y - now.ry);
+                if (far >= 16) what.push("obj:" + (key || o.type) + (o.name ? "/" + o.name : "") + ":" + Math.round(far));
+              } else if (!now.still) { now.still = t; now.rx = now.x; now.ry = now.y; }
+              if (Math.abs(now.a - was.a) > 0.03 && now.a > 0.02 && now.a < 0.98) what.push("fade:" + (key || o.type));
+            }
             stamp.set(o, now);
-            if (!was) continue;
-            if (Math.abs(now.x - was.x) > 0.6 || Math.abs(now.y - was.y) > 0.6 || Math.abs(now.sx - was.sx) > 0.004 || (Math.abs(now.a - was.a) > 0.03 && now.a > 0.02 && now.a < 0.98)) what.push("obj:" + (key || o.type) + (o.name ? "/" + o.name : ""));
           }
         };
         walk(sc.children.list);

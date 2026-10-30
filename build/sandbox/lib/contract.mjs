@@ -1583,7 +1583,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check54(tl, add);
   check72(tl, add);
   check73(tl, add);
-  check74(r, tl, segs, add);
+  if (!/#replay/.test(r.flow || "")) check74(r, tl, segs, add); // (a replayed round: the second round starts the station long after the first order's tap)
   check75(tl, add);
   check76(tl, add);
   check77(r, tl, add);
