@@ -272,7 +272,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             rack.set(j + 1);
             SK.stickShown(sk, false);
           } else await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
-          if (j === 0) doneBtn();
+          // (the orchestrator, 30 Oct: the go is the kit's move-on, which presses itself a beat after it shows (Sprint 11, "no Next and no
+          // Done anywhere"): shown after the first skewer, it took an L2-L4 order to the grill with one skewer made and the grill then
+          // waited for ever. It shows once every skewer the order wants is made, or the rack is full)
+          if (!doneShown && (ordered.every((w) => (made[w] || 0) >= want[w]) || full() || doneRow.length >= slots)) doneBtn();
         }
         fresh();
       };
