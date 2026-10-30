@@ -47,8 +47,10 @@ test("LNG-17: the join is left out, the second kind says 'ne', a single tomato i
   // the plural is still the engine's gap (Q14): never asked for, and never invented here
   assert.equal(L.phrase([2, "veg-03"]).ok, false);
   for (const id of ["daal", "chaat"]) {
-    const t = Cook.data.recipes[id].slots.tomatoes;
-    const ranges = t.byLevel ? t.byLevel.map((x) => x.int) : [t.int];
+    const S = Cook.data.recipes[id].slots;
+    const t = S.tomatoes;
+    // (the S14 roll-out: daar's chopped things are the rules' X shared out by its chop slot, each within its [min, max])
+    const ranges = S.chop && S.chop.into ? [S.chop.into.tomatoes] : t.byLevel ? t.byLevel.map((x) => x.int) : [t.int];
     ranges.forEach((r) => assert.ok(r[1] <= 1, `${id}: at most one tomato until the plural is in the lexicon (${JSON.stringify(r)})`));
   }
 });

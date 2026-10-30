@@ -22,6 +22,7 @@
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = readFileSync(join(ROOT, "js/cook/mechanics/assemble.js"), "utf8");
@@ -39,9 +40,13 @@ export function rules(src = SRC) {
 const R = DATA.recipes.chaat;
 const TOPPINGS = R.lists.toppings;
 const BASES = R.slots.base.pick;
-const TAKE = R.slots.seq.take.byLevel;
+// (the S14 roll-out, CHT-17: the toppings after the base, the "no" from L2 and the decoys 1-4 are the central rules', data/rules.json,
+// read as the game reads them: js/shared/rules.js; the recipe's take is filled from them at load, js/cook/recipes.js Recipes.fromRules)
+const RULES = createRequire(import.meta.url)("../js/shared/rules.js");
+const TAKE = [1, 2, 3, 4].map((lv) => { const n = Math.max(0, RULES.count("chaat", lv) - 2); return [n, n]; });
 const NO_FROM = R.slots.no.else.from;
-const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
+const DECOYS = Object.fromEntries([1, 2, 3, 4].map((lv) => [lv, RULES.level(lv).decoys]));
+const NO_AT = (lv) => RULES.level(lv).noAsks;
 const QTY = ["veg-01", "veg-02", "veg-03"];
 
 const pick = (rng, xs) => xs[Math.floor(rng() * xs.length)];
@@ -56,7 +61,7 @@ const shuffle = (rng, xs) => {
 
 /** An order as the game builds it: {sequence (qty spelt out), rows (the card's), shelf, exclude}. */
 export function order(level, rng) {
-  const exclude = level >= 3 ? [pick(rng, NO_FROM)] : [];
+  const exclude = NO_AT(level) ? [pick(rng, NO_FROM)] : [];
   const [lo, hi] = TAKE[level - 1];
   const n = lo + Math.floor(rng() * (hi - lo + 1));
   const tops = shuffle(rng, TOPPINGS.filter((x) => !exclude.includes(x))).slice(0, n);
