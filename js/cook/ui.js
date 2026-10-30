@@ -1685,8 +1685,31 @@
         return Object.values((S && S.chars) || {}).filter((img) => img && img.active && img.visible !== false);
       })();
       if (global.Rules && heads.length >= global.Rules.popBelowFacesFrom()) {
+        // (Zafar, 29 Oct: "If there's three people and no space for the big card under the left face they use the smaller card
+        // version ... or just scale it down to fit. With three people there won't be a better place": always under the faces at
+        // the left, the card narrower, then smaller, then scaled to the room there)
         const under = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom), play.top);
-        scan(sr.right + 14, play.right - pad, under + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], 0);
+        const y0 = under + pad;
+        const room = Math.max(40, play.bottom - pad - y0);
+        let w = wd;
+        for (w of [wd, wd * 0.85, wd * 0.7, 160, 130, 110, 95, 80].map(Math.round)) {
+          c.style.width = `${w}px`;
+          c.classList.toggle("wc14-small", smallAt || w <= 160);
+          global.WordCard.fit14(c);
+          if (c.offsetHeight <= room) break;
+        }
+        // (its speaker and words have their smallest sizes, so past the narrowest card the whole card is scaled down to the room:
+        // zoom, so its box and the move into its row card see the size it shows at)
+        const k = c.offsetHeight > room ? Math.max(0.3, room / c.offsetHeight) : 1;
+        c.style.zoom = k < 1 ? String(Math.round(k * 1000) / 1000) : "";
+        // (a zoomed element's left and top are zoomed too: given in its own scale)
+        Object.assign(c.style, { left: `${Math.round((sr.right + 14) / k)}px`, top: `${Math.round(y0 / k)}px` });
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: "0", by: JSON.stringify({ under: true, w, k: Math.round(k * 100) / 100, y: Math.round(y0) }) });
+        } catch (e) {
+          /* only a log */
+        }
+        return;
       }
       if (!perfect()) scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], best ? 1 : 0);
       if (best && best.onFace > 0) scan(sr.left + 8, sr.right - 8, Math.max(play.top, sr.top) + pad, Math.min(play.bottom, sr.bottom) - pad, [Math.min(wd, sr.width - 16), 160, 130, 110], 1e6);

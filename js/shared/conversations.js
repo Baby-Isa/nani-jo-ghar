@@ -710,6 +710,21 @@
       // no room above the head (or the head is off screen): the bubble hangs below it instead
       const r = b.getBoundingClientRect();
       if (r.top < 8 || pt.y < 0) b.classList.add("cv-below");
+      // (Zafar, 29 Oct: "It shouldn't overlap the panel almost ever": a side panel marked data-njg-keepout is out of bounds; the
+      // bubble moves along beside it while its tail still points at the head)
+      if (root.document && root.document.querySelectorAll) {
+        let dx = 0;
+        root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
+          const q = k.getBoundingClientRect();
+          if (!q.width || !q.height) return;
+          if (q.right <= pt.x && r.left < q.right + 8) dx = Math.max(dx, q.right + 8 - r.left);
+          else if (q.left >= pt.x && r.right > q.left - 8) dx = Math.min(dx, q.left - 8 - r.right);
+        });
+        if (dx && r.width + 16 < W) {
+          b.style.left = `${x + dx}px`;
+          b.style.setProperty("--cv-tail-dx", `${-dx}px`);
+        }
+      }
     } else layer.classList.add("cv-free");
   }
 
@@ -742,7 +757,6 @@
     bubble.innerHTML = `<span class="cv-face" aria-hidden="true">${faceOf(sp)}</span><span class="cv-text"></span><button type="button" class="cv-spk" aria-label="Hear it again">${SPEAKER_SVG}</button><button type="button" class="cv-skip" aria-label="Skip">✋</button>`;
     bubble.dataset.speaker = sp.id;
     layer.appendChild(bubble);
-    placeBubble(bubble, ctx, sp.id, layer);
     const text = bubble.querySelector(".cv-text");
     const face = bubble.querySelector(".cv-face");
     const mood = (kind) => {
@@ -752,6 +766,8 @@
     };
     const showAsk = (english) => (text.innerHTML = lineHTML(ask, english));
     showAsk(false);
+    // (placed once its words are in, so its real width keeps it off a side panel: Zafar, 29 Oct)
+    placeBubble(bubble, ctx, sp.id, layer);
     requestAnimationFrame(() => bubble.classList.add("in"));
     const sayAsk = async () => {
       bubble.classList.add("speaking");

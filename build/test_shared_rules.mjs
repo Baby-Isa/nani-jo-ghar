@@ -48,13 +48,17 @@ test("the hint waits: 7, 9, 11, 13 s, and the tokens' helpMs is filled from them
 test("how many: 1 + (most - 1)(level - 1)/3 rounded, a game's own override wins", () => {
   const R = fresh();
   assert.deepEqual(R.counts("chai-tray"), [1, 2, 2, 3]);
-  assert.deepEqual(R.counts("fetch"), [1, 3, 4, 6]);
-  assert.deepEqual(R.counts("maani-line"), [1, 2, 3, 4]);
+  // (Zafar, 29 Oct: each game's own four numbers)
+  assert.deepEqual(R.counts("fetch"), [3, 4, 5, 6]);
+  assert.deepEqual(R.counts("maani-line"), [2, 3, 4, 5]);
+  assert.deepEqual(R.counts("samosa"), [2, 3, 4, 6]);
+  assert.deepEqual(R.counts("mishkaki-grill"), [1, 2, 3, 4], "no levels listed: the formula");
   assert.equal(R.counts("nobody"), null);
   const J = structuredClone(FILE);
+  delete J.count.games.fetch.levels;
   J.count.games.fetch.levels = { 1: 2 };
   R.set(J);
-  assert.deepEqual(R.counts("fetch"), [2, 3, 4, 6], "the pantry's L1 override (rulebook open question 1)");
+  assert.deepEqual(R.counts("fetch"), [2, 3, 4, 6], "one level overridden, the rest by the formula");
 });
 
 test("the big card's hold by the word's state, the order card's light, noLast, the first-time hold", () => {

@@ -30,7 +30,7 @@ export const screenHTML = () => `
 
   </main>
 
-  <aside id="side" class="njg-side">
+  <aside id="side" class="njg-side" data-njg-keepout>
     <!-- Wave 6: the sidebar is on the LEFT (people read left to right); the big action buttons stay on the right of the picture.
          0. 28 Sept: Nani's guide box (js/shared/guide.js): her face and what to do now; tap it to mute or unmute her
             (remembered in the save); the light bulb (English for a few seconds: 5/3/2/1 s by level; it costs a hint) and her speaker -->

@@ -438,7 +438,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // no "pass me" in the first order of a session; at most one at level 1
     const level1 = order.dishes.every((d) => (d.level || 1) <= 1);
     ctx.maxInterrupts = !state.ordersServed ? 0 : Cook.save.mode === "busy" && !level1 ? 2 : 1;
-    preLook(order.dishes.map((d) => d.recipe));
+    await preLook(order.dishes.map((d) => d.recipe));
     const ladders = openLadders(ctx, order.dishes);
     ctx.steps = order.dishes.flatMap(chipsFor);
     const name = who === "nani" ? "Nani" : Cook.data.customers[who].name;
@@ -1687,7 +1687,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // the s14 look (chai's cards, light and wider side panel) is on for an order that is all chai (ui.js mission.s14 decides it again,
   // to the same answer, when the order opens); set it early so the stage is laid out once
   const CHAI14 = new Set(["chai", "chai-tray"]);
-  const preLook = (ids) => UI.applyS14 && UI.applyS14(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
+  // (the play area takes its new size on the next layout: the stage is resized and two frames pass before anything is drawn)
+  const preLook = async (ids) => {
+    if (!UI.applyS14) return;
+    const was = document.body.classList.contains("njg-s14");
+    UI.applyS14(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
+    if (document.body.classList.contains("njg-s14") === was) return;
+    global.dispatchEvent(new Event("resize"));
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  };
   async function runLab(key, guided, { level = Cook.labLevel || 1, region } = {}) {
     Cook.run++;
     Cook.undoAt = null;
@@ -1699,7 +1707,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.clearStage();
     // (Zafar, 29 Oct: "the image loads and then jerks into a different version or different zoom level": chai's look, and its
     // wider side panel, set before the kitchen is first drawn, never after, so the scene is fitted once)
-    preLook([key.replace(/^recipe:/, "")]);
+    await preLook([key.replace(/^recipe:/, "")]);
     const order = { who: "nana", dishes: [] };
     const ctx = makeCtx(order, { lab: true, guided });
     const s = S();
@@ -2071,7 +2079,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const spec = o.free || !o.dish ? generateCustomer() : { who: o.who || Cook.pick(["nana", "ma", "cousin"]), dishes: [o.dish] };
     // (SH-160: no level asked for: a game on the central rules picks its own, buildOrder; the others play at 1 as before)
     spec.level = o.level || null;
-    preLook(spec.dishes || []);
+    await preLook(spec.dishes || []);
     await serviceView(null);
     const card = await runOrder(buildOrder(spec), null);
     return { tasks: card ? card.total : undefined };

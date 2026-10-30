@@ -315,7 +315,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const bgRef = `bg:${name}`;
       // SH-108 (P31: "if it's top-down then it should be the marble countertop"): a top-down worktop waits for its painting
       // (only a dead file's 20 s cap), never the code-drawn worktop after 2.5 s; the other views keep the short wait
-      const topDown = name === "marble" || name === "hob";
+      // (Zafar, 29 Oct: "the image loads and then jerks into a different version or different zoom level": the kitchen too waits
+      // for its painting, so it is never drawn first as the stand-in at another fit and then swapped)
+      const topDown = name === "marble" || name === "hob" || name === "service";
       // (a tiled worktop's hob plate loads with it: contract-11)
       const tileSpec = Cook.Art.bgTile ? Cook.Art.bgTile(name) : null;
       const plateLoad = tileSpec && tileSpec.plate ? Cook.Art.loadFile(this, `bgplate-${tileSpec.plate}`, tileSpec.plate.startsWith("assets/") ? `${tileSpec.plate}.webp` : `assets/cook/bg/${tileSpec.plate}.webp`) : Promise.resolve(true);

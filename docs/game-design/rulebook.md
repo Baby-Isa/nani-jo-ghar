@@ -33,9 +33,9 @@ before it is final.
 
 | | Chai | Pantry | Maani | Sekelo | Samosa | Chaat | Daar |
 |---|---|---|---|---|---|---|---|
-| **What repeats; most at L4 (proposed)** | cups; 3 (three burners) | items to fetch; 6 | rotis; 4 | skewers; 4 | samosas; 6 (Zafar) | toppings; 4 | to decide: chopped pieces, spices or stir laps |
+| **What repeats; most at L4** | cups; 3 | items to fetch; 6 | rotis; 5 | skewers; 4 | samosas; 6 | items in the bowl; 6 | chopped (X) and the things in before them (Y); 4+4 |
 | **Today L1-L4** | 1, 2, 2, 3 | 3, 4, 5, 6 | 1, 2, 3, 2-4 | 1, 2, 2-3, 3-4 | 1-2, 1-2, 2-4, 2-4 | 1, 1-2, 2-3, 1-2 | onions 1-3, chillies 1-3, spices 2-3, laps 2-4 |
-| **By the rule** | 1, 2, 2, 3 (as today) | 1, 3, 4, 6 | 1, 2, 3, 4 | 1, 2, 3, 4 | 1, 3, 4, 6 (if the pan fits) | 1, 2, 3, 4 | once its unit is chosen |
+| **By the rule (Zafar, 29 Oct)** | 1, 2, 2, 3 | 3, 4, 5, 6 (as today) | 2, 3, 4, 5 | 1, 2, 3, 4 | 2, 3, 4, 6 | 3, 4, 5, 6 items in the bowl, a double portion counting twice | chopped + added first (X+Y): 1+2, 2+2, 3+3, 4+4 |
 | **L2's new thing today** | 2 cups, numbers, extras, "no" | more items, the whole shelf | big and small | 2 skewers | a second filling | a second topping | decoys come in |
 | **L3's today** | kari / mori names | more items | one of each | mixed skewers | a second batch | "no" asks | more decoys |
 | **"No" asks today → rule** | L2 (done) | none | none | none | L4 → L2 | L3 → L2 | none |
@@ -53,18 +53,20 @@ of the level rule applies. Today's level shapes are each game's own (`data/clini
 | **What repeats; most at L4 (proposed)** | chart rows; 4 | drops; 4 | kicks and turns; 4 | moves on the cross; 6 | toe calls; 4 | to decide | colours to pop; 3 | drops; 5 | to decide |
 | **L2 today** | the side said | a sock to fish out | a second ailment, a list | 4 moves, 2 patches | the salt count, a list | to read | "not this colour" (na) | 4 dispensers, colours | to read |
 | **L3 today** | heard only | as L2 | paths | more moves | more calls | to read | to read | to read | to read |
-| **"No" asks → rule** | none → L2 | none | none | none | none | none | L2 (as today) | none | none |
+| **"No" asks → rule** | none (Zafar, 29 Oct: "don't put a no in the eye test game") | none | none | none | none | none | L2 (as today) | none | none |
 | **Decoys** | the chart's other rows | big and small things | none | none | the other toes | none | 2 (as today) | the other dispensers | none |
 | **Timed control** | none | none | none | none (no timer) | to check | none | the bubbles rise (upMs) | the countdown | none |
 | **Shown at the start** | to check in each game at the roll-out | | | | | | | | |
 
+Zafar's numbers, 29 Oct: "pantry keep 3,4,5,6. maani 2,3,4,5. samosa: 2,3,4,6. chaat ... total items in the bowl ... 3, 4, 5, 6
+including double portions (so 5 could be 4 items and one of those twice). Daar is the number of items cut put into the pan ...
+(X+Y), and the sequence per level is 1+2, 2+2, 3+3, 4+4. Don't put a no in the eye test game." So L1 is not always 1: each game
+lists its four numbers (the formula is the default only where a game has none).
+
 ## 4. Open, for Zafar
 
-1. The pantry at L1: one item is a very short trip (today 3). Keep the rule (1, 3, 4, 6) or override L1 to 2?
-2. Daar: which thing is the one that repeats (the chopping, the spices or the stirring)?
-3. Samosa at 6: only if the fry pan fits six; else 4.
-4. Chaat's L4 today drops to 1-2 toppings to add another difficulty: follow the rule (4) instead?
-5. The clinic keeps its numbers from L1 (counting is its task): agree?
+1-4. Answered 29 Oct (above). Samosa's 6 at L4 needs the fry pan to fit six (to check at its roll-out).
+5. The clinic's numbers, game by game: proposed in the chat, 29 Oct.
 6. Fever and a few clinic shapes are conversations, not counts: their "most at L4" to decide when they are rolled out.
 
 ## 5. Fable's review (29 Oct) and what was done with it

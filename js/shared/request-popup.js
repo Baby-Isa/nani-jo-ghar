@@ -427,7 +427,23 @@
       if (sd) return sd;
     }
     let side = fitsAbove || !fitsBelow ? "above" : "below";
-    const x = Math.max(M, Math.min(W - bw - M, cx - bw / 2));
+    // (Zafar, 29 Oct: "Why does the speech bubble go over the left panel even though there is space to right? It shouldn't overlap
+    // the panel almost ever": a page's side panels, marked data-njg-keepout, are out of bounds: the bubble shifts along beside
+    // them, its tail still at the head; only a bubble wider than the room left may cross one)
+    let x0 = M;
+    let x1 = W - M;
+    if (typeof document !== "undefined" && document.querySelectorAll)
+      document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
+        const q = k.getBoundingClientRect();
+        if (!q.width || !q.height) return;
+        if (q.right - lr.left <= hx + r.width / 2) x0 = Math.max(x0, q.right - lr.left + M);
+        else if (q.left - lr.left >= hx + r.width / 2) x1 = Math.min(x1, q.left - lr.left - M);
+      });
+    if (x1 - x0 < bw) {
+      x0 = M;
+      x1 = W - M;
+    }
+    const x = Math.max(x0, Math.min(x1 - bw, cx - bw / 2));
     const yOf = (sd) => Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
     let y = yOf(side);
     const hits = (yy) =>

@@ -45,10 +45,10 @@
 }
 .cv-bubble.in { opacity: 1; transform: translate(-50%, calc(-100% - calc(var(--njg-u) * 14))) scale(1); }
 .cv-bubble.cv-anchored::after {
-  /* the tail, down to the speaker's head */
+  /* the tail, down to the speaker's head (moved back over the head when the bubble was shifted off a side panel) */
   content: "";
   position: absolute;
-  left: 50%;
+  left: calc(50% + var(--cv-tail-dx, 0px));
   bottom: calc(var(--njg-u) * -11);
   width: calc(var(--njg-u) * 18);
   height: calc(var(--njg-u) * 18);
