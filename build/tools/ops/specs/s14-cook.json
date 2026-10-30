@@ -1,0 +1,76 @@
+{
+  "name": "s14-cook: every Cook station on the new chai kit, Zafar's numbers (Sprint 14 roll-out, phase C1)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "six stations moved onto a shared kit and rules, each judged by eye at four sizes",
+  "cost": "about $60-90",
+  "stop": "set at launch: 7 h after it (UK)",
+  "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": [
+    "PAN-18",
+    "MAA-19",
+    "SEK-22",
+    "SAM-28",
+    "CHT-17",
+    "DAAR-36"
+  ],
+  "read": [
+    "build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)",
+    "docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)",
+    "docs/game-design/rulebook.md (the rules and every game's numbers)",
+    "data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)",
+    "docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)"
+  ],
+  "owns": [
+    "js/cook/stations/*.js except chai-tray.js, js/cook/mechanics/**, data/stations/*.json except chai-tray.json, the station parts of data/cook.json (recipes other than chai, the levelTable)",
+    "js/cook/flow.js, js/cook/ui.js, js/cook/station-lib.js, js/cook/recipes.js where a station needs them (chai must play as before: run it)",
+    "data/rules.json (your stations' entries only), js/shared/rules.js (new readers only)",
+    "build/sandbox/data/evidence.json (your rows only), build/sandbox/lib/contract.mjs (your rows' checks only), new unit tests",
+    "build/reports/s14-cook.md and a Round 3 section in build/reports/s14-chai-lessons.md"
+  ],
+  "readOnly": [
+    "js/clinic/**, data/clinic/** (s14-clinic)",
+    "js/cook/stations/chai-tray.js and data/stations/chai-tray.json (the reference)",
+    "js/shared/word-card.js, order-card.js, onboard.js, request-popup.js, conversations.js, css/shared/** (shared with s14-clinic: a change there only if both games need it, run on chai and the eye test too, and say so in your report)",
+    "assets/**",
+    "CLAUDE.md, docs/**"
+  ],
+  "stubs": "none: a gap (a picture, a word, a rule a game cannot take) goes in your report, never a stand-in",
+  "tasks": [
+    {
+      "do": "The s14 look for every Cook recipe (flow.js CHAI14 and ui.js mission.s14 to every dish): the word card, the order and its pop-out, the sideways row, Nani's helper card, the light, skip zones, bubbles off faces and panels, the word pill, the level-up (rollout plan 4a, all ten points)",
+      "accept": "every station below at L1-L4 at the four sizes, a new and a returning player, filmed orders, a replay, the contract run 0 new breaks you do not explain; chai unchanged"
+    },
+    {
+      "do": "Each station's numbers and level shape from data/rules.json (Rules.counts, Rules.level), the old levelTable read through Rules.level then gone, recipes.js's L1 'no' rule on Rules.level().noAsks (rollout plan 4b's table)",
+      "accept": "a unit test per station's counts; the timeline shows each level's counts in play"
+    },
+    {
+      "do": "Each timed control's first-time hold (maani's tawa flip, the grill's turn, samosa's fry lift, daar's tadka)",
+      "accept": "a new player's first one holds in the green until the tap (the timeline)"
+    },
+    {
+      "do": "The help light hugs its item in samosa, daar, the pantry and the grill (contract-53)",
+      "accept": "contract-53 green on those four at the four sizes"
+    },
+    {
+      "do": "Samosa's six at L4 only if the fry pan fits six (else four, said in the report); chaat's double portions count twice; daar's X+Y written on its card",
+      "accept": "stills of each at L4 at 740x320 and 1920x1080"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:maani-line",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:assemble",
+    "cook:daar",
+    "cook:chai-tray"
+  ],
+  "port": 8887,
+  "report": "s14-cook",
+  "publish": false
+}

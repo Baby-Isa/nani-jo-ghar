@@ -47,7 +47,7 @@
   ]
  },
  "count": {
-  "_about": "How many of a game's one repeating thing (cups, skewers, samosas...) by level: L1 is 1, L4 the game's most, L2 and L3 even steps between, rounded: 1 + (most - 1) x (level - 1) / 3 (Zafar, 29 Oct round 4). A game may override a level: levels {\"2\": n}. most: the proposed values of the rulebook's section 2 (a game not yet rolled out keeps its own count until its roll-out reads this). Zafar, 29 Oct: \"pantry keep 3,4,5,6. maani 2,3,4,5. samosa: 2,3,4,6. chaat ... 3, 4, 5, 6 including double portions ... Daar ... (X+Y) ... 1+2, 2+2, 3+3, 4+4\": those games list all four levels. The clinic (Zafar, 29 Oct): numbers spoken from L1; the eye test x+y (2+4, 2-3+5, 2-4+6, 2-5+7, x random in its range), the fever 2, 4, 6, 8, the rest as the rulebook's section 3.",
+  "_about": "How many of a game's one repeating thing (cups, skewers, samosas...) by level: L1 is 1, L4 the game's most, L2 and L3 even steps between, rounded: 1 + (most - 1) x (level - 1) / 3 (Zafar, 29 Oct round 4). A game may override a level: levels {\"2\": n}. most: the proposed values of the rulebook's section 2 (a game not yet rolled out keeps its own count until its roll-out reads this). Zafar, 29 Oct: \"pantry keep 3,4,5,6. maani 2,3,4,5. samosa: 2,3,4,6. chaat ... 3, 4, 5, 6 including double portions ... Daar ... (X+Y) ... 1+2, 2+2, 3+3, 4+4\": those games list all four levels. The clinic (Zafar, 29-30 Oct, the rulebook's section 3): x and y per level; a [lo, hi] pair is a random number in that range.",
   "games": {
    "chai-tray": {
     "most": 3,
@@ -114,7 +114,7 @@
     }
    },
    "heal-eye": {
-    "what": "drops first (x, random in the range) + chart cards (y)",
+    "what": "drops first (x) + chart cards (y)",
     "x": {
      "1": [
       2,
@@ -141,38 +141,80 @@
     }
    },
    "heal-ear": {
-    "what": "things to fish out; drops (most)",
-    "levels": {
-     "1": 2,
-     "2": 3,
-     "3": 3,
-     "4": 4
-    },
-    "drops": {
+    "what": "blobs to clear (x) + drops (y)",
+    "x": {
      "1": 3,
      "2": 4,
-     "3": 4,
-     "4": 5
+     "3": 5,
+     "4": 6
+    },
+    "y": {
+     "1": [
+      1,
+      3
+     ],
+     "2": [
+      2,
+      4
+     ],
+     "3": [
+      2,
+      5
+     ],
+     "4": [
+      3,
+      6
+     ]
     }
    },
    "heal-knee": {
-    "what": "bandage turns (most)",
-    "levels": {
-     "1": 4,
-     "2": 5,
-     "3": 6,
-     "4": 8
+    "what": "kicks (x) + bandage turns (y)",
+    "x": {
+     "1": [
+      1,
+      3
+     ],
+     "2": [
+      2,
+      4
+     ],
+     "3": [
+      2,
+      5
+     ],
+     "4": [
+      3,
+      6
+     ]
+    },
+    "y": {
+     "1": [
+      4,
+      5
+     ],
+     "2": [
+      5,
+      6
+     ],
+     "3": [
+      6,
+      7
+     ],
+     "4": [
+      7,
+      8
+     ]
     }
    },
    "heal-tooth": {
-    "what": "moves on the brush cross; dirty patches",
-    "levels": {
+    "what": "brush moves (x) + dirty patches (y)",
+    "x": {
      "1": 2,
      "2": 3,
      "3": 4,
      "4": 6
     },
-    "patches": {
+    "y": {
      "1": 1,
      "2": 2,
      "3": 3,
@@ -180,23 +222,41 @@
     }
    },
    "heal-foot": {
-    "what": "toe calls (which toe, by size)",
-    "levels": {
-     "1": 2,
-     "2": 3,
-     "3": 4,
-     "4": 5
+    "what": "jugs (x) + splinters (y); one bit of dirt per jug, each pour clears one",
+    "x": {
+     "1": [
+      1,
+      3
+     ],
+     "2": [
+      2,
+      4
+     ],
+     "3": [
+      2,
+      5
+     ],
+     "4": [
+      3,
+      6
+     ]
+    },
+    "y": {
+     "1": 1,
+     "2": 2,
+     "3": 3,
+     "4": 4
     }
    },
    "heal-taste": {
-    "what": "colours to pop; decoys",
-    "levels": {
+    "what": "colours to pop (x) + decoy spots of each other colour (y)",
+    "x": {
      "1": 1,
      "2": 2,
      "3": 3,
      "4": 3
     },
-    "decoys": {
+    "y": {
      "1": 1,
      "2": 2,
      "3": 3,
@@ -204,12 +264,42 @@
     }
    },
    "heal-boing": {
-    "what": "drops (most); dispensers",
-    "levels": {
-     "1": 4,
-     "2": 5,
-     "3": 5,
-     "4": 6
+    "what": "wipes (x) + drops (y); dispensers",
+    "x": {
+     "1": [
+      1,
+      3
+     ],
+     "2": [
+      2,
+      4
+     ],
+     "3": [
+      2,
+      5
+     ],
+     "4": [
+      3,
+      6
+     ]
+    },
+    "y": {
+     "1": [
+      2,
+      3
+     ],
+     "2": [
+      2,
+      4
+     ],
+     "3": [
+      3,
+      5
+     ],
+     "4": [
+      3,
+      6
+     ]
     },
     "dispensers": {
      "1": 1,
@@ -219,8 +309,26 @@
     }
    },
    "heal-cut": {
-    "what": "stitches (most)",
-    "levels": {
+    "what": "dabs (x) + stitches (y); two-colour plasters at L4",
+    "x": {
+     "1": [
+      1,
+      2
+     ],
+     "2": [
+      1,
+      3
+     ],
+     "3": [
+      2,
+      4
+     ],
+     "4": [
+      2,
+      4
+     ]
+    },
+    "y": {
      "1": 0,
      "2": 2,
      "3": 3,

@@ -8,31 +8,33 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (29 Oct 2026, 22:00 UK):** Sprint 14 "Lock the principles" is open (`docs/sprints/S14-lock-the-principles.md`,
-rounds 1-4). The rules are drafted as `docs/game-design/rulebook.md` (every game as a column; Fable's review in its section 5).
-**Live on `main` (89729f48, 20261029T215612Z):** chai on one central rules file (`data/rules.json`, read only through
-`js/shared/rules.js`): its cups, decoys, order card by level, hint waits (7, 9, 11, 13 s), the big card's holds, the 1.2 s light,
-the first-time hold in the green, the word pill (Kutchi off after three right in a row, back after a miss until one right), the
-level-up rule (3 rounds in a row, at most one guide hint each; never down; a grown-up's pick wins); "no" items said last; the
-pop-out never over a face; faint slots on the waiting order card; the skip zones (bubbles, side panel, cog never skip); the cog
-top right in every Cook game. Builder report `build/reports/s14-rules.md`; lessons for the next builders
-`build/reports/s14-chai-lessons.md` (rounds 1 and 2, and my check). Judge: the cog passed; the timed hold works (its probe shot
-early); four rows' film probes fail (I filmed them: fine). Nothing running.
+**Where things stand (30 Oct 2026, about 01:00 UK):** Sprint 14 "Lock the principles" is open. **Zafar has handed the roll-out to
+the next chat to run without him** (30 Oct: "a handover note for a new chat to launch and manage all that build independently
+without me"; 29 Oct: "run both builders to change all the cook and clinic games to the new chai style"; "set the builders up to
+build all night"). Rough publishes to `main` are allowed (`/publish --force`).
+- **Live on `main`** (89729f48, 20261029T215612Z): chai on the central rules file.
+- **On the branch, not live:** his 29 Oct chai notes fixed (`docs/feedback/chai-rules-2026-10-29.md`; rows CHAI-40, CHAI-42 to
+  CHAI-47, SH-161 to SH-166); his per-game numbers for Cook and the clinic in `data/rules.json` and `docs/game-design/rulebook.md`
+  (final); the roll-out rows (PAN-18, MAA-19, SEK-22, SAM-28, CHT-17, DAAR-36, CLN-207 to CLN-215, SH-167, SH-168).
+- **The plan:** `docs/sprints/S14-rollout-plan.md`, all of it. Briefs ready: `build/tools/ops/specs/s14-tools.brief.txt`,
+  `s14-cook.brief.txt`, `s14-clinic.brief.txt` (regenerate with `node build/tools/ops/brief.mjs <spec>.json` after any spec edit;
+  set each `stop` at launch). Lessons for every builder: `build/reports/s14-chai-lessons.md`.
 
-**For Zafar:** (1) play chai L1-L4 as a new player, then again (the pill and the level-up show over several rounds); (2) at
-740x320 with three people the pop-out card falls back over the side panel's top (Nani's line) for a moment: acceptable?
-(3) Mum: the new word order (`docs/questions.md`); (4) the rulebook's open points (section 4) and the bulb's English lines in
-the games not yet rolled out.
-
-**Next steps, in order:**
-1. Zafar's feedback on the new chai (`/feedback`); fix it.
-2. Fix the evidence tool's film probe and add a face-box hook (lessons, my check 1 and 4).
-3. The roll-out, from the lessons: two builders (the other Cook stations; the clinic), each game onto the central file, his
-   numbers in the rulebook; brief, model, effort and cost to him first.
+**Next steps, in order (the plan's sections 1-5):**
+1. **Phase A, in the chat:** verify chai's last tweaks (plan section 2, A1-A11; A1 the three-person card and A10 the replay are
+   unverified), check, publish, note to Zafar.
+2. **Phase B with A:** launch `s14-tools` (Sonnet, high, about $20-30): the checks. Merge, run each on main and the branch.
+3. **Phase C after B merges:** launch `s14-cook` and `s14-clinic` together (Opus, high, about $60-90 each), as in-chat subagents
+   (`Agent`, `isolation: "worktree"`), each with its brief and the lessons; a `send_later` check-in at each hard stop.
+4. **Phase D:** merge one at a time; the checklist (plan section 5) on each; the judge (`evidence.mjs --judge`, one judge per batch);
+   fix what breaks; publish; the report; append Round 3 lessons; hand over with his play list.
+5. **Needs Zafar, not blocking:** Mum's word order (`docs/questions.md`); his play after D.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14 is open; chai on the central rules is live. Here is my
-> feedback. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S14-rollout-plan.md`. Zafar has handed you the
+> Sprint 14 roll-out to run without him: phase A (chai's finish) and phase B (the checks builder) now, then the Cook and clinic
+> builders, then merge, check, judge, publish and report. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Follow
+> the plan's checklist at every merge.
 
 ## The fix list
 
@@ -40,10 +42,10 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 50 | 83 |
-| Cook: pantry | 5 | 9 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 17 / 3 / 3 / 2 / 1 / 3 / 8 | 18 / 14 / 28 / 12 / 22 / 17 / 33 |
-| Clinic | 29 | 164 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 53 | 83 |
+| Cook: pantry | 6 | 9 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 17 / 4 / 4 / 2 / 1 / 4 / 8 | 18 / 14 / 28 / 12 / 22 / 17 / 33 |
+| Clinic | 38 | 164 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
 | Art | 9 | 9 |

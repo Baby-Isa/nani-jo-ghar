@@ -43,28 +43,31 @@ before it is final.
 | **Timed control (first-time hold)** | the boil knob (done in the green) | none | the tawa flip | the grill turn | the fry lift | none | the tadka burn |
 | **Shown at the start** | water, tea (not on the card) | to check in each game at the roll-out: every item not on its order card | | | | | |
 
-## 3. The clinic, game by game (Zafar, 29 Oct)
+## 3. The clinic, game by game (Zafar, 29-30 Oct: final)
 
-The heal games count by design (drops, wipes, kicks, sips): a number is their task, so their numbers are spoken from L1; no "no"
-asks (sore spots' "not this colour" at L2 stays; never in the eye test); L4 is new where a game stopped at L3: one more of
-what repeats, and a lookalike among its decoys. Each game's four numbers (today's from `data/clinic/heal/*.json`):
+The heal games count by design: a number is their task, so their numbers are spoken from L1. No "no" asks (sore spots' "not this
+colour" at L2 stays; never in the eye test). Written x+y for two counts; a-b is a random number in that range (the game picks it).
+"Today" is each game's code (`js/clinic/heal/games/<game>.js` K), not its data notes (the foot's and the ear's data notes are an
+older design).
 
-| Game | What repeats | Today L1-L4 | The rule's L1-L4 |
+| Game | x + y | Today L1 / L2 / L3 / L4 | The rule L1 / L2 / L3 / L4 |
 |---|---|---|---|
-| **Eye test** | drops to fix the eye first (x, a random number in the range) + chart cards to answer (y), written x+y | drops 1-2, 1-3, 1-3; chart 3, 4, 5 | 2+4, 2-3+5, 2-4+6, 2-5+7 (Zafar) |
-| **Ear** | things to fish out; drops (most) | 2, 3, 3; 3, 4, 4 | 2, 3, 3, 4; 3, 4, 4, 5 |
-| **Knee** | bandage turns (most) | 6, 8, paths | 4, 5, 6, 8 |
-| **Tooth** | moves on the brush cross; dirty patches | 2, 4, 4, 6; 1, 2, 2, 4 | 2, 3, 4, 6; 1, 2, 3, 4 |
-| **Foot** | toe calls: the doctor names which toe to check, by size (the big or the small one, either foot) | 2, 3, 2 + the side | 2, 3, 4, 5 |
-| **Sore spots** | colours to pop; decoys | 1, 2, 2; 2, 2, 2, 3 | 1, 2, 3, 3; 1, 2, 3, 4 |
-| **Boing** | drops (most); dispensers to choose from | 4, 5, 5; 1, 1, 4 | 4, 5, 5, 6; 1, 2, 3, 4 |
-| **Scrape** | stitches (most) | none, 5, 4 | 0, 2, 3, 4 |
-| **Fever** | things tried before the right temperature | a conversation | 2, 4, 6, 8 (Zafar) |
+| **Eye test** | drops to fix the eye first + chart cards to answer | 1-3+4 every level | 2+4, 2-3+5, 2-4+6, 2-5+7 |
+| **Ear** | blobs to clear + drops | 3+1-4, 4+2-5, 4+2-5, 5+2-5 | 3+1-3, 4+2-4, 5+2-5, 6+3-6 |
+| **Knee** | kicks + bandage turns | 1-4+4-6, 2-5+5-8, 2-5+5-8, 2-5+6-10 | 1-3+4-5, 2-4+5-6, 2-5+6-7, 3-6+7-8 |
+| **Tooth** | brush moves + dirty patches | 2+1, 4+2, 4+2, 6+4 | 2+1, 3+2, 4+3, 6+4 |
+| **Foot** | jugs of water + splinters | 1-5+1, 2-5+3, 2-5+3, 2-4+3 | 1-3+1, 2-4+2, 2-5+3, 3-6+4; the sole shows one bit of dirt per jug and each pour clears one, so the last pour leaves it clean |
+| **Sore spots** | colours to pop + decoy spots of each other colour | 1+2, 2+2, 2+2, 2+3 | 1+1, 2+2, 3+3, 3+4 |
+| **Boing** | wipes + drops; dispensers to choose from | 1-5+2-4, 2-5, 2-5 (drops at most 5); 1, 1, 4 | 1-3+2-3, 2-4+2-4, 2-5+3-5, 3-6+3-6; 1, 2, 3, 4 |
+| **Scrape** | dabs + stitches | -, 1-4+2-5, 1-4+(2-4 big, 1-2 small); two-colour plasters at L4 | 1-2+0, 1-3+2, 2-4+3, 2-4+4; two-colour plasters at L4 as today |
+| **Fever** | things tried before the right temperature | 3, 3-4, 3-4, 4 | 2, 4, 6, 8 |
+
+The eye test's cards grow from today's fixed 4 (more flash-card rounds per patient).
 
 ## 4. Open, for Zafar
 
 1-4. Answered 29 Oct (above). Samosa's 6 at L4 needs the fry pan to fit six (to check at its roll-out).
-5. The clinic's numbers: section 3 (Zafar, 29 Oct: the eye test's x+y and the fever's 2, 4, 6, 8; the rest as proposed).
+5. The clinic's numbers: section 3, final (Zafar, 29-30 Oct).
 6. Fever and a few clinic shapes are conversations, not counts: their "most at L4" to decide when they are rolled out.
 
 ## 5. Fable's review (29 Oct) and what was done with it

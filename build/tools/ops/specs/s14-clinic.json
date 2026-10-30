@@ -1,0 +1,80 @@
+{
+  "name": "s14-clinic: every clinic heal game on the new chai kit, Zafar's numbers (Sprint 14 roll-out, phase C2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "nine heal games moved onto the shared kit and rules; the clinic's own looks go; each judged by eye at four sizes",
+  "cost": "about $60-90",
+  "stop": "set at launch: 7 h after it (UK)",
+  "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": [
+    "CLN-207",
+    "CLN-208",
+    "CLN-209",
+    "CLN-210",
+    "CLN-211",
+    "CLN-212",
+    "CLN-213",
+    "CLN-214",
+    "CLN-215"
+  ],
+  "read": [
+    "build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)",
+    "docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)",
+    "docs/game-design/rulebook.md (the rules and every game's numbers)",
+    "data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)",
+    "docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)"
+  ],
+  "owns": [
+    "js/clinic/**, data/clinic/**, css/clinic*.css",
+    "data/rules.json (the heal-* entries only), js/shared/rules.js (new readers only)",
+    "build/sandbox/data/evidence.json (your rows only), build/sandbox/lib/contract.mjs (your rows' checks only), new unit tests",
+    "build/reports/s14-clinic.md and a Round 3 section in build/reports/s14-chai-lessons.md"
+  ],
+  "readOnly": [
+    "js/cook/**, data/cook.json, data/stations/** (s14-cook)",
+    "js/shared/word-card.js, order-card.js, onboard.js, request-popup.js, conversations.js, css/shared/** (shared with s14-cook: a change there only if both games need it, run on chai and the eye test too, and say so in your report)",
+    "assets/**",
+    "CLAUDE.md, docs/**"
+  ],
+  "stubs": "none: a gap (a picture, a word, a rule a game cannot take) goes in your report, never a stand-in",
+  "tasks": [
+    {
+      "do": "The s14 kit in the clinic: the doctor's box as the helper card, the word card in place of the clinic's own (SH-137), the light, skip zones, bubbles off the patient's face (contract-52) and the side panels, long words inside cards (contract-51), the word pill, the level-up (ClinicPipeline.levelUp reads Rules.advance), the central menu (rollout plan 4a and 4c)",
+      "accept": "every heal game at L1-L4 at the four sizes, a new and a returning player, filmed rounds, a replay, the contract run 0 new breaks you do not explain (contract-51 and contract-52 green)"
+    },
+    {
+      "do": "Each game's numbers from data/rules.json (heal-*: x and y per level, a [lo, hi] pair a random number in the range), read through Rules (rollout plan 4c's table); numbers spoken from L1; no 'no' asks but sore spots' at L2",
+      "accept": "a unit test per game's counts; the timeline shows each level's counts"
+    },
+    {
+      "do": "The eye test's chart cards 4, 5, 6, 7 (more flash-card rounds) and its drops 2, 2-3, 2-4, 2-5; its one onboarding round with a wrong answer (CLN-205)",
+      "accept": "filmed eye test L1-L4 at 930x430"
+    },
+    {
+      "do": "The foot: one bit of dirt per jug on the sole, each pour clearing one, the last pour leaving it clean; the fever: 2, 4, 6, 8 things tried before the right temperature",
+      "accept": "filmed foot and fever L1-L4 at 930x430"
+    },
+    {
+      "do": "The fill (the tooth) and any other timed control the child operates: the first-time hold in the green",
+      "accept": "a new player's first one holds until the tap (the timeline)"
+    }
+  ],
+  "flows": [
+    "clinic:heal-eye",
+    "clinic:heal-ear",
+    "clinic:heal-knee",
+    "clinic:heal-tooth",
+    "clinic:heal-foot",
+    "clinic:heal-taste",
+    "clinic:heal-boing",
+    "clinic:heal-cut",
+    "clinic:heal-fever",
+    "cook:chai-tray"
+  ],
+  "port": 8888,
+  "report": "s14-clinic",
+  "publish": false
+}

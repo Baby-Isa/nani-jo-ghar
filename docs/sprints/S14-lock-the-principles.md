@@ -110,6 +110,12 @@ central, each game's content, scene and feel its own; the tap-to-skip zone; a ti
 "no" items said last for now. The roll-out: chai first on the central rules, tested; what it teaches goes to the builders of the
 rest. The draft rulebook with every game: `docs/game-design/rulebook.md`.
 
+## The numbers, game by game (Zafar, 29-30 Oct)
+Cook: pantry 3, 4, 5, 6; maani 2, 3, 4, 5; samosa 2, 3, 4, 6; chaat 3, 4, 5, 6 items in the bowl (a double portion counts twice);
+daar chopped + added first 1+2, 2+2, 3+3, 4+4; chai 1, 2, 2, 3; sekelo 1, 2, 3, 4. Clinic: the rulebook's section 3 (the eye test
+2+4, 2-3+5, 2-4+6, 2-5+7; the foot 1-3+1, 2-4+2, 2-5+3, 3-6+4 with one bit of dirt cleared per jug; the fever 2, 4, 6, 8; the rest as
+proposed). The roll-out plan: `docs/sprints/S14-rollout-plan.md`.
+
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
 

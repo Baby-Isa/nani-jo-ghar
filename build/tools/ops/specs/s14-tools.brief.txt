@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  s14-tools: the checks that catch what Zafar found on 29 Oct (Sprint 14 roll-out, phase B)
+MODEL AND EFFORT:     Sonnet, high effort (test tooling, but the checks judge timing, layout and pictures: they must be right the first time)
+COST ESTIMATE:        about $20-30
+HARD STOP:            set at launch: 5 h after it (UK). Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s14-tools.context.md (1140 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)
+     docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)
+     docs/game-design/rulebook.md (the rules and every game's numbers)
+     data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)
+     docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/** (the sandbox, its lib, drivers and flows, the evidence tool, the review tools and their tests), docs/tools.md (a line per new check), docs/process/checks-to-build.md (strike what you built)
+  - a test hook only: njgTest.faces() in js/cook/flow.js's test hooks and the clinic's (B2), nothing else in game code
+  - build/reports/s14-tools.md
+READ-ONLY (never edit):
+  - every game file (js/**, css/**, data/**) except the one test hook
+  - CLAUDE.md, docs/** except the two named above
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a gap (a picture, a word, a rule a game cannot take) goes in your report, never a stand-in
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. B1: the evidence tool's strip probe films motion (today 'did not change' on a moving pop-out and order row): root-cause it and fix it
+     Accept: SH-152, SH-154, CHAI-39 and SH-157's probes film chai's order on the branch at 930x430 and 1920x1080 (frames that differ, judged sheets)
+  2. B2: a face-box test hook for any game (njgTest.faces(): every face's box in page px)
+     Accept: a unit test and a script reading chai's three faces at 740x320
+  3. B3: a timeline check: a step's call within 200 ms of its light; the order card's light only after the last move ends
+     Accept: red on main (89729f48) for a returning player at chai L1; green on the branch
+  4. B4: a replay driver (a round on lab.html, Play again) and its check: no missing texture, the painted worktop, the fx loaded
+     Accept: red on main, green on the branch
+  5. B5: a no-layout-jump check from the first drawn frame to 2 s on
+     Accept: red on main at 930x430, green on the branch
+  6. B6: load time and bytes to the first play tap per game, a baseline, a 20% growth fails
+     Accept: chai's before and after recorded
+  7. B7: overlaps: no picture over a gauge, no lit-box edge across a face, no bubble over a [data-njg-keepout] panel while there is room, no card over a face
+     Accept: red on main for the handle and the tray face, green on the branch
+  8. B8: the light's contrast on a dark thing; B9: labcheck's spill and spacing measure on cook.html and clinic states; B10: evidence through lab.html at speed 1 and a returning-player profile; B11: a save-seeding driver for the word pill and the level-up
+     Accept: each with a unit test; B11 makes pictures of a hidden pill, its return after a miss and a level-up
+
+REGRESSION ROWS TO RECHECK (6; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (6): SH-167*, SH-168*, SH-152*, SH-154*, CHAI-39*, SH-157*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s14-tools.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8886 NJG_LOCK=/tmp/njg-browser-8886.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s14-tools.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8886.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:maani-line,clinic:heal-eye --sizes 740x320,930x430,1280x665,1920x1080 --run-id s14-tools-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s14-tools.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s14-tools.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8886.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8886; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s14-tools.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

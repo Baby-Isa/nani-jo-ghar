@@ -1,0 +1,75 @@
+{
+  "name": "s14-tools: the checks that catch what Zafar found on 29 Oct (Sprint 14 roll-out, phase B)",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "test tooling, but the checks judge timing, layout and pictures: they must be right the first time",
+  "cost": "about $20-30",
+  "stop": "set at launch: 5 h after it (UK)",
+  "branch": "ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "tools",
+  "browser": true,
+  "specsByBuilder": true,
+  "rows": [
+    "SH-167",
+    "SH-168"
+  ],
+  "read": [
+    "build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)",
+    "docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)",
+    "docs/game-design/rulebook.md (the rules and every game's numbers)",
+    "data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)",
+    "docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)"
+  ],
+  "owns": [
+    "build/** (the sandbox, its lib, drivers and flows, the evidence tool, the review tools and their tests), docs/tools.md (a line per new check), docs/process/checks-to-build.md (strike what you built)",
+    "a test hook only: njgTest.faces() in js/cook/flow.js's test hooks and the clinic's (B2), nothing else in game code",
+    "build/reports/s14-tools.md"
+  ],
+  "readOnly": [
+    "every game file (js/**, css/**, data/**) except the one test hook",
+    "CLAUDE.md, docs/** except the two named above"
+  ],
+  "stubs": "none: a gap (a picture, a word, a rule a game cannot take) goes in your report, never a stand-in",
+  "tasks": [
+    {
+      "do": "B1: the evidence tool's strip probe films motion (today 'did not change' on a moving pop-out and order row): root-cause it and fix it",
+      "accept": "SH-152, SH-154, CHAI-39 and SH-157's probes film chai's order on the branch at 930x430 and 1920x1080 (frames that differ, judged sheets)"
+    },
+    {
+      "do": "B2: a face-box test hook for any game (njgTest.faces(): every face's box in page px)",
+      "accept": "a unit test and a script reading chai's three faces at 740x320"
+    },
+    {
+      "do": "B3: a timeline check: a step's call within 200 ms of its light; the order card's light only after the last move ends",
+      "accept": "red on main (89729f48) for a returning player at chai L1; green on the branch"
+    },
+    {
+      "do": "B4: a replay driver (a round on lab.html, Play again) and its check: no missing texture, the painted worktop, the fx loaded",
+      "accept": "red on main, green on the branch"
+    },
+    {
+      "do": "B5: a no-layout-jump check from the first drawn frame to 2 s on",
+      "accept": "red on main at 930x430, green on the branch"
+    },
+    {
+      "do": "B6: load time and bytes to the first play tap per game, a baseline, a 20% growth fails",
+      "accept": "chai's before and after recorded"
+    },
+    {
+      "do": "B7: overlaps: no picture over a gauge, no lit-box edge across a face, no bubble over a [data-njg-keepout] panel while there is room, no card over a face",
+      "accept": "red on main for the handle and the tray face, green on the branch"
+    },
+    {
+      "do": "B8: the light's contrast on a dark thing; B9: labcheck's spill and spacing measure on cook.html and clinic states; B10: evidence through lab.html at speed 1 and a returning-player profile; B11: a save-seeding driver for the word pill and the level-up",
+      "accept": "each with a unit test; B11 makes pictures of a hidden pill, its return after a miss and a level-up"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "cook:maani-line",
+    "clinic:heal-eye"
+  ],
+  "port": 8886,
+  "report": "s14-tools",
+  "publish": false
+}

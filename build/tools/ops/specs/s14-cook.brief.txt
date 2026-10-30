@@ -1,0 +1,68 @@
+SESSION NAME / MODE:  s14-cook: every Cook station on the new chai kit, Zafar's numbers (Sprint 14 roll-out, phase C1)
+MODEL AND EFFORT:     Opus, high effort (six stations moved onto a shared kit and rules, each judged by eye at four sizes)
+COST ESTIMATE:        about $60-90
+HARD STOP:            set at launch: 7 h after it (UK). Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               ccr-dfbb763e-fd6lh9 (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s14-cook.context.md (856 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)
+     docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)
+     docs/game-design/rulebook.md (the rules and every game's numbers)
+     data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)
+     docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/*.js except chai-tray.js, js/cook/mechanics/**, data/stations/*.json except chai-tray.json, the station parts of data/cook.json (recipes other than chai, the levelTable)
+  - js/cook/flow.js, js/cook/ui.js, js/cook/station-lib.js, js/cook/recipes.js where a station needs them (chai must play as before: run it)
+  - data/rules.json (your stations' entries only), js/shared/rules.js (new readers only)
+  - build/sandbox/data/evidence.json (your rows only), build/sandbox/lib/contract.mjs (your rows' checks only), new unit tests
+  - build/reports/s14-cook.md and a Round 3 section in build/reports/s14-chai-lessons.md
+READ-ONLY (never edit):
+  - js/clinic/**, data/clinic/** (s14-clinic)
+  - js/cook/stations/chai-tray.js and data/stations/chai-tray.json (the reference)
+  - js/shared/word-card.js, order-card.js, onboard.js, request-popup.js, conversations.js, css/shared/** (shared with s14-clinic: a change there only if both games need it, run on chai and the eye test too, and say so in your report)
+  - assets/**
+  - CLAUDE.md, docs/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a gap (a picture, a word, a rule a game cannot take) goes in your report, never a stand-in
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The s14 look for every Cook recipe (flow.js CHAI14 and ui.js mission.s14 to every dish): the word card, the order and its pop-out, the sideways row, Nani's helper card, the light, skip zones, bubbles off faces and panels, the word pill, the level-up (rollout plan 4a, all ten points)
+     Accept: every station below at L1-L4 at the four sizes, a new and a returning player, filmed orders, a replay, the contract run 0 new breaks you do not explain; chai unchanged
+  2. Each station's numbers and level shape from data/rules.json (Rules.counts, Rules.level), the old levelTable read through Rules.level then gone, recipes.js's L1 'no' rule on Rules.level().noAsks (rollout plan 4b's table)
+     Accept: a unit test per station's counts; the timeline shows each level's counts in play
+  3. Each timed control's first-time hold (maani's tawa flip, the grill's turn, samosa's fry lift, daar's tadka)
+     Accept: a new player's first one holds in the green until the tap (the timeline)
+  4. The help light hugs its item in samosa, daar, the pantry and the grill (contract-53)
+     Accept: contract-53 green on those four at the four sizes
+  5. Samosa's six at L4 only if the fry pan fits six (else four, said in the report); chaat's double portions count twice; daar's X+Y written on its card
+     Accept: stills of each at L4 at 740x320 and 1920x1080
+
+REGRESSION ROWS TO RECHECK (6; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (6): PAN-18*, MAA-19*, SEK-22*, SAM-28*, CHT-17*, DAAR-36*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s14-cook.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8887 NJG_LOCK=/tmp/njg-browser-8887.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s14-cook.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8887.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:fetch,cook:maani-line,cook:mishkaki-grill,cook:samosa,cook:assemble,cook:daar,cook:chai-tray --sizes 740x320,930x430,1280x665,1920x1080 --run-id s14-cook-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s14-cook.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s14-cook.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8887.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8887; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s14-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.
