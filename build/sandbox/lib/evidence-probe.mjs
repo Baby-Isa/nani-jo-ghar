@@ -539,7 +539,7 @@ export class EvidenceProbe {
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
-              raws.push(await this.surface({ fast: true, scale: film && vw > 1000 ? 0.5 : 1 }));
+              raws.push(await this.surface({ fast: true })); // (never a scaled clip: Chrome emulates the smaller screen for it, the game gets a resize and re-fits mid-film: zoomed corners on the sheet and false overlaps, the orchestrator and the judge, 30 Oct)
               if (k && !film) { const bk = await this.boxes(c.sel).catch(() => null); const u = bk && !bk.error ? union(bk) : null; if (u) seen.push(u); }
               if (s.p.mark === "drawn") (out.states = out.states || []).push(await this.drawnState());
             }

@@ -21162,15 +21162,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "kind-timing",
+   "at": "life:timed-hold",
    "after": null,
    "capture": [
-    "zoom2:canvas:pan",
+    "shot",
     "contract:84"
    ],
    "expect": null,
-   "note": "the knob lit on the black burner: the lit box's warm fill lifts it clearly against the dim (the light's contrast measured: at least 12 of 255 on a dark thing)",
-   "delay": 0
+   "note": "a new player's first boil, held in the green: the knob lit with 'Slow kar!' on the black burner, the lit box's warm fill lifting it clearly against the dim (contract-84: at least 12 of 255 on a dark thing)",
+   "delay": 400
   }
  ],
  "SH-165": [
@@ -21269,14 +21269,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "help-open",
+   "at": "exp:cook-chai",
    "after": null,
    "capture": [
-    "shot",
+    "strip:#side:30x200",
     "contract:79"
    ],
    "expect": null,
-   "note": "a new player: the order card lit once after the tea, only after a quiet spell (no spoon, pour, glide or animation moving), skipped if the child has already moved on",
+   "note": "a new player, filmed from the tea's step: the tea goes in, its spoon lands, the order row glides; only then, after a quiet spell, the order card is lit once (1.2 s); a child who has already picked the next thing gets no light",
    "delay": 0
   }
  ],
@@ -21359,34 +21359,34 @@
    "at": "stage-start",
    "after": null,
    "capture": [
-    "shot",
+    "strip:body:24x100",
     "contract:80"
    ],
    "expect": null,
-   "note": "the kitchen from its first drawn frame: no jump in size or zoom in the first two seconds",
-   "delay": 2000
+   "note": "the kitchen filmed from its first drawn frame for 2.4 s: no jump in size or zoom",
+   "delay": 0
   }
  ],
  "CHAI-46": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": 2,
+   "path": "speed1",
+   "level": 1,
    "sizes": [
     "930x430",
     "1920x1080"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
-   "at": "kind-timing",
+   "at": "life:timed-hold",
    "after": null,
    "capture": [
-    "zoom2:canvas:pan",
+    "shot",
     "contract:81"
    ],
    "expect": null,
-   "note": "the heat ring drawn over the pan's handle: no picture covers the gauge",
-   "delay": 0
+   "note": "the heat ring drawn over the pan's handle while the heat waits in the green: no picture covers the gauge",
+   "delay": 400
   }
  ],
  "CHAI-47": [
@@ -21395,7 +21395,9 @@
    "path": "fair",
    "level": 4,
    "sizes": [
+    "740x320",
     "930x430",
+    "1280x665",
     "1920x1080"
    ],
    "profile": "seen",
@@ -21403,12 +21405,13 @@
    "at": "exp:pour",
    "after": null,
    "capture": [
+    "zoom2:canvas:v2-tray",
     "shot",
     "contract:82"
    ],
    "expect": null,
    "note": "the pour's lit box round the glass alone, taking in its face badge: no box edge across a face circle, no other person's pan in the light",
-   "delay": 0
+   "delay": 300
   }
  ],
  "CHAI-48": [
@@ -21451,7 +21454,7 @@
     "contract:78"
    ],
    "expect": null,
-   "note": "L4: the third pan's knob step, opened while another pan is in hand, lights the knob with 'Chulo bar!'",
+   "note": "L4: the third pan's knob step, opened while another pan is in hand, lights the knob with 'Chulo bar!' (the light's Lifecycle rung and the call in the same moment: the contract's timeline)",
    "delay": 0
   }
  ]
