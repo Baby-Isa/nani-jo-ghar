@@ -877,8 +877,17 @@
       if (global.WordCard) global.WordCard.fit14(e.slot);
       // (the judge, 30 Oct, 930x430: the order list scrolled while her card grew and kept the person's headline hidden under it: once
       // the card has opened, a list that fits whole goes back to its top)
+      // (and one that does not fit never stops with a card's headline cut at its top: it moves up to that card's top, the headline
+      // whole; what is left below runs into the list's soft foot)
       const list = $("#mission");
-      if (list && list.scrollTop > 0 && list.scrollHeight <= list.clientHeight + 1) list.scrollTop = 0;
+      if (list && list.scrollTop > 0) {
+        if (list.scrollHeight <= list.clientHeight + 1) list.scrollTop = 0;
+        else {
+          const top = list.getBoundingClientRect().top;
+          const cut = [...list.querySelectorAll(".oc-card")].find((c) => { const r = c.getBoundingClientRect(); return r.top < top - 1 && r.bottom > top + 1; });
+          if (cut) list.scrollTop = Math.max(0, list.scrollTop + (cut.getBoundingClientRect().top - top) - 4);
+        }
+      }
     }, 480);
   }
   UI.helper = function (w) {
@@ -905,6 +914,20 @@
     return helperOn;
   };
   UI.helperIsOpen = () => !!(helperOn && helperW);
+  /**
+   * A card brought into the order list's view, its headline first (the judge, 30 Oct, 930x430: "nearest" put a card taller than the
+   * list by its foot and cut its headline at the top): a card that is cut at the top, or taller than the list, shows from its top;
+   * one cut only at the foot moves up just enough.
+   */
+  UI.cardIntoView = function (card) {
+    if (!card) return;
+    const list = card.closest && card.closest("#mission");
+    if (!list) return void (card.scrollIntoView && card.scrollIntoView({ block: "nearest" }));
+    const lr = list.getBoundingClientRect();
+    const cr = card.getBoundingClientRect();
+    if (cr.top < lr.top || cr.height > lr.height) list.scrollTop = Math.max(0, list.scrollTop + (cr.top - lr.top) - 4);
+    else if (cr.bottom > lr.bottom) list.scrollTop += cr.bottom - lr.bottom + 4;
+  };
   // SH-172: the card opening is when Nani says the step's instruction (its item in Kutchi), by the hint or the child's arrow
   function helperCall(by) {
     const s = stepper && stepper.current;
@@ -2942,7 +2965,7 @@
   async function sayPersonCard(who, rows) {
     const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
     if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
-    if (c.scrollIntoView) c.scrollIntoView({ block: "nearest" });
+    UI.cardIntoView(c);
     await sayCardEl(c, rows || null);
     return true;
   }
@@ -3329,7 +3352,7 @@
       renderOrder();
       // the part that just appeared (the tadka order) is the one to look at
       const late = [...document.querySelectorAll("#mission .lsec.late")].pop();
-      if (late && late.scrollIntoView) late.scrollIntoView({ block: "nearest" });
+      if (late) UI.cardIntoView(late);
     }
     return found;
   };

@@ -1963,7 +1963,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const cardLit = () => {
             const card = document.querySelector("#mission .oc-card");
             if (!card) return null;
-            if (card.scrollIntoView) card.scrollIntoView({ block: "nearest" });
+            if (UI.cardIntoView) UI.cardIntoView(card); // (its headline first: a card taller than the list never cut at its top)
             const cb = card.getBoundingClientRect();
             const cut = [...document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say")].filter((f) => {
               const b = f.getBoundingClientRect();
