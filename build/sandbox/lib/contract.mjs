@@ -1440,6 +1440,7 @@ export const CHAI_ROW = /^chai-tray$/;
 // the s14 kit and the central rules now, so chai's rows above hold for every Cook flow: the decoys the rules' (1, 2, 3, 4 with the
 // lookalike at L4), the order card's Kutchi always written (never dotted at L3-L4), its English shown at L1, no finger in the light
 export const S14_COOK = (flow) => isCookFlow(flow);
+export const S14_TAPS = /^(chai-tray|chai|fetch|pantry|assemble|chaat|samosa|mishkaki-grill|mishkaki)$/;
 export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
 const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
 const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
@@ -1543,7 +1544,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check34(tl, segs, add);
   check34kit(tl, segs, add);
   check42(tl, segs, add);
-  check44(tl, segs, add, tEnd, S14_COOK(r.flow));
+  // (a gesture still has the kit's moving finger on the s14 look, js/shared/onboard.js: maani's roll, daar's chop swipe and stir;
+  // only the stations whose showing is all taps have no finger at all)
+  check44(tl, segs, add, tEnd, S14_COOK(r.flow) && S14_TAPS.test(stationOf(r.flow) || ""));
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);

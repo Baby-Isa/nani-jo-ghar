@@ -4872,6 +4872,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/maani/*",
@@ -4997,6 +4998,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/daar/*",
       "assets/cook/items-s08b/daar-pot-top-s08b.webp",
@@ -5076,6 +5078,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/shelf-veg-*-bare-f.webp"
@@ -5109,6 +5112,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/*-bowl-t.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-pot-t.webp",
@@ -5145,6 +5149,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/tool-ladle-t.webp",
       "assets/cook/items/v3/daar/ladle-v3.webp",
       "assets/cook/items-s08c/kadchi/*",
@@ -5169,6 +5174,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/v3/chaat/*",
       "assets/cook/items-s08b/chaat-bowl-side-s08b*",
       "assets/cook/items-s08b/chaat-strips/*"
@@ -5216,6 +5222,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/samosa-v2/*",
       "assets/cook/items/v3/hob/*",
@@ -5261,6 +5268,7 @@
      ],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/sekelo/*",
       "assets/cook/items/v3/sekelo/*",
       "assets/cook/items/mishkaki-*",

@@ -2329,8 +2329,10 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
-  const WC_ID = /^(cook-(paani|dudh|chai|khun)|spi-[0-9]+|veg-[0-9]+)$/;
+  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
+  // (the S14 roll-out: every Cook station's word cards: the daal and the flour, and the ph- things with a shelf picture, chaat's toppings and
+  // samosa's fillings among them; lesson 6: a word that is said needs its picture)
+  const WC_ID = /^(cook-(paani|dudh|chai|khun|daal|atto)|spi-[0-9]+|veg-[0-9]+|ph-(amli|chana|dahi|dhana|keema|lili|meat|sev|pepper))$/;
   const wcPicSrc = (id) => WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   const wcStage = (id) => {
@@ -2451,7 +2453,9 @@
           // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
           // only block (count 2: never the shared card's "direct" shape, which drops the head)
           const n = s.head.qty || 1;
-          if (n > 1 && s.head.made != null) {
+          // (the S14 roll-out: on the s14 look the kind's row over its fillings' item cards, as every card's sideways row, ticking together at
+          // the one tick (SAM-24, contract-50); the boxes per samosa are the old look's)
+          if (n > 1 && s.head.made != null && !UI.s14()) {
             // SH-53 (Zafar, 21 Oct: yes): the kind's row ("trae samosa") over one box per samosa, its fillings in it; a box's
             // pieces tick as that samosa is made (filled and left for the next strip: progress, never which spoonful was
             // right, so the counting rule holds); the kind's row ticks only when all of them are made (SAM-24: closeItem)
@@ -2490,8 +2494,17 @@
           items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat, keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
+        // (the S14 roll-out: on the s14 look a dish's cards of plain things, maani's rotis and the grill's plain skewers, are one
+        // sideways row of item cards, each with its count written ("ba wadhi maani"), as chai's; a mixed skewer keeps its little
+        // skewer of pieces)
+        const mixOf = (r) => L.sections.some((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1]);
+        const plain14 = UI.s14() ? rows.filter((x) => x.r.cards && !mixOf(x.r)) : [];
+        if (plain14.length) {
+          items.push({ label: null, parts: plain14.map((x) => Object.assign(partNode(x.r, x.gi), UI.wordOf(x.r))), ordered: false, src: plain14 });
+          rowsShown.push(...plain14.map((x) => x.r));
+        }
         rows
-          .filter((x) => x.r.cards)
+          .filter((x) => x.r.cards && !plain14.includes(x))
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));

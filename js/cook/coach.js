@@ -100,7 +100,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the S14 roll-out (contract-53, the rulebook's light: "one lit box", chai's hugs its thing): the box is the thing's own picture
       // on screen with a small margin (the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
       // heap or a bottle in samosa, the pantry, daar and the grill); the circle only where the step names no picture
-      const box = Cook.expect && Cook.expect.x != null && UI.s14 && UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
+      const box = Cook.expect && Cook.expect.x != null && Cook.UI.s14 && Cook.UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
       return box || rectAround(t, t.r);
     };
     const steps = script.map((st, i) => ({
@@ -148,12 +148,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function pointCard(key) {
     const Onboard = OB();
     const R = global.Rules;
-    if (!Onboard || !Onboard.light || !R || !R.pointMs || !(UI.s14 && UI.s14()) || pointed.has(key)) return;
+    if (!Onboard || !Onboard.light || !R || !R.pointMs || !(Cook.UI.s14 && Cook.UI.s14()) || pointed.has(key)) return;
     pointed.add(key);
     const sp = Cook.speed || 1;
     const m0 = Cook.acted || 0;
     const moved = () => (Cook.acted || 0) !== m0 || !Cook.inStation;
     let rowX = null;
+    const seenAt = new WeakMap();
     const moving = () => {
       const rows = [...document.querySelectorAll("#mission .oc-row14")];
       const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
@@ -168,6 +169,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       } catch (e) {
         /* no tween list: the rest still counts */
       }
+      // (a picture moved or faded by a station's own code, never a tween: daar's stirred disc fading in, its pieces turning with the
+      // ladle: any that moved or faded since the last look, as the sandbox's contract-79 sees it; a tool in the hand left out)
+      let stirred = false;
+      const walk = (list) =>
+        (list || []).forEach((o) => {
+          if (!o || stirred) return;
+          if (o.list) walk(o.list);
+          if (o.type === "Graphics" || o.visible === false || chars.has(o) || o.glowFx) return;
+          if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow|spoon|ladle|hand/i.test(((o.texture && o.texture.key) || "") + (o.name || ""))) return;
+          const now = { x: o.x, y: o.y, a: o.alpha };
+          const was = seenAt.get(o);
+          seenAt.set(o, now);
+          if (was && (Math.abs(now.x - was.x) > 0.6 || Math.abs(now.y - was.y) > 0.6 || (Math.abs(now.a - was.a) > 0.03 && now.a > 0.02 && now.a < 0.98))) stirred = true;
+        });
+      try {
+        walk(S && S.children && S.children.list);
+      } catch (e) {
+        /* no scene: the rest still counts */
+      }
+      if (stirred) return true;
       return !!(document.getAnimations && document.getAnimations().some((a) => {
         if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
         const tm = a.effect.getComputedTiming();
@@ -263,10 +284,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   /** A picture's box on screen, [x, y, w, h] in page px with a small margin (null: none, or too small to be the thing). */
   function hugOf(obj) {
-    if (!obj || !obj.getBounds || !UI.worldToScreen) return null;
+    if (!obj || !obj.getBounds || !Cook.UI.worldToScreen) return null;
     const b = obj.getBounds();
-    const a = UI.worldToScreen(b.x, b.y);
-    const z = UI.worldToScreen(b.x + b.width, b.y + b.height);
+    const a = Cook.UI.worldToScreen(b.x, b.y);
+    const z = Cook.UI.worldToScreen(b.x + b.width, b.y + b.height);
     const w = z.x - a.x;
     const h = z.y - a.y;
     if (!(w > 8 && h > 8)) return null;
