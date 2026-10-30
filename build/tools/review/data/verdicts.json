@@ -839,19 +839,53 @@
   "png": "build/screenshots/evidence/s14-chai-ev4/CHAI-45.png",
   "date": "2026-10-30"
  },
- "CHAI-48": {
-  "hash": "d15597a25ff26e5e7997",
+ "CHAI-46": {
+  "hash": "674578159ada5c8f2e3f",
   "dhash": [
-   "1b481c1c1c1c1d1c",
+   "4170b0703030381c",
+   "d8dbc7cb9bc7e6e8",
+   "313a7ada3a5a3a1a",
+   "fae6cfc7c7c7eee6"
+  ],
+  "verdict": "PASS",
+  "line": "B, the pan crop at 1920x1080 at kind-timing shows the heat ring's green arc and marker drawn intact over the handle, the handle passing behind the gauge; D the same at 930x430.",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CHAI-46.png",
+  "date": "2026-10-30"
+ },
+ "CHAI-47": {
+  "hash": "af9f68a2fc66042f0f28",
+  "dhash": [
+   "0122e9697960b434",
+   "809e7c9a98989880",
+   "0122e9697960b434",
+   "011869696968e868"
+  ],
+  "verdict": "PASS",
+  "line": "B, the tray crop at 1280x665 at the pour shows the gold lit box round Nana's glass alone, his face circle sitting on top of the box's left edge with no line across the face; C and D (1920x1080) the same.",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CHAI-47.png",
+  "date": "2026-10-30"
+ },
+ "CHAI-48": {
+  "hash": "073bd96d8a329348ac1a",
+  "dhash": [
+   "7e67636e6a6e6a7f",
    "26333a2e2e3a363f"
   ],
-  "verdict": "FAIL",
-  "line": "A, 1280x665 L3: contract-52 on this page still reports three bubbles over Nana's face: \"trae khun,three sugars,\" 27%, \"dudh na.no milk.\" 34% and the next person's long first line \"Muke elchi waari chai khape,...\" at 42% of his head (the row's own case, 41-64% at 1280x665); the film of A is also a tool fault (frames alternate between a zoomed top-left crop and a whole-page thumbnail). B (740x320) is good: Masi's \"dudh,\" and \"hakro khun.\" bubbles sit over her own head, clear of Nana, contract-52 0 breaks.",
-  "panel": "A",
+  "verdict": "PASS",
+  "line": "B, frame 7 (24.7 s, 740x320): the second person's \"Muke elchi waari chai khape,\" sits in one line above and right of Nana, its bottom clear of his cap, tail at its own speaker; A frame 7 at 1280x665 the same, its left end stopping just above Nana's cap. Note: at 740x320 the side panel's third order row is cut at the panel's bottom edge in frames 1-6 and the first row is cut under the header in frame 8 (a scroll fade); word cards are caught mid-flight over the stage in frames 2, 4-6 and 8.",
+  "panel": "B",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-chai-ev",
-  "commit": "682e5a89",
-  "png": "build/screenshots/evidence/s14-chai-ev/CHAI-48.png",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CHAI-48.png",
   "date": "2026-10-30"
  },
  "CHT-01": {
@@ -1033,6 +1067,24 @@
   "commit": "10ec9e89",
   "png": "build/screenshots/evidence/ev-20261020-073941-0e9/CHT-15.png",
   "date": "2026-10-20"
+ },
+ "CHT-17": {
+  "hash": "43b5e20233eaf936d1c6",
+  "dhash": [
+   "2e36382c2c283637",
+   "4140341010003030",
+   "0a2000010026200a",
+   "41c0c0c2c6d0c2d2",
+   "212109290d0d2d2d"
+  ],
+  "verdict": "FAIL",
+  "line": "E, at 740x320 L4 the order is not the sideways order row but a tall vertical list card (\"Muke chaat khape.\" chana / bataato / fudino ji chutney / ba dungri / gos…) that runs off the bottom of the screen with its fifth entry clipped; D (1920x1080 L4) shows the same card floating mid-screen on bare marble with no station; C (740x320 L1) is bare marble with one ghosted \"fudino ji chutney\" card and no lit-box; in A the L2 panel shows only the \"mirchi na\" ⊘ card and a \"hakro bataato\" chop pill, never the 4 bowl items as cards, and a \"ha…\" progress pill at top right is cut off by the settings gear from 6001 ms. B (L1 1920x1080) alone is right: pills chana · bataato · fudino ji = 3 items, 4 jars = 1 decoy.",
+  "panel": "E",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev2",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev2/CHT-17.png",
+  "date": "2026-10-30"
  },
  "CK-02": {
   "hash": "7911df4bad08c77d107b",
@@ -3109,6 +3161,55 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "CLN-207": {
+  "hash": "5c8b79b71fe5f91229ee",
+  "dhash": [
+   "e6e646c7d5eaeae6",
+   "9bb92cecdcfcecc3",
+   "ef6969646c6c6c63",
+   "6f89696f4d6c6c63",
+   "a6e66666756e6666",
+   "af092d6c6c6c6c63"
+  ],
+  "verdict": "FAIL",
+  "line": "F, at 740x320 L4 (9 ms) the doctor's opening bubble \"We'll use this medicine.\" lies over his own face and runs off the stage's right edge; the same at D 64 ms (L2 740x320) and at B 40 ms (930x430 L4) where it is squeezed to three short lines against the right edge, and in C 58 ms it butts the edge: bubbles are not off faces and not inside the stage. The rest reads right: drops \"Chando ba\" (L1) and \"Jamni akh, chando ba, left akh, chando trae\" (L4, \"left\" grey italic), warm lit box on the bottle and the eye, chart cards limu/mirchi/tameto/dungri with ha/na. Sizes 1280x665 and 1920x1080, the returning player and the replay are not on the sheet",
+  "panel": "F",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-207.png",
+  "date": "2026-10-30"
+ },
+ "CLN-208": {
+  "hash": "b1c960d426d32c5d1fe0",
+  "dhash": [
+   "c8ccccc1c1c5c4e0",
+   "c8cccdc1c1c1c4e0"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 at 930x430: the doctor's helper card (\"Let's clean it.\" + \"take the wax out\"), 3 wax blobs at 723 ms, a warm lit box round the ear at 923 ms and on the tray tool at 4801 ms, the drops step \"ne poi\" with a dropper at 11101 ms, no bubble on a face or the panel; B at L4 shows 6 blobs and \"pela nindho wax\" with drop counters. Flaws seen: a pointing hand shows over the tray beside the lit box (A 2400 ms, B 3301 ms) where the kit should have only the light; only 930x430 is filmed of the four sizes",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-208.png",
+  "date": "2026-10-30"
+ },
+ "CLN-209": {
+  "hash": "0aad1748f3cdeb816478",
+  "dhash": [
+   "f958d9c1c1d3d2f3",
+   "7918585ad0d0d2f3"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 at 930x430: \"Hammer, hakro\" (1 kick) then \"Ne poi bandage, char turns\" (4 turns), both inside 1-3+4-5, numbers in the spoken headline from L1; the helper card, a warm lit box on the tray's hammer (1201 ms) and bandage (6300 ms), the bandage wrapping (8401-11700 ms); B at L4 \"Hammer, chh\" (6) and \"sat turns\" (7) inside 3-6+7-8. Flaw seen: the headline bar is blank between steps (A 13 ms, 11700 ms); only 930x430 is filmed",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-209.png",
+  "date": "2026-10-30"
+ },
  "CLN-21": {
   "hash": "ae0d9a4bb61d5204b90f",
   "dhash": [],
@@ -3119,6 +3220,97 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "CLN-210": {
+  "hash": "554e387f6109c79ca516",
+  "dhash": [
+   "f1c5d5c9c1d5f1d1",
+   "d1c1c1c1c1c1c1c1",
+   "e181e1c4e4c1e1b3"
+  ],
+  "verdict": "FAIL",
+  "line": "A, L1 at 930x430 the doctor's spoken headline is just \"Brush\" with no number for the two brush moves (the row: numbers spoken from L1), while B at L4 gives the six moves as direction words (\"First right\", \"and then down\" ...) with no count either; a pointing hand sits over the mouth inside the lit box (A 5812 ms); the lit box overlaps the \"right\" word card (B 8307, 9380 ms). Counts themselves read right: 2 dirty targets + 1 patch at L1, 6 moves + 4 patches at L4. C (step:fill strip) shows the round's end and the word review (\"tooth\", \"brush\" grey italic), not the fill holding in the green",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-210.png",
+  "date": "2026-10-30"
+ },
+ "CLN-211": {
+  "hash": "3e62a905d830f55075b1",
+  "dhash": [
+   "e979d1c1d1d7c6f6",
+   "f979d9c1c1c5c6e6"
+  ],
+  "verdict": "FAIL",
+  "line": "B, at L4 930x430 the sole is a flat beige outline crossed by red dashed lines (zone or debug drawing, or placeholder art) from 1295 ms on, not the L1 sole; a pointing hand shows on it at 9001 and 10209 ms. A at L1 reads right: \"Paani garam, hakro jugs\" (1 jug, one bit of dirt, cleared by the pour at 6900 ms), then \"Splinters\" with a lit box on the one splinter, then \"Plaster\"; only 930x430 is filmed",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-211.png",
+  "date": "2026-10-30"
+ },
+ "CLN-212": {
+  "hash": "d741c315b4a1a60ed953",
+  "dhash": [
+   "d8e2d5c1c1c3f6f8",
+   "d8e2d5c1c1c3f6f8"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 930x430: the doctor's centre card \"Let's soothe the sore spots.\" + \"pop laal spots\" at 6 ms, the same line on the side-panel helper card, the s14 word card top-left (\"Pop laal spots\", Kutchi bold, to-record grey), the popper tool in a warm lit box from 1671 ms, 2 red + 1 blue decoy on the tongue, \"Trae chamchi aadu wiji chad!\" spoken at L1 (11701 ms); B at L4 hides the words as \"•••\", \"Pop spots, lilo spots na\" with green decoys; recorder 0 px2 of card over a face, contract-51/-52 0 breaks, counts unit test 10/10 (only 930x430 filmed: the other three sizes are not on this sheet)",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-212.png",
+  "date": "2026-10-30"
+ },
+ "CLN-213": {
+  "hash": "b73479c01683e857b886",
+  "dhash": [
+   "e564c3c1c1cdece4",
+   "e564c3c1c1cdece4"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the doctor's guide line is blank for the wipe step: the centre helper card at 37 ms shows his avatar with an empty line above \"wipe, ba\", and the side-panel helper card stays empty beside his face through 8700 ms; the sentence (\"Time for the jab.\") only appears at the drops step (10605 ms; B 9000 ms), so the doctor is not guiding step 1 (lit box, word card, \"ba\"/\"trae\" from L1 and contract 0 breaks are otherwise in place)",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-213.png",
+  "date": "2026-10-30"
+ },
+ "CLN-214": {
+  "hash": "d6bb85e36c81249891b3",
+  "dhash": [
+   "c5e0c1c9c1c1f4fc",
+   "f97c51c9c1d5f4f6"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 930x430: centre card \"Let's clean it and put plasters on.\" + \"pela paani\" at 6 ms, same line on the side-panel helper card, word card top-left \"Pela paani\", the cup in a warm lit box at 900-2101 ms, \"Ne poi cloth, hakro dabs\" (one, spoken at L1) at 6901 ms, single-colour plasters; B at L4 shows \"trae dabs\" on both knee scrapes and the two-colour plasters in the tool column; recorder 0 px2 over a face, contract-51/-52 0 breaks, counts test 10/10 (only 930x430 filmed)",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-214.png",
+  "date": "2026-10-30"
+ },
+ "CLN-215": {
+  "hash": "b2b91ee9d22b9c356c3c",
+  "dhash": [
+   "e3e949c1c1cdc8c2",
+   "e3e949c1c1cdc8c2"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 930x430: centre card \"Let's get you just right.\" + \"take the temperature\" at 10 ms, same on the side-panel helper card, word card top-left, thermometer in a warm lit box at 601-1812 ms, two things tried before the right temperature (ceiling fan 7091 ms, heater 10233 ms) then \"barabar\" at 12815 ms, her \"I'm too cold!\" bubble beside her head and off the side panel; B at L4 \"I'm too hot!\" then open/close window; recorder 0 px2 over a face, contract-51/-52 0 breaks, counts test 10/10 (only 930x430 filmed)",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/CLN-215.png",
+  "date": "2026-10-30"
  },
  "CLN-22": {
   "hash": "5cb315c00187be33eca1",
@@ -4594,6 +4786,24 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "DAAR-36": {
+  "hash": "b2893a3a4e82f501a764",
+  "dhash": [
+   "2e363c2c2c283637",
+   "4140002028180000",
+   "01011312190b0311",
+   "4140404622202000",
+   "0120207232020200"
+  ],
+  "verdict": "FAIL",
+  "line": "C, L1 740x320 at stage-start a gold glow frames the whole chopping board, not the onion, and a large pointing hand sits on the onion (the row's kit says the light hugs one item, no finger; B at 1920x1080 shows neither, so the sizes disagree); D/E L4 \"Chop these\" lists 2 items (hakro dungri, trae mirchi), not 4+4, and the board holds 3 things while the header asks for trae mirchi with no chilli on it (knife on the onion in D, on the ginger in E); A the 'no' item dungri na is said second, not last, leaving a gap in the row until hakro mirchi lands (5800 ms), and the lone first card is scrolled to \"eto\" at 3000 ms; a faint pink tomato ghost sits bottom-right in C.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev3",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev3/DAAR-36.png",
+  "date": "2026-10-30"
+ },
  "DAY-01": {
   "hash": "9ab7bbf575dc7b52296f",
   "dhash": [],
@@ -5112,6 +5322,24 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/MAA-17.png",
   "date": "2026-10-20"
  },
+ "MAA-19": {
+  "hash": "4cc4aab7c0df9b18175a",
+  "dhash": [
+   "2e3f3c2c2c283637",
+   "4174343434001c1c",
+   "061e3a3a3a2e0e2c",
+   "4134343434003434",
+   "061e3a3a3aa63a38"
+  ],
+  "verdict": "FAIL",
+  "line": "A, three cards for the L2 order but only two pop-outs: the first roti \"hakri wadhi bajr ji maani\" is spoken inside Nani's opening line at 3 ms with the row empty, its row card never pops beside the panel and is only seen in the row at 10001 ms (the row already scrolled 85 px at 3400 ms, hiding it); \"hakri nindhi maani\" and \"hakri wadhi maani\" pop and land correctly. L1 2 rotis (B, C) and L4 \"ba wadhi\" + \"hakri nindhi\" + a third card = 5 (D, E), lit-box hugs the bajr dough (C) all fine.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev2",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev2/MAA-19.png",
+  "date": "2026-10-30"
+ },
  "MOD-01": {
   "hash": "d4ab8931ae43509859ee",
   "dhash": [],
@@ -5396,6 +5624,24 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "PAN-18": {
+  "hash": "0195fe0c06a7aca7ada3",
+  "dhash": [
+   "3e36363634341637",
+   "7f7f767575747d6d",
+   "3f3a38b8b8ba3d35",
+   "7f7f747c5cf8fd6d",
+   "3f3a3a3e3cbc3b3b"
+  ],
+  "verdict": "PASS",
+  "line": "B, L1 1920x1080 new player: the gold lit-box light hugs the dudh carton alone in the fridge, no finger, shelf full of decoys, 3 slots; C the same at 740x320; D/E L4 6 slots, no help light; A (L2 film) 4 cards khun, bataato, loon, daar each pop beside the side panel and turn into their row card, 27 px2 over a face at most, contracts 52/53/83/84 0 breaks. Notes: L3 and 1280x665 are not on the sheet; the sideways row shows half cards at its edges while it scrolls (A 9600 ms \"ataato\", \"daa\").",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev3",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev3/PAN-18.png",
+  "date": "2026-10-30"
  },
  "PRC-01": {
   "hash": "265d9a17e69686cee224",
@@ -5909,6 +6155,24 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/SAM-25.png",
   "date": "2026-10-20"
  },
+ "SAM-28": {
+  "hash": "8aac6c1fcfb315a934ef",
+  "dhash": [
+   "2e36342c2c283637",
+   "4154545454601818",
+   "0c0c0c282a382828",
+   "4174545454606c6c",
+   "b83828282a383434"
+  ],
+  "verdict": "PASS",
+  "line": "A, the L2 order at 930x430: \"Muke trae samosa khape\" (3 samosas), \"ba chunda\", \"mirchi na\" (the 'no' ask at L2, ⊘ on its row card) and \"ba bataata\" each pop beside the side panel (0 px2 over a face), fly into the sideways row and land as row cards by 8000 ms; B/C (L1) pill \"ba samosa\" = 2, lit-box hugging one pastry square (C); D (L4) \"trae samosa\" x2 = 6 and the board holds six, \"dhania na\" ⊘, no help light; contracts 0 breaks. Note: \"mirchi na\" is spoken second (3600 ms), before \"ba bataata\" (6000 ms), though the row places it last. Not on the sheet: 1280x665, L3, returning, replay.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev2",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev2/SAM-28.png",
+  "date": "2026-10-30"
+ },
  "SEK-01": {
   "hash": "962a8023e5d4eff1676e",
   "dhash": [],
@@ -6186,6 +6450,39 @@
   "commit": "4d8a9393",
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/SEK-21.png",
   "date": "2026-10-20"
+ },
+ "SEK-22": {
+  "hash": "ef52cb4f374110e66e8e",
+  "dhash": [
+   "2e36372c2c283637",
+   "4170747434103434",
+   "01383e3e3a383c3c",
+   "4170747474105c58",
+   "01383e3e3a382e26"
+  ],
+  "verdict": "PASS",
+  "line": "A, the L2 order at 930x430 films as the kit asks: \"hakri lakri mishkaki\" pops beside the side panel at x 330-490 (0 px2 over a face, recorder), flies into the sideways order row at 2200 ms, \"hakri lakri tameto\" follows the same way and both row cards sit side by side at 5200 ms with the bubble off the panel; C (L1 740x320) shows the gold lit-box hugging the tameto alone, order \"hakri lakri tameto\" = 1 skewer; D (L4 1920x1080) shows \"ba lakri dungri\" + \"ba lakri mixed\" with two pattern rows = 4 skewers, picture hidden (eye), no help light; contract-52/53/83/84 0 breaks. Not on the sheet: 1280x665, L3, returning player, replay.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev2",
+  "commit": "879b3c0a",
+  "png": "build/screenshots/evidence/s14-D-ev2/SEK-22.png",
+  "date": "2026-10-30"
+ },
+ "SEK-23": {
+  "hash": "9c72c409a06ff9904bbd",
+  "dhash": [
+   "6e050d0a0b030374",
+   "0707150105030363"
+  ],
+  "verdict": "PASS",
+  "line": "A, the grill at L4 1280x665 reaches its results badges (31 s, 6 ticks) with the order's skewers ticked in the side list; B the same at 740x320 (45 s, 6 ticks). Note: in B the results card sits over the gear button at the top right.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SEK-23.png",
+  "date": "2026-10-30"
  },
  "SH-01": {
   "hash": "b9e2481810b27aba279a",
@@ -6585,6 +6882,21 @@
   "commit": "3a402ff9",
   "date": "2026-10-21"
  },
+ "SH-137": {
+  "hash": "9a54a9d1e52f2c27fe00",
+  "dhash": [
+   "a5666463625c656c",
+   "65665445c2c9d676"
+  ],
+  "verdict": "FAIL",
+  "line": "A, Nana still holds the clinic's own landscape word card, the lemon on the left and \"limu\" beside it to the right, not the kit's word-under-picture card (B the same at 930x430); the face circle is now the kit's white-rimmed circle and the heal-eye order card has no teal title bar, but no kit sheet of face-circle, word-card, order-card or buttons across the games is on the sheet.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-137.png",
+  "date": "2026-10-30"
+ },
  "SH-14": {
   "hash": "0d3daf036babb84d2ed6",
   "dhash": [
@@ -6629,33 +6941,68 @@
   "date": "2026-10-20"
  },
  "SH-161": {
-  "hash": "af4ecbff5bc738abcf19",
+  "hash": "c62f5cc27a80d9254756",
   "dhash": [
    "7e6e626a6a6e6a7f",
-   "2e27332e2e2a3637"
+   "2e27332e2e2a3637",
+   "7e6e626c68686a7f"
   ],
   "verdict": "PASS",
-  "line": "A, frame 5 (72.2 s, the replayed stove after Play again at frame 3) shows the same painted marble worktop, stove, two pans, dial tray and eight spice jars as the first round's frame 2 (18.9 s): no flat coded fill, no missing texture; B frame 5 (68.1 s, 930x430) the same. Caveats: only chai was probed though the Check names every Cook station; flaws off the point: A frame 2 and B frame 5 the order panel's third word card is cut at the panel's right edge (\"ha\" / a half card), B frame 5 the first order's \"Muke ... khape.\" header has scrolled out of view; A frame 4 and B frame 4 an enlarged word card (khun na / dudh) sits over the order panel's edge, away from Nana's bubble.",
+  "line": "A, frame 5 (47.1 s, the replayed hob at 1280x665) has the same painted marble worktop, hob, knob tray and every jar as frame 2 (the first round), no flat or missing texture; B frame 5 the same at 930x430. Note: C's replayed samosa only reaches its kitchen intro (frame 5), not its board; A frame 4 and C frame 5 catch a word card mid-flight over the side/stage seam.",
   "panel": "A",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-chai-ev2",
-  "commit": "682e5a89",
-  "png": "build/screenshots/evidence/s14-chai-ev2/SH-161.png",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-161.png",
+  "date": "2026-10-30"
+ },
+ "SH-162": {
+  "hash": "4bccd292a21c1665bf14",
+  "dhash": [
+   "0189c90000000000",
+   "0101199999990100",
+   "2021119999999900"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 1 (the first onboard, 16.1 s, 1920x1080): the helper card's chevron sits in a plain grey circle, no gold box or glow on it, through all 5 onboards; B and C the same at 930x430 (maani too).",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-162.png",
   "date": "2026-10-30"
  },
  "SH-163": {
-  "hash": "ff7fe3f6126ddd199c68",
+  "hash": "c4d90dc20cbc0688cf61",
   "dhash": [
-   "1331b9393d3c3d36",
-   "2e3e3636363e3637"
+   "5f7efe6aeaee6afb",
+   "2e3e3636363e3637",
+   "2e363a2c2c283637"
   ],
   "verdict": "PASS",
-  "line": "B, 930x430 L4 filmed order: at 3001, 7501, 12768 and 13501 ms one card at a time is in flight (recorder: at most 1 card in flight), its words at a single even scale, no doubled or stretched text in any morph frame; the row cards land as \"trae khun\", \"aako\", \"dudh na\", \"dudh\" cleanly. Flaws: A (1920x1080) is a tool fault, a ~2x zoomed crop of the page's top-left (only the top of Nana's head shows at the crop's bottom edge; the pop-out at y 641-844 is outside it), so the morph is not seen at that size; in B at 5500 ms the scrolled row card shows only \"khun\" cut at the panel's left edge, and from 9258 ms the finished person's cards sit half-hidden under the green heading. Only chai filmed, not every game.",
+  "line": "B, at 930x430 each big card flies alone (3001 ms \"trae khun\", 7253 ms \"dudh na\") at one even scale with its words shown once, then sits in the row; A (1920x1080) and C (samosa L3) the same. Flaws seen: at 930x430 the row scrolls sideways and cuts a card's word at the panel's left edge mid-move (B 5500 ms \"khun\", 7253 ms \"o\"); in C the samosa words look to break onto two lines mid-flight (3001 ms \"ba / chunda\", 5500 ms \"dungri / na\") before settling on one line in the row",
   "panel": "B",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-chai-ev",
-  "commit": "682e5a89",
-  "png": "build/screenshots/evidence/s14-chai-ev/SH-163.png",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-163.png",
+  "date": "2026-10-30"
+ },
+ "SH-164": {
+  "hash": "424d307398b39f36e86f",
+  "dhash": [
+   "4970b0703030381c",
+   "0303153b2b150302",
+   "4970b0703030381c",
+   "11387ada3a583808"
+  ],
+  "verdict": "PASS",
+  "line": "B, the crop of the lit knob box at 1920x1080 shows a warm lightened fill inside the gold rim, the knob clearly readable against the black burner; D shows the same at 930x430. Note: in D the line \"hakro khun\" is shown as two separate chips (\"hakro\" with a face, a small \"khun\"), the \"hakro\" chip sitting over the hob's top edge.",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-164.png",
   "date": "2026-10-30"
  },
  "SH-165": {
@@ -6670,18 +7017,20 @@
   "date": "2026-10-30"
  },
  "SH-166": {
-  "hash": "d2ff1343540ac7ffb689",
+  "hash": "0fe90463079e5425febe",
   "dhash": [
    "2e262e363636363f",
-   "2e3e3636363e3637"
+   "2e3e3636363e3637",
+   "e6666666756e6666",
+   "e6e646c7d5eaeae6"
   ],
   "verdict": "PASS",
-  "line": "A, 740x320 L4: every bubble (Nana's \"Muke kari chai khape,\", \"trae khun,\", \"aako,\", \"dudh na.\"; the boy's \"dudh,\", \"khun na.\"; Masi's \"aako,\") sits wholly right of the side panel, each with its tail at its own speaker's head; contract-86 0 breaks at 740x320 and 930x430; B (930x430) the same. Flaws: as SH-163, the finished row's cards sit half-hidden under the heading from 8750 ms. Only chai filmed, two sizes.",
+  "line": "A, at 740x320 every bubble sits in the play area right of the side panel's edge with its tail at the speaker (\"trae khun,\" 2251 ms and \"aako,\" 3410 ms at Nana, \"adh,\" 31526 ms at Nani); B at 930x430 the same. C and D (eye test at stage-start) show no bubble at all, so they prove nothing for the clinic",
   "panel": "A",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-chai-ev",
-  "commit": "682e5a89",
-  "png": "build/screenshots/evidence/s14-chai-ev/SH-166.png",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-166.png",
   "date": "2026-10-30"
  },
  "SH-167": {
@@ -6706,6 +7055,23 @@
   "commit": "9e918ca2",
   "date": "2026-10-30"
  },
+ "SH-169": {
+  "hash": "da0b47c9f9c71c0ca01e",
+  "dhash": [
+   "26333a2e2e3a363f",
+   "2e37322e2e2a3637",
+   "2122b8b8383836b6",
+   "1129999999990999"
+  ],
+  "verdict": "FAIL",
+  "line": "A, at 740x320 Nana's folded headline \"Muke elchi waari chai khape.\" sits half under the side panel's top while Ma orders (7501, 9000, 9750, 11500 ms): the fold happens but the text is still cut at the panel's top. B at 930x430 is right (5501 ms both headlines folded, 7005 ms both cards open at the station) and C/D show every card open at play",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-169.png",
+  "date": "2026-10-30"
+ },
  "SH-17": {
   "hash": "f925355aa3e72443551d",
   "dhash": [
@@ -6721,6 +7087,23 @@
   "run": "ev-20261021-031423-a9z",
   "commit": "a871feed",
   "date": "2026-10-21"
+ },
+ "SH-170": {
+  "hash": "f30348a66ee02e02d9fe",
+  "dhash": [
+   "fe7e6c6f6d7f6a67",
+   "05038d2383a38181",
+   "f6f66e4ed6f2d657",
+   "150b25a3b3010181"
+  ],
+  "verdict": "PASS",
+  "line": "B, the pharmacy order card at 740x320 has \"hammer\" whole on its own line and \"ne bandage\" whole on the next, nothing cut at the card's edge; D the same at 930x430; the foot's row is covered only by the contract-51 text capture (0 breaks), not a panel. Note: .cl-side's box (red outline in A and C) runs past its painted panel over a strip of the stage; the clinic:morning order card still carries a title bar with bulb and speaker (SH-137's point).",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
+  "run": "s14-D-ev",
+  "commit": "9e918ca2",
+  "png": "build/screenshots/evidence/s14-D-ev/SH-170.png",
+  "date": "2026-10-30"
  },
  "SH-18": {
   "hash": "259bbc3adf71e76c2337",

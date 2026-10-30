@@ -22048,7 +22048,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "view-marble",
+   "at": "life:stage-start",
    "after": null,
    "capture": [
     "shot",
@@ -22057,7 +22057,7 @@
    ],
    "expect": null,
    "note": "the pantry for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; items 3, 4, 5, 6 by level; the shelf full of decoys; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
-   "delay": 1500
+   "delay": 2500
   }
  ],
  "MAA-19": [
@@ -22278,7 +22278,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "view-marble",
+   "at": "life:stage-start",
    "after": null,
    "capture": [
     "shot",
@@ -22287,7 +22287,7 @@
    ],
    "expect": null,
    "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
-   "delay": 1500
+   "delay": 2500
   }
  ],
  "SH-169": [

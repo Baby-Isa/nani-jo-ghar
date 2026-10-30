@@ -1244,3 +1244,36 @@
 {"id":"EASY-04","run":"s11-judge-06","earlier":"**to fix: check** · the frame caught the third cup mid-pour"}
 {"id":"EASY-03","run":"s11-judge-07","earlier":"**to fix: check** · 0 s and 5 s pass; the 15 s demo isn't caught in a frame"}
 {"id":"EASY-07","run":"s11-judge-07","earlier":"**to fix: check** · the round lists; a flagged step not yet shown"}
+{"id":"SH-165","run":"s14-chai-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"CHAI-40","run":"s14-chai-ev","earlier":"**to fix: check** · his video (30 Oct): \"it was voice, pause, dim, pause, gold outline\": for a returning player the call came at once and the light only as the hint; now each control is lit with its call for every player (built 30 Oct, unverified)"}
+{"id":"CHAI-44","run":"s14-chai-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"CHAI-43","run":"s14-chai-ev4","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"CHAI-45","run":"s14-chai-ev4","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-161","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-162","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-163","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-164","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-166","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"SH-167","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out, tools first"}
+{"id":"SH-168","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out, tools first"}
+{"id":"SH-169","run":"s14-D-ev","earlier":"**to fix: check** · built 30 Oct in the fast lane (chai L3 filmed at 930x430: Nana's card folded while Ma orders, both open at play; chai's contract at L1-L4, 740x320 and 930x430); the sprint's judge, then Zafar's play"}
+{"id":"SH-170","run":"s14-D-ev","earlier":"**to fix: check** · built 30 Oct in the fast lane (the row 180 px in its 180; clinic:morning contract-15 green at 740x320 and 930x430); the sprint's judge, then Zafar's play"}
+{"id":"SEK-23","run":"s14-D-ev","earlier":"**to fix: check** · built 30 Oct in the fast lane (cook:mishkaki-grill L1-L4 reach their end at 740x320 and 1280x665: they never did before); the sprint's judge, then Zafar's play"}
+{"id":"CHAI-46","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"CHAI-47","run":"s14-D-ev","earlier":"**to fix: check** · built 29 Oct in the fast lane, verified 30 Oct by the orchestrator's films (`build/reports/s14-rollout.md` phase A); the sprint's judge, then Zafar's play"}
+{"id":"CLN-207","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-208","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-209","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-210","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-211","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-212","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-213","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-214","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CLN-215","run":"s14-D-ev","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"SH-137","run":"s14-D-ev","earlier":"**to fix: code** · S14 fast lane, first"}
+{"id":"SEK-22","run":"s14-D-ev2","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"MAA-19","run":"s14-D-ev2","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"SAM-28","run":"s14-D-ev2","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"CHT-17","run":"s14-D-ev2","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"PAN-18","run":"s14-D-ev3","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"DAAR-36","run":"s14-D-ev3","earlier":"**to fix: code** · S14 roll-out"}
