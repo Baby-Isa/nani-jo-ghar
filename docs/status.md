@@ -8,26 +8,41 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (30 Oct 2026, 17:00 UK):** Sprint 15 is open (`docs/sprints/S15-cook-game-by-game.md`): Cook game by game, chai
-first as the reference for the shared fixes; Zafar plays each game before the next. His 30 Oct play is
-`docs/feedback/cook-s14-play-2026-10-30.md` (every point a row). `main` is unchanged since Sprint 14 (639e126).
-
-**Chai is live on `main`** (65d702a2, 20261030T190918Z; published on Zafar's word with --force: the sprint's other rows open, no full gate run); the morph rebuilt as the card lab's (one card melting into the row's, even scale, in a frame with its card's classes): the contract run 0 breaks over
-24 pages (s15-chai-4: lab and cook.html, L1-L4, four sizes); checks.mjs green; the judges PASS on SH-171, SH-172, SH-163, SH-165,
-CHAI-40, CHAI-50 for chai (s15-chai-ev4 to -ev6; noted on each row, not applied: the shared rows close as each game passes, and
-SH-171 and SH-165 need a red-first run). New tools: `build/tools/review/lightfollow.mjs` (a child following the light, layers per
-100 ms) and `spkgap.mjs` (the helper speaker's gap measured). Zafar's cooker case (CHAI-50) was never reproduced: ask him at his play.
+**Where things stand (30 Oct 2026, 20:45 UK):** Sprint 15 (`docs/sprints/S15-cook-game-by-game.md`): Cook game by game, chai
+first as the reference. **Chai is live on `main`** (d7835a56, 20261030T203356Z) with Zafar's 30 Oct notes in two rounds
+(`docs/feedback/cook-s14-play-2026-10-30.md`, `docs/feedback/chai-play-2026-10-30-evening.md`); the shared fixes reach every Cook
+game. Chai: contract run 0 breaks over 32 pages (s15-chai-9), checks green, the judge PASS on SH-171, SH-172, SH-165, CHAI-40,
+CHAI-50 (s15-chai-ev4 to -ev9; noted on the rows, not applied: shared rows close as each game passes). Published with `--force` on
+his word (the other games' rows open, no full gate run). Nothing running. Tools added: `build/tools/review/lightfollow.mjs`,
+`spkgap.mjs`; contract-87 to 89. Spent so far: about $130-150 (Opus, high), mostly chai and the tools.
 
 **Next steps, in order:**
-1. Zafar plays chai (`labs.html`, Chai tray L1-L4, New player on); his notes via `/feedback`.
-2. Then pantry, daar (DAAR-37 to 39), sekelo, maani, chaat, samosa, one at a time, the same way.
-3. The art: the list is `docs/design-language/art-plans/art-needed.md`; his pick for the run, then the plan and paste block.
+1. **Ask Zafar about his chai play**, these questions (numbered, his "yes to all except ..."):
+   1. The pour quiet (no "milk and one sugar")?
+   2. No old-style Nani box at the start; the start quicker?
+   3. A second's pause after the last item before "Chulo bar!"?
+   4. Nana's bubbles beside his head on the right, his face and body clear (his phone, about 915x275)?
+   5. After the first two items, only the milk card lit? If yes: the item card's light becomes the rule in every game (SH-178).
+   6. Nani's helper card short enough; the speaker gaps right?
+   7. The big card into its row card: as good as the card lab now (one card shrinking, melting into the row card)?
+   8. The cooker's dark tint and gold box (CHAI-50): seen again? If so: the level and what he tapped.
+2. **His answers and notes → `/feedback`** (rows the same day); fix what chai still needs, film it, contract run, the judge,
+   `/publish` on his word. When he says chai passes: record it in the sprint file, apply SH-178 everywhere.
+3. **Then the pantry** (sprint step 2), the same way: PAN-19 (Nani gives the order in the kitchen), PAN-20 (word chips and
+   speakers under the jars at L1), PAN-21 (the count pills bottom right), PAN-22 (the new player's light), SH-162 (her card opens
+   on the hint), SH-141 (no ripple; taps by the light), PAN-01, PAN-04, PAN-10, PAN-13 where they still show. Causes are in
+   `docs/feedback/cook-s14-play-2026-10-30.md` §2 (P7, P9, P11, P12, P13). Film it at the four sizes and 915x275, contract run
+   (`lab:cook/fetch` L1-L4), lightfollow and evidence specs, the judge, then his play. In this chat, Opus high, about $10-20.
+4. Then daar (DAAR-37 to 39: kinds 1-4, chops 2/4/6/8, garlic; the chop ends at the last chop; the knife-strip demo), sekelo,
+   maani, chaat, samosa; Sprint 16 the clinic.
+5. The art run: the list is `docs/design-language/art-plans/art-needed.md`; his pick, then the plan and one paste block.
 
-**Open questions to Zafar:** his play of chai (and the cooker case if it comes back: the level and what he tapped). Mum's word order (`docs/questions.md`).
+**Open questions to Zafar:** the eight above. Mum's word order (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S15-cook-game-by-game.md`. Continue Sprint 15 at the
-> next step above. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Ask me the chai questions in
+> step 1 and wait for my answers; take my feedback with `/feedback`; then start the pantry (step 3). Work on branch
+> `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
