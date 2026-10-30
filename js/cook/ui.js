@@ -1820,6 +1820,13 @@
           m.said = m.said || new Set();
           m.said.add(prev);
           renderOrder();
+          // (the judge, 30 Oct, 740x320: the folded card stayed half under the panel's top, where the panel had scrolled for its
+          // rows: the panel goes back to its top, then the speaker's card is brought into view, so the folded one is whole)
+          // (#mission is the scroller: with both cards in, nothing moves; else the speaker's card at the top, the folded one wholly
+          // above it, never half under the panel's top)
+          const list = $("#mission");
+          const cur = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+          if (list && cur) list.scrollTop = list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, cur.offsetTop - list.offsetTop - 4);
         }
         prev = who;
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
@@ -1838,7 +1845,11 @@
               pop14(w);
               const slot = rowElOf(who, r);
               if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot);
-              if (slot && slot.closest(".oc-card") && slot.closest(".oc-card").scrollIntoView) slot.closest(".oc-card").scrollIntoView({ block: "nearest", behavior: "smooth" });
+              // (SH-169: the speaker's card from its top, so a folded card above it is whole or wholly out of view, never cut)
+              const card = slot && slot.closest(".oc-card");
+              const list = $("#mission");
+              if (card && list && list.contains(card) && list.scrollTo) list.scrollTo({ top: list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, card.offsetTop - list.offsetTop - 4), behavior: "smooth" });
+              else if (card && card.scrollIntoView) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
             } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
           }
           try {
@@ -1886,6 +1897,7 @@
         m.away.clear();
         m.said = null; // (every card open again as play starts)
         renderOrder();
+        if ($("#mission")) $("#mission").scrollTop = 0; // (from its top, the first card whole)
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
         if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild, { home: true }));
