@@ -21086,5 +21086,373 @@
    ],
    "note": "the S14 checks (timeline, replay, no layout jump, load, overlaps, the light's contrast, card spacing, the save-seeding driver) each have a unit test that is red on a fixture of the old fault and green on the new"
   }
+ ],
+ "SH-161": [
+  {
+   "flow": "lab:cook/chai-tray",
+   "path": "replay",
+   "level": 3,
+   "sizes": [
+    "1280x665",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:85"
+   ],
+   "expect": null,
+   "note": "a round on the game host, Play again: the second round's kitchen has every picture of the first, the painted marble worktop, the fx; the shot is the replayed station",
+   "delay": 0
+  }
+ ],
+ "SH-162": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "the guide box's helper card: its down arrow is never lit (no gold box, no glow on the arrow) while the first-time lights come and go",
+   "delay": 0
+  }
+ ],
+ "SH-163": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 4,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250"
+   ],
+   "expect": null,
+   "note": "the order filmed whole: each big card moves and turns into its row card with one even scale, its words never doubled during the morph",
+   "delay": 0
+  }
+ ],
+ "SH-164": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan",
+    "contract:84"
+   ],
+   "expect": null,
+   "note": "the knob lit on the black burner: the lit box's warm fill lifts it clearly against the dim (the light's contrast measured: at least 12 of 255 on a dark thing)",
+   "delay": 0
+  }
+ ],
+ "SH-165": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/unit.mjs build/sandbox/s14checks.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the side-by-side helper card's speaker sits at the item card's 12 px from its words (the card measure's unit tests; the orchestrator's measure on chai L2 with the card open: 12 px at 740x320, 930x430, 1280x665)",
+   "delay": 0
+  }
+ ],
+ "SH-166": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250",
+    "contract:86"
+   ],
+   "expect": null,
+   "note": "the greeting and each line's bubble keep off the side panel while the play area has room (never more than 4 px into #side)",
+   "delay": 0
+  }
+ ],
+ "CHAI-40": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:78"
+   ],
+   "expect": null,
+   "note": "at a child's pace, every control's call comes with its light (the knob to light the cooker, the knob at the green, the glass for the pour): the dim, the gold box and the call together",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 4,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:78"
+   ],
+   "expect": null,
+   "note": "L4, three pans: every 'Chulo bar!' and 'Slow kar!' lit with its call",
+   "delay": 0
+  }
+ ],
+ "CHAI-42": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "help-open",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:79"
+   ],
+   "expect": null,
+   "note": "a new player: the order card lit once after the tea, only after a quiet spell (no spoon, pour, glide or animation moving), skipped if the child has already moved on",
+   "delay": 0
+  }
+ ],
+ "CHAI-43": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250",
+    "contract:83"
+   ],
+   "expect": null,
+   "note": "three people: each big card under the left face, about the order row's item card size, whole on screen, never over a face",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250"
+   ],
+   "expect": null,
+   "note": "two people stand middle and right",
+   "delay": 0
+  }
+ ],
+ "CHAI-44": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/loadtime.mjs --games chai-tray --runs 1"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai's load to the first play tap and its bytes within 20% of the recorded baseline (the pour frames load behind the station's start)",
+   "delay": 0
+  }
+ ],
+ "CHAI-45": [
+  {
+   "flow": "lab:cook/chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:80"
+   ],
+   "expect": null,
+   "note": "the kitchen from its first drawn frame: no jump in size or zoom in the first two seconds",
+   "delay": 0
+  }
+ ],
+ "CHAI-46": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan",
+    "contract:81"
+   ],
+   "expect": null,
+   "note": "the heat ring drawn over the pan's handle: no picture covers the gauge",
+   "delay": 0
+  }
+ ],
+ "CHAI-47": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "930x430",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "phase:pour",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:82"
+   ],
+   "expect": null,
+   "note": "the pour's lit box round the glass alone, taking in its face badge: no box edge across a face circle, no other person's pan in the light",
+   "delay": 0
+  }
+ ],
+ "CHAI-48": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "strip:body:60x250",
+    "contract:52"
+   ],
+   "expect": null,
+   "note": "two or three people: the next person's long first line keeps off Nana's face (wrapped narrower at its own speaker)",
+   "delay": 0
+  }
+ ],
+ "CHAI-49": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 4,
+   "sizes": [
+    "930x430",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:78"
+   ],
+   "expect": null,
+   "note": "L4: the third pan's knob step, opened while another pan is in hand, lights the knob with 'Chulo bar!'",
+   "delay": 0
+  }
  ]
 }
