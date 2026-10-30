@@ -873,7 +873,13 @@
     if (spk) e.slot.style.setProperty("--wc14-spk-edge", `${Math.max(4, Math.round(it.getBoundingClientRect().bottom - spk.getBoundingClientRect().bottom))}px`);
     const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame;
     raf(() => global.WordCard.fit14(e.slot));
-    setTimeout(() => global.WordCard && global.WordCard.fit14(e.slot), 480);
+    setTimeout(() => {
+      if (global.WordCard) global.WordCard.fit14(e.slot);
+      // (the judge, 30 Oct, 930x430: the order list scrolled while her card grew and kept the person's headline hidden under it: once
+      // the card has opened, a list that fits whole goes back to its top)
+      const list = $("#mission");
+      if (list && list.scrollTop > 0 && list.scrollHeight <= list.clientHeight + 1) list.scrollTop = 0;
+    }, 480);
   }
   UI.helper = function (w) {
     if (!w) helperOn = false;
@@ -902,7 +908,21 @@
   // SH-172: the card opening is when Nani says the step's instruction (its item in Kutchi), by the hint or the child's arrow
   function helperCall(by) {
     const s = stepper && stepper.current;
-    if (!s || !s.line || s.line.ok === false || !Lang.hasVoice(s.line) || UI.naniMuted()) return;
+    if (!s || UI.naniMuted()) return;
+    // (the judge, 30 Oct, chai L2: the card opened for the water and nothing was said: its step's line is still to record; then the
+    // item's own word, which has Mum's voice, is what she says as she shows it)
+    if (!s.line || s.line.ok === false || !Lang.hasVoice(s.line)) {
+      const id = helperW && helperW.word && helperW.word.id;
+      const w = id && Lang.wordLine ? Lang.wordLine(id) : null;
+      if (!w || !Lang.hasVoice(w)) return;
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("helper-call", { step: String(s.id), by: `${by} word` });
+      } catch (e) {
+        /* only a log */
+      }
+      queued(() => (helperOn && stepper && stepper.current === s ? Lang.speak(Lang.role(w, "call")) : null)).catch(() => {});
+      return;
+    }
     try {
       if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("helper-call", { step: String(s.id), by: String(by) });
     } catch (e) {

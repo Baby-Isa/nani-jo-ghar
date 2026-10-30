@@ -779,19 +779,15 @@
   "date": "2026-10-23"
  },
  "CHAI-40": {
-  "hash": "b52cf31a2e9ceadacda5",
-  "dhash": [
-   "4970b07030303818",
-   "353a7ada3a5a3a18",
-   "0120b03038bc3cb4"
-  ],
+  "hash": "3b1eac22d28e75d40152",
+  "dhash": [],
   "verdict": "PASS",
-  "line": "A, at 1920x1080 L1 speed 1 the \"Chulo bar!\" bubble and the cooker knob's gold ring are in the same frame (B the same at 930x430; C at L4 \"Slow kar!\" with the first pan's knob gold-ringed), contract-78 0 breaks on all three pages; L2-L3 not probed, and a stray \"khun\" word pill floats above the pan with no jar in A and B",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-chai-ev",
-  "commit": "682e5a89",
-  "png": "build/screenshots/evidence/s14-chai-ev/CHAI-40.png",
+  "line": "CHAI-40-p1-L1-930x430 voice, item steps open silent (step-open 1 at 10.40, 2 at 14.07, 3 at 14.29, 4 at 15.21: no call, only the echo of the item just added), the one item call \"Khun wiji chad!\" starts at 22.47 with helper-open (cook-khun) at 22.48, and \"Chulo bar!\" starts at 29.56 with the knob's rung and glow at 29.56, not before; L2-L4 likewise (every step-open silent, L3 \"Chulo bar!\" 27.94 = glow 27.94, L3/L4 \"Slow kar!\" at its glow), contract-89 0 breaks on all four pages. Noted, off the row's point: L2 helper-open (cook-paani) at 23.32 has no call at all (one for SH-172, not this row); L1 echo \"hakro khun\" at 29.54 is tagged silent and \"dudh\" echoes carry a \"?\" voice tag; mum/slow.mp3 + mum/kar.mp3 are family-unchecked (not mine to judge).",
+  "panel": "CHAI-40-p1-L1-930x430 voice",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session https://claude.ai/code/session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev5",
+  "commit": "dd20952",
+  "png": null,
   "date": "2026-10-30"
  },
  "CHAI-43": {
@@ -6973,19 +6969,21 @@
   "date": "2026-10-30"
  },
  "SH-163": {
-  "hash": "be3088e73afb49d3db74",
+  "hash": "143ea723436d20126ec4",
   "dhash": [
-   "5f7efeeaeaee6afb",
+   "5f7efe6aeaeeeafb",
    "2e3e3636363e3637",
-   "2e363a2c2c283637"
+   "2e363a2c2c283637",
+   "5e7e7e6868682a7f",
+   "2e36322c2c383e3f"
   ],
-  "verdict": "FAIL",
-  "line": "B, at 2254 ms and again at 3534 ms two cards are on screen at once: a faded big card still at the centre while the smaller row card is already drawn lower left (trae khun, then aako), a cross-fade of two, not one card shrinking as it moves; C at 2500 ms shows the same ghost behind the flying ba chunda card. Also C at 9501 ms: the flying ba bataata card is cut off at the bottom of the 930x430 viewport (its box runs to y=493), so the child sees half a card. The strips are 250 ms samples, not the 60 fps filmstrip the check names, so the morph is seen only at one or two frames per card; it still shows two cards at once.",
-  "panel": "B",
-  "judge": "Claude Fable 5.1, session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev",
-  "commit": "e036442",
-  "png": "build/screenshots/evidence/s15-chai-ev/SH-163.png",
+  "verdict": "PASS",
+  "line": "D, the dudh big card leaves its pop at 778 ms and shrinks evenly while sliding down-left into the panel (890, 955, 1024, 1107 ms), one whole card with \"dudh / milk\" readable at every frame, no second card and no fade; at 1719 ms the row card sits in the slot and the big card is gone, one hand-over. E (930x430) shows the same at 940, 1149, 1254, 1886 ms; the 250 ms strips B (L4) and C (L3) catch one mid-flight frame per item (2751, 5250, 9250 ms), each a single whole readable card. Notes: at L4 930x430 (B) the scene pop-out is smaller than its row card, so the card grows into the panel rather than shrinking; nearly every 50 ms frame in D and E is captioned \"slot N: off\" (captures 60-300 ms late), so the strip is not the 60 fps film the Check asks for and covers chai-tray L1 only; B 8577 ms Nana's placed cards vanish from the panel (see SH-171).",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev4",
+  "commit": "dd20952",
+  "png": "build/screenshots/evidence/s15-chai-ev4/SH-163.png",
   "date": "2026-10-30"
  },
  "SH-164": {
@@ -7106,19 +7104,36 @@
   "date": "2026-10-30"
  },
  "SH-171": {
-  "hash": "85cb7627652e7589bf2d",
+  "hash": "0b492ee97cd9ef019cef",
   "dhash": [
    "0101010101010101",
    "0111010101010101",
    "0121010101010105"
   ],
   "verdict": "FAIL",
-  "line": "C, at 5750 ms (L2 740x320, two people) the dudh and trae khun row cards that Nana had already said vanish and the card shows three empty dashed slots again, hakro khun only arriving at 8500 ms; the contract-88 capture for this probe says the same (\"showed dudh, trae khun and then hid them again as a dashed slot\"), the hide-and-return Zafar named. A and B (daar L1) are clean: dashed slot until the card lands, no item before it is said, none hidden after. Other flaws in C: at 2750 ms the dudh card is drawn twice (doubled word and a ghost speaker button, a cross-fade); at 8500 ms the flying hakro khun card sits over Aadu's bubble and hides her words; at 9501 and 9754 ms the hakro khun row card's speaker button is cut off at the bottom of the mission area.",
+  "line": "C, at 5501 ms Nana's dudh and trae khun sit in their two slots; at 6000 ms both are gone (his bubble stays in place, Mum's bubble and three empty dashed slots sit under it) and they never come back by 9750 ms: an item hidden again after it was said, the very flash Zafar names. A and B (daar L1, 1280x665 and 740x320) are clean: an empty dashed slot at 55 ms, the onion card only at 2251 ms, then the hakro dungri row, contract-88 0 breaks. Other flaws: C 3500 and 5262 ms the dudh card's speaker button overhangs its slot's bottom edge; C 8750 ms the flying hakro khun card is cut by the panel's right edge and sits over Nana's bubble (\"khap\" cut). Coverage: only daar L1 and chai-tray L2 filmed, not every station at L1-L4; the same vanishing is visible on SH-163 sheet B (chai-tray L4 930x430, 8577 ms: Nana's three cards gone under his bubble).",
   "panel": "C",
-  "judge": "Claude Fable 5.1, session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev",
-  "commit": "e036442",
-  "png": "build/screenshots/evidence/s15-chai-ev/SH-171.png",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev4",
+  "commit": "dd20952",
+  "png": "build/screenshots/evidence/s15-chai-ev4/SH-171.png",
+  "date": "2026-10-30"
+ },
+ "SH-172": {
+  "hash": "de324b2529a15dd1020d",
+  "dhash": [
+   "01d07030b0b02808",
+   "81909101aae28280",
+   "215a5a3a3a9ad848",
+   "01010181ae969201"
+  ],
+  "verdict": "PASS",
+  "line": "B, the helper card open on \"hakro khun\" with \"Khun wiji chad!\" above it, and the 1280x665 timeline has that call at 23.22 with helper-open at 23.23 (10 ms), nothing spoken at step-open (1)-(4) while the card was closed (the 16.22 \"Muke chai me hakro khun khape.\" is the child's tap on the face button, not the helper); D and the 930x430 timeline the same (call 22.47, helper-open 22.48); contract-89 0 breaks at L1 both sizes and at L3 (no helper call there at all). Scope: chai only, L1 at 1280x665 and 930x430 plus an L3 contract; L2 and L4 and every other Cook station and heal game are not on this sheet, so the row stays open for them. Flaw off the row's point: C, at 930x430 the open helper card sits over the order card below it and hides its headline \"Muke chai khape.\" (only a sliver shows under the card's bottom edge) and part of the tick badge; at 1280x665 (A) the headline is clear. \"Chulo bar!\" and \"Slow kar!\" are spoken at step-open (5)/(6) with the control's glow, not from the helper card; the probe calls that a control's call, outside this row's words.",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev5",
+  "commit": "dd20952",
+  "png": "build/screenshots/evidence/s15-chai-ev5/SH-172.png",
   "date": "2026-10-30"
  },
  "SH-18": {

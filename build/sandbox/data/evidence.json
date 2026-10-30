@@ -21252,6 +21252,26 @@
   {
    "want": null,
    "after": null,
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "at": "now",
+   "capture": [
+    "cmd:node build/tools/review/spkgap.mjs --level 2 --sizes 740x320,930x430,1280x665,1920x1080"
+   ],
+   "note": "the measure (build/tools/review/spkgap.mjs): at each size the helper's side card's speaker gap to its right edge against the order item card's speaker-to-foot gap, in CSS px (within 1 px); a tall window stacks the card, its speaker on the card's centre line"
+  },
+  {
+   "want": null,
+   "after": null,
    "expect": null,
    "delay": 900,
    "flow": "cook:chai-tray",
@@ -21259,16 +21279,14 @@
    "level": 2,
    "sizes": [
     "740x320",
-    "930x430",
     "1280x665"
    ],
    "profile": "seen",
    "at": "life:helper-open",
    "capture": [
-    "zoom2:#guide",
-    "zoom2:#mission"
+    "zoom2:#side"
    ],
-   "note": "the helper's side card (a phone and a short laptop): the speaker at the card's right, its gap to the right edge the order's item card's speaker-to-foot gap (measured 30 Oct: 7 px at 740x320, 9 px at 930x430 and 1280x665); both crops at 2x so the two gaps can be read; on a tall screen (1920x1080) the card stacks, its speaker centred as the item card's"
+   "note": "the helper card open above the order card, both at 2x: the two gaps side by side"
   }
  ],
  "SH-166": [
@@ -22491,10 +22509,10 @@
    "profile": "seen",
    "at": "life:request",
    "capture": [
-    "strip:#mission:40x250",
+    "strip:#mission:60x250",
     "contract:88"
    ],
-   "note": "two people at the phone size: the second person's rows wait in their slots too"
+   "note": "two people at the phone size: no item before it is said; the second person's rows wait in their slots too. NB: as the next person speaks, a person whose order has been said folds to face and headline (SH-169, Zafar 30 Oct: 'we minimise (fold up) menu boxes once that item is complete ... and then all the cards open again when the game starts'): that is not a hiding; the strip runs on to the game's start, where every card opens again"
   }
  ],
  "SH-172": [
@@ -22580,6 +22598,66 @@
     "contract:87"
    ],
    "note": "the cooker's step as a new player: one dim, one gold box (contract-87 over the whole play)"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "at": "now",
+   "capture": [
+    "cmd:node build/tools/review/lightfollow.mjs --level 2 --size 930x430 --speed 3 --secs 45"
+   ],
+   "note": "chai L2 as a new player who taps what is lit: the light layers per 100 ms through the cooker and the glass; fails on two lights together or a box left after its step"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "flow": "repo",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "at": "now",
+   "capture": [
+    "cmd:node build/tools/review/lightfollow.mjs --level 3 --size 930x430 --speed 3 --secs 45"
+   ],
+   "note": "chai L3 as a new player who taps what is lit: the light layers per 100 ms through the cooker and the glass; fails on two lights together or a box left after its step"
+  },
+  {
+   "want": null,
+   "after": null,
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "flow": "repo",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "at": "now",
+   "capture": [
+    "cmd:node build/tools/review/lightfollow.mjs --level 4 --size 930x430 --speed 3 --secs 45"
+   ],
+   "note": "chai L4 as a new player who taps what is lit: the light layers per 100 ms through the cooker and the glass; fails on two lights together or a box left after its step"
   }
  ]
 }
