@@ -78,3 +78,10 @@ sizes): 151 reached their end; the grill at L4 (fixed since: SEK-23) and the pan
 corner over a face circle for a frame (contract-83, about 50 px2, the pantry, daar, the grill); the call's light 200-260 ms after
 "Slow kar!" under load (contract-78); boing L4 once lit two rows together (contract-8, not again in a rerun); the order panel's
 partial card at 930x430 is now folded (SH-169). For Zafar: `docs/questions.md` "From the Sprint 14 roll-out" 1-4.
+
+## Published
+
+30 Oct, 11:50 UK: 20261030T114546Z (639e1263) on `main`, Pages serving it; `labs.html` checked. The final contract run on this code:
+0 breaks over 26 pages (chai L1/L3/L4, the grill L4, samosa, chaat L4, the pantry, maani, daar, the eye test, the foot L4, boing,
+the morning at 740x320 and 1280x665). The judges: 20 rows built; 8 fails, 2 fixed again since (SH-169, CLN-211), the rest noted on
+their rows for next sprint (`docs/status.md` "Next chat").

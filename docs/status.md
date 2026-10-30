@@ -8,29 +8,30 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (30 Oct 2026, 06:20 UK):** Sprint 14's roll-out is running without Zafar (plan `docs/sprints/S14-rollout-plan.md`;
-his 30 Oct words: "run everything autonomously without me till publish; fix all code-fixable issues first").
-- **Done:** phase A (chai's finish, verified by film; fixed CHAI-42 again, the pour's lit box, CHAI-48 the next person's bubble
-  over Nana) and phase B (the checks builder `s14-tools`, merged; its checks found CHAI-49, the third pan's knob unlit, and four
-  more, all fixed). Report: `build/reports/s14-rollout.md` (phases A and B), `build/reports/s14-tools.md`.
-- **Live on `main`** (fe1117ee, 20261030T061035Z): chai with every fix above; the other games unchanged.
-- **Running:** two in-chat builders in their own worktrees, never pushing: `s14-cook` (Opus, high, about $60-90: every Cook
-  station on the new kit, port 8887) and `s14-clinic` (Opus, high, about $60-90: every heal game, port 8888), hard stop 12:00 UK,
-  each writing its report (s14-cook, s14-clinic) under build/reports. A check-in is scheduled for 12:05 UK.
+**Where things stand (30 Oct 2026, 12:00 UK):** Sprint 14's roll-out is done and live, run without Zafar (his 30 Oct words: "run
+everything autonomously without me till publish"). Report: `build/reports/s14-rollout.md` (phases A-D), with
+`s14-tools.md`, `s14-cook.md`, `s14-clinic.md` and Round 3 in `s14-chai-lessons.md`.
+- **Live on `main`** (639e1263, 20261030T114546Z): every Cook station and every heal game on the chai kit and the central rules
+  (his numbers), chai's last fixes, the new checks; his fold rule (SH-169: a said order folds while the next person speaks, all
+  open at play); the grill's L2-L4 that never finished (SEK-23); no word cut or split in a phone's order card (SH-170).
+- **Proof:** the full contract run (156 pages; then 0 breaks over 26 pages on the final code), checks green, the judges: 20 rows
+  built. Nothing running.
 
-**Next steps, in order (the plan's section 5 checklist at every merge):**
-1. Phase D: merge s14-cook, then s14-clinic (one at a time; `git merge --no-ff` of each worktree branch); after each: checks.mjs,
-   the contract run on that area's flows at the four sizes (#speed1 for timing rows), films of each changed order, the replay.
-2. Evidence specs for the 29-30 Oct rows still without one (SH-161 to 166, CHAI-40 to 49), then `evidence.mjs --run` and one
-   judge per batch (`--judge`, the `judge` agent), `--collect`, `--apply`; fix what fails.
-3. `/publish --force` (decision 3), the report's phase C-D sections, Round 3 lessons, this handover, a note to Zafar with his play list.
+**Zafar's play (the next step):** `labs.html` with New player on: chai L1-L4, then each Cook station and each heal game at L1 and
+L4, on the phone and the laptop; `/feedback` with his notes.
 
-**Open questions to Zafar:** none blocking; Mum's word order (`docs/questions.md`).
+**Open, next sprint (rows in the fix list, each with its note):** MAA-19 (the first roti said in the headline gets no big card),
+CHT-17 (chaat's ten jars' labels overlap at 740x320: his call), DAAR-36 (X as pieces? the light on the board), CLN-207 (the
+doctor's line on his chest at 740x320), CLN-210 (the tooth's L1 line has no number), CLN-213 (a probe to check), SH-137 (the
+morning's other stages keep the title bar), CHAI-42/48/49 and CLN-205 (evidence to aim). Known minor: samosa's guided strip glow
+(contract-24, on main too); a card corner over a face circle for a frame (contract-83).
+
+**Open questions to Zafar:** `docs/questions.md` "From the Sprint 14 roll-out" 1-4 (the L1 leak acceptance, the drag hand,
+daar's dots, samosa's ticks); Mum's word order.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S14-rollout-plan.md` section 5 and
-> `build/reports/s14-rollout.md`. Continue the Sprint 14 roll-out at phase D without Zafar: merge, check, judge, publish, report.
-> Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Sprint 14's roll-out is live (`build/reports/s14-rollout.md`). I've
+> played it: here are my notes. Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
@@ -50,6 +51,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+30 Oct 2026, published 11:50 UK (639e1263, 20261030T114546Z): the Sprint 14 roll-out (every Cook station and heal game on the chai kit and the central rules, the new checks, SH-169, SEK-23, SH-170); `--force` per decision 3, Zafar's 30 Oct go. Earlier the same morning: 02:35 (chai's finish) and 06:13 (the checks' fixes).
 
 28 Oct 2026, published 11:33 UK (be3aa32f, 20261028T113000Z): the overnight fixes (the central type SH-151, centred badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you SH-108/CHAI-31/CLN-206) and the new checks; `--force` on Zafar's word (28 Oct: "Yes publish"). Checked live: chai at 740x320, no errors, the light round the bottle and its pill, the cog in the sidebar.
 
