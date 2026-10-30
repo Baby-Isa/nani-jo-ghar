@@ -2035,6 +2035,8 @@
     if (people) {
       mission.ladders.forEach((L) => L.sections.forEach((s) => s.for && s.when && (s.shown = true)));
       mission.peopleSaid = true;
+      // (SH-171: a person's rows that come in now, a second person's cup, wait in their slots too: no item before it is said)
+      if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
       renderOrder();
     }
     if (!hasRows(mission)) return;

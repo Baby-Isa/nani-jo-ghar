@@ -233,6 +233,7 @@ test("contract-89: a call while the helper names an item and is closed is a brea
   assert.equal(run(check89, r, [hp(1000, true, false)], v(2000)).length, 1, "said at the step's opening");
   assert.equal(run(check89, r, [hp(1000, true, false), hp(5000, true, true)], v(5200)).length, 0, "said as the card opens");
   assert.equal(run(check89, r, [hp(1000, false, false)], v(2000)).length, 0, "a control's call: no item named");
+  assert.equal(run(check89, r, [hp(1000, true, false), c("lit", 1900, { holes: [[1, 1, 9, 9]], layers: 1 })], v(2000)).length, 0, "a control's call with its light up");
 });
 
 test("contract-74 on lab.html: the station's own start note counts (the host's segment is dated from the page's stage)", async () => {

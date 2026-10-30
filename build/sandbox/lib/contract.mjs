@@ -1422,7 +1422,9 @@ function check36(r, tl, segs, v, add) {
     const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
     // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)
     const again = opens.slice(i + 1).find((x) => x.reason === o.reason);
-    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? again.t : Infinity));
+    // (a step logged open twice in the same moment, the guide's and the help's: a skip noted a millisecond after the second still
+    // belongs to this opening; Sprint 15, SH-172's "skip-helper" note, which comes after the call's "queued")
+    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? (again.t - o.t < 50 ? Infinity : again.t + 50) : Infinity));
     const skip = mine.find((n) => /^skip/.test(n.by || ""));
     // a call queued behind another line may start after the next step opened: any call from this opening on counts
     const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= Math.max(until, o.t + CALL_WITHIN));

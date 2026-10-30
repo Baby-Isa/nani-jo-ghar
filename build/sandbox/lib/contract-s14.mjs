@@ -258,6 +258,11 @@ export function check89(r, tl, v, add) {
     if (!st || !st.named || st.open) continue;
     // (the probe samples ten times a second: a helper that let its item go, or opened, within 200 ms of the line was not closed on it)
     if (hs.some((h) => h.t > l.t0 && h.t <= l.t0 + 200 && (!h.named || h.open))) continue;
+    // (a control's call comes with its light, contract-78: a light up at the line, or coming within 400 ms of it, is that)
+    const lits = ev(tl, "lit");
+    let cur = null;
+    for (const e of lits) { if (e.t > l.t0) break; cur = e; }
+    if ((cur && cur.holes && cur.holes.length) || lits.some((e) => e.t > l.t0 && e.t <= l.t0 + 400 && e.holes && e.holes.length)) continue;
     if (l.t0 - openedAt <= HELPER_CALL_MS / speed) continue;
     add("contract-89", l.t0, `"${l.text.trim()}" was said while Nani's helper card named the item and was closed: the item said before her card shows it`);
     return;
