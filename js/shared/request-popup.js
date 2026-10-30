@@ -327,6 +327,13 @@
         VoiceStop.stop("request-popup");
         if (opts.onStop) opts.onStop();
         me.fold(true);
+        // (contract-21, non-negotiable 7: a tap on a game's own button under the veil (the eye test's yes and no pills while the
+        // doctor says the word) is the child's answer too, never only a skip: the orchestrator, 30 Oct)
+        if (opts.zones) {
+          const el = under(ev);
+          const btn = el && el.closest ? el.closest("button, [role=button]") : null;
+          if (btn && !veil.contains(btn) && typeof btn.click === "function") btn.click();
+        }
       };
       veil.addEventListener("click", onTap);
       Promise.resolve()
