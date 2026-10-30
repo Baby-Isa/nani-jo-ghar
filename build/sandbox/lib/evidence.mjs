@@ -38,7 +38,7 @@ export const THROTTLES = { slow: { kbps: 1600, latency: 150, cpu: 4 } }; // Ligh
 // mark: what each frame of a probe's filmstrips is marked with (its edge and the strip's text): "drawn" = Cook's station fully
 // drawn (its view up, faded in, nothing of it still loading, no missing picture)
 export const MARKS = ["drawn"];
-export const PROFILES = ["fresh", "seen", "second-play", "numbers-known", "returning", "pill-hidden", "pill-miss", "levelup-ready"]; // (S14 tools, B10 and B11: a returning player and the seeded saves, lib/seed.mjs) // numbers-known: help seen, and every number word already heard 3 times (decision 57: then L3 drops the written number; SH-13)
+export const PROFILES = ["fresh", "seen", "second-play", "numbers-known", "returning", "pill-hidden", "pill-miss", "levelup-ready", "levelup-done"]; // (S14 tools, B10 and B11: a returning player and the seeded saves, lib/seed.mjs) // numbers-known: help seen, and every number word already heard 3 times (decision 57: then L3 drops the written number; SH-13)
 export const KINDS = ["layout", "detail", "art", "motion", "text", "voice"];
 
 // ---------- selectors ----------

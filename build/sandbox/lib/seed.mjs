@@ -9,12 +9,14 @@
 //   pill-hidden    returning, and the chai words' pills earned: three right in a row (the Kutchi goes, the speaker stays)
 //   pill-miss      pill-hidden, then one miss on "paani" (water): its Kutchi is back until one right pick; the others stay hidden
 //   levelup-ready  returning, and chai's level count at level 1 with two rounds done (the next round at that level moves it up)
+//   levelup-done   returning, and chai's level count already at level 2 (the next self-picked order is the second level's)
 
 export const SEED_PROFILES = {
   returning: "help seen, every word heard right",
   "pill-hidden": "returning, the chai words' pills earned (three right in a row)",
   "pill-miss": "pill-hidden, then a miss on paani: its Kutchi is back",
   "levelup-ready": "returning, chai at level 1 with two rounds done",
+  "levelup-done": "returning, chai already at level 2",
 };
 export const CHAI_WORDS = ["cook-paani", "cook-dudh", "cook-chai", "cook-khun"];
 export const isSeedProfile = (p) => Object.prototype.hasOwnProperty.call(SEED_PROFILES, p);
@@ -33,8 +35,8 @@ function seedInPage(profile, chaiWords) {
     for (const id of chaiWords) for (let i = 0; i < 3; i++) P.pill(id, { ok: true, firstTry: true });
     if (profile === "pill-miss") P.pill("cook-paani", { ok: false, firstTry: true });
   }
-  if (profile === "levelup-ready") {
-    C.save.levelUp = Object.assign({}, C.save.levelUp, { "chai-tray": { level: 1, streak: 2 } });
+  if (profile === "levelup-ready" || profile === "levelup-done") {
+    C.save.levelUp = Object.assign({}, C.save.levelUp, { "chai-tray": profile === "levelup-ready" ? { level: 1, streak: 2 } : { level: 2, streak: 0 } });
   }
   if (C.writeSave) C.writeSave();
   out.pill = Object.fromEntries(chaiWords.map((id) => { const r = (P.get ? P.get(id) : null) || {}; return [id, { run: r.pillRun || 0, earned: !!r.pillEarned, hidden: !!r.pillHidden }]; }));

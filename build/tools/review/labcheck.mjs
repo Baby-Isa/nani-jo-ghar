@@ -62,11 +62,11 @@ for (const size of sizes) {
     await p.waitForTimeout(wait);
     const sp = await p.evaluate(SPILLS).catch((e) => [String(e)]);
     const spacing = judgeSpacing(await p.evaluate(SPACING).catch(() => []));
-    for (const x of spacing) if (x.ok === false) sp.push(x.what);
+    const spacingBad = spacing.some((x) => x.ok === false);
     const f = join(out, `${size}${q ? "-" + q.replace(/[^\w=]+/g, "_") : ""}.png`);
     await p.screenshot({ path: f });
     shots.push({ f, size, q });
-    if (errs.length || sp.length) bad++;
+    if (errs.length || sp.length || spacingBad) bad++;
     lines.push(`- ${size} ${q || "(default)"}: ${errs.length ? `ERRORS ${errs.join(" | ")}` : "no errors"}; ${sp.length ? `SPILLS ${sp.join("; ")}` : "nothing spills"}${spacing.length ? `; SPACING ${spacing.map((x) => x.what).join("; ")}` : ""}`);
     console.log(lines[lines.length - 1]);
     await (np ? np.ctx : p).close();
