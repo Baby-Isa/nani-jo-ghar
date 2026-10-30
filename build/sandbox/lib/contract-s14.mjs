@@ -233,7 +233,10 @@ export function check87(tl, add) {
 // 88
 export function check88(tl, add) {
   const seen = new Set();
-  for (const e of ev(tl, "rows14")) {
+  // (the order's first giving, up to the station's start: a replay asked for later reads the card again, its own matter)
+  const st = tl.find((e) => e.type === "c" && e.k === "life" && e.what === "stage-start" && /^cook:station/.test(e.reason || ""));
+  const until = st ? st.t + 500 : Infinity;
+  for (const e of ev(tl, "rows14").filter((x) => x.t <= until)) {
     for (const w of e.shown || []) seen.add(w);
     if (!(e.away > 0) || !seen.size) continue;
     const prev = ev(tl, "rows14").filter((x) => x.t < e.t).pop();

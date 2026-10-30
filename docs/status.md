@@ -8,25 +8,42 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (30 Oct 2026, evening UK):** Sprint 14 is live on `main` (639e126, 20261030T114546Z). Zafar played it and found
-about twenty faults in four pages (`docs/feedback/cook-s14-play-2026-10-30.md`, every point a row). **Sprint 15 is open**
-(`docs/sprints/S15-cook-game-by-game.md`): Cook, game by game, chai first as the reference for the shared fixes, each game filmed,
-looked at frame by frame, judged, then played by Zafar before the next. Sprint 16 is the clinic the same way. All in the
-orchestrator's chat (Opus, high), no builders; about $90-140.
+**Where things stand (30 Oct 2026, 17:00 UK):** Sprint 15 is open (`docs/sprints/S15-cook-game-by-game.md`): Cook game by game, chai
+first as the reference for the shared fixes; Zafar plays each game before the next. His 30 Oct play is
+`docs/feedback/cook-s14-play-2026-10-30.md` (every point a row). `main` is unchanged since Sprint 14 (639e126).
+
+**Chai, built on the branch (not on `main`), the contract run green at L1-L4 x four sizes (s15-chai-1, -2):**
+- SH-171: the order's rows wait as dashed slots until each is said; a landed row never waits again (`mission.landed`).
+- SH-172 (+ CHAI-40): an item step's call waits for Nani's helper card and is said as it opens; a control's call is unchanged.
+- SH-163: the big card shrinks (one even scale) as it moves, stays on the row until the row card is drawn, then fades (filmed).
+- SH-165: the helper's side card: the speaker at the right, its gap the row card's speaker-to-foot gap (7 px at 740x320, measured).
+- SH-141: no ripple on the hand anywhere (css/shared/onboard.css).
+- CHAI-50: a re-entry that could leave a second light closed; **his exact case is not reproduced** (follow-the-light script, four
+  orders): ask him how he reached it when he plays chai.
+- New checks: contract-87 (one light), -88 (no item before it is said, the first giving only), -89 (helper call as the card opens);
+  fixed: contract-74 on lab pages, -36's window, -89 on lit control calls.
+
+**The judges (s15-chai-ev, -ev2, -ev3; verdicts collected, not applied):** SH-171 FAIL at L2 740x320 (fixed since: a landed row was
+hidden again; re-judge with s15-chai-ev3); SH-163 FAIL: at 930x430 a faded big card and the row card both show (the landing fade
+caught by the 250 ms strip) and samosa's card flies below the viewport (its row off screen); CHAI-50, CHAI-40, SH-165, SH-172
+EVIDENCE: the probes need timelines (light layers per frame; call vs card-open times) and L2-L4. Flaws they saw: at 1280x665 the
+open helper card overlaps the item card under it; a done card cut at the helper row's left edge; at L4 930x430 a card cut at the
+helper panel's foot; "Slow kar!" to check as a loan word.
 
 **Next steps, in order:**
-1. Chai: CHAI-50 (fixed in code, to film), SH-171 (no item before the order), SH-172 and CHAI-40 (the helper calls the item only as
-   her card opens), SH-163 (the morph: one card shrinking as it moves), SH-165 (the speaker's gap); film chai L1-L4 as a new player
-   at the four sizes; the judge; Zafar plays chai.
-2. Then pantry, daar (DAAR-37 to 39), sekelo, maani, chaat, samosa, one at a time.
-3. The art: the list is `docs/design-language/art-plans/art-needed.md` (ART-30); write the Sprint 15 plan and paste block for
-   Zafar to run while chai is fixed.
+1. SH-163: land without two cards showing (swap at once on the drawn row, or scale to the row's box exactly); samosa's off-screen row
+   (glide the row into view before the flight).
+2. The helper card over the item card at 1280x665; the cut cards the judges saw.
+3. Re-probe with timelines (a cmd probe: a follow-the-light player like the scratch `follow-light.mjs`, as a repo tool), re-judge.
+4. Ask Zafar to publish chai (his play), with the question below; then pantry, daar, sekelo, maani, chaat, samosa.
+5. The art: the list is `docs/design-language/art-plans/art-needed.md`; his pick for the run, then the plan and paste block.
 
-**Open questions to Zafar:** none blocking; Mum's word order (`docs/questions.md`).
+**Open questions to Zafar:** on a replay of the order mid-play, should the cards blank and pop back as they are read again, or stay
+and light up as read? (Recommend: stay and light up.) Mum's word order (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S15-cook-game-by-game.md`. Continue Sprint 15 at
-> the next step above. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S15-cook-game-by-game.md`. Continue Sprint 15 at the
+> next step above. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site.
 
 ## The fix list
 

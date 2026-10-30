@@ -6973,19 +6973,19 @@
   "date": "2026-10-30"
  },
  "SH-163": {
-  "hash": "c4d90dc20cbc0688cf61",
+  "hash": "be3088e73afb49d3db74",
   "dhash": [
-   "5f7efe6aeaee6afb",
+   "5f7efeeaeaee6afb",
    "2e3e3636363e3637",
    "2e363a2c2c283637"
   ],
-  "verdict": "PASS",
-  "line": "B, at 930x430 each big card flies alone (3001 ms \"trae khun\", 7253 ms \"dudh na\") at one even scale with its words shown once, then sits in the row; A (1920x1080) and C (samosa L3) the same. Flaws seen: at 930x430 the row scrolls sideways and cuts a card's word at the panel's left edge mid-move (B 5500 ms \"khun\", 7253 ms \"o\"); in C the samosa words look to break onto two lines mid-flight (3001 ms \"ba / chunda\", 5500 ms \"dungri / na\") before settling on one line in the row",
+  "verdict": "FAIL",
+  "line": "B, at 2254 ms and again at 3534 ms two cards are on screen at once: a faded big card still at the centre while the smaller row card is already drawn lower left (trae khun, then aako), a cross-fade of two, not one card shrinking as it moves; C at 2500 ms shows the same ghost behind the flying ba chunda card. Also C at 9501 ms: the flying ba bataata card is cut off at the bottom of the 930x430 viewport (its box runs to y=493), so the child sees half a card. The strips are 250 ms samples, not the 60 fps filmstrip the check names, so the morph is seen only at one or two frames per card; it still shows two cards at once.",
   "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-D-ev",
-  "commit": "9e918ca2",
-  "png": "build/screenshots/evidence/s14-D-ev/SH-163.png",
+  "judge": "Claude Fable 5.1, session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev",
+  "commit": "e036442",
+  "png": "build/screenshots/evidence/s15-chai-ev/SH-163.png",
   "date": "2026-10-30"
  },
  "SH-164": {
@@ -7103,6 +7103,22 @@
   "run": "s14-D-ev",
   "commit": "9e918ca2",
   "png": "build/screenshots/evidence/s14-D-ev/SH-170.png",
+  "date": "2026-10-30"
+ },
+ "SH-171": {
+  "hash": "85cb7627652e7589bf2d",
+  "dhash": [
+   "0101010101010101",
+   "0111010101010101",
+   "0121010101010105"
+  ],
+  "verdict": "FAIL",
+  "line": "C, at 5750 ms (L2 740x320, two people) the dudh and trae khun row cards that Nana had already said vanish and the card shows three empty dashed slots again, hakro khun only arriving at 8500 ms; the contract-88 capture for this probe says the same (\"showed dudh, trae khun and then hid them again as a dashed slot\"), the hide-and-return Zafar named. A and B (daar L1) are clean: dashed slot until the card lands, no item before it is said, none hidden after. Other flaws in C: at 2750 ms the dudh card is drawn twice (doubled word and a ghost speaker button, a cross-fade); at 8500 ms the flying hakro khun card sits over Aadu's bubble and hides her words; at 9501 and 9754 ms the hakro khun row card's speaker button is cut off at the bottom of the mission area.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1, session_014xb3kRLtLPZ2qrL3PyhaaF",
+  "run": "s15-chai-ev",
+  "commit": "e036442",
+  "png": "build/screenshots/evidence/s15-chai-ev/SH-171.png",
   "date": "2026-10-30"
  },
  "SH-18": {

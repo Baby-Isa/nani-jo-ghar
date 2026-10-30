@@ -1333,7 +1333,7 @@
     // on all the game modes"): an order that will be said item by item (introduce's along) opens with its rows waiting, each slot its
     // dashed outline, so no item shows while the person walks in and greets; each comes as it is said
     mission.preAway = !!(global.WordCard && OCard() && UI.w6() && (mission.wordRows || UI.s14()));
-    if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
+    if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r))))));
     renderOrder();
     // Sprint 11: the word cards' pictures (the row's small copy and the big one the item is said with) start now, so they
     // are there by the time each item is said (the kitchen conversation comes first)
@@ -1809,6 +1809,7 @@
         big14 = null;
         const done = () => {
           m.away.delete(r);
+          (m.landed = m.landed || new Set()).add(r); // (SH-171: a row said and landed never waits as a slot again)
           if (to) to.classList.remove("oc-away");
           if (big) big.remove();
         };
@@ -2036,7 +2037,7 @@
       mission.ladders.forEach((L) => L.sections.forEach((s) => s.for && s.when && (s.shown = true)));
       mission.peopleSaid = true;
       // (SH-171: a person's rows that come in now, a second person's cup, wait in their slots too: no item before it is said)
-      if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
+      if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r))))));
       renderOrder();
     }
     if (!hasRows(mission)) return;
@@ -2046,7 +2047,7 @@
     // big card popping by the side panel and turning into its row card)
     const along = !opts.only && global.WordCard && OCard() && UI.w6() && ((people && mission.wordRows) || UI.s14());
     if (along) {
-      mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
+      mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r))))));
       renderOrder();
     } else if (mission.preAway && mission.away.size) {
       // (SH-171: an order said another way after all shows its rows now)
