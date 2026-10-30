@@ -1,0 +1,122 @@
+- **0:01** for chaat L4, only show "speaker buttons only" if space is an issue, otherwise follow usual rules.
+- **0:02** do garlic for 10.
+- **0:03** When I load up chop, before the guy even comes to give the order for chopping, it says, it gives the order card for Haiku Dungri for one onion.
+- **0:04** And then when he comes and he says, Salaam Alaikum, the item card for the onion disappears, but it leaves a dotted outline and then reappears again.
+- **0:05** So obviously that's out of sequence.
+- **0:06** You shouldn't see the item until he's given the order.
+- **0:07** And it appears before even he's appeared.
+- **0:08** And then when you say question 9, is this what you mean by the...
+- **0:09** you said the patient card list.
+- **0:10** Do you mean the image 2?
+- **0:11** Basically the version of this, but for the clinic, where for the clinic it would say whatever, water and then plaster and then something else.
+- **0:12** Because if that's the case, then yeah, that we need that for clinic as well.
+- **0:13** The same how we have it for chai, how it shows the items you need it the same for clinic across all the different game modes.
+- **0:14** It should show you the things that you need.
+- **0:15** So let's fix that.
+- **0:16** And you should have the artwork for it, right?
+- **0:17** You should have artwork for plasters and for jugs.
+- **0:18** And I mean, if they're in the game, then you should have them already.
+- **0:19** So where we have them, just put them in the box.
+- **0:20** So many bugs.
+- **0:21** The current chop game doesn't end after the last chop is done.
+- **0:22** And And at the beginning of the pantry game, there's no one in the kitchen giving you the order.
+- **0:23** The items just appear on the sidebar.
+- **0:24** So I really just opened 3 pages and found like 4 bugs.
+- **0:25** So I'm not really feeling that inclined to do a thorough review at the moment.
+- **0:26** Also, when I put the chop game side, I snapped the browser to half the left half of the screen, just to make it easy for me to screen grab, and yeah, as you can see, the format completely changed, which isn't the end of the world actually, if that's what works.
+- **0:27** But the onboarding for the chop game definitely went awry.
+- **0:28** Like, it kept like going up and down jerkily, like it was kind of struggling to resize or struggling to fit or something.
+- **0:29** Also, do we have a handy list of artwork we need?
+- **0:30** Any additional artwork we need?
+- **0:31** If not, then fine.
+- **0:32** But now might be a good time for me just to supervise an art run, if there is anything.
+- **0:33** Like the additional ingredients that you said we don't have.
+- **0:34** What about...
+- **0:35** I will leave it for now.
+- **0:36** Item sitting on the tray.
+- **0:37** I'll figure that one out later.
+- **0:38** Yeah, I'm kind of hesitant.
+- **0:39** We're going to start fixing all these things, but there's a lot of things gone wrong thus far.
+- **0:40** I'm playing level one of the pantry.
+- **0:41** I see no words under the items in the pantry.
+- **0:42** I don't even see any speaker buttons.
+- **0:43** There's no speaker buttons or words under the items in the pantry.
+- **0:44** So I don't know how anybody's meant to know what's going on.
+- **0:45** Also, look at the padding.
+- **0:46** I said that the speaker button on the helper card should have the same padding to the right edge of the helper card as the item card, like the card below, the speaker button on the item below has to the bottom of its card.
+- **0:47** Basically, look at the two gaps I've highlighted in red circles.
+- **0:48** They should be the same.
+- **0:49** So for the sugar, on the sugar card, wherever the gap is between the speaker button and the edge of the card, replicate that gap on the big sugar card to the right.
+- **0:50** Oh, hopefully you understand what I'm saying.
+- **0:51** If you don't, then clarify.
+- **0:52** But I was saying that's what you should do.
+- **0:53** So the speaker's always on the right-hand side.
+- **0:54** Padded it a little bit.
+- **0:55** And then I just said if you didn't have to squeeze that padding a little bit just to try get an item on one line, then you can do so.
+- **0:56** But if you don't need to, then keep it the same.
+- **0:57** Also look at the screenshot number 4.
+- **0:58** Why are the counting items from the pantry appearing where they are?
+- **0:59** On top of a shelf covering items.
+- **1:00** Should they not be in the bottom right hand corner?
+- **1:01** Why is everything just completely gone haywire?
+- **1:02** Also in the pantry mode, the helper card doesn't automatically open and expand.
+- **1:03** It highlights the item, but it doesn't expand the helper card.
+- **1:04** I also had new player turned on, so I don't know why I didn't get any onboarding in terms of, you know, the darker outside screen, the lighter focus box.
+- **1:05** Haven't had any of that.
+- **1:06** Also, look at the next screenshot.
+- **1:07** I think I know why now the chop game is jumping up and down.
+- **1:08** I think it's because it's highlight the whole entire screen of the chop game has been highlighted, and it's been treated as an item.
+- **1:09** So how items bounce to say, oh, pick me, the whole entire chop game is bouncing up and down, which is stupid, obviously.
+- **1:10** Just the knife should be highlighted.
+- **1:11** Just highlight the knife.
+- **1:12** I mean, I don't know if this is too complex, but ideally to show them how the game works, you should highlight like a small horizontal strip, maybe twice the height of the knife, running the full width along.
+- **1:13** The rest is shaded darker.
+- **1:14** And then there's a finger grabbing the knife and dragging it from right to left.
+- **1:15** And as it drags it from right to left, it chops an item in half.
+- **1:16** So an item happens to jump in the in that highlighted rectangle box on purpose, predestined.
+- **1:17** So it chops it in half.
+- **1:18** And then it adds it to the chopped list.
+- **1:19** So maybe, you know, the first order, there's or in fact, it doesn't, no, don't add it to the chopped list.
+- **1:20** It's fine.
+- **1:21** It just chops it.
+- **1:22** It'll be obvious that it chops it.
+- **1:23** And if, and then once it's chopped it, the highlight goes and the player can play.
+- **1:24** But if the player chooses to grab the knife, no, actually don't let them.
+- **1:25** Wait for the, make them wait for the onboarding.
+- **1:26** Also, the transition still doesn't work well.
+- **1:27** When there's a big card highlighted from, as it's been spoken in the order, from the big card then moving down into the small card, yeah, it just does, the transition doesn't look good.
+- **1:28** If you break it down frame by frame, you'll just see, or show me frame by frame and I'll explain to you the problem.
+- **1:29** But essentially, can't we just have two separate things going on?
+- **1:30** One, it shrinks from the bigger card to the small card, which shouldn't, like, yeah, which just needs is like, which needs like a nice frame by frame shrinking down where everything's still nicely visible and not squashed or anything.
+- **1:31** And at the same time, it just needs to physically move into the right place.
+- **1:32** And then you just do the two things at the same time.
+- **1:33** That issue of the onion appearing in the order card before the person even comes and gives their order seems to be present on all the game modes.
+- **1:34** The highlight on the skewer in the second part of secular is also bad.
+- **1:35** You know, the highlight should include the whole skewer.
+- **1:36** Right now it cuts off the top and bottom of it, the handle and the pin.
+- **1:37** And currently it's much too wide as well.
+- **1:38** If there are multiple skewer items on there, it would cover them as well.
+- **1:39** It should be fairly tight to include the whole skewer and all the items on the skewer, but not that much else.
+- **1:40** There was also no dark screen or light screen highlighting for turning the skewer on the grill.
+- **1:41** It paused in the green zone and I was told to turn it, but it didn't like highlight how it did for chai.
+- **1:42** Do you think you're just not capable of doing this many changes at once, even though we specified the rules and what needs to be done?
+- **1:43** Is it just too much?
+- **1:44** Like, and you've got different builders running on it, but is it just too much?
+- **1:45** Do we need to go game by game like we did for chai?
+- **1:46** You implement the changes in a sandbox mode where I can like check everything you've implemented is correct, and then you change it on the main game?
+- **1:47** Is that what's needed?
+- **1:48** The thing is, you seem to understand the feedback.
+- **1:49** When we did the rapid prototyping in the sandbox mode, you implemented everything flawlessly, pretty much first time, or with minimal feedback.
+- **1:50** So then I thought there wouldn't be an issue.
+- **1:51** On Cook, there's still, sorry, on Chai, there's still the issue where, number one, Nani shouts out the next thing to do straight away, like put the milk in or, yeah, for example, put the milk in.
+- **1:52** As soon as you've put the tea in, she says put the milk in.
+- **1:53** I think that instruction should be said out loud, only at the same time as the order hint is shown.
+- **1:54** So when she expands her card to help you, and shows you the card for the next item, that's when she should call out the item as well in Kachi.
+- **1:55** So that's a rule for all the games always.
+- **1:56** I think that makes a lot of sense.
+- **1:57** The instruction in the helper's help box is only read out loud when their help box expands to show you the item based on the previous triggers we agreed for showing the item.
+- **1:58** There's still an issue with the onboarding of turning on the cooker for the chai.
+- **1:59** There seems to be a black tint which is applied during that onboarding that never goes away, although it gets even more darker.
+- **2:00** And then the gold square box doesn't go away either, even when it's time to select the chai or the tea glass to put the tea in.
+- **2:01** There's still a gold box highlighting in the cooker, even though it's been turned off at that point.
+- **2:02** Yeah, lots of issues.

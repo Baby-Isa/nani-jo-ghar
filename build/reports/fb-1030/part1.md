@@ -1,0 +1,9 @@
+- **0:01** 2 no ripples - the same light focus box with darker outside and gold glow and jump if item logic as chai, no ripple we tried that and failed it.
+- **0:02** Yes hand for drag is fine.
+- **0:03** Daar I meant 4 types of things to chop in the chop game - the number of total chops per play per level can go: 2, 4, 6, 8 (min 1 and max 3 chops per single item).
+- **0:04** And dont forget to end the game once all chops have been done.
+- **0:05** level 4 chaat, do speaker buttons alone as it's level 4 so they should be used to using the sounds to figure it out, and they alwyas have the help card if needed.
+- **0:06** Plus a few will be speaker anyway as by level 4 they would have progressed with a lot of words.
+- **0:07** what you do mean by q9?
+- **0:08** Can you check screenshots to confirm nothing hasnt been missed out.
+- **0:09** then answer my Qs and incoprotate my feedback, and I'll the approve the buld start. Yes to evrything esle.
