@@ -38,6 +38,8 @@ export const DRIVERS = {
   "variant-e4": { kinds: ["clinic-stage"], moments: [] },
   // the request pop-up is never tapped: the spoken order plays out to its end (SEK-11)
   "listen-through": { kinds: ["cook"], moments: [] },
+  // S14 tools (SH-167): the same, at a child's pace (speed 1): the order is given whole, never tapped, for a film of it
+  "order-whole": { kinds: ["cook"], moments: [] },
   "tap-quick": { kinds: ["cook"], moments: ["drv:count-word"] },
   "tawa-empty-then-off": { kinds: ["cook"], moments: ["rec:tawa-empty", "rec:knob-off", "drv:knob-off", "drv:tawa-empty"] },
   "idle-twice": { kinds: ["cook", "heal"], moments: ["rec:idle-hint", "rec:idle-again"] },

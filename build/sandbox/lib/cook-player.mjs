@@ -421,7 +421,7 @@ export class CookPlayer {
     if (this.intros === 1) await this.once("order-card-big", { settle: 150 });
     await sleep(400);
     // listen-through (SEK-11): the pop-up is not tapped: the spoken order plays out and the pop-up folds by itself
-    if (this.mode === "listen-through") { await until(async () => !(await popupOpen(p)), 60000, 100); await sleep(300); return; }
+    if (this.mode === "listen-through" || this.mode === "order-whole") { await until(async () => !(await popupOpen(p)), 60000, 100); await sleep(300); return; }
     if (await this.page.$("#intro:not(.hidden) .ic-card")) { try { await this.page.click("#intro .ic-card", { force: true, timeout: 2000 }); } catch (e) { /* it flew in by itself */ } }
     // (S13-B1: Cook's order pop-up is the kit's: a tap on its veil, anywhere but a face, folds it)
     else if (await this.page.$(".njg-rq-veil:not(.going)")) { try { await this.page.click(".njg-rq-veil:not(.going)", { force: true, timeout: 2000, position: { x: 8, y: 8 } }); } catch (e) { /* it flew in by itself */ } }

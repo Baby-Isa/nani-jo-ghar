@@ -879,7 +879,8 @@ export const CONTRACT_HOOK = `(() => {
       emit({ k: "bubble", list: bubs, heads: [...phaserHeads(), ...domHeads()], play: playArea(), side: safe(() => { const s = document.querySelector(SIDE); return s && shown(s) ? R(s.getBoundingClientRect()) : null; }, null), vw: innerWidth, vh: innerHeight });
     }
   };
-  setInterval(() => { try { sample(); } catch (e) {} }, 100);
+  // (a film in progress, lib/film.mjs: the heavy sampling runs twice a second, so the frames keep their slots)
+  setInterval(() => { try { if (window.__njgFilm && Date.now() - (window.__njgFilmAt || 0) < 500) return; window.__njgFilmAt = Date.now(); sample(); } catch (e) {} }, 100);
   // a pop-up, a button or a bubble can come and go between two samples (test speed): any class or style change samples at once
   let queued = false;
   const soon = () => { if (queued) return; queued = true; setTimeout(() => { queued = false; try { sample(); } catch (e) {} }, 0); };

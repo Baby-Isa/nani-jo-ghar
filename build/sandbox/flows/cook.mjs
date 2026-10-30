@@ -28,7 +28,7 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
   const day = /^day(\d)$/.exec(key);
   if (day) return cookDay(+day[1], { mode });
   // the voice-timing drivers play at a child's pace (speed 1): the lines last as long as they do for a child
-  if (["tap-during-speech", "tap-during-pause", "tap-quick", "tap-through-popup", "tap-card-1s", "tap-zones"].includes(mode) && speed === 3) return { ...cookStation(key, level, { recipe, mode, group, speed: 1 }), id: `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}${level > 1 ? `@L${level}` : ""}#${mode}` };
+  if (["tap-during-speech", "tap-during-pause", "tap-quick", "tap-through-popup", "tap-card-1s", "tap-zones", "order-whole"].includes(mode) && speed === 3) return { ...cookStation(key, level, { recipe, mode, group, speed: 1 }), id: `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}${level > 1 ? `@L${level}` : ""}#${mode}` };
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
   const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "") + (speed !== 3 ? `#speed${speed}` : "");

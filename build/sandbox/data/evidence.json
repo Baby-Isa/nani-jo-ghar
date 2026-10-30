@@ -20444,7 +20444,7 @@
  "SH-152": [
   {
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "order-whole",
    "level": 1,
    "sizes": [
     "930x430",
@@ -20458,7 +20458,7 @@
     "strip:body:60x200"
    ],
    "expect": null,
-   "note": "the order filmed whole (from the request, 12 s, every 200 ms, the whole screen): while the order is given the row glides to the next card (never a jump, never more than a card width a frame); the film table lists the row's scroll per frame",
+   "note": "the order filmed whole (from the request, 12 s, every 200 ms, the order given whole and never tapped, the whole screen): while the order is given the row glides to the next card (never a jump, never more than a card width a frame); the film table lists the row's scroll per frame",
    "delay": 0
   }
  ],
@@ -20743,7 +20743,7 @@
  "SH-154": [
   {
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "order-whole",
    "level": 4,
    "sizes": [
     "930x430",
@@ -20754,7 +20754,7 @@
    "at": "life:request",
    "after": null,
    "capture": [
-    "strip:body:60x200",
+    "strip:body:60x250",
     "contract:76"
    ],
    "expect": null,
@@ -20891,7 +20891,7 @@
  "CHAI-39": [
   {
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "order-whole",
    "level": [
     2,
     3,
@@ -20908,7 +20908,7 @@
    "at": "life:request",
    "after": null,
    "capture": [
-    "strip:body:60x200",
+    "strip:body:60x250",
     "contract:72"
    ],
    "expect": null,

@@ -81,3 +81,50 @@ export function filmTable({ times = [], ms = 0, diffs = [], facts = [], keys = [
   });
   return lines.join("\n");
 }
+
+// ---- the page's own recorder: facts on every animation frame (16 ms), cheap, so the numbers are finer than the pictures ----
+export const FILM_REC_START = `(() => {
+  window.__njgFilm = true;
+  const R = (window.__njgFilmRec = { on: true, rows: [] });
+  const r = (e) => { const b = e.getBoundingClientRect(); return [b.left, b.top, b.right, b.bottom].map((v) => Math.round(v * 10) / 10); };
+  const q = (s) => Array.from(document.querySelectorAll(s)).filter((e) => e.getBoundingClientRect().width > 2).map(r);
+  const tick = () => {
+    if (!R.on) return;
+    if (R.rows.length < 4000) {
+      const row = document.querySelector(".oc-row14");
+      let faces = null;
+      try { const T = window.njgTest; const h = T && (T.faces ? T : T.cook && T.cook.faces ? T.cook : T.clinic && T.clinic.faces ? T.clinic : null); faces = h ? h.faces().map((x) => [x.left, x.top, x.right, x.bottom].map((v) => Math.round(v * 10) / 10)) : null; } catch (e) { faces = null; }
+      // where each card of the order row is drawn (its left edge, by its key): the row's scroll and the cards' own slide (FLIP) both show here
+      const cards = {};
+      if (row) row.querySelectorAll(":scope > .oc-row[data-key]").forEach((c) => { cards[c.dataset.key] = Math.round(c.getBoundingClientRect().left * 10) / 10; });
+      R.rows.push({ t: Date.now(), pop: q(".wc14-pop"), fly: q(".wc14-flyer"), row: row ? Math.round(row.scrollLeft * 10) / 10 : null, cards, faces });
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+})()`;
+export const FILM_REC_STOP = `(() => { const R = window.__njgFilmRec; window.__njgFilm = false; if (!R) return []; R.on = false; return R.rows; })()`;
+const over = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+// the numbers from the recorder: how far the order row moved between two animation frames, how much of a big card (or a card in
+// flight) sat over a face, the most cards in flight, how long the row's scroll took from its first to its last change
+export function filmSummary(rows = []) {
+  let maxCardStep = 0, cardStepAt = null, cardMoves = 0, maxRowStep = 0, rowMoves = 0, rowT0 = null, rowT1 = null, maxOnFace = 0, onFaceAt = null, popFrames = 0, maxFly = 0, faceFrames = 0;
+  rows.forEach((s, k) => {
+    if (k && s.row != null && rows[k - 1].row != null) {
+      const d = Math.abs(s.row - rows[k - 1].row);
+      if (d > 0.5) { rowMoves++; rowT0 = rowT0 == null ? s.t : rowT0; rowT1 = s.t; }
+      maxRowStep = Math.max(maxRowStep, d);
+    }
+    // a card drawn in two neighbouring frames: how far it moved on screen (the row's scroll and its own slide together)
+    if (k && s.cards && rows[k - 1].cards) for (const key of Object.keys(s.cards)) if (key in rows[k - 1].cards) {
+      const d = Math.abs(s.cards[key] - rows[k - 1].cards[key]);
+      if (d > maxCardStep) { maxCardStep = d; cardStepAt = { t: s.t, key, from: rows[k - 1].cards[key], to: s.cards[key], dt: s.t - rows[k - 1].t }; }
+      if (d > 0.5) cardMoves++;
+    }
+    if (s.pop.length) popFrames++;
+    maxFly = Math.max(maxFly, s.fly.length);
+    if (s.faces) faceFrames++;
+    for (const c of [...s.pop, ...s.fly]) for (const f of s.faces || []) { const o = over(c, f); if (o > maxOnFace) { maxOnFace = o; onFaceAt = { t: s.t, card: c, face: f }; } }
+  });
+  return { frames: rows.length, maxCardStep: Math.round(maxCardStep * 10) / 10, cardStepAt, cardMoves, maxRowStep: Math.round(maxRowStep * 10) / 10, rowMoves, rowMs: rowT0 != null ? rowT1 - rowT0 : 0, maxOnFace: Math.round(maxOnFace), onFaceAt, popFrames, maxFly, faceFrames };
+}

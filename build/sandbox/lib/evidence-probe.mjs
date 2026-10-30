@@ -17,7 +17,7 @@ import * as Contract from "./contract.mjs";
 import { markStrip, isHelpMoment, edge, DRAWN_RGB, NOT_DRAWN_RGB } from "./strip-mark.mjs";
 import { DEVICE_VOICE, utterances, uttOfPlay } from "./device-voice.mjs";
 import { lintPage } from "../../lint/layout.mjs";
-import { FILM_FACTS, sigOf, sigDiff, cropImg, pickKeys, filmMotion, filmTable } from "./film.mjs";
+import { FILM_REC_START, FILM_REC_STOP, filmSummary, sigOf, sigDiff, cropImg, pickKeys, filmMotion, filmTable } from "./film.mjs";
 import { FILM_FROM, FILM_KEEP } from "./evidence.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -399,11 +399,13 @@ export class EvidenceProbe {
   // 4x250 strip land at 0/452/738/1144 ms; a strip now takes every frame first and cuts them after): null when CDP is not there
   // fast: PNG with the quick encoder (about 100 ms for 1366x768 against 300-400 ms; lossless either way), for a strip on its clock.
   // (A clip straight from the compositor is quicker still, but on 26 Oct it came back blank or wrongly sized: never used.)
-  async surface({ fast = false } = {}) {
+  // scale (S14 tools: a film of a big screen takes each frame at half size, 110 ms instead of 170-500 ms at 1920x1080)
+  async surface({ fast = false, scale = 1 } = {}) {
     try {
       if (this._cdp === undefined) this._cdp = await this.page.context().newCDPSession(this.page).catch(() => null);
       if (!this._cdp) return null;
-      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, ...(fast ? { optimizeForSpeed: true } : {}) });
+      const vp = this.page.viewportSize();
+      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, ...(fast ? { optimizeForSpeed: true } : {}), ...(scale !== 1 ? { clip: { x: 0, y: 0, width: vp.width, height: vp.height, scale } } : {}) });
       return Buffer.from(r.data, "base64");
     } catch (e) { return null; }
   }
@@ -530,15 +532,18 @@ export class EvidenceProbe {
             // every frame is the whole surface (the quick encoder) taken on its slot, cut once all are taken to ONE clip: the union of
             // the element's boxes over every frame and a margin, so a thing that moves (the finger) is whole in every frame (round 3)
             // S14 tools (SH-167): a long strip is a film (lib/film.mjs): every frame, the sheet keeps the changing ones
-            const film = c.n >= FILM_FROM, facts = [], raws = [], seen = [b];
+            const film = c.n >= FILM_FROM, raws = [], seen = [b];
+            // (the page's own recorder: facts on every animation frame, and the contract probe's heavy sampling slowed to twice a second,
+            // which made a frame cost 0.5 s instead of 0.1 s: lib/film.mjs)
+            if (film) await page.evaluate(FILM_REC_START).catch(() => {});
             for (let k = 0; k < c.n; k++) {
               const due = t0 + k * c.ms; if (Date.now() < due) await sleep(due - Date.now());
               out.times.push(Date.now() - t0);
-              raws.push(await this.surface({ fast: true }));
-              if (film) facts.push(await page.evaluate(FILM_FACTS).catch(() => ({})));
-              if (k) { const bk = await this.boxes(c.sel).catch(() => null); const u = bk && !bk.error ? union(bk) : null; if (u) seen.push(u); }
+              raws.push(await this.surface({ fast: true, scale: film && vw > 1000 ? 0.5 : 1 }));
+              if (k && !film) { const bk = await this.boxes(c.sel).catch(() => null); const u = bk && !bk.error ? union(bk) : null; if (u) seen.push(u); }
               if (s.p.mark === "drawn") (out.states = out.states || []).push(await this.drawnState());
             }
+            const recRows = film ? await page.evaluate(FILM_REC_STOP).catch(() => []) : [];
             out.slots = Array.from({ length: c.n }, (_, k) => k * c.ms);
             const all = { l: Math.min(...seen.map((x) => x.l)), t: Math.min(...seen.map((x) => x.t)), r: Math.max(...seen.map((x) => x.r)), b: Math.max(...seen.map((x) => x.b)) };
             const wide = clipOf(all, vw, vh, 24);
@@ -563,9 +568,12 @@ export class EvidenceProbe {
                 const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
               }
               const allTimes = out.times;
-              out.film = { n: c.n, keys, moving: step.moving, steps: step.steps, max: step.max };
+              // each frame's facts: the recorder's sample nearest the frame's real time (the frame's time is from t0)
+              const facts = allTimes.map((t) => { let best = null; for (const r of recRows) if (!best || Math.abs(r.t - (t0 + t)) < Math.abs(best.t - (t0 + t))) best = r; return best || {}; });
+              const sum = filmSummary(recRows);
+              out.film = { n: c.n, keys, moving: step.moving, steps: step.steps, max: step.max, summary: sum };
               out.times = keys.map((k) => allTimes[k]); out.slots = keys.map((k) => k * c.ms);
-              out.text = `a film of ${c.n} frames, every ${c.ms} ms (${(c.n * c.ms / 1000).toFixed(1)} s), from ${hit.name}; the sheet shows the ${keys.length} frames where the picture changed (*)\n${filmTable({ times: allTimes, ms: c.ms, diffs, facts, keys })}`;
+              out.text = `a film of ${c.n} frames, every ${c.ms} ms (${(c.n * c.ms / 1000).toFixed(1)} s), from ${hit.name}; the sheet shows the ${keys.length} frames where the picture changed (*)\nthe page's own recorder (${sum.frames} animation frames): the order row's scroll moved at most ${sum.maxRowStep} px between two frames (${sum.rowMoves} moves over ${sum.rowMs} ms); a card of the row moved at most ${sum.maxCardStep} px on screen between two frames${sum.cardStepAt ? ` (${sum.cardStepAt.key}: ${sum.cardStepAt.from} to ${sum.cardStepAt.to} in ${sum.cardStepAt.dt} ms)` : ""}; the big card was up in ${sum.popFrames} frames, at most ${sum.maxFly} cards in flight; most of a card over a face: ${sum.maxOnFace} px2 (${sum.faceFrames} frames had face boxes)\n${filmTable({ times: allTimes, ms: c.ms, diffs, facts, keys })}`;
             } else {
               for (let k = 0; k < c.n; k++) if (raws[k]) raws[k] = await this.cut(raws[k], clip);
               for (let k = 0; k < c.n; k++) {
