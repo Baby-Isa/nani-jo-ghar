@@ -606,6 +606,13 @@
       // (a plain timer: Cook.wait belongs to the station's life and may never resolve once a step ends, which held the queue)
       return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
+        // SH-172 (Zafar, 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ... when
+        // she expands her card to help you ... that's a rule for all the games always"): a step whose item Nani's helper card names
+        // is said as that card opens (UI.helperOpen below), never as the step opens; a control's call (no item named) stays here
+        // (the step's own thing is an item, as the helper reads it: Cook.expect names it; a knob, a flip or a pour is a control)
+        const e = Cook.expect;
+        const item = !!(e && typeof e.key === "string" && Cook.isItemWord && Cook.isItemWord(e.key));
+        if (UI.s14() && item && helperW && !helperOn) return callNote(s, "skip-helper");
         if (guide) guide.talk(true);
         return Lang.speak(line).finally(() => guide && guide.talk(false));
       });
@@ -883,10 +890,27 @@
         /* only a log */
       }
       if (helperW.onOpen) helperW.onOpen(o.by || "arrow");
+      helperCall(o.by || "arrow");
     }
     return helperOn;
   };
   UI.helperIsOpen = () => !!(helperOn && helperW);
+  // SH-172: the card opening is when Nani says the step's instruction (its item in Kutchi), by the hint or the child's arrow
+  function helperCall(by) {
+    const s = stepper && stepper.current;
+    if (!s || !s.line || s.line.ok === false || !Lang.hasVoice(s.line) || UI.naniMuted()) return;
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("helper-call", { step: String(s.id), by: String(by) });
+    } catch (e) {
+      /* only a log */
+    }
+    const line = Lang.role(copyLine(s.line), "call");
+    queued(() => {
+      if (!helperOn || !stepper || stepper.current !== s) return null;
+      if (guide) guide.talk(true);
+      return Lang.speak(line).finally(() => guide && guide.talk(false));
+    }).catch(() => {});
+  }
   let talking = false;
   let blinkT = 0;
   let restAs = "neutral"; // the mood she rests in (the service view's setMood)
@@ -1301,6 +1325,11 @@
     el.querySelector(".m-face").alt = name;
     el.querySelector(".m-ring").title = name;
     renderStars();
+    // SH-171 (Zafar, 30 Oct: "You shouldn't see the item until he's given the order ... it appears before even he's appeared"; "present
+    // on all the game modes"): an order that will be said item by item (introduce's along) opens with its rows waiting, each slot its
+    // dashed outline, so no item shows while the person walks in and greets; each comes as it is said
+    mission.preAway = !!(global.WordCard && OCard() && UI.w6() && (mission.wordRows || UI.s14()));
+    if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
     renderOrder();
     // Sprint 11: the word cards' pictures (the row's small copy and the big one the item is said with) start now, so they
     // are there by the time each item is said (the kitchen conversation comes first)
@@ -2013,7 +2042,12 @@
     if (along) {
       mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head))));
       renderOrder();
+    } else if (mission.preAway && mission.away.size) {
+      // (SH-171: an order said another way after all shows its rows now)
+      mission.away.clear();
+      renderOrder();
     }
+    mission.preAway = false;
     if (!opts.only && opts.pause == null) await kitchenTalk();
     // Sprint 11 (task 2): a people order (the chai cups) is said item by item at the asker's face, each its word card
     if (along) return introduceAlong(opts);

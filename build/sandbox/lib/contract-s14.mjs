@@ -43,6 +43,9 @@ export const S14_CHECKS = {
   "contract-84": { item: "light-clear", title: "the lit box is clear against the dim", how: "Every lightpix measure (lib/lightpix.mjs: a beat after a light comes up the sandbox takes the screen with the light and without it, and measures each lit box: the mean brightness inside it, 8 px in from its edge, with the light and under it): on a dark thing (under it, below 110 of 255) the light must lift the inside by at least 12 of 255, the soft warm fill. A lit black burner that looks as black as it did is a break (SH-164: \"the highlight on the burner isn't clear enough because the burner is black ... it might need lightening inside the highlight box\")." },
   "contract-85": { item: "replay", title: "a round played again is whole", how: "The replay driver (a lab.html round, then Play again: build/sandbox/flows/labs.mjs, mode replay) records each round's textures (k replay): after Play again no picture of the first round is missing, nothing is drawn as the missing-picture texture, the station's worktop is the painted marble (spr:bg:marble), and the fx textures are loaded. Any of them missing is a break (SH-161: the replay lost its pictures and drew the worktop in code)." },
   "contract-86": { item: "bubble-clear", title: "a bubble keeps off a side panel", how: "Every keepout event (the S14 probe: each speech bubble against every [data-njg-keepout] panel and the side panel (#side, .njg-side, .cl-side)): a bubble that reaches more than 8 px into a panel while the play area has room for it beside the panel (the play area's right edge less the panel's is at least the bubble's width) is a break (SH-166: \"why does the speech bubble go over the left panel even though there is space to right?\")." },
+  "contract-87": { item: "one-light", title: "one light at a time", how: "Every lit event (the S14 probe: the light layers up, .njg-onboard): two or more light layers up together for longer than 300 ms is a break: their dims stack (the screen darker each time) and the older one's box stays on a control whose step has ended (CHAI-50, Zafar, 30 Oct: \"a black tint ... that never goes away, although it gets even more darker ... the gold square box doesn't go away either\")." },
+  "contract-88": { item: "item-said", title: "no item on the order card before it is said", how: "Every rows14 event (the S14 probe: the order panel's item rows, the words of those shown and how many wait as a dashed slot): a row shown and later back to its dashed slot (the item seen, then hidden as the person greets, then shown again) is a break (SH-171, Zafar, 30 Oct: \"before the guy even comes to give the order ... it gives the order card for ... one onion ... when he comes and he says, Salaam Alaikum, the item card for the onion disappears, but it leaves a dotted outline and then reappears again ... You shouldn't see the item until he's given the order\")." },
+  "contract-89": { item: "helper-call", title: "the helper says the item as her card opens", how: "Cook flows: every Cook line tagged role call that starts while Nani's helper card names an item (the S14 probe's helper event: her arrow up) and is closed, and more than 1.5 s (scaled by the test speed) after her card last opened, is a break: the next item said before her card shows it (SH-172, Zafar, 30 Oct: \"that instruction should be said out loud, only at the same time as the order hint is shown ... when she expands her card to help you ... that's a rule for all the games always\"). A control's call (no item named) is contract-78's." },
 };
 
 // 78
@@ -211,4 +214,52 @@ export function check86(tl, add) {
       add("contract-86", e.t, `a bubble [${b.map(Math.round).join(",")}] reaches ${Math.round(ox)} px into ${p.tagged ? "the keep-out panel" : "the side panel"} ${p.sel} for ${Math.round(Math.min(until - e.t, 9999))} ms while the play area has ${Math.round(room)} px beside it`);
     }
   });
+}
+
+// 87
+export const TWO_LIGHTS_MS = 300;       // a light handing over to the next may overlap for a frame or two
+export function check87(tl, add) {
+  const evs = ev(tl, "lit");
+  for (let i = 0; i < evs.length; i++) {
+    const e = evs[i];
+    if (!(e.layers > 1)) continue;
+    const until = (evs.slice(i + 1).find((x) => !(x.layers > 1)) || { t: e.t + 1e9 }).t;
+    if (until - e.t < TWO_LIGHTS_MS) continue;
+    add("contract-87", e.t, `${e.layers} light layers up together for ${Math.round(Math.min(until - e.t, 99999))} ms (boxes ${(e.holes || []).map((h) => `[${h.join(",")}]`).join(" ")}): the dims stack and one box outlives its step`);
+    return;
+  }
+}
+
+// 88
+export function check88(tl, add) {
+  const seen = new Set();
+  for (const e of ev(tl, "rows14")) {
+    for (const w of e.shown || []) seen.add(w);
+    if (!(e.away > 0) || !seen.size) continue;
+    const prev = ev(tl, "rows14").filter((x) => x.t < e.t).pop();
+    const gone = (prev ? prev.shown || [] : []).filter((w) => !(e.shown || []).includes(w));
+    if (!gone.length) continue;
+    add("contract-88", e.t, `the order card showed ${gone.map((w) => `"${w}"`).join(", ")} and then hid ${gone.length > 1 ? "them" : "it"} again as a dashed slot: the item seen before it was said`);
+    return;
+  }
+}
+
+// 89
+export const HELPER_CALL_MS = 1500;
+export function check89(r, tl, v, add) {
+  if (!isCookFlow(r.flow)) return;
+  const hs = ev(tl, "helper");
+  if (!hs.length) return;
+  const speed = +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3); // (Cook's test speed, as contract-22 reads it)
+  const lines = v.lines.filter((l) => l.role === "call" && (l.text || "").trim());
+  for (const l of lines) {
+    let st = null, openedAt = -Infinity;
+    for (const h of hs) { if (h.t > l.t0) break; st = h; if (h.open) openedAt = h.t; }
+    if (!st || !st.named || st.open) continue;
+    // (the probe samples ten times a second: a helper that let its item go, or opened, within 200 ms of the line was not closed on it)
+    if (hs.some((h) => h.t > l.t0 && h.t <= l.t0 + 200 && (!h.named || h.open))) continue;
+    if (l.t0 - openedAt <= HELPER_CALL_MS / speed) continue;
+    add("contract-89", l.t0, `"${l.text.trim()}" was said while Nani's helper card named the item and was closed: the item said before her card shows it`);
+    return;
+  }
 }

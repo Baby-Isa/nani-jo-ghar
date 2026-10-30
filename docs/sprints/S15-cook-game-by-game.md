@@ -25,9 +25,9 @@ None: the orchestrator fixes in this chat (fast lane), the `judge` agent per gam
 ## Decisions at the opening (Zafar, 30 Oct)
 - S14 questions 1-4: yes to 1, 3, 4; 2 changed (below). S13 questions 40 (centre the end screen's words when none are wrong) and 42 (pictures on the clinic's order rows, now CLN-216): yes.
 - **No ripples** (SH-141): every tap demo gets chai's light (darker outside, the lit box, gold glow, the item's jump); the hand only on drag, hold and swipe, without its ripple.
-- **Daar's chop** (DAAR-36, DAAR-37): X is the number of kinds to chop, 1, 2, 3, 4 by level; the total chops 2, 4, 6, 8; each item 1 to 3 chops; the chop ends the moment the last chop is done; the fourth kind is **garlic** (grey "to record" until Mum records *lasan*; its pieces and pile from the art run, a stand-in until then).
+- **Daar's chop** (DAAR-36 to DAAR-39): X is the number of kinds to chop, 1, 2, 3, 4 by level; the total chops 2, 4, 6, 8; each item 1 to 3 chops; the chop ends the moment the last chop is done; the fourth kind is **garlic** (grey "to record" until Mum records *lasan*; its pieces and pile from the art run, a stand-in until then).
 - **Chaat at L4** (CHT-17): the speaker alone only where the words don't fit; otherwise the usual rules.
-- **The helper says the next item only when her card opens** (SH-182), every game.
+- **The helper says the next item only when her card opens** (SH-172), every game.
 
 ## Small decisions
 

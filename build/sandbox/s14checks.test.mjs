@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, faceShare, CONTROL_CALLS, POINT_AFTER_MOVE_MS } from "./lib/contract-s14.mjs";
+import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, faceShare, CONTROL_CALLS, POINT_AFTER_MOVE_MS } from "./lib/contract-s14.mjs";
 import { CHECKS } from "./lib/contract.mjs";
 import { measureLight, lum, DARK_BELOW, LIGHT_LIFT } from "./lib/lightpix.mjs";
 import { SEED_PROFILES, isSeedProfile, CHAI_WORDS } from "./lib/seed.mjs";
@@ -18,9 +18,9 @@ const lines = (...l) => ({ lines: l.map(([text, t0]) => ({ text, t0, role: "call
 
 test("the new checks are in the contract table with their rows", () => {
   for (const k of Object.keys(S14_CHECKS)) { assert.ok(CHECKS[k], k); assert.ok(S14_CHECKS[k].how.length > 60); }
-  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86"]);
+  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89"]);
   const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d)\b/.test(k));
-  assert.equal(rows.length, 9, "each check names the fix-list rows it guards");
+  assert.equal(rows.length, 12, "each check names the fix-list rows it guards");
 });
 
 test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice, pause, dim' is red", () => {
@@ -211,4 +211,26 @@ test("the paths and profiles the evidence loop plays through lab.html at a child
   assert.equal(resolveFlow("cook:chai-tray#sideways"), null);
   // the order-whole path plays at speed 1 (flows/cook.mjs): its id carries no speed of its own
   assert.equal(resolveFlow("cook:chai-tray#order-whole").id, "cook:chai-tray#order-whole");
+});
+
+test("contract-87: two lights up together is a break; a hand-over of a frame is not", () => {
+  const lit = (t, layers) => c("lit", t, { holes: layers ? [[10, 10, 50, 50]] : [], layers });
+  assert.equal(run(check87, [lit(1000, 1), lit(2000, 2), lit(9000, 1)]).length, 1, "the chai cooker's two lights (CHAI-50)");
+  assert.equal(run(check87, [lit(1000, 1), lit(2000, 2), lit(2100, 1)]).length, 0, "a hand-over");
+  assert.equal(run(check87, [lit(1000, 1), lit(3000, 0)]).length, 0, "one light");
+});
+
+test("contract-88: an item shown, then hidden as a dashed slot, then shown is a break (SH-171)", () => {
+  const rw = (t, shown, away) => c("rows14", t, { shown, away });
+  assert.equal(run(check88, [rw(500, ["hakro dungri"], 0), rw(1600, [], 1), rw(4000, ["hakro dungri"], 0)]).length, 1, "main on 30 Oct");
+  assert.equal(run(check88, [rw(500, [], 1), rw(4000, ["hakro dungri"], 0)]).length, 0, "the slot first, the item as it is said");
+});
+
+test("contract-89: a call while the helper names an item and is closed is a break (SH-172)", () => {
+  const hp = (t, named, open) => c("helper", t, { named, open });
+  const v = (t0) => ({ speed: 1, lines: [{ text: "Dudh nakh!", role: "call", t0 }] });
+  const r = { flow: "lab:cook/chai-tray#speed1" };
+  assert.equal(run(check89, r, [hp(1000, true, false)], v(2000)).length, 1, "said at the step's opening");
+  assert.equal(run(check89, r, [hp(1000, true, false), hp(5000, true, true)], v(5200)).length, 0, "said as the card opens");
+  assert.equal(run(check89, r, [hp(1000, false, false)], v(2000)).length, 0, "a control's call: no item named");
 });

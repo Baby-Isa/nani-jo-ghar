@@ -2026,13 +2026,18 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // (Zafar, 29 Oct, his video: "it was voice, pause, dim, pause, gold outline": a control's call and its light come together,
       // for every player: the knob to light the cooker, the knob at the green, the glass for the pour are lit (the dim, the gold
       // box, the glow) as the step opens and its call is said, until the step moves on; no later hint rungs for them)
+      // (CHAI-50, Zafar, 30 Oct: "a black tint ... that never goes away ... the gold square box doesn't go away either": closing the
+      // last rung's spotlight refreshes the station, which came back in here before rungKey was set and opened a second light that
+      // nothing closed. The key is set and the rung let go first, so a refresh from its close finds this step already open)
+      const r0 = rung;
+      rung = null;
+      rungKey = sid;
       if (s14 && CONTROL14.has(nx && nx.phase) && rungCur && rungCur.target && OB14 && OB14.light) {
-        if (rung) rung.done();
-        rung = null;
-        rungKey = sid;
+        if (r0) r0.done();
         hideCallout();
         // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
         // them: the box is the control alone (the glass, which pours at a tap too); its pan keeps its glow and its tap)
+        if (ctl14) ctl14.close(); // (one light at a time, whatever came back in above)
         ctl14 = OB14.light(rungCur.target, { look: "glow", pad: 4, pass: true, live: [rungCur.target].concat(rungCur.also ? [rungCur.also] : []) });
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
@@ -2042,9 +2047,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         helpGlow(rungCur.obj);
         return;
       }
-      if (rung) rung.done();
-      rung = null;
-      rungKey = sid;
+      if (r0) r0.done();
       hideCallout();
       if (helpObj) helpGlow(null);
       const step = nx && nx.phase;

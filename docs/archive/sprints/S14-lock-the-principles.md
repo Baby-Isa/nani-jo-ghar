@@ -1,6 +1,6 @@
 # Sprint 14: Lock the principles
 
-**Status:** planned (Zafar, 26-27 Oct: the first sprint of phase 1; written 27 Oct). Opens after Zafar plays Sprint 13 and his feedback is in.
+**Status:** closed (30 Oct 2026). Was planned 26-27 Oct as the first sprint of phase 1.
 **Opened:** - · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -114,7 +114,7 @@ rest. The draft rulebook with every game: `docs/game-design/rulebook.md`.
 Cook: pantry 3, 4, 5, 6; maani 2, 3, 4, 5; samosa 2, 3, 4, 6; chaat 3, 4, 5, 6 items in the bowl (a double portion counts twice);
 daar chopped + added first 1+2, 2+2, 3+3, 4+4; chai 1, 2, 2, 3; sekelo 1, 2, 3, 4. Clinic: the rulebook's section 3 (the eye test
 2+4, 2-3+5, 2-4+6, 2-5+7; the foot 1-3+1, 2-4+2, 2-5+3, 3-6+4 with one bit of dirt cleared per jug; the fever 2, 4, 6, 8; the rest as
-proposed). The roll-out plan: `docs/sprints/S14-rollout-plan.md`.
+proposed). The roll-out plan: `docs/archive/sprints/S14-rollout-plan.md`.
 
 ## Step 0: Sprint 13 feedback
 Zafar plays Sprint 13 (the checklist in `docs/status.md`); `/feedback` makes rows; the fast lane fixes what blocks play; anything that is a principle goes to step 1.
@@ -137,5 +137,12 @@ The chai-style order first, in one Cook station and one clinic game, for Zafar t
 To set with Zafar at the opening (expected well under Sprint 13's: no restructuring, fast lane for tweaks).
 
 ## Outcome
+Published to `main` 639e126 (20261030T114546Z): the rulebook and the s14 kit in every Cook station and heal game, the checks
+contract-78 to 86 (`build/reports/s14-rollout.md`). Moved to Sprint 15: the eight games the judge failed (MAA-19, DAAR-36, CHT-17,
+CLN-207, CLN-210, CLN-211, CLN-213, SH-137) and Zafar's 30 Oct play (`docs/feedback/cook-s14-play-2026-10-30.md`: about twenty
+faults, most from the roll-out). Open rows: `docs/status.md` (statuscounts). Spent: not tracked against a budget (none was set).
 
 ## Look back (three lines)
+1. What worked: the labs with Zafar (cards, onboarding, chai) landed nearly first time because he watched every step as it played.
+2. What cost more: the unattended roll-out of a dozen games in one morning, passed on stills and scripted rules; Zafar found about twenty faults in four pages.
+3. One change: one game at a time, filmed and looked at frame by frame, then Zafar plays it before the next starts (Sprint 15).

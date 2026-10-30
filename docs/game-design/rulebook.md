@@ -1,6 +1,6 @@
 # The rulebook (draft, Sprint 14)
 
-**Status:** draft from Zafar's answers, 28-29 Oct (`docs/sprints/S14-lock-the-principles.md`, rounds 1-3 and the 29 Oct morning
+**Status:** draft from Zafar's answers, 28-29 Oct (`docs/archive/sprints/S14-lock-the-principles.md`, rounds 1-3 and the 29 Oct morning
 answers). Every number here will live in one central settings file, so a change is made once and every game follows. Chai is
 built first; what it teaches goes into the roll-out briefs. Reviewed by Fable against `docs/architecture/target-model.md`
 before it is final.

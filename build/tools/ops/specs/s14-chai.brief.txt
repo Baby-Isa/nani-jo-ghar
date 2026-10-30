@@ -13,7 +13,7 @@ READ FIRST (in this order):
   2. docs/tools.md (the checks are the rules) and the context pack
   3. docs/process/qa-checklist.md (definition of done)
   4. the design doc(s) for this area:
-     docs/sprints/S14-lock-the-principles.md (every decision of 27-29 Oct: the card, the order row, the helper card, the light, the screens)
+     docs/archive/sprints/S14-lock-the-principles.md (every decision of 27-29 Oct: the card, the order row, the helper card, the light, the screens)
      lab/cards.html: the reference build Zafar played and kept (bigCard, itemCard, buildSide, playOrder, glideTo, morph, settleRow, spot, addItem, playChai); port its behaviour, never its stand-ins (its drawn heat ring and its flyTo are not the game's)
      docs/feedback/chai-onboarding-2026-10-28.md and docs/feedback/chai-cards-2026-10-27.md (his words for every row)
      assets/cook/items-s14/meta.json (each new picture's rim centre and radius, source px) and build/tools/art/specs/s14.cut.json's notes

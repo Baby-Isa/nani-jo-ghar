@@ -8,29 +8,25 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (30 Oct 2026, 06:20 UK):** Sprint 14's roll-out is running without Zafar (plan `docs/sprints/S14-rollout-plan.md`;
-his 30 Oct words: "run everything autonomously without me till publish; fix all code-fixable issues first").
-- **Done:** phase A (chai's finish, verified by film; fixed CHAI-42 again, the pour's lit box, CHAI-48 the next person's bubble
-  over Nana) and phase B (the checks builder `s14-tools`, merged; its checks found CHAI-49, the third pan's knob unlit, and four
-  more, all fixed). Report: `build/reports/s14-rollout.md` (phases A and B), `build/reports/s14-tools.md`.
-- **Live on `main`** (fe1117ee, 20261030T061035Z): chai with every fix above; the other games unchanged.
-- **Running:** two in-chat builders in their own worktrees, never pushing: `s14-cook` (Opus, high, about $60-90: every Cook
-  station on the new kit, port 8887) and `s14-clinic` (Opus, high, about $60-90: every heal game, port 8888), hard stop 12:00 UK,
-  each writing its report (s14-cook, s14-clinic) under build/reports. A check-in is scheduled for 12:05 UK.
+**Where things stand (30 Oct 2026, evening UK):** Sprint 14 is live on `main` (639e126, 20261030T114546Z). Zafar played it and found
+about twenty faults in four pages (`docs/feedback/cook-s14-play-2026-10-30.md`, every point a row). **Sprint 15 is open**
+(`docs/sprints/S15-cook-game-by-game.md`): Cook, game by game, chai first as the reference for the shared fixes, each game filmed,
+looked at frame by frame, judged, then played by Zafar before the next. Sprint 16 is the clinic the same way. All in the
+orchestrator's chat (Opus, high), no builders; about $90-140.
 
-**Next steps, in order (the plan's section 5 checklist at every merge):**
-1. Phase D: merge s14-cook, then s14-clinic (one at a time; `git merge --no-ff` of each worktree branch); after each: checks.mjs,
-   the contract run on that area's flows at the four sizes (#speed1 for timing rows), films of each changed order, the replay.
-2. Evidence specs for the 29-30 Oct rows still without one (SH-161 to 166, CHAI-40 to 49), then `evidence.mjs --run` and one
-   judge per batch (`--judge`, the `judge` agent), `--collect`, `--apply`; fix what fails.
-3. `/publish --force` (decision 3), the report's phase C-D sections, Round 3 lessons, this handover, a note to Zafar with his play list.
+**Next steps, in order:**
+1. Chai: CHAI-50 (fixed in code, to film), SH-171 (no item before the order), SH-172 and CHAI-40 (the helper calls the item only as
+   her card opens), SH-163 (the morph: one card shrinking as it moves), SH-165 (the speaker's gap); film chai L1-L4 as a new player
+   at the four sizes; the judge; Zafar plays chai.
+2. Then pantry, daar (DAAR-37 to 39), sekelo, maani, chaat, samosa, one at a time.
+3. The art: the list is `docs/design-language/art-plans/art-needed.md` (ART-30); write the Sprint 15 plan and paste block for
+   Zafar to run while chai is fixed.
 
 **Open questions to Zafar:** none blocking; Mum's word order (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S14-rollout-plan.md` section 5 and
-> `build/reports/s14-rollout.md`. Continue the Sprint 14 roll-out at phase D without Zafar: merge, check, judge, publish, report.
-> Work on branch `ccr-dfbb763e-fd6lh9`; `main` is the live site.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S15-cook-game-by-game.md`. Continue Sprint 15 at
+> the next step above. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site.
 
 ## The fix list
 
@@ -38,13 +34,13 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 45 | 94 |
-| Cook: pantry | 5 | 10 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 13 / 4 / 4 / 2 / 1 / 3 / 8 | 24 / 14 / 28 / 12 / 22 / 18 / 33 |
-| Clinic | 33 | 169 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 50 | 91 |
+| Cook: pantry | 9 | 10 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 15 / 4 / 7 / 2 / 1 / 4 / 8 | 23 / 14 / 27 / 12 / 22 / 17 / 33 |
+| Clinic | 34 | 169 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
-| Art | 9 | 9 |
+| Art | 10 | 9 |
 | Language and audio | 8 | 7 |
 
 ---

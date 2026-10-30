@@ -13,7 +13,7 @@
   "read": [
     "build/reports/s14-chai-lessons.md FIRST (what the last chai build taught: every point applies to you)",
     "docs/game-design/rulebook.md (the rules, section 1, and chai's column; the other games' columns are for later: do not change those games beyond the cog)",
-    "docs/sprints/S14-lock-the-principles.md rounds 1-4 (Zafar's words for every rule)",
+    "docs/archive/sprints/S14-lock-the-principles.md rounds 1-4 (Zafar's words for every rule)",
     "data/shared.json and js/shared/tokens.js (the one help ladder today: the pattern the central file grows from), data/cook.json levelTable (chai's row)",
     "build/reports/s14-chai.md (the last build: what the kit's s14 option is and where it lives)"
   ],

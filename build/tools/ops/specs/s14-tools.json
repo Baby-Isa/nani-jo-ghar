@@ -15,7 +15,7 @@
   ],
   "read": [
     "build/reports/s14-chai-lessons.md FIRST (rounds 1-2 and the orchestrator's check: every point applies to you)",
-    "docs/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)",
+    "docs/archive/sprints/S14-rollout-plan.md (your phase's section, and section 5: what the orchestrator will check)",
     "docs/game-design/rulebook.md (the rules and every game's numbers)",
     "data/rules.json and js/shared/rules.js (the central rules and their one reader: ask the reader, never the file)",
     "docs/feedback/chai-rules-2026-10-29.md section 5 (why things were missed; the checks that catch them)"

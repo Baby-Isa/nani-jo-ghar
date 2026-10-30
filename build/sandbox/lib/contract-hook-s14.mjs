@@ -7,8 +7,10 @@
 //                                       camera, the canvas, the world's size), on every animation frame it changes (contract-80)
 //   k: "gaugeover" {at, ring, over: [{key, depth, ov}]}   pictures drawn above the heat ring that sit on it (contract-81)
 //   k: "cardface"  {over, who, card}   the big card or a card in flight over a face (contract-83), measured with the faces' own boxes
-//   k: "lit"       {holes, card, faces}  the first-time help's light (holes [] when it goes out; card: it is the order card's) and the faces then: a box edge across a face circle (contract-82); the
+//   k: "lit"       {holes, card, faces, layers}  the first-time help's light (layers: how many light layers are up, a closing one's fade left out: contract-87) (holes [] when it goes out; card: it is the order card's) and the faces then: a box edge across a face circle (contract-82); the
 //                                       sandbox (run.mjs) measures the picture under it a beat later: k "lightpix" (contract-84)
+//   k: "rows14"    {shown, away}       the order panel's item rows: the words of those shown, how many wait as a dashed slot (contract-88)
+//   k: "helper"    {named, open}       Nani's helper card: an item named (her arrow up) and whether the card is open (contract-89)
 //   k: "keepout"   {bubbles, panels, play}   speech bubbles against every [data-njg-keepout] panel and the side panel (contract-52)
 // A function, not a string: the page gets its source (fn.toString()), so nothing is escaped twice.
 function s14hook() {
@@ -188,7 +190,7 @@ function s14hook() {
       const cards = [...document.querySelectorAll(".oc-card")].filter((c) => !c.closest(".njg-rq-card")).map((c) => R(c.getBoundingClientRect()));
       const card = holes.some((h) => cards.some((c) => over(h, c) > 0.5 * Math.min((h[2] - h[0]) * (h[3] - h[1]), (c[2] - c[0]) * (c[3] - c[1]))));
       litWas = true;
-      emit({ k: "lit", holes, card, faces: facesNow() });
+      emit({ k: "lit", holes, card, faces: facesNow(), layers: document.querySelectorAll(".njg-onboard.on:not(.ob-empty)").length });
     } else if (litWas) { litWas = false; last.lit = null; emit({ k: "lit", holes: [], card: false, faces: [] }); }
   };
   const frame = () => {
@@ -226,6 +228,20 @@ function s14hook() {
       if (!same("keepout", [bubbles.map((b) => b.map((v) => Math.round(v / 8))), panels.map((p) => p.box)])) emit({ k: "keepout", bubbles, panels, play: st ? R(st.getBoundingClientRect()) : null });
     } else last.keepout = null;
   };
-  setInterval(() => { try { sample(); } catch (e) { /* a probe only */ } }, 100);
+  // the order panel's rows and Nani's helper card (SH-171, SH-172)
+  const rows14 = () => {
+    const rows = [...document.querySelectorAll("#mission .oc-row.oc-it14")];
+    if (!rows.length) { last.rows14 = null; return; }
+    const shownRows = rows.filter((r) => !r.classList.contains("oc-away") && shown(r)).map((r) => r.textContent.trim().replace(/\s+/g, " ").slice(0, 40));
+    const away = rows.filter((r) => r.classList.contains("oc-away")).length;
+    if (!same("rows14", [shownRows, away])) emit({ k: "rows14", shown: shownRows, away });
+  };
+  const helperNow = () => {
+    const g = document.querySelector("#guide.ng-s14");
+    const a = g && g.querySelector(".ng-arrow");
+    const st = { named: !!(a && !a.hidden), open: !!(g && g.classList.contains("ng-open")) };
+    if (!same("helper", [st.named, st.open])) emit(Object.assign({ k: "helper" }, st));
+  };
+  setInterval(() => { try { sample(); rows14(); helperNow(); } catch (e) { /* a probe only */ } }, 100);
 }
 export const S14_HOOK = `(${s14hook.toString()})()`;
