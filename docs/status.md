@@ -12,18 +12,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 first as the reference for the shared fixes; Zafar plays each game before the next. His 30 Oct play is
 `docs/feedback/cook-s14-play-2026-10-30.md` (every point a row). `main` is unchanged since Sprint 14 (639e126).
 
-**Chai is done on the branch, waiting for Zafar's go to publish and his play** (not on `main`): the contract run 0 breaks over
+**Chai is live on `main`** (65d702a2, 20261030T190918Z; published on Zafar's word with --force: the sprint's other rows open, no full gate run); the morph rebuilt as the card lab's (one card melting into the row's, even scale, in a frame with its card's classes): the contract run 0 breaks over
 24 pages (s15-chai-4: lab and cook.html, L1-L4, four sizes); checks.mjs green; the judges PASS on SH-171, SH-172, SH-163, SH-165,
 CHAI-40, CHAI-50 for chai (s15-chai-ev4 to -ev6; noted on each row, not applied: the shared rows close as each game passes, and
 SH-171 and SH-165 need a red-first run). New tools: `build/tools/review/lightfollow.mjs` (a child following the light, layers per
 100 ms) and `spkgap.mjs` (the helper speaker's gap measured). Zafar's cooker case (CHAI-50) was never reproduced: ask him at his play.
 
 **Next steps, in order:**
-1. Zafar's go: `/publish` the branch (chai and the shared fixes reach every game), then his play of chai; his notes via `/feedback`.
+1. Zafar plays chai (`labs.html`, Chai tray L1-L4, New player on); his notes via `/feedback`.
 2. Then pantry, daar (DAAR-37 to 39), sekelo, maani, chaat, samosa, one at a time, the same way.
 3. The art: the list is `docs/design-language/art-plans/art-needed.md`; his pick for the run, then the plan and paste block.
 
-**Open questions to Zafar:** his go to publish chai. Mum's word order (`docs/questions.md`).
+**Open questions to Zafar:** his play of chai (and the cooker case if it comes back: the level and what he tapped). Mum's word order (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S15-cook-game-by-game.md`. Continue Sprint 15 at the
@@ -47,6 +47,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+30 Oct 2026, published 19:12 UK (65d702a2, 20261030T190918Z): Sprint 15's chai, the shared fixes reaching every Cook game: no item before it is said (SH-171), the helper's call as her card opens (SH-172), the pop-out into its row as the card lab's (SH-163), the helper speaker's gap (SH-165), no ripple (SH-141), one light at a time (CHAI-50); `--force` on Zafar's word (the sprint's other games still to come).
 
 28 Oct 2026, published 11:33 UK (be3aa32f, 20261028T113000Z): the overnight fixes (the central type SH-151, centred badges SH-140, chai's help light and dim CHAI-33/36, Cook's cog CK-53, chai's marble, pour and the eye test's thank-you SH-108/CHAI-31/CLN-206) and the new checks; `--force` on Zafar's word (28 Oct: "Yes publish"). Checked live: chai at 740x320, no errors, the light round the bottle and its pill, the cog in the sidebar.
 
