@@ -322,6 +322,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       seen14[key] = true;
       return true;
     };
+    const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
+    const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
     // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
     const light14 = (el, look, ms, onTap, quitIf) => {
       if (!el || !OB14 || !OB14.light) return Promise.resolve();
@@ -1428,8 +1430,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       moves14++;
       coachEnd(); // (no help spotlight over the pour: s12-w3b)
       // Sprint 11 (easy-to-play principle 9: each word heard at the order, at the shelf and at the pour): while their chai
-      // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
-      if (level <= 2 && !pan.poured && UI.readAlong) {
+      // pours, the person's card said what went into it, row by row (at L1-L2). Zafar, 30 Oct: "when the tea is pouring it says
+      // milk and one sugar, which it shouldn't": the pour is quiet (READ_AT_POUR off)
+      if (READ_AT_POUR && level <= 2 && !pan.poured && UI.readAlong) {
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === pan.who);
         const said = c && c._parts ? c._parts().filter((p) => p.row && !p.row.head && !p.row.no && !saidLately(p.row.ids) && !(UI.readLately && UI.readLately(p.line))) : [];
         if (said.length) {
@@ -1961,9 +1964,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // (contract-82, CHAI-47's rule: no box edge across a face: the card is brought whole into view, and a face circle that
           // overhangs it (Nani's at 740x320) is taken into its box)
           const cardLit = () => {
-            const card = document.querySelector("#mission .oc-card");
+            // (Zafar, 30 Oct: "the onboarding of the menu card after the first two items should just highlight the item card (milk)":
+            // the light is the next item's own card in the order row, brought into view; the whole order card only when it has none)
+            const pid = rungCur && rungCur.id;
+            const item = pid ? [...document.querySelectorAll("#mission .oc-row.oc-it14")].find((x) => (x.dataset.word === pid || (x.querySelector(".wc14") || {}).dataset?.word === pid) && x.getBoundingClientRect().width > 0) : null;
+            // (only an item whole in view: the order row scrolls itself to the current item, so no glide is started here, which would
+            // light it while the row still moves, contract-79; else the whole card as before)
+            const row = item && item.closest(".oc-row14");
+            const seen = item && row && item.getBoundingClientRect().left >= row.getBoundingClientRect().left - 1 && item.getBoundingClientRect().right <= row.getBoundingClientRect().right + 1;
+            const card = seen ? item : document.querySelector("#mission .oc-card");
             if (!card) return null;
-            if (UI.cardIntoView) UI.cardIntoView(card); // (its headline first: a card taller than the list never cut at its top)
+            if (UI.cardIntoView) UI.cardIntoView(seen ? card.closest(".oc-card") : card); // (its headline first: a card taller than the list never cut at its top)
             const cb = card.getBoundingClientRect();
             const cut = [...document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say")].filter((f) => {
               const b = f.getBoundingClientRect();
@@ -2038,13 +2049,41 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
         // them: the box is the control alone (the glass, which pours at a tap too); its pan keeps its glow and its tap)
         if (ctl14) ctl14.close(); // (one light at a time, whatever came back in above)
-        ctl14 = OB14.light(rungCur.target, { look: "glow", pad: 4, pass: true, live: [rungCur.target].concat(rungCur.also ? [rungCur.also] : []) });
-        try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
-        } catch (e) {
-          /* only a log */
-        }
-        helpGlow(rungCur.obj);
+        // (Zafar, 30 Oct: "add a second extra to the pause between the last item being added (including its animation) and the chulo
+        // bar onboarding": the control's light and its call wait until nothing moves on the stage, then a second more; the call is
+        // held for the light (UI.holdCalls), so they still come together, contract-78)
+        const target = rungCur.target, also = rungCur.also, obj = rungCur.obj;
+        let release = null;
+        // (only lighting the cooker after the last thing went in: the knob at the green, "Slow kar!", is timed and comes at once)
+        const pauseMs = nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0;
+        if (pauseMs && UI.holdCalls) UI.holdCalls(new Promise((r) => (release = r)));
+        const sp = Cook.speed || 1;
+        const still = () => {
+          try {
+            return !(S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite));
+          } catch (e) {
+            return true;
+          }
+        };
+        let quiet = null;
+        const t0 = Date.now();
+        const go = () => {
+          if (rungKey !== sid || finished) return release && release();
+          if (still()) quiet = quiet == null ? Date.now() : quiet;
+          else quiet = null;
+          // (never longer than 3 s: a pan that keeps a tween going never holds the light back for ever)
+          if (pauseMs && (quiet == null || Date.now() - quiet < pauseMs / sp) && Date.now() - t0 < 3000 / sp) return void setTimeout(go, 60);
+          if (ctl14) ctl14.close();
+          ctl14 = OB14.light(target, { look: "glow", pad: 4, pass: true, live: [target].concat(also ? [also] : []) });
+          try {
+            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
+          } catch (e) {
+            /* only a log */
+          }
+          helpGlow(obj);
+          if (release) release();
+        };
+        go();
         return;
       }
       if (r0) r0.done();

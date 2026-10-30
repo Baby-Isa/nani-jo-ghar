@@ -59,6 +59,13 @@
 }
 .cv-bubble.cv-below, .cv-bubble.cv-below.in { transform: translate(-50%, calc(var(--njg-u) * 14)); }
 .cv-bubble.cv-below::after { bottom: auto; top: calc(var(--njg-u) * -11); transform: translateX(-50%) rotate(225deg); }
+/* beside the head (no room above): the bubble's own box at left/top, the tail on its near side pointing at the head (Zafar, 30 Oct) */
+.cv-bubble.cv-side-r, .cv-bubble.cv-side-r.in, .cv-bubble.cv-side-l, .cv-bubble.cv-side-l.in { transform: none; }
+.cv-bubble.cv-side-r:not(.in), .cv-bubble.cv-side-l:not(.in) { transform: scale(.9); }
+.cv-bubble.cv-side-r::after { left: calc(var(--njg-u) * -11); bottom: auto; top: clamp(calc(var(--njg-u) * 10), calc(var(--cv-tail-dy, 50%) - var(--njg-u) * 9), calc(100% - var(--njg-u) * 28)); transform: rotate(135deg); }
+.cv-bubble.cv-side-l::after { left: auto; right: calc(var(--njg-u) * -11); bottom: auto; top: clamp(calc(var(--njg-u) * 10), calc(var(--cv-tail-dy, 50%) - var(--njg-u) * 9), calc(100% - var(--njg-u) * 28)); transform: rotate(-45deg); }
+.cv-bubble.cv-compact .cv-face { display: none; }
+.cv-bubble.cv-compact { gap: calc(var(--njg-u) * 6); padding-inline: calc(var(--njg-u) * 8); }
 .cv-free .cv-bubble { left: 50%; top: max(calc(var(--njg-u) * 16), env(safe-area-inset-top)); transform: translate(-50%, calc(var(--njg-u) * -8)) scale(.9); }
 .cv-free .cv-bubble.in { transform: translate(-50%, 0) scale(1); }
 .cv-face { font-size: calc(var(--njg-u) * 34); line-height: 1; flex: none; white-space: nowrap; }

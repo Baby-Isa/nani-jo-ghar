@@ -187,8 +187,12 @@ function s14hook() {
     const holes = litNow();
     if (holes.length) {
       if (same("lit", holes)) return;
-      const cards = [...document.querySelectorAll(".oc-card")].filter((c) => !c.closest(".njg-rq-card")).map((c) => R(c.getBoundingClientRect()));
-      const card = holes.some((h) => cards.some((c) => over(h, c) > 0.5 * Math.min((h[2] - h[0]) * (h[3] - h[1]), (c[2] - c[0]) * (c[3] - c[1]))));
+      // (an order card's light, or since 30 Oct the next item's own card in its row: Zafar, "just highlight the item card (milk)")
+      const cards = [...document.querySelectorAll(".oc-card")].filter((c) => !c.closest(".njg-rq-card") && !c.closest(".wc14-flyer-frame")).map((c) => R(c.getBoundingClientRect()));
+      const items = [...document.querySelectorAll("#mission .oc-row.oc-it14")].map((c) => R(c.getBoundingClientRect()));
+      const area = (q) => (q[2] - q[0]) * (q[3] - q[1]);
+      // (an item card lit whole, its box about the card's own, is the order card's light too; a small light on its dotted word is not)
+      const card = holes.some((h) => cards.some((c) => over(h, c) > 0.5 * Math.min(area(h), area(c))) || items.some((c) => over(h, c) > 0.8 * area(c) && area(h) < 2.2 * area(c)));
       litWas = true;
       emit({ k: "lit", holes, card, faces: facesNow(), layers: document.querySelectorAll(".njg-onboard.on:not(.ob-empty)").length });
     } else if (litWas) { litWas = false; last.lit = null; emit({ k: "lit", holes: [], card: false, faces: [] }); }

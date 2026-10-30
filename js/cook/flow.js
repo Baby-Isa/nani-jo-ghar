@@ -1706,6 +1706,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.clearStage();
     // (Zafar, 29 Oct: "the image loads and then jerks into a different version or different zoom level": chai's look, and its
     // wider side panel, set before the kitchen is first drawn, never after, so the scene is fitted once)
+    // (the greeting's lines and clips asked for now, beside the station's files, never after them: Zafar, 30 Oct, the slow start)
+    if (global.Conversations && global.Conversations.load) global.Conversations.load().catch(() => {});
     await preLook([key.replace(/^recipe:/, "")]);
     const order = { who: "nana", dishes: [] };
     const ctx = makeCtx(order, { lab: true, guided });

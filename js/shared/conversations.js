@@ -701,15 +701,59 @@
       pt = null;
     }
     const W = root.innerWidth || 800;
+    b.classList.remove("cv-below", "cv-side-r", "cv-side-l", "cv-compact");
+    b.style.maxWidth = "";
     if (pt && isFinite(pt.x) && isFinite(pt.y)) {
       const H = root.innerHeight || 600;
       const x = Math.max(150, Math.min(W - 150, pt.x));
       b.style.left = `${x}px`;
       b.style.top = `${Math.max(8, Math.min(H - 160, pt.y))}px`;
       b.classList.add("cv-anchored");
-      // no room above the head (or the head is off screen): the bubble hangs below it instead
+      // no room above the head (or the head is off screen): beside the head where there is room, the right first, so the face, the
+      // body and the side panel's cards stay clear (Zafar, 30 Oct, his phone: "the speech bubble blocks the face and body but it
+      // seems like it could easily go on the right"); only with no room either side does it hang below
       const r = b.getBoundingClientRect();
-      if (r.top < 8 || pt.y < 0) b.classList.add("cv-below");
+      if (r.top < 8 || pt.y < 0) {
+        const w = b.offsetWidth;
+        const h = b.offsetHeight;
+        const gap = 46; // (past the head's half width, the tail's length too)
+        const top = Math.max(8, Math.min(H - h - 8, pt.y + 30 - h / 2));
+        const side = (dir) => {
+          const left = dir > 0 ? pt.x + gap : pt.x - gap - w;
+          if (left < 8 || left + w > W - 8) return false;
+          let clear = true;
+          if (root.document && root.document.querySelectorAll) root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
+            const q = k.getBoundingClientRect();
+            if (q.width && q.height && left < q.right + 8 && left + w > q.left - 8 && top < q.bottom && top + h > q.top) clear = false;
+          });
+          if (!clear) return false;
+          b.classList.add(dir > 0 ? "cv-side-r" : "cv-side-l");
+          b.style.left = `${left}px`;
+          b.style.top = `${top}px`;
+          b.style.setProperty("--cv-tail-dy", `${Math.round(pt.y + 30 - top)}px`);
+          return true;
+        };
+        // (the right first, then the right made compact, then the left: the left is where the order's big card pops, by the panel)
+        if (side(1)) return;
+        // (a short screen, the phone's in-app browser at 915x275: beside the head the bubble drops its own copy of the speaker's face,
+        // who is right there, and may sit against the screen's edge, so long as it starts clear of the face)
+        b.classList.add("cv-compact");
+        const avail = W - 8 - (pt.x + gap);
+        b.style.maxWidth = `${Math.max(0, avail)}px`; // (its words wrap to the room beside the head)
+        const w2 = b.offsetWidth;
+        const left = Math.min(W - 8 - w2, pt.x + gap);
+        if (w2 <= avail + 1 && left >= pt.x + 30) {
+          b.classList.add("cv-side-r");
+          b.style.left = `${left}px`;
+          b.style.top = `${top}px`;
+          b.style.setProperty("--cv-tail-dy", `${Math.round(pt.y + 30 - top)}px`);
+          return;
+        }
+        b.classList.remove("cv-compact");
+        b.style.maxWidth = "";
+        if (side(-1)) return;
+        b.classList.add("cv-below");
+      }
       // (Zafar, 29 Oct: "It shouldn't overlap the panel almost ever": a side panel marked data-njg-keepout is out of bounds; the
       // bubble moves along beside it while its tail still points at the head)
       // (measured at its full size, centred on x: placed while it still pops in at 90% it read narrower, and its edge then grew

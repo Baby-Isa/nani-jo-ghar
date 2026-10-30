@@ -589,9 +589,24 @@
         const qy = q.top - lr.top;
         return !(xs[sd] >= qx + q.width || xs[sd] + bw <= qx || y >= qy + q.height || y + bh <= qy);
       });
-    // towards the middle of the play area first (the room the other side may not have)
-    const order = hx + w / 2 <= W / 2 ? ["face-right", "face-left"] : ["face-left", "face-right"];
-    let sd = order.find((k) => fits(k) && !hits(k));
+    // (Zafar, 30 Oct, his phone: "it could easily go on the right so there's space for the card on the left": the right first, at
+    // its width or wrapped narrower to the room there, and only then the left, where the order's big card pops by the side panel;
+    // was: towards the middle of the play area first)
+    const order = ["face-right", "face-left"];
+    let sd = fits("face-right") && !hits("face-right") ? "face-right" : null;
+    if (!sd && !g.narrowed) {
+      const roomR = Math.floor(W - M - xs["face-right"]);
+      if (roomR >= 110 && roomR < bw) {
+        b.style.maxWidth = `${roomR}px`;
+        b.dataset.njgNarrow = "1";
+        const r2 = placeByFace(b, Object.assign({}, g, { bw: b.offsetWidth, bh: b.offsetHeight, narrowed: true, strict: true, rightOnly: true }), avoid);
+        if (r2) return r2;
+        b.style.maxWidth = "";
+        delete b.dataset.njgNarrow;
+        b.dataset.njgPlace = "face-right";
+      }
+    }
+    if (!sd && !g.rightOnly) sd = order.find((k) => fits(k) && !hits(k));
     // (S14, contract-52 in the clinic: the doctor beside her with no room above his head; his line, at its full width, fitted
     // only on her side, over her face): before landing on a face, the line wraps narrower beside its own head, as the
     // placement above the head does; with no narrower wrap that clears it, back to its own width as before
@@ -615,7 +630,7 @@
       delete b.dataset.njgPlace;
       return null;
     }
-    sd = sd || order.find(fits);
+    sd = sd || (g.rightOnly ? null : order.find(fits));
     if (!sd) {
       delete b.dataset.njgPlace;
       return null;

@@ -110,6 +110,18 @@ await import("./mechanics/passme.js");
   Mech.parts = PARTS;
   // a dynamic import from this file, so the page's import map stamps the station's files (B7)
   Mech.importer = (rel) => import(rel);
+  // (Zafar, 30 Oct: "it still takes ages to load into the game (from clicking in labs to the order starting)": a station's files
+  // were asked for one after another, each a round trip on a phone; now every one is asked for at once, a modulepreload each,
+  // and still run in their order)
+  Mech.prefetch = (rel) => {
+    const u = new URL(rel, import.meta.url);
+    u.search = globalThis.NJG_V ? `?v=${globalThis.NJG_V}` : "";
+    if (document.querySelector(`link[rel=modulepreload][href="${u.href}"]`)) return;
+    const l = document.createElement("link");
+    l.rel = "modulepreload";
+    l.href = u.href;
+    document.head.appendChild(l);
+  };
   LABS.forEach(([key, name, verb]) => Mech.lab(key, { name, verb, run: null }));
   COMBINED.forEach((key) => Mech.stationData(key, `data/stations/${key}.json`));
 }

@@ -552,6 +552,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   M.need = function (key) {
     const files = M.parts[key];
     if (!files || !M.importer) return Promise.resolve();
+    if (!needing[key] && M.prefetch) files.forEach((f) => M.prefetch(f)); // (all asked for at once, run in order below)
     return (needing[key] = needing[key] || files.reduce((p, f) => p.then(() => M.importer(f)), Promise.resolve()));
   };
   M.needAll = () => Promise.all(Object.keys(M.parts).map(M.need));

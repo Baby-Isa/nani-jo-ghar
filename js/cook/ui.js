@@ -583,6 +583,13 @@
     }
   };
   const copyLine = (l) => Object.assign({}, l, { parts: l.parts ? l.parts.map(copyLine) : l.parts });
+  // a station holding the next step's call until its light shows (chai's control steps: the pause after the last move, Zafar 30 Oct)
+  let callHold = null;
+  UI.holdCalls = (p) => {
+    callHold = Promise.resolve(p).then(() => {
+      callHold = null;
+    });
+  };
   function stepCall(s) {
     const row = Cook.levelRow ? Cook.levelRow(orderLevel()) : { stepCall: false };
     if (!row.stepCall) return callNote(s, "skip-off");
@@ -604,7 +611,8 @@
       // (only what is left of the beat: a call that waited in the queue behind other speech already comes after its light)
       const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? Math.max(0, global.Rules.callAfterLightMs() / (Cook.speed || 1) - (Date.now() - queuedAt)) : 0;
       // (a plain timer: Cook.wait belongs to the station's life and may never resolve once a step ends, which held the queue)
-      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => {
+      const hold = callHold;
+      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
         // SH-172 (Zafar, 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ... when
         // she expands her card to help you ... that's a rule for all the games always"): a step whose item Nani's helper card names
@@ -810,6 +818,9 @@
     blinkT = setTimeout(blink, 2400);
     showGuide();
     // (Sprint 14: a box mounted again, the next station, keeps chai's look)
+    // (Zafar, 30 Oct, his phone: "the game loads the old style and then suddenly switches", her old box with its bar and speaker:
+    // every Cook dish is on the s14 look now, UI.S14_ALL, so her box takes it as it mounts, before the kitchen or any order)
+    if (UI.S14_ALL && UI.w6() && !document.body.classList.contains("njg-s14")) UI.applyS14(true);
     if (document.body.classList.contains("njg-s14")) guideS14(true);
   }
   /*

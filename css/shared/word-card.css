@@ -160,18 +160,20 @@
 /* (SH-165 again, Zafar, 30 Oct, his red circles: "the speaker's always on the right-hand side", its gap to the card's right edge the
    gap the order's item card leaves under its speaker: the words take the middle, the speaker sits at the right; --wc14-spk-edge is that
    gap in px, measured from the order card by the helper (js/cook/ui.js paintHelper); the card's own padding where there is none) */
-.wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 30% minmax(0, 1fr) auto; align-items: center; padding: 2cqi; padding-right: var(--wc14-spk-edge, 2cqi); column-gap: 2.5cqi; }
+/* (Zafar, 30 Oct: "Nani help card looks big (tall) for what it needs to be since we need to preserve vertical space": the side card is
+   as tall as its speaker, a tap: the picture a short 4:3 strip of 24%, not a 30% square; the padding and the words a size down) */
+.wc14-big.wc14-side > .wc14-in { display: grid; grid-template-columns: 24% minmax(0, 1fr) auto; align-items: center; padding: 1.4cqi; padding-right: var(--wc14-spk-edge, 1.4cqi); column-gap: 2.5cqi; }
 .wc14-big.wc14-side > .wc14-in > .wc14-spk { justify-self: end; }
 .wc14-big.wc14-side .wc14-lab { display: none; }
-.wc14-big.wc14-side .wc14-pic { aspect-ratio: 1; }
+.wc14-big.wc14-side .wc14-pic { aspect-ratio: 4 / 3; }
 .wc14-big.wc14-side .wc14-words { min-width: 0; display: flex; flex-direction: column; gap: 1cqi; }
-.wc14-big.wc14-side .wc14-k { font-size: clamp(var(--njg-card14-u18), 9cqi, var(--njg-card14-u40)); }
-.wc14-big.wc14-side .wc14-en { font-size: clamp(var(--njg-card14-u13), 5.2cqi, var(--njg-card14-u22)); }
+.wc14-big.wc14-side .wc14-k { font-size: clamp(var(--njg-card14-u18), 7.5cqi, var(--njg-card14-u34)); }
+.wc14-big.wc14-side .wc14-en { font-size: clamp(var(--njg-card14-u13), 4.6cqi, var(--njg-card14-u20)); }
 .wc14-big.wc14-side .wc14-slot { place-items: center start; }
 .wc14-big.wc14-side .wc14-dots { justify-content: flex-start; }
 /* (S14, the clinic's eye test, rule 6: a hushed card keeps its words and speaker in place, unseen, until it is judged: WordCard api.hush) */
 .wc14.wc14-hush .wc14-words, .wc14.wc14-hush > .wc14-in > .wc14-spk { visibility: hidden; }
-.wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap), 15cqi, var(--njg-card14-u72)); margin: 0; box-shadow: var(--njg-card14-spk-ring-s); }
+.wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap), 13cqi, var(--njg-card14-u60)); margin: 0; box-shadow: var(--njg-card14-spk-ring-s); }
 
 /* the order's item card (SH-148): picture, Kutchi sitting on its English, the speaker at its foot; even spacing (its padding = picture to
    Kutchi = speaker to foot); a row's spare height (a two-line word beside a one-line one) goes above the one-line word */
