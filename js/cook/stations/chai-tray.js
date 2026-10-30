@@ -323,7 +323,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return true;
     };
     // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
-    const light14 = (el, look, ms, onTap) => {
+    const light14 = (el, look, ms, onTap, quitIf) => {
       if (!el || !OB14 || !OB14.light) return Promise.resolve();
       // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
       const h = OB14.light(el, { look, pad: 4, pass: true });
@@ -334,8 +334,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       return new Promise((res) => {
         let t = 0;
+        let q = 0;
         const end = () => {
           clearTimeout(t);
+          clearInterval(q);
           el.removeEventListener("click", tap, true);
           h.close();
           res();
@@ -345,6 +347,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           end();
         };
         if (onTap) el.addEventListener("click", tap, true);
+        // (quitIf: the light goes as soon as it holds, e.g. the child already pouring the next thing)
+        if (quitIf) q = setInterval(() => quitIf() && end(), 60);
         t = setTimeout(end, ms);
       });
     };
@@ -699,6 +703,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     /* ---------- state, selection, looks ---------- */
     let sel = null;
     let busy = 0; // a pour or a spoon in flight
+    let moves14 = 0; // every pour, spoon or take-back begun (the order card's light skips once the child has moved on)
+    let spoons14 = 0; // spoons in flight (they never hold the plan up, but the order card's light waits for them)
     let talked = false;
     let finished = false;
     let glowing = null;
@@ -1041,6 +1047,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const pourInto = async (pan, obj, color, toLevel, look) => {
       // the bottle or carton lifts, tips over the pan (its cap is the spout) and pours
       busy++;
+      moves14++;
       obj.flying = true;
       refresh();
       const art = S.track(S.add.image(obj.x, obj.y, obj.texture.key).setOrigin(0.5, 1).setScale(obj.scaleX).setDepth(D.fx + 1));
@@ -1094,8 +1101,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       busy--;
     };
     const spoonInto = async (pan, obj, id) => {
+      // (counted for the order card's light only: it waits for a spoon to land, and skips once the child spoons the next thing)
+      moves14++;
+      spoons14++;
       refresh(); // the next step is known now (a spoon in flight never holds the plan up)
-      await Cook.Spoon.spoon(zb, { bowl: obj, into: pan.vessel, word: id, ms: kCount.spoonMs });
+      try {
+        await Cook.Spoon.spoon(zb, { bowl: obj, into: pan.vessel, word: id, ms: kCount.spoonMs });
+      } finally {
+        spoons14--;
+      }
     };
     const use = async (id) => {
       const pan = sel;
@@ -1370,6 +1384,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       pan.spoons.splice(pan.spoons.lastIndexOf(id), 1);
       const obj = shelf[id];
       busy++;
+      moves14++;
       unglow();
       zb.expect({ kind: "wait" });
       const p = pan.p;
@@ -1410,6 +1425,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (sel !== pan) select(pan);
       finishGen++; // (L4: a second pour in the last beat holds the move-on)
       busy++;
+      moves14++;
       coachEnd(); // (no help spotlight over the pour: s12-w3b)
       // Sprint 11 (easy-to-play principle 9: each word heard at the order, at the shelf and at the pour): while their chai
       // pours, the person's card says what went into it, row by row (at L1-L2, while the order is written in full)
@@ -1928,8 +1944,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // until nothing is in flight, then a beat, then its time)
         if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) {
           const sp = Cook.speed || 1;
-          const go = () => (busy || pans.some((q) => q.away) ? setTimeout(go, 60) : setTimeout(() => light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp), (RULES() ? RULES().pointAfterMoveMs() : 0) / sp));
-          go();
+          // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
+          // then over the sugar: a child who has already moved on to the next thing needs no pointer, so it is skipped, and a pour
+          // begun while it is lit ends it)
+          const m0 = moves14;
+          const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
+          const on = () => moves14 !== m0;
+          const go = (settled) => (on() || finished ? null : moving() ? setTimeout(() => go(false), 60) : settled ? light14(document.querySelector("#mission .oc-card"), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on()) : setTimeout(() => go(true), (RULES() ? RULES().pointAfterMoveMs() : 0) / sp));
+          go(false);
         }
         lastStep14 = st || lastStep14;
         // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
