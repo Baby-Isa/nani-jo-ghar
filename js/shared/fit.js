@@ -27,6 +27,20 @@
   const px = (v) => parseFloat(v) || 0;
 
   F.fit = function (el) {
+    // (an order row on a phone is never narrower than its word, min-width: min-content, css/shared/order-card.css; while the line is
+    // still one unwrapped line that is the whole line, so the row grew with it and the fit never saw it was too long: the clinic's
+    // "Paani lukewarm, trae jugs" cut at the side panel's edge at 740x320, the orchestrator, 30 Oct. The floor is lifted while the
+    // line is fitted, then comes back, by then the longest word of the wrapped line)
+    const row = el.closest ? el.closest(".oc-row") : null;
+    const held = !!row && !row.style.minWidth;
+    if (held) row.style.minWidth = "0px";
+    try {
+      return F.fitIn(el);
+    } finally {
+      if (held) row.style.minWidth = "";
+    }
+  };
+  F.fitIn = function (el) {
     const two = el.classList.contains("fit2") || el.classList.contains("fit-head");
     el.style.whiteSpace = "";
     el.style.overflowWrap = "";

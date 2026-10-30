@@ -906,9 +906,12 @@
     // CLN-148 (s08 w8B; fever at 800x360: "Switch on ceiling fan" ran on under its tick): a step group stacks a beat after
     // it is drawn (js/shared/order-card.js stackWhenTight, once it has its width), and its words were fitted before that,
     // as wide as a side-by-side pill: fit them again once it has settled (shrunk, then wrapped: never cut, rule 9)
-    if (global.FitText && global.FitText.run && c.querySelector(".oc-group")) {
+    // (the orchestrator, 30 Oct: every card, not only a step group: the foot's "Paani lukewarm, trae jugs" was fitted while the card
+    // was still wider, then cut at the side panel's edge at 740x320; and watched, as Cook's sidebar is, so a later change of room fits again)
+    if (global.FitText && global.FitText.run) {
       clearTimeout(this.refitT);
       this.refitT = setTimeout(() => c.isConnected && global.FitText.run(c), 80);
+      if (!this.fitOff && global.FitText.watch) try { this.fitOff = global.FitText.watch(this.el); } catch (e) { /* no fitting */ }
     }
     return this;
   };
