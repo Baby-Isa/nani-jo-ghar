@@ -10,6 +10,10 @@ Only what is still open. An answer goes straight into the doc, row or check it c
    decision 13i), L2-L4 stay at 10% (`build/tools/review/leak-configs/`). Or say "wider L1 ranges" and the builder widens them.
 2. **The ghost hand on drag, hold and swipe demos** (the clinic's swabs, the tooth brush): the s14 rule is "no finger"; today the hand
    still shows how to drag, as you allowed on 23 Oct. Recommendation: keep it for drags only.
+3. **Daar's staged dots on Nani's chop card (DAAR-34)** are off on the new look, where a card's Kutchi is always written (rulebook 4a).
+   Recommendation: leave them off (the word pill does the hiding now). Or say "dots back".
+4. **Samosa's one box per samosa ticking (SH-53)** is off on the new look: the card ticks once, at the one tick, like chai.
+   Recommendation: keep the one tick. Or say "per samosa".
 
 ### After Sprint 13 (27 Oct): answer "yes to all except …"
 40. **The end screen's empty left half** (the wrong-words space when nothing was wrong, your SH-103 of 17 Oct): keep, or centre the words when none are wrong? Recommend centre.

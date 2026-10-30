@@ -2682,10 +2682,13 @@
         // is given; the engine builds the sentence from the rows in that order (Order.sentence), never a hand-written line
         const noLast = s14 && global.Rules && global.Rules.noLast && global.Rules.noLast();
         const rowsSaid = noLast ? rowsIn.filter((r) => r.head || !r.no).concat(rowsIn.filter((r) => !r.head && r.no)) : rowsIn;
+        // (a dish's card, samosa's or chaat's "no" asks from L2, the same: a group with a "no" item is said after the rest of its section;
+        // the plan's 4a point 2, the roll-out)
+        const lastNo = (groups) => (noLast ? groups.filter((g) => !g.some((r) => r && r.no)).concat(groups.filter((g) => g.some((r) => r && r.no))) : groups);
         const headSaid = part ? null : head;
         const line = c.who && c.L && c.L.sections.some((s) => s.for === c.who)
           ? Order().sentence(headSaid, rowsSaid, { join: Order().joinOf(c.L) })
-          : Order().speech([Object.assign({}, c.L, { head: headSaid || null, sections: c.L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: part ? s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) : s.groups })).filter((s) => s.groups.length) })]);
+          : Order().speech([Object.assign({}, c.L, { head: headSaid || null, sections: c.L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: lastNo(part ? s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) : s.groups) })).filter((s) => s.groups.length) })]);
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
