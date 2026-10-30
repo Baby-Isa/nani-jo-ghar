@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { seedCook, isSeedProfile } from "../lib/seed.mjs";
 import { openGrownUps } from "../drivers/index.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
 import { MODE_DRIVER_FLOWS } from "./modes.mjs";
@@ -49,8 +50,18 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
     id, group: "labs", title, timeoutMs: timeoutS * 1000 * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
+      let seeded = false;
+      if (isSeedProfile(ctx.profile)) {
+        // a saved player (lib/seed.mjs): cook.html makes the save through the game's own services, lab.html (same origin) plays on it
+        await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });
+        await page.evaluate(() => localStorage.clear());
+        await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });
+        await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
+        rec.note(`seeded save ${ctx.profile}: ${JSON.stringify(await seedCook(page, ctx.profile)).slice(0, 300)}`);
+        seeded = true;
+      }
       await page.goto(`${BASE}/lab.html`, { waitUntil: "load" });
-      if (!ctx.keepStorage) await page.evaluate(() => localStorage.clear());
+      if (!ctx.keepStorage && !seeded) await page.evaluate(() => localStorage.clear());
       if (firstDone) {
         // a story arc opens after the first-launch story (s04-fxc: the cleared save showed the lab's lock, 0 stages played)
         await page.goto(`${BASE}/lab/shared.html`, { waitUntil: "load" }).catch(() => {});
@@ -61,7 +72,9 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           Save.setFlag("firstDone", true);
         });
       }
-      await page.goto(`${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
+      // (path auto-level, S14 tools B11: no level asked for, so a game on the central rules picks its own from the save: SH-160)
+      const q0 = mode === "auto-level" ? query.replace(/&?level=\d/, "") : query;
+      await page.goto(`${BASE}/lab.html?${q0}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
       const t0 = Date.now();
       let stages = 0, results = 0, muted = false, rounds = 0, replayed = false;
       const badges = [];
