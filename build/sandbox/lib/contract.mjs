@@ -74,6 +74,8 @@ import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.m
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
 import { CHAI_CHECKS, check70, check71 } from "./contract-chai.mjs";
+// contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
+import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86 } from "./contract-s14.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
@@ -123,6 +125,7 @@ export const CHECKS = {
   ...DAY_CHECKS,
   ...DAAL_CHECKS,
   ...CHAI_CHECKS,
+  ...S14_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -1584,6 +1587,15 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check75(tl, add);
   check76(tl, add);
   check77(r, tl, add);
+  check78(r, tl, v, add);
+  check79(tl, add);
+  check80(r, tl, add);
+  check81(tl, add);
+  check82(tl, add);
+  check83(tl, add);
+  check84(tl, add);
+  check85(r, tl, add);
+  check86(tl, add);
   return out;
 }
 
