@@ -51,9 +51,9 @@ function s14hook() {
       const walk = (list) => (list || []).forEach((o) => {
         if (!o) return;
         if (o.list) return walk(o.list);
-        if (o.visible === false || o.active === false || !o.texture || !/-badge$/.test(o.texture.key) || !o.getBounds || !UI) return;
+        if (o.visible === false || o.active === false || !o.texture || !o.texture.key.includes("-badge") || !o.getBounds || !UI) return;
         const b = o.getBounds(), a = UI.worldToScreen(b.x, b.y), z = UI.worldToScreen(b.right, b.bottom);
-        out.push({ who: o.texture.key.replace(/-badge$/, ""), kind: "badge", box: [a.x, a.y, z.x, z.y].map((v) => Math.round(v * 10) / 10) });
+        out.push({ who: o.texture.key.split("-badge")[0], kind: "badge", box: [a.x, a.y, z.x, z.y].map((v) => Math.round(v * 10) / 10) });
       });
       walk(S && S.children && S.children.list);
     });
@@ -214,7 +214,8 @@ function s14hook() {
     if (cards.length) {
       const faces = facesNow();
       let ov = 0; const who = [];
-      for (const c of cards) for (const f of faces) { const o = over(c, f.box); if (o > 0) { ov += o; who.push(f.who || f.kind); } }
+      // (the people: a head in the kitchen or a face circle in the page; the round badges on a hob or tray are the station's own, behind the veil as it folds)
+      for (const c of cards) for (const f of faces) { if (f.kind === "badge") continue; const o = over(c, f.box); if (o > 0) { ov += o; who.push(f.who || f.kind); } }
       if (!same("cardface", [Math.round(ov / 20), who.join()])) emit({ k: "cardface", over: Math.round(ov), who: [...new Set(who)].join(","), card: cards[0] });
     } else last.cardface = null;
     // bubbles against the panels

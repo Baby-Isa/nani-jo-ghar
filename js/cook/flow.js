@@ -2207,9 +2207,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           (list || []).forEach((o) => {
             if (!o) return;
             if (o.list) return walk(o.list);
-            if (o.visible === false || o.active === false || !o.texture || !/-badge$/.test(o.texture.key) || !o.getBounds) return;
+            if (o.visible === false || o.active === false || !o.texture || !o.texture.key.includes("-badge") || !o.getBounds) return;
             const b = o.getBounds();
-            put(o.texture.key.replace(/-badge$/, ""), "badge", UI.worldToScreen(b.x, b.y), UI.worldToScreen(b.right, b.bottom));
+            put(o.texture.key.split("-badge")[0], "badge", UI.worldToScreen(b.x, b.y), UI.worldToScreen(b.right, b.bottom));
           });
         walk(S && S.children && S.children.list);
       } catch (e) {

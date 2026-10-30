@@ -20978,12 +20978,12 @@
    "at": "view-marble",
    "after": null,
    "capture": [
-    "crop:#stage",
-    "js:Cook.save.words"
+    "crop:#stage"
    ],
    "expect": null,
    "note": "S14 tools, B11: a saved player who got each chai word right three times in a row (lib/seed.mjs, pill-hidden): the shelf's pills are the speaker only, the Kutchi gone",
-   "delay": 0
+   "delay": 0,
+   "kind": "detail"
   },
   {
    "flow": "cook:chai-tray",
@@ -20997,12 +20997,12 @@
    "at": "view-marble",
    "after": null,
    "capture": [
-    "crop:#stage",
-    "js:Cook.save.words"
+    "crop:#stage"
    ],
    "expect": null,
    "note": "S14 tools, B11: the same player after one miss on paani (pill-miss): paani's Kutchi is back under its jar, the other words stay speaker only",
-   "delay": 0
+   "delay": 0,
+   "kind": "detail"
   }
  ],
  "SH-160": [
