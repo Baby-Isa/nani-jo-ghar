@@ -153,7 +153,7 @@ test("the seed profiles (B11): every one is a spec profile, with a words list an
   const src = readFileSync(new URL("./lib/seed.mjs", import.meta.url), "utf8");
   assert.match(src, /P\.pill\(id, \{ ok: true, firstTry: true \}\)/, "three right in a row through the progress service");
   assert.match(src, /P\.pill\("cook-paani", \{ ok: false/, "a miss on paani");
-  assert.match(src, /levelUp = Object\.assign\(\{\}, C\.save\.levelUp, \{ "chai-tray": \{ level: 1, streak: 2 \}/, "two rounds done at level 1");
+  assert.match(src, /"chai-tray": profile === "levelup-ready" \? \{ level: 1, streak: 2 \} : \{ level: 2, streak: 0 \}/, "two rounds done at level 1, or already at level 2");
   // the service's own rule: three right in a row earn the pill, a miss brings it back (js/core/progress.js pillPick)
   return import("../../js/core/progress.js").then(({ pillPick, pillShows }) => {
     let r = null;
