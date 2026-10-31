@@ -298,7 +298,7 @@ food-drink,bean,noun,Pre-A1,5: YLE-Starters; CDI-WS(77% at 30m); A2-Key; B1-Prel
 food-drink,biscuit,noun,Pre-A1,4: YLE-Flyers; CDI-WS(96% at 30m); B1-Prelim; Ox3000-A2,high,note,food word only; never a reward
 food-drink,bread,noun,Pre-A1,5: YLE-Starters; CDI-WS(93% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,breakfast,phrase,Pre-A1,5: YLE-Starters; CDI-WS(83% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
-food-drink,burger,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,check,halal only
+food-drink,burger,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,,halal only; Zafar 31 Oct: kept (can be halal)
 food-drink,butter,noun,Pre-A1,5: YLE-Flyers; CDI-WS(86% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,cake,noun,Pre-A1,4: YLE-Starters; CDI-WS(93% at 30m); B1-Prelim; Ox3000-A1,high,note,celebration food; never a reward
 food-drink,carrot,noun,Pre-A1,5: YLE-Starters; CDI-WS(82% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
@@ -322,7 +322,7 @@ food-drink,fizzy drink,noun,Pre-A1,4: CDI-WS(83% at 30m); A2-Key; B1-Prelim; Ox3
 food-drink,food,noun,Pre-A1,5: YLE-Starters; CDI-WS(82% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,fruit,noun,Pre-A1,3: YLE-Starters; B1-Prelim; Ox3000-A1,high,,
 food-drink,grape,noun,Pre-A1,4: YLE-Starters; CDI-WS(90% at 30m); A2-Key; B1-Prelim,high,,
-food-drink,hamburger,noun,Pre-A1,1: CDI-WS(91% at 30m),high,check,halal beef only
+food-drink,hamburger,noun,Pre-A1,1: CDI-WS(91% at 30m),high,,halal beef only; Zafar 31 Oct: kept (can be halal)
 food-drink,ice,noun,Pre-A1,5: YLE-Movers; CDI-WS(88% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,ice cream,noun,Pre-A1,5: YLE-Starters; CDI-WS(95% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,juice,noun,Pre-A1,5: YLE-Starters; CDI-WS(97% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
@@ -333,7 +333,7 @@ food-drink,lime,noun,Pre-A1,1: YLE-Starters,high,,
 food-drink,lunch,phrase,Pre-A1,5: YLE-Starters; CDI-WS(83% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,mango,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,,
 food-drink,meat,noun,Pre-A1,4: YLE-Starters; CDI-WS(80% at 30m); B1-Prelim; Ox3000-A1,high,,
-food-drink,meatballs,noun,Pre-A1,1: YLE-Starters,high,check,halal only
+food-drink,meatballs,noun,Pre-A1,1: YLE-Starters,high,,halal only; Zafar 31 Oct: kept (can be halal)
 food-drink,milk,noun,Pre-A1,5: YLE-Starters; CDI-WS(97% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,onion,noun,Pre-A1,4: YLE-Starters; A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,orange (fruit),noun,Pre-A1,5: YLE-Starters; CDI-WS(91% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
@@ -346,7 +346,7 @@ food-drink,popcorn,noun,Pre-A1,1: CDI-WS(89% at 30m),high,,
 food-drink,potato,noun,Pre-A1,5: YLE-Starters; CDI-WS(79% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 food-drink,raisin,noun,Pre-A1,1: CDI-WS(85% at 30m),high,,
 food-drink,rice,noun,Pre-A1,4: YLE-Starters; A2-Key; B1-Prelim; Ox3000-A1,high,,
-food-drink,sausage,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,check,"often pork; keep only as halal (chicken or beef) sausage, or drop"
+food-drink,sausage,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,,"often pork; keep only as halal (chicken or beef) sausage, or drop; Zafar 31 Oct: kept (can be halal)"
 food-drink,spaghetti,noun,Pre-A1,1: CDI-WS(86% at 30m),high,,
 food-drink,sweet,noun,Pre-A1,4: YLE-Starters; A2-Key; B1-Prelim; Ox3000-A2,high,,
 food-drink,sweets,noun,Pre-A1,5: YLE-Starters; CDI-WS(93% at 30m); A2-Key; B1-Prelim; Ox3000-A2,high,note,food word only; never a reward
@@ -363,7 +363,7 @@ food-drink,green beans,noun,A1,1: CDI-WS(50% at 30m),high,,
 food-drink,gum,noun,A1,2: CDI-WS(83% at 30m); B1-Prelim,high,note,food word only; never a reward
 food-drink,ice lolly,noun,A1,1: CDI-WS(77% at 30m),high,note,food word only; never a reward
 food-drink,jam,noun,A1,5: YLE-Flyers; CDI-WS(75% at 30m); A2-Key; B1-Prelim; Ox3000-A2,high,,
-food-drink,jelly,noun,A1,1: CDI-WS(64% at 30m),high,check,gelatine; halal only
+food-drink,jelly,noun,A1,1: CDI-WS(64% at 30m),high,drop,gelatine; halal only; Zafar 31 Oct: dropped (not halal)
 food-drink,lollipop,noun,A1,1: CDI-WS(59% at 30m),high,note,food word only; never a reward
 food-drink,melon,noun,A1,3: CDI-WS(62% at 30m); A2-Key; B1-Prelim,high,,
 food-drink,muffin,noun,A1,1: CDI-WS(70% at 30m),high,,
@@ -906,7 +906,7 @@ animals-farm,donkey,noun,Pre-A1,4: YLE-Starters; CDI-WS(44% at 30m); A2-Key; B1-
 animals-farm,duck,noun,Pre-A1,4: YLE-Starters; CDI-WS(95% at 30m); A2-Key; B1-Prelim,high,,
 animals-farm,goat,noun,Pre-A1,3: YLE-Starters; A2-Key; B1-Prelim,high,,
 animals-farm,horse,noun,Pre-A1,5: YLE-Starters; CDI-WS(94% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
-animals-farm,pig,noun,Pre-A1,3: CDI-WS(91% at 30m); B1-Prelim; Ox3000-A1,high,check,"animal, not food; family to decide whether to show it"
+animals-farm,pig,noun,Pre-A1,3: CDI-WS(91% at 30m); B1-Prelim; Ox3000-A1,high,drop,"animal, not food; family to decide whether to show it; Zafar 31 Oct: dropped (not halal)"
 animals-farm,sheep,noun,Pre-A1,5: YLE-Starters; CDI-WS(74% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 animals-farm,farm,noun,A1,5: YLE-Movers; CDI-WS(50% at 30m); A2-Key; B1-Prelim; Ox3000-A1,high,,
 animals-farm,goose,noun,A1,1: CDI-WS(52% at 30m),high,,

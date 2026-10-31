@@ -76,5 +76,5 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 67. The safari: Snap from the jeep. Animals pass as you ride, and you photograph the one that's named [Zafar, 31 Oct]. Idea.
 68. The beach: three stalls on the sand. Tap one and it zooms in, like the clinic; play its game; zoom out to a thumbs-up and the stall greyed out. The other two call for help, and the trip is done when all three are helped [Zafar, 31 Oct]. Idea.
 69. An arcade trip: a few arcade-style games that teach Kutchi [Zafar, 31 Oct]. Idea (no sweets as prizes, non-negotiable 9).
-70. Speaking games with a few choices said aloud (the recogniser's closed set), for example a four-answer quiz like Who Wants to Be a Millionaire. Open: does it fit the theme, or is there a better form? [Zafar, 31 Oct]. Idea.
+70. Speaking games with a few choices said aloud (the recogniser's closed set), for example a four-answer quiz like Who Wants to Be a Millionaire. Open: does it fit the theme, or is there a better form? [Zafar, 31 Oct]. **Dropped** (Zafar, 31 Oct: "no quiz").
 71. Aim every new game at the language: choose modes and trips to cover topic word sets (A1 to A2, towards B1) and the most-used verbs, so coverage can be counted (for example, 1,000 words, 80% of common verbs, speaking and listening) [Zafar, 31 Oct]. In research (31 Oct).

@@ -180,6 +180,7 @@ Sources: Habgood & Ainsworth, *Motivating children to learn effectively* (2011);
 
 
 - **Not a CEFR course.** CEFR assumes a standardised written language with formal registers. Kutchi has neither. We borrow its sequencing logic and claim none of its levels.
+- **The language target (Zafar, 31 Oct):** overall, A2-level listening and speaking for a child (about 1,000 words across 38 child topics, the most-used verbs; `build/reports/research-language-targets-2026-10-31.md`). The store version's level depends on how many words the games can carry.
 - **Not a script-teaching app.** Kutchi is written informally in Gujarati or Perso-Arabic script and there is no agreed standard. Romanised spelling only, matched generously.
 - **Not a dictionary or a preservation archive.** Those are worthy and they are different projects.
 - **No ads, no growth targets.** The commercial model is open (decision 7): Zafar's £2 a month idea (the first arc free) and "free to the community" both stay open.
@@ -264,6 +265,8 @@ Everything in the released app is recorded, written and drawn for this project. 
 The content model is already language-agnostic: words and sentences have ids and come from the engine's lexicon, and audio is one file per id. Plugging in a popular language (Spanish, Arabic, Hindi, Mandarin…) is mostly:
 - a new content sheet, recordings from paid native speakers, and per-language sentence templates (plural and gender rules differ);
 - the art and engines reused as they are.
+
+**Culture that travels (Zafar, 31 Oct):** favour birthdays over weddings and Eid as big set pieces, so another language needs less cultural rework.
 
 **Keep this possible cheaply now:** never hard-code Kutchi-specific grammar in the engines; keep templates in data. The market for big languages is crowded (Duolingo ABC, Lingokids, Gus on the Go), and **"real games, not flashcards"** would be the differentiator.
 

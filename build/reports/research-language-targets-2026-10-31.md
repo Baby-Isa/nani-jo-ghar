@@ -138,3 +138,12 @@ The kitchen and the clinic stay as they are and keep food, cooking, body and hea
 - The verb coverage is from English speech to children. The light-verb evidence is from written Hindi and Urdu.
 - The topic gap figures match the two CSVs by English word, so a word worded differently counts as missing.
 - No audio was played; the inventory reads the transcripts in `family-audio.json`.
+
+## Zafar's answers (31 Oct)
+
+1. **The target:** overall A2. The store target waits on how many words the games can carry ("if you could do 100 words per game, it'd be easier to do A2").
+2. **Mum's rounds:** not now; verbs can come after the grammar. Keep reminding him about Mum's recordings (they cost him no tokens).
+3. **The trip map:** don't start from it. First a table of the 38 word groups with keywords, verbs and five settings each, then the verbs, then the settings that cover many groups (`build/reports/word-groups-map-2026-10-31.md`). The 12 trips are options only.
+4. **Food:** drop the non-halal items (pig, jelly); sausages, burgers and meatballs can be halal and stay.
+5. **Songs:** none yet; tell him where and why first.
+6. **No quiz.** Weddings and Eid: lean towards birthdays, so another language needs less cultural rework.
