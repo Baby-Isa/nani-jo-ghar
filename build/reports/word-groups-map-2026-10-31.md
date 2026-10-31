@@ -121,3 +121,30 @@ Named only once: Aquarium, Behind the screen, Bin day, Camping, Getting ready, H
 - **The home settings punch above their weight:** the kitchen, the evening book and Tidy up are built or designed, and each reaches 7-8 groups. **Living room visitors** (new: guests arrive at Nani's) reaches 7, including greetings, question words and owners, which are the speaking glue.
 - **For verbs, one setting stands out:** the **park and playground** (7 word groups and 3 verb groups: moving yourself, play, the glue), where "Nani says, do it" fits naturally. The **toy shop** (7 and 3) is the other strong new one.
 - **Low reach, but the only home for a group:** the zoo or safari (wild animals), the boat (litter: household things and the sea), the swimming pool and sports day (sports), and the school or nursery (school words). Each of these covers few groups but is that group's natural place.
+
+## Zafar's notes on the tables (31 Oct, collecting; more to come)
+
+**The process (Zafar, 31 Oct):**
+1. A back-and-forth with Zafar agrees the settings and game modes.
+2. Research first:
+   - list the games we have, group them, and judge how well each does its job
+   - look at other games
+3. Agents design concepts for each setting or game, as Claude thinks best.
+4. Claude writes ChatGPT prompts to visualise each one; Zafar runs them and gives feedback.
+5. Once the modes are agreed and tweaked, rapid lab prototypes with the new language cards, as with the new chai game. Get them out quickly, with no long testing, and work through his feedback.
+
+Alongside this:
+- **Review the current modes** to get more words out of them. Today they mainly cover clinic, cooking, counting, colours and some directions.
+- **Map the words in the tables to the agreed modes,** find the gaps, and put more words into each setting. For example, an anatomy game in the clinic (point at the skeleton), or a baking station in Cook for measures: a little, a lot, a bit more, half, two and a half (idea 54).
+- **Snap, the shops' games and the farm's games** go through the same brainstorm, design, mock-up and prototype loop.
+
+**By row:**
+- **1 Greetings and politeness:** the birthday party, someone else's, not the player's, so new characters can be made without confusing the cast.
+  - The guests introduce themselves; the child introduces them; they introduce each other.
+  - Gifts go to the right person.
+  - Several game modes fit inside it.
+  - A story that comes back: a different birthday each visit, a year older, harder each time.
+- **2 Sounds and baby games:** not needed (not real words).
+- **3 Family and people:** folds into the birthday party: the cake and the presents to the right person, and Snap photos of the person named. The evening book closes every day, so every group gets its review there.
+- **4 Jobs and helpers:** not a setting of its own for now (and unclear if Kutchi has a word for many of them). Dot them through other modes: the doctor in the clinic, a teacher somewhere, the shopkeeper in the shops.
+- **5 Body:** the clinic has a lot; extend it further. New heal games or diagnoses could carry more body words (the lice game was a joke).
