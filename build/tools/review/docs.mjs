@@ -49,6 +49,7 @@ export const DOC_LIMITS = {
   "docs/game-design/days/beach.md": 1500,
   "docs/game-design/days/safari.md": 1500,
   "docs/game-design/days/boat.md": 1500,
+  "docs/game-design/days/TEMPLATE.md": 3000,
   "docs/game-design/modes/window-ride.md": 1000,
   "docs/game-design/modes/pack-the-bag.md": 1000,
   "docs/game-design/modes/put-it-in-its-place.md": 1000,
