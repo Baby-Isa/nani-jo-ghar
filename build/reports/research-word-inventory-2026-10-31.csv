@@ -1,0 +1,1028 @@
+english,kind,topic,status,where,forms,kutchi_in_repo,recorded_detail,engine_status,voices,take_check,evidence,engine_ids,notes
+"chat, talk",noun,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,watu,none,confirmed,,,lexicon,n.chat,
+help,noun,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,madad,heard only inside 3 longer recorded line(s),draft,,,lexicon,n.help,
+can you help me?,phrase-or-sentence,actions,recorded,First launch story; Story day: door/ride,,tu muke help kar de,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.can-you-help-me,
+careful! (keep care),phrase-or-sentence,actions,recorded,Cook; Conversations,,dhyan rakh,whole line recorded,confirmed,mum,ok,lexicon,phrase.careful-keep-care,
+Hurry up!,phrase-or-sentence,actions,recorded,Cook,,jaldi kar,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.hurry-up,
+hurry up! (to an elder),phrase-or-sentence,actions,recorded,no game uses it yet (asked of Mum / heard in her recordings),,jaldi karo,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.hurry-up-to-an-elder,
+wait for me!,phrase-or-sentence,actions,recorded,Cook,,mu lai khobar,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.wait-for-me,
+Clean it,phrase-or-sentence,actions,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,v.clean-it,
+come along with me,phrase-or-sentence,actions,in-engine-not-recorded,Story day: door/ride,,hal mu saathe,none,confirmed,,,lexicon,phrase.come-along-with-me,
+come here (to a child or someone your age),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hida ach,none,confirmed,,,lexicon,phrase.come-here-to-a-child-or-someone-your-age,
+come here (to an elder),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hida acho,none,confirmed,,,lexicon,phrase.come-here-to-an-elder,
+come now,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hever hal,none,confirmed,,,lexicon,phrase.come-now,
+don't chat,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,watu na kar,none,confirmed,,,lexicon,phrase.dont-chat,
+don't come with me (a different meaning),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,na hal,none,confirmed,,,lexicon,phrase.dont-come-with-me-a-different-meaning,
+don't put sugar in,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khun na wij,none,confirmed,,,lexicon,phrase.dont-put-sugar-in,
+"don't run, walk",phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"bhaj na, hal",none,confirmed,,,lexicon,phrase.dont-run-walk,
+don't speak,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bol na,none,confirmed,,,lexicon,phrase.dont-speak,
+don't touch that (the everyday 'don't touch'),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ad na,none,confirmed,,,lexicon,phrase.dont-touch-that-the-everyday-dont-touch,
+don't touch! (urgent: it's hot),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,na ad,none,confirmed,,,lexicon,phrase.dont-touch-urgent-its-hot,
+don't use sugar,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khun na wapur,none,confirmed,,,lexicon,phrase.dont-use-sugar,
+don't walk,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hal na,none,confirmed,,,lexicon,phrase.dont-walk,
+give,phrase-or-sentence,actions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.give,"cites data/clinic/lang.json, a file that no longer exists"
+give it,phrase-or-sentence,actions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.give-it,"cites data/clinic/lang.json, a file that no longer exists"
+Give me,phrase-or-sentence,actions,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.give-me,
+give me this teaspoon (muke hi chamchi de),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi chamchi de,none,confirmed,,,lexicon,phrase.give-me-this-teaspoon-muke-hi-chamchi-de,
+he / she came (a child),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,e achi vyo,none,confirmed,,,lexicon,phrase.he-she-came-a-child,
+he / she came (an elder),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,e achi vya,none,confirmed,,,lexicon,phrase.he-she-came-an-elder,
+he / she will come (a child),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,e achdo,none,confirmed,,,lexicon,phrase.he-she-will-come-a-child,
+he / she will come (an elder),phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,e achda,none,confirmed,,,lexicon,phrase.he-she-will-come-an-elder,
+Listen to,phrase-or-sentence,actions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.listen-to,
+Look at,phrase-or-sentence,actions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-at,
+Look at that!,phrase-or-sentence,actions,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-at-that,
+Look in,phrase-or-sentence,actions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-in,
+Pass me that one,phrase-or-sentence,actions,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.pass-me-that-one,
+Put it back.,phrase-or-sentence,actions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-it-back,
+Say it,phrase-or-sentence,actions,in-engine-not-recorded,Clinic; Snap (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.say-it,
+Say it again?,phrase-or-sentence,actions,in-engine-not-recorded,Clinic; Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.say-it-again,
+Slow down!,phrase-or-sentence,actions,in-engine-not-recorded,Story day: window ride (Nani to the driver),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.slow-down,named in game data with an English line only; no lexicon entry
+Speed up!,phrase-or-sentence,actions,in-engine-not-recorded,Story day: window ride (Nani to the driver),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.speed-up,named in game data with an English line only; no lexicon entry
+Tell Ali.,phrase-or-sentence,actions,in-engine-not-recorded,Snap (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.tell-ali,
+Then we saw the {thing}.,phrase-or-sentence,actions,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.then-we-saw-the-x,named in game data with an English line only; no lexicon entry
+Then we used the {thing}.,phrase-or-sentence,actions,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.then-we-used-the-x,named in game data with an English line only; no lexicon entry
+"wait, I'll taste it",phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"khobar, aau chakha",none,draft,,,lexicon,phrase.wait-ill-taste-it,
+We saw a {thing}.,phrase-or-sentence,actions,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.we-saw-a-x,named in game data with an English line only; no lexicon entry
+We used the {thing}.,phrase-or-sentence,actions,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.we-used-the-x,named in game data with an English line only; no lexicon entry
+will come,phrase-or-sentence,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,achindo,none,confirmed,,,lexicon,phrase.will-come,
+let go,phrase-or-sentence,actions,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:let go,
+"do, make",verb,actions,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): kar [recorded alone]; imperative (to an elder): karo [recorded inside a longer line]; ""having done"" form: kari [recorded inside a longer line]; inside recorded phrases: ha, aau randhan lai madad kar dis, ha, aau randhan lai madad kar dos, jaldi kar, jaldi karo, slow kar, tu muke help kar de",kar,alone (family clip),confirmed,mum,unchecked,lexicon,v.do,
+be,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),I am: aiya [recorded inside a longer line]; we are: aayo [recorded inside a longer line]; you are (child): aiye [recorded inside a longer line]; you are (elder): aayo [recorded inside a longer line]; he/she is: ai [in engine; too short to check by text]; they are: ain [recorded inside a longer line],ai,heard only inside 21 longer recorded line(s),confirmed,,,lexicon,cop.be,
+"be over (pati vyo: that's enough, time's up)",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"""having done"" form: pati [in engine, not recorded]",pati,none,draft,,,lexicon,v.be-over,
+be wanted (by someone),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"informal: khape [recorded inside a longer line]; present (he-thing/man): khapeto [recorded inside a longer line]; present (she-thing/woman): khapeti [recorded inside a longer line]; present (he, plural): khapanta [in engine, not recorded]; present (she, plural): khapanti [in engine, not recorded]; future (he): khapdo [recorded inside a longer line]; inside recorded phrases: anke kuro khapeto, muke na khape, muke nato khape, no, I don't want it (polite), panke randhnu khapdo, toke kuro khapeto",khape,heard only inside 22 longer recorded line(s),confirmed,,,lexicon,v.want,
+"become, happen (thai vyo)",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"""having done"" form: thai [recorded inside a longer line]; inside recorded phrases: thundo thai vyo",thai,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.become,
+bring,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): khanech [in engine, not recorded]; ""having done"" form: khanechi [recorded inside a longer line]; not yet known: imperative (to an elder)",khanech,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.bring,
+"bring along, take with you",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): khanij [in engine, not recorded]; not yet known: imperative (to an elder)",khanij,none,draft,,,lexicon,v.bring-along,
+"can, be able to",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"present, I (woman): sakati [recorded inside a longer line]; present, I (man): sakanto [recorded inside a longer line]; present, she: saketi [recorded inside a longer line]; present, he: saketo [recorded inside a longer line]; present, they: sakanto [recorded inside a longer line]; can't, I (man): sakanto [recorded inside a longer line]; can't, I (woman): saketi [recorded inside a longer line]",saka,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,v.can,
+close,verb,actions,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.close,"cites data/clinic/lang.json, a file that no longer exists"
+come,verb,actions,in-engine-not-recorded,Story day: door/ride,"imperative (to a child): ach [in engine, not recorded]; imperative (to an elder): acho [in engine, not recorded]; ""having done"" form: achi [in engine, not recorded]; present (he, plural): achenta [recorded inside a longer line]; future (he): achdo [in engine, not recorded]; future (he, plural): achda [in engine, not recorded]; inside recorded phrases: mageni achenta",ach,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.come,
+give (also: pass),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): de [in engine; too short to check by text]; future, you (child): dinda [recorded inside a longer line]; future, you (elder): dinda [recorded inside a longer line]; future, I (woman): dis [recorded inside a longer line]; future, I (man): dos [recorded inside a longer line]; past, I (man): dinos [recorded inside a longer line]; past, I (woman): dinis [recorded inside a longer line]; past, he: dino [recorded inside a longer line]; past, she: dini [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: ha, aau randhan lai madad kar dis, ha, aau randhan lai madad kar dos, inke chadi de, muke chai banai dinda, muke chakhan lai de, tu muke chai banai dinda",de,heard only inside 18 longer recorded line(s),confirmed,,,lexicon,v.give,
+"go (before a helper: winni saka, can go)",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"""having done"" form: winni [recorded inside a longer line]; recorded sentence frames: can",winni,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,v.go,
+help (the English word: help kar de),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),base form: help [recorded inside a longer line]; inside recorded phrases: tu muke help kar de,help,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.help,
+"leave, finish (the helper in wiji chad, chadi de)",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): chad [recorded inside a longer line]; ""having done"" form: chadi [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: bego kari chad, firai chad, inke chadi de, kadhi chad, kapi chad, tarelo kari chad",chad,heard only inside 11 longer recorded line(s),confirmed,,,lexicon,v.leave,
+let's go,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): winja [recorded inside a longer line]; present, we: winjanta [in engine, not recorded]; not yet known: imperative (to an elder); inside recorded phrases: hal, rasore me winja",winja,heard only inside 1 longer recorded line(s),draft,,,lexicon,v.lets-go,
+like (root; Zafar 26 Oct: said R then air),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"present (he-thing/man): arreto [in engine, not recorded]; present (she-thing/woman): arreti [recorded inside a longer line]",arre,heard only inside 3 longer recorded line(s),draft,,,lexicon,v.like,
+look,verb,actions,in-engine-not-recorded,Story day: door/ride; Snap (parked),"imperative (to a child): nar [in engine, not recorded]; past, I (man): naryos [recorded inside a longer line]; past, I (woman): naris [recorded inside a longer line]; present, I (man): narato [recorded inside a longer line]; present, I (woman): narati [recorded inside a longer line]; future, I (man): nardos [recorded inside a longer line]; future, I (woman): nardis [recorded inside a longer line]; not yet known: imperative (to an elder)",nar,heard only inside 11 longer recorded line(s),confirmed,,,lexicon,v.look + phrase.look,merged same English: phrase.look
+make,verb,actions,in-engine-not-recorded,Clinic,"imperative (to a child): banai [recorded inside a longer line]; ""having done"" form: banai [recorded inside a longer line]; not yet known: imperative (to an elder); recorded sentence frames: command; inside recorded phrases: muke chai banai dinda, tu muke chai banai dinda",banai,heard only inside 10 longer recorded line(s),confirmed,,,lexicon,v.make,"cites data/clinic/lang.json, a file that no longer exists"
+open,verb,actions,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.open,"cites data/clinic/lang.json, a file that no longer exists"
+"put (down), place; keep",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): rakh [recorded inside a longer line]; ""having done"" form: rakhi [in engine, not recorded]; not yet known: imperative (to an elder); inside recorded phrases: dhyan rakh, thori war rakh",rakh,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,v.put,
+put on,verb,actions,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.put-on,"cites data/clinic/lang.json, a file that no longer exists"
+run,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): bhaj [in engine, not recorded]; not yet known: imperative (to an elder)",bhaj,none,confirmed,,,lexicon,v.run,
+sit,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): we [in engine; too short to check by text]; not yet known: imperative (to an elder),we,none,confirmed,,,lexicon,v.sit,
+speak,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): bol [in engine, not recorded]; not yet known: imperative (to an elder)",bol,none,confirmed,,,lexicon,v.speak,
+spill,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): dhor [in engine, not recorded]; not yet known: imperative (to an elder)",dhor,none,draft,,,lexicon,v.spill,
+take,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): khan [in engine, not recorded]; ""having done"" form: khani [in engine, not recorded]; not yet known: imperative (to an elder)",khan,none,confirmed,,,lexicon,v.take,
+"take it yourself, pick one yourself",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): khanigin [in engine, not recorded]; not yet known: imperative (to an elder)",khanigin,none,draft,,,lexicon,v.take-it-yourself,
+to go (the 'to do' word),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"base form: winnu [recorded inside a longer line]; recorded sentence frames: have to, need to, want to",winnu,heard only inside 8 longer recorded line(s),confirmed,,,lexicon,v.to-go,
+touch,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): ad [in engine; too short to check by text]; not yet known: imperative (to an elder),ad,none,confirmed,,,lexicon,v.touch,
+use,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): wapur [in engine, not recorded]; not yet known: imperative (to an elder)",wapur,none,confirmed,,,lexicon,v.use,
+wait,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): khobar [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: mu lai khobar,khobar,heard only inside 1 longer recorded line(s),draft,,,lexicon,v.wait,
+"walk, come, go",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): hal [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: hal, rasore me winja",hal,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.walk,
+want to (after a 'to do' word: muke winnu aaye),verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),base form: aaye [recorded inside a longer line],aaye,heard only inside 3 longer recorded line(s),draft,,,lexicon,v.want-to,
+was,verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),past (he/it): wo [in engine; too short to check by text],wo,none,confirmed,,,lexicon,v.was,
+"went, became (the helper after the 'having done' form: thai vyo, khai vyo, achi vyo)",verb,actions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"past (he/it): vyo [recorded inside a longer line]; past (she/it): vai [in engine, not recorded]; past (plural): vya [in engine, not recorded]; inside recorded phrases: thundo thai vyo",vyo,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,v.went,
+buffalo,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.buffalo,named in game data with an English line only; no lexicon entry
+camel,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.camel,named in game data with an English line only; no lexicon entry
+"chick (the ride says ""hen with her chicks"")",noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.chick,named in game data with an English line only; no lexicon entry
+cow,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.cow,named in game data with an English line only; no lexicon entry
+donkey,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.donkey,named in game data with an English line only; no lexicon entry
+duck,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.duck,named in game data with an English line only; no lexicon entry
+goat (a billy goat),noun,animals-farm,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bakro,heard only inside 9 longer recorded line(s),confirmed,,,lexicon,n.billy-goat,"a ""hakro bakro, ba bakra"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+goat (a she-goat),noun,animals-farm,in-engine-not-recorded,Story day: evening book; Story day: door/ride,,bakri,heard only inside 9 longer recorded line(s),confirmed,,,lexicon,n.she-goat,"a ""hakri bakri, ba bakri"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+horse,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.horse,named in game data with an English line only; no lexicon entry
+sheep,noun,animals-farm,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.sheep,named in game data with an English line only; no lexicon entry
+coop,noun,animals-farm,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:coop,
+scoop,noun,animals-farm,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:scoop,
+shed,noun,animals-farm,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:shed,
+feed,verb,animals-farm,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:feed,noun or verb not stated
+dog,noun,animals-pets-small,in-engine-not-recorded,Story day: evening book; Story day: door/ride,,kutro,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.dog,
+Kasuku,noun,animals-pets-small,in-engine-not-recorded,Who did it (parked),,Kasuku,none,draft,,,lexicon,pn.kasuku,
+Simba,noun,animals-pets-small,in-engine-not-recorded,Who did it (parked),,Simba,none,draft,,,lexicon,pn.simba,
+Zazu,noun,animals-pets-small,in-engine-not-recorded,Who did it (parked),,Zazu,none,draft,,,lexicon,pn.zazu,
+I saw Simba in the kitchen,phrase-or-sentence,animals-pets-small,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,simba ke rasore me nares,none,draft,,,lexicon,phrase.i-saw-simba-in-the-kitchen,
+"Shoo, Simba!",phrase-or-sentence,animals-pets-small,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.shoo-simba,
+Simba ate it,phrase-or-sentence,animals-pets-small,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,simba khai vyo,none,confirmed,,,lexicon,phrase.simba-ate-it,
+Simba took it,phrase-or-sentence,animals-pets-small,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,simba khani vyo,none,confirmed,,,lexicon,phrase.simba-took-it,
+bird,noun,animals-wild,in-engine-not-recorded,Story day: evening book; Story day: door/ride,,chakli,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.bird,
+butterfly,noun,animals-wild,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.butterfly,named in game data with an English line only; no lexicon entry
+elephant,noun,animals-wild,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:elephant,
+giraffe,noun,animals-wild,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:giraffe,
+lion,noun,animals-wild,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:lion,
+watering hole,noun,animals-wild,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:watering hole,
+zebra,noun,animals-wild,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:zebra,
+ear,noun,body,recorded,Clinic; Clinic heal game: ear,,kan,alone (family clip),confirmed,mum,unchecked,lexicon,n.ear,
+arm,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.arm,
+big toe,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.big-toe,"cites data/clinic/lang.json, a file that no longer exists"
+chest,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.chest,
+elbow,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.elbow,
+eye,noun,body,in-engine-not-recorded,Clinic,,akh,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.eye,"a ""hakri akh, ba akhyu"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+finger,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.finger,
+foot,noun,body,in-engine-not-recorded,Clinic,,pag,none,draft,,,lexicon,n.foot,
+hand,noun,body,in-engine-not-recorded,Clinic,,hath,none,draft,,,lexicon,n.hand,
+head,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.head,
+knee,noun,body,in-engine-not-recorded,Clinic; Clinic heal game: knee,,gutan,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.knee,"a ""hakro gutan, ba gutan"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+leg,noun,body,in-engine-not-recorded,Clinic; Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,n.leg,
+little toe,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.little-toe,"cites data/clinic/lang.json, a file that no longer exists"
+middle toe,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.middle-toe,"cites data/clinic/lang.json, a file that no longer exists"
+mouth,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.mouth,
+neck,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.neck,
+nose,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.nose,
+shoulder,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.shoulder,
+throat,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.throat,
+toe,noun,body,in-engine-not-recorded,Clinic; Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,n.toe,
+tooth,noun,body,in-engine-not-recorded,Clinic; Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,n.tooth,
+tummy,noun,body,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.tummy,
+tongue,noun,body,planned,planned: modes/clinic.md,,,none,not in lexicon or any game data,,,doc-only,planned:tongue,
+My left arm,phrase-or-sentence,body,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,n.my-left-arm,
+My right arm,phrase-or-sentence,body,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,n.my-right-arm,
+Eid (the festival),noun,celebrations,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,Eid,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,pn.eid,
+tomorrow is Eid,phrase-or-sentence,celebrations,recorded,First launch story,,saware eid ai,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.tomorrow-is-eid,
+Eid Mubarak,phrase-or-sentence,celebrations,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:eid mubarak,named as a placeholder (F71)
+bangles,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.bangles,
+beads,noun,clothes,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.beads,"cites data/clinic/lang.json, a file that no longer exists"
+buttons,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.buttons,
+cap,noun,clothes,in-engine-not-recorded,Dress up (parked); Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.cap,
+cardigan,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.cardigan,
+collar,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.collar,
+cotton,noun,clothes,in-engine-not-recorded,Clinic; Story day: evening book,,,none,no-kutchi (English placeholder),,,lexicon,n.cotton,
+dupatta (the family says pacheri),noun,clothes,in-engine-not-recorded,Dress up (parked),,pacheri,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,n.dupatta,"a ""hakri pacheri, ba pacheri"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+glasses,noun,clothes,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.glasses,
+headscarf,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.headscarf,
+hem,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.hem,
+kurta,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.kurta,
+kurti,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.kurti,
+pocket,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.pocket,
+shawl,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.shawl,
+shirt,noun,clothes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,shati,none,draft,,,lexicon,n.shirt,
+sleeve,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.sleeve,
+sock,noun,clothes,in-engine-not-recorded,Clinic heal game: ear; Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.sock + n.socks,merged same English: n.socks
+sun hat,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.sun-hat,
+T-shirt,noun,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.t-shirt,
+life jacket,noun,clothes,planned,planned: boat.md,,,none,not in lexicon or any game data,,,doc-only,planned:life jacket,
+sandals,noun,clothes,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:sandals,
+How do I look?,phrase-or-sentence,clothes,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.how-do-i-look,
+red,adjective,colours,recorded,Clinic; Dress up (parked); Tidy up (parked); Story day: door/ride,,laal,alone (family clip),confirmed,mum,unchecked,lexicon,a.red,"cites data/clinic/lang.json, a file that no longer exists"
+black (of tea: no milk),adjective,colours,in-engine-not-recorded,Cook; Dress up (parked),,kari,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,a.black,
+blue,adjective,colours,in-engine-not-recorded,Clinic; Clinic heal game: taste; Dress up (parked); Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.blue + n.blue,"merged same English: n.blue | cites data/clinic/lang.json, a file that no longer exists"
+dark,adjective,colours,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.dark,
+gold,adjective,colours,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.gold,
+green,adjective,colours,in-engine-not-recorded,Clinic; Dress up (parked); Tidy up (parked); Story day: door/ride,,lilo,none,confirmed,,,lexicon,a.green,"cites data/clinic/lang.json, a file that no longer exists"
+pink,adjective,colours,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.pink,
+purple,adjective,colours,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.purple,
+silver,adjective,colours,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.silver,
+white,adjective,colours,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.white,
+yellow,adjective,colours,in-engine-not-recorded,Clinic; Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,a.yellow,"cites data/clinic/lang.json, a file that no longer exists"
+not the red one,phrase-or-sentence,colours,recorded,no game uses it yet (asked of Mum / heard in her recordings),,laal na,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.not-the-red-one,
+in blue,phrase-or-sentence,colours,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.in-blue,
+in green,phrase-or-sentence,colours,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.in-green,
+in red,phrase-or-sentence,colours,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.in-red,
+in yellow,phrase-or-sentence,colours,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.in-yellow,
+The blue one!,phrase-or-sentence,colours,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-blue-one,
+The green one!,phrase-or-sentence,colours,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-green-one,
+The red one!,phrase-or-sentence,colours,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-red-one,
+I like red,phrase-or-sentence,colours,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:i like red,named as a placeholder (F35)
+cup,noun,cooking-kitchen,recorded,Conversations; Clinic; Tidy up (parked),,cup,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.cup,"a ""hakro cup, ba cup"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+fire,noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,aag,alone (family clip),confirmed,mum,unchecked,lexicon,n.fire,
+pot,noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,tapelo / sufuria,alone (family clip),confirmed,mum,ok-auto,lexicon,n.pot + n.pot-2,"merged same English: n.pot-2 | two Kutchi words for one meaning, Zafar to choose (clash list)"
+rolling pin,noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,welan,alone (family clip),confirmed,mum,unchecked,lexicon,n.rolling-pin,
+skewer (a stick),noun,cooking-kitchen,recorded,Cook,,lakri,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.skewer,
+stove,noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,chulo,alone (family clip),confirmed,mum,unchecked,lexicon,n.stove,
+"tablespoon, ladle",noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,chamcho,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.tablespoon,
+tawa,noun,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,tawa,alone (family clip),confirmed,mum,unchecked,lexicon,n.tawa,
+teaspoon,noun,cooking-kitchen,recorded,Conversations; Clinic,,chamchi,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.teaspoon,"cites data/clinic/lang.json, a file that no longer exists"
+a full glass of,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.a-full-glass-of,
+board (for chopping or rolling),noun,cooking-kitchen,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.board + n.board-2,merged same English: n.board-2
+bowl,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked); Find it,,bakuli / piali,heard only inside 3 longer recorded line(s),confirmed,,,lexicon,n.bowl + n.bowl-2,"merged same English: n.bowl-2 | two Kutchi words for one meaning, Zafar to choose (clash list)"
+cooking,noun,cooking-kitchen,in-engine-not-recorded,Story day: door/ride,,randhan,heard only inside 3 longer recorded line(s),draft,,,lexicon,n.cooking,
+counter,noun,cooking-kitchen,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.counter,
+dishes,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.dishes,
+flask,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.flask,
+food cage (the old netted one; also a bird cage),noun,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pinjro,none,confirmed,,,lexicon,n.food-cage,
+glass (the English word),noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,glass,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.glass,
+half a glass of,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.half-a-glass-of,
+jar,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.jar + n.the-jar,merged same English: n.the-jar
+jug,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked); Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.jug + n.jugs,merged same English: n.jugs
+jug of cold water,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.jug-of-cold-water,
+jug of hot water,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.jug-of-hot-water,
+katori,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.katori,
+plate (ceramic),noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,saani,none,confirmed,,,lexicon,n.plate,
+sip,noun,cooking-kitchen,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,n.sip + n.sips,merged same English: n.sips
+sip of,noun,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.sip-of + n.sips-of,merged same English: n.sips-of
+spoon,noun,cooking-kitchen,in-engine-not-recorded,Clinic; Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.spoon,
+tasting (muke chakhan lai de: let me taste it),noun,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chakhan,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.tasting,
+the tray,noun,cooking-kitchen,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-tray,
+the water pot,noun,cooking-kitchen,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-water-pot,
+turner,noun,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,n.turner,
+(sprinkle) put a little in,phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,thorok wij,whole line recorded,draft,mum,unchecked,lexicon,phrase.sprinkle-put-a-little-in,only a low-confidence take
+a whole chilli (not powdered),phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,aakhi mirchi,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.a-whole-chilli-not-powdered,
+"boil the tea, boil the water",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"chai ke ukar, paani ke ukar",whole line recorded,confirmed,mum,unchecked,lexicon,phrase.boil-the-tea-boil-the-water,
+Can you make me chai?,phrase-or-sentence,cooking-kitchen,recorded,First launch story,,tu muke chai banai dinda,whole line recorded,confirmed,mum,ok,lexicon,phrase.can-you-make-me-chai,
+"can you make me chai? (said naturally, without 'you')",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,muke chai banai dinda,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.can-you-make-me-chai-said-naturally-without-you,
+Chop it small!,phrase-or-sentence,cooking-kitchen,recorded,Cook,,nindha nindha kap,whole line recorded,draft,mum,unchecked,lexicon,phrase.chop-it-small,only a low-confidence take
+fry it (make it fried),phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,tarelo kari chad,whole line recorded,draft,mum,unchecked,lexicon,phrase.fry-it-make-it-fried,
+It's boiling!,phrase-or-sentence,cooking-kitchen,recorded,Cook,,ukreto,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.its-boiling,
+It's burning!,phrase-or-sentence,cooking-kitchen,recorded,Cook,,bareto,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.its-burning,
+It's ready.,phrase-or-sentence,cooking-kitchen,recorded,Cook,,tayar ai,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.its-ready,
+leave it a bit longer,phrase-or-sentence,cooking-kitchen,recorded,Cook,,thori war rakh,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.leave-it-a-bit-longer,
+leave it be,phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,inke chadi de,whole line recorded,confirmed,mum,ok,lexicon,phrase.leave-it-be,
+Let me taste it.,phrase-or-sentence,cooking-kitchen,recorded,Cook,,muke chakhan lai de,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.let-me-taste-it,
+mix (put it together),phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,bego kari chad,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.mix-put-it-together,
+put it in the bowl (the stand-in for 'serve'),phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,bakuli me wiji chad,whole line recorded,draft,mum,unchecked,lexicon,phrase.put-it-in-the-bowl-the-stand-in-for-serve,
+"put it in, add",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,wiji chad,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.put-it-in-add,
+"put it in, add (second way)",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,andar wiji chad,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.put-it-in-add-second-way,
+take it out,phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,kadhi chad,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.take-it-out,
+"take it out now (gently, in a sequence)",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,inke hane kadh,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.take-it-out-now-gently-in-a-sequence,
+take it out now! (urgent),phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hever kadh,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.take-it-out-now-urgent,
+turn it down (the flame),phrase-or-sentence,cooking-kitchen,recorded,Cook,,slow kar,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.turn-it-down-the-flame,
+turn over; also stir,phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,firai chad,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.turn-over-also-stir,only a low-confidence take
+"wash the glass, wash the cup",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"dhui ginta ja glass dho, cup dho",whole line recorded,draft,mum,unchecked,lexicon,phrase.wash-the-glass-wash-the-cup,
+we need to cook,phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,panke randhnu khapdo,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.we-need-to-cook,
+will you bring me the chai things?,phrase-or-sentence,cooking-kitchen,recorded,First launch story,,muke chai ji chiju khanechi dinde,whole line recorded,draft,mum,ok,lexicon,phrase.will-you-bring-me-the-chai-things,
+will you help me cook?,phrase-or-sentence,cooking-kitchen,recorded,Conversations; First launch story; Story day: door/ride,,tu muke randhan lai madad kar de,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.will-you-help-me-cook,
+"yes, I'll help you cook (a boy says it)",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"ha, aau randhan lai madad kar dos",whole line recorded,draft,mum/zafar,ok,lexicon,phrase.help-cook-boy,
+"yes, I'll help you cook (a girl says it)",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"ha, aau randhan lai madad kar dis",whole line recorded,draft,mum,ok,lexicon,phrase.help-cook-girl,
+"yes, take it out",phrase-or-sentence,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"ha, kadh",whole line recorded,confirmed,mum,ok,lexicon,phrase.yes-take-it-out,
+add onion too,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,dungri pan wij,none,confirmed,,,lexicon,phrase.add-onion-too,
+add the onion,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,dungri wij,none,confirmed,,,lexicon,phrase.add-the-onion,
+"Add the spices, in order",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.add-the-spices-in-order,
+Bring me these,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook; Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bring-me-these,
+Bring me...,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bring-me,
+bring the big cup,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho cup khanech,none,confirmed,,,lexicon,phrase.bring-the-big-cup,
+Bring these from the pantry,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bring-these-from-the-pantry,
+Chop these,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.chop-these,
+Cook it the way they said,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.cook-it-the-way-they-said,
+daar and maani together?,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,daar ne maani saathe khapeti,none,confirmed,,,lexicon,phrase.daar-and-maani-together,
+fill it to the green,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.fill-it-to-the-green,"cites data/clinic/lang.json, a file that no longer exists"
+Fill the next one,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.fill-the-next-one,
+Fry them,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.fry-them,
+Grill the skewers,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.grill-the-skewers,
+Grill them,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.grill-them,
+let's get the food ready,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khenjo tayar karyo,none,draft,,,lexicon,phrase.lets-get-the-food-ready,
+Make each cup the way they said,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.make-each-cup-the-way-they-said,
+Make each pan the way they said,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.make-each-pan-the-way-they-said,
+make one for Ma too,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ma lai pan hakro banai,none,confirmed,,,lexicon,phrase.make-one-for-ma-too,
+"Make the bowl, in order",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.make-the-bowl-in-order,
+mix it (with the English word mix),phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mix kari chad,none,confirmed,,,lexicon,phrase.mix-it-with-the-english-word-mix,
+now put the tomatoes in,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hane tameta wij,none,confirmed,,,lexicon,phrase.now-put-the-tomatoes-in,
+Pour it into their glass,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.pour-it-into-their-glass,
+Pour it up to the line,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.pour-it-up-to-the-line,
+press it,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.press-it,"cites data/clinic/lang.json, a file that no longer exists"
+Put in as many spoons as they said,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-in-as-many-spoons-as-they-said,
+Put in the next thing,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-in-the-next-thing,
+"put it in front of me, facing me",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,munje same rakh,none,confirmed,,,lexicon,phrase.put-it-in-front-of-me-facing-me,
+put it in the bowl (the stand-in for 'pour'),phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bakuli me wij,none,draft,,,lexicon,phrase.put-it-in-the-bowl-the-stand-in-for-pour,
+Put it on the tawa,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-it-on-the-tawa,
+Put the chai in the pan,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-the-chai-in-the-pan,
+Put the daar in,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-the-daar-in,
+Put the vegetables in,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-the-vegetables-in,
+Put water in the pan,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.put-water-in-the-pan,
+Roll it round,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.roll-it-round,
+Roll the maani round,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.roll-the-maani-round,
+"Roll the maani, then cook it",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.roll-the-maani-then-cook-it,
+shall I take the samosa out or not?,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,samosa kadhu ke na,none,confirmed,,,lexicon,phrase.shall-i-take-the-samosa-out-or-not,
+Take a dough ball,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.take-a-dough-ball,
+"take the chai, for everyone (serving guests chai)",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"chai khani win, mare lai",none,draft,,,lexicon,phrase.take-the-chai-for-everyone-serving-guests-chai,
+tea and the things that go with it (an echo word),phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chai bai,none,draft,,,lexicon,phrase.tea-and-the-things-that-go-with-it-an-echo-word,
+the big mangoes or the small ones?,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadha ke nindha amba,none,confirmed,,,lexicon,phrase.the-big-mangoes-or-the-small-ones,
+Thread the skewers,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thread-the-skewers,
+"Thread the skewers, then grill them",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thread-the-skewers-then-grill-them,
+Thread them,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thread-them,
+To the grill,phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.to-the-grill,
+"yes, I want daar and maani",phrase-or-sentence,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"haa, muke daar ne maani khapeti",none,confirmed,,,lexicon,phrase.yes-i-want-daar-and-maani,
+boil,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): ukar [recorded alone]; present (he-thing/man): ukreto [recorded alone]; not yet known: imperative (to an elder); inside recorded phrases: chai ke ukar, paani ke ukar",ukar,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,v.boil,
+cut,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): kap [recorded inside a longer line]; ""having done"" form: kapi [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: kapi chad, nindha nindha kap",kap / kapi chad,whole line recorded,confirmed,mum,unchecked,lexicon,v.cut + phrase.cut,merged same English: phrase.cut | only a low-confidence take
+fill,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): bhar [recorded alone]; ""having done"" form: bhari [recorded inside a longer line]; not yet known: imperative (to an elder); recorded sentence frames: command with ""it""",bhar,alone (family clip),confirmed,mum,ok-auto,lexicon,v.fill,
+knead,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): gund [recorded alone]; not yet known: imperative (to an elder); recorded sentence frames: command,gund,alone (family clip),draft,mum,ok-auto,lexicon,v.knead,
+light (a fire),verb,cooking-kitchen,recorded,Who did it (parked),imperative (to a child): bar [recorded alone]; not yet known: imperative (to an elder); recorded sentence frames: command,bar,alone (family clip),confirmed,mum,unchecked,lexicon,v.light,
+press,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): dabai [recorded alone]; not yet known: imperative (to an elder),dabai,alone (family clip),draft,mum,unchecked,lexicon,v.press,
+taste,verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): chakh [recorded alone]; future, I: chakha [in engine, not recorded]; not yet known: imperative (to an elder)",chakh,alone (family clip),confirmed,mum,unchecked,lexicon,v.taste,
+"turn, flip, stir",verb,cooking-kitchen,recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): firai [recorded alone]; ""having done"" form: firai [recorded alone]; not yet known: imperative (to an elder); inside recorded phrases: firai chad",firai,alone (family clip),confirmed,mum,unchecked,lexicon,v.turn,
+fold,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): waar [in engine, not recorded]; not yet known: imperative (to an elder)",waar,none,confirmed,,,lexicon,v.fold,
+fry,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): tar [in engine, not recorded]; not yet known: imperative (to an elder)",tar,none,draft,,,lexicon,v.fry,
+mix (the English word: mix kari chad),verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"base form: mix [in engine, not recorded]",mix,none,confirmed,,,lexicon,v.mix,
+pour,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.pour,
+"put in, add",verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): wij [recorded inside a longer line]; ""having done"" form: wiji [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: thorok wij, wiji chad",wij,heard only inside 4 longer recorded line(s),confirmed,,,lexicon,v.put-in,
+roll (out),verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.roll,
+serve (put it on the plate),verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.serve,
+sprinkle,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.sprinkle,
+take out,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),"imperative (to a child): kadh [recorded inside a longer line]; future, I: kadhu [in engine, not recorded]; ""having done"" form: kadhi [recorded inside a longer line]; not yet known: imperative (to an elder); inside recorded phrases: ha, kadh, hever kadh, inke hane kadh, kadhi chad",kadh,heard only inside 5 longer recorded line(s),confirmed,,,lexicon,v.take-out,
+to cook,verb,cooking-kitchen,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),base form: randhnu [recorded inside a longer line]; inside recorded phrases: panke randhnu khapdo,randhnu,heard only inside 1 longer recorded line(s),draft,,,lexicon,v.to-cook,
+cold (gone cold),adjective,describing-words,recorded,Clinic; Clinic heal game: foot,,thundo,alone (family clip),confirmed,mum,unchecked,lexicon,a.cold,
+hot (to touch),adjective,describing-words,recorded,Clinic; Clinic heal game: foot,,garam,alone (family clip),confirmed,mum,unchecked,lexicon,a.hot,
+mixed,adjective,describing-words,recorded,Cook,,mixed,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.mixed,
+"right, proper, just right",adjective,describing-words,recorded,Clinic,,barabar,alone (family clip),confirmed,mum,unchecked,lexicon,a.proper,
+closed,adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,band,none,confirmed,,,lexicon,a.closed,
+"fine, all right (never changes)",adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,theek,heard only inside 3 longer recorded line(s),confirmed,,,lexicon,a.okay,
+"finished, completely",adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khalas,none,confirmed,,,lexicon,a.finished,
+fried,adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,tarelo,heard only inside 2 longer recorded line(s),draft,,,lexicon,a.fried,
+good (things),adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,saro,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,a.good,
+good (well-behaved: people and animals only),adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,dayo,heard only inside 6 longer recorded line(s),confirmed,,,lexicon,a.well-behaved,
+lukewarm,adjective,describing-words,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,a.lukewarm,"cites data/clinic/lang.json, a file that no longer exists"
+"nice, good (the English word)",adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,fine,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,a.nice,
+"nice, special",adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khaso,none,draft,,,lexicon,a.special,
+old,adjective,describing-words,in-engine-not-recorded,Who did it (parked); Clinic,,,none,no-kutchi (English placeholder),,,lexicon,a.old + n.old,merged same English: n.old
+ready,adjective,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,tayar,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,a.ready,
+unsweetened (of tea),adjective,describing-words,in-engine-not-recorded,Cook,,mori,none,confirmed,,,lexicon,a.unsweetened,
+young,adjective,describing-words,in-engine-not-recorded,Who did it (parked); Clinic,,,none,no-kutchi (English placeholder),,,lexicon,a.young + n.young,merged same English: n.young
+warm,adjective,describing-words,planned,planned: modes/clinic.md,,,none,not in lexicon or any game data,,,doc-only,planned:warm,"""lukewarm"" is in the lexicon; ""warm"" is a separate word in the doc"
+quickly,adverb,describing-words,recorded,Cook,,jaldi,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,adv.quickly,
+"slow (the English word: slow kar, turn it down)",adverb,describing-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,slow,alone (family clip),confirmed,mum,unchecked,lexicon,adv.slow,
+slowly,adverb,describing-words,recorded,Cook,,aste thi,alone (family clip),confirmed,mum/zafar,ok,lexicon,adv.slowly,
+very,adverb,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bo,none,confirmed,,,lexicon,adv.very,
+it's gone cold,phrase-or-sentence,describing-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,thundo thai vyo,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.its-gone-cold,
+Just right!,phrase-or-sentence,describing-words,recorded,Clinic,,barabar,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.just-right,"cites data/clinic/lang.json, a file that no longer exists"
+Cold!,phrase-or-sentence,describing-words,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.cold,
+"nice, very nice (the fuller way)",phrase-or-sentence,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bo fine,none,confirmed,,,lexicon,phrase.nice-very-nice-the-fuller-way,
+"quickly, quickly (doubling for emphasis)",phrase-or-sentence,describing-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jaldi jaldi,none,confirmed,,,lexicon,phrase.quickly-quickly-doubling-for-emphasis,
+Ali (the cousin),noun,family-people,recorded,Cook; Who did it (parked); Tidy up (parked); Story day: evening book; Story day: door/ride; Conversations,,Ali,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,pn.ali + phrase.ali,merged same English: phrase.ali
+"Big Ma (great-grandmother, 'big mother')",noun,family-people,recorded,Tidy up (parked),,wadima,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.big-ma,
+Big Ma (what the children call her),noun,family-people,recorded,Conversations,,Big Ma,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,pn.big-ma + phrase.big-ma,merged same English: phrase.big-ma
+"dear, child (boys and girls alike)",noun,family-people,recorded,no game uses it yet (asked of Mum / heard in her recordings),,beta,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.dear,
+great-grandmother (the traditional name),noun,family-people,recorded,no game uses it yet (asked of Mum / heard in her recordings),,maji,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.great-grandmother,
+Nana,noun,family-people,recorded,Cook; Who did it (parked); Tidy up (parked); Story day: evening book; Story day: door/ride; Conversations,,Nana,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,pn.nana + phrase.nana,merged same English: phrase.nana
+Nani,noun,family-people,recorded,Conversations; First launch story,,Nani,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,pn.nani + phrase.nani,merged same English: phrase.nani
+boy,noun,family-people,in-engine-not-recorded,Clinic,,chokro,heard only inside 16 longer recorded line(s),confirmed,,,lexicon,n.boy + phrase.the-boy,merged same English: phrase.the-boy
+dear (a girl; strictly),noun,family-people,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,beti,none,confirmed,,,lexicon,n.dear-girl,
+girl,noun,family-people,in-engine-not-recorded,Clinic,,chokri,heard only inside 22 longer recorded line(s),confirmed,,,lexicon,n.girl + phrase.the-girl,"merged same English: phrase.the-girl | a ""hakri chokri, ba chokri"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+grandmother (father's mother),noun,family-people,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,dadima,none,confirmed,,,lexicon,n.grandmother,
+guests,noun,family-people,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mageni,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.guests,
+Ma (mother),noun,family-people,in-engine-not-recorded,Cook; Tidy up (parked),,Ma,none,confirmed,,,lexicon,pn.ma,
+man,noun,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.man + phrase.the-man,merged same English: phrase.the-man
+woman,noun,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.woman + phrase.the-woman,merged same English: phrase.the-woman
+"kinship titles (mother's sister, father's brother, and others)",noun,family-people,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,"planned:kinship titles (mother's sister, father's brother, and others)","Mum's questions E85-E102; a whole family of words, not one"
+do you know who I am?,phrase-or-sentence,family-people,recorded,Conversations,,"toke khabar ai, aau ker aiya",whole line recorded,draft,mum/zafar,ok,lexicon,phrase.do-you-know-who-i-am,
+guests are coming,phrase-or-sentence,family-people,recorded,First launch story,,mageni achenta,whole line recorded,draft,mum/zafar,ok-auto,lexicon,phrase.guests-are-coming,
+Nana wanted {thing}.,phrase-or-sentence,family-people,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.nana-wanted-x,named in game data with an English line only; no lexicon entry
+the old man,phrase-or-sentence,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-old-man,
+the old woman,phrase-or-sentence,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-old-woman,
+with the baby,phrase-or-sentence,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.with-the-baby,
+with the child,phrase-or-sentence,family-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.with-the-child,
+chaat,noun,food-drink,recorded,Cook,,chaat,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.chaat,
+chapati,noun,food-drink,recorded,Cook,,maani,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.chapati,"a ""hakri maani, ba maani"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+chickpeas,noun,food-drink,recorded,Cook,,chana,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.chickpeas,
+chilli,noun,food-drink,recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,mirchi,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.chilli,
+chips,noun,food-drink,recorded,Cook,,chips,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.chips + n.chips-english,merged same English: n.chips-english | only a low-confidence take
+coconut chutney,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,nair ji chutney,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.coconut-chutney,
+coriander,noun,food-drink,recorded,Cook,,dhania,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.coriander,
+corn on the cob,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,makai,alone (family clip),confirmed,mum,unchecked,lexicon,n.corn-on-the-cob,
+egg,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,indo / mayai,alone (family clip),confirmed,mum,unchecked,lexicon,n.egg + n.egg-2,"merged same English: n.egg-2 | two Kutchi words for one meaning, Zafar to choose (clash list)"
+flour,noun,food-drink,recorded,Cook,,atto,alone (family clip),draft,mum,unchecked,lexicon,n.flour,
+fried peas (the snack),noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,watana,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.peas,
+ghee,noun,food-drink,recorded,Cook,,ghee,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.ghee,
+lemon,noun,food-drink,recorded,"Cook; Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,limu,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.lemon,
+meat,noun,food-drink,recorded,Cook,,gos,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.meat,
+millet chapati,noun,food-drink,recorded,Cook,,bajr ji maani,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.millet-chapati,
+mince,noun,food-drink,recorded,Cook,,chundo / keema,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.mince + n.mince-regional,"merged same English: n.mince-regional | two Kutchi words for one meaning, Zafar to choose (clash list)"
+mint chutney,noun,food-drink,recorded,Cook,,fudino ji chutney,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.mint-chutney,
+mishkaki,noun,food-drink,recorded,Cook,,mishkaki,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.mishkaki,
+onion,noun,food-drink,recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,dungri,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.onion,
+peas (green peas),noun,food-drink,recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,matar,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.green-peas,
+samosa,noun,food-drink,recorded,Cook,,samosa / sambusa,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.samosa + n.samosa-nani,"merged same English: n.samosa-nani | two Kutchi words for one meaning, Zafar to choose (clash list)"
+samosa pastry,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,chapri,alone (family clip),confirmed,mum,unchecked,lexicon,n.samosa-pastry,
+sev,noun,food-drink,recorded,Cook,,sev,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.sev,
+tamarind,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,amli,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.tamarind,
+tamarind chutney,noun,food-drink,recorded,Cook,,amli ji chutney,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.tamarind-chutney,
+tomato,noun,food-drink,recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,tameto,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.tomato,
+vegetable,noun,food-drink,recorded,Cook; Tidy up (parked),,boga,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.vegetable + n.vegetables,merged same English: n.vegetables
+yoghurt,noun,food-drink,recorded,Cook,,dai,alone (family clip),confirmed,mum/zafar,ok,lexicon,n.yoghurt,
+yoghurt starter culture,noun,food-drink,recorded,no game uses it yet (asked of Mum / heard in her recordings),,mervan,alone (family clip),confirmed,zafar,ok-auto,lexicon,n.yoghurt-starter-culture,
+apple,noun,food-drink,in-engine-not-recorded,"Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,safarjan,none,draft,,,lexicon,n.apple,"cites data/clinic/lang.json, a file that no longer exists"
+asafoetida,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,hing,none,draft,,,lexicon,n.asafoetida,draft from the class handout; Mum has not confirmed it
+aubergine,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,ringraa,none,draft,,,lexicon,n.aubergine,draft from the class handout; Mum has not confirmed it
+banana,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,kelo,none,draft,,,lexicon,n.banana,draft from the class handout; Mum has not confirmed it
+bay leaf,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,tamalpatr,none,draft,,,lexicon,n.bay-leaf,draft from the class handout; Mum has not confirmed it
+bhajiya (a fried snack),noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bhajiya,none,draft,,,lexicon,n.bhajiya,
+black pepper,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,mari,none,draft,,,lexicon,n.black-pepper,draft from the class handout; Mum has not confirmed it
+black tea,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,,none,confirmed,,,lexicon,n.black-tea,
+cabbage,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,kobi,none,draft,,,lexicon,n.cabbage,
+cardamom,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,elchi,none,draft,,,lexicon,n.cardamom,
+carrot,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,gajar,none,draft,,,lexicon,n.carrot,draft from the class handout; Mum has not confirmed it
+cassava,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mogo,none,confirmed,,,lexicon,n.cassava,
+cauliflower,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,phulaver,none,draft,,,lexicon,n.cauliflower,draft from the class handout; Mum has not confirmed it
+chai,noun,food-drink,in-engine-not-recorded,Cook; Clinic heal game: tummy,,chai,heard only inside 26 longer recorded line(s),confirmed,,,lexicon,n.tea,
+cherry,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,cheree,none,draft,,,lexicon,n.cherry,draft from the class handout; Mum has not confirmed it
+chicken,noun,food-drink,in-engine-not-recorded,Story day: evening book; Story day: door/ride,,murgi,none,confirmed,,,lexicon,n.chicken,"the ride (data/day.json) uses this id for ""hen""; the lexicon meaning is chicken (Mum, cooking)"
+"chilli (the dried chilli, or the plural: Zafar's word)",noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,marcha,none,draft,,,lexicon,n.dried-chilli,
+chutney,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chutney,heard only inside 3 longer recorded line(s),draft,,,lexicon,n.chutney,
+cinnamon,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,taj,none,draft,,,lexicon,n.cinnamon,draft from the class handout; Mum has not confirmed it
+cloves,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,laving,none,draft,,,lexicon,n.cloves,draft from the class handout; Mum has not confirmed it
+coconut,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,nair / naariyel,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.coconut + n.coconut-2,"merged same English: n.coconut-2 | draft from the class handout; Mum has not confirmed it | two Kutchi words for one meaning, Zafar to choose (clash list)"
+coriander seeds,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,dhana,none,draft,,,lexicon,n.coriander-seeds,draft from the class handout; Mum has not confirmed it
+cucumber,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,kaakri,none,draft,,,lexicon,n.cucumber,draft from the class handout; Mum has not confirmed it
+cumin seeds,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,jeeru,none,draft,,,lexicon,n.cumin-seeds,
+daal,noun,food-drink,in-engine-not-recorded,Cook; Conversations,,daar,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.daal,
+fennel seeds,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,variyali,none,draft,,,lexicon,n.fennel-seeds,draft from the class handout; Mum has not confirmed it
+fenugreek seeds,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,methi,none,draft,,,lexicon,n.fenugreek-seeds,draft from the class handout; Mum has not confirmed it
+fig,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,anjir,none,draft,,,lexicon,n.fig,draft from the class handout; Mum has not confirmed it
+food,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khenjo / kenjo,none,draft,,,lexicon,n.food + n.food-s5,"merged same English: n.food-s5 | two Kutchi words for one meaning, Zafar to choose (clash list)"
+fruit,noun,food-drink,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.fruit,
+garam masala,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,garam masalo,none,draft,,,lexicon,n.garam-masala,draft from the class handout; Mum has not confirmed it
+garlic,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,lasan,none,draft,,,lexicon,n.garlic,
+ginger,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,aadu,none,draft,,,lexicon,n.ginger,
+grapes,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,drakhu,none,draft,,,lexicon,n.grapes,draft from the class handout; Mum has not confirmed it
+green beans,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,phali,none,draft,,,lexicon,n.green-beans,draft from the class handout; Mum has not confirmed it
+green pepper,noun,food-drink,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,n.green-pepper,
+honey,noun,food-drink,in-engine-not-recorded,Clinic; Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,n.honey,"cites data/clinic/lang.json, a file that no longer exists"
+kebab,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kebab,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.kebab,
+kiwi,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,kivi,none,draft,,,lexicon,n.kiwi,draft from the class handout; Mum has not confirmed it
+lollipop,noun,food-drink,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.lollipop,
+lychee,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,litchi,none,draft,,,lexicon,n.lychee,draft from the class handout; Mum has not confirmed it
+mango,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,ambo / aamo,heard only inside 38 longer recorded line(s),confirmed,,,lexicon,n.mango + n.mango-2,"merged same English: n.mango-2 | draft from the class handout; Mum has not confirmed it | two Kutchi words for one meaning, Zafar to choose (clash list) | a ""hakro ambo, ba amba"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+milk,noun,food-drink,in-engine-not-recorded,Cook; Clinic; Clinic heal game: tummy,,dudh,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.milk,
+millet,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bajr,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.millet,
+mint,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,fudino,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.mint,
+mustard seeds,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,rai,none,draft,,,lexicon,n.mustard-seeds,
+oil,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,,none,no-kutchi (English placeholder),,,lexicon,n.oil,
+okra,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,bhindaa,none,draft,,,lexicon,n.okra,draft from the class handout; Mum has not confirmed it
+orange,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap); Dress up (parked)",,santra,none,draft,,,lexicon,n.orange,
+papaya,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,papaiyo,none,draft,,,lexicon,n.papaya,draft from the class handout; Mum has not confirmed it
+peach,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,peach,none,draft,,,lexicon,n.peach,draft from the class handout; Mum has not confirmed it
+pear,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,naaspati,none,draft,,,lexicon,n.pear,draft from the class handout; Mum has not confirmed it
+pineapple,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,ananas,none,draft,,,lexicon,n.pineapple,draft from the class handout; Mum has not confirmed it
+pomegranate,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,daadam,none,draft,,,lexicon,n.pomegranate,draft from the class handout; Mum has not confirmed it
+potato,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,bataato,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.potato,"takes ""bateto"" and ""trae bateta"" exist but are not linked: Whisper hears bateto, the game spells bataato"
+pumpkin,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,kolu,none,draft,,,lexicon,n.pumpkin,draft from the class handout; Mum has not confirmed it
+red chilli powder,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,laal marcha,none,draft,,,lexicon,n.red-chilli-powder,
+saffron,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kesar,none,confirmed,,,lexicon,n.saffron,
+salt,noun,food-drink,in-engine-not-recorded,"Cook; Clinic; Clinic heal game: foot; Handout list (content master; read by Find it, Tidy up, Snap)",,loon,none,draft,,,lexicon,n.salt,
+sekelo,noun,food-drink,in-engine-not-recorded,Cook,,sekelo,none,draft,,,lexicon,n.sekelo,
+sesame seeds,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,tal,none,draft,,,lexicon,n.sesame-seeds,draft from the class handout; Mum has not confirmed it
+spices,noun,food-drink,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.spices,
+spinach,noun,food-drink,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,bhaji,none,draft,,,lexicon,n.spinach,draft from the class handout; Mum has not confirmed it
+sugar,noun,food-drink,in-engine-not-recorded,Cook; Clinic,,khun,none,confirmed,,,lexicon,n.sugar,
+sweets (the family's word; mithai at a celebration is fine),noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mitai,none,confirmed,,,lexicon,n.sweets,
+syrup,noun,food-drink,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.syrup,
+turmeric,noun,food-drink,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,hardar,none,draft,,,lexicon,n.turmeric,
+unsweetened tea,noun,food-drink,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,,none,confirmed,,,lexicon,n.unsweetened-tea,
+water,noun,food-drink,in-engine-not-recorded,Cook; Clinic; Clinic heal game: cut; Clinic heal game: foot; Clinic heal game: hic; Clinic heal game: tummy,,paani,heard only inside 3 longer recorded line(s),draft,,,lexicon,n.water,
+garlic powder,noun,food-drink,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:garlic powder,
+eat,verb,food-drink,recorded,Cook,"imperative (to a child): kha [recorded alone]; ""having done"" form: khai [in engine, not recorded]; present, I (man): kianto [recorded inside a longer line]; present, I (woman): kianti [recorded inside a longer line]; present, you (boy): khaito [recorded inside a longer line]; present, you (girl): khaiti [recorded inside a longer line]; present, he: khaito [recorded inside a longer line]; present, she: khaiti [recorded inside a longer line]; present, you (elder): kianta [recorded inside a longer line]; present, we: kianta [recorded inside a longer line]; present, they: kenta [recorded inside a longer line]; not yet known: imperative (to an elder); recorded sentence frames: every day (habit)",kha,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,v.eat + phrase.eat,merged same English: phrase.eat
+hello (peace be upon you),phrase-or-sentence,greetings-politeness,recorded,"Cook; Conversations; Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,salamun alaykum,whole line recorded,confirmed,mum,ok,lexicon,phrase.hello-peace-be-upon-you,
+hello back (the way Mum said it: no 'wa'),phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,alaikum salaam,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.hello-back-the-way-mum-said-it-no-wa,
+"hey, boy! (calling out puts e before the word)",phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,e chokro,whole line recorded,draft,mum,ok,lexicon,phrase.hey-boy-calling-out-puts-e-before-the-word,
+"hey, girl!",phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,e chokri,whole line recorded,draft,mum,ok,lexicon,phrase.hey-girl,
+how are you? (informal: tu ki aiye without the tu),phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,ki aiye,whole line recorded,draft,mum/zafar,ok-auto,lexicon,phrase.how-are-you-informal-tu-ki-aiye-without-the-tu,
+I don't want it (in full: nato for a he-word),phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,muke nato khape,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.i-dont-want-it-in-full-nato-for-a-he-word,
+I don't want it (polite),phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,muke na khape,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.i-dont-want-it-polite,
+I'm fine. And how are you?,phrase-or-sentence,greetings-politeness,recorded,Conversations,,aau theek ai. Aai ki aayo / aau theek ai. Tu ki aiye,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.im-fine-and-how-are-you + phrase.im-fine-and-how-are-you-2,merged same English: phrase.im-fine-and-how-are-you-2
+"mmm, lovely chai! well done, dear.",phrase-or-sentence,greetings-politeness,recorded,Conversations; First launch story,,"mmm, chai bo fine ai. shabash, beta",whole line recorded,draft,mum/zafar,ok,lexicon,phrase.mmm-lovely-chai-well-done-dear,
+"no, I don't want it (polite)",phrase-or-sentence,greetings-politeness,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"na, muke na khape",whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.no-thanks + phrase.no-thanks-with-me,merged same English: phrase.no-thanks-with-me | only a low-confidence take
+"no, thank you",phrase-or-sentence,greetings-politeness,recorded,Conversations,,"na, thank you",whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.no-thank-you,
+No.,phrase-or-sentence,greetings-politeness,recorded,Cook; Conversations; Clinic; Story day: door/ride,,na,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.no,
+well done!,phrase-or-sentence,greetings-politeness,recorded,Cook; Clinic,,shabash,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,intj.well-done + phrase.well-done,merged same English: phrase.well-done
+yes,phrase-or-sentence,greetings-politeness,recorded,Cook; Conversations; First launch story; Clinic; Story day: door/ride; Who did it (parked),,ha,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.yes + n.yes,"merged same English: n.yes | cites data/clinic/lang.json, a file that no longer exists"
+you're welcome (it's no trouble at all),phrase-or-sentence,greetings-politeness,recorded,Cook; Conversations,,jara e wandho nai,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.youre-welcome-its-no-trouble-at-all,
+"Bye bye, beetle!",phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bye-bye-beetle,
+Bye!,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,"Cook; Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,achija,none,draft,,,lexicon,phrase.bye,"cites data/clinic/lang.json, a file that no longer exists"
+Get well soon!,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.get-well-soon,
+goodbye (khuda hafiz),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Conversations,,khuda-fis,none,confirmed,,,lexicon,phrase.goodbye-khuda-hafiz,"a take ""Khuda hafiz!"" exists (family-audio id khuda-fis) but is not linked: the game spells it khuda-fis (clash list s6)"
+Goodnight!,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Story day: evening book (Nani at the end),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.goodnight,named in game data with an English line only; no lexicon entry
+hello back (and peace be upon you),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,"Cook; Conversations; Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,wa alaikum salaam,none,draft,,,lexicon,phrase.hello-back-and-peace-be-upon-you,
+Here you are.,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,"Cook; Handout list (content master; read by Find it, Tidy up, Snap)",,ghan,none,draft,,,lexicon,phrase.here-you-are,
+Hey!,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,"Cook; Clinic; Handout list (content master; read by Find it, Tidy up, Snap)",,hedo,none,draft,,,lexicon,phrase.hey,"cites data/clinic/lang.json, a file that no longer exists"
+how are you? (casual),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Conversations,,ki ai,none,confirmed,,,lexicon,phrase.how-are-you-casual,
+I don't want sugar,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khun nati khape,none,confirmed,,,lexicon,phrase.i-dont-want-sugar,
+I don't want sugar (polite),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,muke khun nati khape,none,confirmed,,,lexicon,phrase.i-dont-want-sugar-polite,
+no sugar (very informal),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khun na,none,confirmed,,,lexicon,phrase.no-sugar-very-informal,
+"No, I don't want any.",phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Conversations,,"na, na khape",none,draft,,,lexicon,phrase.no-i-dont-want-any,
+Say bye.,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.say-bye,
+Say get well soon.,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.say-get-well-soon,
+Say thank you to the doctor.,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.say-thank-you-to-the-doctor,
+See you tomorrow!,phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Story day: evening book (the tomorrow doorway),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.see-you-tomorrow,named in game data with an English line only; no lexicon entry
+thank you (the English words: the family says them),phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Conversations,,thank you,none,confirmed,,,lexicon,phrase.thank-you-the-english-words-the-family-says-them,
+"Thank you, I feel better!",phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thank-you-i-feel-better,
+"Well done, dear!",phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Conversations,,"shabash, beta",none,draft,,,lexicon,phrase.well-done-dear,
+"Well done, my helper.",phrase-or-sentence,greetings-politeness,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.well-done-my-helper,
+It's okay (after sorry),phrase-or-sentence,greetings-politeness,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:it's okay (after sorry),
+Sorry,phrase-or-sentence,greetings-politeness,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:sorry,
+"Thank you for getting those for me, beta.",phrase-or-sentence,greetings-politeness,planned,planned: modes/first-launch.md,,,none,not in lexicon or any game data,,,doc-only,"planned:thank you for getting those for me, beta.",
+happy,adjective,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,a.happy,
+sad,adjective,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,a.sad,
+better,adjective,health-feelings,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:better,named as a placeholder (G63-G65)
+hurt / sore (the words),adjective,health-feelings,planned,planned: modes/clinic.md,,,none,not in lexicon or any game data,,,doc-only,planned:hurt / sore (the words),"only whole sentences (""my knee hurts"") are in the lexicon"
+not well,adjective,health-feelings,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:not well,named as a placeholder (G112)
+tired,adjective,health-feelings,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:tired,named as a placeholder (G62)
+bandage,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,n.bandage,"cites data/clinic/lang.json, a file that no longer exists"
+bubble,noun,health-feelings,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,n.bubble + n.bubbles,merged same English: n.bubbles
+"care, attention",noun,health-feelings,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,dhyan,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.care,
+cast,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,n.cast,
+cotton bud,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.cotton-bud,"cites data/clinic/lang.json, a file that no longer exists"
+crutches,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.crutches,
+dabs,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,n.dabs,"cites data/clinic/lang.json, a file that no longer exists"
+dropper,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.dropper,
+drops (not sprinkle),noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: ear; Clinic heal game: eye,,chando,none,confirmed,,,lexicon,n.drops + n.drop,"merged same English: n.drop | cites data/clinic/lang.json, a file that no longer exists"
+eye drops,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.eye-drops,
+eye patch,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.eye-patch,
+filling,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.filling,
+hot-water bottle,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,n.hot-water-bottle + n.the-hot-water-bottle,"merged same English: n.the-hot-water-bottle | cites data/clinic/lang.json, a file that no longer exists"
+ice pack,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.ice-pack,"cites data/clinic/lang.json, a file that no longer exists"
+medicine,noun,health-feelings,in-engine-not-recorded,Clinic,,dawa,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.medicine,"cites data/clinic/lang.json, a file that no longer exists"
+need (a necessity),noun,health-feelings,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jaruri,heard only inside 10 longer recorded line(s),confirmed,,,lexicon,n.need,
+plaster,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: boing; Clinic heal game: cut; Story day: evening book,,,none,no-kutchi (English placeholder),,,lexicon,n.plaster,"cites data/clinic/lang.json, a file that no longer exists"
+rub,noun,health-feelings,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,n.rub + n.rubs,merged same English: n.rubs
+soothing ointment,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.soothing-ointment,"cites data/clinic/lang.json, a file that no longer exists"
+splinters,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.splinters,"cites data/clinic/lang.json, a file that no longer exists"
+spots,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,n.spots,"cites data/clinic/lang.json, a file that no longer exists"
+stethoscope,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.stethoscope,
+stitches,noun,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,n.stitches,"cites data/clinic/lang.json, a file that no longer exists"
+the doctor’s syringe,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.the-doctors-syringe,
+the eye test,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.the-eye-test,"cites data/clinic/lang.json, a file that no longer exists"
+thermometer,noun,health-feelings,in-engine-not-recorded,Clinic; Story day: evening book,,,none,no-kutchi (English placeholder),,,lexicon,n.thermometer,
+tissue,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.tissue,
+tweezers,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.tweezers,
+X-ray,noun,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.x-ray,
+"The waiting room's ladder words (W4). All English placeholders, to record (man, woman, young, old, tall, short, with, the colours, the baby, the child, bring in).",other,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.the-waiting-rooms-ladder-words,
+"A bow, like a shoelace!",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-bow-like-a-shoelace,
+A break. Clonk!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-break-clonk,
+A bump.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-bump,
+A cracked tooth.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-cracked-tooth,
+A fever.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-fever,
+A few more drops,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-few-more-drops,
+A sore eye.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-sore-eye,
+A sugar bug!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-sugar-bug,
+A thorn!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.a-thorn,
+All better!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic; Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.all-better,
+Ask them,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ask-them,
+Ask them how they feel,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ask-them-how-they-feel,
+Ask where it hurts,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ask-where-it-hurts,
+Check her over,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.check-her-over,
+Close the clinic,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.close-the-clinic,
+Comb it,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,phrase.comb-it,
+Cover the other eye,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.cover-the-other-eye,
+Does it hurt here?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.does-it-hurt-here,
+drill the bad bits,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.drill-the-bad-bits,"cites data/clinic/lang.json, a file that no longer exists"
+"Drops first, then let's test your eyes.",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.drops-first-then-lets-test-your-eyes,
+"drops, please",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.drops-please,
+Find where it hurts,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.find-where-it-hurts,
+fix it,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.fix-it,"cites data/clinic/lang.json, a file that no longer exists"
+Hold your breath!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hold-your-breath,
+How do you feel?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.how-do-you-feel,
+I can hear again!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-can-hear-again,
+I can see!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-can-see,
+I can't see well.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-cant-see-well,
+I don't feel well.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-dont-feel-well,
+I don't feel well. I don't know why.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-dont-feel-well-i-dont-know-why,
+I don't know why.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-dont-know-why,
+I feel cold.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-feel-cold,
+I feel happy.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-feel-happy,
+I feel hot.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-feel-hot,
+"I feel hot... no, cold!",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: fever,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-feel-hot-no-cold,
+I feel sad.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-feel-sad,
+I fell over and scraped my arm.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.i-fell-over-and-scraped-my-arm,
+I'm too cold!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.im-too-cold,"cites data/clinic/lang.json, a file that no longer exists"
+I'm too hot!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.im-too-hot,"cites data/clinic/lang.json, a file that no longer exists"
+Is everything okay now?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.is-everything-okay-now,
+It doesn't hurt now!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.it-doesnt-hurt-now,
+"Let's brush, fix it and fill it.",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-brush-fix-it-and-fill-it,
+Let's check everything.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-check-everything,
+Let's check it and bandage it.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-check-it-and-bandage-it,
+Let's clean it and put plasters on.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-clean-it-and-put-plasters-on,
+Let's clean it.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-clean-it,
+Let's get you just right.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: fever,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-get-you-just-right,
+Let's have a look,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-have-a-look,
+Let's soothe the sore spots.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-soothe-the-sore-spots,
+Let's take the splinters out.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.lets-take-the-splinters-out,
+Listen: the stethoscope.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.listen-the-stethoscope,
+Look at: your hand.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-at-your-hand,
+Look in: the torch.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-in-the-torch,
+My ear feels blocked.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-ear-feels-blocked,
+My knee hurts.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-knee-hurts,
+My left,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-left,
+My left eye,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-left-eye,
+My right,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-right,
+My right eye,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-right-eye,
+My tongue feels better!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-tongue-feels-better,
+My tongue is sore.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-tongue-is-sore,
+My tooth hurts.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.my-tooth-hurts,
+Nothing wrong there.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.nothing-wrong-there,
+Nothing wrong there. What else?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.nothing-wrong-there-what-else,
+"Ooh, my tummy! Too many sweets!",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ooh-my-tummy-too-many-sweets,
+Pick how she feels,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.pick-how-she-feels,
+Something in the ear!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.something-in-the-ear,
+Sore feet!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.sore-feet,
+Sore spots on my tongue!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.sore-spots-on-my-tongue,
+Still too cold!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.still-too-cold,"cites data/clinic/lang.json, a file that no longer exists"
+Still too hot!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.still-too-hot,"cites data/clinic/lang.json, a file that no longer exists"
+take back,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.take-back,"cites data/clinic/lang.json, a file that no longer exists"
+take off,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.take-off,"cites data/clinic/lang.json, a file that no longer exists"
+take the temperature,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.take-the-temperature,"cites data/clinic/lang.json, a file that no longer exists"
+Take the wax out,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.take-the-wax-out,"cites data/clinic/lang.json, a file that no longer exists"
+Tap the knee,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,phrase.tap-the-knee,
+That feels better!,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,phrase.that-feels-better,
+The chart.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-chart,
+The eye isn't right.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-eye-isnt-right,
+The jab before the trip.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-jab-before-the-trip,
+The temperature:,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-temperature,
+The temperature: the thermometer.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-temperature-the-thermometer,
+Time for my jab.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.time-for-my-jab,
+Time for the jab,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.time-for-the-jab,
+Use the stethoscope,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.use-the-stethoscope,
+Use the thermometer,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.use-the-thermometer,
+Use the torch,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.use-the-torch,
+Use your hand,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.use-your-hand,
+We will heal the eye.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.we-will-heal-the-eye,
+We'll use this medicine.,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.well-use-this-medicine,
+What will help?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.what-will-help,
+Where does it hurt?,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.where-does-it-hurt,
+Wipe it,phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.wipe-it,
+"X-ray the leg, clonk",phrase-or-sentence,health-feelings,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,phrase.x-ray-the-leg-clonk,
+sore throat,phrase-or-sentence,health-feelings,planned,planned: modes/clinic.md,,,none,not in lexicon or any game data,,,doc-only,planned:sore throat,
+cupboard,noun,home-rooms,recorded,Cook,,kabaat,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,n.cupboard,
+door,noun,home-rooms,in-engine-not-recorded,Monsoon rush (parked); Story day: evening book; Story day: door/ride,,darwajo,heard only inside 13 longer recorded line(s),confirmed,,,lexicon,n.door,"a ""hakro darwajo, ba darwaja"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+house,noun,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ghar,none,confirmed,,,lexicon,n.house,
+kitchen,noun,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,rasoro / jikoni,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,n.kitchen + n.kitchen-swahili,"merged same English: n.kitchen-swahili | two Kutchi words for one meaning, Zafar to choose (clash list)"
+the gate,noun,home-rooms,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-gate,
+window,noun,home-rooms,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.window,"cites data/clinic/lang.json, a file that no longer exists"
+"come, let's go to the kitchen",phrase-or-sentence,home-rooms,recorded,First launch story,,"hal, rasore me winja",whole line recorded,draft,mum/zafar,ok,lexicon,phrase.come-lets-go-to-the-kitchen,
+he's / she's in the kitchen,phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,e rasore me ai,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.hes-shes-in-the-kitchen,
+he's over there in the kitchen,phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,e huda rasore me ai,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.hes-over-there-in-the-kitchen,
+I'm in the kitchen (a man or a woman),phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,aau rasore me aiya,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.im-in-the-kitchen-a-man-or-a-woman,
+that girl is in the kitchen,phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hu chokri rasore me ai,whole line recorded,draft,mum,unchecked,lexicon,phrase.that-girl-is-in-the-kitchen,
+these are in the kitchen,phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi rasore me ain,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.these-are-in-the-kitchen,
+you're in the kitchen (to a child),phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,tu rasore me aiye,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.youre-in-the-kitchen-to-a-child,
+you're in the kitchen (to Nana),phrase-or-sentence,home-rooms,recorded,no game uses it yet (asked of Mum / heard in her recordings),,aai rasore me aayo,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.youre-in-the-kitchen-to-nana,
+"these are all in the kitchen, and those are all in the kitchen",phrase-or-sentence,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"hi mare rasore me ain, ne hu mare rasore me ain",none,confirmed,,,lexicon,phrase.these-are-all-in-the-kitchen-and-those-are-all-in-the,
+they're in the kitchen (no word for 'they' needed),phrase-or-sentence,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,rasore me ain,none,confirmed,,,lexicon,phrase.theyre-in-the-kitchen-no-word-for-they-needed,
+those are in the kitchen,phrase-or-sentence,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hu rasore me ain,none,confirmed,,,lexicon,phrase.those-are-in-the-kitchen,
+we're all in the kitchen,phrase-or-sentence,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pa mare rasore me aayo,none,confirmed,,,lexicon,phrase.were-all-in-the-kitchen,
+we're all in the kitchen (not you),phrase-or-sentence,home-rooms,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,asa mare rasore me aayo,none,confirmed,,,lexicon,phrase.were-all-in-the-kitchen-not-you,
+basket,noun,household-objects,in-engine-not-recorded,Find it; Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.basket + n.the-basket,merged same English: n.the-basket
+blanket,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.blanket,"cites data/clinic/lang.json, a file that no longer exists"
+blue bottle,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.blue-bottle,
+bottle,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.bottle,
+box,noun,household-objects,in-engine-not-recorded,Find it; Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.box + n.the-box,merged same English: n.the-box
+ceiling fan,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.ceiling-fan,"cites data/clinic/lang.json, a file that no longer exists"
+chair,noun,household-objects,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kursi,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,n.chair,
+cloth,noun,household-objects,in-engine-not-recorded,Clinic; Clinic heal game: cut; Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.cloth,"cites data/clinic/lang.json, a file that no longer exists"
+comb,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.comb,
+cool cloth,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.cool-cloth,
+crate,noun,household-objects,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.crate,
+curtain,noun,household-objects,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.curtain,
+cushion,noun,household-objects,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.cushion,
+drill,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.drill,
+fan,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.fan,
+film,noun,household-objects,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,film,none,confirmed,,,lexicon,n.film,
+green bottle,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.green-bottle,
+hammer,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.hammer,
+hand fan,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.hand-fan,"cites data/clinic/lang.json, a file that no longer exists"
+heater,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.heater,"cites data/clinic/lang.json, a file that no longer exists"
+key,noun,household-objects,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chawi,none,confirmed,,,lexicon,n.key,
+needle,noun,household-objects,in-engine-not-recorded,Clinic; Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.needle,
+pillow,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.pillow,
+pin,noun,household-objects,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.pin,
+pointer,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.pointer,
+red bottle,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.red-bottle,
+rug,noun,household-objects,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.rug,
+scissors,noun,household-objects,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.scissors,
+shelf (the English word),noun,household-objects,in-engine-not-recorded,Tidy up (parked); Find it,,shelf,none,confirmed,,,lexicon,n.shelf,
+sofa,noun,household-objects,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.sofa,
+table (the English word),noun,household-objects,in-engine-not-recorded,Find it,,table,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,n.table,"a ""hakro table, ba table"" take exists in family-audio.json but is not linked to the engine (two phrases in one take)"
+tank,noun,household-objects,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,tanki,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,n.tank,
+taps,noun,household-objects,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,n.taps,
+the bucket,noun,household-objects,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-bucket,
+the charpai,noun,household-objects,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-charpai,
+thing,noun,household-objects,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chij,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.thing,
+thread,noun,household-objects,in-engine-not-recorded,Clinic; Clinic heal game: cut; Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.thread,"cites data/clinic/lang.json, a file that no longer exists"
+toothbrush,noun,household-objects,in-engine-not-recorded,Clinic; Story day: evening book,,,none,no-kutchi (English placeholder),,,lexicon,n.toothbrush,
+torch,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.torch,
+tub,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.tub,
+umbrella,noun,household-objects,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.umbrella,
+wax,noun,household-objects,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.wax,"cites data/clinic/lang.json, a file that no longer exists"
+binoculars,noun,household-objects,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:binoculars,
+towel,noun,household-objects,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:towel,
+water bottle,noun,household-objects,planned,planned: farm.md,,,none,not in lexicon or any game data,,,doc-only,planned:water bottle,
+ones,pronoun,household-objects,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,n.ones,
+Bring them in,phrase-or-sentence,jobs-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bring-them-in,
+Call them in,phrase-or-sentence,jobs-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.call-them-in,
+Next,phrase-or-sentence,jobs-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.next,
+Next patient,phrase-or-sentence,jobs-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.next-patient,
+Who's next?,phrase-or-sentence,jobs-people,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.whos-next,
+scales,noun,money-shopping,in-engine-not-recorded,Find it,,,none,no-kutchi (English placeholder),,,lexicon,n.scales,
+change (money back),noun,money-shopping,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:change (money back),
+paisa (money),noun,money-shopping,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:paisa (money),
+prices (how much),noun,money-shopping,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:prices (how much),
+purse,noun,money-shopping,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:purse,
+shop,noun,money-shopping,planned,planned: recording-sheet.md §5 (ride candidates),,,none,not in lexicon or any game data,,,doc-only,planned:shop,named as a possible next ride word
+shopping bag,noun,money-shopping,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:shopping bag,
+"buy the big one, buy the small one",phrase-or-sentence,money-shopping,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"wadho ginech, nindho ginech",whole line recorded,draft,mum,unchecked,lexicon,phrase.buy-the-big-one-buy-the-small-one,
+buy the big one,phrase-or-sentence,money-shopping,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho ginech,none,draft,,,lexicon,phrase.buy-the-big-one,
+buy the small one,phrase-or-sentence,money-shopping,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,nindho ginech,none,draft,,,lexicon,phrase.buy-the-small-one,
+"I'll give you pocket money for helping. Get it all right and be quick, and you get more!",phrase-or-sentence,money-shopping,in-engine-not-recorded,Cook,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ill-give-you-pocket-money-for-helping-get-it-all-right-and,
+"buy, fetch",verb,money-shopping,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): ginech [recorded inside a longer line]; not yet known: imperative (to an elder),ginech,heard only inside 1 longer recorded line(s),draft,,,lexicon,v.buy,
+times,noun,numbers-counting,in-engine-not-recorded,Clinic heal game: ear; Clinic heal game: boing; Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,adv.times + n.times,merged same English: n.times
+turns,noun,numbers-counting,in-engine-not-recorded,Clinic heal game: knee,,,none,no-kutchi (English placeholder),,,lexicon,n.turns,
+eight,number,numbers-counting,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,ath,none,draft,,,lexicon,num.8,draft from the class handout; Mum has not confirmed it
+five,number,numbers-counting,in-engine-not-recorded,"Cook; Clinic heal game: boing; Handout list (content master; read by Find it, Tidy up, Snap)",,panj,none,draft,,,lexicon,num.5,
+four,number,numbers-counting,in-engine-not-recorded,"Cook; Clinic heal game: boing; Handout list (content master; read by Find it, Tidy up, Snap)",,char,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,num.4,
+nine,number,numbers-counting,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,no,none,draft,,,lexicon,num.9,draft from the class handout; Mum has not confirmed it
+one,number,numbers-counting,in-engine-not-recorded,"Cook; Clinic heal game: boing; Clinic heal game: hair; Handout list (content master; read by Find it, Tidy up, Snap)",,hakro,heard only inside 18 longer recorded line(s),confirmed,,,lexicon,num.1,
+seven,number,numbers-counting,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,sat,none,draft,,,lexicon,num.7,draft from the class handout; Mum has not confirmed it
+six,number,numbers-counting,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,chh,none,draft,,,lexicon,num.6,draft from the class handout; Mum has not confirmed it
+ten,number,numbers-counting,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,do,none,draft,,,lexicon,num.10,draft from the class handout; Mum has not confirmed it
+three,number,numbers-counting,in-engine-not-recorded,"Cook; Clinic heal game: boing; Handout list (content master; read by Find it, Tidy up, Snap)",,trae,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,num.3,
+two,number,numbers-counting,in-engine-not-recorded,"Cook; Clinic heal game: boing; Handout list (content master; read by Find it, Tidy up, Snap)",,ba,none,confirmed,,,lexicon,num.2,
+Count to,phrase-or-sentence,numbers-counting,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.count-to,
+Count with me!,phrase-or-sentence,numbers-counting,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.count-with-me,
+I'll do it. You count!,phrase-or-sentence,numbers-counting,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ill-do-it-you-count,
+no / not,adverb,other:grammar-words,recorded,Cook; Clinic heal game: eye,,na,alone (family clip),draft,mum/zafar,ok-auto,lexicon,neg.not,
+"also, too",adverb,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pan,none,confirmed,,,lexicon,adv.also,
+"is not, there is none",adverb,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,nai,heard only inside 3 longer recorded line(s),confirmed,,,lexicon,neg.is-not,
+and,other,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ne,none,confirmed,,,lexicon,conj.and,
+leave the,other,other:grammar-words,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.leave-the,
+mmm (a pleased sound),other,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mmm,heard only inside 1 longer recorded line(s),draft,,,lexicon,intj.mmm,
+oh,other,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,o,none,draft,,,lexicon,intj.oh,
+oh no! (more dramatic than o),other,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,oho,heard only inside 1 longer recorded line(s),draft,,,lexicon,intj.oh-no,
+or,other,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ke,none,confirmed,,,lexicon,conj.or,
+for,postposition-or-position,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,lai,heard only inside 6 longer recorded line(s),confirmed,,,lexicon,post.for,
+with (a person),postposition-or-position,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,sathe,heard only inside 16 longer recorded line(s),confirmed,,,lexicon,post.with,
+with (mixed in),postposition-or-position,other:grammar-words,in-engine-not-recorded,Cook,,waari,none,confirmed,,,lexicon,post.mixed-in,
+without,postposition-or-position,other:grammar-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wagar,none,confirmed,,,lexicon,post.without,
+Again?,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.again,
+All done!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.all-done,
+And what else?,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.and-what-else,
+Caught you!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.caught-you,
+Did you hear?,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.did-you-hear,
+Done,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.done,
+Found it,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.found-it,
+Here's the photo.,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Snap (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.heres-the-photo,
+I'm telling you,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.im-telling-you,
+It was that one!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.it-was-that-one,
+Let me see.,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.let-me-see,
+Look closer!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.look-closer,
+Lovely!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.lovely,
+Nearly!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Snap (parked); Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.nearly,
+Not me!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.not-me,
+One more thing,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.one-more-thing,
+that,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.that,
+That one? Oh!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.that-one-oh,
+That's it!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thats-it,
+That's it. Will you help me?,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thats-it-will-you-help-me,
+That's mine!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.thats-mine,
+You first.,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.you-first,
+You guessed!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.you-guessed,
+You told me…,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Clinic heal game: ear,,,none,no-kutchi (English placeholder),,,lexicon,phrase.you-told-me,
+You're right!,phrase-or-sentence,other:small-talk,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.youre-right,
+"Your turn, Ali.",phrase-or-sentence,other:small-talk,in-engine-not-recorded,Snap (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.your-turn-ali,
+"oh no, there's no food!",phrase-or-sentence,other:sounds,recorded,no game uses it yet (asked of Mum / heard in her recordings),,"o, kenjo nai",whole line recorded,draft,mum,ok-auto,lexicon,phrase.oh-no-theres-no-food,
+"oh no, there's no food! (more dramatic)",phrase-or-sentence,other:sounds,recorded,First launch story,,"oho, kenjo nai",whole line recorded,draft,mum/zafar,ok,lexicon,phrase.oh-no-theres-no-food-more-dramatic,
+...hic! Still there!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hic-still-there,
+"Ahh, this one.",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ahh-this-one,
+"Ahhh, that's warm...",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ahhh-thats-warm,
+Ahhh...,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ahhh,
+Arrr! A pirate!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.arrr-a-pirate,
+BOING!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: boing,,,none,no-kutchi (English placeholder),,,lexicon,phrase.boing,
+Boing! In you go!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,phrase.boing-in-you-go,
+Boo!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.boo,
+Brrr!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.brrr,
+Bubbles! Hee hee!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,phrase.bubbles-hee-hee,
+Burp!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.burp,
+Eeek!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.eeek,
+Glug glug... ahh!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.glug-glug-ahh,
+Glug!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.glug,
+Ha ha ha! All gone!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ha-ha-ha-all-gone,
+Hee hee! That tickles!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot; Clinic heal game: hair; Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hee-hee-that-tickles,
+Hic!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hic,
+"Hm, nobody's left!",phrase-or-sentence,other:sounds,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.hm-nobodys-left,
+"Hmm, not that one.",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: taste,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hmm-not-that-one,
+Hmmm... (squints),phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.hmmm-squints,
+"Hmm… no, the first one.",phrase-or-sentence,other:sounds,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.hmm-no-the-first-one,
+"Itchy, itchy! Something's in my hair!",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,phrase.itchy-itchy-somethings-in-my-hair,
+Mmmph! (cheeks full),phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.mmmph-cheeks-full,
+Much better!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.much-better,
+Nothing there. Where?,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.nothing-there-where,
+oh dear!,phrase-or-sentence,other:sounds,in-engine-not-recorded,"Cook; Clinic; Handout list (content master; read by Find it, Tidy up, Snap); Who did it (parked)",,arre re,none,draft,,,lexicon,phrase.oh-dear,"cites data/clinic/lang.json, a file that no longer exists"
+"Oh, wait!",phrase-or-sentence,other:sounds,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.oh-wait,
+"Ooh, cold!",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ooh-cold,
+Oop!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.oop,
+Oops! Splash!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.oops-splash,
+Ow!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic; Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ow,"cites data/clinic/lang.json, a file that no longer exists"
+Ow! A chip!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ow-a-chip,
+Ow! There's a thorn!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ow-theres-a-thorn,
+"Ow, something's in my foot!",phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.ow-somethings-in-my-foot,
+Phew!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: foot,,,none,no-kutchi (English placeholder),,,lexicon,phrase.phew,
+Slurrrp... it's empty!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: hic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.slurrrp-its-empty,
+Squawk!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: eye,,,none,no-kutchi (English placeholder),,,lexicon,phrase.squawk,
+That tickles!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic; Clinic heal game: cut,,,none,no-kutchi (English placeholder),,,lexicon,phrase.that-tickles,
+Whoops! It's spilling!,phrase-or-sentence,other:sounds,in-engine-not-recorded,Clinic heal game: tummy,,,none,no-kutchi (English placeholder),,,lexicon,phrase.whoops-its-spilling,
+clinic,noun,places-town,in-engine-not-recorded,Story day: door (the day's place card),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.clinic,named in game data with an English line only; no lexicon entry
+farm,noun,places-town,in-engine-not-recorded,Story day: door (the day's place card),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.farm,named in game data with an English line only; no lexicon entry
+market,noun,places-town,in-engine-not-recorded,Story day: door (the day's place card),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.market,named in game data with an English line only; no lexicon entry
+well,noun,places-town,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.well,named in game data with an English line only; no lexicon entry
+windmill,noun,places-town,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.windmill,named in game data with an English line only; no lexicon entry
+Do you want to come to the farm with me?,phrase-or-sentence,places-town,in-engine-not-recorded,Story day: door (farm day),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.do-you-want-to-come-to-the-farm-with-me,named in game data with an English line only; no lexicon entry
+Go to the market,phrase-or-sentence,places-town,in-engine-not-recorded,"Handout list (content master; read by Find it, Tidy up, Snap)",,bajaar mai vaan,none,draft,,,lexicon,phrase.go-to-the-market,draft from the class handout; Mum has not confirmed it
+Let's go to the market.,phrase-or-sentence,places-town,in-engine-not-recorded,Story day: door (market day thought bubble),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.lets-go-to-the-market,named in game data with an English line only; no lexicon entry
+Today I want to go to the farm.,phrase-or-sentence,places-town,in-engine-not-recorded,Story day: door (farm day thought bubble),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.today-i-want-to-go-to-the-farm,named in game data with an English line only; no lexicon entry
+flower,noun,plants-garden,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.flower,
+leaf,noun,plants-garden,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.leaf,
+the tree,noun,plants-garden,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-tree,
+field,noun,plants-garden,planned,planned: recording-sheet.md §5 (ride candidates),,,none,not in lexicon or any game data,,,doc-only,planned:field,named as a possible next ride word
+palm tree,noun,plants-garden,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:palm tree,
+last,adjective,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.last,
+left,adjective,positions-directions,in-engine-not-recorded,Clinic; Clinic heal game: ear; Clinic heal game: knee; Dress up (parked),,dabo,none,confirmed,,,lexicon,a.left,"cites data/clinic/lang.json, a file that no longer exists"
+right (side),adjective,positions-directions,in-engine-not-recorded,Clinic; Clinic heal game: ear; Clinic heal game: knee; Clinic heal game: tooth; Dress up (parked),,jamni,none,draft,,,lexicon,a.right,"clinic data says jamno, Mum said only jamni (clash list) | cites data/clinic/lang.json, a file that no longer exists"
+middle,noun,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wich,none,confirmed,,,lexicon,n.middle,
+side,noun,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,baju,none,draft,,,lexicon,n.side,
+"space, place",noun,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jagai,none,confirmed,,,lexicon,n.space,
+the bottom row,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-bottom-row,
+the bottom shelf,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-bottom-shelf,
+the corners,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-corners,
+the middle row,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-middle-row,
+the top row,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-top-row,
+the top shelf,noun,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.the-top-shelf,
+Here! (by you),phrase-or-sentence,positions-directions,recorded,Conversations,,hida,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.here-by-you,
+There! (over there),phrase-or-sentence,positions-directions,recorded,Conversations,,huda,whole line recorded,confirmed,mum/zafar,ok-auto,lexicon,phrase.there-over-there,
+"between, in the middle",phrase-or-sentence,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wich me,none,confirmed,,,lexicon,phrase.between-in-the-middle,
+it was on the table,phrase-or-sentence,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,table je mathe wo,none,confirmed,,,lexicon,phrase.it-was-on-the-table,
+leave it,phrase-or-sentence,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.leave-it,
+put it on the table,phrase-or-sentence,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,table mathe rakhi chad,none,draft,,,lexicon,phrase.put-it-on-the-table,
+"sit here, in the space in front of me",phrase-or-sentence,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,munje agiya jagai hida we,none,confirmed,,,lexicon,phrase.sit-here-in-the-space-in-front-of-me,
+sit opposite me,phrase-or-sentence,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,munje same we,none,confirmed,,,lexicon,phrase.sit-opposite-me,
+To the bench,phrase-or-sentence,positions-directions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.to-the-bench,
+To the counter,phrase-or-sentence,positions-directions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.to-the-counter,
+up and out!,phrase-or-sentence,positions-directions,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.up-and-out,
+"""it went that way"" direction lines",phrase-or-sentence,positions-directions,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,"planned:""it went that way"" direction lines",
+here (near you),postposition-or-position,positions-directions,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hida,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,dem.here,
+there,postposition-or-position,positions-directions,recorded,no game uses it yet (asked of Mum / heard in her recordings),,huda,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,dem.there,
+(links a thing to a place word),postposition-or-position,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,je,none,confirmed,,,lexicon,link.place,
+"among (in 'the biggest', wadho ma wadho)",postposition-or-position,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ma,none,confirmed,,,lexicon,post.among,
+at the back,postposition-or-position,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,post.at-the-back,
+at the front,postposition-or-position,positions-directions,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,post.at-the-front,
+behind,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,puthiya,heard only inside 4 longer recorded line(s),confirmed,,,lexicon,post.behind,
+between,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.between,
+down,postposition-or-position,positions-directions,in-engine-not-recorded,Clinic; Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,adv.down,"cites data/clinic/lang.json, a file that no longer exists"
+in,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,me,none,confirmed,,,lexicon,post.in,
+in front of (anywhere in front),postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,agiya,none,confirmed,,,lexicon,post.in-front-of,
+in the corner,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.in-the-corner,
+in the middle,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.in-the-middle,
+"in, inside",postposition-or-position,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,andar,heard only inside 7 longer recorded line(s),confirmed,,,lexicon,post.inside,
+"next to, beside",postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,bajume,none,confirmed,,,lexicon,post.next-to,
+on,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,mathe,heard only inside 6 longer recorded line(s),confirmed,,,lexicon,post.on,
+on the bottom shelf,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.on-the-bottom-shelf,
+on the left of,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.on-the-left-of,
+on the right of,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.on-the-right-of,
+on the top shelf,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.on-the-top-shelf,
+on top of,postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,,none,no-kutchi (English placeholder),,,lexicon,post.on-top-of,
+"opposite, facing",postposition-or-position,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,same,none,confirmed,,,lexicon,post.opposite,
+"out, outside",postposition-or-position,positions-directions,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bare,none,draft,,,lexicon,adv.out,
+"under, underneath",postposition-or-position,positions-directions,in-engine-not-recorded,"Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,niche,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,post.under,
+up,postposition-or-position,positions-directions,in-engine-not-recorded,Clinic; Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,adv.up,"cites data/clinic/lang.json, a file that no longer exists"
+straight on,postposition-or-position,positions-directions,planned,planned: shops.md,,,none,not in lexicon or any game data,,,doc-only,planned:straight on,
+all of these,phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi mare,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.all-of-these,
+all of those,phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hu mare,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.all-of-those,
+it's Nana's,phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,nana jo ai,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.its-nanas,
+it's Nani's,phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,nani jo ai,whole line recorded,confirmed,mum,ok-auto,lexicon,phrase.its-nanis,
+they're the girls' (she-word things),phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,chokriyu ji ain,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.theyre-the-girls-she-word-things,
+this is for Nana,phrase-or-sentence,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi nana lai ai,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.this-is-for-nana,
+it's the boy's,phrase-or-sentence,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chokre jo ai,none,draft,,,lexicon,phrase.its-the-boys,
+"not this one, that one",phrase-or-sentence,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,"hi na, hu",none,confirmed,,,lexicon,phrase.not-this-one-that-one,
+something or other,phrase-or-sentence,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ki na ki,none,confirmed,,,lexicon,phrase.something-or-other,
+these are all my chairs,phrase-or-sentence,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi mare munji kursi ain,none,confirmed,,,lexicon,phrase.these-are-all-my-chairs,
+they're the girls' (things of unknown or he-gender),phrase-or-sentence,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,chokriyu ja ain,none,confirmed,,,lexicon,phrase.theyre-the-girls-things-of-unknown-or-he-gender,
+(marks who or what is acted on: Simba ke rasore me nares),postposition-or-position,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ke,none,draft,,,lexicon,post.object-marker,
+of ('s),postposition-or-position,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jo,none,confirmed,,,lexicon,gen.of,
+that (one),pronoun,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hu,alone (family clip),confirmed,mum/zafar,ok,lexicon,dem.that,
+this (one),pronoun,pronouns-possession,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hi,alone (family clip),confirmed,mum/zafar,ok,lexicon,dem.this,
+he / she,pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,e,heard only inside 22 longer recorded line(s),confirmed,,,lexicon,pron.p3,
+I / me,pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,aau,heard only inside 64 longer recorded line(s),confirmed,,,lexicon,pron.p1,
+"these (people), this lot (near)",pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,hiloka,none,confirmed,,,lexicon,pron.these,
+they / them (those people),pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,iloka,heard only inside 13 longer recorded line(s),confirmed,,,lexicon,pron.they,
+"those (people), that lot (far)",pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,huloka,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,pron.those,
+we (not you),pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,asa,heard only inside 3 longer recorded line(s),confirmed,,,lexicon,pron.we-excl,
+we (with you),pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pa,heard only inside 5 longer recorded line(s),confirmed,,,lexicon,pron.we-incl,
+you (a child),pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,tu,heard only inside 20 longer recorded line(s),confirmed,,,lexicon,pron.p2,
+you (an elder),pronoun,pronouns-possession,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,aai,heard only inside 14 longer recorded line(s),confirmed,,,lexicon,pron.p2resp,
+"filled up, heaped (bharelo cup, bhareli chamchi)",adjective,quantities,recorded,no game uses it yet (asked of Mum / heard in her recordings),,bharelo,alone (family clip),confirmed,zafar,ok-auto,lexicon,a.filled-up,
+half (a portion),adjective,quantities,recorded,no game uses it yet (asked of Mum / heard in her recordings),,ardo,alone (family clip),confirmed,mum/zafar,ok,lexicon,a.half,
+half (of an amount: adh cup),adjective,quantities,recorded,Cook; Clinic heal game: hic; Clinic heal game: tummy,,adh,alone (family clip),draft,mum/zafar,ok-auto,lexicon,a.adh,
+"whole, full (aako cup: a whole cup)",adjective,quantities,recorded,Cook,,aako,alone (family clip),confirmed,zafar,ok,lexicon,a.whole,
+"remaining, left over",adjective,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,baki,none,confirmed,,,lexicon,a.remaining,
+a little (thorok),adverb,quantities,recorded,Cook,,thorok,alone (family clip),draft,mum/zafar,ok-auto,lexicon,adv.a-little + phrase.a-little,merged same English: phrase.a-little
+enough,adverb,quantities,recorded,Cook,,bas,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,adv.enough + phrase.enough,merged same English: phrase.enough
+more,adverb,quantities,recorded,Cook,,wadhare,alone (family clip),draft,mum,ok-auto,lexicon,adv.more + phrase.more,merged same English: phrase.more
+only,adverb,quantities,recorded,no game uses it yet (asked of Mum / heard in her recordings),,kali,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,adv.only,
+"a little, a bit (in thori war: a bit of time)",adverb,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,thori,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,adv.a-bit-of,
+"joined up (in bego kari chad: put it together, mix)",adverb,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,bego,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,adv.joined-up,
+together,adverb,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,saathe,none,draft,,,lexicon,adv.together,
+with,adverb,quantities,in-engine-not-recorded,Clinic,,waaro,none,draft,,,lexicon,adv.with,"cites data/clinic/lang.json, a file that no longer exists"
+all the,other,quantities,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.all-the,
+empty,phrase-or-sentence,quantities,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.empty,
+none left,phrase-or-sentence,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ki baki nai,none,confirmed,,,lexicon,phrase.none-left,
+none left (with the feeling of 'left over'),phrase-or-sentence,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ki rei nai vyo,none,draft,,,lexicon,phrase.none-left-with-the-feeling-of-left-over,
+nothing,phrase-or-sentence,quantities,in-engine-not-recorded,Tidy up (parked),,ki na,none,confirmed,,,lexicon,phrase.nothing + n.nothing,merged same English: n.nothing
+Too much!,phrase-or-sentence,quantities,in-engine-not-recorded,Clinic heal game: tooth,,,none,no-kutchi (English placeholder),,,lexicon,phrase.too-much,
+all (after hi / hu: hi mare = all of these),pronoun,quantities,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,mare,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,adv.all,
+what would you like? (to a child),phrase-or-sentence,question-words,recorded,Conversations,,toke kuro khapeto,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.what-would-you-like-to-a-child,
+what would you like? (to an adult),phrase-or-sentence,question-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,anke kuro khapeto,whole line recorded,draft,mum,ok-auto,lexicon,phrase.what-would-you-like-to-an-adult,
+what's this?,phrase-or-sentence,question-words,recorded,Clinic; Snap (parked); Tidy up (parked); Story day: evening book,,hi kuro ai,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.whats-this,
+where is it?,phrase-or-sentence,question-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,kida ai,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.where-is-it,
+who did it? (⚠: Zafar doesn't recognise it),phrase-or-sentence,question-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,kere karein,whole line recorded,draft,mum/zafar,ok,lexicon,phrase.who-did-it-zafar-doesnt-recognise-it,"Zafar does not recognise this phrase (""do not use"" in conversations.md) but a take of it exists"
+who's there?,phrase-or-sentence,question-words,recorded,no game uses it yet (asked of Mum / heard in her recordings),,ker ai,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.whos-there,
+Here?,phrase-or-sentence,question-words,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.here,
+There's the {thing}!,phrase-or-sentence,question-words,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.theres-the-x,named in game data with an English line only; no lexicon entry
+What did we do today?,phrase-or-sentence,question-words,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.what-did-we-do-today,named in game data with an English line only; no lexicon entry
+What was it like?,phrase-or-sentence,question-words,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.what-was-it-like,
+where was it?,phrase-or-sentence,question-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kida wo,none,confirmed,,,lexicon,phrase.where-was-it,
+Which one did I say?,phrase-or-sentence,question-words,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,phrase.which-one-did-i-say,"cites data/clinic/lang.json, a file that no longer exists"
+who ate the sweets?,phrase-or-sentence,question-words,in-engine-not-recorded,Who did it (parked),,ker mitai khai vyo,none,confirmed,,,lexicon,phrase.who-ate-the-sweets,
+Who ate this one?,phrase-or-sentence,question-words,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.who-ate-this-one,
+Who did it?,phrase-or-sentence,question-words,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.who-did-it,
+Are you cooking today?,phrase-or-sentence,question-words,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:are you cooking today?,
+What's your favourite colour?,phrase-or-sentence,question-words,planned,planned: modes/conversations.md,,,none,not in lexicon or any game data,,,doc-only,planned:what's your favourite colour?,named as a placeholder (F35)
+how many,question word,question-words,recorded,Dress up (parked),,kitla,alone (family clip),confirmed,mum/zafar,ok,lexicon,q.how-many + phrase.how-many,merged same English: phrase.how-many
+which one,question word,question-words,recorded,Snap (parked); Tidy up (parked),,kyo,alone (family clip),draft,mum/zafar,ok,lexicon,q.which-one + phrase.which-one,merged same English: phrase.which-one
+how / what / something,question word,question-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ki,none,confirmed,,,lexicon,q.how,
+what,question word,question-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kuro,heard only inside 6 longer recorded line(s),confirmed,,,lexicon,q.what,
+where,question word,question-words,in-engine-not-recorded,Clinic,,kida,heard only inside 3 longer recorded line(s),confirmed,,,lexicon,q.where + phrase.where,merged same English: phrase.where
+who,question word,question-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,ker,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,q.who,
+who (as the one who did it),question word,question-words,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kere,heard only inside 2 longer recorded line(s),draft,,,lexicon,q.who-did-it,
+shampoo,noun,routines-daily-life,in-engine-not-recorded,Clinic; Clinic heal game: hair,,,none,no-kutchi (English placeholder),,,lexicon,n.shampoo,
+work,noun,routines-daily-life,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kam,none,confirmed,,,lexicon,n.work,
+have you finished work? (said one way),phrase-or-sentence,routines-daily-life,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kam kari vya,none,confirmed,,,lexicon,phrase.have-you-finished-work-said-one-way,
+have you finished work? (said the other way),phrase-or-sentence,routines-daily-life,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kam khalas thai vyo,none,confirmed,,,lexicon,phrase.have-you-finished-work-said-the-other-way,
+I want to cook today.,phrase-or-sentence,routines-daily-life,in-engine-not-recorded,Story day: door (kitchen day thought bubble),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.i-want-to-cook-today,named in game data with an English line only; no lexicon entry
+In the morning we opened the door.,phrase-or-sentence,routines-daily-life,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.in-the-morning-we-opened-the-door,named in game data with an English line only; no lexicon entry
+Tidy up!,phrase-or-sentence,routines-daily-life,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.tidy-up,
+Today we're helping at the clinic.,phrase-or-sentence,routines-daily-life,in-engine-not-recorded,Story day: door (clinic day thought bubble),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.today-we-help-at-the-clinic,named in game data with an English line only; no lexicon entry
+What a mess!,phrase-or-sentence,routines-daily-life,in-engine-not-recorded,Tidy up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.what-a-mess,
+brush,verb,routines-daily-life,in-engine-not-recorded,Clinic; Clinic heal game: tooth,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.brush,"cites data/clinic/lang.json, a file that no longer exists"
+wash,verb,routines-daily-life,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),imperative (to a child): dho [recorded inside a longer line]; not yet known: imperative (to an elder),dho,heard only inside 1 longer recorded line(s),draft,,,lexicon,v.wash,
+wipe,verb,routines-daily-life,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.wipe,"cites data/clinic/lang.json, a file that no longer exists"
+"knowledge, news (Toke khabar ai: do you know)",noun,school-learning,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,khabar,heard only inside 1 longer recorded line(s),draft,,,lexicon,n.knowledge,
+beach,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:beach,
+crab,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:crab,
+fish,noun,sea-beach,planned,planned: boat.md,,,none,not in lexicon or any game data,,,doc-only,planned:fish,
+jetty,noun,sea-beach,planned,planned: boat.md,,,none,not in lexicon or any game data,,,doc-only,planned:jetty,
+net,noun,sea-beach,planned,planned: boat.md,,,none,not in lexicon or any game data,,,doc-only,planned:net,
+sand,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:sand,
+sea,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:sea,
+shell,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:shell,
+spade,noun,sea-beach,planned,planned: beach.md,,,none,not in lexicon or any game data,,,doc-only,planned:spade,
+wave,noun,sea-beach,planned,"planned: beach.md, boat.md",,,none,not in lexicon or any game data,,,doc-only,planned:wave,
+small,adjective,shapes-sizes,recorded,Cook; Clinic heal game: cut; Clinic heal game: eye; Clinic heal game: foot,,nindho,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,a.small,
+big,adjective,shapes-sizes,in-engine-not-recorded,Cook; Clinic heal game: cut; Clinic heal game: eye; Clinic heal game: foot,,wadho,heard only inside 30 longer recorded line(s),confirmed,,,lexicon,a.big,
+short,adjective,shapes-sizes,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.short,
+tall,adjective,shapes-sizes,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.tall,
+thick (she-form; he-form not said),adjective,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jadi,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,a.thick,
+thin,adjective,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,jhino,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,a.thin,
+with the big boy,phrase-or-sentence,shapes-sizes,recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadhe chokre sathe,whole line recorded,confirmed,mum,unchecked,lexicon,phrase.with-the-big-boy,
+big or small?,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho ke nindho,none,confirmed,,,lexicon,phrase.big-or-small,
+take the big one,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho khan,none,confirmed,,,lexicon,phrase.take-the-big-one,
+the biggest,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho ma wadho,none,confirmed,,,lexicon,phrase.the-biggest,
+the cabbages are big,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,kobi wadha ain,none,draft,,,lexicon,phrase.the-cabbages-are-big,
+the smallest,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,nindho ma nindho,none,confirmed,,,lexicon,phrase.the-smallest,
+use the big one,phrase-or-sentence,shapes-sizes,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,wadho wapar,none,confirmed,,,lexicon,phrase.use-the-big-one,
+camera,noun,technology,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:camera,
+"the film has finished, completely",phrase-or-sentence,technology,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,film khalas thai vai,none,confirmed,,,lexicon,phrase.the-film-has-finished-completely,
+switch off,verb,technology,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.switch-off,"cites data/clinic/lang.json, a file that no longer exists"
+switch on,verb,technology,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.switch-on,"cites data/clinic/lang.json, a file that no longer exists"
+now (in a sequence of steps),adverb,time-days-seasons,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hane,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,adv.now-in-steps,
+"now (in general, urgent)",adverb,time-days-seasons,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hever,alone (family clip),confirmed,mum/zafar,ok-auto,lexicon,adv.now-urgent,
+every day,adverb,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,roj,heard only inside 10 longer recorded line(s),draft,,,lexicon,adv.every-day,
+first,adverb,time-days-seasons,in-engine-not-recorded,"Cook; Clinic heal game: boing; Clinic heal game: cut; Clinic heal game: foot; Clinic heal game: hic; Clinic heal game: tummy; Position relations (shared: Find it, Tidy, Monsoon, Snap, clinic)",,pela,none,draft,,,lexicon,adv.first,
+then,adverb,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,poi,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,adv.then,
+tomorrow,adverb,time-days-seasons,in-engine-not-recorded,Story day: door/ride,,saware,heard only inside 1 longer recorded line(s),draft,,,lexicon,adv.tomorrow,
+yesterday,adverb,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,gaykal,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,adv.yesterday,
+a while (thori war = a bit longer),noun,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,war,heard only inside 1 longer recorded line(s),confirmed,,,lexicon,n.a-while,
+time (the English word),noun,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,time,none,confirmed,,,lexicon,n.time,
+and then,phrase-or-sentence,time-days-seasons,recorded,Cook; Clinic heal game: cut; Clinic heal game: foot; Clinic heal game: hair; Clinic heal game: hic; Clinic heal game: tummy; Clinic heal game: boing,,ne poi,whole line recorded,confirmed,mum/zafar,ok,lexicon,phrase.and-then + n.and-then,merged same English: n.and-then
+not now,phrase-or-sentence,time-days-seasons,recorded,no game uses it yet (asked of Mum / heard in her recordings),,hever na,whole line recorded,confirmed,mum,ok,lexicon,phrase.not-now,
+"that's enough, it's over",phrase-or-sentence,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pati vyo,none,draft,,,lexicon,phrase.thats-enough-its-over,
+time's up,phrase-or-sentence,time-days-seasons,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,time pati vyo,none,draft,,,lexicon,phrase.times-up,
+kite,noun,toys-play,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.kite,named in game data with an English line only; no lexicon entry
+sticker,noun,toys-play,in-engine-not-recorded,Clinic,,,none,no-kutchi (English placeholder),,,lexicon,n.sticker,
+pop,verb,toys-play,in-engine-not-recorded,Clinic,no Kutchi form in the engine,,none,no-kutchi (English placeholder),,,lexicon,v.pop,"cites data/clinic/lang.json, a file that no longer exists"
+aeroplane,noun,transport-travel,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.aeroplane,named in game data with an English line only; no lexicon entry
+bicycle,noun,transport-travel,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.bicycle,named in game data with an English line only; no lexicon entry
+bus,noun,transport-travel,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.bus,named in game data with an English line only; no lexicon entry
+car,noun,transport-travel,in-engine-not-recorded,Story day: evening book; Story day: door/ride,,gadi,heard only inside 2 longer recorded line(s),confirmed,,,lexicon,n.car,
+milk van,noun,transport-travel,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.milk-van,named in game data with an English line only; no lexicon entry
+tractor,noun,transport-travel,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.tractor,named in game data with an English line only; no lexicon entry
+boat,noun,transport-travel,planned,"planned: beach.md, boat.md",,,none,not in lexicon or any game data,,,doc-only,planned:boat,
+jeep,noun,transport-travel,planned,planned: safari.md,,,none,not in lexicon or any game data,,,doc-only,planned:jeep,
+oar,noun,transport-travel,planned,planned: boat.md,,,none,not in lexicon or any game data,,,doc-only,planned:oar,
+road,noun,transport-travel,planned,planned: recording-sheet.md §5 (ride candidates),,,none,not in lexicon or any game data,,,doc-only,planned:road,named as a possible next ride word
+stop the car (keep it standing),phrase-or-sentence,transport-travel,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,gadi ke ubhi rakh,none,confirmed,,,lexicon,phrase.stop-the-car-keep-it-standing,
+Then we went by {thing}.,phrase-or-sentence,transport-travel,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.then-we-went-by-x,named in game data with an English line only; no lexicon entry
+We went by {thing}.,phrase-or-sentence,transport-travel,in-engine-not-recorded,Story day: evening book frame,,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.we-went-by-x,named in game data with an English line only; no lexicon entry
+we're all going out,phrase-or-sentence,transport-travel,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pa bare winjanta,none,draft,,,lexicon,phrase.were-all-going-out,
+we're going out (and you're not coming),phrase-or-sentence,transport-travel,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,asa bare winjanta,none,draft,,,lexicon,phrase.were-going-out-and-youre-not-coming,
+we're going to our house,phrase-or-sentence,transport-travel,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,pa panje ghare winjanta,none,draft,,,lexicon,phrase.were-going-to-our-house,
+cloud,noun,weather-nature,in-engine-not-recorded,Story day: door (cloudy weather card),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.cloud,named in game data with an English line only; no lexicon entry
+moon,noun,weather-nature,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.moon,
+mud,noun,weather-nature,in-engine-not-recorded,Who did it (parked),,,none,no-kutchi (English placeholder),,,lexicon,n.mud,
+rain,noun,weather-nature,in-engine-not-recorded,Story day: door/ride,,warsaad,none,confirmed,,,lexicon,n.rain,
+rainbow,noun,weather-nature,in-engine-not-recorded,"Story day: window ride (farm road, Nani names it)",,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.rainbow,named in game data with an English line only; no lexicon entry
+star,noun,weather-nature,in-engine-not-recorded,Dress up (parked); Story day: door/ride,,,none,no-kutchi (English placeholder),,,lexicon,n.star,
+sun,noun,weather-nature,in-engine-not-recorded,Story day: door (sunny weather card),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,n.sun,named in game data with an English line only; no lexicon entry
+it stopped raining,phrase-or-sentence,weather-nature,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.it-stopped-raining,
+it's cold,phrase-or-sentence,weather-nature,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.its-cold,
+it's hot,phrase-or-sentence,weather-nature,in-engine-not-recorded,Dress up (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.its-hot,
+it's raining,phrase-or-sentence,weather-nature,in-engine-not-recorded,Dress up (parked); Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.its-raining,
+it's windy,phrase-or-sentence,weather-nature,in-engine-not-recorded,Dress up (parked); Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.its-windy,
+the rain stopped,phrase-or-sentence,weather-nature,in-engine-not-recorded,no game uses it yet (asked of Mum / heard in her recordings),,warsaad band thai vyo,none,confirmed,,,lexicon,phrase.the-rain-stopped,
+the sun's out,phrase-or-sentence,weather-nature,in-engine-not-recorded,Monsoon rush (parked); Story day: door/ride,,,none,no-kutchi (English placeholder),,,lexicon,phrase.the-suns-out,
+thunder,phrase-or-sentence,weather-nature,in-engine-not-recorded,Monsoon rush (parked),,,none,no-kutchi (English placeholder),,,lexicon,phrase.thunder,
+Today it's cloudy. Lots of clouds!,phrase-or-sentence,weather-nature,in-engine-not-recorded,Story day: door (weather sentence),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.its-cloudy-today,named in game data with an English line only; no lexicon entry
+Today it's raining. Lots of rain!,phrase-or-sentence,weather-nature,in-engine-not-recorded,Story day: door (weather sentence),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.its-raining-today,named in game data with an English line only; no lexicon entry
+Today it's sunny. Lots of sun!,phrase-or-sentence,weather-nature,in-engine-not-recorded,Story day: door (weather sentence),,,none,meaning-only (not in lexicon; no Kutchi),,,game-data,phrase.its-sunny-today,named in game data with an English line only; no lexicon entry

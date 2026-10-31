@@ -132,16 +132,16 @@ Hannah Mami's farm, a sunny day, the first trip, first visit; designed (Sprint 1
 
 | ID | Kind | Target | New this trip | Comes back |
 |---|---|---|---|---|
-| O1 | Main topic: farm animals | hen, goat, chick, cow; their homes (shed, coop) | chick, cow, shed, coop, farm | hen ✓, goat ✓ |
-| O2 | Main topic: food from the farm | egg, corn on the cob, feed, scoop; the corn's dressings and chutneys | feed, scoop, chilli powder, garlic powder, salt, pepper, coconut chutney | egg ✓, corn ✓, lemons ✓, mint and tamarind chutney ✓ |
+| O1 | Main topic: farm animals | hen, goat, chick, cow; their homes (shed, coop) | chick, cow, shed, coop, farm; hen (in the engine, not recorded) | goat (heard inside lines) |
+| O2 | Main topic: food from the farm | egg, corn on the cob, feed, scoop; the corn's dressings and chutneys | feed, scoop, chilli powder, garlic powder, salt, pepper | egg ✓, corn ✓, lemons ✓, mint, tamarind and coconut chutney ✓ |
 | O3 | Supporting: weather and what you take | sun, hat, water bottle | hat, water bottle | sun, "the sun's out" (the door) |
-| O4 | Small words: numbers 1-5 and size | "how many?", two scoops, three eggs; big, small | | numbers ✓, big ✓, small ✓, "how many?" ✓ |
-| O5 | Small words: positions (start) | under; with ("with the goat") | | under ✓, "with the goat" ✓ |
+| O4 | Small words: numbers 1-5 and size | "how many?", two scoops, three eggs; big, small | the numbers 1-5 on their own (to record) | small ✓, "how many?" ✓; big and three heard inside lines |
+| O5 | Small words: positions (start) | under; with ("with the goat") | | under, "with the goat" (heard inside lines) |
 | O6 | Verbs | **Proposed:** give (feed), put, take, come, go; as commands from Nani and Hannah Mami | to record | |
 | O7 | Frames heard | "two scoops for the hen"; "how many eggs?"; "the goat goes to the shed"; customers' orders at the corn stall | | the Cook order frame ✓ |
 | O8 | Frames said | greeting an elder and answering "how are you?" (the elder form); **proposed:** calling an animal home (2-3 names) | | |
 
-New words about 17; words coming back about 15; speaking turns two (one agreed, one proposed).
+New words about 18; words coming back about 12 (✓ = its own family clip, checked against the data on 31 Oct); speaking turns two (one agreed, one proposed).
 
 ### 2. The story
 

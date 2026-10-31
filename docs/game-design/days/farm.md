@@ -26,7 +26,7 @@ Nani and Hannah Mami. One egg for Ali; the rest of the eggs (and later the veget
 
 ## Words it needs
 
-Recorded ✓: goat, hen, egg, corn on the cob, lemons, big, small, the numbers, "how many?", "with the goat", "under", mint and tamarind chutney. To record: hat, water bottle, cow (*gai*, Zafar), farm, feed, scoop, shed, coop, chick, chilli powder, garlic powder, salt, pepper, coconut chutney, "speed up", "slow down", Hannah Mami's lines. Never invented: Mum's sheet (`docs/language/recording-sheet.md`).
+Recorded ✓ on their own: egg, corn on the cob, lemons, small, "how many?", mint, tamarind and coconut chutney. Heard only inside longer lines: goat, big, under, "with the goat", three. In the engine, no recording: hen, the numbers 1-5 (checked against the data, 31 Oct: `build/reports/research-word-inventory-2026-10-31.md`). To record: hat, water bottle, cow (*gai*, Zafar), farm, feed, scoop, shed, coop, chick, chilli powder, garlic powder, salt, pepper, "speed up", "slow down", Hannah Mami's lines. Never invented: Mum's sheet (`docs/language/recording-sheet.md`).
 
 ## Art it needs
 
