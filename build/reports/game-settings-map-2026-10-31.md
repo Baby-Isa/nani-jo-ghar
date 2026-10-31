@@ -223,3 +223,9 @@ They overlap in setting (Nani's house) and a little in positions. That's fine if
    This is one agent on our games and one on other games, Opus high, about $20-30. Then I bring you the design plan (which agents, how many at a time).
 
 *Mum (reminder):* when she's next free, the words these games need most first: the places in the house and the town, the body parts beyond the clinic's, the feelings, the home verbs (turn off, open, close, sweep).
+
+## Zafar's answers (31 Oct)
+
+- **Yes:** 1 (the 30 games as the list to design), 2 (the three home games split and played as a day at home), 3 (fold Tidy up's and Find it's mini-games in, after the list of which go where), 5 (music, days of the week, shapes left for now), 6 (the Eid lines become the birthday), 7 (the research now).
+- **4, not sure:** is the skeleton the same as diagnosis? (Yes, near enough: the clinic's D2 "where does it hurt?" already has the patient say "my ___ hurts" and the child tap it. A body chart is D2 with more parts.) If diagnosis names a part, it must be treatable. Are we close to a treatment game for every part? A simple cut game (clean, plaster) for parts without their own game; the hand gets the foot's splinter game.
+- **Next (his order):** do the research, then make the table, grouped by setting with its game modes under it, tied to the word groups so the whole is shown to be complete (or the gaps show). Fable reviews it, Claude revises, then presents.
