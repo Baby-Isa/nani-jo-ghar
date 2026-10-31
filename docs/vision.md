@@ -266,7 +266,7 @@ The content model is already language-agnostic: words and sentences have ids and
 - a new content sheet, recordings from paid native speakers, and per-language sentence templates (plural and gender rules differ);
 - the art and engines reused as they are.
 
-**Culture that travels (Zafar, 31 Oct):** favour birthdays over weddings and Eid as big set pieces, so another language needs less cultural rework.
+**Culture that travels (Zafar, 31 Oct):** no religious celebrations as set pieces (the celebrations word group is out); the birthday party stays as a social day, so another language needs less cultural rework.
 
 **Keep this possible cheaply now:** never hard-code Kutchi-specific grammar in the engines; keep templates in data. The market for big languages is crowded (Duolingo ABC, Lingokids, Gus on the Go), and **"real games, not flashcards"** would be the differentiator.
 
