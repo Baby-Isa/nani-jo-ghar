@@ -61,4 +61,4 @@ Nani at her door on the day's sky: she says the weather word alone, then in a se
 
 ## 6. A trip file's sections
 
-(a) One line: what, weather, host, status, sources (newest wins). (b) **The day's list:** stage, engine, level, what the Kutchi decides. (c) **People, the thing for Ali, what comes home.** (d) **Words it needs** (English; ✓ recorded or to record; never invented). (e) **Art it needs.** (f) **Later visits.** (g) **Zafar's answers and open questions**, dated.
+The template, the quality bar and the farm as a worked example: `TEMPLATE.md` (Zafar, 31 Oct; replaces the old list (a) to (g)).
