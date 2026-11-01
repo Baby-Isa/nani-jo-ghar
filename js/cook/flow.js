@@ -2381,6 +2381,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     closeResults();
     if (Cook.stopVoice) Cook.stopVoice();
     if (Cook.closeAudio) Cook.closeAudio();
+    // a character's clip still sounding through the conversations kit (js/shared/conversations.js C.stop) goes with the screen
+    if (global.Conversations && global.Conversations.stop) global.Conversations.stop();
     UI.reset();
     const game = Cook.game;
     Cook.game = Cook.scene = Cook.ctx = null;

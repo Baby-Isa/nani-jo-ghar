@@ -326,7 +326,7 @@
    *     [{label, note, ask, onPress}] (NjgButtons.grownUp); playAsNew: a function: the one "Play as new" row (upgrades: true
    *     when the mode keeps upgrades too); skip: false for no "Skip the help" row while the first-time help runs (on by default);
    *     toggle: false when the anchor opens it some other way (the house's cog: press and hold)
-   *   pop.open() / pop.close() / pop.toggle() / pop.isOpen() / pop.el / pop.anchor
+   *   pop.open() / pop.close() / pop.toggle() / pop.isOpen() / pop.el / pop.anchor; pop.dispose() takes it off the page again
    * The anchor gets the kit's "?" look (.njg-gu-btn) unless o.anchorLook is false, aria-expanded and data-ob-pass.
    */
   B.grownUpPop = function (anchor, o = {}) {
@@ -406,8 +406,21 @@
         sfx();
         pop.toggle();
       });
-    d.addEventListener("pointerdown", (e) => pop.isOpen() && !(e.target.closest && (e.target.closest(".njg-gu-pop") || (anchor && anchor.contains(e.target)))) && pop.close(), true);
-    if (root.addEventListener) root.addEventListener("resize", () => pop.close());
+    const onDown = (e) => pop.isOpen() && !(e.target.closest && (e.target.closest(".njg-gu-pop") || (anchor && anchor.contains(e.target)))) && pop.close();
+    const onResize = () => pop.close();
+    d.addEventListener("pointerdown", onDown, true);
+    if (root.addEventListener) root.addEventListener("resize", onResize);
+    // a host that makes a new "?" per mount (Cook, js/cook/mount.js) disposes of the old pop: its two page listeners and its
+    // element go, and the anchor is as it was (open / close / toggle are untouched)
+    pop.dispose = function () {
+      d.removeEventListener("pointerdown", onDown, true);
+      if (root.removeEventListener) root.removeEventListener("resize", onResize);
+      el.remove();
+      if (anchor) {
+        anchor.removeAttribute("aria-expanded");
+        anchor.classList.remove("njg-gu-btn");
+      }
+    };
     return pop;
   };
   return B;

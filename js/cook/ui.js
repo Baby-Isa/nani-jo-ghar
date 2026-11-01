@@ -3857,6 +3857,11 @@
    * the same page): the shared widgets this file made are destroyed and every handle on the old screen dropped.
    */
   UI.reset = function () {
+    // the s14 look's page-level parts go with the screen (body.njg-s14, Onboard.look), so the next mount starts as the page loaded
+    UI.applyS14(false);
+    // the grown-ups' pop-up was made for this screen's "?": its page listeners and its <body> element go with it (COOK-1)
+    if (guPop && guPop.dispose) guPop.dispose();
+    guPop = null;
     if (guide && guide.destroy) {
       try {
         guide.destroy();
