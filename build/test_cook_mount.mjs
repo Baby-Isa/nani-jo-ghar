@@ -144,12 +144,27 @@ try {
       const up = Math.round(performance.now() - t0);
       // a station started and left running (its order card, the coach, its timers), then the child leaves
       cook.Cook.testHook.lab(station, true, { level: 1 }).catch(() => {});
-      await new Promise((r) => setTimeout(r, 2500));
-      const s = { up, canvases: document.querySelectorAll("canvas").length, screen: !!document.getElementById("app"), running: __cookMount.running(), view: cook.Cook.testHook.state().view };
+      // COOK-10: the request pop-up's folds are watched on every mount (not only the first, as when the watcher started at module
+      // load): once the order's pop-up is up (its art loads first: up to 8 s on the first mount) it is folded, and the station
+      // lib's lastFoldMs() must then be finite
+      const t1 = performance.now();
+      const RP = window.RequestPopup;
+      while (performance.now() - t1 < 8000 && !(RP && RP.isOpen())) await new Promise((r) => setTimeout(r, 50));
+      await new Promise((r) => setTimeout(r, Math.max(0, 2500 - (performance.now() - t1))));
+      let fold = null;
+      const St = cook.Cook.Stations;
+      if (RP && RP.isOpen() && St && St.lastFoldMs) {
+        RP.close();
+        await new Promise((r) => setTimeout(r, 300));
+        fold = St.lastFoldMs();
+      }
+      const s = { up, canvases: document.querySelectorAll("canvas").length, screen: !!document.getElementById("app"), running: __cookMount.running(), view: cook.Cook.testHook.state().view, fold };
       __cookMount.unmount();
       return s;
     }, STATION);
     check(during.canvases === base.canvases + 1 && during.screen, `mounted in ${during.up} ms: Cook's screen and one canvas; ${STATION} running (view ${during.view}; Cook's lifetime held ${JSON.stringify(during.running)})`);
+    if (during.fold != null) check(Number.isFinite(during.fold), `the pop-up's fold was seen on this mount (lastFoldMs ${during.fold} ms)`);
+    else console.log("  (no pop-up up at the probe's moment: the fold watcher was not probed on this mount)");
     await sleep(1200);
     const after = await page.evaluate((s) => __probe.snapshot(s), since);
     const left = await page.evaluate(() => __cookMount.running());

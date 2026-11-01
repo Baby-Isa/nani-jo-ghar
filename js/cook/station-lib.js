@@ -22,7 +22,7 @@
  * and it may call ctx.maybePassMe() at a safe moment (Nani interrupts).
  */
 import { Cook as CookNS } from "./ns.js";
-import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame, onEnd } from "./life.js";
 
 (function (global) {
   const Cook = CookNS;
@@ -365,17 +365,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }, 30);
     });
   }
-  (function watchFolds() {
+  // COOK-10: armed once per mount (Cook.boot calls it), on life.js's interval, which the unmount clears; the next mount arms
+  // it again (it ran once at module load before, so from the second mount on no fold was ever seen and lastFoldMs stayed Infinity)
+  let foldsArmed = false;
+  S$.watchFolds = function () {
     const RP = global.RequestPopup;
-    if (!RP || !RP.isOpen) return;
+    if (foldsArmed || !RP || !RP.isOpen) return;
+    foldsArmed = true;
+    onEnd(() => (foldsArmed = false));
     let was = false;
     setInterval(() => {
       const open = RP.isOpen();
       if (was && !open) foldAt = Date.now();
       was = open;
     }, 60);
-  })();
+  };
   const lastFoldMs = () => (foldAt ? Date.now() - foldAt : Infinity);
+  S$.lastFoldMs = lastFoldMs; // (the mount test reads it: build/test_cook_mount.mjs)
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   /*
