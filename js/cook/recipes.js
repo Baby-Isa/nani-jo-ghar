@@ -78,6 +78,12 @@
       const n = Number(cmp[3]);
       return { ">=": v >= n, "<=": v <= n, "==": v === n, ">": v > n, "<": v < n }[cmp[2]];
     }
+    // "slot=word" ("!slot=word"): the slot holds that word id (LNG-23: it.amount=ph-half)
+    const eq = /^(!?)([^=!<>]+)=([A-Za-z][\w-]*)$/.exec(c);
+    if (eq) {
+      const same = String(lookup(eq[2], env)) === eq[3];
+      return eq[1] ? !same : same;
+    }
     const neg = c.startsWith("!");
     const v = truthy(lookup(neg ? c.slice(1) : c, env));
     return neg ? !v : v;
@@ -130,6 +136,14 @@
     const t = fromTaste(spec, env);
     if (t !== undefined) return t;
     if ("usual" in spec && env.usual) return spec.usual;
+    // CHAI-55 (Zafar, 1 Nov; decision 4): {"teach": {"words": [...], "seats": [...]}}: while any of the words is still supported (word
+    // stage 1-2: the child is learning it), the person in seat i (0: the first to order) gets seats[i]; past the seats, or once the
+    // words are known, the rest of the spec decides (a random pick), so no pattern wins (non-negotiable 4)
+    if (spec.teach && env.seat != null) {
+      const t = spec.teach;
+      const learning = (t.words || []).some((id) => Cook.wordStage(id) <= (t.stage || 2));
+      if (learning && t.seats && env.seat < t.seats.length && t.seats[env.seat] !== undefined) return t.seats[env.seat];
+    }
     let v;
     if (spec.int) v = rand(spec.int[0], spec.int[1]);
     else if (spec.pick) {
@@ -220,9 +234,9 @@
       const all = res(spec.who, env) || Object.keys(Cook.data.customers);
       const n = value(spec.count != null ? spec.count : 1, env);
       const order = (spec.includeCustomer !== false && env.who && all.includes(env.who) ? [env.who] : []).concat(Cook.shuffle(all.filter((w) => w !== env.who)));
-      return order.slice(0, n).map((who) => {
+      return order.slice(0, n).map((who, seat) => {
         const sub = { who };
-        const penv = Object.assign({}, env, { taste: tasteOf(who, spec.tastes || env.tastes), d: sub, who });
+        const penv = Object.assign({}, env, { taste: tasteOf(who, spec.tastes || env.tastes), d: sub, who, seat });
         Object.keys(spec.each || {}).forEach((k) => (sub[k] = value(spec.each[k], penv)));
         return sub;
       });

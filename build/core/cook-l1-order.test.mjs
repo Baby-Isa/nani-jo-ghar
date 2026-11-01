@@ -48,7 +48,9 @@ test("CK-51: chai's card lists paani and chai first on every cup, never said; th
         const rows = [].concat(...s.groups);
         assert.deepEqual(rows.slice(0, 2).map((r) => r.ids[0]), ["cook-paani", "cook-chai"], `L${level}: paani, then chai, at the top of ${s.for}'s card`);
         assert.ok(rows.slice(0, 2).every((r) => r.unsaid && !r.no), "the two are on the card only");
-        assert.ok(rows.slice(2).every((r) => !r.unsaid), "the asked-for rows follow");
+        // (LNG-23, Zafar 1 Nov: an L4 half cup's amount is said in its headline, "Muke adh chai khape", so its row is on the card only)
+        const inHead = (r) => r.ids[0] === "ph-half" && !!s.head && Cook.Lang.plain(s.head.line || s.head).split(/\s+/).length > 3;
+        assert.ok(rows.slice(2).every((r) => !r.unsaid || inHead(r)), "the asked-for rows follow");
       }
       // what is said: never paani, and chai only in the headline ("Muke chai khape")
       const said = Cook.Lang.plain(Cook.Order.speech([L], { withWhen: true }));
