@@ -49,7 +49,11 @@
     const spec = SHARED[name];
     if (!spec || typeof document === "undefined") return Promise.resolve(null);
     const [glob, js, css] = spec;
-    if (css && ![...document.querySelectorAll('link[rel="stylesheet"]')].some((l) => (l.getAttribute("href") || "").includes(css))) {
+    // the kit's one link (css/shared/kit.css) already @imports the conversations and word-card sheets (COOK-11: they were added
+    // and applied twice on every kit page); a page without the kit (the parked pages) still gets the sheet by its own href
+    const links = [...document.querySelectorAll('link[rel="stylesheet"]')].map((l) => l.getAttribute("href") || "");
+    const inKit = links.some((h) => h.includes("shared/kit.css")) && /conversations\.css|word-card\.css/.test(css || "");
+    if (css && !inKit && !links.some((h) => h.includes(css))) {
       const l = document.createElement("link");
       l.rel = "stylesheet";
       l.href = stamped(css);
