@@ -48,7 +48,7 @@ Four areas (Cook, the clinic, the shared kit and pages, the six parked modes). F
 | Area | Applied | The main gains |
 |---|---|---|
 | Cook | 10 | data files fetched once per page (lab chai: 205 → 197 requests); 3 cut-outs about 154 KB lighter, pixel for pixel the same; 16 dead functions and 15 dead CSS classes gone; Cook cleans up after itself on leaving; one fonts request instead of two |
-| Clinic | 14 | the pipeline data parsed fewer times; dead code, a stale data file and 11 dead CSS rules gone; focus.js no longer loaded |
+| Clinic | 13 | the pipeline data parsed fewer times; dead code, a stale data file and 11 dead CSS rules gone; focus.js no longer loaded |
 | Shared and pages | 10 | modules and data asked for at once (preloads) on lab, day, first and home pages; the kit's 13 sheets start with the page; unused ChatGPT upload folders moved out of the live site (**444 MB → 341 MB**) |
 | Parked modes | 6 | Find's scene files fetched in one round trip; dead code and CSS gone; nothing about how they play changed |
 | **Found and fixed by me after** | 1 | **a real bug:** the rules, the ladder table, the faces and the bulb timings were fetched without the version stamp, so a returning player could keep stale data after a publish. Now stamped on every page (checked in a browser: day, lab, clinic, cook) |

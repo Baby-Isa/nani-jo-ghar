@@ -13,7 +13,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 - **18 new games designed:** Opus designers, Fable critics, Opus revisions (`build/reports/designs/`); 11 day drafts
   (`build/reports/designs/days/README.md`); a 79-prompt ChatGPT sheet for Claude in Chrome
   (`build/reports/designs/chatgpt-prompt-sheet-2026-11-01.md`).
-- **Fable's code sweep merged:** 40 fixes plus the version-stamp bug; the live site 444 MB to 341 MB; checks green.
+- **Fable's code sweep merged:** 39 fixes plus the version-stamp bug; the live site 444 MB to 341 MB; checks green.
 
 Summary: `build/reports/overnight-2026-11-01.md`. The language research behind it: `build/reports/games-master-map-2026-10-31.md`.
 `main` is unchanged since d7835a56.
