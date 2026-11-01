@@ -272,6 +272,26 @@
   {
    "text": "big toe",
    "why": "keys that name data ids (foot.js's toes map to the engine's word ids TOE_ID); not text. Step 4d"
+  },
+  {
+   "text": "Boil or fry, then the plates",
+   "why": "the labs page's note for grown-ups (js/cook/index.js lab entry), never shown to the child (kitchen prototypes, 1 Nov)"
+  },
+  {
+   "text": "Nani's turns: a little, a lot; then the oven",
+   "why": "the labs page's note for grown-ups (js/cook/index.js lab entry) (kitchen prototypes, 1 Nov)"
+  },
+  {
+   "text": "Grill, turn once, then what goes on",
+   "why": "the labs page's note for grown-ups (lab entry, js/cook/index.js and corn.js) (kitchen prototypes, 1 Nov)"
+  },
+  {
+   "text": "took   for",
+   "why": "an internal listen() log key for the test hooks (baking.js), never shown (kitchen prototypes, 1 Nov)"
+  },
+  {
+   "text": "egg on",
+   "why": "an internal listen() log key for the test hooks (eggs.js), never shown (kitchen prototypes, 1 Nov)"
   }
  ],
  "patterns": [
