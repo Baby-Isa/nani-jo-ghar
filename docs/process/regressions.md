@@ -349,6 +349,9 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | CHAI-31 | Tea colour and effects (judge, 22 Oct): the tea is maroon in the pan but amber in the glass; a blue water splash lands on amber tea; the conversation bubble shows a generic face, not Nana's | **to fix: check** · built 28 Oct overnight: the half glass at 0.85 of the full one (was 0.6, paler than the pan), the stream half again thicker | eye: pan and glass the same tea; splash in the tea's colour; the bubble with his face | `docs/sprints/S11-easy-to-play.md` |
+| CHAI-58 | The new boil (CHAI-57) is tight at L4: at a child's pace the green plus the red lasts about 3 s, and a miss empties the pan and starts it again; a child busy with another pan may boil over often (the builder's note, 1 Nov) | **waiting on Zafar** · his play of L4: widen the window at L4, or keep | eye: chai L4 at 1280x665 | `build/reports/s15-chai-11.md` |
+| CHAI-59 | At 740x320 and 930x430 the L4 card under three faces scales down as its last step, so its speaker is 43-46 px, under the 48 px floor (CHAI-43) | **to fix: code** · open (phones; Zafar plays on laptop for now) | auto: chai L4 at 740x320 and 930x430, speaker 48 px or more | `build/reports/s15-chai-11.md` |
+| CHAI-60 | contract-78 still counts a second pot's "Chulo bar!" and a later "Slow kar!" without a light as breaks; under SH-181 (first-time only) they are right: the check must count only first-time lights | **to fix: check** · open | auto: contract run cook:chai-tray L2-L4, 0 contract-78 breaks | `build/reports/s15-chai-11.md`; `build/sandbox/lib/contract-s14.mjs` |
 
 ## Sprint 12 polish: Zafar's voice notes (22 Oct)
 

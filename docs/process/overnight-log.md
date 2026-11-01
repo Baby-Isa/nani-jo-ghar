@@ -108,3 +108,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-30 19:12 UK · Published 20261030T190918Z to main (65d702a2); Pages serving it.
 - 2026-10-30 20:36 UK · Published 20261030T203356Z to main (d7835a56); Pages serving it.
 - 2026-11-01 16:00 UK · s15-chai-11 builder (Opus): chai's 1 Nov rows (bubble speaker, faces, fold, card light, hint order, box, counts and half, first-time lights, the new boil, spice pictures, no splash, the L4 card, adh after muke for half); before played, after partial (L4 sandbox pages time out on the new boil-over), no contract run (stopped for Zafar's play); report build/reports/s15-chai-11.md; not pushed.
+- 2026-11-01 17:36 UK · Published 20261101T173400Z to main (da5b9197); Pages serving it.
