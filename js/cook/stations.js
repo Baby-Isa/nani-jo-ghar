@@ -29,7 +29,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const Lang = Cook.Lang;
   const W = 1600;
   const H = 900;
-  const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, hand: 45, top: 50 };
+  // badge (SH-183, Zafar, 1 Nov: "faces shouldn't be faded they should have full contrast and 'sit on top'"): a person's face
+  // badge on a tray or a plate (chai's tray, the eggs' plates), over every picture, veil and effect of the station, under only
+  // the helping hand
+  const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, badge: 44, hand: 45, top: 50 };
 
   const CHARS = {
     // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, head 186 px wide at 1:1, drawn at 0.90
@@ -41,11 +44,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the counter at canvas row 449.7 (the source's counter line, build/tools/art/specs/s08-nani.cut-data.json
     // counter_row), so top = 615 - 449.7 x 0.90 = 210 (her crown 213.6, Ma's 228.4: a touch taller); the others 6 px lower
     // than before (their hands were on the edge). pointTip: her fingertip on the canvas (cut-data front.tip).
+    // CK-46 reopened (Zafar, 1 Nov, his 8-elbows.png: "Check also the elbows cutting into the counter. We said they should be sitting as
+    // if on bar stools behind the countertop and so nothing rests on the counter"): Nana, Ma and Ali are drawn with their hands and
+    // forearms resting forward on a table, and at their old tops (181, 201, 296) the counter's back edge cut through those forearms,
+    // so they read as leaning on it. Each now sits low enough that the edge hides every forearm, elbow and hand: armTop is the
+    // canvas row where the first forearm, elbow or hand begins (measured on the neutral canvas, which every mood shares), and
+    // top = 615 - armTop x scale puts that row 4 px under the occluder's top (611), as Nani's rule. Their pictures are still
+    // the old table pose (the upper arms reach down to the edge): ART-33 redraws them seated, as Nani was.
     nani: { x: 330, top: 210, scale: 0.9, pointTip: [193.2, 530.7] },
-    nana: { x: 940, top: 181, scale: 1.25 },
-    ma: { x: 940, top: 201, scale: 1.14 },
-    cousin: { x: 940, top: 296, scale: 1.02 },
+    nana: { x: 940, scale: 1.25, armTop: 333 },
+    ma: { x: 940, scale: 1.14, armTop: 326 },
+    cousin: { x: 940, scale: 1.02, armTop: 296 },
   };
+  Object.values(CHARS).forEach((c) => c.armTop != null && (c.top = Math.round(615 - c.armTop * c.scale)));
 
   /** How far a station may raise its scene pieces into the extra worktop above the design box (k of it; see fitView). */
   Cook.lift = (k = 0.5) => Math.round(((Cook.view && Cook.view.ey) || 0) * k);

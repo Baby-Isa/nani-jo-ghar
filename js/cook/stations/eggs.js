@@ -175,7 +175,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       const x = trayX + fx * trayD;
       const y = trayY + fy * tray.displayHeight;
       const hit = T(S.add.image(x, y, "px-plate").setDepth(D.item));
-      const face = T(S.add.image(x - 74, y - 70, Cook.Kit.badge(S, q.who)).setDisplaySize(64, 64).setDepth(D.item + 1));
+      // SH-183 (Zafar, 1 Nov: tray and plate faces at full contrast, "sit on top"): the shared badge depth, over the eggs and the plate
+      const face = T(S.add.image(x - 74, y - 70, Cook.Kit.badge(S, q.who)).setDisplaySize(64, 64).setDepth(D.badge).setAlpha(1));
       const top = T(S.add.container(x, y).setDepth(D.item + 0.6));
       return { q, x, y, hit, face, top, eggs: [], salt: false, pepper: false, done: false, ticked: false };
     });
