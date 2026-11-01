@@ -169,7 +169,7 @@ That keeps each round to 3-5 new words, each heard at least three times (the ord
 | 6 | Home: put the shopping away (put it in its place) | Lemons and onions to the cupboard (*kabaat* ✓), the pot on the shelf; **the gift fruit to Ali**; **the cloth to Big Ma's room** (it seeds the sewing day). |
 | 7 | The evening book | One page per stall played: the customer you served, the coins counted out, the big pot, the red cloth, the goat with the list in its mouth. |
 
-The walk between the fruit stall and the general store is open question 4: a camera glide now and Zafar's lanes on visit 2 (recommended), or the lanes on visit 1 as he drew them.
+**The lane (Zafar, 1 Nov: the lanes are introduced gently from the first visit, so getting about stays the same when the full lanes come on visit 2).** The walk from the fruit stall to the general store is one short first-person lane with one turning. The first time, Nani says the way ("this way!", to record) and the lit box shows the turning; from the second round she says which way (left or right, to record) and the child taps that way. The other way is a friendly dead end (a cat on a wall blinks, and back you come), never a miss. No maze and no goat chase on visit 1: the goat still eats the list at the end of the round, which sets up visit 2's chase.
 
 **What it takes from earlier days:**
 - Cook's food nouns (onion, lemon, tomato, cup, pot, spoons) and the order frame *Muke {x} khape*, heard dozens of times serving chai. That is why serving comes naturally first.
@@ -177,8 +177,8 @@ The walk between the fruit stall and the general store is open question 4: a cam
 
 **What it hands on:**
 - **The sewing day:** the red cloth, and the colour and length words, start Big Ma's day. The sewing's "at the stall, from L2, the child says the colour" is this design's cloth L2 (S5), so the two are one stall.
-- **The beach and the farm's corn stall:** they use this pay engine at their own levels (the beach's numbers stay at 1-5; the shops own everything above 20). Count-out is the one pay; the beach's "tap the stack that matches" becomes this engine's L1 skin, not a second engine (decision 9; now written into `beach-boat.md` open question E and its §6, consistency pass, 1 Nov).
-- **Later shops visits:** the lanes and the goat chase, the cloth seller's own stall, the chai stall (§5; open questions 4-6).
+- **The beach and the farm's corn stall:** they use this pay engine at their own levels (the beach's numbers stay at 1-5; the shops own everything above 20). **One pay (Zafar, 1 Nov): count out the coins and hand them over; ready-made stacks for small prices** (to five: the beach, and the shops' L1). One engine, not two (decision 9; `beach-boat.md` says the same).
+- **Later shops visits:** the full lanes and the goat chase (met gently on visit 1), the cloth seller's own stall, the chai stall (§5; open questions 5-6).
 
 **Free play:** each stall can be played alone (lab and free play): serve, Nani's picky shopping, or the cloth, each ending with its pay and the shared end screen.
 
@@ -189,13 +189,14 @@ The walk between the fruit stall and the general store is open question 4: a cam
 ### Shared rules for all five
 
 1. **The heard word decides; rows tick only on a right first give.** A row never ticks after a second try.
-2. **Counts never end by themselves; the give closes the step** (one wording, coded once in the shared count, with Cook's count and the farm's eggs).
+2. **Counts never end by themselves; the give closes the step** (Zafar's one count close, 1 Nov: the natural next thing, here the give; where a count has no clear next thing, about 1.25 s after the last tap; one wording, coded once in the shared count).
    - Extra fruit land on the pan; extra coins land on the counter. The step closes only when the child taps the person: the customer's held-out bag, Nani's basket, the seller's open hand. That person can be tapped from the first item.
    - **The light on the person:** only on that screen's first-ever showing, it lights **the moment the first item lands** (the light says "this is where it goes", not "now") and stays lit until the give. It never lights at the count, and never lights again after the showing.
    - **A wrong give brings everything back.** Wrong kind, too many or too few: the pan tips back into its crate, the coins slide back into the purse, the thing goes back on the counter. The asker reacts (their own joke; for too few the seller's patient open hand and "and …?") and says the ask again, number and all. The row starts over from nothing; nothing is left on the counter for the child to finish.
    - **After the second wrong give in a row,** the helper card opens with the full answer (it costs the bulb), never a third blind try.
 3. **The give is an action in the world, not a Done button.** There is no Next and no Done.
 4. **Undo until the give:** tap a fruit on the pan, or the coins on the counter, to take the last one back.
+   - **Moving up (Zafar, 1 Nov):** only right-first-time rounds count towards the next level, in every game.
 5. **Two words a move from L2** (which and how many; which and what like). Pay is the exception: its one word is a number from a set of 20 to 100.
 6. **Every miss gets a funny reaction,** never a frown, then the word again. Each stall has its own (the customers' three, Nani's monocle and stagger, the seller's patient hand, the bolt's *fwump*); more come with later pairs.
 7. **Hints are one sequence with one owner, the central rules file.** The first hint, at 7 s from the last action (by level), **is the asker saying the ask again**; the next steps follow the rulebook up to the helper card, which opens with the full answer and costs the bulb. There is no separate idle repeat, so two voices never overlap. Listening again is free (tap the row's speaker).
@@ -358,7 +359,7 @@ The child never touches anything hot: the flasks are tapped, and Nani lifts the 
 
 **Why:** Zafar, 1 Nov: paying climbs to every number up to 100 as the levels rise. It is the home of the numbers above ten and of "give me N", the standard test of what a number word means.
 
-**The money:** two coins only, with no digits. **A small copper coin is one; a big brass coin is ten.** The ten is taught by the shopkeeper's trick (below), never by a label. **Nani's purse holds two piles**, copper and brass (at L1 copper only); one tap on a pile slides one coin out. The piles always hold more than the price and are drawn as heaps, never as countable rows.
+**The money:** two coins only, with no digits. **A small copper coin is one; a big brass coin is ten.** The ten is taught by the shopkeeper's trick (below), never by a label. **Nani's purse holds two piles**, copper and brass; one tap on a pile slides one coin out. **At L1 (prices to five) it holds ready-made copper stacks of one to five instead** (Zafar, 1 Nov: stacks for small prices): one tap on the stack of the price slides it onto the counter, and the give is the same tap on the open hand. The piles always hold more than the price and are drawn as heaps, never as countable rows.
 
 **The watch step:** at serve L1 every customer pays the fruit seller, and he counts their coins aloud into his tin (§3A step 5). The child has heard the counts, and seen the open hand and the tin, many times before paying.
 
@@ -387,7 +388,7 @@ The child never touches anything hot: the flasks are tapped, and Nani lifts the 
 
 | Level | Prices | The purse | Adds |
 |---|---|---|---|
-| L1 | 1-5 (the first-ever pay: 1-3) | a copper pile | the seller counts along as coins land |
+| L1 | 1-5 (the first-ever pay: 1-3) | ready-made copper stacks of one to five | pick the stack of the price, hand it over; the seller counts along as the coins land |
 | L2 | 6-20 | both piles | the ten-coin (the trick, once, after Mum's clip of ten); counted only at the give |
 | L3 | the tens: 10, 20 … 100 | both piles | the tens as words of their own; "other ways": the price said as "{N} paisa" or the number alone |
 | L4 | any number 21-99 | both piles | tens and ones together (73 is seven brass and three copper, in the two rows); **one price per stall** (two prices is twenty taps); look-alike numbers next to each other in a round (which ones sound alike: Mum) |
@@ -436,7 +437,7 @@ Change from a bigger coin is visit 2 (§5).
 
 ### The goat (visit 1's surprise, no game)
 
-At the end of the round, as Nani and the child turn to leave, a goat trots past, snatches Nani's shopping list off the top of the bag and munches it. Nani laughs: *oho!* (heard; the line to cut or record). Nothing is lost that mattered. It is the joke the child retells in the book, and it sets up the goat chase in Zafar's 19 Oct design (open question 4 asks whether the chase is visit 1 or visit 2). The farm's goat sprite is reused if the camera matches.
+At the end of the round, as Nani and the child turn to leave, a goat trots past, snatches Nani's shopping list off the top of the bag and munches it. Nani laughs: *oho!* (heard; the line to cut or record). Nothing is lost that mattered. It is the joke the child retells in the book, and it sets up the goat chase in Zafar's 19 Oct design (the chase is visit 2's; the lanes are met gently on visit 1: decision 28). The farm's goat sprite is reused if the camera matches.
 
 ### Considered and parked
 
@@ -465,7 +466,7 @@ The town map has just ended at the market tile. Each new screen has its showing 
 
 It ends where it began, at the fruit stall, and the avatar on the customer's side says "both ways" one more time.
 
-**Round 2** adds the general store after the gift: the walk (open question 4), the X one at L1 with its showing (the pots glow; the basket lights at the first lift and stays lit until the give), four asks (big and small, pots then cups), and the store's pay (no showing). Nani's buy at the fruit stall moves to the store. The round ends back at the fruit stall with the mango slice and the goat.
+**Round 2** adds the general store after the gift: the short lane (§2; decision 28), the X one at L1 with its showing (the pots glow; the basket lights at the first lift and stays lit until the give), four asks (big and small, pots then cups), and the store's pay (no showing). Nani's buy at the fruit stall moves to the store. The round ends back at the fruit stall with the mango slice and the goat.
 
 **Round 3** adds Big Ma's cloth at the general store, with its showing (the bolts glow; the bag lights as the first bolt unrolls), and its pay.
 
@@ -477,11 +478,11 @@ It ends where it began, at the fruit stall, and the avatar on the customer's sid
 
 ## 5. Later visits and harder versions
 
-The day is data: each visit is the same list with stages added and levels raised. This assumes open questions 4-6 go as recommended; each answer moves its row.
+The day is data: each visit is the same list with stages added and levels raised. This assumes open questions 5-6 go as recommended; each answer moves its row. The lanes are settled (decision 28).
 
 | Visit | Adds | New engine |
 |---|---|---|
-| 2 | **The lanes and the goat chase** (Zafar's 19 Oct design, kept whole): the goat steals the bunch of bananas from the bag, and people along the lanes say which way it went; the child follows the words through the first-person lanes. Its own design is to come. **The cloth seller's own stall** (the cloth moves off the general store's shelf). The fruit stall from the customer's side (order there too). Soft/hard mangoes. **Ask the price** (the child says *kitla?*, the price is hidden until asked); **change** from a big coin, with **Check his change** (he gives change and says it; one coin too few); **take the money** in serve (the customer pays the child, who counts it into the tin). | the lanes (one per trip) |
+| 2 | **The full lanes and the goat chase** (Zafar's 19 Oct design, kept whole; the lanes met gently on visit 1, decision 28): the goat steals the bunch of bananas from the bag, and people along the lanes say which way it went; the child follows the words through the first-person lanes. Its own design is to come. **The cloth seller's own stall** (the cloth moves off the general store's shelf). The fruit stall from the customer's side (order there too). Soft/hard mangoes. **Ask the price** (the child says *kitla?*, the price is hidden until asked); **change** from a big coin, with **Check his change** (he gives change and says it; one coin too few); **take the money** in serve (the customer pays the child, who counts it into the tin). | the lanes (one per trip) |
 | 3 | Green/yellow bananas; the chai stall (Cook's chai tray reskin) with **hot and cold water** in the flasks; two lists (Nani's and Big Ma's, Find it 1b); the toy stall (the kite, if Zafar un-parks it at the beach). | none |
 | 4 | Every number to 100 everywhere in pay; the busy market (two customers at serve L4 on every stall); grandparent mode (idea 46: a grown-up plays the shopkeeper and the child orders from them). | none |
 
@@ -511,7 +512,7 @@ The day is data: each visit is the same list with stages added and levels raised
 
 | Piece | Size | Notes |
 |---|---|---|
-| **Pay** (shared engine) | about one sprint | the purse with two piles, two coins, the two counted rows, the open hand, the count-back, the ten-coin trick, price ranges as data. **Count-out is the one pay** (it teaches "give me N"); the beach's "tap the stack that matches" becomes its L1 skin, not a second engine; the farm's corn stall uses it too (decision 9). |
+| **Pay** (shared engine) | about one sprint | the purse with two piles, two coins, the two counted rows, the open hand, the count-back, the ten-coin trick, price ranges as data. **One pay (Zafar, 1 Nov): count out the coins and hand them over, with ready-made stacks for small prices** (the shops' L1 and the beach); one engine, and the farm's corn stall uses it too (decision 9). |
 | The scale (pan and dial) | small | Find it 5c, designed, not built; a needle layer and a pan that dips per item and tips back. |
 | The lift-and-test | small | a thing lifts to the middle, is "in hand", and plays its state's reaction. Visit 1 has one reaction pair (the wobble-and-thud, the bounce), done in code; later pairs bring their own (the squish, the steam: steam is drawn, not coded). |
 | The restock | tiny | a fresh pair after each give; the decoy stays. |
@@ -531,7 +532,7 @@ The day is data: each visit is the same list with stages added and levels raised
 
 ### The art list, visit 1 (one ChatGPT run Zafar supervises; backgrounds locked first)
 
-**Backgrounds (2):** the fruit stall from behind the counter; the general store from the customer's side, with a shelf of bolts of cloth. Calm, modern market with one or two Kutch or East African nods per scene (a mirror-work trim on a shelf edge, a brass weighing scale). No signs, no lettering, no religious markers.
+**Backgrounds (3):** the fruit stall from behind the counter; the general store from the customer's side, with a shelf of bolts of cloth; one short lane with one turning between them (decision 28), the lane engine's first piece. Calm, modern market with one or two Kutch or East African nods per scene (a mirror-work trim on a shelf edge, a brass weighing scale). No signs, no lettering, no religious markers.
 
 **People:**
 - New (2): the fruit seller (a man in his fifties, apron, cap; check the existing fruit-seller art the day doc lists first) and the general store's shopkeeper (a man in a waistcoat). Each in the art bible's set: neutral, talking, smile, big happy, thinking, surprised, the gentle "tsk", plus three-quarter and front-facing (the handover). The shopkeeper also cups his ear, waves, holds out his open hand and flings a bolt.
@@ -540,9 +541,9 @@ The day is data: each visit is the same list with stages added and levels raised
 
 **Things (F view), about 15:** lemons, mangoes, onions, tomatoes (the pantry's crates and F view first; check before redrawing), pots big and small, cups big and small, eggs, spoons (big and little, for L4), bolts of cloth (red, green, blue, a dotted red), a cut folded piece.
 
-**Props, about 10:** the scale (pan, body and a separate needle), the paper bag and its twisted top, Nani's basket (front and back for things to sit inside), Nani's purse (open with two piles, and closed), the small copper coin, the big brass coin (no digits, no faces, no script; a simple stamped flower or rim), the seller's tin box, the scoop, the shopping list (blank lines, no writing), the goat (reuse the farm's).
+**Props, about 10:** the scale (pan, body and a separate needle), the paper bag and its twisted top, Nani's basket (front and back for things to sit inside), Nani's purse (open with two piles, open with ready-made copper stacks of one to five, and closed), the small copper coin, the big brass coin (no digits, no faces, no script; a simple stamped flower or rim), the seller's tin box, the scoop, the shopping list (blank lines, no writing), the goat (reuse the farm's).
 
-**Later visits (not in the first run):** the cloth seller and her stall; the lanes; the fruit stall from the customer's side; mangoes soft and hard (one look, with a squish frame); bananas green and yellow; two lidded steel flasks, with a steam layer and a cold-drops layer; Nani's squeeze, sniff and lid-lift poses; the chai stall.
+**Later visits (not in the first run):** the cloth seller and her stall; the full lanes and their junctions; the fruit stall from the customer's side; mangoes soft and hard (one look, with a squish frame); bananas green and yellow; two lidded steel flasks, with a steam layer and a cold-drops layer; Nani's squeeze, sniff and lid-lift poses; the chai stall.
 
 ### Layout (two layouts, switched by height), with the pixel budget
 
@@ -602,7 +603,7 @@ The lab films each of these at the four sizes and 915x275 and confirms the numbe
 | **10. Words and recording** | **Pass, with the recording as the gate.** Every line built from recorded frames or played as a whole recorded line; the gaps listed (§1) with Mum's next sheet in order. One sentence per person. Things named as they are, and every pair is one a real shopper wants both ways. 3-5 new words a round. Visit 1's L1 needs about 17 new clips (the template proposes 15-25); the whole game about 110. |
 | **11. Culture** | **Pass.** Halal food only. No sweets: no sweet stall; the gift and the end are fruit. Modest clothes for every seller and customer. No religious markers on stalls. Nothing hot is touched by the child. No haggling, nothing lost, Nani pays. |
 | **12. Fun and delight** | **Pass.** The hands have something at every step (tap, lift, give, coins). The "kind of funny": Nani's picky tests and the goat. Good gestures: the pan dip, the unroll, the coin clink. Contrast is the game itself. No fatigue: serve, pick, say, pay and unroll are different actions, and L4 pays one price a stall. Nani's asks give it a goal; the cloth and the gift carry on. |
-| **13. Mistakes made twice** | **Pass.** The wrong-give rule (the redo on the spot, a plain tick) is shared with the farm; the close itself is the farm's option (b), not its stillness close, and one count close for every game is Zafar's single answer (decision 8). One pay engine (the beach's stacks are its skin). Every level and size to be played in the lab, on film. Builder questions answered (what is in hand, an empty give, what restocks). No mechanic replaced without asking: the lanes, the chase, the cloth stall and the chai stall are open questions 4-6. |
+| **13. Mistakes made twice** | **Pass.** The wrong-give rule (the redo on the spot, a plain tick) is shared with the farm; the close itself is the farm's option (b), not its stillness close, and one count close for every game is Zafar's single answer (decision 8). One pay engine (the beach's stacks are its skin). Every level and size to be played in the lab, on film. Builder questions answered (what is in hand, an empty give, what restocks). No mechanic replaced without asking: the lanes and the chase are decision 28 (Zafar, 1 Nov); the cloth stall and the chai stall are open questions 5-6. |
 
 **The ten questions:**
 1. Nouns, describing words, colours and numbers; 14 of about 43 with Mum's own clip, 7 more in whole lines (numbers are the gap).
@@ -620,7 +621,7 @@ The lab films each of these at the four sizes and 915x275 and confirms the numbe
 
 ## 10. Decisions made for Zafar overnight
 
-Each line gives the choice, why, and the answer I assumed. Reverse any by number. (Revised after the critique; the old 12 and 25 are now open questions 4 and 5.)
+Each line gives the choice, why, and the answer I assumed. Reverse any by number. (Revised after the critique; the old 12 and 25 became open questions 4 and 5; Zafar answered 4, the lanes, on 1 Nov: decision 28.)
 
 1. **The game is five parts at two stalls on visit 1:** serve (the fruit stall), the X one and your turn (the general store), pay (after each buy), Big Ma's cloth (from the general store's shelf). Plus three beats: the salaam, the gift, the goat. *Why:* his scope (serve then order, pay, the describing game, the cloth) in the fewest scenes. *Assumed:* yes (the cloth's place is open question 6).
 2. **Serve first, from behind the fruit stall's counter; then order at the general store.** *Why:* his "serve, then order"; the child hears the order frame many times before saying it. *Assumed:* yes.
@@ -629,8 +630,8 @@ Each line gives the choice, why, and the answer I assumed. Reverse any by number
 5. **Tap lifts the thing into your hand and shows its test; tap Nani's basket gives what is in hand; a lift is never a miss; an empty give gets *kyo?*; the restock replaces the pair, not the decoy.** *Why:* the hidden pairs need a way to find out; testing is the fun; only the give is judged. *Assumed:* yes.
 6. **The pay ladder:** L1 1-5 (the first pay 1-3), L2 6-20, L3 the tens to 100, L4 every number 21-99, one price per stall. *Why:* his "every number up to 100 as the levels rise", with the tens given their own level; two prices at L4 is twenty taps. *Assumed:* yes.
 7. **Two coins only, copper one and brass ten, no digits, in two piles in the purse; counted coins land in two short rows, tens above ones; the ten taught by the shopkeeper's trick.** *Why:* the price stays heard; 73 becomes seven and three; nine and nine fit any phone. *Assumed:* yes (open question 3 asks about notes).
-8. **Counts never end by themselves; the give closes; a wrong give brings everything back with the ask again; the helper card after the second wrong give; the person is lit only on the first showing, from the first item.** *Why:* the lessons' "stop at N needs redesigning"; a dump-all must never finish a count. The farm's designs close a count on stillness instead and list this give close as their option (b) (`farm-eggs-orchard.md` open question 1, `farm-animals.md` decision 5), so which close every count game uses is one question for Zafar (consistency pass, 1 Nov). *Assumed:* yes.
-9. **One pay engine for every game, built here first: count-out with the give.** The beach's coin stacks become its L1 skin (to carry into the beach design's open questions). *Why:* count-out teaches "give me N"; a rule fixed in one game gets lost. *Assumed:* yes.
+8. **Counts never end by themselves; the give closes; a wrong give brings everything back with the ask again; the helper card after the second wrong give; the person is lit only on the first showing, from the first item.** *Why:* the lessons' "stop at N needs redesigning"; a dump-all must never finish a count. Zafar settled it on 1 Nov: one count close for every game, the natural next thing (here the give) where it is clear, else about 1.25 s of stillness (one data setting).
+9. **One pay for every game (Zafar, 1 Nov): count out the coins and hand them over, with ready-made stacks for small prices** (to five: the beach, and the shops' L1). Built here first, one engine. *Why:* count-out teaches "give me N"; the stacks keep a small price one tap.
 10. **Nani pays from her purse, which always holds more than needed. Never the child's pocket money, and no haggling.** *Why:* non-negotiable 7; nothing lost; Find it rejected bargaining. *Assumed:* yes.
 11. **The seller counts along at L1 only; from L2 he counts back only after the give. At serve L1 he counts the customers' coins aloud** (pay's watch step). *Why:* support at first, then the count-back is the check, not a cue. *Assumed:* yes.
 12. **The scale is serve's container** (Find it 5c folded in). *Why:* the pan and needle are the toy; no other game weighs. *Assumed:* yes.
@@ -649,14 +650,12 @@ Each line gives the choice, why, and the answer I assumed. Reverse any by number
 25. **Serve's L4 is a busy queue** (two customers wait; the one who speaks is the order), with no timer. *Why:* an L4 of its own, not a faster L3; listening and speed fight. *Assumed:* yes.
 26. **Hints: the ask again is the first hint (at 7 s), then the rulebook's steps to the helper card,** one sequence owned by the central rules file. *Why:* an idle repeat at 6 s and a hint at 7 s would overlap. *Assumed:* yes.
 27. **Visit 1 is two backgrounds, two new sellers, four Nani poses and one reaction pair;** the rest is listed for later visits (§7). *Why:* the template's "a trip that needs 60 new recordings won't get made" applies to art too; one supervised ChatGPT run. *Assumed:* yes.
+28. **The lanes are introduced gently from visit 1** (Zafar, 1 Nov: "if the lanes are how it works from visit 2, introduce them gently from the first visit, so it stays consistent"): one short lane with one turning between the two stalls (§2); the full lanes and the goat chase on visit 2. *Costs:* the lane engine's first piece and one background on visit 1, and "this way", left and right to record.
 
-**Open questions (genuinely his, or Mum's):**
+**Open questions (genuinely his, or Mum's):** (open question 4, the lanes, was answered on 1 Nov: decision 28.)
 1. **Mum:** how does the family say the numbers one to ten (as clips), and is ten *do*? (The handout's *do* was never confirmed, and it is "two" in Hindi and Urdu.) Her ten gates pay's L2. Then 11-99: if each is its own word (as in Gujarati), that is 90 clips. Is money *paisa*, or shillings in the East African way? How is a price said ("that's five paisa"), and "how much is it?"
 2. **Mum:** *wadho* alone; *khanigin* and *ghan* (are they right?); the family words for soft, hard, yellow, long, short, thin and dotted; *paani* alone.
 3. **Zafar:** a big brass coin for ten, or paper notes for the tens? (Coins keep one gesture and one look; notes are more real for 50 and 100.) *Recommended:* coins.
-4. **Zafar: your lanes and goat chase (19 Oct): visit 1 or visit 2?** Your design of the day is a maze of lanes followed by spoken directions, each shop a game, pay, and the goat chase as the climax; the day doc says "a first shops day may take the lanes, two stalls, pay and the goat".
-   - **A (recommended): visit 2.** Visit 1 walks from the fruit stall to the general store with a camera glide; the goat's joke (it eats the list) stays at the end of each round and sets up the chase. *Costs now:* nothing new. *Why:* the town map now carries "getting there", and visit 1 already has one new engine (pay) and about 17 clips to record.
-   - **B: visit 1, as you drew it.** The lanes are the walk between the two stalls, Nani's directions are their words, and the goat's snatch ends the round with the chase. *Costs:* a second new engine on visit 1 (the first-person lanes, about one sprint more); art for three or four lane junctions, the goat running and two or three people pointing; about 10-12 more lines to record (left, right, straight on, "past the …", "it went that way", goat stealing), none recorded today.
 5. **Zafar: the chai stall (your list's #10) and the toy stall's kite.**
    - **A (recommended):** the chai stall on visit 3, where hot and cold water join the X one; the kite stays parked with the beach's kite. *Costs now:* nothing.
    - **B:** the chai stall on visit 1. *Costs:* a third background and the chai stall man (posed); the code is Cook's chai tray reskinned and the fried peas into cones (*bas*, *thorok*, *wadhare* are ✓), so the words are cheap; it makes visit 1 a third stall and a third pay.
@@ -668,6 +667,8 @@ Each line gives the choice, why, and the answer I assumed. Reverse any by number
 ---
 
 ## 11. ChatGPT mock-up prompts
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt shops-1: serve at the fruit stall
 
@@ -790,3 +791,8 @@ Each finding (`shops-critique.md`, 1 Nov), then what I did. Where the critique a
 **14. SHOULD: the end doesn't end where it began; the customers' pay is unused.** Done in part. The round now ends at the fruit stall with the mango slice and the goat, and §3A and §3E say the customers paying the seller is pay's watch step, with the seller counting their coins aloud at L1. One part is changed: the critique's camera flip to the customer's side would be a third background on visit 1 and undo finding 5's cut. So the child's avatar walks round to the customer's side within the same behind-the-counter view, and the full flip waits for visit 2's customer-side background (decision 23).
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The pay line is now written into `beach-boat.md` (open question E, §6). Decision 8 and checklist row 13 no longer say the farm uses the give close: the farm designs close on stillness and list the give as their option (b), so one count close for every game is a single question for Zafar. The cloth on visit 1 stays the general store's shelf (open question 6 A), and `sewing.md` now says its stall visit is that shelf until the cloth seller's own stall arrives. Prompt shops-1's customer wears sage green, not teal, which is the cast's Masi placeholder colour (the beach and the town map draw Masi in a teal headscarf).
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The lanes, introduced gently from visit 1:** one short lane with one turning between the two stalls; the full lanes and the goat chase stay on visit 2 (§2, §3's round 2, §5, §7's art, new decision 28; open question 4 gone).
+- **One pay:** count out the coins and hand them over, with ready-made stacks for small prices; the shops' L1 (prices to five) uses the stacks (§2, §3E, decision 9).
+- **Level up only on right-first-time rounds** (the shared rules). **Clothes:** the prompt sheet's line is added before the prompts.

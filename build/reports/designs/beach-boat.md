@@ -220,7 +220,7 @@ Every stage follows the shared rules:
 - A row ticks only on a right first pick.
 - The word ladder applies: a word's Kutchi shows until it's picked right three times in a row.
 - Hints come after 7, 9, 11 or 13 seconds, by level.
-- Level up after three rounds with at most one hint each.
+- Level up after three rounds with at most one hint each, and only on right-first-time rounds (Zafar, 1 Nov).
 - **Each level adds one thing; L4 adds one look-alike** (the rulebook). Extras wait for later visits (§5).
 
 These are `docs/game-design/rulebook.md` §1 and `easy-to-play.md`, and are not repeated below.
@@ -346,7 +346,7 @@ On big screens Masi and Nani stand in front, middle and right, holding the picni
 4. **Pay** closes every stall:
    - The stallholder says the price.
    - Masi holds her purse open on the counter, with coins in little stacks of **one to five**. The coins carry no digits. She keeps hold of it.
-   - The child taps the stack that matches the price. The coins slide over one by one, and the stallholder counts along.
+   - The child taps the stack that matches the price, then the stallholder's open hand: the coins slide over one by one, and the stallholder counts along. **This is the one pay** (Zafar, 1 Nov: count out the coins and hand them over; ready-made stacks for small prices), the shops' engine with its small-price stacks.
    - The very first time pay plays, Masi taps the stack herself while the child watches (the watch step); from then on the child pays.
 5. Zoom out. The stall greys out (Zafar's idea; the greying is done in code, not art), and the food drops into the basket.
 6. **The return ask (from L2):** one of the asks goes back to a stall that's already done ("and one more coconut for Nani"). The greyed stall wakes again, so the last stall is never a free pick by elimination.
@@ -478,7 +478,7 @@ All are kept. The three stalls are Cook skins, so they're cheap, and each has it
 
 Nani names a thing, and the child taps it as it passes. The engine's rules already pass the leak test: look-alikes pass together, and things are asked only as they come into view.
 
-**The new bit: the child sets the speed.** The ride has no Kutchi today (audit: 18 words, none Kutchi), so this needs **a change to the shared ride: Nani's speed lines in Kutchi** (*jaldi*, *aste thi*), its own row in §6 and Zafar's yes (question D).
+**The new bit: the child sets the speed.** The ride has no Kutchi today (audit: 18 words, none Kutchi), so this needs **a change to the shared ride: Nani's speed lines in Kutchi** (*jaldi*, *aste thi*), its own row in §6. **Zafar, 1 Nov: yes, only at later levels; the start stays simple.** Every ride's L1 keeps one steady speed. The boat day is a later visit, so a child whose ride is past L1 gets the speed turn; a child still at the ride's L1 rides at one speed and the turn waits.
 - **Watch:** on the first stretch, Nani says "*jaldi!*" to the boatman, and the boat really rushes (the ride's three speeds). Later she says "*aste thi!*", and it eases.
 - **Rung 1, the first ride:** on the second stretch Nani says "*jaldi!*" again, then turns to the child; the "your turn" bubble shows the words, underlined as she says them, and the child says it after her. The boat obeys.
 - **Later rides:** the turn climbs the speaking ladder by the child's own record (`speaking.md`): words without the model, then the picture, and only at rung 4 the choice of two pictures (spray for quickly, calm water for slowly).
@@ -629,10 +629,10 @@ Then home: the shell goes onto Nani's shelf. The evening book shows the castle a
 | Shells | **built on the shared kit** (`js/shared/host.js`, `order-card.js`, `guide.js`, `focus.js`, `onboard.js`) with Cook's count (`js/cook/mechanics/count.js`) for the counted-along hop; Find it's size and decoy rules (`js/find/gen.js`, 4b *Which one?*) copied as generator rules, **not** Find it's greybox engine | the tap-in-a-scene search on the kit; the wave that re-lays the spread; piles as counts; the crab under a shell (Find it 4d's openable reveal, rebuilt as a kit reaction) |
 | Sandcastle | the shared kit as above | **new engine: fill and stack** (the only new engine): moulds, tap-to-fill steps with the overflow window, tip-to-tower, a generated plan, stacking two high. About the size of one Cook mechanic plus a plan checker. |
 | The three stalls | Cook's grill (`mechanics/grill.js`, `stations/mishkaki-grill.js`; the same station as the farm's corn), fry (`mechanics/fry.js`, `stations/samosa.js`), chop and count (`mechanics/chop.js`, `count.js`); the clinic's zoom-in from a room (`js/clinic/heal/scene.js`) | the stall picker with greyed-done stalls, the queue and the return ask (data plus a small picker); bundles and straw cups as count groups; the sleeve and the cone as closing moves |
-| Pay | count-to-a-number's pay, designed for the shops (`count-to-a-number.md`, `shops.md`) | **one pay design proposed, not two:** coins in stacks of one to five, so the number picks the stack (no "stop at N"). The shops' version today is coins onto the counter to a heard number, which is the stop-at-N this design avoids, so the stacks rule goes to Zafar as a numbered change to `count-to-a-number.md` (question E). The beach builds whichever he picks; it doesn't use the counter version as is. **The shops' design (`shops.md` decision 9) makes count-out with the give the one pay engine, built at the shops first, with these stacks as its L1 skin; the beach's prices stay at 1-5** (question E). |
+| Pay | the shops' pay engine (`shops.md` §3E, decision 9) | **one pay (Zafar, 1 Nov): count out the coins and hand them over, with ready-made stacks for small prices.** The beach's prices stay at 1-5, so it uses the stacks of one to five: the number picks the stack (no "stop at N"), then the give to the stallholder's hand. |
 | Picnic | **put it in its place after its rebuild onto the kit (R7)**: `js/tidy/engine.js` is greybox. The rebuild is the one pick it up and put it back needs first, so its cost is shared. The shared spot outline comes with it. Cook's pour (`js/shared/pour.js`) at L4 | the picnic data and art |
 | Speaking at the stall | Conversations (`js/shared/conversations.js`), `js/shared/speech.js`, `say.js`; the shared "say it, someone acts" moment | none (data), once the order lines are recorded |
-| The boat ride | the window ride (`js/shared/window-ride.js`, `js/day/window.js`; a road in `data/day.json`) | a boat road (data and art); the hat beat; **a shared-engine change: the ride gains Nani's speed lines in Kutchi** (its own fix-list row and Zafar's yes, question D), and the speed set by the child's voice |
+| The boat ride | the window ride (`js/shared/window-ride.js`, `js/day/window.js`; a road in `data/day.json`) | a boat road (data and art); the hat beat; **a shared-engine change: the ride gains Nani's speed lines in Kutchi** (its own fix-list row; Zafar, 1 Nov: yes, at later levels only), and the speed set by the child's voice |
 | Litter fishing | the shared kit; the shells' generator rules (decoys, piles as clumps) | **a small new control: the hook** (tap a thing, the hook drops, then tap to reel); the closed pool with the sink-in newcomer |
 | The day | the day runner (`js/day/day.js`, `data/days.json`), door, book | two day lists: the beach (growing over three plays) and the boat day |
 
@@ -641,9 +641,9 @@ Each stage declares and loads only its own art when it's chosen.
 **Bots to write:** the leak bot for shells, the sandcastle (with the L1 allowance stated in §3.2), the stall round and fishing. Each plays blind on a learned save, first picks only, and must win under 10% of rounds (15% for the sandcastle's L1). The window ride's bot already exists.
 
 **The order of work** (each a sprint or part of one; Zafar picks):
-1. **Mum's beach sheet A** (§1) and the art run's backgrounds and Masi's sheet (her likeness first if she's in the game as herself).
+1. **Mum's beach sheet A** (§1) and the art run's backgrounds and Masi's sheet (a placeholder character, not a likeness: Zafar, 1 Nov).
 2. **Shells and the sandcastle** on the kit: the first play of the beach. One builder.
-3. **The boat day:** the boat road, the ride's Kutchi speed lines (once he says yes), and fishing with the hook. Needs the boat sheet to teach.
+3. **The boat day:** the boat road, the ride's Kutchi speed lines (at later levels only, Zafar 1 Nov), and fishing with the hook. Needs the boat sheet to teach.
 4. **The stalls and pay**, once he picks the pay design; the corn stall teaches once sheet B's with and without land.
 5. **The picnic**, after put it in its place's rebuild (scheduled with pick it up and put it back).
 6. Snap joins the day after its own rebuild.
@@ -745,17 +745,17 @@ Each line gives the choice, then the reason, then the answer I assumed. Lines ma
 
 1. **The four beach stages stay as he listed them**, with Snap kept in the day where he put it, and the kite parked (it still hops into the bag). *His 1 Nov "yes" to keeping the four. Likely: yes.*
 2. **The boat day is the beach's second visit:** door, bag, the ride on the water, litter fishing, an optional coconut on the jetty, home. *His Part 7 placing; the research says fishing is thin alone. Likely: yes.*
-3. **Masi voices her own asks** if she'll record a short set (about 15 frames). Until then, Nani asks, and the bubble is Nani's. *Only real family voices; Masi is already the dialect tie-break. Likely: yes, and he'll ask her.*
+3. **Masi's asks, and who voices them.** **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 4. *(revised)* **The sandcastle is his design as written: Masi beside the child, telling; no second castle.** The windbreak version (Masi builds her own castle hidden behind a windbreak, then the reveal of twin castles) is **an option for his word**, costing a windbreak in two states, Masi kneeling behind it in two poses, and her duplicate castle (the tower sprites reused). Every step is put right on the spot, so the two castles always match, which makes the reveal a show, not a check. *Non-negotiable 1: he didn't ask for it. Likely: the plain version; the windbreak if he likes the reveal.*
 5. *(revised)* **The castle grows sideways at L1-L2, stacking comes only with "on top" at L3, and stacks are two high at most on every screen.** *Big-then-small stacking is physics, so a no-Kutchi player would always get it right; three high doesn't fit a phone. Likely: yes.*
 6. *(revised)* **Amounts (a little, half, fill it) are chosen by the child stopping, closed by the tip, with no cap:** full is four or five spadefuls, and a sixth overflows. *Matches baking's agreed rule (no fill line, no cap); the cap made "fill it" tap-until-full. Likely: yes.*
-7. *(revised)* **Every count picks a group:** piles (shells), bundles of cobs, cups of straws, stacks of coins (pay) and clumps (fishing). Nothing "stops by itself". *E2P 4 says a count ends at its number, which makes "tap until it stops" win, so the number must choose something. Likely: yes; this may become the pattern for every game.*
+7. *(revised; Zafar, 1 Nov)* **Every count picks a group, and closes on the natural next thing:** piles (shells), bundles of cobs, cups of straws, stacks of coins (pay) and clumps (fishing), closed by the tip, the sleeve, the cone or the give. Where a count has no clear next thing, it closes about 1.25 s after the last tap (Zafar's one count close: one data setting, the same in every game). Nothing "stops by itself" at the number.
 8. *(revised)* **The stalls: the asker orders (Masi at L1, the queue too from L2), the stallholder asks the child to help make it, and the child pays from the purse Masi holds open; at the third stall she puts the purse in the child's hands for the speaking turn.** *This joins idea 68 and the 19 Oct pay (Masi's coins) in one story, keeps three prices a round, and makes the purse a real handover prop. Likely: yes.*
 9. **The return ask from L2** (a greyed stall can wake again). *Otherwise the last stall is a free pick by elimination. Likely: yes; his greyed-out stall stays.*
 10. **The three dishes are corn with lemon and chilli, cassava chips, and coconut** (the research's pick, replacing fried doughnuts). *Halal, coastal, mostly recorded words, no sweets. Likely: yes.*
 11. **The corn stall is the same station as the farm's corn stall**, with beach dressing and a different background. *One build, two days. Likely: yes.*
-12. *(revised)* **Pay at every stall, as a short one-tap beat, in stacks of one to five;** the first time, Masi pays while the child watches. *Numbers heard three times a round; a price of five needs a stack of five. Likely: yes.*
-13. **Stallholders are generic beach people** (two men, one woman), voiced by family members other than Mum, so Nani's voice is never on a stranger. They say only three lines: "can you help me?" ✓, the price, and thank you. *Only family voices; Mum's voice is Nani's. Likely: yes, with Zafar or Dad as the men. The woman's voice is open (question A).*
+12. *(revised)* **Pay at every stall, as a short beat: pick the stack of one to five, then hand it over;** the first time, Masi pays while the child watches. This is Zafar's one pay (1 Nov: count out and hand over; ready-made stacks for small prices).
+13. **Stallholders are generic beach people** (two men, one woman). They say only three lines: "can you help me?" ✓, the price, and thank you. **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 14. **The picnic uses the island camera (E)**, people behind the cloth, not a top-down cloth. *Owners need faces; the art bible's island framing already exists. Likely: yes.*
 15. *(revised)* **Ali's tiffin box stands in for Ali at the picnic, and his lemon drink goes home in it** (his 19 Oct thing for Ali). *Gives a fourth owner and keeps his line. Likely: yes.*
 16. **The crab is the day's running joke** (under a shell, on the castle, stealing the last chip, in the shoe on the boat day). The crab is never food. *The same joke each visit, so the child waits for it; halal. Likely: yes.*
@@ -763,7 +763,7 @@ Each line gives the choice, then the reason, then the answer I assumed. Lines ma
 18. **The hook drops where the child taps, and the child taps to reel.** No aiming or casting. *Fiddly rods are the top complaint in fishing apps. Likely: yes.*
 19. **Fish are never caught;** they nudge the hook and swim off. The boatman's net clears the rest without a message line. *Nothing gory, no preaching, no "clear it all". Likely: yes.*
 20. **Nani's hat blows off on the ride and is the last catch.** *It gives the fishing a reason, and the day a joke the child retells. Likely: yes.*
-21. *(revised)* **The child says "quickly" (and later "slowly") to the boatman** as the boat day's speaking turn, **at rung 1 on the first ride** (Nani says it, the child repeats); the two-picture choice comes only at rung 4. *The ladder starts at rung 1; the ride gains Nani's Kutchi speed lines first (question D). Likely: yes.*
+21. *(revised)* **The child says "quickly" (and later "slowly") to the boatman** as the boat day's speaking turn, **at rung 1 on the first ride** (Nani says it, the child repeats); the two-picture choice comes only at rung 4. *The ladder starts at rung 1; the ride gains Nani's Kutchi speed lines first, at later levels only (Zafar, 1 Nov). Likely: yes.*
 22. **The fishing nouns come from the day at home's list** (bottle, shoe, can, bag, sock, ball, kettle). *One recording round serves three games. Likely: yes.*
 23. **Shells are top-down.** *Perspective would make far shells look small, which breaks the size rule. Likely: yes.*
 24. *(revised)* **Fishing is an E side-on cross-section with the waterline at 40%, the boat cropped to its rail, and a closed pool where everything bobs alike.** *Three faces and a bubble need 110 px of sky on the Z Fold; a still answer among drifting things is a tell. Likely: yes.*
@@ -778,13 +778,9 @@ Each line gives the choice, then the reason, then the answer I assumed. Lines ma
 33. *(new)* **His two-step castle line ("first the big, and then the small, in the order heard") comes at L2,** not L3. *The castle grows sideways, so it's safe, and it's his core line. Likely: yes.*
 34. *(new)* **Art size is medium-large: 120-150 sprites, five backgrounds, a three-layer sea road, five character sheets.** *Recounted from the camera table. Likely: he decides on cost.*
 
-**Open questions that are genuinely his**
+**Open questions that are genuinely his** (A, C, D and E were answered on 1 Nov: voices are settled before shipping; Masi won't want to be in the game as herself, so her look is a placeholder character; the speed lines come at later levels only; one pay, count out and hand over with stacks for small prices.)
 
-- A. **Who voices the stallholders, the queue customers and the boatman?** I assumed Zafar or Dad for the men. For the woman at the chips stall and a queue customer, is there a family voice other than Mum and Masi, or should all be men?
 - B. **Mum's sea words.** He wasn't sure how many sea words have a catchy Kutchi word (31 Oct). The words in §1 go on Mum's beach sheets A and B. If she says Kutchi uses the English word (as with *chips* and *cup*), that's fine and recorded as hers. Also: *nair* or *naariyel* for coconut (the clash list).
-- C. **Masi's likeness.** If she's in the game as herself, a likeness run comes first. Otherwise, use the cast's placeholder (the teal headscarf).
-- D. **The ride gains Nani's speed lines in Kutchi** (*jaldi*, *aste thi*): a change to the shared window ride, for every ride, so it needs his yes and its own row. *Recommended: yes.*
-- E. **One pay design:** coins in stacks (the number picks the stack) as a numbered change to `count-to-a-number.md`, replacing "coins onto the counter to a heard number" for small prices. The shops' bigger numbers (to 20, then 100) would need their own answer, such as stacks of five and ones. *Recommended: yes for prices to five; the shops' design to follow.* **The pay line from `shops.md` (decision 9, written in here in the consistency pass, 1 Nov):** one pay engine for every game, count-out with the give, built at the shops first; the beach's "tap the stack that matches" (coins in stacks of one to five) is its L1 skin, not a second engine, and the beach's numbers stay at 1-5 (the shops own everything above). Zafar's one answer covers both designs.
 - F. **The sandcastle's windbreak** (decision 4): plain, or the barrier-game reveal at its art cost? *Recommended: plain first; the windbreak later if he likes it.*
 
 ---
@@ -792,6 +788,8 @@ Each line gives the choice, then the reason, then the answer I assumed. Lines ma
 ## 11. ChatGPT mock-up prompts
 
 Five prompts, one for each screen that looks different. Attach the listed references. Each shows Zafar one moment of play. Nani's locked reference is `sources/art/s08/sheet-nani-final-1.png` (art bible). Interface states (greying, outlines as code, ticks) are left to code, except where a mock-up needs to show a play mark, and then it says so.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt beach-boat-1: Shells
 
@@ -930,3 +928,10 @@ The critique (`beach-boat-critique.md`, 1 Nov) had 21 findings: 8 MUST, 13 SHOUL
 | 21 | SHOULD: prompt faults | Prompt 2: same-colour buckets (and the plain version); prompt 1 and 4's bucket is blue, keeping red for *laal*; prompt 3: every stall in full colour, no thumbs-up, one row of faces; prompts 4 and 5 attach Nani's locked sheet (`sources/art/s08/sheet-nani-final-1.png`) instead of the Cook sheet, and prompt 3 no longer attaches it; prompt 5 has the waterline at 40% with the boat cropped to its rail; prompt 4 shows the identical outlines. |
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The shops' pay line is now written into open question E and §6's pay row: count-out with the give is the one pay engine (`shops.md` decision 9), and this design's coin stacks of one to five are its L1 skin, so Zafar answers once for both.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **One pay:** count out the coins and hand them over, with ready-made stacks for small prices; the beach's stacks of one to five are that, now with the give to the stallholder's hand (§3.3, §6, decision 12; question E gone).
+- **Speed lines only at later levels;** the start stays simple (§3.5, §6, the build order, decision 21; question D gone).
+- **One count close:** every count closes on its natural next thing (the tip, the sleeve, the cone, the give), else 1.25 s of stillness (decision 7). **Level up only on right-first-time rounds** (§3).
+- **Voices:** not now (decisions 3 and 13; question A gone). **Masi:** Zafar says she won't want to be in the game as herself, so her sheet is a placeholder character (question C gone). **Flag for Zafar:** the beach is still hosted by "Masi"; whether the host keeps that name is his.
+- **Clothes:** the prompt sheet's line is added before the prompts.

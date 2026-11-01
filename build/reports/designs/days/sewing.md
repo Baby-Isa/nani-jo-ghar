@@ -4,7 +4,7 @@ Drafted overnight from the game design; nothing here is agreed. Built on `docs/g
 
 ## 0. One line
 
-Big Ma's sewing room, the day's weather (used by Going out), host Big Ma, first visit over three plays. Status: designed as a rebuild of the parked Dress up; three sewing sprints after a Mum round and an art run. Sources, newest first: `consistency-2026-11-01.md` rows 22-24, `sewing.md` (§0, §1, §2), `cast.md` (Big Ma).
+Big Ma's sewing room, the day's weather (used by Going out), host Big Ma, first visit over three plays. Status: designed as a rebuild of the parked Dress up; three build slices after an art run (sprint planning is on hold, Zafar 1 Nov; the prototype doesn't wait for Mum's round). Sources, newest first: `consistency-2026-11-01.md` rows 22-24, `sewing.md` (§0, §1, §2), `cast.md` (Big Ma).
 
 ## 1. The language goal
 
@@ -95,6 +95,8 @@ A dupatta for Ma and a cap for Nana; Ali's shirt with a hole (the offcut patch);
 **Decided in this draft (reversible):** the stall stage stays in the list on every play and is skipped when the shops have already put the cloth on Big Ma's table.
 
 **Open (Zafar):**
-1. Make or mend first (sewing question 1)? The design proposes make.
+1. Bring1. Make or mend first (sewing question 1)? The design proposes make.
 2. Bring the stall's colour handover into visit 1's third play, so the day passes rule 4? Recommended: yes, once green and blue are recorded.
-3. Does Big Ma walk to the stall herself?
+2. Does Big Ma walk to the stall herself?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the recommendations are fine (make, then mend; Going out on visit 1); one count close and one pay (count out and hand over, stacks for small prices); only right-first-time rounds level up.

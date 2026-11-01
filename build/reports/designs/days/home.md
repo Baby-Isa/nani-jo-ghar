@@ -10,7 +10,7 @@ Nani's house, the day's own weather (the sky outside the bathroom window matches
 
 | ID | Kind | Target | New this day | Comes back |
 |---|---|---|---|---|
-| O1 | Main: home and rooms | places that open (cupboard, wardrobe, bed, curtain, toy box; basket, drawer at L2); the rooms (kitchen, sitting room, bedroom; bathroom, Ali's room in 1b) | all to record but cupboard ✓ | |
+| O1 | Main: home and rooms | places that open (cupboard, wardrobe, bed, curtain, toy box; basket, drawer at L2); the rooms (kitchen, sitting room, bedroom; bathroom, Ali's room in 1b; Zafar, to confirm: kitchen *rasor*, the bathroom said as "bathroom") | all to record but cupboard ✓ | |
 | O2 | Main: positions | in, under, behind, on; next to, this side and that side in 1b | on (to record) | under, behind (heard in lines), in (engine, heard in a ✓ line) |
 | O3 | Supporting: household things and the home verbs | glasses, ball, bag, table, chair; tap, light, curtains, floor; turn off, switch off, close, sweep (L1); on, open (L2) | all to record (about 15 at L1 across the three games) | cup (Cook) |
 | O4 | Small words: owners and question words | Nana's, Nani's; where? | | where (engine), here, there ✓ |
@@ -53,7 +53,7 @@ The day **fails Part B rule 4 in 1a**: every speaking moment is in 1b.
 
 ## 5. Fun and novelty
 
-- **The new thing:** the doll's house: one cross-section of Nani's house, five rooms in a row, that all three games share.
+- **The new thing:** the doll's house: one two-storey cross-section of Nani's house (downstairs the kitchen and the sitting room; upstairs the bathroom, Nani's bedroom and Ali's room), shared by all three games.
 - **The joke:** Simba's mischief: each find comes with one thing a cat took, dropped on the floor, which the next game puts back.
 - **The collectible:** the best find's photo; the room before and after.
 - **Rhythm:** lively (reveals), calm (carrying), toy-box (reactions). About 3 + 3 + 3 minutes plus the door and book: **about 10-12 minutes, at the top of one sitting.**
@@ -72,7 +72,7 @@ The day **fails Part B rule 4 in 1a**: every speaking moment is in 1b.
 
 ## 7. People and what comes home
 
-Nani (every line in 1a), Nana (his voice in 1b), Simba and Zazu, Ali from 1b (his ball is the thing for Ali). The adoption centre's brush "for Simba" comes back here on a later visit.
+Nani (every line in 1a), Nana (his voice in 1b), Simba and Zazu, Ali from 1b (his ball is the thing for Ali). The pet hotel's brush "for Simba" comes back here on a later visit.
 
 ## 8. Words
 
@@ -93,6 +93,7 @@ A new room a visit, your turn to hide, bedtime with the torch, the shoe rack and
 2. Part B rule 7 fails as drawn: three new pieces (the openable with its cat actor, the doll's-house view, `do-it`). Proposed: the home day owns the openable and the house view; `do-it` is one shared engine for three days, built once with its smallest skins (statues and getting ready), and the runner skips the clean-up until it exists.
 
 **Open (Zafar):**
-1. The house: five rooms in a row with the bathroom in the hall's place (clean-up decision 25: a, b or c)?
-2. Grow by play (decision 1 above), or all three games from the first play?
-3. For Mum: does one word close a tap and a light (clean-up open question 1)?
+1. Grow by play (decision 1 above), or all three games from the first play?
+2. For Mum: does one word close a tap and a light (clean-up open question 1)? Zafar says the family says *bund*, "close the light" (to confirm).
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): one two-storey doll's house for the three home games (each design says how it fits 740x320); push on a toy car in Ali's room and the kitchen as the clean-up's fourth visit; voices wait for shipping (any voice for Nana, Ma and Ali); his words to confirm: *bund*, *batti*, *fugya*/*fugyu*, *he baju*/*ne hu baju*, *rasor*; only right-first-time rounds level up.

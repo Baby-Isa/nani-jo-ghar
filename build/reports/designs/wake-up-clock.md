@@ -6,16 +6,15 @@ Sources: his design and notes (`game-settings-map-2026-10-31.md` §1, §5), the 
 
 ## 0. One line
 
-Three people sleep in three beds. At bedtime Nani tells the child each one's wake time. A big digital wall clock runs fast through the night and pauses at each hour, and the child wakes each person at their time. **Day:** the school day, which it opens (Zafar to confirm the order, decision 18). **Status:** new → designed (this doc), **waiting on Mum** (the gate below). **Engine:** one new small engine (a running clock, plus tap a person). Everything else comes from the shared kit (order card, guide box, bulb and eye, word card, the light, rules, speech). **Rough size:** small to medium. It needs a lab test first (master map Part 5, row 15). One background in two lighting states, about 18 character poses and a set of clock digits.
+Three people sleep in three beds. At bedtime Nani tells the child each one's wake time. A big digital wall clock runs fast through the night and pauses at each hour, and the child wakes each person at their time. **Day:** the school day, which it opens (Zafar, 1 Nov: "fine", decision 18). **Status:** new → designed (this doc); the prototype plays on the device voice until Mum's round lands (below). **Engine:** one new small engine (a running clock, plus tap a person). Everything else comes from the shared kit (order card, guide box, bulb and eye, word card, the light, rules, speech). **Rough size:** small to medium. It needs a lab test first (master map Part 5, row 15). One background in two lighting states, about 18 character poses and a set of clock digits.
 
-### The gate: Mum first (before any art run or lab page)
+### Mum first, without a gate (Zafar, 1 Nov)
 
-The whole game rests on one unasked question: **does the family say the time in Kutchi at all?** 0 of the 12 deciding words have their own clip, 6 of them (five to ten) are class-handout drafts Mum has never confirmed, eleven and twelve aren't in the repo, and the hour form ("___ o'clock") is unknown. So the order is:
+**Zafar's answer to the unasked question, to confirm with Mum:** the family says the time **fully in Kutchi**: all the hours, and 1:15, 1:30 and 1:45 too. **Half past one and half past two have special names of their own**, as 1.5 and 2.5 do. So the game stands as designed. 0 of the 12 deciding words have their own clip yet, 6 of them (five to ten) are class-handout drafts Mum has never confirmed, eleven and twelve aren't in the repo, and the hour form ("___ o'clock") is unknown, so:
 
-1. **One voice note to Mum** (Zafar sends it; Claude writes it): "How do you say 'wake me at seven'? And 'it's seven o'clock'? And six, eight, nine, ten?" Plus: "Do you say the time in Kutchi or in English at home?"
-2. **If she says it in Kutchi:** her number round (1-12 alone, the hour form, the frame she uses) goes first on her next sheet. The frames in §1 are rebuilt from her words, not the other way round. Then the lab page (placeholder art), then the art run.
-3. **If the family says the time in English:** the number no longer decides, and this game can only teach the frame and morning or night. It goes back to Zafar as a numbered choice (park it, or rebuild it around the part of the day); nothing is built.
-4. **The mock-ups (§11)** can go ahead before her answer only if Zafar wants to see the scene regardless. They cost his time, not Mum's.
+1. **One voice note to Mum** (Zafar sends it; Claude writes it): "How do you say 'wake me at seven'? And 'it's seven o'clock'? And six, eight, nine, ten?" Plus the times he named, to confirm: quarter past, half past and quarter to one, and the special names for half past one and half past two.
+2. **Her number round** (1-12 alone, the hour form, the frame she uses) goes first on her next sheet. The frames in §1 are rebuilt from her words, not the other way round.
+3. **Nothing waits for it** (Zafar, 1 Nov: designs must not block on a voice): the lab page, the mock-ups and the prototype play on the device voice; the game counts as teaching once her round lands.
 
 ---
 
@@ -42,8 +41,10 @@ The whole game rests on one unasked question: **does the family say the time in 
 | eleven | to record | |
 | twelve | to record | |
 | the hour form (does the number change when it's a time?) | to record; a question for Mum, not yet a word in this design | |
+| quarter past, half past, quarter to (1:15, 1:30, 1:45) | **Zafar, to confirm** (1 Nov): said fully in Kutchi | later visits (§5) |
+| half past one, half past two | **Zafar, to confirm** (1 Nov): each has a special name of its own, like 1.5 and 2.5 | later visits (§5) |
 
-**Recorded today: 0 of the 12 deciding words have their own clip.** Until Mum records them, a reader wins on the grey English (AUD flaw 2). This game therefore teaches nothing until her number round lands, which is why it is gated on her (§0).
+**Recorded today: 0 of the 12 deciding words have their own clip.** Until Mum records them, a reader wins on the grey English (AUD flaw 2). This game therefore teaches nothing until her number round lands (§0); the prototype plays on the device voice before then.
 
 ### Time words and the night
 
@@ -94,7 +95,7 @@ The whole game rests on one unasked question: **does the family say the time in 
 
 ### Frames (the fallback leads: Mum's voice only)
 
-Every line is Nani's, in Mum's voice. The sleepers make sounds, not words (a yawn, a snore, a sleepy "mm-mm" head shake), until Zafar casts voices for them (open question 2). This keeps the clip count to Mum's one voice: one frame plus 12 hours, not three voices times thirteen. The frame list below is a placeholder in English; **the real frames are built from what Mum says in her first answer**, and the engine splices only what she confirms is grammatical.
+Every line is Nani's, in Mum's voice. The sleepers make sounds, not words (a yawn, a snore, a sleepy "mm-mm" head shake). **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice. This keeps the clip count to Mum's one voice: one frame plus 12 hours, not three voices times thirteen. The frame list below is a placeholder in English; **the real frames are built from what Mum says in her first answer**, and the engine splices only what she confirms is grammatical.
 
 **Heard (listening):**
 1. Nani, at bedtime, as each sleeper sits up and nods: "Ali wakes up at six" (a full sentence; to record in her words).
@@ -266,7 +267,7 @@ It's a play action, not a gate. The tap made the wake, and the speaking is the f
 
 Only visit 2's speaking moment (§3) is in this design; it's what the lab needs. Everything else is one entry in `docs/ideas.md` (added in the consistency pass, 1 Nov, as row 97):
 
-> **Wake-up clock, later visits (idea, 1 Nov):** the holiday morning ("don't wake me", a "no" ask); baby Isa's cot that wakes by itself and cries (a different game: react to an event); half past (if Mum says Kutchi has its own words); the afternoon nap with Big Ma (a daylight scene, her sheet in sleepwear); the child's own time for tomorrow ("and you?"); the same clock in the bus stage and the eggs station. Each needs Zafar's yes and the lab's verdict first.
+> **Wake-up clock, later visits (idea, 1 Nov):** the holiday morning ("don't wake me", a "no" ask); baby Isa's cot that wakes by itself and cries (a different game: react to an event); half past and the quarters (Zafar, 1 Nov: the family says them in Kutchi, and half past one and half past two have special names, to confirm with Mum); the afternoon nap with Big Ma (a daylight scene, her sheet in sleepwear); the child's own time for tomorrow ("and you?"); the same clock in the bus stage and the eggs station. Each needs Zafar's yes and the lab's verdict first.
 
 ---
 
@@ -366,8 +367,8 @@ Each line gives the choice, the reason, and the answer I assumed he'd give. Reve
 
 1. **The sleepers are Nana, Ma and Ali.** *Why:* known faces from Cook; two grown-ups and a school child is a real school morning. *Assumed:* yes.
 2. **The child is Nani's "alarm clock" for the night and isn't in a bed.** *Why:* the child rings and doesn't set times; it keeps one job. *Assumed:* yes.
-3. **Nani says every ask in Mum's voice; the sleepers sit up and nod, and make sounds, not words.** *Why:* one voice instead of four (about 13 clips, not 50-80); the sleepers' own lines come later if he casts them. *Assumed:* yes.
-4. **Wake times are only o'clock.** *Assumed:* yes.
+3. **Nani says every ask; the sleepers sit up and nod, and make sounds, not words.** *Why:* one voice instead of four (about 13 clips, not 50-80). **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
+4. **Wake times are only o'clock on the first visit.** Half past and the quarters (said fully in Kutchi, with special names for half past one and half past two: Zafar, to confirm) wait for a later visit. *Assumed:* yes.
 5. **The pause is 6 s at L1 and about 15% less a level, in data, the same length whether anyone is due or not; the minutes whizz for about 1.5 s between hours.** *Why:* his pause; an unequal pause would be a tell. *Assumed:* yes, to tune in the lab.
 6. **The wall clock isn't a button; there's no hurry tap.** Empty hours are capped at 2-3 a round instead, and the window is a toy. *Why:* one gesture and one kind of target; a hurry tap that's "never needed" was never taught. *Assumed:* yes.
 7. **A card's speaker holds the clock while its line plays, up to 6 s a pause in all; the bulb holds it while the helper card is open.** *Why:* listening again is free, but holding can't stretch a pause for ever. *Assumed:* yes.
@@ -381,26 +382,29 @@ Each line gives the choice, the reason, and the answer I assumed he'd give. Reve
 15. **Later visits (holiday, baby Isa, half past, the nap, "and you?") are ideas, not this design;** only visit 2's speaking stays. *Why:* keep it small until the lab says it works. *Assumed:* yes.
 16. **Speaking is "call the hour" at the wake,** from visit 2 by the speaking ladder; a closed set of 3 kept apart by Mum's look-alike list; a wrong pick gets a recast, never a block. *Assumed:* yes.
 17. **The end serves chai and milk** (Cook's art) and hands "the bus comes at eight" to the bus stage. *Why:* end with something served; carry between games. *Assumed:* yes.
-18. **The clock stage comes before the door** on the school day (as `school-day.md` has it). The day's weather is picked as now; the clock's last sky just shows it, and the door is unchanged. *Why:* it starts the night before; door-then-clock runs time backwards. *Assumed:* yes, but it changes the day's shared opening, so it's his call.
+18. **The clock stage comes before the door** on the school day (as `school-day.md` has it). The day's weather is picked as now; the clock's last sky just shows it, and the door is unchanged. *Why:* it starts the night before; door-then-clock runs time backwards. **Zafar, 1 Nov: fine.** *Assumed:* yes, but it changes the day's shared opening, so it's his call.
 19. **Simba sleeps on a random bed each night** and launches when that sleeper wakes. *Why:* tied to the last riser, he'd tell the child the wake order. *Assumed:* yes.
 20. **Digits are art sprites** (warm glowing segments), not a font, with a small moon or sun on every clock face. *Why:* code moves art and never draws it; the clock shows the time of day. *Assumed:* yes.
-21. **Mum first, then a lab page with a speed slider, then the art run.** The mock-ups only if he wants to see the scene regardless. *Why:* none of the deciding words is recorded, and the family may say the time in English. *Assumed:* yes.
+21. **Mum's voice note first, but nothing waits for it:** a lab page with a speed slider and the art run go ahead on the device voice (Zafar, 1 Nov: designs don't block on a voice; the family says the time in Kutchi, to confirm).
 22. **One voice note to Mum goes first** ("how do you say 'wake me at seven'? 'it's seven o'clock'? six, eight, nine, ten? Kutchi or English at home?"), then her number round (1-12 alone, the hour form, the frame) heads her next sheet. Ten is asked fresh, without the handout's *do*. *Assumed:* yes.
-23. **Level-up for this game counts only rounds where all three wakes were right with no eye and no bulb (3 such rounds, not necessarily in a row); timed guide hints are off; a bed tap during a line is a move.** All three are per-game switches added to `data/rules.json` in the build. *Why:* without them, reading would climb the levels and waiting would hand over who's next. *Assumed:* yes.
+23. **Level-up for this game counts only rounds where all three wakes were right with no eye and no bulb** (this is Zafar's 1 Nov rule for every game: only right-first-time rounds level up) (3 such rounds, not necessarily in a row); timed guide hints are off; a bed tap during a line is a move.** All three are per-game switches added to `data/rules.json` in the build. *Why:* without them, reading would climb the levels and waiting would hand over who's next. *Assumed:* yes.
 24. **No look-alike at L4;** after Mum's round, any hours that sound alike go in data to keep them apart in speaking. *Why:* the repo's pairs are drafts, one probably wrong. *Assumed:* yes.
 25. **On phones the bedside alarms carry no digits and there's no window strip;** the card is the L1 digit support and the clock carries the moon or sun. *Why:* 18 px digits and a slim strip don't read at 320 px tall. *Assumed:* yes.
 
 **Open questions (genuinely his, or Mum's):**
 1. **How does the family say the time: Kutchi numbers or English?** (Mum; §0, the gate.) If English, the game goes back to him as a choice.
 2. **Who, if anyone, voices Nana, Ma and Ali later?** Until then Nani says everything in Mum's voice.
-3. **Does the "wake up" verb change with who it's about** (a man, a woman, a child)? Mum's sheet asks for each form.
-4. **Do the times feel right?** The first-ever round has Ali at six, Nana at seven and Ma at nine. He can say if the family's real mornings fit better.
+(Answered 1 Nov and removed: the family says the time in Kutchi, to confirm with Mum; voices are settled before shipping.)
+1. **Does the "wake up" verb change with who it's about** (a man, a woman, a child)? Mum's sheet asks for each form.
+2. **Do the times feel right?** The first-ever round has Ali at six, Nana at seven and Ma at nine. He can say if the family's real mornings fit better.
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-**Only if Zafar wants to see the scene before Mum answers** (§0). The digits in these mock-ups are for his eye only: image models often garble digits, so a wrong time on a mock-up means nothing. The asset run later asks for blank clock faces, and the game lays digit sprites on them. Each prompt attaches only the sheets of the people in the shot.
+**These no longer wait for Mum** (Zafar, 1 Nov; §0). The digits in these mock-ups are for his eye only: image models often garble digits, so a wrong time on a mock-up means nothing. The asset run later asks for blank clock faces, and the game lays digit sprites on them. Each prompt attaches only the sheets of the people in the shot.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt wake-up-clock-1: level 1, the first wake at dawn
 
@@ -537,3 +541,9 @@ Each finding from `wake-up-clock-critique.md`, then what I did.
 **Found while revising (not in the critique):** Simba always sleeping on the last riser's feet would tell the child the wake order (a pattern leak). He now picks a random bed each night (decision 19).
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** `do-it-engine.md` §2B now has this design's order (the clock, then the door, then getting ready). Ali's two little cousins from getting ready sleep on a floor mattress in this bedroom, background only and never a target (§3, §7). Ali is about 8, as the getting-ready design draws him, and the prompts now say "a tall, lanky boy of about eight"; their cat is now Simba as `cast.md` describes him (big, round-faced, charcoal-black), not "a small dark grey cat", which reads as Zazu. The mock-ups leave the cousins out; they are a background layer added in the art run.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **Times in Kutchi:** the family says the time fully in Kutchi (the hours, 1:15, 1:30, 1:45), with special names for half past one and half past two, all "Zafar, to confirm" in the word table, the voice note and §5; the gate is gone and open question 1 with it.
+- **Voices:** nothing waits on Mum's round or a cast (§0, decisions 3 and 21); open question 2 gone.
+- **"Wake-up clock: fine":** the order with the clock before the door stands (decision 18). Its level-up rule already matched his right-first-time rule (decision 23).
+- **Clothes:** the prompt sheet's line is added before the prompts.

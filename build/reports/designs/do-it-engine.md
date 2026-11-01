@@ -15,6 +15,14 @@ Sources, newest first:
 
 ---
 
+## How it plays (in 30 seconds; Zafar asked, 1 Nov)
+
+**Musical statues, at the party.** Two party children, Zara and Yusuf, dance in the middle of the room while Nani claps the beat. Nani stops clapping: the music stops, and the two children bob on the spot, waiting. Nani calls a pose in Kutchi, say "sit!". Beside the dancers stand two to five picture cards (sit, jump, turn round, and later stand, stop, touch your nose). The child taps the card for what Nani said, and both dancers snap into that pose and hold it, with a click and a giggle. Then Nani says "dance!", the music bursts back, and they dance again. Tap the wrong card and the dancers do that pose as a funny mistake; Nani says the call again and the child taps again. About six stops make a round. Once a play, Nani turns to the real child, "now you!", and the child in the room dances and freezes too. Later levels add "jump, don't sit!", "touch your nose" and two calls at once, and later still the child is Nani and calls the pose out loud. At the end Zara puts a paper crown on the child's character.
+
+**Getting ready, on the school day,** is the same game with a different room: Ali and two little cousins stand in pyjamas; Nani says "Ali, comb your hair", the child taps the comb, and Ali combs his hair. Nani calls the jobs in any order and to any child, so only the words say which.
+
+---
+
 ## 0. One line
 
 | | |
@@ -23,7 +31,7 @@ Sources, newest first:
 | **Days** | A: someone's birthday, after look after the guests and before the cake. B: the school day, after the wake-up clock and the door, before pack the school bag. |
 | **Status** | New. Designed overnight, revised after the critique, not agreed. |
 | **Engine** | New: `do-it` (actors, actions, triggers, per-actor state, a call queue). Everything around it is the shared kit: order card, guide, light, end screen, speaking moment. |
-| **Rough size** | Engine: small, about one sprint with both stages greyboxed. Art: two party dancers with about 12 poses each; three children as layered "dress-up dolls" built on `js/dress/doll.js` (a lab page first). **Recording is the blocker:** 2 of the statues verbs are in the engine (sit *we*; turn *firai*, if Mum uses it for a person) and none has its own clip. Of getting ready's calls, only "eat" ✓ has a clip. Visit 1 is the scope's vocabulary only; everything else is visits 2-3 (§5). |
+| **Rough size** | Engine: small, about one sprint with both stages greyboxed. Art: two party dancers with about 12 poses each; three children as layered "dress-up dolls" built on `js/dress/doll.js` (a lab page first). **Recording is not a blocker for the prototype** (Zafar, 1 Nov: existing takes, else the device voice; voices are settled before shipping). 2 of the statues verbs are in the engine (sit *we*; turn *firai*, if Mum uses it for a person) and none has its own clip. Of getting ready's calls, only "eat" ✓ has a clip. Visit 1 is the scope's vocabulary only; everything else is visits 2-3 (§5). |
 
 ---
 
@@ -67,7 +75,7 @@ Later visits (§5): clap, hands up, hand (*hath*, in engine), tummy, knee (*guta
 
 | English | Kutchi in the repo | State | Level it decides from |
 |---|---|---|---|
-| the three children's names | | to record in Nani's voice (Ali, plus two little cousins: placeholders, §10 open question 5) | heard from L1 (the called child steps forward); the person decides on visit 2 |
+| the three children's names | | to record (Ali, plus two little cousins: placeholders, Zafar's "the recommendation for now", 1 Nov) | heard from L1 (the called child steps forward); the person decides on visit 2 |
 | brush (your teeth) | | to record | L1 |
 | teeth | | to record | L1 |
 | comb (your hair) | | to record | L1 |
@@ -130,7 +138,7 @@ The lessons ask for 3-5 new words a round, each heard at least 3 times.
 
 ### Mum first
 
-The game teaches nothing until these are recorded. Grey English would be a reader's win (lessons §1, AUD flaw 2). They go first on her next sheet, as bare commands to a child.
+The game teaches nothing until these are recorded. Grey English would be a reader's win (lessons §1, AUD flaw 2). The prototype plays before then on the device voice (Zafar, 1 Nov). They go first on her next sheet, as bare commands to a child.
 
 **Statues L1:** sit (as a clip of its own), jump, turn round (with the *firai* question), dance.
 
@@ -158,7 +166,7 @@ The game teaches nothing until these are recorded. Grey English would be a reade
 9. Home (the party-bag toy for Ali)
 10. The evening book
 
-All three party designs now use this order: `party-guests.md` §2 was brought into line in the consistency pass (1 Nov), and only the master map's Part 7 still shows the older one. It is the gifts doc's order because it is the newest and keeps the give-to stages apart; Zafar confirms it once for all three (§10, open question 6). The party's people are one cast across the three designs (`party-gifts.md` §0): Zara (4), her mum, her masi, Yusuf (6), Sana (5), dada and dadima.
+All three party designs now use this order: `party-guests.md` §2 was brought into line in the consistency pass (1 Nov), and only the master map's Part 7 still shows the older one. It is the gifts doc's order because it is the newest and keeps the give-to stages apart; Zafar took it on 1 Nov ("the recommendation for now"). The party's people are one cast across the three designs (`party-gifts.md` §0): Zara (4), her mum, her masi, Yusuf (6), Sana (5), dada and dadima.
 
 | Carries in | Carries out |
 |---|---|
@@ -209,6 +217,7 @@ Nani says one call, and its card pops big and flies into its row. The child taps
 - **Right, first go:** the reaction, then the row ticks and the next call comes.
 - **Wrong:** the actor does the wrong action as a comic miss (a different one each time). Nani says the call again, and the child redoes it on the spot. **The row ticks only a call that was right on the first tap; a call put right after a miss closes without a tick and never moves that word's ladder** (lessons §5, rulebook "first go").
 - **Data per level:** the call queue (shuffled; repeats where natural), how many triggers show (always more than one), the decoys, the "no" asks, and which calls are two-word.
+- **Moving up (Zafar, 1 Nov):** only right-first-time rounds count towards the next level, every call ticked on its first tap. A round with an untick is progress on the end screen, but doesn't count.
 
 Nothing moves by itself, nothing glows on the answer, and there's no timer.
 
@@ -263,7 +272,7 @@ Scores out of 5: fun, does the Kutchi decide, novelty, build cost (5 = cheap).
 | Where's the instruction? | Nani on screen, then the card. The guide box shows the step (a speaker). Nani repeats the call every few seconds for non-readers (lessons §4). | 4 |
 | What's novel? | The only game where whole-body verbs decide, and it has the off-screen twin. No other stage freezes and releases to music. | 4 |
 
-**Level ladder.** Levels make the Kutchi harder, never the gesture (always one tap on a card). "Stops" are the calls per round. The round sizes follow Zafar's 29 Oct rule: one level overridden (L1, written here: 6 stops, because a new verb needs three hearings a round and a round of one is over before it starts), then even steps to L4's most of 8, which is how `wake-up-clock.md` reads the same rule. The alternatives are in §10, open question 3.
+**Level ladder.** Levels make the Kutchi harder, never the gesture (always one tap on a card). "Stops" are the calls per round. The round sizes follow Zafar's 29 Oct rule: one level overridden (L1, written here: 6 stops, because a new verb needs three hearings a round and a round of one is over before it starts), then even steps to L4's most of 8, which is how `wake-up-clock.md` reads the same rule (Zafar, 1 Nov: the recommendation for now).
 
 | Level | Adds one thing | Calls | Cards per stop | Stops |
 |---|---|---|---|---|
@@ -361,7 +370,7 @@ It's never a gate: no mic means tap a pill. There are 2 calls, then it goes back
 **The why:** Ali and his two little cousins slept over at Nani's, and it's a school morning. The child helps Nani get the three of them ready: tap what Nani says, and the child she named does it. Nani calls in any order and to any child, so the routine is no help (the scope: "the verb decides, not the routine's order"). The mixed-up order is the joke: a cousin eats breakfast with bed-hair while Ali stands combed and in pyjamas.
 
 **Who's on screen (E camera, full body):**
-- **The three children** stand in a row in the middle of the room, in pyjamas with bed-hair: **Ali** (about 8, tall and lanky), a **girl cousin** (about 5) and a **boy cousin** (about 4). Placeholders: Zafar names them (§10, open question 5). Their places in the row shuffle each round.
+- **The three children** stand in a row in the middle of the room, in pyjamas with bed-hair: **Ali** (about 8, tall and lanky), a **girl cousin** (about 5) and a **boy cousin** (about 4). Placeholders for now (Zafar, 1 Nov: the recommendation). Their places in the row shuffle each round.
 - **The things,** at reachable spots either side of them:
   - a basin shelf on one side: a cup with three toothbrushes, the comb; from L2 the soap and the flannel;
   - a clothes rail on the other: the school clothes on hangers (the one thing never called before L4); from L3 socks, and shoes on the floor below.
@@ -572,7 +581,7 @@ We borrow mechanics, never themes, and no specific game is recreated.
 | **6. Layout** | **Passed on paper** (§7). The four sizes plus 915x275 are checked at build. The touch cards are head-and-shoulders crops, proven at 64 px on the lab page before the art run. |
 | **7. Art** | **Passed on paper.** One camera per scene (E; items F). Code only moves real art (the children's layers are real cut-outs). Calm faces and gentle motion: the dance is a two-frame bob, not "crazy". Each speaker has two poses (Nani three-quarter, then front-facing for "now you!"). One paste block. **Risk:** the three children's layers need the lab first. |
 | **8. Speaking** | **Passed.** Only after many watches (A3, from L3 or visit 2). Closed set of 3 with the pills always there. Never a gate. It reuses the one shared moment. |
-| **9. Levels** | **Passed, following the rulebook.** Each level adds one thing and is designed in its own right: L4 adds look-alikes and two calls in one (statues), first-then and get dressed (getting ready), not just more speed. L2 has the rulebook's "no" ask in both stages. Round sizes: one override (L1), written in each ladder, then even steps (the clock's reading of the rule); Zafar confirms the reading (§10, open question 3). |
+| **9. Levels** | **Passed, following the rulebook.** Each level adds one thing and is designed in its own right: L4 adds look-alikes and two calls in one (statues), first-then and get dressed (getting ready), not just more speed. L2 has the rulebook's "no" ask in both stages. Round sizes: one override (L1), written in each ladder, then even steps (the clock's reading of the rule); Zafar took the recommendation for now (1 Nov). |
 | **10. Words** | **Passed, recounted.** Every line is listed in §1 and every call is one natural sentence (a bare command). Naming fits the moment ("put on your shoes", not "shoes"). What's said is what's on the card. Statues L1: 2-3 new verbs, each called 3 times a round; getting ready L1: 5 new words, each heard 3 times (once per child). Visit 1 is the scope's vocabulary; the rest is visits 2-3. |
 | **11. Culture** | **Passed.** No reward is a sweet: the statues prize is a paper crown, and the cake stays in the cake stage. The party has no religious markers. Clothes are modest. Food is never played with in the misses. Shoes stay on feet. Nothing to copy and get hurt by: no jumping on furniture (every miss lands on the open floor, cushions untouched), no spinning into each other, and nobody puts anything in their mouth wrongly (the comb miss stops short). The tune is off until Zafar says (§10, 2). The host grandmother is *dadima*, never a second Nani. |
 | **12. Fun** | **Passed.** The hands have a toy during the music (tap a dancer for a wiggle). Yusuf's wobble and the children's misses are the "kind of funny" moments. The freeze-click and the boing feel good. Contrast: the freeze against the dancing; the mixed-up morning. Consecutive stages never repeat the engine. Something is carried to the book. |
@@ -602,7 +611,7 @@ We borrow mechanics, never themes, and no specific game is recreated.
 Each line gives the choice, the reason, and the answer I assumed. Reverse any by number. (Renumbered after the critique; §12 says what changed.)
 
 1. **One `do-it` engine for statues, getting ready and the clean-up,** designed here with both stages. *Why:* his R9, and the master map's "one engine". *Assumed:* yes.
-2. **The music: Nani's recorded claps alone by default.** A tune is a data switch that stays off until he says yes and where it comes from. It stops at a random 3-8 s. *Why:* question 16 is still his call; claps are the family's own sound; nothing generated or stock goes in unasked. *Assumed:* yes (open question 1).
+2. **The music: Nani's recorded claps alone by default.** A tune is a data switch that stays off until he says yes and where it comes from. It stops at a random 3-8 s. *Why:* question 16 is still his call; claps are the family's own sound; nothing generated or stock goes in unasked. *Assumed:* yes (Zafar, 1 Nov: the recommendation for now).
 3. **Statues' gesture is one tap on a pose card.** The cards are crops of Zara's own poses, with no text, in a column beside the dancers; the touch cards are head-and-shoulders crops, proven at 64 px on a lab page first. *Why:* one gesture, big targets, readable on phones. *Assumed:* yes.
 4. **Everyone does the pose the child picked,** and nobody is ever "out". *Why:* non-negotiable 7. *Assumed:* yes.
 5. **The dancers are Zara and Yusuf** (Sana on visit 2). The child's own character stays off screen and slides in only for the crown and the handover. *Why:* pose art for the child's character is costly, and a figure standing still at a dance is a sad note. *Assumed:* yes.
@@ -613,34 +622,31 @@ Each line gives the choice, the reason, and the answer I assumed. Reverse any by
 10. **No mic and no camera in the off-screen round.** *Why:* privacy and simplicity; it's unscored. *Assumed:* yes.
 11. **The statues prize is a plain paper crown,** worn in the family photo. Never a sweet. *Why:* non-negotiable 9, and a carry into Snap. *Assumed:* yes.
 12. **You be Nani from statues L3 (or visit 2),** using the one shared speaking moment. Closed set: sit, jump, turn. *Why:* a natural exchange the child has watched many times. *Assumed:* yes.
-13. **Getting ready is three children who slept over: Ali and two little cousins** (placeholders), each with their own state. The called child steps forward on visit 1; the name decides on visit 2 with give-to's two taps. *Why:* one child can't hear a call three times or repeat a once-only job; three children give every word three hearings and an honest leak test. *Assumed:* yes (open question 5 has the cheap alternative).
+13. **Getting ready is three children who slept over: Ali and two little cousins** (placeholders), each with their own state. The called child steps forward on visit 1; the name decides on visit 2 with give-to's two taps. *Why:* one child can't hear a call three times or repeat a once-only job; three children give every word three hearings and an honest leak test. *Assumed:* yes (Zafar, 1 Nov: the recommendation for now).
 14. **Getting ready's gesture is tap the thing:** it hops into the called child's hand, they do it and put it back. *Why:* toy-like, one gesture at every level. *Assumed:* yes.
 15. **Nani's calls are shuffled across children and jobs, out of routine order on purpose,** and the comedy is in it. "Wake up" is the clock's word only. *Why:* the scope; the clock decides "wake up". *Assumed:* yes.
 16. **Dressed children always reach the bag:** "get dressed" is heard at the end of every round and decides only at L4. *Why:* the story needs ready children for the bag without "get dressed is always called" becoming a pattern. *Assumed:* yes.
 17. **"First ... then" at L4 in both stages,** sometimes against the routine's order. *Why:* the heard order decides; two calls without a new gesture. *Assumed:* yes.
 18. **What decides in getting ready is said plainly:** the thing's word at L1, the noun within a pair from L2, the verb on one thing (wash against dry) on visit 2. *Why:* each thing has one job; the doc shouldn't claim more. *Assumed:* yes.
-19. **Round sizes follow the 29 Oct rule:** one override, L1 (statues 6 stops, getting ready 9 calls), then even steps to L4 (statues 6/7/7/8; getting ready 9/9/10/10). *Why:* his rule; the override is for the three hearings. *Assumed:* yes, built this way (open question 3 asks him to confirm the reading).
-20. **L2 has the rulebook's "no" ask in both stages:** "jump, don't sit!" and "wash your hands, not your face!", the "no" said last. *Why:* his 29 Oct rule; a negated ask says what to do, unlike Simon says. *Assumed:* yes, built this way (open question 4).
+19. **Round sizes follow the 29 Oct rule:** one override, L1 (statues 6 stops, getting ready 9 calls), then even steps to L4 (statues 6/7/7/8; getting ready 9/9/10/10). *Why:* his rule; the override is for the three hearings. *Assumed:* yes, built this way (Zafar, 1 Nov: the recommendation for now).
+20. **L2 has the rulebook's "no" ask in both stages:** "jump, don't sit!" and "wash your hands, not your face!", the "no" said last. *Why:* his 29 Oct rule; a negated ask says what to do, unlike Simon says. *Assumed:* yes, built this way (Zafar, 1 Nov: the recommendation for now).
 21. **Every miss passes "could a child copy this at Nani's?":** no furniture, nothing spun into, food never played with, shoes only on feet, nothing near a mouth. *Why:* lessons §11, non-negotiable 9. *Assumed:* yes.
 22. **Lab pages before the art run:** the three children's layers at the four sizes, and every statues card at 64 px. *Why:* layered dolls can misalign, and the touch cards must read on phones. *Assumed:* yes.
 23. **The game counts as teaching only once Mum's L1 lines are recorded** (about 10). Bare commands to a child; elder forms wait for visit 2. *Why:* grey English is a reader's win. *Assumed:* yes.
-24. **The party order is `party-gifts.md`'s:** door, ride, introductions, look after the guests, statues, the cake, Snap, the presents, home, the book. *Why:* the newest of the three, and it keeps give-to stages apart; `party-guests.md` §2 and the master map change with it. *Assumed:* yes (open question 6).
+24. **The party order is `party-gifts.md`'s:** door, ride, introductions, look after the guests, statues, the cake, Snap, the presents, home, the book. *Why:* the newest of the three, and it keeps give-to stages apart; `party-guests.md` §2 and the master map change with it. *Assumed:* yes (Zafar, 1 Nov: the recommendation for now).
 25. **The host family's grandmother is *dadima*,** never "Zara's nani", and she stays off the dance floor until visit 2 and the recorded elder forms. *Why:* the gifts critique's two-Nani finding, as the gifts design decided it. *Assumed:* yes.
 26. **Breakfast comes on Nani's tray at the door,** and nobody drinks milk here (the clock served it). *Why:* how a Nani's house works, and no serving twice. *Assumed:* yes.
 
-**Open questions (genuinely his):**
-1. **The music:** claps alone (built), claps plus a family hum, or claps plus a tune (and where from)?
-2. **For Mum:** does she use *firai* for a person turning round; what does she say for "jump", "stand up", "stop" (she has said English *stop*: confirm for children freezing) and "don't sit"; and does "first ... then" have a natural frame?
-3. **Round sizes. Built the rule-following way:** one override (L1), then even steps: statues 6/7/7/8, getting ready 9/9/10/10. If you read "one override" strictly (the formula from 1 for L2-L4), statues L2 drops to 3 stops after L1's 6, which is why I read it as the clock does. **My first draft's sizes at every level reversed your 29 Oct rule** and are dropped unless you want them.
-4. **"No" asks at L2. Built the rule-following way:** "jump, don't sit!" and "wash your hands, not your face!". **My first draft dropped them (that reverses your 29 Oct rule)** on the Simon-says research; I no longer recommend it, since a plain negated ask is listening, not a trick.
-5. **Getting ready's children:** Ali and two little cousins (names and ages yours; they now sleep on a floor mattress in the clock's room, `wake-up-clock.md` §3), or the cheap version: Ali alone, with fewer hearings (each call once a round) and an honest note that done jobs cross themselves off.
-6. **The party order:** confirm the one order in decision 24 for all three party docs.
+**Open questions:** Zafar took the recommendations for now (1 Nov): claps alone, the round sizes and the "no" asks as built, Ali and two placeholder cousins, and the one party order. Left for Mum:
+1. **For Mum:** does she use *firai* for a person turning round; what does she say for "jump", "stand up", "stop" (she has said English *stop*: confirm for children freezing) and "don't sit"; and does "first ... then" have a natural frame?
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
 All five are mock-ups for Zafar to judge the look and scale. **The real pose cards and things are separate crops and cut-outs** made from the approved renders; the cards drawn inside these scenes only show the layout, and their in-scene look is not the asset.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt do-it-engine-1: musical statues, level 1 (the first stop)
 
@@ -821,3 +827,10 @@ Each finding from `do-it-engine-critique.md`, then what I did.
 16. **The ChatGPT prompts.** A line above the prompts and in each "what it should show" says the real cards and things are separate crops and cut-outs. Prompt 2 drops Sana and the second grandmother (two dancers), and asks for head-and-shoulders touch cards. Prompt 3 drops the swirls and the speaker and forbids "symbols of any kind". Prompt 4 drops the glow and the stool (Nani holds the tray at the door), and shows the three children. Prompt 5 drops the glass of milk, is now L3 (socks), and asks for plain pyjamas and socks with no stripes or prints. The new statues prompts place the dancers on the open floor, away from the cushions.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The school day's order in §2B is now the clock, then the door, then getting ready, as `school-day.md` and `wake-up-clock.md` have it; the two little cousins sleep in the clock's bedroom (its §3 has the line). The party order was already `party-gifts.md`'s; `party-guests.md` now matches it and parks the after-statues round. The party cast is the one shared list in `party-gifts.md` §0: Zara is 4 on visit 1, in a marigold kameez, and the prompts say so.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **"How it plays"** added near the top, as he asked: musical statues and getting ready in 30 seconds.
+- **Musical statues: the recommendation for now.** Open questions 1 and 3-6 are closed on the recommendations (claps alone, the round sizes, the "no" asks, Ali and two placeholder cousins, the one party order); only Mum's question remains.
+- **Level up only on right-first-time rounds,** written into the engine paragraph.
+- **Voices:** recording is not a blocker for the prototype (existing takes, else the device voice).
+- **Clothes:** the prompt sheet's line is added before the prompts (the dancers and the cousins in modern casual clothes, Nani as drawn).

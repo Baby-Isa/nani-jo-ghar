@@ -25,7 +25,8 @@ Designed overnight, 1 Nov 2026, while Zafar slept, and revised the same night af
 | elephant | – | to record | A, B |
 | giraffe | – | to record | A, B |
 | zebra | – | to record | A, B |
-| lion (or monkey, if no lion: §10) | – | to record | A L3+, B |
+| lion (in a tree; Zafar, 1 Nov: yes) | – | to record | A L3+, B |
+| monkey (Zafar, 1 Nov: monkeys too) | – | to record | A: the monkeys' beat (heard, visit 1); asked from visit 2 |
 | baby (of an animal) | – | to record | A L4, B L4 |
 | big | *wadho* | heard inside 30 recorded lines | A L4, B L3-L4 |
 | small | *nindho* | ✓ recorded alone | A L4, B L4 |
@@ -87,11 +88,11 @@ The proposed safari day:
 
 **Why (said at the start):** Hannah Mami: "Look! Take photos for Ali." She is in the driver's seat, turned three-quarters to the child.
 
-**Steps (the farm's Snap gesture, unchanged):** the jeep drives (the window ride, side view). A group of animals comes into view in one of the near loop's scenes, and Hannah Mami names one. Its card pops up big, then flies into its row. The child **taps the animal**: the camera frame (soft white corners) glides to it and follows it, and the jeep eases to its slowest. Once the frame has locked on (about 0.4 s), its corners go gold. The child **taps inside the gold frame**: click, flash, the animal reacts, and a print slides into the card's row as its tick. Tapping a different animal before the shot moves the frame (that's the undo). **There is no shutter button: the cog stays the only button on the play screen** (lessons §6; the farm's Snap, stage 7).
+**Steps (the farm's Snap gesture, unchanged):** the jeep drives (the window ride, side view). A group of animals comes into view in one of the near loop's scenes, and Hannah Mami names one. Its card pops up big, then flies into its row. The child **taps the animal**: the camera frame (soft white corners) glides to it and follows it, and the jeep eases to its slowest. Once the frame has locked on (about 0.4 s), its corners go gold. The child **taps inside the gold frame**: click, flash, the animal reacts, and the **instant camera prints**: the print slides into the card's row, and **a right shot ticks at once** (Zafar, 1 Nov: a tick with each correct shot, straight away). No darkroom. Tapping a different animal before the shot moves the frame (that's the undo). **There is no shutter button: the cog stays the only button on the play screen** (lessons §6; the farm's Snap, stage 7).
 
 **The verb scenes on the near loop.** The ride's near loop (the layer at speed 1, where the animals stand) is built as three scenes in a row, so every verb has its prop on the same layer as the animal doing it:
 - **The waterhole:** a grassy bank with a bush (eat), a deep middle (swim), and the open bank (run).
-- **The tree:** a climbable acacia standing on the near line (climb), its low leaves (eat, for a giraffe), and open grass beside it (run).
+- **The tree:** a climbable acacia standing on the near line (climb: **the lion in the tree**, Zafar 1 Nov; it climbs up and lies along a low branch, legs dangling), its low leaves (eat, for a giraffe), and open grass beside it (run).
 - **The open grass:** grazing (eat) and room to run.
 
 Each group is placed in one scene, and only asks a verb whose prop is in that scene. The middle loop's acacia stays scenery.
@@ -123,9 +124,10 @@ Each group is placed in one scene, and only asks a verb whose prop is in that sc
 **Pacing (lessons §4):**
 - Nothing leaves before it's been asked. An ask comes as its group enters from the right, never while it's leaving.
 - The jeep runs at its slowest while an ask is live: about 50% slower than today's ride at L1, and about 15% quicker per level, set in data.
-- **The ride's speed calls stay** (Zafar, 20 Oct: "that's the fun of it"). From L2, between asks, Hannah Mami calls "faster!" or "slow down!" as Nani does on the ride, and everything really rushes past or slows. When a group that will be asked comes in, she calls "slow down!", so the ask-driven slowdown is her own call, not a hidden rule. At L1 there are no speed calls: one slow speed.
+- **The ride's speed calls stay** (Zafar, 20 Oct: "that's the fun of it"), **only at later levels** (Zafar, 1 Nov: the start stays simple). From L2, between asks, Hannah Mami calls "faster!" or "slow down!" as Nani does on the ride, and everything really rushes past or slows. When a group that will be asked comes in, she calls "slow down!", so the ask-driven slowdown is her own call, not a hidden rule. At L1 there are no speed calls: one slow speed.
 - A group that reaches the left edge unshot comes round again on the next loop.
 - No timer.
+- **The monkeys (Zafar, 1 Nov: monkeys too).** Once a round, between asks, a small troop of three monkeys bounds out of the acacia, hops onto the jeep's bonnet, and one peers in through the windscreen and pulls a face before they all scamper off. Hannah Mami laughs and names them ("monkeys!"). It's the ride's funny beat: unscored, never in an ask, and the frame never goes to them on visit 1. From visit 2 the monkey is an askable kind (eat, climb, run), in a second tree, so "who's climbing?" never has two answers in one scene.
 
 **Leak test:**
 
@@ -137,18 +139,18 @@ Each group is placed in one scene, and only asks a verb whose prop is in that sc
 | **Patterns** | Which member does which verb, the order within a group, the scene, the order of groups and whether a group is asked at all are all random per round. Unasked groups pass too (the ride's rule). The same verb can be asked twice in a row |
 | **Waiting** | Nothing shoots itself and nothing glows on the answer. The frame goes gold on any animal, so gold isn't the answer. The hint (7, 9, 11 or 13 s after the last action) repeats the ask. The helper card, which costs a bulb, shows the full answer |
 | **Running off** | The runner's dash stays inside its group's width, so a runner is never alone on screen ahead of its group, and never out of view when its ask comes |
-| **Spraying shots** | Every shot makes a print. A wrong one is a funny print, but it costs the gold tick |
+| **Spraying shots** | Every shot makes a print. A wrong one is a funny print with no tick; the re-asked row closes plain, and a round with a plain row never moves up |
 
-**The bot (`leak_snap` plus `leak_window_ride`).** Winning means at least 80% of rows ticked on the first go. Every bot below must win under 10% of rounds from L2.
+**The bot (`leak_snap` plus `leak_window_ride`).** Winning means a round that counts towards moving up: every row ticked on the first go (Zafar, 1 Nov: level up only on right-first-time rounds). Every bot below must win under 10% of rounds from L2.
 
 | Level | Rows | Best save's chance per ask | Win rate |
 |---|---|---|---|
 | L1 | 3 | random tap: 1 in 2 | 12.5%, within the level-1 allowance, as on the ride today |
 | L2 | 3 | knows the nouns, not the verbs: 1 in 3 | 3.7% |
-| L3 | 5 | knows the nouns (no use here): 1 in 3 | 4.5% (needs 4 of 5) |
-| L4 | 7 | knows the nouns and the verbs, not the sizes: 1 in 2 | 6.25% (needs 6 of 7) |
+| L3 | 5 | knows the nouns (no use here): 1 in 3 | 0.4% (all 5) |
+| L4 | 7 | knows the nouns and the verbs, not the sizes: 1 in 2 | 0.8% (all 7) |
 
-(Why 7 at L4 and not 6: at 1 in 2, six rows need five right, which a save wins 10.9% of the time. Seven rows need six, 6.25%.)
+(With every row needed, L4 could drop to 6 rows (1.6%); it stays at 7 for the round's length.)
 
 **Mistakes (no verdicts):**
 - The print shakes gently in the tray, and Hannah Mami says what's in it ("That's the elephant running!") as a recast. Then she asks again.
@@ -158,7 +160,7 @@ Each group is placed in one scene, and only asks a verb whose prop is in that sc
 - The giraffe bends down and stares into the lens until its eye fills the frame.
 - The elephant squirts water, and drops run down the screen.
 - The zebra flicks its tail and trots a step.
-- The lion rolls over (the monkey pulls a face, if it's the monkey).
+- The lion, stretched along its branch, yawns hugely and rolls onto its back on the branch.
 
 Behind them, a print slides out of the instant camera and fades up in two seconds.
 
@@ -167,7 +169,7 @@ Behind them, a print slides out of the instant camera and fades up in two second
 ### B. Who's hiding? (the second game, proposed)
 
 **Why this game:**
-- **The teaching gap.** A teaches the names and the verbs. B teaches what the animals look like: their parts (ears, neck, tail) and the words that describe them (stripy, spotty, big). The farm, the adoption centre and the rest of the safari teach neither, and describing words are the master map's biggest short group.
+- **The teaching gap.** A teaches the names and the verbs. B teaches what the animals look like: their parts (ears, neck, tail) and the words that describe them (stripy, spotty, big). The farm, the pet hotel and the rest of the safari teach neither, and describing words are the master map's biggest short group.
 - **Not a repeat.** The first draft's B ("Playtime": tap the baby, tap the place, the place is the verb) was the farm's photo shoot again, on the same verbs, one trip later (critique 2). B uses a different deciding group and a different move.
 - **Where it comes from.** The day doc packs binoculars, and the first draft's parked "Who's hiding?" scored best of the parked ideas.
 - **What it borrows:** hide-and-seek's openable piece (a place that opens and shows what's in it) and its "every flap reacts" rule. Honest novelty: the hider partly shows, so the heard part or describing word decides, not the place.
@@ -212,7 +214,7 @@ Behind them, a print slides out of the instant camera and fades up in two second
 | **Waiting** | Nothing pops up by itself; no clump glows on the answer. The hint repeats the ask. The helper card costs a bulb |
 | **Random tapping** | Every wrong clump pops its animal too, but only a first-go right ticks gold |
 
-**The bot.** Winning means at least 80% of counted rows ticked first go. The two spoken turns from L3 are never counted for the bot or for level-up.
+**The bot.** Winning means every counted row ticked first go (a round that moves up; Zafar, 1 Nov). The two spoken turns from L3 are never counted for the bot or for level-up.
 
 | Level | Rows counted | Best save's chance per ask | Win rate |
 |---|---|---|---|
@@ -270,7 +272,7 @@ Both rounds together take about four minutes.
 
 ## 5. Later visits and harder versions
 
-**Levels (per game, above).** Up a level after three rounds with at most one hint each; never down.
+**Levels (per game, above).** Up a level after three right-first-time rounds with at most one hint each (Zafar, 1 Nov); never down.
 
 **Second visit (a later safari day):**
 - **A** adds drink (the giraffe's splayed-leg drink, the elephant at the waterhole's edge) as a fifth verb, birds in the sky band with colour words (red *laal* ✓, green *lilo*, in engine), and the hippo, the crocodile and the ostrich. The monkey comes in here if the lion was the climber.
@@ -309,7 +311,7 @@ Both rounds together take about four minutes.
 
 **Camera:** E (eye level, side view) for both, one camera per scene. The animals are all drawn side-on in E, so A and B share them.
 
-**The cast on the first visit:** four kinds, the ones Zafar's verbs need: the elephant (eat, swim, run), the giraffe (eat, run), the zebra (eat, swim, run) and one climber: the lion if he says yes, else the monkey (decision 13). Two babies, the giraffe and the elephant, each drawn as its grown-up smaller with a younger face (the farm's small goat does this). The hippo, the second calf, drink and sleep are later visits.
+**The cast on the first visit:** four kinds, the ones Zafar's verbs need: the elephant (eat, swim, run), the giraffe (eat, run), the zebra (eat, swim, run) and the lion, in its tree (Zafar, 1 Nov: yes), **and monkeys too** (decision 13): a troop of three, the ride's funny beat on visit 1. Two babies, the giraffe and the elephant, each drawn as its grown-up smaller with a younger face (the farm's small goat does this). The hippo, the second calf, drink and sleep are later visits.
 
 **Sprite count:**
 
@@ -318,10 +320,11 @@ Both rounds together take about four minutes.
 | Elephant | stand, eat, swim, run (2 frames), react (squirt) | 6 |
 | Zebra | stand, eat, swim, run (2), react (tail flick) | 6 |
 | Giraffe | stand, eat (leaves), run (2), react (eye in the lens) | 5 |
-| Lion (or monkey) | stand, climb, run (2), react (roll over) | 5 |
+| Lion | stand, climb, lie along the branch, run, react (rolls over on the branch) | 5 |
+| Monkeys (one sheet, a troop of three) | sit in the tree, bound, on the bonnet, peer in and pull a face | 5 |
 | Baby giraffe | stand, eat, run (2) | 4 |
 | Baby elephant | stand, eat, swim, run (2) | 5 |
-| **Total** | B uses the stand and react poses, hidden behind clumps | **31** |
+| **Total** | B uses the stand and react poses, hidden behind clumps | **36** |
 
 **Art in three runs (decision 77: one paste block per run, which Zafar supervises; backgrounds first):**
 
@@ -330,10 +333,10 @@ Both rounds together take about four minutes.
 | 1 Backgrounds | 1 | The savannah ride: far, middle and near loops (magenta key) | Far: plains, flat-topped acacias, a distant mountain. Middle: grass, a termite mound, an acacia (scenery). **Near: the three verb scenes in a row:** the waterhole (a bank with a bush, a deep middle, open bank), a climbable acacia standing on the near line with low leaves, open grass. Day light |
 | | 2 | The jeep frame (green key) | An open-sided safari jeep: roof bars, a side rail; the driver's seat at the right, drawn empty (the character goes in later) |
 | | 3 | The long grass (B) | A wide stretch of savannah with tall grass; the front grass as a separate keyed layer, cut into four clumps that can part. Only the clumps; no tree or rock as extra tappable-looking places |
-| 2 Grown-ups | 4-7 | Elephant, zebra, giraffe, lion (or monkey) | 22 sprites, side view, as the table |
+| 2 Grown-ups | 4-8 | Elephant, zebra, giraffe, the lion (in the tree), the monkeys | 27 sprites, side view, as the table |
 | 3 Babies and props | 8-9 | Baby giraffe, baby elephant | 9 sprites, each the grown-up smaller with a younger face |
 | | 10 | Props | Instant camera, binoculars, the binocular view frame, water drops overlay. The print's white border is code-drawn UI chrome, never the photo's content |
-| Later, after his answers | 11 | Hannah Mami sheet | Three-quarter, front-facing (the child's turn), laughing, with binoculars. Her likeness, clothes and head covering are his (§10, "Genuinely his"); nothing is drawn of her until he answers |
+| Placeholder for now | 11 | Hannah Mami | Nani or another placeholder (Zafar, 1 Nov), three-quarter, front-facing (the child's turn), laughing, with binoculars; her clothes follow his rule (mostly modern, modest). Her likeness and voice are settled before shipping |
 
 **Rules:**
 - **Nothing drawn in code** (water, drops, dust, grass are art).
@@ -356,7 +359,7 @@ Both rounds together take about four minutes.
   - B shows the whole stretch of grass and the sky, the clumps about 30% of the height.
 - **Before any build:** a mock-up of each game at the two phone sizes (from the prompts in §11, or Zafar's own), then a lab page checked at all four sizes by script (Zafar, 27 Oct: mock-up, lab page, four-size check, his numbered choices, then the game).
 
-**If Hannah Mami doesn't record (the fallback layout, designed now):** the right-edge face slot always holds whoever speaks. If it's Nani, she sits there in A (the front passenger seat, turned three-quarters to the child), and Hannah Mami drives beside her, seen only as a hat brim and shoulder, with no bubble. In B, Nani holds the binoculars at the right edge and Hannah Mami stands just behind her. The speaker is one field in the data, so the layout doesn't move.
+**For the prototype** (Zafar, 1 Nov: voices not now), Hannah Mami's lines play in whatever takes exist, else the device voice, from her face slot. **If Hannah Mami doesn't record before shipping (the fallback layout, designed now):** the right-edge face slot always holds whoever speaks. If it's Nani, she sits there in A (the front passenger seat, turned three-quarters to the child), and Hannah Mami drives beside her, seen only as a hat brim and shoulder, with no bubble. In B, Nani holds the binoculars at the right edge and Hannah Mami stands just behind her. The speaker is one field in the data, so the layout doesn't move.
 
 ## 8. What it borrows
 
@@ -384,7 +387,7 @@ Sources from tonight's search: [Safari Train for Toddlers review](https://childr
 | 8. Speaking | Pass. B only, from L3: Hannah Mami's "*ker ai*?" (✓) heard at every find first, then the child answers it. Closed set of three or four, pills always there, never a gate, the shared moment reused. The watch step is Hannah Mami asking and answering herself, not two people; decision 21 asks whether that's enough |
 | 9. Levels | **Pass with one override.** L1 has 3 photos and 3 finds, not the rule's 1, since a ride needs a few animals; the top of 7 is set by the bot. A's L2 adds verbs instead of numbers (Zafar's own rule for this game). Every level is its own |
 | 10. Words | Pass. Every line is a whole sentence to record, built by the engine. Nothing guessed for "take a photo", "Look!" or the photo words. 1-3 new words a level, each heard 3+ times in a round even with no mistakes |
-| 11. Culture | Pass. No sweets. No religious markers. Nothing a child could copy and get hurt by (the animals are watched from the jeep and through binoculars; no one approaches them). Hannah Mami's clothes and head covering wait for Zafar |
+| 11. Culture | Pass. No sweets. No religious markers. Nothing a child could copy and get hurt by (the animals are watched from the jeep and through binoculars; no one approaches them). Clothes follow Zafar's rule (1 Nov: mostly modern and modest); Hannah Mami is a placeholder for now |
 | 12. Fun | Pass. Hands busy at every step; "kind of funny" (the squirt, the stare, the "not me!", the rustle); contrast (the speed calls, big and baby) |
 | 13. Twice-made mistakes | Covered. Every level and all four sizes to be played, motion judged on film, and the open questions are numbered for Zafar, not left to a builder |
 
@@ -396,16 +399,16 @@ Each line gives the choice, the reason, and the answer I assumed he'd give. Answ
 2. **Who's hiding is a second describing-word game, not a replacement** for the one he said yes to (1 Nov), which sits at the shops' stall ("the X one"). *Assumed:* yes.
 3. **Snap from the jeep is the day's ride;** there's no separate car ride. *Reason:* the ride engine shouldn't be played twice in a row. *Assumed:* yes.
 4. **A uses the farm's Snap gesture:** tap the animal, the frame glides and follows and goes gold, tap inside it to shoot. No shutter button, no drag-to-aim, no zoom. *Reason:* the same shared kit in every game, and the cog is the only button. *Assumed:* yes (the first draft had a shutter button: dropped).
-5. **An instant camera, with prints** (open question 19). *Reason:* the print is an object that rides to the book and to Ali. The dark-room idea can come later. *Assumed:* yes, but this is his open question.
-6. **The ride's speed calls stay.** L1 is one slow speed all round; from L2 Hannah Mami calls "faster!" and "slow down!" between asks, and "slow down!" as an asked group comes in. *Reason:* he called the speed "the fun of it" (20 Oct). *Assumed:* yes.
-7. **Only first-go shots and finds tick gold and count** for level-up and the bot. *Reason:* spraying mustn't win. *Assumed:* yes.
+5. **An instant camera, with prints, and a tick on each right shot at once; no darkroom** (Zafar, 1 Nov). *Reason:* the print is an object that rides to the book and to Ali, and instant feedback works best for the youngest.
+6. **The ride's speed calls stay, only at later levels** (Zafar, 1 Nov). L1 is one slow speed all round; from L2 Hannah Mami calls "faster!" and "slow down!" between asks, and "slow down!" as an asked group comes in. *Reason:* he called the speed "the fun of it" (20 Oct). *Assumed:* yes.
+7. **Only first-go shots and finds tick gold, and only right-first-time rounds level up** (Zafar, 1 Nov, every game) and win for the bot. *Reason:* spraying mustn't win.
 8. **Snap's ladder:** L1 nouns; L2 **three** of a kind doing different things (his "two of a kind", made three so a save that knows the nouns can't win); L3 "who's {verb-ing}?" with one member per verb; L4 baby versus grown-up. *Assumed:* yes.
 9. **Rows per round 3, 3, 5, 7 in both games** (the formula with a top of 7, L1 overridden to 3). *Reason:* with the first draft's 3 at L2 and 6 at L4, a save won 12.5% and 10.9%; with these it's at most 6.25%. *Assumed:* yes.
 10. **Only his four verbs on the first visit: eat, run, swim, climb.** The first draft added drink at L2 and sleep, sit and walk later; drink and sleep move to later visits, and sit and walk go with Playtime. *Reason:* his scope line, and drink has no Kutchi yet. *Assumed:* yes.
 11. **The near loop is built as three verb scenes** (the waterhole, the tree, the open grass), and **"run" is a dash inside the group.** *Reason:* each verb needs its prop on the animals' own layer, and a runner mustn't leave its group. *Assumed:* yes.
 12. **The first photo is taken before the jeep moves** (it has stopped for an elephant by the road). *Reason:* a light waits until everything is still. *Assumed:* yes.
-13. **The animals on the first visit:** elephant, giraffe, zebra, and one climber: the lion if he says yes (tree lions are a real East African sight), else the monkey. Two babies (giraffe, elephant) drawn as the grown-ups smaller. The hippo, the crocodile, the ostrich and birds later. *Assumed:* yes, with the lion his.
-14. **The art in three runs,** about 31 animal sprites: backgrounds, then grown-ups, then babies and props. Hannah Mami's sheet waits for his answers. *Reason:* one paste block per supervised run, and the map sizes the safari "small". *Assumed:* yes.
+13. **The animals on the first visit:** elephant, giraffe, zebra, **the lion in a tree** (Zafar, 1 Nov: yes; tree lions are a real East African sight) **and monkeys too** (his addition: the ride's funny beat on visit 1, askable from visit 2). Two babies (giraffe, elephant) drawn as the grown-ups smaller. The hippo, the crocodile, the ostrich and birds later.
+14. **The art in three runs,** about 36 animal sprites: backgrounds, then grown-ups (with the monkeys), then babies and props. Hannah Mami is Nani or another placeholder for now (Zafar, 1 Nov). *Reason:* one paste block per supervised run, and the map sizes the safari "small". *Assumed:* yes.
 15. **The food stall is parked, not cut,** until the family names the stall's food. *Assumed:* yes.
 16. **The binoculars stay in the bag** and are B's tool. (If he picks Playtime, the binoculars go in the bag for a later visit's Who's hiding.) *Assumed:* yes.
 17. **Counts are left to the farm's Snap,** and colours to a later safari visit. *Reason:* one thing per level, and the colour words aren't recorded. *Assumed:* yes.
@@ -417,14 +420,12 @@ Each line gives the choice, the reason, and the answer I assumed he'd give. Answ
 23. **"Yes" keeps the spelling question open** (*ha* or *haa*, clash list 4-5) until he checks the clip. *Assumed:* yes.
 24. **No game is built until the phone mock-ups and a lab page pass at the four sizes.** *Assumed:* yes (his 27 Oct order).
 
-**Genuinely his:**
-- Hannah Mami's likeness, her clothes and head covering, and **whether she records the lines.** Ask this first: every line in both games is hers. The fallback layout (Nani in the speaking slot) is designed in §7.
-- Whether a lion appears at all, alongside zebras (decision 13).
+**Genuinely his** (1 Nov: Hannah Mami is a placeholder for now and her voice waits for shipping; the lion is in, in a tree, with monkeys too):
 - Option 1 or 2 for the second game (decision 1).
 
 ## 11. ChatGPT mock-up prompts
 
-One moment per prompt. Hannah Mami isn't drawn until Zafar has settled her likeness and clothes, so each prompt leaves the right edge as plain scenery for her. No prompt dims anything or glows an answer, so the reference art bakes in no hint.
+One moment per prompt. Hannah Mami is a placeholder for now (Zafar, 1 Nov), so each prompt leaves the right edge as plain scenery for her. The lion in its tree and the monkeys (his 1 Nov additions) aren't in these five moments; the tick on a right shot is code-drawn and isn't painted. No prompt dims anything or glows an answer, so the reference art bakes in no hint.
 
 ### Prompt safari-1: Snap from the jeep, level 1 (the first photo)
 
@@ -569,3 +570,9 @@ The critique (`safari-critique.md`, 1 Nov) had 5 MUSTs and 9 SHOULDs. All were a
 12. **SHOULD: muddled prompts that settled things that are Zafar's.** One moment per prompt: the giraffe's eye now has its own prompt (4), and the size contrast its own (3). B's prompt draws only the three live clumps, with no rock or tree. Hannah Mami is left out of every prompt (the right edge is left plain for her), so no clothes or head covering are fixed. Nothing is dimmed and nothing glows the answer. The shutter button is gone, and the phone height is 320.
 13. **SHOULD: the voice fallback had no screen.** Whether she records is the first item under "Genuinely his", and the fallback layout is designed (§7): the right-edge speaking slot holds Nani if needed, with Hannah Mami driving or standing beside her without a bubble.
 14. **SHOULD: waiting and support in B were unspecified.** In the recommended B, a find is one tap with a short pop-up and nothing to wait through; support ends by the rulebook's word ladder (three right picks in a row), and the supported card shows the whole animal, never the part. In the parked Playtime, actions last 1.5-2.5 s, the next call may land on the tick, and the card's picture is the baby acting, never the place.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The lion in a tree, and monkeys too:** the lion climbs the acacia and lies along its branch; a troop of three monkeys is the ride's funny beat on visit 1 and an askable kind from visit 2 (§1, §3 A, §7's sprites, now 36, decision 13; the lion question is gone).
+- **Snap:** an instant camera with prints and a tick on each right shot at once; no darkroom (decision 5).
+- **Speed calls only at later levels** (decision 6, §3). **Level up only on right-first-time rounds:** the bots' wins are now every row first go, recounted (all under 1% from L3).
+- **Hannah Mami and voices:** a placeholder look and existing takes or the device voice for now; the fallback layout stays for shipping. **Clothes:** his rule.

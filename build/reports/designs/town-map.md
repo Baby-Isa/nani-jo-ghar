@@ -48,7 +48,7 @@ Sources, newest first:
 
 Phones show 8 plots and big screens 12 (§7). The tiles can be swapped, so each visit picks its set from this pool.
 
-**The gate (decision 17):** the first visit's 8 places, and the L1 and L2 open sets, are **chosen after Mum says which places the family names in Kutchi and which as English loans** ("library", "post office", "school" and "station" are the likely loans). A place whose family word is the English word decides nothing for a child with English, so it is never a deciding word at L1-L2; it can still open at L3-L4, where the deciding word is the thing or the need. The sets below are provisional until her answer.
+**The places (decision 17; Zafar, 1 Nov: use popular places).** The first visit's 8 are the popular places below. The want ("I want a book") still teaches Kutchi even when the place word is English, so the places are no longer gated on Mum's answer. Mum still says which places the family names in Kutchi and which as English loans ("library", "post office", "school" and "station" are the likely loans): a loan place word is still asked at L1-L2 inside Mum's Kutchi sentence, and the leak bot reports that move as one a child with English can win; L1 keeps the market (*bajaar*), so a real Kutchi word decides from the first round, and from L3 the deciding word is the thing or the need.
 
 | Place | Status | Kutchi in the repo | First visit (provisional) |
 |---|---|---|---|
@@ -64,7 +64,7 @@ Phones show 8 plots and big screens 12 (§7). The tiles can be swapped, so each 
 | the toy shop | to record | | visit 2, every device |
 | the train station | to record (likely loan) | | visit 2, every device |
 | the cloth shop (Big Ma's cloth, for the sewing day) | to record | | visit 2, every device |
-| a house; Masi's house (directions visit) | engine | *ghar* (house, engine) | visit 3 |
+| a house; Big Ma's house (directions visit) | engine | *ghar* (house, engine) | visit 3 |
 | the bus stop (where the day starts; not a tile) | to record | | always |
 
 **Recorded today: 0 of the 12 places.** *bajaar* is the only place word in the engine, which is why the market moves into L1 (the critique's finding 1): at least one real Kutchi word decides from the first round, and "let's go to the market" (F8) lands on a place the child has already sent someone to. Until Mum records them, every place is a grey English placeholder, which is a reader's win (lessons §1). **L1-L2 count as teaching only once their open places are recorded and confirmed as Kutchi, not loans** (§9 row 1). If fewer than three of the eight are Kutchi, L1-L2 still play (they teach the frame and the who) but are not counted, and the test sits at L3-L4 (open question 1).
@@ -76,9 +76,9 @@ One cast on every device for visit 1 (decision 14):
 | Person | When | Status | Kutchi in the repo | Face art |
 |---|---|---|---|---|
 | Nana | L1 on | ✓ | *Nana* | exists (`data/faces.json`) |
-| Ma | L1 on | engine | *Ma* | to make (generic; run 1) |
-| Big Ma | L1 on | ✓ | *Big Ma*; also *wadima* ✓ | placeholder until her photos and sheet land (real likeness, sheet-first) |
-| Masi | L2 on, off the same bus | to record (the cast's name; a kin word) | | to make (generic; `cast.md`: forties, teal patterned headscarf) |
+| Hannah Mami | L1 on, **first in the face row** (Zafar, 1 Nov: she's seen more and is more recognisable) | to record | | to make (a character, not a likeness; run 1) |
+| Ma | L2 on, off the same bus | engine | *Ma* | to make (generic; run 1) |
+| Big Ma | L1 on | ✓ | *Big Ma*; also *wadima* ✓ | to make (a character, not a likeness: Zafar, 1 Nov) |
 | Ali (stays home; things are carried "for Ali") | never on the map | ✓ | *Ali* | |
 | Nani (the host; the off-screen guide in the box; she relays the asks from L2) | the guide box only | ✓ | *Nani* | exists |
 
@@ -109,9 +109,9 @@ Visit 1's set is the same on every device (decision 15), and every need has **ex
 | I want to read | library | 1 | to record ("read" has no other home on the map, master map Part 3) | |
 | I'm thirsty | café | 2 | to record: **the party's row** ("I'm thirsty", `party-guests.md`), so Mum records it once | |
 | I want to sit down | café | 2 | to record; sit is engine | *we* (sit, engine) |
-| Masi is coming (on the train) | station | 2 | to record; "will come (an elder)" is engine | *e achda* (engine) |
+| Hannah Mami is coming (on the train) | station | 2 | to record; "will come (an elder)" is engine | *e achda* (engine) |
 | a present for Ali | toy shop | 2 | to record | |
-| I want to send this to Masi (a parcel) | post office | 2 | to record | |
+| I want to send this (a parcel) | post office | 2 | to record | |
 | I want to try on a fire helmet | fire station | 2 | to record | |
 
 "We need to cook" stands only if Mum agrees an open bakery doesn't also answer it (open question 4). If she says it does, it leaves L4 and "I want to read" and the other two carry the level.
@@ -141,8 +141,8 @@ Visit 1's set is the same on every device (decision 15), and every need has **ex
 
 | Level | New | Comes back |
 |---|---|---|
-| L1 | 3 places (market, park, bakery; provisional, after Mum's gate) and F1 | |
-| L2 | 2 places (library, clinic), Masi, and F2 | Nana ✓, Big Ma ✓, Ma |
+| L1 | 3 places (market, park, bakery) and F1 | |
+| L2 | 2 places (library, clinic), Ma, and F2 | Nana ✓, Big Ma ✓, Hannah Mami |
 | L3 | 4 things (book, bread, letter, medicine *dawa*) and F3; 2 places open (post office, school) | onions ✓ (Cook) |
 | L4 | 3-4 needs (feel poorly, want to play, want to read; "we need to cook" ✓ if Mum agrees) and 1 place open as a decoy (fire station) | |
 
@@ -241,7 +241,7 @@ It's one map and one gesture all game: **tap a face, then tap a place.** What ch
 | Post office | goes in holding the letter, comes out empty-handed | a happy wave; the postbox burps softly |
 | School | Ali's jumper | it's far too small for them; they hold it up and laugh |
 | Fire station | a shiny fire helmet on their head (it stays on until the end) | it slips over their eyes once |
-| *Visit 2* | chai, a ball, a roll of red cloth, Masi off the train | a sip and an "aah"; one bounce; it trails like a cape; Masi waves from the platform |
+| *Visit 2* | chai, a ball, a roll of red cloth, Hannah Mami off the train | a sip and an "aah"; one bounce; it trails like a cape; Hannah Mami waves from the platform |
 
 ### A. Who wants to go where (L1-L2)
 
@@ -276,14 +276,14 @@ How many errands: up to 5 at L4. The rulebook formula gives 1, 2, 4, 5; **L1 is 
 
 | Level | Adds one thing | Errands | Open places (of 8) | Faces | The calls |
 |---|---|---|---|---|---|
-| **L1** | the core: the place word | 2 | 3 (market, park, bakery: clearly different shapes and colours; provisional until Mum's gate) | 3 (Nana, Ma, Big Ma) | The child taps any face, and that person says F1, "I want to go to the market". Only "yes" asks. The card shows the place's picture, its Kutchi, and the English (L1 only). |
-| **L2** | two words: who + where | 3 | 5 (adds the library and the clinic, or whichever two Mum confirms as Kutchi) | 4 (Masi steps off the bus with the others) | Nani: "Nana wants to go to the clinic" (F2). From here the faces don't speak first, so the who is heard. The card shows no picture until the hint or a miss, and its English is gone. People are out at the same time, and anyone can still be called. Never the same place twice running. |
+| **L1** | the core: the place word | 2 | 3 (market, park, bakery: clearly different shapes and colours) | 3 (Hannah Mami first in the row, Nana, Big Ma) | The child taps any face, and that person says F1, "I want to go to the market". Only "yes" asks. The card shows the place's picture, its Kutchi, and the English (L1 only). |
+| **L2** | two words: who + where | 3 | 5 (adds the library and the clinic) | 4 (Ma steps off the bus with the others) | Nani: "Nana wants to go to the clinic" (F2). From here the faces don't speak first, so the who is heard. The card shows no picture until the hint or a miss, and its English is gone. People are out at the same time, and anyone can still be called. Never the same place twice running. |
 | **L3** | other ways of saying it: the thing, not the place | 4 | 7 (adds the post office and the school) | 4 | Nani: "Big Ma wants a book" (F3). The thing's picture is blurred and comes only on the hint or a miss. One carried thing a round is for Ali. |
 | **L4** | needs not drawn on any sign, and a look-alike | 5 | 8 (all; adds the fire station as a decoy) | 4 | Nani: "Nana feels poorly", "Ma wants to play", "Big Ma wants to read", "we need to cook" ✓ (→ the market, if Mum agrees). **The look-alike pair, the bakery and the market (both food), is always open together**, and every need has exactly one plausible open place. A vague want ("hungry") is never a call. |
 
 The gestures never change. The Kutchi climbs from the place name, to who and where, to the thing, to the need.
 
-**Level up:** after 3 rounds with at most one hint each, where a round with any miss counts as hinted (the miss rule); never down (rulebook).
+**Level up:** after 3 rounds with at most one hint each and no miss (Zafar, 1 Nov: only right-first-time rounds, in every game); never down (rulebook).
 
 **Big screens:** the same open counts, faces and needs as phones at L1-L4, so the game is equally hard on every device. The 4 extra plots hold gardens painted into the big base map on visit 1 (houses come with visit 3's art run). Later visits may open up to 12 places on big screens (§5).
 
@@ -319,9 +319,9 @@ Not on visit 1. Form E (§5) brings it on visit 2, following `docs/game-design/s
 
 ## 4. The child's first-ever round, screen by screen
 
-L1, a phone at 740x320, after the bus ride. It's guided and unscored (D13), and every new action is shown once (rulebook "Showing what to do"). The open set is provisional (market, park, bakery) until Mum's gate.
+L1, a phone at 740x320, after the bus ride. It's guided and unscored (D13), and every new action is shown once (rulebook "Showing what to do"). The open set is the market, the park and the bakery.
 
-1. **The bus pulls in** at the stop on the left of the map (the same bus as the ride). Nana, Ma and Big Ma step off one by one and pop into their face circles in the column on the right, below the cog. Nani's shopping bag sits at the stop. The map is lit and calm. Three places are open (the market, the park and the bakery, with doors open and warm windows); the other five are closed and dimmed. **Silence for two seconds** so the child can look.
+1. **The bus pulls in** at the stop on the left of the map (the same bus as the ride). Hannah Mami, Nana and Big Ma step off one by one and pop into their face circles in the column on the right, below the cog, Hannah Mami at the top. Nani's shopping bag sits at the stop. The map is lit and calm. Three places are open (the market, the park and the bakery, with doors open and warm windows); the other five are closed and dimmed. **Silence for two seconds** so the child can look.
 2. **Nani (guide box, off screen):** "Let's go to town!" (to record). She speaks first. No card yet.
 3. **The lit ring on Nana's face circle** (the shared face circle's lit state: a breathing gold ring round the circle, never a box over the face). Everything else dims. The child taps Nana. His face lifts and he says F1 from a bubble at his circle: **"I want to go to the park."** The card pops big beside the side panel (Nana's face, the park's picture, the Kutchi, the English under it, a speaker), then flies into row 1.
 4. **The lit box moves to the park** (this first errand only: the guided showing). The child taps it. Nana's small figure steps off at the stop and walks the road. **The hurry is shown once:** a soft glow round Nana's tap area; a tap gives a little skip. He goes through the park gate, the ducks paddle over, and he comes back with his hair windswept and **a duck waddling behind him**. On the way he says F5: "I went to the park!" He reaches the stop, the duck flaps home, he pops back into his circle, and **row 1 ticks**.
@@ -329,7 +329,7 @@ L1, a phone at 740x320, after the bus ride. It's guided and unscored (D13), and 
 6. **The child taps the bakery.** A puff of flour comes out of the door. Big Ma walks in, comes out with a long loaf over her shoulder and flour on her nose, says "I've got bread!" on the way back, and **row 2 ticks**.
    - **If the child taps a wrong place first** (say the market): the orange rolls out and back (the market's refusal, shown on this first real miss, whenever it happens), Big Ma shakes her head ("not here!", F6), and her line plays once more. No glow lands on the answer. When she's back with the loaf, row 2 gets a **hollow tick**. The round is unscored, so nothing else changes.
    - **If the child taps a place before a face:** the place shrugs "who?" and the faces bounce once.
-7. **The return parade.** Nana, Ma and Big Ma gather at the stop. The loaf goes into Nani's bag. Nani (box): **"Well done, dear"** ✓ *shabash, beta*. A slice of the mango she packed at the door comes up out of the bag: "aah".
+7. **The return parade.** Hannah Mami, Nana and Big Ma gather at the stop. The loaf goes into Nani's bag. Nani (box): **"Well done, dear"** ✓ *shabash, beta*. A slice of the mango she packed at the door comes up out of the bag: "aah".
 8. **The end:** Nani says **"Let's go to the market"** (F8). In story mode, the camera glides into the market tile, and the shops begin. In free play, the shared two-page end screen shows the round's word cards (park, bakery; market heard), the ticks, and progress, not a verdict.
 
 The round lasts about 90 seconds. The child touched every action once: a face, a place and hurrying the walker. A miss and its refusal are shown when the first real miss happens, not scripted.
@@ -343,14 +343,14 @@ Notes only: not in the builder's scope for visit 1, and not in run 1's art. Each
 | Visit | What's new | Form |
 |---|---|---|
 | 1 | The first round, then L1-L4 as above | A, B |
-| 2 | The café, toy shop, station and cloth shop open **on every device** (four of visit 1's tiles swap out on phones). Masi can arrive on the train. Thirsty → the café. First-then errands. The speaking handover. | B, C, E |
+| 2 | The café, toy shop, station and cloth shop open **on every device** (four of visit 1's tiles swap out on phones). Hannah Mami can arrive on the train. Thirsty → the café. First-then errands. The speaking handover. | B, C, E |
 | 3 | Directions with identical houses. | D |
 | 4 | The want plus a position; big screens open up to 12 places. | B + D |
 | Later | **The town as the trip picker** (idea 72): the free-play map could reuse these tiles. A separate design. | |
 
 **C. First, then (visit 2, L3+).** Tap a face, then two places in order: "first the post office, then the bakery" (F9: *pela*, first, engine + *ne poi* ✓, and then). The card's row holds two place slots that fill in order. A wrong order: the person reaches the second place and finds it shut for a moment ("not yet!"), and the call is said again. *Leak:* two places and their order are heard; neither slot shows a picture until the hint; the miss rule applies to the pair.
 
-**D. Next to the park (visit 3, Zafar's "later: directions").** Three or four identical houses stand on free plots; only the position word and a known landmark tell them apart: "Masi's house is next to the park" (F10: *bajume*, *agiya*, *same*, engine; *puthiya* heard inside 4). Positions climb: next to and in front of, then behind, then opposite. The right house opens and Masi waves; at a wrong one a cat blinks and draws the curtain. *Leak:* the houses are one tile drawn once and placed by code, so they are identical by construction; the light never rests on the answer; 1 in 3 or 4 a call, 4 calls a round. Uses `js/shared/rel.js` for the positions.
+**D. Next to the park (visit 3, Zafar's "later: directions").** Three or four identical houses stand on free plots; only the position word and a known landmark tell them apart: "Big Ma's house is next to the park" (F10: *bajume*, *agiya*, *same*, engine; *puthiya* heard inside 4). Positions climb: next to and in front of, then behind, then opposite. The right house opens and Big Ma waves; at a wrong one a cat blinks and draws the curtain. *Leak:* the houses are one tile drawn once and placed by code, so they are identical by construction; the light never rests on the answer; 1 in 3 or 4 a call, 4 calls a round. Uses `js/shared/rel.js` for the positions.
 
 **E. Where shall I go? (visit 2, the speaking moment).** A person asks the child "where shall I go?" (F11: *kida*, where, heard inside 3). The card shows the place's picture (a picture says what; the heard frame says how), and the child says the place from a closed set of 3 that sound different, pills always there, never a gate. It's watched first (Nana asks Nani at L2 on visit 2; Nani answers), then handed over (Nana turns front-facing to the child, two poses). It reuses the shared say-it moment (`js/shared/say.js`). *Leak:* it's a production moment, not a test; the pills are always there.
 
@@ -368,7 +368,7 @@ Notes only: not in the builder's scope for visit 1, and not in run 1's art. Each
 | **The animal actor** | `farm-animals.md` "New to build" 1 (designed; counted there) | The walker: an actor that walks to a named place and does an action, all as data. This game adds **a multi-point road path** (waypoints in data) and **a carried-thing slot** (a sprite that rides the actor), and the hurry (a skip on tap). Whichever design is built first builds the actor with both additions. |
 | Call and speech queue | `do-it-engine.md` | One voice at a time; calls wait for the current line; F5 drops to a wave when a line is due. |
 | Relations layer | `js/shared/rel.js`, `data/relations.json` | Visit 3's positions (later). |
-| Face circle | `js/shared/face.js`, `data/faces.json` | The faces at the big size and the card rows, with the shared **lit state** (a breathing gold ring round the circle) written once for every game. Today's table has Nani, Nana, the doctor and the girl; Ma and Masi crops come from run 1, and Big Ma is a placeholder until her sheet. |
+| Face circle | `js/shared/face.js`, `data/faces.json` | The faces at the big size and the card rows, with the shared **lit state** (a breathing gold ring round the circle) written once for every game. Today's table has Nani, Nana, the doctor and the girl; Hannah Mami's and Ma's crops come from run 1, and Big Ma's too: the faces are characters, not real likenesses (Zafar, 1 Nov). |
 | Order card, request pop-up | `js/shared/order-card.js`, `request-popup.js` | One row per errand, popping big, then flying to its row; the hollow tick. |
 | Guide box, light, focus | `js/shared/guide.js`, `onboard.js`, `focus.js` | Nani off screen in the box; the lit box for the first round's place; the dimming of closed places. |
 | Bulb, helper card | `js/shared/bulb.js` | The paid answer. |
@@ -407,16 +407,16 @@ The approved mock-up's view: a **tilted map, about 50° down**, so every buildin
 |---|---|---|
 | Base map, phones | 1 | 8 plots in 2 rows of 4, wide and short, with thin roads and little scenery between plots. The bus stop at the left edge. Empty plots (rounded pavement squares). |
 | Base map, big screens | 1 | 12 plots in 3 rows of 4 (about 16:9), the bus stop at the bottom left; 8 empty plots and 4 painted as gardens. |
-| Place tiles | 8 × 2 states = 16 | Market, park, bakery, library, clinic, post office, school, fire station (or whichever 8 Mum's gate gives). **Open** (door open, warm window light, awning out) and **closed** (door shut, awning in), the second state as an edit-in-place. |
-| Walkers | 4 (Nana, Ma, Big Ma, Masi) | Small full-body figures in M: a three-frame walk (or a bob), front and back facing, entering a door. Nani doesn't walk. Big Ma's comes from her sheet; if it hasn't landed, her slot waits and the lab uses a plain placeholder. |
+| Place tiles | 8 × 2 states = 16 | Market, park, bakery, library, clinic, post office, school, fire station (the popular places; Zafar, 1 Nov). **Open** (door open, warm window light, awning out) and **closed** (door shut, awning in), the second state as an edit-in-place. |
+| Walkers | 4 (Hannah Mami, Nana, Ma, Big Ma) | Small full-body figures in M: a three-frame walk (or a bob), front and back facing, entering a door. Nani doesn't walk. All are characters, not real likenesses (Zafar, 1 Nov). |
 | Carried things | 8 | Onion bag (with one loose onion), loaf, book stack, apple, letter, Ali's jumper, fire helmet, and the duck (a walk cycle). |
 | Bus | 1 | The ride's bus, redrawn in M at the stop, with Nani's shopping bag beside it. |
-| **Total** | **31** | Plus face crops for Ma and Masi (generic) from the face-circle sheet's style. |
+| **Total** | **31** | Plus face crops for Hannah Mami, Ma and Big Ma (characters) from the face-circle sheet's style. |
 
 ### Later runs (not now)
 
-- **Visit 2:** the café, toy shop, station and cloth shop (4 × 2 states), Masi stepping off a train, chai, ball, cloth roll, parcel, kite; Nana's front-facing pose for the speaking handover; the four refusals' props.
-- **Visit 3:** one house tile (placed several times by code) and a garden plot; the cat at the window; Masi at the door.
+- **Visit 2:** the café, toy shop, station and cloth shop (4 × 2 states), Hannah Mami stepping off a train, chai, ball, cloth roll, parcel, kite; Nana's front-facing pose for the speaking handover; the four refusals' props.
+- **Visit 3:** one house tile (placed several times by code) and a garden plot; the cat at the window; Big Ma at the door.
 - **Visit 4:** one fruit stall tile (placed twice by code).
 
 **The mock-up's fixes (Zafar, 1 Nov):**
@@ -508,10 +508,10 @@ Each line gives the choice, why, and the answer I assumed. Reverse any of them b
 11. **No place of worship tile.** *Why:* the game's culture rule (no religious markers; the family is never named publicly). *Assumed:* yes. He can add one if he wants it.
 12. **The swimming pool is dropped;** the cloth shop takes its plot. *Why:* modest clothing (non-negotiable 9), and the cloth seeds the sewing day. *Assumed:* yes.
 13. **The fruit and veg shop is the market's entrance.** Errands there are food; at the end, the camera goes in for the shops games. *Why:* one place, not two that overlap. *Assumed:* yes.
-14. **One cast for visit 1 on every device: Nana, Ma and Big Ma from L1; Masi from L2, stepping off the same bus.** Four faces through L4. Masi's train arrival is visit 2's, when the station opens everywhere. Nani is the off-screen guide, not in the row. Ali stays home and gets things carried for him. *Why:* one cast that adds up on phones and big screens; the days rule that Ali stays home. *Assumed:* yes.
+14. **One cast for visit 1 on every device: Hannah Mami (first in the row), Nana and Big Ma from L1; Ma from L2, stepping off the same bus** (Zafar, 1 Nov: Hannah Mami first, she's seen more and is more recognisable; no Masi face, since Masi won't want to be in the game; the faces are characters, not real likenesses). Four faces through L4. Hannah Mami's train arrival is visit 2's, when the station opens everywhere. Nani is the off-screen guide, not in the row. Ali stays home and gets things carried for him. *Why:* one cast that adds up on phones and big screens; the days rule that Ali stays home. *Assumed:* yes.
 15. **L4 uses only needs not drawn on any sign, the same set on every device: poorly (clinic), play (park), read (library) and cook (market, if Mum agrees the bakery doesn't also answer it).** The bakery and the market are always open together as the look-alike pair. A vague want ("hungry") is never a call. Thirsty waits for the café on visit 2. *Why:* the research's warning that "I want a book" against a book sign is no harder than "the library"; decision 19's same difficulty everywhere. His "I want a book" stays as L3. *Assumed:* yes.
 16. **The tiles are shuffled onto the plots once per visit.** *Why:* nothing is learned by position; a town that moves mid-visit would confuse. *Assumed:* yes.
-17. **The gate: Mum first says which town places the family names in Kutchi and which as English loans; only then are the first visit's 8 and the L1-L2 open sets fixed, and only Kutchi place words decide at L1-L2.** The game counts as teaching only once those places and the L3 things are recorded. They go first on her next sheet. *Why:* grey English and English loans are a reader's win. *Assumed:* yes.
+17. **The places are the popular ones** (Zafar, 1 Nov): the want ("I want a book") still teaches Kutchi even if the place word is English. Mum still marks each place word as Kutchi or loan; a loan asked at L1-L2 is reported by the leak bot as a move a child with English can win, and the market (*bajaar*) keeps a Kutchi place word deciding from L1. The game counts as teaching once the places and the L3 things are recorded.
 18. **Faces on phones go in a column on the right, four at most, starting below the cog's reserved square.** *Why:* at 320 and 275 px tall, a bottom row would take a third of the height; five faces and the cog don't fit at 275. *Assumed:* yes.
 19. **The same open counts, faces and needs on every screen through L4.** Big screens' 4 extra plots are gardens on visit 1. Up to 12 open places on big screens only from visit 4. *Why:* the same difficulty on every device, for the leak bot and fairness. *Assumed:* yes, with "up to 12 on big screens" kept for later visits.
 20. **No timer.** From L2, people are out at the same time instead, so it's busy but never rushed. *Why:* listening and speed fight; Sago's and the ride's rule. *Assumed:* yes.
@@ -527,23 +527,24 @@ Each line gives the choice, why, and the answer I assumed. Reverse any of them b
 30. **The map's directions visit (D) takes over spoken directions; the lanes and the goat stay designed for a later shops visit** (`shops.md` decision 12). *Why:* the map now carries "getting there"; nothing of his is cut. *Assumed:* yes.
 31. **Art run 1 is 31 pieces for visit 1** (two base maps, 8 tiles × 2 states, 4 walkers, 8 carried things, the bus); later visits are later runs. *Why:* one supervised run, a game sized "small". *Assumed:* yes.
 32. **A place tapped before a face shrugs "who?" and the faces bounce once.** *Why:* the likeliest first move of a 3-year-old, left undefined. *Assumed:* yes.
-33. **Big Ma is a placeholder until her photos and sheet land;** Ma's and Masi's face crops and walkers come from run 1. *Why:* the sheet-first rule for real likenesses. *Assumed:* yes.
+33. **The faces are characters, not real likenesses** (Zafar, 1 Nov): Hannah Mami's, Ma's and Big Ma's face crops and walkers all come from run 1.
 34. **A lit face is a breathing gold ring round the circle,** written as the shared face circle's lit state for every game. *Why:* the lit box never crosses a face. *Assumed:* yes.
 35. **Every L4 need has exactly one plausible open place,** written in the drawer and checked by the bot per open set (and by Mum for meaning). *Why:* "we need to cook" with the bakery open is arguable. *Assumed:* yes.
 36. **The library's L4 need is "I want to read",** not a bedtime story for Ali. *Why:* Ali is the lanky cousin, and "read" has no other home on the map. *Assumed:* yes.
 37. **The hurry tap is a 64 px circle round the walker, live only when no face is lifted;** a place's tap target is its whole plot. *Why:* a 30 px walker is under the 44 px floor, and a hurry must never steal a place pick. *Assumed:* yes.
 
-**Open questions (genuinely his, or Mum's):**
-1. **Mum (the gate, decision 17):** which town places does the family say in Kutchi, and which as English loans ("library", "post office", "school", "station")? The answer fixes the first visit's 8 and the L1-L2 sets.
+**Open questions (genuinely his, or Mum's):** (Zafar answered his on 1 Nov: Hannah Mami first in the row, no Masi; popular places.)
+1. **Mum (decision 17):** which town places does the family say in Kutchi, and which as English loans ("library", "post office", "school", "station")? The places are fixed (the popular ones); her answer tells the leak bot which moves an English speaker can win.
 2. **Mum:** what does the family call a bakery loaf (as against *maani*, chapati), and is there a Kutchi word for a parcel or letter?
-3. **Zafar:** Masi in the row (a kin word) or another relative? And is Hannah Mami welcome in town as a fifth face on big screens on a later visit (never on visit 1, where every device has four)?
 4. **Mum:** would "we need to cook" ever send someone to the bakery? If yes, it leaves L4.
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-All four ask for 16:9 (what the image model makes). The phone shapes are drawn **inside guide bars** within the 16:9, and the judge crops to the strip. The row faces are placeholders; nobody in these images is Nani, and no real likeness is asked for. Prompt 4 is a later-visit mock-up, not run 1.
+All four ask for 16:9 (what the image model makes). The phone shapes are drawn **inside guide bars** within the 16:9, and the judge crops to the strip. The row faces are placeholders, characters rather than likenesses; nobody in these images is Nani, and no real likeness is asked for. **Zafar, 1 Nov:** Hannah Mami (the woman in the sage quarter-zip) comes first in the row, and there is no Masi face, so the four prompts are changed to match (the prompt sheet still has the older faces: use these).
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins. Prompt 4 is a later-visit mock-up, not run 1.
 
 ### Prompt town-map-1: the first round, a phone, level 1
 
@@ -570,7 +571,7 @@ At the far left edge of the strip: a small bus stop with a cream bus just pulled
 
 THE MOMENT: a small full-body grandfather in a plain navy blazer is walking along the road from the bus stop towards the park gate, mid-stride. The park has a soft warm golden glow, as if it has just been tapped.
 
-THE FACES: along the RIGHT edge of the strip, a plain soft-green vertical column. At the top of the column, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, three round portrait circles stacked (head and shoulders, white ring): the same grandfather (with a soft golden ring round his circle), a young mother in a green dupatta, and a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people.
+THE FACES: along the RIGHT edge of the strip, a plain soft-green vertical column. At the top of the column, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, three round portrait circles stacked (head and shoulders, white ring): at the top a friendly woman in her thirties in a sage-green quarter-zip, then the same grandfather (with a soft golden ring round his circle), then a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people.
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, soft global illumination, chunky simplified shapes, clean surfaces, no outlines, no photorealism, no cel shading, no blur or vignette.
 
@@ -601,7 +602,7 @@ THE MOMENT, two people out on errands at once, small full-body figures:
 - a grandfather in a plain navy blazer walking back along the road from the park, his hair windswept, with a white duck waddling right behind him.
 At the bottom left, a small bus stop with a cream bus and a big empty cloth shopping bag by the bench. No one is standing at the stop.
 
-THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), ALL equally bright and in full colour: the grandfather, the young mother, a very old great-grandmother with white hair and a pale shawl, and a warm woman in her forties in a teal patterned headscarf and an embroidered blouse. Same render style as the people reference. Placeholders, not real people. Keep the top right corner of the image clear (a settings button goes there).
+THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), ALL equally bright and in full colour, left to right: a friendly woman in her thirties in a sage-green quarter-zip, the grandfather, the young mother, and a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people. Keep the top right corner of the image clear (a settings button goes there).
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 
@@ -627,7 +628,7 @@ THE SCENE: the same toy town as the attached approved map, TILTED about 50 degre
 
 THE MOMENT: the post office has just been tapped by mistake. Its red postbox is doing a cheerful little hop off the ground with a tiny puff of dust, and a single plain envelope is popping out of its slot. In front of the post office door, a small great-grandmother with white hair and a pale shawl is gently shaking her head with a warm, amused smile, one hand raised as if to say "not here". Nobody looks cross or sad. The bakery, the right place, has no glow and looks like all the others.
 
-THE FACES: along the RIGHT edge of the strip, a narrow soft-green vertical column. At its top, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, four small round portrait circles stacked (head and shoulders, white ring): a grandfather in a navy blazer, a young mother in a green dupatta, the great-grandmother (with a soft golden ring round her circle, because she is the one chosen), and a warm woman in her forties in a teal patterned headscarf. Placeholders, not real people.
+THE FACES: along the RIGHT edge of the strip, a narrow soft-green vertical column. At its top, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, four small round portrait circles stacked (head and shoulders, white ring): at the top a friendly woman in her thirties in a sage-green quarter-zip, then a grandfather in a navy blazer, the great-grandmother (with a soft golden ring round her circle, because she is the one chosen), and a young mother in a green dupatta. Placeholders, not real people.
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 
@@ -642,7 +643,7 @@ https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/custom
 
 ### Prompt town-map-4: directions, the third visit (a later-visit mock-up, not run 1)
 
-Shows the directions visit: identical houses that only a position word tells apart ("Masi's house is next to the park"). **Note for the judge:** in the game the houses are identical because one tile is drawn once and placed by code; the image model can't repeat a tile exactly, so judge the one house design and the layout, not whether the copies match.
+Shows the directions visit: identical houses that only a position word tells apart ("Big Ma's house is next to the park"). **Note for the judge:** in the game the houses are identical because one tile is drawn once and placed by code; the image model can't repeat a tile exactly, so judge the one house design and the layout, not whether the copies match.
 
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets): one gameplay screen of the main play area only (no side panel, no buttons), widescreen 16:9.
@@ -651,9 +652,9 @@ THE SCENE: the same toy town as the attached approved map, TILTED about 50 degre
 
 THE HOUSE: on the plot right next to the park, draw ONE small house with great care: cream limewash walls, a terracotta roof, a sage-green door, two windows with plain curtains, one pot plant by the door. On three other plots (one behind the school, one opposite the bakery, one in front of the library), draw the SAME house again, as plain copies of it: same shape, same colours, same door, same windows, same pot. Keep them as simple as possible so they match.
 
-THE MOMENT: a young mother in a green dupatta, small and full-body, has just knocked on the house next to the park. Its door is open and a warm woman in her forties in a teal patterned headscarf leans out of it, waving happily with both arms. At the house behind the school, a ginger cat is peeping out of a window, blinking, half-drawing the curtain (a gentle joke for a wrong guess). A small bus stop with a cream bus sits at the bottom left; no one is standing there.
+THE MOMENT: a young mother in a green dupatta, small and full-body, has just knocked on the house next to the park. Its door is open and the very old great-grandmother with white hair and a pale shawl leans out of it, waving happily with both arms. At the house behind the school, a ginger cat is peeping out of a window, blinking, half-drawing the curtain (a gentle joke for a wrong guess). A small bus stop with a cream bus sits at the bottom left; no one is standing there.
 
-THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), all bright: a grandfather in a navy blazer, the young mother, a very old great-grandmother with white hair and a pale shawl, and the woman in the teal headscarf. Placeholders, not real people. Keep the top right corner clear (a settings button goes there).
+THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), all bright, left to right: a friendly woman in her thirties in a sage-green quarter-zip, a grandfather in a navy blazer, the young mother, and a very old great-grandmother with white hair and a pale shawl. Placeholders, not real people. Keep the top right corner clear (a settings button goes there).
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 
@@ -691,3 +692,8 @@ The critique (`town-map-critique.md`, 1 Nov) had 8 MUSTs and 10 SHOULDs. All 8 M
 16. **SHOULD: two L4 needs and one carried thing don't quite fit.** *Done in part.* The one-plausible-place rule is in the drawer and the bot (decision 35), with "we need to cook" held on Mum's answer (open question 4). The bedtime story for Ali is replaced by "I want to read" (decision 36). I didn't add the critique's "Masi's parcel" need at the post office for visit 1: "send this" needs a thing in the hand, which would show the letter before the pick, and a parcel is a ninth carried thing for run 1. It stays for visit 2.
 17. **SHOULD: the prompts ask for sizes ChatGPT doesn't make; prompt 2 is too busy; prompt 4 asks for identical houses; prompt 3's likeness line.** *Done.* Prompts 1 and 3 ask for 16:9 with the strip drawn inside guide bars. Prompt 2 is cut to 8 places, 4 gardens and two walkers. Prompt 4 asks for one carefully drawn house and plain copies, with a note for the judge that identity is a code property. Prompt 3 no longer attaches Nani's sheet, and no prompt has a grandmother at the stop (finding 5). All prompts show four faces and leave the cog's corner clear.
 18. **SHOULD: the lit box on a face circle needs its exception.** *Done.* A lit face is a breathing gold ring round the circle, written as the shared face circle's lit state (§4 step 3, §6, decision 34).
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The face row:** Hannah Mami first (from L1), no Masi face; Ma joins at L2 in Masi's place. The faces are characters, not real likenesses, so Big Ma no longer waits for her sheet. §1's people, §3's ladder, §4, §5, §6, §7, decisions 14 and 33, and the four prompts' face rows changed; the directions visit is Big Ma's house; open question 3 is gone.
+- **Popular places:** the places are no longer gated on Mum's Kutchi-or-loan answer; the want still teaches Kutchi (decision 17, §1, open question 1 reworded).
+- **Level up only on right-first-time rounds** (§3). **Clothes:** the prompt sheet's line is added before the prompts.

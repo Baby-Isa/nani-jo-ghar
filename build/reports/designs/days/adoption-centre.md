@@ -1,10 +1,10 @@
-# Hannah Mami's adoption centre (draft, 1 Nov 2026)
+# Hannah Mami's pet hotel (draft, 1 Nov 2026; the adoption centre, renamed)
 
 Drafted overnight from the game design; nothing here is agreed. Built on `docs/game-design/days/TEMPLATE.md` Part A, checked against Part B.
 
 ## 0. One line
 
-Hannah Mami's little animal centre next to the farm, the day's weather, host Hannah Mami, first visit. Status: designed, not built; waits on give-to (built first for the birthday) and on about 88 art cells, the largest run of the overnight set. Sources, newest first: `consistency-2026-11-01.md` row 25, `adoption-centre.md` (§0, §1, §2), Zafar's answer of 1 Nov (include dogs).
+Hannah Mami's pet hotel next to the farm (families leave their pets and come back for them), the day's weather, host Hannah Mami, first visit. Status: designed, not built; waits on give-to (built first for the birthday) and on about 88 art cells, the largest run of the overnight set. Sources, newest first: `consistency-2026-11-01.md` row 25, `adoption-centre.md` (§0, §1, §2), Zafar's answer of 1 Nov (include dogs).
 
 ## 1. The language goal
 
@@ -21,8 +21,8 @@ New words: 4 at L1, 11 over the visit's ladder: inside the 15-25 bar. Coming bac
 
 ## 2. The story
 
-1. **The reason:** Nani at the door, holding a photo of the centre: Hannah Mami needs help with the animals today; their families are coming back this afternoon.
-2. **Getting there:** the farm road again ("look, the farm!"); the ride's dog and bird are named before the centre.
+1. **The reason:** Nani at the door, holding a photo of the pet hotel: Hannah Mami needs help with the animals today; their families are coming back this afternoon.
+2. **Getting there:** the farm road again ("look, the farm!"); the ride's dog and bird are named before the pet hotel.
 3. **Helping:** feed, wash, brush and tuck in each animal as Hannah Mami says.
 4. **The surprise:** the dog shakes water over the screen; an ant carries a corn cob far too big for it; a brushed bee turns into a fluffball.
 5. **Home:** one family comes back for its pet; the child gets a little brush "for Simba".
@@ -33,7 +33,7 @@ The feeling: gentle and caring. The end shows the pet at home with its family.
 
 | # | Stage | Engine | Level | O-IDs | What the Kutchi decides | Skill | The fun |
 |---|---|---|---|---|---|---|---|
-| 1 | Door | door (built) | | O2 | "Hannah Mami needs help with the animals" | L | the photo of the centre |
+| 1 | Door | door (built) | | O2 | "Hannah Mami needs help with the animals" | L | the photo of the pet hotel |
 | 2 | Ride | window ride (built), the farm road | 1 | O1 | which passing thing she names | L | the farm goes past |
 | 3 | Meet Hannah Mami | Conversations (built) | 1 | O6 | the greeting, the elder form | L+S | |
 | 4 | Look after the animals | give-to + heal-game actions (no new engine) | 1 | O1, O2, O3, O4, O5 | which care (L1); which animal and how many corn (L2+) | L | the shake, the fluffball |
@@ -75,11 +75,11 @@ Hannah Mami, Ali (who acts in the speaking moment), one family per round (Zara's
 
 ## 8. Words
 
-`adoption-centre.md` §1 (the words, the frames, the C takes); about 30-60 takes in all. Open for Mum: the name the child hears for the place.
+`adoption-centre.md` §1 (the words, the frames, the C takes); about 30-60 takes in all. Open for Mum: her word for the pet hotel.
 
 ## 9. Art
 
-The centre background first, five animals and the small rabbit, Hannah Mami's new poses, Ali and the family: `adoption-centre.md` §7 (one paste block), prompts §11.
+The pet hotel background first, five animals and the small rabbit, Hannah Mami's new poses, Ali and the family: `adoption-centre.md` §7 (one paste block), prompts §11.
 
 ## 10. Later visits
 
@@ -90,6 +90,6 @@ Visit 2, "dinner time": the bird and the tortoise; the food shelf. Visit 3, "a p
 **Decided in this draft (reversible):** the day keeps its own place next to the farm (not part of the farm day), as the design and the master map say.
 
 **Open (Zafar):**
-1. The roster: families come back for their pets (recommended), or true adoption?
-2. The dog in the tub and hugged (assumed), or on the counter only?
-3. "The animal centre" or "Hannah Mami's animals"?
+1. The dog in the tub and hugged (assumed), or on the counter only?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the adoption centre is **the pet hotel** (families come back for their pets), so the roster and the name questions are gone; the count closes on the animal or after 1.25 s of stillness; only right-first-time rounds level up; Hannah Mami is a placeholder and voices wait for shipping.

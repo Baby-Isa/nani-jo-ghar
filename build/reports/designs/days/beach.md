@@ -80,7 +80,7 @@ The boat day: door, pack the bag (life jacket, Nani's big hat, water), **the rid
 
 ## 7. People and what comes home
 
-Masi (likeness or the cast's teal-headscarf placeholder), Nani, three stallholders, the boatman (voices open). Comes home: the shell for Nani's shelf, the lemon drink for Ali; on the boat day, Nani's hat on its hook and the washed ball for Ali. Comes in: the shops' kite and pay; the kitchen's lemons.
+Masi (a placeholder character: Zafar says she won't want to be in the game as herself), Nani, three stallholders, the boatman (any voice for now; voices are settled before shipping). Comes home: the shell for Nani's shelf, the lemon drink for Ali; on the boat day, Nani's hat on its hook and the washed ball for Ali. Comes in: the shops' kite and pay; the kitchen's lemons.
 
 ## 8. Words
 
@@ -99,7 +99,7 @@ Visit 2 is the boat day. Visit 3: the child describes and Masi builds the castle
 **Decided in this draft (reversible):** the boat day opens once the beach has been played through once (all three plays), as its own short day.
 
 **Open (Zafar):**
-1. Who voices the stallholders, the queue and the boatman (open question A)?
-2. Masi's likeness (C).
-3. Nani's speed lines on every ride (D).
-4. Pay: the coin stacks as the shops' L1 skin (E, settled by the consistency pass; to confirm).
+1. The sandcastle's windbreak (`beach-boat.md` question F): plain first (recommended)?
+2. The beach is still hosted by "Masi": does the host keep that name, now that Masi won't be in the game as herself?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): voices wait for shipping; Masi is a placeholder character; Nani's speed lines come only at later levels (the start stays simple); one pay, count out and hand over with ready-made stacks for small prices (the beach's stacks of one to five); only right-first-time rounds level up.

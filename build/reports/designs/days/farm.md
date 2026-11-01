@@ -4,7 +4,7 @@ Drafted overnight from the two farm designs on TEMPLATE Part A, checked against 
 
 ## 0. One line
 
-Hannah Mami's farm, sunny, host Hannah Mami (Nani speaks her lines until her likeness and voice are settled), the first trip, first visit; the orchard is the second visit. Status: designed (Sprint 10's list), now detailed. Sources, newest first: `consistency-2026-11-01.md` rows 15-18, `farm-animals.md`, `farm-eggs-orchard.md`, `days/farm.md`.
+Hannah Mami's farm, sunny, host Hannah Mami (Nani or another placeholder for her lines and look for now: Zafar, 1 Nov), the first trip, first visit; the orchard is the second visit. Status: designed (Sprint 10's list), now detailed. Sources, newest first: `consistency-2026-11-01.md` rows 15-18, `farm-animals.md`, `farm-eggs-orchard.md`, `days/farm.md`.
 
 ## 1. The language goal
 
@@ -40,7 +40,7 @@ The feeling: useful and proud. The end shows the animals in bed and Ali's egg.
 | 4 | Meet Hannah Mami | Conversations (built) | 1 | O7 | the greeting; Nani calls the animals over (the first watch of the dusk call) | L+S | |
 | 5 | Feeding time | put it in its place + count, **animal actor** (new, small) | 1 | O1, O2, O4 | which animal wants which food; from L2 how many | L | the animals eat |
 | 6 | Collect the eggs | count on the shared **openable** (from hide and seek) | 1 | O1, O4 | which hen (big or small; from L2 the colour); how many eggs | L | **the joke:** the chick |
-| 7 | The photo shoot | Snap (rebuilt) + animal actor | 1 | O1, O3 | which animal doing what; every animal can do every action | L | make it do it, then snap |
+| 7 | The photo shoot | Snap (rebuilt) + animal actor | 1 | O1, O3 | which animal doing what; every animal can do every action | L | make it do it, then snap: the instant camera prints, and a right shot ticks at once |
 | 8 | The corn stall | Cook's sekelo station, reskinned | 1 | O2, O6 | which dressing and which chutney each customer asks for | L | grilling for customers |
 | 9 | Home at dusk | put it in its place + the speaking moment | 1 | O1, O3, O7 | which animal to which home; then the child calls the next one | L, then S | the animal trots home when called |
 | 10 | Home | put it in its place | 1 | O2 | one egg for Ali | L | Ali's face |
@@ -67,9 +67,9 @@ Visit 2 (the orchard): door, bag, ride, meet, **pick**, animals home with positi
 
 | O-ID | Stages | Heard (about) | Said | Met again |
 |---|---|---|---|---|
-| O1 animals | 3, 4, 5, 6, 7, 9 | 20+ | 1-2 | the adoption centre, the safari, the school's board |
+| O1 animals | 3, 4, 5, 6, 7, 9 | 20+ | 1-2 | the pet hotel, the safari, the school's board |
 | O2 food | 5, 8, 10 | 20+ | 0 | the kitchen (the eggs), the shops |
-| O3 verbs | 4, 7, 9 | 12+ | 0 | the safari (eat, run); the adoption centre (feed) |
+| O3 verbs | 4, 7, 9 | 12+ | 0 | the safari (eat, run); the pet hotel (feed) |
 | O4 numbers, size, under | 2, 5, 6, 7 | 15+ | 0 | the shops, the beach |
 | O5 weather, things to take | 1, 2 | 4 | 0 | every trip's bag |
 | O7 said | 4, 9 | 2-3 | 2 | every trip's meeting |
@@ -78,7 +78,7 @@ Visit 2 (the orchard): door, bag, ride, meet, **pick**, animals home with positi
 
 ## 7. People and what comes home
 
-Hannah Mami (likeness and voice open since 20 Oct), Nani; one hen cast (three hens, three chicks). Comes home: an egg for Ali; the eggs to the pantry (the kitchen's eggs station); the photos. Visit 2: fruit to the pantry.
+Hannah Mami (a placeholder for now; her likeness and voice before shipping), Nani; one hen cast (three hens, three chicks). Comes home: an egg for Ali; the eggs to the pantry (the kitchen's eggs station); the photos. Visit 2: fruit to the pantry.
 
 ## 8. Words
 
@@ -100,3 +100,5 @@ Visit 2: the orchard; positions at home; count them in. Visit 3: the child gives
 1. **The length.** (a) his 21 Oct rule: animals home moves to the second farm day (the dusk call goes with it); or (b) **recommended:** the day grows by play: play 1 is door, bag, ride, meet, feed, eggs, photo shoot, home, book (about 10 minutes); the corn stall joins on play 2, animals home on play 3. Nothing is removed either way.
 2. One count close for every count game (the stillness rule), and who asks on the farm (`farm-eggs-orchard.md` open questions 1-2).
 3. Hannah Mami's likeness and voice.
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): one count close (the hand-over of the basket or the serve where it's the natural next thing, else 1.25 s of stillness); Nani asks and Hannah Mami is a placeholder; Snap ticks each right shot at once from an instant camera, no darkroom; only right-first-time rounds level up; *murgi* and *indo* are Zafar's words, to confirm.

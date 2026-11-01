@@ -2,7 +2,7 @@
 
 Designed overnight, 1 Nov 2026, while Zafar slept, and revised the same night after an independent critique (`farm-eggs-orchard-critique.md`, 7 MUST, 10 SHOULD); §12 lists each finding and what changed. Every choice he hasn't made is in §10, with the answer I assumed, so he can reverse it. Nothing here is built. The Kutchi below is only what the repo holds (`data/lang/lexicon.json`, the word inventory of 31 Oct); everything else is English, marked "to record". No Kutchi sentence in this file is mine: frames are given in English, to be built by the language engine from recorded parts, and §1's frame table says which parts exist.
 
-This design shares its day with `farm-animals.md` (feed, the photo shoot, animals home). The two now use **one count close, one cast of hens and chicks, one asker rule and one art plan** (decisions 2, 18 and 24; open questions 1 and 2). Where `farm-animals.md` still says otherwise (its old hen sprites), §10 flags the change for its owner; I edit no other file.
+This design shares its day with `farm-animals.md` (feed, the photo shoot, animals home). The two now use **one count close, one cast of hens and chicks, one asker rule and one art plan** (decisions 2, 18 and 24, settled by Zafar's answers of 1 Nov). Where `farm-animals.md` still says otherwise (its old hen sprites), §10 flags the change for its owner; I edit no other file.
 
 ## 0. One line
 
@@ -32,8 +32,8 @@ This design shares its day with `farm-animals.md` (feed, the photo shoot, animal
 
 | English | Kutchi in the repo | Status | Used in |
 |---|---|---|---|
-| egg | *indo* / *mayai* | ✓ both recorded alone (Mum to say which one for a child) | A, home |
-| chicken, hen | *murgi* | in engine, confirmed as food ("chicken"); Mum to say whether it is the live hen | A |
+| egg | *indo* / *mayai* | ✓ both recorded alone; **Zafar, to confirm: *indo*, for now** (1 Nov; Mum to say which one for a child) | A, home |
+| chicken, hen | *murgi* | in engine, confirmed as food ("chicken"); **Zafar, to confirm: *murgi* for the hen** (1 Nov; Mum to say whether it is the live hen) | A |
 | chick | – | to record | A (the joke, every round) |
 | under | *niche* | heard in 1 line | A frame |
 | big | *wadho* | heard in 30 lines (the he-form; the she-form for a hen is Mum's) | A L1, C1 L4 |
@@ -136,17 +136,16 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 
 ### Shared rules for all three
 
-- **Who speaks** (decision 18, open question 2): **Nani says every line,** in Mum's voice. In A and C she stands at the right and asks from a bubble at her face; in B she is off screen and her grill lines are in the guide box (guide-and-card R3), as in Cook. Hannah Mami is silent until her own lines are recorded, as in `farm-animals.md` decision 13; she isn't in the hen house or the patch in the first build. The guide box says only the step now (R2), without a face (R4).
-- **How a step closes** (decision 2, open question 1; the same rule as `farm-animals.md` decision 5, put to Zafar once for both): **a count closes on stillness** (no tap for a set time, in `data/rules.json`, lab-tested at 3 s and 4 s), **or at once when the child turns to the step's next thing, where there is one** (C2: picking up the can closes the planting). An empty basket never closes. The stillness clock waits while anyone speaks or a joke plays. There is no Done and no give button: after the close, Nani tips the basket into the crate (A) or lifts it onto her hip (C1) as the step's animation, not a control.
+- **Who speaks** (decision 18): **Nani says every line,** in Mum's takes where they exist and the device voice for the rest in the prototype. In A and C she stands at the right and asks from a bubble at her face; in B she is off screen and her grill lines are in the guide box (guide-and-card R3), as in Cook. Hannah Mami is silent for now (Zafar, 1 Nov: Nani or another placeholder for her lines and look), as in `farm-animals.md` decision 13; she isn't in the hen house or the patch in the first build. The guide box says only the step now (R2), without a face (R4).
+- **How a step closes** (decision 2; Zafar, 1 Nov, one rule for every game): the natural next thing where it is clear and obvious (in A and C1 the child hands the basket to Nani, a tap on her, and she tips it into the crate (A) or lifts it onto her hip (C1); in B Cook's serve; in C2 picking up the can closes the planting), never a button; otherwise stillness: the count closes about 1-1.5 s after the last tap. The pause is one setting in the data (`data/rules.json`, starting at 1.25 s), the same for every game. A count never stops itself at the right number: this replaces `easy-to-play.md` rule 4's "a count ends at the right number". An empty basket can't be handed over. The stillness clock waits while anyone speaks or a joke plays.
 - **Judged once, at the close (the fishing fix):** nothing is judged item by item. An egg from any hen and a fruit from any plant lands in the basket. At the close the whole basket is judged once:
   - **Right the first time:** the row ticks **gold**, each word in it moves one step on its ladder, and only this counts as a win for the leak bot.
-  - **Wrong** (the wrong hen or plant, the wrong colour, too many or too few): a funny consequence takes out what's wrong (the hen hops over and nudges her egg home; the goat munches the wrong fruit; extras roll back to their nest or plant; too few: Nani counts what's there aloud and says the number again), and Nani says the ask again. **The right items stay in the basket** (nothing undoes a child's right work, non-negotiable 7). The child fixes it and it closes again. The row then ticks **plain**, moves no word's ladder, and **counts as a hint for moving up** (the rulebook counts hints, so a fished row can't climb a level).
+  - **Wrong** (the wrong hen or plant, the wrong colour, too many or too few): a funny consequence takes out what's wrong (the hen hops over and nudges her egg home; the goat munches the wrong fruit; extras roll back to their nest or plant; too few: Nani counts what's there aloud and says the number again), and Nani says the ask again. **The right items stay in the basket** (nothing undoes a child's right work, non-negotiable 7). The child fixes it and it closes again. The row then ticks **plain**, moves no word's ladder, and **the round doesn't count towards moving up** (Zafar, 1 Nov: level up only on right-first-time rounds), so a fished row can't climb a level.
 - **Take-backs:** tap an item in the basket to put it back, until the close.
 - **The count sits on the basket** as the shared tally (dots, never digits). The card writes the whole ask in Kutchi, count included, as a word, and fades it by the word ladder.
 - **Hints** after 7, 9, 11 and 13 s from the last action: Nani says the ask again (free). The helper card with the full answer costs a bulb.
 - **No timers** in A and C. B keeps the grill's turn timing (a skill row, not language), and its first turn holds in the green.
 - **The first round is the tutorial,** unscored, one lit box at a time (§4).
-- **If Zafar keeps easy-to-play rule 4** (the fallback, open question 1 (c)): the count stops itself when the basket holds the asked number, an extra tap doesn't land, and the basket is judged at that stop with the same first-go rule. Which hen, plant or colour still decides; how many no longer does (a tapper reaches N anyway). The leak is noted in the leak tables, the bots judge only the "which", and `whichone` adds hens, plants or asks until a level-up round is under 10% (with three hens and three asks it would be about 26% at L2). The numbers would then be taught by hearing only, not by the count.
 
 ### 3A. Collect the eggs
 
@@ -155,7 +154,7 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 **The hen is the shared openable** (`hide-and-seek.md` §6): closed is the hen sitting on her nest; open is the hen hopped down to the floor beside her nest, on the side away from the basket, clucking; the content layer is her eggs and, sometimes, the chick. What the openable needs for the hen (taking from the content layer, holding open while the ask is open) is a row for the shared-layer owner (§6).
 
 **The five questions:**
-1. **What do you do?** Tap a hen: she flaps and hops down off the shelf beside her nest, and her eggs lie in the open. She stays down while the ask is open; tap her again, or tap another hen, and she hops back up (one hen down at a time). Tap an egg: it hops into the basket. Tap an egg in the basket to put it back. When the child is still, the basket is judged.
+1. **What do you do?** Tap a hen: she flaps and hops down off the shelf beside her nest, and her eggs lie in the open. She stays down while the ask is open; tap her again, or tap another hen, and she hops back up (one hen down at a time). Tap an egg: it hops into the basket. Tap an egg in the basket to put it back. Hand the basket to Nani (tap her) and it is judged.
 2. **Does the Kutchi decide?** Yes. **Which hen** (big or small at L1; colour from L2), and from L2 **how many**. Every hen has eggs, always more than asked, so the picture never settles it.
 3. **The fun:** the hop-down is a toy (the flap, the cluck, a feather drifting). **The chick:** under one random hen each round sits a fluffy chick. When that hen hops down, it tumbles out of the nest cheeping, hops onto her back and rides her back up at the close. Nani laughs: "Oh, a chick!" Children will open every hen to find it, and that's allowed.
 4. **The instruction:** Nani, three-quarter to the hens, then front-on to the child for the ask. Her card shows the hen and the egg while they're supported.
@@ -179,12 +178,12 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 |---|---|---|
 | **Reading** | Only on English placeholders. | The card shows Kutchi, and its English is dotted from L2. Until Mum records hen, chick and white, a reader wins: it counts as teaching only once they're in (decision 22). |
 | **Matching** | Only while supported. | The card's hen picture is support: it shows until the word is picked right three times in a row (first time right), then speaker only. From L3 the picture blurs. The hens carry no labels past support. |
-| **Fishing** | No. | Nothing is judged egg by egg: a wrong hen's egg lands like any other. The basket is judged once, at the close. Only a first close right ticks gold and moves a ladder; a redo ticks plain, counts as a hint and is never a bot win. Too few and too many are both judged at the close, so the close can't be probed for the count. |
+| **Fishing** | No. | Nothing is judged egg by egg: a wrong hen's egg lands like any other. The basket is judged once, at the close. Only a first close right ticks gold and moves a ladder; a redo ticks plain, the round doesn't count towards moving up, and it is never a bot win. Too few and too many are both judged at the close, so the close can't be probed for the count. |
 | **Eliminating** | No. | Every hen keeps more eggs than asked after each ask, so the same hen can be asked again. Nothing ends by itself. |
 | **Patterns** | No. | The hens shuffle along the shelf each round. The asked hen, the counts and the chick's hen are random. The chick is under a set hen only in the first-ever round. |
-| **Waiting** | No. | No glow on the answer after the tutorial. The hint repeats the ask and points at the card, never at a hen. An empty basket never closes, and a still basket is judged as it stands. |
+| **Waiting** | No. | No glow on the answer after the tutorial. The hint repeats the ask and points at the card, never at a hen. An empty basket can't be handed over, and nothing closes by waiting. |
 
-**Blind odds** (first close right; the bot's win is a round that counts towards moving up, so one redo is allowed; `whichone`'s calculator checks them in data): L1: hen 1 in 2 per ask, three asks: a gold round 12.5%, a level-up round 50%: accepted as the guided level, with the words supported (decision 23); the bot judges from L2. **L2:** hen 1 in 3 × count 1 in 2 = 1 in 6 per ask; a level-up round about **7%**. L3: 1 in 9 per ask, four asks: about 0.5%. L4 lower.
+**Blind odds** (first close right; the bot's win is a round that counts towards moving up, which is now a right-first-time round, Zafar 1 Nov; `whichone`'s calculator checks them in data): L1: hen 1 in 2 per ask, three asks: a level-up round 12.5%: accepted as the guided level, with the words supported (decision 23); the bot judges from L2. **L2:** hen 1 in 3 × count 1 in 2 = 1 in 6 per ask; a level-up round about **0.5%**. L3 and L4 far lower.
 
 **Miss reactions at the close** (different each time, never a frown): the wrong hen hops over, clucks and nudges her egg home with her beak; an extra egg wobbles and rolls back to its nest; too few, and Nani counts the basket aloud and says the number again. Idle, not a verdict: a hen ruffles up and plops back down with a puff of straw.
 
@@ -212,7 +211,7 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 
 **Scores:** do 4, Kutchi 4, fun 4, instruction 4, novel 2 (kept: Zafar asked for it, and it's cheap).
 
-**Level ladder.** The repeating thing is **cobs per round**, most 4 at L4; by the rule 1, 2, 3 and 4. **The one override:** L2 has 3 cobs, not 2, for the leak budget (with two cobs a level-up round is about 21% blind; with three, about 3%). One customer at L1-L2; two from L3, one after the other (2 + 1 at L3, 2 + 2 at L4). Decoys by the rule: 1, 2, 3 and 4 (the dressings out: 2, 3, 4, 5).
+**Level ladder.** The repeating thing is **cobs per round**, most 4 at L4; by the rule 1, 2, 3 and 4. **The one override:** L2 has 3 cobs, not 2, for the leak budget (with two cobs a level-up round was about 21% blind; with three, about 3%; now that only right-first-time rounds move up, Zafar 1 Nov, about 0.1%). One customer at L1-L2; two from L3, one after the other (2 + 1 at L3, 2 + 2 at L4). Decoys by the rule: 1, 2, 3 and 4 (the dressings out: 2, 3, 4, 5).
 - **L1:** one cob. Two dressings out (lemon ✓, chilli powder) and two chutneys (mint ✓, tamarind ✓). One of each asked. Everything shown.
 - **L2:** three cobs for one customer; numbers ("two with lemon, one with chilli"); **"no" asks** said last ("no chilli", *na* ✓). Adds salt and the third chutney (coconut ✓). The card's English is dotted.
 - **L3:** **other ways of saying it.** The customer's own phrasing ("make it spicy"; "with a squeeze of lemon"). Each cob in an order can differ. Adds pepper. The card's picture is blurred.
@@ -224,12 +223,12 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 |---|---|---|
 | **Reading** | Only on placeholders. | Chilli powder, salt, pepper and garlic powder are drafts or to record. Until Mum confirms them, the dressing rows are a reading leak. The chutneys and lemon are ✓ already. |
 | **Matching** | Only while supported. | The card's pictures fade by the word ladder and blur at L3. The shakers have no labels. |
-| **Fishing** | No. | Cook's accuracy rule: the plate is judged at the serve, gold only if right the first time; extra shakes land and count. A re-served plate ticks plain and counts as a hint. |
+| **Fishing** | No. | Cook's accuracy rule: the plate is judged at the serve, gold only if right the first time; extra shakes land and count. A re-served plate ticks plain, and the round doesn't count towards moving up. |
 | **Eliminating** | No. | Every shaker and bowl stays out. "No" items are said last. A customer may ask for what the last one had. |
 | **Patterns** | No. | Orders are random. The shaker and bowl places are fixed per station (Cook's rule), but the order varies, so position never predicts. |
 | **Waiting** | No. | No glow on the answer. The hint points at the card. |
 
-**Blind odds:** L1: dressing 1 in 2 × chutney 1 in 2: a gold round 25%, the guided level (decision 23). L2: three cobs at 1 in 9 each: a level-up round about **3%**. L3 and L4 lower.
+**Blind odds:** L1: dressing 1 in 2 × chutney 1 in 2: a gold round 25%, the guided level (decision 23). L2: three cobs at 1 in 9 each: a level-up round (right first time) about **0.1%**. L3 and L4 lower.
 
 **Speaking:** none in the first build (decision 16). The chutney order on the shared "say it, X acts" moment is a later row, if Zafar wants a second speaking turn on the farm.
 
@@ -238,7 +237,7 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 **Scene:** a sunny kitchen garden at the farm, eye level (camera E). One row of two to five fruit trees and vegetable plants across the middle, kept low so every fruit is in reach. In front of them, a strip of dug soil with gaps (C2's). Behind, a low fence runs across and ends at the right, where the big basket stands against the end post; the goat's head can stretch over the fence just above it. Nani stands at the right edge.
 
 **The five questions:**
-1. **What do you do?** Tap a fruit or vegetable: it pops off with a wobble of leaves and bounces into the basket. Tap one in the basket to put it back. When the child is still, the basket is judged.
+1. **What do you do?** Tap a fruit or vegetable: it pops off with a wobble of leaves and bounces into the basket. Tap one in the basket to put it back. Hand the basket to Nani (tap her) and it is judged.
 2. **Does the Kutchi decide?** Yes: **which** (the plant) from L1, **how many** from L2 (Zafar's two words per move), and **which ones** (the colour, the size) from L3. Every plant has more than asked, and several kinds grow side by side.
 3. **The fun:** the pop and bounce, the leaves shaking, and the goat. **At a wrong close the goat helps:** he stretches over the fence and munches the wrong one out of the basket, happily. The child adds the right one, with a laugh instead of a verdict.
 4. **The instruction:** Nani asks. Her card shows the fruit while it's supported.
@@ -258,12 +257,12 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 |---|---|---|
 | **Reading** | Only on placeholders. | Lemon, tomato and chilli are ✓; mango is heard in 38 lines and needs its own clip; numbers have no clip. Until then those rows are a reading leak. |
 | **Matching** | Only while supported. | The card picture fades by the ladder and blurs at L3. No plant has a label past support. |
-| **Fishing** | No. | Nothing is judged fruit by fruit; the goat only comes at the close. The basket is judged once; only a first close right ticks gold; a redo ticks plain and counts as a hint. |
+| **Fishing** | No. | Nothing is judged fruit by fruit; the goat only comes at the close. The basket is judged once; only a first close right ticks gold; a redo ticks plain and the round doesn't count towards moving up. |
 | **Eliminating** | No. | More on every plant than asked; the same plant can be asked twice; nothing ends by itself. |
 | **Patterns** | No. | Plants shuffle along the row each round. Asks, counts and colours are random. |
 | **Waiting** | No. | No glow on the answer. The hint repeats the ask. An empty basket never closes. |
 
-**Blind odds:** L1: 1 in 2 per ask, three asks (the guided level). **L2:** plant 1 in 3 × count 1 in 2: a level-up round about **7%**. L3: plant 1 in 4 × colour 1 in 2 × count 1 in 3 per ask: far under 1%.
+**Blind odds:** L1: 1 in 2 per ask, three asks (the guided level). **L2:** plant 1 in 3 × count 1 in 2: a level-up round (right first time) about **0.5%**. L3: plant 1 in 4 × colour 1 in 2 × count 1 in 3 per ask: far under 1%.
 
 **Miss reactions at the close:** the goat's munch (built first, from `farm-animals.md`'s goat eat pose, cropped over the fence); extras bounce out and roll back under their plant. The bird is a later row.
 
@@ -279,7 +278,7 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 1. Nani: "Plant the lemon." Tap the lemon sapling: it lifts out of its pot.
 2. Tap a gap: it goes in, and the soil closes round it. Tap a planted sapling to take it back, until the planting closes.
 3. Tap and hold the watering can: it tilts and pours over the new plant (Cook's pour). Release to stop. **Picking up the can closes the planting** (the step's next thing), and the planting is judged then.
-4. **The grow:** when the watering closes (stillness after the last release), the sapling shoots up in place into its fruiting plant, in about three seconds: a cross-fade through real art frames (sapling, small plant, the patch's own fruiting plant), with a soft rustle and a pop. No sparkles. The row ticks.
+4. **The grow:** when the watering closes (about 1.25 s of stillness after the last release, the shared setting), the sapling shoots up in place into its fruiting plant, in about three seconds: a cross-fade through real art frames (sapling, small plant, the patch's own fruiting plant), with a soft rustle and a pop. No sparkles. The row ticks.
 
 **The five questions:**
 1. **What do you do?** Tap the sapling, tap the gap, hold the can.
@@ -315,7 +314,7 @@ No two of the same engine back to back: A (count on openables) follows feed (pla
 | **Patterns** | No. | Saplings shuffle; asks and amounts are random. |
 | **Waiting** | No. | Holding the can is a miss on "a little"; no glow on the answer. |
 
-**Blind odds:** L1: 1 in 2 per ask, three asks (the guided level). **L2:** sapling 1 in 3 × count 1 in 2: a level-up round about **7%**. L3: 1 in 4 × water 1 in 2 × count 1 in 2: about 1%.
+**Blind odds:** L1: 1 in 2 per ask, three asks (the guided level). **L2:** sapling 1 in 3 × count 1 in 2: a level-up round (right first time) about **0.5%**. L3: 1 in 4 × water 1 in 2 × count 1 in 2: about 1%.
 
 **The delight moment:** the grow, every planting.
 
@@ -342,8 +341,8 @@ Every first round is the tutorial and unscored. One lit box at a time with a bre
 3. **The ask.** Nani turns front-on: "Bring me an egg from under the big hen." The card pops big beside the side panel (the big hen, an egg, the Kutchi, the speaker), then flies into its row. Guide box: [Look under the hen] (to record).
 4. **The open (a new action, shown once).** The lit box hugs the big hen. The child taps: she flaps and hops down beside her nest with a cluck. Two eggs lie in the open straw. She stays down.
 5. **The egg.** The lit box moves to the eggs. Guide box: *wiji chad* ✓ ("put it in"). Tap one: it hops into the basket with a soft *tok*. A dot appears on the basket.
-6. **The close (shown once).** The light goes out and nothing is lit. Stillness: Nani counts "one", tips the basket into the crate, and says *shabash* ✓. The row ticks gold. The big hen hops back up onto her nest.
-7. **Alone, and the joke.** The light points once at the card (1.2 s), then stops. "An egg from under the small hen." The child may open the big hen first; that's free, and she just clucks. They open the small hen (her first time): **the chick tumbles out** cheeping and hops onto her back. Nani laughs: "Oh, a chick!" The child takes an egg; the close; the chick rides her back up. Tick.
+6. **The close (shown once).** The lit box moves to Nani. Tap her: the child hands the basket over (the natural next thing), and Nani counts "one", tips the basket into the crate, and says *shabash* ✓. The row ticks gold. The big hen hops back up onto her nest.
+7. **Alone, and the joke.** The light points once at the card (1.2 s), then stops. "An egg from under the small hen." The child may open the big hen first; that's free, and she just clucks. They open the small hen (her first time): **the chick tumbles out** cheeping and hops onto her back. Nani laughs: "Oh, a chick!" The child takes an egg and hands the basket over; the chick rides her back up. Tick.
 8. **The same hen twice.** "An egg from under the big hen" again (the same hen can be asked twice). Open, take, close. Tick.
 9. **The end.** The crate is full. Nani puts one egg in the child's hands: "for Ali". *Shabash*. The chick runs out to its sisters in the yard; the camera eases back to the yard.
 10. **The end screen:** the shared two-page end screen. Its word page has egg, hen, big and small, and chick (to record), each with its picture and speaker; the grown-ups' English sits under the Kutchi there.
@@ -367,7 +366,7 @@ From the second round, the round is scored and the showing doesn't repeat. Each 
 2. **What isn't on the card.** The light moves to each tree as Nani names it: "a mango", "a lemon". The leaves shiver as each is named.
 3. **The ask.** "Pick a mango." The card pops and flies into its row. Guide box: [Pick them] (to record).
 4. **The pick (shown once).** The lit box moves to the mangoes. Tap one: it pops off and bounces into the basket. A dot appears.
-5. **The close (shown once).** Nothing lit. Stillness: Nani counts "one", lifts the basket onto her hip and back, and says *shabash*. Tick.
+5. **The close (shown once).** The lit box moves to Nani. Tap her: the child hands the basket over; Nani counts "one", lifts it onto her hip and back, and says *shabash*. Tick.
 6. **Alone.** The light points once at the card. "Pick a lemon." The child picks.
 7. **The goat (shown once).** If any close in the round is wrong, the goat stretches over and munches the wrong one, and Nani says the ask again. If none is, at the end the goat steals one leaf from the lemon tree, so every child meets him.
 8. **The end.** The basket goes to the pantry; the word page has mango and lemon.
@@ -408,14 +407,14 @@ From the second round, the round is scored and the showing doesn't repeat. Each 
 - **The sekelo station** (`js/cook/stations/mishkaki-grill.js`, `js/cook/mechanics/grill.js`, `data/stations/mishkaki-grill.json`): the grill phase as it is.
 - **Cook's add** (`js/cook/mechanics/add.js`) for the dress and the chutney; **pour** (`js/shared/pour.js`, `js/cook/mechanics/pour.js`) for the watering can.
 - **Tidy's place** (`js/tidy/mechanics/place.js`): tap, then tap, for sapling to gap.
-- **The close on stillness** and its time in `data/rules.json`, shared with `farm-animals.md` (decision 2).
+- **Zafar's one count close** (1 Nov): the hand-over, the serve or the can where it is the natural next thing, else stillness; the pause is one setting in `data/rules.json`, shared by every game (decision 2).
 - **The shared layer** (`js/shared/`): the order card (`order-card.js`), the guide box (`guide.js`), the onboarding and light (`onboard.js`, `focus.js`), the request pop-up (`request-popup.js`), the tally (`tally.js`), the bulb (`bulb.js`), the end screen (`results.js`), the family voice (`family-voice.js`).
 - **The day** (`js/day/`): the farm day's data, the home stage (one egg for Ali), and the book (the chick and the grown plants as pictures).
 - **Art:** the farm's hens and chicks (one set for the day, decision 24); `farm-animals.md`'s goat eat pose for the goat over the fence; Nani's locked s08 look.
 
 **New to build:**
 - **Two rows for the shared-layer owner on the openable** (not built here; never restyled per mode): (1) **take from the content layer**, one item at a time, each a tappable item that leaves the openable for a container; (2) **hold open while the ask is open**, closing with the step's close or a tap on it or on another openable (one open at a time), instead of "closes itself after its joke". The hen's open art (hopped down beside the nest) is art, not code.
-- **The judged-at-the-close count:** the whole container judged once at the close, gold on a first close right, a redo plain and counted as a hint. It belongs in the shared count (`count-to-a-number.md`), written there on Zafar's answer to open question 1, so every count game gets it.
+- **The judged-at-the-close count:** the whole container judged once at the close, gold on a first close right, a redo plain (and the round doesn't count towards moving up). It belongs in the shared count (`count-to-a-number.md`), written there with Zafar's one count close of 1 Nov, so every count game gets it.
 - **Plant items in states** (unripe, ripe; on the plant, in the basket), the pop-and-bounce pick, and **saplings** (in the pot, planted, small plant).
 - **The grow:** a cross-fade through real art frames, all in E. No drawing in code.
 - **The dress and chutney phase** for B: Cook's add with new items, in place of threading.
@@ -470,7 +469,7 @@ From the second round, the round is scored and the showing doesn't repeat. Each 
 1. **The heard word decides: passed.** A and C1 need two words per move from L2 (which hen or plant, and how many), the basket is judged once at the close, and only a first close right ticks gold or moves a ladder, so fishing doesn't win. Each game's leak test, with a Fishing row, and its blind odds are in §3, from L2 a level-up round under 10%. The deciding words recorded today: egg, small, red, lemon, tomato, chilli, the three chutneys; the rest are in §1's frame table. **C2 is weak on language at L1-L2** (the sapling is the only decider), accepted because it's the calm stage; at L3 the water decides both ways. Our own words, not just numbers: hen, chick, the colours, the fruit and vegetables.
 2. **Onboarding and the first round: passed.** Every first round is written step by step (§4), each starting with what isn't on the card, one lit box, each new action shown once, the grill's timer held in the green, tap then tap, and 2-5 hiding places.
 3. **Instructions: passed.** Nani is on screen and speaks before the card (A, C); the customer orders (B). The card never changes; the guide box says the step, never empty (§4's lines). Listening again is free. One line per moment: Nani counts aloud only at L1.
-4. **Pacing and waiting: passed, one change put to Zafar.** No Next and no Done: a count closes on stillness (3-4 s, lab-tested) or when the child turns to the next thing, the same rule as `farm-animals.md` (open question 1, which reverses easy-to-play rule 4 only on his yes; the fallback is in §3). Taps skip the speech; the stillness clock waits for speech. Hints at 7-13 s. No timers in A or C. The ask repeats for non-readers.
+4. **Pacing and waiting: passed.** No Next and no Done: a count closes on its natural next thing (the hand-over, the serve, the can) or after about 1.25 s of stillness, Zafar's one count close (1 Nov). Taps skip the speech; the stillness clock waits for speech. Hints at 7-13 s. No timers in A or C. The ask repeats for non-readers.
 5. **Feedback and the end: passed.** A funny consequence and the ask again, redone on the spot (the hen's nudge, the goat, the droop and flop). Rows tick at the close, gold only first time. The count sits on the basket. It ends at once with something given or grown (the egg for Ali, the child's own cob, the grow). The shared end screen.
 6. **Layout: passed on paper** at all five sizes, with numbers for 740x320 and 915x275 (§7); a grey-box lab comes before any art.
 7. **Art and camera: passed.** One camera per scene (E for the hen house and the whole patch, T for the worktop), the nests and basket in F view inside E so counts read. Nothing drawn in code (the grow is art frames). Contact shadows, nothing floating. No sparkles. Three paste blocks, each its own run.
@@ -479,7 +478,7 @@ From the second round, the round is scored and the showing doesn't repeat. Each 
 10. **Words: passed with the gap listed.** §1's frame table says frame by frame what the engine can't build today and what Mum records (about 75 takes; about 25 for the first sitting). Every count is written on the card as a word. 2-4 new words a round.
 11. **Culture: passed.** Halal; no sweets (the treat is a cob of corn and an egg for Ali); modest clothes; no religious markers. Nothing a child could copy and get hurt by: the grill is tapped, never touched, and Nani says "don't touch!" (*na ad*, in engine, to record) the first time.
 12. **Fun: passed.** The hands always have something to do. The "kind of funny" moments: the chick riding the hen, the goat munching, the sapling flopping in its puddle, the "sss-aah". Good gestures: the hop-down, the pop, the squish, the pour. Contrast: big hen and small hen, red and green. No fatigue: A follows feed with a different action; B's L4 is four cobs in a round, not twelve.
-13. **Mistakes made twice: guarded.** The count close is one question for Zafar, shared with `farm-animals.md`, not settled in either game; the openable is hide and seek's, not a copy; one cast and one asker rule for the day. Each level is designed (§3). Nothing removed or replaced: the farm's existing stages stay, and the breakfast eggs station is untouched. Help is never early. No English reaches the child ("Oh, a chick!" is spoken Kutchi, or grey to record).
+13. **Mistakes made twice: guarded.** The count close is Zafar's one rule for every game (1 Nov), not settled in either game; the openable is hide and seek's, not a copy; one cast and one asker rule for the day. Each level is designed (§3). Nothing removed or replaced: the farm's existing stages stay, and the breakfast eggs station is untouched. Help is never early. No English reaches the child ("Oh, a chick!" is spoken Kutchi, or grey to record).
 
 **The ten questions:** 1. §1 and §3 (the deciding words; about ten recorded). 2. §3's leak tables, each with a Fishing row. 3. Every hen has eggs; every plant has more than asked; every shaker, bowl and sapling is out. 4. §4, all four. 5. Nani and the customers, in the frames of §1. 6. Open, take; pick; tap, tap, pour; grill, sprinkle, spoon, serve. 7. The chick, the goat, the flop, the "sss-aah". 8. With something given or grown: the eggs into the crate, one for Ali; the cob to each customer and to the child; the grow. 9. §3; each L4 has its own look-alike. 10. §7.
 
@@ -488,8 +487,8 @@ From the second round, the round is scored and the showing doesn't repeat. Each 
 Answer "yes to all except ...".
 
 1. **Scope cut to small:** visit 1 is A and B (B as the plain sekelo reskin); the orchard is visit 2, one scene, one camera, pick then plant. The stall front, the chutney speaking turn, plant-now-pick-next-time, the corn-to-stall carry and the bird are later rows (§5). *Reason:* the map's "small" and your "a skin of Cook, not a new game"; the carry needs saved state the day doesn't have, with DAY-02 still open. *Assumed answer:* yes.
-2. **One count close for the whole farm day, the same as `farm-animals.md`:** a count closes on stillness (3-4 s, lab-tested, in `data/rules.json`), or at once when the child turns to the step's next thing where there is one; no Done and no give button. This reverses your easy-to-play rule 4 (22 Oct), so it is **open question 1**, asked once for both farm designs; it goes into `count-to-a-number.md` and `easy-to-play.md` only on your yes, with your name and date. *Assumed answer:* yes, with the fallback in §3 if no.
-3. **The basket is judged once, at the close; gold only first time.** No egg or fruit is judged as it's taken. A wrong close takes out what's wrong with a funny reaction and asks again; the right ones stay; the row ticks plain, moves no word's ladder and counts as a hint for moving up. *Reason:* otherwise a child wins by taking from each hen until one stays, or by probing the count (your chaat point, CHT-14; every sibling design's first-go rule). *Assumed answer:* yes.
+2. **One count close, Zafar's (1 Nov), the same in every game:** the natural next thing where it is clear (A and C1: hand the basket to Nani; B: the serve; C2: pick up the can), otherwise stillness about 1.25 s after the last tap (one data setting). Never a button, and never stopping at the right number.
+3. **The basket is judged once, at the close; gold only first time.** No egg or fruit is judged as it's taken. A wrong close takes out what's wrong with a funny reaction and asks again; the right ones stay; the row ticks plain, moves no word's ladder, and the round doesn't count towards moving up (Zafar, 1 Nov). *Reason:* otherwise a child wins by taking from each hen until one stays, or by probing the count (your chaat point, CHT-14; every sibling design's first-go rule). *Assumed answer:* yes.
 4. **The hens are told apart by size at L1** (big and small) **and by colour from L2** (red ✓, then white), each asked by the words that pick her out alone. *Reason:* recorded words first; contrast pairs teach best. *Assumed answer:* yes.
 5. **Opening a hen is a free peek.** She hops down beside her nest and stays down while the ask is open. The chick sits under a random hen each round (under the small hen in the first-ever round, the first time she's opened). From L3 "the hen with the chick" is a joke row that ticks plain and is never a leak-bot win. *Reason:* the joke works as a toy; a peek gives nothing away because every hen has eggs. *Assumed answer:* yes.
 6. **No "no" asks in A or C;** B has them from L2. *Reason:* "not that hen" is unnatural; the rulebook lets a game skip them with a reason. *Assumed answer:* yes.
@@ -504,28 +503,24 @@ Answer "yes to all except ...".
 15. **The dressings:** lemon ✓ and chilli powder at L1; salt (L2), pepper (L3), garlic powder (L4, the look-alike beside the salt). *Reason:* recorded first; a real look-alike pair. *Assumed answer:* yes.
 16. **No speaking turn in this design's first build.** The farm's speaking turn is the call at dusk. B's chutney order on the shared "say it" moment is a later row if you want a second. *Reason:* B is meant to be cheap, and a seventh copy of "say it, X acts" is what the audit warns against. *Assumed answer:* yes.
 17. **(Was: the stall uses the corn you picked.)** Now a later row (§5). *Assumed answer:* yes.
-18. **Nani says every line in A and C** (Mum's voice), from her bubble on screen, and from the guide box in B; Hannah Mami is silent until her lines are recorded, the same rule as `farm-animals.md` decision 13. This is **open question 2**. *Reason:* only real family voices ship, and Mum's exists. *Assumed answer:* yes.
+18. **Nani says every line in A and C,** from her bubble on screen, and from the guide box in B; Hannah Mami is silent, Nani or another placeholder for her lines and look for now (Zafar, 1 Nov), the same rule as `farm-animals.md` decision 13. **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 19. **The pull-up gesture** (root vegetables) waits for a later visit. *Reason:* one new action at a time. *Assumed answer:* yes.
 20. **No timers in A or C.** B keeps the grill's turn timing, held in the green the first time. *Reason:* the no-timers lesson; sekelo's existing rule. *Assumed answer:* yes.
 21. **The ladders follow the rulebook,** each with its repeating thing, its most at L4 and at most one override, written in §3: A eggs per ask (1-4; L3 keeps three hens); B cobs per round (1, 3, 3, 4); C1 fruit per ask (1-4); C2 saplings per ask (1, 2, 2, 3). Asks per round: 3, 3, 4, 4 in A and C1; 3 in C2. *Reason:* one override per game, written in its row. *Assumed answer:* yes.
 22. **A game counts as teaching only once its deciding words are recorded;** until then it plays with grey English in testing only. The farm's sheet for Mum is §1's frame table, the first sitting about 25 takes (visit 1, L1-L2). *Reason:* NN2; lesson §1. *Assumed answer:* yes.
-23. **L1's blind odds are accepted as the guided level** (the words are supported, everything shown); the leak bot judges from L2, where a level-up round must stay under 10% (A, C1 and C2 about 7%; B about 3%). *Reason:* the clinic's L1 precedent. *Assumed answer:* yes.
+23. **L1's blind odds are accepted as the guided level** (the words are supported, everything shown); the leak bot judges from L2, where a level-up round must stay under 10% (A, C1 and C2 about 0.5%; B about 0.1%, now that only right-first-time rounds move up, Zafar 1 Nov). *Reason:* the clinic's L1 precedent. *Assumed answer:* yes.
 24. **One farm cast for the day:** three hens (the big red-brown mother hen, the small white hen, the big white hen) and the mother hen's three chicks, drawn new in the 3D style. The hen the child feeds is the hen that lays; one chick hides in the hen house, the other two peck in the yard; all three follow her home at dusk. **`farm-animals.md` adopts these hens** in place of the old `assets/characters/` hen sprites (done in the consistency pass, 1 Nov: its decision 8 and §7). *Reason:* one hen on one day; the old sprites are the art bible's anti-reference. *Assumed answer:* yes.
 25. **The hen is hide and seek's shared openable,** not a new "lift" piece; two rows go to the shared-layer owner (take from the content layer; hold open while the ask is open). *Reason:* one piece, four designs (non-negotiable 6). *Assumed answer:* yes.
 26. **Art in three blocks after a grey-box lab:** the hen house and hens (shared with `farm-animals.md`), the corn stall, then the patch in two halves. *Reason:* one supervised paste block per run. *Assumed answer:* yes.
 
-**Open questions that are genuinely his** (the build goes ahead on the recommendation unless he says otherwise):
-1. **How a count closes, in every count game** (the same question as `farm-animals.md` decision 5; one answer for both). An auto-stop at the right number teaches the number by waiting: a child taps until it stops. The choices:
-   - (a) **Close on stillness** (3-4 s, lab-tested) or when the child turns to the next thing; no Done. *Recommended:* it keeps "every step moves on by itself", your own wording.
-   - (b) **Close on a give:** tap the asker to hand the basket over. It teaches "give", but it is a Done button in costume.
-   - (c) **Keep rule 4:** the count stops at the right number and an extra tap doesn't land. Then which hen or plant still decides, how many doesn't, and the numbers are taught by hearing only (§3's fallback).
-   Either way the basket is judged once and gold only first time (decision 3). Your answer goes into `count-to-a-number.md` and `easy-to-play.md` the same day.
-2. **Who asks on the farm** (one rule for the day): (a) **Nani says every line** in Mum's voice and Hannah Mami acts silently until she records her own lines, which then swap in (*recommended*, and what `farm-animals.md` assumes); or (b) Hannah Mami asks in A and C, her lines grey "to record" until she records them (the farm doesn't teach until then).
-3. **For Mum, through him:** which word for egg to a child (*indo* or *mayai*); whether *murgi* is the live hen (or the Swahili word); the she-forms of big and small with hen; whether *laal* is said of a hen; whether roasted corn has its own name.
+**Open questions:** Zafar answered the count close and who asks on 1 Nov (decisions 2 and 18). What remains is for Mum:
+1. **For Mum, through him:** which word for egg to a child (Zafar: *indo*, for now; to confirm); whether *murgi* is the live hen (Zafar thinks so; to confirm); the she-forms of big and small with hen; whether *laal* is said of a hen; whether roasted corn has its own name.
 
 ## 11. ChatGPT mock-up prompts
 
-**Run order:** prompt 1 first; prompt 2 next, and once Zafar approves its patch, attach it as the **first** reference of prompt 3 (a fresh run has no memory of the last); prompt 4 on its own. The grandmother is a **stand-in from her locked sheet**; Hannah Mami is left out until her likeness run. All UI (lit boxes, glows, the tally dots, bubbles) is code-drawn and not shown.
+**Run order:** prompt 1 first; prompt 2 next, and once Zafar approves its patch, attach it as the **first** reference of prompt 3 (a fresh run has no memory of the last); prompt 4 on its own. The grandmother is a **stand-in from her locked sheet**; Hannah Mami is left out (a placeholder for now, Zafar 1 Nov). All UI (lit boxes, glows, the tally dots, bubbles) is code-drawn and not shown.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt farm-eggs-orchard-1: collect the eggs (L2)
 
@@ -637,3 +632,9 @@ Each finding from `farm-eggs-orchard-critique.md` (1 Nov), then what was done.
 17. **SHOULD: outside evidence from memory.** Done. Peekaboo Barn now cites the store listing the hide-and-seek design found. Hay Day is dropped, along with the carry it supported.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** `farm-animals.md` now uses this design's three new 3D hens and three chicks (its decision 8 and §7; its prompts draw the same big, plump red-brown mother hen), and its count close is worded the same as §3 here (stillness, or the step's next thing where there is one; an empty trough or basket never closes; the clock waits for speech), one question for both (open question 1).
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **One count close:** A and C1 close when the child hands the basket to Nani (his "hand the basket over"), B on the serve, C2 when the can is picked up; else about 1.25 s of stillness, one data setting. The rule-4 fallback and open question 1 are gone (§3, §4, decisions 2-3, checklist 4).
+- **Level up only on right-first-time rounds:** a redo no longer counts as a hint; the round doesn't count. The blind odds are recounted (all far under 10% from L2).
+- **Voices and Hannah Mami:** Nani or a placeholder for now; existing takes, else the device voice; open question 2 is gone (decision 18).
+- **Words:** *indo* for egg (for now) and *murgi* for the hen are marked "Zafar, to confirm". **Clothes:** the prompt sheet's line is added before the prompts.

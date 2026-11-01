@@ -20,7 +20,7 @@ Sources, newest first:
 **Who is there (visit 1):**
 - **The child's own Nani and Nana**, who brought the child. Nani is the asker and the guide; Nana is a guest like the child.
 - **The host family, six people:** the birthday girl (4), her baby brother, her mum, her **dada** and **dadima** (her father's parents), and an aunty.
-- **One party cast for all three party designs** (this file, `party-guests.md`, `do-it-engine.md`; consistency pass, 1 Nov). The placeholder names are `party-guests.md`'s, which Zafar picks (its open question 0): the birthday girl is **Zara**; the aunty is **Zara's masi** (her mum's sister), so Mum's one aunty title is *masi* (open question 2 below); masi's son **Yusuf** (the boy cousin, 6) and Zara's friend **Sana** (5) are guests from visit 1, in the introductions, look after the guests and statues, but not in this design's visit-1 scenes (Yusuf joins D1 on visit 2). Dada and dadima are at the party from visit 1 (here) and join the balloon game at its L4 (visit 2). Looks, one list for every prompt: Zara a marigold kameez with a light dupatta; her mum a deep plum kameez with a soft grey dupatta; Zara's masi a red kameez and dupatta (D1's "the aunty in red"); dadima a lilac kameez with a plain grey dupatta; dada tall, a short grey beard, a pale kurta and grey waistcoat; Yusuf a striped kurta; Sana a kameez and trousers. No teal (the cast's Masi), no cream-and-red (Nani).
+- **One party cast for all three party designs** (this file, `party-guests.md`, `do-it-engine.md`; consistency pass, 1 Nov). The placeholder names are `party-guests.md`'s, fine for now (Zafar, 1 Nov): the birthday girl is **Zara**; the aunty is **Zara's masi** (her mum's sister), so Mum's one aunty title is *masi* (open question 2 below); masi's son **Yusuf** (the boy cousin, 6) and Zara's friend **Sana** (5) are guests from visit 1, in the introductions, look after the guests and statues, but not in this design's visit-1 scenes (Yusuf joins D1 on visit 2). Dada and dadima are at the party from visit 1 (here) and join the balloon game at its L4 (visit 2). Looks, one list for every prompt, in Zafar's clothes rule (1 Nov: mostly modern and modest; older people somewhat more traditional, not all; older men a shirt tucked into trousers; middle-aged adults modern smart-casual, a quarter-zip and chinos; younger people modern casual): Zara in marigold, a long-sleeved dress over leggings; her mum in deep plum, modern smart-casual with a soft grey scarf; Zara's masi in red, modern smart-casual (D1's "the aunty in red"); dadima a lilac kameez with a plain grey dupatta (the one more traditional look); dada tall, a short grey beard, a pale shirt tucked into grey trousers; Yusuf a striped long-sleeved top and trousers; Sana modern casual. The colours stay, so every prompt still tells them apart. No teal (the cast's Masi), no cream-and-red (Nani).
 - The host family's grandparents are dada and dadima, never Nana and Nani, so "Nana" and "Nani" mean the child's own grandparents on every day of the game (§12, finding 1).
 
 **Status:** new. Its parts are old designs, folded in:
@@ -37,7 +37,7 @@ Sources, newest first:
 - **Snap** and **Who did it?**: their rebuilds, already planned for other days; nothing is built for them here.
 
 **Rough size, honestly:**
-- **First sprint (one to three days):** `giveto`, the cake stage with the cloth (A2), and the party presents (B1), at L1-L4 on the six-person cast. It can be built and bot-tested now: its first round and the whole cloth run on Mum's existing clips.
+- **The prototype's first slice:** `giveto`, the cake stage with the cloth (A2), and the party presents (B1), at L1-L4 on the six-person cast. It can be built and bot-tested now: its first round and the whole cloth run on Mum's existing clips. (Sprint planning is on hold, Zafar 1 Nov; the aim now is rapid prototypes.)
 - **Second, small:** the candles (A1) and the speaking moment (B3), once their clips land.
 - **Art:** one run for the visit-1 cast (six new sheets plus Nana's party sheet), one room, the items.
 - **Later, each small on its rebuild:** Snap's party part, then Who ate the cake?.
@@ -106,9 +106,9 @@ Recounted from `data/family-audio.json` by id on 1 Nov (Mum's take, with a file)
 | open it | | to record | the presents |
 | drum, ball, teddy | | to record | named at the unwrap |
 | car | gadi | engine; ✓ Mum in phrases (`wadhi-gadi-je-andar`) | named at the unwrap |
-| happy birthday | | to record (ask Mum what the family says) | the candles' end |
+| happy birthday | **Zafar, to confirm: probably said in English** (1 Nov) | to record (Mum confirms) | the candles' end |
 | she's four today | | to record (Nani's line) | the candles' story beat |
-| thank you | only *na, thank you* (✓ Mum `na-thank-you`) is recorded | not used: no "thank you" line for the child until Mum says what the family says (question 4) | none |
+| thank you | only *na, thank you* (✓ Mum `na-thank-you`) is recorded | **Zafar, to confirm: probably said in English** (1 Nov). Not used for the child until Mum confirms; then it is the family's own word in Mum's voice, like *table* | none yet |
 | take a photo of ... | | to record | Snap (later) |
 
 Corrections against the first draft: there's no clip of *chai* alone (only inside phrases), so chai and plate are out of this table; the owner words were never "in engine only": Mum has recorded seven of them on *cup*.
@@ -150,15 +150,15 @@ Each new word is heard at least 3 times in a round: in the ask, on the card, and
 
 ### Mum first (recounted)
 
-**Already recorded:** the first round and the whole cloth (L2-L3) run today on Mum's clips: `nana`, `nani`, `hi-nana-lai-ai`, `nana-jo-cup`, `nani-jo-cup`, `munjo-cup`, `tojo-cup`, `chokri-jo-cup`, `laal-cup`, `wadho-cup`, `cup-laal-ai`, `kida-ai`. So the first sprint's give-to and its leak bot can be tested on real Kutchi now. The unchecked ones need one listening pass first.
+**Already recorded:** the first round and the whole cloth (L2-L3) run today on Mum's clips: `nana`, `nani`, `hi-nana-lai-ai`, `nana-jo-cup`, `nani-jo-cup`, `munjo-cup`, `tojo-cup`, `chokri-jo-cup`, `laal-cup`, `wadho-cup`, `cup-laal-ai`, `kida-ai`. So the first slice's give-to and its leak bot can be tested on real Kutchi now. The unchecked ones need one listening pass first.
 
 **To record for visit 1, by part:**
-- **The cake stage (A2), the first sprint's deciding words: 7.** dada, dadima, baby, the girl's mum, one aunty title, cake, piece. Plus up to 5 "this is for {person}" lines if Mum's ear turns down the engine's splice.
+- **The cake stage (A2), the first slice's deciding words: 7.** dada, dadima, baby, the girl's mum, one aunty title, cake, piece. Plus up to 5 "this is for {person}" lines if Mum's ear turns down the engine's splice.
 - **The presents (B1, B2): 7.** Open it; drum, ball, teddy; and the four "it's mine / yours / the girl's / the baby's" lines.
 - **The candles (A1): 5-9.** Candle, cupcake, "she's four today", "happy birthday", and the numbers 1-6 as clips of their own (1-4 may be cut from Mum's existing phrase takes if they pass her ear; 5 and 6 are new).
-- **The speaking moment (B3): 1 of Mum's** ("whose is it?") **and 2 of Masi's** (the aunty asks Nani "whose is it?", and answers "mine!").
+- **The speaking moment (B3): 1 of Mum's** ("whose is it?") **and the aunty's 2 lines** (she asks Nani "whose is it?", and answers "mine!"; any voice for now, Zafar 1 Nov).
 
-That's **about 20-24 of Mum's clips for all of visit 1, 7 for the first sprint**, and 2 of Masi's. Until a word is recorded, a reader wins on its grey English (the audit's flaw 2: the dastarkhwan, 95-100%), so the leak bot runs on the recorded set only and reports the rest.
+That's **about 20-24 of Mum's clips for all of visit 1, 7 for the first slice**, and the aunty's 2. Until a word is recorded, a reader wins on its grey English (the audit's flaw 2: the dastarkhwan, 95-100%), so the leak bot runs on the recorded set only and reports the rest.
 
 ---
 
@@ -195,10 +195,11 @@ This keeps give-to games apart (look after the guests also gives, but by feeling
 
 **Shared rules:**
 - **give-to:** tap the thing, then tap the person (or their place on the cloth). The same two taps as Find it 6b, Tidy 5a and Snap 5b, deliberately shared. One gesture means "give" everywhere.
-- **Who asks:** Nani, every deciding line, in Mum's voice (non-negotiable 2). The host family's lines are reactions only (giggles, "mmm", a gasp, as sounds), never a word the move depends on.
+- **Who asks:** Nani, every deciding line, in Mum's takes where they exist and the device voice for the rest in the prototype (Zafar, 1 Nov). The host family's lines are reactions only (giggles, "mmm", a gasp, as sounds), never a word the move depends on.
 - **Wrong person:** they react in a funny way, kindly. Nani says the ask again, the thing hops back to the tray, and the child gives it again on the spot.
 - **Take-backs:** a tap on a given thing takes it back until the step moves on.
 - **Ticks:** a row ticks when its thing reaches the right person first time, and only then.
+- **Moving up (Zafar, 1 Nov):** only right-first-time rounds count towards the next level, in every game.
 - **Hints:** after 7, 9, 11 or 13 s by level, counted from the last action, Nani repeats the ask. That hint is free (the rulebook). The helper card holds the full answer and costs a bulb.
 - **How much repeats** (rulebook formula): most at L4 is 4, so the counts run 1, 2, 3, 4.
 - **On phones** (below 430 px tall) at most four people stand in view; the rest wait off the right edge and walk in as the step moves on.
@@ -210,13 +211,13 @@ The five questions, scored 1-5: Do · Challenge (does the Kutchi decide?) · Fun
 | # | Mini-game | Do | Ch | Fun | Ins | Nov | Total | Verdict |
 |---|---|---|---|---|---|---|---|---|
 | A1 | **Candles**: hear the count, pick the bundle, blow | 4 | 4 | 5 | 4 | 4 | 21 | Keep: visit 1, from round two (needs its clips) |
-| A2 | **Cake to the right person** (Find it 6b folded in) | 5 | 5 | 4 | 5 | 3 | 22 | Keep: the core, the first sprint |
+| A2 | **Cake to the right person** (Find it 6b folded in) | 5 | 5 | 4 | 5 | 3 | 22 | Keep: the core, the first slice |
 | A3 | **Where's my cup?** (Nani's own cup) | 4 | 5 | 4 | 4 | 4 | 21 | Folded into A2's cloth at L3, in Nani's voice |
 | A4 | **Lay the dastarkhwan** (owners, then positions) | 4 | 5 | 3 | 4 | 3 | 19 | Keep: A2's opener from L2, on Tidy's place, check and dastarkhwan (Zafar's 1 Nov yes to the fold) |
 | A5 | Seat the guests ("sit next to ...") | 4 | 4 | 5 | 4 | 4 | 21 | Parked for a later visit (`docs/ideas.md`) |
-| B1 | **The party presents**: unwrap a plain box, give the toy | 5 | 5 | 5 | 4 | 4 | 23 | Keep: the first sprint |
+| B1 | **The party presents**: unwrap a plain box, give the toy | 5 | 5 | 5 | 4 | 4 | 23 | Keep: the first slice |
 | B2 | **Yours, the girl's or the baby's** (sort to three places) | 4 | 5 | 4 | 4 | 5 | 22 | Keep: B1's L3, in Nani's voice |
-| B3 | **Whose is it?** (the speaking moment) | 3 | 4 | 4 | 4 | 4 | 19 | Keep: the end of part B, once Masi's two lines are recorded |
+| B3 | **Whose is it?** (the speaking moment) | 3 | 4 | 4 | 4 | 4 | 19 | Keep: the end of part B (any voice for now, Zafar 1 Nov) |
 | B4 | Pass the parcel | 5 | 5 | 5 | 4 | 5 | 24 | Parked for a later visit |
 | C1 | **Snap the person named** (two of a kind) | 4 | 5 | 4 | 4 | 4 | 21 | Keep: lands with Snap's rebuild |
 | C2 | **The family photo**, "all of us" (unscored) | 4 | 2 | 5 | 3 | 4 | 18 | Keep with C1, as its end shot; the arranged photo is parked |
@@ -375,11 +376,11 @@ Numbers to 10 wait for visit 3 (the girl turns 6).
 
 ### B3. Whose is it? (the speaking moment, at the end of part B)
 
-Held until Masi has recorded her two lines and Mum her "whose is it?" (3 clips). Until then part B ends with the bag going home.
+In the prototype it plays on existing takes and the device voice (Zafar, 1 Nov: nothing waits on a voice); who voices the aunty is settled before shipping.
 
 **The five questions:**
 1. **Do (3):** Nani holds up a toy and asks "whose is it?"
-   - **Watch:** two exchanges, both sides in family voices. Nani asks the aunty, holding the aunty's toy; the aunty (Masi's voice) answers "mine!" and takes it. Then the aunty asks Nani, holding Nani's; Nani answers "mine!" (*munjo ai*). That's the model, played out between two characters.
+   - **Watch:** two exchanges, both sides in family voices. Nani asks the aunty, holding the aunty's toy; the aunty answers "mine!" and takes it. Then the aunty asks Nani, holding Nani's; Nani answers "mine!" (*munjo ai*). That's the model, played out between two characters.
    - **Handover:** Nani turns to the child (the child's front-facing moment). She holds up the toy that went into the child's bag in B1 or B2, and asks the child.
 2. **Challenge (4):** what to say is shown by the picture (it's the child's own toy). How to say it is the heard frame. The pills are always there: three speaker pills with Mum's clip and a small face (the child's own, Nani's, the girl's), no written words.
 3. **Fun (4):** Nani hands it over with a little bow and a "beta". From L2 she sometimes holds up *her own* present by mistake, and the child says "yours!" to her (*anjo*, the elder form).
@@ -397,14 +398,14 @@ Held until Masi has recorded her two lines and Mum her "whose is it?" (3 clips).
 - It's never a gate: a pill tap moves on.
 - No verdict; Ali never needs to act.
 - The recogniser gets a two- or three-way choice (the 49/60 setting, SH-127).
-- No "thank you" line for the child (spoken English outside story mode); the bow is the thanks until Mum says what the family says.
+- No "thank you" line for the child yet; the bow is the thanks. Zafar thinks the family says "thank you" in English (1 Nov, to confirm); once Mum confirms, it is the family's own word in her voice and the line can come.
 
 ---
 
 ### C1. Snap the person named (lands with Snap's rebuild)
 
 **The five questions:**
-1. **Do (4):** the guests mingle slowly in the garden, waist-up behind a low wall (one E camera, the same sprites as the room). The child pans and frames with the viewfinder, then taps to shoot. The flash fires and the print slides out.
+1. **Do (4):** the guests mingle slowly in the garden, waist-up behind a low wall (one E camera, the same sprites as the room). The child pans and frames with the viewfinder, then taps to shoot. The flash fires and the **instant camera prints** (Zafar, 1 Nov): **a right shot ticks its row at once** as the print slides out; a miss prints the funny photo with no tick. No darkroom.
 2. **Challenge (5):** the family word, and from L2 two words:
    - "dada", then "dadima with the baby", then "the aunty in red" (*laal* ✓).
    - **Two of a kind** always: two older men (Nana and dada), two women of an age (the girl's mum and the aunty).
@@ -421,7 +422,7 @@ Held until Masi has recorded her two lines and Mum her "whose is it?" (3 clips).
 - its centre is inside the **centre two-thirds** of the viewfinder;
 - **no other face** in the frame is above **50% of its area**;
 - for a pair ("dadima with the baby"), exactly those two faces pass, and no third face is above 50% of the smaller one.
-- An extra face is a funny miss (the photobomber's print), never a frown: Nani says the ask again and the child reshoots.
+- An extra face is a funny miss (the photobomber's print, no tick), never a frown: Nani says the ask again and the child reshoots. A reshot row ticks plain, and only right-first-time rounds move up (Zafar, 1 Nov), so fishing with the shutter never climbs a level.
 - People stand at least one face-width apart at every level, so a tight frame can always isolate one person.
 
 **Levels:**
@@ -497,13 +498,13 @@ The guided first round: unscored, about 50 seconds. **A2 only, at L1.** It shows
    - The box moves to Nana; the child taps him.
    - The plate glides over. He takes a huge bite, crumbs land on his moustache, and he laughs. The row ticks.
 5. **The end.** Everyone eats; Nani sighs a happy "aah". The word card shows Nana and cake (cake in grey until recorded). Then the shared two-page end screen: progress, never a verdict.
-6. **Next time:** round two adds the candles (tap to blow) and the presents at L1. The microphone appears only in B3, the day's speaking moment, once Masi's lines are in.
+6. **Next time:** round two adds the candles (tap to blow) and the presents at L1. The microphone appears only in B3, the day's speaking moment.
 
 ---
 
 ## 5. Later visits and harder versions
 
-**Visit 1** (she turns 4): the cake with the cloth, the candles and the presents, at levels 1-4 as the child moves up. The rule: up after 3 rounds where the guide's hint came at most once a round; never down. Snap's party part joins when Snap is rebuilt.
+**Visit 1** (she turns 4): the cake with the cloth, the candles and the presents, at levels 1-4 as the child moves up. The rule: up after 3 right-first-time rounds (Zafar, 1 Nov) where the guide's hint came at most once a round; never down. Snap's party part joins when Snap is rebuilt.
 
 **Visit 2** (a year older: she turns 5):
 - The uncle is new (one more art run). The boy cousin is **Yusuf**, at the party since visit 1 (`party-guests.md`) and drawn in visit 1's run; he joins D1 now.
@@ -670,7 +671,7 @@ Sources: [Peekaboo Presents](https://apps.apple.com/app/id575704316), [Peek-a-Zo
    - Each L4 is its own (Nana against dada, *injo*, the cloth's cup clue in D1).
    - Every level uses only what has happened that day.
 10. **Words: exception, now smaller.**
-    - The first sprint needs 7 of Mum's clips; all of visit 1 about 20-24, plus 2 of Masi's. The budget is listed in §1.
+    - The first slice needs 7 of Mum's clips; all of visit 1 about 20-24, plus the aunty's 2. The budget is listed in §1.
     - The cloth and the first round run on Mum's existing clips today.
     - Things are named as they are: the toy only after the unwrap.
 11. **Culture: pass.**
@@ -697,7 +698,7 @@ Each line gives the choice, the reason, and the answer I assumed. Answerable as 
 1. **One game, built in steps:** visit 1 is the cake with the cloth (A2), the candles (A1) and the presents (B1, B2, B3), all on one give-to. Snap's party part joins with Snap's rebuild; Who ate the cake? on visit 2 with Who did it?'s. *Reason:* the scope was one give-to; a sprint has one playable goal. *Assumed:* yes.
 2. **The day's order:** introductions, look after the guests, statues, the cake, (Snap and the photo), the presents as everyone leaves. *Reason:* give-to games aren't back to back. *Assumed:* yes. The map's Part 7 had the gifts before statues and changes with this.
 3. **The host family's grandparents are dada and dadima**, never Nana and Nani; the child's own Nana and Nani come to the party. `party-guests.md` (introductions, look after the guests) now uses the same cast (consistency pass, 1 Nov; it had "Zara's nani"). *Reason:* two Nanis on one screen break the word that decides. *Assumed:* yes.
-4. **Nani asks every deciding line** (Mum's voice); the host family's lines are reactions only. Masi voices the aunty in B3's watched exchange, two lines. *Reason:* non-negotiable 2; the family has no four-year-old girl's voice. *Assumed:* yes; question 1 below.
+4. **Nani asks every deciding line;** the host family's lines are reactions only, and the aunty has two lines in B3's watched exchange. **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 5. **The dastarkhwan is folded in, not sent elsewhere:** A2 opens with laying the cloth from L2 (owners), positions joining as Mum records them, on Tidy's place, check and dastarkhwan. *Reason:* your 1 Nov yes to the fold list keeps it at the party. *Assumed:* yes.
 6. **Owners on the cloth use Mum's existing cup clips** (*munjo, tojo, Nana jo, Nani jo, chokri jo* cup), so the pronoun work starts at L2 on real Kutchi. *Reason:* they're recorded. *Assumed:* yes.
 7. **The presents are the host's thank-you presents**, in plain boxes, unwrapped before giving; Nani helps hand them out. *Reason:* your plain-box rule, a reason to unwrap, and one asker. *Assumed:* yes.
@@ -717,16 +718,17 @@ Each line gives the choice, the reason, and the answer I assumed. Answerable as 
 21. **Snap's print hand-out (C3) and Tell Ali (D3) are "maybe later".** *Reason:* a third give-to in a day; "say it, Ali acts" has six copies. *Assumed:* yes.
 
 **Open questions that are genuinely his:**
-1. **Voices:** may Masi voice the aunty for two lines in B3? If not, B3 waits and part B ends with the bag going home. *Recommended:* yes.
 2. **Kinship words:** is it *dada* for the father's father? The aunty title is now *masi* (mother's sister), set by the shared cast with `party-guests.md` (consistency pass, 1 Nov); Mum confirms the word, you confirm spellings.
-3. **"Happy birthday":** what does the family actually say, in Kutchi or English?
-4. **"Thank you":** what does the family say? Until then the child has no thank-you line.
+
+(Answered 1 Nov and removed: 1, voices are settled before shipping; 3 and 4, "happy birthday" and "thank you" are probably said in English, marked "Zafar, to confirm" in the word table.)
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-All four prompts ask for a wide landscape frame (about 21:9) with the left fifth kept as plain wall for the side panel, and no comic sound marks. Nani's sheet is attached only where Nani is in the scene.
+All four prompts ask for a wide landscape frame (about 21:9) with the left fifth kept as plain wall for the side panel, and no comic sound marks. Nani's sheet is attached only where Nani is in the scene. Prompt 4's camera is the instant camera; the tick on a right shot is code-drawn, so it isn't in the picture (Zafar, 1 Nov).
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt party-gifts-1: the candles (part A)
 
@@ -880,3 +882,10 @@ Each finding from `party-gifts-critique.md`, then what I did. All 8 MUSTs applie
 19. **Small contradictions.** The timed hint is free, and only the helper card costs a bulb (everywhere). "I'm a hundred" left with the parked joke ages rather than being made visual. The map's Part 7 change is stated in §2 and decision 2. "Happy birthday" now comes after the countdown, one voice at a time.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** One party cast with `party-guests.md` and `do-it-engine.md`, written once in §0: the placeholder names (Zara, Zara's masi as the aunty, Yusuf, Sana), one look per person for every prompt (Zara's mum is now deep plum, not teal, which is the cast's Masi's colour), Yusuf and Sana drawn in visit 1's run, and the aunty title settled as *masi* for Mum to confirm (open question 2). The party order here is now the one all three party designs use. Ali stays home and gets the party-bag toy, wearing the kurta from `sewing.md`.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **Snap (C1):** an instant camera with prints and a tick on each right shot, at once; no darkroom; a reshot row ticks plain.
+- **Voices:** Nani's lines play on existing takes, else the device voice; the aunty's two lines in B3 no longer hold the stage back; decision 4 rewritten and open question 1 gone.
+- **Happy birthday and thank you:** probably said in English, "Zafar, to confirm" in the word table; open questions 3 and 4 gone; the child's thank-you line can come once Mum confirms.
+- **Level up only on right-first-time rounds** (the shared rules). **Sprint planning on hold:** "the first sprint" is now "the prototype's first slice".
+- **Clothes:** the cast's looks follow his rule (dada's shirt and trousers, the mums modern smart-casual, the children modern casual, dadima the one kameez), and the prompt sheet's line is added before the prompts.

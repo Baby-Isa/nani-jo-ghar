@@ -12,7 +12,7 @@ Zara's birthday at her family's house, the day's weather, host Zara's family (a 
 |---|---|---|---|---|
 | O1 | Main: greetings and family | hello; how are you? (both forms); my name is; this is my; mum, masi, dada, dadima, baby | mum, masi, dada, dadima, baby, "my name is", "this is my" (to record) | Nana ✓, Nani ✓, how are you? ✓ (both forms), hello back ✓, I'm fine ✓ |
 | O2 | Main: owners | my, your, Nana's, Nani's, the girl's, the baby's; whose? | it's mine / yours / the girl's (to record) | my cup, your cup, Nana's cup, Nani's cup ✓, "this is for Nana" ✓ |
-| O3 | Supporting: feelings and what helps | hungry, thirsty, tired, sad; hot, cold | all to record (hungry shared with the adoption centre) | water, samosa ✓, chair |
+| O3 | Supporting: feelings and what helps | hungry, thirsty, tired, sad; hot, cold | all to record (hungry shared with the pet hotel) | water, samosa ✓, chair |
 | O4 | Verbs (commands) | sit, jump, turn, dance; stand, stop, don't (L2); give; open it | all to record | eat ✓ |
 | O5 | Small words: numbers 1-6, red, big and small | candles and slices | 5, 6 (to record) | red cup ✓, big cup ✓, where is it? ✓ |
 | O6 | Frames heard | "give the balloon to {person}"; "{person}'s {kin}"; "I'm thirsty"; "{verb}!" | to record | the give frame ✓ |
@@ -53,7 +53,7 @@ Give-to stages (4, 6, 8) are never back to back.
 |---|---|---|---|---|---|---|
 | Hello and how are you | Zara's family, the guests | each greets the child | greets back, asks how they are in the right form | 2-3 | hello; how are you? ✓ | O1, O7 |
 | What's wrong? | each guest | "I'm thirsty" | brings water; hears "thank you" | (listening) | feelings | O3 |
-| Whose is it? (end of the presents, once Masi's two lines are recorded) | Nani, Zara's masi | the aunty asks whose it is | answers | 3 owners | "it's mine / yours / the girl's" | O2 |
+| Whose is it? (end of the presents) | Nani, Zara's masi | the aunty asks whose it is | answers | 3 owners | "it's mine / yours / the girl's" | O2 |
 | You be Nani (statues, L3 or visit 2) | the dancers | the child calls the move | sit, jump or turn | 3 | heard all round | O4 |
 
 ## 5. Fun and novelty
@@ -69,7 +69,7 @@ Give-to stages (4, 6, 8) are never back to back.
 |---|---|---|---|---|
 | O1 greetings, family | 1, 3, 4, 7, 10 | 15+ | 2-4 | every trip's meeting; the town map's people |
 | O2 owners | 6, 8, 10 | 12+ | visit 2: 1 | home (Nana's things); school (Ali's bag) |
-| O3 feelings | 4, 10 | 6 per feeling | 0 | the clinic; the adoption centre (hungry, sleepy) |
+| O3 feelings | 4, 10 | 6 per feeling | 0 | the clinic; the pet hotel (hungry, sleepy) |
 | O4 verbs | 5 | 18+ | 0 (visit 2: 1) | school (getting ready) |
 | O5 numbers, red, size | 6 | 6+ | 0 | the shops (pay) |
 
@@ -77,7 +77,7 @@ Give-to stages (4, 6, 8) are never back to back.
 
 ## 7. People and what comes home
 
-One cast (party-gifts §0): Zara (4), her baby brother, mum, dada, dadima, masi, Yusuf (6), Sana (5); our Nani and Nana. Names are placeholders. Ali stays home and gets the party-bag toy. Comes in: the shops' gift, the kitchen's cake, the sewing's kurta for Ali.
+One cast (party-gifts §0): Zara (4), her baby brother, mum, dada, dadima, masi, Yusuf (6), Sana (5); our Nani and Nana. Names are placeholders (fine for now: Zafar, 1 Nov). Ali stays home and gets the party-bag toy. Comes in: the shops' gift, the kitchen's cake, the sewing's kurta for Ali.
 
 ## 8. Words
 
@@ -98,6 +98,8 @@ Zara turns 5: dada and dadima join the balloon row; who ate the cake?; dadima da
 2. Part B rule 7 fails as drawn: give-to and `do-it` are both new. Both are small and shared by four or more days; proposed that the birthday builds give-to, and `do-it` is built once for statues and getting ready together.
 
 **Open (Zafar):**
-1. One voice rule for the party (party-guests open question 6).
+1. Grow by play (decision 1)?1. One voice rule for the party (party-guests open question 6).
 2. The party order, once for all three designs (do-it open question 6).
 3. Grow by play (decision 1)?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the placeholder names and the balloon game stand ("yes for now"); musical statues and the one party order take the recommendation; voices wait for shipping, so there is no party voice rule; Snap is an instant camera with a tick on each right shot; "happy birthday" and "thank you" are probably English (to confirm); only right-first-time rounds level up.

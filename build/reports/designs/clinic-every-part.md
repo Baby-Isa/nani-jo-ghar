@@ -4,7 +4,7 @@ Design for Zafar, written overnight on 1 Nov 2026 while he slept, and revised th
 
 **Sources (newest wins):**
 - Zafar's 1 Nov answers at the foot of `build/reports/games-master-map-2026-10-31.md`, and his scope for this game
-- Zafar, 30 Oct (`docs/sprints/S15-cook-game-by-game.md` "How" 3): Sprint 16 is the clinic, game by game, with the "Bring me these" card (CLN-216)
+- Zafar, 30 Oct (`docs/sprints/S15-cook-game-by-game.md` "How" 3): the next sprint was to be the clinic, game by game, with the "Bring me these" card (CLN-216). **On hold (Zafar, 1 Nov):** sprint planning waits while every new mode gets a rapid prototype, and the rollout of chai's shared fixes to the clinic waits for his chai feedback.
 - Zafar, 14 Oct (`docs/game-design/cast.md`): the doctor voices his own lines
 - `docs/game-design/modes/clinic.md` (the base)
 - `docs/game-design/rulebook.md` §1 and §3; `docs/game-design/speaking.md`
@@ -25,11 +25,11 @@ Design for Zafar, written overnight on 1 Nov 2026 while he slept, and revised th
   - the diagnosis D2, and its built face zoom (`closeup` in `grey-adult.json`; the zoom in `diagnosis.js` lines 112-128)
   - the heal-game host (`js/clinic/heal/host.js`)
   - `cut.js` (the scrape), `foot.js` (the hand splinter), `ear.js` (the nose's twin), `taste.js` (the drinks), `knee.js` (the wrap)
-- **Size: three pieces, not one sprint** (§6 has the split and the budget):
-  - **Sprint 16, one playable goal:** every part the chart says at L1-L2 can be found (the face by zoom) and cured: the cut game un-parked on the arm and the knee, and the hand splinter. Built game by game, as your 30 Oct plan for Sprint 16 says.
-  - **Sprint 17:** the chart's L3 (the why) and L4 (the small parts by zoom), the nose, the drinks, the head bandage, and the L3 body or side word in the live heal games.
+- **Size: three pieces** (§6 has the split and the budget). Sprint planning is on hold (Zafar, 1 Nov), so these are slices of the prototype, not sprints:
+  - **The prototype's first slice:** every part the chart says at L1-L2 can be found (the face by zoom) and cured: the cut game un-parked on the arm and the knee, and the hand splinter. Built game by game.
+  - **The second slice:** the chart's L3 (the why, and the sides with their first-time showing) and L4 (the small parts by zoom), the nose, the drinks, the head bandage, and the L3 body or side word in the live heal games.
   - **Only on your yes** (they add to your scope): the ankle, the teddy's speaking moment, the parent who speaks for a child.
-- **Recording:** about 68 clips in all, 34 of them for Sprint 16 (§1, "Every line"). Nothing here teaches until they're in.
+- **Recording:** about 68 clips in all, 34 of them for the first slice (§1, "Every line"). Nothing here teaches until they're in; the prototype plays on existing takes and the device voice (Zafar, 1 Nov).
 
 ---
 
@@ -47,34 +47,34 @@ Design for Zafar, written overnight on 1 Nov 2026 while he slept, and revised th
 
 ### The parts on the chart (24), with their cures
 
-| Part | Kutchi | On the chart from | The cure (game) | Built? | Sprint |
+| Part | Kutchi | On the chart from | The cure (game) | Built? | Slice |
 |---|---|---|---|---|---|
-| head | to record | L1 (tapped in the face zoom: the forehead) | fever (built); a bump: the cut game's head bandage (new data plus the knee's wrap) | partly | 16 (fever); 17 (bandage) |
-| ear | *kan* ✓ | L1 (in the face zoom) | ear | yes | 16 |
-| hand | *hath* (in repo, no clip) | L1 | the hand splinter (foot.js on a palm), or the cut game | new reskins | 16 |
-| arm | to record | L1 | boing; the cut game | yes / un-park | 16 |
-| leg | to record | L1 | knee (the leg break) | yes | 16 |
-| knee | *gutan* (in repo, in one line) | L1 | knee; the cut game (a grazed knee) | yes / un-park | 16 |
-| foot | *pag* (in repo, no clip) | L1 | foot | yes | 16 |
-| eye | *akh* (in repo, in one line) | L2 (in the face zoom) | eye | yes | 16 |
-| nose | to record | L2 (in the face zoom) | **the nose game** (new: drops, then a tissue to wipe) | new | 16 on the chart (the cure: §3D) |
-| mouth | to record | L2 (in the face zoom) | tooth, sore spots (taste) | yes | 16 |
-| tooth | to record | L2 (in the face zoom; shares the mouth's spot, as built) | tooth | yes | 16 |
-| tummy | to record | L2 | **the drinks** (taste's counter, the tummy) | reskin | 16 on the chart (the cure: §3E) |
-| chest | to record | L2 | **the drinks** for a cough | reskin | 16 on the chart (the cure: §3E) |
-| elbow | to record | L2 (was L3) | the cut game | un-park | 16 |
-| shoulder | to record | L2 (was L3) | the cut game | un-park | 16 |
-| neck | to record | L2 (was L3) | the cut game (a scratch, on the side-on head) | un-park | 17 |
-| finger | to record | L4 (was L3), in the hand zoom | the cut game; the hand splinter | un-park | 17 |
-| thumb | to record | L4, in the hand zoom | the cut game; the hand splinter | un-park | 17 |
-| toe | to record | L4 (was L3), in the foot zoom | foot (the toes) | yes | 17 |
+| head | to record | L1 (tapped in the face zoom: the forehead) | fever (built); a bump: the cut game's head bandage (new data plus the knee's wrap) | partly | 1st (fever); 2nd (bandage) |
+| ear | *kan* ✓ | L1 (in the face zoom) | ear | yes | 1st |
+| hand | *hath* (in repo, no clip) | L1 | the hand splinter (foot.js on a palm), or the cut game | new reskins | 1st |
+| arm | to record | L1 | boing; the cut game | yes / un-park | 1st |
+| leg | to record | L1 | knee (the leg break) | yes | 1st |
+| knee | *gutan* (in repo, in one line) | L1 | knee; the cut game (a grazed knee) | yes / un-park | 1st |
+| foot | *pag* (in repo, no clip) | L1 | foot | yes | 1st |
+| eye | *akh* (in repo, in one line) | L2 (in the face zoom) | eye | yes | 1st |
+| nose | to record | L2 (in the face zoom) | **the nose game** (new: drops, then a tissue to wipe) | new | 1st on the chart (the cure: §3D) |
+| mouth | to record | L2 (in the face zoom) | tooth, sore spots (taste) | yes | 1st |
+| tooth | to record | L2 (in the face zoom; shares the mouth's spot, as built) | tooth | yes | 1st |
+| tummy | to record | L2 | **the drinks** (taste's counter, the tummy) | reskin | 1st on the chart (the cure: §3E) |
+| chest | to record | L2 | **the drinks** for a cough | reskin | 1st on the chart (the cure: §3E) |
+| elbow | to record | L2 (was L3) | the cut game | un-park | 1st |
+| shoulder | to record | L2 (was L3) | the cut game | un-park | 1st |
+| neck | to record | L2 (was L3) | the cut game (a scratch, on the side-on head) | un-park | 2nd |
+| finger | to record | L4 (was L3), in the hand zoom | the cut game; the hand splinter | un-park | 2nd |
+| thumb | to record | L4, in the hand zoom | the cut game; the hand splinter | un-park | 2nd |
+| toe | to record | L4 (was L3), in the foot zoom | foot (the toes) | yes | 2nd |
 | ankle | to record | L4, in the foot zoom | the knee's wrap on a twisted ankle | reskin | on your yes (decision 3) |
-| cheek | to record | L4, in the face zoom | the cut game (a scratch, on the nose game's face) | un-park | 17 |
-| chin | to record | L4, in the face zoom | the cut game (the same face) | un-park | 17 |
-| tongue | to record | L4 (lands on the mouth) | sore spots (taste) | yes | 17 |
-| throat | to record | L4 (lands on the neck) | sore spots, turmeric milk | yes | 17 |
+| cheek | to record | L4, in the face zoom | the cut game (a scratch, on the nose game's face) | un-park | 2nd |
+| chin | to record | L4, in the face zoom | the cut game (the same face) | un-park | 2nd |
+| tongue | to record | L4 (lands on the mouth) | sore spots (taste) | yes | 2nd |
+| throat | to record | L4 (lands on the neck) | sore spots, turmeric milk | yes | 2nd |
 
-**The no-cure rule holds sprint by sprint.** A part is on the chart only once its cure is built. Until the nose game and the drinks land in Sprint 17, the nose, tummy and chest are drawn only by ailments that already treat them (the tummy's and chest's checks in D3, sore spots for the mouth); the check in §6 makes this code. If that leaves the nose with no cure in Sprint 16, the nose waits for Sprint 17 and L2 has 15 parts (decision 1).
+**The no-cure rule holds slice by slice.** A part is on the chart only once its cure is built. Until the nose game and the drinks land in the second slice, the nose, tummy and chest are drawn only by ailments that already treat them (the tummy's and chest's checks in D3, sore spots for the mouth); the check in §6 makes this code. If that leaves the nose with no cure in the first slice, the nose waits for the second slice and L2 has 15 parts (decision 1).
 
 **Kept off the chart until each has a cure** (the rule: no part named without a cure; §10, decision 2):
 - **hair:** stays parked (Zafar: yes). Its hotspots stay in `js/clinic/figure.js`, so the check must cover D3's calls too.
@@ -85,7 +85,7 @@ Design for Zafar, written overnight on 1 Nov 2026 while he slept, and revised th
 ### The health half (the "why")
 
 - **Certain why-only words:** a cold, a cough, a fever. Each is its own word in English, and almost certainly in Kutchi.
-- **As Mum says them:** a headache, a toothache, an earache, a tummy ache. If the family says "my tooth hurts" (not a separate word), the why line is the L1 line again, and these three stay out of the L3 why rung. Mum's sheet asks (open question C).
+- **As the family says them:** a headache, a toothache, an earache, a tummy ache. **Zafar, to confirm** (1 Nov): the family says the part, then "is hurting" ("my head is hurting", "my tooth is hurting": *munjo dand dukhe to*, roughly; the ending varies, *duke*, *duki*). So the why line for these is the L1 line again, and they stay out of the L3 why rung unless Mum gives a word of its own.
 - **Medicine** (*dawa*, in repo, in one line); **better** (planned, G63-G65).
 - They are heard in the patient's line from L2, and they decide the tap from L3 (§3A).
 
@@ -111,7 +111,7 @@ Design for Zafar, written overnight on 1 Nov 2026 while he slept, and revised th
 | drops | *chando* | in repo |
 | green | *lilo* | in repo |
 | first, then | *pela*, *poi* | in repo; *poi* in lines |
-| left, right | *dabo*, *jamni* | in repo. *Jamni* exists only as a she-form ("jamni baju", `lexicon.json`); `clinic.md` writes *jamno*. Mum gives the form for each sentence before "on the right side" is built (question D). |
+| left, right | *dabo*, *jamni* | in repo. *Jamni* exists only as a she-form ("jamni baju", `lexicon.json`); `clinic.md` writes *jamno*. **Zafar, to confirm** (1 Nov): the patient says *munjo dabo hath* ("my left hand"); the doctor says *injo dabo* ("his left") and *injo jamno* ("his right"). Mum gives the form for each sentence before "on the right side" is built (question D). |
 | one to five | *hakro, ba, trae, char, panj* | in repo; none has its own clip |
 
 ### Verbs
@@ -139,58 +139,58 @@ Non-negotiable 2: every line is a full sentence the engine builds from recorded 
 
 **The doctor (his recording):**
 
-| # | Line | Used at | Status | Sprint |
+| # | Line | Used at | Status | Slice |
 |---|---|---|---|---|
-| D-1 | "Where does it hurt?" | the chart, every level | Engine (`where`) | 16 |
-| D-2 | "First {a}, then {b}." (*Pela … ne poi …*) | every heal game's order; the nose's "first drops, then the tissue" | Engine, Kutchi written (`bring2`); check a take exists | 16 |
-| D-3 | "{n} dabs." / "{n} jugs of {hot / cold} water." | the cut game, the hand | Engine (the heal games' count rows, as built) | 16 |
-| D-4 | "Careful!" (*dhyan rakh*) | the hand, the foot, the ear | ✓ (a family take; his own when he records) | 16 |
-| D-5 | "The {colour} one." (the plaster) | the cut game L2+ | Engine (the cut game's colour rows, as built); check | 16 |
-| D-6 | "Let's clean it and put a plaster on." | the cut game's start | **Missing** | 16 |
-| D-7 | "Let's take the splinters out." | the hand's start | **Missing** | 16 |
-| D-8 | "Clean the one on the {part} first, then the {part}." | the cut game L3 | **Missing** | 16 (placeholder until recorded) |
-| D-9 | "First the {big / small} one, in the {finger}." | the hand L3 | **Missing** | 16 (placeholder until recorded) |
-| D-10 | "{n} drops on the {side} side." / "{n} on the left, {n} on the right." | the nose L3-L4 | **Missing** (two frames) | 17 |
-| D-11 | "Make the drink for {his / her} {cough / tummy / throat}." | the drinks L3 | **Missing** | 17 |
-| D-12 | "The {top / bottom} tooth." | the tooth L3 | **Missing** | 17 |
-| D-13 | "Put it {on the forehead / under the arm / in the mouth}." | the fever L3 | **Missing** | 17 |
-| D-14 | "{Above / below} the knee." | the knee L3 (§3F) | **Missing** | 17 |
+| D-1 | "Where does it hurt?" | the chart, every level | Engine (`where`) | 1st |
+| D-2 | "First {a}, then {b}." (*Pela … ne poi …*) | every heal game's order; the nose's "first drops, then the tissue" | Engine, Kutchi written (`bring2`); check a take exists | 1st |
+| D-3 | "{n} dabs." / "{n} jugs of {hot / cold} water." | the cut game, the hand | Engine (the heal games' count rows, as built) | 1st |
+| D-4 | "Careful!" (*dhyan rakh*) | the hand, the foot, the ear | ✓ (a family take; his own when he records) | 1st |
+| D-5 | "The {colour} one." (the plaster) | the cut game L2+ | Engine (the cut game's colour rows, as built); check | 1st |
+| D-6 | "Let's clean it and put a plaster on." | the cut game's start | **Missing** | 1st |
+| D-7 | "Let's take the splinters out." | the hand's start | **Missing** | 1st |
+| D-8 | "Clean the one on the {part} first, then the {part}." | the cut game L3 | **Missing** | 1st (placeholder until recorded) |
+| D-9 | "First the {big / small} one, in the {finger}." | the hand L3 | **Missing** | 1st (placeholder until recorded) |
+| D-10 | "{n} drops on the {side} side." / "{n} on the left, {n} on the right." | the nose L3-L4 | **Missing** (two frames) | 2nd |
+| D-11 | "Make the drink for {his / her} {cough / tummy / throat}." | the drinks L3 | **Missing** | 2nd |
+| D-12 | "The {top / bottom} tooth." | the tooth L3 | **Missing** | 2nd |
+| D-13 | "Put it {on the forehead / under the arm / in the mouth}." | the fever L3 | **Missing** | 2nd |
+| D-14 | "{Above / below} the knee." | the knee L3 (§3F) | **Missing** | 2nd |
 
 **The patients (Mum):**
 
-| # | Line | Used at | Status | Sprint |
+| # | Line | Used at | Status | Slice |
 |---|---|---|---|---|
-| P-1 | "My {part} hurts." | the chart L1+ | Engine (`hurts`) | 16 |
-| P-2 | "My {part} and my {part} hurt." | the chart L2 | **Missing** | 16 |
-| P-3 | "I fell over." (in Nani's garden) | the cut game's why | **Missing** | 16 |
-| P-4 | "I was picking up sticks." | the hand's why | **Missing** | 16 |
-| P-5 | "Thank you, I feel better." | every cure's end | "Thank you" in the engine (`thanks`); "I feel better" **Missing** | 16 |
-| P-6 | "My {side} {part}." | the chart L3 | Engine (`hurts-side`) | 17 |
-| P-7 | "I've got a {cold / cough / fever / …}." | the chart L3 | **Missing** | 17 |
-| P-8 | "My nose is blocked." | the nose's why | **Missing** | 17 |
-| P-9 | "I ate too much at the birthday party." | the drinks' tummy why | **Missing** | 17 |
-| P-10 | "I danced all afternoon at the birthday party." | the foot's why | **Missing** | 17 |
-| — | *haa*, *na*, *thundo!* | the chart's misses, the cut game's gasp | ✓ | 16 |
+| P-1 | "My {part} hurts." **Zafar's pattern, to confirm:** the part, then "is hurting" (*munjo dand dukhe to*, roughly; the ending varies: *dukhe*, *duke*, *duki*), so Mum's takes decide the form | the chart L1+ | Engine (`hurts`) | 1st |
+| P-2 | "My {part} and my {part} hurt." | the chart L2 | **Missing** | 1st |
+| P-3 | "I fell over." (in Nani's garden) | the cut game's why | **Missing** | 1st |
+| P-4 | "I was picking up sticks." | the hand's why | **Missing** | 1st |
+| P-5 | "Thank you, I feel better." | every cure's end | "Thank you" in the engine (`thanks`); "I feel better" **Missing** | 1st |
+| P-6 | "My {side} {part}." | the chart L3 | Engine (`hurts-side`) | 2nd |
+| P-7 | "I've got a {cold / cough / fever / …}." | the chart L3 | **Missing** | 2nd |
+| P-8 | "My nose is blocked." | the nose's why | **Missing** | 2nd |
+| P-9 | "I ate too much at the birthday party." | the drinks' tummy why | **Missing** | 2nd |
+| P-10 | "I danced all afternoon at the birthday party." | the foot's why | **Missing** | 2nd |
+| — | *haa*, *na*, *thundo!* | the chart's misses, the cut game's gasp | ✓ | 1st |
 
 Reactions with no words (a giggle, "ow!", "aah… choo", the honk, the tiny burp) are sounds, not lines; no line is written for them. "That tickles" and "excuse me" are dropped as lines: a giggle says it.
 
 **The words (Mum):**
 
-| Group | Words | Clips | Sprint |
+| Group | Words | Clips | Slice |
 |---|---|---|---|
-| Parts, L1-L2 | knee, hand, arm, leg, foot, head, eye, nose, mouth, tooth, tummy, chest, elbow, shoulder, neck (*kan* ✓; *hath*, *gutan*, *pag*, *akh* need their own clips) | 15 | 16 |
-| Parts, L4 | finger, thumb, toe, cheek, chin, tongue, throat (+ ankle on your yes) | 7-8 | 17 |
-| The cut game and the hand | plaster, cream (`clinic.md`: *malam*; Mum confirms), tissue, blue, yellow, splinter | 6 | 16 |
-| Finger names | the middle finger, the little finger, the pointing finger | 3 | 16 |
-| The health half | a cold, a cough, a fever, a headache, a toothache, an earache, a tummy ache (as Mum gives them), better | up to 8 | 17 |
-| Places and the rest | top, bottom, the forehead, above, below; bandage, honey | 7 | 17 |
+| Parts, L1-L2 | knee, hand, arm, leg, foot, head, eye, nose, mouth, tooth, tummy, chest, elbow, shoulder, neck (*kan* ✓; *hath*, *gutan*, *pag*, *akh* need their own clips) | 15 | 1st |
+| Parts, L4 | finger, thumb, toe, cheek, chin, tongue, throat (+ ankle on your yes) | 7-8 | 2nd |
+| The cut game and the hand | plaster, cream (`clinic.md`: *malam*; Mum confirms), tissue, blue, yellow, splinter | 6 | 1st |
+| Finger names | the middle finger, the little finger, the pointing finger | 3 | 1st |
+| The health half | a cold, a cough, a fever, a headache, a toothache, an earache, a tummy ache (as Mum gives them), better | up to 8 | 2nd |
+| Places and the rest | top, bottom, the forehead, above, below; bandage, honey | 7 | 2nd |
 
 **The count:**
-- **Sprint 16:** 5 of the doctor's (D-1, D-6 to D-9) and 29 of Mum's (P-1 to P-5, and 24 words): **about 34 clips.** Of the new frames, D-6, D-7, P-2, P-3, P-4 and P-5's "I feel better" are gaps the engine must gain first; D-8 and D-9 can ship as grey placeholders for the L3 rows.
-- **Sprint 17:** 5 frames of the doctor's (D-10 to D-14, six with D-10's pair), 5 of Mum's lines and about 23 words: **about 34 more.**
+- **The first slice:** 5 of the doctor's (D-1, D-6 to D-9) and 29 of Mum's (P-1 to P-5, and 24 words): **about 34 clips.** Of the new frames, D-6, D-7, P-2, P-3, P-4 and P-5's "I feel better" are gaps the engine must gain first; D-8 and D-9 can ship as grey placeholders for the L3 rows.
+- **The second slice:** 5 frames of the doctor's (D-10 to D-14, six with D-10's pair), 5 of Mum's lines and about 23 words: **about 34 more.**
 - **All in:** about 68 clips (11 the doctor's, 57 Mum's), not the 33 first counted.
 
-**What plays in Kutchi with today's recordings:** none of the chart or the cures, beyond *kan*, *haa*/*na*, *thundo*, *dhyan rakh*, *garam*, *nindho* and *pela … poi*. "Where does it hurt?" and "My {part} hurts" are in the engine but unrecorded. So: **the chart and the cut game at L1-L2 need only the 34 Sprint 16 clips; every L3 "other way of saying it" also needs a new frame.** Until the clips are in, a reader wins on the grey English (lessons §1), so this game counts as teaching only once they're recorded.
+**What plays in Kutchi with today's recordings:** none of the chart or the cures, beyond *kan*, *haa*/*na*, *thundo*, *dhyan rakh*, *garam*, *nindho* and *pela … poi*. "Where does it hurt?" and "My {part} hurts" are in the engine but unrecorded. So: **the chart and the cut game at L1-L2 need only the 34 the first slice clips; every L3 "other way of saying it" also needs a new frame.** Until the clips are in, a reader wins on the grey English (lessons §1), so this game counts as teaching only once they're recorded.
 
 ### New words per level
 
@@ -232,7 +232,7 @@ A clinic day runs: the door, then the clinic morning (waiting room → diagnosis
 - **Later days reuse the parts:**
   - musical statues at the birthday ("touch your nose")
   - getting ready on the school day (wash your face, brush your teeth)
-  - the adoption centre's care verbs
+  - the pet hotel's care verbs (the adoption centre, renamed by Zafar on 1 Nov)
 
 ---
 
@@ -246,7 +246,7 @@ Each part below is a stage or a mini-game in the clinic morning:
 
 **Scores** are 1-5 for: Do (the gesture is clear), Kutchi (the word decides), Fun, Instruction (clear, family Kutchi only), Novel.
 
-**One builder rule for every game here** (lessons §4 and §5): a counted row closes only when the child picks the next item, as the cut game's rows do (`cut.js` line 14). Nothing that follows (a sneeze, a fizz, a light, a next step) starts on the count being reached, only on that next tap. Otherwise the picture says when to stop, and the count leaks by waiting (the fever's "just right" bug, CLN-176).
+**One builder rule for every game here** (lessons §4 and §5), now Zafar's one count close (1 Nov): a counted row closes when the child picks the next item (the natural next thing), as the cut game's rows do (`cut.js` line 14); where no next item follows, it closes about 1.25 s after the last tap (one data setting, the same in every game), never at the right number. Nothing that follows (a sneeze, a fizz, a light, a next step) starts on the count being reached, only on that next tap. Otherwise the picture says when to stop, and the count leaks by waiting (the fever's "just right" bug, CLN-176).
 
 ### 3A. The body chart: "where does it hurt?" (the diagnosis D2, extended)
 
@@ -280,10 +280,11 @@ Each part below is a stage or a mini-game in the clinic morning:
 - **L2:** more of it.
   - 16 parts (adds the eye, nose, mouth, tooth, tummy, chest, elbow, shoulder, neck; the face parts in the face zoom).
   - **Two parts in one line** ("my elbow and my hand hurt"), for one patient a morning (decision 5). Tap both, in any order; each is its own first try.
-  - **Which cure follows:** a two-part line is drawn only from pairs that one close-up treats, so one heal game follows and the pharmacy asks for its items as usual. In Sprint 16 that's the cut game on the arm (any two of hand, arm, elbow, shoulder); the cut game's L2 already has two scrapes, which are exactly those two parts. Two cures in a row stay at L4 (§5).
-- **L3:** other ways of saying it. The patient says the side ("my left knee", the patient's own left, as built) **or only the why**:
-  - "I've got a cough" → the chest; "a cold" → the nose; "a fever" → the head
-  - and, if Mum gives each as its own word: "a headache" → the head, "a tummy ache" → the tummy, "a toothache" → the tooth, "an earache" → the ear
+  - **Which cure follows:** a two-part line is drawn only from pairs that one close-up treats, so one heal game follows and the pharmacy asks for its items as usual. In the first slice that's the cut game on the arm (any two of hand, arm, elbow, shoulder); the cut game's L2 already has two scrapes, which are exactly those two parts. Two cures in a row stay at L4 (§5).
+- **L3:** other ways of saying it. The patient says the side ("my left knee", the patient's own left, as built) **or only the why**.
+  - **The first time a side is asked (Zafar, 1 Nov: yes; children must learn left and right):** before that ask, the doctor lifts the patient's left hand and the patient says "my left hand" (*munjo dabo hath*, Zafar's words, to confirm); the doctor nods, "his left" (*injo dabo*), then lifts the right: "his right" (*injo jamno*). The light then goes to the patient and the side ask comes. It plays once, at L3, and never again; after it, a side is heard only in the asks. The showing uses the patient's own left, so on screen it is the mirror of the child's left, which the lifted hand makes visible.
+  - The why: "I've got a cough" → the chest; "a cold" → the nose; "a fever" → the head
+  - and, if Mum gives each as its own word (Zafar thinks the family says "my head is hurting" instead, to confirm): "a headache" → the head, "a tummy ache" → the tummy, "a toothache" → the tooth, "an earache" → the ear
   - This is where the health half decides a move.
 - **L4:** the small and inside parts, 23 in all (24 with the ankle).
   - Finger, thumb, toe (and ankle) in the hand or foot zoom; cheek and chin in the face zoom.
@@ -308,11 +309,11 @@ Each part below is a stage or a mini-game in the clinic morning:
 ### 3B. The cut game (the scrape, un-parked and made busy)
 
 **What it treats:**
-- **On the arm close-up (Sprint 16):** hand, arm, elbow, shoulder; finger and thumb from L4 (Sprint 17)
-- **On the existing knee close-up (Sprint 16):** the knee
-- **On the side-on head (Sprint 17):** the neck
-- **On the nose game's face (Sprint 17):** cheek, chin
-- **The head (Sprint 17):** a bump gets a head bandage
+- **On the arm close-up (the first slice):** hand, arm, elbow, shoulder; finger and thumb from L4 (the second slice)
+- **On the existing knee close-up (the first slice):** the knee
+- **On the side-on head (the second slice):** the neck
+- **On the nose game's face (the second slice):** cheek, chin
+- **The head (the second slice):** a bump gets a head bandage
 
 **The why:** "I fell over. My elbow hurts." (P-3, P-1) / "Let's clean it and put a plaster on." (D-6)
 
@@ -327,7 +328,7 @@ Each part below is a stage or a mini-game in the clinic morning:
    - The redness fades to half on the first dab and then stays, so the picture never says when to stop. The heard count does.
    - The doctor counts aloud at L1 only.
 3. **The plaster:** tap the plaster of the colour said, and its backing peels off with a zip. Tap the scrape, and it smooths on.
-4. **Head bump only (Sprint 17):** instead of the plaster, the knee's flash-and-tap wrap round the head (Zafar's own idea).
+4. **Head bump only (the second slice):** instead of the plaster, the knee's flash-and-tap wrap round the head (Zafar's own idea).
 
 The row ticks when the step closes (the next item is picked), never at a count.
 
@@ -406,7 +407,7 @@ The row ticks when the step closes (the next item is picked), never at a count.
 
 **Speaking:** none.
 
-### 3D. The nose (the ear's twin: drops, then a tissue to wipe) — Sprint 17
+### 3D. The nose (the ear's twin: drops, then a tissue to wipe) — the second slice
 
 **The why:** "I've got a cold. My nose is blocked." (P-7, P-8) / "First drops, then the tissue." (D-2, the built frame: *pela chando, ne poi* tissue)
 
@@ -459,7 +460,7 @@ The row ticks when the step closes (the next item is picked), never at a count.
 
 **Speaking:** none.
 
-### 3E. The drinks for the tummy and a cough (taste.js's counter) — Sprint 17
+### 3E. The drinks for the tummy and a cough (taste.js's counter) — the second slice
 
 **The why:**
 - "I ate too much at the birthday party. My tummy hurts." (re-pointed from the wedding; decision 27)
@@ -519,7 +520,7 @@ The leak bot (`build/leak_clinic.mjs`) gets the L3 row with this number.
 
 **Speaking:** none.
 
-### 3F. A body or side word at L3 in every live heal game, and "careful" — Sprint 17
+### 3F. A body or side word at L3 in every live heal game, and "careful" — the second slice
 
 Zafar, 1 Nov: so numbers don't decide everything.
 
@@ -540,7 +541,7 @@ Zafar, 1 Nov: so numbers don't decide everything.
 - the doctor says it as the tweezers reach the ear's deep blob, which then moves at half speed
 - It's said, not tested: it's the natural line, heard often.
 
-### 3G. The speaking moment: the teddy (on your yes; not in any sprint yet)
+### 3G. The speaking moment: the teddy (on your yes; not in any slice yet)
 
 This adds to your scope (decision 23). `speaking.md` puts the speaking weight on Cook and Conversations, the clinic's rows are "lighter touches", and its pilot (chai) hasn't run. So this waits for the pilot and your yes.
 
@@ -629,7 +630,7 @@ The face zoom's first time (a later patient's "my ear hurts"): the lit box hugs 
 | The speaking pills, the mic, the handover | `js/shared/` speech and onboarding |
 | The two-page end screen, the order card ("Bring me these", CLN-216), the guide box | shared |
 
-**Sprint 16: new to build** (the one playable goal: every part the chart says at L1-L2 can be found and cured):
+**The first slice: new to build** (the one playable goal: every part the chart says at L1-L2 can be found and cured):
 1. **Chart data:** `parts` tiers "1" (7) and "2" (16, or 15 if the nose waits); the L2 two-part line from one close-up's pairs; D-6, D-7, P-2 to P-5 added to the engine as placeholders (grey "to record").
 2. **The face zoom on a head tap,** on the built `closeup`: the head fills the play area's height; a tap outside zooms back; the magnifier button goes; a zoom tap isn't a try. Tap zones checked at 44 px or more inside the zoom at 915x275 on the lab page before any art.
 3. **The no-clue rule as code:** the patient's pose and gaze are fixed until a tap.
@@ -640,9 +641,9 @@ The face zoom's first time (a later patient's "my ear hurts"): the lit box hugs 
 8. **`days.mix`:** sessions 1 and 2 unchanged; session 3's game set gains `cut`, and its third patient is the first-ever scrape once; session 4's set gains `cut` (the hand splinter comes in through `foot`).
 9. **A check** (`docs/process/checks-to-build.md`): every part the chart (D2) or the check-up (D3) can call at a level has an ailment whose `parts` include it at that level, and no hair hotspot can be called. "No part named without a cure" becomes code.
 10. **Leak bot rows** for the chart at L1-L2, the cut game and the hand (`build/leak_clinic.mjs`).
-11. **Art for Sprint 16:** the arm close-up and the palm (pictures 1 and 2, after checking the drawn forearm and upper-arm close-ups first), the scrape and its states, the cream tube, plasters, the tissue box (§7).
+11. **Art for the first slice:** the arm close-up and the palm (pictures 1 and 2, after checking the drawn forearm and upper-arm close-ups first), the scrape and its states, the cream tube, plasters, the tissue box (§7).
 
-**Sprint 17: new to build:**
+**The second slice: new to build:**
 1. The chart's L3 (P-6, P-7: the side or the why) and L4 (the hand and foot zooms; the "4" tier; the diagnosis's level cap from 3 to 4).
 2. **The nose game** (about the ear's size): drops, the wipe with the sneeze as a reaction, the bin; the builder rule on the drops row.
 3. **The drinks variant of taste.js:** a tummy or chest close-up, no spots step, three remedies in order at L3, the listen step that moves at L3; its L3 leak-bot row.
@@ -650,9 +651,9 @@ The face zoom's first time (a later patient's "my ear hurts"): the lit box hugs 
 5. **The L3 body or side word in the knee (above or below), the ear, the tooth, the fever and boing.** Small code per game.
 6. Leak bot rows for the chart at L3-L4, the nose and the drinks.
 
-**On your yes, then a sprint:** the ankle (decision 3), the teddy (decision 23), "his knee" (§5).
+**On your yes, then a slice:** the ankle (decision 3), the teddy (decision 23), "his knee" (§5).
 
-**The budget for Sprint 16's slice** (estimate; the `/brief` for each launch carries the exact one):
+**The budget for the first slice** (estimate; the `/brief` for each launch carries the exact one):
 
 | Work | Who | Model, effort | Cost |
 |---|---|---|---|
@@ -663,7 +664,7 @@ The face zoom's first time (a later patient's "my ear hurts"): the lit box hugs 
 | The art (11) | your ChatGPT run; Claude judges and cuts | Opus, medium for the cuts | about $5-10, plus your time |
 | **In all** | | | **about $105-155, two to three days** |
 
-This sits beside Sprint 16's agreed work (the clinic game by game, with the "Bring me these" card in each heal game, CLN-216), which isn't in this figure. If both don't fit three days, the scope is cut, never the budget (S08's rule): the slice above goes first, and the other heal games' pass moves on (decision 28, open question E).
+The clinic's game-by-game pass with the "Bring me these" card (CLN-216) isn't in this figure. Sprint planning is on hold (Zafar, 1 Nov), and the rollout of chai's shared fixes to the clinic waits for his chai feedback; when a slice is launched, `/brief` sets its budget.
 
 ---
 
@@ -682,19 +683,19 @@ This sits beside Sprint 16's agreed work (the clinic game by game, with the "Bri
 
 **New pictures** (one ChatGPT paste block, against the locked clinic backgrounds and the approved patients; lessons §7):
 
-| # | Picture | Serves | Sprint |
+| # | Picture | Serves | Slice |
 |---|---|---|---|
-| 1 | The arm close-up, shoulder to fingertips, palm down, short sleeve (a boy), only if the drawn ones don't cover it | cut game: shoulder, elbow, arm, hand. Shared with boing's redo (its arm failed the judge). | 16 |
-| 2 | The palm close-up, fingers spread | the hand splinter; from L4 the finger and thumb scrapes and the chart's hand zoom | 16 |
-| 3 | The s08c face, new states: a pink, blocked nose; the "aah… aah…" build-up; the honk into a tissue; clear and happy | the nose; the cheek and chin scrapes | 17 |
-| 4 | The upper body, sitting, clothed, neutral pose, a cup in reach (the boy for the cough; either for the tummy) | the drinks | 17 |
-| 5 | The side-on head (the girl, then the boy), if the drawn ear close-ups don't serve | the ear's L3 side; the neck scratch | 17 |
-| 6 | The foot and ankle from the side | the chart's foot zoom (the toe); the ankle on your yes | 17 |
+| 1 | The arm close-up, shoulder to fingertips, palm down, short sleeve (a boy), only if the drawn ones don't cover it | cut game: shoulder, elbow, arm, hand. Shared with boing's redo (its arm failed the judge). | 1st |
+| 2 | The palm close-up, fingers spread | the hand splinter; from L4 the finger and thumb scrapes and the chart's hand zoom | 1st |
+| 3 | The s08c face, new states: a pink, blocked nose; the "aah… aah…" build-up; the honk into a tissue; clear and happy | the nose; the cheek and chin scrapes | 2nd |
+| 4 | The upper body, sitting, clothed, neutral pose, a cup in reach (the boy for the cough; either for the tummy) | the drinks | 2nd |
+| 5 | The side-on head (the girl, then the boy), if the drawn ear close-ups don't serve | the ear's L3 side; the neck scratch | 2nd |
+| 6 | The foot and ankle from the side | the chart's foot zoom (the toe); the ankle on your yes | 2nd |
 | 7 | The teddy (front, sitting) | the speaking moment | on your yes |
 
 **Items and effects** (nothing drawn in code: each effect is a sprite state or a short frame set):
-- **Sprint 16:** the scrape (one piece, rotated) and its half-faded state; grit specks (3-4 frames of the fizz); the water splash (3 frames); the cream tube; the cream sparkle (3 frames); plasters in four colours (the "photorealistic" plaster style, K1018 P12), each with its backing and a peeled-backing state, and laid flat on skin; the tissue box; a single tissue; the palm's splinter (the foot's, recut).
-- **Sprint 17:** a small bin; nose drops (or the ear drops recoloured) and a falling drop (2 frames); the head bandage, wrapped (the knee's bandage recut); the tissue held to the nose.
+- **The first slice:** the scrape (one piece, rotated) and its half-faded state; grit specks (3-4 frames of the fizz); the water splash (3 frames); the cream tube; the cream sparkle (3 frames); plasters in four colours (the "photorealistic" plaster style, K1018 P12), each with its backing and a peeled-backing state, and laid flat on skin; the tissue box; a single tissue; the palm's splinter (the foot's, recut).
+- **The second slice:** a small bin; nose drops (or the ear drops recoloured) and a falling drop (2 frames); the head bandage, wrapped (the knee's bandage recut); the tissue held to the nose.
 - **Existing:** the kidney tray, the jugs, the counter pieces, the stethoscope.
 
 **Rules for all of it:** nothing drawn in code (code only moves real art); no drop shadow on things resting on the strip; calm faces; gentle zooms.
@@ -740,7 +741,7 @@ Sources (web, 1 Nov): [Toca Doctor (GeekDad)](https://geekdad.com/2011/05/practi
 - The need isn't settled by the picture: no clue on the body, look-alike scrapes and splinters, a neutral pose in the drinks.
 - Two words per move from L2.
 - Body words, not only numbers, decide in every heal game from L3.
-- **The exception:** it doesn't teach until the family records about 34 clips for Sprint 16 (68 in all), and the missing frames are gaps (§1). The reader leak stands until then.
+- **The exception:** it doesn't teach until the family records about 34 clips for the first slice (68 in all), and the missing frames are gaps (§1). The reader leak stands until then.
 
 ### 2. Onboarding and the first round: passed
 - The first round is the tutorial (§4), in session 3; sessions 1 and 2 are untouched.
@@ -780,7 +781,7 @@ Sources (web, 1 Nov): [Toca Doctor (GeekDad)](https://geekdad.com/2011/05/practi
 - One camera per picture; one moment per prompt.
 - Nothing drawn in code: every effect is listed as art (§7), and the ear's code-drawn head is replaced.
 - Plasters in the real style.
-- Reuse first; one paste block per sprint.
+- Reuse first; one paste block per slice.
 
 ### 8. Speaking: on your yes
 - If built: inside an exchange watched many times; three pills always there (no bonus); never a gate; the shared pattern.
@@ -788,7 +789,7 @@ Sources (web, 1 Nov): [Toca Doctor (GeekDad)](https://geekdad.com/2011/05/practi
 ### 9. Levels: passed
 - Each level adds one thing; L4 is its own (zoom and look-alikes, two-colour plasters, both sides).
 - The gestures never get harder.
-- Level up after three rounds with at most one hint each.
+- Level up after three rounds with at most one hint each, and only on right-first-time rounds (Zafar, 1 Nov).
 
 ### 10. Words: passed, with the gaps reported
 - Every line is listed with its speaker and status (§1).
@@ -840,11 +841,11 @@ Each line: the choice, the reason, my assumed answer. "Yes to all except …" wo
    - L2: adds the eye, nose, mouth, tooth, tummy, chest, elbow, shoulder, neck (16)
    - L4: adds the finger, thumb, toe, cheek, chin, tongue, throat (23; 24 with the ankle)
 
-   Elbow, shoulder and neck move from L3 to L2; finger and toe from L3 to L4 (they're too small without the zoom). A part joins only once its cure is built: if the nose game isn't in Sprint 16, the nose waits for Sprint 17 (L2 then has 15). *Why:* big parts first; small parts with the zoom; one new thing per level; your no-cure rule. *Likely:* yes.
+   Elbow, shoulder and neck move from L3 to L2; finger and toe from L3 to L4 (they're too small without the zoom). A part joins only once its cure is built: if the nose game isn't in the first slice, the nose waits for the second slice (L2 then has 15). *Why:* big parts first; small parts with the zoom; one new thing per level; your no-cure rule. *Likely:* yes.
 2. **Hair, back and lips stay off the chart** until each has a cure. *Why:* your rule, any part said must be treatable; hair stays parked. *Likely:* yes.
-3. **Adds to your scope. The ankle joins at L4, with the knee's wrap on a twisted ankle.** *Why:* the most natural reskin; it's an A2 word. Not in any sprint until you say yes.
+3. **Adds to your scope. The ankle joins at L4, with the knee's wrap on a twisted ankle.** *Why:* the most natural reskin; it's an A2 word. Not in any slice until you say yes.
 4. **The chart's L3 is "other ways of saying it":** the side (as built) or only the why ("I've got a cough" → the chest). *Why:* it makes the health half decide a move, as you asked, and matches the rulebook's L3. *Likely:* yes.
-5. **The chart's L2 names two parts in one line, once a morning, from parts one close-up treats** (in Sprint 16, two of hand, arm, elbow, shoulder, then the cut game with those two scrapes). *Why:* the rulebook's two words per move from L2; one close-up keeps one cure. It's new, so flagged. *Likely:* yes.
+5. **The chart's L2 names two parts in one line, once a morning, from parts one close-up treats** (in the first slice, two of hand, arm, elbow, shoulder, then the cut game with those two scrapes). *Why:* the rulebook's two words per move from L2; one close-up keeps one cure. It's new, so flagged. *Likely:* yes.
 6. **The face is found by zooming at every level; the hand and foot from L4.** Tap the head, the face fills the screen, tap the part. *Why:* on a 275 px phone the head is about 60 px, too small for five parts; the code already has this zoom. *Likely:* yes.
 7. **No clue on the body:** hands in the lap, eyes on the doctor, no mark until tapped. *Why:* the leak (the research: a visible wound picks the part). *Likely:* yes.
 8. **Each miss on the chart gets a different playful reaction** (a giggle, a toe wriggle, a shrug, a playful *na*). *Why:* nothing makes a child feel bad, and misses become fun. *Likely:* yes.
@@ -857,7 +858,7 @@ Each line: the choice, the reason, my assumed answer. "Yes to all except …" wo
 
     *Why:* CLN-172, "nothing really to do". *Likely:* yes.
 11. **The scrape's numbers are dabs + scrapes: 1-2+1, 1-3+2, 2-4+2, 2-4+3,** with two-colour plasters at L4. `rules.json`'s `heal-cut` gets a scrape row; the stitches keep theirs. *Why:* the rulebook's one-thing-repeats rule; the scrape has no stitches. *Likely:* yes.
-12. **The head bump:** clean, then the knee's flash-and-tap wrap round the head (Sprint 17). *Why:* your own idea, and cheap. *Likely:* yes.
+12. **The head bump:** clean, then the knee's flash-and-tap wrap round the head (the second slice). *Why:* your own idea, and cheap. *Likely:* yes.
 13. **The neck scratch comes from a rose bush in Nani's garden,** not the cats. *Why:* Simba and Zazu stay loved. *Likely:* yes.
 14. **The hand splinter:**
     - the soak in hot or cold (*garam*, *thundo*, both recorded)
@@ -876,44 +877,45 @@ Each line: the choice, the reason, my assumed answer. "Yes to all except …" wo
 22. **The headache and the fever land on the head and lead to the fever game.** *Why:* it already treats the head; no new game. *Likely:* yes. The alternative is a cool cloth of its own on a later visit.
 23. **Adds to your scope. A speaking moment: Isa's teddy,** carried in by Ma; from L3, once every third morning; the child speaks for the teddy ("my tummy hurts"); three pills (no bonus); never a gate. Not built until the speaking pilot (chai) has run and you say yes. *Why:* no new recording; it's pretend play; it fits `speaking.md`'s "you're the patient" row.
 24. **"No part named without a cure" becomes a check in code,** covering D2 and D3 and the hair hotspots. *Why:* keep it small; a rule that can be code is a check. *Likely:* yes.
-25. **Recording: about 68 clips in all, 34 for Sprint 16** (§1's table). The doctor records his own asks (your 14 Oct word); Mum the patients' lines and the words. No store build with placeholders. *Why:* the reader leak and non-negotiable 2. *Likely:* yes.
-26. **Reuse the drawn close-ups first;** then up to six new pictures across two sprints (arm if needed, palm in 16; the face's new states, the upper body, the side-on head if needed, the foot in 17), the teddy on your yes. Every effect is art, not code. *Why:* reuse first; nothing drawn in code. *Likely:* yes.
+25. **Recording: about 68 clips in all, 34 for the first slice** (§1's table). **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice. No store build with placeholders. *Why:* the reader leak and non-negotiable 2. *Likely:* yes.
+26. **Reuse the drawn close-ups first;** then up to six new pictures across two slices (arm if needed, palm in the first slice; the face's new states, the upper body, the side-on head if needed, the foot in the second), the teddy on your yes. Every effect is art, not code. *Why:* reuse first; nothing drawn in code. *Likely:* yes.
 27. **The parked tummy and foot stories move to the birthday:**
     - the tummy: "I ate too much at the birthday party" (no sweets named)
     - the foot: "I danced all afternoon at the birthday party" (a nod to musical statues)
 
     *Why:* your 1 Nov yes. *Likely:* yes.
-28. **Sprint 16's one playable goal for this game: every part the chart says at L1-L2 can be found (the face by zoom) and cured; the cut game un-parked on the arm and knee; the hand splinter.** About $105-155, two to three days, two builders (the diagnosis; the heal games), Opus high for the visual work, Sonnet medium for the mechanical. Sprint 17 takes the chart's L3-L4, the nose, the drinks, the head bandage and the L3 words in the live games. *Why:* ten build items, six pictures and 68 clips are two or three sprints, not one. *Likely:* yes.
+28. **(Removed 1 Nov.)** Sprint planning is on hold, so the Sprint 16 and 17 split is no longer a decision. The slice is now the prototype's first slice (§0), with the rest as the second slice.
 29. **The face zoom opens on any tap on the head,** at every level; the head fills the play area; a tap outside glides back; the magnifier button goes (its zoom stays). The forehead counts as the head. *Why:* the cog is the only button on the play screen; a zoom that opens for any tap tells the child nothing. *Likely:* yes.
 30. **At L1-L3 a tap on the hand or the foot is the answer; from L4 it always opens the zoom,** and the whole hand or foot is a target inside it. A zoom tap is never a try; a tap on a wrong part, in or out of a zoom, is a miss with its playful reaction. *Why:* one rule for every zoom, and no feedback from the zoom itself. *Likely:* yes.
 31. **The diagnosis's level cap rises from 3 to 4** (for the L4 tier); D1 keeps tier 1; D3 draws its tools' `finds` only within the level's parts, and the torch finds the nose. *Why:* the parts data is shared by D1, D2 and D3. *Likely:* yes.
 32. **The cream's gesture is the built one:** tap the tube once, then the scrape N times; picking the next item closes the row. *Why:* it's how `cut.js` works today. *Likely:* yes.
 33. **Sessions 1 and 2 stay as they are** (the knee; the knee and the ear). The first-ever scrape is session 3's third patient; the cut game joins sessions 3 and 4, the hand splinter through `foot`. *Why:* moving the hand into session 2 would drop the ear (non-negotiable 1). *Likely:* yes.
-34. **Counted rows close on the next item's tap, and nothing (a sneeze, a light, a next step) starts when a count is reached.** A rule written into each builder's brief. *Why:* the fever's "just right" leak (CLN-176). *Likely:* yes.
+34. **Counted rows close on the next item's tap (Zafar's one count close, 1 Nov: the natural next thing; else 1.25 s of stillness), and nothing (a sneeze, a light, a next step) starts when a count is reached.** A rule written into each builder's brief. *Why:* the fever's "just right" leak (CLN-176). *Likely:* yes.
 35. **Gold Found it on a first try only;** a find after misses gets the soft glow and a plain tick. *Why:* ticks mustn't let a child fish. *Likely:* yes.
 36. **"That tickles" and "excuse me" are giggles, not lines.** *Why:* fewer clips, and a giggle needs no Kutchi. *Likely:* yes.
 37. **The cough patient is the boy; the tummy patient either.** *Why:* the stethoscope on a girl's chest costs nothing to avoid. *Likely:* yes.
 38. **Spellings follow the repo:** *haa* (not *ha*). *Why:* one spelling everywhere until you confirm. *Likely:* yes.
+39. **Left and right get a first-time showing at L3** (Zafar, 1 Nov: yes): the first time a side is asked, the doctor lifts the patient's left hand, the patient says "my left hand" and the doctor "his left", then the right (§3A, L3). His words, to confirm: *munjo dabo hath*, *injo dabo*, *injo jamno*.
 
 **Open questions that are genuinely his (or Mum's):**
 - **A. The remedies (decision 17):** ginger for the tummy, honey in milk for a cough (or honey and lemon, which needs a two-thing drink in code), turmeric milk for the throat. Mum's call, and the Kutchi for honey, cream, tissue and plaster.
-- **B. The sides:** the chart uses the patient's own left (as built), the mirror of the child's. It was never questioned in play. Should the L3 side words get a first-time showing (the doctor lifts the patient's left hand), or stay as they are?
-- **C. For Mum's sheet:** how does the family say a headache, a toothache, an earache and a tummy ache: a word of its own, or "my ___ hurts"? A cold, a cough and a fever are the certain why words; the other four are whatever she gives.
-- **D. Two word forms:** *jamni* (she-form, the lexicon) or *jamno* (`clinic.md`) for "right" in "on the right side"; and *garam* or *koso* for hot (the two *garam* takes are whose?).
-- **E. Sprint 16:** this slice and your 30 Oct "clinic, game by game, with the 'Bring me these' card" may not both fit three days. Recommended: this slice first, each game played by you before the next, then the other heal games' pass; if it runs long, the pass moves to Sprint 17.
+- **C. For Mum's sheet:** Zafar says the family uses the part, then "is hurting" (to confirm); Mum gives the ending (*dukhe*, *duke*, *duki*) for each part. A cold, a cough and a fever are the certain why words.
+- **D. Two word forms:** *jamni* (she-form, the lexicon) or *jamno* (`clinic.md`, and Zafar's *injo jamno*, to confirm) for "right" in "on the right side"; and *garam* or *koso* for hot (the two *garam* takes are whose?).
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-Five versions that look different, one moment each:
-1. the chart (Sprint 16)
-2. the scrape (Sprint 16)
-3. the nose (Sprint 17)
-4. the drinks (Sprint 17)
-5. the hand splinter (Sprint 16)
+Five versions that look different, one moment each (slices, not sprints: sprint planning is on hold, Zafar 1 Nov):
+1. the chart (the first slice)
+2. the scrape (the first slice)
+3. the nose (the second slice)
+4. the drinks (the second slice)
+5. the hand splinter (the first slice)
 
 Every prompt asks for 16:9 with everything that matters inside the middle band, so it crops to about 2.3:1 (740x320), 2.2:1 (930x430) and 3:1 (915x275). The references are the clinic's own locked backgrounds and approved patients, not Cook's. They run after the backgrounds are locked (lessons §7).
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt clinic-every-part-1: the body chart ("where does it hurt?")
 
@@ -1094,3 +1096,10 @@ The critique (`build/reports/designs/clinic-every-part-critique.md`, 1 Nov): 6 M
 13. **SHOULD, the prompts.** Done. One moment per picture. 1: the inset dropped, the glow alone, no clue on the body. 3: the tissue arrives with the dropper back on the tray, no falling drop, no cotton flurry. 4: the boy, neutral pose, an empty cup, nothing falling or steaming. 5: "no tweezers, no tool and no other hand: the splinter slides along its channel". All five: the clinic's own backgrounds and approved patients and doctor as references instead of Cook's, 16:9 with a middle band that crops to 740x320, 930x430 and 915x275; §7's layout now names all four check sizes.
 14. **SHOULD, the small corrections.** Done. *ha* → *haa*, as the repo spells it (decision 38); *jamni* (she-form) vs *jamno* and *garam* vs *koso* are open question D, with *garam*'s two takes to be named; the check covers D3's calls and the hair hotspots (§6 item 9, decision 24); the teddy's pills earn no speaking bonus, as `speaking.md` says; decision 19 now says "this reverses your 14 Oct ear decision".
 15. **SHOULD, the chest patient.** Done. The cough patient is the boy, the tummy patient either (§3E, prompt 4, decision 37).
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **Sprint planning on hold:** the Sprint 16 and 17 split is no longer a decision (decision 28 removed, open question E gone); the slice is now **the prototype's first slice**, the rest the second slice, everywhere in §0-§11. The clinic's game-by-game pass and the rollout of chai's shared fixes wait for his chai feedback.
+- **Left and right: yes.** A first-time showing at L3, the first time a side is asked: the doctor lifts the patient's left hand, "my left hand", "his left", then the right (§3A, new decision 39); open question B gone. His words, "Zafar, to confirm": *munjo dabo hath*, *injo dabo*, *injo jamno*.
+- **"Is hurting":** his pattern (the part, then "is hurting"; *munjo dand dukhe to*, the ending varying) is in the word notes and P-1 as "Zafar, to confirm"; the aches stay out of the L3 why rung; open question C now asks Mum only for the endings.
+- **One count close:** the next item's tap is the natural next thing; else 1.25 s of stillness (§3's builder rule, decision 34). **Level up only on right-first-time rounds** (§9).
+- **Voices:** decision 25 no longer casts who records what; the prototype plays existing takes and the device voice. **Clothes:** the prompt sheet's line is added before the prompts.

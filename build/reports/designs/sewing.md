@@ -47,10 +47,10 @@ Designed overnight on 1 Nov 2026 while Zafar slept, and revised the same night a
 4. One linear-track mechanic in `js/shared/`, used by cut, seam and needle.
 5. The sewing.
 
-The sewing **owns** 4, the part of 2 it uses (the rail, the worn layer, the size gag), and its stages. It **waits for** 1 and pay only for the stall, and for give-to only if the party gets there first. That is **three sewing sprints**, after the Mum round and one art run:
-- **Sprint 1 (about 3 days):** the shared track (cut, seam), make on the kit's table, the fitting on `whichone` with the two taps, the opening joke, the book line. Goal: the first-ever play end to end.
-- **Sprint 2 (2-3 days):** mend (the fault picker, the needle on the same track, buttons on the built ring stitch) and Going out as the fitting's last beat.
-- **Sprint 3 (about 2 days, after Find it's rebuild and pay):** the stall, with pay once the shops have taught it.
+The sewing **owns** 4, the part of 2 it uses (the rail, the worn layer, the size gag), and its stages. It **waits for** 1 and pay only for the stall, and for give-to only if the party gets there first. That is **three build slices** (sprint planning is on hold, Zafar 1 Nov; the aim now is a rapid prototype), after one art run:
+- **Slice 1 (about 3 days):** the shared track (cut, seam), make on the kit's table, the fitting on `whichone` with the two taps, the opening joke, the book line. Goal: the first-ever play end to end.
+- **Slice 2 (2-3 days):** mend (the fault picker, the needle on the same track, buttons on the built ring stitch) and Going out as the fitting's last beat.
+- **Slice 3 (about 2 days, after Find it's rebuild and pay):** the stall, with pay once the shops have taught it.
 
 **The blockers are words, art and three engines.** No clothes word has a family clip today. Big Ma's character sheet is the first item of the art run, drawn from the photo notes already in `cast.md`. The game is "worth nothing until clothes and colours are recorded" (games map); the first-ever play needs only about six recordings (§1).
 
@@ -197,7 +197,7 @@ Key:
 
 Rules that hold: every objective is taught in at least two stages; a fault word that falls short of three hearings on a play counts as met, not taught, for that play.
 
-**Who voices whom.** Every deciding line (Big Ma, Ali, Nana, Ma, the seller, Nani at the door) is a take by Mum, or Masi second, as Cook's customers are. Zafar's wife records only Big Ma's song (`cast.md`). Nothing is device-spoken in a store build.
+**Who voices whom.** **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice. Big Ma's song stays as `cast.md` has it. Nothing is device-spoken in a store build.
 
 **The Mum list.** The first-ever play needs about **6**:
 
@@ -229,7 +229,7 @@ That is over the template's 15-25, so it splits: the first-ever play's 6 and the
 | 7 | **Going out** (the fitting's last beat, about 30 s) | play 3 | one tap from two carry items, then a reaction | the weather Nani calls: shawl or umbrella | the outcome joins the photo |
 | 8 | Evening book | play 1 | the book (built; `js/day/book-games.js`) | the engine's noun phrases: "Ali's kurta", "Nana's sleeve", "red cloth" (the past-tense sentences once recorded) | |
 
-**The order of make and mend is Zafar's call** (§10, question 1). His 1 Nov scope says "mend, then make"; this design proposes make first because the opening joke needs a new kurta. Because the order is one line of the days file, flipping it costs nothing.
+**Make, then mend** (Zafar, 1 Nov: the recommendations are fine; make something, then tweak). His earlier scope said "mend, then make"; make comes first because the opening joke needs a new kurta. Because the order is one line of the days file, flipping it costs nothing.
 
 **When the shops day came first:**
 - Stage 2 is skipped, and the shops' log puts the cloth on Big Ma's table.
@@ -272,13 +272,13 @@ Make and mend both use the track, but with different tools, sounds and decisions
 - **Mistakes:** a shake and the word. The wrong item is redone on the spot. Every miss gets a different funny reaction; nobody ever frowns.
 - **A step ends by itself** when it's done: no Done and no Next. A tap skips speech and is never lost.
 - **Hints** (the rulebook's split): the guide's hint comes free after 7, 9, 11 or 13 s by level, from the last action, and only replays the ask. The helper card holds the full answer and is the only thing that costs a bulb.
-- **Counts close themselves** (`easy-to-play.md` rule 4): a count ends at the right number and an extra tap doesn't land; a placed item can be tapped back until the step moves on. Every count is shown with more spots than N, so the picture never gives the number.
+- **How a count closes (Zafar, 1 Nov; one rule for every game, replacing `easy-to-play.md` rule 4's "a count ends at the right number"):** the natural next thing where it is clear (lifting the next tool, or the piece going to its person), never a button; otherwise about 1.25 s after the last tap (one data setting, the same everywhere). A count never stops itself at the right number: an extra tap lands, and a wrong count is a miss, said again and fixed on the spot, the row plain. A placed item can be tapped back until the step moves on. Every count is shown with more spots than N, so the picture never gives the number.
 - **Levels** follow the rulebook:
   - L1: "yes" asks only, one clearly different decoy.
   - L2: numbers, "no" said last, 2 decoys, the English dotted.
   - L3: other ways of saying it, the picture blurred, 3 decoys.
   - L4: amounts, 4 decoys, one a look-alike.
-- **Up a level** after 3 rounds with at most one hint each; never down.
+- **Up a level** after 3 rounds with at most one hint each, and only right-first-time rounds count (Zafar, 1 Nov); never down.
 - **No timers.** This is a craft day: the listening matters more than speed (mechanics finding 4).
 
 ### 3a. The cloth stall (buy cloth)
@@ -292,7 +292,7 @@ Make and mend both use the track, but with different tools, sounds and decisions
 1. Big Ma tells the seller what she wants, for example "I want the red one" (*muke laal khape*).
 2. Tap the bolt. The seller lifts it and unrolls it across the counter with a thump.
 3. **From L2:** he holds up two lengths he has cut, a big piece and a small one. Tap the one Big Ma said ("buy the big one", *wadho ginech* ✓).
-4. **Pay:** the seller says the price. If the child has played pay at the shops, they count coins onto the counter at the shops' level for them (the coins carry no digits). If not, Big Ma pays herself with a clink: no tap, no first-time showing here.
+4. **Pay:** the seller says the price. If the child has played pay at the shops, they pay the shops' one way (Zafar, 1 Nov): count out the coins and hand them over to the seller, with ready-made stacks for small prices, at the shops' level for them (the coins carry no digits). If not, Big Ma pays herself with a clink: no tap, no first-time showing here.
 
 The cloth folds itself into Big Ma's bag.
 
@@ -375,7 +375,7 @@ The cloth folds itself into Big Ma's bag.
 | L1 | the garment, from 2 clearly different patterns (kurta's body, cap's crown); one chalk line; cut; machine | "make me a kurta" |
 | L2 | the length: the sleeve's two chalk lines, long and short (two words per move); 3 patterns; numbers (two sleeves, *ba*, each a cut); "no" said last ("long, not short") | |
 | L3 | other ways of saying it: "cut the long one" (*kap* ✓), Big Ma saying it for Ali, "for Ali" (*Ali lai*); 4 patterns; the card's picture blurred | |
-| L4 | buttons, with amount and look-alike: "three small red buttons" from a tin of big and small buttons in red and pink (4 decoys). The placket shows **five** button spots, so the picture never gives the count; the count closes itself at three and a fourth tap doesn't land (`easy-to-play.md` rule 4). Each button is tapped onto a spot, then a swipe round it (the built ring `stitch.js`, T3 buttons). | |
+| L4 | buttons, with amount and look-alike: "three small red buttons" from a tin of big and small buttons in red and pink (4 decoys). The placket shows **five** button spots, so the picture never gives the count; the count closes on Zafar's one count close (1 Nov: the next tool lifted, else about 1.25 s after the last tap); a fourth tap lands, and too many or too few is a miss, said again and fixed on the spot. Each button is tapped onto a spot, then a swipe round it (the built ring `stitch.js`, T3 buttons). | |
 
 **The leak test:**
 - **Reading:** the card shows the Kutchi with a speaker. The garment's picture shows only while that word is supported; from L2 there is **no picture of the finished piece** (games map). The length is never pictured, only said and written in Kutchi.
@@ -421,7 +421,7 @@ The cloth folds itself into Big Ma's bag.
 | Level | What it adds | Example |
 |---|---|---|
 | L1 | two clearly different faults; one asked | a torn sleeve and a missing button; "my sleeve is torn" |
-| L2 | three faults; two asked, in order; numbers; "no" said last | "first the pocket, then the buttons: two of them", then "not the sleeve" (*pela … ne poi …*). The placket shows four empty button spots for "two", so the picture never gives the count; the count closes at two and a third tap doesn't land (`easy-to-play.md` rule 4). |
+| L2 | three faults; two asked, in order; numbers; "no" said last | "first the pocket, then the buttons: two of them", then "not the sleeve" (*pela … ne poi …*). The placket shows four empty button spots for "two", so the picture never gives the count; the count closes on Zafar's one count close (1 Nov: the next tool lifted, else about 1.25 s after the last tap); a third tap lands, and a wrong count is said again and fixed on the spot. |
 | L3 | other ways of saying it: "there's a hole", "the button has come off", "it's too long" (the hem: the scissors cut along the hem's chalk line, as in make). 4 faults; the picture blurred. | |
 | L4 | look-alikes and amounts: the same fault on two parts (a torn pocket and a torn sleeve; left and right once recorded). A hole is patched from **the scrap tin**, which holds the offcut from make, picked by colour and size ("the small red piece"). | |
 
@@ -640,7 +640,7 @@ As 4b, and the fitting ends with Going out (3e): Nani through the doorway calls 
 6. **Going out's beat** (small). Two carry items, one tap, the step-out reaction (Dress up 5b's logic, greybox, cut to the beat).
 7. **Data:** `data/sewing.json` (or `data/dress.json` reshaped): garments, faults, patterns, rail sets, gags, the level ladders, the customers and which play opens each stage.
 
-**The honest size and order** are in §0: Find it's rebuild and pay (others' work) gate only the stall; the sewing's own three sprints are the track + make + the fitting (sprint 1), mend + Going out (sprint 2), the stall (sprint 3).
+**The honest size and order** are in §0: Find it's rebuild and pay (others' work) gate only the stall; the sewing's own three build slices are the track + make + the fitting (slice 1), mend + Going out (slice 2), the stall (slice 3).
 
 **Where it lives:** a lab page first (`lab/sewing.html`), checked at the four sizes plus 915x275. Then the stages are wired into the day's list.
 
@@ -752,7 +752,7 @@ Sources: [Toca Tailor, Common Sense Media](https://www.commonsensemedia.org/app-
 
 **4. Pacing.** Passed.
 - No Done and no Next. Tap skips. The guide's free hint comes at 7, 9, 11 and 13 s; only the helper card costs a bulb (the rulebook's split).
-- Counts close themselves at N; an extra tap doesn't land (`easy-to-play.md` rule 4).
+- Counts close on Zafar's one count close (1 Nov): the natural next thing, else about 1.25 s after the last tap; never at N.
 - No timers in make, mend or the fitting.
 - Nothing leaves before it's asked.
 - The ask is repeated every few seconds for non-readers, as the guide's replay.
@@ -808,10 +808,10 @@ Sources: [Toca Tailor, Common Sense Media](https://www.commonsensemedia.org/app-
 
 Each line gives the choice, the reason, and the answer assumed. Answer "yes to all except …".
 
-**Questions first (not assumed; his 1 Nov scope said otherwise, or the choice is his to make):**
+**Answered by Zafar (1 Nov: the recommendations are fine):**
 
-1. **Make or mend first?** The 1 Nov scope says "mend, then make". I propose **make first** because the opening joke (Ali stuck in his old kurta) needs a new kurta straight after it, and the made piece is then fresh for the fitting. The order is one line in the days file, so either costs nothing. *Recommend:* make first. *Not assumed:* until he answers, the build follows whichever he says; the first-ever play has no mend, so nothing waits on it.
-2. **Going out stays in visit 1** (his scope), as the fitting's last beat from the third play: Nani calls the weather, the shawl or the umbrella, Ali steps out, about 30 s. *A reason he may weigh:* pack the bag also teaches weather → what to take, so he may prefer Going out later or merged there. *Recommend:* keep it in visit 1, as his scope says.
+1. **Make, then mend: Zafar, 1 Nov, the recommendations are fine** ("make something, then tweak"). The opening joke (Ali stuck in his old kurta) needs a new kurta straight after it, and the made piece is then fresh for the fitting.
+2. **Going out stays in visit 1** (his scope), as the fitting's last beat from the third play: Nani calls the weather, the shawl or the umbrella, Ali steps out, about 30 s. **Zafar, 1 Nov: fine.**
 
 **Assumed yes:**
 
@@ -840,13 +840,13 @@ Each line gives the choice, the reason, and the answer assumed. Answer "yes to a
 20. **No code tinting of garments:** every colour is a real recolour from the ChatGPT run. *Reason:* "draw nothing in code". It costs more sprites (about 80 for visit 1) but keeps the plaster look. *Assumed:* yes. He might accept tint masks to save art.
 21. **Speaking:** the stall's colour turn is handed over once three colours are recorded; the mirror's *bo fine* is ungraded shadowing with a set of two. *Reason:* both inside watched exchanges in family voices. *Assumed:* yes.
 22. **Ali wears his new piece on the birthday day,** in the bought colour (the made piece is always cut from the bought cloth), at home when the child brings him the party-bag toy: Ali isn't at the party (`party-gifts.md` §2, which now has the line). *Reason:* carry-home delight, and the thing for Ali. *Assumed:* yes.
-23. **Big Ma hums only at the machine.** *Reason:* "she sings while she sews" (cast); one moment, not over speech. *Assumed:* yes. Zafar's wife records it; every spoken line is Mum's or Masi's.
-24. **The size is large: three sewing sprints,** after Find it's rebuild and pay (which gate only the stall). Sprint 1 is the first-ever play end to end. *Reason:* the stall, the fitting and give-to are rebuilds or unbuilt, and the track is new (§0). *Assumed:* yes.
+23. **Big Ma hums only at the machine.** *Reason:* "she sings while she sews" (cast); one moment, not over speech. Who voices the spoken lines is settled before shipping (Zafar, 1 Nov).
+24. **The size is large: three build slices,** after Find it's rebuild and pay (which gate only the stall). Slice 1 is the first-ever play end to end. Sprint planning is on hold (Zafar, 1 Nov), so this is a size, not a sprint plan.
 25. **Big Ma's character sheet is drawn from the photo notes already in `cast.md`,** as the first item of the art run, and Zafar signs it off before any scene. *Reason:* the sheet-first rule; the photos are in. *Assumed:* yes.
-26. **The build waits for the first Mum round** (about 6 lines for the first-ever play, 15 for the second); the lab can greybox earlier. *Reason:* games map rule 3 and non-negotiable 2. *Assumed:* yes.
+26. **The prototype doesn't wait for the first Mum round** (Zafar, 1 Nov): it plays on existing takes and the device voice. The game counts as teaching once about 6 lines (the first-ever play) and 15 (the second) are recorded.
 
-**Open questions that are genuinely his** (beyond 1 and 2):
-- **What the family wears:** decision 15, *topi* or *kofia* for the cap. What do the girls wear for "a new outfit": kurta and trousers, or something else? (Mum or his wife.)
+**Open questions that are genuinely his:**
+- **What the family wears:** Zafar's clothes rule (1 Nov) is mostly modern and modest, with older people somewhat more traditional; the sewing still makes the kurta and the cap Big Ma sews (the recommendations stand). Left: *topi* or *kofia* for the cap, and what the girls' new outfit is (Mum or his wife).
 - **Whether Big Ma goes to the stall in person** or sends the child with Nani: does a great-grandmother walking to the market fit the real Big Ma?
 - **`cast.md`'s 24 Sept line** "no stall visit; Big Ma fixes the kurta rather than a new one being bought" is outdated by his 31 Oct note ("buys the fabric at the shop"). Changed in `cast.md` in the consistency pass (1 Nov), marked "for Zafar to confirm"; he can reverse it there.
 
@@ -855,6 +855,8 @@ Each line gives the choice, the reason, and the answer assumed. Answer "yes to a
 ## 11. ChatGPT mock-up prompts
 
 **Run order:** Big Ma's character sheet comes first (art list item 1), from the photo notes in `cast.md`, and Zafar signs it off; these four mock-ups then attach that signed sheet in place of the description where marked. Until it exists, every prompt describes her from the same notes, word for word, and no other real person's sheet is attached to a scene she is in.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins. Big Ma's own description below stands (she is an older woman).
 
 **Big Ma's description, used in every prompt (from `cast.md`):** a very elderly, small great-grandmother with a gentle, knowing smile; dark hair, greying, pulled back under a soft, plain headscarf; thin rectangular metal glasses; at home, a soft cotton house dress, maroon with a small white paisley print and a little lace trim, and thin gold bangles; going out, a black headscarf and a plain black abaya with a little embroidered trim.
 
@@ -991,3 +993,11 @@ The critique (`sewing-critique.md`, 1 Nov) had 7 MUSTs and 11 SHOULDs. All MUSTs
 18. **Small contradictions.** Applied: the hint follows the rulebook (the guide's hint free, only the helper card costs a bulb) everywhere; §2 states that the made piece is always cut from the bought cloth, so the party promise holds; take-off is a tap on the piece's empty hanger, never on the person; decision 19 cites clinic decision 92. *Not done here:* `cast.md`'s 24 Sept "no stall visit" line, because this run may edit only this file; it is listed in §10's open questions to change in the same commit as this design.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** Ali isn't at the birthday party (`party-gifts.md`: the child goes with Nana and Nani, and the party-bag toy goes home for Ali), so his new piece comes out at home on the party day (§2, decision 22; the party design now has the line). The stall stage follows `shops.md`: on the shops' visit 1 the cloth is the general store's shelf, and the cloth seller's own stall comes on visit 2 (§2). `cast.md`'s "no stall visit" line is changed, for Zafar to confirm. The cushion cover and the role reversal are `docs/ideas.md` rows 95-96. The prompts' attach lines say "the great-grandmother's character sheet", so no real person's name reaches ChatGPT. The counts keep `easy-to-play.md` rule 4, which is Zafar's word; if he picks another count close for every game (`farm-animals.md` decision 5, `shops.md` decision 8, `adoption-centre.md` decision 21, `beach-boat.md` decision 7), the sewing's counts follow it.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The recommendations are fine:** make, then mend, and Going out in visit 1 (§2, the two "questions first" are now answered decisions).
+- **One count close** replaces this design's "counts close themselves" (§3's shared rules). **Level up only on right-first-time rounds.**
+- **One pay** at the stall: count out and hand over, with stacks for small prices.
+- **Voices:** settled before shipping; the prototype doesn't wait for Mum's round (§1, decisions 23 and 26).
+- **Sprint planning on hold:** the three sewing sprints are now three build slices (§0, decision 24).
+- **Clothes:** his rule noted in the open question and before the prompts; the made kurtas and caps stand.

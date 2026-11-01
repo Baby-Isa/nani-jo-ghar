@@ -76,7 +76,7 @@ Nani hosts; Nana, Ma and Ali order (no new likeness). Ali gets his fried egg in 
 
 ## 8. Words
 
-About 26 to record across both stations, 9 for L1; Mum's list is `cook-baking-eggs.md` §10 open question 4, and the full table is its §1. Open for Mum: which word for egg to a child; which word for pot.
+About 26 to record across both stations, 9 for L1; Mum's list is `cook-baking-eggs.md` §10 open question 4, and the full table is its §1. Zafar's words, to confirm with Mum: *indo* for egg (for now), *tapelo* for the pot.
 
 ## 9. Art
 
@@ -95,3 +95,5 @@ Visit 2 adds the lunch station between them (chips mayai first). Then the "boile
 **Open (Zafar):**
 1. May the speaking turn ("boiled or fried?") come before the chai pilot, so the kitchen day passes rule 4? Recommended: no, wait for the pilot, as `speaking.md` says.
 2. Peeled egg on the plate, or an egg cup (`cook-baking-eggs.md` open question 3)?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the boiled egg goes in an egg cup; *indo* and *tapelo* are his words, to confirm; only right-first-time rounds level up.

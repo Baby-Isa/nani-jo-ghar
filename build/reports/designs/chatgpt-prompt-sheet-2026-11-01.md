@@ -1122,7 +1122,7 @@ At the far left edge of the strip: a small bus stop with a cream bus just pulled
 
 THE MOMENT: a small full-body grandfather in a plain navy blazer is walking along the road from the bus stop towards the park gate, mid-stride. The park has a soft warm golden glow, as if it has just been tapped.
 
-THE FACES: along the RIGHT edge of the strip, a plain soft-green vertical column. At the top of the column, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, three round portrait circles stacked (head and shoulders, white ring): the same grandfather (with a soft golden ring round his circle), a young mother in a green dupatta, and a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people.
+THE FACES: along the RIGHT edge of the strip, a plain soft-green vertical column. At the top of the column, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, three round portrait circles stacked (head and shoulders, white ring): at the top a friendly woman in her thirties in a sage-green quarter-zip, then the same grandfather (with a soft golden ring round his circle), then a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people.
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, soft global illumination, chunky simplified shapes, clean surfaces, no outlines, no photorealism, no cel shading, no blur or vignette.
 
@@ -1149,7 +1149,7 @@ THE MOMENT, two people out on errands at once, small full-body figures:
 - a grandfather in a plain navy blazer walking back along the road from the park, his hair windswept, with a white duck waddling right behind him.
 At the bottom left, a small bus stop with a cream bus and a big empty cloth shopping bag by the bench. No one is standing at the stop.
 
-THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), ALL equally bright and in full colour: the grandfather, the young mother, a very old great-grandmother with white hair and a pale shawl, and a warm woman in her forties in a teal patterned headscarf and an embroidered blouse. Same render style as the people reference. Placeholders, not real people. Keep the top right corner of the image clear (a settings button goes there).
+THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), ALL equally bright and in full colour, left to right: a friendly woman in her thirties in a sage-green quarter-zip, the grandfather, the young mother, and a very old great-grandmother with white hair and a pale shawl. Same render style as the people reference. Placeholders, not real people. Keep the top right corner of the image clear (a settings button goes there).
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 
@@ -1171,7 +1171,7 @@ THE SCENE: the same toy town as the attached approved map, TILTED about 50 degre
 
 THE MOMENT: the post office has just been tapped by mistake. Its red postbox is doing a cheerful little hop off the ground with a tiny puff of dust, and a single plain envelope is popping out of its slot. In front of the post office door, a small great-grandmother with white hair and a pale shawl is gently shaking her head with a warm, amused smile, one hand raised as if to say "not here". Nobody looks cross or sad. The bakery, the right place, has no glow and looks like all the others.
 
-THE FACES: along the RIGHT edge of the strip, a narrow soft-green vertical column. At its top, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, four small round portrait circles stacked (head and shoulders, white ring): a grandfather in a navy blazer, a young mother in a green dupatta, the great-grandmother (with a soft golden ring round her circle, because she is the one chosen), and a warm woman in her forties in a teal patterned headscarf. Placeholders, not real people.
+THE FACES: along the RIGHT edge of the strip, a narrow soft-green vertical column. At its top, an empty square space the size of one face (kept clear for a settings button; draw nothing there). Below it, four small round portrait circles stacked (head and shoulders, white ring): at the top a friendly woman in her thirties in a sage-green quarter-zip, then a grandfather in a navy blazer, the great-grandmother (with a soft golden ring round her circle, because she is the one chosen), and a young mother in a green dupatta. Placeholders, not real people.
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 
@@ -1193,9 +1193,9 @@ THE SCENE: the same toy town as the attached approved map, TILTED about 50 degre
 
 THE HOUSE: on the plot right next to the park, draw ONE small house with great care: cream limewash walls, a terracotta roof, a sage-green door, two windows with plain curtains, one pot plant by the door. On three other plots (one behind the school, one opposite the bakery, one in front of the library), draw the SAME house again, as plain copies of it: same shape, same colours, same door, same windows, same pot. Keep them as simple as possible so they match.
 
-THE MOMENT: a young mother in a green dupatta, small and full-body, has just knocked on the house next to the park. Its door is open and a warm woman in her forties in a teal patterned headscarf leans out of it, waving happily with both arms. At the house behind the school, a ginger cat is peeping out of a window, blinking, half-drawing the curtain (a gentle joke for a wrong guess). A small bus stop with a cream bus sits at the bottom left; no one is standing there.
+THE MOMENT: a young mother in a green dupatta, small and full-body, has just knocked on the house next to the park. Its door is open and the very old great-grandmother with white hair and a pale shawl leans out of it, waving happily with both arms. At the house behind the school, a ginger cat is peeping out of a window, blinking, half-drawing the curtain (a gentle joke for a wrong guess). A small bus stop with a cream bus sits at the bottom left; no one is standing there.
 
-THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), all bright: a grandfather in a navy blazer, the young mother, a very old great-grandmother with white hair and a pale shawl, and the woman in the teal headscarf. Placeholders, not real people. Keep the top right corner clear (a settings button goes there).
+THE FACES: along the bottom 16% of the image, a plain soft-green strip with four round portrait circles (head and shoulders, white ring), all bright, left to right: a friendly woman in her thirties in a sage-green quarter-zip, a grandfather in a navy blazer, the young mother, and a very old great-grandmother with white hair and a pale shawl. Placeholders, not real people. Keep the top right corner clear (a settings button goes there).
 
 STYLE: match the references: a stylised 3D animated-feature look, soft warm sunlight, chunky simplified shapes, no outlines, no photorealism, no blur.
 

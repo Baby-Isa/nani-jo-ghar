@@ -17,7 +17,7 @@ The doctor's clinic, a cloudy day, host the doctor (Hannah's granddad), first vi
 | O5 | Frames heard | "my {part} hurts"; "show me where it hurts"; "how do you feel?" "Better." | to record | |
 | O6 | Frames said | **on his yes:** the teddy's "my {part} hurts", the child speaking for it (3 picture pills) | | |
 
-New words: 7 parts at L1, about 33 over the ladder (plus 2-4 cure words a game). Coming back: about 10, most ✓. Speaking turns: 0 agreed, 1 on his yes. About 68 clips in all, 34 for Sprint 16 (`clinic-every-part.md` §0).
+New words: 7 parts at L1, about 33 over the ladder (plus 2-4 cure words a game). Coming back: about 10, most ✓. Speaking turns: 0 agreed, 1 on his yes. About 68 clips in all, 34 for the prototype's first slice (`clinic-every-part.md` §0).
 
 ## 2. The story
 
@@ -65,7 +65,7 @@ The day **fails Part B rule 4** until the teddy is agreed: no speaking moment on
 
 | O-ID | Stages | Heard (about) | Said | Met again |
 |---|---|---|---|---|
-| O1 body | 2, 3, 4, 5, 8 | 4+ per part per patient | 0 (teddy: 1) | birthday (statues: nose, head, ear); school (getting ready: teeth, face, hands); adoption (care verbs) |
+| O1 body | 2, 3, 4, 5, 8 | 4+ per part per patient | 0 (teddy: 1) | birthday (statues: nose, head, ear); school (getting ready: teeth, face, hands); the pet hotel (care verbs) |
 | O2 health half | 3 (L3), 6 | 2-3 per patient | 0 | birthday (look after the guests) |
 | O3 verbs | 4, 5 | 3+ | 0 | home (clean-up: wash, wipe) |
 | O4 sides, order | 3, 5 (L3+) | 2-3 | 0 | home (pick it up: this side, left and right) |
@@ -95,5 +95,7 @@ Two new parts a round until all 24 are in; the back and the lips on the third vi
 
 **Open (Zafar):**
 1. The teddy's speaking moment (decision 23): yes, so the clinic passes rule 4? Recommended: yes, after the chai pilot.
-2. Sprint 16's slice against his 30 Oct "game by game" plan (open question E).
+2. The remedies, for Mum (open question A).2. Sprint 16's slice against his 30 Oct "game by game" plan (open question E).
 3. The remedies, for Mum (open question A).
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): sprint planning is on hold, so the clinic's slice is the prototype's first slice and the Sprint 16 question is gone; left and right: yes, with a first-time showing at L3 (the doctor lifts the patient's left hand; *munjo dabo hath*, *injo dabo*, *injo jamno*, to confirm); "is hurting" is the family's pattern for aches (to confirm); the counted rows close on the next item, else 1.25 s of stillness; only right-first-time rounds level up.

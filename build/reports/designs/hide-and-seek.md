@@ -16,7 +16,7 @@ Sources, newest first:
 - **in engine** the engine has it, but it isn't recorded;
 - **to record** the repo has no Kutchi for it yet.
 
-**Nothing in this game ships, and the leak bot has nothing to measure, until Mum's L1 list (§1) is recorded.** Until then every unrecorded word is grey-italic English, device-spoken in testing only (non-negotiable 2), and a reader wins.
+**Nothing in this game ships, and the leak bot has nothing to measure, until Mum's L1 list (§1) is recorded.** Until then every unrecorded word is grey-italic English, device-spoken in testing only (non-negotiable 2), and a reader wins. **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 
 ---
 
@@ -65,7 +65,7 @@ The door is no longer a hiding place (§10, decision 26). "Cat" is not needed: N
 | Verb | Kutchi in the repo | Status | Where | Visit |
 |---|---|---|---|---|
 | look | *nar* (to a child) | in engine; past forms inside lines (11) | every ask: "look in the wardrobe" | 1a |
-| close | none (*band*, closed, in engine) | to record | "close your eyes" (whole line); the close step ("close the wardrobe") | 1a |
+| close | none (*band*, closed, in engine); **Zafar, to confirm: *bund*** (1 Nov; the family says it for closing and for a light) | to record | "close your eyes" (whole line); the close step ("close the wardrobe") | 1a |
 | open | none | to record | 1a only inside "open your eyes" (whole line); alone in 1b, L3: "open the box!" | 1a / 1b |
 | find | none | to record (not in the engine) | "find Zazu!" (L2 on) | 1a |
 | hide | none | to record | only inside the door line (a whole line) | 1a |
@@ -86,7 +86,7 @@ The door is no longer a hiding place (§10, decision 26). "Cat" is not needed: N
 | An empty spot | Nani laughs, then "No!" and the ask once more | *na* **✓** ("No.") with Nani's laugh; no new clip | 1a |
 | The close step | "Close the wardrobe." | close (to record) + place | 1a |
 | The door | "Simba and Zazu are hiding! Shall we find them?" | one whole line (to record) | 1a |
-| Nana, at the door (watch) | Nani: "Nana, where's Zazu?" Nana: "I think he's under the bed." | *Nana* **✓**, *kida ai* **✓**; think (to record); Nana's voice (§10, open question 1) | 1b |
+| Nana, at the door (watch) | Nani: "Nana, where's Zazu?" Nana: "I think he's under the bed." | *Nana* **✓**, *kida ai* **✓**; think (to record); Nana's lines in whoever's takes we have, else the device voice (Zafar, 1 Nov) | 1b |
 | The mischief | "Simba took Nana's glasses!" | "Simba took it" (in engine), glasses (to record) | later: in 1a the thing drops silently and is named in pick it up, where its word decides |
 
 ### What Mum records for L1 to play
@@ -173,7 +173,7 @@ Scores: Do / Challenge (Kutchi decides) / Fun / Instruction / Novel, each 1-5.
 | M9 | **The cats' trail** (paw prints or a bell) | 3/2/4/3/3 | 15 | **Folded, a numbered choice** (§10, decision 11): (a) prints only after a find, as a route replay; (b) a bell or prints before the find at L3-L4 that are right only half the time. (a) in 1a, (b) tested in 1b. | 1a / 1b |
 | M10 | **Your turn to hide** (the child hides a cat; Nani asks "is he in the box?"; the child answers yes or no, *ha* / *na* **✓**) | 4/5/5/3/5 | 22 | **Later visit** (§5). It is the audit's "judge what is said", leak-proof, and the yes/no clips exist. Parked from the first visit only to keep it small. | later |
 
-**Maybe later:** Kasuku's version (the parrot saw where they went; see open question 2); the garden (behind the tree, under the car); find two the same (Find it's L5), which doesn't fit cats.
+**Maybe later:** Kasuku's version (the parrot saw where they went; her squawk, Zafar 1 Nov: try Kasuku's squawk from Mum's clip, and Zafar can imitate a parrot if that fails); the garden (behind the tree, under the car); find two the same (Find it's L5), which doesn't fit cats.
 
 ---
 
@@ -211,7 +211,7 @@ Scores: Do / Challenge (Kutchi decides) / Fun / Instruction / Novel, each 1-5.
 These numbers live in the data, in the rulebook's central file. This game overrides four rulebook defaults, all recorded in §10:
 - L1 has 2 searches, not 1, because two cats are the story (decision 2).
 - "No" asks come at L3 as a phrasing, not at L2, because L2's new thing is who and where (decision 9).
-- **Level-up rests on the finds** as well as the guide's hint: up after 3 finished rounds in a row where at most one find a round wasn't first-open and the guide's hint came at most once (decision 24).
+- **Level-up rests on the finds** as well as the guide's hint: up after 3 finished rounds in a row where **every find was first-open** (Zafar, 1 Nov: level up only on right-first-time rounds) and the guide's hint came at most once (decision 24).
 - **The card's place picture shows at L1 only**, not L1-L2 (decision 25).
 
 **The three helps** (one meaning each):
@@ -349,10 +349,10 @@ That tray is the carry into pick it up and put it back. It is a new shared eleme
 
 The child is 4 and can't read. A grown-up may be beside them. **The first tap comes within about 10 s.**
 
-1. **The door** (built). Nani opens it. A black tail whisks past behind her and a bell jingles. Nani: "Simba and Zazu are hiding! Shall we find them?" The door swings, and the camera glides gently into the bedroom (about 4 s in all).
+1. **The door** (built). Nani opens it. A black tail whisks past behind her and a bell jingles. Nani: "Simba and Zazu are hiding! Shall we find them?" The door swings, the house opens as the doll's house (two storeys: downstairs the kitchen and the sitting room, upstairs the bathroom, Nani's bedroom and Ali's room), and the camera glides gently up into Nani's bedroom (about 4 s in all).
 2. **The bedroom, first frame.**
    - The room is lit by warm late-morning sun from the window on the left.
-   - Left to right across the back: the wardrobe, the window with its ajrakh curtain, the bed (side on, its cover hanging to the floor), the low cupboard. The toy box sits on the rug in front. On the far right, the bedroom door stands wide open onto the hall (scenery).
+   - Left to right across the back: the wardrobe, the window with its ajrakh curtain, the bed (side on, its cover hanging to the floor), the low cupboard. The toy box sits on the rug in front. On the far right, the bedroom door stands wide open onto the landing (scenery).
    - Nani stands on the right, full height on a big screen, a bust on a phone. Simba and Zazu sit at her feet, tails flicking.
    - The side panel on the left is empty.
    - Nothing moves for two seconds (the calm start).
@@ -393,10 +393,10 @@ The round takes about 90 seconds and asks two places. It shows the tap, the open
 |---|---|---|---|
 | **1a. The bedroom, L1-L2** (build first) | M1, M2, M3 (the close), M5 (the count to five), M8 (the thing drops silently); 7 places; no Nana, no speaking | §1, Mum's 22 clips | the openable, the cat actor, the hide logic |
 | **1b. The bedroom, L3-L4** (after Zafar plays 1a) | M4 (the look-alike pairs), M6 (Ask Nana), the other ways of saying it, the blanket; the trail test (decision 11, option b) | blanket, think, know, open, big; Nana's set | Nana in the doorway; the order card's face per row |
-| **2. The sitting room and the kitchen** | two more rooms, one per round, chosen at random: under the sofa, behind the sofa cushion, the kitchen cupboard, under the table, the big pot cupboard | sofa, cushion, table (*table*, inside lines), kitchen (*rasoro*, inside lines, and the recorded "he's in the kitchen" frame); "I saw Simba in the kitchen" (*simba ke rasore me nares*, in engine); the mischief line; the count to ten | a background per room; the same data shape |
+| **2. The sitting room and the kitchen** (downstairs in the doll's house) | two more rooms, one per round, chosen at random: under the sofa, behind the sofa cushion, the kitchen cupboard, under the table, the big pot cupboard | sofa, cushion, table (*table*, inside lines), kitchen (*rasoro*, inside lines, and the recorded "he's in the kitchen" frame; **Zafar, to confirm: *rasor***); "I saw Simba in the kitchen" (*simba ke rasore me nares*, in engine); the mischief line; the count to ten | a background per room; the same data shape |
 | **3. Your turn to hide** (M10) | the child drags nothing: they tap a place and the cat hides there. Nani covers her eyes, counts, then asks "Is he in the box?" The child answers *ha* or *na* (**✓** both), tapped or said (closed set 2, watched first as Nana answering Nani). Nani opens what she asked and looks puzzled or delighted. | yes and no as answers; the place words heard as questions | the "judge what is said" pattern; a tiny reversal of M1 |
 | **4. Bedtime, with the torch** (M7) | the night relight of the bedroom: dark blue with the moon through the curtain. Tap a place and the torch shines there (no free drag, the lessons' "tap, then tap"). Green eyes glow back if a cat is there. At the end, "switch on the light" leads into the clean-up's verb. | torch, dark, light, night, sleep (all to record) | the night background (a relight, art bible §2); the shared dim as the dark |
-| **5. The whole house** | the doll's-house cross-section shared with pick it up. Room and place: "Zazu's in the cupboard in the kitchen." Tap the room (the camera glides in), then the place. | the rooms' names; two words a move as room and place | one overview background; the room tap |
+| **5. The whole house** | the two-storey doll's-house cross-section shared with pick it up and the clean-up (Zafar, 1 Nov): downstairs the kitchen and the sitting room, upstairs the bathroom, Nani's bedroom and Ali's room. Room and place: "Zazu's in the cupboard in the kitchen." Tap the room (the camera glides in), then the place. At phone size see §7, "The doll's house at 740x320". | the rooms' names (kitchen *rasor* and bathroom said as "bathroom": Zafar, to confirm; the others to record); two words a move as room and place | one overview background; the room tap |
 
 **Harder versions inside the levels** come from more places, both cats, other ways of saying it, look-alikes, and Nana's answer, never from faster or fiddlier gestures.
 
@@ -485,6 +485,8 @@ All in the house's existing look (`assets/cook/bg/service.jpg` for palette and l
 
 **One check:** the dim of the count must leave Nani's face, her tappable hands and the cog visible at all five sizes.
 
+**The doll's house at 740x320** (visit 5, and the glide in at the door on every visit; Zafar, 1 Nov: one two-storey house for the three home games). The play area is about 577x320 beside the side panel. The house fills it as a cross-section: a 10 px roof line, two storeys of about 145 px each and a 20 px ground strip. Upstairs, three rooms of about 192 px wide (the bathroom, Ali's room, Nani's bedroom); downstairs, two of about 288 px (the kitchen, the sitting room). Nani's bust stands on the ground strip at the bottom right, over the sitting room's floor edge, never over a room's middle. On the overview each room is one tap box (192x145 or 288x145, far above the 64 px minimum); its places are too small to tap there, so a tap on a room glides the camera in and the room fills the play area, as in the phone layout above. At 915x275 the storeys are about 122 px; at 930x430 about 195 px. On big screens the whole house shows, and the room tap still glides in. The overview is one background, `pick-it-up-put-it-back.md`'s, so the three home games share one house.
+
 ---
 
 ## 8. What it borrows, by name
@@ -542,7 +544,7 @@ All in the house's existing look (`assets/cook/bg/service.jpg` for palette and l
 
 Each is the choice, the reason, and the answer I assumed he'd give. Any can be reversed. Decisions 24-33 were added after the critique; 5, 8, 10, 11, 16, 20 and 22 were changed by it.
 
-1. **The first visit is one room, a bedroom at Nani's** (the room the grandchildren sleep in, so a toy box belongs there). More rooms on later visits. *Reason:* one background keeps the art run small, and 5-10 places fit one room. *Assumed:* yes.
+1. **The first visit is one room, Nani's bedroom,** upstairs in the two-storey doll's-house home (Zafar, 1 Nov), the room the grandchildren sleep in, so a toy box belongs there. More rooms on later visits. *Reason:* one background keeps the art run small, and 5-10 places fit one room. *Assumed:* yes.
 2. **L1 has one cat hiding at a time, two searches a round** (Simba, then Zazu). This overrides the rulebook's 1 at L1. *Reason:* both cats are the story, and one hidden target keeps L1 a pure "where". *Assumed:* yes.
 3. **The glow is only at L1, with Nani's line. From L2 the only glow is help** (the guide's hint, which counts, or the helper card, which costs a bulb). *Reason:* his "it glows at first", and the research says a glow is fine at L1 only. *Assumed:* yes.
 4. **From L2, a cat slips to a new place after two empty opens.** It's heard (patter and bell), not seen, and Nani says the new place. *Reason:* it ends elimination; Monki does it. Not at L1, because the youngest give up if the target moves. *Assumed:* yes.
@@ -551,7 +553,7 @@ Each is the choice, the reason, and the answer I assumed he'd give. Any can be r
 7. **A close step at the end of every round** ("close the wardrobe"), with the cats always out first and never shut in. *Reason:* he gave this game "open and close"; it seeds the clean-up; and it's safe to copy. *Assumed:* yes.
 8. **The count is a beat the child drives:** "Close your eyes!", one tap on Nani's hands per number (she counts on by herself after 2 s), "Open your eyes!". To five at every level; ten is a later data change once six to ten are recorded. No hold. The first-ever hide skips it. *Reason:* the research's favourite moment, open and close heard every round, and the hands busy instead of a wait. *Assumed:* yes.
 9. **"No" asks come at L3 as one of the other ways of saying it** ("he's under the bed, not in the wardrobe"), not at L2. This overrides the rulebook. *Reason:* L2's new thing is who and where; one new thing a level. *Assumed:* yes.
-10. **The speaking moment is asking Nana "Where's Zazu?", in 1b:** watched at L2, handed over at L3, alone at L4, where the ask becomes "where's the big one / the small one?". A closed set of 2. *Reason:* the only mechanic that makes a child ask; *kida ai* is recorded; at L2-L3 it tests a name, which is fine for a starter rung, and L4 makes the Kutchi vary. *Assumed:* yes. Who voices Nana is open question 1, and it only blocks 1b.
+10. **The speaking moment is asking Nana "Where's Zazu?", in 1b:** watched at L2, handed over at L3, alone at L4, where the ask becomes "where's the big one / the small one?". A closed set of 2. *Reason:* the only mechanic that makes a child ask; *kida ai* is recorded; at L2-L3 it tests a name, which is fine for a starter rung, and L4 makes the Kutchi vary. *Assumed:* yes. Nana's lines play in whoever's takes we have, else the device voice (Zafar, 1 Nov); nothing waits on a voice.
 11. **The cats' trail and the bell, two options:** (a) no clue before the find; prints appear after it, as a route replay ("so that's how he got in!"), and big and small paws feed L3's "the big one / the small one"; (b) a bell or prints before the find at L3-L4 that point to the right place only half the time, so the clue can lie and the word still decides (Find it 4d's "a clue that can lie", and the research's "decoy tails"). *Chosen:* (a) in 1a, (b) as a test in 1b, judged by the bot. *Reason:* a clue that is always right is visual search (a leak); one that lies half the time keeps the folded mechanic he agreed without leaking. *Assumed:* yes.
 12. **The torch is a later visit (bedtime), not a level, and it's tap-to-shine, not drag.** *Reason:* the lessons' "drag only along a track"; the night relight is cheap; it leads to "switch on the light". *Assumed:* yes.
 13. **"The other one" is L4's recast on look-alike pairs, decided by big and small** (two boxes, two baskets), in 1b. This side and that side stay with pick it up. *Reason:* the rulebook's L4 look-alike; Mum's order for sides. *Assumed:* yes.
@@ -565,7 +567,7 @@ Each is the choice, the reason, and the answer I assumed he'd give. Any can be r
 21. **Cat sounds are mono and centred, never from the cat's place.** *Reason:* hearing direction is not Kutchi. *Assumed:* yes.
 22. **An empty spot is Nani's laugh and "No!" (*na* ✓), then the ask once more.** The surprises aren't named in Kutchi on the first visit. *Reason:* no new clip, one line per moment; later visits can name them. *Assumed:* yes.
 23. **The game's file names:** `hide.html`, `js/hide/`, `data/hide-and-seek.json`. *Reason:* the existing pattern. *Assumed:* yes.
-24. **Level-up rests on the finds** (rulebook override 3): up after 3 finished rounds in a row where at most one find a round wasn't first-open, and the guide's hint came at most once. The finds still always tick. The number goes in `data/rules.json` for the game and the leak bot (`advance.games["hide-and-seek"].maxNotFirstOpen: 1`, when built). *Reason:* without it a fast tapper never idles into a hint, finds every cat eventually, and climbs to L4 knowing no place word. *Assumed:* yes.
+24. **Level-up rests on the finds** (rulebook override 3): up after 3 finished rounds in a row where every find was first-open (Zafar, 1 Nov: level up only on right-first-time rounds, in every game), and the guide's hint came at most once. The finds still always tick. The number goes in `data/rules.json` for the game and the leak bot (`advance.games["hide-and-seek"].maxNotFirstOpen: 0`, when built). *Reason:* without it a fast tapper never idles into a hint, finds every cat eventually, and climbs to L4 knowing no place word. *Assumed:* yes.
 25. **The card's place picture shows at L1 only** (rulebook override 4: the rulebook shows it at L1-L2, `cardPicture: [true, true, false, false]`); from L2 the card is speaker and Kutchi, and the cats' faces stay. One rule everywhere: M1, M2, M3, M4 and §4 all follow it. *Reason:* at L2 a place picture is picture-to-scene matching among seven places, a 100% win with no Kutchi; the clean-up already has "the card's picture at L1 only". *Assumed:* yes.
 26. **The door is not a hiding place; the chest of drawers' bottom drawer joins at L2 instead.** The bedroom door stays wide open as scenery, and it is Nana's doorway in 1b. *Reason:* Nana leans round the door, so it can't also be a closed place (a leak and a muddle). The window can't be his either: the curtain there is a hiding place. *Assumed:* yes.
 27. **The first visit is split: 1a (L1-L2) is built first; 1b (L3-L4, Nana, the speaking moment, the look-alike pairs) after he has played 1a.** *Reason:* the research sized this as a small reskin of Find it's openables; 1a is about a third of the art and no new speaking or voice. Nothing is dropped, only ordered. *Assumed:* yes.
@@ -578,14 +580,15 @@ Each is the choice, the reason, and the answer I assumed he'd give. Any can be r
 
 ### Open questions (genuinely his)
 
-1. **Who voices Nana's lines** ("I think he's under the bed", and the place answers)? Only blocks 1b. *My suggestion:* Zafar, since only family voices ship and Nana's lines are short. The other choice is to make Nani the one who knows and drop the doorway, but then the child asks the person who's asking them, which isn't natural.
-2. **Kasuku as a surprise in the wardrobe, squawking the place word** (Mum's clip, pitched up)? It's funny and gives an extra hearing, but it changes her voice. *My suggestion:* yes, if a pitched clip still sounds like her to him; otherwise Kasuku just squawks.
+None left. Zafar answered both on 1 Nov: Nana's lines play in whoever's lines we have; Kasuku's squawk is tried from Mum's clip, and Zafar can imitate a parrot if that fails.
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-Attach the listed references to each prompt. The cats have no reference sheet yet, so they're described in words from the cast doc's photo notes (`docs/game-design/cast.md`); ChatGPT is never the authority on how they look. Nani comes from the locked sheet and lineup; `nani-sheet.webp` is attached only for the render style. One surprise per frame.
+Attach the listed references to each prompt. The cats have no reference sheet yet, so they're described in words from the cast doc's photo notes (`docs/game-design/cast.md`); ChatGPT is never the authority on how they look. Nani comes from the locked sheet and lineup; `nani-sheet.webp` is attached only for the render style. One surprise per frame. The bedroom is Nani's bedroom, upstairs in the two-storey doll's house (Zafar, 1 Nov); these prompts show it close up, so the scene text is unchanged.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt hide-and-seek-1: the first find (L1, the bedroom by day)
 
@@ -749,3 +752,9 @@ The critique (`hide-and-seek-critique.md`, 1 Nov) had 5 MUSTs and 12 SHOULDs. Al
 | 15 | SHOULD. The words were served twice at the end. | Step 12 is the cuddle only; the shared two-page end screen is the only word list. |
 | 16 | SHOULD. Ask Nana varies only a name. | Said plainly in M6; at L4 the ask becomes "where's the big one / the small one?" (*wadho*, *nindho* ✓). M6's challenge score is lowered from 5 to 4. |
 | 17 | SHOULD. Small things. | "In" is *me* (decision 31); the prompts cite the cast doc; the "for later" tray goes to the shared-layer owner; §6 says where the design lives once he says yes. |
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The home:** one two-storey doll's house for the three home games (downstairs the kitchen and the sitting room; upstairs the bathroom, Nani's bedroom and Ali's room). The first visit is Nani's bedroom, upstairs; visit 2's rooms are downstairs; visit 5 is the whole house, with its 740x320 layout in §7.
+- **Level up only on right-first-time rounds:** every find first-open (decision 24, §3).
+- **Voices:** Nana's lines in whoever's takes we have, else the device voice; Kasuku's squawk from Mum's clip, or Zafar's parrot. Both open questions are answered and removed.
+- **Words:** *bund* (close) and *rasor* (kitchen) are in the tables as "Zafar, to confirm"; the bathroom is said as "bathroom". **Clothes:** the prompt sheet's line is added before the prompts (Nana's study, prompt 2b).

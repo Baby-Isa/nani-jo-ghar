@@ -14,7 +14,7 @@ Kutchi here is only what is in the repo (`build/reports/research-word-inventory-
 - the shared speaking moment (`say.js` and `speech.js`, built);
 - one small new piece, the **animal actor**: an animal that walks to a place and does an action.
 
-**Size:** medium. The art is most of the work, in two blocks (§7). The code is about one builder sprint once Hannah Mami's art and Mum's first sitting (§9, "Mum first") exist. **Nothing here teaches, and the speaking moment can't even be tested, until Mum records the three animal names and her call to each** (§1, §3 C2).
+**Size:** medium. The art is most of the work, in two blocks (§7). The code is about one builder sprint. **For the prototype** (Zafar, 1 Nov) the existing Kutchi takes play and the device voice says the rest, and Hannah Mami is Nani or another placeholder; nothing waits on a voice. It counts as teaching once Mum's words land (§9, "Mum first"), and voices are settled before shipping.
 
 ---
 
@@ -27,7 +27,7 @@ Kutchi here is only what is in the repo (`build/reports/research-word-inventory-
 | English | Kutchi in the repo | Status | Where it decides a move |
 |---|---|---|---|
 | goat (she-goat) | *bakri* | inside lines (9); a "hakri bakri, ba bakri" take exists but isn't linked to the engine | feed, photo, home |
-| hen | *murgi* | in engine, to record. **The inventory has it under food ("chicken", Mum, cooking); Mum must say whether it is the word for the live hen** | feed, photo, home |
+| hen | *murgi* | in engine, to record. **The inventory has it under food ("chicken", Mum, cooking); Zafar, to confirm: *murgi* for the hen** (1 Nov; Mum confirms) | feed, photo, home |
 | cow | *gai* (Zafar, `farm.md`) | to record (not in the engine) | feed, home |
 | chick | none | to record | home (the joke), photo, second visit |
 | corn on the cob | *makai* | **✓** | feed (the counted thing) |
@@ -66,7 +66,7 @@ Each frame is recorded by Mum as a whole, natural sentence, once with each anima
 | F3 | "The cow wants water." "Give the hen grass." | feed L3 | F1 and F2 with water and grass | *paani* inside lines; grass none | water alone, grass alone | 2 |
 | F4 | "Three corn for the small goat." | feed L4 | small ✓, big alone, four, five alone | *nindho* ✓; *wadho* inside lines | big, four, five alone | 3 |
 | P1 | "Take a photo of the goat eating." | photo L1 (eat, run), L2 (+ drink, sleep) | *khan*; photo; the "doing" form of each verb | none recorded | the frame with each verb (the animal swapped) | 2 + 2 |
-| P2 | Nani at the hand-in: "Oh, the goat is eating!" | photo L1+ | present, she-thing, per verb | *khaiti* inside lines; the rest none | the line per verb | 2 + 2 |
+| P2 | Nani as the print comes out: "Oh, the goat is eating!" | photo L1+ | present, she-thing, per verb | *khaiti* inside lines; the rest none | the line per verb | 2 + 2 |
 | P3 | "Two hens eating." "Now the goat sleeps." | photo L3 | present plural per verb; another phrasing | *kenta* inside lines | the plural line per verb | 4 |
 | H1 | "Now the goat goes into the shed." | home L1 | go, present she-thing; into; shed, coop | none | the frame with each home; shed, coop alone | 2 + 2 |
 | H2 | "Two hens go into the coop now." | home L2 | go, present plural | none | the plural frame | 1 |
@@ -114,7 +114,7 @@ Door → Bag → Ride → Meet Hannah Mami → [5 FEED] → Eggs → [7 PHOTO SH
 - **Photo → book:** every photo that fits its ask, and the round's one bonus photo, goes into the evening book's farm page. The book's existing "we saw the {thing}" lines get real pictures.
 - **Corn stall → home:** the corn stall's leftover husks go into the goat's trough before bed. It's a picture beat, with no ask.
 - **Home → home (Ali):** the animals are in bed, then the egg for Ali.
-- **Out of the day:** the evening book shows the photos. The safari later reuses the Snap kit and the animal actor; the adoption centre reuses the feed troughs and the animal actor.
+- **Out of the day:** the evening book shows the photos. The safari later reuses the Snap kit and the animal actor; the pet hotel reuses the feed troughs and the animal actor.
 
 **Rhythm:** put it in its place (5), count (6), Snap (7), Cook (8), put it in its place plus speaking (9). The same engine never comes twice in a row. The busy corn stall is followed by the calm walk home.
 
@@ -143,7 +143,7 @@ Cut: milking (no words; Zafar already cut it), watering with a can (Cook's pour,
 
 ### Who speaks, and where the lines go (all three stages)
 
-- **Nani says every line,** from a bubble at her own face (guide-and-card R3). Hannah Mami is on screen and **silent until her own lines are recorded:** she gestures (points at the lit box, waves an animal over, leads one in). No voice ever comes from a face that isn't its speaker.
+- **Nani says every line,** from a bubble at her own face (guide-and-card R3). Hannah Mami is on screen and **silent for now** (Zafar, 1 Nov: Nani or another placeholder for her lines and look; voices are settled before shipping): she gestures (points at the lit box, waves an animal over, leads one in). No voice ever comes from a face that isn't its speaker.
 - **The guide box** at the top of the side panel says only the next step, without a face, since Nani is also the asker (R4).
 - **The card's face is the customer:** the animal being fed, photographed or called. The pop-then-row card reads as "the hen wants", "the goat eating", "the goat comes".
 - **Word pills** follow the shared word ladder (SH-159, Zafar 29 Oct, `data/rules.json`): each animal, each food and each photo place carries its Kutchi in a pill with a speaker until that word has been picked right three times in a row, then the speaker only. The leak tables below mean "no text past support"; the leak bots play a learned save with the pills earned.
@@ -161,13 +161,13 @@ Cut: milking (no words; Zafar already cut it), watering with a can (Cook's pour,
 4. **Where is the instruction?** Nani asks from her bubble, standing on screen at the right, before any card. Each animal's card (its face) pops up big beside the side panel, then flies into its row on the order card.
 5. **What is novel?** The first game where an animal is the customer. Two words per move (which animal and how many) on one tap pair. And the count can't end by itself (below).
 
-**How a count closes.** **This reverses Zafar's easy-to-play principle 4 for counts** ("a count ends at the right number and an extra tap doesn't land", 21-22 Oct), because a count that stops at N lets a child win by tapping until it stops. It is put to him as decision 5; if he says no, the farm's counts stop at N like every other count game and the leak is noted. It keeps "no Done":
+**How a count closes (Zafar, 1 Nov; one rule for every game):** the natural next thing where it is clear and obvious (hand the basket over, serve the plate), never a button; otherwise stillness: the count closes about 1-1.5 s after the last tap. The pause is one setting in the data (`data/rules.json`, starting at 1.25 s), the same for every game. A count never stops itself at the right number: this replaces `easy-to-play.md` rule 4's "a count ends at the right number". Here:
 - Cobs pile up visibly in the trough. The count sits on the thing being counted.
 - The animal waits politely, looking at the cobs.
-- The step closes after a **stillness**: no tap for a set time (the rulebook's "a light waits until everything is still"). The time lives in `data/rules.json`; the lab tests it at **3 s and 4 s** with a three-year-old's pace before it's set (lessons §4: the ride had to run 50% slower). **One rule for the whole farm day, worded the same in `farm-eggs-orchard.md` §3:** a count closes on stillness, or at once when the child turns to the step's next thing, where there is one. Feeding and home at dusk have one live ask a step, so there is no next thing: here stillness is the only close. An empty trough never closes, and the stillness clock waits while anyone speaks or a joke plays.
+- The step closes after **stillness**: about 1.25 s after the last tap (the one shared setting). Feeding and home at dusk have one live ask a step and no clear next thing, so stillness is the close. An empty trough never closes, and the stillness clock waits while anyone speaks or a joke plays.
 - Until then, a tap on a cob in the trough takes it back.
 - On close, if the count is right, the animal eats and the row ticks gold.
-- If it's wrong, the trough gives a small shake and Nani says the number again. The child adds a cob or taps one back, there and then. The row then ticks plain, not gold, and **for moving up a level a redone row counts as a hint** (the rulebook counts hints, so a fished row mustn't climb the levels).
+- If it's wrong, the trough gives a small shake and Nani says the number again. The child adds a cob or taps one back, there and then. The row then ticks plain, not gold, and **a round with a redone row doesn't count towards moving up** (Zafar, 1 Nov: level up only on right-first-time rounds), so a fished row can't climb the levels.
 
 **The level ladder** (each level adds one Kutchi thing; the gesture never changes):
 
@@ -190,9 +190,9 @@ No "no" asks in feeding: "don't feed the cow" isn't a natural thing to ask, and 
 | **Patterns** | A fixed order, "the hen first", or "the model's animal is never asked". | The order, the counts, the foods and the model's animal are random per round. The animals' positions shuffle between rounds. |
 | **Waiting** | A glow on the answer, or a count that stops at N. | No glow on the answer. Hints only repeat the line (free); the helper card with the answer costs the bulb. The count never stops by itself. |
 
-**Blind odds:** L1 1 in 3 × 1 in 2 = **1 in 6** a round (17%, within the L1 allowance for supported words; it was really 1 in 2 when the model spent the cow). L2: 1 in 9 a row, about 1 in 730 a gold round, about 3% a level-up round.
+**Blind odds:** L1 1 in 3 × 1 in 2 = **1 in 6** a round (17%, within the L1 allowance for supported words; it was really 1 in 2 when the model spent the cow). L2: 1 in 9 a row, about 1 in 730 a gold round, which is now the only kind that counts towards moving up.
 
-**The bot's win (A1):** a round that would count towards moving up (at most one hint, a redone row counting as a hint). It must win under 10% of rounds from L2. It also reports gold rounds.
+**The bot's win (A1):** a round that would count towards moving up, which is a right-first-time round (every row gold; Zafar, 1 Nov). It must win under 10% of rounds from L2. It also reports gold rounds.
 
 **The delight moment:** all fed, everyone eats at once, a little farmyard orchestra of munch, peck and moo. Nani says *shabash* ✓, and Hannah Mami claps. The chicks run in and steal one kernel.
 
@@ -210,7 +210,7 @@ This is the farm's **"Nani says, do it"** (research-mechanics, top 10, no. 1: on
 1. **What do you do?** The goat stands in the middle of the yard. Around it are the places, each with its action: the trough (eat), the open field gate (run) from L1; the water bucket (drink) and the straw bed under the awning (sleep) from L2.
    - **Tap a place.** The goat trots there and does the action, in a loop: it eats, or races round the field and leaps back; from L2 it drinks, or curls up and snores.
    - The camera frame (soft white corners) follows the goat. Once the goat is doing something, its corners turn gold.
-   - **Tap the goat inside the gold frame:** click, flash, the goat looks into the lens, and a print slides out **silently** into its row (below). **The shutter never judges** (Snap's quality pass Q0, Zafar 25 Sept): no tick, no laugh, nothing at the click that tells right from wrong.
+   - **Tap the goat inside the gold frame:** click, flash, the goat looks into the lens, and the **instant camera prints**: the print slides out and drops into its row (below) **with a tick at once if it fits** (Zafar, 1 Nov: a tick on each correct shot, straight away; in testing, instant feedback works best for the youngest). This replaces the silent shutter of Snap's quality pass Q0 (25 Sept). No darkroom.
    - From L2 the hen also acts: tap the hen first (the frame glides to her), then a place, then her.
    - Before the shutter, tapping another place changes the action. That's the undo.
    - There's no shutter button: the cog stays the only button on the play screen.
@@ -218,13 +218,13 @@ This is the farm's **"Nani says, do it"** (research-mechanics, top 10, no. 1: on
 3. **Where is the fun?** The animal acts, then poses: on the click, the goat looks straight into the lens.
    - Running ends with a leap that lands nose-to-lens: **the first round's reward**.
    - From L2, drinking leaves a dripping beard; sleeping brings a snore bubble and one ear twitch.
-   - **The hand-in:** when the round's photos are taken, Nani says "let's look!" and holds up each print in turn, names what's in it ("Oh, the goat is eating!", P2) and ticks it if it fits. A print that doesn't fit is the joke, not a verdict: the goat mid-leap with its tongue out, say. Nani laughs and names it. **The first such print a round is kept as the bonus photo for the book;** later ones get the laugh and the naming, and nothing is kept. Then she asks that row again and the child retakes it (a plain tick).
+   - **The print:** as each print comes out, Nani names what's in it ("Oh, the goat is eating!", P2) and the row ticks if it fits. A print that doesn't fit is the joke, not a verdict: the goat mid-leap with its tongue out, say. Nani laughs and names it. **The first such print a round is kept as the bonus photo for the book;** later ones get the laugh and the naming, and nothing is kept. Then she asks that row again and the child retakes it (a plain tick).
 4. **Where is the instruction?** Nani is on screen, holding the camera at chest height. "Take a photo of the goat eating." The card pops up big: the goat doing it (its face is the customer's), while supported. It flies into its row.
 5. **What is novel?** The first game anywhere in Nani jo Ghar where a **verb** decides the move, and the first where the child makes a character act. The photo is a thing the child made, and it lives on in the book.
 
 **One job at a time:** each row is one photo. The make-it-act tap and the snap tap are one move: you can't snap until the animal acts.
 
-**Where the print goes.** The print lands on its row and the row's picture becomes the child's photo. That is a change to the shared `order-card.js` (non-negotiable 6), so it is put to the shared-layer owner as a **shared feature** (the party's and the safari's Snap will want it too), not built in the farm. Until it exists, the prints stand in a small tray at the bottom of the play area, in row order, face down, until the hand-in.
+**Where the print goes.** The print lands on its row and the row's picture becomes the child's photo. That is a change to the shared `order-card.js` (non-negotiable 6), so it is put to the shared-layer owner as a **shared feature** (the party's and the safari's Snap will want it too), not built in the farm. Until it exists, the prints stand in a small tray at the bottom of the play area, in row order, face up, each with its tick.
 
 **The level ladder:**
 
@@ -246,15 +246,15 @@ This is the farm's **"Nani says, do it"** (research-mechanics, top 10, no. 1: on
 | **Eliminating** | All the level's places stay live every row. Actions repeat across rows. Nothing greys out once used. | Asks drawn with replacement; never "one of each". |
 | **Patterns** | Eat first, then run. | Random order; places shuffle round the yard between rounds. |
 | **Waiting** | The frame turns gold for any action, so gold isn't the answer. Nothing glows the right place. | Hints repeat the line; the bulb's helper card costs. |
-| **Fishing** | Snap, watch for a tick, try the next place. | The shutter is silent; nothing is judged until the hand-in. A retaken row ticks plain and **counts as a hint for moving up**. |
+| **Fishing** | Snap, watch for a tick, try the next place. | It can finish a row, but a retaken row ticks plain, and **a round with a plain row doesn't count towards moving up** (Zafar, 1 Nov), so fishing never climbs a level. |
 
-**Blind odds:** L1 1 in 2 a row, **1 in 4** a gold round (supported words; within the L1 allowance). L2 1 in 8 a row (two actors, four places): about 1 in 500 a gold round, about **4%** a level-up round.
+**Blind odds:** L1 1 in 2 a row, **1 in 4** a gold round (supported words; within the L1 allowance). L2 1 in 8 a row (two actors, four places): about **1 in 500** a gold round, the only kind that moves up.
 
-**The bot's win (B1):** a round that would count towards moving up (at most one hint, a retaken row counting as a hint). Under 10% from L2. It also reports gold rounds (every print fits at the hand-in).
+**The bot's win (B1):** a round that would count towards moving up: every shot right first time (Zafar, 1 Nov). Under 10% from L2.
 
-The alternative (decision 6 option b) keeps a tick at the shutter, with a redone row counting as a hint and the bot's win being any tick. It reacts faster, but Zafar ruled the silent shutter in Snap's quality pass and named the fishing leak himself in chaat (CHT-14), so (a) is assumed.
+**Zafar, 1 Nov:** the tick comes at once, on each correct shot (the old option b); the silent shutter and the end-of-round hand-in are gone. The fishing leak he named in chaat (CHT-14) is closed by his levelling rule: only right-first-time rounds move up.
 
-**The delight moment:** the leap. The goat races off through the gate, loops the field, and lands in the frame mid-air on the click. The print catches it with all four hooves off the ground, and at the hand-in Nani laughs with delight at it.
+**The delight moment:** the leap. The goat races off through the gate, loops the field, and lands in the frame mid-air on the click. The print catches it with all four hooves off the ground, and as it prints Nani laughs with delight at it.
 
 **Speaking:** none at the first two visits. At the third visit, "You be Nani" (P4) flips it: the child says the verb from a closed set of 2-3 (*kha* ✓ "eat!" is already recorded; the others need their imperatives), and the goat does what it heard. It uses the shared "say it, the character acts" moment (`say.js`), never a seventh copy.
 
@@ -276,7 +276,7 @@ The scene is the same farmyard relit for golden evening. The shed's door is open
 
 #### C2 Call it over (speaking)
 
-**Gated:** C2 runs only once Mum has recorded the three names alone and her call to each animal (§9 "Mum first", items 1 and 2). The recogniser has nothing to match without them, and it is never device-spoken. Until then, home at dusk plays C1 only, and Hannah Mami leads the last animal in (a beat, no ask).
+**In the prototype** (Zafar, 1 Nov: nothing waits on a voice): C2 plays with Nani's call in the device voice where no take exists, and a tap on a pill counts as saying it. The recogniser listens once Mum has recorded the three names alone and her call to each animal (§9 "Mum first", items 1 and 2), before shipping.
 
 1. **What do you do?**
    - **Watch:** Nani calls one animal: "Hen, come here!" It trots to the gate, then goes home. The child has already heard Nani call each animal at breakfast.
@@ -337,20 +337,20 @@ C2 isn't a listening test: the recogniser decides, and the pills earn no speakin
 
 **The photo shoot (stage 7)**
 1. **The opening.** Midday. The goat stands centre stage; the trough is on the left, the open field gate at the back right. Nani at the right edge, holding the camera.
-2. **The model.** Nani, to Hannah Mami: "A photo of the goat eating." Hannah Mami points at the trough (its lit box); the goat trots over and eats; the frame turns gold; Nani snaps: click, flash, the goat looks up at the lens with full cheeks, and a print slides out silently into the tray. (Asks are drawn with replacement, so the model spends nothing.)
+2. **The model.** Nani, to Hannah Mami: "A photo of the goat eating." Hannah Mami points at the trough (its lit box); the goat trots over and eats; the frame turns gold; Nani snaps: click, flash, the goat looks up at the lens with full cheeks, and the instant camera prints; the print drops into the tray with its tick. (Asks are drawn with replacement, so the model spends nothing.)
 3. **The ask.** Nani turns to the child: "Take a photo of the goat running." The card (the goat mid-run) pops up and flies in.
 4. **First tap.** The two places are each lit. Tap the gate. The goat races through it, loops the field, and its frame follows; its corners turn gold.
-5. **Second tap.** Now only the gold frame is lit. Tap it as the goat leaps back: click, flash, all four hooves off the ground, nose to the lens. The print slides into its row, face down. No tick yet.
+5. **Second tap.** Now only the gold frame is lit. Tap it as the goat leaps back: click, flash, all four hooves off the ground, nose to the lens. The instant camera prints; the print drops into its row and ticks at once.
 6. **Second ask.** "Take a photo of the goat eating." Tap, tap.
    - If the child taps the gate instead, the goat runs (the undo is free until the snap).
-7. **The hand-in.** Nani: "Let's look!" She holds up each print in turn: "Oh, the goat is running!" and the row ticks gold. If a print doesn't fit, she laughs, names what's in it, it becomes the round's bonus photo, and she asks that row again for a retake.
+7. **A print that doesn't fit** comes out with no tick: Nani laughs, names what's in it ("Oh, the goat is sleeping!"), it becomes the round's bonus photo, and she asks that row again for a retake. When the photos are done, Nani says "Let's look!" and flips through them (a beat; nothing is judged again).
 8. **The end.** The photos sit in their rows. The word cards for eat, run and photo come up, then the end screen.
 
 **Home at dusk (stage 9)**
 1. **The opening.** Golden light; the three animals out and yawning. Nani and the child's character at the gate; Hannah Mami by the shed.
 2. **Watch.** Nani: "Hen, come here!" The hen trots to the gate, then up the coop ramp. Her chicks follow in a line, and the last chick runs back for a kernel (the joke).
 3. **The listening ask.** Nani: "Now the cow goes into the shed." The cow's card pops up and flies in. The goat and the cow are each lit. Tap the cow: it plods into the shed, and the window glows a little brighter. (A wrong tap: the goat looks puzzled and stays; the line again.)
-4. **The handover** (once Mum's names and calls are recorded; until then Hannah Mami leads the goat in and the round ends). Nani turns to the child and holds out a corn cob. The child's character steps forward. The card shows the goat's face, and the "your turn" mic bubble appears.
+4. **The handover** (in the prototype the call plays in Mum's take or the device voice, and a pill tap counts; the recogniser joins once her names and calls are recorded). Nani turns to the child and holds out a corn cob. The child's character steps forward. The card shows the goat's face, and the "your turn" mic bubble appears.
 5. **Rung 1.** Nani's call "Goat, come here!" plays, written and underlined in the child's bubble. The child says it. The mic shows it's listening, then what it heard. The goat trots over, nuzzles the cob, and goes into the shed. If the recogniser heard "hen", the hen pokes her head out of the coop and goes back in, and the goat is asked again. If there's no mic, the three pills are tapped instead.
 6. **The end.** The door closes and the window glows, with a sleepy chorus. Nani: "Good night!" The word cards for come here, go in, shed and coop come up, then the end screen. Then home, the egg for Ali, and the book with today's photos.
 
@@ -358,16 +358,15 @@ C2 isn't a listening test: the recogniser decides, and the pills earn no speakin
 
 ## 5. Later visits and harder versions
 
-- **Within a visit:** level up after 3 rounds with at most one hint each, where a redone or retaken row counts as a hint; never down (the rulebook). Free play can dip into any of the three stages at any level from the farm on the map. A level opens only when its words are recorded (§9).
+- **Within a visit:** level up after 3 right-first-time rounds (Zafar, 1 Nov); a round with a redone or retaken row doesn't count; never down (the rulebook). Free play can dip into any of the three stages at any level from the farm on the map. A level opens only when its words are recorded (§9).
 - **Second farm visit:** positions.
   - Home: "the goat sleeps next to the cow", "the chick behind the hen". The shed has stalls, and the place is said.
   - Photo shoot: "the chick with its mother", "the goat next to the cow".
   - P1 Count them in: "how many in the shed?" (*kitla* ✓), answered by tapping the right number of animals, never digits.
   - The orchard (its own design) joins this visit.
-  - The darkroom, if Zafar wants it here (§10, open questions).
 - **Third visit:** the child gives the orders. P4 "You be Nani" in the photo shoot: the child says eat (*kha* ✓), drink or sleep, and the goat does what it heard. C2 at rung 4: the card shows two animals and the child picks which to call.
 - **The book, later:** the past tense under each photo ("the goat ate", "the goat slept"), once Mum's past forms are in. The *khai* form is already in the engine.
-- **Reused elsewhere:** the animal actor and the troughs at the adoption centre; the Snap kit at the safari and the party.
+- **Reused elsewhere:** the animal actor and the troughs at the pet hotel; the Snap kit at the safari and the party.
 
 ---
 
@@ -391,19 +390,19 @@ C2 isn't a listening test: the recogniser decides, and the pills earn no speakin
 
 **Reused, designed but not built:**
 - put it in its place (`docs/game-design/modes/put-it-in-its-place.md`): feed and in you go.
-- count to a heard number (`count-to-a-number.md`): the cobs and the hens. If Zafar says yes to decision 5, the **close on stillness** goes into `easy-to-play.md` principle 4 and `count-to-a-number.md` in the same commit, with his name and date, as the everywhere rule; it isn't changed from here.
+- count to a heard number (`count-to-a-number.md`): the cobs and the hens. Zafar's one count close (1 Nov) replaces `easy-to-play.md` rule 4's "a count ends at the right number"; those docs change in their own commit.
 - The window ride's rule "nothing leaves before it's asked".
 
 **The Snap kit, rebuilt from the greybox** (`js/snap/`, parked). Kept as ideas, rewritten on the shared kit:
 - the photo record: what's in the frame, from `photo.js`;
-- the silent shutter and the hand-in that names each print and ticks what fits, from `handin.js`, quality pass Q0;
+- the naming of each print, from `handin.js`, now at the shot: a tick on each correct shot at once (Zafar, 1 Nov, replacing quality pass Q0's silent shutter);
 - the leak bot's shape, from `bot.js`.
 
-**Not used on the farm's first visit:** dragging the world to aim, the zoom and the film count. The darkroom, the instant camera or phone, and young Nani in old photos are Zafar's open questions for this rebuild (§10), not parked.
+**Not used on the farm's first visit:** dragging the world to aim, the zoom and the film count. Zafar, 1 Nov: **an instant camera that prints, and no darkroom** (too complicated). Young Nani in old photos is the book's question, not the farm's.
 
 **New to build:**
 1. **The animal actor** (small; the trip's one new piece). An animal sprite with pose states (idle, walk, eat, drink, sleep, run, look at the lens, peek out of its home), a walk to a named place, and an action loop, all as data. The safari and the adoption centre reuse it.
-2. **The Snap kit's frame and hand-in:** a soft-cornered frame that glides to an animal and follows it, goes gold when the shot is ready, and shoots on a tap inside it; the print slides out silently; the hand-in holds each print up for Nani to name and tick. The safari designer adds the moving road on top.
+2. **The Snap kit's frame and hand-in:** a soft-cornered frame that glides to an animal and follows it, goes gold when the shot is ready, and shoots on a tap inside it; the instant camera's print slides out and drops into its row with a tick at once if it fits, as Nani names it. The safari designer adds the moving road on top.
 3. **Data:** `data/day.json` farm stages; the yard's spots; asks per level; the evening relight's swap; the stillness time in `data/rules.json`.
 4. **Leak bots** for A1, B1 and C1 (adapters in `build/tools/review/leak-games/`), playing a learned save with the pills earned. Each bot's win is written in §3: a round that would count towards moving up (A1, B1) or every ask right first tap (C1); under 10% from L2.
 5. **Lab pages** for each stage with a level picker (the clinic heal lab's pattern), plus the grey-box layout lab (§7) before any art run.
@@ -424,7 +423,7 @@ C2 isn't a listening test: the recogniser decides, and the pills earn no speakin
 
 **E, eye level, front**, one camera for the farmyard in all three stages. The horizon sits high so the ground fills the frame. Troughs, the bucket, the basket and the straw bed are in **F view** (about 10° down), so the cobs in a trough can be counted. All animals stand on the ground and get contact shadows from code. Nothing floats.
 
-### Art needed (backgrounds locked first; two blocks, then Hannah Mami)
+### Art needed (backgrounds locked first; two blocks; Hannah Mami a placeholder for now)
 
 The first plan was about 35 cut-outs in one block, nearly double the biggest run so far (s07 B, about 20 with redos). It is staged:
 
@@ -442,7 +441,7 @@ The first plan was about 35 cut-outs in one block, nearly double the biggest run
 
 **Block 2 (L3-L4 and the second visit):** the small goat (the same goat, scaled, younger face); the hen pair and trio and the hen at the lens (poses of the shared hens); the cow drink, walk, lie down, three-quarter, front; grass bundle and grass in a trough; water in a trough; cobs 4-5; the animals peeking out of their homes.
 
-**Hannah Mami, after her likeness run (Zafar):** three-quarter and front-facing (UX §16), waist up and full; pointing, clapping, leading an animal. The farm doesn't ship without her, since she hosts the day.
+**Hannah Mami (Zafar, 1 Nov: Nani or another placeholder for her look and lines for now):** three-quarter and front-facing (UX §16), waist up and full; pointing, clapping, leading an animal. Her likeness and voice are settled before shipping.
 
 **The child's character:** the shared character layers, standing at the gate holding a cob (a pose for the shared kit, not a farm-only sprite).
 
@@ -476,7 +475,7 @@ The left fifth (about 22%) is the side panel at every size. "Keep the left for t
 - **Peekaboo Barn** (Night & Day Studios): an animal appears, then a human voice names it. Cause and effect plus the name, loved by toddlers. Borrowed: every animal reacts the moment it is named and acted on, and the word comes with the reaction.
 - **Sago Mini Farm:** animals react to whatever you do, but reviewers say open play bores children who want the app to "do something". Borrowed: the reactions. Added: Nani's ask gives the toy a goal.
 - **Nintendogs:** you call your pet by its name and it comes. Borrowed: calling an animal by voice as the speaking moment, with a closed set of names.
-- **Pokémon Snap:** the subject reacts to the shutter and the photo is judged by what's in it, after the run. Borrowed: the look into the lens, and Nani naming what's really in the photo at the hand-in. Not borrowed: the rail and the score.
+- **Pokémon Snap:** the subject reacts to the shutter and the photo is judged by what's in it, after the run. Borrowed: the look into the lens, and Nani naming what's really in the photo as it prints. Not borrowed: the rail and the score.
 - **TOEM:** characters ask for particular photos. Borrowed: Nani's photo asks, which feed the book.
 - **"Simon says" without the trick** (TPR; research-mechanics no. 1): "Nani says, do it", with the verb deciding which action happens.
 - **Toca Kitchen 2:** guests react to food. Borrowed: each animal eats in its own way.
@@ -484,7 +483,7 @@ The left fifth (about 22%) is the side panel at every size. "Keep the left for t
   - the window ride's rule that nothing leaves before it's asked;
   - Cook's order card and the pop-then-row;
   - the clinic's "why" beat;
-  - Snap's quality pass (Q0): the shutter is silent, an unasked print is named, not judged, and rows tick at the hand-in.
+  - Snap's quality pass (Q0): an unasked print is named, not judged. Its silent shutter is replaced by Zafar's tick on each correct shot (1 Nov).
 
 Sources: research-other-games and research-mechanics (31 Oct). [Common Sense Media on Sago Mini Farm](https://www.commonsensemedia.org/app-reviews/sago-mini-farm); [BridgingApps on Sago Mini Farm](https://bridgingapps.org/?p=29033); [Common Sense Media on Peekaboo Barn](https://www.commonsensemedia.org/app-reviews/peekaboo-barn); [WonderBaby on Peekaboo Barn](https://www.wonderbaby.org/?p=3281).
 
@@ -494,39 +493,39 @@ Sources: research-other-games and research-mechanics (31 Oct). [Common Sense Med
 
 | Group | Verdict |
 |---|---|
-| 1 The heard word decides | **Pass, with a recording gap.** A leak test and a bot win rule per mini-game (A1, B1, C1). The deciding words are named in §1, and the frame table says what each heard sentence needs: **only corn and small are deciding clips on their own today**; *kha* ✓ is the imperative and decides nothing until the third visit's speaking. The animals, numbers, the verbs' present forms and every frame are to record. **Until Mum records them, a reader can win on the grey English** (AUD flaw 2), so the stages don't count as teaching until then, and C2 can't run at all. No outlines or dirt mark the answer. Ticks are first go only, and the photo shoot's tick waits for the hand-in. A redone row counts as a hint. Two words per move from L2. |
+| 1 The heard word decides | **Pass, with a recording gap.** A leak test and a bot win rule per mini-game (A1, B1, C1). The deciding words are named in §1, and the frame table says what each heard sentence needs: **only corn and small are deciding clips on their own today**; *kha* ✓ is the imperative and decides nothing until the third visit's speaking. The animals, numbers, the verbs' present forms and every frame are to record. **Until Mum records them, a reader can win on the grey English** (AUD flaw 2), so the stages don't count as teaching until then; in the prototype C2 runs on the device voice and the pills. No outlines or dirt mark the answer. Ticks are first go only, and the photo shoot ticks each correct shot at once (Zafar, 1 Nov). A round with a redone row doesn't count towards moving up. Two words per move from L2. |
 | 2 Onboarding | **Pass.** The first round is the tutorial, with one lit box at a time, no finger and no flying item: each model shows the two taps as lit boxes, and Hannah Mami points, never carries. The basket is shown at the start (it isn't on the card). The photo's gold frame is shown once. It's tap then tap, with 3 places at L1 (feed) and 2 (photo); no drags. |
 | 3 Instructions | **Pass.** Nani is on screen and speaks first, from her own bubble; the guide box says the step without a face; the card's face is the animal; the card pops up big, then flies to its row. A model exchange plays before each first ask. One line per moment: Hannah Mami is silent until her own lines exist. Listening again is free. |
-| 4 Pacing | **Pass, one change put to Zafar.** No Next or Done; counts close on stillness (3-4 s, lab-tested), which reverses easy-to-play principle 4 for counts (decision 5). Hints at 7/9/11/13 s. The call comes after the light. Nothing leaves before it's asked. The ask is repeated for non-readers. |
+| 4 Pacing | **Pass.** No Next or Done; counts close on stillness about 1.25 s after the last tap, Zafar's one count close (1 Nov; decision 5). Hints at 7/9/11/13 s. The call comes after the light. Nothing leaves before it's asked. The ask is repeated for non-readers. |
 | 5 Feedback | **Pass.** A shake and the word; a wrong item redone on the spot; each miss gets a different puzzled face; an unasked photo is a joke, and one a round is kept for the book. It ends when the job is done, with something served (everyone eats; the photos; the door shuts), then the shared end screen. Undo until the step moves on: a tap on a cob takes it back; a hen on the ramp goes back to the yard; another place changes the action before the snap. |
 | 6 Layout | **Not yet.** The first phone plan didn't add up; the revised one (depth, one person at a time on phones) is proved in a grey-box lab at the four sizes and the Z Fold before the art run. |
 | 7 Art | **Pass on paper.** One camera (E, with F items). Real art only, with code moving it. Contact shadows. Calm animation. Two poses per speaker. Two staged blocks, then Hannah Mami. **Exception:** the old goat set and the `i1` goat don't match; one must be redone. |
-| 8 Speaking | **Pass, gated.** Inside a watched exchange (Nani at breakfast and at dusk), the recogniser's set always the three names with the pills always there, and never a gate. It uses the shared `say.js` moment. It runs only once Mum's names and calls exist. |
+| 8 Speaking | **Pass, gated.** Inside a watched exchange (Nani at breakfast and at dusk), the recogniser's set always the three names with the pills always there, and never a gate. It uses the shared `say.js` moment. In the prototype it runs on the device voice and the pills; the recogniser waits for Mum's names and calls. |
 | 9 Levels | **Pass, one exception.** L1 to L4 follow the rulebook (L1 yes only; L2 numbers; L3 other ways; L4 look-alike), and each level is designed. A level opens when its words are recorded. **Exception:** no "no" asks in feeding or the photo shoot (a reason given, as the rulebook allows). |
 | 10 Words | **Over the cap, said.** About 44 takes for the three stages (about 30 at L1-L2), about 55-60 for the farm day: double the template's first-visit figure. Split by level into sittings below; the day's length is decision 19. Things are named as they are at that moment (corn on the cob, not "food"). Every count is said. At most 3-5 new words a round, each heard 3+ times. |
 | 11 Culture | **Pass.** No pig (Zafar, 31 Oct). Food is corn, water and grass, with no sweets or treats as rewards. Modest clothes. No religious markers. |
 | 12 Fun | **Pass.** The hands work at every step, and each stage has a "kind of funny" moment in its first round: the nose boop, the leap into the lens, the chick that runs back, the hen peeking out of the coop. Contrast comes from the cow's slow chew against the hen's fast pecks. Consecutive stages never repeat the main action. Everything carries into the book. |
-| 13 Twice-made mistakes | The count-closing rule is **put to Zafar** as a change to his principle 4, not set for every game from here. Judging needs film, because the animals' actions only show in motion. All four levels and all five sizes are specified, the phones proved in a lab first. The open questions are Zafar's (§10). |
+| 13 Twice-made mistakes | The count close is **Zafar's one rule for every game** (1 Nov). Judging needs film, because the animals' actions only show in motion. All four levels and all five sizes are specified, the phones proved in a lab first. The open questions are Zafar's (§10). |
 
 **The ten questions:**
 1. The animal names, the verbs' present forms and the numbers decide. Two deciding words are recorded on their own today (corn, small).
-2. The Sceptic at L2+ fails: about 3% (feed) and 4% (photo) a level-up round. Elimination is blocked by keeping the model's animal askable, repeats and beats; patterns by shuffling; waiting by the free hint giving no answer; fishing by the silent shutter.
+2. The Sceptic at L2+ fails: about 1 in 730 (feed) and 1 in 500 (photo) a level-up round, now that only right-first-time rounds move up (Zafar, 1 Nov). Elimination is blocked by keeping the model's animal askable, repeats and beats; patterns by shuffling; waiting by the free hint giving no answer; fishing by the levelling rule (only right-first-time rounds move up).
 3. Every animal is equally hungry, keen or sleepy.
 4. The basket, then the troughs; the two places, then the gold frame; the mic bubble.
 5. Nani (Mum's voice) asks in every stage, from her own bubble; Hannah Mami hosts silently until her lines exist.
 6. Tap the basket and trough; tap the place and the frame; speak or tap a pill.
 7. The nose boop, the leap into the lens, the chick running back.
-8. Everyone eats; the hand-in; the door shuts with a sleepy chorus.
+8. Everyone eats; the prints, each ticked as it comes out; the door shuts with a sleepy chorus.
 9. See the ladders. Each L4 has its own look-alike.
 10. Not yet: the grey-box lab first, with one camera.
 
 ### Mum first: her sheet, in order
 
-C2 is gated on items 1 and 2; everything else unlocks a level when it lands. Never device-spoken in a store build.
+For the prototype the device voice fills any gap and C2 works on the pills (Zafar, 1 Nov); C2's recogniser needs items 1 and 2. Each item makes a level teach when it lands. Never device-spoken in a store build.
 
 | Order | What | Takes | Unlocks |
 |---|---|---|---|
-| 1 | **The three animal names alone:** hen, goat, cow. **Ask: is *murgi* the live hen** (the inventory has it as "chicken" in cooking)? Is *bakri* the word for the yard's goat? | 3 | every stage's deciding words; the recogniser's templates |
+| 1 | **The three animal names alone:** hen, goat, cow. **Ask: is *murgi* the live hen** (Zafar thinks so, to confirm) (the inventory has it as "chicken" in cooking)? Is *bakri* the word for the yard's goat? | 3 | every stage's deciding words; the recogniser's templates |
 | 2 | **Nani's call to each animal:** "Hen / Goat / Cow, come here!" Ask: is "come here (to a child)" how she'd call a goat? | 3 | C2 |
 | 3 | **The present forms** of eat, run, go in (she-thing), and "wants" with an animal (F1, P2, H1); then drink, sleep (L2); then the plurals (L3) | 4 + 2 + 5 | feed L1, photo L1, home L1; then L2, L3 |
 | 4 | **The frames:** F1, P1 (eat, run), H1 (shed, coop); then F2, P1 (drink, sleep), H2; then F3, F4, P3 | 7, then 6, then about 6 | the same levels |
@@ -544,9 +543,9 @@ Each line gives the choice, the reason, and the answer I assumed. Answer "yes to
 2. **"Nani says, do it" lives inside the photo shoot:** make the animal do it, then take its photo. The verbs get a goal, the photos carry into the book, it adds no 12th stage, and it differs from the safari's Snap (which watches verbs pass). Your row 7 asks ("the hen", "two goats", "the big goat") become L2-L4's who, how many and big; **L1 is eat and run with the goat alone**, so the leap into the lens is the first round's reward. The alternative is L1 "take a photo of the goat / the hen / the cow" (nouns), with verbs from L2. *Assumed: verbs at L1 (eat, run).*
 3. **Feeding counts corn cobs, not scoops.** *Makai* ✓ is already recorded, so "scoop" needs no recording, and it links to the corn stall. *Assumed: yes.*
 4. **Every animal eats every food.** Otherwise real-life knowledge ("goats eat grass") picks the answer instead of the word. *Assumed: yes.*
-5. **This reverses your easy-to-play principle 4 (21-22 Oct) for counts.** A count that stops at the right number lets a child win by tapping until it stops. Instead a count **closes on stillness** (no Done), or at once when the child turns to the step's next thing where there is one (none in this design's stages), the time in `data/rules.json`, lab-tested at 3 s and 4 s, one rule and one question for both farm designs (`farm-eggs-orchard.md` decision 2 and open question 1, which lists the alternatives); take a cob back by tapping the cob, not the trough; a redone count ticks plain and counts as a hint. If yes, it becomes the rule for every count game, changed in `easy-to-play.md` and `count-to-a-number.md` with your name and date. If no, the farm's counts stop at N and the leak is noted. *Assumed: yes, starting with the farm's lab.*
-6. **The photo shoot's tick.** (a) **The shutter stays silent,** as your Snap quality pass decided (25 Sept): prints slide out unjudged; at the hand-in Nani holds up each, names it and ticks the ones that fit; a retake counts as a hint. (b) A live tick at the shutter, with a redone row counting as a hint and the bot's win being any tick: quicker feedback, but it lets a child fish (your chaat point, CHT-14). Either way: tap to frame, tap the gold frame to shoot; no drag-to-aim, zoom, film count or shutter button. *Assumed: (a).*
-7. **One unasked photo a round is kept as a funny bonus photo** for the book, named by Nani at the hand-in; later ones get the laugh and nothing is kept, so the joke can't be farmed. *Assumed: yes.*
+5. **The count close: Zafar's one rule (1 Nov).** The natural next thing where it is clear; otherwise stillness, about 1.25 s after the last tap (one data setting, the same in every game). Feeding has no clear next thing, so it closes on stillness. A count never stops itself at the right number. Take a cob back by tapping the cob, not the trough; a redone count ticks plain.
+6. **The photo shoot's tick: Zafar, 1 Nov, a tick on each correct shot, straight away,** from an instant camera that prints; **no darkroom.** The print slides out and drops into its row with its tick; a print that doesn't fit gets Nani's laugh and naming, then a retake that ticks plain. Only right-first-time rounds move up, so fishing can't climb. Tap to frame, tap the gold frame to shoot; no drag-to-aim, zoom, film count or shutter button.
+7. **One unasked photo a round is kept as a funny bonus photo** for the book, named by Nani as it prints; later ones get the laugh and nothing is kept, so the joke can't be farmed. *Assumed: yes.*
 8. **The cast:** a she-goat (*bakri*, since the take exists), a mother hen with three chicks (two more hens from L2), a cow (*gai*), and a small goat at L4. **The hens and chicks are the farm's one cast with `farm-eggs-orchard.md` (its decision 24):** the big red-brown mother hen, the small white hen and the big white hen, and the mother hen's three chicks, drawn new in the 3D style in place of the old `assets/characters/` hen sprites; the hen the child feeds is the hen that lays (consistency pass, 1 Nov). No dog, camel or buffalo on the first visit. *Assumed: yes.*
 9. **No "no" asks** in feeding or the photo shoot. "Don't feed the cow" isn't a natural thing to ask. The rulebook lets a game skip them with a reason. *Assumed: yes.*
 10. **Home keeps "each animal to its own place, one at a time, the place named"** (your 20-21 Oct row), with a listening ask at every level, L1 included; the heard word decides **who goes now**, and the place is named but doesn't decide (a coop looks like a hen's home, so "where" would be won by picture). *Assumed: yes.*
@@ -554,31 +553,28 @@ Each line gives the choice, the reason, and the answer I assumed. Answer "yes to
     - The child watches Nani call three animals at breakfast and one at dusk.
     - Then the handover: Nani hands over a corn cob, and rung 1 (say it after) begins.
     - The recogniser's set is always the three names; the animal it heard reacts, even a wrong one (one already in peeks out and goes back).
-    - **C2 waits for Mum's names and calls;** until then Hannah Mami leads the last animal in. *Assumed: yes.*
+    - **In the prototype C2 runs on the device voice and the pills** (Zafar, 1 Nov: nothing waits on a voice); the recogniser joins when Mum's names and calls are recorded.
 12. **The last animal out is never a free tap.** It's called by voice, or Hannah Mami leads it in (a beat). This stops elimination. *Assumed: yes.*
-13. **Nani says every line in all three stages for the first build** (Mum's voice exists), from her own bubble. Hannah Mami hosts silently: she points, waves the animals over, claps and leads one in, until her own lines are recorded. *Assumed: yes.*
+13. **Nani says every line in all three stages for the first build** (Mum's voice exists), from her own bubble. Hannah Mami hosts silently: she points, waves the animals over, claps and leads one in. **Zafar, 1 Nov: Nani or another placeholder for Hannah Mami's lines and look for now.** **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 14. **The evening is the same yard relit,** not a new scene. It's one camera, and the art bible's relight rule. *Assumed: yes.*
 15. **Positions on the second visit; "you give the orders" on the third** (the goat obeys the child's verb, starting with *kha* ✓). That's your scope line, with the speaking flip from the research's top 10. *Assumed: yes.*
-16. **The animal actor is the trip's one new engine piece,** built to be reused at the safari and the adoption centre. The template allows at most one new engine per trip. *Assumed: yes.*
+16. **The animal actor is the trip's one new engine piece,** built to be reused at the safari and the pet hotel. The template allows at most one new engine per trip. *Assumed: yes.*
 17. **One goat look:** match the old goat poses and the `i1` road goat. The new art redoes whichever set you don't pick. *Assumed: keep the `i1` road goat (it matches the farm road you approved) and redo the poses.*
 18. **The chick that runs back** is the evening's fixed joke. The egg stage keeps its own joke (the chick under the hen). *Assumed: yes.*
 19. **The day is long in words:** about 55-60 takes for the farm day, double the template's first-visit figure. Your 21 Oct word is "keep animals home in for now, move it to a second farm day if the day is too long." I've kept home at dusk on the first visit and cut by **level** instead: each stage opens at L1 after Mum's first sitting (about 21 takes for these three stages), and L2-L4 open as later sittings land. The alternative is your own rule: home at dusk moves to the second farm day, saving about 9 first-sitting takes (the calls, go in, its frames, shed, coop, good night). *Assumed: keep it, split by level.*
-20. **Art in two blocks** (L1-L2 first, then L3-L4 and the second visit), Hannah Mami after her likeness run, and a grey-box layout lab before either. *Assumed: yes.*
+20. **Art in two blocks** (L1-L2 first, then L3-L4 and the second visit), Hannah Mami on Nani or another placeholder look for now (Zafar, 1 Nov), and a grey-box layout lab before either.
 21. **The photo in the order card's row** is asked of the shared-layer owner as a shared feature, not built in the farm. *Assumed: yes.*
 
-**Open questions that are genuinely yours** (the build goes ahead on the recommendation unless you say otherwise):
-- **Snap's rebuild, your 14 Oct list** ("undecided until Snap is rebuilt"). This is that rebuild:
-  - **The darkroom** (the children develop the photos, then place each in the right place in the book with Nani). *Recommend:* not on the farm's first visit (the photos go straight to the book's farm page); the darkroom as the book's "stick in the photo" page, or the farm's second visit.
-  - **Instant camera or phone.** *Recommend:* an instant camera: the print slides out, which is the hand-in, and it leads into the darkroom later; a phone brings a screen into the scene.
-  - **Young Nani in old photos.** *Recommend:* not a farm question; the book's, when it's redesigned.
-- **Hannah Mami's likeness and voice** (open since 20 Oct). Until then, Nani does every line and the farm doesn't ship.
-- **For Mum** (on the next sheet, not design choices): is *murgi* the live hen; is "come here (to a child)" how she'd call a goat; the present and plural forms in §1.
+**Open questions:** none left for Zafar (1 Nov: Snap is an instant camera with a tick on each correct shot and no darkroom; Hannah Mami is a placeholder for now; young Nani in old photos belongs to the book).
+- **For Mum** (on the next sheet, not design choices): is *murgi* the live hen (Zafar, to confirm); is "come here (to a child)" how she'd call a goat; the present and plural forms in §1.
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-**Run order:** prompt 1 first. Once Zafar approves its yard, attach that image as the **first** reference of prompts 2, 3 and 4 (relit for 3), since a fresh run has no memory of the last. The people are **stand-ins, not likenesses** (caption for Zafar): Nani is from her locked s08 sheet; Hannah Mami is left out until her likeness run; the child in prompt 3 is a stand-in for the shared character layers. All UI (frame brackets, glows, bubbles, the mic) is code-drawn; where a mock-up shows a bracket, it's to judge the moment, and Zafar is told so.
+**Run order:** prompt 1 first. Once Zafar approves its yard, attach that image as the **first** reference of prompts 2, 3 and 4 (relit for 3), since a fresh run has no memory of the last. The people are **stand-ins, not likenesses** (caption for Zafar): Nani is from her locked s08 sheet; Hannah Mami is left out (a placeholder for now); the child in prompt 3 is a stand-in for the shared character layers. All UI (frame brackets, glows, bubbles, the mic, the tick on a right shot) is code-drawn; where a mock-up shows a bracket, it's to judge the moment, and Zafar is told so. The camera is an instant camera that prints (Zafar, 1 Nov).
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt farm-animals-1: Feeding time (stage 5, L2)
 
@@ -705,3 +701,10 @@ Each finding from `farm-animals-critique.md` (1 Nov), then what was done.
 19. **SHOULD: the asset list, the bots' win, and the shared order card.** Done. An asset table per mini-game (§6); each bot's win written in §3 and §6; the photo-in-the-row put to the shared-layer owner as a shared feature (decision 21), with a play-area tray until then.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The hens and chicks are now the farm's one cast with `farm-eggs-orchard.md` (its decision 24): three new 3D hens (the big red-brown mother hen, the small white hen, the big white hen) and the mother hen's three chicks, drawn once in that design's Block 1 with this design's poses on the same sheets; the old `assets/characters/` hen sprites are dropped (§7, decision 8), and the prompts' "russet hen" is now the same big, plump red-brown hen. The count close is worded the same in both farm designs (stillness, or the step's next thing where there is one; an empty trough never closes; the clock waits for speech), and decision 5 is one question with `farm-eggs-orchard.md` open question 1. The prompts no longer name Zafar.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **Snap:** a tick on each correct shot, at once, from an instant camera that prints; the silent shutter, the end-of-round hand-in and the darkroom are gone (§3 B1, §4, §5, §6, decisions 6-7, the open questions).
+- **One count close:** stillness about 1.25 s after the last tap (one data setting), the natural next thing where there is one; never stopping at the number (§3 A1, decision 5, checklist).
+- **Level up only on right-first-time rounds:** a redone or retaken row no longer counts as a hint; the round doesn't count (§3, §5, the bots' wins and odds).
+- **Voices and Hannah Mami:** Nani or a placeholder for her lines and look; the prototype plays existing takes and the device voice, and C2 works on the pills; nothing waits on a voice (§0, §3, §9, decisions 11, 13, 20).
+- **Words:** *murgi* for the hen is marked "Zafar, to confirm". **The pet hotel** replaces the adoption centre. **Clothes:** the prompt sheet's line is added before the prompts.

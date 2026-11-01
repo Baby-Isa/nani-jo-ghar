@@ -141,7 +141,7 @@ This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts
 | **Waiting** | Nothing packs itself and nothing glows on the answer. The hint after 7, 9, 11 or 13 s repeats the ask. The helper card, which costs a bulb, shows the full answer |
 | **Fishing** | A wrong tap: the thing wriggles, Nani says its word (*hi na, hu*: "not this one, that one" when it fits), and it stays out. Only a first-go right pick (and a right first count) ticks gold and moves the word's ladder (lessons §1) |
 
-**The bot:** winning means at least 80% of rows ticked gold. The random bot and the "never a toy" bot must win under 10% of rounds from L2. **Count rows have their own line:** the "pack every one of the asked thing" bot never ticks a count row gold, and the "knows the noun, guesses the count" bot ticks under 1 in 2 of them. At L1 a random tapper wins about 1 round in 6, within the supported level's allowance.
+**The bot:** winning means every row ticked gold (a round that moves up; Zafar, 1 Nov: level up only on right-first-time rounds). The random bot and the "never a toy" bot must win under 10% of rounds from L2. **Count rows have their own line:** the "pack every one of the asked thing" bot never ticks a count row gold, and the "knows the noun, guesses the count" bot ticks under 1 in 2 of them. At L1 a random tapper wins about 1 round in 6, within the supported level's allowance.
 
 **Mistakes:** never a cross. Each toy has its own way back out: the teddy climbs out and waves, the ball boings off the wall and rolls back, the toy car reverses out with a beep, the doll sits up and shakes her head. A wrong school thing just hops back to its place.
 
@@ -242,7 +242,7 @@ This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts
 
 #### The bots for B (written per level)
 
-A lesson wins at 80% of jobs gold. Targets: the random bot wins **under 10% at L1 and under 2% from L2**; the "knows one of the two words" bot under 15% at L2 and under 10% from L3; the "remembers the model" bot no better than random.
+A lesson wins when every job is gold (Zafar, 1 Nov: only right-first-time rounds level up). Targets: the random bot wins **under 10% at L1 and under 2% from L2**; the "knows one of the two words" bot under 15% at L2 and under 10% from L3; the "remembers the model" bot no better than random.
 - **L1** (draw, colour): B1 1 in 3 (three pictures, the model's never among them) × B2 1 in 4 (two pictures, two chalks) = **about 1 in 12 (8%)**.
 - **L2** (three jobs of B1-B4): B1 1 in 4; B2 1 in 3 pictures × 1 in 3 tools = 1 in 9; B3 1 in 4; B4 1 in 3 × 1 in 3 = 1 in 9. Any three: **under 1%**. The one-word bot (knows the noun or the number/colour, not both) is left two candidates per job, so 1 in 2 each and **about 1 in 8 (12%) for three jobs**; it still loses almost nine lessons in ten. Adding a third candidate per word would mean six groups on a phone board, so I accept 12% at L2 and hold the 10% line from L3, where size adds candidates.
 - **L3-L4:** lower again; the bot proves it on the second run.
@@ -277,7 +277,7 @@ Total: about three minutes, two plus two asks, two of each shown. Each new word 
 
 ## 5. Later visits and harder versions
 
-- **The ladder:** each game moves up after 3 rounds at a level with at most one hint each; never down (rulebook).
+- **The ladder:** each game moves up after 3 right-first-time rounds at a level with at most one hint each (Zafar, 1 Nov); never down (rulebook).
 - **The second art run (L3-L4):** the lunchboxes, Ali's bag, the pen, separate crayons, the water bottle, the toy car and doll; the sun, ball and fish on the board; yellow, blue and white; once Mum confirms them, apple and banana (with the lunchbox's apple carried to the board).
 - **Second visit:** more school things (ruler, rubber, pen, notebook, pencil case, to record); colours to six; numbers to 7 on the board; the child-as-teacher turn.
 - **Third visit:** numbers to 10 on the board (*chh, sat, ath, no, do* are drafts in the engine; Mum checks them); shapes if she has the words; the class hand-out (B6) once the party's give-to engine is built ("give the red crayon to the girl").
@@ -302,7 +302,7 @@ Total: about three minutes, two plus two asks, two of each shown. Each new word 
 - Leak bots for both (`leak_school_bag`, `leak_board`), with the "never a toy", "every pencil", "one word only" and "remembers the model" bots.
 - Words for Mum's school round (below).
 
-**Mum's school round (the first job).** Speaker in brackets: N Nani, T the teacher, A Ali. **Nothing marked T records until Zafar answers open question 1** (who voices the teacher).
+**Mum's school round (the first job).** Speaker in brackets: N Nani, T the teacher, A Ali. Who voices the teacher is settled before shipping (Zafar, 1 Nov); for the prototype, T lines play in any take or the device voice.
 - **Words:** school, teacher, book, pencil, crayon, bag, lunchbox, bottle, chalk, board, sticker, ball, teddy, doll; draw, colour, rub out, count, put a ring round; sun, fish, tree, flower; yellow, blue, white; one to five as clips; *ghar* as a clip; "your" and "Ali's"; "show-and-tell" if there's a family way to say it; confirm *safarjan* and *kelo*; and a question: does Kutchi have circle, square, triangle?
 - **Lines, A (N):** "School today! Let's pack your bag." / "Today it's school." / "Put the {thing} in the bag." / "Put {n} {things} in the bag." / "Not the {toy}." / "Your {thing}, not Ali's." / "Take your {toy} to school today: it's show-and-tell." (whole frame; no verb guessed) / "Simba! Out you come."
 - **Lines, B (T):** "Good morning! Come, you're my helper today." / "Ali, draw the bird / the goat / the car." (the speaking models) / "Now you: draw the {thing}." / "Draw it!" "Colour it!" "Rub it out!" / "Colour the {thing} {colour}." / "Put a ring round the {n} {things}." / "How many?" / counting along ("one, two, three", as one line and as single words) / "that's two!" / "Rub out the {thing}." / "Well done, my helper." / "Give me your book."
@@ -358,7 +358,7 @@ Sources: [The Tracing-to-Animation Formula, Screenwise](https://screenwiseapp.co
 | 6. Layout | Passes on paper at the four sizes (§7): bag capped at seven slots; the teacher's bubble in her own column; nobody stands on the card side. To prove with a mock-up and on film |
 | 7. Art and camera | Passes: one E camera per scene; chalk is real art revealed by a mask; no text in the room; about 48 pieces in four blocks for the first run, counted |
 | 8. Speaking | Passes: only the child-as-teacher turn, watched first; closed set of three confirmed words heard in clips; pills always; reuses `say.js`; off until its model lines are recorded |
-| 9. Levels | Passes: each level adds one thing, L4 is its own (lookalikes, two in one line); level up after 3 rounds; the Kutchi gets harder, never the gesture |
+| 9. Levels | Passes: each level adds one thing, L4 is its own (lookalikes, two in one line); level up after 3 right-first-time rounds (Zafar, 1 Nov); the Kutchi gets harder, never the gesture |
 | 10. Words and recording | Passes as a plan: every line listed with its speaker (§6); 3-5 new words a round, each heard three times in a right-go round |
 | 11. Culture | Passes: modest clothes, no religious markers, fruit in the lunchbox, stickers not sweets, no celebrations |
 | 12. Fun and delight | Passes: the drawing comes alive, the dodge, Simba in the bag, the bouncing count; no two jobs in a row share an action |
@@ -401,7 +401,7 @@ Each is the choice, the reason, and the answer I assumed.
 19. **The lunchbox holds fruit only;** its "week" stays parked with the days of the week. *Assumed: yes (your 31 Oct answer).*
 20. **From L2, both deciding words are needed for every ask** (dropping either leaves at least two candidates), as a data check and a one-word bot. Covers loanword nouns and keeps the nouns teaching. *Assumed: yes.*
 21. **Parked, not dropped:** the class hand-out (B6, needs give-to) and what's gone? (B7). *Assumed: yes.*
-22. **Both games wait for Mum's school round before a build;** the lab may be built on placeholders, but the leak bot is run on recorded words only. *Assumed: yes.*
+22. **The prototype doesn't wait for Mum's school round:** it plays on existing takes and the device voice (Zafar, 1 Nov); the leak bot is run on recorded words only.
 23. **The day's order is the wake-up clock's:** clock (the night before, to sunrise), the door with its sky, getting ready, the bag, the bus, the board, home, the book. Door-then-clock ran time backwards. `do-it-engine.md` §2B now has the same order (fixed in the consistency pass, 1 Nov). *Assumed: yes.*
 24. **The model never hands over the answer:** Ali's picture is rubbed out and the board re-dealt, so it is never the child's next candidate. The model plays on each level's first lesson and before each speaking turn; otherwise a tap skips it. Its rub uses the child's gesture. *Assumed: yes.*
 25. **The bag's counts always have spares** (three or four pencils for "two"); too few holds the next tap, too many hops back out, both with the number said again and no gold. *Assumed: yes.*
@@ -413,12 +413,12 @@ Each is the choice, the reason, and the answer I assumed.
 31. **"Take your teddy to school" goes to Mum as a whole frame;** no Kutchi verb is guessed for it. *Assumed: yes.*
 32. **The four check sizes are yours of 27 Oct** (740x320, 930x430, 1280x665, 1920x1080); the first draft's 915x275 is dropped. *Assumed: yes.*
 
-**Open questions that are genuinely his:**
-1. **Who voices the teacher?** Only family voices ship, and none of B's teacher lines records until this is answered. I'd suggest Masi (a voice distinct from Nani's), or Mum with a different register. And what does the teacher look like? I've assumed a generic young woman, not a family likeness; her face is your call.
-2. **Does the family say the school nouns in Kutchi or as English loanwords?** That's Mum's answer, but it changes how much the nouns can carry (decision 20).
-3. **Show-and-tell:** is it a thing your children know, or would "toy day" read better?
+**Open questions that are genuinely his:** Zafar said the school day is fine (1 Nov), so the teacher (a generic young woman, any voice for now; voices are settled before shipping) and show-and-tell stand as designed. Left for Mum:
+1. **Does the family say the school nouns in Kutchi or as English loanwords?** That's Mum's answer, but it changes how much the nouns can carry (decision 20).
 
 ## 11. ChatGPT mock-up prompts
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 Four screens, one moment each: the bag (L2), then three board jobs at the level they show. The teddy's climb-out and Simba in the bag get their own small prompts later, so they never share a frame with a right pick. The teacher has no family reference: she is a generic young woman, and her face is Zafar's call. Nani's identity reference is the locked s08 sheet.
 
@@ -551,3 +551,9 @@ Each finding (`school-day-critique.md`), then what I did.
 13. **SHOULD, the prompts.** Applied: one moment per prompt (the pencil's hop only; the teddy and Simba later, on their own); boards at the level shown (three pictures at L1; birds on wires, no banana on an apple tree; L2's red car, green car, red bird); Nani from `sources/art/s08/sheet-nani-final-1.png`; no Nani reference for the teacher, called a generic character, her face Zafar's call; the board leaves the right quarter as plain wall for the teacher and her bubble, matching §7.
 14. **SHOULD, things dropped or claimed without a line.** Applied: Tidy's bookshelf parked (decision 26); the school bag named as the day's bag stage (decision 27); the "draw and count are on the top-40 list" claim corrected in §1 (checked: neither is in Part 3).
 15. **SHOULD, lines missing from Mum's list.** Applied: §6 now lists every heard line, with its speaker (Nani, the teacher), including the book's past-tense lines, the greeting and reply, "come, you're my helper", "Simba! Out you come" and counting along, and says nothing of the teacher's records until open question 1 is answered.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **"School: fine."** Open questions 1 (the teacher's voice and look) and 3 (show-and-tell) are closed as designed; only Mum's loanword question remains.
+- **Voices:** the prototype no longer waits for Mum's school round (decision 22).
+- **Level up only on right-first-time rounds:** both bots now need every row gold (§3), and §9's levels row says so.
+- **Clothes:** the prompt sheet's line is added before the prompts (the teacher in modern smart-casual, the children modern casual).

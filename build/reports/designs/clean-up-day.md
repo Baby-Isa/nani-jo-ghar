@@ -8,7 +8,7 @@ Sources, newest first:
   - it owns the home verbs; it reacts like a toy, not chores; states start mixed; the order card's picture at L1 only;
   - toys belong in the play room ("toys are part of tidying up");
   - the rooms are the bathroom, the play room, the bedroom and the kitchen;
-  - the doll's house: "4-5 rooms at most" (the settings map §1).
+  - the doll's house: "4-5 rooms at most" (the settings map §1); **Zafar, 1 Nov: a two-storey doll's-house cross-section, downstairs the kitchen and the sitting room, upstairs the bathroom, Nani's bedroom and Ali's room (the play room)**, not rooms in a row; push on a toy car in Ali's room; the kitchen as the fourth visit.
 - **The maps:**
   - the games map (`build/reports/games-master-map-2026-10-31.md`): Part 1 "A day at home", Parts 2, 3, 5 and 7, and his answers of 1 Nov;
   - the settings map (`game-settings-map-2026-10-31.md` §1, row 20, and §4's three home games).
@@ -59,9 +59,9 @@ Sources, newest first:
 | English | Kutchi in the repo | Status | Decides from |
 |---|---|---|---|
 | turn off (the tap) | none | to record. Mum to say whether her *firai* ✓ ("turn over, stir", a cooking word) is ever used for a tap. Never lift it across without her | L1 (with its noun) |
-| switch off (the light) | none | to record | L1 (with its noun) |
-| close (the curtains, the drawer) | none. *band* (closed) is in engine | to record. Mum to say how she says "close it" | L1 (with its noun) |
-| sweep (the floor) | none | to record | L1 (with its noun) |
+| switch off (the light) | none; **Zafar, to confirm: *bund*, as the family says "close the light"** (1 Nov) | to record | L1 (with its noun) |
+| close (the curtains, the drawer) | none. *band* (closed) is in engine; **Zafar, to confirm: *bund*** (1 Nov; the same word closes a light) | to record. Mum to say how she says "close it" | L1 (with its noun) |
+| sweep (the floor) | none; **Zafar, to confirm: *fugya*** (1 Nov) | to record | L1 (with its noun) |
 | turn on, switch on | none | to record | L2 (the verb decides) |
 | open | none | to record | L2 (the verb decides) |
 | put (the soap) on the tray | *rakh* (put) inside lines; *mathe* (on) inside lines; tray to record | inside lines / to record | L2 |
@@ -73,10 +73,10 @@ Sources, newest first:
 | English | Kutchi in the repo | Status | Decides from |
 |---|---|---|---|
 | tap | none ("taps" is an English placeholder in the engine) | to record | L1 |
-| light | none. *bar* ✓ means "light (a fire)", a cooking verb. Mum to say whether it's ever used for a lamp | to record | L1 |
+| light | none. *bar* ✓ means "light (a fire)", a cooking verb. **Zafar, to confirm: *batti*** (1 Nov) | to record | L1 |
 | curtains | none | to record | L1 |
 | floor | none | to record | L1 ("sweep the floor") |
-| broom | none | to record | heard L1; decides at L3 (against the cloth) |
+| broom | none; **Zafar, to confirm: *fugyu*** (1 Nov) | to record | heard L1; decides at L3 (against the cloth) |
 | drawer | none | to record | heard L1 (named when first touched); decides L2 |
 | soap | none | to record | L2 |
 | tray | none ("the tray" is an English placeholder) | to record | L2 |
@@ -99,7 +99,7 @@ Sources, newest first:
 
 turn off and on, switch off and on, open, close, sweep, wipe, put, wash (kitchen), play (play room). From Part 3's top 40:
 - **turn (26), open (36) and put (7)** decide here;
-- **push (38)** gets its "weak" home as "push the drawer shut", only if Mum's word for closing a drawer is a push;
+- **push (38)** gets its home on **a toy car in Ali's room** (Zafar, 1 Nov: yes): "push the toy car" and it zooms off round the rug;
 - **play (17)** gets a second home (the play room), after the party.
 
 ### Frames
@@ -117,7 +117,7 @@ turn off and on, switch off and on, open, close, sweep, wipe, put, wash (kitchen
 | The end | *shabash* ✓; "now it's clean!" | ✓ / to record |
 | The day's last beat (unscored) | "It's night. Switch off the light." | to record |
 
-**Said (from L3 or the second visit; §3, C4):** the child tells Ali one ask from a closed set of three that sound different: "switch off the light", "close the curtains", "turn off the tap". Zafar checks they sound different once they're recorded.
+**Said (from L3 or the second visit; §3, C4):** the child tells Ali one ask from a closed set of three that sound different: "switch off the light", "close the curtains", "turn off the tap". Zafar checks they sound different once they're recorded. If the family's *bund* covers both "close the light" and "close the curtains" (Zafar, to confirm), those two share a verb and differ by the noun (*batti* against curtains), and the set is checked again then.
 
 ### New words per level
 
@@ -162,13 +162,13 @@ The game teaches nothing until these are recorded. Grey English would be a reade
 
 **A day at home, hosted by Nani, with Simba and Zazu.** Zafar's order: hide and seek, then pick it up and put it back, then the clean-up. Every day is the door, its games, then the evening book. There's no `docs/game-design/days/home.md` yet; this row and hide and seek's §2 are its first lines.
 
-**One house for the whole day (decision 25, a numbered choice for Zafar):** the doll's house has **five rooms in a row**: the kitchen, the sitting room (the front door in its wall), Nani's bedroom, **the bathroom** (in the hall's place), and **Ali's room, which is the play room** (its toy box is already there). That keeps his "4-5 rooms at most" and gives the clean-up all four of his rooms: the bathroom, the play room (Ali's room), the bedroom (Nani's, hide and seek's room) and the kitchen. Pick it up now says the same (consistency pass, 1 Nov: its decision 2, §3 G and §7), so its first visit still plays the left three rooms; its shoe rack stands in the sitting room, by the front door.
+**One house for the whole day (decision 25; Zafar, 1 Nov):** **a two-storey doll's house, drawn as a cross-section,** not rooms in a row. Downstairs: the kitchen and the sitting room (the front door in its wall). Upstairs: the bathroom, Ali's room (the play room; its toy box is already there) and Nani's bedroom (hide and seek's room). The clean-up has all four of his rooms: the bathroom, the play room, the bedroom (all upstairs) and the kitchen (downstairs). Pick it up and hide and seek use the same house; pick it up's first visit plays the kitchen, the sitting room and Nani's bedroom; its shoe rack stands in the sitting room, by the front door.
 
 | Step | What happens | What carries |
 |---|---|---|
 | **The door** | Nani: today we're at home. The day's weather is the sky. | The sky outside the bathroom window (sun or rain) matches the door's. |
 | **1. Hide and seek** | The cats hide in Nani's bedroom; "look in the wardrobe". Each round ends "close the wardrobe". | **Close is met here first.** The cats are known. The torch (its later visit) ends on "switch on the light". |
-| **2. Pick it up and put it back** | Nana's glasses and the other mischief things go back to their places, in the doll's-house view. | **The doll's-house view** (one overview background, five rooms) and its rooms. The clean-up starts from the same view. |
+| **2. Pick it up and put it back** | Nana's glasses and the other mischief things go back to their places, in the doll's-house view. | **The doll's-house view** (one overview background, two storeys, five rooms) and its rooms. The clean-up starts from the same view. |
 | **3. The clean-up** | The camera glides from the doll's house into one room. Nani's asks; the toy-like reactions; the room ends tidy and cosy. | **Into the book:** the room before and after, and "what did we switch off?" (heard; past tense later). |
 | **The evening book** | The day's last beat: it's night, Nani says "switch off the light". The child's tap darkens the house, and the book opens. | The day ends on this game's verb. |
 
@@ -185,7 +185,7 @@ The game teaches nothing until these are recorded. Grey English would be a reade
 ```
 the doll's house  ->  zoom into the room  ->  Nani's asks (3-6, mixed kinds)  ->  the cosy end  ->  back out
    (shared view,        (glide, 1 s)          C1 toggle, C2 tool, C3 put away      ("aah", the       (the room's
-    five rooms)                               C5 Simba once (L3+)                  word card)        window glows)
+    2 + 3 rooms)                              C5 Simba once (L3+)                  word card)        window glows)
                                               C4 Tell Ali (L3+ or visit 2)
 ```
 
@@ -198,7 +198,7 @@ Each room holds **things**. Each thing has two states, drawn as real art (the ta
 - **Wrong:** the wrong thing does its reaction as a comic miss, then flips back by itself (it's undone). Nani says the ask again, and the child redoes it on the spot. The row ticks when the right thing is done (a done thing can't be refused), but **only a right first pick counts** for the level and the end screen's first-pick stars.
 - **The one rule the builder must code:** every ask has **exactly one** right target in the room's current state. The ask maker checks this before each ask (for example, it never asks "switch off the light" when two lights are on, until L4 adds "the big one" or "all").
 - **Spent pairs (the honest consequence):** from L2 a kind comes as a pair in opposite states. Once one of the pair is asked and done, both are in the same state, so neither "on" nor "off" has exactly one target: **the pair is spent** and the ask maker treats it as unaskable for the rest of the round, unless Simba puts it back into opposite states (C5, L3+) or an L4 size word ("the big tap") picks one of a same-state pair. So a round's asks come from different kinds, and every level has **at least asks + 2 askable kinds** (§3 ladder).
-- **Level-up rests on first picks** (decision 22, part of the shared rulebook proposal, decision 35): up one level after 3 finished rounds in a row where every ask, or all but one, was right first pick, and the guide's hint came at most once. Showings never count. Proposed as `advance.maxNotFirstPick: 1` in `data/rules.json` (every game; hide and seek's first-open rule is the same rule), or failing that `advance.engines["do-it"].maxNotFirstPick: 1`, read by the engine for statues, getting ready and the clean-up, and by the leak bot. Not added tonight.
+- **Level-up rests on first picks** (decision 22, part of the shared rulebook proposal, decision 35): up one level after 3 finished rounds in a row where every ask was right first pick (Zafar, 1 Nov: right-first-time rounds only), and the guide's hint came at most once. Showings never count. Proposed as `advance.maxNotFirstPick: 0` in `data/rules.json` (every game; hide and seek's first-open rule is the same rule), or failing that `advance.engines["do-it"].maxNotFirstPick: 0`, read by the engine for statues, getting ready and the clean-up, and by the leak bot. Not added tonight.
 
 Nothing moves by itself, nothing glows on the answer, and there's no timer.
 
@@ -359,7 +359,7 @@ Scores out of 5: fun, does the Kutchi decide, novelty, build cost (5 = cheap).
 
 **Leak test:** as C2 (two homes from L3, identical rings, shuffled; two loose things at L4, so "the only loose thing" never helps).
 
-**The play room's version (Ali's room):** the toys are the things. "Put the teddy in the box", "put the ball in the basket" (the place piece, two homes), with C1's toys alongside: switch off the toy car (it zooms in circles until you do), switch off the music box, open and close the toy box lid (the teddy peeks out when it opens). The toy box sorting board (Tidy's design) stays with pick it up: here a toy goes to one of two homes, never a board of cells.
+**The play room's version (Ali's room):** the toys are the things. "Put the teddy in the box", "put the ball in the basket" (the place piece, two homes), with C1's toys alongside: push the toy car (it zooms off round the rug; Zafar's push, 1 Nov), switch off the toy car (it zooms in circles until you do), switch off the music box, open and close the toy box lid (the teddy peeks out when it opens). The toy box sorting board (Tidy's design) stays with pick it up: here a toy goes to one of two homes, never a board of cells.
 
 ---
 
@@ -374,7 +374,7 @@ Scores out of 5: fun, does the Kutchi decide, novelty, build cost (5 = cheap).
 
 **Before the handover, the ask maker checks the set:** each of the three sentences must have exactly one target in the room's current state (for example, exactly one light on). If one doesn't, it swaps in another valid "off or close" sentence from the recorded set, or skips the handover this round.
 
-**Closed set:** switch off the light, close the curtains, turn off the tap. Each starts with a different verb (to check once recorded).
+**Closed set:** switch off the light, close the curtains, turn off the tap. Each starts with a different verb (to check once recorded; with *bund* for both the light and the curtains, the nouns tell them apart).
 
 **The five questions:** what you do: say it, or tap a pill (4); the Kutchi decides: the child must say the verb and the thing to match the bubble, but a pill tap is a picture match (4); the fun: Ali obeys you (4); the instruction: modelled by Nani and Ali first (4); novel: the shared moment, new verbs (3).
 
@@ -396,7 +396,7 @@ Between two asks, the shared dim falls for a beat (about 1.5 s, like pick it up'
 
 The first choice comes about 10 s in; the dim clears fully after every showing.
 
-1. **The house.** The doll's-house view from pick it up: five rooms in a row (the kitchen, the sitting room, the bathroom, Nani's bedroom, Ali's room). Nani's voice: "what a mess! let's tidy the bathroom." Only the bathroom is lit; the rest is dimmed. The camera glides in by itself (1 s; the first time, there's nothing to tap).
+1. **The house.** The doll's-house view from pick it up: two storeys (downstairs the kitchen and the sitting room; upstairs the bathroom, Ali's room and Nani's bedroom). Nani's voice: "what a mess! let's tidy the bathroom." Only the bathroom, upstairs on the left, is lit; the rest is dimmed. The camera glides up and in by itself (1 s; the first time, there's nothing to tap).
 2. **The room, and quiet.** The bathroom, straight on. The basin tap is running, the duck bobbing. The wall light is on. The window curtain is open with a sun stripe on the floor. A talc spill and footprints are on the floor, with the broom in the corner. The drawer is open. Nani stands in the doorway on the right, three-quarter on. Zazu is curled in the laundry basket. Two seconds of quiet.
 3. **Name the four.** Each L1 thing bounces once in a lit box as Nani names it: the tap, the light, the curtains, the floor (about 6 s). No tap is needed. The drawer isn't named yet.
 4. **Show the flip once.** Nani: "turn off the tap." The card pops big beside the side panel (the picture of the tap off, the Kutchi when recorded, the English beneath at L1), then flies into its row. The light hugs **only the tap** this one time (the showing; it doesn't count for the level). The child taps: squeak, drips, plink, the duck stops. The row ticks. **The dim clears fully.**
@@ -417,10 +417,10 @@ Each visit to the day at home cleans one room. A new room plays one round at L1 
 | Visit | Room | New things and words | Its fun |
 |---|---|---|---|
 | **1** | **Bathroom** | tap, light, curtains, floor, drawer, soap, tray; later window, cabinet *kabaat* ✓, mirror, cloth, shelf | the plink, the dusk and Zazu's eyes |
-| **2** | **Play room (Ali's room)** | toy box (open, close), toy car and music box (switch on, off), teddy, ball, blocks (put in the box or the basket, by the place piece), fan (switch on, off); sweep the sand spilled from the sand tray; play | the toy car zooming in circles until it's switched off; the music box tinkling; the fan blowing a paper windmill; Tell Ali from the start |
+| **2** | **Play room (Ali's room)** | toy box (open, close), toy car (push it: Zafar, 1 Nov; switch on, off) and music box (switch on, off), teddy, ball, blocks (put in the box or the basket, by the place piece), fan (switch on, off); sweep the sand spilled from the sand tray; play | the toy car zooming in circles until it's switched off; the music box tinkling; the fan blowing a paper windmill; Tell Ali from the start |
 | **3** | **Bedroom (Nani's, hide and seek's room)** | lamp against the ceiling light (L4's look-alike), wardrobe door, window, curtains, fan, bed (the cover pulled straight: "make the bed" stays with pick it up); sleep, night | a night version: the lamp's warm pool, the moon through the curtains; Ali in his pyjamas comes to say goodnight and is told "switch off the lamp"; the round ends with Nani settling down |
-| **4** | **Kitchen** (after Cook's day) | cupboard *kabaat* ✓, taps (hot *garam* ✓ and cold, if Mum confirms *thundo* for a tap, at L4), the fan, the window; wash the cup and the glass (the recorded line, to re-check), wipe the table (*table*, the English word, inside lines), sweep the floor | the cups clink clean in the rack; steam from the hot tap |
-| **5** | **The whole house** | room plus thing plus verb: "switch off the light in the bathroom", "close the curtains in the bedroom". Tap the room in the doll's house (the camera glides in), then the thing | three words a move; the house going dark room by room at night |
+| **4** | **Kitchen** (downstairs; after Cook's day; Zafar, 1 Nov: yes, the fourth visit) | cupboard *kabaat* ✓, taps (hot *garam* ✓ and cold, if Mum confirms *thundo* for a tap, at L4), the fan, the window; wash the cup and the glass (the recorded line, to re-check), wipe the table (*table*, the English word, inside lines), sweep the floor | the cups clink clean in the rack; steam from the hot tap |
+| **5** | **The whole house** | room plus thing plus verb: "switch off the light in the bathroom", "close the curtains in the bedroom". Tap the room in the two-storey doll's house (the camera glides in), then the thing; how it fits 740x320 is in §7 | three words a move; the house going dark room by room at night |
 | **Book** | | "what did we switch off?" (heard now; past tense at A2) | the before and after pages |
 
 ---
@@ -444,7 +444,7 @@ Each visit to the day at home cleans one room. A new room plays one round at L1 
 | **The openable piece** | `hide-and-seek.md` (from Find it's designed openables) | the drawer, the cabinet, the wardrobe, the toy box lid |
 | **The place piece** | `pick-it-up-put-it-back.md` (Tidy's place engine on the shared kit, `js/shared/rel.js`) | C3's put-away: the soap to the tray or the shelf; the toys to the box or the basket; identical dotted rings on every home |
 | **The cat actor** | `hide-and-seek.md` | Zazu in the basket, Simba's mischief |
-| **The doll's-house view** | `pick-it-up-put-it-back.md` (five rooms in a row; decision 25 makes them the kitchen, the sitting room, Nani's bedroom, the bathroom and Ali's room) | the zoom in and out |
+| **The doll's-house view** | `pick-it-up-put-it-back.md` (the two-storey house, Zafar 1 Nov: downstairs the kitchen and the sitting room, upstairs the bathroom, Ali's room and Nani's bedroom) | the zoom in and out |
 
 ### New
 
@@ -464,7 +464,7 @@ Each visit to the day at home cleans one room. A new room plays one round at L1 
 
 | Scene | Camera | In this camera |
 |---|---|---|
-| The doll's-house view | **E**, wide cross-section (shared with pick it up; five rooms in a row) | the rooms; window glows |
+| The doll's-house view | **E**, wide two-storey cross-section (shared with pick it up and hide and seek; 2 rooms down, 3 up) | the rooms; window glows |
 | Each room | **E**, eye level, straight on to the room's main wall; horizon about 55%; the floor a strip at the bottom (it must show the dirt) | the things in both states, Nani in the doorway, the cats, Ali at the door |
 | The order card's pictures (L1) | crops of the room's own art (the tap off, the curtains closed) | no new drawing |
 
@@ -487,7 +487,7 @@ Each visit to the day at home cleans one room. A new room plays one round at L1 
 - basin ring, sill dust: 2; cloth (on its stool), shelf, shampoo: 3;
 - Nani front-facing for the handover; Ali at the door (standing, doing it, oops); Simba trotting in, sitting pleased.
 
-**Later runs, one per visit:** the play room (Ali's room), Nani's bedroom (day and night), the kitchen (the Cook kitchen's look, after cooking), each with its things. The play room: the toy box (open, shut), toy car (still; three zoom frames, for film), music box (shut; open with a carved bird, no religious marker), teddy, ball, blocks, basket, fan (still; turning frames for film), paper windmill.
+**Later runs, one per visit:** the play room (Ali's room), Nani's bedroom (day and night), the kitchen (the Cook kitchen's look, after cooking), each with its things. The play room: the toy box (open, shut), toy car (still; three zoom frames, for film; the push and the zoom off), music box (shut; open with a carved bird, no religious marker), teddy, ball, blocks, basket, fan (still; turning frames for film), paper windmill.
 
 **Rules:**
 - no text, letters or numbers anywhere: no labels on the shampoo, no brand on the soap;
@@ -515,6 +515,8 @@ The phone layout is used when the screen's short side is under 500 px (`data/lay
 - **The cap in data:** `phoneCap: [6, 11, 16, 16]` (L1 to L4). Over the cap, things leave in this order: the sill dust (never on phones), the basin ring, then the shelf (the soap's second home becomes the cabinet: "put the soap in the cupboard"). The cats and Nani are never targets.
 - **The lab page's job:** placeholder boxes at all five sizes, by script, proving every number above (the bands, 6 a band, the wall strip, Nani's face clear, no clipped text in the ask rows) **before one sprite is drawn**. If 6 a band doesn't fit at 740x320, the cap drops by one a band (a data change) and the drop order applies.
 - The cog is the only button. Nothing is clipped or ellipsised.
+
+**The doll's house at 740x320** (the glide in and out of every round, the day's last beat, and visit 5's room tap; Zafar, 1 Nov). The play area is about 577x320 beside the side panel. The house fills it as a cross-section: a 10 px roof line, two storeys of about 145 px each and a 20 px ground strip. Upstairs, three rooms of about 192 px wide (the bathroom, Ali's room, Nani's bedroom); downstairs, two of about 288 px (the kitchen, the sitting room). Nani's bust stands at the bottom right over the sitting room's outer corner, so its tap box is the part she leaves clear (about 180x145). Each room is one tap box, far above the 64 px minimum; its things are never tapped on the overview: a tap on a room glides the camera in, and the room fills the play area with the bands above. The day's last beat taps the house's light (any room). At 915x275 the storeys are about 122 px; at 930x430 about 195 px. Big screens show the whole house with the garden and sky.
 
 **Big screens (1280x665 and 1920x1080):**
 - The side panel is on the left: the guide box and the ask rows.
@@ -579,7 +581,7 @@ Each line gives the choice, the reason, and the answer I assumed. Reverse any by
 4. **If Mum uses one word for several verbs** (say, one "close" for the tap, the light and the curtains), the design keeps working: the noun decides the thing, and on or off still decides which twin. *Why:* never invent Kutchi; design for whatever she says. *Assumed:* yes.
 5. **Asks go both ways from L2** (on and off, open and close), often with a reason at L3 ("it's dark in here"). *Why:* "tidy means off" would be a pattern win. *Assumed:* yes.
 6. **No "clean everything".** Dirt stays on the places not asked, and the round ends when Nani's asks are done. *Why:* his note and the research's leak. *Assumed:* yes.
-7. **One room a round; the bathroom first,** then the play room (Ali's room), Nani's bedroom and the kitchen on later visits; the whole house at visit 5. *Why:* his "zoom into a room (the bathroom first)" and his room list. *Assumed:* yes.
+7. **One room a round; the bathroom first,** then the play room (Ali's room), Nani's bedroom and the kitchen on later visits; the whole house at visit 5. *Why:* his "zoom into a room (the bathroom first)" and his room list. **Zafar, 1 Nov: yes, with the kitchen as the fourth visit.**
 8. **A new room opens at L1 for one round,** then jumps to the child's level. *Why:* his "picture at L1 only" would otherwise leave a new room's nouns without any support. *Assumed:* yes.
 9. **The order card's picture shows at L1 only.** *Why:* his note. Now part of the one rulebook proposal (decision 35), not this game's override. *Assumed:* yes.
 10. **The soap and the toys use put-away with two homes** (the tray or the shelf; the box or the basket), done by pick it up's place piece, never a sorting board and never a second copy inside `do-it`. *Why:* he named the soap and the toys; placing belongs to pick it up (R9). *Assumed:* yes.
@@ -591,13 +593,13 @@ Each line gives the choice, the reason, and the answer I assumed. Reverse any by
 16. **Round sizes 3, 4, 5, 6 asks.** *Why:* a round of one is too short to play the toy; the first-ever round has 4 (two showings). Part of the rulebook proposal (decision 35). *Assumed:* yes.
 17. **The day's last beat is the heard "it's night, switch off the light"**, tapped on the doll's house, which opens the evening book. It's never scored, and it's the one allowed `do-it` tap after a `do-it` game. *Why:* the day ends on this game's verb; unscored, so "the last ask is always the light" can't be learned. *Assumed:* yes.
 18. **The light, the water and the dusk are real art frames and layers;** code only fades and swaps them. *Why:* lessons §7 ("draw nothing in code"). *Assumed:* yes.
-19. **"Push the drawer shut" only if Mum's word is a push.** *Why:* Part 3 lists push's weak home here, but we follow her words. *Assumed:* yes.
-20. **The game counts as teaching only once Mum's L1 lines are recorded** (15 new clips; §1). The leak bot runs on recorded words only. *Why:* grey English is a reader's win. *Assumed:* yes.
+19. **Push lives on a toy car in Ali's room** (Zafar, 1 Nov: yes): "push the toy car" sends it zooming round the rug. "Push the drawer shut" only if Mum's word for closing a drawer is a push.
+20. **The game counts as teaching only once Mum's L1 lines are recorded** (15 new clips; §1). The leak bot runs on recorded words only. *Why:* grey English is a reader's win. **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 21. **A lab page of the bathroom comes before any art:** placeholder boxes at the five sizes, by script, proving the bands and the phone cap. *Why:* about 16 targets must read at 275 px. *Assumed:* yes.
-22. **Level-up rests on first picks:** up after 3 finished rounds in a row where every ask, or all but one, was right first pick and the guide's hint came at most once; showings don't count. The rows still always tick; the end screen shows first-pick stars as progress, never a verdict. In the engine and `data/rules.json` (decision 35), not this game alone. *Why:* without it a fast tapper never idles into a hint, every miss undoes itself, and they climb to L4 knowing no verb. *Assumed:* yes.
+22. **Level-up rests on first picks:** up after 3 finished rounds in a row where every ask was right first pick (Zafar, 1 Nov: level up only on right-first-time rounds, in every game) and the guide's hint came at most once; showings don't count. The rows still always tick; the end screen shows first-pick stars as progress, never a verdict. In the engine and `data/rules.json` (decision 35), not this game alone. *Why:* without it a fast tapper never idles into a hint, every miss undoes itself, and they climb to L4 knowing no verb. *Assumed:* yes.
 23. **A pair is spent once asked;** the ask maker treats it as unaskable until Simba or an L4 size word re-opens it, and every level starts with at least asks + 2 askable kinds (L2: 6 for 4; L3: 10 for 5; L4: 11 for 6, 10 on phones). *Why:* the exactly-one rule makes this true anyway; writing it down stops a builder choosing, and the odds are worked with it (about 0.1% a round at L2). *Assumed:* yes.
 24. **The mirror cabinet's door is the mirror:** a bare tap opens or closes it; with the cloth lifted, a tap wipes its smudge. *Why:* one thing, two verbs (the research's fix for "one action per thing"), and one tap box fewer on phones. *Assumed:* yes.
-25. **One house of five rooms in a row, shared with pick it up: the kitchen, the sitting room (with the front door), Nani's bedroom, the bathroom (in the hall's place), Ali's room (the play room).** The hall's shoe rack moves to the sitting room by the front door. **Your numbered choice:** (a) this, recommended; (b) keep pick it up's hall and drop the bathroom (the clean-up starts in Ali's room); (c) six rooms (against your "4-5 at most"). Pick it up already assumes (a) (consistency pass, 1 Nov) and changes back if you pick (b). *Why:* the two designs must agree on the one piece they share, and his clean-up room list needs a bathroom and a play room. *Assumed:* (a).
+25. **One house for the three home games, drawn as a two-storey doll's house (Zafar, 1 Nov):** a cross-section, not rooms in a row. Downstairs: the kitchen and the sitting room (with the front door; the shoe rack stands by it). Upstairs: the bathroom, Nani's bedroom and Ali's room (the play room). The 740x320 fit is in §7.
 26. **The phone cap is data:** `phoneCap: [6, 11, 16, 16]`, three bands of at most 6 boxes, and a drop order (the sill dust, the basin ring, then the shelf, whose job the cabinet takes). *Why:* the count must hold at 740x320 and 915x275, and a data cap is easy to change after the lab. *Assumed:* yes.
 27. **On phones, bubbles go in a 44-48 px wall strip at the top of the play area,** running to Nani's face; she keeps her own bubble. *Why:* "bubbles belong to faces", and a reserved strip is the only free wall the count leaves. *Assumed:* yes.
 28. **The soap waits on the bath mat** (the floor strip), not in the bath. *Why:* it keeps the lower band to 6 boxes on phones and is easy to tap. *Assumed:* yes.
@@ -607,20 +609,21 @@ Each line gives the choice, the reason, and the answer I assumed. Reverse any by
 32. **The first art run is the bathroom's L1-L2 set** (about 28 frames plus the poses it needs); L3-L4 and the other rooms follow as their own runs. *Why:* the honest count is about 38 frames for the bathroom alone; the first visit needs only L1-L2 to play. *Assumed:* yes.
 33. **Tell Ali scores 4 for "Kutchi decides", not 5,** since a pill tap is a picture match. *Why:* honest scoring. *Assumed:* yes.
 34. **Ali's age isn't set here.** The cast doc gives none ("tall and lanky"); this design and its prompts say no age. Fix it once in `cast.md` when Zafar picks one (the critique notes `do-it-engine.md` says 8). *Assumed:* no age until he says.
-35. **One rulebook proposal instead of per-game overrides** (shared with hide and seek, the do-it engine and pick it up): (a) the card's picture at L1 only, everywhere; (b) "no" asks optional per game (`levels.noAsks` per game); (c) the L1 round size set per game; (d) level-up needs first picks (`advance.maxNotFirstPick: 1`, every game; hide and seek's first-open rule is the same). Each design cites this instead of overriding. Not added to the rulebook or `data/rules.json` tonight. *Why:* an everywhere rule fixed in one game only is the first mistake made twice. *Assumed:* yes, to put to you as one change.
+35. **One rulebook proposal instead of per-game overrides** (shared with hide and seek, the do-it engine and pick it up): (a) the card's picture at L1 only, everywhere; (b) "no" asks optional per game (`levels.noAsks` per game); (c) the L1 round size set per game; (d) level-up needs first picks (`advance.maxNotFirstPick: 0`, every game; hide and seek's first-open rule is the same). **Zafar settled (d) on 1 Nov: level up only on right-first-time rounds, in every game.** Each design cites this instead of overriding. Not added to the rulebook or `data/rules.json` tonight. *Why:* an everywhere rule fixed in one game only is the first mistake made twice. *Assumed:* yes, to put to you as one change.
 
 **Open questions (genuinely his, or Mum's):**
-1. **For Mum:** how does she say turn off and on (a tap), switch off and on (a light), open, close, sweep and wipe? Does one word cover several? Does she use *firai* ✓ for a tap, *bar* ✓ for a lamp, or *thundo* ✓ for a cold tap?
-2. **Push in the play room or the kitchen?** If Mum has no push for the drawer, push stays without a home. Is that fine, or should a toy (a car you push) carry it?
-3. **The kitchen as a clean-up room** overlaps the Cook day's setting. Keep it as visit 4, or swap it for another room? **I recommend keep:** it's on your room list, and with decision 25 there is no hall to swap to.
-4. **The house (decision 25):** (a), (b) or (c)?
-5. **Ali's age** (decision 34), once, in the cast doc.
+1. **For Mum:** how does she say turn off and on (a tap), switch off and on (a light), open, close, sweep and wipe? Does one word cover several? Does she use *firai* ✓ for a tap, *bar* ✓ for a lamp, or *thundo* ✓ for a cold tap? Zafar's words to confirm with her: *bund* (close, and "close the light"), *batti* (light), *fugya* (sweep), *fugyu* (broom).
+2. **Ali's age** (decision 34), once, in the cast doc.
+
+(Answered 1 Nov and removed: push lives on a toy car in Ali's room; the kitchen stays as visit 4; the house is the two-storey doll's house.)
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-Every prompt now draws Nani from her locked sheet (glasses, a plain red dupatta over her head, no rings), the cats from the cast doc (Simba a big charcoal-black cat, Zazu a silver-grey kitten), no motion marks, no glow on any answer, and a 2.3:1 frame.
+Every prompt now draws Nani from her locked sheet (glasses, a plain red dupatta over her head, no rings), the cats from the cast doc (Simba a big charcoal-black cat, Zazu a silver-grey kitten), no motion marks, no glow on any answer, and a 2.3:1 frame. Each prompt shows one room close up, so the two-storey house (Zafar, 1 Nov) doesn't change their scene text.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt clean-up-day-1: the bathroom, level 1 (the tap just turned off)
 
@@ -777,3 +780,11 @@ The critique (`clean-up-day-critique.md`, 1 Nov) had 6 MUSTs and 10 SHOULDs (fin
 | 16 | SHOULD. Small facts. | Zazu is "he" throughout; *hida* removed from Nani's lines (no moment used it); the day's last beat is said to be the one allowed unscored `do-it` tap (§2, decision 17); taps during a reaction are taken (§3, decision 29); open question 3 kept, recommending keep the kitchen. |
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** `pick-it-up-put-it-back.md` now assumes decision 25 (a): one house whose rooms run the kitchen, the sitting room, Nani's bedroom, the bathroom (in the hall's place) and Ali's room. The order here was put in that design's order, so its first visit's three left rooms still include the bedroom.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The home:** the doll's house is two storeys (downstairs the kitchen and the sitting room; upstairs the bathroom, Ali's room and Nani's bedroom), not five rooms in a row. §2, §3, §4, §5, §6, §7 (with how the 2+3 house fits 740x320) and decision 25 changed; open question 4 is gone.
+- **Push on a toy car in Ali's room: yes** (§1, §3 C3, §5, decision 19). **The kitchen as the fourth visit: yes** (decision 7). Both open questions are gone.
+- **Level up only on right-first-time rounds:** decision 22 and decision 35 (d), now settled.
+- **Voices:** decision 20 says nothing waits on a voice.
+- **His Kutchi, "Zafar, to confirm":** *bund* (close, and "close the light"), *batti* (light), *fugya* (sweep), *fugyu* (broom), in the word tables, the speaking set and Mum's question.
+- **Clothes:** the prompt sheet's line is added before the prompts.

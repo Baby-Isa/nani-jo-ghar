@@ -10,7 +10,7 @@ Kutchi here is only what is in the repo (`research-word-inventory-2026-10-31.csv
 
 ## 0. One line
 
-**What:** a doll's-house cross-section of Nani's house. Nani says where Nana's things are ("Nana's glasses are under the table"); the child goes to the room, picks the right one of two identical copies, and it flies to Nana, who uses it and keeps it. Then the child puts back what Simba knocked down during hide and seek, on or under the furniture, as Nani says. Later visits add the room as a second word, the family's own voices, Simba's paw, Tell Ali where, this side and that side, and the rooms' own boards (the spice box, the bed, the shoe rack, the drawers).
+**What:** a doll's-house cross-section of Nani's two-storey house (Zafar, 1 Nov: downstairs the kitchen and the sitting room; upstairs the bathroom, Nani's bedroom and Ali's room). Nani says where Nana's things are ("Nana's glasses are under the table"); the child goes to the room, picks the right one of two identical copies, and it flies to Nana, who uses it and keeps it. Then the child puts back what Simba knocked down during hide and seek, on or under the furniture, as Nani says. Later visits add the room as a second word, the family's own voices, Simba's paw, Tell Ali where, this side and that side, and the rooms' own boards (the spice box, the bed, the shoe rack, the drawers).
 
 **Day:** a day at home, the second game (hide and seek, then this, then clean-up day).
 
@@ -40,8 +40,8 @@ Kutchi here is only what is in the repo (`research-word-inventory-2026-10-31.csv
 | on, on top of | *mathe* | inside 6 lines | fetch and put away from L1 (1a) |
 | under, underneath | *niche* | inside 1 line (hide and seek's L1 list records it alone) | fetch and put away from L1 (1a) |
 | behind | *puthiya* | inside 4 lines (hide and seek's list records it alone) | Tell Ali where's speaking set (1b); placing at the second visit |
-| this side | *hi baju* (grammar-notes §17; *hi* ✓, *baju* "side" in engine, draft) | the whole phrase to record, **after Mum confirms its meaning** | put away L3 (1b), the spice box (1b) |
-| that side | *hu baju* (*hu* ✓) | as above | as above |
+| this side | *hi baju* (grammar-notes §17; *hi* ✓, *baju* "side" in engine, draft); **Zafar, to confirm: *he baju*** (1 Nov) | the whole phrase to record, **after Mum confirms its meaning** | put away L3 (1b), the spice box (1b) |
+| that side | *hu baju* (*hu* ✓); **Zafar, to confirm: *ne hu baju*** (1 Nov) | as above | as above |
 | next to | *bajume* | in engine | second visit |
 | in, inside | *me* (as hide and seek; *andar* not used here) | in engine (hide and seek's list records it alone) | Tell Ali where L3 (1b); the toy box, the drawers |
 | in front of | *agiya* | in engine | second visit |
@@ -73,9 +73,9 @@ Kutchi here is only what is in the repo (`research-word-inventory-2026-10-31.csv
 | sofa, armchair | none | to record | 1b (scenery in 1a) |
 | box (the toy box) | none | to record (hide and seek's list) | 1b (Ali's room) |
 | cupboard | *kabaat* ✓ | ✓ | scenery here (decision 27) |
-| kitchen | *rasoro*; "he's in the kitchen" *e rasore me ai* ✓ | inside lines; the whole line ✓ | heard at L1, deciding at L2 (1a) |
-| sitting room, bedroom | none | to record | heard at L1, deciding at L2 (1a) |
-| the bathroom, Ali's room | none | to record | 1b |
+| kitchen | *rasoro*; "he's in the kitchen" *e rasore me ai* ✓; **Zafar, to confirm: *rasor*** (1 Nov, "not sure") | inside lines; the whole line ✓ | heard at L1, deciding at L2 (1a) |
+| sitting room, bedroom | none (Zafar, 1 Nov: not known) | to record | heard at L1, deciding at L2 (1a) |
+| the bathroom, Ali's room | the bathroom: "bathroom", the English word (**Zafar, to confirm**, 1 Nov); Ali's room: none (not known) | to record | 1b |
 
 **Owners.**
 
@@ -103,7 +103,7 @@ Kutchi here is only what is in the repo (`research-word-inventory-2026-10-31.csv
 | The fetch ask, L2 | "Nana's cup is under the chair in the kitchen." | **A gap.** The engine has no frame with a room and an anchor in one line, and splicing "it was on the table" onto "he's in the kitchen" would be a hand-made fragment (non-negotiable 2). Reported to the language engine's owner; Mum records one model line (row 9 below) and the engine takes the frame from it. L2 waits for it. | 1a |
 | The room, on arrival at L1 | "The kitchen." (Nani names the room as the camera eases in) | the room word alone; silent until recorded | 1a |
 | Put away | "Put the ball under the table." | **{thing} {place-thing} *je* {where} *rakh*** (grammar-notes §16, rule 14; draft in engine; Mum's model line confirms it) | 1a |
-| L3, the two-person exchange | Nana: "Where are my glasses?" (*kida ai* ✓). Nani: "They're under the chair in the bedroom." | Nana's own voice (open question 1); the L2 frame | 1b |
+| L3, the two-person exchange | Nana: "Where are my glasses?" (*kida ai* ✓). Nani: "They're under the chair in the bedroom." | Nana's lines in any voice for now (Zafar, 1 Nov); the L2 frame | 1b |
 | Simba's paw | "Simba took it!" Rows: "The bag goes on the bed." At the close: "and the ball: leave it be" (*inke chadi de* ✓). | "Simba took it" (in engine); the put frame; *inke chadi de* ✓ | 1b |
 | Glue that comes back | *shabash* ✓ well done, *hane* ✓ now, *ne poi* ✓ and then, *ha* ✓, *na* ✓, *hida* ✓ here | ✓ | 1a |
 | The evening book | "It was on the table" (*table je mathe wo*), "where was it?" (*kida wo*) | both in engine | 1a (the book page) |
@@ -137,11 +137,11 @@ Ordered by what unblocks play. Each is one short clip. Nani (Mum) says every ask
 
 **For 1b, from Mum:** this side and that side (2, once she has answered what they mean); next to, in front of (2; behind and in come from hide and seek); teddy, key, book (3); the bathroom, Ali's room (2); "Simba took it" (1, shared with hide and seek's later list); "put it back" (1); a model line "bring Nana his glasses" (1); sock and thread (2, hide and seek's carry): **about 14.** *wadho* (big) alone is shared with hide and seek's 1b.
 
-**For 1b, in the askers' own voices** (only if Zafar chooses family voices for Nana, Ma and Ali, open question 1): about 10 (each asker's "my X is …" model line and "where are my …?").
+**For 1b, the askers' lines** (Zafar, 1 Nov: any voice for now; who voices Nana, Ma and Ali is settled before shipping): about 10 (each asker's "my X is …" model line and "where are my …?").
 
 **The boards (1b and the second visit):** in the middle (1) and six spices (in engine; Cook needs the same clips); pillow and Simba's mouse (2; blanket is hide and seek's); slippers, shoes, top, bottom (4); drawer, knife, fork (3; teaspoon, tablespoon ✓): **about 16.**
 
-**The whole design, every visit counted:** about 43 from Mum, plus about 6 shared with hide and seek, plus about 10 in the askers' voices if he chooses them. 1a needs 13.
+**The whole design, every visit counted:** about 43 from Mum, plus about 6 shared with hide and seek, plus about 10 askers' lines (any voice for now). 1a needs 13.
 
 ### New words per level (3-5 a round, each heard at least three times)
 
@@ -169,7 +169,7 @@ This section is the one place both designs cite for what passes between them (de
 
 | From hide and seek | Into this game |
 |---|---|
-| **The house:** one bedroom drawing, hide and seek's (wardrobe, curtain, bed with its cover to the floor, cupboard, chest of drawers, toy box, basket, the open door to the hall), plus **one small pale-oak bedside table**, which is an anchor here and scenery there (decision 3). | The doll's-house view is drawn to match that bedroom and locked after it. In this game everything in the bedroom except the bed and the bedside table is scenery, never ringed. |
+| **The house:** one bedroom drawing, hide and seek's (Nani's bedroom, upstairs; wardrobe, curtain, bed with its cover to the floor, cupboard, chest of drawers, toy box, basket, the open door to the landing), plus **one small pale-oak bedside table**, which is an anchor here and scenery there (decision 3). | The doll's-house view is drawn to match that bedroom and locked after it. In this game everything in the bedroom except the bed and the bedside table is scenery, never ringed. |
 | **The mischief things** (one a round, dropped silently on the bedroom floor; the "for later" tray holds their pictures): Nana's glasses, Nani's bag (hide and seek's "purse", one word for both), Ali's sock, Big Ma's thread. | **Nana's glasses** in the tray become one of stage 1's two copies (Nana gets them back). **Nani's bag** is put away in stage 2. **The sock and the thread** stay in the tray until 1b, when their words are recorded, and are then put away in stage 2. A thing in the tray is never a stage-1 thing for someone else. |
 | **The place words:** under, behind, in, bed, box. | under and bed come back at L1-L2; behind and in in Tell Ali where (1b). |
 | **The room words:** none. Hide and seek's first visits are one bedroom; its visit 5 ("the whole house") needs room names. | **This game teaches them first:** kitchen, sitting room, bedroom (1a), the bathroom and Ali's room (1b). Hide and seek's visit 5 reuses the same five words and the same clips (decision 30). |
@@ -228,22 +228,22 @@ Nothing is removed: the toy box becomes an anchor in Ali's room; Tidy's paw-tap 
 
 ### Rulebook overrides (each also in §10)
 
-1. **Level-up rests on first go** (decision 21): up after 3 finished rounds in a row in which at most one errand or placement wasn't right first go and the guide's hint came at most once. Proposed `data/rules.json` entry, read by the game and the leak bot: `advance.games["pick-it-up"].maxNotFirstGo: 1` (not added tonight: no other file edited).
+1. **Level-up rests on first go** (decision 21; Zafar, 1 Nov): up after 3 finished rounds in a row in which every errand and placement was right first go and the guide's hint came at most once. Proposed `data/rules.json` entry, read by the game and the leak bot: `advance.games["pick-it-up"].maxNotFirstGo: 0` (not added tonight: no other file edited).
 2. **The guide's hint counts from the last ask** (decision 22), reading `hintS`'s "from the last action" so that a tap never resets it.
 3. **The card's pictures at L1 only** (decision 23): the rulebook shows the card picture at L1-L2 (`cardPicture: [true, true, false, false]`). Here, at L1 the row shows the thing with a small position badge; from L2 the row is the thing (which can't choose among identical copies), the Kutchi and a speaker. Room and position pictures never show from L2.
 4. **"No" asks at L3, not L2** (decision 9b): L2's one new thing is the room as a second word.
 
 ### The leak numbers (one table; the bot prints them)
 
-**A won round** is one in which every errand and every placement was right first go. The level-up rule (override 1) allows one miss a round, so the table also gives that.
+**A won round** is one in which every errand and every placement was right first go. Since Zafar's rule of 1 Nov (level up only on right-first-time rounds), a level-up round is a won round.
 
-| Stage, level | Choices per move | Blind odds per move | A won round by chance | A level-up round (at most one miss) | Three in a row by chance |
-|---|---|---|---|---|---|
-| 1 and 2, L1 (1a) | 2 copies (on, under one table); 2 rings | 1 in 2; 1 in 2 | 1.6% (6 moves) | about 11% | about 0.13% |
-| 1 and 2, L2 (1a) | 3 copies across rooms; 4 rings (2 anchors x on, under) | 1 in 3; 1 in 4 | about 0.06% | about 0.9% | under 0.0001% |
-| 2, L3 (1b) | 8 rings (2 anchors x on, under, this side, that side) | 1 in 8 | | | |
-| 3, L2 (1b) | n = 2 dots of 3 rows: which two (1 in 3), then 4 rings each | about 2% a round | | | |
-| 3, L3, the swap (1b) | 6 things, which two swapped | 1 in 15 (about 7%) a round | | | |
+| Stage, level | Choices per move | Blind odds per move | A won (level-up) round by chance | Three in a row by chance |
+|---|---|---|---|---|
+| 1 and 2, L1 (1a) | 2 copies (on, under one table); 2 rings | 1 in 2; 1 in 2 | 1.6% (6 moves) | under 0.001% |
+| 1 and 2, L2 (1a) | 3 copies across rooms; 4 rings (2 anchors x on, under) | 1 in 3; 1 in 4 | about 0.06% | under 0.0001% |
+| 2, L3 (1b) | 8 rings (2 anchors x on, under, this side, that side) | 1 in 8 | | |
+| 3, L2 (1b) | n = 2 dots of 3 rows: which two (1 in 3), then 4 rings each | about 2% a round | | |
+| 3, L3, the swap (1b) | 6 things, which two swapped | 1 in 15 (about 7%) a round | | |
 
 **L1 is the supported level:** the position badge on the card lets anyone match their way through it, as the rulebook intends for L1. The odds above for L1 are with the badge ignored. The leak bar (under 10% a round, under 1% for three level-up rounds) applies from L2, where nothing on the card or the scene points at a copy or a ring.
 
@@ -257,9 +257,9 @@ Nothing is removed: the toy box becomes an anchor in Ali's room; Tidy's paw-tap 
 1. Nani, beside Nana, says where his thing is. The card pops up big and flies to its row.
 2. The camera pulls back to the whole house. Tap a room: the camera eases into it.
 3. Tap the thing. It hops up with a small lift sound.
-4. The camera pulls back. The thing travels along the house to Nana in the sitting room; each room it passes glows softly (the shared lit-box glow, code, no light states). Nana takes it and uses it. The row ticks.
+4. The camera pulls back. The thing travels through the house to Nana in the sitting room (along its floor, and down the stairs from upstairs); each room it passes glows softly (the shared lit-box glow, code, no light states). Nana takes it and uses it. The row ticks.
 
-Inside a room, slivers of the rooms either side show at the edges. A tap on a sliver slides to that room. That is the only navigation; no buttons.
+Inside a room, slivers of the rooms beside it on the same floor show at the edges; a tap on a sliver slides to that room. A room at the end of a floor shows the house's outside wall at that edge instead; a tap on it eases back out to the house, where the other floor is one tap away. That is the only navigation; no buttons.
 
 **The challenge, decided by the Kutchi:** two or three identical copies of the asked thing (Zafar: "two of the same thing in different places, so the place decides"). The card's thing picture fits all of them.
 
@@ -428,7 +428,7 @@ The bedroom (hide and seek's), eye level. The pillow, the blanket, Simba's toy m
 
 ### G. The shoe rack (by the front door; second visit)
 
-The sitting room's corner by the front door (the house has no hall: the bathroom takes its place, `clean-up-day.md` decision 25). A two-shelf rack; slippers and shoes in a heap. Tap a shoe, tap its mate (they set down as a pair), then tap a place: "Nana's slippers on the top shelf." **Words:** slippers, shoes (to record), top, bottom (to record), the owners ✓. **Leak:** pairs are matched by eye (the hand-and-eye part, not scored); the scored move is the place.
+The sitting room's corner by the front door (the house has no hall: the front door opens into the sitting room, downstairs). A two-shelf rack; slippers and shoes in a heap. Tap a shoe, tap its mate (they set down as a pair), then tap a place: "Nana's slippers on the top shelf." **Words:** slippers, shoes (to record), top, bottom (to record), the owners ✓. **Leak:** pairs are matched by eye (the hand-and-eye part, not scored); the scored move is the place.
 
 ### H. The drawers (the kitchen; second visit)
 
@@ -438,13 +438,13 @@ Zafar's "drawers (cutlery)". Three drawers stacked, opened by a tap. Nani: "The 
 
 ## 4. The child's first-ever round, screen by screen (1a, L1)
 
-1. **The house.** Hide and seek has just ended in the bedroom, the cats cuddled. Nani's bag and her cup lie on the bedroom rug where Simba knocked them. The camera pulls gently back out through the missing front wall, and the bedroom becomes one box of a doll's-house cross-section: the kitchen, the sitting room and the bedroom side by side. Simba and Zazu trot across. Before anything is asked, the camera drifts slowly along the rooms (showing what isn't on the card: two pairs of glasses on and under the kitchen table, two cups on and under the bedroom's bedside table).
+1. **The house.** Hide and seek has just ended in the bedroom, the cats cuddled. Nani's bag and her cup lie on the bedroom rug where Simba knocked them. The camera pulls gently back out through the missing front wall, and the bedroom becomes one box of the two-storey doll's house: Nani's bedroom upstairs on the right, beside Ali's room and the bathroom (dimmed in 1a), and the kitchen and the sitting room downstairs. Simba and Zazu trot down the stairs. Before anything is asked, the camera drifts slowly over the three lit rooms (showing what isn't on the card: two pairs of glasses on and under the kitchen table, two cups on and under the bedroom's bedside table).
 2. **The ask.** The camera eases into the sitting room. Nana sits in his armchair, squinting at his newspaper held at arm's length. Nani stands beside him, on the right, and says one line: "Nana's glasses are under the table." The card pops up big (the glasses with an "under" badge, the Kutchi, the English), then flies into its row on the left. (If hide and seek dropped Nana's glasses, that pair is one of the two copies.)
 3. **The room.** The camera pulls back to the house. Everything dims except the kitchen, which sits in a lit box with a gold glow. No finger, no ripple. The child taps it; the camera eases in, and Nani names the room ("the kitchen", once recorded).
 4. **The thing (the one showing).** In the kitchen: glasses on the table, identical glasses under it, the ball on the counter. Because this is the first errand ever, the glasses under the table glow once (the rulebook's first-time showing). Tap: they hop up.
 5. **The journey.** The camera pulls back. The glasses glide into the sitting room, each room glowing softly as they pass. Nana puts them on and his eyes go huge. "Aah." He shakes out his newspaper. Nani: "glasses" as the row ticks. (The showing ends here: from now on, the lit room guides the room, and nothing glows the copy.)
 6. **The second ask.** Nani: "Nana's cup is on the table." The bedroom is lit. In it: a cup on the bedside table, a cup under it, Nani's bag on the rug. The child may tap the cup under the table first: it shakes, Zazu's nose pops into it, "mrrp", and Nani's line repeats. Then the cup on the table: it flies to Nana, who sips. "Aah." Tick.
-7. **The third ask.** Nani: "The ball is under the table." The kitchen is lit; a ball on the table, a ball under it. The ball flies to Nana; he rolls it across the floor and Zazu pounces after it, chasing it out of the sitting room and all the way into the bedroom. Tick.
+7. **The third ask.** Nani: "The ball is under the table." The kitchen is lit; a ball on the table, a ball under it. The ball flies to Nana; he rolls it across the floor and Zazu pounces after it, chasing it out of the sitting room and all the way up the stairs into the bedroom. Tick.
 8. **Put it away.** The camera follows Zazu into the bedroom. On the rug: the ball, Nani's bag, Nani's cup. Nani stands on the right. "Put the ball under the table." The ball glows once (the first-time showing of a new action); tap it. Two identical dotted rings appear: on the bedside table, under it. Tap under: the ball rolls under and wobbles still; Zazu comes to sniff it. Tick. Then "Put the bag under the table": the bag settles beside the ball (the spot is never used up; the child still has two rings). Then "Put the cup on the table": a tiny clink. Tick.
 9. **The end.** The camera pulls back to the house: Nana reading with his glasses on and his cup at his elbow; in the bedroom, the cup on the bedside table, the ball and the bag under it, Zazu curled up between them; Simba asleep on the bed. Nothing the child put away is back in anyone's hands. Nani: *shabash* ✓. "Aah."
 10. **The shared two-page end screen.** Progress per word (glasses, ball, bag, on, table, each with its speaker), never a score that judges. It is the only word list.
@@ -456,7 +456,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 ## 5. Later visits and harder versions
 
 - **1a, L2:** the room word joins as the second word (after Mum's model line, the frame gap); two anchors in stage 2. Level up by the first-go rule (override 1); never level down.
-- **1b (after Zafar plays 1a):** Ma and Ali join, in their own voices if he chooses (open question 1); the bathroom and Ali's room; Simba's paw with the paw-tap, the swap and Zazu's theft; Tell Ali where; L3-L4 of stages 1 and 2; this side and that side once Mum has answered; the spice box and make the bed; the sock and the thread from hide and seek's tray; the thing for Ali.
+- **1b (after Zafar plays 1a):** Ma and Ali join, in any voice for now (Zafar, 1 Nov); the bathroom and Ali's room; Simba's paw with the paw-tap, the swap and Zazu's theft; Tell Ali where; L3-L4 of stages 1 and 2; this side and that side once Mum has answered; the spice box and make the bed; the sock and the thread from hide and seek's tray; the thing for Ali.
 - **Second visit (harder, new items):** the shoe rack by the front door and the kitchen drawers; the teddy, the key and the book as things; next to, behind, in front of as placing words; left and right (*dabo*, *jamni baju*) after this side and that side, with Nani's place moving between ends to keep this side and that side alive alongside them.
 - **Third visit:** the wardrobe (clothes words come from the sewing day: top shelf, hanging, bottom), "between" (*wich me*), and the past in the book ("it was under the bed").
 - **Role reversal:** at the third visit, Tell Ali where becomes the whole put-away: Ali holds each thing and the child tells him where, from the bubble.
@@ -504,7 +504,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 
 | Asset | Count | Notes |
 |---|---|---|
-| The house overview, front open | 1 | five rooms in a row (kitchen, sitting room, bedroom, bathroom, Ali's room), the bungalow of `h3-house-empty-wide-v1.png`, matched to hide and seek's bedroom; 1a shows the left three |
+| The house overview, front open | 1 | **the two-storey doll's house** (Zafar, 1 Nov): downstairs the kitchen and the sitting room, upstairs the bathroom, Ali's room and Nani's bedroom; the limewash look of `h3-house-empty-wide-v1.png`, matched to hide and seek's bedroom; 1a lights three (kitchen, sitting room, bedroom) and dims the other two |
 | The kitchen and the sitting room, full resolution, empty of loose things | 2 | crops and upscales of the overview, so camera and light match; the bedroom is hide and seek's |
 | Anchors as separate layers | 3 | the kitchen table, the kitchen chair, the bedroom's bedside table (the bed is hide and seek's) |
 | Things, F view | 4 | glasses, cup (reuse Cook's if it fits), ball, bag |
@@ -524,7 +524,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 
 **Phones:**
 - The card column on the left, about 20% of the width (about 148 px at 740); nothing else on the left. At L1 a row is the thing's picture with its position badge, the Kutchi beneath it (wrapping, never ellipsised) and the English under that; from L2, the picture, the Kutchi and a speaker. One picture a row, not three.
-- **The overview (1a, three rooms):** the house fills the play width: about 190 px a room at 740x320, about 245 px at 930x430. Rooms are the tap targets. Sky and lawn are trimmed to thin strips.
+- **The overview: how the 2+3 house fits 740x320.** The play area is about 592x320 beside the card column. The house fills it: a 10 px roof line, two storeys of about 145 px each and a 20 px lawn strip (sky and lawn trimmed to thin strips). Upstairs, three rooms of about 197 px wide (the bathroom, Ali's room, Nani's bedroom); downstairs, two of about 296 px (the kitchen, the sitting room). Rooms are the tap targets: 197x145 and 296x145, far above the 64 px minimum; things are never tapped on the overview, only inside a room. In 1a the bathroom and Ali's room are dimmed and don't take taps. Nana and Nani stay inside the sitting room's box, so no person stands over another room. At 915x275 the storeys are about 122 px; at 930x430 (play width about 744) the rooms are about 248 and 372 px wide and the storeys about 195 px.
 - **A room:** fills the play area; neighbour slivers 8% each side. The anchors sit in the middle third; rings at least 48 px. At L2 four rings round two anchors in about 590 px of play width. Nani or Nana stands on the right of the play area, cut at the hip, face fully inside the frame; no bubble crosses a face or the card column. From L3 (1b), Nani's two places are middle-left and right of the play area, never against the card column.
 - The cog is the only button.
 
@@ -573,11 +573,11 @@ About 3 minutes. No stage 3 or 4 in 1a.
 Each line: the choice, the reason, the answer I assumed. Changed or new after the critique: marked *(revised)* or *(new)*.
 
 1. **Two halves, fetch then put away, with different things** *(revised)*. Stage 1 fetches what Nana wants and he keeps it; stage 2 puts away what Simba knocked down in hide and seek and the ball Zazu chased into the bedroom. *Reason:* the old story had tidied things back in people's hands. *Likely yes.*
-2. **One storey, five rooms in a row** (kitchen, sitting room, bedroom, bathroom, Ali's room), drawn once; 1a plays the left three *(revised)*. The bathroom takes the hall's place so the clean-up has all four of your rooms: one house for both designs, as `clean-up-day.md` decision 25 sets it (consistency pass, 1 Nov; your numbered choice there decides both). The bedroom's open door in hide and seek's drawing stays a plain doorway. That is your "4-5 rooms at most". *Likely yes.*
+2. **Zafar, 1 Nov: one house for the three home games, drawn as a two-storey doll's house,** a cross-section, not rooms in a row. Downstairs: the kitchen and the sitting room. Upstairs: the bathroom, Nani's bedroom and Ali's room (the play room). Drawn once; 1a plays the kitchen, the sitting room and Nani's bedroom. The bedroom's open door in hide and seek's drawing opens onto the landing. The phone layout is in §7.
 3. **Hide and seek and this game share one house and one bedroom drawing** *(revised)*: hide and seek's bedroom plus one small bedside table, which is an anchor here and scenery there; the overview is drawn to match. *Reason:* one drawing for both, so the claim that it halves the art is true. *Likely yes.*
 4. **The thing flies to its owner,** who uses it, rather than a doll figure carrying it. Nothing drawn in code; no hands. *Likely yes.*
 5. **L1: the room is guided and the position decides; L2: the room joins as the second word** *(revised)*. Copies at L1 are on and under one table in the lit room. *Reason:* the room names are new to the child and not yet recorded; on and under are inside Mum's lines and heard in hide and seek. *Likely yes.*
-6. **"This side" is the side nearer Nani, but nothing is built on it until Mum confirms** *(revised)*. Grammar-notes §17 says the family point when they say *hi baju* and *hu baju*. Stage 2's L3 and the spice box wait for her answer; if she confirms, as designed; if not, they are redesigned with Nani pointing. *Likely yes.*
+6. **"This side" is the side nearer Nani, but nothing is built on it until Mum confirms** *(revised)*. Grammar-notes §17 says the family point when they say *hi baju* and *hu baju*. Stage 2's L3 and the spice box wait for her answer; if she confirms, as designed; if not, they are redesigned with Nani pointing. Zafar's words, to confirm: *he baju* (this side), *ne hu baju* (that side). *Likely yes.*
 7. **On and under first, then this side and that side (after Mum), then next to, behind, in front, in; left and right only on a later visit.** Your own list was "on top of, underneath, left of, right of"; this side and that side before left and right follows Mum's advice you approved (idea 11, 26 Sept) and your scope of 1 Nov, so the swap was yours. *Likely yes.*
 8. **Every spot gets an identical dotted ring, and spots are never used up** *(revised)*: things can share a spot, so every placement has every ring. *Likely yes.*
 9. **A wrong spot: shake, the line again, try again; only a first-go right ticks the word's ladder, the badge and the level** (decision 21). *Likely yes.*
@@ -593,7 +593,7 @@ Each line: the choice, the reason, the answer I assumed. Changed or new after th
 18. **The book gets a "where it was" page in 1a; the thing for Ali (his ball) joins in 1b with Ali** *(revised)*. *Likely yes.*
 19. **The spice box and drawers use the top-down camera as their own scenes; Nani's side is shown by the eye-level kitchen before the zoom and her bust at that edge** *(revised)*. No sleeve (a sleeve at the bottom of a top view reads as the child's own arm). *Likely yes.*
 20. **The kitchen has no fridge, sink or hob as anchors; its cabinets and worktop are scenery, never ringed** *(revised)*. Clean-up day and Cook own them. *Likely yes.*
-21. **Level-up rests on first go** *(new; rulebook override 1)*: up after 3 rounds in a row with at most one move not right first go and the guide's hint at most once. Proposed `advance.games["pick-it-up"].maxNotFirstGo: 1`. *Reason:* otherwise a fast tapper never idles into a hint and climbs to L4 with no Kutchi. *Likely yes.*
+21. **Level-up rests on first go** *(rulebook override 1; Zafar, 1 Nov: only right-first-time rounds, in every game)*: up after 3 rounds in a row with every move right first go and the guide's hint at most once. Proposed `advance.games["pick-it-up"].maxNotFirstGo: 0`. *Reason:* otherwise a fast tapper never idles into a hint and climbs to L4 with no Kutchi. *Likely yes.*
 22. **The guide's hint counts from the last ask, not the last tap** *(new; override 2)*. *Likely yes.*
 23. **The card's position badge shows at L1 only; the room picture never shows** *(new; override 3, against the rulebook's L1-L2)*. *Reason:* at L2 a picture would be a picture match, a 100% win with no Kutchi. Hide and seek made the same choice. *Likely yes.*
 24. **Simba's paw: the card is n dots, every row said in one form, nothing ticks on a wait, and a tapped thing lifts like any other** *(new)*. Tidy's rule, reused. *Reason:* the old auto-tick named the rows to leave. I did not add the critique's "happy wiggle" on a thing that holds: it tells a child who taps everything which rows hold, the same leak by probing. "Leave it be" is said at the close instead. *Likely yes.*
@@ -601,7 +601,7 @@ Each line: the choice, the reason, the answer I assumed. Changed or new after th
 26. **Tidy's Zazu's theft is kept** as stage 3's L4 in 1b, the past tense ("it was on the table") deciding *(new)*. *Assumed: keep, 1b.* (Other answers: a later visit, or park it.)
 27. **Cupboards** *(new, a choice)*: (a) maybe later, as now (opening a cupboard is hide and seek's reveal); (b) with the drawers at the second visit, as shelves. *Assumed: (a).*
 28. **1a and 1b** *(new)*: 1a is stages 1-2 at L1-L2, three rooms, four things, Nani the only voice, Nana the one receiver with two poses, no boards, no light states. 1b after you've played it. *Reason:* the research sized it small to medium; the old first visit was about fifty assets. *Likely yes.*
-29. **Nani says every ask in 1a** *(new)*: "Nana's glasses are under the table." The askers' own voices and "my" wait for 1b (open question 1). *Likely yes.*
+29. **Nani says every ask in 1a** *(new)*: "Nana's glasses are under the table." The askers' lines and "my" come in 1b, in any voice for now (Zafar, 1 Nov). *Likely yes.*
 30. **The room words, one list for all three home designs** *(new)*: kitchen, sitting room, bedroom (1a), the bathroom and Ali's room (1b). This game teaches them first (heard at L1, deciding at L2); hide and seek's whole-house visit reuses the same clips. *Likely yes.*
 31. **The day's carry, one list** *(new)*: §2. Nana's glasses become a stage-1 copy; Nani's bag (hide and seek's purse, one word) is put away in stage 2; the sock and thread wait in the tray for 1b. Hide and seek's file should cite §2 once you say yes. *Likely yes.*
 32. **The room-and-anchor frame is a gap, reported, not spliced** *(new)*. Mum records a model line ("Nana's cup is on the table in the kitchen"); L2 waits for it. *Likely yes.*
@@ -612,22 +612,22 @@ Each line: the choice, the reason, the answer I assumed. Changed or new after th
 
 ### Rulebook overrides (this game)
 
-1. Level-up on first go (decision 21; proposed `advance.games["pick-it-up"].maxNotFirstGo: 1`).
+1. Level-up on first go (decision 21; proposed `advance.games["pick-it-up"].maxNotFirstGo: 0`).
 2. The guide's hint from the last ask (decision 22).
 3. The card's pictures at L1 only, and the room picture never (decision 23; the rulebook shows them at L1-L2).
 4. "No" asks from L3, not L2 (decision 9b).
 
 ### Open questions (genuinely his; none blocks 1a)
 
-1. **Who voices Nana, Ma and Ali in 1b?** "My glasses ..." needs the owner's voice. Cook's customers use Mum and you. *Recommended:* you for Nana and Ali (as in Cook), Mum or Masi for Ma; until then Nani says each ask, as in 1a.
-2. **Mum's this side and that side:** does *hi baju* mean the side nearer the speaker, as stage 2's L3 assumes, or the side she points at? Ask her with a picture on the next sheet. Nothing is built on it before her answer.
-3. **The room names** for the sitting room, the bedroom, the bathroom and Ali's room: which words does the family use (English loans are fine, like *table*)? Asked once for both home designs.
+None left; Zafar answered them on 1 Nov. Voices: any voice for now. This side and that side: his words are *he baju* and *ne hu baju* (to confirm); what they mean (nearer the speaker, or pointed at) goes to Mum with a picture on the next sheet, and nothing is built on it before her answer. Room names: kitchen *rasor* (not sure), the bathroom said as "bathroom"; the others he doesn't know, so they go to Mum.
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
-Attach the listed references to each prompt. Nani comes from the locked sheet and lineup; `nani-sheet.webp` is attached only for the render style, never her face. Nana is the art bible's standing placeholder; the customers sheet shows how generic family members are drawn. The cats follow the cast doc (Simba a big black Russian Blue, Zazu a grey Russian Blue drawn as a kitten, both with green eyes). One moment per frame.
+Attach the listed references to each prompt. Nani comes from the locked sheet and lineup; `nani-sheet.webp` is attached only for the render style, never her face. Nana is the art bible's standing placeholder; the customers sheet shows how generic family members are drawn. The cats follow the cast doc (Simba a big black Russian Blue, Zazu a grey Russian Blue drawn as a kitten, both with green eyes). One moment per frame. Prompt 1 draws the two-storey doll's house (Zafar, 1 Nov), as on the prompt sheet; prompts 2-4 are single rooms, unchanged.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt pick-it-up-put-it-back-1: the guided room and the two copies (stage 1, L1)
 
@@ -636,9 +636,9 @@ The image should show the house open like a doll's house, Nana squinting in the 
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets), one gameplay screen, landscape, the main play area only (no side panel, no menus, no buttons).
 
-The scene: a single-storey family bungalow in warm limewash cream with a flat roof, shown as a doll's house: the whole front wall has been removed so we see straight into three rooms side by side, like a cross-section, at eye level, front on, one-point perspective, verticals perfectly vertical. A thin strip of pale blue sky above the roof and a thin strip of green lawn below. From left to right: a calm modern kitchen with plain sage cabinets and a worktop along the back wall, and a small wooden table with one wooden chair standing clear in the middle of the floor; a sitting room with a cream sofa, a low wooden table and a wooden armchair; a bedroom with a pale-oak wardrobe, a window with an indigo block-printed curtain, a single bed with a patterned cover hanging to the floor, a low sage-green cupboard and a small pale-oak bedside table standing clear on the floor. Each room has a little floor depth so things can sit under the furniture. Each room is calm and uncluttered, with at most one cultural accent (an ajrakh-print cushion on the sofa, a small mirror-work frame in the bedroom).
+The scene: a two-storey family house in warm limewash cream, shown as a doll's house: the whole front wall has been removed so we see straight into five rooms, like a cross-section, at eye level, front on, one-point perspective, verticals perfectly vertical. Upstairs, three rooms side by side: a small bathroom, a boy's bedroom with a few toys, and the bedroom described below; downstairs, two wider rooms: the kitchen and the sitting room. A thin strip of pale blue sky above the roof and a thin strip of green lawn below. Downstairs from left to right: a calm modern kitchen with plain sage cabinets and a worktop along the back wall, and a small wooden table with one wooden chair standing clear in the middle of the floor; a sitting room with a cream sofa, a low wooden table and a wooden armchair. Upstairs on the right: a bedroom with a pale-oak wardrobe, a window with an indigo block-printed curtain, a single bed with a patterned cover hanging to the floor, a low sage-green cupboard and a small pale-oak bedside table standing clear on the floor. Each room has a little floor depth so things can sit under the furniture. Each room is calm and uncluttered, with at most one cultural accent (an ajrakh-print cushion on the sofa, a small mirror-work frame in the bedroom).
 
-The moment: in the sitting room, a grandfather sits in the armchair, turned three-quarters towards us, holding a newspaper at arm's length and squinting at it because his glasses are missing. He is a generic character drawn like the attached customers sheet: a white knitted cap, a white beard, a cream kurta and a brown waistcoat; he must not look like the older man in any real-family reference. In the kitchen, two identical pairs of round reading glasses: one pair lies on the small table, the other pair lies on the floor directly under the same table. A red-and-blue rubber ball sits on the worktop at the back. The kitchen glows: a soft breathing gold light outlines the kitchen's room box, and the other two rooms are very slightly dimmed. A big black cat with green eyes and a small grey kitten with green eyes trot across the sitting-room floor.
+The moment: in the sitting room, a grandfather sits in the armchair, turned three-quarters towards us, holding a newspaper at arm's length and squinting at it because his glasses are missing. He is a generic character drawn like the attached customers sheet: a white knitted cap, a white beard, a cream kurta and a brown waistcoat; he must not look like the older man in any real-family reference. In the kitchen, two identical pairs of round reading glasses: one pair lies on the small table, the other pair lies on the floor directly under the same table. A red-and-blue rubber ball sits on the worktop at the back. The kitchen glows: a soft breathing gold light outlines the kitchen's room box, and the other four rooms are very slightly dimmed. A big black cat with green eyes and a small grey kitten with green eyes trot across the sitting-room floor.
 
 Style: match the attached references. A stylised 3D animated-feature look, soft warm late-morning sunlight from the upper left, gentle global illumination, chunky simplified shapes, clean surfaces, believable materials (limewash, pale oak, brass, cotton), soft contact shadows under every object. No outlines, no cel shading, no photorealism, no depth-of-field blur.
 
@@ -647,7 +647,7 @@ Absolutely no text, letters or numbers anywhere: none on the newspaper (show onl
 Must read at phone size (about 740x320 pixels): each of the three rooms as its own box, the two identical pairs of glasses and which is on the table and which is under it, the grandfather's squint, and the gold glow on the kitchen.
 
 References to attach:
-https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/h3-house-empty-wide-v1.png (the bungalow)
+https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/h3-house-empty-wide-v1.png (the house's look; drawn now as two storeys)
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/assets/cook/bg/service.jpg (the house's palette and light)
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/customers-sheet.webp (how generic family members are drawn)
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/props-sheet.webp (how things are drawn)
@@ -753,3 +753,9 @@ The critique (`pick-it-up-put-it-back-critique.md`, 1 Nov) had 6 MUSTs and 9 SHO
 Sources from the web search (1 Nov): [House of Learning, App Store](https://apps.apple.com/app/id452080937); [Constructing favourable conditions for measuring the young child's understanding of in, on and under (Lancaster)](https://eprints.lancs.ac.uk/id/eprint/54063); [Spatial prepositions in toddlers' online processing (NSF PAR)](https://par.nsf.gov//servlets/purl/10534393); [Teaching spatial concepts to preschoolers (freeslp)](https://freeslp.com/?p=179399).
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** One house for the three home designs: the bathroom takes the hall's place (`clean-up-day.md` decision 25, which Zafar's numbered choice still decides), so the rooms are the kitchen, the sitting room, the bedroom, the bathroom and Ali's room, in that order; 1a still plays the left three, 1b adds the bathroom and Ali's room, and the second visit's shoe rack stands by the front door in the sitting room (§3 G, §5, §7, decisions 2 and 30, open question 3).
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The home:** one two-storey doll's-house cross-section, not five rooms in a row: downstairs the kitchen and the sitting room, upstairs the bathroom, Nani's bedroom and Ali's room. §0, §2, §3 (the journey down the stairs, navigation between floors), §4, §7 (the art list and the 740x320 fit of the 2+3 house), decision 2 and prompt 1 (as on the prompt sheet) changed.
+- **Level up only on right-first-time rounds:** override 1, decision 21 (`maxNotFirstGo: 0`) and the leak table, where a level-up round is now a won round.
+- **Voices:** any voice for now for Nana, Ma and Ali; open question 1 is gone.
+- **His Kutchi, "Zafar, to confirm":** *he baju* / *ne hu baju* (this side, that side), *rasor* (kitchen), "bathroom" (the English word). Open questions 2 and 3 now go to Mum.

@@ -4,7 +4,7 @@ Drafted overnight from the game designs; nothing here is agreed. Built on `docs/
 
 ## 0. One line
 
-Nani's house the night before, then school, the day's weather (shown in the clock's last sky), hosts Nani (the morning) and the teacher, first visit. Status: four games designed, none built; **gated on one question to Mum** (does the family say the time in Kutchi?). Sources, newest first: `consistency-2026-11-01.md` rows 10-14, `wake-up-clock.md`, `do-it-engine.md` (§2B), `school-day.md` (each §0, §2). The clock comes first (it starts the night before).
+Nani's house the night before, then school, the day's weather (shown in the clock's last sky), hosts Nani (the morning) and the teacher, first visit. Status: four games designed, none built; **no longer gated:** Zafar says the family says the time fully in Kutchi, with special names for half past one and half past two (1 Nov, to confirm with Mum); the prototype plays on the device voice meanwhile. Sources, newest first: `consistency-2026-11-01.md` rows 10-14, `wake-up-clock.md`, `do-it-engine.md` (§2B), `school-day.md` (each §0, §2). The clock comes first (it starts the night before).
 
 ## 1. The language goal
 
@@ -73,11 +73,11 @@ The day **passes rule 4 only from L3** (the board); at L1-L2 the child never spe
 
 ## 7. People and what comes home
 
-Nani, Nana, Ma, Ali (about 8), his two little cousins (sleeping top-to-tail, then getting ready), the teacher (voice open), Simba. What comes home: the sticker on the book. Comes in: bird, goat and car from the farm and the safari; the numbers from the shops.
+Nani, Nana, Ma, Ali (about 8), his two little cousins (sleeping top-to-tail, then getting ready), the teacher (any voice for now), Simba. What comes home: the sticker on the book. Comes in: bird, goat and car from the farm and the safari; the numbers from the shops.
 
 ## 8. Words
 
-`wake-up-clock.md` §1 and its gate; `do-it-engine.md` §1 (getting ready's Mum list); `school-day.md` §1 and §6 (Mum's school round).
+`wake-up-clock.md` §0-§1 (the voice note to Mum; no gate); `do-it-engine.md` §1 (getting ready's Mum list); `school-day.md` §1 and §6 (Mum's school round).
 
 ## 9. Art
 
@@ -92,6 +92,8 @@ More school things, colours to six, numbers to 10, shapes if Mum has the words; 
 **Decided in this draft (reversible):** the clock opens the day before the door, as all three designs now say; the day runner still picks the weather first and the clock's last sky only shows it.
 
 **Open (Zafar):**
-1. **The gate:** send Mum the time question first; if the family says the time in English, the clock comes back to him as a choice.
+1. Cut1. **The gate:** send Mum the time question first; if the family says the time in English, the clock comes back to him as a choice.
 2. Who voices the teacher (school-day open question 1)? Suggested: Masi.
 3. Cut the first school visit to the board's L1-L2 and the clock's L1-L2, so the new words fit 15-25?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): "school and the wake-up clock: fine"; the time is said in Kutchi (to confirm), so the gate is gone; voices wait for shipping; only right-first-time rounds level up.

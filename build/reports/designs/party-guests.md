@@ -2,9 +2,15 @@
 
 Designed overnight, 1 Nov 2026, while Zafar slept; revised the same night after an independent critique (`party-guests-critique.md`; what changed is in §12). Every choice he hasn't made is in §10, so he can reverse it. Design only: no code, no data, no Kutchi invented. Kutchi in *italics* is copied from the repo, with its clip id where one exists; everything else is English marked "to record". When agreed, this doc becomes `docs/game-design/modes/party.md` (the party's two talking stages; gifts, statues and Snap get their own sections there).
 
+## How it plays (in 30 seconds; Zafar asked, 1 Nov)
+
+**Pass the balloon (introductions).** Zara's family and friends sit in a row facing us: Zara (the birthday girl), her mum, her masi, her cousin Yusuf and her friend Sana. One child holds a balloon and calls out, in Kutchi, who gets it next: "give the balloon to Zara's masi!" The child taps that person, and the balloon floats over and lands on them, a soft bop on a child's head or into a grown-up's hands; a grown-up bats it back to a child, who holds it and calls the next one. At first everyone says their own name ("my name is Yusuf") and the child passes the balloon to whoever is named. From level 2 only the two sisters are called, Zara's mum and Zara's masi (who is Yusuf's mum), and they swap seats, so only the Kutchi words for mum and masi tell the child which sister to tap. A wrong tap gets the balloon puffed back with a cheeky blow, and the call comes again. Later, our Nani hasn't met them, and the child introduces them to her.
+
+**How are you? (looking after the guests)** comes next: each guest says how they are ("I'm thirsty") and the child gives them what helps (water, food, a chair, a fan, a shawl, a balloon); one guest is fine and needs nothing.
+
 ## 0. One line
 
-Two stages at someone else's birthday party: **pass the balloon** (introductions: tap the person called; from level 2 the Kutchi kin word picks between two sisters) and **how are you?** (ask each guest how they are, hear the answer, fix it). Day: **someone's birthday** (a new family, a year older each visit; the day is not in `data/days.json` yet). Status: **new → designed, waiting on Mum's words** (this doc). Built from **Conversations** (built: T1, T3, T4, T11, T13 and its roster), `whichone.js` + `onboard.js` (the tap on a person), Cook's **order card** and host (built), the clinic's **feeling faces** (built), and one new shared piece, the **give-to tap** (the master map's shared give-to). Rough size: **large in all; the first sprint is medium** (stage A L1-L2 and stage B L1-L2 in the lab, five people, one art run; §6 says what waits). **Order: mock-ups → the names → Mum's sheet (§1) → the art run → the lab.** No lab build, leak bot or play-test before Mum's words land, because every deciding word is unrecorded today (§1).
+Two stages at someone else's birthday party: **pass the balloon** (introductions: tap the person called; from level 2 the Kutchi kin word picks between two sisters) and **how are you?** (ask each guest how they are, hear the answer, fix it). Day: **someone's birthday** (a new family, a year older each visit; the day is not in `data/days.json` yet). Status: **new → designed** (this doc); the prototype plays on existing takes and the device voice (Zafar, 1 Nov). Built from **Conversations** (built: T1, T3, T4, T11, T13 and its roster), `whichone.js` + `onboard.js` (the tap on a person), Cook's **order card** and host (built), the clinic's **feeling faces** (built), and one new shared piece, the **give-to tap** (the master map's shared give-to). Rough size: **large in all; the first sprint is medium** (stage A L1-L2 and stage B L1-L2 in the lab, five people, one art run; §6 says what waits). **Order: mock-ups → Mum's sheet (§1) → the art run → the lab.** The placeholder names stand (Zafar, 1 Nov). The lab and play-tests run on the device voice where no take exists; the leak bot measures once Mum's words land, because every deciding word is unrecorded today (§1).
 
 ---
 
@@ -36,7 +42,7 @@ Two stages at someone else's birthday party: **pass the balloon** (introductions
 | what's your name?; my name is (name) | to record (whole sentences, §1 Mum's sheet) | |
 | this is my (kin) | to record (*hi*, this ✓; *munji* ✓ in `munji-kursi`) | |
 | give the balloon to (person) | to record (the engine has no "to" word yet: gap 2 below) | |
-| happy birthday (Kutchi, or the English the family uses?) | to record (open question 3) | |
+| happy birthday | **Zafar, to confirm: probably said in English** (1 Nov) | |
 
 ### Family and kinship (stage A)
 
@@ -47,7 +53,7 @@ Two stages at someone else's birthday party: **pass the balloon** (introductions
 | grandmother, father's mother | in a recording (K14; lexicon `n.grandmother`, confirmed; not cut as a clip) | *dadima* |
 | grandfather, father's father | to record (not in the lexicon; `party-gifts.md` uses *dada*, Zafar confirms the spelling) | *dada* |
 | Nana (mother's father; ours) | ✓ (`nana`) as the cast's name; Mum to confirm it works as a kin word with an owner | *Nana* |
-| mother's sister | to record (the cast's Masi is a real person and the beach host; open question 4) | |
+| mother's sister | to record (the cast's Masi is a real person; open question 4) | |
 | dad; brother; baby; cousin; friend | to record (later visits) | |
 | boy; girl | heard inside | *chokro*; *chokri* |
 | dear (a child) | heard inside (`mmm-chai-bo-fine-ai-shabash-beta`) | *beta* |
@@ -79,7 +85,7 @@ Two stages at someone else's birthday party: **pass the balloon** (introductions
 
 ### Mum's sheet for the party (English only; Mum says it her way)
 
-Recorded only after Zafar fixes the family's names (open question 0), because the names are inside the sentences. Each is a whole, natural sentence; the engine learns the pieces from them (gaps below). Children's lines are voiced by family members, as in Conversations.
+The placeholder names are fine (Zafar, 1 Nov), so Mum records them inside the sentences. Each is a whole, natural sentence; the engine learns the pieces from them (gaps below). Who voices the children's lines is settled before shipping (Zafar, 1 Nov); for the prototype, existing takes, else the device voice.
 
 **Feelings (stage B, first):**
 1. I'm hungry.
@@ -88,7 +94,7 @@ Recorded only after Zafar fixes the family's names (open question 0), because th
 4. I'm sad. (and, at L3: "I'm sad, my balloon flew away.")
 5. I'm hot. (the person form)
 6. I'm cold. (the person form)
-7. The six thank-yous, each with its feeling, so the word is heard a third time: "Thank you, I'm not hungry now." (and thirsty, tired, sad, hot, cold).
+7. The six thank-yous, each with its feeling, so the word is heard a third time: "Thank you, I'm not hungry now." (and thirsty, tired, sad, hot, cold). "Thank you" is probably said in English (Zafar, to confirm, 1 Nov).
 8. Two natural lead-ins, so a needy answer isn't shorter than the "fine" one: "Oh, I'm so thirsty!"; "Oh, I'm so tired!"
 
 **Kin and calls (stage A, visit 1):**
@@ -168,7 +174,7 @@ The birthday day, in `party-gifts.md` §2's order, which all three party designs
 
 ## 3. The stages and mini-games
 
-**The people on visit 1** (placeholder names; Zafar picks, open question 0; one party cast with `party-gifts.md` §0, which also gives each person's look): **Zara**, the birthday girl (4); **Zara's mum** (the host); **Zara's masi** (her mum's sister, who is **Yusuf's mum**; the gifts design's "aunty"); **Yusuf**, Zara's cousin (6); **Sana**, Zara's friend (5). Five people in these two stages. Plus the child, and **Nani** and **Nana** (ours), who brought the child; Nani is the guide in the guide box. Also at the party from visit 1, in the gifts design's stages only: Zara's baby brother and her father's parents, **dada** and **dadima**. **Visit 2** brings dada and dadima into the balloon row (L4), with our Nana and Nani. The host's grandparents are never "nani" or "nana" (`party-gifts.md` decision 3). The two sisters are each other's children's masi: Zara's mum is Yusuf's masi, and Zara's masi is Yusuf's mum. That crossing is what makes the kin word decide.
+**The people on visit 1** (placeholder names, fine for now: Zafar, 1 Nov; one party cast with `party-gifts.md` §0, which also gives each person's look): **Zara**, the birthday girl (4); **Zara's mum** (the host); **Zara's masi** (her mum's sister, who is **Yusuf's mum**; the gifts design's "aunty"); **Yusuf**, Zara's cousin (6); **Sana**, Zara's friend (5). Five people in these two stages. Plus the child, and **Nani** and **Nana** (ours), who brought the child; Nani is the guide in the guide box. Also at the party from visit 1, in the gifts design's stages only: Zara's baby brother and her father's parents, **dada** and **dadima**. **Visit 2** brings dada and dadima into the balloon row (L4), with our Nana and Nani. The host's grandparents are never "nani" or "nana" (`party-gifts.md` decision 3). The two sisters are each other's children's masi: Zara's mum is Yusuf's masi, and Zara's masi is Yusuf's mum. That crossing is what makes the kin word decide.
 
 Adults are called by kin words with their owner, never by first names: that's how a child speaks of elders in this family, and it puts the Kutchi kin word in the deciding seat. The owner is always said ("Zara's masi", never bare "Masi"), so the party's masi is never confused with ours (open question 4).
 
@@ -422,7 +428,7 @@ The family's birthday comes round again: Zara is a year older each time.
 
 **New to build:**
 1. **The give-to tap** (`giveto`, the one shared piece `party-gifts.md` designs, lifted from Snap's `js/snap/mechanics/handin.js`; one name in every design): tap a thing, then a person; the thing goes to them; the person reacts; the open-card rule (§3 B). One shared piece for the party's gifts and cake, seat the guests, give one to Nana, and stage B. Built once, here or by whichever party game comes first.
-2. **One feelings table** (`data/party/needs.json`): feeling → fix, its lines, the reaction pose names, the wrong-fix reaction for each pair. It is meant to be the game's one feelings table; the clinic's send-off keeps its own (cold → blanket, sad → apple) until Zafar decides whether it reads this one (decision 9; non-negotiable 1). The adoption centre's needs card can reuse the shape.
+2. **One feelings table** (`data/party/needs.json`): feeling → fix, its lines, the reaction pose names, the wrong-fix reaction for each pair. It is meant to be the game's one feelings table; the clinic's send-off keeps its own (cold → blanket, sad → apple) until Zafar decides whether it reads this one (decision 9; non-negotiable 1). The pet hotel's needs card (the adoption centre, renamed 1 Nov) can reuse the shape.
 3. **The balloon:** a slow arc in the ceiling band, a bop or a catch, the funny misses. Small (code moves one sprite).
 4. **The seat shuffle:** people swap places in a short walk. Small.
 5. **The name beat's mic:** the live wave from `speech.js`'s existing level meter (`onLevel`, SH-128), result ignored. If `Speech.listen` can't run with no choices, a one-line guard is the only engine change.
@@ -430,7 +436,7 @@ The family's birthday comes round again: Zara is a year older each time.
 7. **The leak bot** for both stages, playing recorded rows only.
 8. **The engine's gaps** (§1): the names and kin nouns with gender, the "to" word, the person forms of hot and cold, from Mum's lines.
 
-**The first sprint** (once Mum's sheet 1-15 is recorded and cut, and the art lands): stage A L1-L2 and stage B L1-L2 in the lab, five people, the give-to tap, the balloon, the shuffle, needs.json, guests.json, the leak bot on L2. **Waits:** L3-L4, A3, A4, B3, visit 2's grandparents in the row, the day entry's later stages.
+**The prototype's first slice** (sprint planning is on hold, Zafar 1 Nov; once the art lands, on Mum's takes where they exist and the device voice for the rest): stage A L1-L2 and stage B L1-L2 in the lab, five people, the give-to tap, the balloon, the shuffle, needs.json, guests.json, the leak bot on L2. **Waits:** L3-L4, A3, A4, B3, visit 2's grandparents in the row, the day entry's later stages.
 
 ### Assets each mini-game declares and loads
 
@@ -462,7 +468,7 @@ The family's birthday comes round again: Zara is a year older each time.
 
 Plus a second 12-cell fix-and-miss sheet (six fixes, six misses) **only for the four who get needs on visit 1:** Zara, Yusuf, Sana, Zara's masi. Zara's mum is the host and needs only the pose sheet. So visit 1 is 5 × 12 + 4 × 12 = 108 cells, cut from the same character sheets as `party-gifts.md`'s (Zara, her mum, her masi; Yusuf and Sana are drawn in that run too), in one paste block. The two sisters share a family likeness. Dada, dadima and Nana's party sheet are drawn in that same run for the cake; their balloon poses (seated, catch) are added for visit 2. Zara's later ages are later runs. None of the new family looks like anyone in the cast: no cream kameez with a red dupatta on any grandmother (Nani's look), no teal headscarf (the cast's Masi), no white beard (Nana, the doctor).
 
-**Clothes and culture:** modest, modern East African Kutchi family party clothes (kurtas, kameez with dupattas), at most 1-2 Kutch nods per scene (a mirror-work cushion, an ajrakh throw). **No text anywhere:** no "happy birthday" banner, no number candles, no letters on balloons or bunting. Plain bunting, balloons in plain colours. No religious markers. Cake only as celebration food, never a reward.
+**Clothes and culture (Zafar, 1 Nov):** mostly modern and modest; older people somewhat more traditional, but not all; older men in a shirt tucked into trousers; the mums and masi in modern smart-casual; the children in modern casual; at most 1-2 Kutch nods per scene (a mirror-work cushion, an ajrakh throw). **No text anywhere:** no "happy birthday" banner, no number candles, no letters on balloons or bunting. Plain bunting, balloons in plain colours. No religious markers. Cake only as celebration food, never a reward.
 
 **Backgrounds:** the new family's front room, day; golden evening for later visits (the relight rule: same camera, same layers).
 
@@ -511,7 +517,7 @@ At L2 (four people) the slots widen by a quarter; the extra room goes to the sce
 | **6. Layout** | Passed on paper: one row at every size, at most 5 people, no pan, bubbles and the arc in the ceiling band in turn, the card in the side panel on phones, a pixel sketch per size (§7). Must be checked at all five sizes in the lab, on film |
 | **7. Art** | Passed on paper. One camera (E, items F). Nothing drawn in code. Two poses per speaker. Visit 1 is five people, 108 cells. The new family looks like no one in the cast; no real-likeness sheet in their prompts |
 | **8. Speaking** | Passed. All speaking inside watched exchanges; closed sets of 2-3 with pills always there; never a gate. The child's own name is a watched beat with the face pill always beside the mic, never checked, never in a ladder |
-| **9. Levels** | Passed. Rulebook order (core, more of it, other ways, a look-alike). Gestures never change. Level up after 3 rounds with the guide's hint at most once each (`data/rules.json`). **Exception:** stage B's L1 is 2 guests, not 1 (written in its row) |
+| **9. Levels** | Passed. Rulebook order (core, more of it, other ways, a look-alike). Gestures never change. Level up after 3 rounds with the guide's hint at most once each and every call right first time (Zafar, 1 Nov: only right-first-time rounds; `data/rules.json`). **Exception:** stage B's L1 is 2 guests, not 1 (written in its row) |
 | **10. Words** | Passed. Every line listed with its clip id or "to record" (§1); Mum's numbered sheet in §1; the engine's gaps reported. 3-5 new words a round; each feeling heard three times in its own step |
 | **11. Culture** | Passed. Halal food (samosa, fruit); modest clothes; no religious markers, no turban gag; no sweets as a reward; no frown, even pretend; the balloon is never put near a face or popped; whether elders are bopped is Zafar's call (open question 2) |
 | **12. Fun** | Passed. Hands busy at every step (the intro pass is taps). "Kind of funny": the balloon bops, the instant nap, the shawl-as-fan. Contrast (the gulp and the slow nap). Fine guests break the ask-fix rhythm |
@@ -536,8 +542,8 @@ At L2 (four people) the slots widen by a quarter; the extra room goes to the sce
 Each: the choice, why, and the answer I assumed. Reverse any by number. Answerable "yes to all except …".
 
 1. **Two stages, one doc:** pass the balloon and how are you?, stages 3 and 4 of the birthday day (`party-gifts.md` §2's order). *Why:* the people met in one are looked after in the next. *Assumed:* yes.
-2. **The order is mock-ups → the names → Mum's sheet (§1) → the art run → the lab.** No lab build, leak bot or play-test before Mum's lines 1-15 are recorded and cut. *Why:* every deciding word is unrecorded, so a build today is a reader's win on grey English. *Assumed:* yes.
-3. **Introductions as a balloon name game; the intro pass is taps** (option a of the critique). *Why:* the real preschool name game, and hands are busy from the first second. The other option, "give it to Nani" ✓ against a child's name at L1, is kept as a fallback if L1 feels empty of Kutchi. *Assumed:* yes.
+2. **The order is mock-ups → Mum's sheet (§1) → the art run → the lab.** **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice. The leak bot measures only recorded rows, since grey English is a reader's win.
+3. **Introductions as a balloon name game; the intro pass is taps** (option a of the critique). **Zafar, 1 Nov: yes, for now.** *Why:* the real preschool name game, and hands are busy from the first second. The other option, "give it to Nani" ✓ against a child's name at L1, is kept as a fallback if L1 feels empty of Kutchi. *Assumed:* yes.
 4. **Adults are called by kin word with an owner, never by first name or a bare kin word.** *Why:* that's how a child speaks of elders here, and the owner keeps the party's masi apart from ours. *Assumed:* yes.
 5. **From L2 every call is between the two sisters** (Zara's mum, Zara's masi, Yusuf's mum, Yusuf's masi); no grandparent call until L4's two pairs (Zara's dada and dadima, our Nana and Nani); no second Nani anywhere (`party-gifts.md` decision 3); Yusuf's grandparents never come. *Why:* the critique showed the names and the one old woman decided L2-L3. *Assumed:* yes.
 6. **Every call is addressed to the player** ("my" means the holder's; "your Nani" and "your Nana" mean ours). Every new person is introduced once. *Assumed:* yes.
@@ -559,19 +565,19 @@ Each: the choice, why, and the answer I assumed. Reverse any by number. Answerab
 22. **When agreed, this becomes `docs/game-design/modes/party.md`.** *Assumed:* yes.
 
 **Open questions (genuinely his):**
-0. **The family's names, first:** Zara, Yusuf, Sana are placeholders; Mum records them inside every frame. Should they avoid any real relative's name? He picks.
 1. **Two calls or one for the child's ask at L3:** may the informal *Ki aiye?* (K4, marked "to check") be used as another way to ask a cousin?
 2. **Elders and the balloon:** may the balloon bop a grown-up's head in play, or does it land in their hands (assumed: hands)?
-3. **"Happy birthday":** Kutchi, or the English the family says? (Mum.)
-4. **The word "masi":** our Masi is real and hosts the beach. At the party the owner is always said ("Zara's masi"). Is that enough, or should the beach host get a name (e.g. "Masi Sakina") so the word is only a kin word? (Him and Mum.)
-5. **Caps or headscarves** for the new family at the party? Kept plain and modern with dupattas.
-6. **One voice rule for the party** (consistency pass, 1 Nov): here the children's calls are family takes said as a child would (Mum's, as in Conversations), while `party-gifts.md` gives every deciding line to Nani and keeps the host family to reactions, because the family has no young girl's voice (its decision 4 and open question 1). *Recommended:* keep both: Zara's calls here are Mum's takes; in the gifts design Nani asks. He confirms once for both.
+4. **The word "masi":** our Masi is real (and, Zafar says, won't want to be in the game as herself: the town map's answer). At the party the owner is always said ("Zara's masi"). Is that enough? (Him and Mum.)
+
+(Answered 1 Nov and removed: 0, the placeholder names are fine; 3, "happy birthday" is probably English, to confirm; 5, clothes follow his rule, mostly modern and modest; 6, voices are settled before shipping, so there is no party voice rule now.)
 
 ---
 
 ## 11. ChatGPT mock-up prompts
 
 Every prompt: no real-likeness sheet attached (the customers sheet is placeholders); the line "none of these people is anyone shown in the references"; the cast matches the ladder; no quoted sounds; no glow on anyone (the game never lights the answer). Each asks for the important strip to sit across the middle so Claude can cut a 3:1 phone crop from it.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt party-guests-1: pass the balloon, level 1
 
@@ -716,3 +722,10 @@ Each finding, then what I did. Checked against the repo where the critique cited
 20. **SHOULD: method outputs missing.** Applied. An assets table per mini-game (§6). The doc's home is `docs/game-design/modes/party.md` (decision 22). The idea pools are stated (six for A, five for B, with why). B3 and the after-statues round are marked "later, depends on statues", since the master map's day doesn't include that round yet.
 
 **Consistency pass (1 Nov, `consistency-2026-11-01.md`).** This design now shares one party cast with `party-gifts.md` (its §0) and `do-it-engine.md`. The host's grandparents are **dada** and **dadima**, never "Zara's nani" or "dadi" (`party-gifts.md` decision 3), so L4 is now two look-alike pairs (Zara's dada and our Nana, Zara's dadima and our Nani; blind 1 in 4), Mum's lines 16-17 changed with it, and the grandparents don't ask A4. Zara is 4 on visit 1 (the gifts design owns her birthday), and every prompt uses the shared looks (Zara marigold, her mum deep plum, Zara's masi red; nobody in teal). The day's order is `party-gifts.md` §2's, so these are stages 3 and 4; the after-statues round is parked (it would put two give-to stages back to back) and B3 plays inside stage 4 on visit 2. One art run with the gifts design's sheets. The rows above in §12 describe the design before this pass.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **"How it plays"** added near the top, as he asked: the balloon game and how are you? in 30 seconds.
+- **The balloon: yes for now; the placeholder names are fine** (decision 3, §1, §3; open question 0 gone).
+- **Voices:** not now. The build order no longer waits on Mum's words for the lab (§0, decision 2); open question 6 (the party's voice rule) is gone.
+- **Happy birthday and thank you:** probably English, "Zafar, to confirm" in the word table and Mum's sheet; open question 3 gone.
+- **Level up only on right-first-time rounds** (checklist 9). **Clothes:** his rule in §7 and the prompt sheet's line before the prompts; open question 5 gone.

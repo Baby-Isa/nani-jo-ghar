@@ -4,13 +4,13 @@ Drafted overnight on TEMPLATE Part A, checked against Part B; nothing here is ag
 
 ## 0. One line
 
-The town and its market, a **sunny** day (overriding the shops' rainy door of 19 Oct: `town-map.md` decision 2), host Nani, first visit. Status: both games designed, none built; recording is the gate (pay alone needs about 110 clips over its ladder, most of them numbers). Sources, newest first: `consistency-2026-11-01.md` rows 19-21, `town-map.md`, `shops.md`, `days/shops.md` (Zafar's 19-21 Oct design).
+The town and its market, a **sunny** day (overriding the shops' rainy door of 19 Oct: `town-map.md` decision 2), host Nani, first visit. Status: both games designed, none built; recording makes it teach (pay alone needs about 110 clips over its ladder, most of them numbers); the prototype plays on the device voice meanwhile (Zafar, 1 Nov). Sources, newest first: `consistency-2026-11-01.md` rows 19-21, `town-map.md`, `shops.md`, `days/shops.md` (Zafar's 19-21 Oct design).
 
 ## 1. The language goal
 
 | ID | Kind | Target | New this day | Comes back |
 |---|---|---|---|---|
-| O1 | Main: places in town | market, park, bakery (L1); library, clinic (L2); post office, school (L3) | all to record but one (Mum's gate: which places the family says in Kutchi) | |
+| O1 | Main: places in town | market, park, bakery (L1); library, clinic (L2); post office, school (L3) | all to record but one (the popular places, Zafar 1 Nov; Mum marks which the family says in Kutchi) | |
 | O2 | Main: money and numbers | the price, "how much?", paisa; 1-5 on round 1, to 20 by L2, the tens at L3, every number to 100 by L4 | the numbers alone (no clips), paisa, the price frame (to record) | how many? ✓ |
 | O3 | Main: describing words as the move | big and small (the pot, the cup); not the big one; the biggest, the smallest (L3); half, a little, more (L4) | to record alone (big pot, small pot are ✓ lines) | big cup ✓ (line), small ✓, red ✓ |
 | O4 | Supporting: food and things | mango, lemon, onion; book, bread, letter, medicine | mango, bread, letter (to record) | lemon ✓, onion ✓, medicine (the clinic) |
@@ -38,7 +38,7 @@ The feeling: grown-up and capable. The end shows the bag unpacked and Ali with h
 | 2 | Pack the bag | pack the bag (designed) | 1 | O4 | which thing goes in | L | the purse shown first |
 | 3 | The bus | window ride (built) | 1 | O1 | which passing thing she names | L | the bus pulls in |
 | 4 | The town map | put it in its place (person to place) + the farm's animal actor | 1 | O1, O5, O6 | where the person said they want to go; from L3 what they want, so the place is inferred | L | each place's funny refusal; what each carries out |
-| 5 | The market | serve, the X one, pay (**new**), the cloth, your turn | 1 | O2, O3, O4, O6, O7 | how many on the scale; which size; how much to count out | L, S from L2 | the shopkeeper's ten trick |
+| 5 | The market (a short lane between the stalls) | serve, the X one, pay (**new**), the cloth, your turn; the lane met gently | 1 | O2, O3, O4, O6, O7 | how many on the scale; which size; how much to count out | L, S from L2 | the shopkeeper's ten trick |
 | 6 | Home: put the shopping away | put it in its place | 1 | O4 | where each thing goes | L | the gift fruit to Ali |
 | 7 | Evening book | book (built) | | all | "Nana went to the library" | L | one page per errand and stall |
 
@@ -48,14 +48,14 @@ The market grows by round (shops §2): round 1 the fruit stall, round 2 the gene
 
 | Moment | Who | It plays out as | The child does | Closed set | Frame | O-IDs |
 |---|---|---|---|---|---|---|
-| The errands | Nana, Big Ma, Ma, Masi | each says where they want to go | sends them | (listening) | "{name} wants to go to the {place}" | O1, O5 |
+| The errands | Hannah Mami (first in the row), Nana, Big Ma, Ma | each says where they want to go | sends them | (listening) | "{name} wants to go to the {place}" | O1, O5 |
 | Serving | two customers | each orders fruit | weighs it out | (listening) | the order frame | O2, O4 |
 | Your turn (L2) | Nani, the shopkeeper | Nani orders, then hands over | orders for her | 2-3 | "I want {x}" | O3, O7 |
 | Where shall I go? (visit 2) | a person | asks the child | says the place | 3 | heard all visit 1 | O1 |
 
 ## 5. Fun and novelty
 
-- **The new thing:** pay: the purse with two piles, counting out, the open hand, the count-back. Built here first and reused by the sewing, the beach and the farm's corn stall.
+- **The new thing:** pay, the one pay (Zafar, 1 Nov): count out the coins and hand them over (the purse with two piles, the open hand, the count-back), with ready-made stacks for small prices. Built here first and reused by the sewing, the beach and the farm's corn stall.
 - **The joke:** each place's funny refusal on a miss; the goat eats the list.
 - **The collectible:** one page per errand and per stall.
 - **Rhythm:** busy (the map), then the market, then the calm put-away. About 1.5 + 3 minutes for the map and the first market round, **about 8-9 minutes on the first play**, 12-13 once three market rounds open (then the rounds split over plays).
@@ -74,7 +74,7 @@ The market grows by round (shops §2): round 1 the fruit stall, round 2 the gene
 
 ## 7. People and what comes home
 
-Nani, Nana, Big Ma, Ma, Masi, two sellers. Comes home: bread and onions to the pantry; the book and the gift fruit for Ali; the red cloth to Big Ma's room (seeds `sewing.md`); the birthday present (seeds `birthday.md`). Comes in: the clinic's medicine, Cook's onions and lemons.
+Nani, Hannah Mami, Nana, Big Ma, Ma, two sellers. Comes home: bread and onions to the pantry; the book and the gift fruit for Ali; the red cloth to Big Ma's room (seeds `sewing.md`); the birthday present (seeds `birthday.md`). Comes in: the clinic's medicine, Cook's onions and lemons.
 
 ## 8. Words
 
@@ -86,7 +86,7 @@ Nani, Nana, Big Ma, Ma, Masi, two sellers. Comes home: bread and onions to the p
 
 ## 10. Later visits
 
-The lanes and the goat chase; the cloth seller's stall; the chai stall; first-then errands; directions; numbers to 100 everywhere (each design's §5).
+The full lanes and the goat chase (met gently on visit 1); the cloth seller's stall; the chai stall; first-then errands; directions; numbers to 100 everywhere (each design's §5).
 
 ## 11. Decisions made overnight, and open questions
 
@@ -94,6 +94,6 @@ The lanes and the goat chase; the cloth seller's stall; the chai stall; first-th
 
 **Open (Zafar):**
 1. Sunny, or keep the 19 Oct rain (town-map decision 2)?
-2. The lanes and the goat chase: visit 1 or visit 2 (shops open question 4)? Recommended: visit 2.
-3. A brass coin or notes for the tens (shops open question 3)?
-4. Masi in the town's row, or another relative (town-map open question 3)?
+2. A brass coin or notes for the tens (shops open question 3)?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the lanes are introduced gently from visit 1 (one short lane), in full on visit 2; Hannah Mami first in the face row and no Masi face; the popular places; one pay with stacks for small prices; only right-first-time rounds level up.

@@ -10,7 +10,7 @@ A wildlife park, sunny, host Hannah Mami, first visit. Status: both games design
 
 | ID | Kind | Target | New this day | Comes back |
 |---|---|---|---|---|
-| O1 | Main: wild animals | elephant, giraffe, zebra (L1); lion (or monkey) at L3 | all to record | |
+| O1 | Main: wild animals | elephant, giraffe, zebra (L1); the lion (in a tree) at L3; monkeys too (the ride's funny beat on visit 1, asked from visit 2) | all to record | |
 | O2 | Main: verbs seen in motion | eat, run, swim (L2), climb (L3), as "the one that's eating" | the "that's eating" forms, swim, climb (to record) | eat ✓ (command), run (engine) |
 | O3 | Main: what an animal looks like | ears, neck, tail (L2); stripy, spotty (L3) | neck, tail, stripy, spotty, hiding (to record) | ears ✓ (the clinic) |
 | O4 | Small words: who, big, small, baby | "who's climbing?"; the baby elephant | baby, who (to record alone) | small ✓, big (in lines), who's there? ✓, where is it? ✓ |
@@ -62,7 +62,7 @@ No new engine: everything is reused from the farm and the home day.
 | O-ID | Stages | Heard (about) | Said | Met again |
 |---|---|---|---|---|
 | O1 animals | 4, 5, 6 | 3+ each per round | L3: 1 | the school's board (none yet); later safari visits |
-| O2 verbs | 4, 6 | 3+ each | 0 | the farm's photo shoot (eat, run), the adoption centre |
+| O2 verbs | 4, 6 | 3+ each | 0 | the farm's photo shoot (eat, run), the pet hotel |
 | O3 parts, describing | 5 | 3+ each | 0 | the clinic (ears), the shops (describing) |
 | O4 who, size, baby | 4, 5 | 6+ | 0 | the farm, the beach |
 | O6 said | 3, 5 | 2+ | 1-2 | every trip's meeting |
@@ -71,7 +71,7 @@ No new engine: everything is reused from the farm and the home day.
 
 ## 7. People and what comes home
 
-Hannah Mami (every line is hers; until her voice is settled, Nani speaks from the speaking slot), Nani. One print for Ali. Comes in: the Snap kit and the animal actor from the farm; the openable from the home day; ears from the clinic.
+Hannah Mami (every line is hers; a placeholder look for now, and her lines play in existing takes or the device voice), Nani. One print for Ali. Comes in: the Snap kit and the animal actor from the farm; the openable from the home day; ears from the clinic.
 
 ## 8. Words
 
@@ -90,6 +90,8 @@ Visit 2: drink, birds with colours, the hippo, crocodile and ostrich; the trunk,
 **Decided in this draft (reversible):** the food stall stays parked until the family names its food; the watering hole is not a stage on visit 1 (the design's decisions 10 and 15).
 
 **Open (Zafar):**
-1. Hannah Mami's likeness, clothes and whether she records (ask first: every line is hers).
+1. Who's hiding?1. Hannah Mami's likeness, clothes and whether she records (ask first: every line is hers).
 2. A lion at all (decision 13)?
 3. Who's hiding? or the parked Playtime at the watering hole as the second game (decision 1)?
+
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the lion in a tree, and monkeys too; Snap is an instant camera with a tick on each right shot, no darkroom; the speed calls come only at later levels; Hannah Mami is a placeholder; only right-first-time rounds level up.

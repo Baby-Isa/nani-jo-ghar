@@ -40,14 +40,14 @@ Designed overnight on 1 Nov 2026, while Zafar slept, and revised the same night 
 
 | English | Kutchi in the repo | Status | Used in |
 |---|---|---|---|
-| egg | *indo* / *mayai* | ✓ both (Mum to say which one for a child: open in the lexicon) | eggs, cake |
+| egg | *indo* / *mayai* | ✓ both; **Zafar, to confirm: *indo*, for now** (1 Nov; Mum to say which one for a child) | eggs, cake |
 | boil | *ukar* | ✓ (verb alone; also "boil the water" as a whole line) | eggs |
 | a boiled egg | – | to record (the engine may build it from *ukar* and egg once Mum gives the form) | eggs |
 | fry it | *tarelo kari chad* | ✓ whole line | eggs |
 | fried | *tarelo* | heard in 2 lines (draft) | eggs: "a fried one" |
 | fry (verb) | *tar* | in engine (draft; on Mum's confirm list) | eggs |
 | crack (an egg) | – | to record | eggs, cake |
-| pot | *tapelo* / *sufuria* | ✓ both (which one is the lexicon's open question: §10) | eggs; "the pot" is also Nani's one naming line at the first round |
+| pot | *tapelo* / *sufuria* | ✓ both; **Zafar, to confirm: *tapelo*** (1 Nov; Mum confirms) | eggs; "the pot" is also Nani's one naming line at the first round |
 | frying pan | – | to record (Cook's data has *kadai* as an art name only, not a word) | eggs |
 | plate | *saani* | in engine | eggs |
 | soft (of an egg), hard | – | to record | eggs L4 |
@@ -198,7 +198,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
    - The fried egg is lifted with the flat turner and slides off.
    - The boiled egg is lifted with the slotted spoon.
    - Either way it rises above the hob, waiting.
-4. Tap the plate. The egg flies there: the boiled egg peeled onto the plate (§10 open question 3: egg cup or peeled), the fried egg flat on the plate.
+4. Tap the plate. The egg flies there: the boiled egg into a plain egg cup on the plate (Zafar, 1 Nov), the fried egg flat on the plate.
 5. **Tap the tray: the commit,** and the only moment the plates are judged. Once every plate has at least one egg and nothing is cooking, the tray glows; nothing about the glow says whether the counts are right. Tapping it carries the tray to the table, an action with its own meaning like the baking cup's tip, not a Done button. Each plate is judged against its person's order (verb and count). A plate that's wrong shakes and comes back, Nani says that person's order again, and the eggs that don't belong hop back to the hob to be given again (too few: the plate waits for more). Until the tray is tapped, eggs can be moved freely between plates (NN7's undo). When every plate is right, each person's face appears over their plate (Cook's review).
 
 **The five questions:**
@@ -207,7 +207,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
 |---|---|---|
 | 1. What do you do? | Tap, then tap (egg, then pot or pan); tap in the green; tap the plate; tap the tray to serve. One gesture per kind of action. | 5 |
 | 2. Does the Kutchi decide it? | Yes. The verb (boil or fry) picks the pot or the pan. From L2 the number picks how many, and "with chilli" or "no chilli" picks the shaker. From L3, the owner picks the plate (Nani's card has no faces). From L4, soft or hard picks when to take it out. At L2 the plate is support: the person's card part carries their face, and the tray badge matches it. | 5 |
-| 3. Where is the fun? | The crack and sizzle. The egg bobbing in the boiling water (tap the pot and it bobs again: a toy while you wait). At the serve, Nana knocks his boiled egg on the plate's rim, "tok tok", and the shell falls away; Ali folds his fried egg into a maani and grins. | 4 |
+| 3. Where is the fun? | The crack and sizzle. The egg bobbing in the boiling water (tap the pot and it bobs again: a toy while you wait). At the serve, Nana taps the top of his boiled egg in its egg cup with a teaspoon, "tok tok", and slices the top off; Ali folds his fried egg into a maani and grins. | 4 |
 | 4. Where is the instruction? | At L1-L2 each person, on screen at the table first, says their order in the Cook frame "I want a boiled egg". From L3 Nani relays all of them. The card pops up big, then flies to its row. Nani calls each step once as it opens ("now, the eggs"). | 4 |
 | 5. What is novel? | Two cooking verbs on one identical item. The crack. From L3, the first Cook station where the heard owner, not a face, picks the plate. The meal named by the light. | 4 |
 
@@ -248,7 +248,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
 - Nani says Nana's order again, and the egg hops back to the bowl.
 - The miss reactions rotate: a wobble on the rim; Simba's ears popping up at the sill; the egg spinning like a top.
 
-**The delight moment:** the crack. One knock, the shell splits, the yolk slides out and wobbles, then the sizzle. At the serve, Nana's "tok tok" on the plate's rim and the shell falling away; at L4 he halves it and a soft egg's yolk runs (the soft and hard reveal).
+**The delight moment:** the crack. One knock, the shell splits, the yolk slides out and wobbles, then the sizzle. At the serve, Nana's "tok tok" on the top of the egg in its egg cup and the top sliced off; at L4 the open top shows a soft egg's runny yolk or a hard egg's set one (the soft and hard reveal).
 
 ### Stage E4: "And you?" (moved to a later visit)
 
@@ -412,7 +412,7 @@ The first kitchen day: the door, eggs, baking and the book, with no lunch statio
 6. **While it cooks.** The light rests on the pot, and a tap makes the egg bob again. Nani is quiet. The ring holds in the green this first time, and Nani says one line: "take it out now" (*inke hane kadh* ✓). The child taps the egg and the slotted spoon lifts it.
 7. **One live thing: Nana's plate.** Tap, and the egg lands on his plate.
 8. **One live thing: the tray** (the commit, shown once). It glows; tap it, and it's carried to the table. The row ticks gold.
-9. **The serve.** Nana's big face appears over the plate. He knocks the egg on the plate's rim, "tok tok", the shell falls away, and he says "aah". In the next moment Nani says "well done" (*shabash* ✓), and the word card plays: egg, boil, I want.
+9. **The serve.** Nana's big face appears over the plate. He taps the top of the egg in its egg cup, "tok tok", slices the top off, and says "aah". In the next moment Nani says "well done" (*shabash* ✓), and the word card plays: egg, boil, I want.
 10. **The end.** The shared two-page end screen: the time, the ticks, the bulb, then the words with English under them for the grown-ups. Back to the kitchen.
 
 **The baking station, L1** (the same day, golden evening), in short:
@@ -486,7 +486,7 @@ All of it goes in **one paste block for one ChatGPT run** that Zafar supervises 
 - Crack frames: knock, split, slide; and the raw egg in the pan.
 - Fried egg states: raw, setting, done, crispy-edged.
 - An egg bobbing in boiling water.
-- A plain plate: a boiled egg whole, its shell cracked and falling away, peeled and halved soft (runny yolk), peeled and halved hard (open question 3: if Zafar says egg cups, these become an egg cup with the lid on, lid off soft, lid off hard).
+- A plain plate with a plain white egg cup (Zafar, 1 Nov): the boiled egg whole in the cup, its top tapped and cracked, the top sliced off soft (runny yolk), the top sliced off hard (set yolk); a small teaspoon.
 - A slotted spoon (if the maani set lacks one).
 - A chilli shaker.
 
@@ -569,11 +569,11 @@ All of it goes in **one paste block for one ChatGPT run** that Zafar supervises 
 8. **Speaking: none in this scope.** The eggs' "boiled or fried?" turn waits for the chai pilot, as Zafar's speaking plan says, and comes back as a one-word answer (§5).
 9. **Levels: passed.**
    - Every level is designed with its own new thing (§3). L4 is its own: soft and hard, halves, three bakes.
-   - Up after 3 rounds with at most one hint each.
+   - Up after 3 rounds with at most one hint each, and only right-first-time rounds count (Zafar, 1 Nov).
    - The bands and rings are in data. The rules are coded (the bot and `rules.json`).
    - Note: amounts are baking's core, so they start at L1 rather than the rulebook's L4. The rulebook's L4 "halves" is kept.
 10. **Words: passed, with a recording cost.** Every line said is listed in §1, with its status (including "I'll have it!", "one for me", the bake-for-meal and two-owner frames, the bare numbers, "the pot" and "aah"). Frames come from recorded parts, and things are named as they are: raw egg, then boiled or fried egg; flour, then dough, then naan. Four doubtful words go on Mum's confirm list.
-11. **Culture: passed.** Eggs, flour, naan and bread are halal. The cake is a celebration food for the party, never a prize. No religious markers, and modest clothes. Nothing a child could copy and get hurt by: Nani says "careful!" at the hot oven, and a child never touches the oven in the art. How the family serves a boiled egg is asked (open question 3).
+11. **Culture: passed.** Eggs, flour, naan and bread are halal. The cake is a celebration food for the party, never a prize. No religious markers, and modest clothes. Nothing a child could copy and get hurt by: Nani says "careful!" at the hot oven, and a child never touches the oven in the art. A boiled egg is served in an egg cup (Zafar, 1 Nov).
 12. **Fun: passed.**
     - The hands always have something to do (the bob toy while an egg cooks).
     - "Kind of funny": Simba's sneeze, Nani eating the spare egg, the "tok tok".
@@ -631,13 +631,12 @@ Each line gives the choice, the reason and the answer I assumed. Decision 1 reve
 26. **Chips mayai is visit 2's lunch.** *Reason:* the worked example is already written; it's a family dish. *Assumed:* yes.
 27. **It counts as teaching only once the deciding words are recorded.** Until then the lab plays with grey placeholders. *Reason:* map rule 3 (R6). *Assumed:* yes.
 28. **The farm's brown egg in the bowl, with no comment.** *Reason:* a quiet carry; Nani saying it would be a line with no job. *Assumed:* yes.
-29. **A boiled egg is served peeled on the plate,** "tok tok" on the rim, halved to show soft or hard. *Reason:* Zafar's row says "a boiled egg for Nana", not an egg cup, and an egg cup is a British habit; open question 3 asks. *Assumed:* peeled.
+29. **A boiled egg is served in an egg cup** (Zafar, 1 Nov): Nana taps the top, "tok tok", and slices it off, so the open top shows soft or hard at L4.
 30. **This run's backgrounds are three:** the morning hob, the morning island, the golden-evening counter. The night island waits for the book. *Reason:* every light state is a real background (art bible). *Assumed:* yes.
+31. **Level up only on right-first-time rounds** (Zafar, 1 Nov, every game): the leak bot's first-go rows are now also the level rule.
 
 **Open questions (genuinely his, or Mum's):**
-1. **"Indo" or "mayai" for a child?** (The lexicon's own question; Mum decides.) The eggs station says "egg" every round, so it needs one answer before the recording.
-2. **"Tapelo" or "sufuria" for the pot?** (Also the lexicon's own question; Mum decides.) "The pot" is named at the first round.
-3. **How does the family serve a boiled egg: in an egg cup, or peeled on the plate?** I assumed peeled (decision 29); the reveal and the art follow his answer.
+(Answered 1 Nov and removed: the egg is *indo*, for now; the pot is *tapelo*; both "Zafar, to confirm" with Mum in the word table. The boiled egg goes in an egg cup, decision 29.)
 4. **Mum's recording list for these two stations** (for her next round; `/mum-round`):
    - a boiled egg, a fried egg, crack, frying pan, soft, hard;
    - a lot, a bit more, two and a half, one and a half;
@@ -650,7 +649,9 @@ Each line gives the choice, the reason and the answer I assumed. Decision 1 reve
 
 ## 11. ChatGPT mock-up prompts
 
-Rules kept in every prompt (after the critique): people are "exactly as on the attached sheets", with only their pose and expression described; Simba is the big black cat with green eyes; "no hands or arms" on any prop; one moment per prompt; no text anywhere.
+Rules kept in every prompt (after the critique): people are "exactly as on the attached sheets", with only their pose and expression described; Simba is the big black cat with green eyes; "no hands or arms" on any prop; one moment per prompt; no text anywhere. Prompt 4's boiled egg stands in an egg cup (Zafar, 1 Nov), as on the prompt sheet.
+
+**Clothes (Zafar, 1 Nov; as on the prompt sheet):** before pasting any prompt that shows people other than the grandmother from the locked reference, add this line at the end: "Clothes: mostly modern everyday wear, modest (long sleeves, nothing tight). Older men wear a shirt tucked into trousers; middle-aged adults wear modern smart-casual clothes such as a quarter-zip top with chinos; children and young adults wear modern casual clothes. At most one older woman in the scene may wear a kameez with a dupatta; everyone else is in modern clothes." Where a prompt below describes someone else's outfit as a kameez or kurta, that outfit stays only if the person is an older woman; otherwise the added line wins.
 
 ### Prompt cook-baking-eggs-1: the eggs station, the crack
 It shows the core of the eggs station at the moment of the crack: identical eggs, two vessels, and plain plates on a 2×2 tray with face badges, so Zafar can see that only the heard word decides the pot or the pan.
@@ -741,14 +742,14 @@ https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/custom
 ```
 
 ### Prompt cook-baking-eggs-4: breakfast served, the meal named by the light
-It shows the serve at breakfast in morning light at one moment: Nana's boiled egg shelled and halved, Ali's fried egg in his maani. It's the reward for the eggs station, and it shows how the time of day sets the meal. (If Zafar says egg cups, open question 3, the egg changes and the rest stays.)
+It shows the serve at breakfast in morning light at one moment: Nana's boiled egg in its egg cup with the top off (Zafar, 1 Nov), Ali's fried egg in his maani. It's the reward for the eggs station, and it shows how the time of day sets the meal. (Zafar, 1 Nov: the egg cup.)
 
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets): one gameplay screen of breakfast being served at the kitchen island of a grandmother's modern home with gentle Kutch accents. One moment only: the first bite of breakfast.
 
 Camera: eye level, the island's top edge nearly horizontal at about 65% of the frame height; people sit behind it, cut at the waist, their heads against a plain limewash wall.
 
-The scene: bright early-morning sun streams in from a window on the upper left, long soft light patches on the wall. Behind the island, on the left, Nana, exactly as on the attached customers sheet, with the same face, beard, cap, glasses and clothes. On his plain white plate, a peeled boiled egg cut in half, showing a soft golden yolk, with the cracked shell beside it; he is delighted, eyebrows up. Beside him a glass of milky chai. On the right, Ali, exactly as on the attached customers sheet, with the same face, hair and clothes, grins as he folds a fried egg into a round flatbread on his white plate. The plates sit on the marble island top. In front, on the island, a small woven basket holds two more eggs, one of them brown. On the window sill in the background, Simba watches: a big adult cat with a sleek black coat and bright green eyes.
+The scene: bright early-morning sun streams in from a window on the upper left, long soft light patches on the wall. Behind the island, on the left, Nana, exactly as on the attached customers sheet, with the same face, beard, cap, glasses and clothes. On his plain white plate, a boiled egg stands in a plain white egg cup, its top sliced off to show a soft golden yolk, a small teaspoon beside it; he is delighted, eyebrows up. Beside him a glass of milky chai. On the right, Ali, exactly as on the attached customers sheet, with the same face, hair and clothes, grins as he folds a fried egg into a round flatbread on his white plate. The plates sit on the marble island top. In front, on the island, a small woven basket holds two more eggs, one of them brown. On the window sill in the background, Simba watches: a big adult cat with a sleek black coat and bright green eyes.
 
 Light: early-morning sun, warm and bright, from the upper left; soft contact shadows. Nothing floats.
 
@@ -807,3 +808,10 @@ The critique (`cook-baking-eggs-critique.md`, 1 Nov) had 19 findings: 6 MUST, 13
 17. **"No" rows were always no.** Ali sometimes asks "with chilli" (the chaat's `WithFood` frame, *mirchi* ✓), and from L3 some bakes ask for "a little sugar" (decision 23).
 18. **The first kitchen day was long.** It's now the door, eggs, baking and the book; lunch (chips mayai) joins on visit 2 (§2, decision 3).
 19. **Egg cups.** Open question 3 asks; I assumed peeled on the plate, "tok tok" on the rim, halved to show soft or hard (decision 29), and changed the scene, the art list and prompts 1 and 4 to match.
+
+**Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
+- **The boiled egg goes in an egg cup:** the serve ("tok tok" on its top, the top sliced off), the delight, the first round, the art list, decision 29 and prompt 4 (as on the prompt sheet). Open question 3 gone.
+- **His Kutchi, "Zafar, to confirm":** *indo* for egg (for now) and *tapelo* for the pot; open questions 1 and 2 gone (Mum confirms).
+- **Level up only on right-first-time rounds** (new decision 31). **Clothes:** the prompt sheet's line is added before the prompts.
+
+- **One count close** (also 1 Nov): the tray's tap and the knead's first tap stay the commits; they are the natural next things in his rule, so nothing else changes.
