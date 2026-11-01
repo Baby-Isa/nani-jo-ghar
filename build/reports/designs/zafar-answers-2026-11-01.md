@@ -4,7 +4,9 @@ These win over every overnight design decision and over the older docs they touc
 
 ## Rules for every game
 
-1. **How a count finishes:**
+1. **How a count finishes: REVERSED later on 1 Nov, after his chai play.** A count ticks the moment the right number is reached, and an extra tap doesn't land, in every game, for consistency; half ticks when half is poured. The text below is what he said first, kept for the record:
+
+   *Earlier the same day:*
    - **The natural next thing,** where it is clear and obvious (hand the basket over, serve the plate, tip the bucket). Never a button.
    - **Otherwise, stillness:** the count closes about **1-1.5 s after the last tap**, not 3 s. A child waiting longer thinks "nothing's happening".
    - The value is one setting in the data (start at 1.25 s), easy to change, and the same for every game.
