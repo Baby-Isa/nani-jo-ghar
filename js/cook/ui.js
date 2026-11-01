@@ -1791,7 +1791,10 @@
         // version ... or just scale it down to fit. With three people there won't be a better place": always under the faces at
         // the left, the card narrower, then smaller, then scaled to the room there)
         const under = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom), play.top);
-        const y0 = under + pad;
+        // (CHAI-43: a wider card reaches under the next faces too, so it keeps clear of a speaker's talk and idle motion (a fifth of a head):
+        // contract-83 at 1920x1080 found its corner 180 px2 into Nana's face)
+        const headH = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom - f.top), 0);
+        const y0 = under + pad + Math.max(14, headH * 0.2);
         const room = Math.max(40, play.bottom - pad - y0);
         // CHAI-43 (Zafar, 1 Nov: "The card could be bigger ... there's plenty of space for it to be bigger, so I feel like it probably
         // should dynamically size ... the speaker button now goes past the boundary"; decision 1): the card takes the room under the
