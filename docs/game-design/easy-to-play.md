@@ -26,7 +26,7 @@ The farm day waits until Cook and the clinic are right (Zafar, 21 Oct). There ar
    - at 15 s, the real item demonstrates again, with the guide's line. It never does the step for them: the critic warned that teaches a 3-year-old to wait.
    - The bulb stays everyone's help, whoever is playing (Zafar, 21 Oct).
    - Evidence: time-delay prompting (AFIRM). This replaces the level-based 7-15 s wait for the "where to tap" hint. Nani's bulb and her own lines keep their timing.
-4. **No Next and no ✓ Done anywhere** (Zafar, 22 Oct: "it's so bad we have to drop it"). Every step moves on by itself when complete; a count ends at the right number and an extra tap doesn't land; tap a placed item to take it back until the step moves on.
+4. **No Next and no ✓ Done anywhere** (Zafar, 22 Oct: "it's so bad we have to drop it"). Every step moves on by itself when complete; tap a placed item to take it back until the step moves on. **A count closes on the natural next thing where it's clear (hand it over, serve it, tip it); otherwise about 1-1.5 s after the last tap (one setting in the data, the same in every game), never by stopping itself at the right number** (Zafar, 1 Nov; was "a count ends at the right number and an extra tap doesn't land", which let a child tap until it stopped).
 5. **Tap by default; drag only along a track or for rubbing.**
    - Pick-and-place is tap the thing, then tap the spot.
    - Brushing and wiping is a drag, but the tool starts on the target, or runs in a fixed channel (the toothbrush cross).
