@@ -100,7 +100,8 @@
   UI.applyS14 = function (on) {
     if (typeof document === "undefined" || !document.body) return;
     on = !!on && UI.w6();
-    if (on && !document.querySelector("link[data-njg-card14-font]")) {
+    // (COOK-17: cook.html, lab.html and index.html carry Fraunces in their one fonts link; the run-time link stays for any other host)
+    if (on && !document.querySelector("link[data-njg-card14-font]") && !document.querySelector('link[href*="Fraunces"]')) {
       const l = document.createElement("link");
       l.rel = "stylesheet";
       l.href = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap";
