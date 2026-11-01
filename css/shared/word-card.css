@@ -141,6 +141,9 @@
 /* the big card (his image 1): the pop-out by the side panel and the helper card */
 .wc.wc14-big { background: var(--njg-card14-bg); border-radius: var(--njg-card14-u22); box-shadow: var(--njg-card14-shadow); text-align: center; }
 .wc14-big > .wc14-in { padding: 5cqi; display: flex; flex-direction: column; align-items: center; gap: 2.4cqi; }
+/* CHAI-43 (Zafar, 1 Nov: "the speaker button now goes past the boundary, the bottom boundary of the card"): a narrow big card (under
+   200 px, the pop-out under three faces) keeps its speaker's ring (7.5 px, --njg-card14-spk-ring) inside its foot */
+.wc14-big:not(.wc14-side) > .wc14-in { padding-bottom: max(5cqi, var(--njg-card14-u12)); }
 .wc14-big .wc14-pic { width: 100%; aspect-ratio: 4 / 3; }
 .wc14-big .wc14-words { display: contents; }
 .wc14-big .wc14-lab { display: flex; align-items: center; justify-content: center; gap: 3cqi; width: 100%; font: 800 clamp(var(--njg-card14-u9), 3.4cqi, var(--njg-card14-u14))/1 var(--njg-card14-body); letter-spacing: .22em; color: var(--njg-card14-label); }

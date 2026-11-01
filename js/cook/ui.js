@@ -177,7 +177,8 @@
     const sayLine = opts.speakLine || line;
     const voice = Lang.hasVoice(sayLine);
     const hideTr = opts.noTranslate || !line.en;
-    el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : opts.reserveSay ? `<span class="wp-gap"></span>` : ""}<span class="wp-text">${opts.readAlong ? raHtml(line, opts) : Lang.html(line, opts)}</span>${
+    // (opts.noSay: SH-153, a bubble that plays and goes has no speaker, Zafar 1 Nov)
+    el.innerHTML = `${voice && !opts.noSay ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : opts.reserveSay ? `<span class="wp-gap"></span>` : ""}<span class="wp-text">${opts.readAlong ? raHtml(line, opts) : Lang.html(line, opts)}</span>${
       opts.onReveal ? `<button class="wp-eye" type="button" aria-label="Show the word">${ICON.eye}</button>` : ""
     }${hideTr ? "" : `<button class="wp-tr" type="button" aria-label="Show in English">${ICON.translate}</button>`}<span class="wp-en hidden">${esc(line.en || "")}</span>`;
     const say = el.querySelector(".wp-say");
@@ -347,7 +348,11 @@
     // the kit's bubble (its script loads once, early: UI.needShared); without it the line goes to Nani's card
     const C = anchor && anchor.badge ? null : await UI.needShared("conversations");
     const toCard = !(C && C.bubble);
-    const pill = UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), readAlong: true });
+    // SH-153 (Zafar, 1 Nov: "when the speech bubbles pop up, they're already being played out loud. And as soon as they've been read
+    // out loud, they disappear. So you don't really have a chance to play them again ... remove the speaker buttons"; decision 6): a
+    // person's bubble plays and goes, so its line has no speaker (the person's face in the side panel stays the replay); Nani's card
+    // keeps its own
+    const pill = UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), readAlong: true, noSay: !toCard });
     let target, slot;
     if (toCard) {
       target = card();
@@ -1788,25 +1793,55 @@
         const under = faces.filter((f) => f.left >= sr.right).reduce((m, f) => Math.max(m, f.bottom), play.top);
         const y0 = under + pad;
         const room = Math.max(40, play.bottom - pad - y0);
-        // (Zafar, 29 Oct: "the item card in the menu box looks like it'll fit just fine in the space under the left head, or at most
-        // need a tiny bit of shrinking. So just use that": the card at the order row's item card size, the speaker kept, a little
-        // narrower only if it must be; the scale below only as the last step)
-        const item = document.querySelector("#mission .oc-card .wc14-it");
-        const itemW = Math.round((item && item.offsetWidth) || 120);
-        let w = itemW;
-        for (const ww of [itemW, itemW * 0.92, itemW * 0.85].map(Math.round)) {
-          w = ww;
+        // CHAI-43 (Zafar, 1 Nov: "The card could be bigger ... there's plenty of space for it to be bigger, so I feel like it probably
+        // should dynamically size ... the speaker button now goes past the boundary"; decision 1): the card takes the room under the
+        // faces, as big as it fits up to the full big card (wd), its picture, words and speaker scaling with it (cq units); the
+        // speaker shrinks only with the card and never under the tap size (48 px, its own floor); then the short picture; a zoom
+        // only as the last step. Its height is measured with the speaker's ring, so nothing passes its foot (the ring is inside the
+        // card's own padding: css/shared/word-card.css .wc14-pop)
+        const x0 = sr.right + 14;
+        const maxW = Math.round(Math.max(100, Math.min(wd, play.right - pad - x0)));
+        const tall = () => {
+          const cb = c.getBoundingClientRect();
+          const spk = c.querySelector(".wc14-spk");
+          const sb = spk ? spk.getBoundingClientRect() : null;
+          // (the ring: 7.5 px round the speaker, the token's spk-ring)
+          const over = sb && sb.height ? Math.max(0, sb.bottom + 8 - cb.bottom) : 0;
+          return c.offsetHeight + over;
+        };
+        const at = (ww, small) => {
           c.style.width = `${ww}px`;
-          c.classList.add("wc14-small");
+          c.classList.toggle("wc14-small", small);
           global.WordCard.fit14(c);
-          if (c.offsetHeight <= room) break;
+          return tall();
+        };
+        // the widest card that fits the room's height (a narrower card is shorter: its picture is 4:3), by halving
+        const widest = (small) => {
+          if (at(100, small) > room) return null;
+          let lo = 100;
+          let hi = maxW;
+          if (at(hi, small) <= room) return hi;
+          while (hi - lo > 4) {
+            const mid = Math.round((lo + hi) / 2);
+            if (at(mid, small) <= room) lo = mid;
+            else hi = mid;
+          }
+          return lo;
+        };
+        let w = widest(false);
+        let small = false;
+        if (w == null) {
+          w = widest(true);
+          small = true;
         }
+        if (w == null) w = 100;
+        at(w, small);
         // (its speaker and words have their smallest sizes, so past the narrowest card the whole card is scaled down to the room:
         // zoom, so its box and the move into its row card see the size it shows at)
-        const k = c.offsetHeight > room ? Math.max(0.3, room / c.offsetHeight) : 1;
+        const k = tall() > room ? Math.max(0.3, room / tall()) : 1;
         c.style.zoom = k < 1 ? String(Math.round(k * 1000) / 1000) : "";
         // (a zoomed element's left and top are zoomed too: given in its own scale)
-        Object.assign(c.style, { left: `${Math.round((sr.right + 14) / k)}px`, top: `${Math.round(y0 / k)}px` });
+        Object.assign(c.style, { left: `${Math.round(x0 / k)}px`, top: `${Math.round(y0 / k)}px` });
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: "0", by: JSON.stringify({ under: true, w, k: Math.round(k * 100) / 100, y: Math.round(y0) }) });
         } catch (e) {
@@ -1882,6 +1917,46 @@
       // (nobody at the counter to say it: the card's own read-along)
       return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
     };
+    /*
+     * SH-180: one motion as the order passes to the next person: each card whose height changed eases from its old height to its new
+     * one (clipped while it moves, about 300 ms), and the panel's scroll follows the speaker's card, from where it was to where it
+     * ends, frame by frame on the same ease; a reduced-motion setting, or nothing to move, keeps the old jump (the end state is the same)
+     */
+    const FOLD_MS = 320;
+    const foldGlide = (list, h0, top0, aim) => {
+      const sp = Cook.speed || 1;
+      const ms = FOLD_MS / sp;
+      const reduced = !!(global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      const cards = [...list.querySelectorAll(".oc-card")];
+      const moves = reduced ? [] : cards.map((c) => [c, h0.get(c.dataset.who), c.getBoundingClientRect().height]).filter(([, a, b]) => a != null && Math.abs(a - b) > 1);
+      if (!moves.length || !cards[0].animate) {
+        list.scrollTop = aim();
+        return;
+      }
+      const ease = "cubic-bezier(.4, 0, .2, 1)";
+      moves.forEach(([c, a, b]) => {
+        const an = c.animate([{ height: `${a}px`, overflow: "hidden" }, { height: `${b}px`, overflow: "hidden" }], { duration: ms, easing: ease });
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("card-fold", { step: c.dataset.who || "", by: `${Math.round(a)}->${Math.round(b)} ${Math.round(ms)}ms` });
+        } catch (e) {
+          /* only a log */
+        }
+        an.finished.catch(() => {});
+      });
+      list.scrollTop = top0;
+      const t0 = performance.now();
+      const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame;
+      const tok = Cook.run;
+      // (the same curve as the cards': a cubic ease in and out)
+      const curve = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+      const step = () => {
+        if (tok !== Cook.run || !list.isConnected) return;
+        const u = Math.min(1, (performance.now() - t0) / ms);
+        list.scrollTop = top0 + (aim() - top0) * curve(u);
+        if (u < 1) raf(step);
+      };
+      raf(step);
+    };
     const read = async () => {
       let prev = null;
       for (const who of people.map((c) => c.who)) {
@@ -1892,14 +1967,22 @@
         if (prev) {
           m.said = m.said || new Set();
           m.said.add(prev);
+          // SH-180 (Zafar, 1 Nov: "it should like smoothly minimize, another one should maximize, rather than it kind of like just snapping
+          // as it does at the moment"): the cards' heights before the redraw, so each one that changes size eases from its old height
+          // to its new one (the said card folding, the next one opening), and the panel glides with them, one motion
+          const list = $("#mission");
+          const h0 = new Map([...document.querySelectorAll("#mission .oc-card")].map((x) => [x.dataset.who, x.getBoundingClientRect().height]));
+          const top0 = list ? list.scrollTop : 0;
+          // (the next speaker in focus first: on a short side panel focusing draws the cards again, which would cut the motion short)
+          if (M.focus) M.focus(who);
           renderOrder();
           // (the judge, 30 Oct, 740x320: the folded card stayed half under the panel's top, where the panel had scrolled for its
           // rows: the panel goes back to its top, then the speaker's card is brought into view, so the folded one is whole)
           // (#mission is the scroller: with both cards in, nothing moves; else the speaker's card at the top, the folded one wholly
           // above it, never half under the panel's top)
-          const list = $("#mission");
           const cur = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
-          if (list && cur) list.scrollTop = list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, cur.offsetTop - list.offsetTop - 4);
+          const aim = () => (list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, cur.offsetTop - list.offsetTop - 4));
+          if (list && cur) foldGlide(list, h0, top0, aim);
         }
         prev = who;
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);

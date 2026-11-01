@@ -311,10 +311,11 @@
           /* only a log */
         }
         if (zone === "play") return false;
-        // (it does its own thing: a bubble's speaker replays, a button presses; never a skip)
+        // (it does its own thing: a button presses; never a skip. SH-153, Zafar 1 Nov: a bubble that plays and goes has no speaker, so
+        // a tap on it replays nothing: it is taken, and nothing else happens)
         if (el && el !== ev.target) {
           const bub = zone === "bubble" && el.closest ? el.closest(".cv-bubble, .njg-bubble") : null;
-          const hit = (bub && bub.querySelector(".cv-spk, .wp-say")) || (el.closest && el.closest("button, [role=button]")) || el;
+          const hit = bub ? null : (el.closest && el.closest("button, [role=button]")) || el;
           if (hit && typeof hit.click === "function") hit.click();
         }
         return true;

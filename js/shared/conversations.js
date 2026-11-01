@@ -1107,7 +1107,8 @@
    *   z       its stacking order in its layer (default the kit's, 60)
    *   avoid   other speakers it must not cover: elements, or a function giving them
    *   face    true: the speaker's face circle at its start (js/shared/face.js, the row size)
-   *   hear    () => say the line again: the kit's speaker button at the bubble's start (left), as on every bubble
+   *   hear    () => say the line again: the kit's speaker button at the bubble's start (left), only on a bubble that stays up
+   *           waiting for the child's answer (o.waits: true). SH-153 (Zafar, 1 Nov; decision 6): a bubble that plays and goes has none
    * bubble.njgPlace() places it again now. Take it off with bubble.remove().
    */
   C.bubble = function (anchor, o = {}) {
@@ -1123,9 +1124,11 @@
     if (o.en) b.dataset.en = String(o.en);
     if (o.tap) b.classList.add("cv-tap");
     if (o.z != null) b.style.zIndex = String(o.z);
-    // the speaker button, at the bubble's start as in every bubble (css: .cv-spk first; "🔊 word", ui-design-system 4): it says
-    // the line again (o.hear). A line whose words are a game's own pill with its speaker in it (Cook's) passes none
-    if (typeof o.hear === "function") {
+    // the speaker button, at the bubble's start (css: .cv-spk first; "🔊 word", ui-design-system 4): it says the line again (o.hear),
+    // only on a bubble that waits for the child's answer (o.waits). SH-153 (Zafar, 1 Nov: "as soon as they've been read out loud,
+    // they disappear. So you don't really have a chance to play them again"): every bubble that plays and goes has no speaker, in
+    // every game (the clinic's lines pass hear: it is left unused)
+    if (typeof o.hear === "function" && o.waits) {
       const s = b.appendChild(mk("button", "cv-spk", SPEAKER_SVG));
       s.type = "button";
       s.setAttribute("aria-label", "Hear it again");
