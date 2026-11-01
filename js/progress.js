@@ -1,4 +1,8 @@
 /*
+ * PARKED (Monsoon) ONLY (sweep SHARED-14, 1 Nov): the live per-word progress is js/core/progress.js; only monsoon.html loads
+ * this file (js/monsoon/core.js reads Progress.get/recordCorrect/recordMiss/recordMeeting). Drop it when Monsoon moves to the
+ * core; js/storage.js and js/shell.js it cites below no longer exist.
+ *
  * Per-word difficulty (PlayerWordProgress), read and written through the
  * ACTIVE PROFILE object (js/storage.js owns actually persisting it) - see
  * the Technical Plan's data model and Build Brief v4 section 2.1. Progress
