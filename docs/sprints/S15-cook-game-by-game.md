@@ -1,6 +1,6 @@
 # Sprint 15: Cook, game by game
 
-**Status:** open
+**Status:** closed (1 Nov 2026)
 **Opened:** 30 Oct 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -35,4 +35,37 @@ None: the orchestrator fixes in this chat (fast lane), the `judge` agent per gam
 
 ## Outcome
 
+**Live on `main`:** c6cf44a1 (20261101T194110Z).
+
+**What the sprint did** (it grew past its goal, on Zafar's spare tokens and his word):
+1. **Chai, the reference game:**
+   - three rounds of his notes: s15-chai-4 to -9, s15-chai-11, s15-chai-12
+   - the shared rules proven in it: counts tick at the number; first-time-only onboarding; any right action restarts the hint; one pan's work never pauses another's; the card scrolls back on a restart; the tray faces on top; nobody's arms on the counter
+2. **The language targets:**
+   - research: about 1,000 words for A2 over 38 word groups, the top 40 verbs, what's recorded
+   - the map of settings, games and word groups, reviewed by Fable
+   - Zafar set A2 as the overall target
+3. **18 games designed overnight** (designer, Fable critic, revision), 11 day drafts, the lessons checklist, 79 ChatGPT mock-ups made by Zafar, his answers applied.
+4. **8 rapid prototypes in the labs:**
+   - kitchen: eggs, baking, corn
+   - farm: feeding, eggs, home at dusk, plant-grow-pick, the photo shoot
+5. **Fable's code sweep:** 39 fixes plus the version-stamp bug; the live site 444 MB to 341 MB.
+6. **The character pose register** (ART-34).
+
+**Cut or moved on:**
+- The game-by-game Cook roll-out (pantry, daar, sekelo, maani, chaat, samosa) did not start. It moves to the next sprint, after chai's final pass.
+- The clinic's sprint (16) waits.
+- Open rows: 201 open or reopened, 527 built and not re-played (`statuscounts.mjs`).
+
+**Spend:** far over the $90-140 budget, by Zafar's choice to use spare tokens. About 25 million agent tokens, mostly the overnight design and sweep workflows (about 13M) and five builders.
+
 ## Look back (three lines)
+
+- **Worked:** one agent per game, then an independent Fable critic, then a revision gave designs Zafar could approve nearly as they were. Rapid prototypes in the labs, with his notes beside the mock-ups, got games into his hands fast.
+- **Cost more than it should:**
+  - builders that proved prototypes at four sizes when he only needed a laptop playable
+  - one builder started on `main` instead of the branch
+  - the disk filled with leftover worktrees
+
+  Brief prototypes as "laptop only, hand back when it plays", and remove a builder's worktree as soon as it's merged.
+- **Process change:** chai is proper and everything new is rapid until Zafar picks it. Two lanes: the reference game gets full proof; prototypes get his play first.

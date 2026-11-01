@@ -8,30 +8,39 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (1 Nov 2026, morning):** Sprint 15 (`docs/sprints/S15-cook-game-by-game.md`), with chai live on `main`
-(d7835a56). Overnight on Zafar's word, on this branch only:
-- **18 new games designed:** Opus designers, Fable critics, Opus revisions (`build/reports/designs/`); 11 day drafts
-  (`build/reports/designs/days/README.md`); a 79-prompt ChatGPT sheet for Claude in Chrome
-  (`build/reports/designs/chatgpt-prompt-sheet-2026-11-01.md`).
-- **Fable's code sweep merged:** 39 fixes plus the version-stamp bug; the live site 444 MB to 341 MB; checks green.
+**Where things stand (1 Nov 2026, 20:00 UK):**
+- **Sprint 15 is closed** (`docs/sprints/S15-cook-game-by-game.md`: outcome and look back). Nothing is running.
+- **Live on `main`** (c6cf44a1):
+  - chai with three rounds of fixes, the reference game: s15-chai-11, s15-chai-12
+  - 8 rapid prototypes in the labs: kitchen (eggs, baking, corn) and farm (feed, eggs, home at dusk, grow-pick, photo)
+  - Fable's code sweep
+- **Done and in the repo:**
+  - the language targets: `build/reports/research-language-targets-2026-10-31.md`, the target A2
+  - the games map: `build/reports/games-master-map-2026-10-31.md`
+  - 18 game designs and 11 day drafts: `build/reports/designs/`, start with `games-at-a-glance-2026-11-01.md` and `days/README.md`
+  - Zafar's answers: `designs/zafar-answers-2026-11-01.md`; counts tick at the number
+  - the pose register: `docs/design-language/art-plans/character-poses.md`
+  - his mock-ups: `sources/art/mockups-2026-11-01/`
 
-Summary: `build/reports/overnight-2026-11-01.md`. The language research behind it: `build/reports/games-master-map-2026-10-31.md`.
-`main` is unchanged since d7835a56.
+**Next steps, in order (proposed Sprint 16; Zafar opens it):**
+1. **His play of the live chai and the 8 prototypes** → `/feedback`.
+2. **Chai's final pass**, so chai is finished. Open: CHAI-58 (the L4 boil window: widen to about 3 s?), CHAI-59, and his notes.
+3. **Refine the prototypes on his notes** (rapid, laptop only), then choose which become proper first.
+4. **Roll chai's shared rules out game by game:** Cook (pantry, daar, sekelo, maani, chaat, samosa), then the clinic, plus the cheap word-adds from `build/reports/research-existing-games-2026-10-31.md` §2-3 (still to agree with him).
+5. **Later:** the other designed games as prototypes; days stitched with conversations; art and recording runs in batches (the pose checklist, ART-33).
 
-**Next steps, in order:**
-1. Zafar runs the prompt sheet and sends notes per game (`/feedback`). He answers the designs' open questions and reverses any
-   overnight decision (each design's §10).
-2. Rapid lab prototypes, one game at a time, his play between. Suggested first: the clinic (Sprint 16), hide and seek, the town map.
-3. Publish the sweep to `main` when he says (`/review`, then `/publish`).
-4. Still open from before: his chai play (the eight questions in the 30 Oct handover), the pantry (sprint step 2).
+Builders: rapid prototypes are "laptop only, hand back when it plays"; chai is full proof. Remove a builder's worktree as soon as it's merged (the disk filled once).
 
-**Open questions to Zafar:** in each design's §10, and the summary's list (one count-closing rule, the party's voices, the time in
-Kutchi, the town's places in Kutchi, the farm's photo tick). Mum's word order (`docs/questions.md`).
+**Open questions to Zafar:**
+1. Open Sprint 16 as above? (One goal: chai final, plus the prototypes refined.)
+2. CHAI-58: widen L4's green to about 3 s?
+3. Which existing Cook and clinic word-adds to take (the audit's list)?
+4. Mum's words (`docs/questions.md`, `build/reports/designs/zafar-answers-2026-11-01.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/overnight-2026-11-01.md`. Take my notes on the
-> mock-ups and the designs with `/feedback`, then start the lab prototypes one game at a time. Work on branch
-> `claude/nice-lovelace-0vfjcj`; `main` is the live site.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Take my feedback on the
+> live chai and the prototypes with `/feedback`, then propose Sprint 16. Work on branch `claude/nice-lovelace-0vfjcj`;
+> `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
