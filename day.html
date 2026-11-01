@@ -14,6 +14,21 @@
   window.njgTest {state(), expect()}; window.Day (the line seam the sandbox's sound hook wraps).
 -->
 <!-- the shared kit in one link (css/shared/kit.css; S13-A1); data-day-cv: it carries the conversations sheet js/day/book.js looks for -->
+<!-- SHARED-3 (sweep, 1 Nov): the kit's thirteen sheets asked for with the page, not once kit.css has arrived and its @imports are read; the cascade
+     is still kit.css's (one link per page: build/lint/static.mjs shell ignores a preload). build/bump_version.py restamps them. -->
+<link rel="preload" as="style" href="css/shared/tokens.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/app.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/focus.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/frame.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/face.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/results.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/onboard.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/guide.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/order-card.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/buttons.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/tally.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/conversations.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/word-card.css?v=20261030T203356Z">
 <link rel="stylesheet" href="css/shared/kit.css?v=20261030T203356Z" data-day-cv>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
@@ -177,10 +192,29 @@
  }
 }
 </script>
+<!-- SHARED-5 (sweep, 1 Nov): the core's modules asked for at once with js/day/day.js, not one round trip after another as day.js's
+     import() reaches each; the same files, evaluated in the same order. build/bump_version.py restamps them. -->
+<link rel="modulepreload" href="js/core/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/save.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/env.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/progress.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/wallet.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/score.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/voice.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/linearize.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/clips.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/settings.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/unlocks.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/context.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/log.js?v=20261030T203356Z">
 </head>
 <body class="day">
 <div id="day-app"></div>
 <script src="js/version.js?v=20261030T203356Z"></script>
+<!-- the rules first (SHARED-4, sweep 1 Nov): tokens.js would otherwise inject this same script after it has run, a round trip later -->
+<script src="js/shared/rules.js?v=20261030T203356Z"></script>
 <!-- the design tokens in code and the one ladder table, data/shared.json (js/shared/tokens.js; S13-A1) -->
 <script src="js/shared/tokens.js?v=20261030T203356Z"></script>
 <script src="js/shared/app.js?v=20261030T203356Z"></script>

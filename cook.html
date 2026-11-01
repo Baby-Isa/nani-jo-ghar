@@ -9,6 +9,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap">
 <link rel="stylesheet" href="css/cook.css?v=20261030T203356Z">
 <!-- the shared kit in one link (css/shared/kit.css; S13-A1), after css/cook.css: the kit wins where the shared sheets did -->
+<!-- SHARED-3 (sweep, 1 Nov): the kit's thirteen sheets asked for with the page, not once kit.css has arrived and its @imports are read; the cascade
+     is still kit.css's (one link per page: build/lint/static.mjs shell ignores a preload). build/bump_version.py restamps them. -->
+<link rel="preload" as="style" href="css/shared/tokens.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/app.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/focus.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/frame.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/face.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/results.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/onboard.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/guide.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/order-card.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/buttons.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/tally.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/conversations.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/word-card.css?v=20261030T203356Z">
 <link rel="stylesheet" href="css/shared/kit.css?v=20261030T203356Z">
 <!-- Sidebar v2 (docs/archive/feedback/cook-ui-feedback-2026-09-28.md 9): the sidebar, the request cards and pop-up -->
 <link rel="stylesheet" href="css/cook-side-v2.css?v=20261030T203356Z">
@@ -182,6 +197,8 @@
 
 <script src="js/vendor/phaser.min.js?v=20261030T203356Z"></script>
 <script src="js/version.js?v=20261030T203356Z"></script>
+<!-- the rules first (SHARED-4, sweep 1 Nov): tokens.js would otherwise inject this same script after it has run, a round trip later -->
+<script src="js/shared/rules.js?v=20261030T203356Z"></script>
 <!-- the design tokens in code and the one ladder table, data/shared.json (js/shared/tokens.js; S13-A1) -->
 <script src="js/shared/tokens.js?v=20261030T203356Z"></script>
 <script src="js/shared/frame.js?v=20261030T203356Z"></script>

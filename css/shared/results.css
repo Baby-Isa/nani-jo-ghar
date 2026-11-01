@@ -395,7 +395,6 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 
 /* ---------- D12 (1 Oct, decision 27): the eye badge, at closed-card levels only ---------- */
 .rs-badges.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--njg-s3); }
-.rs-badges.n3.has-looks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .njg-results .rs-looks .rs-disc .rs-eye-art { width: 92%; height: 92%; margin: auto; color: var(--njg-gold); transition: opacity 0.4s, color 0.4s; }
 .njg-results .rs-looks .rs-foot svg.rs-cap-icon { display: inline-block; width: 1.5em; height: 1em; }
 .njg-results .rs-looks[data-ln="1"] .rs-disc .rs-eye-art { color: var(--njg-eye-1); opacity: 0.75; }
@@ -479,7 +478,7 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 /* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
-.rs-results .rs-rec, .rs-rec { display: none !important; }
+.rs-rec { display: none !important; }
 
 /* ---------- the receipt (S13-B2: Results.show({receipt}); CLN-111, CLN-03): one row per person in place of the badges, at the
    end screen's one place; the face is the kit's circle (css/shared/face.css), drawn at its row size. No game restyles it. ---------- */

@@ -20,6 +20,9 @@ test("shell (S13-A1): one kit link per live page, no shared sheet linked directl
   assert.deepEqual(shellFindings("cook.html", '<link rel="stylesheet" href="css/shared/kit.css?v=1"><link rel="stylesheet" href="css/shared/focus.css?v=1">').map((f) => f.key), ["shell|cook.html|css/shared/focus.css"]);
   assert.deepEqual(shellFindings("index.html", '<link rel="stylesheet" href="css/shared/app.css">').map((f) => f.key), ["shell|index.html|kit 0", "shell|index.html|css/shared/app.css"]);
   assert.deepEqual(shellFindings("x.html", '<!-- <link rel="stylesheet" href="css/shared/app.css"> -->\n<link rel="stylesheet" href="css/shared/kit.css">'), []);
+  // SHARED-3: a preload of a kit sheet is not a second link (it only pulls kit.css's own @import earlier); a stylesheet link still is
+  assert.deepEqual(shellFindings("x.html", '<link rel="preload" as="style" href="css/shared/tokens.css?v=1">\n<link rel="stylesheet" href="css/shared/kit.css?v=1">'), []);
+  assert.deepEqual(shellFindings("x.html", '<link rel="preload" as="style" href="css/shared/tokens.css?v=1">\n<link rel="stylesheet" href="css/shared/kit.css?v=1">\n<link rel="stylesheet" href="css/shared/tokens.css?v=1">').map((f) => f.key), ["shell|x.html|css/shared/tokens.css"]);
   assert.deepEqual(kitImportFindings('@import url("tokens.css?v=1");\n@import url("app.css?v=1");', ["kit.css", "tokens.css", "app.css", "focus.css"]).map((f) => f.key), ["shell|css/shared/kit.css|misses focus.css"]);
 });
 test("motion (S13-A1): no game keyframes for a kit motion; the kit's own live in css/shared/", () => {

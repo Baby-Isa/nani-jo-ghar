@@ -1,10 +1,10 @@
 {
  "chai-tray@L3@930x430@4000/60": {
-  "ms": 26538,
-  "bytes": 8748449,
-  "requests": 356,
-  "label": "branch-s14-tools",
-  "date": "2026-10-30T02:33"
+  "ms": 26655,
+  "bytes": 8710043,
+  "requests": 355,
+  "label": "sweep-shared-20261101",
+  "date": "2026-11-01T04:36"
  },
  "fetch@L3@930x430@4000/60": {
   "ms": 18326,

@@ -6,6 +6,21 @@
 <meta name="theme-color" content="#f3e7d3">
 <title>Nani jo Ghar</title>
 <!-- the shared kit in one link: tokens, motion, the app frame and every component (css/shared/kit.css; S13-A1) -->
+<!-- SHARED-3 (sweep, 1 Nov): the kit's thirteen sheets asked for with the page, not once kit.css has arrived and its @imports are read; the cascade
+     is still kit.css's (one link per page: build/lint/static.mjs shell ignores a preload). build/bump_version.py restamps them. -->
+<link rel="preload" as="style" href="css/shared/tokens.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/app.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/focus.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/frame.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/face.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/results.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/onboard.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/guide.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/order-card.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/buttons.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/tally.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/conversations.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/word-card.css?v=20261030T203356Z">
 <link rel="stylesheet" href="css/shared/kit.css?v=20261030T203356Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap">
@@ -247,7 +262,10 @@
 </script>
 <script src="js/version.js?v=20261030T203356Z"></script>
 <!-- S13-V: the one save is the core's (js/core/save.js, a module that becomes window.Save); the classic scripts after it are
-     deferred, so they run once it has (modules and deferred scripts keep document order) -->
+     deferred, so they run once it has (modules and deferred scripts keep document order). SHARED-7 (sweep, 1 Nov): save.js's two
+     imports asked for with it, not a round trip later -->
+<link rel="modulepreload" href="js/core/progress.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/wallet.js?v=20261030T203356Z">
 <script type="module" src="js/core/save.js?v=20261030T203356Z"></script>
 <script defer src="js/shared/app.js?v=20261030T203356Z"></script>
 <script defer src="js/shared/character.js?v=20261030T203356Z"></script>
