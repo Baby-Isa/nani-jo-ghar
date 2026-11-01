@@ -156,6 +156,8 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | CK-53 | "Why is the question mark the home button and the book button ... off to the side ... overlapping the bottle ... the question mark is somehow pulsing and highlighted": "for now just remove them"; later one menu button, tbc ("a little tab button on the right hand side", "the hamburger icon at the top right", or "in the sidebar on the left at the bottom but smaller like just like a settings cog"), that turns the left panel into the game menu (save and exit, home, restart, a setting to turn off Nani's extra voice). The ? never glows while the onboarding lights something else | **to fix: check** · built 28 Oct overnight: one cog pinned at the sidebar's foot opens the ?, home and book in a small row above it (never over the play area; the ? never glows); contract-54 checks it | auto: no sidebar button outside the sidebar (SH-138), every Cook station at both sizes | `docs/feedback/chai-cards-2026-10-27.md` P7 |
 | CK-54 | "I also need way to click on the kitchen during the order and skip the slow ordering into playing the game": a tap on the kitchen while the order is given lands every card at once and the game starts | **to fix: check** · built 29 Oct in the live chai (s14-chai, `build/reports/s14-chai.md`); the judge, then Zafar's play | auto: every Cook station at L1, L2, L3 and L4 (a tap 1 s into the order: every card in its row, at the station within 1 s) | `docs/feedback/chai-onboarding-2026-10-28.md` P4 |
 | CK-18 | A customer's bubble never covers their own face | **to fix: code** · reopened 27 Oct: at his phone's 971x318 Nana's "Salamun alaykum!" covers his face and Ali's, and the eye test's doctor bubble covers the girl (with SH-145) | auto: SH-138's faces-clear check, every Cook customer and the clinic, both sizes | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) · `docs/feedback/chai-cards-2026-10-27.md` P13 |
+| CK-55 | The shop's "?" (#gu-btn) sits under the cog (#side-cog) at 740x320, so the sandbox's cook:title flow stops there (found by the overnight sweep, on the baseline too) | **to fix: code** · open | auto: sandbox cook:title@740x320 | `build/reports/sweep-cook-2026-11-01.md` (skipped) |
+| CK-56 | `build/test_cook_host.mjs` fails on the baseline: E17, a served card (`div.njg-served-card`) is left at cook/order; and `build/test_cook_voice.mjs` fails (Lang.speak plan against played, 496 of 629 lines). Neither is in checks.mjs | **to fix: check** · open | auto: both tests green, then into the browser checks list | `build/reports/sweep-cook-2026-11-01.md` (skipped) |
 
 ## Clinic
 
@@ -228,6 +230,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
+| LAB-08 | labs.html has no import map, so its core modules load without the version stamp (a returning player can get stale code after a publish); gen_labs.mjs should write the core import map tag for bump_version.py to fill | **to fix: code** · open | auto: loadcheck on labs.html, every module request stamped | `build/reports/sweep-shared-2026-11-01.md` N3 |
 
 ## Other modes
 
