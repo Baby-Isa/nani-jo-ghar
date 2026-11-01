@@ -76,7 +76,7 @@ Tidy's sorting boards (toy box, make the bed, shoe rack) are placing, so they go
 |---|---|---|---|---|
 | **Introductions** | N, Conversations | greetings, family; question words (who?), owners | names: they introduce themselves and each other, then the child | **the move:** tap the person whose name is said, then say your own; never the only stranger |
 | **Gifts and cake to the right person** | N, one shared give-to (Find it's "give one to Nana"; Tidy's seat the guests, the dastarkhwan, the family photo) | owners, family; numbers (candles), food | whose is it? | plain boxes (a football-shaped gift is matching); toys are named only after the unwrap |
-| **Look after the guests** | N, Cook's order card | feelings (hungry, thirsty, tired, sad, hot, cold); food, describing | the feeling decides: a hungry guest gets food, thirsty water, tired a chair, sad a balloon | the guest says it first; the face shows only after a try (or at L1) |
+| **Look after the guests** | N, Cook's order card | feelings (hungry, thirsty, tired, sad, hot, cold); greetings (how are you?), food, describing | the child asks each guest how they are; the guest answers; the child fixes it (Zafar, 1 Nov): a hungry guest gets food, thirsty water, tired a chair, sad a balloon | the guest says it first; the face shows only after a try (or at L1) |
 | **Snap the person named** | G, Snap's own engine (a rebuild) | family, clothes ("the aunty in red") | photos of people | two of a kind (grandad and the old neighbour) |
 | **Musical statues** | N, the "do it" engine (one engine with the clean-up and the routine, R9) | verbs: dance, stop, sit, stand, jump, turn; body (touch your nose) | the body-moving verbs | poses shuffled; an off-screen round (the research: the fun is the child's own body); the music is his call |
 | **Who ate the cake?** | G, Who did it? | question words (who?), describing | deduction | the clue must be heard, not a trace to match |
@@ -91,7 +91,7 @@ Tidy's sorting boards (toy box, make the bed, shoe rack) are placing, so they go
 
 | Game | Status, engine | Words: main; also | Unique point | Leak and fix |
 |---|---|---|---|---|
-| **Shopkeeper, both ways** | D, Find it's greybox shop games (the stalls, the scales, pay, the gift) | money, food; numbers **to 20 when paying** (the home of 11-20, R1), colours, sizes, greetings, how much? | serve, then order | the price is heard; the coins are more than needed |
+| **Shopkeeper, both ways** | D, Find it's greybox shop games (the stalls, the scales, pay, the gift) | money, food; numbers **to 20, then up to 100 as the levels rise** (Zafar, 1 Nov), colours, sizes, greetings, how much? | serve, then order | the price is heard; the coins are more than needed |
 
 ### The farm, hosted by Hannah Mami
 
@@ -339,3 +339,40 @@ His process: agree, research, concept designs, ChatGPT mock-ups, a lab prototype
 14. **Snap's rebuild** onto the shared kit, since three settings need it? *Recommended.*
 15. **Family words:** the party owns them (the waiting room keeps people and describing)? *Recommended.*
 16. **Musical statues:** what music, or a clapping beat? Your call.
+
+## Zafar's answers (1 Nov)
+
+- **Yes to all except:**
+  - **3:** the nose gets drops to dissolve it, then a tissue to wipe.
+  - **6:** go bigger: paying in the shops climbs to every number up to 100 as the levels rise.
+  - **8:** include dogs at the adoption centre.
+- **Look after the guests:** a good way to ask different people how they are. They answer, and the child fixes it.
+- **He asks:** some games float without a day; the games must be really well designed, challenged and tweaked, on best practice, the best of our current games and the lessons from making them. Are we ready for the design phase?
+
+## Part 7: which day each game lives in (proposed, 1 Nov)
+
+Every day is the door, the bag (trips), the ride (trips), its games, then the evening book. A later visit is the same day, harder, with new items.
+
+| Day | Host | Its games, in order | Later visits |
+|---|---|---|---|
+| Kitchen | Nani | the Cook stations; eggs at breakfast; baking | more dishes |
+| Clinic | the doctor | waiting room, diagnosis, heal games, pharmacy, send-off | more parts and patients |
+| A day at home | Nani, Simba, Zazu | hide and seek, pick it up and put it back, clean-up day | more rooms, drawers, wardrobe |
+| Someone's birthday | a new family | introductions, look after the guests, gifts and cake, musical statues, Snap the people | a year older: who ate the cake?, more guests |
+| School day | the teacher | the wake-up clock (the family wakes for school), getting ready, pack the school bag, the bus, the blackboard | harder board, more times |
+| Town and shops | Nani | the town map (drop each person where they need to go), then the shops and pay | more places; numbers to 100; "I want a book" |
+| Sewing with Big Ma | Big Ma | buy cloth (carried from the shops), make, mend, try on | more garments |
+| The farm | Hannah Mami | feed, eggs, Snap, the corn stall, animals home; the orchard on a later visit | positions, the orchard, the chicks |
+| The adoption centre | Hannah Mami (next to the farm) | look after the animals | more animals, more cares |
+| The safari | Hannah Mami | Snap from the jeep; **one more game to design** | |
+| The beach | Masi | shells, the sandcastle, the stall and pay, the picnic | **the boat day as the second visit:** the ride on the water, litter fishing |
+| (Parked) the monsoon | | Monsoon rush | |
+
+The floating ones placed:
+- the clock opens the school day
+- the town map opens the shops
+- the adoption centre is its own day next to the farm
+- the boat is the beach's second visit
+- the sewing takes its cloth from the shops
+
+The safari needs a second game.
