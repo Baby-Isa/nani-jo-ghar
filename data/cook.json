@@ -537,6 +537,11 @@
    "fn": "Exclaim",
    "x": "cook.line.guide-slow"
   },
+  "_not-now": "CHAI-57 (Zafar, 1 Nov; decision 5a): a tap on the knob before the green: Nani's hever na (not now), Mum's own clip (hever-na, grammar-notes §25 B16), through the engine",
+  "not-now": {
+   "fn": "Exclaim",
+   "x": "phrase.not-now"
+  },
   "guide-chop": {
    "fn": "Exclaim",
    "x": "cook.line.guide-chop"
@@ -944,6 +949,17 @@
         null,
         null,
         {
+         "_teach": "CHAI-55 (Zafar, 1 Nov; decision 4): while adh and aako are new to the child (word stage 1-2), the first person asks half and the second full; the third, and everyone once the words are known, at random (js/cook/recipes.js teach)",
+         "teach": {
+          "words": [
+           "ph-half",
+           "ph-full"
+          ],
+          "seats": [
+           "ph-half",
+           "ph-full"
+          ]
+         },
          "pick": [
           "ph-half",
           "ph-full"
@@ -988,6 +1004,37 @@
        "frame": "need_waari",
        "x": [
         "$it.extra"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "_lng23": "LNG-23 (Zafar, 1 Nov: 'you say the quantity right after saying my or saying me ... muke adh chai khape'): at L4 a half cup's headline has the amount right after muke, through the engine's need frame (Muke adh chai khape: Mum's adh). Full keeps its old place (aako said last) until Mum confirms its form before chai (the engine would say aaki, unrecorded); where the amount goes with an extra or kari / mori is a question for her too (decision 7): those keep the amount said last",
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "!it.named"
+       ],
+       "frame": "need",
+       "x": [
+        "$it.amount",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "it.khun"
+       ],
+       "frame": "need",
+       "x": [
+        "$it.amount",
+        "cook-chai"
        ],
        "personHead": true,
        "when": "chai-tray"
@@ -1049,7 +1096,74 @@
        "when": "chai-tray"
       },
       {
-       "if": "it.amount",
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "!it.named"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray",
+       "unsaid": true,
+       "_lng23": "LNG-23: the amount's row stays on the card (it ticks at the pour, CHAI-54) but is not said again: the headline says it"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "it.khun"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray",
+       "unsaid": true
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "!it.dudh"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "!it.khun"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "it.extra"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.amount=ph-full",
        "frame": "and",
        "x": [
         "$it.amount"
@@ -4753,7 +4867,6 @@
       "assets/cook/items-s14/glass/glass-fill-milky-*-s14.webp",
       "assets/cook/items-s14/glass/glass-fill-black-*-s14.webp",
       "assets/cook/items-s08c/teaspoon/*",
-      "assets/shared/fx-s11/splash-s11.webp",
       "assets/shared/fx-s11/steam-s11.webp",
       "assets/shared/fx-s11/sparkle-s11.webp"
      ],
