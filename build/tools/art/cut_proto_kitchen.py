@@ -27,7 +27,9 @@ CROPS = [
     ("corn-salt", "mockup-farm-corn-stall.png", (344, 392, 442, 491), "ellipse", 180),
     ("corn-pepper", "mockup-farm-corn-stall.png", (446, 392, 545, 491), "ellipse", 180),
     ("corn-lemon", "mockup-farm-corn-stall.png", (568, 394, 716, 492), "lemons", 240),
-    ("corn-grill", "mockup-farm-corn-stall.png", (26, 118, 478, 388), "rect", 600),
+    ("corn-cob-raw", "mockup-farm-corn-stall.png", (126, 140, 202, 352), "corn", 260),
+    ("corn-cob-half", "mockup-farm-corn-stall.png", (226, 140, 302, 352), "corn", 260),
+    ("corn-cob-done", "mockup-farm-corn-stall.png", (320, 140, 398, 352), "corn", 260),
 ]
 
 K = None
@@ -47,6 +49,20 @@ for name, f, box, mask, mx in CROPS:
     elif mask == "lemons":
         d.ellipse((2, 2, w * 0.5, h - 3), fill=255)
         d.ellipse((w * 0.5, 2, w - 3, h - 3), fill=255)
+    elif mask == "corn":
+        arr = np.asarray(c).astype(int)
+        r, g, bb = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+        m = ((r > 140) & (g > 90) & (bb < 150) & (r - bb > 70)) | ((r > 60) & (r - bb > 25) & (r >= g))
+        m = ndimage.binary_opening(m, iterations=1)
+        m = ndimage.binary_closing(m, iterations=4)
+        m = ndimage.binary_fill_holes(m)
+        yy, xx = np.mgrid[0:m.shape[0], 0:m.shape[1]]
+        m &= ((xx - m.shape[1] / 2) / (m.shape[1] * 0.4)) ** 2 + ((yy - m.shape[0] / 2) / (m.shape[0] * 0.5)) ** 2 <= 1
+        lab, n = ndimage.label(m)
+        if n:
+            sizes = ndimage.sum(m, lab, range(1, n + 1))
+            m = lab == (1 + int(np.argmax(sizes)))
+        a = Image.fromarray((m * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(0.6))
     elif mask in ("dark", "light"):
         arr = np.asarray(c).astype(int)
         if mask == "dark":
