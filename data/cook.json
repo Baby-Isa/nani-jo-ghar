@@ -730,6 +730,29 @@
    "run": [{"do": "eggs", "plates": "$plates"}],
    "how": "Each person says how they want their egg. Boil it in the pot or fry it in the pan, put it on their plate, then carry the tray to the table."
   },
+  "baking": {
+   "_about": "proto-kitchen (Zafar's baking design, 1 Nov; prototype-notes-2026-11-01.md 'Baking'): Nana asks for naan; Nani gives one instruction at a time, each its own row on the card that appears as she says it (when: bake-1 .. bake-5, js/cook/stations/baking.js UI.mission.reveal). The plan (which containers, how much) is picked from data/stations/baking.json by level and set on the order as `plan` by the lab entry, so this recipe has no slots. Lab only; free: false; proto: true (its to-record words are grey English).",
+   "name": "ph-naan",
+   "english": "Naan",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 3,
+   "stations": ["baking"],
+   "slots": {},
+   "say": [
+    {"frame": "order", "x": ["ph-naan"]},
+    {"if": "plan.0", "frame": "bare", "x": ["$plan.0.parts"], "when": "bake-1"},
+    {"if": "plan.1", "frame": "bare", "x": ["$plan.1.parts"], "when": "bake-2"},
+    {"if": "plan.2", "frame": "bare", "x": ["$plan.2.parts"], "when": "bake-3"},
+    {"if": "plan.3", "frame": "bare", "x": ["$plan.3.parts"], "when": "bake-4"},
+    {"if": "plan.4", "frame": "bare", "x": ["$plan.4.parts"], "when": "bake-5"}
+   ],
+   "need": [],
+   "steps": ["Mix", "Oven"],
+   "run": [{"do": "baking", "plan": "$plan"}],
+   "how": "Nani says one thing at a time: a little, a lot, a cup. Tap it to tip it in. Then bake the naan."
+  },
   "pantry": {
    "_about": "Wave 6 (docs/design-language/ux-principles.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
    "name": "ph-pantry",
