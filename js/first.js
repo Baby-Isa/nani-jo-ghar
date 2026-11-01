@@ -20,6 +20,10 @@
   global.addEventListener("pagehide", () => (leaving = true));
   Story.setChild((view) => (C.options() ? C.svg(choices || C.defaults(), { view: view === "badge" ? "badge" : undefined }) : ""));
 
+  // SHARED-6 (sweep, 1 Nov): the family's clip list (data/family-audio.json) starts now, with the character's pictures, not after
+  // the story's first line asks for its clip; FamilyVoice.load caches one promise on root.njgFamilyAudio, so the story's own
+  // load() and js/core/voice.js share the one fetch (CK-48). Nothing waits for it here: the first scene shows as soon as it did
+  if (global.FamilyVoice) global.FamilyVoice.load().catch(() => {});
   // the character is drawn in every scene: have its pictures ready first
   C.load()
     .catch(() => {})

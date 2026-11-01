@@ -181,7 +181,11 @@
 </script>
 <script src="js/version.js?v=20261030T203356Z"></script>
 <!-- S13-V: the one save is the core's (js/core/save.js, a module that becomes window.Save); the classic scripts after it are
-     deferred, so they run once it has (modules and deferred scripts keep document order) -->
+     deferred, so they run once it has (modules and deferred scripts keep document order). SHARED-7 (sweep, 1 Nov): save.js's two
+     imports and voice.js's one asked for with them, not a round trip later -->
+<link rel="modulepreload" href="js/core/progress.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/wallet.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/env.js?v=20261030T203356Z">
 <script type="module" src="js/core/save.js?v=20261030T203356Z"></script>
 <script defer src="js/shared/app.js?v=20261030T203356Z"></script>
 <script defer src="js/shared/family-voice.js?v=20261030T203356Z"></script>
