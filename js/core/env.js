@@ -15,12 +15,26 @@ const g = globalThis;
 /** A URL with the cache-busting stamp (js/version.js's njgV), or as it is when there is none. */
 export const stamp = (url) => (typeof g.njgV === "function" ? g.njgV(url) : url);
 
-/** A data file as an object. In a page: fetch(base + path) with the stamp. In Node: read it from the repo. */
+// a page's data files, fetched once each (COOK-2: a host that builds a core and then mounts a mode built two, fetching the four
+// core files twice): the TEXT is kept per stamped URL and parsed for every caller, so each core owns its objects (Save.init
+// mutates progressData); a failed fetch is forgotten, so a retry fetches again
+const texts = new Map();
+function fetchText(url, path) {
+  if (!texts.has(url)) {
+    const p = g.fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`could not load ${path}: ${r.status}`);
+      return r.text();
+    });
+    p.catch(() => texts.delete(url));
+    texts.set(url, p);
+  }
+  return texts.get(url);
+}
+
+/** A data file as an object (its own copy). In a page: fetch(base + path) with the stamp, once per URL. In Node: read it from the repo. */
 export async function loadJSON(path, { base = "" } = {}) {
   if (isBrowser || typeof g.process === "undefined") {
-    const r = await g.fetch(stamp(base + path));
-    if (!r.ok) throw new Error(`could not load ${path}: ${r.status}`);
-    return r.json();
+    return JSON.parse(await fetchText(stamp(base + path), path));
   }
   const { readFile } = await import("node:fs/promises");
   const { fileURLToPath } = await import("node:url");
