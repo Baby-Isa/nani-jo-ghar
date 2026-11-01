@@ -1788,6 +1788,45 @@
     "You said knee."
    ],
    "_sig": "[\"x\"]"
+  },
+  "BringHalfOfX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring half of {x}.",
+   "elicit": [
+    "Bring half of knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "BringAllOfX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring all of {x}.",
+   "elicit": [
+    "Bring all of knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "PlantTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Plant the {x}.",
+   "elicit": [
+    "Plant the knee."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }

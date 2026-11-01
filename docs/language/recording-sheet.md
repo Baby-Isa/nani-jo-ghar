@@ -729,7 +729,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | goat | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: goat (a she-goat) |
 | green door | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: green, door |
 | hen | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: chicken |
-| hen with her chicks | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| hen with her chicks | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): chick |
 | horse | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | kite | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | Look! | Ride: Nani's headline | 2 of 5 days | The engine can say it; no family recording yet |
@@ -744,7 +744,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | Where is the …? | Ride farm-road: Nani's call for every thing | 2 of 5 days, every call | The engine can say it; no family recording of: where, be |
 | windmill | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 
-**The ride's candidate words with no family recording yet (English only; 18 of 18):** cow, tree, flower, bus, bicycle, tractor, camel, horse, sheep, buffalo, boat, sun, moon, star, cloud, road, field, shop. These are things the ride could name next, not in it yet. tree, flower, moon, star already have an engine entry with no Kutchi; the rest are not in the engine, so they need Mum's word first.
+**The ride's candidate words with no family recording yet (English only; 18 of 18):** cow, tree, flower, bus, bicycle, tractor, camel, horse, sheep, buffalo, boat, sun, moon, star, cloud, road, field, shop. These are things the ride could name next, not in it yet. cow, tree, flower, sheep, moon, star already have an engine entry with no Kutchi; the rest are not in the engine, so they need Mum's word first.
 
 ## 6. Story mode: the evening book
 
@@ -759,17 +759,30 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 7. Other modes
 
-118 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
+131 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
 | Big Ma! | conversations / story | — | No Kutchi yet |
 | board (for chopping or rolling) | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Bring me the eggs. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| chick | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Feed them what she asks for. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Find them and take them home. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| grass | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| It's getting dark: time for bed! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Let's grow our own food. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Lift the hen and find her eggs. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Look, it's growing! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Nobody here! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Now water it. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | oil | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Plant it, water it, then pick. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | pour | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | roll (out) | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | serve (put it on the plate) | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | sprinkle | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| The animals are hungry. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | bangles | dress (parked) | — | No Kutchi yet |
 | buttons | dress (parked) | — | No Kutchi yet |
 | cap | dress (parked); who (parked) | — | No Kutchi yet |

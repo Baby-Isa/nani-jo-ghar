@@ -1862,6 +1862,25 @@
    }
   },
   {
+   "id": "n.chick",
+   "pos": "N",
+   "gender": null,
+   "gloss": "chick",
+   "glossPl": "chicks",
+   "status": "to-record",
+   "src": [
+    "data/farm.json words.ph-chick: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-chick"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.chicken",
    "pos": "N",
    "gender": "she",
@@ -2405,6 +2424,25 @@
    ],
    "aliases": [
     "ph-counter"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.cow",
+   "pos": "N",
+   "gender": null,
+   "gloss": "cow",
+   "glossPl": "cows",
+   "status": "to-record",
+   "src": [
+    "data/farm.json words.ph-cow: an English placeholder, to record (Zafar's word is gai (docs/game-design/days/farm.md, to record): never shipped unconfirmed)"
+   ],
+   "aliases": [
+    "ph-cow"
    ],
    "ask": {
     "word": [
@@ -3555,6 +3593,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.grass",
+   "pos": "N",
+   "gender": null,
+   "gloss": "grass",
+   "glossPl": "grass",
+   "status": "to-record",
+   "src": [
+    "data/farm.json words.ph-grass: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-grass"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -5999,6 +6056,25 @@
      "src": "grammar-notes §36 C17"
     }
    ]
+  },
+  {
+   "id": "n.sheep",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sheep",
+   "glossPl": "sheeps",
+   "status": "to-record",
+   "src": [
+    "data/farm.json words.ph-sheep: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sheep"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.shelf",
@@ -12522,6 +12598,23 @@
    }
   },
   {
+   "id": "phrase.bring-me-the-eggs",
+   "pos": "Phrase",
+   "gloss": "Bring me the eggs.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.eggs-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.eggs-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.bring-me-these",
    "pos": "Phrase",
    "gloss": "Bring me these",
@@ -13689,6 +13782,23 @@
    ]
   },
   {
+   "id": "phrase.feed-them-what-she-asks-for",
+   "pos": "Phrase",
+   "gloss": "Feed them what she asks for.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.feed-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.feed-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.fill-it-to-the-green",
    "pos": "Phrase",
    "gloss": "fill it to the green",
@@ -13719,6 +13829,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.find-them-and-take-them-home",
+   "pos": "Phrase",
+   "gloss": "Find them and take them home.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.dusk-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.dusk-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -13985,6 +14112,23 @@
    "aliases": [
     "conversation.line.khudafis"
    ]
+  },
+  {
+   "id": "phrase.goodnight",
+   "pos": "Phrase",
+   "gloss": "Goodnight!",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.dusk-night: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.dusk-night"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.grill-the-skewers",
@@ -15578,6 +15722,23 @@
    }
   },
   {
+   "id": "phrase.its-getting-dark-time-for-bed",
+   "pos": "Phrase",
+   "gloss": "It's getting dark: time for bed!",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.dusk-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.dusk-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.its-gone-cold",
    "pos": "Phrase",
    "lemma": "thundo thai vyo",
@@ -15986,6 +16147,23 @@
    }
   },
   {
+   "id": "phrase.lets-grow-our-own-food",
+   "pos": "Phrase",
+   "gloss": "Let's grow our own food.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.grow-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.grow-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.lets-have-a-look",
    "pos": "Phrase",
    "gloss": "Let's have a look",
@@ -16033,6 +16211,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lift-the-hen-and-find-her-eggs",
+   "pos": "Phrase",
+   "gloss": "Lift the hen and find her eggs.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.eggs-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.eggs-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -16206,6 +16401,23 @@
    "notes": [
     "English placeholder (to record): the first-time cue for the torch; step 4e"
    ]
+  },
+  {
+   "id": "phrase.look-its-growing",
+   "pos": "Phrase",
+   "gloss": "Look, it's growing!",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.grow-look: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.grow-look"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.lovely",
@@ -16876,6 +17088,23 @@
    ]
   },
   {
+   "id": "phrase.nobody-here",
+   "pos": "Phrase",
+   "gloss": "Nobody here!",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.dusk-nobody: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.dusk-nobody"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.none-left",
    "pos": "Phrase",
    "lemma": "ki baki nai",
@@ -17100,6 +17329,23 @@
    "src": [
     "grammar-notes §25 B14"
    ]
+  },
+  {
+   "id": "phrase.now-water-it",
+   "pos": "Phrase",
+   "gloss": "Now water it.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.grow-water: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.grow-water"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.oh-dear",
@@ -17413,6 +17659,23 @@
    "notes": [
     "English placeholder (to record), S02-C: the doctor's box in the send-off at L1 (T28)"
    ]
+  },
+  {
+   "id": "phrase.plant-it-water-it-then-pick",
+   "pos": "Phrase",
+   "gloss": "Plant it, water it, then pick.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.grow-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.grow-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.pour-it-into-their-glass",
@@ -18707,6 +18970,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.the-animals-are-hungry",
+   "pos": "Phrase",
+   "gloss": "The animals are hungry.",
+   "status": "to-record",
+   "src": [
+    "data/farm.json lines.feed-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "farm.line.feed-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },

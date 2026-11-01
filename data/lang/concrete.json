@@ -2107,6 +2107,33 @@
    "english": "You said {x}.",
    "what": "You said {x}.",
    "src": "data/tidy.json lines.yousaid: asked as A7"
+  },
+  "BringHalfOfX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Bring half of {x}.",
+   "what": "Bring half of {x}.",
+   "src": "data/farm.json lines.eggs-half: an English placeholder, to record"
+  },
+  "BringAllOfX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Bring all of {x}.",
+   "what": "Bring all of {x}.",
+   "src": "data/farm.json lines.eggs-all: an English placeholder, to record"
+  },
+  "PlantTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Plant the {x}.",
+   "what": "Plant the {x}.",
+   "src": "data/farm.json lines.grow-plant: an English placeholder, to record"
   }
  }
 }
