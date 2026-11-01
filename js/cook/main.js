@@ -55,6 +55,8 @@ const STATIONS = [
   ["stir", "Stir", ["circle"]],
   ["assemble", "Chaat bowl", ["tap"]],
   ["samosa", "Samosa", ["tap", "swipe"]],
+  // proto-kitchen (Zafar's rapid prototypes, 1 Nov): lab only
+  ["eggs", "Eggs (prototype)", ["tap"]],
 ];
 /** Whole recipes, every station in turn (the Station lab's "recipe:<id>"). */
 const RECIPES = [

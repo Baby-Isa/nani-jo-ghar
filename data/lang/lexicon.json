@@ -1338,6 +1338,25 @@
    }
   },
   {
+   "id": "n.boiled-egg",
+   "pos": "N",
+   "gender": null,
+   "gloss": "boiled egg",
+   "glossPl": "boiled eggs",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-boiledegg: placeholder (proto-kitchen, 1 Nov): 'a boiled egg' is to record (build/reports/designs/cook-baking-eggs.md §1: the engine may build it from ukar and indo once Mum gives the form)"
+   ],
+   "aliases": [
+    "ph-boiledegg"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.bottle",
    "pos": "N",
    "gender": null,

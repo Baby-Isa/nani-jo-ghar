@@ -51,6 +51,8 @@ const PARTS = {
   "mishkaki-grill": SKEWER.concat("./stations/mishkaki-grill.js"),
   samosa: SAMOSA.concat("./stations/samosa.js"),
   daar: DAAR.concat("./stations/daar.js"),
+  // proto-kitchen (Zafar's rapid prototypes, 1 Nov; build/reports/proto-kitchen-2026-11-01.md): lab-only stations
+  eggs: ["./stations/eggs.js"],
 };
 // the Station lab's list, in its old order, before any station's code is there (its file fills in the rest)
 const LABS = [
@@ -73,8 +75,9 @@ const LABS = [
   ["mishkaki-grill", "Sekelo", "Thread, then the barbecue (level 4: both at once)"],
   ["samosa", "Samosa", "Fill, fold, fry"],
   ["daar", "Daar", "Chop, tadka, stir"],
+  ["eggs", "Eggs (prototype)", "Boil or fry, then the plates"],
 ];
-const COMBINED = ["roll-tawa", "maani-line", "chai-tray", "mishkaki-grill", "samosa", "daar"];
+const COMBINED = ["roll-tawa", "maani-line", "chai-tray", "mishkaki-grill", "samosa", "daar", "eggs"];
 try {
   const doc = globalThis.document;
   if (doc && doc.head) {

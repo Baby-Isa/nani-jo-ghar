@@ -1,0 +1,27 @@
+{
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes).",
+ "station": {
+  "name": "Eggs",
+  "verb": "Boil or fry, then the plates",
+  "goal": "Each person says how they want their egg. Tap the bowl for an egg, then the pot to boil it or the pan to fry it. When its ring is green, tap it, then tap their plate. Then tap the tray to take it to the table.",
+  "phases": {
+   "eggs": "Tap the bowl, then the pot (boiled) or the pan (fried).",
+   "plates": "When an egg's ring is green, tap it, then tap the plate of the person who asked.",
+   "serve": "Tap the tray to take it to the table."
+  }
+ },
+ "words": {
+  "n.egg": {"heap": {"kind": "balls", "color": "#f6ead2"}, "bowl": "ceramic"},
+  "ph-boiledegg": {"heap": {"kind": "balls", "color": "#fbf6ec"}, "bowl": "ceramic"},
+  "a.fried": {"heap": {"kind": "balls", "color": "#f3c84b"}, "bowl": "ceramic"},
+  "spi-11": {"heap": {"kind": "grains", "color": "#3b3530"}, "bowl": "ceramic"}
+ },
+ "mechanic": {
+  "levels": [
+   {"cookMs": 3200, "room": 6, "shakers": false, "meal": "breakfast", "ready": 0.72},
+   {"cookMs": 3600},
+   {"cookMs": 4000, "shakers": true, "meal": "lunch"},
+   {"cookMs": 4400, "meal": "dinner"}
+  ]
+ }
+}

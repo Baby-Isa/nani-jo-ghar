@@ -417,6 +417,12 @@
    "english": "pantry",
    "gender": "unknown",
    "src": "placeholder"
+  },
+  "ph-boiledegg": {
+   "kutchi": null,
+   "english": "boiled egg",
+   "gender": "unknown",
+   "src": "placeholder (proto-kitchen, 1 Nov): 'a boiled egg' is to record (build/reports/designs/cook-baking-eggs.md §1: the engine may build it from ukar and indo once Mum gives the form)"
   }
  },
  "lines": {

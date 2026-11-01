@@ -688,6 +688,47 @@
   }
  },
  "recipes": {
+  "eggs": {
+   "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov; build/reports/designs/prototype-notes-2026-11-01.md 'Eggs at breakfast', cook-baking-eggs.md stage E1): each person at the table says how they want their egg, boiled or fried, how many, and from L3 with salt or pepper (Zafar's two new words). js/cook/stations/eggs.js. Levels: 1 = one person, one egg; 2 = two people, 1-2 eggs each; 3 = three people, salt and pepper asked for; 4 = three people, 1-2 eggs, salt or pepper or 'no salt'. Lab only (lab.notInLaunch); free: false keeps it out of the customers' orders.",
+   "name": "n.egg",
+   "english": "Eggs",
+   "free": false,
+   "countRule": true,
+   "price": 3,
+   "stations": ["eggs"],
+   "lists": {"family": ["nana", "ma", "cousin"]},
+   "slots": {
+    "plates": {
+     "type": "people",
+     "who": "$family",
+     "count": {"byLevel": [1, 2, 3, 3]},
+     "each": {
+      "fried": {"chance": 0.5},
+      "n": {"byLevel": [{"int": [1, 1]}, {"int": [1, 2]}, {"int": [1, 1]}, {"int": [1, 2]}]},
+      "salt": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", "no", null]}]},
+      "pepper": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", null]}]}
+     }
+    }
+   },
+   "say": [
+    {"frame": "order", "x": ["n.egg"]},
+    {
+     "forEach": "$plates",
+     "for": "$it.who",
+     "say": [
+      {"if": "it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "a.fried"}, "n.egg"]},
+      {"if": "!it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "ph-boiledegg"}]},
+      {"if": "it.salt=yes", "frame": "and", "x": ["spi-16"]},
+      {"if": "it.pepper=yes", "frame": "and", "x": ["spi-11"]},
+      {"if": "it.salt=no", "frame": "no", "x": ["spi-16"]}
+     ]
+    }
+   ],
+   "need": [],
+   "steps": ["Eggs", "Cook", "Plates", "Serve"],
+   "run": [{"do": "eggs", "plates": "$plates"}],
+   "how": "Each person says how they want their egg. Boil it in the pot or fry it in the pan, put it on their plate, then carry the tray to the table."
+  },
   "pantry": {
    "_about": "Wave 6 (docs/design-language/ux-principles.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
    "name": "ph-pantry",
@@ -6086,11 +6127,18 @@
    "tadka",
    "stir",
    "assemble",
-   "samosa"
+   "samosa",
+   "eggs",
+   "baking",
+   "corn"
   ],
   "notInLaunch": [
-   "tadka"
+   "tadka",
+   "eggs",
+   "baking",
+   "corn"
   ],
+  "_proto": "proto-kitchen (1 Nov, Zafar's rapid prototypes): eggs, baking and corn are lab-only prototypes (build/reports/proto-kitchen-2026-11-01.md); kept so they end in the kitchen like the other stations, and out of the launch until Zafar has played them.",
   "_notInLaunch": "Decision 62 (DAAR-15, S02-B): Tadka stays in the labs (the Station lab and labs.html) but is not in the first launch: Daar replaced it. A launch build leaves out every station listed here."
  },
  "onboard": {
