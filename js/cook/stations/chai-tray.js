@@ -177,7 +177,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   };
   // each stage of the brew: the s14 picture of it; the boil-over's foam is still v3's foam picture over the milky boil (no
   // s14 picture of it), cut to this pan's contents circle (pictures only, never drawn contents: ART-12, CK-06)
-  const STAGE = { empty: ["empty"], water: ["water"], leaves: ["leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk"], "boil-tea": ["black"], "boil-milky": ["boil"], foam: ["boil", "foam"] };
+  // CHAI-63: black tea (a "dudh na" cup, L2 up) comes to the boil as milky chai does: v3's rolling black boil over the s14 black, cut to
+  // the contents circle as the foam is (was the plain black picture, so a black pan never showed the boil)
+  const STAGE = { empty: ["empty"], water: ["water"], leaves: ["leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk"], "boil-tea": ["black", "boil-tea"], "boil-milky": ["boil"], foam: ["boil", "foam"] };
   const DISCS = PAN_LOOKS.filter((k) => STAGE[k][1]);
   const RING = "chai-pan-ring";
   /*
@@ -644,7 +646,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const fd = Math.min(90, 2 * rimW, Math.max(BADGE, 30 / perPx));
       // its centre: as far in as keeps it off the glass, but never more than half of it past the tray's edge
       const inset = Math.max(0, Math.min(rimW - fd / 2, rimW / 2));
-      const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
+      // SH-183 (Zafar, 1 Nov, his 7-faded-faces.png: "faces shouldn't be faded they should have full contrast and 'sit on top'"):
+      // over the tray's quiet veil (trayQuiet, which dimmed them to 58% until a pan was ready) and every picture: the badge depth
+      const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
       return { x: wx, y: wy, r: gR, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
@@ -656,6 +660,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const m = Math.max(b.width, b.height) * 0.12;
       return { x: b.x - m, y: b.y - m * 2, w: b.width + m * 2, h: b.height + m * 3 };
     };
+    // (the test hook js:Cook.chaiBusy: a pour or a spoon in flight; CHAI-61's probe reads the lit pans' heat against it)
+    Cook.chaiBusy = () => busy;
     Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, spicePics: Object.keys(q.spicePics || {}).length, shown: q.shown, poured: q.poured, need: needOf(q), closed: q.closed, sugar: q.sugar, khun: q.p.khun || 0 }));
     // (the test hooks for the evidence probes, js:Cook.chaiAmounts and js:Cook.chaiFaces: read only)
     // CHAI-55: who asked half or full, in seat order, and the words' stages (the rule: data/cook.json chai cups.amount teach)
@@ -790,7 +796,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // C8: which picture the pan shows: [the stage, the next one fading in over it, how far]. The leaves
     // steep to black tea as it heats; near the green it comes to the boil; past the green milky chai
     // foams up to the rim (the boil-over warning). Turned down, it settles (the simmer bubbles stay on top).
-    const boilAt = lo - 0.12;
+    // CHAI-63 (Zafar, 1 Nov: "there's a chai boiling animation or new image that happens as the chai is ready (green zone) or close to
+    // green zone - i didn't see that on the other modes"): the boil comes up the same TIME before the green at every level (was a
+    // fixed 0.12 of heat: 1.3 s at L1's slow rate, 0.9 s at L4's, and L1's first-time hold kept it on screen for as long as the child
+    // waited); its steam starts with it, and black tea boils too (below, STAGE)
+    const BOIL_LEAD_S = 2;
+    const boilAt = Math.max(0.3, lo - kBoil.rate * BOIL_LEAD_S);
     const lookOf = (pan) => {
       const tea = pan.has.leaves > 0;
       const milk = pan.has.milk > 0;
@@ -1180,6 +1191,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       land(obj, { k: 0.06 }); // (back on the shelf: it settles)
       soft("tap", 0.35);
       busy--;
+      St.acted(); // (SH-184: the hint's wait from the end of this pour)
     };
     const spoonInto = async (pan, obj, id) => {
       // (counted for the order card's light only: it waits for a spoon to land, and skips once the child spoons the next thing)
@@ -1190,6 +1202,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await Cook.Spoon.spoon(zb, { bowl: obj, into: pan.vessel, word: id, ms: kCount.spoonMs });
       } finally {
         spoons14--;
+        St.acted(); // (SH-184: the hint's wait from the spoonful's landing)
       }
     };
     const use = async (id) => {
@@ -1408,9 +1421,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       pans.forEach((pan) => {
         const hd = pan.layers && pan.layers.handle;
         if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
-        // (s14, contract-70: at L2+ the heat is quicker, so a second pan reached the green mid-pour and "Slow kar" waited for the
-        // pour; one live thing at a time: the other pans hold their heat while a pour or a spoon is in flight)
-        if (pan.state === "heating" && !busy) {
+        // CHAI-61 (Zafar, 1 Nov: "the addition of paani stops the cooking of the first one (pauses is during the animation). Check the
+        // additions to the other pans dont stop or slow the cooking of the lit chai pans"): a lit pan's boil runs on its own clock,
+        // whatever goes into another pan (was: every lit pan held its heat while a pour or a spoon was in flight, s14's contract-70
+        // fix; the turn-off call now comes through the pour instead: refresh() below)
+        if (pan.state === "heating") {
           const was = pan.heat >= lo && pan.heat <= hi;
           // CHAI-10: twice as fast to the green; in the green it slows to half, so the turn-down keeps its old time
           pan.heat += kBoil.rate * (pan.heat >= lo ? 0.5 : 1) * dt;
@@ -1438,8 +1453,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // CK-06 (CP4 v2: "never drawn circles or rings"): no drawn bubbles; the pictured boil rolls (its picture turns slowly)
           const spin = 0.0025 * Math.min(1.4, hot);
           [pan.disc, pan.mixDisc].forEach((im) => im && im.visible && im.setRotation(im.rotation + spin));
-          // the painted steam, now and then, off the far rim (never over the tea: CK-06), only near the boil
-          if (steamT > 0.3 && hot >= 0.8 && Math.random() < 0.12 + hot * 0.1) fx("steam", pan.x + (Math.random() - 0.5) * rIn * 0.8, pan.y - rIn * 1.2, { w: rIn * 0.55, ms: 900, rise: rIn * 0.35, depth: D.fx - 2 });
+          // the painted steam, now and then, off the far rim (never over the tea: CK-06), only near the boil (CHAI-63: from the boil's
+          // own start, boilAt, the same time before the green at every level; was a fixed heat, later at the quicker levels)
+          if (steamT > 0.3 && pan.state === "heating" && pan.heat >= boilAt && Math.random() < 0.12 + hot * 0.1) fx("steam", pan.x + (Math.random() - 0.5) * rIn * 0.8, pan.y - rIn * 1.2, { w: rIn * 0.55, ms: 900, rise: rIn * 0.35, depth: D.fx - 2 });
         }
       });
       if (steamT > 0.3) steamT = 0;
@@ -1545,6 +1561,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (id !== "cook-khun" && id !== "spi-16") fadeLook(pan, pan.shown);
       if (id === "cook-khun" && pan.sugar === (p.khun || 0)) closeSpoons(pan);
       busy--;
+      St.acted(); // (SH-184: a take-back is a right move too)
       refresh();
     };
     const panTap = async (pan) => {
@@ -1737,6 +1754,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         pan.extras.forEach((x) => UI.count(spoonsOf(pan, x), { speak: false, id: x }));
       }
       busy--;
+      // SH-184 (Zafar, 1 Nov: "I was pausing making one chai pot while pouring the completed other pots and i got the nani hint ...
+      // It should have noted that pouring was a legit action and therefore restart the timer"): the pour is a right move: the hint's
+      // wait runs again from its end, whichever pan the hint is for
+      St.acted();
       maybeFinish();
       refresh();
     };
@@ -2270,9 +2291,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             // (the call alone now; the light only if the child is still stuck after the level's wait)
             if (release) release();
             if (nx.phase === "slow") return;
-            const m0 = moves14;
-            ctlHint14 = setTimeout(() => {
-              if (rungKey !== sid || finished || moves14 !== m0 || pans.some((q) => q.away) || !(OB14 && OB14.light)) return;
+            // SH-184 (Zafar, 1 Nov: the hint "times itself from the last correct action"): on the page's one idle clock (NaniGuide:
+            // every tap, and the end of every pour or spoonful, St.acted), from the later of the step's opening and the last action;
+            // any action restarts the wait (was a one-shot timer from the step's opening, cancelled for good by a pour or a spoon and
+            // blind to every other action)
+            const opened = Date.now();
+            const NGd = global.NaniGuide;
+            const due = () => Math.max(opened, NGd && NGd.lastAction ? NGd.lastAction() : opened) + hintMs14() / sp;
+            const wait = () => {
+              if (rungKey !== sid || finished || !(OB14 && OB14.light)) return;
+              if (busy || pans.some((q) => q.away) || Date.now() < due()) return void (ctlHint14 = setTimeout(wait, 200));
               hints14++; // (SH-160: the guide's hint came)
               if (ctl14) ctl14.close();
               ctl14 = OB14.light(target, { look: "glow", pad: 4, pass: true, live: [target].concat(also ? [also] : []) });
@@ -2284,7 +2312,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               helpGlow(obj);
               // (her call again with the light: the control's call and its light together, contract-78)
               if (UI.stepHelp) UI.stepHelp();
-            }, hintMs14() / sp);
+            };
+            ctlHint14 = setTimeout(wait, 200);
             return;
           }
           if (ctl14) ctl14.close();
@@ -2449,7 +2478,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       syncTakeBack();
       // serving: every pan is in its glass, so the last pan's sugar tally has nothing left to count
       if (pans.length && pans.every((q) => q.poured > 0)) UI.hideCount();
-      if (busy) {
+      // CHAI-61: a lit pan that reaches the green while something goes into another pan is called at once ("Slow kar!", the knob's
+      // glow and tap), as its heat runs on through the add (contract-70: the call as the bar enters the green, never held back)
+      const hotNow = busy ? plan() : null;
+      if (busy && !(hotNow && hotNow.phase === "slow")) {
         zb.expect({ kind: "wait" }); // a pour in progress: the player waits for it
         // s12-w3b (the judge, 26 Oct: a help spotlight dimmed the whole pour): no help rung runs while a pan pours; the next
         // step's help starts afresh after it
@@ -2458,7 +2490,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         hideMic();
         return;
       }
-      const nx = plan();
+      const nx = hotNow || plan();
       gaugePan = nx && nx.gauge ? nx.gauge : null;
       if (gaugePan) zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
       zb.expect(nx ? nx.e : null);

@@ -403,6 +403,10 @@
     row.scrollLeft = was;
     const rows = [...row.querySelectorAll(":scope > .oc-row[data-key]")];
     const fresh = snap ? rows.filter((r) => r.classList.contains("done") && !snap.done.has(r.dataset.key)) : [];
+    // CHAI-62 (Zafar, 1 Nov: "the contents emptied, but the menu card didn't reset by scrolling to the start again ... every time the
+    // item starts again the menu card should scroll to the start"): a card whose ticked rows have opened again (a pan boiled over,
+    // a redo, any start again) glides back to its first item, every game on this card
+    const again = snap ? rows.filter((r) => !r.classList.contains("done") && snap.done.has(r.dataset.key)) : [];
     if (snap && row.animate)
       rows.forEach((r) => {
         const old = snap.lefts.get(r.dataset.key);
@@ -416,6 +420,16 @@
       const to = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
       if (fold) fold.scroll14 = fold.want14 = to;
       setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
+    } else if (again.length) {
+      if (fold) fold.scroll14 = fold.want14 = 0;
+      glideWant.delete(card.dataset.ck);
+      try {
+        if (root.Lifecycle && root.Lifecycle.note && row.scrollLeft > 1) root.Lifecycle.note("row-home", { step: String(Math.round(row.scrollLeft)), by: `again:${again.length} smooth from:${Math.round(row.scrollLeft)} to:0` });
+      } catch (e) {
+        /* only a log */
+      }
+      // (once the reopened cards have slid back to their places)
+      setTimeout(() => row.isConnected && row.scrollTo({ left: 0, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
     }
     // (a redraw in the middle of the row's own glide: it carries on to where it was going)
     else {

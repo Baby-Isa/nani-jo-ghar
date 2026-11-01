@@ -868,6 +868,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * joined, "Bataato." then "Wiji chad!".
    */
   S$.addLine = (id) => Object.assign(Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf([id]) }), { key: "guide-add" });
+  /**
+   * SH-184 (Zafar, 1 Nov: "the pause before the hint times itself from the last correct action ... It should have noted that pouring
+   * was a legit action and therefore restart the timer"): a station's legitimate action has ENDED (a pour, a spoonful landing, a
+   * serve: its animation done). The page's one idle clock (NaniGuide) restarts from now, so every hint on it (Nani's stepper, the
+   * kit's stuck rungs, a station's own) waits the level's full pause (data/rules.json levels.hintS) from the end of the last right
+   * move, on any item, not from the tap that began it.
+   */
+  S$.acted = () => {
+    const g = NG();
+    if (g && g.poke) g.poke();
+  };
   S$.steps = function (ctx) {
     let cur = null;
     const g = {

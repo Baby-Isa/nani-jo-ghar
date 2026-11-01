@@ -39,6 +39,15 @@ test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice
   assert.equal(run(check78, r, [c("lit", 31000, { holes: [[1, 1, 2, 2]] })], lines(["Chulo bar!", 31270])).length, 0, "a light already up at the call");
   assert.equal(run(check78, r, [c("lit", 31000, { holes: [[1, 1, 2, 2]] }), c("lit", 31100, { holes: [] })], lines(["Chulo bar!", 31270])).length, 1, "a light that went out before the call is no light");
   assert.equal(run(check78, { flow: "cook:fetch" }, [], lines(["Chulo bar!", 1])).length, 0, "only the games that list control calls");
+  // CHAI-60 (SH-181): only each control's first call is lit; a second pot's "Chulo bar!" with no light is right
+  const lit = [c("lit", 31292, { holes: [[531, 240, 571, 280]] }), c("lit", 33000, { holes: [] })];
+  assert.equal(run(check78, r, lit, lines(["Chulo bar!", 31270], ["Chulo bar!", 52000], ["Slow kar!", 60000])).length, 1, "the first Slow kar is still judged");
+  assert.equal(run(check78, r, lit, lines(["Chulo bar!", 31270], ["Chulo bar!", 52000])).length, 0, "a second Chulo bar is the call alone");
+  // (s15-chai-12's run, L4 740x320: the first pot's knob was tapped before its "Chulo bar!" was said, so the first SAID one is the
+  // second pot's, the call alone; its words had shown in Nani's box at the first pot's step)
+  const box = (t, on) => c("texts", t, { list: on ? [{ t: "Chulo" }, { t: "bar" }] : [{ t: "Muke" }] });
+  assert.equal(run(check78, r, [box(37670, true), box(41000, false), box(51540, true)], lines(["Chulo bar!", 51990])).length, 0, "the control came up before, unsaid");
+  assert.equal(run(check78, r, [box(37670, true)], lines(["Chulo bar!", 37900])).length, 1, "its first opening is still judged");
 });
 
 test("contract-79 (B3, CHAI-42): the order card's light waits until nothing moves, then 500 ms", () => {
