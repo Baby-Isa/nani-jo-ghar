@@ -149,9 +149,6 @@
       i.src = Cook.v(Find.picture(noun));
     });
   };
-  V.clearItems = function () {
-    if (layers) layers.items.innerHTML = "";
-  };
   V.clearBasket = function () {
     if (layers && layers.basketItems) layers.basketItems.innerHTML = "";
   };
