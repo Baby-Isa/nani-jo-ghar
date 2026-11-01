@@ -61,7 +61,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 ## 2. Cook
 
-111 rows: 35 with no Kutchi yet, 76 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+114 rows: 38 with no Kutchi yet, 76 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -113,6 +113,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | turmeric | Cook: turmeric | 2 lines | Kutchi known (hardar); no family recording. |
 | water | Cook: water | 2 lines | Kutchi known (paani); no family recording. |
 | a little, a bit (in thori war: a bit of time) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (thori); no family recording. |
+| A lot. | Cook line: A lot. | 1 line | No Kutchi yet (grey English). |
 | a while (thori war = a bit longer) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (war); no family recording. |
 | Add the spices, in order | Cook line: Add the spices, in order | 1 line | No Kutchi yet (grey English). |
 | be | Cook line: How are you? | 1 line | Kutchi known (aiye); no family recording. |
@@ -164,10 +165,12 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | Roll the maani round | Cook line: Roll the maani round | 1 line | No Kutchi yet (grey English). |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekelo); no family recording. |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekela); no family recording. |
+| Still a little more. | Cook line: Still a little more. | 1 line | No Kutchi yet (grey English). |
 | Take a dough ball | Cook line: Take a dough ball | 1 line | No Kutchi yet (grey English). |
 | take out | Cook line: Lift out the {x}. | 1 line | Kutchi known (kadh); no family recording. |
 | tasting (muke chakhan lai de: let me taste it) | Cook line: Let me taste it. | 1 line | Kutchi known (chakhan); no family recording. |
 | thank you | Cook line: Thank you! | 1 line | No Kutchi yet (grey English). |
+| That's good. | Cook line: That's good. | 1 line | No Kutchi yet (grey English). |
 | Thread the skewers | Cook line: Thread the skewers | 1 line | No Kutchi yet (grey English). |
 | Thread the skewers, then grill them | Cook line: Thread the skewers, then grill them | 1 line | No Kutchi yet (grey English). |
 | Thread them | Cook line: Thread them | 1 line | No Kutchi yet (grey English). |
@@ -897,4 +900,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (163 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (166 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

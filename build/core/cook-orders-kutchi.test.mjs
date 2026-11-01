@@ -21,7 +21,8 @@ test("LNG-17: every order is said in Kutchi: no English join, no 'tomatoes'", as
   for (const seed of SEEDS) {
     const { Cook } = await loadCookEngine({ seed });
     const D = Cook.data;
-    for (const id of Object.keys(D.recipes).filter((x) => x[0] !== "_" && x !== "pantry"))
+    // (proto-kitchen, 1 Nov: a lab-only prototype recipe, "proto": true, says its to-record words as grey English until Mum records them)
+    for (const id of Object.keys(D.recipes).filter((x) => x[0] !== "_" && x !== "pantry" && !D.recipes[x].proto))
       for (const level of [1, 2, 3, 4])
         for (const who of Object.keys(D.customers)) {
           const L = Cook.Order.ladder(Cook.Recipes[id].make(who, { level }), 0);

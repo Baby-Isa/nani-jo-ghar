@@ -1,0 +1,100 @@
+{
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes).",
+ "station": {
+  "name": "Eggs",
+  "verb": "Boil or fry, then the plates",
+  "goal": "Each person says how they want their egg. Tap the bowl for an egg, then the pot to boil it or the pan to fry it. When its ring is green, tap it, then tap their plate. Then tap the tray to take it to the table.",
+  "phases": {
+   "eggs": "Tap the bowl, then the pot (boiled) or the pan (fried).",
+   "plates": "When an egg's ring is green, tap it, then tap the plate of the person who asked.",
+   "serve": "Tap the tray to take it to the table."
+  },
+  "palette": {
+   "eggWhite": "#fbf7ee",
+   "shell": "#f3e6cf",
+   "yolk": "#f2b21b",
+   "ink": "#2a2522",
+   "morningTop": "#bfe3f5",
+   "morningBottom": "#fbe7c4",
+   "sun": "#ffd56b",
+   "noonTop": "#6fb8ea",
+   "noonBottom": "#cfeaf8",
+   "noonSun": "#fff3b0",
+   "nightTop": "#14213d",
+   "nightBottom": "#3b3f6b",
+   "moon": "#f4f1de",
+   "shadow": "#28190a",
+   "white": "#ffffff",
+   "plateRim": "#e9e2d6",
+   "cupRim": "#d9d2c4",
+   "steel": "#c0c4c8",
+   "salt": "#f7f3ea",
+   "pepper": "#4a4542",
+   "track": "#fffaf1",
+   "sage": "#7e9a76",
+   "ringDone": "#5c8a4e",
+   "gold": "#c9962e",
+   "wall": "#f1e3cf",
+   "nightGrass": "#1f3a2a",
+   "grass": "#86b36a",
+   "sill": "#e6d3b8",
+   "nightShade": "#0b1530",
+   "cloth": "#f6efe3",
+   "wood": "#b9824f",
+   "woodGrain": "#8a5a33"
+  }
+ },
+ "words": {
+  "n.egg": {
+   "heap": {
+    "kind": "balls",
+    "color": "#f6ead2"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-boiledegg": {
+   "heap": {
+    "kind": "balls",
+    "color": "#fbf6ec"
+   },
+   "bowl": "ceramic"
+  },
+  "a.fried": {
+   "heap": {
+    "kind": "balls",
+    "color": "#f3c84b"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-11": {
+   "heap": {
+    "kind": "grains",
+    "color": "#3b3530"
+   },
+   "bowl": "ceramic"
+  }
+ },
+ "mechanic": {
+  "levels": [
+   {
+    "cookMs": 3200,
+    "room": 6,
+    "shakers": false,
+    "meal": "breakfast",
+    "ready": 0.72
+   },
+   {
+    "cookMs": 3600
+   },
+   {
+    "cookMs": 4000,
+    "shakers": true,
+    "meal": "lunch"
+   },
+   {
+    "cookMs": 4400,
+    "meal": "dinner"
+   }
+  ]
+ }
+}

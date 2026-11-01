@@ -1,0 +1,85 @@
+{
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt (little: one tap, it stops, 'that's good'; lot: tap until lotTaps, 'enough'; more: a little, tap, 'still a little more', tap, 'enough'; jug: tap until `units` quarter cups in the measuring jug, its lines at a quarter, half, full, one and a half and two and a half, no numbers), parts (the card row's words, through the language engine). `plans` by level (one picked at random); `decoys` how many other containers stand on the shelf; bakeMs the oven's time; `palette` the art colours.",
+ "station": {
+  "name": "Baking",
+  "verb": "Nani's turns: a little, a lot; then the oven",
+  "goal": "Nani says one thing at a time. Tap what she names; then tap it to tip it, a bit more each tap, until she says that's enough. Then the oven: open it, put the naan in, take it out when she says it's ready.",
+  "phases": {
+   "mix": "Tap what Nani names. Each tap tips it a bit more.",
+   "oven": "Tap the oven to open it, then the naan. Take it out when it's ready."
+  },
+  "palette": {
+   "wall": "#cfd8c4",
+   "tile": "#b9c6ad",
+   "counter": "#efe4d6",
+   "counterEdge": "#d9c9b4",
+   "cabinet": "#9fae8c",
+   "shadow": "#28190a",
+   "white": "#ffffff",
+   "glass": "#e8f3f6",
+   "glassEdge": "#9fb8c0",
+   "line": "#4f6a73",
+   "atto": "#f3ead8",
+   "paani": "#9fd3ee",
+   "dudh": "#fbf8f0",
+   "khun": "#ffffff",
+   "loon": "#f1f1f1",
+   "dahi": "#fbf6ee",
+   "ghee": "#f2c84b",
+   "dough": "#ead2a4",
+   "steel": "#c9cdd1",
+   "steelDark": "#7d8389",
+   "ovenGlass": "#2b2a2e",
+   "ovenGlow": "#f2a43a",
+   "ovenInside": "#5a3a22",
+   "rack": "#d8d2c8",
+   "ring": "#fffaf1",
+   "ringBand": "#7e9a76",
+   "ringFill": "#c9962e",
+   "ringDone": "#5c8a4e",
+   "steam": "#ffffff",
+   "toast": "#d9a25a"
+  }
+ },
+ "words": {
+  "ph-naan": {"heap": {"kind": "pieces", "color": "#e7c58b"}, "bowl": "ceramic"},
+  "ph-cup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"}
+ },
+ "mechanic": {
+  "levels": [
+   {
+    "lotTaps": 4,
+    "decoys": 1,
+    "bakeMs": 3600,
+    "plans": [
+     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-paani", "amt": "little", "parts": ["cook-paani"]}],
+     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-dudh", "amt": "little", "parts": ["cook-dudh"]}]
+    ]
+   },
+   {
+    "decoys": 2,
+    "plans": [
+     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}, {"id": "cook-paani", "amt": "more", "parts": ["cook-paani"]}],
+     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-khun", "amt": "little", "parts": ["cook-khun"]}, {"id": "cook-dudh", "amt": "more", "parts": ["cook-dudh"]}],
+     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "ph-dahi", "amt": "more", "parts": ["ph-dahi"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}]
+    ]
+   },
+   {
+    "decoys": 3,
+    "jug": true,
+    "plans": [
+     [{"id": "cook-atto", "amt": "jug", "units": 4, "parts": [1, "ph-cup", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 2, "parts": ["ph-half", "cook-paani"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
+     [{"id": "cook-atto", "amt": "jug", "units": 4, "parts": [1, "ph-cup", "cook-atto"]}, {"id": "cook-dudh", "amt": "jug", "units": 2, "parts": ["ph-half", "cook-dudh"]}, {"id": "cook-khun", "amt": "little", "parts": ["cook-khun"]}]
+    ]
+   },
+   {
+    "decoys": 3,
+    "bakeMs": 4200,
+    "plans": [
+     [{"id": "cook-atto", "amt": "jug", "units": 10, "parts": ["ph-cups-2h", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 6, "parts": ["ph-cups-1h", "cook-paani"]}, {"id": "ph-dahi", "amt": "jug", "units": 1, "parts": ["ph-quartercup", "ph-dahi"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
+     [{"id": "cook-atto", "amt": "jug", "units": 6, "parts": ["ph-cups-1h", "cook-atto"]}, {"id": "cook-dudh", "amt": "jug", "units": 1, "parts": ["ph-quartercup", "cook-dudh"]}, {"id": "cook-khun", "amt": "more", "parts": ["cook-khun"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}]
+    ]
+   }
+  ]
+ }
+}

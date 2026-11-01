@@ -802,6 +802,25 @@
    }
   },
   {
+   "id": "n.a-quarter-cup",
+   "pos": "N",
+   "gender": null,
+   "gloss": "a quarter cup",
+   "glossPl": "a quarter cups",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-quartercup: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+   ],
+   "aliases": [
+    "ph-quartercup"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.a-while",
    "pos": "N",
    "gender": null,
@@ -1330,6 +1349,25 @@
    ],
    "aliases": [
     "ph-board"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.boiled-egg",
+   "pos": "N",
+   "gender": null,
+   "gloss": "boiled egg",
+   "glossPl": "boiled eggs",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-boiledegg: placeholder (proto-kitchen, 1 Nov): 'a boiled egg' is to record (build/reports/designs/cook-baking-eggs.md §1: the engine may build it from ukar and indo once Mum gives the form)"
+   ],
+   "aliases": [
+    "ph-boiledegg"
    ],
    "ask": {
     "word": [
@@ -5014,6 +5052,25 @@
    }
   },
   {
+   "id": "n.naan",
+   "pos": "N",
+   "gender": null,
+   "gloss": "naan",
+   "glossPl": "naans",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-naan: placeholder (proto-kitchen, 1 Nov): the oven's bake, to record"
+   ],
+   "aliases": [
+    "ph-naan"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.neck",
    "pos": "N",
    "gender": null,
@@ -5169,6 +5226,25 @@
    ],
    "aliases": [
     "clinic.pipeline.ladder.old"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.one-and-a-half-cups",
+   "pos": "N",
+   "gender": null,
+   "gloss": "one and a half cups",
+   "glossPl": "one and a half cups",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-cups-1h: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+   ],
+   "aliases": [
+    "ph-cups-1h"
    ],
    "ask": {
     "word": [
@@ -7703,6 +7779,25 @@
    "aliases": [
     "clinic.item.tweezers",
     "clinic.item.tool-tweezers"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.two-and-a-half-cups",
+   "pos": "N",
+   "gender": null,
+   "gloss": "two and a half cups",
+   "glossPl": "two and a half cups",
+   "status": "to-record",
+   "src": [
+    "data/cook.json words.ph-cups-2h: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+   ],
+   "aliases": [
+    "ph-cups-2h"
    ],
    "ask": {
     "word": [
@@ -12011,6 +12106,26 @@
    ],
    "aliases": [
     "cook.line.little"
+   ]
+  },
+  {
+   "id": "phrase.a-lot",
+   "pos": "Phrase",
+   "gloss": "A lot.",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.alot: no source given"
+   ],
+   "aliases": [
+    "cook.line.alot"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
    ]
   },
   {
@@ -18452,6 +18567,26 @@
    }
   },
   {
+   "id": "phrase.still-a-little-more",
+   "pos": "Phrase",
+   "gloss": "Still a little more.",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.stillmore: no source given"
+   ],
+   "aliases": [
+    "cook.line.stillmore"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+   ]
+  },
+  {
    "id": "phrase.still-too-cold",
    "pos": "Phrase",
    "gloss": "Still too cold!",
@@ -18918,6 +19053,26 @@
    "status": "draft",
    "src": [
     "grammar-notes §19"
+   ]
+  },
+  {
+   "id": "phrase.thats-good",
+   "pos": "Phrase",
+   "gloss": "That's good.",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.good: no source given"
+   ],
+   "aliases": [
+    "cook.line.good"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
    ]
   },
   {

@@ -688,6 +688,96 @@
   }
  },
  "recipes": {
+  "eggs": {
+   "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov; build/reports/designs/prototype-notes-2026-11-01.md 'Eggs at breakfast', cook-baking-eggs.md stage E1): each person at the table says how they want their egg, boiled or fried, how many, and from L3 with salt or pepper (Zafar's two new words). js/cook/stations/eggs.js. Levels: 1 = one person, one egg; 2 = two people, 1-2 eggs each; 3 = three people, salt and pepper asked for; 4 = three people, 1-2 eggs, salt or pepper or 'no salt'. Lab only (lab.notInLaunch); free: false keeps it out of the customers' orders.",
+   "name": "n.egg",
+   "english": "Eggs",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 3,
+   "stations": ["eggs"],
+   "lists": {"family": ["nana", "ma", "cousin"]},
+   "slots": {
+    "plates": {
+     "type": "people",
+     "who": "$family",
+     "count": {"byLevel": [1, 2, 3, 3]},
+     "each": {
+      "fried": {"chance": 0.5},
+      "n": {"byLevel": [{"int": [1, 1]}, {"int": [1, 2]}, {"int": [1, 1]}, {"int": [1, 2]}]},
+      "salt": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", "no", null]}]},
+      "pepper": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", null]}]}
+     }
+    }
+   },
+   "say": [
+    {"frame": "order", "x": ["n.egg"]},
+    {
+     "forEach": "$plates",
+     "for": "$it.who",
+     "say": [
+      {"if": "it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "a.fried"}, "n.egg"]},
+      {"if": "!it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "ph-boiledegg"}]},
+      {"if": "it.salt=yes", "frame": "and", "x": ["spi-16"]},
+      {"if": "it.pepper=yes", "frame": "and", "x": ["spi-11"]},
+      {"if": "it.salt=no", "frame": "no", "x": ["spi-16"]}
+     ]
+    }
+   ],
+   "need": [],
+   "steps": ["Eggs", "Cook", "Plates", "Serve"],
+   "run": [{"do": "eggs", "plates": "$plates"}],
+   "how": "Each person says how they want their egg. Boil it in the pot or fry it in the pan, put it on their plate, then carry the tray to the table."
+  },
+  "corn": {
+   "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov; prototype-notes-2026-11-01.md 'The corn stall'): the farm's corn stall, a sekelo redress on one screen (js/cook/stations/corn.js). Someone asks for corn on the cob (makai) and what goes on it: lemon, salt, chilli powder, the chutneys, pepper; each is named as it goes on. Levels: 1 = one cob, one thing on it; 2 = one cob, two; 3 = two cobs, two; 4 = two cobs, two or three, and sometimes a 'no'. Lab only; free: false; proto: true. Hannah Mami hosts the farm; until her lines and look exist, Nani's guide box stands in (Zafar, 1 Nov).",
+   "name": "n.corn-on-the-cob",
+   "english": "Corn on the cob",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 2,
+   "stations": ["corn"],
+   "lists": {"dress": ["fru-02", "spi-16", "spi-04", "ph-lili", "ph-amli", "spi-11"]},
+   "slots": {
+    "count": {"byLevel": [1, 1, 2, 2]},
+    "no": {"type": "no", "else": {"chance": {"byLevel": [0, 0, 0, 0.6]}, "from": "$dress"}},
+    "dress": {"type": "items", "from": "$dress", "exclude": "no", "take": {"byLevel": [[1, 1], [2, 2], [2, 2], [2, 3]]}, "order": "any"}
+   },
+   "say": [
+    {"frame": "order", "x": [{"n": "$count", "of": "n.corn-on-the-cob"}]},
+    {"forEach": "$dress", "frame": "and", "x": ["$it"]},
+    {"forEach": "$no", "frame": "no", "x": ["$it"]}
+   ],
+   "need": [],
+   "steps": ["Grill", "Dress", "Serve"],
+   "run": [{"do": "corn", "count": "$count", "dress": "$dress", "no": "$no"}],
+   "how": "Put the corn on the grill, turn it once, take it off when it's cooked; then put on what they asked for."
+  },
+  "baking": {
+   "_about": "proto-kitchen (Zafar's baking design, 1 Nov; prototype-notes-2026-11-01.md 'Baking'): Nana asks for naan; Nani gives one instruction at a time, each its own row on the card that appears as she says it (when: bake-1 .. bake-5, js/cook/stations/baking.js UI.mission.reveal). The plan (which containers, how much) is picked from data/stations/baking.json by level and set on the order as `plan` by the lab entry, so this recipe has no slots. Lab only; free: false; proto: true (its to-record words are grey English).",
+   "name": "ph-naan",
+   "english": "Naan",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 3,
+   "stations": ["baking"],
+   "slots": {},
+   "say": [
+    {"frame": "order", "x": ["ph-naan"]},
+    {"if": "plan.0", "frame": "bare", "x": ["$plan.0.parts"], "when": "bake-1"},
+    {"if": "plan.1", "frame": "bare", "x": ["$plan.1.parts"], "when": "bake-2"},
+    {"if": "plan.2", "frame": "bare", "x": ["$plan.2.parts"], "when": "bake-3"},
+    {"if": "plan.3", "frame": "bare", "x": ["$plan.3.parts"], "when": "bake-4"},
+    {"if": "plan.4", "frame": "bare", "x": ["$plan.4.parts"], "when": "bake-5"}
+   ],
+   "need": [],
+   "steps": ["Mix", "Oven"],
+   "run": [{"do": "baking", "plan": "$plan"}],
+   "how": "Nani says one thing at a time: a little, a lot, a cup. Tap it to tip it in. Then bake the naan."
+  },
   "pantry": {
    "_about": "Wave 6 (docs/design-language/ux-principles.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
    "name": "ph-pantry",
@@ -6086,11 +6176,18 @@
    "tadka",
    "stir",
    "assemble",
-   "samosa"
+   "samosa",
+   "eggs",
+   "baking",
+   "corn"
   ],
   "notInLaunch": [
-   "tadka"
+   "tadka",
+   "eggs",
+   "baking",
+   "corn"
   ],
+  "_proto": "proto-kitchen (1 Nov, Zafar's rapid prototypes): eggs, baking and corn are lab-only prototypes (build/reports/proto-kitchen-2026-11-01.md); kept so they end in the kitchen like the other stations, and out of the launch until Zafar has played them.",
   "_notInLaunch": "Decision 62 (DAAR-15, S02-B): Tadka stays in the labs (the Station lab and labs.html) but is not in the first launch: Daar replaced it. A launch build leaves out every station listed here."
  },
  "onboard": {

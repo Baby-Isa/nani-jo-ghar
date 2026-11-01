@@ -1,0 +1,43 @@
+{
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the corn stall's own data (js/cook/stations/corn.js; the order is recipes.corn in data/cook.json). A sekelo redress on one screen, top-down: the raw cobs (left) and the cooked plate (right) either side of the grill, the chutneys and dressings on a tray below, each with its word card. `mechanic.levels`: sideMs how long one side takes on the grill; slots how many cobs the grill holds; `palette` the art colours (data, not code).",
+ "station": {
+  "name": "Corn stall",
+  "verb": "Grill, turn once, then what goes on",
+  "goal": "Tap the box: a cob goes on the grill. When it glows, tap it to turn it; when it glows again, tap it: onto the plate. Then tap what they asked for: it goes on. Tap the plate to give it to them.",
+  "phases": {
+   "grill": "Tap the box for a cob. Turn it once when it glows; take it off when it glows again.",
+   "dress": "Tap what they asked for: it goes on the corn."
+  },
+  "palette": {
+   "table": "#c98f55",
+   "tableGrain": "#a8713f",
+   "tray": "#6b3f22",
+   "trayEdge": "#4e2c17",
+   "shadow": "#28190a",
+   "white": "#ffffff",
+   "ring": "#fffaf1",
+   "ringBand": "#7e9a76",
+   "ringFill": "#c9962e",
+   "ringDone": "#5c8a4e",
+   "smoke": "#ffffff",
+   "fru-02": "#f6d74a",
+   "spi-16": "#ffffff",
+   "spi-04": "#d2401e",
+   "ph-lili": "#5aa23a",
+   "ph-amli": "#6b2a14",
+   "spi-11": "#2f2a26"
+  }
+ },
+ "words": {
+  "n.corn-on-the-cob": {"heap": {"kind": "pieces", "color": "#f2c230"}, "bowl": "ceramic"},
+  "spi-04": {"heap": {"kind": "powder", "color": "#d2401e"}, "bowl": "ceramic"}
+ },
+ "mechanic": {
+  "levels": [
+   {"sideMs": 2600, "slots": 3},
+   {"sideMs": 2800},
+   {"sideMs": 3000},
+   {"sideMs": 3200}
+  ]
+ }
+}
