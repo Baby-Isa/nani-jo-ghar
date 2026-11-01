@@ -159,6 +159,8 @@ All the stages and nine heal games are built. Body words: only *kan* (ear) is re
 
 ## 2. What each could carry more of, cheaply
 
+**Zafar, 1 Nov:** each game's word-adds come in when that game is brought to chai's level, not as a separate pass.
+
 Group numbers are the 38 word groups. Each suggestion goes in one of three ways:
 - **level:** a new level of the same game
 - **reskin:** the same mechanic with new art and words

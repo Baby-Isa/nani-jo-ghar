@@ -22,20 +22,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
   - the pose register: `docs/design-language/art-plans/character-poses.md`
   - his mock-ups: `sources/art/mockups-2026-11-01/`
 
-**Next steps, in order (proposed Sprint 16; Zafar opens it):**
+**Sprint 16 is open** (`docs/sprints/S16-chai-final-prototypes.md`, Zafar, 1 Nov). **Next steps, in order:**
 1. **His play of the live chai and the 8 prototypes** → `/feedback`.
-2. **Chai's final pass**, so chai is finished. Open: CHAI-58 (the L4 boil window: widen to about 3 s?), CHAI-59, and his notes.
+2. **Chai's final pass**, so chai is finished. Open: CHAI-58 (L4's green to 2 s: Zafar, 1 Nov), CHAI-59, and his notes.
 3. **Refine the prototypes on his notes** (rapid, laptop only), then choose which become proper first.
-4. **Roll chai's shared rules out game by game:** Cook (pantry, daar, sekelo, maani, chaat, samosa), then the clinic, plus the cheap word-adds from `build/reports/research-existing-games-2026-10-31.md` §2-3 (still to agree with him).
+4. **Roll chai's shared rules out game by game:** Cook (pantry, daar, sekelo, maani, chaat, samosa), then the clinic, each game's word-adds from `build/reports/research-existing-games-2026-10-31.md` §2-3 taken in that game's pass (Zafar, 1 Nov).
 5. **Later:** the other designed games as prototypes; days stitched with conversations; art and recording runs in batches (the pose checklist, ART-33).
 
 Builders: rapid prototypes are "laptop only, hand back when it plays"; chai is full proof. Remove a builder's worktree as soon as it's merged (the disk filled once).
 
 **Open questions to Zafar:**
-1. Open Sprint 16 as above? (One goal: chai final, plus the prototypes refined.)
-2. CHAI-58: widen L4's green to about 3 s?
-3. Which existing Cook and clinic word-adds to take (the audit's list)?
-4. Mum's words (`docs/questions.md`, `build/reports/designs/zafar-answers-2026-11-01.md`).
+1. His play notes on the live chai and the 8 prototypes (Sprint 16 step 1).
+2. Mum's words (`docs/questions.md`, `build/reports/designs/zafar-answers-2026-11-01.md`).
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Take my feedback on the
