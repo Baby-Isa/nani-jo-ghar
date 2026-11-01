@@ -2545,10 +2545,13 @@
    "path": "fair",
    "level": [
     1,
-    2
+    2,
+    3,
+    4
    ],
    "sizes": [
-    "844x390"
+    "740x320",
+    "1280x665"
    ],
    "profile": "seen",
    "want": null,
@@ -2558,7 +2561,9 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "chai tray: hidden two sugars tick with the milk at L1; L2 only when the step closes"
+   "note": "1 Nov: every count ticks the moment the right number is reached (sugars and every count), at every level; an extra spoonful only wiggles",
+   "delay": 0,
+   "max": 14
   }
  ],
  "SH-39": [
@@ -5986,36 +5991,26 @@
   {
    "flow": "cook:chai-tray",
    "path": "fair",
-   "level": 1,
+   "level": [
+    2,
+    3,
+    4
+   ],
    "sizes": [
-    "1366x768"
+    "740x320",
+    "1280x665"
    ],
    "profile": "seen",
    "want": null,
    "at": "kind-timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:pan"
+    "zoom2:canvas:s14-pan",
+    "js:Cook.chaiPans"
    ],
    "expect": null,
-   "note": "chai liquid"
-  },
-  {
-   "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": 4,
-   "sizes": [
-    "1920x1080"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "kind-timing",
-   "after": null,
-   "capture": [
-    "zoom2:canvas:pan"
-   ],
-   "expect": null,
-   "note": "s14: the pan's painted states (black tea, milky chai), nothing drawn in code"
+   "note": "a spiced cup: the elchi pod and ginger pictures lie on the pan where each spoonful landed, still there after the milk, sinking at the boil; nothing drawn in code",
+   "delay": 300
   }
  ],
  "CK-07": [
@@ -20508,21 +20503,25 @@
   {
    "flow": "cook:chai-tray",
    "path": "speed1",
-   "level": 1,
+   "level": [
+    1,
+    4
+   ],
    "sizes": [
     "740x320",
-    "1920x1080"
+    "1280x665"
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.cv-bubble .wp-say",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "zoom2:.cv-bubble"
    ],
-   "expect": null,
-   "note": "the bubble's speaker 1.8 em of its words, its icon 66%, never under the 48 px tap",
-   "delay": 200
+   "expect": "count:.cv-bubble .wp-say=0",
+   "note": "1 Nov (decision 6): no speaker in a bubble that plays and goes (a person's order bubble, a word's bubble); the waiting question bubble (the kitchen conversation) keeps it",
+   "delay": 0,
+   "max": 4
   }
  ],
  "SH-149": [
@@ -21447,6 +21446,7 @@
    "sizes": [
     "740x320",
     "930x430",
+    "1280x665",
     "1920x1080"
    ],
    "profile": "seen",
@@ -21458,7 +21458,7 @@
     "contract:83"
    ],
    "expect": null,
-   "note": "three people: each big card under the left face, about the order row's item card size, whole on screen, never over a face",
+   "note": "three people: the card under the faces fills the room it has up to the full card, its insides scaling; the speaker inside the card (its ring too), never under 48 px",
    "delay": 0
   },
   {
@@ -22658,6 +22658,339 @@
     "cmd:node build/tools/review/lightfollow.mjs --level 4 --size 930x430 --speed 3 --secs 45"
    ],
    "note": "chai L4 as a new player who taps what is lit: the light layers per 100 ms through the cooker and the glass; fails on two lights together or a box left after its step"
+  }
+ ],
+ "SH-139": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:canvas:v2-tray",
+    "js:Cook.chaiFaces"
+   ],
+   "expect": null,
+   "note": "the faces beside the tray's glasses as big as the burner faces where the rim has room (js:Cook.chaiFaces: each face's drawn size and the tray's)",
+   "delay": 400
+  }
+ ],
+ "SH-180": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "strip:#side:30x40"
+   ],
+   "expect": null,
+   "note": "while the order is given: the said card folds smoothly as the next one opens and the panel glides to it (25 fps: 30 frames 40 ms apart); no frame where a card snaps",
+   "delay": 0,
+   "max": 3
+  }
+ ],
+ "SH-178": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a new player, every level: after the first two items the light is the next item's own card in the order row (whole, scrolled in if it sat at the row's cut-off edge), never the whole order card",
+   "delay": 300,
+   "max": 6
+  }
+ ],
+ "SH-182": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:#guide"
+   ],
+   "expect": null,
+   "note": "idle at a step: Nani's hint names the next undone item in the order card's own order (water, tea, the extra, milk, sugar), not chai's old internal order",
+   "delay": 900
+  }
+ ],
+ "CHAI-33": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-onboard.on .ob-box"
+   ],
+   "expect": null,
+   "note": "every lit shelf box clears its pill's foot by the same margin as at its sides",
+   "delay": 300,
+   "max": 4
+  }
+ ],
+ "CK-57": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "trace:#stage:2500",
+    "strip:body:20x125"
+   ],
+   "expect": null,
+   "note": "L3, no extension attached: as the second person starts to speak the kitchen (the stage) keeps its size and place",
+   "delay": 0,
+   "max": 2
+  }
+ ],
+ "CHAI-54": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "js:Cook.chaiPans"
+   ],
+   "expect": null,
+   "note": "L4: half ticks at the first pour, full at the second; a pour past what was asked doesn't land; no wait after a half glass",
+   "delay": 0,
+   "max": 16
+  }
+ ],
+ "CHAI-55": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "cmd:node -e \"const r=require('./data/stations/chai-tray.json');console.log(JSON.stringify(r.amounts||null))\""
+   ],
+   "expect": null,
+   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/stations/chai-tray.json amounts)",
+   "delay": 400
+  }
+ ],
+ "LNG-23": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "order-whole",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:request",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "L4: the amount said right after muke (Muke adh chai khape), built by the engine's frame from Mum's adh; full stays grey 'to record'",
+   "delay": 0
+  }
+ ],
+ "SH-181": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:knob-on",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a returning player: no first-time light (no dim, no lit box) when Nani says Chulo bar!; the light only as the level's stuck hint",
+   "delay": 600
+  }
+ ],
+ "CHAI-56": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a new player: the knob lit with Chulo bar! once (the first pot); never again for the second pot",
+   "delay": 300,
+   "max": 8
+  }
+ ],
+ "CHAI-57": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "strip:canvas:hob:10x200",
+    "js:Cook.chaiBoil"
+   ],
+   "expect": null,
+   "note": "the boil: a tap in the green turns it down; a tap before it shakes the knob (hever na) and the heat runs on; in the red, or no tap by its end, it boils over and that pot starts again (js:Cook.chaiBoil: every boil event, early, green, over)",
+   "delay": 0
+  }
+ ],
+ "ART-32": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:s14-pan"
+   ],
+   "expect": null,
+   "note": "waiting on art: the s14 pan boiling over (Zafar's next ChatGPT run); the v3 foam stands in",
+   "delay": 0
+  }
+ ],
+ "ART-31": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:tap",
+   "after": null,
+   "capture": [
+    "strip:canvas:hob:8x170",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the water goes in: no drawn blue splash (the s14 water picture fades in with the pan's small settle); the sound stays",
+   "delay": 0
   }
  ]
 }
