@@ -68,7 +68,6 @@ html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink
 .tell-pill.armed { background: #ffe6b8; box-shadow: 0 0 0 3px var(--gold); }
 .tell-mic { font-size: 22px; width: 100%; }
 .tell-note { width: 100%; text-align: center; font-size: 13px; color: var(--muted); }
-.tell-parent { width: 100%; font-size: 13px; }
 
 #lab summary { font-weight: 800; cursor: pointer; }
 /* the closed lab is gone, not merely unpainted: its controls take no space and no taps under the sidebar (MOD-04) */

@@ -91,7 +91,6 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
 .lab-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
 .lab-lbl { font-weight: 800; min-width: 52px; }
 .lab-check { display: flex; gap: 8px; align-items: center; font-weight: 800; margin: 8px 0; }
-.story-line { background: var(--paper); border-radius: 12px; padding: 8px 12px; }
 
 @media (max-height: 430px) {
   .find-foot { gap: 5px; }
@@ -166,7 +165,6 @@ body.find #mission .m-order { padding-bottom: 4px; }
   body.find .title-wrap { gap: 12px; align-items: start; }
   body.find .title-wrap img { width: clamp(88px, 14vw, 140px); }
   body.find .title-wrap .t-text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; align-items: start; }
-  body.find .title-wrap .t-about h1 { font-size: clamp(26px, 4vw, 34px); }
   body.find .title-wrap .t-go .btn-row { margin-top: 8px; }
   body.find .title-wrap .t-go > p { margin-top: 8px; }
 }

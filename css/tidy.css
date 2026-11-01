@@ -104,8 +104,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .paw { position: absolute; height: 120px; border-radius: 60px; background: rgba(90,70,50,0.35); border: 5px dashed rgba(90,70,50,0.6); display: flex; align-items: center; justify-content: center; font-size: 70px; cursor: pointer; z-index: 150; animation: pawIn .3s ease; }
 @keyframes pawIn { from { opacity: 0; transform: translateY(-40px); } }
 .ali { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: #fff center/cover no-repeat; border: 6px solid #fff; box-shadow: var(--card); transition: left .6s ease, top .6s ease; z-index: 45; pointer-events: none; }
-.card-pic { position: absolute; right: 24px; top: 24px; width: 420px; height: 236px; background: var(--paper); border-radius: 16px; box-shadow: var(--card); overflow: hidden; z-index: 30; pointer-events: none; border: 6px solid #fff; }
-.card-pic .mini { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; }
 
 /* ---------------- sidebar ---------------- */
 .card { background: var(--paper); border-radius: 14px; box-shadow: var(--card); padding: 8px; }
