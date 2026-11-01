@@ -177,6 +177,23 @@
  }
 }
 </script>
+<!-- SHARED-5 (sweep, 1 Nov): the core's modules asked for at once with js/day/day.js, not one round trip after another as day.js's
+     import() reaches each; the same files, evaluated in the same order. build/bump_version.py restamps them. -->
+<link rel="modulepreload" href="js/core/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/save.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/env.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/progress.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/wallet.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/score.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/voice.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/linearize.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/clips.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/settings.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/unlocks.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/context.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/log.js?v=20261030T203356Z">
 </head>
 <body class="day">
 <div id="day-app"></div>

@@ -643,10 +643,12 @@ async function boot() {
   const { createEngine, DATA_FILES } = await import("../core/lang/engine/index.js");
   const { loadJSON } = await import("../core/env.js");
   const load = (p) => loadJSON(p, { base: ROOT });
-  const [data, days, core] = await Promise.all([load("data/day.json"), load("data/days.json"), loadCore({ base: ROOT })]);
+  // SHARED-5 (sweep, 1 Nov): the language data (data/lang/lexicon.json, 449 KB) needs nothing from the core, so it goes out with
+  // the day's data and the core's, not after data/family-audio.json has landed
   const langData = {};
+  const [data, days, core] = await Promise.all([load("data/day.json"), load("data/days.json"), loadCore({ base: ROOT }), ...DATA_FILES.map(async (f) => (langData[f] = await load(`data/lang/${f}.json`)))]);
   // CK-48 (S13-V): the family's clip list is the core's (loaded once per page), never fetched a second time here
-  const [audio] = await Promise.all([Promise.resolve(core.data && core.data.familyAudio ? core.data.familyAudio : load("data/family-audio.json")).catch(() => []),...DATA_FILES.map(async (f) => (langData[f] = await load(`data/lang/${f}.json`)))]);
+  const audio = await Promise.resolve(core.data && core.data.familyAudio ? core.data.familyAudio : load("data/family-audio.json")).catch(() => []);
   const E = createEngine({ data: langData, audio: audio || [], voice: core.voice });
   const api = makeApi({ data, days, core, E });
   // the sound hook's seam: every line is said through window.Day.say (one line in the sandbox's sound log)
