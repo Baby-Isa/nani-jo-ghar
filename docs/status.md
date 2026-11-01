@@ -32,7 +32,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 Builders: rapid prototypes are "laptop only, hand back when it plays"; chai is full proof. Remove a builder's worktree as soon as it's merged (the disk filled once).
 
 **Open questions to Zafar:**
-1. His play notes on the live chai and the 8 prototypes (Sprint 16 step 1).
+1. The 10 decisions in `docs/feedback/chai-play-2026-11-01-night.md` (his chai notes, 1 Nov night). Still to come: his notes on the 8 prototypes.
 2. Mum's words (`docs/questions.md`, `build/reports/designs/zafar-answers-2026-11-01.md`).
 
 **Starting prompt for a new chat:**

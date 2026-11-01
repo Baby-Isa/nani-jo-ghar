@@ -23,6 +23,7 @@ None yet. Each launch is proposed to Zafar first, with its model, effort and cos
 - **Word-adds to the existing games** (`build/reports/research-existing-games-2026-10-31.md` §2-3): "we can add them when we get to each of those games to get them to chai's level". Not this sprint: each game's word-adds join that game's pass to chai's level.
 
 ## Small decisions
+- 1 Nov night: his chai notes (phone L2-L4, a small window L1) taken: `docs/feedback/chai-play-2026-11-01-night.md`, 16 points; 11 new rows, 4 reopened, 1 amended; its 10 decisions waiting on him.
 
 ## Outcome
 
