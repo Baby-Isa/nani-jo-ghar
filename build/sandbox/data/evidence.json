@@ -22850,7 +22850,7 @@
     "js:Cook.chaiAmounts"
    ],
    "expect": null,
-   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/stations/chai-tray.json amounts; js:Cook.chaiAmounts: the rule and each cup asked)",
+   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/cook.json chai cups.amount teach; js:Cook.chaiAmounts: each cup asked, in seat order, and the words stages)",
    "delay": 400
   }
  ],
