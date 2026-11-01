@@ -1,0 +1,151 @@
+/* The farm prototypes (proto-farm, 1 Nov 2026; js/farm/): the play area's scene only. The side panel is the kit's (Hannah Mami's
+   box and her order card on chai's s14 look, css/shared/order-card.css), never restyled here (non-negotiable 6). Colours are
+   the kit's tokens; motion is the kit's (var(--njg-glow-anim), var(--njg-hop-anim)); every placeholder shape is flat, to be
+   swapped for the art run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width:
+   its middle; --y of its height: its foot; --h of its height: its height), so one layout serves 740x320 to 1920x1080. */
+
+.farm { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.farm-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.farm-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.farm-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.farm-scene { position: absolute; inset: 0; overflow: hidden; }
+.farm-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.farm-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.farm-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.farm-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.farm-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.farm-thing.flip > img { transform: scaleX(-1); }
+.farm-thing.wide { width: calc(var(--w) * 100%); }
+.farm-thing.wide > img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+/* (a reset of no weight: a thing's own look wins) */
+:where(button.farm-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+/* (a tap area never under the kit's tap size, whatever the picture's size: the phone's small eggs and chicks) */
+:where(button.farm-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.farm-thing.sel { animation: var(--njg-glow-anim); }
+.farm-thing.lift { translate: 0 -14%; transition: translate .25s ease-out; }
+.farm-thing.farm-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.farm-thing.farm-shake { animation: farmWobble .5s ease-in-out 1; }
+@keyframes farmWobble { 20%, 60% { rotate: -7deg; } 40%, 80% { rotate: 7deg; } }
+.farm-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .farm-thing.farm-shake { animation: none; } }
+
+/* ---------- the backdrop ---------- */
+.farm-sky { position: absolute; inset: 0 0 auto 0; height: 62%; width: 100%; object-fit: cover; object-position: 50% 80%; }
+.farm-hills, .farm-fields { position: absolute; left: 0; width: 100%; object-fit: cover; object-position: 50% 0; }
+.farm-hills { top: 18%; height: 30%; }
+.farm-fields { top: 30%; height: 26%; }
+.farm-ground { position: absolute; left: 0; right: 0; top: 50%; bottom: 0; background: var(--njg-home-wall2); }
+.farm-ground.soil { background: var(--njg-stick); }
+.farm[data-game="home-dusk"] .farm-sky { filter: sepia(.9) saturate(2.4) hue-rotate(-28deg) brightness(.8); }
+.farm[data-game="home-dusk"] .farm-hills, .farm[data-game="home-dusk"] .farm-fields { filter: sepia(.4) brightness(.78) saturate(1.2); }
+.farm[data-game="home-dusk"] .farm-ground { filter: brightness(.82) sepia(.3); }
+.farm[data-game="home-dusk"].night .farm-sky, .farm[data-game="home-dusk"].night .farm-hills, .farm[data-game="home-dusk"].night .farm-fields, .farm[data-game="home-dusk"].night .farm-ground { filter: brightness(.45) saturate(.7); transition: filter 1.6s; }
+
+/* ---------- flat placeholder shapes (the art run's pictures replace them) ---------- */
+/* a feeding tray: a low wooden box */
+.farm-tray { aspect-ratio: 2.4; background: var(--njg-home-wood); border-radius: 8% / 20%; border: 0.35em solid var(--njg-home-wood2); box-sizing: border-box; }
+.farm-tray .farm-in { position: absolute; left: 8%; right: 8%; bottom: 30%; height: 70%; display: flex; justify-content: center; align-items: flex-end; gap: 2%; }
+.farm-tray .farm-in img { height: 100%; width: auto; max-width: 30%; object-fit: contain; }
+.farm-tray .farm-in .farm-water { width: 84%; height: 40%; border-radius: 40%; background: var(--njg-blue); }
+/* a food basket (the kit's wicker picture, back and front, the food between) */
+.farm-basket { aspect-ratio: 2.07; }
+.farm-basket > img { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: contain; }
+.farm-basket .farm-load { position: absolute; left: 14%; right: 14%; bottom: 38%; height: 95%; display: flex; justify-content: center; align-items: flex-end; }
+.farm-basket .farm-load img { height: 100%; width: auto; max-width: 48%; object-fit: contain; margin: 0 -6%; }
+/* a bucket of water */
+.farm-bucket { aspect-ratio: .95; }
+.farm-bucket::before { content: ""; position: absolute; inset: 12% 6% 0 6%; background: var(--njg-pewter); clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%); }
+.farm-bucket .farm-water-top { position: absolute; left: 6%; right: 6%; top: 4%; height: 18%; border-radius: 50%; background: var(--njg-blue); border: 0.2em solid var(--njg-grey); box-sizing: border-box; }
+.farm-bucket.over .farm-water-top { display: none; }
+/* an egg */
+.farm-egg { aspect-ratio: .78; border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%; background: var(--njg-cream); border: 1px solid var(--njg-cream-edge); box-sizing: border-box; }
+.farm-egg.brown { background: var(--njg-home-wall2); border-color: var(--njg-stick); }
+.farm-flyer.farm-egg { border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%; }
+/* the perch: a plank, and the nests of hay along it */
+.farm-plank { background: var(--njg-home-wood2); border-bottom: 0.3em solid var(--njg-ink-outline); }
+.farm-nest { aspect-ratio: 2.6; }
+.farm-nest > img { width: 100%; height: 100%; object-fit: fill; }
+/* the hen house's wall behind the perch */
+.farm-wall { position: absolute; inset: 0 0 32% 0; background: var(--njg-home-wood); }
+.farm-floor { position: absolute; inset: 68% 0 0 0; background: var(--njg-home-wall2); }
+/* a home: walls, a roof, a door; its window lights up as an animal goes in */
+.farm-home { aspect-ratio: var(--ar, 1.1); }
+.farm-home .farm-roof { position: absolute; left: -8%; right: -8%; top: 0; height: 38%; background: var(--njg-home-roof2); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.farm-home .farm-walls { position: absolute; left: 0; right: 0; top: 36%; bottom: 0; background: var(--njg-home-wood); }
+.farm-home .farm-door { position: absolute; left: 32%; right: 32%; bottom: 0; height: 52%; background: var(--njg-ink-outline); border-radius: 30% 30% 0 0 / 18% 18% 0 0; }
+.farm-home .farm-window { position: absolute; right: 8%; top: 46%; width: 16%; aspect-ratio: 1; background: var(--njg-ink-outline); transition: background .6s; }
+.farm-home.lit .farm-window { background: var(--njg-gold-hi); }
+.farm-home .farm-sign { position: absolute; left: 50%; top: 14%; translate: -50% 0; height: 20%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-cream); display: grid; place-items: center; overflow: hidden; }
+.farm-home .farm-sign img { height: 80%; width: 80%; object-fit: contain; }
+.farm-home .farm-count { position: absolute; left: 8%; top: 46%; display: flex; gap: 4%; }
+.farm-home.stilts .farm-walls { bottom: 26%; }
+.farm-home.stilts .farm-door { bottom: 26%; height: 40%; }
+.farm-home.stilts::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 0; height: 26%; border-left: 0.4em solid var(--njg-home-wood2); border-right: 0.4em solid var(--njg-home-wood2); }
+/* a wheelbarrow, upside down */
+.farm-barrow { aspect-ratio: 1.9; }
+.farm-barrow::before { content: ""; position: absolute; left: 4%; right: 18%; top: 0; bottom: 26%; background: var(--njg-rust); clip-path: polygon(0 100%, 100% 100%, 88% 0, 12% 0); }
+.farm-barrow::after { content: ""; position: absolute; left: auto; top: auto; right: 0; bottom: 0; width: 24%; height: auto; aspect-ratio: 1; translate: none; border-radius: 50%; background: var(--njg-ink-outline); border: 0.3em solid var(--njg-pewter); box-sizing: border-box; }
+.farm-barrow.up::before { top: 30%; bottom: 0; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); }
+/* the plots, the pots, the watering can */
+.farm-plot { aspect-ratio: 3.2; border-radius: 50%; background: var(--njg-home-wood2); }
+.farm-plot.planted { background: var(--njg-brown); }
+.farm-plot.wet { background: var(--njg-ink-outline); }
+.farm-pot { aspect-ratio: .95; }
+.farm-pot::before { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 46%; background: var(--njg-rust); clip-path: polygon(0 0, 100% 0, 84% 100%, 16% 100%); }
+.farm-pot .farm-sapling { position: absolute; left: 50%; bottom: 36%; height: 64%; aspect-ratio: 1; translate: -50% 0; }
+.farm-pot .farm-sapling > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.farm-pot .farm-sapling > img.farm-sapling-fruit { inset: auto; right: -6%; bottom: 0; width: 44%; height: 44%; }
+.farm-plant { aspect-ratio: .8; }
+.farm-plant .farm-stem { position: absolute; left: 47%; width: 6%; bottom: 0; height: 40%; background: var(--njg-leaf-deep); }
+.farm-plant .farm-leaves { position: absolute; left: 0; right: 0; bottom: 22%; height: 78%; width: 100%; object-fit: contain; transform-origin: 50% 100%; transition: transform var(--grow-ms, 1.2s) ease-out; }
+.farm-plant[data-stage="0"] .farm-leaves { transform: scale(.32); }
+.farm-plant[data-stage="1"] .farm-leaves { transform: scale(.6); }
+.farm-plant[data-stage="2"] .farm-leaves { transform: scale(1); }
+.farm-plant .farm-fruit { position: absolute; width: calc(var(--fs, .16) * 100%); aspect-ratio: 1; padding: 0; border: 0; background: none; cursor: pointer; translate: -50% -50%; opacity: 0; transition: opacity .4s; }
+.farm-plant .farm-fruit::after { content: ""; position: absolute; inset: -30%; }
+.farm-plant[data-stage="2"] .farm-fruit { opacity: 1; }
+.farm-plant .farm-fruit img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+/* (the green tomato and the red chilli: their one picture, recoloured, until the art run draws them) */
+.farm-tint-green { filter: hue-rotate(95deg) saturate(.75) brightness(.95); }
+.farm-tint-red { filter: hue-rotate(-95deg) saturate(1.2); }
+.farm-plant .farm-fruit.small { width: calc(var(--fs, .16) * 70%); }
+.farm-plant .farm-fruit.picked { visibility: hidden; }
+.farm-can { aspect-ratio: 1.3; }
+.farm-can::before { content: ""; position: absolute; left: 10%; right: 34%; top: 26%; bottom: 0; border-radius: 18% 18% 10% 10%; background: var(--njg-tick-green); }
+.farm-can::after { content: ""; position: absolute; left: auto; right: 0; top: 18%; translate: none; width: 42%; height: 12%; background: var(--njg-tick-green); rotate: -32deg; transform-origin: 0 50%; border-radius: 0.2em; }
+.farm-can.pour { rotate: -28deg; transition: rotate .3s; }
+.farm-drops { position: absolute; inset: 0; pointer-events: none; }
+.farm-drop { position: absolute; width: 0.5em; height: 0.8em; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-blue); }
+/* the eggs' basket on the floor */
+.farm-ebasket { aspect-ratio: 2.07; }
+.farm-ebasket > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.farm-ebasket .farm-load { position: absolute; left: 18%; right: 18%; bottom: 32%; height: 55%; display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; gap: 2%; }
+.farm-ebasket .farm-load .farm-egg { position: relative; height: 70%; }
+.farm-ebasket .farm-load .farm-in-basket { height: 70%; width: auto; max-width: 30%; object-fit: contain; }
+/* a hen on her nest: she sits; lifted, she flaps up and her eggs show in the hay */
+.farm-hen { z-index: 3; transition: translate .25s ease-out; }
+.farm-hen.up { translate: 0 -48%; }
+.farm-eggs { z-index: 2; display: flex; justify-content: center; align-items: flex-end; gap: 4%; }
+.farm-eggs > button.farm-egg { position: relative; height: 100%; padding: 0; cursor: pointer; }
+.farm-eggs > button.farm-egg::after { content: ""; position: absolute; inset: -40% -20%; }
+.farm-eggs > button.farm-egg.taken { visibility: hidden; }
+/* a hidden animal peeks out once found */
+.farm-hider { opacity: 0; pointer-events: none; transition: opacity .3s; }
+.farm-hider.found { opacity: 1; pointer-events: auto; }
+.farm-thing.behind > img { clip-path: inset(0 0 0 62%); }
+.farm-thing.behind.found > img { clip-path: none; }
+.farm-thing.home-gone { opacity: 0; transition: opacity .5s, left .9s ease-in-out, bottom .9s ease-in-out, height .9s; pointer-events: none; }
+.farm-thing.walk { transition: left .9s ease-in-out, bottom .9s ease-in-out, height .9s ease-in-out; }
+/* the order card's picture for an ask: who and what (drawn inside the card's own picture box) */
+.farm-pic { width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; gap: 4%; padding: 6% 4%; box-sizing: border-box; }
+.farm-pic img { height: 88%; width: auto; max-width: 62%; object-fit: contain; }
+.farm-pic img.farm-pic-what, .farm-pic .farm-pic-what { height: 46%; max-width: 40%; }
+.farm-pic .farm-pic-water { width: 38%; height: 18%; border-radius: 50%; background: var(--njg-blue); }
+.farm-pic .farm-egg { height: 40%; }
+.farm-flyer.farm-drop { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-blue); }
+/* the white hen: the hen picture, whitened (a placeholder until the art run draws her) */
+.farm-white > img, img.farm-white { filter: grayscale(1) brightness(2.3) contrast(.62); }
+.farm-pic img.farm-small { height: 60%; }
+.farm-plant.tall .farm-stem { display: none; }

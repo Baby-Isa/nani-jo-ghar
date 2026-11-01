@@ -6,7 +6,8 @@ import { readJSON, RANK } from "./lib.mjs";
 import { importLine, recordWord } from "./import_cook.mjs";
 
 const SOURCE = "parked modes";
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find"];
+// (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm"];
 
 const isWordObj = (o) => o && typeof o === "object" && !Array.isArray(o) && typeof o.english === "string" && !("hex" in o && false);
 

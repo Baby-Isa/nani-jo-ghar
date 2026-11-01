@@ -225,7 +225,8 @@ export function sortEntries(modes, arcs) {
             put("Clinic: a patient and a morning", card1(m, l));
           }
           else put("Clinic: the healing games", card1(m, l));
-        } else put(`${esc(m.id)}`, card1(m, l));
+        } else if (m.id === "farm") put("Farm prototypes (Hannah Mami, 1 Nov)", card1(m, l));
+        else put(`${esc(m.id)}`, card1(m, l));
       }
     }
     // story errands and free play of this mode: a test mode's go with its tests, a real mode's under "Story and free play"
