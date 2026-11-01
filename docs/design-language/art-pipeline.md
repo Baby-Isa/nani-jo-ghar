@@ -174,6 +174,8 @@ Every sheet gets renamed on arrival, kept in `sources/`:
 
 `vN` tracks which regeneration was kept, matching the "kept as vN" notes in the Chapter 1 Art Prompts doc. A background is never sliced — the whole sheet is the game-ready asset once renamed, and saved directly to `assets/backgrounds/`.
 
+**Only what the game names ships (sweep SHARED-19, 1 Nov):** `assets/` is the live site, so a ChatGPT upload folder or a PNG original whose `.webp` is the one the game names lives under `sources/art/` (excluded from the site by `_config.yml`), never under `assets/`. The three upload folders (`ChatGPT Sprint 8 Image Dump`, `ChatGPT Sprint 9 Test Dump`, `chat gpt dump for processing 2`) moved to `sources/art/`; the unreferenced background originals to `sources/art/backgrounds/` (the nine `-e-*-v1.png` that were byte-identical to `sources/art/chatgpt/` were dropped from `assets/`, the source stays). About 122 MB left the site (444 → 322 MB).
+
 ## Sliced, game-ready files
 
 **Items already in the content master** (fruit, vegetable, spice, and any future sheet once its words are added to the spreadsheet) are sliced one file per grid cell and named by the content master's `id` column, so the art and the word are joined by filename alone:
