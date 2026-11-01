@@ -2,7 +2,7 @@
 
 One draft per day, written overnight on `docs/game-design/days/TEMPLATE.md` (Part A's sections, Part B's bar) from the 18 game designs in `build/reports/designs/` and the agreed orders in `consistency-2026-11-01.md`. Where a design changed an order in the master map's old Part 7, the design wins. Nothing here is agreed; nothing is in `data/days.json`. The live day docs in `docs/game-design/days/` are untouched.
 
-Every day is the door, the bag and the ride (trips only), its games, then the evening book. A later visit is the same list, harder, with stages added.
+Every day is the door, the bag and the ride (trips only), its games, then the evening book. **The bag (Zafar, 1 Nov):** on the trips only: the farm, the pet hotel, the safari, the beach, town and shops, and the school day (the school bag). No bag on the kitchen, clinic, home or birthday days. A later visit is the same list, harder, with stages added.
 
 ## The days and their games, in order (visit 1)
 
@@ -16,7 +16,7 @@ Every day is the door, the bag and the ride (trips only), its games, then the ev
 | Town and shops | Nani | door, bag, bus, **the town map**, **the market** (fruit stall, a short lane, then the general store, then Big Ma's cloth, with pay), put the shopping away, book | about 8-9 min on play 1; 12-13 with all three market rounds | `town-and-shops.md` |
 | Sewing with Big Ma | Big Ma | door, **the cloth stall** (play 2; skipped if the shops bought it), the opening joke, **make**, then **mend** (play 2), **the fitting**, **going out** (play 3), book | about 2, 4 and 4.5 min over three plays | `sewing.md` |
 | The farm | Hannah Mami | door, bag, ride, meet, **feed**, **collect the eggs**, **the photo shoot**, **the corn stall**, **home at dusk**, home (egg for Ali), book. Visit 2: **pick**, animals home with positions, **plant and water** | about 13-16 min in full: **too long**; proposed 10 on play 1 | `farm.md` |
-| The pet hotel (was the adoption centre) | Hannah Mami | door, ride (the farm road), meet, **look after the animals**, **going home** (families come back for their pets), home (a brush for Simba), book | about 6-7 min | `adoption-centre.md` |
+| The pet hotel (was the adoption centre) | Hannah Mami | door, bag, ride (the farm road), meet, **look after the animals**, **going home** (families come back for their pets), home (a brush for Simba), book | about 6-7 min | `adoption-centre.md` |
 | The safari | Hannah Mami | door, bag, meet at the gate, **Snap from the jeep** (the ride), **who's hiding?**, book | about 8-9 min | `safari.md` |
 | The beach | Masi (a placeholder character) | door, bag, ride, meet, **shells**, **sandcastle**, Snap (after its rebuild), **three stalls with pay**, **picnic**, home, book. Visit 2, the boat: door, bag, **the ride on the water**, **litter fishing**, the coconut cart, book | about 15 min in full: **too long**; play 1 is 8 (the design's own grow-by-play) | `beach.md` |
 
@@ -55,3 +55,28 @@ The kitchen and the clinic are open from the start, as they are today. After the
 
 From `../zafar-answers-2026-11-01.md`. Names: the adoption centre is **the pet hotel** (the file keeps its name). Orders: the home day's three games share one two-storey doll's house; the market has a short lane between the stalls from visit 1 (the full lanes and the goat chase on visit 2); the sewing is make, then mend; the school and party orders stand as drafted. Every day: one count rule (a count ticks at the number and an extra tap doesn't land; the first answer, stillness, was reversed after the chai play), level up only on right-first-time rounds, one pay (count out and hand over, stacks for small prices), Snap as an instant camera with a tick on each right shot, voices settled before shipping, and Zafar's Kutchi words marked "to confirm". Each day draft ends with a line on what changed.
 - Counts tick at the number (his reversal after the chai play).
+
+
+## Sewing is short (Zafar, 1 Nov)
+
+At 2-4.5 minutes the sewing day is the shortest. If it stays short once built, a tidy-up of Big Ma's sewing room (pick it up and put it back, in her room: the thread, the scissors, the buttons) can close the day.
+
+## More places to visit: a quick review (1 Nov)
+
+Zafar asked whether there are more locations: three of the trips are about animals. Nothing below is designed or agreed. Each is a candidate, with the word groups it would add where the eleven days run short (the master map, Part 2: verbs, describing words, time, transport, sports, places, toys).
+
+| Place | What the child does there | What it adds | Bag |
+|---|---|---|---|
+| **The park and playground** (recommended first) | slide, swing, climb, kick and catch a ball, feed the ducks, fly a kite | the moving verbs (the biggest gap: run, jump, climb, throw, catch), up and down, on top and under, the weather and nature words | yes |
+| **The station or the airport** (recommended) | meet a relative off the train or plane: find them, whose suitcase, the clock says when it comes | transport, time (the clock again), greetings and family, owners | yes |
+| **The funfair or arcade** (Zafar's idea 69) | ride the rides, win prizes at stalls by number and colour | numbers, colours, sizes, toys, fast and slow | yes |
+| **A café with the family** | order for everyone, then for yourself; pay | speaking (ordering is the clearest speaking moment), food, hot and cold, please and thank you, money | no |
+| **The swimming pool** | pack the swimming bag, jump in, splash, float | sports, the body, wet and dry, cold and warm | yes |
+| **The hairdresser or barber** | the haircut asked: short or long, a little or a lot | the body (hair, face), describing words, a little and a lot | no |
+| **A camping night or a picnic in the countryside** | the tent, the night sky, the fire, the morning | weather and nature, night and morning, stars and moon | yes |
+
+**Recommended:** the park and playground (verbs are the biggest gap), and the station or airport (transport and time).
+
+Left out:
+- the library (its book words ride on the town map and the school)
+- religious places and weddings (celebrations are out)
