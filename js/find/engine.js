@@ -78,11 +78,13 @@
     // this mode's star icons and names
     Cook.data.star_sets = Cook.data.star_sets || {};
     Cook.data.star_sets.find = Object.assign({}, Cook.data.star_sets.find || {}, fd.star_set || {});
-    // scenes: the base scene file (background, shopkeeper, basket) plus Find's spots
-    for (const [id, s] of Object.entries(fd.scenes)) {
-      const base = s.base ? await fetch(Cook.v(s.base)).then((r) => r.json()) : {};
-      Find.scenes[id] = Object.assign({ id }, base, s);
-    }
+    // scenes: the base scene file (background, shopkeeper, basket) plus Find's spots. The base files are asked for
+    // at once (one round trip, not one per scene) and assigned in the data's order, so Find.scenes keeps its key order.
+    const entries = Object.entries(fd.scenes);
+    const bases = await Promise.all(entries.map(([, s]) => (s.base ? fetch(Cook.v(s.base)).then((r) => r.json()) : Promise.resolve({}))));
+    entries.forEach(([id, s], i) => {
+      Find.scenes[id] = Object.assign({ id }, bases[i], s);
+    });
     return fd;
   };
 

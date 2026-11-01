@@ -12,7 +12,7 @@
  * and word stages come from the lab's selector. The shell's one save
  * (js/progress.js via js/shell.js) takes over in phase 3.
  *
- * window.__who is the test hook (build/test_who.py): expectation() says what
+ * window.__who is the test hook (build/archive/test_who.py; live smoke flow: build/sandbox/flows/modes.mjs): expectation() says what
  * the game wants next, point(i) where suspect i is on screen.
  */
 (function (global) {

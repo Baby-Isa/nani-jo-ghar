@@ -5,7 +5,7 @@
  * Ali's camera. It sees what the Node bot sees: the orchard (a picture), the
  * card's row shapes, its own prints, Ali's picture cards; only the oracle is
  * given the rows. It drives the viewfinder's own API (setView, shutter) and
- * clicks the real hand-in prints and Ali's pills; build/test_snap.py's
+ * clicks the real hand-in prints and Ali's pills; build/archive/test_snap.py's
  * pointer-level run is separate (real taps from __snap.expectation()).
  *
  * Speaking: the lab sets the listen() stub (oracle: hears the card; the
