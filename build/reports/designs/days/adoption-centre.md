@@ -41,7 +41,7 @@ The feeling: gentle and caring. The end shows the pet at home with its family.
 | 6 | Home | | | | | | the brush for Simba |
 | 7 | Evening book | book (built) | | all | "who did we wash?" | L | the pet at home |
 
-No bag on visit 1 (`adoption-centre.md` decision 4): it is half a day, close by.
+**A bag on every visit (Zafar, 1 Nov: the trips carry a bag):** the pets' treats and a brush. This overrides `adoption-centre.md` decision 4.
 
 ## 4. Conversation moments
 

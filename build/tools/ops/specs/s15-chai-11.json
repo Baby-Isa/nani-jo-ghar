@@ -1,0 +1,106 @@
+{
+ "name": "s15-chai-11: chai, Zafar's 1 Nov play (the rows from docs/feedback/chai-play-2026-11-01.md, his seven decisions as recommended)",
+ "model": "Opus",
+ "effort": "high",
+ "why": "timing, onboarding and card-layout fixes across chai's four levels and the shared kit need judgement and careful proof",
+ "cost": "about $25-40",
+ "stop": "1 Nov 2026, 23:00 UK",
+ "branch": "claude/nice-lovelace-0vfjcj",
+ "rules": [
+  "3",
+  "4",
+  "6",
+  "7"
+ ],
+ "read": [
+  "docs/feedback/chai-play-2026-11-01.md (every point: his words, the cause in code, the fix, the decisions; he said yes to all seven recommendations on 1 Nov)",
+  "docs/feedback/chai-play-2026-10-30-evening.md and docs/feedback/cook-s14-play-2026-10-30.md (the rounds before)",
+  "docs/game-design/easy-to-play.md rule 4 (counts tick at the number, half at half: Zafar, 1 Nov)",
+  "build/reports/designs/lessons-checklist-2026-11-01.md"
+ ],
+ "owns": [
+  "js/cook/** (chai-tray.js, ui.js, flow.js, coach.js and the rest as the rows need)",
+  "js/shared/** where a row is shared (the bubble's speaker SH-153, onboarding first-time-only SH-181, the hint's order SH-182, the order card SH-178 and SH-180)",
+  "css/** for Cook and the shared kit",
+  "data/cook.json, data/stations/*, data/rules.json (the timings stay in data)",
+  "assets/cook/** (placing existing pictures only; no new art)",
+  "build/sandbox/data/evidence.json entries for these rows",
+  "build/reports/s15-chai-11.md"
+ ],
+ "readOnly": [
+  "js/clinic/** (the clinic takes chai's shared fixes later, once Zafar passes chai)",
+  "docs/** except the report",
+  "data/lang/** (LNG-23's frame order through the engine only; never hand-written Kutchi)"
+ ],
+ "stubs": "none; a missing word stays grey 'to record'",
+ "tasks": [
+  {
+   "do": "SH-153: no speaker button in any speech bubble, in every game, except a bubble that stays up waiting for the child's answer (decision 6).",
+   "accept": "contract run at the four sizes: no speaker in a bubble that plays and goes; the waiting question bubble keeps it"
+  },
+  {
+   "do": "SH-139: the face icons beside the chai trays bigger at every size.",
+   "accept": "faces measured at 1280x665 and 740x320 against the tray, shots before and after"
+  },
+  {
+   "do": "SH-180: at L2 the first order card folds smoothly and the next opens (no snap).",
+   "accept": "a 25 fps film of the change at L2 and L3"
+  },
+  {
+   "do": "SH-178: at L2 (and every level) the onboarding lights only the next item's card in the row, as at L1, including when that card sits at the row's cut-off edge (scroll it in).",
+   "accept": "L1-L4 as a new player: only the next item card lit after the first two items"
+  },
+  {
+   "do": "SH-182 and the hint: the stuck hint names the next item in the order card's order; chai's internal order matches the card's.",
+   "accept": "idle 13 s at each step of an L3 and L4 order: the hint names the card's next item"
+  },
+  {
+   "do": "CHAI-33: the lit box clears the pill with even spacing, every item, every level.",
+   "accept": "shots of every lit item at 1280x665 and 740x320"
+  },
+  {
+   "do": "CK-57: replay L3 with no browser extension; if the kitchen still moves when the second person orders, fix it.",
+   "accept": "a film of the L3 order change: the kitchen does not move"
+  },
+  {
+   "do": "SH-38 in chai: every count ticks the moment the right number is reached and an extra tap doesn't land; amounts too.",
+   "accept": "L1-L4: sugars and every count tick at the number"
+  },
+  {
+   "do": "CHAI-54 and CHAI-55: half ticks when half is poured; while the words are new the first person asks half, the second full (then random); a stuck child gets the second pour shown as a hint after 13 s.",
+   "accept": "L4 films: half ticks at half, full at full; the order rule in the data"
+  },
+  {
+   "do": "LNG-23: the amount said right after 'muke' (Muke adh chai khape) through the engine's frame, using Mum's recorded adh; full stays grey 'to record' until Mum.",
+   "accept": "the card's line and the voice plan show the amount after muke"
+  },
+  {
+   "do": "SH-181 and CHAI-56: onboarding only for a first-ever action and only for a new player (mark chai's coach as seen); for a returning player Nani's line only, the light coming with the 7/9/11/13 s idle hints; the chulo light never repeats on the second pot.",
+   "accept": "L1-L4 as new and as returning player: the chulo light once for new, never unprompted for returning"
+  },
+  {
+   "do": "CHAI-57: the boil: a tap before the green shakes the knob and Nani says hever na, heat goes on, no mark; a tap in the green turns it down as now; a tap in the red or no tap by its end boils over, that pan empties and that pot starts again (the existing foam picture stands in; ART-32 brings the real one).",
+   "accept": "films of early, green, red and no-tap at L1 and L3"
+  },
+  {
+   "do": "CHAI-43: the L4 card under the faces fills the space it has up to the full card, its insides scaling; the speaker shrinks only when the card can't hold it, never under 48 px; its ring measured inside the card.",
+   "accept": "L4 at the four sizes and 915x275: the speaker inside the card"
+  },
+  {
+   "do": "CK-06: the spices stay visible in the pan as pictures (the existing elchi pod and ginger pictures laid on the pan), after the milk too, sinking at the boil; no code-drawn pods.",
+   "accept": "shots of a spiced cup before and after milk at L2-L4"
+  },
+  {
+   "do": "ART-31: the drawn blue splash goes; splash and pop are left to the next art run; the sounds stay.",
+   "accept": "a film of an add with no blue splash, the sound present"
+  }
+ ],
+ "flows": [
+  "cook:chai-tray"
+ ],
+ "shared": true,
+ "port": 8821,
+ "report": "s15-chai-11",
+ "publish": false,
+ "specsByBuilder": true
+}
