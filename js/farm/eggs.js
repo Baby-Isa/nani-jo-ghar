@@ -58,7 +58,6 @@ export default async function eggs(F) {
   F.scene.insertAdjacentHTML("beforeend", '<div class="farm-wall"></div><div class="farm-floor"></div>');
   const plank = F.put("farm-plank wide", { x: 0.5, y: 0.6, h: 0.05, w: 0.94, z: 2 });
   plank.setAttribute("aria-hidden", "true");
-  F.put("", { x: 0.12, y: 1.02, h: 0.18, img: SCENERY.hay, z: 1 });
   const xs = hens.map((_, i) => (nHens === 1 ? 0.5 : 0.2 + (0.6 * i) / (nHens - 1)));
   const henEls = [];
   const eggEls = [];

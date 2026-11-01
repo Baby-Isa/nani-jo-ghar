@@ -56,7 +56,7 @@ export default async function growPick(F) {
   });
   const can = F.put("farm-can", { x: 0.91, y: 0.97, h: 0.15, tag: "button", z: 20 });
   can.setAttribute("aria-label", "watering can");
-  const basket = F.put("farm-ebasket", { x: 0.09, y: 0.99, h: 0.14, z: 20 });
+  const basket = F.put("farm-ebasket", { x: 0.13, y: 0.99, h: 0.14, z: 20 });
   basket.innerHTML = `<img src="${stamp(SCENERY.basketBack)}" alt=""><div class="farm-load"></div><img src="${stamp(SCENERY.basketFront)}" alt="">`;
   const load = basket.querySelector(".farm-load");
 
@@ -117,7 +117,7 @@ export default async function growPick(F) {
   function growPlant(plot) {
     const kind = plot.kind;
     const tall = kind === "mango";
-    const el = F.put("farm-plant", { x: plot.x, y: 0.69, h: tall ? 0.44 : 0.34, z: 10, html: `<div class="farm-stem"></div><img class="farm-leaves" src="${stamp(tall ? SCENERY.tree : SCENERY.bush)}" alt="">` });
+    const el = F.put(`farm-plant${tall ? " tall" : ""}`, { x: plot.x, y: 0.69, h: tall ? 0.44 : 0.34, z: 10, html: `<div class="farm-stem"></div><img class="farm-leaves" src="${stamp(tall ? SCENERY.tree : SCENERY.bush)}" alt="">` });
     el.dataset.stage = "0";
     el.dataset.kind = kind;
     return { el, kind, fruit: [] };

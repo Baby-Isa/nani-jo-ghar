@@ -86,7 +86,7 @@
 /* a wheelbarrow, upside down */
 .farm-barrow { aspect-ratio: 1.9; }
 .farm-barrow::before { content: ""; position: absolute; left: 4%; right: 18%; top: 0; bottom: 26%; background: var(--njg-rust); clip-path: polygon(0 100%, 100% 100%, 88% 0, 12% 0); }
-.farm-barrow::after { content: ""; position: absolute; right: 0; bottom: 0; width: 24%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-ink-outline); border: 0.3em solid var(--njg-pewter); box-sizing: border-box; }
+.farm-barrow::after { content: ""; position: absolute; left: auto; top: auto; right: 0; bottom: 0; width: 24%; height: auto; aspect-ratio: 1; translate: none; border-radius: 50%; background: var(--njg-ink-outline); border: 0.3em solid var(--njg-pewter); box-sizing: border-box; }
 .farm-barrow.up::before { top: 30%; bottom: 0; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); }
 /* the plots, the pots, the watering can */
 .farm-plot { aspect-ratio: 3.2; border-radius: 50%; background: var(--njg-home-wood2); }
@@ -108,13 +108,13 @@
 .farm-plant[data-stage="2"] .farm-fruit { opacity: 1; }
 .farm-plant .farm-fruit img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 /* (the green tomato and the red chilli: their one picture, recoloured, until the art run draws them) */
-.farm-tint-green { filter: hue-rotate(75deg) saturate(.8); }
+.farm-tint-green { filter: hue-rotate(95deg) saturate(.75) brightness(.95); }
 .farm-tint-red { filter: hue-rotate(-95deg) saturate(1.2); }
 .farm-plant .farm-fruit.small { width: calc(var(--fs, .16) * 70%); }
 .farm-plant .farm-fruit.picked { visibility: hidden; }
 .farm-can { aspect-ratio: 1.3; }
 .farm-can::before { content: ""; position: absolute; left: 10%; right: 34%; top: 26%; bottom: 0; border-radius: 18% 18% 10% 10%; background: var(--njg-tick-green); }
-.farm-can::after { content: ""; position: absolute; right: 0; top: 18%; width: 42%; height: 12%; background: var(--njg-tick-green); rotate: -32deg; transform-origin: 0 50%; border-radius: 0.2em; }
+.farm-can::after { content: ""; position: absolute; left: auto; right: 0; top: 18%; translate: none; width: 42%; height: 12%; background: var(--njg-tick-green); rotate: -32deg; transform-origin: 0 50%; border-radius: 0.2em; }
 .farm-can.pour { rotate: -28deg; transition: rotate .3s; }
 .farm-drops { position: absolute; inset: 0; pointer-events: none; }
 .farm-drop { position: absolute; width: 0.5em; height: 0.8em; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-blue); }
@@ -148,3 +148,4 @@
 /* the white hen: the hen picture, whitened (a placeholder until the art run draws her) */
 .farm-white > img, img.farm-white { filter: grayscale(1) brightness(2.3) contrast(.62); }
 .farm-pic img.farm-small { height: 60%; }
+.farm-plant.tall .farm-stem { display: none; }
