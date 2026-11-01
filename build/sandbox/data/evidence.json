@@ -22847,10 +22847,10 @@
    "after": null,
    "capture": [
     "crop:#mission",
-    "cmd:node -e \"const r=require('./data/stations/chai-tray.json');console.log(JSON.stringify(r.amounts||null))\""
+    "js:Cook.chaiAmounts"
    ],
    "expect": null,
-   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/stations/chai-tray.json amounts)",
+   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/stations/chai-tray.json amounts; js:Cook.chaiAmounts: the rule and each cup asked)",
    "delay": 400
   }
  ],
