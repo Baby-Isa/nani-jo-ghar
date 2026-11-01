@@ -1,10 +1,10 @@
 # A day at home (draft, 1 Nov 2026)
 
-Drafted overnight from the game designs; nothing here is agreed. Built on `docs/game-design/days/TEMPLATE.md` Part A, checked against Part B. It is the `home.md` the hide-and-seek and clean-up designs said was missing.
+Drafted overnight on TEMPLATE Part A, checked against Part B; nothing here is agreed. It is the `home.md` the designs said was missing.
 
 ## 0. One line
 
-Nani's house, the day's own weather (the sky outside the bathroom window matches the door), host Nani with Simba and Zazu, first visit. Status: all three games designed, none built; two need a split build (1a, then 1b). Sources, newest first: `consistency-2026-11-01.md` rows 26-27, `hide-and-seek.md`, `pick-it-up-put-it-back.md`, `clean-up-day.md` (each §0, §2), master map Part 7.
+Nani's house, the day's own weather (the sky outside the bathroom window matches the door), host Nani with Simba and Zazu, first visit. Status: all three games designed, none built; two need a split build (1a, then 1b). Sources, newest first: `consistency-2026-11-01.md` rows 26-27, `hide-and-seek.md`, `pick-it-up-put-it-back.md`, `clean-up-day.md`.
 
 ## 1. The language goal
 
@@ -68,11 +68,11 @@ The day **fails Part B rule 4 in 1a**: every speaking moment is in 1b.
 | O4 owners, where | 2, 3, 6 | 6+ | 0 | the party (owners) |
 | O5 frames | 2, 3, 4 | 9+ | 0 | |
 
-**What the check shows:** positions and places are strong, heard in two or three stages each. The clean-up's verbs are taught in one game only, plus the last beat. They pass Part B's two-stage rule only because hide and seek's "close the wardrobe" ends every round. Nothing teaches until Mum's sheets are in: hide and seek about 22 clips, the clean-up about 15 for L1.
+**What the check shows:** places and positions are strong. The clean-up's verbs pass the two-stage rule only through the last beat and hide and seek's "close the wardrobe". Nothing teaches until Mum's sheets are in: hide and seek about 22 clips, the clean-up about 15 for L1.
 
 ## 7. People and what comes home
 
-Nani (asks every line in 1a), Nana (the errands; his voice in 1b), Simba and Zazu, Ali from 1b (his ball, the thing for Ali, which he bounces at the end). Nothing travels; carries out: the house's rooms reused by later home visits, and the adoption centre's little brush "for Simba" comes back here.
+Nani (every line in 1a), Nana (his voice in 1b), Simba and Zazu, Ali from 1b (his ball is the thing for Ali). The adoption centre's brush "for Simba" comes back here on a later visit.
 
 ## 8. Words
 
@@ -80,11 +80,11 @@ Each game's word table and Mum list: `hide-and-seek.md` §1 ("What Mum records f
 
 ## 9. Art
 
-The bedroom first (hide and seek), the doll's-house overview locked to it, then the bathroom set (`hide-and-seek.md` §7, `pick-it-up-put-it-back.md` §7, `clean-up-day.md` §7). The clean-up's bathroom alone is about 38 frames.
+The bedroom first, the doll's house locked to it, then the bathroom (about 38 frames): each design's §7.
 
 ## 10. Later visits
 
-Hide and seek: the sitting room and kitchen, your turn to hide, bedtime with the torch, the whole house. Pick it up: the shoe rack, the drawers, the wardrobe. The clean-up: one room a visit (play room, bedroom, kitchen, the whole house). Each design's §5.
+A new room a visit, your turn to hide, bedtime with the torch, the shoe rack and drawers, the whole house (each design's §5).
 
 ## 11. Decisions made overnight, and open questions
 

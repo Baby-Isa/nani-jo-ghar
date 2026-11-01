@@ -1,10 +1,10 @@
 # Someone's birthday (draft, 1 Nov 2026)
 
-Drafted overnight from the game designs; nothing here is agreed. Built on `docs/game-design/days/TEMPLATE.md` Part A, checked against Part B.
+Drafted overnight on TEMPLATE Part A, checked against Part B; nothing here is agreed.
 
 ## 0. One line
 
-Zara's birthday at her family's house, the day's weather, host Zara's family (a new family, a year older each visit), first visit (Zara turns 4). Status: three designs, none built; not in `data/days.json`. Sources, newest first: `consistency-2026-11-01.md` rows 1-11, `party-gifts.md`, `party-guests.md`, `do-it-engine.md` (each §0, §2). The order is party-gifts' (the master map's Part 7 order is replaced).
+Zara's birthday at her family's house, the day's weather, host Zara's family (a new family, a year older each visit), first visit (Zara turns 4). Status: three designs, none built; not in `data/days.json`. Sources, newest first: `consistency-2026-11-01.md` rows 1-11, `party-gifts.md`, `party-guests.md`, `do-it-engine.md`. The order is party-gifts'.
 
 ## 1. The language goal
 
@@ -18,13 +18,13 @@ Zara's birthday at her family's house, the day's weather, host Zara's family (a 
 | O6 | Frames heard | "give the balloon to {person}"; "{person}'s {kin}"; "I'm thirsty"; "{verb}!" | to record | the give frame ✓ |
 | O7 | Frames said | hello back; how are you? (the right form); I'm fine; you're welcome; on visit 2, "whose is it?" and "You be Nani" | | all four ✓ |
 
-New words: about 12 at L1 across the stages; about 40 over the ladder (the cake and presents about 20-24 of Mum's clips; the guests' and statues' about 20 more). Coming back: about 15, many ✓. Speaking turns: 2-4 on visit 1 (the greeting exchange).
+New words: about 12 at L1; about 40 over the ladder (over the 15-25 bar; they arrive level by level). Coming back: about 15, many ✓. Speaking turns: 2-4 on visit 1.
 
 ## 2. The story
 
 1. **The reason:** Nani at the door: "today is Zara's birthday; guests are coming". The present the child chose at the shops is wrapped.
 2. **Getting there:** the walk or ride along the town road.
-3. **Helping:** meet the family by passing the balloon; look after the guests who are thirsty or tired; dance in musical statues; give out the cake; hand out the presents.
+3. **Helping:** meet the family; look after thirsty or tired guests; musical statues; the cake; the presents.
 4. **The surprise:** Zara opens the child's present last; the paper crown from statues sits on the child's head in the photo.
 5. **Home:** the party-bag toy goes home for Ali, who opens the door in the kurta the child chose at Big Ma's.
 
@@ -42,7 +42,7 @@ The feeling: belonging. The end shows the family photo with the child in the cro
 | 6 | The cake: candles, the cloth, the slices | give-to + Tidy's place and check | 1 | O2, O5, O6 | who gets which cup and slice (owners) | L | blowing the candles |
 | 7 | Snap the people (after Snap's rebuild) | Snap | 1 | O1 | the person named | L | the family photo |
 | 8 | The party presents, as everyone leaves | give-to | 1 | O2 | whose present (the owner word) | L | unwrapping |
-| 9 | Home | | | | | | Ali in his new kurta |
+| 9 | Home | | | | | | Ali in his kurta |
 | 10 | Evening book | book (built) | | all | "who's this?" over the photo; "who was thirsty?" | L | |
 
 Give-to stages (4, 6, 8) are never back to back.
@@ -58,7 +58,7 @@ Give-to stages (4, 6, 8) are never back to back.
 
 ## 5. Fun and novelty
 
-- **The new thing:** a new family to meet, a year older each visit; the only day where the people are the lesson.
+- **The new thing:** a new family, a year older each visit: the people are the lesson.
 - **The joke:** everyone freezes in whatever pose the child picks, even the wrong one.
 - **The collectible:** the family photo and the crown.
 - **Rhythm:** calm, busy, loud, calm, calm, reveal. **Too long for one sitting:** stages 3-8 are about 1 + 1 + 2 + 3.5 + 1.5 + 2 minutes, about 13-15 minutes with the door, ride and book.
@@ -77,7 +77,7 @@ Give-to stages (4, 6, 8) are never back to back.
 
 ## 7. People and what comes home
 
-One party cast for all three designs (party-gifts §0): Zara (4), her baby brother, her mum (plum), her dada and dadima, her masi (red), Yusuf (6) and Sana (5); our Nani and Nana. Names are placeholders. Ali stays home and gets the party-bag toy. Comes in: the shops' gift, the kitchen's cake (if baked the day before), the sewing's kurta for Ali.
+One cast (party-gifts §0): Zara (4), her baby brother, mum, dada, dadima, masi, Yusuf (6), Sana (5); our Nani and Nana. Names are placeholders. Ali stays home and gets the party-bag toy. Comes in: the shops' gift, the kitchen's cake, the sewing's kurta for Ali.
 
 ## 8. Words
 
@@ -85,11 +85,11 @@ One party cast for all three designs (party-gifts §0): Zara (4), her baby broth
 
 ## 9. Art
 
-One run shared by the gifts and the guests (six new sheets, one room), plus the two dancers' pose sheets: `party-gifts.md` §7, `party-guests.md` §7, `do-it-engine.md` §7.
+One run for the cast and room, plus the dancers' poses: `party-gifts.md` §7, `party-guests.md` §7, `do-it-engine.md` §7.
 
 ## 10. Later visits
 
-Zara turns 5: dada and dadima join the balloon row; who ate the cake? (after Who did it?'s rebuild); dadima dances, called in the elder form; the elder "yours". Zara turns 6: candles to 10, the past tense in the book. Parked games: ideas rows 84-94.
+Zara turns 5: dada and dadima join the balloon row; who ate the cake?; dadima dances, called in the elder form. Zara turns 6: candles to 10, the past tense. Parked: ideas rows 84-94.
 
 ## 11. Decisions made overnight, and open questions
 

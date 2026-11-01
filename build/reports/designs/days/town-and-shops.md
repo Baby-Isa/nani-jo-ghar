@@ -1,10 +1,10 @@
 # Town and shops (draft, 1 Nov 2026)
 
-Drafted overnight from the game designs; nothing here is agreed. Built on `docs/game-design/days/TEMPLATE.md` Part A, checked against Part B. It replaces `docs/game-design/days/shops.md`'s list once Zafar agrees (that file stays untouched).
+Drafted overnight on TEMPLATE Part A, checked against Part B; nothing here is agreed. `docs/game-design/days/shops.md` stays untouched.
 
 ## 0. One line
 
-The town and its market, a **sunny** day (overriding the shops' rainy door of 19 Oct: `town-map.md` decision 2), host Nani, first visit. Status: both games designed, none built; recording is the gate (pay alone needs about 110 clips over its ladder, most of them numbers). Sources, newest first: `consistency-2026-11-01.md` rows 19-21, `town-map.md`, `shops.md` (each §0, §2), `days/shops.md` (Zafar's 19-21 Oct design), master map Part 7.
+The town and its market, a **sunny** day (overriding the shops' rainy door of 19 Oct: `town-map.md` decision 2), host Nani, first visit. Status: both games designed, none built; recording is the gate (pay alone needs about 110 clips over its ladder, most of them numbers). Sources, newest first: `consistency-2026-11-01.md` rows 19-21, `town-map.md`, `shops.md`, `days/shops.md` (Zafar's 19-21 Oct design).
 
 ## 1. The language goal
 
@@ -74,7 +74,7 @@ The market grows by round (shops §2): round 1 the fruit stall, round 2 the gene
 
 ## 7. People and what comes home
 
-Nani, Nana, Big Ma, Ma, Masi (the town's faces; kin word open), two sellers. Comes home: bread and onions to the pantry, the book for Ali, the gift fruit for Ali, the red cloth to Big Ma's room (seeds `sewing.md`), the birthday present (seeds `birthday.md`). Comes in: the clinic's "medicine", Cook's onions and lemons.
+Nani, Nana, Big Ma, Ma, Masi, two sellers. Comes home: bread and onions to the pantry; the book and the gift fruit for Ali; the red cloth to Big Ma's room (seeds `sewing.md`); the birthday present (seeds `birthday.md`). Comes in: the clinic's medicine, Cook's onions and lemons.
 
 ## 8. Words
 
@@ -82,11 +82,11 @@ Nani, Nana, Big Ma, Ma, Masi (the town's faces; kin word open), two sellers. Com
 
 ## 9. Art
 
-Town run 1 (about 31 pieces) and the market's run (two scenes, two sellers, about 25 things): `town-map.md` §7, `shops.md` §7.
+`town-map.md` §7 (run 1, about 31 pieces), `shops.md` §7 (two scenes, two sellers).
 
 ## 10. Later visits
 
-The lanes and the goat chase (Zafar's 19 Oct design; visit 2 recommended); the cloth seller's own stall; the chai stall; first-then errands, directions with identical houses; every number to 100 everywhere (`town-map.md` §5, `shops.md` §5).
+The lanes and the goat chase; the cloth seller's stall; the chai stall; first-then errands; directions; numbers to 100 everywhere (each design's §5).
 
 ## 11. Decisions made overnight, and open questions
 

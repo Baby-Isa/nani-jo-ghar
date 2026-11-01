@@ -349,30 +349,21 @@ His process: agree, research, concept designs, ChatGPT mock-ups, a lab prototype
 - **Look after the guests:** a good way to ask different people how they are. They answer, and the child fixes it.
 - **He asks:** some games float without a day; the games must be really well designed, challenged and tweaked, on best practice, the best of our current games and the lessons from making them. Are we ready for the design phase?
 
-## Part 7: which day each game lives in (proposed, 1 Nov)
+## Part 7: which day each game lives in (corrected, 1 Nov)
 
-Every day is the door, the bag (trips), the ride (trips), its games, then the evening book. A later visit is the same day, harder, with new items.
+Replaced by the day drafts: **`build/reports/designs/days/README.md`** (one draft per day on the day template, the visit-1 lengths, the word groups each day owns, and a proposed unlock order). The designs' orders win over the list first proposed here; the corrected table:
 
 | Day | Host | Its games, in order | Later visits |
 |---|---|---|---|
-| Kitchen | Nani | the Cook stations; eggs at breakfast; baking | more dishes |
-| Clinic | the doctor | waiting room, diagnosis, heal games, pharmacy, send-off | more parts and patients |
-| A day at home | Nani, Simba, Zazu | hide and seek, pick it up and put it back, clean-up day | more rooms, drawers, wardrobe |
-| Someone's birthday | a new family | introductions, look after the guests, gifts and cake, musical statues, Snap the people | a year older: who ate the cake?, more guests |
-| School day | the teacher | the wake-up clock (the family wakes for school), getting ready, pack the school bag, the bus, the blackboard | harder board, more times |
-| Town and shops | Nani | the town map (drop each person where they need to go), then the shops and pay | more places; numbers to 100; "I want a book" |
-| Sewing with Big Ma | Big Ma | buy cloth (carried from the shops), make, mend, try on | more garments |
-| The farm | Hannah Mami | feed, eggs, Snap, the corn stall, animals home; the orchard on a later visit | positions, the orchard, the chicks |
-| The adoption centre | Hannah Mami (next to the farm) | look after the animals | more animals, more cares |
-| The safari | Hannah Mami | Snap from the jeep; **one more game to design** | |
-| The beach | Masi | shells, the sandcastle, the stall and pay, the picnic | **the boat day as the second visit:** the ride on the water, litter fishing |
+| Kitchen | Nani | eggs at breakfast, baking (a lunch station from visit 2) | the speaking turn, more bakes, the party cake |
+| Clinic | the doctor | waiting room, the body chart, pharmacy, heal games (cut, hand splinter, nose, drinks join), send-off | more parts; the teddy (on his yes) |
+| A day at home | Nani, Simba, Zazu | hide and seek, pick it up and put it back, the clean-up | a new room each visit; the whole house |
+| Someone's birthday | Zara's family | introductions, look after the guests, musical statues, the cake, Snap the people, the presents | a year older: who ate the cake?, dada and dadima |
+| School day | Nani, the teacher | the wake-up clock (the night before), getting ready, pack the school bag, the bus, the blackboard | call the hour; more school things |
+| Town and shops | Nani | the town map, then the market (serve, the X one, pay, Big Ma's cloth) | the lanes and the goat chase; numbers to 100 |
+| Sewing with Big Ma | Big Ma | buy cloth (or carried from the shops), make, mend, the fitting, going out | more garments |
+| The farm | Hannah Mami | feed, collect the eggs, the photo shoot, the corn stall, home at dusk | the orchard (pick, plant and water), positions |
+| The adoption centre | Hannah Mami | look after the animals, going home | the bird and tortoise; puppies |
+| The safari | Hannah Mami | Snap from the jeep, who's hiding? | drink, more animals, dusk |
+| The beach | Masi | shells, the sandcastle, the stalls with pay, the picnic | the boat day: the ride on the water, litter fishing |
 | (Parked) the monsoon | | Monsoon rush | |
-
-The floating ones placed:
-- the clock opens the school day
-- the town map opens the shops
-- the adoption centre is its own day next to the farm
-- the boat is the beach's second visit
-- the sewing takes its cloth from the shops
-
-The safari needs a second game.
