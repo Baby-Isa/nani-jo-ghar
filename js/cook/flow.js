@@ -2289,6 +2289,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (global.njgTest && !global.njgTest.faces) global.njgTest.faces = () => Cook.testHook.faces();
     UI.init();
     wireRail();
+    // the request pop-up's folds watched for this mount (js/cook/station-lib.js watchFolds, COOK-10: the under-the-card swap)
+    if (Cook.Stations && Cook.Stations.watchFolds) Cook.Stations.watchFolds();
     // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load
     // (no module support) still plays, unpaid, on Cook's own save (Cook.core stays null)
     // CK-48 (s12-w3b): Cook's own data (the item catalogue, the station files, the hands) loads while the core does: it
@@ -2381,6 +2383,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     closeResults();
     if (Cook.stopVoice) Cook.stopVoice();
     if (Cook.closeAudio) Cook.closeAudio();
+    // a character's clip still sounding through the conversations kit (js/shared/conversations.js C.stop) goes with the screen
+    if (global.Conversations && global.Conversations.stop) global.Conversations.stop();
     UI.reset();
     const game = Cook.game;
     Cook.game = Cook.scene = Cook.ctx = null;

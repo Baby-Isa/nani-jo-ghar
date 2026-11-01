@@ -2481,7 +2481,6 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,
       // happy when it's right, a gentle frown when it's wrong (then they say again what they asked for)
-      Cook.chaiServe = recasts.length ? "wrong" : "right"; // for the screenshot script
       const looks = await review(recasts.map((r) => r.pan));
       if (recasts.length) {
         if (!round) await zb.oops();

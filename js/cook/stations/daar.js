@@ -69,7 +69,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
   // the vegetables' own art: word id -> file stem
   const VEG = { "veg-01": "bataato", "veg-02": "dungri", "veg-03": "tameto", "veg-12": "marcha", "veg-13": "lasan", "veg-14": "aadu" };
-  const CHOPPED = { "veg-01": "veg-bataato-cubed-v2-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
+  const CHOPPED = { "veg-01": "veg-bataato-cubed-v2-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.webp" };
   // 30 Sept (R5): onion, tomato and chilli as real chopped heaps (one heap per chopped vegetable) and one piece
   // each (the piece flies off the knife and lands as its heap), in place of the flower-like v2 piles
   const HEAP5 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
@@ -1033,7 +1033,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const gone = [mat, mat.shadow].filter(Boolean);
       S.tweens.add({ targets: gone, alpha: 0, duration: 420, onComplete: () => gone.forEach((o) => o.active && o.destroy()) });
     }
-    Cook.daarMat = () => !!(mat && mat.active && mat.alpha > 0.02); // (for the evidence probes: is the mat still on the counter?)
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("daar", 300);
     const pieces = [];

@@ -1144,9 +1144,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- a topping goes in: it lifts off the shelf, drops into the glass and settles ---------- */
       const got = [];
-      Cook.assembleGot = got; // (for the screenshot and test scripts: what's in the bowl, bottom first)
-      // (test scripts: the order and each pot's screen point, to try a wrong one on purpose: the CHT-14 filmstrips)
-      Cook.assembleOrder = { flat: flat.slice(), exclude: exclude.slice(), at: () => Object.fromEntries(Object.entries(items).filter(([, o]) => o && o.active).map(([id, o]) => [id, UI.worldToScreen(S.centre(o).x, S.centre(o).y)])) };
       const ticked = []; // the card row each layer ticked (null: none), to untick it if it's taken back
       let busy = 0;
       let building = false; // the bowl takes a layer back only while you're building (§17)

@@ -965,7 +965,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["sk2-grill", V2.DIR + "grill-t.webp"],
       ["sk2-rack", V2.DIR + "rack-t.webp"],
       ["sk2-stick", V2.DIR + "stick-v.webp"],
-      ["sk2-board", "assets/cook/items/tool-board-t.png"],
+      ["sk2-board", "assets/cook/items/tool-board-t.webp"],
       ["sk2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
     ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, SK.bowlFile(bowls[id])]));
     // v3 (K5, K6, K9): the pictured rack and plate, the grill, the one stick, the chunky pieces

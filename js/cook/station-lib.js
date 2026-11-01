@@ -22,7 +22,7 @@
  * and it may call ctx.maybePassMe() at a safe moment (Nani interrupts).
  */
 import { Cook as CookNS } from "./ns.js";
-import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame, onEnd } from "./life.js";
 
 (function (global) {
   const Cook = CookNS;
@@ -342,28 +342,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.scene && Cook.scene.__pendingGlows) Cook.scene.__pendingGlows.clear();
     if (NG()) NG().pulseBulbs(false);
   }
-  /** SH-53: the item glow as strong, as wide and on the same beat as the tick's ring (GLOW), whether WebGL or the canvas halo. */
-  function tuneGlow(S, obj) {
-    const g = obj.glowFx;
-    const ring = GLOW.radius;
-    const mine = (t) => (t.targets || []).some((x) => x === g.fx || x === g.halo);
-    if (g.fx && obj.preFX) {
-      g.tweens.filter(mine).forEach((t) => t.stop());
-      g.tweens = g.tweens.filter((t) => !mine(t));
-      obj.preFX.remove(g.fx);
-      obj.preFX.padding = Math.max(obj.preFX.padding || 0, ring * 3.6);
-      g.fx = obj.preFX.addGlow(GLOW.color, ring * 0.4, 0, false, 0.1, Math.round(ring * 2.2));
-      g.tweens.push(S.tweens.add({ targets: g.fx, outerStrength: ring * 1.2, duration: GLOW.ms / 2, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
-    } else if (g.halo) {
-      g.tweens.filter(mine).forEach((t) => t.stop());
-      g.tweens = g.tweens.filter((t) => !mine(t));
-      const c = S.opaqueBox(obj);
-      g.halo.setSize && g.halo.setSize(c.w * 1.25 + ring * 4, c.h * 1.2 + ring * 3.4);
-      g.halo.setAlpha(GLOW.alpha);
-      g.tweens.push(S.tweens.add({ targets: g.halo, alpha: GLOW.alpha * 0.45, scale: 1.1, duration: GLOW.ms / 2, yoyo: true, repeat: -1 }));
-    }
-  }
-
   /*
    * CK-48 (S13-V): the request pop-up's fold, seen from here: folded() resolves once a pop-up has opened and then started to
    * fold (RequestPopup.isOpen() turns false as the card starts to fly); lastFoldMs() is how long ago the last one folded.
@@ -387,17 +365,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }, 30);
     });
   }
-  (function watchFolds() {
+  // COOK-10: armed once per mount (Cook.boot calls it), on life.js's interval, which the unmount clears; the next mount arms
+  // it again (it ran once at module load before, so from the second mount on no fold was ever seen and lastFoldMs stayed Infinity)
+  let foldsArmed = false;
+  S$.watchFolds = function () {
     const RP = global.RequestPopup;
-    if (!RP || !RP.isOpen) return;
+    if (foldsArmed || !RP || !RP.isOpen) return;
+    foldsArmed = true;
+    onEnd(() => (foldsArmed = false));
     let was = false;
     setInterval(() => {
       const open = RP.isOpen();
       if (was && !open) foldAt = Date.now();
       was = open;
     }, 60);
-  })();
+  };
   const lastFoldMs = () => (foldAt ? Date.now() - foldAt : Infinity);
+  S$.lastFoldMs = lastFoldMs; // (the mount test reads it: build/test_cook_mount.mjs)
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   /*
@@ -841,7 +825,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       rim = { x: ox + cx * scale, y: oy + cy * scale, rx: rx * scale, ry: ry * scale, depth: info.depth * scale };
     }
     const liq = S.track(S.add.graphics().setDepth(D.item + 0.4));
-    const tgt = S.track(S.add.graphics().setDepth(D.item + 0.6));
     const v = img;
     v.rimRx = rim.rx;
     v.rimRy = rim.ry;
@@ -865,25 +848,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const p = at(Math.max(v.level, 0.1));
       return { x: p.x, y: p.y };
     };
-    v.drawTarget = (lo, hi) => {
-      tgt.clear();
-      const a = at(lo);
-      const b = at(hi);
-      // green band between the two levels, dashed edges
-      tgt.fillStyle(0x7d9a78, 0.22);
-      tgt.fillEllipse(b.x, (a.y + b.y) / 2, b.rx * 2, (b.ry + a.y - b.y) * 2);
-      [a, b].forEach((p) => {
-        for (let t = 0; t < Math.PI * 2; t += 0.22) {
-          tgt.lineStyle(5, 0x4f6b4b, 0.95);
-          const x1 = p.x + Math.cos(t) * p.rx;
-          const y1 = p.y + Math.sin(t) * p.ry;
-          const x2 = p.x + Math.cos(t + 0.12) * p.rx;
-          const y2 = p.y + Math.sin(t + 0.12) * p.ry;
-          tgt.lineBetween(x1, y1, x2, y2);
-        }
-      });
-    };
-    v.clearTarget = () => tgt.clear();
     v.liqGraphics = liq;
     v.rim = rim;
     return v;

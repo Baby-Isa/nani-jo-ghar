@@ -17,6 +17,10 @@
  *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
  * Other browser checks are not run here (one at a time under the lock, rule B16): build/check_stamps.mjs, build/lint/layout.test.mjs, the sandbox
  * (`touched.mjs` prints the command), and the leak bots (`leak.mjs --list`; leak.mjs cook needs a browser).
+ * Cook's mount test (C4), whenever js/cook/** or js/shared/buttons.js changes (COOK-16; its result goes in the sprint's review report):
+ *   COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/test_cook_mount.mjs
+ * Known until the shared sweep handles them (watch only that the counts stop growing): one sfx AudioContext (js/shared/sfx.js's page-level
+ * one), the conversations / voice safety timers (3-6 s), the shared kits' one-time page listeners and <body> element.
  */
 import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";

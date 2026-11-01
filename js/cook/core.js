@@ -190,14 +190,6 @@
     const learned = ctx && ctx.learned;
     return learned ? !learned.has(id) : Cook.timesRight(id) === 0;
   };
-  /** How many times a word has been met (heard in an order): decision 57's "the first times it is heard". */
-  Cook.timesHeard = (id) => {
-    if (P()) {
-      const w = P().get(id);
-      return (w && w.seen) || 0;
-    }
-    return (Cook.save.words[id] && Cook.save.words[id].seen) || 0;
-  };
   Cook.paused = false;
   Cook.hintDelay = function (id) {
     // Wave 5 (clarity and calm): hints after a longer hesitation (data.calm.hintMs by word
@@ -300,10 +292,6 @@
     }
     return bufCache[url];
   }
-  Cook.preloadVoice = (plain) => {
-    const url = Cook.tts[Cook.norm(plain)]; // parked pages only
-    if (url && ctx) loadBuffer(url);
-  };
   // S04-B (SH-66): a stop also cancels a clip still loading (its buffer arrives after the stop: it never starts)
   let stopGen = 0;
   Cook.stopVoice = () => {

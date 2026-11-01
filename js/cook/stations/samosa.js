@@ -135,7 +135,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["sv3-plate", V3 + "plate.webp"],
       ["sv3-karahi", V3 + "karahi.webp"],
       ["sv3-jharo", V3 + "jharo.webp"],
-      ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
+      ["sv2-thali", "assets/cook/items/vessel-thali-t.webp"],
     ]
       // SAM-21: the pastry texture the coded fold is drawn in (the s08 art run's tile, seamless across)
       .concat([["sv3-pastry", "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp"]])

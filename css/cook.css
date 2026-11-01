@@ -202,12 +202,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .day-dot.next b { background: var(--brass); color: var(--njg-white); box-shadow: 0 0 0 4px rgba(201,151,58,.3); }
 .day-dot .st { color: #b07d10; letter-spacing: -1px; }
 
-.sum-rows { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
-.sum-row { display: grid; grid-template-columns: 48px 1fr auto auto; gap: 10px; align-items: center; background: var(--paper); border-radius: 14px; padding: 6px 12px; }
-.sum-row img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; }
-.sum-row .st { color: #b07d10; font-size: 22px; letter-spacing: 1px; }
-.sum-row .co { font-weight: 800; display: inline-flex; gap: 4px; align-items: center; }
-.sum-row small { display: block; color: var(--ink-soft); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; }
 .chip {
   border: none; background: var(--paper); border-radius: 12px; padding: 6px 12px; text-align: left;
@@ -216,7 +210,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .chip small { display: block; font-family: var(--ui-font); font-size: 12px; color: var(--ink-soft); font-weight: 700; }
 .chip .dots { font-size: 10px; color: var(--sage); letter-spacing: 1px; }
 
-.shop-counter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 12px; }
 .slot {
   aspect-ratio: 1.7; border-radius: 16px; border: 2px dashed #cdb892; background: var(--paper);
   display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--ink-soft);
@@ -232,17 +225,13 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .shop-img.special::after { content: "\2728"; position: absolute; right: -4px; top: -6px; font-size: 16px; }
 .shop-item .station { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--madder); }
 .shop-item.none { opacity: .8; border: 2px dashed #d9c7a8; }
-.owned-tag { color: var(--sage-dark) !important; font-size: 13px !important; }
 .shop-item h4 { margin: 0; font-size: 15px; }
 .shop-item p { margin: 1px 0 4px !important; font-size: 12.5px !important; line-height: 1.25; }
 .shop-item .tag { font-size: 11px; font-weight: 800; color: var(--indigo); }
 .shop-item.owned { outline: 2px solid var(--sage); }
 
-.book-recipe { background: var(--paper); border-radius: 16px; padding: 10px 14px; margin-bottom: 10px; }
-.book-recipe h3 { margin: 0 0 6px; font-family: var(--kutchi-font); }
 .seq { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--kutchi-font); font-weight: 800; font-size: 18px; }
 .seq span.arrow { color: var(--ink-soft); font-size: 14px; }
-.seq .step-icon { font-family: var(--ui-font); font-size: 13px; color: var(--ink-soft); background: var(--njg-white); border-radius: 8px; padding: 2px 6px; }
 
 .finale-row { display: flex; justify-content: center; gap: 4px; margin: 6px 0; }
 .finale-row img { height: clamp(80px, 16vh, 150px); }
@@ -530,7 +519,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---- pocket money (title screen and the day's summary) ---- */
 .purse { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0 10px; }
-.purse .purse-total { font-weight: 800; color: var(--ink-soft); font-size: clamp(14px, 1.6vw, 18px); }
 
 /* ---- completion and result cards ---- */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin: 10px 0; }
@@ -547,10 +535,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .rcard .rc-left { position: relative; min-width: 0; }
 .rc-right { min-width: 0; display: flex; flex-direction: column; gap: 10px; border-left: 2px dashed var(--njg-step-edge); padding-left: 14px; }
 .rc-right h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
-.rc-key { text-transform: none; letter-spacing: 0; font-weight: 700; display: inline-flex; gap: 4px; align-items: center; }
-.rc-key i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; margin-left: 6px; }
-.rc-key .k-missed { background: #fbe7e2; border: 2px solid var(--madder); }
-.rc-key .k-helped { background: #fdf1d3; border: 2px solid var(--brass); }
 /* the word review: [speaker] Kutchi  English, one pill per word */
 .wr { display: flex; flex-wrap: wrap; gap: 6px; }
 .wr-pill {
@@ -567,9 +551,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wr-pill.missed .wr-tag { background: var(--madder); color: var(--njg-white); }
 .wr-pill.helped { border-color: var(--brass); background: #fdf1d3; }
 .wr-pill.helped .wr-tag { background: var(--brass); color: var(--njg-white); }
-.rc-tips .rc-tip { display: flex; gap: 8px; align-items: center; font-weight: 800; font-size: 15px; margin: 3px 0; }
-.rc-tips .rc-tip .mstar { width: 28px; height: 28px; padding: 4px; border-radius: 8px; }
-.rc-tips.all .rc-tip { color: var(--sage-dark); }
 .chip .draft { font-family: var(--ui-font); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #8a6412; background: #fbeecb; border-radius: 6px; padding: 1px 5px; vertical-align: middle; }
 @media (max-width: 720px) {
   .cards .rcard { grid-template-columns: 1fr; }
@@ -659,13 +640,6 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 @container side (max-width: 270px) {
   body.w6 #mission .m-head { grid-template-areas: "face stars" "dish dish"; }
 }
-.card-say {
-  position: absolute; top: 6px; right: 6px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; border: none; padding: 6px;
-  background: var(--njg-face-bg); color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
-}
-.card-say svg { width: 100%; height: 100%; }
-.card-say.on { background: var(--ink); color: var(--cream); }
-#mission.stamped .card-say { visibility: hidden; }
 
 /* rows: a dot and the words, nothing else */
 .r6 { padding-right: 4px; }
@@ -679,26 +653,15 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 .lr.empty { min-height: 1.4em; }
 /* read-along: the part being said lights up */
 .reading { background: #fff0c2 !important; box-shadow: 0 0 0 3px #ffd98a !important; border-radius: 10px; }
-.pslot.reading { border-radius: 8px; }
 
 /* 3. one card per thing, a fixed shape: a person's cup, a skewer (always four dots), a maani */
 .icards { display: flex; flex-wrap: wrap; gap: 6px; }
 .icard { position: relative; background: var(--paper); border: 2px solid var(--njg-tint-edge); border-radius: 14px; padding: 6px 6px 6px 8px; min-width: 0; }
-/* a card's speaker floats in its top-right corner: the words flow beside it, and a long word goes below it whole */
-.icard .card-say { position: relative; top: auto; right: auto; float: right; margin: -2px -2px 2px 6px; }
-.icard .ic-slots { clear: both; }
 .icard.unit { flex: 1 1 96px; }
 /* a card that names its pieces (a mixed skewer) takes the whole row, so four words fit under four dots */
 .icard.unit.named { flex-basis: 100%; }
 .icard .ic-title { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(15px, 1.3vw, 19px); line-height: 1.2; min-height: 1.2em; overflow-wrap: normal; word-break: normal; hyphens: none; }
-.icard .ic-slots { display: flex; gap: 8px; margin-top: 5px; align-items: flex-start; }
-.icard .pslot { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
-.icard .pslot i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); }
-.icard .ic-slots.named { gap: 4px; }
-.icard .ic-slots.named .pslot { flex: 1 1 auto; }
-.icard .pslot b { font-family: var(--kutchi-font); font-size: 12px; line-height: 1.1; text-align: center; overflow-wrap: normal; word-break: normal; }
 .icard.done { background: #eaf3e4; border-color: #cfe3c6; }
-.icard.done .pslot i, .icard .pslot.done i { background: var(--sage); }
 .icard.person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px; align-items: start; margin-bottom: 4px; }
 .icard.person .lface { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--njg-chip); box-shadow: 0 0 0 2px var(--cream); }
 .icard.person .ic-title { font-size: clamp(13px, 1.1vw, 16px); color: var(--ink-soft); }
@@ -717,11 +680,8 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 #intro .icard { padding: clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(8px, 1vw, 14px); border-radius: 18px; }
 #intro .icard.unit { flex: 0 1 auto; min-width: min(190px, 100%); }
 #intro .icard .ic-title { font-size: clamp(18px, min(2.4vw, 5vh), 30px); }
-#intro .icard .pslot i { width: clamp(16px, 1.8vw, 24px); height: clamp(16px, 1.8vw, 24px); }
-#intro .icard .pslot b { font-size: clamp(12px, 1.3vw, 17px); }
 #intro .icard.person { flex: 1 1 260px; }
 #intro .icard.person .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
-#intro .icard .card-say { width: clamp(32px, 3.4vw, 42px); height: clamp(32px, 3.4vw, 42px); }
 #intro .ladder { flex-direction: row; flex-wrap: wrap; }
 
 /* 8. the UI fades in as it's first needed: the stars from the second order, the light bulb from the third */
@@ -731,16 +691,13 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 
 @media (max-height: 430px) {
   #btn-bulb:not(.ng-bulb) { width: 40px; height: 40px; padding: 7px; }
-  .card-say { width: 28px; height: 28px; padding: 5px; top: 4px; right: 4px; }
   body.w6 #mission .m-head { padding-right: 32px; }
   .r6 .lt { font-size: 16px; }
   .icard { padding: 4px 4px 4px 6px; border-radius: 11px; }
   .icard .ic-title { font-size: 15px; }
-  .icard .pslot i { width: 11px; height: 11px; }
   .icard.person .lface { width: 26px; height: 26px; }
   /* a short phone: a cup's slots run along one line, so three cups fit */
   #side .icard.person .lrows { flex-direction: row; flex-wrap: wrap; gap: 0 10px; }
-  #intro .icard .card-say { width: 30px; height: 30px; }
 }
 
 /* 8. first-time onboarding (js/cook/coach.js): its fallback dim with one hole (no kit on the page); the finger is the kit's, never its own (S13-A2) */
@@ -815,22 +772,11 @@ body.w6 .lrows.lseq { position: relative; padding-left: 13px; }
 body.w6 .lrows.lseq::before { content: ""; position: absolute; left: 4px; top: .85em; bottom: .85em; width: 3px; border-radius: 2px; background: #dccab0; }
 body.w6 .lrows.lseq > .r6::before { content: ""; position: absolute; left: -12px; top: 50%; width: 9px; height: 3px; margin-top: -1.5px; border-radius: 2px; background: #dccab0; }
 body.w6 .lrows.lseq > .r6 { position: relative; }
-/* things made several times: the kind as said, once, then a mini card per one (two skewers = two cards) */
-.ugroup { display: flex; flex-direction: column; gap: 4px; }
-.ugroup .ug-title { position: relative; font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(16px, 1.4vw, 20px); line-height: 1.25; padding: 0 2px; min-height: 32px; display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-direction: row-reverse; }
-.ugroup .ug-title .lt { flex: 1; min-width: 0; }
-.ugroup .ug-title .card-say { position: static; flex: none; }
-body.w6 .ugroup .icards { display: flex; flex-wrap: wrap; gap: 6px; }
-body.w6 .ugroup .icard.unit { flex: 1 1 96px; padding: 4px; border-radius: 12px; background: #fffdf8; border: 1.5px solid var(--njg-tint-edge); }
-body.w6 .ugroup .icard.unit.named { flex: 1 1 110px; }
-body.w6 .ugroup .icard.unit.done { background: var(--njg-cream-2); border-color: #ecd49a; }
-body.w6 .ugroup .icard .r6 .lt { font-size: clamp(15px, 1.25vw, 18px); }
 /* a person's cup (the Chai tray): face and "{person} lai." across the top, their rows under it */
 body.w6 .icard.person { display: block; padding: 5px 6px 6px; background: #fffdf8; border: 1.5px solid var(--njg-tint-edge); }
 body.w6 .icard.person.done { background: var(--njg-cream-2); border-color: #ecd49a; }
 body.w6 .icard.person .pc-head { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
 body.w6 .icard.person .pc-head .ic-title { flex: 1; min-width: 0; }
-body.w6 .icard.person .pc-head .card-say { position: static; float: none; margin: 0; flex: none; }
 body.w6 #side .icard.person .lrows { flex-direction: column; gap: 2px; }
 /* the pop-up: face | the overall request | speaker; the same rows, big */
 #intro .ic-dish { flex: 1; min-width: 0; font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(22px, min(3vw, 6vh), 36px); line-height: 1.15; }
@@ -843,9 +789,6 @@ body.w6 #side .icard.person .lrows { flex-direction: column; gap: 2px; }
 #intro .lrows.lseq { padding-left: 18px; }
 #intro .lrows.lseq::before { left: 6px; width: 4px; }
 #intro .lrows.lseq > .r6::before { left: -16px; width: 12px; height: 4px; margin-top: -2px; }
-#intro .ugroup .ug-title { font-size: clamp(20px, min(2.6vw, 5.6vh), 32px); }
-#intro .ugroup .icard.unit { flex: 1 1 150px; padding: 6px; }
-#intro .ugroup .icard .r6 .lt { font-size: clamp(17px, min(2.1vw, 4.6vh), 26px); }
 #intro .icard.person { flex: 1 1 200px; }
 #intro .icard.person .ic-title { font-size: clamp(15px, min(1.8vw, 3.8vh), 22px); }
 #intro .ladder { gap: clamp(6px, 1.2vh, 12px) 12px; }
@@ -861,13 +804,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 @media (max-height: 430px) {
   body.w6 .r6 { min-height: 1.5em; padding: 1px 5px 1px 6px; }
   body.w6 #mission .m-head { padding-right: 32px; }
-  .ugroup .ug-title { min-height: 28px; font-size: 15px; }
-  body.w6 .ugroup .icard .r6 .lt { font-size: 14px; }
   #intro .ic-dish { font-size: 20px; }
   #intro .ic-go { display: none; }
 }
-.ugroup .ug-title .word { color: var(--madder); }
-.ugroup .ug-title .dots { letter-spacing: 2px; color: var(--ink-soft); }
 /* 28 Sept, short landscape phones: the card stays compact (a cup's rows run along a line, two mini cards side by side) */
 @media (max-height: 430px) {
   body.w6 #side { scrollbar-width: none; }
@@ -879,8 +818,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   body.w6 #side .icard.person .r6 .lt { font-size: 14px; }
   body.w6 #side .icard.person .pc-head { margin-bottom: 1px; }
   body.w6 #side .icard.person .lface { width: 22px; height: 22px; }
-  body.w6 #side .ugroup .icard.unit { flex: 1 1 60px; }
-  body.w6 #side .ugroup .icards { gap: 4px; }
   body.w6 #side .r6 .lt { font-size: 14px; }
   body.w6 #side .r6 { min-height: 1.4em; }
   body.w6 #side .lrows { gap: 1px; }
@@ -925,8 +862,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .day-dot b svg { width: 50%; height: 50%; vertical-align: middle; }
 .day-dot .st { display: inline-grid; place-items: center; color: var(--sage); }
 .day-dot .st svg { width: var(--njg-s5); height: var(--njg-s5); }
-.purse .purse-sep { display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); color: var(--ink-soft); }
-.purse .purse-sep svg { width: 100%; height: 100%; }
 .pill.coins.total { font-size: var(--njg-t1); }
 .cards .sum-card { min-height: calc(var(--njg-tap) + var(--njg-s3)); }
 .sum-card .cc-head { padding-right: calc(var(--njg-tap) + var(--njg-s2)); }

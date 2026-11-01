@@ -118,8 +118,6 @@ body.w6 :is(#mission, .m-card).people .m-order { gap: 10px; }
 
 /* the card once served: its stamp stays as it was */
 body.w6 #mission.stamped .face-say .say-badge { display: none; }
-/* (the old round speaker hid once served; the face is that button now, and a face stays) */
-body.w6 #mission.stamped .face-say.card-say { visibility: visible; }
 
 /* ---------- the rail at the bottom: the same flat buttons ---------- */
 body.w6 :is(#side, .sb2) .rail-btn { border-radius: 12px; background: var(--sb-card); border: 1px solid var(--sb-line); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.08); }
