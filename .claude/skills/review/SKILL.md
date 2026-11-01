@@ -20,6 +20,7 @@ description: Review a finished build session or any change before it goes to Zaf
    node build/tools/review/touched.mjs --base <ref> --json | node build/tools/review/regress.mjs --stdin
    ```
 3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). Between fix rounds: only the changed flows, at every size with `--contract`. The full gate (`run.mjs --gate`) runs once, just before a publish (Zafar, 20 Oct).
+3b. **Cook's mount test** whenever the change touches `js/cook/**` or `js/shared/buttons.js` (COOK-16): `COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/test_cook_mount.mjs`. Its result goes in the review report. Until the shared sweep handles the shared kits' own leftovers (one sfx AudioContext, the conversations / voice safety timers, the kits' one-time page listeners), those lines are known: watch only that the counts stop growing from mount to mount.
 4. Only what changed:
    ```
    node build/tools/review/shotdiff.mjs --run <run id>
