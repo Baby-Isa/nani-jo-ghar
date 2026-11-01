@@ -815,3 +815,13 @@ The critique (`cook-baking-eggs-critique.md`, 1 Nov) had 19 findings: 6 MUST, 13
 - Counts tick at the number (his reversal after the chai play).
 
 - **One count rule** (also 1 Nov, reversed after the chai play): counts and amounts tick at the number or amount and an extra tap or pour doesn't land. The tray's tap and the knead stay as real moves of their own, not as commits of the counts;
+
+
+## Zafar's baking design (1 Nov), which replaces the pour-to-a-line above
+
+Turn by turn, as a grandmother teaches:
+- The bag (or jug) is held over the bowl, and each tap tips some in.
+- Nani gives one instruction. "Put a little": one tap, it locks, "that's good". "Put a lot": tap, tap, tap until it's a lot, then "stop, that's enough"; more taps don't land.
+- "A little more" is taught as two turns: "a little", tap, "still a little more", tap, "enough".
+- Half and a whole cup work the same way on the cup.
+- No marks anywhere, so the amount is never a fixed fraction. The prototype follows this (`prototype-review-2026-11-01.md`).

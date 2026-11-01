@@ -107,3 +107,5 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 95. Sewing: a cushion cover for Nani's sofa, new art and an ungraded stage (`sewing.md` §5) [Claude overnight design, 1 Nov]. Idea.
 96. Sewing: role reversal, the child tells Ali which piece to try on, on the shared "say it, Ali acts" (`sewing.md` §5) [Claude overnight design, 1 Nov]. Idea.
 97. Wake-up clock, later visits: the holiday morning ("don't wake me", a "no" ask); baby Isa's cot that wakes by itself and cries; half past (if Kutchi has its own words); the afternoon nap with Big Ma; the child's own time for tomorrow ("and you?"); the same clock in the bus stage and the eggs station; each needs Zafar's yes and the lab's verdict first (`wake-up-clock.md` §5) [Claude overnight design, 1 Nov]. Idea.
+98. The café with the family: a speaking game from level 1; the child gives the orders using the food words already known from the kitchen, so the focus is the joining words; comes later in the game [Zafar, 1 Nov]. Approved, to design.
+99. The park and playground (the moving verbs, up and down, nature) [Claude's review, 1 Nov]. Waits (Zafar, 1 Nov).

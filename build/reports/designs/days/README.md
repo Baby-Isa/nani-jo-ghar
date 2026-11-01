@@ -80,3 +80,7 @@ Zafar asked whether there are more locations: three of the trips are about anima
 Left out:
 - the library (its book words ride on the town map and the school)
 - religious places and weddings (celebrations are out)
+
+**Zafar's choice (1 Nov):**
+- **The café with the family is in.** It's a speaking game from level 1: the child gives the orders, using the food words they already know from the kitchen, so they can focus on the joining words. It comes later in the game; easier levels are still easier, but every level is spoken.
+- **The park and playground waits;** the rest of the list stops here for now.
