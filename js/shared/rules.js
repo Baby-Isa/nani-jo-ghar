@@ -223,9 +223,11 @@
   } else {
     const self = root.document && root.document.currentScript && root.document.currentScript.src;
     const base = self ? self.replace(/js\/shared\/rules\.js.*$/, "") : root.NJG_RULES_BASE || "";
-    let url = base + R.FILE;
+    // the relative path is stamped, then the base put in front (njgV leaves a full URL alone; sweep N1, 1 Nov)
+    let url = R.FILE;
     if (typeof root.njgV === "function") url = root.njgV(url);
     else if (root.NJG_V) url += (url.includes("?") ? "&" : "?") + "v=" + root.NJG_V;
+    url = base + url;
     R.ready =
       typeof root.fetch === "function"
         ? root

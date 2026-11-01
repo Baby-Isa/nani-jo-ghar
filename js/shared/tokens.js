@@ -123,7 +123,8 @@
     T.rulesReady = Promise.resolve(T.rules);
     T.ready = Promise.resolve(T.ladder);
   } else {
-    // the page: this script's own address finds the table (a page in lab/ too); njgV stamps it (B7)
+    // the page: this script's own address finds the table (a page in lab/ too); the relative path is stamped, then the base
+    // put in front (njgV leaves a full URL alone, so stamping base + path sent it unstamped; sweep N1, 1 Nov)
     const self = root.document && root.document.currentScript && root.document.currentScript.src;
     const base = self ? self.replace(/js\/shared\/tokens\.js.*$/, "") : "";
     const stamp = (u) => (typeof root.njgV === "function" ? root.njgV(u) : root.NJG_V ? u + (u.includes("?") ? "&" : "?") + "v=" + root.NJG_V : u);
@@ -134,7 +135,7 @@
       if (!d || !d.createElement) return res(null);
       root.NJG_RULES_BASE = base;
       const s = d.createElement("script");
-      s.src = stamp(base + "js/shared/rules.js");
+      s.src = base + stamp("js/shared/rules.js");
       s.onload = () => res(root.Rules ? root.Rules.ready : null);
       s.onerror = () => res(null);
       (d.head || d.documentElement).appendChild(s);
@@ -144,7 +145,7 @@
     const shared =
       typeof root.fetch === "function"
         ? root
-            .fetch(stamp(base + T.LADDER_FILE))
+            .fetch(base + stamp(T.LADDER_FILE))
             .then((r) => (r.ok ? r.json() : null))
             .then(take)
             .catch(() => T.ladder)

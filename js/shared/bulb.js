@@ -37,11 +37,13 @@
   const tokens = () => root.Tokens || (isNode ? require("./tokens.js") : null);
   if (!tokens() && !isNode) {
     const self = root.document && root.document.currentScript && root.document.currentScript.src;
-    const url = (self ? self.replace(/js\/shared\/bulb\.js.*$/, "") : "") + "data/shared.json";
+    // the relative path is stamped, then the base put in front (njgV leaves a full URL alone; sweep N1, 1 Nov)
+    const rel = typeof root.njgV === "function" ? root.njgV("data/shared.json") : "data/shared.json";
+    const url = (self ? self.replace(/js\/shared\/bulb\.js.*$/, "") : "") + rel;
     B.ready =
       typeof root.fetch === "function"
         ? root
-            .fetch(typeof root.njgV === "function" ? root.njgV(url) : url)
+            .fetch(url)
             .then((r) => (r && r.ok ? r.json() : null))
             .then((j) => (own = j && Array.isArray(j.bulbMs) ? j.bulbMs : own))
             .catch(() => own)

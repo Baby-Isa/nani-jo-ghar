@@ -51,11 +51,12 @@
   } else {
     const self = root.document && root.document.currentScript && root.document.currentScript.src;
     base = self ? self.replace(/js\/shared\/face\.js.*$/, "") : "";
-    const url = base + F.FILE;
+    // the relative path is stamped, then the base put in front (njgV leaves a full URL alone; sweep N1, 1 Nov)
+    const url = base + (typeof root.njgV === "function" ? root.njgV(F.FILE) : F.FILE);
     F.ready =
       typeof root.fetch === "function"
         ? root
-            .fetch(typeof root.njgV === "function" ? root.njgV(url) : url)
+            .fetch(url)
             .then((r) => (r && r.ok ? r.json() : null))
             .then(take)
             .then((t) => (refresh(), t))
@@ -81,7 +82,7 @@
   };
   F.src = function (who, o = {}) {
     const p = F.person(who);
-    if (p && p.src) return stamp(base + p.src);
+    if (p && p.src) return /^(data:|blob:|https?:)/.test(p.src) ? p.src : base + stamp(p.src);
     return o.src || "";
   };
   const sizeOf = (s) => (F.SIZES.includes(s) ? s : "row");
