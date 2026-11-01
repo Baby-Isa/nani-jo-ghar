@@ -125,29 +125,6 @@
     };
   }
 
-  /** The blind bot (Node): the strategies of quality pass Q6 that apply here. */
-  function botCut(level, rng) {
-    const p = planCut(level, level >= 2 ? "cut" : "scrape", rng);
-    const strategies = ["fair", "random", "tray-order", "max", "most-common", "first-option"];
-    return {
-      rows: p.rows,
-      plan: p,
-      strategies,
-      solve(strategy) {
-        const res = p.rows.map((r) => {
-          if (strategy === "fair") return true;
-          let guess;
-          if (strategy === "max") guess = r.kind === "count" ? Math.max(...r.options) : r.options[r.options.length - 1];
-          else if (strategy === "most-common") guess = r.kind === "count" ? r.options[Math.floor((r.options.length - 1) / 2)] : r.options[0];
-          else if (strategy === "first-option") guess = r.options[0];
-          else guess = pick(r.options, rng); // random, tray-order (the tray gives no count, size or colour)
-          return guess === r.answer;
-        });
-        return { right: res.filter(Boolean).length, total: res.length };
-      },
-    };
-  }
-
   /* ---------------- the browser game ---------------- */
   function mountCut(stage, ctx) {
     const doc = stage.ownerDocument;

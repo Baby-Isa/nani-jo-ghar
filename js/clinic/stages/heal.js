@@ -12,8 +12,7 @@
   const S = Clinic.Stages;
 
   S.heal = {
-    run: null, // the host's run, while a game is mounted (tests: S.heal.run.controller.expect())
-    async run_(env, plan, patient) {
+    async run(env, plan, patient) {
       const res = S.result("heal");
       const { screen } = env;
       if (!Clinic.Heal.has(plan.game)) {
@@ -66,5 +65,4 @@
       return true;
     },
   };
-  S.heal.run = S.heal.run_;
 })(typeof self !== "undefined" ? self : this);

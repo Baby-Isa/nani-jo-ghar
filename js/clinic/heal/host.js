@@ -39,7 +39,7 @@
   HOST.loadBase = async function () {
     // CLN-88: every file the clinic needs to start is asked for at once (it was a chain of a dozen, one after another);
     // the steps below then find them in the kit's cache
-    ["data/patients/grey-adult.json", "data/clinic.json", "data/clinic/pipeline.json", "data/clinic/rough-art.json", "data/clinic/heal-art.json", "data/clinic/scenes-v2.json"].forEach((p) => Kit.loadJSON(p));
+    ["data/patients/grey-adult.json", "data/clinic.json", "data/clinic/pipeline.json", "data/clinic/rough-art.json", "data/clinic/heal-art.json", "data/clinic/scenes-v2.json"].forEach((p) => Kit.warmJSON(p));
     if (!HOST.lang && global.ClinicLang && !global.ClinicLang.engine) global.ClinicLang.ready((p) => Kit.loadJSON(p), Kit.root || "");
     if (!HOST.bodyFile) HOST.bodyFile = await Kit.loadJSON("data/patients/grey-adult.json");
     if (!HOST.clinic) HOST.clinic = (await Kit.loadJSON("data/clinic.json")) || {};

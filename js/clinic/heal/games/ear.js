@@ -353,7 +353,6 @@
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
-    const bigOrSmall = () => blobs.find((b) => !b.out && (b.size === "big" || b.size === "small"));
     // E1 (CLN-101): while the help's ghost finger plays the wax drag, the tweezers ride on it (tips at the fingertip),
     // as they do on the child's own drag; gone with the ghost
     let twGhost = null;

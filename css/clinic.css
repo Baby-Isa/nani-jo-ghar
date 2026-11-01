@@ -152,11 +152,8 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 /* the request card: a big copy over the play area, then it flies into the sidebar (UX s1) */
 
 /* stage 1: the bench */
-.cl-bench { position: absolute; left: 3%; right: 26%; bottom: 4%; height: 58%; display: flex; align-items: flex-end; justify-content: center; gap: 1.5%; }
-.cl-bench::after { content: ""; position: absolute; left: -2%; right: -2%; bottom: 0; height: 14%; background: #b98b5c; border-radius: 12px; box-shadow: 0 6px 0 #8f6841; z-index: -1; }
 .cl-seat { position: relative; flex: 0 1 22%; height: 100%; min-width: 64px; border: none; background: none; padding: 0; cursor: pointer; transition: transform .9s ease-in-out, opacity .9s; }
 .cl-seat-who { position: absolute; inset: 0 0 6% 0; display: flex; align-items: flex-end; justify-content: center; }
-.cl-seat-img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
 .cl-seat .cl-fig { height: 100%; }
 .cl-seat.size-small .cl-seat-who { transform: scale(.78); transform-origin: 50% 100%; }
 .cl-seat.puzzled .cl-seat-who { animation: cl-shake .7s; }
@@ -166,8 +163,6 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-ring { position: absolute; left: 50%; top: -2%; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: conic-gradient(var(--njg-focus) var(--p, 100%), #f1e3cc 0); animation: cl-ring var(--t, 30s) linear infinite; }
 @property --p { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
 @keyframes cl-ring { from { --p: 100%; } to { --p: 0%; } }
-.cl-exam-spot { position: absolute; right: 2%; bottom: 6%; width: 22%; height: 40%; }
-.cl-exam-bench { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: #d7ecef; border: 4px solid #9cc7cd; border-radius: 14px; }
 
 /* stage 2: probes, the kit, finds */
 .cl-probe { position: absolute; width: clamp(44px, 6vw, 58px); height: clamp(44px, 6vw, 58px); transform: translate(-50%, -50%); margin: 0; border-radius: 50%; border: 4px solid rgba(226, 163, 58, .9); background: rgba(255, 226, 150, .35); cursor: pointer; animation: cl-probe 1.4s ease-in-out infinite; }
@@ -193,10 +188,7 @@ html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 .cl-item.own-colour { border-color: rgba(var(--njg-black-rgb), .08); }
 
 /* stage 5: faces, the one more thing, the sticker */
-.cl-faces { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--njg-s2); width: min(38%, 300px); z-index: 25; }
 .cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid var(--njg-step-edge); background: var(--njg-white); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--njg-s1); cursor: pointer; padding: var(--njg-s2); }
-.cl-face-emoji { font-size: clamp(34px, 5vw, 54px); line-height: 1; }
-.cl-face-word { font: 700 15px var(--cl-head); }
 .cl-face-card.yes { border-color: var(--cl-good); box-shadow: 0 0 0 5px rgba(63, 163, 91, .3); }
 .cl-face-card.nope { animation: cl-shake .45s; }
 .cl-extra { margin-top: auto; width: 100%; height: 76px; border-radius: 18px; border: 4px solid var(--cl-accent-2); background: var(--njg-white); display: grid; place-items: center; cursor: pointer; animation: var(--njg-pulse-anim); }
@@ -295,10 +287,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-feel { width: 100%; height: 100%; display: grid; place-items: center; }
 .cl-feel svg { width: 100%; height: 100%; display: block; }
 .cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: var(--njg-white); box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid var(--njg-white); display: grid; place-items: center; }
-.cl-feel-q { font: 800 26px var(--cl-head); color: #b9ae9f; }
 .cl-feel-circle.on { animation: cl-pop .25s ease-out; }
-.cl-feel-cards { display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid var(--njg-step-edge); }
 .cl-help-card .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; }
 .room-door .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
 .room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
@@ -491,10 +480,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-find.sore { font-size: 0; filter: none; border-color: var(--njg-gold); box-shadow: 0 0 0 6px rgba(var(--njg-gold-rgb), .25); }
 /* T30: the point her speech bubbles come from (her mouth on the art) */
 .cl-fig .fig-anchor { position: absolute; min-width: 2px; min-height: 2px; pointer-events: none; }
-/* T27 (decision 53): the doctor's request pop-up over the counter, then it folds into the sidebar */
-.cl-req-veil { position: absolute; inset: 0; z-index: 110; background: rgba(40, 25, 10, .18); transition: background .4s; }
-.cl-req-veil.going { background: rgba(40, 25, 10, 0); }
-.cl-req-pop { overflow: visible; padding: var(--njg-s3); }
 /* CLN-96 (decision 51): the item to redo glows as it rides past (a second try's help, or after a pause) */
 .cl-belt-dish.hint .cl-item { filter: drop-shadow(0 0 10px rgba(255, 196, 64, .95)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
 .cl-belt-dish.hint .cl-item { animation: var(--njg-glow-anim); } /* the kit's glow (S13-A1) */
