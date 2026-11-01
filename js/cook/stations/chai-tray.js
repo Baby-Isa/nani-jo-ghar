@@ -638,9 +638,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // design px per CSS px), up to 90; was min(46, 11% of the tray). It keeps off its glass (4 px clear of the cut-out's rim), so a
       // bigger face reaches past the tray's outer edge onto the worktop (never more than half of it: CK-30), towards the gap by the hob
       const perPx = Math.max(0.01, UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1);
-      const fd = Math.min(90, Math.max(BADGE, 30 / perPx));
       // (the rim between the tray's edge and the glass)
       const rimW = left ? wx - gR - 4 - trayX : trayX + trayD - (wx + gR + 4);
+      // (never so big that, half past the tray's edge, it would reach its glass)
+      const fd = Math.min(90, 2 * rimW, Math.max(BADGE, 30 / perPx));
       // its centre: as far in as keeps it off the glass, but never more than half of it past the tray's edge
       const inset = Math.max(0, Math.min(rimW - fd / 2, rimW / 2));
       const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
