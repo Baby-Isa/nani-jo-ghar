@@ -693,6 +693,7 @@
    "name": "n.egg",
    "english": "Eggs",
    "free": false,
+   "proto": true,
    "countRule": true,
    "price": 3,
    "stations": ["eggs"],

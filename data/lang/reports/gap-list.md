@@ -5,18 +5,18 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | | Cook | Clinic |
 |---|---|---|
 | Sentences and frames the engine cannot say yet | 5 | 42 |
-| Words with no Kutchi yet (English placeholders in the game today) | 35 | 255 |
+| Words with no Kutchi yet (English placeholders in the game today) | 38 | 255 |
 | A form of a word we know is missing (plural, 'with the …') | 1 | 0 |
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 30 | 5 |
 | We know the word but have no recording of it | 92 | 40 |
 
-Lines and words checked: Cook 232, clinic 394. A recording counts here if any take exists; 14 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
+Lines and words checked: Cook 235, clinic 394. A recording counts here if any take exists; 14 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
 ## Cook
 
-163 things to ask or record, from the lines and words the game uses today.
+166 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (5)
 
@@ -31,7 +31,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 5. Please say these the way you would at home: "Bring me these for knee" Ask: to record with Mum (the game line has no Kutchi yet).
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-give).
 
-### Words with no Kutchi yet (English placeholders in the game today) (35)
+### Words with no Kutchi yet (English placeholders in the game today) (38)
 
 1. How do you say "green pepper"? Please say it in a short sentence, e.g. "bring me the green pepper". Ask: B34.
    - Needed by: Cook word "green pepper" (ph-pepper).
@@ -49,59 +49,65 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: cook line "I'll give you pocket money for helping. Get it all right and be quick, and you get more!" (cook.line.pocket).
 8. Please say, the way you would at home: "Give me" Ask: to record.
    - Needed by: cook line "Give me" (cook.line.headline-give).
-9. Please say, the way you would at home: "Bring me these" Ask: new.
+9. Please say, the way you would at home: "A lot." Ask: to record.
+   - Needed by: cook line "A lot." (cook.line.alot).
+10. Please say, the way you would at home: "That's good." Ask: to record.
+   - Needed by: cook line "That's good." (cook.line.good).
+11. Please say, the way you would at home: "Still a little more." Ask: to record.
+   - Needed by: cook line "Still a little more." (cook.line.stillmore).
+12. Please say, the way you would at home: "Bring me these" Ask: new.
    - Needed by: cook line "Bring me these" (cook.line.headline-give).
-10. Please say, the way you would at home: "Bring these from the pantry" Ask: new.
+13. Please say, the way you would at home: "Bring these from the pantry" Ask: new.
    - Needed by: cook line "Bring these from the pantry" (cook.guide.fetch).
-11. Please say, the way you would at home: "Pass me that one" Ask: new.
+14. Please say, the way you would at home: "Pass me that one" Ask: new.
    - Needed by: cook line "Pass me that one" (cook.guide.passme).
-12. Please say, the way you would at home: "Pour it up to the line" Ask: new.
+15. Please say, the way you would at home: "Pour it up to the line" Ask: new.
    - Needed by: cook line "Pour it up to the line" (cook.guide.pour).
-13. Please say, the way you would at home: "Put in as many spoons as they said" Ask: new.
+16. Please say, the way you would at home: "Put in as many spoons as they said" Ask: new.
    - Needed by: cook line "Put in as many spoons as they said" (cook.guide.count).
-14. Please say, the way you would at home: "Roll the maani round" Ask: new.
+17. Please say, the way you would at home: "Roll the maani round" Ask: new.
    - Needed by: cook line "Roll the maani round" (cook.guide.roll).
-15. Please say, the way you would at home: "Add the spices, in order" Ask: new.
+18. Please say, the way you would at home: "Add the spices, in order" Ask: new.
    - Needed by: cook line "Add the spices, in order" (cook.guide.tadka).
-16. Please say, the way you would at home: "Make the bowl, in order" Ask: new.
+19. Please say, the way you would at home: "Make the bowl, in order" Ask: new.
    - Needed by: cook line "Make the bowl, in order" (cook.guide.assemble).
-17. Please say, the way you would at home: "Thread the skewers" Ask: new.
+20. Please say, the way you would at home: "Thread the skewers" Ask: new.
    - Needed by: cook line "Thread the skewers" (cook.guide.thread).
-18. Please say, the way you would at home: "Grill the skewers" Ask: new.
+21. Please say, the way you would at home: "Grill the skewers" Ask: new.
    - Needed by: cook line "Grill the skewers" (cook.guide.grill).
-19. Please say, the way you would at home: "Make each cup the way they said" Ask: new.
+22. Please say, the way you would at home: "Make each cup the way they said" Ask: new.
    - Needed by: cook line "Make each cup the way they said" (cook.guide.chai-tray).
-20. Please say, the way you would at home: "Put water in the pan" Ask: new.
+23. Please say, the way you would at home: "Put water in the pan" Ask: new.
    - Needed by: cook line "Put water in the pan" (cook.guide.chai-tray:water).
-21. Please say, the way you would at home: "Put the chai in the pan" Ask: new.
+24. Please say, the way you would at home: "Put the chai in the pan" Ask: new.
    - Needed by: cook line "Put the chai in the pan" (cook.guide.chai-tray:tea).
-22. Please say, the way you would at home: "Make each pan the way they said" Ask: new.
+25. Please say, the way you would at home: "Make each pan the way they said" Ask: new.
    - Needed by: cook line "Make each pan the way they said" (cook.guide.chai-tray:cups).
-23. Please say, the way you would at home: "Pour it into their glass" Ask: new.
+26. Please say, the way you would at home: "Pour it into their glass" Ask: new.
    - Needed by: cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-24. Please say, the way you would at home: "Thread the skewers, then grill them" Ask: new.
+27. Please say, the way you would at home: "Thread the skewers, then grill them" Ask: new.
    - Needed by: cook line "Thread the skewers, then grill them" (cook.guide.mishkaki-grill).
-25. Please say, the way you would at home: "Thread them" Ask: new.
+28. Please say, the way you would at home: "Thread them" Ask: new.
    - Needed by: cook line "Thread them" (cook.guide.mishkaki-grill:thread).
-26. Please say, the way you would at home: "Grill them" Ask: new.
+29. Please say, the way you would at home: "Grill them" Ask: new.
    - Needed by: cook line "Grill them" (cook.guide.mishkaki-grill:grill).
-27. Please say, the way you would at home: "Roll the maani, then cook it" Ask: new.
+30. Please say, the way you would at home: "Roll the maani, then cook it" Ask: new.
    - Needed by: cook line "Roll the maani, then cook it" (cook.guide.maani-line); cook line "Roll the maani, then cook it" (cook.guide.roll-tawa).
-28. Please say, the way you would at home: "Cook it the way they said" Ask: new.
+31. Please say, the way you would at home: "Cook it the way they said" Ask: new.
    - Needed by: cook line "Cook it the way they said" (cook.guide.default).
-29. Please say, the way you would at home: "Put in the next thing" Ask: new.
+32. Please say, the way you would at home: "Put in the next thing" Ask: new.
    - Needed by: cook line "Put in the next thing" (cook.guide.chai-tray:next); cook line "Put in the next thing" (cook.guide.assemble:next).
-30. Please say, the way you would at home: "Take a dough ball" Ask: new.
+33. Please say, the way you would at home: "Take a dough ball" Ask: new.
    - Needed by: cook line "Take a dough ball" (cook.guide.maani-line:take).
-31. Please say, the way you would at home: "Roll it round" Ask: new.
+34. Please say, the way you would at home: "Roll it round" Ask: new.
    - Needed by: cook line "Roll it round" (cook.guide.maani-line:roll).
-32. Please say, the way you would at home: "Put it on the tawa" Ask: new.
+35. Please say, the way you would at home: "Put it on the tawa" Ask: new.
    - Needed by: cook line "Put it on the tawa" (cook.guide.maani-line:tawa).
-33. Please say, the way you would at home: "Put the vegetables in" Ask: new.
+36. Please say, the way you would at home: "Put the vegetables in" Ask: new.
    - Needed by: cook line "Put the vegetables in" (cook.guide.daar:veg).
-34. Please say, the way you would at home: "Put the daar in" Ask: new.
+37. Please say, the way you would at home: "Put the daar in" Ask: new.
    - Needed by: cook line "Put the daar in" (cook.guide.daar:daar).
-35. Please say, the way you would at home: "Fill the next one" Ask: new.
+38. Please say, the way you would at home: "Fill the next one" Ask: new.
    - Needed by: cook line "Fill the next one" (cook.guide.samosa:next).
 
 ### A form of a word we know is missing (plural, 'with the …') (1)

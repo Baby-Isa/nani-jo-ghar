@@ -423,6 +423,30 @@
    "english": "boiled egg",
    "gender": "unknown",
    "src": "placeholder (proto-kitchen, 1 Nov): 'a boiled egg' is to record (build/reports/designs/cook-baking-eggs.md §1: the engine may build it from ukar and indo once Mum gives the form)"
+  },
+  "ph-naan": {
+   "kutchi": null,
+   "english": "naan",
+   "gender": "unknown",
+   "src": "placeholder (proto-kitchen, 1 Nov): the oven's bake, to record"
+  },
+  "ph-quartercup": {
+   "kutchi": null,
+   "english": "a quarter cup",
+   "gender": "unknown",
+   "src": "placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+  },
+  "ph-cups-1h": {
+   "kutchi": null,
+   "english": "one and a half cups",
+   "gender": "unknown",
+   "src": "placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+  },
+  "ph-cups-2h": {
+   "kutchi": null,
+   "english": "two and a half cups",
+   "gender": "unknown",
+   "src": "placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
   }
  },
  "lines": {
@@ -723,6 +747,21 @@
    "e": "Give me",
    "record": true,
    "_about": "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. To record with Mum (Round 5); until then this grey placeholder"
+  },
+  "alot": {
+   "e": "A lot.",
+   "record": true,
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+  },
+  "good": {
+   "e": "That's good.",
+   "record": true,
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+  },
+  "stillmore": {
+   "e": "Still a little more.",
+   "record": true,
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
   }
  },
  "grammar": {

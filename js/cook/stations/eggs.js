@@ -33,11 +33,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       ["px-pot", "assets/cook/items-s14/chai-pan/pan-water-s14.webp"],
       ["v2-tray", "assets/cook/items/chai-v2/tray-4-cutout-t.webp"],
     ].concat(Cook.Kit.art(2, []));
-  const EGG = { w: 0xfbf7ee, shell: 0xf3e6cf, yolk: 0xf2b21b, ink: 0x2a2522 };
+  // the station's art colours are data (data/stations/eggs.json station.palette; UI colours stay the tokens')
+  const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
+  const EGG = { w: col("eggWhite"), shell: col("shell"), yolk: col("yolk"), ink: col("ink") };
   const SKY = {
-    breakfast: { top: 0xbfe3f5, bottom: 0xfbe7c4, sun: 0xffd56b, light: 0.1 },
-    lunch: { top: 0x6fb8ea, bottom: 0xcfeaf8, sun: 0xfff3b0, light: 0 },
-    dinner: { top: 0x14213d, bottom: 0x3b3f6b, sun: 0xf4f1de, light: 0.35, moon: true },
+    breakfast: { top: col("morningTop"), bottom: col("morningBottom"), sun: col("sun"), light: 0.1 },
+    lunch: { top: col("noonTop"), bottom: col("noonBottom"), sun: col("noonSun"), light: 0 },
+    dinner: { top: col("nightTop"), bottom: col("nightBottom"), sun: col("moon"), light: 0.35, moon: true },
   };
 
   Mech.combined(KEY, {
@@ -133,40 +135,40 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       return key;
     };
     tex("px-plate", 184, 184, (g, x, y) => {
-      g.fillStyle(0x28190a, 0.16).fillCircle(x + 3, y + 5, 86);
-      g.fillStyle(0xffffff, 1).fillCircle(x, y, 84);
-      g.lineStyle(3, 0xe9e2d6, 1).strokeCircle(x, y, 62);
+      g.fillStyle(col("shadow"), 0.16).fillCircle(x + 3, y + 5, 86);
+      g.fillStyle(col("white"), 1).fillCircle(x, y, 84);
+      g.lineStyle(3, col("plateRim"), 1).strokeCircle(x, y, 62);
     });
     tex("px-egg-raw", 60, 74, (g, x, y) => {
-      g.fillStyle(0x28190a, 0.18).fillEllipse(x + 3, y + 5, 50, 64);
+      g.fillStyle(col("shadow"), 0.18).fillEllipse(x + 3, y + 5, 50, 64);
       g.fillStyle(EGG.shell, 1).fillEllipse(x, y, 48, 62);
-      g.fillStyle(0xffffff, 0.6).fillEllipse(x - 9, y - 12, 12, 18);
+      g.fillStyle(col("white"), 0.6).fillEllipse(x - 9, y - 12, 12, 18);
     });
     tex("px-egg-fried", 120, 120, (g, x, y) => {
       g.fillStyle(EGG.w, 1);
       [[0, 0, 44], [-22, 8, 26], [20, -10, 28], [10, 20, 24], [-16, -18, 22]].forEach(([dx, dy, r]) => g.fillCircle(x + dx, y + dy, r));
       g.fillStyle(EGG.yolk, 1).fillCircle(x + 2, y, 17);
-      g.fillStyle(0xffffff, 0.5).fillCircle(x - 4, y - 6, 5);
+      g.fillStyle(col("white"), 0.5).fillCircle(x - 4, y - 6, 5);
     });
     tex("px-eggcup", 84, 84, (g, x, y) => {
-      g.fillStyle(0x28190a, 0.16).fillCircle(x + 3, y + 4, 38);
-      g.fillStyle(0xffffff, 1).fillCircle(x, y, 36);
-      g.lineStyle(3, 0xd9d2c4, 1).strokeCircle(x, y, 35);
+      g.fillStyle(col("shadow"), 0.16).fillCircle(x + 3, y + 4, 38);
+      g.fillStyle(col("white"), 1).fillCircle(x, y, 36);
+      g.lineStyle(3, col("cupRim"), 1).strokeCircle(x, y, 35);
       g.fillStyle(EGG.shell, 1).fillCircle(x, y, 24);
-      g.fillStyle(0xffffff, 0.6).fillCircle(x - 7, y - 7, 7);
+      g.fillStyle(col("white"), 0.6).fillCircle(x - 7, y - 7, 7);
     });
     const shakerTex = (key, col) =>
       tex(key, 84, 140, (g, x, y) => {
-        g.fillStyle(0x28190a, 0.15).fillEllipse(x + 4, y + 62, 70, 16);
+        g.fillStyle(col("shadow"), 0.15).fillEllipse(x + 4, y + 62, 70, 16);
         g.fillStyle(col, 1).fillRoundedRect(x - 28, y - 30, 56, 92, 16);
-        g.lineStyle(2, 0x2a2522, 0.25).strokeRoundedRect(x - 28, y - 30, 56, 92, 16);
-        g.fillStyle(0xffffff, 0.35).fillRoundedRect(x - 20, y - 22, 10, 70, 5);
-        g.fillStyle(0xc0c4c8, 1).fillRoundedRect(x - 30, y - 60, 60, 34, 12);
-        g.fillStyle(0x2a2522, 0.55);
+        g.lineStyle(2, col("ink"), 0.25).strokeRoundedRect(x - 28, y - 30, 56, 92, 16);
+        g.fillStyle(col("white"), 0.35).fillRoundedRect(x - 20, y - 22, 10, 70, 5);
+        g.fillStyle(col("steel"), 1).fillRoundedRect(x - 30, y - 60, 60, 34, 12);
+        g.fillStyle(col("ink"), 0.55);
         [-12, 0, 12].forEach((dx) => g.fillCircle(x + dx, y - 47, 3));
       });
-    shakerTex("px-shaker-salt", 0xf7f3ea);
-    shakerTex("px-shaker-pepper", 0x4a4542);
+    shakerTex("px-shaker-salt", col("salt"));
+    shakerTex("px-shaker-pepper", col("pepper"));
     const order = Cook.shuffle(plates.map((q, i) => i));
     const P0 = plates.map((q, i) => {
       const [fx, fy] = WELLS[order.indexOf(i)];
@@ -197,7 +199,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     const ringG = T(S.add.graphics().setDepth(D.fx + 1));
     const steamPuff = (x, y, n = 3) => {
       for (let i = 0; i < n; i++) {
-        const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, 10 + Math.random() * 8, 0xffffff, 0.55).setDepth(D.fx + 2));
+        const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, 10 + Math.random() * 8, col("white"), 0.55).setDepth(D.fx + 2));
         S.tweens.add({ targets: s, y: y - 90 - Math.random() * 40, alpha: 0, scale: 2.2, duration: 1300 + i * 200, delay: i * 180, onComplete: () => s.destroy() });
       }
     };
@@ -348,7 +350,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         await Cook.tween(S, { targets: sh, angle: 150, duration: 160 });
         const dots = S.add.graphics();
         pl.top.add(dots);
-        dots.fillStyle(id === "spi-16" ? 0xffffff : 0x2a2522, 0.9);
+        dots.fillStyle(id === "spi-16" ? col("white") : col("ink"), 0.9);
         for (let i = 0; i < 14; i++) dots.fillCircle((Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70, 2.4);
         S.tweens.add({ targets: sh, angle: 110, duration: 90, yoyo: true, repeat: 2 });
         await Cook.wait(360);
@@ -411,9 +413,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         }
         const r = 40;
         const { x, y } = e.obj;
-        ringG.lineStyle(9, 0xfffaf1, 0.95).beginPath().arc(x, y, r, 0, Math.PI * 2).strokePath();
-        ringG.lineStyle(9, 0x7e9a76, 1).beginPath().arc(x, y, r, -Math.PI / 2 + ready * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
-        ringG.lineStyle(5, e.p >= ready ? 0x5c8a4e : 0xc9962e, 1).beginPath().arc(x, y, r, -Math.PI / 2, -Math.PI / 2 + e.p * Math.PI * 2).strokePath();
+        ringG.lineStyle(9, col("track"), 0.95).beginPath().arc(x, y, r, 0, Math.PI * 2).strokePath();
+        ringG.lineStyle(9, col("sage"), 1).beginPath().arc(x, y, r, -Math.PI / 2 + ready * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
+        ringG.lineStyle(5, e.p >= ready ? col("ringDone") : col("gold"), 1).beginPath().arc(x, y, r, -Math.PI / 2, -Math.PI / 2 + e.p * Math.PI * 2).strokePath();
       });
       if (changed) refresh();
       // steam now and then over a pot that's boiling
@@ -456,7 +458,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     const T = (o) => S.track(o);
     const g = T(S.add.graphics().setDepth(D.bg + 2));
     // the wall, the window (its sky by the meal), the sill with the cat
-    g.fillStyle(0xf1e3cf, 1).fillRect(-400, -400, 2400, 1700);
+    g.fillStyle(col("wall"), 1).fillRect(-400, -400, 2400, 1700);
     const wx = 70;
     const wy = -60;
     const ww = 560;
@@ -469,14 +471,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     g.fillStyle(sky.sun, 1).fillCircle(wx + ww * (sky.moon ? 0.72 : 0.3), wy + wh * (meal === "lunch" ? 0.22 : 0.35), sky.moon ? 34 : 46);
     if (sky.moon) {
       g.fillStyle(sky.top, 1).fillCircle(wx + ww * 0.72 + 16, wy + wh * 0.35 - 8, 30);
-      g.fillStyle(0xffffff, 0.9);
+      g.fillStyle(col("white"), 0.9);
       for (let i = 0; i < 14; i++) g.fillCircle(wx + 20 + Math.random() * (ww - 40), wy + 20 + Math.random() * (wh * 0.6), 2);
     }
-    g.fillStyle(meal === "dinner" ? 0x1f3a2a : 0x86b36a, 1).fillRect(wx, wy + wh * 0.82, ww, wh * 0.18);
-    g.lineStyle(18, 0xffffff, 1).strokeRect(wx, wy, ww, wh);
-    g.lineStyle(10, 0xffffff, 1).lineBetween(wx + ww / 2, wy, wx + ww / 2, wy + wh).lineBetween(wx, wy + wh / 2, wx + ww, wy + wh / 2);
-    g.fillStyle(0xe6d3b8, 1).fillRect(wx - 30, wy + wh, ww + 230, 22);
-    if (sky.light) g.fillStyle(0x0b1530, sky.light).fillRect(-400, -400, 2400, 1700);
+    g.fillStyle(meal === "dinner" ? col("nightGrass") : col("grass"), 1).fillRect(wx, wy + wh * 0.82, ww, wh * 0.18);
+    g.lineStyle(18, col("white"), 1).strokeRect(wx, wy, ww, wh);
+    g.lineStyle(10, col("white"), 1).lineBetween(wx + ww / 2, wy, wx + ww / 2, wy + wh).lineBetween(wx, wy + wh / 2, wx + ww, wy + wh / 2);
+    g.fillStyle(col("sill"), 1).fillRect(wx - 30, wy + wh, ww + 230, 22);
+    if (sky.light) g.fillStyle(col("nightShade"), sky.light).fillRect(-400, -400, 2400, 1700);
     const cat = T(S.add.image(wx + ww + 95, wy + wh + 4, "px-cat-sit").setOrigin(0.5, 1).setDepth(D.bg + 3));
     cat.setScale(190 / cat.height);
     S.tweens.add({ targets: cat, scaleY: cat.scaleY * 1.03, duration: 900, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
@@ -494,12 +496,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     });
     // the table (a plain wood top; a cloth at dinner)
     const tg = T(S.add.graphics().setDepth(D.item));
-    tg.fillStyle(0x28190a, 0.18).fillRoundedRect(700, 470, 1300, 600, 40);
-    tg.fillStyle(meal === "dinner" ? 0xf6efe3 : 0xb9824f, 1).fillRoundedRect(680, 450, 1300, 600, 40);
+    tg.fillStyle(col("shadow"), 0.18).fillRoundedRect(700, 470, 1300, 600, 40);
+    tg.fillStyle(meal === "dinner" ? col("cloth") : col("wood"), 1).fillRoundedRect(680, 450, 1300, 600, 40);
     if (meal === "dinner") {
-      tg.lineStyle(6, 0xc9962e, 0.7).strokeRoundedRect(700, 466, 1260, 560, 32);
+      tg.lineStyle(6, col("gold"), 0.7).strokeRoundedRect(700, 466, 1260, 560, 32);
     } else {
-      tg.lineStyle(2, 0x8a5a33, 0.35);
+      tg.lineStyle(2, col("woodGrain"), 0.35);
       for (let y = 500; y < 1000; y += 46) tg.lineBetween(700, y, 1960, y + 6);
     }
     await Cook.wait(400);
@@ -509,9 +511,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       const x = img.x;
       const plate = T(S.add.container(x, 1050).setDepth(D.item + 1));
       const pg = S.add.graphics();
-      pg.fillStyle(0x28190a, 0.16).fillEllipse(4, 8, 230, 96);
-      pg.fillStyle(0xffffff, 1).fillEllipse(0, 0, 220, 90);
-      pg.lineStyle(3, 0xe9e2d6, 1).strokeEllipse(0, 0, 160, 62);
+      pg.fillStyle(col("shadow"), 0.16).fillEllipse(4, 8, 230, 96);
+      pg.fillStyle(col("white"), 1).fillEllipse(0, 0, 220, 90);
+      pg.lineStyle(3, col("plateRim"), 1).strokeEllipse(0, 0, 160, 62);
       plate.add(pg);
       pl.eggs.forEach((e, j) => {
         const dx = (j - (pl.eggs.length - 1) / 2) * 64;
@@ -521,17 +523,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         } else {
           // the egg cup, side-on, the egg standing in it
           eg.fillStyle(EGG.shell, 1).fillEllipse(dx, -62, 54, 70);
-          eg.fillStyle(0xffffff, 0.6).fillEllipse(dx - 10, -76, 12, 20);
-          eg.fillStyle(0xffffff, 1).fillRoundedRect(dx - 32, -44, 64, 40, 12).fillRect(dx - 12, -6, 24, 8).fillEllipse(dx, 4, 52, 14);
-          eg.lineStyle(2, 0xd9d2c4, 1).strokeRoundedRect(dx - 32, -44, 64, 40, 12);
+          eg.fillStyle(col("white"), 0.6).fillEllipse(dx - 10, -76, 12, 20);
+          eg.fillStyle(col("white"), 1).fillRoundedRect(dx - 32, -44, 64, 40, 12).fillRect(dx - 12, -6, 24, 8).fillEllipse(dx, 4, 52, 14);
+          eg.lineStyle(2, col("cupRim"), 1).strokeRoundedRect(dx - 32, -44, 64, 40, 12);
         }
         plate.add(eg);
       });
       if (pl.salt || pl.pepper) {
         const dg = S.add.graphics();
-        if (pl.salt) dg.fillStyle(0xffffff, 0.95);
+        if (pl.salt) dg.fillStyle(col("white"), 0.95);
         for (let i = 0; i < 10 && pl.salt; i++) dg.fillCircle((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 24, 2.2);
-        if (pl.pepper) dg.fillStyle(0x2a2522, 0.9);
+        if (pl.pepper) dg.fillStyle(col("ink"), 0.9);
         for (let i = 0; i < 10 && pl.pepper; i++) dg.fillCircle((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 24, 2.2);
         plate.add(dg);
       }
@@ -542,7 +544,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       const ok = kindsRight && seasonRight;
       if (!ok) allRight = false;
       for (let i = 0; i < 3; i++) {
-        const s = T(S.add.circle(x + (i - 1) * 30, 540, 12, 0xffffff, 0.6).setDepth(D.item + 2));
+        const s = T(S.add.circle(x + (i - 1) * 30, 540, 12, col("white"), 0.6).setDepth(D.item + 2));
         S.tweens.add({ targets: s, y: 420, alpha: 0, scale: 2.4, duration: 1500, delay: i * 220, repeat: 1, onComplete: () => s.destroy() });
       }
       // the pose swap and a small bounce (a gentle frown when it isn't what they asked for)
