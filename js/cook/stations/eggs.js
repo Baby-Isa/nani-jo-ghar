@@ -37,7 +37,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
   const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
   const EGG = { w: col("eggWhite"), shell: col("shell"), yolk: col("yolk"), ink: col("ink") };
   const SKY = {
-    breakfast: { top: col("morningTop"), bottom: col("morningBottom"), sun: col("sun"), light: 0.1 },
+    breakfast: { top: col("morningTop"), bottom: col("morningBottom"), sun: col("sun"), light: 0 },
     lunch: { top: col("noonTop"), bottom: col("noonBottom"), sun: col("noonSun"), light: 0 },
     dinner: { top: col("nightTop"), bottom: col("nightBottom"), sun: col("moon"), light: 0.35, moon: true },
   };
@@ -157,10 +157,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       g.fillStyle(EGG.shell, 1).fillCircle(x, y, 24);
       g.fillStyle(col("white"), 0.6).fillCircle(x - 7, y - 7, 7);
     });
-    const shakerTex = (key, col) =>
+    const shakerTex = (key, body) =>
       tex(key, 84, 140, (g, x, y) => {
         g.fillStyle(col("shadow"), 0.15).fillEllipse(x + 4, y + 62, 70, 16);
-        g.fillStyle(col, 1).fillRoundedRect(x - 28, y - 30, 56, 92, 16);
+        g.fillStyle(body, 1).fillRoundedRect(x - 28, y - 30, 56, 92, 16);
         g.lineStyle(2, col("ink"), 0.25).strokeRoundedRect(x - 28, y - 30, 56, 92, 16);
         g.fillStyle(col("white"), 0.35).fillRoundedRect(x - 20, y - 22, 10, 70, 5);
         g.fillStyle(col("steel"), 1).fillRoundedRect(x - 30, y - 60, 60, 34, 12);
@@ -350,7 +350,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         await Cook.tween(S, { targets: sh, angle: 150, duration: 160 });
         const dots = S.add.graphics();
         pl.top.add(dots);
-        dots.fillStyle(id === "spi-16" ? col("white") : col("ink"), 0.9);
+        dots.fillStyle(id === "spi-16" ? col("steel") : col("ink"), 0.9);
         for (let i = 0; i < 14; i++) dots.fillCircle((Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70, 2.4);
         S.tweens.add({ targets: sh, angle: 110, duration: 90, yoyo: true, repeat: 2 });
         await Cook.wait(360);
@@ -537,7 +537,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         for (let i = 0; i < 10 && pl.pepper; i++) dg.fillCircle((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 24, 2.2);
         plate.add(dg);
       }
-      await Cook.tween(S, { targets: plate, y: 590, duration: 520, ease: "Cubic.easeOut" });
+      await Cook.tween(S, { targets: plate, y: 545, duration: 520, ease: "Cubic.easeOut" });
       Cook.sfx.pop();
       const kindsRight = pl.eggs.length === (pl.q.n || 1) && pl.eggs.every((e) => e.fried === !!pl.q.fried);
       const seasonRight = (pl.q.salt === "yes") === !!pl.salt && (pl.q.pepper === "yes") === !!pl.pepper;
