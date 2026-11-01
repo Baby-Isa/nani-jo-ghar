@@ -309,7 +309,7 @@
       .map(([k, v]) => `<div><span>${esc(k)}</span><b>${v.ear}/${v.n}</b></div>`)
       .join("")}</div>`;
 
-  /* ---------------- test hooks (build/test_snap.py) ---------------- */
+  /* ---------------- test hooks (build/archive/test_snap.py; live smoke flow: build/sandbox/flows/modes.mjs) ---------------- */
   /**
    * What the oracle would do next, as a real pointer action at screen
    * coordinates: tap the orchard to centre, a zoom step, the shutter, Show

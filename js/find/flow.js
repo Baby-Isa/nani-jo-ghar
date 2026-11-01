@@ -285,7 +285,7 @@
       .map(([k, v]) => `<div><span>${esc(k)}</span><b>${v.ear}/${v.n}</b></div>`)
       .join("")}</div>`;
 
-  /* ---------------- test hooks (build/test_find.py) ---------------- */
+  /* ---------------- test hooks (build/archive/test_find.py; live smoke flow: build/sandbox/flows/modes.mjs) ---------------- */
   function screenify(e) {
     if (e.x == null) return e;
     if (!V.inView(e.x, e.y, 30)) {
