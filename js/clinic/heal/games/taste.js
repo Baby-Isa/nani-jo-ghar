@@ -412,8 +412,6 @@
     };
     const opOf = (id) => (id === "water" ? 0.5 : 0.95);
     const blob = s("ellipse", { cx: TOP.x - 6, cy: TOP.y + 3, rx: TOP.rx * 0.45, ry: TOP.ry * 0.6, fill: "#fff", opacity: 0 }, glassG);
-    const glassArt = (key) => art(key);
-    void glassArt;
     const toolSvg = (id) => {
       const el = S.toolEls[id];
       if (!el) return { x: 700, y: 250 };

@@ -29,7 +29,6 @@
   // CLN-136: the diagnosis's sore face. It was the sad one while the art's pain face winked; s08-clinic-items: the pain
   // face is GS1 now (both eyes open, an "ow"), sitting and standing, so she looks sore (ouch, held: react(HURT, 0))
   const HURT = "ouch";
-  const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
   S.diagnosis = {
     async run(env, plan) {

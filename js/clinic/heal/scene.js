@@ -610,7 +610,6 @@
       b.classList.toggle("used", on);
       if (on) b.classList.remove("sel");
     };
-    S.pulseTool = (id) => Object.entries(S.toolEls).forEach(([k, b]) => b.classList.toggle("pulse", k === id));
 
     /* ---- what came from the pharmacy (13: the tray feeds the heal game) ---- */
     const ALIAS = { bud: "cotton-bud", thermo: "thermometer", lollipop: "apple", cover: "patch", "care-patch": "patch", "care-drops": "drops", "care-plaster": "plaster", "cook-paani": "paani", "fru-02": "limu", "tool-tweezers": "tweezers" };
