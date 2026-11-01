@@ -1,0 +1,1 @@
+{"id": "farm", "adapter": "script", "script": "build/tools/review/leak-games/farm-photo.mjs", "args": ["--rounds", "500"], "about": "The farm mode: the photo shoot only on this branch (proto-photo); the farm builder's own farm.json replaces this one at the merge (keep farm-photo.json)"}
