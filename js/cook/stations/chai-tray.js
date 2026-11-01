@@ -851,7 +851,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }
       // it sinks in as the pan comes to the boil (the sugar's heaps and the spices alike), gone once it is ready
       const h = pan.heat || 0;
-      const sink = pan.state === "ready" || pan.state === "over" ? 0 : pan.state === "heating" ? Cook.clamp(1 - (h - boilAt * 0.6) / (boilAt * 0.5), 0, 1) : 1;
+      // (CK-06, decision 3a: "sinking at the boil": they fade from the rolling boil, boilAt, to the green, not from half-heat)
+      const sink = pan.state === "ready" || pan.state === "over" ? 0 : pan.state === "heating" ? Cook.clamp(1 - (h - boilAt) / Math.max(0.01, lo - boilAt), 0, 1) : 1;
       // CK-06 (Zafar, 1 Nov; decision 3a): elchi and ginger are pictures (the props' pod, the cut ginger slice), laid where each
       // spoonful went and kept after the milk (the s14 milky picture has no spices in it: they no longer vanish when it goes in),
       // sinking at the boil; any other spice (a decoy put in by mistake) keeps its small heap
