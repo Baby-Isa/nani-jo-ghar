@@ -17,7 +17,8 @@ but as built a child can win by matching pictures: each animal's or hen's card s
 **Claude's recommendation: B, with C's strips as the phone layout of the same screen** (one design that rearranges by size, as
 chai's panel does). A leaks: the card pairs the animal with its food, so the sentence is never needed. In B and C:
 - the tiles show **every** animal and food in the scene, asked for or not, so the tiles never say which ones are in play;
-- the tiles follow each word's ladder (picture and word, then the word, then dots, then gone), as the order cards do;
+- a tile's picture always stays; its word dots out on the word ladder, and revealing it costs accuracy (Zafar, 2 Nov: "you'll
+  hear the words in the spoken sentence so there's not much point in fading the image");
 - early on, a **pair tile** shows the small hen beside the big hen with their words, so "small" is learned by contrast (Zafar's
   idea); it goes at higher levels;
 - a wrong pick (the big hen when she said the small one) does nothing bad: the hen settles, Hannah Mami says the instruction

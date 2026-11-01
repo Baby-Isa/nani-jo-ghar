@@ -102,7 +102,7 @@ and the rows, with his 2 Nov answers): 0 missing, 8 weakened, all fixed in the r
 - SH-169: the aim, not the mechanism: the current card's face and headline always in view.
 - SH-186: the order when two replies don't fit, never stacked, spread left and right.
 - SH-187: never under the gear; over it only as the last resort (his words).
-- 971x318 (his phone) added to every row's check.
+- ~~971x318 (his phone) added to every row's check~~: taken out (Zafar, 2 Nov: "just stick with the current agreed sizes ... we'll make minor adjustment to all screen sizes before launch. don't add more to what's been agreed").
 - SH-171: the next person's card comes when they say its sentence, not when they arrive.
 - SH-185: the floors named (14.5 px words, about 32 px drawn speaker with a 48 px tap area, about 56 px picture); 2.5 cards.
 - Its aims check, also in the rows: every bubble place tested against every face, the panel, the gear and the replies, and a
