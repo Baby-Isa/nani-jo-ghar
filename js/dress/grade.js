@@ -26,7 +26,6 @@
   const partSlot = (r) => `part:${r.part}${r.side ? ":" + r.side : ""}`;
   Grade.partSlot = partSlot;
   const matchGarment = (r, it) => it.kind === r.garment && it.colour === r.colour;
-  const matchThing = (r, it) => it.colour === r.colour && (!r.size || it.size === r.size) && (!r.motif || it.motif === r.motif);
   const whyThing = (r, items) => {
     if (!items.length) return "missing";
     if (items.length !== r.count) return "count";
