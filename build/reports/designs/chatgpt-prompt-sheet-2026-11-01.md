@@ -1922,7 +1922,7 @@ It must read at phone size: the two naans' different colours, the face badges an
 
 #### cook-baking-eggs-4: breakfast served, the meal named by the light
 
-- **shows:** The serve at breakfast in morning light at one moment: Nana's boiled egg shelled and halved, Ali's fried egg in his maani
+- **shows:** The serve at breakfast in morning light at one moment: Nana's boiled egg standing in an egg cup, its top off, Ali's fried egg in his maani
 - **attach (3):** cook-service-bg.jpg, customers-sheet.webp, house-wide.png
 - **save as:** mockup-cook-baking-eggs-4.png
 
