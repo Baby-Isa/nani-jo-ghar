@@ -50,7 +50,11 @@ export const CLASSIC = [
 ];
 // the shared kit in its one link (S13-B1: the kit review's shell rule), then the clinic's own sheet
 export const STYLES = ["css/shared/kit.css", "css/clinic.css"];
-/** The healing games in the pipeline, and the three parked ones (tummy, hic, hair: as they are, lab only). */
+/**
+ * The healing games in the pipeline, and the three parked ones (tummy, hic, hair: as they are, lab only). Every pipeline
+ * game has a level 4 (its harder variety: Zafar's heal ladder, 13 Oct; boing: S14, the central rules' L4; fever: decision
+ * 97 (8); ear: CLN-45, Zafar 14 Oct); the parked three stop at 3 (their plans clamp).
+ */
 export const HEAL = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 export const PARKED = ["tummy", "hic", "hair"];
 const HEAL_GESTURES = { cut: ["tap"], knee: ["tap"], ear: ["tap", "drag"], tooth: ["tap", "drag"], taste: ["tap"], fever: ["tap"], boing: ["tap"], eye: ["tap"], foot: ["tap", "drag"], tummy: ["tap", "drag"], hic: ["tap"], hair: ["tap", "drag"] };
@@ -58,8 +62,6 @@ const LABEL = { cut: "The scrape", knee: "The knee", ear: "The ear", tooth: "The
 const STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"];
 const STAGE_LABEL = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (the belt)", heal: "Heal (the patient's game)", sendoff: "Send-off" };
 const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
-// the heal games with a level 4 (their harder variety: Zafar's heal ladder, 13 Oct); the rest stop at 3 (their plans clamp)
-const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear", "boing"]; // boing: S14 (the central rules' L4) // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
 
 const G = () => globalThis;
 /**
@@ -353,7 +355,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
 
 const games = {};
 STAGES.forEach((s) => (games[s] = stageGame(s, { stage: s, gestures: s === "heal" ? ["tap", "drag"] : ["tap"], levels: STAGE_LEVELS[s] || [1, 2, 3], label: STAGE_LABEL[s] })));
-HEAL.concat(PARKED).forEach((g) => (games[g] = stageGame(g, { stage: "heal", heal: g, gestures: HEAL_GESTURES[g], label: LABEL[g], levels: HEAL_L4.includes(g) ? [1, 2, 3, 4] : undefined })));
+HEAL.concat(PARKED).forEach((g) => (games[g] = stageGame(g, { stage: "heal", heal: g, gestures: HEAL_GESTURES[g], label: LABEL[g], levels: HEAL.includes(g) ? [1, 2, 3, 4] : undefined })));
 
 /* ---------------- the mode ---------------- */
 
