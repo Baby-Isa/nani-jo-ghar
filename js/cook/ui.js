@@ -272,7 +272,6 @@
     speechTail = mine.catch(() => {});
     return mine;
   };
-  UI.queueSpeech = queued;
 
   /* ---------------- speech: bubble by a character, or Nani's card ---------------- */
   // S13-B2 (the kit review 3, decision 6): a character's line is the kit's one speech bubble (js/shared/conversations.js
@@ -663,23 +662,6 @@
   UI.stepDone = () => stepper && stepper.close();
   // (Sprint 11: the open step's id, as Nani's stepper logs it: a station's hint rungs for that step go by the same name)
   UI.stepId = () => (stepper && stepper.current ? stepper.current.id : null);
-  /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
-  UI.guideSay = async function (line, o = {}) {
-    if (!guide || !line) return UI.say(line, { badge: true }, o);
-    if (stepper) stepper.close();
-    guideLine = line;
-    guide.set(raHtml(line), { rec: line.ok === false });
-    guide.talk(true);
-    let off = null;
-    const skipped = new Promise((resolve) => (off = onPage(document, "pointerdown", (ev) => !(ev.target.closest && ev.target.closest("button, a, #overlay")) && resolve(), true)));
-    try {
-      const voice = !UI.naniMuted() && Lang.hasVoice(line);
-      await Promise.race([voice ? Promise.all([queued(() => speakAlong(line, guide.el)), Cook.wait(600)]) : Cook.wait(o.ms || Math.min(2600, Cook.readMs(Lang.plain(line)))), skipped]);
-    } finally {
-      if (off) off();
-      if (guide) guide.talk(false);
-    }
-  };
   UI.stepPoke = () => stepper && stepper.poke();
   UI.stepHelp = () => stepper && stepper.help();
   UI.stepOpen = function (line, { ctx, hide } = {}) {
@@ -924,7 +906,6 @@
     }
     return helperOn;
   };
-  UI.helperIsOpen = () => !!(helperOn && helperW);
   /**
    * A card brought into the order list's view, its headline first (the judge, 30 Oct, 930x430: "nearest" put a card taller than the
    * list by its foot and cut its headline at the top): a card that is cut at the top, or taller than the list, shows from its top;
@@ -1030,7 +1011,6 @@
     helpText = HELP_DEFAULT;
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
   };
-  UI.hideTopGist = () => $("#gist").classList.add("hidden");
   /**
    * The "?" pops the goal out beside itself: the kit's one grown-ups' pop-up (js/shared/buttons.js NjgButtons.grownUpPop; S13-A2,
    * non-negotiable 3), with the grown-ups' "Play as new" (SH-60) and, while the first-time help runs, its skip (G7 / CQ15).
@@ -3256,14 +3236,6 @@
     s.at = (s.at || 0) + 1;
     renderOrder();
   };
-  /** The i-th piece of the dish's sequence (thread reports a position, not an item). */
-  M.unitId = function (i, dish = 0) {
-    const L = ladderFor(dish);
-    if (!L) return null;
-    const units = [];
-    seqSecs(L).forEach((s) => s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id))))));
-    return units[i] || null;
-  };
   /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */
   M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null, block = null, did = null } = {}) {
     const L = ladderFor(dish);
@@ -3414,9 +3386,8 @@
         .some((r) => !r.done && !r.no && r.ids.includes(id))
     );
   };
-  // Wave 5: the English step pills are gone; kept as no-ops for callers
+  // Wave 5: the English step pills are gone; kept as a no-op for callers
   M.step = () => {};
-  M.setSteps = () => {};
   /** PARKED MODES ONLY (legacy stars; Cook never calls it). state: "earned" | "lost" | "pending" */
   M.star = function (k, state, { final = false } = {}) {
     if (!mission || mission.stars[k] === state) return;
@@ -3487,10 +3458,7 @@
   };
 
   /* ---------------- pocket money ---------------- */
-  // Wave 5: no coins counter in the sidebar (pocket money is on the title screen and the day's
-  // summary); kept as a no-op so the parked modes that call it needn't care
-  UI.setCoins = () => {};
-  UI.setStars = () => {}; // parked modes only
+  // Wave 5: no coins counter in the sidebar (pocket money is on the title screen and the day's summary)
   function bumpEl(p) {
     p.classList.remove("bump");
     void p.offsetWidth;
@@ -3968,7 +3936,6 @@
       if (e.target.closest && e.target.closest(".side-rail, .njg-gu-pop")) return;
       setMenu(false);
     }, { passive: true });
-    UI.openMenu = () => setMenu(true);
     on("#btn-help", () => {
       Cook.sfx.click();
       if (UI.helpOpen()) UI.closeHelp();

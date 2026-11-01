@@ -328,7 +328,6 @@
     const g = String((e && e.gloss) || "");
     return { fn: /!\s*$/.test(g) ? "Exclaim" : /\?\s*$/.test(g) ? "Ask" : "Say", x: e ? e.id : id };
   }
-  Lang.fixedOf = fixed;
   /**
    * A line by Cook's key: a frame (data/cook.json `meanings`, its "$x" filled by the phrase's meaning), else a fixed
    * line (the engine's alias cook.line.<key>), else a word said on its own (a stir speed), else the engine's gap.

@@ -72,9 +72,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       },
     });
   };
-  /** An x just past the right edge of what's shown (a person sliding in from the right), never on a wide stage. */
-  Cook.offRight = (x = 1760) => Math.max(x, ((Cook.view && Cook.view.right) || 1600) + 160);
-
   class CookScene extends Phaser.Scene {
     constructor() {
       super("cook");
