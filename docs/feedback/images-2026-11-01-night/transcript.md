@@ -1,0 +1,93 @@
+# Zafar, 1 Nov 2026 night: typed notes on chai (phone L2-L4, a laptop window at phone size L1); line numbers stand in for times
+
+- **0:01** Okay, the last two screenshots were taken on my laptop, but I've reduced the browser size to approximately a phone size.
+- **0:02** Starting with the second image, is there no scaling of words, text, and image sizes on the left bar?
+- **0:03** Feels like the main game scales for the smaller screen, the words are smaller for the individual items, but they're massive on the left-hand side, with no reduction in card size scaling down, the gap between the cards and the Moke Chaiko pair, and the I want T sentence.
+- **0:04** The speaker button for the water is massive.
+- **0:05** It's too big to even be contained in the hint card.
+- **0:06** Just in general, it feels like there's not the same level of scaling on the left bar, and as you can see as a result, it's very difficult to even see one order's worth of items.
+- **0:07** Before I forget, when the milk pours, there's a little white rectangle that comes out.
+- **0:08** I think that's a code drawn animation or effect.
+- **0:09** We should take that out.
+- **0:10** I don't think we need to draw milk going in, because the colour of the tea changes.
+- **0:11** Also, the face is next to the tea.
+- **0:12** I think we should put them at the corners.
+- **0:13** So for the top left glass, put it in the top left corner.
+- **0:14** For the top right glass, put it in the top right corner.
+- **0:15** Bottom right glass, bottom right corner.
+- **0:16** Bottom left glass, bottom left corner.
+- **0:17** There's a bit of natural space there.
+- **0:18** Also, when the pan of the tea comes across to pour into the glass, it should go on top of the face icons, rather than having them on top of the teapot.
+- **0:19** The first screenshot from the second message, look at the, everything's wrong.
+- **0:20** The speech bubble makes no sense, being in the bottom right hand corner, and the replies are stacked on top, overlapping, so you can't see what's behind.
+- **0:21** It's a mess.
+- **0:22** Again, is there no scaling of the text for the conversations in the ordering?
+- **0:23** There should be, because yeah, the text is way bigger in the replies and in the speech bubble than is in the menu card or the item labels.
+- **0:24** So if we have deemed that size acceptable in terms of smallness for those items, then it can go smaller for the speech bubble, especially if that helps the replies sit side by side, left and right, at the bottom of the screen.
+- **0:25** Speech bubble shouldn't be there, and they definitely shouldn't overlap.
+- **0:26** There should be some more stopping that.
+- **0:27** Also, at one point I saw the speech bubble go behind the gear icon.
+- **0:28** Ideally, it should just go around the gear icon, or if it has to interact with the gear icon, it should go on top.
+- **0:29** But yeah, there should be set rules to stop this happening.
+- **0:30** Rather than us fixing this one instance, it should be, there should be rules that stop this happening.
+- **0:31** Now I'm going back to my first message.
+- **0:32** I don't know the order that you saw it in, but for me, I'm going for the first image.
+- **0:33** Oh wait, there was something else I forgot to mention.
+- **0:34** If you look back to the second image of the second lot of images, second message worth of images, you can see that the order, the menu card is already there before the order's even started.
+- **0:35** He's just saying hello, and the menu card already says that he wants tea.
+- **0:36** So there's something wrong there.
+- **0:37** The menu card should only come, it should be introduced, like the collapsed version of it should appear when he says the sentence, like, I want tea.
+- **0:38** And then as he starts listing out the items, the menu card should expand with the gaps ready to then receive the first item as it fades into it.
+- **0:39** So one more time, the menu card should only appear when that person starts their order, saying the sentence that is the sentence of the menu card, in this case, I want tea.
+- **0:40** It should appear in its collapsed form, and then as they start listing what they want in their tea, the menu card should open up so that there's space for then the first item to slot in.
+- **0:41** And then when the second person comes, their menu card should appear in collapsed form as well as the first person's collapsing.
+- **0:42** And then as they give their order, their card should open up as well.
+- **0:43** So you kind of see more strongly whose order is whose.
+- **0:44** And it's not given away early.
+- **0:45** Also, again, look at the speech bubble of Salam on that image.
+- **0:46** It looks like there's a a square or diamond shaped block for the sticky out part of the speech bubble, but you can see that's infringing on the circle of the speaker button on the speech bubble.
+- **0:47** I've seen that a few times on smaller screens where the presumably the square or the diamond used for the pointy out bit doesn't have enough padding to get lost into, so that needs fixing.
+- **0:48** Okay, back to my first message in the first screenshot. can't remember the purpose of this, but I think it was the top left menu, the top left.
+- **0:49** Why does it doesn't look like Nani should have a double spaced header bar?
+- **0:50** Looks much too big.
+- **0:51** I don't know why the menu card is like moved down, so you can't see all of it.
+- **0:52** Oh, and the other thing was, look at the gold outline on the items in the menu card.
+- **0:53** Like there's some alignment issue, right?
+- **0:54** Look at the photos or the pictures.
+- **0:55** They're all the way to the left, no padding to the gold outline.
+- **0:56** Whereas on the right of them, there is padding.
+- **0:57** So something's gone wrong there.
+- **0:58** You know, these should be ideally smaller and fitting in nicely on a smaller screen, and there should be equal and better padding.
+- **0:59** Also, now I look at it, the items at the bottom aren't in line with the tea tray and the tea hobs on the top.
+- **0:60** Like, the water bottle is more left than the tea hob, which is the leftmost item, but the jiru, which is the rightmost item, is well within the right hand boundary of the tea tray.
+- **0:61** Surely they should be centralized to each other, or if nothing else, there should be, maybe more specifically, there should be equal spacing between the left edge of the leftmost game item, in this case the handle of the tea pan on the left and the water bottle, and then on the right hand side the rightmost item is the juru.
+- **0:62** There should be the equal amount of space between the juru and the right edge of the tea board as there is the water bottle on the left edge of the teapot tea pot container.
+- **0:63** Okay, going on to the second image.
+- **0:64** If you look at the small card in the bottom left that gets pulled up as he starts speaking, as the order goes in, the one about not having milk, again, that's so much smaller than it needs to be.
+- **0:65** It could be way bigger than that.
+- **0:66** I don't understand.
+- **0:67** There needs to be some rules, but like dynamic rules around assessing the space that is available and then scaling the card accordingly.
+- **0:68** You can see the speaker button is encroaching onto the dotted line of the dotted English for the word.
+- **0:69** It should be much bigger.
+- **0:70** If it had to be that small, we could probably reduce the speaker button.
+- **0:71** There's not the right dynamic scaling.
+- **0:72** Yeah, and I think there needs to be a rule whereby if the current order that's going on gets cut off at the bottom, then it needs to automatically scroll up and push the items above it up.
+- **0:73** So like the previous order should like scroll up and be hidden until there's enough space for the full menu card that's currently being ordered to be seen.
+- **0:74** And then image 3, I'm not sure what the point of image 3 was.
+- **0:75** I think it's just if you look at the left hand bar to look at like a nasty overlap between the with the hint card and the menu card.
+- **0:76** I don't know why that, and this is during the, yeah, this is during the ordering, so there shouldn't be that with the ordering.
+- **0:77** And then fourth image, to be honest, I'm not sure what the point of this was.
+- **0:78** But while I'm here, it doesn't feel like for the second menu card on the fourth item of the sixth, I don't know, there seems to be a weird spacing between, like, that text, is that the I want T text, is that in the middle of the head icon?
+- **0:79** And if it is, there's a lot more spacing from the I want T words to the top of the menu card than there is to the top of the item cards below.
+- **0:80** I feel like that needs slightly readdressing.
+- **0:81** Oh, I think again this is a good example where it says 3 sugars.
+- **0:82** You can really see on the speech bubble the diamond used to make the call out even covers the underlining of the 3 sugars.
+- **0:83** And then fifth image of 6, honestly not sure what this is showing.
+- **0:84** And then sixth image of 6, yeah, again the speech bubble just completely covers the boy's head.
+- **0:85** I don't understand why when we have rules around this.
+- **0:86** I definitely think that the text could shrink down a little bit if needed to have made it fit.
+- **0:87** I'm sure it could have fitted in above the kid's head.
+- **0:88** I'm sure there's space there.
+- **0:89** Or just horizontally, all on one line above the nana's head.
+- **0:90** There's some logic here that hasn't been well programmed.
+- **0:91** I guess that's everything.

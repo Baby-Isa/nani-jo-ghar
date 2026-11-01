@@ -13,7 +13,7 @@ Chai is finished (Zafar plays it and says so), and the 8 lab prototypes play bet
 4. **He chooses** which prototypes become proper games first (the next sprint's proposal).
 
 ## Budget
-About $60-100 and two days. Mostly in this chat (fast lane, Opus, high effort). At most two builders (Opus, high effort, about $10-20 each), only for a prototype change too big for the chat, each launched on his go. The judge on chai's changed screens at the end, about $5.
+About $110-160 and three days (Zafar, 2 Nov: decision 9 of his chai notes; was $60-100, two days). Mostly in this chat (fast lane, Opus, high effort). At most two builders (Opus, high effort, about $10-20 each), only for a prototype change too big for the chat, each launched on his go. The judge on chai's changed screens at the end, about $5.
 
 ## Sessions
 None yet. Each launch is proposed to Zafar first, with its model, effort and cost.
@@ -23,7 +23,7 @@ None yet. Each launch is proposed to Zafar first, with its model, effort and cos
 - **Word-adds to the existing games** (`build/reports/research-existing-games-2026-10-31.md` §2-3): "we can add them when we get to each of those games to get them to chai's level". Not this sprint: each game's word-adds join that game's pass to chai's level.
 
 ## Small decisions
-- 1 Nov night: his chai notes (phone L2-L4, a small window L1) taken: `docs/feedback/chai-play-2026-11-01-night.md`, 16 points; 11 new rows, 4 reopened, 1 amended; its 10 decisions waiting on him.
+- 1 Nov night: his chai notes (phone L2-L4, a small window L1) taken: `docs/feedback/chai-play-2026-11-01-night.md`, 16 points; 11 new rows, 4 reopened, 1 amended; answered 2 Nov: yes to all, 1 and 8 amended (the rows SH-185, CHAI-43). The sprint grows to about $110-160 and three days (decision 9).
 
 ## Outcome
 

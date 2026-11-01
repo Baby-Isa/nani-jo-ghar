@@ -95,8 +95,18 @@ Levels: chai L1, L2, L3 and L4 in every row; the shared rows name every game and
 | 0:84–0:90 | P16 |
 | 0:91 | chatter ("I guess that's everything.") |
 
-Unmapped 0. First reader: the orchestrator. Second reader (a fresh Fable agent on the transcript and the rows only): waiting on
-Zafar's go (he asked to be told before anything launches); its misses will be fixed in the rows the same day.
+Unmapped 0. First reader: the orchestrator. Second reader (a fresh Fable agent, 2 Nov, on his words, the screenshots, this report
+and the rows, with his 2 Nov answers): 0 missing, 8 weakened, all fixed in the rows the same day:
+- CHAI-43: "the room" is the largest free rectangle (the column left of the people included), not only the strip under the faces;
+  checked against it; CHAI-59 retired into it (decision 1 replaces its 48 px drawn floor).
+- SH-169: the aim, not the mechanism: the current card's face and headline always in view.
+- SH-186: the order when two replies don't fit, never stacked, spread left and right.
+- SH-187: never under the gear; over it only as the last resort (his words).
+- 971x318 (his phone) added to every row's check.
+- SH-171: the next person's card comes when they say its sentence, not when they arrive.
+- SH-185: the floors named (14.5 px words, about 32 px drawn speaker with a 48 px tap area, about 56 px picture); 2.5 cards.
+- Its aims check, also in the rows: every bubble place tested against every face, the panel, the gear and the replies, and a
+  bubble's buttons drawn at its words' scale (SH-177); the shelf keeps clear of the tick where they meet (CHAI-66).
 
 ## 5. Told before, and why it slipped
 
@@ -110,6 +120,9 @@ Zafar's go (he asked to be told before anything launches); its misses will be fi
 - **SH-183 (P4):** "sit on top" was built as above everything; the pour was not filmed.
 
 ## Decisions for Zafar
+
+**Answered 2 Nov:** "Yes, except" 1 and 8. **1:** the panel shrinks with its cards and words down to their minimums for that screen size, then keeps shrinking only while 2.5 item cards still show in a menu card (SH-185). **8:** the card first takes the whole room under the faces, which on his screenshots was plenty; sideways only as a crossover where needed (CHAI-43). 2-7, 9 and 10: yes.
+
 
 1. **The side panel scales with the window**, everything in it together (words, cards, gaps, Nani's box). The speaker's drawn circle
    shrinks with its card; its tap area stays 48 px, so a small finger still hits it. *Recommend yes.*
