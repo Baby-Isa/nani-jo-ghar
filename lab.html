@@ -188,6 +188,26 @@
  }
 }
 </script>
+<!-- SHARED-1 (sweep, 1 Nov): the host's and the core's modules asked for at once, as Cook's stations are (SH-175), instead of one
+     round trip after another as each import() is reached; the same files, the same order of evaluation. build/bump_version.py restamps them. -->
+<link rel="modulepreload" href="js/shared/mode.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/shared/host.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/shared/input.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/save.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/env.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/progress.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/wallet.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/score.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/voice.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/index.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/linearize.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/lang/engine/clips.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/settings.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/unlocks.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/context.js?v=20261030T203356Z">
+<link rel="modulepreload" href="js/core/log.js?v=20261030T203356Z">
 </head>
 <body>
 <div id="lab-app"><div id="lab-stage"></div></div>
@@ -226,19 +246,17 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const getJSON = async (p) => (await fetch(njgV(p))).json();
 
-  const M = await import(njgV("./js/shared/mode.js"));
-  const { loadCore } = await import("#core/index.js");
-  const { createUnlocks } = await import("#core/unlocks.js");
+  // SHARED-1, SHARED-2 (sweep, 1 Nov): the three modules at once, then the core's data, the mode (its main.js, data and sheets),
+  // the arcs and the map all in flight together; nothing but the unlocks needs the core and the arcs
+  const [M, { loadCore }, { createUnlocks }] = await Promise.all([import(njgV("./js/shared/mode.js")), import("#core/index.js"), import("#core/unlocks.js")]);
 
   if (!q.get("mode")) {
     note(`Pick a game from <a href="labs.html">the labs list</a>.`);
   } else {
-    const core = await loadCore({ base: "" });
-    const mode = await M.loadMode(q.get("mode"), { stamp: njgV });
-    const index = await getJSON("data/arcs/index.json");
+    const [core, mode, index, map] = await Promise.all([loadCore({ base: "" }), M.loadMode(q.get("mode"), { stamp: njgV }), getJSON("data/arcs/index.json"), getJSON("data/map.json")]);
     const arcs = {};
-    for (const a of index.arcs) arcs[a.id] = await getJSON(`data/arcs/${a.id}.json`);
-    const map = await getJSON("data/map.json");
+    const arcData = await Promise.all(index.arcs.map((a) => getJSON(`data/arcs/${a.id}.json`)));
+    index.arcs.forEach((a, i) => (arcs[a.id] = arcData[i])); // (keyed in the index's order, as the serial loop left them)
     // the arcs feed the unlock rules (a chapter's "opens"), next to data/unlocks.json's own
     const unlocks = createUnlocks({ save: core.save, rules: M.withArcRules(core.data.unlocks, arcs) });
 
