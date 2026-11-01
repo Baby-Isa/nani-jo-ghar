@@ -98,6 +98,25 @@ export function centred(box, view) {
 }
 
 /**
+ * The things of a round where they stand: the level's kinds dealt into its slots, each part a sprite at its place and height.
+ * -> [{kind, word, parts: [{s, x, y, h, flip, z}], box: {x0, x1, y0, y1}}] (scene units; box: all its parts together). The game
+ * draws these; the leak bot (build/tools/review/leak-games/farm-photo.mjs) judges photos of them.
+ */
+export function placeThings(D, level, rng = Math.random) {
+  return dealItems(level, rng).map(({ kind, slot }) => {
+    const K = D.kinds[kind];
+    const hh = K.h * (slot.s || 1);
+    const parts = K.parts.map((pt) => ({ s: pt.s, x: slot.x + (pt.dx || 0) * hh, y: slot.y, h: hh * (pt.h || 1), flip: !!pt.flip, z: slot.z || 0 }));
+    const boxes = parts.map((pt) => {
+      const w = (pt.h * D.sprites[pt.s].w) / D.sprites[pt.s].h;
+      return { x0: pt.x - w / 2, x1: pt.x + w / 2, y0: pt.y - pt.h, y1: pt.y };
+    });
+    const box = { x0: Math.min(...boxes.map((b) => b.x0)), x1: Math.max(...boxes.map((b) => b.x1)), y0: Math.min(...boxes.map((b) => b.y0)), y1: Math.max(...boxes.map((b) => b.y1)) };
+    return { kind, word: K.word || null, parts, box };
+  });
+}
+
+/**
  * The camera's centre kept on the scene: up and down the frame stays inside it; across, the centre may reach the scene's very
  * edge (the layers run on past it, nothing stands there), so a thing standing near an edge can still be centred.
  */
@@ -190,16 +209,7 @@ function mountPhoto(el, ctx) {
   };
   (LV.props || []).forEach((p) => sprite(p.s, p.x, p.y, p.h, { z: p.z || 0, flip: p.flip }));
   (LV.extras || []).forEach((p) => sprite(p.s, p.x, p.y, p.h, { flip: p.flip }));
-  const things = dealItems(LV, ctx.rng).map(({ kind, slot }) => {
-    const K = D.kinds[kind];
-    const hh = K.h * (slot.s || 1);
-    const boxes = K.parts.map((pt) => {
-      const ph = hh * (pt.h || 1);
-      return sprite(pt.s, slot.x + (pt.dx || 0) * hh, slot.y, ph, { flip: pt.flip, z: slot.z || 0 });
-    });
-    const box = { x0: Math.min(...boxes.map((b) => b.x0)), x1: Math.max(...boxes.map((b) => b.x1)), y0: Math.min(...boxes.map((b) => b.y0)), y1: Math.max(...boxes.map((b) => b.y1)) };
-    return { kind, word: K.word || null, box, els: boxes.map((b) => b.el) };
-  });
+  const things = placeThings(D, LV, ctx.rng).map((t) => Object.assign(t, { els: t.parts.map((pt) => sprite(pt.s, pt.x, pt.y, pt.h, { flip: pt.flip, z: pt.z }).el) }));
 
   /* ---------- the camera ---------- */
   const cam = { x: SC.w / 2, y: LV.camY || SC.h * 0.65, s: 1, mode: "eye" };

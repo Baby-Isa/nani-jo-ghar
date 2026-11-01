@@ -1,0 +1,1 @@
+{"id": "farm-photo", "adapter": "script", "script": "build/tools/review/leak-games/farm-photo.mjs", "about": "The farm's photo shoot (prototype): fair, a random animal, a random sweep, every level (Node)"}

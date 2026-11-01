@@ -66,7 +66,7 @@ for (const lv of levels) {
     await until(p, `!!document.querySelector(".njg-results")`, 20000);
     await p.waitForTimeout(1200);
     await shot("6-results");
-    lines.push(`  L${lv} ${size}: first ask ${first}; asks ${JSON.stringify(await T(p, `0`))}; ${errors.length ? "ERRORS " + errors.join(" | ") : "no errors"}`);
+    lines.push(`  L${lv} ${size}: first ask ${first}; the end screen ${(await T(p, `!!document.querySelector(".njg-results")`)) === true ? "shown" : "MISSING"}; ${errors.length ? "ERRORS " + errors.join(" | ") : "no errors"}`);
     if (errors.length) bad++;
     await np.ctx.close();
   }
