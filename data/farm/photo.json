@@ -1,0 +1,186 @@
+{
+  "_about": "The farm's photo shoot, a rapid prototype (Zafar's notes, build/reports/designs/prototype-notes-2026-11-01.md 'The photo shoot'; the older design build/reports/designs/farm-animals.md stage 7). Read by js/farm/photo.js only. Positions are in the panorama's own units (scene.w x scene.h); an item's y is where its feet stand, h its height when near (a slot's scale shrinks it further back). Every word is a meaning for the language engine (data/lang/), never Kutchi typed here: what the engine can't say comes back as its grey English placeholder, 'to record'. Art is placeholder: the ride's cut farm layers and animals (assets/day/), Hannah Mami's face and the lone chick in assets/farm/proto/.",
+  "scene": {
+    "w": 3200,
+    "h": 1000,
+    "layers": [
+      { "id": "sky", "src": "assets/day/s09b/sky-sunny.webp", "top": 0, "h": 680, "tile": 3200, "tileH": 2133 },
+      { "id": "hills", "src": "assets/day/ride/s09r/far-hills.webp", "top": 250, "h": 420, "tile": 1088 },
+      { "id": "fields", "src": "assets/day/ride/s09r/middle-fields.webp", "top": 300, "h": 500, "tile": 1194 },
+      { "id": "verge", "src": "assets/day/ride/s09r/near-verge.webp", "top": 690, "h": 330, "tile": 1052 }
+    ]
+  },
+  "sprites": {
+    "goat": { "src": "assets/day/ride/s09r/goat.webp", "w": 308, "h": 360, "anim": "chew" },
+    "hen": { "src": "assets/day/ride/s09r/hen.webp", "w": 283, "h": 360, "anim": "peck" },
+    "dog": { "src": "assets/day/ride/s09r/dog.webp", "w": 350, "h": 360, "anim": "sway" },
+    "bird": { "src": "assets/day/ride/s09r/bird.webp", "w": 194, "h": 305, "anim": "peck" },
+    "cow": { "src": "assets/day/s09b/cow.webp", "w": 347, "h": 360, "anim": "chew" },
+    "sheep": { "src": "assets/day/s09b/sheep.webp", "w": 320, "h": 360, "anim": "chew" },
+    "donkey": { "src": "assets/day/s09b/donkey.webp", "w": 276, "h": 360, "anim": "sway" },
+    "horse": { "src": "assets/day/s09b/horse.webp", "w": 291, "h": 360, "anim": "sway" },
+    "buffalo": { "src": "assets/day/s09b/buffalo.webp", "w": 382, "h": 360, "anim": "chew" },
+    "duck": { "src": "assets/day/s09b/duck.webp", "w": 275, "h": 303, "anim": "peck" },
+    "camel": { "src": "assets/day/s09b/camel.webp", "w": 324, "h": 360, "anim": "chew" },
+    "chick": { "src": "assets/farm/proto/chick.webp", "w": 108, "h": 124, "anim": "peck" },
+    "tree": { "src": "assets/day/ride/s09r/tree.webp", "w": 323, "h": 360 },
+    "bush": { "src": "assets/day/ride/s09r/bush.webp", "w": 334, "h": 247 },
+    "haystack": { "src": "assets/day/ride/s09r/haystack.webp", "w": 344, "h": 205 },
+    "wall": { "src": "assets/day/ride/s09r/wall.webp", "w": 407, "h": 134 }
+  },
+  "_kinds": "What can stand in a slot: one sprite, or a group (parts: dx in units of the kind's h, flip). 'word' is the ask it answers (words below); a kind with no word is a decoy nobody asks for.",
+  "kinds": {
+    "goat": { "parts": [{ "s": "goat" }], "h": 230, "word": "goat" },
+    "big-goat": { "parts": [{ "s": "goat" }], "h": 290, "word": "big-goat" },
+    "small-goat": { "parts": [{ "s": "goat", "flip": true }], "h": 140, "word": "small-goat" },
+    "two-goats": { "parts": [{ "s": "goat", "dx": -0.42 }, { "s": "goat", "dx": 0.42, "flip": true }], "h": 220, "word": "two-goats" },
+    "hen": { "parts": [{ "s": "hen" }], "h": 130, "word": "hen" },
+    "two-hens": { "parts": [{ "s": "hen", "dx": -0.42 }, { "s": "hen", "dx": 0.42, "flip": true }], "h": 125, "word": "two-hens" },
+    "three-hens": { "parts": [{ "s": "hen", "dx": -0.8 }, { "s": "hen", "flip": true }, { "s": "hen", "dx": 0.8 }], "h": 120, "word": "three-hens" },
+    "cow": { "parts": [{ "s": "cow" }], "h": 290, "word": "cow" },
+    "dog": { "parts": [{ "s": "dog", "flip": true }], "h": 170, "word": "dog" },
+    "chick": { "parts": [{ "s": "chick" }], "h": 62, "word": "chick" },
+    "chick-mother": { "parts": [{ "s": "hen", "dx": -0.3 }, { "s": "chick", "dx": 0.5, "h": 0.45 }], "h": 130, "word": "chick-mother" },
+    "duck": { "parts": [{ "s": "duck" }], "h": 115 },
+    "sheep": { "parts": [{ "s": "sheep", "flip": true }], "h": 200 },
+    "donkey": { "parts": [{ "s": "donkey" }], "h": 270 },
+    "horse": { "parts": [{ "s": "horse", "flip": true }], "h": 310 },
+    "buffalo": { "parts": [{ "s": "buffalo" }], "h": 270 },
+    "camel": { "parts": [{ "s": "camel", "flip": true }], "h": 330 }
+  },
+  "_words": "Each ask's meaning for the engine (js/core/lang/engine; the farm's nouns are n.she-goat bakri and n.chicken murgi in data/lang/lexicon.json, a.big, a.small, the numbers) and its English (the grown-ups' gloss, and the grey placeholder when the engine can't say it). cow and chick have no lexicon entry yet, and 'the chick with its mother' no frame (meaning null): grey English, to record (farm.md has gai from Zafar; Mum confirms). pic: the sprites the word card's picture shows.",
+  "words": {
+    "goat": { "meaning": { "fn": "Item", "kind": "n.she-goat" }, "english": "the goat", "pic": ["goat"] },
+    "big-goat": { "meaning": { "fn": "Item", "kind": "n.she-goat", "mods": ["a.big"] }, "english": "the big goat", "pic": ["goat"] },
+    "small-goat": { "meaning": { "fn": "Item", "kind": "n.she-goat", "mods": ["a.small"] }, "english": "the small goat", "pic": ["goat"], "picScale": 0.62 },
+    "two-goats": { "meaning": { "fn": "Item", "kind": "n.she-goat", "n": 2 }, "english": "two goats", "pic": ["goat", "goat"] },
+    "hen": { "meaning": { "fn": "Item", "kind": "n.chicken" }, "english": "the hen", "pic": ["hen"] },
+    "two-hens": { "meaning": { "fn": "Item", "kind": "n.chicken", "n": 2 }, "english": "two hens", "pic": ["hen", "hen"] },
+    "three-hens": { "meaning": { "fn": "Item", "kind": "n.chicken", "n": 3 }, "english": "three hens", "pic": ["hen", "hen", "hen"] },
+    "cow": { "meaning": { "fn": "Item", "kind": "n.cow" }, "english": "the cow", "pic": ["cow"] },
+    "dog": { "meaning": { "fn": "Item", "kind": "n.dog" }, "english": "the dog", "pic": ["dog"] },
+    "chick": { "meaning": { "fn": "Item", "kind": "n.chick" }, "english": "the chick", "pic": ["chick"] },
+    "chick-mother": { "meaning": null, "english": "the chick with its mother", "pic": ["hen", "chick"] }
+  },
+  "lines": {
+    "_about": "Hannah Mami's lines. The engine has no frame for them yet (take a photo of X; let's take photos), so each is its grey English placeholder, to record (non-negotiable 2), with the asked word itself said and shown in Kutchi on its card. The end's well done is the engine's phrase.well-done (Mum's own shabash).",
+    "intro": "Let's take photos of the animals!",
+    "ask": "Take a photo of {x}.",
+    "again": "Find {x}, then tap the camera.",
+    "end": { "fn": "Say", "x": "phrase.well-done" }
+  },
+  "_levels": "Zafar, 1 Nov: harder levels have more kinds, smaller or harder-to-find things and a busier scene. frame: the share of the scene's width the viewfinder shows (a quarter at L1 to a sixth at L4). arrows: L1 left and right only. photos: how many asks (the end's table holds up to six). asks: the words a round draws from (each once), 'must' at least one of them. items: what stands in the scene (the asks' answers and the decoys), dealt into the level's slots at random each round (the patterns leak); props stand where they are. A slot's s scales what stands in it (further back, smaller), z puts it in front of (1) or behind (-1) the props.",
+  "levels": {
+    "1": {
+      "frame": 0.25,
+      "arrows": ["left", "right"],
+      "camY": 640,
+      "photos": 3,
+      "asks": ["goat", "hen", "cow"],
+      "must": [],
+      "items": ["goat", "hen", "cow", "dog"],
+      "slots": [
+        { "x": 420, "y": 905, "s": 1 },
+        { "x": 1180, "y": 915, "s": 1 },
+        { "x": 2020, "y": 905, "s": 1 },
+        { "x": 2800, "y": 915, "s": 1 }
+      ],
+      "props": [
+        { "s": "tree", "x": 150, "y": 720, "h": 380 },
+        { "s": "haystack", "x": 1600, "y": 800, "h": 190 },
+        { "s": "bush", "x": 2420, "y": 812, "h": 150 },
+        { "s": "tree", "x": 3080, "y": 715, "h": 360 }
+      ]
+    },
+    "2": {
+      "frame": 0.2,
+      "arrows": ["left", "right", "up", "down"],
+      "camY": 700,
+      "photos": 4,
+      "asks": ["goat", "hen", "cow", "two-hens", "two-goats"],
+      "must": ["two-hens", "two-goats"],
+      "items": ["goat", "two-goats", "hen", "two-hens", "cow", "dog", "duck"],
+      "slots": [
+        { "x": 330, "y": 930, "s": 1 },
+        { "x": 900, "y": 735, "s": 0.78 },
+        { "x": 1420, "y": 935, "s": 1 },
+        { "x": 1960, "y": 742, "s": 0.78 },
+        { "x": 2420, "y": 930, "s": 1 },
+        { "x": 2930, "y": 738, "s": 0.78 },
+        { "x": 3080, "y": 945, "s": 0.95 }
+      ],
+      "props": [
+        { "s": "tree", "x": 110, "y": 700, "h": 360 },
+        { "s": "haystack", "x": 1180, "y": 760, "h": 170 },
+        { "s": "wall", "x": 1720, "y": 950, "h": 100, "z": 1 },
+        { "s": "bush", "x": 2650, "y": 780, "h": 140 },
+        { "s": "tree", "x": 2250, "y": 690, "h": 330 }
+      ]
+    },
+    "3": {
+      "frame": 0.2,
+      "arrows": ["left", "right", "up", "down"],
+      "camY": 700,
+      "photos": 5,
+      "asks": ["big-goat", "small-goat", "two-hens", "three-hens", "hen", "cow", "dog"],
+      "must": ["big-goat", "small-goat"],
+      "items": ["big-goat", "small-goat", "hen", "two-hens", "three-hens", "cow", "dog", "sheep", "duck"],
+      "slots": [
+        { "x": 300, "y": 940, "s": 1 },
+        { "x": 760, "y": 720, "s": 0.7 },
+        { "x": 1150, "y": 940, "s": 1 },
+        { "x": 1560, "y": 728, "s": 0.7 },
+        { "x": 1960, "y": 945, "s": 1 },
+        { "x": 2340, "y": 722, "s": 0.7 },
+        { "x": 2680, "y": 940, "s": 1 },
+        { "x": 2990, "y": 725, "s": 0.7 },
+        { "x": 3060, "y": 950, "s": 0.95 }
+      ],
+      "props": [
+        { "s": "tree", "x": 520, "y": 690, "h": 330 },
+        { "s": "haystack", "x": 1360, "y": 770, "h": 160 },
+        { "s": "bush", "x": 1780, "y": 965, "h": 130, "z": 1 },
+        { "s": "tree", "x": 2150, "y": 680, "h": 320 },
+        { "s": "wall", "x": 2860, "y": 960, "h": 95, "z": 1 }
+      ]
+    },
+    "4": {
+      "frame": 0.1667,
+      "arrows": ["left", "right", "up", "down"],
+      "camY": 700,
+      "photos": 6,
+      "asks": ["chick-mother", "chick", "big-goat", "small-goat", "two-hens", "three-hens", "hen", "cow", "dog"],
+      "must": ["chick-mother"],
+      "items": ["chick-mother", "chick", "hen", "two-hens", "three-hens", "big-goat", "small-goat", "cow", "dog", "duck", "sheep", "donkey", "horse", "buffalo"],
+      "slots": [
+        { "x": 230, "y": 945, "s": 1 },
+        { "x": 560, "y": 722, "s": 0.62 },
+        { "x": 820, "y": 940, "s": 1 },
+        { "x": 1120, "y": 728, "s": 0.62 },
+        { "x": 1380, "y": 945, "s": 1 },
+        { "x": 1660, "y": 720, "s": 0.62 },
+        { "x": 1930, "y": 940, "s": 1 },
+        { "x": 2180, "y": 726, "s": 0.62 },
+        { "x": 2450, "y": 945, "s": 1 },
+        { "x": 2700, "y": 722, "s": 0.62 },
+        { "x": 2950, "y": 940, "s": 1 },
+        { "x": 3080, "y": 735, "s": 0.62 },
+        { "x": 3120, "y": 955, "s": 0.9 },
+        { "x": 1040, "y": 960, "s": 0.9 }
+      ],
+      "props": [
+        { "s": "tree", "x": 380, "y": 680, "h": 300 },
+        { "s": "haystack", "x": 1250, "y": 770, "h": 150 },
+        { "s": "bush", "x": 1560, "y": 965, "h": 120, "z": 1 },
+        { "s": "tree", "x": 2050, "y": 675, "h": 300 },
+        { "s": "wall", "x": 2600, "y": 965, "h": 90, "z": 1 },
+        { "s": "bush", "x": 2870, "y": 760, "h": 110 }
+      ],
+      "extras": [
+        { "s": "bird", "x": 2080, "y": 470, "h": 70 },
+        { "s": "camel", "x": 1810, "y": 640, "h": 170, "flip": true }
+      ]
+    }
+  },
+  "end": { "table": 6, "printMs": 900, "landMs": 700 }
+}
