@@ -79,7 +79,8 @@
   // CLN-88 (load times): each file is fetched once per page (the same text shared by every caller, each gets its own
   // parsed copy) and through the browser's cache: the URL carries the version stamp (njgV), so no revalidation trip
   const jsonText = new Map();
-  Kit.loadJSON = async function (path) {
+  /** Start the fetch of a data file (once per page) without parsing it: the warm-up of the files a stage will ask for. */
+  Kit.warmJSON = function (path) {
     const u = Kit.url(path);
     if (!jsonText.has(u))
       jsonText.set(
@@ -88,8 +89,12 @@
           .then((r) => (r.ok ? r.text() : null))
           .catch(() => null)
       );
+    return jsonText.get(u);
+  };
+  Kit.loadJSON = async function (path) {
+    const text = Kit.warmJSON(path);
     try {
-      const t = await jsonText.get(u);
+      const t = await text;
       return t == null ? null : JSON.parse(t);
     } catch (e) {
       return null;
