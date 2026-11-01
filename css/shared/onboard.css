@@ -14,8 +14,6 @@
 /* CHAI-36: no dim without its lit thing (js/shared/onboard.js marks a layer with no target yet) */
 .njg-onboard.on.ob-empty { opacity: 0; }
 .njg-onboard .ob-dim { position: absolute; inset: 0; width: 100%; height: 100%; }
-.njg-onboard .ob-ring { fill: none; stroke: var(--njg-gold-hi); stroke-width: var(--njg-s1); opacity: 0.9; animation: ob-glow 1.8s ease-in-out infinite; }
-.njg-onboard.between .ob-ring { opacity: 0; }
 /* EASY-08 (Zafar, 22 Oct): the box is a plain gold edge, rounded, no glow and no pulse of its own */
 .njg-onboard .ob-box { fill: none; stroke: var(--njg-focus); stroke-width: 3; }
 /* the item glows and bounces: a canvas thing's soft warm ring (the kit's), an HTML control by its own shape (ob-lit) */
@@ -100,7 +98,6 @@
 .njg-await { visibility: hidden !important; opacity: 0 !important; }
 .njg-fadein { animation: ob-fadein 0.9s ease-out both, ob-shine 1.6s ease-out 0.4s 1; border-radius: inherit; }
 
-@keyframes ob-glow { 50% { stroke-opacity: 0.35; stroke-width: calc(var(--njg-s1) * 1.75); } }
 @keyframes ob-item-glow { 0%, 100% { stroke-opacity: 0.55; } 50% { stroke-opacity: 1; } }
 /* a clear hop, Onboard.HOP (10%) of the thing's own height, up quickly and back, then a rest */
 @keyframes ob-hold { from { --p: 0%; } to { --p: 100%; } }
@@ -109,7 +106,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .njg-onboard { transition: none; }
-  .njg-onboard .ob-ring, .njg-onboard .ob-item-glow { animation: none; } /* (.ob-lit: the kit's glow holds still, css/shared/focus.css) */
+  .njg-onboard .ob-item-glow { animation: none; } /* (.ob-lit: the kit's glow holds still, css/shared/focus.css) */
   .njg-onboard .ob-ghost.pressed { transition: none; }
   .njg-onboard .ob-ghost.on,
   .njg-onboard .ob-ghost.pressed { opacity: 0.95; }

@@ -130,15 +130,6 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-backdrop { position: absolute; inset: 0; overflow: hidden; border-radius: 2px; }
 .day-backdrop > svg, .day-backdrop > img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
-/* find it: the things as sprites over the place, each its own button (at least 64 px) */
-.day-find-item { position: absolute; transform: translate(-50%, -100%); height: max(64px, calc(var(--pg-h) * var(--h))); min-width: 64px; padding: 0; border: 0; background: transparent; cursor: pointer; touch-action: manipulation; }
-.day-find-item > img, .day-find-item > svg { position: relative; height: 100%; width: auto; max-width: none; display: block; z-index: 1; }
-.day-find-item > svg { width: calc(max(64px, calc(var(--pg-h) * var(--h))) * 1); }
-.day-find-item .day-contact { left: 14%; right: 14%; bottom: -6px; height: 12px; z-index: 0; }
-.day-find-item.day-wiggle { animation: day-wiggle .5s ease-in-out 1; }
-@keyframes day-wiggle { 0%, 100% { transform: translate(-50%, -100%); } 25% { transform: translate(-50%, -100%) rotate(-6deg); } 75% { transform: translate(-50%, -100%) rotate(6deg); } }
-.day-find-item.day-bounce { animation: day-bounce .7s cubic-bezier(.3, .7, .3, 1) 1; }
-@keyframes day-bounce { 0%, 100% { transform: translate(-50%, -100%); } 40% { transform: translate(-50%, calc(-100% - 24px)) scale(1.06); } 70% { transform: translate(-50%, calc(-100% + 4px)); } }
 .day-tick { position: absolute; right: -8px; top: -8px; width: 32px; height: 32px; border-radius: var(--njg-round); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); z-index: 2; }
 .day-tick::after { content: ""; position: absolute; left: 10px; top: 5px; width: 8px; height: 14px; border: solid var(--njg-gold); border-width: 0 3px 3px 0; transform: rotate(45deg); }
 
@@ -168,12 +159,6 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-sent .day-line { display: inline; }
 .day-sent .day-k { display: inline; font-size: inherit; }
 .day-word-in { color: var(--njg-word); }
-.day-spks { display: flex; gap: max(12px, calc(var(--pg-w) * .06)); justify-content: center; flex-wrap: wrap; }
-.day-spk { width: 72px; height: 72px; padding: 18px; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-cream); color: var(--njg-ink); box-shadow: var(--njg-lip); cursor: pointer; touch-action: manipulation; }
-.day-spk svg { width: 100%; height: 100%; display: block; }
-.day-spk:active { transform: translateY(2px); box-shadow: var(--njg-lip-down); }
-.day-spk.day-wobble { animation: day-wobble .5s ease-in-out 1; }
-.day-spk[disabled] { visibility: hidden; }
 /* BOOK-13 (decision 9): "Say it" first, the mic; then the three words, each a speaker at its start (it plays at once) and the
    word to pick */
 .day-sayit { display: flex; align-items: center; justify-content: center; }
@@ -259,11 +244,10 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-tomorrow-sky { position: absolute; inset: 0; }
 .day-tomorrow-sky > svg, .day-tomorrow-sky > img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .day-tomorrow-door { position: absolute; left: 0; top: 18%; bottom: 0; width: 22%; background: var(--njg-cream-edge); border-right: var(--njg-line-2) solid var(--njg-cream-lip); }
-@media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in .day-turn-corner, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .day-turn.in .day-turn-corner, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
 
 /* ---------- the window ride (js/shared/window-ride.js) ---------- */
 .day-window .day-play { position: relative; overflow: hidden; }
-.day-card { margin-top: var(--njg-s2); }
 /* RIDE-09: the list of what to find under her guide box: the one to find now open as the shared word card (its picture shrinks
    to the room the sidebar has), the others their word, ticked when found */
 .day-window .day-side { display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box; }
@@ -294,13 +278,8 @@ canvas.day-layer { width: 100%; height: 100%; }
 .wr-thing > img, .wr-thing > svg { position: relative; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; z-index: 1; }
 .wr-thing[disabled] { cursor: default; }
 .wr-contact { position: absolute; left: 18%; right: 18%; bottom: -8px; height: 16px; border-radius: var(--njg-round); background: var(--njg-contact); z-index: 0; }
-.wr-scenery { position: absolute; pointer-events: none; }
-.wr-scenery > img, .wr-scenery > svg { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
 .wr-nudge > img, .wr-nudge > svg { animation: wr-nudge .4s ease-in-out 1; }
 @keyframes wr-nudge { 0%, 100% { transform: none; } 30% { transform: rotate(-4deg); } 70% { transform: rotate(4deg); } }
-.wr-got { animation: wr-got .6s ease-out 1 forwards; }
-@keyframes wr-got { 0% { transform: none; opacity: 1; } 60% { transform: translateY(-48px) scale(1.12); opacity: 1; } 100% { transform: translateY(-64px) scale(0.9); opacity: 0; } }
-.wr-crossing { transition: opacity .4s; }
 .wr-frame { position: absolute; inset: 0; pointer-events: none; border: var(--njg-s5) solid var(--njg-cream-edge); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
 @media (prefers-reduced-motion: reduce) { .day-nani.gesture, .wr-nudge > img, .wr-nudge > svg { animation: none; } }
 .day-sent-rec { max-width: 100%; text-align: center; }
