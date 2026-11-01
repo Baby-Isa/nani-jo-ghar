@@ -972,14 +972,6 @@
     this.shown = this.progressive ? this.stepEnd(0) : this.rows.length - 1;
     return this;
   };
-  /** The last index of the step group that starts at i (rows sharing the first row's `seq`). */
-  Kit.Card.prototype.groupEnd = function (i) {
-    if (!this.rows.length) return -1;
-    const r = this.rows[i];
-    let j = i;
-    if (r && r.seq) while (j + 1 < this.rows.length && this.rows[j + 1].seq === r.seq) j++;
-    return j;
-  };
   /**
    * SH-45 (S05-D): the last index of the STEP that starts at i (its row, or its parts <step>0, <step>1 ...). A sequence
    * (`seq`) may run across several steps (the scrape: the wash, the cloth, each plaster on one line): it is drawn as
@@ -1259,9 +1251,6 @@
       delete s.el.dataset.item;
     }
     return s.el;
-  };
-  Kit.Tray.prototype.firstEmpty = function () {
-    return this.slots.findIndex((s) => !s.item);
   };
   Kit.Tray.prototype.items = function () {
     return this.slots.map((s) => s.item);
