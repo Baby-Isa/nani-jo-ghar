@@ -1033,7 +1033,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const gone = [mat, mat.shadow].filter(Boolean);
       S.tweens.add({ targets: gone, alpha: 0, duration: 420, onComplete: () => gone.forEach((o) => o.active && o.destroy()) });
     }
-    Cook.daarMat = () => !!(mat && mat.active && mat.alpha > 0.02); // (for the evidence probes: is the mat still on the counter?)
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("daar", 300);
     const pieces = [];
