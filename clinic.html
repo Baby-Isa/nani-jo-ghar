@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>The doctor's clinic</title>
 <!-- the shared kit in one link: tokens, motion, the app frame and every component (css/shared/kit.css; S13-A1) -->
+<!-- SHARED-3 (sweep, 1 Nov): the kit's thirteen sheets asked for with the page, not once kit.css has arrived and its @imports are read; the cascade
+     is still kit.css's (one link per page: build/lint/static.mjs shell ignores a preload). build/bump_version.py restamps them. -->
+<link rel="preload" as="style" href="css/shared/tokens.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/app.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/focus.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/frame.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/face.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/results.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/onboard.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/guide.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/order-card.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/buttons.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/tally.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/conversations.css?v=20261030T203356Z">
+<link rel="preload" as="style" href="css/shared/word-card.css?v=20261030T203356Z">
 <link rel="stylesheet" href="css/shared/kit.css?v=20261030T203356Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">

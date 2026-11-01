@@ -85,7 +85,8 @@ export function tokenFindings(file, text) {
 export const LIVE_PAGES = ["index.html", "first.html", "day.html", "cook.html", "clinic.html", "lab.html", "labs.html"];
 export function shellFindings(file, html) {
   const out = [];
-  const links = [...String(html).replace(/<!--[\s\S]*?-->/g, "").matchAll(/<link\b[^>]*\bhref="((?:\.\.\/)?css\/shared\/[^"?]+)[^"]*"[^>]*>/gi)].map((m) => m[1].replace(/^\.\.\//, ""));
+  // (a <link rel="preload"> of a kit sheet only pulls it earlier for kit.css's own @import, SHARED-3: it is not a second link)
+  const links = [...String(html).replace(/<!--[\s\S]*?-->/g, "").matchAll(/<link\b[^>]*\bhref="((?:\.\.\/)?css\/shared\/[^"?]+)[^"]*"[^>]*>/gi)].filter((m) => !/\brel="preload"/i.test(m[0])).map((m) => m[1].replace(/^\.\.\//, ""));
   const kit = links.filter((h) => h === "css/shared/kit.css").length;
   if (kit !== 1) out.push({ check: "shell", at: file, key: `shell|${file}|kit ${kit}`, text: `${file} links css/shared/kit.css ${kit} times: once, in the head` });
   for (const h of links.filter((x) => x !== "css/shared/kit.css")) out.push({ check: "shell", at: file, key: `shell|${file}|${h}`, text: `${file} links ${h} directly: css/shared/kit.css imports it` });
