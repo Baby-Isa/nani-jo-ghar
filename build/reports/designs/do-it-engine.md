@@ -20,7 +20,7 @@ Sources, newest first:
 | | |
 |---|---|
 | **What it is** | One small engine, "do it". A person can do several actions, and the heard words pick which one. The child taps, and the character does it. Two stages use it here: **A. musical statues** (the party) and **B. getting ready** (the school day: three children who slept over at Nani's). The clean-up will be the third (its own design). |
-| **Days** | A: someone's birthday, after look after the guests and before the cake. B: the school day, after the wake-up clock and before pack the school bag. |
+| **Days** | A: someone's birthday, after look after the guests and before the cake. B: the school day, after the wake-up clock and the door, before pack the school bag. |
 | **Status** | New. Designed overnight, revised after the critique, not agreed. |
 | **Engine** | New: `do-it` (actors, actions, triggers, per-actor state, a call queue). Everything around it is the shared kit: order card, guide, light, end screen, speaking moment. |
 | **Rough size** | Engine: small, about one sprint with both stages greyboxed. Art: two party dancers with about 12 poses each; three children as layered "dress-up dolls" built on `js/dress/doll.js` (a lab page first). **Recording is the blocker:** 2 of the statues verbs are in the engine (sit *we*; turn *firai*, if Mum uses it for a person) and none has its own clip. Of getting ready's calls, only "eat" ✓ has a clip. Visit 1 is the scope's vocabulary only; everything else is visits 2-3 (§5). |
@@ -158,21 +158,21 @@ The game teaches nothing until these are recorded. Grey English would be a reade
 9. Home (the party-bag toy for Ali)
 10. The evening book
 
-`party-guests.md` §2 (gifts and cake before statues) and the master map's Part 7 still show the older order. This doc follows the gifts doc's order because it is the newest and keeps the two give-to stages apart; Zafar confirms one order for all three (§10, open question 6), and the orchestrator carries it into the other two.
+All three party designs now use this order: `party-guests.md` §2 was brought into line in the consistency pass (1 Nov), and only the master map's Part 7 still shows the older one. It is the gifts doc's order because it is the newest and keeps the give-to stages apart; Zafar confirms it once for all three (§10, open question 6). The party's people are one cast across the three designs (`party-gifts.md` §0): Zara (4), her mum, her masi, Yusuf (6), Sana (5), dada and dadima.
 
 | Carries in | Carries out |
 |---|---|
 | The names from introductions: Zara and Yusuf dance. (Names decide nothing here on visit 1.) | **The dancing crown:** a plain paper crown that Zara puts on the child's character at the end. The child wears it in the family photo (stage 7). |
 | The balloon tied to the child's wrist (`party-guests`): seen when the child's character slides in for the crown. | **The cake:** the round ends with Nani's unscored "sit, the cake is coming". It's heard, never a decision, so "the last call is always sit" can't be learned. |
 | | **The book:** a page of the dancers frozen in the funniest statue of the round, and "who jumped?" over it. |
-| | **Later visits:** the dancers flop down hot and thirsty. Whether a short second "how are you?" follows is `party-guests` B3's call; in this order the cake's give-to comes next, so it would put give-to twice in a row, and I'd leave it out. |
+| | **Later visits:** the dancers flop down hot and thirsty. A short second "how are you?" after statues would put give-to twice in a row before the cake, so `party-guests.md` now parks that round (consistency pass); the cake follows statues directly. |
 
 **Rhythm:** look after the guests is busy and toy-like, statues is loud and physical, and the cake is calm. The engine is never used twice in a row.
 
-### B. The school day (master map Part 7)
+### B. The school day (the order `school-day.md` §2 and `wake-up-clock.md` §2 give: the clock starts the night before, so it comes before the door; consistency pass, 1 Nov)
 
-1. Door
-2. **The wake-up clock** (the family wakes at their time)
+1. **The wake-up clock** (the family wakes at their time)
+2. Door
 3. **Getting ready**
 4. Pack the school bag
 5. The bus
@@ -182,7 +182,7 @@ The game teaches nothing until these are recorded. Grey English would be a reade
 
 | Carries in | Carries out |
 |---|---|
-| **From the clock:** Ali is up, in his pyjamas with bed-hair, as the clock leaves him (the clock wakes him; "wake up" is heard only there). His two little cousins slept in his room too (a one-line carry for the clock's owner: they can sleep in the background of the clock's room, or simply be up already). | **To pack the bag:** three dressed children, ready. Nani: "now the bag", and the **child** packs it at the front door, as `school-day.md` designs it. |
+| **From the clock:** Ali is up, in his pyjamas with bed-hair, as the clock leaves him (the clock wakes him; "wake up" is heard only there). His two little cousins slept in the clock's bedroom too, top-to-tail on a floor mattress in the background (`wake-up-clock.md` §3 has the line); after the door, all three go through to the children's room to get ready. | **To pack the bag:** three dressed children, ready. Nani: "now the bag", and the **child** packs it at the front door, as `school-day.md` designs it. |
 | The clock already served Ali his milk, so nobody drinks milk here. | **To the bus:** at the end the bus horn beeps outside; *jaldi kar* ✓. |
 | | **The book:** before and after. Three sleepy, bed-haired children, then three in uniform, and "who brushed their teeth?" (past tense later, at A2). |
 
@@ -238,7 +238,7 @@ Scores out of 5: fun, does the Kutchi decide, novelty, build cost (5 = cheap).
 **The why:** at every children's party the grown-up stops the music and calls a pose. Here Nani does it. She stands on the right and claps the beat. When she stops clapping, the music stops, and she calls.
 
 **Who's on screen (E camera):**
-- Two party children, full body, in the middle of the cleared front room: **Zara** (the lead, in the centre and a little bigger) and **Yusuf**. (Sana and the host family's *dadima* join on visit 2.)
+- Two party children, full body, in the middle of the cleared front room: **Zara** (the lead, in the centre, a step nearer the viewer) and **Yusuf**. (Sana and the host family's *dadima* join on visit 2.)
 - **Nani** on the right, three-quarter on, clapping.
 - The child's own character is off screen (the child is the camera, as in Cook). It slides in only at the end, for the crown, and on visit 2 for the handover.
 
@@ -633,7 +633,7 @@ Each line gives the choice, the reason, and the answer I assumed. Reverse any by
 2. **For Mum:** does she use *firai* for a person turning round; what does she say for "jump", "stand up", "stop" (she has said English *stop*: confirm for children freezing) and "don't sit"; and does "first ... then" have a natural frame?
 3. **Round sizes. Built the rule-following way:** one override (L1), then even steps: statues 6/7/7/8, getting ready 9/9/10/10. If you read "one override" strictly (the formula from 1 for L2-L4), statues L2 drops to 3 stops after L1's 6, which is why I read it as the clock does. **My first draft's sizes at every level reversed your 29 Oct rule** and are dropped unless you want them.
 4. **"No" asks at L2. Built the rule-following way:** "jump, don't sit!" and "wash your hands, not your face!". **My first draft dropped them (that reverses your 29 Oct rule)** on the Simon-says research; I no longer recommend it, since a plain negated ask is listening, not a trick.
-5. **Getting ready's children:** Ali and two little cousins (names and ages yours; they need a line in the clock's room), or the cheap version: Ali alone, with fewer hearings (each call once a round) and an honest note that done jobs cross themselves off.
+5. **Getting ready's children:** Ali and two little cousins (names and ages yours; they now sleep on a floor mattress in the clock's room, `wake-up-clock.md` §3), or the cheap version: Ali alone, with fewer hearings (each call once a round) and an honest note that done jobs cross themselves off.
 6. **The party order:** confirm the one order in decision 24 for all three party docs.
 
 ---
@@ -651,7 +651,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the bright front room of a modern East African family home with gentle Kutch touches: limewash cream walls, pale oak floor, floor cushions pushed back against the walls, plain coloured balloons and plain fabric bunting on the back wall with no writing. Late-morning sun from the upper left, soft contact shadows on the floor.
 
-Centre, on the open floor well away from the cushions: two young children have just dropped to sit cross-legged on the floor at the same moment, mid-giggle: a 5-year-old girl in a modest long-sleeved party dress over leggings (centre, slightly larger), and a 6-year-old boy in a cotton kurta and trousers, who is wobbling a little as he lands. A tiny soft sparkle burst around them, as if they have just frozen into the pose.
+Centre, on the open floor well away from the cushions: two young children have just dropped to sit cross-legged on the floor at the same moment, mid-giggle: a 4-year-old girl in a marigold kameez with a light dupatta over leggings (centre, a step nearer the viewer), and a 6-year-old boy in a striped cotton kurta and trousers, who is wobbling a little as he lands. A tiny soft sparkle burst around them, as if they have just frozen into the pose.
 
 Right: a grandmother in a cream kameez with red embroidery and a plain red dupatta, round thin gold glasses, standing three-quarter on, hands just apart after a clap, smiling at the children.
 
@@ -679,7 +679,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the same bright modern front room (limewash cream walls, pale oak floor, cushions pushed back against the walls, plain balloons and plain bunting without writing), late-morning sun from the upper left.
 
-Centre, on the open floor: two children have just frozen in the same pose, each touching the tip of their own nose with one finger and looking cross-eyed at it, laughing: a 5-year-old girl in a modest long-sleeved party dress over leggings (centre, slightly larger) and a 6-year-old boy in a kurta and trousers, who is wobbling a little. A small soft sparkle around them.
+Centre, on the open floor: two children have just frozen in the same pose, each touching the tip of their own nose with one finger and looking cross-eyed at it, laughing: a 4-year-old girl in a marigold kameez with a light dupatta over leggings (centre, a step nearer the viewer) and a 6-year-old boy in a striped kurta and trousers, who is wobbling a little. A small soft sparkle around them.
 
 Right: a grandmother in a cream kameez with red embroidery and a plain red dupatta, round thin gold glasses, three-quarter on, laughing, hands mid-clap.
 
@@ -709,7 +709,7 @@ The scene: the same bright modern front room (limewash cream walls, pale oak flo
 
 Foreground, slightly right of centre and large: a grandmother in a cream kameez with red embroidery and a plain red dupatta, round thin gold glasses, now turned to face the viewer directly, leaning forward a little with a warm, playful smile, one hand stretched out palm-up towards the viewer, inviting the person holding the screen to dance.
 
-Behind her, smaller, a 5-year-old girl in a modest long-sleeved party dress over leggings and a 6-year-old boy in a kurta and trousers stand on the open floor, knees a little bent, grinning at the viewer, waiting to copy.
+Behind her, smaller, a 4-year-old girl in a marigold kameez with a light dupatta over leggings and a 6-year-old boy in a striped kurta and trousers stand on the open floor, knees a little bent, grinning at the viewer, waiting to copy.
 
 No cards on screen in this moment.
 
@@ -819,3 +819,5 @@ Each finding from `do-it-engine-critique.md`, then what I did.
 14. **Kutchi bookkeeping.** "Dance slowly" now asks for *aste thi* ✓ (B2), not the *slow* loan; "stop" cites grammar-notes §25 B19 (Mum said English *stop*) so the sheet asks her to confirm; §0 says two verbs are in the engine (*we*, *firai*, with the meaning question); *shabash, beta* is noted as inside the S2 line and uncuttable, so Nani uses *shabash* ✓; the first-go rule is in the engine paragraph; Dress up's doll is named as `js/dress/doll.js`.
 15. **The music's source and default.** Claps alone by default; the tune is a switch that stays off until Zafar says yes and where it comes from (a family hum suggested). Decision 2 and open question 1 rewritten; the kalimba is gone.
 16. **The ChatGPT prompts.** A line above the prompts and in each "what it should show" says the real cards and things are separate crops and cut-outs. Prompt 2 drops Sana and the second grandmother (two dancers), and asks for head-and-shoulders touch cards. Prompt 3 drops the swirls and the speaker and forbids "symbols of any kind". Prompt 4 drops the glow and the stool (Nani holds the tray at the door), and shows the three children. Prompt 5 drops the glass of milk, is now L3 (socks), and asks for plain pyjamas and socks with no stripes or prints. The new statues prompts place the dancers on the open floor, away from the cushions.
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The school day's order in §2B is now the clock, then the door, then getting ready, as `school-day.md` and `wake-up-clock.md` have it; the two little cousins sleep in the clock's bedroom (its §3 has the line). The party order was already `party-gifts.md`'s; `party-guests.md` now matches it and parks the after-statues round. The party cast is the one shared list in `party-gifts.md` §0: Zara is 4 on visit 1, in a marigold kameez, and the prompts say so.

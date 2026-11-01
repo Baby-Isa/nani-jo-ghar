@@ -90,3 +90,20 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 81. A school day: the morning routine, pack the school bag, the teacher's game on the blackboard [Zafar, 31 Oct]. Idea.
 82. The clinic, more body words: the nose as the ear game's twin, a finger and a head to bandage, the tummy's drinks; a skeleton game, or "where does it hurt?" on a body chart [Zafar, 31 Oct; Claude prefers the body chart]. Idea.
 83. Big Ma's sewing grown: buy cloth at the shop, choose colours, make and mend, then the fitting [Zafar, 31 Oct; Dress up's design]. Idea.
+
+## Parked by the overnight designs (1 Nov)
+
+84. Party: seat the guests, with "next to" and "opposite me" (Tidy 5a), on a later visit (`build/reports/designs/party-gifts.md` A5) [Claude overnight design, 1 Nov]. Idea.
+85. Party: pass the parcel, sharing the music question with musical statues (`party-gifts.md` B4) [Claude overnight design, 1 Nov]. Idea.
+86. Party: Nani guesses (`party-gifts.md` D2) [Claude overnight design, 1 Nov]. Idea.
+87. Party: the arranged family photo (Tidy M7), once positions and comparatives are recorded (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+88. Party: the cupcake joke ages ("I'm a hundred!") (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+89. Party: the cake-cutting drag on Cook's track; for now the host mum cuts the cake as an animation (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+90. Party: blow out the candles into the microphone; for now the blow is a tap (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+91. Party: the old neighbour as a third older man beside Nana and dada (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+92. Party: "it's okay" and "share!" pills at the end of Who ate the cake? (`party-gifts.md` D1) [Claude overnight design, 1 Nov]. Idea.
+93. Party: hand out Snap's prints (C3) and Tell Ali the clue (D3) (`party-gifts.md`) [Claude overnight design, 1 Nov]. Idea.
+94. Party: a short second "how are you?" round after musical statues for the hot, thirsty, tired dancers; parked because it puts two give-to stages back to back before the cake (`party-guests.md` §2, consistency pass) [Claude overnight design, 1 Nov]. Idea.
+95. Sewing: a cushion cover for Nani's sofa, new art and an ungraded stage (`sewing.md` §5) [Claude overnight design, 1 Nov]. Idea.
+96. Sewing: role reversal, the child tells Ali which piece to try on, on the shared "say it, Ali acts" (`sewing.md` §5) [Claude overnight design, 1 Nov]. Idea.
+97. Wake-up clock, later visits: the holiday morning ("don't wake me", a "no" ask); baby Isa's cot that wakes by itself and cries; half past (if Kutchi has its own words); the afternoon nap with Big Ma; the child's own time for tomorrow ("and you?"); the same clock in the bus stage and the eggs station; each needs Zafar's yes and the lab's verdict first (`wake-up-clock.md` §5) [Claude overnight design, 1 Nov]. Idea.

@@ -164,7 +164,7 @@ Cut: milking (no words; Zafar already cut it), watering with a can (Cook's pour,
 **How a count closes.** **This reverses Zafar's easy-to-play principle 4 for counts** ("a count ends at the right number and an extra tap doesn't land", 21-22 Oct), because a count that stops at N lets a child win by tapping until it stops. It is put to him as decision 5; if he says no, the farm's counts stop at N like every other count game and the leak is noted. It keeps "no Done":
 - Cobs pile up visibly in the trough. The count sits on the thing being counted.
 - The animal waits politely, looking at the cobs.
-- The step closes after a **stillness**: no tap for a set time (the rulebook's "a light waits until everything is still"). The time lives in `data/rules.json`; the lab tests it at **3 s and 4 s** with a three-year-old's pace before it's set (lessons §4: the ride had to run 50% slower). A step has one live ask, so there is no "next thing" to turn to: stillness is the only close.
+- The step closes after a **stillness**: no tap for a set time (the rulebook's "a light waits until everything is still"). The time lives in `data/rules.json`; the lab tests it at **3 s and 4 s** with a three-year-old's pace before it's set (lessons §4: the ride had to run 50% slower). **One rule for the whole farm day, worded the same in `farm-eggs-orchard.md` §3:** a count closes on stillness, or at once when the child turns to the step's next thing, where there is one. Feeding and home at dusk have one live ask a step, so there is no next thing: here stillness is the only close. An empty trough never closes, and the stillness clock waits while anyone speaks or a joke plays.
 - Until then, a tap on a cob in the trough takes it back.
 - On close, if the count is right, the animal eats and the row ticks gold.
 - If it's wrong, the trough gives a small shake and Nani says the number again. The child adds a cob or taps one back, there and then. The row then ticks plain, not gold, and **for moving up a level a redone row counts as a hint** (the rulebook counts hints, so a fished row mustn't climb the levels).
@@ -435,12 +435,12 @@ The first plan was about 35 cut-outs in one block, nearly double the biggest run
 | The farmyard: day | the farm road's mid fields and far hills (`s09r` m1, f1) as style | one wide yard background: fence, field, shed with a door and window, coop with a ramp, awning over the straw, a gate to the field; empty ground in front for troughs |
 | The farmyard: golden evening | | the same picture relit (art bible §2), plus the shed window lit and the door shut |
 | Goat | three-quarter, front, side, back, walk, graze (eat), lie, jump, bleat (`assets/characters/goat/`) | eat, drink, sleep (eyes shut, curled), run, look at the lens. The old goat set is a whiter goat than the `i1` sheet: pick one look (decision 17) and redo the other to match |
-| Hen | walk, peck, sit, flap, three-quarter, front (`assets/characters/`) | drink, sleep |
+| Hens and chicks | none kept: the old `assets/characters/` hen sprites are the storybook look, the art bible's anti-reference | the farm's one cast, drawn new in the 3D style in `farm-eggs-orchard.md`'s Block 1 (the big red-brown mother hen, the small white hen, the big white hen, the mother hen's three chicks), with this design's poses on the same sheets: walk, peck, drink, sleep, flap, three-quarter, front; the chicks in a line following |
 | Cow | standing (`s09b` a1) | eat |
 | Things | | three troughs (empty), corn cobs in a trough (1-3, stacked readably), the corn basket, the water bucket, the straw bed |
 | Nani | the locked s08 look (`sources/art/s08/sheet-nani-final-1.png`, `lineup-v4-1.png`) | holding a camera (three-quarter and front); holding out a corn cob |
 
-**Block 2 (L3-L4 and the second visit):** the small goat (the same goat, scaled, younger face); the hen pair and trio; the hen at the lens; the cow drink, walk, lie down, three-quarter, front; grass bundle and grass in a trough; water in a trough; cobs 4-5; a line of chicks following; the animals peeking out of their homes.
+**Block 2 (L3-L4 and the second visit):** the small goat (the same goat, scaled, younger face); the hen pair and trio and the hen at the lens (poses of the shared hens); the cow drink, walk, lie down, three-quarter, front; grass bundle and grass in a trough; water in a trough; cobs 4-5; the animals peeking out of their homes.
 
 **Hannah Mami, after her likeness run (Zafar):** three-quarter and front-facing (UX §16), waist up and full; pointing, clapping, leading an animal. The farm doesn't ship without her, since she hosts the day.
 
@@ -544,10 +544,10 @@ Each line gives the choice, the reason, and the answer I assumed. Answer "yes to
 2. **"Nani says, do it" lives inside the photo shoot:** make the animal do it, then take its photo. The verbs get a goal, the photos carry into the book, it adds no 12th stage, and it differs from the safari's Snap (which watches verbs pass). Your row 7 asks ("the hen", "two goats", "the big goat") become L2-L4's who, how many and big; **L1 is eat and run with the goat alone**, so the leap into the lens is the first round's reward. The alternative is L1 "take a photo of the goat / the hen / the cow" (nouns), with verbs from L2. *Assumed: verbs at L1 (eat, run).*
 3. **Feeding counts corn cobs, not scoops.** *Makai* ✓ is already recorded, so "scoop" needs no recording, and it links to the corn stall. *Assumed: yes.*
 4. **Every animal eats every food.** Otherwise real-life knowledge ("goats eat grass") picks the answer instead of the word. *Assumed: yes.*
-5. **This reverses your easy-to-play principle 4 (21-22 Oct) for counts.** A count that stops at the right number lets a child win by tapping until it stops. Instead a count **closes on stillness** (no Done), the time in `data/rules.json`, lab-tested at 3 s and 4 s; take a cob back by tapping the cob, not the trough; a redone count ticks plain and counts as a hint. If yes, it becomes the rule for every count game, changed in `easy-to-play.md` and `count-to-a-number.md` with your name and date. If no, the farm's counts stop at N and the leak is noted. *Assumed: yes, starting with the farm's lab.*
+5. **This reverses your easy-to-play principle 4 (21-22 Oct) for counts.** A count that stops at the right number lets a child win by tapping until it stops. Instead a count **closes on stillness** (no Done), or at once when the child turns to the step's next thing where there is one (none in this design's stages), the time in `data/rules.json`, lab-tested at 3 s and 4 s, one rule and one question for both farm designs (`farm-eggs-orchard.md` decision 2 and open question 1, which lists the alternatives); take a cob back by tapping the cob, not the trough; a redone count ticks plain and counts as a hint. If yes, it becomes the rule for every count game, changed in `easy-to-play.md` and `count-to-a-number.md` with your name and date. If no, the farm's counts stop at N and the leak is noted. *Assumed: yes, starting with the farm's lab.*
 6. **The photo shoot's tick.** (a) **The shutter stays silent,** as your Snap quality pass decided (25 Sept): prints slide out unjudged; at the hand-in Nani holds up each, names it and ticks the ones that fit; a retake counts as a hint. (b) A live tick at the shutter, with a redone row counting as a hint and the bot's win being any tick: quicker feedback, but it lets a child fish (your chaat point, CHT-14). Either way: tap to frame, tap the gold frame to shoot; no drag-to-aim, zoom, film count or shutter button. *Assumed: (a).*
 7. **One unasked photo a round is kept as a funny bonus photo** for the book, named by Nani at the hand-in; later ones get the laugh and nothing is kept, so the joke can't be farmed. *Assumed: yes.*
-8. **The cast:** a she-goat (*bakri*, since the take exists), a mother hen with three chicks (two more hens from L2), a cow (*gai*), and a small goat at L4. No dog, camel or buffalo on the first visit. *Assumed: yes.*
+8. **The cast:** a she-goat (*bakri*, since the take exists), a mother hen with three chicks (two more hens from L2), a cow (*gai*), and a small goat at L4. **The hens and chicks are the farm's one cast with `farm-eggs-orchard.md` (its decision 24):** the big red-brown mother hen, the small white hen and the big white hen, and the mother hen's three chicks, drawn new in the 3D style in place of the old `assets/characters/` hen sprites; the hen the child feeds is the hen that lays (consistency pass, 1 Nov). No dog, camel or buffalo on the first visit. *Assumed: yes.*
 9. **No "no" asks** in feeding or the photo shoot. "Don't feed the cow" isn't a natural thing to ask. The rulebook lets a game skip them with a reason. *Assumed: yes.*
 10. **Home keeps "each animal to its own place, one at a time, the place named"** (your 20-21 Oct row), with a listening ask at every level, L1 included; the heard word decides **who goes now**, and the place is named but doesn't decide (a coop looks like a hen's home, so "where" would be won by picture). *Assumed: yes.*
 11. **The first round's speaking:**
@@ -587,7 +587,7 @@ The image should show the feeding moment, so Zafar can see the yard, the three a
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets), one gameplay screen, landscape, the main play area only (no side panel, no menus, no buttons).
 
-The scene: a sunny farmyard seen at eye level, front on. A simple wooden rail fence and a soft green field with a few round trees behind; a small whitewashed shed with a wooden door at the back right, partly cropped. The sky is only a thin strip at the top. On the ground in the middle, three animals stand behind their own low wooden troughs: a cream-and-tan she-goat with small curved horns at the front left, a russet hen with three fluffy yellow chicks at her feet at the front right, and a brown-and-white cow standing a little further back between them, slightly overlapped by them, with its trough behind theirs. In the bottom-left corner of the play area sits a woven basket full of yellow corn cobs. At the right edge, cut at the chest, stands the grandmother from the attached character sheet, turned three-quarters toward the animals, smiling warmly. No other people.
+The scene: a sunny farmyard seen at eye level, front on. A simple wooden rail fence and a soft green field with a few round trees behind; a small whitewashed shed with a wooden door at the back right, partly cropped. The sky is only a thin strip at the top. On the ground in the middle, three animals stand behind their own low wooden troughs: a cream-and-tan she-goat with small curved horns at the front left, a big, plump red-brown hen with three fluffy yellow chicks at her feet at the front right, and a brown-and-white cow standing a little further back between them, slightly overlapped by them, with its trough behind theirs. In the bottom-left corner of the play area sits a woven basket full of yellow corn cobs. At the right edge, cut at the chest, stands the grandmother from the attached character sheet, turned three-quarters toward the animals, smiling warmly. No other people.
 
 The moment: the child has just tapped the basket, then the goat's trough. Two corn cobs lie clearly separate in the goat's trough; the goat leans in with wide delighted eyes, its beard wobbling, about to munch. The other two troughs are empty. No glow, outline or highlight on anything.
 
@@ -612,7 +612,7 @@ The image should show the verb game: the goat doing the asked action at one of f
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets), one gameplay screen, landscape, the main play area only (no side panel, no menus, no buttons).
 
-The scene: the same farmyard as the first attached image, at midday, eye level, front on, with a thin strip of sky, a wooden rail fence and green fields behind. Around the yard are four clearly different places, spaced well apart: on the left a low wooden trough with corn cobs; in the middle a round steel bucket of water; on the right a bed of golden straw under a small wooden awning; at the back an open wooden gate onto the green field. A russet hen pecks quietly in the background. At the right edge, cut at the chest, the grandmother from the attached character sheet holds a simple boxy instant camera at chest height, smiling.
+The scene: the same farmyard as the first attached image, at midday, eye level, front on, with a thin strip of sky, a wooden rail fence and green fields behind. Around the yard are four clearly different places, spaced well apart: on the left a low wooden trough with corn cobs; in the middle a round steel bucket of water; on the right a bed of golden straw under a small wooden awning; at the back an open wooden gate onto the green field. A big, plump red-brown hen pecks quietly in the background. At the right edge, cut at the chest, the grandmother from the attached character sheet holds a simple boxy instant camera at chest height, smiling.
 
 The moment: the child tapped the water bucket, and the cream-and-tan she-goat has trotted over and is drinking, water dripping from its beard. Around the goat are four soft rounded gold corner brackets, plain lines only. The child has just tapped inside them: a soft white camera flash bursts, and the goat has lifted its head to look straight into the lens with a cheeky, pleased face.
 
@@ -622,7 +622,7 @@ Absolutely no text, letters or numbers anywhere, including on the camera and the
 
 Must read at phone size (about 740x320 pixels): the goat's action (drinking), the four places as four distinct shapes, the gold corner brackets, and the goat's look into the lens.
 
-References to attach (first: Zafar's approved yard from prompt 1):
+References to attach (first: the approved yard from prompt 1):
 [the approved yard image from prompt farm-animals-1]
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/a1-farm-animals-v1.png
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s08/sheet-nani-final-1.png
@@ -636,7 +636,7 @@ The image should show the speaking moment, so Zafar can judge whether "call it a
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets), one gameplay screen, landscape, the main play area only (no side panel, no menus, no buttons).
 
-The scene: the same farmyard as the first attached image, relit for golden evening, eye level, front on. Low warm orange sun from the left, long soft shadows to the right, a peach-and-gold sky strip. At the back, a small whitewashed shed with its wooden door open and a warm lamp glow in its little window; beside it, a small wooden hen-house with a ramp. A russet hen is just walking up the ramp, with three yellow chicks following in a neat line, and the last chick hurrying back with a single corn kernel in its beak. In the yard, a brown-and-white cow stands sleepily. At the front right, by an open wooden gate, stands a small child of about five in simple modest clothes, holding up one corn cob, facing the animals, mouth open as if calling; beside the child, turned toward them and smiling, the grandmother from the attached character sheet. The sky above the child's head is empty.
+The scene: the same farmyard as the first attached image, relit for golden evening, eye level, front on. Low warm orange sun from the left, long soft shadows to the right, a peach-and-gold sky strip. At the back, a small whitewashed shed with its wooden door open and a warm lamp glow in its little window; beside it, a small wooden hen-house with a ramp. A big, plump red-brown hen is just walking up the ramp, with three yellow chicks following in a neat line, and the last chick hurrying back with a single corn kernel in its beak. In the yard, a brown-and-white cow stands sleepily. At the front right, by an open wooden gate, stands a small child of about five in simple modest clothes, holding up one corn cob, facing the animals, mouth open as if calling; beside the child, turned toward them and smiling, the grandmother from the attached character sheet. The sky above the child's head is empty.
 
 The moment: the child has just called, and the cream-and-tan she-goat has turned with its ears up and is trotting happily toward the child and the corn cob, one hoof lifted.
 
@@ -646,7 +646,7 @@ Absolutely no text, letters, numbers, speech bubbles, icons or symbols anywhere.
 
 Must read at phone size (about 740x320 pixels): which animal is coming (the goat), the child with the corn cob, and the shed door with its glowing window.
 
-References to attach (first: Zafar's approved yard from prompt 1):
+References to attach (first: the approved yard from prompt 1):
 [the approved yard image from prompt farm-animals-1]
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/a2-farm-animals-v1.png
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/a1-farm-animals-v1.png
@@ -671,7 +671,7 @@ Absolutely no text, letters or numbers anywhere. No readouts, symbols, bars, dot
 
 Must read at phone size (about 740x320 pixels): the big goat and the small goat as clearly different sizes, and the leaping small goat whole inside the gold brackets.
 
-References to attach (first: Zafar's approved yard from prompt 1):
+References to attach (first: the approved yard from prompt 1):
 [the approved yard image from prompt farm-animals-1]
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/a2-farm-animals-v1.png
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/a1-farm-animals-v1.png
@@ -703,3 +703,5 @@ Each finding from `farm-animals-critique.md` (1 Nov), then what was done.
 17. **SHOULD: cap the bonus photos.** Done. One a round (decision 7).
 18. **SHOULD: the recording total was understated; the day is over the cap.** Done in part. The day's total is given (about 55-60 takes) and split into sittings by level. I did not assume the critique's move of home at dusk to the second visit: Zafar's newest word (21 Oct) is "keep animals home in for now", and the level split already brings the first sitting to about 21 takes for these stages. His own "move it if the day is too long" is the alternative in decision 19.
 19. **SHOULD: the asset list, the bots' win, and the shared order card.** Done. An asset table per mini-game (§6); each bot's win written in §3 and §6; the photo-in-the-row put to the shared-layer owner as a shared feature (decision 21), with a play-area tray until then.
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** The hens and chicks are now the farm's one cast with `farm-eggs-orchard.md` (its decision 24): three new 3D hens (the big red-brown mother hen, the small white hen, the big white hen) and the mother hen's three chicks, drawn once in that design's Block 1 with this design's poses on the same sheets; the old `assets/characters/` hen sprites are dropped (§7, decision 8), and the prompts' "russet hen" is now the same big, plump red-brown hen. The count close is worded the same in both farm designs (stillness, or the step's next thing where there is one; an empty trough never closes; the clock waits for speech), and decision 5 is one question with `farm-eggs-orchard.md` open question 1. The prompts no longer name Zafar.

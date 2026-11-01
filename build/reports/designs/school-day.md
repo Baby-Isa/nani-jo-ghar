@@ -89,7 +89,7 @@ Designed overnight, 1 Nov 2026, while Zafar slept; revised the same night after 
 | 6 | **B. The blackboard** | `do-it` tool plus two new board modules | the drawn picture becomes the day's sticker |
 | 7 | Home, the evening book | the book (built) | the sticker on the book's cover and the packed things on the page |
 
-This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts the night before and ends at sunrise, so it must come before the door. `do-it-engine.md` §2B still lists the older door-first order; it needs the same fix when that file is next touched (flagged in §10, decision 23).
+This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts the night before and ends at sunrise, so it must come before the door. `do-it-engine.md` §2B now has the same order (consistency pass, 1 Nov; §10, decision 23).
 
 - **A to the bus:** the bag zips shut, a horn toots outside, and the door opens onto the bus. The bag rides on the seat beside the window (art only, no ask).
 - **The bus to B:** the classroom opens with the bag on the child's desk. The things packed come out onto the desk by themselves, one hop each (a show, not a test).
@@ -402,7 +402,7 @@ Each is the choice, the reason, and the answer I assumed.
 20. **From L2, both deciding words are needed for every ask** (dropping either leaves at least two candidates), as a data check and a one-word bot. Covers loanword nouns and keeps the nouns teaching. *Assumed: yes.*
 21. **Parked, not dropped:** the class hand-out (B6, needs give-to) and what's gone? (B7). *Assumed: yes.*
 22. **Both games wait for Mum's school round before a build;** the lab may be built on placeholders, but the leak bot is run on recorded words only. *Assumed: yes.*
-23. **The day's order is the wake-up clock's:** clock (the night before, to sunrise), the door with its sky, getting ready, the bag, the bus, the board, home, the book. Door-then-clock ran time backwards. `do-it-engine.md` §2B still shows door-first and needs the same one-line fix (not edited tonight). *Assumed: yes.*
+23. **The day's order is the wake-up clock's:** clock (the night before, to sunrise), the door with its sky, getting ready, the bag, the bus, the board, home, the book. Door-then-clock ran time backwards. `do-it-engine.md` §2B now has the same order (fixed in the consistency pass, 1 Nov). *Assumed: yes.*
 24. **The model never hands over the answer:** Ali's picture is rubbed out and the board re-dealt, so it is never the child's next candidate. The model plays on each level's first lesson and before each speaking turn; otherwise a tap skips it. Its rub uses the child's gesture. *Assumed: yes.*
 25. **The bag's counts always have spares** (three or four pencils for "two"); too few holds the next tap, too many hops back out, both with the number said again and no gold. *Assumed: yes.*
 26. **Tidy's bookshelf is parked** (a later "put the book back on the shelf" at home); Tidy's school bag is this day's. *Assumed: yes.*

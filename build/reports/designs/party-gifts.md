@@ -20,6 +20,7 @@ Sources, newest first:
 **Who is there (visit 1):**
 - **The child's own Nani and Nana**, who brought the child. Nani is the asker and the guide; Nana is a guest like the child.
 - **The host family, six people:** the birthday girl (4), her baby brother, her mum, her **dada** and **dadima** (her father's parents), and an aunty.
+- **One party cast for all three party designs** (this file, `party-guests.md`, `do-it-engine.md`; consistency pass, 1 Nov). The placeholder names are `party-guests.md`'s, which Zafar picks (its open question 0): the birthday girl is **Zara**; the aunty is **Zara's masi** (her mum's sister), so Mum's one aunty title is *masi* (open question 2 below); masi's son **Yusuf** (the boy cousin, 6) and Zara's friend **Sana** (5) are guests from visit 1, in the introductions, look after the guests and statues, but not in this design's visit-1 scenes (Yusuf joins D1 on visit 2). Dada and dadima are at the party from visit 1 (here) and join the balloon game at its L4 (visit 2). Looks, one list for every prompt: Zara a marigold kameez with a light dupatta; her mum a deep plum kameez with a soft grey dupatta; Zara's masi a red kameez and dupatta (D1's "the aunty in red"); dadima a lilac kameez with a plain grey dupatta; dada tall, a short grey beard, a pale kurta and grey waistcoat; Yusuf a striped kurta; Sana a kameez and trousers. No teal (the cast's Masi), no cream-and-red (Nani).
 - The host family's grandparents are dada and dadima, never Nana and Nani, so "Nana" and "Nani" mean the child's own grandparents on every day of the game (§12, finding 1).
 
 **Status:** new. Its parts are old designs, folded in:
@@ -178,14 +179,14 @@ That's **about 20-24 of Mum's clips for all of visit 1, 7 for the first sprint**
 This keeps give-to games apart (look after the guests also gives, but by feeling), and puts statues between them. The map's Part 7 lists the gifts before statues; it changes with this order (one line for the orchestrator to carry over).
 
 **What carries in:**
-- **From Introductions:** the host family's names and kinship (dada, dadima, the aunty). The cake and the presents then test them. Both party designs must share this one cast (§10, decision 3).
+- **From Introductions:** the host family's names and kinship (dada, dadima, the aunty, who is Zara's masi). The cake and the presents then test them. Both party designs now share this one cast (§0; §10, decision 3).
 - **From the shops day:** the gift the child chose. It is the last present the birthday girl opens in B2.
 - **From the kitchen day:** if the child baked the party cake, the same cake comes out here.
 - Look after the guests no longer hands its cups on: the cloth is laid fresh in A2 (§12, finding 14).
 
 **What carries out:**
 - **The photos** (once Snap's part exists) go into the evening book. Nani asks "who's this?" over them; her own Nana is in them as Nana, the host's grandad as dada.
-- **The party-bag toy** goes home for Ali.
+- **The party-bag toy** goes home for Ali. Ali isn't at the party; he opens the door at home in the new kurta the child chose at Big Ma's (`sewing.md` decision 22, consistency pass).
 - **On visit 2:** the cloth's cups and the missing slice open *Who ate the cake?*, straight after the cake stage.
 
 ---
@@ -505,7 +506,7 @@ The guided first round: unscored, about 50 seconds. **A2 only, at L1.** It shows
 **Visit 1** (she turns 4): the cake with the cloth, the candles and the presents, at levels 1-4 as the child moves up. The rule: up after 3 rounds where the guide's hint came at most once a round; never down. Snap's party part joins when Snap is rebuilt.
 
 **Visit 2** (a year older: she turns 5):
-- The uncle and a boy cousin are new (one more art run).
+- The uncle is new (one more art run). The boy cousin is **Yusuf**, at the party since visit 1 (`party-guests.md`) and drawn in visit 1's run; he joins D1 now.
 - **Who ate the cake? (D1)** follows the cake stage, once Who did it? is rebuilt.
 - The elder "yours" (*anjo*) is in B3.
 
@@ -513,7 +514,7 @@ The guided first round: unscored, about 50 seconds. **A2 only, at L1.** It shows
 
 **Free play:** a party table on the map runs any one part at any unlocked level.
 
-**Parked for `docs/ideas.md`** (the orchestrator adds them; this design edits no other file):
+**Parked in `docs/ideas.md`** (added in the consistency pass, 1 Nov, as rows 84-93):
 - Seat the guests (A5), "next to" and "opposite me" (Tidy 5a).
 - Pass the parcel (B4), with the music question shared with statues.
 - Nani guesses (D2).
@@ -576,12 +577,13 @@ Tidy's `tell.js` is not used for B3: it is "Ali acts on what the child says", an
 **Visit 1 run (one run):**
 1. **One background:** the host family's sitting room, golden afternoon light, with the cloth laid along the low table. Modern, with Kutch or East African hints: at most two nods. Bunting and balloons, **no writing on them**. The left fifth is plain wall for the side panel.
 2. **Seven character sheets** (five poses each: idle three-quarter, front-facing, receiving, eating, one comic), not real people, consistent with `customers-sheet.webp`:
-   - the birthday girl at 4;
+   - the birthday girl (Zara) at 4;
    - her baby brother (comic: cream on the nose; asleep in the high chair for D1);
    - her mum;
    - dada (comic: drumming);
    - dadima (comic: the squeaking teddy);
-   - an aunty;
+   - an aunty (Zara's masi);
+   - **One run with `party-guests.md`:** the same sheets carry its 12-cell pose and fix-and-miss cells, and Yusuf's and Sana's sheets are drawn in this run too (one paste block; the looks in §0);
    - **Nana's party sheet** (receiving, eating with crumbs on his moustache, comic), matching his existing face (`assets/shared/faces/nana.webp`).
    - **Modest clothes:** kameez and dupatta, kurta and waistcoat. No religious markers. Nani uses her existing sheet.
 3. **Item sheets (F view), every state listed:**
@@ -596,7 +598,7 @@ Tidy's `tell.js` is not used for B3: it is "Ali acts on what the child says", an
    - the child's party bag, the baby's basket, the girl's gift table.
 4. **Nothing drawn in code** beyond composing these sprites. No drop shadows on things resting on a surface; contact shadows only. Clean cut-outs.
 
-**Later runs:** Snap's garden with its low wall and Snap's viewfinder and print frame (with Snap's rebuild); visit 2's girl at 5, the uncle, the boy cousin and the sofa wall (with Who did it?'s rebuild).
+**Later runs:** Snap's garden with its low wall and Snap's viewfinder and print frame (with Snap's rebuild); visit 2's girl at 5, the uncle and the sofa wall (with Who did it?'s rebuild); the boy cousin is Yusuf, already drawn in visit 1's run.
 
 ### Layout (two layouts, switched by height)
 
@@ -694,7 +696,7 @@ Each line gives the choice, the reason, and the answer I assumed. Answerable as 
 
 1. **One game, built in steps:** visit 1 is the cake with the cloth (A2), the candles (A1) and the presents (B1, B2, B3), all on one give-to. Snap's party part joins with Snap's rebuild; Who ate the cake? on visit 2 with Who did it?'s. *Reason:* the scope was one give-to; a sprint has one playable goal. *Assumed:* yes.
 2. **The day's order:** introductions, look after the guests, statues, the cake, (Snap and the photo), the presents as everyone leaves. *Reason:* give-to games aren't back to back. *Assumed:* yes. The map's Part 7 had the gifts before statues and changes with this.
-3. **The host family's grandparents are dada and dadima**, never Nana and Nani; the child's own Nana and Nani come to the party. `party-guests.md` (introductions, look after the guests) must use the same cast; it currently has "Zara's nani". *Reason:* two Nanis on one screen break the word that decides. *Assumed:* yes.
+3. **The host family's grandparents are dada and dadima**, never Nana and Nani; the child's own Nana and Nani come to the party. `party-guests.md` (introductions, look after the guests) now uses the same cast (consistency pass, 1 Nov; it had "Zara's nani"). *Reason:* two Nanis on one screen break the word that decides. *Assumed:* yes.
 4. **Nani asks every deciding line** (Mum's voice); the host family's lines are reactions only. Masi voices the aunty in B3's watched exchange, two lines. *Reason:* non-negotiable 2; the family has no four-year-old girl's voice. *Assumed:* yes; question 1 below.
 5. **The dastarkhwan is folded in, not sent elsewhere:** A2 opens with laying the cloth from L2 (owners), positions joining as Mum records them, on Tidy's place, check and dastarkhwan. *Reason:* your 1 Nov yes to the fold list keeps it at the party. *Assumed:* yes.
 6. **Owners on the cloth use Mum's existing cup clips** (*munjo, tojo, Nana jo, Nani jo, chokri jo* cup), so the pronoun work starts at L2 on real Kutchi. *Reason:* they're recorded. *Assumed:* yes.
@@ -710,13 +712,13 @@ Each line gives the choice, the reason, and the answer I assumed. Answerable as 
 16. **The host mum cuts the cake as an animation;** the cut drag is parked. *Reason:* one mechanic fewer; the child never holds the knife. *Assumed:* yes.
 17. **Who ate the cake?:** "who did it?" (✓ Mum) until "who ate the cake?" is recorded; often a grown-up; never "thief"; it ends with the host cutting a slice to share. *Reason:* non-negotiable 7. *Assumed:* yes.
 18. **Parked for later visits:** seat the guests, pass the parcel, Nani guesses, the arranged photo, the cupcake joke ages, the old neighbour. *Reason:* each is a new mechanic or art job the scope didn't ask for. *Assumed:* yes.
-19. **The new family is generic** (not real people): modest, warm, a year older each visit. Six people on visit 1; the uncle and cousin on visit 2. *Reason:* "a new family, a year older each visit", and one art run. *Assumed:* yes.
+19. **The new family is generic** (not real people): modest, warm, a year older each visit. Six people on visit 1, plus Yusuf and Sana from `party-guests.md`'s stages (one shared cast, §0); the uncle on visit 2. *Reason:* "a new family, a year older each visit", and one art run. *Assumed:* yes.
 20. **Snap's party part is built after Snap's rebuild for the farm.** *Reason:* one rebuild, three settings (your yes to Q14). *Assumed:* yes.
 21. **Snap's print hand-out (C3) and Tell Ali (D3) are "maybe later".** *Reason:* a third give-to in a day; "say it, Ali acts" has six copies. *Assumed:* yes.
 
 **Open questions that are genuinely his:**
 1. **Voices:** may Masi voice the aunty for two lines in B3? If not, B3 waits and part B ends with the bag going home. *Recommended:* yes.
-2. **Kinship words:** is it *dada* for the father's father? Which one aunty title first (mother's sister, father's sister ...)? For Mum to choose; you confirm spellings.
+2. **Kinship words:** is it *dada* for the father's father? The aunty title is now *masi* (mother's sister), set by the shared cast with `party-guests.md` (consistency pass, 1 Nov); Mum confirms the word, you confirm spellings.
 3. **"Happy birthday":** what does the family actually say, in Kutchi or English?
 4. **"Thank you":** what does the family say? Until then the child has no thank-you line.
 
@@ -757,7 +759,7 @@ This shows the dastarkhwan laid along the table and a slice going to the child's
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets): one gameplay screen, the main play area only. Wide landscape, about 21:9. Keep the left fifth of the frame as plain cream wall with nothing important in it (a side panel will cover it later); a grandmother stands just right of that strip.
 
-The scene: the same bright, modern family sitting room, golden afternoon light, eye-level camera. Limewash cream walls, a brass lamp, a few plain paper bunting flags (no writing). A low pale-oak table across the front of the frame with a plain cream cloth laid along its front edge; on the cloth, a small round place in front of each person, and one empty place at the near edge in the middle of the frame. Behind the table, cut at the waist and spaced well apart: the grandfather from the Nana reference face, white moustache, kind; a girl of about four in a marigold kameez; a woman in a teal kameez and dupatta; a tall grandfather with a short grey beard in a pale kurta and grey waistcoat. At the left, just right of the plain strip, the grandmother from the reference sheet, smiling. In front of three places stand identical plain cream cups.
+The scene: the same bright, modern family sitting room, golden afternoon light, eye-level camera. Limewash cream walls, a brass lamp, a few plain paper bunting flags (no writing). A low pale-oak table across the front of the frame with a plain cream cloth laid along its front edge; on the cloth, a small round place in front of each person, and one empty place at the near edge in the middle of the frame. Behind the table, cut at the waist and spaced well apart: the grandfather from the Nana reference face, white moustache, kind; a girl of about four in a marigold kameez; a woman in a deep plum kameez with a soft grey dupatta; a tall grandfather with a short grey beard in a pale kurta and grey waistcoat. At the left, just right of the plain strip, the grandmother from the reference sheet, smiling. In front of three places stand identical plain cream cups.
 
 The moment: on a tray at the front, five slices of white cake on small plates, two big and three small. One plate is gliding through the air toward the grandfather with the white moustache, who reaches out with delight. A soft gold glow outlines him only. Everyone else watches, smiling the same mild smile.
 
@@ -806,7 +808,7 @@ This shows the photo game with two older men spaced apart, and the viewfinder ho
 ```
 Mock-up for a children's language game (ages 3-8, phones and tablets): one gameplay screen, the main play area only. Wide landscape, about 21:9. Keep the left fifth of the frame as plain garden wall with nothing important in it (a side panel will cover it later).
 
-The scene: a wide, eye-level view of a family's sunny back garden during a birthday party, like a frame from a family animated film. A limewash wall with a sage door at the back, a potted lime tree, a string of plain paper bunting (no writing). Across the middle of the frame runs a low garden wall at waist height; the guests stand behind it, seen waist-up, relaxed and spaced well apart, at least one head-width between any two: a grandfather with a white moustache (the Nana reference face); a tall grandfather with a short grey beard in a pale kurta and grey waistcoat, standing far from the first; a grandmother in a lilac kameez and dupatta holding a baby; a woman in a red kameez and a woman in a teal kameez, both with dupattas over their shoulders, apart from each other; a girl of about four in a marigold kameez.
+The scene: a wide, eye-level view of a family's sunny back garden during a birthday party, like a frame from a family animated film. A limewash wall with a sage door at the back, a potted lime tree, a string of plain paper bunting (no writing). Across the middle of the frame runs a low garden wall at waist height; the guests stand behind it, seen waist-up, relaxed and spaced well apart, at least one head-width between any two: a grandfather with a white moustache (the Nana reference face); a tall grandfather with a short grey beard in a pale kurta and grey waistcoat, standing far from the first; a grandmother in a lilac kameez and dupatta holding a baby; a woman in a red kameez and a woman in a deep plum kameez, both with dupattas over their shoulders, apart from each other; a girl of about four in a marigold kameez.
 
 The moment: a camera viewfinder overlay, four soft white rounded corner brackets, frames only the tall grandfather with the short grey beard: his face is big and centred and no other face is inside the brackets. A bright white flash is just firing, and a small instant photo of him is sliding out at the bottom edge of the frame. He is mid-blink with one eye shut, comic. Everyone else is caught in natural poses with the same mild smile.
 
@@ -832,7 +834,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the family's bright, modern sitting room in golden late-afternoon light, eye-level camera like a family animated film. A long sofa with a single ajrakh cushion against a limewash cream wall, a brass lamp, plain paper bunting (no writing). In the foreground on a low pale-oak table: a cake on a stand with one slice clearly missing, and a cream cloth with cups at each place, one of them clearly bigger than the rest.
 
-The moment: six guests behind the sofa, cut at the waist, each holding an empty plate, with no crumbs or cream on any face, all with the same calm, curious expression and open eyes. Two grown-ups are standing tall: a woman in a red kameez and dupatta, and a man in a red kurta. Four have sat down with small, friendly comic flops: a girl of about five in a marigold kameez, a boy of about seven in a striped kurta, a woman in a teal kameez and dupatta, and a tall grandfather with a short grey beard in a grey waistcoat. A baby is fast asleep in a high chair at the side. A soft gold glow surrounds the two standing grown-ups only.
+The moment: six guests behind the sofa, cut at the waist, each holding an empty plate, with no crumbs or cream on any face, all with the same calm, curious expression and open eyes. Two grown-ups are standing tall: a woman in a red kameez and dupatta, and a man in a red kurta. Four have sat down with small, friendly comic flops: a girl of about five in a marigold kameez, a boy of about seven in a striped kurta, a woman in a deep plum kameez and soft grey dupatta, and a tall grandfather with a short grey beard in a grey waistcoat. A baby is fast asleep in a high chair at the side. A soft gold glow surrounds the two standing grown-ups only.
 
 Style: match the references exactly: a stylised 3D animated-feature look, soft warm light from the upper left, chunky simplified shapes, big expressive eyes, readable mouths, no outlines, no cel shading, no photorealism, no depth-of-field blur. Soft contact shadows. Modest clothing, no religious symbols or markers of any kind. Playful, never scary or shaming: nobody frowns, rolls their eyes or looks guilty.
 
@@ -876,3 +878,5 @@ Each finding from `party-gifts-critique.md`, then what I did. All 8 MUSTs applie
 17. **Reuse missed.** `giveto` is lifted from `js/snap/mechanics/handin.js`; `whichone.js`, `onboard.js`, Cook's `count.js` and the clinic's waiting-room ladder are in §6. Not taken: Tidy's `tell.js` for B3, because tell is "Ali acts" and B3 has no Ali.
 18. **English reaching the child.** B3's pills are pictures plus Mum's clip, no words; D1's "it's okay / share!" pills are parked, the ending is a picture; the child's "thank you" is gone until Mum says what the family says (open question 4).
 19. **Small contradictions.** The timed hint is free, and only the helper card costs a bulb (everywhere). "I'm a hundred" left with the parked joke ages rather than being made visual. The map's Part 7 change is stated in §2 and decision 2. "Happy birthday" now comes after the countdown, one voice at a time.
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** One party cast with `party-guests.md` and `do-it-engine.md`, written once in §0: the placeholder names (Zara, Zara's masi as the aunty, Yusuf, Sana), one look per person for every prompt (Zara's mum is now deep plum, not teal, which is the cast's Masi's colour), Yusuf and Sana drawn in visit 1's run, and the aunty title settled as *masi* for Mum to confirm (open question 2). The party order here is now the one all three party designs use. Ali stays home and gets the party-bag toy, wearing the kurta from `sewing.md`.

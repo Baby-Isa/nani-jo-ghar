@@ -188,9 +188,9 @@ Key:
 
 | O-ID | Objective | New words | Stages that teach it | Times heard in the day | Times said | Met again |
 |---|---|---|---|---|---|---|
-| O1 | Clothes | kurta, cap | make (showing, ask, card), the fitting (ask, card, the end's word card), the door (Nani's line names the kurta), the book | kurta 6+, cap 3+ (make's showing, and the asked or the decoy at the fitting, named on its miss) | 0 | the party (Ali's kurta) |
+| O1 | Clothes | kurta, cap | make (showing, ask, card), the fitting (ask, card, the end's word card), the door (Nani's line names the kurta), the book | kurta 6+, cap 3+ (make's showing, and the asked or the decoy at the fitting, named on its miss) | 0 | the party day (Ali's kurta, at home) |
 | O2 | Garment parts and faults | sleeve, button, torn | mend (showing **names** each fault, the ask, the card), the door ("Nana's kurta is torn", from play 2), the book ("Nana's sleeve") | the asked fault 4+ in 3 stages; the unasked fault 1-2 times (met, not taught, that day; the asked fault alternates between plays) | 0 | the clinic (a part named) |
-| O3 | Colours | red ✓, green | the stall (showing, ask, recast), make (Big Ma names the cloth), the fitting (L2+), the book ("red cloth") | red 4+, green 2+ in 2 stages | stall handover from visit 2 | the shops, the party |
+| O3 | Colours | red ✓, green | the stall (showing, ask, recast), make (Big Ma names the cloth), the fitting (L2+), the book ("red cloth") | red 4+, green 2+ in 2 stages | stall handover from visit 2 | the shops, the party day |
 | O4 | Size and fit | small ✓, long, short | the opening joke (*nindho*), make L2, the fitting's gags | small 2+ at L1; long and short 3+ each from L2 | 0 | the clinic's tape (later) |
 | O5 | Weather → clothes | shawl, umbrella, rain or cold | the door (the day's weather), Going out (Nani's call, the card, the outcome line) | the weather word 3, the asked item 2+ | 0 | pack the bag |
 | O6 | Wanting and giving | *muke {x} khape*, *barabar* | make, the fitting, the stall | 5+ | 0 | Cook, the shops |
@@ -233,14 +233,14 @@ That is over the template's 15-25, so it splits: the first-ever play's 6 and the
 
 **When the shops day came first:**
 - Stage 2 is skipped, and the shops' log puts the cloth on Big Ma's table.
-- At the shops the cloth stall is row 7 of `shops.md` ("the red cloth, the big piece, for Big Ma"). It is the same stage engine, the same art and the same words, so the cloth the child chose there turns up here (Toca Town's carry-home; other games lesson 7).
+- At the shops the cloth stall is row 7 of `docs/game-design/days/shops.md` ("the red cloth, the big piece, for Big Ma"). On the shops' visit 1 it is a shelf of bolts at the general store, sold by the shopkeeper, and the cloth seller's own stall comes with the shops' visit 2 (`shops.md` decision 1 and open question 6, recommended A). The sewing's stall stage follows Zafar's answer there: the same engine, words and bolts either way, so until the seller's stall exists the stage plays at the general store's shelf (consistency pass, 1 Nov). It is the same stage engine, the same art and the same words, so the cloth the child chose there turns up here (Toca Town's carry-home; other games lesson 7).
 
 **From the days around it:**
 - **Pay** comes from the shops. The sewing uses it at the shops' current level for this child, so it never teaches a new number here; and until the child has played pay at the shops, Big Ma pays herself (a coin clink, no tap), so the sewing never carries pay's first-time showing.
 - **Red, small and "not the red one"** come back from Cook and the shops.
 
 **To the days after:**
-- **Ali's new piece comes to the birthday party.** He wears it there, in the colour the child bought. This holds because **the made piece is always cut from the bought cloth** (make has no colour choice); what varies is only which piece the fitting asks for. This is cheap delight, and it's the thing for Ali.
+- **Ali's new piece comes out on the birthday day.** Ali isn't at the party (`party-gifts.md`: the child goes with Nana and Nani, and the party-bag toy goes home for Ali), so he opens the door in it, in the colour the child bought, when the child brings his toy home; `party-gifts.md` §2 now has the line (consistency pass, 1 Nov). This holds because **the made piece is always cut from the bought cloth** (make has no colour choice); what varies is only which piece the fitting asks for. This is cheap delight, and it's the thing for Ali.
 - **The offcut goes into Big Ma's scrap tin.** On a later visit it's the patch for a hole (mend L4).
 - **The mirror photo** goes into the evening book.
 
@@ -306,7 +306,7 @@ The cloth folds itself into Big Ma's bag.
 | Where is the challenge, and does the Kutchi decide it? | Only the heard colour (and size) picks the bolt; every bolt could be bought. | 4 (colour words are slow to learn, so red and green carry it first) |
 | Where is the fun? | The bolt's thump-and-unroll; the seller's big shears' snip; the coins clinking. | 3 |
 | Where is the instruction? | Big Ma speaks to the seller, then her card pops up: the colour chip (a swatch only while the word is supported), and from L2 the size chip. | 5 |
-| What is novel? | Choosing the material that the next game makes from. The colour you heard is the colour Ali wears at the party. | 3 (Find it 4b's skin, once rebuilt) |
+| What is novel? | Choosing the material that the next game makes from. The colour you heard is the colour Ali wears on the party day. | 3 (Find it 4b's skin, once rebuilt) |
 
 **Total: 20. Keep** as the day's short opener. On the shops day it is that day's stall 7.
 
@@ -605,7 +605,7 @@ As 4b, and the fitting ends with Going out (3e): Nani through the doorway calls 
 
 **Free play:** any open stage at the child's level, from Big Ma's room. **"Chooses colours" as expression after effort** (Khan Academy Kids' rule) reuses Find it 3a's ungraded gift tap, with no new stage and no new art: at the free-play stall the seller holds out the bolts, the child taps **any** one, the seller says its colour and Big Ma takes it home. The word is still heard; nothing is graded.
 
-**Cut from this design to `docs/ideas.md`** (later-visit material; this run edits only the design, so the orchestrator adds the two lines): the cushion cover for Nani's sofa (new art and a new ungraded stage), and the role reversal (the child tells Ali which piece to try on, on the shared "say it, Ali acts").
+**Cut from this design to `docs/ideas.md`** (later-visit material; added in the consistency pass, 1 Nov, as rows 95 and 96): the cushion cover for Nani's sofa (new art and a new ungraded stage), and the role reversal (the child tells Ali which piece to try on, on the shared "say it, Ali acts").
 
 **Grown-up level picker:** any level, as everywhere.
 
@@ -709,7 +709,7 @@ As 4b, and the fitting ends with Going out (3e): Nani through the doorway calls 
 | **Good Pizza, Great Pizza** | the order is the puzzle, and the customer's reaction is the grade | the fitting's *barabar* and the size gags |
 | **Cooking Mama: Cuisine!** | one gesture per step, fixed across levels | cut, seam and stitch: each one track swipe |
 | **Dr. Panda Home** | a chore with a clear finished state | the kurta folding itself onto the rail |
-| **Toca Town** (carry it home) | things made or bought in one place turn up in another | cloth from the shops; Ali's kurta at the party; the offcut patch |
+| **Toca Town** (carry it home) | things made or bought in one place turn up in another | cloth from the shops; Ali's kurta on the party day; the offcut patch |
 | **Pok Pok Playroom** | learn a control by seeing it react once | the first-time showing of each track |
 | **Lingokids** (dress-up) | named item, put it on, hear the word again | the fitting's L1 |
 | **Bluey: Let's Play** (dress-up room) | a wrong outfit becomes the joke, worn | the too-long and too-small gags |
@@ -839,7 +839,7 @@ Each line gives the choice, the reason, and the answer assumed. Answer "yes to a
 19. **Make and mend use the clinic's convention:** a top-down table with the asker's face in a corner frame (clinic decision 92: a circle only where the person is off screen). *Reason:* one camera per scene, and the asker still on screen. *Assumed:* yes.
 20. **No code tinting of garments:** every colour is a real recolour from the ChatGPT run. *Reason:* "draw nothing in code". It costs more sprites (about 80 for visit 1) but keeps the plaster look. *Assumed:* yes. He might accept tint masks to save art.
 21. **Speaking:** the stall's colour turn is handed over once three colours are recorded; the mirror's *bo fine* is ungraded shadowing with a set of two. *Reason:* both inside watched exchanges in family voices. *Assumed:* yes.
-22. **Ali's new piece comes to the birthday party** in the bought colour (the made piece is always cut from the bought cloth). *Reason:* carry-home delight, and the thing for Ali. *Assumed:* yes. The party design needs one line for it.
+22. **Ali wears his new piece on the birthday day,** in the bought colour (the made piece is always cut from the bought cloth), at home when the child brings him the party-bag toy: Ali isn't at the party (`party-gifts.md` §2, which now has the line). *Reason:* carry-home delight, and the thing for Ali. *Assumed:* yes.
 23. **Big Ma hums only at the machine.** *Reason:* "she sings while she sews" (cast); one moment, not over speech. *Assumed:* yes. Zafar's wife records it; every spoken line is Mum's or Masi's.
 24. **The size is large: three sewing sprints,** after Find it's rebuild and pay (which gate only the stall). Sprint 1 is the first-ever play end to end. *Reason:* the stall, the fitting and give-to are rebuilds or unbuilt, and the track is new (§0). *Assumed:* yes.
 25. **Big Ma's character sheet is drawn from the photo notes already in `cast.md`,** as the first item of the art run, and Zafar signs it off before any scene. *Reason:* the sheet-first rule; the photos are in. *Assumed:* yes.
@@ -848,7 +848,7 @@ Each line gives the choice, the reason, and the answer assumed. Answer "yes to a
 **Open questions that are genuinely his** (beyond 1 and 2):
 - **What the family wears:** decision 15, *topi* or *kofia* for the cap. What do the girls wear for "a new outfit": kurta and trousers, or something else? (Mum or his wife.)
 - **Whether Big Ma goes to the stall in person** or sends the child with Nani: does a great-grandmother walking to the market fit the real Big Ma?
-- **`cast.md`'s 24 Sept line** "no stall visit; Big Ma fixes the kurta rather than a new one being bought" is outdated by his 31 Oct note ("buys the fabric at the shop"). If he agrees, that line changes in the same commit as this design.
+- **`cast.md`'s 24 Sept line** "no stall visit; Big Ma fixes the kurta rather than a new one being bought" is outdated by his 31 Oct note ("buys the fabric at the shop"). Changed in `cast.md` in the consistency pass (1 Nov), marked "for Zafar to confirm"; he can reverse it there.
 
 ---
 
@@ -880,7 +880,7 @@ https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09r/c2
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/assets/cook/bg/service.jpg
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/customers-sheet.webp
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/props-sheet.webp
-(once signed off: Big Ma's character sheet)
+(once signed off: the great-grandmother's character sheet)
 ```
 
 ### Prompt sewing-2: make (tap the long line, then cut)
@@ -907,7 +907,7 @@ https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/style-a
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/props-sheet.webp
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/customers-sheet.webp
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/assets/cook/bg/service.jpg
-(once signed off: Big Ma's character sheet)
+(once signed off: the great-grandmother's character sheet)
 ```
 
 ### Prompt sewing-3: mend (two faults; the said one decides)
@@ -933,7 +933,7 @@ References to attach:
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/style-anchor-v1.png
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/props-sheet.webp
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/customers-sheet.webp
-(once signed off: Big Ma's character sheet)
+(once signed off: the great-grandmother's character sheet)
 ```
 
 ### Prompt sewing-4: the fitting at phone size (the size gag)
@@ -957,7 +957,7 @@ References to attach:
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/style-anchor-v1.png
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/customers-sheet.webp
 https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/art/s09b/h3-house-empty-wide-v1.png
-(once signed off: Big Ma's character sheet)
+(once signed off: the great-grandmother's character sheet)
 ```
 
 ---
@@ -989,3 +989,5 @@ The critique (`sewing-critique.md`, 1 Nov) had 7 MUSTs and 11 SHOULDs. All MUSTs
 16. **Nana's hand through the sleeve.** Applied: the mended sleeve flaps like a windsock and Nana's face circle chuckles; no hand drawn (§3c, art item 10).
 17. **No rail in the art list.** Applied: rail pieces on hangers are item 8 (about 10), the count is honest at about 80, and visit 1 is cut to red and green (green as the decoy), with white and the other recolours coming in visit 2; a split run is offered if 80 is too many (§7, §10 decisions 18 and 20).
 18. **Small contradictions.** Applied: the hint follows the rulebook (the guide's hint free, only the helper card costs a bulb) everywhere; §2 states that the made piece is always cut from the bought cloth, so the party promise holds; take-off is a tap on the piece's empty hanger, never on the person; decision 19 cites clinic decision 92. *Not done here:* `cast.md`'s 24 Sept "no stall visit" line, because this run may edit only this file; it is listed in §10's open questions to change in the same commit as this design.
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** Ali isn't at the birthday party (`party-gifts.md`: the child goes with Nana and Nani, and the party-bag toy goes home for Ali), so his new piece comes out at home on the party day (§2, decision 22; the party design now has the line). The stall stage follows `shops.md`: on the shops' visit 1 the cloth is the general store's shelf, and the cloth seller's own stall comes on visit 2 (§2). `cast.md`'s "no stall visit" line is changed, for Zafar to confirm. The cushion cover and the role reversal are `docs/ideas.md` rows 95-96. The prompts' attach lines say "the great-grandmother's character sheet", so no real person's name reaches ChatGPT. The counts keep `easy-to-play.md` rule 4, which is Zafar's word; if he picks another count close for every game (`farm-animals.md` decision 5, `shops.md` decision 8, `adoption-centre.md` decision 21, `beach-boat.md` decision 7), the sewing's counts follow it.

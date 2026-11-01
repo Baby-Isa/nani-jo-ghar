@@ -75,7 +75,7 @@ Kutchi here is only what is in the repo (`research-word-inventory-2026-10-31.csv
 | cupboard | *kabaat* ✓ | ✓ | scenery here (decision 27) |
 | kitchen | *rasoro*; "he's in the kitchen" *e rasore me ai* ✓ | inside lines; the whole line ✓ | heard at L1, deciding at L2 (1a) |
 | sitting room, bedroom | none | to record | heard at L1, deciding at L2 (1a) |
-| the hall, Ali's room | none | to record | 1b |
+| the bathroom, Ali's room | none | to record | 1b |
 
 **Owners.**
 
@@ -135,7 +135,7 @@ Ordered by what unblocks play. Each is one short clip. Nani (Mum) says every ask
 | 9 | one model line with a room and an anchor: "Nana's cup is on the table in the kitchen" | 1 | **the frame gap**: asked of her as a frame, not spliced |
 | | **1a total** | **13** | (+2 shared with hide and seek) |
 
-**For 1b, from Mum:** this side and that side (2, once she has answered what they mean); next to, in front of (2; behind and in come from hide and seek); teddy, key, book (3); the hall, Ali's room (2); "Simba took it" (1, shared with hide and seek's later list); "put it back" (1); a model line "bring Nana his glasses" (1); sock and thread (2, hide and seek's carry): **about 14.** *wadho* (big) alone is shared with hide and seek's 1b.
+**For 1b, from Mum:** this side and that side (2, once she has answered what they mean); next to, in front of (2; behind and in come from hide and seek); teddy, key, book (3); the bathroom, Ali's room (2); "Simba took it" (1, shared with hide and seek's later list); "put it back" (1); a model line "bring Nana his glasses" (1); sock and thread (2, hide and seek's carry): **about 14.** *wadho* (big) alone is shared with hide and seek's 1b.
 
 **For 1b, in the askers' own voices** (only if Zafar chooses family voices for Nana, Ma and Ali, open question 1): about 10 (each asker's "my X is …" model line and "where are my …?").
 
@@ -172,7 +172,7 @@ This section is the one place both designs cite for what passes between them (de
 | **The house:** one bedroom drawing, hide and seek's (wardrobe, curtain, bed with its cover to the floor, cupboard, chest of drawers, toy box, basket, the open door to the hall), plus **one small pale-oak bedside table**, which is an anchor here and scenery there (decision 3). | The doll's-house view is drawn to match that bedroom and locked after it. In this game everything in the bedroom except the bed and the bedside table is scenery, never ringed. |
 | **The mischief things** (one a round, dropped silently on the bedroom floor; the "for later" tray holds their pictures): Nana's glasses, Nani's bag (hide and seek's "purse", one word for both), Ali's sock, Big Ma's thread. | **Nana's glasses** in the tray become one of stage 1's two copies (Nana gets them back). **Nani's bag** is put away in stage 2. **The sock and the thread** stay in the tray until 1b, when their words are recorded, and are then put away in stage 2. A thing in the tray is never a stage-1 thing for someone else. |
 | **The place words:** under, behind, in, bed, box. | under and bed come back at L1-L2; behind and in in Tell Ali where (1b). |
-| **The room words:** none. Hide and seek's first visits are one bedroom; its visit 5 ("the whole house") needs room names. | **This game teaches them first:** kitchen, sitting room, bedroom (1a), the hall and Ali's room (1b). Hide and seek's visit 5 reuses the same five words and the same clips (decision 30). |
+| **The room words:** none. Hide and seek's first visits are one bedroom; its visit 5 ("the whole house") needs room names. | **This game teaches them first:** kitchen, sitting room, bedroom (1a), the bathroom and Ali's room (1b). Hide and seek's visit 5 reuses the same five words and the same clips (decision 30). |
 | **The cats,** found and awake. | Zazu chases the ball and sniffs what goes under; Simba's paw is theirs (1b). |
 
 ### What it hands on
@@ -212,7 +212,7 @@ Scores are 1-5 for: **Do** (one clear gesture), **Kutchi** (the word decides), *
 | D | Tell Ali where | Find it L20, Tidy "Ali's turn" | 4 | 5 | 5 | 4 | 3 | 21 | **keep, stage 4, speaking (1b)** |
 | E | The spice box (the kitchen's board) | Tidy masala dabba | 4 | 5 | 4 | 4 | 4 | 21 | **keep, stage 2 variant (1b, after Mum's answer)** |
 | F | Make the bed (the bedroom's board) | Tidy "make the bed" | 4 | 4 | 4 | 4 | 4 | 20 | **keep, stage 2 variant (1b)** |
-| G | The shoe rack (the hall's board) | Tidy "shoe rack" | 4 | 4 | 4 | 4 | 4 | 20 | **keep, second visit** |
+| G | The shoe rack (by the front door, in the sitting room) | Tidy "shoe rack" | 4 | 4 | 4 | 4 | 4 | 20 | **keep, second visit** |
 | H | The drawers (cutlery) | Zafar's "later: drawers" | 4 | 5 | 3 | 4 | 4 | 20 | **keep, second visit** |
 | I | The toy box (Ali's room) | Tidy toy-box skin | 5 | 4 | 3 | 4 | 2 | 18 | **a skin of B** (the box is one more anchor, adding "in") |
 | J | The wardrobe | Zafar's "later: wardrobe" | 4 | 4 | 3 | 4 | 3 | 18 | **third visit** (needs clothes words, which the sewing day records) |
@@ -278,7 +278,7 @@ Inside a room, slivers of the rooms either side show at the edges. A tap on a sl
 |---|---|---|
 | L1 (1a) | One thing per errand. **The room is guided:** the asked room sits in the lit box (the room word is heard as the camera eases in, once recorded). **The position decides:** two copies in that room, one on and one under the same table. One clearly different decoy in the room (another of the round's things, on the counter or floor, never on or under the table). Rooms with copies: the kitchen and the bedroom; Nana sits in the sitting room. | "Nana's glasses are under the table." In the kitchen: glasses on the table, glasses under it, the ball on the counter. |
 | L2 (1a) | **Two words per move: the room joins.** No lit box. Three copies, at least two in one room, on or under the table, the chair or the bed. Three rooms. Waits for Mum's model line (the frame gap, §1). | "Nana's cup is under the chair in the kitchen." The others: on the chair in the kitchen; under the table in the bedroom. |
-| L3 (1b) | **Other ways of saying it:** the two-person exchange (Nana: "Where are my glasses?" Nani: "They're under the chair in the bedroom"); "Bring Nana his glasses"; a "no" ask ("not in the kitchen, in the bedroom"). Ma and Ali ask too; the hall and Ali's room join. | the asker is the one who receives; "his" is heard |
+| L3 (1b) | **Other ways of saying it:** the two-person exchange (Nana: "Where are my glasses?" Nani: "They're under the chair in the bedroom"); "Bring Nana his glasses"; a "no" ask ("not in the kitchen, in the bedroom"). Ma and Ali ask too; the bathroom and Ali's room join. | the asker is the one who receives; "his" is heard |
 | L4 (1b) | **A look-alike:** the copies differ by size, and the size word joins the place. And "my" against "your": "Bring my small bag" or the child's own trip bag. | "Bring my small bag. It's on the table in the kitchen." |
 
 **The leak test, written out:**
@@ -426,9 +426,9 @@ Inside a room, slivers of the rooms either side show at the edges. A tap on a sl
 
 The bedroom (hide and seek's), eye level. The pillow, the blanket, Simba's toy mouse and Ali's teddy are on the floor. Nani: "The pillow goes on the bed. Simba's mouse goes under the bed." The only board where "under" and "on" share one anchor at the size of a bed; from L3 the pillow can go "this side" or "that side" of the bed's head (after Mum's answer). **Fun:** the blanket floats down and settles; Zazu immediately climbs in. **Levels:** L2 on, under; L3 this side, that side; L4 two things in one line. **Leak:** as B (every spot ringed; things that look natural on the bed, the pillow, also have a ringed "under" at all levels).
 
-### G. The shoe rack (the hall; second visit)
+### G. The shoe rack (by the front door; second visit)
 
-The hall by the front door. A two-shelf rack; slippers and shoes in a heap. Tap a shoe, tap its mate (they set down as a pair), then tap a place: "Nana's slippers on the top shelf." **Words:** slippers, shoes (to record), top, bottom (to record), the owners ✓. **Leak:** pairs are matched by eye (the hand-and-eye part, not scored); the scored move is the place.
+The sitting room's corner by the front door (the house has no hall: the bathroom takes its place, `clean-up-day.md` decision 25). A two-shelf rack; slippers and shoes in a heap. Tap a shoe, tap its mate (they set down as a pair), then tap a place: "Nana's slippers on the top shelf." **Words:** slippers, shoes (to record), top, bottom (to record), the owners ✓. **Leak:** pairs are matched by eye (the hand-and-eye part, not scored); the scored move is the place.
 
 ### H. The drawers (the kitchen; second visit)
 
@@ -456,8 +456,8 @@ About 3 minutes. No stage 3 or 4 in 1a.
 ## 5. Later visits and harder versions
 
 - **1a, L2:** the room word joins as the second word (after Mum's model line, the frame gap); two anchors in stage 2. Level up by the first-go rule (override 1); never level down.
-- **1b (after Zafar plays 1a):** Ma and Ali join, in their own voices if he chooses (open question 1); the hall and Ali's room; Simba's paw with the paw-tap, the swap and Zazu's theft; Tell Ali where; L3-L4 of stages 1 and 2; this side and that side once Mum has answered; the spice box and make the bed; the sock and the thread from hide and seek's tray; the thing for Ali.
-- **Second visit (harder, new items):** the hall's shoe rack and the kitchen drawers; the teddy, the key and the book as things; next to, behind, in front of as placing words; left and right (*dabo*, *jamni baju*) after this side and that side, with Nani's place moving between ends to keep this side and that side alive alongside them.
+- **1b (after Zafar plays 1a):** Ma and Ali join, in their own voices if he chooses (open question 1); the bathroom and Ali's room; Simba's paw with the paw-tap, the swap and Zazu's theft; Tell Ali where; L3-L4 of stages 1 and 2; this side and that side once Mum has answered; the spice box and make the bed; the sock and the thread from hide and seek's tray; the thing for Ali.
+- **Second visit (harder, new items):** the shoe rack by the front door and the kitchen drawers; the teddy, the key and the book as things; next to, behind, in front of as placing words; left and right (*dabo*, *jamni baju*) after this side and that side, with Nani's place moving between ends to keep this side and that side alive alongside them.
 - **Third visit:** the wardrobe (clothes words come from the sewing day: top shelf, hanging, bottom), "between" (*wich me*), and the past in the book ("it was under the bed").
 - **Role reversal:** at the third visit, Tell Ali where becomes the whole put-away: Ali holds each thing and the child tells him where, from the bubble.
 - **Waiting on decisions:** cupboards (decision 27); baby Isa, when the cast doc designs her; "behind the screen" (research-mechanics' barrier game: Ali arranges his room behind a curtain as the child describes theirs, then the curtain opens).
@@ -504,7 +504,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 
 | Asset | Count | Notes |
 |---|---|---|
-| The house overview, front open | 1 | five rooms in a row (kitchen, sitting room, bedroom, hall, Ali's room), the bungalow of `h3-house-empty-wide-v1.png`, matched to hide and seek's bedroom; 1a shows the left three |
+| The house overview, front open | 1 | five rooms in a row (kitchen, sitting room, bedroom, bathroom, Ali's room), the bungalow of `h3-house-empty-wide-v1.png`, matched to hide and seek's bedroom; 1a shows the left three |
 | The kitchen and the sitting room, full resolution, empty of loose things | 2 | crops and upscales of the overview, so camera and light match; the bedroom is hide and seek's |
 | Anchors as separate layers | 3 | the kitchen table, the kitchen chair, the bedroom's bedside table (the bed is hide and seek's) |
 | Things, F view | 4 | glasses, cup (reuse Cook's if it fits), ball, bag |
@@ -512,7 +512,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 | Nani | existing | the locked sheet; hide and seek's standing three-quarter pose in a room |
 | Simba and Zazu | existing | hide and seek's poses; plus Zazu pouncing and Zazu curled up |
 
-**1b adds:** the hall and Ali's room in full; the sitting room's anchors (sofa, armchair, low table); Ma and Ali (asking, front-facing, using it); the teddy, key, book, sock, thread, pillow, blanket, mouse; Simba with a paw out and in glasses; the spice box (T) and the drawers (T) as scenes; the shoe rack.
+**1b adds:** the bathroom and Ali's room in full; the sitting room's anchors (sofa, armchair, low table); Ma and Ali (asking, front-facing, using it); the teddy, key, book, sock, thread, pillow, blanket, mouse; Simba with a paw out and in glasses; the spice box (T) and the drawers (T) as scenes; the shoe rack.
 
 **Restraint:** at most 1-2 cultural nods per room (an ajrakh cushion in the sitting room; a mirror-work frame in the bedroom, as hide and seek draws it), rotated between visits. The kitchen's cabinets and worktop are scenery, never ringed (decision 20).
 
@@ -573,7 +573,7 @@ About 3 minutes. No stage 3 or 4 in 1a.
 Each line: the choice, the reason, the answer I assumed. Changed or new after the critique: marked *(revised)* or *(new)*.
 
 1. **Two halves, fetch then put away, with different things** *(revised)*. Stage 1 fetches what Nana wants and he keeps it; stage 2 puts away what Simba knocked down in hide and seek and the ball Zazu chased into the bedroom. *Reason:* the old story had tidied things back in people's hands. *Likely yes.*
-2. **One storey, five rooms in a row** (kitchen, sitting room, bedroom, hall, Ali's room), drawn once; 1a plays the left three *(revised)*. The bedroom's open door leads to the hall, as hide and seek draws it. That is your "4-5 rooms at most". *Likely yes.*
+2. **One storey, five rooms in a row** (kitchen, sitting room, bedroom, bathroom, Ali's room), drawn once; 1a plays the left three *(revised)*. The bathroom takes the hall's place so the clean-up has all four of your rooms: one house for both designs, as `clean-up-day.md` decision 25 sets it (consistency pass, 1 Nov; your numbered choice there decides both). The bedroom's open door in hide and seek's drawing stays a plain doorway. That is your "4-5 rooms at most". *Likely yes.*
 3. **Hide and seek and this game share one house and one bedroom drawing** *(revised)*: hide and seek's bedroom plus one small bedside table, which is an anchor here and scenery there; the overview is drawn to match. *Reason:* one drawing for both, so the claim that it halves the art is true. *Likely yes.*
 4. **The thing flies to its owner,** who uses it, rather than a doll figure carrying it. Nothing drawn in code; no hands. *Likely yes.*
 5. **L1: the room is guided and the position decides; L2: the room joins as the second word** *(revised)*. Copies at L1 are on and under one table in the lit room. *Reason:* the room names are new to the child and not yet recorded; on and under are inside Mum's lines and heard in hide and seek. *Likely yes.*
@@ -602,7 +602,7 @@ Each line: the choice, the reason, the answer I assumed. Changed or new after th
 27. **Cupboards** *(new, a choice)*: (a) maybe later, as now (opening a cupboard is hide and seek's reveal); (b) with the drawers at the second visit, as shelves. *Assumed: (a).*
 28. **1a and 1b** *(new)*: 1a is stages 1-2 at L1-L2, three rooms, four things, Nani the only voice, Nana the one receiver with two poses, no boards, no light states. 1b after you've played it. *Reason:* the research sized it small to medium; the old first visit was about fifty assets. *Likely yes.*
 29. **Nani says every ask in 1a** *(new)*: "Nana's glasses are under the table." The askers' own voices and "my" wait for 1b (open question 1). *Likely yes.*
-30. **The room words, one list for both home designs** *(new)*: kitchen, sitting room, bedroom (1a), the hall and Ali's room (1b). This game teaches them first (heard at L1, deciding at L2); hide and seek's whole-house visit reuses the same clips. *Likely yes.*
+30. **The room words, one list for all three home designs** *(new)*: kitchen, sitting room, bedroom (1a), the bathroom and Ali's room (1b). This game teaches them first (heard at L1, deciding at L2); hide and seek's whole-house visit reuses the same clips. *Likely yes.*
 31. **The day's carry, one list** *(new)*: §2. Nana's glasses become a stage-1 copy; Nani's bag (hide and seek's purse, one word) is put away in stage 2; the sock and thread wait in the tray for 1b. Hide and seek's file should cite §2 once you say yes. *Likely yes.*
 32. **The room-and-anchor frame is a gap, reported, not spliced** *(new)*. Mum records a model line ("Nana's cup is on the table in the kitchen"); L2 waits for it. *Likely yes.*
 33. **A won round is every move right first go; one odds table, printed by the bot** *(new)*. *Likely yes.*
@@ -621,7 +621,7 @@ Each line: the choice, the reason, the answer I assumed. Changed or new after th
 
 1. **Who voices Nana, Ma and Ali in 1b?** "My glasses ..." needs the owner's voice. Cook's customers use Mum and you. *Recommended:* you for Nana and Ali (as in Cook), Mum or Masi for Ma; until then Nani says each ask, as in 1a.
 2. **Mum's this side and that side:** does *hi baju* mean the side nearer the speaker, as stage 2's L3 assumes, or the side she points at? Ask her with a picture on the next sheet. Nothing is built on it before her answer.
-3. **The room names** for the sitting room, the bedroom, the hall and Ali's room: which words does the family use (English loans are fine, like *table*)? Asked once for both home designs.
+3. **The room names** for the sitting room, the bedroom, the bathroom and Ali's room: which words does the family use (English loans are fine, like *table*)? Asked once for both home designs.
 
 ---
 
@@ -751,3 +751,5 @@ The critique (`pick-it-up-put-it-back-critique.md`, 1 Nov) had 6 MUSTs and 9 SHO
 ---
 
 Sources from the web search (1 Nov): [House of Learning, App Store](https://apps.apple.com/app/id452080937); [Constructing favourable conditions for measuring the young child's understanding of in, on and under (Lancaster)](https://eprints.lancs.ac.uk/id/eprint/54063); [Spatial prepositions in toddlers' online processing (NSF PAR)](https://par.nsf.gov//servlets/purl/10534393); [Teaching spatial concepts to preschoolers (freeslp)](https://freeslp.com/?p=179399).
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** One house for the three home designs: the bathroom takes the hall's place (`clean-up-day.md` decision 25, which Zafar's numbered choice still decides), so the rooms are the kitchen, the sitting room, the bedroom, the bathroom and Ali's room, in that order; 1a still plays the left three, 1b adds the bathroom and Ali's room, and the second visit's shoe rack stands by the front door in the sitting room (§3 G, §5, §7, decisions 2 and 30, open question 3).

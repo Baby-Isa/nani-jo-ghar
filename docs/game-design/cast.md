@@ -32,7 +32,7 @@ Zafar's wife's great-grandma. She's the warm senior pillar of the family — her
 | **The guests** (2–4 aunties and uncles) | Generic | "Knock knock", the dastarkhwan, the sharbat spill | Greetings, respect language, "for whom?" |
 | **The elders** | Generic, **plus Big Ma** | the Birthday: greet them | Greetings, respect language |
 
-**The clothes-stall keeper is dropped** from Big Ma's mending story: Big Ma fixes the kurta rather than a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so the mode isn't lost from Arc 1.
+**Big Ma still mends rather than buys** (she fixes the stained kurta), **but for making clothes the child now buys the cloth first, at the shops' cloth stall** (Zafar, 31 Oct: "buys the fabric at the shop"; `build/reports/designs/sewing.md` and `shops.md`), so there is a stall visit; the old clothes-stall keeper stays dropped (overnight design, 1 Nov; for Zafar to confirm).
 
 ## Later arcs (for reference)
 

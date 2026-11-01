@@ -148,7 +148,9 @@ One stage with one core mini-game, **wake them at their time**, plus its level t
 
 **The why:** tomorrow is school. Nani knows what time everyone must get up, and she makes the child her alarm clock for the night. The child is the alarm: they don't set times, they ring.
 
-**The people:** Nana (a grandfather in glasses), Ma (the child's mother) and Ali (the cousin, about 7). Simba sleeps curled on the foot of a random bed. Nani speaks from the guide box.
+**The people:** Nana (a grandfather in glasses), Ma (the child's mother) and Ali (the cousin, about 8, as `do-it-engine.md` draws him). Simba sleeps curled on the foot of a random bed. Nani speaks from the guide box.
+
+**Ali's two little cousins** (a girl of about 5 and a boy of about 4, who slept over for `do-it-engine.md`'s getting ready) sleep top-to-tail on a floor mattress in the far corner by the door, behind the line of the beds: background only, never asked, never a tap target (a tap there does nothing), and on phones they may crop out. They sit up yawning in the end beat with the others and go on to getting ready with Ali (consistency pass, 1 Nov).
 
 **The scene:** Nani's big bedroom at night. Three beds stand side by side, headboards on the back wall. Each has a bedside table with a small digital alarm. A big digital clock hangs on the wall above the middle bed, with a small moon or sun beside its digits. A window to one side shows the moon, then the dawn, then the sun.
 
@@ -262,7 +264,7 @@ It's a play action, not a gate. The tap made the wake, and the speaking is the f
 
 ## 5. Later visits and harder versions
 
-Only visit 2's speaking moment (§3) is in this design; it's what the lab needs. Everything else is one entry for `docs/ideas.md`, for the orchestrator to add when it next touches that file (this revision edits no other file):
+Only visit 2's speaking moment (§3) is in this design; it's what the lab needs. Everything else is one entry in `docs/ideas.md` (added in the consistency pass, 1 Nov, as row 97):
 
 > **Wake-up clock, later visits (idea, 1 Nov):** the holiday morning ("don't wake me", a "no" ask); baby Isa's cot that wakes by itself and cries (a different game: react to an event); half past (if Mum says Kutchi has its own words); the afternoon nap with Big Ma (a daylight scene, her sheet in sleepwear); the child's own time for tomorrow ("and you?"); the same clock in the bus stage and the eggs station. Each needs Zafar's yes and the lab's verdict first.
 
@@ -310,6 +312,7 @@ Only visit 2's speaking moment (§3) is in this design; it's what the lab needs.
 | **Bedside alarm** | a small rounded alarm with a blank face, at rest and tilted mid-rattle; small digit sprites (the same set scaled down); the same moon and sun; a frosted-glass overlay | 2 + overlay |
 | **Nana, Ma, Ali in bed** | asleep (on their side, facing us), sitting up and nodding (front-facing), rolled over with the quilt pulled up (wrong tap, face still to us), bolt upright with wild hair (wake), stretch and yawn, standing at the window (end). Modest sleepwear: long-sleeved cotton kurta-pyjama; Ma also a loose cotton dupatta. Likeness from the Cook customers sheet | 6 poses × 3 = 18 |
 | **Blanket front layers** | so the sleepers tuck in under real art | 3 |
+| **The two little cousins on their floor mattress** | asleep top-to-tail, and sitting up yawning (the end); drawn from their getting-ready sheets (`do-it-engine.md`), in the same run | 1 mattress + 2 poses × 2 |
 | **Simba** | curled asleep; mid-hop; landed | 3 (reuse the cat sheets if the pose exists) |
 | **Nani with the tray** | the end: cream kameez, red dupatta, a tray of chai and milk | 1 pose (from her sheet) |
 | **Lamp** | on and off | 2 |
@@ -408,7 +411,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: a calm, modern grandmother's bedroom in an East African family home with a gentle Kutch touch: limewash cream walls, pale oak furniture, one indigo ajrakh-print quilt as the only cultural pattern. Three single beds stand side by side across the frame, headboards against the back wall, each with a small wooden bedside table beside it. On each bedside table is a small, chunky, rounded digital alarm clock. Above the middle bed hangs a big, chunky digital wall clock with a brass frame and a dark face showing glowing warm digits, with a tiny glowing sun shape beside them. A window at the top left shows a soft pink dawn sky with the last of the stars. The room is in cool early-morning light with a warm glow coming in from the window.
 
-The people: in the left bed, a young mother in a long-sleeved cotton nightdress with a loose cotton dupatta, fast asleep on her side facing us. In the right bed, a grandfather with grey hair, asleep on his side facing us, his glasses folded on his bedside table. In the middle bed, a boy of about seven in long-sleeved cotton pyjamas; a small dark grey cat is curled asleep at the foot of his bed.
+The people: in the left bed, a young mother in a long-sleeved cotton nightdress with a loose cotton dupatta, fast asleep on her side facing us. In the right bed, a grandfather with grey hair, asleep on his side facing us, his glasses folded on his bedside table. In the middle bed, a tall, lanky boy of about eight in long-sleeved cotton pyjamas; a big, round-faced charcoal-black cat with pale green eyes is curled asleep at the foot of his bed.
 
 The moment: the middle bedside alarm clock is tilted mid-rattle, and the boy has just bolted upright, eyes wide, hair sticking up wildly, arms flung up in a huge yawn and stretch, his pillow flopping off the side of the bed; the cat is springing up in surprise. The mother and grandfather sleep on peacefully. No motion lines, no glow around anyone.
 
@@ -434,9 +437,9 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the same calm, modern grandmother's bedroom: limewash cream walls, pale oak furniture, one indigo ajrakh-print quilt. Three single beds side by side, headboards against the back wall, a small wooden bedside table beside each. On each bedside table, a small chunky rounded digital alarm clock whose face is covered by frosted, misty glass, so its display is only a soft glow and cannot be read. Above the middle bed, a big chunky brass-framed digital wall clock with glowing warm digits and a tiny glowing sun shape beside them. The window at the top left shows a fresh early-morning sky, the sun just up. Soft warm morning light.
 
-The people: this time the order is different. In the left bed, a boy of about seven in long-sleeved cotton pyjamas, asleep on his side facing us, one foot sticking out of the blanket. In the middle bed, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta, asleep on her side facing us, the quilt pulled up to her chin. In the right bed, a grandfather with grey hair in a long-sleeved cotton kurta-pyjama.
+The people: this time the order is different. In the left bed, a tall, lanky boy of about eight in long-sleeved cotton pyjamas, asleep on his side facing us, one foot sticking out of the blanket. In the middle bed, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta, asleep on her side facing us, the quilt pulled up to her chin. In the right bed, a grandfather with grey hair in a long-sleeved cotton kurta-pyjama.
 
-The moment: the grandfather's frosted bedside alarm is tilted mid-rattle. He has just sat bolt upright, hair ruffled, putting his round glasses on upside down with a sleepy, surprised smile. A small dark grey cat that was asleep at the foot of his bed has sprung into the air in a comic little hop, paws out, ears back, about to land on all fours. The boy and the mother sleep on. No motion lines, no glow around anyone.
+The moment: the grandfather's frosted bedside alarm is tilted mid-rattle. He has just sat bolt upright, hair ruffled, putting his round glasses on upside down with a sleepy, surprised smile. A big, round-faced charcoal-black cat with pale green eyes that was asleep at the foot of his bed has sprung into the air in a comic little hop, paws out, ears back, about to land on all fours. The boy and the mother sleep on. No motion lines, no glow around anyone.
 
 Style: match the references: a stylised 3D animated-feature look, soft warm sunlight, soft global illumination, chunky simplified shapes, big expressive eyes, rosy cheeks, no outlines, no photorealism, no cel shading, no blur or vignette on the image (only the frosted glass on the three small alarm clocks).
 
@@ -459,7 +462,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the same calm, modern grandmother's bedroom at night: limewash cream walls in cool blue moonlight, pale oak furniture, one indigo ajrakh-print quilt. Three single beds side by side, headboards against the back wall, a small wooden bedside table beside each with a small chunky digital alarm clock whose face is frosted and unreadable. One small table lamp is off. Above the middle bed, a big chunky brass-framed digital wall clock with glowing warm digits and a tiny glowing crescent-moon shape beside them, casting a soft amber glow on the wall. The window at the top left is large and clear: a deep blue night sky, a bright full round moon and stars.
 
-The people: in the left bed, a grandfather with grey hair, fast asleep on his side facing us, glasses on his bedside table. In the middle bed, a boy of about seven, asleep on his side facing us, hugging his pillow. In the right bed, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta.
+The people: in the left bed, a grandfather with grey hair, fast asleep on his side facing us, glasses on his bedside table. In the middle bed, a tall, lanky boy of about eight, asleep on his side facing us, hugging his pillow. In the right bed, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta.
 
 The moment: the mother has just been nudged awake too early. Still lying on her side facing us, eyes closed, she pulls the quilt up to her chin with one hand and gives a sleepy little wave with the other, as if saying "not now". Her face is peaceful and a little amused, never cross, and fully visible. The others sleep on. No motion lines.
 
@@ -484,7 +487,7 @@ Mock-up for a children's language game (ages 3-8, phones and tablets): one gamep
 
 The scene: the same calm, modern grandmother's bedroom in full morning sun: limewash cream walls, pale oak furniture, one indigo ajrakh-print quilt now thrown back. Three single beds side by side, their blankets rumpled and empty. Above the middle bed, the big chunky brass-framed digital wall clock with glowing warm digits and a tiny glowing sun shape beside them. The window at the top left has its curtains swung wide open on a bright blue sunny sky with a few soft clouds; warm sunlight falls in long window-shaped patches across the floor.
 
-The people: a grandfather with grey hair and round glasses, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta, and a boy of about seven in long-sleeved cotton pyjamas with his hair still sticking up, all standing in a happy row near the window, mid big morning stretch, smiling. A small dark grey cat sits washing its paw on the floor. Entering from the right, a grandmother in a cream kameez with bold red motifs at the neck and cuffs and a plain red dupatta carries a brass tray with two small glasses of milky chai and one glass of milk, smiling warmly.
+The people: a grandfather with grey hair and round glasses, a young mother in a long-sleeved cotton nightdress and a loose cotton dupatta, and a tall, lanky boy of about eight in long-sleeved cotton pyjamas with his hair still sticking up, all standing in a happy row near the window, mid big morning stretch, smiling. A big, round-faced charcoal-black cat with pale green eyes sits washing its paw on the floor. Entering from the right, a grandmother in a cream kameez with bold red motifs at the neck and cuffs and a plain red dupatta carries a brass tray with two small glasses of milky chai and one glass of milk, smiling warmly.
 
 The moment: the boy is reaching for his glass of milk; the grown-ups turn towards the tray.
 
@@ -532,3 +535,5 @@ Each finding from `wake-up-clock-critique.md`, then what I did.
 19. **SHOULD, L4's relation is a coin toss.** Applied. Two of the three asks are relations on the same sleeper (before Ali, after Ali), so the two words must be told apart. The pair counts together, which stops the second being won by elimination.
 
 **Found while revising (not in the critique):** Simba always sleeping on the last riser's feet would tell the child the wake order (a pattern leak). He now picks a random bed each night (decision 19).
+
+**Consistency pass (1 Nov, `consistency-2026-11-01.md`).** `do-it-engine.md` §2B now has this design's order (the clock, then the door, then getting ready). Ali's two little cousins from getting ready sleep on a floor mattress in this bedroom, background only and never a target (§3, §7). Ali is about 8, as the getting-ready design draws him, and the prompts now say "a tall, lanky boy of about eight"; their cat is now Simba as `cast.md` describes him (big, round-faced, charcoal-black), not "a small dark grey cat", which reads as Zazu. The mock-ups leave the cousins out; they are a background layer added in the art run.
