@@ -237,7 +237,7 @@ These are `docs/game-design/rulebook.md` §1 and `easy-to-play.md`, and are not 
 3. Under one shell per round is the crab. When its shell is lifted, it blinks its stalk eyes, waves both claws and scuttles sideways into the foam. If its shell was the one asked for, the shell still goes in the bucket. If not, the shell shakes and drops back, and the crab ducks under another shell. That's a funny miss, never a frown. **Rule:** the crab's shell is drawn at random, except in the child's first-ever round, where it is scripted under one of the shells that answer the third ask, so the first meeting is always a happy one.
 4. Three asks make a round. After the last, the bucket rattles and Masi says *shabash* once.
 
-**Groups (from L2):** the wave leaves the shells in little piles, touching. "Two small shells" means tapping the pile of two small ones. The whole pile hops in, one shell at a time, counted along. Because the number picks the pile, the count decides the move without a "stop at N" (E2P 4). **The L2 field is four piles:** the asked size in piles of one, two and three, and one pile of the other size holding the asked count, so neither the size nor the count alone settles it. That's at most nine shells, which fits a phone (§7).
+**Groups (from L2):** the wave leaves the shells in little piles, touching. "Two small shells" means tapping the pile of two small ones. The whole pile hops in, one shell at a time, counted along. Because the number picks the pile, the count decides the move (E2P 4). **The L2 field is four piles:** the asked size in piles of one, two and three, and one pile of the other size holding the asked count, so neither the size nor the count alone settles it. That's at most nine shells, which fits a phone (§7).
 
 **The five questions**
 
@@ -282,10 +282,10 @@ This is **Zafar's design as he wrote it** (fill the bucket, a little or full; st
 
 **The steps** (each one tap, then tap):
 1. **Which mould.** Masi says it. The child taps a bucket, and it hops next to the heap.
-2. **Fill.** Each tap on the heap flies one spadeful in, with a thwump, and the sand rises a step. **A little is 1 tap, half is 2, full is 4; a fifth heaps it over the rim and still counts as full. A sixth overflows:** the sand spills down the sides with a soft "fff", the heap takes the bucket's sand back, the bucket comes back empty, and Masi says the line again. So "full" is a window the child stops in, not a cap; nothing stops by itself.
+2. **Fill.** Each tap on the heap flies one spadeful in, with a thwump, and the sand rises a step. **A little is 1 tap, half is 2, full is 4, and the amount ticks the moment it is reached (Zafar, 1 Nov, after his chai play):** half ticks when half is poured, full when full. A spadeful tapped after that doesn't land: it bounces off the full bucket with a soft "plop".
 3. **Tip.** Tap the bucket, or tap the spot it should go. It flies over, flips, thumps, wiggles and lifts with a shloop: a tower. The tower's height is the amount: a stump, a squat tower or a tall one.
-   - The tip is a move in the world, not a Done button. It closes the step. Amounts are chosen by the child stopping, the way baking's "the amount word says when to stop" works (agreed in the master map). Counts are never chosen this way.
-   - **A wrong amount** makes the wrong-height tower. It slumps back into the heap with a soft "fff", the bucket comes back empty, and Masi says the line again.
+   - The tip is a move in the world, not a Done button. It closes the step. Amounts tick when reached, the way baking's do (Zafar, 1 Nov); the tip is a real move of its own and stays.
+   - **A wrong bucket or a wrong spot** makes the wrong tower. It slumps back into the heap with a soft "fff", the bucket comes back empty, and Masi says the line again. There is no wrong amount: the fill ticks at the asked amount.
    - **A wrong bucket** shakes and goes back to the kit.
 4. **Decorate.** Tap a shell, then tap the tower it goes on.
 5. **The end.** Masi claps. The crab pops out of the top of the tallest tower wearing a shell like a hat. Nani takes the photo for the book.
@@ -296,7 +296,7 @@ This is **Zafar's design as he wrote it** (fill the bucket, a little or full; st
 |---|---|---|
 | 1 What do you do? | Tap a bucket, tap the heap (fill), tap to tip, tap a shell then a tower. One gesture per kind of action. | 5 |
 | 2 Does the Kutchi decide it? | Yes. Which bucket (big or small), how much (a little, half, fill it), the order (from L2), where (from L3) and which tower the shell goes on, all heard, with no model to copy | 5 |
-| 3 The fun | The tip and lift ("shloop"), the overflow and the slump, the crab on the castle | 5 |
+| 3 The fun | The tip and lift ("shloop"), the plop of a spadeful that won't land, the slump of a wrong tower, the crab on the castle | 5 |
 | 4 The instruction | Masi's line, beside the child. The card holds the castle's rows: the bucket picture, with the amount as a word and a speaker, never a picture of a full bucket. | 4 |
 | 5 What's novel | The only game built by amounts. Nothing else in the game builds a thing to a heard plan. | 4 |
 | **Total** | | **23: keep (the beach's flagship)** |
@@ -317,14 +317,14 @@ The castle grows sideways at L1-L2 (a row of towers), so the order is real and n
 - **Matching:** there is no model castle on screen, so there's nothing to copy.
 - **Eliminating:** every bucket goes back to the kit after use, so all choices stay open. Every spot takes every bucket.
 - **Patterns:** the plan is generated each round: the order of big and small, the amounts and the spots are random. Big-then-small isn't always right. From L2 each amount is asked a third of the time.
-- **Waiting:** nothing fills or tips by itself, and **there is no cap**: a sixth spadeful overflows, so tapping until it stops never wins. The bucket can be tipped from the first spadeful, so the light never tells you when to stop.
+- **Waiting:** nothing fills or tips by itself. The fill ticks at the asked amount and an extra spadeful doesn't land. By Zafar's choice (1 Nov), a count or an amount can be won by tapping or pouring until it ticks; which bucket, which pile, which stall and which spot still decide wherever two words decide a move. The bucket can be tipped from the first spadeful, so the light never tells you when to stop.
 
 **The blind bot** (first picks only, on a learned save):
-- **L1: about 12%** (one bucket of two, twice, and one tower of two for the shell: (1/2)³). This is the L1 allowance, the same as fishing's "one of each at L1 only" (master map): a 3-year-old's first choices are between two, and at L1 every ask is "fill it", which a learned bot knows. Stated here so the bot check passes L1 at 15%, not 10%.
-- **L2: under 1%** (bucket 1/2 × amount 1/3 per tower over three towers, then two shells).
-- **L3-L4: under 0.1%.**
+- **L1: about 12%** (one bucket of two, twice, and one tower of two for the shell: (1/2)³). The amount adds nothing here, as before: the bot taps until the fill ticks. This is the L1 allowance, the same as fishing's "one of each at L1 only" (master map): a 3-year-old's first choices are between two, and at L1 every ask is "fill it", which a learned bot knows. Stated here so the bot check passes L1 at 15%, not 10%.
+- **L2: about 3%** (changed 1 Nov: the amount no longer decides, because the bot taps until the fill ticks; bucket 1/2 per tower over three towers, then two shells at 1/2: (1/2)^5). Still under the 10% line.
+- **L3-L4: under 3%** (was under 0.1% with the amount factor of 1/27 over three towers; recomputed without it, 1 Nov). Still under 10%.
 
-**The delight:** the shloop of the lifted bucket, the overflow, and the crab on top for the photo.
+**The delight:** the shloop of the lifted bucket, the plop of a spadeful that won't land, and the crab on top for the photo.
 
 **Speaking:** none on visit 1. On a later visit the roles swap: the child describes from a closed set, and Masi builds (§5).
 
@@ -354,7 +354,7 @@ On big screens Masi and Nani stand in front, middle and right, holding the picni
 
 **3.3a The corn grill** (a reskin of the sekelo grill, and the same station as the farm's corn stall)
 - **Steps:**
-  - **Pick the cobs.** The cobs lie on the cart in bundles of one, two and three, tied with a twist of husk. Tap the bundle the count asks for; the whole bundle goes on the grill, counted along. A wrong bundle shakes and stays. (The number picks the bundle, so nothing stops by itself.)
+  - **Pick the cobs.** The cobs lie on the cart in bundles of one, two and three, tied with a twist of husk. Tap the bundle the count asks for; the whole bundle goes on the grill, counted along. A wrong bundle shakes and stays. (The number picks the bundle.)
   - Turn each cob when its kernels pop and blacken. This is the toy part. Its timer holds in the green the first time.
   - **Dress the cob:** tap a topping, then rub it along the cob. The cob is the track for the swipe. A topping that wasn't asked for shakes off with a puff, and the line is said again (undo on the spot).
   - **Close it: tap the paper sleeve.** The cob drops into its sleeve and the step closes. A sleeve tapped before the asked toppings are on gets Masi's line again, not a verdict; the sleeve waits.
@@ -365,7 +365,7 @@ On big screens Masi and Nani stand in front, middle and right, holding the picni
   - Tap the raw chips into the basket. They slide into the oil, sizzling.
   - The stallholder lifts the basket when Masi says "take them out now" (*inke hane kadh* ✓) and the child taps the **basket's handle**, a thing in the world, never a word button. "Careful, it's hot" is said once (a gap until recorded, §1). The child never touches the oil (KEEP-08).
   - **Serve:** both cones, big and small, are always out. Tap the asked cone; the chips tip into it.
-  - **Salt (from L2):** tap the shaker over the cone. "A little salt" is one or two shakes; "without salt" is none. A third shake heaps salt on top, and the cone shakes it off with Masi's line again.
+  - **Salt (from L2):** tap the shaker over the cone. "A little salt" is one or two shakes; "without salt" is none. "A little" ticks at the amount, and an extra shake doesn't land (Zafar, 1 Nov).
   - **Close it: tap the cone** to hand it to Masi. That closes the step. A cone handed over with the wrong salt gets the line again, not a verdict.
 - **The deciding words:** at L1, the cone: "the small cone" or "the big cone" (*nindho*, *wadho*), one asked of two; from L2 the salt amount, "a little" or "without" (*thorok* ✓; with and without to record).
 
@@ -461,7 +461,7 @@ All are kept. The three stalls are Cook skins, so they're cheap, and each has it
 - **Matching:** every spot has the same outline, so no place looks like the answer, and every person has a plate place and a cup place in front of them.
 - **Eliminating:** all eight outlines show every time, and a spot never fills up and drops out, because everyone takes more than one thing. Ali's box takes several.
 - **Patterns:** who gets what is random each round.
-- **Waiting:** nothing places itself. The pour doesn't stop at the asked amount (an amount, as in baking).
+- **Waiting:** nothing places itself. The pour ticks at the asked amount (half ticks at half, full at full) and an extra pour doesn't land (Zafar, 1 Nov, as in baking). By his choice it can be won by pouring until it ticks; the owner and the spot still decide.
 
 **The blind bot:** one of about four owner spots per ask at L1, three asks: (1/4)³, under 2%.
 
@@ -576,7 +576,7 @@ The door, the bag, the bus ride and meeting Masi are built engines with their ow
 
 - Masi kneels beside the patch and pats the sand. Her line: "fill the big bucket".
 - The box lights the big bucket. Tap it, and it hops to the heap.
-- The box moves to the heap: tap, thwump; tap, thwump. The fourth tap fills it to the rim. This first time only, the box moves to the bucket at four, so the child learns that full is where you tip; the overflow is never shown as a lesson, only met.
+- The box moves to the heap: tap, thwump; tap, thwump. The fourth tap fills it to the rim and ticks, and a fifth won't land. The box then moves to the bucket, so the child learns that full is where you tip.
 - The box moves to the lit spot: tap. The bucket flips, thumps and lifts. Shloop. A tall tower.
 - "And then the small one": the child does it alone now; the box shows only for new actions.
 - "A shell on the big one": tap the shell (the box shows tap, then tap once), then the big tower.
@@ -627,9 +627,9 @@ Then home: the shell goes onto Nani's shelf. The evening book shows the castle a
 | Piece | Reused from | What's new in it |
 |---|---|---|
 | Shells | **built on the shared kit** (`js/shared/host.js`, `order-card.js`, `guide.js`, `focus.js`, `onboard.js`) with Cook's count (`js/cook/mechanics/count.js`) for the counted-along hop; Find it's size and decoy rules (`js/find/gen.js`, 4b *Which one?*) copied as generator rules, **not** Find it's greybox engine | the tap-in-a-scene search on the kit; the wave that re-lays the spread; piles as counts; the crab under a shell (Find it 4d's openable reveal, rebuilt as a kit reaction) |
-| Sandcastle | the shared kit as above | **new engine: fill and stack** (the only new engine): moulds, tap-to-fill steps with the overflow window, tip-to-tower, a generated plan, stacking two high. About the size of one Cook mechanic plus a plan checker. |
+| Sandcastle | the shared kit as above | **new engine: fill and stack** (the only new engine): moulds, tap-to-fill steps that tick at the amount, tip-to-tower, a generated plan, stacking two high. About the size of one Cook mechanic plus a plan checker. |
 | The three stalls | Cook's grill (`mechanics/grill.js`, `stations/mishkaki-grill.js`; the same station as the farm's corn), fry (`mechanics/fry.js`, `stations/samosa.js`), chop and count (`mechanics/chop.js`, `count.js`); the clinic's zoom-in from a room (`js/clinic/heal/scene.js`) | the stall picker with greyed-done stalls, the queue and the return ask (data plus a small picker); bundles and straw cups as count groups; the sleeve and the cone as closing moves |
-| Pay | the shops' pay engine (`shops.md` §3E, decision 9) | **one pay (Zafar, 1 Nov): count out the coins and hand them over, with ready-made stacks for small prices.** The beach's prices stay at 1-5, so it uses the stacks of one to five: the number picks the stack (no "stop at N"), then the give to the stallholder's hand. |
+| Pay | the shops' pay engine (`shops.md` §3E, decision 9) | **one pay (Zafar, 1 Nov): count out the coins and hand them over, with ready-made stacks for small prices.** The beach's prices stay at 1-5, so it uses the stacks of one to five: the number picks the stack, then the give to the stallholder's hand (a real move of its own). |
 | Picnic | **put it in its place after its rebuild onto the kit (R7)**: `js/tidy/engine.js` is greybox. The rebuild is the one pick it up and put it back needs first, so its cost is shared. The shared spot outline comes with it. Cook's pour (`js/shared/pour.js`) at L4 | the picnic data and art |
 | Speaking at the stall | Conversations (`js/shared/conversations.js`), `js/shared/speech.js`, `say.js`; the shared "say it, someone acts" moment | none (data), once the order lines are recorded |
 | The boat ride | the window ride (`js/shared/window-ride.js`, `js/day/window.js`; a road in `data/day.json`) | a boat road (data and art); the hat beat; **a shared-engine change: the ride gains Nani's speed lines in Kutchi** (its own fix-list row; Zafar, 1 Nov: yes, at later levels only), and the speed set by the child's voice |
@@ -659,7 +659,7 @@ All art is made in ChatGPT runs Zafar supervises (non-negotiable 8). It goes in 
 | Scene | Camera | Sprites in that camera |
 |---|---|---|
 | Shells | **T**, exactly overhead: wet sand with the foam edge along the top | shells (2 sizes plus the L4 middle size × red and white, as singles and touching piles), a pebble, the crab (top-down, plus a scuttle pose), the bucket (top-down, open) |
-| Sandcastle | **E** at sand height, horizon at about 55% | buckets (big, small, one colour), the sand heap with the spade, the fill steps and the overflow, towers in 3 heights × 2 widths, the slump, Masi kneeling (3/4 and front), the crab on a tower |
+| Sandcastle | **E** at sand height, horizon at about 55% | buckets (big, small, one colour), the sand heap with the spade, the fill steps and the plop of a spadeful that won't land, towers in 3 heights × 2 widths, the slump, Masi kneeling (3/4 and front), the crab on a tower |
 | The stalls (wide) | **E**, the bazaar framing (horizon about 55%) | three stall carts in full colour, three stallholders (3/4 and front), one or two beach-goers, Masi and Nani standing, the basket |
 | Corn grill zoom | **T** (the Cook station rule) | cobs raw, grilled and black-spotted; cob bundles of 1, 2, 3; the lemon half, the chilli; the paper sleeve |
 | Chips zoom | **T** | the raw and golden cassava chips, the fry basket with its handle, cones in two sizes (and the L4 middle), the salt shaker, salted chips |
@@ -713,26 +713,26 @@ Bubbles go into free space (the sky above the stalls, beside the faces at sea), 
 | 1. The heard word decides | **Pass, with exceptions stated** | Leak tests written for every stage (§3), each with a bot number. Deciding words counted honestly (§1): 18 of 40 recorded for visit 1, 2 of 14 for visit 2. Rows tick only on a right first pick. A need the picture can't settle: identical plates under identical outlines, two sizes of every shell and thing, a castle plan that is only heard. Two words a move from L2, counts included (bundles, cups, piles, stacks). **Exceptions:** the corn stall doesn't teach until with and without are recorded; the fishing nouns are all still to record, so the boat day doesn't teach until its sheet; the sandcastle's L1 bot is about 12%, the stated L1 allowance. |
 | 2. Onboarding and the first round | Pass | The first play is tiny: shells and the sandcastle (§2, §4). One lit box per live thing; no finger and no fly-in. Each new action is shown once. The dim clears fully. Every new screen (shells, the castle, the stall picker, each zoom, pay with its watch step, the picnic, the fishing hook) has its showing on the play that adds it. Tap then tap throughout; drag only along the cob. 5 places at L1. The first crab is scripted by rule. |
 | 3. Instructions | Pass | Masi, the stallholder, the queue customer or Nani is on screen and speaks before the card. The card is what's wanted; the guide box says the step. Bubbles belong to faces. The speaking turn is modelled twice before the handover. One line per moment: *shabash* once per step, not per tap. |
-| 4. Pacing and waiting | Pass | No Done and no Next: the tip, the sleeve, the cone, the slurp and the reel are moves in the world that close each step. Counts pick a group (pile, bundle, straw cup, stack, clump), never a stop; amounts stop in a window with no cap (the sandcastle overflows, the salt heaps). Taps skip speech. Hints by the rulebook. The wave settles before the ask. Nothing leaves before it's asked; the fishing bay is a closed pool where everything bobs alike. The ask repeats for non-readers. |
-| 5. Feedback and the end | Pass | A shake and the word; the wrong tower slumps, the overflow spills, the wrong topping puffs off, all redone. Every miss has its own funny reaction (the crab ducks, the ball squeaks, the bottle spins, the stallholder shrugs). Rows tick when the step closes. Each stage ends with something served: the castle photo, Nani's slurp, the picnic "aah", the wet hat. The shared end screen is used. |
+| 4. Pacing and waiting | Pass | No Done and no Next: the tip, the sleeve, the cone, the slurp and the reel are moves in the world that close each step. Counts pick a group (pile, bundle, straw cup, stack, clump); counts and amounts tick at the number or amount (Zafar, 1 Nov). Taps skip speech. Hints by the rulebook. The wave settles before the ask. Nothing leaves before it's asked; the fishing bay is a closed pool where everything bobs alike. The ask repeats for non-readers. |
+| 5. Feedback and the end | Pass | A shake and the word; the wrong tower slumps, an extra spadeful plops off, the wrong topping puffs off, all redone. Every miss has its own funny reaction (the crab ducks, the ball squeaks, the bottle spins, the stallholder shrugs). Rows tick when the step closes. Each stage ends with something served: the castle photo, Nani's slurp, the picnic "aah", the wet hat. The shared end screen is used. |
 | 6. Layout | Pass, numbers in §7 | Two layouts by height, five sizes. Each phone layout is worked in pixels at 715x275: one row of faces at the stalls, Masi in a corner round, the fishing waterline at 40%, stacks two high, nine shells at most. Faces clear; people in the middle and on the right; one background each; the cog only. To check at build with the four-size check. |
 | 7. Art and camera | Pass | One camera per scene (§7). Shells are exactly overhead. Code draws nothing; interface marks are the kit's. Items in the plaster style. Contact shadows only. Calm faces and gentle zooms. Two poses per speaker. One paste block. Sprite count stated honestly (120-150). |
 | 8. Speaking | Pass | Two moments, each inside an exchange watched first, both at rung 1 the first time. Closed sets of 3 and 2 (the eye test's *haa / na* is the precedent for 2). Pills always there. It's a play action: the stallholder acts (and shrugs kindly at a wrong hearing), the boat speeds up. The handover prop (the purse) is handed over only at the turn. Reuses the shared moment rather than adding a seventh copy. The ride's speed lines are a shared-engine change for Zafar's yes. |
 | 9. Levels | Pass | Every stage has an L1-L4, each adding one thing, made harder by the Kutchi, never the gesture. Each L4 is one look-alike (the middle-sized shell, cone and coconut; half; the girl's hat). Extras are parked for later visits. Level up after 3 rounds. |
 | 10. Words | Pass, with gaps reported | Built from recorded frames; every gap listed and sent to Mum's sheets A and B (§1): with and without, "careful, it's hot", the order frame, the price frame. Nothing glued by hand. One natural sentence per person. Every count and colour said is written on the card. 3-5 new words a round, each heard 3+ times. |
 | 11. Culture | Pass | Halal food only; no sweets or ice cream as rewards; modest dress; paddling only; no religious markers. The child never holds or drives the knife (the coconut is tapped; the stallholder chops) and never touches the oil. |
-| 12. Fun | Pass | Hands busy at every step (fill, tip, turn, rub, wrap, shake, push the straws, reel). "Kind of funny": the crab three times, the overflow and the slump, the shrug, the wet hat. Gestures that feel good: the tip-and-lift, the reel. Contrast: tall and stump towers, quick and slow on the boat. No fatigue: no two stalls share a main action. The asks give the toy a goal; the castle photo and the hat go into the book. |
-| 13. Mistakes made twice | Watched | Every level designed (§3). Every step's closing move is named here, not left for the builder (the sleeve, the cone, the tip, the slurp). The engines that need a rebuild first are listed with the order of work (§6). Builders reuse Cook's art only where §6 says so. Judge on film for the tip, the overflow, the reel and the zooms, not on stills. |
+| 12. Fun | Pass | Hands busy at every step (fill, tip, turn, rub, wrap, shake, push the straws, reel). "Kind of funny": the crab three times, the plop and the slump, the shrug, the wet hat. Gestures that feel good: the tip-and-lift, the reel. Contrast: tall and stump towers, quick and slow on the boat. No fatigue: no two stalls share a main action. The asks give the toy a goal; the castle photo and the hat go into the book. |
+| 13. Mistakes made twice | Watched | Every level designed (§3). Every step's closing move is named here, not left for the builder (the sleeve, the cone, the tip, the slurp). The engines that need a rebuild first are listed with the order of work (§6). Builders reuse Cook's art only where §6 says so. Judge on film for the tip, the plop, the reel and the zooms, not on stills. |
 
 **The ten questions, in short:**
 
 1. **Which heard words decide each move?** Listed in §1, counted honestly, with what's recorded.
-2. **How does the Sceptic fail?** A plan only heard, two of every kind, the queue and the return ask, groups for counts, windows with no cap for amounts, identical outlines, a field that never thins, and nothing that moves differently.
+2. **How does the Sceptic fail?** A plan only heard, two of every kind, the queue and the return ask, groups for counts, identical outlines (counts and amounts tick at the number, by his choice), a field that never thins, and nothing that moves differently.
 3. **What need can't the picture settle?** Identical plates under identical outlines, two sizes, a heard plan.
 4. **What does the first round light up?** See §4.
 5. **Who asks?** Masi, the queue customers, the stallholders and Nani, in the frames in §1.
 6. **What do the hands do?** Every step has a tap action and a closing move.
-7. **Where's the "kind of funny" moment?** The crab, the overflow and the hat.
+7. **Where's the "kind of funny" moment?** The crab, the plop and the hat.
 8. **How does it end, and what's served?** The photo, the slurp, the "aah" and the hat.
 9. **What changes at each level, and is L4 its own?** The ladders in §3; each L4 is one look-alike.
 10. **Does it fit all five sizes, with real art in one camera?** Yes, worked in pixels in §7.
@@ -748,8 +748,8 @@ Each line gives the choice, then the reason, then the answer I assumed. Lines ma
 3. **Masi's asks, and who voices them.** **Voices (Zafar, 1 Nov):** for the prototype, the Kutchi takes that exist play, and the device voice says the rest. Who voices what, the recording sessions and the casting are settled before shipping, once the words are locked; nothing in this design waits on a voice.
 4. *(revised)* **The sandcastle is his design as written: Masi beside the child, telling; no second castle.** The windbreak version (Masi builds her own castle hidden behind a windbreak, then the reveal of twin castles) is **an option for his word**, costing a windbreak in two states, Masi kneeling behind it in two poses, and her duplicate castle (the tower sprites reused). Every step is put right on the spot, so the two castles always match, which makes the reveal a show, not a check. *Non-negotiable 1: he didn't ask for it. Likely: the plain version; the windbreak if he likes the reveal.*
 5. *(revised)* **The castle grows sideways at L1-L2, stacking comes only with "on top" at L3, and stacks are two high at most on every screen.** *Big-then-small stacking is physics, so a no-Kutchi player would always get it right; three high doesn't fit a phone. Likely: yes.*
-6. *(revised)* **Amounts (a little, half, fill it) are chosen by the child stopping, closed by the tip, with no cap:** full is four or five spadefuls, and a sixth overflows. *Matches baking's agreed rule (no fill line, no cap); the cap made "fill it" tap-until-full. Likely: yes.*
-7. *(revised; Zafar, 1 Nov)* **Every count picks a group, and closes on the natural next thing:** piles (shells), bundles of cobs, cups of straws, stacks of coins (pay) and clumps (fishing), closed by the tip, the sleeve, the cone or the give. Where a count has no clear next thing, it closes about 1.25 s after the last tap (Zafar's one count close: one data setting, the same in every game). Nothing "stops by itself" at the number.
+6. *(revised)* **Amounts (a little, half, fill it) tick at the amount (Zafar, 1 Nov, reversed after the chai play), and the tip is a move of its own:** full is four spadefuls, and a fifth doesn't land. By his choice "fill it" can be won by tapping until it ticks; the bucket and the spot still decide. *Supersedes the earlier no-cap window. Matches baking's amounts.*
+7. *(revised; Zafar, 1 Nov, and reversed after his chai play)* **Counts and amounts tick at the number:** piles (shells), bundles of cobs, cups of straws, stacks of coins (pay) and clumps (fishing) are picked by the number, and the pick ticks at once; wherever a count is tapped out one by one, it ticks the moment the right number is reached and an extra tap doesn't land. The tip, the sleeve, the cone and the give stay as moves of their own, not as what closes a count. No stillness timer. By Zafar's choice (1 Nov), a count or an amount can be won by tapping or pouring until it ticks; which bucket, which pile, which stall and which spot still decide wherever two words decide a move.
 8. *(revised)* **The stalls: the asker orders (Masi at L1, the queue too from L2), the stallholder asks the child to help make it, and the child pays from the purse Masi holds open; at the third stall she puts the purse in the child's hands for the speaking turn.** *This joins idea 68 and the 19 Oct pay (Masi's coins) in one story, keeps three prices a round, and makes the purse a real handover prop. Likely: yes.*
 9. **The return ask from L2** (a greyed stall can wake again). *Otherwise the last stall is a free pick by elimination. Likely: yes; his greyed-out stall stays.*
 10. **The three dishes are corn with lemon and chilli, cassava chips, and coconut** (the research's pick, replacing fried doughnuts). *Halal, coastal, mostly recorded words, no sweets. Likely: yes.*
@@ -907,7 +907,7 @@ The critique (`beach-boat-critique.md`, 1 Nov) had 21 findings: 8 MUST, 13 SHOUL
 |---|---|---|
 | 1 | MUST: the picnic read "every spot outlined" as the leak, when it is Zafar's fix | Every spot on the cloth (plate and cup places, the middle, Ali's box) now has the same outline, every time (§3.4, §7, prompt 4). Recorded as a reversed decision (26). |
 | 2 | MUST: the cobs and the straws "stop by themselves" | Counts pick a group: cobs in tied bundles of one, two and three; straws in cups of one, two and three (§3.3a, §3.3c). The leak test's deciding list now includes the count, so L2's two words a move holds. |
-| 3 | MUST: "fill it" was tap-until-full; no sandcastle bot number | No cap: full is four or five spadefuls, and a sixth overflows and slumps back (§3.2). Bot numbers written: about 12% at L1 (stated as the L1 allowance, like fishing's), under 1% from L2. |
+| 3 | MUST: "fill it" was tap-until-full; no sandcastle bot number | *(Reversed 1 Nov: the fill ticks at the amount and an extra spadeful doesn't land, §3.2.)* First fix: no cap, full is four or five spadefuls, and a sixth overflows and slumps back. Bot numbers written: about 12% at L1 (stated as the L1 allowance, like fishing's), under 1% from L2. |
 | 4 | MUST: in fishing the asked thing was the one that stayed still | The bay is a closed pool: nothing drifts in or out of view, everything bobs alike, and a newcomer sinks in at random after each catch and is never the next answer more often than chance (§3.6). |
 | 5 | MUST: the corn toppings and the chips' salt had no closing move | Named: tap the paper sleeve to close the corn, tap the cone to hand the chips to Masi; tapped early, either gets the line again, not a verdict. A wrong topping puffs off; a third shake of salt heaps and is shaken off (§3.3a-b, §4). |
 | 6 | MUST: the size and order of work were wrong | Shells are built on the shared kit with Cook's count (decision 27); the picnic waits for put it in its place's rebuild, shared with pick it up (28). Art recounted at 120-150 sprites, five backgrounds, a three-layer road, five character sheets; the game is medium-large. The order of work is in §6. |
@@ -932,6 +932,7 @@ The critique (`beach-boat-critique.md`, 1 Nov) had 21 findings: 8 MUST, 13 SHOUL
 **Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
 - **One pay:** count out the coins and hand them over, with ready-made stacks for small prices; the beach's stacks of one to five are that, now with the give to the stallholder's hand (§3.3, §6, decision 12; question E gone).
 - **Speed lines only at later levels;** the start stays simple (§3.5, §6, the build order, decision 21; question D gone).
-- **One count close:** every count closes on its natural next thing (the tip, the sleeve, the cone, the give), else 1.25 s of stillness (decision 7). **Level up only on right-first-time rounds** (§3).
+- **One count rule:** counts and amounts tick at the number or amount, and an extra tap doesn't land (reversed later on 1 Nov, after the chai play; it was first the natural next thing or 1.25 s of stillness, decision 7). **Level up only on right-first-time rounds** (§3).
 - **Voices:** not now (decisions 3 and 13; question A gone). **Masi:** Zafar says she won't want to be in the game as herself, so her sheet is a placeholder character (question C gone). **Flag for Zafar:** the beach is still hosted by "Masi"; whether the host keeps that name is his.
 - **Clothes:** the prompt sheet's line is added before the prompts.
+- Counts tick at the number (his reversal after the chai play).

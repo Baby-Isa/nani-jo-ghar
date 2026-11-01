@@ -246,7 +246,7 @@ Each part below is a stage or a mini-game in the clinic morning:
 
 **Scores** are 1-5 for: Do (the gesture is clear), Kutchi (the word decides), Fun, Instruction (clear, family Kutchi only), Novel.
 
-**One builder rule for every game here** (lessons §4 and §5), now Zafar's one count close (1 Nov): a counted row closes when the child picks the next item (the natural next thing), as the cut game's rows do (`cut.js` line 14); where no next item follows, it closes about 1.25 s after the last tap (one data setting, the same in every game), never at the right number. Nothing that follows (a sneeze, a fizz, a light, a next step) starts on the count being reached, only on that next tap. Otherwise the picture says when to stop, and the count leaks by waiting (the fever's "just right" bug, CLN-176).
+**One builder rule for every game here** (lessons §4 and §5), now Zafar's count rule (1 Nov, reversed after the chai play): a counted row ticks the moment the right number is reached, and an extra tap doesn't land (`cut.js` line 14 changes: it closed on the next item). Picking the next item is then its own move and starts the next row. Nothing that follows (a sneeze, a fizz, a light, a next step) starts on the tick, only on that next move's tap, so no sneeze or fizz becomes a timer. By Zafar's choice (1 Nov), the count can be won by tapping until it ticks; which thing and which number still decide wherever two words decide a move. The picture never says when to stop, so the number is heard (the fever's "just right" bug, CLN-176).
 
 ### 3A. The body chart: "where does it hurt?" (the diagnosis D2, extended)
 
@@ -323,14 +323,14 @@ Each part below is a stage or a mini-game in the clinic morning:
 1. **Clean:** tap the water bowl, then tap the scrape.
    - A splash, and little bits of garden grit fizz away.
    - The patient gasps "*thundo!*" ✓ with a comic shiver. One tap per scrape; it isn't counted.
-2. **Cream:** "{n} dabs" (*pela paani, ne poi* cream). **The gesture, as `cut.js` does it today:** tap the tube once (it stays picked), then tap the scrape N times. Picking the next item closes the row.
+2. **Cream:** "{n} dabs" (*pela paani, ne poi* cream). **The gesture, as `cut.js` does it today, except for the close:** tap the tube once (it stays picked), then tap the scrape N times. The row ticks at N dabs and an extra dab doesn't land (Zafar, 1 Nov).
    - Each dab gives a cool sparkle and a "sss-aah" face.
-   - The redness fades to half on the first dab and then stays, so the picture never says when to stop. The heard count does.
+   - The redness fades to half on the first dab and then stays, so the picture never says the number. The row ticks at the heard count.
    - The doctor counts aloud at L1 only.
 3. **The plaster:** tap the plaster of the colour said, and its backing peels off with a zip. Tap the scrape, and it smooths on.
 4. **Head bump only (the second slice):** instead of the plaster, the knee's flash-and-tap wrap round the head (Zafar's own idea).
 
-The row ticks when the step closes (the next item is picked), never at a count.
+The row ticks the moment the right number of dabs is reached (Zafar, 1 Nov).
 
 **The five questions:**
 1. **What do you do?** Tap, then tap, three times over. The wrap is the knee's.
@@ -362,9 +362,9 @@ The row ticks when the step closes (the next item is picked), never at a count.
 |---|---|---|
 | **Reading** | Only on placeholders. | The same rule as 3A: no English past support; not shipped until recorded. |
 | **Matching** | No. | No colour swatch or part picture on the card past support. Every scrape is the same picture. |
-| **Eliminating** | No. | Picking the wrong scrape first, or over-dabbing, isn't stopped. It shows in the review (no verdict mid-round). Blind L3 odds: order 1/2 × count 1/3 × colour 1/3 ≈ 6%, and two scrapes per round push it lower. |
+| **Eliminating** | No. | Picking the wrong scrape first isn't stopped (it shows in the review, no verdict mid-round); over-dabbing can't land. Blind L3 odds, changed 1 Nov because the count no longer decides (the bot taps until it ticks): order 1/2 × colour 1/3 ≈ 17% a scrape, about 3% over the round's two scrapes. |
 | **Patterns** | No. | Scrape places, colours and counts are random per round, and which scrape is first rotates. |
-| **Waiting** | No. | No glow on the scrape to do first. The hint repeats the line. The half-fade means the picture never says the count is done. |
+| **Waiting** | No. | No glow on the scrape to do first. The hint repeats the line. The half-fade means the picture never says the number; the tick is the count. |
 
 **The delight moment:** the plaster's peel and stick, then the patient flexes the arm and admires it.
 
@@ -401,7 +401,7 @@ The row ticks when the step closes (the next item is picked), never at a count.
 - **Matching:** every splinter is the same picture.
 - **Eliminating:** the order isn't blocked; it's scored in the review. Blind L2 odds: 1/6 for a three-splinter order × 1/2 for hot or cold, about 8%.
 - **Patterns:** the fingers and temperatures are random.
-- **Waiting:** no glow on the first splinter. The jug row closes on the next tap, not on the last dirt.
+- **Waiting:** no glow on the first splinter. The jug row ticks at the asked number of jugs and an extra jug doesn't land (Zafar, 1 Nov); the soak's dirt is one per jug, so nothing else starts on the tick.
 
 **The delight moment:** the splinter pops out with a tiny "plink" into the kidney tray, and the patient wiggles the fingers.
 
@@ -421,9 +421,9 @@ The row ticks when the step closes (the next item is picked), never at a count.
 **Steps** (Zafar, 1 Nov: "drops to dissolve it, then a tissue to wipe"):
 1. **Drops:** "{n} drops" (*chando*). Tap the dropper on the tray, then tap the nose. A drop falls.
    - The patient's breathing changes from snuffly to clear, little by little.
-   - The blocked look stays until the tissue, so the picture never says when to stop.
+   - The blocked look stays until the tissue, so the picture never says the number.
 2. **The wipe:** tap the tissue box (a tissue pops up), then tap the nose.
-   - **Builder rule:** the drops row closes only on the tissue-box tap. The twitch ("aah… aah…") starts on that tap, never when the count is reached.
+   - **Builder rule:** the drops row ticks when the right number of drops is reached, and an extra drop doesn't land (Zafar, 1 Nov). The twitch is not part of that tick: it starts only on the tissue-box tap.
    - When the tissue reaches the nose, the sneeze comes into it: "choo!", a big comic honk, and the patient giggles. Always caught: the build-up waits for the tap, however long it takes. No timer.
 3. **The bin:** tap the tissue, then the bin. It drops with a soft pat.
 
@@ -452,9 +452,9 @@ The row ticks when the step closes (the next item is picked), never at a count.
 |---|---|---|
 | **Reading** | Only on placeholders. | As 3A. |
 | **Matching** | No. | No count or side shown past support. |
-| **Eliminating** | No. | Extra drops aren't stopped, and nothing ends by itself. Blind L3 odds: side 1/2 × count 1/3 ≈ 17% for the drops row alone; with the order row (the first item from three) about 6%. |
+| **Eliminating** | No. | An extra drop doesn't land (the row ticks at the number). Blind L3 odds, changed 1 Nov because the count no longer decides: side 1/2 ≈ 50% for the drops row alone; with the order row (the first item from three) about 17%, which is above 10% for that pair of rows, so the lab bot measures the whole round (drops, order and the wipes' side from L4), and the nose is not shipped until it passes. By Zafar's choice (1 Nov), the count can be won by tapping until it ticks; which thing and which number still decide wherever two words decide a move. |
 | **Patterns** | No. | Side and counts are random. |
-| **Waiting** | No. | No glow on the side. The blocked look holds; the twitch starts only on the tissue-box tap (the builder rule above), so the picture never says the count is done. |
+| **Waiting** | No. | No glow on the side. The blocked look holds; the twitch starts only on the tissue-box tap (the builder rule above), so the tick is the count and nothing else starts on it. |
 
 **The delight moment:** the honk into the tissue.
 
@@ -510,7 +510,7 @@ If Mum says the cough's remedy is honey and lemon, that's a drink with two thing
 |---|---|---|
 | **Reading** | Only on placeholders. | As 3A. |
 | **Matching** | No. | No ingredient pictures on the card past support. |
-| **Eliminating** | No. | All six ingredients stay out; a wrong one is redone on the spot. **Blind L3 odds:** the first drink from four (1/4) × the second from the three left (1/3) = 1/12 ≈ 8%; with the L2 spoon count (1/3) about 3%. The second drink is never forced: the fourth drink is always possible. |
+| **Eliminating** | No. | All six ingredients stay out; a wrong one is redone on the spot. **Blind L3 odds:** the first drink from four (1/4) × the second from the three left (1/3) = 1/12 ≈ 8%; with the L2 spoon count it stays about 8% (changed 1 Nov: the spoon count ticks at the number, so the bot taps until it ticks and the count no longer lowers the odds). The second drink is never forced: the fourth drink is always possible. |
 | **Patterns** | No. | Which two complaints, and their order, are random. |
 | **Waiting, and the sound clue** | No. | At L3 the listen step moves to after the drinks, as a check, so the grumble or cough can't say which drink. The pose stays neutral: no hand on the chest, no cough puff. |
 
@@ -583,7 +583,7 @@ The first morning that shows this game's new pieces: **session 3, its third pati
    - The doctor: "Let's clean it and put a plaster on." His card: three rows (water, cream, plaster).
    - **Shown at the start:** the tray's four things (bowl, cream, plasters, tissue), each lit once in turn.
 7. **Row 1, *pela paani*:** the lit box hugs the tray. Tap the bowl (it bounces), then the scrape. A splash, the grit fizzes off, the boy shivers: "*thundo!*".
-8. **Row 2, cream, two dabs:** tap the tube (row 1 ticks: the next item was picked), then the scrape. "One" (sparkle, "sss-aah"), "two". The doctor counts aloud, and the count sits on the scrape.
+8. **Row 2, cream, two dabs:** tap the tube (row 1 ticks: the next item was picked, as it has no count), then the scrape. "One" (sparkle, "sss-aah"), "two": row 2 ticks at two and a third dab wouldn't land. The doctor counts aloud, and the count sits on the scrape.
 9. **Row 3, the plaster:** tap the plaster (row 2 ticks). The zip peel. Tap the scrape: it smooths on, and row 3 ticks. The boy lifts his hand and wiggles his fingers at it.
 10. **The end:** zoom out to the bed.
     - The boy: "Thank you, I feel better."
@@ -761,7 +761,7 @@ Sources (web, 1 Nov): [Toca Doctor (GeekDad)](https://geekdad.com/2011/05/practi
 - No Next and no Done; steps close by themselves.
 - A tap skips speech.
 - Hints at 7, 9, 11, 13 s.
-- A counted row closes on the next item's tap; nothing starts on a count being reached (the builder rule, §3).
+- A counted row ticks at the number and an extra tap doesn't land; nothing else starts on that tick (the builder rule, §3).
 - The ask repeats for non-readers.
 - No timers: the sneeze waits for the tissue.
 
@@ -819,7 +819,7 @@ Sources (web, 1 Nov): [Toca Doctor (GeekDad)](https://geekdad.com/2011/05/practi
 ### The ten questions
 1. **The heard words:** the parts, sides, why words, counts, colours, items. Recorded: *kan*, plus the helpers in §1.
 2. **The Sceptic at L2 and above:**
-   - She can't win by the body (no clue), the zoom (it opens for any tap), the scrapes (all alike), the side (no glow), the drinks' sound (moved at L3) or a count (rows close on the next tap).
+   - She can't win by the body (no clue), the zoom (it opens for any tap), the scrapes (all alike), the side (no glow), the drinks' sound (moved at L3); a count she can win by tapping until it ticks, by Zafar's choice (1 Nov), so the side, the item and the colour carry the leak test.
    - Elimination isn't blocked but is scored in the review; first-try blind odds are under 10% everywhere.
 3. **The open need:** which part, which scrape first, which side, which drinks.
 4. **The first round:** §4.
@@ -868,9 +868,9 @@ Each line: the choice, the reason, my assumed answer. "Yes to all except …" wo
 
     *Why:* it mirrors the foot, and uses recorded words. *Likely:* yes.
 15. **Nose safety:** drops fall from above, nothing goes inside, the tissue wipes outside, and the patient blows. Mum sees the mock-up first. *Why:* your 1 Nov answer, and copy safety. *Likely:* yes.
-16. **The nose keeps your wipe: drops, then a tissue to wipe; the sneeze is the reaction when the tissue arrives,** always caught, no timer. The drops row closes only on the tissue tap. *Why:* your 1 Nov words; the research warns timers fight listening. *Likely:* yes. If you'd like a catch-in-time instead, say so: it adds a timer to the clinic (timing in `rules.json`).
+16. **The nose keeps your wipe: drops, then a tissue to wipe; the sneeze is the reaction when the tissue arrives,** always caught, no timer. The drops row ticks at the number of drops (your 1 Nov reversal), and the twitch starts only on the tissue tap. *Why:* your 1 Nov words; the research warns timers fight listening. *Likely:* yes. If you'd like a catch-in-time instead, say so: it adds a timer to the clinic (timing in `rules.json`).
 17. **The drinks: taste.js's four, kept:** ginger and water for the tummy, honey in milk for a cough, turmeric milk for the throat, lemon and water always on the counter. Mum confirms these are the family's. *Why:* the built four keep a blind guess under 10%. *Likely:* yes, pending Mum.
-18. **The drinks' L3:** two of three complaints (tummy, cough, throat), asked in order, from the four drinks; the listen step moves after the drinks, the pose stays neutral. Blind odds about 8% (3% with the count). *Why:* the coin-toss leak. *Likely:* yes.
+18. **The drinks' L3:** two of three complaints (tummy, cough, throat), asked in order, from the four drinks; the listen step moves after the drinks, the pose stays neutral. Blind odds about 8% (the count ticks at the number, so it no longer lowers them, 1 Nov). *Why:* the coin-toss leak. *Likely:* yes.
 19. **Your 1 Nov "body or side word at L3" applies to every live heal game** (§3F). *Why:* newest word wins. **This reverses your 14 Oct ear decision** (decision 97 (8): the ear's side at L4) and supersedes the 13 Oct "L3 = heard only" ladder. The card follows the rulebook (picture blurred at L3, each word fading by its own ladder). *Likely:* yes.
 20. **The knee has no side word today** (the side is tested in the diagnosis only; its close-up shows one knee). **Its L3 word: where the bandage goes, "above the knee" or "below the knee".** *Why:* your 1 Nov rule needs a word in the knee's own rows. *Likely:* yes.
 21. **"Careful" (*dhyan rakh*, recorded):** on the foot's and the hand's wince, and before the ear's deep blob (which then moves at half speed). *Why:* your 1 Nov placement. *Likely:* yes.
@@ -888,9 +888,9 @@ Each line: the choice, the reason, my assumed answer. "Yes to all except …" wo
 29. **The face zoom opens on any tap on the head,** at every level; the head fills the play area; a tap outside glides back; the magnifier button goes (its zoom stays). The forehead counts as the head. *Why:* the cog is the only button on the play screen; a zoom that opens for any tap tells the child nothing. *Likely:* yes.
 30. **At L1-L3 a tap on the hand or the foot is the answer; from L4 it always opens the zoom,** and the whole hand or foot is a target inside it. A zoom tap is never a try; a tap on a wrong part, in or out of a zoom, is a miss with its playful reaction. *Why:* one rule for every zoom, and no feedback from the zoom itself. *Likely:* yes.
 31. **The diagnosis's level cap rises from 3 to 4** (for the L4 tier); D1 keeps tier 1; D3 draws its tools' `finds` only within the level's parts, and the torch finds the nose. *Why:* the parts data is shared by D1, D2 and D3. *Likely:* yes.
-32. **The cream's gesture is the built one:** tap the tube once, then the scrape N times; picking the next item closes the row. *Why:* it's how `cut.js` works today. *Likely:* yes.
+32. **The cream's gesture is the built one, with the tick at the number:** tap the tube once, then the scrape N times; the row ticks at N (Zafar, 1 Nov). *Why:* it's how `cut.js` works today, except for the close. *Likely:* yes.
 33. **Sessions 1 and 2 stay as they are** (the knee; the knee and the ear). The first-ever scrape is session 3's third patient; the cut game joins sessions 3 and 4, the hand splinter through `foot`. *Why:* moving the hand into session 2 would drop the ear (non-negotiable 1). *Likely:* yes.
-34. **Counted rows close on the next item's tap (Zafar's one count close, 1 Nov: the natural next thing; else 1.25 s of stillness), and nothing (a sneeze, a light, a next step) starts when a count is reached.** A rule written into each builder's brief. *Why:* the fever's "just right" leak (CLN-176). *Likely:* yes.
+34. **Counted rows tick at the number, an extra tap doesn't land, and nothing (a sneeze, a light, a next step) starts on the tick (Zafar, 1 Nov, reversed after the chai play; before that: the next item's tap, else 1.25 s of stillness).** A rule written into each builder's brief. By his choice the count can be won by tapping until it ticks. *Why:* the fever's "just right" leak (CLN-176), and one rule for every game. *Likely:* yes.
 35. **Gold Found it on a first try only;** a find after misses gets the soft glow and a plain tick. *Why:* ticks mustn't let a child fish. *Likely:* yes.
 36. **"That tickles" and "excuse me" are giggles, not lines.** *Why:* fewer clips, and a giggle needs no Kutchi. *Likely:* yes.
 37. **The cough patient is the boy; the tummy patient either.** *Why:* the stethoscope on a girl's chest costs nothing to avoid. *Likely:* yes.
@@ -1078,8 +1078,8 @@ The critique (`build/reports/designs/clinic-every-part-critique.md`, 1 Nov): 6 M
 
 1. **MUST, the recording budget and the frames.** Done. §1 now has "Every line, who says it, and what's missing": the doctor's 14 asks (his recording, Zafar 14 Oct) and Mum's 10 lines and words, each marked recorded, in the engine, or missing, with the sprint. Eighteen missing frames (ten of the doctor's, eight of the patients') are reported as gaps. The count is about 68 clips, 34 for Sprint 16; "Where does it hurt?" moved off Mum's list. It says what plays in Kutchi today (almost nothing) and that every L3 line needs a new frame. Decision 25 rewritten.
 2. **MUST, the face at L2 on a 275 px body.** Done. The face is a zoom region at every level (the ear is already a face part at L1), on the built `closeup` and `diagnosis.js` zoom; any tap on the head opens it, the head fills the play area (about 4x on a 275 px phone), a tap outside closes it, the magnifier button goes. Tap zones checked at 44 px on the lab page before any art. §3A, §6 item 2, §7, decisions 6 and 29.
-3. **MUST, the drinks' L3 leak.** Done. Three remedies in play (tummy, cough, throat), two asked in order, taste.js's four drinks kept (lemon and water always on the counter, so the second is never forced). Blind odds 1/12 ≈ 8%, about 3% with the count, written in the table, with a leak-bot row. The cough's remedy follows the built "honey in milk" unless Mum says honey and lemon (open question A). §3E, decisions 17 and 18.
-4. **MUST, the nose's count leaking by waiting.** Done. The builder rule: the drops row closes only on the tissue-box tap, and the twitch starts on that tap, never on the count. Written once as a rule for every game here (§3 intro, decision 34) and in §3D's steps and leak table.
+3. **MUST, the drinks' L3 leak.** Done. Three remedies in play (tummy, cough, throat), two asked in order, taste.js's four drinks kept (lemon and water always on the counter, so the second is never forced). Blind odds 1/12 ≈ 8% (the count no longer lowers them, 1 Nov), written in the table, with a leak-bot row. The cough's remedy follows the built "honey in milk" unless Mum says honey and lemon (open question A). §3E, decisions 17 and 18.
+4. **MUST, the nose's count leaking by waiting.** Done. The builder rule: the drops row closes only on the tissue-box tap, and the twitch starts on that tap, never on the count. Written once as a rule for every game here (§3 intro, decision 34) and in §3D's steps and leak table. *Updated later on 1 Nov: the drops row now ticks at the number; the twitch still starts only on the tissue tap.*
 5. **MUST, builder questions left open.** Done, each decided:
    1. The zooms: the face at every level; the hand and foot only from L4 (a direct answer before); a zoom opens for any tap on its region and is never a try, so it says nothing; a wrong part is a miss with its reaction; the diagnosis's zoom is told apart from the heal game's glide (decisions 29, 30).
    2. The L2 two-part line: only pairs that one close-up treats, so one heal game follows and the pharmacy asks as usual; in Sprint 16, the arm's pairs into the cut game's two scrapes (decision 5).
@@ -1101,5 +1101,6 @@ The critique (`build/reports/designs/clinic-every-part-critique.md`, 1 Nov): 6 M
 - **Sprint planning on hold:** the Sprint 16 and 17 split is no longer a decision (decision 28 removed, open question E gone); the slice is now **the prototype's first slice**, the rest the second slice, everywhere in §0-§11. The clinic's game-by-game pass and the rollout of chai's shared fixes wait for his chai feedback.
 - **Left and right: yes.** A first-time showing at L3, the first time a side is asked: the doctor lifts the patient's left hand, "my left hand", "his left", then the right (§3A, new decision 39); open question B gone. His words, "Zafar, to confirm": *munjo dabo hath*, *injo dabo*, *injo jamno*.
 - **"Is hurting":** his pattern (the part, then "is hurting"; *munjo dand dukhe to*, the ending varying) is in the word notes and P-1 as "Zafar, to confirm"; the aches stay out of the L3 why rung; open question C now asks Mum only for the endings.
-- **One count close:** the next item's tap is the natural next thing; else 1.25 s of stillness (§3's builder rule, decision 34). **Level up only on right-first-time rounds** (§9).
+- **One count rule:** counts tick at the number and an extra tap doesn't land (reversed later on 1 Nov, after the chai play; it was first the next item's tap, else 1.25 s of stillness; §3's builder rule, decision 34). **Level up only on right-first-time rounds** (§9).
 - **Voices:** decision 25 no longer casts who records what; the prototype plays existing takes and the device voice. **Clothes:** the prompt sheet's line is added before the prompts.
+- Counts tick at the number (his reversal after the chai play).

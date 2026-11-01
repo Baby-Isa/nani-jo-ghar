@@ -105,10 +105,10 @@ This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts
 
 **Steps:** things stand on the bench and the low cubby under it (F view, like the pantry). The bag stands at the bench's right end, beside Nani, and is not one of the slots. Nani says one line. The thing's card pops up big beside the side panel, then flies into its row. The child **taps the thing**: it hops into the bag with its own sound (the book thumps, the pencils rattle), and Nani says its word as it lands ("The book!"). The row ticks. When the last row ticks, the bag zips itself shut and Nani calls the packed things back ("Book, pencil: *shabash*!"). A tap on a packed thing, before the next ask, hops it back out (the undo).
 
-**Counts (L2+).** A count ask always has **more of that thing than asked**: three or four pencils for "two" (the rulebook's "decoy of the same kind", counted in the decoy budget). A counted group stands in one slot, each member its own tap target at least 44 px wide. Each pencil that hops in fills one dot on the pencil row's card (`tally.js`: dots, never digits). The row closes when the child taps a thing of another kind:
-- the right count: the row ticks gold;
-- **too few:** the other thing doesn't move; Nani says the count again ("Two pencils"), the empty dot pulses once, and the row ticks (not gold) when it's filled;
-- **too many:** the extra pencil hops straight back out as it lands, Nani says the count again, and the row redoes on the spot (it ticks, not gold).
+**Counts (L2+).** A count ask always has **more of that thing than asked**: three or four pencils for "two" (the rulebook's "decoy of the same kind", counted in the decoy budget). A counted group stands in one slot, each member its own tap target at least 44 px wide. Each pencil that hops in fills one dot on the pencil row's card (`tally.js`: dots, never digits). **The row ticks the moment the right count is reached, and an extra pencil doesn't land** (it stays on the bench), Zafar's count rule of 1 Nov, reversed after the chai play. No "too many" or "too few" miss exists any more; a short count is simply not yet ticked, and the number can be said again for free. By Zafar's choice (1 Nov), the count can be won by tapping until it ticks; the noun (which thing) still decides, and so do the owner, the size and "not" wherever two words decide a move.
+- the right count, reached with no wrong thing: the row ticks gold; a wrong thing tapped first gets the funny hop-back and the row ticks plain;
+- (Superseded 1 Nov: the old too-few and too-many misses are gone; counts tick at the number.)
+- (Superseded 1 Nov, see above.)
 
 **The five questions:**
 
@@ -141,7 +141,7 @@ This is the order `wake-up-clock.md` §2 gives, for its reason: the clock starts
 | **Waiting** | Nothing packs itself and nothing glows on the answer. The hint after 7, 9, 11 or 13 s repeats the ask. The helper card, which costs a bulb, shows the full answer |
 | **Fishing** | A wrong tap: the thing wriggles, Nani says its word (*hi na, hu*: "not this one, that one" when it fits), and it stays out. Only a first-go right pick (and a right first count) ticks gold and moves the word's ladder (lessons §1) |
 
-**The bot:** winning means every row ticked gold (a round that moves up; Zafar, 1 Nov: level up only on right-first-time rounds). The random bot and the "never a toy" bot must win under 10% of rounds from L2. **Count rows have their own line:** the "pack every one of the asked thing" bot never ticks a count row gold, and the "knows the noun, guesses the count" bot ticks under 1 in 2 of them. At L1 a random tapper wins about 1 round in 6, within the supported level's allowance.
+**The bot:** winning means every row ticked gold (a round that moves up; Zafar, 1 Nov: level up only on right-first-time rounds). The random bot and the "never a toy" bot must win under 10% of rounds from L2. **Count rows (changed 1 Nov):** the number ticks on its own, so the "pack every one of the asked thing" bot now ticks a count row gold, and so does the "knows the noun, guesses the count" bot; the noun alone decides the bag's count rows, and the bot's odds for a count row are the noun's alone (about 1 in 3 at L2's four slots), so the lab bot recounts the bag's L2 against the 10% line. By Zafar's choice (1 Nov), the count can be won by tapping until it ticks; the noun (which thing) still decides, and so do the owner, the size and "not" wherever two words decide a move. At L1 a random tapper wins about 1 round in 6, within the supported level's allowance.
 
 **Mistakes:** never a cross. Each toy has its own way back out: the teddy climbs out and waves, the ball boings off the wall and rolls back, the toy car reverses out with a beep, the doll sits up and shakes her head. A wrong school thing just hops back to its place.
 
@@ -342,7 +342,7 @@ Second run (L3-L4, §5): about 30 more, listed when L1-L2 plays.
 - **Busy Shapes:** calm, unhurried puzzles; no timers on the board.
 - **Toca Town:** carry it home (the sticker and the packed things reach the evening book).
 - **Monki:** rotate the hiding places; here the pictures' places and the owners.
-- **Classroom research:** "give me N" as the number test, turned round into "find the group of N" so a count never stops by itself; counting along. And its warning: exactly as many as asked means "take them all", so the bag's counts always have spares.
+- **Classroom research:** "give me N" as the number test, turned round into "find the group of N"; counting along. And its warning: exactly as many as asked means "take them all", so the bag's counts always have spares, and the pencils tick at the number so "take them all" cannot over-pack (Zafar, 1 Nov).
 
 Sources: [The Tracing-to-Animation Formula, Screenwise](https://screenwiseapp.com/media/drawing-for-kids-learning-apps-app); [Crayola trace kit, The Globe and Mail](https://www.theglobeandmail.com/technology/crayolas-ipad-tracing-kit-a-draw-for-young-scribblers/article4252627); [bekids Coloring](https://bekids.com/coloring/); [Kids Coloring & Drawing Games](https://spark.mwm.ai/en/apps/kids-coloring-drawing-games/1225122654); the school section of `research-other-games-2026-10-31.md`.
 
@@ -353,7 +353,7 @@ Sources: [The Tracing-to-Animation Formula, Screenwise](https://screenwiseapp.co
 | 1. The heard word decides | **Passes, once recorded.** Leak tests written per game; both words decide from L2 (a data check, and a one-word bot); counts have spares; the model's picture is never the next candidate; show-and-tell beats "no toys"; the verb picks the tool from L2; tick only the first-go right pick. **Exception:** today nearly every deciding word is unrecorded, so neither game teaches until Mum's school round lands |
 | 2. Onboarding and the first round | Passes: the first round is the tutorial (§4); one lit thing; the decoy shown first; each new action shown once (rub-out in the model, with the child's gesture); tap, then tap; tracing is a drag along a track only |
 | 3. Instructions | Passes: Nani and the teacher are on screen and speak before the card; the card never changes; the model (Ali) on each level's first lesson and before speaking; listening again is free |
-| 4. Pacing and waiting | Passes: no Next, no Done button; no timers; a tap skips the model; counts choose a group, never stop at N; the bag's count closes on the next action; the teacher's count never holds the board; hints from 7 s |
+| 4. Pacing and waiting | Passes: no Next, no Done button; no timers; a tap skips the model; counts choose a group (the board) or tick at the number (the bag), and an extra tap doesn't land; the teacher's count never holds the board; hints from 7 s |
 | 5. Feedback, progress, the end | Passes: a wriggle, a dodge, a duck or a recount and the word, never a cross; each miss its own joke; ends at the zip and at the sticker; the shared end screen |
 | 6. Layout | Passes on paper at the four sizes (§7): bag capped at seven slots; the teacher's bubble in her own column; nobody stands on the card side. To prove with a mock-up and on film |
 | 7. Art and camera | Passes: one E camera per scene; chalk is real art revealed by a mask; no text in the room; about 48 pieces in four blocks for the first run, counted |
@@ -387,7 +387,7 @@ Each is the choice, the reason, and the answer I assumed.
 5. **The board's first pictures are bird, goat, car and house,** all confirmed in the engine, three of them heard in clips. Apple and banana wait for Mum to confirm them; sun, fish and tree come in the second run. *Assumed: yes.*
 6. **Shapes only at B1's L4, and only if Mum has the words;** until then "round" things (sun, ball) stand in. You left shapes for now on 31 Oct. *Assumed: yes; ask Mum in her school round.*
 7. **Nothing written anywhere in the school:** no letters, words or digits on the board, books, posters or walls. A data check. *Assumed: yes (non-negotiable 3).*
-8. **Counting chooses a group ("ring the three birds"), never "draw three".** A "stop at N" leaks or needs a Done button. *Assumed: yes.*
+8. **Counting chooses a group ("ring the three birds"), never "draw three"; the bag's count ticks at the number and an extra tap doesn't land (Zafar, 1 Nov, after the chai play).** *Assumed: yes.*
 9. **Tracing is the one drag, along the dotted track only.** Lessons §2. *Assumed: yes.*
 10. **Rub it out is tap the duster, tap the picture, three rubs; a wrong picture dodges.** No loss, a joke, and the word. *Assumed: yes.*
 11. **Chalk lines are real art revealed by a mask; every picture has its states drawn.** Code draws nothing. *Assumed: yes.*
@@ -399,12 +399,12 @@ Each is the choice, the reason, and the answer I assumed.
 17. **Ali goes to the same school;** his bag gives the owners, he models at the board. *Assumed: yes.*
 18. **Simba in the bag, one round in three from L2.** A recurring joke at home before school. *Assumed: yes.*
 19. **The lunchbox holds fruit only;** its "week" stays parked with the days of the week. *Assumed: yes (your 31 Oct answer).*
-20. **From L2, both deciding words are needed for every ask** (dropping either leaves at least two candidates), as a data check and a one-word bot. Covers loanword nouns and keeps the nouns teaching. *Assumed: yes.*
+20. **From L2, both deciding words are needed for every ask except the bag's count rows** (dropping either leaves at least two candidates), as a data check and a one-word bot. For the bag's counts the number no longer decides (1 Nov: it ticks at the number), so the noun carries the row. Covers loanword nouns and keeps the nouns teaching. *Assumed: yes.*
 21. **Parked, not dropped:** the class hand-out (B6, needs give-to) and what's gone? (B7). *Assumed: yes.*
 22. **The prototype doesn't wait for Mum's school round:** it plays on existing takes and the device voice (Zafar, 1 Nov); the leak bot is run on recorded words only.
 23. **The day's order is the wake-up clock's:** clock (the night before, to sunrise), the door with its sky, getting ready, the bag, the bus, the board, home, the book. Door-then-clock ran time backwards. `do-it-engine.md` §2B now has the same order (fixed in the consistency pass, 1 Nov). *Assumed: yes.*
 24. **The model never hands over the answer:** Ali's picture is rubbed out and the board re-dealt, so it is never the child's next candidate. The model plays on each level's first lesson and before each speaking turn; otherwise a tap skips it. Its rub uses the child's gesture. *Assumed: yes.*
-25. **The bag's counts always have spares** (three or four pencils for "two"); too few holds the next tap, too many hops back out, both with the number said again and no gold. *Assumed: yes.*
+25. **The bag's counts always have spares** (three or four pencils for "two"); the count ticks at the number, an extra pencil doesn't land, and by Zafar's choice (1 Nov) the count can be won by tapping until it ticks. *Assumed: yes.*
 26. **Tidy's bookshelf is parked** (a later "put the book back on the shelf" at home); Tidy's school bag is this day's. *Assumed: yes.*
 27. **The school bag is the day's "pack the bag" stage** (the glue's bag for every trip, here as the school bag). *Assumed: yes.*
 28. **The first build is L1-L2 of both games, about 48 art pieces in four paste blocks** (backgrounds, people, things, chalk); L3-L4 art is a second run. The stickers page in the evening book, PE day, break time and the classroom greeting are parked as later designs. *Assumed: yes; it keeps the day medium.*
@@ -538,7 +538,7 @@ Each finding (`school-day-critique.md`), then what I did.
 
 1. **MUST, the day runs backwards.** Took the wake-up clock's order (clock, door with its sky, getting ready, bag, bus, board, home, book) in §0, §2 and §4 step 1. I can't edit `do-it-engine.md` tonight, so its door-first §2B is flagged in decision 23 for a one-line fix.
 2. **MUST, the model leaks by elimination.** Took the critique's option (b), strengthened: Ali's picture is rubbed out (gone, not back to dots) and the board is re-dealt, so the model's picture is never the child's next candidate. Written in B's "The model", B1's leak test, the data checks (§6) and a "remembers the model" bot. L1 now deals three pictures. Decision 24.
-3. **MUST, the bag's count has no decoys.** Every count ask has spares (three or four pencils for "two"), counted as same-kind decoys; too few holds the next tap, too many hops back out, both with the number said again, neither gold; dots on the card via `tally.js`; count rows get their own bot line. Decision 25.
+3. **MUST, the bag's count has no decoys.** Every count ask has spares (three or four pencils for "two"), counted as same-kind decoys; too few holds the next tap, too many hops back out, both with the number said again, neither gold; dots on the card via `tally.js`; count rows get their own bot line. Decision 25. *Superseded later on 1 Nov, after the chai play: the count ticks at the number and an extra pencil doesn't land; there is no too-few or too-many miss.*
 4. **MUST, scope.** The first build is L1-L2 of both games: four board pictures (bird, goat, car, house rather than the critique's apple, because finding 9 moves the speaking set off *safarjan*, a draft with no clip), red and green, the bag's L1-L2 things. Art counted at about 48 pieces in four paste blocks (backgrounds, people, things, chalk); the sticker is the drawn state on the book cover; the stickers page, PE day, break time and the greeting are parked. Decision 28.
 5. **MUST, colour and rub-out re-specified as a new engine.** B2 and B4 are now the `do-it` two-tap tool with board pictures as things; only trace-and-reveal and ring-the-group are new modules. "New engine" removed from §0, §2 and §6; B2's novelty 3 to 2, B4's 4 to 3. There is no shared "pick the group" yet, so the ring is new code written for count-to-a-number to reuse. Decision 29.
 6. **MUST, the phone layout breaks.** The board no longer takes the full width: the teacher has her own right-hand column and her bubble sits beside her head. The bag holds at most seven slots at any size (L4: four asks, three decoys), with the height worked out at 740x320. Ali models from the board's right edge and sits at the right. 915x275 is dropped for Zafar's four sizes of 27 Oct (CLAUDE.md wins over the critique's 275 px case), and a mock-up at both small sizes comes before any build. Decisions 4 and 32.
@@ -557,3 +557,4 @@ Each finding (`school-day-critique.md`), then what I did.
 - **Voices:** the prototype no longer waits for Mum's school round (decision 22).
 - **Level up only on right-first-time rounds:** both bots now need every row gold (§3), and §9's levels row says so.
 - **Clothes:** the prompt sheet's line is added before the prompts (the teacher in modern smart-casual, the children modern casual).
+- Counts tick at the number (his reversal after the chai play).

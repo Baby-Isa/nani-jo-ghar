@@ -272,7 +272,7 @@ Make and mend both use the track, but with different tools, sounds and decisions
 - **Mistakes:** a shake and the word. The wrong item is redone on the spot. Every miss gets a different funny reaction; nobody ever frowns.
 - **A step ends by itself** when it's done: no Done and no Next. A tap skips speech and is never lost.
 - **Hints** (the rulebook's split): the guide's hint comes free after 7, 9, 11 or 13 s by level, from the last action, and only replays the ask. The helper card holds the full answer and is the only thing that costs a bulb.
-- **How a count closes (Zafar, 1 Nov; one rule for every game, replacing `easy-to-play.md` rule 4's "a count ends at the right number"):** the natural next thing where it is clear (lifting the next tool, or the piece going to its person), never a button; otherwise about 1.25 s after the last tap (one data setting, the same everywhere). A count never stops itself at the right number: an extra tap lands, and a wrong count is a miss, said again and fixed on the spot, the row plain. A placed item can be tapped back until the step moves on. Every count is shown with more spots than N, so the picture never gives the number.
+- **How a count closes (Zafar, 1 Nov, reversed after his chai play; one rule for every game, restoring `easy-to-play.md` rule 4):** a count ticks the moment the right number is reached, and an extra tap doesn't land. No stillness timer and no waiting for the next tool. Lifting the next tool, or the piece going to its person, is a real move of its own and stays. A placed item can be tapped back until the step moves on. Every count is shown with more spots than N, so the picture never gives the number. By Zafar's choice (1 Nov), the count can be won by tapping until it ticks; which tool, which garment and which colour still decide wherever two words decide a move.
 - **Levels** follow the rulebook:
   - L1: "yes" asks only, one clearly different decoy.
   - L2: numbers, "no" said last, 2 decoys, the English dotted.
@@ -375,7 +375,7 @@ The cloth folds itself into Big Ma's bag.
 | L1 | the garment, from 2 clearly different patterns (kurta's body, cap's crown); one chalk line; cut; machine | "make me a kurta" |
 | L2 | the length: the sleeve's two chalk lines, long and short (two words per move); 3 patterns; numbers (two sleeves, *ba*, each a cut); "no" said last ("long, not short") | |
 | L3 | other ways of saying it: "cut the long one" (*kap* ✓), Big Ma saying it for Ali, "for Ali" (*Ali lai*); 4 patterns; the card's picture blurred | |
-| L4 | buttons, with amount and look-alike: "three small red buttons" from a tin of big and small buttons in red and pink (4 decoys). The placket shows **five** button spots, so the picture never gives the count; the count closes on Zafar's one count close (1 Nov: the next tool lifted, else about 1.25 s after the last tap); a fourth tap lands, and too many or too few is a miss, said again and fixed on the spot. Each button is tapped onto a spot, then a swipe round it (the built ring `stitch.js`, T3 buttons). | |
+| L4 | buttons, with amount and look-alike: "three small red buttons" from a tin of big and small buttons in red and pink (4 decoys). The placket shows **five** button spots, so the picture never gives the count; the count ticks at three and a fourth tap doesn't land (Zafar, 1 Nov). Each button is tapped onto a spot, then a swipe round it (the built ring `stitch.js`, T3 buttons). | |
 
 **The leak test:**
 - **Reading:** the card shows the Kutchi with a speaker. The garment's picture shows only while that word is supported; from L2 there is **no picture of the finished piece** (games map). The length is never pictured, only said and written in Kutchi.
@@ -383,7 +383,7 @@ The cloth folds itself into Big Ma's bag.
 - **Eliminating:** a wrong pattern tap shakes the pattern; Ali names it ("a cap?") and then the asked one ("kurta!"), with no *na* (a no aimed at the child is a verdict; *na* stays for "no said last" asks). It slides back. Nothing is removed. A wrong chalk-line tap shakes the line and Ali says the asked length; the line stays. Only a right first tap ticks. The cut can't be made on the wrong line, because the track lights only after the right line is tapped: the line tap is the test.
 - **Patterns:** the garment, which line is long (above or below), the side of the table and the asker are random.
 - **Waiting:** neither line glows until one is tapped. The guide's free hint replays the ask; the helper card costs a bulb.
-- **The blind bot:** L1 50%; L2 1 in 3 × 1 in 2 = 17%; L3 1 in 4 × 1 in 2 = 12.5%; L4 adds 1 in 5 for the button kind and the count, under 2%.
+- **The blind bot:** L1 50%; L2 1 in 3 × 1 in 2 = 17%; L3 1 in 4 × 1 in 2 = 12.5%; L4 adds the button kind (at worst 1 in 3; the count dropped out on 1 Nov because the bot taps until it ticks), so at worst about 4%, still under 10%.
 
 **The delight moment:** the offcut falls, and Simba's paw shoots in from the table edge and bats it away. It's a different cat gag each time: Zazu wears it as a hat; Simba sits on it. Then the machine runs and the pieces snap together.
 
@@ -421,7 +421,7 @@ The cloth folds itself into Big Ma's bag.
 | Level | What it adds | Example |
 |---|---|---|
 | L1 | two clearly different faults; one asked | a torn sleeve and a missing button; "my sleeve is torn" |
-| L2 | three faults; two asked, in order; numbers; "no" said last | "first the pocket, then the buttons: two of them", then "not the sleeve" (*pela … ne poi …*). The placket shows four empty button spots for "two", so the picture never gives the count; the count closes on Zafar's one count close (1 Nov: the next tool lifted, else about 1.25 s after the last tap); a third tap lands, and a wrong count is said again and fixed on the spot. |
+| L2 | three faults; two asked, in order; numbers; "no" said last | "first the pocket, then the buttons: two of them", then "not the sleeve" (*pela … ne poi …*). The placket shows four empty button spots for "two", so the picture never gives the count; the count ticks at two and a third tap doesn't land (Zafar, 1 Nov). |
 | L3 | other ways of saying it: "there's a hole", "the button has come off", "it's too long" (the hem: the scissors cut along the hem's chalk line, as in make). 4 faults; the picture blurred. | |
 | L4 | look-alikes and amounts: the same fault on two parts (a torn pocket and a torn sleeve; left and right once recorded). A hole is patched from **the scrap tin**, which holds the offcut from make, picked by colour and size ("the small red piece"). | |
 
@@ -431,7 +431,7 @@ The cloth folds itself into Big Ma's bag.
 - **Eliminating:** a wrong tap doesn't fix or remove that fault; it stays. Only the right fault ticks, first go. At L2 the unasked fault stays visible after the round, and a new garment comes next round (never "the one left over").
 - **Patterns:** the faults, their places, the garment, the customer and the order are random each round. The customer rotates: Nana, Ma, Ali, the girl.
 - **Waiting:** nothing glows on the answer. The light boxes the whole garment, never a fault. The guide's free hint replays the ask.
-- **The blind bot:** L1 50%; L2 1 in 3 × 1 in 2 (the order) = 17%, × the count = under 10%; L4 under 3%.
+- **The blind bot** (changed 1 Nov: the count no longer decides, because the bot taps until it ticks): L1 50%; L2 1 in 3 × 1 in 2 (the order) = 17% for that row, which was under 10% with the count; the lab bot measures the whole round and a second fault in the order is the fix to try if it stays over; L4 recounted by the lab bot, at worst about 9% (was under 3%).
 
 **The delight moment:**
 - **A right fix:** the mended sleeve puffs up and flaps like a windsock in a little breeze, and Nana's face circle does its eyebrows-up chuckle (as the heal games do). No hand is drawn (H13).
@@ -752,7 +752,7 @@ Sources: [Toca Tailor, Common Sense Media](https://www.commonsensemedia.org/app-
 
 **4. Pacing.** Passed.
 - No Done and no Next. Tap skips. The guide's free hint comes at 7, 9, 11 and 13 s; only the helper card costs a bulb (the rulebook's split).
-- Counts close on Zafar's one count close (1 Nov): the natural next thing, else about 1.25 s after the last tap; never at N.
+- Counts tick at the number and an extra tap doesn't land (Zafar, 1 Nov, reversed after the chai play).
 - No timers in make, mend or the fitting.
 - Nothing leaves before it's asked.
 - The ask is repeated every few seconds for non-readers, as the guide's replay.
@@ -996,8 +996,9 @@ The critique (`sewing-critique.md`, 1 Nov) had 7 MUSTs and 11 SHOULDs. All MUSTs
 
 **Zafar's answers (1 Nov): what changed** (`zafar-answers-2026-11-01.md`).
 - **The recommendations are fine:** make, then mend, and Going out in visit 1 (§2, the two "questions first" are now answered decisions).
-- **One count close** replaces this design's "counts close themselves" (§3's shared rules). **Level up only on right-first-time rounds.**
+- **One count rule** (counts tick at the number, an extra tap doesn't land; reversed later on 1 Nov, after the chai play, from the natural next thing or about 1.25 s of stillness) replaces this design's "counts close themselves" (§3's shared rules). **Level up only on right-first-time rounds.**
 - **One pay** at the stall: count out and hand over, with stacks for small prices.
 - **Voices:** settled before shipping; the prototype doesn't wait for Mum's round (§1, decisions 23 and 26).
 - **Sprint planning on hold:** the three sewing sprints are now three build slices (§0, decision 24).
 - **Clothes:** his rule noted in the open question and before the prompts; the made kurtas and caps stand.
+- Counts tick at the number (his reversal after the chai play).

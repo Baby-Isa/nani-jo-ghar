@@ -98,7 +98,8 @@ Visit 2: the orchard; positions at home; count them in. Visit 3: the child gives
 
 **Open (Zafar):**
 1. **The length.** (a) his 21 Oct rule: animals home moves to the second farm day (the dusk call goes with it); or (b) **recommended:** the day grows by play: play 1 is door, bag, ride, meet, feed, eggs, photo shoot, home, book (about 10 minutes); the corn stall joins on play 2, animals home on play 3. Nothing is removed either way.
-2. One count close for every count game (the stillness rule), and who asks on the farm (`farm-eggs-orchard.md` open questions 1-2).
+2. One count rule for every count game (ticks at the number; answered 1 Nov, reversed after the chai play), and who asks on the farm (`farm-eggs-orchard.md` open questions 1-2).
 3. Hannah Mami's likeness and voice.
 
-**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): one count close (the hand-over of the basket or the serve where it's the natural next thing, else 1.25 s of stillness); Nani asks and Hannah Mami is a placeholder; Snap ticks each right shot at once from an instant camera, no darkroom; only right-first-time rounds level up; *murgi* and *indo* are Zafar's words, to confirm.
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): one count rule (counts tick at the number and an extra tap doesn't land; the hand-over of the basket and the serve stay as moves of their own; first answer, stillness, reversed after the chai play); Nani asks and Hannah Mami is a placeholder; Snap ticks each right shot at once from an instant camera, no darkroom; only right-first-time rounds level up; *murgi* and *indo* are Zafar's words, to confirm.
+- Counts tick at the number (his reversal after the chai play).

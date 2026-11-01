@@ -8,13 +8,13 @@ Designed overnight on 1 Nov 2026, while Zafar slept, and revised the same night 
 
 - **What:** two new Cook stations and one rule on the existing ones.
   - **A. The eggs station (Zafar's):** each person at the breakfast table asks for their egg. The child boils it or cracks it into the pan and fries it, then gives it to the right plate. "A boiled egg for Nana, a fried one for Ali." (Its speaking turn waits for the chai pilot: §5.)
-  - **B. The baking station:** Nani calls each ingredient with an amount. The child pours it into a clear cup with no lines on it and stops at the amount word. Then a quick knead, and the oven, where each bake comes out when its word says. Bread, naan, or the party's cake. Never a treat, never a prize.
+  - **B. The baking station:** Nani calls each ingredient with an amount. The child pours it into a clear cup with no lines on it, and the cup ticks the moment the amount is reached (half ticks at half, full at full; Zafar, 1 Nov). Then a quick knead, and the oven, where each bake comes out when its word says. Bread, naan, or the party's cake. Never a treat, never a prize.
   - **C. The meal word (rule):** in story mode the time of day names the meal on every Cook station in a kitchen day: breakfast in the morning light, lunch at midday, dinner under the lamps. In free play each station keeps its own meal.
 - **Day:** the kitchen (Nani). Eggs open the day at breakfast. Baking is the afternoon, and it ends at dinner. The first kitchen day is eggs and baking only; a lunch station joins on visit 2.
 - **Status:** new. The eggs station was restored on 1 Nov (R4), with the breakfast skin folded into it.
 - **Engine:** Cook's kit.
   - **Eggs:** the hob, pot and pan, the fry ring (`js/cook/mechanics/fry.js`) for both vessels (the pot is a second "pan" with its own ring profile; `boil.js` is a knob game and isn't used), the chai tray's face-badged 2×2 tray for the plates, and the order card. One tiny new mechanic: **crack**.
-  - **Baking:** the press-and-hold pour (`js/shared/pour.js`, `Cook.Pour.hold`), with its dashed lines removed, knead (`knead.js`, un-parked) and the tawa ring (`tawa.js`) behind an oven door. Two small new pieces: **measure** (the amount judge, with the count judged at the knead) and **oven** (a zone).
+  - **Baking:** the press-and-hold pour (`js/shared/pour.js`, `Cook.Pour.hold`), with its dashed lines removed, knead (`knead.js`, un-parked) and the tawa ring (`tawa.js`) behind an oven door. Two small new pieces: **measure** (the amount ticker, with the counts ticking at their numbers) and **oven** (a zone).
 - **Rough size:** small to medium in total. Eggs is small. Baking is small to medium: the measure judge and the oven zone are new, and the front-on counter may be the chaat v2 or pantry view rather than a new one (checked first, §6). One art run covers both stations.
 
 ## 1. The language goal
@@ -167,7 +167,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
 | B1 | **Pour to the word** (no line on the cup) | 4 | 5 | 5 | 4 | 3 | 21 | **Keep: baking's core** |
 | B2 | Two and a half cups (whole, whole, half) | 3 | 5 | 4 | 3 | 4 | 19 | Keep as B1's L4 |
 | B3 | Salt or sugar (two white jars) | 3 | 5 | 3 | 3 | 5 | 19 | Keep as B1's L4 look-alike |
-| B4 | **Knead** (squish the dough) | 4 | 1 | 2 | 3 | 5 | 15 | Keep as a short beat, not a stage, and the count's commit (decision 12) |
+| B4 | **Knead** (squish the dough) | 4 | 1 | 2 | 3 | 5 | 15 | Keep as a short beat, not a stage (decision 12) |
 | B5 | **The oven: each bake out at its word** | 4 | 4 | 4 | 4 | 4 | 20 | **Keep: baking's second stage** |
 | B6 | Decorate the party cake (candles, colours) | 4 | 3 | 2 | 4 | 3 | 16 | Park: decorating swamps measuring (research), and candles belong to the party |
 | B7 | A full cup of flour puffs a cloud as it lands, and Simba sneezes | 5 | 1 | 4 | 3 | 4 | 17 | Keep as B1's joke, on a right whole or heaped cup of flour (not on a miss) |
@@ -175,7 +175,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
 
 **The keep:**
 - **The eggs station:** E1 (with E2 inside, and E3 as its L4). E4 moves to a later visit (§5).
-- **Baking:** B1 (with B2 and B3 at L4, and B7 as its joke), B4 as a beat (and the count's commit), and B5.
+- **Baking:** B1 (with B2 and B3 at L4, and B7 as its joke), B4 as a beat, and B5.
 
 ---
 
@@ -199,7 +199,7 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
    - The boiled egg is lifted with the slotted spoon.
    - Either way it rises above the hob, waiting.
 4. Tap the plate. The egg flies there: the boiled egg into a plain egg cup on the plate (Zafar, 1 Nov), the fried egg flat on the plate.
-5. **Tap the tray: the commit,** and the only moment the plates are judged. Once every plate has at least one egg and nothing is cooking, the tray glows; nothing about the glow says whether the counts are right. Tapping it carries the tray to the table, an action with its own meaning like the baking cup's tip, not a Done button. Each plate is judged against its person's order (verb and count). A plate that's wrong shakes and comes back, Nani says that person's order again, and the eggs that don't belong hop back to the hob to be given again (too few: the plate waits for more). Until the tray is tapped, eggs can be moved freely between plates (NN7's undo). When every plate is right, each person's face appears over their plate (Cook's review).
+5. **Tap the tray: carry the plates to the table,** a real move of its own, like the baking cup's tip, not a Done button. Each plate's count ticks the moment the right number of eggs is on it, and an extra egg doesn't land (Zafar, 1 Nov, reversed after the chai play). Once every plate has its eggs and nothing is cooking, the tray glows; tapping it carries the tray to the table. The verb (boiled or fried) and the owner are judged at the tray: a plate with the wrong kind of egg shakes and comes back, Nani says that person's order again, and the eggs that don't belong hop back to the hob to be given again. Until the tray is tapped, eggs can be moved freely between plates (NN7's undo). When every plate is right, each person's face appears over their plate (Cook's review).
 
 **The five questions:**
 
@@ -236,11 +236,11 @@ Scored Fun / Kutchi decides / Novel / Plot / Cost to build (5 = cheap), each 1-5
 | **Patterns** | No. | Tastes rotate (`tasteChance` 0.5): Nana isn't always boiled. The order of people on the tray changes each round, and so does who speaks first. At L3 the card's rows are shuffled separately from the tray. |
 | **Waiting** | No. | Nothing cooks or moves until the child acts. The help glow (after 7, 9, 11 or 13 s from the last action) shows only the next step's place (the bowl, the hob, the plates), never which vessel or plate. Nani's "take it out now" at L4 is said when the eggs go in, never at the green. |
 
-**Bot estimate** (a learned save, guessing, first-go rows only): L2 is the verb for each of 2 people (½ × ½) and each count (½ × ½), about 6% a round; the plate is support and not counted. L3 adds the plate mapping (three people, about ⅓ × ½ for the first two) and three verbs: under 1%. L4 is under 1%. **L1 is 50%**, which is fine because its word is still supported.
+**Bot estimate** (changed 1 Nov: the count no longer decides, because the bot piles eggs on until the plate ticks; a learned save, guessing, first-go rows only): L2 is the verb for each of 2 people (½ × ½), about 25% a round, above the 10% line: the lab bot measures it and a third vessel or an extra verb at L2 is the fix to try, not designed here; the plate is support and not counted. L3 adds the plate mapping (three people, about ⅓ × ½ for the first two) and three verbs: about 2%. L4 is under 2%. **L1 is 50%**, which is fine because its word is still supported. Old figure for the record (verb and count, ½ × ½ each): about 6% at L2. 
 
 **Counts never end by themselves:**
 - Extra eggs land: tap a third egg into the pan and it fries.
-- Counts are judged only at the tray commit (step 5), never as an egg lands, so a plate never tells the child its count by refusing an egg. Put three on Ali's plate when he said two, tap the tray, and his plate shakes, Nani says Ali's order again, and one egg hops back to the pan.
+- A plate's count ticks at the number and an extra egg doesn't land (Zafar, 1 Nov); only the verb and the owner are judged at the tray (step 5). Put a boiled egg on Ali's plate when he asked for fried, tap the tray, and his plate shakes, Nani says Ali's order again, and the egg hops back to the pan.
 - An extra fried egg left in the pan at the end goes to Nani ("I'll have it!", with a grin; to record). It costs only the first-go tick of that row. That's the funny miss, never a frown.
 
 **Wrong vessel:**
@@ -258,7 +258,7 @@ Not in this scope. Zafar's speaking plan (`speaking.md`, 29 Sept and 14 Oct) pil
 
 ### Stage B1: Baking, pour to the word
 
-**Why:** Zafar's rule is "no fill line; the amount word says when to stop". Amounts are the one thing no other game makes the move. The clear cup with no lines on it makes "how much" something you can see, and the word sets the target.
+**Why:** Zafar's rule is "no fill line; the amount word sets the target" (reversed after the chai play, 1 Nov: the cup ticks at the target, and an extra pour doesn't land). Amounts are the one thing no other game makes the move. The clear cup with no lines on it makes "how much" something you can see, and the word sets the target.
 
 **The scene** (front-on, camera E; the view is the chaat v2 or pantry front-on view if one fits, §6):
 - A marble worktop at eye level, in golden-evening light.
@@ -270,20 +270,19 @@ Not in this scope. Zafar's speaking plan (`speaking.md`, 29 Sept and 14 Oct) pil
 
 **Steps:**
 1. Nani names the bake ("naan for dinner", to record), and the card pops up big and flies to its row. The card lists each ingredient with its amount, in order (the sequence line, grey "next").
-2. **Hold** the container Nani calls. It slides over the cup, tilts and pours, and the level rises with the pour sound, its pitch rising. Nothing is said while it pours.
-3. **Let go** to stop. Nothing is judged and nothing is said. You can hold again to top up, as many times as you like.
-4. **Tap the cup.** It tips into the bowl ("put it in"). This is the commit for the amount, and the only moment an amount is judged.
+2. **Hold** the container Nani calls. It slides over the cup, tilts and pours, and the level rises with the pour sound, its pitch rising. At the asked amount the pour stops itself, the amount ticks (a soft chime, no words), and holding on pours nothing more. Nothing is said while it pours.
+3. **Let go early** and nothing ticks and nothing is said; hold again to top up, as many times as you like, until the amount ticks.
+4. **Tap the cup.** It tips into the bowl ("put it in"). This is a real move of its own, no longer where the amount is judged: the amount ticked already, so a cup that has not ticked does not glow for the tip.
    - **Right:** a soft thump and the heap rises in the bowl. On a single-amount row the row ticks and Nani says "enough! well done"; she says *bas* only here, never during a pour. On a counted row (L2, L4) the cup just lands; the row stays open until the knead (step 5).
    - **Too little:** the cup comes back. Nani says "more" (*wadhare* ✓; "a bit more" once it's recorded) and the child tops it up.
    - **Too much:** the extra tips back into its container and Nani says the amount again; the child redoes it on the spot. The reactions rotate, and stay small: a liquid sloshes ("splosh"), Simba's ears pop up, Nani laughs "oho".
    - **The joke (B7):** a right whole cup or a right heaped cup of flour lands with a big soft puff of flour from the bowl, and Simba sneezes, "ah-choo!". The funniest thing comes with the right word, never with a miss.
-5. **The knead, and the count's commit.** Once the last row has had its first tip, the bowl is live beside the jar, with no glow and no line, so nothing hints that the count is reached (the help glow, after its delay, shows the jar and the bowl together). The child's first tap on the bowl is the commit for every counted row (the cups of flour, the cake's eggs) and for the "no" row: they're judged now, never as a cup lands.
-   - **Right:** Nani says "knead" (*gund*) once, the dough squelches together and the counted rows tick. Tap on: 6 taps in all, and it squishes, folds and turns smooth. There's no counting aloud.
-   - **Too few:** the dough stays crumbly and dry. Nani says the row again ("two cups of flour"), the row reopens, and the child adds the rest; then the knead goes on.
-   - **Too many:** a puff, the last cup lifts back out of the bowl into its jar, and Nani says the row again.
+5. **The knead.** Once the last row has had its first tip, the bowl is live beside the jar, with no glow and no line (the help glow, after its delay, shows the jar and the bowl together). The knead is a real move of its own and stays; it no longer judges anything, because each counted row ticked at its number: the cups of flour, the cake's eggs and the "no" row (ticked if the jar was left alone).
+   - Nani says "knead" (*gund*) once, the dough squelches together (the counted rows ticked already, at their numbers). Tap on: 6 taps in all, and it squishes, folds and turns smooth. There's no counting aloud.
+   - If a counted row is short, the row simply hasn't ticked and the dough stays crumbly and dry: the child adds the rest. An extra cup can't land (Zafar, 1 Nov).
    - Then Nani carries the tin to the oven (B5).
 
-**Counted rows never close by themselves.** Nothing on screen counts: no number on the bowl, and Nani doesn't count along (at L4 only, while "two and a half" is a supported word, she counts each tip as it lands; once it's picked right 3 times she stops). After a counted row, Nani doesn't call the next step, since that would tell the child the count was reached; the child moves on by holding the next row's container (the card's grey "next" row shows which, while supported), and her call follows as they pick it. A counted row is always the last row before the knead, so the knead is its natural commit. At L4 the cake's eggs (crack, from the eggs station) are counted the same way, just before the flour.
+**Counted rows tick at the number (Zafar, 1 Nov, reversed after the chai play).** The second whole cup tipped in ticks the row "two cups", and a third doesn't land: the cup stays on the counter. Nothing on screen counts: no number on the bowl, and Nani doesn't count along (at L4 only, while "two and a half" is a supported word, she counts each tip as it lands; once it's picked right 3 times she stops). After a counted row, Nani doesn't call the next step; the child moves on by holding the next row's container (the card's grey "next" row shows which, while supported), and her call follows as they pick it. At L4 the cake's eggs (crack, from the eggs station) are counted the same way, just before the flour. By Zafar's choice (1 Nov), a count or an amount can be won by tapping or holding until it ticks; which container, which verb and which plate still decide wherever two words decide a move.
 
 **The amounts** (a band on the cup's fill, from 0 to the brim, set in `data/stations/baking.json`, widest at L1):
 
@@ -295,8 +294,8 @@ Not in this scope. Zafar's speaking plan (`speaking.md`, 29 Sept and 14 Oct) pil
 | a lot (to record) | – | 60-85% (55-85% at L3) | L3 on. A full cup is too much for it. Now and then in the same round as "a whole cup", so the two are contrasted |
 | a bit more (to record) | – | a top-up of 5-30% on a finished row | L3 on: Nani's "second look" |
 | half (*adh* ✓) | – | 40-60% | L4 |
-| two cups (*ba cup* ✓) | – | whole cups, each tip judged as whole, the count judged at the knead | L2 on |
-| two and a half (to record) | – | whole, whole, half in any order: each tip judged as whole or half as it lands; the total judged at the knead | L4 |
+| two cups (*ba cup* ✓) | – | whole cups; the row ticks when the second whole cup is tipped in, and a third doesn't land | L2 on |
+| two and a half (to record) | – | whole, whole, half in any order: the row ticks when the total reaches two and a half, and an extra tip doesn't land | L4 |
 
 **The five questions:**
 
@@ -313,13 +312,13 @@ Not in this scope. Zafar's speaking plan (`speaking.md`, 29 Sept and 14 Oct) pil
 | Level | Adds | Example (English; built by the engine) | Pours | Decoys |
 |---|---|---|---|---|
 | **L1** | The core: a little or a whole cup, each picked at random per row; one bake | Naan: "a little water; a whole cup of flour." | 2 | 1, clearly different (the oil bottle) |
-| **L2** | Numbers of cups (whole cups, judged at the knead, with nothing counting on screen), and a "no" row said last; the English dotted | Bread: "a little milk; a little salt; no sugar; two cups of flour." | 3 | 2 (the sugar jar is one; it's ticked at the knead if it stayed out) |
+| **L2** | Numbers of cups (whole cups, the row ticking at the number, with nothing counting on screen), and a "no" row said last; the English dotted | Bread: "a little milk; a little salt; no sugar; two cups of flour." | 3 | 2 (the sugar jar is one; it's ticked at the knead if it stayed out) |
 | **L3** | Other ways of saying it: "a lot", "heaped", and Nani's second look ("a bit more milk" or "a whole cup more"); the picture blurred; some bakes now want "a little sugar", so the sugar jar is a real choice | Naan: "a little yoghurt; a little ghee; a lot of flour." Then: "a bit more yoghurt." | 3, plus 1 top-up | 3 |
 | **L4** | Halves: half a cup, two and a half cups; the salt-or-sugar look-alike | The party cake: "half a cup of sugar; a little milk; two eggs" (crack, from the eggs station); "two and a half cups of flour." | 4 | 4, one the look-alike (salt beside sugar) |
 
 **Two and a half** (L4):
-- Each tip of the cup adds what's in it, judged as it lands: a whole cup or a half. A cup in neither band comes back, and Nani says the row again.
-- The order of the tips doesn't matter; the total is judged at the knead commit (step 5): too few and the row reopens, too many and the last cup lifts back out.
+- Each tip of the cup adds what's in it: a whole cup or a half. The row ticks when the total reaches two and a half, and an extra tip doesn't land.
+- The order of the tips doesn't matter; the row ticks at the total.
 - Nani's counting along ("one", "two", "and half") is support while the word is new, and stops once it's picked right 3 times.
 
 **The leak test:**
@@ -330,9 +329,9 @@ Not in this scope. Zafar's speaking plan (`speaking.md`, 29 Sept and 14 Oct) pil
 | **Matching** | Only while supported. | While an amount word is supported, the card row shows a small picture of the cup at that amount. Once the word is picked right 3 times in a row, it's speaker only. The cup itself never has a line, a mark or a ghost level, and the bowl shows no count. The container pictures follow the same support rule. |
 | **Eliminating** | No. | Amounts are drawn at random for each row (two "a little" rows in one round are allowed). The "no" row's container sits in the strip like any other, and from L3 the same jar is sometimes asked for. |
 | **Patterns** | No. | Flour isn't always "a lot": the amount follows the bake's size (a small naan for Ma, a big loaf for the family), drawn at random. The order of the single-amount rows changes, and so do the bakes. A counted row is always last before the knead, but that tells the order, not the number. |
-| **Waiting** | No. | Holding until it stops gives a full cup, which is right only for "a whole cup" (a full cup is too much for "a lot"). "A whole cup" is never more than one row in three at L2 and above. Nani never says "enough" while the level rises. Nothing commits until the cup is tapped, and no count closes a row by itself: the count is judged at the knead. |
+| **Waiting** | No. | Holding until it ticks pours only to the asked band (Zafar, 1 Nov): a full cup ticks only for "a whole cup" and a lot-sized pour only for "a lot", so the word sets the band; the container and the word still decide. Nothing is said while it pours. By Zafar's choice (1 Nov), a count or an amount can be won by tapping or holding until it ticks; which container, which verb and which plate still decide wherever two words decide a move. Nothing counts on screen; the bowl shows no number. |
 
-**Bot estimate** (the leak bot counts first-go rows only: a child who fishes still finishes every round, so a "win" means every row right first go): L1 is about 25% (two rows of two choices, both supported words). L2 is 3 rows × (container ⅓ × amount ½), and the counted row's number (⅓): under 1%. L3 and L4 are under 1%.
+**Bot estimate** (changed 1 Nov: the bot holds and taps until each amount and count ticks, so neither amount nor number is a factor any more; the container is what is left. The leak bot counts first-go rows only: a child who fishes still finishes every round, so a "win" means every row right first go): L1 is the container choice alone, about 25% (two rows of two choices, both supported words). L2 is 3 rows × container ⅓: about 4% (was under 1%). L3 and L4 are under 4%, container alone, still under the 10% line.
 
 **The delight moment:** the pour itself, with the rising pitch and the level climbing the clear glass, and the heap that mounds over a "heaped" cup. The joke is the flour puff and Simba's sneeze when a full or heaped cup of flour goes in right: the same every visit, so the child waits for it, and the way to get it is the right word.
 
@@ -411,14 +410,14 @@ The first kitchen day: the door, eggs, baking and the book, with no lunch statio
 5. **The hob: the one deliberate exception to "one live thing".** A choice needs two targets, so one lit box goes round the whole hob, both vessels live inside it, and nothing else is lit. The child taps the pot. Plop: the egg bobs, the burner whooshes alight, and the ring appears. (Had they tapped the pan, the egg would wobble on the rim, Nani would say Nana's order again, and the egg would hop back. No frown.)
 6. **While it cooks.** The light rests on the pot, and a tap makes the egg bob again. Nani is quiet. The ring holds in the green this first time, and Nani says one line: "take it out now" (*inke hane kadh* ✓). The child taps the egg and the slotted spoon lifts it.
 7. **One live thing: Nana's plate.** Tap, and the egg lands on his plate.
-8. **One live thing: the tray** (the commit, shown once). It glows; tap it, and it's carried to the table. The row ticks gold.
+8. **One live thing: the tray** (a real move, shown once). It glows; tap it, and it's carried to the table. The row ticks gold.
 9. **The serve.** Nana's big face appears over the plate. He taps the top of the egg in its egg cup, "tok tok", slices the top off, and says "aah". In the next moment Nani says "well done" (*shabash* ✓), and the word card plays: egg, boil, I want.
 10. **The end.** The shared two-page end screen: the time, the ticks, the bulb, then the words with English under them for the grown-ups. Back to the kitchen.
 
 **The baking station, L1** (the same day, golden evening), in short:
 1. The counter, eye level. Nani says "naan for dinner" (to record) and the card flies in: flour with a whole cup, water with a little.
 2. The light first shows what isn't on the card: the oil bottle. Then it shows the new action once: the flour jar glows, and the light pulses on it with a held-press ring until the child presses. The jar pours, and the cup fills.
-3. The child lets go. Nothing is said and nothing is judged; they can hold again as often as they like. Then the cup glows (the tip, shown once): tap it. It tips into the bowl, and only now is it judged.
+3. The child lets go early: nothing is said and nothing ticks; they can hold again as often as they like, and at the amount it ticks. Then the cup glows (the tip, shown once): tap it. It tips into the bowl; the amount was already ticked.
    - Full enough: a big soft puff of flour, Simba sneezes "ah-choo!", and in the next moment Nani says "enough! well done". The row ticks.
    - Short: the cup comes back, Nani says "more" (*wadhare* ✓), and the child tops up and taps again.
 4. "Now, a little water." The light is on the water bottle only. Hold, let go, tap the cup. If too much went in, it sloshes ("splosh"), the extra goes back, and Nani says "a little water" again.
@@ -459,7 +458,7 @@ The first kitchen day: the door, eggs, baking and the book, with no lunch statio
 
 **New to build:**
 1. **`js/cook/mechanics/crack.js`** (tiny): an egg flown to a vessel's rim knocks, splits and slides in (art frames), with a sound. It's used by eggs, the cake and chips mayai.
-2. **`js/cook/mechanics/measure.js`** (small): the clear cup with no line. It wraps the hold pour, takes several holds, then judges one commit (the tip) by the cup's fill against the amount word's band from data. It also handles the top-up and the tip back. For counted rows (whole cups, halves, the cake's eggs) it keeps a hidden tally and hands it to the knead commit: the first tap on the bowl judges every counted row and the "no" row, reopens a short row, or lifts the last cup back out. Nothing shows the tally.
+2. **`js/cook/mechanics/measure.js`** (small): the clear cup with no line. It wraps the hold pour, takes several holds, stops the pour at the amount word's band from data and ticks there (Zafar, 1 Nov), so no extra pour lands. It also handles the top-up and the tip back. For counted rows (whole cups, halves, the cake's eggs) it ticks the row at the number and refuses an extra tip. Nothing shows the tally.
 3. **`js/cook/stations/oven.js`** (small): a zone of N tawa rings behind a glass door. Every ring has both bands, light golden then deep golden, and each bake's word picks which one is right; the other is a defined, kind miss (a "now" bake late comes out toasty and eaten; a "bit longer" bake early goes back in). The ring stops at the end of the deep band.
 4. **`js/cook/stations/eggs.js`** and **`js/cook/stations/baking.js`**, combined stations on `Cook.Mech.combined`. Their data is in `data/stations/eggs.json` and `data/stations/baking.json` (levels, bands, ring speeds).
 5. **The front-on counter for baking** (camera E): first test whether the chaat v2 front-on view (`cook.md` §14, with its shelf band) or the straight-on `pantry` view is the counter, with the oven at the right. Add a new `counter` view only if neither fits.
@@ -467,7 +466,7 @@ The first kitchen day: the door, eggs, baking and the book, with no lunch statio
 7. **The meal-word line:** a `slot` field on kitchen stages in the days data, and the light state of the background picked from it.
 8. **Words:** every placeholder in §1 goes into `data/lang/seed/cook.json` with its English and no Kutchi, so it shows in the gap list for Mum.
 9. **The leak bot's rows:** the bot learns a save, guesses amounts by holding to random levels, guesses counts, and taps oven bakes at a random band or waits. It counts first-go rows only (a child who fishes still finishes every round, so a win means every row right first go). The station's round must be under 10% at L2 and above; the oven is also reported on its own (§3 B5).
-10. **The eggs' tray commit:** the tray glows once every plate has an egg and nothing is cooking; its tap judges every plate's verb and count (chai tray code, with a judge at the tray rather than at each cup).
+10. **The eggs' tray:** each plate's count ticks at its number (an extra egg doesn't land); the tray glows once every plate has its eggs and nothing is cooking, and its tap carries the tray and judges every plate's verb (chai tray code, with a judge at the tray rather than at each cup).
 
 **Lab entries:** `lab.html?mode=cook&game=eggs&level=1..4` and `&game=baking&level=1..4`. The phone layouts are checked on the lab page at the four sizes and 915x275 before the game is built (the fast lane, Zafar 27 Oct).
 
@@ -535,7 +534,7 @@ All of it goes in **one paste block for one ChatGPT run** that Zafar supervises 
 1. **The heard word decides: passed** (after the critique's fixes).
    - The leak test is written for each of E1, B1 and B5, and the bot counts first-go rows only.
    - The deciding words are named and counted (§1: eggs 2 of 6, baking 6 of 9 plus "two cups", the oven's 2 of 2).
-   - Ticks are first-go only, and every count and plate is judged at a commit the child makes (the tray, the knead), never by a row closing itself.
+   - Ticks are first-go only; counts and amounts tick at the number (Zafar, 1 Nov), and the plates' verb and owner are judged at a move the child makes (the tray), never by a row closing itself.
    - Each need can't be settled from the picture: identical eggs, identical plates, a cup with no line, no count on screen.
    - Who wants what rotates. From L2 each move needs two words (egg: which vessel and how many; baking: which container and how much). From L3 the eggs' owner is heard, not matched by face; at L2 the plate is support, and the bot doesn't count it.
    - The oven's time words decide from L1, and waiting is a miss for every "now" bake.
@@ -557,7 +556,7 @@ All of it goes in **one paste block for one ChatGPT run** that Zafar supervises 
    - A miss gets a small reaction and the word, and it's redone on the spot; an oven bake taken late is still eaten.
    - Misses are funny and varied: the rim wobble, the spinning egg, the slosh, Simba's ears, Nani's "oho", the toasty naan, Nani eating the spare egg.
    - The best joke (the puff and Simba's sneeze) comes with a right full or heaped cup of flour, never with a miss.
-   - Rows tick when their commit is judged. Nothing on screen counts for the child.
+   - Rows tick when the amount or number is reached, or (the plates' verb) when the tray is judged. Nothing on screen counts for the child.
    - It ends served ("tok tok", "aah", the naan torn), on the shared end screen.
 6. **Layout: passed on paper** (§7). The four sizes and 915x275 are checked on the lab page with the mock-up art before the game. Cards are on the left, people right and centre, Simba at the right, the egg tray 2×2, the cup at least 55% of the play height, and nothing goes over a face.
 7. **Art and camera: passed.**
@@ -584,7 +583,7 @@ All of it goes in **one paste block for one ChatGPT run** that Zafar supervises 
     - The meal word is a rule for every station, set in the days data, not in one game.
     - Every level is designed.
     - No question is left for the builder: every commit, miss and band is defined.
-    - Nothing is removed. Knead comes back only as a beat and the count's commit, and it's flagged (decision 12). The two rules this reverses (H17 the tap-measure pour; H12 the hob's knobs, for eggs) are flagged as decisions 1 and 17.
+    - Nothing is removed. Knead comes back only as a beat, and it's flagged (decision 12). The two rules this reverses (H17 the tap-measure pour; H12 the hob's knobs, for eggs) are flagged as decisions 1 and 17.
     - No English reaches the child: "tok tok" and "ah-choo" are sounds, not text.
 
 **Ten questions:**
@@ -606,15 +605,15 @@ Each line gives the choice, the reason and the answer I assumed. Decision 1 reve
 1. **The pour is press-and-hold, and letting go stops it.** *This reverses his rule for baking only:* `cook.md` H17 ("pour is a tap-measure") and `ux-principles.md` §12 ("Cook's press-and-hold pour didn't land in testing"). If yes, both docs get a line: "baking's lineless cup is the exception". *Reason:* his newer rule, "no fill line; the amount word says when to stop", needs a stop the child decides, and a tap-measure pours to a line. *Fallback if no:* the cup fills by short taps and the amount is judged on how many, which turns amounts back into counting. *Assumed:* yes, the hold, tried on the lab page first.
 2. **Two stations, one design.** Eggs and baking are two Cook stations in the kitchen day, plus the meal-word rule for all stations. *Reason:* the map's row 9 pairs them, and both use Cook's kit. *Assumed:* yes.
 3. **Eggs at breakfast, baking in the afternoon, ending at dinner. The first kitchen day has no lunch station;** lunch (chips mayai) joins on visit 2. *Reason:* Part 7 and the meal words; H50 (one recipe across a few stations), and a 3-year-old's sitting. *Assumed:* yes.
-4. **Tapping the cup tips it into the bowl and is the only moment an amount is judged.** Top-ups before it are free, and nothing is said on letting go. *Reason:* a kind undo before the step moves on (NN7), and it gives a verb ("put it in"). *Assumed:* yes.
-5. **The number of cups is judged at the knead** (the child's first tap on the bowl), never as a cup lands; nothing counts on screen; a counted row is always last before the knead; Nani doesn't call the next step after a counted row. *Reason:* counts must never end by themselves (the critique's first finding; Cook's samosa keeps its count commit). *Assumed:* yes.
-6. **The eggs' plates are judged when the child taps the tray** (carried to the table), never as an egg lands; eggs can move between plates until then. *Reason:* the same rule for counts; a plate that refuses an egg tells the count. *Assumed:* yes.
+4. **The amount ticks when it is reached (Zafar, 1 Nov, reversed after the chai play); tapping the cup then tips it into the bowl, a real move of its own.** Top-ups before it are free, and nothing is said on letting go. *Reason:* one rule for every game; a kind undo before the step moves on (NN7), and it gives a verb ("put it in"). *Assumed:* yes.
+5. **The number of cups ticks the moment it is reached, and an extra cup doesn't land** (Zafar, 1 Nov, reversed after the chai play); nothing counts on screen; Nani doesn't call the next step after a counted row. The knead stays as a real move. *Reason:* one rule for every game; he accepts that a child can tap until it ticks. *Assumed:* yes.
+6. **A plate's egg count ticks at its number and an extra egg doesn't land; the tray carries the plates and judges the verb and owner,** and eggs can move between plates until then (Zafar, 1 Nov). *Reason:* one rule for every game. *Assumed:* yes.
 7. **The owner decides the plate only from L3,** where Nani relays every order on her one card with no faces. At L2 each person's card part has their face, and the plate is support. *Reason:* faces on the card and on the tray let a child match without the name. *Assumed:* yes.
 8. **The measure is a plain clear cup** (*cup* ✓), not the bowl. *Reason:* the cup makes "half" and "a whole cup" visible, and those words are recorded with "cup" (*aako cup*, *adh cup*, *bharelo cup*, *ba cup*). *Assumed:* yes.
 9. **Amounts are baking's core from L1** (a little or a whole cup). Halves stay at L4 as the rulebook says. *Reason:* the station is about how much. *Assumed:* yes.
-10. **Nani says *bas* (enough) only after a right tip,** never during a pour, and never gives a time word at the oven's band. *Reason:* a voice that says when to stop is a waiting leak. *Assumed:* yes.
-11. **Too little gets "more"; too much gets a small rotating reaction** (a slosh, Simba's ears, Nani's "oho"), and the extra goes back. Nothing is ruined, and the bake always comes out. *Reason:* consequences, not verdicts (research §14), and NN7. *Assumed:* yes.
-12. **Knead comes back as a 6-tap beat,** not a stage, and its first tap is the count's commit. *Reason:* the map's row names "pour, add, knead", the hands need a squish between listening, and the count needs a commit. It was cut from the stations before. *Assumed:* yes.
+10. **Nani says *bas* (enough) only after a right tip,** never during a pour (the tick is a soft chime, not a word), and never gives a time word at the oven's band. *Reason:* a voice that says when to stop is a waiting leak. *Assumed:* yes.
+11. **Too little just isn't ticked yet, and the child tops it up; too much can't happen now (the pour stops at the amount), so the small rotating reactions (a slosh, Simba's ears, Nani's "oho") belong to a wrong container and a wrong plate.** Nothing is ruined, and the bake always comes out. *Reason:* consequences, not verdicts (research §14), and NN7. *Assumed:* yes.
+12. **Knead comes back as a 6-tap beat,** not a stage, and a real move of its own (it no longer commits the count: counts tick at the number, 1 Nov). *Reason:* the map's row names "pour, add, knead", and the hands need a squish between listening. It was cut from the stations before. *Assumed:* yes.
 13. **No speaking in this scope.** The eggs' "boiled or fried?" turn waits for the chai pilot and comes back as a one-word answer ("boiled", "fried", "no, thank you"). *Reason:* his speaking plan (29 Sept, 14 Oct) builds nothing else before the pilot, and the lines aren't recorded. *Assumed:* yes.
 14. **Simba sneezes when a right full or heaped cup of flour lands** (the joke, every visit), not on a miss. *Reason:* a recurring joke the child waits for, which should come with the right word, not pull them off it. *Assumed:* yes.
 15. **The oven's time words decide from L1,** drawn at random per bake, with both misses defined: a "now" bake taken late comes out toasty and is still eaten (tick lost, word said once); a "bit longer" bake taken early goes back in. The light-golden band passes, so waiting is a miss. *Reason:* both lines are ✓ with no deciding home, and an oven where waiting wins teaches nothing. *Assumed:* yes.
@@ -787,7 +786,7 @@ https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/sources/cook/nani-s
 The critique (`cook-baking-eggs-critique.md`, 1 Nov) had 19 findings: 6 MUST, 13 SHOULD. All six MUSTs are applied, and all thirteen SHOULDs too; none clashed with Zafar's recorded word, and where one touched it (the free-play clock, the hold pour, the knobs) his word is kept or put to him.
 
 **MUST**
-1. **Counted cups closed by themselves.** The number of cups (and the cake's eggs) is now judged at the knead: the child's first tap on the bowl is the commit. Nothing counts on screen (the number on the bowl is gone), Nani doesn't count along (except as support for "two and a half" at L4) and doesn't call the next step after a counted row, which is always last before the knead. Too few reopens the row; too many lifts the last cup back out. "Two and a half" no longer closes at its total, and the "half first is a miss" rule is gone (the total is judged, in any order). The leak bot counts first-go rows only (§3 B1, §6 item 9). The same flaw was in the eggs' "when every plate has what was asked, the step closes", so the eggs now commit at the tray's tap, and a plate never refuses an egg as it lands (§3 E1 step 5, decision 6).
+1. **Counted cups closed by themselves.** *(Reversed later on 1 Nov, after the chai play: counts and amounts now tick at the number, an extra tap doesn't land, and the knead and the tray stay as real moves; the text below is the first fix.)* The number of cups (and the cake's eggs) is now judged at the knead: the child's first tap on the bowl is the commit. Nothing counts on screen (the number on the bowl is gone), Nani doesn't count along (except as support for "two and a half" at L4) and doesn't call the next step after a counted row, which is always last before the knead. Too few reopens the row; too many lifts the last cup back out. "Two and a half" no longer closes at its total, and the "half first is a miss" rule is gone (the total is judged, in any order). The leak bot counts first-go rows only (§3 B1, §6 item 9). The same flaw was in the eggs' "when every plate has what was asked, the step closes", so the eggs now commit at the tray's tap, and a plate never refuses an egg as it lands (§3 E1 step 5, decision 6).
 2. **The owner never decided the plate.** At L2 the plate is now called support (faces on the card and tray), and the bot is recounted at about 6%. From L3 Nani relays every order on her one card with no face per row, shuffled separately from the tray, so the badge is found only by the heard name. Q2 and Q5 now say this; "for" moved to L3 in the word counts (§3 E1, decision 7). The oven's L3 uses the same card.
 3. **The oven's "now" was never judged.** Both misses are defined, kindly: a "now" bake taken late comes out toasty and is still eaten (its owner's "oho", the tick lost, the word said once); a "bit longer" bake taken early goes back in. The ring passes the light-golden band and fills on, so waiting is a miss for every "now" bake. Nani gives each bake its word as the door shuts, never at the band. The oven's bot is reported on its own (§3 B5, decision 15).
 4. **The prompts drew a different family and cat, and invited a hand.** Every prompt now says "exactly as on the attached sheets" (customers sheet, Nani sheet), with only pose and expression described; Simba is the big black cat with green eyes; every prompt says "no hands or arms" on the props; each prompt is one moment. Prompt 2 is now only the pour (the bowl empty, Simba watching from the right), and the sneeze has its own small optional prompt 5. Prompt 1's egg cups became plain plates on a 2×2 tray; prompt 4's egg is peeled (open question 3).
@@ -813,5 +812,6 @@ The critique (`cook-baking-eggs-critique.md`, 1 Nov) had 19 findings: 6 MUST, 13
 - **The boiled egg goes in an egg cup:** the serve ("tok tok" on its top, the top sliced off), the delight, the first round, the art list, decision 29 and prompt 4 (as on the prompt sheet). Open question 3 gone.
 - **His Kutchi, "Zafar, to confirm":** *indo* for egg (for now) and *tapelo* for the pot; open questions 1 and 2 gone (Mum confirms).
 - **Level up only on right-first-time rounds** (new decision 31). **Clothes:** the prompt sheet's line is added before the prompts.
+- Counts tick at the number (his reversal after the chai play).
 
-- **One count close** (also 1 Nov): the tray's tap and the knead's first tap stay the commits; they are the natural next things in his rule, so nothing else changes.
+- **One count rule** (also 1 Nov, reversed after the chai play): counts and amounts tick at the number or amount and an extra tap or pour doesn't land. The tray's tap and the knead stay as real moves of their own, not as commits of the counts;

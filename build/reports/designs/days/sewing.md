@@ -99,4 +99,5 @@ A dupatta for Ma and a cap for Nana; Ali's shirt with a hole (the offcut patch);
 2. Bring the stall's colour handover into visit 1's third play, so the day passes rule 4? Recommended: yes, once green and blue are recorded.
 2. Does Big Ma walk to the stall herself?
 
-**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the recommendations are fine (make, then mend; Going out on visit 1); one count close and one pay (count out and hand over, stacks for small prices); only right-first-time rounds level up.
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the recommendations are fine (make, then mend; Going out on visit 1); one count rule (counts tick at the number) and one pay (count out and hand over, stacks for small prices); only right-first-time rounds level up.
+- Counts tick at the number (his reversal after the chai play).

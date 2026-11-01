@@ -92,4 +92,5 @@ Visit 2, "dinner time": the bird and the tortoise; the food shelf. Visit 3, "a p
 **Open (Zafar):**
 1. The dog in the tub and hugged (assumed), or on the counter only?
 
-**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the adoption centre is **the pet hotel** (families come back for their pets), so the roster and the name questions are gone; the count closes on the animal or after 1.25 s of stillness; only right-first-time rounds level up; Hannah Mami is a placeholder and voices wait for shipping.
+**Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the adoption centre is **the pet hotel** (families come back for their pets), so the roster and the name questions are gone; the feed count ticks at the number and an extra tap doesn't land (first the animal or 1.25 s of stillness, reversed after the chai play); only right-first-time rounds level up; Hannah Mami is a placeholder and voices wait for shipping.
+- Counts tick at the number (his reversal after the chai play).

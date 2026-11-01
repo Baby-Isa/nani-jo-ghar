@@ -36,7 +36,7 @@ The feeling: cosy and useful. The end shows the whole family at dinner with the 
 | 1 | Door | door (built) | | O4 | "breakfast" (to record) | L | the morning light |
 | 2 | Eggs at breakfast | Cook kit + fry ring, plus a tiny **crack** (designed) | 1 | O2, O3, O4, O5 | boil or fry, then whose plate; every plate could be right | L | the crack, the sizzle |
 | 3 | Lunch station (visit 2 only) | a built Cook station (chips mayai first) | 2 | O1, O3 | the station's own order | L | |
-| 4 | Baking | pour (lines removed), knead, **measure** and **oven** (designed) | 1 | O1, O2, O3 | the amount word says when to stop the pour; the time word says when to open the oven | L | pouring by ear; the bake rising |
+| 4 | Baking | pour (lines removed), knead, **measure** and **oven** (designed) | 1 | O1, O2, O3 | the amount word sets the target the pour ticks at (half at half, full at full); the time word says when to open the oven | L | pouring by ear; the bake rising |
 | 5 | Evening book | book (built) | | all | "what did we make for dinner?" | L | the bake's photo |
 
 No new engine: crack, measure and oven are small pieces on Cook's kit. Eggs (tap, tap, a ring) and baking (hold and stop) never share a main action.
@@ -97,3 +97,4 @@ Visit 2 adds the lunch station between them (chips mayai first). Then the "boile
 2. Peeled egg on the plate, or an egg cup (`cook-baking-eggs.md` open question 3)?
 
 **Zafar's answers (1 Nov)** (`../zafar-answers-2026-11-01.md`): the boiled egg goes in an egg cup; *indo* and *tapelo* are his words, to confirm; only right-first-time rounds level up.
+- Counts tick at the number (his reversal after the chai play).
