@@ -57,8 +57,22 @@ export function check78(r, tl, v, add) {
   // CHAI-60 (SH-181, Zafar, 1 Nov: "Onboarding should only be actions that occur for the first time"): only each control's first
   // call on the page comes with its light; a second pot's "Chulo bar!" or a later "Slow kar!" is the call alone (its light only as
   // the stuck hint after the level's wait), so only the first call of each is judged
+  // (a control comes up as its words show in Nani's box, said or not: a player who lit the cooker before the first "Chulo bar!" was said
+  // has met it, so a later pot's call is not its first time; the openings are the moments its words newly show on the page)
+  const opens = {};
+  const was = {};
+  for (const e of ev(tl, "texts")) for (const c of calls) {
+    const on = (" " + norm((e.list || []).map((x) => x.t).join(" ")) + " ").includes(` ${c} `);
+    if (on && !was[c]) (opens[c] = opens[c] || []).push(e.t);
+    was[c] = on;
+  }
   const firsts = new Set();
-  const lines = v.lines.filter((l) => l.role === "call" && calls.includes(norm(l.text)) && !firsts.has(norm(l.text)) && firsts.add(norm(l.text)));
+  const lines = v.lines.filter((l) => {
+    const c = norm(l.text);
+    if (l.role !== "call" || !calls.includes(c) || firsts.has(c)) return false;
+    firsts.add(c);
+    return !(opens[c] && opens[c].length > 1 && l.t0 >= opens[c][1]);
+  });
   for (const l of lines) {
     // a light up at the call (opened before it, not yet out) counts as together; else an opening within 200 ms either side
     let open = null;
