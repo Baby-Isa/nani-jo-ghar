@@ -1,0 +1,32 @@
+{
+  "_about": "The home prototypes (proto-home, 2 Nov 2026; hide and seek, pick it up and put it back, the clean-up: build/reports/designs/hide-and-seek.md, pick-it-up-put-it-back.md, clean-up-day.md): the words and lines the three games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry (pos from `pos` where given, else a noun) and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-wardrobe": { "english": "wardrobe", "src": "hide-and-seek.md §1: ask Mum whether it is also kabaat (decision 20)" },
+    "ph-bed": { "english": "bed" },
+    "ph-drawer": { "english": "drawer" },
+    "ph-lamp": { "english": "lamp", "src": "Zafar 1 Nov: the light is batti (to confirm with Mum); the game's light" },
+    "ph-tap": { "english": "tap" },
+    "ph-soap": { "english": "soap" },
+    "ph-soap-dish": { "english": "soap dish" },
+    "ph-broom": { "english": "broom", "src": "Zafar 1 Nov: the broom is fugyu (to confirm with Mum)" },
+    "ph-ball": { "english": "ball" },
+    "ph-bag": { "english": "bag" },
+    "ph-bathroom": { "english": "bathroom", "src": "Zafar 1 Nov: the family says the English word, bathroom" },
+    "ph-bedroom": { "english": "bedroom" },
+    "ph-sweep": { "english": "sweep", "pos": "V", "src": "Zafar 1 Nov: sweep is fugya (to confirm with Mum)" },
+    "ph-turn-off": { "english": "turn off", "pos": "V", "src": "Zafar 1 Nov: the family says close (bund) for a light; for a tap, ask Mum" },
+    "ph-turn-on": { "english": "turn on", "pos": "V" }
+  },
+  "lines": {
+    "hs-head": { "e": "Simba and Zazu are hiding!" },
+    "hs-count": { "e": "Close your eyes and count with me!" },
+    "hs-ready": { "e": "Ready or not, here I come!" },
+    "hs-nobody": { "e": "Nobody here!" },
+    "hs-ran": { "e": "He ran off!" },
+    "hs-tidy": { "e": "Nana's coming: let's tidy up!" },
+    "pk-head": { "e": "Nana can't find his things." },
+    "pk-put": { "e": "Simba knocked these down. Put them back." },
+    "cl-head": { "e": "Let's tidy the bathroom." },
+    "cl-dark": { "e": "It's so cosy now." }
+  }
+}

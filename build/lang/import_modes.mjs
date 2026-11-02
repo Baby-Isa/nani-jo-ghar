@@ -6,12 +6,13 @@ import { readJSON, RANK } from "./lib.mjs";
 import { importLine, recordWord } from "./import_cook.mjs";
 
 const SOURCE = "parked modes";
-// (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm"];
+// (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov. home-proto: the home prototypes', data/home-proto.json; proto-home, 2 Nov)
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "home-proto"];
 
 const isWordObj = (o) => o && typeof o === "object" && !Array.isArray(o) && typeof o.english === "string" && !("hex" in o && false);
 
 function posOf(id, o, mode) {
+  if (o.pos) return o.pos; // (a placeholder that says its part of speech: home-proto's verbs)
   if (/^nm-/.test(id) || o.name) return "PN";
   if (o.kind === "colour" || /^(ph-)?(red|green|white|blue|yellow|dark|light|old|young|big|small)$/.test(id.replace(/^ph-/, ""))) return "A";
   if (/^ph-rel-/.test(id)) return "Post";

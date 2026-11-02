@@ -1,0 +1,121 @@
+/* The home prototypes (proto-home, 2 Nov 2026; js/home-proto/): the farm prototypes' scene rules (css/farm.css) under hp-, Nani's
+   house as a doll's house, and each game's placeholder things. The side panel is the kit's (Nani's box, css/shared/order-card.css)
+   and the shared word tiles (css/shared/word-tiles.css), never restyled here (non-negotiable 6). Colours only through tokens
+   (css/shared/tokens.css, --njg-proto-*); every placeholder shape is flat, to be swapped for the art run's pictures. LAYOUT BY
+   HEIGHT: a thing is placed by shares of its parent (a room or the play area): --x its middle, --y its foot, --h its height. */
+
+.hp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.hp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.hp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.hp-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.hp-scene { position: absolute; inset: 0; overflow: hidden; }
+.hp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.hp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.hp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a thing ---------- */
+.hp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; transition: left .6s ease-in-out, bottom .6s ease-in-out; }
+.hp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.hp-thing.flip > img { transform: scaleX(-1); }
+.hp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.hp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.hp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.hp-thing.sel { animation: var(--njg-glow-anim); }
+.hp-thing.hp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.hp-thing.hp-shake { animation: hpWobble .5s ease-in-out 1; }
+@keyframes hpWobble { 20%, 60% { rotate: -5deg; } 40%, 80% { rotate: 5deg; } }
+.hp-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .hp-thing.hp-shake { animation: none; } }
+
+/* ---------- the doll's house (Zafar, 1 Nov: a cross-section, two storeys) ---------- */
+.hp-house { position: absolute; inset: 0; transform-origin: 0 0; transition: transform .7s ease-in-out; }
+.hp-sky { position: absolute; inset: 0; background: var(--njg-proto-sky); }
+.hp-roof { position: absolute; left: 1%; right: 1%; top: 1%; height: 12.5%; background: var(--njg-proto-roof); clip-path: polygon(8% 100%, 50% 0, 92% 100%); }
+.hp-shell { position: absolute; left: 3%; right: 3%; top: 12.5%; bottom: 4.5%; background: var(--njg-proto-shell); }
+.hp-lawn { position: absolute; left: 0; right: 0; bottom: 0; height: 5.5%; background: var(--njg-proto-lawn); }
+.hp-room { position: absolute; box-sizing: border-box; border: 0.25em solid var(--njg-proto-shell); overflow: hidden; cursor: pointer; }
+.hp-in .hp-room.hp-here { cursor: default; }
+.hp-wall { position: absolute; inset: 0 0 14% 0; background: var(--njg-proto-wall-bed); }
+.hp-floor { position: absolute; inset: 86% 0 0 0; background: var(--njg-proto-floor); }
+.hp-room-bathroom .hp-wall { background: var(--njg-proto-wall-bath); }
+.hp-room-bathroom .hp-floor { background: var(--njg-proto-floor-tile); }
+.hp-room-ali .hp-wall { background: var(--njg-proto-wall-ali); }
+.hp-room-kitchen .hp-wall { background: var(--njg-proto-wall-kitchen); }
+.hp-room-sitting .hp-wall { background: var(--njg-proto-wall-sitting); }
+.hp-room.hp-lit { box-shadow: inset 0 0 0 0.3em var(--njg-gold-hi), inset 0 0 2em var(--njg-gold-hi); }
+.hp-window { position: absolute; left: 86%; width: 18%; top: 14%; height: 40%; translate: -50% 0; background: var(--njg-proto-glass); border: 0.35em solid var(--njg-proto-paint); box-sizing: border-box; }
+.hp-rug { position: absolute; left: 44%; width: 30%; bottom: 3%; height: 7%; background: var(--njg-proto-rug); border-radius: 50%; opacity: .8; }
+
+/* ---------- hide and seek: the places (every one closed and alike; no tail peeks out) ---------- */
+.hp-place { background: var(--njg-proto-paint); border: 0.18em solid var(--njg-proto-paint-edge); border-radius: 0.3em; }
+.hp-door, .hp-inside { position: absolute; pointer-events: none; }
+.hp-inside { inset: 6%; background: var(--njg-proto-dark); opacity: 0; transition: opacity .2s; border-radius: 0.2em; }
+.hp-door { inset: 4%; background: var(--njg-proto-paint); border: 0.12em solid var(--njg-proto-paint-edge); border-radius: 0.2em; transform-origin: 0 50%; transition: transform .35s ease-out; box-sizing: border-box; }
+.hp-door2 { display: none; }
+.hp-wardrobe .hp-door { right: 50%; }
+.hp-wardrobe .hp-door2 { display: block; left: 50%; right: 4%; transform-origin: 100% 50%; }
+.hp-place.open .hp-inside { opacity: 1; }
+.hp-place.open .hp-door { transform: scaleX(.12); }
+/* the drawer: the chest's bottom drawer slides out */
+.hp-drawer .hp-door { inset: auto 4% 4% 4%; height: 40%; transform-origin: 50% 100%; }
+.hp-drawer .hp-inside { inset: auto 6% 6% 6%; height: 36%; }
+.hp-drawer::before { content: ""; position: absolute; left: 6%; right: 6%; top: 48%; border-top: 0.12em solid var(--njg-proto-paint-edge); }
+.hp-drawer.open .hp-door { transform: translateY(35%) scaleY(.25); }
+/* the box and the basket: the lid lifts */
+.hp-box .hp-door, .hp-basket .hp-door { transform-origin: 50% 0; }
+.hp-box.open .hp-door, .hp-basket.open .hp-door { transform: scaleY(.15); }
+.hp-basket { border-radius: 0.2em 0.2em 1em 1em; background: var(--njg-proto-wood); }
+.hp-basket .hp-door { background: var(--njg-proto-wood); border-color: var(--njg-proto-wood-dark); border-radius: 0.2em 0.2em 1em 1em; }
+/* under the bed: the cover's valance lifts */
+.hp-bed { background: none; border: 0; }
+.hp-bed::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 44%; background: var(--njg-proto-cover); border-radius: 0.6em 0.6em 0 0; }
+.hp-bed .hp-inside { inset: 44% 4% 0 4%; }
+.hp-bed .hp-door { inset: 40% 0 0 0; background: var(--njg-proto-cover); border: 0; border-radius: 0 0 0.3em 0.3em; transform-origin: 50% 0; }
+.hp-bed.open .hp-door { transform: scaleY(.12); }
+/* behind the curtain: it swishes aside */
+.hp-curtain { background: var(--njg-proto-glass); border: 0; }
+.hp-curtain .hp-door { inset: 0; background: var(--njg-proto-curtain); border: 0; border-radius: 0; transform-origin: 100% 50%; }
+.hp-curtain.open .hp-door { transform: scaleX(.22); }
+/* a cat inside: two green eyes blink before the leap */
+.hp-place.eyes .hp-inside::before, .hp-place.eyes .hp-inside::after { content: ""; position: absolute; top: 42%; width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--njg-proto-eye); }
+.hp-place.eyes .hp-inside::before { left: 34%; }
+.hp-place.eyes .hp-inside::after { right: 34%; }
+.hp-place.hp-bolt { animation: hpWobble .35s ease-in-out 2; }
+/* an empty spot's joke (placeholder shapes) */
+.hp-joke { position: absolute; left: 50%; bottom: 30%; width: 1.4em; height: 1.4em; translate: -50% 0; pointer-events: none; animation: hpJoke 1.2s ease-out 1 forwards; border-radius: 0.3em; background: var(--njg-cream); border: 0.1em solid var(--njg-proto-paint-edge); }
+.hp-joke-pigeon { border-radius: 50% 50% 40% 40%; background: var(--njg-grey); }
+.hp-joke-towels { width: 2.4em; height: 1em; background: var(--njg-sage); }
+.hp-joke-car { width: 2em; height: 1em; background: var(--njg-rust); border-radius: 0.5em 0.5em 0.2em 0.2em; }
+.hp-joke-wool { border-radius: 50%; background: var(--njg-madder); }
+@keyframes hpJoke { 0% { transform: translateY(0) scale(.4); opacity: 0; } 30% { transform: translateY(-120%) scale(1); opacity: 1; } 75% { transform: translateY(-60%) rotate(20deg); opacity: 1; } 100% { transform: translateY(-80%) rotate(30deg); opacity: 0; } }
+
+/* ---------- the cats (placeholder: one cut, Zazu greyed until the art run) ---------- */
+.hp-cat { pointer-events: none; }
+.hp-cat.zazu > img, .hp-tcat.zazu { filter: invert(.8) sepia(.5); }
+.hp-cat.hp-hidden { opacity: 0; }
+.hp-cat.hp-leap { animation: hpLeap .8s ease-out 1; }
+@keyframes hpLeap { 0% { transform: translate(-50%, 0) scale(.6); } 40% { transform: translate(-50%, -45%) scale(1.05); } 100% { transform: translate(-50%, 0) scale(1); } }
+.hp-cat.hp-curl > img { animation: hpPurr 1.2s ease-in-out infinite; }
+@keyframes hpPurr { 50% { transform: scale(1.04, .96); } }
+
+/* ---------- the count: Nani's hands over the play area ---------- */
+.hp-veil { position: absolute; inset: 0; z-index: 45; display: grid; place-items: center; align-content: center; gap: 4%; background: var(--njg-proto-dark); transition: opacity .45s; }
+.hp-veil.gone { opacity: 0; pointer-events: none; }
+.hp-hands { all: unset; cursor: pointer; width: min(46vh, 60%); aspect-ratio: 1; border-radius: 50%; background: var(--njg-cream-2); display: grid; place-items: center; box-shadow: var(--njg-shadow); }
+.hp-hands img { width: 86%; height: 86%; object-fit: contain; pointer-events: none; }
+.hp-pips { display: flex; gap: 0.8em; }
+.hp-pips i { width: 1.4em; height: 1.4em; border-radius: 50%; border: 0.2em solid var(--njg-cream); box-sizing: border-box; }
+.hp-pips i.on { background: var(--njg-gold-hi); border-color: var(--njg-gold-hi); }
+
+/* ---------- the word tiles' little pictures (the same placeholder shapes as the room) ---------- */
+.hp-tpic { display: block; position: relative; height: 80%; width: auto; max-width: 92%; aspect-ratio: .8; background: var(--njg-proto-paint); border: 0.12em solid var(--njg-proto-paint-edge); border-radius: 0.2em; box-sizing: border-box; }
+.hp-tpic-wardrobe { aspect-ratio: .55; background: linear-gradient(90deg, transparent 48%, var(--njg-proto-paint-edge) 48% 52%, transparent 52%), var(--njg-proto-paint); }
+.hp-tpic-cupboard { aspect-ratio: 1.1; }
+.hp-tpic-drawer { aspect-ratio: 1.2; background: linear-gradient(transparent 46%, var(--njg-proto-paint-edge) 46% 54%, transparent 54%), var(--njg-proto-paint); }
+.hp-tpic-box, .hp-tpic-plainbox { aspect-ratio: 1.3; height: 50%; }
+.hp-tpic-plainbox { background: var(--njg-grey); }
+.hp-tpic-small { height: 30%; }
+.hp-tpic-basket { aspect-ratio: 1; height: 55%; background: var(--njg-proto-wood); border-color: var(--njg-proto-wood-dark); border-radius: 0.2em 0.2em 0.8em 0.8em; }
+.hp-tpic-bed { aspect-ratio: 2; height: 45%; background: var(--njg-proto-cover); border: 0; border-radius: 0.5em 0.5em 0.1em 0.1em; }
+.hp-tpic-curtain { aspect-ratio: .5; background: var(--njg-proto-curtain); border: 0; border-radius: 0; }
+.hp-tcat { min-height: 2em; }
