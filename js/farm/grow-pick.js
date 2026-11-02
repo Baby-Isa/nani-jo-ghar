@@ -17,6 +17,11 @@
  *   L3  four on offer, plant three; two picks, with colours (red or green tomatoes and chillies)
  *   L4  plant all four; two picks, with sizes (big or small mangoes) and colours
  * Every fruit is Mum's word (limu, tameto, mirchi, ambo); "plant", "water" and the tomatoes' plural are still to record.
+ *
+ * v2 (Zafar, 2 Nov, FARM-01: the order card's fruit picture, tinted and sized, gave the answer away): no order card; she says
+ * ONE instruction at a time, big in her box, with the word tiles under her (js/shared/word-tiles.js): every fruit on offer,
+ * and from L3 the colours (neutral swatches), at L4 the small-and-big pair (plain mangoes). A sapling or a fruit she isn't
+ * asking about now: it hops back or wobbles and she says her instruction again.
  */
 import { THINGS, SCENERY } from "./art.js";
 
@@ -65,6 +70,7 @@ export default async function growPick(F) {
   const plantRows = toPlant.map((kind) =>
     F.row({
       key: `plant-${kind}`,
+      tiles: [kind],
       line: { fn: "PlantTheX", x: fruitItem(kind) },
       word: fruitItem(kind),
       need: 1,
@@ -73,6 +79,22 @@ export default async function growPick(F) {
       data: { kind },
     })
   );
+  /* ----- the word tiles: every fruit on offer; the colours from L3, the sizes at L4 (neutral pictures) ----- */
+  const swatch = (c) => (box) => box.insertAdjacentHTML("beforeend", `<span class="farm-tile-swatch ${c}"></span>`);
+  const plainFruit = (kind, scale) => (box) => {
+    const i = document.createElement("img");
+    i.src = stamp(THINGS[kind].img);
+    i.alt = "";
+    i.className = "farm-tile-hen farm-tile-plain";
+    i.style.setProperty("--s", scale);
+    box.appendChild(i);
+  };
+  const tiles = offered.map((kind) => ({ key: kind, id: kind, word: fruitItem(kind), lex: THINGS[kind].lex, picture: THINGS[kind].img }));
+  const colourOf = offered.includes("tomato") ? "tomato" : offered.includes("chilli") ? "chilli" : null;
+  if (lv >= 3 && colourOf) tiles.push(...["red", "green"].map((c) => ({ key: c, word: fruitItem(colourOf, undefined, [`a.${c}`]), lex: `a.${c}`, picture: swatch(c) })));
+  if (lv >= 4 && offered.includes("mango")) tiles.unshift({ pair: ["small", "big"].map((sz) => ({ key: sz, word: fruitItem("mango", undefined, [`a.${sz}`]), lex: `a.${sz}`, picture: plainFruit("mango", sz === "small" ? "58%" : "100%") })) });
+  F.sentence([{ label: { en: "Plants" }, tiles }]);
+
   const phase = { now: "plant" };
   let held = null;
   const hold = (pot) => {
@@ -87,8 +109,6 @@ export default async function growPick(F) {
       F.acted();
       if (phase.now !== "plant" || pot.used) return;
       hold(pot);
-      const r = plantRows.find((x) => x.data.kind === pot.kind);
-      if (r) F.focus(r);
     })
   );
   plots.forEach((plot) =>
@@ -98,10 +118,11 @@ export default async function growPick(F) {
       if (phase.now !== "plant" || plot.kind) return F.jiggle(plot.el);
       if (!held) return pots.forEach((p) => !p.used && F.jiggle(p.el));
       const pot = held;
-      const r = plantRows.find((x) => x.data.kind === pot.kind && !x.done);
+      const cur = F.current();
+      const r = cur && plantRows.includes(cur) && cur.data.kind === pot.kind ? cur : null;
       if (!r) {
-        // a sapling she didn't name: it hops back to its pot, her ask again
-        F.oops(plantRows.find((x) => !x.done) || null, pot.el);
+        // a sapling she isn't naming now: it hops back to its pot, her instruction again
+        F.oops(cur, pot.el);
         hold(null);
         return;
       }
@@ -180,6 +201,7 @@ export default async function growPick(F) {
   const pickRows = picks.map((p) =>
     F.row({
       key: `pick-${p.kind}`,
+      tiles: p.mods.concat([p.kind]),
       line: { fn: "Command", verb: "v.take", obj: fruitItem(p.kind, p.n, p.mods.map((m) => `a.${m}`)) },
       word: fruitItem(p.kind, p.n, p.mods.map((m) => `a.${m}`)),
       need: p.n,
@@ -220,13 +242,13 @@ export default async function growPick(F) {
   async function pick(f) {
     F.acted();
     if (phase.now !== "pick" || f.picked) return;
-    const r = pickRows.find((x) => fits(f, x.data));
+    const cur = F.current();
+    const r = cur && pickRows.includes(cur) && fits(f, cur.data) ? cur : null;
     if (!r) {
-      // a fruit she didn't ask for: it wobbles on the branch, her ask again
-      F.oops(pickRows.find((x) => !x.done) || null, f.el);
+      // a fruit she isn't asking for now: it wobbles on the branch, her instruction again
+      F.oops(cur, f.el);
       return;
     }
-    F.focus(r);
     if (F.full(r)) {
       F.jiggle(f.el, "farm-shake"); // that's enough: it stays on the plant
       return;
