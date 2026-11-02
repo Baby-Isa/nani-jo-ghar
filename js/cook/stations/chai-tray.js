@@ -632,23 +632,32 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const glass = {};
       // (CHAI-08: 480 x 466, the rim from exactly above filling the cut-out)
       ["empty", "half", "full"].forEach((st) => (glass[st] = glassLook(S.track(S.add.image(wx, wy, glassTex(`v2-glass-${st}`))), `v2-glass-${st}`, gR).setDepth(D.item + 0.5).setAlpha(st === "empty" ? 1 : 0)));
-      // CHAI-18 (S05-C): the orderer's face on the tray's rim beside their glass (the outer rim, level with the cut-out),
-      // never over the cup
+      // CHAI-65 (Zafar, 1 Nov night: "the face is next to the tea. I think we should put them at the corners. So for the top left glass,
+      // put it in the top left corner ... There's a bit of natural space there"): each orderer's face in its own glass's corner of the
+      // tray (was CHAI-18's place: the side rim at the glass's height), never over the glass
       const left = fx < 0.5;
-      // SH-139 (Zafar, 27 Oct and again 1 Nov: "the face icons next to the chai trays probably should be a little bit bigger. They're
-      // quite small"): as big as the burner faces (the kit's BADGE, 64), and on a small screen at least 30 px as seen (the screen's
-      // design px per CSS px), up to 90; was min(46, 11% of the tray). It keeps off its glass (4 px clear of the cut-out's rim), so a
-      // bigger face reaches past the tray's outer edge onto the worktop (never more than half of it: CK-30), towards the gap by the hob
+      const top = fy < 0.5;
+      // SH-139 (Zafar, 27 Oct and again 1 Nov: "the face icons next to the chai trays probably should be a little bit bigger"): as big
+      // as the burner faces (the kit's BADGE, 64), and on a small screen at least 30 px as seen, up to 90
       const perPx = Math.max(0.01, UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1);
-      // (the rim between the tray's edge and the glass)
-      const rimW = left ? wx - gR - 4 - trayX : trayX + trayD - (wx + gR + 4);
-      // (never so big that, half past the tray's edge, it would reach its glass)
-      const fd = Math.min(90, 2 * rimW, Math.max(BADGE, 30 / perPx));
-      // its centre: as far in as keeps it off the glass, but never more than half of it past the tray's edge
-      const inset = Math.max(0, Math.min(rimW - fd / 2, rimW / 2));
+      const trayH = (trayD * 754) / 768;
+      // (the corner, and the glass's centre measured from it)
+      const cx0 = left ? trayX : trayX + trayD;
+      const cy0 = top ? trayY : trayY + trayH;
+      const gx = Math.abs(wx - cx0);
+      const gy = Math.abs(wy - cy0);
+      // its centre along the corner's diagonal, k in from each edge: wholly inside the corner where the gap allows (k = fd / 2 + 4),
+      // else further out over the corner (never past its middle, k = 0), 4 px clear of the glass's rim; it shrinks only if even at the
+      // corner it would touch the glass
+      const clear = (k, d) => Math.hypot(gx - k, gy - k) >= gR + 4 + d / 2;
+      let fd = Math.min(90, Math.max(BADGE, 30 / perPx));
+      let k = fd / 2 + 4;
+      while (k > 0 && !clear(k, fd)) k -= 1;
+      while (fd > 24 && !clear(Math.max(0, k), fd)) fd -= 2;
+      k = Math.max(0, k);
       // SH-183 (Zafar, 1 Nov, his 7-faded-faces.png: "faces shouldn't be faded they should have full contrast and 'sit on top'"):
-      // over the tray's quiet veil (trayQuiet, which dimmed them to 58% until a pan was ready) and every picture: the badge depth
-      const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+      // over the tray's quiet veil and every picture: the badge depth (a pan pouring passes over them: SH-183 amended)
+      const face = S.track(S.add.image(left ? cx0 + k : cx0 - k, top ? cy0 + k : cy0 - k, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
       return { x: wx, y: wy, r: gR, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
@@ -681,7 +690,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // (nine jars at L3-L4: the slots narrow so the row stays clear of the tick)
     const slotW = Math.min(PITCH, (1600 - 190 - 80 - (shelfIds.length - 1) * GROUP_GAP) / slotsN);
     const width = slotsN * slotW + (shelfIds.length - 1) * GROUP_GAP;
-    const x0 = Math.max(40, (1600 - 190 - width) / 2); // clear of the tick, bottom right
+    // CHAI-66 (Zafar, 1 Nov night: "the items at the bottom aren't in line with the tea tray and the tea hobs on the top ... There
+    // should be the equal amount of space between the juru and the right edge of the tea board as there is the water bottle on the
+    // left edge of the teapot"): the row centred under the hob-and-tray span (the first pan's handle to the tray's right edge), so the
+    // two ends' gaps match; it still keeps clear of the tick at the bottom right, and that wins where they meet
+    const spanL = hobX - overL;
+    const spanR = trayX + trayD;
+    const x0 = Math.max(40, Math.min((spanL + spanR - width) / 2, 1600 - 190 - width));
     const shelf = {};
     let sx = x0 + slotW / 2;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
@@ -1151,10 +1166,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       art.y = obj.y - obj.displayHeight / 2;
       await S.fly(art, ox, oy, { duration: 380, arc: 60 });
       await new Promise((r) => S.tweens.add({ targets: art, angle: -118, duration: 220, ease: "Sine.easeOut", onComplete: r }));
-      const rad = Phaser.Math.DegToRad(art.angle);
-      const cy0 = -0.44 * art.displayHeight;
-      const cap = { x: art.x - Math.sin(rad) * cy0, y: art.y + Math.cos(rad) * cy0 };
-      const stream = S.track(S.add.graphics().setDepth(D.fx));
+      // CHAI-64 (Zafar, 1 Nov: "when the milk pours, there's a little white rectangle that comes out ... We should take that out. I
+      // don't think we need to draw milk going in, because the colour of the tea changes"; decision 5: water too): no drawn line; the
+      // carton or bottle tips and the pan's own picture changes over the pour
       const from = pan.level;
       pan.fading = true;
       await new Promise((r) =>
@@ -1164,19 +1178,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           duration: 620,
           onUpdate: (tw) => {
             const u = tw.getValue();
-            stream.clear();
-            stream.lineStyle(11, color, color === COL.water ? 0.55 : 0.95);
-            stream.beginPath();
-            stream.moveTo(cap.x, cap.y);
-            stream.lineTo(pan.x + (cap.x - pan.x) * 0.15, pan.y);
-            stream.strokePath();
             pan.level = from + (toLevel - from) * u;
             setLook(pan, { from: look, u });
           },
           onComplete: r,
         })
       );
-      stream.destroy();
       pan.fading = false;
       setLook(pan);
       // ART-31 (Zafar, 1 Nov: "the drawn blue splash ... doesn't seem to quite just fit in with the theme of the game"; decision 2a):
@@ -1639,8 +1646,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       Object.values(pan.layers).forEach((im) => im.setVisible(false));
       pan.bubbles.setVisible(false);
       if (pan.img.shadow) pan.img.shadow.setVisible(false);
-      body.setDepth(D.fx + 1);
-      fr.setDepth(D.fx + 1.01);
+      // SH-183 amended (Zafar, 1 Nov night: "when the pan of the tea comes across to pour into the glass, it should go on top of the
+      // face icons, rather than having them on top of the teapot"): while it pours, the pan and its shadow pass over the faces (D.badge)
+      body.setDepth(D.badge + 0.5);
+      fr.setDepth(D.badge + 0.51);
+      lsh.setDepth(D.badge + 0.4);
       const v = Cook.view || {};
       const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: (v.right || 1600) - 12, b: (v.bottom || 900) - 12 };
       // the pan's whole picture (its handle included) at a place and size, in the view

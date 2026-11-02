@@ -595,3 +595,7 @@ body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14.oc-away > *, .oc-card.oc-s14 .oc-row.oc-it14.oc-away::after { visibility: hidden; }
 /* (in the scrolling list the cards keep their own height: the list scrolls, a card is never squeezed, so its words never leave it) */
 body.w6.njg-s14 #mission.people > *, body.w6.njg-s14 #mission.people .m-order > * { flex-shrink: 0; }
+/* SH-171 (Zafar, 1 Nov night): a person's card is not there until they start their order (oc-unsaid), then folded to face and
+   headline while they say its sentence (oc-headonly), opening with its empty slots at their first item (js/cook/ui.js) */
+#mission .oc-card.oc-unsaid { display: none; }
+#mission .oc-card.oc-headonly .oc-items14, #mission .oc-card.oc-headonly .oc-items { display: none; }

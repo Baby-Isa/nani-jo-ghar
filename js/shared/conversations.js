@@ -693,6 +693,57 @@
     host.appendChild(layer);
     return layer;
   }
+  /*
+   * SH-177, SH-186, SH-187, SH-145 (Zafar, 1 Nov night: "the speech bubble just completely covers the boy's head ... the text could
+   * shrink down a little bit if needed to have made it fit ... it could have fitted in above the kid's head ... Or just horizontally,
+   * all on one line above the nana's head"; "it should just go around the gear icon ... there should be set rules to stop this
+   * happening"; "if we have deemed that size acceptable in terms of smallness for those items, then it can go smaller"): one set of
+   * rules for every bubble. The places, in order: above the head on one line, then above wrapped, then beside it on the right, then
+   * on the left, then below. Each is tried at full size, then smaller, down to the side panel's own text size (the order card's
+   * headline: never smaller than what the panel already asks a child to read). A place is free when it keeps clear of every face
+   * (each person's head: NjgFaceBoxes, or ctx.faces), the side panel ([data-njg-keepout]), the gear and other corner buttons
+   * ([data-njg-avoid], .side-cog), the replies and the screen's edge. The first free place wins; with none, the place that covers
+   * the least (and never under the gear: the bubble layer is above it).
+   */
+  const rectOf = (el) => {
+    const q = el.getBoundingClientRect();
+    return q.width && q.height ? { l: q.left, t: q.top, r: q.right, b: q.bottom } : null;
+  };
+  const overlap = (a, o) => Math.max(0, Math.min(a.r, o.r) - Math.max(a.l, o.l)) * Math.max(0, Math.min(a.b, o.b) - Math.max(a.t, o.t));
+  function obstacles(ctx, layer, self) {
+    const out = [];
+    const doc = root.document;
+    if (!doc || !doc.querySelectorAll) return out;
+    doc.querySelectorAll("[data-njg-keepout], [data-njg-avoid], .side-cog").forEach((k) => {
+      const q = rectOf(k);
+      if (q) out.push(Object.assign(q, { pad: 8 }));
+    });
+    layer.querySelectorAll(".cv-replies .cv-reply, .cv-bubble").forEach((k) => {
+      if (k === self || k.classList.contains("gone")) return;
+      const q = rectOf(k);
+      if (q) out.push(Object.assign(q, { pad: 6 }));
+    });
+    let faces = [];
+    try {
+      faces = (ctx && ctx.faces ? ctx.faces() : root.NjgFaceBoxes ? root.NjgFaceBoxes() : []) || [];
+    } catch (e) {
+      faces = [];
+    }
+    faces.forEach((f) => f && out.push({ l: f.left, t: f.top, r: f.right, b: f.bottom, pad: 4, face: true }));
+    return out;
+  }
+  // the smallest the words go: the side panel's own text (the order card's headline, else Nani's line, else the panel's token)
+  function minK(el, inner) {
+    const doc = root.document;
+    let cap = 0;
+    const ref = doc && (doc.querySelector(".oc-card .oc-headline") || doc.querySelector("#guide .ng-line"));
+    if (ref) cap = parseFloat(root.getComputedStyle(ref).fontSize) || 0;
+    if (!cap) cap = 14.5;
+    el.style.setProperty("--cv-k", "1");
+    const t = el.querySelector(inner);
+    const base = t ? parseFloat(root.getComputedStyle(t).fontSize) || 0 : 0;
+    return base ? Math.max(0.45, Math.min(1, cap / base)) : 1;
+  }
   function placeBubble(b, ctx, spId, layer) {
     let pt = null;
     try {
@@ -701,82 +752,133 @@
       pt = null;
     }
     const W = root.innerWidth || 800;
-    b.classList.remove("cv-below", "cv-side-r", "cv-side-l", "cv-compact");
-    b.style.maxWidth = "";
-    if (pt && isFinite(pt.x) && isFinite(pt.y)) {
-      const H = root.innerHeight || 600;
-      const x = Math.max(150, Math.min(W - 150, pt.x));
-      b.style.left = `${x}px`;
-      b.style.top = `${Math.max(8, Math.min(H - 160, pt.y))}px`;
-      b.classList.add("cv-anchored");
-      // no room above the head (or the head is off screen): beside the head where there is room, the right first, so the face, the
-      // body and the side panel's cards stay clear (Zafar, 30 Oct, his phone: "the speech bubble blocks the face and body but it
-      // seems like it could easily go on the right"); only with no room either side does it hang below
-      const r = b.getBoundingClientRect();
-      if (r.top < 8 || pt.y < 0) {
-        const w = b.offsetWidth;
-        const h = b.offsetHeight;
-        const gap = 46; // (past the head's half width, the tail's length too)
-        const top = Math.max(8, Math.min(H - h - 8, pt.y + 30 - h / 2));
-        const side = (dir) => {
-          const left = dir > 0 ? pt.x + gap : pt.x - gap - w;
-          if (left < 8 || left + w > W - 8) return false;
-          let clear = true;
-          if (root.document && root.document.querySelectorAll) root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
-            const q = k.getBoundingClientRect();
-            if (q.width && q.height && left < q.right + 8 && left + w > q.left - 8 && top < q.bottom && top + h > q.top) clear = false;
-          });
-          if (!clear) return false;
-          b.classList.add(dir > 0 ? "cv-side-r" : "cv-side-l");
-          b.style.left = `${left}px`;
-          b.style.top = `${top}px`;
-          b.style.setProperty("--cv-tail-dy", `${Math.round(pt.y + 30 - top)}px`);
-          return true;
-        };
-        // (the right first, then the right made compact, then the left: the left is where the order's big card pops, by the panel)
-        if (side(1)) return;
-        // (a short screen, the phone's in-app browser at 915x275: beside the head the bubble drops its own copy of the speaker's face,
-        // who is right there, and may sit against the screen's edge, so long as it starts clear of the face)
-        b.classList.add("cv-compact");
-        const avail = W - 8 - (pt.x + gap);
-        b.style.maxWidth = `${Math.max(0, avail)}px`; // (its words wrap to the room beside the head)
-        const w2 = b.offsetWidth;
-        const left = Math.min(W - 8 - w2, pt.x + gap);
-        if (w2 <= avail + 1 && left >= pt.x + 30) {
-          b.classList.add("cv-side-r");
-          b.style.left = `${left}px`;
-          b.style.top = `${top}px`;
-          b.style.setProperty("--cv-tail-dy", `${Math.round(pt.y + 30 - top)}px`);
-          return;
-        }
-        b.classList.remove("cv-compact");
-        b.style.maxWidth = "";
-        if (side(-1)) return;
-        b.classList.add("cv-below");
+    const H = root.innerHeight || 600;
+    const MODES = ["cv-below", "cv-side-r", "cv-side-l", "cv-compact", "cv-oneline"];
+    const reset = () => {
+      b.classList.remove(...MODES);
+      b.style.maxWidth = "";
+      b.style.removeProperty("--cv-tail-dx");
+      b.style.removeProperty("--cv-tail-dy");
+    };
+    reset();
+    if (!(pt && isFinite(pt.x) && isFinite(pt.y))) {
+      layer.classList.add("cv-free");
+      return;
+    }
+    b.classList.add("cv-anchored");
+    const obs = obstacles(ctx, layer, b);
+    const kMin = minK(b, ".cv-text");
+    const ks = [1];
+    for (let k = 0.9; k > kMin; k -= 0.1) ks.push(k);
+    if (ks[ks.length - 1] > kMin) ks.push(kMin);
+    const u = (n) => n * (parseFloat(root.getComputedStyle(b).getPropertyValue("--njg-u")) || 1);
+    const gap = 46;
+    // a place: its box, scored by what it covers (faces count most) and by how far it leaves the screen
+    const score = (box) => {
+      let s = 0;
+      obs.forEach((o) => {
+        const a = overlap(box, { l: o.l - o.pad, t: o.t - o.pad, r: o.r + o.pad, b: o.b + o.pad });
+        s += o.face ? a * 3 : a;
+      });
+      const out = Math.max(0, 8 - box.l) + Math.max(0, box.r - (W - 8)) + Math.max(0, 8 - box.t) + Math.max(0, box.b - (H - 8));
+      return s + out * 400;
+    };
+    // above or below: the bubble slides along so it keeps clear, its tail still pointing at the head
+    const along = (w, top, h) => {
+      const xs = [pt.x];
+      obs.forEach((o) => xs.push(o.r + o.pad + w / 2 + 1, o.l - o.pad - w / 2 - 1));
+      let best = null;
+      xs.forEach((x0) => {
+        const x = Math.max(8 + w / 2, Math.min(W - 8 - w / 2, x0));
+        if (Math.abs(x - pt.x) > w / 2 - u(22)) return; // (the tail must still reach the head)
+        const box = { l: x - w / 2, t: top, r: x + w / 2, b: top + h };
+        const sc = score(box);
+        if (!best || sc < best.sc || (sc === best.sc && Math.abs(x - pt.x) < Math.abs(best.x - pt.x))) best = { x, box, sc };
+      });
+      return best;
+    };
+    const tries = [];
+    const tryMode = (mode, k) => {
+      reset();
+      b.style.setProperty("--cv-k", String(k));
+      if (mode === "above1") b.classList.add("cv-oneline");
+      if (mode === "below") b.classList.add("cv-below");
+      if (mode === "right" || mode === "left") {
+        b.classList.add(mode === "right" ? "cv-side-r" : "cv-side-l");
+        const avail = mode === "right" ? W - 8 - (pt.x + gap) : pt.x - gap - 8;
+        if (avail < 80) return null;
+        b.style.maxWidth = `${avail}px`;
       }
-      // (Zafar, 29 Oct: "It shouldn't overlap the panel almost ever": a side panel marked data-njg-keepout is out of bounds; the
-      // bubble moves along beside it while its tail still points at the head)
-      // (measured at its full size, centred on x: placed while it still pops in at 90% it read narrower, and its edge then grew
-      // 11-21 px into the panel: contract-86, chai L4 at 930x430)
-      if (root.document && root.document.querySelectorAll) {
-        let dx = 0;
-        const w = b.offsetWidth;
-        const bl = x - w / 2;
-        const br = x + w / 2;
-        root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
-          const q = k.getBoundingClientRect();
-          if (!q.width || !q.height) return;
-          if (q.right <= pt.x && bl < q.right + 8) dx = Math.max(dx, q.right + 8 - bl);
-          else if (q.left >= pt.x && br > q.left - 8) dx = Math.min(dx, q.left - 8 - br);
-        });
-        if (dx && w + 16 < W) {
-          b.style.left = `${x + dx}px`;
-          b.style.setProperty("--cv-tail-dx", `${-dx}px`);
+      const w = b.offsetWidth;
+      const h = b.offsetHeight;
+      if (mode === "above1" || mode === "above" || mode === "below") {
+        const top = mode === "below" ? pt.y + u(14) : pt.y - u(14) - h;
+        const best = along(w, top, h);
+        return best && { mode, k, x: best.x, top, sc: best.sc, w, h };
+      }
+      const left = mode === "right" ? pt.x + gap : pt.x - gap - w;
+      const top = Math.max(8, Math.min(H - h - 8, pt.y + 30 - h / 2));
+      const box = { l: left, t: top, r: left + w, b: top + h };
+      return { mode, k, left, top, sc: score(box), w, h };
+    };
+    let pick = null;
+    outer: for (const mode of ["above1", "above", "right", "left", "below"]) {
+      for (const k of ks) {
+        const t = tryMode(mode, k);
+        if (!t) continue;
+        tries.push(t);
+        if (t.sc === 0) {
+          pick = t;
+          break outer;
         }
       }
-    } else layer.classList.add("cv-free");
+    }
+    if (!pick) pick = tries.reduce((m, t) => (!m || t.sc < m.sc ? t : m), null);
+    reset();
+    if (!pick) {
+      layer.classList.add("cv-free");
+      return;
+    }
+    b.style.setProperty("--cv-k", String(pick.k));
+    b.dataset.place = pick.mode; // (for the checks)
+    if (pick.mode === "above1") b.classList.add("cv-oneline");
+    if (pick.mode === "below") b.classList.add("cv-below");
+    if (pick.mode === "right" || pick.mode === "left") {
+      b.classList.add(pick.mode === "right" ? "cv-side-r" : "cv-side-l");
+      b.style.maxWidth = `${pick.mode === "right" ? W - 8 - (pt.x + gap) : pt.x - gap - 8}px`;
+      b.style.left = `${pick.left}px`;
+      b.style.top = `${pick.top}px`;
+      b.style.setProperty("--cv-tail-dy", `${Math.round(pt.y + 30 - pick.top)}px`);
+      return;
+    }
+    b.style.left = `${pick.x}px`;
+    b.style.top = `${pt.y}px`;
+    if (pick.x !== pt.x) b.style.setProperty("--cv-tail-dx", `${Math.round(pt.x - pick.x)}px`);
   }
-
+  /*
+   * SH-186 (Zafar, 1 Nov night: "the replies are stacked on top, overlapping ... it can go smaller for the speech bubble,
+   * especially if that helps the replies sit side by side, left and right, at the bottom of the screen"): the replies in one row
+   * along the bottom of the play area (right of the side panel), spread left and right; when they don't fit, their words go
+   * smaller, down to the side panel's own text size, then wrap inside their pills; never stacked.
+   */
+  function fitReplies(box, layer) {
+    const lr = layer.getBoundingClientRect();
+    let left = lr.left;
+    if (root.document) root.document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
+      const q = k.getBoundingClientRect();
+      if (q.width && q.height && q.left <= lr.left + 4 && q.right > left) left = q.right;
+    });
+    box.classList.add("cv-row");
+    box.style.left = `${Math.round(left - lr.left + 16)}px`;
+    const kMin = minK(box, ".cv-words");
+    box.classList.remove("cv-wrap");
+    let fits = false;
+    for (let k = 1; k >= kMin - 1e-6 && !fits; k -= 0.05) {
+      box.style.setProperty("--cv-k", String(Math.max(kMin, k)));
+      fits = box.scrollWidth <= box.clientWidth + 1;
+    }
+    if (!fits) box.classList.add("cv-wrap"); // (at the smallest, the words wrap inside their pills: still one row)
+  }
   /**
    * Play one exchange with the bubbles. Resolves with the outcome (maybe()/run() add the tracking).
    * ctx: {stage, rung, x, gender, container, anchor(id), character: {mood(id, kind), talk(id, lineId)}, lab, rng, idleMs}
@@ -856,6 +958,9 @@
       box.appendChild(row);
       pills[a.key] = b;
     });
+    // SH-186: the replies in one row, then the ask's bubble placed again so it keeps clear of them
+    fitReplies(box, layer);
+    placeBubble(bubble, ctx, sp.id, layer);
     requestAnimationFrame(() => box.classList.add("in"));
 
     // the reply to pick, lit: the kit's gold glow and hop on the pill (ob-lit, css/shared/onboard.css), the kit's finger on it

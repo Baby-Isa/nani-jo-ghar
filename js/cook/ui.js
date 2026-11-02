@@ -930,6 +930,24 @@
     if (cr.top < lr.top || cr.height > lr.height) list.scrollTop = Math.max(0, list.scrollTop + (cr.top - lr.top) - 4);
     else if (cr.bottom > lr.bottom) list.scrollTop += cr.bottom - lr.bottom + 4;
   };
+  /** SH-177 (Zafar, 1 Nov night): every person's head on screen, in screen px, for the shared bubble rules (js/shared/conversations.js
+   * placeBubble keeps every bubble off every face). */
+  global.NjgFaceBoxes = UI.headBoxes = function () {
+    const out = [];
+    const S = Cook.scene;
+    try {
+      Object.values((S && S.chars) || {}).forEach((img) => {
+        if (!img || !img.active || img.visible === false || !S.headBox) return;
+        const hb = S.headBox(img);
+        const a = UI.worldToScreen(hb.x, hb.y);
+        const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+        out.push({ left: a.x, top: a.y, right: z.x, bottom: z.y });
+      });
+    } catch (e) {
+      /* no scene */
+    }
+    return out;
+  };
   // SH-172: the card opening is when Nani says the step's instruction (its item in Kutchi), by the hint or the child's arrow
   function helperCall(by) {
     const s = stepper && stepper.current;
@@ -1377,6 +1395,9 @@
     // on all the game modes"): an order that will be said item by item (introduce's along) opens with its rows waiting, each slot its
     // dashed outline, so no item shows while the person walks in and greets; each comes as it is said
     mission.preAway = !!(global.WordCard && OCard() && UI.w6() && (mission.wordRows || UI.s14()));
+    // (SH-171: no person's card until they start their order (revealed: those who have); introduceAlong reveals each in turn)
+    mission.revealed = mission.preAway ? new Set() : null;
+    mission.headOnly = null;
     if (mission.preAway) mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r))))));
     renderOrder();
     // Sprint 11: the word cards' pictures (the row's small copy and the big one the item is said with) start now, so they
@@ -1988,6 +2009,13 @@
           if (list && cur) foldGlide(list, h0, top0, aim);
         }
         prev = who;
+        // (SH-171: their card comes now, folded, as they start; it opens at their first item)
+        if (m.revealed && !m.revealed.has(who)) {
+          m.revealed.add(who);
+          m.headOnly = m.headOnly || new Set();
+          m.headOnly.add(who);
+          renderOrder();
+        }
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
         if (!c || !c._parts) continue;
         if (M.focus) M.focus(who);
@@ -1998,6 +2026,10 @@
           const item = r && m.away.has(r);
           if (!box) return;
           box.innerHTML = "";
+          if (item && m.headOnly && m.headOnly.delete(who)) {
+            renderOrder(); // (SH-171: the card opens, its slots empty, as the first item is said)
+            await Cook.wait(260);
+          }
           if (item) {
             const w = UI.wordOf(r, { size: 240, written: true });
             if (w && s14) {
@@ -2055,6 +2087,8 @@
       if (m === mission) {
         m.away.clear();
         m.said = null; // (every card open again as play starts)
+        m.revealed = null;
+        m.headOnly = null;
         renderOrder();
         if ($("#mission")) $("#mission").scrollTop = 0; // (from its top, the first card whole)
         // (the row from its first card)
@@ -2177,6 +2211,12 @@
     } else if (mission.preAway && mission.away.size) {
       // (SH-171: an order said another way after all shows its rows now)
       mission.away.clear();
+      renderOrder();
+    }
+    // (SH-171: only the item-by-item read-out reveals cards one by one; any other way shows them all)
+    if (!along && (mission.revealed || mission.headOnly)) {
+      mission.revealed = null;
+      mission.headOnly = null;
       renderOrder();
     }
     mission.preAway = false;
@@ -3056,6 +3096,14 @@
     drawCards(box, sideEls);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
     if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
+    // SH-171 (Zafar, 1 Nov night: "the menu card should only appear when that person starts their order, saying the sentence that is
+    // the sentence of the menu card ... It should appear in its collapsed form, and then as they start listing what they want ... the
+    // menu card should open up"): a person's card is not drawn until they start (unsaid), shows folded (face and headline) while they
+    // say its sentence (headOnly), and opens with its empty slots at their first item
+    document.querySelectorAll("#mission .oc-card[data-who]").forEach((c) => {
+      c.classList.toggle("oc-unsaid", !!(mission.revealed && !mission.revealed.has(c.dataset.who)));
+      c.classList.toggle("oc-headonly", !!(mission.headOnly && mission.headOnly.has(c.dataset.who)));
+    });
     $("#side").classList.remove("rail-out"); // CK-53 (Zafar, 27 Oct): the rail never leaves the sidebar for the play area
     checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
