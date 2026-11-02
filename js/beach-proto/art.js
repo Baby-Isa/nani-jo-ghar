@@ -11,6 +11,9 @@ const CP = "assets/cook/proto/";
 /** The host (the helper's box): Masi (a placeholder face: the clinic's auntie, modestly dressed). */
 export const MASI = { id: "masi", name: "Masi", face: `${CL}patients/auntie/auntie-head-neutral.webp` };
 
+/** Nani hosts the ride on the water (she names things as they pass). */
+export const NANI = { id: "nani", name: "Nani", face: "assets/shared/faces/nani.webp" };
+
 /** The family at the picnic (faces only). */
 export const PEOPLE = {
   nani: { lex: "pn.nani", face: "assets/shared/faces/nani.webp" },

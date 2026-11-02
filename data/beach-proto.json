@@ -20,7 +20,18 @@
     "ph-food": { "english": "food" },
     "ph-toppings": { "english": "toppings" },
     "ph-people": { "english": "people" },
-    "ph-places": { "english": "places" }
+    "ph-places": { "english": "places" },
+    "ph-shoe": { "english": "shoe", "src": "the boat sheet" },
+    "ph-tin-can": { "english": "tin can", "src": "the boat sheet (a tin can)" },
+    "ph-kettle": { "english": "kettle", "src": "the boat sheet" },
+    "ph-fish": { "english": "fish", "src": "the boat sheet" },
+    "ph-boat": { "english": "boat", "src": "the boat sheet" },
+    "ph-wave": { "english": "wave", "src": "the boat sheet" },
+    "ph-buoy": { "english": "buoy", "src": "the ride's middle layer" },
+    "ph-ship": { "english": "ship", "src": "the ride's far layer" },
+    "ph-sea": { "english": "sea", "src": "sheet A" },
+    "ph-things": { "english": "things" },
+    "ph-on-the-sea": { "english": "on the sea" }
   },
   "lines": {
     "sh-guide": { "e": "Bring Masi the shell she asks for." },
@@ -35,6 +46,12 @@
     "st-head": { "e": "Let's get food for our picnic." },
     "st-hot": { "e": "Careful, it's hot!" },
     "pc-guide": { "e": "Put each thing where Masi says." },
-    "pc-head": { "e": "Let's set out the picnic." }
+    "pc-head": { "e": "Let's set out the picnic." },
+    "fi-guide": { "e": "Fish out what Masi says." },
+    "fi-head": { "e": "Nani's hat! And look, the sea has rubbish in it. Let's fish it out." },
+    "fi-net": { "e": "The boatman nets the rest." },
+    "rd-guide": { "e": "Tap what Nani names as it goes past." },
+    "rd-head": { "e": "Masi's friend is taking us out on his boat." },
+    "rd-hat": { "e": "Oho! My hat!" }
   }
 }

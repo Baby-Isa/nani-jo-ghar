@@ -129,4 +129,38 @@ span.bp-shell { position: relative; display: block; box-sizing: border-box; }
 .bp-pthing .bp-coconut { height: 80%; position: relative; display: block; }
 .bp-thing.bp-pthing.lifted { translate: 0 -10%; filter: drop-shadow(0 0 0.4em var(--njg-gold-hi)); }
 .bp-tileface { border-radius: 50%; }
+/* ---------- litter fishing (a side-on cutaway): the water, the hull, the rod and reel, the line, the litter, the fish ---------- */
+.bp-sky-fish { height: 40%; }
+.bp-water { position: absolute; left: 0; right: 0; top: 40%; bottom: 0; background: var(--njg-proto-beach-sea); border-top: 0.4em solid var(--njg-proto-beach-foam); }
+.bp-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: var(--njg-proto-beach-wet); }
+.bp-hull { position: absolute; left: 0; width: 26%; top: 33%; height: 14%; background: var(--njg-proto-wood-dark); border-radius: 0 0 50% 0 / 0 0 100% 0; }
+.bp-rod { width: 0.35em; background: var(--njg-proto-wood-dark); rotate: 35deg; transform-origin: 50% 100%; }
+.bp-reel { aspect-ratio: 1; border-radius: 50%; background: var(--njg-pewter); border: 0.35em solid var(--njg-ink); transition: rotate .25s; }
+.bp-reel.turn { rotate: 180deg; }
+.bp-reel::after { content: ""; position: absolute; left: 50%; top: 10%; width: 14%; height: 40%; translate: -50% 0; background: var(--njg-ink); border-radius: 0.2em; }
+.bp-thing.bp-fishline { width: 0.15em; background: var(--njg-ink); bottom: auto; top: 30%; transition: left .3s, height .4s; pointer-events: none; z-index: 4; }
+.bp-thing.bp-fishline::after { content: ""; position: absolute; left: -0.3em; bottom: -0.5em; width: 0.6em; height: 0.6em; border: 0.15em solid var(--njg-ink); border-top: 0; border-radius: 0 0 50% 50%; box-sizing: border-box; }
+.bp-litter { transition: bottom .4s ease-in-out, opacity .3s; animation: bpBob 2.4s ease-in-out infinite; }
+@keyframes bpBob { 50% { translate: 0 -4%; } }
+@media (prefers-reduced-motion: reduce) { .bp-litter { animation: none; } }
+.bp-litter.caught { opacity: 0; pointer-events: none; }
+.k-bottle { aspect-ratio: .38; background: var(--njg-leaf); border-radius: 30% 30% 0.2em 0.2em / 20% 20% 0.2em 0.2em; }
+.k-bottle.red { background: var(--njg-proto-beach-shell-red); }
+.k-bottle.white { background: var(--njg-proto-beach-shell-white); }
+.k-shoe { aspect-ratio: 1.8; background: var(--njg-brown); border-radius: 50% 60% 0.2em 0.2em / 80% 60% 0.2em 0.2em; }
+.k-can { aspect-ratio: .7; background: var(--njg-pewter); border-radius: 0.2em; box-shadow: inset 0 0.25em 0 var(--njg-proto-tray), inset 0 -0.25em 0 var(--njg-proto-tray); }
+.k-bag { aspect-ratio: .9; background: var(--njg-proto-beach-foam); border-radius: 20% 20% 30% 30%; opacity: .85; }
+.k-sock { aspect-ratio: .9; background: var(--njg-proto-curtain); clip-path: polygon(20% 0, 55% 0, 55% 60%, 100% 70%, 100% 100%, 20% 100%); }
+.k-ball { aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-balloon); box-shadow: inset -0.3em -0.3em 0 var(--njg-proto-swatch-shade); }
+.k-kettle { aspect-ratio: 1.2; background: var(--njg-pewter); border-radius: 50% 50% 0.3em 0.3em / 60% 60% 0.3em 0.3em; }
+.k-kettle::after { content: ""; position: absolute; right: -22%; top: 34%; width: 30%; height: 16%; background: var(--njg-pewter); rotate: -30deg; border-radius: 0.2em; }
+.k-hat { aspect-ratio: 2.4; background: var(--njg-proto-beach-cone); border-radius: 50%; }
+.k-hat::before { content: ""; position: absolute; left: 28%; right: 28%; bottom: 40%; height: 70%; background: var(--njg-proto-beach-cone); border-radius: 50% 50% 0.2em 0.2em; box-shadow: inset 0 -0.3em 0 var(--njg-proto-curtain); }
+.bp-tilepic.bp-litter { width: auto; height: 80%; max-width: 86%; margin-bottom: 4%; animation: none; }
+.bp-tilepic.k-shoe, .bp-tilepic.k-hat { height: 50%; }
+.bp-fish { position: absolute; top: 58%; left: -10%; width: 6%; aspect-ratio: 2; background: var(--njg-proto-beach-bucket); border-radius: 50%; animation: bpSwim 14s linear infinite; pointer-events: none; }
+.bp-fish.f2 { top: 66%; animation-delay: -7s; animation-duration: 18s; }
+@keyframes bpSwim { to { left: 110%; } }
+@media (prefers-reduced-motion: reduce) { .bp-fish { animation: none; } }
+.bp-clear .bp-fish { animation-duration: 6s; }
 .bp-flash::after { content: ""; position: absolute; inset: 0; background: var(--njg-white); opacity: .7; pointer-events: none; z-index: 60; }
