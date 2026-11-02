@@ -50,7 +50,9 @@
     const e = entry(id);
     const cells = Object.keys((e && e.forms) || {});
     if (!r.ok && e.pos === "A" && cells.length === 1) r = EN().word(String(id), cells[0], ctx);
-    return withSay(Object.assign({}, r, { en: entry(id).gloss || String(id) }));
+    // (Zafar, 2 Nov: "adh" sat higher than its neighbours: its English was the gloss's note for grown-ups, "half (of an amount: adh
+    // cup)", wrapping to two lines; a card's English is the plain word, as Cook.english gives it)
+    return withSay(Object.assign({}, r, { en: Cook.english(id) }));
   }
   // a noun through the engine's Item (a fixed expression such as bajr ji maani is built from its parts)
   Cook.display = (id) => Lang.plain(Lang.phrase([id]));
@@ -263,7 +265,7 @@
   Lang.formLine = (id, text, cell) => {
     if (cell && entry(id)) {
       const r = withSay(EN().word(String(id), cell, ctx));
-      if (r.ok && (!text || r.text === text)) return lineOf(Object.assign({}, r, { en: entry(id).gloss || String(id) }), { fn: "Word", id });
+      if (r.ok && (!text || r.text === text)) return lineOf(Object.assign({}, r, { en: Cook.english(id) }), { fn: "Word", id });
     }
     const l = Lang.wordLine(id);
     if (!text || !l.ok || text === l.segs.map((s) => s.t).join("")) return l;

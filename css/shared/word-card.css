@@ -136,6 +136,8 @@
 .wc14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u8)); color: var(--njg-card14-dots-en); gap: .38em; }
 .wc14 .wc14-en-dots i { width: .36em; height: .36em; }
 .wc14.wc14-hide-k .wc14-slot-k > .wc14-k:not(.wc14-peek), .wc14.wc14-hide-en .wc14-slot-e > .wc14-en:not(.wc14-peek) { visibility: hidden; }
+/* (Zafar, 2 Nov: a row's words all on one line: a hidden English line is never taller than one line, so it never lifts its word) */
+.wc14.wc14-hide-en .wc14-slot-e > .wc14-en:not(.wc14-peek) { white-space: nowrap; max-height: 1.15em; overflow: hidden; }
 .wc14.wc14-hide-k .wc14-slot-k > .wc14-k-dots:not(.wc14-gone), .wc14.wc14-hide-en .wc14-slot-e > .wc14-en-dots:not(.wc14-gone) { display: flex; }
 
 /* the big card (his image 1): the pop-out by the side panel and the helper card */

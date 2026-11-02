@@ -373,7 +373,15 @@
     const l = row.scrollLeft + card.getBoundingClientRect().left - row.getBoundingClientRect().left;
     const r = l + card.offsetWidth;
     let x = row.scrollLeft;
-    if (l < x) x = l - 2;
+    if (opts.lead) {
+      // (Zafar, 2 Nov: "slot 3 is only half visible, which gives a weird scrolling effect as the card fits into in a half space ... start
+      // the item cards scrolled by 1, so what's visible ... is gap, gap filled by first item, half gap, and then it scrolls along so the
+      // next item has a full gap to go into"): while the order is given, the slot before the target sits at the row's left edge, so the
+      // target is always whole, with the next slot peeking
+      const prev = card.previousElementSibling;
+      const pl = prev ? row.scrollLeft + prev.getBoundingClientRect().left - row.getBoundingClientRect().left : l;
+      x = Math.max(0, Math.min(pl - 2, row.scrollWidth - row.clientWidth));
+    } else if (l < x) x = l - 2;
     else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
     const c = row.closest(".oc-card");
     if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
@@ -382,6 +390,10 @@
       if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note(opts.home ? "row-home" : "row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
     } catch (e) {
       /* only a log */
+    }
+    if (opts.instant) {
+      row.scrollLeft = x; // (the card opening: already in place, nothing seen to move)
+      return;
     }
     if (Math.abs(x - row.scrollLeft) > 1) {
       row._auto = true;
