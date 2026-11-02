@@ -41,8 +41,8 @@
 .cp-tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
 .cp-tile { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 3px 5px; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); border-radius: 12px; box-sizing: border-box; min-width: 0; transition: border-color .15s, box-shadow .15s; }
 .cp-tile.on { border-color: var(--njg-gold-hi); box-shadow: 0 0 0 3px var(--njg-gold-hi); }
-.cp-tpic { width: 100%; height: 44px; display: grid; place-items: center; }
-.cp-tpic img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.cp-tpic { width: 100%; height: 44px; overflow: hidden; }
+.cp-tpic img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .cp-tword { all: unset; font: 800 0.95rem/1.15 "Baloo 2", system-ui, sans-serif; color: var(--njg-word); text-align: center; overflow-wrap: anywhere; min-height: 1.15em; }
 .cp-tword .njg-ph { color: var(--njg-ink-soft); font-style: italic; font-weight: 600; }
 .cp-tword.dots { color: var(--njg-ink-soft); cursor: pointer; letter-spacing: 0.05em; }
