@@ -14,7 +14,7 @@ tiles, unchanged). New colour tokens `--njg-proto-pets-*` (counter, mat, bubble,
 in `labs.html` (via `build/gen_labs.mjs`). Leak: `build/tools/review/leak-configs/pets-proto.json` + stub
 `leak-games/pets-proto.mjs` (knownFail). Words: `data/pets-proto.json` (English placeholders, to record), registered in
 `build/lang/import_modes.mjs`; **`node build/lang/import_all.mjs` re-run** (so `data/lang/*.json` changed: re-run it after merging
-rather than hand-merging the generated files). `build/tools/ops/recordings.mjs` was **not** re-run.
+rather than hand-merging the generated files). **`node build/tools/ops/recordings.mjs` re-run** (`docs/language/recording-sheet.md` regenerated: re-run it after merging too).
 
 **Art:** placeholders only, cut as soft ovals (and three clean cut-outs: the corn, the bowl, the bed) from Zafar's 1 Nov pet hotel
 mock-ups by `build/tools/art/cut_proto_pets.py` into `assets/pets-proto/` (dog, ant, rabbit, bee, cat, corn basket, bowl, tub, jug,
@@ -90,7 +90,7 @@ the family (mother, girl, basket) on transparency, with a hug pose; Hannah Mami'
 ## Checks
 
 `node --check` on every new file; one driven lab shot per game at 1280x665 (no errors, nothing spills). The full
-`node build/tools/review/checks.mjs`: see the hand-back message.
+`node build/tools/review/checks.mjs` ran: everything passed except two that my files broke, both fixed: the art check (the oval cuts had soft 10 px rims: re-cut with a 0.6 px edge) and the recording sheet (out of date after the new words: regenerated). Re-run: unit 623 pass, recordings current.
 
 ## Lab links
 

@@ -56,7 +56,7 @@ for name, f, box, tol, mx in CROPS:
         w, h = c.size
         a = Image.new("L", (w, h), 0)
         ImageDraw.Draw(a).ellipse((4, 4, w - 5, h - 5), fill=255)
-        c.putalpha(a.filter(ImageFilter.GaussianBlur(3)))
+        c.putalpha(a.filter(ImageFilter.GaussianBlur(0.6)))
         c.thumbnail((mx, mx))
         c.save(os.path.join(OUT, name + ".webp"), "WEBP", quality=82, method=6)
         print(name, c.size, "ellipse")
