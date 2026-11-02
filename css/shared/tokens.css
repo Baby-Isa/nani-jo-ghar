@@ -254,6 +254,20 @@
   --njg-proto-awning-2: #f3ecd9;
   --njg-proto-mirror: #d8e6ec;
   --njg-proto-trousers: #4a5466;
+  /* the pet hotel prototypes' placeholders (proto-pets, 2 Nov 2026: js/pets-proto/, css/pets-proto.css) */
+  --njg-proto-pets-counter: #c79a63;
+  --njg-proto-pets-counter-edge: #94673d;
+  --njg-proto-pets-mat: #d9c08f;
+  --njg-proto-pets-mat-edge: #b89a63;
+  --njg-proto-pets-bubble: rgb(255 255 255 / .85);
+  --njg-proto-pets-bubble-edge: #9fd0ee;
+  --njg-proto-pets-drop: #6fb7e3;
+  --njg-proto-pets-track: rgb(255 248 236 / .9);
+  --njg-proto-pets-track-edge: #b89a63;
+  --njg-proto-pets-pip: #d8cbb4;
+  --njg-proto-pets-blanket: #c4646a;
+  --njg-proto-pets-blanket-stripe: #f3e6d2;
+  --njg-proto-pets-sleep: #ffffff;
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;

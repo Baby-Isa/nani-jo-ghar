@@ -904,6 +904,44 @@
    }
   },
   {
+   "id": "n.animals",
+   "pos": "N",
+   "gender": null,
+   "gloss": "animals",
+   "glossPl": "animals",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-animals: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-animals"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.ant",
+   "pos": "N",
+   "gender": null,
+   "gloss": "ant",
+   "glossPl": "ants",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-ant: an English placeholder, to record (adoption-centre.md §1: the funny L1 animal; to record with Mum)"
+   ],
+   "aliases": [
+    "ph-ant"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.apple",
    "pos": "N",
    "gender": null,
@@ -1287,6 +1325,25 @@
    ],
    "aliases": [
     "ph-bedroom"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.bee",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bee",
+   "glossPl": "bees",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-bee: an English placeholder, to record (adoption-centre.md §1: L2)"
+   ],
+   "aliases": [
+    "ph-bee"
    ],
    "ask": {
     "word": [
@@ -2022,6 +2079,25 @@
    "aliases": [
     "clinic.item.cast",
     "w-cast"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.cat",
+   "pos": "N",
+   "gender": null,
+   "gloss": "cat",
+   "glossPl": "cats",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-cat: an English placeholder, to record (adoption-centre.md §1: L3 (Simba and Zazu are names, not the word))"
+   ],
+   "aliases": [
+    "ph-cat"
    ],
    "ask": {
     "word": [
@@ -3631,6 +3707,25 @@
    }
   },
   {
+   "id": "n.feelings",
+   "pos": "N",
+   "gender": null,
+   "gloss": "feelings",
+   "glossPl": "feelings",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-feelings: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-feelings"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.fennel-seeds",
    "pos": "N",
    "gender": null,
@@ -5143,6 +5238,25 @@
    }
   },
   {
+   "id": "n.looking-after",
+   "pos": "N",
+   "gender": null,
+   "gloss": "looking after",
+   "glossPl": "looking afters",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-jobs-pets: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-jobs-pets"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.lunchbox",
    "pos": "N",
    "gender": null,
@@ -6479,6 +6593,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.rabbit",
+   "pos": "N",
+   "gender": null,
+   "gloss": "rabbit",
+   "glossPl": "rabbits",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-rabbit: an English placeholder, to record (adoption-centre.md §1: L2; the L4 look-alike pair (big and small))"
+   ],
+   "aliases": [
+    "ph-rabbit"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -9828,6 +9961,23 @@
    ]
   },
   {
+   "id": "a.hungry",
+   "pos": "A",
+   "gloss": "hungry",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-hungry: an English placeholder, to record (adoption-centre.md §1: L3 (the party needs it too))"
+   ],
+   "aliases": [
+    "ph-hungry"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "a.left",
    "pos": "A",
    "lemma": "dabo",
@@ -10120,6 +10270,23 @@
    ],
    "aliases": [
     "ph-silver"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "a.sleepy",
+   "pos": "A",
+   "gloss": "sleepy",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-sleepy: an English placeholder, to record (adoption-centre.md §1: L3 (ask Mum whether it is the party's 'tired'))"
+   ],
+   "aliases": [
+    "ph-sleepy"
    ],
    "ask": {
     "word": [
@@ -10863,6 +11030,23 @@
    ]
   },
   {
+   "id": "v.feed",
+   "pos": "V",
+   "gloss": "feed",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-feed: an English placeholder, to record (adoption-centre.md §1, the care verbs: the bare command to a child)"
+   ],
+   "aliases": [
+    "ph-feed"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "v.fill",
    "pos": "V",
    "lemma": "bhar",
@@ -11472,6 +11656,23 @@
    ],
    "aliases": [
     "fever-put-on"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "v.put-to-bed",
+   "pos": "V",
+   "gloss": "put to bed",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json words.ph-put-to-bed: an English placeholder, to record (adoption-centre.md §1, the care verbs: put to bed / sleep; ask Mum her natural command)"
+   ],
+   "aliases": [
+    "ph-put-to-bed"
    ],
    "ask": {
     "word": [
@@ -14899,6 +15100,23 @@
    }
   },
   {
+   "id": "phrase.do-what-hannah-mami-says",
+   "pos": "Phrase",
+   "gloss": "Do what Hannah Mami says.",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json lines.care-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "pets-proto.line.care-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.do-what-the-teacher-says",
    "pos": "Phrase",
    "gloss": "Do what the teacher says.",
@@ -15540,6 +15758,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.give-each-family-its-pet",
+   "pos": "Phrase",
+   "gloss": "Give each family its pet.",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json lines.home-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "pets-proto.line.home-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -21349,6 +21584,40 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.the-families-are-coming-back-for-their-pets",
+   "pos": "Phrase",
+   "gloss": "The families are coming back for their pets!",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json lines.home-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "pets-proto.line.home-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.the-families-come-back-this-afternoon-lets-look-after-their-pets",
+   "pos": "Phrase",
+   "gloss": "The families come back this afternoon. Let's look after their pets!",
+   "status": "to-record",
+   "src": [
+    "data/pets-proto.json lines.care-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "pets-proto.line.care-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },

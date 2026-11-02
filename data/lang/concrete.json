@@ -2296,6 +2296,33 @@
    "english": "There's a hole in my {x}.",
    "what": "There's a hole in my {x}.",
    "src": "data/sewing-proto.json lines.mend-hole: an English placeholder, to record"
+  },
+  "TheXIsHungry": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is hungry.",
+   "what": "The {x} is hungry.",
+   "src": "data/pets-proto.json lines.care-hungry: an English placeholder, to record"
+  },
+  "TheXIsSleepy": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is sleepy.",
+   "what": "The {x} is sleepy.",
+   "src": "data/pets-proto.json lines.care-sleepy: an English placeholder, to record"
+  },
+  "WeVeComeForTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "We've come for the {x}.",
+   "what": "We've come for the {x}.",
+   "src": "data/pets-proto.json lines.home-come: an English placeholder, to record"
   }
  }
 }
