@@ -8,9 +8,10 @@ import { importLine, recordWord } from "./import_cook.mjs";
 const SOURCE = "parked modes";
 // (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
 // (school-proto: the school day prototypes' placeholders, data/school-proto.json; proto-school, 2 Nov)
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto", "home-proto", "party-proto"];
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto", "home-proto", "party-proto", "pets-proto"];
 // (home-proto: the home prototypes' placeholders, data/home-proto.json; proto-home, 2 Nov)
 // (party-proto: the birthday prototypes' placeholders, data/party-proto.json; proto-party, 2 Nov)
+// (pets-proto: the pet hotel prototypes' placeholders, data/pets-proto.json; proto-pets, 2 Nov)
 
 const isWordObj = (o) => o && typeof o === "object" && !Array.isArray(o) && typeof o.english === "string" && !("hex" in o && false);
 

@@ -1,0 +1,25 @@
+{
+  "_about": "The pet hotel prototypes (proto-pets, 2 Nov 2026; look after the animals, going home: build/reports/designs/adoption-centre.md and its critique): the words and lines the two games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry (pos from `pos` where given, else a noun) and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi: dog (kutro), bird (chakli), wash (dho), corn (makai), big and small (wadho, nindho) and bye (achija) are the engine's own. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-ant": { "english": "ant", "src": "adoption-centre.md §1: the funny L1 animal; to record with Mum" },
+    "ph-rabbit": { "english": "rabbit", "src": "adoption-centre.md §1: L2; the L4 look-alike pair (big and small)" },
+    "ph-bee": { "english": "bee", "src": "adoption-centre.md §1: L2" },
+    "ph-cat": { "english": "cat", "src": "adoption-centre.md §1: L3 (Simba and Zazu are names, not the word)" },
+    "ph-feed": { "english": "feed", "pos": "V", "src": "adoption-centre.md §1, the care verbs: the bare command to a child" },
+    "ph-put-to-bed": { "english": "put to bed", "pos": "V", "src": "adoption-centre.md §1, the care verbs: put to bed / sleep; ask Mum her natural command" },
+    "ph-hungry": { "english": "hungry", "pos": "A", "src": "adoption-centre.md §1: L3 (the party needs it too)" },
+    "ph-sleepy": { "english": "sleepy", "pos": "A", "src": "adoption-centre.md §1: L3 (ask Mum whether it is the party's 'tired')" },
+    "ph-animals": { "english": "animals" },
+    "ph-jobs-pets": { "english": "looking after" },
+    "ph-feelings": { "english": "feelings" }
+  },
+  "lines": {
+    "care-head": { "e": "The families come back this afternoon. Let's look after their pets!" },
+    "care-guide": { "e": "Do what Hannah Mami says." },
+    "care-hungry": { "e": "The {x} is hungry." },
+    "care-sleepy": { "e": "The {x} is sleepy." },
+    "home-head": { "e": "The families are coming back for their pets!" },
+    "home-guide": { "e": "Give each family its pet." },
+    "home-come": { "e": "We've come for the {x}." }
+  }
+}

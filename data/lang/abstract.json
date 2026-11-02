@@ -1953,6 +1953,61 @@
     "The knee is for y."
    ],
    "_sig": "[\"x\",\"y\"]"
+  },
+  "TheXIsHungry": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} is hungry.",
+   "elicit": [
+    "The knee is hungry."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheXIsSleepy": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} is sleepy.",
+   "elicit": [
+    "The knee is sleepy."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "NCornForTheX": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{n} corn for the {x}.",
+   "elicit": [
+    "two corn for the knee."
+   ],
+   "_sig": "[\"n\",\"x\"]"
+  },
+  "WeVeComeForTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "We've come for the {x}.",
+   "elicit": [
+    "We've come for the knee."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }

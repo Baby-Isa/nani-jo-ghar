@@ -1,0 +1,74 @@
+/* The pet hotel prototypes (proto-pets, 2 Nov 2026; js/pets-proto/): the play area's scene only, the school prototypes' scene rules
+   (css/school-proto.css) under pt-. The side panel is the kit's (Hannah Mami's box and the shared word tiles,
+   css/shared/word-tiles.css), never restyled here (non-negotiable 6). Colours only through tokens (--njg-proto-pets-*,
+   css/shared/tokens.css); the pictures are placeholders cut from the mock-ups (assets/pets-proto/). LAYOUT BY HEIGHT: a scene thing
+   is placed by shares of the play area (--x of its width: its middle; --y of its height: its foot; --h of its height: its height). */
+
+.pt { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.pt-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.pt-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.pt-play { position: relative; overflow: hidden; min-width: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.pt-scene { position: absolute; inset: 0; overflow: hidden; background: var(--njg-proto-sky); }
+.pt-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.pt-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.pt-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.pt-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.pt-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.pt-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.pt-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.pt-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.pt-thing.sel { animation: var(--njg-glow-anim); }
+.pt-thing.lift { translate: 0 -14%; transition: translate .25s ease-out; }
+.pt-thing.pt-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.pt-thing.pt-shake, .pt-shake { animation: ptWobble .5s ease-in-out 1; }
+@keyframes ptWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+.pt-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .pt-thing.pt-shake, .pt-shake { animation: none; } }
+
+/* ---------- the yard and the counter ---------- */
+.pt-sky { position: absolute; left: 0; top: 0; width: 100%; height: 46%; object-fit: cover; }
+.pt-hills { position: absolute; left: 0; top: 26%; width: 100%; height: 18%; object-fit: cover; object-position: 50% 100%; }
+.pt-fields { position: absolute; left: 0; top: 38%; width: 100%; height: 14%; object-fit: cover; }
+.pt-tree { z-index: 1; }
+.pt-counter { position: absolute; left: 0; right: 0; top: 52%; bottom: 0; background: var(--njg-proto-pets-counter); z-index: 2; }
+.pt-counter-edge { position: absolute; left: 0; right: 0; top: 52%; height: 1.4%; background: var(--njg-proto-pets-counter-edge); z-index: 2; }
+.pt-mat { width: calc(var(--w) * 100%); border-radius: 50%; background: var(--njg-proto-pets-mat); border: 3px solid var(--njg-proto-pets-mat-edge); z-index: 3; }
+.pt-animal { z-index: 5; transition: filter .6s; }
+.pt-animal.eat { animation: var(--njg-hop-anim); }
+.pt-animal.fluff > img { scale: 1.08; transition: scale .25s; }
+.pt-animal.asleep { filter: brightness(.72) saturate(.8); }
+.pt-tool { z-index: 6; transition: opacity .3s, filter .3s; }
+.pt-tool.off { filter: grayscale(.85); opacity: .45; cursor: default; }
+.pt-tool.away { opacity: 0; pointer-events: none; }
+
+/* ---------- the cares ---------- */
+.pt-bowl { pointer-events: none; }
+.pt-cob { position: absolute; height: 70%; bottom: 30%; left: calc(18% + var(--i) * 22%); rotate: -20deg; }
+.pt-bubble { position: absolute; width: 22%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-pets-bubble); border: 2px solid var(--njg-proto-pets-bubble-edge); pointer-events: none; animation: ptPop .3s ease-out 1; }
+@keyframes ptPop { from { scale: .2; } }
+.pt-drop { position: absolute; top: -10%; width: 5%; aspect-ratio: .6; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-proto-pets-drop); pointer-events: none; animation: ptDrop .7s ease-in 1 forwards; }
+@keyframes ptDrop { to { translate: 0 900%; opacity: 0; } }
+.pt-jug.pour { rotate: -40deg; transition: rotate .3s; }
+.pt-tub, .pt-bed { pointer-events: auto; }
+.pt-track { display: flex; align-items: center; touch-action: none; cursor: grab; }
+.pt-track-line { position: absolute; left: 0; right: 0; top: 50%; height: 34%; translate: 0 -50%; border-radius: 999px; background: var(--njg-proto-pets-track); border: 2px dashed var(--njg-proto-pets-track-edge); }
+.pt-brush { position: absolute; height: 160%; top: -30%; left: calc(var(--f, 0) * 100%); translate: -50% 0; pointer-events: none; }
+.pt-brush.back { transition: left .3s ease-out; }
+.pt-strokes { position: absolute; left: 50%; top: 120%; translate: -50% 0; display: flex; gap: 6px; }
+.pt-strokes b { width: 12px; height: 12px; border-radius: 50%; background: var(--njg-proto-pets-pip); }
+.pt-strokes b.on { background: var(--njg-gold-hi); }
+.pt-blanket { width: calc(var(--w) * 100%); border-radius: 30% 30% 12% 12%; background: var(--njg-proto-pets-blanket); border-top: 6px solid var(--njg-proto-pets-blanket-stripe); pointer-events: none; }
+.pt-zz { position: absolute; right: -20%; bottom: 180%; width: 34%; aspect-ratio: 1.3; border-radius: 50%; background: var(--njg-proto-pets-sleep); animation: ptFloat 2.4s ease-in-out infinite; }
+@keyframes ptFloat { 50% { translate: 0 -30%; } }
+@media (prefers-reduced-motion: reduce) { .pt-zz, .pt-drop { animation: none; } }
+
+/* ---------- the tiles' pair pictures (L4: the small and the big rabbit) ---------- */
+.pt-tilepic { display: block; margin: auto; height: 90%; width: auto; object-fit: contain; }
+.pt-tilepic.rabbit-small { height: 55%; }
+
+/* ---------- going home: the family behind the counter ---------- */
+.pt-mum, .pt-girl { z-index: 1; transition: opacity .5s, translate .6s ease-out; }
+.pt-family-away { opacity: 0; translate: 0 8%; }
+.pt-basket { z-index: 4; pointer-events: none; }
