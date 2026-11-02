@@ -606,23 +606,23 @@ body.w6.njg-s14 #mission.people > *, body.w6.njg-s14 #mission.people .m-order > 
    to 0.66; js/cook/ui.js writes it). Its card sizes, gaps and width follow it; words never under 14.5 px; a speaker or arrow may be
    drawn smaller, its tap area stays 48 px (::before); an item card is 1/2.5 of its row, so two and a half always show. */
 body.njg-s14 #side {
-  --njg-card14-u2: calc(2px * var(--njg-p, 1)); --njg-card14-u4: calc(4px * var(--njg-p, 1)); --njg-card14-u5: calc(5px * var(--njg-p, 1));
-  --njg-card14-u6: calc(6px * var(--njg-p, 1)); --njg-card14-u8: calc(8px * var(--njg-p, 1)); --njg-card14-u9: calc(9px * var(--njg-p, 1));
-  --njg-card14-u12: calc(12px * var(--njg-p, 1)); --njg-card14-u13: calc(13px * var(--njg-p, 1)); --njg-card14-u14: calc(14px * var(--njg-p, 1));
-  --njg-card14-u16: calc(16px * var(--njg-p, 1)); --njg-card14-u18: calc(18px * var(--njg-p, 1)); --njg-card14-u19: calc(19px * var(--njg-p, 1));
-  --njg-card14-u22: calc(22px * var(--njg-p, 1)); --njg-card14-u26: calc(26px * var(--njg-p, 1)); --njg-card14-u30: calc(30px * var(--njg-p, 1));
-  --njg-card14-u32: calc(32px * var(--njg-p, 1)); --njg-card14-u34: calc(34px * var(--njg-p, 1)); --njg-card14-u40: calc(40px * var(--njg-p, 1));
-  --njg-card14-u60: calc(60px * var(--njg-p, 1)); --njg-card14-u64: calc(64px * var(--njg-p, 1)); --njg-card14-u72: calc(72px * var(--njg-p, 1));
-  --njg-card14-u112: calc(112px * var(--njg-p, 1));
-  --njg-s1: calc(4px * var(--njg-p, 1)); --njg-s2: calc(8px * var(--njg-p, 1)); --njg-card-pad: calc(8px * var(--njg-p, 1));
-  --njg-side-pad: calc(8px * var(--njg-p, 1)); --njg-side-gap: calc(8px * var(--njg-p, 1));
-  --njg-side-h: max(14.5px, calc(19px * var(--njg-p, 1))); --njg-side-p: max(14.5px, calc(17px * var(--njg-p, 1)));
-  --njg-guide-face: max(32px, calc(56px * var(--njg-p, 1))); --njg-face: max(28px, calc(44px * var(--njg-p, 1)));
-  --njg-tap-drawn: max(30px, calc(48px * var(--njg-p, 1)));
+  --njg-card14-u2: calc(calc(var(--njg-px) * 2) * var(--njg-p, 1)); --njg-card14-u4: calc(calc(var(--njg-px) * 4) * var(--njg-p, 1)); --njg-card14-u5: calc(calc(var(--njg-px) * 5) * var(--njg-p, 1));
+  --njg-card14-u6: calc(calc(var(--njg-px) * 6) * var(--njg-p, 1)); --njg-card14-u8: calc(calc(var(--njg-px) * 8) * var(--njg-p, 1)); --njg-card14-u9: calc(calc(var(--njg-px) * 9) * var(--njg-p, 1));
+  --njg-card14-u12: calc(calc(var(--njg-px) * 12) * var(--njg-p, 1)); --njg-card14-u13: calc(calc(var(--njg-px) * 13) * var(--njg-p, 1)); --njg-card14-u14: calc(calc(var(--njg-px) * 14) * var(--njg-p, 1));
+  --njg-card14-u16: calc(calc(var(--njg-px) * 16) * var(--njg-p, 1)); --njg-card14-u18: calc(calc(var(--njg-px) * 18) * var(--njg-p, 1)); --njg-card14-u19: calc(calc(var(--njg-px) * 19) * var(--njg-p, 1));
+  --njg-card14-u22: calc(calc(var(--njg-px) * 22) * var(--njg-p, 1)); --njg-card14-u26: calc(calc(var(--njg-px) * 26) * var(--njg-p, 1)); --njg-card14-u30: calc(calc(var(--njg-px) * 30) * var(--njg-p, 1));
+  --njg-card14-u32: calc(calc(var(--njg-px) * 32) * var(--njg-p, 1)); --njg-card14-u34: calc(calc(var(--njg-px) * 34) * var(--njg-p, 1)); --njg-card14-u40: calc(calc(var(--njg-px) * 40) * var(--njg-p, 1));
+  --njg-card14-u60: calc(calc(var(--njg-px) * 60) * var(--njg-p, 1)); --njg-card14-u64: calc(calc(var(--njg-px) * 64) * var(--njg-p, 1)); --njg-card14-u72: calc(calc(var(--njg-px) * 72) * var(--njg-p, 1));
+  --njg-card14-u112: calc(calc(var(--njg-px) * 112) * var(--njg-p, 1));
+  --njg-s1: calc(calc(var(--njg-px) * 4) * var(--njg-p, 1)); --njg-s2: calc(calc(var(--njg-px) * 8) * var(--njg-p, 1)); --njg-card-pad: calc(calc(var(--njg-px) * 8) * var(--njg-p, 1));
+  --njg-side-pad: calc(calc(var(--njg-px) * 8) * var(--njg-p, 1)); --njg-side-gap: calc(calc(var(--njg-px) * 8) * var(--njg-p, 1));
+  --njg-side-h: max(calc(var(--njg-px) * 14.5), calc(calc(var(--njg-px) * 19) * var(--njg-p, 1))); --njg-side-p: max(calc(var(--njg-px) * 14.5), calc(calc(var(--njg-px) * 17) * var(--njg-p, 1)));
+  --njg-guide-face: max(calc(var(--njg-px) * 32), calc(calc(var(--njg-px) * 56) * var(--njg-p, 1))); --njg-face: max(calc(var(--njg-px) * 28), calc(calc(var(--njg-px) * 44) * var(--njg-p, 1)));
+  --njg-tap-drawn: max(calc(var(--njg-px) * 30), calc(calc(var(--njg-px) * 48) * var(--njg-p, 1)));
 }
-@media (max-height: 500px) { body.w6.njg-s14 { --njg-side-w: clamp(calc(250px * var(--njg-p, 1)), 34vw, calc(340px * var(--njg-p, 1))); } }
+@media (max-height: 500px) { body.w6.njg-s14 { --njg-side-w: clamp(calc(calc(var(--njg-px) * 250) * var(--njg-p, 1)), 34vw, calc(calc(var(--njg-px) * 340) * var(--njg-p, 1))); } }
 .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex-basis: calc((100% - 2 * var(--njg-s2)) / 2.5) !important; }
-.oc-card.oc-s14 .oc-row.oc-it14 .oc-t { font-size: clamp(14.5px, 16cqi, max(14.5px, var(--njg-card14-u32))); }
+.oc-card.oc-s14 .oc-row.oc-it14 .oc-t { font-size: clamp(calc(var(--njg-px) * 14.5), 16cqi, max(calc(var(--njg-px) * 14.5), var(--njg-card14-u32))); }
 body.njg-s14 #side .oc-row.oc-it14 > .oc-spk.wc14-spk { width: clamp(var(--njg-tap-drawn), 32cqi, max(var(--njg-tap-drawn), var(--njg-card14-u60))); height: auto; }
 body.njg-s14 #side .wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap-drawn), 13cqi, max(var(--njg-tap-drawn), var(--njg-card14-u60))); }
 body.njg-s14 #side .wc14-big .wc14-spk { width: clamp(var(--njg-tap-drawn), 25cqi, max(var(--njg-tap-drawn), var(--njg-card14-u112))); }

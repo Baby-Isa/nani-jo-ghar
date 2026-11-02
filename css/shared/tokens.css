@@ -145,6 +145,8 @@
   --njg-item-scale: 1;
   /* one scaled pixel: for art-bound sizes that have no token of their own (a conversation bubble's tail) */
   --njg-u: calc(1px * var(--njg-scale));
+  /* one plain CSS pixel, for sizes built from a scale in the shared CSS (SH-185's panel scale, SH-177's bubble scale) */
+  --njg-px: 1px;
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;
