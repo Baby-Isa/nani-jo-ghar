@@ -17,9 +17,11 @@ queue and its words are on Mum's sheet, so Sprint 18 can roll it out (and polish
    (SH-195), the reveal taught once (SH-196), the next-pan light (CHAI-68). The word moment (CHAI-67) is a new mechanic for several
    games, so it goes the new-screen way (CLAUDE.md, 27 Oct): a lab page in `js/shared/` on placeholder art (then art block 1's
    draft), his numbered choices, then chai. Plus every outstanding chai row:
-   - **to fix: code:** SH-38, SH-139, SH-141, SH-143, SH-145, SH-153, SH-162, SH-163, SH-165, SH-169, SH-174, SH-175, SH-178 to SH-182,
-     SH-184, SH-189 to SH-192, CHAI-33, CHAI-40, CHAI-50 to CHAI-52, CHAI-54 to CHAI-57, CHAI-61, CHAI-62, CK-06, CK-18, ART-31.
-   - **to fix: check** (built, to close by the audit where it can, else the judge): SH-140, SH-142, SH-144, SH-147 to SH-150, SH-152,
+   - **to fix: code:** none left in chai (2 Nov night). SH-141 and SH-162 are the other games' part only (at their roll-out).
+   - **to fix: check** (built, to close by the audit where it can, else the judge): moved here 2 Nov night, built in s15-chai-11/-12,
+     30 Oct or now: SH-38, SH-139, SH-143, SH-145, SH-153, SH-163, SH-165, SH-169, SH-174, SH-175, SH-178 to SH-182, SH-184, SH-189
+     to SH-192 (built 2 Nov night: the panel's padding, Nani's box, the headline's gaps, the current card whole in view), CHAI-33,
+     CHAI-40, CHAI-50 to CHAI-52, CHAI-54 to CHAI-57, CHAI-61, CHAI-62, CK-06, CK-18, ART-31; and from before: SH-140, SH-142, SH-144, SH-147 to SH-150, SH-152,
      SH-171, SH-176, SH-177, SH-183, SH-185 to SH-188, SH-193, SH-194, CHAI-02, CHAI-08, CHAI-19, CHAI-31, CHAI-34 to CHAI-39,
      CHAI-42, CHAI-48, CHAI-49, CHAI-58, CHAI-60, CHAI-63 to CHAI-66, CK-53, CK-54, CK-57, ART-28.
    - **Waiting on Zafar:** CHAI-53 (his user test of switching pans: CHAI-68 may answer it), SH-146.

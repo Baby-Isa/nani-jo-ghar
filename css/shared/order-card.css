@@ -337,8 +337,8 @@ html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc
 html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group):has(> .oc-irow:only-child) { flex: 1 1 calc(50% - var(--njg-s1)); }
 /* two or three to a line: the speaker's tap area starts a little left of its cell (into the gap, never the cell before's tap area),
    so the words keep their room beside it */
-html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) :is(.oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row, .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group) > .oc-irow) { padding-left: 0; }
-html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) :is(.oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row, .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group) > .oc-irow) > .oc-spk { margin-inline-start: calc(-1 * var(--njg-s2)); }
+html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) :is(.oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row:not(.oc-it14), .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group) > .oc-irow) { padding-left: 0; }
+html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc-two):not(.oc-big):not(.oc-pills) :is(.oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row:not(.oc-it14), .oc-items:has(> .oc-item:not(.oc-group) > .oc-irow > .oc-spk) > .oc-item:not(.oc-group) > .oc-irow) > .oc-spk { margin-inline-start: calc(-1 * var(--njg-s2)); }
 /* the last fold (.oc-three, Cook's fit ladder): three to a line, each cell still wider than a speaker's tap area */
 html:not([data-oc-rows="pills"]) .oc-card.oc-two.oc-three:not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row { flex-basis: calc(33.33% - var(--njg-s1)); min-width: calc(var(--njg-tap) + var(--njg-s1)); }
 html:not([data-oc-rows="pills"]) .oc-card.oc-two.oc-three:not(.oc-big):not(.oc-pills) .oc-parts:has(> .oc-row:nth-child(2) > .oc-spk) > .oc-row:is(:not(.oc-blank), .oc-worded) { min-width: min-content; } /* (a row with its word: never narrower than the word, contract-15; an all-dots row's dots fit beside its speaker) */
@@ -557,11 +557,20 @@ body.njg-s14 #guide.ng-s14.ng-open .ng-help { grid-template-rows: 1fr; }
 body.njg-s14 #guide.ng-s14 .ng-help-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--njg-card14-u6)) calc(-1 * var(--njg-card14-u6)); padding: 0 var(--njg-card14-u6) var(--njg-card14-u6); } /* room for the card's shadow: no hard, dark corner */
 body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
 @media (prefers-reduced-motion: reduce) { body.njg-s14 #guide.ng-s14 .ng-help { transition: none; } }
+/* SH-189 (Zafar, 1 Nov night: "a double spaced header bar ... much too big"): Nani's box as tall as her line and face need. Her
+   face is drawn at the panel's scale and its 48 px tap area stays, hanging past the line's box (the speakers' way, SH-185), so
+   on a phone her box is no longer held at 48 px; a shut help row adds no gap (the open card keeps its own margin above). Her
+   line sits beside the face here, never under its badge, so the badge's room below (css/shared/guide.css) is not needed. */
+body.njg-s14 #guide.ng-s14 { row-gap: 0; }
+body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - var(--njg-face-tap)) / 2); }
 
 .oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
 .oc-card.oc-s14 .oc-headline { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 .oc-card.oc-s14 .oc-headline .word { color: var(--njg-card14-kutchi); }
-.oc-card.oc-s14 .oc-items14 { margin-top: var(--njg-s2); }
+/* SH-192 (Zafar, 1 Nov night): the space above the head row's words equals the space below them to the item cards. The head
+   row is centred on the face (SH-36), so the words' extra space above and below is the same; the card's own gap under the head
+   row (with the item row's shadow room) matches its padding above, so the item row takes no margin of its own. */
+:root .oc-card.oc-s14 .oc-items.oc-items14 { margin-top: 0; }
 .oc-card.oc-s14 .oc-row14 { container-type: inline-size; position: relative; display: flex; flex-direction: row !important; flex-wrap: nowrap !important; column-gap: var(--njg-s2) !important; gap: var(--njg-s2); margin-top: 0; align-items: stretch; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; padding: var(--njg-card14-u2) var(--njg-card14-u2) var(--njg-card14-u4); -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
 .oc-card.oc-s14 .oc-row14::-webkit-scrollbar { display: none; }
 .oc-card.oc-s14 .oc-row14.oc-at-end { -webkit-mask-image: none; mask-image: none; }
@@ -582,7 +591,7 @@ body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
 .oc-card.oc-s14 .oc-row.oc-it14.wrong { border-color: var(--njg-wrong); }
 /* the orders one under the other in a list that scrolls by itself (no bar), the next one peeking under a soft fade; Nani's box stays put */
 body.w6.njg-s14 #side { overflow-y: hidden; }
-body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: var(--njg-card14-u18); /* (SH-156, 29 Oct: the cog moved to the play area's top right, so the side panel's foot is the orders' again) */ -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
+body.w6.njg-s14 #mission.people { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: var(--njg-card14-u22); /* (SH-191: as tall as the soft foot below, so the last card scrolls whole into view) (SH-156, 29 Oct: the cog moved to the play area's top right, so the side panel's foot is the orders' again) */ -webkit-mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); mask-image: linear-gradient(black calc(100% - var(--njg-card14-u22)), transparent); }
 body.w6.njg-s14 #mission.people::-webkit-scrollbar { display: none; }
 /* the item card's speaker is the s14 card's own (the round maroon one), never the kit row's ringed one (.oc-spk's look) */
 .oc-card.oc-s14 .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 4; justify-self: center; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); height: auto; aspect-ratio: 1; margin: 5cqi 0 0; padding: 0; border: 0; border-radius: 50%; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); }

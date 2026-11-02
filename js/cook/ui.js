@@ -930,6 +930,25 @@
     if (cr.top < lr.top || cr.height > lr.height) list.scrollTop = Math.max(0, list.scrollTop + (cr.top - lr.top) - 4);
     else if (cr.bottom > lr.bottom) list.scrollTop += cr.bottom - lr.bottom + 4;
   };
+  /**
+   * SH-191 (Zafar, 1 Nov night: "if the current order that's going on gets cut off at the bottom, then it needs to automatically scroll
+   * up and push the items above it up ... until there's enough space for the full menu card that's currently being ordered to be
+   * seen"): while the order is given, the speaker's card is kept whole in view. The panel's soft foot (its fade) counts as cut. When
+   * the card is cut at the top or the foot, the panel glides to the card's top, so a card above it is whole or wholly out of view,
+   * never cut (SH-169); a list that fits whole stays at its top. A card already whole in view never moves the panel.
+   */
+  UI.followCard = function (card) {
+    const list = card && card.closest && card.closest("#mission");
+    if (!list || !list.scrollTo) return;
+    const lr = list.getBoundingClientRect();
+    const cr = card.getBoundingClientRect();
+    // (the panel's soft foot: --njg-card14-u22, 22 px at the panel's scale, css/shared/order-card.css #mission.people)
+    const fade = 22 * (parseFloat(global.getComputedStyle(global.document.documentElement).getPropertyValue("--njg-p")) || 1);
+    if (cr.top >= lr.top - 1 && cr.bottom <= lr.bottom - fade + 1) return;
+    // (measured on screen: #mission is the cards' offset parent, so offsetTop is already the list's own; as far as the list scrolls)
+    const top = Math.max(0, Math.min(list.scrollHeight - list.clientHeight, list.scrollTop + (cr.top - lr.top) - 4));
+    if (Math.abs(top - list.scrollTop) > 1) list.scrollTo({ top, behavior: "smooth" });
+  };
   /** SH-177 (Zafar, 1 Nov night): every person's head on screen, in screen px, for the shared bubble rules (js/shared/conversations.js
    * placeBubble keeps every bubble off every face). */
   // SH-185: the side panel's scale (css/shared/order-card.css --njg-p): 1 at 665 px tall and above, down to 0.66 on a short window
@@ -1980,7 +1999,9 @@
           // (#mission is the scroller: with both cards in, nothing moves; else the speaker's card at the top, the folded one wholly
           // above it, never half under the panel's top)
           const cur = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
-          const aim = () => (list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, cur.offsetTop - list.offsetTop - 4));
+          // (measured on screen, as UI.followCard: the cards' offset parent is #mission itself, so the old offsetTop - list.offsetTop
+          // aimed short by the list's own place in the panel)
+          const aim = () => (list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, list.scrollTop + (cur.getBoundingClientRect().top - list.getBoundingClientRect().top) - 4));
           if (list && cur) foldGlide(list, h0, top0, aim);
         }
         prev = who;
@@ -2006,6 +2027,8 @@
             // (Zafar, 2 Nov: the row opens already scrolled so the first item's slot is whole, the one before it at the left)
             const first = rowElOf(who, r);
             if (first && OCard() && OCard().glideTo) OCard().glideTo(first, { lead: true, instant: true });
+            // (SH-191: the card has grown as it opened: cut at the panel's foot, the panel glides up until it shows whole)
+            if (first) UI.followCard(first.closest(".oc-card"));
             await Cook.wait(260);
           }
           if (item) {
@@ -2014,12 +2037,19 @@
               pop14(w);
               const slot = rowElOf(who, r);
               if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot, { lead: true });
-              // (SH-169: the speaker's card from its top, so a folded card above it is whole or wholly out of view, never cut)
+              // (SH-169, SH-191: the speaker's card whole in view, from its top when it has to move, so a folded card above it is
+              // whole or wholly out of view, never cut)
               const card = slot && slot.closest(".oc-card");
               const list = $("#mission");
-              if (card && list && list.contains(card) && list.scrollTo) list.scrollTo({ top: list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, card.offsetTop - list.offsetTop - 4), behavior: "smooth" });
+              if (card && list && list.contains(card)) UI.followCard(card);
               else if (card && card.scrollIntoView) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
             } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
+          }
+          if (!item && s14) {
+            // (an item already on the card, said along: the speaker's card kept whole in view all the same, SH-191; the s14 look only
+            // until each game's roll-out)
+            const card = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+            if (card) UI.followCard(card);
           }
           try {
             // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
