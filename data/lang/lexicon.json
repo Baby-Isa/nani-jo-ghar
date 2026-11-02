@@ -1000,6 +1000,44 @@
    }
   },
   {
+   "id": "n.aunt",
+   "pos": "N",
+   "gender": null,
+   "gloss": "aunt",
+   "glossPl": "aunts",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-aunt: an English placeholder, to record (mother's sister (masi): Mum records the kin word (party-guests.md open question 4))"
+   ],
+   "aliases": [
+    "ph-aunt"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.baby",
+   "pos": "N",
+   "gender": null,
+   "gloss": "baby",
+   "glossPl": "babies",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-baby: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-baby"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.bag",
    "pos": "N",
    "gender": null,
@@ -1030,6 +1068,25 @@
    ],
    "aliases": [
     "ph-ball"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.balloon",
+   "pos": "N",
+   "gender": null,
+   "gloss": "balloon",
+   "glossPl": "balloons",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-balloon: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-balloon"
    ],
    "ask": {
     "word": [
@@ -1730,6 +1787,44 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.cake",
+   "pos": "N",
+   "gender": null,
+   "gloss": "cake",
+   "glossPl": "cakes",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-cake: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-cake"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.candle",
+   "pos": "N",
+   "gender": null,
+   "gloss": "candle",
+   "glossPl": "candles",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-candle: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-candle"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -5410,6 +5505,25 @@
    }
   },
   {
+   "id": "n.mum",
+   "pos": "N",
+   "gender": null,
+   "gloss": "mum",
+   "glossPl": "mums",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json words.ph-mum: an English placeholder, to record (mum as a kin word with an owner (Zara's mum); the engine has Ma only as the cast's name)"
+   ],
+   "aliases": [
+    "ph-mum"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.mustard-seeds",
    "pos": "N",
    "gender": null,
@@ -8977,6 +9091,28 @@
    ]
   },
   {
+   "id": "pn.sana",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Sana",
+   "gloss": "Sana",
+   "forms": {
+    "*": "Sana"
+   },
+   "status": "draft",
+   "src": [
+    "data/party-proto.json words.nm-sana: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "nm-sana"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "pn.simba",
    "pos": "PN",
    "gender": null,
@@ -8991,6 +9127,50 @@
    ],
    "aliases": [
     "nm-simba"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "pn.yusuf",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Yusuf",
+   "gloss": "Yusuf",
+   "forms": {
+    "*": "Yusuf"
+   },
+   "status": "draft",
+   "src": [
+    "data/party-proto.json words.nm-yusuf: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "nm-yusuf"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "pn.zara",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Zara",
+   "gloss": "Zara",
+   "forms": {
+    "*": "Zara"
+   },
+   "status": "draft",
+   "src": [
+    "data/party-proto.json words.nm-zara: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "nm-zara"
    ],
    "ask": {
     "gender": [
@@ -14278,6 +14458,23 @@
    ]
   },
   {
+   "id": "phrase.dance",
+   "pos": "Phrase",
+   "gloss": "Dance!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.statues-dance: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.statues-dance"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.did-you-hear",
    "pos": "Phrase",
    "gloss": "Did you hear?",
@@ -15031,6 +15228,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.go-round-and-ask-everyone-how-they-are",
+   "pos": "Phrase",
+   "gloss": "Go round and ask everyone how they are.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.how-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.how-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -16345,6 +16559,23 @@
    }
   },
   {
+   "id": "phrase.im-cold",
+   "pos": "Phrase",
+   "gloss": "I'm cold.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-cold: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-cold"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.im-fine-and-how-are-you",
    "pos": "Phrase",
    "lemma": "aau theek ai. Aai ki aayo",
@@ -16424,6 +16655,40 @@
    ]
   },
   {
+   "id": "phrase.im-hot",
+   "pos": "Phrase",
+   "gloss": "I'm hot.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-hot: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-hot"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.im-hungry",
+   "pos": "Phrase",
+   "gloss": "I'm hungry.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-hungry: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-hungry"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.im-in-the-kitchen-a-man-or-a-woman",
    "pos": "Phrase",
    "lemma": "aau rasore me aiya",
@@ -16452,6 +16717,23 @@
    ]
   },
   {
+   "id": "phrase.im-sad",
+   "pos": "Phrase",
+   "gloss": "I'm sad.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-sad: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-sad"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.im-telling-you",
    "pos": "Phrase",
    "gloss": "I'm telling you",
@@ -16465,6 +16747,40 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.im-thirsty",
+   "pos": "Phrase",
+   "gloss": "I'm thirsty.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-thirsty: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-thirsty"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.im-tired",
+   "pos": "Phrase",
+   "gloss": "I'm tired.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.feel-tired: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.feel-tired"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -16941,6 +17257,40 @@
    }
   },
   {
+   "id": "phrase.its-zaras-birthday-the-cake",
+   "pos": "Phrase",
+   "gloss": "It's Zara's birthday: the cake!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.cake-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.cake-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.jump",
+   "pos": "Phrase",
+   "gloss": "Jump!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.statues-jump: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.statues-jump"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.just-right",
    "pos": "Phrase",
    "lemma": "barabar",
@@ -17201,6 +17551,23 @@
    ],
    "aliases": [
     "clinic.line.pipeline.lookhere"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-play-pass-the-balloon",
+   "pos": "Phrase",
+   "gloss": "Let's play pass the balloon!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.balloon-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.balloon-guide"
    ],
    "ask": {
     "word": [
@@ -18405,6 +18772,23 @@
    }
   },
   {
+   "id": "phrase.now-blow",
+   "pos": "Phrase",
+   "gloss": "Now blow!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.cake-blow: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.cake-blow"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.now-put-the-tomatoes-in",
    "pos": "Phrase",
    "lemma": "hane tameta wij",
@@ -18631,6 +19015,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.open-the-boxes-and-give-out-the-presents",
+   "pos": "Phrase",
+   "gloss": "Open the boxes and give out the presents.",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.gift-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.gift-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -19665,6 +20066,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.stand-up",
+   "pos": "Phrase",
+   "gloss": "Stand up!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.statues-stand: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.statues-stand"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -21192,6 +21610,23 @@
    ]
   },
   {
+   "id": "phrase.turn-round",
+   "pos": "Phrase",
+   "gloss": "Turn round!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.statues-turn: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.statues-turn"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.up-and-out",
    "pos": "Phrase",
    "gloss": "up and out!",
@@ -21777,6 +22212,40 @@
     "snap.line.snap-what",
     "tidy.line.whatsthis"
    ]
+  },
+  {
+   "id": "phrase.whats-your-name",
+   "pos": "Phrase",
+   "gloss": "What's your name?",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.balloon-your-name: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.balloon-your-name"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.when-the-clapping-stops-do-what-i-say",
+   "pos": "Phrase",
+   "gloss": "When the clapping stops, do what I say!",
+   "status": "to-record",
+   "src": [
+    "data/party-proto.json lines.statues-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "party-proto.line.statues-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.where",

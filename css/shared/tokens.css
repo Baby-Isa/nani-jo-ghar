@@ -205,6 +205,23 @@
   --njg-proto-draw-bed: linear-gradient(var(--njg-proto-cover) 0 55%, transparent 55%), linear-gradient(90deg, var(--njg-proto-wood-dark) 0 8%, transparent 8% 92%, var(--njg-proto-wood-dark) 92%);
   --njg-proto-draw-tap: linear-gradient(var(--njg-pewter) 0 35%, transparent 35%), linear-gradient(90deg, transparent 60%, var(--njg-pewter) 60% 85%, transparent 85%);
   --njg-proto-draw-broom: linear-gradient(var(--njg-proto-wood-dark) 0 70%, transparent 70%) 50% 0 / 22% 100% no-repeat, linear-gradient(transparent 70%, var(--njg-stick) 70%);
+  /* the birthday prototypes' placeholders (proto-party, 2 Nov 2026: js/party-proto/, css/party-proto.css) */
+  --njg-proto-party-wall: #f6e3c8;
+  --njg-proto-party-floor: #d8b48a;
+  --njg-proto-party-sofa: #9a6b8e;
+  --njg-proto-balloon: #e2574c;
+  --njg-proto-balloon-shine: rgb(255 255 255 / .45);
+  --njg-proto-balloon-fill: radial-gradient(circle at 34% 30%, var(--njg-proto-balloon-shine) 0 14%, transparent 15%), var(--njg-proto-balloon);
+  --njg-proto-bunting-a: #e2574c;
+  --njg-proto-bunting-b: #f2b134;
+  --njg-proto-bunting-c: #4f9fd6;
+  --njg-proto-cake: #8a5a3c;
+  --njg-proto-icing: #fff4e6;
+  --njg-proto-candle: #6fb7e8;
+  --njg-proto-flame: #ffb42e;
+  --njg-proto-giftbox: #b8875a;
+  --njg-proto-giftbox-tape: #8f6440;
+  --njg-proto-pose-card: #fffaf1;
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;

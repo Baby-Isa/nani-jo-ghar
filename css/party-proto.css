@@ -1,0 +1,110 @@
+/* The birthday prototypes (proto-party, 2 Nov 2026; js/party-proto/): the play area's scene only, a copy of the farm prototypes'
+   scene rules (css/farm.css) under pp-. The side panel is the kit's (the host's box and her order card on chai's s14 look,
+   css/shared/order-card.css; the word tiles, css/shared/word-tiles.css), never restyled here (non-negotiable 6). Colours are the
+   kit's tokens (the placeholders' are --njg-proto-*, css/shared/tokens.css); every placeholder shape is flat, to be swapped for the
+   art run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width: its middle; --y of
+   its height: its foot; --h of its height: its height). */
+
+.pp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.pp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.pp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.pp-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.pp-scene { position: absolute; inset: 0; overflow: hidden; }
+.pp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.pp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.pp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.pp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.pp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.pp-thing.flip > img { transform: scaleX(-1); }
+.pp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.pp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.pp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.pp-thing.sel { animation: var(--njg-glow-anim); }
+.pp-thing.lift { translate: 0 -10%; transition: translate .25s ease-out; }
+.pp-thing.pp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.pp-thing.pp-shake { animation: ppWobble .5s ease-in-out 1; }
+@keyframes ppWobble { 20%, 60% { rotate: -7deg; } 40%, 80% { rotate: 7deg; } }
+.pp-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .pp-thing.pp-shake { animation: none; } }
+
+/* ---------- the party room (placeholder: a wall with bunting, the floor, a sofa) ---------- */
+.pp-wall { position: absolute; inset: 0 0 30% 0; background: var(--njg-proto-party-wall); }
+.pp-floor { position: absolute; inset: 70% 0 0 0; background: var(--njg-proto-party-floor); }
+.pp-bunting { position: absolute; left: 0; right: 0; top: 3%; height: 7%; background:
+  conic-gradient(from 150deg at 50% 0, var(--njg-proto-bunting-a) 0 60deg, transparent 60deg) 0 0 / 6% 100% repeat-x; opacity: .9; }
+.pp-bunting.b2 { top: 4%; left: 2%; background: conic-gradient(from 150deg at 50% 0, var(--njg-proto-bunting-b) 0 60deg, transparent 60deg) 0 0 / 12% 100% repeat-x; }
+.pp-bunting.b3 { top: 4%; left: 8%; background: conic-gradient(from 150deg at 50% 0, var(--njg-proto-bunting-c) 0 60deg, transparent 60deg) 0 0 / 12% 100% repeat-x; }
+.pp-sofa { position: absolute; left: 6%; right: 6%; top: 58%; height: 16%; background: var(--njg-proto-party-sofa); border-radius: 1.2em 1.2em .4em .4em; opacity: .8; }
+.pp-table { position: absolute; left: 22%; right: 22%; top: 64%; height: 6%; background: var(--njg-proto-wood); border-bottom: .5em solid var(--njg-proto-wood-dark); border-radius: .5em; }
+
+/* ---------- a person (a placeholder picture; a seat name under them for grown-ups only: none) ---------- */
+.pp-person > img { margin: 0 auto; }
+.pp-person.pp-hold > img { filter: drop-shadow(0 0 .5em var(--njg-gold-hi)); }
+
+/* ---------- the balloon ---------- */
+.pp-balloon { position: absolute; width: 5.5%; aspect-ratio: .82; translate: -50% -50%; border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%; background: var(--njg-proto-balloon-fill); z-index: 20; pointer-events: none; transition: left .9s ease-in-out, top .9s ease-in-out; }
+.pp-balloon::after { content: ""; position: absolute; left: 50%; top: 98%; width: 2px; height: 70%; background: var(--njg-ink-soft); }
+.pp-balloon.bop { animation: ppBop .5s ease-out 1; }
+@keyframes ppBop { 30% { translate: -50% -80%; } 60% { translate: -50% -40%; } }
+
+/* ---------- a speech bubble over someone (a guest's line; the kit's word markup inside) ---------- */
+.pp-bubble { position: absolute; z-index: 30; max-width: 40%; padding: .3em .8em; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); border-radius: 1em; font: 800 var(--njg-side-h, 19px)/1.25 "Baloo 2", system-ui, sans-serif; color: var(--njg-ink); box-shadow: var(--njg-shadow); translate: -50% -100%; pointer-events: none; text-align: center; }
+.pp-bubble .word { color: var(--njg-word); }
+
+/* ---------- the tea trolley and its fixes (How are you?) ---------- */
+.pp-trolley { position: absolute; left: 4%; right: 4%; top: 80%; height: 4%; background: var(--njg-proto-wood); border-radius: .4em; }
+.pp-fix .pp-shape, .pp-toy .pp-shape { display: block; height: 100%; aspect-ratio: .8; }
+.pp-feel { position: absolute; left: 50%; top: -2%; translate: -50% -100%; width: 46%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); display: grid; place-items: center; overflow: hidden; }
+.pp-feel img { width: 100%; height: 100%; object-fit: cover; }
+.pp-feel.hide { visibility: hidden; }
+
+/* ---------- musical statues: the dancers and the pose cards ---------- */
+.pp-dancer > img { transition: rotate .15s; }
+.pp-dancer.dance > img { animation: ppDance .5s ease-in-out infinite alternate; }
+@keyframes ppDance { from { rotate: -8deg; translate: 0 0; } to { rotate: 8deg; translate: 0 -4%; } }
+.pp-dancer[data-pose="sit"] > img { scale: 1 .7; transform-origin: 50% 100%; }
+.pp-dancer[data-pose="jump"] > img { translate: 0 -22%; }
+.pp-dancer[data-pose="turn"] > img { transform: scaleX(-1); }
+.pp-dancer[data-pose="stand"] > img { scale: 1 1.04; transform-origin: 50% 100%; }
+.pp-dancer.freeze > img { animation: none; }
+@media (prefers-reduced-motion: reduce) { .pp-dancer.dance > img { animation: none; } }
+.pp-cards { position: absolute; left: 4%; right: 4%; bottom: 3%; height: 25%; display: flex; justify-content: center; gap: 3%; z-index: 12; }
+.pp-pose { all: unset; cursor: pointer; height: 100%; aspect-ratio: .8; background: var(--njg-proto-pose-card); border: 3px solid var(--njg-cream-edge); border-radius: 14px; box-shadow: var(--njg-shadow); display: grid; place-items: center; box-sizing: border-box; position: relative; }
+.pp-pose svg { width: 76%; height: 76%; color: var(--njg-ink); }
+.pp-pose.sel { animation: var(--njg-glow-anim); }
+.pp-pose.pp-shake { animation: ppWobble .5s ease-in-out 1; }
+.pp-pose[disabled] { opacity: .45; cursor: default; }
+.pp-clap { position: absolute; right: 4%; top: 14%; width: 7%; aspect-ratio: 1; display: grid; place-items: center; z-index: 13; }
+.pp-clap svg { width: 100%; height: 100%; color: var(--njg-ink-soft); }
+.pp-clap.on svg { animation: ppClap .45s ease-in-out infinite; }
+@keyframes ppClap { 50% { scale: .82; } }
+
+/* ---------- the cake and the candles ---------- */
+.pp-cake { aspect-ratio: 1.6; }
+.pp-cake .pp-sponge { position: absolute; left: 0; right: 0; bottom: 0; height: 62%; background: var(--njg-proto-cake); border-radius: .6em .6em .3em .3em; border-top: .45em solid var(--njg-proto-icing); box-sizing: border-box; }
+.pp-cake .pp-on-top { position: absolute; left: 10%; right: 10%; bottom: 62%; height: 38%; display: flex; justify-content: center; align-items: flex-end; gap: 4%; }
+.pp-candle { position: relative; width: 6%; max-width: 1.1em; height: 80%; background: var(--njg-proto-candle); border-radius: .2em; }
+.pp-candle::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 140%; aspect-ratio: .6; translate: -50% 10%; background: var(--njg-proto-flame); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; opacity: 0; transition: opacity .3s; }
+.pp-candle.lit::before { opacity: 1; }
+.pp-bundle { display: flex; justify-content: center; align-items: flex-end; gap: 6%; aspect-ratio: 1.1; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); border-radius: 12px; padding: 8% 6%; box-sizing: border-box; }
+.pp-bundle .pp-candle { height: 100%; width: 12%; max-width: none; }
+.pp-bundle-in { position: absolute; inset: 12% 8%; display: flex; justify-content: center; align-items: flex-end; gap: 6%; }
+.pp-bundle-in .pp-candle { height: 100%; width: 11%; max-width: none; }
+.pp-slice { aspect-ratio: 1.2; }
+.pp-slice::before { content: ""; position: absolute; inset: 0; background: var(--njg-proto-cake); clip-path: polygon(0 100%, 100% 100%, 100% 30%); border-top: .3em solid var(--njg-proto-icing); }
+.pp-slice::after { content: ""; position: absolute; left: 0; right: 0; top: 24%; height: 14%; background: var(--njg-proto-icing); clip-path: polygon(0 100%, 100% 0, 100% 40%, 0 140%); }
+.pp-plate { position: absolute; width: 10%; aspect-ratio: 2.6; translate: -50% 0; border-radius: 50%; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); }
+
+/* ---------- the party presents: plain brown boxes, the toys ---------- */
+.pp-box { aspect-ratio: 1.1; background: var(--njg-proto-giftbox); border-radius: .4em; box-shadow: inset 0 0 0 .2em var(--njg-proto-giftbox-tape); }
+.pp-box::before { content: ""; position: absolute; left: 44%; width: 12%; top: 0; bottom: 0; background: var(--njg-proto-giftbox-tape); }
+.pp-box.open { opacity: 0; transition: opacity .3s .2s, scale .3s; scale: 1.15; pointer-events: none; }
+.pp-toy.out { animation: ppPop .5s ease-out 1; }
+@keyframes ppPop { 0% { scale: .2; translate: 0 30%; } 70% { scale: 1.12; } 100% { scale: 1; } }
+
+/* ---------- small drawn stand-ins (the art run's pictures replace them) ---------- */
+.pp-shape svg { width: 100%; height: 100%; display: block; }
+.pp-tile-pic { display: block; max-width: 92%; max-height: 92%; object-fit: contain; }
+.pp-tile-svg { display: block; width: 74%; height: 84%; color: var(--njg-ink); }

@@ -1,0 +1,38 @@
+{
+  "_about": "The birthday prototypes (proto-party, 2 Nov 2026; js/party-proto/): the words and lines the five party games need that the family has not recorded yet (build/reports/designs/party-guests.md §1 'Mum's sheet for the party', party-gifts.md §1). Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "nm-zara": { "english": "Zara", "name": true, "src": "the birthday girl: a placeholder name (Zafar, 1 Nov: the placeholder names are fine)" },
+    "nm-yusuf": { "english": "Yusuf", "name": true, "src": "Zara's cousin: a placeholder name" },
+    "nm-sana": { "english": "Sana", "name": true, "src": "Zara's friend: a placeholder name" },
+    "ph-mum": { "english": "mum", "src": "mum as a kin word with an owner (Zara's mum); the engine has Ma only as the cast's name" },
+    "ph-aunt": { "english": "aunt", "src": "mother's sister (masi): Mum records the kin word (party-guests.md open question 4)" },
+    "ph-baby": { "english": "baby" },
+    "ph-balloon": { "english": "balloon" },
+    "ph-cake": { "english": "cake" },
+    "ph-candle": { "english": "candle" },
+    "ph-ball": { "english": "ball" },
+    "ph-teddy": { "english": "teddy" }
+  },
+  "lines": {
+    "balloon-guide": { "e": "Let's play pass the balloon!" },
+    "balloon-name": { "e": "My name is {x}." },
+    "balloon-give": { "e": "Give the balloon to {x}." },
+    "balloon-your-name": { "e": "What's your name?" },
+    "how-guide": { "e": "Go round and ask everyone how they are." },
+    "feel-hungry": { "e": "I'm hungry." },
+    "feel-thirsty": { "e": "I'm thirsty." },
+    "feel-tired": { "e": "I'm tired." },
+    "feel-sad": { "e": "I'm sad." },
+    "feel-hot": { "e": "I'm hot." },
+    "feel-cold": { "e": "I'm cold." },
+    "statues-guide": { "e": "When the clapping stops, do what I say!" },
+    "statues-jump": { "e": "Jump!" },
+    "statues-stand": { "e": "Stand up!" },
+    "statues-turn": { "e": "Turn round!" },
+    "statues-dance": { "e": "Dance!" },
+    "cake-guide": { "e": "It's Zara's birthday: the cake!" },
+    "cake-blow": { "e": "Now blow!" },
+    "gift-guide": { "e": "Open the boxes and give out the presents." },
+    "gift-for": { "e": "The {x} is for {y}." }
+  }
+}

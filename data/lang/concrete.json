@@ -2188,6 +2188,33 @@
    "english": "Rub out the {x}.",
    "what": "Rub out the {x}.",
    "src": "data/school-proto.json lines.board-rub: an English placeholder, to record"
+  },
+  "MyNameIsX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "My name is {x}.",
+   "what": "My name is {x}.",
+   "src": "data/party-proto.json lines.balloon-name: an English placeholder, to record"
+  },
+  "GiveTheBalloonToX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Give the balloon to {x}.",
+   "what": "Give the balloon to {x}.",
+   "src": "data/party-proto.json lines.balloon-give: an English placeholder, to record"
+  },
+  "TheXIsForY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is for {y}.",
+   "what": "The {x} is for {y}.",
+   "src": "data/party-proto.json lines.gift-for: an English placeholder, to record"
   }
  }
 }
