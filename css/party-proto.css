@@ -55,9 +55,7 @@
 
 /* ---------- the tea trolley and its fixes (How are you?) ---------- */
 .pp-trolley { position: absolute; left: 4%; right: 4%; top: 80%; height: 4%; background: var(--njg-proto-wood); border-radius: .4em; }
-.pp-fix { display: grid; place-items: end center; }
-.pp-fix > img { max-width: 100%; object-fit: contain; }
-.pp-fix .pp-shape { width: 100%; height: 100%; }
+.pp-fix .pp-shape, .pp-toy .pp-shape { display: block; height: 100%; aspect-ratio: .8; }
 .pp-feel { position: absolute; left: 50%; top: -2%; translate: -50% -100%; width: 46%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); display: grid; place-items: center; overflow: hidden; }
 .pp-feel img { width: 100%; height: 100%; object-fit: cover; }
 .pp-feel.hide { visibility: hidden; }
@@ -101,9 +99,6 @@
 .pp-box { aspect-ratio: 1.1; background: var(--njg-proto-giftbox); border-radius: .4em; box-shadow: inset 0 0 0 .2em var(--njg-proto-giftbox-tape); }
 .pp-box::before { content: ""; position: absolute; left: 44%; width: 12%; top: 0; bottom: 0; background: var(--njg-proto-giftbox-tape); }
 .pp-box.open { opacity: 0; transition: opacity .3s .2s, scale .3s; scale: 1.15; pointer-events: none; }
-.pp-toy { display: grid; place-items: end center; }
-.pp-toy > img { max-width: 100%; object-fit: contain; }
-.pp-toy .pp-shape { width: 100%; height: 100%; }
 .pp-toy.out { animation: ppPop .5s ease-out 1; }
 @keyframes ppPop { 0% { scale: .2; translate: 0 30%; } 70% { scale: 1.12; } 100% { scale: 1; } }
 
