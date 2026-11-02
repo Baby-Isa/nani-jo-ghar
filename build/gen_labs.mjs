@@ -226,6 +226,7 @@ export function sortEntries(modes, arcs) {
           }
           else put("Clinic: the healing games", card1(m, l));
         } else if (m.id === "farm") put("Farm prototypes (Hannah Mami, 1 Nov)", card1(m, l));
+        else if (m.id === "school-proto") put("School prototypes (Nani, then the teacher; 2 Nov)", card1(m, l));
         else put(`${esc(m.id)}`, card1(m, l));
       }
     }

@@ -7,7 +7,8 @@ import { importLine, recordWord } from "./import_cook.mjs";
 
 const SOURCE = "parked modes";
 // (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm"];
+// (school-proto: the school day prototypes' placeholders, data/school-proto.json; proto-school, 2 Nov)
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto"];
 
 const isWordObj = (o) => o && typeof o === "object" && !Array.isArray(o) && typeof o.english === "string" && !("hex" in o && false);
 

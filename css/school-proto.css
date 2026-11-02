@@ -1,0 +1,125 @@
+/* The school day prototypes (proto-school, 2 Nov 2026; js/school-proto/): the play area's scene only. The side panel is the kit's
+   (the host's box, the order card or the word tiles on chai's s14 look), never restyled here (non-negotiable 6). Colours are the
+   kit's tokens (the school's placeholders: --njg-proto-* in css/shared/tokens.css); every shape is a flat placeholder, to be
+   swapped for the art run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width:
+   its middle; --y of its height: its foot; --h of its height: its height), as the farm's (css/farm.css). */
+
+.sp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.sp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.sp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.sp-play { position: relative; overflow: hidden; min-width: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sp-scene { position: absolute; inset: 0; overflow: hidden; }
+.sp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.sp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.sp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.sp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.sp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.sp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.sp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.sp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sp-thing.sel { animation: var(--njg-glow-anim); }
+.sp-thing.lift { translate: 0 -14%; transition: translate .25s ease-out; }
+.sp-thing.sp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sp-thing.sp-shake, .sp-shake { animation: spWobble .5s ease-in-out 1; }
+@keyframes spWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+.sp-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .sp-thing.sp-shake, .sp-shake { animation: none; } }
+.sp-pic { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 6%; padding: 6% 4%; box-sizing: border-box; }
+.sp-pic img { height: 80%; width: auto; max-width: 60%; object-fit: contain; }
+
+/* ---------- the wake-up clock: the bedroom ---------- */
+.sp-wall { position: absolute; inset: 0 0 30% 0; background: var(--njg-home-wall); transition: background 1.2s; }
+.sp-floor { position: absolute; inset: 70% 0 0 0; background: var(--njg-home-wood); transition: filter 1.2s; }
+.sp-window { position: absolute; left: 6%; top: 8%; width: 18%; aspect-ratio: 1.1; border: 0.5em solid var(--njg-home-wood2); background: var(--njg-blue); overflow: hidden; box-sizing: border-box; transition: background 1.2s; }
+.sp-moon, .sp-sun { position: absolute; width: 30%; aspect-ratio: 1; border-radius: 50%; top: 18%; transition: opacity 1.2s; }
+.sp-moon { right: 16%; background: var(--njg-cream); opacity: 0; }
+.sp-sun { left: 16%; background: var(--njg-gold-hi); }
+.sp-dark .sp-wall { background: var(--njg-proto-night-wall); }
+.sp-dark .sp-floor { filter: brightness(.45); }
+.sp-dark .sp-window { background: var(--njg-proto-night); }
+.sp-dark .sp-moon { opacity: 1; }
+.sp-dark .sp-sun { opacity: 0; }
+.sp-morning .sp-window { background: var(--njg-proto-dawn); }
+.sp-wallclock { aspect-ratio: 2.3; background: var(--njg-proto-clock); border-radius: 0.6em; border: 0.3em solid var(--njg-pewter); display: grid; place-items: center; container-type: size; }
+.sp-wallclock .sp-digits { font-family: var(--njg-font-display); font-weight: 800; color: var(--njg-proto-digits); font-size: 62cqh; line-height: 1; font-variant-numeric: tabular-nums; }
+.sp-bed { aspect-ratio: 1.15; }
+.sp-bed .sp-headboard { position: absolute; left: 4%; right: 4%; top: 0; height: 55%; background: var(--njg-home-wood2); border-radius: 30% 30% 0 0 / 40% 40% 0 0; }
+.sp-bed .sp-pillow { position: absolute; left: 22%; right: 22%; top: 26%; height: 16%; background: var(--njg-cream); border-radius: 40%; }
+.sp-bed .sp-blanket { position: absolute; left: 0; right: 0; top: 52%; bottom: 0; background: var(--njg-proto-blanket); border-radius: 10% 10% 4% 4%; z-index: 2; }
+.sp-bed .sp-sleeper { position: absolute; left: 50%; top: 8%; height: 50%; width: auto; translate: -50% 0; rotate: -12deg; transition: rotate .3s, top .3s; z-index: 1; }
+.sp-bed.up .sp-sleeper { rotate: 0deg; top: -6%; }
+.sp-dark .sp-bed { filter: brightness(.7); }
+.sp-alarm { aspect-ratio: 1.6; background: var(--njg-proto-clock); border-radius: 0.4em; display: grid; place-items: center; container-type: size; }
+.sp-alarm > span { color: var(--njg-proto-digits); font-family: var(--njg-font-display); font-weight: 800; font-size: 52cqh; line-height: 1; }
+.sp-alarm.frosted::after, .sp-alarm-pic.frosted::after { content: ""; position: absolute; inset: 12%; border-radius: 0.3em; background: var(--njg-proto-chalk-dim); backdrop-filter: blur(3px); }
+.sp-alarm-pic { position: relative; display: grid; place-items: center; min-width: 34%; aspect-ratio: 1.6; background: var(--njg-proto-clock); color: var(--njg-proto-digits); border-radius: 0.3em; font-family: var(--njg-font-display); font-weight: 800; font-size: 0.9em; }
+
+/* ---------- pack the bag: the door, the bench, the things, the bag ---------- */
+.sp-door { position: absolute; right: 2%; top: 8%; width: 16%; height: 62%; background: var(--njg-home-wood2); border-radius: 0.4em 0.4em 0 0; }
+.sp-bench { background: var(--njg-home-wood2); border-radius: 0.3em; }
+.sp-bench-legs { border-left: 0.6em solid var(--njg-home-wood2); border-right: 0.6em solid var(--njg-home-wood2); }
+.sp-bag { aspect-ratio: .9; background: var(--njg-proto-bag); border-radius: 18% 18% 12% 12%; box-shadow: inset 0 -0.4em 0 var(--njg-proto-bag-dark); }
+.sp-bag .sp-bag-flap { position: absolute; left: 6%; right: 6%; top: -14%; height: 30%; background: var(--njg-proto-bag-dark); border-radius: 40% 40% 10% 10%; transform-origin: 50% 100%; rotate: -24deg; transition: rotate .4s, top .4s; }
+.sp-bag.zipped .sp-bag-flap { rotate: 0deg; top: 0; }
+.sp-bag .sp-bag-strap { position: absolute; left: 30%; right: 30%; top: -18%; height: 16%; border: 0.3em solid var(--njg-proto-bag-dark); border-bottom: 0; border-radius: 50% 50% 0 0; }
+/* the things: flat shapes until the art run (a tile shows the same shape, small) */
+.sp-obj.packed { visibility: hidden; }
+.sp-book { aspect-ratio: .78; background: var(--njg-rust); border-radius: 0.15em; box-shadow: inset 0.35em 0 0 var(--njg-brown); }
+.sp-pencil { aspect-ratio: .16; background: var(--njg-gold); border-top: 0.25em solid var(--njg-cream); border-bottom: 0.25em solid var(--njg-pewter); box-sizing: border-box; border-radius: 50% 50% 0.1em 0.1em / 18% 18% 0.1em 0.1em; }
+.sp-crayon { aspect-ratio: .3; background: var(--njg-leaf-deep); border-radius: 40% 40% 0.1em 0.1em / 20% 20% 0.1em 0.1em; }
+.sp-lunchbox { aspect-ratio: 1.4; background: var(--njg-tick-green); border-radius: 0.3em; box-shadow: inset 0 0.3em 0 var(--njg-leaf-deep); }
+.sp-ball { aspect-ratio: 1; border-radius: 50%; background: var(--njg-rust); box-shadow: inset -0.3em -0.3em 0 var(--njg-proto-swatch-shade); }
+.sp-teddy { aspect-ratio: .8; background: var(--njg-brown); border-radius: 45% 45% 40% 40%; }
+.sp-flannel { aspect-ratio: 1.2; background: var(--njg-blue); border-radius: 0.2em; }
+.sp-tilepic { position: relative; display: block; height: 70%; max-width: 80%; }
+.sp-flyer.sp-obj { aspect-ratio: auto; }
+
+/* ---------- getting ready: the children's room ---------- */
+.sp-shelf { background: var(--njg-home-wood2); border-radius: 0.2em; }
+.sp-tray { background: var(--njg-proto-wood-dark); border-radius: 0.3em; }
+.sp-obj.used { opacity: .35; pointer-events: none; }
+.sp-kid { aspect-ratio: .42; }
+.sp-kid .sp-pj { position: absolute; left: 8%; right: 8%; top: 30%; bottom: 0; background: var(--njg-proto-pyjama); border-radius: 30% 30% 6% 6% / 14% 14% 4% 4%; }
+.sp-kid .sp-face { position: absolute; left: 50%; top: 0; width: 82%; height: auto; translate: -50% 0; border-radius: 50%; }
+.sp-kid .sp-hair { position: absolute; left: 22%; right: 22%; top: -6%; height: 12%; background: var(--njg-ink-outline); clip-path: polygon(0 100%, 10% 10%, 25% 70%, 40% 0, 55% 65%, 70% 5%, 85% 70%, 100% 100%); transition: height .2s, top .2s; }
+.sp-kid.combed .sp-hair { height: 3%; top: 1%; clip-path: none; border-radius: 50% 50% 0 0; }
+.sp-kid .sp-foam { position: absolute; left: 34%; right: 34%; top: 23%; height: 4%; border-radius: 50%; background: var(--njg-white); opacity: 0; transition: opacity .2s; }
+.sp-kid.foam .sp-foam { opacity: 1; }
+
+/* ---------- the blackboard ---------- */
+.sp-classroom { background: var(--njg-cream-2); inset: 0; }
+.sp-board { position: absolute; left: 5%; right: 5%; top: 6%; bottom: 26%; background: var(--njg-proto-board); border: 0.7em solid var(--njg-proto-board-edge); border-radius: 0.4em; box-sizing: border-box; }
+.sp-tray-bar { position: absolute; left: 5%; right: 5%; top: 76%; height: 10%; background: var(--njg-proto-board-edge); border-radius: 0 0 0.4em 0.4em; display: flex; align-items: center; justify-content: center; gap: 5%; }
+.sp-tool { border: 0; padding: 0; cursor: pointer; min-width: var(--njg-tap, 48px); min-height: var(--njg-tap, 48px); background: none; position: relative; transition: translate .2s; }
+.sp-tool::before { content: ""; position: absolute; inset: 30% 0; border-radius: 0.3em; }
+.sp-chalk.white::before { background: var(--njg-proto-chalk); }
+.sp-chalk.red::before { background: var(--njg-rust); }
+.sp-chalk.green::before { background: var(--njg-tick-green); }
+.sp-duster { min-width: calc(var(--njg-tap, 48px) * 1.6); }
+.sp-duster::before { inset: 18% 0; background: var(--njg-brown); box-shadow: inset 0 -0.4em 0 var(--njg-proto-chalk-dim); }
+.sp-tool.held { translate: 0 -30%; filter: drop-shadow(0 0 0.4em var(--njg-gold-hi)); }
+.sp-boardpic { position: absolute; left: calc(var(--x) * 100%); top: 50%; translate: -50% -50%; height: 62%; aspect-ratio: 1; border: 0; padding: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: none; border-radius: 50%; transition: translate .3s, opacity .3s; }
+.sp-boardpic.group { aspect-ratio: auto; width: 24%; height: 40%; flex-wrap: wrap; gap: 4%; }
+.sp-boardpic.group .sp-chalkpic { width: 44%; height: auto; }
+.sp-boardpic.ringed { outline: 0.25em solid var(--njg-proto-chalk); outline-offset: 0.3em; }
+.sp-boardpic.dodge { translate: -10% -60%; }
+.sp-boardpic.rubbed { opacity: 0; pointer-events: none; }
+.sp-chalkpic { width: 100%; height: 100%; overflow: visible; }
+.sp-chalkpic path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.sp-chalkpic .sp-fill { stroke: none; }
+.sp-chalkpic .sp-dots { stroke: var(--njg-proto-chalk-dim); stroke-width: 2.5; stroke-dasharray: 1 5; }
+.sp-chalkpic .sp-ink { stroke: var(--njg-proto-chalk); stroke-width: 3.2; stroke-dasharray: 100; stroke-dashoffset: var(--draw, 100); }
+.sp-chalkpic.drawn .sp-ink { stroke-dashoffset: 0; }
+.sp-chalkpic.drawn .sp-dots { display: none; }
+.sp-chalkpic.coloured.red .sp-fill { fill: var(--njg-rust); }
+.sp-chalkpic.coloured.green .sp-fill { fill: var(--njg-tick-green); }
+.sp-chalkpic.tile .sp-ink { stroke: var(--njg-ink); }
+.sp-chalkpic.tile { width: 80%; height: 80%; }
+.sp-swatch { display: block; width: 60%; aspect-ratio: 1.5; border-radius: 0.3em; }
+.sp-swatch.red { background: var(--njg-rust); }
+.sp-swatch.green { background: var(--njg-tick-green); }
+.sp-dots-n { display: flex; gap: 8%; justify-content: center; width: 80%; }
+.sp-dots-n i { display: block; width: 22%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-ink); }
+.sp-alive { animation: var(--njg-hop-anim); animation-iteration-count: 2; }
