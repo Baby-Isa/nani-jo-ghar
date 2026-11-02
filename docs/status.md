@@ -8,7 +8,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Sprint 17 is open** (2 Nov, `docs/sprints/S17-chai-done-families.md`): chai done, then the families begin (`docs/process/prototype-to-game.md`).
+**Sprint 17 is open** (2 Nov, `docs/sprints/S17-chai-done-families.md`): chai polished as the stove family's reference; each sprint polishes one reference and rolls out the last (`docs/process/prototype-to-game.md`).
 
 **Where things stand (2 Nov 2026, 14:00 UK):** Sprint 16 is closed (`docs/sprints/S16-chai-final-prototypes.md`). Nothing is running.
 - **Live on `main`** (33762921): chai with every fix from Zafar's 1-2 Nov notes; farm v2 (feeding, eggs, home at dusk, grow-pick on

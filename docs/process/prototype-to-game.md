@@ -1,56 +1,84 @@
-# From prototype to finished game: by family, not one by one (Zafar, 2 Nov 2026)
+# From prototype to finished game: one reference a sprint, then its family (Zafar, 2 Nov 2026)
 
 **Why:** about 45 designed games, every one in the launch (Zafar, 2 Nov: "for now I want to work towards launching all games in the
 launch"; Gujarati and feedback come in the next big phase, after the launch). Chai took about a week and six rounds of his play, and
 most of its 60-odd rows were rules for every game. Those rules are now known; the rest of the games inherit them by code, not by
 being rebuilt one by one (Sprint 12's lesson), and never by an unattended roll-out checked on stills (Sprint 14's lesson).
-Fable reviewed this plan on 2 Nov (approve with changes: art first, a judge per strand, a Kutchi gate, Orders split in two).
+Fable reviewed the plan on 2 Nov (approve with changes: art first, a judge per strand, a Kutchi gate, Orders split in two).
 
-## Once, before the first batch (Sprint 17)
+## The rhythm (Zafar, 2 Nov): every sprint polishes one reference and rolls out the last one
 
-1. **The art queue** (`build/reports/art-queue.md`): always at least two days (about 240 images) of paste blocks ready, next first,
-   so ChatGPT's 120 a day never go unused (ART-35). The first block goes out before anything else.
-2. **The audit:** one command plays a game at L1-L4 at the four sizes, films it, and reports against the standard (clipped text,
-   overlaps, free space, the card's shape, the onboarding light, the blur rule, the leak bot, load time). Mostly existing checks,
-   joined up. It closes "to fix: check" rows by script where it can; the judge looks at what it can't.
-3. **One shared game kit** in `js/shared/`: the farm's copy folds in now and the spotlight bug is fixed in every copy (Zafar,
-   2 Nov); each other area's copy folds in at its batch's step 5, so a fix lands in every game.
-4. **The chai standard** (`docs/design-language/chai-standard.md`): one page, written from chai's rows once chai is done; every
-   rule either built into the kit or checked by the audit.
+Each sprint does two things:
+- **Polish one reference game** with Zafar, until he calls it done: a nearly-done game (Cook or the clinic first), in a **different
+  family** from the one being rolled out, so it is ready for the next sprint.
+- **Roll out last sprint's reference to its whole family:** every game in that family, prototype or nearly done, brought to the
+  reference's standard on the shared kit.
 
-## Every batch (one family), step by step
+So the reference polished in sprint N is the family rolled out in sprint N+1. A family's art and words are planned while its
+reference is being polished, one sprint ahead of its roll-out.
 
-1. **List the family:** its games, the example game, every deciding word and the earlier game that teaches it (the farm is day 2,
-   so the kitchen, the ride and the bag carry its foods and animals), its art list and its recording list. A word no earlier game
-   teaches gets the general first meeting (SH-195, SH-196); a word a picture can't show (half, full, measures) gets a word moment
-   (CHAI-67's system).
-2. **The same day, before any build:** the art block into the queue, with the target sizes stated (placeholders are fitted to it,
-   so landing the art changes data, not layout); the recording list to Mum (`/mum-round`); the example's design calls to Zafar as
-   numbered decisions, settled before anything is built.
-3. **The example game:** on the kit, to the chai standard; the audit green; the judge passes it on film.
-4. **He plays the example** → `/feedback` → fixed; he says "done". A new rule it teaches goes into the standard, the kit or a check,
-   never into one game.
-5. **The rest of the family, by Claude:** each game moved onto the kit and the standard, landed art and recordings wired, the audit
-   green, the judge on each, a short film each. In the chat, or one builder per area (two at most), on his go.
-6. **He plays the batch in one sitting** (one play sheet of lab links) → `/feedback` → rows the same day; a second round only for
-   what failed.
-7. **The Kutchi gate:** a game is "done" only when its deciding words are recorded by the family and the leak bot is green on them;
-   until then it stays in the labs.
-8. **Publish** (`/review`, `/publish`); his "done" per game.
-9. **Overlap:** batch N+1's steps 1 and 2 are done before batch N's step 4, so the art and Mum's list are always ahead.
+**Mum's recording sheet** (`docs/language/recording-sheet.md`): every new word goes onto it as the games are made, grouped by
+family; Zafar asks for the latest version whenever he has time with her. Recording is not in step with the building (Zafar, 2 Nov).
 
-## The families (draft; each list is refined at its step 1)
+**Art:** a first draft from ChatGPT beats a code-drawn placeholder to give feedback on, even when it changes later (Zafar, 2 Nov).
+The art queue (`build/reports/art-queue.md`) always holds at least two days (about 240 images) of paste blocks (ART-35).
 
-| Family | Example | The rest |
+## The sprint chain (proposed)
+
+| Sprint | Polish (the reference) | Roll out (last sprint's reference, to its family) | Art block made |
+|---|---|---|---|
+| 17 | chai (make at the stove) | the shared ground instead: the audit, the kit's spotlight fix, the chai standard | 1: the stove family, with chai's half and full moment |
+| 18 | the pantry (fetch and serve) | the stove family | 2: fetch and serve |
+| 19 | the scrape (clinic care) | fetch and serve | 3: clinic care |
+| 20 | feeding time (word tiles) | clinic care | 4: word tiles (the farm) |
+| 21 | Find it or Snap (find and snap) | word tiles | 5: find and snap |
+| 22 | Dress up (do it) | find and snap | 6: do it |
+| 23 | the conversations (talk and pay) | do it | 7: talk and pay |
+| 24 | the car ride (rides) | talk and pay, then rides | 8: rides |
+
+## The families (draft; each list is refined while its reference is polished)
+
+| Family | Reference | The rest |
 |---|---|---|
-| Make at the stove (a recipe, cooked) | chai (done) | daar, sekelo, maani, chaat, samosa, eggs at breakfast, baking, the cake, the corn stall |
-| Fetch and serve (someone asks, you find and give) | the pantry | serve at the fruit stall, the beach stalls, the cloth stall, Nani's picky shopping |
+| Make at the stove (a recipe, cooked) | chai | daar, sekelo, maani (and the rolling), chaat, samosa, eggs at breakfast, baking, the corn stall, the cake |
+| Fetch and serve (someone asks, you find and give) | the pantry | serve at the fruit stall, the beach stalls, the cloth stall, Nani's picky shopping, the pharmacy belt |
+| Clinic care (find the hurt, heal it) | the scrape | the knee, ear, tooth, fever, boing, eye, foot, tummy, hiccups, hair, taste; where does it hurt?, the hand splinter, the blocked nose, the drinks, mend |
 | Instructions on word tiles (who gets what) | feeding time | collect the eggs, home at dusk, plant and pick, pick it up and put it back, the clean-up, the pet hotel's two, pack the bag, the presents |
-| Find and snap | the photo shoot | hide and seek, who's hiding?, Snap from the jeep, Snap the guests, shells, who ate the cake?, the town map |
-| Clinic care | the scrape | where does it hurt?, the hand splinter, the blocked nose, the drinks, mend |
-| "Nani says, do it" | getting ready | musical statues (once its music is decided), pass the balloon, the wake-up clock, make, the sandcastle |
-| Talk and pay | the café order | how are you?, pay, the fitting, the picnic |
+| Find and snap | Find it or Snap (parked, nearly done) | the photo shoot, hide and seek, who's hiding?, Snap from the jeep, Snap the guests, shells, who ate the cake?, the town map |
+| "Nani says, do it" | Dress up (parked, nearly done) | getting ready, musical statues (once its music is decided), pass the balloon, the wake-up clock, make, the sandcastle, Tidy up |
+| Talk and pay | the conversations (live) | the café order, how are you?, pay, the fitting, the picnic |
 | Rides | the car ride (live) | the ride on the water, litter fishing, the blackboard (to place) |
 
-**Order of batches (proposed):** word tiles first (the farm is day 2 and its art block goes out first), then fetch and serve (the
-pantry), make at the stove, clinic care, find and snap, do it, talk and pay, rides.
+**The farm spans three families:** feeding, eggs, home at dusk and plant and pick are word tiles; the photo shoot is find and snap;
+the corn stall is make at the stove.
+
+## Once, in Sprint 17
+
+1. **The audit:** one command plays a game at L1-L4 at the four sizes, films it, and reports against the standard (clipped text,
+   overlaps, free space, the card's shape, the onboarding light, the blur rule, the leak bot, load time). Mostly existing checks,
+   joined up. It closes "to fix: check" rows by script where it can; the judge looks at what it can't.
+2. **The shared kit:** the spotlight bug fixed in every area's copy now; each area's copy folds into `js/shared/` in its family's
+   roll-out sprint.
+3. **The chai standard** (`docs/design-language/chai-standard.md`): written from chai's rows once chai is done; every rule either
+   built into the kit or checked by the audit.
+
+## Every family, step by step
+
+**While its reference is polished (sprint N):**
+1. **List the family:** its games, every deciding word and the earlier game that teaches it (the farm is day 2, so the kitchen, the
+   ride and the bag carry its foods and animals), its art list. A word no earlier game teaches gets the general first meeting
+   (SH-195, SH-196); a word a picture can't show (half, full, measures) gets a word moment (CHAI-67's system).
+2. **Before any build:** the family's art block into the queue, with target sizes stated (placeholders are fitted to it, so landing
+   the art changes data, not layout); its words onto Mum's sheet; the reference's design calls to Zafar as numbered decisions.
+3. **The reference game:** to the standard on the kit; the audit green; the judge passes it on film before he plays.
+4. **He plays the reference** → `/feedback` → fixed; he says "done". A new rule it teaches goes into the standard, the kit or a
+   check, never into one game.
+
+**The next sprint (N+1), its roll-out:**
+5. **The rest of the family, by Claude:** each game moved onto the kit and the reference's standard, landed art wired, the audit
+   green, the judge on each, a short film each. In the chat, or one builder per area (two at most), on his go.
+6. **He plays the family in one sitting** (one play sheet of lab links) → `/feedback` → rows the same day; a second round only for
+   what failed.
+7. **Publish** (`/review`, `/publish`); his "done" per game.
+8. **The Kutchi gate, before the stores:** a game is store-ready only when its deciding words are recorded by the family and the
+   leak bot is green on them.

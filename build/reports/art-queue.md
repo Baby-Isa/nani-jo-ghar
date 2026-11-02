@@ -7,5 +7,5 @@ Windows, PowerToys Awake.
 
 | # | Block | Images (about) | Status |
 |---|---|---|---|
-| 1 | The farm's three (feeding, eggs, home at dusk: Hannah Mami, the plain hen and goat, the egg, the mango outline, colour blobs, the yard and barn) and chai's word moment (an opaque vessel held tilted, its tea stream, two chai glasses half and full, the snap frame: ART-36) | to plan | being planned (Sprint 17) |
-| 2 | The pantry's word-adds and labels (PAN-06) | to plan | queued |
+| 1 | The stove family's games still on placeholders (the cake, eggs at breakfast, baking, the corn stall) and chai's half and full word moment (a new piece for the teaching moment only: an opaque vessel held tilted, its tea stream, two chai glasses half and full, the snap frame: ART-36) | to plan | being planned (Sprint 17, for the stove roll-out in Sprint 18) |
+| 2 | Fetch and serve: the pantry's labels, shelves and meat (PAN-06) and the stalls | to plan | queued (made in Sprint 18) |
