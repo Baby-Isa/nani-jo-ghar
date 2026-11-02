@@ -19,6 +19,6 @@ Start with `CLAUDE.md`, then `docs/status.md` "Next chat". Open anything else on
 
 ## How it is built
 - `architecture/`: `target-model.md`, `shared-api.md`, `code-map.md`, `building-games.md`, `clinic-heal-api.md`, `cook-recipes-guide.md`, `evidence-loop.md`, `testing.md` (ports, browser-test lessons, the contract checks), `speech-recognition-plan.md`, `technical-plan.md`.
-- `process/`: `checks-to-build.md`, `qa-checklist.md`, `mode-design-method.md`, `session-brief-template.md`, `cost-and-speed.md`, `overnight-log.md`.
+- `process/`: `checks-to-build.md`, `qa-checklist.md`, `mode-design-method.md`, `session-brief-template.md`, `cost-and-speed.md`, `overnight-log.md`, `prototype-to-game.md` (from prototype to finished game, by family).
 - `sprints/`: the current sprint and `TEMPLATE.md` (closed sprints in `archive/sprints/`).
 - The old rulebook: `archive/process/rules-2026-10-13.md`, with `archive/process/rules-redirect.md` saying where each letter of rules lives now.

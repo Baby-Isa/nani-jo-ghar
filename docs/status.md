@@ -2,11 +2,13 @@
 
 The orchestrator rewrites **Next chat** at every step end (`/handover`). Open questions for Zafar are in `docs/questions.md`.
 
-**The end point:** the app is live on the stores with Arc 1 (the Birthday) plus the repeatable day-out trips, and every game mode appears at least once.
+**The end point:** the app is live on the stores with Arc 1 (the Birthday) plus the repeatable day-out trips, and every designed game in it (Zafar, 2 Nov: "for now I want to work towards launching all games in the launch"); Gujarati and his feedback rounds come in the next big phase, after the launch.
 
 ---
 
 ## Next chat
+
+**Sprint 17 is open** (2 Nov, `docs/sprints/S17-chai-done-families.md`): chai done, then the families begin (`docs/process/prototype-to-game.md`).
 
 **Where things stand (2 Nov 2026, 14:00 UK):** Sprint 16 is closed (`docs/sprints/S16-chai-final-prototypes.md`). Nothing is running.
 - **Live on `main`** (33762921): chai with every fix from Zafar's 1-2 Nov notes; farm v2 (feeding, eggs, home at dusk, grow-pick on
