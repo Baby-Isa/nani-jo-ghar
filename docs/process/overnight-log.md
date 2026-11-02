@@ -112,3 +112,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-01 19:43 UK · Published 20261101T194110Z to main (c6cf44a1); Pages serving it.
 - 2026-11-02 00:42 UK · Published 20261102T004020Z to main (0e15bb4c); Pages serving it.
 - 2026-11-02 08:40 UK · Published 20261102T083741Z to main (33762921); Pages serving it.
+- 2026-11-02 17:45 UK · s17-art1 (builder): art block 1 planned, 29 prompts (stove family and chai's word moment), block ready once merged and pushed.

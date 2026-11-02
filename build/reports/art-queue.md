@@ -7,5 +7,5 @@ Windows, PowerToys Awake.
 
 | # | Block | Images (about) | Status |
 |---|---|---|---|
-| 1 | The stove family's games still on placeholders (the cake, eggs at breakfast, baking, the corn stall) and chai's half and full word moment (a new piece for the teaching moment only: an opaque vessel held tilted, its tea stream, two chai glasses half and full, the snap frame: ART-36) | to plan | being planned (Sprint 17, for the stove roll-out in Sprint 18) |
+| 1 | The stove family's games still on placeholders (the cake, eggs at breakfast, baking, the corn stall) and chai's half and full word moment (a new piece for the teaching moment only: an opaque kettle held tilted, its tea stream, the glass half and full side-on, the snap: ART-36). Plan `docs/design-language/art-plans/s17-art1-art-plan.md`, block `s17-art1-chrome-block.txt` (first draft, 7 questions in its §7) | 29 prompts (about 38-40 with redos; 108 game pictures) | ready (once merged and pushed: its two cake references must be on the branch; Sprint 17, for the stove roll-out in Sprint 18) |
 | 2 | Fetch and serve: the pantry's labels, shelves and meat (PAN-06) and the stalls | to plan | queued (made in Sprint 18) |
