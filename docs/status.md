@@ -8,7 +8,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, about 23:10 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`, the plan
+**Where things stand (2 Nov 2026, about 23:40 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`, the plan
 `docs/sprints/plan.md`). Nothing is running. `main` is unchanged (c6cf44a).
 - **Done on the branch tonight:**
   - Chai's side panel: equal item padding (SH-190), Nani's box as tall as it needs (SH-189), the headline's gaps equal (SH-192),
@@ -19,24 +19,29 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
   - Check tools: contract-42 (face sizes read as 0 since SH-185) and contract-78 (returning players) fixed.
 - **Chai's contract run** (same tools, before and after tonight): 46 breaks before, 42 after. Still there: contract-79 (23, the order
   card's light while something moves), -72 (5), -51 (5, CHAI-69, cause to measure), -83 (2, the L4 card over Nana), -89 (2), -78 (1).
-- Another session made the Simba paste block (`s17-simba-chrome-block.txt`, queue row 1b).
+- **Art block 1 and Simba landed** (Zafar ran them; pushed to `main` in `assets/ChatGPT 261102/`, moved on the branch to
+  `sources/art/s17-art1/` and `sources/art/s17-simba/`, named by the run log): 28 of 29 kept (BK and CX kept as FAIL best tries;
+  BL skipped). Not yet judged by script, cut or wired. On `main` the raw folder stays until the next publish.
 
 **Next steps, in order (Sprint 17):**
-1. **Chai's remaining contract breaks** above, in this chat (Opus, high), then `audit.mjs chai-tray` green.
-2. **The judge on chai** (`sprintcheck.mjs`, the `judge` agent, Fable, about $10) on Zafar's go, then his play; he says "done".
-3. **The word moment:** his four choices on the lab page, then into chai's first L4 order (CHAI-67).
-4. **Art block 2** (fetch and serve) into `build/reports/art-queue.md`: a builder (Opus, high, about $10-15) on his go.
-5. **The chai standard page** once he says chai is done; then Sprint 18 made ready (the stove family listed, Mum's sheet, the
+1. **Block 1's art:** `artjudge.py`, cut the word moment's pieces (the kettle, the five side-on glasses, the stream, the snap
+   corners), the lab page on them; the rest cut for Sprint 18's roll-out. Simba's six sheets to Zafar to judge.
+2. **Chai's remaining contract breaks** above, in the chat (Opus, high), then `audit.mjs chai-tray` green.
+3. **The judge on chai** (`sprintcheck.mjs`, the `judge` agent, Fable, about $10) on Zafar's go, then his play; he says "done".
+4. **The word moment:** his four choices on the lab page, then into chai's first L4 order (CHAI-67).
+5. **Art block 2** (fetch and serve) into `build/reports/art-queue.md`: a builder (Opus, high, about $10-15) on his go.
+6. **The chai standard page** once he says chai is done; then Sprint 18 made ready (the stove family listed, Mum's sheet, the
    pantry's decisions).
 
 **Open questions to Zafar:**
 1. The word moment's four choices (`lab/word-moment.html`).
 2. Go for the judge on chai (after step 1) and for the art block 2 builder.
-3. Mum's words (`docs/questions.md`).
+3. Simba's six sheets (`sources/art/s17-simba/`): which to keep.
+4. Mum's words (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: chai's remaining
-> contract breaks, then `audit.mjs chai-tray` green, then the judge on chai before I play it. Take my notes with `/feedback`. Work on
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: block 1's art judged, cut and
+> on the word moment's lab page; chai's remaining contract breaks, then `audit.mjs chai-tray` green, then the judge on chai before I play it. Take my notes with `/feedback`. Work on
 > branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
