@@ -556,8 +556,9 @@ export async function createSewing(el, ctx, game, PERSON = NANI) {
     return Promise.resolve(ctx.onboard(name, [{ spotlight: t, wait: "sw-act" }], { container: doc.body })).catch(() => "skipped");
   }
   let playing = false;
+  let paused = false; // (a tool at work after the right choice: the cut, the machine, the needle: no hint while it runs)
   ctx.every(T(250), () => {
-    if (!playing || introOn || dead || (W.Onboard && W.Onboard.active && W.Onboard.active())) return;
+    if (!playing || paused || introOn || dead || (W.Onboard && W.Onboard.active && W.Onboard.active())) return;
     const idle = Date.now() - lastAct;
     const r = curRow();
     if (!r) return;
@@ -796,6 +797,7 @@ export async function createSewing(el, ctx, game, PERSON = NANI) {
     track,
     setPose,
     sleep,
+    doc,
     stopVoice,
     focus: (r) => (focusRow = r || null),
     sentence,
@@ -806,6 +808,15 @@ export async function createSewing(el, ctx, game, PERSON = NANI) {
     },
     helper,
     rowEl: (r) => rowEls[r.key],
+    /** The choice is made and a tool is at work (no hints, no helper) until pause(false). */
+    pause(on) {
+      paused = !!on;
+      lastAct = Date.now();
+      if (on) {
+        helper(false);
+        closeSpot();
+      }
+    },
     begin() {
       playing = true;
       started = Date.now();

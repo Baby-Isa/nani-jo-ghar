@@ -82,3 +82,40 @@
 .sw-clothbag-strap { position: absolute; left: 22%; right: 22%; top: -30%; height: 34%; border: 0.25em solid var(--njg-ink-outline); border-bottom: 0; border-radius: 50% 50% 0 0; }
 .sw-piece > svg { aspect-ratio: 1.3; }
 .sw-flypiece { background: var(--c); border-radius: 0.2em; border: 0.12em solid var(--njg-ink-outline); box-sizing: border-box; }
+
+/* ---------- make: Big Ma's table, straight down ---------- */
+.sw-table { position: absolute; inset: 0; background: var(--njg-proto-wood); }
+.sw-cloth { background: var(--c); border-radius: 0.3em; box-shadow: inset 0 0 0 0.15em var(--njg-proto-cloth-edge); }
+.sw-watch > img { border-radius: 50%; box-shadow: 0 0 0 var(--njg-line-2) var(--njg-cream); }
+.sw-machine { background: var(--njg-proto-machine); border-radius: 0.6em; }
+.sw-machine-arm { position: absolute; left: 8%; right: 30%; top: 22%; height: 26%; background: var(--njg-proto-metal); border-radius: 0.4em; }
+.sw-machine-wheel { position: absolute; right: 6%; top: 18%; width: 16%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-metal); box-shadow: inset 0 0 0 0.3em var(--njg-proto-machine); }
+.sw-machine-plate { position: absolute; left: 18%; width: 14%; bottom: 8%; height: 24%; background: var(--njg-proto-metal); border-radius: 0.2em; }
+.sw-machine.sw-run { animation: swRun .12s linear 3; }
+@keyframes swRun { 50% { translate: -50% 2%; } }
+.sw-rail { border-left: 0.5em solid var(--njg-proto-wood-dark); border-radius: 0.2em; }
+.sw-made.sw-arrive { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sw-pattern > svg { filter: drop-shadow(0 0.15em 0 var(--njg-proto-paper-edge)); }
+.sw-outline .sw-chalked .sw-f { fill: none; stroke: var(--njg-proto-chalk); stroke-width: 1.4; stroke-dasharray: 3 2; opacity: 0; transition: opacity .5s; }
+.sw-outline .sw-chalked .sw-seam, .sw-outline .sw-chalked .sw-btn, .sw-outline .sw-chalked .sw-pocket { display: none; }
+.sw-outline.traced .sw-chalked .sw-f { opacity: 1; }
+.sw-outline.cut .sw-chalked .sw-f { fill: var(--c); stroke: var(--njg-ink-outline); stroke-dasharray: none; filter: brightness(1.08); }
+.sw-outline.cut-short .sw-chalked .sw-f { clip-path: inset(0 0 26% 0); }
+.sw-outline.to-machine { transition: translate .45s ease-in, scale .45s ease-in, opacity .45s; translate: -30% -60%; scale: .4; opacity: 0; }
+.sw-hem { position: absolute; left: 16%; width: 68%; height: 0; padding: 0; margin: 0; background: none; border: 0; border-top: 0.3em dashed var(--njg-proto-chalk); translate: 0 -50%; cursor: pointer; z-index: 3; }
+.sw-hem::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: var(--njg-tap, 48px); translate: 0 -50%; }
+.sw-hem.lit { border-top-color: var(--njg-gold-hi); }
+.sw-hem.off { opacity: .35; }
+.sw-offcut { position: absolute; left: 22%; width: 56%; height: 10%; background: var(--c); border: 0.1em solid var(--njg-ink-outline); animation: swDrop .9s ease-in 1 forwards; }
+@keyframes swDrop { to { translate: 30% 160%; rotate: 24deg; opacity: 0; } }
+.sw-tool-cloth { border-radius: 0.4em; }
+.sw-tin { background: var(--njg-proto-metal); border-radius: 50% / 30%; box-shadow: inset 0 0 0 0.3em var(--njg-proto-cloth-edge); }
+.sw-tinbtn { position: absolute; width: 18%; aspect-ratio: 1; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; }
+.sw-tinbtn.small { width: 13%; }
+.sw-tinbtn > svg { width: 100%; height: 100%; display: block; }
+.sw-tinbtn::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sw-tinbtn.used { visibility: hidden; }
+.sw-spot { position: absolute; left: 50%; width: 6%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; border: 0.12em dashed var(--njg-ink-outline); box-sizing: border-box; }
+.sw-spot.on { background: var(--c); border-style: solid; }
+.sw-flybtn { border-radius: 50%; background: var(--c); border: 0.1em solid var(--njg-ink-outline); box-sizing: border-box; }
+.sw-flypattern { background: var(--njg-proto-paper); border-radius: 0.3em; opacity: .8; }
