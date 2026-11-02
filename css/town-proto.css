@@ -90,13 +90,14 @@
 .tp-tin { aspect-ratio: 1; background: var(--njg-proto-steel); border-radius: .5em .5em 1em 1em; border: .3em solid var(--njg-proto-steel-dark); box-sizing: border-box; }
 
 /* ---------- the town map: the map picture, the places, the face strip, the walkers ---------- */
-.tp-map { position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 1672 / 712; max-height: 76%; width: 100%; overflow: hidden; }
+.tp-town { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.tp-map { position: relative; flex: none; width: 100%; aspect-ratio: 1672 / 712; overflow: hidden; }
 .tp-map > img.tp-mapimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
-.tp-place { position: absolute; left: calc(var(--x) * 100%); top: calc(var(--y) * 100%); width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); translate: -50% -50%; border: 0; padding: 0; background: none; border-radius: 1em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tp-place { position: absolute; left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%); width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); border: 0; padding: 0; background: none; border-radius: 1em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .tp-place.closed { background: var(--njg-proto-closed); cursor: default; }
 .tp-place.tp-shake { animation: tpWobble .5s ease-in-out 1; }
 .tp-place.lit { box-shadow: 0 0 0 .3em var(--njg-gold); }
-.tp-strip { position: absolute; left: 0; right: 0; bottom: 0; top: min(76%, calc(100vw * 0)); background: var(--njg-proto-grass); display: flex; align-items: center; justify-content: space-evenly; padding: 0 4%; }
+.tp-strip { position: relative; flex: 1 1 auto; min-height: 0; background: var(--njg-proto-grass); display: flex; align-items: center; justify-content: space-evenly; padding: 0 4%; }
 .tp-face { position: relative; height: min(78%, 9em); aspect-ratio: 1; border-radius: 50%; border: 0; padding: 0; background: var(--njg-cream-2); box-shadow: 0 0 0 .3em var(--njg-white); cursor: pointer; transition: translate .2s ease-out; }
 .tp-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; pointer-events: none; }
 .tp-face.up { translate: 0 -12%; box-shadow: 0 0 0 .3em var(--njg-gold), 0 0 1em .3em var(--njg-gold); }

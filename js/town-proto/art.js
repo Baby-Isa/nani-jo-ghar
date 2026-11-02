@@ -51,8 +51,8 @@ export const PLACES = {
 /** What each place gives the one who went in (carried back; the thing asked for at L3). */
 export const THINGS = {
   market: { lex: "n.mango", img: "assets/items/fruit/fru-05.png", plural: true },
-  bakery: { lex: "n.bread", img: null },
-  library: { lex: "n.book", img: null },
-  clinic: { lex: "n.medicine", img: null },
-  "post-office": { lex: "n.letter", img: null },
+  bakery: { lex: "n.bread", img: `${TP}thing-bread.webp` },
+  library: { lex: "n.book", img: `${TP}thing-book.webp` },
+  clinic: { lex: "n.medicine", img: `${TP}thing-medicine.webp` },
+  "post-office": { lex: "n.letter", img: `${TP}thing-letter.webp` },
 };
