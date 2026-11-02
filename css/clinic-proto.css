@@ -1,0 +1,75 @@
+/* The clinic prototypes (proto-clinic, 2 Nov 2026; js/clinic/proto/): a copy of the farm prototypes' scene rules (css/farm.css)
+   under cp-, the clinic's room, and the sentence layout's word tiles (proto brief, 2 Nov). The side panel's box and order card
+   are the kit's (css/shared/order-card.css), never restyled. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area
+   (--x of its width: its middle; --y of its height: its foot; --h of its height: its height). Placeholders are flat shapes. */
+.cp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.cp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.cp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.cp-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.cp-scene { position: absolute; inset: 0; overflow: hidden; }
+.cp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.cp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.cp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.cp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.cp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.cp-thing.flip > img { transform: scaleX(-1); }
+.cp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.cp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.cp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.cp-thing.sel { animation: var(--njg-glow-anim); }
+.cp-thing.lift { translate: 0 -14%; transition: translate .25s ease-out; }
+.cp-thing.cp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.cp-thing.cp-shake { animation: cpWobble .5s ease-in-out 1; }
+@keyframes cpWobble { 20%, 60% { rotate: -7deg; } 40%, 80% { rotate: 7deg; } }
+.cp-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .cp-thing.cp-shake { animation: none; } }
+
+/* ---------- the clinic's room (placeholder: a wall, the floor, the bed's edge; the counter for the drinks) ---------- */
+.cp-wall { position: absolute; inset: 0 0 26% 0; background: var(--njg-cream-2); }
+.cp-floor { position: absolute; inset: 74% 0 0 0; background: var(--njg-cream-edge); }
+.cp-bed { position: absolute; left: 30%; right: 30%; top: 66%; height: 12%; background: var(--njg-cream); border-radius: 1em 1em 0 0; border-bottom: 0.4em solid var(--njg-cream-lip); }
+.cp-counter { position: absolute; left: 0; right: 0; top: 66%; bottom: 0; background: var(--njg-home-wood, #b98a5a); border-top: 0.4em solid var(--njg-home-wood2, #8a5f3a); }
+.cp-traybox { background: var(--njg-pewter, #c9c4bb); border-radius: 0.8em; }
+
+/* ---------- the sentence layout: the person's line big, its key words underlined; word tiles in labelled groups ---------- */
+.cp-sentence #guide .word { text-decoration: underline; text-decoration-thickness: 0.12em; text-underline-offset: 0.18em; }
+.cp-tiles { overflow-y: auto; overflow-x: hidden; flex: 1 1 auto; }
+.cp-tgroup { display: flex; flex-direction: column; gap: 4px; }
+.cp-tlabel { font: 800 0.8rem/1.2 "Nunito", system-ui, sans-serif; color: var(--njg-ink-soft); padding-left: 2px; }
+.cp-tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
+.cp-tile { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 3px 5px; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); border-radius: 12px; box-sizing: border-box; min-width: 0; transition: border-color .15s, box-shadow .15s; }
+.cp-tile.on { border-color: var(--njg-gold-hi); box-shadow: 0 0 0 3px var(--njg-gold-hi); }
+.cp-tpic { width: 100%; height: 44px; overflow: hidden; }
+.cp-tpic img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.cp-tword { all: unset; font: 800 0.95rem/1.15 "Baloo 2", system-ui, sans-serif; color: var(--njg-word); text-align: center; overflow-wrap: anywhere; min-height: 1.15em; }
+.cp-tword .njg-ph { color: var(--njg-ink-soft); font-style: italic; font-weight: 600; }
+.cp-tword.dots { color: var(--njg-ink-soft); cursor: pointer; letter-spacing: 0.05em; }
+.cp-tsay { all: unset; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; background: var(--njg-cream-2); border: 2px solid var(--njg-cream-edge); display: grid; place-items: center; color: var(--njg-ink); box-sizing: border-box; }
+.cp-tsay svg { width: 26px; height: 26px; }
+
+/* ---------- a patient's tap targets (invisible; a found part glows soft red) and the face zoom ---------- */
+.cp-body { position: absolute; transform-origin: 50% 0; transition: transform .7s ease-in-out; }
+.cp-body > img { display: block; height: 100%; width: auto; pointer-events: none; }
+.cp-spot { position: absolute; width: calc(var(--r) * 2); height: calc(var(--r) * 2); translate: -50% -50%; border-radius: 50%; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; }
+.cp-spot.found { background: radial-gradient(circle, rgba(230, 80, 70, .5), rgba(230, 80, 70, 0) 70%); }
+.cp-face { position: absolute; inset: 0; display: none; place-items: center; background: var(--njg-cream-2); z-index: 20; }
+.cp-face.open { display: grid; animation: cpZoom .5s ease-out 1; }
+@keyframes cpZoom { from { transform: scale(.35); opacity: .2; } to { transform: none; opacity: 1; } }
+.cp-face .cp-facebox { position: relative; height: 96%; aspect-ratio: 1; }
+.cp-face .cp-facebox > img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* ---------- small placeholder shapes (the art run's pictures replace them) ---------- */
+.cp-palm { position: absolute; background: #e7b48f; border-radius: 42% 42% 36% 36% / 30% 30% 46% 46%; }
+.cp-finger { position: absolute; background: #e7b48f; border-radius: 999px; }
+.cp-channel { position: absolute; background: rgba(255, 238, 220, .95); border-radius: 999px; }
+.cp-dirt { position: absolute; width: 3%; aspect-ratio: 1; border-radius: 50%; background: #7a5a3a; opacity: .7; transition: opacity .4s; translate: -50% -50%; }
+.cp-dirt.gone { opacity: 0; }
+.cp-splinter { position: absolute; width: 5%; height: 10px; background: #6b4423; border-radius: 3px; translate: -50% -50%; touch-action: none; cursor: grab; z-index: 5; }
+.cp-splinter::after { content: ""; position: absolute; left: -16px; right: -16px; top: -20px; bottom: -20px; }
+.cp-plaster { position: absolute; width: 8%; aspect-ratio: 2.2; translate: -50% -50%; background: #f1c9a0; border: 2px solid #d9a77a; border-radius: 30%; z-index: 6; }
+.cp-cup-in { position: absolute; left: 50%; bottom: 30%; translate: -50% 0; display: flex; gap: 2px; height: 34%; }
+.cp-cup-in img { height: 100%; width: auto; }
+.cp-bubble { position: absolute; z-index: 30; padding: .25em .7em; background: var(--njg-cream); border-radius: 1em; font: 800 1.4rem/1.2 "Baloo 2", system-ui, sans-serif; color: var(--njg-ink); box-shadow: 0 3px 10px rgba(0, 0, 0, .12); translate: -50% -100%; pointer-events: none; }
+.cp-drop { position: absolute; width: 2.4%; aspect-ratio: .7; translate: -50% 0; pointer-events: none; z-index: 8; }
