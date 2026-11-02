@@ -113,7 +113,7 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 - A charcoal, near-black Russian Blue.
 - Solid, round-faced and heavier.
 - Pale mint-green eyes.
-- A dark collar with a small silver bell.
+- No collar (Zafar, 2 Nov 2026; his approved sheet: `sources/art/characters/char-simba-v1.png`).
 
 **Zazu** (`cats-*`: the lighter one):
 - A silver-grey Russian Blue, slim, with big ears.
