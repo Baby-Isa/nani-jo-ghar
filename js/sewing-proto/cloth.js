@@ -53,7 +53,7 @@ const DRAW = {
   short: () => `<path class="sw-f" d="M40 4 L60 4 L60 46 L40 46 Z"/>`,
   // the mend's what's-wrong tiles: a tear (a zig-zag slit) and a button come off (an empty spot, loose threads)
   torn: () => `<path class="sw-f" d="M10 10 L90 10 L90 90 L10 90 Z"/><path class="sw-tear" d="M22 50 L34 40 L44 58 L56 42 L66 58 L78 48"/>`,
-  off: () => `<path class="sw-f" d="M10 10 L90 10 L90 90 L10 90 Z"/><circle class="sw-gap" cx="50" cy="50" r="13"/><path class="sw-thread" d="M50 50 Q60 66 52 80 M50 50 Q38 64 44 78"/>`,
+  off: () => `<path class="sw-f" d="M10 10 L90 10 L90 90 L10 90 Z"/><circle class="sw-gap" cx="50" cy="44" r="26"/><path class="sw-thread" d="M50 44 Q64 70 54 96 M50 44 Q34 68 42 94"/>`,
   // the parts' tiles: the part alone, no fault drawn
   sleeve: () => `<path class="sw-f" d="M20 14 L52 14 L86 82 L66 92 L34 40 Z"/><path class="sw-seam" d="M66 92 L86 82"/>`,
   pocket: () => `<path class="sw-f" d="M14 10 L86 10 L86 90 L14 90 Z"/><path class="sw-pocket" d="M30 34 L70 34 L70 76 L30 76 Z"/>`,
