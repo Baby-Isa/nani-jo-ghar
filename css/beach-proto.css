@@ -1,0 +1,184 @@
+/* The beach prototypes (proto-beach, 2 Nov 2026; js/beach-proto/): the play area's scene only. The side panel is the kit's (Masi's
+   box, the word tiles on chai's s14 look), never restyled here (non-negotiable 6). Colours only through tokens (css/shared/tokens.css,
+   --njg-proto-beach-*); every shape is a flat placeholder, to be swapped for the art run's pictures. LAYOUT BY HEIGHT: a scene thing
+   is placed by shares of the play area (--x of its width: its middle; --y of its height: its foot; --h of its height: its height). */
+
+.bp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.bp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.bp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.bp-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.bp-scene { position: absolute; inset: 0; overflow: hidden; }
+.bp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.bp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.bp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.bp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; transition: left 1s ease-in, translate .3s, opacity .3s, filter .3s; }
+.bp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.bp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.bp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.bp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.bp-thing.sel { animation: var(--njg-glow-anim); }
+.bp-thing.lift { translate: 0 -14%; }
+.bp-thing.bp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.bp-thing.bp-shake, .bp-shake { animation: bpWobble .5s ease-in-out 1; }
+@keyframes bpWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+.bp-thing.gone { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .bp-thing.bp-shake, .bp-shake { animation: none; } }
+.bp-tilepic { position: relative; display: block; width: 62%; height: auto; max-height: 90%; margin-bottom: 6%; }
+.bp-tilepic.small { width: 36%; }
+.bp-dots { display: flex; gap: 8%; justify-content: center; align-items: center; width: 80%; height: 60%; }
+.bp-dots i { display: block; width: 22%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-ink); }
+
+/* ---------- the beach: sand, the wet edge, the sea ---------- */
+.bp-sand { position: absolute; inset: 0; background: var(--njg-proto-beach-sand); }
+.bp-wet { position: absolute; left: 0; right: 0; top: 0; height: 30%; background: var(--njg-proto-beach-wet); }
+.bp-sea { position: absolute; left: 0; right: 0; top: 0; height: 14%; background: var(--njg-proto-beach-sea); border-bottom: 0.5em solid var(--njg-proto-beach-foam); transition: height .6s ease-in-out; }
+.bp-sea.wave { height: 34%; }
+.bp-sky { position: absolute; left: 0; right: 0; top: 0; height: 30%; background: var(--njg-proto-beach-sky); }
+.bp-horizon { position: absolute; left: 0; right: 0; top: 30%; height: 12%; background: var(--njg-proto-beach-sea); border-bottom: 0.4em solid var(--njg-proto-beach-foam); }
+.bp-far-sand { position: absolute; left: 0; right: 0; top: 42%; bottom: 0; background: var(--njg-proto-beach-sand); }
+
+/* ---------- shells (top-down): a shell, a pile, a pebble, the crab, the bucket ---------- */
+.bp-shell { aspect-ratio: 1.1; background: var(--njg-proto-beach-shell); border: 0.18em solid var(--njg-proto-beach-shell-edge); border-radius: 50% 50% 18% 18% / 70% 70% 30% 30%; }
+.bp-shell::before { content: ""; position: absolute; inset: 18% 24% 8%; border-left: 0.14em solid var(--njg-proto-beach-shell-edge); border-right: 0.14em solid var(--njg-proto-beach-shell-edge); border-radius: 50% 50% 0 0; }
+span.bp-shell { position: relative; display: block; box-sizing: border-box; }
+.bp-shell.red { background: var(--njg-proto-beach-shell-red); }
+.bp-shell.white { background: var(--njg-proto-beach-shell-white); }
+.bp-pebble { aspect-ratio: 1.3; background: var(--njg-proto-beach-pebble); border-radius: 48% 52% 45% 55%; }
+.bp-pile { display: flex; align-items: flex-end; justify-content: center; gap: 0.15em; }
+.bp-pile > .bp-shell { height: 100%; flex: 0 0 auto; }
+.bp-thing.lifted { translate: 0 -22%; }
+.bp-thing.taken { opacity: 0; pointer-events: none; }
+.bp-crab { aspect-ratio: 1.5; background: var(--njg-proto-beach-crab); border-radius: 50% 50% 40% 40%; pointer-events: none; z-index: 5; }
+.bp-crab::before, .bp-crab::after { content: ""; position: absolute; top: -24%; width: 18%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-white); box-shadow: inset 0 0 0 0.25em var(--njg-ink); }
+.bp-crab::before { left: 24%; }
+.bp-crab::after { right: 24%; }
+.bp-bucket { aspect-ratio: .95; background: var(--njg-proto-beach-bucket); border-top: 0.4em solid var(--njg-proto-beach-bucket-rim); clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%); overflow: hidden; }
+.bp-bucket .bp-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--njg-proto-beach-tower); transition: height .25s; }
+.bp-flyer.bp-shell, .bp-flyer.bp-pile, .bp-flyer.bp-pebble { aspect-ratio: auto; }
+
+/* ---------- the sandcastle (eye level): the spots, the heap and spade, the buckets, the towers ---------- */
+.bp-spot { border-radius: 50%; border: 0.18em dashed var(--njg-proto-beach-outline); background: none; }
+.bp-spot.next { border-style: solid; border-color: var(--njg-gold); }
+.bp-heap { background: var(--njg-proto-beach-tower); border-radius: 50% 50% 0.3em 0.3em / 90% 90% 0.3em 0.3em; }
+.bp-spade { position: absolute; left: 60%; bottom: 40%; width: 7%; height: 100%; background: var(--njg-proto-wood-dark); border-radius: 0.2em; rotate: 14deg; }
+.bp-spade::after { content: ""; position: absolute; left: -110%; right: -110%; bottom: 76%; height: 32%; background: var(--njg-proto-beach-awning-a); border-radius: 0.2em 0.2em 40% 40%; }
+.bp-heap-pic { aspect-ratio: 2; background: var(--njg-proto-beach-tower); border-radius: 50% 50% 0.2em 0.2em / 90% 90% 0.2em 0.2em; }
+.bp-thing.bp-bucket { transition: left .45s ease-in-out, bottom .45s ease-in-out, rotate .3s; }
+.bp-bucket.tipped { rotate: 180deg; }
+.bp-spadeful { border-radius: 50%; background: var(--njg-proto-beach-tower); }
+.bp-tower { background: var(--njg-proto-beach-tower); border-radius: 0.2em 0.2em 0 0; aspect-ratio: .9; transform-origin: 50% 100%; box-shadow: inset 0 -0.3em 0 var(--njg-proto-beach-wet); }
+.bp-tower .bp-crenel { position: absolute; left: 0; right: 0; top: -0.6em; height: 0.6em; background: var(--njg-proto-beach-tower); clip-path: polygon(0 100%, 0 0, 20% 0, 20% 50%, 40% 50%, 40% 0, 60% 0, 60% 50%, 80% 50%, 80% 0, 100% 0, 100% 100%); }
+.bp-tower.lifted-out { animation: bpShloop .4s ease-out 1; }
+@keyframes bpShloop { from { scale: 1 .6; } to { scale: 1 1; } }
+.bp-thing.bp-tower.slump { scale: 1.3 .1; opacity: 0; transition: scale .5s ease-in, opacity .5s; }
+.bp-tower .bp-ontop { position: absolute; left: 50%; bottom: 100%; translate: -50% -0.5em; height: 0.9em; }
+.bp-crab-top { position: absolute; left: 50%; bottom: 100%; translate: -50% -1.4em; height: 1.6em; display: block; }
+/* ---------- the three stalls: the row, the inside, the purse ---------- */
+.bp-stall { display: block; }
+.bp-stall .bp-awning { position: absolute; left: -4%; right: -4%; top: 0; height: 18%; background: var(--njg-proto-beach-awning-a); border-bottom: 0.5em dotted var(--njg-proto-beach-awning-b); border-radius: 0.3em 0.3em 0 0; }
+.bp-stall .bp-counter { position: absolute; left: 0; right: 0; bottom: 0; height: 42%; background: var(--njg-proto-beach-cart); border-radius: 0.3em; }
+.bp-stall .bp-sign { position: absolute; left: 50%; bottom: 6%; translate: -50% 0; height: 30%; display: flex; align-items: flex-end; z-index: 1; }
+.bp-stall .bp-sign img { height: 100%; width: auto; }
+.bp-stall .bp-sign .bp-coconut { height: 80%; position: relative; display: block; }
+.bp-stall .bp-keeper { position: absolute; left: 50%; top: 24%; translate: -50% 0; width: 22%; aspect-ratio: .7; background: var(--njg-proto-skin); border-radius: 45% 45% 30% 30%; box-shadow: 0 1.4em 0 0.4em var(--njg-proto-cover); }
+.bp-stall.done { filter: grayscale(1) brightness(1.05); }
+.bp-stall.done::after { content: ""; position: absolute; inset: 0; background: var(--njg-proto-beach-grey); border-radius: 0.3em; }
+.bp-basket img { height: 100%; width: auto; }
+.bp-inside { background: var(--njg-proto-beach-cart); z-index: 10; }
+.bp-inside::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10%; background: var(--njg-proto-beach-awning-a); border-bottom: 0.6em dotted var(--njg-proto-beach-awning-b); }
+.bp-inside::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: var(--njg-proto-wood); }
+.bp-inside > .bp-thing { z-index: 1; }
+.bp-hand { aspect-ratio: 1.2; background: var(--njg-proto-skin); border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%; box-shadow: inset 0 -0.4em 0 var(--njg-proto-plaster-edge); }
+.bp-grill { background: var(--njg-ink); border-radius: 0.3em; }
+.bp-cob img, .bp-top img, .bp-frybasket img { height: 100%; width: auto; }
+.bp-cob { display: flex; align-items: center; }
+.bp-cob .bp-cob-top { position: absolute; height: 60%; width: auto; left: 30%; top: -20%; }
+.bp-sleeve { aspect-ratio: .6; background: var(--njg-proto-beach-cone); border-radius: 0.2em 0.2em 0.6em 0.6em; border: 0.15em solid var(--njg-proto-paint-edge); }
+.bp-sleeve.full, .bp-cone.full { box-shadow: inset 0 0.6em 0 var(--njg-gold-hi); }
+.bp-fryer { background: var(--njg-pewter); border-radius: 0.2em 0.2em 1em 1em; box-shadow: inset 0 0.6em 0 var(--njg-proto-beach-oil); }
+.bp-frybasket.lifted { translate: 0 -40%; }
+.bp-cone { aspect-ratio: .7; background: var(--njg-proto-beach-cone); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.bp-coconut { aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-beach-coconut); box-shadow: inset -0.3em -0.3em 0 var(--njg-proto-swatch-shade); }
+.bp-tilepic.bp-coconut { width: auto; height: 80%; }
+.bp-thing.bp-coconut { transition: left .45s ease-in-out, bottom .45s ease-in-out; }
+.bp-coconut.chopped::before { content: ""; position: absolute; left: 22%; right: 22%; top: 4%; height: 18%; border-radius: 50%; background: var(--njg-proto-beach-coconut-in); }
+.bp-straw { position: absolute; left: 56%; bottom: 80%; width: 7%; height: 60%; background: var(--njg-proto-balloon); border-radius: 0.2em; rotate: 12deg; }
+.bp-block { background: var(--njg-proto-wood-dark); border-radius: 0.2em; }
+.bp-purse { background: var(--njg-proto-beach-purse); border-radius: 1em 1em 0.4em 0.4em; }
+.bp-stack { display: flex; flex-direction: column-reverse; align-items: center; aspect-ratio: auto; width: 4.5%; }
+.bp-stack .bp-coin, .bp-coin { display: block; width: 100%; height: 0.7em; flex: none; margin-top: -0.25em; border-radius: 50%; background: var(--njg-proto-beach-coin); border: 0.1em solid var(--njg-proto-beach-bucket-rim); box-sizing: border-box; }
+.bp-thing.bp-stack.lifted { translate: 0 -30%; }
+.bp-plain { aspect-ratio: 1; border-radius: 50%; background: var(--njg-pewter); }
+.bp-tileimg { height: 92%; width: auto; max-width: 92%; object-fit: contain; }
+/* ---------- the picnic: the people, the cloth, the outlined places, Ali's box, the basket row ---------- */
+.bp-person { aspect-ratio: .75; }
+.bp-person .bp-body { position: absolute; left: 8%; right: 8%; top: 46%; bottom: 0; background: var(--njg-proto-cover); border-radius: 40% 40% 0.3em 0.3em / 30% 30% 0.3em 0.3em; }
+.bp-person[data-who="masi"] .bp-body { background: var(--njg-proto-beach-purse); }
+.bp-person .bp-face { position: absolute; left: 50%; top: 0; translate: -50% 0; height: 54%; width: auto; border-radius: 50%; }
+.bp-cloth { background: var(--njg-proto-beach-cloth); border-radius: 0.4em; box-shadow: inset 0 0 0 0.5em var(--njg-proto-curtain); }
+.bp-cushion { background: var(--njg-proto-rug); border-radius: 0.8em 0.8em 0 0; }
+.bp-place { border: 0.16em dashed var(--njg-proto-beach-outline); border-radius: 50%; background: none; display: flex; align-items: center; justify-content: center; }
+.bp-place.bp-tiffin { border-radius: 0.4em; background: var(--njg-proto-beach-box); border-style: solid; }
+.bp-place .bp-on { position: absolute; left: 50%; bottom: 10%; height: 80%; translate: calc(-50% + var(--k, 0) * 22%) calc(var(--k, 0) * -10%); display: flex; align-items: flex-end; pointer-events: none; }
+.bp-place .bp-on img { height: 100%; width: auto; }
+.bp-place .bp-on .bp-coconut { height: 80%; position: relative; display: block; }
+.bp-pthing { display: flex; align-items: flex-end; justify-content: center; }
+.bp-pthing img { height: 100%; width: auto; }
+.bp-pthing .bp-coconut { height: 80%; position: relative; display: block; }
+.bp-thing.bp-pthing.lifted { translate: 0 -10%; filter: drop-shadow(0 0 0.4em var(--njg-gold-hi)); }
+.bp-tileface { border-radius: 50%; }
+/* ---------- litter fishing (a side-on cutaway): the water, the hull, the rod and reel, the line, the litter, the fish ---------- */
+.bp-sky-fish { height: 40%; }
+.bp-water { position: absolute; left: 0; right: 0; top: 40%; bottom: 0; background: var(--njg-proto-beach-sea); border-top: 0.4em solid var(--njg-proto-beach-foam); }
+.bp-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: var(--njg-proto-beach-wet); }
+.bp-hull { position: absolute; left: 0; width: 26%; top: 33%; height: 14%; background: var(--njg-proto-wood-dark); border-radius: 0 0 50% 0 / 0 0 100% 0; }
+.bp-rod { width: 0.35em; background: var(--njg-proto-wood-dark); rotate: 35deg; transform-origin: 50% 100%; }
+.bp-reel { aspect-ratio: 1; border-radius: 50%; background: var(--njg-pewter); border: 0.35em solid var(--njg-ink); transition: rotate .25s; }
+.bp-reel.turn { rotate: 180deg; }
+.bp-reel::after { content: ""; position: absolute; left: 50%; top: 10%; width: 14%; height: 40%; translate: -50% 0; background: var(--njg-ink); border-radius: 0.2em; }
+.bp-thing.bp-fishline { width: 0.15em; background: var(--njg-ink); bottom: auto; top: 30%; transition: left .3s, height .4s; pointer-events: none; z-index: 4; }
+.bp-thing.bp-fishline::after { content: ""; position: absolute; left: -0.3em; bottom: -0.5em; width: 0.6em; height: 0.6em; border: 0.15em solid var(--njg-ink); border-top: 0; border-radius: 0 0 50% 50%; box-sizing: border-box; }
+.bp-litter { transition: bottom .4s ease-in-out, opacity .3s; }
+.bp-litter.caught { opacity: 0; pointer-events: none; }
+.k-bottle { aspect-ratio: .38; background: var(--njg-leaf); border-radius: 30% 30% 0.2em 0.2em / 20% 20% 0.2em 0.2em; }
+.k-bottle.red { background: var(--njg-proto-beach-shell-red); }
+.k-bottle.white { background: var(--njg-proto-beach-shell-white); }
+.k-shoe { aspect-ratio: 1.8; background: var(--njg-brown); border-radius: 50% 60% 0.2em 0.2em / 80% 60% 0.2em 0.2em; }
+.k-can { aspect-ratio: .7; background: var(--njg-pewter); border-radius: 0.2em; box-shadow: inset 0 0.25em 0 var(--njg-proto-tray), inset 0 -0.25em 0 var(--njg-proto-tray); }
+.k-bag { aspect-ratio: .9; background: var(--njg-proto-beach-foam); border-radius: 20% 20% 30% 30%; opacity: .85; }
+.k-sock { aspect-ratio: .9; background: var(--njg-proto-curtain); clip-path: polygon(20% 0, 55% 0, 55% 60%, 100% 70%, 100% 100%, 20% 100%); }
+.k-ball { aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-balloon); box-shadow: inset -0.3em -0.3em 0 var(--njg-proto-swatch-shade); }
+.k-kettle { aspect-ratio: 1.2; background: var(--njg-pewter); border-radius: 50% 50% 0.3em 0.3em / 60% 60% 0.3em 0.3em; }
+.k-kettle::after { content: ""; position: absolute; right: -22%; top: 34%; width: 30%; height: 16%; background: var(--njg-pewter); rotate: -30deg; border-radius: 0.2em; }
+.k-hat { aspect-ratio: 2.4; background: var(--njg-proto-beach-cone); border-radius: 50%; }
+.k-hat::before { content: ""; position: absolute; left: 28%; right: 28%; bottom: 40%; height: 70%; background: var(--njg-proto-beach-cone); border-radius: 50% 50% 0.2em 0.2em; box-shadow: inset 0 -0.3em 0 var(--njg-proto-curtain); }
+.bp-tilepic.bp-litter { width: auto; height: 80%; max-width: 86%; margin-bottom: 4%; }
+.bp-tilepic.k-shoe, .bp-tilepic.k-hat { height: 50%; }
+.bp-fish { position: absolute; top: 58%; left: -10%; width: 6%; aspect-ratio: 2; background: var(--njg-proto-beach-bucket); border-radius: 50%; animation: bpSwim 14s linear infinite; pointer-events: none; }
+.bp-fish.f2 { top: 66%; animation-delay: -7s; animation-duration: 18s; }
+@keyframes bpSwim { to { left: 110%; } }
+@media (prefers-reduced-motion: reduce) { .bp-fish { animation: none; } }
+.bp-clear .bp-fish { animation-duration: 6s; }
+/* ---------- the ride on the water: the sea in three layers, the rail, the things floating past ---------- */
+.bp-ride-sea { position: absolute; left: 0; right: 0; top: 34%; bottom: 0; background: var(--njg-proto-beach-sea); overflow: hidden; }
+.bp-ride-sea i { position: absolute; left: 0; width: 200%; height: 0.35em; background: var(--njg-proto-beach-foam); opacity: .5; border-radius: 0.2em; animation: bpWaves 8s linear infinite; }
+.bp-ride-sea i:nth-child(1) { top: 20%; animation-duration: 16s; width: 160%; }
+.bp-ride-sea i:nth-child(2) { top: 50%; animation-duration: 10s; }
+.bp-ride-sea i:nth-child(3) { top: 78%; animation-duration: 6s; }
+@keyframes bpWaves { to { translate: -40% 0; } }
+.bp-fast .bp-ride-sea i { animation-duration: 3s; }
+@media (prefers-reduced-motion: reduce) { .bp-ride-sea i { animation: none; } }
+.bp-rail { position: absolute; left: 0; right: 0; bottom: 0; height: 13%; background: var(--njg-proto-wood-dark); border-top: 0.5em solid var(--njg-proto-wood); z-index: 3; }
+.bp-floater { z-index: 2; }
+.bp-floater img { height: 100%; width: auto; }
+.bp-floater.seen { filter: drop-shadow(0 0 0.5em var(--njg-gold-hi)); }
+.bp-sea-boat { aspect-ratio: 1.6; background: var(--njg-proto-roof); clip-path: polygon(0 55%, 100% 55%, 85% 100%, 15% 100%, 0 55%, 45% 55%, 45% 0, 80% 50%, 45% 50%, 45% 55%); }
+.bp-sea-ship { aspect-ratio: 3; background: var(--njg-indigo); clip-path: polygon(0 50%, 100% 50%, 92% 100%, 8% 100%, 0 50%, 30% 50%, 30% 10%, 60% 10%, 60% 50%); }
+.bp-sea-buoy { aspect-ratio: .8; background: var(--njg-proto-beach-shell-red); border-radius: 50% 50% 20% 20%; box-shadow: inset 0 -0.5em 0 var(--njg-proto-beach-shell-white); }
+.bp-sea-fish { aspect-ratio: 2; background: var(--njg-proto-beach-bucket); clip-path: polygon(0 50%, 25% 10%, 70% 0, 85% 30%, 100% 0, 100% 100%, 85% 70%, 70% 100%, 25% 90%); }
+.bp-tilepic.bp-sea-ship, .bp-tilepic.bp-sea-fish { height: 36%; }
+.bp-nanihat { z-index: 4; transition: left 1.6s ease-in, bottom 1.6s ease-out, rotate 1.6s, opacity 1.6s; }
+.bp-nanihat.blown { left: 70%; bottom: 40%; rotate: 220deg; opacity: .8; }
+.bp-flash::after { content: ""; position: absolute; inset: 0; background: var(--njg-white); opacity: .7; pointer-events: none; z-index: 60; }

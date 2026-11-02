@@ -885,6 +885,25 @@
    }
   },
   {
+   "id": "n.amounts",
+   "pos": "N",
+   "gender": null,
+   "gloss": "amounts",
+   "glossPl": "amounts",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-amounts: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-amounts"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.and-then",
    "pos": "N",
    "gender": null,
@@ -1604,6 +1623,25 @@
    }
   },
   {
+   "id": "n.boat",
+   "pos": "N",
+   "gender": null,
+   "gloss": "boat",
+   "glossPl": "boats",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-boat: an English placeholder, to record (the boat sheet)"
+   ],
+   "aliases": [
+    "ph-boat"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.boiled-egg",
    "pos": "N",
    "gender": null,
@@ -1720,10 +1758,12 @@
    "glossPl": "boxes",
    "status": "to-record",
    "src": [
-    "data/find.json words.placeholders.ph-box: an English placeholder, to record"
+    "data/find.json words.placeholders.ph-box: an English placeholder, to record",
+    "data/beach-proto.json words.ph-tiffin-box: an English placeholder, to record (Ali's tiffin box at the picnic)"
    ],
    "aliases": [
-    "ph-box"
+    "ph-box",
+    "ph-tiffin-box"
    ],
    "ask": {
     "word": [
@@ -1838,6 +1878,63 @@
    ],
    "aliases": [
     "bubbles"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.bucket",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bucket",
+   "glossPl": "buckets",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-beach-bucket: an English placeholder, to record (sheet A)"
+   ],
+   "aliases": [
+    "ph-beach-bucket"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.buckets",
+   "pos": "N",
+   "gender": null,
+   "gloss": "buckets",
+   "glossPl": "buckets",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-buckets: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-buckets"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.buoy",
+   "pos": "N",
+   "gender": null,
+   "gloss": "buoy",
+   "glossPl": "buoys",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-buoy: an English placeholder, to record (the ride's middle layer)"
+   ],
+   "aliases": [
+    "ph-buoy"
    ],
    "ask": {
     "word": [
@@ -2713,6 +2810,25 @@
    ]
   },
   {
+   "id": "n.coin",
+   "pos": "N",
+   "gender": null,
+   "gloss": "coin",
+   "glossPl": "coins",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-coin: an English placeholder, to record (sheet B)"
+   ],
+   "aliases": [
+    "ph-coin"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.collar",
    "pos": "N",
    "gender": null,
@@ -2762,6 +2878,25 @@
    ],
    "aliases": [
     "clinic.item.comb"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.cone",
+   "pos": "N",
+   "gender": null,
+   "gloss": "cone",
+   "glossPl": "cones",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-cone: an English placeholder, to record (the chips cone (sheet B))"
+   ],
+   "aliases": [
+    "ph-cone"
    ],
    "ask": {
     "word": [
@@ -2956,6 +3091,25 @@
    ],
    "aliases": [
     "ph-cow"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.crab",
+   "pos": "N",
+   "gender": null,
+   "gloss": "crab",
+   "glossPl": "crabs",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-crab: an English placeholder, to record (sheet A)"
+   ],
+   "aliases": [
+    "ph-crab"
    ],
    "ask": {
     "word": [
@@ -3919,6 +4073,25 @@
    }
   },
   {
+   "id": "n.fish",
+   "pos": "N",
+   "gender": null,
+   "gloss": "fish",
+   "glossPl": "fishes",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-fish: an English placeholder, to record (the boat sheet)"
+   ],
+   "aliases": [
+    "ph-fish"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.flannel",
    "pos": "N",
    "gender": null,
@@ -4007,7 +4180,11 @@
    "status": "draft",
    "src": [
     "grammar-notes §33 S5 (kenjo nai: ⚠)",
-    "grammar-notes §38 I18 (khenjo tayar karyo: let's get the food ready)"
+    "grammar-notes §38 I18 (khenjo tayar karyo: let's get the food ready)",
+    "data/beach-proto.json words.ph-food: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-food"
    ],
    "ask": {
     "gender": [
@@ -4927,6 +5104,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.kettle",
+   "pos": "N",
+   "gender": null,
+   "gloss": "kettle",
+   "glossPl": "kettles",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-kettle: an English placeholder, to record (the boat sheet)"
+   ],
+   "aliases": [
+    "ph-kettle"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -6110,6 +6306,25 @@
    }
   },
   {
+   "id": "n.on-the-sea",
+   "pos": "N",
+   "gender": null,
+   "gloss": "on the sea",
+   "glossPl": "on the seas",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-on-the-sea: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-on-the-sea"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.one-and-a-half-cups",
    "pos": "N",
    "gender": null,
@@ -6330,6 +6545,25 @@
    ]
   },
   {
+   "id": "n.pebble",
+   "pos": "N",
+   "gender": null,
+   "gloss": "pebble",
+   "glossPl": "pebbles",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-pebble: an English placeholder, to record (shells L1's clearly different decoy)"
+   ],
+   "aliases": [
+    "ph-pebble"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.pencil",
    "pos": "N",
    "gender": null,
@@ -6341,6 +6575,25 @@
    ],
    "aliases": [
     "ph-pencil"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.people",
+   "pos": "N",
+   "gender": null,
+   "gloss": "people",
+   "glossPl": "peoples",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-people: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-people"
    ],
    "ask": {
     "word": [
@@ -6422,6 +6675,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.places",
+   "pos": "N",
+   "gender": null,
+   "gloss": "places",
+   "glossPl": "places",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-places: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-places"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -6961,6 +7233,25 @@
    }
   },
   {
+   "id": "n.sand",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sand",
+   "glossPl": "sands",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-sand: an English placeholder, to record (sheet A)"
+   ],
+   "aliases": [
+    "ph-sand"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.scales",
    "pos": "N",
    "gender": null,
@@ -7048,6 +7339,44 @@
    ],
    "aliases": [
     "ph-scissors"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.sea",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sea",
+   "glossPl": "seas",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-sea: an English placeholder, to record (sheet A)"
+   ],
+   "aliases": [
+    "ph-sea"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.sea-things",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sea things",
+   "glossPl": "sea things",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-sea-things: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sea-things"
    ],
    "ask": {
     "word": [
@@ -7244,6 +7573,44 @@
    "loan": "en"
   },
   {
+   "id": "n.shell",
+   "pos": "N",
+   "gender": null,
+   "gloss": "shell",
+   "glossPl": "shells",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-shell: an English placeholder, to record (beach-boat.md §1, sheet A)"
+   ],
+   "aliases": [
+    "ph-shell"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.ship",
+   "pos": "N",
+   "gender": null,
+   "gloss": "ship",
+   "glossPl": "ships",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-ship: an English placeholder, to record (the ride's far layer)"
+   ],
+   "aliases": [
+    "ph-ship"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.shirt",
    "pos": "N",
    "gender": "she",
@@ -7265,6 +7632,25 @@
    "src": [
     "lexicon.md §6.2 (C22-C49 22:13)"
    ]
+  },
+  {
+   "id": "n.shoe",
+   "pos": "N",
+   "gender": null,
+   "gloss": "shoe",
+   "glossPl": "shoes",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-shoe: an English placeholder, to record (the boat sheet)"
+   ],
+   "aliases": [
+    "ph-shoe"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.short",
@@ -7606,6 +7992,25 @@
    }
   },
   {
+   "id": "n.spade",
+   "pos": "N",
+   "gender": null,
+   "gloss": "spade",
+   "glossPl": "spades",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-spade: an English placeholder, to record (sheet A)"
+   ],
+   "aliases": [
+    "ph-spade"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.spices",
    "pos": "N",
    "gender": null,
@@ -7797,6 +8202,25 @@
    "src": [
     "lexicon.md §6.2 (I1-I35 6:43)"
    ]
+  },
+  {
+   "id": "n.straw",
+   "pos": "N",
+   "gender": null,
+   "gloss": "straw",
+   "glossPl": "straws",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-straw: an English placeholder, to record (sheet B)"
+   ],
+   "aliases": [
+    "ph-straw"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.sugar",
@@ -8648,6 +9072,25 @@
    ]
   },
   {
+   "id": "n.things",
+   "pos": "N",
+   "gender": null,
+   "gloss": "things",
+   "glossPl": "things",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-things: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-things"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.thread",
    "pos": "N",
    "gender": null,
@@ -8723,6 +9166,25 @@
    ],
    "aliases": [
     "times"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.tin-can",
+   "pos": "N",
+   "gender": null,
+   "gloss": "tin can",
+   "glossPl": "tin cans",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-tin-can: an English placeholder, to record (the boat sheet (a tin can))"
+   ],
+   "aliases": [
+    "ph-tin-can"
    ],
    "ask": {
     "word": [
@@ -8861,6 +9323,25 @@
    }
   },
   {
+   "id": "n.toppings",
+   "pos": "N",
+   "gender": null,
+   "gloss": "toppings",
+   "glossPl": "toppings",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-toppings: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-toppings"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.torch",
    "pos": "N",
    "gender": null,
@@ -8878,6 +9359,25 @@
    "ask": {
     "word": [
      "G110"
+    ]
+   }
+  },
+  {
+   "id": "n.tower",
+   "pos": "N",
+   "gender": null,
+   "gloss": "tower",
+   "glossPl": "towers",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-tower: an English placeholder, to record (the sandcastle's towers (ask Mum how she'd say 'on the big one'))"
+   ],
+   "aliases": [
+    "ph-tower"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -9195,6 +9695,25 @@
    "notes": [
     "gender: Mum 28 Sept (Round 3 K10; docs/language/grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)"
    ]
+  },
+  {
+   "id": "n.wave",
+   "pos": "N",
+   "gender": null,
+   "gloss": "wave",
+   "glossPl": "waves",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json words.ph-wave: an English placeholder, to record (the boat sheet)"
+   ],
+   "aliases": [
+    "ph-wave"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.wax",
@@ -9660,6 +10179,28 @@
     "kin-ma",
     "ph-p-ma"
    ]
+  },
+  {
+   "id": "pn.masi",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Masi",
+   "gloss": "Masi",
+   "forms": {
+    "*": "Masi"
+   },
+   "status": "draft",
+   "src": [
+    "data/beach-proto.json words.ph-masi: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "ph-masi"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
   },
   {
    "id": "pn.nana",
@@ -13746,6 +14287,23 @@
    }
   },
   {
+   "id": "phrase.a-crab",
+   "pos": "Phrase",
+   "gloss": "A crab!",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sh-crab: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sh-crab"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.a-cracked-tooth",
    "pos": "Phrase",
    "gloss": "A cracked tooth.",
@@ -14417,6 +14975,23 @@
    }
   },
   {
+   "id": "phrase.bring-masi-the-shell-she-asks-for",
+   "pos": "Phrase",
+   "gloss": "Bring Masi the shell she asks for.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sh-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sh-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.bring-me",
    "pos": "Phrase",
    "gloss": "Bring me...",
@@ -14578,6 +15153,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.build-the-castle-the-way-masi-says",
+   "pos": "Phrase",
+   "gloss": "Build the castle the way Masi says.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sc-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sc-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -14817,6 +15409,23 @@
    "src": [
     "grammar-notes §27 B40 (the recording said naturally, without tu / aai)"
    ]
+  },
+  {
+   "id": "phrase.careful-its-hot",
+   "pos": "Phrase",
+   "gloss": "Careful, it's hot!",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.st-hot: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.st-hot"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.careful-keep-care",
@@ -15893,6 +16502,23 @@
    }
   },
   {
+   "id": "phrase.fish-out-what-masi-says",
+   "pos": "Phrase",
+   "gloss": "Fish out what Masi says.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.fi-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.fi-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.fix-it",
    "pos": "Phrase",
    "gloss": "fix it",
@@ -15969,6 +16595,23 @@
    "notes": [
     "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
    ]
+  },
+  {
+   "id": "phrase.get-the-food-masi-asks-for-then-pay",
+   "pos": "Phrase",
+   "gloss": "Get the food Masi asks for, then pay.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.st-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.st-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.get-them-ready-for-school",
@@ -17478,6 +18121,23 @@
    ]
   },
   {
+   "id": "phrase.i-want-shells-for-my-castle",
+   "pos": "Phrase",
+   "gloss": "I want shells for my castle!",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sh-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sh-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.ill-do-it-you-count",
    "pos": "Phrase",
    "gloss": "I'll do it. You count!",
@@ -18377,6 +19037,23 @@
    }
   },
   {
+   "id": "phrase.lets-build-a-castle-ill-tell-you-how-it-goes",
+   "pos": "Phrase",
+   "gloss": "Let's build a castle. I'll tell you how it goes.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sc-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sc-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.lets-check-everything",
    "pos": "Phrase",
    "gloss": "Let's check everything.",
@@ -18441,6 +19118,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-get-food-for-our-picnic",
+   "pos": "Phrase",
+   "gloss": "Let's get food for our picnic.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.st-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.st-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -18521,6 +19215,23 @@
    ],
    "aliases": [
     "party-proto.line.balloon-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-set-out-the-picnic",
+   "pos": "Phrase",
+   "gloss": "Let's set out the picnic.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.pc-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.pc-head"
    ],
    "ask": {
     "word": [
@@ -18915,6 +19626,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.masis-friend-is-taking-us-out-on-his-boat",
+   "pos": "Phrase",
+   "gloss": "Masi's friend is taking us out on his boat.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.rd-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.rd-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -19330,6 +20058,23 @@
     "conversation.line.name-nani",
     "story.line.name-nani"
    ]
+  },
+  {
+   "id": "phrase.nanis-hat-and-look-the-sea-has-rubbish-in-it-lets-fish",
+   "pos": "Phrase",
+   "gloss": "Nani's hat! And look, the sea has rubbish in it. Let's fish it out.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.fi-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.fi-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.nearly",
@@ -19972,6 +20717,23 @@
    }
   },
   {
+   "id": "phrase.oho-my-hat",
+   "pos": "Phrase",
+   "gloss": "Oho! My hat!",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.rd-hat: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.rd-hat"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.one-more-thing",
    "pos": "Phrase",
    "gloss": "One more thing",
@@ -20279,6 +21041,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.put-each-thing-where-masi-says",
+   "pos": "Phrase",
+   "gloss": "Put each thing where Masi says.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.pc-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.pc-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -21049,6 +21828,23 @@
    }
   },
   {
+   "id": "phrase.smile-nani-takes-the-photo",
+   "pos": "Phrase",
+   "gloss": "Smile! Nani takes the photo.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.sc-photo: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.sc-photo"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.something-in-the-ear",
    "pos": "Phrase",
    "gloss": "Something in the ear!",
@@ -21469,6 +22265,23 @@
    }
   },
   {
+   "id": "phrase.tap-what-nani-names-as-it-goes-past",
+   "pos": "Phrase",
+   "gloss": "Tap what Nani names as it goes past.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.rd-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.rd-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.tea-and-the-things-that-go-with-it-an-echo-word",
    "pos": "Phrase",
    "lemma": "chai bai",
@@ -21837,6 +22650,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.the-boatman-nets-the-rest",
+   "pos": "Phrase",
+   "gloss": "The boatman nets the rest.",
+   "status": "to-record",
+   "src": [
+    "data/beach-proto.json lines.fi-net: an English placeholder, to record"
+   ],
+   "aliases": [
+    "beach-proto.line.fi-net"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
