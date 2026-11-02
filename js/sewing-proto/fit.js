@@ -137,7 +137,7 @@ export default async function fit(F) {
       sel.classList.remove("lift");
       sel = null;
       pieceEl.classList.add("away");
-      await wear(pe, p);
+      await wear(pe, p, p.k !== r.data.a.p.k);
       const a = r.data.a;
       const right = p.id === a.p.id && pe.dataset.who === a.who;
       if (right) {
@@ -161,11 +161,11 @@ export default async function fit(F) {
   );
 
   /** It swishes on: the worn layer shows the piece, sized against the person (fit, too big, too small, or the wrong garment). */
-  async function wear(pe, p) {
+  async function wear(pe, p, wrongKind = false) {
     const worn = pe.querySelector(".sw-worn");
     const who = PEOPLE[pe.dataset.who];
     const fitCls = p.k === "kurta" ? (p.size === who.size ? "fit" : p.size === "big" ? "toobig" : "toosmall") : "fit";
-    worn.className = `sw-worn on k-${p.k} ${fitCls}`;
+    worn.className = `sw-worn on k-${p.k} ${fitCls}${wrongKind ? " gag" : ""}`; // (the wrong garment: the cap over the eyes, the dupatta a tent)
     worn.innerHTML = svg(p.k, { colour: p.c, length: "long", stretch: p.k === "kurta", hang: true });
     if (W.Sfx) W.Sfx.play("whoosh", { volume: 0.25 });
     F.jiggle(pe, "sw-wriggle");

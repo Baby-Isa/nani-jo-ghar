@@ -164,6 +164,10 @@
 .sw-worn.k-cap { top: -4%; width: 64%; height: 16%; z-index: 4; }
 .sw-worn.k-dupatta { top: -8%; width: 140%; height: 48%; z-index: 4; }
 .sw-worn.k-dupatta > svg { rotate: 90deg; }
+/* the wrong garment's gags: the cap drops over the eyes; the dupatta lands over the head like a tent */
+.sw-worn.k-cap.gag { top: 8%; width: 78%; height: 20%; }
+.sw-worn.k-dupatta.gag { top: -6%; width: 150%; height: 70%; }
+.sw-worn.k-dupatta.gag > svg { rotate: 0deg; scale: 1 2.4; }
 .sw-person.sw-twirl { animation: swTwirl .7s ease-in-out 1; }
 @keyframes swTwirl { 50% { scale: -1 1; } }
 .sw-person.sw-wriggle { animation: swWobble .5s ease-in-out 1; }
