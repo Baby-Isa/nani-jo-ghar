@@ -164,7 +164,7 @@ export default async function fit(F) {
   async function wear(pe, p, wrongKind = false) {
     const worn = pe.querySelector(".sw-worn");
     const who = PEOPLE[pe.dataset.who];
-    const fitCls = p.k === "kurta" ? (p.size === who.size ? "fit" : p.size === "big" ? "toobig" : "toosmall") : "fit";
+    const fitCls = p.k === "kurta" ? (p.size === who.size ? "sz-ok" : p.size === "big" ? "sz-big" : "sz-small") : "sz-ok";
     worn.className = `sw-worn on k-${p.k} ${fitCls}${wrongKind ? " gag" : ""}`; // (the wrong garment: the cap over the eyes, the dupatta a tent)
     worn.innerHTML = svg(p.k, { colour: p.c, length: "long", stretch: p.k === "kurta", hang: true });
     if (W.Sfx) W.Sfx.play("whoosh", { volume: 0.25 });
