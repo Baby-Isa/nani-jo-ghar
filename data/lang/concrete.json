@@ -2134,6 +2134,42 @@
    "english": "Plant the {x}.",
    "what": "Plant the {x}.",
    "src": "data/farm.json lines.grow-plant: an English placeholder, to record"
+  },
+  "IWantToGoToTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "I want to go to the {x}.",
+   "what": "I want to go to the {x}.",
+   "src": "data/town-proto.json lines.map-go: an English placeholder, to record"
+  },
+  "XWantsToGoToTheY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to go to the {y}.",
+   "what": "{x} wants to go to the {y}.",
+   "src": "data/town-proto.json lines.map-wants: an English placeholder, to record"
+  },
+  "XWantsY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants {y}.",
+   "what": "{x} wants {y}.",
+   "src": "data/town-proto.json lines.map-wants-thing: an English placeholder, to record"
+  },
+  "XPlease": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x}, please.",
+   "what": "{x}, please.",
+   "src": "data/town-proto.json lines.pay-price: an English placeholder, to record"
   }
  }
 }
