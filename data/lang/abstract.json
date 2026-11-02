@@ -1827,6 +1827,48 @@
     "Plant the knee."
    ],
    "_sig": "[\"x\"]"
+  },
+  "MyNameIsX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "My name is {x}.",
+   "elicit": [
+    "My name is knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "GiveTheBalloonToX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Give the balloon to {x}.",
+   "elicit": [
+    "Give the balloon to knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheXIsForY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} is for {y}.",
+   "elicit": [
+    "The knee is for y."
+   ],
+   "_sig": "[\"x\",\"y\"]"
   }
  }
 }
