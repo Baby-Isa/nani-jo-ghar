@@ -2162,6 +2162,33 @@
    "what": "{x} wants {y}.",
    "src": "data/town-proto.json lines.map-wants-thing: an English placeholder, to record"
   },
+  "XFeelsPoorly": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} feels poorly.",
+   "what": "{x} feels poorly.",
+   "src": "data/town-proto.json lines.map-poorly: an English placeholder, to record"
+  },
+  "XWantsToPlay": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to play.",
+   "what": "{x} wants to play.",
+   "src": "data/town-proto.json lines.map-play: an English placeholder, to record"
+  },
+  "XWantsToRead": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to read.",
+   "what": "{x} wants to read.",
+   "src": "data/town-proto.json lines.map-read: an English placeholder, to record"
+  },
   "XPlease": {
    "status": "unknown",
    "ask": [

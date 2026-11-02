@@ -1873,6 +1873,45 @@
    ],
    "_sig": "[\"x\",\"y\"]"
   },
+  "XFeelsPoorly": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} feels poorly.",
+   "elicit": [
+    "knee feels poorly."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XWantsToPlay": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants to play.",
+   "elicit": [
+    "knee wants to play."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XWantsToRead": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants to read.",
+   "elicit": [
+    "knee wants to read."
+   ],
+   "_sig": "[\"x\"]"
+  },
   "XPlease": {
    "cat": "Utt",
    "args": {

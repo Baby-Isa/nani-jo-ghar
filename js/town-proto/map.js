@@ -16,7 +16,9 @@
  *       (their face is lifted for them: only the place decides)
  *   L2  five places (+ the library, the clinic); four faces (+ Ma); Nani says who and where: "Nana wants to go to the clinic."
  *   L3  all eight open; the thing, not the place: "Big Ma wants a book." (book, bread, medicine, letter, mangoes)
- *   L4  not built yet (the needs: "Nana feels poorly", "Ma wants to play"): plays as L3 with five errands
+ *   L4  the need, not drawn on any sign: "Nana feels poorly" (the clinic), "Ma wants to play" (the park), "Big Ma wants to
+ *       read" (the library), "Hannah Mami. We need to cook." (the market); six places open, the fire station and the bakery
+ *       answering none of them; five errands
  */
 import { PEOPLE, PLACES, THINGS, MAP } from "./art.js";
 
@@ -25,7 +27,9 @@ const NANI = { id: "nani", name: "Nani", face: "assets/shared/faces/nani.webp" }
 
 async function run(F) {
   const lv = F.level;
-  const open = lv === 1 ? ["market", "park", "bakery"] : lv === 2 ? ["market", "park", "bakery", "library", "clinic"] : Object.keys(PLACES);
+  const open = lv === 1 ? ["market", "park", "bakery"] : lv === 2 ? ["market", "park", "bakery", "library", "clinic"] : lv === 4 ? ["market", "park", "bakery", "library", "clinic", "fire-station"] : Object.keys(PLACES);
+  // (L4: each need has exactly one plausible open place: town-map.md decision 35)
+  const NEEDS = { clinic: "XFeelsPoorly", park: "XWantsToPlay", library: "XWantsToRead", market: "cook" };
   const cast = lv === 1 ? [PEOPLE.hannah, PEOPLE.nana, PEOPLE.bigma] : [PEOPLE.hannah, PEOPLE.nana, PEOPLE.bigma, PEOPLE.ma];
   const nErr = [3, 4, 4, 5][lv - 1];
   const wanted = Object.keys(THINGS); // (L3: the places that give a thing someone can want)
@@ -35,7 +39,7 @@ async function run(F) {
   let lastPlace = null;
   const whos = lv === 1 ? F.shuffle(cast) : null;
   for (let i = 0; i < nErr; i++) {
-    const pool = (lv >= 3 ? wanted : open).filter((p) => p !== lastPlace);
+    const pool = (lv === 4 ? Object.keys(NEEDS) : lv === 3 ? wanted : open).filter((p) => p !== lastPlace);
     const place = F.pick(pool);
     lastPlace = place;
     errands.push({ i, who: whos ? whos[i % whos.length] : F.pick(cast), place });
@@ -79,12 +83,13 @@ async function run(F) {
   const P = (who) => ({ fn: "Item", kind: who.lex });
   const Pl = (id) => ({ fn: "Item", kind: PLACES[id].lex });
   const Th = (id) => ({ fn: "Item", kind: THINGS[id].lex, number: THINGS[id].plural ? "pl" : undefined });
+  const need = (e) => (NEEDS[e.place] === "cook" ? [{ fn: "X", x: P(e.who) }, { fn: "Say", x: "phrase.we-need-to-cook" }] : { fn: NEEDS[e.place], x: P(e.who) });
   const rows = errands.map((e) =>
     F.row({
       key: `errand${e.i}`,
-      line: lv === 1 ? { fn: "IWantToGoToTheX", x: Pl(e.place) } : lv === 2 ? { fn: "XWantsToGoToTheY", x: P(e.who), y: Pl(e.place) } : { fn: "XWantsY", x: P(e.who), y: Th(e.place) },
-      word: lv >= 3 ? Th(e.place) : Pl(e.place),
-      tiles: lv === 1 ? [e.place] : lv === 2 ? [e.who.id, e.place] : [e.who.id, `t-${e.place}`],
+      line: lv === 1 ? { fn: "IWantToGoToTheX", x: Pl(e.place) } : lv === 2 ? { fn: "XWantsToGoToTheY", x: P(e.who), y: Pl(e.place) } : lv === 3 ? { fn: "XWantsY", x: P(e.who), y: Th(e.place) } : need(e),
+      word: lv === 3 ? Th(e.place) : Pl(e.place),
+      tiles: lv === 1 ? [e.place] : lv === 2 ? [e.who.id, e.place] : lv === 3 ? [e.who.id, `t-${e.place}`] : [e.who.id],
       picture: (box) => box.appendChild(mapPic(e.place)),
       target: () => (lifted === e.who.id ? placeEls[e.place] : faceEls[e.who.id]),
       data: e,
@@ -92,14 +97,13 @@ async function run(F) {
   );
 
   /* ----- the word tiles: the people in the row (L2+), the open places (L1-L2) or the things (L3+) ----- */
+  /** A place's own picture, cut from the map (assets/town-proto/place-ID.webp). */
   function mapPic(id) {
-    const p = PLACES[id];
-    const d = document.createElement("div");
-    d.className = "tp-mappic";
-    d.style.backgroundImage = `url("${stamp(MAP)}")`;
-    d.style.backgroundSize = `${100 / p.w}% ${100 / p.h}%`;
-    d.style.backgroundPosition = `${((p.x - p.w / 2) / (1 - p.w)) * 100}% ${((p.y - p.h / 2) / (1 - p.h)) * 100}%`;
-    return d;
+    const i = document.createElement("img");
+    i.src = stamp(`assets/town-proto/place-${id}.webp`);
+    i.alt = "";
+    i.className = "tp-tile-pic";
+    return i;
   }
   const img = (src) => (box) => {
     const i = document.createElement("img");
@@ -110,7 +114,7 @@ async function run(F) {
   };
   const groups = [];
   if (lv >= 2) groups.push({ label: { en: "People" }, tiles: cast.map((p) => ({ key: p.id, id: p.id, word: P(p), lex: p.lex, picture: img(p.face) })) });
-  if (lv <= 2) groups.push({ label: { en: "Places" }, tiles: open.map((id) => ({ key: id, id, word: Pl(id), lex: PLACES[id].lex, picture: (box) => box.appendChild(mapPic(id)) })) });
+  if (lv !== 3) groups.push({ label: { en: "Places" }, tiles: open.map((id) => ({ key: id, id, word: Pl(id), lex: PLACES[id].lex, picture: (box) => box.appendChild(mapPic(id)) })) });
   else groups.push({ label: { en: "Things" }, tiles: wanted.map((id) => ({ key: `t-${id}`, id: `thing-${id}`, word: Th(id), lex: THINGS[id].lex, picture: img(THINGS[id].img) })) });
   F.sentence(groups);
 

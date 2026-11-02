@@ -31,7 +31,7 @@
 
 /* ---------- a shop: the wall, the awning, the counter ---------- */
 .tp-wall { position: absolute; inset: 0 0 30% 0; background: var(--njg-proto-shop-wall); }
-.tp-awning { position: absolute; left: 0; right: 0; top: 0; height: 9%; background: repeating-linear-gradient(90deg, var(--njg-proto-awning) 0 6%, var(--njg-cream-2) 6% 12%); }
+.tp-awning { position: absolute; left: 0; right: 0; top: 0; height: 9%; background: var(--njg-proto-awning-stripes); }
 .tp-counter { position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: var(--njg-proto-wood); border-top: .6em solid var(--njg-proto-wood-dark); box-sizing: border-box; }
 .tp-shelf { position: absolute; left: 4%; right: 4%; height: 2.2%; background: var(--njg-proto-wood-dark); border-radius: .3em; }
 
@@ -67,7 +67,7 @@
 .tp-basket > img { width: 100%; height: 100%; object-fit: contain; }
 .tp-basket .tp-load { position: absolute; left: 18%; right: 18%; bottom: 46%; height: 50%; display: flex; justify-content: center; align-items: flex-end; pointer-events: none; }
 .tp-basket .tp-load img { height: 100%; width: auto; max-width: 40%; object-fit: contain; margin: 0 -8%; }
-.tp-puff { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--njg-cream-2), transparent 70%); animation: tpPuff .6s ease-out forwards; pointer-events: none; }
+.tp-puff { aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-puff); animation: tpPuff .6s ease-out forwards; pointer-events: none; }
 @keyframes tpPuff { from { opacity: 1; scale: .4; } to { opacity: 0; scale: 1.6; } }
 /* the tile picture of a thing at one neutral size, or scaled for the pair tile */
 .tp-tile-pic { height: var(--s, 100%); width: auto; max-width: 100%; object-fit: contain; }
@@ -108,7 +108,6 @@
 .tp-walker > img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 .2em var(--njg-white); }
 .tp-walker .tp-carry { position: absolute; right: -45%; bottom: -25%; width: 70%; height: 70%; object-fit: contain; }
 .tp-walker.inside { opacity: 0; transition: opacity .3s; }
-.tp-mappic { width: 100%; height: 100%; background-repeat: no-repeat; border-radius: .4em; }
 /* a number tile's picture: that many plain dots (every number has its tile, so none gives the answer) */
 .tp-dots { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: .15em; width: 100%; height: 100%; font-size: clamp(.5em, 9cqi, 1.1em); }
 .tp-dots .tp-coin { background: var(--njg-home-wood); box-shadow: none; }
