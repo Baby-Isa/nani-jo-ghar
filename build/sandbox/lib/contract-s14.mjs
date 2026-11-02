@@ -53,6 +53,9 @@ export function check78(r, tl, v, add) {
   if (!isCookFlow(r.flow)) return;
   const calls = CONTROL_CALLS[stationOf(r.flow)];
   if (!calls) return;
+  // (CHAI-56 and decision 5e, Zafar 1 Nov: a returning player hears a control's call alone, its light only as the stuck hint after the
+  // level's wait: a page that starts with every first-time help seen, #returning and #takeback (flows/cook.mjs), has no first time)
+  if (/#(returning|takeback)\b/.test(String(r.flow)) || ["returning", "seen", "numbers-known"].includes(String(r.profile || ""))) return;
   const lits = ev(tl, "lit");
   // CHAI-60 (SH-181, Zafar, 1 Nov: "Onboarding should only be actions that occur for the first time"): only each control's first
   // call on the page comes with its light; a second pot's "Chulo bar!" or a later "Slow kar!" is the call alone (its light only as

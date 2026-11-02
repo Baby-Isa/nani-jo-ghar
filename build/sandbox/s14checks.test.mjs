@@ -25,7 +25,10 @@ test("the new checks are in the contract table with their rows", () => {
 
 test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice, pause, dim' is red", () => {
   assert.deepEqual(CONTROL_CALLS["chai-tray"], ["chulo bar", "slow kar"]);
-  const r = { flow: "cook:chai-tray#returning" };
+  const r = { flow: "cook:chai-tray" };
+  // (CHAI-56, decision 5e: a returning player hears the call alone, so a page that starts with the first-time help seen is not judged)
+  assert.equal(run(check78, { flow: "cook:chai-tray#returning" }, [], lines(["Slow kar!", 1000], ["Chulo bar!", 2000])).length, 0, "a returning player: the call alone");
+  assert.equal(run(check78, { flow: "cook:chai-tray@L3#takeback" }, [], lines(["Chulo bar!", 2000])).length, 0, "takeback starts with the help seen");
   // main: the call at 31.3 s, the light only as the hint, 6 s later
   const mainTl = [c("lit", 37300, { holes: [[531, 240, 571, 280]] })];
   const bad = run(check78, r, mainTl, lines(["Chulo bar!", 31270]));

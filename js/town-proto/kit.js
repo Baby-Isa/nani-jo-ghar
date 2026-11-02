@@ -536,6 +536,7 @@ export async function createTown(el, ctx, game, opts = {}) {
     lastAct = Date.now();
     rung = 0;
     closeSpot();
+    acts++;
     if (W.Onboard && W.Onboard.signal) W.Onboard.signal("tp-act");
     if (introOn && !skipIntro) {
       skipIntro = true;
@@ -548,13 +549,32 @@ export async function createTown(el, ctx, game, opts = {}) {
     if (introOn && !skipIntro) acted();
   });
   const taught = new Set();
+  let acts = 0;
+  // (the spotlight bug, Sprint 17: a child who acts during Nani's first line could finish the thing before its first-time light came
+  // up; the light then sat on a finished thing and blocked every other tap. A target still to do is one on the page, shown and
+  // tappable, not marked done)
+  const liveTarget = (t) => {
+    if (!t || !t.isConnected || !t.getBoundingClientRect) return false;
+    const r = t.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    if (t.matches && t.matches(".done, [disabled], [aria-disabled='true']")) return false;
+    const cs = W.getComputedStyle(t);
+    return cs.visibility !== "hidden" && cs.pointerEvents !== "none" && cs.display !== "none";
+  };
   /** The first time this player meets an action: the thing lit alone (s14: a glow, no finger). Resolves when it's done. */
   function teach(name, target) {
     if (taught.has(name) || P.onboard === false || dead) return Promise.resolve("skipped");
     taught.add(name);
     const t = typeof target === "function" ? target() : target;
-    if (!t) return Promise.resolve("skipped");
-    return Promise.resolve(ctx.onboard(name, [{ spotlight: t, wait: "tp-act" }], { container: doc.body })).catch(() => "skipped");
+    if (!liveTarget(t)) return Promise.resolve("skipped");
+    // (while it waits to show and while it shows: a right move since it was asked, or its target done or gone, ends it at once)
+    const n0 = acts;
+    const watch = setInterval(() => {
+      if ((dead || acts > n0 || !liveTarget(t)) && W.Onboard && W.Onboard.signal) W.Onboard.signal("tp-act");
+    }, 250);
+    return Promise.resolve(ctx.onboard(name, [{ spotlight: t, wait: "tp-act" }], { container: doc.body }))
+      .catch(() => "skipped")
+      .finally(() => clearInterval(watch));
   }
   let playing = false;
   ctx.every(T(250), () => {

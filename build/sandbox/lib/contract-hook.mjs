@@ -592,7 +592,18 @@ export const CONTRACT_HOOK = `(() => {
       const m = /njg-face-(row|guide|big)\\b/.exec(c.className || "");
       const size = m ? m[1] : null;
       const cs = getComputedStyle(c);
-      const tok = parseFloat(cs.getPropertyValue({ row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face")) || 0;
+      // (the token resolved as the page lays it out: since SH-185 the side panel's sizes are calc() of its scale, which parseFloat
+      // reads as 0; a hidden probe inside the circle takes the token's width)
+      const tokName = { row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face";
+      let tok = parseFloat(cs.getPropertyValue(tokName));
+      if (!/^\\s*[\\d.]+px\\s*$/.test(cs.getPropertyValue(tokName))) {
+        const pr = document.createElement("span");
+        pr.style.cssText = "position:absolute;visibility:hidden;left:0;top:0;height:1px;width:var(" + tokName + ")";
+        c.appendChild(pr);
+        tok = pr.offsetWidth;
+        pr.remove();
+      }
+      tok = tok || 0;
       out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: lw, h: lh, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
     }
     return out;
