@@ -149,3 +149,14 @@
 .farm-white > img, img.farm-white { filter: grayscale(1) brightness(2.3) contrast(.62); }
 .farm-pic img.farm-small { height: 60%; }
 .farm-plant.tall .farm-stem { display: none; }
+/* v2: a word tile's picture where there is none yet (water: a little bucket, drawn; the white hen and the plain hen; a colour) */
+.farm-tile-bucket { position: relative; display: block; width: 52%; max-height: 82%; aspect-ratio: .95; }
+.farm-tile-bucket::before { content: ""; position: absolute; inset: 14% 6% 0 6%; background: var(--njg-pewter); clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%); }
+.farm-tile-bucket > span { position: absolute; left: 6%; right: 6%; top: 4%; height: 22%; border-radius: 50%; background: var(--njg-blue); }
+.farm-tile-plain { filter: grayscale(1) brightness(1.08) contrast(.7) opacity(.9); }
+.farm-tile-swatch { display: block; width: 78%; height: 62%; border-radius: 42% 58% 46% 54% / 55% 45% 55% 45%; box-shadow: inset 0 -0.25em 0 rgb(0 0 0 / .12); }
+.farm-tile-swatch.red { background: var(--njg-rust); }
+.farm-tile-swatch.white { background: var(--njg-cream); border: 1px solid var(--njg-cream-edge); box-sizing: border-box; }
+.farm-tile-eggs { display: flex; align-items: flex-end; justify-content: center; gap: 6%; height: 70%; width: 100%; }
+.farm-tile-eggs .farm-egg { height: 100%; }
+.farm-tile-hen { height: var(--s, 100%); width: auto; max-width: 100%; object-fit: contain; }

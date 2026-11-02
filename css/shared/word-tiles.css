@@ -1,0 +1,48 @@
+/* Word tiles (js/shared/word-tiles.js; proto-farm v2, 2 Nov 2026): the side panel of a game whose order is a sentence. The helper's
+   one instruction big, its key words underlined; under it small tiles in labelled groups, two or three across, each a picture, its
+   word and a big speaker. The tiles share the height that is left (they shrink, never scroll on the laptop). The kit's s14 card
+   tokens only; no px (the shared CSS's rule). */
+
+/* the helper's box for a sentence: her line bigger, the said words (the engine's nouns, adjectives, numbers) underlined */
+body.njg-s14 #guide.ng-s14.ng-sentence .ng-line { font-size: clamp(var(--njg-card14-u18), 2.1vw, var(--njg-card14-u34)); line-height: 1.3; }
+body.njg-s14 #guide.ng-s14.ng-sentence .ng-line .word { text-decoration: underline; text-decoration-color: var(--njg-gold); text-decoration-thickness: .12em; text-underline-offset: .22em; }
+
+.wt { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s2); }
+.wt-steps { display: flex; justify-content: center; gap: var(--njg-s2); flex: none; }
+.wt-steps[hidden] { display: none; }
+.wt-step { display: block; width: var(--njg-card14-u12); height: var(--njg-card14-u12); border-radius: 50%; background: var(--njg-card14-dim); box-sizing: border-box; }
+.wt-step.cur { background: var(--njg-card14-card); border: var(--njg-card14-u2) solid var(--njg-gold); }
+.wt-step.done { background: var(--njg-gold); }
+.wt-group { flex: var(--wt-rows, 1) 1 0; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
+.wt-label { margin: 0; flex: none; font-family: var(--njg-card14-font); font-style: italic; font-weight: 700; font-size: var(--njg-card14-u16); line-height: 1.2; color: var(--njg-card14-text); }
+.wt-label span { display: inline-block; background: var(--njg-card14-label-bg); border-radius: var(--njg-card14-u999); padding: .15em .7em; }
+.wt-label.wt-rec span { color: var(--njg-ink-soft); }
+.wt-grid { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: repeat(var(--wt-cols, 2), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: var(--njg-s2); }
+
+/* a tile: the picture takes what is left, the word, the speaker at its foot */
+.wt-tile { position: relative; min-height: 0; min-width: 0; container-type: inline-size; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; justify-items: center; align-items: center; padding: var(--njg-card14-u5) var(--njg-card14-u4); box-sizing: border-box; background: var(--njg-card14-card); border-radius: var(--njg-card14-u14); box-shadow: var(--njg-card14-shadow-it); border: var(--njg-card14-u2) solid transparent; cursor: pointer; touch-action: manipulation; transition: border-color .2s, box-shadow .2s; }
+.wt-pic { width: 100%; height: 100%; min-height: 0; display: flex; align-items: flex-end; justify-content: center; }
+.wt-pic > img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+.wt-slot { position: relative; max-width: 100%; display: grid; place-items: center; }
+.wt-word { margin: 0; max-width: 100%; font-family: var(--njg-card14-font); font-weight: 700; font-size: clamp(var(--njg-card14-u13), 15cqi, var(--njg-card14-u22)); line-height: 1.15; text-align: center; color: var(--njg-card14-kutchi); overflow-wrap: anywhere; }
+.wt-word .word { color: inherit; }
+.wt-word .wt-key { text-decoration: underline; text-decoration-color: var(--njg-gold); text-decoration-thickness: .12em; text-underline-offset: .2em; }
+.wt-word.wt-rec, .wt-word .njg-ph { color: var(--njg-ink-soft); font-style: italic; }
+.wt-dots { display: none; position: absolute; inset: calc(-1 * var(--njg-card14-u6)) 0; border: 0; background: none; padding: 0; gap: .3em; align-items: center; justify-content: center; cursor: pointer; color: var(--njg-card14-kutchi); font-size: clamp(var(--njg-card14-u13), 15cqi, var(--njg-card14-u22)); }
+.wt-dots i { display: block; flex: none; width: .32em; height: .32em; border-radius: 50%; background: currentColor; }
+.wt-tile.wt-dotted .wt-word { visibility: hidden; }
+.wt-tile.wt-dotted .wt-dots { display: flex; }
+.wt-tile.wt-dotted.wt-peek .wt-word { visibility: visible; }
+.wt-tile.wt-dotted.wt-peek .wt-dots { display: none; }
+.wt-spk { margin-top: var(--njg-card14-u4); width: clamp(var(--njg-tap), 34cqi, var(--njg-card14-u60)); aspect-ratio: 1; border: 0; padding: 0; border-radius: 50%; display: grid; place-items: center; background: var(--njg-card14-spk-bg); color: var(--njg-card14-white); cursor: pointer; touch-action: manipulation; }
+.wt-spk svg { width: 50%; height: 50%; pointer-events: none; }
+.wt-tile:active .wt-spk { transform: scale(.94); }
+/* lit only while its word is spoken (never for being asked) */
+.wt-tile.wt-lit { border-color: var(--njg-gold); box-shadow: 0 0 0 var(--njg-card14-u2) var(--njg-gold), var(--njg-card14-shadow-it); }
+.wt-tile.wt-lit .wt-spk { animation: wc14-pulse .9s ease-out infinite; }
+
+/* a pair tile: two halves in one frame (small and big side by side) */
+.wt-pair { grid-column: span 2; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; background: var(--njg-card14-card); border-radius: var(--njg-card14-u14); box-shadow: var(--njg-card14-shadow-it); }
+.wt-pair > .wt-tile { background: none; box-shadow: none; }
+.wt-pair > .wt-tile.wt-lit { box-shadow: 0 0 0 var(--njg-card14-u2) var(--njg-gold); }
+@media (prefers-reduced-motion: reduce) { .wt-tile.wt-lit .wt-spk { animation: none; } }

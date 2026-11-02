@@ -11,7 +11,7 @@
     lab.html?mode=demo&level=1                      the mode's whole plan, as a lab round
     lab.html?mode=demo&play=story&arc=demo&chapter=1&errand=helper    an errand of an arc (data/arcs/)
     lab.html?mode=demo&play=free                    free play (locked until the story that opens it)
-  Extra: &seed=7 (the host's rng), &speed=3 (Cook's test speed), &quiet=1 &fast=1 &onboard=0 &guided=0 &side= &kind=
+  Extra: &seed=7 (the host's rng), &speed=3 (Cook's test speed), &quiet=1 &fast=1 &onboard=0 &guided=0 &side= &kind= &ladder=N (the farm's word tiles: every tile word at ladder stage N; 5 dots them)
   (passed to every stage as ctx.params), &nonav=1 (the end screen's buttons don't leave the page: tests).
   labs.html lists every lab entry (build/gen_labs.mjs). The test hook is window.njgTest (target-model § 8.1).
 -->
@@ -302,7 +302,7 @@
     const unlocks = createUnlocks({ save: core.save, rules: M.withArcRules(core.data.unlocks, arcs) });
 
     const params = {};
-    ["speed", "quiet", "fast", "onboard", "guided", "side", "kind"].forEach((k) => q.has(k) && (params[k] = /^\d+$/.test(q.get(k)) ? Number(q.get(k)) : q.get(k)));
+    ["speed", "quiet", "fast", "onboard", "guided", "side", "kind", "ladder"].forEach((k) => q.has(k) && (params[k] = /^\d+$/.test(q.get(k)) ? Number(q.get(k)) : q.get(k)));
     if (params.onboard === 0) params.onboard = false;
     if (params.guided === 0) params.guided = false;
     const entry = Object.assign(M.entryFromQuery(q), { params });

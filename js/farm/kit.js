@@ -19,6 +19,12 @@
  *   right thing is lit (Onboard.spot). Each counts as a hint.
  *   A WRONG MOVE: F.oops(row, el): the thing shakes (a funny bounce, never a frown), the row's ask is said again, the row
  *   will tick plain.
+ *   A SENTENCE ORDER (proto-farm v2, Zafar 2 Nov: "you could just match up the items pictorially"; FARM-01): F.sentence(groups)
+ *   swaps the order card for the word tiles (js/shared/word-tiles.js): she says ONE instruction at a time (the first row not done),
+ *   big in her box with its key words underlined; the tiles under her (every thing in the scene, asked for or not) never glow for
+ *   being asked: a tile lights only while its word is said (its own speaker, or her line while that word is still supported on
+ *   the word ladder: stage 1-2); its word dots out at the ladder's top (stage 5) and a peek at it costs the instruction its
+ *   first-try mark. A row ticks: a pip fills and she says the next one. ?ladder=N (lab) puts every tile word at stage N.
  *   THE END: "Shabash!" (Mum's clip), the game's own finale, then the host's one end screen (ctx.done).
  *
  * Every word and line comes from the language engine (js/core/lang/engine/, data/lang/): meanings only, no Kutchi here.
@@ -27,6 +33,7 @@
  * height), so one layout serves the phone and the big screen.
  */
 import { HANNAH } from "./art.js";
+import { mountTiles } from "../shared/word-tiles.js";
 
 const W = typeof window !== "undefined" ? window : globalThis;
 const stamp = (p) => (typeof W.njgV === "function" ? W.njgV(p) : p);
@@ -70,6 +77,7 @@ export function lineHtml(r) {
       continue;
     }
     if (s.gap || s.lang === "e") out += `<span class="njg-ph to-record" data-rec="to record" lang="en">${esc(t)}</span>`;
+    else if (s.key) out += `<span class="word wt-key">${esc(t)}</span>`;
     else if (s.w && /^(n|a|num)\./.test(s.w)) out += `<span class="word">${esc(t)}</span>`;
     else out += esc(t);
     last = t;
@@ -210,7 +218,7 @@ export async function createFarm(el, ctx, game) {
         hints++;
       }
       note("helper-open", { step: row.key, by });
-      speak(row.line);
+      speakLine(row);
     }
   }
   ctx.on(arrow, "click", (ev) => {
@@ -226,6 +234,11 @@ export async function createFarm(el, ctx, game) {
   const rowEls = {};
   const wordOpts = () => ({ slots: { picture: rl.cardPicture !== false, english: !!rl.cardEnglish, kutchiText: true }, enShown: !!rl.cardEnglish, stage: 1 });
   function draw() {
+    if (tiles) {
+      paintSteps();
+      arrow.hidden = !curRow();
+      return;
+    }
     const OC = W.OrderCard;
     const snap = OC.snap14 ? OC.snap14(list).get("farm") : null;
     const data = {
@@ -270,6 +283,7 @@ export async function createFarm(el, ctx, game) {
       wordRes: wordR,
       target: o.target || null,
       data: o.data || {},
+      tiles: o.tiles || [],
       word: null,
     };
     r.word = {
@@ -284,12 +298,157 @@ export async function createFarm(el, ctx, game) {
     return r;
   }
   let focusRow = null;
-  const curRow = () => (focusRow && !focusRow.done ? focusRow : rows.find((r) => !r.done && !r.away) || null);
+  const curRow = () => (tiles ? rows.find((r) => !r.done) || null : focusRow && !focusRow.done ? focusRow : rows.find((r) => !r.done && !r.away) || null);
+
+  /* ----- a sentence order: the word tiles, one instruction at a time ----- */
+  let tiles = null;
+  const tileOf = {};
+  const peeked = new Set();
+  const stageOf = (id) => {
+    if (Number(P.ladder) > 0) return Number(P.ladder);
+    try {
+      return ctx.progress && ctx.progress.stage ? Number(ctx.progress.stage(id)) || 1 : 1;
+    } catch (e) {
+      return 1;
+    }
+  };
+  /** Still supported (stage 1-2: her line lights its tile while it's said). */
+  const supported = (w) => !!w && stageOf(w.id) <= 2;
+  /**
+   * groups: [{label: meaning | {en} (a group with no Kutchi word yet: its English, to record), tiles: [{key, word: meaning, lex (the
+   * word in it the tile teaches: underlined), picture} | {pair: [tile, tile]}]}]
+   */
+  function sentence(groups) {
+    guideEl.classList.add("ng-sentence");
+    list.hidden = true;
+    list.style.display = "none";
+    list.innerHTML = "";
+    const mk = (t) => {
+      if (t.pair) return { pair: t.pair.map(mk) };
+      const r = say(t.word);
+      const seg = ((r && r.segments) || []).find((x) => x.w === t.lex) || null;
+      const w = {
+        key: t.key,
+        id: `farm.tile.${t.id || t.key}`,
+        res: r,
+        lex: t.lex,
+        heard: seg ? String(seg.t).toLowerCase() : null,
+        html: keyHtml(r, t.lex),
+        rec: allRec(r),
+        picture: typeof t.picture === "string" ? stamp(t.picture) : t.picture,
+        say: () => speak(r),
+      };
+      tileOf[t.key] = w;
+      return w;
+    };
+    const label = (l) => {
+      if (!l) return null;
+      if (l.en) return { html: `<span class="njg-ph to-record" data-rec="to record" lang="en">${esc(l.en)}</span>`, rec: true };
+      const r = say(l);
+      return { html: lineHtml(r), rec: allRec(r) };
+    };
+    tiles = mountTiles(
+      side,
+      groups.map((g) => ({ label: label(g.label), tiles: g.tiles.map(mk) })),
+      {
+        speed,
+        shown: (w) => stageOf(w.id) < 5,
+        onSpeak: () => acted(),
+        onReveal: (w) => {
+          acted();
+          const r = curRow();
+          // (a peek at a dotted word costs accuracy: the instruction ticks plain; the word's cue is logged as text)
+          if (r) r.miss = true;
+          peeked.add(w.id);
+          try {
+            if (ctx.progress && ctx.progress.reveal) ctx.progress.reveal(w.id, "text");
+          } catch (e) {
+            /* only a log */
+          }
+          note("reveal", { step: r ? r.key : "", slot: "text", word: w.id });
+        },
+      }
+    );
+    paintSteps();
+    return tiles;
+  }
+  /** A tile's words: the kit's markup, the word it teaches underlined. */
+  function keyHtml(r, lex) {
+    // (one word alone needs no underline: only a tile of two words, "wadhi murgi", marks the one it teaches)
+    if (!r || !lex || (r.segments || []).filter((x) => x.w).length < 2) return lineHtml(r);
+    const segs = (r.segments || []).map((x) => (x.w === lex && !(x.gap || x.lang === "e") ? Object.assign({}, x, { key: true }) : x));
+    return lineHtml(Object.assign({}, r, { segments: segs }));
+  }
+  function paintSteps() {
+    if (!tiles) return;
+    const done = rows.filter((r) => r.done).length;
+    const cur = curRow();
+    tiles.steps(rows.length, done, cur ? rows.indexOf(cur) : -1);
+  }
+  /** When each of the row's tile words is heard in her line, as shares of its letters (no word timings yet). */
+  function heardAt(r) {
+    const segs = [];
+    for (const x of Array.isArray(r.line) ? r.line : [r.line]) {
+      segs.push(...((x && x.segments) || []));
+      segs.push({ t: " " });
+    }
+    const total = Math.max(1, segs.reduce((n, x) => n + String(x.t || "").length, 0));
+    const out = [];
+    let at = 0;
+    for (const x of segs) {
+      const t = String(x.t || "");
+      const lt = t.toLowerCase();
+      for (const k of r.tiles || []) {
+        const w = tileOf[k];
+        if (w && x.w === w.lex && (!w.heard || w.heard === lt)) out.push({ key: k, at: at / total, len: t.length / total });
+      }
+      at += t.length;
+    }
+    return out;
+  }
+  let lineSeq = 0;
+  /** Her line for the row, said; the tiles of its words light as they're heard, only while those words are supported. */
+  function speakLine(r) {
+    if (!r) return Promise.resolve();
+    if (!tiles) return speak(r.line);
+    const ms = T(1400 + plainText(r.line).length * 95);
+    const seq = ++lineSeq;
+    for (const h of heardAt(r)) {
+      if (!supported(tileOf[h.key])) continue;
+      ctx.after(h.at * ms, () => seq === lineSeq && !dead && tiles.light(h.key, true));
+      ctx.after((h.at + h.len) * ms + T(700), () => tiles && tiles.light(h.key, false));
+    }
+    return speak(r.line);
+  }
+  /** The current instruction: shown big in her box, said. */
+  function instruct() {
+    const r = curRow();
+    paintSteps();
+    if (!r || dead) return Promise.resolve();
+    guide.set(lineHtml(r.line), { rec: allRec(r.line) });
+    note("instruct", { step: r.key });
+    return speakLine(r);
+  }
 
   /* ----- the ask: said, its card pops, then turns into its row ----- */
   let skipIntro = false;
   let introOn = false;
   async function ask(o = {}) {
+    if (tiles) {
+      // (a sentence order: her opening line, then her first instruction; a tap skips to play, never lost)
+      introOn = true;
+      skipIntro = false;
+      const skip = new Promise((res) => (ask.skip = res));
+      rows.forEach((r) => (r.away = false));
+      if (o.guide) {
+        setGuide(o.guide);
+        await Promise.race([speak(lineOf(o.guide)), skip]);
+      }
+      introOn = false;
+      lastAct = Date.now();
+      await Promise.race([instruct(), sleep(T(400))]);
+      return;
+    }
     if (o.headline) headline = lineOf(o.headline);
     draw();
     introOn = true;
@@ -323,6 +482,12 @@ export async function createFarm(el, ctx, game) {
   /** Her face (on the card or in her box): every ask still open, said again. */
   async function replayAll() {
     acted();
+    if (tiles) {
+      stopVoice();
+      const r = curRow();
+      if (r) guide.set(lineHtml(r.line), { rec: allRec(r.line) });
+      return speakLine(r);
+    }
     for (const r of rows.filter((x) => !x.done)) {
       await speak(r.line);
       if (dead) return;
@@ -358,6 +523,10 @@ export async function createFarm(el, ctx, game) {
     const el2 = rowEls[r.key];
     if (el2 && el2.scrollIntoView) el2.scrollIntoView({ block: "nearest", inline: "nearest" });
     if (rows.every((x) => x.done) && onAll) onAll();
+    else if (tiles) {
+      const seq = ++lineSeq;
+      ctx.after(T(700), () => seq === lineSeq && !dead && instruct());
+    }
   }
   /** A wrong move on row r: el shakes (a funny bounce), her ask is said again, the row will tick plain. */
   function oops(r, elx, { line = true } = {}) {
@@ -367,7 +536,7 @@ export async function createFarm(el, ctx, game) {
     if (W.Sfx) W.Sfx.play("cook-oops", { volume: 0.3 });
     if (r && line) {
       stopVoice();
-      speak(r.line);
+      speakLine(r);
     }
   }
 
@@ -506,7 +675,15 @@ export async function createFarm(el, ctx, game) {
     await sleep(T(900));
     if (dead) return;
     const right = rows.filter((r) => !r.miss).length;
-    ctx.done({ right, total: rows.length, hints, words, timeMs: Date.now() - started, steps: rows.map((r) => ({ id: r.key, label: plainText(r.wordRes), asked: r.need, done: r.got, ok: !r.miss })) });
+    // (a sentence order: every tile word in an instruction is heard evidence for its ladder; a peeked one is a text cue)
+    const evidence = [];
+    if (tiles)
+      for (const r of rows)
+        for (const k of r.tiles || []) {
+          const w = tileOf[k];
+          if (w && !w.rec) evidence.push({ word: w.id, ok: !r.miss, cue: peeked.has(w.id) ? "text" : "kutchi" });
+        }
+    ctx.done({ right, total: rows.length, hints, words, evidence, timeMs: Date.now() - started, steps: rows.map((r) => ({ id: r.key, label: plainText(r.wordRes), asked: r.need, done: r.got, ok: !r.miss })) });
   }
 
   const F = {
@@ -540,6 +717,12 @@ export async function createFarm(el, ctx, game) {
     sleep,
     stopVoice,
     focus: (r) => (focusRow = r || null),
+    sentence,
+    current: () => curRow(),
+    sayLine: (r) => speakLine(r || curRow()),
+    get tiles() {
+      return tiles;
+    },
     helper,
     rowEl: (r) => rowEls[r.key],
     begin() {
