@@ -2543,23 +2543,36 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       speaking = false;
       await Cook.wait(K.speakGapMs || 300);
     }
-    // Sprint 14 (lab/cards.html playChai): the first time words are dotted on the order card, the dots are lit once ("tap the
-    // dots": a tap shows the word in its place, free help); a few seconds at most, then the game goes on
+    // SH-196 (Zafar, 2 Nov: "teach the blur of the word, and then the image, both when they first happen (no need to repeat for the
+    // kutchi blurred as its same and english word blurred)"): once per player, for every game (one key each, not chai's own), the
+    // first dotted word on the order card is lit ("tap the dots": a tap shows the word in its place, free help), then, the first
+    // time a picture is blurred, its eye. The English and the Kutchi dots are one lesson. Was (Sprint 14): the Kutchi dots only.
     if (s14) {
-      // (the Kutchi dotted: the level's dotting from L3, Lang's dots, or a word past its Kutchi; the English is always tapped open)
-      const d = [...document.querySelectorAll("#mission .oc-row14 .wc14-k .dots, #mission .oc-row14 .wc14-k-dots")].find((x) => x.offsetParent && getComputedStyle(x).display !== "none");
-      if (d && first14("dots")) {
-        const row = d.closest(".oc-row");
+      const vis = (x) => x && x.offsetParent && getComputedStyle(x).display !== "none" && getComputedStyle(x).visibility !== "hidden";
+      const firstAll = (k) => {
+        const key = `*:${S14_TAG}${k}`;
+        if (!fresh14 || seen14[key]) return false;
+        seen14[key] = true;
+        return true;
+      };
+      const lesson = async (el) => {
+        const row = el.closest(".oc-row");
         if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
         await Cook.wait(400);
-        d.classList.add("ob-dots-now");
+        el.classList.add("ob-dots-now");
         const prevExpect = Cook.expect;
         const wait14 = { kind: "wait", dots: true };
         Cook.expect = wait14;
-        await light14(d, "glow", 6000 / (Cook.speed || 1), () => {});
-        d.classList.remove("ob-dots-now");
+        await light14(el, "glow", 6000 / (Cook.speed || 1), () => {});
+        el.classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
-      }
+      };
+      const rows14 = "#mission .oc-row14";
+      const dots = [...document.querySelectorAll(`${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`)].find(vis);
+      if (dots && firstAll("reveal-word")) await lesson(dots);
+      const eye = [...document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`)].find(vis);
+      // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
+      if (eye && seen14[`*:${S14_TAG}reveal-word`] && firstAll("reveal-pic")) await lesson(eye);
     }
     talked = true;
     refresh();

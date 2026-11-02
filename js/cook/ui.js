@@ -2573,7 +2573,11 @@
     // cardPicture, through js/shared/rules.js)
     if (UI.s14()) {
       const RL = global.Rules ? global.Rules.level(mission.level || 1) : { cardEnglish: false, cardPicture: true };
-      const at = (k) => (k === "pic" ? RL.cardPicture : RL.cardEnglish);
+      // SH-195 (Zafar, 2 Nov: "how will you learn what saffron is if the word card is blurred"; his yes to the rule): never blur a
+      // word the child hasn't met: the picture blurs only where the level says so AND the word was picked right before this round
+      // (Cook.chipWord: the round's snapshot, so a card never changes mid-round)
+      const newWord = Cook.chipWord ? Cook.chipWord(wcWordId(r)) : false;
+      const at = (k) => (k === "pic" ? RL.cardPicture || newWord : RL.cardEnglish);
       const srcB = wcPicSrc(wcWordId(r));
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
       return {

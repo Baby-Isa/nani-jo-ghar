@@ -64,6 +64,7 @@ export const DOC_LIMITS = {
   "docs/design-language/tone-of-voice.md": 1000,
   "docs/design-language/ui-design-system.md": 3500,
   "docs/design-language/ux-principles.md": 3000,
+  "docs/design-language/chai-standard.md": 1500,
 };
 export const DOC_DIRS = ["docs/game-design/modes", "docs/game-design/days", "docs/design-language"];
 export const NEXT_CHAT = 600, SPRINT = 1200, STATUS_CHARS = 1200;
