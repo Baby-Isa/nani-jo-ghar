@@ -1827,6 +1827,90 @@
     "Plant the knee."
    ],
    "_sig": "[\"x\"]"
+  },
+  "WhoWakesUpAtN": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "NP"
+    },
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "{who} wakes up at {n}.",
+   "elicit": [
+    "who wakes up at two."
+   ],
+   "_sig": "[\"who\",\"n\"]"
+  },
+  "ItSNOClock": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "It's {n} o'clock.",
+   "elicit": [
+    "It's two o'clock."
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "DrawTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Draw the {x}.",
+   "elicit": [
+    "Draw the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ColourTheXY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "Colour the {x}: {y}.",
+   "elicit": [
+    "Colour the knee: y."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "PutARingRoundTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Put a ring round the {x}.",
+   "elicit": [
+    "Put a ring round the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "RubOutTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Rub out the {x}.",
+   "elicit": [
+    "Rub out the knee."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }

@@ -847,6 +847,25 @@
    }
   },
   {
+   "id": "n.alarm-clock",
+   "pos": "N",
+   "gender": null,
+   "gloss": "alarm clock",
+   "glossPl": "alarm clocks",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-alarm-clock: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-alarm-clock"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.all-the",
    "pos": "N",
    "gender": null,
@@ -976,6 +995,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.ball",
+   "pos": "N",
+   "gender": null,
+   "gloss": "ball",
+   "glossPl": "balls",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-ball: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-ball"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -1376,6 +1414,25 @@
    }
   },
   {
+   "id": "n.book",
+   "pos": "N",
+   "gender": null,
+   "gloss": "book",
+   "glossPl": "books",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-book: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-book"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.bottle",
    "pos": "N",
    "gender": null,
@@ -1483,6 +1540,25 @@
    "aliases": [
     "clinic.pipeline.ladder.boy"
    ]
+  },
+  {
+   "id": "n.breakfast",
+   "pos": "N",
+   "gender": null,
+   "gloss": "breakfast",
+   "glossPl": "breakfasts",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-breakfast: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-breakfast"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.bubble",
@@ -1817,6 +1893,25 @@
    ]
   },
   {
+   "id": "n.chalk",
+   "pos": "N",
+   "gender": null,
+   "gloss": "chalk",
+   "glossPl": "chalks",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-chalk: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-chalk"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.chapati",
    "pos": "N",
    "gender": "she",
@@ -1967,6 +2062,25 @@
      "src": "data/cook.json words.ph-chana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)"
     }
    ]
+  },
+  {
+   "id": "n.children",
+   "pos": "N",
+   "gender": null,
+   "gloss": "children",
+   "glossPl": "childrens",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-children: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-children"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.chilli",
@@ -2276,6 +2390,25 @@
    }
   },
   {
+   "id": "n.colours",
+   "pos": "N",
+   "gender": null,
+   "gloss": "colours",
+   "glossPl": "colours",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-colours: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-colours"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.comb",
    "pos": "N",
    "gender": null,
@@ -2500,6 +2633,25 @@
    ],
    "aliases": [
     "ph-crate"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.crayon",
+   "pos": "N",
+   "gender": null,
+   "gloss": "crayon",
+   "glossPl": "crayons",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-crayon: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-crayon"
    ],
    "ask": {
     "word": [
@@ -2944,6 +3096,25 @@
    ]
   },
   {
+   "id": "n.duster",
+   "pos": "N",
+   "gender": null,
+   "gloss": "duster",
+   "glossPl": "dusters",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-duster: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-duster"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.ear",
    "pos": "N",
    "gender": null,
@@ -3047,6 +3218,25 @@
    }
   },
   {
+   "id": "n.eleven",
+   "pos": "N",
+   "gender": null,
+   "gloss": "eleven",
+   "glossPl": "elevens",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-eleven: an English placeholder, to record (the hours 11 and 12 (wake-up-clock.md §1): to record with Mum's number round)"
+   ],
+   "aliases": [
+    "ph-eleven"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.eye",
    "pos": "N",
    "gender": "she",
@@ -3110,6 +3300,25 @@
    "aliases": [
     "clinic.item.patch",
     "clinic.item.care-patch"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.face",
+   "pos": "N",
+   "gender": null,
+   "gloss": "face",
+   "glossPl": "faces",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-face: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-face"
    ],
    "ask": {
     "word": [
@@ -3268,6 +3477,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.flannel",
+   "pos": "N",
+   "gender": null,
+   "gloss": "flannel",
+   "glossPl": "flannels",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-flannel: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-flannel"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -3790,6 +4018,25 @@
    ]
   },
   {
+   "id": "n.hair",
+   "pos": "N",
+   "gender": null,
+   "gloss": "hair",
+   "glossPl": "hairs",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-hair: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-hair"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.half-a-glass-of",
    "pos": "N",
    "gender": null,
@@ -4068,6 +4315,25 @@
    ],
    "aliases": [
     "clinic.item.bug-jar"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.jobs",
+   "pos": "N",
+   "gender": null,
+   "gloss": "jobs",
+   "glossPl": "jobs",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-jobs: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-jobs"
    ],
    "ask": {
     "word": [
@@ -4489,6 +4755,25 @@
    ],
    "aliases": [
     "clinic.item.lollipop"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.lunchbox",
+   "pos": "N",
+   "gender": null,
+   "gloss": "lunchbox",
+   "glossPl": "lunchboxes",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-lunchbox: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-lunchbox"
    ],
    "ask": {
     "word": [
@@ -5416,6 +5701,44 @@
    ]
   },
   {
+   "id": "n.pencil",
+   "pos": "N",
+   "gender": null,
+   "gloss": "pencil",
+   "glossPl": "pencils",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-pencil: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-pencil"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.pictures",
+   "pos": "N",
+   "gender": null,
+   "gloss": "pictures",
+   "glossPl": "pictures",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-pictures: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-pictures"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.pillow",
    "pos": "N",
    "gender": null,
@@ -5971,6 +6294,44 @@
    }
   },
   {
+   "id": "n.school-bag",
+   "pos": "N",
+   "gender": null,
+   "gloss": "school bag",
+   "glossPl": "school bags",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-school-bag: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-school-bag"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.school-things",
+   "pos": "N",
+   "gender": null,
+   "gloss": "school things",
+   "glossPl": "school things",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-school-things: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-school-things"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.scissors",
    "pos": "N",
    "gender": null,
@@ -6382,6 +6743,25 @@
    ],
    "aliases": [
     "ph-sleeve"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.soap",
+   "pos": "N",
+   "gender": null,
+   "gloss": "soap",
+   "glossPl": "soaps",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-soap: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-soap"
    ],
    "ask": {
     "word": [
@@ -6992,6 +7372,25 @@
    }
   },
   {
+   "id": "n.teacher",
+   "pos": "N",
+   "gender": null,
+   "gloss": "teacher",
+   "glossPl": "teachers",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-teacher: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-teacher"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.teaspoon",
    "pos": "N",
    "gender": "she",
@@ -7019,6 +7418,25 @@
    "notes": [
     "The family says chamchi (small) and chamcho (big): the -i / -o pattern again (§9)."
    ]
+  },
+  {
+   "id": "n.teddy",
+   "pos": "N",
+   "gender": null,
+   "gloss": "teddy",
+   "glossPl": "teddies",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-teddy: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-teddy"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.the-basket",
@@ -7664,6 +8082,25 @@
    }
   },
   {
+   "id": "n.toys",
+   "pos": "N",
+   "gender": null,
+   "gloss": "toys",
+   "glossPl": "toys",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-toys: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-toys"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.tub",
    "pos": "N",
    "gender": null,
@@ -7779,6 +8216,25 @@
    "aliases": [
     "clinic.item.tweezers",
     "clinic.item.tool-tweezers"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.twelve",
+   "pos": "N",
+   "gender": null,
+   "gloss": "twelve",
+   "glossPl": "twelves",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json words.ph-twelve: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-twelve"
    ],
    "ask": {
     "word": [
@@ -8174,6 +8630,50 @@
     "grammar-notes §30 K14 (the children really just say Big Ma, in English)",
     "docs/decisions.md 11 (Big Ma)"
    ]
+  },
+  {
+   "id": "pn.cousin-hasan",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Cousin Hasan",
+   "gloss": "Cousin Hasan",
+   "forms": {
+    "*": "Cousin Hasan"
+   },
+   "status": "draft",
+   "src": [
+    "data/school-proto.json words.ph-boy-cousin: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "ph-boy-cousin"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "pn.cousin-zahra",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Cousin Zahra",
+   "gloss": "Cousin Zahra",
+   "forms": {
+    "*": "Cousin Zahra"
+   },
+   "status": "draft",
+   "src": [
+    "data/school-proto.json words.ph-girl-cousin: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "ph-girl-cousin"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
   },
   {
    "id": "pn.eid",
@@ -12827,6 +13327,23 @@
    }
   },
   {
+   "id": "phrase.brush-your-teeth",
+   "pos": "Phrase",
+   "gloss": "Brush your teeth!",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.ready-teeth: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.ready-teeth"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.bubbles-hee-hee",
    "pos": "Phrase",
    "gloss": "Bubbles! Hee hee!",
@@ -13244,6 +13761,23 @@
    }
   },
   {
+   "id": "phrase.comb-your-hair",
+   "pos": "Phrase",
+   "gloss": "Comb your hair!",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.ready-hair: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.ready-hair"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.come-along-with-me",
    "pos": "Phrase",
    "lemma": "hal mu saathe",
@@ -13499,6 +14033,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.do-what-the-teacher-says",
+   "pos": "Phrase",
+   "gloss": "Do what the teacher says.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.board-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.board-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -14063,6 +14614,40 @@
    ]
   },
   {
+   "id": "phrase.get-them-ready-for-school",
+   "pos": "Phrase",
+   "gloss": "Get them ready for school.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.ready-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.ready-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.get-up",
+   "pos": "Phrase",
+   "gloss": "Get up!",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.clock-getup: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.clock-getup"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.get-well-soon",
    "pos": "Phrase",
    "gloss": "Get well soon!",
@@ -14211,6 +14796,40 @@
    ]
   },
   {
+   "id": "phrase.good-morning-come-youre-my-helper-today",
+   "pos": "Phrase",
+   "gloss": "Good morning! Come, you're my helper today.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.board-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.board-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.good-morning-the-bus-comes-at-eight",
+   "pos": "Phrase",
+   "gloss": "Good morning! The bus comes at eight.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.clock-morning: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.clock-morning"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.goodbye-khuda-hafiz",
    "pos": "Phrase",
    "lemma": "khuda-fis",
@@ -14234,10 +14853,12 @@
    "gloss": "Goodnight!",
    "status": "to-record",
    "src": [
-    "data/farm.json lines.dusk-night: an English placeholder, to record"
+    "data/farm.json lines.dusk-night: an English placeholder, to record",
+    "data/school-proto.json lines.clock-goodnight: an English placeholder, to record"
    ],
    "aliases": [
-    "farm.line.dusk-night"
+    "farm.line.dusk-night",
+    "school-proto.line.clock-goodnight"
    ],
    "ask": {
     "word": [
@@ -16498,6 +17119,23 @@
    ]
   },
   {
+   "id": "phrase.look-in-the-mirror",
+   "pos": "Phrase",
+   "gloss": "Look in the mirror!",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.ready-mirror: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.ready-mirror"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.look-in-the-torch",
    "pos": "Phrase",
    "gloss": "Look in: the torch.",
@@ -17861,6 +18499,23 @@
    }
   },
   {
+   "id": "phrase.put-in-the-bag-what-nani-says",
+   "pos": "Phrase",
+   "gloss": "Put in the bag what Nani says.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.bag-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.bag-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.put-in-the-next-thing",
    "pos": "Phrase",
    "gloss": "Put in the next thing",
@@ -18291,6 +18946,40 @@
    }
   },
   {
+   "id": "phrase.school-today-get-ready",
+   "pos": "Phrase",
+   "gloss": "School today! Get ready.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.ready-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.ready-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.school-today-lets-pack-your-bag",
+   "pos": "Phrase",
+   "gloss": "School today! Let's pack your bag.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.bag-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.bag-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.shall-i-take-the-samosa-out-or-not",
    "pos": "Phrase",
    "lemma": "samosa kadhu ke na",
@@ -18358,6 +19047,23 @@
    "src": [
     "grammar-notes §20"
    ]
+  },
+  {
+   "id": "phrase.simba-out-you-come",
+   "pos": "Phrase",
+   "gloss": "Simba! Out you come.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.bag-simba: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.bag-simba"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.simba-took-it",
@@ -20004,6 +20710,23 @@
    ]
   },
   {
+   "id": "phrase.tomorrow-is-school-who-wakes-up-when",
+   "pos": "Phrase",
+   "gloss": "Tomorrow is school! Who wakes up when?",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.clock-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.clock-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.too-much",
    "pos": "Phrase",
    "gloss": "Too much!",
@@ -20240,6 +20963,23 @@
    "src": [
     "grammar-notes §27 B46 (also Muke chakhan lai de)"
    ]
+  },
+  {
+   "id": "phrase.wake-them-up-at-their-time",
+   "pos": "Phrase",
+   "gloss": "Wake them up at their time.",
+   "status": "to-record",
+   "src": [
+    "data/school-proto.json lines.clock-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "school-proto.line.clock-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.wash-the-glass-wash-the-cup",

@@ -2134,6 +2134,60 @@
    "english": "Plant the {x}.",
    "what": "Plant the {x}.",
    "src": "data/farm.json lines.grow-plant: an English placeholder, to record"
+  },
+  "WhoWakesUpAtN": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{who} wakes up at {n}.",
+   "what": "{who} wakes up at {n}.",
+   "src": "data/school-proto.json lines.clock-wake: an English placeholder, to record"
+  },
+  "ItSNOClock": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "It's {n} o'clock.",
+   "what": "It's {n} o'clock.",
+   "src": "data/school-proto.json lines.clock-its: an English placeholder, to record"
+  },
+  "DrawTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Draw the {x}.",
+   "what": "Draw the {x}.",
+   "src": "data/school-proto.json lines.board-draw: an English placeholder, to record"
+  },
+  "ColourTheXY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Colour the {x}: {y}.",
+   "what": "Colour the {x}: {y}.",
+   "src": "data/school-proto.json lines.board-colour: an English placeholder, to record"
+  },
+  "PutARingRoundTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Put a ring round the {x}.",
+   "what": "Put a ring round the {x}.",
+   "src": "data/school-proto.json lines.board-ring: an English placeholder, to record"
+  },
+  "RubOutTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Rub out the {x}.",
+   "what": "Rub out the {x}.",
+   "src": "data/school-proto.json lines.board-rub: an English placeholder, to record"
   }
  }
 }
