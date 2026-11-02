@@ -243,7 +243,7 @@ export default async function fetchGame(F) {
   await F.sleep(F.T(400));
   await F.ask({});
   F.begin();
-  F.teach("room", () => H.room(errands[0].room));
+  F.teach("room", () => F.current() && F.current().target());
   void bed;
   void bedroomRug;
   await new Promise((res) => F.whenAll(res));

@@ -290,7 +290,7 @@ export default async function hide(F) {
   phase = "play";
   await F.ask({});
   F.begin();
-  F.teach("open", () => places[cats[order[0]].at] && places[cats[order[0]].at].el);
+  F.teach("open", () => F.current() && F.current().target());
   await new Promise((res) => F.whenAll(res));
   await F.finish(async () => {
     // both cats curl up together on the rug, purring
