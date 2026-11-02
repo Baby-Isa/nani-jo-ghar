@@ -355,7 +355,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
 
 /*
  * The clinic's new games, prototyped (proto-clinic, 2 Nov 2026; build/reports/designs/clinic-every-part.md): each plays alone in the
- * lab on the prototypes' kit (js/clinic/proto/kit.js: chai's patterns, as the farm's), not yet in the morning's pipeline.
+ * lab on the prototypes' kit (js/clinic-proto/kit.js: chai's patterns, as the farm's), not yet in the morning's pipeline.
  */
 const PROTO = [
   ["where", "Where does it hurt? (prototype)", "The patient says what hurts; tap it on her (the head opens the face). Word tiles under her line."],
@@ -377,7 +377,7 @@ function protoGame(id, label) {
       return {
         async start() {
           ctx.test.state("loading");
-          const m = await import("./proto/play.js");
+          const m = await import("../clinic-proto/play.js");
           if (stopped) return;
           api = await m.play(id, el, ctx);
           if (stopped && api) api.destroy();

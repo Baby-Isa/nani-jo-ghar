@@ -147,6 +147,18 @@
   --njg-u: calc(1px * var(--njg-scale));
   /* one plain CSS pixel, for sizes built from a scale in the shared CSS (SH-185's panel scale, SH-177's bubble scale) */
   --njg-px: 1px;
+  /* the lab prototypes' placeholder colours (2 Nov 2026: the clinic and farm prototypes; replaced by art) */
+  --njg-proto-wood: #b98a5a;
+  --njg-proto-wood-dark: #8a5f3a;
+  --njg-proto-tray: #c9c4bb;
+  --njg-proto-found-glow: radial-gradient(circle, rgba(230, 80, 70, .5), rgba(230, 80, 70, 0) 70%);
+  --njg-proto-skin: #e7b48f;
+  --njg-proto-channel: rgba(255, 238, 220, .95);
+  --njg-proto-dirt: #7a5a3a;
+  --njg-proto-splinter: #6b4423;
+  --njg-proto-plaster: #f1c9a0;
+  --njg-proto-plaster-edge: #d9a77a;
+  --njg-proto-swatch-shade: rgb(0 0 0 / .12);
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;

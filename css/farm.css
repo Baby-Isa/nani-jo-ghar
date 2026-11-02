@@ -154,7 +154,7 @@
 .farm-tile-bucket::before { content: ""; position: absolute; inset: 14% 6% 0 6%; background: var(--njg-pewter); clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%); }
 .farm-tile-bucket > span { position: absolute; left: 6%; right: 6%; top: 4%; height: 22%; border-radius: 50%; background: var(--njg-blue); }
 .farm-tile-plain { filter: grayscale(1) brightness(.8) sepia(.3) hue-rotate(170deg) saturate(1.8); } /* (slate: no hen in the scene is this colour) */
-.farm-tile-swatch { display: block; width: 66%; aspect-ratio: 1.5; max-height: 70%; border-radius: 42% 58% 46% 54% / 55% 45% 55% 45%; box-shadow: inset 0 -0.25em 0 rgb(0 0 0 / .12); }
+.farm-tile-swatch { display: block; width: 66%; aspect-ratio: 1.5; max-height: 70%; border-radius: 42% 58% 46% 54% / 55% 45% 55% 45%; box-shadow: inset 0 -0.25em 0 var(--njg-proto-swatch-shade); }
 .farm-tile-swatch.red { background: var(--njg-rust); }
 .farm-tile-swatch.green { background: var(--njg-leaf-deep); }
 .farm-tile-swatch.white { background: var(--njg-cream); border: 1px solid var(--njg-cream-edge); box-sizing: border-box; }

@@ -1820,120 +1820,57 @@
         return Object.values((S && S.chars) || {}).filter((img) => img && img.active && img.visible !== false);
       })();
       if (global.Rules && heads.length >= global.Rules.popBelowFacesFrom()) {
-        // (Zafar, 29 Oct: "If there's three people and no space for the big card under the left face they use the smaller card
-        // version ... or just scale it down to fit. With three people there won't be a better place": always under the faces at
-        // the left, the card narrower, then smaller, then scaled to the room there)
-        // (Zafar, 2 Nov, his red box: "the whole shaded red area [is] free space on the left below the person's head ... the pop up card
-        // can be bigger and the speaker need not be cramped"): only the faces above the card's own span count, so a card at the left
-        // starts under the first person's head, not under the lowest head on the counter; a buffer below that head, at the left and the foot
+        // (Zafar, 2 Nov: "cant you just draw the space available on each screen ... and then the card dynamically fills that space (with
+        // a max width and height)?" Yes: one rule at every size. The free space is the play area right of the side panel, less every
+        // face (with a buffer), with a margin at the left and the foot. Two clear rectangles are drawn: under the heads (from the panel
+        // across, starting below the lowest head above it: his red box), and the column beside the first head (from the top). The
+        // card fills the bigger one, up to a maximum width and height; upright, or sideways where that space is very wide and short.
+        // The shape is chosen at the order's first pop and kept for the order (Zafar, 2 Nov: aako "should be the same").
+        const MAXW = 380;
+        const MAXH = 460;
+        const BUF = 16; // (clear of a head: a fifth of a head at least, below)
         const xL = sr.right + 14;
-        const above = (ww) => faces.filter((f) => f.left >= sr.right && f.right > xL - 8 && f.left < xL + ww + 8);
-        const yFor = (ww) => {
-          const fs = above(ww);
-          const under = fs.reduce((m, f) => Math.max(m, f.bottom), play.top);
-          const headH = fs.reduce((m, f) => Math.max(m, f.bottom - f.top), 0);
-          return under + pad + Math.max(14, headH * 0.2);
-        };
-        const roomFor = (ww) => Math.max(40, play.bottom - pad - yFor(ww));
-        let y0 = yFor(100);
-        let room = roomFor(100);
-        // CHAI-43 (Zafar, 1 Nov: "The card could be bigger ... there's plenty of space for it to be bigger, so I feel like it probably
-        // should dynamically size ... the speaker button now goes past the boundary"; decision 1): the card takes the room under the
-        // faces, as big as it fits up to the full big card (wd), its picture, words and speaker scaling with it (cq units); the
-        // speaker shrinks only with the card and never under the tap size (48 px, its own floor); then the short picture; a zoom
-        // only as the last step. Its height is measured with the speaker's ring, so nothing passes its foot (the ring is inside the
-        // card's own padding: css/shared/word-card.css .wc14-pop)
-        const x0 = sr.right + 14;
-        const maxW = Math.round(Math.max(100, Math.min(Math.max(wd, 340), play.right - pad - x0)));
-        const tall = () => {
-          const cb = c.getBoundingClientRect();
-          const spk = c.querySelector(".wc14-spk");
-          const sb = spk ? spk.getBoundingClientRect() : null;
-          // (the ring: 7.5 px round the speaker, the token's spk-ring)
-          const over = sb && sb.height ? Math.max(0, sb.bottom + 8 - cb.bottom) : 0;
-          return c.offsetHeight + over;
-        };
-        c.classList.remove("wc14-side"); // (CHAI-43: upright first; sideways only as the crossover below)
-        const at = (ww, small) => {
-          c.style.width = `${ww}px`;
-          c.classList.toggle("wc14-small", small);
-          global.WordCard.fit14(c);
-          return tall();
-        };
-        // the widest card that fits the room's height (a narrower card is shorter: its picture is 4:3), by halving
-        const widest = (small) => {
-          const fits = (ww) => at(ww, small) <= roomFor(ww);
-          if (!fits(100)) return null;
-          let lo = 100;
-          let hi = maxW;
-          if (fits(hi)) return hi;
-          while (hi - lo > 4) {
-            const mid = Math.round((lo + hi) / 2);
-            if (fits(mid)) lo = mid;
-            else hi = mid;
-          }
-          return lo;
-        };
-        // (Zafar, 2 Nov: "why randomly for the final item of the order (aako) did a different pop up item card get used when the rest
-        // of the order had vertical cards? should be the same": the card's shape is chosen at the order's first pop and kept for the order)
-        const shape = popShape.mission === mission ? popShape.side : null;
-        let w = widest(false);
-        let small = false;
-        // (Zafar, 2 Nov: the room under the first head is wider than an upright 4:3 picture lets the card be: the short-picture card,
-        // as wide as that room, when it makes the card bigger)
-        const wS = widest(true);
-        const areaOf = (ww, sm) => (ww == null ? 0 : ww * at(ww, sm));
-        if (w == null || (wS != null && areaOf(wS, true) > areaOf(w, false) * 1.2)) {
-          w = wS;
-          small = true;
+        const xR = play.right - pad;
+        const yB = play.bottom - pad;
+        const pf = faces.filter((f) => f.left >= sr.right).sort((p, q) => p.left - q.left);
+        const headH = pf.reduce((m, f) => Math.max(m, f.bottom - f.top), 0);
+        const below = Math.max(BUF, headH * 0.2);
+        // (a) under the heads: for each width, the top is below every head over that span
+        let A = null;
+        for (let ww = 100; ww <= Math.min(MAXW * 1.8, xR - xL); ww += 10) {
+          const over = pf.filter((f) => f.right > xL - 8 && f.left < xL + ww + 8);
+          const top = over.reduce((m, f) => Math.max(m, f.bottom), play.top + pad - below) + below;
+          const hh = yB - top;
+          if (hh < 60) continue;
+          const area = Math.min(ww, MAXW) * Math.min(hh, MAXH);
+          if (!A || area > A.area) A = { x: xL, y: top, w: ww, h: hh, area };
         }
-        if (w == null) w = 100;
-        // CHAI-43 (Zafar, 2 Nov, decision 8: "at a certain point, you can code in a crossover"; the second reader: sideways only where
-        // the room is wider than about 1.3 times its height): on a short, wide room (a phone's counter under the faces) the card lies
-        // sideways (picture, word, speaker in a row: the side card's look) when the upright card would be small (under 140 px), up to
-        // three times the room's height wide, when that makes it bigger
-        const roomW = Math.max(0, play.right - pad - x0);
-        let side = false;
-        room = roomFor(w);
-        if (shape !== false && (shape === true || (roomW > room * 1.3 && w < 140))) {
-          // (the upright card as it will show: zoomed down to the room when it is taller)
-          const upH = at(w, small);
-          const upArea = upH > room ? (w * room) / upH * room : upH * w;
-          c.classList.add("wc14-side");
-          const sideAt = (ww) => at(ww, false) * (room / roomFor(ww)); // (a wider card may reach under the next head: its room is less)
-          let lo = 160;
-          let hi = Math.round(Math.min(roomW, Math.max(260, room * 3))); // (its picture, word and speaker stay together: never stretched across the counter)
-          let sw = null;
-          if (sideAt(lo) <= room) {
-            if (sideAt(hi) <= room) sw = hi;
-            else {
-              while (hi - lo > 4) {
-                const mid = Math.round((lo + hi) / 2);
-                if (sideAt(mid) <= room) lo = mid;
-                else hi = mid;
-              }
-              sw = lo;
-            }
-          }
-          if (sw != null && (shape === true || sideAt(sw) * sw > upArea * 1.15)) {
-            side = true;
-            w = sw;
-            small = false;
-          } else c.classList.remove("wc14-side");
-        }
+        // (b) the column beside the first head, from the top
+        const firstL = pf.length ? pf[0].left - BUF : xR;
+        const colW = Math.min(firstL, xR) - xL;
+        const B = colW >= 100 ? { x: xL, y: play.top + pad, w: colW, h: yB - (play.top + pad), area: Math.min(colW, MAXW) * Math.min(yB - play.top - pad, MAXH) } : null;
+        const R = B && (!A || B.area > A.area * 1.1) ? B : A || { x: xL, y: play.top + pad, w: 100, h: Math.max(60, yB - play.top - pad), area: 0 };
+        const W = Math.round(Math.min(R.w, MAXW));
+        const H = Math.round(Math.min(R.h, MAXH));
+        const side = popShape.mission === mission && popShape.side != null ? popShape.side : W > H * 1.8;
         popShape.mission = mission;
         popShape.side = side;
-        at(w, small);
-        y0 = yFor(w);
-        room = roomFor(w);
-        // (its speaker and words have their smallest sizes, so past the narrowest card the whole card is scaled down to the room:
-        // zoom, so its box and the move into its row card see the size it shows at)
-        const k = tall() > room ? Math.max(0.3, room / tall()) : 1;
+        c.classList.remove("wc14-small");
+        c.classList.toggle("wc14-side", side);
+        c.classList.add("wc14-fill");
+        c.style.width = `${W}px`;
+        c.style.setProperty("--wc14-fill-h", `${H}px`);
+        c.style.zoom = "";
+        global.WordCard.fit14(c);
+        // (sideways: as tall as it needs, centred in the space's height; upright: the space's height, at its top)
+        const ch = c.offsetHeight;
+        // (a sideways card taller than its space is scaled down to it: zoom, so its move into its row card sees the size it shows at)
+        const k = side && ch > H ? Math.max(0.4, H / ch) : 1;
         c.style.zoom = k < 1 ? String(Math.round(k * 1000) / 1000) : "";
-        // (a zoomed element's left and top are zoomed too: given in its own scale)
-        Object.assign(c.style, { left: `${Math.round(x0 / k)}px`, top: `${Math.round(y0 / k)}px` });
+        const y = side ? R.y + Math.max(0, (H - ch * k) / 2) : R.y;
+        Object.assign(c.style, { left: `${Math.round(R.x / k)}px`, top: `${Math.round(y / k)}px` });
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: "0", by: JSON.stringify({ under: true, w, k: Math.round(k * 100) / 100, y: Math.round(y0) }) });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: "0", by: JSON.stringify({ under: true, w: W, h: H, side, space: R === B ? "column" : "under" }) });
         } catch (e) {
           /* only a log */
         }
