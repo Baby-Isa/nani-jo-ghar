@@ -8,37 +8,36 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, about 21:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`): chai polished
-as the stove family's reference. **The plan to the launch is `docs/sprints/plan.md`** (Zafar, 2 Nov: "we'll try stick to it this
-time"): each sprint polishes one reference and rolls out the last one to its family. Nothing is running. `main` is unchanged (33762921).
-- **Done on the branch** (from Zafar's 2 Nov notes, `docs/feedback/chai-play-2026-11-02.md`):
-  - CHAI-43: the pop-out keeps L1's shape, scaled evenly, at L1's place or bottom left.
-  - SH-195: a new word's picture is never blurred.
-  - SH-196: the reveal is taught once, the dotted word and then the picture.
-  - CHAI-68: the next-pan light, a gold circle on the pan's rim.
-  Each is shot or driven; all are "to fix: check" for the judge.
-- **Art block 1 is ready to run:** `docs/design-language/art-plans/s17-art1-chrome-block.txt` (34 prompts, about 45-50 images: the
-  stove family's placeholders, chai's half and full moment, Simba's pose sheet). His answers: yes to all (the plan's §7). Next: block 2
-  (fetch and serve) into `build/reports/art-queue.md`, so two days stay ready.
+**Where things stand (2 Nov 2026, about 23:10 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`, the plan
+`docs/sprints/plan.md`). Nothing is running. `main` is unchanged (c6cf44a).
+- **Done on the branch tonight:**
+  - Chai's side panel: equal item padding (SH-190), Nani's box as tall as it needs (SH-189), the headline's gaps equal (SH-192),
+    the current card kept whole in view (SH-191, SH-169). `panelcheck.mjs`: 60 pass, 0 fail at the four sizes, L2-L4.
+  - Chai's open code rows: all built (s15-chai-11/-12, 30 Oct, tonight) and moved to "to fix: check" for the judge.
+  - The word moment's lab page (CHAI-67): `lab/word-moment.html`, `js/shared/word-moment.js`, four numbered choices.
+  - The shared ground: the spotlight bug fixed in the ten prototype kits (SH-197); the audit (`audit.mjs <game>`, `panelcheck.mjs`).
+  - Check tools: contract-42 (face sizes read as 0 since SH-185) and contract-78 (returning players) fixed.
+- **Chai's contract run** (same tools, before and after tonight): 46 breaks before, 42 after. Still there: contract-79 (23, the order
+  card's light while something moves), -72 (5), -51 (5, CHAI-69, cause to measure), -83 (2, the L4 card over Nana), -89 (2), -78 (1).
+- Another session made the Simba paste block (`s17-simba-chrome-block.txt`, queue row 1b).
 
 **Next steps, in order (Sprint 17):**
-1. **The rest of chai's open rows** (the sprint file lists them): SH-189 to SH-192 (the panel's scroll and spacing), SH-178 to SH-182,
-   SH-184, CHAI-54 to CHAI-57, CHAI-61, CHAI-62 and the others. Fast lane in the chat, Opus high.
-2. **The word moment (CHAI-67):** a lab page in `js/shared/` first, on block 1's draft art when it lands; his numbered choices; then
-   chai.
-3. **The shared ground:** the audit command; the spotlight bug fixed in every area's kit copy; the chai standard page.
-4. **The judge on chai** (Fable, about $10), then his play; he says "done".
-5. **Sprint 18 made ready:** the stove family listed, its words on Mum's sheet, the pantry's design calls as numbered decisions.
+1. **Chai's remaining contract breaks** above, in this chat (Opus, high), then `audit.mjs chai-tray` green.
+2. **The judge on chai** (`sprintcheck.mjs`, the `judge` agent, Fable, about $10) on Zafar's go, then his play; he says "done".
+3. **The word moment:** his four choices on the lab page, then into chai's first L4 order (CHAI-67).
+4. **Art block 2** (fetch and serve) into `build/reports/art-queue.md`: a builder (Opus, high, about $10-15) on his go.
+5. **The chai standard page** once he says chai is done; then Sprint 18 made ready (the stove family listed, Mum's sheet, the
+   pantry's decisions).
 
 **Open questions to Zafar:**
-1. Where his approved Simba sheet is (not in the repo; the run looks for it in ChatGPT's Library).
-2. Mum's words (`docs/questions.md`); the recording sheet grows by family, sent when he asks.
+1. The word moment's four choices (`lab/word-moment.html`).
+2. Go for the judge on chai (after step 1) and for the art block 2 builder.
+3. Mum's words (`docs/questions.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17 as
-> `docs/sprints/plan.md` sets it: the rest of chai's open rows (the sprint file lists them), the word moment's lab page, the shared
-> ground, then the judge on chai before I play it; and art block 2 into the queue. Take my notes with `/feedback`. Work on branch
-> `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: chai's remaining
+> contract breaks, then `audit.mjs chai-tray` green, then the judge on chai before I play it. Take my notes with `/feedback`. Work on
+> branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
