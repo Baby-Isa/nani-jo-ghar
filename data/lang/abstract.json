@@ -1953,6 +1953,103 @@
     "The knee is for y."
    ],
    "_sig": "[\"x\",\"y\"]"
+  },
+  "IWantToGoToTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "I want to go to the {x}.",
+   "elicit": [
+    "I want to go to the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XWantsToGoToTheY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants to go to the {y}.",
+   "elicit": [
+    "knee wants to go to the y."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "XWantsY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants {y}.",
+   "elicit": [
+    "knee wants y."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "XFeelsPoorly": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} feels poorly.",
+   "elicit": [
+    "knee feels poorly."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XWantsToPlay": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants to play.",
+   "elicit": [
+    "knee wants to play."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XWantsToRead": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} wants to read.",
+   "elicit": [
+    "knee wants to read."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XPlease": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}, please.",
+   "elicit": [
+    "knee, please."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }

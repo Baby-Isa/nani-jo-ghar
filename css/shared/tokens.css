@@ -222,6 +222,21 @@
   --njg-proto-giftbox: #b8875a;
   --njg-proto-giftbox-tape: #8f6440;
   --njg-proto-pose-card: #fffaf1;
+  /* (the town and shops prototypes, 2 Nov: the coins, the scale, the bag, the map's face strip, a closed place) */
+  --njg-proto-copper: #c07a43;
+  --njg-proto-copper-dark: #8a4f27;
+  --njg-proto-brass: #e0be55;
+  --njg-proto-brass-dark: #a8862c;
+  --njg-proto-steel: #b9bec4;
+  --njg-proto-steel-dark: #7d838a;
+  --njg-proto-town-bag: #ead9b5;
+  --njg-proto-town-bag-dark: #c4ab7c;
+  --njg-proto-grass: #6fae4f;
+  --njg-proto-closed: rgb(40 30 20 / .45);
+  --njg-proto-shop-wall: #f3e0bf;
+  --njg-proto-awning: #3f8f5a;
+  --njg-proto-awning-stripes: repeating-linear-gradient(90deg, #3f8f5a 0 6%, #fdf6e8 6% 12%);
+  --njg-proto-puff: radial-gradient(circle, #fdf6e8, rgb(253 246 232 / 0) 70%);
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;

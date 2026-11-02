@@ -1057,6 +1057,25 @@
    }
   },
   {
+   "id": "n.bakery",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bakery",
+   "glossPl": "bakeries",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-bakery: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-bakery"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.ball",
    "pos": "N",
    "gender": null,
@@ -1673,6 +1692,25 @@
    "aliases": [
     "clinic.pipeline.ladder.boy"
    ]
+  },
+  {
+   "id": "n.bread",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bread",
+   "glossPl": "breads",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-bread: an English placeholder, to record (Mum: which word the family uses for a bakery loaf (maani is chapati))"
+   ],
+   "aliases": [
+    "ph-bread"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.breakfast",
@@ -2426,6 +2464,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.clinic",
+   "pos": "N",
+   "gender": null,
+   "gloss": "clinic",
+   "glossPl": "clinics",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-clinic: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-clinic"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -3686,6 +3743,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.fire-station",
+   "pos": "N",
+   "gender": null,
+   "gloss": "fire station",
+   "glossPl": "fire stations",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-fire-station: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-fire-station"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -4953,6 +5029,44 @@
    ]
   },
   {
+   "id": "n.letter",
+   "pos": "N",
+   "gender": null,
+   "gloss": "letter",
+   "glossPl": "letters",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-letter: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-letter"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.library",
+   "pos": "N",
+   "gender": null,
+   "gloss": "library",
+   "glossPl": "libraries",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-library: an English placeholder, to record (likely an English loan in the family's Kutchi: Mum to say)"
+   ],
+   "aliases": [
+    "ph-library"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.little-toe",
    "pos": "N",
    "gender": null,
@@ -5096,6 +5210,25 @@
      "src": "data/content.json words.fru-05: handout (class handout / content master; never confirmed by Mum)"
     }
    ]
+  },
+  {
+   "id": "n.market",
+   "pos": "N",
+   "gender": null,
+   "gloss": "market",
+   "glossPl": "markets",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-market: an English placeholder, to record (bajaar is heard inside 'go to the market' (bajaar mai vaan, a handout draft Mum hasn't confirmed): to record as a word)"
+   ],
+   "aliases": [
+    "ph-market"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.meat",
@@ -5852,6 +5985,25 @@
    }
   },
   {
+   "id": "n.paisa",
+   "pos": "N",
+   "gender": null,
+   "gloss": "paisa",
+   "glossPl": "paisas",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-paisa: an English placeholder, to record (the price's unit word: Mum to say which the family uses (paisa, shilling ...))"
+   ],
+   "aliases": [
+    "ph-paisa"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.papaya",
    "pos": "N",
    "gender": null,
@@ -5868,6 +6020,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.park",
+   "pos": "N",
+   "gender": null,
+   "gloss": "park",
+   "glossPl": "parks",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-park: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-park"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -6152,6 +6323,25 @@
    ],
    "ask": {
     "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.post-office",
+   "pos": "N",
+   "gender": null,
+   "gloss": "post office",
+   "glossPl": "post offices",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-post-office: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-post-office"
+   ],
+   "ask": {
+    "word": [
      "new"
     ]
    }
@@ -6533,6 +6723,25 @@
    ],
    "aliases": [
     "ph-scales"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.school",
+   "pos": "N",
+   "gender": null,
+   "gloss": "school",
+   "glossPl": "schools",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json words.ph-school: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-school"
    ],
    "ask": {
     "word": [
@@ -8998,6 +9207,28 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §33 S3 (Saware Eid ai)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "pn.hannah-mami",
+   "pos": "PN",
+   "gender": null,
+   "lemma": "Hannah Mami",
+   "gloss": "Hannah Mami",
+   "forms": {
+    "*": "Hannah Mami"
+   },
+   "status": "draft",
+   "src": [
+    "data/town-proto.json words.nm-hannah-mami: a character's name in the game's cast; not yet said by the family"
+   ],
+   "aliases": [
+    "nm-hannah-mami"
    ],
    "ask": {
     "gender": [
@@ -14352,6 +14583,23 @@
    }
   },
   {
+   "id": "phrase.count-out-the-coins-then-give-them-to-him",
+   "pos": "Phrase",
+   "gloss": "Count out the coins, then give them to him.",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json lines.pay-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "town-proto.line.pay-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.count-to",
    "pos": "Phrase",
    "gloss": "Count to",
@@ -15763,6 +16011,23 @@
    "notes": [
     "A girl says dis, a boy dos: the verb agrees with the speaker (§32)."
    ]
+  },
+  {
+   "id": "phrase.help-me-at-the-stall-give-each-one-what-they-ask-for",
+   "pos": "Phrase",
+   "gloss": "Help me at the stall: give each one what they ask for.",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json lines.serve-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "town-proto.line.serve-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.here",
@@ -18616,6 +18881,23 @@
    ]
   },
   {
+   "id": "phrase.not-here",
+   "pos": "Phrase",
+   "gloss": "Not here!",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json lines.map-not-here: an English placeholder, to record"
+   ],
+   "aliases": [
+    "town-proto.line.map-not-here"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.not-me",
    "pos": "Phrase",
    "gloss": "Not me!",
@@ -19158,6 +19440,23 @@
    "notes": [
     "English placeholder (to record), S02-C: the doctor's box in the send-off at L1 (T28)"
    ]
+  },
+  {
+   "id": "phrase.pick-the-one-i-want-then-give-it-to-me",
+   "pos": "Phrase",
+   "gloss": "Pick the one I want, then give it to me.",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json lines.picky-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "town-proto.line.picky-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.plant-it-water-it-then-pick",
@@ -19735,6 +20034,23 @@
    ],
    "aliases": [
     "school-proto.line.bag-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.send-each-one-where-they-want-to-go",
+   "pos": "Phrase",
+   "gloss": "Send each one where they want to go.",
+   "status": "to-record",
+   "src": [
+    "data/town-proto.json lines.map-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "town-proto.line.map-guide"
    ],
    "ask": {
     "word": [

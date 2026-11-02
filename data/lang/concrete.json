@@ -2215,6 +2215,69 @@
    "english": "The {x} is for {y}.",
    "what": "The {x} is for {y}.",
    "src": "data/party-proto.json lines.gift-for: an English placeholder, to record"
+  },
+  "IWantToGoToTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "I want to go to the {x}.",
+   "what": "I want to go to the {x}.",
+   "src": "data/town-proto.json lines.map-go: an English placeholder, to record"
+  },
+  "XWantsToGoToTheY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to go to the {y}.",
+   "what": "{x} wants to go to the {y}.",
+   "src": "data/town-proto.json lines.map-wants: an English placeholder, to record"
+  },
+  "XWantsY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants {y}.",
+   "what": "{x} wants {y}.",
+   "src": "data/town-proto.json lines.map-wants-thing: an English placeholder, to record"
+  },
+  "XFeelsPoorly": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} feels poorly.",
+   "what": "{x} feels poorly.",
+   "src": "data/town-proto.json lines.map-poorly: an English placeholder, to record"
+  },
+  "XWantsToPlay": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to play.",
+   "what": "{x} wants to play.",
+   "src": "data/town-proto.json lines.map-play: an English placeholder, to record"
+  },
+  "XWantsToRead": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to read.",
+   "what": "{x} wants to read.",
+   "src": "data/town-proto.json lines.map-read: an English placeholder, to record"
+  },
+  "XPlease": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x}, please.",
+   "what": "{x}, please.",
+   "src": "data/town-proto.json lines.pay-price: an English placeholder, to record"
   }
  }
 }

@@ -1,0 +1,113 @@
+/* The town and shops prototypes (proto-town, 2 Nov 2026; js/town-proto/): the play area's scene only. The side panel is the kit's
+   (Nani's box, the word tiles or the order card on chai's s14 look), never restyled here (non-negotiable 6). Colours are the kit's
+   tokens and the --njg-proto-* placeholders (css/shared/tokens.css); every placeholder shape is flat, to be swapped for the art
+   run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width: its middle; --y of its
+   height: its foot; --h of its height: its height), so one layout serves 740x320 to 1920x1080. */
+
+.tp { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.tp-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.tp-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.tp-play { position: relative; overflow: hidden; min-width: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.tp-scene { position: absolute; inset: 0; overflow: hidden; }
+.tp-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.tp-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.tp-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.tp-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.tp-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.tp-thing.flip > img { transform: scaleX(-1); }
+.tp-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.tp-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.tp-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.tp-thing.sel { animation: var(--njg-glow-anim); }
+.tp-thing.lift { translate: 0 -14%; transition: translate .25s ease-out; }
+.tp-thing.tp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.tp-thing.tp-shake { animation: tpWobble .5s ease-in-out 1; }
+@keyframes tpWobble { 20%, 60% { rotate: -7deg; } 40%, 80% { rotate: 7deg; } }
+.tp-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+.tp-thing.lit { filter: drop-shadow(0 0 .35em var(--njg-gold)) drop-shadow(0 0 .15em var(--njg-gold)); }
+@media (prefers-reduced-motion: reduce) { .tp-thing.tp-shake { animation: none; } }
+
+/* ---------- a shop: the wall, the awning, the counter ---------- */
+.tp-wall { position: absolute; inset: 0 0 30% 0; background: var(--njg-proto-shop-wall); }
+.tp-awning { position: absolute; left: 0; right: 0; top: 0; height: 9%; background: var(--njg-proto-awning-stripes); }
+.tp-counter { position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: var(--njg-proto-wood); border-top: .6em solid var(--njg-proto-wood-dark); box-sizing: border-box; }
+.tp-shelf { position: absolute; left: 4%; right: 4%; height: 2.2%; background: var(--njg-proto-wood-dark); border-radius: .3em; }
+
+/* a person behind or beyond the counter: a face in a circle on a plain body (the art run draws them) */
+.tp-person { aspect-ratio: .78; }
+.tp-person .tp-body { position: absolute; left: 8%; right: 8%; bottom: 0; height: 52%; border-radius: 45% 45% 0 0; background: var(--tp-cloth, var(--njg-proto-awning)); }
+.tp-person .tp-head { position: absolute; left: 14%; right: 14%; top: 0; aspect-ratio: 1; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 .25em var(--njg-white); background: var(--njg-cream-2); }
+.tp-person .tp-head img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tp-person.in { transition: left .6s ease-out, opacity .4s; }
+.tp-person.out { opacity: 0; }
+
+/* ---------- serve: the crates, the scale, the bag ---------- */
+.tp-crate { aspect-ratio: 1.35; background: var(--njg-proto-wood-dark); border-radius: .4em; border: .3em solid var(--njg-home-wood2); box-sizing: border-box; }
+.tp-crate .tp-pile { position: absolute; inset: -38% 4% 30% 4%; display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; }
+.tp-crate .tp-pile img { width: 34%; height: auto; margin: -4% -3%; object-fit: contain; pointer-events: none; }
+.tp-crate.small .tp-pile img { width: 25%; }
+.tp-scale { aspect-ratio: .9; }
+.tp-scale .tp-pan { position: absolute; left: 0; right: 0; top: 0; height: 26%; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: var(--njg-proto-steel); border-top: .3em solid var(--njg-proto-steel-dark); transition: translate .25s ease-out; translate: 0 calc(var(--dip, 0) * 1%); }
+.tp-scale .tp-on { position: absolute; left: 6%; right: 6%; bottom: 55%; height: 140%; display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; pointer-events: none; }
+.tp-scale .tp-on img { width: 30%; height: auto; margin: -5% -3%; object-fit: contain; }
+.tp-scale .tp-dial { position: absolute; left: 14%; right: 14%; bottom: 0; aspect-ratio: 1; border-radius: 50%; background: var(--njg-cream-2); border: .35em solid var(--njg-proto-steel-dark); box-sizing: border-box; }
+.tp-scale .tp-needle { position: absolute; left: 50%; bottom: 50%; width: 5%; height: 42%; margin-left: -2.5%; background: var(--njg-home-ink); border-radius: 1em; transform-origin: 50% 100%; rotate: calc(var(--turn, 0) * 1deg - 60deg); transition: rotate .45s cubic-bezier(.3, 1.6, .5, 1); }
+.tp-scale.full .tp-dial { box-shadow: 0 0 0 .3em var(--njg-gold); }
+.tp-bag { aspect-ratio: .8; }
+.tp-bag .tp-sack { position: absolute; inset: 18% 6% 0 6%; background: var(--njg-proto-town-bag); border: .25em solid var(--njg-proto-town-bag-dark); border-radius: 10% 10% 22% 22%; box-sizing: border-box; }
+.tp-bag .tp-sack::before { content: ""; position: absolute; left: 22%; right: 22%; top: -24%; height: 30%; border: .3em solid var(--njg-proto-town-bag-dark); border-bottom: 0; border-radius: 50% 50% 0 0; }
+
+/* ---------- picky: the things on the counter, Nani's basket, the restock puff ---------- */
+.tp-item { aspect-ratio: 1; }
+.tp-item > img { width: 100%; height: 100%; object-fit: contain; }
+.tp-item.up { translate: 0 -22%; transition: translate .22s ease-out; filter: drop-shadow(0 .5em .4em var(--njg-proto-swatch-shade)); }
+.tp-basket { aspect-ratio: 1.25; }
+.tp-basket > img { width: 100%; height: 100%; object-fit: contain; }
+.tp-basket .tp-load { position: absolute; left: 18%; right: 18%; bottom: 46%; height: 50%; display: flex; justify-content: center; align-items: flex-end; pointer-events: none; }
+.tp-basket .tp-load img { height: 100%; width: auto; max-width: 40%; object-fit: contain; margin: 0 -8%; }
+.tp-puff { aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-puff); animation: tpPuff .6s ease-out forwards; pointer-events: none; }
+@keyframes tpPuff { from { opacity: 1; scale: .4; } to { opacity: 0; scale: 1.6; } }
+/* the tile picture of a thing at one neutral size, or scaled for the pair tile */
+.tp-tile-pic { height: var(--s, 100%); width: auto; max-width: 100%; object-fit: contain; }
+
+/* ---------- pay: the purse, the coins, the counter's rows, the open hand, the tin ---------- */
+.tp-coin { display: inline-block; width: 1em; height: 1em; border-radius: 50%; background: var(--njg-proto-copper); box-shadow: inset 0 0 0 .12em var(--njg-proto-copper-dark); flex: none; }
+.tp-coin.ten { width: 1.45em; height: 1.45em; background: var(--njg-proto-brass); box-shadow: inset 0 0 0 .14em var(--njg-proto-brass-dark), inset 0 0 0 .3em var(--njg-proto-brass); }
+.tp-purse { aspect-ratio: 1.9; background: var(--njg-proto-wood-dark); border-radius: 1em 1em 1.6em 1.6em; border: .3em solid var(--njg-home-wood2); box-sizing: border-box; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 3% 6%; }
+.tp-stack, .tp-heap { position: relative; border: 0; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column-reverse; align-items: center; font-size: var(--tp-coin, 1.6em); min-width: var(--njg-tap); min-height: var(--njg-tap); justify-content: flex-start; }
+.tp-stack .tp-coin { margin-top: -.72em; box-shadow: inset 0 0 0 .12em var(--njg-proto-copper-dark), 0 .08em 0 var(--njg-proto-copper-dark); }
+.tp-stack.out { visibility: hidden; }
+.tp-heap { flex-direction: row; flex-wrap: wrap-reverse; width: 4.6em; justify-content: center; }
+.tp-heap .tp-coin { margin: -.18em; }
+.tp-rows { display: flex; flex-direction: column; justify-content: flex-end; gap: .3em; padding: .4em; font-size: var(--tp-coin, 1.6em); border-radius: .4em; cursor: pointer; }
+.tp-rows .tp-row { display: flex; align-items: center; gap: .12em; min-height: 1.45em; }
+.tp-rows .tp-row .tp-gap { width: .45em; flex: none; }
+.tp-rows.full { box-shadow: 0 0 0 .14em var(--njg-gold); background: var(--njg-proto-channel); }
+.tp-hand { aspect-ratio: 1; }
+.tp-hand > img { width: 100%; height: 100%; object-fit: contain; }
+.tp-tin { aspect-ratio: 1; background: var(--njg-proto-steel); border-radius: .5em .5em 1em 1em; border: .3em solid var(--njg-proto-steel-dark); box-sizing: border-box; }
+
+/* ---------- the town map: the map picture, the places, the face strip, the walkers ---------- */
+.tp-town { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.tp-map { position: relative; flex: none; width: 100%; aspect-ratio: 1672 / 712; overflow: hidden; }
+.tp-map > img.tp-mapimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
+.tp-place { position: absolute; left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%); width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); border: 0; padding: 0; background: none; border-radius: 1em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tp-place.closed { background: var(--njg-proto-closed); cursor: default; }
+.tp-place.tp-shake { animation: tpWobble .5s ease-in-out 1; }
+.tp-place.lit { box-shadow: 0 0 0 .3em var(--njg-gold); }
+.tp-strip { position: relative; flex: 1 1 auto; min-height: 0; background: var(--njg-proto-grass); display: flex; align-items: center; justify-content: space-evenly; padding: 0 4%; }
+.tp-face { position: relative; height: min(78%, 9em); aspect-ratio: 1; border-radius: 50%; border: 0; padding: 0; background: var(--njg-cream-2); box-shadow: 0 0 0 .3em var(--njg-white); cursor: pointer; transition: translate .2s ease-out; }
+.tp-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; pointer-events: none; }
+.tp-face.up { translate: 0 -12%; box-shadow: 0 0 0 .3em var(--njg-gold), 0 0 1em .3em var(--njg-gold); }
+.tp-face.out img { opacity: .8; }
+.tp-face.tp-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.tp-face.tp-shake { animation: tpWobble .5s ease-in-out 1; }
+.tp-walker { position: absolute; width: 7%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; overflow: visible; z-index: 20; pointer-events: none; }
+.tp-walker > img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 .2em var(--njg-white); }
+.tp-walker .tp-carry { position: absolute; right: -45%; bottom: -25%; width: 70%; height: 70%; object-fit: contain; }
+.tp-walker.inside { opacity: 0; transition: opacity .3s; }
+/* a number tile's picture: that many plain dots (every number has its tile, so none gives the answer) */
+.tp-dots { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: .15em; width: 100%; height: 100%; font-size: clamp(.5em, 9cqi, 1.1em); }
+.tp-dots .tp-coin { background: var(--njg-home-wood); box-shadow: none; }

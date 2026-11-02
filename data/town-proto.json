@@ -1,0 +1,32 @@
+{
+  "_about": "The town and shops prototypes (proto-town, 2 Nov 2026; js/town-proto/; designs build/reports/designs/town-map.md and shops.md): the words and lines the four games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "nm-hannah-mami": { "english": "Hannah Mami", "name": true },
+    "ph-market": { "english": "market", "src": "bajaar is heard inside 'go to the market' (bajaar mai vaan, a handout draft Mum hasn't confirmed): to record as a word" },
+    "ph-park": { "english": "park" },
+    "ph-bakery": { "english": "bakery" },
+    "ph-library": { "english": "library", "src": "likely an English loan in the family's Kutchi: Mum to say" },
+    "ph-clinic": { "english": "clinic" },
+    "ph-post-office": { "english": "post office" },
+    "ph-school": { "english": "school" },
+    "ph-fire-station": { "english": "fire station" },
+    "ph-book": { "english": "book" },
+    "ph-bread": { "english": "bread", "src": "Mum: which word the family uses for a bakery loaf (maani is chapati)" },
+    "ph-letter": { "english": "letter" },
+    "ph-paisa": { "english": "paisa", "src": "the price's unit word: Mum to say which the family uses (paisa, shilling ...)" }
+  },
+  "lines": {
+    "map-guide": { "e": "Send each one where they want to go." },
+    "map-go": { "e": "I want to go to the {x}." },
+    "map-wants": { "e": "{x} wants to go to the {y}." },
+    "map-wants-thing": { "e": "{x} wants {y}." },
+    "map-poorly": { "e": "{x} feels poorly." },
+    "map-play": { "e": "{x} wants to play." },
+    "map-read": { "e": "{x} wants to read." },
+    "map-not-here": { "e": "Not here!" },
+    "serve-guide": { "e": "Help me at the stall: give each one what they ask for." },
+    "picky-guide": { "e": "Pick the one I want, then give it to me." },
+    "pay-guide": { "e": "Count out the coins, then give them to him." },
+    "pay-price": { "e": "{x}, please." }
+  }
+}
