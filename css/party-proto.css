@@ -90,6 +90,8 @@
 .pp-candle.lit::before { opacity: 1; }
 .pp-bundle { display: flex; justify-content: center; align-items: flex-end; gap: 6%; aspect-ratio: 1.1; background: var(--njg-cream); border: 2px solid var(--njg-cream-edge); border-radius: 12px; padding: 8% 6%; box-sizing: border-box; }
 .pp-bundle .pp-candle { height: 100%; width: 12%; max-width: none; }
+.pp-bundle-in { position: absolute; inset: 12% 8%; display: flex; justify-content: center; align-items: flex-end; gap: 6%; }
+.pp-bundle-in .pp-candle { height: 100%; width: 11%; max-width: none; }
 .pp-slice { aspect-ratio: 1.2; }
 .pp-slice::before { content: ""; position: absolute; inset: 0; background: var(--njg-proto-cake); clip-path: polygon(0 100%, 100% 100%, 100% 30%); border-top: .3em solid var(--njg-proto-icing); }
 .pp-slice::after { content: ""; position: absolute; left: 0; right: 0; top: 24%; height: 14%; background: var(--njg-proto-icing); clip-path: polygon(0 100%, 100% 0, 100% 40%, 0 140%); }
