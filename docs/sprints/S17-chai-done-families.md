@@ -58,6 +58,10 @@ About $150-200 and three days.
    first meeting, never a special case.
 
 ## Small decisions
+- 2 Nov evening (Zafar): art block 1's seven questions, yes to all; Simba's pose sheet added to the block (part G: model sheet, rest,
+  stretches and grabs, peering and hiding, head layers), judged by him while it runs or after; daily runs, not the bottleneck.
+- 2 Nov evening: the next-pan light is a gold circle on the pan's rim (CHAI-68).
+- 2 Nov evening: the sprint plan to the launch is `docs/sprints/plan.md`; we stick to it.
 
 ## Outcome
 

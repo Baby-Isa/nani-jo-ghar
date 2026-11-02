@@ -21,7 +21,7 @@ Reference images, by the name the run order uses:
  mock-corn.png         RAW + sources/art/mockups-2026-11-01/mockup-farm-corn-stall.png
  mock-cake.png         RAW + sources/art/s17-art1/refs/cake-candles-mockup.png
  mock-slices.png       RAW + sources/art/s17-art1/refs/cake-slices-mockup.png
- simba.png             RAW + sources/art/mockups-2026-11-01/Playful Cat in a Cozy Living Room.png
+ simba.png             RAW + sources/art/s17-art1/refs/simba-mockup.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 

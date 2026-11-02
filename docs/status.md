@@ -8,18 +8,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, about 20:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`): chai polished
-as the stove family's reference. Each sprint polishes one reference and rolls out the last one to its family (`docs/process/prototype-to-game.md`,
-the chain to Sprint 24; Zafar, 2 Nov). Nothing is running. `main` is unchanged (33762921).
+**Where things stand (2 Nov 2026, about 21:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`): chai polished
+as the stove family's reference. **The plan to the launch is `docs/sprints/plan.md`** (Zafar, 2 Nov: "we'll try stick to it this
+time"): each sprint polishes one reference and rolls out the last one to its family. Nothing is running. `main` is unchanged (33762921).
 - **Done on the branch** (from Zafar's 2 Nov notes, `docs/feedback/chai-play-2026-11-02.md`):
   - CHAI-43: the pop-out keeps L1's shape, scaled evenly, at L1's place or bottom left.
   - SH-195: a new word's picture is never blurred.
   - SH-196: the reveal is taught once, the dotted word and then the picture.
-  - CHAI-68: the next-pan light.
+  - CHAI-68: the next-pan light, a gold circle on the pan's rim.
   Each is shot or driven; all are "to fix: check" for the judge.
-- **Art block 1 is ready to run:** `docs/design-language/art-plans/s17-art1-chrome-block.txt` (29 prompts, about 40 images; the
-  stove family's placeholders and chai's half and full moment). Report: `build/reports/s17-art1.md`; seven questions in the plan's
-  §7. The art queue: `build/reports/art-queue.md`.
+- **Art block 1 is ready to run:** `docs/design-language/art-plans/s17-art1-chrome-block.txt` (34 prompts, about 45-50 images: the
+  stove family's placeholders, chai's half and full moment, Simba's pose sheet). His answers: yes to all (the plan's §7). Next: block 2
+  (fetch and serve) into `build/reports/art-queue.md`, so two days stay ready.
 
 **Next steps, in order (Sprint 17):**
 1. **The rest of chai's open rows** (the sprint file lists them): SH-189 to SH-192 (the panel's scroll and spacing), SH-178 to SH-182,
@@ -31,13 +31,14 @@ the chain to Sprint 24; Zafar, 2 Nov). Nothing is running. `main` is unchanged (
 5. **Sprint 18 made ready:** the stove family listed, its words on Mum's sheet, the pantry's design calls as numbered decisions.
 
 **Open questions to Zafar:**
-1. Art block 1's seven questions (plan §7). Recommend running it as drafted and giving feedback on what lands.
+1. Where his approved Simba sheet is (not in the repo; the run looks for it in ChatGPT's Library).
 2. Mum's words (`docs/questions.md`); the recording sheet grows by family, sent when he asks.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: the rest of
-> chai's open rows, then the word moment's lab page. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me
-> before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17 as
+> `docs/sprints/plan.md` sets it: the rest of chai's open rows (the sprint file lists them), the word moment's lab page, the shared
+> ground, then the judge on chai before I play it; and art block 2 into the queue. Take my notes with `/feedback`. Work on branch
+> `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 

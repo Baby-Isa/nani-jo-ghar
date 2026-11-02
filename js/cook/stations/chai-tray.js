@@ -327,10 +327,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
     // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
-    const light14 = (el, look, ms, onTap, quitIf) => {
+    const light14 = (el, look, ms, onTap, quitIf, opts) => {
       if (!el || !OB14 || !OB14.light) return Promise.resolve();
       // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
-      const h = OB14.light(el, { look, pad: 4, pass: true });
+      const h = OB14.light(el, Object.assign({ look, pad: 4, pass: true }, opts || {}));
       try {
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}light`, rung: 0, coach: true });
       } catch (e) {
@@ -1950,7 +1950,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const nx = nextEmpty();
       if (!nx || switched14 || !first14("next-pan")) return;
       const sp = Cook.speed || 1;
-      light14(unionRect(pageRect(nx.img, 4), pageRect(nx.face, 3)), "glow", 5000 / sp, null, () => finished || sel === nx);
+      // (Zafar, 2 Nov: "a tighter highlight for the pan onboarding - just around the pan, maybe even circular around the rim ... tight to
+      // the clickable area": a circle on the pan's rim ring, its tap area)
+      light14(pageRect(nx.glowRing), "glow", 5000 / sp, null, () => finished || sel === nx, { round: true, pad: 2 });
       try {
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("next-pan", { step: nx.who, by: "light" });
       } catch (e) {

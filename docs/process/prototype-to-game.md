@@ -23,18 +23,9 @@ family; Zafar asks for the latest version whenever he has time with her. Recordi
 **Art:** a first draft from ChatGPT beats a code-drawn placeholder to give feedback on, even when it changes later (Zafar, 2 Nov).
 The art queue (`build/reports/art-queue.md`) always holds at least two days (about 240 images) of paste blocks (ART-35).
 
-## The sprint chain (proposed)
+## The sprint chain
 
-| Sprint | Polish (the reference) | Roll out (last sprint's reference, to its family) | Art block made |
-|---|---|---|---|
-| 17 | chai (make at the stove) | the shared ground instead: the audit, the kit's spotlight fix, the chai standard | 1: the stove family, with chai's half and full moment |
-| 18 | the pantry (fetch and serve) | the stove family | 2: fetch and serve |
-| 19 | the scrape (clinic care) | fetch and serve | 3: clinic care |
-| 20 | feeding time (word tiles) | clinic care | 4: word tiles (the farm) |
-| 21 | Find it or Snap (find and snap) | word tiles | 5: find and snap |
-| 22 | Dress up (do it) | find and snap | 6: do it |
-| 23 | the conversations (talk and pay) | do it | 7: talk and pay |
-| 24 | the car ride (rides) | talk and pay, then rides | 8: rides |
+In `docs/sprints/plan.md` (Zafar, 2 Nov: "we'll try stick to it this time").
 
 ## The families (draft; each list is refined while its reference is polished)
 

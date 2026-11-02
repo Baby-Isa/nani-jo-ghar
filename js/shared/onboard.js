@@ -592,6 +592,11 @@
       draw(rects, o) {
         o = o || {};
         let b = rects.length ? Onboard.groupBox(rects, o.avoid, o.pad) : null;
+        // (o.round, CHAI-68: a round thing's light is a circle hugging it, e.g. a pan's rim: the box's longer side, centred)
+        if (b && o.round) {
+          const d = Math.max(b.w, b.h);
+          b = Object.assign({}, b, { x: b.x + (b.w - d) / 2, y: b.y + (b.h - d) / 2, w: d, h: d, r: d / 2 });
+        }
         // the box is always whole on the screen (S12 W2-A, the judge: the pantry jar's box touched the top edge at 915x412)
         if (b) {
           const m = 3;
@@ -1193,7 +1198,7 @@
     let shown = null;
     const draw = () => {
       const sp = split(target);
-      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, rings: [], els: sp.els });
+      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, round: !!o.round, rings: [], els: sp.els });
       if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
@@ -1254,7 +1259,7 @@
 
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass });
+    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round });
   };
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
