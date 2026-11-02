@@ -942,8 +942,8 @@
   };
   panelScale();
   if (global.addEventListener) global.addEventListener("resize", panelScale);
-  // (the pop-out card's shape for the order being given: upright or sideways, chosen at its first pop)
-  const popShape = { mission: null, side: null };
+  // (CHAI-43: the pop-out's place and scale for the order being given, chosen at its first pop and kept for the order)
+  const popShape = { mission: null, anchor: null, k: 1 };
   global.NjgFaceBoxes = UI.headBoxes = function () {
     const out = [];
     const S = Cook.scene;
@@ -1783,110 +1783,82 @@
     };
     const overlap14 = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
     function placeFree14(c, play, sr, wd) {
+      // CHAI-43 (Zafar, 2 Nov afternoon, his screenshot of the L4 card stretched wide: "Just keep the pop up card in its usually
+      // proportions ... make it close as possible to original size seen in level 1 as much as the space allows"; "not centred, they
+      // should be as left as the level card so less space to travel to get to the side menu. If they need to go bottom left, then just
+      // put the anchored to bottom left (with some padding) so they stay more away from the faces"). One shape at every level and
+      // size: the card as L1 draws it (width wd, fitted), scaled evenly (zoom), never above L1's size. Two places only: L1's (top left,
+      // beside the side panel) or bottom left with padding; the bigger scale clear of every face (and bubble, where it can) wins, L1's
+      // place on a tie. The place and scale are kept for the whole order, so every card of an order is the same size.
       const faces = faces14();
       const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
       const pad = 10;
-      const smallAt = c.classList.contains("wc14-small");
-      let best = null;
-      const perfect = () => best && best.onFace === 0 && best.onBub === 0;
-      // one area (x from x0 to x1, y from y0 to y1), at each width from the full card down (a smaller picture from 160 px): the spots
-      // from its top left outwards; the best is the one over no face, then over the fewest bubbles, then the nearest the side panel
-      const scan = (x0, x1, y0, y1, widths, cost) => {
-        for (const w of widths.map(Math.round)) {
-          if (w < 100 || w > x1 - x0) continue;
-          c.style.width = `${w}px`;
-          c.classList.toggle("wc14-small", smallAt || w <= 160);
-          global.WordCard.fit14(c);
-          const h = c.offsetHeight;
-          for (let y = y0; y + h <= y1 + 0.5 || y === y0; y += 12) {
-            for (let x = x0; x + w <= x1 + 0.5 || x === x0; x += 16) {
-              const r = { left: x, top: y, right: x + w, bottom: y + h };
-              const onFace = overlap14(r, faces);
-              const onBub = overlap14(r, bubs);
-              const score = cost + onBub + (x - x0) * 0.5 + (y - y0) * 0.25;
-              if (!best || onFace < best.onFace || (onFace === best.onFace && score < best.score)) best = { x, y, w, h, score, onFace, onBub, small: c.classList.contains("wc14-small") };
-              if (onFace === 0 && onBub === 0) break;
-            }
-            if (perfect()) return;
+      const KMIN = 0.45;
+      c.classList.remove("wc14-side", "wc14-fill");
+      c.style.zoom = "";
+      c.style.width = `${wd}px`;
+      global.WordCard.fit14(c);
+      const w0 = c.offsetWidth;
+      // (the height with the speaker's ring, which sits on the card's foot)
+      const cb = c.getBoundingClientRect();
+      const sb = c.querySelector(".wc14-spk") && c.querySelector(".wc14-spk").getBoundingClientRect();
+      const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
+      const xL = sr.right + 14;
+      const yT = play.top + pad;
+      const yB = play.bottom - pad;
+      const xR = play.right - pad;
+      const rectAt = (anchor, k) => (anchor === "top" ? { left: xL, top: yT, right: xL + w0 * k, bottom: yT + h0 * k } : { left: xL, top: yB - h0 * k, right: xL + w0 * k, bottom: yB });
+      const clear = (r, withBubs) => r.right <= xR + 0.5 && r.top >= yT - 0.5 && r.bottom <= yB + 0.5 && overlap14(r, faces) === 0 && (!withBubs || overlap14(r, bubs) === 0);
+      // the biggest scale (to 1%) at which the card sits clear at that place; 0 where even KMIN doesn't
+      const best = (anchor, withBubs) => {
+        if (clear(rectAt(anchor, 1), withBubs)) return 1;
+        if (!clear(rectAt(anchor, KMIN), withBubs)) return 0;
+        let lo = KMIN;
+        let hi = 1;
+        while (hi - lo > 0.01) {
+          const mid = (lo + hi) / 2;
+          if (clear(rectAt(anchor, mid), withBubs)) lo = mid;
+          else hi = mid;
+        }
+        return lo;
+      };
+      let pick = popShape.mission === mission && popShape.anchor ? { anchor: popShape.anchor, k: popShape.k } : null;
+      if (!pick) {
+        for (const withBubs of [true, false]) {
+          const kt = best("top", withBubs);
+          const kb = best("bottom", withBubs);
+          if (kt || kb) {
+            pick = kb > kt ? { anchor: "bottom", k: kb } : { anchor: "top", k: kt };
+            break;
           }
         }
-      };
-      // the play area beside the side panel first; then, a phone with three people at the counter and no face-free spot there,
-      // over the side panel (the order card the big card is about to turn into), still never over a face (contract-76: 740x320)
-      // (Zafar, 29 Oct: "If there's three, put the cards bottom left under the face": from the central rules' popBelowFacesFrom
-      // people on, the space under the people's heads, from the left, comes first)
-      const heads = (() => {
-        const S = Cook.scene;
-        return Object.values((S && S.chars) || {}).filter((img) => img && img.active && img.visible !== false);
-      })();
-      if (global.Rules && heads.length >= global.Rules.popBelowFacesFrom()) {
-        // (Zafar, 2 Nov: "cant you just draw the space available on each screen ... and then the card dynamically fills that space (with
-        // a max width and height)?" Yes: one rule at every size. The free space is the play area right of the side panel, less every
-        // face (with a buffer), with a margin at the left and the foot. Two clear rectangles are drawn: under the heads (from the panel
-        // across, starting below the lowest head above it: his red box), and the column beside the first head (from the top). The
-        // card fills the bigger one, up to a maximum width and height; upright, or sideways where that space is very wide and short.
-        // The shape is chosen at the order's first pop and kept for the order (Zafar, 2 Nov: aako "should be the same").
-        const MAXW = 380;
-        const MAXH = 460;
-        const BUF = 16; // (clear of a head: a fifth of a head at least, below)
-        const xL = sr.right + 14;
-        const xR = play.right - pad;
-        const yB = play.bottom - pad;
-        const pf = faces.filter((f) => f.left >= sr.right).sort((p, q) => p.left - q.left);
-        const headH = pf.reduce((m, f) => Math.max(m, f.bottom - f.top), 0);
-        const below = Math.max(BUF, headH * 0.2);
-        // (a) under the heads: for each width, the top is below every head over that span
-        let A = null;
-        for (let ww = 100; ww <= Math.min(MAXW * 1.8, xR - xL); ww += 10) {
-          const over = pf.filter((f) => f.right > xL - 8 && f.left < xL + ww + 8);
-          const top = over.reduce((m, f) => Math.max(m, f.bottom), play.top + pad - below) + below;
-          const hh = yB - top;
-          if (hh < 60) continue;
-          const area = Math.min(ww, MAXW) * Math.min(hh, MAXH);
-          if (!A || area > A.area) A = { x: xL, y: top, w: ww, h: hh, area };
-        }
-        // (b) the column beside the first head, from the top
-        const firstL = pf.length ? pf[0].left - BUF : xR;
-        const colW = Math.min(firstL, xR) - xL;
-        const B = colW >= 100 ? { x: xL, y: play.top + pad, w: colW, h: yB - (play.top + pad), area: Math.min(colW, MAXW) * Math.min(yB - play.top - pad, MAXH) } : null;
-        const R = B && (!A || B.area > A.area * 1.1) ? B : A || { x: xL, y: play.top + pad, w: 100, h: Math.max(60, yB - play.top - pad), area: 0 };
-        const W = Math.round(Math.min(R.w, MAXW));
-        const H = Math.round(Math.min(R.h, MAXH));
-        const side = popShape.mission === mission && popShape.side != null ? popShape.side : W > H * 1.8;
-        popShape.mission = mission;
-        popShape.side = side;
-        c.classList.remove("wc14-small");
-        c.classList.toggle("wc14-side", side);
-        c.classList.add("wc14-fill");
-        c.style.width = `${W}px`;
-        c.style.setProperty("--wc14-fill-h", `${H}px`);
-        c.style.zoom = "";
-        global.WordCard.fit14(c);
-        // (sideways: as tall as it needs, centred in the space's height; upright: the space's height, at its top)
-        const ch = c.offsetHeight;
-        // (a sideways card taller than its space is scaled down to it: zoom, so its move into its row card sees the size it shows at)
-        const k = side && ch > H ? Math.max(0.4, H / ch) : 1;
-        c.style.zoom = k < 1 ? String(Math.round(k * 1000) / 1000) : "";
-        const y = side ? R.y + Math.max(0, (H - ch * k) / 2) : R.y;
-        Object.assign(c.style, { left: `${Math.round(R.x / k)}px`, top: `${Math.round(y / k)}px` });
-        try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: "0", by: JSON.stringify({ under: true, w: W, h: H, side, space: R === B ? "column" : "under" }) });
-        } catch (e) {
-          /* only a log */
-        }
-        return;
       }
-      if (!perfect()) scan(sr.right + 14, play.right - pad, play.top + pad, play.bottom - pad, [wd, wd * 0.85, wd * 0.7, 160, 130, 110], best ? 1 : 0);
-      if (best && best.onFace > 0) scan(sr.left + 8, sr.right - 8, Math.max(play.top, sr.top) + pad, Math.min(play.bottom, sr.bottom) - pad, [Math.min(wd, sr.width - 16), 160, 130, 110], 1e6);
-      if (!best) return;
-      c.style.width = `${best.w}px`;
-      c.classList.toggle("wc14-small", !!best.small);
-      global.WordCard.fit14(c);
-      Object.assign(c.style, { left: `${Math.round(best.x)}px`, top: `${Math.round(best.y)}px` });
-      // (SH-154's check: how much of the card sits over a face, for the contract checks only)
+      let x;
+      let y;
+      let k;
+      if (pick) {
+        k = pick.k;
+        const r = rectAt(pick.anchor, k);
+        x = r.left;
+        y = r.top;
+      } else {
+        // (no clear place in the play area even at KMIN, a phone with three people at the counter: over the side panel, the order
+        // card the big card is about to turn into, at the panel's width; contract-76: 740x320)
+        k = Math.max(0.3, Math.min(1, (sr.width - 16) / w0, (Math.min(play.bottom, sr.bottom) - Math.max(play.top, sr.top) - 2 * pad) / h0));
+        x = sr.left + 8;
+        y = Math.max(play.top, sr.top) + pad;
+        pick = { anchor: "panel", k };
+      }
+      popShape.mission = mission;
+      popShape.anchor = pick.anchor;
+      popShape.k = k;
+      c.style.zoom = k < 0.999 ? String(Math.round(k * 1000) / 1000) : "";
+      const kz = c.style.zoom ? Number(c.style.zoom) : 1;
+      // (a zoomed element's left and top are given in its own scale)
+      Object.assign(c.style, { left: `${Math.round(x / kz)}px`, top: `${Math.round(y / kz)}px` });
       try {
-        const f0 = faces[0];
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(best.onFace)), by: JSON.stringify({ faces: faces.length, w: best.w, x: Math.round(best.x), y: Math.round(best.y), f: f0 ? [f0.left, f0.top, f0.right, f0.bottom].map(Math.round) : null }) });
+        const onFace = overlap14({ left: x, top: y, right: x + w0 * kz, bottom: y + h0 * kz }, faces);
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(onFace)), by: JSON.stringify({ at: pick.anchor, k: Math.round(kz * 1000) / 1000, w0, h0: Math.round(h0), ratio: Math.round((w0 / h0) * 1000) / 1000, x: Math.round(x), y: Math.round(y) }) });
       } catch (e) {
         /* only a log */
       }

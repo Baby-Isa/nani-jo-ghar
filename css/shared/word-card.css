@@ -197,13 +197,5 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say { font-size: clamp(var(--njg-card14-
 body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height: 66%; }
 .wc14 .wc14-k .dots { font-size: 1.15em; letter-spacing: .14em; line-height: 1; }
 
-/* (Zafar, 2 Nov: the pop-out under the first person's head fills the free room: js/cook/ui.js sets its height, --wc14-fill-h, and
-   its width; the card is a size container, so its word and speaker take the smaller of its width and height, and the picture
-   takes the rest) */
-.wc14-big.wc14-fill:not(.wc14-side) { height: var(--wc14-fill-h); container-type: size; }
-.wc14-big.wc14-fill:not(.wc14-side) > .wc14-in { height: 100%; box-sizing: border-box; padding: min(5cqi, 5cqh); padding-bottom: max(min(5cqi, 5cqh), var(--njg-card14-u12)); gap: min(2.4cqi, 2.4cqh); }
-.wc14-big.wc14-fill:not(.wc14-side) .wc14-lab { display: none; }
-.wc14-big.wc14-fill:not(.wc14-side) .wc14-pic { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; }
-.wc14-big.wc14-fill:not(.wc14-side) .wc14-k { font-size: clamp(var(--njg-card14-u22), min(15cqi, 16cqh), var(--njg-card14-u64)); }
-.wc14-big.wc14-fill:not(.wc14-side) .wc14-en { font-size: clamp(var(--njg-card14-u14), min(7.4cqi, 6cqh), var(--njg-card14-u30)); }
-.wc14-big.wc14-fill:not(.wc14-side) .wc14-spk { width: clamp(var(--njg-tap), min(25cqi, 24cqh), var(--njg-card14-u112)); }
+/* (CHAI-43, Zafar 2 Nov afternoon: the pop-out keeps L1's shape at every level, scaled evenly by js/cook/ui.js placeFree14: no
+   free-room fill) */
