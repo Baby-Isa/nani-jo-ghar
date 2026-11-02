@@ -121,8 +121,9 @@ Rapid: laptop 1280x665 only, a lab shot per game, a scripted play-through of eve
 
 - `node --check` on every JS file; one lab shot per game at 1280x665 (looked at; fixed: crates over the scale, the map hotspots'
   offset, stretched place tiles, the bag's light blocking taps); a scripted play-through per level built (all rows tick).
-- `node build/tools/review/checks.mjs`: see the hand-back note (run once; my two new token findings fixed; the recording sheet
-  regenerated).
+- `node build/tools/review/checks.mjs`: all green (unit 623 pass, words, static 0 new after my two gradients moved to tokens,
+  leak, bump, specs, docs, recordings after regenerating the sheet, fixlist, size, load 29/29). The whole run passes 300 s here,
+  so I ran it in groups. `node build/gen_labs.mjs --check`: up to date.
 - Leak: no bot yet (knownFail). Known risks: "tap till it stops" wins serve's count and pay's price from L2 (the kind, the size,
   the stack at L1 and the place still decide); the place words are English placeholders, so English wins the map's L1-L2 until
   Mum records them.
