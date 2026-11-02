@@ -184,5 +184,13 @@ therefore a whole placeholder line, and the button tile doesn't light while Nana
   SPACING line, from the shared helper card's side-by-side layout, not from my files.
 - I drove whole rounds through with a script: the stall at L2 (both buys), make at L4 (the kurta's buttons, then the
   dupatta's seam), mend at L4 (into its second round) and the fitting at L4 (to the end screen).
-- The full checks (`build/tools/review/checks.mjs`): see the note at the end.
-- The leak bot is a knownFail stub, as the school's.
+- **The full checks** (`build/tools/review/checks.mjs`) pass, after three fixes:
+  - **static:** my worn-size class `.fit` clashed with a shared kit class, so I renamed the sizes `sz-ok`, `sz-big` and
+    `sz-small`.
+  - **static:** the track had a glow animation of its own; the lit line is now still.
+  - **recordings:** `docs/language/recording-sheet.md` was out of date because of the new placeholders (the school's and
+    mine). I regenerated it with `node build/tools/ops/recordings.mjs`.
+
+  Then unit 623/623, static 0 new, words, leak (20 configs), bump, specs, docs, fixlist, recordings, size and load (29/29) all
+  pass.
+- The leak bot is a knownFail stub, as the school's is.
