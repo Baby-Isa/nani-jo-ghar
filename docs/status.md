@@ -8,34 +8,36 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Sprint 17 is open** (2 Nov, `docs/sprints/S17-chai-done-families.md`): chai polished as the stove family's reference; each sprint polishes one reference and rolls out the last (`docs/process/prototype-to-game.md`).
+**Where things stand (2 Nov 2026, about 20:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`): chai polished
+as the stove family's reference. Each sprint polishes one reference and rolls out the last one to its family (`docs/process/prototype-to-game.md`,
+the chain to Sprint 24; Zafar, 2 Nov). Nothing is running. `main` is unchanged (33762921).
+- **Done on the branch** (from Zafar's 2 Nov notes, `docs/feedback/chai-play-2026-11-02.md`):
+  - CHAI-43: the pop-out keeps L1's shape, scaled evenly, at L1's place or bottom left.
+  - SH-195: a new word's picture is never blurred.
+  - SH-196: the reveal is taught once, the dotted word and then the picture.
+  - CHAI-68: the next-pan light.
+  Each is shot or driven; all are "to fix: check" for the judge.
+- **Art block 1 is ready to run:** `docs/design-language/art-plans/s17-art1-chrome-block.txt` (29 prompts, about 40 images; the
+  stove family's placeholders and chai's half and full moment). Report: `build/reports/s17-art1.md`; seven questions in the plan's
+  §7. The art queue: `build/reports/art-queue.md`.
 
-**Where things stand (2 Nov 2026, 14:00 UK):** Sprint 16 is closed (`docs/sprints/S16-chai-final-prototypes.md`). Nothing is running.
-- **Live on `main`** (33762921): chai with every fix from Zafar's 1-2 Nov notes; farm v2 (feeding, eggs, home at dusk, grow-pick on
-  the word tiles); the four clinic prototypes.
-- **On the branch only** (`claude/nice-lovelace-0vfjcj`): every other designed game as a lab prototype (home, town, birthday, school,
-  sewing, pet hotel, safari, beach), checks green. Play from the branch without publishing:
-  https://raw.githack.com/Baby-Isa/nani-jo-ghar/claude/nice-lovelace-0vfjcj/labs.html
-- **Read:** `build/reports/overnight-prototypes-2026-11-02.md` (what's built, its 7 decisions); one report per area
-  (`build/reports/proto-<area>-2026-11-02.md`); the shared word tiles `js/shared/word-tiles.js`.
+**Next steps, in order (Sprint 17):**
+1. **The rest of chai's open rows** (the sprint file lists them): SH-189 to SH-192 (the panel's scroll and spacing), SH-178 to SH-182,
+   SH-184, CHAI-54 to CHAI-57, CHAI-61, CHAI-62 and the others. Fast lane in the chat, Opus high.
+2. **The word moment (CHAI-67):** a lab page in `js/shared/` first, on block 1's draft art when it lands; his numbered choices; then
+   chai.
+3. **The shared ground:** the audit command; the spotlight bug fixed in every area's kit copy; the chai standard page.
+4. **The judge on chai** (Fable, about $10), then his play; he says "done".
+5. **Sprint 18 made ready:** the stove family listed, its words on Mum's sheet, the pantry's design calls as numbered decisions.
 
-**Sprint 17, proposed (Zafar opens it):** three strands, one at a time, his play between.
-1. **Chai, final:** his last play and notes (`/feedback`), the judge on the changed screens, then chai is done. Open from Sprint 16:
-   SH-169, SH-191 (the panel's scroll), SH-189 (Nani's box), SH-190 (item picture padding), SH-192 (the headline's gaps).
-2. **Chai's rules rolled out, one game at a time,** starting with the pantry (Zafar), each to chai's level with its word-adds
-   (`build/reports/research-existing-games-2026-10-31.md` §2-3), played and passed by him before the next.
-3. **Prototypes graduating:** three farm games (his pick, likely feeding, eggs and one more) get their mechanics finished so they're
-   ready for an art run; the phone strips for the tiles; one shared kit in place of the areas' copies (and its spotlight bug).
-
-**Open questions to Zafar:** the prototypes' 7 decisions (the summary); which third farm game graduates; publish the prototypes to
-`main` or keep playing them from the branch; the feeding background (`build/reports/designs/chatgpt-feed-backgrounds-2026-11-02.md`);
-Mum's recording list (`docs/language/recording-sheet.md`, many new placeholders).
+**Open questions to Zafar:**
+1. Art block 1's seven questions (plan §7). Recommend running it as drafted and giving feedback on what lands.
+2. Mum's words (`docs/questions.md`); the recording sheet grows by family, sent when he asks.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Propose Sprint 17 from it: chai's
-> final feedback and finish, chai's rules rolled out game by game starting with the pantry, and three farm prototypes made ready for
-> an art run. Take my notes with `/feedback`. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before
-> launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: the rest of
+> chai's open rows, then the word moment's lab page. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me
+> before launching anything new.
 
 ## The fix list
 
