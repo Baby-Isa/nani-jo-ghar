@@ -182,6 +182,15 @@
   --njg-proto-lamp-on: #ffe58a;
   --njg-proto-water: #6fb7e3;
   --njg-proto-rug: #b9675d;
+  /* (the home prototypes' drawn placeholder shapes: a wardrobe's doors, a pair of glasses, a table, a tap ...) */
+  --njg-proto-draw-wardrobe: linear-gradient(90deg, transparent 48%, var(--njg-proto-paint-edge) 48% 52%, transparent 52%), var(--njg-proto-paint);
+  --njg-proto-draw-drawer: linear-gradient(transparent 46%, var(--njg-proto-paint-edge) 46% 54%, transparent 54%), var(--njg-proto-paint);
+  --njg-proto-draw-bedside: linear-gradient(var(--njg-proto-cover) 0 50%, transparent 50%);
+  --njg-proto-draw-glasses: radial-gradient(circle at 25% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%), radial-gradient(circle at 75% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%);
+  --njg-proto-draw-table: linear-gradient(var(--njg-proto-wood) 0 18%, transparent 18%), linear-gradient(90deg, transparent 10%, var(--njg-proto-wood-dark) 10% 18%, transparent 18% 82%, var(--njg-proto-wood-dark) 82% 90%, transparent 90%);
+  --njg-proto-draw-bed: linear-gradient(var(--njg-proto-cover) 0 55%, transparent 55%), linear-gradient(90deg, var(--njg-proto-wood-dark) 0 8%, transparent 8% 92%, var(--njg-proto-wood-dark) 92%);
+  --njg-proto-draw-tap: linear-gradient(var(--njg-pewter) 0 35%, transparent 35%), linear-gradient(90deg, transparent 60%, var(--njg-pewter) 60% 85%, transparent 85%);
+  --njg-proto-draw-broom: linear-gradient(var(--njg-proto-wood-dark) 0 70%, transparent 70%) 50% 0 / 22% 100% no-repeat, linear-gradient(transparent 70%, var(--njg-stick) 70%);
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;

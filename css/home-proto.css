@@ -109,9 +109,9 @@
 
 /* ---------- the word tiles' little pictures (the same placeholder shapes as the room) ---------- */
 .hp-tpic { display: block; position: relative; height: 80%; width: auto; max-width: 92%; aspect-ratio: .8; background: var(--njg-proto-paint); border: 0.12em solid var(--njg-proto-paint-edge); border-radius: 0.2em; box-sizing: border-box; }
-.hp-tpic-wardrobe { aspect-ratio: .55; background: linear-gradient(90deg, transparent 48%, var(--njg-proto-paint-edge) 48% 52%, transparent 52%), var(--njg-proto-paint); }
+.hp-tpic-wardrobe { aspect-ratio: .55; background: var(--njg-proto-draw-wardrobe); }
 .hp-tpic-cupboard { aspect-ratio: 1.1; }
-.hp-tpic-drawer { aspect-ratio: 1.2; background: linear-gradient(transparent 46%, var(--njg-proto-paint-edge) 46% 54%, transparent 54%), var(--njg-proto-paint); }
+.hp-tpic-drawer { aspect-ratio: 1.2; background: var(--njg-proto-draw-drawer); }
 .hp-tpic-box, .hp-tpic-plainbox { aspect-ratio: 1.3; height: 50%; }
 .hp-tpic-plainbox { background: var(--njg-grey); }
 .hp-tpic-small { height: 30%; }
@@ -124,18 +124,18 @@
 .hp-table::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 14%; background: var(--njg-proto-wood); border-radius: 0.2em; }
 .hp-leg { position: absolute; left: 8%; top: 12%; bottom: 0; width: 6%; background: var(--njg-proto-wood-dark); }
 .hp-leg2 { left: auto; right: 8%; }
-.hp-bedx { background: linear-gradient(var(--njg-proto-cover) 0 50%, transparent 50%); border-radius: 0.6em 0.6em 0 0; }
+.hp-bedx { background: var(--njg-proto-draw-bedside); border-radius: 0.6em 0.6em 0 0; }
 .hp-bedx::after { content: ""; position: absolute; left: 4%; right: 4%; top: 50%; bottom: 0; border-left: 0.3em solid var(--njg-proto-wood-dark); border-right: 0.3em solid var(--njg-proto-wood-dark); }
 .hp-rugx { background: var(--njg-proto-rug); border-radius: 50%; opacity: .7; }
 .hp-sofa { background: var(--njg-sage); border-radius: 1em 1em 0.3em 0.3em; }
 .hp-nana { pointer-events: none; }
 .hp-th { display: block; box-sizing: border-box; }
-.hp-th-glasses { background: radial-gradient(circle at 25% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%), radial-gradient(circle at 75% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%); }
+.hp-th-glasses { background: var(--njg-proto-draw-glasses); }
 .hp-th-cup { background: var(--njg-cream); border: 0.15em solid var(--njg-proto-paint-edge); border-radius: 0.1em 0.1em 0.6em 0.6em; }
 .hp-th-ball { background: var(--njg-rust); border-radius: 50%; }
 .hp-th-bag { background: var(--njg-navy); border-radius: 0.3em; }
-.hp-th-table { background: linear-gradient(var(--njg-proto-wood) 0 18%, transparent 18%), linear-gradient(90deg, transparent 10%, var(--njg-proto-wood-dark) 10% 18%, transparent 18% 82%, var(--njg-proto-wood-dark) 82% 90%, transparent 90%); }
-.hp-th-bed { background: linear-gradient(var(--njg-proto-cover) 0 55%, transparent 55%), linear-gradient(90deg, var(--njg-proto-wood-dark) 0 8%, transparent 8% 92%, var(--njg-proto-wood-dark) 92%); }
+.hp-th-table { background: var(--njg-proto-draw-table); }
+.hp-th-bed { background: var(--njg-proto-draw-bed); }
 .hp-copy.wide { width: auto; aspect-ratio: 1.4; }
 .hp-copy.hp-th-cup, .hp-copy.hp-th-ball { aspect-ratio: 1; }
 .hp-flyer.hp-th-glasses { background-color: transparent; }
@@ -153,7 +153,7 @@
 .hp-flip-in { position: absolute; inset: 0; pointer-events: none; }
 .hp-lamp .hp-flip-in { border-radius: 50% 50% 45% 45%; background: var(--njg-grey); border: 0.12em solid var(--njg-proto-paint-edge); box-sizing: border-box; transition: background .2s, box-shadow .2s; }
 .hp-lamp.on .hp-flip-in { background: var(--njg-proto-lamp-on); box-shadow: 0 0 1.4em 0.6em var(--njg-proto-lamp-on); }
-.hp-tapx .hp-flip-in { background: linear-gradient(var(--njg-pewter) 0 35%, transparent 35%), linear-gradient(90deg, transparent 60%, var(--njg-pewter) 60% 85%, transparent 85%); }
+.hp-tapx .hp-flip-in { background: var(--njg-proto-draw-tap); }
 .hp-tapx.on .hp-flip-in::after { content: ""; position: absolute; left: 64%; width: 16%; top: 100%; height: 160%; background: var(--njg-proto-water); border-radius: 0 0 0.3em 0.3em; animation: hpDrip .4s linear infinite; }
 @keyframes hpDrip { 50% { opacity: .65; } }
 .hp-curt .hp-flip-in { background: var(--njg-proto-curtain); transform-origin: 100% 50%; transition: transform .35s ease-out; }
@@ -162,7 +162,7 @@
 .hp-basin { background: var(--njg-cream); border: 0.12em solid var(--njg-proto-paint-edge); border-radius: 0.2em 0.2em 1.4em 1.4em; }
 .hp-bath { background: var(--njg-cream); border: 0.12em solid var(--njg-proto-paint-edge); border-radius: 0.4em 0.4em 1em 1em; }
 .hp-laundry { background: var(--njg-proto-wood); border-radius: 0.2em 0.2em 0.8em 0.8em; }
-.hp-broom { background: linear-gradient(var(--njg-proto-wood-dark) 0 70%, transparent 70%) 50% 0 / 22% 100% no-repeat, linear-gradient(transparent 70%, var(--njg-stick) 70%); border-radius: 0 0 0.3em 0.3em; }
+.hp-broom { background: var(--njg-proto-draw-broom); border-radius: 0 0 0.3em 0.3em; }
 .hp-dirt { background: var(--njg-proto-dirt); border-radius: 50%; opacity: .55; }
 .hp-dish { background: var(--njg-sage); border-radius: 0 0 1em 1em; }
 .hp-soapx.sel, .hp-broom.sel { animation: var(--njg-glow-anim); }
