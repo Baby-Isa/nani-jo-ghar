@@ -353,7 +353,47 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
   };
 }
 
+/*
+ * The clinic's new games, prototyped (proto-clinic, 2 Nov 2026; build/reports/designs/clinic-every-part.md): each plays alone in the
+ * lab on the prototypes' kit (js/clinic/proto/kit.js: chai's patterns, as the farm's), not yet in the morning's pipeline.
+ */
+const PROTO = [
+  ["where", "Where does it hurt? (prototype)", "The patient says what hurts; tap it on her (the head opens the face). Word tiles under her line."],
+  ["hand", "The hand splinter (prototype)", "Hot or cold water, so many jugs; drag each splinter out along its path; a plaster on each spot."],
+  ["nose", "The blocked nose (prototype)", "First the drops, so many; then the tissue (the sneeze!), then the bin."],
+  ["drinks", "The drinks (prototype)", "Make the family's drink: each thing into the cup (later, so many spoons), then give it."],
+];
+const PROTO_NEEDS = { scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"], styles: ["css/clinic-proto.css"] };
+function protoGame(id, label) {
+  return {
+    id,
+    gestures: id === "hand" ? ["tap", "drag"] : ["tap"],
+    levels: [1, 2, 3, 4],
+    needs: PROTO_NEEDS,
+    label,
+    mount(el, ctx) {
+      let api = null;
+      let stopped = false;
+      return {
+        async start() {
+          ctx.test.state("loading");
+          const m = await import("./proto/play.js");
+          if (stopped) return;
+          api = await m.play(id, el, ctx);
+          if (stopped && api) api.destroy();
+        },
+        destroy() {
+          stopped = true;
+          if (api) api.destroy();
+          api = null;
+        },
+      };
+    },
+  };
+}
+
 const games = {};
+PROTO.forEach(([id, label]) => (games[id] = protoGame(id, label)));
 STAGES.forEach((s) => (games[s] = stageGame(s, { stage: s, gestures: s === "heal" ? ["tap", "drag"] : ["tap"], levels: STAGE_LEVELS[s] || [1, 2, 3], label: STAGE_LABEL[s] })));
 HEAL.concat(PARKED).forEach((g) => (games[g] = stageGame(g, { stage: "heal", heal: g, gestures: HEAL_GESTURES[g], label: LABEL[g], levels: HEAL.includes(g) ? [1, 2, 3, 4] : undefined })));
 
@@ -389,6 +429,8 @@ export default {
       .map((s) => ({ game: s, label: `Clinic: ${STAGE_LABEL[s]}`, note: "One stage alone, with its own patient." }))
       // Sprint 10: each game once; the eye's default is layout A (decision 85), B is its own test entry below
       .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}`, note: "One healing game, mounted by the pipeline's heal stage." })))
+      // proto-clinic (2 Nov): the new games, beside the healing games
+      .concat(PROTO.map(([game, label, note]) => ({ game, label: `Clinic heal: ${label}`, note, levels: [1, 2, 3, 4] })))
       // D15h: both eye tests are prototyped; B (side by side) next to A
       .concat([{ game: "eye", label: `Clinic heal: ${LABEL.eye} (test B, side by side)`, note: "The eye test's version B (the lab's eyetest=b).", extra: "&eyetest=b" }])
       .concat(PARKED.map((g) => ({ game: g, label: `Clinic heal (parked): ${LABEL[g]}`, note: "Parked: as it is, lab only." })))
