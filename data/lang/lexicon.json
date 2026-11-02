@@ -1295,6 +1295,25 @@
    }
   },
   {
+   "id": "n.big-and-small",
+   "pos": "N",
+   "gender": null,
+   "gloss": "big and small",
+   "glossPl": "big and smalls",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-sizes: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sizes"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.big-ma",
    "pos": "N",
    "gender": "she",
@@ -3352,6 +3371,25 @@
    ]
   },
   {
+   "id": "n.eating",
+   "pos": "N",
+   "gender": null,
+   "gloss": "eating",
+   "glossPl": "eatings",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-eating: an English placeholder, to record (the doing word as the safari asks it (that's eating); the command kha is recorded, this form is not)"
+   ],
+   "aliases": [
+    "ph-eating"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.egg",
    "pos": "N",
    "gender": null,
@@ -3423,6 +3461,25 @@
    "ask": {
     "word": [
      "G56"
+    ]
+   }
+  },
+  {
+   "id": "n.elephant",
+   "pos": "N",
+   "gender": null,
+   "gloss": "elephant",
+   "glossPl": "elephants",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-elephant: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-elephant"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -3969,6 +4026,25 @@
    "ask": {
     "gender": [
      "L42"
+    ]
+   }
+  },
+  {
+   "id": "n.giraffe",
+   "pos": "N",
+   "gender": null,
+   "gloss": "giraffe",
+   "glossPl": "giraffes",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-giraffe: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-giraffe"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -5611,11 +5687,13 @@
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-neck: placeholder",
-    "data/clinic/pipeline.json part_words.neck: an English placeholder, to record (the doctor's session, Round 4 Section G)"
+    "data/clinic/pipeline.json part_words.neck: an English placeholder, to record (the doctor's session, Round 4 Section G)",
+    "data/safari-proto.json words.ph-neck: an English placeholder, to record"
    ],
    "aliases": [
     "body-neck",
-    "clinic.pipeline.part.neck"
+    "clinic.pipeline.part.neck",
+    "ph-neck"
    ],
    "ask": {
     "word": [
@@ -6391,6 +6469,25 @@
    ],
    "aliases": [
     "ph-rug"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.running",
+   "pos": "N",
+   "gender": null,
+   "gloss": "running",
+   "glossPl": "runnings",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-running: an English placeholder, to record (the command bhaj is in the engine; the that's-running form is not)"
+   ],
+   "aliases": [
+    "ph-running"
    ],
    "ask": {
     "word": [
@@ -7384,6 +7481,25 @@
    }
   },
   {
+   "id": "n.swimming",
+   "pos": "N",
+   "gender": null,
+   "gloss": "swimming",
+   "glossPl": "swimmings",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-swimming: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-swimming"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.syrup",
    "pos": "N",
    "gender": null,
@@ -7458,6 +7574,25 @@
    "notes": [
     "one / more than one: chamcha (§34)"
    ]
+  },
+  {
+   "id": "n.tail",
+   "pos": "N",
+   "gender": null,
+   "gloss": "tail",
+   "glossPl": "tails",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-tail: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-tail"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.tall",
@@ -8701,6 +8836,63 @@
    }
   },
   {
+   "id": "n.what-shows",
+   "pos": "N",
+   "gender": null,
+   "gloss": "what shows",
+   "glossPl": "what shows",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-what-shows: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-what-shows"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.what-they-do",
+   "pos": "N",
+   "gender": null,
+   "gloss": "what they do",
+   "glossPl": "what they dos",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-what-they-do: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-what-they-do"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.wild-animals",
+   "pos": "N",
+   "gender": null,
+   "gloss": "wild animals",
+   "glossPl": "wild animals",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-wild-animals: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-wild-animals"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.window",
    "pos": "N",
    "gender": null,
@@ -8885,6 +9077,25 @@
    ],
    "aliases": [
     "clinic.pipeline.ladder.young"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.zebra",
+   "pos": "N",
+   "gender": null,
+   "gloss": "zebra",
+   "glossPl": "zebras",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-zebra: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-zebra"
    ],
    "ask": {
     "word": [
@@ -9477,6 +9688,23 @@
    ]
   },
   {
+   "id": "a.grey",
+   "pos": "A",
+   "gloss": "grey",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-grey: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-grey"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "a.half",
    "pos": "A",
    "lemma": "ardo",
@@ -9841,6 +10069,40 @@
     "grammar-notes §45 C46 (khaso ambo: ⚠)",
     "lexicon.md §6.3 (C22-C49 18:14)"
    ]
+  },
+  {
+   "id": "a.spotty",
+   "pos": "A",
+   "gloss": "spotty",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-spotty: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-spotty"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "a.stripy",
+   "pos": "A",
+   "gloss": "stripy",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json words.ph-stripy: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-stripy"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "a.thick",
@@ -14903,6 +15165,23 @@
    ]
   },
   {
+   "id": "phrase.everybody-out",
+   "pos": "Phrase",
+   "gloss": "Everybody out!",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json lines.hide-out: an English placeholder, to record"
+   ],
+   "aliases": [
+    "safari-proto.line.hide-out"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.feed-them-what-she-asks-for",
    "pos": "Phrase",
    "gloss": "Feed them what she asks for.",
@@ -14989,6 +15268,23 @@
    "notes": [
     "English placeholder (to record), S02-C: the D2 card's headline (T25)"
    ]
+  },
+  {
+   "id": "phrase.find-who-hannah-mami-sees-in-the-long-grass",
+   "pos": "Phrase",
+   "gloss": "Find who Hannah Mami sees in the long grass.",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json lines.hide-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "safari-proto.line.hide-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.fix-it",
@@ -17849,6 +18145,23 @@
    }
   },
   {
+   "id": "phrase.look-take-photos-for-ali",
+   "pos": "Phrase",
+   "gloss": "Look! Take photos for Ali.",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json lines.snap-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "safari-proto.line.snap-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.lovely",
    "pos": "Phrase",
    "gloss": "Lovely!",
@@ -19771,6 +20084,23 @@
    ]
   },
   {
+   "id": "phrase.shh-whos-hiding",
+   "pos": "Phrase",
+   "gloss": "Shh! Who's hiding?",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json lines.hide-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "safari-proto.line.hide-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.shoo-simba",
    "pos": "Phrase",
    "gloss": "Shoo, Simba!",
@@ -20272,6 +20602,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.take-photos-for-ali-of-the-animals-i-say",
+   "pos": "Phrase",
+   "gloss": "Take photos for Ali of the animals I say.",
+   "status": "to-record",
+   "src": [
+    "data/safari-proto.json lines.snap-guide: an English placeholder, to record"
+   ],
+   "aliases": [
+    "safari-proto.line.snap-guide"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },

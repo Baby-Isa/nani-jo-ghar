@@ -1,0 +1,73 @@
+/* The safari prototypes (proto-safari, 2 Nov 2026; js/safari-proto/): the play area's scene only. The side panel is the kit's
+   (Hannah Mami's box and the shared word tiles on chai's s14 look), never restyled here (non-negotiable 6). Colours are tokens
+   (--njg-proto-safari-* in css/shared/tokens.css); the pictures are placeholders cut from Zafar's mock-ups (js/safari-proto/art.js).
+   LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width: its middle; --y of its height: its
+   foot; --h of its height: its height), as the farm's and the school's; the ride is sized by --hs (the strip's height, set by
+   the game from the play area's height and width). */
+
+.sf { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.sf-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.sf-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.sf-play { position: relative; overflow: hidden; min-width: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sf-scene { position: absolute; inset: 0; overflow: hidden; }
+.sf-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.sf-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.sf-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.sf-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.sf-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+:where(button.sf-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.sf-thing.sp-bounce, .sf-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sf-shake { animation: sfWobble .5s ease-in-out 1; }
+@keyframes sfWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+@media (prefers-reduced-motion: reduce) { .sf-shake { animation: none; } }
+
+/* ---------- Snap from the jeep: the window, the ride, the frame, the prints ---------- */
+.sf-ride { position: absolute; inset: 0; overflow: hidden; background: var(--njg-proto-safari-sky); }
+.sf-strip { position: absolute; left: 0; bottom: 12%; height: var(--hs); display: flex; will-change: transform; }
+.sf-ride .sf-place { position: relative; inset: auto; flex: none; height: 100%; width: calc(var(--w) * var(--hs)); overflow: visible; background-repeat: no-repeat;
+  background-size: calc(var(--ar) * var(--hs)) 100%; background-position: calc(var(--c0) * var(--ar) * var(--hs) * -1) 0; }
+.sf-spot { position: absolute; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.sf-roof { position: absolute; left: 0; right: 0; top: 0; height: 7%; background: var(--njg-proto-safari-roof); border-bottom: 0.5em solid var(--njg-proto-safari-bar); z-index: 5; pointer-events: none; }
+.sf-rail { position: absolute; left: 0; right: 0; bottom: 0; height: 13%; background: var(--njg-proto-safari-dash); border-top: 0.6em solid var(--njg-proto-safari-bar); z-index: 5; pointer-events: none; }
+.sf-flash { position: absolute; inset: 0; background: var(--njg-proto-safari-flash); opacity: 0; pointer-events: none; z-index: 8; }
+.sf-flash.on { animation: sfFlash .35s ease-out 1; }
+@keyframes sfFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
+.sf-frame { position: absolute; z-index: 6; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: left .35s ease-out, top .35s ease-out, width .35s ease-out, height .35s ease-out; }
+.sf-frame[hidden] { display: none; }
+.sf-frame > i { position: absolute; width: 22%; height: 22%; max-width: 3.2em; max-height: 3.2em; border: 0 solid var(--njg-proto-safari-corner); transition: border-color .2s; filter: drop-shadow(0 0 0.15em var(--njg-ink-outline)); }
+.sf-frame > i:nth-child(1) { left: 0; top: 0; border-left-width: 0.35em; border-top-width: 0.35em; border-top-left-radius: 0.5em; }
+.sf-frame > i:nth-child(2) { right: 0; top: 0; border-right-width: 0.35em; border-top-width: 0.35em; border-top-right-radius: 0.5em; }
+.sf-frame > i:nth-child(3) { left: 0; bottom: 0; border-left-width: 0.35em; border-bottom-width: 0.35em; border-bottom-left-radius: 0.5em; }
+.sf-frame > i:nth-child(4) { right: 0; bottom: 0; border-right-width: 0.35em; border-bottom-width: 0.35em; border-bottom-right-radius: 0.5em; }
+.sf-frame.gold > i { border-color: var(--njg-gold-hi); }
+.sf-prints { position: absolute; left: 2%; right: 2%; bottom: 1.5%; height: 10%; display: flex; gap: 1.2%; align-items: flex-end; z-index: 7; pointer-events: none; }
+.sf-print { height: 100%; aspect-ratio: 1; background: var(--njg-white); padding: 0.25em 0.25em 0.7em; box-sizing: border-box; box-shadow: var(--njg-proto-safari-shadow); rotate: -3deg; animation: sfPrint .6s ease-out 1; }
+.sf-print:nth-child(even) { rotate: 3deg; }
+.sf-print-pic { width: 100%; height: 100%; background-repeat: no-repeat; }
+.sf-pop { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+@keyframes sfPrint { from { opacity: 0; translate: 0 -40%; } to { opacity: 1; translate: 0 0; } }
+.sf-icon { display: flex; align-items: center; justify-content: center; height: 70%; aspect-ratio: 1; color: var(--njg-proto-safari-bar); }
+.sf-icon svg { width: 100%; height: 100%; }
+.sf-size { display: block; aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-safari-dash); }
+.sf-size.small { height: 34%; }
+.sf-size.big { height: 72%; }
+
+/* ---------- Who's hiding: the long grass ---------- */
+.sf-savannah { position: absolute; inset: 0; background: var(--njg-proto-safari-sky); }
+.sf-savannah .sf-hills { position: absolute; left: 0; right: 0; bottom: 52%; height: 22%; width: 100%; object-fit: cover; object-position: bottom; }
+.sf-savannah .sf-far { position: absolute; left: 0; right: 0; top: 48%; height: 12%; background: var(--njg-proto-safari-ground-far); }
+.sf-savannah .sf-ground { position: absolute; left: 0; right: 0; top: 60%; bottom: 0; background: var(--njg-proto-safari-ground); }
+.sf-clump { z-index: 3; cursor: pointer; }
+.sf-clump > img { margin: 0 auto; }
+.sf-clump.rustle { animation: sfRustle .45s ease-in-out 1; transform-origin: 50% 100%; }
+@keyframes sfRustle { 25% { transform: translateX(-50%) skewX(-5deg); } 75% { transform: translateX(-50%) skewX(5deg); } }
+.sf-hider { z-index: 2; pointer-events: none; transition: translate .45s cubic-bezier(.3,1.4,.5,1), opacity .25s; }
+.sf-hider > img { transition: clip-path .3s; }
+.sf-hider.out > img { clip-path: inset(0 0 0 0) !important; }
+.sf-hider.out { z-index: 4; }
+.sf-hider.down { translate: 0 60%; opacity: 0; }
+.sf-hider.flip > img { transform: scaleX(-1); }
+.sf-group-frame { z-index: 6; }

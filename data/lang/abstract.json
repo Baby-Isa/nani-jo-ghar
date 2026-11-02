@@ -1953,6 +1953,116 @@
     "The knee is for y."
    ],
    "_sig": "[\"x\",\"y\"]"
+  },
+  "TakeAPhotoOfTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Take a photo of the {x}.",
+   "elicit": [
+    "Take a photo of the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TakeAPhotoOfTheXThatSV": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "v": {
+     "type": "NP"
+    }
+   },
+   "en": "Take a photo of the {x} that's {v}.",
+   "elicit": [
+    "Take a photo of the knee that's v."
+   ],
+   "_sig": "[\"x\",\"v\"]"
+  },
+  "WhoSV": {
+   "cat": "Utt",
+   "args": {
+    "v": {
+     "type": "NP"
+    }
+   },
+   "en": "Who's {v}?",
+   "elicit": [
+    "Who's v?"
+   ],
+   "_sig": "[\"v\"]"
+  },
+  "ThatSTheXV": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "v": {
+     "type": "NP"
+    }
+   },
+   "en": "That's the {x} {v}!",
+   "elicit": [
+    "That's the knee v!"
+   ],
+   "_sig": "[\"x\",\"v\"]"
+  },
+  "TheXIsHiding": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} is hiding.",
+   "elicit": [
+    "The knee is hiding."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "FindTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Find the {x}!",
+   "elicit": [
+    "Find the knee!"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "WhereSTheXOne": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Where's the {x} one?",
+   "elicit": [
+    "Where's the knee one?"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ThatSTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "That's the {x}!",
+   "elicit": [
+    "That's the knee!"
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }
