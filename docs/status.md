@@ -8,32 +8,32 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, 13:30 UK):** Sprint 16 is open (`docs/sprints/S16-chai-final-prototypes.md`).
-- **Live on `main`** (33762921): chai with Zafar's 1-2 Nov fixes (the pop-out fills the free space, aligned item cards, the row led by a
-  slot, the order card only as its person starts, the bubble rules, the panel's scale), farm v2 and the four clinic prototypes.
-- **On this branch, not live:** every remaining prototype, built overnight (Home, Town, Birthday, School, Sewing, Pet hotel, Safari,
-  Beach), checks green: `build/reports/overnight-prototypes-2026-11-02.md` (its 7 decisions for Zafar).
-- **Next:** Zafar plays the prototypes (`/feedback`), answers the 7 decisions, says which become proper games; publish the
-  prototypes when he says; Mum's recording list (the recording sheet); an art run.
-- Earlier work in the repo: the language targets, the games map, 18 designs (`build/reports/designs/`), the pose register.
+**Where things stand (2 Nov 2026, 14:00 UK):** Sprint 16 is closed (`docs/sprints/S16-chai-final-prototypes.md`). Nothing is running.
+- **Live on `main`** (33762921): chai with every fix from Zafar's 1-2 Nov notes; farm v2 (feeding, eggs, home at dusk, grow-pick on
+  the word tiles); the four clinic prototypes.
+- **On the branch only** (`claude/nice-lovelace-0vfjcj`): every other designed game as a lab prototype (home, town, birthday, school,
+  sewing, pet hotel, safari, beach), checks green. Play from the branch without publishing:
+  https://raw.githack.com/Baby-Isa/nani-jo-ghar/claude/nice-lovelace-0vfjcj/labs.html
+- **Read:** `build/reports/overnight-prototypes-2026-11-02.md` (what's built, its 7 decisions); one report per area
+  (`build/reports/proto-<area>-2026-11-02.md`); the shared word tiles `js/shared/word-tiles.js`.
 
-**Sprint 16 is open** (`docs/sprints/S16-chai-final-prototypes.md`, Zafar, 1 Nov). **Next steps, in order:**
-1. **His play of the live chai and the 8 prototypes** → `/feedback`.
-2. **Chai's final pass**, so chai is finished. Open: CHAI-58 (L4's green to 2 s: Zafar, 1 Nov), CHAI-59, and his notes.
-3. **Refine the prototypes on his notes** (rapid, laptop only), then choose which become proper first.
-4. **Roll chai's shared rules out game by game:** Cook (pantry, daar, sekelo, maani, chaat, samosa), then the clinic, each game's word-adds from `build/reports/research-existing-games-2026-10-31.md` §2-3 taken in that game's pass (Zafar, 1 Nov).
-5. **Later:** the other designed games as prototypes; days stitched with conversations; art and recording runs in batches (the pose checklist, ART-33).
+**Sprint 17, proposed (Zafar opens it):** three strands, one at a time, his play between.
+1. **Chai, final:** his last play and notes (`/feedback`), the judge on the changed screens, then chai is done. Open from Sprint 16:
+   SH-169, SH-191 (the panel's scroll), SH-189 (Nani's box), SH-190 (item picture padding), SH-192 (the headline's gaps).
+2. **Chai's rules rolled out, one game at a time,** starting with the pantry (Zafar), each to chai's level with its word-adds
+   (`build/reports/research-existing-games-2026-10-31.md` §2-3), played and passed by him before the next.
+3. **Prototypes graduating:** three farm games (his pick, likely feeding, eggs and one more) get their mechanics finished so they're
+   ready for an art run; the phone strips for the tiles; one shared kit in place of the areas' copies (and its spotlight bug).
 
-Builders: rapid prototypes are "laptop only, hand back when it plays"; chai is full proof. Remove a builder's worktree as soon as it's merged (the disk filled once).
-
-**Open questions to Zafar:**
-1. The 10 decisions in `docs/feedback/chai-play-2026-11-01-night.md` (his chai notes, 1 Nov night). Still to come: his notes on the 8 prototypes.
-2. Mum's words (`docs/questions.md`, `build/reports/designs/zafar-answers-2026-11-01.md`).
+**Open questions to Zafar:** the prototypes' 7 decisions (the summary); which third farm game graduates; publish the prototypes to
+`main` or keep playing them from the branch; the feeding background (`build/reports/designs/chatgpt-feed-backgrounds-2026-11-02.md`);
+Mum's recording list (`docs/language/recording-sheet.md`, many new placeholders).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Take my feedback on the
-> live chai and the prototypes with `/feedback`, then propose Sprint 16. Work on branch `claude/nice-lovelace-0vfjcj`;
-> `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Propose Sprint 17 from it: chai's
+> final feedback and finish, chai's rules rolled out game by game starting with the pantry, and three farm prototypes made ready for
+> an art run. Take my notes with `/feedback`. Work on branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before
+> launching anything new.
 
 ## The fix list
 

@@ -1,6 +1,6 @@
 # Sprint 16: chai finished, the prototypes refined
 
-**Status:** open
+**Status:** closed (2 Nov 2026)
 **Opened:** 1 Nov 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -32,8 +32,15 @@ None yet. Each launch is proposed to Zafar first, with its model, effort and cos
   `build/reports/proto-queue-2026-11-02.md`.
 
 ## Outcome
+- **On `main`** (33762921): chai with all of Zafar's 1-2 Nov notes built (`docs/feedback/chai-play-2026-11-01-night.md`: SH-171, -177,
+  -183, -185 to -188, -193, -194; CHAI-43, -58, -64 to -66), farm v2 on the word tiles, the four clinic prototypes. Published with the
+  gate overridden on his word (no contract or evidence run, no judge).
+- **On the branch** (b8f0a23 and after): every remaining designed game as a lab prototype (home, town, birthday, school, sewing, pet
+  hotel, safari, beach): `build/reports/overnight-prototypes-2026-11-02.md`.
+- **Moved to Sprint 17:** SH-169, SH-189, SH-190, SH-191, SH-192 (the panel's scroll and spacing); chai's judge and Zafar's final play;
+  the phone strips for the tiles; the prototypes' seven decisions.
 
 ## Look back (three lines)
-1.
-2.
-3.
+1. What worked: his screenshots straight into rows and fixes the same night; one shared rule (free space, one bubble rule) beat case-by-case patches.
+2. What cost more: the pop-out took four rounds before it measured the real free space; the first fixes sized by width alone.
+3. One change: draw the screen's free space first, then size into it, for every placed element (cards, bubbles, tiles).
