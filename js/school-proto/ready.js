@@ -20,7 +20,7 @@ const stamp = (p) => (typeof window !== "undefined" && typeof window.njgV === "f
 const KIDS = ["ali", "zahra", "hasan"];
 // each job: the thing tapped, the line's job part (an engine meaning or a data/school-proto.json key), its tile's word
 const JOBS = {
-  teeth: { thing: "toothbrush", line: "ready-teeth", tile: { fn: "Item", kind: "n.tooth", number: "pl" }, lex: "n.tooth" },
+  teeth: { thing: "toothbrush", line: "ready-teeth", tile: { fn: "Item", kind: "n.toothbrush" }, lex: "n.toothbrush" }, // (n.tooth plural is "tooths" in the placeholder)
   hair: { thing: "comb", line: "ready-hair", tile: { fn: "Item", kind: "n.hair" }, lex: "n.hair" },
   breakfast: { thing: "bowl", line: { fn: "Command", verb: "v.eat", obj: { fn: "Item", kind: "n.breakfast" } }, tile: { fn: "Item", kind: "n.breakfast" }, lex: "n.breakfast" },
   hands: { thing: "soap", line: { fn: "Command", verb: "v.wash", obj: { fn: "Item", kind: "n.hand", number: "pl" } }, tile: { fn: "Item", kind: "n.hand", number: "pl" }, lex: "n.hand" },

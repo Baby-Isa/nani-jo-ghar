@@ -82,8 +82,8 @@ missing word or frame is grey italic English, "to record".
 - **Bag:** book, pencil, crayon, lunchbox, ball, teddy, school bag; "School today! Let's pack your bag.", "Simba! Out you come."; the
   tile labels "school things", "toys".
 - **Board:** "Draw the {x}.", "Colour the {x}: {y}." (the frame to record: Mum's word order), "Put a ring round the {x}.",
-  "Rub out the {x}.", "Good morning! Come, you're my helper today."; green is the engine's (*lilo*) but showed grey in one tile
-  label check: to look at; pictures, colours, numbers (tile labels); teacher, chalk, duster, flannel, soap.
+  "Rub out the {x}.", "Good morning! Come, you're my helper today."; green alone (the tile) comes back grey: the engine has
+  *lilo* only as a he-form with a noun, so the tile word needs Mum's standalone form; pictures, colours, numbers (tile labels); teacher, chalk, duster, flannel, soap.
 
 ## Art needed (all placeholders now)
 
