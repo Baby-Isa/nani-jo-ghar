@@ -28,8 +28,8 @@ const WELL = { fn: "Exclaim", x: "phrase.well-done" };
 /** The hiders: a picture, its height (a share of the play area's), and its parts: the share of it above the grass and the clip. */
 const HIDERS = {
   elephant: { kind: "elephant", img: ANIMALS.elephant.img, h: 0.36, part: "ears", look: "grey", show: { part: { share: 0.42, clip: "0 0 0 0" }, back: { share: 0.4, clip: "0 0 0 45%" } } },
-  giraffe: { kind: "giraffe", img: ANIMALS.giraffe.img, h: 0.6, part: "neck", look: "spotty", size: "big", show: { part: { share: 0.48, clip: "0 0 0 0" }, back: { share: 0.62, clip: "45% 0 0 0" } } },
-  zebra: { kind: "zebra", img: ANIMALS.zebra.img, h: 0.38, part: "tail", look: "stripy", show: { part: { share: 0.55, clip: "0 0 0 62%" }, back: { share: 0.5, clip: "30% 0 0 35%" } } },
+  giraffe: { kind: "giraffe", img: ANIMALS.giraffe.img, h: 0.5, part: "neck", look: "spotty", size: "big", show: { part: { share: 0.5, clip: "0 0 0 0" }, back: { share: 0.62, clip: "45% 0 0 0" } } },
+  zebra: { kind: "zebra", img: ANIMALS.zebra.img, h: 0.38, part: "tail", look: "stripy", show: { part: { share: 0.62, clip: "28% 0 0 55%" }, back: { share: 0.55, clip: "30% 0 0 35%" } } },
   smallGiraffe: { kind: "giraffe", img: ANIMALS.giraffe.small, h: 0.32, part: "neck", size: "small", show: { part: { share: 0.5, clip: "0 0 0 0" } } },
 };
 const ICON = {

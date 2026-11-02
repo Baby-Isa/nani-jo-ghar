@@ -67,7 +67,6 @@
 .sf-hider { z-index: 2; pointer-events: none; transition: translate .45s cubic-bezier(.3,1.4,.5,1), opacity .25s; }
 .sf-hider > img { transition: clip-path .3s; }
 .sf-hider.out > img { clip-path: inset(0 0 0 0) !important; }
-.sf-hider.out { z-index: 4; }
 .sf-hider.down { translate: 0 60%; opacity: 0; }
 .sf-hider.flip > img { transform: scaleX(-1); }
 .sf-group-frame { z-index: 6; }
