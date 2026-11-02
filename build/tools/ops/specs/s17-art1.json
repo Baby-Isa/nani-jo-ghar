@@ -1,0 +1,37 @@
+{
+  "name": "s17-art1: art block 1, the plan and the one paste block (the stove family's placeholders and chai's half and full word moment)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "deciding what each object is for, its size and pose from the designs, and writing prompts that land in the house style needs judgement",
+  "cost": "about $10-15",
+  "stop": "2 Nov 2026, 23:00 UK",
+  "branch": "claude/nice-lovelace-0vfjcj",
+  "rules": ["8 (art: ChatGPT runs Zafar supervises; Claude plans and writes one paste block)", "9 (halal, modest, no sweets as rewards)"],
+  "read": [
+    ".claude/skills/art-run/SKILL.md (the method), docs/design-language/art-pipeline.md §15, docs/design-language/art-bible.md",
+    "docs/design-language/art-plans/s14-art-plan.md and build/tools/art/specs/s14.run.yaml (the last plan and spec: copy their shape)",
+    "docs/feedback/chai-play-2026-11-02.md P4 and the rows CHAI-67, ART-36 in docs/process/regressions.md (the word moment)",
+    "build/reports/designs/cook-baking-eggs.md, party-gifts.md / party-guests.md (the cake), the corn stall in js/cook/stations/corn.js and its art in js/cook/art.js",
+    "build/reports/proto-party-2026-11-02.md (the cake's art list); build/reports/art-queue.md; docs/process/prototype-to-game.md"
+  ],
+  "owns": [
+    "docs/design-language/art-plans/s17-art1-art-plan.md",
+    "build/tools/art/specs/s17-art1.run.yaml",
+    "docs/design-language/art-plans/s17-art1-chrome-block.txt",
+    "sources/art/s17-art1/refs/** (reference images the block needs, copied from existing approved art)",
+    "build/reports/art-queue.md (block 1's row only)",
+    "build/reports/s17-art1.md"
+  ],
+  "readOnly": ["js/**, css/**, data/** (no game code: the orchestrator is fixing chai in js/cook and js/shared)", "assets/**", "build/tools/art/*.py (run them, don't change them)"],
+  "stubs": "none; an item whose use in the game is unclear goes in the report as a question, never guessed",
+  "tasks": [
+    { "do": "The plan: for each stove-family game still on placeholder or code-drawn art (the cake, eggs at breakfast, baking, the corn stall: check each in code and its report), list what is placeholder, what each object is for, how it is seen in the game, its target size and position in the game's layout, and what approved art is reused instead (say so). Add chai's half and full word moment (a NEW piece for the teaching moment only, not chai's current pour): an opaque vessel (a kettle or a steel pot) held tilted for the whole scene, its tea stream as a separate cut, two chai glasses in the s14 style (half, full), and a camera-snap frame. Count the images.", "accept": "the plan file lists every object with its use, target size, reuse note, and the image count; first draft, not final (Zafar, 2 Nov: 'easier to feedback on a first draft')" },
+    { "do": "The run spec and the one paste block: build/tools/art/specs/s17-art1.run.yaml, validated and generated with build/tools/art/artblock.py (--check then the block); every reference pushed to the branch the block reads; the block tells Zafar to keep the laptop awake (Mac: caffeinate -dims in Terminal, charger in, lid open; Windows: PowerToys Awake).", "accept": "artblock.py --check passes; the block file exists and needs nothing from Zafar but pasting it into Claude in Chrome" },
+    { "do": "Update block 1's row in build/reports/art-queue.md (images, status 'ready') and write the report.", "accept": "the report names the block, its image count (about 120 or fewer, one day), expected redos, and every open question" }
+  ],
+  "flows": [],
+  "shared": false,
+  "port": 8831,
+  "report": "s17-art1",
+  "publish": false
+}
