@@ -10,8 +10,8 @@ save often. Brief: `build/reports/proto-brief-2026-11-02.md`. Each area is one b
 | 3 | Home | hide and seek, pick it up and put it back, the clean-up | hide-and-seek.md, pick-it-up-put-it-back.md, clean-up-day.md | building (08:35, four builders) |
 | 4 | Town and shops | the town map, the fruit stall, Nani's picky shopping, pay | town-map.md, shops.md | building (08:35, four builders) |
 | 5 | Birthday | pass the balloon, how are you?, musical statues, the cake, the presents | party-guests.md, party-gifts.md | building (08:35, four builders) |
-| 6 | School day | the wake-up clock, getting ready, pack the bag, the blackboard | wake-up-clock.md, school-day.md | building (08:35, four builders) |
-| 7 | Sewing | the cloth stall, make, mend, the fitting | sewing.md | queued |
+| 6 | School day | the wake-up clock, getting ready, pack the bag, the blackboard | wake-up-clock.md, school-day.md | merged 09:20 (7c20739): clock, getting ready, pack the bag, the blackboard; report proto-school-2026-11-02.md |
+| 7 | Sewing | the cloth stall, make, mend, the fitting | sewing.md | building (09:20) |
 | 8 | Pet hotel | look after the animals, going home | adoption-centre.md | queued |
 | 9 | Safari | snap from the jeep, who's hiding? | safari.md | queued |
 | 10 | Beach and boat | shells, the sandcastle, the stalls, the picnic, the boat ride, litter fishing | beach-boat.md | queued |
