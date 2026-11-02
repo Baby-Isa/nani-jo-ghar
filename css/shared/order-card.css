@@ -599,3 +599,33 @@ body.w6.njg-s14 #mission.people > *, body.w6.njg-s14 #mission.people .m-order > 
    headline while they say its sentence (oc-headonly), opening with its empty slots at their first item (js/cook/ui.js) */
 #mission .oc-card.oc-unsaid { display: none; }
 #mission .oc-card.oc-headonly .oc-items14, #mission .oc-card.oc-headonly .oc-items { display: none; }
+
+/* SH-185 (Zafar, 1 Nov night: "is there no scaling of words, text, and image sizes on the left bar? ... they're massive on the
+   left-hand side"; 2 Nov, decision 1: the panel shrinks with its cards and words down to their minimums, then only while 2.5 item
+   cards still show): the side panel scales with the window's height as the play area does (--njg-p: 1 at 665 px tall and above, down
+   to 0.66; js/cook/ui.js writes it). Its card sizes, gaps and width follow it; words never under 14.5 px; a speaker or arrow may be
+   drawn smaller, its tap area stays 48 px (::before); an item card is 1/2.5 of its row, so two and a half always show. */
+body.njg-s14 #side {
+  --njg-card14-u2: calc(2px * var(--njg-p, 1)); --njg-card14-u4: calc(4px * var(--njg-p, 1)); --njg-card14-u5: calc(5px * var(--njg-p, 1));
+  --njg-card14-u6: calc(6px * var(--njg-p, 1)); --njg-card14-u8: calc(8px * var(--njg-p, 1)); --njg-card14-u9: calc(9px * var(--njg-p, 1));
+  --njg-card14-u12: calc(12px * var(--njg-p, 1)); --njg-card14-u13: calc(13px * var(--njg-p, 1)); --njg-card14-u14: calc(14px * var(--njg-p, 1));
+  --njg-card14-u16: calc(16px * var(--njg-p, 1)); --njg-card14-u18: calc(18px * var(--njg-p, 1)); --njg-card14-u19: calc(19px * var(--njg-p, 1));
+  --njg-card14-u22: calc(22px * var(--njg-p, 1)); --njg-card14-u26: calc(26px * var(--njg-p, 1)); --njg-card14-u30: calc(30px * var(--njg-p, 1));
+  --njg-card14-u32: calc(32px * var(--njg-p, 1)); --njg-card14-u34: calc(34px * var(--njg-p, 1)); --njg-card14-u40: calc(40px * var(--njg-p, 1));
+  --njg-card14-u60: calc(60px * var(--njg-p, 1)); --njg-card14-u64: calc(64px * var(--njg-p, 1)); --njg-card14-u72: calc(72px * var(--njg-p, 1));
+  --njg-card14-u112: calc(112px * var(--njg-p, 1));
+  --njg-s1: calc(4px * var(--njg-p, 1)); --njg-s2: calc(8px * var(--njg-p, 1)); --njg-card-pad: calc(8px * var(--njg-p, 1));
+  --njg-side-pad: calc(8px * var(--njg-p, 1)); --njg-side-gap: calc(8px * var(--njg-p, 1));
+  --njg-side-h: max(14.5px, calc(19px * var(--njg-p, 1))); --njg-side-p: max(14.5px, calc(17px * var(--njg-p, 1)));
+  --njg-guide-face: max(32px, calc(56px * var(--njg-p, 1))); --njg-face: max(28px, calc(44px * var(--njg-p, 1)));
+  --njg-tap-drawn: max(30px, calc(48px * var(--njg-p, 1)));
+}
+@media (max-height: 500px) { body.w6.njg-s14 { --njg-side-w: clamp(calc(250px * var(--njg-p, 1)), 34vw, calc(340px * var(--njg-p, 1))); } }
+.oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex-basis: calc((100% - 2 * var(--njg-s2)) / 2.5) !important; }
+.oc-card.oc-s14 .oc-row.oc-it14 .oc-t { font-size: clamp(14.5px, 16cqi, max(14.5px, var(--njg-card14-u32))); }
+body.njg-s14 #side .oc-row.oc-it14 > .oc-spk.wc14-spk { width: clamp(var(--njg-tap-drawn), 32cqi, max(var(--njg-tap-drawn), var(--njg-card14-u60))); height: auto; }
+body.njg-s14 #side .wc14-big.wc14-side .wc14-spk { width: clamp(var(--njg-tap-drawn), 13cqi, max(var(--njg-tap-drawn), var(--njg-card14-u60))); }
+body.njg-s14 #side .wc14-big .wc14-spk { width: clamp(var(--njg-tap-drawn), 25cqi, max(var(--njg-tap-drawn), var(--njg-card14-u112))); }
+body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap-drawn); height: var(--njg-tap-drawn); position: relative; }
+body.njg-s14 #side .wc14-spk, body.njg-s14 #side .oc-spk { position: relative; }
+body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-spk::after, body.njg-s14 #guide.ng-s14 .ng-arrow::after { content: ""; position: absolute; inset: min(0px, calc((100% - var(--njg-tap)) / 2)); border-radius: 50%; }

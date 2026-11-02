@@ -932,6 +932,16 @@
   };
   /** SH-177 (Zafar, 1 Nov night): every person's head on screen, in screen px, for the shared bubble rules (js/shared/conversations.js
    * placeBubble keeps every bubble off every face). */
+  // SH-185: the side panel's scale (css/shared/order-card.css --njg-p): 1 at 665 px tall and above, down to 0.66 on a short window
+  const panelScale = () => {
+    try {
+      global.document.documentElement.style.setProperty("--njg-p", String(Math.max(0.66, Math.min(1, (global.innerHeight || 665) / 665))));
+    } catch (e) {
+      /* no page */
+    }
+  };
+  panelScale();
+  if (global.addEventListener) global.addEventListener("resize", panelScale);
   global.NjgFaceBoxes = UI.headBoxes = function () {
     const out = [];
     const S = Cook.scene;
@@ -1833,6 +1843,7 @@
           const over = sb && sb.height ? Math.max(0, sb.bottom + 8 - cb.bottom) : 0;
           return c.offsetHeight + over;
         };
+        c.classList.remove("wc14-side"); // (CHAI-43: upright first; sideways only as the crossover below)
         const at = (ww, small) => {
           c.style.width = `${ww}px`;
           c.classList.toggle("wc14-small", small);
@@ -1859,6 +1870,38 @@
           small = true;
         }
         if (w == null) w = 100;
+        // CHAI-43 (Zafar, 2 Nov, decision 8: "at a certain point, you can code in a crossover"; the second reader: sideways only where
+        // the room is wider than about 1.3 times its height): on a short, wide room (a phone's counter under the faces) the card lies
+        // sideways (picture, word, speaker in a row: the side card's look) when the upright card would be small (under 140 px), up to
+        // three times the room's height wide, when that makes it bigger
+        const roomW = Math.max(0, play.right - pad - x0);
+        let side = false;
+        if (roomW > room * 1.3 && w < 140) {
+          // (the upright card as it will show: zoomed down to the room when it is taller)
+          const upH = at(w, small);
+          const upArea = upH > room ? (w * room) / upH * room : upH * w;
+          c.classList.add("wc14-side");
+          const sideAt = (ww) => at(ww, false);
+          let lo = 160;
+          let hi = Math.round(Math.min(roomW, Math.max(260, room * 3))); // (its picture, word and speaker stay together: never stretched across the counter)
+          let sw = null;
+          if (sideAt(lo) <= room) {
+            if (sideAt(hi) <= room) sw = hi;
+            else {
+              while (hi - lo > 4) {
+                const mid = Math.round((lo + hi) / 2);
+                if (sideAt(mid) <= room) lo = mid;
+                else hi = mid;
+              }
+              sw = lo;
+            }
+          }
+          if (sw != null && sideAt(sw) * sw > upArea * 1.15) {
+            side = true;
+            w = sw;
+            small = false;
+          } else c.classList.remove("wc14-side");
+        }
         at(w, small);
         // (its speaker and words have their smallest sizes, so past the narrowest card the whole card is scaled down to the room:
         // zoom, so its box and the move into its row card see the size it shows at)

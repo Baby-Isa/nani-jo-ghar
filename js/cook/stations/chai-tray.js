@@ -687,16 +687,18 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
 
     /* ---------- the shelf: identical slots, grouped, a chip under each ---------- */
     const slotsN = shelfIds.reduce((a, g) => a + g.length, 0);
-    // (nine jars at L3-L4: the slots narrow so the row stays clear of the tick)
-    const slotW = Math.min(PITCH, (1600 - 190 - 80 - (shelfIds.length - 1) * GROUP_GAP) / slotsN);
-    const width = slotsN * slotW + (shelfIds.length - 1) * GROUP_GAP;
     // CHAI-66 (Zafar, 1 Nov night: "the items at the bottom aren't in line with the tea tray and the tea hobs on the top ... There
     // should be the equal amount of space between the juru and the right edge of the tea board as there is the water bottle on the
     // left edge of the teapot"): the row centred under the hob-and-tray span (the first pan's handle to the tray's right edge), so the
-    // two ends' gaps match; it still keeps clear of the tick at the bottom right, and that wins where they meet
+    // two ends' gaps match. It still keeps clear of the tick at the bottom right: where a centred row would reach it (nine or ten
+    // jars at L3-L4), the slots narrow, so the row stays centred and clear
     const spanL = hobX - overL;
     const spanR = trayX + trayD;
-    const x0 = Math.max(40, Math.min((spanL + spanR - width) / 2, 1600 - 190 - width));
+    const mid = (spanL + spanR) / 2;
+    const roomW = 2 * Math.min(mid - 40, 1600 - 190 - mid, (spanR - spanL) / 2);
+    const slotW = Math.min(PITCH, (roomW - (shelfIds.length - 1) * GROUP_GAP) / slotsN);
+    const width = slotsN * slotW + (shelfIds.length - 1) * GROUP_GAP;
+    const x0 = Math.max(40, mid - width / 2);
     const shelf = {};
     let sx = x0 + slotW / 2;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
