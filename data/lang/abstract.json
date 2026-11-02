@@ -1980,22 +1980,6 @@
    ],
    "_sig": "[\"x\"]"
   },
-  "NCornForTheX": {
-   "cat": "Utt",
-   "args": {
-    "n": {
-     "type": "Num"
-    },
-    "x": {
-     "type": "NP"
-    }
-   },
-   "en": "{n} corn for the {x}.",
-   "elicit": [
-    "two corn for the knee."
-   ],
-   "_sig": "[\"n\",\"x\"]"
-  },
   "WeVeComeForTheX": {
    "cat": "Utt",
    "args": {

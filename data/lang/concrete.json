@@ -2234,15 +2234,6 @@
    "what": "The {x} is sleepy.",
    "src": "data/pets-proto.json lines.care-sleepy: an English placeholder, to record"
   },
-  "NCornForTheX": {
-   "status": "unknown",
-   "ask": [
-    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
-   ],
-   "english": "{n} corn for the {x}.",
-   "what": "{n} corn for the {x}.",
-   "src": "data/pets-proto.json lines.care-corn: an English placeholder, to record"
-  },
   "WeVeComeForTheX": {
    "status": "unknown",
    "ask": [

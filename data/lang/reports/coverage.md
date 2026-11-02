@@ -45,7 +45,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Grammar
 
-5 word classes (paradigms); 140 meanings; 139 rules (38 confirmed, 22 draft, 79 unknown, asking Mum); 10 exceptions.
+5 word classes (paradigms); 139 meanings; 138 rules (38 confirmed, 22 draft, 78 unknown, asking Mum); 10 exceptions.
 
 ## Recordings
 
@@ -53,7 +53,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Games
 
-Game lines registered: 502 (cook 116, clinic 219, and 167 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 75.
+Game lines registered: 501 (cook 116, clinic 219, and 166 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 75.
 
 ## Sources loaded, and sources deliberately not
 

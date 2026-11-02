@@ -19,7 +19,7 @@
  * Not built: Ali's turn (the speaking moment), the funny per-animal misses and eats (one wobble and one bounce for all), "not",
  * the zoom for the wash and the brush, the dog's shake spraying the screen (drops fall round it instead).
  */
-import { ANIMALS, TOOLS, PROPS, FEELINGS } from "./art.js";
+import { ANIMALS, TOOLS, PROPS } from "./art.js";
 import { yard, matXs, animal } from "./yard.js";
 
 const CARE_LEX = { feed: "v.feed", wash: "v.wash", brush: "v.brush", bed: "v.put-to-bed" };
@@ -112,7 +112,7 @@ export default async function care(F) {
     { label: { fn: "Item", kind: "n.animals" }, tiles: [...(lv === 4 ? [{ pair: [animalTile("rabbit-small"), animalTile("rabbit-big")] }] : []), ...plain.map(animalTile)] },
     { label: { fn: "Item", kind: "n.looking-after" }, tiles: cares.map((c) => ({ key: c, word: { fn: "Command", verb: CARE_LEX[c] }, lex: CARE_LEX[c], picture: TOOLS[c].img })) },
   ];
-  if (lv >= 3) groups.push({ label: { fn: "Item", kind: "n.feelings" }, tiles: Object.keys(FEELINGS).map((f) => ({ key: f, word: { fn: "Item", kind: FEELINGS[f].lex }, lex: FEELINGS[f].lex, picture: FEELINGS[f].img })) });
+  // (no Feelings group: a third group squeezed every tile picture to nothing at 1280x665; hungry and sleepy are heard in her line only)
   F.sentence(groups);
 
   /* ----- the give-to tap ----- */
@@ -336,7 +336,7 @@ export default async function care(F) {
       if (tucked) return;
       tucked = true;
       el.classList.add("asleep");
-      const bl = F.put("pt-blanket", { x: xOf(el), y: yOf(el) + 0.01, h: hOf(el) * 0.4, w: hOf(el) * 0.5, z: 8 });
+      const bl = F.put("pt-blanket", { x: xOf(el), y: yOf(el) + 0.01, h: hOf(el) * 0.28, w: hOf(el) * 0.5, z: 8 });
       bl.dataset.k = el.dataset.k;
       bl.innerHTML = '<span class="pt-zz"></span>';
       active = null;
