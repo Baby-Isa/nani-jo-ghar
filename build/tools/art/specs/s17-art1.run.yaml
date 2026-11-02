@@ -1,0 +1,189 @@
+# The run spec for pack s17-art1 (art block 1, a first draft): the stove family's games still on placeholders (eggs at
+# breakfast, baking, the corn stall, the cake) and chai's half and full word moment (CHAI-67, ART-36: an opaque kettle held
+# tilted, its stream as its own cut, the glasses side-on half and full, the snap). Sprint 17 step 0; ART-35 (the art queue).
+# ART-29: every reference is on the pushed branch; nothing for Zafar to upload. Read by build/tools/art/artblock.py:
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art1.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art1.run.yaml
+pack: s17-art1
+title: 'Art block 1: the stove family (eggs, baking, the corn stall, the cake) and chai''s half and full word moment'
+plan: docs/design-language/art-plans/s17-art1-art-plan.md
+plan_branch: claude/nice-lovelace-0vfjcj
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/nice-lovelace-0vfjcj
+dest: sources/art/s17-art1
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on). If the screen sleeps the run stops.\n- No real people in this run: everything is yours to judge with the checks below. The mock-ups attached for content show Nani and the family: if a picture copies any person from them, it fails. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  glasses-overhead.png: sources/art/s14/gl-chai-glasses-overhead-v1.png
+  glass-filling.png: sources/art/s14/gf-glass-filling-milky-v1.png
+  steel-pans.png: sources/art/s14/st-chai-pan-states-overhead-v1.png
+  kitchen.png: sources/art/s14/kt-kitchen-plain-v1.png
+  daar-pot.png: sources/art/s08b/dp2-daar-pot-topdown-v1.png
+  glass-jars.png: sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png
+  grill.png: sources/art/cook-v3/k3-grill-v1.png
+  steel-plate.png: sources/art/s02/c7-sekelo-plate-plain-t-v1.png
+  mock-eggs.png: sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-eggs-station.png
+  mock-served.png: sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-served.png
+  mock-pour.png: sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-pour.png
+  mock-oven.png: sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-oven.png
+  mock-corn.png: sources/art/mockups-2026-11-01/mockup-farm-corn-stall.png
+  mock-cake.png: sources/art/s17-art1/refs/cake-candles-mockup.png
+  mock-slices.png: sources/art/s17-art1/refs/cake-slices-mockup.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  WV: {attach: [steel-pans.png], save: wv-chai-kettle-tilted-v1.png, check: KETTLE}
+  WG: {attach: [glasses-overhead.png, glass-filling.png], save: wg-chai-glass-side-filling-v1.png, check: GLASSES}
+  WS: {attach: [glass-filling.png], save: ws-falling-streams-v1.png, check: STREAMS}
+  WF: {attach: [], save: wf-camera-snap-v1.png, check: SNAP}
+  EP: {attach: [daar-pot.png], save: ep-egg-pot-states-v1.png, check: POT}
+  EF: {attach: [steel-pans.png, mock-eggs.png], save: ef-frying-pan-v1.png, check: PAN}
+  EG: {attach: [mock-eggs.png], save: eg-eggs-crack-shakers-top-v1.png, check: EGGS}
+  EY: {attach: [mock-eggs.png], save: ey-fried-egg-states-v1.png, check: FRIED}
+  EB: {attach: [mock-eggs.png, mock-served.png], save: eb-egg-bowl-eggcups-top-v1.png, check: BOWL}
+  ES: {attach: [mock-served.png], save: es-breakfast-served-side-v1.png, check: SERVED}
+  EM: {attach: ["edit: kitchen.png"], save: em-kitchen-morning-v1.png, check: RELIGHT}
+  EN: {attach: ["edit: kitchen.png"], save: en-kitchen-night-v1.png, check: RELIGHT}
+  BK: {attach: [kitchen.png, mock-pour.png], save: bk-baking-counter-v1.png, check: COUNTER}
+  BB: {attach: [steel-pans.png, mock-pour.png], save: bb-mixing-bowl-states-v1.png, check: MIXBOWL}
+  BJ: {attach: [glass-jars.png, mock-pour.png], save: bj-measuring-jug-v1.png, check: JUG}
+  BO1: {attach: [kitchen.png, mock-oven.png], save: bo1-oven-shut-v1.png, check: OVEN}
+  BO2: {attach: ["edit: kept:BO1"], save: bo2-oven-baking-v1.png, check: OVENEDIT}
+  BO3: {attach: ["edit: kept:BO1"], save: bo3-oven-open-v1.png, check: OVENEDIT}
+  BN: {attach: [mock-oven.png], save: bn-naan-tray-states-v1.png, check: NAAN}
+  BL: {attach: ["kept:BN"], save: bl-loaf-cake-tins-v1.png, check: TINS}
+  CT: {attach: [mock-corn.png], save: ct-corn-stall-table-v1.png, check: TABLETOP}
+  CB: {attach: [mock-corn.png, grill.png], save: cb-corn-cob-states-v1.png, check: COBS}
+  CX: {attach: [mock-corn.png], save: cx-corn-crate-v1.png, check: CRATE}
+  CD: {attach: [mock-corn.png, steel-plate.png], save: cd-corn-dressing-bowls-v1.png, check: DRESSINGS}
+  CO: {attach: ["kept:CB"], save: co-corn-dressings-on-cob-v1.png, check: ONCOB}
+  PR: {attach: [kitchen.png, mock-cake.png], save: pr-party-room-v1.png, check: ROOM}
+  TB: {attach: ["kept:PR"], save: tb-party-table-v1.png, check: PARTYTABLE}
+  CK: {attach: [mock-cake.png, mock-slices.png], save: ck-birthday-cake-slices-v1.png, check: CAKE}
+  CN: {attach: [mock-cake.png], save: cn-candles-v1.png, check: CANDLES}
+parts:
+- id: A
+  title: 'CHAI: THE HALF AND FULL WORD MOMENT'
+  intro: 'WV: the same steel chai kettle twice, tilted, dry and with a short tongue of chai; WG: one chai glass side-on five times, empty to full; WS: six falling streams (chai, black tea, water, milk, flour, sugar); WF: the camera snap (corners and the shutter iris).'
+  items:
+  - lines: [WV, WG, WS, WF]
+- id: B
+  title: 'EGGS AT BREAKFAST'
+  intro: 'The hob scene from exactly above (the pot, the pan, the eggs, the shakers, the fried states, the bowl and egg cups), the served plates side-on, and two relit edits of the kitchen in play (morning and night).'
+  items:
+  - lines: [EP, EF, EG, EY, EB, ES, EM, EN]
+- id: C
+  title: 'BAKING'
+  intro: 'The straight-on counter, the mixing bowl''s six states, the measuring jug (lines, no numbers), the oven shut then two edits of it (baking, open), the naan on its tray; BL (the loaf and cake tins) is optional and runs last.'
+  items:
+  - lines: [BK, BB, BJ, BO1, BO2, BO3, BN]
+- id: D
+  title: 'THE CORN STALL'
+  intro: 'The stall''s table from exactly above, the cob in four states, the crate of cobs, the six dressing bowls, and the six dressings alone in the cob''s shape.'
+  items:
+  - lines: [CT, CB, CX, CD, CO]
+- id: E
+  title: 'THE CAKE'
+  intro: 'The empty party room, its table as its own piece, the birthday cake and its slices, the candles.'
+  items:
+  - lines: [PR, TB, CK, CN]
+- id: F
+  title: 'OPTIONAL, LAST'
+  intro: 'BL: the loaf and the cake in their tins (the design''s later bakes). Run it only when every other line is KEPT or SKIPPED.'
+  items:
+  - lines: [BL]
+checks:
+  KETTLE:
+    text: 'two identical opaque brushed-steel chai kettles side by side, seen exactly from the side, both tilted forward about 35 degrees with the spout down to the left and the handle arching over the top; the left one dry, the right one with only a short tongue of milky chai at the spout tip, no long stream; no hand, arm or person; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  GLASSES:
+    text: 'the same faceted chai glass five times in a row, seen exactly from the side, the same size on the same line; empty, a quarter, exactly half, three quarters, full, in that order, with half and full obvious at a glance; the facets and glints of the attached s14 glasses; milky caramel chai; no saucer or holder; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 5, no_touch: true, soft_edges: true}
+  STREAMS:
+    text: 'six separate straight vertical streams in a row, top to bottom, the same width: milky chai, black tea, clear water, white milk, powdery flour, sparkling sugar; no spout, cup, splash or surface; none touching; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, soft_edges: true}
+  SNAP:
+    text: 'four pieces in a 2 by 2 grid: four rounded white viewfinder corners marking a square; the same steel shutter iris open, half closed and closed, the same size in its quarter; the hole shows only the grey; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 4, no_touch: true}
+  POT:
+    text: 'the same two-handled steel pot as the attached three times in a row, from exactly above (the rim a perfect circle, the floor centred, the wall an even ring), the same size and place: empty, still clear water, a rolling boil; no eggs, lid or spoon; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  PAN:
+    text: 'the same round non-stick frying pan twice, from exactly above (a perfect circle), the black handle pointing straight down and inside the image; dry, then a thin film of shimmering oil; no egg or food; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  EGGS:
+    text: 'six things from exactly above in a 3 by 2 grid at one true scale: a cream egg, a light-brown egg, the cream egg cracked, two empty shell halves, a glass salt shaker with a steel cap, the same shaker with black pepper; no table; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true}
+  FRIED:
+    text: 'the same fried egg four times in a 2 by 2 grid from exactly above, the same outline and yolk place: clear and runny, setting, done, crispy golden edge; no pan or plate; no shadow on ONE flat mid-grey'
+    judge: {aspect: [1, 1], bg: flat, pieces: 4, no_touch: true}
+  BOWL:
+    text: 'from exactly above in a 3 by 2 grid: the same cream bowl with six eggs, with three, empty; the same white egg cup empty, with a whole boiled egg, with its top sliced off showing a runny yolk; no people or table; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  SERVED:
+    text: 'six things at a seated eye level about 20 degrees down, in a 3 by 2 grid at one true scale: an empty white plate, a fried egg alone at the plate''s angle, an egg cup with a whole egg, tapped and cracked, sliced with a runny yolk, sliced with a set yolk; no people or table; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  RELIGHT:
+    text: 'the same kitchen as the attached at the same framing, the island''s top edge at the same height, its three trays, the window, the arched door and the cooker where they were; only the light changed (morning: low pale-gold sun and a pale morning sky; night: a dark sky with a moon and stars, the room lit warmly from ceiling and under-cabinet lights, no hanging lamp); nothing added or removed; no people, no writing'
+    judge: {aspect: [3, 2], bg: none}
+  COUNTER:
+    text: 'the kitchen''s back counter seen straight on: the marble worktop''s front edge one straight horizontal line at about half height, the pale tiles above, sage cabinets with brass knobs below, part of a window at the far left; the worktop completely empty (no cooker, hob, oven, jars, plants, people or cat); the same look and light as our kitchen'
+    judge: {aspect: [3, 2], bg: none}
+  MIXBOWL:
+    text: 'the same brushed-steel mixing bowl six times in a 3 by 2 grid, seen from the front about 25 degrees down, the same size and place: empty, a little flour, a big heap, the heap with water soaking in, shaggy dough, one smooth dough ball; no counter or people; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  JUG:
+    text: 'the same clear glass measuring jug six times in a 3 by 2 grid, front view, handle right, lip left, five short white lines at the same heights and NO numbers or words; empty, then full to the top line with water, milk, flour, yoghurt, sugar; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true, soft_edges: true}
+  OVEN:
+    text: 'one built-in oven straight on, in a sage-green cabinet frame on all four sides: brushed-steel front, a dark glass door shut with a bar handle, two knobs, cold; no bread, people or wall; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  OVENEDIT:
+    text: 'the same oven, frame, size and place as the attached; only the asked change (baking: a warm glow behind the shut door; open: the door folded down flat at the front, the lit empty rack inside); nothing on the rack; the grey and everything else unchanged'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  NAAN:
+    text: 'the same flat steel baking tray in five cells and the naan alone in the sixth, in a 3 by 2 grid, front view about 30 degrees down: empty tray, raw naan, puffed pale, light golden, deep golden with toasty spots (nothing burnt), the deep golden naan alone; the naan the same size and shape in each; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  TINS:
+    text: 'eight bakes in a 4 by 2 grid, front view about 30 degrees down: the same loaf tin raw, risen pale, light golden, deep golden; the same round cake tin raw batter, risen pale, light golden, deep golden; plain sponge, no icing; nothing burnt; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+  TABLETOP:
+    text: 'a wooden table top seen from exactly above filling the whole image: wide honey planks running left to right, soft grain, warm light from the upper left; completely empty; no people, hands or writing'
+    judge: {aspect: [3, 2], bg: none}
+  COBS:
+    text: 'the same husked corn cob four times in a row from exactly above, upright, the same size and place: raw yellow, grilled on top with charred stripes, turned over (mostly raw), done golden-brown all over; no hand or grill; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: none}
+  CRATE:
+    text: 'one shallow wooden crate from exactly above with six raw husked cobs side by side, tips to the right, the sides even all round; no hand or table; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: none}
+  DRESSINGS:
+    text: 'the same small steel bowl six times from exactly above in a 3 by 2 grid: lemon halves, white salt, red chilli powder, green chutney, tamarind chutney, black pepper; no spoons, hands or table; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  ONCOB:
+    text: 'six dressings ALONE in a row, each in the long narrow shape of the attached cob with NO cob drawn: lemon drops and a pip, salt, chilli powder, a green chutney zigzag, a tamarind zigzag, black pepper; none touching; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, soft_edges: true}
+  ROOM:
+    text: 'an empty sitting room straight on to its back wall at standing eye level: a cream wall, a low sofa, a window right with golden light, plain bunting and three plain balloons with NO writing, at most one ajrakh or mirror-work touch; the left fifth plain wall; the bottom third plain floor; no people, animals, table, food, hanging lamps or religious objects'
+    judge: {aspect: [3, 2], bg: none}
+  PARTYTABLE:
+    text: 'one long low wooden table straight on, its top a thin band, a plain cream cloth along it; empty; about 92% of the width; no floor or people; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  CAKE:
+    text: 'six things in a 3 by 2 grid, seated eye level about 20 degrees down: the same round white-cream birthday cake on a white stand whole, one slice out, half left; a slice on a small plate, with a bite out, the plate empty with crumbs; NOTHING written on the cake; no candles or people; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  CANDLES:
+    text: 'six things in a 3 by 2 grid, front view: the same twisted pastel-blue candle unlit, lit with a small flame, just blown out with a curl of smoke; the flame alone; a small pink ribbon bow; a small brass saucer; no cake or people; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true, soft_edges: true}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a jug, a cake, bunting, balloons, a tin or a crate too).
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things, the wrong order, or the wrong view (a top-down line drawn even a little from the side; a side-on line drawn from above).
+- A person, a hand or an arm anywhere, or anything copied from a person in a mock-up.
+- A key background that isn't one flat colour (a gradient, a floor, shadows or haze on it).
+- 'In an edit, the island, window, door, oven or frame moved or changed size; anything added that the prompt did not ask for.'
+- Anything scary; sweets, lollies or biscuits (the birthday cake is the celebration, not a reward); any religious marker; anything not halal (no pork, no alcohol).
