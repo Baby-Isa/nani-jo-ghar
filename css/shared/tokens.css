@@ -113,6 +113,7 @@
   --njg-card14-english: #2a2522;                    /* the English under it */
   --njg-card14-label: #6e5f50; --njg-card14-label-bg: #f1e7d6; --njg-card14-rule: #dccbae; --njg-card14-edge: #e9dcc6;
   --njg-card14-dots-en: #8f8070; --njg-card14-no-edge: #c8b79c; --njg-card14-card: #fffdf8; --njg-card14-ring: #fff7ea;
+  --njg-wm-stream: #b47a4c; /* the word moment's placeholder tea stream (CHAI-67) until ART-36's pour */
   --njg-card14-white: #fff; --njg-card14-eye-edge: rgba(255, 255, 255, 0.85); --njg-card14-eye-bg: rgba(255, 255, 255, 0.5);
   /* the s14 card's sizes, the lab's own px (lab/cards.html), in one place: */
   --njg-card14-u1p5: 1.5px; --njg-card14-u2: 2px; --njg-card14-u4: 4px; --njg-card14-u5: 5px; --njg-card14-u6: 6px; --njg-card14-u8: 8px; --njg-card14-u9: 9px; --njg-card14-u12: 12px; --njg-card14-u13: 13px; --njg-card14-u14: 14px; --njg-card14-u15: 15px; --njg-card14-u16: 16px; --njg-card14-u18: 18px; --njg-card14-u19: 19px; --njg-card14-u22: 22px; --njg-card14-u26: 26px; --njg-card14-u30: 30px; --njg-card14-u32: 32px; --njg-card14-u34: 34px; --njg-card14-u40: 40px; --njg-card14-u60: 60px; --njg-card14-u64: 64px; --njg-card14-u72: 72px; --njg-card14-u112: 112px; --njg-card14-u250: 250px; --njg-card14-u270: 270px; --njg-card14-u340: 340px; --njg-card14-u410: 410px; --njg-card14-u999: 999px;
