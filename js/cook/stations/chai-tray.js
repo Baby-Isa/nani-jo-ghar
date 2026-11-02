@@ -671,7 +671,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     };
     // (the test hook js:Cook.chaiBusy: a pour or a spoon in flight; CHAI-61's probe reads the lit pans' heat against it)
     Cook.chaiBusy = () => busy;
-    Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, spicePics: Object.keys(q.spicePics || {}).length, shown: q.shown, poured: q.poured, need: needOf(q), closed: q.closed, sugar: q.sugar, khun: q.p.khun || 0 }));
+    Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, spicePics: Object.keys(q.spicePics || {}).length, shown: q.shown, poured: q.poured, need: needOf(q), closed: q.closed, sugar: q.sugar, khun: q.p.khun || 0, at: UI.worldToScreen(q.x, q.y), knobAt: q.knob ? UI.worldToScreen(q.knob.x, q.knob.y) : null }));
     // (the test hooks for the evidence probes, js:Cook.chaiAmounts and js:Cook.chaiFaces: read only)
     // CHAI-55: who asked half or full, in seat order, and the words' stages (the rule: data/cook.json chai cups.amount teach)
     Cook.chaiAmounts = { cups: people.map((p) => ({ who: p.who, amount: p.amount || null })), stages: { "ph-half": Cook.wordStage("ph-half"), "ph-full": Cook.wordStage("ph-full") } };
@@ -959,6 +959,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         },
       });
     };
+    let switched14 = false;
     const drawSel = () =>
       pans.forEach((pan) => {
         pan.sel.clear();
@@ -973,6 +974,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         pan.selRing.strokeCircle(pan.face.x, pan.face.y, BADGE / 2 + 4);
       });
     const select = (pan) => {
+      if (sel && sel !== pan && talked) switched14 = true; // (CHAI-68: the child has moved to another pan by themselves)
       if (sel && sel !== pan) {
         closeSpoons(sel);
         // level 4: moving on from a pan you've poured from closes it (half is the child's call)
@@ -1219,6 +1221,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const obj = shelf[id];
       if (!pan || finished || pan.poured > 0 || pan.state === "over" || !obj || (busy && (id === "cook-paani" || id === "cook-dudh"))) {
         if (obj && !busy) S.wiggle(obj);
+        if (pan && pan.poured > 0 && !finished) nextPanLight(); // (CHAI-68: a jar tapped into a poured pan: the next pan, at once)
         return;
       }
       // CHAI-22 (P33): there is one of milk, water and tea in a pan: a second tap only wiggles (nothing goes in, no word)
@@ -1772,6 +1775,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       St.acted();
       maybeFinish();
       refresh();
+      if (!finished && !doneShown) nextPanSoon(); // (CHAI-68: the first pan poured: the next pan's light in about 3 s)
     };
     /*
      * SH-105 (decision 6, P26: "once you've poured all the teas it just scores you immediately"): every cup poured and ticked, so
@@ -1931,6 +1935,34 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return [x, y, Math.max(a[0] + a[2], c[0] + c[2]) - x, Math.max(a[1] + a[3], c[1] + c[3]) - y];
     };
     const shelfBut = (obj) => Object.values(shelf).filter((o) => o !== obj && o.active).map((o) => pageRect(o));
+    /*
+     * CHAI-68 (Zafar, 2 Nov: "we need an onboarding for selecting the new pan to start cooking, which kicks in a few seconds after the
+     * first pan is poured, when its the first time a second pan is introduced, and/or when they try to put items into the first pan"):
+     * the first time only (a new player; SH-181), the light on the next empty pan and its face: about 3 s after the first pan is
+     * poured while the child is still on it, or at once when they tap a jar into a poured pan. It goes when they pick that pan.
+     */
+    let nextPanT = 0;
+    // (the next pan still to make; none once the child has moved between pans by themselves: they know how)
+    const nextEmpty = () => pans.find((q) => q !== sel && !q.poured && q.state !== "over");
+    const nextPanLight = () => {
+      clearTimeout(nextPanT);
+      if (!s14 || pans.length < 2 || finished || !OB14 || !OB14.light || !sel || !(sel.poured > 0) || !(sel.closed || sel.poured >= needOf(sel))) return;
+      const nx = nextEmpty();
+      if (!nx || switched14 || !first14("next-pan")) return;
+      const sp = Cook.speed || 1;
+      light14(unionRect(pageRect(nx.img, 4), pageRect(nx.face, 3)), "glow", 5000 / sp, null, () => finished || sel === nx);
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("next-pan", { step: nx.who, by: "light" });
+      } catch (e) {
+        /* only a log */
+      }
+    };
+    const nextPanSoon = () => {
+      clearTimeout(nextPanT);
+      if (pans.length < 2 || pans.filter((q) => q.poured > 0).length !== 1) return;
+      const from = sel;
+      nextPanT = setTimeout(() => sel === from && nextPanLight(), 3000 / (Cook.speed || 1));
+    };
     // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests
     // (not where its bounce has it), with room for its own glow (the station's halo, Cook.Stations glowDraw) and its word chip
     const restY = (o) => (o.glowFx && o.glowFx.y != null ? o.y - o.glowFx.y : 0);
