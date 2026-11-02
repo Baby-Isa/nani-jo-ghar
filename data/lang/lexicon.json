@@ -1000,6 +1000,25 @@
    }
   },
   {
+   "id": "n.bag",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bag",
+   "glossPl": "bags",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-bag: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-bag"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.ball",
    "pos": "N",
    "gender": null,
@@ -1103,6 +1122,25 @@
    }
   },
   {
+   "id": "n.bathroom",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bathroom",
+   "glossPl": "bathrooms",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-bathroom: an English placeholder, to record (Zafar 1 Nov: the family says the English word, bathroom)"
+   ],
+   "aliases": [
+    "ph-bathroom"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.bay-leaf",
    "pos": "N",
    "gender": null,
@@ -1135,6 +1173,44 @@
    ],
    "aliases": [
     "cl-beads"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.bed",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bed",
+   "glossPl": "beds",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-bed: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-bed"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.bedroom",
+   "pos": "N",
+   "gender": null,
+   "gloss": "bedroom",
+   "glossPl": "bedrooms",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-bedroom: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-bedroom"
    ],
    "ask": {
     "word": [
@@ -1553,6 +1629,25 @@
    ],
    "aliases": [
     "ph-breakfast"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.broom",
+   "pos": "N",
+   "gender": null,
+   "gloss": "broom",
+   "glossPl": "brooms",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-broom: an English placeholder, to record (Zafar 1 Nov: the broom is fugyu (to confirm with Mum))"
+   ],
+   "aliases": [
+    "ph-broom"
    ],
    "ask": {
     "word": [
@@ -2956,6 +3051,25 @@
    "aliases": [
     "ph-door"
    ]
+  },
+  {
+   "id": "n.drawer",
+   "pos": "N",
+   "gender": null,
+   "gloss": "drawer",
+   "glossPl": "drawers",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-drawer: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-drawer"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.dried-chilli",
@@ -4627,6 +4741,25 @@
    ],
    "aliases": [
     "ph-kurti"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.lamp",
+   "pos": "N",
+   "gender": null,
+   "gloss": "lamp",
+   "glossPl": "lamps",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-lamp: an English placeholder, to record (Zafar 1 Nov: the light is batti (to confirm with Mum); the game's light)"
+   ],
+   "aliases": [
+    "ph-lamp"
    ],
    "ask": {
     "word": [
@@ -6770,6 +6903,25 @@
    }
   },
   {
+   "id": "n.soap-dish",
+   "pos": "N",
+   "gender": null,
+   "gloss": "soap dish",
+   "glossPl": "soap dishes",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-soap-dish: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-soap-dish"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.sock",
    "pos": "N",
    "gender": null,
@@ -7280,6 +7432,25 @@
    "src": [
     "grammar-notes §29 R4 (aaki tanki: a full tank)"
    ]
+  },
+  {
+   "id": "n.tap",
+   "pos": "N",
+   "gender": null,
+   "gloss": "tap",
+   "glossPl": "taps",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-tap: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-tap"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.taps",
@@ -8348,6 +8519,25 @@
    "ask": {
     "word": [
      "E81"
+    ]
+   }
+  },
+  {
+   "id": "n.wardrobe",
+   "pos": "N",
+   "gender": null,
+   "gloss": "wardrobe",
+   "glossPl": "wardrobes",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-wardrobe: an English placeholder, to record (hide-and-seek.md §1: ask Mum whether it is also kabaat (decision 20))"
+   ],
+   "aliases": [
+    "ph-wardrobe"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -10905,6 +11095,23 @@
    }
   },
   {
+   "id": "v.sweep",
+   "pos": "V",
+   "gloss": "sweep",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-sweep: an English placeholder, to record (Zafar 1 Nov: sweep is fugya (to confirm with Mum))"
+   ],
+   "aliases": [
+    "ph-sweep"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "v.switch-off",
    "pos": "V",
    "gloss": "switch off",
@@ -11163,6 +11370,40 @@
     "Spelling confirmed by Zafar 5 Oct. Turning a car round is the same word: gadi firai chad.",
     "gadi firai chad (turn the car round)"
    ]
+  },
+  {
+   "id": "v.turn-off",
+   "pos": "V",
+   "gloss": "turn off",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-turn-off: an English placeholder, to record (Zafar 1 Nov: the family says close (bund) for a light; for a tap, ask Mum)"
+   ],
+   "aliases": [
+    "ph-turn-off"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "v.turn-on",
+   "pos": "V",
+   "gloss": "turn on",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json words.ph-turn-on: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-turn-on"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "v.use",
@@ -13727,6 +13968,23 @@
    }
   },
   {
+   "id": "phrase.close-your-eyes-and-count-with-me",
+   "pos": "Phrase",
+   "gloss": "Close your eyes and count with me!",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.hs-count: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.hs-count"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.cold",
    "pos": "Phrase",
    "gloss": "Cold!",
@@ -14993,6 +15251,23 @@
    "src": [
     "grammar-notes §19"
    ]
+  },
+  {
+   "id": "phrase.he-ran-off",
+   "pos": "Phrase",
+   "gloss": "He ran off!",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.hs-ran: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.hs-ran"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.he-she-came-a-child",
@@ -16606,6 +16881,23 @@
    ]
   },
   {
+   "id": "phrase.its-so-cosy-now",
+   "pos": "Phrase",
+   "gloss": "It's so cosy now.",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.cl-dark: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.cl-dark"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.its-the-boys",
    "pos": "Phrase",
    "lemma": "chokre jo ai",
@@ -16947,6 +17239,23 @@
    "ask": {
     "word": [
      "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-tidy-the-bathroom",
+   "pos": "Phrase",
+   "gloss": "Let's tidy the bathroom.",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.cl-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.cl-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
     ]
    }
   },
@@ -17600,6 +17909,40 @@
    ]
   },
   {
+   "id": "phrase.nana-cant-find-his-things",
+   "pos": "Phrase",
+   "gloss": "Nana can't find his things.",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.pk-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.pk-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.nanas-coming-lets-tidy-up",
+   "pos": "Phrase",
+   "gloss": "Nana's coming: let's tidy up!",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.hs-tidy: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.hs-tidy"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.nani",
    "pos": "Phrase",
    "lemma": "nani",
@@ -17846,10 +18189,12 @@
    "gloss": "Nobody here!",
    "status": "to-record",
    "src": [
-    "data/farm.json lines.dusk-nobody: an English placeholder, to record"
+    "data/farm.json lines.dusk-nobody: an English placeholder, to record",
+    "data/home-proto.json lines.hs-nobody: an English placeholder, to record"
    ],
    "aliases": [
-    "farm.line.dusk-nobody"
+    "farm.line.dusk-nobody",
+    "home-proto.line.hs-nobody"
    ],
    "ask": {
     "word": [
@@ -18800,6 +19145,23 @@
    ]
   },
   {
+   "id": "phrase.ready-or-not-here-i-come",
+   "pos": "Phrase",
+   "gloss": "Ready or not, here I come!",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.hs-ready: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.hs-ready"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.roll-it-round",
    "pos": "Phrase",
    "gloss": "Roll it round",
@@ -19025,6 +19387,23 @@
    }
   },
   {
+   "id": "phrase.simba-and-zazu-are-hiding",
+   "pos": "Phrase",
+   "gloss": "Simba and Zazu are hiding!",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.hs-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.hs-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.simba-ate-it",
    "pos": "Phrase",
    "lemma": "simba khai vyo",
@@ -19047,6 +19426,23 @@
    "src": [
     "grammar-notes §20"
    ]
+  },
+  {
+   "id": "phrase.simba-knocked-these-down-put-them-back",
+   "pos": "Phrase",
+   "gloss": "Simba knocked these down. Put them back.",
+   "status": "to-record",
+   "src": [
+    "data/home-proto.json lines.pk-put: an English placeholder, to record"
+   ],
+   "aliases": [
+    "home-proto.line.pk-put"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.simba-out-you-come",
