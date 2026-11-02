@@ -25,6 +25,12 @@ None yet. Each launch is proposed to Zafar first, with its model, effort and cos
 ## Small decisions
 - 1 Nov night: his chai notes (phone L2-L4, a small window L1) taken: `docs/feedback/chai-play-2026-11-01-night.md`, 16 points; 11 new rows, 4 reopened, 1 amended; answered 2 Nov: yes to all, 1 and 8 amended (the rows SH-185, CHAI-43). The sprint grows to about $110-160 and three days (decision 9).
 
+- 2 Nov, 01:30 (Zafar): the farm layout agreed: the helper's speaker in the corner of her face (feed-B-yard); word tiles with a big
+  speaker under the word ("I want to encourage listening"); eggs-B-grid on the laptop, eggs-C-strips on the phone; no glow on the asked
+  tiles, neutral pair and plain tiles, items repeat. "go make all prototypes": overnight, rapid, minimal checks; two builders now and
+  four at once from 7am UK (his word over CLAUDE.md's two at most, for tonight); brief `build/reports/proto-brief-2026-11-02.md`, queue
+  `build/reports/proto-queue-2026-11-02.md`.
+
 ## Outcome
 
 ## Look back (three lines)
