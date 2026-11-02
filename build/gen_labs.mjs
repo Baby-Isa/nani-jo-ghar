@@ -229,6 +229,7 @@ export function sortEntries(modes, arcs) {
         else if (m.id === "school-proto") put("School prototypes (Nani, then the teacher; 2 Nov)", card1(m, l));
         else if (m.id === "home-proto") put("Home prototypes (Nani, Simba and Zazu, 2 Nov)", card1(m, l));
         else if (m.id === "party-proto") put("Birthday prototypes (Zara's family, 2 Nov)", card1(m, l));
+        else if (m.id === "beach-proto") put("Beach prototypes (Masi, 2 Nov)", card1(m, l));
         else put(`${esc(m.id)}`, card1(m, l));
       }
     }

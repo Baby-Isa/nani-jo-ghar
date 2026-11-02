@@ -1953,6 +1953,35 @@
     "The knee is for y."
    ],
    "_sig": "[\"x\",\"y\"]"
+  },
+  "FillTheXY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "Fill the {x}: {y}.",
+   "elicit": [
+    "Fill the knee: y."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "AShellOnTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "A shell on the {x}.",
+   "elicit": [
+    "A shell on the knee."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }

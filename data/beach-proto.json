@@ -1,0 +1,40 @@
+{
+  "_about": "The beach prototypes (proto-beach, 2 Nov 2026; build/reports/designs/beach-boat.md): the words and lines the beach games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record (Mum's beach sheets A and B, beach-boat.md §1); build/lang/import_modes.mjs turns each word into a to-record entry and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-shell": { "english": "shell", "src": "beach-boat.md §1, sheet A" },
+    "ph-pebble": { "english": "pebble", "src": "shells L1's clearly different decoy" },
+    "ph-crab": { "english": "crab", "src": "sheet A" },
+    "ph-beach-bucket": { "english": "bucket", "src": "sheet A" },
+    "ph-spade": { "english": "spade", "src": "sheet A" },
+    "ph-tower": { "english": "tower", "src": "the sandcastle's towers (ask Mum how she'd say 'on the big one')" },
+    "ph-sand": { "english": "sand", "src": "sheet A" },
+    "ph-cone": { "english": "cone", "src": "the chips cone (sheet B)" },
+    "ph-straw": { "english": "straw", "src": "sheet B" },
+    "ph-coin": { "english": "coin", "src": "sheet B" },
+    "ph-tiffin-box": { "english": "box", "src": "Ali's tiffin box at the picnic" },
+    "ph-masi": { "english": "Masi", "name": true, "src": "the host (sheet A): Masi; Zafar 1 Nov: a character, not a likeness" },
+    "ph-sea-things": { "english": "sea things" },
+    "ph-sizes": { "english": "sizes" },
+    "ph-buckets": { "english": "buckets" },
+    "ph-amounts": { "english": "amounts" },
+    "ph-food": { "english": "food" },
+    "ph-toppings": { "english": "toppings" },
+    "ph-people": { "english": "people" },
+    "ph-places": { "english": "places" }
+  },
+  "lines": {
+    "sh-guide": { "e": "Bring Masi the shell she asks for." },
+    "sh-head": { "e": "I want shells for my castle!" },
+    "sh-crab": { "e": "A crab!" },
+    "sc-guide": { "e": "Build the castle the way Masi says." },
+    "sc-head": { "e": "Let's build a castle. I'll tell you how it goes." },
+    "sc-fill": { "e": "Fill the {x}: {y}." },
+    "sc-shell": { "e": "A shell on the {x}." },
+    "sc-photo": { "e": "Smile! Nani takes the photo." },
+    "st-guide": { "e": "Get the food Masi asks for, then pay." },
+    "st-head": { "e": "Let's get food for our picnic." },
+    "st-hot": { "e": "Careful, it's hot!" },
+    "pc-guide": { "e": "Put each thing where Masi says." },
+    "pc-head": { "e": "Let's set out the picnic." }
+  }
+}

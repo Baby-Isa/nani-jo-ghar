@@ -1150,6 +1150,7 @@ A game file still shows an English placeholder (`kutchi: null`) for something th
 - `ph-shelf` (data/find.json): "shelf" → *shelf*
 - `ph-table` (data/find.json): "table" → *table*
 - `ph-bowl` (data/find.json): "bowl" → *bakuli*
+- `ph-food` (data/beach-proto.json): "food" → *khenjo* (draft)
 
 ## Recorded but not yet ticked OK
 

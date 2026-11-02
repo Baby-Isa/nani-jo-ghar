@@ -2215,6 +2215,24 @@
    "english": "The {x} is for {y}.",
    "what": "The {x} is for {y}.",
    "src": "data/party-proto.json lines.gift-for: an English placeholder, to record"
+  },
+  "FillTheXY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the beach-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Fill the {x}: {y}.",
+   "what": "Fill the {x}: {y}.",
+   "src": "data/beach-proto.json lines.sc-fill: an English placeholder, to record"
+  },
+  "AShellOnTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the beach-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "A shell on the {x}.",
+   "what": "A shell on the {x}.",
+   "src": "data/beach-proto.json lines.sc-shell: an English placeholder, to record"
   }
  }
 }
