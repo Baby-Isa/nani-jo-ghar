@@ -3,7 +3,7 @@
  *
  * A side-on cutaway: the boat's rail at the left above the waterline (the rod, the reel, the basket on the deck), clear water
  * below down to the sandy bottom, and rubbish on the bottom: a bottle, a shoe, a tin can, a bag, a sock, a ball, a kettle, and
- * Nani's sun hat, half sunk. Everything bobs the same gentle amount, asked or not; fish swim past (never caught). THE SENTENCE
+ * Nani's sun hat, half sunk. Everything lies still alike, asked or not; fish swim past (never caught). THE SENTENCE
  * LAYOUT: Masi says one at a time ("Shoe kadh!": take out the shoe; the nouns are to record), the word tiles under her: Things
  * (every kind in the water), from L2 the small-and-big pair and red and white.
  *   Tap the thing: the hook drops straight onto it (no aiming) with a tink. Tap the reel three times: it rises a third each click,
