@@ -18,6 +18,11 @@
  *       (behind the tree)
  *   L4  three asks: the small goat (the big one is out too), three hens, the cow
  * "Cow" and "chick" are still to record (grey English).
+ *
+ * v2 (Zafar, 2 Nov, FARM-01: the order card's picture of the animal gave the answer away): no order card; she says ONE
+ * instruction at a time, big in her box, with the word tiles under her (js/shared/word-tiles.js): every kind of animal out in
+ * the yard tonight, and at L4 the small-and-big pair tile (neutral goats). An animal she isn't asking about now: it shakes its
+ * head and she says her instruction again.
  */
 import { ANIMALS, SCENERY, pose } from "./art.js";
 
@@ -117,6 +122,7 @@ export default async function homeDusk(F) {
   const rows = plans.asks.map(([kind, n, size]) =>
     F.row({
       key: `${size || ""}${kind}`,
+      tiles: (size ? [size] : []).concat([kind]),
       line: { fn: "PutAt", thing: itemOf(kind, n, size), anchor: { fn: "Item", kind: "n.house" }, rel: "post.in" },
       word: itemOf(kind, n, size),
       need: n,
@@ -131,7 +137,31 @@ export default async function homeDusk(F) {
     })
   );
   const matches = (a, kind, size) => a.kind === kind && (!size || a.size === size);
-  const rowOf = (a) => rows.find((r) => matches(a, r.data.kind, r.data.size));
+  const rowOf = (a) => {
+    const cur = F.current();
+    return cur && matches(a, cur.data.kind, cur.data.size) ? cur : null;
+  };
+
+  /* ----- the word tiles: every kind of animal out tonight (and the small-and-big pair where sizes are said) ----- */
+  const kinds = [...new Set(plans.animals.map(([k]) => k))];
+  const sized = plans.animals.find(([, , sz]) => sz);
+  const tile = (kind) => ({ key: kind, id: kind, word: { fn: "Item", kind: ANIMALS[kind].lex }, lex: ANIMALS[kind].lex, picture: pose(kind, "stand") });
+  const sizeTile = (kind, sz, scale) => ({
+    key: sz,
+    word: { fn: "Item", kind: ANIMALS[kind].lex, mods: [`a.${sz}`] },
+    lex: `a.${sz}`,
+    picture: (box) => {
+      const i = document.createElement("img");
+      i.src = stamp(pose(kind, "stand"));
+      i.alt = "";
+      i.className = "farm-tile-hen farm-tile-plain";
+      i.style.setProperty("--s", scale);
+      box.appendChild(i);
+    },
+  });
+  const animalTiles = kinds.map(tile);
+  if (sized) animalTiles.unshift({ pair: [sizeTile(sized[0], "small", "58%"), sizeTile(sized[0], "big", "100%")] });
+  F.sentence([{ label: { en: "Animals" }, tiles: animalTiles }]);
 
   /* ----- play ----- */
   let chosen = null;
@@ -145,8 +175,6 @@ export default async function homeDusk(F) {
       if (a.hidden || a.home) return;
       choose(a);
       F.jiggle(a.el);
-      const r = rowOf(a);
-      if (r) F.focus(r);
     })
   );
   Object.entries(covers).forEach(([id, c]) =>
@@ -178,8 +206,8 @@ export default async function homeDusk(F) {
       if (!a) return F.jiggle(home);
       const r = rowOf(a);
       if (!r) {
-        // she didn't ask for this one now: it shakes its head, her ask again
-        F.oops(rows.find((x) => !x.done) || null, a.el);
+        // she isn't asking for this one now: it shakes its head, her instruction again
+        F.oops(F.current(), a.el);
         choose(null);
         return;
       }
@@ -232,7 +260,7 @@ export default async function homeDusk(F) {
   });
 }
 
-/** The card's picture: the animal (its size). */
+/** The helper card's picture (help, asked for or after the wait): the animal (its size). */
 function pic(box, kind, size) {
   const d = document.createElement("div");
   d.className = "farm-pic";

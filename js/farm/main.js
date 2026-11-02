@@ -19,7 +19,7 @@ import { photo, PHOTO_DATA } from "./photo.js";
 /** What the farm needs on a host page beyond what lab.html loads (the s14 word card, the bulb, the focus; the farm's sheet). */
 export const NEEDS = {
   scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"],
-  styles: ["css/farm.css"],
+  styles: ["css/farm.css", "css/shared/word-tiles.css"],
 };
 
 const GAMES = [

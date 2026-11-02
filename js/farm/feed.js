@@ -5,10 +5,13 @@
  * animal to four").
  *
  * Hannah Mami names each animal and what it wants: "Hane murgi! Inke ba makai khape." (Now the hen! She wants two corn.)
- * One card per animal on her order card. The child taps a basket (it lifts and glows; it stays chosen), then taps a tray:
+ * v2 (Zafar, 2 Nov, FARM-01: "you could just match up the items pictorially"): she says ONE instruction at a time, big in her
+ * box, and the order card is gone; under her the word tiles (js/shared/word-tiles.js): Animals (every animal in the yard) and
+ * Food (every basket), a picture, its word and a big speaker each; nothing on them says who wants what. A tray of an animal
+ * she isn't asking about: it shakes its head and she says her instruction again. The child taps a basket (it lifts and glows; it stays chosen), then taps a tray:
  * one piece flies in per tap. The tray's row ticks the moment its number is reached and the next piece bounces back (it
  * doesn't land). A wrong food: the animal shakes its head, the piece hops back, her ask is said again (the row ticks plain).
- * A tap on an animal says its ask again (free). Fed animals eat (a two-picture loop); at the end everyone eats and hops.
+ * A tap on an animal says her instruction again (free). Fed animals eat (a two-picture loop); at the end everyone eats and hops.
  *
  *   L1  one animal; corn or grass (two baskets); one or two pieces
  *   L2  two animals; one to three pieces
@@ -67,10 +70,11 @@ export default async function feed(F) {
     baskets[food] = el;
   });
 
-  /* ----- the order card: one card per animal ----- */
+  /* ----- her instructions (one at a time) and the word tiles: every animal and every food in the yard ----- */
   const rows = asks.map((a, i) =>
     F.row({
       key: `${a.kind}`,
+      tiles: [a.kind, a.food],
       line: [{ fn: "Now", x: { fn: "Item", kind: ANIMALS[a.kind].lex } }, { fn: "Need", who: "p3", thing: foodItem(a) }],
       word: foodItem(a),
       need: a.n,
@@ -79,6 +83,11 @@ export default async function feed(F) {
       data: a,
     })
   );
+
+  F.sentence([
+    { label: { en: "Animals" }, tiles: kinds.map((kind) => ({ key: kind, id: kind, word: { fn: "Item", kind: ANIMALS[kind].lex }, lex: ANIMALS[kind].lex, picture: pose(kind, "stand") })) },
+    { label: { fn: "Item", kind: "n.food" }, tiles: foods.map((food) => ({ key: food, id: food, word: { fn: "Item", kind: THINGS[food].lex }, lex: THINGS[food].lex, picture: THINGS[food].img || waterPic })) },
+  ]);
 
   /* ----- play ----- */
   let chosen = null;
@@ -96,12 +105,13 @@ export default async function feed(F) {
       F.jiggle(el);
     })
   );
-  animals.forEach((el, i) =>
+  // (a tap on an animal: it bounces and she says her instruction again; it never says which animal wants what)
+  animals.forEach((el) =>
     F.on(el, "click", () => {
       F.acted();
       F.jiggle(el);
-      F.focus(rows[i]);
-      F.speak(rows[i].line);
+      F.stopVoice();
+      F.sayLine();
     })
   );
   const eating = new Set();
@@ -110,7 +120,6 @@ export default async function feed(F) {
       const r = rows[i];
       const a = asks[i];
       F.acted();
-      F.focus(r);
       if (!chosen) {
         Object.values(baskets).forEach((b) => F.jiggle(b));
         return;
@@ -120,6 +129,13 @@ export default async function feed(F) {
       if (r.done) {
         // fed already: nothing more lands (it bounces back)
         F.jiggle(tray, "farm-shake");
+        return;
+      }
+      const cur = F.current();
+      if (cur && cur !== r) {
+        // not the animal she's asking about now: it hops back, the animal shakes its head, her instruction again
+        await F.fly(src, baskets[food], tray, { ms: 360, cls: src ? "" : "farm-drop" });
+        F.oops(cur, animals[i]);
         return;
       }
       if (food !== a.food) {
@@ -189,7 +205,12 @@ function foodItem(a) {
   return a.food === "water" ? { fn: "Item", kind: lex } : { fn: "Item", kind: lex, n: a.n };
 }
 
-/** The card's picture: the animal and the food it wants (support at L1-L2; the kit blurs it from L3). */
+/** A tile's picture for water (no picture yet): a little bucket, drawn. */
+function waterPic(box) {
+  box.insertAdjacentHTML("beforeend", '<span class="farm-tile-bucket"><span></span></span>');
+}
+
+/** The helper card's picture (help, asked for or after the wait): the animal and the food it wants. */
 function pic(box, a) {
   const d = document.createElement("div");
   d.className = "farm-pic";
