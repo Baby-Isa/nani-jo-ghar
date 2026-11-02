@@ -112,4 +112,21 @@ span.bp-shell { position: relative; display: block; box-sizing: border-box; }
 .bp-thing.bp-stack.lifted { translate: 0 -30%; }
 .bp-plain { aspect-ratio: 1; border-radius: 50%; background: var(--njg-pewter); }
 .bp-tileimg { height: 92%; width: auto; max-width: 92%; object-fit: contain; }
+/* ---------- the picnic: the people, the cloth, the outlined places, Ali's box, the basket row ---------- */
+.bp-person { aspect-ratio: .75; }
+.bp-person .bp-body { position: absolute; left: 8%; right: 8%; top: 46%; bottom: 0; background: var(--njg-proto-cover); border-radius: 40% 40% 0.3em 0.3em / 30% 30% 0.3em 0.3em; }
+.bp-person[data-who="masi"] .bp-body { background: var(--njg-proto-beach-purse); }
+.bp-person .bp-face { position: absolute; left: 50%; top: 0; translate: -50% 0; height: 54%; width: auto; border-radius: 50%; }
+.bp-cloth { background: var(--njg-proto-beach-cloth); border-radius: 0.4em; box-shadow: inset 0 0 0 0.5em var(--njg-proto-curtain); }
+.bp-cushion { background: var(--njg-proto-rug); border-radius: 0.8em 0.8em 0 0; }
+.bp-place { border: 0.16em dashed var(--njg-proto-beach-outline); border-radius: 50%; background: none; display: flex; align-items: center; justify-content: center; }
+.bp-place.bp-tiffin { border-radius: 0.4em; background: var(--njg-proto-beach-box); border-style: solid; }
+.bp-place .bp-on { position: absolute; left: 50%; bottom: 10%; height: 80%; translate: calc(-50% + var(--k, 0) * 22%) calc(var(--k, 0) * -10%); display: flex; align-items: flex-end; pointer-events: none; }
+.bp-place .bp-on img { height: 100%; width: auto; }
+.bp-place .bp-on .bp-coconut { height: 80%; position: relative; display: block; }
+.bp-pthing { display: flex; align-items: flex-end; justify-content: center; }
+.bp-pthing img { height: 100%; width: auto; }
+.bp-pthing .bp-coconut { height: 80%; position: relative; display: block; }
+.bp-thing.bp-pthing.lifted { translate: 0 -10%; filter: drop-shadow(0 0 0.4em var(--njg-gold-hi)); }
+.bp-tileface { border-radius: 50%; }
 .bp-flash::after { content: ""; position: absolute; inset: 0; background: var(--njg-white); opacity: .7; pointer-events: none; z-index: 60; }
