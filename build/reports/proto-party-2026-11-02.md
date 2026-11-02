@@ -124,4 +124,7 @@ overflowing, and the balloon sitting on Zara's face.
 
 ## Checks
 `node --check` passes on every party file, and the static lint has 0 new findings (the balloon gradient became a token). The full
-`checks.mjs` result is below.
+`checks.mjs` result: every check passes except `leak`, and the leak failure is in **snap** ("g1 level 1: oracle 100.0% (lens
+63.0%)"), not in these games. `js/snap/` does not read the language engine or anything this branch changed, so the failure doesn't
+come from these files. The orchestrator should compare it with the base branch. The party-proto leak config is knownFail, as the
+clinic's is. The full run takes over 10 minutes.
