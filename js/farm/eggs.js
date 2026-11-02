@@ -15,6 +15,12 @@
  *   L3  three hens, red and white; two asks: all of one hen's, and so many from another
  *   L4  four hens, big and small, red and white; two asks, one of them half a hen's eggs
  * "White" and "half" are still to record: the engine shows them as grey English.
+ *
+ * v2 (Zafar, 2 Nov, FARM-01: "take 2 of the little chicken's eggs ... you could just match up the items pictorially"): no order
+ * card; she says ONE instruction at a time, big in her box, and under her the word tiles (js/shared/word-tiles.js, the layout of
+ * eggs-B-grid.webp): Hens (a plain hen in no scene colour; the small-and-big pair tile at L1-L3, gone at L4; red and white from
+ * L3) and Eggs (one egg, eggs). Nothing on a tile says which hen she means. An egg from a hen she isn't asking about now: it
+ * wobbles and she says her instruction again.
  */
 import { ANIMALS, SCENERY, pose } from "./art.js";
 
@@ -91,8 +97,30 @@ export default async function eggs(F) {
   const rows = asks.map((a, k) => {
     const line = a.kind === "all" ? { fn: "Command", verb: "v.bring", obj: eggsOf(a.hen, null) } : a.kind === "half" ? { fn: "BringHalfOfX", x: eggsOf(a.hen, null) } : { fn: "Command", verb: "v.bring", obj: eggsOf(a.hen, a.n) };
     const word = a.kind === "some" ? eggsOf(a.hen, a.n) : a.kind === "half" ? { fn: "BringHalfOfX", x: eggsOf(a.hen, null) } : eggsOf(a.hen, null);
-    return F.row({ key: `hen${a.hen.i}`, line, word, need: a.n, picture: (box) => pic(box, a), target: () => (up === a.hen.i ? eggEls[a.hen.i].find((e) => !e.classList.contains("taken")) : henEls[a.hen.i]), data: a });
+    const keys = mods(a.hen).concat(["hen", a.kind === "some" && a.n === 1 ? "egg" : "eggs"]);
+    return F.row({ key: `hen${a.hen.i}`, tiles: keys, line, word, need: a.n, picture: (box) => pic(box, a), target: () => (up === a.hen.i ? eggEls[a.hen.i].find((e) => !e.classList.contains("taken")) : henEls[a.hen.i]), data: a });
   });
+
+  /* ----- the word tiles: every kind of hen and egg in the house, asked for or not ----- */
+  const hen = (mod) => ({ fn: "Item", kind: ANIMALS.hen.lex, mods: mod ? [`a.${mod}`] : [] });
+  const henPic = (scale) => (box) => {
+    const i = document.createElement("img");
+    i.src = stamp(pose("hen", "sit"));
+    i.alt = "";
+    i.className = "farm-tile-hen farm-tile-plain";
+    i.style.setProperty("--s", scale);
+    box.appendChild(i);
+  };
+  const swatch = (c) => (box) => box.insertAdjacentHTML("beforeend", `<span class="farm-tile-swatch ${c}"></span>`);
+  const eggPic = (n) => (box) => box.insertAdjacentHTML("beforeend", `<span class="farm-tile-eggs">${'<span class="farm-egg"></span>'.repeat(n)}</span>`);
+  const henTiles = [];
+  if (lv <= 3) henTiles.push({ pair: [{ key: "small", word: hen("small"), lex: "a.small", picture: henPic("58%") }, { key: "big", word: hen("big"), lex: "a.big", picture: henPic("100%") }] });
+  henTiles.push({ key: "hen", word: hen(null), lex: ANIMALS.hen.lex, picture: henPic("100%") });
+  if (lv >= 3) henTiles.push({ key: "red", word: hen("red"), lex: "a.red", picture: swatch("red") }, { key: "white", word: hen("white"), lex: "a.white", picture: swatch("white") });
+  F.sentence([
+    { label: { fn: "Item", kind: ANIMALS.hen.lex, number: "pl" }, tiles: henTiles },
+    { label: { fn: "Item", kind: "n.egg", number: "pl" }, tiles: [{ key: "egg", word: { fn: "Item", kind: "n.egg" }, lex: "n.egg", picture: eggPic(1) }, { key: "eggs", word: { fn: "Item", kind: "n.egg", number: "pl" }, lex: "n.egg", picture: eggPic(2) }] },
+  ]);
 
   /* ----- play ----- */
   let up = -1;
@@ -127,16 +155,14 @@ export default async function eggs(F) {
         ev.stopPropagation();
         F.acted();
         if (up !== i || e.classList.contains("taken")) return;
-        const r = rows.find((x) => x.data.hen.i === i);
-        if (!r) {
-          // not a hen she asked about: the egg wobbles, the hen clucks, her ask again
-          const open = rows.find((x) => !x.done);
+        const r = F.current();
+        if (!r || r.data.hen.i !== i) {
+          // not the hen she's asking about now: the egg wobbles, the hen clucks, her instruction again
           F.setPose(henEls[i], "hen", "happy", pose);
           F.after(F.T(600), () => up === i && F.setPose(henEls[i], "hen", "up", pose));
-          F.oops(open || null, e);
+          F.oops(r || null, e);
           return;
         }
-        F.focus(r);
         if (F.full(r)) {
           F.jiggle(e, "farm-shake"); // careful: that's enough (it doesn't land)
           return;
@@ -181,7 +207,7 @@ export default async function eggs(F) {
   });
 }
 
-/** The card's picture: the hen (her size and colour) and an egg. */
+/** The helper card's picture (help, asked for or after the wait): the hen (her size and colour) and an egg. */
 function pic(box, a) {
   const d = document.createElement("div");
   d.className = "farm-pic";
