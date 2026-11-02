@@ -49,7 +49,7 @@ export default async function bag(F) {
   F.put("sp-bench-legs wide", { x: 0.46, y: 0.96, h: 0.18, w: 0.72 });
   const bagEl = F.put("sp-bag", { x: 0.86, y: 0.8, h: 0.36, html: '<span class="sp-bag-flap"></span><span class="sp-bag-strap"></span>' });
   const kinds = F.shuffle(Object.keys(bench));
-  const span = 0.66;
+  const span = 0.52;
   const els = [];
   kinds.forEach((k, i) => {
     const x = 0.14 + (kinds.length === 1 ? span / 2 : (span * i) / (kinds.length - 1));
