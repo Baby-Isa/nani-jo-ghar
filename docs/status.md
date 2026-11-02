@@ -8,19 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (1 Nov 2026, 20:00 UK):**
-- **Sprint 15 is closed** (`docs/sprints/S15-cook-game-by-game.md`: outcome and look back). Nothing is running.
-- **Live on `main`** (c6cf44a1):
-  - chai with three rounds of fixes, the reference game: s15-chai-11, s15-chai-12
-  - 8 rapid prototypes in the labs: kitchen (eggs, baking, corn) and farm (feed, eggs, home at dusk, grow-pick, photo)
-  - Fable's code sweep
-- **Done and in the repo:**
-  - the language targets: `build/reports/research-language-targets-2026-10-31.md`, the target A2
-  - the games map: `build/reports/games-master-map-2026-10-31.md`
-  - 18 game designs and 11 day drafts: `build/reports/designs/`, start with `games-at-a-glance-2026-11-01.md` and `days/README.md`
-  - Zafar's answers: `designs/zafar-answers-2026-11-01.md`; counts tick at the number
-  - the pose register: `docs/design-language/art-plans/character-poses.md`
-  - his mock-ups: `sources/art/mockups-2026-11-01/`
+**Where things stand (2 Nov 2026, 00:45 UK):** Sprint 16 is open (`docs/sprints/S16-chai-final-prototypes.md`).
+- **Live on `main`** (0e15bb4c, version 20261102T004020Z), published on Zafar's word with the gate overridden (no contract or
+  evidence run, no judge yet): his 1 Nov night chai notes built (`docs/feedback/chai-play-2026-11-01-night.md`): the order card only
+  as its person starts (SH-171); one set of bubble rules, clear of faces, panel, gear and replies (SH-177, -186, -187, -188); the
+  side panel scales with the window, 2.5 item cards (SH-185); the L4 pop-out sideways on phones (CHAI-43); tray faces in the corners,
+  the pan over them, no pour line, the shelf centred, L4's green 2 s (CHAI-58, -64, -65, -66, SH-183).
+- **Still open from those notes:** SH-189 (Nani's box height, improved, not measured), SH-169 and SH-191 (the panel's scroll),
+  SH-190 (item picture padding: the cause still to measure), SH-192 (the headline's gaps).
+- **Farm:** FARM-01, the sentence games; Zafar runs `build/reports/designs/chatgpt-farm-sentence-mockups-2026-11-02.md`.
+- Earlier work in the repo: the language targets, the games map, 18 designs (`build/reports/designs/`), the pose register.
 
 **Sprint 16 is open** (`docs/sprints/S16-chai-final-prototypes.md`, Zafar, 1 Nov). **Next steps, in order:**
 1. **His play of the live chai and the 8 prototypes** → `/feedback`.
