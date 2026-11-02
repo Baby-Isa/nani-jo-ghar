@@ -18,7 +18,8 @@ on Windows, PowerToys Awake on. The block repeats this.
 | **C** | baking | the counter, the mixing bowl's states, the measuring jug, the oven (shut, baking, open), the naan; the loaf and cake tin (optional, last) | 8 |
 | **D** | the corn stall | the stall's table, the cobs, the crate, the dressing bowls, the dressings on a cob | 5 |
 | **E** | the cake (birthday) | the party room, the table, the cake and slices, the candles | 4 |
-| | **Total** | | **29 prompts** (108 game pictures once cut); **about 38-40 images with the expected redos** (one third of a day's 120); about 3 hours in three windows |
+| | **Simba (added 2 Nov, Zafar)** | | 5 prompts (36 poses once cut): his pose sheet for every game he's in |
+| | **Total** | | **34 prompts** (144 game pictures once cut); **about 45-50 images with the expected redos** (under half a day's 120); about 3.5 hours in three windows |
 
 **Expected redos (about 10):** WG two (side-on glasses drift from the s14 facets; the five levels must differ), WV one (the kettle
 must stay one shape with no hand), EM/EN one each (relight edits move the island), BO2/BO3 one each (edits shift the oven), CO one
@@ -131,6 +132,21 @@ Positions and sizes are on the 1600x900 stage at 1x (the cut makes `@2x`); "now"
 | Slices and plates | a slice goes to the named person's plate | slice 10% of the height; plate 10% of the width | CSS shapes | CK |
 | The candles, the bundles | tap the bundle with that many; lit, then out one by one | a candle about 9% of the height; a bundle 17% | CSS bars and a CSS flame | CN |
 | The people | Zara, Yusuf, Nana, the sisters, the baby | 42-56% of the height | **reused:** clinic patients (Q7) | none |
+
+### 2.6 Simba, the pose sheet (added 2 Nov; Zafar: "lots of different cat poses and stretches and grabbing and peering and yawning and blinking")
+
+Zafar's cat (cast.md: a charcoal, near-black Russian Blue, solid and round-faced, pale mint-green eyes, a dark collar with a small silver
+bell). He is in the kitchen (eggs, baking), the home day (hide and seek, the clean-up), sewing and Tidy up; today he is mock-up crops
+(`assets/cook/proto/cat-peek.webp`, `cat-sit.webp`). Zafar approved a basic Simba sheet in ChatGPT earlier (not in the repo): the runner
+attaches it from ChatGPT's Library when it finds it, else the 1 Nov mock-up. Zafar judges these while the run goes or after (Zafar, 2 Nov).
+
+| Sheet | Poses (8 each, one cat, the same size) | Line |
+|---|---|---|
+| The model sheet | front, three-quarter, side, back; sitting front, sitting side; head and collar close; the tail alone | SM |
+| At rest | sitting tall, sitting loaf, lying on his side, sleeping curled, on his back, walking, trotting, washing a paw | S1 |
+| Stretches and grabs | the bow stretch, the tall stretch on his back legs, reaching up with one paw, grabbing with both, batting, pouncing, leaping, carrying a sock | S2 |
+| Peering and hiding | over an edge, round a corner, eyes in the dark, peering down, out of a box, under a cloth with his tail out, a paw reaching in, looking up | S3 |
+| Head layers (blinking and yawning) | open, half shut, shut, a small yawn, a wide yawn, a meow, a happy squint, a guilty look | S4 |
 
 ## 5. The prompts
 
@@ -529,6 +545,71 @@ Style: a stylised 3D animated-feature-film look, semi-photoreal wax, flame and b
 Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 
+#### SM. Simba: the model sheet
+```
+Generate an image, 1536×1024, landscape.
+
+A character sprite sheet for a children's game: the SAME cat, Simba, eight times in an invisible grid of 4 columns and 2 rows, each pose centred in its cell, the same size cat in every cell. Simba: a charcoal, near-black Russian Blue cat, short dense plush coat with a soft blue-grey sheen, solid and round-faced, a little heavy, pale mint-green eyes, a dark collar with a small silver bell. Copy his look exactly from the attached picture of him; not its room, its people or its view.
+From left to right, top row: (1) standing, seen from the front; (2) standing, three-quarter view facing left; (3) standing, side view facing left; (4) standing, seen from behind, tail up. Bottom row: (5) sitting, front; (6) sitting, side view facing left; (7) a close-up of his head and collar from the front, the bell clear; (8) his tail alone, curved, as its own piece.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no furniture except where a pose names one, no gradient, NO shadows on the grey. Nothing touches an edge or another pose. Do not draw grid lines.
+
+Style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, appealing and friendly, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### S1. Simba at rest
+```
+Generate an image, 1536×1024, landscape.
+
+A character sprite sheet for a children's game: the SAME cat, Simba, eight times in an invisible grid of 4 columns and 2 rows, each pose centred in its cell, the same size cat in every cell. Simba: a charcoal, near-black Russian Blue cat, short dense plush coat with a soft blue-grey sheen, solid and round-faced, a little heavy, pale mint-green eyes, a dark collar with a small silver bell. Copy his look exactly from the attached picture of him; not its room, its people or its view.
+Top row: (1) sitting tall and alert, front; (2) sitting as a loaf, paws tucked, three-quarter; (3) lying on his side, relaxed; (4) asleep, curled in a round ball, nose in his tail. Bottom row: (5) lying on his back, paws up, playful; (6) walking, side view facing left; (7) trotting, side view facing left, tail up; (8) sitting, licking one raised front paw.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no furniture except where a pose names one, no gradient, NO shadows on the grey. Nothing touches an edge or another pose. Do not draw grid lines.
+
+Style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, appealing and friendly, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### S2. Simba: stretches and grabs
+```
+Generate an image, 1536×1024, landscape.
+
+A character sprite sheet for a children's game: the SAME cat, Simba, eight times in an invisible grid of 4 columns and 2 rows, each pose centred in its cell, the same size cat in every cell. Simba: a charcoal, near-black Russian Blue cat, short dense plush coat with a soft blue-grey sheen, solid and round-faced, a little heavy, pale mint-green eyes, a dark collar with a small silver bell. Copy his look exactly from the attached picture of him; not its room, its people or its view.
+Top row: (1) the long bow stretch, front legs flat forward and bottom up, side view facing left; (2) the tall stretch, standing up on his back legs reaching high, front view; (3) sitting, reaching up with one front paw; (4) grabbing at something above with both front paws, up on his back legs. Bottom row: (5) batting with one paw, crouched; (6) crouched to pounce, bottom wiggling; (7) mid-leap, all paws off the ground, side view facing left; (8) trotting with a small striped sock in his mouth.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no furniture except where a pose names one, no gradient, NO shadows on the grey. Nothing touches an edge or another pose. Do not draw grid lines.
+
+Style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, appealing and friendly, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### S3. Simba: peering and hiding
+```
+Generate an image, 1536×1024, landscape.
+
+A character sprite sheet for a children's game: the SAME cat, Simba, eight times in an invisible grid of 4 columns and 2 rows, each pose centred in its cell, the same size cat in every cell. Simba: a charcoal, near-black Russian Blue cat, short dense plush coat with a soft blue-grey sheen, solid and round-faced, a little heavy, pale mint-green eyes, a dark collar with a small silver bell. Copy his look exactly from the attached picture of him; not its room, its people or its view.
+Top row: (1) peeking over a plain edge: only his head and two front paws above a flat grey bar; (2) peeking round a corner: half his head and one eye beside a flat grey upright bar; (3) only his two pale-green eyes glowing in a soft dark round shadow; (4) peering down from above, head and paws over an edge, seen from below. Bottom row: (5) his head and paws out of a plain cardboard box; (6) hiding under a plain cream cloth, only his tail sticking out; (7) one front paw reaching in from the left edge of a flat grey bar; (8) sitting, looking straight up, curious.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no furniture except where a pose names one, no gradient, NO shadows on the grey. Nothing touches an edge or another pose. Do not draw grid lines.
+
+Style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, appealing and friendly, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### S4. Simba: head layers
+```
+Generate an image, 1536×1024, landscape.
+
+A character sprite sheet for a children's game: the SAME cat, Simba, eight heads times in an invisible grid of 4 columns and 2 rows, each pose centred in its cell, the same size cat in every cell. Simba: a charcoal, near-black Russian Blue cat, short dense plush coat with a soft blue-grey sheen, solid and round-faced, a little heavy, pale mint-green eyes, a dark collar with a small silver bell. Copy his look exactly from the attached picture of him; not its room, its people or its view.
+Each cell is ONLY his head and collar from the front, the same size, the same place, the same tilt, so the heads can be swapped to animate: (1) eyes open; (2) eyes half shut; (3) eyes shut; (4) a small yawn; (5) a wide yawn, pink mouth and small teeth, eyes squeezed shut; (6) a meow, mouth open small; (7) a happy squint, eyes curved; (8) a guilty look, ears back, eyes to one side.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no furniture except where a pose names one, no gradient, NO shadows on the grey. Nothing touches an edge or another pose. Do not draw grid lines.
+
+Style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, appealing and friendly, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
 ## 6. Cut and wire notes
 
 Cut into `assets/<area>/items-s17/` at the cut (shared pieces into assets/shared/word-moment/, made at the cut), names in the pack's cut spec
@@ -561,6 +642,9 @@ as s14 KT). Wiring is a separate build (the stove roll-out, Sprint 18; the word 
 
 ## 7. Questions for Zafar (first draft: answer "yes to all except …")
 
+**Answered 2 Nov: yes to all** (1 side-on glasses, 2 the steel kettle, 3 the kitchen island relit, 4 the oven close-up, 5 the tins kept,
+7 the clinic patients for the cake for now); 6 answered below.
+
 1. **The word moment's glasses side-on** (WG), so half and full read at a glance; chai's overhead s14 frames 4 and 6 stay as the
    fallback. Recommended: side-on.
 2. **The vessel is a steel chai kettle** (kitli), opaque, tilted the whole time, no hand (it comes in from the top right, cut by
@@ -571,5 +655,6 @@ as s14 KT). Wiring is a separate build (the stove roll-out, Sprint 18; the word 
 5. **The loaf and the cake in their tins** (BL, last in the run, optional): the design's bread and party-cake recipes aren't
    built yet. Recommended: keep (one image; the party cake then comes out of Nani's oven).
 6. **Simba:** the black cat is still mock-up crops. A real cat: a sheet from photos in a run you watch? Not in this block.
+   **Answered (Zafar, 2 Nov):** "there should be some real simba ones already that I approved. A basic sheet. Add it into the artrun - lots of different cat poses and stretches and grabbing and peering and yawning and blinking etc. I can judge while it runs or after": part G (SM, S1-S4), his approved sheet attached from ChatGPT's Library when found.
 7. **The cake's people** are the clinic's patients until the party's own sheets (party-guests' run, with its family block).
    The corn stall's dressing tray stays a plain drawn board. Recommended: yes to both for this draft.

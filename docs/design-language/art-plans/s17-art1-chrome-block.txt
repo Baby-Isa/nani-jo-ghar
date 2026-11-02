@@ -1,4 +1,4 @@
-You're making 29 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+You're making 34 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
 
 THE PAGE
 Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/nice-lovelace-0vfjcj/docs/design-language/art-plans/s17-art1-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
@@ -21,6 +21,7 @@ Reference images, by the name the run order uses:
  mock-corn.png         RAW + sources/art/mockups-2026-11-01/mockup-farm-corn-stall.png
  mock-cake.png         RAW + sources/art/s17-art1/refs/cake-candles-mockup.png
  mock-slices.png       RAW + sources/art/s17-art1/refs/cake-slices-mockup.png
+ simba.png             RAW + sources/art/mockups-2026-11-01/Playful Cat in a Cozy Living Room.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 
@@ -123,6 +124,15 @@ CK | mock-cake.png, mock-slices.png | ck-birthday-cake-slices-v1.png | CAKE
 CN | mock-cake.png | cn-candles-v1.png | CANDLES
 Part E done: post the part E summary (see AT THE END) and carry on.
 
+PART G: SIMBA, THE POSE SHEET (5)
+Zafar's cat (a charcoal Russian Blue, pale mint-green eyes, a dark collar with a silver bell): his model sheet first, then four pose sheets made from it (rest, stretches and grabs, peering and hiding, head layers for blinking and yawning). Zafar approved a basic Simba sheet in ChatGPT before: look for it in ChatGPT's Library (a black cat with green eyes) and attach it with simba.png to SM if you find it. Zafar judges these himself while the run goes or after.
+SM | simba.png | sm-simba-model-sheet-v1.png | CATSHEET
+S1 | kept:SM | s1-simba-rest-v1.png | CATSHEET
+S2 | kept:SM | s2-simba-stretch-grab-v1.png | CATSHEET
+S3 | kept:SM | s3-simba-peer-hide-v1.png | CATSHEET
+S4 | kept:SM | s4-simba-heads-v1.png | CATHEADS
+Part G done: post the part G summary (see AT THE END) and carry on.
+
 PART F: OPTIONAL, LAST (1)
 BL: the loaf and the cake in their tins (the design's later bakes). Run it only when every other line is KEPT or SKIPPED.
 BL | kept:BN | bl-loaf-cake-tins-v1.png | TINS
@@ -156,6 +166,8 @@ ROOM: an empty sitting room straight on to its back wall at standing eye level: 
 PARTYTABLE: one long low wooden table straight on, its top a thin band, a plain cream cloth along it; empty; about 92% of the width; no floor or people; no shadow on ONE flat mid-grey
 CAKE: six things in a 3 by 2 grid, seated eye level about 20 degrees down: the same round white-cream birthday cake on a white stand whole, one slice out, half left; a slice on a small plate, with a bite out, the plate empty with crumbs; NOTHING written on the cake; no candles or people; no shadow on ONE flat mid-grey
 CANDLES: six things in a 3 by 2 grid, front view: the same twisted pastel-blue candle unlit, lit with a small flame, just blown out with a curl of smoke; the flame alone; a small pink ribbon bow; a small brass saucer; no cake or people; no shadow on ONE flat mid-grey
+CATSHEET: the same charcoal near-black Russian Blue cat with pale mint-green eyes and a dark collar with a silver bell in all eight cells of a 4 by 2 grid, the same size, the poses asked in the order asked; no people, room or floor; no shadow on ONE flat mid-grey
+CATHEADS: eight heads of the same cat in a 4 by 2 grid, front view, the same size, place and tilt, only the face changing as asked; no bodies; no shadow on ONE flat mid-grey
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 - Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a jug, a cake, bunting, balloons, a tin or a crate too).

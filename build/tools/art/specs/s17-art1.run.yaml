@@ -32,6 +32,7 @@ refs:
   mock-corn.png: sources/art/mockups-2026-11-01/mockup-farm-corn-stall.png
   mock-cake.png: sources/art/s17-art1/refs/cake-candles-mockup.png
   mock-slices.png: sources/art/s17-art1/refs/cake-slices-mockup.png
+  simba.png: sources/art/s17-art1/refs/simba-mockup.png
 people: {}
 limb_sets: {}
 templates: {}
@@ -66,6 +67,11 @@ lines:
   TB: {attach: ["kept:PR"], save: tb-party-table-v1.png, check: PARTYTABLE}
   CK: {attach: [mock-cake.png, mock-slices.png], save: ck-birthday-cake-slices-v1.png, check: CAKE}
   CN: {attach: [mock-cake.png], save: cn-candles-v1.png, check: CANDLES}
+  SM: {attach: [simba.png], save: sm-simba-model-sheet-v1.png, check: CATSHEET}
+  S1: {attach: ["kept:SM"], save: s1-simba-rest-v1.png, check: CATSHEET}
+  S2: {attach: ["kept:SM"], save: s2-simba-stretch-grab-v1.png, check: CATSHEET}
+  S3: {attach: ["kept:SM"], save: s3-simba-peer-hide-v1.png, check: CATSHEET}
+  S4: {attach: ["kept:SM"], save: s4-simba-heads-v1.png, check: CATHEADS}
 parts:
 - id: A
   title: 'CHAI: THE HALF AND FULL WORD MOMENT'
@@ -92,6 +98,11 @@ parts:
   intro: 'The empty party room, its table as its own piece, the birthday cake and its slices, the candles.'
   items:
   - lines: [PR, TB, CK, CN]
+- id: G
+  title: 'SIMBA, THE POSE SHEET'
+  intro: 'Zafar''s cat (a charcoal Russian Blue, pale mint-green eyes, a dark collar with a silver bell): his model sheet first, then four pose sheets made from it (rest, stretches and grabs, peering and hiding, head layers for blinking and yawning). Zafar approved a basic Simba sheet in ChatGPT before: look for it in ChatGPT''s Library (a black cat with green eyes) and attach it with simba.png to SM if you find it. Zafar judges these himself while the run goes or after.'
+  items:
+  - lines: [SM, S1, S2, S3, S4]
 - id: F
   title: 'OPTIONAL, LAST'
   intro: 'BL: the loaf and the cake in their tins (the design''s later bakes). Run it only when every other line is KEPT or SKIPPED.'
@@ -179,6 +190,12 @@ checks:
   CANDLES:
     text: 'six things in a 3 by 2 grid, front view: the same twisted pastel-blue candle unlit, lit with a small flame, just blown out with a curl of smoke; the flame alone; a small pink ribbon bow; a small brass saucer; no cake or people; no shadow on ONE flat mid-grey'
     judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true, soft_edges: true}
+  CATSHEET:
+    text: 'the same charcoal near-black Russian Blue cat with pale mint-green eyes and a dark collar with a silver bell in all eight cells of a 4 by 2 grid, the same size, the poses asked in the order asked; no people, room or floor; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 8, no_touch: true}
+  CATHEADS:
+    text: 'eight heads of the same cat in a 4 by 2 grid, front view, the same size, place and tilt, only the face changing as asked; no bodies; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
 passfail:
 - Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a jug, a cake, bunting, balloons, a tin or a crate too).
 - Outlines, cel shading, a flat vector look or painterly brushwork.
