@@ -44,7 +44,7 @@
 .pp-person.pp-hold > img { filter: drop-shadow(0 0 .5em var(--njg-gold-hi)); }
 
 /* ---------- the balloon ---------- */
-.pp-balloon { position: absolute; width: 5.5%; aspect-ratio: .82; translate: -50% -50%; border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%; background: radial-gradient(circle at 34% 30%, var(--njg-proto-balloon-shine) 0 14%, transparent 15%), var(--njg-proto-balloon); z-index: 20; pointer-events: none; transition: left .9s ease-in-out, top .9s ease-in-out; }
+.pp-balloon { position: absolute; width: 5.5%; aspect-ratio: .82; translate: -50% -50%; border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%; background: var(--njg-proto-balloon-fill); z-index: 20; pointer-events: none; transition: left .9s ease-in-out, top .9s ease-in-out; }
 .pp-balloon::after { content: ""; position: absolute; left: 50%; top: 98%; width: 2px; height: 70%; background: var(--njg-ink-soft); }
 .pp-balloon.bop { animation: ppBop .5s ease-out 1; }
 @keyframes ppBop { 30% { translate: -50% -80%; } 60% { translate: -50% -40%; } }

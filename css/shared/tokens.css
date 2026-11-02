@@ -165,6 +165,7 @@
   --njg-proto-party-sofa: #9a6b8e;
   --njg-proto-balloon: #e2574c;
   --njg-proto-balloon-shine: rgb(255 255 255 / .45);
+  --njg-proto-balloon-fill: radial-gradient(circle at 34% 30%, var(--njg-proto-balloon-shine) 0 14%, transparent 15%), var(--njg-proto-balloon);
   --njg-proto-bunting-a: #e2574c;
   --njg-proto-bunting-b: #f2b134;
   --njg-proto-bunting-c: #4f9fd6;
