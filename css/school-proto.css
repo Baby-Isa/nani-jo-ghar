@@ -67,10 +67,10 @@
 /* the things: flat shapes until the art run (a tile shows the same shape, small) */
 .sp-obj.packed { visibility: hidden; }
 .sp-book { aspect-ratio: .78; background: var(--njg-rust); border-radius: 0.15em; box-shadow: inset 0.35em 0 0 var(--njg-brown); }
-.sp-pencil { aspect-ratio: .16; background: linear-gradient(to bottom, var(--njg-cream) 0 12%, var(--njg-gold) 12% 88%, var(--njg-pewter) 88%); border-radius: 50% 50% 0.1em 0.1em / 18% 18% 0.1em 0.1em; }
+.sp-pencil { aspect-ratio: .16; background: var(--njg-gold); border-top: 0.25em solid var(--njg-cream); border-bottom: 0.25em solid var(--njg-pewter); box-sizing: border-box; border-radius: 50% 50% 0.1em 0.1em / 18% 18% 0.1em 0.1em; }
 .sp-crayon { aspect-ratio: .3; background: var(--njg-leaf-deep); border-radius: 40% 40% 0.1em 0.1em / 20% 20% 0.1em 0.1em; }
 .sp-lunchbox { aspect-ratio: 1.4; background: var(--njg-tick-green); border-radius: 0.3em; box-shadow: inset 0 0.3em 0 var(--njg-leaf-deep); }
-.sp-ball { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--njg-gold-hi), var(--njg-rust)); }
+.sp-ball { aspect-ratio: 1; border-radius: 50%; background: var(--njg-rust); box-shadow: inset -0.3em -0.3em 0 var(--njg-proto-swatch-shade); }
 .sp-teddy { aspect-ratio: .8; background: var(--njg-brown); border-radius: 45% 45% 40% 40%; }
 .sp-flannel { aspect-ratio: 1.2; background: var(--njg-blue); border-radius: 0.2em; }
 .sp-tilepic { position: relative; display: block; height: 70%; max-width: 80%; }
