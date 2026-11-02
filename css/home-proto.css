@@ -119,3 +119,32 @@
 .hp-tpic-bed { aspect-ratio: 2; height: 45%; background: var(--njg-proto-cover); border: 0; border-radius: 0.5em 0.5em 0.1em 0.1em; }
 .hp-tpic-curtain { aspect-ratio: .5; background: var(--njg-proto-curtain); border: 0; border-radius: 0; }
 .hp-tcat { min-height: 2em; }
+
+/* ---------- pick it up and put it back: the furniture, the things (flat placeholders), the dotted rings ---------- */
+.hp-table::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 14%; background: var(--njg-proto-wood); border-radius: 0.2em; }
+.hp-leg { position: absolute; left: 8%; top: 12%; bottom: 0; width: 6%; background: var(--njg-proto-wood-dark); }
+.hp-leg2 { left: auto; right: 8%; }
+.hp-bedx { background: linear-gradient(var(--njg-proto-cover) 0 50%, transparent 50%); border-radius: 0.6em 0.6em 0 0; }
+.hp-bedx::after { content: ""; position: absolute; left: 4%; right: 4%; top: 50%; bottom: 0; border-left: 0.3em solid var(--njg-proto-wood-dark); border-right: 0.3em solid var(--njg-proto-wood-dark); }
+.hp-rugx { background: var(--njg-proto-rug); border-radius: 50%; opacity: .7; }
+.hp-sofa { background: var(--njg-sage); border-radius: 1em 1em 0.3em 0.3em; }
+.hp-nana { pointer-events: none; }
+.hp-th { display: block; box-sizing: border-box; }
+.hp-th-glasses { background: radial-gradient(circle at 25% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%), radial-gradient(circle at 75% 55%, transparent 28%, var(--njg-ink) 29% 36%, transparent 37%); }
+.hp-th-cup { background: var(--njg-cream); border: 0.15em solid var(--njg-proto-paint-edge); border-radius: 0.1em 0.1em 0.6em 0.6em; }
+.hp-th-ball { background: var(--njg-rust); border-radius: 50%; }
+.hp-th-bag { background: var(--njg-navy); border-radius: 0.3em; }
+.hp-th-table { background: linear-gradient(var(--njg-proto-wood) 0 18%, transparent 18%), linear-gradient(90deg, transparent 10%, var(--njg-proto-wood-dark) 10% 18%, transparent 18% 82%, var(--njg-proto-wood-dark) 82% 90%, transparent 90%); }
+.hp-th-bed { background: linear-gradient(var(--njg-proto-cover) 0 55%, transparent 55%), linear-gradient(90deg, var(--njg-proto-wood-dark) 0 8%, transparent 8% 92%, var(--njg-proto-wood-dark) 92%); }
+.hp-copy.wide { width: auto; aspect-ratio: 1.4; }
+.hp-copy.hp-th-cup, .hp-copy.hp-th-ball { aspect-ratio: 1; }
+.hp-flyer.hp-th-glasses { background-color: transparent; }
+.hp-ring { border: 0.18em dashed var(--njg-ink-soft); border-radius: 50%; aspect-ratio: 1.6; width: auto; background: var(--njg-proto-glass); opacity: .75; }
+.hp-tthing { position: relative; height: 56%; aspect-ratio: 1.4; width: auto; max-width: 90%; }
+.hp-tthing.hp-th-cup, .hp-tthing.hp-th-ball { aspect-ratio: 1; height: 46%; }
+.hp-trel { position: relative; display: block; height: 70%; aspect-ratio: 1; }
+.hp-trel-top { position: absolute; left: 0; right: 0; top: 40%; height: 12%; background: var(--njg-grey); border-radius: 0.1em; }
+.hp-trel-ball { position: absolute; left: 34%; width: 32%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-ink-soft); }
+.hp-trel-on .hp-trel-ball { top: 8%; }
+.hp-trel-under .hp-trel-ball { bottom: 4%; }
+.hp-troom { position: relative; display: block; height: 70%; aspect-ratio: 1.3; overflow: hidden; border: 0.12em solid var(--njg-proto-shell); }
