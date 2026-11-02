@@ -798,6 +798,7 @@ export async function createSewing(el, ctx, game, PERSON = NANI) {
     setPose,
     sleep,
     doc,
+    stamp,
     stopVoice,
     focus: (r) => (focusRow = r || null),
     sentence,

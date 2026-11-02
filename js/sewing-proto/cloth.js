@@ -12,7 +12,7 @@ export const COLOURS = ["red", "green", "white", "blue", "yellow", "pink"];
 export const COLOUR_LEX = { red: "a.red", green: "a.green", white: "a.white", blue: "a.blue", yellow: "a.yellow", pink: "a.pink" };
 
 /** The kurta: hem at y (long 96, short 74). */
-const kurtaPath = (hem) => `M44 6 Q50 13 56 6 L70 10 L95 50 L86 56 L70 31 L72 ${hem} L28 ${hem} L30 31 L14 56 L5 50 L30 10 Z`;
+const kurtaPath = (hem, hang) => (hang ? `M44 6 Q50 13 56 6 L70 10 L80 58 L71 60 L68 31 L72 ${hem} L28 ${hem} L32 31 L29 60 L20 58 L30 10 Z` : `M44 6 Q50 13 56 6 L70 10 L95 50 L86 56 L70 31 L72 ${hem} L28 ${hem} L30 31 L14 56 L5 50 L30 10 Z`);
 
 /** Where the mend's faults sit on Nana's flat kurta (shares of its 100x100 box): the middle of each fault's place. */
 export const KURTA_SPOTS = {
@@ -24,9 +24,9 @@ export const KURTA_SPOTS = {
 };
 
 const DRAW = {
-  kurta: ({ length = "long", buttons = 3, faults = [] }) => {
+  kurta: ({ length = "long", buttons = 3, faults = [], hang = false }) => {
     const hem = length === "short" ? 74 : 96;
-    let s = `<path class="sw-f" d="${kurtaPath(hem)}"/>`;
+    let s = `<path class="sw-f" d="${kurtaPath(hem, hang)}"/>`;
     s += `<path class="sw-seam" d="M50 9 L50 34"/>`;
     s += `<path class="sw-seam" d="M30 ${hem - 9} L30 ${hem} M70 ${hem - 9} L70 ${hem}"/>`; // the side slits
     const spots = [18, 25, 32];
@@ -63,5 +63,5 @@ const DRAW = {
 export function svg(kind, o = {}) {
   const colour = o.colour || "plain";
   const draw = DRAW[kind] || DRAW.piece;
-  return `<svg viewBox="0 0 100 100" class="sw-svg sw-${kind} sw-c-${colour} ${o.cls || ""}" aria-hidden="true" preserveAspectRatio="xMidYMax meet">${draw(o)}</svg>`;
+  return `<svg viewBox="0 0 100 100" class="sw-svg sw-${kind} sw-c-${colour} ${o.cls || ""}" aria-hidden="true" preserveAspectRatio="${o.stretch ? "none" : "xMidYMax meet"}">${draw(o)}</svg>`;
 }

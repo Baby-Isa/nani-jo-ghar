@@ -14,7 +14,9 @@ const GAMES = { stall, make, mend, fit };
 const HOST = { stall: BIGMA, make: ALI, mend: NANA, fit: ALI };
 
 export async function play(id, el, ctx) {
-  const F = await createSewing(el, ctx, id, HOST[id] || BIGMA);
+  // (the fitting from L3: Big Ma says the piece and whom it's for)
+  const host = id === "fit" && Number(ctx.level) >= 3 ? BIGMA : HOST[id] || BIGMA;
+  const F = await createSewing(el, ctx, id, host);
   ctx.test.state("playing");
   Promise.resolve()
     .then(() => GAMES[id](F, ctx))
