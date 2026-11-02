@@ -18,6 +18,9 @@ The orchestrator judges, merges and pushes. The queue and who has what: `build/r
 ## The layout for any game whose order is a sentence (Zafar, 2 Nov: mock-ups in `sources/art/mockups-2026-11-02/`)
 - **The helper's box** (Nani, Hannah Mami, the doctor ...): her one instruction at a time, big, its key words underlined; her
   speaker in the corner of her face (as `feed-B-yard.webp`), so the words get the room.
+- **Use the shared word tiles** (built tonight): `js/shared/word-tiles.js` + `css/shared/word-tiles.css` (`mountTiles(parent, groups,
+  {shown, onSpeak, onReveal})`; the farm kit's `F.sentence(groups)` shows how). Don't copy it. Group labels: Kutchi where the engine has
+  the word, else grey English to record (no written English for the child). Use a free port for labcheck: `COOK_TEST_PORT=88xx`.
 - **Word tiles under her:** small cards grouped under labels (Animals / Food, Hens / Eggs ...): the picture, the word under it and a
   **big speaker under the word** ("I want to encourage listening": the tile look of `feed-B-yard.webp` with the larger speaker of
   `feed-B-barn.webp`). Laptop: a grid as `eggs-B-grid.webp`. Phone: two labelled strips that scroll sideways as `eggs-C-strips.webp`
