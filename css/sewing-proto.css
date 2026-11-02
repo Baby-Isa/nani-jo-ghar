@@ -1,0 +1,84 @@
+/* Sewing with Big Ma, the prototypes (proto-sewing, 2 Nov 2026; js/sewing-proto/): the play area's scene only. The side panel is the
+   kit's (the asker's box and the word tiles on chai's s14 look), never restyled here (non-negotiable 6). Colours are tokens only
+   (--njg-proto-* in css/shared/tokens.css: the cloths, paper, the machine, the stall); every shape is a flat placeholder, to be
+   swapped for the art run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width: its
+   middle; --y of its height: its foot; --h of its height: its height), as the school's and the farm's. */
+
+.sw { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.sw-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.sw-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.sw-play { position: relative; overflow: hidden; min-width: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sw-scene { position: absolute; inset: 0; overflow: hidden; }
+.sw-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.sw-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.sw-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.sw-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.sw-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.sw-thing > svg { display: block; height: 100%; width: auto; aspect-ratio: 1; pointer-events: none; overflow: visible; }
+.sw-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.sw-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.sw-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sw-thing.sel { animation: var(--njg-glow-anim); }
+.sw-thing.lift, .sw-thing.sw-lifted { translate: 0 -12%; transition: translate .25s ease-out; }
+.sw-thing.sw-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sw-thing.sw-shake, .sw-shake { animation: swWobble .5s ease-in-out 1; }
+@keyframes swWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+.sw-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .sw-thing.sw-shake, .sw-shake { animation: none; } }
+
+/* ---------- the drawn things (js/sewing-proto/cloth.js): a colour class sets --c, the shapes fill with it ---------- */
+.sw-c-red { --c: var(--njg-proto-cloth-red); }
+.sw-c-green { --c: var(--njg-proto-cloth-green); }
+.sw-c-white { --c: var(--njg-proto-cloth-white); }
+.sw-c-blue { --c: var(--njg-proto-cloth-blue); }
+.sw-c-yellow { --c: var(--njg-proto-cloth-yellow); }
+.sw-c-pink { --c: var(--njg-proto-cloth-pink); }
+.sw-c-plain { --c: var(--njg-proto-cloth-grey); }
+.sw-c-paper { --c: var(--njg-proto-paper); }
+.sw-svg .sw-f { fill: var(--c); stroke: var(--njg-ink-outline); stroke-width: 1.6; stroke-linejoin: round; }
+.sw-svg .sw-roll { stroke-width: 1.2; }
+.sw-svg .sw-core { fill: var(--njg-ink-outline); opacity: .55; }
+.sw-svg .sw-seam { fill: none; stroke: var(--njg-proto-cloth-edge); stroke-width: 1.2; stroke-dasharray: 2.5 2; }
+.sw-svg .sw-band { fill: var(--c); stroke: var(--njg-ink-outline); stroke-width: 1.4; filter: brightness(.82); }
+.sw-svg .sw-btn { fill: var(--njg-cream); stroke: var(--njg-ink-outline); stroke-width: .8; }
+.sw-svg .sw-pocket { fill: none; stroke: var(--njg-proto-cloth-edge); stroke-width: 1.4; }
+.sw-svg .sw-tear { fill: none; stroke: var(--njg-ink-outline); stroke-width: 3; stroke-linejoin: round; }
+.sw-svg .sw-gap { fill: none; stroke: var(--njg-ink-outline); stroke-width: 2; stroke-dasharray: 3 2.5; }
+.sw-svg .sw-thread { fill: none; stroke: var(--njg-rust); stroke-width: 2; }
+.sw-svg .sw-metal { fill: none; stroke: var(--njg-proto-metal); stroke-width: 6; stroke-linecap: round; }
+.sw-svg .sw-grip { fill: none; stroke: var(--njg-ink-outline); stroke-width: 5; }
+.sw-svg .sw-eye { fill: var(--njg-white); stroke: var(--njg-ink-outline); stroke-width: 1.5; }
+.sw-svg.sw-paper .sw-f, .sw-c-paper .sw-f { stroke: var(--njg-proto-paper-edge); }
+.sw-tilepic { position: relative; display: block; height: 72%; width: auto; max-width: 84%; aspect-ratio: 1; }
+
+/* ---------- the track: a lit dashed line, the tool on it (F.track) ---------- */
+.sw-track { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.sw-track-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.sw-track-lit { stroke: var(--njg-gold-hi); stroke-width: 6; stroke-dasharray: 14 10; stroke-linecap: round; vector-effect: non-scaling-stroke; animation: swTrackGlow 1.2s ease-in-out infinite alternate; }
+.sw-track-done { stroke: var(--njg-ink-outline); stroke-width: 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.sw-track-done.zig, .sw-track-lit.zig { stroke-dasharray: 6 6; }
+@keyframes swTrackGlow { from { opacity: .55; } to { opacity: 1; } }
+.sw-tool-h { position: absolute; pointer-events: auto; translate: -50% -50%; width: calc(var(--njg-tap, 48px) * 1.5); height: calc(var(--njg-tap, 48px) * 1.5); padding: 0; border: 0; border-radius: 50%; background: var(--njg-cream); box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), var(--njg-shadow); cursor: grab; touch-action: none; display: grid; place-items: center; }
+.sw-tool-h > svg { width: 78%; height: 78%; }
+.sw-tool-h.held { cursor: grabbing; scale: 1.1; }
+.sw-track.done .sw-tool-h { opacity: 0; transition: opacity .25s; }
+
+/* ---------- the cloth stall ---------- */
+.sw-stall-wall { position: absolute; inset: 0; background: var(--njg-cream-2); }
+.sw-awning { position: absolute; left: 0; right: 0; top: 0; height: 9%; background: var(--njg-proto-awning); border-bottom: 0.5em dotted var(--njg-proto-awning-2); }
+.sw-shelf-back { position: absolute; left: 4%; right: 22%; top: 18%; height: 3%; background: var(--njg-proto-wood-dark); border-radius: 0.2em; }
+.sw-counter { background: var(--njg-proto-wood); border-radius: 0.3em 0.3em 0 0; }
+.sw-counter-top { background: var(--njg-proto-wood-dark); border-radius: 0.3em; }
+.sw-counter-top.sw-thump { animation: swThump .3s ease-out 1; }
+@keyframes swThump { 40% { translate: -50% 6%; } }
+.sw-bolt > svg { aspect-ratio: .6; }
+.sw-unroll { background: var(--c); border: 0.12em solid var(--njg-ink-outline); border-radius: 0.2em; clip-path: inset(0 100% 0 0); transition: clip-path .5s ease-out; }
+.sw-unroll.open { clip-path: inset(0 0 0 0); }
+.sw-puff { aspect-ratio: 2; border-radius: 50%; background: var(--njg-cream); opacity: .85; animation: swPuff .7s ease-out 1 forwards; }
+@keyframes swPuff { to { opacity: 0; scale: 1.8; translate: 0 -40%; } }
+.sw-clothbag { aspect-ratio: .85; background: var(--njg-proto-cloth-yellow); border: 0.15em solid var(--njg-ink-outline); border-radius: 12% 12% 30% 30%; }
+.sw-clothbag-strap { position: absolute; left: 22%; right: 22%; top: -30%; height: 34%; border: 0.25em solid var(--njg-ink-outline); border-bottom: 0; border-radius: 50% 50% 0 0; }
+.sw-piece > svg { aspect-ratio: 1.3; }
+.sw-flypiece { background: var(--c); border-radius: 0.2em; border: 0.12em solid var(--njg-ink-outline); box-sizing: border-box; }

@@ -2266,6 +2266,25 @@
    }
   },
   {
+   "id": "n.clothes",
+   "pos": "N",
+   "gender": null,
+   "gloss": "clothes",
+   "glossPl": "clothes",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-clothes: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-clothes"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.cloves",
    "pos": "N",
    "gender": null,
@@ -4217,6 +4236,25 @@
    ],
    "aliases": [
     "ph-hem"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.hole",
+   "pos": "N",
+   "gender": null,
+   "gloss": "hole",
+   "glossPl": "holes",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-hole: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-hole"
    ],
    "ask": {
     "word": [
@@ -6692,6 +6730,25 @@
    ],
    "aliases": [
     "heal-sips-of"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.sizes",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sizes",
+   "glossPl": "sizes",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-sizes: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sizes"
    ],
    "ask": {
     "word": [
@@ -9203,6 +9260,23 @@
    ]
   },
   {
+   "id": "a.long",
+   "pos": "A",
+   "gloss": "long",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-sew-long: an English placeholder, to record (sewing.md §1: long and short pick the cut and the hem; to record)"
+   ],
+   "aliases": [
+    "ph-sew-long"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "a.lukewarm",
    "pos": "A",
    "gloss": "lukewarm",
@@ -9419,6 +9493,23 @@
    }
   },
   {
+   "id": "a.short",
+   "pos": "A",
+   "gloss": "short",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-sew-short: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sew-short"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "a.silver",
    "pos": "A",
    "gloss": "silver",
@@ -9509,6 +9600,23 @@
    "notes": [
     "Spelling confirmed by Zafar 5 Oct."
    ]
+  },
+  {
+   "id": "a.torn",
+   "pos": "A",
+   "gloss": "torn",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json words.ph-sew-torn: an English placeholder, to record"
+   ],
+   "aliases": [
+    "ph-sew-torn"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "a.unsweetened",
@@ -12841,6 +12949,23 @@
    ]
   },
   {
+   "id": "phrase.ali-has-grown-his-clothes-are-small",
+   "pos": "Phrase",
+   "gloss": "Ali has grown! His clothes are small.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.make-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.make-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.all-better",
    "pos": "Phrase",
    "gloss": "All better!",
@@ -13842,6 +13967,23 @@
    ]
   },
   {
+   "id": "phrase.come-lets-buy-cloth-for-alis-kurta",
+   "pos": "Phrase",
+   "gloss": "Come, let's buy cloth for Ali's kurta.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.stall-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.stall-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.come-lets-go-to-the-kitchen",
    "pos": "Phrase",
    "lemma": "hal, rasore me winja",
@@ -13895,6 +14037,23 @@
    "src": [
     "grammar-notes §25 B14"
    ]
+  },
+  {
+   "id": "phrase.come-try-on-what-we-made",
+   "pos": "Phrase",
+   "gloss": "Come, try on what we made.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.fit-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.fit-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.cook-it-the-way-they-said",
@@ -15325,6 +15484,23 @@
     "cook.line.here",
     "content.snt-10"
    ]
+  },
+  {
+   "id": "phrase.heres-the-money",
+   "pos": "Phrase",
+   "gloss": "Here's the money.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.stall-pay: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.stall-pay"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.heres-the-photo",
@@ -17431,6 +17607,23 @@
    }
   },
   {
+   "id": "phrase.my-button-has-come-off",
+   "pos": "Phrase",
+   "gloss": "My button has come off.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.mend-off: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.mend-off"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
+  },
+  {
    "id": "phrase.my-ear-feels-blocked",
    "pos": "Phrase",
    "gloss": "My ear feels blocked.",
@@ -17598,6 +17791,23 @@
    "aliases": [
     "conversation.line.name-nana"
    ]
+  },
+  {
+   "id": "phrase.nanas-kurta-is-torn-lets-mend-it",
+   "pos": "Phrase",
+   "gloss": "Nana's kurta is torn. Let's mend it.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.mend-head: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.mend-head"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.nani",
@@ -18082,6 +18292,23 @@
    "src": [
     "grammar-notes §25 B14"
    ]
+  },
+  {
+   "id": "phrase.now-sew-it",
+   "pos": "Phrase",
+   "gloss": "Now sew it.",
+   "status": "to-record",
+   "src": [
+    "data/sewing-proto.json lines.make-sew: an English placeholder, to record"
+   ],
+   "aliases": [
+    "sewing-proto.line.make-sew"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   }
   },
   {
    "id": "phrase.now-water-it",

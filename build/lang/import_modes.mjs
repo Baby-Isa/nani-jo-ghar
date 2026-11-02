@@ -8,11 +8,13 @@ import { importLine, recordWord } from "./import_cook.mjs";
 const SOURCE = "parked modes";
 // (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
 // (school-proto: the school day prototypes' placeholders, data/school-proto.json; proto-school, 2 Nov)
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto"];
+// (sewing-proto: the sewing prototypes' placeholders, data/sewing-proto.json; proto-sewing, 2 Nov: a word may name its pos)
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto", "sewing-proto"];
 
 const isWordObj = (o) => o && typeof o === "object" && !Array.isArray(o) && typeof o.english === "string" && !("hex" in o && false);
 
 function posOf(id, o, mode) {
+  if (o.pos) return o.pos;
   if (/^nm-/.test(id) || o.name) return "PN";
   if (o.kind === "colour" || /^(ph-)?(red|green|white|blue|yellow|dark|light|old|young|big|small)$/.test(id.replace(/^ph-/, ""))) return "A";
   if (/^ph-rel-/.test(id)) return "Post";

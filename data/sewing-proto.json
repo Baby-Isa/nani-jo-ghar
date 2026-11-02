@@ -1,0 +1,23 @@
+{
+  "_about": "Sewing with Big Ma, the prototypes (proto-sewing, 2 Nov 2026; build/reports/designs/sewing.md and its critique, the sewing section of games-at-a-glance-2026-11-01.md): the words and lines the four sewing games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry (pos: its part of speech where it isn't a noun) and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-sew-long": { "english": "long", "pos": "A", "src": "sewing.md §1: long and short pick the cut and the hem; to record" },
+    "ph-sew-short": { "english": "short", "pos": "A" },
+    "ph-sew-torn": { "english": "torn", "pos": "A" },
+    "ph-button": { "english": "button" },
+    "ph-hole": { "english": "hole" },
+    "ph-clothes": { "english": "clothes" },
+    "ph-sizes": { "english": "sizes" }
+  },
+  "lines": {
+    "stall-head": { "e": "Come, let's buy cloth for Ali's kurta." },
+    "stall-pay": { "e": "Here's the money." },
+    "make-head": { "e": "Ali has grown! His clothes are small." },
+    "make-sew": { "e": "Now sew it." },
+    "mend-head": { "e": "Nana's kurta is torn. Let's mend it." },
+    "mend-torn": { "e": "My {x} is torn." },
+    "mend-off": { "e": "My button has come off." },
+    "mend-hole": { "e": "There's a hole in my {x}." },
+    "fit-head": { "e": "Come, try on what we made." }
+  }
+}

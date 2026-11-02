@@ -1911,6 +1911,32 @@
     "Rub out the knee."
    ],
    "_sig": "[\"x\"]"
+  },
+  "MyXIsTorn": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "My {x} is torn.",
+   "elicit": [
+    "My knee is torn."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ThereSAHoleInMyX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "There's a hole in my {x}.",
+   "elicit": [
+    "There's a hole in my knee."
+   ],
+   "_sig": "[\"x\"]"
   }
  }
 }
