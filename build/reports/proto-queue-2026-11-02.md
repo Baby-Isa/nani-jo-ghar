@@ -13,5 +13,7 @@ save often. Brief: `build/reports/proto-brief-2026-11-02.md`. Each area is one b
 | 6 | School day | the wake-up clock, getting ready, pack the bag, the blackboard | wake-up-clock.md, school-day.md | merged 09:20 (7c20739): clock, getting ready, pack the bag, the blackboard; report proto-school-2026-11-02.md |
 | 7 | Sewing | the cloth stall, make, mend, the fitting | sewing.md | merged 11:30: the cloth stall, make, mend, the fitting; report proto-sewing-2026-11-02.md |
 | 8 | Pet hotel | look after the animals, going home | adoption-centre.md | merged 12:20: look after the animals, going home; report proto-pets-2026-11-02.md |
-| 9 | Safari | snap from the jeep, who's hiding? | safari.md | building (10:50) |
-| 10 | Beach and boat | shells, the sandcastle, the stalls, the picnic, the boat ride, litter fishing | beach-boat.md | building (10:50) |
+| 9 | Safari | snap from the jeep, who's hiding? | safari.md | merged 13:00: snap from the jeep, who's hiding?; report proto-safari-2026-11-02.md |
+| 10 | Beach and boat | shells, the sandcastle, the stalls, the picnic, the boat ride, litter fishing | beach-boat.md | merged 13:20: shells, sandcastle, stalls, picnic, ride, litter fishing; report proto-beach-2026-11-02.md |
+
+**Done 2 Nov, 13:20:** every area merged (dd58bd5), checks green. Summary: `build/reports/overnight-prototypes-2026-11-02.md`.

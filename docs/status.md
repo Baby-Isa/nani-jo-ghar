@@ -8,15 +8,13 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, 00:45 UK):** Sprint 16 is open (`docs/sprints/S16-chai-final-prototypes.md`).
-- **Live on `main`** (0e15bb4c, version 20261102T004020Z), published on Zafar's word with the gate overridden (no contract or
-  evidence run, no judge yet): his 1 Nov night chai notes built (`docs/feedback/chai-play-2026-11-01-night.md`): the order card only
-  as its person starts (SH-171); one set of bubble rules, clear of faces, panel, gear and replies (SH-177, -186, -187, -188); the
-  side panel scales with the window, 2.5 item cards (SH-185); the L4 pop-out sideways on phones (CHAI-43); tray faces in the corners,
-  the pan over them, no pour line, the shelf centred, L4's green 2 s (CHAI-58, -64, -65, -66, SH-183).
-- **Still open from those notes:** SH-189 (Nani's box height, improved, not measured), SH-169 and SH-191 (the panel's scroll),
-  SH-190 (item picture padding: the cause still to measure), SH-192 (the headline's gaps).
-- **Farm:** FARM-01, the sentence games; Zafar runs `build/reports/designs/chatgpt-farm-sentence-mockups-2026-11-02.md`.
+**Where things stand (2 Nov 2026, 13:30 UK):** Sprint 16 is open (`docs/sprints/S16-chai-final-prototypes.md`).
+- **Live on `main`** (33762921): chai with Zafar's 1-2 Nov fixes (the pop-out fills the free space, aligned item cards, the row led by a
+  slot, the order card only as its person starts, the bubble rules, the panel's scale), farm v2 and the four clinic prototypes.
+- **On this branch, not live:** every remaining prototype, built overnight (Home, Town, Birthday, School, Sewing, Pet hotel, Safari,
+  Beach), checks green: `build/reports/overnight-prototypes-2026-11-02.md` (its 7 decisions for Zafar).
+- **Next:** Zafar plays the prototypes (`/feedback`), answers the 7 decisions, says which become proper games; publish the
+  prototypes when he says; Mum's recording list (the recording sheet); an art run.
 - Earlier work in the repo: the language targets, the games map, 18 designs (`build/reports/designs/`), the pose register.
 
 **Sprint 16 is open** (`docs/sprints/S16-chai-final-prototypes.md`, Zafar, 1 Nov). **Next steps, in order:**
