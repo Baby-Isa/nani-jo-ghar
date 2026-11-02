@@ -762,11 +762,12 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 7. Other modes
 
-230 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
+243 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
 | alarm clock | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Ali has grown! His clothes are small. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | aunt | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | baby | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | bag | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -791,8 +792,11 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | children | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | clinic | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Close your eyes and count with me! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| clothes | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | colours | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Comb your hair! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Come, let's buy cloth for Ali's kurta. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Come, try on what we made. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Count out the coins, then give them to him. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | crayon | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Dance! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -814,6 +818,8 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | hair | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | He ran off! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Help me at the stall: give each one what they ask for. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Here's the money. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| hole | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | I'm cold. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | I'm hot. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | I'm hungry. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -832,16 +838,20 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | letter | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | library | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Lift the hen and find her eggs. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| long | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Look in the mirror! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Look, it's growing! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | lunchbox | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | market | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | mum | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| My button has come off. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Nana can't find his things. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Nana's coming: let's tidy up! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Nana's kurta is torn. Let's mend it. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Nobody here! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Not here! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Now blow! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| Now sew it. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Now water it. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | oil | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Open the boxes and give out the presents. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -863,9 +873,11 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | School today! Let's pack your bag. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Send each one where they want to go. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | serve (put it on the plate) | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| short | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Simba and Zazu are hiding! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Simba knocked these down. Put them back. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Simba! Out you come. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| sizes | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | soap | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | soap dish | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | sprinkle | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -876,6 +888,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | teddy | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | The animals are hungry. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Tomorrow is school! Who wakes up when? | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| torn | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | toys | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | turn off | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | turn on | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |

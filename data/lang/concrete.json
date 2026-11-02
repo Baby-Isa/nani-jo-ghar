@@ -2278,6 +2278,24 @@
    "english": "{x}, please.",
    "what": "{x}, please.",
    "src": "data/town-proto.json lines.pay-price: an English placeholder, to record"
+  },
+  "MyXIsTorn": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the sewing-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "My {x} is torn.",
+   "what": "My {x} is torn.",
+   "src": "data/sewing-proto.json lines.mend-torn: an English placeholder, to record"
+  },
+  "ThereSAHoleInMyX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the sewing-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "There's a hole in my {x}.",
+   "what": "There's a hole in my {x}.",
+   "src": "data/sewing-proto.json lines.mend-hole: an English placeholder, to record"
   }
  }
 }

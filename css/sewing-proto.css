@@ -1,0 +1,181 @@
+/* Sewing with Big Ma, the prototypes (proto-sewing, 2 Nov 2026; js/sewing-proto/): the play area's scene only. The side panel is the
+   kit's (the asker's box and the word tiles on chai's s14 look), never restyled here (non-negotiable 6). Colours are tokens only
+   (--njg-proto-* in css/shared/tokens.css: the cloths, paper, the machine, the stall); every shape is a flat placeholder, to be
+   swapped for the art run's pictures. LAYOUT BY HEIGHT: a scene thing is placed by shares of the play area (--x of its width: its
+   middle; --y of its height: its foot; --h of its height: its height), as the school's and the farm's. */
+
+.sw { position: absolute; inset: 0; display: grid; grid-template-columns: var(--njg-side-w) minmax(0, 1fr); background: var(--njg-panel); overflow: hidden; }
+.sw-side { position: relative; display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); padding: var(--njg-side-pad, 10px); min-height: 0; min-width: 0; box-sizing: border-box; overflow: hidden; }
+.sw-list { display: flex; flex-direction: column; gap: var(--njg-side-gap, 10px); min-height: 0; }
+.sw-play { position: relative; overflow: hidden; min-width: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sw-scene { position: absolute; inset: 0; overflow: hidden; }
+.sw-pop { position: absolute; left: 2%; top: 3%; width: clamp(150px, 27%, 300px); z-index: 40; pointer-events: none; }
+.sw-fx { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+.sw-flyer { position: absolute; object-fit: contain; }
+
+/* ---------- a scene thing ---------- */
+.sw-thing { position: absolute; left: calc(var(--x) * 100%); bottom: calc((1 - var(--y)) * 100%); height: calc(var(--h) * 100%); transform: translateX(-50%); box-sizing: border-box; }
+.sw-thing > img { display: block; height: 100%; width: auto; pointer-events: none; -webkit-user-drag: none; }
+.sw-thing > svg { display: block; height: 100%; width: auto; aspect-ratio: 1; pointer-events: none; overflow: visible; }
+.sw-thing.wide { width: calc(var(--w) * 100%); }
+:where(button.sw-thing) { padding: 0; margin: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(button.sw-thing)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sw-thing.sel { animation: var(--njg-glow-anim); }
+.sw-thing.lift, .sw-thing.sw-lifted { translate: 0 -12%; transition: translate .25s ease-out; }
+.sw-thing.sw-bounce { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sw-thing.sw-shake, .sw-shake { animation: swWobble .5s ease-in-out 1; }
+@keyframes swWobble { 20%, 60% { rotate: -6deg; } 40%, 80% { rotate: 6deg; } }
+.sw-thing.gone { opacity: 0; transition: opacity .35s; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .sw-thing.sw-shake, .sw-shake { animation: none; } }
+
+/* ---------- the drawn things (js/sewing-proto/cloth.js): a colour class sets --c, the shapes fill with it ---------- */
+.sw-c-red { --c: var(--njg-proto-cloth-red); }
+.sw-c-green { --c: var(--njg-proto-cloth-green); }
+.sw-c-white { --c: var(--njg-proto-cloth-white); }
+.sw-c-blue { --c: var(--njg-proto-cloth-blue); }
+.sw-c-yellow { --c: var(--njg-proto-cloth-yellow); }
+.sw-c-pink { --c: var(--njg-proto-cloth-pink); }
+.sw-c-plain { --c: var(--njg-proto-cloth-grey); }
+.sw-c-paper { --c: var(--njg-proto-paper); }
+.sw-svg * { vector-effect: non-scaling-stroke; }
+.sw-svg .sw-f { fill: var(--c); stroke: var(--njg-ink-outline); stroke-width: 2.4; stroke-linejoin: round; }
+.sw-svg .sw-roll { stroke-width: 1.2; }
+.sw-svg .sw-core { fill: var(--njg-ink-outline); opacity: .55; }
+.sw-svg .sw-seam { fill: none; stroke: var(--njg-proto-cloth-edge); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.sw-svg .sw-band { fill: var(--c); stroke: var(--njg-ink-outline); stroke-width: 1.4; filter: brightness(.82); }
+.sw-svg .sw-btn { fill: var(--njg-cream); stroke: var(--njg-ink-outline); stroke-width: 1.5; }
+.sw-svg .sw-pocket { fill: none; stroke: var(--njg-proto-cloth-edge); stroke-width: 2; }
+.sw-svg .sw-tear { fill: none; stroke: var(--njg-ink-outline); stroke-width: 3; stroke-linejoin: round; }
+.sw-svg .sw-gap { fill: none; stroke: var(--njg-ink-outline); stroke-width: 2; stroke-dasharray: 3 2.5; }
+.sw-svg .sw-thread { fill: none; stroke: var(--njg-rust); stroke-width: 2; }
+.sw-svg .sw-metal { fill: none; stroke: var(--njg-proto-metal); stroke-width: 6; stroke-linecap: round; }
+.sw-svg .sw-grip { fill: none; stroke: var(--njg-ink-outline); stroke-width: 5; }
+.sw-svg .sw-eye { fill: var(--njg-white); stroke: var(--njg-ink-outline); stroke-width: 1.5; }
+.sw-svg.sw-paper .sw-f, .sw-c-paper .sw-f { stroke: var(--njg-proto-paper-edge); }
+.sw-tilepic { position: relative; display: block; height: 72%; width: auto; max-width: 84%; aspect-ratio: 1; }
+
+/* ---------- the track: a lit dashed line, the tool on it (F.track) ---------- */
+.sw-track { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.sw-track-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.sw-track-lit { stroke: var(--njg-gold-hi); stroke-width: 6; stroke-dasharray: 14 10; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.sw-track-done { stroke: var(--njg-ink-outline); stroke-width: 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.sw-track-done.zig, .sw-track-lit.zig { stroke-dasharray: 6 6; }
+.sw-tool-h { position: absolute; pointer-events: auto; translate: -50% -50%; width: calc(var(--njg-tap, 48px) * 1.5); height: calc(var(--njg-tap, 48px) * 1.5); padding: 0; border: 0; border-radius: 50%; background: var(--njg-cream); box-shadow: 0 0 0 var(--njg-line-2) var(--njg-gold), var(--njg-shadow); cursor: grab; touch-action: none; display: grid; place-items: center; }
+.sw-tool-h > svg { width: 78%; height: 78%; }
+.sw-tool-h.held { cursor: grabbing; scale: 1.1; }
+.sw-track.done .sw-tool-h { opacity: 0; transition: opacity .25s; }
+
+/* ---------- the cloth stall ---------- */
+.sw-stall-wall { position: absolute; inset: 0; background: var(--njg-cream-2); }
+.sw-awning { position: absolute; left: 0; right: 0; top: 0; height: 9%; background: var(--njg-proto-sewing-awning); border-bottom: 0.5em dotted var(--njg-proto-awning-2); }
+.sw-shelf-back { position: absolute; left: 4%; right: 22%; top: 18%; height: 3%; background: var(--njg-proto-wood-dark); border-radius: 0.2em; }
+.sw-counter { background: var(--njg-proto-wood); border-radius: 0.3em 0.3em 0 0; }
+.sw-counter-top { background: var(--njg-proto-wood-dark); border-radius: 0.3em; }
+.sw-counter-top.sw-thump { animation: swThump .3s ease-out 1; }
+@keyframes swThump { 40% { translate: -50% 6%; } }
+.sw-bolt > svg { aspect-ratio: .6; }
+.sw-unroll { background: var(--c); border: 0.12em solid var(--njg-ink-outline); border-radius: 0.2em; clip-path: inset(0 100% 0 0); transition: clip-path .5s ease-out; }
+.sw-unroll.open { clip-path: inset(0 0 0 0); }
+.sw-puff { aspect-ratio: 2; border-radius: 50%; background: var(--njg-cream); opacity: .85; animation: swPuff .7s ease-out 1 forwards; }
+@keyframes swPuff { to { opacity: 0; scale: 1.8; translate: 0 -40%; } }
+.sw-clothbag { aspect-ratio: .85; background: var(--njg-proto-cloth-yellow); border: 0.15em solid var(--njg-ink-outline); border-radius: 12% 12% 30% 30%; }
+.sw-clothbag-strap { position: absolute; left: 22%; right: 22%; top: -30%; height: 34%; border: 0.25em solid var(--njg-ink-outline); border-bottom: 0; border-radius: 50% 50% 0 0; }
+.sw-piece > svg { aspect-ratio: 1.3; }
+.sw-flypiece { background: var(--c); border-radius: 0.2em; border: 0.12em solid var(--njg-ink-outline); box-sizing: border-box; }
+
+/* ---------- make: Big Ma's table, straight down ---------- */
+.sw-table { position: absolute; inset: 0; background: var(--njg-proto-wood); }
+.sw-cloth { background: var(--c); border-radius: 0.3em; box-shadow: inset 0 0 0 0.15em var(--njg-proto-cloth-edge); }
+.sw-watch > img { border-radius: 50%; box-shadow: 0 0 0 var(--njg-line-2) var(--njg-cream); }
+.sw-machine { background: var(--njg-proto-machine); border-radius: 0.6em; }
+.sw-machine-arm { position: absolute; left: 8%; right: 30%; top: 22%; height: 26%; background: var(--njg-proto-metal); border-radius: 0.4em; }
+.sw-machine-wheel { position: absolute; right: 6%; top: 18%; width: 16%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-proto-metal); box-shadow: inset 0 0 0 0.3em var(--njg-proto-machine); }
+.sw-machine-plate { position: absolute; left: 18%; width: 14%; bottom: 8%; height: 24%; background: var(--njg-proto-metal); border-radius: 0.2em; }
+.sw-machine.sw-run { animation: swRun .12s linear 3; }
+@keyframes swRun { 50% { translate: -50% 2%; } }
+.sw-rail { border-left: 0.5em solid var(--njg-proto-wood-dark); border-radius: 0.2em; }
+.sw-made.sw-arrive { animation: var(--njg-hop-anim); animation-iteration-count: 1; }
+.sw-pattern > svg { filter: drop-shadow(0 0.15em 0 var(--njg-proto-paper-edge)); }
+.sw-outline .sw-chalked .sw-f { fill: none; stroke: var(--njg-proto-chalk); stroke-width: 4; stroke-dasharray: 12 8; opacity: 0; transition: opacity .5s; }
+.sw-outline .sw-chalked .sw-seam, .sw-outline .sw-chalked .sw-btn, .sw-outline .sw-chalked .sw-pocket { display: none; }
+.sw-outline.traced .sw-chalked .sw-f { opacity: 1; }
+.sw-outline.cut .sw-chalked .sw-f { fill: var(--c); stroke: var(--njg-ink-outline); stroke-dasharray: none; filter: brightness(1.08); }
+.sw-outline.cut-short .sw-chalked .sw-f { clip-path: inset(0 0 26% 0); }
+.sw-outline.to-machine { transition: translate .45s ease-in, scale .45s ease-in, opacity .45s; translate: -30% -60%; scale: .4; opacity: 0; }
+.sw-hem { position: absolute; left: 16%; width: 68%; height: 0; padding: 0; margin: 0; background: none; border: 0; border-top: 0.3em dashed var(--njg-proto-chalk); translate: 0 -50%; cursor: pointer; z-index: 3; }
+.sw-hem::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: var(--njg-tap, 48px); translate: 0 -50%; }
+.sw-hem.lit { border-top-color: var(--njg-gold-hi); }
+.sw-hem.off { opacity: .35; }
+.sw-offcut { position: absolute; left: 22%; width: 56%; height: 10%; background: var(--c); border: 0.1em solid var(--njg-ink-outline); animation: swDrop .9s ease-in 1 forwards; }
+@keyframes swDrop { to { translate: 30% 160%; rotate: 24deg; opacity: 0; } }
+.sw-tool-cloth { border-radius: 0.4em; }
+.sw-tin { background: var(--njg-proto-metal); border-radius: 50% / 30%; box-shadow: inset 0 0 0 0.3em var(--njg-proto-cloth-edge); }
+.sw-tinbtn { position: absolute; width: 18%; aspect-ratio: 1; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; }
+.sw-tinbtn.small { width: 13%; }
+.sw-tinbtn > svg { width: 100%; height: 100%; display: block; }
+.sw-tinbtn::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sw-tinbtn.used { visibility: hidden; }
+.sw-spot { position: absolute; left: 50%; width: 6%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; border: 0.12em dashed var(--njg-ink-outline); box-sizing: border-box; }
+.sw-spot.on { background: var(--c); border-style: solid; }
+.sw-flybtn { border-radius: 50%; background: var(--c); border: 0.1em solid var(--njg-ink-outline); box-sizing: border-box; }
+.sw-flypattern { background: var(--njg-proto-paper); border-radius: 0.3em; opacity: .8; }
+
+/* ---------- mend: Nana's kurta flat on the table, its faults ---------- */
+.sw-flat { transition: opacity .4s, translate .4s; }
+.sw-flat.sw-away { opacity: 0; translate: -50% 20%; }
+.sw-flat.sw-flap { animation: swFlap .6s ease-in-out 1; }
+@keyframes swFlap { 25% { scale: 1.02 .98; } 50% { scale: .98 1.02; } 75% { scale: 1.01 .99; } }
+.sw-fault { position: absolute; width: 13%; aspect-ratio: 1; translate: -50% -50%; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.sw-fault::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap, 48px)); height: max(100%, var(--njg-tap, 48px)); translate: -50% -50%; }
+.sw-fault.sel { animation: var(--njg-glow-anim); border-radius: 50%; }
+.sw-fault-pic { width: 70%; height: 70%; }
+.sw-fault-off { width: 9%; }
+.sw-fault-off .sw-fault-pic .sw-f { fill: none; stroke: none; }
+.sw-fault-mark { display: block; width: 90%; height: 30%; background: var(--njg-ink-outline); clip-path: polygon(0 50%, 15% 0, 30% 70%, 45% 5%, 60% 75%, 75% 10%, 90% 70%, 100% 40%, 100% 60%, 90% 100%, 75% 40%, 60% 100%, 45% 35%, 30% 100%, 15% 35%, 0 70%); }
+.sw-fault-hole .sw-fault-mark { width: 46%; height: 34%; border-radius: 50%; clip-path: none; background: var(--njg-proto-wood); box-shadow: 0 0 0 0.15em var(--njg-ink-outline); }
+.sw-fault.mended .sw-fault-mark { background: none; height: 0; border-top: 0.2em dashed var(--njg-ink-outline); clip-path: none; box-shadow: none; border-radius: 0; }
+.sw-fault-off.mended .sw-fault-pic { visibility: hidden; }
+.sw-fault-off.mended::before { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: var(--njg-cream); box-shadow: 0 0 0 0.1em var(--njg-ink-outline); }
+.sw-tin-small { display: grid; place-items: center; }
+.sw-tin-small .sw-tin-btn { width: 50%; height: auto; }
+.sw-needle-rest > svg { aspect-ratio: 1; }
+.sw-holepic { display: block; height: 40%; aspect-ratio: 1.3; border-radius: 50%; background: var(--njg-proto-cloth-grey); box-shadow: 0 0 0 0.15em var(--njg-ink-outline); }
+
+/* ---------- the fitting: Big Ma's room, front on ---------- */
+.sw-room-wall { position: absolute; inset: 0 0 18% 0; background: var(--njg-cream-2); }
+.sw-room-floor { position: absolute; inset: 82% 0 0 0; background: var(--njg-proto-wood); }
+.sw-mirror { background: var(--njg-proto-mirror); border: 0.6em solid var(--njg-proto-wood-dark); border-radius: 40% 40% 0.4em 0.4em / 18% 18% 0.4em 0.4em; box-sizing: border-box; opacity: .9; }
+.sw-stool { background: var(--njg-proto-wood-dark); border-radius: 0.3em 0.3em 0 0; }
+.sw-person { aspect-ratio: .36; overflow: visible; }
+.sw-person .sw-head { position: absolute; left: 50%; top: 0; width: 82%; height: auto; translate: -50% 0; border-radius: 50%; z-index: 3; }
+.sw-nana .sw-head { width: 76%; }
+.sw-person .sw-torso { position: absolute; left: 14%; right: 14%; top: 22%; height: 34%; background: var(--njg-cream); border-radius: 30% 30% 8% 8% / 20% 20% 6% 6%; box-shadow: inset 0 0 0 0.1em var(--njg-proto-cloth-edge); z-index: 1; }
+.sw-person .sw-arm { position: absolute; top: 24%; width: 13%; height: 32%; background: var(--njg-cream); border-radius: 0.6em; z-index: 1; box-shadow: inset 0 0 0 0.1em var(--njg-proto-cloth-edge); }
+.sw-person .sw-arm.l { left: 2%; rotate: 8deg; }
+.sw-person .sw-arm.r { right: 2%; rotate: -8deg; }
+.sw-person .sw-legs { position: absolute; left: 22%; right: 22%; top: 54%; bottom: 0; background: var(--njg-proto-trousers); border-radius: 0.3em 0.3em 0.2em 0.2em; z-index: 0; }
+.sw-worn { position: absolute; left: 50%; translate: -50% 0; z-index: 2; display: none; pointer-events: none; }
+.sw-worn.on { display: block; }
+.sw-worn > svg { display: block; width: 100%; height: 100%; overflow: visible; aspect-ratio: auto; }
+.sw-worn.k-kurta.sz-ok { top: 17%; width: 132%; height: 64%; }
+.sw-worn.k-kurta.sz-big { top: 15%; width: 190%; height: 104%; }
+.sw-worn.k-kurta.sz-small { top: 17%; width: 92%; height: 30%; }
+.sw-worn.k-cap { top: -4%; width: 64%; height: 16%; z-index: 4; }
+.sw-worn.k-dupatta { top: -8%; width: 140%; height: 48%; z-index: 4; }
+.sw-worn.k-dupatta > svg { rotate: 90deg; }
+/* the wrong garment's gags: the cap drops over the eyes; the dupatta lands over the head like a tent */
+.sw-worn.k-cap.gag { top: 8%; width: 78%; height: 20%; }
+.sw-worn.k-dupatta.gag { top: -6%; width: 150%; height: 70%; }
+.sw-worn.k-dupatta.gag > svg { rotate: 0deg; scale: 1 2.4; }
+.sw-person.sw-twirl { animation: swTwirl .7s ease-in-out 1; }
+@keyframes swTwirl { 50% { scale: -1 1; } }
+.sw-person.sw-wriggle { animation: swWobble .5s ease-in-out 1; }
+.sw-person.sw-giggle { animation: swGiggle .3s ease-in-out 3; }
+@keyframes swGiggle { 50% { translate: 0 -3%; } }
+.sw-person.sw-puzzled .sw-head { rotate: 14deg; translate: -50% 6%; transition: rotate .3s, translate .3s; }
+.sw-railbar { background: var(--njg-proto-wood-dark); border-radius: 0.3em; }
+.sw-hang { overflow: visible; }
+.sw-hang .sw-hanger { position: absolute; left: 50%; top: -12%; width: 40%; height: 12%; translate: -50% 0; border: 0.2em solid var(--njg-proto-metal); border-bottom: 0; border-radius: 50% 50% 0 0; box-sizing: border-box; }
+.sw-hang.away { opacity: .25; }
+.sw-flash { background: var(--njg-white); opacity: 0; animation: swFlash .5s ease-out 1; pointer-events: none; }
+@keyframes swFlash { 15% { opacity: .85; } 100% { opacity: 0; } }

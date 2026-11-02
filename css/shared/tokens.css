@@ -237,6 +237,23 @@
   --njg-proto-awning: #3f8f5a;
   --njg-proto-awning-stripes: repeating-linear-gradient(90deg, #3f8f5a 0 6%, #fdf6e8 6% 12%);
   --njg-proto-puff: radial-gradient(circle, #fdf6e8, rgb(253 246 232 / 0) 70%);
+  /* (the sewing prototypes, proto-sewing 2 Nov: the cloths, paper patterns, the machine, the stall, the fitting room) */
+  --njg-proto-cloth-red: #c8402f;
+  --njg-proto-cloth-green: #3f8f4e;
+  --njg-proto-cloth-white: #f6f2e9;
+  --njg-proto-cloth-blue: #3a6fb8;
+  --njg-proto-cloth-yellow: #e8b931;
+  --njg-proto-cloth-pink: #e07a8e;
+  --njg-proto-cloth-grey: #b9b3aa;
+  --njg-proto-cloth-edge: rgb(0 0 0 / .28);
+  --njg-proto-paper: #efe3c4;
+  --njg-proto-paper-edge: #c9b88f;
+  --njg-proto-machine: #3b3f46;
+  --njg-proto-metal: #aeb4bb;
+  --njg-proto-sewing-awning: #d9b44a;
+  --njg-proto-awning-2: #f3ecd9;
+  --njg-proto-mirror: #d8e6ec;
+  --njg-proto-trousers: #4a5466;
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;
