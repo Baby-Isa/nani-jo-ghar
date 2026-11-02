@@ -232,6 +232,7 @@ export function sortEntries(modes, arcs) {
         else if (m.id === "town-proto") put("Town prototypes (Nani, 2 Nov)", card1(m, l));
         else if (m.id === "sewing-proto") put("Sewing prototypes (Big Ma; 2 Nov)", card1(m, l));
         else if (m.id === "pets-proto") put("Pet hotel prototypes (Hannah Mami, 2 Nov)", card1(m, l));
+        else if (m.id === "safari-proto") put("Safari prototypes (Hannah Mami, 2 Nov)", card1(m, l));
         else put(`${esc(m.id)}`, card1(m, l));
       }
     }

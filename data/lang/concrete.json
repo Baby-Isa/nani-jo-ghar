@@ -2323,6 +2323,78 @@
    "english": "We've come for the {x}.",
    "what": "We've come for the {x}.",
    "src": "data/pets-proto.json lines.home-come: an English placeholder, to record"
+  },
+  "TakeAPhotoOfTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Take a photo of the {x}.",
+   "what": "Take a photo of the {x}.",
+   "src": "data/safari-proto.json lines.snap-x: an English placeholder, to record"
+  },
+  "TakeAPhotoOfTheXThatSV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Take a photo of the {x} that's {v}.",
+   "what": "Take a photo of the {x} that's {v}.",
+   "src": "data/safari-proto.json lines.snap-x-v: an English placeholder, to record"
+  },
+  "WhoSV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Who's {v}?",
+   "what": "Who's {v}?",
+   "src": "data/safari-proto.json lines.snap-who-v: an English placeholder, to record"
+  },
+  "ThatSTheXV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "That's the {x} {v}!",
+   "what": "That's the {x} {v}!",
+   "src": "data/safari-proto.json lines.snap-is-v: an English placeholder, to record"
+  },
+  "TheXIsHiding": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is hiding.",
+   "what": "The {x} is hiding.",
+   "src": "data/safari-proto.json lines.hide-x: an English placeholder, to record"
+  },
+  "FindTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Find the {x}!",
+   "what": "Find the {x}!",
+   "src": "data/safari-proto.json lines.hide-part: an English placeholder, to record"
+  },
+  "WhereSTheXOne": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Where's the {x} one?",
+   "what": "Where's the {x} one?",
+   "src": "data/safari-proto.json lines.hide-desc: an English placeholder, to record"
+  },
+  "ThatSTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "That's the {x}!",
+   "what": "That's the {x}!",
+   "src": "data/safari-proto.json lines.hide-thats: an English placeholder, to record"
   }
  }
 }

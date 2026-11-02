@@ -8,7 +8,8 @@ import { importLine, recordWord } from "./import_cook.mjs";
 const SOURCE = "parked modes";
 // (farm: the farm prototypes' placeholders, data/farm.json; proto-farm, 1 Nov)
 // (school-proto: the school day prototypes' placeholders, data/school-proto.json; proto-school, 2 Nov)
-const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto", "home-proto", "party-proto", "town-proto", "sewing-proto", "pets-proto"];
+const MODES = ["dress", "who", "relations", "monsoon", "snap", "tidy", "find", "farm", "school-proto", "home-proto", "party-proto", "town-proto", "sewing-proto", "pets-proto", "safari-proto"];
+// (safari-proto: the safari prototypes' placeholders, data/safari-proto.json; 2 Nov)
 // (home-proto: the home prototypes' placeholders, data/home-proto.json; proto-home, 2 Nov)
 // (party-proto: the birthday prototypes' placeholders, data/party-proto.json; proto-party, 2 Nov)
 // (town-proto: the town and shops prototypes' placeholders, data/town-proto.json; proto-town, 2 Nov)

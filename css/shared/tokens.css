@@ -268,6 +268,17 @@
   --njg-proto-pets-blanket: #c4646a;
   --njg-proto-pets-blanket-stripe: #f3e6d2;
   --njg-proto-pets-sleep: #ffffff;
+  /* (the safari prototypes, proto-safari 2 Nov: css/safari-proto.css: the sky over the ride, the jeep's roof and rail, the
+     dashboard, the camera's flash and frame, the print's shadow, the savannah's ground behind the long grass) */
+  --njg-proto-safari-sky: #a9d4f2;
+  --njg-proto-safari-roof: #6b5a3e;
+  --njg-proto-safari-bar: #3d4a35;
+  --njg-proto-safari-dash: #8a6d4a;
+  --njg-proto-safari-flash: rgb(255 255 255 / .85);
+  --njg-proto-safari-corner: rgb(255 255 255 / .92);
+  --njg-proto-safari-shadow: 0 0.2em 0.6em rgb(40 25 10 / .35);
+  --njg-proto-safari-ground: #d8b860;
+  --njg-proto-safari-ground-far: #c9b46a;
   --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
   --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;
