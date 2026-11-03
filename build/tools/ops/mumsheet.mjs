@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { ROOT, args, help, die, sh } from "./lib.mjs";
 
 const HELP = `
-node build/tools/ops/mumsheet.mjs [--round N] [--out file.md] [--docx] [--max 30] [--prefix R6-] [--date "6 Oct 2026"]
+node build/tools/ops/mumsheet.mjs [--round N] [--out file.md] [--docx] [--max 30] [--prefix R6-] [--date "6 Oct 2026"] [--modes cook,clinic]
   Reads data/lang/reports/gap-list.md and clash-list.md (rebuild them first: node build/lang/import_all.mjs) and writes the next
   round's question sheet in the Round 5 layout: how to answer, Part 1 quick checks (the clash list's open spellings and
   "two words for one thing"), then Cook (decision: Cook first) and the clinic, each as sentences (say once), words (three
@@ -14,6 +14,7 @@ node build/tools/ops/mumsheet.mjs [--round N] [--out file.md] [--docx] [--max 30
   --max N     rows per part (default 30); the rest are counted as "next round" so a sitting stays about an hour
   --out       default: print counts only (dry run). Give a path to write, e.g.
               "docs/language/mum-questions/Questions for Mum (Round 6).md" (the round number is the next free one)
+  --modes     which games' gaps go on the sheet, in order (default cook,clinic; e.g. --modes cook for a stove-family round)
   --docx      also write the Word copy beside it (needs the npm "docx" package; it is installed globally here)
   Zafar's spelling and gender calls (clash list sections 3-6) are for him, not Mum, and stay out of the sheet. No network.`;
 const a = args(); help(HELP, a);
@@ -40,6 +41,21 @@ for (const line of readFileSync(join(REP, "gap-list.md"), "utf8").split("\n")) {
   }
   const need = /^\s+- Needed by: (.+)$/.exec(line);
   if (need && mode && cat && gaps[mode][cat].length) gaps[mode][cat].at(-1).need = need[1];
+}
+// tidy each part (3 Nov): an engine key never reaches Mum ("phrase.thank-you" -> the line's English, "Thank you!"), and a
+// word to record is asked once however many forms of it the gap list counts (it listed paani, trae, chai ... twice)
+for (const m of Object.keys(gaps)) for (const cat of Object.keys(gaps[m])) {
+  const seen = new Map();
+  gaps[m][cat] = gaps[m][cat].filter((it) => {
+    if (/"[a-z]+\.[a-z0-9-]+"/.test(it.say)) {
+      const en = /line "([^"]+)"/.exec(it.need || "");
+      if (!en) return false;
+      it.say = `"${en[1]}"`;
+    }
+    const k = it.say.toLowerCase();
+    if (seen.has(k)) { const first = seen.get(k); if (it.was && !first.was.includes(it.was)) first.was = [first.was, it.was].filter(Boolean).join(", "); return false; }
+    seen.set(k, it); return true;
+  });
 }
 
 // ---- clash list: only what Mum can settle (section 1 not yet settled, section 2)
@@ -86,7 +102,8 @@ if (clash.length) {
   L.push(`## Part ${++part} · Quick checks: which is right? (about ${Math.ceil(rows.length * 20 / 60)} minutes)`, "", "*Two of our sources disagree. Say the one you would use, three times.*", "");
   table(rows.map((c) => `| ${id()} | ${c.en}: *${c.have}* | ${c.note} | |`), "Question"); secs += rows.length * 20;
 }
-for (const [mkey, mname] of [["cook", "The cooking game"], ["clinic", "The clinic"]]) {
+const MODES = String(a.val("modes", "cook,clinic")).split(",");
+for (const [mkey, mname] of [["cook", "The cooking game"], ["clinic", "The clinic"]].filter(([k]) => MODES.includes(k))) {
   L.push(`# ${mname}`, "");
   for (const [cat, title, times, per] of PARTS) {
     const items = gaps[mkey][cat] || [];

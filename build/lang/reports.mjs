@@ -8,7 +8,8 @@ import { createEngine } from "../../js/core/lang/engine/index.js";
 import { REASONS, PAIRS } from "./hand/contradictions.mjs";
 import { DECISION_CLASHES } from "./hand/clash-notes.mjs";
 import { NOT_LOADED } from "./hand/not-kutchi.mjs";
-import { readText } from "./lib.mjs";
+import { readText, ROOT } from "./lib.mjs";
+import { readdirSync } from "node:fs";
 
 const OUT = "data/lang/reports/";
 
@@ -67,8 +68,10 @@ function cookWordIds(S) {
   const ids = [];
   const cook = readJSON("data/cook.json");
   ids.push(...Object.keys(cook.words));
-  for (const f of ["mishkaki-grill", "maani-line"]) ids.push(...Object.keys(readJSON(`data/stations/${f}.json`).words || {}));
-  return ids;
+  // every station's own words (was only mishkaki-grill and maani-line, so eggs, baking and the corn stall never reached Mum's sheet; 3 Nov)
+  for (const f of readdirSync(ROOT + "data/stations").filter((x) => x.endsWith(".json")).sort())
+    ids.push(...Object.keys(readJSON(`data/stations/${f}`).words || {}));
+  return [...new Set(ids)];
 }
 function clinicWordIds(S) {
   const ids = new Set();

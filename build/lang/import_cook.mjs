@@ -137,14 +137,14 @@ const pascal = (s) => String(s).replace(/\{(\w+)\}/g, " $1 ").replace(/[^A-Za-z0
 const SAMPLE_ARG = { part: "body-ear", x: "body-ear", side: "side-left", tool: "tool-torch", kind: "cook-maani", a: "cook-maani", b: "cook-dudh", c: "cook-khun", rest: "cook-dudh", n: 2, what: "body-ear", y: "cook-dudh", pela: "lnk-pela", nepoi: "lnk-nepoi" };
 
 /** A game frame Mum has not given: an abstract meaning with an unknown rule, asking for the questions that would settle it. */
-export function unknownFrame(S, { english, src, ask, key }) {
+export function unknownFrame(S, { english, src, ask, key, game }) {
   const args = Array.from(new Set(Array.from(String(english).matchAll(/\{(\w+)\}/g)).map((m) => m[1])));
   let name = pascal(english) || "Line";
   if (/^[0-9]/.test(name)) name = "L" + name;
   const sig = JSON.stringify(args);
   while (S.functions[name] && S.functions[name]._sig !== sig) name += "2";
   if (!S.functions[name]) {
-    S.functions[name] = { cat: "Utt", args: Object.fromEntries(args.map((a) => [a, { type: a === "n" ? "Num" : "NP" }])), en: english, elicit: [english.replace(/\{(\w+)\}/g, (_, a) => ({ part: "knee", x: "knee", side: "left", tool: "torch", kind: "man", n: "two" }[a] || a))], _sig: sig };
+    S.functions[name] = { cat: "Utt", args: Object.fromEntries(args.map((a) => [a, { type: a === "n" ? "Num" : "NP" }])), en: english, elicit: [english.replace(/\{(\w+)\}/g, (_, a) => ({ part: "knee", x: game === "cook" ? "chai" : "knee", dish: "chai", side: "left", tool: "torch", kind: "man", n: "two" }[a] || a))], _sig: sig };
     S.lin[name] = { status: "unknown", ask: [ask], english, what: english, src };
   }
   const meaning = { fn: name };
@@ -182,7 +182,7 @@ export function importLine(S, game, key, ln, { frames, src, okWords, rank, ask =
   }
   const bracketed = !!text && /\[[^\]]+\]/.test(text); // an English placeholder inside the Kutchi frame: to record
   const hasSlot = /\{\w+\}/.test(text || "") || (!text && /\{\w+\}/.test(en));
-  if (hasSlot) return finish("unknown-frame", unknownFrame(S, { english: en, src: srcStr, ask, key }).meaning);
+  if (hasSlot) return finish("unknown-frame", unknownFrame(S, { english: en, src: srcStr, ask, key, game }).meaning);
   if (!text || bracketed) {
     const t = recordWord(S, { pos: "Phrase", english: en, src: srcStr, alias, file: src, ask: ln.record ? "to record" : "new", rank, notes: ln._about ? [String(ln._about)] : undefined });
     return finish("torecord", { fn: "Say", x: t.id }, t.id);
