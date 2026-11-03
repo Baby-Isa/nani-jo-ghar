@@ -2273,7 +2273,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const cardKey14 = `${STATION14}:${S14_TAG}card`;
         // (one waiter at a time: the sandbox, 3 Nov, contract-87: each step opened while it waited started another, and three lit the
         // card together)
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14] && !cardWait14) {
+        // (and only towards an item: the sandbox, 3 Nov: after a pan's tea the next step can be picking the next pan, which has no item,
+        // and the whole order card lit beside the pan's own light, contract-79 and -87)
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14] && !cardWait14 && rungCur && rungCur.id) {
           cardWait14 = true;
           const sp = Cook.speed || 1;
           // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
