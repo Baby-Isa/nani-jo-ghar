@@ -3170,6 +3170,9 @@
   function renderOrder6() {
     const box = $("#mission .m-order");
     drawCards(box, sideEls);
+    // CHAI-69 (the audit, 2 Nov night): the headline is fitted the moment it is drawn, not a frame later by the watch, so no sample
+    // (and no paint) ever finds it on one unwrapped line past the card's edge ("khape." 15-20 px out at 740x320 and 930x430)
+    if (global.FitText && global.FitText.run) global.FitText.run(box);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
     if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
     // SH-171 (Zafar, 1 Nov night: "the menu card should only appear when that person starts their order, saying the sentence that is
