@@ -2113,7 +2113,13 @@
           if (!box) return;
           box.innerHTML = "";
           if (item && m.headOnly && m.headOnly.delete(who)) {
+            // SH-180 (the judge, 3 Nov: the card went from its headline to three open slots in one step): its height eases open, as the
+            // said card's fold does (foldGlide)
+            const listO = $("#mission");
+            const hO = new Map([...document.querySelectorAll("#mission .oc-card")].map((x) => [x.dataset.who, x.getBoundingClientRect().height]));
+            const topO = listO ? listO.scrollTop : 0;
             renderOrder(); // (SH-171: the card opens, its slots empty, as the first item is said)
+            if (listO) foldGlide(listO, hO, topO, () => listO.scrollTop);
             // (Zafar, 2 Nov: the row opens already scrolled so the first item's slot is whole, the one before it at the left)
             const first = rowElOf(who, r);
             if (first && OCard() && OCard().glideTo) OCard().glideTo(first, { lead: true, instant: true });

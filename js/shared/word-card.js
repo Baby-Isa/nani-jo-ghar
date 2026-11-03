@@ -668,24 +668,24 @@
       // SH-163 (the judge, 3 Nov: the two cards' words both showed through the long cross-fade; Zafar, 30 Oct: "one card shrinking
       // while it moves, never a cross-fade of two"): the big card stays whole and solid as it shrinks and moves; the row's card takes
       // over only in the last eighth of the flight, where the two are one size on one place, so no frame shows two cards' words
-      const SWAP = 0.88;
+      // (the judge again, 3 Nov: even a short fade at the end showed the two half see-through: no fade at all; the big card flies whole
+      // to the row's card's place and size, and on landing the row's card is shown and the big one hidden in the same frame, below)
       const fk = o.across
-        ? [{ transform: "none", opacity: 1 }, { transform: `translate(${dx}px, 0px) scale(${sm})`, opacity: 1, offset: 0.5 }, { opacity: 1, offset: SWAP }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }]
-        : [{ transform: "none", opacity: 1 }, { opacity: 1, offset: SWAP }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }];
-      const gk = o.across
-        ? [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { transform: `translate(0px, ${-dy}px) scale(${gm})`, opacity: 0, offset: 0.5 }, { opacity: 0, offset: SWAP }, { transform: "none", opacity: 1 }]
-        : [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: SWAP }, { transform: "none", opacity: 1 }];
+        ? [{ transform: "none" }, { transform: `translate(${dx}px, 0px) scale(${sm})`, offset: 0.5 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }]
+        : [{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }];
+      const gk = [{ opacity: 0 }, { opacity: 0 }];
       const f = from.animate(fk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
       const g = ghost.animate(gk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
       await Promise.all([f.finished, g.finished]);
       // the row's own card under the copy, shown at once (no fade from its waiting slot), then the copy goes: the same card, one frame
+      // (its picture decoded first, while it still waits off the card; then the row's card shown and the big one hidden together)
+      const im = to.querySelector("img");
+      if (im && im.decode) await Promise.race([im.decode().catch(() => {}), new Promise((r) => setTimeout(r, 300))]);
       const tr = to.style.transition;
       to.style.transition = "none";
       to.classList.remove("oc-away");
-      void to.offsetWidth;
-      const im = to.querySelector("img");
-      if (im && im.decode) await Promise.race([im.decode().catch(() => {}), new Promise((r) => setTimeout(r, 300))]);
       from.style.visibility = "hidden";
+      void to.offsetWidth;
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       to.style.transition = tr;
     } catch (e) {
