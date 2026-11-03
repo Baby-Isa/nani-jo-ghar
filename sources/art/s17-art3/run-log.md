@@ -49,3 +49,9 @@ Not landed: MZ.
 crystals (dots only, as asked: no writing), GS's are the fizz specks, NF's four faces are whole with the hair touching the cell's top:
 all three kept. SF (six real folds), KC (the empty board), BV, BW (plain lines, no numbers) and PO read as asked. MZ (the mouth zoom's
 middle step) did not land: to redo.
+
+## Zafar's run log (3 Nov, his paste)
+His Chrome run's own verdicts, by line: BK FAIL kept as the best try (front edge about 59%, not 48-55%; tiles slightly peach; 2 redos);
+NF FAIL kept as the best try (slight face drift: narrower, a little older; 2 redos); DC PASS (edge about 57%); MZ skipped (ChatGPT
+refused it, no image); every other line PASS (GS: image 2 of ChatGPT's two). Redo list: BK, NF, MZ (MZ re-worded so it is not
+refused: the open-mouth "aah" at the whole face's framing, as the s08c close-up).

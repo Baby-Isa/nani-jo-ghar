@@ -26,5 +26,46 @@
  },
  "_report": [
   "wf-snap: 4 piece(s) by cell for 4 name(s)"
- ]
+ ],
+ "wm-glass": {
+  "w": 190,
+  "h": 225,
+  "frames": [
+   "glass-wm-01-s17.webp",
+   "glass-wm-02-s17.webp",
+   "glass-wm-03-s17.webp",
+   "glass-wm-04-s17.webp",
+   "glass-wm-05-s17.webp",
+   "glass-wm-06-s17.webp",
+   "glass-wm-07-s17.webp",
+   "glass-wm-08-s17.webp",
+   "glass-wm-09-s17.webp",
+   "glass-wm-10-s17.webp",
+   "glass-wm-11-s17.webp",
+   "glass-wm-12-s17.webp"
+  ]
+ },
+ "wm-jug": {
+  "w": 248,
+  "h": 228,
+  "frames": [
+   "jug-wm-01-s17.webp",
+   "jug-wm-02-s17.webp",
+   "jug-wm-03-s17.webp",
+   "jug-wm-04-s17.webp",
+   "jug-wm-05-s17.webp",
+   "jug-wm-06-s17.webp",
+   "jug-wm-07-s17.webp",
+   "jug-wm-08-s17.webp",
+   "jug-wm-09-s17.webp",
+   "jug-wm-10-s17.webp",
+   "jug-wm-11-s17.webp",
+   "jug-wm-12-s17.webp"
+  ]
+ },
+ "wm-counter": {
+  "file": "counter-wm-s17.webp",
+  "baseAt": 0.707,
+  "aspect": 1.5
+ }
 }

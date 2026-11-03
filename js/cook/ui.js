@@ -100,9 +100,10 @@
     Cook.save.seenStation[WM_KEY] = true;
     if (Cook.writeSave) Cook.writeSave();
     const A = "assets/shared/word-moment/";
-    const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-side-${i + 1}-s17.webp`));
+    // (CHAI-73, pack s17-wm: one glass in twelve stages, each in the same place on the counter: half is the 6th, full the 11th)
+    const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-wm-${String(i + 1).padStart(2, "0")}-s17.webp`));
     const glass = (id, n) => ({
-      empty: Cook.v(`${A}glass-side-1-s17.webp`),
+      empty: Cook.v(`${A}glass-wm-01-s17.webp`),
       frames: fr(n),
       word: { id, kutchi: Cook.display(id), english: Cook.english(id) },
       say: () => (Cook.Lang || Lang).speakWord(id),
@@ -119,7 +120,8 @@
         stream: Cook.v(`${A}stream-chai-s17.webp`),
         // (Zafar, 3 Nov: the iris retired: the corners close in, the frame flashes, the shutter's sound)
         snapArt: { corners: Cook.v(`${A}snap-corners-s17.webp`) },
-        glasses: [glass("ph-half", 3), glass("ph-full", 5)],
+        scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5 },
+        glasses: [glass("ph-half", 6), glass("ph-full", 11)],
         snap: "each",
         shutter: "corners",
         cards: "stay",
@@ -2721,7 +2723,7 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/shared/word-moment/glass-side-3-s17.webp", "ph-full": "assets/shared/word-moment/glass-side-5-s17.webp" }; // (half and full: the side-on glasses the word moment snapped, Zafar, 3 Nov: "the item cards for full and half cup need to be the side on views ... that's obviously the pictures that we have to use"; was the s14 overhead fills)
+  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/shared/word-moment/glass-wm-06-s17.webp", "ph-full": "assets/shared/word-moment/glass-wm-11-s17.webp" }; // (half and full: the side-on glasses the word moment snapped, Zafar, 3 Nov: "the item cards for full and half cup need to be the side on views ... that's obviously the pictures that we have to use"; was the s14 overhead fills)
   // (the S14 roll-out: every Cook station's word cards: the daal and the flour, and the ph- things with a shelf picture, chaat's toppings and
   // samosa's fillings among them; lesson 6: a word that is said needs its picture)
   const WC_ID = /^(cook-(paani|dudh|chai|khun|daal|atto)|spi-[0-9]+|veg-[0-9]+|ph-(amli|chana|dahi|dhana|keema|lili|meat|sev|pepper))$/;

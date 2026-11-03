@@ -18,6 +18,7 @@
  *     cards:   "stay" (each card where its glass was) | "rise" (the cards rise to the top, side by side),
  *     speed:   1 (2 = twice as fast), instant: true (the end state at once: the lab's shots)
  *     hold:    ms each card stays before the next glass (500), english: false to dot the card's English (shown by default)
+ *     scene:   { src, baseAt (the counter's top as a fraction of the picture's height), aspect } a scene behind, the glasses on its counter
  *   }) -> Promise<{ cards: [el] }>;   WordMoment.stop(host) ends one early (the cards stay)
  *
  * Art: art block 1 (3 Nov, assets/shared/word-moment/: the tilted kettle, the side-on glasses, the streams, the corners and the iris);
@@ -58,7 +59,19 @@
     const g = Math.round(Math.min(W / (n * 1.9 + 0.4), H * 0.42));
     const gap = g * 0.9;
     const left0 = (W - (n * g + (n - 1) * gap)) / 2;
-    const cy = H * 0.6;
+    let cy = H * 0.6;
+    // (o.scene, CHAI-73: the kitchen counter side-on behind the glasses, its picture covering the stage; the glasses stand on its top,
+    // o.scene.baseAt of the picture's height, so a see-through glass shows the scene's own plain wall: Zafar, 3 Nov)
+    if (o.scene && o.scene.src) {
+      const sc = el("img", "wm-scene", box);
+      sc.alt = "";
+      sc.draggable = false;
+      sc.src = o.scene.src;
+      const ar = o.scene.aspect || 1.5;
+      const k = Math.max(W / ar, H); // (the picture's drawn height under object-fit: cover)
+      const lineY = (H - k) / 2 + (o.scene.baseAt || 0.7) * k;
+      cy = Math.min(H - g / 2 - 4, lineY - g / 2);
+    }
     const slots = o.glasses.map((x, i) => {
       const s = el("div", `wm-glass${o.side ? " wm-side" : ""}`, box);
       s.style.cssText = `left:${left0 + i * (g + gap)}px;top:${cy - g / 2}px;width:${g}px;height:${g}px`;

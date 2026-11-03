@@ -1,6 +1,8 @@
 /* The word moment (js/shared/word-moment.js, CHAI-67): the glasses, the tilted vessel, its stream, the shutter, the cards in place.
    Sizes come from the script (the room it has); colours and type from the tokens. */
 .wm { position: absolute; inset: 0; pointer-events: none; }
+.wm > .wm-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.wm-glass.wm-side > img { object-position: 50% 100%; }
 /* (in the kitchen, js/cook/ui.js UI.wordMoment: over the play area, then gone as the order comes up) */
 .cook-wm { position: absolute; inset: 0; z-index: 20; pointer-events: none; transition: opacity .3s; animation: cook-wm-in .3s ease-out; }
 /* (a cut-scene, Zafar 2 Nov: "we teach them first with a cutscene before the kitchen ordering": its own worktop, the kitchen behind) */
