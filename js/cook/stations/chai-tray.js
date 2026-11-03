@@ -2326,10 +2326,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               // SH-178 (the judge, 3 Nov: at L2-L4 the box sat on the ticked card while Nani called the next): the light follows the
               // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
               const first = cardLit();
-              const lit = Array.isArray(first) || !first ? first : () => {
-                const item = itemOf();
-                return whole(item) ? item : document.querySelector("#mission .oc-card") || first;
-              };
+              // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
+              const onItem = first && first.classList && first.classList.contains("oc-row");
+              const lit = Array.isArray(first) || !first ? first : () => (onItem ? itemOf() || first : document.querySelector("#mission .oc-card") || first);
               light14(lit, "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
             }
             else setTimeout(go, 60);
