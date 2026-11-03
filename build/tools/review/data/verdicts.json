@@ -6968,19 +6968,19 @@
   "date": "2026-10-20"
  },
  "SH-153": {
-  "hash": "ff8c1e229ec2f04fe526",
+  "hash": "c4812dd855615908a495",
   "dhash": [
-   "0003595975050fcc",
-   "8007035949030fcc",
+   "000090a82a000c0c",
+   "0000009aac000c0c",
    "00011191d8030d0c",
-   "cc0101626a03115c"
+   "808301d1cd018f8c"
   ],
   "verdict": "PASS",
   "line": "machine: count:.cv-bubble .wp-say=0 (0 visible (4 moments)); count:.cv-bubble .wp-say=0 (0 visible (4 moments)); count:.cv-bubble .wp-say=0 (0 visible (4 moments))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261103-111144-8je",
-  "commit": "6cf773d3",
+  "run": "ev-20261103-131342-phl",
+  "commit": "1b33f4dc",
   "date": "2026-11-03"
  },
  "SH-16": {

@@ -1767,3 +1767,4 @@
 {"id":"CHAI-50","run":"ev-20261103-111144-8je","event":"built","date":"2026-11-03"}
 {"id":"CK-18","run":"ev-20261103-111144-8je","event":"built","date":"2026-11-03"}
 {"id":"ART-31","run":"ev-20261103-111144-8je","event":"built","date":"2026-11-03"}
+{"id":"SH-153","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"418360e4818db346e83b","judge":"expect","date":"2026-11-03"}
