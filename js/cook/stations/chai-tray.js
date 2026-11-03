@@ -2350,8 +2350,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           };
           const on = () => moves14 !== m0;
           let quiet = null;
+          // (the sandbox, 3 Nov: a kitchen that never went still held the waiter for seconds, and it lit in the middle of another move;
+          // past its 3 s it gives up, and the next pan's tea brings it again: SH-178)
+          const until = Date.now() + 3000;
           const go = () => {
-            if (on() || finished) return void (cardWait14 = false);
+            if (on() || finished || Date.now() > until) return void (cardWait14 = false);
             const still = !moving();
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
