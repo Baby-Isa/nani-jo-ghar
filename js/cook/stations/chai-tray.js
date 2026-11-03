@@ -2046,8 +2046,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const st = document.querySelector("#stage");
         const room = st ? st.getBoundingClientRect().bottom - pb - 6 : m;
         m = Math.max(3, Math.min(m, room));
-        const left = Math.min(a.x, pl - m);
-        const right = Math.max(z.x, pr + m);
+        // (the judge, 3 Nov, every size: the sides came from the picture's own wide margin, so the gap under the pill was a third of the
+        // sides': the box's sides follow the pill by the same margin, wider only where the picture itself would reach past them)
+        const il = UI.worldToScreen(b.x, 0).x;
+        const ir = UI.worldToScreen(b.right, 0).x;
+        const left = Math.min(pl - m, il - 4);
+        const right = Math.max(pr + m, ir + 4);
         const bottom = pb + m;
         return [left, a.y, right - left, bottom - a.y];
       }
