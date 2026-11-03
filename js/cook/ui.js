@@ -2041,6 +2041,8 @@
         list.scrollTop = aim();
         return;
       }
+      // (the evidence moment life:order-pass: the glide begins, so a probe films the fold itself, not a bubble either side of it)
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-pass", { cards: moves.length });
       const ease = "cubic-bezier(.4, 0, .2, 1)";
       moves.forEach(([c, a, b]) => {
         const an = c.animate([{ height: `${a}px`, overflow: "hidden" }, { height: `${b}px`, overflow: "hidden" }], { duration: ms, easing: ease });

@@ -14,16 +14,18 @@ import { args, help } from "./lib/common.mjs";
 const a = args();
 help("node build/tools/review/spkgap.mjs [--game chai-tray] [--level 2] [--sizes 740x320,930x430,1280x665,1920x1080]", a);
 process.env.COOK_TEST_PORT = String(+(process.env.COOK_TEST_PORT || 8812) + 42);
-const { pw, startServer, BASE } = await import("../../sandbox/lib/env.mjs");
+const { launch, startServer, BASE } = await import("../../sandbox/lib/env.mjs");
 
 const game = a.val("game") || "chai-tray", level = +(a.val("level") || 2);
 const sizes = String(a.val("sizes") || "740x320,930x430,1280x665,1920x1080").split(",");
 const server = await startServer();
-const browser = await pw.chromium.launch();
+// the sandbox's own launch (no WebGL, autoplay on): a bare launch crashed the page at 1920x1080 and the tool hung with no line (3 Nov)
+const browser = await launch();
 const bad = [];
-for (const size of sizes) {
+async function measure(size) {
   const [w, h] = size.split("x").map(Number);
   const page = await browser.newPage({ viewport: { width: w, height: h } });
+  try {
   await page.goto(`${BASE}/lab.html?mode=cook&game=${game}&level=${level}&nonav=1&seed=7&speed=3`, { waitUntil: "load" });
   await page.waitForFunction(() => { const e = document.querySelector("#guide .ng-arrow"); return e && !e.hidden && e.getBoundingClientRect().width > 0; }, null, { timeout: 90000 }).catch(() => {});
   // (a first-time light holds every tap but its lit thing's: tap what is lit, then the arrow, until her card is open)
@@ -43,7 +45,12 @@ for (const size of sizes) {
     if (!A || !B || !C || !D) return null;
     return { side: big.classList.contains("wc14-side"), right: +(A.right - B.right).toFixed(1), foot: +(C.bottom - D.bottom).toFixed(1), off: +((B.left + B.width / 2) - (A.left + A.width / 2)).toFixed(1) };
   });
-  await page.close();
+  return m;
+  } finally { await page.close().catch(() => {}); }
+}
+for (const size of sizes) {
+  // a page that crashes or times out is a reported line, never a silent stop
+  let m; try { m = await measure(size); } catch (e) { bad.push(`${size}: the page failed (${String(e.message || e).split("\n")[0]})`); console.log(`${size}: the page failed: ${String(e.message || e).split("\n")[0]}`); continue; }
   if (!m) { bad.push(`${size}: the helper card did not open`); console.log(`${size}: no helper card`); continue; }
   if (m.side) {
     console.log(`${size}: side card, the speaker ${m.right} px from the card's right edge; the item card's speaker ${m.foot} px from its foot`);

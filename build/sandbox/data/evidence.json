@@ -22699,13 +22699,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:life:order-pass",
    "after": null,
    "capture": [
-    "strip:#side:30x40"
+    "strip:#side:16x40"
    ],
    "expect": null,
-   "note": "while the order is given: the said card folds smoothly as the next one opens and the panel glides to it (25 fps: 30 frames 40 ms apart); no frame where a card snaps",
+   "note": "as the order passes to the next person (life:order-pass, the glide's start, js/cook/ui.js foldGlide): the said card folds to its face and sentence while the next opens, its height easing, and the panel's scroll glides to it (16 frames 40 ms apart from the glide's first frame); no frame where a card snaps (3 Nov: the old probe filmed every bubble and missed the fold between them)",
    "delay": 0,
    "max": 3
   }
@@ -22939,15 +22939,37 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-timing",
+   "at": "phase:slow",
    "after": null,
    "capture": [
-    "strip:canvas:hob:10x200",
+    "strip:canvas:pan:12x300",
     "js:Cook.chaiBoil"
    ],
    "expect": null,
-   "note": "the boil: a tap in the green turns it down; a tap before it shakes the knob (hever na) and the heat runs on; in the red, or no tap by its end, it boils over and that pot starts again (js:Cook.chaiBoil: every boil event, early, green, over)",
+   "note": "the boil: from 'Slow kar!' (the bar in the green) the player holds its tap while it is filmed, so the strip shows the ring run on through the green into the red and the pot boil over and empty (js:Cook.chaiBoil: its 'over' and 'again' events); the canvas pan, not the hob (3 Nov: the hob's still picture never changed)",
    "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:timing",
+   "after": null,
+   "capture": [
+    "shot",
+    "js:Cook.chaiBoil"
+   ],
+   "expect": null,
+   "note": "a tap in the green turns it down: the boil log's 'green' event and the pan ready to pour, nothing boiled over",
+   "delay": 400
   }
  ],
  "ART-32": [
@@ -22990,6 +23012,714 @@
    ],
    "expect": null,
    "note": "the water goes in: no drawn blue splash (the s14 water picture fades in with the pan's small settle); the sound stays",
+   "delay": 0
+  }
+ ],
+ "SH-174": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "page:start",
+   "after": null,
+   "capture": [
+    "strip:#guide:8x120",
+    "dom:#guide"
+   ],
+   "expect": null,
+   "note": "the first frames as the station mounts: Nani's box in its s14 look from the first frame (no green bar, no box speaker), never an old box that then switches",
+   "delay": 0
+  }
+ ],
+ "SH-175": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/loadtime.mjs --games chai-tray --level 3 --size 930x430 --net 4000/60 --runs 1"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the measure (loadtime.mjs): the lab click to the first play tap on a throttled phone network, against the baseline (a growth of 20% fails)",
+   "delay": 0
+  }
+ ],
+ "SH-179": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/spkgap.mjs --level 2 --sizes 915x412,740x320"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the measure (spkgap.mjs) at the two shortest phones: the helper's side card no taller than its speaker needs, its speaker's gap as the item card's",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 2,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:helper-open",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": null,
+   "note": "the helper card open at 740x320 at 2x: a 4:3 picture of about 24%, little padding, the card as tall as its speaker",
+   "delay": 900
+  }
+ ],
+ "SH-141": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:44"
+   ],
+   "expect": null,
+   "note": "every first-time demo on a tap is chai's light (the dim, the lit box, the gold glow, the item's jump): no ripple anywhere and no pointing finger; a hand only on a drag, hold or swipe demo",
+   "delay": 300,
+   "max": 4
+  }
+ ],
+ "SH-143": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "every card's reveal control (the picture's eye) centred in the slot it reveals, both sizes",
+   "delay": 500
+  }
+ ],
+ "SH-145": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:52",
+    "contract:86"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every bubble placed from free space: off every face and off the side panel, beside the head when there is no room above (contracts 52 and 86 over the play)",
+   "delay": 200,
+   "max": 4
+  }
+ ],
+ "SH-146": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "ref:docs/design-language/chai-standard.md"
+   ],
+   "expect": null,
+   "note": "eye (Zafar): the one onboarding rule for every game, drafted in the chai standard's section 1; each game's onboarding is checked against it at its roll-out",
+   "delay": 0
+  }
+ ],
+ "CHAI-51": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "phase:pour",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the pour is quiet: from the pour's start no Cook line (no read-along of the order), only the pour's own sounds",
+   "delay": 0
+  }
+ ],
+ "CHAI-52": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob-on",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:78"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the cooker's first-time light and 'Chulo bar!' come together, a breath (1 s or more) after the last thing went in and its animation ended (contract-78 over the play)",
+   "delay": 300
+  }
+ ],
+ "CHAI-61": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "strip:#stage:6x250"
+   ],
+   "expect": null,
+   "note": "with one pan heating, a thing added to another pan never pauses the first: its ring keeps growing through the other pan's add",
+   "delay": 0,
+   "max": 3
+  }
+ ],
+ "CHAI-62": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "phase:slow",
+   "after": null,
+   "capture": [
+    "strip:canvas:pan:12x300",
+    "strip:#side:8x500",
+    "js:Cook.chaiBoil"
+   ],
+   "expect": null,
+   "note": "held through 'Slow kar!' until the pot boils over (the boil log's 'over' and 'again'): the order card's rows open again and its row scrolls back to the first item",
+   "delay": 0
+  }
+ ],
+ "CHAI-67": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "rec:order-card-big",
+   "after": null,
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "expect": null,
+   "note": "a new player at L4 (adh and aako unmet): the word moment plays before the order (the kettle, the half glass, the full glass, both cards said, the snap frame); a returning player who has met them never sees it",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:order-card-big",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a returning player at L4: no word moment, the order straight away",
+   "delay": 0
+  }
+ ],
+ "CHAI-68": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a new player: about 3 s after the first pan is poured (or at once on a jar tapped into the poured pan) a gold circle on the next empty pan's rim, tight to its tap area, no face and no square box; never for a returning player",
+   "delay": 300,
+   "max": 4
+  }
+ ],
+ "CHAI-69": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "contract:51"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "on phones at L2-L4 every word of the order card, its last headline word included, stays inside its card over the whole play (contract-51)",
+   "delay": 0
+  }
+ ],
+ "SH-197": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/teachgate.mjs --games party-proto/balloon,party-proto/statues,town-proto/serve"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the measure (teachgate.mjs) on three prototypes: each first-time light goes with its tap, and a thing tapped during Nani's first line (before its light) never has a light left sitting on it; the whole set: node build/tools/review/teachgate.mjs",
+   "delay": 0
+  }
+ ],
+ "SH-198": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/tapgate.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the lab page with no tap yet (a phone's rule): the play button shows at 740x320 and 1920x1080, and one tap starts the game with the orders' sound",
+   "delay": 0
+  }
+ ],
+ "SH-184": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "contract:24"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no help before the idle time, counted from the last right move (a pour or a serve included): pouring another pot restarts the hint's wait (contract-24 over the play)",
+   "delay": 0
+  }
+ ],
+ "SH-189": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 740x320 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the panel's measures (panelcheck.mjs) at 740x320, L4: Nani's box as tall as its line and face need (SH-189); the item padding (SH-190), the current card whole in view (SH-191), the headline's gaps (SH-192) on the same run",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1920x1080 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same measures at 1920x1080, L4",
+   "delay": 0
+  }
+ ],
+ "SH-190": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 930x430 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the panel's measures at 930x430, L4: every item card's left and right padding inside its gold outline equal within 1 px",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1280x665 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same at 1280x665, L4",
+   "delay": 0
+  }
+ ],
+ "SH-191": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:order-pass",
+   "after": null,
+   "capture": [
+    "strip:#side:12x60"
+   ],
+   "expect": null,
+   "note": "as the order passes to the next person and its card grows, the current card comes whole into view within 400 ms, the cards above pushed up",
+   "delay": 0,
+   "max": 3
+  }
+ ],
+ "SH-192": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 740x320 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the panel's measures at 740x320, L4: the gap above the headline (to the card's top) and below it (to the item cards) equal within 2 px",
+   "delay": 0
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1920x1080 --no-film"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same at 1920x1080, L4",
+   "delay": 0
+  }
+ ],
+ "SH-195": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "a fresh save at L3-L4: no word has been picked right yet, so every card's picture is clear (never blurred) though the level would blur it",
+   "delay": 500
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "second-play",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "the second play, the words now met: the level's blur applies to them",
+   "delay": 500
+  }
+ ],
+ "SH-196": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a new player: the first time a card's word is dotted (L2), the light shows the reveal tap on the word; the first time a picture is blurred (L3), the same for the picture; each once, never again",
+   "delay": 300,
+   "max": 4
+  }
+ ],
+ "ART-35": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "ref:build/reports/art-queue.md"
+   ],
+   "expect": null,
+   "note": "eye: the art queue holds at least two days of paste blocks (about 240 images) at each step's end",
+   "delay": 0
+  }
+ ],
+ "ART-36": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "ref:sources/art/s17-art1/wv-chai-kettle-tilted-v1.png",
+    "ref:sources/art/s17-art1/wg-chai-glass-side-filling-v1.png"
+   ],
+   "expect": null,
+   "note": "eye: block 1's word-moment pieces: the opaque kettle held tilted and the side-on glasses, half and full obvious at a glance",
    "delay": 0
   }
  ]
