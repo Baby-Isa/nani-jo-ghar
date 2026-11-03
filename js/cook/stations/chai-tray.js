@@ -370,7 +370,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
         const was = rowX;
         rowX = xs;
-        if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
+        if ((was != null && xs !== was) || rows.some((r) => r._auto || r._pend14)) return true;
         const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
         const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
         try {

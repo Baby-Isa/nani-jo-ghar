@@ -23724,5 +23724,256 @@
    "note": "eye: block 1's word-moment pieces: the opaque kettle held tilted and the side-on glasses, half and full obvious at a glance",
    "delay": 0
   }
- ]
+ ],
+ "SH-199": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "after each tick the next card still to do is wholly inside its row (the last one at the row's right edge, never centred with space after it), the card on the left may show half",
+   "delay": 700,
+   "max": 4
+  }
+ ],
+ "SH-200": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission",
+    "shot"
+   ],
+   "expect": null,
+   "note": "every order card's picture is the very jar its shelf shows (the ginger, garlic, cardamom and salt jars: art.s02's C5 jars), the cards and the shelf side by side",
+   "delay": 500
+  }
+ ],
+ "SH-201": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "every person's order: each said row has its clip, the second person's first item included (the voice timeline, no row silent)",
+   "delay": 0
+  }
+ ],
+ "SH-202": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "second-play",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "a 'no' card whose word is past its pill: its picture blurred as the others (the grey on top), never showing through",
+   "delay": 500
+  }
+ ],
+ "SH-203": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "strip:body:14x60",
+    "contract:83"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "each big card's flight to its row: a smooth curve or a straight line, never a corner, no frame over a face or a bubble (contract-83)",
+   "delay": 0,
+   "max": 3
+  }
+ ],
+ "CHAI-70": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "rec:start",
+   "after": null,
+   "capture": [
+    "strip:#stage:16x500",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the word moment at about half the old speed: each card stays about 1 s after its word, the pair about 2.4 s before the order",
+   "delay": 0
+  }
+ ],
+ "CHAI-71": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cook-wm .wc14",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "dom:.cook-wm"
+   ],
+   "expect": null,
+   "note": "the word moment's cards show their English (half; whole, full): the first time the child meets the words",
+   "delay": 1500
+  }
+ ],
+ "CHAI-72": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cook-wm .wm-shut",
+   "after": null,
+   "capture": [
+    "strip:#stage:8x60",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the snap: the corners close in and the frame's own area flashes, no iris; the shutter's sound in the sound log",
+   "delay": 0
+  }
+ ],
+ "CHAI-73": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.cook-wm .wm-glass",
+   "after": null,
+   "capture": [
+    "strip:#stage:12x300"
+   ],
+   "expect": null,
+   "note": "the glasses stand on the kitchen counter in front of a plain wall; every fill frame in one place, the tea rising, no shift and no change of tint",
+   "delay": 0
+  }
+ ],
+ "CHAI-74": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "adh and aako's item cards show the word moment's side-on glasses, half and full",
+   "delay": 500
+  }
+ ],
+ "CHAI-75": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:hint-glow",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a returning player stuck after the first pour: after the level's wait the next pan's rim is lit round, as the first-time light",
+   "delay": 600
+  }
+ ],
+ "CHAI-76": {
+  "human": "Zafar's ear: what Nani says when the child is stuck on an asked thing (milk, sugar, the extra) past its support: her line hides the word (the leak test); his call whether to keep it"
+ }
 }

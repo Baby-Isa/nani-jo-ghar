@@ -1877,6 +1877,17 @@
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
       // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
       placeFree14(c, play, sr, wd);
+      // (the sandbox, 3 Nov, L4 at 740x320: the taller row-shaped card found no place clear of the faces and fell back over the side
+      // panel, on Nani's face and Nana's (contract-76, -83): where its row shape fits nowhere clear, it keeps its own shape, which does)
+      if (c.classList.contains("wc14-fitrow")) {
+        const cr = c.getBoundingClientRect();
+        if (popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
+          c.classList.remove("wc14-fitrow");
+          c.style.height = "";
+          popShape.mission = null; // (placed again, its own shape)
+          placeFree14(c, play, sr, wd);
+        }
+      }
       // (a card scaled to its room with zoom (three people) fades in alone: zoom and a transform together drew its first frames
       // about 50 px off its place, over Nana's face: contract-83, the orchestrator's film at 930x430, 30 Oct)
       if (c.animate) c.animate(c.style.zoom ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });

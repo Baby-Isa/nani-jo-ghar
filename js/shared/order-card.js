@@ -476,7 +476,14 @@
         if (nr > to + row.clientWidth) to = Math.min(max(), Math.ceil(nr - row.clientWidth + 2));
       }
       if (fold) fold.scroll14 = fold.want14 = to;
-      setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
+      // (the row counts as moving from now until its glide is done, so a light that waits for stillness, contract-79, never starts
+      // in the beat before a glide that is still to come: the sandbox, 3 Nov)
+      const spd = (root.Cook && root.Cook.speed) || 1;
+      if (Math.abs(to - row.scrollLeft) > 1) {
+        row._pend14 = true;
+        setTimeout(() => (row._pend14 = false), (400 + 450) / spd);
+      }
+      setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / spd);
     } else if (again.length) {
       if (fold) fold.scroll14 = fold.want14 = 0;
       glideWant.delete(card.dataset.ck);
