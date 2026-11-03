@@ -23629,10 +23629,11 @@
    "after": null,
    "capture": [
     "zoom2:#mission",
-    "dom:#mission"
+    "dom:#mission",
+    "js:Cook.save.words"
    ],
    "expect": null,
-   "note": "a fresh save at L3-L4: no word has been picked right yet, so every card's picture is clear (never blurred) though the level would blur it",
+   "note": "a fresh save at L3-L4: every word's pill still shows, so every card's picture is clear though the level would blur it (Zafar, 3 Nov: the level and the word ladder must both agree)",
    "delay": 500
   },
   {
@@ -23650,10 +23651,12 @@
    "at": "rec:order-card-in-sidebar",
    "after": null,
    "capture": [
-    "zoom2:#mission"
+    "zoom2:#mission",
+    "dom:#mission",
+    "js:Cook.save.words"
    ],
    "expect": null,
-   "note": "the second play, the words now met: the level's blur applies to them",
+   "note": "the second play: a card's picture is blurred exactly when its word's pill is gone (the ladder has passed it) and clear while its pill still shows, at L3 and L4 alike",
    "delay": 500
   }
  ],

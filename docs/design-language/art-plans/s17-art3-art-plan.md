@@ -1,4 +1,4 @@
-# Art block 3 plan (pack `s17-art3`): clinic care, and block 1's redos
+# Art block 3 plan (pack `s17-art3`): clinic care, the stove family's roll-out, and block 1's redos
 
 **Written:** 3 Nov 2026, a **first draft** for Zafar to run (Sprint 17 step 3: "one big art block, 50+ images": block 1's redos
 plus the next family's block, clinic care, `docs/sprints/plan.md`). Clinic care is rolled out in Sprint 20; the scrape is polished
@@ -18,7 +18,8 @@ PowerToys Awake on.
 | C | The blocked nose and the drinks (the second slice) | NF, DR, BI, UB, UG, DC, DT | 4 + 6 + 2 + 1 + 1 + 1 + 6 = 21 |
 | D | The side-on heads and the foot | HG, HO, FA | 3 |
 | E | The heal games' rows waiting on art | DM, NG, MZ, TH, KB, TB, TC, FL, BT | 2 + 2 + 1 + 3 + 4 + 3 + 2 + 1 + 9 = 27 |
-| | **Total** | **35 prompts** | **about 114 game pictures**; about 50 images with the expected redos; about 3 hours in three windows |
+| F | The stove family's roll-out (block 4, folded in) | KC, SF, BV, BW | 1 + 6 + 2 + 10 = 19 |
+| | **Total** | **39 prompts** | **about 133 game pictures**; about 55 images with the expected redos; about 3.5 hours in three windows |
 
 **Not in this block, on purpose:**
 - **Real people** (decision 29: Zafar approves only them): the doctor (CLN-150's one picture), Nani's four moods (ART-10), the house
@@ -544,6 +545,70 @@ Background between the tiles: one perfectly flat, uniform neutral mid-grey, hex 
 Style: exactly as the attached sheet and style anchor: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism.
+```
+
+### Part F. The stove family's roll-out (block 4, folded in: Zafar, 3 Nov)
+
+*So every stove game can be brought to chai's standard at once: daar's chop needs a better background (ART-37, CHT-16), samosa's
+pastry and folds don't yet read (ART-37), and baking's amounts get their own word moment in baking's art (ART-38; chai's is WV, WG,
+WS and WF from block 1: the streams WS and the snap WF are reused).*
+
+#### KC. The chop board, the chop game's whole scene (ART-37, CHT-16)
+```
+Generate an image, 1536×1024, landscape.
+
+A background for a children's cooking game: a big rectangular walnut chopping board seen from EXACTLY straight above, lying on the cream-white marble worktop of the attached kitchen tile, filling the picture: the board covers the middle 80% of the width and 85% of the height, its edges straight and parallel to the picture's edges, its corners softly rounded. Rich warm walnut grain, a few faint knife marks, clean and dry; a thin band of the marble shows all round it. The board is completely EMPTY: no vegetables, no knife, no bowls, no crumbs, no hands. Warm afternoon light from the upper left, the same light as our kitchen.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### SF. The samosa strip: fill and fold, six states (ART-37)
+```
+Generate an image, 1536×1024, landscape.
+
+A sprite sheet for a cooking game: the SAME long strip of raw samosa pastry six times, standing upright, seen from EXACTLY straight above, in one row, each in its own sixth, the same width; the attached pictures are our pastry and our filling: copy their colour and texture.
+(1) the flat empty strip, pale and matte, a few faint flour specks;
+(2) the same strip with a small heap of the attached mince filling at its BOTTOM end;
+(3) the bottom corner folded diagonally up over the filling into a triangle: the fold has visible thickness and a soft shadowed edge, the filling hidden, the rest of the strip flat above it;
+(4) the triangle folded straight up once more, the strip shorter, two layers of pastry clearly visible at the edges;
+(5) folded diagonally again, only a short tail of strip left at the top;
+(6) the finished raw samosa: one neat plump triangle, its last flap pressed down and sealed, three layers visible at the edges.
+Each fold is clearly thicker and layered: never lines drawn on a flat sheet.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No board, no gradient, NO shadows on the grey. The six never touch each other or the edges.
+
+Style: a stylised 3D animated-feature-film look, semi-photoreal food, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### BV. Baking's word moment: the scoop held tilted (ART-38)
+```
+Generate an image, 1536×1024, landscape.
+
+A sprite sheet for a cooking game: two identical OPAQUE brushed-steel measuring scoops with short straight handles, side by side, seen exactly from the side, both tilted forward about 35 degrees with the lip down to the left, exactly as the attached chai kettle is tilted: (1) dry and empty; (2) with only a little soft white flour at its lip, no long stream. No hand, arm or person.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No gradient, NO shadows on the grey. The two never touch each other or the edges.
+
+Style: exactly as the attached kettle: a stylised 3D animated-feature-film look, semi-photoreal steel, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
+```
+
+#### BW. Baking's word moment: the jug side-on, filling (ART-38)
+```
+Generate an image, 1536×1024, landscape.
+
+A sprite sheet for a cooking game: the SAME clear glass measuring jug as the attached one, seen EXACTLY from the side, the same size on the same line, in an invisible grid of 5 columns and 2 rows. Its sides have plain horizontal lines and NO numbers.
+Row 1, filled with soft white FLOUR (a flat top): empty, a quarter, exactly half, three quarters, full to the top line.
+Row 2, filled with clear WATER (a flat top with a soft highlight): empty, a quarter, exactly half, three quarters, full to the top line.
+Half and full are obvious at a glance; nothing spills.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No gradient, NO shadows on the grey. Nothing touches a cell's edge. Do not draw grid lines.
+
+Style: exactly as the attached jug and the attached chai glasses: a stylised 3D animated-feature-film look, semi-photoreal glass, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 
 ## 6. Cut and wire notes

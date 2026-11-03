@@ -29,8 +29,9 @@ stove family's roll-out. **How it is checked:** *contract* (the sandbox's contra
    where to look (CHAI-37), and then follows the next item on it (SH-178).
 5. **The reveal is taught when it first happens:** the first time a card's word is dotted, then the first time a picture is
    blurred, the light shows the reveal tap; a blurred Kutchi word and a blurred English word are one lesson (SH-196).
-6. **A word is never blurred before it is met** (the blur rule, SH-195): a picture blurs only when the level says so and the child
-   has picked that word right at least once (the round's snapshot, so it never changes mid-round). A word a picture can't show (half,
+6. **A word is never blurred before it is met** (the blur rule, SH-195; Zafar, 3 Nov): a picture blurs only when the level says so
+   **and** the word's ladder agrees: while its pill still shows (the first or second meetings), it stays clear, even at L3-L4 (the
+   round's snapshot, so it never changes mid-round). A word a picture can't show (half,
    full, an amount) gets the word moment (CHAI-67).
 7. **After the first time:** no light at all unless the child is stuck; the stuck hint names and lights the next undone item in the
    card's order (SH-182); its wait restarts after every right move, pours and serves included (SH-184).

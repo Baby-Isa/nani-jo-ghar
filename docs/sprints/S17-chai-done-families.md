@@ -86,9 +86,10 @@ polish (fetch and serve); its four rows from his 30 Oct play:
    becomes fetch-and-serve's reference for Sprint 19. *Recommended.*
 
 The stove family's roll-out:
-7. **Order of the roll-out (Zafar, 3 Nov):** maani first ("start maani"), then sekelo and chaat on their reopened kit rows, then
-   the three prototypes; **samosa and daar wait for new art** ("I think we'll need new artwork": a better chopping background; the
-   samosas' look and folding not right yet; their layout decisions still open): ART-37.
+7. **The roll-out (Zafar, 3 Nov, late):** all nine stove games at once, each brought to chai's standard before he reviews them as one
+   family (`docs/process/prototype-to-game.md`, steps 5-6); art block 4 (daar's chop scene, samosa's fill and fold, baking's word
+   moment: ART-37, ART-38) is folded into art block 3 so every game's art is ready first; samosa's and daar's layout calls to him at
+   the roll-out.
 8. **The cake** moves to the word-tiles family (it is on the party kit's tiles, and has no recipe); the stove family is the nine.
    *Recommended.*
 9. **Baking's amounts** use the word moment (CHAI-67) for half and full now, and for a quarter, one and a half and two and a half once
