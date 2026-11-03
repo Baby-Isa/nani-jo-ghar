@@ -931,6 +931,33 @@
   "png": "build/screenshots/evidence/ev-20261103-131342-phl/CHAI-50.png",
   "date": "2026-11-03"
  },
+ "CHAI-52": {
+  "hash": "c81cd890f8ffe467b667",
+  "dhash": [
+   "513030b070301a1a",
+   "416830b430b0b696",
+   "012030b478b8b616",
+   "0122797979a03a3a"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "CHAI-69": {
+  "hash": "05d6c9869535e079e622",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-174914-nhg",
+  "commit": "24d8f50e",
+  "date": "2026-11-03"
+ },
  "CHT-01": {
   "hash": "ff0ba1426c907aa7f5b1",
   "dhash": [],
@@ -6955,6 +6982,22 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/SH-14.png",
   "date": "2026-10-20"
  },
+ "SH-145": {
+  "hash": "fd6a0f19a9ea9ec69ae4",
+  "dhash": [
+   "7e6ef6ae4a786a6f",
+   "6e363ebeb8ba2a6d",
+   "7e6efea87a783a7f",
+   "6e3e3e7e78781a7d"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
  "SH-15": {
   "hash": "9be57476ff281d78075b",
   "dhash": [
@@ -7203,6 +7246,17 @@
   "png": "build/screenshots/evidence/s15-chai-ev6/SH-172.png",
   "date": "2026-10-30"
  },
+ "SH-175": {
+  "hash": "3900c8173dc9aaff30db",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SH-175-p1-repo: pass: node build/tools/review/loadtime.mjs --games chai-tray --level 3 --size 930x430 --net 4000/60 --runs 1: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
  "SH-178": {
   "hash": "2aec6896e297fad460a6",
   "dhash": [
@@ -7272,6 +7326,28 @@
   "png": "build/screenshots/evidence/ev-20261103-131342-phl/SH-181.png",
   "date": "2026-11-03"
  },
+ "SH-184": {
+  "hash": "86b687e17443d02f0042",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "SH-189": {
+  "hash": "b65b53c1722e1d7c37d9",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 740x320 --no-film: exit 0); pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1920x1080 --no-film: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
  "SH-19": {
   "hash": "74b9ee33ffa5cf5fb9f7",
   "dhash": [
@@ -7285,6 +7361,50 @@
   "run": "ev-20261021-031423-a9z",
   "commit": "a871feed",
   "date": "2026-10-21"
+ },
+ "SH-190": {
+  "hash": "303acedc7d8d7d23adfb",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 930x430 --no-film: exit 0); pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1280x665 --no-film: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "SH-192": {
+  "hash": "a418336a088b3540e4d8",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 740x320 --no-film: exit 0); pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1920x1080 --no-film: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "SH-197": {
+  "hash": "e0f430541a7a05c47684",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/teachgate.mjs --games party-proto/balloon,party-proto/statues,town-proto/serve: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "SH-198": {
+  "hash": "ca5e10ff122f71df9dc0",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/tapgate.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "date": "2026-11-03"
  },
  "SH-20": {
   "hash": "597f3748a4fac242f49d",
