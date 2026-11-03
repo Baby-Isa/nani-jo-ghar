@@ -1,0 +1,121 @@
+# The run spec for pack s17-art2 (art block 2, a first draft): fetch and serve (the fruit stall, picky shopping, paying, the
+# beach's three stalls, the cloth stall). Sprint 17 step 5 (Zafar, 3 Nov: "get me the art block now so I can set it to run
+# overnight"); ART-35 (the art queue). ART-29: every reference is on the pushed branch; nothing for Zafar to upload.
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art2.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art2.run.yaml
+pack: s17-art2
+title: 'Art block 2: fetch and serve (the fruit stall, picky shopping, paying, the beach stalls, the cloth stall)'
+plan: docs/design-language/art-plans/s17-art2-art-plan.md
+plan_branch: claude/admiring-ptolemy-77fuv5
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/admiring-ptolemy-77fuv5
+dest: sources/art/s17-art2
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on). If the screen sleeps the run stops.\n- No real people in this run: everything is yours to judge with the checks below. The mock-ups attached show people: if a picture copies or includes any person from them, it fails. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  mock-fruit.png: sources/art/s17-art2/refs/mock-fruit-stall.png
+  mock-shop.png: sources/art/s17-art2/refs/mock-general-store.png
+  mock-beach.png: sources/art/s17-art2/refs/mock-beach-stalls.png
+  mock-cloth.png: sources/art/s17-art2/refs/mock-cloth-stall.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  FS: {attach: [mock-fruit.png], save: fs-fruit-stall-behind-v1.png, check: SCENE}
+  FX: {attach: [mock-fruit.png], save: fx-produce-crates-v1.png, check: CRATES}
+  FP: {attach: ["kept:FX"], save: fp-produce-singles-v1.png, check: PRODUCE}
+  FW: {attach: [mock-fruit.png], save: fw-brass-scale-v1.png, check: SCALE}
+  FB: {attach: [], save: fb-paper-bag-v1.png, check: BAG}
+  GS: {attach: [mock-shop.png], save: gs-general-store-v1.png, check: SCENE}
+  GG: {attach: [mock-shop.png], save: gg-shop-goods-v1.png, check: GOODS}
+  PC: {attach: [], save: pc-coins-stacks-v1.png, check: COINS}
+  PT: {attach: [], save: pt-tin-purses-v1.png, check: PURSES}
+  BH: {attach: [mock-beach.png], save: bh-beach-v1.png, check: BEACH}
+  SC: {attach: [mock-beach.png], save: sc-corn-cart-v1.png, check: CART}
+  SF: {attach: [mock-beach.png], save: sf-chips-cart-v1.png, check: CART}
+  SK: {attach: [mock-beach.png], save: sk-coconut-cart-v1.png, check: CART}
+  SN: {attach: [mock-beach.png], save: sn-paper-cones-v1.png, check: CONES}
+  SO: {attach: [], save: so-coconuts-v1.png, check: COCONUTS}
+  SB: {attach: [], save: sb-fryer-basket-v1.png, check: BASKET}
+  CL: {attach: [mock-cloth.png], save: cl-cloth-stall-v1.png, check: SCENE}
+  CB: {attach: [mock-cloth.png], save: cb-cloth-bolts-v1.png, check: BOLTS}
+parts:
+- id: A
+  title: 'THE FRUIT STALL'
+  intro: 'The stall seen from behind its counter (empty), six crates of fruit and vegetables, the eight singly at true size, the brass scale (no numbers) with its needle at three places, the paper bag in four states.'
+  items:
+  - lines: [FS, FX, FP, FW, FB]
+- id: B
+  title: 'PICKY SHOPPING'
+  intro: 'The general store with an empty counter, and eight household things (pot, cup, glass, plate, wooden spoon, ladle, clay water pot, tiffin carrier).'
+  items:
+  - lines: [GS, GG]
+- id: C
+  title: 'PAYING'
+  intro: 'Plain gold coins (no numbers) in stacks of one to five and a heap; the seller''s steel tin and two purses, closed and open.'
+  items:
+  - lines: [PC, PT]
+- id: D
+  title: 'THE BEACH STALLS'
+  intro: 'The empty beach; the corn, chips and coconut carts alone (nobody at them); paper cones small and big, empty and with chips; coconuts small and big, whole, opened, with a straw; the fryer''s basket in three states.'
+  items:
+  - lines: [BH, SC, SF, SK, SN, SO, SB]
+- id: E
+  title: 'THE CLOTH STALL'
+  intro: 'The stall with an empty counter, and eight bolts of cloth standing on end.'
+  items:
+  - lines: [CL, CB]
+checks:
+  SCENE:
+    text: 'the scene asked, at a child''s standing eye level, the counter one straight horizontal band across the bottom quarter, completely empty; the middle open; the mock-up''s town, light and colours; NO people, animals or signs; no text anywhere'
+    judge: {aspect: [3, 2], bg: none}
+  BEACH:
+    text: 'an empty sunny beach at eye level: rippled sand in the bottom half, the sea''s foam edge across the middle, a straight horizon at about 40% from the top, a palm at each top corner; NO people, stalls, boats, umbrellas or things on the sand'
+    judge: {aspect: [3, 2], bg: none}
+  CRATES:
+    text: 'the same woven wicker crate six times in a 3 by 2 grid, front view about 30 degrees down, the same size and place, heaped with mangoes, lemons, onions, tomatoes, bananas, potatoes in that order; nothing spilling; no people or table; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  PRODUCE:
+    text: 'eight single fruit and vegetables in a 4 by 2 grid at true size against each other: mango, lemon, onion, tomato, three bananas, potato, orange, pomegranate, in that order; matching the crates'' fruit; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+  SCALE:
+    text: 'the same brass counter scale three times in a row, front view, the same size and place, its pan empty; the dial with ONLY plain tick marks and NO numbers; the needle straight up, a quarter round, three quarters round; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  BAG:
+    text: 'the same plain brown paper bag four times in a row, the same width: flat, open empty, open with a mango, lemon and tomato at the top, rolled closed; no handles or print; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 4, no_touch: true}
+  GOODS:
+    text: 'eight household things in a 4 by 2 grid, each about two thirds of its cell: steel pot with lid, steel cup, clear glass tumbler, steel plate, wooden spoon, steel ladle, terracotta matka, three-tier steel tiffin carrier, in that order; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+  COINS:
+    text: 'the same plain gold coin in a 3 by 2 grid at one scale: one flat, stacks of two, three, four, five, a loose heap; NO numbers, letters or faces on any coin; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  PURSES:
+    text: 'six things in a 3 by 2 grid: a round steel cash tin closed, the same tin open and empty, a red mirror-work drawstring purse closed, then open and empty, a plain teal zip purse closed, then open and empty; no money; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  CART:
+    text: 'one painted wooden beach food cart alone, straight on, two spoked wheels, a scalloped striped awning on four posts, its own colours and food as asked; NOBODY at it; no knife; about 70% of the height, centred; no sand; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  CONES:
+    text: 'plain cream paper cones point down in a 3 by 2 grid, two sizes that differ at a glance: small empty, big empty, big with golden chips; small with golden chips, small red-dusted with a lemon wedge, big red-dusted with a lemon wedge; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  COCONUTS:
+    text: 'green drinking coconuts in a 3 by 2 grid: the top row small (whole, top sliced off, with a white straw), the bottom row the same three BIG, small and big obvious at a glance; no knife; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  BASKET:
+    text: 'the same steel wire frying basket with a long black handle three times in a row, the same size and place: empty, pale raw chips, golden chips (nothing burnt); no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  BOLTS:
+    text: 'the same tall bolt of cloth standing on end eight times in a 4 by 2 grid, the same size and place: cream, sky blue, deep green, maroon, mustard, pink with white dots, indigo-and-red ajrakh, black with mirror-work, in that order; nothing religious; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a scale dial, a coin, a bag, a cart, an awning or a shop shelf too).
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things, the wrong order, or the wrong view.
+- A person, a hand or an arm anywhere, or anything copied from a person in a mock-up.
+- A key background that isn't one flat colour (a gradient, a floor, sand, shadows or haze on it).
+- Anything scary (a knife or machete included); sweets, lollies or biscuits; any religious marker; anything not halal (no pork, no alcohol).
