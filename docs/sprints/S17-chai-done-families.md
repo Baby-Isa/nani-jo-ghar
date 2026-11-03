@@ -70,6 +70,31 @@ About $150-200 and three days.
   lists what is recorded and in the game); LNG-16 heard on his phone; the silent orders on a reloaded page (SH-198) fixed tonight.
   No handover until he has played chai in the morning and approved it.
 
+## Sprint 18's opening decisions (drafted 3 Nov; for Zafar at Sprint 18's opening, "yes to all except …")
+
+The stove family's list and each game's gap to chai: `docs/game-design/families/stove.md`. The pantry is Sprint 18's reference to
+polish (fetch and serve); its four rows from his 30 Oct play:
+1. **PAN-19, who gives the order:** Nani walks in and gives it as chai's customers do, each card appearing as she says it, then stays
+   as the helper. *Recommended.*
+2. **PAN-20, the jars' words:** every jar gets the kit's word chip by the word ladder (L1 the written word and a speaker, L2-L4 by the
+   ladder), as on chai's shelf; where a long row's words don't fit, the speaker alone (his chaat rule, 30 Oct). *Recommended.*
+3. **PAN-21, the counts:** the count pills in the bottom right corner, over no jar, as chai's. *Recommended.*
+4. **PAN-22, the first time:** chai's first-time light (the dim, the lit box on the first jar) for a new player, once. *Recommended.*
+5. **The jars stay bare** (no written labels: the word chip is the label, and a label would let a child win by reading); PAN-06's
+   "labelled jars" reads as the chip. *Recommended.*
+6. **The pantry on chai's whole standard,** the order card, the helper card, the pop-out and the next-item light included, so it
+   becomes fetch-and-serve's reference for Sprint 19. *Recommended.*
+
+The stove family's roll-out:
+7. **Order of the roll-out:** samosa first (already on the kit), then daar, maani, sekelo and chaat (their reopened kit rows), then
+   the three prototypes (eggs, baking, the corn stall) on the kit with block 1's art cut and wired. *Recommended.*
+8. **The cake** moves to the word-tiles family (it is on the party kit's tiles, and has no recipe); the stove family is the nine.
+   *Recommended.*
+9. **Baking's amounts** use the word moment (CHAI-67) for half and full now, and for a quarter, one and a half and two and a half once
+   Mum records them (Round 6, R6-135). *Recommended.*
+10. **One builder or the chat:** the five live games in the chat (Opus, high), and one builder for the three prototypes (Opus, high,
+    about $15-20, own worktree), on his go. *Recommended.*
+
 ## Outcome
 
 ## Look back (three lines)
