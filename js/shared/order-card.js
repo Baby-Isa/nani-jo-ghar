@@ -384,10 +384,34 @@
     } else if (l < x) x = l - 2;
     else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
     const c = row.closest(".oc-card");
+    // contract-72 (the audit, 3 Nov: the row glided 3-5 cards at once when the order was read from a card far along): a glide never
+    // goes more than two cards in one move; a longer one goes two cards, then on (the row follows, never leaps). A glide back to the
+    // first card is the row going home (logged as row-home, as the end of the order's)
+    const home = !!opts.home || x <= 2;
+    const span = 2 * (card.offsetWidth + (parseFloat(getComputedStyle(row).columnGap) || 0));
+    if (!home && !opts.instant && span > 0 && Math.abs(x - row.scrollLeft) > span + 2) {
+      const sp = (root.Cook && root.Cook.speed) || 1;
+      const step = row.scrollLeft + Math.sign(x - row.scrollLeft) * span;
+      if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
+      try {
+        if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("row-glide", { step: String(Math.round(span)), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(step)} (on to ${Math.round(x)})` });
+      } catch (e) {
+        /* only a log */
+      }
+      row._auto = true;
+      row.scrollTo({ left: step, behavior: "smooth" });
+      const ck = c && c.dataset.ck;
+      setTimeout(() => {
+        row._auto = false;
+        // (on, unless something else has moved the row since: a redraw's own want, a child's scroll)
+        if (card.isConnected && (!ck || glideWant.get(ck) === x)) OC.glideTo(card, opts);
+      }, 320 / sp);
+      return;
+    }
     if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
     // SH-152's check (contract-72): each glide, how far and how (always smooth), against a card's width
     try {
-      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note(opts.home ? "row-home" : "row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
+      if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note(home ? "row-home" : "row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
     } catch (e) {
       /* only a log */
     }

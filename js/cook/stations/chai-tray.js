@@ -356,6 +356,51 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         t = setTimeout(end, ms);
       });
     };
+    /*
+     * contract-79 (the audit, 3 Nov: the first-time "tap the dots" lesson lit the order card while its cards still slid in, and its
+     * light was still fading when play began): a light on the order card waits for a quiet spell, nothing moving for the central
+     * rules' pointAfterMoveMs (the order row's glide, a page animation that ends, a kitchen tween that ends; the people's idling,
+     * glows, effects and bubbles left out, as the sandbox's contract-79 leaves them), sampled every 60 ms; capped at 6 s.
+     */
+    const movingNow14 = (() => {
+      let rowX = null;
+      return () => {
+        const rows = [...document.querySelectorAll("#mission .oc-row14")];
+        const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
+        const was = rowX;
+        rowX = xs;
+        if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
+        const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
+        const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
+        try {
+          if (S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
+        } catch (e) {
+          /* no tween list: the rest still counts */
+        }
+        return !!(document.getAnimations && document.getAnimations().some((a) => {
+          if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
+          const tm = a.effect.getComputedTiming();
+          const el = a.effect.target;
+          return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
+        }));
+      };
+    })();
+    const settled14 = () =>
+      new Promise((res) => {
+        const sp = Cook.speed || 1;
+        const need = (RULES() ? RULES().pointAfterMoveMs() : 500) / sp;
+        const t0 = Date.now();
+        let quiet = null;
+        const tick = () => {
+          const still = !movingNow14() && !busy && !spoons14;
+          if (still) {
+            if (quiet == null) quiet = Date.now();
+          } else quiet = null;
+          if ((quiet != null && Date.now() - quiet >= need) || Date.now() - t0 > 6000) return res();
+          setTimeout(tick, 60);
+        };
+        tick();
+      });
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
     // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
@@ -2316,7 +2361,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         let release = null;
         // (only lighting the cooker after the last thing went in: the knob at the green, "Slow kar!", is timed and comes at once)
         const pauseMs = nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0;
-        if (pauseMs && UI.holdCalls) UI.holdCalls(new Promise((r) => (release = r)));
+        // (contract-78, the audit at L4 on phones, 3 Nov: "Slow kar!" began 215-244 ms before its light was seen: a first-time light
+        // holds its call until the light is on the screen too)
+        if ((pauseMs || firstTime) && UI.holdCalls) UI.holdCalls(new Promise((r) => (release = r)));
         const sp = Cook.speed || 1;
         const still = () => {
           try {
@@ -2370,7 +2417,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             /* only a log */
           }
           helpGlow(obj);
-          if (release) release();
+          // (the call once the light's layer is showing: two frames for it to be drawn, then a beat of its fade-in)
+          if (release) {
+            const rel = release;
+            const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
+            raf(() => raf(() => setTimeout(rel, 90)));
+          }
         };
         go();
         return;
@@ -2593,6 +2645,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const row = el.closest(".oc-row");
         if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
         await Cook.wait(400);
+        await settled14(); // (contract-79: the cards have landed and the row has stopped before the card is lit)
         el.classList.add("ob-dots-now");
         const prevExpect = Cook.expect;
         const wait14 = { kind: "wait", dots: true };
@@ -2600,6 +2653,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await light14(el, "glow", 6000 / (Cook.speed || 1), () => {});
         el.classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
+        await Cook.wait(320 / (Cook.speed || 1)); // (its light has faded (the kit's 300 ms) before play, and the shelf, come in)
       };
       const rows14 = "#mission .oc-row14";
       const dots = [...document.querySelectorAll(`${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`)].find(vis);

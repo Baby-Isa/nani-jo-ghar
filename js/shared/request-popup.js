@@ -130,7 +130,7 @@
   const resolveEl = (t) => (typeof t === "function" ? t() : t) || null;
 
   /** The big card shrinks into the sidebar card's place (Cook's flyIn, now everyone's). */
-  async function fly(card, target, { fast = false } = {}) {
+  async function fly(card, target, { fast = false, quick = false } = {}) {
     if (!card || !target || fast || reduced() || !card.animate) return;
     const a = card.getBoundingClientRect();
     const b = target.getBoundingClientRect();
@@ -141,7 +141,8 @@
         { transform: "none", opacity: 1 },
         { transform: `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(${s})`, opacity: 0.3 },
       ],
-      { duration: 480, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" }
+      // (contract-74, the audit at L2 930x430, 3 Nov: a tap-through took 1014 ms to land the order: a skipped card flies quicker)
+      { duration: quick ? 260 : 480, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" }
     );
     await new Promise((resolve) => {
       anim.onfinish = resolve;
@@ -268,7 +269,7 @@
             /* the host's own problem */
           }
           try {
-            await fly(cardEl, resolveEl(opts.target), { fast });
+            await fly(cardEl, resolveEl(opts.target), { fast, quick: !!skipped });
           } catch (e) {
             /* no animation */
           }

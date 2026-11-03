@@ -1044,6 +1044,12 @@
     return out;
   };
   // SH-172: the card opening is when Nani says the step's instruction (its item in Kutchi), by the hint or the child's arrow
+  // (contract-89, the audit at L3 on phones, 3 Nov: the item's word began in the same millisecond as her card opened, before the open
+  // card was drawn: the word now waits for the card to be on the screen, two frames)
+  const drawn = () => new Promise((r) => {
+    const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
+    raf(() => raf(r));
+  });
   function helperCall(by) {
     const s = stepper && stepper.current;
     if (!s || UI.naniMuted()) return;
@@ -1058,7 +1064,7 @@
       } catch (e) {
         /* only a log */
       }
-      queued(() => (helperOn && stepper && stepper.current === s ? Lang.speak(Lang.role(w, "call")) : null)).catch(() => {});
+      queued(() => drawn().then(() => (helperOn && stepper && stepper.current === s ? Lang.speak(Lang.role(w, "call")) : null))).catch(() => {});
       return;
     }
     try {
@@ -1067,11 +1073,13 @@
       /* only a log */
     }
     const line = Lang.role(copyLine(s.line), "call");
-    queued(() => {
-      if (!helperOn || !stepper || stepper.current !== s) return null;
-      if (guide) guide.talk(true);
-      return Lang.speak(line).finally(() => guide && guide.talk(false));
-    }).catch(() => {});
+    queued(() =>
+      drawn().then(() => {
+        if (!helperOn || !stepper || stepper.current !== s) return null;
+        if (guide) guide.talk(true);
+        return Lang.speak(line).finally(() => guide && guide.talk(false));
+      })
+    ).catch(() => {});
   }
   let talking = false;
   let blinkT = 0;
@@ -1906,6 +1914,9 @@
         return lo;
       };
       let pick = popShape.mission === mission && popShape.anchor ? { anchor: popShape.anchor, k: popShape.k } : null;
+      // (contract-83, the audit at L4 1280x665, 3 Nov: the order's kept place came from before the third person had walked up, so a
+      // later card touched Nana's face: a kept place that now meets a face is measured again; the order's other cards keep theirs)
+      if (pick && pick.anchor !== "panel" && !clear(rectAt(pick.anchor, pick.k), false)) pick = null;
       if (!pick) {
         for (const withBubs of [true, false]) {
           const kt = best("top", withBubs);
