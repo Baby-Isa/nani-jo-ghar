@@ -1876,18 +1876,20 @@
       if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
       // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
-      placeFree14(c, play, sr, wd);
       // (the sandbox, 3 Nov, L4 at 740x320: the taller row-shaped card found no place clear of the faces and fell back over the side
-      // panel, on Nani's face and Nana's (contract-76, -83): where its row shape fits nowhere clear, it keeps its own shape, which does)
+      // panel, on Nani's face and Nana's (contract-76, -83): where its row shape fits nowhere clear, it keeps its own shape, which does;
+      // the row shape is tried quietly, so only the place it keeps is logged)
       if (c.classList.contains("wc14-fitrow")) {
+        const kept = { mission: popShape.mission, anchor: popShape.anchor, k: popShape.k };
+        placeFree14(c, play, sr, wd, true);
         const cr = c.getBoundingClientRect();
         if (popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
           c.classList.remove("wc14-fitrow");
           c.style.height = "";
           popShape.mission = null; // (placed again, its own shape)
-          placeFree14(c, play, sr, wd);
-        }
+        } else Object.assign(popShape, kept); // (the same place again, logged)
       }
+      placeFree14(c, play, sr, wd);
       // (a card scaled to its room with zoom (three people) fades in alone: zoom and a transform together drew its first frames
       // about 50 px off its place, over Nana's face: contract-83, the orchestrator's film at 930x430, 30 Oct)
       if (c.animate) c.animate(c.style.zoom ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
@@ -1919,7 +1921,7 @@
       return out;
     };
     const overlap14 = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
-    function placeFree14(c, play, sr, wd) {
+    function placeFree14(c, play, sr, wd, quiet) {
       // CHAI-43 (Zafar, 2 Nov afternoon, his screenshot of the L4 card stretched wide: "Just keep the pop up card in its usually
       // proportions ... make it close as possible to original size seen in level 1 as much as the space allows"; "not centred, they
       // should be as left as the level card so less space to travel to get to the side menu. If they need to go bottom left, then just
@@ -1996,6 +1998,7 @@
       const kz = c.style.zoom ? Number(c.style.zoom) : 1;
       // (a zoomed element's left and top are given in its own scale)
       Object.assign(c.style, { left: `${Math.round(x / kz)}px`, top: `${Math.round(y / kz)}px` });
+      if (quiet) return;
       try {
         const onFace = overlap14({ left: x, top: y, right: x + w0 * kz, bottom: y + h0 * kz }, faces);
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(onFace)), by: JSON.stringify({ at: pick.anchor, k: Math.round(kz * 1000) / 1000, w0, h0: Math.round(h0), ratio: Math.round((w0 / h0) * 1000) / 1000, x: Math.round(x), y: Math.round(y) }) });

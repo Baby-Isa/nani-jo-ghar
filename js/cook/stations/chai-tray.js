@@ -2255,6 +2255,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const firstLit14 = {};
     const CONTROL14 = new Set(["knob", "slow", "pour"]);
     let rushHint14 = false; // (a wrong move while a control's stuck hint waits: it comes at once)
+    let cardWait14 = false; // (CHAI-37's order card light waiting for stillness: one waiter only)
     let ctl14 = null;
     let ctlHint14 = 0; // SH-181: a control's stuck hint, waiting for the level's wait
     const coachStep = (nx, sid) => {
@@ -2270,7 +2271,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (SH-178, the judge, 3 Nov: a light skipped because the child had already moved on still used up its one showing, so a child who
         // stalled later never saw it: the showing is used only when the light is up; until then each pan's tea brings it again)
         const cardKey14 = `${STATION14}:${S14_TAG}card`;
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14]) {
+        // (one waiter at a time: the sandbox, 3 Nov, contract-87: each step opened while it waited started another, and three lit the
+        // card together)
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14] && !cardWait14) {
+          cardWait14 = true;
           const sp = Cook.speed || 1;
           // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
           // then over the sugar: a child who has already moved on to the next thing needs no pointer, so it is skipped, and a pour
@@ -2329,7 +2333,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
             const was = rowX;
             rowX = xs;
-            if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
+            if ((was != null && xs !== was) || rows.some((r) => r._auto || r._pend14)) return true;
             const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
             const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
             try {
@@ -2347,7 +2351,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const on = () => moves14 !== m0;
           let quiet = null;
           const go = () => {
-            if (on() || finished) return;
+            if (on() || finished) return void (cardWait14 = false);
             const still = !moving();
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
@@ -2356,6 +2360,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               // SH-178 (the judge, 3 Nov: at L2-L4 the box sat on the ticked card while Nani called the next): the light follows the
               // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
               seen14[cardKey14] = true;
+              cardWait14 = false;
               const first = cardLit();
               // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
               const onItem = first && first.classList && first.classList.contains("oc-row");
