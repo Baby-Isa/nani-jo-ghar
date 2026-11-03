@@ -2244,7 +2244,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // no glow, no bounce), so the eye knows where to look next; once, for a new player
         // (Zafar, 29 Oct: "start its timer after the last animation action ... when the tea has finished going in": the light waits
         // until nothing is in flight, then a beat, then its time)
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && first14("card")) {
+        // (SH-178, the judge, 3 Nov: a light skipped because the child had already moved on still used up its one showing, so a child who
+        // stalled later never saw it: the showing is used only when the light is up; until then each pan's tea brings it again)
+        const cardKey14 = `${STATION14}:${S14_TAG}card`;
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14]) {
           const sp = Cook.speed || 1;
           // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
           // then over the sugar: a child who has already moved on to the next thing needs no pointer, so it is skipped, and a pour
@@ -2329,6 +2332,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) {
               // SH-178 (the judge, 3 Nov: at L2-L4 the box sat on the ticked card while Nani called the next): the light follows the
               // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
+              seen14[cardKey14] = true;
               const first = cardLit();
               // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
               const onItem = first && first.classList && first.classList.contains("oc-row");
