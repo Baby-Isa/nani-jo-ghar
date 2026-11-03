@@ -11,7 +11,7 @@
 .wm-stream { position: absolute; z-index: 2; border-radius: var(--njg-card14-u999); background: var(--njg-wm-stream); opacity: 0; transform-origin: top; transform: rotate(var(--wm-rot, 0deg)) scaleY(0); transition: opacity .15s, transform .2s; }
 .wm-stream.on { opacity: .95; transform: rotate(var(--wm-rot, 0deg)) scaleY(1); }
 /* (art block 1's stream: its picture stretched from the spout into the glass, behind the glass) */
-.wm-stream.wm-art { z-index: 1; border-radius: 0; background: var(--wm-stream-img) center / 100% 100% no-repeat; }
+.wm-stream.wm-art { z-index: 1; border-radius: 0; background-color: transparent; background-position: center; background-size: 100% 100%; background-repeat: no-repeat; }
 .wm-stream.wm-art.on { opacity: 1; }
 /* the shutter: four gold corners close in round the glass, then a white flash */
 .wm-shut { position: absolute; z-index: 4; border-radius: var(--njg-card14-u16); }

@@ -69,7 +69,8 @@
     });
     // the vessel: held tilted the whole time, its spout over the glass being filled
     const v = o.vessel;
-    const vw = g * 1.15;
+    // (the s17 kettle is drawn tilted and sits above its glass: a little smaller, so it stays on the stage)
+    const vw = g * (o.side ? 0.95 : 1.15);
     const vh = vw / (v.aspect || 1.27);
     const ves = el("div", "wm-vessel", box);
     ves.style.cssText = `width:${vw}px;height:${vh}px;transform-origin:${v.spout[0] * 100}% ${v.spout[1] * 100}%`;
@@ -82,13 +83,14 @@
       pre.src = v.pour; // (ready before the first pour)
     }
     const stream = el("div", `wm-stream${o.stream ? " wm-art" : ""}`, box);
-    if (o.stream) stream.style.setProperty("--wm-stream-img", `url("${o.stream}")`);
+    // (set here, not through a CSS variable: a url() in a variable resolves against the stylesheet, not this page)
+    if (o.stream) stream.style.backgroundImage = `url("${o.stream}")`;
     const tilt = v.tilt == null ? -28 : v.tilt;
     const placeVessel = (sl, now) => {
       // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show;
       // side-on glasses: the spout right above the glass's mouth, so the stream falls straight in)
       const sx = o.side ? sl.cx : sl.cx + g * 0.36;
-      const sy = o.side ? sl.cy - g * 0.85 : sl.cy - g * 0.4;
+      const sy = o.side ? sl.cy - g * 0.64 : sl.cy - g * 0.4;
       ves.style.transition = now || o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1)`;
       ves.style.left = `${sx - v.spout[0] * vw}px`;
       ves.style.top = `${sy - v.spout[1] * vh}px`;
