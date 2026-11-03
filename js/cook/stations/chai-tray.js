@@ -422,6 +422,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         : askedX.concat(St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice, what: "spices", station: "chai-tray" }))
     );
     const shelfIds = [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], spiceIds];
+    // (Zafar, 3 Nov: "the bottle of ginger on the item card is different from the bottle of ginger on the shelf ... the one on the shelf
+    // is the correct one": the order's word cards take the very picture the shelf draws, so they can never drift apart)
+    const shelfSet = new Set([].concat(...shelfIds));
+    Cook.shelfPic = (id) => (shelfSet.has(id) ? spiceJar(id) : null);
     /*
      * CK-06 (Zafar, 1 Nov: "I thought we had like proper visuals for elchi in the tea and ginger in the tea ... I think we should";
      * decision 3a): a spice in the pan is a picture, never drawn: one elchi pod from the props' five pods (assets/cook/props/elchi.webp,
@@ -1266,7 +1270,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const obj = shelf[id];
       if (!pan || finished || pan.poured > 0 || pan.state === "over" || !obj || (busy && (id === "cook-paani" || id === "cook-dudh"))) {
         if (obj && !busy) S.wiggle(obj);
-        if (pan && pan.poured > 0 && !finished) nextPanLight(); // (CHAI-68: a jar tapped into a poured pan: the next pan, at once)
+        if (pan && pan.poured > 0 && !finished) {
+          nextPanLight(); // (CHAI-68: a jar tapped into a poured pan: the next pan, at once)
+          rushHint14 = true; // (and after the first time, the stuck hint on the next pan at once)
+        }
         return;
       }
       // CHAI-22 (P33): there is one of milk, water and tea in a pan: a second tap only wiggles (nothing goes in, no word)
@@ -2008,7 +2015,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       clearTimeout(nextPanT);
       if (pans.length < 2 || pans.filter((q) => q.poured > 0).length !== 1) return;
       const from = sel;
-      nextPanT = setTimeout(() => sel === from && nextPanLight(), 3000 / (Cook.speed || 1));
+      // (Zafar, 3 Nov: "needs to happen quicker ... once it's returned to the stove, literally give it 0.3 seconds": this runs at the
+      // pour's end, the pan back on its burner)
+      nextPanT = setTimeout(() => sel === from && nextPanLight(), 300 / (Cook.speed || 1));
     };
     // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests
     // (not where its bounce has it), with room for its own glow (the station's halo, Cook.Stations glowDraw) and its word chip
@@ -2105,6 +2114,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (nx.phase === "knob" && /^pan-/.test(key)) {
         const pan = pans.find((q) => `pan-${q.who}` === key);
         return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
+      }
+      // (Zafar, 3 Nov: "I filled the first tea tray, poured the first tea, and then I did nothing for like 30 seconds, and there was no
+      // hint to click the second tea tray ... a stuck hint ... using the onboarding methodology of highlighting": the next pan to pick
+      // is a control's step, its rim lit round as CHAI-68's first-time light; was: its next item's shelf thing, which had no light)
+      if (/^pan-/.test(key)) {
+        const pan = pans.find((q) => `pan-${q.who}` === key);
+        return pan && { obj: pan.img, target: pageRect(pan.glowRing), round: true, panPick: true };
       }
       const obj = shelf[key];
       if (!obj || !sel) return null;
@@ -2237,6 +2253,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     let lastStep14 = null;
     const firstLit14 = {};
     const CONTROL14 = new Set(["knob", "slow", "pour"]);
+    let rushHint14 = false; // (a wrong move while a control's stuck hint waits: it comes at once)
     let ctl14 = null;
     let ctlHint14 = 0; // SH-181: a control's stuck hint, waiting for the level's wait
     const coachStep = (nx, sid) => {
@@ -2374,7 +2391,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const r0 = rung;
       rung = null;
       rungKey = sid;
-      if (s14 && CONTROL14.has(nx && nx.phase) && rungCur && rungCur.target && OB14 && OB14.light) {
+      rushHint14 = false; // (a new step: a wrong move from the one before doesn't rush this one)
+      if (s14 && (CONTROL14.has(nx && nx.phase) || (rungCur && rungCur.panPick)) && rungCur && rungCur.target && OB14 && OB14.light) {
         if (r0) r0.done();
         hideCallout();
         // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
@@ -2384,7 +2402,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // bar onboarding": the control's light and its call wait until nothing moves on the stage, then a second more; the call is
         // held for the light (UI.holdCalls), so they still come together, contract-78)
         const target = rungCur.target, also = rungCur.also, obj = rungCur.obj;
-        const firstTime = first14(`ctl-${nx.phase}`);
+        // (picking the next pan: its first time is CHAI-68's own light, so here only the stuck hint)
+        const firstTime = rungCur.panPick ? false : first14(`ctl-${nx.phase}`);
+        const roundLit = !!rungCur.round;
         let release = null;
         // (only lighting the cooker after the last thing went in: the knob at the green, "Slow kar!", is timed and comes at once)
         const pauseMs = nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0;
@@ -2417,13 +2437,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             // blind to every other action)
             const opened = Date.now();
             const NGd = global.NaniGuide;
-            const due = () => Math.max(opened, NGd && NGd.lastAction ? NGd.lastAction() : opened) + hintMs14() / sp;
+            // (a wrong move on the way, a jar tapped into a poured pan, brings it at once: Zafar, 3 Nov: "that's an incorrect move, which
+            // again should have triggered the stuck mechanism")
+            const due = () => (rushHint14 ? 0 : Math.max(opened, NGd && NGd.lastAction ? NGd.lastAction() : opened) + hintMs14() / sp);
             const wait = () => {
               if (rungKey !== sid || finished || !(OB14 && OB14.light)) return;
               if (busy || pans.some((q) => q.away) || Date.now() < due()) return void (ctlHint14 = setTimeout(wait, 200));
               hints14++; // (SH-160: the guide's hint came)
+              rushHint14 = false;
               if (ctl14) ctl14.close();
-              ctl14 = OB14.light(target, { look: "glow", pad: 4, pass: true, live: [target].concat(also ? [also] : []) });
+              ctl14 = OB14.light(target, { look: "glow", pad: roundLit ? 2 : 4, round: roundLit, pass: true, live: [target].concat(also ? [also] : []) });
               try {
                 if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 1, coach: false });
               } catch (e) {
@@ -2684,7 +2707,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const wait14 = { kind: "wait", dots: true };
         Cook.expect = wait14;
         // (the judge, 3 Nov: the ring round the dots overlapped the word above them: a tight ring, 1 px out)
-        await light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 1 });
+        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 1 });
+        // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
+        // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
+        const card = row && row.wc;
+        const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
+        if (card && card.demo) {
+          await Cook.wait(1100);
+          if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
+          await card.demo(slot, 1600 / (Cook.speed || 1));
+        }
+        await lit;
         el.classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
         // (its light has faded before play and the shelf come in: the kit's fade is 300 ms of real time, never the test speed's)
@@ -2784,6 +2817,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     for (;;) {
       await doneP;
       finished = true;
+      Cook.shelfPic = null; // (the next station's cards take their own shelf's pictures)
       coachEnd();
       hideMic();
       clearInterval(nudge);

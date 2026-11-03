@@ -465,7 +465,16 @@
       // row peeks the next slot while the order is given, Zafar 2 Nov)
       const edges = rows.map((r) => r.offsetLeft - row.firstElementChild.offsetLeft).filter((x) => x >= 0);
       const want = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
-      const to = edges.filter((x) => x <= want + 1).reduce((a, b) => Math.max(a, b), 0);
+      let to = edges.filter((x) => x <= want + 1).reduce((a, b) => Math.max(a, b), 0);
+      // (Zafar, 3 Nov: "if there's only one item left, then that item scrolls fully into view. It scrolls only until that item is fully
+      // into view ... and the third last item can be in half": the next card still to do is always whole; near the row's end that
+      // wins over stopping on a card's edge, so the card on the left may show half)
+      const next = rows.find((r) => !r.classList.contains("done") && r.offsetLeft > (lead ? lead.offsetLeft : -1));
+      if (next) {
+        const nl = next.offsetLeft - row.firstElementChild.offsetLeft;
+        const nr = nl + next.offsetWidth;
+        if (nr > to + row.clientWidth) to = Math.min(max(), Math.ceil(nr - row.clientWidth + 2));
+      }
       if (fold) fold.scroll14 = fold.want14 = to;
       setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
     } else if (again.length) {

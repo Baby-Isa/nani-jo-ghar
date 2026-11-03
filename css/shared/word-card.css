@@ -147,6 +147,9 @@
    200 px, the pop-out under three faces) keeps its speaker's ring (7.5 px, --njg-card14-spk-ring) inside its foot */
 .wc14-big:not(.wc14-side) > .wc14-in { padding-bottom: max(5cqi, var(--njg-card14-u12)); }
 .wc14-big .wc14-pic { width: 100%; aspect-ratio: 4 / 3; }
+/* (the order's pop-up in its row card's shape, js/cook/ui.js pop14: the picture takes the height the shape gives or takes, the words keep theirs) */
+.wc14-big.wc14-fitrow > .wc14-in { height: 100%; box-sizing: border-box; }
+.wc14-big.wc14-fitrow .wc14-pic { aspect-ratio: auto; flex: 1 1 0; min-height: 0; }
 .wc14-big .wc14-words { display: contents; }
 .wc14-big .wc14-lab { display: flex; align-items: center; justify-content: center; gap: 3cqi; width: 100%; font: 800 clamp(var(--njg-card14-u9), 3.4cqi, var(--njg-card14-u14))/1 var(--njg-card14-body); letter-spacing: .22em; color: var(--njg-card14-label); }
 .wc14-big .wc14-lab::before, .wc14-big .wc14-lab::after { content: ""; flex: 0 0 11cqi; height: var(--njg-card14-u1p5); background: var(--njg-card14-rule); }
@@ -157,6 +160,7 @@
 /* small: no labels, a shorter picture, room for the Kutchi to wrap */
 .wc14-big.wc14-small .wc14-lab { display: none; }
 .wc14-big.wc14-small .wc14-pic { aspect-ratio: 16 / 10; }
+.wc14-big.wc14-fitrow.wc14-small .wc14-pic { aspect-ratio: auto; }
 /* side by side (a phone's helper card): the picture left, the words and the speaker right */
 .wc.wc14-big.wc14-side { text-align: left; border-radius: var(--njg-card14-u16); }
 /* (Zafar, 29 Oct: "the speaker shouldn't sit so far over to the right. Make it padded to the right of the item card the same amount the

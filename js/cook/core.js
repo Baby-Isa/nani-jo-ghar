@@ -368,6 +368,8 @@
   Cook.speak = (plain) => playURL(Cook.tts[Cook.norm(plain)]); // parked pages only
   /** Speak a voice file by its manifest key (see lang.js). */
   Cook.speakKey = (key) => playURL(Cook.tts[key]); // parked pages only
+  /** Fetch and decode a clip now, so its turn never waits on the network (Zafar, 3 Nov: the next person's first word was silent). */
+  Cook.warmFile = (url) => (url ? loadBuffer(url) : Promise.resolve(null));
   /** Speak a family recording by its own URL (js/shared/family-voice.js), relative to the game root. */
   Cook.speakFile = (url) => playURL(url);
   /** Speak several lines in a row (an order is "Muke chai khape." then "Ne ba khun."). */

@@ -76,13 +76,20 @@
    */
   const WM_KEY = "*:word-moment-half-full";
   UI.wordMomentDue = function (ids) {
-    if (!ids || !(ids.includes("ph-half") || ids.includes("ph-full"))) return false;
+    // (Zafar, 3 Nov: "immediately before the time when you first see these in the actual game ... where there's going to guaranteed
+    // be a half order and a whole order": a round that asks both, chai L4's first, CHAI-55's teach seats them)
+    if (!ids || !(ids.includes("ph-half") && ids.includes("ph-full"))) return false;
     const seen = (Cook.save && Cook.save.seenStation) || {};
     if (seen[WM_KEY]) return false;
     return ["ph-half", "ph-full"].some((id) => Cook.wordStage(id) <= 2);
   };
   // (the order's half and full, wherever the ladders hold them: a person's section rows come in only as they are said)
-  UI.wordMomentIds = (ladders) => ["ph-half", "ph-full"].filter((id) => JSON.stringify(ladders || []).includes(`"${id}"`));
+  // (only what is asked: the ladder's head and rows, never its card's fixed slots, which name half and full at every level, so the moment
+  // came on chai L1's first round: Zafar, 3 Nov)
+  UI.wordMomentIds = (ladders) => {
+    const asked = JSON.stringify((ladders || []).map((L) => L && { head: L.head, sections: L.sections, no: L.no, rows: L.rows }));
+    return ["ph-half", "ph-full"].filter((id) => asked.includes(`"${id}"`));
+  };
   UI.wordMoment = async function (ids) {
     if (!UI.wordMomentDue(ids)) return false;
     const WM = await UI.needShared("word-moment");
@@ -110,14 +117,19 @@
         vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), pour: Cook.v(`${A}kettle-tilted-pour-s17.webp`), spout: [0.025, 0.9], aspect: 560 / 515, tilt: 0 },
         side: true,
         stream: Cook.v(`${A}stream-chai-s17.webp`),
-        snapArt: { corners: Cook.v(`${A}snap-corners-s17.webp`), iris: ["open", "half", "shut"].map((k) => Cook.v(`${A}iris-${k}-s17.webp`)) },
+        // (Zafar, 3 Nov: the iris retired: the corners close in, the frame flashes, the shutter's sound)
+        snapArt: { corners: Cook.v(`${A}snap-corners-s17.webp`) },
         glasses: [glass("ph-half", 3), glass("ph-full", 5)],
         snap: "each",
         shutter: "corners",
         cards: "stay",
-        speed: 1.5 * (Cook.speed || 1),
+        // (Zafar, 3 Nov: "it needs to slow down, maybe about half the speed ... settle on that card for about twice the time ... so
+        // you've got some time to just compare the two")
+        speed: 0.75 * (Cook.speed || 1),
+        hold: 1000,
+        english: true,
       });
-      await Cook.wait(1200);
+      await Cook.wait(2400);
       box.classList.add("cook-wm-out");
       await Cook.wait(350);
     } catch (e) {
@@ -1813,6 +1825,14 @@
     // every person's row waits off the card until it is said
     m.away = new Set([].concat(...people.map((c) => c.rows.filter((r) => !r.head))));
     renderOrder();
+    // (every person's lines warm before the first is said, so no word waits on its clip: Zafar, 3 Nov)
+    if (Lang.warm) document.querySelectorAll("#mission .oc-card").forEach((c) => {
+      try {
+        (c._parts ? c._parts() : []).forEach((p) => p && p.line && Lang.warm(p.line));
+      } catch (e) {
+        /* a warm-up only */
+      }
+    });
     UI.closeHelp();
     const token = Cook.run;
     let skipped = false;
@@ -1828,7 +1848,7 @@
     const s14 = UI.s14() && global.WordCard && global.WordCard.big14 && global.WordCard.morph;
     let big14 = null;
     let tapAt = 0;
-    const pop14 = (w) => {
+    const pop14 = (w, slot) => {
       if (big14) big14.remove();
       const side = $("#side");
       const st = $("#stage");
@@ -1840,6 +1860,14 @@
       Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
       document.body.appendChild(c);
       global.WordCard.fit14(c);
+      // (Zafar, 3 Nov: "the pop-up card, when it scales down to go into the left sidebar ... keeps its proportions, the height ends up
+      // being shorter than the height that is needed for the item card ... so it's one smooth transition": the big card takes its row
+      // card's own shape, so one even scale lands it on that card exactly; the picture takes the difference, never the words)
+      const sb = slot && slot.getBoundingClientRect();
+      if (sb && sb.width > 0 && sb.height > 0) {
+        c.classList.add("wc14-fitrow");
+        c.style.height = `${Math.round(wd * (sb.height / sb.width))}px`;
+      }
       // (shorter screens: the card keeps inside the play area, its picture shorter first)
       if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
@@ -1992,16 +2020,36 @@
         // (contract-83, the audit at L4 740x320, 3 Nov: the big card's straight flight up to the panel crossed Nana's face: where the
         // straight line meets a face, it goes across into the panel first, then up to its row)
         const fb = big.getBoundingClientRect();
-        const across = (() => {
-          const fs = faces14();
-          for (let i = 1; i < 10; i++) {
-            const k = i / 10;
-            const r = { left: fb.left + (tr.left - fb.left) * k, right: fb.right + (tr.right - fb.right) * k, top: fb.top + (tr.top - fb.top) * k, bottom: fb.bottom + (tr.bottom - fb.bottom) * k };
-            if (overlap14(r, fs) > 0) return true;
+        // (Zafar, 3 Nov, L4: "it can't turn any corners ... it can move in an arc ... the smallest arc possible. It should ideally take
+        // the straightest path ... make sure the corner of the card doesn't clip Nana's face ... or the speech bubble. If it's close,
+        // that's still fine": the flight is a curve from the pop-up's centre to the row's, its middle bowed sideways by the least that
+        // keeps every frame of the shrinking card off every face and bubble: a straight line when that is clear; was: across, then up)
+        const bend = (() => {
+          const fs = faces14().concat([...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0));
+          const c0 = { x: fb.left + fb.width / 2, y: fb.top + fb.height / 2 };
+          const c2 = { x: tr.left + tr.width / 2, y: tr.top + tr.height / 2 };
+          const len = Math.hypot(c2.x - c0.x, c2.y - c0.y) || 1;
+          const nx = -(c2.y - c0.y) / len;
+          const ny = (c2.x - c0.x) / len;
+          const hits = (b) => {
+            for (let i = 1; i < 20; i++) {
+              const t = i / 20;
+              const px = (1 - t) * (1 - t) * c0.x + 2 * (1 - t) * t * ((c0.x + c2.x) / 2 + nx * b) + t * t * c2.x;
+              const py = (1 - t) * (1 - t) * c0.y + 2 * (1 - t) * t * ((c0.y + c2.y) / 2 + ny * b) + t * t * c2.y;
+              const w = fb.width + (tr.width - fb.width) * t;
+              const h = fb.height + (tr.height - fb.height) * t;
+              if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > 0) return true;
+            }
+            return false;
+          };
+          if (!hits(0)) return 0;
+          for (let b = 12; b <= len * 1.2; b += 12) {
+            if (!hits(b)) return b;
+            if (!hits(-b)) return -b;
           }
-          return false;
+          return 0; // (nothing clears: the straight line, the shortest time over anything)
         })();
-        return global.WordCard.morph(big, to, { across }).catch(() => {}).then(done);
+        return global.WordCard.morph(big, to, { bend }).catch(() => {}).then(done);
       }
       m.away.delete(r);
       const to = rowElOf(who, r);
@@ -2132,8 +2180,8 @@
           if (item) {
             const w = UI.wordOf(r, { size: 240, written: true });
             if (w && s14) {
-              pop14(w);
               const slot = rowElOf(who, r);
+              pop14(w, slot);
               if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot, { lead: true });
               // (SH-169, SH-191: the speaker's card whole in view, from its top when it has to move, so a folded card above it is
               // whole or wholly out of view, never cut)
@@ -2671,11 +2719,18 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp", "ph-full": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp" }; // (half and full: the s14 glass half and full, the judge 29 Oct: "aakho" had no picture)
+  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/shared/word-moment/glass-side-3-s17.webp", "ph-full": "assets/shared/word-moment/glass-side-5-s17.webp" }; // (half and full: the side-on glasses the word moment snapped, Zafar, 3 Nov: "the item cards for full and half cup need to be the side on views ... that's obviously the pictures that we have to use"; was the s14 overhead fills)
   // (the S14 roll-out: every Cook station's word cards: the daal and the flour, and the ph- things with a shelf picture, chaat's toppings and
   // samosa's fillings among them; lesson 6: a word that is said needs its picture)
   const WC_ID = /^(cook-(paani|dudh|chai|khun|daal|atto)|spi-[0-9]+|veg-[0-9]+|ph-(amli|chana|dahi|dhana|keema|lili|meat|sev|pepper))$/;
-  const wcPicSrc = (id) => WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  // (a station's own shelf picture first, Cook.shelfPic: the card shows exactly what the child taps; Zafar, 3 Nov)
+  // (and before the station is up, the same art run's spice jars the shelf takes first: art.s02's C5 jars, as chai-tray.js spiceJar)
+  const s02Jar = (id) => {
+    const s02 = ((Cook.data && Cook.data.art) || {}).s02 || {};
+    const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
+    return (e && e.file) || null;
+  };
+  const wcPicSrc = (id) => (Cook.shelfPic && Cook.shelfPic(id)) || s02Jar(id) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   const wcStage = (id) => {
     try {

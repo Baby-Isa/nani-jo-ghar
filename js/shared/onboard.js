@@ -234,7 +234,9 @@
       p = Math.max(0, p);
       const w = r.w + 2 * p;
       const h = r.h + 2 * p;
-      return { x: r.x - p, y: r.y - p, w, h, r: Math.min(12, w / 2, h / 2), pad: p };
+      // (Zafar, 3 Nov: a thin box "can't have such rounded corners because it looks almost circular ... a long, thin rectangle with
+      // slightly rounded corners": the corner scales with the box, at most a quarter of its height, so a thin strip stays a strip)
+      return { x: r.x - p, y: r.y - p, w, h, r: Math.min(12, w / 2, h / 4), pad: p };
     });
   };
   /** The smallest box holding every rect, or null. */

@@ -365,6 +365,19 @@
       return null;
     }
   }
+  /**
+   * Every clip a line will play, fetched and decoded now (Zafar, 3 Nov, L2: "when the second person ordered their order, the first item
+   * in their order didn't have a sound to it ... a weird random bug": a clip still loading when the next card's redraw stopped the voice
+   * was cancelled, Cook.stopVoice; only the first person's lines were warm). Fire and forget.
+   */
+  Lang.warm = (line) => {
+    try {
+      const plan = corePlan(line) || [];
+      plan.forEach((it) => it && it.file && Cook.warmFile && Cook.warmFile(it.file));
+    } catch (e) {
+      /* a warm-up only */
+    }
+  };
   // the core's player speaks a device-voice stand-in (test path only) with the word's own voice spelling
   Cook.synthSay = (text) => synth(saySpelling(Cook.norm(text)));
   Lang.speak = async (line) => {

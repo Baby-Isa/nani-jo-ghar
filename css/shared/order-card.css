@@ -562,6 +562,10 @@ body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
    on a phone her box is no longer held at 48 px; a shut help row adds no gap (the open card keeps its own margin above). Her
    line sits beside the face here, never under its badge, so the badge's room below (css/shared/guide.css) is not needed. */
 body.njg-s14 #guide.ng-s14 { row-gap: 0; }
+/* (Zafar, 3 Nov: "the nanny's helper head size icon looks bigger than the ordering person's head size, and her text box still looks
+   much taller": in the side panel her face is the order card's size, so her box is as tall as a card's head row; the guide size
+   stays for the guide box elsewhere) */
+body.njg-s14 #guide.ng-s14 { --njg-guide-face: var(--njg-face); }
 body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - var(--njg-face-tap)) / 2); }
 
 .oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
@@ -585,6 +589,9 @@ body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - va
 .oc-card.oc-s14 .oc-row.oc-it14.done { border-color: var(--njg-card14-done-edge); background: var(--njg-card14-card); box-shadow: var(--njg-card14-shadow-it); }
 .oc-card.oc-s14 .oc-row.oc-it14.no { border: var(--njg-card14-u1p5) dashed var(--njg-card14-no-edge); background: transparent; box-shadow: none; color: inherit; }
 .oc-card.oc-s14 .oc-row.oc-it14.no .wc14-pic > img.wc-img { opacity: .5; filter: grayscale(.7); }
+/* (Zafar, 3 Nov: "the order of no sugar doesn't blur the sugar as well as it's meant to": the "no" row's grey look replaced the
+   blur's filter, so a blurred "no" picture showed through; a blurred one keeps the blur, with the grey on top of it) */
+.oc-card.oc-s14 .oc-row.oc-it14.no.wc14-hide-pic .wc14-pic:not(.wc14-peek) > img.wc-img, .oc-card.oc-s14 .oc-row.oc-it14.no .wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) > img.wc-img { filter: blur(var(--njg-card14-u16)) saturate(.55) brightness(1.06) grayscale(.7); }
 .oc-card.oc-s14 .oc-row.oc-it14.no::after { content: ""; order: 0; position: absolute; top: var(--njg-card14-u5); right: var(--njg-card14-u5); width: var(--njg-card14-u26); height: var(--njg-card14-u26); border-radius: 50%; box-shadow: 0 0 0 var(--njg-card14-u2) var(--njg-card14-white); background: var(--njg-card14-white) no-repeat center / 100% var(--njg-card14-nosign); }
 .oc-card.oc-s14 .oc-row.oc-it14.no.done::after { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14.reading { border-color: var(--njg-focus) !important; box-shadow: var(--njg-card14-shadow-it), 0 0 0 var(--njg-card14-u2) var(--njg-focus) !important; background: var(--njg-card14-card) !important; }

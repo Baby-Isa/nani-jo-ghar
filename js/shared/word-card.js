@@ -491,6 +491,22 @@
         c.dispatchEvent(new CustomEvent("wc-reveal", { bubbles: true, detail: { word: word.id, slot } }));
         return true;
       },
+      // (a demonstration, never the child's help: the hidden thing shows in its place for ms, nothing logged; SH-196's lesson: Zafar,
+      // 3 Nov: "it didn't show that if you click it, it turns to English")
+      demo(slot, ms = 1600) {
+        const box = slot === "picture" ? pic : slot === "english" ? en : k;
+        const dots = slot === "picture" ? null : slot === "english" ? ed : kd;
+        box.classList.add("wc14-peek", "revealed");
+        if (dots) dots.classList.add("wc14-gone");
+        W.fit14(c);
+        return new Promise((res) => setTimeout(() => {
+          if (!revealed.has(slot)) {
+            box.classList.remove("wc14-peek", "revealed");
+            if (dots) dots.classList.remove("wc14-gone");
+          }
+          res();
+        }, ms));
+      },
       cue() {
         if (revealed.has("picture")) return "picture";
         if (revealed.has("english")) return "english";
@@ -670,12 +686,28 @@
       // over only in the last eighth of the flight, where the two are one size on one place, so no frame shows two cards' words
       // (the judge again, 3 Nov: even a short fade at the end showed the two half see-through: no fade at all; the big card flies whole
       // to the row's card's place and size, and on landing the row's card is shown and the big one hidden in the same frame, below)
-      const fk = o.across
-        ? [{ transform: "none" }, { transform: `translate(${dx}px, 0px) scale(${sm})`, offset: 0.5 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }]
-        : [{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }];
+      // (o.bend, Zafar, 3 Nov: a curve, never a corner: the centre follows a quadratic curve whose middle is bowed o.bend px to the
+      // side of the straight line; sampled into frames on the flight's own ease, so it moves and shrinks as one smooth arc)
+      const curve = (o.bend || 0) !== 0;
+      let fk;
+      if (curve) {
+        const len = Math.hypot(dx, dy) || 1;
+        const qx = dx / 2 + (-dy / len) * o.bend;
+        const qy = dy / 2 + (dx / len) * o.bend;
+        const easeT = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+        fk = [];
+        for (let i = 0; i <= 16; i++) {
+          const t = easeT(i / 16);
+          const x = 2 * (1 - t) * t * qx + t * t * dx;
+          const y = 2 * (1 - t) * t * qy + t * t * dy;
+          fk.push({ transform: i ? `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(1 + (s - 1) * t).toFixed(4)})` : "none", offset: i / 16 });
+        }
+      } else if (o.across) fk = [{ transform: "none" }, { transform: `translate(${dx}px, 0px) scale(${sm})`, offset: 0.5 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }];
+      else fk = [{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }];
       const gk = [{ opacity: 0 }, { opacity: 0 }];
-      const f = from.animate(fk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
-      const g = ghost.animate(gk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
+      const fe = curve ? "linear" : o.across ? "ease-in-out" : ease;
+      const f = from.animate(fk, { duration: dur, easing: fe, fill: "forwards" });
+      const g = ghost.animate(gk, { duration: dur, easing: fe, fill: "forwards" });
       await Promise.all([f.finished, g.finished]);
       // the row's own card under the copy, shown at once (no fade from its waiting slot), then the copy goes: the same card, one frame
       // (its picture decoded first, while it still waits off the card; then the row's card shown and the big one hidden together)

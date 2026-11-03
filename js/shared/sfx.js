@@ -152,6 +152,12 @@
     },
     bubble: (c, o) => tone(c, o, 300 + Math.random() * 300, 0.06, { type: "sine", gain: 0.06, slide: 200 }),
     click: (c, o) => tone(c, o, 1200, 0.03, { type: "square", gain: 0.05 }),
+    // CHAI-67 (Zafar, 3 Nov: "make the camera shutter sound"): a camera's two-part shutter, a sharp click and its mechanical return
+    shutter: (c, o) => {
+      noise(c, o, 0.035, { gain: 0.32, freq: 3200, q: 0.9 });
+      tone(c, o, 1900, 0.02, { type: "square", gain: 0.05 });
+      noise(c, o, 0.06, { gain: 0.2, freq: 1500, q: 0.8, when: 0.09 });
+    },
     // DAAR-30: the stir's flag as the ladle passes it (in the sound log as "sfx/lap")
     lap: (c, o) => {
       tone(c, o, 1047, 0.12, { type: "triangle", gain: 0.16 });

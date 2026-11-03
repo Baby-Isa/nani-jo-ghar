@@ -17,6 +17,7 @@
  *     shutter: "corners" (the corners close in, then the shutter: the iris with snapArt, else the flash) | "flash" (the flash alone),
  *     cards:   "stay" (each card where its glass was) | "rise" (the cards rise to the top, side by side),
  *     speed:   1 (2 = twice as fast), instant: true (the end state at once: the lab's shots)
+ *     hold:    ms each card stays before the next glass (500), english: false to dot the card's English (shown by default)
  *   }) -> Promise<{ cards: [el] }>;   WordMoment.stop(host) ends one early (the cards stay)
  *
  * Art: art block 1 (3 Nov, assets/shared/word-moment/: the tilted kettle, the side-on glasses, the streams, the corners and the iris);
@@ -163,17 +164,20 @@
           await wait(k ? 70 : 60);
         }
         iris.src = art.iris[2];
-        sfx("click");
+        sfx("shutter");
       } else {
-        sfx("click");
+        // (Zafar, 3 Nov: "the shutter doesn't really work ... just put the four corners, blink ... and make the camera shutter sound":
+        // the frame's own area flashes, as a camera's viewfinder does, never the whole screen)
+        sfx("shutter");
         shut.classList.add("flash");
       }
       await wait(140);
       // the glass becomes its word card, in place: the card grows from the glass's own square
       const card = root.WordCard.big14(box, Object.assign({}, sl.x.word, { picture: sl.x.word.picture || sl.x.frames[sl.x.frames.length - 1] }), {
         variant: "small",
-        slots: { picture: true, english: false, kutchiText: true },
-        enShown: false,
+        // (a word met here for the first time: its English shown, never dotted: Zafar, 3 Nov; o.english false keeps the old dots)
+        slots: { picture: true, english: o.english !== false, kutchiText: true },
+        enShown: o.english !== false,
         stage: 1,
         cls: "wm-card",
       });
@@ -212,7 +216,8 @@
         await Promise.race([Promise.resolve(sl.x.say()).catch(() => {}), wait(2500)]);
         if (spk) spk.classList.remove("on");
       }
-      await wait(500);
+      // (it settles on the card before the next glass: o.hold, Zafar, 3 Nov: "settle on that card for about twice the time")
+      await wait(o.hold != null ? o.hold : 500);
       return card;
     };
 
