@@ -694,6 +694,9 @@
         const e = Cook.expect;
         const item = !!(e && typeof e.key === "string" && Cook.isItemWord && Cook.isItemWord(e.key));
         if (UI.s14() && item && helperW && !helperOn) return callNote(s, "skip-helper");
+        // (the judge, 3 Nov, chai L4: "Slow kar!" was said while her card still named another pan's item: a control's call is the step
+        // now, so her card names nothing while it is said; the next item comes back with its own step)
+        if (UI.s14() && !item && helperW) UI.helper(null);
         if (guide) guide.talk(true);
         return Lang.speak(line).finally(() => guide && guide.talk(false));
       });
