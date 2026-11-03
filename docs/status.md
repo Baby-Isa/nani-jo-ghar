@@ -8,40 +8,34 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (3 Nov 2026, about 18:10 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`). Steps 1 to 4 of the
-15:15 handover are done (`build/reports/s17-steps1-4-2026-11-03.md`). Nothing is running. `main` is unchanged (4343fa94, chai live for
-Zafar's play). Branch `claude/admiring-ptolemy-77fuv5`.
-- **Sprint 18 made ready:** the stove family against chai (`docs/game-design/families/stove.md`, every game audited: lab pages clean,
-  panel misses SH-192, SH-169, SH-191 in daar, chaat, sekelo, samosa, eggs); Mum's Round 6 (148 lines,
-  `docs/language/mum-questions/`); ten opening decisions in the sprint file.
-- **Drafts:** the chai standard with the onboarding rule for every game (`docs/design-language/chai-standard.md`, SH-146).
-- **Art block 3:** clinic care and block 1's redos, 35 prompts, about 50 images, the paste block ready (`build/reports/art-queue.md`).
-- **The judge's blind spots:** every row has a spec; spkgap, SH-180's and CHAI-57's probes fixed; `teachgate.mjs` (SH-197, all 30
-  prototypes pass). Evidence runs `ev-20261103-171129-t61`, `-174914-nhg`, `-180011-2zi`: 9 PASS by the machine, about 16 rows for
-  a reviewer. Still blind: CHAI-62 (a boil-over driver, checks-to-build 26).
-- **SH-175 (load time):** a real growth (chai L3: 9.9 MB, 397 requests against 8.7 MB, 355 on 1 Nov); not applied to the fix list yet.
+**Where things stand (3 Nov 2026, about 22:20 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`). Zafar played chai on
+a laptop (L1-L4) tonight: his notes are `docs/feedback/chai-play-2026-11-03.md` (17 points, 12 new rows and 5 reopened), all built on
+branch `claude/admiring-ptolemy-77fuv5` for his replay; `main` is still 4343fa94 (plus his art uploads). Earlier today: steps 1-4
+(`build/reports/s17-steps1-4-2026-11-03.md`), the judge on 28 rows (13 built, 4 reopened).
+- **Built tonight (to fix: check):** the word moment only before the first round asking half and full, half the speed, its English
+  shown, corners and a flash and the shutter's sound, adh and aako's cards side-on (CHAI-67, -70 to -72, -74); the next card always
+  whole (SH-199); the cards' pictures the shelf's (SH-200); every person's clips fetched ahead (SH-201); a 'no' card's blur (SH-202);
+  the card's flight a curve clear of faces (SH-203); the pop-up in its row card's shape (SH-163); Nani's face the cards' size (SH-189);
+  the reveal lesson thin and shown (SH-196); the next pan lit 0.3 s after the pour and as the stuck hint (CHAI-68, CHAI-75).
+- **Checked:** labcheck chai L1-L4 at 740x320 and 1280x665 clean; panelcheck 36/36; the word moment filmed (not at L1, at L4 with
+  English); `checks.mjs` green; the sandbox contract run `s17-fb3` (see its end).
+- **Art:** block 3 landed (`sources/art/s17-art3/`, 38 of 39, MZ to redo, judged); pack s17-wm (the word moment on the counter,
+  CHAI-73) is with Zafar to run.
 
 **Next steps, in order:**
-1. **His play of chai, then `/feedback`;** fix what blocks play; he says "done"; the chai standard final; `/sprint` close.
-2. **The judge** (Fable, about $10) on the three runs' reviewer rows, on his go; then `--collect` and `--apply`.
-3. **SH-175:** re-measure on a quiet machine (`loadtime.mjs --games chai-tray --runs 2`), find the 42 new requests (the word moment's
-   pieces loading at L3 first), fix.
-4. **The boil-over driver** (checks-to-build 26), then CHAI-62's probe.
-5. **Art block 3** on his go; judge, cut, queue for Sprint 19-20.
-6. **Sprint 18 opens** with its ten decisions.
+1. **s17-wm's art** when he pushes it: judge, cut (cells 6 and 11 for adh and aako), wire into `js/shared/word-moment.js` (the counter
+   scene, 12 frames in one place).
+2. **His replay of chai on a laptop**, then `/feedback`; then his phone.
+3. **The judge** on tonight's rows once he has replayed (Fable, about $10, on his go).
+4. **Sprint 18** opens with all nine stove games at once (block 3's art ready).
 
-**Open questions to Zafar:**
-1. Chai: your play and notes; "done"?
-2. Go for the judge (Fable, about $10)?
-3. Go for art block 3, and its four questions (§7 of `docs/design-language/art-plans/s17-art3-art-plan.md`)?
-4. The onboarding rule (SH-146, the chai standard §1): yes, or changes?
-5. CHAI-33 (move the shelf up at phone heights?) and CHAI-40 (a control's light every time?).
-6. Mum's Round 6: take it to her when you see her.
+**Open questions to Zafar:** `docs/feedback/chai-play-2026-11-03.md` §6 (the snap, the pop-up's shape, the reveal lesson, the plain
+wall, Nani's hint for an asked thing), all built on the recommendation.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: my chai notes with
-> `/feedback` when they come, then the next steps in order. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live site.
-> Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: the word moment's
+> art when I push it, then my chai replay notes with `/feedback`. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live
+> site. Tell me before launching anything new.
 
 ## The fix list
 
@@ -49,7 +43,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 49 | 101 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 56 | 100 |
 | Cook: pantry | 9 | 10 |
 | Cook: chai / maani / daar / chaat / samosa / sekelo / general | 16 / 4 / 7 / 2 / 1 / 4 / 10 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
 | Clinic | 35 | 169 |
