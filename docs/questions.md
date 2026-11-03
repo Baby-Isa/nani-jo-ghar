@@ -2,9 +2,6 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### After Sprint 13 (27 Oct)
-43. **Your ear on the Z Flip:** does the customer's opening ("Muke …") now play at the start of every order (LNG-16, fixed on a model of a phone's voice)?
-
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
@@ -15,7 +12,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - Order rows use the short *{x} na* (*Dudh na.*), not the polite *Muke {x} na khape*; Mum called the short form "very informal".
 - Green chutney is the mint one (*fudino ji chutney*, a she-word); chutneys as she-words by inference from *ji*; *chundo*'s gender unknown.
 - *lakri* (skewer) goes before *gos*, *boga* and *mixed*, though Mum said it only with *mishkaki*; *{x} hane kadh* and *{x} chadi de* name the thing instead of Mum's *inke*.
-- Drop green pepper from the skewers at the next recipe or art change (no Kutchi word; do not call it *mirchi*).
+- Green pepper on the skewers has no Kutchi word: it stays, said and shown in English (Zafar, 3 Nov: "where we don't have Kutchi just use English and make an internal log note"; the log is `docs/language/recording-sheet.md`). Never call it *mirchi*.
 - Chai's orders now say the "no" items last (Zafar, 29 Oct: so the order card's row only moves forward): *Muke aadu waari chai khape, ba khun, dudh na.* / *..., hakro khun, aako, dudh na.* / *..., dudh, adh, khun na.* Does that order sound natural? (`build/reports/s14-rules.md`)
 - Pantry jars stay bare (no labels) for now.
 - *gaykal* for "yesterday"; "tomorrow" (*saware* or *kale*) undecided.
@@ -24,8 +21,6 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - Handout vocabulary (*paani, chai, dudh, atto, dungri, tameto, lasan, hardar, jeeru, rai, elchi, loon, trae, char, panj, Hedo!, Ghan*) was never confirmed by Mum (Round 2 Part 5 and Round 3 Section D unanswered).
 - Clinic level 1: a morning is 2 check-ups and 2 named ailments, the first visit always a check-up.
 - Speech recognition defaults (Isa and a cousin saying five words, children's takes enrolled by default, no cloud path, three takes from Mum) await Zafar (`docs/architecture/speech-recognition-plan.md`).
-
-- The Cook greeting pill "Thank you!" is styled as Kutchi (red, bold): is there a Kutchi word for it, or should it be grey italic "to record"? (s08 gate, 16 Oct)
 
 ### From Sprint 7's art (16 Oct)
 35. **Boing's drop machine (DM1):** the new machine is tall, so its levers would sit 40 units apart, too close for a phone tap (needs 56). Redraw it wider (on the redo list) or move the syringe to make room? Recommend: redraw.

@@ -23,6 +23,17 @@
    already the biggest thing on its corner (S13-A1: the tick's pulse IS the glow token, 1.2 s, 12 px at .85) */
 .njg-done.glow, .njg-done.njg-pulse { animation: var(--njg-glow-anim); }
 
+/* SH-198: the one tap a page needs before it may make sound (js/shared/buttons.js tapToStart): the ✓'s round cream button,
+   twice its size, in the middle of the screen, a gold play triangle in it */
+.njg-start { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; background: var(--njg-page); }
+.njg-start-btn {
+  position: relative; width: calc(var(--njg-done) * 2); aspect-ratio: 1; border-radius: 50%; padding: 0; margin: 0;
+  background: var(--njg-cream); border: var(--njg-line) solid var(--njg-cream-edge); box-shadow: none;
+}
+.njg-start-btn.njg-pulse { animation: var(--njg-glow-anim); }
+.njg-start-play { position: absolute; left: 38%; top: 28%; width: 0; height: 0; border-style: solid; border-width: calc(var(--njg-done) * 0.44) 0 calc(var(--njg-done) * 0.44) calc(var(--njg-done) * 0.72); border-color: transparent transparent transparent var(--njg-gold); }
+.njg-start-btn:active { transform: scale(0.96); }
+
 /* → Next, the go-on button (SH-106, 19 Oct: "consistent ... there's no arrow"; samosa's "twice as big vertically"): the
    flat card (white, charcoal text, gold edge), a quarter taller than the ✓ beside it, the picture of where it goes as
    big as the card allows, then the gold arrow, always. Every Cook station and every heal game; no mode restyles it. */

@@ -2,7 +2,7 @@
 
 Built by `node build/tools/ops/recordings.mjs` (do not edit by hand; `--check` says when it is out of date). English meanings and gaps only: this sheet never holds Kutchi we have not been given. Zafar, 20 Oct: **lock the grammar first, then the vocabulary slots in.** So Mum's next sitting starts at section 1; each later section is a table to work down, most-used first.
 
-**Status words:** *No Kutchi yet* = the game shows the English in grey italic (to record). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).
+**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no "to record" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).
 
 ## 1. Grammar first
 
@@ -1086,6 +1086,268 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | rug | find (parked) | — | No Kutchi yet |
 | scales | find (parked) | — | No Kutchi yet |
 | sofa | find (parked) | — | No Kutchi yet |
+
+## 8. In the game with a family voice
+
+255 recordings of words and lines by the family, and OK'd, so the game says them in a family voice (402 OK takes; 485 more takes wait for Zafar's OK in `lab/family-audio.html`, 43 are marked for a redo). Everything in sections 1-7 is still English in the game (Zafar, 3 Nov: where there is no Kutchi the game uses the English; this sheet is the log).
+
+| English | Kutchi | Who | OK |
+|---|---|---|---|
+| a cup (one cup) | hakro cup | mum | Zafar |
+| a filled-up cup | bharelo cup | mum | auto |
+| a full tank | aaki tanki | mum | auto |
+| a good (well-behaved) boy | dayo chokro | mum | auto |
+| a good (well-behaved) girl | dayi chokri | mum | auto |
+| a good bird | dayi chakli | mum | auto |
+| a heaped teaspoonful | bhareli chamchi | zafar | Zafar |
+| a little | thorok | mum | auto |
+| a mishkaki skewer | mishkaki ji lakri | mum | auto |
+| a pot | tapelo | mum | auto |
+| a tablespoon | hakro chamcho | zafar | Zafar |
+| a teaspoon | hakri chamchi | mum | auto |
+| a whole chilli | aakhi mirchi | mum | auto |
+| a whole cup | aako cup | mum | Zafar |
+| Ali! | Ali! | mum | auto |
+| all of those | hu mare | mum | auto |
+| and then | ne poi | mum | auto |
+| behind the big door | wadhe darwaje je puthiya | mum | auto |
+| behind the door (one or more) | darwaje je puthiya | mum | Zafar |
+| Big Ma! (the Kutchi: 'big mother') | Wadima! | mum | auto |
+| Big Ma! (what the children call her) | Big Ma! | mum | auto |
+| Boy! (calling out) | E chokro! | mum | Zafar |
+| Can you bring me the chai things? | Muke chai ji chiju khanechi dinde? | mum | Zafar |
+| Can you help me? | Tu muke help kar de? | mum | Zafar |
+| Can you make me chaat? | Tu muke chaat banai dinda? | mum | Zafar |
+| Can you make me daar? | Tu muke daar banai dinda? | mum | Zafar |
+| Can you make me maani? | Tu muke maani banai dinda? | mum | Zafar |
+| Can you make me mishkaki? | Tu muke mishkaki banai dinda? | mum | auto |
+| Can you make me samosa? | Tu muke samosa banai dinda? | mum | auto |
+| Can you make me some chai? (said naturally, without 'you') | Muke chai banai dinda? | mum | auto |
+| Can you make me some chai? (to a child) | Tu muke chai banai dinda? | mum | Zafar |
+| Can you make me some chai? (to an elder) | Aai muke chai banai dinda? | mum | Zafar |
+| Careful! | Dhyan rakh! | mum | Zafar |
+| chaat | chaat | mum | Zafar |
+| chapati (one or more) | maani | mum | auto |
+| chickpeas | chana | mum | auto |
+| chilli (one or more) | mirchi | mum | auto |
+| chips | chips | mum | Zafar |
+| coconut chutney | nair ji chutney | mum | auto |
+| Come, let's go to the kitchen. | Hal, rasore me winja. | mum | Zafar |
+| cup (one or more) | cup | mum | auto |
+| cupboard (for the pantry) | kabaat | mum | auto |
+| Do you know who I am? (Nani to a grandchild) | Toke khabar ai, aau ker aiya? | mum | Zafar |
+| Eat! | Kha! | zafar | auto |
+| enough! | bas! | zafar | auto |
+| fill it | bhar | mum | auto |
+| filled up (he-word) | bharelo | zafar | auto |
+| filled up (she-word) | bhareli | zafar | auto |
+| four lemons | char limu | mum | Zafar |
+| four skewers | char lakri | mum | auto |
+| fresh coriander | dhania | mum | auto |
+| fried peas (the snack) | watana | mum | Zafar |
+| fried potatoes (chips) | tarela bataata | mum | auto |
+| ghee | ghee | zafar | Zafar |
+| Girl! (calling out) | E chokri! | mum | Zafar |
+| good (well-behaved) boys | daya chokra | mum | auto |
+| good (well-behaved) girls | dayi chokriyu | mum | auto |
+| goodbye | Khuda hafiz! | mum | auto |
+| Great-grandma! (the traditional name) | Maji! | zafar | auto |
+| green peas | matar | mum | auto |
+| Guests are coming. | Mageni achenta. | mum | auto |
+| half (a portion, he-word) | ardo | mum | auto |
+| half (a portion, she-word) | ardi | mum | Zafar |
+| half (an amount) | adh | mum | auto |
+| hello (peace be upon you) | Salamun alaykum! | mum | Zafar |
+| hello back | Alaikum salaam! | mum | auto |
+| her (his) mangoes | inja amba | mum | auto |
+| here | hida | mum | auto |
+| his (her) chair | inji kursi | mum | auto |
+| his (her) mango | injo ambo | mum | auto |
+| how are you? (informal) | Ki aiye? | mum | auto |
+| How are you? (to a child) | Tu ki aiye? | mum | Zafar |
+| How are you? (to an elder) | Aai ki aayo? | mum | auto |
+| how many? | kitla? | mum | Zafar |
+| Hurry up! (to a child) | Jaldi kar! | mum | auto |
+| Hurry up! (to an elder) | Jaldi karo! | mum | auto |
+| I don't want it | muke na khape | mum | auto |
+| I don't want it (in full) | muke nato khape | mum | Zafar |
+| I'd like chai | Muke chai khapeti | mum | auto |
+| I'd like milk | Muke dudh khapeto | mum | Zafar |
+| I'd like water | Muke paani khapeto | mum | Zafar |
+| I'm fine | Aau theek ai | mum | Zafar |
+| I'm fine. And how are you? (to an elder) | Aau theek ai. Aai ki aayo? | mum | Zafar |
+| I'm fine. And you? (to a cousin) | Aau theek ai. Tu ki aiye? | mum | Zafar |
+| I'm in the kitchen. | Aau rasore me aiya. | mum | auto |
+| in her cup | inje cup me | mum | auto |
+| in the big bowl | wadhi bakuli je andar | mum | auto |
+| in the big cup | wadhe cup me | mum | auto |
+| in the cup (one or more) | cup je andar | mum | Zafar |
+| it's boiling | ukreto | mum | auto |
+| it's burning! | bareto! | mum | auto |
+| It's Nana's. | Nana jo ai. | mum | auto |
+| It's Nani's. | Nani jo ai. | mum | auto |
+| it's ready | tayar ai | mum | auto |
+| knead (in atto gund) | gund | mum | auto |
+| ladle (the big spoon) | chamcho | mum | auto |
+| leave it (in) | chadi de | mum | auto |
+| leave it a bit longer | thori war rakh | mum | auto |
+| leave it in | inke chadi de | mum | Zafar |
+| lemon | limu | mum | Zafar |
+| Let me taste it. | Muke chakhan lai de. | mum | auto |
+| lift it out now | hane kadh | zafar | auto |
+| lift it out now | hever kadh | mum | auto |
+| lift them out now | inke hane kadh | mum | auto |
+| make a thick maani | jadi maani banai | mum | auto |
+| make a thin maani | jhini maani banai | mum | auto |
+| meat | gos | mum | auto |
+| millet chapati | bajr ji maani | mum | Zafar |
+| mince | keema | mum | auto |
+| mince (the game's word) | chundo | mum | auto |
+| mint chutney | fudino ji chutney | mum | auto |
+| mishkaki | mishkaki | mum | auto |
+| mixed | mixed | mum | auto |
+| Mmm, lovely chai! Well done, dear. | Mmm, chai bo fine ai. Shabash, beta. | mum | Zafar |
+| more | wadhare | mum | auto |
+| my chair | munji kursi | mum | auto |
+| my cups | munja cups | mum | auto |
+| my mango | munjo ambo | mum | auto |
+| my mangoes | munja amba | mum | auto |
+| Nana! | Nana! | mum | auto |
+| Nana's maani | Nana ji maani | mum | auto |
+| Nana's mango | Nana jo ambo | mum | auto |
+| Nana's mangoes | Nana ja amba | mum | auto |
+| Nani! | Nani! | mum | auto |
+| Nani's cup | Nani jo cup | mum | auto |
+| Nani's door | Nani jo darwajo | mum | auto |
+| Nani's dupatta | Nani ji pacheri | mum | auto |
+| Nani's goat (a billy goat) | Nani jo bakro | mum | auto |
+| Nani's goat (a she-goat) | Nani ji bakri | mum | auto |
+| Nani's mango | Nani jo ambo | mum | auto |
+| Nani's mangoes | Nani ja amba | mum | auto |
+| no | na | mum | auto |
+| No, I don't want it (polite) | Na, muke na khape | mum | auto |
+| no, thank you | na, thank you | zafar | auto |
+| not now | hever na | mum | Zafar |
+| not the red one | laal na | mum | auto |
+| now (in general) | hever | zafar | auto |
+| now (next, in cooking) | hane | zafar | auto |
+| Of course! | Ha! | zafar | Zafar |
+| Oh no, there's no food! | O, kenjo nai! | mum | auto |
+| Oh no, there's no food! (more dramatic) | Oho, kenjo nai! | mum | auto |
+| on Nani's mango | Nani je ambe je mathe | mum | auto |
+| on the big mango | wadhe ambe je mathe | mum | auto |
+| on the maani (one or more) | maani je mathe | mum | auto |
+| on the mangoes | amba je mathe | zafar | Zafar |
+| on your mango (to a child) | toje ambe mathe | mum | auto |
+| one billy goat, two billy goats | hakro bakro, ba bakra | mum | auto |
+| one cup, two cups | hakro cup, ba cup | mum | Zafar |
+| one door, two doors | hakro darwajo, ba darwaja | mum | Zafar |
+| one dupatta (pacheri), two | hakri pacheri, ba pacheri | mum | auto |
+| one eye, two eyes | hakri akh, ba akhyu | mum | Zafar |
+| one fried pea (almost never said) | watano | zafar | auto |
+| one girl, two girls | hakri chokri, ba chokri | mum | auto |
+| one goat, two goats (she-goats) | hakri bakri, ba bakri | mum | Zafar |
+| one knee, two knees | hakro gutan, ba gutan | mum | Zafar |
+| one maani, two maani | hakri maani, ba maani | mum | Zafar |
+| one mango, two mangoes | hakro ambo, ba amba | mum | Zafar |
+| one skewer | hakri lakri | zafar | auto |
+| one skewer of mishkaki | hakri lakri mishkaki | mum | auto |
+| one table, two tables | hakro table, ba table | mum | Zafar |
+| onion | dungri | mum | auto |
+| only | kali | mum | auto |
+| our cup (yours too) | panjo cup | mum | auto |
+| our mango (not yours) | asanjo ambo | mum | auto |
+| Pass me the tablespoon. | Muke chamcho de | mum | auto |
+| Pass me the teaspoon. | Muke chamchi de | mum | auto |
+| potato (one) | bateto | zafar | auto |
+| quickly | jaldi | mum | auto |
+| samosa (Mum's way) | sambusa | mum | auto |
+| samosa (one or more) | samosa | zafar | auto |
+| samosa (the family's word, as Nani says it) | sambusa | mum | auto |
+| samosa (Zafar's way) | samosa | zafar | auto |
+| sev | sev | mum | Zafar |
+| skewer | lakri | mum | auto |
+| slowly | aste thi | mum | Zafar |
+| small (he-word) | nindho | zafar | auto |
+| small (she-word) | nindhi | mum | auto |
+| son / dear (to a grandchild) | beta | mum | auto |
+| tablespoon | chamcho | zafar | Zafar |
+| tablespoon (one) | chamcho | mum | auto |
+| tablespoons (more than one) | chamcha | mum | Zafar |
+| tamarind | amli | zafar | auto |
+| tamarind chutney | amli ji chutney | mum | auto |
+| teaspoon | chamchi | zafar | Zafar |
+| teaspoon (one or more) | chamchi | mum | Zafar |
+| that one | hu | mum | Zafar |
+| that small girl | hu nindhi chokri | mum | auto |
+| the big boy | wadho chokro | mum | auto |
+| the big door | wadho darwajo | mum | auto |
+| the big doors | wadha darwaja | mum | auto |
+| the big dupatta | wadhi pacheri | mum | auto |
+| the big girl | wadhi chokri | mum | auto |
+| the big mango | wadho ambo | mum | auto |
+| the big mangoes | wadha amba | mum | auto |
+| the big spoon | wadho chamcho | mum | auto |
+| The boys are big. | Chokra wadha ain. | mum | auto |
+| The cup is big. | Cup wadho ai. | mum | auto |
+| The cups are big. | Cups wadha ain. | mum | auto |
+| The girl is big. | Chokri wadhi ai. | mum | auto |
+| The girl is good. | Chokri sari ai. | mum | auto |
+| The maani are good. | Maani sari ain. | mum | auto |
+| The mangoes are red. | Amba laal ain. | mum | auto |
+| the red cup | laal cup | mum | auto |
+| the red mango | laal ambo | mum | auto |
+| the red mangoes | laal amba | mum | auto |
+| the small boy | nindho chokro | mum | auto |
+| the small ones | nindha | mum | auto |
+| their chair | iloka ji kursi | mum | auto |
+| their cup | iloka jo cup | mum | auto |
+| there | huda | mum | auto |
+| They're your mangoes. (to a child) | Toja amba ain. | mum | auto |
+| This is for Nana. | Hi Nana lai ai. | mum | auto |
+| this one | hi | mum | auto |
+| three onions | trae dungri | mum | auto |
+| three potatoes | trae bateta | mum | auto |
+| tomato | tameto | mum | auto |
+| Tomorrow is Eid! | Saware Eid ai. | mum | auto |
+| turn it down (the flame) | slow kar | mum | auto |
+| two girls (the fuller plural) | ba chokriyu | mum | auto |
+| under the table (one or more) | table je niche | mum | Zafar |
+| vegetable | boga | mum | auto |
+| Wait for me! | Mu lai khobar! | mum | auto |
+| We need to cook. | Panke randhnu khapdo. | mum | auto |
+| well done! | shabash! | zafar | auto |
+| what would you like? (to a child) | toke kuro khapeto? | mum | auto |
+| what would you like? (to an adult) | anke kuro khapeto? | mum | auto |
+| what's this? | hi kuro ai? | mum | auto |
+| where is it? | kida ai? | mum | auto |
+| Where's the cup? | Cup kida ai? | mum | Zafar |
+| Where's the teaspoon? | Chamchi kida ai? | mum | Zafar |
+| which one? | kyo? | mum | Zafar |
+| who did it? | kere karein? | zafar | Zafar |
+| who's there? | ker ai? | mum | auto |
+| whole, full (he-word) | aako | zafar | auto |
+| whole, full (she-word) | aaki | zafar | Zafar |
+| Will you help me cook? | Tu muke randhan lai madad kar de? | mum | auto |
+| with Nana | Nana sathe | mum | auto |
+| with Nani | Nani sathe | mum | auto |
+| with the billy goat | bakro sathe | mum | Zafar |
+| with the boy | chokre sathe | mum | Zafar |
+| with the girls | chokriyu sathe | mum | Zafar |
+| with the goat | bakri sathe | mum | Zafar |
+| with the goats | bakra sathe | mum | auto |
+| yes | ha | mum | Zafar |
+| Yes, I'll help you cook. (a boy says it) | Ha, aau randhan lai madad kar dos. | mum | auto |
+| Yes, I'll help you cook. (a girl says it) | Ha, aau randhan lai madad kar dis. | mum | Zafar |
+| yes, take it out | ha, kadh | mum | Zafar |
+| Yes. | Ha. | mum | Zafar |
+| yoghurt | dai | mum | Zafar |
+| yoghurt starter culture | mervan | zafar | auto |
+| You're in the kitchen. (to a child) | Tu rasore me aiye. | mum | auto |
+| You're welcome (it's no trouble at all) | Jara e wandho nai | mum | Zafar |
+| your chair (to an elder) | anji kursi | mum | auto |
+| your mango (to a child) | tojo ambo | mum | auto |
+| your mangoes (to an elder) | anja amba | mum | auto |
 
 ---
 

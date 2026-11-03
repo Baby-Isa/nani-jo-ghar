@@ -64,11 +64,12 @@ test("the grammar table lists only what is open; the README's next-round notes a
   assert.deepEqual(parseOpenQuestions("## x\n\n## For the next round\n\n- one\n\n**For the next recording session (Zafar, 20 Oct):** two"), ["one", "For the next recording session (Zafar, 20 Oct): two"]);
 });
 
-test("the sheet has the seven sections in order and the ride's candidate line", () => {
+test("the sheet has the eight sections in order (8: what is in the game, Zafar 3 Nov) and the ride's candidate line", () => {
   const { text, counts } = buildSheet();
   const heads = [...text.matchAll(/^## (\d)\. (.+)$/gm)].map((m) => `${m[1]} ${m[2]}`);
-  assert.deepEqual(heads.map((h) => h.split(" ")[0]), ["1", "2", "3", "4", "5", "6", "7"]);
+  assert.deepEqual(heads.map((h) => h.split(" ")[0]), ["1", "2", "3", "4", "5", "6", "7", "8"]);
   assert.match(heads[0], /Grammar first/);
+  assert.match(heads[7], /In the game with a family voice/);
   assert.match(heads[3], /the door/);
   assert.match(heads[4], /the ride/);
   assert.match(heads[5], /evening book/);

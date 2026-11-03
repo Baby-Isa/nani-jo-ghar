@@ -112,6 +112,38 @@
     return wire(b, onPress);
   };
   /*
+   * SH-198 (Zafar, 3 Nov: on a phone, a refreshed chai L4 sometimes said one or more people's orders with no sound): a page
+   * opened or reloaded with no tap yet may not make sound (Chrome's rule: the device voice, a page's audio and Web Audio
+   * stay silent until the first tap), so an order said before any tap was lost. A page that starts a game by itself (the
+   * lab page; the app's own screens always start from a tap) waits for one tap on a big round play button first.
+   *   NjgButtons.needsTap() -> true when the page has had no tap yet (never in a test browser: navigator.webdriver)
+   *   await NjgButtons.tapToStart(parent)   the round play button over everything; resolves on the tap
+   */
+  B.needsTap = function () {
+    const nav = root.navigator;
+    if (!nav || nav.webdriver) return false;
+    const ua = nav.userActivation;
+    return !!(ua && !ua.hasBeenActive);
+  };
+  B.tapToStart = function (parent) {
+    return new Promise((resolve) => {
+      const layer = doc().createElement("div");
+      layer.className = "njg-start";
+      const b = doc().createElement("button");
+      b.type = "button";
+      b.className = "njg-btn njg-start-btn njg-pulse";
+      b.setAttribute("aria-label", "Play");
+      b.innerHTML = '<span class="njg-start-play" aria-hidden="true"></span>';
+      layer.appendChild(b);
+      (parent || doc().body).appendChild(layer);
+      const go = () => {
+        layer.remove();
+        resolve(true);
+      };
+      b.addEventListener("click", go, { once: true });
+    });
+  };
+  /*
    * SH-58 (S05-S): a glowing ✓ (the only thing left) pulses with the one focal pulse every mode uses (css/shared/focus.css
    * .njg-pulse, rule F17), whoever sets its glow (B.glow, or a mode toggling the class itself, e.g. Cook's UI.done)
    */

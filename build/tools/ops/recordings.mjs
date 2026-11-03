@@ -276,7 +276,7 @@ export function buildSheet() {
   const nGender = (m) => genders[m].reduce((s, g) => s + g.count, 0);
   push("# Recording sheet: everything still to record, in one place", "",
     "Built by `node build/tools/ops/recordings.mjs` (do not edit by hand; `--check` says when it is out of date). English meanings and gaps only: this sheet never holds Kutchi we have not been given. Zafar, 20 Oct: **lock the grammar first, then the vocabulary slots in.** So Mum's next sitting starts at section 1; each later section is a table to work down, most-used first.", "",
-    "**Status words:** *No Kutchi yet* = the game shows the English in grey italic (to record). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).", "");
+    "**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no \"to record\" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).", "");
 
   // 1 grammar
   const gRows = grammar.list().sort((x, y) => (x.order - y.order) || byCount(x, y));
@@ -320,6 +320,16 @@ export function buildSheet() {
   const oRows = other.list().sort((x, y) => (x.order - y.order) || String(x.en).localeCompare(String(y.en)));
   push("## 7. Other modes", "", `${plural(oRows.length, "row")}: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.`, "", ...table(oRows), "");
 
+  // 8 (Zafar, 3 Nov: "ensure somewhere is a full list of words that need recording and which words are correctly in the game"): what
+  // the family has recorded and OK'd, so it plays in the game (sections 1-7 are what still needs recording)
+  const audio = J("data/family-audio.json");
+  const okClips = audio.filter((e) => /^ok/.test(e.checked || "") && e.kutchi);
+  const redoN = audio.filter((e) => e.checked === "redo").length, waitN = audio.filter((e) => !e.checked).length;
+  const seenK = new Set();
+  const okRows = okClips.filter((e) => { const k = `${String(e.kutchi).toLowerCase()}|${e.english}`; if (seenK.has(k)) return false; seenK.add(k); return true; })
+    .sort((x, y) => String(x.english || "").localeCompare(String(y.english || "")));
+  push("## 8. In the game with a family voice", "", `${plural(okRows.length, "recording")} of words and lines by the family, and OK'd, so the game says them in a family voice (${okClips.length} OK takes; ${waitN} more takes wait for Zafar's OK in \`lab/family-audio.html\`, ${redoN} are marked for a redo). Everything in sections 1-7 is still English in the game (Zafar, 3 Nov: where there is no Kutchi the game uses the English; this sheet is the log).`, "",
+    "| English | Kutchi | Who | OK |", "|---|---|---|---|", ...okRows.map((e) => `| ${String(e.english || "").replace(/\|/g, "/")} | ${String(e.kutchi).replace(/\|/g, "/")} | ${e.speaker || ""} | ${e.checked === "ok" ? "Zafar" : "auto"} |`), "");
   push("---", "", `*Sources: \`data/lang/reports/gap-list.md\` (${gl.cook.length} Cook and ${gl.clinic.length} clinic gaps; rebuild with \`node build/lang/import_all.mjs\`), \`data/lang/*.json\`, \`data/day.json\`, \`data/family-audio.json\`, \`docs/language/doctor-recording-list.md\`, \`docs/language/grammar-kb.md\`, \`docs/language/mum-questions/README.md\`. ${gl.awaiting} recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; \`build/reports/lines-needing-family.md\` is the retired shopping game's list and is not a source.*`, "");
   counts.grammar = gRows.length + gProse.length; counts.grammarKb = kb.length; counts.cook = cookRows.length; counts.clinic = dTable.length + clSent.length + clWords.length;
   counts.door = pd.length; counts.ride = pr.length; counts.book = pb.length; counts.other = oRows.length;

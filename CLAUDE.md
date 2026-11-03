@@ -6,7 +6,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 ## Working agreement
 
-- Discuss first: propose, wait for an explicit go, act. Approval for one thing isn't approval for the next. Never launch while a question to him is open; an agreed overnight run goes ahead.
+- Discuss first: propose, wait for an explicit go, act. Approval for one thing isn't approval for the next. Never launch with a question to him open; an agreed overnight run goes ahead.
 - Work in sprints (`/sprint`): one to three days, one playable goal, a budget; `/review` and publish at the end. Steer new work into a sprint.
 - Decisions: a numbered list with recommendations, answerable "yes to all except …".
 - When he says more is coming, collect. Improve his ideas; push back.
@@ -21,7 +21,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 ## Non-negotiables
 
 1. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his OK.
-2. **Never invent Kutchi; only real family voices ship.** Mum is the authority (Masi second; Zafar confirms spellings); two AIs agreeing is not evidence. Every line is a full, natural sentence built by the language engine from recorded phrases and words; no hand-written fragments: if the engine can't say it, report the gap. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (decision 84), device-spoken while testing, never in a store build.
+2. **Never invent Kutchi; only real family voices ship.** Mum is the authority (Masi second; Zafar confirms spellings); two AIs agreeing is not evidence. Every line is a full, natural sentence built by the language engine from recorded phrases and words; no hand-written fragments: if the engine can't say it, report the gap. Missing Kutchi is its English in grey italic, no "to record" sign (Zafar, 3 Nov), logged in `docs/language/recording-sheet.md`; device-spoken while testing, never in a store build.
 3. **No written English for the child,** except under Nani's lines at the door, on the order card at L1, the helper card (28-29 Oct) and a supported word card, tapped. Spoken English: story mode only, rare and simple. Grown-ups' English: only the "?" pop-up and the end-of-round review.
 4. **The Kutchi leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting. Right picks while supported move a word's ladder (29 Oct, sprint file).
 5. **Done means an independent picture:** the `judge` agent, never the builder, passes the changed screens, flaws first.

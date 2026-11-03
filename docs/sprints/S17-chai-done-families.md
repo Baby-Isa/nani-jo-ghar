@@ -64,6 +64,11 @@ About $150-200 and three days.
   stretches and grabs, peering and hiding, head layers), judged by him while it runs or after; daily runs, not the bottleneck.
 - 2 Nov evening: the next-pan light is a gold circle on the pan's rim (CHAI-68).
 - 2 Nov evening: the sprint plan to the launch is `docs/sprints/plan.md`; we stick to it.
+- 3 Nov, 1 am (Zafar): yes to all; Simba's six sheets all kept; art block 2 (fetch and serve) made now for his overnight run; the
+  word moment 1a, 2a, 3a, 4b (CHAI-67's row); CHAI-53 retired (covered by CHAI-68); the onboarding rule for every game (SH-146) in
+  the chai standard page; no Kutchi: the English, no "to record" sign, logged in `docs/language/recording-sheet.md` (its section 8
+  lists what is recorded and in the game); LNG-16 heard on his phone; the silent orders on a reloaded page (SH-198) fixed tonight.
+  No handover until he has played chai in the morning and approved it.
 
 ## Outcome
 
