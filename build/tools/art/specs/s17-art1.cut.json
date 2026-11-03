@@ -1,0 +1,13 @@
+{
+  "pack": "s17-art1",
+  "about": "Sprint 17 art block 1 (Zafar's run, 2 Nov; sources/art/s17-art1/run-log.md). Cut now: the word moment's pieces only (CHAI-67, ART-36: the tilted kettle, the side-on glasses, the streams, the snap). The stove family's pictures are cut at Sprint 18's roll-out.",
+  "src": "sources/art/s17-art1",
+  "out": "assets",
+  "data": "assets/shared/word-moment/cut-data.json",
+  "jobs": [
+    {"id": "wv-kettle", "type": "grid", "src": "wv-chai-kettle-tilted-v1.png", "cells": [2, 1], "names": ["kettle-tilted-s17", "kettle-tilted-pour-s17"], "outdir": "shared/word-moment", "tol": 5, "cell_align": true, "max": 560, "x2": true, "pad": 4, "_note": "steel: tol 5; the two cells registered (the tongue is the only change)"},
+    {"id": "wg-glasses", "type": "grid", "src": "wg-chai-glass-side-filling-v1.png", "cells": [5, 1], "names": ["glass-side-1-s17", "glass-side-2-s17", "glass-side-3-s17", "glass-side-4-s17", "glass-side-5-s17"], "outdir": "shared/word-moment", "glass": ["glass-side-1-s17"], "soft_floor": 0.25, "soft_gain": 2.0, "shadow": true, "cell_align": true, "max": 420, "x2": true, "pad": 4, "_note": "empty, a little, half, three-quarters, full; as s14's glass cuts"},
+    {"id": "ws-streams", "type": "grid", "src": "ws-falling-streams-v1.png", "cells": [6, 1], "names": ["stream-chai-s17", "stream-tea-black-s17", "stream-water-s17", "stream-milk-s17", "stream-flour-s17", "stream-sugar-s17"], "outdir": "shared/word-moment", "glass": ["stream-water-s17"], "soft_floor": 0.25, "soft_gain": 2.0, "max": 640, "pad": 2, "_note": "one column per liquid, stretched by the game"},
+    {"id": "wf-snap", "type": "grid", "src": "wf-camera-snap-v1.png", "cells": [2, 2], "names": ["snap-corners-s17", "iris-open-s17", "iris-half-s17", "iris-shut-s17"], "outdir": "shared/word-moment", "tol": 6, "max": 480, "x2": true, "pad": 4, "_note": "the corners (cream, as drawn) and the iris open, half and shut"}
+  ]
+}

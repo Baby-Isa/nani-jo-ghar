@@ -1,0 +1,102 @@
+{
+ "_about": "Sprint 17 art block 1 (Zafar's run, 2 Nov; sources/art/s17-art1/run-log.md). Cut now: the word moment's pieces only (CHAI-67, ART-36: the tilted kettle, the side-on glasses, the streams, the snap). The stove family's pictures are cut at Sprint 18's roll-out.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "kettle-tilted-s17": {
+   "file": "shared/word-moment/kettle-tilted-s17.webp",
+   "w": 560,
+   "h": 515,
+   "file2x": "shared/word-moment/kettle-tilted-s17@2x.webp"
+  },
+  "kettle-tilted-pour-s17": {
+   "file": "shared/word-moment/kettle-tilted-pour-s17.webp",
+   "w": 560,
+   "h": 515,
+   "file2x": "shared/word-moment/kettle-tilted-pour-s17@2x.webp"
+  },
+  "glass-side-1-s17": {
+   "file": "shared/word-moment/glass-side-1-s17.webp",
+   "w": 291,
+   "h": 346
+  },
+  "glass-side-2-s17": {
+   "file": "shared/word-moment/glass-side-2-s17.webp",
+   "w": 291,
+   "h": 346
+  },
+  "glass-side-3-s17": {
+   "file": "shared/word-moment/glass-side-3-s17.webp",
+   "w": 291,
+   "h": 346
+  },
+  "glass-side-4-s17": {
+   "file": "shared/word-moment/glass-side-4-s17.webp",
+   "w": 291,
+   "h": 346
+  },
+  "glass-side-5-s17": {
+   "file": "shared/word-moment/glass-side-5-s17.webp",
+   "w": 291,
+   "h": 346
+  },
+  "stream-chai-s17": {
+   "file": "shared/word-moment/stream-chai-s17.webp",
+   "w": 52,
+   "h": 640
+  },
+  "stream-tea-black-s17": {
+   "file": "shared/word-moment/stream-tea-black-s17.webp",
+   "w": 53,
+   "h": 640
+  },
+  "stream-water-s17": {
+   "file": "shared/word-moment/stream-water-s17.webp",
+   "w": 55,
+   "h": 640
+  },
+  "stream-milk-s17": {
+   "file": "shared/word-moment/stream-milk-s17.webp",
+   "w": 55,
+   "h": 640
+  },
+  "stream-flour-s17": {
+   "file": "shared/word-moment/stream-flour-s17.webp",
+   "w": 104,
+   "h": 640
+  },
+  "stream-sugar-s17": {
+   "file": "shared/word-moment/stream-sugar-s17.webp",
+   "w": 74,
+   "h": 640
+  },
+  "snap-corners-s17": {
+   "file": "shared/word-moment/snap-corners-s17.webp",
+   "w": 362,
+   "h": 376
+  },
+  "iris-open-s17": {
+   "file": "shared/word-moment/iris-open-s17.webp",
+   "w": 440,
+   "h": 445
+  },
+  "iris-half-s17": {
+   "file": "shared/word-moment/iris-half-s17.webp",
+   "w": 442,
+   "h": 446
+  },
+  "iris-shut-s17": {
+   "file": "shared/word-moment/iris-shut-s17.webp",
+   "w": 441,
+   "h": 445
+  }
+ },
+ "_report": [
+  "wv-kettle: 2 piece(s) by cell for 2 name(s)",
+  "  wv-kettle: 2 piece(s) on one window 667x613 (cell_align)",
+  "wg-glasses: 5 piece(s) by cell for 5 name(s)",
+  "  wg-glasses: 5 piece(s) on one window 283x338 (cell_align)",
+  "ws-streams: 6 piece(s) by cell for 6 name(s)",
+  "wf-snap: 4 piece(s) by cell for 4 name(s)"
+ ]
+}
