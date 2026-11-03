@@ -6,8 +6,8 @@
 <title>Word moment lab: half and full</title>
 <!-- CHAI-67 (Zafar, 2 Nov): the word moment, tried here before chai. A vessel held tilted pours tea into two glasses, half and full;
      a camera-shutter snap round each glass turns it into its word card in place, said as it lands. The shared piece is
-     js/shared/word-moment.js; the art is placeholder (the s14 pan and glasses) until art block 1's vessel and pour (ART-36) land.
-     The bar at the top holds the numbered choices (grown-ups only); ?snap=after&shutter=flash&cards=rise&at=end sets them. -->
+     js/shared/word-moment.js; the art is art block 1's (3 Nov, assets/shared/word-moment/). Zafar's choices, 3 Nov: 1a, 2a, 3a, 4b
+     (the defaults below). The bar at the top holds the choices (grown-ups only); ?snap=after&shutter=flash&cards=rise&at=end sets them. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@600;700;800&display=swap">
 <link rel="stylesheet" href="../css/shared/tokens.css?v=20261102T083741Z">
@@ -27,9 +27,9 @@
 <body>
 <div class="bar">
   <label>1. Snap <select id="snap"><option value="each">each glass after its pour</option><option value="after">both poured, then both snapped</option></select></label>
-  <label>2. Shutter <select id="shutter"><option value="corners">gold corners, then the flash</option><option value="flash">the flash alone</option></select></label>
+  <label>2. Shutter <select id="shutter"><option value="corners">the corners, then the shutter</option><option value="flash">the flash alone</option></select></label>
   <label>3. Cards <select id="cards"><option value="stay">stay where the glasses were</option><option value="rise">rise to the top, side by side</option></select></label>
-  <label>4. Speed <select id="speed"><option value="1">a child's pace</option><option value="1.5">a bit quicker</option></select></label>
+  <label>4. Speed <select id="speed"><option value="1">a child's pace</option><option value="1.5" selected>a bit quicker</option></select></label>
   <button id="go" type="button">Play again</button>
 </div>
 <div id="stage"></div>
@@ -39,20 +39,22 @@
 <script src="../js/shared/word-moment.js?v=20261102T083741Z"></script>
 <script>
   const q = new URLSearchParams(location.search);
-  const G = "../assets/cook/items-s14/glass/";
-  const fr = (k) => Array.from({ length: k }, (_, i) => `${G}glass-fill-milky-${i + 1}-s14.webp`);
+  const A = "../assets/shared/word-moment/";
+  const fr = (k) => Array.from({ length: k }, (_, i) => `${A}glass-side-${i + 1}-s17.webp`);
   // (the family's own clips: Mum's adh; aako is Zafar's take until Mum's is redone, data/family-audio.json)
   const clip = (src) => () => new Promise((res) => { const a = new Audio(src); a.onended = a.onerror = res; a.play().catch(res); });
   const glasses = [
-    { empty: `${G}glass-empty-top-s14.webp`, frames: fr(4), word: { id: "adh", kutchi: "adh", english: "half" }, say: clip("../assets/audio/family/mum/adh-rc.mp3") },
-    { empty: `${G}glass-empty-top-s14.webp`, frames: fr(6), word: { id: "aako", kutchi: "aako", english: "full" }, say: clip("../assets/audio/family/zafar/aako-rc.mp3") },
+    { empty: `${A}glass-side-1-s17.webp`, frames: fr(3), word: { id: "adh", kutchi: "adh", english: "half" }, say: clip("../assets/audio/family/mum/adh-rc.mp3") },
+    { empty: `${A}glass-side-1-s17.webp`, frames: fr(5), word: { id: "aako", kutchi: "aako", english: "full" }, say: clip("../assets/audio/family/zafar/aako-rc.mp3") },
   ];
-  const vessel = { src: "../assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp", spout: [0.03, 0.37], aspect: 514 / 405, tilt: -28 };
+  // (the kettle drawn tilted: tilt 0; the stream leaves at the chai's tongue below the spout, measured on the cut)
+  const vessel = { src: `${A}kettle-tilted-s17.webp`, pour: `${A}kettle-tilted-pour-s17.webp`, spout: [0.025, 0.9], aspect: 560 / 515, tilt: 0 };
+  const art = { side: true, stream: `${A}stream-chai-s17.webp`, snapArt: { corners: `${A}snap-corners-s17.webp`, iris: [`${A}iris-open-s17.webp`, `${A}iris-half-s17.webp`, `${A}iris-shut-s17.webp`] } };
   ["snap", "shutter", "cards", "speed"].forEach((k) => { if (q.get(k)) document.getElementById(k).value = q.get(k); });
   const stage = document.getElementById("stage");
   const go = (instant) => {
     const v = (k) => document.getElementById(k).value;
-    window.lastMoment = WordMoment.play(stage, { vessel, glasses, snap: v("snap"), shutter: v("shutter"), cards: v("cards"), speed: +v("speed"), instant });
+    window.lastMoment = WordMoment.play(stage, { ...art, vessel, glasses, snap: v("snap"), shutter: v("shutter"), cards: v("cards"), speed: +v("speed"), instant });
   };
   document.getElementById("go").addEventListener("click", () => { if (window.Sfx && Sfx.unlock) Sfx.unlock(); go(false); });
   let t = 0;

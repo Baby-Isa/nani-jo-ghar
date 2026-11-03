@@ -7,16 +7,21 @@
  * option 3) for what comes next.
  *
  *   WordMoment.play(host, {
- *     vessel:  { src, spout: [fx, fy] (the spout's point as fractions of the picture), aspect (w/h), tilt (deg) },
+ *     vessel:  { src, pour (the same picture with chai at the spout, while it pours), spout: [fx, fy] (where the stream leaves,
+ *              as fractions of the picture), aspect (w/h), tilt (deg: 0 when the picture is drawn tilted, as the s17 kettle) },
+ *     stream:  the falling stream's picture (stretched from the spout into the glass; a drawn stream without it),
+ *     side:    true for side-on glasses (the stream falls straight in from above; the s17 glasses),
+ *     snapArt: { corners, iris: [open, half, shut] } (the s17 snap: the corners close in, the iris shuts and opens on the card),
  *     glasses: [{ empty, frames: [src, ...] (the fill, first to last), word: {kutchi, english, picture, rec}, say: () => Promise }],
  *     snap:    "each" (each glass snapped after its pour) | "after" (both poured, then both snapped),
- *     shutter: "corners" (gold corners close in, then the flash) | "flash" (the flash alone),
+ *     shutter: "corners" (the corners close in, then the shutter: the iris with snapArt, else the flash) | "flash" (the flash alone),
  *     cards:   "stay" (each card where its glass was) | "rise" (the cards rise to the top, side by side),
  *     speed:   1 (2 = twice as fast), instant: true (the end state at once: the lab's shots)
  *   }) -> Promise<{ cards: [el] }>;   WordMoment.stop(host) ends one early (the cards stay)
  *
- * Art: placeholders until ART-36 lands (the s14 pan for the vessel, the s14 glass fill frames); the stream is a drawn placeholder
- * (decision 77: the real pour comes from the art run). Plain <script>: window.WordMoment.
+ * Art: art block 1 (3 Nov, assets/shared/word-moment/: the tilted kettle, the side-on glasses, the streams, the corners and the iris);
+ * the old placeholders (the s14 pan, the overhead fills, a drawn stream and corners) still work without them. Zafar, 3 Nov: snap
+ * each glass after its pour, the corners then the iris, the cards stay, a bit quicker (speed 1.5). Plain <script>: window.WordMoment.
  */
 (function (root) {
   "use strict";
@@ -54,7 +59,7 @@
     const left0 = (W - (n * g + (n - 1) * gap)) / 2;
     const cy = H * 0.6;
     const slots = o.glasses.map((x, i) => {
-      const s = el("div", "wm-glass", box);
+      const s = el("div", `wm-glass${o.side ? " wm-side" : ""}`, box);
       s.style.cssText = `left:${left0 + i * (g + gap)}px;top:${cy - g / 2}px;width:${g}px;height:${g}px`;
       const im = el("img", "", s);
       im.alt = "";
@@ -72,21 +77,34 @@
     vim.alt = "";
     vim.draggable = false;
     vim.src = v.src;
-    const stream = el("div", "wm-stream", box);
+    if (v.pour) {
+      const pre = new Image();
+      pre.src = v.pour; // (ready before the first pour)
+    }
+    const stream = el("div", `wm-stream${o.stream ? " wm-art" : ""}`, box);
+    if (o.stream) stream.style.setProperty("--wm-stream-img", `url("${o.stream}")`);
     const tilt = v.tilt == null ? -28 : v.tilt;
     const placeVessel = (sl, now) => {
-      // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show)
-      const sx = sl.cx + g * 0.36;
-      const sy = sl.cy - g * 0.4;
+      // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show;
+      // side-on glasses: the spout right above the glass's mouth, so the stream falls straight in)
+      const sx = o.side ? sl.cx : sl.cx + g * 0.36;
+      const sy = o.side ? sl.cy - g * 0.85 : sl.cy - g * 0.4;
       ves.style.transition = now || o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1)`;
       ves.style.left = `${sx - v.spout[0] * vw}px`;
       ves.style.top = `${sy - v.spout[1] * vh}px`;
       ves.style.transform = `rotate(${tilt}deg)`;
       // (the stream from the spout to the glass's middle)
-      const len = Math.hypot(sx - sl.cx, sy - sl.cy);
-      const ang = (Math.atan2(sl.cy - sy, sl.cx - sx) * 180) / Math.PI - 90;
-      stream.style.cssText = `left:${sx - g * 0.035}px;top:${sy}px;width:${g * 0.07}px;height:${len}px;--wm-rot:${ang.toFixed(1)}deg`;
+      const ey = o.side ? sl.cy + g * 0.36 : sl.cy;
+      const len = Math.hypot(sx - sl.cx, sy - ey);
+      const ang = (Math.atan2(ey - sy, sl.cx - sx) * 180) / Math.PI - 90;
+      const sw = g * (o.stream ? 0.09 : 0.07);
+      stream.style.left = `${sx - sw / 2}px`;
+      stream.style.top = `${sy}px`;
+      stream.style.width = `${sw}px`;
+      stream.style.height = `${len}px`;
+      stream.style.setProperty("--wm-rot", `${ang.toFixed(1)}deg`);
     };
+    if (o.snapArt && o.snapArt.iris) o.snapArt.iris.concat(o.snapArt.corners || []).forEach((src) => (new Image().src = src));
     // (it comes in from the right, already tilted)
     placeVessel({ cx: W + vw, cy: cy - g * 0.6 }, true);
     void ves.offsetWidth;
@@ -96,6 +114,7 @@
       await wait(650);
       if (!alive()) return;
       stream.classList.add("on");
+      if (v.pour) vim.src = v.pour;
       const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
       const fr = sl.x.frames;
       for (let i = 0; i < fr.length; i++) {
@@ -106,6 +125,7 @@
       }
       if (loop) loop.stop();
       stream.classList.remove("on");
+      if (v.pour) vim.src = v.src;
       await wait(250);
     };
 
@@ -114,14 +134,38 @@
       const r = { x: sl.cx - g / 2, y: sl.cy - g / 2 };
       const shut = el("div", `wm-shut wm-${o.shutter === "flash" ? "flash-only" : "corners"}`, box);
       shut.style.cssText = `left:${r.x - g * 0.08}px;top:${r.y - g * 0.08}px;width:${g * 1.16}px;height:${g * 1.16}px`;
+      const art = o.snapArt || null;
+      const irisOn = o.shutter !== "flash" && art && art.iris && art.iris.length === 3;
       if (o.shutter !== "flash") {
-        ["tl", "tr", "bl", "br"].forEach((k) => el("i", `wm-c wm-${k}`, shut));
+        if (art && art.corners) {
+          shut.classList.add("wm-art");
+          const ci = el("img", "wm-corners", shut);
+          ci.alt = "";
+          ci.draggable = false;
+          ci.src = art.corners;
+        } else ["tl", "tr", "bl", "br"].forEach((k) => el("i", `wm-c wm-${k}`, shut));
         if (!o.instant) await wait(40);
         shut.classList.add("in");
         await wait(320);
       }
-      sfx("click");
-      shut.classList.add("flash");
+      // the shutter: the iris shuts over the glass (the click), the glass is its card behind it, and the iris opens on the card
+      let iris = null;
+      const isz = g * 1.05;
+      if (irisOn && !o.instant) {
+        iris = el("img", "wm-iris", box);
+        iris.alt = "";
+        iris.draggable = false;
+        iris.style.cssText = `left:${sl.cx - isz / 2}px;top:${sl.cy - isz / 2}px;width:${isz}px;height:${isz}px`;
+        for (const k of [0, 1]) {
+          iris.src = art.iris[k];
+          await wait(k ? 70 : 60);
+        }
+        iris.src = art.iris[2];
+        sfx("click");
+      } else {
+        sfx("click");
+        shut.classList.add("flash");
+      }
       await wait(140);
       // the glass becomes its word card, in place: the card grows from the glass's own square
       const card = root.WordCard.big14(box, Object.assign({}, sl.x.word, { picture: sl.x.word.picture || sl.x.frames[sl.x.frames.length - 1] }), {
@@ -149,6 +193,13 @@
       card.style.top = `${Math.max(8, Math.min(H - ch - 8, sl.cy - ch / 2))}px`;
       sl.s.style.visibility = "hidden";
       if (!o.instant && !reduced() && card.animate) card.animate([{ transform: `scale(${(g / cw).toFixed(3)})`, opacity: 0.4 }, { transform: "scale(1)", opacity: 1 }], { duration: 380 / sp, easing: "cubic-bezier(.3,.7,.2,1.2)" });
+      if (iris) {
+        for (const k of [1, 0]) {
+          iris.src = art.iris[k];
+          await wait(70);
+        }
+        iris.remove();
+      }
       sfx("pop");
       await wait(300);
       shut.remove();
