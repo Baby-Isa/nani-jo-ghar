@@ -2048,12 +2048,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         m = Math.max(3, Math.min(m, room));
         // (the judge, 3 Nov, every size: the sides came from the picture's own wide margin, so the gap under the pill was a third of the
         // sides': the box's sides follow the pill by the same margin, wider only where the picture itself would reach past them)
-        const il = UI.worldToScreen(b.x, 0).x;
-        const ir = UI.worldToScreen(b.right, 0).x;
-        const left = Math.min(pl - m, il - 4);
-        const right = Math.max(pr + m, ir + 4);
+        // (the judge again: the picture's bounds include its transparent frame, so following them kept the sides twice the foot's: the
+        // sides follow the pill alone, which is as wide as any shelf thing; the top a margin over the picture's frame, not its glow room)
+        const left = pl - m;
+        const right = pr + m;
         const bottom = pb + m;
-        return [left, a.y, right - left, bottom - a.y];
+        const top = UI.worldToScreen(0, b.y - dy).y - m;
+        return [left, top, right - left, bottom - top];
       }
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
