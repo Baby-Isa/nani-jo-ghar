@@ -22939,14 +22939,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:slow",
+   "at": "results",
    "after": null,
    "capture": [
-    "strip:canvas:pan:12x300",
     "js:Cook.chaiBoil"
    ],
    "expect": null,
-   "note": "the boil: from 'Slow kar!' (the bar in the green) the player holds its tap while it is filmed, so the strip shows the ring run on through the green into the red and the pot boil over and empty (js:Cook.chaiBoil: its 'over' and 'again' events); the canvas pan, not the hob (3 Nov: the hob's still picture never changed)",
+   "note": "the round's whole boil log (js:Cook.chaiBoil): each pot turned down in the green ('green'), nothing early or over on a fair play. The over case (no tap: it boils over and starts again) needs a driver that lets a pot boil over (docs/process/checks-to-build.md, 3 Nov): a film at a held moment never changes, because the game's clock waits with the player",
    "delay": 0
   },
   {

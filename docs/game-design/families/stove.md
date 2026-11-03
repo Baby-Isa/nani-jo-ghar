@@ -108,13 +108,13 @@ The audit's numbers are the panel step (`panelcheck.mjs`: the side panel at the 
 - **The word moment:** the jug's amounts (a quarter, half, full, one and a half, two and a half) are what CHAI-67's system is for;
   half and full are recorded words (adh, aako); the rest wait for Mum (R6-135).
 - **Art:** block 1 landed (BK kept as a best try, BB, BJ, BO1-3, BN; BL skipped); not cut or wired.
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 60 of 60; the lab page clean at L1-L4.
 - **Words:** atto, paani, dudh, dai, ghee, loon, khun; naan to record (R6-18).
 
 ### The corn stall (prototype)
 - **Kit:** as eggs. Nani's box stands in for Hannah Mami (her approved sheet first: no real person without it).
 - **Art:** block 1 landed (CT, CB, CX kept as a best try, CD; CO failed with text-like marks, in the redo list).
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 60 of 60; the lab page clean at L1-L4.
 - **Words:** makai (confirmed), limu, loon, laal marcha, mari, lili, amli (the dressings); R6-139.
 
 ### The birthday cake (prototype)
