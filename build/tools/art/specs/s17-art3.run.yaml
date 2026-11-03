@@ -1,0 +1,208 @@
+# The run spec for pack s17-art3 (art block 3, a first draft): clinic care (the cut game, the hand splinter, the blocked nose, the
+# drinks, the side-on heads, the foot, the heal games' rows waiting on art) and block 1's redos. Sprint 17 step 3 (Zafar, 3 Nov:
+# "one big art block, 50+ images"); ART-35 (the art queue). ART-29: every reference is on the pushed branch; nothing for Zafar to upload.
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art3.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art3.run.yaml
+pack: s17-art3
+title: 'Art block 3: clinic care (the cut game, the splinter, the nose, the drinks, the heal games) and block 1''s redos'
+plan: docs/design-language/art-plans/s17-art3-art-plan.md
+plan_branch: claude/admiring-ptolemy-77fuv5
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/admiring-ptolemy-77fuv5
+dest: sources/art/s17-art3
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on). If the screen sleeps the run stops.\n- No real people in this run: the girl and the boy are the clinic's patients from their approved sheets, not real people, so you judge every image with the checks below. Any picture of the doctor, Nani or another grown-up fails.\n- A patient's face, hair or skin that drifts from the attached sheet or close-up fails. Clothes are never lifted (modest). Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  kitchen.png: sources/art/s14/kt-kitchen-plain-v1.png
+  mock-pour.png: sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-pour.png
+  corn-cob.png: sources/art/s17-art1/cb-corn-cob-states-v1.png
+  naan-tray.png: sources/art/s17-art1/bn-naan-tray-states-v1.png
+  chai-pan.png: sources/art/s14/st-chai-pan-states-overhead-v1.png
+  potato.png: sources/art/s07/pt1-potato-v1.png
+  style.png: sources/art/style-anchor-v1.png
+  girl-sheet.png: sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+  boy-sheet.png: sources/art/clinic-heal-v3/s2-boy-sheet-v2.png
+  forearm-graze.png: sources/art/clinic-heal-v3/child-f2-forearm-graze-v1.png
+  forearm.png: sources/art/clinic-heal-v3/child-f1-forearm-v1.png
+  knee.png: sources/art/clinic-heal-v3/child-k1-knee-v1.png
+  sole.png: sources/art/s07/child-p1-sole-v2.png
+  girl-ear.png: sources/art/clinic-heal-v3/girl-e1-ear-v1.png
+  boy-ear.png: sources/art/clinic-heal-v3/boy-e1-ear-v1.png
+  girl-face.png: sources/art/s08c/gz2-girl-face-eyes-v1.png
+  girl-aah.png: sources/art/s08c/gz1-girl-face-aah-v1.png
+  exam-room.png: sources/art/clinic-heal-v3/r3-exam-room-square-v1.png
+  splinter-tiles.png: sources/art/s08b/sp1-splinter-channel-tiles-v1.png
+  taste-things.png: sources/art/s07/b8-taste-things-v1.png
+  drop-machine.png: sources/art/s07/dm1-drop-machine-v1.png
+  steel-cup.png: sources/art/s08c/tc1-steel-cup-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  BK: {attach: [kitchen.png, mock-pour.png], save: bk-baking-counter-v2.png, check: COUNTER}
+  CX: {attach: [], save: cx-corn-crate-v2.png, check: CRATE}
+  CO: {attach: [corn-cob.png], save: co-corn-dressings-on-cob-v2.png, check: ONCOB}
+  BL: {attach: [naan-tray.png], save: bl-loaf-cake-tins-v1.png, check: TINS}
+  PO: {attach: [chai-pan.png], save: po-chai-pan-boil-over-v1.png, check: BOILOVER}
+  PU: {attach: [potato.png], save: pu-potato-states-v1.png, check: POTATO}
+  AB: {attach: [boy-sheet.png, forearm.png, style.png], save: ab-boy-arm-whole-v1.png, check: ARM}
+  AG: {attach: [girl-sheet.png, forearm.png, style.png], save: ag-girl-arm-whole-v1.png, check: ARM}
+  PB: {attach: [boy-sheet.png, style.png], save: pb-boy-palm-v1.png, check: PALM}
+  PG: {attach: [girl-sheet.png, style.png], save: pg-girl-palm-v1.png, check: PALM}
+  SR: {attach: [forearm-graze.png], save: sr-scrape-states-v1.png, check: SCRAPE}
+  GS: {attach: [], save: gs-grit-splash-v1.png, check: FIZZ}
+  CR: {attach: [], save: cr-cream-tube-v1.png, check: CREAM}
+  PL: {attach: [], save: pl-plasters-v1.png, check: PLASTERS}
+  TX: {attach: [], save: tx-tissues-v1.png, check: TISSUES}
+  SL: {attach: [splinter-tiles.png], save: sl-splinters-channel-v1.png, check: SPLINTERS}
+  NF: {attach: [girl-face.png, style.png], save: nf-girl-nose-states-v1.png, check: NOSE}
+  DR: {attach: [], save: dr-droppers-drops-v1.png, check: DROPS}
+  BI: {attach: [], save: bi-pedal-bin-v1.png, check: BIN}
+  UB: {attach: [boy-sheet.png, exam-room.png, style.png], save: ub-boy-sitting-cup-v1.png, check: SITTING}
+  UG: {attach: [girl-sheet.png, exam-room.png, style.png], save: ug-girl-sitting-cup-v1.png, check: SITTING}
+  DC: {attach: [exam-room.png], save: dc-drinks-counter-v1.png, check: COUNTER2}
+  DT: {attach: [taste-things.png], save: dt-drink-things-v1.png, check: DRINKS}
+  HG: {attach: [girl-sheet.png, girl-ear.png, style.png], save: hg-girl-head-side-v1.png, check: HEAD}
+  HO: {attach: [boy-sheet.png, boy-ear.png, style.png], save: ho-boy-head-side-v1.png, check: HEAD}
+  FA: {attach: [girl-sheet.png, sole.png, style.png], save: fa-foot-ankle-side-v1.png, check: FOOT}
+  DM: {attach: [drop-machine.png], save: dm-drop-machine-wide-v1.png, check: MACHINE}
+  NG: {attach: [girl-sheet.png, boy-sheet.png, style.png], save: ng-neutral-faces-v1.png, check: NEUTRAL}
+  MZ: {attach: [girl-aah.png, style.png], save: mz-mouth-zoom-mid-v1.png, check: MOUTH}
+  TH: {attach: [], save: th-thermometer-photo-v1.png, check: THERMO}
+  KB: {attach: [knee.png, style.png], save: kb-knee-bandage-wrap-v1.png, check: BANDAGE}
+  TB: {attach: [], save: tb-toothbrush-states-v1.png, check: BRUSH}
+  TC: {attach: [steel-cup.png], save: tc-taste-cups-v1.png, check: CUPS}
+  FL: {attach: [girl-sheet.png, forearm.png, style.png], save: fl-girl-forearm-lap-v1.png, check: LAP}
+  BT: {attach: [girl-sheet.png, style.png], save: bt-body-part-tiles-v1.png, check: TILES}
+parts:
+- id: A
+  title: 'BLOCK 1''S REDOS AND TWO STOVE PIECES'
+  intro: 'The baking counter (the edge at half height, cream tiles), the crate of six husked cobs, the cob dressings as dots and drops only (no lines: block 1''s looked like writing), the loaf and cake tins (block 1 skipped them), the chai pan boiling over, the potato that reads as potato.'
+  items:
+  - lines: [BK, CX, CO, BL, PO, PU]
+- id: B
+  title: 'THE CUT GAME AND THE HAND SPLINTER'
+  intro: 'The boy''s and the girl''s whole arm on the paper strip, their palms with fingers spread, the scrape in four states, the grit''s fizz and the water splash, the cream tube, plasters in four colours, tissues, splinters and the splinter''s channel tiles.'
+  items:
+  - lines: [AB, AG, PB, PG, SR, GS, CR, PL, TX, SL]
+- id: C
+  title: 'THE BLOCKED NOSE AND THE DRINKS'
+  intro: 'The girl''s face in four nose states (an edit of her approved close-up), the eye and nose droppers and drops, the bin, the boy and the girl sitting with a cup, the clinic''s empty counter, the six drink things.'
+  items:
+  - lines: [NF, DR, BI, UB, UG, DC, DT]
+- id: D
+  title: 'THE SIDE-ON HEADS AND THE FOOT'
+  intro: 'The girl''s and the boy''s head exactly side-on (the ear clear), and the foot and ankle from the side, the leg fading out of the picture.'
+  items:
+  - lines: [HG, HO, FA]
+- id: E
+  title: 'THE HEAL GAMES'' ROWS WAITING ON ART'
+  intro: 'Boing''s drop machine wider, truly neutral faces, the zoom''s middle step to the mouth, a photographic thermometer, the knee bandage wrapping round, the toothbrush the right way round, the taste cups with no shadow, the girl''s forearm in her lap, nine body-part tiles.'
+  items:
+  - lines: [DM, NG, MZ, TH, KB, TB, TC, FL, BT]
+checks:
+  COUNTER:
+    text: 'the kitchen''s back counter seen straight on: the marble worktop''s front edge ONE straight horizontal line at half the picture''s height (48-55% from the top), cream (not peach) tiles above, sage cabinets with brass knobs below to the bottom edge; the worktop completely empty (no cooker, jars, plants, people or cat); the same look and light as our kitchen'
+    judge: {aspect: [3, 2], bg: none}
+  CRATE:
+    text: 'one shallow wooden crate from exactly above, about 70% of the width, with exactly SIX fully husked yellow cobs in one row, tips to the right, NO green leaves or silk, the sides even all round; no hand or table; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: none}
+  ONCOB:
+    text: 'six dressings ALONE in a row, each in the long narrow shape of the attached cob with NO cob drawn, made only of dots, drops, crystals and blobs (NO lines, zigzags or anything like writing): lemon drops and a pip, salt, chilli powder, green chutney drops, tamarind drops, black pepper; none touching; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, soft_edges: true}
+  TINS:
+    text: 'eight bakes in a 4 by 2 grid, front view about 30 degrees down: the same loaf tin raw, risen pale, light golden, deep golden; the same round cake tin raw batter, risen pale, light golden, deep golden; plain sponge, no icing; nothing burnt; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+  BOILOVER:
+    text: 'the same steel chai pan as the attached three times in a row from exactly above (a perfect circle), handle straight down: a rolling boil inside the rim, froth over one side, froth spilling all round; no hob or spoon; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  POTATO:
+    text: 'four pieces in a row from exactly above: a whole brown potato, the same cut in half (pale cream face), a heap of matte starchy cubes with some skin (never shiny or butter-yellow), the same cubes boiled; no board; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 4, no_touch: true}
+  ARM:
+    text: 'the attached sheet''s child, the whole right arm from the shoulder (at the left edge) to the open hand (fully inside), palm down, lying straight on a white paper strip seen from above; a sleeve to just above the elbow, nothing lifted; five fingers; the sheet''s exact skin tone and style; no mark; no drop shadow; no text'
+    judge: {aspect: [3, 2], bg: none}
+  PALM:
+    text: 'the attached sheet''s child''s right hand PALM UP, five fingers and the thumb evenly spread and fully inside, the wrist from the bottom edge, on a white paper strip from above, about 70% of the height; the sheet''s skin tone; no mark or splinter; no drop shadow; no text'
+    judge: {aspect: [3, 2], bg: none}
+  SCRAPE:
+    text: 'the same small oval graze four times in a row, drawn alone with no skin: fresh with grit specks, clean, half faded, almost gone; the same shape and size; soft edges; never gory; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 4, soft_edges: true}
+  FIZZ:
+    text: 'a 4 by 2 grid from above: row 1 the same grit specks fizzing away in four steps; row 2 a clear water drop about to land, its small crown splash, a wet sheen; the last cell empty; clear water (not blue); no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 7, soft_edges: true}
+  CREAM:
+    text: 'four pieces in a row from above: a completely plain white cream tube with a white cap (no label or writing), a swirl of white cream, the swirl with two or three gold sparkles, a faint rubbed-in shine with one sparkle; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 4, soft_edges: true}
+  PLASTERS:
+    text: 'a 4 by 3 grid from above of the same rounded fabric plaster with a white pad, columns beige, sky blue, leaf green, sunflower yellow (plain, no pictures or writing): row 1 on its backing with tabs, row 2 the backing half peeled, row 3 alone stuck flat; photographic; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 12, no_touch: true}
+  TISSUES:
+    text: 'three pieces in a row, front view about 30 degrees down: a completely plain pale blue cube tissue box with a tissue standing out of it, one open white tissue, one scrunched used tissue; no writing; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  SPLINTERS:
+    text: 'a 3 by 2 grid from above: row 1 three wooden splinters (short, medium, long) with darker tips; row 2 three square skin tiles of a soft raised pinkish channel (straight, corner, rounded end), the channel the same width where it meets each tile''s side so they join; gentle; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  NOSE:
+    text: 'a 2 by 2 grid of the attached girl''s face, front on, the same size and place, her face, hair and skin EXACTLY as the attached: a pink blocked nose and watery eyes; the sneeze build-up, eyes half shut; sneezing into a white tissue in her hand; clear and smiling; nothing coming out of her nose; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 4, no_touch: true}
+  DROPS:
+    text: 'six pieces in a row, side view: a plain amber eye-drop bottle with a white bulb dropper, the same upside down with a drop forming, one falling clear drop, a plain white nose-drop bottle, the same upside down with a drop forming, a drop splashing into a tiny crown; no labels or writing; photographic; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true}
+  BIN:
+    text: 'a small round plain white pedal bin twice, front view about 20 degrees down, lid closed then open; no label or symbol; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  SITTING:
+    text: 'the attached sheet''s child sitting up on the doctor''s bed, front on, waist to head, fully clothed as in the sheet (nothing lifted), hands in the lap, a calm slightly poorly face, the left two thirds of the picture; an empty plain white cup on a small table on the right; the exam room''s wall soft behind; the sheet''s exact face, hair and skin; five fingers; no text'
+    judge: {aspect: [3, 2], bg: none}
+  COUNTER2:
+    text: 'the clinic''s small pale wooden counter seen straight on, its front edge one straight horizontal line at about 55% of the height, the plain soft wall above with one small empty shelf, plain cupboard doors below to the bottom edge; completely empty (no cups, bottles, people or plants); the attached exam room''s look and light'
+    judge: {aspect: [3, 2], bg: none}
+  DRINKS:
+    text: 'six things standing in a row at eye level, one true scale: fresh ginger root, a glass honey jar with a wooden dipper, a small steel milk jug, a glass jar of yellow turmeric with a steel spoon, a lemon with a cut half, a clear glass of water; no labels or writing; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true}
+  HEAD:
+    text: 'the attached sheet''s child''s head and neck exactly side-on from the right (the right ear clear and unhidden, the jaw and the side of the neck clear), looking to the right, calm, about 75% of the height, the collar at the bottom edge; the sheet''s exact face, hair and skin; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat}
+  FOOT:
+    text: 'the attached sheet''s child''s bare right foot exactly from the side (the inside of the foot), sole flat on a white paper strip, five toes, about 60% of the width; the lower leg rising out of the top-left edge, fading softly (never stopping dead); the sheet''s skin tone; no mark; no drop shadow; no text'
+    judge: {aspect: [3, 2], bg: none}
+  MACHINE:
+    text: 'the attached drop machine redrawn wider than it is tall (about 1.6 to 1), its look and colours kept, four big round levers in one row with gaps at least a lever wide; beside it the four levers alone and their four drops in matching colours; no writing, numbers or symbols; ONE flat magenta with no shadow'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 2, no_touch: true}
+  NEUTRAL:
+    text: 'the girl and the boy from the attached sheets, each in their own half, head to shoulders, front on, a truly neutral face (mouth closed, lips straight, NOT smiling, not sad), each exactly as their sheet; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  MOUTH:
+    text: 'the attached girl''s face framed from just under her eyes to under her chin, her mouth wide open ("aah") exactly as the attached, clean teeth and tongue clear, crisp high detail; the face fills the image; her exact skin and style; no text'
+    judge: {aspect: [3, 2], bg: none}
+  THERMO:
+    text: 'three pieces in a row from above: a slim white digital thermometer with a silver tip and a blank grey window, the same glowing soft green, the same glowing soft red, every display BLANK (no digits or symbols); photographic, crisp outline; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  BANDAGE:
+    text: 'a 2 by 2 grid of the attached knee close-up, the same knee, size and place, a photographic cream crepe bandage wrapping AROUND it and reaching both edges of the leg: one turn, two turns, three turns over the kneecap, fully wrapped and tucked; never a flat strip on top; the knee as the attached'
+    judge: {aspect: [3, 2], bg: none}
+  BRUSH:
+    text: 'three pieces in a row, exactly side-on: a child''s toothbrush lying horizontally, head on the LEFT, the straight untwisted pastel-blue handle to the RIGHT, bristles pointing straight UP; the same with a toothpaste blob; the same with foam; plain, no writing; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  CUPS:
+    text: 'two cups standing upright, front view about 20 degrees down: a plain brushed-steel cup as the attached, a plain white enamel cup with a thin dark-blue rim; both empty, NO shadow and no surface; ONE flat magenta'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  LAP:
+    text: 'the attached sheet''s girl sitting on the bed, framed on her lap from the front and a little above: her right forearm resting across her lap palm down, elbow at the left, relaxed hand at the right, five fingers, the other hand beside it; sleeve rolled to below the elbow, nothing lifted; her exact skin tone; the background soft, never washed out; no text'
+    judge: {aspect: [3, 2], bg: none}
+  TILES:
+    text: 'nine rounded square tiles in a 3 by 3 grid, each one body part of the attached girl, clothed, cropped close: the back of the hand, the leg knee to foot, the bent elbow, the clothed tummy with hands on it, the clothed chest, the side of the neck, the clothed back from behind, the top of the head and hair, the shoulder; each tile the same soft pale inside; ONE flat mid-grey between, no shadow'
+    judge: {aspect: [3, 2], bg: flat, pieces: 9, no_touch: true}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a bottle, a tube, a box, a thermometer's display or a plaster too); dressings or marks that look like writing.
+- Outlines, cel shading, a flat vector look or painterly brushwork; a patient drawn photorealistic (items may be semi-photoreal, people never).
+- The wrong number of things, the wrong order, or the wrong view.
+- A patient whose face, hair, skin tone or clothes drift from the attached sheet or close-up; any grown-up (the doctor, Nani or another adult); clothes lifted.
+- Extra or missing fingers or toes.
+- A key background that isn't one flat colour (a gradient, a floor, shadows or haze on it), where the line asks for one.
+- Anything scary or gory (blood running, an open wound, a needle shown going in); sweets, lollies or biscuits; any religious marker; anything not halal.

@@ -1,0 +1,195 @@
+You're making 35 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/admiring-ptolemy-77fuv5/docs/design-language/art-plans/s17-art3-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/admiring-ptolemy-77fuv5/
+Reference images, by the name the run order uses:
+ kitchen.png         RAW + sources/art/s14/kt-kitchen-plain-v1.png
+ mock-pour.png       RAW + sources/art/mockups-2026-11-01/mockup-cook-baking-eggs-pour.png
+ corn-cob.png        RAW + sources/art/s17-art1/cb-corn-cob-states-v1.png
+ naan-tray.png       RAW + sources/art/s17-art1/bn-naan-tray-states-v1.png
+ chai-pan.png        RAW + sources/art/s14/st-chai-pan-states-overhead-v1.png
+ potato.png          RAW + sources/art/s07/pt1-potato-v1.png
+ style.png           RAW + sources/art/style-anchor-v1.png
+ girl-sheet.png      RAW + sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+ boy-sheet.png       RAW + sources/art/clinic-heal-v3/s2-boy-sheet-v2.png
+ forearm-graze.png   RAW + sources/art/clinic-heal-v3/child-f2-forearm-graze-v1.png
+ forearm.png         RAW + sources/art/clinic-heal-v3/child-f1-forearm-v1.png
+ knee.png            RAW + sources/art/clinic-heal-v3/child-k1-knee-v1.png
+ sole.png            RAW + sources/art/s07/child-p1-sole-v2.png
+ girl-ear.png        RAW + sources/art/clinic-heal-v3/girl-e1-ear-v1.png
+ boy-ear.png         RAW + sources/art/clinic-heal-v3/boy-e1-ear-v1.png
+ girl-face.png       RAW + sources/art/s08c/gz2-girl-face-eyes-v1.png
+ girl-aah.png        RAW + sources/art/s08c/gz1-girl-face-aah-v1.png
+ exam-room.png       RAW + sources/art/clinic-heal-v3/r3-exam-room-square-v1.png
+ splinter-tiles.png  RAW + sources/art/s08b/sp1-splinter-channel-tiles-v1.png
+ taste-things.png    RAW + sources/art/s07/b8-taste-things-v1.png
+ drop-machine.png    RAW + sources/art/s07/dm1-drop-machine-v1.png
+ steel-cup.png       RAW + sources/art/s08c/tc1-steel-cup-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
+Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
+
+MOVING IMAGES (references in, kept images stay put until the end)
+Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
+
+1. INTO CHATGPT (references). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, in the order the line names them, and check the composer shows exactly that many thumbnails before you paste.
+
+2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest kept try of that chat, by its title and thumbnail), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
+
+3. OUT OF CHATGPT: only at the very end, or when Zafar says "stop" or "download": from the Library page (https://chatgpt.com/library), each kept image in the run order with ChatGPT's own download button (Chrome's normal download; the file keeps ChatGPT's title, so you log "title -> save as" for each one; see AT THE END). Until then every kept image stays in its chat, and its chat link, title and save-as name are in THE LOG.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
+
+THE TICK. Repeat until every line is KEPT or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
+   FAIL with redos left: put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+APPROVALS
+- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on). If the screen sleeps the run stops.
+- No real people in this run: the girl and the boy are the clinic's patients from their approved sheets, not real people, so you judge every image with the checks below. Any picture of the doctor, Nani or another grown-up fails.
+- A patient's face, hair or skin that drifts from the attached sheet or close-up fails. Clothes are never lifted (modest). Redo only for a failed check or a PASS/FAIL point.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it. The only change allowed is filling a code box's {SLOTS}.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it in a fresh chat with the same attachments, at most 2 redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong.
+6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: BLOCK 1'S REDOS AND TWO STOVE PIECES (6)
+The baking counter (the edge at half height, cream tiles), the crate of six husked cobs, the cob dressings as dots and drops only (no lines: block 1's looked like writing), the loaf and cake tins (block 1 skipped them), the chai pan boiling over, the potato that reads as potato.
+BK | kitchen.png, mock-pour.png | bk-baking-counter-v2.png | COUNTER
+CX |  | cx-corn-crate-v2.png | CRATE
+CO | corn-cob.png | co-corn-dressings-on-cob-v2.png | ONCOB
+BL | naan-tray.png | bl-loaf-cake-tins-v1.png | TINS
+PO | chai-pan.png | po-chai-pan-boil-over-v1.png | BOILOVER
+PU | potato.png | pu-potato-states-v1.png | POTATO
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: THE CUT GAME AND THE HAND SPLINTER (10)
+The boy's and the girl's whole arm on the paper strip, their palms with fingers spread, the scrape in four states, the grit's fizz and the water splash, the cream tube, plasters in four colours, tissues, splinters and the splinter's channel tiles.
+AB | boy-sheet.png, forearm.png, style.png | ab-boy-arm-whole-v1.png | ARM
+AG | girl-sheet.png, forearm.png, style.png | ag-girl-arm-whole-v1.png | ARM
+PB | boy-sheet.png, style.png | pb-boy-palm-v1.png | PALM
+PG | girl-sheet.png, style.png | pg-girl-palm-v1.png | PALM
+SR | forearm-graze.png | sr-scrape-states-v1.png | SCRAPE
+GS |  | gs-grit-splash-v1.png | FIZZ
+CR |  | cr-cream-tube-v1.png | CREAM
+PL |  | pl-plasters-v1.png | PLASTERS
+TX |  | tx-tissues-v1.png | TISSUES
+SL | splinter-tiles.png | sl-splinters-channel-v1.png | SPLINTERS
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: THE BLOCKED NOSE AND THE DRINKS (7)
+The girl's face in four nose states (an edit of her approved close-up), the eye and nose droppers and drops, the bin, the boy and the girl sitting with a cup, the clinic's empty counter, the six drink things.
+NF | girl-face.png, style.png | nf-girl-nose-states-v1.png | NOSE
+DR |  | dr-droppers-drops-v1.png | DROPS
+BI |  | bi-pedal-bin-v1.png | BIN
+UB | boy-sheet.png, exam-room.png, style.png | ub-boy-sitting-cup-v1.png | SITTING
+UG | girl-sheet.png, exam-room.png, style.png | ug-girl-sitting-cup-v1.png | SITTING
+DC | exam-room.png | dc-drinks-counter-v1.png | COUNTER2
+DT | taste-things.png | dt-drink-things-v1.png | DRINKS
+Part C done: post the part C summary (see AT THE END) and carry on.
+
+PART D: THE SIDE-ON HEADS AND THE FOOT (3)
+The girl's and the boy's head exactly side-on (the ear clear), and the foot and ankle from the side, the leg fading out of the picture.
+HG | girl-sheet.png, girl-ear.png, style.png | hg-girl-head-side-v1.png | HEAD
+HO | boy-sheet.png, boy-ear.png, style.png | ho-boy-head-side-v1.png | HEAD
+FA | girl-sheet.png, sole.png, style.png | fa-foot-ankle-side-v1.png | FOOT
+Part D done: post the part D summary (see AT THE END) and carry on.
+
+PART E: THE HEAL GAMES' ROWS WAITING ON ART (9)
+Boing's drop machine wider, truly neutral faces, the zoom's middle step to the mouth, a photographic thermometer, the knee bandage wrapping round, the toothbrush the right way round, the taste cups with no shadow, the girl's forearm in her lap, nine body-part tiles.
+DM | drop-machine.png | dm-drop-machine-wide-v1.png | MACHINE
+NG | girl-sheet.png, boy-sheet.png, style.png | ng-neutral-faces-v1.png | NEUTRAL
+MZ | girl-aah.png, style.png | mz-mouth-zoom-mid-v1.png | MOUTH
+TH |  | th-thermometer-photo-v1.png | THERMO
+KB | knee.png, style.png | kb-knee-bandage-wrap-v1.png | BANDAGE
+TB |  | tb-toothbrush-states-v1.png | BRUSH
+TC | steel-cup.png | tc-taste-cups-v1.png | CUPS
+FL | girl-sheet.png, forearm.png, style.png | fl-girl-forearm-lap-v1.png | LAP
+BT | girl-sheet.png, style.png | bt-body-part-tiles-v1.png | TILES
+Part E done.
+
+CHECKS (by check ID)
+COUNTER: the kitchen's back counter seen straight on: the marble worktop's front edge ONE straight horizontal line at half the picture's height (48-55% from the top), cream (not peach) tiles above, sage cabinets with brass knobs below to the bottom edge; the worktop completely empty (no cooker, jars, plants, people or cat); the same look and light as our kitchen
+CRATE: one shallow wooden crate from exactly above, about 70% of the width, with exactly SIX fully husked yellow cobs in one row, tips to the right, NO green leaves or silk, the sides even all round; no hand or table; ONE flat magenta with no shadow
+ONCOB: six dressings ALONE in a row, each in the long narrow shape of the attached cob with NO cob drawn, made only of dots, drops, crystals and blobs (NO lines, zigzags or anything like writing): lemon drops and a pip, salt, chilli powder, green chutney drops, tamarind drops, black pepper; none touching; no shadow on ONE flat mid-grey
+TINS: eight bakes in a 4 by 2 grid, front view about 30 degrees down: the same loaf tin raw, risen pale, light golden, deep golden; the same round cake tin raw batter, risen pale, light golden, deep golden; plain sponge, no icing; nothing burnt; no shadow on ONE flat mid-grey
+BOILOVER: the same steel chai pan as the attached three times in a row from exactly above (a perfect circle), handle straight down: a rolling boil inside the rim, froth over one side, froth spilling all round; no hob or spoon; ONE flat magenta with no shadow
+POTATO: four pieces in a row from exactly above: a whole brown potato, the same cut in half (pale cream face), a heap of matte starchy cubes with some skin (never shiny or butter-yellow), the same cubes boiled; no board; no shadow on ONE flat mid-grey
+ARM: the attached sheet's child, the whole right arm from the shoulder (at the left edge) to the open hand (fully inside), palm down, lying straight on a white paper strip seen from above; a sleeve to just above the elbow, nothing lifted; five fingers; the sheet's exact skin tone and style; no mark; no drop shadow; no text
+PALM: the attached sheet's child's right hand PALM UP, five fingers and the thumb evenly spread and fully inside, the wrist from the bottom edge, on a white paper strip from above, about 70% of the height; the sheet's skin tone; no mark or splinter; no drop shadow; no text
+SCRAPE: the same small oval graze four times in a row, drawn alone with no skin: fresh with grit specks, clean, half faded, almost gone; the same shape and size; soft edges; never gory; no shadow on ONE flat mid-grey
+FIZZ: a 4 by 2 grid from above: row 1 the same grit specks fizzing away in four steps; row 2 a clear water drop about to land, its small crown splash, a wet sheen; the last cell empty; clear water (not blue); no shadow on ONE flat mid-grey
+CREAM: four pieces in a row from above: a completely plain white cream tube with a white cap (no label or writing), a swirl of white cream, the swirl with two or three gold sparkles, a faint rubbed-in shine with one sparkle; no shadow on ONE flat mid-grey
+PLASTERS: a 4 by 3 grid from above of the same rounded fabric plaster with a white pad, columns beige, sky blue, leaf green, sunflower yellow (plain, no pictures or writing): row 1 on its backing with tabs, row 2 the backing half peeled, row 3 alone stuck flat; photographic; no shadow on ONE flat mid-grey
+TISSUES: three pieces in a row, front view about 30 degrees down: a completely plain pale blue cube tissue box with a tissue standing out of it, one open white tissue, one scrunched used tissue; no writing; no shadow on ONE flat mid-grey
+SPLINTERS: a 3 by 2 grid from above: row 1 three wooden splinters (short, medium, long) with darker tips; row 2 three square skin tiles of a soft raised pinkish channel (straight, corner, rounded end), the channel the same width where it meets each tile's side so they join; gentle; no shadow on ONE flat mid-grey
+NOSE: a 2 by 2 grid of the attached girl's face, front on, the same size and place, her face, hair and skin EXACTLY as the attached: a pink blocked nose and watery eyes; the sneeze build-up, eyes half shut; sneezing into a white tissue in her hand; clear and smiling; nothing coming out of her nose; no shadow on ONE flat mid-grey
+DROPS: six pieces in a row, side view: a plain amber eye-drop bottle with a white bulb dropper, the same upside down with a drop forming, one falling clear drop, a plain white nose-drop bottle, the same upside down with a drop forming, a drop splashing into a tiny crown; no labels or writing; photographic; no shadow on ONE flat mid-grey
+BIN: a small round plain white pedal bin twice, front view about 20 degrees down, lid closed then open; no label or symbol; ONE flat magenta with no shadow
+SITTING: the attached sheet's child sitting up on the doctor's bed, front on, waist to head, fully clothed as in the sheet (nothing lifted), hands in the lap, a calm slightly poorly face, the left two thirds of the picture; an empty plain white cup on a small table on the right; the exam room's wall soft behind; the sheet's exact face, hair and skin; five fingers; no text
+COUNTER2: the clinic's small pale wooden counter seen straight on, its front edge one straight horizontal line at about 55% of the height, the plain soft wall above with one small empty shelf, plain cupboard doors below to the bottom edge; completely empty (no cups, bottles, people or plants); the attached exam room's look and light
+DRINKS: six things standing in a row at eye level, one true scale: fresh ginger root, a glass honey jar with a wooden dipper, a small steel milk jug, a glass jar of yellow turmeric with a steel spoon, a lemon with a cut half, a clear glass of water; no labels or writing; no shadow on ONE flat mid-grey
+HEAD: the attached sheet's child's head and neck exactly side-on from the right (the right ear clear and unhidden, the jaw and the side of the neck clear), looking to the right, calm, about 75% of the height, the collar at the bottom edge; the sheet's exact face, hair and skin; no shadow on ONE flat mid-grey
+FOOT: the attached sheet's child's bare right foot exactly from the side (the inside of the foot), sole flat on a white paper strip, five toes, about 60% of the width; the lower leg rising out of the top-left edge, fading softly (never stopping dead); the sheet's skin tone; no mark; no drop shadow; no text
+MACHINE: the attached drop machine redrawn wider than it is tall (about 1.6 to 1), its look and colours kept, four big round levers in one row with gaps at least a lever wide; beside it the four levers alone and their four drops in matching colours; no writing, numbers or symbols; ONE flat magenta with no shadow
+NEUTRAL: the girl and the boy from the attached sheets, each in their own half, head to shoulders, front on, a truly neutral face (mouth closed, lips straight, NOT smiling, not sad), each exactly as their sheet; no shadow on ONE flat mid-grey
+MOUTH: the attached girl's face framed from just under her eyes to under her chin, her mouth wide open ("aah") exactly as the attached, clean teeth and tongue clear, crisp high detail; the face fills the image; her exact skin and style; no text
+THERMO: three pieces in a row from above: a slim white digital thermometer with a silver tip and a blank grey window, the same glowing soft green, the same glowing soft red, every display BLANK (no digits or symbols); photographic, crisp outline; no shadow on ONE flat mid-grey
+BANDAGE: a 2 by 2 grid of the attached knee close-up, the same knee, size and place, a photographic cream crepe bandage wrapping AROUND it and reaching both edges of the leg: one turn, two turns, three turns over the kneecap, fully wrapped and tucked; never a flat strip on top; the knee as the attached
+BRUSH: three pieces in a row, exactly side-on: a child's toothbrush lying horizontally, head on the LEFT, the straight untwisted pastel-blue handle to the RIGHT, bristles pointing straight UP; the same with a toothpaste blob; the same with foam; plain, no writing; no shadow on ONE flat mid-grey
+CUPS: two cups standing upright, front view about 20 degrees down: a plain brushed-steel cup as the attached, a plain white enamel cup with a thin dark-blue rim; both empty, NO shadow and no surface; ONE flat magenta
+LAP: the attached sheet's girl sitting on the bed, framed on her lap from the front and a little above: her right forearm resting across her lap palm down, elbow at the left, relaxed hand at the right, five fingers, the other hand beside it; sleeve rolled to below the elbow, nothing lifted; her exact skin tone; the background soft, never washed out; no text
+TILES: nine rounded square tiles in a 3 by 3 grid, each one body part of the attached girl, clothed, cropped close: the back of the hand, the leg knee to foot, the bent elbow, the clothed tummy with hands on it, the clothed chest, the side of the neck, the clothed back from behind, the top of the head and hair, the shoulder; each tile the same soft pale inside; ONE flat mid-grey between, no shadow
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a bottle, a tube, a box, a thermometer's display or a plaster too); dressings or marks that look like writing.
+- Outlines, cel shading, a flat vector look or painterly brushwork; a patient drawn photorealistic (items may be semi-photoreal, people never).
+- The wrong number of things, the wrong order, or the wrong view.
+- A patient whose face, hair, skin tone or clothes drift from the attached sheet or close-up; any grown-up (the doctor, Nani or another adult); clothes lifted.
+- Extra or missing fingers or toes.
+- A key background that isn't one flat colour (a gradient, a floor, shadows or haze on it), where the line asks for one.
+- Anything scary or gory (blood running, an open wound, a needle shown going in); sweets, lollies or biscuits; any religious marker; anything not halal.
+
+THE LOG
+One line per kept image:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link and title. At the very end, or as soon as Zafar says "stop" or "download" in this chat, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open https://chatgpt.com/library, find the kept image (by its chat's title and its thumbnail; the newest kept try of that chat), open it and download it with ChatGPT's own download button, which is Chrome's normal download into the Downloads folder. The file keeps the name ChatGPT gives it; you cannot rename it, so log each download at once, in order, as "DOWNLOADED <n>: <ChatGPT's title, as the file is named> -> <save as>". When every kept image is down, post the whole log once more with that numbered title -> save-as list at its end: Zafar renames from it and pushes the folder and the log to the repo himself. Never page JavaScript, never a GitHub upload, never a file picker. If a download is refused, say so, log it, and post the ordered list of chat links, titles and save-as names instead; Zafar downloads from it.
