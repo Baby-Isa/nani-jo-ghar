@@ -8,41 +8,34 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (2 Nov 2026, about 23:40 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`, the plan
-`docs/sprints/plan.md`). Nothing is running. `main` is unchanged (c6cf44a).
-- **Done on the branch tonight:**
-  - Chai's side panel: equal item padding (SH-190), Nani's box as tall as it needs (SH-189), the headline's gaps equal (SH-192),
-    the current card kept whole in view (SH-191, SH-169). `panelcheck.mjs`: 60 pass, 0 fail at the four sizes, L2-L4.
-  - Chai's open code rows: all built (s15-chai-11/-12, 30 Oct, tonight) and moved to "to fix: check" for the judge.
-  - The word moment's lab page (CHAI-67): `lab/word-moment.html`, `js/shared/word-moment.js`, four numbered choices.
-  - The shared ground: the spotlight bug fixed in the ten prototype kits (SH-197); the audit (`audit.mjs <game>`, `panelcheck.mjs`).
-  - Check tools: contract-42 (face sizes read as 0 since SH-185) and contract-78 (returning players) fixed.
-- **Chai's contract run** (same tools, before and after tonight): 46 breaks before, 42 after. Still there: contract-79 (23, the order
-  card's light while something moves), -72 (5), -51 (5, CHAI-69, cause to measure), -83 (2, the L4 card over Nana), -89 (2), -78 (1).
-- **Art block 1 and Simba landed** (Zafar ran them; pushed to `main` in `assets/ChatGPT 261102/`, moved on the branch to
-  `sources/art/s17-art1/` and `sources/art/s17-simba/`, named by the run log): 28 of 29 kept (BK and CX kept as FAIL best tries;
-  BL skipped). Not yet judged by script, cut or wired. On `main` the raw folder stays until the next publish.
+**Where things stand (3 Nov 2026, about 15:15 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`). Chai is live
+for Zafar's play: published 14:55 UK (4343fa94, 20261103T145224Z). Nothing is running. Today's work: `build/reports/s17-chai-2026-11-03.md`
+(the silent orders fixed, the word moment in chai, chai's 46 contract breaks fixed, three judge rounds, art blocks 1 and 2 landed).
+Work on branch `claude/admiring-ptolemy-77fuv5` (it carries all of `claude/nice-lovelace-0vfjcj`).
 
-**Next steps, in order (Sprint 17):**
-1. **Block 1's art:** `artjudge.py`, cut the word moment's pieces (the kettle, the five side-on glasses, the stream, the snap
-   corners), the lab page on them; the rest cut for Sprint 18's roll-out. Simba's six sheets to Zafar to judge.
-2. **Chai's remaining contract breaks** above, in the chat (Opus, high), then `audit.mjs chai-tray` green.
-3. **The judge on chai** (`sprintcheck.mjs`, the `judge` agent, Fable, about $10) on Zafar's go, then his play; he says "done".
-4. **The word moment:** his four choices on the lab page, then into chai's first L4 order (CHAI-67).
-5. **Art block 2** (fetch and serve) into `build/reports/art-queue.md`: a builder (Opus, high, about $10-15) on his go.
-6. **The chai standard page** once he says chai is done; then Sprint 18 made ready (the stove family listed, Mum's sheet, the
-   pantry's decisions).
+**Next steps, in order (Zafar, 3 Nov: "yes to all"; all in the chat, Opus, high):**
+1. **Sprint 18 made ready:** the stove family listed (daar, sekelo, maani, chaat, samosa, eggs, baking, the corn stall, the cake),
+   each one's gap to chai; Mum's Round 6 sheet (`/mum-round`): the stove family's words and the assumptions in `docs/questions.md`;
+   the pantry's PAN-19 to PAN-22 as numbered decisions for Zafar.
+2. **Drafts for his yes:** the onboarding rule for every game (SH-146) and the chai standard page (`docs/process/prototype-to-game.md`,
+   from chai's rows), so minor feedback from his play changes a draft, not a blank page.
+3. **One big art block, 50+ images** (`/art-run`): block 1's redos (CO failed: text-like marks; BK and CX kept as best tries; BL
+   skipped) plus the next family's block (`docs/sprints/plan.md`: block 3, clinic care); no real people without his approved sheets.
+4. **The judge's blind spots:** evidence specs for the 25 rows with none (`build/reports/evidence-ev-20261103-111144-8je.md`, "No
+   spec"), spkgap stopping at 1920 (SH-165), the SH-180 probe that films the wrong moment, CHAI-57's strip.
+5. **His play of chai, then `/feedback`;** fix what blocks play; he says "done"; the chai standard page final; `/sprint` close.
 
 **Open questions to Zafar:**
-1. The word moment's four choices (`lab/word-moment.html`).
-2. Go for the judge on chai (after step 1) and for the art block 2 builder.
-3. Simba's six sheets (`sources/art/s17-simba/`): which to keep.
-4. Mum's words (`docs/questions.md`).
+1. Chai: your play and notes; "done"?
+2. CHAI-33: at 740x320 the shelf pill sits 10 px off the screen's foot, so the lit box's margin under it is 3 px: move the shelf up at
+   phone heights?
+3. CHAI-40: keep your 1 Nov rule (a control's light only the first time), as the judge wanted it every time?
+4. Mum's words (`docs/questions.md`, for Mum).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: block 1's art judged, cut and
-> on the word moment's lab page; chai's remaining contract breaks, then `audit.mjs chai-tray` green, then the judge on chai before I play it. Take my notes with `/feedback`. Work on
-> branch `claude/nice-lovelace-0vfjcj`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17, steps 1 to 4
+> (I said yes to all), with a 30-minute check-in and the overnight log line at each step. Take my chai notes with `/feedback` when
+> they come. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
@@ -62,6 +55,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+3 Nov 2026, published 14:55 UK (4343fa94, 20261103T145224Z): Sprint 17's chai for Zafar's play: the play button on a reloaded page (SH-198), the word moment at L4 (CHAI-67), chai's contract breaks fixed, the judge's fixes (`build/reports/s17-chai-2026-11-03.md`); `--force` on his word.
 
 30 Oct 2026, published 20:36 UK (d7835a56, 20261030T203356Z): Zafar's evening notes on chai (`docs/feedback/chai-play-2026-10-30-evening.md`: a quiet pour, the s14 look at mount, a faster start, a second's pause before the cooker's light, bubbles beside the head on the right, the item card's light, a shorter helper card); `--force` on his word.
 
