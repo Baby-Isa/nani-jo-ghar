@@ -1,0 +1,1010 @@
+[
+ {
+  "id": "AB",
+  "file": "ab-boy-arm-whole-v1.png",
+  "check": "ARM",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right"
+   ],
+   "bbox": [
+    0,
+    193,
+    1536,
+    836
+   ]
+  }
+ },
+ {
+  "id": "AG",
+  "file": "ag-girl-arm-whole-v1.png",
+  "check": "ARM",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "BI",
+  "file": "bi-pedal-bin-v1.png",
+  "check": "BIN",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "ground is #FC03FA, spread 0.9, not flat #808080"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#FC03FA, spread 0.9",
+   "edge_move": 0.0027,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    192,
+    51,
+    1339,
+    939
+   ],
+   "margin": 0.05,
+   "pieces": 2
+  }
+ },
+ {
+  "id": "BK",
+  "file": "bk-baking-counter-v2.png",
+  "check": "COUNTER",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "BL",
+  "file": "bl-loaf-cake-tins-v1.png",
+  "check": "TINS",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "tight margin 0.7% to the nearest edge"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7C7C7C, spread 0.8",
+   "edge_move": 0.0053,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    19,
+    208,
+    1525,
+    884
+   ],
+   "margin": 0.007,
+   "pieces": 8
+  }
+ },
+ {
+  "id": "BT",
+  "file": "bt-body-part-tiles-v1.png",
+  "check": "TILES",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#777777, spread 1.0",
+   "edge_move": 0.0036,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    200,
+    16,
+    1337,
+    1006
+   ],
+   "margin": 0.016,
+   "pieces": 9
+  }
+ },
+ {
+  "id": "BV",
+  "file": "bv-baking-scoop-tilted-v1.png",
+  "check": "SCOOP",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "edge not crisp: the cut moves 4.5% with the key tolerance (blur, halo or a shadow)"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7E7D7D, spread 0.8",
+   "edge_move": 0.045,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    146,
+    280,
+    1480,
+    745
+   ],
+   "margin": 0.036,
+   "pieces": 2
+  }
+ },
+ {
+  "id": "BW",
+  "file": "bw-baking-jug-fills-v1.png",
+  "check": "JUGFILL",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "tight margin 1.1% to the nearest edge"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7D, spread 1.2",
+   "edge_move": 0.2487,
+   "glyph_row": 1,
+   "touch": [],
+   "bbox": [
+    38,
+    132,
+    1519,
+    874
+   ],
+   "margin": 0.011,
+   "pieces": 10
+  }
+ },
+ {
+  "id": "CO",
+  "file": "co-corn-dressings-on-cob-v2.png",
+  "check": "ONCOB",
+  "level": "FAIL",
+  "fail": [
+   "text-like marks on the ground (7 glyph-sized blobs in a row)"
+  ],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7E7D7D, spread 2.8",
+   "edge_move": 0.2272,
+   "glyph_row": 7,
+   "touch": [],
+   "bbox": [
+    45,
+    91,
+    1474,
+    903
+   ],
+   "margin": 0.029,
+   "pieces": 47
+  }
+ },
+ {
+  "id": "CR",
+  "file": "cr-cream-tube-v1.png",
+  "check": "CREAM",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7C7C7B, spread 1.0",
+   "edge_move": 0.0906,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    46,
+    358,
+    1476,
+    618
+   ],
+   "margin": 0.03,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "CX",
+  "file": "cx-corn-crate-v2.png",
+  "check": "CRATE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [],
+   "bbox": [
+    232,
+    101,
+    1303,
+    927
+   ]
+  }
+ },
+ {
+  "id": "DC",
+  "file": "dc-drinks-counter-v1.png",
+  "check": "COUNTER2",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "DM",
+  "file": "dm-drop-machine-wide-v1.png",
+  "check": "MACHINE",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "ground is #FB11FA, spread 1.0, not flat #808080",
+   "tight margin 1.3% to the nearest edge"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#FB11FA, spread 1.0",
+   "edge_move": 0.0079,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    20,
+    196,
+    1505,
+    831
+   ],
+   "margin": 0.013,
+   "pieces": 9
+  }
+ },
+ {
+  "id": "DR",
+  "file": "dr-droppers-drops-v1.png",
+  "check": "DROPS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7C7C, spread 1.0",
+   "edge_move": 0.0196,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    66,
+    247,
+    1449,
+    754
+   ],
+   "margin": 0.043,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "DT",
+  "file": "dt-drink-things-v1.png",
+  "check": "DRINKS",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "edge not crisp: the cut moves 8.9% with the key tolerance (blur, halo or a shadow)"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7C7C, spread 1.0",
+   "edge_move": 0.0889,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    27,
+    311,
+    1506,
+    652
+   ],
+   "margin": 0.018,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "FA",
+  "file": "fa-foot-ankle-side-v1.png",
+  "check": "FOOT",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "FL",
+  "file": "fl-girl-forearm-lap-v1.png",
+  "check": "LAP",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "GS",
+  "file": "gs-grit-splash-v1.png",
+  "check": "FIZZ",
+  "level": "FAIL",
+  "fail": [
+   "text-like marks on the ground (10 glyph-sized blobs in a row)",
+   "6 separate pieces, expected at least 7 (panels touching or missing)"
+  ],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7F7F7F, spread 1.5",
+   "edge_move": 0.5265,
+   "glyph_row": 10,
+   "touch": [],
+   "bbox": [
+    139,
+    149,
+    1389,
+    862
+   ],
+   "margin": 0.09,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "HG",
+  "file": "hg-girl-head-side-v1.png",
+  "check": "HEAD",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#777777, spread 1.0",
+   "edge_move": 0.0187,
+   "glyph_row": 0,
+   "touch": [
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    343,
+    0,
+    1204,
+    1024
+   ],
+   "margin": 0.0
+  }
+ },
+ {
+  "id": "HO",
+  "file": "ho-boy-head-side-v1.png",
+  "check": "HEAD",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7A7A7A, spread 1.0",
+   "edge_move": 0.0161,
+   "glyph_row": 0,
+   "touch": [
+    "bottom"
+   ],
+   "bbox": [
+    308,
+    20,
+    1154,
+    1024
+   ],
+   "margin": 0.0
+  }
+ },
+ {
+  "id": "KB",
+  "file": "kb-knee-bandage-wrap-v1.png",
+  "check": "BANDAGE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    15,
+    1316,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "KC",
+  "file": "kc-chop-board-scene-v1.png",
+  "check": "BOARD",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "NF",
+  "file": "nf-girl-nose-states-v1.png",
+  "check": "NOSE",
+  "level": "FAIL",
+  "fail": [
+   "3 separate pieces, expected 4 (touching, missing or extra)"
+  ],
+  "flag": [
+   "framing: the subject touches the top edge"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7E7E7D, spread 1.1",
+   "edge_move": 0.0234,
+   "glyph_row": 0,
+   "touch": [
+    "top"
+   ],
+   "bbox": [
+    161,
+    0,
+    1396,
+    1008
+   ],
+   "margin": 0.0,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "NG",
+  "file": "ng-neutral-faces-v1.png",
+  "check": "NEUTRAL",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7D, spread 0.9",
+   "edge_move": 0.018,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    130,
+    93,
+    1433,
+    886
+   ],
+   "margin": 0.067,
+   "pieces": 2
+  }
+ },
+ {
+  "id": "PB",
+  "file": "pb-boy-palm-v1.png",
+  "check": "PALM",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "bottom"
+   ],
+   "bbox": [
+    392,
+    24,
+    1189,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "PG",
+  "file": "pg-girl-palm-v1.png",
+  "check": "PALM",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "bottom"
+   ],
+   "bbox": [
+    338,
+    14,
+    1171,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "PL",
+  "file": "pl-plasters-v1.png",
+  "check": "PLASTERS",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "tight margin 1.2% to the nearest edge"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7A7A79, spread 0.9",
+   "edge_move": 0.0204,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    22,
+    138,
+    1517,
+    888
+   ],
+   "margin": 0.012,
+   "pieces": 12
+  }
+ },
+ {
+  "id": "PO",
+  "file": "po-chai-pan-boil-over-v1.png",
+  "check": "BOILOVER",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "ground is #FD04FB, spread 0.9, not flat #808080"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#FD04FB, spread 0.9",
+   "edge_move": 0.0049,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    35,
+    159,
+    1496,
+    874
+   ],
+   "margin": 0.023,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "PU",
+  "file": "pu-potato-states-v1.png",
+  "check": "POTATO",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 0.9",
+   "edge_move": 0.005,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    28,
+    331,
+    1505,
+    659
+   ],
+   "margin": 0.018,
+   "pieces": 4
+  }
+ },
+ {
+  "id": "SF",
+  "file": "sf-samosa-fold-states-v1.png",
+  "check": "FOLDS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7A7A, spread 0.9",
+   "edge_move": 0.0126,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    49,
+    196,
+    1500,
+    801
+   ],
+   "margin": 0.023,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "SL",
+  "file": "sl-splinters-channel-v1.png",
+  "check": "SPLINTERS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 0.8",
+   "edge_move": 0.0072,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    83,
+    212,
+    1477,
+    903
+   ],
+   "margin": 0.038,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "SR",
+  "file": "sr-scrape-states-v1.png",
+  "check": "SCRAPE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7D, spread 0.9",
+   "edge_move": 0.1704,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    46,
+    420,
+    1480,
+    600
+   ],
+   "margin": 0.03,
+   "pieces": 4
+  }
+ },
+ {
+  "id": "TB",
+  "file": "tb-toothbrush-states-v1.png",
+  "check": "BRUSH",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 1.0",
+   "edge_move": 0.0135,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    34,
+    432,
+    1510,
+    567
+   ],
+   "margin": 0.017,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "TC",
+  "file": "tc-taste-cups-v1.png",
+  "check": "CUPS",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "ground is #FC03FB, spread 0.9, not flat #808080"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#FC03FB, spread 0.9",
+   "edge_move": 0.0026,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    152,
+    143,
+    1404,
+    876
+   ],
+   "margin": 0.086,
+   "pieces": 2
+  }
+ },
+ {
+  "id": "TH",
+  "file": "th-thermometer-photo-v1.png",
+  "check": "THERMO",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "edge not crisp: the cut moves 4.6% with the key tolerance (blur, halo or a shadow)"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 0.9",
+   "edge_move": 0.046,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    66,
+    465,
+    1471,
+    559
+   ],
+   "margin": 0.042,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "TX",
+  "file": "tx-tissues-v1.png",
+  "check": "TISSUES",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7C7B7B, spread 0.8",
+   "edge_move": 0.0036,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    45,
+    186,
+    1492,
+    759
+   ],
+   "margin": 0.029,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "UB",
+  "file": "ub-boy-sitting-cup-v1.png",
+  "check": "SITTING",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "UG",
+  "file": "ug-girl-sitting-cup-v1.png",
+  "check": "SITTING",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ }
+]

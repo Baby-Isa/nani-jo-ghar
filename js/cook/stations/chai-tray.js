@@ -275,6 +275,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
 
   async function station(host, params) {
+    Cook.shelfJars = true; // (the order's cards take this shelf's jars from the first card drawn: Zafar, 3 Nov, SH-200)
     const S = host.S;
     const ctx = host.ctx;
     const K = host.knobs;
@@ -2818,6 +2819,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       await doneP;
       finished = true;
       Cook.shelfPic = null; // (the next station's cards take their own shelf's pictures)
+      Cook.shelfJars = false;
       coachEnd();
       hideMic();
       clearInterval(nudge);

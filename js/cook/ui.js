@@ -1455,6 +1455,8 @@
   const faceUrl = (who, mood) => Cook.v(Cook.facePath(who, mood));
   UI.faceUrl = faceUrl;
   M.open = function ({ who, name, ladders, lines, line, busy, how }) {
+    // (SH-200: a chai order's cards take the chai shelf's jars from the first card drawn, before the station itself starts)
+    Cook.shelfJars = (ladders || []).some((L) => L && L.recipe === "chai");
     if (!ladders) ladders = [Order().fromLines(lines || [])];
     const seqWord = Lang.frames().seq_word;
     mission = {
@@ -2730,7 +2732,8 @@
     const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
     return (e && e.file) || null;
   };
-  const wcPicSrc = (id) => (Cook.shelfPic && Cook.shelfPic(id)) || s02Jar(id) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
+  const wcPicSrc = (id) => (Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   const wcStage = (id) => {
     try {
