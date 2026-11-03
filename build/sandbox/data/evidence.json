@@ -22930,7 +22930,7 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
-    1,
+    2,
     3
    ],
    "sizes": [
@@ -22953,7 +22953,7 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
-    1,
+    2,
     3
    ],
    "sizes": [
@@ -23032,12 +23032,12 @@
    "at": "rec:start",
    "after": null,
    "capture": [
-    "strip:#guide:8x120",
+    "crop:#guide",
     "dom:#guide"
    ],
    "expect": null,
    "note": "the first frames as the station starts (rec:start, after the page's own navigation): Nani's box in its s14 look from the first frame (no green bar, no box speaker), never an old box that then switches",
-   "delay": 0
+   "delay": 150
   }
  ],
  "SH-175": [
@@ -23279,7 +23279,7 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
-    1,
+    2,
     3
    ],
    "sizes": [
