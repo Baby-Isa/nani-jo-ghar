@@ -1,0 +1,472 @@
+[
+ {
+  "id": "BH",
+  "file": "bh-beach-v1.png",
+  "check": "BEACH",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "CB",
+  "file": "cb-cloth-bolts-v1.png",
+  "check": "BOLTS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7D, spread 0.8",
+   "edge_move": 0.0049,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    113,
+    24,
+    1433,
+    999
+   ],
+   "margin": 0.023,
+   "pieces": 8
+  }
+ },
+ {
+  "id": "CL",
+  "file": "cl-cloth-stall-v1.png",
+  "check": "SCENE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "FB",
+  "file": "fb-paper-bag-v1.png",
+  "check": "BAG",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#80807F, spread 1.0",
+   "edge_move": 0.0054,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    35,
+    227,
+    1496,
+    751
+   ],
+   "margin": 0.023,
+   "pieces": 4
+  }
+ },
+ {
+  "id": "FP",
+  "file": "fp-produce-singles-v1.png",
+  "check": "PRODUCE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 0.8",
+   "edge_move": 0.0062,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    25,
+    104,
+    1482,
+    898
+   ],
+   "margin": 0.016,
+   "pieces": 8
+  }
+ },
+ {
+  "id": "FS",
+  "file": "fs-fruit-stall-behind-v1.png",
+  "check": "SCENE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "FW",
+  "file": "fw-brass-scale-v1.png",
+  "check": "SCALE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7C7C7C, spread 0.9",
+   "edge_move": 0.0043,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    55,
+    212,
+    1481,
+    800
+   ],
+   "margin": 0.036,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "FX",
+  "file": "fx-produce-crates-v1.png",
+  "check": "CRATES",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7C, spread 1.2",
+   "edge_move": 0.0046,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    33,
+    53,
+    1501,
+    951
+   ],
+   "margin": 0.021,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "GG",
+  "file": "gg-shop-goods-v1.png",
+  "check": "GOODS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7A, spread 1.1",
+   "edge_move": 0.0286,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    27,
+    112,
+    1506,
+    922
+   ],
+   "margin": 0.018,
+   "pieces": 8
+  }
+ },
+ {
+  "id": "GS",
+  "file": "gs-general-store-v1.png",
+  "check": "SCENE",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "touch": [
+    "left",
+    "right",
+    "top",
+    "bottom"
+   ],
+   "bbox": [
+    0,
+    0,
+    1536,
+    1024
+   ]
+  }
+ },
+ {
+  "id": "PC",
+  "file": "pc-coins-stacks-v1.png",
+  "check": "COINS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7A7A, spread 1.0",
+   "edge_move": 0.0058,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    116,
+    106,
+    1477,
+    903
+   ],
+   "margin": 0.038,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "PT",
+  "file": "pt-tin-purses-v1.png",
+  "check": "PURSES",
+  "level": "FLAG",
+  "fail": [],
+  "flag": [
+   "edge not crisp: the cut moves 3.3% with the key tolerance (blur, halo or a shadow)"
+  ],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7A7A, spread 1.0",
+   "edge_move": 0.0334,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    39,
+    72,
+    1487,
+    951
+   ],
+   "margin": 0.025,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "SB",
+  "file": "sb-fryer-basket-v1.png",
+  "check": "BASKET",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 1.0",
+   "edge_move": 0.0042,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    34,
+    205,
+    1504,
+    801
+   ],
+   "margin": 0.021,
+   "pieces": 3
+  }
+ },
+ {
+  "id": "SC",
+  "file": "sc-corn-cart-v1.png",
+  "check": "CART",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7D7C, spread 1.0",
+   "edge_move": 0.0247,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    423,
+    124,
+    1102,
+    891
+   ],
+   "margin": 0.121,
+   "pieces": 1
+  }
+ },
+ {
+  "id": "SF",
+  "file": "sf-chips-cart-v1.png",
+  "check": "CART",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7D7C7C, spread 0.8",
+   "edge_move": 0.0184,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    467,
+    179,
+    1048,
+    860
+   ],
+   "margin": 0.16,
+   "pieces": 1
+  }
+ },
+ {
+  "id": "SK",
+  "file": "sk-coconut-cart-v1.png",
+  "check": "CART",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7E7D7D, spread 0.9",
+   "edge_move": 0.0096,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    473,
+    165,
+    1059,
+    844
+   ],
+   "margin": 0.161,
+   "pieces": 1
+  }
+ },
+ {
+  "id": "SN",
+  "file": "sn-paper-cones-v1.png",
+  "check": "CONES",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7C7C7C, spread 0.8",
+   "edge_move": 0.0064,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    201,
+    28,
+    1348,
+    979
+   ],
+   "margin": 0.027,
+   "pieces": 6
+  }
+ },
+ {
+  "id": "SO",
+  "file": "so-coconuts-v1.png",
+  "check": "COCONUTS",
+  "level": "PASS",
+  "fail": [],
+  "flag": [],
+  "info": {
+   "size": [
+    1536,
+    1024
+   ],
+   "ground": "#7B7B7B, spread 0.9",
+   "edge_move": 0.0041,
+   "glyph_row": 0,
+   "touch": [],
+   "bbox": [
+    75,
+    45,
+    1468,
+    942
+   ],
+   "margin": 0.044,
+   "pieces": 6
+  }
+ }
+]
