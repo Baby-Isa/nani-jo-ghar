@@ -60,3 +60,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-03 13:58 UK · orchestrator · S17: round 2 applied; recheck s17-chai-d 0 breaks; SH-178 light fixed again (its showing used only when seen). Final evidence round on SH-163, SH-178, SH-180, CHAI-33, CHAI-40 running (scratchpad evidence3.log, ~9 min); then judge, publish --force.
 - 2026-11-03 14:46 UK · orchestrator · S17: final judge done; checks.mjs green; publishing (--force on Zafar's word, 12:20).
 - 2026-11-03 14:55 UK · Published 20261103T145224Z to main (4343fa94); Pages serving it.
+- 2026-11-03 16:28 UK · orchestrator · S17: handover written (status Next chat): steps 1-4 for the next chat, then Zafar's play of chai.
