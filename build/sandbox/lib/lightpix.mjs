@@ -36,7 +36,10 @@ export function measureLight(lit, under, holes, vw = lit.w) {
   const k = lit.w / vw;
   return holes.map((hb) => {
     const [l, t, r, b] = hb.map((v) => v * k);
-    const inL = l + INSET * k, inT = t + INSET * k, inR = r - INSET * k, inB = b - INSET * k;
+    // (a round light, CHAI-68's and CHAI-75's circle on a pan's rim: its square's corners lie outside the circle, dimmed, so a square box
+    // is measured in from its edge by at least 15% of its side, which keeps the sample inside an inscribed circle: the sandbox, 3 Nov)
+    const ins = Math.max(INSET * k, 0.15 * Math.min(r - l, b - t));
+    const inL = l + ins, inT = t + ins, inR = r - ins, inB = b - ins;
     if (inR - inL < 6 || inB - inT < 6) return { box: hb, lin: null, under: null, lift: null, lout: null };
     const step = Math.max(2, Math.round(3 * k));
     const lin = meanIn(lit, inL, inT, inR, inB, step), un = under ? meanIn(under, inL, inT, inR, inB, step) : null, lout = meanRing(lit, l, t, r, b, k, step);
