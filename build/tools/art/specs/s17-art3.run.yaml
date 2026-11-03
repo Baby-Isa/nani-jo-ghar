@@ -193,7 +193,7 @@ checks:
     text: 'the girl and the boy from the attached sheets, each in their own half, head to shoulders, front on, a truly neutral face (mouth closed, lips straight, NOT smiling, not sad), each exactly as their sheet; no shadow on ONE flat mid-grey'
     judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
   MOUTH:
-    text: 'the attached girl''s face framed from just under her eyes to under her chin, her mouth wide open ("aah") exactly as the attached, clean teeth and tongue clear, crisp high detail; the face fills the image; her exact skin and style; no text'
+    text: 'the attached girl''s face framed from her eyebrows to just under her chin, a big happy "aah" exactly as the attached, eyes open, clean teeth clear, crisp high detail; the face fills the image; her exact skin and style; no text'
     judge: {aspect: [3, 2], bg: none}
   THERMO:
     text: 'three pieces in a row from above: a slim white digital thermometer with a silver tip and a blank grey window, the same glowing soft green, the same glowing soft red, every display BLANK (no digits or symbols); photographic, crisp outline; no shadow on ONE flat mid-grey'

@@ -458,13 +458,13 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism.
 ```
 
-#### MZ. The zoom's middle step, face to mouth (CLN-163)
+#### MZ. The zoom's middle step, the face saying "aah" (CLN-163; reworded 3 Nov after ChatGPT refused the mouth-only framing)
 ```
 Generate an image, 1536×1024, landscape, in the highest detail you can.
 
-A close-up for a children's doctor game, the middle step of a zoom from the girl's face to her open mouth: the girl from the attached face close-up, front on, framed from just under her eyes to just under her chin, her mouth wide open saying "aah" exactly as in the attached picture, her teeth and tongue clearly visible and clean. Her nose's lower half is at the top edge and her chin at the bottom edge. Copy her face, skin tone and style exactly; crisp, sharp detail.
+A friendly picture for a children's doctor game, the middle step of the camera moving in from the girl's whole face to the dentist's view of her teeth: the cartoon girl from the attached picture, front on, saying a big happy "aah" at the dentist exactly as in the attached picture, framed a little closer than it: from her eyebrows to just under her chin, her eyes open and calm, her cheeks and nose in the picture, her teeth clean and white. Copy her face, skin tone and style exactly; crisp, sharp detail.
 
-Background: none needed: the face fills the whole image.
+Background: none needed: her face fills the whole image.
 
 Style: exactly as the attached close-up and style anchor: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 

@@ -1,0 +1,13 @@
+# Art block 3's redo (3 Nov, late), from Zafar's run log and Claude's look (sources/art/s17-art3/run-log.md).
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art3.run.yaml --redo docs/design-language/art-plans/s17-art3-redo-list.yaml
+pack: s17-art3
+redo:
+  - id: BK
+    why: "the worktop's front edge at about 59% of the height, not 48-55%, and the tiles slightly peach: the edge exactly at the middle (52%), the tiles cream"
+    source: "Zafar's run log, 3 Nov"
+  - id: NF
+    why: "her face drifted from the attached close-up (narrower, a little older): the same face, round and young as the attached, only the nose and expression change"
+    source: "Zafar's run log, 3 Nov"
+  - id: MZ
+    why: "ChatGPT refused the mouth-only framing: reworded as the whole face saying aah at the dentist, eyebrows to chin"
+    source: "Zafar's run log, 3 Nov (refused)"
