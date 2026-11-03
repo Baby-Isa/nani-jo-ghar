@@ -2322,7 +2322,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
             } else quiet = null;
-            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) light14(cardLit(), "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
+            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) {
+              // SH-178 (the judge, 3 Nov: at L2-L4 the box sat on the ticked card while Nani called the next): the light follows the
+              // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
+              const first = cardLit();
+              const lit = Array.isArray(first) || !first ? first : () => {
+                const item = itemOf();
+                return whole(item) ? item : document.querySelector("#mission .oc-card") || first;
+              };
+              light14(lit, "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
+            }
             else setTimeout(go, 60);
           };
           go();
@@ -2661,7 +2670,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const prevExpect = Cook.expect;
         const wait14 = { kind: "wait", dots: true };
         Cook.expect = wait14;
-        await light14(el, "glow", 6000 / (Cook.speed || 1), () => {});
+        // (the judge, 3 Nov: the ring round the dots overlapped the word above them: a tight ring, 1 px out)
+        await light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 1 });
         el.classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
         // (its light has faded before play and the shelf come in: the kit's fade is 300 ms of real time, never the test speed's)

@@ -358,7 +358,14 @@
     box.querySelectorAll(".oc-card[data-ck] .oc-row14").forEach((row) => {
       const c = row.closest(".oc-card");
       const lefts = new Map();
-      row.querySelectorAll(":scope > .oc-row[data-key]").forEach((r) => lefts.set(r.dataset.key, r.getBoundingClientRect().left));
+      // SH-180 (the judge, 3 Nov: as a card opened, its empty slots began stacked on one spot and fanned out, 120 px in a frame): a
+      // row not on screen (a folded card's, headline only) has no places to slide from; its cards simply appear where they belong
+      const shown = row.getBoundingClientRect().width > 0 && row.offsetParent !== null;
+      if (shown)
+        row.querySelectorAll(":scope > .oc-row[data-key]").forEach((r) => {
+          const rb = r.getBoundingClientRect();
+          if (rb.width > 0) lefts.set(r.dataset.key, rb.left);
+        });
       out.set(c.dataset.ck, { scroll: row.scrollLeft, lefts, done: new Set([...row.querySelectorAll(":scope > .oc-row.done[data-key]")].map((r) => r.dataset.key)) });
     });
     return out;
@@ -453,7 +460,12 @@
     if (fresh.length) {
       const lead = [...row.querySelectorAll(":scope > .oc-row.done")].pop();
       // (its place measured once the cards have slid: the offset, not the transform, is where it rests)
-      const to = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
+      // (the judge, 3 Nov, L1: at the row's end the scroll stopped at its very end, so the card on the left was cut in half ("ai", its
+      // speaker halved): the row stops on a card's edge, the leftmost card whole, the last one peeking on the right if it must, as the
+      // row peeks the next slot while the order is given, Zafar 2 Nov)
+      const edges = rows.map((r) => r.offsetLeft - row.firstElementChild.offsetLeft).filter((x) => x >= 0);
+      const want = lead ? Math.max(0, Math.min(max(), lead.offsetLeft - row.firstElementChild.offsetLeft)) : 0;
+      const to = edges.filter((x) => x <= want + 1).reduce((a, b) => Math.max(a, b), 0);
       if (fold) fold.scroll14 = fold.want14 = to;
       setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / ((root.Cook && root.Cook.speed) || 1));
     } else if (again.length) {

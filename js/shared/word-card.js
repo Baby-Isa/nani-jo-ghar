@@ -665,12 +665,16 @@
       // and the row's card on the same bend, half the scale change at the corner)
       const sm = (1 + s) / 2;
       const gm = (g0 + 1) / 2;
+      // SH-163 (the judge, 3 Nov: the two cards' words both showed through the long cross-fade; Zafar, 30 Oct: "one card shrinking
+      // while it moves, never a cross-fade of two"): the big card stays whole and solid as it shrinks and moves; the row's card takes
+      // over only in the last eighth of the flight, where the two are one size on one place, so no frame shows two cards' words
+      const SWAP = 0.88;
       const fk = o.across
-        ? [{ transform: "none", opacity: 1 }, { transform: `translate(${dx}px, 0px) scale(${sm})`, opacity: 0.6, offset: 0.5 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }]
-        : [{ transform: "none", opacity: 1 }, { opacity: 0.9, offset: 0.35 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }];
+        ? [{ transform: "none", opacity: 1 }, { transform: `translate(${dx}px, 0px) scale(${sm})`, opacity: 1, offset: 0.5 }, { opacity: 1, offset: SWAP }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }]
+        : [{ transform: "none", opacity: 1 }, { opacity: 1, offset: SWAP }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }];
       const gk = o.across
-        ? [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { transform: `translate(0px, ${-dy}px) scale(${gm})`, opacity: 0.4, offset: 0.5 }, { transform: "none", opacity: 1 }]
-        : [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }];
+        ? [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { transform: `translate(0px, ${-dy}px) scale(${gm})`, opacity: 0, offset: 0.5 }, { opacity: 0, offset: SWAP }, { transform: "none", opacity: 1 }]
+        : [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: SWAP }, { transform: "none", opacity: 1 }];
       const f = from.animate(fk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
       const g = ghost.animate(gk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
       await Promise.all([f.finished, g.finished]);
