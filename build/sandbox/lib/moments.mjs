@@ -57,7 +57,9 @@ export const ALIASES = {
 const HOST = ["host:*", "host:*/*", "host:*/*/*", "host:results", "host:done", "host:idle", "host:loading"];
 const COOK_REC = ["rec:start", "rec:result", "rec:order-card-big", "rec:order-card-in-sidebar", "rec:results-badges", "rec:results-words", "rec:results-steps", "rec:view-*", "rec:view-*-*", "rec:kind-*", "rec:stir-begin", "rec:stir-mid", "rec:help-open"];
 const COOK_PATH = {
-  hint: ["rec:hint-nani-says", "rec:hint-glow", "rec:peek-open", "rec:bulb-english", "rec:help-open"],
+  // (life:helper-open: the hint opens Nani's helper card at the level's wait, js/cook/ui.js UI.helperOpen; seen on chai's #hint and
+  // #returning runs, 3 Nov)
+  hint: ["rec:hint-nani-says", "rec:hint-glow", "rec:peek-open", "rec:bulb-english", "rec:help-open", "life:helper-open"],
   mistake: ["rec:wrong-choice", "rec:wrong-tap", "drv:bad-item-going-in", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"],
   takeback: ["rec:before-takeback", "rec:after-takeback"],
 };
