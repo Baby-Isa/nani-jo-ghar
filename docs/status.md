@@ -17,7 +17,7 @@ Zafar's play). Branch `claude/admiring-ptolemy-77fuv5`.
 - **Drafts:** the chai standard with the onboarding rule for every game (`docs/design-language/chai-standard.md`, SH-146).
 - **Art block 3:** clinic care and block 1's redos, 35 prompts, about 50 images, the paste block ready (`build/reports/art-queue.md`).
 - **The judge's blind spots:** every row has a spec; spkgap, SH-180's and CHAI-57's probes fixed; `teachgate.mjs` (SH-197, all 30
-  prototypes pass). Evidence runs `ev-20261103-171129-t61`, `-174914-nhg`, `-180011-2zi`: 10 PASS by the machine, about 16 rows for
+  prototypes pass). Evidence runs `ev-20261103-171129-t61`, `-174914-nhg`, `-180011-2zi`: 9 PASS by the machine, about 16 rows for
   a reviewer. Still blind: CHAI-62 (a boil-over driver, checks-to-build 26).
 - **SH-175 (load time):** a real growth (chai L3: 9.9 MB, 397 requests against 8.7 MB, 355 on 1 Nov); not applied to the fix list yet.
 
