@@ -142,5 +142,8 @@ await import("./frame-hookup.js");
 // (and the hook object too when the handoff was all it held: no njgTest is left on a page that had none)
 if (globalThis.njgTest) { delete globalThis.njgTest.loading; if (!Object.keys(globalThis.njgTest).length) delete globalThis.njgTest; }
 
+// (the evidence probes read Cook's test hooks by path, js:Cook.chaiPans: a test browser on the lab page gets the namespace too, as
+// cook.html's page.js gives it; never a real visitor's page)
+if (typeof navigator !== "undefined" && navigator.webdriver && typeof window !== "undefined" && !window.Cook) window.Cook = Cook;
 export { Cook };
 export default Cook;

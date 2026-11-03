@@ -310,6 +310,21 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/ART-23.png",
   "date": "2026-10-20"
  },
+ "ART-31": {
+  "hash": "943e6c2ea0d147850fb9",
+  "dhash": [
+   "f0cc969eccdcdec0",
+   "5ceccc94ccd4dcc0"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1280x665 the bottle tips and the water appears in the pan with its own rippled surface, no drawn blue splash and no cartoon pop in any of the 8 frames, sfx/cook-pop still fires at 34.00 s in the voice timeline; B the same at 740x320 (not on the sheet: the steam and the served glass the check also names, and L2-L4; flaw: A 0 ms and 1656 ms, B 0 ms and 1602 ms the bottle's home spot sits over Nana's face chip)",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/ART-31.png",
+  "date": "2026-11-03"
+ },
  "BOOK-01": {
   "hash": "1d3d1d501e55bc729484",
   "dhash": [
@@ -778,17 +793,34 @@
   "commit": "d3e1c0d",
   "date": "2026-10-23"
  },
+ "CHAI-33": {
+  "hash": "4087ccd5921d859e038c",
+  "dhash": [
+   "0131717171712331",
+   "0070707070702230",
+   "0030707070704030",
+   "007071f0f0702231"
+  ],
+  "verdict": "FAIL",
+  "line": "C, at L3 1280x665 (frame 2, 24.0 s) the lit box no longer clips the paani pill, but the gap under the pill's foot is roughly a quarter of the gap at the pill's sides (about 8 px against about 30 px in the zoom), so the margin below is not the same as at its sides; A frame 2 (L1 1280x665) and D frame 2 (L3 740x320) show the same uneven box, tightest in D where the pill foot nearly touches the ring. Also: the sheet covers only L1 and L3 at 740x320 and 1280x665; L2, L4, 930x430 and 1920x1080 named by the Check are not shown.",
+  "panel": "C",
+  "judge": "Fable 5.1 (claude-fable-5-1), session session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/CHAI-33.png",
+  "date": "2026-11-03"
+ },
  "CHAI-40": {
-  "hash": "3b1eac22d28e75d40152",
+  "hash": "4240a5ef73a8fe67d354",
   "dhash": [],
-  "verdict": "PASS",
-  "line": "CHAI-40-p1-L1-930x430 voice, item steps open silent (step-open 1 at 10.40, 2 at 14.07, 3 at 14.29, 4 at 15.21: no call, only the echo of the item just added), the one item call \"Khun wiji chad!\" starts at 22.47 with helper-open (cook-khun) at 22.48, and \"Chulo bar!\" starts at 29.56 with the knob's rung and glow at 29.56, not before; L2-L4 likewise (every step-open silent, L3 \"Chulo bar!\" 27.94 = glow 27.94, L3/L4 \"Slow kar!\" at its glow), contract-89 0 breaks on all four pages. Noted, off the row's point: L2 helper-open (cook-paani) at 23.32 has no call at all (one for SH-172, not this row); L1 echo \"hakro khun\" at 29.54 is tagged silent and \"dudh\" echoes carry a \"?\" voice tag; mum/slow.mp3 + mum/kar.mp3 are family-unchecked (not mine to judge).",
-  "panel": "CHAI-40-p1-L1-930x430 voice",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session https://claude.ai/code/session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev5",
-  "commit": "dd20952",
+  "verdict": "FAIL",
+  "line": "CHAI-40-p2-L2-930x430 contract-78, \"Chulo bar!\" at 50s starts and no light comes with it (the row's own words: Chulo bar must be synced with its visual help); the same for the knob at L3 and L4 (contract-78 46.4s/54.7s; the L3 timeline shows chai-slow, step-open (10), step-call (10) at 46.36-46.37 then \"Slow kar!\" at 46.40 with no rung/glow, L4 likewise at 54.66-54.69; only L1 has rung + glow at 38.95 before \"Slow kar!\" at 39.16). The item-call half is met: contract-89 0 breaks at L1-L4, every step-call event is silent (L1 14.66, 19.07, 20.63; L2 15.94, 37.87, 43.59), items are only named as echoes of a tap or as the helper's card opens (L1 \"Khun wiji chad!\" 28.06 with helper-open 28.07; L2 \"paani\" 29.13 after helper-open 28.97). Off the row: item names at L1-L2 are device-voice (allowed while testing), \"dudh\" is tagged \"?\" source at L1 19.88 / L2 42.40.",
+  "panel": "CHAI-40-p2-L2-930x430 contract",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
   "png": null,
-  "date": "2026-10-30"
+  "date": "2026-11-03"
  },
  "CHAI-43": {
   "hash": "0d319d26d99fb529882c",
@@ -885,18 +917,18 @@
   "date": "2026-10-30"
  },
  "CHAI-50": {
-  "hash": "0b73ceab373bd71cf35d",
+  "hash": "76fc09a1716a416a6fc6",
   "dhash": [
-   "5170b0b0b0302808"
+   "513030b070301a1a"
   ],
   "verdict": "PASS",
-  "line": "A, at L1 1280x665 the cooker step shows one gold ring on the knob only, no dark tint over the kitchen and no second box; the lightfollow captures at L1-L4 show lights 0 after the knob light each time (L1 29.6 s, L2 37.6 s, L3 30.1 s, L4 38.0 s) and never two lights up together. No flaws: order-card English (milk, one sugar) is the L1 order card; the floating \"hakro\"/\"khun\" chips sit over the pan they describe.",
+  "line": "A, L1 1280x665 at the cooker step as a new player shows one gold box (the knob's ring) and no dim layer over the counter or the side panel; the lightfollow captures for L1, L2, L3 and L4 each show lights never above 1 and back to 0 after each step, none left after the cooker step (L1: box 39.3 s to 40.6 s, then 0), exit 0 all four; contract-87 0 breaks · flaw off the row's point: in A the order card's first item is cut at the card's left edge (its word reads \"ai\", its speaker button half off), clipped text",
   "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev6",
-  "commit": "6484dc9",
-  "png": "build/screenshots/evidence/s15-chai-ev6/CHAI-50.png",
-  "date": "2026-10-30"
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/CHAI-50.png",
+  "date": "2026-11-03"
  },
  "CHT-01": {
   "hash": "ff0ba1426c907aa7f5b1",
@@ -1310,19 +1342,19 @@
   "date": "2026-10-20"
  },
  "CK-18": {
-  "hash": "3b33d9442a728bb2de73",
+  "hash": "a62f9aae103fcada5c9e",
   "dhash": [
-   "5fcfdecaebf96ad5",
-   "3f9fa4b292b2d62f"
+   "7e6f7e6668682a4b",
+   "7ebfbc8c9090d615"
   ],
   "verdict": "PASS",
-  "line": "B, at serve the customer's \"Salamun alaykum!\" bubble sits above her head with its tail pointing down to her, her face fully clear; A the same on the full screen. Answer pills (\"Thank you!\" is loan:en, Kutchi), \"Wa alaikum salaam!\", \"Khuda-fis!\" sit on the counter below both faces. Note: the expect could not find the happy (after-serve) customer art, so only the greeting bubble is shown",
+  "line": "B (lab:cook/order 1366x768): Ma's \"Salamun alaykum!\" bubble sits above her head with its tail pointing to her, her face fully clear; A shows the same at screen size. Only one customer at one size is on the sheet (the faces-clear expect came back undecided); 740x320 and the other customers are not shown.",
   "panel": "B",
-  "judge": "judge",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "png": "build/screenshots/evidence/ev-20261020-203453-9h9/CK-18.png",
-  "date": "2026-10-20"
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/CK-18.png",
+  "date": "2026-11-03"
  },
  "CK-19": {
   "hash": "4c9fda985c78c3f46be9",
@@ -6935,6 +6967,22 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "SH-153": {
+  "hash": "ff8c1e229ec2f04fe526",
+  "dhash": [
+   "0003595975050fcc",
+   "8007035949030fcc",
+   "00011191d8030d0c",
+   "cc0101626a03115c"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.cv-bubble .wp-say=0 (0 visible (4 moments)); count:.cv-bubble .wp-say=0 (0 visible (4 moments)); count:.cv-bubble .wp-say=0 (0 visible (4 moments))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "date": "2026-11-03"
+ },
  "SH-16": {
   "hash": "75e252cebdc3ccd9207c",
   "dhash": [
@@ -6967,38 +7015,38 @@
   "date": "2026-10-30"
  },
  "SH-162": {
-  "hash": "4bccd292a21c1665bf14",
+  "hash": "caa648983ea15be785da",
   "dhash": [
-   "0189c90000000000",
-   "0101199999990100",
-   "2021119999999900"
+   "01199b0000000000",
+   "b109919392000000",
+   "8859911191000000"
   ],
   "verdict": "PASS",
-  "line": "A, frame 1 (the first onboard, 16.1 s, 1920x1080): the helper card's chevron sits in a plain grey circle, no gold box or glow on it, through all 5 onboards; B and C the same at 930x430 (maani too).",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-D-ev",
-  "commit": "9e918ca2",
-  "png": "build/screenshots/evidence/s14-D-ev/SH-162.png",
-  "date": "2026-10-30"
+  "line": "C, frame 5 (maani-line L1 930x430, 23.2 s): the helper card is open (both item cards showing) and the first-time light is a gold box round the card itself, no arrow lit; A and B (chai) light only the item cards, never the chevron. Only L1 is on the sheet (chai 1920/930, maani 930); L2-L4 and the other stations are not shown. Flaw: A frame 3 (1920x1080, 29.2 s) at \"Dudh wiji chad!\" the whole helper card is lit and the dudh card sits cut at the row's edge, not scrolled in (SH-178's point at 1920).",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-162.png",
+  "date": "2026-11-03"
  },
  "SH-163": {
-  "hash": "143ea723436d20126ec4",
+  "hash": "8755abef12335e7c1973",
   "dhash": [
-   "5f7efe6aeaeeeafb",
-   "2e3e3636363e3637",
-   "2e363a2c2c283637",
-   "5e7e7e6868682a7f",
-   "2e36322c2c383e3f"
+   "5f7eeeeeeaee6afb",
+   "6e7e7e6a6a7e2a7b",
+   "6e667668486a2a7b",
+   "5e7e7e7e68682a7f",
+   "5e2e7e68782a6a7b"
   ],
-  "verdict": "PASS",
-  "line": "D, the dudh big card leaves its pop at 778 ms and shrinks evenly while sliding down-left into the panel (890, 955, 1024, 1107 ms), one whole card with \"dudh / milk\" readable at every frame, no second card and no fade; at 1719 ms the row card sits in the slot and the big card is gone, one hand-over. E (930x430) shows the same at 940, 1149, 1254, 1886 ms; the 250 ms strips B (L4) and C (L3) catch one mid-flight frame per item (2751, 5250, 9250 ms), each a single whole readable card. Notes: at L4 930x430 (B) the scene pop-out is smaller than its row card, so the card grows into the panel rather than shrinking; nearly every 50 ms frame in D and E is captioned \"slot N: off\" (captures 60-300 ms late), so the strip is not the 60 fps film the Check asks for and covers chai-tray L1 only; B 8577 ms Nana's placed cards vanish from the panel (see SH-171).",
-  "panel": "D",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev4",
-  "commit": "dd20952",
-  "png": "build/screenshots/evidence/s15-chai-ev4/SH-163.png",
-  "date": "2026-10-30"
+  "verdict": "FAIL",
+  "line": "C, at 3251 ms the flying card shows \"ba chunda\" twice (a ghosted copy over the row card's words), the same doubling at 6115 ms (\"dungri na\") and 9751 ms (\"ba bataata\"); also B 2500 ms \"trae khun\" doubled, D 1047 ms \"dudh\" doubled and 3473 ms \"hakro khun\" doubled, E 670 ms and 3162 ms the same: the morph is still a cross-fade of two cards, not one card shrinking as it moves (flaws: C 11039 ms the \"ba samosa\" headline sits half under Nani's \"Bhai! Chunda.\" box in play)",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-163.png",
+  "date": "2026-11-03"
  },
  "SH-164": {
   "hash": "424d307398b39f36e86f",
@@ -7072,21 +7120,21 @@
   "date": "2026-10-30"
  },
  "SH-169": {
-  "hash": "da0b47c9f9c71c0ca01e",
+  "hash": "b858935773904fb0f4f1",
   "dhash": [
-   "26333a2e2e3a363f",
-   "2e37322e2e2a3637",
-   "2122b8b8383836b6",
-   "1129999999990999"
+   "6e223e6e6a723a6d",
+   "6e667e6a4a6a2a7b",
+   "4378f0707078f6b4",
+   "b121929393119392"
   ],
-  "verdict": "FAIL",
-  "line": "A, at 740x320 Nana's folded headline \"Muke elchi waari chai khape.\" sits half under the side panel's top while Ma orders (7501, 9000, 9750, 11500 ms): the fold happens but the text is still cut at the panel's top. B at 930x430 is right (5501 ms both headlines folded, 7005 ms both cards open at the station) and C/D show every card open at play",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kP6T7dmVAL7LekGAxz",
-  "run": "s14-D-ev",
-  "commit": "9e918ca2",
-  "png": "build/screenshots/evidence/s14-D-ev/SH-169.png",
-  "date": "2026-10-30"
+  "verdict": "PASS",
+  "line": "D, at 930x430 in play Nana's face and \"Muke aadu waari chai khape.\" and Ma's face and \"Muke chai khape.\" sit wholly inside the list under \"Put water in the pan.\", nothing under Nani's box or its shadow; A (740x320) 7500-13271 ms shows Nana's card folded to face and headline while Ma speaks and both heads in view, 14918-15663 ms both open again in play (not on the sheet: 1280x665 and 1920x1080, which the check also names; flaw: A 2758 ms and B 2503 ms the flying card's words doubled, SH-163's fault)",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-169.png",
+  "date": "2026-11-03"
  },
  "SH-17": {
   "hash": "f925355aa3e72443551d",
@@ -7154,6 +7202,27 @@
   "png": "build/screenshots/evidence/s15-chai-ev6/SH-172.png",
   "date": "2026-10-30"
  },
+ "SH-178": {
+  "hash": "fcb32f7aa4b7b0cb9cfb",
+  "dhash": [
+   "0170b03030300a0a",
+   "323238b030303a18",
+   "0160b0b470b0aa28",
+   "003838b8b8303aaa",
+   "0160b0b470b0b696",
+   "223838b838382caa",
+   "0160f97979a01212",
+   "003c30b8b8303aba"
+  ],
+  "verdict": "FAIL",
+  "line": "D, frame 4 (L2 740x320, 22.6 s): at \"Dudh wiji chad!\" the lit box is on the already-ticked chai card and the dudh card beside it is unlit; no later L2 frame (C or D) lights the third item at all. The same lag is at L3 (E frame 4 and F frame 4: lit box on ticked chai while Nani calls aadu) and L4 (H frame 4: lit box on ticked paani while the shelf lights chai), whereas at L1 (A frame 4) the lit box is the called dudh card, whole and scrolled in. Not the whole card, but not the next item's card either, so not \"like level one\". Flaws: C/D/H frame 1 the \"···\" stage pill overlaps the word \"paani\" on its card.",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-178.png",
+  "date": "2026-11-03"
+ },
  "SH-18": {
   "hash": "259bbc3adf71e76c2337",
   "dhash": [
@@ -7167,6 +7236,40 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "SH-180": {
+  "hash": "4e9dfc2bfab9727c7888",
+  "dhash": [
+   "8925010101010101",
+   "8925290101010101",
+   "a125252515266525",
+   "9191630101010001"
+  ],
+  "verdict": "FAIL",
+  "line": "A, Nana's card never folds on any frame: A's last frame (3463 ms) has it open with dudh, B's first (28 ms) has it already folded to its headline, so the fold is a cut not a filmed motion; and the page's own recorder logs row cards snapping 120.8 px in 27 ms (A), 82.6 px in 12 ms (D) and 139 px in 33 ms (L3 1280x665), which are jumps, not glides (flaws: C 33 ms the first item of each card is cut at the card's left edge, \"chi\" and \"du\")",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-180.png",
+  "date": "2026-11-03"
+ },
+ "SH-181": {
+  "hash": "9b54aba5b74e7998579b",
+  "dhash": [
+   "493030b070301a1a",
+   "3a7a3850b0901808",
+   "412030b470b0b494",
+   "32383838f8382cac"
+  ],
+  "verdict": "PASS",
+  "line": "C (L3 1280x665, returning player, 32.6 s): \"Chulo bar!\" in the bubble with no dim, no lit box and the knobs plain; A, B and D show the same at L1 and at 740x320.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-181.png",
+  "date": "2026-11-03"
  },
  "SH-19": {
   "hash": "74b9ee33ffa5cf5fb9f7",
@@ -7435,21 +7538,27 @@
   "date": "2026-10-20"
  },
  "SH-38": {
-  "hash": "5a39143087edd8fd34d5",
+  "hash": "d1ab2d2f2d688fb345e2",
   "dhash": [
-   "008aa9814181c101",
-   "8aa9818189888181",
-   "546c919181c1a100",
-   "40a88141898d8100"
+   "111999db9b000000",
+   "109adb9b19999b00",
+   "51519a9bdb000000",
+   "b1599b93db920101",
+   "111b9bda119bdb9a",
+   "a1199b919b91199b",
+   "051a9ada119bdb9a",
+   "a5119b9393931193",
+   "199a9b9b199bdb01",
+   "a1119a9393931193"
   ],
   "verdict": "PASS",
-  "line": "A, L1 trae khun stays plain through sugars 1-2 (frames 5-6), turns gold on the third (frame 7) and the card closes itself at frame 8; D, L2 trae khun stays unticked through frames 5-8 after dudh went gold at 4. Note: no frame captures the L2 step closing, so the \"ticks on close\" half is not shown; C frame 5 shows a pale half-rendered tick on the collapsed headline.",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/SH-38.png",
-  "date": "2026-10-12"
+  "line": "E, frame 6 (L2 1280x665, 28.3 s): trae khun (three sugars) ticks one placed event after dudh's tick (frame 5), and frames 7-9 (29.6-32.5 s) show the card unchanged through further placed events, so the extra spoon lands nothing; D frame 4 and C frame 6 show hakro khun ticking the same way at L1, H frame 8 and J frame 7 at L3/L4.",
+  "panel": "E",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-111144-8je",
+  "commit": "6cf773d3",
+  "png": "build/screenshots/evidence/ev-20261103-111144-8je/SH-38.png",
+  "date": "2026-11-03"
  },
  "SH-39": {
   "hash": "5502643d9257a7fd6277",

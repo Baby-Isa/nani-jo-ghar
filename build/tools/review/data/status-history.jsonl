@@ -1277,3 +1277,16 @@
 {"id":"CHT-17","run":"s14-D-ev2","earlier":"**to fix: code** · S14 roll-out"}
 {"id":"PAN-18","run":"s14-D-ev3","earlier":"**to fix: code** · S14 roll-out"}
 {"id":"DAAR-36","run":"s14-D-ev3","earlier":"**to fix: code** · S14 roll-out"}
+{"id":"SH-162","run":"ev-20261103-111144-8je","earlier":"**to fix: code** · chai has its own helper (nothing to do); the shared helper the other stations use: at their roll-out"}
+{"id":"SH-163","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · chai judged PASS 30 Oct (s15-chai-ev4): one card shrinking as it moves; the other games at their roll-out"}
+{"id":"SH-178","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built in chai (s15-chai-11): the light on the card's next item, scrolled in first when cut; the other games at their roll-out"}
+{"id":"SH-180","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built in chai (s15-chai-11): the said card and the next ease their heights while the panel glides; the glide's aim fixed 2 Nov night (SH-191); the other games at their roll-out"}
+{"id":"SH-38","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built in chai (s15-chai-11): sugar and every count tick at the number, a spoonful past it wiggles; the other games at their roll-out"}
+{"id":"SH-181","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built in chai (s15-chai-11, CHAI-60): a control lit only the first time it comes up; contract-78 judges only each control's first call; the other games at their roll-out"}
+{"id":"SH-153","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built (s15-chai-11): no speaker in a bubble that plays and goes, every game through Conversations.bubble; the waiting question keeps it (decision 6)"}
+{"id":"SH-169","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · filmed 2 Nov night in chai at L2, L3, L4 at the four sizes: the current card's head never out of view while the order is said (with SH-191); in play the list from its top; the judge"}
+{"id":"CHAI-33","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built (s15-chai-11): the lit box clears the pill evenly, 8-16 px"}
+{"id":"CHAI-50","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · judged PASS 30 Oct (s15-chai-ev6: lightfollow L1-L4, contract-87); his exact path in his play"}
+{"id":"CHAI-40","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · judged PASS 30 Oct (s15-chai-ev5: L1-L4 voice timelines, contract-89)"}
+{"id":"CK-18","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · chai: with SH-177 (built 2 Nov); the clinic's eye test at its roll-out"}
+{"id":"ART-31","run":"ev-20261103-111144-8je","earlier":"**to fix: check** · built (s15-chai-11, decision 2a): no splash, the pan settles, the sounds stay; the steam and the serve in the next art run"}
