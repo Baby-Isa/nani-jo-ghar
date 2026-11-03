@@ -794,20 +794,20 @@
   "date": "2026-10-23"
  },
  "CHAI-33": {
-  "hash": "d9f90e9e54a88b00b7e8",
+  "hash": "dbc93e25a950aab95530",
   "dhash": [
-   "0030707070f05131",
-   "2070f0f0f0f02232",
-   "3070786870f04131",
-   "3070f0f0f0f07030"
+   "7070686060f04531",
+   "0333333333330313",
+   "3371796161715521",
+   "70f0f8e0e0f05030"
   ],
   "verdict": "FAIL",
-  "line": "C, at L3 1280x665 (frame 2, 22.4s) the paani pill's foot sits only a sliver above the lit box's bottom edge, about half the cream margin at its sides, and the box's bottom gold border is thinner than its sides (cut off), so the box does not clear the pill's foot by its side margin; D (L3 740x320, 28.9s) shows the same tight foot; A (L1 1280x665) also has a visibly smaller gap under the pill than beside it. Sheet shows only L1 and L3 at 1280x665 and 740x320: L2, L4, 930x430 and 1920x1080 named in the Check are absent.",
-  "panel": "C",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session 014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-143454-8da",
-  "commit": "f5eab3f8",
-  "png": "build/screenshots/evidence/ev-20261103-143454-8da/CHAI-33.png",
+  "line": "D, at L3 740x320 (frame 2, 27.3 s) the paani pill's foot sits almost on the box's gold rim, a gap of roughly half the side margin; B (L1 740x320, frames 1-2) shows the same tight foot, and its frame 3 (32.2 s) shows the chai jar and pill with no lit box at all. Only C (L3 1280x665) and A (L1 1280x665, frame 2) show the pill cleared below by about its side margin. Sheet covers L1 and L3 at two sizes only; L2, L4, 930x430 and 1920x1080 named by the Check are not shown. No English for the child, no clipped text; D frame 1's second pill cut at the crop edge is a crop artefact, not a flaw.",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-143901-sdj",
+  "commit": "b60dd9e1",
+  "png": "build/screenshots/evidence/ev-20261103-143901-sdj/CHAI-33.png",
   "date": "2026-11-03"
  },
  "CHAI-40": {
