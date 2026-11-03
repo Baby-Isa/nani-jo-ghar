@@ -2618,7 +2618,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const nx = hotNow || plan();
       gaugePan = nx && nx.gauge ? nx.gauge : null;
       if (gaugePan) zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
-      zb.expect(nx ? nx.e : null);
+      // (the step's phase rides on its expectation, so the evidence moments phase:slow and phase:pour come; 3 Nov)
+      zb.expect(nx ? (nx.phase ? Object.assign({}, nx.e, { phase: nx.phase }) : nx.e) : null);
       // (contract-70: where the bar was as "Slow kar" was called)
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)

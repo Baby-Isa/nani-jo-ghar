@@ -23029,14 +23029,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "page:start",
+   "at": "rec:start",
    "after": null,
    "capture": [
     "strip:#guide:8x120",
     "dom:#guide"
    ],
    "expect": null,
-   "note": "the first frames as the station mounts: Nani's box in its s14 look from the first frame (no green bar, no box speaker), never an old box that then switches",
+   "note": "the first frames as the station starts (rec:start, after the page's own navigation): Nani's box in its s14 look from the first frame (no green bar, no box speaker), never an old box that then switches",
    "delay": 0
   }
  ],
@@ -23380,7 +23380,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "rec:order-card-in-sidebar",
    "after": null,
    "capture": [
     "contract:51"
@@ -23388,7 +23388,7 @@
    "expect": [
     "pass"
    ],
-   "note": "on phones at L2-L4 every word of the order card, its last headline word included, stays inside its card over the whole play (contract-51)",
+   "note": "on phones at L2-L4 every word of the order card, its last headline word included, stays inside its card while the order is given (contract-51 up to the order's end; the round's end timed out at L4 930x430, 3 Nov)",
    "delay": 0
   }
  ],

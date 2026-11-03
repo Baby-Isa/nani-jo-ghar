@@ -12,13 +12,13 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
-| Bring me these for knee | Cook line: Bring me these for {x} | 1 line | Rule not known yet: needs Mum. |
+| Bring me these for chai | Cook line: Bring me these for {x} | 1 line | Rule not known yet: needs Mum. |
 | I'd like two samosas with mince, and one with potato. | Cook line: and {x} | 1 line | Rule not known yet: needs Mum. Asked before: L23, L26, L27. |
 | I'd like two samosas with mince. · I'd like one samosa with potato and one with mince. | Cook line: with {x} | 1 line | Rule not known yet: needs Mum. Asked before: L17, L22, L23, L27. |
 | In my tea I want two sugars. | Cook line: In my chai I want {x}. | 1 line | Rule not known yet: needs Mum. Asked before: L34, L9. |
 | once; twice; three times (stir it three times) | Cook line: {x} times | 1 line | Rule not known yet: needs Mum. Asked before: L54. |
 | One tomato, three tomatoes. | Cook: tomato | 1 line | Form missing: Mum's answer unlocks it. Asked before: Q14. Zafar, 20 Oct: see 1c. |
-| He-word or she-word? 30 nouns in Cook: sugar, flour, daal, potato, onion, tomato, chilli, garlic, peas (green peas), ginger, turmeric, cumin seeds, mustard seeds, cardamom, salt, red chilli powder, chickpeas, yoghurt, sev, coriander, mince, meat, ghee, chaat, samosa, sekelo, mishkaki, cupboard, vegetable, mixed | Cook: every line that names them | 65 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
+| He-word or she-word? 33 nouns in Cook: sugar, flour, daal, potato, onion, tomato, chilli, garlic, peas (green peas), ginger, turmeric, cumin seeds, mustard seeds, cardamom, salt, red chilli powder, chickpeas, yoghurt, sev, coriander, mince, meat, ghee, chaat, samosa, sekelo, mishkaki, cupboard, corn on the cob, egg, black pepper, vegetable, mixed | Cook: every line that names them | 71 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
 | He-word or she-word? 5 nouns in the clinic: foot, ear, drops (not sprinkle), apple, medicine | Clinic: every line that names them | 12 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
 
 ### 1b. Wider grammar still open
@@ -61,12 +61,12 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 ## 2. Cook
 
-114 rows: 38 with no Kutchi yet, 76 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+119 rows: 40 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
-| three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 42 lines | Kutchi known (trae); no family recording. |
-| one | Cook: water; Cook: milk; Cook: sugar | 39 lines | Kutchi known (hakro); no family recording. |
+| three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 46 lines | Kutchi known (trae); no family recording. |
+| one | Cook: water; Cook: milk; Cook: sugar | 45 lines | Kutchi known (hakro); no family recording. |
 | I / me | Cook line: I need {x}. | 16 lines | Kutchi known (muke); no family recording. |
 | chai | Cook: chai; Cook: black (of tea: no milk); Cook: unsweetened (of tea) | 13 lines | Kutchi known (chai); no family recording. |
 | milk | Cook: milk; Cook line: I need {x}. | 10 lines | Kutchi known (dudh); no family recording. |
@@ -92,6 +92,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | you (a child) | Cook line: How are you?; Cook line: Can you make me {x}? | 3 lines | Kutchi known (tu); no family recording. |
 | and | Cook line: And {x}. | 2 lines | Kutchi known (ne); no family recording. |
 | be wanted (by someone) | Cook line: I need {x}. | 2 lines | Kutchi known (khapeto); no family recording. |
+| black pepper | Cook: black pepper | 2 lines | Kutchi known (mari); no family recording. |
 | cardamom | Cook: cardamom | 2 lines | Kutchi known (elchi); no family recording. |
 | chicken | Cook: chicken | 2 lines | Kutchi known (murgi); no family recording. |
 | chilli (the dried chilli, or the plural: Zafar's word) | Cook: red chilli powder | 2 lines | Kutchi known (marcha); no family recording. |
@@ -119,17 +120,20 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | be | Cook line: How are you? | 1 line | Kutchi known (aiye); no family recording. |
 | big | Cook: big | 1 line | Kutchi known (wadho); no family recording. |
 | black (of tea: no milk) / do, make | Cook: black (of tea: no milk) | 1 line | Kutchi known (kari); no family recording. |
+| boiled egg | Cook: boiled egg | 1 line | No Kutchi yet (grey English). |
 | Bring me these | Cook line: Bring me these | 1 line | No Kutchi yet (grey English). |
 | Bring these from the pantry | Cook line: Bring these from the pantry | 1 line | No Kutchi yet (grey English). |
 | Bye! | Cook line: Bye! | 1 line | Kutchi known (achija); no family recording. |
 | care, attention | Cook line: Careful! | 1 line | Kutchi known (dhyan); no family recording. |
 | Chop these | Cook line: Chop these | 1 line | No Kutchi yet (grey English). |
 | Cook it the way they said | Cook line: Cook it the way they said | 1 line | No Kutchi yet (grey English). |
+| egg | Cook: egg | 1 line | Kutchi known (inda); no family recording. |
 | Fill the next one | Cook line: Fill the next one | 1 line | No Kutchi yet (grey English). |
 | fine, all right (never changes) | Cook line: I'm fine, thank you. | 1 line | Kutchi known (theek); no family recording. |
 | five | Cook: five | 1 line | Kutchi known (panj); no family recording. |
 | flour | Cook: flour | 1 line | Kutchi known (atta); no family recording. |
 | four | Cook: four | 1 line | Kutchi known (char); no family recording. |
+| fried | Cook: fried | 1 line | Kutchi known (tarelo); no family recording. |
 | Fry them | Cook line: Fry them | 1 line | No Kutchi yet (grey English). |
 | Give me | Cook line: Give me | 1 line | No Kutchi yet (grey English). |
 | green pepper | Cook: green pepper | 1 line | No Kutchi yet (grey English). Asked before: B34. |
@@ -150,6 +154,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | Make each pan the way they said | Cook line: Make each pan the way they said | 1 line | No Kutchi yet (grey English). |
 | Make the bowl, in order | Cook line: Make the bowl, in order | 1 line | No Kutchi yet (grey English). |
 | mince | Cook: mince | 1 line | Kutchi known (chunda); no family recording. |
+| naan | Cook: naan | 1 line | No Kutchi yet (grey English). |
 | oh dear! | Cook line: Oh dear! | 1 line | Kutchi known (arre re); no family recording. |
 | Pass me that one | Cook line: Pass me that one | 1 line | No Kutchi yet (grey English). |
 | Pour it into their glass | Cook line: Pour it into their glass | 1 line | No Kutchi yet (grey English). |
@@ -1351,4 +1356,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (166 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (175 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

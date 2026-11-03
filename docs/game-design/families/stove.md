@@ -55,14 +55,16 @@ The audit's numbers are the panel step (`panelcheck.mjs`: the side panel at the 
   knife, a small strip, not the screen).
 - **Chai's later rules:** the reveal taught once, the light following its card.
 - **Waiting:** DAAR-02 (the kadchi, art), DAAR-26 (the stir line, Mum: Round 6, R6-146), DAAR-12 (the stir's speed shown as dots: Zafar).
-- **Audit (3 Nov):** panel 54 pass, 6 fail; the lab page clean at L1-L4 (no errors, nothing spills).
+- **Audit (3 Nov):** panel 54 of 60: SH-192 at 740x320 and 930x430, L2-L4 (the headline's gaps 9.1 above against 7.5 below, the second
+  card 15.7 against 10.8); the lab page clean at L1-L4 (no errors, nothing spills).
 - **Words:** daar, hardar, jeeru, rai, the chop's vegetables, aste thi, jaldi; daar and hardar met in the pantry, the rest first met here.
 
 ### Sekelo
 - **Kit:** SEK-22 reopened (the skewer's light: the whole skewer, handle to tip, at most 12 px beyond, no other skewer).
 - **Chai's later rules:** the reveal, the light following its card, the next-skewer light.
 - **Waiting:** SEK-20 (a square top-down barbecue, art), SEK-18 (the "thread them" line, Mum), SEK-14 (the racks as pictures: check).
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 58 of 60: SH-169 at 740x320, L3-L4 (the current card's head out of view for about 200 ms as the
+  order passes); the lab page clean.
 - **Words:** sekelo, mishkaki, gos, murgi, boga, mixed, lakri; green pepper stays English (Zafar, 3 Nov).
 
 ### Maani
@@ -70,7 +72,7 @@ The audit's numbers are the panel step (`panelcheck.mjs`: the side panel at the 
   is said).
 - **Chai's later rules:** the reveal, the light following its card, the next-maani light on the tawa.
 - **Waiting:** MAA-15, MAA-16 (the take-off wording and the "and" join, Mum), MAA-14 (Nani's "pass me": check).
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 60 of 60; the lab page clean.
 - **Words:** maani, bajr ji maani; the turner has no word (picture only).
 
 ### Chaat
@@ -78,13 +80,15 @@ The audit's numbers are the panel step (`panelcheck.mjs`: the side panel at the 
   the words don't fit, Zafar, 30 Oct).
 - **Chai's later rules:** the reveal, the light following its card.
 - **Waiting on art:** CHT-13 and CHT-04 (the side-on bowl and its layers), CHT-16 (the chop's background).
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 51 of 60: SH-192 at 740x320, 1280x665 and 1920x1080, L2-L4 (the headline's gaps 9.5 above against
+  14.1 below); the lab page clean.
 - **Words:** chaat, dai, amli, lili, sev, dhania, chana.
 
 ### Samosa
 - **Kit:** built (SAM-28 passed on film). Nothing open in its own rows.
 - **Chai's later rules:** the reveal, the light following its card, the next-pastry light.
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 53 of 60: SH-169 at 740x320 and 930x430, L3-L4 (the current card's head out of view as the order
+  passes), SH-191 at 1280x665, L3-L4, SH-192 at 930x430, L2; the lab page clean.
 - **Words:** samosa, chundo, bataata, dhania, atto.
 
 ### Eggs at breakfast (prototype)
@@ -93,7 +97,8 @@ The audit's numbers are the panel step (`panelcheck.mjs`: the side panel at the 
 - **Chai's later rules:** all of them; the next-vessel light chooses between the pot and the pan.
 - **Art:** block 1 landed (EP, EF, EG, EY, EB, ES, EM, EN); not cut or wired. Known edges: the pot's handle over the pan, the people
   stand behind the table.
-- **Audit:** see the report.
+- **Audit (3 Nov):** panel 59 of 60 (SH-191 at 740x320, L3: a fitting card cut for about 1.8 s past its 400 ms); the lab page
+  clean. The panel measures the shared order card, so it reads well even where the station's own kit is thin.
 - **Words:** indo (confirmed), tarelo (draft), loon, mari (draft); "boiled egg" to record (R6-19, R6-137); salt, pepper and "no salt"
   (R6-138).
 
