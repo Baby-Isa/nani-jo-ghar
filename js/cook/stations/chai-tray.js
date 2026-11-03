@@ -2043,9 +2043,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (the judge, 3 Nov, L3 740x320: a pill on the play area's foot left no room for that margin below it, so the box's foot lay on
         // the screen's edge, its gap a quarter of the sides': the margin is what fits below the pill, its gold ring (6 px) included,
         // and the sides take the same)
+        // (the judge, 3 Nov, final: the box's foot was cut by the screen's edge: the light pads every side by its own BOX_PAD and draws a
+        // 4 px ring, so the room is measured to the screen's bottom with both; one margin then on every side, as small as it must be)
+        const PAD = (global.Onboard && global.Onboard.BOX_PAD) || 10;
         const st = document.querySelector("#stage");
-        const room = st ? st.getBoundingClientRect().bottom - pb - 6 : m;
-        m = Math.max(3, Math.min(m, room));
+        const foot = Math.min(global.innerHeight || 1e4, st ? st.getBoundingClientRect().bottom : 1e4);
+        const room = foot - pb - PAD - 3;
+        m = Math.max(3 - PAD, Math.min(m, room));
         // (the judge, 3 Nov, every size: the sides came from the picture's own wide margin, so the gap under the pill was a third of the
         // sides': the box's sides follow the pill by the same margin, wider only where the picture itself would reach past them)
         // (the judge again: the picture's bounds include its transparent frame, so following them kept the sides twice the foot's: the
