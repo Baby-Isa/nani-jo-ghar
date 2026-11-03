@@ -1986,7 +1986,19 @@
         const tr = to.getBoundingClientRect();
         // (a dish's own card, not a people order: chai's people cards keep their morph as they were)
         if (!m.wordRows && faces14().some((f) => Math.min(tr.right, f.right) - Math.max(tr.left, f.left) > 0 && Math.min(tr.bottom, f.bottom) - Math.max(tr.top, f.top) > 0)) return Promise.resolve(done());
-        return global.WordCard.morph(big, to).catch(() => {}).then(done);
+        // (contract-83, the audit at L4 740x320, 3 Nov: the big card's straight flight up to the panel crossed Nana's face: where the
+        // straight line meets a face, it goes across into the panel first, then up to its row)
+        const fb = big.getBoundingClientRect();
+        const across = (() => {
+          const fs = faces14();
+          for (let i = 1; i < 10; i++) {
+            const k = i / 10;
+            const r = { left: fb.left + (tr.left - fb.left) * k, right: fb.right + (tr.right - fb.right) * k, top: fb.top + (tr.top - fb.top) * k, bottom: fb.bottom + (tr.bottom - fb.bottom) * k };
+            if (overlap14(r, fs) > 0) return true;
+          }
+          return false;
+        })();
+        return global.WordCard.morph(big, to, { across }).catch(() => {}).then(done);
       }
       m.away.delete(r);
       const to = rowElOf(who, r);

@@ -2645,7 +2645,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const row = el.closest(".oc-row");
         if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
         await Cook.wait(400);
-        await settled14(); // (contract-79: the cards have landed and the row has stopped before the card is lit)
+        // (contract-79: the cards have landed and the row has stopped before the card is lit; looked at once more as it lights, as a
+        // card's slide can begin in the same frame)
+        for (let k = 0; k < 4; k++) {
+          await settled14();
+          if (!movingNow14()) break;
+        }
         el.classList.add("ob-dots-now");
         const prevExpect = Cook.expect;
         const wait14 = { kind: "wait", dots: true };
@@ -2653,7 +2658,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await light14(el, "glow", 6000 / (Cook.speed || 1), () => {});
         el.classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
-        await Cook.wait(320 / (Cook.speed || 1)); // (its light has faded (the kit's 300 ms) before play, and the shelf, come in)
+        // (its light has faded before play and the shelf come in: the kit's fade is 300 ms of real time, never the test speed's)
+        await new Promise((r) => global.setTimeout(r, 340));
       };
       const rows14 = "#mission .oc-row14";
       const dots = [...document.querySelectorAll(`${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`)].find(vis);

@@ -659,10 +659,20 @@
     const dur = (o.ms || 650) / sp;
     from.style.transformOrigin = "50% 50%";
     try {
-      const f = from.animate([{ transform: "none", opacity: 1 }, { opacity: 0.9, offset: 0.35 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }], { duration: dur, easing: ease, fill: "forwards" });
       // (the row's card starts inside the big one's outline, never reaching past it: the big card is placed off every face, so its copy is too)
       const g0 = Math.min(a.width / b.width, a.height / b.height);
-      const g = ghost.animate([{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }], { duration: dur, easing: ease, fill: "forwards" });
+      // (o.across, contract-83: a straight flight that would cross a face goes across first, then up or down to the row: the big card
+      // and the row's card on the same bend, half the scale change at the corner)
+      const sm = (1 + s) / 2;
+      const gm = (g0 + 1) / 2;
+      const fk = o.across
+        ? [{ transform: "none", opacity: 1 }, { transform: `translate(${dx}px, 0px) scale(${sm})`, opacity: 0.6, offset: 0.5 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }]
+        : [{ transform: "none", opacity: 1 }, { opacity: 0.9, offset: 0.35 }, { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0 }];
+      const gk = o.across
+        ? [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { transform: `translate(0px, ${-dy}px) scale(${gm})`, opacity: 0.4, offset: 0.5 }, { transform: "none", opacity: 1 }]
+        : [{ transform: `translate(${-dx}px, ${-dy}px) scale(${g0})`, opacity: 0 }, { opacity: 0, offset: 0.25 }, { transform: "none", opacity: 1 }];
+      const f = from.animate(fk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
+      const g = ghost.animate(gk, { duration: dur, easing: o.across ? "ease-in-out" : ease, fill: "forwards" });
       await Promise.all([f.finished, g.finished]);
       // the row's own card under the copy, shown at once (no fade from its waiting slot), then the copy goes: the same card, one frame
       const tr = to.style.transition;
