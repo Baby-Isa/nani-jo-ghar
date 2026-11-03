@@ -1805,3 +1805,23 @@
 {"id":"SH-190","run":"ev-20261103-171129-t61","verdict":"PASS","spec":"2b837ce4cb90747cf268","judge":"expect","date":"2026-11-03"}
 {"id":"SH-192","run":"ev-20261103-171129-t61","verdict":"PASS","spec":"9743291f63d434c5463c","judge":"expect","date":"2026-11-03"}
 {"id":"CHAI-69","run":"ev-20261103-174914-nhg","verdict":"PASS","spec":"7c221cebc6e467cc9d6c","judge":"expect","date":"2026-11-03"}
+{"id":"SH-195","run":"ev-20261103-171129-t61","verdict":"FAIL","spec":"6546f623a23fa7816942","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"SH-180","run":"ev-20261103-171129-t61","verdict":"FAIL","spec":"55d6822782a2886fa18e","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"SH-165","run":"ev-20261103-171129-t61","verdict":"PASS","spec":"aee29cf7fe92fecf9266","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"SH-179","run":"ev-20261103-171129-t61","verdict":"PASS","spec":"d239584644fa4b58a778","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"ART-36","run":"ev-20261103-171129-t61","verdict":"FAIL","spec":"e42bbbdb3660816438fa","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"CHAI-51","run":"ev-20261103-174914-nhg","verdict":"PASS","spec":"985fa4df22226805e2d8","judge":"Claude Fable 5.1 (claude-fable-5-1), session https://claude.ai/code/session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"SH-174","run":"ev-20261103-180011-2zi","verdict":"PASS","spec":"1d29cee497afacfacef7","judge":"Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-03"}
+{"id":"SH-165","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-179","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-145","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"CHAI-52","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-197","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-198","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-184","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-189","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-190","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"SH-192","run":"ev-20261103-171129-t61","event":"built","date":"2026-11-03"}
+{"id":"CHAI-51","run":"ev-20261103-174914-nhg","event":"built","date":"2026-11-03"}
+{"id":"CHAI-69","run":"ev-20261103-174914-nhg","event":"built","date":"2026-11-03"}
+{"id":"SH-174","run":"ev-20261103-180011-2zi","event":"built","date":"2026-11-03"}

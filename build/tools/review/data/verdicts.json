@@ -325,6 +325,21 @@
   "png": "build/screenshots/evidence/ev-20261103-131342-phl/ART-31.png",
   "date": "2026-11-03"
  },
+ "ART-36": {
+  "hash": "53042174b3ac47b071ad",
+  "dhash": [
+   "00c6adb931044000",
+   "000084892d800000"
+  ],
+  "verdict": "FAIL",
+  "line": "A, a photoreal steel kettle on a grey ground, near upright with a drip at the spout rather than a vessel held tilted with a tea stream; B is five photoreal glasses on grey, not two (half, full) in the s14 style; no snap frame: these are reference pictures, the art has not landed",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "png": "build/screenshots/evidence/ev-20261103-171129-t61/ART-36.png",
+  "date": "2026-11-03"
+ },
  "BOOK-01": {
   "hash": "1d3d1d501e55bc729484",
   "dhash": [
@@ -929,6 +944,18 @@
   "run": "ev-20261103-131342-phl",
   "commit": "1b33f4dc",
   "png": "build/screenshots/evidence/ev-20261103-131342-phl/CHAI-50.png",
+  "date": "2026-11-03"
+ },
+ "CHAI-51": {
+  "hash": "03eb3d5d630967721559",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "CHAI-51-p1-L1-1280x665 voice, from the 45.74 pour moment only the station's own sfx/noise + sfx/osc play (46.06-46.38) and the first Cook line is \"Shabash!\" at 46.89 after the pour has stopped, no read-along of the order; same at L1-740x320 (pour sfx 43.84-44.14, \"Shabash!\" 44.74), L2-1280x665 (pour sfx 56.64-56.96, next step's \"Dudh wiji chad!\" 57.23 after it), L2-740x320 (pour sfx 73.34-73.72, no Cook line until \"chai\" at 76.84)",
+  "panel": "CHAI-51-p1-L1-1280x665 voice",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session https://claude.ai/code/session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-174914-nhg",
+  "commit": "24d8f50e",
+  "png": null,
   "date": "2026-11-03"
  },
  "CHAI-52": {
@@ -7110,19 +7137,19 @@
   "date": "2026-10-30"
  },
  "SH-165": {
-  "hash": "6104bff17cbb570e8a08",
+  "hash": "ce9287291817eb6df588",
   "dhash": [
-   "09a201d9d9c959d9",
-   "a021a68614999989"
+   "02821b9b9b1b9a9b",
+   "91a6ea619b9b9b91"
   ],
   "verdict": "PASS",
-  "line": "A, at 1280x665 the open helper card's speaker sits at the right of \"paani / water\" with a right gap that matches the order item cards' speaker-to-foot gap below it (measure 9 px vs 9 px); B shows the same at 740x320 (7 px vs 7.1 px); 930x430 within 1 px in the text capture; 1920x1080 is stacked with the speaker centred like the item card, text only, no panel. No flaws: the helper's \"Put water in the pan.\" is the allowed grey-italic helper-card line; the cut third item in each order row is the scroll row at the crop edge.",
+  "line": "A, the helper card's speaker sits at the right of its words with a right gap that matches the order card's speaker-to-foot gap (spkgap: 9 px / 9 px at 1280x665; 6 / 6.3 px at 740x320 and 930x430; centred when stacked at 1920x1080); B shows the same at 740x320 · measured on chai L2 only, the other stations and levels not in this run",
   "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kRLtLPZ2qrL3PyhaaF",
-  "run": "s15-chai-ev6",
-  "commit": "6484dc9",
-  "png": "build/screenshots/evidence/s15-chai-ev6/SH-165.png",
-  "date": "2026-10-30"
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "png": "build/screenshots/evidence/ev-20261103-171129-t61/SH-165.png",
+  "date": "2026-11-03"
  },
  "SH-166": {
   "hash": "0fe90463079e5425febe",
@@ -7246,6 +7273,23 @@
   "png": "build/screenshots/evidence/s15-chai-ev6/SH-172.png",
   "date": "2026-10-30"
  },
+ "SH-174": {
+  "hash": "dcec51b9b2756ad28af5",
+  "dhash": [
+   "1f1f1f16161e5673",
+   "008081b494800080",
+   "1f1e171616161633",
+   "00a0a080a8288000"
+  ],
+  "verdict": "PASS",
+  "line": "B, the #guide crop at rec:start (1280x665, fresh load) already has the s14 look: Nani's round portrait with the small speaker badge on the portrait, a pale rounded bubble, no solid green bar and no speaker button inside the box; D shows the same at 740x320 with the line wrapped cleanly, and A/C show the kitchen and the order card already present in that same first frame, so the box does not mount in an old look first. Flaws noted, off the row's point: the guide line is grey-italic English with a [ph] tag (allowed, decision 84); the L3 panels (4 probes) are not on the sheet, only their dom captures, and only the chai-tray station is probed although the check says \"every Cook station\" (the row's status limits the others to their roll-out).",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-180011-2zi",
+  "commit": "650548fc",
+  "png": "build/screenshots/evidence/ev-20261103-180011-2zi/SH-174.png",
+  "date": "2026-11-03"
+ },
  "SH-175": {
   "hash": "3900c8173dc9aaff30db",
   "dhash": [],
@@ -7278,6 +7322,20 @@
   "png": "build/screenshots/evidence/ev-20261103-135810-7dq/SH-178.png",
   "date": "2026-11-03"
  },
+ "SH-179": {
+  "hash": "19985d2d46ef9b904265",
+  "dhash": [
+   "91a6ea619b9b9b91"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 740x320 the paani row is only as tall as its speaker with a thin margin, a landscape (about 4:3) picture at roughly a quarter of the card's width, small words; spkgap holds 6 / 6.3 px · the named height check printed no height, and 915x275 was run as 915x412",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "png": "build/screenshots/evidence/ev-20261103-171129-t61/SH-179.png",
+  "date": "2026-11-03"
+ },
  "SH-18": {
   "hash": "259bbc3adf71e76c2337",
   "dhash": [
@@ -7293,20 +7351,20 @@
   "date": "2026-10-20"
  },
  "SH-180": {
-  "hash": "16771aa46a87d4ef47b9",
+  "hash": "0447200698bc611b1fcb",
   "dhash": [
-   "8925010101010101",
-   "8925290101010101",
-   "8925296161010101",
-   "9191630101010001"
+   "8921010101010101",
+   "a125929335139392",
+   "8105929335139392",
+   "9191633131130001"
   ],
   "verdict": "FAIL",
-  "line": "A, between 403 ms and 690 ms (slot 120) Nana's card goes from headline only to three fully open empty slots in one step, the frames either side unchanged (the page's own recorder: a row card moved 265.8 px in 43 ms): the card snaps open rather than folding or unfolding smoothly; B 1006 ms and D 565 ms show the same one-step opening for the next card. Flaws: C 502 ms \"dudh na\" doubled in the morph (SH-163); C 1828 ms row cards cut at the list's left edge mid-scroll (\"chi\", \"du\").",
-  "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-131342-phl",
-  "commit": "1b33f4dc",
-  "png": "build/screenshots/evidence/ev-20261103-131342-phl/SH-180.png",
+  "line": "D, the page's own recorder for this 740x320 run says the order row's scroll moved 38 px in \"1 moves over 0 ms\" (a single-frame snap, not a glide), and the L3 1280x665 run 3 in the .md moved 123 px in \"1 moves over 0 ms\", L2 1280x665 run 3 124 px between two frames: the panel still jumps; D's 4789 ms frame also shows the trae khun card cut at the panel's right edge (\"trae k\"). Every frame caption on A-D landed off its 40 ms slot (966 ms to 13.4 s apart), so the strips never film the fold itself; the recorder figures are the only motion evidence and they show snaps.",
+  "panel": "D",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "png": "build/screenshots/evidence/ev-20261103-171129-t61/SH-180.png",
   "date": "2026-11-03"
  },
  "SH-181": {
@@ -7382,6 +7440,23 @@
   "judge": "expect",
   "run": "ev-20261103-171129-t61",
   "commit": "db5c297b",
+  "date": "2026-11-03"
+ },
+ "SH-195": {
+  "hash": "ff40b7aabcb4dc5f7374",
+  "dhash": [
+   "209adbdb029a9bd9",
+   "019bdb9919d9d901",
+   "249adbdb04da9bd9",
+   "2199db9919d9db21"
+  ],
+  "verdict": "FAIL",
+  "line": "C, L3 second play with paani and chai met shows both pictures clear (no blur, no eye) where the check expects met words blurred at L3; A and B (fresh L3 and L4) correctly show every picture clear, and D (L4 second play) correctly blurs paani and chai with the eye centred while the unmet elchi/dudh stay clear. Off-point: B and D crop a third order card at the bottom; the third card in each row is cut by the crop edge.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261103-171129-t61",
+  "commit": "db5c297b",
+  "png": "build/screenshots/evidence/ev-20261103-171129-t61/SH-195.png",
   "date": "2026-11-03"
  },
  "SH-197": {
