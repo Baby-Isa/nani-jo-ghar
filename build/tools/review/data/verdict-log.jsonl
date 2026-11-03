@@ -1768,3 +1768,23 @@
 {"id":"CK-18","run":"ev-20261103-111144-8je","event":"built","date":"2026-11-03"}
 {"id":"ART-31","run":"ev-20261103-111144-8je","event":"built","date":"2026-11-03"}
 {"id":"SH-153","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"418360e4818db346e83b","judge":"expect","date":"2026-11-03"}
+{"id":"CHAI-33","run":"ev-20261103-131342-phl","verdict":"FAIL","spec":"e7df46b6a6fb9549b9ee","judge":"Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-178","run":"ev-20261103-131342-phl","verdict":"FAIL","spec":"a10659e26cf6683298ad","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-38","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"df5034336bf91990f245","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-181","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"818c755e609b023d72c1","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"CK-18","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"e1d7cf8e17e3a1f709bd","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-163","run":"ev-20261103-131342-phl","verdict":"FAIL","spec":"27ae234ffd44d4699fe7","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-180","run":"ev-20261103-131342-phl","verdict":"FAIL","spec":"cc6dd5f06f7d78fb3472","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"CHAI-43","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"eea7eecadb2afd5a90e5","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"SH-169","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"7f0c7846abbd7ffbfadf","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"ART-31","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"b44c7fd1e0cdcaa2e322","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"CHAI-50","run":"ev-20261103-131342-phl","verdict":"PASS","spec":"64b74d12585ce0e98ee7","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"CHAI-40","run":"ev-20261103-131342-phl","verdict":"FAIL","spec":"6eaac59eebb7e2341cff","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn","date":"2026-11-03"}
+{"id":"CHAI-43","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"SH-38","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"SH-181","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"SH-153","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"SH-169","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"CHAI-50","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"CK-18","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
+{"id":"ART-31","run":"ev-20261103-131342-phl","event":"built","date":"2026-11-03"}
