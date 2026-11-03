@@ -794,31 +794,31 @@
   "date": "2026-10-23"
  },
  "CHAI-33": {
-  "hash": "a019fa4836a6912c9c53",
+  "hash": "d9f90e9e54a88b00b7e8",
   "dhash": [
-   "0131716171712331",
-   "0030707070702230",
-   "3371717171714131",
-   "007070f0f0f02031"
+   "0030707070f05131",
+   "2070f0f0f0f02232",
+   "3070786870f04131",
+   "3070f0f0f0f07030"
   ],
   "verdict": "FAIL",
-  "line": "D, L3 740x320 frame 2 (21.3 s): the gold box's foot sits a thin sliver under the paani pill while the side bands are three to four times wider, so the box does not clear the pill's foot by its side margin; the same unequal gap shows in C (L3 1280x665, frames 1 and 3), A (L1 1280x665, frames 1 and 2) and B (L1 740x320, frame 2); also B frame 1 and D frame 1 show no lit box at the first onboard hit, A frame 3 and B frames 3-4 show the chai-cup onboard with no box and Nani's avatar over the cup, and L2, L4, 930x430 and 1920x1080 named by the Check are not on either sheet",
-  "panel": "D",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-131342-phl",
-  "commit": "1b33f4dc",
-  "png": "build/screenshots/evidence/ev-20261103-131342-phl/CHAI-33.png",
+  "line": "C, at L3 1280x665 (frame 2, 22.4s) the paani pill's foot sits only a sliver above the lit box's bottom edge, about half the cream margin at its sides, and the box's bottom gold border is thinner than its sides (cut off), so the box does not clear the pill's foot by its side margin; D (L3 740x320, 28.9s) shows the same tight foot; A (L1 1280x665) also has a visibly smaller gap under the pill than beside it. Sheet shows only L1 and L3 at 1280x665 and 740x320: L2, L4, 930x430 and 1920x1080 named in the Check are absent.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session 014xb3kQTCK3YzzLRoQ1FAmn",
+  "run": "ev-20261103-143454-8da",
+  "commit": "f5eab3f8",
+  "png": "build/screenshots/evidence/ev-20261103-143454-8da/CHAI-33.png",
   "date": "2026-11-03"
  },
  "CHAI-40": {
-  "hash": "4da62dbc1e35c4bcb940",
+  "hash": "7ceeeaef10d445e0dec4",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "CHAI-40-p4-L4-930x430 contract-89, \"Slow kar!\" starts at 55.82s while Nani's helper card names the item and is closed (contract-89 kind-timing 55.8s: the item said before her card shows it): an item call before the helper's card opens at L4; L1-L3 show contract-89 0 breaks (L1: \"Khun wiji chad!\" at 28.13s with helper-open at 28.14s, called as it opens). Contract-78 light breaks at L2-L4 noted but not the row's check.",
-  "panel": "CHAI-40-p4-L4-930x430 contract",
+  "line": "CHAI-40-p2-L2-930x430 contract-78, \"Chulo bar!\" at 51.6s starts and no light comes with it (the row's own complaint), and \"Slow kar!\" starts with no light at L2 54.8s, L3 54.8s (timeline: chai-slow, step-open (8), call 54.80, no rung/glow; L1 at 39.54 has rung+glow before its call) and L4 63.6s; the helper-card half is met (contract-89 0 breaks L1-L4; no item spoken at any step-open while the card is closed; L2 \"paani\" 29.14 after helper-open 29.01; L1 \"Khun wiji chad!\" 28.95 is 10 ms before helper-open/glow 28.96, as it opens, not a beat after)",
+  "panel": "CHAI-40-p2-L2-930x430 contract",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-131342-phl",
-  "commit": "1b33f4dc",
+  "run": "ev-20261103-135810-7dq",
+  "commit": "9fddcef7",
   "png": null,
   "date": "2026-11-03"
  },
@@ -7032,21 +7032,21 @@
   "date": "2026-11-03"
  },
  "SH-163": {
-  "hash": "86c23197d89c0db32bbe",
+  "hash": "7c43d903d7a7d2cb6225",
   "dhash": [
    "5f7eeeeeeaee6afb",
    "6e7e7e6a6a7e2a7b",
    "6e667668486a2a7b",
-   "5e7e7e7e68682a7f",
+   "5e7e7e7c68682a7f",
    "5e2e7e68782a6a7b"
   ],
-  "verdict": "FAIL",
-  "line": "E, at 1104 ms (slot 600) the shrunk big card sits translucent over the row's own \"dudh\" card at the same spot, the word and the speaker showing twice through each other: a cross-fade of two cards, not one card arriving; D 1087 ms shows the same faint ghost at 1280x665, and C 3251 ms (\"ba chunda\") at L3; the same doubling shows on SH-180's sheet (A 2962 ms \"dudh dudh\", C 502 ms \"dudh na dudh na\"). Flaws: none else; grey-italic English (milk, one sugar) is to-record, allowed.",
+  "verdict": "PASS",
+  "line": "E, L1 930x430: the dudh card shrinks as it moves from its pop to its row slot (844, 1044, 1111 ms) as one whole card, \"dudh / milk\" readable and evenly scaled at every shown step, no second copy in the row until it lands; hakro khun does the same (3238-3586 ms); C (samosa L3) and B (chai L4) show the same single shrinking card in flight (3001 ms ba chunda, 5501 ms dungri na; 2673 ms trae khun, 5151 ms adh); gaps: L2 and the other Cook stations not filmed, strips are 4 fps / 20 fps not 60, D's strip (L1 1280x665) missed the morph frames entirely",
   "panel": "E",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-131342-phl",
-  "commit": "1b33f4dc",
-  "png": "build/screenshots/evidence/ev-20261103-131342-phl/SH-163.png",
+  "run": "ev-20261103-135810-7dq",
+  "commit": "9fddcef7",
+  "png": "build/screenshots/evidence/ev-20261103-135810-7dq/SH-163.png",
   "date": "2026-11-03"
  },
  "SH-164": {
@@ -7204,24 +7204,24 @@
   "date": "2026-10-30"
  },
  "SH-178": {
-  "hash": "76e89a74ff85acd10f00",
+  "hash": "2aec6896e297fad460a6",
   "dhash": [
-   "0170b03030300a0a",
-   "303030b030380a08",
+   "0170b0b07030321a",
+   "303030b030380808",
    "0160b0b470b0aa2a",
-   "003838b8b8303aaa",
-   "0160b0b470b0b414",
-   "223838b838382caa",
-   "0160f97979a01616",
+   "223838b838383aaa",
+   "0160b0b470b0b696",
+   "223838b838382aaa",
+   "0120f97979a03636",
    "223c30b8383036b6"
   ],
   "verdict": "FAIL",
-  "line": "H, frame 4 (L4 740x320, 29.0 s): Nani calls \"Elchi wiji chad!\" after paani and chai, and the order row shows chai ✓ in the done style with elchi, the next item, plain: no lit box on the next item's card; frame 5 (31.4 s, \"Khun wiji chad!\") the same with trae khun unlit; E frame 4 (L3 1280x665, 24.5 s, \"Aadu wiji chad!\") likewise lights nothing on aadu's card while the fading light still sits on the bench chai jar; no frame at any level lights the next item's card after the first two items. Flaws: at frame 1 of C, D, E, F and H the \"...\" badge sits over the paani label and hides the word; the next card is left cut at the row's right edge (A frame 4 \"hakr\", G frame 4 \"dud\"), not brought whole into view.",
-  "panel": "H",
+  "line": "E, frame 4 (27.6 s, \"Aadu wiji chad!\", L3 1280x665): the lit box sits on the ticked, already-done chai card while the next item aadu beside it is unlit; the same in D frame 4 (L2 740x320: lit box on ticked chai, dudh unlit, the level Zafar named), F frames 4-5, G frame 4 and H frames 4-5 (lit box on ticked chai / trae khun, next item elchi / adh unlit); and B frame 3 (L1 740x320, \"Dudh wiji chad!\") leaves the next item's card \"du…\" cut off at the order row's right edge, not brought whole into view. Other flaws: C frame 1 and D frame 1 (L2, first item) light a tiny box round the dot row under paani, not the paani card whole; G (L4 1280x665) and D/F/H (740x320) clip the last order card's items at the sidebar's bottom edge in every frame. No English for the child beyond the grey-italic Nani lines (allowed) and the L1 order-card captions (allowed).",
+  "panel": "E",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-131342-phl",
-  "commit": "1b33f4dc",
-  "png": "build/screenshots/evidence/ev-20261103-131342-phl/SH-178.png",
+  "run": "ev-20261103-135810-7dq",
+  "commit": "9fddcef7",
+  "png": "build/screenshots/evidence/ev-20261103-135810-7dq/SH-178.png",
   "date": "2026-11-03"
  },
  "SH-18": {
