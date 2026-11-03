@@ -70,7 +70,7 @@ About $150-200 and three days.
   lists what is recorded and in the game); LNG-16 heard on his phone; the silent orders on a reloaded page (SH-198) fixed tonight.
   No handover until he has played chai in the morning and approved it.
 
-## Sprint 18's opening decisions (drafted 3 Nov; for Zafar at Sprint 18's opening, "yes to all except …")
+## Sprint 18's opening decisions (Zafar, 3 Nov evening: yes to all except 7, changed; 9 with baking's own art)
 
 The stove family's list and each game's gap to chai: `docs/game-design/families/stove.md`. The pantry is Sprint 18's reference to
 polish (fetch and serve); its four rows from his 30 Oct play:
@@ -86,14 +86,24 @@ polish (fetch and serve); its four rows from his 30 Oct play:
    becomes fetch-and-serve's reference for Sprint 19. *Recommended.*
 
 The stove family's roll-out:
-7. **Order of the roll-out:** samosa first (already on the kit), then daar, maani, sekelo and chaat (their reopened kit rows), then
-   the three prototypes (eggs, baking, the corn stall) on the kit with block 1's art cut and wired. *Recommended.*
+7. **Order of the roll-out (Zafar, 3 Nov):** maani first ("start maani"), then sekelo and chaat on their reopened kit rows, then
+   the three prototypes; **samosa and daar wait for new art** ("I think we'll need new artwork": a better chopping background; the
+   samosas' look and folding not right yet; their layout decisions still open): ART-37.
 8. **The cake** moves to the word-tiles family (it is on the party kit's tiles, and has no recipe); the stove family is the nine.
    *Recommended.*
 9. **Baking's amounts** use the word moment (CHAI-67) for half and full now, and for a quarter, one and a half and two and a half once
-   Mum records them (Round 6, R6-135). *Recommended.*
+   Mum records them (Round 6, R6-135); **in baking's own art**, a baking version of chai's moment (Zafar, 3 Nov): ART-38.
 10. **One builder or the chat:** the five live games in the chat (Opus, high), and one builder for the three prototypes (Opus, high,
     about $15-20, own worktree), on his go. *Recommended.*
+
+## Small decisions, 3 Nov evening (Zafar: yes to all except 6)
+- Art block 3 runs as it is; DM redraws the drop machine wider (question 35); items semi-photographic, people stylised; the cake's
+  block 1 art goes with the cake.
+- The judge (Fable) on the three evidence runs' reviewer rows: yes.
+- CHAI-33: the shelf stays where it is at 740x320 ("an unpopular screen size and would rather not add exceptions unless strictly
+  required"); CHAI-40: his 1 Nov rule kept (first time only); the onboarding rule for every game (SH-146): yes.
+- The pharmacy's glass tumbler and hot-water bottle kept (question 36); a dad may hold the baby in the waiting room (question 37,
+  CLN-217, at clinic care's roll-out).
 
 ## Outcome
 

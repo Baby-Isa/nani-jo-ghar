@@ -554,7 +554,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
   corn stall at Sprint 18.
 - **Every piece's target size** is the close-up's play area at 1920x1080 (the arm and palm about 1500 px wide; items at least 256 px).
 
-## 7. Questions for Zafar (answer "yes to all except …")
+## 7. Questions for Zafar (answered 3 Nov: yes to all four)
 
 1. Run this block as it is (35 prompts, about 50 images, about 3 hours in three windows)? *Recommended.*
 2. DM (the wider drop machine) is the answer to question 35's "redraw it wider". *Recommended*; else skip DM.

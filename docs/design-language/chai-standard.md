@@ -4,15 +4,15 @@ Chai is the reference game. This page lists every rule chai earned, each one eit
 audit, so any game can show it meets it (`docs/process/prototype-to-game.md`). A family's roll-out brings each game to this page; the
 audit (`node build/tools/review/audit.mjs <game>`) measures what it can and the judge looks at the rest.
 
-**Status: a draft for Zafar's yes** (3 Nov), written before his play of chai so his notes change a draft, not a blank page. It becomes
-final when he says chai is done. The rows behind each rule are in `docs/process/regressions.md` and `docs/archive/regressions-done.md`.
+**Status: a draft** (3 Nov), written before his play of chai so his notes change a draft, not a blank page; section 1 has his yes
+(3 Nov). It becomes final when he says chai is done. The rows behind each rule are in `docs/process/regressions.md` and `docs/archive/regressions-done.md`.
 
 **Where a rule lives:** *kit* means in shared code (`js/shared/`, or `js/cook/ui.js` for every station on the order card), so a game
 that uses the kit has it; *chai* means it is still in chai's own code (`js/cook/stations/chai-tray.js`) and moves to the kit at the
 stove family's roll-out. **How it is checked:** *contract* (the sandbox's contract checks), *panel* (`panelcheck.mjs`), *lab*
 (`labcheck.mjs`), *leak* (`leak.mjs`), *load* (`loadtime.mjs`), or *judge* (on film).
 
-## 1. Onboarding: one rule for every game (SH-146)
+## 1. Onboarding: one rule for every game (SH-146; Zafar, 3 Nov: yes)
 
 **The rule, in one line:** show each action once, the first time it happens, with chai's light; after that, only the stuck hint.
 
@@ -85,7 +85,8 @@ panel (SH-169, SH-189 to SH-192), judge (the order filmed).
 
 1. **The real things, animated:** heating rings, the boil and its green zone (CHAI-38, CHAI-63); an over-boil empties the pan and
    starts it again (CHAI-57, CHAI-58); several pans cook at once without pausing each other (CHAI-61).
-2. **Layout by height at the four sizes** (740x320, 930x430, 1280x665, 1920x1080); the play area and its strip lined up with equal
+2. **Layout by height at the four sizes** (740x320, 930x430, 1280x665, 1920x1080), with **no exception for one size unless strictly
+   required** (Zafar, 3 Nov, CHAI-33: 740x320 is an unpopular size); the play area and its strip lined up with equal
    gaps (CHAI-66); nothing overlaps (CHAI-02); the screen never jumps between orders (CK-57).
 3. **Undo until the step moves on** (non-negotiable 7); progress, never verdicts.
 4. **Loading:** the game's files asked for at once, the greeting's lines with them (SH-175); Nani's box in its final look from the
@@ -103,6 +104,4 @@ panel (SH-169, SH-189 to SH-192), judge (the order filmed).
 
 ## Open in chai while this is a draft
 
-- CHAI-33 (the lit box's margin at 740x320: move the shelf up?) and CHAI-40 (a control's light every time, or first time only?):
-  Zafar's answers.
 - His play of chai (3 Nov) and his "done".
