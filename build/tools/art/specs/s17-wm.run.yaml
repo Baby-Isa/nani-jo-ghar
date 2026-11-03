@@ -1,0 +1,49 @@
+# The run spec for pack s17-wm: the word moment on the counter (Zafar's chai play, 3 Nov).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-wm.run.yaml --check
+pack: s17-wm
+title: 'The word moment on the kitchen counter, side-on (chai''s glass and baking''s jug)'
+plan: docs/design-language/art-plans/s17-wm-art-plan.md
+plan_branch: claude/admiring-ptolemy-77fuv5
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/admiring-ptolemy-77fuv5
+dest: sources/art/s17-wm
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 3, flush_minutes: 25}
+refs:
+  kitchen.png: sources/art/s14/kt-kitchen-plain-v1.png
+  chai-glass.png: sources/art/s17-art1/wg-chai-glass-side-filling-v1.png
+  jug.png: sources/art/s17-art1/bj-measuring-jug-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  MS: {attach: [kitchen.png], save: ms-word-moment-counter-v1.png, check: SCENE}
+  MG: {attach: ["kept:MS", chai-glass.png], save: mg-chai-glass-fill-stages-v1.png, check: GLASS}
+  MJ: {attach: ["kept:MS", jug.png], save: mj-baking-jug-fill-stages-v1.png, check: JUG}
+parts:
+- id: A
+  title: 'THE WORD MOMENT ON THE COUNTER'
+  intro: 'The empty counter in front of a plain wall, side-on; then the chai glass and the baking jug standing on that same counter at every fill stage, the same size and place in every cell.'
+  items:
+  - lines: [MS, MG, MJ]
+checks:
+  SCENE:
+    text: 'the kitchen counter exactly side-on: the marble worktop''s front edge one straight horizontal line at about 70% of the height, sage cabinet doors below to the bottom edge, a completely PLAIN limewash wall above (no tiles, window, shelf or pictures); the worktop completely empty; our kitchen''s look and light'
+    judge: {aspect: [3, 2], bg: none}
+  GLASS:
+    text: 'a 6 by 2 grid of the same faceted chai glass exactly side-on, standing on the attached counter in front of its plain wall in every cell, the same size and place: empty, then one tenth to nine tenths, half in cell 6, full in cell 11, full with froth in cell 12; the wall the same colour as the attached scene; only the tea changes; no tray; no text'
+    judge: {aspect: [3, 2], bg: none}
+  JUG:
+    text: 'a 6 by 2 grid of the same clear measuring jug (plain lines, NO numbers) exactly side-on on the attached counter in front of its plain wall, the same size and place, handle right: row 1 flour empty, quarter, half, three quarters, full, heaped; row 2 water empty, quarter, half, three quarters, full, ripples; the wall the same colour as the attached scene; no text'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake ones (on the jug's side lines too).
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of cells, the wrong order, or the glass or jug moving, resizing or turning between cells.
+- Tiles, a window or anything on the wall behind the glasses; a wall colour different from the scene.
+- A tray, a saucer, a hand or a person; sweets, lollies or biscuits; any religious marker.
