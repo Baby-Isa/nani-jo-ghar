@@ -37,6 +37,7 @@
     speech: ["Speech", "js/shared/speech.js", null],
     bulb: ["Bulb", "js/shared/bulb.js", null],
     buttons: ["NjgButtons", "js/shared/buttons.js", "css/shared/buttons.css"],
+    "word-moment": ["WordMoment", "js/shared/word-moment.js", "css/shared/word-moment.css"],
   };
   const sharedP = {};
   const stamped = (rel) => {
@@ -65,6 +66,69 @@
     return sharedP[name];
   };
   UI.esc = esc;
+
+  /*
+   * CHAI-67 (Zafar, 2 Nov; his choices 3 Nov: 1a 2a 3a 4b): the word moment, before the first order that asks half or full while
+   * the words are new (stage 1-2) and the moment not yet seen: a tilted kettle pours into two side-on glasses, half then full; a
+   * camera snap round each turns it into its word card, said in the family's voice (the engine: Lang.speakWord). Once per player
+   * (Cook.save.seenStation, cleared by "Play as new"). The cards stay a beat, then go as the order comes up.
+   *   await UI.wordMoment(ids)   ids: the order's word ids; resolves at once when it isn't the time
+   */
+  const WM_KEY = "*:word-moment-half-full";
+  UI.wordMomentDue = function (ids) {
+    if (!ids || !(ids.includes("ph-half") || ids.includes("ph-full"))) return false;
+    const seen = (Cook.save && Cook.save.seenStation) || {};
+    if (seen[WM_KEY]) return false;
+    return ["ph-half", "ph-full"].some((id) => Cook.wordStage(id) <= 2);
+  };
+  // (the order's half and full, wherever the ladders hold them: a person's section rows come in only as they are said)
+  UI.wordMomentIds = (ladders) => ["ph-half", "ph-full"].filter((id) => JSON.stringify(ladders || []).includes(`"${id}"`));
+  UI.wordMoment = async function (ids) {
+    if (!UI.wordMomentDue(ids)) return false;
+    const WM = await UI.needShared("word-moment");
+    await UI.needShared("word-card");
+    const host = $("#stage");
+    if (!WM || !global.WordCard || !host) return false;
+    Cook.save.seenStation = Cook.save.seenStation || {};
+    Cook.save.seenStation[WM_KEY] = true;
+    if (Cook.writeSave) Cook.writeSave();
+    const A = "assets/shared/word-moment/";
+    const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-side-${i + 1}-s17.webp`));
+    const glass = (id, n) => ({
+      empty: Cook.v(`${A}glass-side-1-s17.webp`),
+      frames: fr(n),
+      word: { id, kutchi: Cook.display(id), english: Cook.english(id) },
+      say: () => (Cook.Lang || Lang).speakWord(id),
+    });
+    const box = document.createElement("div");
+    box.className = "cook-wm";
+    host.appendChild(box);
+    const prev = Cook.expect;
+    Cook.expect = { kind: "wait", wordMoment: true }; // (a test driver waits while it plays)
+    try {
+      await WM.play(box, {
+        vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), pour: Cook.v(`${A}kettle-tilted-pour-s17.webp`), spout: [0.025, 0.9], aspect: 560 / 515, tilt: 0 },
+        side: true,
+        stream: Cook.v(`${A}stream-chai-s17.webp`),
+        snapArt: { corners: Cook.v(`${A}snap-corners-s17.webp`), iris: ["open", "half", "shut"].map((k) => Cook.v(`${A}iris-${k}-s17.webp`)) },
+        glasses: [glass("ph-half", 3), glass("ph-full", 5)],
+        snap: "each",
+        shutter: "corners",
+        cards: "stay",
+        speed: 1.5 * (Cook.speed || 1),
+      });
+      await Cook.wait(1200);
+      box.classList.add("cook-wm-out");
+      await Cook.wait(350);
+    } catch (e) {
+      /* the moment is a nicety: the order goes on */
+    } finally {
+      WM.stop(box);
+      box.remove();
+      if (Cook.expect && Cook.expect.wordMoment) Cook.expect = prev || null;
+    }
+    return true;
+  };
 
   /* ---------------- icons ---------------- */
   const ICON = {

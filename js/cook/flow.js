@@ -469,6 +469,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.hideBubble();
     UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes) });
     closedCards(Math.max(...order.dishes.map((d) => d.level || 1)), demo);
+    // CHAI-67: the word moment first, the first time an order asks half or full
+    if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));
     const stop = talking(who);
     try {
       await UI.mission.introduce();
@@ -1750,6 +1752,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       came.forEach((w, i) => s.addChar(w, { enter: true, x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
       ctx.intro = (came.length ? Cook.wait(1100) : Promise.resolve())
+        // CHAI-67: the word moment first, the first time an order asks half or full
+        .then(() => (UI.wordMoment ? UI.wordMoment(UI.wordMomentIds(ctx.ladders)) : null))
         .then(() => UI.mission.introduce())
         .catch(() => {})
         .then(() => {
