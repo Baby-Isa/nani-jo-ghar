@@ -1,4 +1,4 @@
-You're making 35 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+You're making 39 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
 
 THE PAGE
 Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/admiring-ptolemy-77fuv5/docs/design-language/art-plans/s17-art3-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
@@ -28,6 +28,12 @@ Reference images, by the name the run order uses:
  taste-things.png    RAW + sources/art/s07/b8-taste-things-v1.png
  drop-machine.png    RAW + sources/art/s07/dm1-drop-machine-v1.png
  steel-cup.png       RAW + sources/art/s08c/tc1-steel-cup-v1.png
+ marble.png          RAW + sources/art/s08c/wt1-marble-tile-v1.png
+ pastry.png          RAW + sources/art/s08b/sm1-pastry-tile-v1.png
+ folds-old.png       RAW + sources/art/cook-v3/s1-samosa-fold-v1.png
+ kettle.png          RAW + sources/art/s17-art1/wv-chai-kettle-tilted-v1.png
+ jug.png             RAW + sources/art/s17-art1/bj-measuring-jug-v1.png
+ chai-glasses.png    RAW + sources/art/s17-art1/wg-chai-glass-side-filling-v1.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 
@@ -136,7 +142,15 @@ TB |  | tb-toothbrush-states-v1.png | BRUSH
 TC | steel-cup.png | tc-taste-cups-v1.png | CUPS
 FL | girl-sheet.png, forearm.png, style.png | fl-girl-forearm-lap-v1.png | LAP
 BT | girl-sheet.png, style.png | bt-body-part-tiles-v1.png | TILES
-Part E done.
+Part E done: post the part E summary (see AT THE END) and carry on.
+
+PART F: THE STOVE FAMILY'S ROLL-OUT (4)
+The chop game's board scene (empty), the samosa strip filled and folded in six states with real layered folds, and baking's word moment: the opaque scoop held tilted, the glass jug side-on filling with flour and with water (no numbers).
+KC | marble.png, kitchen.png | kc-chop-board-scene-v1.png | BOARD
+SF | pastry.png, folds-old.png | sf-samosa-fold-states-v1.png | FOLDS
+BV | kettle.png | bv-baking-scoop-tilted-v1.png | SCOOP
+BW | jug.png, chai-glasses.png | bw-baking-jug-fills-v1.png | JUGFILL
+Part F done.
 
 CHECKS (by check ID)
 COUNTER: the kitchen's back counter seen straight on: the marble worktop's front edge ONE straight horizontal line at half the picture's height (48-55% from the top), cream (not peach) tiles above, sage cabinets with brass knobs below to the bottom edge; the worktop completely empty (no cooker, jars, plants, people or cat); the same look and light as our kitchen
@@ -170,6 +184,10 @@ BRUSH: three pieces in a row, exactly side-on: a child's toothbrush lying horizo
 CUPS: two cups standing upright, front view about 20 degrees down: a plain brushed-steel cup as the attached, a plain white enamel cup with a thin dark-blue rim; both empty, NO shadow and no surface; ONE flat magenta
 LAP: the attached sheet's girl sitting on the bed, framed on her lap from the front and a little above: her right forearm resting across her lap palm down, elbow at the left, relaxed hand at the right, five fingers, the other hand beside it; sleeve rolled to below the elbow, nothing lifted; her exact skin tone; the background soft, never washed out; no text
 TILES: nine rounded square tiles in a 3 by 3 grid, each one body part of the attached girl, clothed, cropped close: the back of the hand, the leg knee to foot, the bent elbow, the clothed tummy with hands on it, the clothed chest, the side of the neck, the clothed back from behind, the top of the head and hair, the shoulder; each tile the same soft pale inside; ONE flat mid-grey between, no shadow
+BOARD: a big rectangular walnut chopping board from exactly above, edges parallel to the picture's, covering about 80% of the width and 85% of the height, on the cream marble worktop with a thin band of marble all round; completely empty (no food, knife, crumbs or hands); our kitchen's warm light
+FOLDS: the same upright samosa pastry strip six times in a row from exactly above: empty; with a heap of mince at the bottom; the bottom corner folded over into a triangle; folded up once more; folded again with a short tail left; the finished sealed raw triangle; every fold layered and thick (never lines drawn on a flat sheet); no board; no shadow on ONE flat mid-grey
+SCOOP: two identical opaque brushed-steel measuring scoops side by side, exactly side-on, tilted about 35 degrees lip down to the left like the attached kettle: one dry, one with a little flour at its lip and no stream; no hand; no shadow on ONE flat mid-grey
+JUGFILL: a 5 by 2 grid of the attached clear glass jug exactly side-on, the same size on one line, plain lines and NO numbers: row 1 flour empty, a quarter, half, three quarters, full; row 2 water the same; half and full obvious at a glance; no shadow on ONE flat mid-grey
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 - Any text, letters, numbers, labels, signs or logos, even fake or blurry ones (on a bottle, a tube, a box, a thermometer's display or a plaster too); dressings or marks that look like writing.
