@@ -319,6 +319,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 @media (max-width: 700px) and (orientation: portrait) { .cl-app { grid-template-rows: auto 1fr; } }
 /* 13c: the card is the shared order card; its box is only the frame */
 .cl-card { background: none; box-shadow: none; padding: 0; border-radius: 0; flex: 0 1 auto; min-height: 0; overflow: auto; }
+/* (the sandbox, 4 Nov: the face's speaker badge hangs half outside its circle, SH-140, so a card ending in a face scrolled 6 px at
+   740x320: room at its foot for the badge, the scroller kept for a long card) */
+.cl-side > .cl-card { padding-bottom: var(--njg-s2); }
 /* S05-D2 (SH-09, rule 8): the clinic's own "···" column after a closed card's head is gone: it narrowed the headline to
    four lines on a phone (the eye test's "Drops first, then let's test your eyes."); the shared card's small bulb, at
    the end of the headline's last line, is the closed card's one sign, as in Cook */
