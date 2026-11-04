@@ -2721,6 +2721,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           await settled14();
           if (!movingNow14()) break;
         }
+        // (contract-79, the sandbox, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once it has stopped, the
+        // rules' 1/6 s, and once more if a slide began in it)
+        for (let k = 0; k < 3; k++) {
+          await new Promise((r) => global.setTimeout(r, 200));
+          if (!movingNow14()) break;
+          await settled14();
+        }
         el.classList.add("ob-dots-now");
         const prevExpect = Cook.expect;
         const wait14 = { kind: "wait", dots: true };
