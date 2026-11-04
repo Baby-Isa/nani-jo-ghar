@@ -576,7 +576,6 @@
     pills.forEach((p) => {
       const ps = getComputedStyle(p);
       const t = p.querySelector(".oc-t");
-      const tk = p.querySelector(".oc-tk");
       // the pill's own size, not one fit.js has shrunk the word to
       // CK-39: the word's own CSS size (.oc-t has its own, var(--oc-p)), read without fit.js's inline shrink
       let size = ps.fontSize;
@@ -588,7 +587,15 @@
       }
       const font = `${ps.fontStyle} ${getComputedStyle(t || p).fontWeight} ${size} ${ps.fontFamily}`;
       need += textWidth((t || p).textContent.trim(), font) + px(ps.paddingLeft) + px(ps.paddingRight) + px(ps.borderLeftWidth) + px(ps.borderRightWidth);
-      if (tk && tk.getBoundingClientRect().width) need += tk.getBoundingClientRect().width + px(ps.columnGap);
+      // the pill's other parts beside its word (its speaker, a tick), at their laid-out width (offsetWidth: a pop-up's scale
+      // doesn't count). Only the tick was counted, so chaat's big card at the bowl (five pills, each with a speaker) measured
+      // about 200 px short, stayed side by side and cut "ba dungri" at the card's edge (the sandbox, 4 Nov)
+      [...p.children].forEach((k) => {
+        if ((t && (k === t || k.contains(t))) || !k.offsetWidth) return;
+        const kcs = getComputedStyle(k);
+        if (kcs.position === "absolute" || kcs.position === "fixed") return;
+        need += k.offsetWidth + px(kcs.marginLeft) + px(kcs.marginRight) + px(ps.columnGap);
+      });
     });
     return need <= list.clientWidth + 0.5;
   };

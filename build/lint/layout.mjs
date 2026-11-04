@@ -220,7 +220,9 @@ export async function pageLint(opts) {
     }
     return false;
   }
-  const modalLike = (n) => !!(n.closest && n.closest(".njg-onboard, [role=dialog], dialog, [aria-modal=true]"));
+  // (the request pop-up's tinted veil is the play area's modal: the game under it is inert until a tap folds the card away,
+  // js/shared/request-popup.js; its see-through "along" form is not, and stays checked. The sandbox, 4 Nov: chaat's cog)
+  const modalLike = (n) => !!(n.closest && n.closest(".njg-onboard, [role=dialog], dialog, [aria-modal=true], .njg-rq-veil.njg-rq-open:not(.njg-rq-along)"));
 
   // ---- tap targets ----
   const cand = new Set(document.querySelectorAll('button, a[href], input:not([type=hidden]), select, textarea, summary, [role=button], [role=radio], [role=tab], [role=checkbox], [role=switch], [role=link], [onclick]'));
