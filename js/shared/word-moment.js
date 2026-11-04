@@ -86,6 +86,24 @@
   /** The tea at lv (0..1 of the inside's height): its clip and its surface. */
   function drawTea(f, lv) {
     f.level = lv;
+    if (f.reveal) {
+      const b = f.box;
+      if (!b) return;
+      const T = f.tea;
+      const yf = T.bottom - (T.bottom - T.top) * lv;
+      const y = b.oy + yf * b.h;
+      f.img.style.clipPath = lv <= 0.002 ? "inset(100% 0 0 0)" : `inset(${y.toFixed(1)}px 0 0 0)`;
+      // the inside's walls at this height (straight lines through the measured rows)
+      const rs = T.rows;
+      let i = 0;
+      while (i < rs.length - 2 && rs[i + 1][0] < yf) i++;
+      const a = rs[i], c = rs[i + 1] || a;
+      const u = c[0] === a[0] ? 0 : Math.max(0, Math.min(1, (yf - a[0]) / (c[0] - a[0])));
+      const l = b.ox + (a[1] + (c[1] - a[1]) * u) * b.w, r = b.ox + (a[2] + (c[2] - a[2]) * u) * b.w;
+      const sw = r - l, sh = Math.max(3, sw * 0.11);
+      Object.assign(f.top.style, { left: `${l.toFixed(1)}px`, width: `${sw.toFixed(1)}px`, top: `${(y - sh / 2).toFixed(1)}px`, height: `${sh.toFixed(1)}px`, opacity: lv <= 0.002 || lv >= 0.995 ? "0" : "1" });
+      return;
+    }
     const P = f.prof;
     if (!P) return;
     if (lv <= 0.002) {
@@ -148,6 +166,27 @@
     // its top a soft ellipse, and the glass's own highlights laid back over it
     slots.forEach((sl) => {
       if (sl.x.fill == null) return;
+      // (pack s17-wm2, Zafar's run, 4 Nov: the same glass full, lined up to the pixel: the full picture shows below the tea's level over
+      // the empty one, so the tea and its reflections are the art's own; only its surface is drawn, at the level, until it is full)
+      if (sl.x.full && sl.x.tea) {
+        const fullIm = el("img", "wm-tea-full", sl.s);
+        fullIm.alt = "";
+        fullIm.draggable = false;
+        fullIm.src = sl.x.full;
+        const top = el("div", "wm-tea-top wm-art", sl.s);
+        sl.fill = { reveal: true, img: fullIm, top, tea: sl.x.tea, box: null, level: 0 };
+        const ready = () => {
+          const nw = sl.im.naturalWidth, nh = sl.im.naturalHeight;
+          if (nw && nh) {
+            const sc = Math.min(g / nw, g / nh);
+            sl.fill.box = { ox: (g - nw * sc) / 2, oy: g - nh * sc, w: nw * sc, h: nh * sc };
+          }
+          drawTea(sl.fill, sl.fill.level);
+        };
+        if (sl.im.complete && sl.im.naturalWidth) ready();
+        else sl.im.addEventListener("load", ready, { once: true });
+        return;
+      }
       const tea = el("div", "wm-tea", sl.s);
       const top = el("div", "wm-tea-top", sl.s);
       const hi = el("img", "wm-glass-hi", sl.s);

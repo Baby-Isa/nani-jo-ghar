@@ -22,6 +22,84 @@
    "file": "shared/word-moment/iris-shut-s17.webp",
    "w": 441,
    "h": 445
+  },
+  "glass-we-s17": {
+   "file": "shared/word-moment/glass-we-s17.webp",
+   "w": 597,
+   "h": 900,
+   "_about": "CHAI-79, pack s17-wm2 (Zafar's run, 4 Nov): one large empty glass, cut from its wall by the wall's own colour; WF is the same picture edited full, lined up to the pixel"
+  },
+  "glass-wf-s17": {
+   "file": "shared/word-moment/glass-wf-s17.webp",
+   "w": 597,
+   "h": 900,
+   "tea": {
+    "top": 0.119,
+    "bottom": 0.862,
+    "rows": [
+     [
+      0.119,
+      0.0548,
+      0.9441
+     ],
+     [
+      0.1865,
+      0.0666,
+      0.9322
+     ],
+     [
+      0.2541,
+      0.0784,
+      0.9203
+     ],
+     [
+      0.3216,
+      0.0902,
+      0.9084
+     ],
+     [
+      0.3892,
+      0.102,
+      0.8965
+     ],
+     [
+      0.4567,
+      0.1138,
+      0.8846
+     ],
+     [
+      0.5243,
+      0.1256,
+      0.8727
+     ],
+     [
+      0.5918,
+      0.1374,
+      0.8608
+     ],
+     [
+      0.6594,
+      0.1492,
+      0.8489
+     ],
+     [
+      0.7269,
+      0.161,
+      0.8371
+     ],
+     [
+      0.7945,
+      0.1728,
+      0.8252
+     ],
+     [
+      0.862,
+      0.1846,
+      0.8133
+     ]
+    ],
+    "_about": "CHAI-79: the tea in glass-wf (fractions of the picture): its surface at full (top), where it meets the base (bottom), the inside walls (straight lines fitted to the glass's outline, inset by its wall); the game reveals WF over WE below the level and draws the surface there"
+   }
   }
  },
  "_report": [

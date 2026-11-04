@@ -116,6 +116,7 @@
   --njg-wm-stream: #b47a4c; /* the word moment's placeholder tea stream (CHAI-67) until ART-36's pour */
   /* CHAI-79 (Zafar, 4 Nov): the word moment's tea, drawn in code inside one steady glass (sampled from pack s17-wm's full glass) */
   --njg-wm-tea: #d58d4c; --njg-wm-tea-top: #e8b27a; --njg-wm-tea-deep: #b56f37;
+  --njg-wm-tea-art: #d68434; --njg-wm-tea-art-hi: #e7a560; --njg-wm-tea-art-edge: rgba(150, 80, 25, 0.35); /* (pack s17-wm2's chai, sampled) */
   /* CHAI-82: the snap's thin viewfinder corners */
   --njg-wm-corner: #ffffff; --njg-wm-corner-shade: rgba(60, 40, 20, 0.35);
   --njg-card14-white: #fff; --njg-card14-eye-edge: rgba(255, 255, 255, 0.85); --njg-card14-eye-bg: rgba(255, 255, 255, 0.5);

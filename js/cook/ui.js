@@ -103,8 +103,13 @@
     // (CHAI-73, pack s17-wm: one glass in twelve stages, each in the same place on the counter: half is the 6th, full the 11th)
     const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-wm-${String(i + 1).padStart(2, "0")}-s17.webp`));
     // CHAI-79 (Zafar, 4 Nov): one steady glass, the tea drawn in it (half and nearly full); the cards keep the pack's own pictures
+    // (pack s17-wm2, Zafar's run, 4 Nov: one large glass, empty and the same picture full; the tea's shape measured as it was cut,
+    // assets/shared/word-moment/cut-data.json glass-wf-s17)
+    const TEA = {"top": 0.119, "bottom": 0.862, "rows": [[0.119, 0.0548, 0.9441], [0.1865, 0.0666, 0.9322], [0.2541, 0.0784, 0.9203], [0.3216, 0.0902, 0.9084], [0.3892, 0.102, 0.8965], [0.4567, 0.1138, 0.8846], [0.5243, 0.1256, 0.8727], [0.5918, 0.1374, 0.8608], [0.6594, 0.1492, 0.8489], [0.7269, 0.161, 0.8371], [0.7945, 0.1728, 0.8252], [0.862, 0.1846, 0.8133]]};
     const glass = (id, fill, n) => ({
-      empty: Cook.v(`${A}glass-wm-01-s17.webp`),
+      empty: Cook.v(`${A}glass-we-s17.webp`),
+      full: Cook.v(`${A}glass-wf-s17.webp`),
+      tea: TEA,
       fill,
       word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: fr(n)[n - 1] },
       say: () => (Cook.Lang || Lang).speakWord(id),
@@ -120,7 +125,7 @@
         side: true,
         // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
         scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5 },
-        glasses: [glass("ph-half", 0.5, 6), glass("ph-full", 0.92, 11)],
+        glasses: [glass("ph-half", 0.5, 6), glass("ph-full", 1, 11)],
         // CHAI-81 (Zafar, 4 Nov): both poured, a look at the two, then each snapped in turn, half a second in its frame before the shutter
         snap: "after",
         look: 900,
