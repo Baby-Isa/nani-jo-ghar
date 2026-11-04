@@ -167,10 +167,16 @@
     const room = veil.clientHeight - pad;
     const need = cardEl.scrollHeight;
     if (room > 0 && need > room) {
-      const k = Math.max(0.5, Math.floor((room / need) * 100) / 100);
+      let k = Math.max(0.5, Math.floor((room / need) * 100) / 100);
       cardEl.style.zoom = String(k);
       cardEl.style.setProperty("--rq-k", String(k));
       cardEl.setAttribute("data-fit", "");
+      // sizes in viewport units don't shrink with the zoom, so it can still scroll a little: shrink again until it doesn't
+      for (let i = 0; i < 3 && k > 0.5 && cardEl.scrollHeight > cardEl.clientHeight + 1; i++) {
+        k = Math.max(0.5, Math.floor(k * (cardEl.clientHeight / cardEl.scrollHeight) * 100) / 100 - 0.01);
+        cardEl.style.zoom = String(k);
+        cardEl.style.setProperty("--rq-k", String(k));
+      }
     }
   }
 

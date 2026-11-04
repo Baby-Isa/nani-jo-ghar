@@ -1032,11 +1032,15 @@ function check24(r, tl, segs, v, add) {
   // a rung of the kit (Lifecycle "rung", js/shared/onboard.js Onboard.stuck) is that help, not Nani's early)
   const rungs = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "rung").map((e) => e.t);
   const byRung = (t) => rungs.some((r) => t >= r - 100 && t <= r + 1500);
+  // a glow switched on in the same tap's handler (Lifecycle glow's own clock within 30 ms of the tap) answers that tap, the
+  // place for what she picked, not help that came early (the sandbox, 4 Nov: samosa's fold strip lit 1 ms after a pick)
+  const glowNotes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "glow" && e.reason === "on");
+  const byTap = (t, x) => glowNotes.some((g) => Math.abs(g.t - t) < 60 && (!g.by || `cook:${g.by}` === x) && inputs.some((i) => (g.at || g.t) - i.t >= 0 && (g.at || g.t) - i.t <= 30));
   let prev = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "hl") continue;
     const now = new Set((e.list || []).filter((x) => /^cook:/.test(x)));
-    for (const x of now) if (!prev.has(x) && !byRung(e.t)) flag(e.t, `the glow on ${x.replace(/^cook:/, "")} came`);
+    for (const x of now) if (!prev.has(x) && !byRung(e.t) && !byTap(e.t, x)) flag(e.t, `the glow on ${x.replace(/^cook:/, "")} came`);
     prev = now;
   }
 }
