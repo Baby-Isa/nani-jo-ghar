@@ -55,5 +55,9 @@ export function check90(r, tl, add) {
   if (!tea) return;
   const after = adds.find((n) => n.t > tea.t && n.reason !== "cook-chai");
   if (!after) return;
+  // (a child who taps the next thing at once has moved on and needs no pointer, as the station's own rule: only a pause of 2.5 s or
+  // more after the tea must bring the light)
+  const next = tl.find((e) => e.type === "c" && e.k === "input" && e.t > tea.t);
+  if (next && next.t - tea.t < 2500) return;
   if (!lifeOf(tl, "card-light").length) add("contract-90", after.t, `a new player at L1: the first tea went in and the next item followed, but the order card's next item was never lit (no card-light note): the first time's pointer to the third item is missing`);
 }

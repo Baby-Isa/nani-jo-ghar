@@ -2256,7 +2256,8 @@
           // (SH-157: on the central rules, a tap on a bubble, the cog or its menu does its own thing and never skips:
           // global.Rules.skips(target), through the pop-up's zones)
           zones: s14 && !!global.Rules && typeof global.Rules.skips === "function",
-          onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true)),
+          // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
+          onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
           read,
         },

@@ -723,15 +723,19 @@
         // flew only the zoom's share of the way, stopped short of its card down and to the right, and jumped: Zafar, 4 Nov, "the top left
         // quadrant of the pop-up card overlaps with the bottom right quadrant of the item card slot, and then it'll just snap in place".
         // The distance in the card's own zoomed units)
+        // (measured, not read from the styles: whatever zooms it, a 100 px move is tried and how far it went on screen is the scale;
+        // the sandbox, 4 Nov: read from the styles it overshot in chaat, where the zoom is set elsewhere)
         const zm = (() => {
-          let z = 1;
-          for (let e = from; e && e.nodeType === 1; e = e.parentElement) z *= parseFloat(getComputedStyle(e).zoom) || 1;
-          return z || 1;
+          const was = from.style.transform;
+          from.style.transform = "translate(100px, 0px)";
+          const moved = from.getBoundingClientRect().left - a.left;
+          from.style.transform = was;
+          return moved > 1 ? moved / 100 : 1;
         })();
         await new Promise((res) => {
           let t0 = null;
           const step = (now) => {
-            if (!from.isConnected) return res();
+            if (!from.isConnected || from.dataset.wcSkip) return res(); // (removed, or the order skipped: it lands at once)
             if (t0 == null) t0 = now;
             const u = Math.min(1, (now - t0) / dur);
             const t = easeT(u);

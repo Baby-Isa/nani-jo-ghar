@@ -146,6 +146,16 @@ export class CookPlayer {
       await this.once("idle-again", { settle: 0 });
       return true;
     }
+    // pause-after-tea (CHAI-77, Zafar 4 Nov): chai's first move after the tea went in waits 4.5 s, nothing tapped (a new player looking
+    // for what comes next: the order card's next item is lit for them), then plays fair
+    const prevKey = d.curKey;
+    d.curKey = e.key;
+    if (m === "pause-after-tea" && !d.paused && prevKey === "cook-chai" && e.key !== "cook-chai" && CALM.includes(e.kind)) {
+      d.paused = true;
+      await this.once("pause-after-tea", { settle: 0 });
+      await sleep(4500);
+      return false;
+    }
     // stuck (S13-T): at the first move, nothing tapped through every help rung (drivers/index.mjs stuckWait), then fair
     if (m === "stuck" && !d.stuck && CALM.includes(e.kind)) {
       d.stuck = true;

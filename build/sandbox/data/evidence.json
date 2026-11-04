@@ -24020,7 +24020,7 @@
  "CHAI-77": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "pause-after-tea",
    "level": 1,
    "sizes": [
     "740x320",
@@ -24035,7 +24035,7 @@
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "a new player at L1, after the water and the tea: the next (third) item's card in the order row lit once, whole in view, no box over a face",
+   "note": "a new player at L1 who looks for what comes next after the water and the tea (the player waits 4.5 s): the next (third) item's card in the order row lit once, whole in view, no box over a face",
    "delay": 200
   }
  ]
