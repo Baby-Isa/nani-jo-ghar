@@ -44,7 +44,9 @@ export function load() {
   b.findings = b.findings.map((f) => {
     const i = [0, 1, 2].reduce((at) => f.key.indexOf("|", at) + 1, 0); // the first three "|"
     const [check, flow, size] = f.key.slice(0, i - 1).split("|");
-    return { ...f, check, flow, size, selector: f.key.slice(i), states: f.states || [], page: f.page || "" };
+    const g = { ...f, check, flow, size, selector: f.key.slice(i), states: f.states || [], page: f.page || "" };
+    g.key = keyOf(g); // a key saved before a state class was stripped matches the run's (the sandbox, 4 Nov)
+    return g;
   });
   return b;
 }

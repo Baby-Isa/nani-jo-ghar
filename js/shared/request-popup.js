@@ -249,6 +249,16 @@
     veil.classList.add("njg-rq-open");
     const unclose = closeOrder(cardEl, opts);
     fitCard(veil, cardEl);
+    // fit again if the card grows after it opened (a group row standing upright a frame later, order-card.js stackWhenTight:
+    // chaat's bowl card at 740x320 scrolled, 404 px in 304; the sandbox, 4 Nov). Only while it would scroll, a few times at most
+    let refits = 0;
+    const refit = typeof root.ResizeObserver === "function" && made
+      ? new root.ResizeObserver(() => { if (refits < 4 && cardEl.isConnected && cardEl.scrollHeight > cardEl.clientHeight + 1) { refits++; fitCard(veil, cardEl); } })
+      : null;
+    const body0 = cardEl.querySelector(".njg-rq-body");
+    if (refit && body0) refit.observe(body0);
+    const unlayout0 = unlayout;
+    unlayout = () => { if (refit) refit.disconnect(); unlayout0(); };
     return new Promise((resolve) => {
       let over = false;
       const me = {
