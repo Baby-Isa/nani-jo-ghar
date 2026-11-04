@@ -39,6 +39,6 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 ## 6. Cut and wire notes
 
 - PS: cut the stream from its wall by the wall's colour per row, cropped to its own column (no wall left at its sides), the top and
-  bottom rows kept so it stretches cleanly to any length: `assets/shared/word-moment/stream-chai-real-s17.webp`. Wired in
+  bottom rows kept so it stretches cleanly to any length (to be cut as stream-chai-real-s17 in the word moment's folder). Wired in
   `js/cook/ui.js` (the word moment's `stream`): the art shown as it is (no striped flow over it), grown down at the start and wiped
   away from the top at the end (CSS mask), then the last drop.
