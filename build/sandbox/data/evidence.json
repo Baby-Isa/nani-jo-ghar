@@ -23344,7 +23344,6 @@
    "flow": "cook:chai-tray",
    "path": "hint",
    "level": [
-    2,
     3
    ],
    "sizes": [
@@ -23706,7 +23705,7 @@
    "sizes": [
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "second-play",
    "want": null,
    "at": "visible:.wc14-eye.ob-dots-now",
    "after": null,
@@ -23715,7 +23714,7 @@
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "a new player, L3, after the word's lesson: the first blurred picture's eye lit, the picture shown once in place, then blurred again",
+   "note": "the second play at L3 (its words met and picked right in the first, so their pictures blur, SH-195): the first blurred picture's eye lit, the picture shown once in place with the click, then blurred again",
    "delay": 100
   }
  ],

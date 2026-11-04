@@ -41,14 +41,14 @@
 @keyframes wm-flash { 0% { opacity: 0; } 25% { opacity: .95; } 100% { opacity: 0; } }
 /* CHAI-79: the tea drawn in the one steady glass: over the picture, tinting what shows through (multiply), its surface a soft
    ellipse, the glass's own highlights laid back over it (screen) */
-.wm-glass > .wm-tea { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, var(--njg-wm-tea-top), var(--njg-wm-tea) 35%, var(--njg-wm-tea-deep)); mix-blend-mode: multiply; clip-path: polygon(0 0, 0 0, 0 0); pointer-events: none; }
+.wm-glass > .wm-tea { position: absolute; inset: 0; z-index: 1; background: var(--njg-wm-tea-fill); mix-blend-mode: multiply; clip-path: polygon(0 0, 0 0, 0 0); pointer-events: none; }
 .wm-glass > .wm-tea-top { position: absolute; z-index: 2; border-radius: 50%; background: var(--njg-wm-tea-top); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
 /* (pack s17-wm2: the art's full glass revealed below the level, over the empty one; the surface drawn at the cut in the art's colour) */
 .wm-glass > img.wm-tea-full { position: absolute; inset: 0; z-index: 1; clip-path: inset(100% 0 0 0); pointer-events: none; }
-.wm-glass > .wm-tea-top.wm-art { mix-blend-mode: normal; background: radial-gradient(ellipse at 50% 35%, var(--njg-wm-tea-art-hi), var(--njg-wm-tea-art) 70%); box-shadow: inset 0 calc(-1 * var(--njg-card14-u1p5)) 0 var(--njg-wm-tea-art-edge); }
+.wm-glass > .wm-tea-top.wm-art { mix-blend-mode: normal; background: var(--njg-wm-tea-art-fill); box-shadow: inset 0 calc(-1 * var(--njg-card14-u1p5)) 0 var(--njg-wm-tea-art-edge); }
 .wm-glass > img.wm-glass-hi { position: absolute; inset: 0; z-index: 3; mix-blend-mode: screen; opacity: .4; filter: none; pointer-events: none; }
 /* CHAI-80: the stream flows while it pours (its light moving down it), and at the end its tail falls in, then a last drop */
-.wm-stream.flow { background: linear-gradient(to right, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .18) 48%, rgba(255, 255, 255, 0) 66%), repeating-linear-gradient(to bottom, var(--njg-wm-tea) 0, var(--njg-wm-tea) 44%, var(--njg-wm-tea-top) 50%, var(--njg-wm-tea) 56%, var(--njg-wm-tea) 100%); background-size: 100% 100%, 100% var(--njg-card14-u26); animation: wm-flow .32s linear infinite; }
+.wm-stream.flow { background: var(--njg-wm-stream-fill); background-size: 100% 100%, 100% var(--njg-card14-u26); animation: wm-flow .32s linear infinite; }
 @keyframes wm-flow { from { background-position: 0 0, 0 0; } to { background-position: 0 0, 0 var(--njg-card14-u26); } }
 .wm-stream.on.ending { transform-origin: bottom; transform: rotate(var(--wm-rot, 0deg)) scaleY(0); transition: transform .3s cubic-bezier(.5, 0, 1, 1), opacity .3s .2s; }
 .wm-drop { position: absolute; z-index: 2; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-wm-tea); pointer-events: none; }

@@ -117,6 +117,11 @@
   /* CHAI-79 (Zafar, 4 Nov): the word moment's tea, drawn in code inside one steady glass (sampled from pack s17-wm's full glass) */
   --njg-wm-tea: #d58d4c; --njg-wm-tea-top: #e8b27a; --njg-wm-tea-deep: #b56f37;
   --njg-wm-tea-art: #d68434; --njg-wm-tea-art-hi: #e7a560; --njg-wm-tea-art-edge: rgba(150, 80, 25, 0.35); /* (pack s17-wm2's chai, sampled) */
+  /* (the moment's fills, CHAI-79/-80: the drawn tea, the art's surface at its level, the stream's glint and its moving light) */
+  --njg-wm-tea-fill: linear-gradient(to bottom, var(--njg-wm-tea-top), var(--njg-wm-tea) 35%, var(--njg-wm-tea-deep));
+  --njg-wm-tea-art-fill: radial-gradient(ellipse at 50% 35%, var(--njg-wm-tea-art-hi), var(--njg-wm-tea-art) 70%);
+  --njg-wm-glint: rgba(255, 255, 255, 0.18);
+  --njg-wm-stream-fill: linear-gradient(to right, transparent 30%, var(--njg-wm-glint) 48%, transparent 66%), repeating-linear-gradient(to bottom, var(--njg-wm-tea) 0, var(--njg-wm-tea) 44%, var(--njg-wm-tea-top) 50%, var(--njg-wm-tea) 56%, var(--njg-wm-tea) 100%);
   /* CHAI-82: the snap's thin viewfinder corners */
   --njg-wm-corner: #ffffff; --njg-wm-corner-shade: rgba(60, 40, 20, 0.35);
   --njg-card14-white: #fff; --njg-card14-eye-edge: rgba(255, 255, 255, 0.85); --njg-card14-eye-bg: rgba(255, 255, 255, 0.5);
