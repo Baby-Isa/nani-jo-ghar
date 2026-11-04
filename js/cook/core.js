@@ -442,6 +442,7 @@
     flip: () => fx("flip"),
     bubble: () => fx("bubble"),
     click: () => fx("click"),
+    reveal: () => fx("reveal"),
     lap: () => fx("lap"),
     fanfare: () => fx("fanfare"),
     pourLoop: () => fxLoop("pour"),

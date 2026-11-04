@@ -152,6 +152,12 @@
     },
     bubble: (c, o) => tone(c, o, 300 + Math.random() * 300, 0.06, { type: "sine", gain: 0.06, slide: 200 }),
     click: (c, o) => tone(c, o, 1200, 0.03, { type: "square", gain: 0.05 }),
+    // SH-196 (Zafar, 4 Nov: "there should be like a click sound" as the reveal lesson shows the tap; the click above was too quiet to
+    // hear): a finger's clear tap on a card, a short bright knock and its tick
+    reveal: (c, o) => {
+      noise(c, o, 0.03, { gain: 0.34, freq: 2600, q: 1 });
+      tone(c, o, 1480, 0.05, { type: "triangle", gain: 0.2 });
+    },
     // CHAI-67 (Zafar, 3 Nov: "make the camera shutter sound"): a camera's two-part shutter, a sharp click and its mechanical return
     shutter: (c, o) => {
       noise(c, o, 0.035, { gain: 0.32, freq: 3200, q: 0.9 });

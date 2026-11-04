@@ -2722,8 +2722,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       };
       const lesson = async (el) => {
         const row = el.closest(".oc-row");
-        if (row && UI.mission && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(row);
-        await Cook.wait(400);
+        // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
+        // card is not already whole in view; the stillness wait below covers the rest)
+        const rowBox = row && row.closest(".oc-row14");
+        const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
+        if (cut && UI.mission && global.OrderCard && global.OrderCard.glideTo) {
+          global.OrderCard.glideTo(row);
+          await Cook.wait(400);
+        }
         // (contract-79: the cards have landed and the row has stopped before the card is lit; looked at once more as it lights, as a
         // card's slide can begin in the same frame)
         for (let k = 0; k < 4; k++) {
@@ -2733,7 +2739,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (contract-79, the sandbox, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once it has stopped, the
         // rules' 1/6 s, and once more if a slide began in it)
         for (let k = 0; k < 3; k++) {
-          await new Promise((r) => global.setTimeout(r, 200));
+          await new Promise((r) => global.setTimeout(r, 170));
           if (!movingNow14()) break;
           await settled14();
         }
@@ -2755,15 +2761,34 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (w && w.bottom > y0 - 3 && w.top < y0) y0 = Math.min(y1 - 6, w.bottom + 3);
           return { x: x0 - 4, y: y0, w: x1 - x0 + 8, h: y1 - y0 };
         };
-        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 0, box: el.classList.contains("wc14-eye") ? undefined : hug });
+        // (Zafar, 4 Nov: as the tap is shown the dots go and the box went with them, so the screen came up lit in the middle of the
+        // lesson and then lit the dots again: while the word shows in their place the box is on the word; it ends a beat after)
+        const shown = () => {
+          const c = el.closest(".wc14");
+          const pk = c && [...c.querySelectorAll(".wc14-peek")].find((x) => x.getBoundingClientRect().width > 0);
+          if (!pk) return null;
+          const q = pk.getBoundingClientRect();
+          return { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 };
+        };
+        let lastBox = null;
+        const boxNow = () => {
+          const b = hug() || shown() || lastBox;
+          if (b) lastBox = b;
+          return b;
+        };
+        let over = false;
+        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, () => over, { pad: 0, box: el.classList.contains("wc14-eye") ? undefined : boxNow });
         // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
         // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
         const card = row && row.wc;
         const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
         if (card && card.demo) {
           await Cook.wait(1100);
-          if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
+          if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
+          else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           await card.demo(slot, 1600 / (Cook.speed || 1));
+          await Cook.wait(900);
+          over = true;
         }
         await lit;
         el.classList.remove("ob-dots-now");
