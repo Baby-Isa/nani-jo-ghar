@@ -167,7 +167,11 @@ export async function pageLint(opts) {
     else if (clamp && el.scrollHeight > el.clientHeight + 1) { ell = true; add("ellipsis", el, `line-clamp ${c.webkitLineClamp}: ${el.scrollHeight}px of text in ${el.clientHeight}px`); }
     // clipped by its own box or a parent (overflow hidden / clip)
     let clipped = null;
+    // (inside a designed scroller, only the boxes below it can cut a word: at its edge or above it the word is scrolled out of view)
+    let dsAt = null;
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) if (designedScroller(a)) { dsAt = a; break; }
     for (const a of [el, ...clipAncestors(el)]) {
+      if (dsAt && (a === dsAt || a.contains(dsAt))) continue;
       const ca = cs(a);
       const hx = ca.overflowX === "hidden" || ca.overflowX === "clip";
       const hy = ca.overflowY === "hidden" || ca.overflowY === "clip";

@@ -2656,6 +2656,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       zb.expect(nx ? (nx.phase ? Object.assign({}, nx.e, { phase: nx.phase }) : nx.e) : null);
       // (contract-70: where the bar was as "Slow kar" was called)
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
+      // (a control's step names no item: Nani's card lets the last item go before the call is said, contract-89; the sandbox, 3 Nov)
+      if (nx && CONTROL14.has(nx.phase) && UI.helper) UI.helper(null);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
       // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
