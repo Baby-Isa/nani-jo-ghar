@@ -282,8 +282,9 @@ export function check89(r, tl, v, add) {
     let st = null, openedAt = -Infinity;
     for (const h of hs) { if (h.t > l.t0) break; st = h; if (h.open) openedAt = h.t; }
     if (!st || !st.named || st.open) continue;
-    // (the probe samples ten times a second: a helper that let its item go, or opened, within 200 ms of the line was not closed on it)
-    if (hs.some((h) => h.t > l.t0 && h.t <= l.t0 + 200 && (!h.named || h.open))) continue;
+    // (the probe samples ten times a second, slower under a loaded run: a helper that let its item go, or opened, within 300 ms of the
+    // line was not closed on it; chai clears her card before a control's call is said: the sandbox, 4 Nov, a 190 ms sample)
+    if (hs.some((h) => h.t > l.t0 && h.t <= l.t0 + 300 && (!h.named || h.open))) continue;
     // (a control's call comes with its light, contract-78: a light up at the line, or coming within 400 ms of it, is that)
     const lits = ev(tl, "lit");
     let cur = null;

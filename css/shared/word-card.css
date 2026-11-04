@@ -195,7 +195,7 @@
 .wc14-it > .wc14-slot-e { grid-row: 3; margin-top: .5cqi; }
 .wc14-it > .wc14-spk { grid-row: 4; margin-top: 5cqi; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); }
 .wc14-it .wc14-k { font-size: clamp(var(--njg-card14-u15), 16cqi, var(--njg-card14-u32)); }
-.wc14-it .wc14-en { font-size: clamp(max(calc(var(--njg-px) * 14), var(--njg-card14-u12)), 10cqi, max(calc(var(--njg-px) * 14), var(--njg-card14-u19))); } /* (never under the 14 px text floor, revealed or shown: the sandbox, 4 Nov) */
+.wc14-it .wc14-en { font-size: clamp(var(--njg-card14-u12), 10cqi, var(--njg-card14-u19)); }
 /* the copy in flight (WordCard.morph) */
 .wc.wc14-flyer { box-shadow: var(--njg-card14-shadow); }
 /* SH-153 (Zafar, 28 Oct: "increase the icon size in the speech bubble"; lab/cards.html .bspk): on the s14 look every chai bubble's

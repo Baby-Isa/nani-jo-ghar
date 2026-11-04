@@ -609,7 +609,7 @@ export const CONTRACT_HOOK = `(() => {
     return out;
   };
   // contract-44 (S13-A2): the fingers on screen (the kit's .ob-finger, a game's own) while help shows
-  const fingers = () => [...document.querySelectorAll(".ob-finger, .co-finger, [class*='finger']:not(.ob-finger-in)")].filter((f) => shown(f) && f.getBoundingClientRect().width > 4 && !(f.parentElement && f.parentElement.closest(".ob-finger"))).map((f) => ({ sel: desc(f), kit: f.matches(".ob-finger"), box: R(f.getBoundingClientRect()) }));
+  const fingers = () => [...document.querySelectorAll(".ob-finger, .co-finger, [class*='finger']:not(.ob-finger-in)")].filter((f) => shown(f) && f.getBoundingClientRect().width > 4 && !(f.parentElement && f.parentElement.closest(".ob-finger"))).map((f) => ({ sel: desc(f), kit: f.matches(".ob-finger"), box: R(f.getBoundingClientRect()), drag: !!f.querySelector(".ob-finger-in.pressed") }));
   const faces = () => {
     const all = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16);
     // a face drawn inside another face's button is that one face
@@ -874,7 +874,7 @@ export const CONTRACT_HOOK = `(() => {
     const fk = safe(faceKit, []);
     if (!same("facekit", fk.map((f) => [f.sel, f.kit, f.size, Math.round(f.w), Math.round(f.tok)]))) emit({ k: "facekit", list: fk });
     const fg = safe(fingers, []);
-    if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on") });
+    if (!same("fingers", [fg.length, fg.map((f) => f.sel), !!document.querySelector(".njg-spot.on")])) emit({ k: "fingers", list: fg, help: !!document.querySelector(".njg-spot.on"), s14: !!document.querySelector(".njg-spot.on.ob-s14") });
     // SH-138: words outside their card, sidebar buttons outside the sidebar, the help's light
     const sp = safe(spills, []), rl2 = safe(rail, { side: null, list: [] });
     if (!same("layout", [sp.map((x) => x.card + x.text), rl2.list.map((x) => x.sel)])) emit({ k: "layout", spill: sp, rail: rl2.list, side: rl2.side });

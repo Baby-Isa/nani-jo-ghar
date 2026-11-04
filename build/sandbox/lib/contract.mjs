@@ -702,11 +702,13 @@ export function check44(tl, segs, add, tEnd = tl.length ? tl[tl.length - 1].t : 
       const k = `${s && s.key}|many`;
       if (!seen.has(k)) { seen.add(k); add("contract-44", e.t, `${s ? s.key : "?"}: ${kit} fingers on screen at once`); }
     }
-    if (noFinger) { // chai (Zafar, 28 Oct): the lit box and its glow, never a finger
-      if (list.length && !seen.has(`${s && s.key}|any`)) { seen.add(`${s && s.key}|any`); add("contract-44", e.t, `${s ? s.key : "?"}: a finger on screen (chai's light has none: Zafar, 28 Oct)`); }
+    if (noFinger) { // chai (Zafar, 28 Oct): the lit box and its glow, never a finger; SH-141 (Zafar, 30 Oct): "Yes hand for drag is fine": the
+      // pressed finger of a drag, hold or swipe (chaat's slice) is allowed; a tap's finger is a break
+      if (list.some((f) => !f.drag) && !seen.has(`${s && s.key}|any`)) { seen.add(`${s && s.key}|any`); add("contract-44", e.t, `${s ? s.key : "?"}: a finger on screen (chai's light has none: Zafar, 28 Oct)`); }
       continue;
     }
-    if (e.help && !list.length) { if (since == null) since = e.t; }
+    // (chai's s14 light, wherever it runs, a lab round's chai included, has no finger by design: Zafar, 28 Oct)
+    if (e.help && !e.s14 && !list.length) { if (since == null) since = e.t; }
     else { flush(e.t); since = null; }
   }
   flush(tEnd);

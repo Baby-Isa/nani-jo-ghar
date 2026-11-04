@@ -2358,8 +2358,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // (the sandbox, 3 Nov: a kitchen that never went still held the waiter for seconds, and it lit in the middle of another move;
           // past its 3 s it gives up, and the next pan's tea brings it again: SH-178)
           const until = Date.now() + 3000;
+          // (only on the step it was for: the sandbox, 4 Nov: it waited through the milk and lit beside "Slow kar!"'s own light)
+          const forStep = sid;
           const go = () => {
-            if (on() || finished || Date.now() > until) return void (cardWait14 = false);
+            if (on() || finished || Date.now() > until || rungKey !== forStep) return void (cardWait14 = false);
             const still = !moving();
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
