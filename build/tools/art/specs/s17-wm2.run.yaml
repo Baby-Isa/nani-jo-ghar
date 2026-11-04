@@ -1,0 +1,45 @@
+# The run spec for pack s17-wm2: one steady large glass for the word moment (Zafar's L4 replay, 4 Nov).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-wm2.run.yaml --check
+pack: s17-wm2
+title: 'One steady glass for the word moment, large (empty, and the same picture full)'
+plan: docs/design-language/art-plans/s17-wm2-art-plan.md
+plan_branch: claude/admiring-ptolemy-77fuv5
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/admiring-ptolemy-77fuv5
+dest: sources/art/s17-wm2
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 3, flush_minutes: 25}
+refs:
+  counter.png: sources/art/s17-wm/ms-word-moment-counter-v1.png
+  chai-glass.png: sources/art/s17-art1/wg-chai-glass-side-filling-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  WE: {attach: [counter.png, chai-glass.png], save: we-chai-glass-empty-large-v1.png, check: EMPTY}
+  WF: {attach: ["kept:WE"], save: wf-chai-glass-full-large-v1.png, check: FULL, edit: true}
+parts:
+- id: A
+  title: 'ONE STEADY GLASS'
+  intro: 'One large empty chai glass on the counter, then the same picture edited so the glass is full of chai, nothing else changed.'
+  items:
+  - lines: [WE, WF]
+checks:
+  EMPTY:
+    text: 'ONE faceted chai glass, empty and clean, exactly side-on, about 70% of the height, centred, upright on the cream marble worktop (its front edge one straight horizontal line near the bottom) in front of a completely plain limewash wall the colour of the attached counter; the wall shows through the clear glass; nothing else'
+    judge: {aspect: [2, 3], bg: none}
+  FULL:
+    text: 'the attached picture with the glass full of milky caramel chai to just below the rim, a calm flat top; the glass''s outline, size, place, facets and highlights, the counter, the wall and the shadow UNCHANGED (lay one over the other: nothing but the tea differs)'
+    judge: {aspect: [2, 3], bg: none}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- More than one glass; a tray, a saucer, a hand, a person, a spoon or anything else on the counter.
+- Tiles, a window or anything on the wall; a wall colour different from the attached counter.
+- In WF, the glass moved, resized, turned or redrawn; anything but the tea changed.
+- Sweets, lollies or biscuits; any religious marker.
