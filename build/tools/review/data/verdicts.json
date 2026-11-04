@@ -7587,6 +7587,23 @@
   "png": null,
   "date": "2026-10-20"
  },
+ "SH-200": {
+  "hash": "059d5e66d6c6f50f22db",
+  "dhash": [
+   "249bdbdb119adbdb",
+   "00b0b03070b8b414",
+   "21dbdb9919d9db21",
+   "003cb97979a83636"
+  ],
+  "verdict": "PASS",
+  "line": "A, the L3 cards' paani bottle and chai jar (dark leaves, cork lid) are the shelf's own bottle and jar seen beside them in B, and the aadu card's visible half is the shelf's beige-chunk ginger jar; C and D show the same at L4 with elchi's half-card. Only half of the ginger and cardamom cards is on screen and no lasan or khun card appears, so those four are compared by picture, not file. Flaws: none; \"Put water in the pan.\" at the sidebar's top is grey italic (allowed).",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/SH-200.png",
+  "date": "2026-11-04"
+ },
  "SH-203": {
   "hash": "b77561329135969fa6c3",
   "dhash": [
