@@ -11,7 +11,9 @@ export const BASELINE = join(ROOT, "build", "lint", "baseline.json");
 // build/lint/ignore.json: findings that are timing noise by design (each with its reason)
 const IGNORE = existsSync(join(ROOT, "build", "lint", "ignore.json")) ? JSON.parse(readFileSync(join(ROOT, "build", "lint", "ignore.json"), "utf8")) : [];
 export const ignored = (f) => IGNORE.some((i) => i.check === f.check && f.selector.includes(i.selector));
-export const keyOf = (f) => `${f.check}|${f.flow}|${f.size}|${f.selector}`;
+// (a moment's state classes never make a finding new: the row at its end, a first-time light on it; the sandbox, 4 Nov)
+const STATE_CLASSES = /\.(oc-at-end|ob-dots-now|ob-lit|ob-lit-glow|revealed|wc14-peek)(?=[.\s>:]|$)/g;
+export const keyOf = (f) => `${f.check}|${f.flow}|${f.size}|${String(f.selector || "").replace(STATE_CLASSES, "")}`;
 export const looseKey = (f) => `${f.check}|${f.size}|${f.selector}`;
 const fsKey = (flow, size) => `${flow}@${size}`;
 // zero tolerance (checks-to-build 3; non-negotiables 9 and 12): these fail on ANY finding, known to the baseline or not, and the

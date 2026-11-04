@@ -249,7 +249,7 @@ export async function pageLint(opts) {
       }
     }
     const o = Math.max(-r.left, -r.top, r.right - vw, r.bottom - vh);
-    if (o > TOL) { add("tap-offscreen", el, `${Math.round(o)}px outside the screen`); moving.push([out[out.length - 1], el, r]); }
+    if (o > TOL && !inDesignedScroller(el)) { add("tap-offscreen", el, `${Math.round(o)}px outside the screen`); moving.push([out[out.length - 1], el, r]); }
   }
 
   // ---- the play area: nothing but the canvas on top of its middle (LAY-06) ----
