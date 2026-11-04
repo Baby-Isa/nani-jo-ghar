@@ -974,6 +974,25 @@
   "commit": "db5c297b",
   "date": "2026-11-03"
  },
+ "CHAI-68": {
+  "hash": "ab13ad1c982f78be8ef6",
+  "dhash": [
+   "0160b03470b02a2a",
+   "203838b838381a8a",
+   "0120b03470b03414",
+   "003838b8b8302eaa",
+   "0122f97979a03636",
+   "223c30b8383036b4"
+  ],
+  "verdict": "FAIL",
+  "line": "B, the second pan's light is already on at frame 3 (25.9 s) while the first pan is still boiling on its burner under \"Slow kar!\", and still on at frame 4 (26.9 s) while that pan is mid-pour over the glass: it lands before the pour, not within 0.6 s of the pan coming back; it is also a soft halo like the active pan's glow, not a tight circle on the rim; A, C, D, E and F never reach the pour (their four onboard shots are the word box, the paani bottle and the first additions), so no size but 740x320 at L2 shows the second-pan light at all, and no returning-player probe exists; flaw: in C frame 2, D frame 1 and E frame 2 the lit dotted box covers the lower half of the Kutchi word \"paani\" above it",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/CHAI-68.png",
+  "date": "2026-11-04"
+ },
  "CHAI-69": {
   "hash": "05d6c9869535e079e622",
   "dhash": [],
@@ -984,6 +1003,49 @@
   "run": "ev-20261103-174914-nhg",
   "commit": "24d8f50e",
   "date": "2026-11-03"
+ },
+ "CHAI-70": {
+  "hash": "8283a6864767931f198f",
+  "dhash": [
+   "e6e7e7cecaccaaa3"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1280x665 the adh card is up from 999 ms (page 3.5 s) through 3001 ms while the second glass pours, 2.2 s after its word ends (say-end 3.99, next shutter 6.33); the pair adh + aako stands at 4544 ms and is still there at the 6000 ms slot, gone by 6501 ms (page 8.8 to 9.3 s): about 2.3 to 2.8 s from the aako pop (6.47) and 1.0 to 1.5 s after aako's word ends (7.72), so each card holds at least 1 s and the pair about 2.4 s; the four sizes named by the check were filmed only at 1280x665, and no old run is on the sheet to show \"about twice\" the length",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/CHAI-70.png",
+  "date": "2026-11-04"
+ },
+ "CHAI-72": {
+  "hash": "56bfd897d92816dc56e3",
+  "dhash": [
+   "e6e7e7cecaccaaa3"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 70 ms four white corner brackets close round the left glass, at 181 ms the area inside them goes pale (the flash) and the brackets are gone by 253 ms when the card rises; no iris in any of the 8 frames; the voice log has sfx/shutter at both snaps (3.45 and 6.33) before each pop; filmed at 1280x665 only, not the four sizes named",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/CHAI-72.png",
+  "date": "2026-11-04"
+ },
+ "CHAI-73": {
+  "hash": "5e886175264a61740733",
+  "dhash": [
+   "e6e7e7cedad4a2ab",
+   "befefcd2d0d0d29a"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1280x665 the left glass stands on the counter in front of the plain wall at the same spot in every fill frame (0, 300, 600, 900 ms) with the tea rising and no change of tint or shift, then the right glass the same from 2400 to 3301 ms (empty, then rising in place); B at 740x320 shows the same fill in one place (301 to 900 ms) and the right glass in place (2400 to 3301 ms); B's 0 ms frame is the moment's fade-in, the two empty glasses showing through the family scene for one frame, which is not the fill",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/CHAI-73.png",
+  "date": "2026-11-04"
  },
  "CHT-01": {
   "hash": "ff0ba1426c907aa7f5b1",
@@ -7102,22 +7164,22 @@
   "date": "2026-11-03"
  },
  "SH-163": {
-  "hash": "7c43d903d7a7d2cb6225",
+  "hash": "5e5ef489ab7d07ac717d",
   "dhash": [
-   "5f7eeeeeeaee6afb",
-   "6e7e7e6a6a7e2a7b",
+   "dffefeeeeaee6afb",
+   "6e7efeeaea7e2a7b",
    "6e667668486a2a7b",
-   "5e7e7e7c68682a7f",
-   "5e2e7e68782a6a7b"
+   "2e6e6e6e68682a7f",
+   "5e6e6e68683a2a6b"
   ],
   "verdict": "PASS",
-  "line": "E, L1 930x430: the dudh card shrinks as it moves from its pop to its row slot (844, 1044, 1111 ms) as one whole card, \"dudh / milk\" readable and evenly scaled at every shown step, no second copy in the row until it lands; hakro khun does the same (3238-3586 ms); C (samosa L3) and B (chai L4) show the same single shrinking card in flight (3001 ms ba chunda, 5501 ms dungri na; 2673 ms trae khun, 5151 ms adh); gaps: L2 and the other Cook stations not filmed, strips are 4 fps / 20 fps not 60, D's strip (L1 1280x665) missed the morph frames entirely",
+  "line": "E, the L1 930x430 flight filmed at 50 ms (868 to 1284 ms) is one whole card (picture, dudh, milk, speaker) shrinking as it moves, its box keeping one ratio the whole way (text capture: 222.6x407.4 -> 75.3x137.8, h/w 1.83 on every one of the 8 flight frames) and landing at 1284 ms in the exact place and shape the row card dudh holds at 1808 ms, no second card and no height jump; the same even ratio holds in A (1.463 on all 9 flight frames at 1920x1080), B (1.629, 930x430 L4), C (1.82, samosa L3) and D (1.563, 1280x665 L1 text capture; D's sheet frames show the pop and the landed row only, not the flight); not filmed at 740x320 and in no game but cook, so \"every game\" rests on cook alone",
   "panel": "E",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kQTCK3YzzLRoQ1FAmn",
-  "run": "ev-20261103-135810-7dq",
-  "commit": "9fddcef7",
-  "png": "build/screenshots/evidence/ev-20261103-135810-7dq/SH-163.png",
-  "date": "2026-11-03"
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/SH-163.png",
+  "date": "2026-11-04"
  },
  "SH-164": {
   "hash": "424d307398b39f36e86f",
@@ -7459,6 +7521,21 @@
   "png": "build/screenshots/evidence/ev-20261103-171129-t61/SH-195.png",
   "date": "2026-11-03"
  },
+ "SH-196": {
+  "hash": "d54694541467956cb596",
+  "dhash": [
+   "0160b03470b02a2a",
+   "0120b03470b03414"
+  ],
+  "verdict": "FAIL",
+  "line": "B, at L3 none of the four onboard shots lights a card's picture (the pictures stay sharp: aadu's jar in frame 4), the only lesson lit is the dotted word under paani again (frame 2); A frame 1 shows the word lesson's box with the dots, not the English in its place, no later frame shows it, and the sheet has no sound log, so the click cannot be read; the box itself is a long thin rectangle with a corner well under a quarter of its height (A frame 1, B frame 2); only chai is shot, not every game; flaw: in B frame 2 the lit box hides the lower half of the word \"paani\" above it",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/SH-196.png",
+  "date": "2026-11-04"
+ },
  "SH-197": {
   "hash": "e0f430541a7a05c47684",
   "dhash": [],
@@ -7480,6 +7557,23 @@
   "run": "ev-20261103-171129-t61",
   "commit": "db5c297b",
   "date": "2026-11-03"
+ },
+ "SH-199": {
+  "hash": "9f815d60ad55070951ac",
+  "dhash": [
+   "1119989b9b000000",
+   "89099999d19b9900",
+   "2199d9db119adbdb",
+   "11319b9b9b913199"
+  ],
+  "verdict": "PASS",
+  "line": "A, L1 1280x665 over the four ticks: after paani's tick chai is whole, after chai's tick dudh is whole with hakro khun half at the right, and after dudh's tick hakro khun sits whole at the row's right edge (no space after it) with chai's left half still showing, before hakro khun is taken off; B (740x320), C and D (L2, both sizes, trae khun) show the same at every tick. Not on the sheet: L3, L4, 930x430, 1920x1080 and the other games. Flaws: none beyond the row's own allowed half-card on the left; L1's English glosses (water, milk, one sugar) are the allowed L1 order-card English.",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "png": "build/screenshots/evidence/ev-20261104-042426-e9c/SH-199.png",
+  "date": "2026-11-04"
  },
  "SH-20": {
   "hash": "597f3748a4fac242f49d",
