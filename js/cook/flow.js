@@ -443,6 +443,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // and the order is read (nothing of another station's)
     Cook.prefetchDishes(order.dishes.map((d) => d.recipe));
     UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
+    // CHAI-67, CHAI-78 (Zafar, 4 Nov): the word moment first, before the customer comes in and the order begins
+    if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));
 
     if (!demo && who === "nani") {
       // Nani asks herself (the pantry): she's already here, no small talk
@@ -471,8 +473,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.hideBubble();
     UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes) });
     closedCards(Math.max(...order.dishes.map((d) => d.level || 1)), demo);
-    // CHAI-67: the word moment first, the first time an order asks half or full
-    if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));
     const stop = talking(who);
     try {
       await UI.mission.introduce();
@@ -1755,11 +1755,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (came.length) s.occluder(); // the counter's front, over them (as at a day's service)
       // (Zafar, 29 Oct: two people stand middle and right, the left free for the cards: the central rules' scene.counterSpots)
       const spotOf = (i) => (global.Rules && global.Rules.counterSpot ? global.Rules.counterSpot(i, came.length) : came.length === 1 ? 1 : i);
-      came.forEach((w, i) => s.addChar(w, { enter: true, x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
-      // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
-      ctx.intro = (came.length ? Cook.wait(1100) : Promise.resolve())
-        // CHAI-67: the word moment first, the first time an order asks half or full
-        .then(() => (UI.wordMoment ? UI.wordMoment(UI.wordMomentIds(ctx.ladders)) : null))
+      // CHAI-67: the word moment, the first time an order asks half or full; CHAI-78 (Zafar, 4 Nov: "it should start with the word
+      // focus and then go to the kitchen scene where the order begins"): before anyone comes in; then the people, then the order
+      ctx.intro = (UI.wordMoment ? UI.wordMoment(UI.wordMomentIds(ctx.ladders)) : Promise.resolve())
+        .catch(() => {})
+        .then(() => {
+          came.forEach((w, i) => s.addChar(w, { enter: true, x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
+          return came.length ? Cook.wait(1100) : null;
+        })
+        // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
         .then(() => UI.mission.introduce())
         .catch(() => {})
         .then(() => {

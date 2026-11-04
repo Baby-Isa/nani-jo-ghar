@@ -102,10 +102,11 @@
     const A = "assets/shared/word-moment/";
     // (CHAI-73, pack s17-wm: one glass in twelve stages, each in the same place on the counter: half is the 6th, full the 11th)
     const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-wm-${String(i + 1).padStart(2, "0")}-s17.webp`));
-    const glass = (id, n) => ({
+    // CHAI-79 (Zafar, 4 Nov): one steady glass, the tea drawn in it (half and nearly full); the cards keep the pack's own pictures
+    const glass = (id, fill, n) => ({
       empty: Cook.v(`${A}glass-wm-01-s17.webp`),
-      frames: fr(n),
-      word: { id, kutchi: Cook.display(id), english: Cook.english(id) },
+      fill,
+      word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: fr(n)[n - 1] },
       say: () => (Cook.Lang || Lang).speakWord(id),
     });
     const box = document.createElement("div");
@@ -117,12 +118,13 @@
       await WM.play(box, {
         vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), pour: Cook.v(`${A}kettle-tilted-pour-s17.webp`), spout: [0.025, 0.9], aspect: 560 / 515, tilt: 0 },
         side: true,
-        stream: Cook.v(`${A}stream-chai-s17.webp`),
-        // (Zafar, 3 Nov: the iris retired: the corners close in, the frame flashes, the shutter's sound)
-        snapArt: { corners: Cook.v(`${A}snap-corners-s17.webp`) },
+        // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
         scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5 },
-        glasses: [glass("ph-half", 6), glass("ph-full", 11)],
-        snap: "each",
+        glasses: [glass("ph-half", 0.5, 6), glass("ph-full", 0.92, 11)],
+        // CHAI-81 (Zafar, 4 Nov): both poured, a look at the two, then each snapped in turn, half a second in its frame before the shutter
+        snap: "after",
+        look: 900,
+        frameHold: 500,
         shutter: "corners",
         cards: "stay",
         // (Zafar, 3 Nov: "it needs to slow down, maybe about half the speed ... settle on that card for about twice the time ... so
@@ -131,7 +133,8 @@
         hold: 1000,
         english: true,
       });
-      await Cook.wait(2400);
+      // ("it lingers on the two cards for ... a couple of seconds")
+      await Cook.wait(2200);
       box.classList.add("cook-wm-out");
       await Cook.wait(350);
     } catch (e) {

@@ -43,6 +43,67 @@
     }
   };
 
+  /** The inside of a glass picture drawn in a g x g box (object-fit contain, bottom-centred), from its alpha: rows of {y, l, r} in
+   *  the box's px from the rim down to the top of its base, the walls inset; null where the picture can't be read. */
+  function profileOf(im, g) {
+    try {
+      const nw = im.naturalWidth, nh = im.naturalHeight;
+      if (!nw || !nh) return null;
+      const k = Math.min(1, 200 / nh);
+      const W = Math.max(1, Math.round(nw * k)), H = Math.max(1, Math.round(nh * k));
+      const cv = doc.createElement("canvas");
+      cv.width = W;
+      cv.height = H;
+      const c = cv.getContext("2d", { willReadFrequently: true });
+      c.drawImage(im, 0, 0, W, H);
+      const d = c.getImageData(0, 0, W, H).data;
+      const rows = [];
+      let y0 = -1, y1 = -1;
+      for (let y = 0; y < H; y++) {
+        let l = -1, r = -1;
+        for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3] > 24) { if (l < 0) l = x; r = x; }
+        if (l >= 0) { if (y0 < 0) y0 = y; y1 = y; }
+        rows.push(l < 0 ? null : [l, r]);
+      }
+      if (y0 < 0) return null;
+      const sc = Math.min(g / nw, g / nh);
+      const dw = nw * sc, dh = nh * sc, ox = (g - dw) / 2, oy = g - dh, kx = dw / W, ky = dh / H;
+      const bw = Math.max(...rows.filter(Boolean).map((q) => q[1] - q[0]));
+      const wall = 0.07 * bw;
+      const rimY = y0 + (y1 - y0) * 0.05, baseY = y1 - (y1 - y0) * 0.12;
+      const out = [];
+      for (let y = Math.ceil(rimY); y <= Math.floor(baseY); y++) {
+        const q = rows[y];
+        if (!q) continue;
+        const l = q[0] + wall, r = q[1] + 1 - wall;
+        if (r > l) out.push({ y: oy + y * ky, l: ox + l * kx, r: ox + r * kx });
+      }
+      return out.length > 2 ? { rows: out, top: out[0].y, bottom: out[out.length - 1].y } : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  /** The tea at lv (0..1 of the inside's height): its clip and its surface. */
+  function drawTea(f, lv) {
+    f.level = lv;
+    const P = f.prof;
+    if (!P) return;
+    if (lv <= 0.002) {
+      f.tea.style.clipPath = "polygon(0 0, 0 0, 0 0)";
+      f.top.style.opacity = "0";
+      return;
+    }
+    const yTop = P.bottom - (P.bottom - P.top) * lv;
+    const rs = P.rows.filter((q) => q.y >= yTop - 0.5);
+    if (!rs.length) return;
+    const pts = rs.map((q) => `${q.l.toFixed(1)}px ${q.y.toFixed(1)}px`).concat(rs.slice().reverse().map((q) => `${q.r.toFixed(1)}px ${q.y.toFixed(1)}px`));
+    f.tea.style.clipPath = `polygon(${pts.join(", ")})`;
+    const q0 = rs[0];
+    const sw = q0.r - q0.l;
+    const sh = Math.max(3, sw * 0.13);
+    Object.assign(f.top.style, { left: `${q0.l.toFixed(1)}px`, width: `${sw.toFixed(1)}px`, top: `${(q0.y - sh / 2).toFixed(1)}px`, height: `${sh.toFixed(1)}px`, opacity: "1" });
+  }
+
   function play(host, o) {
     stop(host);
     const sp = Math.max(0.25, +o.speed || 1);
@@ -81,6 +142,26 @@
       im.src = x.empty;
       return { s, im, x, cx: left0 + i * (g + gap) + g / 2, cy };
     });
+    // CHAI-79 (Zafar, 4 Nov: "the glass is just jumping all over the place, and it looks like the internal reflections are all
+    // changing"): a glass with a fill (0..1 of its inside) is ONE picture, never swapped; the tea is drawn over it, clipped to its
+    // inside (read from the picture's own outline: the walls inset, the thick base left out), tinting what shows through (multiply),
+    // its top a soft ellipse, and the glass's own highlights laid back over it
+    slots.forEach((sl) => {
+      if (sl.x.fill == null) return;
+      const tea = el("div", "wm-tea", sl.s);
+      const top = el("div", "wm-tea-top", sl.s);
+      const hi = el("img", "wm-glass-hi", sl.s);
+      hi.alt = "";
+      hi.draggable = false;
+      hi.src = sl.x.empty;
+      sl.fill = { tea, top, prof: null, level: 0 };
+      const ready = () => {
+        sl.fill.prof = profileOf(sl.im, g);
+        drawTea(sl.fill, sl.fill.level);
+      };
+      if (sl.im.complete && sl.im.naturalWidth) ready();
+      else sl.im.addEventListener("load", ready, { once: true });
+    });
     // the vessel: held tilted the whole time, its spout over the glass being filled
     const v = o.vessel;
     // (the s17 kettle is drawn tilted and sits above its glass: a little smaller, so it stays on the stage)
@@ -100,6 +181,15 @@
     // (set here, not through a CSS variable: a url() in a variable resolves against the stylesheet, not this page)
     if (o.stream) stream.style.backgroundImage = `url("${o.stream}")`;
     const tilt = v.tilt == null ? -28 : v.tilt;
+    // CHAI-80 (Zafar, 4 Nov: "tilted but not pouring, and then in a state of pouring"): the vessel comes in tipped back (lift), tips
+    // forward round its spout to pour, and back again when the stream stops
+    const LIFT = o.side ? 18 : 12;
+    let lift = LIFT;
+    const tiltTo = (deg, ms) => {
+      lift = deg;
+      ves.style.transition = o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1), transform ${ms / sp}ms cubic-bezier(.4,0,.2,1)`;
+      ves.style.transform = `rotate(${tilt + lift}deg)`;
+    };
     const placeVessel = (sl, now) => {
       // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show;
       // side-on glasses: the spout right above the glass's mouth, so the stream falls straight in)
@@ -108,7 +198,7 @@
       ves.style.transition = now || o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1)`;
       ves.style.left = `${sx - v.spout[0] * vw}px`;
       ves.style.top = `${sy - v.spout[1] * vh}px`;
-      ves.style.transform = `rotate(${tilt}deg)`;
+      ves.style.transform = `rotate(${tilt + lift}deg)`;
       // (the stream from the spout to the glass's middle)
       const ey = o.side ? sl.cy + g * 0.36 : sl.cy;
       const len = Math.hypot(sx - sl.cx, sy - ey);
@@ -129,6 +219,7 @@
       placeVessel(sl);
       await wait(650);
       if (!alive()) return;
+      if (sl.fill) return pourFill(sl);
       stream.classList.add("on");
       if (v.pour) vim.src = v.pour;
       const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
@@ -143,6 +234,53 @@
       stream.classList.remove("on");
       if (v.pour) vim.src = v.src;
       await wait(250);
+    };
+
+    // the code-drawn pour (CHAI-79, CHAI-80): tip forward, the stream flows while the tea rises smoothly to its level, the stream's
+    // tail falls in with a last drop, tip back
+    const pourFill = async (sl) => {
+      tiltTo(0, 320);
+      await wait(320);
+      if (!alive()) return;
+      stream.classList.remove("ending");
+      stream.classList.add("on", "flow");
+      if (v.pour) vim.src = v.pour;
+      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
+      const to = Math.max(0, Math.min(1, sl.x.fill));
+      const dur = (o.instant ? 0 : 2600 * to + 300) / sp;
+      await new Promise((res) => {
+        if (!dur || !root.requestAnimationFrame) {
+          drawTea(sl.fill, to);
+          return res();
+        }
+        let t0 = null;
+        const step = (now) => {
+          if (!alive()) return res();
+          if (t0 == null) t0 = now;
+          const u = Math.min(1, (now - t0) / dur);
+          // (a pour fills steadily and slows a touch as it is tipped back)
+          drawTea(sl.fill, to * (u < 0.85 ? u / 0.85 * 0.96 : 0.96 + 0.04 * ((u - 0.85) / 0.15)));
+          if (loop && loop.pitch) loop.pitch(0.2 + u * 0.8);
+          if (u < 1) root.requestAnimationFrame(step);
+          else res();
+        };
+        root.requestAnimationFrame(step);
+      });
+      if (loop) loop.stop();
+      // the stream stops: its tail falls into the glass, then a last drop from the spout
+      stream.classList.add("ending");
+      const drop = el("i", "wm-drop", box);
+      const sl0 = parseFloat(stream.style.left) + parseFloat(stream.style.width) / 2;
+      const st0 = parseFloat(stream.style.top);
+      const ds = Math.max(4, g * 0.045);
+      drop.style.cssText = `left:${sl0 - ds / 2}px;top:${st0}px;width:${ds}px;height:${ds * 1.25}px`;
+      if (!o.instant && drop.animate)
+        drop.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: `translateY(${parseFloat(stream.style.height) * 0.95}px)`, opacity: 1, offset: 0.92 }, { transform: `translateY(${parseFloat(stream.style.height)}px)`, opacity: 0 }], { duration: 420 / sp, delay: 160 / sp, easing: "cubic-bezier(.5,0,1,1)", fill: "both" });
+      if (v.pour) vim.src = v.src;
+      tiltTo(LIFT, 320);
+      await wait(600);
+      drop.remove();
+      stream.classList.remove("on", "flow", "ending");
     };
 
     const snap = async (sl) => {
@@ -163,6 +301,8 @@
         if (!o.instant) await wait(40);
         shut.classList.add("in");
         await wait(320);
+        // (Zafar, 4 Nov: "Pause for half a second, snap": the corners round the glass a moment before the shutter)
+        if (o.frameHold) await wait(o.frameHold);
       }
       // the shutter: the iris shuts over the glass (the click), the glass is its card behind it, and the iris opens on the card
       let iris = null;
@@ -186,7 +326,7 @@
       }
       await wait(140);
       // the glass becomes its word card, in place: the card grows from the glass's own square
-      const card = root.WordCard.big14(box, Object.assign({}, sl.x.word, { picture: sl.x.word.picture || sl.x.frames[sl.x.frames.length - 1] }), {
+      const card = root.WordCard.big14(box, Object.assign({}, sl.x.word, { picture: sl.x.word.picture || (sl.x.frames ? sl.x.frames[sl.x.frames.length - 1] : sl.x.empty) }), {
         variant: "small",
         // (a word met here for the first time: its English shown, never dotted: Zafar, 3 Nov; o.english false keeps the old dots)
         slots: { picture: true, english: o.english !== false, kutchiText: true },
@@ -237,8 +377,11 @@
     const go = async () => {
       const cards = [];
       if (o.snap === "after") {
+        // CHAI-81 (Zafar, 4 Nov: "pour both glasses first so you can easily look at the two and see the difference ... and then we
+        // should snap both of them"): both poured, the vessel away, a look at the two side by side, then each snapped in turn
         for (const sl of slots) await pour(sl);
         await leave();
+        if (o.look) await wait(o.look);
         for (const sl of slots) cards.push(await snap(sl));
       } else {
         for (let i = 0; i < slots.length; i++) {
