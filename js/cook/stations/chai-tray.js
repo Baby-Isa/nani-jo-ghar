@@ -275,6 +275,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
 
   async function station(host, params) {
+    Cook.serveTicks = new Set(["ph-half", "ph-full"]); // (SH-206: the glass ticks these as it is poured)
     Cook.shelfJars = true; // (the order's cards take this shelf's jars from the first card drawn: Zafar, 3 Nov, SH-200)
     const S = host.S;
     const ctx = host.ctx;
@@ -746,9 +747,30 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const spanR = trayX + trayD;
     const mid = (spanL + spanR) / 2;
     const roomW = 2 * Math.min(mid - 40, 1600 - 190 - mid, (spanR - spanL) / 2);
-    const slotW = Math.min(PITCH, (roomW - (shelfIds.length - 1) * GROUP_GAP) / slotsN);
-    const width = slotsN * slotW + (shelfIds.length - 1) * GROUP_GAP;
-    const x0 = Math.max(40, mid - width / 2);
+    // SH-208 (Zafar, 4 Nov: "the pills are like overlapping and merging somewhat ... where there's space to spread them out more, such
+    // that they don't overlap, we should try to do that"): under the hob and tray while the pills fit (CHAI-66); where they would touch,
+    // the row widens evenly on both sides up to the play area's margins (still clear of the tick), only as far as the pills need; only
+    // past that do they sit close
+    const PILL_ROOM = CHIP.w + 12;
+    const LEFT = 40, RIGHT = 1600 - 190; // (the play area's margin, and clear of the tick)
+    const nG = shelfIds.length - 1;
+    let gapW = GROUP_GAP;
+    let slotW = Math.min(PITCH, (roomW - nG * gapW) / slotsN);
+    let x0 = null;
+    if (slotW < PILL_ROOM) {
+      // centred under the kitchen as far as the margins let it; then the whole width, centred in it; then the groups' gaps close to 20
+      const roomMid = 2 * Math.min(mid - LEFT, RIGHT - mid);
+      const fit = (room, g) => (room - nG * g) / slotsN;
+      if (fit(roomMid, gapW) >= PILL_ROOM) slotW = PILL_ROOM;
+      else {
+        gapW = Math.max(20, Math.min(GROUP_GAP, (RIGHT - LEFT - slotsN * PILL_ROOM) / Math.max(1, nG)));
+        slotW = Math.min(PILL_ROOM, fit(RIGHT - LEFT, gapW));
+        const w = slotsN * slotW + nG * gapW;
+        x0 = Math.max(LEFT, Math.min(mid - w / 2, RIGHT - w));
+      }
+    }
+    const width = slotsN * slotW + nG * gapW;
+    if (x0 == null) x0 = Math.max(LEFT, mid - width / 2);
     const shelf = {};
     let sx = x0 + slotW / 2;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
@@ -761,7 +783,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         shelf[id] = slot(id, sx, K);
         sx += slotW;
       });
-      sx += GROUP_GAP;
+      sx += gapW;
     });
     // where a canvas's picture ends at the bottom (its transparent margin stands below the shelf line)
     function opaqueBottom(key) {
@@ -2895,6 +2917,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       finished = true;
       Cook.shelfPic = null; // (the next station's cards take their own shelf's pictures)
       Cook.shelfJars = false;
+      Cook.serveTicks = null;
       coachEnd();
       hideMic();
       clearInterval(nudge);

@@ -2729,7 +2729,9 @@
   };
   // SH-110: a dotted row's speaker says the row (Lang.speak, the card's one voice path: free, never a hint, never a mark on a word)
   const sayRow = (r) => () => Lang.speak(r.line);
-  const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false, say: sayRow(r) });
+  // (SH-206: a row ticked only when the dish is served: every "no", and what a station names, Cook.serveTicks: chai's half and full)
+  const serveRow = (r) => !!r.no || !!(Cook.serveTicks && (r.ids || []).some((id) => Cook.serveTicks.has(id)));
+  const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, serve: serveRow(r), key: r, gi, next: false, say: sayRow(r) });
   /*
    * Sprint 11 (B-cook, task 2): a people order's row is the shared word card's row (js/shared/word-card.js through
    * OrderCard's rowEl): the item's picture (its own shelf art, drawn small: a copy at the row's size, as rowPic's), its

@@ -316,6 +316,7 @@
     r.insertAdjacentHTML("beforeend", `<span class="oc-tk oc-badge14" aria-hidden="true">${node.done && !node.wrong ? OC.CHECK : ""}</span>`);
     const id = keyId(node.key);
     if (id != null) r.dataset.key = id;
+    if (node.serve) r.dataset.serve = "1"; // (SH-206: ticked only when the dish is served)
     if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);
     if (node.key != null && opts.onEl) opts.onEl(node.key, r);
     if (opts.decorate) opts.decorate(r, node);
@@ -470,7 +471,13 @@
       // into view ... and the third last item can be in half": the next card still to do is always whole; near the row's end that
       // wins over stopping on a card's edge, so the card on the left may show half)
       const next = rows.find((r) => !r.classList.contains("done") && r.offsetLeft > (lead ? lead.offsetLeft : -1));
-      if (next) {
+      // SH-206 (Zafar, 4 Nov, L4: "the very last item was no milk. And the no milk was half cut off ... if the last two items are not
+      // ticked off until serving, then when you get to the second last item, the menu card scrolls fully to the end"): when every
+      // card still to do ticks only as the dish is served (the "no" cards, chai's half and full), nothing more ticks before then, so
+      // the row goes to its end and they are all whole
+      const rest = rows.filter((r) => !r.classList.contains("done"));
+      if (rest.length > 1 && rest.every((r) => r.dataset.serve === "1")) to = max();
+      else if (next) {
         const nl = next.offsetLeft - row.firstElementChild.offsetLeft;
         const nr = nl + next.offsetWidth;
         if (nr > to + row.clientWidth) to = Math.min(max(), Math.ceil(nr - row.clientWidth + 2));
