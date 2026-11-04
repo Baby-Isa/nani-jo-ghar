@@ -73,7 +73,7 @@ import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.m
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
-import { CHAI_CHECKS, check70, check71 } from "./contract-chai.mjs";
+import { CHAI_CHECKS, check70, check71, check90 } from "./contract-chai.mjs";
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
 import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
 
@@ -1597,6 +1597,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check66(r, tl, v, add);
   check70(r, tl, add);
   check71(r, tl, add);
+  check90(r, tl, add);
   check49(tl, add);
   check51(tl, add);
   check52(tl, add);

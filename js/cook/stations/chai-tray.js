@@ -2359,9 +2359,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // past its 3 s it gives up, and the next pan's tea brings it again: SH-178)
           const until = Date.now() + 3000;
           // (only on the step it was for: the sandbox, 4 Nov: it waited through the milk and lit beside "Slow kar!"'s own light)
+          // (Zafar, 4 Nov, his L1 replay: "after the first two items, I didn't get the onboarding screen to draw my attention to the next
+          // third item": the first look ran before this step's key was set (rungKey is set below), so it always gave up: it gives up only
+          // when the step has moved on from this one, not while the key is still the step before)
           const forStep = sid;
+          const keyBefore = rungKey;
           const go = () => {
-            if (on() || finished || Date.now() > until || rungKey !== forStep) return void (cardWait14 = false);
+            if (on() || finished || Date.now() > until || (rungKey !== forStep && rungKey !== keyBefore)) return void (cardWait14 = false);
             const still = !moving();
             if (!sideMoving() && still) {
               if (quiet == null) quiet = Date.now();
@@ -2371,6 +2375,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
               seen14[cardKey14] = true;
               cardWait14 = false;
+              try {
+                if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("card-light", { step: st || "" });
+              } catch (e) {
+                /* only a log */
+              }
               const first = cardLit();
               // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
               const onItem = first && first.classList && first.classList.contains("oc-row");

@@ -6,6 +6,7 @@
 export const CHAI_CHECKS = {
   "contract-70": { item: "slow-at-green", title: "chai: the turn-off line at the green", how: "Cook flows of the chai tray (cook:chai-tray, cook:chai, their labs): every note the station logs as it calls the turn-off step (Lifecycle chai-slow: the heat bar's level as a fraction, by: the green band's lo/hi and whose pan) must have the level at or above lo and at most 0.06 past it (the bar has just entered the green: P56, 'so that you don't think you have to stop it early'). A round where a pan was turned down in or past the green (chai-down, the level as it was turned down) with no call at all is a break too." },
   "contract-71": { item: "once-each", title: "chai: milk, water and tea once each", how: "Cook flows of the chai tray: every note the station logs as milk (cook-dudh), water (cook-paani) or the tea leaves (cook-chai) is tapped for a pan (Lifecycle chai-add: the thing, then who:count, with :again when the tap was refused) must have a count of 1, or carry :again (the second tap only wiggled, nothing went in). A count of 2 or more is a break: there is one of milk, water and tea in a pan (P33)." },
+  "contract-90": { item: "card-light", title: "chai: the next item lit for a new player", how: "Cook flows of the chai tray at level 1 for a new player (not #returning, #mistake or #takeback): once the first tea has gone into a pan and another item follows, the station must have lit the order card's next item (its Lifecycle note card-light, CHAI-37): the first time, after the two items shown, the light shows where to look next (Zafar, 4 Nov, his L1 replay: it had gone, a waiter that gave up at once, and no check saw a light that never came)" },
 };
 
 const CHAI_FLOW = /^(cook:(recipe:)?chai(-tray)?\b|lab:cook\/(recipe-)?chai(-tray)?\b)/;
@@ -43,4 +44,16 @@ export function check71(r, tl, add) {
     if (again === "again") continue;
     if (Number(count) > 1) add("contract-71", n.t, `${n.reason} went into ${who}'s pan a ${Number(count) === 2 ? "second" : `${count}th`} time: there is one of milk, water and tea in a pan (a second tap only wiggles)`);
   }
+}
+
+// 90 (CHAI-37, CHAI-77; Zafar, 4 Nov): a new player at L1 sees the order card's next item lit once after the first tea
+export function check90(r, tl, add) {
+  const f = r.flow || "";
+  if (!/^cook:chai-tray\b/.test(f) || /@L[2-9]/.test(f) || /#(returning|mistake|takeback)/.test(f)) return;
+  const adds = lifeOf(tl, "chai-add").filter((n) => !/:(again|capped)$/.test(String(n.by || "")));
+  const tea = adds.find((n) => n.reason === "cook-chai");
+  if (!tea) return;
+  const after = adds.find((n) => n.t > tea.t && n.reason !== "cook-chai");
+  if (!after) return;
+  if (!lifeOf(tl, "card-light").length) add("contract-90", after.t, `a new player at L1: the first tea went in and the next item followed, but the order card's next item was never lit (no card-light note): the first time's pointer to the third item is missing`);
 }

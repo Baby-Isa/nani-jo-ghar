@@ -23309,14 +23309,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "rec:order-card-big",
+   "at": "visible:.cook-wm .wm-shut",
    "after": null,
    "capture": [
     "shot",
     "voice"
    ],
    "expect": null,
-   "note": "a new player at L4 (adh and aako unmet): the word moment plays before the order (the kettle, the half glass, the full glass, both cards said, the snap frame); a returning player who has met them never sees it",
+   "note": "a new player at L4 (adh and aako unmet): the word moment before the order: the glass on the counter, the snap frame (corners, flash), both cards said",
    "delay": 0
   },
   {
@@ -23331,21 +23331,21 @@
    "at": "rec:order-card-big",
    "after": null,
    "capture": [
-    "shot"
+    "shot",
+    "voice"
    ],
    "expect": null,
-   "note": "a returning player at L4: no word moment, the order straight away",
+   "note": "a returning player at L4: no word moment (no shutter in the voice timeline), the order straight away",
    "delay": 0
   }
  ],
  "CHAI-68": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "hint",
    "level": [
     2,
-    3,
-    4
+    3
    ],
    "sizes": [
     "740x320",
@@ -23353,15 +23353,34 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "life:next-pan",
+   "after": null,
+   "capture": [
+    "shot",
+    "strip:#stage:4x300"
+   ],
+   "expect": null,
+   "note": "a new player who waits after the first pour (the hint player: pan 2 not yet used, as Zafar's case): about 0.3 s after the first pan is back on its burner, a tight gold circle on the next empty pan's rim, no face, no square box; never for a returning player",
+   "delay": 150
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:stage-start",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "a new player: about 3 s after the first pan is poured (or at once on a jar tapped into the poured pan) a gold circle on the next empty pan's rim, tight to its tap area, no face and no square box; never for a returning player",
-   "delay": 300,
-   "max": 4
+   "note": "a returning player at L2: at each stage's start no first-time next-pan light (no gold circle on an empty pan's rim)",
+   "delay": 0,
+   "max": 2
   }
  ],
  "CHAI-69": [
@@ -23664,24 +23683,40 @@
   {
    "flow": "cook:chai-tray",
    "path": "fair",
-   "level": [
-    2,
-    3
-   ],
+   "level": 2,
    "sizes": [
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "visible:.ob-dots-now",
    "after": null,
    "capture": [
-    "shot"
+    "strip:#mission:5x600",
+    "zoom2:#mission"
    ],
    "expect": null,
-   "note": "a new player: the first time a card's word is dotted (L2), the light shows the reveal tap on the word; the first time a picture is blurred (L3), the same for the picture; each once, never again",
-   "delay": 300,
-   "max": 4
+   "note": "a new player, L2, the first dotted word: its dots lit in a thin strip that hugs them and covers no word, then the tap shown once (the word in its place, about 1.1 s in) with a click, then the dots back",
+   "delay": 100
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wc14-eye.ob-dots-now",
+   "after": null,
+   "capture": [
+    "strip:#mission:5x600",
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "a new player, L3, after the word's lesson: the first blurred picture's eye lit, the picture shown once in place, then blurred again",
+   "delay": 100
   }
  ],
  "ART-35": [
@@ -23787,14 +23822,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "rec:order-card-in-sidebar",
    "after": null,
    "capture": [
     "voice"
    ],
    "expect": null,
-   "note": "every person's order: each said row has its clip, the second person's first item included (the voice timeline, no row silent)",
-   "delay": 0
+   "note": "every person's order up to the cards in the side panel: each said row has its clip, the second person's first item included (no row silent)",
+   "delay": 500
   }
  ],
  "SH-202": [
@@ -23809,14 +23844,16 @@
     "1280x665"
    ],
    "profile": "second-play",
-   "want": null,
+   "want": [
+    "/khun na|dudh na/"
+   ],
    "at": "rec:order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "a 'no' card whose word is past its pill: its picture blurred as the others (the grey on top), never showing through",
+   "note": "a 'no' card (no sugar, no milk) whose word is past its pill: its picture blurred as the others (the grey on top), never showing through",
    "delay": 500
   }
  ],
@@ -23877,15 +23914,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "visible:.cook-wm .wc14",
+   "at": "every:visible:.cook-wm .wc14",
    "after": null,
    "capture": [
     "crop:#stage",
     "dom:.cook-wm"
    ],
    "expect": null,
-   "note": "the word moment's cards show their English (half; whole, full): the first time the child meets the words",
-   "delay": 1500
+   "note": "the word moment's two cards, each with its English shown (adh: half; aako: whole, full)",
+   "delay": 1200,
+   "max": 2
   }
  ],
  "CHAI-72": [
@@ -23939,14 +23977,16 @@
     "1280x665"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/adh|aako/"
+   ],
    "at": "rec:order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "adh and aako's item cards show the word moment's side-on glasses, half and full",
+   "note": "an order with adh or aako: their item cards show the word moment's side-on glasses, half and full",
    "delay": 500
   }
  ],
@@ -23963,17 +24003,40 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "rec:hint-glow",
+   "at": "every:rec:hint-glow",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "a returning player stuck after the first pour: after the level's wait the next pan's rim is lit round, as the first-time light",
-   "delay": 600
+   "note": "a returning player stuck: each stuck hint after the level's wait; the one after the first pour lights the next pan's rim round, as the first-time light",
+   "delay": 600,
+   "max": 4
   }
  ],
  "CHAI-76": {
   "human": "Zafar's ear: what Nani says when the child is stuck on an asked thing (milk, sugar, the extra) past its support: her line hides the word (the leak test); his call whether to keep it"
- }
+ },
+ "CHAI-77": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:card-light",
+   "after": null,
+   "capture": [
+    "shot",
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "a new player at L1, after the water and the tea: the next (third) item's card in the order row lit once, whole in view, no box over a face",
+   "delay": 200
+  }
+ ]
 }
