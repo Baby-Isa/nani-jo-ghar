@@ -508,7 +508,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
     };
     let lastGist = null;
-    const phase = (key, id) => {
+    const phase = (key, id, pick) => {
       const sid = key ? `${key}:${id || ""}` : null;
       if (sid === lastPhase) return;
       lastPhase = sid;
@@ -519,7 +519,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (pans.length && pans.every((q) => q.poured > 0) && UI.guideClear) UI.guideClear();
         return;
       }
-      steps.to(key, { id: sid, line: stepLine(key, id) });
+      // SH-205 (Zafar, 4 Nov evening, L2: "input all the items in pan 1 and set it to boil. While pan 1 is boiling, add the first two
+      // items to pan 2, then stop pan 1 at the correct time and pour. Shortly after ... it will say ginger (when it should reset the
+      // hint timer after the pour as that's a correct action"): after the pour the step is picking pan 2, its line pan 2's next item;
+      // the tap it waits for is the pan, not an item, so the item's rule (said only as her card opens, SH-172) missed it and the line
+      // was said at once as a control's call. A pick's step is never called: its line comes with the pick's own light, after the wait
+      steps.to(key, { id: sid, line: stepLine(key, id), noCall: pick ? "pick" : null });
       if (key === lastGist) return;
       lastGist = key;
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
@@ -2696,7 +2701,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       // (a control's step names no item: Nani's card lets the last item go before the call is said, contract-89; the sandbox, 3 Nov)
       if (nx && CONTROL14.has(nx.phase) && UI.helper) UI.helper(null);
-      if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
+      if (nx) phase(nx.phase, nx.pid, !!(nx.e && /^pan-/.test(nx.e.key || ""))); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
       // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
       coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}` : null);
