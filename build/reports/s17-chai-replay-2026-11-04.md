@@ -63,3 +63,25 @@ Branch `claude/admiring-ptolemy-77fuv5`. All in the chat (Opus, high), the judge
 ## For Zafar
 `docs/feedback/chai-play-2026-11-03.md` §6: the snap, the pop-up's shape, the reveal lesson, the plain wall, Nani's hint for an asked
 thing, each built on the recommendation.
+
+## 4 Nov afternoon: Zafar's replays (L1, L2, L4 on a laptop), `docs/feedback/chai-play-2026-11-04.md`
+
+- **CHAI-77, the next item's light after the first two (L1):** gone twice over: the 4 Nov contract-79 fix gave up before its step's key
+  was set, and its 3 s limit ran out while the tea's spoon and the row's glide kept the kitchen moving. Both fixed (8 s, gives up only
+  once the step has moved on); seen lit in a browser; contract-90 now fails any L1 new player who never sees it (the checks only
+  caught a light that came early).
+- **SH-196, the reveal lesson (L2), and his video:** frame by frame it showed what the browser trace found: the dots lit, then the box
+  went with the dots as the word showed (the screen lit, "water" unlit), then the dots lit again. One lesson now (the box on the word
+  while it shows), a clear tap sound, the wait before it trimmed. His "no lesson with the order untouched" was not reproduced at three
+  sizes.
+- **SH-203, the card's flight (L4):** measured frame by frame: the pop-up is zoomed (CSS zoom) to fit, so its translate was zoomed too
+  and it stopped 90-150 px short, then snapped. Now it lands within 2 px, re-aimed every frame; bows 0-60 px (was 70-90), only for a
+  face it would cover more than at take-off; keep-outs 2 px; heads measured from their pictures.
+- **The word moment (CHAI-78 to -82):** first, before the people; one steady glass (pack s17-wm2, his run this afternoon: the full
+  picture revealed over the empty one below the level, the surface drawn); the kettle tips in and back, a flowing stream, the last
+  drop; both poured, a look, each snapped in turn, both cards held; thin white rounded corners.
+- **SH-206** the last cards ticked at serving both whole; **SH-207** the ladder only between games (a frozen read for the game, a unit
+  test); **SH-208** the shelf centred between the kitchen's outer edges, spread so the pills don't touch.
+- **SH-205, Nani's hint during a pour:** not reproduced (a scripted L4 at a child's pace); every hint clock resets on any tap and stops
+  while a pan pours; his video of it asked for.
+- **The probes that never reached their moment** (CHAI-67, -68, -71, -74, -75, SH-196, SH-201, SH-202) rewritten, plus CHAI-77's.
