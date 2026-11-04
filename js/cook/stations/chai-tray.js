@@ -2357,7 +2357,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           let quiet = null;
           // (the sandbox, 3 Nov: a kitchen that never went still held the waiter for seconds, and it lit in the middle of another move;
           // past its 3 s it gives up, and the next pan's tea brings it again: SH-178)
-          const until = Date.now() + 3000;
+          // (Zafar, 4 Nov, his L1 replay: the light never came: after the tea the spoon and the row's glide keep the kitchen moving for
+          // over 3 s at a child's pace, so it always gave up; it waits up to 8 s for stillness, and gives up as soon as the child moves
+          // on or the step changes, so it never lights beside another step's light)
+          const until = Date.now() + 8000;
           // (only on the step it was for: the sandbox, 4 Nov: it waited through the milk and lit beside "Slow kar!"'s own light)
           // (Zafar, 4 Nov, his L1 replay: "after the first two items, I didn't get the onboarding screen to draw my attention to the next
           // third item": the first look ran before this step's key was set (rungKey is set below), so it always gave up: it gives up only
