@@ -27,6 +27,32 @@ Branch `claude/admiring-ptolemy-77fuv5`. All in the chat (Opus, high), the judge
   finding, and a word scrolled past the row's edge is out of view, not clipped; the 402 "new findings" were all that.
 - `checks.mjs` green; the side panel 36/36; the art check clean; labcheck chai L1-L4 clean.
 
+## The full checks, 4 Nov early morning (everything found was fixed)
+- **The final chai run `s17-final2`:** 0 contract breaks over 44 pages; the route `s17-route2`: 0 over 9. The 3 + 7 screen
+  findings: chai's were known (the order row's small English, a state class in its name: the baseline now loads its keys
+  through the same key); chaat's were the old card's (CHT-17) and two strict ones that were real:
+  - **SH-204 (new, on `main` too):** chaat L4's big card at the bowl cut "ba dungri" at its edge: the shared order card's
+    fit test counted a pill's word and tick, not its speaker (five speakers, about 200 px short), so the row never stood
+    upright; then the request pop-up fitted its card once as it opened, before the row stood up (it scrolled at 740x320).
+    Both fixed for every game (`js/shared/order-card.js` groupFits, `js/shared/request-popup.js` fitCard).
+  - **The cog under the pop-up's veil:** by design (the game under it is inert until a tap folds the card); the screen
+    check now treats the tinted veil as the play area's modal (its see-through "along" form stays checked).
+- **CLN-218 (new, on `main` too):** the clinic's side card scrolled 6 px at 740x320 for the face's badge; room at its foot.
+- **contract-24 on samosa** (a glow 23 ms after a pick): the glow was switched on in the tap's own handler (the answer to
+  the pick); the check now knows that. **contract-65 on chaat's chop** at 1920x1080 (26 ms over): timing, passed twice
+  when rerun.
+- **The judge** (Fable, 4 batches, `ev-20261104-042426-e9c`, 17 rows): built SH-163, SH-199, SH-200, SH-203, CHAI-70,
+  CHAI-72, CHAI-73; reopened CHAI-68 (the builder's reading on the row: pan 2 was in use in the shot, the probe must reach
+  a player who waits) and SH-196; 6 EVIDENCE (the shots did not reach the moment: SH-201, SH-202, CHAI-67, -71, -74, -75);
+  SH-189 refused (no red run first). **Its off-row flaw fixed:** the reveal lesson's box and glow, round the dots' 24 px
+  tap area, lay over the word above; the box now hugs the four dots (`js/shared/onboard.js` o.box) and the dots glow.
+- **Cook's mount test:** 33 fails, down to 21: an unmount mid-step left the onboarding kit's rung clock, its layer on
+  `<body>` and its listeners (Onboard.stopAll, from Cook's UI.reset; the page error went with them). The 21 left are the
+  same in every mount (not leaks): the voice's safety timers, the sound's audio context, the shared listeners added once
+  per page, and the test browser's `window.Cook` (3 Nov, for the evidence probes; never on a visitor's page).
+- **The reveal lesson** waited for the row to stop but lit 7 ms after its scroll ended (contract-79): a beat of real time.
+- Final: `s17-final3` and `s17-route3`, then `checks.mjs` (see the end).
+
 ## Art
 - Art block 3 landed (38 of 39; BK, NF best tries; MZ refused): filed, judged, run log; the redo block for BK, NF and MZ (MZ reworded)
   is `docs/design-language/art-plans/s17-art3-redo-block.txt`.
