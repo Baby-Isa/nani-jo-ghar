@@ -150,6 +150,14 @@ export class CookPlayer {
     // for what comes next: the order card's next item is lit for them), then plays fair
     const prevKey = d.curKey;
     d.curKey = e.key;
+    // pause-after-pour (CHAI-68): the first move after the first pan is poured waits 4 s (a new player who hasn't found the next pan:
+    // its rim is lit for them), then plays fair
+    if (m === "pause-after-pour" && !d.paused && /^pour-/.test(prevKey || "") && e.key !== prevKey && CALM.includes(e.kind)) {
+      d.paused = true;
+      await this.once("pause-after-pour", { settle: 0 });
+      await sleep(4000);
+      return false;
+    }
     if (m === "pause-after-tea" && !d.paused && prevKey === "cook-chai" && e.key !== "cook-chai" && CALM.includes(e.kind)) {
       d.paused = true;
       await this.once("pause-after-tea", { settle: 0 });

@@ -1842,3 +1842,7 @@
 {"id":"CHAI-70","run":"ev-20261104-042426-e9c","event":"built","date":"2026-11-04"}
 {"id":"CHAI-72","run":"ev-20261104-042426-e9c","event":"built","date":"2026-11-04"}
 {"id":"CHAI-73","run":"ev-20261104-042426-e9c","event":"built","date":"2026-11-04"}
+{"id":"SH-203","run":"ev-20261104-152612-lpq","verdict":"PASS","spec":"8f41d63bf176d1a10b60","judge":"expect","date":"2026-11-04"}
+{"id":"CHAI-71","run":"ev-20261104-152612-lpq","verdict":"PASS","spec":"f2c3073639622045c64d","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-04"}
+{"id":"CHAI-67","run":"ev-20261104-152612-lpq","verdict":"FAIL","spec":"5726a09d3d17b2eb898f","judge":"Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36","date":"2026-11-04"}
+{"id":"CHAI-71","run":"ev-20261104-152612-lpq","event":"built","date":"2026-11-04"}

@@ -974,6 +974,22 @@
   "commit": "db5c297b",
   "date": "2026-11-03"
  },
+ "CHAI-67": {
+  "hash": "e9c45d56820e81ccacf8",
+  "dhash": [
+   "7f7f7f3636766d6d",
+   "3e3e3f3636167777",
+   "7e6e2e286a682a7f"
+  ],
+  "verdict": "FAIL",
+  "line": "C, the returning player (p-seen) still gets the word moment: its voice timeline shows sfx/shutter at 6.62 and 8.01 with \"adh\" (mum) and \"aako\" (zafar) said before the order at 16.67, although the probe's note claims no shutter; \"not again once met\" is not shown. The first-time half is met: A (1280x665) and B (740x320) show the snap frame's corner brackets round the half glass with the full glass beside it on the counter, and the p-fresh timelines have shutter + adh, shutter + aako before request (cook:order). Flaws: none in the panels; the order card's \"adh,\" bubble in C sits beside Nana, its speaker.",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-152612-lpq",
+  "commit": "d07d3fbe",
+  "png": "build/screenshots/evidence/ev-20261104-152612-lpq/CHAI-67.png",
+  "date": "2026-11-04"
+ },
  "CHAI-68": {
   "hash": "ab13ad1c982f78be8ef6",
   "dhash": [
@@ -1016,6 +1032,23 @@
   "run": "ev-20261104-042426-e9c",
   "commit": "6a282358",
   "png": "build/screenshots/evidence/ev-20261104-042426-e9c/CHAI-70.png",
+  "date": "2026-11-04"
+ },
+ "CHAI-71": {
+  "hash": "25dfef7bf393279586f2",
+  "dhash": [
+   "7f7f5b121b526b6d",
+   "feff5555555555ca",
+   "3e391b121b166b76",
+   "feb35555515555c8"
+  ],
+  "verdict": "PASS",
+  "line": "A, L4 first time at 1280x665: both word-moment cards carry their English written plainly, not dotted (adh: half; aako: whole, full); B is the same crop, C and D show the same at 740x320, nothing clipped; the dom captures read \"adh / half / aako / whole, full\" at both sizes. Flaws: none; Nani's \"Cook it the way they said.\" in the sidebar is grey-italic English (decision 84).",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_014xb3kSMdFRRDXxAdwjBh36",
+  "run": "ev-20261104-152612-lpq",
+  "commit": "d07d3fbe",
+  "png": "build/screenshots/evidence/ev-20261104-152612-lpq/CHAI-71.png",
   "date": "2026-11-04"
  },
  "CHAI-72": {
@@ -7605,19 +7638,19 @@
   "date": "2026-11-04"
  },
  "SH-203": {
-  "hash": "b77561329135969fa6c3",
+  "hash": "b807fc0f2988e120a255",
   "dhash": [
    "7e6e5e686a682a7f",
-   "0122248062a62032",
-   "0162f97979a0ba38",
-   "6eae2e7e6c783a6d"
+   "0162f97979a0b616",
+   "6eae2e7e6c783a6d",
+   "223c30b838303cbc"
   ],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261104-042426-e9c",
-  "commit": "6a282358",
+  "run": "ev-20261104-152612-lpq",
+  "commit": "d07d3fbe",
   "date": "2026-11-04"
  },
  "SH-21": {

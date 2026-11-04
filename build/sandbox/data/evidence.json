@@ -23342,8 +23342,9 @@
  "CHAI-68": [
   {
    "flow": "cook:chai-tray",
-   "path": "hint",
+   "path": "pause-after-pour",
    "level": [
+    2,
     3
    ],
    "sizes": [
@@ -23359,7 +23360,7 @@
     "strip:#stage:4x300"
    ],
    "expect": null,
-   "note": "a new player who waits after the first pour (the hint player: pan 2 not yet used, as Zafar's case): about 0.3 s after the first pan is back on its burner, a tight gold circle on the next empty pan's rim, no face, no square box; never for a returning player",
+   "note": "a new player who waits after the first pour (the player pauses 4 s, pan 2 not yet used): about 0.3 s after the first pan is back on its burner, a tight gold circle on the next empty pan's rim, no face, no square box",
    "delay": 150
   },
   {

@@ -44,6 +44,8 @@ export const DRIVERS = {
   "tawa-empty-then-off": { kinds: ["cook"], moments: ["rec:tawa-empty", "rec:knob-off", "drv:knob-off", "drv:tawa-empty"] },
   "idle-twice": { kinds: ["cook", "heal"], moments: ["rec:idle-hint", "rec:idle-again"] },
   // CHAI-77 (Zafar, 4 Nov): the first move after chai's tea waits 4.5 s (the order card's next item lit for a new player), then fair
+  // CHAI-68: the first move after the first pour waits 4 s (the next pan's rim lit for a new player), then fair
+  "pause-after-pour": { kinds: ["cook"], moments: ["rec:pause-after-pour", "life:next-pan"] },
   "pause-after-tea": { kinds: ["cook"], moments: ["rec:pause-after-tea", "life:card-light"] },
   // the stuck player (S13-T, generalising idle-twice): at the first move it waits, taps nothing, through every help rung, then
   // plays fair. rec:stuck-start as it stops, then rec:stuck-5s, rec:stuck-12s, rec:stuck-18s at that much idle time (the kit's
