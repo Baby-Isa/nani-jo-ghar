@@ -42,6 +42,8 @@ export async function pageLint(opts) {
   const out = [];
   const csCache = new Map();
   const cs = (el) => { let c = csCache.get(el); if (!c) { c = getComputedStyle(el); csCache.set(el, c); } return c; };
+  const designedScroller = (a) => { if (!a || a.nodeType !== 1) return false; const c = cs(a); const scrolls = /auto|scroll/.test(c.overflowX + " " + c.overflowY); return scrolls && (c.scrollbarWidth === "none" || a.hasAttribute("data-njg-scroll")); };
+  const inDesignedScroller = (el) => { for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) if (designedScroller(a)) return true; return false; };
   const STATE = new Set("in on off live show shown active hidden done ok holding pulse throb reading glow open closed ready wrong right bad good sel selected current lit dim flash shake pop fade fading visible enter leave idle busy hover focus pressed".split(" "));
 
   function seg(el) {
@@ -171,6 +173,7 @@ export async function pageLint(opts) {
       const hy = ca.overflowY === "hidden" || ca.overflowY === "clip";
       if (!hx && !hy) continue;
       if (a === el && ell) continue;
+      if (designedScroller(a)) continue; // (scrolled out of view, not cut)
       const b = padBox(a);
       const slop = fs * sc * 0.3;
       let px = 0;
@@ -194,7 +197,7 @@ export async function pageLint(opts) {
     }
     // outside the viewport
     const out_ = Math.max(-L, -T, R - vw, B - vh);
-    if (out_ > TOL && !(el.closest && el.closest("[data-grown]"))) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
+    if (out_ > TOL && !(el.closest && el.closest("[data-grown]")) && !inDesignedScroller(el)) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
   }
 
   // ---- covering (LAY-06) ----
@@ -269,6 +272,9 @@ export async function pageLint(opts) {
     }
   }
 
+  // a designed scroller (the s14 order row, the side panel's order list: Zafar, 27 Oct, SH-148: "a sideways row that scrolls, going behind a
+  // shadow, no scroll bar"): one that scrolls with its bar hidden. It is no scroll bar on a child's screen (CMP-07), and a card scrolled
+  // past its edge is out of view, not clipped or off the screen (the sandbox, 3 Nov)
   // ---- scrolling ----
   const se = document.scrollingElement || document.documentElement;
   const ho = cs(document.documentElement).overflowX, hb = cs(document.body).overflowX;
@@ -286,6 +292,7 @@ export async function pageLint(opts) {
     const sy = (c.overflowY === "auto" || c.overflowY === "scroll") && el.scrollHeight > el.clientHeight + 1;
     if (!sx && !sy) continue;
     if (!shown(el, el.getBoundingClientRect())) continue;
+    if (designedScroller(el)) continue;
     add("scroll-container", el, (sx ? `sideways ${el.scrollWidth}>${el.clientWidth}` : "") + (sx && sy ? ", " : "") + (sy ? `down ${el.scrollHeight}>${el.clientHeight}` : ""));
   }
   if (moving.length) {

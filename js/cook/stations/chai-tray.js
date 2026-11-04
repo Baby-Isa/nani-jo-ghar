@@ -2658,7 +2658,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
-      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}` : null);
+      // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
+      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}` : null);
       // Sprint 11: a ready pan can be served by calling "chai" (its microphone by the glass)
       if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
       else hideMic();
