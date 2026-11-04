@@ -747,30 +747,25 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const spanR = trayX + trayD;
     const mid = (spanL + spanR) / 2;
     const roomW = 2 * Math.min(mid - 40, 1600 - 190 - mid, (spanR - spanL) / 2);
-    // SH-208 (Zafar, 4 Nov: "the pills are like overlapping and merging somewhat ... where there's space to spread them out more, such
-    // that they don't overlap, we should try to do that"): under the hob and tray while the pills fit (CHAI-66); where they would touch,
-    // the row widens evenly on both sides up to the play area's margins (still clear of the tick), only as far as the pills need; only
-    // past that do they sit close
+    // SH-208 (Zafar, 4 Nov: "the pills are like overlapping ... where there's space to spread them out more ... we should try to do
+    // that"; then, his screenshot: "The items should be centered between the red dotted lines (furtherest edges of in game objects on
+    // both sides)"): the row is always centred on the hob-and-tray span (the pan's handle to the tray's right edge). Under that span
+    // while the pills fit (CHAI-66); where they would touch, it widens evenly on both sides as far as the play area's margins let it
+    // (the left margin and the tick's clearance, whichever is nearer the centre); past that the groups' gaps close to 20 px, then the
+    // pills sit close
     const PILL_ROOM = CHIP.w + 12;
-    const LEFT = 40, RIGHT = 1600 - 190; // (the play area's margin, and clear of the tick)
+    const LEFT = 40, RIGHT = 1600 - 190;
     const nG = shelfIds.length - 1;
     let gapW = GROUP_GAP;
     let slotW = Math.min(PITCH, (roomW - nG * gapW) / slotsN);
-    let x0 = null;
     if (slotW < PILL_ROOM) {
-      // centred under the kitchen as far as the margins let it; then the whole width, centred in it; then the groups' gaps close to 20
       const roomMid = 2 * Math.min(mid - LEFT, RIGHT - mid);
-      const fit = (room, g) => (room - nG * g) / slotsN;
-      if (fit(roomMid, gapW) >= PILL_ROOM) slotW = PILL_ROOM;
-      else {
-        gapW = Math.max(20, Math.min(GROUP_GAP, (RIGHT - LEFT - slotsN * PILL_ROOM) / Math.max(1, nG)));
-        slotW = Math.min(PILL_ROOM, fit(RIGHT - LEFT, gapW));
-        const w = slotsN * slotW + nG * gapW;
-        x0 = Math.max(LEFT, Math.min(mid - w / 2, RIGHT - w));
-      }
+      const fit = (g) => (roomMid - nG * g) / slotsN;
+      if (fit(gapW) < PILL_ROOM) gapW = Math.max(20, Math.min(GROUP_GAP, (roomMid - slotsN * PILL_ROOM) / Math.max(1, nG)));
+      slotW = Math.min(PILL_ROOM, fit(gapW));
     }
     const width = slotsN * slotW + nG * gapW;
-    if (x0 == null) x0 = Math.max(LEFT, mid - width / 2);
+    const x0 = mid - width / 2;
     const shelf = {};
     let sx = x0 + slotW / 2;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));

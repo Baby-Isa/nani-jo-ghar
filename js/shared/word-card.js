@@ -706,9 +706,42 @@
       else fk = [{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }];
       const gk = [{ opacity: 0 }, { opacity: 0 }];
       const fe = curve ? "linear" : o.across ? "ease-in-out" : ease;
-      const f = from.animate(fk, { duration: dur, easing: fe, fill: "forwards" });
-      const g = ghost.animate(gk, { duration: dur, easing: fe, fill: "forwards" });
-      await Promise.all([f.finished, g.finished]);
+      if (o.across || !root.requestAnimationFrame) {
+        const f = from.animate(fk, { duration: dur, easing: fe, fill: "forwards" });
+        const g = ghost.animate(gk, { duration: dur, easing: fe, fill: "forwards" });
+        await Promise.all([f.finished, g.finished]);
+      } else {
+        // SH-203 (Zafar, 4 Nov, L4: "the path takes it nearly there, and then suddenly it just jumps and snaps into place"): the flight
+        // was aimed at where the row's card was as it began; the row and the list can still move while it flies (the row's glide to its
+        // slot, the list keeping it in view), so it ended beside the card and jumped. Now each frame aims at where the card is NOW, on
+        // the same curve and ease, so it lands on it exactly
+        ghost.style.opacity = "0";
+        const easeT = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+        const cx0 = a.left + a.width / 2, cy0 = a.top + a.height / 2;
+        const bend = o.bend || 0;
+        await new Promise((res) => {
+          let t0 = null;
+          const step = (now) => {
+            if (!from.isConnected) return res();
+            if (t0 == null) t0 = now;
+            const u = Math.min(1, (now - t0) / dur);
+            const t = easeT(u);
+            const bb = to.getBoundingClientRect();
+            const ddx = bb.left + bb.width / 2 - cx0;
+            const ddy = bb.top + bb.height / 2 - cy0;
+            const ss = bb.width && bb.height ? Math.min(bb.width / a.width, bb.height / a.height) : s;
+            const len = Math.hypot(ddx, ddy) || 1;
+            const qx = ddx / 2 + (-ddy / len) * bend;
+            const qy = ddy / 2 + (ddx / len) * bend;
+            const x = 2 * (1 - t) * t * qx + t * t * ddx;
+            const y = 2 * (1 - t) * t * qy + t * t * ddy;
+            from.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(1 + (ss - 1) * t).toFixed(4)})`;
+            if (u < 1) root.requestAnimationFrame(step);
+            else res();
+          };
+          root.requestAnimationFrame(step);
+        });
+      }
       // the row's own card under the copy, shown at once (no fade from its waiting slot), then the copy goes: the same card, one frame
       // (its picture decoded first, while it still waits off the card; then the row's card shown and the big one hidden together)
       const im = to.querySelector("img");

@@ -922,7 +922,60 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     headBox(img) {
       const w = img.displayWidth || 300;
       const top = img.baseY != null ? img.baseY : img.y;
+      // SH-203 (Zafar, 4 Nov: "draw the head area tighter to the actual head area"): the head measured from the picture itself (its
+      // outline from the top down, until it widens into the shoulders), once per picture; the old guess where it can't be read
+      const m = this.headOf(img);
+      if (m) {
+        const h = img.displayHeight || w;
+        return { x: img.x - w / 2 + m.l * w, y: top + m.t * h, w: (m.r - m.l) * w, h: (m.b - m.t) * h };
+      }
       return { x: img.x - w * 0.2, y: top + w * 0.04, w: w * 0.4, h: w * 0.42 };
+    }
+    /** The head's box as fractions of the picture (l, r across; t, b down), read from its alpha: null where it can't be read. */
+    headOf(img) {
+      const key = img && img.texture && img.texture.key;
+      if (!key) return null;
+      this._heads = this._heads || {};
+      if (key in this._heads) return this._heads[key];
+      let out = null;
+      try {
+        const src = this.textures.get(key).getSourceImage();
+        const fr = img.frame || {};
+        const sw = fr.cutWidth || src.width, sh = fr.cutHeight || src.height;
+        const W = 120, H = Math.max(1, Math.round((W * sh) / sw));
+        const cv = document.createElement("canvas");
+        cv.width = W;
+        cv.height = H;
+        const g = cv.getContext("2d", { willReadFrequently: true });
+        g.drawImage(src, fr.cutX || 0, fr.cutY || 0, sw, sh, 0, 0, W, H);
+        const d = g.getImageData(0, 0, W, H).data;
+        const span = (y) => {
+          let l = -1, r = -1;
+          for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3] > 40) { if (l < 0) l = x; r = x; }
+          return l < 0 ? null : [l, r];
+        };
+        let y0 = 0;
+        while (y0 < H && !span(y0)) y0++;
+        if (y0 < H) {
+          let l = W, r = 0, widest = 0, y = y0;
+          for (; y < H; y++) {
+            const sp = span(y);
+            if (!sp) continue;
+            const wd = sp[1] - sp[0];
+            // (past the chin: a row much wider than the head so far is the shoulders; a hat or a scarf stays within it)
+            if (y - y0 > H * 0.06 && widest > 0 && wd > widest * 1.6) break;
+            widest = Math.max(widest, wd);
+            l = Math.min(l, sp[0]);
+            r = Math.max(r, sp[1]);
+            if (y - y0 > H * 0.35) break;
+          }
+          if (r > l && y > y0) out = { l: l / W, r: (r + 1) / W, t: y0 / H, b: y / H };
+        }
+      } catch (e) {
+        out = null;
+      }
+      this._heads[key] = out;
+      return out;
     }
     async leaveChar(who) {
       const img = this.chars[who];

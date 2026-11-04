@@ -1907,7 +1907,8 @@
           const hb = S.headBox(img);
           const a = UI.worldToScreen(hb.x, hb.y);
           const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
-          out.push({ left: a.x - 8, top: a.y - 8, right: z.x + 8, bottom: z.y + 8 });
+          // (Zafar, 4 Nov: "draw the head area tighter to the actual head area ... half a centimeter of the head, that's fine")
+          out.push({ left: a.x - 2, top: a.y - 2, right: z.x + 2, bottom: z.y + 2 });
         });
       } catch (e) {
         /* no scene */
@@ -1916,7 +1917,7 @@
       document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
         if (f.closest(".wc14-pop, .wc14-flyer")) return;
         const b = f.getBoundingClientRect();
-        if (b.width > 0) out.push({ left: b.left - 6, top: b.top - 6, right: b.right + 6, bottom: b.bottom + 6 });
+        if (b.width > 0) out.push({ left: b.left - 2, top: b.top - 2, right: b.right + 2, bottom: b.bottom + 2 });
       });
       return out;
     };
@@ -2054,8 +2055,11 @@
               const t = i / 20;
               const px = (1 - t) * (1 - t) * c0.x + 2 * (1 - t) * t * ((c0.x + c2.x) / 2 + nx * b) + t * t * c2.x;
               const py = (1 - t) * (1 - t) * c0.y + 2 * (1 - t) * t * ((c0.y + c2.y) / 2 + ny * b) + t * t * c2.y;
-              const w = fb.width + (tr.width - fb.width) * t;
-              const h = fb.height + (tr.height - fb.height) * t;
+              // (as the morph shrinks it: one even scale to the row's card, never a stretch; the judge's check ran on a stretch, so it
+              // saw the card wider than it is and bowed the path further than needed: Zafar, 4 Nov, "the path is too wide")
+              const k = 1 + (Math.min(tr.width / fb.width, tr.height / fb.height) - 1) * t;
+              const w = fb.width * k;
+              const h = fb.height * k;
               if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > 0) return true;
             }
             return false;
