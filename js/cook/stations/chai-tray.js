@@ -2141,6 +2141,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // is a control's step, its rim lit round as CHAI-68's first-time light; was: its next item's shelf thing, which had no light)
       if (/^pan-/.test(key)) {
         const pan = pans.find((q) => `pan-${q.who}` === key);
+        // (Zafar, 4 Nov evening, L2: "even though I had tea pan 1 selected ... saucepan 2 [lit] in this outer gold rim ... It should only
+        // onboard you to select the second tea pot after you've successfully poured the first pot of chai and it's been served": while
+        // another pan is on the heat or waiting to pour, the next pan's stuck hint never comes; the plan still lets the child pick it)
+        if (pan && pans.some((q) => q !== pan && q.state !== "cold" && q.poured < needOf(q))) return null;
         return pan && { obj: pan.img, target: pageRect(pan.glowRing), round: true, panPick: true };
       }
       const obj = shelf[key];
@@ -2732,12 +2736,18 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // kutchi blurred as its same and english word blurred)"): once per player, for every game (one key each, not chai's own), the
     // first dotted word on the order card is lit ("tap the dots": a tap shows the word in its place, free help), then, the first
     // time a picture is blurred, its eye. The English and the Kutchi dots are one lesson. Was (Sprint 14): the Kutchi dots only.
+    const round14 = new Set();
     if (s14) {
       const vis = (x) => x && x.offsetParent && getComputedStyle(x).display !== "none" && getComputedStyle(x).visibility !== "hidden";
+      // (Zafar, 4 Nov evening: "I couldn't consistently recreate the onboarding for the blurred word ... this needs fixing to ensure it
+      // always shows at the beginning when first time player is selected": the save's mark lasted the whole visit, so a second round
+      // (Play again, the next level) never had it; with the grown-ups' New player it is every round's, once)
+      const np14 = !!(OB14 && OB14.newPlayer && OB14.newPlayer());
       const firstAll = (k) => {
         const key = `*:${S14_TAG}${k}`;
-        if (!fresh14 || seen14[key]) return false;
+        if (!fresh14 || (!np14 && seen14[key]) || (np14 && round14.has(key))) return false;
         seen14[key] = true;
+        round14.add(key);
         return true;
       };
       const lesson = async (el) => {
@@ -2790,9 +2800,28 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const q = pk.getBoundingClientRect();
           return { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 };
         };
+        // (Zafar, 4 Nov evening: "the highlight box for the blurred words should be the biggest size it's going to be ... wrapped to the
+        // size of the English words, so it doesn't jump up in size when the English is revealed": the word's own text, measured while
+        // it is still hidden, joins the dots' box from the start)
+        const wordBox = () => {
+          const c = el.closest(".wc14");
+          const t = c && (el.classList.contains("wc14-en-dots") ? c.querySelector(".wc14-en") : el.classList.contains("wc14-k-dots") ? c.querySelector(".wc14-k") : null);
+          if (!t || !t.textContent.trim() || !document.createRange) return null;
+          const rg = document.createRange();
+          rg.selectNodeContents(t);
+          const q = rg.getBoundingClientRect();
+          return q.width && q.height ? { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 } : null;
+        };
+        const union = (bs) => {
+          const v = bs.filter(Boolean);
+          if (!v.length) return null;
+          const x0 = Math.min(...v.map((b) => b.x)), y0 = Math.min(...v.map((b) => b.y));
+          const x1 = Math.max(...v.map((b) => b.x + b.w)), y1 = Math.max(...v.map((b) => b.y + b.h));
+          return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+        };
         let lastBox = null;
         const boxNow = () => {
-          const b = hug() || shown() || lastBox;
+          const b = union([hug() || shown(), wordBox()]) || lastBox;
           if (b) lastBox = b;
           return b;
         };

@@ -109,6 +109,11 @@
 .oc-card .oc-item.folded > .oc-fold > .oc-fold-in { visibility: hidden; transition: visibility 0s linear 0.42s; }
 .oc-card.folded .oc-done-tk { opacity: 1; transform: none; }
 .oc-card.still, .oc-card.still * { transition: none !important; }
+/* (Zafar, 4 Nov evening: a card folding as the order passes on rolls up with its rows still drawn, its top kept still, while its height
+   eases shut: js/cook/ui.js foldGlide) */
+.oc-card.folded.oc-folding { justify-content: flex-start !important; }
+.oc-card.folded.oc-folding .oc-body { grid-template-rows: 1fr; }
+.oc-card.folded.oc-folding .oc-in { opacity: 1; visibility: visible; }
 /* closed (not finished: the phase fold, a start-folded card): face + headline only, no check; a tap peeks */
 .oc-card.closed { cursor: pointer; }
 .oc-card.closed .oc-done-tk { display: none; }
@@ -549,7 +554,11 @@ body.njg-s14 #guide.ng-s14 .ng-say.rec .ng-line, body.njg-s14 #guide.ng-s14 .ng-
 .njg-guide .ng-arrow { display: none; }
 .njg-guide .ng-help { display: none; }
 body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap); height: var(--njg-tap); border-radius: 50%; border: 0; padding: 0; background: var(--njg-card14-arrow-bg); display: grid; place-items: center; box-shadow: var(--njg-card14-arrow-shadow); color: var(--njg-card14-text); cursor: pointer; touch-action: manipulation; }
-body.njg-s14 #guide.ng-s14 .ng-arrow[hidden] { display: none; }
+/* (Zafar, 4 Nov evening: "the drop-down button on the helper hint green box ... caused that box to be larger in height ... That arrow
+   shouldn't change the size of the box": its column is kept while it is away, so Nani's line never rewraps, and it adds no height of
+   its own: the tools cell is no taller than nothing, the arrow centred on the line, inside the box's padding) */
+body.njg-s14 #guide.ng-s14 .ng-tools { height: 0; align-self: center; overflow: visible; }
+body.njg-s14 #guide.ng-s14 .ng-arrow[hidden] { display: grid; visibility: hidden; pointer-events: none; }
 body.njg-s14 #guide.ng-s14 .ng-arrow svg { width: var(--njg-card14-u22); height: var(--njg-card14-u22); transition: transform .35s; }
 body.njg-s14 #guide.ng-s14.ng-open .ng-arrow svg { transform: rotate(180deg); }
 body.njg-s14 #guide.ng-s14 .ng-help { grid-area: help; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.3, .7, .2, 1); min-width: 0; }

@@ -214,6 +214,8 @@ if (fromRun) {
       const rec = new Recorder({ flow: flow.id, size, dir: runDir, page, sub: (ev && ev.variant) || "" });
       const probe = ev ? new EvidenceProbe(page, ev, { dir: runDir, size, lexicon, armed: ev.profile !== "second-play" }) : null;
       if (probe) { await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes))); await ctx.addInitScript(REC_HOOK); }
+      // (a debug hook of one's own while diagnosing: NJG_INIT=<file.js> adds it to every page)
+      if (process.env.NJG_INIT) await ctx.addInitScript({ path: process.env.NJG_INIT });
       sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); };
       const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
       let timer, wantMiss = null;

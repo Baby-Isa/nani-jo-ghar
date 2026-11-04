@@ -2126,7 +2126,11 @@
       if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-pass", { cards: moves.length });
       const ease = "cubic-bezier(.4, 0, .2, 1)";
       moves.forEach(([c, a, b]) => {
+        // (Zafar, 4 Nov evening: "the first person's card doesn't nicely scroll up and minimize. It just in an instant jerkily flashes":
+        // a card folding keeps its rows drawn while its height eases shut, so it rolls up as it rolled down, never a blank box shrinking)
+        if (b < a) c.classList.add("oc-folding");
         const an = c.animate([{ height: `${a}px`, overflow: "hidden" }, { height: `${b}px`, overflow: "hidden" }], { duration: ms, easing: ease });
+        if (b < a) an.finished.then(() => c.classList.remove("oc-folding"), () => c.classList.remove("oc-folding"));
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("card-fold", { step: c.dataset.who || "", by: `${Math.round(a)}->${Math.round(b)} ${Math.round(ms)}ms` });
         } catch (e) {
@@ -3079,7 +3083,8 @@
         open: !!mission.english,
         onPeek: !big && phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
         peekMs: peekMsOf(),
-        foldAfter: 700 / (Cook.speed || 1),
+        // (s14: the served card's ticks held, its row glided home, then the fold: OrderCard.settle14, Zafar 4 Nov evening)
+        foldAfter: (s14 ? 1500 : 700) / (Cook.speed || 1),
         onEl: (key, e) => addEl(map, key, e),
         decorate: (e, node) => node.key && typeof node.key.decorate === "function" && node.key.decorate(e),
         onFace: big ? null : (ev) => {

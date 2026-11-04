@@ -476,7 +476,11 @@
       // card still to do ticks only as the dish is served (the "no" cards, chai's half and full), nothing more ticks before then, so
       // the row goes to its end and they are all whole
       const rest = rows.filter((r) => !r.classList.contains("done"));
-      if (rest.length > 1 && rest.every((r) => r.dataset.serve === "1")) to = max();
+      // (Zafar, 4 Nov evening, L1: "when the final item is placed into the tea saucepan ... the item cards scroll back to the beginning
+      // ... the final item is cut off, while the order is still going on ... it needs to stay on the last item card, fully scroll to
+      // the right hand side, until the tea is served"): the last tick, or only serve-time cards left, keeps the row at its very end
+      // (a card's edge rule pulled a short row back to its start)
+      if (rest.every((r) => r.dataset.serve === "1")) to = max();
       else if (next) {
         const nl = next.offsetLeft - row.firstElementChild.offsetLeft;
         const nr = nl + next.offsetWidth;
@@ -508,6 +512,32 @@
       if (want != null && Math.abs(want - row.scrollLeft) > 1) row.scrollTo({ left: Math.min(max(), want), behavior: "smooth" });
     }
     if (fresh.length) glideWant.delete(card.dataset.ck);
+    // (Zafar, 4 Nov evening: "only once the tea is served should the menu card scroll the items back to the beginning. And then
+    // minimize. In that sequence"): a finished card (served) holds its ticks a moment at the row's end, glides home, then folds (the
+    // host's foldAfter for the s14 card leaves room for the glide)
+    if (fold) {
+      if (!card.classList.contains("done")) fold.home14 = false;
+      else if (!fold.home14) {
+        fold.home14 = true;
+        const spd = (root.Cook && root.Cook.speed) || 1;
+        setTimeout(() => {
+          const r = fold.el && fold.el.isConnected ? fold.el.querySelector(".oc-row14") : null;
+          if (!r || !fold.el.classList.contains("done")) return;
+          fold.scroll14 = fold.want14 = 0;
+          glideWant.delete(card.dataset.ck);
+          if (r.scrollLeft > 1) {
+            try {
+              if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("row-home", { step: String(Math.round(r.scrollLeft)), by: `served smooth from:${Math.round(r.scrollLeft)} to:0` });
+            } catch (e) {
+              /* only a log */
+            }
+            r._auto = true;
+            r.scrollTo({ left: 0, behavior: "smooth" });
+            setTimeout(() => (r._auto = false), 700);
+          }
+        }, 650 / spd);
+      }
+    }
     setTimeout(() => (row._auto = false), 900);
     row.classList.toggle("oc-at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 4);
     if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);
