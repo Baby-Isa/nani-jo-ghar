@@ -1632,7 +1632,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const panTap = async (pan) => {
       if (finished || busy) return;
       if (pan.state !== "ready" || pan.poured >= 2 || !talked) {
-        if (sel !== pan) select(pan);
+        if (sel !== pan) {
+          select(pan);
+          St.acted(); // (picking a pan is a move: the idle clock, the hint's and the bulbs', starts again: contract-25, the sandbox, 4 Nov)
+        }
         return;
       }
       // CHAI-54 (Zafar, 1 Nov): a glass that holds what was asked (ticked) takes no more: a pour past it doesn't land (a wiggle)

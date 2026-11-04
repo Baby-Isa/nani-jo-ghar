@@ -132,9 +132,8 @@
 .wc14 .wc14-dots { display: none; position: absolute; inset: calc(-1 * var(--njg-card14-u8)) calc(-1 * var(--njg-card14-u2)); border: 0; background: none; padding: 0; gap: .3em; align-items: center; justify-content: center; cursor: pointer; }
 .wc14 .wc14-dots i { display: block; flex: none; border-radius: 50%; background: currentColor; }
 /* (the sandbox, 3 Nov: on phones the dots' tap area, which reaches past the dots, ran under the speaker below, so a tap there played the word
-   instead of showing it: the dots sit above the speaker, their tap area no deeper than the gap above it) */
+   instead of showing it: the dots sit above the speaker, their full tap area kept) */
 .wc14 .wc14-dots { z-index: 3; }
-.oc-row.oc-it14 .wc14-dots { inset: calc(-1 * var(--njg-card14-u6)) calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)); }
 .wc14 .wc14-k-dots { color: var(--njg-card14-kutchi); z-index: 2; }
 .wc14 .wc14-k-dots i { width: .5em; height: .5em; }
 .wc14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u8)); color: var(--njg-card14-dots-en); gap: .38em; }
@@ -196,7 +195,7 @@
 .wc14-it > .wc14-slot-e { grid-row: 3; margin-top: .5cqi; }
 .wc14-it > .wc14-spk { grid-row: 4; margin-top: 5cqi; width: clamp(var(--njg-tap), 32cqi, var(--njg-card14-u60)); }
 .wc14-it .wc14-k { font-size: clamp(var(--njg-card14-u15), 16cqi, var(--njg-card14-u32)); }
-.wc14-it .wc14-en { font-size: clamp(var(--njg-card14-u12), 10cqi, var(--njg-card14-u19)); }
+.wc14-it .wc14-en { font-size: clamp(max(calc(var(--njg-px) * 14), var(--njg-card14-u12)), 10cqi, max(calc(var(--njg-px) * 14), var(--njg-card14-u19))); } /* (never under the 14 px text floor, revealed or shown: the sandbox, 4 Nov) */
 /* the copy in flight (WordCard.morph) */
 .wc.wc14-flyer { box-shadow: var(--njg-card14-shadow); }
 /* SH-153 (Zafar, 28 Oct: "increase the icon size in the speech bubble"; lab/cards.html .bspk): on the s14 look every chai bubble's
