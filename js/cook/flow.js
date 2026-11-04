@@ -427,6 +427,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /* ---------------- one order ---------------- */
   async function runOrder(order, day, { demo, asked } = {}) {
+    // SH-207: the words as they are now for this whole game; what it records shows from the next
+    if (Cook.core && Cook.core.progress && Cook.core.progress.freeze) Cook.core.progress.freeze();
     const who = order.who;
     const ctx = makeCtx(order);
     // no "pass me" in the first order of a session; at most one at level 1
@@ -723,6 +725,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return out.length >= 2 ? out : [];
   }
   async function roundEnd(ctx, { scored, actions }) {
+    // SH-207: the game is over: its outcomes take effect (the end screen's words and the next game see them)
+    if (Cook.core && Cook.core.progress && Cook.core.progress.thaw) Cook.core.progress.thaw();
     // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
     const R = Cook.hostResults || global.Results;
     if (!R || Cook.noResults) return null;
@@ -1704,6 +1708,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.unlockAudio();
     Cook.inDay = true;
     Cook.labGuided = guided;
+    // SH-207: the words as they are now for this whole game; what it records shows from the next
+    if (Cook.core && Cook.core.progress && Cook.core.progress.freeze) Cook.core.progress.freeze();
     UI.closePanel();
     UI.clearStage();
     // (Zafar, 29 Oct: "the image loads and then jerks into a different version or different zoom level": chai's look, and its

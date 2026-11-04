@@ -268,10 +268,16 @@ export function createProgress({ save, data, followCook = true } = {}) {
     const next = importCook(cur, cw, D);
     if (JSON.stringify(next) !== JSON.stringify(cur)) save.set("words", next);
   };
-  const all = () => {
+  // SH-207 (Zafar, 4 Nov: "word, ladder, effects should only take place after the game has ended ... the game logs outcomes and
+  // submits them once the game's finished"): while a game is on (freeze() at its start, thaw() at its end screen) every READ sees
+  // the words as they were when it began, so nothing starts blurring or loses its pill mid-game; every WRITE still goes to the save
+  // at once (nothing is lost if the page closes) and shows from the next game
+  let snap = null;
+  const live = () => {
     follow();
     return save ? save.get("words") : {};
   };
+  const all = () => (snap ? snap : live());
   const put = (id, rec) => {
     if (save) save.update("words", (w) => ((w[id] = rec), w));
     return rec;
@@ -283,18 +289,32 @@ export function createProgress({ save, data, followCook = true } = {}) {
     stage: (id) => fresh(all()[id]).understand_stage,
     produceStage: (id) => fresh(all()[id]).produce_stage,
     cookStage: (id) => Math.min(4, fresh(all()[id]).understand_stage),
-    meet: (id) => put(id, meet(all()[id], D)),
-    heard: (id, ev) => put(id, heard(all()[id], ev, D)),
-    said: (id, ev) => put(id, said(all()[id], ev, D)),
+    meet: (id) => put(id, meet(live()[id], D)),
+    heard: (id, ev) => put(id, heard(live()[id], ev, D)),
+    said: (id, ev) => put(id, said(live()[id], ev, D)),
     support: (id, o) => support(all()[id], D, o),
-    reveal: (id, slot) => put(id, reveal(all()[id], slot, D)),
+    reveal: (id, slot) => put(id, reveal(live()[id], slot, D)),
     /** SH-159: a pick on the word's item ({ok, firstTry, peek}): the pill's own flag; shows(id): its Kutchi still written */
-    pill: (id, ev, run) => put(id, pillPick(all()[id], ev, run)),
+    pill: (id, ev, run) => put(id, pillPick(live()[id], ev, run)),
     pillShows: (id) => pillShows(all()[id]),
-    importCook: (cookWords) => save && save.set("words", importCook(all(), cookWords, D)),
+    importCook: (cookWords) => save && save.set("words", importCook(live(), cookWords, D)),
+    /** SH-207: a game's reads fixed at its start (freeze), the save's own again at its end screen (thaw); writes always go through */
+    freeze: () => {
+      snap = JSON.parse(JSON.stringify(live() || {}));
+      return true;
+    },
+    thaw: () => {
+      snap = null;
+    },
+    get frozen() {
+      return !!snap;
+    },
+    /** the save's words now, frozen or not (what this game has recorded so far) */
+    live: () => live(),
     /** SH-60 (PA5): forget every learned word ("Start over", the grown-ups' "play as new"): each word is new again. */
     reset: () => {
       lastCook = null;
+      snap = null;
       if (save) save.set("words", {});
     },
   };
