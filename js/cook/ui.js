@@ -2050,6 +2050,9 @@
           const len = Math.hypot(c2.x - c0.x, c2.y - c0.y) || 1;
           const nx = -(c2.y - c0.y) / len;
           const ny = (c2.x - c0.x) / len;
+          // (Zafar, 4 Nov: "don't alter the quickest path trajectory unless needed": the pop-up may already sit against a head where it
+          // was placed; moving off it is no reason to bow, so a frame counts only where it covers more of a face than at take-off)
+          const base = overlap14({ left: fb.left, right: fb.right, top: fb.top, bottom: fb.bottom }, fs);
           const hits = (b) => {
             for (let i = 1; i < 20; i++) {
               const t = i / 20;
@@ -2060,7 +2063,7 @@
               const k = 1 + (Math.min(tr.width / fb.width, tr.height / fb.height) - 1) * t;
               const w = fb.width * k;
               const h = fb.height * k;
-              if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > 0) return true;
+              if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > base + 1) return true;
             }
             return false;
           };

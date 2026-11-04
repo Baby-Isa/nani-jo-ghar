@@ -719,6 +719,15 @@
         const easeT = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
         const cx0 = a.left + a.width / 2, cy0 = a.top + a.height / 2;
         const bend = o.bend || 0;
+        // (the pop-up card is scaled with CSS zoom to fit its place, CHAI-43: a translate inside a zoomed element is zoomed too, so it
+        // flew only the zoom's share of the way, stopped short of its card down and to the right, and jumped: Zafar, 4 Nov, "the top left
+        // quadrant of the pop-up card overlaps with the bottom right quadrant of the item card slot, and then it'll just snap in place".
+        // The distance in the card's own zoomed units)
+        const zm = (() => {
+          let z = 1;
+          for (let e = from; e && e.nodeType === 1; e = e.parentElement) z *= parseFloat(getComputedStyle(e).zoom) || 1;
+          return z || 1;
+        })();
         await new Promise((res) => {
           let t0 = null;
           const step = (now) => {
@@ -735,7 +744,7 @@
             const qy = ddy / 2 + (ddx / len) * bend;
             const x = 2 * (1 - t) * t * qx + t * t * ddx;
             const y = 2 * (1 - t) * t * qy + t * t * ddy;
-            from.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(1 + (ss - 1) * t).toFixed(4)})`;
+            from.style.transform = `translate(${(x / zm).toFixed(1)}px, ${(y / zm).toFixed(1)}px) scale(${(1 + (ss - 1) * t).toFixed(4)})`;
             if (u < 1) root.requestAnimationFrame(step);
             else res();
           };
