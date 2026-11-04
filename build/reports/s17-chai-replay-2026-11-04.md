@@ -51,7 +51,9 @@ Branch `claude/admiring-ptolemy-77fuv5`. All in the chat (Opus, high), the judge
   same in every mount (not leaks): the voice's safety timers, the sound's audio context, the shared listeners added once
   per page, and the test browser's `window.Cook` (3 Nov, for the evidence probes; never on a visitor's page).
 - **The reveal lesson** waited for the row to stop but lit 7 ms after its scroll ended (contract-79): a beat of real time.
-- Final: `s17-final3` and `s17-route3`, then `checks.mjs` (see the end).
+- **Final:** `s17-final3` 0 contract breaks over 44 pages (5 findings, the order card's revealed English, a known kind, adopted);
+  `s17-route3` 0 breaks, 0 new findings; `checks.mjs` all 11 green.
+- **Published** 05:35 UK, b6bced02 (20261104T053215Z), `--force` on Zafar's word; the labs page checked live.
 
 ## Art
 - Art block 3 landed (38 of 39; BK, NF best tries; MZ refused): filed, judged, run log; the redo block for BK, NF and MZ (MZ reworded)

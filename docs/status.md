@@ -8,34 +8,34 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (3 Nov 2026, about 22:20 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`). Zafar played chai on
-a laptop (L1-L4) tonight: his notes are `docs/feedback/chai-play-2026-11-03.md` (17 points, 12 new rows and 5 reopened), all built on
-branch `claude/admiring-ptolemy-77fuv5` for his replay; `main` is still 4343fa94 (plus his art uploads). Earlier today: steps 1-4
-(`build/reports/s17-steps1-4-2026-11-03.md`), the judge on 28 rows (13 built, 4 reopened).
-- **Built tonight (to fix: check):** the word moment only before the first round asking half and full, half the speed, its English
-  shown, corners and a flash and the shutter's sound, adh and aako's cards side-on (CHAI-67, -70 to -72, -74); the next card always
-  whole (SH-199); the cards' pictures the shelf's (SH-200); every person's clips fetched ahead (SH-201); a 'no' card's blur (SH-202);
-  the card's flight a curve clear of faces (SH-203); the pop-up in its row card's shape (SH-163); Nani's face the cards' size (SH-189);
-  the reveal lesson thin and shown (SH-196); the next pan lit 0.3 s after the pour and as the stuck hint (CHAI-68, CHAI-75).
-- **Checked:** labcheck chai L1-L4 at 740x320 and 1280x665 clean; panelcheck 36/36; the word moment filmed (not at L1, at L4 with
-  English); `checks.mjs` green; the sandbox contract run `s17-fb3` (see its end).
-- **Art:** block 3 landed (`sources/art/s17-art3/`, 38 of 39, MZ to redo, judged); pack s17-wm (the word moment on the counter,
-  CHAI-73) is with Zafar to run.
+**Where things stand (4 Nov 2026, about 05:40 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`). Zafar's chai
+notes of 3 Nov evening (`docs/feedback/chai-play-2026-11-03.md`, 17 points) are all built, fully checked and **live on `main`**
+(b6bced02, 20261104T053215Z) for his replay. Tonight's report: `build/reports/s17-chai-replay-2026-11-04.md`.
+- **Built and live:** the word moment (CHAI-67, -70 to -74, on the counter with pack s17-wm's glasses); the order card every game
+  (SH-199 to SH-203, SH-163); chai (SH-189, SH-196, CHAI-68, CHAI-75); found by the checks and fixed for every game: a grouped row
+  never cut and its big card never scrolls (SH-204: chaat's bowl card cut "ba dungri", on `main` before too), the clinic's side
+  card's 6 px scroll (CLN-218), the reveal lesson's box hugging its dots (it lay over the word above), Cook's unmount stopping the
+  onboarding kit's lights.
+- **Checked:** the full chai run `s17-final3` 0 contract breaks over 44 pages, every game's route `s17-route3` 0 over 9 and 0 new
+  findings; `checks.mjs` green; Cook's mount test 21 constant fails (once-per-page items, not leaks: the report); the judge (Fable)
+  on 17 rows: 7 built, CHAI-68 and SH-196 reopened, 6 EVIDENCE (shots that never reached their moment).
+- **Art:** block 3 landed (38 of 39; the redo block for BK, NF and MZ is `docs/design-language/art-plans/s17-art3-redo-block.txt`).
 
 **Next steps, in order:**
-1. **s17-wm's art** when he pushes it: judge, cut (cells 6 and 11 for adh and aako), wire into `js/shared/word-moment.js` (the counter
-   scene, 12 frames in one place).
-2. **His replay of chai on a laptop**, then `/feedback`; then his phone.
-3. **The judge** on tonight's rows once he has replayed (Fable, about $10, on his go).
-4. **Sprint 18** opens with all nine stove games at once (block 3's art ready).
+1. **Zafar's replay of chai** on a laptop (then his phone): his notes with `/feedback`, rows the same day.
+2. **The evidence probes that missed** (tool work, no game change): CHAI-68 needs a player who waits at the second pan (the row has
+   the builder's reading: pan 2 was in use in the shot); SH-196 must reach L3's picture lesson and the click; SH-201, SH-202, CHAI-67,
+   -71, -74, -75 must reach their moment; SH-189 needs its red run first. Then the judge on those rows only.
+3. **The art redo** (BK, NF, MZ) when he runs it.
+4. **Sprint 17's close** (`/sprint`): the look back; then **Sprint 18** opens with all nine stove games at once to chai's standard.
 
 **Open questions to Zafar:** `docs/feedback/chai-play-2026-11-03.md` §6 (the snap, the pop-up's shape, the reveal lesson, the plain
-wall, Nani's hint for an asked thing), all built on the recommendation.
+wall, Nani's hint for an asked thing), all built on the recommendation: his replay answers them.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Carry on Sprint 17: the word moment's
-> art when I push it, then my chai replay notes with `/feedback`. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live
-> site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Finish Sprint 17: take my chai
+> replay notes with `/feedback` when they come and fix them; meanwhile make the missed evidence probes reach their moment and run the
+> judge on those rows. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
@@ -55,6 +55,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+4 Nov 2026, published 05:35 UK (b6bced02, 20261104T053215Z): Zafar's chai notes of 3 Nov evening, all 17 points, and the full checks' fixes for every game (SH-204, CLN-218, the reveal lesson's box, the onboarding kit on unmount) (`build/reports/s17-chai-replay-2026-11-04.md`); `--force` on his word ("push to main").
 
 3 Nov 2026, published 14:55 UK (4343fa94, 20261103T145224Z): Sprint 17's chai for Zafar's play: the play button on a reloaded page (SH-198), the word moment at L4 (CHAI-67), chai's contract breaks fixed, the judge's fixes (`build/reports/s17-chai-2026-11-03.md`); `--force` on his word.
 
