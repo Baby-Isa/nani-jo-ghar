@@ -1200,7 +1200,10 @@
     let shown = null;
     const draw = () => {
       const sp = split(target);
-      shown = light.draw(sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, round: !!o.round, rings: [], els: sp.els });
+      // (o.box: the box drawn round what shows of the thing, the thing itself still lit and tapped whole: the reveal lesson's dots,
+      // four 4 px dots in a 24 px tap area whose box ran over the word above; the judge, 4 Nov)
+      const ob = typeof o.box === "function" ? o.box() : null;
+      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, round: !!o.round, rings: [], els: sp.els });
       if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
@@ -1241,12 +1244,13 @@
     const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu", "pointerup", "pointercancel", "touchend"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     let closed = false;
-    return {
+    const handle = {
       layer,
       box: () => shown,
       close() {
         if (closed) return;
         closed = true;
+        liveSpots.delete(handle);
         cancelAnimationFrame(raf);
         if (finger) finger.stop();
         bounce.stop();
@@ -1257,11 +1261,24 @@
         setTimeout(() => layer.remove(), reduced() ? 0 : 300);
       },
     };
+    liveSpots.add(handle);
+    return handle;
+  };
+
+  /**
+   * Everything still lit or counting stops (the cook mount test, 4 Nov: an unmount mid-step left a step's rung clock running, its
+   * spotlight's layer on <body> and the layer's page listeners): Cook's UI.reset calls this as the screen goes
+   */
+  const liveSpots = new Set();
+  const liveStuck = new Set();
+  Onboard.stopAll = function () {
+    [...liveStuck].forEach((h) => { try { h.stop(); } catch (e) { /* its own */ } });
+    [...liveSpots].forEach((sp) => { try { sp.close(); } catch (e) { /* its own */ } });
   };
 
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round });
+    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid });
   };
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
@@ -1336,6 +1353,7 @@
     const end = () => {
       if (h.over) return;
       h.over = true;
+      liveStuck.delete(h);
       clearInterval(poll);
       closeSpot();
       glow(false);
@@ -1398,6 +1416,7 @@
       }
     }, 200);
     if (root.Lifecycle && root.Lifecycle.onStageEnd) off = root.Lifecycle.onStageEnd(end);
+    liveStuck.add(h);
     return h;
   };
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */

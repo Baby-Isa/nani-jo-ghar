@@ -2726,7 +2726,20 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         const wait14 = { kind: "wait", dots: true };
         Cook.expect = wait14;
         // (the judge, 3 Nov: the ring round the dots overlapped the word above them: a tight ring, 1 px out)
-        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 1 });
+        // (the judge, 4 Nov: still over it: the dots' tap area is 24 px tall for 4 px dots; the box hugs the dots and stops short
+        // of the word above, the whole tap area still lit and tappable)
+        const above = el.closest(".wc14") && el.closest(".wc14").querySelector(".wc14-k");
+        const hug = () => {
+          const ks = [...el.children].map((k) => k.getBoundingClientRect()).filter((q) => q.width && q.height);
+          if (!ks.length) return null;
+          const x0 = Math.min(...ks.map((q) => q.left)), x1 = Math.max(...ks.map((q) => q.right));
+          let y0 = Math.min(...ks.map((q) => q.top)) - 3;
+          const y1 = Math.max(...ks.map((q) => q.bottom)) + 3;
+          const w = above && above !== el && !above.contains(el) ? above.getBoundingClientRect() : null;
+          if (w && w.bottom > y0 - 3 && w.top < y0) y0 = Math.min(y1 - 6, w.bottom + 3);
+          return { x: x0 - 4, y: y0, w: x1 - x0 + 8, h: y1 - y0 };
+        };
+        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, null, { pad: 0, box: el.classList.contains("wc14-eye") ? undefined : hug });
         // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
         // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
         const card = row && row.wc;

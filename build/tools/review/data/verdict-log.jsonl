@@ -1825,3 +1825,5 @@
 {"id":"CHAI-51","run":"ev-20261103-174914-nhg","event":"built","date":"2026-11-03"}
 {"id":"CHAI-69","run":"ev-20261103-174914-nhg","event":"built","date":"2026-11-03"}
 {"id":"SH-174","run":"ev-20261103-180011-2zi","event":"built","date":"2026-11-03"}
+{"id":"SH-203","run":"ev-20261104-042426-e9c","verdict":"PASS","spec":"8f41d63bf176d1a10b60","judge":"expect","date":"2026-11-04"}
+{"id":"SH-189","run":"ev-20261104-042426-e9c","verdict":"PASS","spec":"1e897765fe48e8833fee","judge":"expect","date":"2026-11-04"}

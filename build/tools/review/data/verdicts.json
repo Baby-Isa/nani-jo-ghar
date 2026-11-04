@@ -7396,15 +7396,15 @@
   "date": "2026-11-03"
  },
  "SH-189": {
-  "hash": "b65b53c1722e1d7c37d9",
+  "hash": "7becf97aacf592c8b74f",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 740x320 --no-film: exit 0); pass (node build/tools/review/panelcheck.mjs --game chai-tray --levels 4 --sizes 1920x1080 --no-film: exit 0)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261103-171129-t61",
-  "commit": "db5c297b",
-  "date": "2026-11-03"
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "date": "2026-11-04"
  },
  "SH-19": {
   "hash": "74b9ee33ffa5cf5fb9f7",
@@ -7492,6 +7492,22 @@
   "commit": "4d8a9393",
   "png": null,
   "date": "2026-10-20"
+ },
+ "SH-203": {
+  "hash": "b77561329135969fa6c3",
+  "dhash": [
+   "7e6e5e686a682a7f",
+   "0122248062a62032",
+   "0162f97979a0ba38",
+   "6eae2e7e6c783a6d"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261104-042426-e9c",
+  "commit": "6a282358",
+  "date": "2026-11-04"
  },
  "SH-21": {
   "hash": "2bb36336e5d7920eee9b",

@@ -131,6 +131,10 @@
 @keyframes ob14-glowbox { 0%, 100% { box-shadow: var(--njg-card14-glowbox-a); } 50% { box-shadow: var(--njg-card14-glowbox-b); } }
 @keyframes ob14-glowimg { 0%, 100% { filter: var(--njg-card14-glow-a); } 50% { filter: var(--njg-card14-glow-b); } }
 @media (prefers-reduced-motion: reduce) { .ob-lit.ob-lit-glow, .ob-lit.ob-lit-glow > img { animation: none; } }
+/* (the judge, 4 Nov: the reveal lesson's glow round the dots' 24 px tap area lay over the word above: the dots glow, not their tap area) */
+.ob-dots-now.ob-lit.ob-lit-glow { animation: none; box-shadow: none; }
+.ob-dots-now.ob-lit.ob-lit-glow > * { animation: ob14-glowimg 1.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ob-dots-now.ob-lit.ob-lit-glow > * { animation: none; } }
 /* SH-141 (Zafar, 30 Oct: "no ripples - the same light focus box with darker outside and gold glow and jump if item logic as chai, no
    ripple we tried that and failed it. Yes hand for drag is fine"): the hand keeps no ripple anywhere; a tap is shown by the light */
 .ob-finger .ob-ripple, .njg-onboard .ob-ripple { display: none; }
