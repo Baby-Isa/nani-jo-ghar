@@ -260,7 +260,9 @@
       // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show;
       // side-on glasses: the spout right above the glass's mouth, so the stream falls straight in)
       const sx = o.side ? sl.cx : sl.cx + g * 0.36;
-      const sy = o.side ? sl.cy - g * 0.64 : sl.cy - g * 0.4;
+      // (CHAI-86, Zafar 5 Nov: "move the tea kettle higher to give more spacing above the glass": the spout about a third of a glass
+      // higher, so more of the stream shows above the rim; never so high that the kettle leaves the stage's top)
+      const sy = o.side ? Math.max(sl.cy - g * 0.9, Math.min(sl.cy - g * 0.64, 10 + v.spout[1] * vh)) : sl.cy - g * 0.4;
       ves.style.transition = now || o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1)`;
       ves.style.left = `${sx - v.spout[0] * vw}px`;
       ves.style.top = `${sy - v.spout[1] * vh}px`;
@@ -289,7 +291,7 @@
       if (sl.fill) return pourFill(sl);
       stream.classList.add("on");
       if (v.pour) vim.src = v.pour;
-      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
+      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour-glass") : null;
       const fr = sl.x.frames;
       for (let i = 0; i < fr.length; i++) {
         sl.im.src = fr[i];
@@ -305,6 +307,8 @@
 
     // the code-drawn pour (CHAI-79, CHAI-80): tip forward, the stream flows while the tea rises smoothly to its level, the stream's
     // tail falls in with a last drop, tip back
+    // (CHAI-87, Zafar 5 Nov: "add a tea pouring sound to the word focus": the pour is heard, the glass's ring rising as it fills; was
+    // the quiet loop, its event only)
     const pourFill = async (sl) => {
       tiltTo(0, 320);
       await wait(320);
@@ -316,7 +320,7 @@
         wipeTo(0, 104, 300 / sp, "head");
       } else stream.classList.add("on", "flow");
       if (v.pour) vim.src = v.pour;
-      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
+      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour-glass") : null;
       const to = Math.max(0, Math.min(1, sl.x.fill));
       const dur = (o.instant ? 0 : 2600 * to + 300) / sp;
       await new Promise((res) => {

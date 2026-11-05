@@ -570,6 +570,7 @@ body.njg-s14 #guide.ng-s14 .ng-arrow svg { width: var(--njg-card14-u22); height:
 body.njg-s14 #guide.ng-s14.ng-open .ng-arrow svg { transform: rotate(180deg); }
 body.njg-s14 #guide.ng-s14 .ng-help { grid-area: help; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.3, .7, .2, 1); min-width: 0; }
 body.njg-s14 #guide.ng-s14.ng-open .ng-help { grid-template-rows: 1fr; }
+body.njg-s14 #guide.ng-s14:not(.ng-open) .ng-help { transition-duration: .5s; transition-timing-function: cubic-bezier(.45, 0, .25, 1); } /* (SH-215, Zafar 5 Nov: "it snaps up instead of smoothly scrolling up": shutting glides up evenly, its card kept in it until folded: js/cook/ui.js paintHelper) */
 body.njg-s14 #guide.ng-s14 .ng-help-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--njg-card14-u6)) calc(-1 * var(--njg-card14-u6)); padding: 0 var(--njg-card14-u6) var(--njg-card14-u6); } /* room for the card's shadow: no hard, dark corner */
 body.njg-s14 #guide.ng-s14 .ng-help-in > .wc14 { margin-top: var(--njg-s2); }
 @media (prefers-reduced-motion: reduce) { body.njg-s14 #guide.ng-s14 .ng-help { transition: none; } }

@@ -110,3 +110,9 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 98. The café with the family: a speaking game from level 1; the child gives the orders using the food words already known from the kitchen, so the focus is the joining words; comes later in the game [Zafar, 1 Nov]. Approved, to design.
 99. The park and playground (the moving verbs, up and down, nature) [Claude's review, 1 Nov]. Waits (Zafar, 1 Nov).
 100. The book's flashcard game: show a card, jumble the cards, pick it; later the shown card is blurred (a recall step) [Zafar, 1 Nov]. Idea; the book has find, name-it and photo pages today.
+
+## Zafar, 5 Nov morning
+
+- **The peripheries: how a round starts and ends** (Zafar, 5 Nov: "We'll fix up the peripheries and onboarding and offboarding and
+  stuff, and we decide how it all plugs into the game"): the arrival, the word moment, the order, the closing thanks and goodbye,
+  the end screen, and how one game hands to the next, decided as one piece before the stores (`docs/feedback/chai-play-2026-11-05-am.md` P4).

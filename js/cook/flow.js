@@ -283,17 +283,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * CK-47 (decision 7): the lab's one ending, in the kitchen, as a story order's: the counter again, Nani's one Shabash (not
    * when the station's own praise just said it), the customer's thanks and goodbye, and they go.
    */
-  async function kitchenEnd(who) {
-    const guest = who && who !== "nani" && Cook.CHARS[who] ? who : null;
-    await serviceView(guest);
+  async function kitchenEnd(who, people) {
+    // SH-214 (Zafar, 5 Nov, L3: "even though at level 3, 2 people gave me an order, only one of those people was present at the end to
+    // say thank you"): everyone who ordered is back at the counter, each at the spot they ordered from, and each says thank you; the
+    // asker alone only when no one came in (was: the card's asker only, Nana, even when he had not ordered)
+    const came = (people || []).filter((w) => w && w !== "nani" && Cook.CHARS[w]);
+    const guests = came.length ? came : who && who !== "nani" && Cook.CHARS[who] ? [who] : [];
+    await serviceView(null);
+    const spotOf = (i) => (global.Rules && global.Rules.counterSpot ? global.Rules.counterSpot(i, guests.length) : guests.length === 1 ? 1 : i);
+    const spots = traySpots().map((t) => t[0]);
+    guests.forEach((w, i) => S().addChar(w, { x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
+    if (guests.length) S().occluder();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
-    if (guest) {
-      await S().talk(guest, Lang.line("thanks"), { after: "happy" });
-      await S().talk(guest, Lang.line("bye"));
-      UI.hideBubble();
-      await S().leaveChar(guest);
-    }
+    for (const g of guests) await S().talk(g, Lang.line("thanks"), { after: "happy" });
+    for (const g of guests) await S().talk(g, Lang.line("bye"));
+    UI.hideBubble();
+    for (const g of guests) await S().leaveChar(g);
     UI.hideBubble();
   }
   async function serviceView(who, { enter } = {}) {
@@ -1752,6 +1758,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (asker !== "nani" && !people.length) people.push(asker);
       const spots = traySpots().map((t) => t[0]);
       const came = people.filter((w) => w !== "nani" && Cook.CHARS[w] && s.textures.exists(`${w}-neutral`) && !(s.chars || {})[w]);
+      ctx.came = came.slice(); // (SH-214: the same people back for the closing thanks)
       if (came.length) s.occluder(); // the counter's front, over them (as at a day's service)
       // (Zafar, 29 Oct: two people stand middle and right, the left free for the cards: the central rules' scene.counterSpots)
       const spotOf = (i) => (global.Rules && global.Rules.counterSpot ? global.Rules.counterSpot(i, came.length) : came.length === 1 ? 1 : i);
@@ -1789,7 +1796,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SH-66: the closing lines are their own beat, a breath after the station's stage end
       await Cook.wait(600);
       await closingBeat();
-      await kitchenEnd(order.who);
+      await kitchenEnd(order.who, ctx.came);
     }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)

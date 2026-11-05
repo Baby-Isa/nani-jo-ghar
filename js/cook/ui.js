@@ -967,7 +967,19 @@
     e.arrow.setAttribute("aria-expanded", helperOn && helperW ? "true" : "false");
     const want = helperOn && helperW ? helperW : null;
     if (e.slot._w === want) return;
+    const had = e.slot._w;
     e.slot._w = want;
+    clearTimeout(e.slot._fold);
+    // SH-215 (Zafar, 5 Nov: "When i use the arrow on the hint card to minimise the hint card, it snaps up instead of smoothly
+    // scrolling up - it should smoothly scroll up"): shutting, her card stays in the box while the box folds (css/shared/order-card.css
+    // .ng-help, the same .45 s glide it opens with), and goes once it is folded; was emptied at once, so the box jumped shut
+    if (!want && had) {
+      const fold = global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 540;
+      e.slot._fold = setTimeout(() => {
+        if (e.slot._w === null || e.slot._w === undefined) e.slot.innerHTML = "";
+      }, fold);
+      return;
+    }
     e.slot.innerHTML = "";
     if (!want || !global.WordCard || !global.WordCard.big14) return;
     // (a phone: side by side; a big screen: stacked, as the lab's option 5A)

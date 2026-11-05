@@ -1198,11 +1198,30 @@
     if (typeof o.light === "function") o.light(true);
     let raf = 0;
     let shown = null;
+    const zoom = o.zoomFrom ? { t0: Date.now() } : null;
     const draw = () => {
       const sp = split(target);
       // (o.box: the box drawn round what shows of the thing, the thing itself still lit and tapped whole: the reveal lesson's dots,
       // four 4 px dots in a 24 px tap area whose box ran over the word above; the judge, 4 Nov)
-      const ob = typeof o.box === "function" ? o.box() : null;
+      let ob = typeof o.box === "function" ? o.box() : null;
+      // (o.zoomFrom, SH-213, Zafar 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in, i.e. the
+      // highlighted box quickly shrinks just to the size of the highlighted box required"): a small part of a thing is lit by first
+      // lighting the whole thing it sits on, then the box shrinks onto the part (Onboard.ZOOM), so the eye goes to the thing, then
+      // to the part)
+      if (zoom) {
+        const to = ob || Onboard.unionOf(sp.rects);
+        const fr = rectOf(o.zoomFrom);
+        if (to && fr) {
+          const t = Date.now() - zoom.t0;
+          const Z = Onboard.ZOOM;
+          const u = t < Z.hold ? 0 : reduced() ? 1 : Math.min(1, (t - Z.hold) / Z.shrink);
+          const e = 1 - Math.pow(1 - u, 3);
+          const g = (a, b) => a + (b - a) * e;
+          // (the whole thing's box has Z.pad round it; the spot adds o.pad to whatever it draws, so that is taken off here)
+          const fx = { x: fr.x - Z.pad + (o.pad || 0), y: fr.y - Z.pad + (o.pad || 0), w: fr.w + 2 * (Z.pad - (o.pad || 0)), h: fr.h + 2 * (Z.pad - (o.pad || 0)) };
+          ob = u >= 1 ? to : { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
+        }
+      }
       shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, round: !!o.round, rings: [], els: sp.els });
       if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
@@ -1278,8 +1297,16 @@
 
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid });
+    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
   };
+  /**
+   * SH-213, the zoom-in light (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... just to
+   * draw your eye to the item card and then to the part of the item card that you need to focus on ... a generalizable principle"):
+   * every game, a light on a small part of a thing (a card's hidden word, its blurred picture, a knob's mark) is given
+   * {zoomFrom: <the whole thing>}: the whole thing is lit for `hold` ms, then the box shrinks onto the part over `shrink` ms (eased).
+   * Reduced motion: the whole thing, then the part, no shrink. Onboard.ZOOM.total() is how long before the part alone is lit.
+   */
+  Onboard.ZOOM = { hold: 650, shrink: 450, pad: 4, total() { return this.hold + this.shrink; } };
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
   const ownClock = { t: Date.now(), on: false };

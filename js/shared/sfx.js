@@ -242,6 +242,10 @@
   // a looping noise (pouring, sizzling, boiling) that the caller stops; pouring rises in pitch as the vessel fills
   const LOOPS = {
     pour: { gain: 0.12, freq: 900, q: 0.7, wobble: 7 },
+    // CHAI-87 (Zafar, 5 Nov: "can we add a tea pouring sound to the word focus to make it more interesting as the tea is being
+    // poured?"): tea poured into a glass: a soft splashing hiss, and the glass's own ring rising as it fills (ring: a narrow band whose
+    // pitch climbs from..to with pitch(level), the sound of a glass filling)
+    "pour-glass": { gain: 0.1, freq: 1400, q: 0.6, wobble: 11, ring: { from: 380, to: 1500, q: 9, gain: 0.07 } },
     sizzle: { gain: 0.07, freq: 6000, q: 0.4, type: "highpass", event: "sizzle-loop" },
     boil: { gain: 0.05, freq: 400, q: 2, wobble: 5 },
   };
@@ -281,11 +285,22 @@
         lfo.start();
       }
       src.connect(f).connect(g).connect(master);
+      let rf = null;
+      if (L.ring) {
+        rf = c.createBiquadFilter();
+        rf.type = "bandpass";
+        rf.frequency.value = L.ring.from;
+        rf.Q.value = L.ring.q;
+        const rg = c.createGain();
+        rg.gain.value = L.ring.gain / gain;
+        src.connect(rf).connect(rg).connect(g);
+      }
       src.start();
       return {
         pitch(level) {
           try {
             f.frequency.setTargetAtTime(freq * (0.7 + level * 1.6), c.currentTime, 0.05);
+            if (rf) rf.frequency.setTargetAtTime(L.ring.from + (L.ring.to - L.ring.from) * Math.max(0, Math.min(1, level)), c.currentTime, 0.08);
           } catch (e) {
             /* ignore */
           }

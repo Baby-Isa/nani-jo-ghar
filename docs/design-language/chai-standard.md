@@ -29,6 +29,9 @@ stove family's roll-out. **How it is checked:** *contract* (the sandbox's contra
    where to look (CHAI-37), and then follows the next item on it (SH-178).
 5. **The reveal is taught when it first happens:** the first time a card's word is dotted, then the first time a picture is
    blurred, the light shows the reveal tap; a blurred Kutchi word and a blurred English word are one lesson (SH-196).
+   **The zoom-in light** (SH-213; Zafar, 5 Nov: "a generalizable principle/rule"): a light on a small part of a thing (a card's
+   hidden word, its blurred picture, a knob's mark) first lights the whole thing, then the box shrinks onto the part
+   (`Onboard.light(part, {zoomFrom: whole})`, `Onboard.ZOOM`), so the eye goes to the thing, then to the part.
 6. **A word is never blurred before it is met** (the blur rule, SH-195; Zafar, 3 Nov): a picture blurs only when the level says so
    **and** the word's ladder agrees: while its pill still shows (the first or second meetings), it stays clear, even at L3-L4 (the
    round's snapshot, so it never changes mid-round). A word a picture can't show (half,

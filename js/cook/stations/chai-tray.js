@@ -2831,13 +2831,30 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           return b;
         };
         let over = false;
-        const lit = light14(el, "glow", 6000 / (Cook.speed || 1), () => {}, () => over, { pad: 0, box: el.classList.contains("wc14-eye") ? undefined : boxNow });
+        // SH-213 (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... the highlighted box
+        // quickly shrinks just to the size of the highlighted box required ... also do that for the blurred image ... the highlighted
+        // area should shrink down just to the blurred image size"): the whole item card first, then the box shrinks onto the hidden
+        // word, or onto the blurred picture itself (was: the eye button only); the kit's zoom-in light, every game
+        const isEye = el.classList.contains("wc14-eye");
+        const whole = el.closest(".wc14");
+        const picEl = isEye ? el.closest(".wc14-pic") : null;
+        const picBox = () => {
+          const q = picEl && picEl.getBoundingClientRect();
+          if (q && q.width) lastBox = { x: q.left, y: q.top, w: q.width, h: q.height };
+          return lastBox;
+        };
+        const zoomMs = OB14.ZOOM ? OB14.ZOOM.total() : 0;
+        const lit = light14(el, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl ? picBox : undefined) : boxNow, zoomFrom: whole || undefined });
         // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
         // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
         const card = row && row.wc;
         const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
         if (card && card.demo) {
-          await Cook.wait(1100);
+          // (the zoom-in first: the whole card, then the box shrinks onto the part; then the part alone a beat before the tap is shown)
+          // (Zafar, 5 Nov: "the onboarding for paani only started after a delay, as though it was waiting for the blurred onboarding to
+          // finish": the zoom already holds the eye, so the part alone is held 0.5 s, not 1.1 s, before the tap is shown)
+          if (zoomMs) await new Promise((r) => global.setTimeout(r, zoomMs));
+          await Cook.wait(zoomMs ? 500 : 1100);
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           await card.demo(slot, 1600 / (Cook.speed || 1));
