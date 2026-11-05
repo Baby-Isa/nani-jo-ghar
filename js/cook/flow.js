@@ -2321,6 +2321,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.coreReady) await Cook.coreReady.catch(() => null);
     Cook.loadSave();
     await loaded;
+    // SH-216 (Zafar, 5 Nov: "I've not actually seen the onboarding for that because I just have to keep playing the game again and
+    // again to get to the right level on the word ladder"; his yes to a grown-ups' way): labs.html's "Words known" (with New player)
+    // launches a fresh player who has already picked every Cook word right, so at L3-L4 the pictures blur and the picture's lesson
+    // shows; the first-time help still shows (New player). Grown-ups' testing only: the flag is set by labs.html alone
+    try {
+      if (global.Save && global.Save.flag && global.Save.flag("wordsKnown") === true) {
+        // (the s14 look blurs a picture only once its word's pill is earned, three right first tries: js/cook/station-lib.js chipWord)
+        const PG = Cook.core && Cook.core.progress;
+        Cook.items().forEach((id) => {
+          for (let i = 0; i < 5; i++) { Cook.markSeen(id); Cook.markRight(id); }
+          if (PG && PG.pill) for (let i = 0; i < 3; i++) PG.pill(id, { ok: true, firstTry: true });
+        });
+        global.Save.setFlag("wordsKnown", "applied");
+        if (Cook.writeSave) Cook.writeSave();
+      }
+    } catch (e) {
+      /* the grown-ups' switch only */
+    }
     const run = Cook.run;
     let ready;
     const shown = new Promise((r) => (ready = r));

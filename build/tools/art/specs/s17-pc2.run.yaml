@@ -1,0 +1,56 @@
+# The run spec for pack s17-pc2: Zafar's chosen panel look (5 Nov: "I like 1 on this, can we do this colour left and bottom panel and
+# this ledge style? can you give me an art run to see it in chatgpt (and create the background assets you need)"; ART-41): the
+# materials board's option 1, flat pale warm-grey stone with a stone shelf the jars stand on. A preview on his screen, and the two
+# game pieces: a seamless stone tile (the side panel and the shelf wall) and a stone shelf strip (the ledge), both cut and wired after.
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-pc2.run.yaml --check
+pack: s17-pc2
+title: 'The stone panels and the stone shelf (his option 1): a preview on his screen, the stone tile and the shelf strip'
+plan: docs/design-language/art-plans/s17-pc2-art-plan.md
+plan_branch: claude/vibrant-hopper-v3yexp
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/vibrant-hopper-v3yexp
+dest: sources/art/s17-pc2
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No new people in this run: you judge every image with the checks below. PV is a preview (a small redraw of a jar or a word is not a fail; a wrong colour or a changed layout is). ST and SL are game pieces: judge them strictly. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 3, flush_minutes: 25}
+refs:
+  option1.png: sources/art/s17-pc/refs/board-option1.png
+  keyed.png: sources/art/s17-pc/refs/keyed-magenta-1280x665.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  ST: {attach: [option1.png], save: st-stone-tile-v1.png, check: TILE}
+  SL: {attach: [option1.png], save: sl-stone-shelf-strip-v1.png, check: SHELF}
+  PV: {attach: [keyed.png, option1.png], save: pv-stone-preview-v1.png, check: PREVIEW, edit: true}
+parts:
+- id: A
+  title: 'THE STONE AND THE SHELF (GAME PIECES)'
+  intro: 'ST: one seamless, tileable square of the pale warm-grey stone wall in the attached picture. SL: the stone shelf the jar and bottle stand on, as a long strip that tiles left to right.'
+  items:
+  - lines: [ST, SL]
+- id: B
+  title: 'THE PREVIEW ON HIS SCREEN'
+  intro: 'PV: his chai screen with only the magenta areas filled in that stone, the shelf band with the stone shelf the jars stand on.'
+  items:
+  - lines: [PV]
+checks:
+  TILE:
+    text: 'a flat square of pale warm-grey matte stone, the colour of the wall in the attached picture, very low contrast (a faint even mineral grain, no veins, no spots, no streaks), evenly lit edge to edge, no objects, no edges, no shadow or vignette; seamless: its left edge continues its right, its top continues its bottom'
+    judge: {aspect: [1, 1], bg: none}
+  SHELF:
+    text: 'front view of a long pale warm-grey stone shelf running edge to edge across the picture, exactly as the shelf in the attached picture: its flat top surface seen slightly from above (a little lighter than the wall) and a thin rounded front edge with a soft shadow under it; the same stone wall above it, plain flat white below it; nothing on the shelf; it continues seamlessly off the left and right edges'
+    judge: {aspect: [3, 2], bg: none}
+  PREVIEW:
+    text: 'the attached screen with ONLY the magenta areas filled: the left column in the pale warm-grey stone wall of the second attached picture; the bottom band in the same stone wall with the stone shelf of that picture along its foot, the jars and bottle standing on its top surface; no magenta left; everything else where it was; the whole screen inside a 1536x1024 picture, padded, never stretched'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- 'Any new text, letters, numbers, labels, logos or watermarks (in PV, the words already on the screen stay).'
+- 'In ST: any vein, spot, streak, crack, a visible repeat or seam, a light patch or a shadow; a colour other than the attached wall.'
+- 'In SL: a shelf that bends, slopes or stops before an edge; anything standing on it; a wood or marble look; a strong shadow.'
+- 'In PV: any magenta left; the marble, hob or tray recoloured; the layout moved, stretched or cropped; a person added or changed.'
+- 'Sweets, lollies or biscuits; any religious marker.'
