@@ -3518,6 +3518,10 @@
     // made: opts.head, everything closed ({all} for the whole order), or its own word when no row has it
     const H = L.head;
     // decision 97 (3): the station says a person's dish (or the whole order) is made: their card may fold once its rows are done
+    // (Zafar, 5 Nov, his image 1, L1: "the item card doesn't minimise after pouring, even into the end kitchen scene": every row had
+    // ticked as its item went in, so the pour ticked nothing and the card was never drawn again to learn it was served; a dish newly
+    // made draws the cards again, so it holds, glides home and folds: OrderCard.settle14)
+    const madeNow = opts.all && (opts.for ? !(L.closedFor && L.closedFor[opts.for]) : !L.closedAll);
     if (opts.all && opts.for) (L.closedFor = L.closedFor || {})[opts.for] = true;
     if (opts.all && !opts.for) L.closedAll = true;
     if (H && !H.done && !H.rec && (opts.head || (opts.all && !opts.for) || (!rows.length && want.length && (H.ids || []).some((id) => want.includes(id))))) rows.push(H);
@@ -3526,7 +3530,7 @@
       settle(L);
       renderOrder();
       if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: a step is made: Nani's face smiles a moment
-    }
+    } else if (madeNow) renderOrder();
     return rows;
   };
   /** Tick the i-th piece of the dish's sequence (a mixed skewer's pieces): that row, never another row with the same word. */
