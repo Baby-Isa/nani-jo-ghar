@@ -214,6 +214,38 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   S$.shelfItemTop = () => SHELF.top + S$.shelfPad();
   /** How far S.glow's bounce lifts a thing this tall (the same rule as stations.js glow()). */
   S$.shelfHop = (h) => Math.max(6, Math.min(16, h * 0.07));
+  /*
+   * ART-41 (Zafar, 5 Nov: "I like 1 ... this colour left and bottom panel and this ledge style ... add this"): the shelf band in his
+   * pale warm-grey stone (pack s17-pc2's tile, assets/shared/panel/stone-tile-s17) and the stone shelf the jars stand on (its strip,
+   * stone-shelf-s17: the top face, the front edge, a soft shadow), in place of the flat parchment band and the grey plank lines.
+   * The band's stone colour is drawn at once (no blank frame); the tile and the shelf come in when loaded. One call for every
+   * station that has the band (chai now; the stove family at its roll-out). base: the line every object stands on.
+   */
+  S$.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
+  S$.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
+    const ST = S$.STONE;
+    const W = 1600 + 2 * far;
+    const flat = S.track(S.add.graphics().setDepth(depth));
+    flat.fillStyle(ST.mean, 1);
+    flat.fillRect(-far, top, W, 900 - top + far);
+    const A = Cook.Art;
+    if (!A || !A.loadFile || !S.add.tileSprite) return flat;
+    A.loadFile(S, "panel-stone", ST.tile).then((ok) => {
+      if (!ok || !S.sys || !S.sys.isActive()) return;
+      const t = S.track(S.add.tileSprite(-far, top, W, 900 - top + far, "panel-stone").setOrigin(0).setDepth(depth + 0.01));
+      t.setTileScale(ST.tileK, ST.tileK);
+    });
+    if (base != null) {
+      A.loadFile(S, "panel-shelf", ST.shelf).then((ok) => {
+        if (!ok || !S.sys || !S.sys.isActive()) return;
+        const src = S.textures.get("panel-shelf").getSourceImage();
+        const h = src.height * ST.shelfK;
+        const sh = S.track(S.add.tileSprite(-far, base - ST.faceDown, W, h, "panel-shelf").setOrigin(0).setDepth(depth + 0.02));
+        sh.setTileScale(ST.shelfK, ST.shelfK);
+      });
+    }
+    return flat;
+  };
   /** Where a texture's picture starts and ends ([top, bottom] as fractions of its canvas height). */
   S$.opaqueSpan = function (S, key) {
     const cache = (S$._span = S$._span || {});

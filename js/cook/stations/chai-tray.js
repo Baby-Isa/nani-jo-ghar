@@ -540,9 +540,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // SH-108 reopened (Zafar, 27 Oct: "chai has the old stand in background, not the modern countertop"): a lighter wash, so the
     // painted marble reads as marble on a phone (at 0.5 it read as the old plain stand-in)
     S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.18).setOrigin(0).setDepth(D.bg + 1));
-    const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-    band.fillStyle(INK.panel, 1);
-    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 900 - SHELF_TOP + FAR);
+    // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
+    // and a grey plank line under each group)
+    St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2 });
+    const band = S.track(S.add.graphics().setDepth(D.bg + 1.25));
     band.fillStyle(0x2a1a0a, 0.08);
     band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
     band.fillStyle(INK.grey, 1);
@@ -773,10 +774,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const x0 = mid - width / 2;
     const shelf = {};
     let sx = x0 + slotW / 2;
-    const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
     shelfIds.forEach((group, gi) => {
-      plank.fillStyle(INK.grey, 1);
-      plank.fillRoundedRect(sx - slotW / 2 + 10, BASE - 2, group.length * slotW - 20, 10, 5);
+      // (ART-41: the stone shelf is the line they stand on now; no plank under each group)
       // 29 Sept (X7): the band's padding rule (St.shelfFit): the group's tallest thing, hop included, keeps the top gap
       const K = Math.min(...group.map((id) => St.shelfFit(S, `jar-${id}`, SHELF_K[gi], BASE)));
       group.forEach((id) => {

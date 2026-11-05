@@ -13,6 +13,7 @@
   /* ---------- colours (CDS 2) ---------- */
   --njg-page: #f4ecdf;        /* parchment */
   --njg-panel: #efe5d6;       /* the sidebar */
+  --njg-stone: #dfd5cd;       /* ART-41 (Zafar, 5 Nov): the stone side panel and shelf band, Cook (the mean of assets/shared/panel/stone-tile-s17) */
   --njg-card: #ffffff;
   --njg-ink: #2a2522;         /* body text: charcoal, never rust */
   --njg-ink-soft: #7a6857;    /* muted text (a placeholder to record, a sub-line) */
