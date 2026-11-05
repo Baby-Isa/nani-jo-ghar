@@ -551,7 +551,7 @@ body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-
 body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }
 /* (Zafar, 5 Nov, his video: Nani's box stepping 2 px as her line went from one line to two: on the s14 look her line always has two
    lines' room, centred, so her box keeps one height through every step) */
-body.njg-s14 #guide.ng-s14 .ng-say { justify-content: center; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; min-height: calc(2lh + 1px); }
+body.njg-s14 #guide.ng-s14 .ng-say { justify-content: center; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; min-height: calc(2lh + var(--njg-px)); }
 /* (non-negotiable 2: a line still to record keeps the grey italic on the s14 look; the judge, 29 Oct) */
 body.njg-s14 #guide.ng-s14 .ng-say.rec .ng-line, body.njg-s14 #guide.ng-s14 .ng-line .rec { color: var(--njg-ink-soft); font-style: italic; }
 .njg-guide .ng-arrow { display: none; }

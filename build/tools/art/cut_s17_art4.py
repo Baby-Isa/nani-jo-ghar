@@ -84,8 +84,7 @@ def main():
     box = (x0, y_top - 2, x1, base + 1)
     for k, a in imgs.items():
         d = ds[k]
-        alpha = np.clip((d - 5) / (26 - 5), 0, 1)
-        mask = np.zeros_like(alpha)
+        mask = np.zeros(d.shape)
         for y, (l, r) in edges.items():
             mask[y, l : r + 1] = 1
             # (a soft pixel at each edge)
@@ -93,7 +92,9 @@ def main():
                 mask[y, l - 1] = 0.5
             if r + 1 < W0:
                 mask[y, r + 1] = 0.5
-        a8 = (np.clip(alpha, 0.0, 1.0) * mask * 255).astype(np.uint8)
+        # (inside its outline the glass is kept whole, the wall seen through it baked in, as pack s17-wm2's cut: the word moment's scene
+        # has the same wall there, and the art check's soft-rim rule holds; only the outline's own pixel is soft)
+        a8 = (mask * 255).astype(np.uint8)
         rgba = np.dstack([a.astype(np.uint8), a8])
         im = Image.fromarray(rgba, "RGBA").crop(box)
         im.save(os.path.join(ROOT, OUT, f"glass-{k}-s17.webp"), "WEBP", quality=92, method=6)
