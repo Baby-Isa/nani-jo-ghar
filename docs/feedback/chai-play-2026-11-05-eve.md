@@ -72,3 +72,10 @@ Lines: 9; in a point 8; chatter 1; unmapped 0.
 - **SH-208:** the 4 Nov fix wrote the rule but kept an old clearance for a button that had gone; checked at L3 with two pans, not L4 with three.
 - **SH-211:** last night's fix removed the snapping; whatever he still sees is not in a headless browser's timing.
 - **SH-196:** every check asked "was it lit", never "was what it lit on screen".
+
+## 6. The second reader
+
+A fresh Fable read only his notes and the rows: 3 missing, 6 weakened; all fixed in the rows (SH-208's check is his span and
+"touching"; CHAI-89 centred across as well, a tablet size, the group holding everything in play; ART-43 keeps "cleaner ... whiter",
+answers "one image or one pack" and is his to keep or drop; CHAI-88 checked through the fill on both sides; SH-211's test case is his
+theory). The structure line (0:08) is recorded in `build/reports/s17-standards-structure-v2.md` §8, not a row.
