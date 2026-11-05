@@ -100,25 +100,25 @@
     box.className = "cook-wm cook-wm-now";
     host.appendChild(box);
     const A0 = "assets/shared/word-moment/";
-    ["counter-wm-s17", "glass-we-s17", "glass-wf-s17", "kettle-tilted-s17", "stream-chai-real-s17"].forEach((n) => (new Image().src = Cook.v(`${A0}${n}.webp`)));
+    ["counter-wm-s17", "glass-e2-s17", "glass-wr-s17", "kettle-tilted-s17", "stream-chai-real-s17"].forEach((n) => (new Image().src = Cook.v(`${A0}${n}.webp`)));
     const [WM] = await Promise.all([UI.needShared("word-moment"), UI.needShared("word-card")]);
     if (!WM || !global.WordCard) return box.remove(), false;
     Cook.save.seenStation = Cook.save.seenStation || {};
     Cook.save.seenStation[WM_KEY] = true;
     if (Cook.writeSave) Cook.writeSave();
     const A = "assets/shared/word-moment/";
-    // (CHAI-73, pack s17-wm: one glass in twelve stages, each in the same place on the counter: half is the 6th, full the 11th)
-    const fr = (k) => Array.from({ length: k }, (_, i) => Cook.v(`${A}glass-wm-${String(i + 1).padStart(2, "0")}-s17.webp`));
     // CHAI-79 (Zafar, 4 Nov): one steady glass, the tea drawn in it (half and nearly full); the cards keep the pack's own pictures
     // (pack s17-wm2, Zafar's run, 4 Nov: one large glass, empty and the same picture full; the tea's shape measured as it was cut,
     // assets/shared/word-moment/cut-data.json glass-wf-s17)
-    const TEA = {"top": 0.119, "bottom": 0.862, "rows": [[0.119, 0.0548, 0.9441], [0.1865, 0.0666, 0.9322], [0.2541, 0.0784, 0.9203], [0.3216, 0.0902, 0.9084], [0.3892, 0.102, 0.8965], [0.4567, 0.1138, 0.8846], [0.5243, 0.1256, 0.8727], [0.5918, 0.1374, 0.8608], [0.6594, 0.1492, 0.8489], [0.7269, 0.161, 0.8371], [0.7945, 0.1728, 0.8252], [0.862, 0.1846, 0.8133]]};
-    const glass = (id, fill, n) => ({
-      empty: Cook.v(`${A}glass-we-s17.webp`),
-      full: Cook.v(`${A}glass-wf-s17.webp`),
+    // (pack s17-art4, Zafar's run, 5 Nov: the same glass to the rim, chai and plain tea, all cut in one box with the empty one,
+    // build/tools/art/cut_s17_art4.py; the tea's inside measured as it was cut, cut-data.json glass-wr-s17)
+    const TEA = {"top": 0.0309, "bottom": 0.8909, "rows": [[0.0309, 0.0563, 0.9423], [0.1091, 0.0639, 0.9347], [0.1873, 0.074, 0.9246], [0.2654, 0.0967, 0.9019], [0.3436, 0.1068, 0.8918], [0.4218, 0.1181, 0.8805], [0.5, 0.1295, 0.8691], [0.5782, 0.1421, 0.8565], [0.6564, 0.1535, 0.8451], [0.7346, 0.1648, 0.8338], [0.8127, 0.1762, 0.8224], [0.8909, 0.1888, 0.8098]]};
+    const glass = (id, fill) => ({
+      empty: Cook.v(`${A}glass-e2-s17.webp`),
+      full: Cook.v(`${A}glass-wr-s17.webp`),
       tea: TEA,
       fill,
-      word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: fr(n)[n - 1] },
+      word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: Cook.v(`${A}card-${id === "ph-half" ? "half" : "full"}-chai-s17.webp`) },
       say: () => (Cook.Lang || Lang).speakWord(id),
     });
     const prev = Cook.expect;
@@ -135,7 +135,9 @@
         streamWipe: true,
         // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
         scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5 },
-        glasses: [glass("ph-half", 0.5, 6), glass("ph-full", 1, 11)],
+        // (Zafar, 5 Nov: "more obviously show half and full (half should be a little lower than current end height, and full should be
+        // right to the rim)": half 0.42 of the inside, full to the rim (pack s17-art4's glass))
+        glasses: [glass("ph-half", 0.42), glass("ph-full", 1)],
         // CHAI-81 (Zafar, 4 Nov): both poured, a look at the two, then each snapped in turn, half a second in its frame before the shutter
         snap: "after",
         look: 900,
@@ -2776,7 +2778,7 @@
    * stage (English blank at 3, the picture at 4). A row whose words are dotted shows no picture and no English either (they
    * would be the answer the child is to hear). The eye's reveal is a hint (as the old eye was) and never advances the word.
    */
-  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/shared/word-moment/glass-wm-06-s17.webp", "ph-full": "assets/shared/word-moment/glass-wm-11-s17.webp" }; // (half and full: the side-on glasses the word moment snapped, Zafar, 3 Nov: "the item cards for full and half cup need to be the side on views ... that's obviously the pictures that we have to use"; was the s14 overhead fills)
+  const WC_PIC = { "cook-maani": "assets/cook/items/v3/maani/maani-wheat-cooked.webp", "cook-bajrmaani": "assets/cook/items/v3/maani/maani-millet-cooked.webp", "ph-mishkaki": "assets/cook/items/mishkaki-meat-grilled-t.webp", "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp", "ph-half": "assets/shared/word-moment/card-half-chai-s17.webp", "ph-full": "assets/shared/word-moment/card-full-chai-s17.webp" }; // (half and full: the side-on glasses the word moment snapped, Zafar, 3 Nov: "the item cards for full and half cup need to be the side on views ... that's obviously the pictures that we have to use"; was the s14 overhead fills)
   // (the S14 roll-out: every Cook station's word cards: the daal and the flour, and the ph- things with a shelf picture, chaat's toppings and
   // samosa's fillings among them; lesson 6: a word that is said needs its picture)
   const WC_ID = /^(cook-(paani|dudh|chai|khun|daal|atto)|spi-[0-9]+|veg-[0-9]+|ph-(amli|chana|dahi|dhana|keema|lili|meat|sev|pepper))$/;
@@ -2790,6 +2792,22 @@
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
   const wcPicSrc = (id) => (Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
+  // (Zafar, 5 Nov: "we need that bigger difference shown on item cards, and we also need non-milk tea versions as item cards for
+  // non-milk tea orders": a person whose order says no milk has their half and full cards in plain tea; pack s17-art4,
+  // build/tools/art/teacards.py)
+  const TEA_PIC = { "ph-half": "assets/shared/word-moment/card-half-tea-s17.webp", "ph-full": "assets/shared/word-moment/card-full-tea-s17.webp" };
+  const noMilk = (r) => {
+    if (!r || !mission || !mission.ladders) return false;
+    try {
+      return mission.ladders.some((L) => Order().rows(L).some((x) => x !== r && x.no && (!r.for || x.for === r.for) && (x.ids || []).includes("cook-dudh")));
+    } catch (e) {
+      return false;
+    }
+  };
+  const rowPicSrc = (r) => {
+    const id = wcWordId(r);
+    return TEA_PIC[id] && noMilk(r) ? TEA_PIC[id] : wcPicSrc(id);
+  };
   const wcStage = (id) => {
     try {
       const P = Cook.core && Cook.core.progress;
@@ -2819,7 +2837,7 @@
       // (Cook.chipWord: the round's snapshot, so a card never changes mid-round)
       const newWord = Cook.chipWord ? Cook.chipWord(wcWordId(r)) : false;
       const at = (k) => (k === "pic" ? RL.cardPicture || newWord : RL.cardEnglish);
-      const srcB = wcPicSrc(wcWordId(r));
+      const srcB = rowPicSrc(r);
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
       return {
         word: {

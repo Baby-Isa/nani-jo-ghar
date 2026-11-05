@@ -50,17 +50,17 @@ def card(im):
 
 
 def main():
-    empty = load("glass-we-s17.webp")
+    empty = load("glass-e2-s17.webp") or load("glass-we-s17.webp")
     if empty is None:
         sys.exit("no empty glass")
     made = []
-    for kind, names in (("chai", ["glass-wr-s17.webp", "glass-wf-s17.webp"]), ("tea", ["glass-wb-s17.webp"])):
+    for kind, names in (("chai", ["glass-wr-s17.webp"]), ("tea", ["glass-wb-s17.webp"])):
         full = next((load(n) for n in names if load(n) is not None), None)
         if full is None:
             print(f"{kind}: no full picture yet ({', '.join(names)}): skipped")
             continue
         src = next(n for n in names if load(n) is not None)
-        tea = tea_of(src.replace(".webp", ""))
+        tea = tea_of("glass-wr-s17")  # (wr and wb share one box and one inside: cut_s17_art4.py)
         for lvl, lv in (("half", HALF), ("full", 1.0)):
             out = os.path.join(A, f"card-{lvl}-{kind}-s17.webp")
             card(at_level(empty, full, tea, lv)).save(out, "WEBP", quality=90, method=6)
