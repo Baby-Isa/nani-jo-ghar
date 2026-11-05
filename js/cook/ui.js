@@ -92,10 +92,17 @@
   };
   UI.wordMoment = async function (ids) {
     if (!UI.wordMomentDue(ids)) return false;
-    const WM = await UI.needShared("word-moment");
-    await UI.needShared("word-card");
     const host = $("#stage");
-    if (!WM || !global.WordCard || !host) return false;
+    if (!host) return false;
+    // (Zafar, 5 Nov: "the kitchen background still loads and is visible first before the word focus begins": the moment's own scene
+    // covers the kitchen at once, before its script and pictures load (they load meanwhile, side by side), and stays until it ends)
+    const box = document.createElement("div");
+    box.className = "cook-wm cook-wm-now";
+    host.appendChild(box);
+    const A0 = "assets/shared/word-moment/";
+    ["counter-wm-s17", "glass-we-s17", "glass-wf-s17", "kettle-tilted-s17", "stream-chai-real-s17"].forEach((n) => (new Image().src = Cook.v(`${A0}${n}.webp`)));
+    const [WM] = await Promise.all([UI.needShared("word-moment"), UI.needShared("word-card")]);
+    if (!WM || !global.WordCard) return box.remove(), false;
     Cook.save.seenStation = Cook.save.seenStation || {};
     Cook.save.seenStation[WM_KEY] = true;
     if (Cook.writeSave) Cook.writeSave();
@@ -114,9 +121,6 @@
       word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: fr(n)[n - 1] },
       say: () => (Cook.Lang || Lang).speakWord(id),
     });
-    const box = document.createElement("div");
-    box.className = "cook-wm";
-    host.appendChild(box);
     const prev = Cook.expect;
     Cook.expect = { kind: "wait", wordMoment: true }; // (a test driver waits while it plays)
     try {

@@ -113,6 +113,7 @@
   --njg-card14-english: #2a2522;                    /* the English under it */
   --njg-card14-label: #6e5f50; --njg-card14-label-bg: #f1e7d6; --njg-card14-rule: #dccbae; --njg-card14-edge: #e9dcc6;
   --njg-card14-dots-en: #8f8070; --njg-card14-no-edge: #c8b79c; --njg-card14-card: #fffdf8; --njg-card14-ring: #fff7ea;
+  --njg-wm-cover: #ecc8a6; /* the word moment's wall colour, under its scene while that loads (Zafar, 5 Nov: never the kitchen first) */
   --njg-wm-stream: #b47a4c; /* the word moment's placeholder tea stream (CHAI-67) until ART-36's pour */
   /* CHAI-79 (Zafar, 4 Nov): the word moment's tea, drawn in code inside one steady glass (sampled from pack s17-wm's full glass) */
   --njg-wm-tea: #d58d4c; --njg-wm-tea-top: #e8b27a; --njg-wm-tea-deep: #b56f37;

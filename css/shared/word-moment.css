@@ -8,6 +8,9 @@
 /* (a cut-scene, Zafar 2 Nov: "we teach them first with a cutscene before the kitchen ordering": its own worktop, the kitchen behind) */
 .cook-wm::before { content: ""; position: absolute; inset: 0; background: var(--njg-page) center / cover no-repeat url("../../assets/cook/bg/bg-cook-worktop-t-v1.webp?v=20261105T002405Z"); }
 @keyframes cook-wm-in { from { opacity: 0; } to { opacity: 1; } }
+/* (Zafar, 5 Nov: the moment's scene is up before the kitchen shows, so it never fades in over it) */
+.cook-wm.cook-wm-now { animation: none; }
+.cook-wm.cook-wm-now::before { background-color: var(--njg-wm-cover); }
 .cook-wm.cook-wm-out { opacity: 0; }
 .wm .wc14 { pointer-events: auto; }
 .wm-glass { position: absolute; }
