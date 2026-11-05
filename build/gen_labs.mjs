@@ -29,6 +29,8 @@ export const WALKTHROUGH = "cook.html?app=1&first=pantry&then=" + encodeURICompo
 
 export const TOP = [
   { id: "new-player", toggle: true, title: "New player", text: "On: every launch plays a fresh New player (no words, every first-time help, level 1). Off: your own player, never wiped." },
+  // SH-216 (Zafar, 5 Nov: his yes to a grown-ups' way to see the blurred-picture lesson): only with New player
+  { id: "words-known", toggle: true, title: "Words known", text: "With New player: the fresh player already knows every word, so pictures blur at levels 3 and 4 and you see that lesson; the first-time help still shows." },
   { id: "day-builder", toggle: true, title: "Day builder", text: "On: every game you launch starts at Nani's door and ends with the evening book. Off: the game alone." },
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
@@ -43,7 +45,7 @@ export const TOP = [
  * the grown-up's own player (remembered when the toggle goes on) is selected again; it is never reset.
  */
 export function labsPlayer(Save, store) {
-  var NAME = "New player", K_ON = "njg-labs-new-player", K_OWN = "njg-labs-own-player", K_NEW = "njg-labs-new-player-id";
+  var NAME = "New player", K_KNOWN = "njg-labs-words-known", K_ON = "njg-labs-new-player", K_OWN = "njg-labs-own-player", K_NEW = "njg-labs-new-player-id";
   var get = function (k) { try { return store.getItem(k); } catch (e) { return null; } };
   var put = function (k, v) { try { if (v == null) store.removeItem(k); else store.setItem(k, v); } catch (e) { /* this visit only */ } };
   var has = function (id) { return !!id && Save.players().some(function (p) { return p.id === id; }); };
@@ -63,6 +65,8 @@ export function labsPlayer(Save, store) {
   var api = {
     NAME: NAME,
     on: function () { return get(K_ON) === "1"; },
+    known: function () { return get(K_KNOWN) === "1"; },
+    setKnown: function (v) { put(K_KNOWN, v ? "1" : "0"); },
     setOn: function (v) { remember(); put(K_ON, v ? "1" : "0"); return api.label(); },
     /** The player a launch plays as, chosen (and, when on, reset) now. -> that player */
     launch: function () {
@@ -74,6 +78,8 @@ export function labsPlayer(Save, store) {
         Save.resetPlayer(id);
         // SH-120 (Zafar, 22 Oct): the game pages read it (Onboard.newPlayer): every first-time help at once, every visit
         Save.setFlag("newPlayer", true, id);
+        // SH-216 (Zafar, 5 Nov): "Words known": the fresh player has picked every word right (js/cook/flow.js reads it once)
+        Save.setFlag("wordsKnown", get(K_KNOWN) === "1", id);
         return Save.current();
       }
       var own = ownId();
@@ -84,7 +90,7 @@ export function labsPlayer(Save, store) {
     },
     /** Who will play: the badge's words */
     label: function () {
-      if (api.on()) return NAME + " (fresh every launch)";
+      if (api.on()) return NAME + (api.known() ? " (fresh every launch, every word known)" : " (fresh every launch)");
       var own = ownId();
       var p = Save.players().filter(function (q) { return q.id === own; })[0];
       return p ? p.name : "Player 1";
@@ -302,6 +308,7 @@ ${["tokens", "app", "focus", "frame", "face", "results", "onboard", "guide", "or
   .top.toggle input:checked ~ .switch::after { left: 23px; }
   .top.toggle input:focus-visible ~ .switch { outline: 3px solid var(--accent); outline-offset: 2px; }
   .top.toggle.on { background: #eef7f1; border-color: var(--go); }
+  .top.toggle.off { opacity: .55; } /* (Words known works only with New player) */
   #player-badge { display: inline-block; margin: 8px 0 0; padding: 8px 14px; border-radius: 999px; background: #fff; border: 2px solid var(--line); color: var(--ink); font-weight: 600; }
   #player-badge.on { background: #e7f3ec; border-color: #b7d8c5; color: #1f4d37; }
   .grid, .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
@@ -358,13 +365,19 @@ ${hidden.map(sub).join("\n\n")}
   // New player (Sprint 11, Zafar 22 Oct): a toggle. On, every launch plays the reset "New player" profile; off, the grown-up's own player
   var LabsPlayer = (${labsPlayer.toString()})(Save, (function () { try { return window.localStorage; } catch (e) { return { getItem: function () { return null; }, setItem: function () {}, removeItem: function () {} }; } })());
   var tog = document.getElementById("new-player-toggle"), badge = document.getElementById("player-badge"), box = document.getElementById("new-player");
+  var ktog = document.getElementById("words-known-toggle"), kbox = document.getElementById("words-known");
   function show() {
     var on = LabsPlayer.on();
     tog.checked = on;
+    ktog.checked = LabsPlayer.known();
+    ktog.disabled = !on;
+    kbox.classList.toggle("on", on && LabsPlayer.known());
+    kbox.classList.toggle("off", !on);
     box.classList.toggle("on", on);
     badge.classList.toggle("on", on);
     badge.textContent = "Playing as: " + LabsPlayer.label();
   }
+  ktog.addEventListener("change", function () { LabsPlayer.setKnown(ktog.checked); show(); });
   tog.addEventListener("change", function () {
     LabsPlayer.setOn(tog.checked);
     // on: every picker back at its first option (level 1), every Play link with it

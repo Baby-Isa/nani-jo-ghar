@@ -56,9 +56,9 @@ Output 1536×1024 with the whole screenshot kept inside it at its own proportion
 
 ## 6. Cut and wire notes
 
-- ST: edges blended so it tiles (as the white marble, `build/tools/art/`), x1 and x2 webp, `assets/shared/panel/stone-tile-s17`; the side
+- ST: edges blended so it tiles (as the white marble, `build/tools/art/`), x1 and x2 webp, to be cut as stone-tile-s17 in a new shared panel folder; the side
   panel's and the shelf band's background, tiled, with `--njg-panel` set to its mean colour for anything drawn flat.
 - SL: cut to the shelf's top face, front edge and shadow (the wall above and the white below dropped), as a horizontal strip,
-  `assets/shared/panel/stone-shelf-s17`, repeated along the shelf band's foot in place of the grey plank line, at about the word
+  to be cut as stone-shelf-s17 beside it, repeated along the shelf band's foot in place of the grey plank line, at about the word
   pill's height; one shared shelf band for every station (the study's six copies folded into one).
 - PV: not cut; his preview.
