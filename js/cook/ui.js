@@ -201,6 +201,9 @@
     if (global.Onboard) global.Onboard.look = on ? "s14" : global.Onboard.look === "s14" ? null : global.Onboard.look;
     if (document.body.classList.contains("njg-s14") === on) return;
     document.body.classList.toggle("njg-s14", on);
+    // (the s14 orders scroll in their list: the frame's side fit never shrinks the panel for it, js/shared/frame.js fitSide)
+    const ms = document.getElementById("mission");
+    if (ms) ms.toggleAttribute("data-njg-scroller", on);
     guideS14(on);
     if (!on) UI.helper(null);
   };

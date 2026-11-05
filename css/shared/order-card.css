@@ -549,6 +549,9 @@ body.njg-s14 #guide.ng-s14 .ng-bulb, body.njg-s14 #guide.ng-s14 .ng-mute { displ
 body.njg-s14 #guide.ng-s14 .ng-tools { grid-area: tools; display: flex; align-items: center; }
 body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }
+/* (Zafar, 5 Nov, his video: Nani's box stepping 2 px as her line went from one line to two: on the s14 look her line always has two
+   lines' room, centred, so her box keeps one height through every step) */
+body.njg-s14 #guide.ng-s14 .ng-say { justify-content: center; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; min-height: calc(2lh + 1px); }
 /* (non-negotiable 2: a line still to record keeps the grey italic on the s14 look; the judge, 29 Oct) */
 body.njg-s14 #guide.ng-s14 .ng-say.rec .ng-line, body.njg-s14 #guide.ng-s14 .ng-line .rec { color: var(--njg-ink-soft); font-style: italic; }
 .njg-guide .ng-arrow { display: none; }
@@ -557,7 +560,11 @@ body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap); height: var(--njg-
 /* (Zafar, 4 Nov evening: "the drop-down button on the helper hint green box ... caused that box to be larger in height ... That arrow
    shouldn't change the size of the box": its column is kept while it is away, so Nani's line never rewraps, and it adds no height of
    its own: the tools cell is no taller than nothing, the arrow centred on the line, inside the box's padding) */
-body.njg-s14 #guide.ng-s14 .ng-tools { height: 0; align-self: center; overflow: visible; }
+/* (Zafar, 5 Nov, his image 2: the arrow hung off the box's foot: "it should be centred height-wise in the green box when the green box
+   is minimised and keeps its place when the green box opens": the tools cell is the first row's full height, the arrow centred in it
+   and out of the flow, so it adds no height and the open helper below never moves it) */
+body.njg-s14 #guide.ng-s14 .ng-tools { align-self: stretch; position: relative; width: var(--njg-tap-drawn); min-height: 0; overflow: visible; }
+body.njg-s14 #guide.ng-s14 .ng-tools > .ng-arrow { position: absolute; top: 50%; right: 0; transform: translateY(-50%); }
 body.njg-s14 #guide.ng-s14 .ng-arrow[hidden] { display: grid; visibility: hidden; pointer-events: none; }
 body.njg-s14 #guide.ng-s14 .ng-arrow svg { width: var(--njg-card14-u22); height: var(--njg-card14-u22); transition: transform .35s; }
 body.njg-s14 #guide.ng-s14.ng-open .ng-arrow svg { transform: rotate(180deg); }

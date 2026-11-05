@@ -230,6 +230,10 @@
     // CLN-148: overflow anywhere in it counts: the clinic's card scrolls inside a sidebar that itself never overflows
     // (overflow: hidden, the card a shrinking flex child), so the sidebar alone never looked too full
     const scrolls = (x) => {
+      // (Zafar, 5 Nov, his video: "the left menu cards jump up and down ... I click on a menu card ... which prompts the resize": a list
+      // that scrolls by design (the s14 orders, body.njg-s14 #mission) is never a sidebar too full: a card opening made it scroll,
+      // the whole panel stepped its sizes down, Nani's box and every card with it, and back up as the card shut)
+      if (x.closest && x.closest("[data-njg-scroller]")) return false;
       if (x.scrollHeight <= x.clientHeight + 1 || x.clientHeight <= 0) return false;
       const oy = root.getComputedStyle ? root.getComputedStyle(x).overflowY : "visible";
       return oy === "auto" || oy === "scroll";
