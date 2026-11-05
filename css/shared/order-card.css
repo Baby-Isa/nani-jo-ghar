@@ -591,7 +591,11 @@ body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - va
    row is centred on the face (SH-36), so the words' extra space above and below is the same; the card's own gap under the head
    row (with the item row's shadow room) matches its padding above, so the item row takes no margin of its own. */
 :root .oc-card.oc-s14 .oc-items.oc-items14 { margin-top: 0; }
-.oc-card.oc-s14 .oc-row14 { container-type: inline-size; position: relative; display: flex; flex-direction: row !important; flex-wrap: nowrap !important; column-gap: var(--njg-s2) !important; gap: var(--njg-s2); margin-top: 0; align-items: stretch; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; padding: var(--njg-card14-u2) var(--njg-card14-u2) var(--njg-card14-u4); -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
+/* (Zafar, 5 Nov, his image 4, L4: "the row of item cards ... jerkily scrolls back and forth before then scrolling to the left to receive
+   the next item card, almost like it can't decide or it has two competing instructions": it had two: mandatory snapping pulled the row
+   back onto a card's edge after every glide the code makes to a place between edges (a slot whole with the one before at the left, the
+   last card whole); the code alone places the row now, OrderCard.glideTo and settle14) */
+.oc-card.oc-s14 .oc-row14 { container-type: inline-size; position: relative; display: flex; flex-direction: row !important; flex-wrap: nowrap !important; column-gap: var(--njg-s2) !important; gap: var(--njg-s2); margin-top: 0; align-items: stretch; overflow-x: auto; overflow-y: hidden; scroll-snap-type: none; scrollbar-width: none; padding: var(--njg-card14-u2) var(--njg-card14-u2) var(--njg-card14-u4); -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
 .oc-card.oc-s14 .oc-row14::-webkit-scrollbar { display: none; }
 .oc-card.oc-s14 .oc-row14.oc-at-end { -webkit-mask-image: none; mask-image: none; }
 /* (the row is the container: a card is 1/2.3 of it, so its padding, 6% of the card, is 2.6cqi of the row) */
