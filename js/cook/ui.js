@@ -970,6 +970,8 @@
     const had = e.slot._w;
     e.slot._w = want;
     clearTimeout(e.slot._fold);
+    // (the review, 5 Nov, contract-79: a light waits for every move to end: the box's fold or unfold is a move, 0.5 s)
+    if (!!want !== !!had) UI.helperMovingUntil = Date.now() + 560;
     // SH-215 (Zafar, 5 Nov: "When i use the arrow on the hint card to minimise the hint card, it snaps up instead of smoothly
     // scrolling up - it should smoothly scroll up"): shutting, her card stays in the box while the box folds (css/shared/order-card.css
     // .ng-help, the same .45 s glide it opens with), and goes once it is folded; was emptied at once, so the box jumped shut

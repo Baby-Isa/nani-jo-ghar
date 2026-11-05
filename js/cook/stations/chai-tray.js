@@ -2364,6 +2364,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             const was = rowX;
             rowX = xs;
             if ((was != null && xs !== was) || rows.some((r) => r._auto || r._pend14)) return true;
+        // (Nani's box folding or unfolding moves the order list: SH-215, contract-79)
+        if (UI.helperMovingUntil && Date.now() < UI.helperMovingUntil) return true;
             const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
             const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
             try {
