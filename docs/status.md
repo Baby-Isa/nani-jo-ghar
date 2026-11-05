@@ -8,39 +8,42 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (4 Nov 2026, 16:55 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`), **chai only** until Zafar
-calls it done (Zafar, 4 Nov: the other games in later sprints). His three replays of 4 Nov (L1, L2, L4, laptop:
-`docs/feedback/chai-play-2026-11-04.md`, 18 points) are built, checked and **live on `main`** (20261104T155132Z, b575c206; Pages
-delayed by a GitHub incident, live 16:49). He replays chai on a laptop, then his phone. Report: `build/reports/s17-chai-replay-2026-11-04.md`.
-- **Live since this morning:** the next item's light after the first two (CHAI-77; contract-90 guards it); the reveal lesson as one
-  lesson with a click (SH-196); the card's flight landing exactly on its card, tighter arcs (SH-203); the word moment first, one
-  steady glass (pack s17-wm2), the kettle's pour and last drop, both poured then each snapped, thin corners (CHAI-78 to -82); the
-  serve-time cards whole (SH-206); the ladder only between games (SH-207); the shelf centred and spread (SH-208).
-- **Checked:** the full chai run `s17-pm2` 0 contract breaks over 44 pages; every game's route `s17-pm2r` clean; `checks.mjs` green;
-  the judge (Fable): CHAI-71 built, CHAI-67 reopened on its probe, the rest EVIDENCE (the rows say why).
-- **Open:** SH-205 (a hint during a pour at L4): not reproduced, no video; he watches for it.
+**Where things stand (5 Nov 2026, about 02:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`), **chai only** until
+Zafar calls it done. His two overnight rounds are built, checked and published for his morning play (laptop, then phone):
+`docs/feedback/chai-replay-2026-11-04-pm.md` (8 points) and `docs/feedback/chai-replay-2026-11-05.md` (11 points, his video on `main`:
+`assets/20261105_004201.mp4`). Three art packs landed from his runs: s17-ps (the real stream), s17-art4 (the glass to the rim in chai
+and plain tea, the white marble).
+- **Built tonight:** the said card rolls up as the order passes (SH-180: a second redraw had thrown the glide away); the row stays on
+  the last card until served, then home, then the fold, at every level (SH-206: L1's pour drew nothing); the next pan's light only
+  once the first is served (CHAI-83); the pick-the-pan step never says pan 2's item at once (SH-205, his repro); the dots lesson every
+  round for New player, its box the word's size (SH-196); Nani's box one height (SH-209: the arrow centred in her first row; SH-210:
+  the panel never shrinks for the scrolling order list, his video); no snapping on the item row (SH-211, the L4 back-and-forth); the
+  word moment: its scene before the kitchen (CHAI-85), the real stream from the spout's lip, no oval (CHAI-80), half 0.42 and full to
+  the rim, the half and full cards from the same glass, plain tea for "dudh na" (CHAI-84); the white marble on every stove game (ART-40).
+- **Checked:** `checks.mjs` green; every fix replayed in the sandbox with a frame-by-frame panel log (`NJG_INIT=<hook.js>`, a new
+  run.mjs option) at L1-L4 and the four sizes; SH-210 red on last night's build, green on tonight's; the full chai set (`s17-n5`):
+  see `docs/process/overnight-log.md`. The publish gate was forced (150 old open rows; no contract or evidence record after the
+  container restart): the judge has not looked at tonight's rows.
+- **Open:** SH-212 (every next game loads in the background: before the stores).
 
 **Next steps, in order:**
-1. **His chai notes** (laptop, then phone): `/feedback` on each, rows the same day; fix in this chat's fast lane, the four-size check,
-   the full chai run (`node build/sandbox/run.mjs --touched cook:chai-tray --check`), publish on his word (`/publish`). Repeat
-   until he says chai is done.
-2. **The probes that still miss** (tool work, no game change): CHAI-67 on second-play; CHAI-68 (pause-after-pour never reached the
-   light); CHAI-75; CHAI-77 at 740x320 (the light lasts 0.4 s at the test speed); SH-201 (real clips, played through); SH-202 and
-   CHAI-74 (the want didn't seed a "no" or adh/aako order); SH-196's L3 picture lesson (a profile whose words are past their pill);
-   SH-189 and SH-203 need a red run. Then the judge on those rows (Fable, about $3).
-3. **When he says chai is done:** the chai standard page finalised from chai's rows (`docs/design-language/chai-standard.md`);
-   `/review` and `/publish`; Sprint 17 closed with `/sprint` (the look back, the budget: three days planned, four used).
-4. **Sprint 18** opens on his go: the stove family to chai's standard (`docs/game-design/families/stove.md`), the art redo (BK, NF, MZ:
-   `docs/design-language/art-plans/s17-art3-redo-block.txt`).
+1. **His morning play** (chai L1-L4, laptop then phone): `/feedback` on his notes, rows the same day, fix, the panel-log replay
+   (`docs/feedback/chai-replay-2026-11-05.md` §header has the method), publish.
+2. **The judge on tonight's rows** once he is happy: an evidence run on the rows above (`evidence.mjs --run --rows ...`), then the
+   judge (Fable). The probes that still miss (CHAI-67, -68, -75, -77 at 740x320, SH-201, SH-202, CHAI-74, SH-196's L3) as before.
+3. **When he says chai is done:** the chai standard page (`docs/design-language/chai-standard.md`), `/review`, `/publish`, Sprint 17
+   closed with `/sprint` (budget: three days planned, five used).
+4. **Sprint 18** on his go: the stove family to chai's standard (`docs/game-design/families/stove.md`); they have the white marble already.
 
 **Open questions to Zafar:**
-1. Is chai done after this replay, or is there another round?
+1. The kettle sits close to the glass, so only a short stream shows above the rim: lift it so more of the fall shows?
+2. Is chai done after the morning play?
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Sprint 17, chai only: take my chai
-> replay notes with `/feedback` and fix them until I call chai done; then finish Sprint 17 (the chai standard page, the missed
-> evidence probes and the judge, `/review`, `/publish`, `/sprint` to close). Work on branch `claude/admiring-ptolemy-77fuv5`; `main`
-> is the live site. Tell me before launching anything new.
+> notes with `/feedback` and fix them until I call chai done; then the judge on the overnight rows, the chai standard page, `/review`,
+> `/publish`, `/sprint` to close. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live site. Tell me before launching
+> anything new.
 
 ## The fix list
 
