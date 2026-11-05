@@ -8,18 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (5 Nov 2026, 20:15 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`), chai only until Zafar
-calls it done. **Live on `main`: 20261105T200407Z**, for his laptop and phone play: the stone side panel and stone shelf (ART-41,
-pack s17-pc2, `build/tools/art/cut_s17_pc2.py`), the zoom-in light for the reveal lessons (SH-213, a House rule), everyone back for
-the thank-you (SH-214), the word moment fitting every screen (CHAI-86), Nani's box folding smoothly (SH-215), the pour sound
-(CHAI-87), "Words known" on labs.html (SH-216: the picture lesson at L3). His morning notes: `docs/feedback/chai-play-2026-11-05-am.md`.
-- **Checked:** `checks.mjs` green; the chai set (104 pages, every level, four sizes, both chai pages) all reached their end; its one
-  contract break (the order card's light during the box's fold) fixed and replayed (0 breaks over 18 pages); his phone size
-  971x318 shot. The gate was forced on his word (open rows; no full gate or evidence run): the judge has not looked at today's rows.
-- **Art runs:** the block generator now gets references from GitHub by the runner's own screenshots and bulk-downloads from the
-  Library (ART-42, pinned by `artcheck.test.mjs`).
-- **The standard's structure:** draft 2 (`build/reports/s17-standards-structure-v2.md`) after Fable's review
-  (`s17-standards-structure-review.md`), built from the Sprint 16-17 ledger (`s16-s17-change-ledger.md`, 118 changes).
+**Where things stand (5 Nov 2026, 23:00 UK):** Sprint 17 is open, chai only until Zafar calls it done. **Live on `main`:
+20261105T225625Z**, his evening notes fixed (`docs/feedback/chai-play-2026-11-05-eve.md`): the reveal lesson only on a word in view
+(SH-196), the eye's margin (SH-217), no shadow outside the glass (CHAI-88), smaller count pills (SH-218), the play area centred
+(CHAI-89), the shelf pills spread (SH-208), the worktop warmed to the stone (ART-43, Fable: `build/reports/s17-worktop-harmony.md`);
+earlier today the stone panels (ART-41) and the morning's fixes. Checked: `checks.mjs` green; the chai set, 60 pages, all to the end,
+one load-only break (contract-74, passed twice alone). Gate forced on his word; the judge has not looked at 4-5 Nov's rows.
+- **Open:** SH-211 (the L4 row's jerk: not reproduced, his recording needed); Fable's palette review
+  (`build/reports/s17-palette-review.md`): one change for his yes, `--njg-helper-bg` #e6efe2 to #e4ecdd.
+- **The standard's structure:** locked (`build/reports/s17-standards-structure-v2.md`, §8 his answers: every area rule by rule;
+  rules built into the tools). The fill starts in a new chat.
 
 **Next steps, in order:**
 1. **His play** (chai L1-L4, laptop then phone): `/feedback`, rows the same day, fix, replay, publish.
