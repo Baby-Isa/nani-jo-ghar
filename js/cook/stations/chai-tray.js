@@ -2844,7 +2844,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           return lastBox;
         };
         const zoomMs = OB14.ZOOM ? OB14.ZOOM.total() : 0;
-        const lit = light14(el, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl ? picBox : undefined) : boxNow, zoomFrom: whole || undefined });
+        const lit = light14(el, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl ? picBox : undefined) : boxNow, zoomFrom: whole || undefined, avoid: [...document.querySelectorAll("#mission .oc-face")] });
         // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
         // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
         const card = row && row.wc;

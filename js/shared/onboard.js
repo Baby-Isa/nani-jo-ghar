@@ -1219,6 +1219,19 @@
           const g = (a, b) => a + (b - a) * e;
           // (the whole thing's box has Z.pad round it; the spot adds o.pad to whatever it draws, so that is taken off here)
           const fx = { x: fr.x - Z.pad + (o.pad || 0), y: fr.y - Z.pad + (o.pad || 0), w: fr.w + 2 * (Z.pad - (o.pad || 0)), h: fr.h + 2 * (Z.pad - (o.pad || 0)) };
+          // (contract-82, the review of 5 Nov at 740x320: the whole card's box cut the person's face circle that overlaps the card's top:
+          // a shape to avoid trims the box's nearer edge clear of it, never crosses it)
+          if (o.avoid) {
+            const pd = (o.pad || 0) + 1;
+            rectsOf(o.avoid).forEach((q) => {
+              if (!q || q.x > fx.x + fx.w || q.x + q.w < fx.x || q.y > fx.y + fx.h || q.y + q.h < fx.y) return;
+              if (q.y + q.h / 2 < fx.y + fx.h / 2) {
+                const y1 = Math.max(fx.y, q.y + q.h + pd);
+                fx.h -= y1 - fx.y;
+                fx.y = y1;
+              } else fx.h = Math.min(fx.h, q.y - pd - fx.y);
+            });
+          }
           ob = u >= 1 ? to : { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
         }
       }

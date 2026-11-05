@@ -292,7 +292,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(null);
     const spotOf = (i) => (global.Rules && global.Rules.counterSpot ? global.Rules.counterSpot(i, guests.length) : guests.length === 1 ? 1 : i);
     const spots = traySpots().map((t) => t[0]);
-    guests.forEach((w, i) => S().addChar(w, { x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
+    // (the review, 5 Nov, L4 at 930x430: three guests at the three trays put the first one in front of Nani: from three, they stand
+    // evenly between Nani and the view's right edge, so every face shows)
+    const vr = (Cook.view && Cook.view.right) || 1600;
+    const x0 = ((Cook.CHARS.nani && Cook.CHARS.nani.x) || 330) + 300;
+    const x1 = Math.max(x0 + 1, vr - 170);
+    const xAt = (i) => (guests.length >= 3 ? x0 + ((x1 - x0) * i) / (guests.length - 1) : spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined);
+    guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
