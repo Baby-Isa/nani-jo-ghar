@@ -138,12 +138,16 @@
     const H = host.clientHeight;
     const n = o.glasses.length;
     // (the glasses' size from the room: side by side with a glass's width between them; never past 42% of the height)
-    const g = Math.round(Math.min(W / (n * 1.9 + 0.4), H * 0.42));
-    const gap = g * 0.9;
-    const left0 = (W - (n * g + (n - 1) * gap)) / 2;
+    let g = Math.round(Math.min(W / (n * 1.9 + 0.4), H * 0.42));
     let cy = H * 0.6;
-    // (o.scene, CHAI-73: the kitchen counter side-on behind the glasses, its picture covering the stage; the glasses stand on its top,
-    // o.scene.baseAt of the picture's height, so a see-through glass shows the scene's own plain wall: Zafar, 3 Nov)
+    // CHAI-86 (Zafar, 5 Nov: "adjust the sizes of the glasses and/or chai kettles and/or position of the counter so it all fits nicely
+    // on all screens with decent looking spacing"): the room above a side-on glass is planned: a margin at the top (4% of the height),
+    // the kettle (about two thirds of a glass above its spout), the stream's gap (STREAM_GAP of a glass above the rim), the glass, then the
+    // counter. The counter's picture moves down within its cover to make that room (never so far that its front leaves the screen's
+    // last tenth); only when that is not enough do the glasses shrink
+    const STREAM_GAP = 0.4;
+    const ABOVE = o.side ? STREAM_GAP + 0.66 : 0; // (the kettle stands about 0.66 of a glass above its spout, measured, tilt included)
+    const mTop = Math.max(10, H * 0.04);
     if (o.scene && o.scene.src) {
       const sc = el("img", "wm-scene", box);
       sc.alt = "";
@@ -151,9 +155,18 @@
       sc.src = o.scene.src;
       const ar = o.scene.aspect || 1.5;
       const k = Math.max(W / ar, H); // (the picture's drawn height under object-fit: cover)
-      const lineY = (H - k) / 2 + (o.scene.baseAt || 0.7) * k;
+      const base = o.scene.baseAt || 0.7;
+      const top0 = (H - k) / 2; // (where cover puts the picture's top)
+      const slack = (k - H) / 2; // (how far it can move up or down and still cover)
+      const line0 = top0 + base * k;
+      const need = mTop + (1 + ABOVE) * g;
+      const lineY = Math.max(line0 - slack, Math.min(Math.max(line0, need), line0 + slack, H * 0.9));
+      if (lineY < need) g = Math.max(40, Math.floor((lineY - mTop) / (1 + ABOVE)));
+      if (Math.abs(lineY - line0) > 0.5) sc.style.objectPosition = `50% ${(top0 + lineY - line0).toFixed(1)}px`;
       cy = Math.min(H - g / 2 - 4, lineY - g / 2);
     }
+    const gap = g * 0.9;
+    const left0 = (W - (n * g + (n - 1) * gap)) / 2;
     const slots = o.glasses.map((x, i) => {
       const s = el("div", `wm-glass${o.side ? " wm-side" : ""}`, box);
       s.style.cssText = `left:${left0 + i * (g + gap)}px;top:${cy - g / 2}px;width:${g}px;height:${g}px`;
@@ -260,9 +273,9 @@
       // (the spout just past the glass's rim, up and right; the vessel clear of the glass, so the stream and the fill both show;
       // side-on glasses: the spout right above the glass's mouth, so the stream falls straight in)
       const sx = o.side ? sl.cx : sl.cx + g * 0.36;
-      // (CHAI-86, Zafar 5 Nov: "move the tea kettle higher to give more spacing above the glass": the spout about a third of a glass
-      // higher, so more of the stream shows above the rim; never so high that the kettle leaves the stage's top)
-      const sy = o.side ? Math.max(sl.cy - g * 0.9, Math.min(sl.cy - g * 0.64, 10 + v.spout[1] * vh)) : sl.cy - g * 0.4;
+      // (CHAI-86, Zafar 5 Nov: "move the tea kettle higher to give more spacing above the glass": the spout STREAM_GAP of a glass above
+      // the rim, at every size: the room for it is planned above, with the counter and the glasses' size)
+      const sy = o.side ? sl.cy - g * (0.5 + STREAM_GAP) : sl.cy - g * 0.4;
       ves.style.transition = now || o.instant || reduced() ? "none" : `left ${600 / sp}ms cubic-bezier(.4,0,.2,1), top ${600 / sp}ms cubic-bezier(.4,0,.2,1)`;
       ves.style.left = `${sx - v.spout[0] * vw}px`;
       ves.style.top = `${sy - v.spout[1] * vh}px`;

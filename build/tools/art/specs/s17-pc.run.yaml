@@ -1,0 +1,54 @@
+# The run spec for pack s17-pc: the side panel and bottom shelf colour options against the white marble (ART-41; Zafar, 5 Nov:
+# "give me the art run to see the different colour combos"). Mood pictures for his choice, not game art: nothing is cut or wired.
+# Prompts from Fable's verdict (build/reports/s17-panel-colour-judge.md §3: blocks A and B).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-pc.run.yaml --check
+pack: s17-pc
+title: 'The side panel and shelf colours against the white marble (a materials board and four options on his screen)'
+plan: docs/design-language/art-plans/s17-pc-art-plan.md
+plan_branch: claude/vibrant-hopper-v3yexp
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/vibrant-hopper-v3yexp
+dest: sources/art/s17-pc
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No new people in this run: the screen edits keep Nani and the cards as they are. You judge every image with the checks below; these are colour previews for Zafar's choice, so a small redraw of a jar or a word is not a fail, a wrong colour or a changed layout is. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 5, flush_minutes: 25}
+refs:
+  swatches.png: sources/art/s17-pc/refs/swatches.png
+  keyed.png: sources/art/s17-pc/refs/keyed-magenta-1280x665.png
+  screen.webp: docs/feedback/images-2026-11-05-am/1.webp
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  MB: {attach: [swatches.png, screen.webp], save: mb-materials-board-v1.png, check: BOARD}
+  P1: {attach: [keyed.png, swatches.png], save: p1-stone-v1.png, check: PANEL, edit: true}
+  P7: {attach: [keyed.png, swatches.png], save: p7-wall-ledge-v1.png, check: PANEL, edit: true}
+  P5: {attach: [keyed.png, swatches.png], save: p5-mid-oak-v1.png, check: PANEL, edit: true}
+  P2: {attach: [keyed.png, swatches.png], save: p2-linen-oak-v1.png, check: PANEL, edit: true}
+parts:
+- id: A
+  title: 'THE MATERIALS BOARD'
+  intro: 'Six small kitchen vignettes, the white marble above a different shelf band in each, a jar and a bottle on it: no app, no people.'
+  items:
+  - lines: [MB]
+- id: B
+  title: 'FOUR OPTIONS ON HIS SCREEN'
+  intro: 'Four edits of the attached chai screen: only the magenta areas (the left column and the bottom shelf band) are filled, each with one option; everything else stays.'
+  items:
+  - lines: [P1, P7, P5, P2]
+checks:
+  BOARD:
+    text: 'a 3 x 2 grid of six small vignettes, each the white marble on top and a different shelf band below with a glass jar of dark tea leaves and a clear water bottle standing on it, numbered 1 to 6 in a small plain numeral; the bands are in order: pale grey stone, whitewashed pale oak, warm-grey plaster wall with a thin honey-oak ledge, mid oak, dark walnut, clay-pink plaster; matte, subtle, softly lit'
+    judge: {aspect: [3, 2], bg: none}
+  PANEL:
+    text: 'the attached screen with ONLY the magenta areas filled (the left column and the bottom shelf band) in the asked material and colour, no magenta left anywhere; the marble, hob, tray, glass, cards, faces, jars, bottle, carton and words where they were; the whole screen inside a 1536x1024 picture, padded, never stretched'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- 'Any new text, letters, numbers, labels, logos or watermarks (other than MB''s six small numerals and the words already on the screen).'
+- 'In P1-P2: any magenta left; the marble, hob or tray recoloured; the layout moved, stretched or cropped; a person added or changed.'
+- 'In MB: people, hands, food other than the jar of tea leaves and the bottle; shiny or strongly patterned bands.'
+- 'Sweets, lollies or biscuits; any religious marker.'
