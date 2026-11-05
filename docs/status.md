@@ -21,8 +21,8 @@ and plain tea, the white marble).
   word moment: its scene before the kitchen (CHAI-85), the real stream from the spout's lip, no oval (CHAI-80), half 0.42 and full to
   the rim, the half and full cards from the same glass, plain tea for "dudh na" (CHAI-84); the white marble on every stove game (ART-40).
 - **Checked:** `checks.mjs` green; every fix replayed in the sandbox with a frame-by-frame panel log (`NJG_INIT=<hook.js>`, a new
-  run.mjs option) at L1-L4 and the four sizes; SH-210 red on last night's build, green on tonight's; the full chai set (`s17-n5`):
-  see `docs/process/overnight-log.md`. The publish gate was forced (150 old open rows; no contract or evidence record after the
+  run.mjs option) at L1-L4 and the four sizes; SH-210 red on last night's build, green on tonight's; the full chai set `s17-n5` (88 pages, every
+  level, path and size): 0 contract breaks, 0 new findings (known kinds appended to the baseline). Live: 20261105T021953Z (3dd05c01). The publish gate was forced (150 old open rows; no contract or evidence record after the
   container restart): the judge has not looked at tonight's rows.
 - **Open:** SH-212 (every next game loads in the background: before the stores).
 
