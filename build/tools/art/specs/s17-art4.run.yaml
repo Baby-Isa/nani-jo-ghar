@@ -1,0 +1,53 @@
+# The run spec for pack s17-art4: the white marble and the glass full to the rim (Zafar, 5 Nov).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-art4.run.yaml --check
+pack: s17-art4
+title: 'The white marble worktop, and the glass full to the rim (chai and plain tea)'
+plan: docs/design-language/art-plans/s17-art4-art-plan.md
+plan_branch: claude/admiring-ptolemy-77fuv5
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/admiring-ptolemy-77fuv5
+dest: sources/art/s17-art4
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 3, flush_minutes: 25}
+refs:
+  marble.png: sources/art/s17-art4/ref-marble-white-zafar.png
+  empty-glass.webp: sources/art/s17-wm2/we-chai-glass-empty-large-v1.webp
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  MW: {attach: [marble.png], save: mw-marble-white-v1.png, check: MARBLE}
+  WR: {attach: [empty-glass.webp], save: wr-chai-glass-rim-v1.png, check: RIM, edit: true}
+  WB: {attach: [empty-glass.webp], save: wb-tea-glass-rim-v1.png, check: BLACK, edit: true}
+parts:
+- id: A
+  title: 'THE WHITE MARBLE'
+  intro: 'One large top-down white marble texture, drawn again from the attached picture.'
+  items:
+  - lines: [MW]
+- id: B
+  title: 'THE GLASS FULL TO THE RIM'
+  intro: 'Two edits of the attached empty glass: milky chai right to the rim, then plain tea right to the rim. Nothing else changes.'
+  items:
+  - lines: [WR, WB]
+checks:
+  MARBLE:
+    text: 'a flat top-down white marble like the attached, fine thin grey veins, evenly lit edge to edge, no objects, edges, light patches or shadows'
+    judge: {aspect: [3, 2], bg: none}
+  RIM:
+    text: 'the attached picture with the glass full of milky caramel chai level with the rim, a calm flat top; the glass, the counter, the wall and the shadow UNCHANGED (lay one over the other: nothing but the tea differs)'
+    judge: {aspect: [2, 3], bg: none}
+  BLACK:
+    text: 'the attached picture with the glass full of plain amber-red black tea (no milk) level with the rim, a calm flat top; the glass, the counter, the wall and the shadow UNCHANGED'
+    judge: {aspect: [2, 3], bg: none}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake ones.
+- In MW: any object, a worktop edge, a light patch, a shadow or a window reflection; cream or gold veins instead of grey.
+- In WR and WB: the glass moved, resized, turned or redrawn; anything but the tea changed; the tea below the rim.
+- In WB: any milk or cloudiness in the tea.
+- Sweets, lollies or biscuits; any religious marker.
