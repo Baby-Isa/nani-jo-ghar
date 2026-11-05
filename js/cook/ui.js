@@ -128,7 +128,7 @@
         // (Zafar, 5 Nov, his image 5: "the pour looks different from the spout to the straight like stream ... make consistent looking":
         // the kettle pours as itself, with no chai drawn at its spout, and the real stream starts inside the spout's opening, drawn under
         // the kettle, so the chai you see is one picture from the spout to the glass)
-        vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), spout: [0.105, 0.735], aspect: 560 / 515, tilt: 0 },
+        vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), spout: [0.096, 0.74], aspect: 560 / 515, tilt: 0 },
         side: true,
         // (CHAI-80, pack s17-ps, Zafar's run, 5 Nov: the real stream, one still picture shown through a mask that runs down it)
         stream: Cook.v(`${A}stream-chai-real-s17.webp`),
