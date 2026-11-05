@@ -46,8 +46,8 @@ checks:
     text: 'the attached picture with the glass full of plain amber-red black tea (no milk) level with the rim, a calm flat top; the glass, the counter, the wall and the shadow UNCHANGED'
     judge: {aspect: [2, 3], bg: none}
 passfail:
-- Any text, letters, numbers, labels or logos, even fake ones.
-- In MW: any object, a worktop edge, a light patch, a shadow or a window reflection; cream or gold veins instead of grey.
-- In WR and WB: the glass moved, resized, turned or redrawn; anything but the tea changed; the tea below the rim.
-- In WB: any milk or cloudiness in the tea.
-- Sweets, lollies or biscuits; any religious marker.
+- 'Any text, letters, numbers, labels or logos, even fake ones.'
+- 'In MW: any object, a worktop edge, a light patch, a shadow or a window reflection; cream or gold veins instead of grey.'
+- 'In WR and WB: the glass moved, resized, turned or redrawn; anything but the tea changed; the tea below the rim.'
+- 'In WB: any milk or cloudiness in the tea.'
+- 'Sweets, lollies or biscuits; any religious marker.'
