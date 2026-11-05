@@ -51,6 +51,8 @@
 .wm-stream.flow { background: var(--njg-wm-stream-fill); background-size: 100% 100%, 100% var(--njg-card14-u26); animation: wm-flow .32s linear infinite; }
 @keyframes wm-flow { from { background-position: 0 0, 0 0; } to { background-position: 0 0, 0 var(--njg-card14-u26); } }
 .wm-stream.on.ending { transform-origin: bottom; transform: rotate(var(--wm-rot, 0deg)) scaleY(0); transition: transform .3s cubic-bezier(.5, 0, 1, 1), opacity .3s .2s; }
+/* (pack s17-ps, CHAI-80: the real stream never stretches or squashes: it shows through its mask, run by js/shared/word-moment.js) */
+.wm-stream.wm-art.wm-wipe, .wm-stream.wm-art.wm-wipe.on, .wm-stream.wm-art.wm-wipe.on.ending { transform: rotate(var(--wm-rot, 0deg)); transition: opacity .12s; }
 .wm-drop { position: absolute; z-index: 2; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-wm-tea); pointer-events: none; }
 .wm .wc.wc14-big.wm-card { position: absolute; z-index: 5; transform-origin: 50% 40%; margin: 0; }
 @media (prefers-reduced-motion: reduce) { .wm-shut .wm-c, .wm-shut .wm-corners, .wm-stream { transition: none; } .wm-stream.flow { animation: none; } .wm-shut.flash::after { animation-duration: .01s; } }

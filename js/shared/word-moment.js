@@ -216,7 +216,31 @@
       const pre = new Image();
       pre.src = v.pour; // (ready before the first pour)
     }
-    const stream = el("div", `wm-stream${o.stream ? " wm-art" : ""}`, box);
+    const stream = el("div", `wm-stream${o.stream ? " wm-art" : ""}${o.stream && o.streamWipe ? " wm-wipe" : ""}`, box);
+    // CHAI-80 (Zafar, 4 Nov evening: "a static pouring image, that then fades out by you putting a transparent layer from top to bottom
+    // slowly over time, so it's like the last drops are falling through"): the real stream (o.streamWipe) is one still picture, shown
+    // through a mask: its head runs down from the spout as the pour starts, and at the end its tail runs down into the glass
+    const wipeTo = (from, to, ms, which) =>
+      new Promise((res) => {
+        const set = (head, tail) => {
+          const h = Math.max(0, Math.min(100, head)), t = Math.max(0, Math.min(100, tail));
+          const m = `linear-gradient(to bottom, transparent ${t}%, #000 ${Math.min(h, t + 4)}%, #000 ${Math.max(t, h - 4)}%, transparent ${h}%)`;
+          stream.style.webkitMaskImage = m;
+          stream.style.maskImage = m;
+        };
+        const at = (u) => (which === "head" ? set(from + (to - from) * u, 0) : set(104, from + (to - from) * u));
+        if (o.instant || reduced() || !root.requestAnimationFrame || !ms) return at(1), res();
+        let t0 = null;
+        const step = (now) => {
+          if (!alive()) return res();
+          if (t0 == null) t0 = now;
+          const u = Math.min(1, (now - t0) / ms);
+          at(u * u); // (it falls: slow from the spout, then quicker)
+          if (u < 1) root.requestAnimationFrame(step);
+          else res();
+        };
+        root.requestAnimationFrame(step);
+      });
     // (set here, not through a CSS variable: a url() in a variable resolves against the stylesheet, not this page)
     if (o.stream) stream.style.backgroundImage = `url("${o.stream}")`;
     const tilt = v.tilt == null ? -28 : v.tilt;
@@ -242,7 +266,8 @@
       const ey = o.side ? sl.cy + g * 0.36 : sl.cy;
       const len = Math.hypot(sx - sl.cx, sy - ey);
       const ang = (Math.atan2(ey - sy, sl.cx - sx) * 180) / Math.PI - 90;
-      const sw = g * (o.stream ? 0.09 : 0.07);
+      // (pack s17-ps: the real stream's picture is its stream and a little air either side, so it is drawn a touch wider)
+      const sw = g * (o.streamWipe ? 0.13 : o.stream ? 0.09 : 0.07);
       stream.style.left = `${sx - sw / 2}px`;
       stream.style.top = `${sy}px`;
       stream.style.width = `${sw}px`;
@@ -282,7 +307,11 @@
       await wait(320);
       if (!alive()) return;
       stream.classList.remove("ending");
-      stream.classList.add("on", "flow");
+      if (o.streamWipe) {
+        wipeTo(0, 104, 0, "head"); // (hidden until it runs down)
+        stream.classList.add("on");
+        wipeTo(0, 104, 300 / sp, "head");
+      } else stream.classList.add("on", "flow");
       if (v.pour) vim.src = v.pour;
       const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour", { quiet: true }) : null;
       const to = Math.max(0, Math.min(1, sl.x.fill));
@@ -307,7 +336,8 @@
       });
       if (loop) loop.stop();
       // the stream stops: its tail falls into the glass, then a last drop from the spout
-      stream.classList.add("ending");
+      if (o.streamWipe) wipeTo(0, 104, 460 / sp, "tail");
+      else stream.classList.add("ending");
       const drop = el("i", "wm-drop", box);
       const sl0 = parseFloat(stream.style.left) + parseFloat(stream.style.width) / 2;
       const st0 = parseFloat(stream.style.top);

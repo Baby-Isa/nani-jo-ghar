@@ -123,6 +123,9 @@
       await WM.play(box, {
         vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), pour: Cook.v(`${A}kettle-tilted-pour-s17.webp`), spout: [0.025, 0.9], aspect: 560 / 515, tilt: 0 },
         side: true,
+        // (CHAI-80, pack s17-ps, Zafar's run, 5 Nov: the real stream, one still picture shown through a mask that runs down it)
+        stream: Cook.v(`${A}stream-chai-real-s17.webp`),
+        streamWipe: true,
         // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
         scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5 },
         glasses: [glass("ph-half", 0.5, 6), glass("ph-full", 1, 11)],
