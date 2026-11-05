@@ -31,6 +31,8 @@ export const TOP = [
   { id: "new-player", toggle: true, title: "New player", text: "On: every launch plays a fresh New player (no words, every first-time help, level 1). Off: your own player, never wiped." },
   // SH-216 (Zafar, 5 Nov: his yes to a grown-ups' way to see the blurred-picture lesson): only with New player
   { id: "words-known", toggle: true, title: "Words known", text: "With New player: the fresh player already knows every word, so pictures blur at levels 3 and 4 and you see that lesson; the first-time help still shows." },
+  // (Zafar, 5 Nov night: "is there a mode you can turn on that records what happens so you get a log to look over?": js/shared/recorder.js)
+  { id: "record", toggle: true, title: "Record a play", text: "On: the game keeps a log of what happens; a small Save log button in the bottom-left corner saves it as a file to send." },
   { id: "day-builder", toggle: true, title: "Day builder", text: "On: every game you launch starts at Nani's door and ends with the evening book. Off: the game alone." },
   { href: WALKTHROUGH, title: "Walkthrough", text: "Nani's pantry list, then one cup of chai, as a new player sees it." },
   { href: "index.html", title: "The house", text: "Nani's house, the game as the child plays it." },
@@ -80,12 +82,14 @@ export function labsPlayer(Save, store) {
         Save.setFlag("newPlayer", true, id);
         // SH-216 (Zafar, 5 Nov): "Words known": the fresh player has picked every word right (js/cook/flow.js reads it once)
         Save.setFlag("wordsKnown", get(K_KNOWN) === "1", id);
+        Save.setFlag("recordPlay", get("njg-labs-record") === "1", id);
         return Save.current();
       }
       var own = ownId();
       if (own) Save.select(own);
       else Save.addPlayer({ name: "Player 1" });
       Save.setFlag("newPlayer", false);
+      Save.setFlag("recordPlay", get("njg-labs-record") === "1");
       return Save.current();
     },
     /** Who will play: the badge's words */
@@ -394,6 +398,11 @@ ${hidden.map(sub).join("\n\n")}
   // Day builder (LAB-06, Zafar 22 Oct: "if you toggle the day builder it just bookends with the Nani house and the Nani book, so you
   // have two toggles"): beside New player. On, every game launched here starts at the door and ends with the book: day.html?bookend=
   // <its link> (js/day/day.js bookendStages; a link it can't play as a stage, e.g. ?eyetest=b, launches as it is)
+  var RC = "njg-labs-record", rcTog = document.getElementById("record-toggle"), rcBox = document.getElementById("record");
+  function rcOn() { try { return localStorage.getItem(RC) === "1"; } catch (e) { return false; } }
+  function rcShow() { rcTog.checked = rcOn(); rcBox.classList.toggle("on", rcOn()); }
+  rcTog.addEventListener("change", function () { try { localStorage.setItem(RC, rcTog.checked ? "1" : "0"); } catch (e) { /* this visit only */ } rcShow(); });
+  rcShow();
   var DB = "njg-labs-day-builder", dbTog = document.getElementById("day-builder-toggle"), dbBox = document.getElementById("day-builder");
   var dbOn = function () { try { return localStorage.getItem(DB) === "1"; } catch (e) { return false; } };
   function dbShow() { dbTog.checked = dbOn(); dbBox.classList.toggle("on", dbOn()); }

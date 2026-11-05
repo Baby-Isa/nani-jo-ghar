@@ -2929,7 +2929,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const anyDots = [...document.querySelectorAll(DOTS14)].some(vis);
       if (anyDots && firstAll("reveal-word")) {
         const dots = await pick14(DOTS14);
-        noteLesson("word", dots ? "shown" : "none-in-view");
+        // (the recorder, labs.html's "Record a play": why each dotted word was taken or not)
+        const why = (x) => {
+          const c = x.closest(".oc-card");
+          const r = x.getBoundingClientRect();
+          return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !vis(x) ? "hidden" : shown14(x) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
+        };
+        noteLesson("word", dots ? `shown ${why(dots)}` : `none-in-view ${[...document.querySelectorAll(DOTS14)].map(why).join(" ")}`);
         if (dots) await lesson(dots);
       }
       const anyEye = [...document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`)].some(vis);
