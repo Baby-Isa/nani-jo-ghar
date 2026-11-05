@@ -8,42 +8,35 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (5 Nov 2026, about 02:00 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`), **chai only** until
-Zafar calls it done. His two overnight rounds are built, checked and published for his morning play (laptop, then phone):
-`docs/feedback/chai-replay-2026-11-04-pm.md` (8 points) and `docs/feedback/chai-replay-2026-11-05.md` (11 points, his video on `main`:
-`assets/20261105_004201.mp4`). Three art packs landed from his runs: s17-ps (the real stream), s17-art4 (the glass to the rim in chai
-and plain tea, the white marble).
-- **Built tonight:** the said card rolls up as the order passes (SH-180: a second redraw had thrown the glide away); the row stays on
-  the last card until served, then home, then the fold, at every level (SH-206: L1's pour drew nothing); the next pan's light only
-  once the first is served (CHAI-83); the pick-the-pan step never says pan 2's item at once (SH-205, his repro); the dots lesson every
-  round for New player, its box the word's size (SH-196); Nani's box one height (SH-209: the arrow centred in her first row; SH-210:
-  the panel never shrinks for the scrolling order list, his video); no snapping on the item row (SH-211, the L4 back-and-forth); the
-  word moment: its scene before the kitchen (CHAI-85), the real stream from the spout's lip, no oval (CHAI-80), half 0.42 and full to
-  the rim, the half and full cards from the same glass, plain tea for "dudh na" (CHAI-84); the white marble on every stove game (ART-40).
-- **Checked:** `checks.mjs` green; every fix replayed in the sandbox with a frame-by-frame panel log (`NJG_INIT=<hook.js>`, a new
-  run.mjs option) at L1-L4 and the four sizes; SH-210 red on last night's build, green on tonight's; the full chai set `s17-n5` (88 pages, every
-  level, path and size): 0 contract breaks, 0 new findings (known kinds appended to the baseline). Live: 20261105T021953Z (3dd05c01). The publish gate was forced (150 old open rows; no contract or evidence record after the
-  container restart): the judge has not looked at tonight's rows.
-- **Open:** SH-212 (every next game loads in the background: before the stores).
+**Where things stand (5 Nov 2026, 20:15 UK):** Sprint 17 is open (`docs/sprints/S17-chai-done-families.md`), chai only until Zafar
+calls it done. **Live on `main`: 20261105T200407Z**, for his laptop and phone play: the stone side panel and stone shelf (ART-41,
+pack s17-pc2, `build/tools/art/cut_s17_pc2.py`), the zoom-in light for the reveal lessons (SH-213, a House rule), everyone back for
+the thank-you (SH-214), the word moment fitting every screen (CHAI-86), Nani's box folding smoothly (SH-215), the pour sound
+(CHAI-87), "Words known" on labs.html (SH-216: the picture lesson at L3). His morning notes: `docs/feedback/chai-play-2026-11-05-am.md`.
+- **Checked:** `checks.mjs` green; the chai set (104 pages, every level, four sizes, both chai pages) all reached their end; its one
+  contract break (the order card's light during the box's fold) fixed and replayed (0 breaks over 18 pages); his phone size
+  971x318 shot. The gate was forced on his word (open rows; no full gate or evidence run): the judge has not looked at today's rows.
+- **Art runs:** the block generator now gets references from GitHub by the runner's own screenshots and bulk-downloads from the
+  Library (ART-42, pinned by `artcheck.test.mjs`).
+- **The standard's structure:** draft 2 (`build/reports/s17-standards-structure-v2.md`) after Fable's review
+  (`s17-standards-structure-review.md`), built from the Sprint 16-17 ledger (`s16-s17-change-ledger.md`, 118 changes).
 
 **Next steps, in order:**
-1. **His morning play** (chai L1-L4, laptop then phone): `/feedback` on his notes, rows the same day, fix, the panel-log replay
-   (`docs/feedback/chai-replay-2026-11-05.md` §header has the method), publish.
-2. **The judge on tonight's rows** once he is happy: an evidence run on the rows above (`evidence.mjs --run --rows ...`), then the
-   judge (Fable). The probes that still miss (CHAI-67, -68, -75, -77 at 740x320, SH-201, SH-202, CHAI-74, SH-196's L3) as before.
-3. **When he says chai is done:** the chai standard page (`docs/design-language/chai-standard.md`), `/review`, `/publish`, Sprint 17
-   closed with `/sprint` (budget: three days planned, five used).
-4. **Sprint 18** on his go: the stove family to chai's standard (`docs/game-design/families/stove.md`); they have the white marble already.
+1. **His play** (chai L1-L4, laptop then phone): `/feedback`, rows the same day, fix, replay, publish.
+2. **He locks the structure** (its 7 decisions, section 7), then a fresh chat fills the standard (Opus high, Fable reviewing; about
+   half a day): glossary, patterns, the placement table (every ledger change and every ID the old pages cite), rules, values, the ID
+   diff against `chai-standard.md` and `families/stove.md` for his yes, then the gap analysis in two passes.
+3. **When he calls chai done:** the judge on the rows built 4-5 Nov, `/review`, `/publish`, Sprint 17 closed with `/sprint`.
+4. **Sprint 18** on his go: the stove family to chai's standard; the stone band in each game's shelf (ART-41), SH-212 before the stores.
 
 **Open questions to Zafar:**
-1. The kettle sits close to the glass, so only a short stream shows above the rim: lift it so more of the fall shows?
-2. Is chai done after the morning play?
+1. Is chai done after this play?
+2. The structure's 7 decisions (yes to all except ...).
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Sprint 17, chai only: take my chai
-> notes with `/feedback` and fix them until I call chai done; then the judge on the overnight rows, the chai standard page, `/review`,
-> `/publish`, `/sprint` to close. Work on branch `claude/admiring-ptolemy-77fuv5`; `main` is the live site. Tell me before launching
-> anything new.
+> notes with `/feedback` and fix them until I call chai done; then the standards structure and the fill. Work on branch
+> `claude/vibrant-hopper-v3yexp`; `main` is the live site. Tell me before launching anything new.
 
 ## The fix list
 
