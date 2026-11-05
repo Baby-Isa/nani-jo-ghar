@@ -2168,6 +2168,16 @@
         // (Zafar, 30 Oct: "we minimise (fold up) menu boxes once that item is complete ... and then all the cards open again when
         // the game starts": while the order is given, a person whose order has been said folds to face and headline as the next
         // one speaks, so no card is ever half under the panel's top; every card opens again as the order ends)
+        // (SH-171: their card comes now, folded, as they start; it opens at their first item)
+        // (Zafar, 5 Nov: "the first menu card doesn't scroll up nicely like how it scrolls down, it still just snaps back up": the next
+        // person's card was revealed by a second redraw straight after the fold's, which drew the folding card again already folded
+        // and dropped its glide; the reveal now rides the fold's own redraw)
+        const revealNow = !!(m.revealed && !m.revealed.has(who));
+        if (revealNow) {
+          m.revealed.add(who);
+          m.headOnly = m.headOnly || new Set();
+          m.headOnly.add(who);
+        }
         if (prev) {
           m.said = m.said || new Set();
           m.said.add(prev);
@@ -2190,14 +2200,8 @@
           const aim = () => (list.scrollHeight <= list.clientHeight + 1 ? 0 : Math.max(0, list.scrollTop + (cur.getBoundingClientRect().top - list.getBoundingClientRect().top) - 4));
           if (list && cur) foldGlide(list, h0, top0, aim);
         }
+        else if (revealNow) renderOrder();
         prev = who;
-        // (SH-171: their card comes now, folded, as they start; it opens at their first item)
-        if (m.revealed && !m.revealed.has(who)) {
-          m.revealed.add(who);
-          m.headOnly = m.headOnly || new Set();
-          m.headOnly.add(who);
-          renderOrder();
-        }
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
         if (!c || !c._parts) continue;
         if (M.focus) M.focus(who);
