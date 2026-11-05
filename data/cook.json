@@ -3619,12 +3619,12 @@
     }
    },
    "bg": {
-    "marble": "assets/cook/worktop-s08c/marble-tile-s08c",
-    "hob": "assets/cook/worktop-s08c/marble-tile-s08c",
+    "marble": "assets/cook/worktop-s17/marble-white-s17",
+    "hob": "assets/cook/worktop-s17/marble-white-s17",
     "pantry": "bg-pantry-v3-1600"
    },
    "bgTile": {
-    "_about": "contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/worktop-s08c/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
+    "_about": "Zafar, 5 Nov: 'change this to the new background marble for the stove top down games': the white marble (pack s17-art4 MW, edges blended to tile, x2: assets/cook/worktop-s17/marble-white-s17) replaces s08c's cream tile for the marble and hob views. Was: contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/worktop-s08c/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
     "marble": {
      "k": 0.5
     },
