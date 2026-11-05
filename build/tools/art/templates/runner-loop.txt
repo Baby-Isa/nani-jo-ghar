@@ -9,9 +9,9 @@ THE TICK. Repeat until every line is {{DONE}}:
    PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. {{PASS_SAVE}}
    FAIL with redos left: {{LOOP_REDO}}
    FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
-3. FILL. While fewer than {{WINDOWS}} windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave {{GAP}} seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+3. FILL. While fewer than {{WINDOWS}} windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the references its line names as MOVING IMAGES says (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave {{GAP}} seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
 4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: {{CHORES}} No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
-At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+At the start, get only the references the first prompts need (MOVING IMAGES), send them, and get the rest during the gaps.
 
 STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for {{STALL}} minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
 - First, reload that chat once: the picture is often finished and the page is stuck.

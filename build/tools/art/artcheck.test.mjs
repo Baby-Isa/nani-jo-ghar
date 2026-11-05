@@ -71,3 +71,21 @@ test("pixel check on the repo: today's four failures are red, their re-cuts gree
   for (const p of green) assert.deepEqual(r[join(ROOT, p)].fails, [], `${p} should pass`);
   for (const p of red) assert.ok([...KNOWN].some((k) => k.startsWith(`pixel|${p}|`)), `${p} is still shipped: it is on the known list until it is wired to its re-cut`);
 });
+
+// Zafar, 5 Nov (pack s17-pc2's first run stopped: "Files you created cannot be uploaded"): every download-mode block gets its
+// references from GitHub as the runner's own screenshots (never a file it fetched, never Zafar attaching), and downloads the kept
+// images at the end in one go from ChatGPT's Library (tick the first image's bottom-right box, then each other's on hover)
+test("art block (download mode): references by the screenshot route, the Library's bulk download", () => {
+  const moving = readFileSync(join(HERE, "templates", "moving-download.txt"), "utf8");
+  assert.match(moving, /the screenshot route/);
+  assert.match(moving, /Take a screenshot of that tab/);
+  assert.doesNotMatch(moving, /Fetch each reference once into your cloud workspace/, "the refused route (a fetched file uploaded) is gone");
+  assert.doesNotMatch(moving, /please attach|attach (these|the) (two )?files to this chat/i);
+  const block = readFileSync(join(HERE, "templates", "block.txt"), "utf8");
+  assert.match(block, /A reference is never a reason to stop or to ask him/);
+  const py = readFileSync(join(HERE, "artblock.py"), "utf8");
+  assert.match(py, /tick the small check box in its bottom-right corner/);
+  assert.match(py, /every other image shows its own check box in its bottom-right corner when you hover over it/);
+  const loop = readFileSync(join(HERE, "templates", "runner-loop.txt"), "utf8");
+  assert.doesNotMatch(loop, /attach the local copies/);
+});

@@ -22,7 +22,7 @@ SAFETY RULES (always)
 - Sign nothing in or out. Delete no chats.
 - {{SAFETY_COMMIT}}
 - {{REWORD_RULE}} {{SLOT_RULE}}
-- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on. A reference is never a reason to stop or to ask him: MOVING IMAGES step 1 gets every one from GitHub as a screenshot.
 - Pacing: at most {{WINDOWS}} images generating at once and at least {{GAP}} seconds between sends (see the loop).
 
 HOW TO RUN EACH PROMPT
