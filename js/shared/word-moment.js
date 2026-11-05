@@ -101,7 +101,10 @@
       const u = c[0] === a[0] ? 0 : Math.max(0, Math.min(1, (yf - a[0]) / (c[0] - a[0])));
       const l = b.ox + (a[1] + (c[1] - a[1]) * u) * b.w, r = b.ox + (a[2] + (c[2] - a[2]) * u) * b.w;
       const sw = r - l, sh = Math.max(3, sw * 0.11);
-      Object.assign(f.top.style, { left: `${l.toFixed(1)}px`, width: `${sw.toFixed(1)}px`, top: `${(y - sh / 2).toFixed(1)}px`, height: `${sh.toFixed(1)}px`, opacity: lv <= 0.002 || lv >= 0.995 ? "0" : "1" });
+      // (Zafar, 5 Nov: "when pouring ... at the top of the chai there's a circle/oval drawn - it looks bad because it then disappears
+      // after finish pouring on the full cup ... can we take it out?": the glass is seen exactly side-on, so the tea's own edge is its
+      // surface; the drawn oval stays hidden)
+      Object.assign(f.top.style, { left: `${l.toFixed(1)}px`, width: `${sw.toFixed(1)}px`, top: `${(y - sh / 2).toFixed(1)}px`, height: `${sh.toFixed(1)}px`, opacity: "0" });
       return;
     }
     const P = f.prof;
@@ -267,7 +270,7 @@
       const len = Math.hypot(sx - sl.cx, sy - ey);
       const ang = (Math.atan2(ey - sy, sl.cx - sx) * 180) / Math.PI - 90;
       // (pack s17-ps: the real stream's picture is its stream and a little air either side, so it is drawn a touch wider)
-      const sw = g * (o.streamWipe ? 0.13 : o.stream ? 0.09 : 0.07);
+      const sw = g * (o.streamWipe ? 0.085 : o.stream ? 0.09 : 0.07);
       stream.style.left = `${sx - sw / 2}px`;
       stream.style.top = `${sy}px`;
       stream.style.width = `${sw}px`;
