@@ -92,9 +92,34 @@
       const T = f.tea;
       const yf = T.bottom - (T.bottom - T.top) * lv;
       const y = b.oy + yf * b.h;
-      f.img.style.clipPath = lv <= 0.002 ? "inset(100% 0 0 0)" : `inset(${y.toFixed(1)}px 0 0 0)`;
-      // the inside's walls at this height (straight lines through the measured rows)
+      // CHAI-88 (Zafar, 5 Nov evening, his phone: "if you zoom in to the halfway line and look just outside the edge of the glass, you'll
+      // see kind of a black shadow ... as the tea fills the glass, you also get this black shadow going up in line with the level of the
+      // tea, all along the outside edge on both sides ... the only thing that changes is what's inside the glass"): the full picture is
+      // shown only inside the glass, its walls included (the measured inside, widened by the wall), from the tea's level down to the
+      // inside's foot; never across the picture's whole width, whose edge outside the glass is a shade darker than the empty one's
       const rs = T.rows;
+      const WALL = 0.022;
+      if (lv <= 0.002) f.img.style.clipPath = "polygon(0 0, 0 0, 0 0)";
+      else {
+        const pts = [];
+        const xAt = (q, side) => b.ox + (side < 0 ? q[1] - WALL : q[2] + WALL) * b.w;
+        const at = (yq) => {
+          let k = 0;
+          while (k < rs.length - 2 && rs[k + 1][0] < yq) k++;
+          const p0 = rs[k], p1 = rs[k + 1] || p0;
+          const t = p1[0] === p0[0] ? 0 : Math.max(0, Math.min(1, (yq - p0[0]) / (p1[0] - p0[0])));
+          return [yq, p0[1] + (p1[1] - p0[1]) * t, p0[2] + (p1[2] - p0[2]) * t];
+        };
+        const below = [at(yf), ...rs.filter((q) => q[0] > yf)];
+        below.forEach((q) => pts.push(`${xAt(q, -1).toFixed(1)}px ${(b.oy + q[0] * b.h).toFixed(1)}px`));
+        // (the foot: just under the last measured row, where the tea meets the thick base)
+        const last = below[below.length - 1];
+        const foot = (b.oy + Math.min(1, last[0] + 0.02) * b.h).toFixed(1);
+        pts.push(`${xAt(last, -1).toFixed(1)}px ${foot}px`, `${xAt(last, 1).toFixed(1)}px ${foot}px`);
+        below.slice().reverse().forEach((q) => pts.push(`${xAt(q, 1).toFixed(1)}px ${(b.oy + q[0] * b.h).toFixed(1)}px`));
+        f.img.style.clipPath = `polygon(${pts.join(", ")})`;
+      }
+      // the inside's walls at this height (straight lines through the measured rows)
       let i = 0;
       while (i < rs.length - 2 && rs[i + 1][0] < yf) i++;
       const a = rs[i], c = rs[i + 1] || a;

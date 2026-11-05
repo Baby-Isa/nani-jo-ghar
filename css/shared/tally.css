@@ -11,9 +11,12 @@
   display: flex; align-items: center; gap: var(--njg-s1);
   padding: var(--njg-s1) var(--njg-s3) var(--njg-s1) var(--njg-s1); border-radius: var(--njg-round);
   background: var(--njg-card); box-shadow: var(--njg-shadow);
-  font: 800 var(--njg-t1)/1 var(--njg-font); color: var(--njg-ink); font-variant-numeric: tabular-nums;
+  font: 800 var(--njg-t3)/1 var(--njg-font); color: var(--njg-ink); font-variant-numeric: tabular-nums;
 }
-.njg-tally-pic { display: inline-grid; place-items: center; width: var(--njg-s6); height: var(--njg-s6); }
+/* (Zafar, 5 Nov evening, his phone: "the pills that count the number of items that have gone in ... seem a bit big compared with ... the
+   ones on the shelf ... maybe not the same size as those pills, but at least a little bit ... proportionate": a step down, text t3 and
+   picture s5; still a step above the shelf's word pills, t4) */
+.njg-tally-pic { display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); }
 .njg-tally-pic img { width: 100%; height: 100%; object-fit: contain; }
 .njg-tally-chip.bump { animation: njgTallyBump .3s; }
 @keyframes njgTallyBump { 50% { transform: scale(1.2); } }

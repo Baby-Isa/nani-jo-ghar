@@ -103,6 +103,13 @@ history behind a pointer; (7) the gap analysis, by the two passes.
    rules to it and keep their reasoning. *Recommended, after chai's fill.*
 7. Fill it in a fresh chat after you call chai done (about half a day of work), Opus high, Fable reviewing the fill. *Recommended.*
 
+## 8. Zafar's answers (5 Nov, evening)
+
+Yes to all except 5, changed: **every area is broken down rule by rule** in the gap analysis (not only the weak ones). Added: **the
+rules and lessons live in the tools and ways of working, not only in a document**: each rule's "Checked by" names a probe, check,
+contract or build-tool rule (or a design doc read at every launch, such as `/brief`'s standing lines), so it cannot be missed; a rule
+with no such home is a gap in itself. The fill starts in a new chat once today's chai fixes are done.
+
 ## Proof
 
 From the ledger (`build/reports/s16-s17-change-ledger.md`) and Fable's review with its 15-row placement test

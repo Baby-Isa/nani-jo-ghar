@@ -221,6 +221,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * The band's stone colour is drawn at once (no blank frame); the tile and the shelf come in when loaded. One call for every
    * station that has the band (chai now; the stove family at its roll-out). base: the line every object stands on.
    */
+  // (the worktop's wash, Zafar 5 Nov: the white marble warmed to the stone's undertone; Fable's study: the colour, alpha 0.18 kept)
+  S$.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
   S$.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
   S$.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
     const ST = S$.STONE;

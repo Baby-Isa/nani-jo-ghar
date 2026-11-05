@@ -126,6 +126,11 @@
 /* hidden: a strong blur and the picture's frosted eye; a word's dots over its own place (a tap shows it for 3 s, a free peek) */
 .wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) > img.wc-img { filter: blur(var(--njg-card14-u16)) saturate(.55) brightness(1.06); transform: scale(1.12); }
 .wc14 .wc14-eye { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: var(--njg-tap); min-height: var(--njg-tap); width: 34%; aspect-ratio: 1.6; border-radius: var(--njg-card14-u999); border: var(--njg-card14-u1p5) solid var(--njg-card14-eye-edge); background: var(--njg-card14-eye-bg); -webkit-backdrop-filter: blur(var(--njg-card14-u6)); backdrop-filter: blur(var(--njg-card14-u6)); place-items: center; box-shadow: var(--njg-card14-shadow-eye); padding: 0; color: var(--njg-card14-text); cursor: pointer; }
+/* (Zafar, 5 Nov evening, his phone: "the eye circle just touches the top and the bottom of the blurred image rectangle ... it needs to have
+   some padding built in ... so it leaves at least a little bit of padding between the eye in the circle and the edge of the blurred
+   area": never taller than the picture less a margin top and bottom; the tap area stays a whole 48 px, drawn by nothing) */
+.wc14 .wc14-eye { min-height: min(var(--njg-tap), calc(100% - 2 * var(--njg-card14-u8))); max-height: calc(100% - 2 * var(--njg-card14-u8)); }
+.wc14 .wc14-eye::before { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--njg-tap)); height: max(100%, var(--njg-tap)); transform: translate(-50%, -50%); }
 .wc14 .wc14-eye svg { width: 46%; max-width: var(--njg-card14-u40); opacity: .7; }
 .wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) .wc14-eye { display: grid; }
 .wc14 .wc14-slot { position: relative; display: grid; place-items: center; max-width: 100%; min-width: 0; }

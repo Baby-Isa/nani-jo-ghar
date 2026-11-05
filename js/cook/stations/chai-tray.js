@@ -539,7 +539,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
     // SH-108 reopened (Zafar, 27 Oct: "chai has the old stand in background, not the modern countertop"): a lighter wash, so the
     // painted marble reads as marble on a phone (at 0.5 it read as the old plain stand-in)
-    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.18).setOrigin(0).setDepth(D.bg + 1));
+    // (Zafar, 5 Nov: the worktop and the stone "should just sing off each other": the wash in the stone's undertone, St.worktopWash)
+    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, St.worktopWash(), 0.18).setOrigin(0).setDepth(D.bg + 1));
     // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
     // and a grey plank line under each group)
     St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2 });
@@ -573,8 +574,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     trayD = Math.min(trayD, Math.max(TRAY_D * 0.72, 1600 - 2 * 48 - overL - hobW * k - gap));
     const total = overL + hobW * k + gap + trayD;
     const hobX = Math.max(48 + overL, (1600 - total) / 2 + overL);
-    // low (§10), just above the shelf; raised only a little into a taller stage's worktop
-    const hobY = Math.max(-ey + 40, SHELF_TOP - SHELF_GAP - hobH - Cook.lift(0.2));
+    // (Zafar, 5 Nov evening, his laptop: "is there a reason why the stove and the tea tray and the general gameplay area is centred where
+    // it is height-wise? ... a lot more space on top ... it would just feel more natural if it was centred in the space ... both X and Y
+    // axis, including the gameplay area ... big enough to accommodate all the items that will or currently appear"): the play group
+    // (the hob, the tray and the room the count pills take above the hob) is centred in the worktop that shows, between the view's top
+    // and the shelf; was: low, just above the shelf, so a taller stage's extra worktop all went above it
+    const viewTop = (Cook.view && Cook.view.top != null ? Cook.view.top : -ey);
+    const ppw = (() => { try { return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1; } catch (e) { return 1; } })();
+    const PILL_ROOM_Y = 50 / ppw; // (a count pill, 40 CSS px, and its gap above the hob's rim: js/shared/tally.js)
+    const spanTop = viewTop + 16;
+    const spanBot = SHELF_TOP - SHELF_GAP;
+    const hobY = Math.min(spanBot - hobH, Math.max(viewTop + 40, spanTop + (spanBot - spanTop - (hobH + PILL_ROOM_Y)) / 2 + PILL_ROOM_Y));
     // the shared kitchen kit's hob: one burner per person (the burner rule)
     const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
     const hob = kHob.img;
@@ -752,7 +762,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const spanL = hobX - overL;
     const spanR = trayX + trayD;
     const mid = (spanL + spanR) / 2;
-    const roomW = 2 * Math.min(mid - 40, 1600 - 190 - mid, (spanR - spanL) / 2);
+    // (Zafar, 5 Nov evening, L4 at his laptop: "can you see the word pills of the items on the shelf are touching? We had a rule ...
+    // they could basically have space to spread out more and avoid overlapping": the right edge kept 190 px clear for the old tick
+    // button, which chai no longer draws, so with three pans the row was squeezed short of the tray's edge. The margins are the view's
+    // own edges now, 40 px in)
+    const VL = (Cook.view && Cook.view.left != null ? Cook.view.left : 0) + 40;
+    const VR = (Cook.view && Cook.view.right != null ? Cook.view.right : 1600) - 40;
+    const roomW = 2 * Math.min(mid - VL, VR - mid, (spanR - spanL) / 2);
     // SH-208 (Zafar, 4 Nov: "the pills are like overlapping ... where there's space to spread them out more ... we should try to do
     // that"; then, his screenshot: "The items should be centered between the red dotted lines (furtherest edges of in game objects on
     // both sides)"): the row is always centred on the hob-and-tray span (the pan's handle to the tray's right edge). Under that span
@@ -760,7 +776,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // (the left margin and the tick's clearance, whichever is nearer the centre); past that the groups' gaps close to 20 px, then the
     // pills sit close
     const PILL_ROOM = CHIP.w + 12;
-    const LEFT = 40, RIGHT = 1600 - 190;
+    const LEFT = VL, RIGHT = VR;
     const nG = shelfIds.length - 1;
     let gapW = GROUP_GAP;
     let slotW = Math.min(PITCH, (roomW - nG * gapW) / slotsN);
@@ -1089,7 +1105,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // the hob's steel frame along its top: a pill whose top is less than this below the hob's top edge reads as sitting on the
     // rim (844x390 L3: a bubble 12 px inside the edge, on the frame), so it goes wholly above the hob instead
     const RIM_CLEAR = 40;
-    const BADGE_CSS_H = 48; // the badge's height on screen, CSS px (js/shared/tally.js, phone and laptop alike)
+    const BADGE_CSS_H = 40; // the badge's height on screen, CSS px (js/shared/tally.js, phone and laptop alike; a step smaller, 5 Nov)
     const pxPerWorld = () => UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
     const tallyPt = (pan) => {
       const x = pan.x - panR * 0.7;
@@ -2869,11 +2885,60 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         await new Promise((r) => global.setTimeout(r, 340));
       };
       const rows14 = "#mission .oc-row14";
-      const dots = [...document.querySelectorAll(`${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`)].find(vis);
-      if (dots && firstAll("reveal-word")) await lesson(dots);
-      const eye = [...document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`)].find(vis);
+      // SH-196, told before again (Zafar, 5 Nov evening: "it's still absolute toss-up whether I see the onboarding for the blurred English
+      // words ... I played level 2, didn't get the onboarding ... then immediately played level 3 ... and I got onboarding both for the
+      // blurred English word and the blurred image ... on level 2, it waits, as if it's waiting or it's expecting the onboarding for the
+      // blurred word to be taking place, but it's not"): the lesson took the first dotted word in the page, shown or not (a card still
+      // rolled up from the order, a card scrolled out of the list), so it could run lit on nothing while the next light waited. Now only
+      // a word the child can see: inside an open card, inside the order list's view (brought into it if it is just out); waited for up
+      // to 3 s while the cards settle; none: no lesson and no wait (logged for the checks)
+      const shown14 = (x) => {
+        if (!vis(x) || x.closest(".oc-card.folded")) return false;
+        const list = document.querySelector("#mission");
+        const r = x.getBoundingClientRect();
+        const m = list ? list.getBoundingClientRect() : null;
+        if (!m || r.width <= 1 || r.height <= 1 || r.top < m.top - 1 || r.bottom > m.bottom + 1) return false;
+        // (and it is what shows at its middle: never under a card still unfolding, a mask or another layer)
+        const row = x.closest(".oc-row14");
+        const rr = row ? row.getBoundingClientRect() : m;
+        const cx = Math.max(rr.left + 2, Math.min(rr.right - 2, r.left + r.width / 2));
+        const hit = r.left + r.width / 2 >= rr.left && r.left + r.width / 2 <= rr.right ? document.elementFromPoint(cx, r.top + r.height / 2) : null;
+        // (a word cut at the row's edge is fine: the lesson glides the row to it first)
+        return !hit ? r.left + r.width / 2 < rr.left || r.left + r.width / 2 > rr.right : hit === x || x.contains(hit) || hit.contains(x) || !!(hit.closest && hit.closest(".wc14") === x.closest(".wc14"));
+      };
+      const pick14 = async (sel) => {
+        const t0 = Date.now();
+        for (;;) {
+          const all = [...document.querySelectorAll(sel)].filter(vis);
+          const ok = all.find(shown14);
+          if (ok) return ok;
+          const open = all.find((x) => !x.closest(".oc-card.folded"));
+          if (open && UI.cardIntoView) UI.cardIntoView(open.closest(".oc-card"));
+          if (!all.length || Date.now() - t0 > 3000) return null;
+          await new Promise((r) => global.setTimeout(r, 120));
+        }
+      };
+      const noteLesson = (step, by) => {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("reveal-lesson", { step, by });
+        } catch (e) {
+          /* only a log */
+        }
+      };
+      const DOTS14 = `${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`;
+      const anyDots = [...document.querySelectorAll(DOTS14)].some(vis);
+      if (anyDots && firstAll("reveal-word")) {
+        const dots = await pick14(DOTS14);
+        noteLesson("word", dots ? "shown" : "none-in-view");
+        if (dots) await lesson(dots);
+      }
+      const anyEye = [...document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`)].some(vis);
+      const eye = anyEye && seen14[`*:${S14_TAG}reveal-word`] ? await pick14(`${rows14} .wc14-hide-pic .wc14-eye`) : null;
       // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
-      if (eye && seen14[`*:${S14_TAG}reveal-word`] && firstAll("reveal-pic")) await lesson(eye);
+      if (eye && seen14[`*:${S14_TAG}reveal-word`] && firstAll("reveal-pic")) {
+        noteLesson("pic", "shown");
+        await lesson(eye);
+      }
     }
     talked = true;
     refresh();
