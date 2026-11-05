@@ -4847,7 +4847,8 @@
      "assets/shared/faces/*",
      "assets/ui/**",
      "assets/cook/bg/bg-cook-*-1600.webp",
-     "assets/cook/worktop-s08c/*"
+     "assets/cook/worktop-s08c/*",
+     "assets/cook/worktop-s17/*"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
