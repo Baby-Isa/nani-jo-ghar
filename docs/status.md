@@ -19,7 +19,8 @@ report is `build/reports/overnight-2026-11-06.md`: what's done, 32 numbered deci
   `fonts-across-the-game-2026-11-06.md` (C, Fraunces for every word, recommended), `sound-and-juice-chai-2026-11-06.md`,
   `stove-art-400-2026-11-06.md` (the block ready: `docs/design-language/art-plans/s17-stove400-chrome-block.txt`, branch fields on
   `ccr-1f71c98a-wwowh8`), `real-people-art-2026-11-06.md`.
-- **New rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English 7.9 px on phones).
+- **New rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English 7.9 px on phones), ART-44 (seven
+  shipped baked shadows, found by the colour tool, now checked at every push).
 
 **Next, in order (once Zafar answers the morning report):** publish the pills; the fonts change (half a day); the sound lab page then
 chai's sounds; the stove art run, part A (the chai shelf sheet) first, then the shelf swap.
@@ -37,7 +38,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 83 | 103 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 84 | 103 |
 | Cook: pantry | 9 | 10 |
 | Cook: chai / maani / daar / chaat / samosa / sekelo / general | 16 / 4 / 7 / 2 / 1 / 4 / 10 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
 | Clinic | 36 | 169 |
