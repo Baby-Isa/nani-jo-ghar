@@ -1,0 +1,51 @@
+{
+  "name": "s17-n3-order: a style tea's item card pops while it is ordered; each person says their own words (shots: the rows a probe can see; the sound rows are for Zafar's ear)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the order's timing and the one speech queue touch every Cook game",
+  "cost": "about $20-30",
+  "stop": "7 Nov 2026, 02:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": false,
+  "read": [
+    "docs/feedback/chai-play-2026-11-06-night.md (P3, P11)",
+    "docs/feedback/logs/njg-log-2026-11-06T21-08-22-649Z.json (the missing dudh: the cousin's card popped at 21.4 s with no say-start)",
+    "docs/game-design/modes/cook.md"
+  ],
+  "owns": [
+    "js/cook/ui.js (the order read loop, about 1960-2340, and the order card's _parts, about 3150-3175)",
+    "js/cook/words.js",
+    "js/cook/order.js",
+    "data/cook.json (chai's say list only, if needed)",
+    "build/reports/s17-n3-order.md",
+    "build/screenshots/s17-n3/**"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (s17-n1)",
+    "js/shared/word-moment.js and ui.js:136 (s17-n2)",
+    "build/tools/art/** (s17-n4)"
+  ],
+  "stubs": "none: never a hand-written Kutchi line (non-negotiable 2); the sentence stays as the engine builds it",
+  "rows": [
+    "CHAI-96",
+    "CK-59"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-96: while a person's headline is said (Muke elchi waari chai khape, aadu, saffron and every other style tea), the item card of every row folded into that headline (order.js:269-270, inHead; the part's rows) pops up as milk's does (ui.js:2245 pops only a part's own row), held by hold14, then flies into its slot on the person's card: the person's card opens first, the card goes in while they order, then milk and the rest as now. Every item but water and tea leaves gets its card. The sentence is unchanged (the word said once, in the headline).",
+      "accept": "the log shows a pop-face for the extra during the headline's say, before dudh's, at chai and chai tray L1-L4 (style teas at the levels that have them); a filmed strip of the headline's pop and flight at 740x320 and 1280x665; no card on screen twice"
+    },
+    {
+      "do": "CK-59: the said-again rule (words.js:515-575) tells people apart by who speaks, not by a card in a pop-up (words.js:548 looks only inside .njg-rq-open; the order's cards sit in the side panel): a line said by one person is said again by another within 10 s. Every Cook game where two or more people order.",
+      "accept": "replay the log's order (chai tray L2, Nana then the cousin, both with dudh): two say-starts of dudh; the same for every Cook station with two people ordering (a contract run); the child-tap and one-speaker rules unchanged (their tests pass)"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8843,
+  "report": "s17-n3-order",
+  "publish": false
+}

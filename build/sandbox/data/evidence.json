@@ -24045,14 +24045,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:glow",
+   "at": "step:1",
    "after": null,
    "capture": [
     "shot",
     "zoom2:#game"
    ],
    "expect": null,
-   "note": "the lit box round a shelf item (speaker-only and word pills): at least 8 px round picture, pill and face, or 2 px short of a neighbour"
+   "note": "the lit box round the first shelf item at step 1 (L1-L4): at least 8 px round picture, pill and face, or 2 px short of a neighbour"
   }
  ],
  "CHAI-97": {
@@ -24138,10 +24138,10 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:pop-face",
+   "at": "life:request",
    "after": null,
    "capture": [
-    "strip:#mission:6x200",
+    "strip:#mission:8x400",
     "voice"
    ],
    "expect": null,

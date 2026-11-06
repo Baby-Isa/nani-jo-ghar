@@ -1,0 +1,52 @@
+{
+  "name": "s17-n1-chai: the boil's sound, the pause after a serve, no click after a pour, and one highlight rule for every game (shots: the rows a probe can see; the sound rows are for Zafar's ear)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "sound curves and a shared geometry rule judged by eye at four sizes and every level",
+  "cost": "about $20-30",
+  "stop": "7 Nov 2026, 02:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": false,
+  "read": [
+    "docs/feedback/chai-play-2026-11-06-night.md (P1, P2, P8, P9: his words, causes, fixes)",
+    "docs/design-language/chai-standard.md",
+    "docs/design-language/audio.md"
+  ],
+  "owns": [
+    "js/cook/stations/chai-tray.js",
+    "data/stations/chai-tray.json",
+    "js/shared/onboard.js",
+    "js/cook/coach.js",
+    "js/shared/sfx.js (a level curve helper only, if needed)",
+    "build/reports/s17-n1-chai.md",
+    "build/screenshots/s17-n1/**"
+  ],
+  "readOnly": [
+    "js/shared/word-moment.js, css/shared/word-moment.css (s17-n2)",
+    "js/cook/ui.js, js/cook/words.js, js/cook/order.js (s17-n3)",
+    "build/tools/art/** (s17-n4)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "CHAI-99",
+    "SH-230"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-99: the next pan's light 0.8 s after a pour (chai-tray.js:2214, was 0.3 s); fix the stale 'about 3 s' comment.",
+      "accept": "the log's next-pan note at least 0.8 s after the pour's end, L1-L4"
+    },
+    {
+      "do": "SH-230, one shared rule in js/shared/onboard.js used by every game's onboarding light: the box is the union of the thing's picture, its word pill and its face icon (whichever it has), plus a margin of 12% of the union's smaller side, 8 to 16 px; on a side where that margin would touch a neighbouring item (the avoid list), it shrinks only as far as keeps 2 px clear of that item (was half the gap, down to 0); at the screen's edge it stops at the edge. Chai's shelf (itemRect, chai-tray.js:2219-2267) builds its union from the jar picture AND the pill (a speaker-only pill is narrower than its jar: the jar sets the sides). Every other game that lights a thing goes through the same rule (coach.js hugOf and others: find them with build/tools/review/kitmap.mjs).",
+      "accept": "script-made before/after shots of the lit box on a speaker-only shelf item and a word-pill item at 740x320, 930x430, 1280x665, 1920x1080, L1-L4; a shot of a tight shelf row where the box stops 2 px short of the neighbour; one other game's light (clinic or pantry) unchanged or better"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8841,
+  "report": "s17-n1-chai",
+  "publish": false
+}
