@@ -123,7 +123,35 @@ still shrinks a long English to 10 px: no font size is forced.)
 
 ## Fable's ranking
 
-Pending (to be filled after Fable looks at `typo-overview.webp`, `typo-panel-fit.webp` and the option sheets).
+Nine sheets, phone columns zoomed. Flaws first:
+
+1. **The all-two-lines row mixes two English sizes side by side in every option** ("mint chutney" 11 px beside "tamarind chutney"
+   10 px, wrapped). One rule fixes it: when the fit shrinks one English in a row, the row shares the smaller size.
+2. **`typo-popup.webp`, option 1 at 740x320 is a wrong shot** (no pop-up card). Re-shoot the tile.
+3. **Option 5's peek is stated two ways:** flaw 2 says 4 px into the fade at 971x318, the panel-fit sheet says +5 px clear. Reconcile.
+4. **The speaker's tap area is 34 px tall on phones** in every option; widening it does not fix that. Decision 6's full-foot speaker
+   does: keep it.
+5. No clipping, overlap, extra English wraps, or a face that reads wrong at phone size.
+
+Ranking, from the 971x412 mixed row:
+
+1. **Option 2, Centred.** No hole: the one-line Kutchi sits level with the neighbour's second line, its English with "mint chutney",
+   the speakers in a row. Grey 600 under maroon Lora is clearly second without going small.
+2. **Option 4, Quieter.** Hierarchy by size as well as colour, which he named; but 11 px is the floor and Atkinson's letters fight
+   Lora. Borrow its lighter grey only if 2 still feels loud on his phone.
+3. **Option 5, Roomy.** Nicest at 971x412; it eats the small phones' margin.
+4. **Option 1, Tidy.** Right gaps, but the one-line pair still sits on the speaker under a hole: his complaint, unanswered.
+5. **Option 3, Top-aligned.** An 18 px hole above the speaker: the worst mixed row.
+6. **Today and the approved base:** the base beats today (12 px English) but keeps the black 700 English, the "too similar".
+
+**English face: Nunito Sans 600.** At phone size it is the buttons' Nunito minus the round ends, so the screen keeps one sans. Source
+Sans 3 is 3% narrower (one less shrink on "brown sugar"): the only reason to switch.
+
+**The middle path (option 2 + 3 px) is a fallback, not the first ship.** Option 2 closes every gap he named; if he wants air after a
+phone look, put the 3 px in the English-to-speaker gap, nowhere else.
+
+**Recommend:** ship option 2 with Nunito Sans 600, the row-shares-one-English-size rule and decision 6's full-foot speaker; +3 px only
+if he asks after a phone look.
 
 ## Decisions for Zafar
 
