@@ -181,40 +181,140 @@ def combination_words(combo):
     return ", ".join("%s (%s)" % (rows[i]["name"], words(labs[i])) for i in combos()[int(combo)])
 
 
+def _globbed(rel, globs):
+    """The first glob (a list, or a {glob: value} dict's keys) that a repo-relative path or its basename matches."""
+    if not rel:
+        return None
+    return next((g for g in globs if not g.startswith("_") and (fnmatch.fnmatch(rel, g) or fnmatch.fnmatch(os.path.basename(rel), g))), None)
+
+
+def _hue(L):
+    return math.degrees(math.atan2(L[2], L[1])) % 360
+
+
+def _hue_gap(a, b):
+    d = abs(a - b) % 360
+    return min(d, 360 - d)
+
+
+def tone_groups(cols, hue_merge):
+    """Tones of one material as one colour (Fable, 6 Nov: a lit and a shaded side of one chilli are one green): the tinted
+    colours, biggest first, each joining the first group whose hue is within hue_merge degrees, else a new group. A group
+    is matched by its mid tone (the share-weighted mean in Lab). cols: [{lab, share, hex, words}]."""
+    groups = []
+    for c in sorted(cols, key=lambda c: -c["share"]):
+        h = _hue(c["lab"])
+        g = next((g for g in groups if _hue_gap(g["hue"], h) <= hue_merge), None)
+        if g is None:
+            groups.append({"hue": h, "members": [c], "share": c["share"]})
+            continue
+        g["members"].append(c)
+        g["share"] += c["share"]
+    out = []
+    for g in groups:
+        w = np.array([m["share"] for m in g["members"]])
+        L = (np.array([m["lab"] for m in g["members"]], float) * w[:, None]).sum(0) / w.sum()
+        out.append({"lab": L, "share": g["share"], "hex": hexof(lab_to_rgb(L)), "words": words(L), "tones": len(g["members"]),
+                    "chroma": math.hypot(L[1], L[2]), "hue": _hue(L)})
+    return out
+
+
 def palette_fit(cols, R=None, name=""):
-    """Zafar's one-palette rule (6 Nov): every main colour of an item near a colour of ONE Wada combination. cols: the
-    main colours ({lab, share, chroma}). Returns {main, combo, colours, fit, missing, off, allowed}: combo is the best
-    combination (every main colour covered, the tightest; else the most share covered), off the main colours over
-    exception_de from every Wada colour (an EXCEPTION), allowed Zafar's word when the file is on palette.allow."""
+    """Zafar's one-palette rule (6 Nov), measured as re-tuned after Fable's view (6 Nov): an item's main colours from ONE
+    Wada combination. cols: the k-means colours ({lab, share, chroma}). Neutrals (chroma under neutral_chroma: warm steel,
+    glass, stone) and near-blacks are the ground; the rest are merged into tones of one material (hue within hue_merge, the
+    mid tone matched); main colours are at least main_share of the tinted share. PASS when one combination has a colour
+    within combo_de of every main colour, or of all but one in-book accent (within combo_de of some Wada colour, under
+    accent_share). People (palette.people) are judged by eye, not here; natural things (palette.natural: produce, food,
+    animals) by the natural bands; skies (palette.sky) by the sky rule (sky_fit). Returns {main, combo, colours, fit,
+    missing, off, allowed, accent, mode}: off the main colours over exception_de from every Wada colour (an EXCEPTION),
+    allowed Zafar's word when the file is on palette.allow."""
     R = R or rules()
     P, kL = R["palette"], R["colour"]["kL"]
     rows, labs = wada()
-    tinted = [c for c in cols if c["chroma"] >= P["neutral_chroma"] and c["lab"][0] >= P["dark_l"]]
-    tot = sum(c["share"] for c in tinted)
-    main = [dict(c, tshare=c["share"] / tot) for c in tinted if tot and c["share"] / tot >= P["main_share"]]
     rel = os.path.relpath(os.path.abspath(name), REPO) if name else ""
-    allowed = next((v for g, v in P.get("allow", {}).items() if not g.startswith("_") and rel and (fnmatch.fnmatch(rel, g) or fnmatch.fnmatch(os.path.basename(rel), g))), None)
-    out = {"main": [], "combo": None, "colours": [], "fit": True, "missing": [], "off": [], "allowed": allowed}
+    g = _globbed(rel, P.get("allow", {}))
+    allowed = P["allow"][g] if g else None
+    mode = "people" if _globbed(rel, P.get("people", [])) else "sky" if _globbed(rel, P.get("sky", {})) \
+        else "natural" if _globbed(rel, P.get("natural", [])) else "item"
+    out = {"main": [], "combo": None, "colours": [], "fit": True, "missing": [], "off": [], "allowed": allowed, "accent": None, "mode": mode}
+    if mode == "people":  # skin, hair and clothes: a locked style, judged by eye (Fable, 6 Nov; decision 2)
+        return out
+    if mode == "sky":
+        return sky_fit(cols, R, rel, out)
+    tinted = [c for c in cols if c["chroma"] >= P["neutral_chroma"] and c["lab"][0] >= P["dark_l"]]
+    groups = tone_groups(tinted, P.get("hue_merge", 0))
+    tot = sum(c["share"] for c in groups)
+    main = [dict(c, tshare=c["share"] / tot) for c in groups if tot and c["share"] / tot >= P["main_share"]]
     if not main:
         return out
     D = de2000(np.array([c["lab"] for c in main], float)[:, None], labs[None], kL=kL)
     near = D <= P["combo_de"]
+    in_book = near.any(1)
     sh = np.array([c["tshare"] for c in main])
     best = None
     for k, idx in combos().items():
         cov = near[:, idx].any(1)
-        worst = float(D[:, idx].min(1).max())
-        key = (bool(cov.all()), float(sh[cov].sum()), -worst)
+        miss = np.nonzero(~cov)[0]
+        accent = len(miss) == 1 and len(main) > 1 and sh[miss[0]] < P.get("accent_share", 0) and bool(in_book[miss[0]])
+        worst = float(D[cov][:, idx].min(1).max()) if cov.any() else 99.0
+        key = (bool(cov.all()) or accent, bool(cov.all()), float(sh[cov].sum()), -worst)
         if best is None or key > best[0]:
-            best = (key, k, cov)
-    (full, _, _), k, cov = best
-    for c, d, ok in zip(main, D, cov):
+            best = (key, k, cov, int(miss[0]) if accent else None)
+    (ok, _, _, _), k, cov, acc = best
+    for j, (c, d, inc) in enumerate(zip(main, D, cov)):
         i = int(d.argmin())
-        out["main"].append({"hex": c["hex"], "share": round(c["tshare"], 3), "words": c.get("words", ""), "nearest": rows[i]["name"], "de": round(float(d[i]), 1), "in_combo": bool(ok)})
-    out["combo"], out["fit"] = k, full
+        out["main"].append({"hex": c["hex"], "share": round(c["tshare"], 3), "words": c.get("words", ""), "tones": c.get("tones", 1), "nearest": rows[i]["name"],
+                            "de": round(float(d[i]), 1), "in_combo": bool(inc), "accent": j == acc, "chroma": round(c["chroma"], 1), "hue": round(c["hue"])})
+    out["combo"], out["fit"] = k, ok
     out["colours"] = [rows[i]["name"] for i in combos()[k]]
-    out["missing"] = [m["hex"] for m in out["main"] if not m["in_combo"]]
+    out["missing"] = [m["hex"] for m in out["main"] if not m["in_combo"] and not m["accent"]]
+    out["accent"] = next((m["hex"] for m in out["main"] if m["accent"]), None)
     out["off"] = [m for m in out["main"] if m["de"] > P["exception_de"]]
+    if mode == "natural":  # produce, food and animals: their own colours, judged by the natural bands, not the book's combinations
+        N = P["natural_bands"]
+        loud = []
+        for m in out["main"]:
+            band = next((b for b in N["bands"] if b["hue"][0] <= m["hue"] < b["hue"][1]), None)
+            if band and m["chroma"] > band["max_c"]:
+                loud.append(dict(m, band=band["name"], max_c=band["max_c"]))
+        out["fit"], out["loud"], out["missing"] = not loud, loud, [m["hex"] for m in loud]
+    return out
+
+
+def sky_time(rel, R):
+    """A sky picture's time of day by its name (palette.sky: glob -> time), else None."""
+    g = _globbed(rel, R["palette"].get("sky", {}))
+    return R["palette"]["sky"][g] if g else None
+
+
+def sky_fit(cols, R, rel, out):
+    """The sky rule (Zafar, 6 Nov: \"less jarringly vibrant ... the tones merge and match well\"; art bible, Skies): a sky's
+    main colours (tones merged as for an item) each within sky.de (lightness weighted down by sky.kL: a sky is a gradient of
+    tones) of a colour of its time of day's ONE combination (sky.times; greys and whites are the clouds' and free), no
+    accent; the saturation ceiling (mean chroma, and the 95th percentile, over the picture) is measured in analyse_arrays."""
+    P = R["palette"]
+    S = R["sky"]
+    rows, labs = wada()
+    time = sky_time(rel, R)
+    out["time"] = time
+    k = S["times"].get(time, {}).get("combination") if time else None
+    tinted = [c for c in cols if c["chroma"] >= S["neutral_chroma"] and c["lab"][0] >= P["dark_l"]]
+    groups = tone_groups(tinted, P.get("hue_merge", 0))
+    tot = sum(c["share"] for c in groups)
+    main = [dict(c, tshare=c["share"] / tot) for c in groups if tot and c["share"] / tot >= P["main_share"]]
+    out["combo"] = k
+    if k is None or not main:
+        return out
+    idx = combos()[k]
+    D = de2000(np.array([c["lab"] for c in main], float)[:, None], labs[idx][None], kL=S["kL"])
+    out["colours"] = [rows[i]["name"] for i in idx]
+    for c, d in zip(main, D):
+        i = idx[int(d.argmin())]
+        out["main"].append({"hex": c["hex"], "share": round(c["tshare"], 3), "words": c.get("words", ""), "nearest": rows[i]["name"], "de": round(float(d.min()), 1),
+                            "in_combo": bool(d.min() <= S["de"]), "chroma": round(c["chroma"], 1)})
+    out["missing"] = [m["hex"] for m in out["main"] if not m["in_combo"]]
+    out["fit"] = not out["missing"]
     return out
 
 
@@ -610,13 +710,32 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     # one palette per item (Zafar, 6 Nov): all the main colours from ONE Wada combination; a colour the book lacks is his call
     pf = palette_fit(cols, R, name)
     res["palette"] = pf
-    if pf["allowed"]:
+    if pf["mode"] == "sky":
+        S = R["sky"]
+        ch = np.hypot(Lab[..., 1], Lab[..., 2])[op]
+        mean_c, p95 = float(ch.mean()), float(np.percentile(ch, 95))
+        res["info"]["sky"] = {"time": pf.get("time"), "combination": pf["combo"], "mean_chroma": round(mean_c, 1), "p95_chroma": round(p95, 1)}
+        if pf["combo"] is None:
+            res["flag"].append("sky: no time of day for this sky (look-rules.json palette.sky): name it to judge its colours")
+        elif not pf["fit"]:
+            res["fail"].append("sky: %s is not in the %s combination %d (%s): recolour the sky within it (art bible, Skies)"
+                               % (", ".join("%s %s (%.0f%%, nearest %s ΔE %.0f)" % (m["hex"], m["words"], m["share"] * 100, m["nearest"], m["de"]) for m in pf["main"] if not m["in_combo"]),
+                                  pf["time"], pf["combo"], ", ".join(pf["colours"])))
+        T = S["times"].get(pf.get("time") or "", {})
+        if T and (mean_c > T["max_mean_c"] or p95 > T["max_p95_c"]):
+            res["fail"].append("sky: too vibrant for %s (mean chroma %.0f, the brightest 5%% at %.0f; the ceiling is %d and %d): mute it a little (Zafar, 6 Nov)"
+                               % (pf["time"], mean_c, p95, T["max_mean_c"], T["max_p95_c"]))
+    elif pf["allowed"]:
         pass
     elif pf["off"]:
         res["exception"].append("palette exception: %s fit%s no Wada colour (nearest %s): no combination holds %s; Zafar decides"
                                 % (", ".join("%s %s (%.0f%% of its colour)" % (m["hex"], m["words"], m["share"] * 100) for m in pf["off"]),
                                    "s" if len(pf["off"]) == 1 else "", ", ".join("%s ΔE %.0f" % (m["nearest"], m["de"]) for m in pf["off"]),
                                    "it" if len(pf["off"]) == 1 else "them"))
+    elif not pf["fit"] and pf["mode"] == "natural":
+        res["fail"].append("palette (natural): %s %s louder than a natural colour (%s): tone it towards the real thing"
+                           % (", ".join("%s %s (%.0f%%)" % (m["hex"], m["words"], m["share"] * 100) for m in pf["loud"]), "is" if len(pf["loud"]) == 1 else "are",
+                              ", ".join("%s, chroma %.0f over %d" % (m["band"], m["chroma"], m["max_c"]) for m in pf["loud"])))
     elif not pf["fit"]:
         res["fail"].append("palette: no one Wada combination holds its main colours; the nearest, %d (%s), lacks %s: recolour within one combination"
                            % (pf["combo"], ", ".join(pf["colours"]), ", ".join("%s %s (%.0f%%, nearest %s)" % (m["hex"], m["words"], m["share"] * 100, m["nearest"]) for m in pf["main"] if not m["in_combo"])))

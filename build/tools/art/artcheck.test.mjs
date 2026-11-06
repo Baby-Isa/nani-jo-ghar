@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { imageInfo, isBg, isCutout, findings, staleKnown } from "./artcheck.mjs";
-import { readFileSync, mkdtempSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -378,4 +378,58 @@ test("light is a FAIL unless an eye passed the reading (light.eye_passed): the j
   const [j, w] = res.results;
   assert.ok(!j.fail.some((f) => f.startsWith("light")) && /Fable, 6 Nov/.test(j.info.light.eye_passed), JSON.stringify(j.info.light));
   assert.ok(w.fail.some((f) => f.startsWith("light from the lower right")));
+});
+
+// Re-tuned after Fable's view (6 Nov): the rule stays (one combination per item), the measure changed: tones of one material
+// merge, neutrals up to chroma 14, one in-book accent under 20%, natural things by natural bands, people by eye, skies by the sky rule
+const RETUNESYNTH = STRICTSYNTH.split("\nd = sys.argv[1]")[0] + `
+d = sys.argv[1]
+piece(d + "/two-greens.png", ["#3d6405", "#7aa83a"])                       # a chilli's shaded and lit greens: one material
+piece(d + "/stone-cinnamon.png", ["#c9b8a3", "#c27544"], [0.6, 0.4])       # a warm stone (chroma about 12) is ground
+piece(d + "/accent-small.png", ["#ab544d", "#719470", "#006eb8"], [0.43, 0.43, 0.14])  # Wada 283 and a small Blue accent
+piece(d + "/accent-big.png", ["#ab544d", "#719470", "#006eb8"], [0.33, 0.33, 0.34])    # the same Blue at a third: no accent
+piece(d + "/tomato-real.png", ["#d8441d", "#3f7a2a"], [0.8, 0.2])           # a tomato and its stalk: natural colours
+piece(d + "/tomato-loud.png", ["#e91f0e"])                                  # louder than any tomato (the old veg-03 icon)
+piece(d + "/face-mixed.png", ["#f37420", "#719470"])                        # a person: judged by eye
+def sky(path, top, bottom, H=200, W=300):
+    t = np.linspace(0, 1, H)[:, None, None]
+    img = (np.array(top, float) * (1 - t) + np.array(bottom, float) * t) * np.ones((H, W, 3))
+    Image.fromarray(img.astype(np.uint8), "RGB").save(path)
+sky(d + "/sky-day-soft.png", (112, 140, 186), (214, 222, 232))             # Olympic Blue to a pale haze
+sky(d + "/sky-day-loud.png", (40, 150, 252), (120, 200, 255))               # the generator's bright sky blue
+`;
+test("re-tuned palette measure: tones merge, warm stone is ground, one small in-book accent passes and a big one fails", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artretune-")); const r = spawnSync("python3", ["-c", RETUNESYNTH, dir], { encoding: "utf8" }); assert.equal(r.status, 0, r.stderr);
+  const { by } = look(["--batch-by", "none", ...["two-greens", "stone-cinnamon", "accent-small", "accent-big"].map((n) => `${dir}/${n}.png`)]);
+  const pal = (n) => [...by[n].fail, ...by[n].exception].filter((f) => f.startsWith("palette"));
+  assert.deepEqual(pal("two-greens"), [], JSON.stringify(by["two-greens"].palette));
+  assert.equal(by["two-greens"].palette.main.length, 1, "the lit and shaded greens are one colour");
+  assert.ok(by["two-greens"].palette.main[0].tones >= 2);
+  assert.deepEqual(pal("stone-cinnamon"), []); assert.equal(by["stone-cinnamon"].palette.main.length, 1, "the warm stone is a neutral");
+  assert.deepEqual(pal("accent-small"), [], JSON.stringify(by["accent-small"].palette)); assert.ok(by["accent-small"].palette.accent, "the small Blue is the accent");
+  assert.ok(by["accent-big"].fail.some((f) => f.startsWith("palette: no one Wada combination")), JSON.stringify(by["accent-big"].palette));
+});
+test("natural things by natural bands, people by eye, skies by the sky rule (globs in look-rules.json palette)", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artretune-")); const r = spawnSync("python3", ["-c", RETUNESYNTH, dir], { encoding: "utf8" }); assert.equal(r.status, 0, r.stderr);
+  const rules = JSON.parse(readFileSync(join(HERE, "data", "look-rules.json"), "utf8"));
+  rules.palette.natural.push("*/tomato-*.png"); rules.palette.people.push("*/face-*.png"); rules.palette.sky["*/sky-day-*.png"] = "day";
+  const rp = join(dir, "rules.json"); writeFileSync(rp, JSON.stringify(rules));
+  const { by } = look(["--rules", rp, "--batch-by", "none", ...["tomato-real", "tomato-loud", "face-mixed", "sky-day-soft", "sky-day-loud"].map((n) => `${dir}/${n}.png`)]);
+  assert.equal(by["tomato-real"].palette.mode, "natural"); assert.deepEqual(by["tomato-real"].fail, [], JSON.stringify(by["tomato-real"].palette));
+  assert.ok(by["tomato-loud"].fail.some((f) => f.startsWith("palette (natural):")), JSON.stringify(by["tomato-loud"].palette));
+  assert.equal(by["face-mixed"].palette.mode, "people"); assert.deepEqual([...by["face-mixed"].fail, ...by["face-mixed"].exception], []);
+  assert.equal(by["sky-day-soft"].palette.mode, "sky"); assert.deepEqual(by["sky-day-soft"].fail, [], JSON.stringify([by["sky-day-soft"].palette, by["sky-day-soft"].info.sky]));
+  assert.ok(by["sky-day-loud"].fail.some((f) => f.startsWith("sky: too vibrant for day")), JSON.stringify(by["sky-day-loud"].info.sky));
+  assert.equal(by["sky-day-loud"].info.sky.combination, rules.sky.times.day.combination);
+});
+test("must pass on the repo: the 55 house-look pictures and Fable's steel and glass set; the drop machine and the two-colour plasters still fail", () => {
+  const anchors = [...readdirSync(join(ROOT, "assets/shared/word-moment")).filter((f) => /-s17\.webp$/.test(f) && !f.includes("@")).map((f) => `assets/shared/word-moment/${f}`),
+    "assets/cook/worktop-s17/marble-white-s17.webp", "assets/shared/panel/stone-shelf-s17.webp", "assets/shared/panel/stone-tile-s17.webp"];
+  assert.equal(anchors.length, 55);
+  const fable = ["assets/cook/items-s14/chai-pan/pan-water-s14.webp", "assets/clinic/items-v2/tweezers.webp", "assets/cook/items/chai-station/glass.webp", "assets/clinic/sheets/drill/drill-belt.webp", "assets/cook/bg/stove.jpg"];
+  const honest = ["assets/clinic/heal-v3/drop-machine-v3.webp", "assets/clinic/items-v2/plaster-red-green.webp"];
+  const { res } = look(["--batch-by", "none", ...[...anchors, ...fable, ...honest].map((p) => join(ROOT, p))]);
+  const of = (p) => res.results.find((x) => x.file === join(ROOT, p));
+  for (const p of [...anchors, ...fable]) assert.deepEqual([...of(p).fail, ...of(p).exception], [], `${p}: ${JSON.stringify(of(p).palette)}`);
+  for (const p of honest) assert.ok(of(p).fail.some((f) => f.startsWith("palette")), `${p} is a true two-combination fail`);
 });
