@@ -671,7 +671,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   S$.shade = shade;
   S$.WATER = WATER;
   /** Load textures the scene hasn't got yet: [[key, url], ...] (urls cache-busted through Cook.v). */
-  S$.load = (S, list) => {
+  // CHAI-91 (Zafar, 6 Nov, chai L4 on his phone: a pan's picture gone from its burner, Phaser's missing square in its place): a
+  // picture whose download failed (a dropped request on a phone) was left out for the whole round, and the game then drew the
+  // missing square wherever it was asked for. A failed picture is asked for again, up to LOAD_TRIES times in all, a beat apart
+  // (while the station's cap allows; a late one still lands: chai's pan takes it as it arrives).
+  const LOAD_TRIES = 3;
+  S$.load = (S, list, tries = LOAD_TRIES) => {
     const missing = list.filter(([key]) => !S.textures.exists(key));
     if (!missing.length) return Promise.resolve();
     return new Promise((resolve) => {
@@ -686,6 +691,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               /* drawn as before */
             }
           });
+        const again = missing.filter(([key]) => !S.textures.exists(key));
+        if (again.length && tries > 1 && S.sys && S.sys.game && S.load) {
+          try {
+            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("art-retry", { step: String(LOAD_TRIES - tries + 2), by: again.map(([k]) => k).join(" ") });
+          } catch (e) {
+            /* only a log */
+          }
+          return void setTimeout(() => S$.load(S, again, tries - 1).then(resolve), 300);
+        }
         resolve();
       });
       S.load.start();
