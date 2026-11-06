@@ -115,7 +115,7 @@ The stove family's roll-out:
   then the rest of the plan in parallel (the burner, the stove run's cut, juice and sound, the stricter art rules and redo blocks).
   The chai standard and gap analysis wait until chai's fonts, juice and art land.
 - **A progress table every half hour** (done in the last half hour, still to do, percentage).
-- Sizes: 100 / 90 / 81 (equal ratio steps) with a 40 CSS px floor; walnut wherever there's wood; one palette per item.
+- Sizes: his compromise 100 / 91 / 84 (his "9% and 8%", nearly equal ratios) or my 100 / 90 / 81: his pick (the plan said 90/81; the second reader found it isn't his numbers); a 40 CSS px floor either way; walnut wherever there's wood; one palette per item.
 
 ## Outcome
 
