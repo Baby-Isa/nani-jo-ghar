@@ -1287,9 +1287,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const gw = g.displayWidth || 90;
       const full = look === "full";
       // (a little right of the middle: the person's face sits over the glass's upper left, and the drop falls clear of it into the tea)
-      return P.drop(S, w.x + gw * 0.22, w.y - gw * 0.62, w.y, {
-        w: gw * 0.11,
-        ms: 300,
+      // (Fable judge, 6 Nov: at 0.11 of the glass and 300 ms the drop never showed on the tea; now big enough to see and slow enough
+      // to follow, still from about a third of the lab's height)
+      return P.drop(S, w.x + gw * 0.28, w.y - gw * 0.7, w.y, {
+        w: gw * 0.17,
+        ms: 460,
         splash: "none",
         depth: D.fx + 2,
         onLand: () => {
@@ -1299,8 +1301,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }).then(() => {
         if (!full || !g.active) return undefined;
         Cook.sfx.sparkle();
-        // (over the glass's right half, clear of the face on its upper left; added light, so the gold reads on the wood and the tea)
-        return P.sparkle(S, w.x + gw * 0.25, w.y - gw * 0.1, { w: gw, kind: 2, depth: D.badge + 0.5, add: true });
+        // (inside the glass's right half, clear of the face on its upper left; added light, so the gold reads on the wood and the tea;
+        // half the glass's width: Fable judge, 6 Nov, at the glass's width it flared at the rim and touched the face)
+        return P.sparkle(S, w.x + gw * 0.18, w.y + gw * 0.06, { w: gw * 0.5, kind: 2, depth: D.badge + 0.5, add: true });
       });
     };
     const panLayers = (pan) => [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((o) => o && o.visible);

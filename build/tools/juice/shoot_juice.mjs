@@ -97,12 +97,18 @@ try {
           if (g) glassAt = g;
           else if (glassAt) {
             got.B = true;
-            const t0 = Date.now();
+            // (the game's clock stands still while a still is taken, so each frame waits its own share of the game's time, not the
+            // wall clock's: by the wall clock the stills came out nearly one moment, the drop hanging where it started)
+            let t0 = Date.now();
+            let gone = 0;
             for (const ms of [150, 300, 600, 900, 1200, 1500]) {
-              await sleep(Math.max(0, t0 + ms - Date.now()));
+              gone += Date.now() - t0;
+              await sleep(Math.max(0, ms - gone));
+              gone = Math.max(gone, ms);
               if (process.env.DBG) console.log(ms, JSON.stringify(await page.evaluate(() => Cook.scene.children.list.filter((o) => o.texture && /juice/.test(o.texture.key)).map((o) => [o.texture.key, +o.alpha.toFixed(2), Math.round(o.x), Math.round(o.y), o.depth, Cook.UI.worldToScreen(o.x, o.y), o.displayWidth])), glassAt));
               if (process.env.DBG && ms === 900) await shoot("B-whole", null);
               await shoot(`B-glass-${String(ms).padStart(3, "0")}`, { x: glassAt.x - 110, y: glassAt.y - 130, w: 220, h: 220 });
+              t0 = Date.now();
             }
           }
         }
