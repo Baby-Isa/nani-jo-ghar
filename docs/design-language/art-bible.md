@@ -134,7 +134,7 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 ## 4. Size classes (Zafar, 6 Nov: no true sizes)
 
-Items are never drawn to true relative size. **The art draws every item the same height,** filling at least 85% of its cell; each item's size class is data in its mode's catalogue, and the game scales it to that share of its slot's height (method: `build/reports/size-classes-method-2026-11-06.md`):
+Items are never drawn to true relative size. **The art draws every item the same height,** filling at least 85% of its cell; each item's size class is data in its mode's catalogue, and the game scales it to that share of its slot's height (Fable's size-class method, 6 Nov, in the build reports):
 
 | Class | Fills | For |
 |---|---|---|
