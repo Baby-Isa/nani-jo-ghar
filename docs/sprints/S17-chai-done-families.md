@@ -106,6 +106,17 @@ The stove family's roll-out:
 - The pharmacy's glass tumbler and hot-water bottle kept (question 36); a dad may hold the baby in the waiting room (question 37,
   CLN-217, at clinic care's roll-out).
 
+## Zafar's decisions, 6 Nov midday (after the overnight run)
+
+- **Six agents at once for the rest of this sprint** (Zafar, 6 Nov: "I think we can break that rule for the remainder of this sprint
+  ... 6 is reasonable. You can coordinate 6"): CLAUDE.md's "two at most" is suspended until this sprint closes; the orchestrator
+  still judges, merges and publishes, and Fable still judges every built change.
+- **Order:** his feedback rows first; then the two things that need his eyes (the English under the cards, the font sample page);
+  then the rest of the plan in parallel (the burner, the stove run's cut, juice and sound, the stricter art rules and redo blocks).
+  The chai standard and gap analysis wait until chai's fonts, juice and art land.
+- **A progress table every half hour** (done in the last half hour, still to do, percentage).
+- Sizes: 100 / 90 / 81 (equal ratio steps) with a 40 CSS px floor; walnut wherever there's wood; one palette per item.
+
 ## Outcome
 
 ## Look back (three lines)
