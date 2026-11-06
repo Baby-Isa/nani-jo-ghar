@@ -98,7 +98,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return c || null;
       }
       // the S14 roll-out (contract-53, the rulebook's light: "one lit box", chai's hugs its thing): the box is the thing's own picture
-      // on screen with a small margin (the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
+      // on screen with the one light rule's margin (SH-230, Onboard.litBox; the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
       // heap or a bottle in samosa, the pantry, daar and the grill); the circle only where the step names no picture
       const box = Cook.expect && Cook.expect.x != null && Cook.UI.s14 && Cook.UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
       if (!box) return rectAround(t, t.r);
@@ -289,17 +289,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     look(S.children.list);
     return best || hit;
   }
-  /** A picture's box on screen, [x, y, w, h] in page px with a small margin (null: none, or too small to be the thing). */
+  /**
+   * A picture's box on screen, [x, y, w, h] in page px (null: none, or too small to be the thing). SH-230 (Zafar, 6 Nov night: "a
+   * general rule that works in all cases that leaves some padding around the object"): the picture's opaque part (its texture's
+   * transparent frame left out, the scene's opaqueBox) with no margin of its own: the light adds the one rule's (Onboard.litBox; was
+   * 8% here, 4-10 px, and the light's 10 px more on top).
+   */
   function hugOf(obj) {
     if (!obj || !obj.getBounds || !Cook.UI.worldToScreen) return null;
-    const b = obj.getBounds();
+    const S = Cook.scene;
+    const q = S && S.opaqueBox && obj.texture ? S.opaqueBox(obj) : null;
+    const b = q ? { x: q.x - q.w / 2, y: q.y - q.h / 2, width: q.w, height: q.h } : obj.getBounds();
     const a = Cook.UI.worldToScreen(b.x, b.y);
     const z = Cook.UI.worldToScreen(b.x + b.width, b.y + b.height);
     const w = z.x - a.x;
     const h = z.y - a.y;
     if (!(w > 8 && h > 8)) return null;
-    const pad = Math.max(4, Math.min(10, Math.min(w, h) * 0.08));
-    return [a.x - pad, a.y - pad, w + 2 * pad, h + 2 * pad];
+    return [a.x, a.y, w, h];
   }
   function lightThing(state, obj) {
     if (state.lit === obj) return;

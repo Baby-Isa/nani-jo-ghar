@@ -189,7 +189,7 @@
    * Onboard.spot (the stuck spotlight) draw the same thing:
    *   the dim       Onboard.DIM over everything (one token: a little darker than the old 0.62, SH-118);
    *   the box       ONE rounded rectangle with a plain gold edge (no glow of its own, no pulse) round the target, or round all
-   *                 of the targets given together (a group: the eye test's haa, na and the mic), hugging them (Onboard.groupBox);
+   *                 of the targets given together (a group: the eye test's haa, na and the mic), by one rule (Onboard.litBox, SH-230);
    *   the item      inside the box the item itself glows (its own soft radiating glow) and bounces: an HTML control by the
    *                 class ob-lit (css/shared/onboard.css), a canvas thing by its game (o.light / o.move) or the kit's soft ring;
    *   the finger    the kit's one drawn hand (Onboard.finger), tapping in one cadence: in, press, lift off, wait half a second,
@@ -215,7 +215,8 @@
   /**
    * EASY-08 (Sprint 11): the light hugs the control's own box: a rounded rect with a small, even pad, never an oval that spills
    * over its neighbours. When two lit things, or a thing and a neighbour to keep dark (avoid), are close, the pad shrinks to
-   * half the gap between them (down to 0) rather than light the neighbour.
+   * half the gap between them (down to 0) rather than light the neighbour. (SH-230: the drawn light's box is Onboard.litBox now;
+   * this stays the tap area round each live control, Onboard.spot's liveRects, and groupBox's.)
    * rects, avoid: [{x, y, w, h}]; -> [{x, y, w, h, r, pad}] in the same order.
    */
   Onboard.HUG_PAD = 6;
@@ -257,6 +258,46 @@
     const u = Onboard.unionOf(rects);
     if (!u) return null;
     return Onboard.hugShapes([u], avoid, pad == null ? Onboard.BOX_PAD : pad)[0];
+  };
+  /*
+   * SH-230 (Zafar, 6 Nov night: "There should be a general rule that works in all cases that leaves some padding around the
+   * object+pill+face icon, or object+pill, or object"): the ONE rule for every game's lit box (light.draw below; was groupBox's even
+   * pad, trimmed to half the gap to a neighbour, down to 0). The box is the union of what belongs to the thing (its picture, its word
+   * pill, its face icon: whichever it has, given together as rects) plus a margin of LIGHT.share of the union's smaller side, LIGHT.min
+   * to LIGHT.max px. On a side where that margin would touch a neighbouring item (avoid), that side alone shrinks, only as far as
+   * keeps LIGHT.clear px clear of it (a neighbour off a corner trims the side with the most room); at the screen's edge the box stops
+   * at the edge (light.draw). o.pad: a caller's own fixed margin, only for a shape that is not a thing (a pan's rim circle, CHAI-68; a
+   * part of a card, SH-213).
+   * rects, avoid: [{x, y, w, h}] -> {x, y, w, h, r, pad (the rule's margin), sides: {l, t, r, b} (each side's margin)} or null.
+   */
+  Onboard.LIGHT = { share: 0.12, min: 8, max: 16, clear: 2 };
+  Onboard.marginOf = (u) => (u ? Math.max(Onboard.LIGHT.min, Math.min(Onboard.LIGHT.max, Onboard.LIGHT.share * Math.min(u.w, u.h))) : 0);
+  Onboard.litBox = function (rects, avoid, o) {
+    o = o || {};
+    const u = Onboard.unionOf(rects);
+    if (!u) return null;
+    const m = o.pad != null ? o.pad : Onboard.marginOf(u);
+    const c = Onboard.LIGHT.clear;
+    const s = { l: m, t: m, r: m, b: m };
+    // each neighbour's room from the thing on each side (>= 0 where it lies wholly that way)
+    const near = (avoid || [])
+      .filter(Boolean)
+      .map((q) => ({ l: u.x - (q.x + q.w), r: q.x - (u.x + u.w), t: u.y - (q.y + q.h), b: q.y - (u.y + u.h) }))
+      // (one that overlaps the thing itself can't be kept out by the margin: it is not a side's neighbour)
+      .filter((g) => Math.max(g.l, g.r, g.t, g.b) >= 0)
+      .sort((g, k) => Math.max(g.l, g.r, g.t, g.b) - Math.max(k.l, k.r, k.t, k.b));
+    near.forEach((g) => {
+      // already clear of the box as it stands (by `clear` px on some side): nothing to trim
+      if (g.l >= s.l + c || g.r >= s.r + c || g.t >= s.t + c || g.b >= s.b + c) return;
+      // the side that separates them with the most room gives the least
+      const side = ["l", "r", "t", "b"].filter((k) => g[k] >= 0).sort((a, b) => g[b] - g[a])[0];
+      s[side] = Math.max(0, Math.min(s[side], g[side] - c));
+    });
+    const x = u.x - s.l;
+    const y = u.y - s.t;
+    const w = u.w + s.l + s.r;
+    const h = u.h + s.t + s.b;
+    return { x, y, w, h, r: Math.min(12, w / 2, h / 4), pad: m, sides: s };
   };
   /**
    * SH-119 (Zafar, 22 Oct: "click, move off, wait half a second, click ... right now the gaps are too long"): the finger's one
@@ -550,7 +591,7 @@
   };
 
   /*
-   * The light (EASY-08, one look): the dim with ONE rounded hole round the target(s) (Onboard.groupBox), the plain gold box on
+   * The light (EASY-08, one look): the dim with ONE rounded hole round the target(s) (Onboard.litBox, SH-230), the plain gold box on
    * its edge, and the kit's soft ring round each canvas thing inside it (an HTML control glows itself: ob-lit).
    */
   const NS = "http://www.w3.org/2000/svg";
@@ -590,10 +631,11 @@
       litEls = els.slice();
     };
     return {
-      /** rects: the targets' boxes; o: {avoid, pad, rings: the canvas things' boxes to ring, els: the HTML controls}. -> the box */
+      /** rects: the targets' boxes (one thing's parts, or a group given together); o: {avoid, tight (a fixed margin for a shape that
+       *  is not a thing: Onboard.litBox's pad), rings: the canvas things' boxes to ring, els: the HTML controls}. -> the box */
       draw(rects, o) {
         o = o || {};
-        let b = rects.length ? Onboard.groupBox(rects, o.avoid, o.pad) : null;
+        let b = rects.length ? Onboard.litBox(rects, o.avoid, { pad: o.tight }) : null;
         // (o.round, CHAI-68: a round thing's light is a circle hugging it, e.g. a pan's rim: the box's longer side, centred)
         if (b && o.round) {
           const d = Math.max(b.w, b.h);
@@ -1235,7 +1277,10 @@
           ob = u >= 1 ? to : { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
         }
       }
-      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, pad: o.pad, round: !!o.round, rings: [], els: sp.els });
+      // (SH-230: every thing's box by the one rule, Onboard.litBox; a caller's own pad only for a pan's rim circle, CHAI-68, or a part
+      // of a card drawn by o.box, SH-213: shapes that are not a thing with a picture and a pill)
+      const tight = o.round || ob ? o.pad : null;
+      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, round: !!o.round, rings: [], els: sp.els });
       if (!sp.els.length) bounce.tick();
       raf = requestAnimationFrame(draw);
     };

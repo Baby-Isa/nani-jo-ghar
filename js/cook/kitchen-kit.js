@@ -272,8 +272,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const knobHit = S.track(S.add.circle(kx, fy, KNOB_HIT, 0xffffff, 0.001).setDepth(D.item + 2));
       knobHit.baseScale = 1;
       const b = { i, x, y, face, knob, kOff, kOn, knobHit, flameHi, flameLo, state: "off" };
-      /** Turn the knob: off, high (the big flame ring) or low (the small one). */
-      b.set = (st, quiet = false) => {
+      /** Turn the knob: off, high (the big flame ring) or low (the small one). quiet: at once and silent (a station's start);
+       *  silent: turned as usual but with no knob or flame sound (CHAI-100: the fire going off by itself after a pan's last pour) */
+      b.set = (st, quiet = false, silent = quiet) => {
         const was = b.state;
         b.state = st;
         // high: a quarter turn (the bar upright); low: further round, the bar on the diagonal (29 Sept:
@@ -286,7 +287,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: flameLo, alpha: st === "low" ? 0.95 : 0, duration: 360 * t + 1 });
         // CHAI-92 (Zafar's picks, 6 Nov, lab/juice.html): the gas knob's click (knob A, was the tiny "click" SH-196 found too quiet),
         // and as it turns on from off, the flame catching 180 ms later (flame B)
-        if (!quiet) {
+        if (!silent) {
           Cook.sfx.knob();
           if (was === "off" && st !== "off") Cook.sfx.flame({ delay: 180 });
         }
