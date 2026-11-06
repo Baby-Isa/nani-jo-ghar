@@ -8,28 +8,28 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (6 Nov 2026, 01:45 UK):** Sprint 17. **Live on `main`: 20261106T011831Z.** Chai played on his laptop and phone
-and working; the reveal lessons fixed from his recorded play (SH-196: a tap during the order started play before the cards landed);
-the shelf pills grown on small screens (SH-219); the stone panels, the warmed marble, Nani's warmer green. All work is on
-`claude/vibrant-hopper-v3yexp` (pushed). Reports from tonight: palette (`build/reports/s17-palette-review.md`), fonts and the
-"looks AI-made" critique (`build/reports/s17-fonts-review.md`), the standards structure, locked (`s17-standards-structure-v2.md`).
+**Where things stand (6 Nov 2026, 04:00 UK):** Sprint 17. **Live on `main`: 20261106T011831Z** (unchanged overnight). The overnight
+run (`docs/process/overnight-brief-2026-11-06.md`, with Zafar's launch edits: no chai standard fill; token size steps, not true
+sizes) is done on branch `ccr-1f71c98a-wwowh8` (pushed; it holds everything from `claude/vibrant-hopper-v3yexp` too). The morning
+report is `build/reports/overnight-2026-11-06.md`: what's done, 32 numbered decisions, launches and tokens.
 
-**Next: the overnight run (Zafar, 6 Nov 01:40), ready by 10:30 UK Friday:** `docs/process/overnight-brief-2026-11-06.md` holds the
-six tasks, the rules and the outputs: (1) pills that fit their word, built and published; (2) the colour and look tool and the art
-retrospective; (3) fonts across the game, options and a Fable review; (4) the sound and juice map for chai with its art run; (5) the
-stove family's ~400-item art run; (6) the standard's fill if time remains. Morning report: a new report in build/reports named overnight-2026-11-06.
+- **Pills that fit their word (SH-219):** built, Fable PASS, chai contract run clean; **not published**: this session's permission
+  check refused the push to `main`. Zafar's word "publish" lets `/publish --force` run.
+- **Reports, each with a Fable read:** `art-retrospective-2026-11-06.md` (the colour tool `build/tools/art/artcolour.py`),
+  `fonts-across-the-game-2026-11-06.md` (C, Fraunces for every word, recommended), `sound-and-juice-chai-2026-11-06.md`,
+  `stove-art-400-2026-11-06.md` (the block ready: `docs/design-language/art-plans/s17-stove400-chrome-block.txt`, branch fields on
+  `ccr-1f71c98a-wwowh8`), `real-people-art-2026-11-06.md`.
+- **New rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English 7.9 px on phones).
 
-**Decisions he already made (6 Nov):** keep the current fonts until he has seen options; sound and juice as a chai version first;
-the loading flashes (SH-220) wait for the background loading and the round's start and end design; the pills now; the colour tool
-with the light, edge and batch checks; the 400-item run.
+**Next, in order (once Zafar answers the morning report):** publish the pills; the fonts change (half a day); the sound lab page then
+chai's sounds; the stove art run, part A (the chai shelf sheet) first, then the shelf swap.
 
-**Open questions to Zafar:** the morning report's decisions.
+**Open questions to Zafar:** the morning report's 32 decisions ("yes to all except ...").
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/process/overnight-brief-2026-11-06.md`, and run it overnight
-> without asking me anything: start from branch `claude/vibrant-hopper-v3yexp` (pushed; `main` is the live site), push to your
-> session's branch, publish only where the brief says. Keep a `send_later` check-in every 30 minutes and a line in the overnight
-> log at each step. Use Fable generously for judgement and second checks tonight. Have the morning report ready by 10:30 UK.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/overnight-2026-11-06.md`. Work on branch
+> `ccr-1f71c98a-wwowh8` (pushed; `main` is the live site). Wait for my answers to the morning report's decisions; tell me before
+> launching anything new.
 
 ## The fix list
 
@@ -37,7 +37,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 82 | 103 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 83 | 103 |
 | Cook: pantry | 9 | 10 |
 | Cook: chai / maani / daar / chaat / samosa / sekelo / general | 16 / 4 / 7 / 2 / 1 / 4 / 10 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
 | Clinic | 36 | 169 |
