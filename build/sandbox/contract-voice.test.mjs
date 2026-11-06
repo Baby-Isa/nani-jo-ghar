@@ -1,4 +1,4 @@
-// S08 wave 1A (voice and help in every game): contracts 22 to 26, each red on a timeline of what the build before this wave did
+// S08 wave 1A (voice and help in every game): contracts 22 to 26 (25, the bulbs' pulse, retired with the bulbs: Zafar, 6 Nov; its successor, contract-91 help-comes, is contract-help.test.mjs), each red on a timeline of what the build before this wave did
 // and green on what the new voice queue and help ladder do. The timelines are small ones built from the probe's own event shapes
 // (build/sandbox/lib/contract-hook.mjs, lib/sound.mjs). node --test build/sandbox/contract-voice.test.mjs
 import { test } from "node:test";
@@ -149,26 +149,6 @@ test("contract-24: the help (voice and glow) before the idle time of its level i
   assert.match(of(run(page("cook:chai-tray", said)), "contract-24")[0].measured, /her step line "Chulo bar!" was said 400 ms/);
   // a wrong pick is an action and the game answers it: #mistake is left alone
   assert.equal(of(run(page("cook:chai-tray#mistake", said)), "contract-24").length, 0);
-});
-
-test("contract-25: the bulbs pulse after 15-20 s stuck: before 15 s, or never in a 25 s stretch with no action, is a break", () => {
-  const pulse = (t, on) => life(t, "bulb-pulse", on ? "on" : "off");
-  const tl = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), tap(T + 1000), pulse(T + 5000, true), pulse(T + 5200, false)]);
-  const early = of(run(page("cook:chai-tray", tl)), "contract-25");
-  assert.equal(early.length, 1);
-  assert.match(early[0].measured, /began to pulse 4000 ms after the last action/);
-  const ok = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), tap(T + 1000), pulse(T + 17500, true), tap(T + 26000), pulse(T + 26000, false), tap(T + 27000)]);
-  assert.equal(of(run(page("cook:chai-tray", ok)), "contract-25").length, 0);
-  // CHAI-94 (Zafar, 6 Nov: the bulbs are out; Cook's s14 look hides them): a Cook stage needs no pulse, on the lab's host stage too
-  const never = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), tap(T + 1000), tap(T + 27000)]);
-  assert.equal(of(run(page("cook:chai-tray", never)), "contract-25").length, 0);
-  const neverLab = sorted([stage(T, `host:cook/order|${ST}`), tap(T + 1000), tap(T + 27000)]);
-  assert.equal(of(run(page("lab:cook/chai-tray@L4", neverLab)), "contract-25").length, 0);
-  // the day window still shows its bulb: 26 s stuck there with no pulse is a break
-  const ride = sorted([stage(T, "host:day/window/ride"), tap(T + 1000), tap(T + 27000)]);
-  const b = of(run(page("day:window@L1", ride)), "contract-25");
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /26 s with no action and the bulbs never pulsed/);
 });
 
 test("contract-26: the opening line under the request pop-up is heard whole; a word with no sound (the cancel race) is a break", () => {

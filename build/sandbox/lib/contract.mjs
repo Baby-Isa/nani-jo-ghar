@@ -39,7 +39,7 @@
 //   contract-22 once-whole  each Cook line said once (the same line not again within 10 s) and whole (no clip cut by another line) (PAN-04, PAN-16)
 //   contract-23 item-word    an item's name on a tap only when nothing else is speaking, never at L3-L4, not again within 10 s (SH-94)
 //   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
-//   contract-25 bulb-pulse   the bulbs pulse after 15-20 s stuck, never before (SH-96); only where a bulb is shown (not Cook: CHAI-94)
+//   contract-91 help-comes   stuck on the child's turn past the level's hint wait + 4 s, nothing said: the hint came (chai's method; Zafar, 6 Nov)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
 //   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106); S13-A2: every go-on, done and
 //                            answer-pill button on screen is the kit's .njg-btn
@@ -84,11 +84,8 @@ export const CHECKS = {
   "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap) or the game opened a new step whose call it says again on purpose (Lifecycle step-call \"queued-again\": maani's Firai on both turns, MAA-15, Zafar 17 Oct); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
   "contract-23": { item: "item-word", title: "an item's name only when nothing else speaks", how: "Lines tagged role item (js/cook/words.js Lang.popWord: an item's name as it is tapped or lands) that made a sound: at level 3 or 4 any is a break; one starting while another Cook line is being said (from its call to its end, or a clip of it sounding) is a break; the same item word again within 10 s is a break (SH-94, decision 1 of 17 Oct)." },
   "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95). A glow that comes with a rung of the onboarding kit (Lifecycle rung: the first-time box at once, chai's 5 s card; Zafar, 22 Oct, CHAI-32) is that help, not a break." },
-  "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage that shows a bulb must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck). Cook's stages show no bulb since the s14 look went to every dish (Zafar, 6 Nov: the bulbs are out, replaced by the word cards and Nani's timed hints; CHAI-94), so they need no pulse; the day window's bulb still does." },
+  "contract-91": { item: "help-comes", title: "the help comes when stuck", how: "In a play stage on chai's method (a Cook station, the clinic's stages): the stuck clock runs while the game waits for the child's move (the want sample: a move, not wait, end, a button, the pop-up or a timing window) and nothing is being said (the sound log's lines); any action starts it again (a real tap, Lifecycle poke at the end of a pour or spoonful, a step opening, the stage starting). Once it passes the level's hint wait (data/rules.json levels.hintS: 7, 9, 11, 13 s) and 4 s more, the guide's hint must have come since the last action (Lifecycle help, helper-open or helper-call: Nani's or the doctor's helper card and call, or a rung of the showing); none is a break (Zafar, 6 Nov: the bulbs retired, replaced by chai's method, and 'build the help comes now'). Not judged on #mistake, between stations, on the end screen, or on a run with no want samples." },
   "contract-26": { item: "opening", title: "the opening line is heard whole", how: "Every Cook line said while the request pop-up is up: each of its words that is in the lexicon must have a sound, a family clip of that word or the device voice saying it (the sound log); a word that made no sound (the device voice's text thrown away by a cancel, no stand-in at all) is a break (LNG-16: \"I didn't hear the muke\")." },
-  "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
-  "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
-  "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
   "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171). One is the exception (Zafar, 19 Oct: 'we don't need to write one, only two or more'): a said one (hakro, hakri) whose item is written bare passes. Counting along the taps (role count) is a tally, not the order." },
   "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
   "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
@@ -899,8 +896,6 @@ const RULES_FILE = (() => {
   }
 })();
 export const LADDER = Array.isArray(((RULES_FILE || {}).levels || {}).hintS) ? RULES_FILE.levels.hintS.map((s) => Math.round(s * 1000)) : Array.isArray(SHARED_LADDER.helpMs) ? SHARED_LADDER.helpMs.slice() : [];
-export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
-export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
 export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
 const SAID_JUDGED = 9000;
 const SLOP = 400; // ms: the sampler, a timer's tick
@@ -1044,34 +1039,52 @@ function check24(r, tl, segs, v, add) {
     prev = now;
   }
 }
-// 25 (SH-96): both light bulbs pulse after 15-20 s stuck, never before
-// CHAI-94 (Zafar, 6 Nov: "the bulbs are out of the game now, the entire mechanism has been replaced with the word cards and the
-// hints on timers from Nani and the doctor"): a Cook stage (a station, or the host's cook stage around it) shows no bulb: every
-// dish wears the s14 look (js/cook/ui.js UI.S14_ALL), which hides Nani's bulb (css/shared/order-card.css body.njg-s14 #guide.ng-s14
-// .ng-bulb), and Cook never gives a closed card the bulb peek (js/cook/ui.js onPeek needs a phase fold with closed.peek, which
-// memoryClosed rules out). A hidden bulb needs no pulse. The day window's bulb is still shown (js/day/window.js), so it still must.
-// (A pulse that starts too early is still a break everywhere.)
-export const showsBulb = (key) => !/(^|\|)cook:|^host:cook\//.test(key || "");
-function check25(tl, segs, add) {
-  const seen = new Set();
-  const pulses = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "bulb-pulse");
-  for (const e of pulses) {
-    if (e.reason !== "on") continue;
-    const ref = lastAction(tl, e.t, { steps: false });
-    if (isFinite(ref) && e.t - ref < BULB_PULSE_MIN - SLOP) { const s = segAt(segs, e.t); add("contract-25", e.t, `${s ? s.key : "?"}: the bulbs began to pulse ${Math.round(e.t - ref)} ms after the last action (not before ${BULB_PULSE_MIN} ms)`); }
-  }
-  // a stretch of no action at least BULB_PULSE_MAX long inside a play stage must have had the pulse start
-  // any real tap is an action (the shared guide's idle clock restarts on every pointerdown: the card's face, a peek, the bulb as much as a tap in the play area; s08 w1b, SH-102: a replay is a child doing something)
-  const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
+// 91 (help-comes; Zafar, 6 Nov: "remove the bulbs from everywhere ... they will be replaced by chai's method. build the help comes now
+// so it's tested in chai and used in post chai rollout"): in a play stage on chai's method (a Cook station, the clinic's stages), a
+// child stuck on their turn gets the guide's timed hint. The stuck clock runs only while the game waits for the child's move (the
+// probe's want sample: a move, not "wait", "end", a button, the pop-up or a timing window) and nothing is being said; any action
+// starts it again (a real tap, the end of a pour or spoonful: Lifecycle poke, St.acted; a step opening; the stage starting). Once it
+// passes the level's hint wait (data/rules.json levels.hintS, a child's time, never shortened by the test speed) and HINT_SLACK more,
+// the hint must have come since the last action: Lifecycle help (idle or the host's own), Nani's helper card opening or her call
+// with it (helper-open, helper-call), or a rung of the showing (rung). Not judged on #mistake (a wrong move is an action the game
+// answers), between stations or on the end screen, nor where the run has no want samples (an older run).
+export const HINT_SLACK = 4000;
+const HINTS = /^(help|helper-open|helper-call|rung)$/;
+const RESETS = /^(stage-start|step-open|poke|act)$/;
+// the kinds that are not the child's move to make: the game busy, the round over, a button, the pop-up, a timing window to wait for
+const NOT_A_MOVE = /^(|wait|end|none|idle|watch|click|button|timing|results|done|between|say|listen)$/;
+export const helpStage = (key) => isPlayStage(key || "") && /(^|\|)cook:station|^host:cook\/|^host:clinic\//.test(key || "");
+function check91(r, tl, segs, v, add) {
+  if (/#mistake/.test(r.flow || "")) return;
+  const wants = tl.filter((e) => e.type === "c" && e.k === "want");
+  if (!wants.length) return;
+  const resets = tl.filter((e) => e.type === "c" && ((e.k === "input") || (e.k === "life" && RESETS.test(e.what)))).map((e) => e.t);
+  const hints = tl.filter((e) => e.type === "c" && e.k === "life" && HINTS.test(e.what)).map((e) => e.t);
+  const talk = v.lines.filter((l) => (l.text || "").trim()).map((l) => ({ t0: l.t0, t1: l.t1 != null ? l.t1 : l.t0 + 1500 }));
+  const STEP = 100;
   for (const s of segs) {
-    if (!isPlayStage(s.key) || !showsBulb(s.key)) continue;
-    const end = s.t1 == null ? (tl[tl.length - 1] || {}).t : s.t1;
-    const ts = [s.t0, ...inputs.filter((i) => i.t >= s.t0 && i.t < end).map((i) => i.t), end];
-    for (let i = 0; i + 1 < ts.length; i++) {
-      if (ts[i + 1] - ts[i] < BULB_PULSE_MAX + SLOP) continue;
-      const on = pulses.some((p) => p.reason === "on" && p.t >= ts[i] && p.t <= ts[i + 1]);
-      const k = `${s.key}|${ts[i]}`;
-      if (!on && !seen.has(k)) { seen.add(k); add("contract-25", ts[i] + BULB_PULSE_MAX, `${s.key}: ${Math.round((ts[i + 1] - ts[i]) / 1000)} s with no action and the bulbs never pulsed (they pulse after ${BULB_PULSE_MIN / 1000}-${BULB_PULSE_MAX / 1000} s)`); }
+    if (!helpStage(s.key)) continue;
+    const end = s.t1 == null ? Math.max((tl[tl.length - 1] || {}).t || s.t0, s.t0) : s.t1;
+    let from = s.t0; // the last action (or the stage's start)
+    let stuck = 0; // ms stuck since then: the child's turn, nothing said
+    let judged = false;
+    let ri = 0, wi = 0, want = null, level = null;
+    while (ri < resets.length && resets[ri] <= s.t0) ri++;
+    while (wi < wants.length && wants[wi].t <= s.t0) want = wants[wi++];
+    for (let t = s.t0; t < end; t += STEP) {
+      let reset = false;
+      while (ri < resets.length && resets[ri] <= t) { if (resets[ri] > from) reset = true; from = Math.max(from, resets[ri]); ri++; }
+      while (wi < wants.length && wants[wi].t <= t) want = wants[wi++];
+      if (reset) { stuck = 0; judged = false; }
+      const turn = !!want && !want.intro && !NOT_A_MOVE.test(String(want.kind || "").toLowerCase());
+      if (!turn || talk.some((l) => l.t0 <= t && t < l.t1)) continue;
+      stuck += STEP;
+      if (level == null) level = realLevel(tl, t, levelOf(r.flow || ""));
+      const wait = LADDER[Math.min(LADDER.length, level) - 1];
+      if (judged || !(wait > 0) || stuck < wait + HINT_SLACK) continue;
+      judged = true;
+      if (hints.some((h) => h >= from - 50 && h <= t)) continue;
+      add("contract-91", t, `${s.key}: ${(stuck / 1000).toFixed(1)} s stuck on the child's turn (${want.kind}) since the last action with nothing said and no hint (L${level} waits ${wait} ms, judged at ${wait + HINT_SLACK} ms)`);
     }
   }
 }
@@ -1139,56 +1152,8 @@ function check17(r, tl, add) {
   if (!r.store || !r.sound) return;
   for (const p of r.sound.plays || []) if (p.kind !== "family-ok") add("contract-17", r.t0 || (tl[0] && tl[0].t) || 0, `${p.kind}: ${p.file || p.text || "?"}${p.n > 1 ? ` x${p.n}` : ""}`);
 }
-// ---- s08 wave 1B: the card and what is said (SH-98 to SH-103, SH-107, SAM-23, CLN-160, CLN-161, CLN-169, CLN-171) ----
-// the peek's time by level, from data (data/cook.json calm.peekMs; the clinic's Kit.PEEK_MS): 7 s at level 3 (double the old 3.5 s,
-// SH-101) and the same 3.5 s added to the others, so 7 s at every level
-export const PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000 };
+// ---- s08 wave 1B: the card and what is said (SH-99 to SH-103, SH-107, CLN-161, CLN-169, CLN-171; the bulb's peek checks, 27 to 29, retired with the bulbs: Zafar, 6 Nov) ----
 const wordsOf = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’]*/gu) || [];
-// 27 (SH-98): the small bulb's peek shows every word in Kutchi: never a dotted one
-function check27(tl, add) {
-  const seen = new Set();
-  for (const e of tl) {
-    if (e.type !== "c" || e.k !== "side" || !(e.peek > 0) || !(e.dots > 0)) continue;
-    const k = (e.words || []).join("|");
-    if (seen.has(k)) continue;
-    seen.add(k);
-    add("contract-27", e.t, `a peeking card shows ${e.dots} dotted word${e.dots > 1 ? "s" : ""} (•••): the peek shows every word in Kutchi${(e.words || []).length ? ` ("${e.words.join(" / ")}")` : ""}`);
-  }
-}
-// 28 (SH-100): one bulb picture everywhere: the photo (assets/ui/results/icon-bulb.webp), never the flat drawing
-function check28(tl, add) {
-  const seen = new Set();
-  for (const e of tl) {
-    if (e.type !== "c" || e.k !== "bulbs") continue;
-    for (const b of e.list || []) {
-      const ok = (b.kind === "img" || b.kind === "bg") && /^icon-bulb\.webp$/.test(b.file || "");
-      const k = `${b.sel}|${b.kind}|${b.file}`;
-      if (ok || seen.has(k)) continue;
-      seen.add(k);
-      add("contract-28", e.t, `${b.sel} is drawn ${b.kind === "svg" ? "as the flat inline drawing" : `with ${b.file || b.kind}`}, not the photo icon-bulb.webp (one bulb picture everywhere)`);
-    }
-  }
-}
-// 29 (SH-101): a peek lasts the level's time (data), not less: judged as a child's time (Cook's test speed shortens it; the clinic's peek is real time)
-function check29(r, tl, segs, add) {
-  const level = levelOf(r.flow || "");
-  const speed = /^clinic:/.test(r.flow || "") ? 1 : +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
-  const want = (PEEK_MS[level] || PEEK_MS[3]) / speed;
-  let open = null;
-  for (const e of tl) {
-    if (e.type !== "c" || e.k !== "side") continue;
-    if (e.peek > 0 && !open) open = { t0: e.t, n: e.n, seg: segAt(segs, e.t) };
-    else if (!(e.peek > 0) && open) {
-      const o = open;
-      open = null;
-      // a card that went away, a stage that ended, or the light bulb pressed (the bulb opens the card in English and ends the look: SH-41) closes the peek on purpose
-      if (e.n !== o.n || segAt(segs, e.t) !== o.seg) continue;
-      if (tl.some((x) => x.type === "c" && x.k === "input" && /bulb/.test(x.btn || x.on || "") && x.t >= o.t0 && x.t <= e.t + 250)) continue;
-      const took = e.t - o.t0;
-      if (took < want - 450) add("contract-29", o.t0, `a peek lasted ${Math.round(took)} ms; level ${level} gives ${Math.round(want)} ms${speed > 1 ? ` (${PEEK_MS[level] || PEEK_MS[3]} ms at the test speed ${speed})` : ""}`);
-    }
-  }
-}
 // 30 (SH-99): every number said in an order or a step is written on the card, at every level and in every round (a taught one too);
 // a line's English placeholder ([red]: a colour or item with no Kutchi yet) is written there too
 // the number one's forms (data/lang/lexicon.json num.1: hakro, hakri; the old spellings too): a card writes the bare item for one
@@ -1366,7 +1331,7 @@ function check35(r, tl, segs, add, root) {
     // (the rows as the child reads them: the last sample in the stage before that tap with no row under the bulb's English)
     const rows = tl.filter((e) => e.type === "c" && e.k === "rows" && e.t <= first.t && e.t >= s.t0 - 10000 && !(e.list || []).some((x) => x.en)).pop() || last("rows", first.t);
     if (!side || !side.n) continue;
-    // a peeking card (the bulb's peek) shows every word, contract-27's rule: it is not the card at rest that this check judges
+    // a peeking card (a tap on a closed card) is not the card at rest that this check judges
     if (side.peek > 0) continue;
     const level = realLevel(tl, first.t, levelOf(r.flow || ""));
     const at = `${s.key} at L${level}`;
@@ -1577,13 +1542,10 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check22(r, tl, segs, v, numbers || numbersFor(root), add);
   check23(r, tl, segs, v, add);
   check24(r, tl, segs, v, add);
-  check25(tl, segs, add);
+  check91(r, tl, segs, v, add);
   check26(tl, v, add, root, lexicon || lexiconFor(root));
   check16(tl, lexicon || lexiconFor(root), add, !!r.store);
   check19(r, tl, segs, v, numbers || numbersFor(root), add);
-  check27(tl, add);
-  check28(tl, add);
-  check29(r, tl, segs, add);
   check30(r, tl, segs, v, numbers || numbersFor(root), add);
   check31(tl, v, add);
   check32(tl, add);
@@ -1618,7 +1580,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check77(r, tl, add);
   check78(r, tl, v, add);
   // (Cook's test speed shortens the game's beat: the rules' pointAfterMoveMs is a child's time, 500 ms / speed in the run, as contract-22
-  // and contract-29 judge theirs; the orchestrator, 30 Oct: at speed 3 the game waited its 167 ms and the check asked 500)
+  // judges its; the orchestrator, 30 Oct: at speed 3 the game waited its 167 ms and the check asked 500)
   check79(tl, add, { pointAfterMove: POINT_AFTER_MOVE_MS / (/^clinic:/.test(r.flow || "") ? 1 : +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3)) });
   check80(r, tl, add);
   check81(tl, add);

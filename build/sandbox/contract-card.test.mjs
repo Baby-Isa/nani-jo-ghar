@@ -1,4 +1,4 @@
-// S08 wave 1B (the card and what is said): contracts 27 to 31 (and 32, 33 below), each red on a timeline of what the build before
+// S08 wave 1B (the card and what is said): contracts 30 and 31 (and 32, 33 below; 27 to 29, the bulb's peek, retired with the bulbs: Zafar, 6 Nov), each red on a timeline of what the build before
 // this wave did and green on what it does now. The timelines are small ones built from the probe's own event shapes
 // (build/sandbox/lib/contract-hook.mjs, lib/sound.mjs). node --test build/sandbox/contract-card.test.mjs
 import { test } from "node:test";
@@ -27,58 +27,9 @@ const sorted = (tl) => tl.sort((a, b) => a.t - b.t);
 
 test("the checks: every check has an item, a title and how it measures", () => {
   for (const [k, c] of Object.entries(CHECKS)) assert.ok(/^contract-\d+$/.test(k) && c.item && c.title && c.how.length > 40, k);
-  for (const k of ["contract-27", "contract-28", "contract-29", "contract-30", "contract-31"]) assert.ok(CHECKS[k], k);
-});
-
-test("contract-27: a peek with a dotted word is a break; a peek with every word, or a card not peeking, passes", () => {
-  const dotted = sorted([stage(T, ST), side(T + 500), side(T + 1000, { peek: 1, dots: 2, words: ["•••", "dudh", "•••"] }), side(T + 8000)]);
-  const b = of(run(page("cook:chai-tray@L3#hint", dotted)), "contract-27");
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /shows 2 dotted words/);
-  const whole = clone(dotted);
-  whole[2].dots = 0;
-  whole[2].words = ["aadu", "dudh", "trae khun"];
-  assert.equal(of(run(page("cook:chai-tray@L3#hint", whole)), "contract-27").length, 0);
-  // dots on a card that is not peeking (an open card, wave 2A's dotted L3) are not this check's
-  const open = clone(dotted);
-  open[2].peek = 0;
-  assert.equal(of(run(page("cook:chai-tray@L3#hint", open)), "contract-27").length, 0);
-});
-
-test("contract-28: a bulb drawn as the flat inline drawing is a break; every bulb on the one photo passes", () => {
-  const flat = sorted([stage(T, ST), C(T + 200, "bulbs", { list: [{ sel: "span.oc-look.bulb", kind: "svg", file: "" }, { sel: "button#btn-bulb.ng-bulb", kind: "img", file: "icon-bulb.webp" }] })]);
-  const b = of(run(page("cook:chai-tray@L3", flat)), "contract-28");
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /span\.oc-look\.bulb is drawn as the flat inline drawing/);
-  const photo = clone(flat);
-  photo[1].list[0] = { sel: "span.oc-look.bulb", kind: "img", file: "icon-bulb.webp" };
-  assert.equal(of(run(page("cook:chai-tray@L3", photo)), "contract-28").length, 0);
-  const other = clone(flat);
-  other[1].list[0] = { sel: "span.oc-look.bulb", kind: "img", file: "bulb-2.webp" };
-  assert.match(of(run(page("cook:chai-tray@L3", other)), "contract-28")[0].measured, /with bulb-2\.webp/);
-});
-
-test("contract-29: a peek shorter than the level's time (7 s, as a child's time) is a break; the whole time, or one ended by the card going, passes", () => {
-  // Cook's test speed is 3: 7000 / 3 = 2333 ms
-  const short = sorted([stage(T, ST), side(T + 500), side(T + 1000, { peek: 1 }), side(T + 2167)]); // 1167 ms: the old 3500 / 3
-  const b = of(run(page("cook:chai-tray@L3#hint", short)), "contract-29");
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /lasted 1167 ms; level 3 gives 2333 ms/);
-  const full = clone(short);
-  full[3].t = T + 3340;
-  assert.equal(of(run(page("cook:chai-tray@L3#hint", full)), "contract-29").length, 0);
-  // at a child's pace (speed 1) it is 7000
-  assert.equal(of(run(page("cook:chai-tray@L3#hint#speed1", full)), "contract-29").length, 1);
-  // the clinic's peek is real time whatever the test speed
-  assert.equal(of(run(page("clinic:heal-ear@L3#hint", short)), "contract-29").length, 1);
-  // the light bulb pressed during the peek ends it on purpose (the clinic's bulb opens the card in English)
-  const bulb = clone(short);
-  bulb.push(C(T + 2100, "input", { x: 160, y: 30, on: "img", btn: "button.ng-bulb", popup: false, side: true, play: false, exp: {} }));
-  assert.equal(of(run(page("cook:chai-tray@L3#hint", sorted(bulb))), "contract-29").length, 0);
-  // the card went away (the stage ended, a new order): not a short peek
-  const gone = clone(short);
-  gone[3].n = 2;
-  assert.equal(of(run(page("cook:chai-tray@L3#hint", gone)), "contract-29").length, 0);
+  for (const k of ["contract-30", "contract-31", "contract-91"]) assert.ok(CHECKS[k], k);
+  // the bulb checks retired with the bulbs (Zafar, 6 Nov: "remove the bulbs from everywhere ... take their rules out")
+  for (const k of ["contract-25", "contract-27", "contract-28", "contract-29"]) assert.ok(!CHECKS[k], `${k} retired`);
 });
 
 test("contract-30: a number or an English placeholder said that no card of the stage writes is a break; one written passes, at any level", () => {
