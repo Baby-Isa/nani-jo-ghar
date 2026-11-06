@@ -85,7 +85,9 @@ try {
             const pan = C.chaiPans().find((p) => p.state === "heating");
             if (!pan) return null;
             const vis = S.children.list.filter((o) => o.visible && o.alpha > 0.35 && o.texture && /^(fx-juice-st|fx-s11-steam)/.test(o.texture.key));
-            return vis.length >= (vis.some((o) => o.texture.key.startsWith("fx-juice")) ? 2 : 1) ? pan.at : null;
+            // (reduced motion: the one still wisp)
+            const less = matchMedia("(prefers-reduced-motion: reduce)").matches;
+            return vis.length >= (vis.some((o) => o.texture.key.startsWith("fx-juice")) && !less ? 2 : 1) ? pan.at : null;
           });
           if (s) { got.A = true; await shoot("A-steam", { x: s.x - 190, y: s.y - 260, w: 380, h: 380 }); await shoot("A-steam-whole", null); }
         }

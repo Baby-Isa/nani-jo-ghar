@@ -273,7 +273,9 @@
     const d = o.depth;
     // (add: added light, the glow brightening what is under it: the gold reads on wood and tea as on the lab's dark tiles)
     const pic = (...a) => { const im = img(...a); if (im && o.add && im.setBlendMode) im.setBlendMode(1); return im; };
-    if (Juice.less()) return stillP(S, pic(S, "sk-3", x, y, w, d), 700);
+    // (reduced motion: one soft star fading in place, about the size of the twinkles together, not the whole width: in added light the
+    // full-size star glared over the glass)
+    if (Juice.less()) return stillP(S, pic(S, "sk-3", x, y, w * 0.5, d), 700);
     if ((o.kind || 1) === 1) {
       const a = pic(S, "sk-1", x, y, w * 0.4, d);
       const b = pic(S, "sk-3", x, y, w, d);
