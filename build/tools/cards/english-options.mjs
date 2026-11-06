@@ -9,6 +9,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { startServer, launch, newPage, SIZES, sleep } from "../../sandbox/lib/env.mjs";
 import { cookStation } from "../../sandbox/flows/cook.mjs";
+import { OPTIONS as FONTS } from "../fonts/options-b.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
@@ -39,6 +40,8 @@ export const OPTIONS = {
     body #side .wc14-it .wc14-en, body .wc14-it .wc14-en { font-size: clamp(${px(12)}, 10cqi, max(${px(12)}, var(--njg-card14-u19))); line-height: 1 !important; }
     .wc14-it > .wc14-slot-k { margin-top: 3cqi !important; }
     .wc14-it > .wc14-spk { margin-top: 2.5cqi !important; } }`,
+  // the new card (Zafar, 6 Nov: yes to 2b and to Lora): option 2b plus the Lora option (fonts-sample-2026-11-06.md option 1)
+  get newcard() { return FONTS.L.faces.replaceAll("__MOCKFONTS__", "/build/tools/fonts/woff2") + "\n" + FONTS.L.css + "\n" + this.nudgefit; },
   // 3: a gentler 11 px floor, the Kutchi up a little; the card's height holds
   floor11: `@media (max-height: 500px) {
     .wc14-it .wc14-en { font-size: clamp(${px(11)}, 10cqi, max(${px(11)}, var(--njg-card14-u19))) !important; line-height: 1.05 !important; }
@@ -98,6 +101,8 @@ async function applyAndShoot(page, size, state) {
   for (const [name, css] of Object.entries(OPTIONS).filter(([n]) => !ONLY || ONLY.split(",").includes(n))) {
     await page.evaluate((c) => { let s = document.getElementById("njg-mock-cards"); if (!s) { s = document.createElement("style"); s.id = "njg-mock-cards"; document.head.appendChild(s); } s.textContent = c; }, css);
     await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
+    await page.evaluate(() => (document.fonts && document.fonts.ready) || null).catch(() => {});
+    await sleep(250);
     await page.evaluate(() => { const W = window.WordCard; if (W && W.fit14) W.fit14(); });
     await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
     await sleep(150);
@@ -108,7 +113,7 @@ async function applyAndShoot(page, size, state) {
 }
 
 async function runSize(size) {
-  const np = await newPage(browser, size);
+  const np = await newPage(browser, size, { dpr: +(val("dpr", 1)) });
   const page = np.page, done = new Set();
   const rec = {
     names: new Map(),
