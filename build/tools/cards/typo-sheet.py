@@ -82,6 +82,64 @@ def grid(cells, cols, title, colhead, rowhead, gap=24, rowlab_w=0):
     return sheet
 
 
+# ---------- round 2 (6 Nov evening): python3 build/tools/cards/typo-sheet.py <run dir> build/reports/cards --round2 ----------
+# (the run: typo-options.mjs --only o2,r2A,r2B,r2C --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup)
+R2SIZES = ["971x412", "971x318", "740x320", "1280x665", "1920x1080"]
+R2NAMES = {"o2": "Baseline: option 2 (round 1)", "r2A": "A Footer band", "r2B": "B Divider line", "r2C": "C Foot button"}
+SIZELAB = {"971x412": "  (his phone, no banner)", "971x318": "  (his phone in the browser)", "740x320": "  (smallest phone)"}
+
+
+def facts2(d):
+    if not d or not d.get("items"):
+        return "-"
+    it, a = d["items"], d.get("align", {})
+    flags = [k for k in ("clipped", "overlap", "outside") if any(i[k] for i in it)]
+    s = [f"card {it[0]['card']['h']:.0f} px, picture {it[0]['picR']['h']:.0f} px tall",
+         f"English {'/'.join(f'{e:g}' for e in sorted({i['enPx'] for i in it}))} px" + (f", {sum(1 for i in it if i['enLines'] > 1)} on 2 lines" if any(i['enLines'] > 1 for i in it) else ""),
+         f"speaker {it[0]['spkR']['w']:.0f} px, tap {it[0]['spkHit']['w']:.0f} x {it[0]['spkHit']['h']:.0f}",
+         "English lines level" if a.get("enTop1", 9) < 0.6 else f"English lines {a.get('enTop1')} px apart",
+         "CLIPPED/OVERLAP: " + ",".join(flags) if flags else "nothing clipped or overlapping"]
+    return "\n".join(s)
+
+
+def fitcap(d):
+    f = (d or {}).get("fit", {})
+    if f.get("headlineClear"):
+        cap = f"next headline clear (+{f['spareForHeadline']:.0f} px)"
+    elif f.get("headlineShows"):
+        cap = f"next headline whole, {-f['spareForHeadline']:.0f} px into the fade"
+    elif f.get("spareForPeek8", -1) >= 0:
+        cap = f"next card peeks {f['peekPx']:.0f} px, headline hidden"
+    else:
+        cap = f"no peek ({f.get('peekPx', 0):.0f} px)"
+    return cap + "\n" + ("this card whole" if f.get("card1Clear") else "this card in the fade" if f.get("card1Whole") else "this card CUT")
+
+
+def round2():
+    opts = [o for o in R2NAMES if any(k.endswith(f"|{o}") for k in m)]
+    # the overview: his phone (971x412), the mixed row, the baseline and A, B, C side by side
+    row = [(card_crop("971x412", "mixed", o)[0], facts2(m.get(f"971x412|mixed|{o}"))) for o in opts]
+    save(grid([row], len(opts), "His phone (971x412, no banner): two-line words beside one-line. Round 2: the row aligned, one English size, three speaker treatments",
+              [R2NAMES[o] for o in opts], None), "typo2-overview.webp")
+    # one sheet per treatment (and the baseline): the three cases as rows, the five sizes as columns
+    for o in opts:
+        rows = [[(card_crop(s, cs, o)[0], f"{s}, {lab}\n" + facts2(m.get(f"{s}|{cs}|{o}"))) for s in R2SIZES] for cs, lab in CASES]
+        save(grid(rows, len(R2SIZES), f"{R2NAMES[o]}   (rows: {', '.join(l for _, l in CASES)}; columns: the screen; 2x pixels)",
+                  [s + SIZELAB.get(s, "") for s in R2SIZES], None), f"typo2-{o.replace('r2', '')}.webp")
+    # the panel fit: the whole side panel (Nani's box shut, one order card, the next card's peek) at his phone sizes, the mixed and the
+    # all-two-lines rows (the tightest), every treatment
+    rows = []
+    for s in ("971x412", "971x318", "740x320"):
+        for cs in ("mixed", "two"):
+            rows.append([(shot(s, cs, o), f"{s}, {dict(CASES)[cs]}\n" + fitcap(m.get(f"{s}|{cs}|{o}"))) for o in opts])
+    save(grid(rows, len(opts), "The side panel: Nani's box shut, one order card, the next one's peek (rows: 971x412, 971x318, 740x320; mixed, then all two lines)",
+              [R2NAMES[o] for o in opts], None), "typo2-panel-fit.webp")
+
+
+if "--round2" in sys.argv:
+    round2()
+    sys.exit(0)
+
 # 1. per option: cases as rows, sizes as columns
 for opt in OPTS:
     rows = []
