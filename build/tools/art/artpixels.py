@@ -26,9 +26,12 @@ Rules (RULES below; solid pieces):
 Glass (a piece whose semi-alpha pixels are over 28 % of what it covers) gets a narrower rule, not an exemption: holes and
 grey are measured on alpha >= 0.5, dirt and smudge apply, and only the rim allowance is wider (10 px: clear glass is soft all
 through, so its soft band is not a defect until it is a wide glow).
+Light (CHAI-92, 6 Nov: the painted sparkles and gold bursts of the juice run, assets/shared/juice/sk-* and bu-*) is all glow by
+design, cut with a difference key so the glow keeps: the rim rule does not apply; grey, holes, dirt and smudge still do.
 Thresholds are in RULES; change them there and re-run `artcheck.mjs --write-known` only when a rule is tightened.
 """
 import hashlib
+import re
 import json
 import os
 import sys
@@ -40,7 +43,7 @@ from scipy import ndimage as ndi
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 CREAM = np.array([247.0, 238.0, 220.0])
-RULES = {"v": 13, "grey_share": 0.03, "hole_px": 16, "rim_w": 5.0, "glass_semi": 0.28, "rim_glass": 10.0, "dirt": 0.05,
+RULES = {"v": 14, "grey_share": 0.03, "hole_px": 16, "rim_w": 5.0, "glass_semi": 0.28, "rim_glass": 10.0, "dirt": 0.05,
          "smudge": 0.02, "max_side": 1600, "key_tol": 14, "key_mid": 122, "spread": 12, "flat_sd": 1.5, "coloured": 22}
 
 
@@ -100,7 +103,8 @@ def analyse(path):
         fails.append("grey %.1f%% of the solid pixels are key grey" % (grey * 100))
     if holes:
         fails.append("holes %d key-grey patch(es), the largest %d px" % (len(holes), max(holes)))
-    if rim > (RULES["rim_glass"] if glass else RULES["rim_w"]):
+    light = bool(re.search(r"assets/shared/juice/(sk|bu)-[^/]*$", str(path).replace(os.sep, "/")))
+    if not light and rim > (RULES["rim_glass"] if glass else RULES["rim_w"]):
         fails.append("rim a soft rim %.1f px wide on cream" % rim)
     if dirt > RULES["dirt"]:
         fails.append("dirt %.1f%% of the piece is faint alpha that shows dark on cream (a cast shadow or the sheet's haze)" % (dirt * 100))
