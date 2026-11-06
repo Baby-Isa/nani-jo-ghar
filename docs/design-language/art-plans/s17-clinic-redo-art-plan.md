@@ -29,9 +29,13 @@ so the pharmacy belt reads as one batch.
 ## 1. Flaws and uncertainties first
 
 1. **Eight items a sheet is near the top of what the generator keeps distinct;** a merged, doubled or reordered sheet is a redo.
-2. **The drop machine's four drops (red, yellow, green, blue) cannot come from one Wada combination:** no combination in the
-   book has all four. The machine's body takes the house's colours; the four drops are the game's colours, softened to book
-   tones. An exception for Zafar (the report's decisions).
+2. **The colour-coded sets keep the game's colours (Zafar, 6 Nov night, decision 5: "a colour-coded set: the colours are the
+   game"):** the four plasters (CA01), the drop machine's four dispensers (DM01), the toothbrush (TB01, TB02: the shipped blue
+   brushes) and the game's coloured bandages and threads (CD01). No one Wada combination holds red, yellow, green and blue, so
+   each of those lines carries a `colour_exception` in the run spec, printed in the block for the runner. Every other blue
+   item is Venice Green, the house teal (ART-58). CD01's bandages and threads are a reading of decision 5 (its list named
+   "bandage"): the game asks for them by colour (`data/clinic.json` `bandage`, `thread`), so a teal one would clash with
+   the green one; Zafar to confirm.
 3. **The toothbrush angle has no photo reference:** none of 17 free photos on Wikimedia Commons shows it (6 Nov), so the block
    attaches a plain diagram (`sources/art/clinic-redo/toothbrush-angle.png`, made by `build/tools/art/toothbrush_angle.py`) and
    describes the angle in words. Never the old toothbrush reference (Zafar, 6 Nov).
@@ -44,13 +48,18 @@ so the pharmacy belt reads as one batch.
 - **Camera:** every item seen from the front and a little above (the pharmacy belt's view), standing or lying as it naturally
   rests, filling about 85% of its cell; never two cameras on one sheet.
 - **Light:** one warm key from the upper left, a soft fill; no rim light.
-- **Palette:** the house strip is attached to every picture; each item's main colours from ONE combination, in lighter and darker
-  tones; whites, greys, clear plastic, glass and steel are free. Coloured items name their colours in words (Olympic Blue, Chromium
-  Green, Carmine Red, Yellow Ocher, the house's), never the generator's bright sky blue.
+- **Palette:** the house strip is attached to every picture; each picture's main colours from ONE combination, in lighter and
+  darker tones; whites, greys, clear plastic, glass and steel are free. Coloured items name house colours in words (Venice Green,
+  the house teal, for what was blue; Chromium Green, Carmine Red, Olive Buff), never the generator's bright sky blue; only the
+  colour-coded sets (flaw 2) name Olympic Blue and Yellow Ocher together. `artblock.py --check` reads every line's prompt for
+  this (ART-58).
 - **Edges:** clean, crisp, no halo, no shadow under any item, no floor; one flat neutral mid-grey ground.
 - **No text** on any box, bottle, tube, dial or packet; no needles, no sweets, no lollipops.
 
-## 3. References (all on the branch; nothing from Zafar)
+## 3. References (one zip; Zafar drags its files into the Chrome chat with the block)
+
+`artblock.py` copies them to `sources/art/s17-clinic-redo/refs/` and zips them as `refs.zip` (ART-42, decision 4); the block's
+first lines give him its raw link.
 
 | Name | Repo path | What it carries |
 |---|---|---|

@@ -24030,7 +24030,7 @@
  "SH-230": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "hint",
    "level": [
     1,
     2,
@@ -24045,7 +24045,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "step:1",
+   "at": "rec:hint-glow",
    "after": null,
    "capture": [
     "shot",
