@@ -13,7 +13,7 @@
 
 /** What the school games need on a host page beyond what lab.html loads. */
 export const NEEDS = {
-  scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"],
+  scripts: ["js/shared/word-card.js", "js/shared/focus.js"],
   styles: ["css/school-proto.css", "css/shared/word-tiles.css"],
 };
 

@@ -528,7 +528,7 @@
         (ev) => {
           const t = ev && ev.target;
           // (a tap through the pop-up, anywhere but a face, skips it: it asks to hear nothing again)
-          const ask = t && t.closest && t.closest("#side button, #mission, #guide, .oc-face, .ic-say, .ng-face, .wp-say, .oc-look, .ng-bulb, #btn-bulb");
+          const ask = t && t.closest && t.closest("#side button, #mission, #guide, .oc-face, .ic-say, .ng-face, .wp-say, .oc-look");
           if (ev.isTrusted !== false && ask) tapAt = Date.now();
         },
         true

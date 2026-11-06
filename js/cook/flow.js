@@ -220,18 +220,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** Wave 5 (clarity and calm): how much Nani says, from data.calm. */
   const calm = () => Cook.data.calm || {};
   /**
-   * Wave 6: the UI appears as it's first needed (docs/design-language/ux-principles.md 8).
-   * A new player's first orders have just the order card; the light bulb fades in
-   * from the third (data.calm.uiAfter.bulb).
-   * The Station lab, and anyone who has played before Wave 6, sees it all.
+   * Wave 6: the UI appears as it's first needed (docs/design-language/ux-principles.md 8). (Its one late piece, the light bulb
+   * from the third order, went with the bulbs: Zafar, 6 Nov; a player from before Wave 6 is still marked as seeing it all.)
    */
   function uiStage({ all = false } = {}) {
     const n = Cook.save.orders || 0;
-    const after = calm().uiAfter || { bulb: 2 };
     // someone who played before Wave 6 (dishes taught, no orders counted) keeps everything
     if (!n && Object.keys(Cook.save.taught || {}).length > 0) Cook.save.uiAll = true;
-    all = all || !!Cook.save.uiAll;
-    document.body.classList.toggle("ui-bulb", all || n >= after.bulb);
+    void all;
   }
   Cook.uiStage = uiStage;
   /** The request card's instructions: what to do, in plain English (the recipe's `how`). */

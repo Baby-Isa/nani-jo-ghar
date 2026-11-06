@@ -23,7 +23,7 @@
   M.side = function (side, o = {}) {
     const g = document.createElement("div");
     side.appendChild(g);
-    const guide = global.NaniGuide.mount(g, { face: M.FACE, bulb: M.BULB, onBulb: () => {}, onReplay: () => {} });
+    const guide = global.NaniGuide.mount(g, { face: M.FACE, onReplay: () => {} });
     if (o.card) side.appendChild(o.card);
     const dock = document.createElement("div");
     dock.className = "mk-dock";

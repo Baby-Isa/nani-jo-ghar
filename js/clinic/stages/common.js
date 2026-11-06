@@ -261,12 +261,12 @@
     const card = screen.card;
     card.who = who;
     card.isOrdered = !!ordered;
-    // decision 57 (CLN-91): look "bulb" on a spoken card (the waiting room's call): the small bulb, no counter
+    // (the closed card's peek sign is the eye: its small bulb went with the bulbs, Zafar, 6 Nov)
     card.closed = closed ? { onPeek, look } : null;
     card.fold = {};
     card.titleText = title || "";
     // CLN-140 (R4 in the clinic): the doctor is the guide and the asker, so his face shows once, on his own sidebar card
-    // (null here: the screen's card wears his face, screen.js); his box above keeps only the bulb and sound buttons
+    // (null here: the screen's card wears his face, screen.js); his box above keeps only the sound button
     card.faceEl = face || (who === "doctor" ? null : S.doctorFace());
     card.setRows(rows);
     const reading = read ? card.speak() : Promise.resolve();

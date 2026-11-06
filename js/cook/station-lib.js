@@ -293,9 +293,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   - first-play guidance (ctx.guided) only at levels 1 and 2; at levels 3 and 4 nothing at the start;
    *   - the idle clock is the page's (NaniGuide.idleMs: every tap, drag and key restarts it, in every station);
    *   - Nani's word and the glow come at the same moment, after the pause (S$.step below, the stepper in guide.js);
-   *   - after calm.bulbPulseMs stuck, both light bulbs pulse.
-   * The numbers are data: the ONE ladder table, data/shared.json helpMs and bulbPulseMs (NaniGuide.PAUSE and BULB_PULSE read it;
-   * S13-A1); the glow's size and beat are the kit's motion tokens (Cook.GLOW reads them, so the tick's pulse, the CSS glow and
+   *   - (the bulbs' pulse after 15-20 s stuck went with the bulbs: Zafar, 6 Nov).
+   * The numbers are data: the central rules' hint waits (data/rules.json levels.hintS; NaniGuide.PAUSE reads them; S13-A1, SH-155); the glow's size and beat are the kit's motion tokens (Cook.GLOW reads them, so the tick's pulse, the CSS glow and
    * the Phaser item glow are the same).
    */
   if (Cook.labGuided == null) Cook.labGuided = false;
@@ -311,7 +310,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     rgb: { enumerable: true, get: () => global.Motion.glow.rgb },
     alpha: { enumerable: true, get: () => global.Motion.glow.alpha },
   }));
-  let pulseTimer = null;
   let glowTimer = null;
   const levelOf = (ctx) => Cook.roundLevel(ctx);
   function ladderStart(S, ctx) {
@@ -361,20 +359,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         };
       }
     }
-    clearInterval(pulseTimer);
-    pulseTimer = setInterval(() => {
-      const g = NG();
-      if (g) g.pulseBulbs(!!Cook.inStation && !Cook.paused && g.idleMs() >= g.BULB_PULSE);
-    }, 500);
     clearInterval(glowTimer);
     glowTimer = setInterval(() => S && S.__releaseGlows && S.__releaseGlows(), 200);
   }
   function ladderStop() {
-    clearInterval(pulseTimer);
     clearInterval(glowTimer);
-    pulseTimer = glowTimer = null;
+    glowTimer = null;
     if (Cook.scene && Cook.scene.__pendingGlows) Cook.scene.__pendingGlows.clear();
-    if (NG()) NG().pulseBulbs(false);
   }
   /*
    * CK-48 (S13-V): the request pop-up's fold, seen from here: folded() resolves once a pop-up has opened and then started to

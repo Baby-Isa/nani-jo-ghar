@@ -14,9 +14,9 @@
  * starts. The screen and its rules are js/party-proto/kit.js (the farm kit's copy); the pictures js/party-proto/art.js.
  */
 
-/** What the party needs on a host page beyond what lab.html loads (the s14 word card, the bulb, the focus; the sheets). */
+/** What the party needs on a host page beyond what lab.html loads (the s14 word card, the focus; the sheets). */
 export const NEEDS = {
-  scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"],
+  scripts: ["js/shared/word-card.js", "js/shared/focus.js"],
   styles: ["css/party-proto.css", "css/shared/word-tiles.css"],
 };
 

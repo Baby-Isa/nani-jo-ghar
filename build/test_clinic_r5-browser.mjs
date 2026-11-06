@@ -167,20 +167,13 @@ test("SH-09: the drinks game's card rows are never cut off at level 3 (phone)", 
   assert.deepEqual(cut, [], "no clipped row");
 });
 
-test("D11, D12: at a closed-card level the bulb opens the card, and a look isn't counted as a bulb", async () => {
+test("D12: at a closed-card level a look opens the card; no bulb anywhere (the bulbs retired, Zafar, 6 Nov)", async () => {
   const { page, close } = await open("1366x768", "stage=pharmacy&level=3&seed=7&onboard=0", "window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect() && document.querySelector('.cl-card .oc-card.closed')");
   // a look: tap the closed card
   await page.click(".cl-card .oc-card.closed .oc-head", { force: true });
   await sleep(200);
-  // the bulb: it opens the closed card for its time
-  await page.evaluate(() => {
-    window.Clinic.Kit.fast = false;
-  });
-  await page.click(".ng-bulb", { force: true });
-  await sleep(60); // the lab's fast mode makes the bulb's time 0.3 s
-  const open1 = await page.evaluate(() => !!document.querySelector(".cl-card .oc-card.bulb-open"));
-  const counts = await page.evaluate(() => ({ hints: window.njgTest?.clinic.Stages && window.Clinic && document.querySelector(".cl-hint-n").textContent }));
+  const seen = await page.evaluate(() => ({ peek: !!document.querySelector(".cl-card .oc-card.peek"), bulbs: document.querySelectorAll(".ng-bulb, .cl-bulb, #btn-bulb, .oc-look.bulb, .cl-hint-n").length }));
   await close();
-  assert.ok(open1, "the bulb opened the closed card");
-  assert.equal(counts.hints, "1", "one bulb");
+  assert.ok(seen.peek, "the look opened the closed card");
+  assert.equal(seen.bulbs, 0, "no bulb and no bulb counter");
 });

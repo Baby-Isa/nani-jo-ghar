@@ -2,7 +2,7 @@
  * Nani's guide box (Zafar, 28 Sept 2026; docs/archive/feedback/cook-ui-feedback-2026-09-28.md 3).
  * One shared component, so every mode can put Nani at the top of its sidebar:
  *
- *   [face)] what to do now, in Kutchi, up to 2 lines       [bulb] [mute]
+ *   [face)] what to do now, in Kutchi, up to 2 lines       [mute]
  *
  *  - Sidebar v3 (Zafar, 28 Sept late; docs/archive/feedback/cook-ui-feedback-2026-09-28.md 10): a calm sage green box
  *    with a darker sage band down the left (one CSS variable, --nani-sage), so she stands apart from
@@ -14,9 +14,10 @@
  *    (js/shared/fit.js "fit2" when loaded);
  *  - the mute button mutes or unmutes her voice. It's remembered for every mode, per player, in the
  *    one save (Save flag "naniMuted"); muted, she still shows what she'd say;
- *  - the light bulb (translate) lives here too, drawn with the results art.
+ *  - no light bulb: the bulbs were retired (Zafar, 6 Nov: "remove the bulbs from everywhere ... replaced by chai's method"):
+ *    the help is the word cards and the guide's timed hint on the level's wait (the stepper below, data/rules.json levels.hintS).
  *
- *   const g = NaniGuide.mount(el, {face, bulb, bulbId, onBulb, onReplay, base})
+ *   const g = NaniGuide.mount(el, {face, onReplay, base})
  *   g.set(html, {rec})      the line now (html: the host's own word markup); rec: flagged "to record"
  *   g.talk(on)              her face bobs while she talks
  *   g.replaying(on)         her face's badge lights while her line is heard again
@@ -36,9 +37,8 @@
  *   st.close([{clear}])     the step ended: the glow goes; its line stays until the next step opens (SH-63), cleared
  *                           with {clear: true} (the stage's end)
  *   st.poke()               the child did something: the page's idle clock starts again (it also starts on every tap, drag or key)
- *   st.help()               the help now (the bulb, a wrong tap): line, voice and glow
- *   NaniGuide.PAUSE / REPEAT / BULB_PULSE   the ladder's table (below); NaniGuide.idleMs() ms since the last action;
- *   NaniGuide.pulseBulbs(on) both light bulbs pulse (class help-pulse)
+ *   st.help()               the help now (a wrong tap, a station's own hint): line, voice and glow
+ *   NaniGuide.PAUSE / REPEAT the ladder's table (below); NaniGuide.idleMs() ms since the last action
  *   st.current              the open step, or null
  *   NaniGuide.setMuted(v)   NaniGuide.onMute(fn) -> unsubscribe
  *
@@ -87,16 +87,15 @@
   G.onMute = (fn) => (listeners.push(fn), () => listeners.splice(listeners.indexOf(fn), 1));
 
   /*
-   * The help ladder (Zafar, 17 Oct; decision 4: SH-60, SH-95, SH-96). One table for every station, counted from the child's
+   * The help ladder (Zafar, 17 Oct; decision 4: SH-60, SH-95). One table for every station, counted from the child's
    * LAST ACTION (any tap, drag or key: the idle clock below), never from when a step opened:
    *   PAUSE[level-1]   how long she must have done nothing before Nani helps: her line and the glow at the SAME moment
    *                    (2 s later than before: 7, 8, 11, 15 s)
    *   REPEAT           a help line is never said again within this time (never twice in a row, PAN-16); a help never comes
  *                    again with no action since it (SH-60: it "shouldn't persist"): after an action the pause runs again
-   *   BULB_PULSE       after this long stuck both light bulbs pulse, so the child knows they can be tapped (15-20 s)
    * Nothing is said or lit when a step opens (the "step call", Nani saying each step once as it opens, is the next wave's:
-   * pass `call(step)` to the stepper and it runs at that moment). PAUSE and BULB_PULSE are the ONE ladder table, data/shared.json
-   * helpMs and bulbPulseMs (S13-A1), read through js/shared/tokens.js (Tokens.ladder) every time, so every game has the same; no
+   * pass `call(step)` to the stepper and it runs at that moment). PAUSE is the ONE ladder table, the central rules' hint waits
+   * (data/rules.json levels.hintS, filled into Tokens.ladder.helpMs; S13-A1, SH-155), read through js/shared/tokens.js (Tokens.ladder) every time, so every game has the same; no
    * copy here. Until the table has loaded, every pause is endless (nothing helps yet). A test may set its own (G.PAUSE = [...]).
    */
   const ladder = (k) => {
@@ -104,9 +103,7 @@
     return T && T.ladder ? T.ladder[k] : null;
   };
   let pauseOwn = null;
-  let pulseOwn = null;
   Object.defineProperty(G, "PAUSE", { enumerable: true, get: () => pauseOwn || ladder("helpMs") || [Infinity, Infinity, Infinity, Infinity], set: (v) => (pauseOwn = v) });
-  Object.defineProperty(G, "BULB_PULSE", { enumerable: true, get: () => (pulseOwn != null ? pulseOwn : ladder("bulbPulseMs") != null ? ladder("bulbPulseMs") : Infinity), set: (v) => (pulseOwn = v) });
   G.REPEAT = 10000;
   G.idleHelp = false;
   /**
@@ -130,22 +127,14 @@
     ["pointerdown", "pointerup", "keydown", "wheel", "touchstart"].forEach((ev) => d.addEventListener(ev, bump, true));
     d.addEventListener("pointermove", (e) => e.buttons && bump(), true); // a drag or a stir is doing something
   };
-  G.poke = () => (clock.t = Date.now());
+  // (a legitimate action that has ENDED, St.acted: the end of a pour or a spoonful; logged for the help-comes check, contract-91)
+  G.poke = () => {
+    clock.t = Date.now();
+    logHelp("poke", {});
+  };
   /** ms since the child last did anything (or a station started). */
   G.idleMs = () => Date.now() - clock.t;
   G.lastAction = () => clock.t;
-  /** The pulse on both light bulbs (the English bulb in her box and the closed card's small bulb): a class the page styles (css/cook.css). */
-  G.BULBS = "#btn-bulb, .ng-bulb, .oc-look.bulb";
-  let pulsing = false;
-  G.pulseBulbs = function (on) {
-    const d = root.document;
-    if (!d || !d.querySelectorAll) return;
-    d.querySelectorAll(G.BULBS).forEach((b) => b.classList.toggle("help-pulse", !!on));
-    if (!!on !== pulsing) {
-      pulsing = !!on;
-      logHelp("bulb-pulse", { step: pulsing ? "on" : "off" }); // (a test log: contract-25)
-    }
-  };
   // what has been said, and when (every Cook line is marked as it is spoken, js/cook/words.js Lang.speak): the help never says
   // a line again that was said less than REPEAT ago
   const spoken = new Map();
@@ -300,7 +289,7 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /**
-   * Build the box inside `el` (emptied). opts: face (img URL), bulb (img URL, optional), bulbId, onBulb, onReplay(faceButton),
+   * Build the box inside `el` (emptied). opts: face (img URL), onReplay(faceButton),
    * name (who the box is: "Nani" by default; the clinic's is the doctor, 13f: Nani isn't at the clinic).
    */
   G.mount = function (el, opts = {}) {
@@ -313,7 +302,6 @@
       ${root.Face ? root.Face.buttonHtml(opts.name || "Nani", "guide", { cls: "ng-face", label: `Hear ${opts.name || "Nani"} again`, title: `Hear ${opts.name || "Nani"} again`, src: opts.face || null, alt: opts.name || "Nani" }) : `<button class="ng-face face-say" type="button" aria-label="Hear ${who} again" title="Hear ${who} again"><img alt="${who}" src="${esc(opts.face || "")}"><span class="say-badge" aria-hidden="true"></span></button>`}
       <span class="ng-say"></span>
       <span class="ng-tools">
-        ${opts.bulb || opts.onBulb ? `<button class="ng-bulb" type="button"${opts.bulbId ? ` id="${esc(opts.bulbId)}"` : ""} aria-label="Show it in English for a moment" title="Show it in English for a moment">${opts.bulb ? `<img alt="" src="${esc(opts.bulb)}">` : ""}<span class="bulb-t"></span></button>` : ""}
         <button class="ng-mute" type="button" aria-pressed="false">${SPEAKER}</button>
       </span>`;
     const face = el.querySelector(".ng-face");
@@ -339,8 +327,6 @@
       ev.stopPropagation();
       if (opts.onReplay) opts.onReplay(face);
     });
-    const bulb = el.querySelector(".ng-bulb");
-    if (bulb && opts.onBulb) bulb.addEventListener("click", (ev) => (ev.stopPropagation(), opts.onBulb(bulb)));
     const off = G.onMute(paint);
     paint();
     // ART-10 (s07 fix round): her face follows her mood. opts.faces: {mood: {src, crop: [x, y, w, h] in the picture's

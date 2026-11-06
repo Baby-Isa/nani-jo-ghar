@@ -20,7 +20,7 @@ import { end as endLife, open as openLife } from "./life.js";
 import { makeScreen } from "./dom.js";
 
 let current = null;
-const BODY_CLASSES = ["ui-bulb", "ui-stars", "njg-s14"]; // classes Cook's code sets on <body> while it plays (njg-s14: UI.applyS14)
+const BODY_CLASSES = ["ui-stars", "njg-s14"]; // classes Cook's code sets on <body> while it plays (njg-s14: UI.applyS14)
 
 export async function mount(el, o = {}) {
   if (!el) throw new Error("cook: no element to mount in");

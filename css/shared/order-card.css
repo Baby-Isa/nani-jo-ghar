@@ -398,7 +398,6 @@ html:not([data-oc-rows="pills"]) :is(html[data-ff="phone"] .oc-card, .oc-card.oc
 .oc-strip.rec .oc-strip-t { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-strip.new { animation: ocStrip .3s ease-out; }
 @keyframes ocStrip { from { opacity: .2; } }
-.oc-look.bulb img { width: 100%; height: 100%; } /* SH-100: the photo bulb (order-card.js bulbImg), one picture everywhere */
 /* S02 review: on the shortest phones (800x360) the guide's strip gives back a little padding, so a card with the strip,
    a two-line headline and four rows (the cut game) still fits its sidebar without a scroll */
 @media (max-height: 370px) {
@@ -537,7 +536,7 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 /* ---------- the s14 look (Sprint 14: lab/cards.html, the reference Zafar played and kept, 27-28 Oct) ----------
    On for chai through the kit's one option (js/cook/ui.js UI.applyS14: body.njg-s14; OrderCard's opts.s14: .oc-card.oc-s14);
    every other game keeps the card above until the roll-out. The page: the lab's wider side panel (its two layouts by height).
-   Nani's box: the arrow in the bulb's place, no speaker of her own (a tap on her face replays her), no green bar, one helper
+   Nani's box: the arrow in the tools' place, no speaker of her own (a tap on her face replays her), no green bar, one helper
    colour; the arrow opens her helper card in place (the order card below is pushed down, never covered). The order card: its
    headline in the serif, its items one sideways row of item cards that scrolls (no scroll bar, the third card going behind a
    soft shadow), a gold tick on a done card, a no-sign badge on a "no" card. */
@@ -545,7 +544,7 @@ body.w6.njg-s14 { --njg-side-w: clamp(var(--njg-card14-u270), 27vw, var(--njg-ca
 @media (max-height: 500px) { body.w6.njg-s14 { --njg-side-w: clamp(var(--njg-card14-u250), 34vw, var(--njg-card14-u340)); } }
 body.njg-s14 #guide.ng-s14 { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "face say tools" "help help help"; background: var(--njg-helper-bg); border: 0; border-radius: var(--njg-card14-u16); padding: var(--njg-card-pad); box-shadow: var(--njg-card14-shadow-box); overflow: visible; }
 body.njg-s14 #guide.ng-s14::before { display: none; }
-body.njg-s14 #guide.ng-s14 .ng-bulb, body.njg-s14 #guide.ng-s14 .ng-mute { display: none; }
+body.njg-s14 #guide.ng-s14 .ng-mute { display: none; }
 body.njg-s14 #guide.ng-s14 .ng-tools { grid-area: tools; display: flex; align-items: center; }
 body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }

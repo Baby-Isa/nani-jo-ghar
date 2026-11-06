@@ -5,8 +5,7 @@
  *
  *   Kit.Card     the instruction card (the master): rows that tick when a
  *                step closes, a throbbing hint, one speaker (reads the rows
- *                in order, lighting each), the light bulb's English flip
- *   Kit.Bulb     the one light bulb: English for 5/3/2 s by level; counts a hint
+ *                in order, lighting each)
  *   Kit.Tally    pictures with how many you did (never the target)
  *   Kit.Tray     the fixed-slot tray of dishes (the pharmacy fills it, heal uses it)
  *   Kit.Voice    say a line: the family's audio when there is some, else the
@@ -785,7 +784,7 @@
     // SH-110 (Zafar, 26 Oct: "a card is never a memory test"): from level 3 (close()) the sidebar card stays open; a row not yet
     // ticked is blanked (its words dotted, Kit.rowBlank) and starts with its speaker (OrderCard speakerFirst), which says it on the
     // card's own voice path, free (never a hint). The pop-up (big) writes every word: the order is written when it first comes
-    const blank = !!this.closed && !this.big && !this.bulbOn;
+    const blank = !!this.closed && !this.big;
     const card0 = this;
     const label = (r) => (blank && !st.done.has(r.id) ? Kit.rowBlank(r) : Kit.rowHtml(r));
     const say = (r) => () => Voice.say(r, { who: r.who || card0.who, noBubble: true });
@@ -1063,18 +1062,6 @@
     this.render();
     if (fresh.length && this.onReveal) this.onReveal(fresh);
   };
-  /** D11: the light bulb is on (or off): a closed card opens for the bulb's whole time, in English. */
-  Kit.Card.prototype.bulbOpen = function (on) {
-    if (!!this.bulbOn === !!on) return;
-    this.bulbOn = !!on;
-    // SH-41 (S05-D): a look (peek) running when the bulb is pressed ends now: its timer would fold the card the bulb
-    // holds open (the shared card's fold state is this card's own)
-    if (on && this.fold) {
-      clearTimeout(this.fold.timer);
-      this.fold.peekUntil = 0;
-    }
-    if (this.closed) this.render();
-  };
   Kit.Card.prototype.english = function (on) {
     this.el.classList.toggle("english", !!on);
     if (this.ocEl) this.ocEl.classList.toggle("english", !!on);
@@ -1122,73 +1109,12 @@
     }
   };
 
-  /* ---------------- the light bulb ---------------- */
-  // the bulb's time per level (D11, 1 Oct: 8 s at every level): the ONE ladder table's bulbMs (data/shared.json, through
-  // js/shared/tokens.js; S13-A1), read when asked: Kit.BULB_MS[level]; no copy here
-  Object.defineProperty(Kit, "BULB_MS", {
-    configurable: true,
-    get: () => Object.fromEntries(((global.Tokens && global.Tokens.ladder && global.Tokens.ladder.bulbMs) || []).map((ms, i) => [i + 1, ms])),
-  });
-  // SH-101 (Zafar, 17 Oct: level 3 double, the same seconds added to the others): how long the closed card's small bulb holds it open (the
-  // peek), by level; was a flat 3.5 s. Cook's table is data/cook.json calm.peekMs (contract-29 reads both as 7 s)
+
+  /* ---------------- the peek ---------------- */
+  // SH-101 (Zafar, 17 Oct: level 3 double, the same seconds added to the others): how long a tap holds a closed card open (the peek),
+  // by level; was a flat 3.5 s. (The light bulb that was here went: the bulbs were retired, Zafar, 6 Nov.)
   Kit.PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000, 5: 7000 };
   Kit.peekMs = (level) => Kit.PEEK_MS[level] || Kit.PEEK_MS[3];
-  Kit.Bulb = function (btn, opts = {}) {
-    this.btn = btn;
-    this.level = opts.level || 1;
-    Kit.Bulb.last = this; // the screen's bulb: its level is the stage's (the peek's time follows it, SH-101)
-    this.onUse = opts.onUse || null;
-    // SH-41 (S05-D): the bulb's on and off reach the card (a closed card opens, in English, for the bulb's time); these
-    // were passed by the screen and never called
-    this.onOn = opts.onOn || null;
-    this.onOff = opts.onOff || null;
-    this.targets = opts.targets || (() => document.querySelectorAll(".cl-card"));
-    this.uses = 0;
-    this._h = () => this.use();
-    if (opts.keepArt) return; // Nani's box draws the bulb and calls use() (the shared guide, clinic v2)
-    btn.classList.add("cl-bulb");
-    btn.type = "button";
-    btn.setAttribute("aria-label", "Light bulb: show it in English for a moment");
-    // SH-100: the one bulb picture (assets/ui/results/icon-bulb.webp), as Nani's and the card's small bulb
-    btn.innerHTML = `<img src="${Kit.url("assets/ui/results/icon-bulb.webp")}" alt="" draggable="false">`;
-    btn.addEventListener("click", this._h);
-  };
-  Kit.Bulb.prototype.use = function () {
-    if (this.on) return false;
-    this.uses++;
-    this.on = true;
-    const ms = Kit.BULB_MS[this.level] || Kit.BULB_MS[1];
-    const cards = Array.from(this.targets());
-    cards.forEach((c) => c.classList.add("english"));
-    if (this.onOn) this.onOn();
-    // the card drawn inside (the shared order card) shows it too, also when it is redrawn while the bulb is on
-    cards.forEach((c) => c.querySelectorAll(".oc-card").forEach((o) => o.classList.add("english")));
-    document.body.classList.add("cl-english");
-    this.btn.classList.add("lit");
-    if (this.onUse) this.onUse(this.uses);
-    clearTimeout(this._t);
-    // SH-41 (S05-D): the bulb's whole time (data, 8 s), never cut by the test speed: it is a reading time (as the shared bulb)
-    this._off = () => {
-      this._off = null;
-      cards.forEach((c) => c.classList.remove("english"));
-      cards.forEach((c) => c.querySelectorAll(".oc-card").forEach((o) => o.classList.remove("english")));
-      document.body.classList.remove("cl-english");
-      this.btn.classList.remove("lit");
-      this.on = false;
-      if (this.onOff) this.onOff();
-    };
-    this._t = setTimeout(() => this._off && this._off(), ms);
-    return true;
-  };
-  /** The stage ended: the English flip ends with it (it never carries into the next stage's card). */
-  Kit.Bulb.prototype.off = function () {
-    clearTimeout(this._t);
-    if (this._off) this._off();
-  };
-  Kit.Bulb.prototype.destroy = function () {
-    clearTimeout(this._t);
-    this.btn.removeEventListener("click", this._h);
-  };
 
   /* ---------------- the tally ---------------- */
   Kit.Tally = function (el) {

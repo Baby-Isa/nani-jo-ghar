@@ -30,7 +30,6 @@ export const NEEDS = {
     "js/shared/onboard.js",
     "js/shared/fit.js",
     "js/shared/stage.js",
-    "js/shared/bulb.js",
     "js/shared/tally.js",
     "js/shared/focus.js",
     "js/shared/guide.js",

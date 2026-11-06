@@ -12,9 +12,9 @@
  * Node-importable (build/gen_labs.mjs reads lab()): the games' runtime (js/town-proto/play.js) is imported only when a stage starts.
  */
 
-/** What the town needs on a host page beyond what lab.html loads (the s14 word card, the bulb, the focus; the town's sheet). */
+/** What the town needs on a host page beyond what lab.html loads (the s14 word card, the focus; the town's sheet). */
 export const NEEDS = {
-  scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"],
+  scripts: ["js/shared/word-card.js", "js/shared/focus.js"],
   styles: ["css/town-proto.css", "css/shared/word-tiles.css"],
 };
 

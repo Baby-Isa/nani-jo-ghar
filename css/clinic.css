@@ -33,13 +33,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-stage { position: absolute; inset: 0; }
 .cl-actions { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2) var(--njg-s3); background: linear-gradient(90deg, rgba(var(--njg-black-rgb), 0), rgba(var(--njg-black-rgb), .03)); }
 
-/* ---------- the light bulb ---------- */
-.cl-bulb { width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e7cf8e; background: var(--njg-chosen); color: #caa13a; display: grid; place-items: center; cursor: pointer; flex: none; }
-.cl-bulb svg { width: 28px; height: 28px; }
-.cl-bulb.lit { background: #ffe26a; color: #b8860b; box-shadow: 0 0 18px 6px rgba(255, 220, 90, .8); }
-.cl-hint-n { font: 800 var(--njg-t2) var(--cl-head); color: var(--cl-soft); }
-/* decision 57 (CLN-91, W5): no counter beside the bulb (the hints are on the end screen's badge) */
-.cl-hint-n { display: none !important; }
 
 /* ---------- the instruction card ---------- */
 .cl-words .ku { color: var(--cl-ink); }
@@ -123,7 +116,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
 @media (max-height: 460px) {
-  .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
 }
 /* CLN-151: a short landscape phone lays the sidebar's tray in a row (three to a line) so the doctor's card above it
@@ -302,12 +294,8 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
-/* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
 .cl-nani .ng-tools { position: relative; }
-.cl-nani .cl-hint-n { position: absolute; left: calc(var(--njg-tool) - var(--njg-s3)); top: calc(var(--njg-s1) * -1); font-size: var(--njg-t3); line-height: 1; min-width: 0; pointer-events: none; }
-/* (the guide box's tools are the shared kit's, 48 px: css/shared/guide.css) */
-.cl-nani .ng-bulb .bulb-t { display: none; }
-.cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }
+/* (the guide box's tools are the shared kit's, 48 px: css/shared/guide.css; no bulb: retired, Zafar, 6 Nov) */
 
 /* ================= clinic fixes (29-30 Sept, feedback 13-13k) ================= */
 /* UX 15: the buttons come from the shared kit (css/shared/buttons.css) and sit in the play area's
