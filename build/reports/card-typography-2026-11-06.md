@@ -344,3 +344,145 @@ every panel; the next card's headline whole in every panel; the one-line English
 bump, specs, docs, fixlist, recordings, size and load (29/29) ok; **art fails** on the stove run's new item pictures
 (`assets/cook/items-s17-stove/`, 5760719: "not referenced" and palette flags, 170 of 369). This round touches no picture; that is the
 stove run's open redo list, not this study's. No game file changed.
+
+## Round 3 (6 Nov night)
+
+Zafar (6 Nov, ~17:45): "I'm going to go back on my word ... in [round 1's] option 2 ... the English word chai sits under the Kutchi word
+for chai directly ... that looks better. The other way looks awkward ... keep the words paired together." And: "You and Gemini both like
+the footer band A. I completely disagree ... it breaks up the card concept ... Let's do the divider line ... 70, 80, 85 and 90% ... the
+padding should be equal: the bottom of the card up to the bottom of the speaker; the top of the speaker up to the divider line; the
+divider line up to the bottom of the English word ... But obviously don't raise the divider line up halfway up the page to make it match
+the English word if the English word goes up higher."
+
+Still a study: nothing in the game changed. Round 2's B (Lora 600 Kutchi, Nunito Sans 600 grey English, one English size per row, the
+30 px speaker with the card's whole foot as its tap area, bigger pictures on big screens) with the changes below, injected into the real
+game (chai L1) by `build/tools/cards/typo-options.mjs` (`r3Css`, sets `r3w70` to `r3w100`); the sheets by `typo-sheet.py --round3`.
+
+### What changed
+
+1. **Each English under its own Kutchi.** The pair is centred between the picture and the divider (round 1's option 2: the row's spare
+   split above and below it). The row pass now only shares one English size across the row; the Kutchi areas are no longer lined up.
+2. **One gap g, three times:** the card's bottom edge to the speaker's bottom, the speaker's top to the divider, the divider to the
+   bottom of the row's lowest English. The cards of a row are one height, and the divider sits g + speaker + g above the foot, so it is at
+   one height across the row. The card with the tallest words has no spare, so its English sits exactly g above the divider; every other
+   English sits higher, and the divider stays where it is. **g is 7% of the card's inner width** (one rule, so it grows with the card).
+3. **The divider at 70, 80, 85, 90 and 100% of round 2's line** (100% = round 2's B: 88% of the card's inner width, its ends fading),
+   centred, 1 px thick on the phones (1.4 at 1280, 1.7 at 1920).
+
+### The gaps, measured (every card of every row, the cards scrolled out of view included)
+
+| Screen | g (all three gaps) | Item card width | Divider 70 / 80 / 85 / 90 / 100% |
+|---|---|---|---|
+| 971x412 his phone, no banner | **4.41 px** | 75 px | 39 / 44 / 47 / 50 / 55 px |
+| 971x318 his phone in the browser | **4.47 px** | 76 px | 39 / 45 / 48 / 51 / 56 px |
+| 740x320 smallest phone | **4.47 px** | 76 px | 39 / 45 / 48 / 51 / 56 px |
+| 1280x665 laptop | **6.83 px** | 115 px | 60 / 69 / 73 / 77 / 86 px |
+| 1920x1080 | **8.39 px** | 141 px | 74 / 84 / 90 / 95 / 106 px |
+
+In all 75 round-3 panels (5 widths x 3 rows x 5 sizes) and the 12 hidden-English panels, on every card, the three gaps agree within
+**0.01 px** (the brief's limit: 0.5), and the divider is at one height across every row. (They are measured to the English's line box,
+which keeps room for a "y"'s tail: to the letters' baseline the last gap looks about 2 px bigger on the phones.) The divider's width
+never changes a card's height: the five widths fit identically.
+
+### The space it costs
+
+The cards grow by about 4 px against round 2's B on the phones (the third g; a two-line row at 971x318: option 2 149, B 152, round 3
+156 px). The next card's headline:
+
+| Screen | Option 2 | Round 2's B | Round 3 (any width) |
+|---|---|---|---|
+| 971x412, mixed / all two lines | +100 / +90 | +98 / +87 | +94 / +83 |
+| 971x318, mixed / all two lines | +11 / +1 | +9 / -2 | +5 / **-6** |
+| 740x320, mixed / all two lines | +13 / +3 | +11 / 0 | +7 / **-4** |
+
+(+: px to spare with the next headline clear of the list's soft foot; -: the headline whole but that far into the fade. This order card
+is whole and clear in every panel.)
+
+### Flaws first
+
+1. **The tightest case (all two-line words, one English wrapped, his phone in the browser) puts the next card's headline 6 px into the
+   soft foot** (round 2's B: 2). It stays whole and readable, a little faded at its foot. It is the price of the third gap at 4.4 px; at
+   g = 6% (3.8 px) it would be about 3 px (decision 2).
+2. **A peek on a long English moves the row:** hidden, "tamarind chutney" is one line (its dots); shown, it wraps, so for its 3 s the
+   whole row grows 11 px and the dividers and speakers step down with it (`typo3-hidden.webp`, last column). Today's game does the same
+   (the cards grow); the pairing does not make it worse. Only "tamarind chutney" and "coconut chutney" wrap, and only on the phones.
+3. **The 1 px line on the phones is faint** at arm's length (round 2's flaw 3). He chose it; at 85% its solid middle is as wide as the
+   speaker on the phones (30 px), which is what makes it read as the speaker's own rule rather than a cut.
+4. **The item card's border is set to 1 px** in the mock (the 1.5 px token is already drawn 1 px at dpr 2; fixed, the foot gap is exact
+   at every dpr). No visible change.
+5. A hidden English's invisible box (one line, no wrap) runs past its card for "tamarind chutney": the dots show and nothing is seen
+   clipped; today's game does the same. The sheets note it rather than flag it.
+6. **Pictures are stand-ins** for the chutneys and "hakro khun" (as before); only real Kutchi forms are used (paani, chai, dudh, khun,
+   fudino ji chutney, amli ji chutney, nair ji chutney, hakro khun).
+7. **Not shot:** the pop-up card (round 1's option 2, unchanged), 930x430, the dress games' item cards (the rules stay in the side panel).
+
+Nothing clipped, ellipsised, overlapping or outside its card that can be seen in any width, case or size (105 panels, 12 hidden-English
+panels); the English never touches the divider.
+
+### Sheets (`build/reports/cards/`, 2x pixels)
+
+- **`typo3-overview.webp`: start here.** His phone (971x412), two-line words beside one-line: the five widths side by side, and round 1's
+  option 2 for reference.
+- `typo3-closeups.webp`: the card whose English sits lowest ("fudino ji chutney"), from its Kutchi down, at each width, the three gaps
+  drawn in red with their px.
+- `typo3-85.webp`: 85%, the three rows (all one line, all two lines, mixed) by the five sizes.
+- `typo3-panel-fit.webp`: the whole side panel at 971x412, 971x318 and 740x320, mixed and all two lines: option 2, round 2's B, round 3.
+- `typo3-hidden.webp`: 85% with the English hidden (its dots) and peeking, at 971x412, 740x320 and 1280x665. The dots sit where the
+  English sits, under their own Kutchi; a peek shows the English in the same place.
+
+### My pick
+
+**85%.** Its solid middle (the line fades over its outer fifths) is the speaker's width on the phones and at 1280 (30 of 47 px on his
+phone, 47 of 73 against a 45 px circle at 1280; at 1920, 57 against 45), so the line and the circle read as one unit: a rule over the
+button. 90 and 100% reach past the speaker and start to
+underline the words instead, and 100% nearly meets the card's sides, the "cut here" look. 70 and 80% are tidy but shorter than the
+circle under them, so the line looks like a dash rather than a rule. Keep g at 7% (4.4 px on the phone): smaller and the speaker looks
+pressed against the card's foot, the thing he disliked first.
+
+### Fable's round-3 pick
+
+(pending)
+
+### Decision for Zafar
+
+1. The divider at **85%** (else 80 or 90). Recommend 85.
+2. One gap g = 4.4 px on his phone (6.8 at 1280, 8.4 at 1920) for all three, which puts the next card's headline up to 6 px into the soft
+   foot in the tightest case on his phone in the browser (whole and readable). Recommend yes (else 3.8 px and about 3 px into the fade).
+3. A peek on "tamarind chutney" or "coconut chutney" on the phones grows the row for 3 s, as today. Recommend leave it (the other way,
+   the row always as tall as the wrapped English, costs 11 px all the time in those rows).
+
+### Implementation plan (updated; it replaces round 2's)
+
+- **Files:**
+  - `css/shared/word-card.css` and `css/shared/order-card.css` (the side panel's item card, `body.njg-s14 #side .oc-row.oc-it14`): the
+    rows `auto 1fr auto auto 1fr auto auto` (picture, spare, Kutchi, English, spare, divider, speaker); the card's bottom padding 0 and
+    its border 1 px; a token `--njg-card14-it-gap: 7cqi` (g) used only by the card's children (the card's own padding is in the row's
+    units, not the card's); the divider as the card's `::before` (today `display: none`) in row 6: `width: 74.8cqi` (85% of 88),
+    `height: max(1px, 1.4cqi)`, the rule colour fading at its ends, `margin-top: g`; the speaker `margin: g 0 calc(g - 1px)`; its
+    `::after` tap area the card's whole width from half a g above the divider to the card's edge; the English dots' tap area reaching
+    half a g down; the circle at 94% (30 px on the phones); the big-screen picture (`@media (min-height: 501px)`: the box 6:5, the image
+    96%). The mock's CSS: `node build/tools/cards/typo-options.mjs --print-css r3w85` (drop the `!important`s and the mock's
+    `.njg-r3-div` element for the `::before`).
+  - `js/shared/word-card.js`: at the end of `W.fit14`, the row pass, now only (a): every visible card's English (and its dots) in a
+    `.oc-row14` to the row's smallest fitted size. About 8 lines (`settle()` in `typo-options.mjs`). No Kutchi min-height.
+  - Round 1's, unchanged: `css/shared/tokens.css` (the grey, `--njg-card14-en-font`), the Nunito Sans 600 font link or a self-hosted
+    woff2, `build/sandbox/fonts/`, Lora (the morning's change).
+- **Checks:** re-run `typo-options.mjs --only today,r3w85 --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup --hidden r3w85`
+  against the built game ("today" must equal r3w85: card heights within 1 px, the three gaps within 0.5 px on every card, the divider
+  at one height in every row, the tap area the card's foot, no overlap); a peek in a mixed row (the row settles back after it); the
+  sandbox's text checks at the four sizes and 971x318; one dress game (`table`, `fitting`) at 740x320 unchanged;
+  `node build/tools/review/checks.mjs`; the judge on the order card at the four sizes.
+- **Size and risk:** about 35 lines of CSS, 8 of JS and one font file; mid-tier model, about two hours. Risk: low to medium (the item
+  card and `fit14` are shared; the CSS stays scoped to the side panel; the row pass touches only `.oc-row14` rows).
+
+### Proof (round 3)
+
+`COOK_TEST_PORT=8858 flock /tmp/njg-browser-8858.lock node build/tools/cards/typo-options.mjs --out <dir> --only
+o2,r2B,r3w100,r3w90,r3w85,r3w80,r3w70 --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup --hidden r3w85`, then
+`python3 build/tools/cards/typo-sheet.py <dir> build/reports/cards --round3` (6 Nov night; the hidden and peek panels shot again at
+971x412, 740x320 and 1280x665 after the peek was made to hide the dots as the game does). 105 panels and 12 hidden-English panels:
+every card's three gaps within 0.01 px, the divider level across every row, nothing seen clipped or overlapping, this order card whole
+and clear, the next card's headline whole in every panel.
+
+`node build/tools/review/checks.mjs` (6 Nov night, on 726f06f): unit (644 pass), words, static, leak (20 configs), bump, specs, docs,
+fixlist, recordings, art (306 pass, 77 flag, 0 fail), size and load (29/29): **all green**. No game file changed.
