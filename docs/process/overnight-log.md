@@ -79,3 +79,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 20:03 UK · chai contract run on all four merged: 1 timing break (contract-74, a tap 1218 ms under load), its path re-run 0 breaks over 3 pages; the 20 'new' findings are the lab flows with no baseline yet / next: publish to main for Zafar's review
 - 2026-11-06 20:18 UK · Published 20261106T200832Z to main (19657cd5); Pages serving it.
 - 20:18 UK · handover written for the new chat (status.md Next chat)
+- 2026-11-06 22:16 UK · s17-n3-order · CK-59 (said-again per speaker) and CHAI-96 (a style tea's extra pops with its headline) built; after run and contract run (0 breaks over 4 pages) done / next: the orchestrator judges and merges
