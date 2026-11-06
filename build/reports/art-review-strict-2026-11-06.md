@@ -152,3 +152,31 @@ Built on this branch: `artcolour.py` (`palette_fit`, the EXCEPTION level and exi
 - `node build/tools/review/checks.mjs`: every line ok (unit 641 pass; docs within every limit); `art` "no picture changed since c7a1ddcafa7b".
 - Sheets looked at: the worst (30) and the Cook items' batch sheet.
 - Not done: no eye on each of the 699 palette FAILs; the 48 batches wait for the judge.
+
+## Fable's view (6 Nov)
+
+Looked at 30 non-people palette FAILs, 15 PASSes, 10 people and the sheets; then the rule re-run on the 699's stored colours, thresholds varied.
+
+**Flaws (evidence).**
+
+1. **The "main colours" are mostly tones of one material.** `assets/cook/items-s08b/chaat-strips/strip-chilli-s08b.webp` fails on its shaded green; `assets/cook/items/icon-ph-pepper.webp` on its two greens; `assets/shared/word-moment/card-half-chai-s17.webp` (a house anchor) on the chai's highlight; `assets/shared/faces/nani.webp` on the hijab's shade. The k-means merge is ΔE 5 at kL 1 while the match uses kL 2, so lit and shaded sides survive as two colours. Merging colours within 25° of hue first passes **616 of the 699**; the drop machine and the well slip through, caught by the rainbow and light rules.
+2. **Warm steel, glass and stone (chroma 8-14) count as colour.** `assets/cook/items-s14/chai-pan/pan-water-s14.webp` (grey 61%), `assets/clinic/items-v2/tweezers.webp` and `assets/clinic/sheets/drill/drill-belt.webp` are marked *redraw*; `assets/cook/items/chai-station/glass.webp` (empty) and `assets/cook/bg/stove.jpg` fail on their stone. None looks off.
+3. **Natural things judged against a design book:** `assets/items/fruit/fru-11.png` (grape leaves), `assets/cook/items/shelf-spi-05-bare-f.webp` (mustard seed, "redraw"). The verdict flips by state: `plaster-green-belt` passes, `plaster-green-tray` fails; `sky-sunny` passes, `sky-cloudy` fails.
+4. **389 of the 429 non-people fails hinge on one colour at 10-19%:** a coin toss, not a look.
+5. What is genuinely off (the drop machine, the sky-blue toothbrushes and plasters, the kite, the s09r bush and tree) the exception, rainbow and house-look rules already catch; this rule adds almost only false fails. (Aside: `clinic/rough/items/lollipop.webp` ships; non-negotiable 9.)
+
+**Verdict:** Zafar's rule is right; the measurement is too harsh.
+
+**Change:** (1) merge tones (hue within ~25°), match the mid tone; (2) neutral under chroma 14; (3) one combination + neutrals + one in-book accent under 20% (a lid, a tip, a label): together 654 of 699 pass; the 29 non-people left are honest (two-colour plasters, drop machine, kite, rainbow, six fruit and veg icons, the wipes); (4) a `palette.natural` glob list (fruit, veg, cooked food, animals, sky) judged by the exception and loudness rules only; (5) people exempt (locked style); (6) all 55 house anchors must pass, plus pan-water-s14, tweezers and the empty glass. Re-run and re-cut the list and the 33 redraws.
+
+**Redo programme (after the re-run; 60-90 pictures, not 668):**
+
+1. Chai shelf, 8 jars: the stove run, as planned.
+2. Sky-blue hue pull in post, one script: 19 toothbrush, plaster, sky and door pictures; the gas flame kept.
+3. Clinic, one run of ~20: the plaster pairs, the wipes, the drop machine redrawn, the re-cuts.
+4. Cook, one run of ~20: chai's leftovers (knobs, flames, two pans), then daar and chaat.
+5. Other modes: the kite, the s09r bush, tree and well when day is next touched; the icons and protos not at all.
+
+**Batches, by eye.** Mixed: the chai shelf (lids, camera), `day/s09b` (the well, the aeroplane), `items/spice` (the bare salt heap), `clinic/rough/furniture` (a steel trolley among toy furniture). Not the hands, the sheets (one item's states) or the streams.
+
+**Decisions:** 1 no, re-tune first; 2 yes, exempt; 3 yes, with the hue pull; 4 yes, only what fails after the re-run; 5-7 yes.
