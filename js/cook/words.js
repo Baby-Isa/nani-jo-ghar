@@ -522,6 +522,10 @@
   const FREE_ROLES = { call: 1, hear: 1, count: 1, laps: 1, countdown: 1, item: 1 };
   const said = new Map(); // the line's words -> Map(its speaker, "" when none is named -> {t, popup, card, by, k})
   const byOf = (line) => (line && line.by != null && line.by !== "" ? String(line.by) : "");
+  // CHAI-96: who waits for a line's first word (the order's read times a style tea's item card to its headline): fn(line) at
+  // each line's say-start; returns the unsubscribe
+  const starts = new Set();
+  Lang.onSayStart = (fn) => (starts.add(fn), () => starts.delete(fn));
   const normLine = (t) => (String(t || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’-]*/gu) || []).join(" ");
   let tapAt = -1e9;
   let chain = { on: false, end: -1e9 };
@@ -614,7 +618,16 @@
         channel: "cook",
         queue: true,
         onWord: () => {
-          if (!started) (started = true), note("say-start", turn, Lang.plain(line));
+          if (started) return;
+          started = true;
+          note("say-start", turn, Lang.plain(line));
+          starts.forEach((f) => {
+            try {
+              f(line);
+            } catch (e) {
+              /* a watcher only */
+            }
+          });
         },
       };
       if (kind === "count") Object.assign(o, { key: "count", ttl: COUNT_WAIT_MS });
