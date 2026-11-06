@@ -692,7 +692,9 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-slot-e { grid-row: 4; align-self: start; margin-top: 3.5cqi; margin-bottom: calc(-1 * var(--wc14-ink, 0px)); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14::before { content: ""; display: block; grid-row: 6; grid-column: 1; justify-self: center; width: 74.8cqi; height: max(var(--njg-card14-hair), 1.4cqi); margin-top: 7cqi; pointer-events: none; background: var(--njg-card14-divider); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14.oc-away::before { visibility: hidden; }
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 7; align-self: end; margin: 7cqi 0 calc(7cqi - var(--njg-card14-hair)); z-index: 1; width: calc(var(--njg-tap-drawn) * .94); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 7; align-self: end; margin: 7cqi 0 calc(7cqi - var(--njg-card14-hair)); z-index: 1; width: var(--njg-tap-drawn); }
+/* (on the phones the speaker is drawn 30 px, 94% of the panel's drawn tap, its tap area the foot; at 1280 and 1920 it stays a whole 48 px tap) */
+@media (max-height: 500px) { :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { width: calc(var(--njg-tap-drawn) * .94); } }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::after { inset: calc(-1 * (10.5cqi + max(var(--njg-card14-hair), 1.4cqi))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) -7cqi; border-radius: 0 0 calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)) calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)); }
 /* (the English's dots, its tap to show it, reach down to half a gap above the divider: the speaker's tap area starts there) */
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(var(--wc14-ink, 0px) - 3.5cqi); }

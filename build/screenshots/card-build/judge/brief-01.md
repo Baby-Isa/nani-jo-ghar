@@ -15,7 +15,7 @@ Sizes: 740x320 (smallest phone), 971x318 (his phone in the browser), 971x412 (hi
 3. Each English directly under its own Kutchi (no lining up across the row); the pair centred between the picture and the divider.
 4. The divider: a thin line in the card's rule colour, fading at its ends, about 85% of the earlier line's width, at one height across a row.
 5. Three equal gaps g (7% of the card's inner width, about 4.4 px on the phones): the card's bottom edge to the speaker's bottom, the speaker's top to the divider, the divider to the lowest ink of the English above it. The last gap is measured to the letters over the divider's span: a "y", "g" or comma tail where one sits over the line, else the baseline (Zafar: under "day" the y's tail; under "mint chutney" the y sits past the line, so the other letters' feet). Only the row's lowest English sits g above the divider; every other card's words sit higher, centred.
-6. The speaker 30 px on the phones (45 at 1280 and 1920), not overlapping the English.
+6. The speaker 30 px on the phones (a whole 48 px tap at 1280 and 1920, as before), not overlapping the English.
 7. At 1280 and 1920 the item cards' pictures about 21% taller than BEFORE; on the phones unchanged.
 8. The next order's headline may sit up to about 6 px into the list's soft fade in the tightest case (all two lines, 971x318 and 740x320): whole and readable.
 
