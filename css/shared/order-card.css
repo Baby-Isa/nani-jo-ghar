@@ -665,3 +665,44 @@ body.njg-s14 #side .wc14-big .wc14-spk { width: clamp(var(--njg-tap-drawn), 25cq
 body.njg-s14 #guide.ng-s14 .ng-arrow { width: var(--njg-tap-drawn); height: var(--njg-tap-drawn); position: relative; }
 body.njg-s14 #side .wc14-spk, body.njg-s14 #side .oc-spk { position: relative; }
 body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-spk::after, body.njg-s14 #guide.ng-s14 .ng-arrow::after { content: ""; position: absolute; inset: min(0px, calc((100% - var(--njg-tap)) / 2)); border-radius: 50%; }
+
+/* ---------- the 6 Nov type and item card (SH-223, SH-227), on for chai first (:root.njg-lora: js/cook/ui.js applyType; the tokens in
+   css/shared/tokens.css). The roll-out drops the ":root.njg-lora" from these lines. ---------- */
+/* Lora 600 for the order's headline, 500 for Nani's line in her light box (Fable's weights, Zafar 6 Nov) */
+:root.njg-lora .oc-card.oc-s14 .oc-headline { font-weight: 600; }
+/* (SH-192 with Lora: its letters sit high in their line, so the words are set .05em lower to stay centred between the card's top and the
+   item cards: panelcheck measured 18.4 above / 20.6 below at 1280, over its 2 px; the phones were within it, 3.0 / 3.6) */
+@media (min-height: 501px) { :root.njg-lora .oc-card.oc-s14 .oc-headline { position: relative; top: .05em; } }
+:root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line, :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line .wp-text { font-weight: 500; }
+/* Cook's Kutchi words and its bubbles (css/cook.css .wp-text, .wr-pill b, the ladder lines and dishes): Lora 600, they were 800, which
+   Lora draws at its heaviest (the gate's class is the kit's, so its rules live in the kit: build/lint/static.mjs kit) */
+:root.njg-lora .wp .wp-text, :root.njg-lora .wr-pill b, :root.njg-lora .ir, :root.njg-lora .lc, :root.njg-lora #mission .m-dish, :root.njg-lora .ccard .cc-dish, :root.njg-lora .icard .ic-title, :root.njg-lora #intro .ic-dish { font-weight: 600; }
+/* The item card in the side panel (Zafar, 6 Nov, round 3: build/reports/card-typography-2026-11-06.md): picture, spare, Kutchi,
+   English, spare, the divider, the speaker. The English sits under its own Kutchi, the pair centred between the picture and the
+   divider. One gap g = 7% of the card's inner width (about 4.4 px on a phone) three times: the card's foot to the speaker's bottom,
+   the speaker's top to the divider, the divider to the English above it; the divider at one height across the row (the cards of a
+   row are one height), never raised to meet a higher English. That last gap is measured to the ink, not to the line's box:
+   js/shared/word-card.js fit14 sets --wc14-ink on each English (the box's foot less the lowest ink over the divider's span: a "y"
+   or a comma's tail where one sits over the line, else the baseline), and the English's box gives that much back. The speaker is
+   drawn 30 px on the phones (94% of the panel's drawn tap) and its tap area is the card's whole foot, never over the English's.
+   (g is used only by the card's children, so it is in the card's own cqi; the card's padding is in the row's cqi, a different unit:
+   --njg-itpad, registered so it resolves on the card, carries it to the speaker's tap area.) */
+@property --njg-itpad { syntax: "<length>"; inherits: true; initial-value: 0px; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { grid-template-rows: auto 1fr auto auto 1fr auto auto; --njg-itpad: 2.6cqi; padding: var(--njg-itpad) var(--njg-itpad) 0; border-width: var(--njg-card14-hair); isolation: isolate; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > * { grid-column: 1; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-pic { grid-row: 1; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-slot-k { grid-row: 3; align-self: end; margin-top: 4cqi; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-slot-e { grid-row: 4; align-self: start; margin-top: 3.5cqi; margin-bottom: calc(-1 * var(--wc14-ink, 0px)); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14::before { content: ""; display: block; grid-row: 6; grid-column: 1; justify-self: center; width: 74.8cqi; height: max(var(--njg-card14-hair), 1.4cqi); margin-top: 7cqi; pointer-events: none; background: var(--njg-card14-divider); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14.oc-away::before { visibility: hidden; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 7; align-self: end; margin: 7cqi 0 calc(7cqi - var(--njg-card14-hair)); z-index: 1; width: var(--njg-tap-drawn); }
+/* (on the phones the speaker is drawn 30 px, 94% of the panel's drawn tap, its tap area the foot; at 1280 and 1920 it stays a whole 48 px tap) */
+@media (max-height: 500px) { :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { width: calc(var(--njg-tap-drawn) * .94); } }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::after { inset: calc(-1 * (10.5cqi + max(var(--njg-card14-hair), 1.4cqi))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) -7cqi; border-radius: 0 0 calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)) calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)); }
+/* (the English's dots, its tap to show it, reach down to half a gap above the divider: the speaker's tap area starts there) */
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(var(--wc14-ink, 0px) - 3.5cqi); }
+/* bigger pictures on the big screens (about 21% taller); the phones unchanged */
+@media (min-height: 501px) {
+  :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-pic { aspect-ratio: 6 / 5; }
+  :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-pic > img.wc-img { inset: 2%; width: 96%; height: 96%; }
+}

@@ -154,3 +154,19 @@ test("the known list only shrinks (Zafar, 23 Oct): one more kit restyle or raw v
   assert.ok(!next.includes(restyle[0].key));
   assert.ok(next.every((k) => knownKeys.includes(k)));
 });
+test("fonts (SH-224): a face is named only in the type tokens; chai's files fail on a name, the other games' only warn until the roll-out", async () => {
+  const { fontFindings, CHAI_FONT_FILES, FONT_WARN } = await import("./static.mjs");
+  assert.equal(fontFindings("css/shared/tokens.css", ':root { --njg-font-kutchi: "Lora", Georgia, serif; }').length, 0);
+  assert.equal(fontFindings("css/shared/fonts.css", '@font-face { font-family: "Lora"; src: url(x.woff2); }').length, 0);
+  assert.deepEqual(fontFindings("css/shared/word-card.css", '.wc14 .wc14-k { font-family: "Lora", Georgia, serif; }').map((f) => f.key.split("|")[2]), ["Lora", "Georgia", "serif"]);
+  assert.equal(fontFindings("css/shared/word-card.css", ".wc14 .wc14-k { font-family: var(--njg-card14-font); } /* Lora, from the tokens */").length, 0);
+  assert.equal(fontFindings("css/cook.css", ".serif-note, .lora { color: var(--njg-ink); }").length, 0, "a selector is not a face");
+  assert.equal(fontFindings("css/cook.css", "  --kutchi-font: var(--njg-font-display, \"Baloo 2\", sans-serif);").length, 2, "a fallback inside var() names a face too");
+  assert.equal(fontFindings("js/cook/stations/chai-tray.js", 'const FONT = () => Tokens.font("word", "Nunito, sans-serif"); // Nunito').length, 2);
+  assert.equal(fontFindings("js/cook/stations/chai-tray.js", 'const FONT = () => Tokens.font("word"); // the drawn face (Lora on chai)').length, 0);
+  assert.equal(fontFindings("cook.html", '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito">').length, 2);
+  // the repo: nothing in chai's files; the other games' names are warnings
+  const found = run(ROOT, ["fonts"]);
+  assert.deepEqual(found.filter((f) => CHAI_FONT_FILES.includes(f.at.split(":")[0])).map((f) => f.at + " " + f.text), []);
+  assert.ok(FONT_WARN.length > 0 && FONT_WARN.every((f) => !CHAI_FONT_FILES.includes(f.at.split(":")[0])));
+});

@@ -50,7 +50,10 @@
   };
   T.rgbOf = rgbOf;
   // a font role from the central type (css/shared/tokens.css "type": display, body, word), for drawn (Phaser) text
-  T.font = (role, fallback) => T.css(`font-${role}`) || fallback || "";
+  T.font = (role, fallback) => T.css(`font-${role}`) || fallback || "sans-serif"; // (never empty: a drawn text needs a face)
+  // a drawn word's weight from the central type (--njg-weight-<role>; "drawn": the shelf pills, 800 until the 6 Nov type's 600, SH-223),
+  // as Phaser's fontStyle takes it
+  T.weight = (role, fallback) => T.css(`weight-${role}`) || fallback || "";
   // the drawn games' palette (Cook's stations: text, the Kutchi word, card, grey, gold, panel, page), read once the sheet is in
   let pal = null;
   T.cookInk = () => {

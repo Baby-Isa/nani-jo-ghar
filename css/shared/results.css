@@ -338,6 +338,9 @@
 .rs-word.ok .rs-say, .rs-word.bad .rs-say { background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.on .rs-say { animation: rs-pulse 0.8s ease-in-out infinite; }
 .rs-word b { font-family: var(--njg-font); font-size: var(--njg-end-word); font-weight: 800; line-height: 1.15; letter-spacing: -0.005em; }
+/* (the 6 Nov type, chai first: the end screen's Kutchi words in Lora 600, :root.njg-lora, css/shared/tokens.css; a word still to record keeps
+   the grey italic below) */
+:root.njg-lora .rs-word b:not(.rs-ph) { font-family: var(--njg-font-kutchi); font-weight: 600; letter-spacing: 0; }
 .rs-en { font-family: var(--njg-font); font-size: var(--njg-t4); color: var(--njg-muted); font-weight: 700; }
 .rs-word.ok .rs-en, .rs-word.bad .rs-en { color: var(--njg-muted); }
 

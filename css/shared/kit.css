@@ -5,6 +5,7 @@
    one). The word card and the conversations are imported here too; their scripts may add their sheet again when they first
    draw (js/shared/word-card.js useCss), which is harmless. build/bump_version.py stamps every @import below. */
 @import url("tokens.css?v=20261106T090836Z");
+@import url("fonts.css?v=20261106T090836Z");
 @import url("app.css?v=20261106T090836Z");
 @import url("focus.css?v=20261106T090836Z");
 @import url("frame.css?v=20261106T090836Z");

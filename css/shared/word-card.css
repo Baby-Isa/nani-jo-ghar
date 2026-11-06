@@ -114,7 +114,7 @@
 .wc14 .wc14-pic > img.wc-img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; filter: var(--njg-card14-pic-drop); transition: filter .35s, transform .35s; }
 .wc14 .wc-slot.wc14-k { display: block; margin: 0; padding: 0; border: 0; min-height: 0; font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-kutchi); line-height: 1.04; text-wrap: balance; overflow-wrap: normal; word-break: normal; max-width: 100%; }
 .wc14 .wc-slot.wc14-k.to-record { font-family: var(--njg-card14-body); }
-.wc14 .wc-slot.wc14-en { display: block; margin: 0; padding: 0; border: 0; min-height: 0; font-family: var(--njg-card14-body); font-weight: 700; color: var(--njg-card14-english); line-height: 1.15; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.wc14 .wc-slot.wc14-en { display: block; margin: 0; padding: 0; border: 0; min-height: 0; font-family: var(--njg-card14-en-font); font-weight: 700; color: var(--njg-card14-english); line-height: 1.15; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 .wc14 .wc-slot.wc14-en.wc14-wrap { white-space: normal; }
 .wc14 .wc-slot.wc14-en.none { display: none; }
 .wc14 .wc14-k .dots { color: var(--njg-card14-kutchi); letter-spacing: .08em; cursor: pointer; }
@@ -211,3 +211,16 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height
 
 /* (CHAI-43, Zafar 2 Nov afternoon: the pop-out keeps L1's shape at every level, scaled evenly by js/cook/ui.js placeFree14: no
    free-room fill) */
+
+/* ---------- the 6 Nov type (SH-223, SH-227), on for chai first (:root.njg-lora: js/cook/ui.js applyType; the faces and the grey in
+   css/shared/tokens.css). Zafar, 6 Nov: Lora 600 for a card's Kutchi, the English under it Nunito Sans 600 in a warm grey; the
+   English 12 px on phones (it may shrink to 10 on one line; one size per order row, js/shared/word-card.js fit14). The roll-out drops
+   the ":root.njg-lora" from these lines. ---------- */
+:root.njg-lora .wc14 .wc-slot.wc14-k, :root.njg-lora .wt-word { font-weight: 600; }
+:root.njg-lora .wc14 .wc-slot.wc14-k { line-height: 1.08; }
+:root.njg-lora .wc14 .wc-slot.wc14-en { font-weight: 600; line-height: 1.1; }
+@media (max-height: 500px) {
+  :root.njg-lora body.njg-s14 #side .wc14-it .wc14-en { font-size: clamp(calc(var(--njg-px) * 12), 10cqi, max(calc(var(--njg-px) * 12), var(--njg-card14-u19))); }
+}
+/* the pop-up card: the English a little apart from its Kutchi (round 1's option 2); the helper card keeps its height (Zafar, 30 Oct) */
+:root.njg-lora .wc14-big:not(.wc14-side) .wc14-slot-e { margin-top: 1.75cqi; }

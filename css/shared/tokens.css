@@ -110,6 +110,17 @@
      (the serif) and its inks live here, so one line changes them all. */
   --njg-card14-font: "Fraunces", Georgia, "Times New Roman", serif;   /* the card's Kutchi, its titles, Nani's line, the order line, bubbles */
   --njg-card14-body: "Nunito", system-ui, sans-serif;                 /* the card's English and labels */
+  --njg-card14-en-font: var(--njg-card14-body);     /* the English under a card's Kutchi (Nunito Sans with the 6 Nov type, below) */
+  /* the 6 Nov type (SH-223, SH-224, SH-227; Zafar, 6 Nov: Lora for the Kutchi everywhere, 600 for a word and 500 for Nani's lines;
+     Nunito Sans 600 grey for the English under it; the buttons and the UI stay Nunito): the faces live in assets/fonts/, declared
+     in css/shared/fonts.css. On for chai first (:root.njg-lora at the end of this sheet, set by js/cook/ui.js applyType); the
+     roll-out moves those lines up here (docs/design-language/guide-and-card.md, "The 6 Nov card"). */
+  --njg-font-kutchi: "Lora", Georgia, "Times New Roman", serif;          /* every Kutchi word and line */
+  --njg-font-english: "Nunito Sans", "Nunito", system-ui, sans-serif;    /* the English under a Kutchi word on a card */
+  --njg-weight-drawn: 800;                          /* a Kutchi word drawn in the play area (the shelf pills): Tokens.weight("drawn") */
+  --njg-card14-divider: linear-gradient(to right, transparent, var(--njg-card14-rule) 18%, var(--njg-card14-rule) 82%, transparent); /* the item card's line over its speaker, fading at its ends (SH-227) */
+  --njg-card14-hair: 1px;                           /* the item card's edge and the divider's least (a hairline at every dpr: SH-227) */
+  --njg-card14-en-grey: #6f6660;                    /* the English's warm grey (5.6:1 on the card's cream, AA for small text) */
   --njg-card14-kutchi: #7d2234;                     /* the maroon Kutchi */
   --njg-card14-text: #2a2522;                       /* a line's other words */
   --njg-card14-english: #2a2522;                    /* the English under it */
@@ -364,4 +375,17 @@
     --njg-badge: 230px; --njg-end-btn: 82.8px; --njg-end-pad: 27.6px; --njg-end-word: 32.2px; --njg-end-cap: 25.3px; --njg-end-foot: 34.5px; --njg-end-btn-t: 23px; --njg-end-card: 1150px; --njg-end-col: 253px;
     --njg-side-w: clamp(253px, 25vw, 345px);
   }
+}
+
+/* ---------- the 6 Nov type and card, on for chai first (Zafar, 6 Nov: "start with Chai. Do Chai, let me review it, and then if I like it,
+   you can just roll it out everywhere"). js/cook/ui.js applyType puts .njg-lora on <html> while a chai order plays (Tokens.font and
+   Tokens.weight read <html>, so the drawn shelf pills follow too). The roll-out: move these lines into :root above, and drop the
+   ":root.njg-lora" from the rules that carry it (css/shared/word-card.css, css/shared/order-card.css, the "6 Nov type" blocks). ---------- */
+:root.njg-lora {
+  --njg-card14-font: var(--njg-font-kutchi);
+  --njg-font-word: var(--njg-font-kutchi);
+  --kutchi-font: var(--njg-font-kutchi);
+  --njg-weight-drawn: 600;
+  --njg-card14-english: var(--njg-card14-en-grey);
+  --njg-card14-en-font: var(--njg-font-english);
 }

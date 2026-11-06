@@ -29,6 +29,7 @@ The single source of truth for how Cook looks and behaves. It merges Zafar's fee
 - **Ladders:** the help's waits are the central rules' alone (`data/rules.json` levels.hintS through `Tokens.ladder`; `NaniGuide.PAUSE` reads it). Check: `hintwait`. No bulb: the help is chai's method (the bulbs retired, Zafar, 6 Nov: `docs/game-design/rulebook.md`).
 - **To record:** one rule, `.njg-ph` in `css/shared/app.css` (grey italic; `.ph` and `.to-record` its older names until every renderer emits `.njg-ph`).
 - **Shared classes:** no CSS outside `css/shared/` selects `.njg-`, `.oc-`, `.rs-`, `.gb-`, `.wc-`, `.ng-`, `.ob-`, `.cv-`, `.say-` or `.fit` classes (`:not()` allowed). Check: `kit`. Every check's known list only shrinks.
+- **Type (Zafar, 6 Nov; SH-224):** faces in `assets/fonts/`, declared once in `css/shared/fonts.css`; only `tokens.css` names one. Lora for Kutchi (600 words, 500 Nani's line), Nunito Sans 600 grey for the English under it, Nunito for the UI; drawn text: `Tokens.font`, `Tokens.weight`. Check: `fonts`. Chai first; the card and the roll-out: `guide-and-card.md`, "The 6 Nov card".
 
 ## 3. The screen grid
 - **The left panel, about 22%.** One continuous surface. There are no cards inside cards.

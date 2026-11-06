@@ -1715,6 +1715,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const was = document.body.classList.contains("njg-s14");
     // (the S14 roll-out: every dish, UI.S14_ALL; chai alone when it is off)
     UI.applyS14(ids.length > 0 && (UI.S14_ALL || ids.every((id) => CHAI14.has(id))));
+    // (the 6 Nov type, chai first: ui.js applyType; its faces are in before the kitchen is drawn)
+    if (UI.applyType) await UI.applyType(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
     if (document.body.classList.contains("njg-s14") === was) return;
     global.dispatchEvent(new Event("resize"));
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));

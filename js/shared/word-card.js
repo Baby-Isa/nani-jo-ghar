@@ -476,6 +476,7 @@
           box.classList.remove("wc14-peek");
           if (slot !== "picture" || !all) box.classList.remove("revealed");
           if (dots) dots.classList.remove("wc14-gone");
+          if (type14()) W.fit14(c); // (the 6 Nov card: the row settles back, SH-227)
         }, 3000 / ((root.Cook && root.Cook.speed) || 1));
         try {
           if (opts.progress && opts.progress.reveal && word.id != null) opts.progress.reveal(word.id, slot);
@@ -503,6 +504,7 @@
           if (!revealed.has(slot)) {
             box.classList.remove("wc14-peek", "revealed");
             if (dots) dots.classList.remove("wc14-gone");
+            if (type14()) W.fit14(c);
           }
           res();
         }, ms));
@@ -613,9 +615,113 @@
   W.fit14 = function (rootEl) {
     const r = rootEl || doc;
     const all = (sel) => (r.matches && r.matches(sel) ? [r] : []).concat([...r.querySelectorAll(sel)]);
-    all(".wc14 .wc14-k").forEach((e) => fitOne14(e, 11, 2));
-    all(".wc14 .wc14-en").forEach((e) => fitOne14(e, 10, 1));
+    // (the 6 Nov card: a fit that reaches into an order row fits the whole row, so the row pass below sees every card fresh)
+    const rows = type14() ? rowsOf14(r) : [];
+    const ks = new Set(all(".wc14 .wc14-k")), ens = new Set(all(".wc14 .wc14-en"));
+    rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-k").forEach((e) => ks.add(e)));
+    rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-en").forEach((e) => ens.add(e)));
+    ks.forEach((e) => fitOne14(e, 11, 2));
+    ens.forEach((e) => fitOne14(e, 10, 1));
+    rows.forEach(row14);
   };
+  /*
+   * ---- THE 6 NOV CARD's ROW PASS (SH-227; Zafar, 6 Nov, round 3), on with the 6 Nov type (<html class="njg-lora">, chai first):
+   * after every fit, peek and resize, each order row (.oc-row14) of item cards gets
+   *   (a) one English size: the smallest the fit gave in the row, shared by every card in it (an English the fit wrapped keeps its
+   *       size; its dots follow);
+   *   (b) the last gap measured to the ink (Zafar: "if the word was very short, like ... D-A-Y, then the Y would sit directly above
+   *       the dividing line ... your eye would be drawn to the gap between the dividing line and the bottom of the Y ... because mint
+   *       chutney is so ... lengthy ..., the Y ... sits outside of the divider line ... your eye ... draws its understanding of the
+   *       spacing between the bottom of the other letters ... and the dividing line"): on each card, the letters of the English's
+   *       last line that sit across the divider's span (its x from the card's ::before) are measured one by one (a Range per letter
+   *       for its place, the canvas's measureText for its ink); a letter whose ink drops below the baseline (y, g, p, q, j, a comma)
+   *       counts with its tail, every other letter at the baseline; the lowest of them is the English's ink foot. --wc14-ink is how
+   *       far the English's box runs below that foot, and css/shared/order-card.css gives that much back under it, so the divider
+   *       sits g under the lowest ink of the row's lowest English (the card with no spare), and every other card's words, centred
+   *       in their room, sit higher. A card with no English measures its Kutchi the same way.
+   */
+  const type14 = () => !!(doc && doc.documentElement && doc.documentElement.classList.contains("njg-lora"));
+  function rowsOf14(r) {
+    const out = new Set();
+    const up = r.closest ? r.closest(".oc-row14") : null;
+    if (up) out.add(up);
+    if (r.matches && r.matches(".oc-row14")) out.add(r);
+    if (r.querySelectorAll) r.querySelectorAll(".oc-row14").forEach((x) => out.add(x));
+    return [...out];
+  }
+  let ink14 = null;
+  // (one letter's ink below its baseline, in px, in its element's own face; 0 for a letter that sits on the baseline)
+  function dropOf14(ch, cs) {
+    if (!ink14) ink14 = doc.createElement("canvas").getContext("2d");
+    if (!ink14) return 0;
+    ink14.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const m = ink14.measureText(ch);
+    const px = parseFloat(cs.fontSize) || 16;
+    const d = m.actualBoundingBoxDescent || 0;
+    return { drop: d > px * 0.1 ? d : 0, fontDescent: m.fontBoundingBoxDescent };
+  }
+  // the lowest ink, in the page's px, of the last line of e's letters that sit across [l, r]
+  function inkFoot14(e, l, r) {
+    const range = doc.createRange();
+    const walk = doc.createTreeWalker(e, 4); // (text nodes)
+    const gl = [];
+    for (let t = walk.nextNode(); t; t = walk.nextNode()) {
+      const s = t.nodeValue || "";
+      for (let i = 0; i < s.length; i++) {
+        if (/\s/.test(s[i])) continue;
+        range.setStart(t, i);
+        range.setEnd(t, i + 1);
+        const b = range.getBoundingClientRect();
+        if (!b || !b.width) continue;
+        gl.push({ ch: s[i], b, el: t.parentElement });
+      }
+    }
+    if (!gl.length) return null;
+    const top = Math.max(...gl.map((g) => g.b.top));
+    const line = gl.filter((g) => g.b.top > top - g.b.height / 2);
+    const over = line.filter((g) => g.b.right > l && g.b.left < r);
+    let foot = -Infinity;
+    for (const g of over.length ? over : line) {
+      const cs = root.getComputedStyle(g.el);
+      const m = dropOf14(g.ch, cs);
+      if (!m) return null;
+      // (the letter's box is its face's ascent and descent: its baseline is the box's foot less that descent)
+      const base = g.b.bottom - (m.fontDescent != null ? m.fontDescent : 0);
+      foot = Math.max(foot, base + m.drop);
+    }
+    return isFinite(foot) ? foot : null;
+  }
+  function row14(row) {
+    if (!row.isConnected || !row.offsetParent) return;
+    const cards = [...row.querySelectorAll(":scope > .wc14-it")];
+    // (a) one English size per row
+    const ens = cards.map((c) => c.querySelector(".wc14-slot-e > .wc14-en")).filter((e) => e && e.offsetParent && !e.classList.contains("none"));
+    const sizes = ens.map((e) => parseFloat(root.getComputedStyle(e).fontSize) || 0).filter((x) => x > 0);
+    const min = sizes.length ? Math.min(...sizes) : 0;
+    if (min) {
+      ens.forEach((e) => {
+        if (parseFloat(root.getComputedStyle(e).fontSize) <= min + 0.05) return;
+        e.style.fontSize = `${min}px`;
+        const d = e.parentNode && e.parentNode.querySelector(".wc14-dots");
+        if (d) d.style.fontSize = `${min}px`;
+      });
+    }
+    // (b) the last gap to the ink: every card measured first, then every one set (no layout in between)
+    const ink = cards.map((c) => {
+      const slot = c.querySelector(":scope > .wc14-slot-e");
+      if (!slot) return null;
+      const div = root.getComputedStyle(c, "::before");
+      const w = div && div.content && div.content !== "none" ? parseFloat(div.width) : NaN;
+      if (!isFinite(w) || !w) return { slot, d: 0 };
+      const cb = c.getBoundingClientRect();
+      const mid = cb.left + cb.width / 2;
+      let e = slot.querySelector(".wc14-en");
+      if (!e || !e.offsetParent || e.classList.contains("none") || !e.textContent.trim()) e = c.querySelector(":scope > .wc14-slot-k > .wc14-k");
+      const foot = e ? inkFoot14(e, mid - w / 2, mid + w / 2) : null;
+      return { slot, d: foot == null ? 0 : slot.getBoundingClientRect().bottom - foot };
+    });
+    ink.forEach((x) => x && x.slot.style.setProperty("--wc14-ink", `${x.d.toFixed(2)}px`));
+  }
   W.morph = async function (from, to, o = {}) {
     if (!from || !to) return;
     // (the judge, 30 Oct: samosa's card flew below the screen's foot to a row the list had scrolled away: the row is brought into
@@ -779,6 +885,8 @@
       cancelAnimationFrame(rz);
       rz = requestAnimationFrame(() => W.fit14());
     });
+    // (a face that arrives after the cards are drawn changes every word's width: fit again; css/shared/fonts.css swaps)
+    if (doc && doc.fonts && doc.fonts.addEventListener) doc.fonts.addEventListener("loadingdone", () => W.fit14());
   }
   return W;
 });
