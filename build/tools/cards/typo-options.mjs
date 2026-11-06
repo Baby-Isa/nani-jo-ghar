@@ -8,6 +8,7 @@
 // (WordCard.fit14), measures every visible item card and the panel's fit, and shoots the side panel and the pop-up.
 // Writes <out>/<size>/<case>-<option>.png, <out>/<size>/popup-<option>.png and <out>/measure.json
 // Round 2 (6 Nov evening): --only o2,r2A,r2B,r2C --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup (r2Css below)
+// Round 3 (6 Nov night): --only o2,r2B,r3w100,r3w90,r3w85,r3w80,r3w70 --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup --hidden r3w85 [--g 7] (r3Css below)
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -161,12 +162,61 @@ export const R2 = {
   C: { name: "C Foot button", t: "C", spk: 0.94, gEx: 3, padTop: 3.5, padB: 0.8 },
 };
 
+// ---------- round 3 (6 Nov night; Zafar: "the English word chai sits under the Kutchi word for chai directly ... that looks better ...
+// keep the words paired together"; "Let's do the divider line ... 70, 80, 85 and 90% ... the padding should be equal: the bottom of the
+// card up to the bottom of the speaker; the top of the speaker up to the divider line; the divider line up to the bottom of the English
+// word") ----------
+// Round 2's B (the divider, Lora 600, Nunito Sans 600 grey, one English size per row, the 30 px speaker with its full-foot tap area,
+// bigger pictures on big screens) with:
+//  1. the English paired under its own Kutchi, the pair centred between the picture and the divider (round 1's option 2: the row's
+//     spare split above and below it); no row alignment of the English (the row pass keeps only the one English size per row);
+//  2. one gap g (card units, cqi of the card) three times: the card's bottom edge to the speaker's bottom, the speaker's top to the
+//     divider, the divider to the bottom of the row's lowest English. The cards of a row are one height (the row stretches them) and
+//     the divider sits a fixed g + speaker + g above the foot, so it is at one height across the row; the card whose words are tallest
+//     has no spare, so its English sits g above the divider and every other English sits higher (never the divider raised to meet it);
+//  3. the divider a real element in the mock (.njg-r3-div, so it can be measured; the build can use the card's ::before), t.w of round
+//     2's line (88% of the card's inner width, its ends fading), centred.
+// (g is on children of the card only, so all three are in the card's own cqi: the card's padding is in the row's cqi, a different unit;
+// the card's bottom padding is 0 and the speaker's bottom margin is g less the card's border, set to 1 px: the 1.5 px token is drawn
+// 1 px at dpr 2 anyway, and a fixed width keeps the foot exact at every dpr.)
+const R3LINE = "max(1px, 1.4cqi)";
+function r3Css(t) {
+  const o = { ...SETS.o2, spk: 0.94 };
+  const g = t.g;
+  const cardR = "calc(var(--njg-card14-u14) - var(--njg-card14-u1p5))";
+  return [setCss(o), R2PROP, `
+  /* 1. rows: picture, spare, Kutchi, English, spare, divider, speaker (option 2's centred pair; the speaker at the foot) */
+  ${IT} { grid-template-rows: auto 1fr auto auto 1fr auto auto !important; --njg-itpad: 2.6cqi; padding: var(--njg-itpad) var(--njg-itpad) 0 !important; border-width: 1px !important; isolation: isolate; }
+  ${IT} > * { grid-column: 1 !important; }
+  ${IT} > .wc14-pic { grid-row: 1 !important; }
+  ${IT} > .wc14-slot-k { grid-row: 3 !important; }
+  ${IT} > .wc14-slot-e { grid-row: 4 !important; align-self: start !important; }
+  /* 2. the divider and the speaker: g, g, g */
+  ${IT} > .njg-r3-div { display: block; grid-row: 6 !important; justify-self: center; width: ${(88 * t.w).toFixed(2)}cqi; height: ${R3LINE}; margin: ${g}cqi 0 0; pointer-events: none;
+        background: linear-gradient(to right, transparent, var(--njg-card14-rule) 18%, var(--njg-card14-rule) 82%, transparent); }
+  ${IT} > .wc14-spk { grid-row: 7 !important; align-self: end !important; margin: ${g}cqi 0 calc(${g}cqi - 1px) !important; z-index: 1; }
+  /* the tap areas: the speaker's the card's whole width, from the middle of the gap above the divider down to the card's edge; the
+     English's dots reach down half a gap */
+  ${IT} > .oc-spk.wc14-spk::after { inset: calc(-1 * (${1.5 * g}cqi + ${R3LINE})) calc((100% - 100cqi) / 2 - var(--njg-itpad)) calc(-1 * ${g}cqi) !important; border-radius: 0 0 ${cardR} ${cardR} !important; }
+  body.njg-s14 .wc14-it .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-${g / 2}cqi) !important; }
+  /* bigger pictures on big screens (round 2; phones unchanged) */
+  @media (min-height: 501px) {
+    ${IT} > .wc14-pic { aspect-ratio: 6 / 5 !important; }
+    ${IT} > .wc14-pic > img.wc-img { inset: 2% !important; width: 96% !important; height: 96% !important; }
+  }
+  `].join("\n");
+}
+// g: the one gap, in the card's cqi (7: 4.4 px on his phone's item card; the report has the measured px per size)
+const R3G = +val("g", 7);
+export const R3 = Object.fromEntries([100, 90, 85, 80, 70].map((w) => [`r3w${w}`, { name: `Divider ${w}%${w === 100 ? " (round 2's B)" : ""}`, w: w / 100, g: R3G }]));
+
 export const OPTIONS = {
   today: { css: "", name: "Today (the game)" },
   base: { css: FACE_CSS + "\n" + BASE, name: "Approved this morning (2b + Lora)" },
   ...Object.fromEntries(Object.entries(SETS).map(([k, o]) => [k, { css: setCss(o), name: o.name, set: o }])),
   ...Object.fromEntries(Object.entries(FACESETS).map(([k, o]) => [k, { css: setCss(o), name: o.name, set: o, only: { sizes: ["971x412"], cases: ["mixed"] } }])),
   ...Object.fromEntries(Object.entries(R2).map(([k, t]) => [`r2${k}`, { css: r2Css(t), name: t.name, r2: t, rowSize: true }])),
+  ...Object.fromEntries(Object.entries(R3).map(([k, t]) => [k, { css: r3Css(t), name: t.name, r3: t, rowSize: true, enSizeOnly: true }])),
 };
 
 // ---------- in the page ----------
@@ -251,6 +301,23 @@ function measure() {
   const spread = (a) => (a.length ? +(Math.max(...a) - Math.min(...a)).toFixed(1) : 0);
   out.align = { enTop1: spread(vis.filter((i) => i.enLines === 1).map((i) => i.enTop)), spkTop: spread(vis.map((i) => i.spkTop)), kArea: spread(vis.map((i) => i.kSlot.h)), cardH: spread(vis.map((i) => i.card.h)),
     zoneGap: vis.length ? +Math.min(...vis.map((i) => i.zoneTop - i.enR.b)).toFixed(1) : null, enPx: [...new Set(out.items.map((i) => i.enPx))] };
+  // round 3: the three gaps on every card of the first order card's row (the cards scrolled out of view too: the row is one height):
+  // foot = the card's bottom edge to the speaker's bottom; spk = the speaker's top to the divider's bottom; en = the divider's top to the
+  // bottom of the row's lowest English (enOwn: to this card's own English); divTop: the divider's top (one height across the row)
+  if (c1) {
+    const cs = [...c1.querySelectorAll(".oc-row14 > .oc-row.oc-it14")];
+    const rr = cs.map((it) => ({ it, b: it.getBoundingClientRect(), d: it.querySelector(":scope > .njg-r3-div"), s: it.querySelector(".wc14-spk").getBoundingClientRect(), e: it.querySelector(".wc14-en").getBoundingClientRect(), k: it.querySelector(".wc14-k").getBoundingClientRect(), p: it.querySelector(".wc14-pic").getBoundingClientRect() }));
+    const lowE = Math.max(...rr.map((x) => x.e.bottom)), rowR = c1.querySelector(".oc-row14").getBoundingClientRect().right;
+    const f1 = (v) => +v.toFixed(2);
+    out.r3 = rr.map(({ it, b, d, s, e, k, p }) => {
+      const db = d && d.getBoundingClientRect();
+      return { word: it.querySelector(".wc14-k").textContent.trim(), en: it.querySelector(".wc14-en").textContent.trim(), cardH: f1(b.height), cardW: f1(b.width), inView: b.right <= rowR + 1,
+        foot: f1(b.bottom - s.bottom), spk: db ? f1(s.top - db.bottom) : null, en: db ? f1(db.top - lowE) : f1(s.top - lowE), enOwn: db ? f1(db.top - e.bottom) : f1(s.top - e.bottom),
+        divTop: db ? f1(db.top - b.top) : null, divW: db ? f1(db.width) : null, divH: db ? f1(db.height) : null, spkW: f1(s.width),
+        picToK: f1(k.top - p.bottom), kToE: f1(e.top - k.bottom), css: ["paddingBottom", "borderBottomWidth"].map((q) => getComputedStyle(it)[q]).concat([getComputedStyle(it.querySelector(".wc14-spk")).marginBottom, getComputedStyle(it.querySelector(".wc14-spk")).marginTop]).join(" "), hidden: it.classList.contains("wc14-hide-en"),
+        overlap: k.bottom > e.top + 0.5 || (db ? e.bottom > db.top + 0.5 || db.bottom > s.top + 0.5 : e.bottom > s.top + 0.5) || s.bottom > b.bottom + 0.5 };
+    });
+  }
   const big = document.querySelector(".njg-mock-pop") || document.querySelector(".wc14-big:not(.wc14-side)");
   if (big && big.getBoundingClientRect().width) {
     const k = big.querySelector(".wc14-k"), en = big.querySelector(".wc14-en"), spk = big.querySelector(".wc14-spk");
@@ -277,18 +344,25 @@ async function settle(page, o = {}) {
   await page.evaluate(() => (document.fonts && document.fonts.ready) || null).catch(() => {});
   await sleep(200);
   await page.evaluate(() => document.querySelectorAll("#side .wc14-it > .wc14-slot-k").forEach((k) => { k.style.minHeight = ""; }));
+  // round 3: the divider, a real element in each item card (removed for every other option)
+  await page.evaluate((on) => document.querySelectorAll("#side .oc-row.oc-it14").forEach((c) => {
+    const d = c.querySelector(":scope > .njg-r3-div");
+    if (on && !d) { const n = document.createElement("i"); n.className = "njg-r3-div"; n.setAttribute("aria-hidden", "true"); c.appendChild(n); }
+    if (!on && d) d.remove();
+  }), !!o.r3);
   await page.evaluate(() => { const W = window.WordCard; if (W && W.fit14) W.fit14(); });
   // round 2, the row pass (the build: the end of WordCard.fit14): (a) one English size per row, the fit's smallest in the row shared by
   // every card in it (an English the fit wrapped keeps its size); (b) every card's Kutchi area as tall as the row's tallest Kutchi
-  if (o.rowSize) await page.evaluate(() => document.querySelectorAll("#side .oc-row14").forEach((row) => {
+  if (o.rowSize) await page.evaluate((enSizeOnly) => document.querySelectorAll("#side .oc-row14").forEach((row) => {
     const ens = [...row.querySelectorAll(".wc14-it .wc14-en")].filter((e) => e.offsetParent);
     const min = Math.min(...ens.map((e) => parseFloat(getComputedStyle(e).fontSize)));
     if (isFinite(min)) ens.forEach((e) => { if (parseFloat(getComputedStyle(e).fontSize) > min + 0.05) { e.style.fontSize = `${min}px`; const d = e.parentNode.querySelector(".wc14-dots"); if (d) d.style.fontSize = `${min}px`; } });
+    if (enSizeOnly) return; // round 3: the English paired under its own Kutchi, no Kutchi area to line up
     const ks = [...row.querySelectorAll(".wc14-it > .wc14-slot-k")].filter((k) => k.offsetParent);
     ks.forEach((k) => { k.style.minHeight = ""; });
     const h = Math.max(...ks.map((k) => k.getBoundingClientRect().height));
     if (isFinite(h)) ks.forEach((k) => { k.style.minHeight = `${h}px`; });
-  }));
+  }), !!o.enSizeOnly);
   await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
   await sleep(100);
 }
@@ -313,6 +387,23 @@ async function panel(page, size) {
       const s = m.side;
       await page.screenshot({ path: join(dir, `${cs}-${name}.png`), clip: { x: 0, y: 0, width: Math.ceil(s.r) + 2, height: Math.ceil(s.b) }, animations: "disabled" }).catch((e) => console.log("shot", e.message));
     }
+  }
+  // round 3 (--hidden r3w85): the English hidden (its dots, a tap shows it for 3 s), then the first card's English peeking
+  const hid = val("hidden", null);
+  if (hid && OPTIONS[hid]) for (const cs of ["mixed", "two"]) {
+    await page.evaluate(`(${writeCase.toString()})(${JSON.stringify(CASES[cs])})`);
+    for (const st of ["hidden", "peek"]) {
+      await inject(page, SHUT + "\n" + OPTIONS[hid].css);
+      await page.evaluate((st) => document.querySelectorAll("#side .m-order > .oc-card .oc-row.oc-it14").forEach((c, i) => {
+        c.classList.add("wc14-hide-en"); const e = c.querySelector(".wc14-en"); if (e) e.classList.toggle("wc14-peek", st === "peek" && i % 4 === 0);
+      }), st);
+      await settle(page, OPTIONS[hid]);
+      await page.evaluate(() => { const m = document.querySelector("#mission"); if (m) m.scrollTop = 0; document.querySelectorAll("#side .oc-row14").forEach((r) => { r.scrollLeft = 0; }); });
+      const m = await page.evaluate(`(${measure.toString()})()`);
+      data[`${size}|${st}-${cs}|${hid}`] = m;
+      await page.screenshot({ path: join(dir, `${st}-${cs}-${hid}.png`), clip: { x: 0, y: 0, width: Math.ceil(m.side.r) + 2, height: Math.ceil(m.side.b) }, animations: "disabled" }).catch((e) => console.log("shot", e.message));
+    }
+    await page.evaluate(() => document.querySelectorAll("#side .oc-row.oc-it14").forEach((c) => { c.classList.remove("wc14-hide-en"); c.querySelector(".wc14-en")?.classList.remove("wc14-peek"); }));
   }
   await inject(page, "");
 }
