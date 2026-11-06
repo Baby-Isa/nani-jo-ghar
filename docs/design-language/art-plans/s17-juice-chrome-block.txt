@@ -67,7 +67,7 @@ HOW TO RUN EACH PROMPT
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
 PART A: THE JUICE SPRITES (4)
-Four small sprite sheets of painted effects for the chai game, each on one flat mid-grey: a warm sparkle in four steps, soft steam wisps, drops of milky chai, and a gold burst of light. Soft, glowing, never clip-art; nothing touches a cell's edge; no shadow on the grey.
+Four small sprite sheets of painted effects for the chai game, each on one flat mid-grey: a warm sparkle in four steps, soft steam wisps, drops of milky chai (the word moment's painted last drop among them; Zafar, 6 Nov), and a gold burst of light. Soft, glowing, never clip-art; nothing touches a cell's edge; no shadow on the grey.
 SK | style.png | sk-sparkle-steps-v1.png | SPARKLE
 ST | style.png, chai-pan.png | st-steam-wisps-v1.png | STEAM
 TD | chai-glass.png | td-tea-drops-v1.png | DROPS
@@ -77,7 +77,7 @@ Part A done.
 CHECKS (by check ID)
 SPARKLE: a 3 by 2 grid: row 1 the SAME warm gold sparkle in three growing steps (a soft point of light; a small soft four-point star; a larger soft four-point star with a faint glow); row 2 the star fading thinner, then two tiny soft dots of light, the last cell empty; soft and glowing with no hard points, no clip-art star shapes, no outlines; no shadow on ONE flat mid-grey
 STEAM: a 3 by 2 grid of soft white steam wisps alone, each rising and curling gently, semi-transparent, no pan or cup drawn: row 1 three wisps of different curl (left, straight, right); row 2 the same three thinner and fainter; nothing solid, no cloud outlines; no shadow on ONE flat mid-grey
-DROPS: a 3 by 2 grid of milky caramel chai in motion, the exact tea colour of the attached glass, no glass or cup drawn: row 1 one falling round drop, a small crown splash as it lands, a single ring ripple on a flat tea surface seen a little from above; row 2 two rings, one small droplet, two small droplets; glossy and soft, nothing blue; no shadow on ONE flat mid-grey
+DROPS: a 3 by 2 grid of milky caramel chai in motion, the exact tea colour of the attached glass, all seen from the side, no glass or cup drawn: row 1 the last drop of a pour as a teardrop with a thin tail (leaving a spout), the same drop round as it falls, a small crown splash seen from the side; row 2 one, two and three small droplets; soft with a gentle sheen, not glossy plastic, nothing blue; no shadow on ONE flat mid-grey
 BURST: a 3 by 2 grid of a soft gold burst of light alone, no object in it: row 1 the burst small, medium and large (soft rays radiating from a bright warm centre, fading to nothing at the tips); row 2 three single soft rays of the same gold, the last two thinner; no stars, confetti, coins or sparkles mixed in; no shadow on ONE flat mid-grey
 
 PASS/FAIL LIST (every image; any one of these is a fail)

@@ -59,3 +59,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-06 04:21 UK · Check-in: 5 commits (status 2, other 3); art 76 of 115; overnight run finished; morning report final (build/reports/overnight-2026-11-06.md); nothing running; the pills wait on Zafar's 'publish'; check-ins stop here.
 - 2026-11-06 08:54 UK · Published 20261106T085157Z to main (12b790b3); Pages serving it.
 - 2026-11-06 09:11 UK · Published 20261106T090836Z to main (0f22196d); Pages serving it.
+- 2026-11-06 14:22 UK · day run · English study and font sample to Zafar (option 2; Lora recommended pending Fable); juice run landed and judged; juice lab started; running: feedback rows, burner + SH-221, stove cut, strict art / next: Fable's font ranking, size classes

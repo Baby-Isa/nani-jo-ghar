@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fonts lab</title>
+<meta name="robots" content="noindex">
+<!-- The font sample of 6 Nov (b): chai's screen from the cards lab, with each font option switched in live. Mock only: the option's
+     faces and CSS are injected into the lab page; the game's own fonts are untouched (build/reports/fonts-sample-2026-11-06.md). -->
+<style>
+  html, body { margin: 0; height: 100%; background: #f6f1e8; font-family: "Nunito", system-ui, sans-serif; color: #2a2522; }
+  body { display: flex; flex-direction: column; }
+  .bar { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px; align-items: center; padding: 6px 10px; white-space: nowrap; }
+  .bar a { color: #7d2234; font-weight: 800; text-decoration: none; margin-right: 6px; }
+  .bar button { font: 800 13px "Nunito", sans-serif; border: 2px solid #e0d2bb; background: #fffaf0; color: #2a2522; border-radius: 999px; padding: 4px 10px; min-height: 32px; cursor: pointer; }
+  .bar button[aria-pressed="true"] { background: #7d2234; border-color: #7d2234; color: #fff; }
+  .why { font-size: 12px; color: #6b5f55; }
+  @media (max-height: 500px) { .why { display: none; } }
+  iframe { flex: 1; width: 100%; border: 0; }
+</style>
+</head>
+<body>
+<div class="bar" id="bar"><a href="../labs.html">&larr; Labs</a></div>
+<iframe id="f" src="cards.html" title="Chai's screen"></iframe>
+<script type="module">
+  import { OPTIONS } from "../build/tools/fonts/options-b.mjs";
+  const WOFF = new URL("../build/tools/fonts/woff2", location.href).href;
+  const bar = document.getElementById("bar"), f = document.getElementById("f");
+  const why = Object.assign(document.createElement("span"), { className: "why" });
+  let cur = new URLSearchParams(location.search).get("opt") || "A";
+  function apply() {
+    const d = f.contentDocument;
+    if (!d || !d.head) return;
+    let s = d.getElementById("njg-mock-font");
+    if (!s) { s = d.createElement("style"); s.id = "njg-mock-font"; d.head.appendChild(s); }
+    const o = OPTIONS[cur];
+    s.textContent = o.faces.replaceAll("__MOCKFONTS__", WOFF) + "\n" + o.css;
+    why.textContent = o.why;
+    for (const b of bar.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.k === cur));
+  }
+  for (const [k, o] of Object.entries(OPTIONS)) {
+    const b = Object.assign(document.createElement("button"), { textContent: o.name });
+    b.dataset.k = k;
+    b.onclick = () => { cur = k; apply(); };
+    bar.appendChild(b);
+  }
+  bar.appendChild(why);
+  f.addEventListener("load", () => { apply(); setTimeout(apply, 1500); });
+  apply();
+</script>
+</body>
+</html>
