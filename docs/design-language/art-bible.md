@@ -71,7 +71,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Hands (skin) | One tone, Zafar's own: a warm light tan, **not orange, not saturated** (sampled from his photos, 24 Sept 2026) | Midtone `#C49A78`, highlights `#D8B894`, shadows `#A07A60` (daylight face sample `#BE826B`) | Every hand sprite (section 7); no variants for now. The generator drifts orange (round 3 came out `#D3833E`–`#DE9351`), so check the sampled hex and colour-correct in post if needed |
 
 **Rules:**
-- **One Wada combination per item (Zafar, 6 Nov).** All of an item's main colours come from one combination in Sanzo Wada's *A Dictionary of Color Combinations* (any of the 348; the house's are 283, 249, 311 and 200), in lighter or darker tones. Whites, greys and near-black are the ground and free. An item that mixes combinations is redone; a colour the book lacks is an exception Zafar decides. New items that need colours outside the house take one combination that suits them, and its strip goes into the run. `artcolour.py` checks it (thresholds in `build/tools/art/data/look-rules.json`).
+- **One Wada combination per item (Zafar, 6 Nov).** All of an item's main colours come from one combination in Sanzo Wada's *A Dictionary of Color Combinations* (any of the 348; the house's are 283, 249, 311 and 200), in lighter or darker tones. Whites, greys and near-black are the ground and free. An item that mixes combinations is redone; a colour the book lacks is an exception Zafar decides. Measured as re-tuned after Fable's view (6 Nov): a material's light and shade count as one colour, warm steel, glass and stone are neutral, one small accent from the book is allowed, natural foods, plants and animals keep their real colours (judged for loudness), people are judged by eye. New items that need colours outside the house take one combination that suits them, and its strip goes into the run. `artcolour.py` checks it (thresholds in `build/tools/art/data/look-rules.json`).
 - **Walnut wherever there is wood** (lids, boards, handles, trays).
 - **Reds belong to Nani.** Keep large red areas out of the backgrounds behind her head (curtains, frames), so she always pops.
 - **Tappable items get the most saturation in the frame.** Backgrounds are lighter and calmer than what sits on them.
@@ -96,6 +96,19 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 - **Everything resting on a surface has a contact shadow** where it touches: a tight dark core plus a soft falloff towards the lower right.
 - **Nothing floats.** An item without a contact shadow is a reject.
 - **Sprites carry no cast shadow of their own** unless they come from an edit-in-place cut (section 5), where the shadow is kept as a separate layer. Otherwise code draws the contact shadow (a soft multiply ellipse, offset down-right).
+
+### Skies (Zafar, 6 Nov)
+
+"Less jarringly vibrant and more in theme, but still distinct and attractive." A sky is softly painted in our semi-3D look: gentle gradients from zenith to horizon, big soft cumulus with warm lit tops and cool shaded undersides, warm atmospheric light and haze near the horizon, colours slightly muted so the tones merge. Refined and calm, never a flat cartoon blue or a saturated stock gradient; it sits behind the scene, so it stays lighter and quieter than what stands on it.
+
+| Time of day | Wada combination (strip `swatches/wada-N.png`) | Reads as |
+|---|---|---|
+| Bright day (also cloudy and rain, in greys) | 194 | Olympic Blue sky, Seashell Pink warmth on the clouds |
+| Golden hour, sunset | 209 | Ivory Buff and a muted Yellow Orange low, Salvia Blue above |
+| Dusk, nightfall | 339 | Violet Blue above, Light Glaucous Blue haze, an Ochraceous Salmon glow |
+| Night | 75 | deep Violet Blue, a Pale King's Blue moonlit haze, white stars |
+
+Every sky prompt attaches its time's strip. `artcolour.py` checks each sky's colours against its time's combination and a saturation ceiling (`look-rules.json` `sky`).
 
 ---
 
