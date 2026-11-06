@@ -16,7 +16,7 @@ Per picture:
            palette review named); FLAG off-palette: a main colour over off_palette_share that is over off_palette_de from
            every Wada colour. Neutrals (steel, glass, white, black) are reported, never off-palette.
   light    (cut-outs) the light direction from the shading inside each material on the outer ring; FLAG when it is clear
-           and not from the upper left or above (the art bible), or the brightest quadrant is the lower right.
+           and not from the upper left, above or the left (the art bible). Not on people (look-rules.json light.skip).
   halo     (cut-outs) FLAG a near-white band just inside the alpha edge, much whiter than the band behind it.
   shadow   (cut-outs) FAIL a baked shadow: dark, low-chroma soft alpha below the body, or a dark skirt wider than the body.
   size     (cut-outs with a size class) FLAG when the piece's height in its canvas is off its class's target (token steps,
@@ -344,7 +344,8 @@ def baked_shadow(Lab, alpha, R):
     has = body.any(0)
     bottom = np.where(has, body.shape[0] - 1 - np.argmax(body[::-1], 0), -1)
     below = np.arange(body.shape[0])[:, None] > bottom[None, :]
-    soft = cov & beyond & below & (alpha >= lo) & (alpha <= hi) & dark & band
+    shows = alpha * (1 - Lab[..., 0] / 100) >= P["shows"]  # visibly dark on a light ground (clear glass's faint dark wall is not)
+    soft = cov & beyond & below & (alpha >= lo) & (alpha <= hi) & dark & band & shows
     soft_share = soft.sum() / max(1, (cov & band).sum())
     # a solid dark skirt: rows of the bottom band wider than the body above them, the extra pixels dark and neutral
     sy, sx = np.nonzero(solid)
@@ -410,7 +411,7 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         Lc = c["lab"]
         chroma = math.hypot(Lc[1], Lc[2])
         near, hs = match(Lc, R)
-        row = {"hex": hexof(lab_to_rgb(Lc)), "share": round(c["share"], 3), "words": words(Lc), "neutral": chroma < R["colour"]["neutral_chroma"],
+        row = {"hex": hexof(lab_to_rgb(Lc)), "share": round(c["share"], 3), "words": words(Lc), "neutral": chroma < R["colour"]["neutral_chroma"] or Lc[0] < R["colour"]["dark_l"],
                "wada": near, "house": hs, "in_house": hs["de"] <= R["house"]["house_de"]}
         cols.append(row)
         if not row["neutral"] and c["share"] >= R["colour"]["off_palette_share"] and near["de"] > R["colour"]["off_palette_de"]:
@@ -441,7 +442,9 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         lo_, hi_ = P["concave_arc"]
         concave = li["round"] >= P["concave_round"] and (lo_ <= li["angle"] <= hi_)
         li["concave"] = concave
-        if (off_arc or li["brightest"] == "LR") and not concave:
+        skip = any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in P["skip"]) if name else False
+        li["skipped"] = skip
+        if off_arc and not concave and not skip:
             res["flag"].append("light from %s (%d°, strength %.0f; brightest quadrant %s): the bible's light is from the upper left"
                                % (angle_word(li["angle"]), li["angle"], li["strength"], li["brightest"]))
     # halo
@@ -520,7 +523,7 @@ def batch_check(results, name, R=None, surface=True):
         gap = abs(v[hi].mean() - v[lo].mean())
         spread = math.sqrt((v[lo].var() * len(lo) + v[hi].var() * len(hi)) / len(v))
         small = lo if len(lo) < len(hi) else hi if len(hi) < len(lo) else hi
-        if gap > spec["min_gap"] and gap > B["sep"] * max(spread, spec["min_gap"] / 10) and len(small) <= spec.get("max_odd", B["max_odd"]) * len(v):
+        if gap > spec["min_gap"] and gap > B["sep"] * max(spread, spec["min_gap"] / 10) and len(small) <= spec.get("max_odd", B["max_odd"]) * len(v) and (surface or len(small) == 1 or not B["folder_odd_only"]):
             big = hi if small is lo else lo
             fmt = (lambda x: "%.0f°" % (x % 360)) if spec.get("circular") else (lambda x: "%.3g" % x)
             for i in small:
