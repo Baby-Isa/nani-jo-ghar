@@ -30,12 +30,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * the flames under the pan. set("off" | "high" | "low") turns it.
    */
   // the painted hob parts (sources/art/chatgpt-batch3/sheet-hob-parts-t-v1.png, cut by
-  // build/cut_chai_station.py): the knob off and on, and the flame ring high and low
+  // build/cut_chai_station.py): the knob off and on (shown only here, in the Station lab's Boil: the stations draw the
+  // kit's knob), and the flame ring high and low, since 6 Nov the Cook redo's calmer blue, as the kit's
+  // (build/reports/cook-redo-landed-2026-11-06.md)
   const ART = [
     ["hob-knob-off", "assets/cook/items/chai-station/knob-off.webp"],
     ["hob-knob-on", "assets/cook/items/chai-station/knob-on.webp"],
-    ["hob-flame-high", "assets/cook/items/chai-station/flame-high.webp"],
-    ["hob-flame-low", "assets/cook/items/chai-station/flame-low.webp"],
+    ["hob-flame-high", "assets/cook/items/s17-cook-redo/flame-high.webp"],
+    ["hob-flame-low", "assets/cook/items/s17-cook-redo/flame-low.webp"],
   ];
   function knob(z, vessel, at, r) {
     const S = z.S;
