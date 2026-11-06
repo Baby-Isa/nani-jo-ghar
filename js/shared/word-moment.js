@@ -18,7 +18,8 @@
  *     cards:   "stay" (each card where its glass was) | "rise" (the cards rise to the top, side by side),
  *     speed:   1 (2 = twice as fast), instant: true (the end state at once: the lab's shots)
  *     hold:    ms each card stays before the next glass (500), english: false to dot the card's English (shown by default)
- *     scene:   { src, baseAt (the counter's top as a fraction of the picture's height), aspect } a scene behind, the glasses on its counter
+ *     scene:   { src, baseAt (the counter's top as a fraction of the picture's height), aspect, zoom (1: cover; 1.6: drawn 1.6x
+ *              larger, centred across), lineMax (the counter's top at most this far down: 0.7) } a scene behind, the glasses on its counter
  *   }) -> Promise<{ cards: [el] }>;   WordMoment.stop(host) ends one early (the cards stay)
  *
  * Art: art block 1 (3 Nov, assets/shared/word-moment/: the tilted kettle, the side-on glasses, the streams, the corners and the iris);
@@ -160,12 +161,22 @@
     const wait = (ms) => new Promise((res) => (o.instant ? res() : run.timers.push(setTimeout(res, ms / sp))));
     const alive = () => run.live && host.isConnected;
 
+    // CHAI-97 (Zafar, 6 Nov night: "the full cup of tea has the correct pouring sound, but the smaller half cup of tea has the old
+    // incorrect pouring sound"): the recorded pour (Sfx "pour-glass", its file pour-a) is fetched as the moment starts and the first
+    // pour waits for it (POUR_WAIT at most); a pour plays the file or nothing, never the made loop it replaced
+    const POUR_WAIT = 4000;
+    const pourIn = o.instant || !root.Sfx || !root.Sfx.preload ? Promise.resolve(false) : Promise.resolve(root.Sfx.preload(["pour-glass"])).then((b) => !!(b && b[0]), () => false);
+    let pourOk = false;
+    const pourReady = o.instant ? Promise.resolve() : Promise.race([pourIn.then((ok) => (pourOk = ok)), new Promise((res) => run.timers.push(setTimeout(res, POUR_WAIT)))]);
+    const pourLoop = () => (!o.instant && pourOk && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour-glass") : null);
+
     const box = el("div", "wm", host);
     const W = host.clientWidth;
     const H = host.clientHeight;
     const n = o.glasses.length;
     // (the glasses' size from the room: side by side with a glass's width between them; never past 42% of the height)
     let g = Math.round(Math.min(W / (n * 1.9 + 0.4), H * 0.42));
+    const g0 = g; // (the glasses' size before the counter's room shrinks them: the cards keep it)
     let cy = H * 0.6;
     // CHAI-86 (Zafar, 5 Nov: "adjust the sizes of the glasses and/or chai kettles and/or position of the counter so it all fits nicely
     // on all screens with decent looking spacing"): the room above a side-on glass is planned: a margin at the top (4% of the height),
@@ -175,21 +186,27 @@
     const STREAM_GAP = 0.4;
     const ABOVE = o.side ? STREAM_GAP + 0.66 : 0; // (the kettle stands about 0.66 of a glass above its spout, measured, tilt included)
     const mTop = Math.max(10, H * 0.04);
+    // CHAI-101 (Zafar, 6 Nov night: "the camera is just a little bit too high. So you only see a tiny bit of the kitchen cabinet ...
+    // you can maybe make the tea glasses a tiny bit smaller" · "so many of them tight together, it makes the tea glass look as wide as
+    // narrow kitchen cabinet"): the counter's line at most lineMax (70%) of the height down, so at least 30% is cabinet, and the
+    // glasses shrink to fit the kettle's room above it; the picture drawn zoom times its cover size (centred across), so fewer, wider
+    // doors span the screen (the s17 counter: five doors at cover, about three at 1.6). The picture always covers the stage
     if (o.scene && o.scene.src) {
       const sc = el("img", "wm-scene", box);
       sc.alt = "";
       sc.draggable = false;
       sc.src = o.scene.src;
       const ar = o.scene.aspect || 1.5;
-      const k = Math.max(W / ar, H); // (the picture's drawn height under object-fit: cover)
+      const zoom = Math.max(1, +o.scene.zoom || 1);
+      const k = Math.max(W / ar, H) * zoom; // (the picture's drawn height: its cover height, zoomed)
+      const kw = k * ar;
       const base = o.scene.baseAt || 0.7;
-      const top0 = (H - k) / 2; // (where cover puts the picture's top)
-      const slack = (k - H) / 2; // (how far it can move up or down and still cover)
-      const line0 = top0 + base * k;
       const need = mTop + (1 + ABOVE) * g;
-      const lineY = Math.max(line0 - slack, Math.min(Math.max(line0, need), line0 + slack, H * 0.9));
+      // (the line where the room above it asks, never past lineMax, and only where the picture still covers top and bottom)
+      const lo = H - (1 - base) * k, hi = base * k;
+      const lineY = Math.max(lo, Math.min(need, H * (o.scene.lineMax || 0.7), hi));
       if (lineY < need) g = Math.max(40, Math.floor((lineY - mTop) / (1 + ABOVE)));
-      if (Math.abs(lineY - line0) > 0.5) sc.style.objectPosition = `50% ${(top0 + lineY - line0).toFixed(1)}px`;
+      Object.assign(sc.style, { inset: "auto", objectFit: "fill", left: `${((W - kw) / 2).toFixed(1)}px`, top: `${(lineY - base * k).toFixed(1)}px`, width: `${kw.toFixed(1)}px`, height: `${k.toFixed(1)}px` });
       cy = Math.min(H - g / 2 - 4, lineY - g / 2);
     }
     const gap = g * 0.9;
@@ -342,7 +359,7 @@
       if (sl.fill) return pourFill(sl);
       stream.classList.add("on");
       if (v.pour) vim.src = v.pour;
-      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour-glass") : null;
+      const loop = pourLoop();
       const fr = sl.x.frames;
       for (let i = 0; i < fr.length; i++) {
         sl.im.src = fr[i];
@@ -381,8 +398,8 @@
         wipeTo(0, 104, 300 / sp, "head");
       } else stream.classList.add("on", "flow");
       if (v.pour) vim.src = v.pour;
-      const loop = !o.instant && root.Sfx && root.Sfx.loop ? root.Sfx.loop("pour-glass") : null;
-      const to = Math.max(0, Math.min(1, sl.x.fill));
+      const loop = pourLoop();
+      const to =Math.max(0, Math.min(1, sl.x.fill));
       const dur = (o.instant ? 0 : 2600 * to + 300) / sp;
       await new Promise((res) => {
         if (!dur || !root.requestAnimationFrame) {
@@ -413,12 +430,14 @@
       // CHAI-92 (Zafar's pick, 6 Nov, lab/juice.html "last drop 1"): the painted last drop (art run s17-juice, js/shared/juice.js) falls
       // from the spout into the tea and lands with its crown splash and its plink (drop B, at twice the lab's level); under reduced
       // motion it fades where it lands. Where the juice kit is not on the page, the code-drawn drop as before
+      // CHAI-98 (Zafar, 6 Nov night: "make the physical size of the tea drop smaller, the one that falls and splashes in"; half, his
+      // answer): the drop 5.5% of the glass (was 11%), its floor halved with it; the crown splash is three drops wide, so it halves too
       let drop = null;
       if (root.Juice && root.Juice.drop && !o.instant)
-        wait(160).then(() => alive() && root.Juice.drop(box, sl0, st0, st0 + sh, { w: Math.max(8, g * 0.11), ms: 420 / sp, splash: "crown", onLand: () => sfx("drop") }));
+        wait(160).then(() => alive() && root.Juice.drop(box, sl0, st0, st0 + sh, { w: Math.max(4, g * 0.055), ms: 420 / sp, splash: "crown", onLand: () => sfx("drop") }));
       else {
         drop = el("i", "wm-drop", box);
-        const ds = Math.max(4, g * 0.045);
+        const ds = Math.max(2, g * 0.0225);
         drop.style.cssText = `left:${sl0 - ds / 2}px;top:${st0}px;width:${ds}px;height:${ds * 1.25}px`;
         if (!o.instant && drop.animate)
           drop.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: `translateY(${sh * 0.95}px)`, opacity: 1, offset: 0.92 }, { transform: `translateY(${sh}px)`, opacity: 0 }], { duration: 420 / sp, delay: 160 / sp, easing: "cubic-bezier(.5,0,1,1)", fill: "both" });
@@ -484,7 +503,8 @@
       if (sl.x.say) card.wc && Object.assign(card.wc, { speak: () => sl.x.say() });
       // (as wide as a glass and a quarter, never more than its share of the width; shrunk until it fits the room's height, then
       // centred on its glass and kept on the stage)
-      let cw = Math.min(g * 1.25, W / n - 16);
+      // (CHAI-101: a glass shrunk to give the counter its cabinet keeps the card it had: g0, before the shrink)
+      let cw = Math.min(g0 * 1.25, W / n - 16);
       const fit = () => {
         card.style.width = `${cw}px`;
         if (root.WordCard.fit14) root.WordCard.fit14(card);
@@ -523,6 +543,9 @@
 
     const go = async () => {
       const cards = [];
+      // (CHAI-97: the kettle comes in once the pour's sound is in, so both pours sound the same)
+      await pourReady;
+      if (!alive()) return { cards };
       if (o.snap === "after") {
         // CHAI-81 (Zafar, 4 Nov: "pour both glasses first so you can easily look at the two and see the difference ... and then we
         // should snap both of them"): both poured, the vessel away, a look at the two side by side, then each snapped in turn
