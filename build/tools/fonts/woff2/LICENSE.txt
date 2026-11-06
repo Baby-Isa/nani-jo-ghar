@@ -1,2 +1,9 @@
 Fraunces, Andika, Fredoka and Nunito: SIL Open Font License 1.1 (https://openfontlicense.org), from Google Fonts, latin subset.
 Mock only (build/tools/fonts/shoot.mjs serves them); the game does not load these files.
+
+Added 6 Nov (font sample b), latin subsets from Fontsource (@fontsource-variable), all SIL Open Font License 1.1:
+  lora-normal/italic.woff2            Lora (Cyreal, The Lora Project Authors)
+  fraunces-full-normal.woff2          Fraunces with all four axes: opsz, wght, SOFT, WONK (Undercase Type)
+  literata-normal/italic.woff2        Literata (TypeTogether)
+  source-serif-4-normal/italic.woff2  Source Serif 4 (Adobe)
+  alegreya-normal/italic.woff2        Alegreya (Huerta Tipografica)
