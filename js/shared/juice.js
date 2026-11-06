@@ -225,7 +225,7 @@
 
   /* ---- the Phaser twin (a canvas game: chai's hob and tray), CHAI-92 (Zafar's picks, 6 Nov): the same effects by the same names
    *      and timings, as Phaser images and tweens in place of the DOM's animations; Juice.less() makes each a fade in place.
-   *   Juice.P.keys(names) -> [[key, url], ...]    the sprites to load with a station's art (texture key "juice-<name>")
+   *   Juice.P.keys(names) -> [[key, url], ...]    the sprites to load with a station's art (texture key "fx-juice-<name>")
    *   Juice.P.sparkle(S, x, y, {w, kind, depth, add}) -> Promise     kind 1 one star; kind 2 three twinkles; add: added light
    *   Juice.P.steam(S, x, y, {w, thin, every, depth}) -> {stop()}    wisps rising on a slow loop until stopped
    *   Juice.P.puff(S, x, y, {w, depth}) -> Promise                    one full wisp rising once (a boil-over's steam)
@@ -234,7 +234,8 @@
    * Never through Cook.Stations' sparkle/steam stubs: S.verdict draws those by score.
    */
   const P = (Juice.P = {});
-  P.key = (name) => "juice-" + name;
+  // (the key starts "fx-": every "is the kitchen still?" check, the game's and the sandbox's, leaves an effect out, as it did the s11 ones)
+  P.key = (name) => "fx-juice-" + name;
   // (relative to the game's root, as a station's art list is: the loader stamps the version)
   P.keys = (names) => names.map((n) => [P.key(n), "assets/shared/juice/" + n + ".webp"]);
   P.ALL = ["sk-1", "sk-2", "sk-3", "sk-4", "sk-5", "st-1", "st-2", "st-3", "td-1", "td-2", "td-3", "td-5", "td-6"];

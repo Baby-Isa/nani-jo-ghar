@@ -195,7 +195,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   // full wisps (steam 1) over a boiling pan and a boil-over, the three twinkles (sparkle 2) over a full glass, the painted last drop
   // into the tray's glass. Loaded after the station starts (nothing waits on them; a sprite not in yet is not drawn). The s11 steam
   // and sparkle are no longer loaded.
-  const JUICE_ART = ["sk-2", "sk-3", "sk-4", "sk-5", "st-1", "st-2", "st-3", "td-1", "td-2"].map((n) => [`juice-${n}`, `assets/shared/juice/${n}.webp`]);
+  const JUICE_ART = ["sk-2", "sk-3", "sk-4", "sk-5", "st-1", "st-2", "st-3", "td-1", "td-2"].map((n) => [`fx-juice-${n}`, `assets/shared/juice/${n}.webp`]);
   // (and its picked sounds, js/shared/sfx.js FILES: fetched at the start too, so each plays on its moment, never late)
   const JUICE_SFX = ["knob", "flame", "simmer", "green", "glass", "settle", "sparkle", "pour-tea", "pour-glass", "pour-short"];
   const ART = [
