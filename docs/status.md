@@ -14,8 +14,12 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 (CHAI-89), the shelf pills spread (SH-208), the worktop warmed to the stone (ART-43, Fable: `build/reports/s17-worktop-harmony.md`);
 earlier today the stone panels (ART-41) and the morning's fixes. Checked: `checks.mjs` green; the chai set, 60 pages, all to the end,
 one load-only break (contract-74, passed twice alone). Gate forced on his word; the judge has not looked at 4-5 Nov's rows.
-- **Open:** SH-211 (the L4 row's jerk: not reproduced, his recording needed); Fable's palette review
-  (`build/reports/s17-palette-review.md`): one change for his yes, `--njg-helper-bg` #e6efe2 to #e4ecdd.
+- **Open:** SH-196 again (6 Nov: no reveal lessons at L2 or L3 with New player and Words known, both at L4): his recorded log
+  (labs.html "Record a play", `js/shared/recorder.js`) to read first; the suspect: the lessons show only after the word moment ran.
+  SH-211 (the L4 row's jerk: his recording). Nani's box #e4ecdd live (his yes, Fable's palette review).
+- **Next chat, first job (his yes, 6 Nov):** the colour tool, `build/tools/art/palette.py` (an image's colours matched to Sanzo
+  Wada's, checked against the house family 283/249/311; in every paste block and the art judge), then a retrospective over every
+  asset with Fable on the outliers; then the standard's fill.
 - **The standard's structure:** locked (`build/reports/s17-standards-structure-v2.md`, §8 his answers: every area rule by rule;
   rules built into the tools). The fill starts in a new chat.
 
