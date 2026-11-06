@@ -8,37 +8,28 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (5 Nov 2026, 23:00 UK):** Sprint 17 is open, chai only until Zafar calls it done. **Live on `main`:
-20261105T225625Z**, his evening notes fixed (`docs/feedback/chai-play-2026-11-05-eve.md`): the reveal lesson only on a word in view
-(SH-196), the eye's margin (SH-217), no shadow outside the glass (CHAI-88), smaller count pills (SH-218), the play area centred
-(CHAI-89), the shelf pills spread (SH-208), the worktop warmed to the stone (ART-43, Fable: `build/reports/s17-worktop-harmony.md`);
-earlier today the stone panels (ART-41) and the morning's fixes. Checked: `checks.mjs` green; the chai set, 60 pages, all to the end,
-one load-only break (contract-74, passed twice alone). Gate forced on his word; the judge has not looked at 4-5 Nov's rows.
-- **Open:** SH-196 again (6 Nov: no reveal lessons at L2 or L3 with New player and Words known, both at L4): his recorded log
-  (labs.html "Record a play", `js/shared/recorder.js`) to read first; the suspect: the lessons show only after the word moment ran.
-  SH-211 (the L4 row's jerk: his recording). Nani's box #e4ecdd live (his yes, Fable's palette review).
-- **Next chat, first job (his yes, 6 Nov):** the colour tool, a new palette script in build/tools/art (an image's colours matched to Sanzo
-  Wada's, checked against the house family 283/249/311; in every paste block and the art judge), then a retrospective over every
-  asset with Fable on the outliers; then the standard's fill.
-- **The standard's structure:** locked (`build/reports/s17-standards-structure-v2.md`, §8 his answers: every area rule by rule;
-  rules built into the tools). The fill starts in a new chat.
+**Where things stand (6 Nov 2026, 01:45 UK):** Sprint 17. **Live on `main`: 20261106T011831Z.** Chai played on his laptop and phone
+and working; the reveal lessons fixed from his recorded play (SH-196: a tap during the order started play before the cards landed);
+the shelf pills grown on small screens (SH-219); the stone panels, the warmed marble, Nani's warmer green. All work is on
+`claude/vibrant-hopper-v3yexp` (pushed). Reports from tonight: palette (`build/reports/s17-palette-review.md`), fonts and the
+"looks AI-made" critique (`build/reports/s17-fonts-review.md`), the standards structure, locked (`s17-standards-structure-v2.md`).
 
-**Next steps, in order:**
-1. **His play** (chai L1-L4, laptop then phone): `/feedback`, rows the same day, fix, replay, publish.
-2. **He locks the structure** (its 7 decisions, section 7), then a fresh chat fills the standard (Opus high, Fable reviewing; about
-   half a day): glossary, patterns, the placement table (every ledger change and every ID the old pages cite), rules, values, the ID
-   diff against `chai-standard.md` and `families/stove.md` for his yes, then the gap analysis in two passes.
-3. **When he calls chai done:** the judge on the rows built 4-5 Nov, `/review`, `/publish`, Sprint 17 closed with `/sprint`.
-4. **Sprint 18** on his go: the stove family to chai's standard; the stone band in each game's shelf (ART-41), SH-212 before the stores.
+**Next: the overnight run (Zafar, 6 Nov 01:40), ready by 10:30 UK Friday:** `docs/process/overnight-brief-2026-11-06.md` holds the
+six tasks, the rules and the outputs: (1) pills that fit their word, built and published; (2) the colour and look tool and the art
+retrospective; (3) fonts across the game, options and a Fable review; (4) the sound and juice map for chai with its art run; (5) the
+stove family's ~400-item art run; (6) the standard's fill if time remains. Morning report: a new report in build/reports named overnight-2026-11-06.
 
-**Open questions to Zafar:**
-1. Is chai done after this play?
-2. The structure's 7 decisions (yes to all except ...).
+**Decisions he already made (6 Nov):** keep the current fonts until he has seen options; sound and juice as a chai version first;
+the loading flashes (SH-220) wait for the background loading and the round's start and end design; the pills now; the colour tool
+with the light, edge and batch checks; the 400-item run.
+
+**Open questions to Zafar:** the morning report's decisions.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only (nothing else until a task needs it). Sprint 17, chai only: take my chai
-> notes with `/feedback` and fix them until I call chai done; then the standards structure and the fill. Work on branch
-> `claude/vibrant-hopper-v3yexp`; `main` is the live site. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/process/overnight-brief-2026-11-06.md`, and run it overnight
+> without asking me anything: start from branch `claude/vibrant-hopper-v3yexp` (pushed; `main` is the live site), push to your
+> session's branch, publish only where the brief says. Keep a `send_later` check-in every 30 minutes and a line in the overnight
+> log at each step. Use Fable generously for judgement and second checks tonight. Have the morning report ready by 10:30 UK.
 
 ## The fix list
 
