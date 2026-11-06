@@ -7,6 +7,7 @@
 // next card's peek can be measured) it writes three content cases onto the item cards, applies each option, lets the card's own fit run
 // (WordCard.fit14), measures every visible item card and the panel's fit, and shoots the side panel and the pop-up.
 // Writes <out>/<size>/<case>-<option>.png, <out>/<size>/popup-<option>.png and <out>/measure.json
+// Round 2 (6 Nov evening): --only o2,r2A,r2B,r2C --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup (r2Css below)
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -102,11 +103,70 @@ export const SETS = {
 // the English faces side by side, every one on option 2's layout (the mixed case at his phone size only)
 export const FACESETS = Object.fromEntries(Object.keys(FACES).map((f) => [`f-${f}`, { ...SETS.o2, name: `face: ${f}`, face: f, enW: ["atkinson", "figtree", "nunito"].includes(f) ? 500 : 600 }]));
 
+// ---------- round 2 (6 Nov evening; Zafar: "English should stay aligned with other cards' English if they're both on one line, with the
+// Kutchi centre aligned. Speaker has to stay at bottom but can we improve or tie in? ... keep the speaker prominent for non readers") ----------
+// Option 2 (Nunito Sans 600 grey English, Lora 600 Kutchi) plus:
+//  1. the row's alignment by the row's own measurement: a small row pass after the fit (in settle below) sets every card's Kutchi area
+//     to the row's tallest Kutchi (min-height), the Kutchi centred in it, so the Englishes start on one line; the English sits at the top
+//     of its area and the spare goes above the speaker, so the speakers sit on one line at the cards' foot. (Not CSS subgrid: the item
+//     card is a size container, container-type: inline-size, for its cqi units, and a contained grid cannot be a subgrid; Chrome
+//     computes it as none. The build runs the same pass at the end of WordCard.fit14.)
+//  2. one English size per row (the fit's smallest in the row, shared: the same row pass);
+//  3. a speaker treatment: A a soft footer band, B a thin divider line, C a full-width foot button; each with the circle at today's full
+//     size and its tap area the card's whole foot (from the middle of the gap under the English down to the card's edge);
+//  4. bigger pictures on big screens (min-height 501px: the picture box 6:5 instead of 4:3, the picture 96% of it instead of 88%).
+const R2PROP = `@property --njg-itpad { syntax: '<length>'; inherits: true; initial-value: 0px; }`;
+function r2Css(t) {
+  const o = { ...SETS.o2, spk: t.spk };
+  const top = t.gEx + t.padTop; // the speaker's margin above it: the gap under the English, then the treatment's own room
+  const cardR = "calc(var(--njg-card14-u14) - var(--njg-card14-u1p5))";
+  const zone = {
+    // A: a soft footer band, the card's cream a shade warmer, across the card's foot to its edges; the circle seated in it
+    A: `${IT}::before { margin: ${t.gEx}cqi calc(-1 * var(--njg-itpad)) calc(-1 * var(--njg-itpad) * ${t.padB}) !important; border-radius: 0 0 ${cardR} ${cardR};
+          background: linear-gradient(to bottom, #f6eddf, #f3e8d6); box-shadow: inset 0 1px 0 rgba(220, 203, 174, .55); }`,
+    // B: a thin divider above the speaker zone (the card art's rule colour, fading at its ends), the circle under it
+    B: `${IT}::before { margin: ${t.gEx}cqi 6cqi 0 !important; align-self: start !important; height: max(1px, 1.4cqi);
+          background: linear-gradient(to right, transparent, var(--njg-card14-rule) 18%, var(--njg-card14-rule) 82%, transparent); }`,
+    // C: a full-width foot button: a rounded bar the card's inner width, the circle centred in it
+    C: `${IT}::before { margin: ${t.gEx}cqi 0 calc(-1 * ${t.padTop}cqi) !important; border-radius: 999px;
+          background: linear-gradient(to bottom, #f7efe2, #f1e6d3); box-shadow: inset 0 0 0 1px rgba(220, 203, 174, .8), 0 1px 0 rgba(255, 255, 255, .7); }`,
+  }[t.t];
+  return [setCss(o), R2PROP, `
+  /* 1. the item card's rows: picture, Kutchi area (min-height from the row pass, the Kutchi centred), English, the spare, the speaker zone */
+  ${IT} { grid-template-rows: auto auto auto 1fr auto !important; --njg-itpad: 2.6cqi; padding: var(--njg-itpad) var(--njg-itpad) calc(var(--njg-itpad) * ${t.padB}) !important; isolation: isolate; }
+  ${IT} > * { grid-column: 1 !important; }
+  ${IT} > .wc14-pic { grid-row: 1 !important; }
+  ${IT} > .wc14-slot-k { grid-row: 2 !important; align-self: stretch !important; display: flex; flex-direction: column; justify-content: center; }
+  ${IT} > .wc14-slot-e { grid-row: 3 !important; align-self: start !important; }
+  ${IT} > .wc14-spk { grid-row: 5 !important; align-self: end !important; margin-top: ${top}cqi !important; z-index: 1; }
+  /* 3. the speaker zone: drawn by the card's ::before in the speaker's row, under the circle */
+  ${IT}::before { content: "" !important; display: block !important; grid-row: 5; grid-column: 1; align-self: stretch; justify-self: stretch; z-index: 0; pointer-events: none; position: static; }
+  ${zone}
+  /* the tap areas: the speaker's runs the card's whole width, from the middle of the gap under the English to the card's foot; the
+     English's dots reach down to that line */
+  ${IT} > .oc-spk.wc14-spk::after { inset: calc(-1 * ${t.padTop + t.gEx / 2}cqi) calc((100% - 100cqi) / 2 - var(--njg-itpad)) calc(-1 * var(--njg-itpad) * ${t.padB}) !important; border-radius: 0 0 ${cardR} ${cardR} !important; }
+  body.njg-s14 .wc14-it .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-${t.gEx / 2}cqi) !important; }
+  /* 4. bigger pictures on big screens (phones unchanged) */
+  @media (min-height: 501px) {
+    ${IT} > .wc14-pic { aspect-ratio: 6 / 5 !important; }
+    ${IT} > .wc14-pic > img.wc-img { inset: 2% !important; width: 96% !important; height: 96% !important; }
+  }
+  `].join("\n");
+}
+export const R2 = {
+  // (spk: the circle against today's; gEx: the gap under the English, cqi; padTop: the zone's room above the circle, cqi; padB: the
+  // card's padding under the circle, a share of its sides' padding; sized so a two-line row still shows the next card's headline at 971x318)
+  A: { name: "A Footer band", t: "A", spk: 0.94, gEx: 3, padTop: 5, padB: 0.65 },
+  B: { name: "B Divider line", t: "B", spk: 0.94, gEx: 4, padTop: 4, padB: 0.75 },
+  C: { name: "C Foot button", t: "C", spk: 0.94, gEx: 3, padTop: 3.5, padB: 0.8 },
+};
+
 export const OPTIONS = {
   today: { css: "", name: "Today (the game)" },
   base: { css: FACE_CSS + "\n" + BASE, name: "Approved this morning (2b + Lora)" },
   ...Object.fromEntries(Object.entries(SETS).map(([k, o]) => [k, { css: setCss(o), name: o.name, set: o }])),
   ...Object.fromEntries(Object.entries(FACESETS).map(([k, o]) => [k, { css: setCss(o), name: o.name, set: o, only: { sizes: ["971x412"], cases: ["mixed"] } }])),
+  ...Object.fromEntries(Object.entries(R2).map(([k, t]) => [`r2${k}`, { css: r2Css(t), name: t.name, r2: t, rowSize: true }])),
 };
 
 // ---------- in the page ----------
@@ -178,12 +238,19 @@ function measure() {
         gapPicK: +(kb.top - pb.bottom).toFixed(1), gapKE: +(eb.top - kb.bottom).toFixed(1), gapES: +(sb.top - eb.bottom).toFixed(1), foot: +(b.bottom - sb.bottom).toFixed(1),
         spkHit: { w: +(sHit.r - sHit.l).toFixed(1), h: +(clipB - clipT).toFixed(1), hUncut: +(sHit.b - sHit.t).toFixed(1) },
         hitOverlap: xOver ? +Math.max(0, eHit.b - sHit.t).toFixed(1) : 0,
+        enTop: +eb.top.toFixed(1), kSlot: R(it.querySelector(".wc14-slot-k") || k), spkTop: +sb.top.toFixed(1),
+        zoneTop: +(sb.top - parseFloat(getComputedStyle(spk).marginTop) + (parseFloat(getComputedStyle(it, "::before").marginTop) || 0)).toFixed(1),
         clipped: [k, en].some((e) => e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 2) || [k, en].some((e) => getComputedStyle(e).textOverflow === "ellipsis" && e.scrollWidth > e.clientWidth),
         overlap: kb.bottom > eb.top + 0.5 || eb.bottom > sb.top + 0.5 || pb.bottom > kb.top + 0.5,
         outside: [kb, eb, sb].some((x) => x.bottom > b.bottom + 0.5 || x.left < b.left - 0.5 || x.right > b.right + 0.5),
       });
     }
   }
+  // round 2: the row's alignment (cards wholly in view): the one-line Englishes' tops, the speakers' tops, the Kutchi areas' heights
+  const vis = out.items.filter((i) => out.row && i.card.r <= out.row.r + 1);
+  const spread = (a) => (a.length ? +(Math.max(...a) - Math.min(...a)).toFixed(1) : 0);
+  out.align = { enTop1: spread(vis.filter((i) => i.enLines === 1).map((i) => i.enTop)), spkTop: spread(vis.map((i) => i.spkTop)), kArea: spread(vis.map((i) => i.kSlot.h)), cardH: spread(vis.map((i) => i.card.h)),
+    zoneGap: vis.length ? +Math.min(...vis.map((i) => i.zoneTop - i.enR.b)).toFixed(1) : null, enPx: [...new Set(out.items.map((i) => i.enPx))] };
   const big = document.querySelector(".njg-mock-pop") || document.querySelector(".wc14-big:not(.wc14-side)");
   if (big && big.getBoundingClientRect().width) {
     const k = big.querySelector(".wc14-k"), en = big.querySelector(".wc14-en"), spk = big.querySelector(".wc14-spk");
@@ -197,17 +264,31 @@ function measure() {
 }
 
 // ---------- the run ----------
+// (--print-css NAME: the option's CSS to stdout, nothing run)
+if (val("print-css", null)) { console.log(OPTIONS[val("print-css")].css); process.exit(0); }
 const srv = await startServer();
 const browser = await launch();
 const data = {};
 mkdirSync(OUT, { recursive: true });
 const wanted = Object.entries(OPTIONS).filter(([n]) => !ONLY || ONLY.split(",").includes(n));
 
-async function settle(page) {
+async function settle(page, o = {}) {
   await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
   await page.evaluate(() => (document.fonts && document.fonts.ready) || null).catch(() => {});
   await sleep(200);
+  await page.evaluate(() => document.querySelectorAll("#side .wc14-it > .wc14-slot-k").forEach((k) => { k.style.minHeight = ""; }));
   await page.evaluate(() => { const W = window.WordCard; if (W && W.fit14) W.fit14(); });
+  // round 2, the row pass (the build: the end of WordCard.fit14): (a) one English size per row, the fit's smallest in the row shared by
+  // every card in it (an English the fit wrapped keeps its size); (b) every card's Kutchi area as tall as the row's tallest Kutchi
+  if (o.rowSize) await page.evaluate(() => document.querySelectorAll("#side .oc-row14").forEach((row) => {
+    const ens = [...row.querySelectorAll(".wc14-it .wc14-en")].filter((e) => e.offsetParent);
+    const min = Math.min(...ens.map((e) => parseFloat(getComputedStyle(e).fontSize)));
+    if (isFinite(min)) ens.forEach((e) => { if (parseFloat(getComputedStyle(e).fontSize) > min + 0.05) { e.style.fontSize = `${min}px`; const d = e.parentNode.querySelector(".wc14-dots"); if (d) d.style.fontSize = `${min}px`; } });
+    const ks = [...row.querySelectorAll(".wc14-it > .wc14-slot-k")].filter((k) => k.offsetParent);
+    ks.forEach((k) => { k.style.minHeight = ""; });
+    const h = Math.max(...ks.map((k) => k.getBoundingClientRect().height));
+    if (isFinite(h)) ks.forEach((k) => { k.style.minHeight = `${h}px`; });
+  }));
   await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
   await sleep(100);
 }
@@ -225,7 +306,7 @@ async function panel(page, size) {
     await page.evaluate(`(${writeCase.toString()})(${JSON.stringify(rows)})`);
     for (const [name, o] of wanted) {
       if (o.only && (!o.only.sizes.includes(size) || !o.only.cases.includes(cs))) continue;
-      await inject(page, SHUT + "\n" + o.css); await settle(page);
+      await inject(page, SHUT + "\n" + o.css); await settle(page, o);
       await page.evaluate(() => { const m = document.querySelector("#mission"); if (m) m.scrollTop = 0; document.querySelectorAll("#side .oc-row14").forEach((r) => { r.scrollLeft = 0; }); });
       const m = await page.evaluate(`(${measure.toString()})()`);
       data[`${size}|${cs}|${name}`] = m;
@@ -269,7 +350,7 @@ async function runSize(size) {
     names: new Map(),
     async state(name, o = {}) {
       if (o.settle) await page.waitForTimeout(o.settle);
-      if (name === "order-card-big" && !done.has("popup")) {
+      if (name === "order-card-big" && !done.has("popup") && !argv.includes("--no-popup")) {
         await page.waitForFunction(() => [...document.querySelectorAll(".wc14-big .wc14-en")].some((e) => e.getBoundingClientRect().width > 0), null, { timeout: 15000 }).then(() => page.waitForTimeout(400)).catch(() => {});
         done.add("popup"); await popup(page, size); if (argv.includes("--popup-only")) throw new Error("enough states");
       }

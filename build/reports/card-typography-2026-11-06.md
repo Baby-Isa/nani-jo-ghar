@@ -193,3 +193,136 @@ if he asks after a phone look.
   fixlist, recordings, art, size and load (29/29) ok; unit 643 pass, **1 fail: `docs/design-language/art-pipeline.md` 13,528 characters
   over its 13,500 limit**. This study does not touch that file; the branch has fixed it since (abd993d, "art-pipeline under its word
   limit"), so the run is green once this branch is merged onto it. No game file changed.
+
+## Round 2 (6 Nov evening)
+
+Zafar (6 Nov, ~17:00): "I like Fable's suggestion ... English should stay aligned with other cards' English if they're both on one
+line, with the Kutchi centre aligned. Speaker has to stay at bottom but can we improve or tie in? ... I also want to keep the speaker
+prominent for non readers." And the critique he shared: the speaker circle "floating in space at the bottom of the card with an identical
+gap above and below it ... not visually grouped with the text or the card bottom"; on big screens "the item images stay relatively small
+... let the item images grow". (Its "hakro/brown crop" at 1280 is the next card's deliberate peek at the panel's edge: left as it is.)
+
+Still a study: nothing in the game changed. Every treatment is option 2 (Lora 600 Kutchi, Nunito Sans 600 grey English, option 2's gaps)
+plus the four changes below, injected into the real game (chai L1) by `build/tools/cards/typo-options.mjs` (`r2Css`, sets `r2A`, `r2B`,
+`r2C`); the sheets by `typo-sheet.py --round2`.
+
+### What changed
+
+1. **The row lines up.** In each row the Kutchi area is as tall as the row's tallest Kutchi, a one-line Kutchi centred in it; so every
+   one-line English sits on one shared line and every speaker on one line at the cards' foot. Measured: in every round-2 row the one-line
+   Englishes' tops are level (0 px apart; option 2 had them 8.5 to 10 px apart in a mixed row), and the speakers level.
+   **How: a small row pass after the card's fit, not CSS.** The pass clears, measures and sets each Kutchi area's min-height to the row's
+   tallest; the card's rows are picture, Kutchi area (its Kutchi centred), English (at its top), the spare, the speaker zone. CSS subgrid
+   was tried first and cannot work here: the item card is a size container (`container-type: inline-size`, for its `cqi` units), and a
+   contained grid cannot be a subgrid (Chrome computes it as `none`). **The build must use the same pass**, at the end of
+   `WordCard.fit14`, so it runs again after every fit, peek and resize.
+2. **One English size per row** (Fable's flaw 1): the same pass gives every card in the row the fit's smallest English size. A long
+   English still wraps rather than go under 10 px ("tamarind chutney" on the phones, as before).
+3. **Three speaker treatments**, each with the circle at the card's foot, drawn at 94% of today's (30 px on the phones, 45 at 1280 and
+   1920; option 2 had 28 and 42), and its **tap area the card's whole foot**: the card's full width, from the middle of the gap under the
+   English down to the card's edge (73 x 37 px on his phone, against option 2's 48 x 34; 114 x 57 at 1280). It never overlaps the
+   English's own tap area (0 px everywhere).
+   - **A Footer band:** the card's cream a shade warmer (#f6eddf to #f3e8d6), across the foot to the card's edges and rounded corners,
+     a hairline of the card art's rule colour on top; the circle seated in it. The band is the tap area.
+   - **B Divider line:** a thin line in the card art's rule colour (#dccbae), fading at its ends, above the speaker zone; the circle under it.
+   - **C Foot button:** a rounded bar the card's inner width, the same warm cream with a soft rule-coloured edge; the circle centred in it.
+4. **Bigger pictures on big screens** (min-height 501 px; the phones unchanged): the picture box 6:5 instead of 4:3 and the picture 96%
+   of it instead of 88%: the drawn picture about 21% taller (1280x665: 64 to 78 px; 1920x1080: 79 to 96 px).
+
+### The space it costs
+
+The cards grow by 1 to 3 px on the phones (a two-line row at 971x318: option 2 149, A 152, B 152, C 151). The next card's headline:
+
+| Screen | Option 2 | A | B | C |
+|---|---|---|---|---|
+| 971x412, mixed / all two lines | +100 / +90 | +99 / +88 | +98 / +87 | +99 / +88 |
+| 971x318, mixed / all two lines | +11 / +1 | +10 / **-1** | +9 / **-2** | +10 / **-1** |
+| 740x320, mixed / all two lines | +13 / +3 | +12 / +1 | +11 / 0 | +12 / +1 |
+
+(+: px to spare with the next headline clear of the list's soft foot; -: the headline whole but that far into the fade. This order card
+is whole and clear in every panel.)
+
+### Flaws first
+
+1. **The tightest case (all two-line words, one English wrapped, his phone in the browser) puts the next card's headline 1 to 2 px into
+   the soft foot** in A, B and C (option 2: 1 px clear). It stays whole and readable. The cost is the bigger circle: at option 2's 28 px
+   it would clear; I kept 30 px because he asked for the speaker to stay prominent.
+2. **On the big screens the speaker zone is tall** (its gaps are in card units and grow with the card): A's band and C's bar read heavier
+   at 1280 and 1920 than on the phone. Fine to ship; a cap on the zone's padding at the big sizes is a one-line follow-up if he finds it
+   heavy.
+3. **B's line is 1 px on the phones** and nearly disappears at arm's length; and it separates the speaker from the words rather than
+   tying it to the card, the opposite of what he asked. (He guessed the lines "might not be the correct fix": the sheets agree.)
+4. **Pictures are stand-ins** for the chutneys and "hakro khun" (as in round 1); only real Kutchi forms are used (paani, chai, dudh,
+   khun, fudino ji chutney, amli ji chutney, nair ji chutney, hakro khun).
+5. **Not shot:** the pop-up card (round 1's option 2, unchanged), 930x430 (this round's sizes: his two phone views, the smallest phone,
+   1280 and 1920), the dress games' item cards (the rules stay scoped to the side panel).
+
+Nothing clipped, ellipsised, overlapping or outside its card in any treatment, case or size (60 panels, 180 card measures); the speaker
+zone never touches the English (1.9 px or more between them).
+
+### Sheets (`build/reports/cards/`, 2x pixels)
+
+- **`typo2-overview.webp`: start here.** His phone (971x412), two-line words beside one-line: option 2 (round 1's baseline), A, B, C.
+- One sheet per treatment, the three cases as rows and the five sizes as columns: `typo2-A.webp`, `typo2-B.webp`, `typo2-C.webp`, and the
+  baseline `typo2-o2.webp`.
+- `typo2-panel-fit.webp`: the whole side panel (Nani's box shut, one order card, the next card's peek) at 971x412, 971x318 and 740x320,
+  the mixed and the all-two-lines rows, every treatment, with the room left under each.
+
+### My pick
+
+1. **A, Footer band.** It answers both halves of the critique: the circle no longer floats, it sits in the card's own foot, grouped with
+   the card's bottom edge; and the band shows a child who cannot read exactly where to tap (the band is the tap area). The quietest of the
+   three: it reads as part of the card, in the card's own cream.
+2. **C, Foot button.** The most obviously "a button", but a third rounded shape (picture box, card, pill) in a 76 px card, and heavy on
+   the big screens. Take it if A's band feels too faint on his phone.
+3. **B, Divider line.** Separates rather than ties in; the 1 px line is lost on the phone.
+
+### Fable's round-2 pick
+
+(pending)
+
+### Decision for Zafar
+
+1. Line the row up: the Kutchi area as tall as the row's tallest Kutchi, a one-line Kutchi centred in it, so the Englishes share one line
+   and the speakers one line at the foot. Recommend yes.
+2. One English size per row (the smallest the fit needs in that row). Recommend yes.
+3. The speaker: **A, a soft footer band** (else C, the foot button; else B, the line), the circle 30 px on the phones (today 32, option 2
+   28), its tap area the whole foot of the card. Recommend A.
+4. Bigger pictures on the big screens only (about 21% taller); the phones unchanged. Recommend yes.
+5. Accept the next card's headline 1 to 2 px into the soft foot in the tightest case on his phone in the browser (all two-line words, one
+   English wrapped), for the bigger speaker. Recommend yes (else the circle goes back to 28 px and it clears).
+
+### Implementation plan (updated; it replaces the item card's steps above)
+
+- **Files:**
+  - `css/shared/word-card.css`: the item card's rows (`.wc14-it`: picture, Kutchi area, English, the spare `1fr`, the speaker zone; the
+    Kutchi area a centred flex column), the English's face, weight and colour, option 2's gaps; the big-screen picture
+    (`@media (min-height: 501px)`: the box 6:5, the image at `inset: 2%`, 96%).
+  - `css/shared/order-card.css`: the side panel's item card (`body.njg-s14 #side .oc-row.oc-it14`): its padding as a token, not `cqi`
+    (so the speaker zone can reach the card's edge without the mock's `@property --njg-itpad`); the speaker zone (the card's `::before`
+    in the speaker's row, `isolation: isolate` on the card, A's band colours); the circle at 94%; its `::after` tap area widened to the
+    card's foot; the English dots' tap area stopping at the middle of the gap.
+  - `js/shared/word-card.js`, **the row alignment**: at the end of `W.fit14`, a row pass over every `.oc-row14` the fitted cards sit in
+    (also when it is called with one card, after a peek): (a) every visible card's English (and its dots) to the row's smallest fitted
+    size; (b) every card's `.wc14-slot-k` min-height cleared, measured, and set to the row's tallest. About 15 lines: the mock's
+    `settle()` in `typo-options.mjs`.
+  - Round 1's, unchanged: `css/shared/tokens.css` (the grey, `--njg-card14-en-font`), the Nunito Sans 600 font link or a self-hosted
+    woff2, `build/sandbox/fonts/`, Lora (the morning's change).
+- **Checks:** re-run `typo-options.mjs --only today,r2A --sizes 971x412,971x318,740x320,1280x665,1920x1080 --no-popup` against the
+  built game ("today" must equal A: card heights within 1 px, the Englishes level, the tap area 73 x 37 on his phone, no overlap); a peek
+  on a hidden English in a mixed row (the row stays level after it); the sandbox's text checks at the four sizes and 971x318; one dress
+  game (`table`, `fitting`) at 740x320 unchanged; `node build/tools/review/checks.mjs`; the judge on the order card at the four sizes.
+- **Size and risk:** about 40 lines of CSS, 15 of JS and one font file; mid-tier model, about two hours. Risk: low to medium (the item
+  card and `fit14` are shared; the CSS stays scoped to the side panel; the row pass touches only `.oc-row14` rows).
+
+### Proof (round 2)
+
+`COOK_TEST_PORT=8858 flock /tmp/njg-browser-8858.lock node build/tools/cards/typo-options.mjs --out <dir> --only o2,r2A,r2B,r2C --sizes
+971x412,971x318,740x320,1280x665,1920x1080 --no-popup`, then `python3 build/tools/cards/typo-sheet.py <dir> build/reports/cards
+--round2` (6 Nov, 15:55). 60 panels, 180 cards: nothing clipped, overlapping or outside its card; this order card whole and clear in
+every panel; the next card's headline whole in every panel; the one-line Englishes and the speakers level in every round-2 row.
+
+`node build/tools/review/checks.mjs` (6 Nov, 16:00, on 156c8d0 plus this round): unit (644 pass), words, static, leak (20 configs),
+bump, specs, docs, fixlist, recordings, size and load (29/29) ok; **art fails** on the stove run's new item pictures
+(`assets/cook/items-s17-stove/`, 5760719: "not referenced" and palette flags, 170 of 369). This round touches no picture; that is the
+stove run's open redo list, not this study's. No game file changed.
