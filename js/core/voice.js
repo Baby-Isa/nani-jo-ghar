@@ -670,7 +670,8 @@ export function stopAll() {
   }
 }
 if (typeof globalThis !== "undefined" && !globalThis.NjgVoice) {
-  globalThis.NjgVoice = { clip: playClip, device: speakDevice, allowed: clipAllowed, path: voicePath, stop: stopAll, deviceSpeak };
+  // (busy: a family clip is sounding now: the sound effects' voice gate reads it, js/shared/sfx.js Sfx.speaking; CHAI-92)
+  globalThis.NjgVoice = { clip: playClip, device: speakDevice, allowed: clipAllowed, path: voicePath, stop: stopAll, deviceSpeak, busy: () => liveClips.size > 0 };
   try {
     const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
     if (layer && layer.onStop) layer.onStop(() => liveClips.forEach((h) => h.cut()));

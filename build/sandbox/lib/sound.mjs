@@ -70,7 +70,11 @@ export const SOUND_HOOK = `(() => {
         let d = this.buffer.duration - (offset || 0);
         if (duration != null) d = Math.min(d, duration);
         node.__njgPid = pid;
-        log({ type: "play", via: "webaudio", url: u, pid, dur: d / rate, rate });
+        // (CHAI-92: a recorded sound effect, assets/shared/sfx/, is an effect, never a voice: "sfx/file:<stem>", with its real
+        // length and end, so the voice gate's proof can see it; a loop's length is its stop)
+        const fx = /(^|\\/)assets\\/shared\\/sfx\\//.test(u);
+        if (fx) log({ type: "play", via: "sfx", url: "sfx/file:" + u.split("/").pop().replace(/\\.mp3$/, ""), pid, dur: this.loop ? null : d / rate, loop: !!this.loop });
+        else log({ type: "play", via: "webaudio", url: u, pid, dur: d / rate, rate });
         node.addEventListener("ended", () => { if (node.__njgPid === pid) { node.__njgPid = null; log({ type: "play-end", pid, why: "ended" }); } });
       }
     } catch (e) {}
