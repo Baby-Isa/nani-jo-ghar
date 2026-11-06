@@ -1,0 +1,10 @@
+/* The game's own fonts, in one place (SH-224; Zafar, 6 Nov: "keep the fonts in the repo rather than loading them from Google. Have it
+   in the central place that everyone pulls upon"). The files live in assets/fonts/ (README.txt, OFL.txt: SIL Open Font Licence 1.1);
+   this sheet is the only one that names a font file, css/shared/tokens.css the only one that names a face (build/lint/static.mjs
+   "fonts"). Every page takes it through css/shared/kit.css. A face only downloads when a page draws with it, so declaring it here
+   costs the other games nothing. swap: the words show at once in the fallback and change face when the file arrives (it is local and
+   small); the s14 cards fit again when it does (js/shared/word-card.js), and Cook waits for it before drawing chai (js/cook/ui.js
+   applyType). Nunito and Baloo 2 still come from Google until the roll-out (cook.html, index.html, lab.html). */
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora-italic.woff2") format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 200 1000; font-display: swap; src: url("../../assets/fonts/nunito-sans.woff2") format("woff2"); }

@@ -216,6 +216,25 @@
   };
 
   /**
+   * The 6 Nov type and card (SH-223, SH-224, SH-227), on for chai first (Zafar, 6 Nov: "start with Chai ... let me review it"):
+   * <html class="njg-lora"> carries it (css/shared/tokens.css, the "6 Nov type" blocks in css/shared/word-card.css and
+   * order-card.css; Tokens.font and Tokens.weight read <html>, so the drawn shelf pills follow). Returns once Lora and Nunito Sans
+   * are in (at most 1.5 s, real time), so Phaser never draws a pill in the fallback face. The roll-out: on for every game
+   * (UI.TYPE_ALL, as S14_ALL did for the s14 look), then the gate goes (docs/design-language/type-and-cards.md).
+   */
+  UI.TYPE_ALL = false;
+  UI.applyType = function (on) {
+    if (typeof document === "undefined" || !document.documentElement) return Promise.resolve();
+    on = !!on || UI.TYPE_ALL;
+    document.documentElement.classList.toggle("njg-lora", on);
+    if (!on || !document.fonts || !document.fonts.load) return Promise.resolve();
+    const faces = ['600 20px "Lora"', '500 20px "Lora"', '600 20px "Nunito Sans"'].map((f) => document.fonts.load(f).catch(() => {}));
+    return Promise.race([Promise.all(faces), new Promise((r) => setTimeout(r, 1500))]).then(() => {
+      if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14();
+    });
+  };
+
+  /**
    * PARKED MODES ONLY (Find it, Dress up, Snap borrow this file; H45): their star icons from their own
    * star sets. Cook itself has no stars since step 3 R4 (H5, J7: the three badges instead); this and the
    * other marked legacy-star helpers below go when those modes move onto the core.
@@ -1512,6 +1531,7 @@
     // to the new chai style"): every Cook order (UI.S14_ALL, flow.js preLook says the same before the kitchen is drawn)
     mission.s14 = ladders.length > 0 && (UI.S14_ALL || (mission.wordRows && ladders.every((L) => L.recipe === "chai")));
     UI.applyS14(mission.s14);
+    UI.applyType(ladders.length > 0 && ladders.every((L) => L.recipe === "chai")); // (flow.js preLook says the same, and waits for the faces)
     // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
     // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
     // Lifecycle note "order-level"), never shown to the child
@@ -4129,6 +4149,7 @@
   UI.reset = function () {
     // the s14 look's page-level parts go with the screen (body.njg-s14, Onboard.look), so the next mount starts as the page loaded
     UI.applyS14(false);
+    UI.applyType(false);
     // the onboarding kit's lights and rung clocks still running go too (a step left mid-way)
     if (global.Onboard && global.Onboard.stopAll) global.Onboard.stopAll();
     // the grown-ups' pop-up was made for this screen's "?": its page listeners and its <body> element go with it (COOK-1)

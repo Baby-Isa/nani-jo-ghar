@@ -131,7 +131,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const WELL_D = 0.33;
   const COL = { water: St.WATER, chai: 0x8a4a22, milk: 0xf6f1e7, glass: 0xc98a52 };
   const INK = { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; } }; // the central tokens (SH-151)
-  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
+  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word") : ""); // the central type's drawn-word font (SH-151)
+  const WEIGHT = () => (global.Tokens && global.Tokens.weight ? global.Tokens.weight("drawn", "800") : "800"); // and its weight (SH-223: Lora 600 on chai)
   const jarUrl = (id) => `assets/cook/items/shelf-${id}-bare-f.webp`;
   // the small-jar family for every spice slot: the art run's jars with lids that differ (art.s02 "spice-jar-*", C5; the
   // ginger jar replaces the old one that read as gummies, C24) once they land, else the v2 jars
@@ -810,7 +811,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const PILL_GAP = Math.max(12, 5 / ppw); // (at least 5 CSS px between two pills)
     const rowIds = shelfIds.flat();
     const measureW = (id) => {
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: "800" });
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: WEIGHT() });
       const w = t.width;
       t.destroy();
       return w;
@@ -911,7 +912,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       bg.fillRoundedRect(-w / 2, -CHIP.h / 2, w, CHIP.h, 12);
       const icon = S.add.graphics();
       if (showWord) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: WEIGHT(), color: INK.kutchi }).setOrigin(0, 0.5);
         const maxT = w - PILL_PAD;
         if (t.width > maxT) t.setScale(maxT / t.width);
         const cw = 22 + 8 + t.displayWidth;
@@ -1206,7 +1207,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
       const c = S.track(S.add.container(0, 0).setDepth(D.fx + 3).setAlpha(0).setScale(k));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "36px", fontStyle: WEIGHT(), color: INK.kutchi }).setOrigin(0, 0.5);
       const w = 34 + 10 + t.width + 36;
       const g = S.add.graphics();
       g.fillStyle(0x28190a, 0.1);
