@@ -248,8 +248,29 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   });
 
   /** Show one of the s08b pan's pictures on an image, placed by that picture's own registration point (its contents' circle). */
+  // CHAI-91 (Zafar, 6 Nov, L4 on his phone: "the burner still showing, and there's a small black dot ... the pan is still meant to
+  // be full of tea"): a look whose picture is not in (its download failed, or it is still coming) was put on the pan anyway, and
+  // Phaser drew its missing square on a bare burner for the rest of the round. Now the pan shows the nearest look that is in
+  // (never the missing square), and takes the right one the moment it arrives (the loader asks again: St.load)
+  const NEAR = { boil: ["milk", "leaves", "water"], black: ["leaves", "water"], milk: ["leaves", "water"], leaves: ["water"], water: [] };
   function look8(im, key) {
-    const t = TOP.looks[key];
+    let t = TOP.looks[key];
+    const tm = im.scene && im.scene.textures;
+    if (tm && !tm.exists(t.key)) {
+      const waits = (im.lookWaits = im.lookWaits || new Set());
+      if (!waits.has(t.key)) {
+        waits.add(t.key);
+        const k = t.key;
+        tm.once(`addtexture-${k}`, () => {
+          waits.delete(k);
+          if (im.active && im.lookWant) look8(im, im.lookWant);
+        });
+      }
+      im.lookWant = key;
+      const near = (NEAR[key] || []).concat("empty").find((k) => tm.exists(TOP.looks[k].key));
+      if (!near) return im;
+      t = TOP.looks[near];
+    } else im.lookWant = key;
     if (im.texture.key !== t.key) im.setTexture(t.key);
     // (mirrored: Phaser flips a picture within its own box, so the registration point is taken from the other side)
     return im.setFlipX(TOP.mirror).setOrigin(TOP.mirror ? 1 - t.cx / t.w : t.cx / t.w, t.cy / t.h);

@@ -75,9 +75,19 @@
   };
 
   const doc = () => root.document;
+  // SH-221 (6 Nov): the shared Sfx's soft "tap" (a short quiet triangle note); was Sfx.tap(), which Sfx never had, so no shared
+  // button ever made its sound (build/test_shared_sfx_calls.mjs). Never over a family voice line: Cook says when its voice is
+  // speaking (Cook.voiceBusy); the other modes have no page-wide voice state yet, so there the tap plays as the button is pressed
+  const voiceBusy = () => {
+    try {
+      return !!(root.Cook && typeof root.Cook.voiceBusy === "function" && root.Cook.voiceBusy());
+    } catch (e) {
+      return false;
+    }
+  };
   const sfx = () => {
     try {
-      if (root.Sfx && root.Sfx.tap) root.Sfx.tap();
+      if (root.Sfx && root.Sfx.play && !voiceBusy()) root.Sfx.play("tap");
     } catch (e) {
       /* no sound */
     }
