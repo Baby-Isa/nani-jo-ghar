@@ -8,13 +8,13 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (6 Nov 2026, 04:00 UK):** Sprint 17. **Live on `main`: 20261106T011831Z** (unchanged overnight). The overnight
+**Where things stand (6 Nov 2026, 04:00 UK):** Sprint 17. **Live on `main`: 20261106T090836Z** (09:11 UK, on Zafar's word: the pills that fit their word, SH-219; the word moment's stream inside the glass behind its front lip, CHAI-90; the overnight tools and reports). The overnight
 run (`docs/process/overnight-brief-2026-11-06.md`, with Zafar's launch edits: no chai standard fill; token size steps, not true
 sizes) is done on branch `ccr-1f71c98a-wwowh8` (pushed; it holds everything from `claude/vibrant-hopper-v3yexp` too). The morning
 report is `build/reports/overnight-2026-11-06.md`: what's done, 32 numbered decisions, launches and tokens.
 
-- **Pills that fit their word (SH-219):** built, Fable PASS, chai contract run clean; **not published**: this session's permission
-  check refused the push to `main`. Zafar's word "publish" lets `/publish --force` run.
+- **Pills that fit their word (SH-219):** built, Fable PASS, chai contract run clean; live. The stove art run (unsupervised, no stop)
+  was handed to Zafar at about 08:30 to run.
 - **Reports, each with a Fable read:** `art-retrospective-2026-11-06.md` (the colour tool `build/tools/art/artcolour.py`),
   `fonts-across-the-game-2026-11-06.md` (C, Fraunces for every word, recommended), `sound-and-juice-chai-2026-11-06.md`,
   `stove-art-400-2026-11-06.md` (the block ready: `docs/design-language/art-plans/s17-stove400-chrome-block.txt`, branch fields on
@@ -22,7 +22,7 @@ report is `build/reports/overnight-2026-11-06.md`: what's done, 32 numbered deci
 - **New rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English 7.9 px on phones), ART-44 (seven
   shipped baked shadows, found by the colour tool, now checked at every push).
 
-**Next, in order (once Zafar answers the morning report):** publish the pills; the fonts change (half a day); the sound lab page then
+**Next, in order (once Zafar answers the morning report):** the fonts change (half a day); the sound lab page then
 chai's sounds; the stove art run, part A (the chai shelf sheet) first, then the shelf swap.
 
 **Open questions to Zafar:** the morning report's 32 decisions ("yes to all except ...").
