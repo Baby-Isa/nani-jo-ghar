@@ -1,6 +1,7 @@
 /* The word moment (js/shared/word-moment.js, CHAI-67): the glasses, the tilted vessel, its stream, the shutter, the cards in place.
    Sizes come from the script (the room it has); colours and type from the tokens. */
 .wm { position: absolute; inset: 0; pointer-events: none; }
+/* (the scene's box is set by the script as it frames it: CHAI-101's zoom and counter line; cover until then) */
 .wm > .wm-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
 .wm-glass.wm-side > img { object-position: 50% 100%; }
 /* (in the kitchen, js/cook/ui.js UI.wordMoment: over the play area, then gone as the order comes up) */
@@ -62,4 +63,15 @@
 .wm-stream.wm-art.wm-wipe, .wm-stream.wm-art.wm-wipe.on, .wm-stream.wm-art.wm-wipe.on.ending { transform: rotate(var(--wm-rot, 0deg)); transition: opacity .12s; }
 .wm-drop { position: absolute; z-index: 2; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--njg-wm-tea); pointer-events: none; }
 .wm .wc.wc14-big.wm-card { position: absolute; z-index: 5; transform-origin: 50% 40%; margin: 0; }
+/* SH-231 (Zafar, 6 Nov night: "check that the card that pops up is within the new style of cards that we've created and has the same
+   fonts and spacings"): the word moment's card laid out as the order's 6 Nov item card (css/shared/order-card.css, "the 6 Nov type and
+   item card"), in the same proportions at its own width: the picture, the Kutchi (4% under it) with its English 3.5% under that, the
+   divider (74.8% wide, fading ends, as fine as the item card's line: never over 1.5 px on this bigger card), the speaker; one gap g = 7% three times: the English to the divider, the divider to the
+   speaker, the speaker to the card's foot. The speaker as the item card's (no ring), so nothing presses on the English. The faces and
+   weights are the shared card's (Lora 600, Nunito Sans 600) */
+:root.njg-lora .wm .wc.wc14-big.wm-card > .wc14-in { gap: 0; padding-bottom: 0; }
+:root.njg-lora .wm .wc.wc14-big.wm-card .wc14-slot-k { margin-top: 4cqi; }
+:root.njg-lora .wm .wc.wc14-big.wm-card .wc14-slot-e { margin-top: 3.5cqi; }
+:root.njg-lora .wm .wc.wc14-big.wm-card > .wc14-in::after { content: ""; order: 1; display: block; flex: none; width: 74.8cqi; height: max(var(--njg-card14-hair), min(1.4cqi, var(--njg-card14-u1p5))); margin-top: 7cqi; background: var(--njg-card14-divider); pointer-events: none; }
+:root.njg-lora .wm .wc.wc14-big.wm-card > .wc14-in > .wc14-spk { order: 2; margin: 7cqi 0; box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .wm-shut .wm-c, .wm-shut .wm-corners, .wm-stream { transition: none; } .wm-stream.flow { animation: none; } .wm-shut.flash::after { animation-duration: .01s; } }
