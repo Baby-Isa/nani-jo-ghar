@@ -79,3 +79,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 20:03 UK · chai contract run on all four merged: 1 timing break (contract-74, a tap 1218 ms under load), its path re-run 0 breaks over 3 pages; the 20 'new' findings are the lab flows with no baseline yet / next: publish to main for Zafar's review
 - 2026-11-06 20:18 UK · Published 20261106T200832Z to main (19657cd5); Pages serving it.
 - 20:18 UK · handover written for the new chat (status.md Next chat)
+- 22:58 UK · s17-n2-wm (builder): word moment's pour waits for its file (CHAI-97), drop halved (CHAI-98), counter at 70% on three doors (CHAI-101), card on the 6 Nov item rhythm (SH-231); contract 1 break explained (contract-11, counter art 1.58x at 1920) / next: the judge on the after batch
