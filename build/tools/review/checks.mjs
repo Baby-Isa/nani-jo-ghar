@@ -4,7 +4,7 @@
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
  * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
  * leak   the Kutchi leak bots (build/tools/review/leak.mjs) for every config that needs no browser, at every level
- * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, one hint-wait table; a finding not in build/lint/static-known.json fails
+ * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, one hint-wait table, fonts (SH-224); a finding not in build/lint/static-known.json fails
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)

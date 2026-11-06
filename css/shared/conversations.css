@@ -19,7 +19,7 @@
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  font-family: var(--njg-font-body, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-family: var(--njg-font-body); /* (the faces are named only in css/shared/tokens.css: build/lint/static.mjs fonts) */
   transition: opacity .25s;
 }
 .cv-layer.out { opacity: 0; }
@@ -174,7 +174,7 @@
 
 /* the lab shows what the game hides */
 .cv-lab .cv-pill[data-correct="true"]::after { content: "✓"; font-size: var(--njg-t4); color: var(--njg-tick-green); margin-left: calc(var(--njg-u) * 4); }
-.cv-lab .is-ph::before, .cv-lab .cv-ph::after { content: "PH"; font: 700 var(--njg-t4)/1 system-ui; color: var(--njg-white); background: var(--njg-madder); border-radius: calc(var(--njg-u) * 6); padding: calc(var(--njg-u) * 2) calc(var(--njg-u) * 4); margin: 0 calc(var(--njg-u) * 4); font-style: normal; }
+.cv-lab .is-ph::before, .cv-lab .cv-ph::after { content: "PH"; font: 700 var(--njg-t4)/1 var(--njg-font-body); color: var(--njg-white); background: var(--njg-madder); border-radius: calc(var(--njg-u) * 6); padding: calc(var(--njg-u) * 2) calc(var(--njg-u) * 4); margin: 0 calc(var(--njg-u) * 4); font-style: normal; }
 
 @keyframes cv-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(calc(var(--njg-u) * -10)); } 40% { transform: translateX(calc(var(--njg-u) * 9)); } 60% { transform: translateX(calc(var(--njg-u) * -6)); } 80% { transform: translateX(calc(var(--njg-u) * 4)); } }
 @keyframes cv-dodge { 0% { transform: none; } 45% { transform: translateX(calc(var(--njg-u) * -70)) rotate(-6deg); } 100% { transform: translateX(calc(var(--njg-u) * -40)); } }

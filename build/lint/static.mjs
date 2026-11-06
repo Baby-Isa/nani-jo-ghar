@@ -25,6 +25,10 @@
 //   voice     one voice player (S13-V): no speechSynthesis, SpeechSynthesisUtterance, new Audio or .play() outside js/core/voice.js
 //             (the voice), js/shared/sfx.js (the sound effects) and the mic (js/shared/speech.js); no synthesized sound (an
 //             oscillator, a noise buffer, a filter) outside js/shared/sfx.js; the parked games are left out (out of scope)
+//   fonts     a font family is named only in the type tokens (SH-224, Zafar 6 Nov): css/shared/tokens.css names the faces,
+//             css/shared/fonts.css the files (assets/fonts/), js/shared/tokens.js the drawn text's last fallback; a face (Lora, Nunito,
+//             Baloo, Fraunces, Georgia, a generic serif or sans-serif, ...) or a Google Fonts link anywhere else in chai's files fails
+//             (CHAI_FONT_FILES); in every other file it is a warning, counted on the summary line, until the roll-out moves that game
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails, and so does
 // a check with more findings than the list holds for it; --write-known only shrinks the list (Zafar, 23 Oct: compareKnown, shrinkKnown).
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
@@ -79,6 +83,34 @@ export function tokenFindings(file, text) {
   });
   return out;
 }
+// ---- fonts: a face is named only in the type tokens (SH-224; Zafar, 6 Nov: "Have it in the central place that everyone pulls upon") ----
+// chai first ("start with Chai ... then if I like it, you can just roll it out everywhere"): a name in one of chai's files fails, a name in
+// any other game's file is a warning (counted, never failed) until the roll-out adds that game's files to CHAI_FONT_FILES (or drops the list)
+export const FONT_HOMES = ["css/shared/tokens.css", "css/shared/fonts.css", "js/shared/tokens.js"];
+export const CHAI_FONT_FILES = ["css/cook.css", "css/shared/kit.css", "css/shared/word-card.css", "css/shared/order-card.css", "css/shared/word-moment.css", "css/shared/guide.css", "css/shared/conversations.css", "css/shared/results.css", "js/shared/word-card.js", "js/shared/word-moment.js", "js/shared/order-card.js", "js/cook/stations/chai-tray.js"];
+export const FONT_NAME = /\b(?:Baloo(?: 2)?|Fraunces|Nunito(?: Sans)?|Lora|Georgia|Times New Roman|Fredoka|Andika|Literata|Alegreya|Source (?:Serif|Sans) \d|Segoe UI|Arial|Helvetica|Roboto|sans-serif|serif|system-ui|-apple-system|monospace|cursive|fantasy)\b|fonts\.googleapis\.com/g;
+// (comments are prose, not fonts: CSS and JS block comments and JS line comments go first; a "//" after a ":" is a URL, kept)
+const stripCode = (file, t) => {
+  const blank = (m) => m.replace(/[^\n]/g, " ");
+  let s = String(t).replace(/\/\*[\s\S]*?\*\//g, blank);
+  if (/\.m?js$/.test(file)) s = s.replace(/(^|[^:\\])\/\/.*$/gm, (m, a) => a + blank(m.slice(a.length)));
+  if (/\.html?$/.test(file)) s = s.replace(/<!--[\s\S]*?-->/g, blank);
+  return s;
+};
+export function fontFindings(file, text) {
+  if (FONT_HOMES.includes(file)) return [];
+  const out = [];
+  lines(stripCode(file, text)).forEach((l, i) => {
+    // (a CSS selector or a class name is never a face: only what follows a "{", a "font" property, a string or a link counts)
+    const css = /\.css$/.test(file);
+    const part = css ? (l.includes("{") ? l.slice(l.indexOf("{") + 1) : /^\s*[\w-]+\s*:/.test(l) ? l : "") : l;
+    const names = [...part.matchAll(FONT_NAME)].map((m) => m[0]);
+    for (const n of new Set(names)) out.push({ check: "fonts", at: `${file}:${i + 1}`, key: `fonts|${file}|${n}|${part.trim().slice(0, 70)}`, text: `the face "${n}" named outside the type tokens (css/shared/tokens.css): ${part.trim().slice(0, 90)}` });
+  });
+  return out;
+}
+export const FONT_WARN = []; // the other games' names, reported until the roll-out (run() fills it)
+
 // ---- shell: one kit link on every live page (S13-A1) ----
 // every live page links css/shared/kit.css (it @imports every shared sheet, in order) and no shared sheet directly; the parked
 // games' pages (dress, find, monsoon, snap, tidy, who) switch over when they are unparked (Zafar, 26 Oct: out of scope)
@@ -368,6 +400,15 @@ export function run(root = ROOT, only = null) {
     out.push(...(sheets.includes("kit.css") ? kitImportFindings(rd("css/shared/kit.css"), sheets) : [{ check: "shell", at: "css/shared/kit.css", key: "shell|css/shared/kit.css|missing", text: "css/shared/kit.css is missing" }]));
   }
   if (want("motion")) for (const f of css) out.push(...motionFindings(f, rd(f)));
+  if (want("fonts")) {
+    FONT_WARN.length = 0;
+    const files = [...css, ...walk(root, "js", (p) => p.endsWith(".js") && !/\/vendor\//.test(p)), ...readdirSync(root).filter((x) => x.endsWith(".html"))];
+    for (const f of files) {
+      const found = fontFindings(f, rd(f));
+      if (CHAI_FONT_FILES.includes(f)) out.push(...found);
+      else FONT_WARN.push(...found);
+    }
+  }
   if (want("jscolour")) {
     const ui = uiColours(rd("css/shared/tokens.css"));
     const art = new Set((existsSync(join(root, "build/lint/static-known.json")) ? JSON.parse(rd("build/lint/static-known.json")) : []).filter((k) => /^jscolour\|.*\|art-only$/.test(k)).map((k) => k.split("|")[1]));
@@ -437,6 +478,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   }
   for (const f of (argv.includes("--all") ? found : cmp.fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.at}: ${f.text}`);
   for (const u of cmp.up) console.log(`UP ${u.check}: ${u.now} findings, the known list holds ${u.known} (it only shrinks)`);
-  console.log(`static: ${found.length} findings (${Object.entries(cmp.by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - cmp.fresh.length} known, ${cmp.fresh.length} new${cmp.up.length ? `, ${cmp.up.length} check(s) up` : ""}${cmp.gone.length ? `; ${cmp.gone.length} known ones are fixed: run --write-known to shrink the list` : ""}`);
+  if (FONT_WARN.length && argv.includes("--fonts")) for (const f of FONT_WARN) console.log(`warn fonts ${f.at}: ${f.text}`);
+  const fontWarn = FONT_WARN.length ? `; fonts: ${FONT_WARN.length} face names outside the tokens in ${new Set(FONT_WARN.map((f) => f.at.split(":")[0])).size} files of the other games (warn until the roll-out; --fonts lists them)` : "";
+  console.log(`static: ${found.length} findings (${Object.entries(cmp.by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - cmp.fresh.length} known, ${cmp.fresh.length} new${cmp.up.length ? `, ${cmp.up.length} check(s) up` : ""}${cmp.gone.length ? `; ${cmp.gone.length} known ones are fixed: run --write-known to shrink the list` : ""}${fontWarn}`);
   process.exit(cmp.ok ? 0 : 1);
 }

@@ -1000,8 +1000,3 @@ body.w6 #guide { flex: none; }
 .ck-mic.shrug { animation: ckShrug .5s ease-in-out; }
 @keyframes ckShrug { 25% { transform: translate(-50%, -50%) rotate(-12deg); } 75% { transform: translate(-50%, -50%) rotate(12deg); } }
 @media (prefers-reduced-motion: reduce) { .ck-mic.shrug { animation: none; } }
-
-/* the 6 Nov type, on for chai first (:root.njg-lora: js/cook/ui.js applyType, css/shared/tokens.css): Cook's Kutchi words and its
-   bubbles in Lora 600 (they were 800, which Lora draws at its heaviest; Zafar 6 Nov, Fable's weights). The roll-out drops the
-   ":root.njg-lora". */
-:root.njg-lora .wp .wp-text, :root.njg-lora .wr-pill b, :root.njg-lora .ir, :root.njg-lora .lc, :root.njg-lora #mission .m-dish, :root.njg-lora .ccard .cc-dish, :root.njg-lora .icard .ic-title, :root.njg-lora #intro .ic-dish { font-weight: 600; }

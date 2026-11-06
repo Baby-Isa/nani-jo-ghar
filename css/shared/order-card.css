@@ -671,6 +671,9 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 /* Lora 600 for the order's headline, 500 for Nani's line in her light box (Fable's weights, Zafar 6 Nov) */
 :root.njg-lora .oc-card.oc-s14 .oc-headline { font-weight: 600; }
 :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line, :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line .wp-text { font-weight: 500; }
+/* Cook's Kutchi words and its bubbles (css/cook.css .wp-text, .wr-pill b, the ladder lines and dishes): Lora 600, they were 800, which
+   Lora draws at its heaviest (the gate's class is the kit's, so its rules live in the kit: build/lint/static.mjs kit) */
+:root.njg-lora .wp .wp-text, :root.njg-lora .wr-pill b, :root.njg-lora .ir, :root.njg-lora .lc, :root.njg-lora #mission .m-dish, :root.njg-lora .ccard .cc-dish, :root.njg-lora .icard .ic-title, :root.njg-lora #intro .ic-dish { font-weight: 600; }
 /* The item card in the side panel (Zafar, 6 Nov, round 3: build/reports/card-typography-2026-11-06.md): picture, spare, Kutchi,
    English, spare, the divider, the speaker. The English sits under its own Kutchi, the pair centred between the picture and the
    divider. One gap g = 7% of the card's inner width (about 4.4 px on a phone) three times: the card's foot to the speaker's bottom,
