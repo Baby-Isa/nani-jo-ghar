@@ -18,8 +18,9 @@
  *     cards:   "stay" (each card where its glass was) | "rise" (the cards rise to the top, side by side),
  *     speed:   1 (2 = twice as fast), instant: true (the end state at once: the lab's shots)
  *     hold:    ms each card stays before the next glass (500), english: false to dot the card's English (shown by default)
- *     scene:   { src, baseAt (the counter's top as a fraction of the picture's height), aspect, zoom (1: cover; 1.6: drawn 1.6x
- *              larger, centred across), lineMax (the counter's top at most this far down: 0.7) } a scene behind, the glasses on its counter
+ *     scene:   { src, baseAt (the counter's top as a fraction of the picture's height), aspect, span: [x0, x1] (the part of the
+ *              picture's width drawn across the stage, centred) or zoom (1: cover; 1.6: 1.6x larger, centred), lineMax (the
+ *              counter's top at most this far down: 0.7) } a scene behind, the glasses on its counter
  *   }) -> Promise<{ cards: [el] }>;   WordMoment.stop(host) ends one early (the cards stay)
  *
  * Art: art block 1 (3 Nov, assets/shared/word-moment/: the tilted kettle, the side-on glasses, the streams, the corners and the iris);
@@ -189,24 +190,26 @@
     // CHAI-101 (Zafar, 6 Nov night: "the camera is just a little bit too high. So you only see a tiny bit of the kitchen cabinet ...
     // you can maybe make the tea glasses a tiny bit smaller" · "so many of them tight together, it makes the tea glass look as wide as
     // narrow kitchen cabinet"): the counter's line at most lineMax (70%) of the height down, so at least 30% is cabinet, and the
-    // glasses shrink to fit the kettle's room above it; the picture drawn zoom times its cover size (centred across), so fewer, wider
-    // doors span the screen (the s17 counter: five doors at cover, about three at 1.6). The picture always covers the stage
+    // glasses shrink to fit the kettle's room above it; the picture drawn larger, centred across, so fewer, wider doors span the
+    // screen: span [x0, x1] (that part of the picture's width, edge to edge: the s17 counter's three middle doors, seam to seam, so no
+    // sliver of a fourth shows at any size; about 1.6x its cover), else zoom (times its cover). It always covers the stage
     if (o.scene && o.scene.src) {
       const sc = el("img", "wm-scene", box);
       sc.alt = "";
       sc.draggable = false;
       sc.src = o.scene.src;
       const ar = o.scene.aspect || 1.5;
-      const zoom = Math.max(1, +o.scene.zoom || 1);
-      const k = Math.max(W / ar, H) * zoom; // (the picture's drawn height: its cover height, zoomed)
-      const kw = k * ar;
+      const span = o.scene.span;
+      const kw = span ? Math.max(W / (span[1] - span[0]), H * ar) : Math.max(W, H * ar) * Math.max(1, +o.scene.zoom || 1);
+      const k = kw / ar; // (the picture's drawn height)
+      const x0 = span ? W / 2 - ((span[0] + span[1]) / 2) * kw : (W - kw) / 2;
       const base = o.scene.baseAt || 0.7;
       const need = mTop + (1 + ABOVE) * g;
       // (the line where the room above it asks, never past lineMax, and only where the picture still covers top and bottom)
       const lo = H - (1 - base) * k, hi = base * k;
       const lineY = Math.max(lo, Math.min(need, H * (o.scene.lineMax || 0.7), hi));
       if (lineY < need) g = Math.max(40, Math.floor((lineY - mTop) / (1 + ABOVE)));
-      Object.assign(sc.style, { inset: "auto", objectFit: "fill", left: `${((W - kw) / 2).toFixed(1)}px`, top: `${(lineY - base * k).toFixed(1)}px`, width: `${kw.toFixed(1)}px`, height: `${k.toFixed(1)}px` });
+      Object.assign(sc.style, { inset: "auto", objectFit: "fill", left: `${Math.min(0, Math.max(W - kw, x0)).toFixed(1)}px`, top: `${(lineY - base * k).toFixed(1)}px`, width: `${kw.toFixed(1)}px`, height: `${k.toFixed(1)}px` });
       cy = Math.min(H - g / 2 - 4, lineY - g / 2);
     }
     const gap = g * 0.9;

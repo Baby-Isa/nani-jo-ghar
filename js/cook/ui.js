@@ -133,7 +133,7 @@
         stream: Cook.v(`${A}stream-chai-real-s17.webp`),
         streamWipe: true,
         // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
-        scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5, zoom: 1.6 }, // (CHAI-101: about three doors across)
+        scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5, span: [0.2019, 0.8006] }, // (CHAI-101: the three middle doors, seam to seam)
         // (Zafar, 5 Nov: "more obviously show half and full (half should be a little lower than current end height, and full should be
         // right to the rim)": half 0.42 of the inside, full to the rim (pack s17-art4's glass))
         glasses: [glass("ph-half", 0.42), glass("ph-full", 1)],
