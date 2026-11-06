@@ -1,0 +1,1781 @@
+{
+ "_about": "The stove family's shared item art (Zafar's run of 6 Nov, build/tools/art/specs/s17-stove400.run.yaml; landed in build/reports/stove-run-landed-2026-11-06.md). One grid job per sheet, the names in the run line's slot order (the CSV docs/design-language/art-plans/stove-400-items.csv ids). Not wired.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "f-water-bottle": {
+   "file": "cook/items-s17-stove/f-water-bottle.webp",
+   "w": 218,
+   "h": 475
+  },
+  "f-milk-carton": {
+   "file": "cook/items-s17-stove/f-milk-carton.webp",
+   "w": 256,
+   "h": 464
+  },
+  "f-tea-jar": {
+   "file": "cook/items-s17-stove/f-tea-jar.webp",
+   "w": 294,
+   "h": 472
+  },
+  "f-sugar-jar": {
+   "file": "cook/items-s17-stove/f-sugar-jar.webp",
+   "w": 294,
+   "h": 472
+  },
+  "f-cardamom-jar": {
+   "file": "cook/items-s17-stove/f-cardamom-jar.webp",
+   "w": 294,
+   "h": 457
+  },
+  "f-ginger-jar": {
+   "file": "cook/items-s17-stove/f-ginger-jar.webp",
+   "w": 294,
+   "h": 457
+  },
+  "f-garlic-jar": {
+   "file": "cook/items-s17-stove/f-garlic-jar.webp",
+   "w": 294,
+   "h": 457
+  },
+  "f-salt-jar": {
+   "file": "cook/items-s17-stove/f-salt-jar.webp",
+   "w": 294,
+   "h": 457
+  },
+  "f-turmeric-jar": {
+   "file": "cook/items-s17-stove/f-turmeric-jar.webp",
+   "w": 313,
+   "h": 431
+  },
+  "f-cumin-seeds-jar": {
+   "file": "cook/items-s17-stove/f-cumin-seeds-jar.webp",
+   "w": 313,
+   "h": 430
+  },
+  "f-mustard-seeds-jar": {
+   "file": "cook/items-s17-stove/f-mustard-seeds-jar.webp",
+   "w": 314,
+   "h": 431
+  },
+  "f-black-pepper-jar": {
+   "file": "cook/items-s17-stove/f-black-pepper-jar.webp",
+   "w": 313,
+   "h": 431
+  },
+  "f-cinnamon-sticks-jar": {
+   "file": "cook/items-s17-stove/f-cinnamon-sticks-jar.webp",
+   "w": 313,
+   "h": 429
+  },
+  "f-cloves-jar": {
+   "file": "cook/items-s17-stove/f-cloves-jar.webp",
+   "w": 313,
+   "h": 429
+  },
+  "f-fennel-seeds-jar": {
+   "file": "cook/items-s17-stove/f-fennel-seeds-jar.webp",
+   "w": 314,
+   "h": 429
+  },
+  "f-red-chilli-powder-jar": {
+   "file": "cook/items-s17-stove/f-red-chilli-powder-jar.webp",
+   "w": 313,
+   "h": 430
+  },
+  "f-kettle": {
+   "file": "cook/items-s17-stove/f-kettle.webp",
+   "w": 366,
+   "h": 389
+  },
+  "f-milk-pan-with-handle": {
+   "file": "cook/items-s17-stove/f-milk-pan-with-handle.webp",
+   "w": 384,
+   "h": 226
+  },
+  "f-chai-flask": {
+   "file": "cook/items-s17-stove/f-chai-flask.webp",
+   "w": 206,
+   "h": 454
+  },
+  "f-tea-strainer": {
+   "file": "cook/items-s17-stove/f-tea-strainer.webp",
+   "w": 394,
+   "h": 162
+  },
+  "f-tea-cup-and-saucer": {
+   "file": "cook/items-s17-stove/f-tea-cup-and-saucer.webp",
+   "w": 365,
+   "h": 223
+  },
+  "f-coriander-seeds-jar": {
+   "file": "cook/items-s17-stove/f-coriander-seeds-jar.webp",
+   "w": 315,
+   "h": 434
+  },
+  "f-fenugreek-seeds-jar": {
+   "file": "cook/items-s17-stove/f-fenugreek-seeds-jar.webp",
+   "w": 315,
+   "h": 434
+  },
+  "f-garam-masala-jar": {
+   "file": "cook/items-s17-stove/f-garam-masala-jar.webp",
+   "w": 316,
+   "h": 435
+  },
+  "f-bay-leaves-jar": {
+   "file": "cook/items-s17-stove/f-bay-leaves-jar.webp",
+   "w": 315,
+   "h": 435
+  },
+  "f-asafoetida-jar": {
+   "file": "cook/items-s17-stove/f-asafoetida-jar.webp",
+   "w": 315,
+   "h": 434
+  },
+  "f-sesame-seeds-jar": {
+   "file": "cook/items-s17-stove/f-sesame-seeds-jar.webp",
+   "w": 315,
+   "h": 434
+  },
+  "f-dried-red-chillies-jar": {
+   "file": "cook/items-s17-stove/f-dried-red-chillies-jar.webp",
+   "w": 315,
+   "h": 434
+  },
+  "f-chai-masala-jar": {
+   "file": "cook/items-s17-stove/f-chai-masala-jar.webp",
+   "w": 315,
+   "h": 435
+  },
+  "f-saffron-jar": {
+   "file": "cook/items-s17-stove/f-saffron-jar.webp",
+   "w": 327,
+   "h": 440
+  },
+  "f-chaat-masala-jar": {
+   "file": "cook/items-s17-stove/f-chaat-masala-jar.webp",
+   "w": 326,
+   "h": 440
+  },
+  "f-roasted-cumin-powder-jar": {
+   "file": "cook/items-s17-stove/f-roasted-cumin-powder-jar.webp",
+   "w": 325,
+   "h": 440
+  },
+  "f-nigella-seeds-jar": {
+   "file": "cook/items-s17-stove/f-nigella-seeds-jar.webp",
+   "w": 326,
+   "h": 440
+  },
+  "f-carom-seeds-ajwain-jar": {
+   "file": "cook/items-s17-stove/f-carom-seeds-ajwain-jar.webp",
+   "w": 327,
+   "h": 439
+  },
+  "f-dried-mint-jar": {
+   "file": "cook/items-s17-stove/f-dried-mint-jar.webp",
+   "w": 326,
+   "h": 439
+  },
+  "f-mango-powder-amchur-jar": {
+   "file": "cook/items-s17-stove/f-mango-powder-amchur-jar.webp",
+   "w": 324,
+   "h": 439
+  },
+  "f-black-salt-jar": {
+   "file": "cook/items-s17-stove/f-black-salt-jar.webp",
+   "w": 326,
+   "h": 439
+  },
+  "f-poppy-seeds-jar": {
+   "file": "cook/items-s17-stove/f-poppy-seeds-jar.webp",
+   "w": 306,
+   "h": 399
+  },
+  "f-dhana-jeeru-powder-jar": {
+   "file": "cook/items-s17-stove/f-dhana-jeeru-powder-jar.webp",
+   "w": 306,
+   "h": 399
+  },
+  "f-chapati-flour-atta": {
+   "file": "cook/items-s17-stove/f-chapati-flour-atta.webp",
+   "w": 309,
+   "h": 426
+  },
+  "f-millet-flour-bajri": {
+   "file": "cook/items-s17-stove/f-millet-flour-bajri.webp",
+   "w": 356,
+   "h": 413
+  },
+  "f-plain-flour-maida": {
+   "file": "cook/items-s17-stove/f-plain-flour-maida.webp",
+   "w": 360,
+   "h": 416
+  },
+  "f-gram-flour-besan": {
+   "file": "cook/items-s17-stove/f-gram-flour-besan.webp",
+   "w": 361,
+   "h": 414
+  },
+  "f-rice-flour": {
+   "file": "cook/items-s17-stove/f-rice-flour.webp",
+   "w": 360,
+   "h": 412
+  },
+  "f-semolina": {
+   "file": "cook/items-s17-stove/f-semolina.webp",
+   "w": 311,
+   "h": 423
+  },
+  "f-basmati-rice": {
+   "file": "cook/items-s17-stove/f-basmati-rice.webp",
+   "w": 279,
+   "h": 480
+  },
+  "f-toor-daar": {
+   "file": "cook/items-s17-stove/f-toor-daar.webp",
+   "w": 278,
+   "h": 479
+  },
+  "f-chana-daar": {
+   "file": "cook/items-s17-stove/f-chana-daar.webp",
+   "w": 278,
+   "h": 478
+  },
+  "f-mung-beans-whole": {
+   "file": "cook/items-s17-stove/f-mung-beans-whole.webp",
+   "w": 277,
+   "h": 479
+  },
+  "f-yellow-mung-daar": {
+   "file": "cook/items-s17-stove/f-yellow-mung-daar.webp",
+   "w": 277,
+   "h": 479
+  },
+  "f-red-lentils-masoor": {
+   "file": "cook/items-s17-stove/f-red-lentils-masoor.webp",
+   "w": 276,
+   "h": 480
+  },
+  "f-dried-chickpeas": {
+   "file": "cook/items-s17-stove/f-dried-chickpeas.webp",
+   "w": 278,
+   "h": 481
+  },
+  "f-red-kidney-beans": {
+   "file": "cook/items-s17-stove/f-red-kidney-beans.webp",
+   "w": 277,
+   "h": 480
+  },
+  "f-pigeon-peas-dried": {
+   "file": "cook/items-s17-stove/f-pigeon-peas-dried.webp",
+   "w": 299,
+   "h": 471
+  },
+  "f-black-eyed-beans": {
+   "file": "cook/items-s17-stove/f-black-eyed-beans.webp",
+   "w": 298,
+   "h": 471
+  },
+  "f-cracked-wheat": {
+   "file": "cook/items-s17-stove/f-cracked-wheat.webp",
+   "w": 298,
+   "h": 471
+  },
+  "f-flattened-rice-poha": {
+   "file": "cook/items-s17-stove/f-flattened-rice-poha.webp",
+   "w": 297,
+   "h": 471
+  },
+  "f-sev-crispy-noodles": {
+   "file": "cook/items-s17-stove/f-sev-crispy-noodles.webp",
+   "w": 299,
+   "h": 472
+  },
+  "f-puri-crisps-papdi": {
+   "file": "cook/items-s17-stove/f-puri-crisps-papdi.webp",
+   "w": 297,
+   "h": 472
+  },
+  "f-fried-peas-watana": {
+   "file": "cook/items-s17-stove/f-fried-peas-watana.webp",
+   "w": 298,
+   "h": 472
+  },
+  "f-peanuts": {
+   "file": "cook/items-s17-stove/f-peanuts.webp",
+   "w": 297,
+   "h": 471
+  },
+  "f-desiccated-coconut": {
+   "file": "cook/items-s17-stove/f-desiccated-coconut.webp",
+   "w": 301,
+   "h": 471
+  },
+  "f-cashew-nuts": {
+   "file": "cook/items-s17-stove/f-cashew-nuts.webp",
+   "w": 300,
+   "h": 414
+  },
+  "f-almonds": {
+   "file": "cook/items-s17-stove/f-almonds.webp",
+   "w": 299,
+   "h": 416
+  },
+  "f-raisins": {
+   "file": "cook/items-s17-stove/f-raisins.webp",
+   "w": 300,
+   "h": 416
+  },
+  "f-dates": {
+   "file": "cook/items-s17-stove/f-dates.webp",
+   "w": 301,
+   "h": 473
+  },
+  "f-brown-sugar-lumps-jaggery": {
+   "file": "cook/items-s17-stove/f-brown-sugar-lumps-jaggery.webp",
+   "w": 299,
+   "h": 415
+  },
+  "f-tamarind-block": {
+   "file": "cook/items-s17-stove/f-tamarind-block.webp",
+   "w": 299,
+   "h": 415
+  },
+  "f-dried-yeast": {
+   "file": "cook/items-s17-stove/f-dried-yeast.webp",
+   "w": 299,
+   "h": 416
+  },
+  "f-baking-powder": {
+   "file": "cook/items-s17-stove/f-baking-powder.webp",
+   "w": 312,
+   "h": 360
+  },
+  "f-cocoa-powder": {
+   "file": "cook/items-s17-stove/f-cocoa-powder.webp",
+   "w": 367,
+   "h": 344
+  },
+  "f-tea-bags": {
+   "file": "cook/items-s17-stove/f-tea-bags.webp",
+   "w": 374,
+   "h": 372
+  },
+  "f-vermicelli": {
+   "file": "cook/items-s17-stove/f-vermicelli.webp",
+   "w": 324,
+   "h": 481
+  },
+  "f-ghee": {
+   "file": "cook/items-s17-stove/f-ghee.webp",
+   "w": 322,
+   "h": 395
+  },
+  "f-green-mint-chutney": {
+   "file": "cook/items-s17-stove/f-green-mint-chutney.webp",
+   "w": 319,
+   "h": 395
+  },
+  "f-tamarind-chutney": {
+   "file": "cook/items-s17-stove/f-tamarind-chutney.webp",
+   "w": 318,
+   "h": 395
+  },
+  "f-ginger-garlic-paste": {
+   "file": "cook/items-s17-stove/f-ginger-garlic-paste.webp",
+   "w": 318,
+   "h": 394
+  },
+  "f-cooking-oil": {
+   "file": "cook/items-s17-stove/f-cooking-oil.webp",
+   "w": 186,
+   "h": 463
+  },
+  "f-yoghurt": {
+   "file": "cook/items-s17-stove/f-yoghurt.webp",
+   "w": 354,
+   "h": 335
+  },
+  "f-samosa-pastry-sheets": {
+   "file": "cook/items-s17-stove/f-samosa-pastry-sheets.webp",
+   "w": 389,
+   "h": 241
+  },
+  "f-lamb": {
+   "file": "cook/items-s17-stove/f-lamb.webp",
+   "w": 367,
+   "h": 337
+  },
+  "f-chicken": {
+   "file": "cook/items-s17-stove/f-chicken.webp",
+   "w": 372,
+   "h": 336
+  },
+  "f-mince": {
+   "file": "cook/items-s17-stove/f-mince.webp",
+   "w": 376,
+   "h": 336
+  },
+  "f-tomato-ketchup": {
+   "file": "cook/items-s17-stove/f-tomato-ketchup.webp",
+   "w": 180,
+   "h": 470
+  },
+  "f-butter": {
+   "file": "cook/items-s17-stove/f-butter.webp",
+   "w": 391,
+   "h": 267
+  },
+  "f-onion": {
+   "file": "cook/items-s17-stove/f-onion.webp",
+   "w": 340,
+   "h": 407
+  },
+  "f-tomato": {
+   "file": "cook/items-s17-stove/f-tomato.webp",
+   "w": 360,
+   "h": 360
+  },
+  "f-potato": {
+   "file": "cook/items-s17-stove/f-potato.webp",
+   "w": 390,
+   "h": 318
+  },
+  "f-garlic-bulb": {
+   "file": "cook/items-s17-stove/f-garlic-bulb.webp",
+   "w": 354,
+   "h": 366
+  },
+  "f-ginger-root": {
+   "file": "cook/items-s17-stove/f-ginger-root.webp",
+   "w": 368,
+   "h": 387
+  },
+  "f-green-chilli": {
+   "file": "cook/items-s17-stove/f-green-chilli.webp",
+   "w": 296,
+   "h": 431
+  },
+  "f-lemon": {
+   "file": "cook/items-s17-stove/f-lemon.webp",
+   "w": 389,
+   "h": 316
+  },
+  "f-coriander-bunch": {
+   "file": "cook/items-s17-stove/f-coriander-bunch.webp",
+   "w": 373,
+   "h": 442
+  },
+  "f-mint-bunch": {
+   "file": "cook/items-s17-stove/f-mint-bunch.webp",
+   "w": 380,
+   "h": 432
+  },
+  "f-curry-leaves-sprig": {
+   "file": "cook/items-s17-stove/f-curry-leaves-sprig.webp",
+   "w": 292,
+   "h": 471
+  },
+  "f-green-pepper": {
+   "file": "cook/items-s17-stove/f-green-pepper.webp",
+   "w": 334,
+   "h": 409
+  },
+  "f-peas-in-the-pod": {
+   "file": "cook/items-s17-stove/f-peas-in-the-pod.webp",
+   "w": 335,
+   "h": 410
+  },
+  "f-cucumber": {
+   "file": "cook/items-s17-stove/f-cucumber.webp",
+   "w": 175,
+   "h": 488
+  },
+  "f-raw-green-mango": {
+   "file": "cook/items-s17-stove/f-raw-green-mango.webp",
+   "w": 299,
+   "h": 430
+  },
+  "f-pomegranate": {
+   "file": "cook/items-s17-stove/f-pomegranate.webp",
+   "w": 350,
+   "h": 415
+  },
+  "f-corn-cob-in-husk": {
+   "file": "cook/items-s17-stove/f-corn-cob-in-husk.webp",
+   "w": 203,
+   "h": 493
+  },
+  "t-black-pepper-katori": {
+   "file": "cook/items-s17-stove/t-black-pepper-katori.webp",
+   "w": 384,
+   "h": 391
+  },
+  "t-cinnamon-stick-katori": {
+   "file": "cook/items-s17-stove/t-cinnamon-stick-katori.webp",
+   "w": 386,
+   "h": 393
+  },
+  "t-cloves-katori": {
+   "file": "cook/items-s17-stove/t-cloves-katori.webp",
+   "w": 386,
+   "h": 391
+  },
+  "t-fennel-seeds-katori": {
+   "file": "cook/items-s17-stove/t-fennel-seeds-katori.webp",
+   "w": 382,
+   "h": 392
+  },
+  "t-garam-masala-katori": {
+   "file": "cook/items-s17-stove/t-garam-masala-katori.webp",
+   "w": 387,
+   "h": 395
+  },
+  "t-coriander-seeds-katori": {
+   "file": "cook/items-s17-stove/t-coriander-seeds-katori.webp",
+   "w": 389,
+   "h": 396
+  },
+  "t-asafoetida-katori": {
+   "file": "cook/items-s17-stove/t-asafoetida-katori.webp",
+   "w": 384,
+   "h": 396
+  },
+  "t-dried-red-chillies-katori": {
+   "file": "cook/items-s17-stove/t-dried-red-chillies-katori.webp",
+   "w": 389,
+   "h": 399
+  },
+  "t-chai-masala-katori": {
+   "file": "cook/items-s17-stove/t-chai-masala-katori.webp",
+   "w": 389,
+   "h": 399
+  },
+  "t-saffron-threads-katori": {
+   "file": "cook/items-s17-stove/t-saffron-threads-katori.webp",
+   "w": 388,
+   "h": 395
+  },
+  "t-chaat-masala-katori": {
+   "file": "cook/items-s17-stove/t-chaat-masala-katori.webp",
+   "w": 389,
+   "h": 395
+  },
+  "t-roasted-cumin-powder-katori": {
+   "file": "cook/items-s17-stove/t-roasted-cumin-powder-katori.webp",
+   "w": 390,
+   "h": 395
+  },
+  "t-fenugreek-leaves-dried-katori": {
+   "file": "cook/items-s17-stove/t-fenugreek-leaves-dried-katori.webp",
+   "w": 389,
+   "h": 398
+  },
+  "t-millet-flour-katori": {
+   "file": "cook/items-s17-stove/t-millet-flour-katori.webp",
+   "w": 394,
+   "h": 400
+  },
+  "t-basmati-rice-raw-katori": {
+   "file": "cook/items-s17-stove/t-basmati-rice-raw-katori.webp",
+   "w": 393,
+   "h": 401
+  },
+  "t-chana-daar-dry-katori": {
+   "file": "cook/items-s17-stove/t-chana-daar-dry-katori.webp",
+   "w": 390,
+   "h": 400
+  },
+  "t-yellow-mung-daar-dry-katori": {
+   "file": "cook/items-s17-stove/t-yellow-mung-daar-dry-katori.webp",
+   "w": 392,
+   "h": 400
+  },
+  "t-dried-chickpeas-katori": {
+   "file": "cook/items-s17-stove/t-dried-chickpeas-katori.webp",
+   "w": 395,
+   "h": 402
+  },
+  "t-black-salt-katori": {
+   "file": "cook/items-s17-stove/t-black-salt-katori.webp",
+   "w": 381,
+   "h": 390
+  },
+  "t-mango-powder-katori": {
+   "file": "cook/items-s17-stove/t-mango-powder-katori.webp",
+   "w": 386,
+   "h": 392
+  },
+  "t-dried-mint-katori": {
+   "file": "cook/items-s17-stove/t-dried-mint-katori.webp",
+   "w": 384,
+   "h": 391
+  },
+  "t-ginger-garlic-paste-katori": {
+   "file": "cook/items-s17-stove/t-ginger-garlic-paste-katori.webp",
+   "w": 381,
+   "h": 391
+  },
+  "t-tamarind-pulp-katori": {
+   "file": "cook/items-s17-stove/t-tamarind-pulp-katori.webp",
+   "w": 385,
+   "h": 391
+  },
+  "t-cooking-oil-bowl": {
+   "file": "cook/items-s17-stove/t-cooking-oil-bowl.webp",
+   "w": 388,
+   "h": 392
+  },
+  "t-lemon-juice-bowl": {
+   "file": "cook/items-s17-stove/t-lemon-juice-bowl.webp",
+   "w": 381,
+   "h": 393
+  },
+  "t-marinade-yoghurt-and-spice-bowl": {
+   "file": "cook/items-s17-stove/t-marinade-yoghurt-and-spice-bowl.webp",
+   "w": 401,
+   "h": 405
+  },
+  "t-flour-paste-samosa-glue-bowl": {
+   "file": "cook/items-s17-stove/t-flour-paste-samosa-glue-bowl.webp",
+   "w": 383,
+   "h": 392
+  },
+  "t-onion-sliced-rings": {
+   "file": "cook/items-s17-stove/t-onion-sliced-rings.webp",
+   "w": 374,
+   "h": 360
+  },
+  "t-onion-fried-golden": {
+   "file": "cook/items-s17-stove/t-onion-fried-golden.webp",
+   "w": 393,
+   "h": 373
+  },
+  "t-onion-burnt": {
+   "file": "cook/items-s17-stove/t-onion-burnt.webp",
+   "w": 397,
+   "h": 372
+  },
+  "t-tomato-sliced": {
+   "file": "cook/items-s17-stove/t-tomato-sliced.webp",
+   "w": 377,
+   "h": 379
+  },
+  "t-potato-boiled-cubes": {
+   "file": "cook/items-s17-stove/t-potato-boiled-cubes.webp",
+   "w": 389,
+   "h": 383
+  },
+  "t-potato-mashed": {
+   "file": "cook/items-s17-stove/t-potato-mashed.webp",
+   "w": 396,
+   "h": 376
+  },
+  "t-potato-chips-burnt": {
+   "file": "cook/items-s17-stove/t-potato-chips-burnt.webp",
+   "w": 377,
+   "h": 369
+  },
+  "t-garlic-sizzling-golden": {
+   "file": "cook/items-s17-stove/t-garlic-sizzling-golden.webp",
+   "w": 375,
+   "h": 373
+  },
+  "t-ginger-sliced": {
+   "file": "cook/items-s17-stove/t-ginger-sliced.webp",
+   "w": 389,
+   "h": 373
+  },
+  "t-green-chilli-slit": {
+   "file": "cook/items-s17-stove/t-green-chilli-slit.webp",
+   "w": 404,
+   "h": 378
+  },
+  "t-mint-bunch": {
+   "file": "cook/items-s17-stove/t-mint-bunch.webp",
+   "w": 408,
+   "h": 408
+  },
+  "t-mint-leaves": {
+   "file": "cook/items-s17-stove/t-mint-leaves.webp",
+   "w": 396,
+   "h": 380
+  },
+  "t-curry-leaves-sprig": {
+   "file": "cook/items-s17-stove/t-curry-leaves-sprig.webp",
+   "w": 340,
+   "h": 415
+  },
+  "t-curry-leaves-sizzling": {
+   "file": "cook/items-s17-stove/t-curry-leaves-sizzling.webp",
+   "w": 401,
+   "h": 364
+  },
+  "t-green-pepper-whole": {
+   "file": "cook/items-s17-stove/t-green-pepper-whole.webp",
+   "w": 351,
+   "h": 354
+  },
+  "t-green-pepper-chunks": {
+   "file": "cook/items-s17-stove/t-green-pepper-chunks.webp",
+   "w": 378,
+   "h": 391
+  },
+  "t-peas-pods": {
+   "file": "cook/items-s17-stove/t-peas-pods.webp",
+   "w": 402,
+   "h": 379
+  },
+  "t-peas-shelled": {
+   "file": "cook/items-s17-stove/t-peas-shelled.webp",
+   "w": 387,
+   "h": 368
+  },
+  "t-cucumber-whole": {
+   "file": "cook/items-s17-stove/t-cucumber-whole.webp",
+   "w": 388,
+   "h": 378
+  },
+  "t-cucumber-diced": {
+   "file": "cook/items-s17-stove/t-cucumber-diced.webp",
+   "w": 374,
+   "h": 383
+  },
+  "t-raw-green-mango-diced": {
+   "file": "cook/items-s17-stove/t-raw-green-mango-diced.webp",
+   "w": 395,
+   "h": 392
+  },
+  "t-pomegranate-halved": {
+   "file": "cook/items-s17-stove/t-pomegranate-halved.webp",
+   "w": 401,
+   "h": 392
+  },
+  "t-pomegranate-seeds": {
+   "file": "cook/items-s17-stove/t-pomegranate-seeds.webp",
+   "w": 380,
+   "h": 344
+  },
+  "t-chicken-cubes-raw": {
+   "file": "cook/items-s17-stove/t-chicken-cubes-raw.webp",
+   "w": 400,
+   "h": 395
+  },
+  "t-chicken-cubes-on-skewer-raw": {
+   "file": "cook/items-s17-stove/t-chicken-cubes-on-skewer-raw.webp",
+   "w": 398,
+   "h": 416
+  },
+  "t-chicken-cubes-grilled": {
+   "file": "cook/items-s17-stove/t-chicken-cubes-grilled.webp",
+   "w": 391,
+   "h": 394
+  },
+  "t-chicken-cubes-charred": {
+   "file": "cook/items-s17-stove/t-chicken-cubes-charred.webp",
+   "w": 399,
+   "h": 388
+  },
+  "t-mince-raw": {
+   "file": "cook/items-s17-stove/t-mince-raw.webp",
+   "w": 375,
+   "h": 369
+  },
+  "t-mince-cooked-in-the-pan": {
+   "file": "cook/items-s17-stove/t-mince-cooked-in-the-pan.webp",
+   "w": 392,
+   "h": 373
+  },
+  "t-kebab-seekh-raw-on-skewer": {
+   "file": "cook/items-s17-stove/t-kebab-seekh-raw-on-skewer.webp",
+   "w": 401,
+   "h": 403
+  },
+  "t-kebab-seekh-grilled": {
+   "file": "cook/items-s17-stove/t-kebab-seekh-grilled.webp",
+   "w": 385,
+   "h": 409
+  },
+  "t-maani-cooked-spotted": {
+   "file": "cook/items-s17-stove/t-maani-cooked-spotted.webp",
+   "w": 388,
+   "h": 395
+  },
+  "t-maani-ghee-brushed": {
+   "file": "cook/items-s17-stove/t-maani-ghee-brushed.webp",
+   "w": 390,
+   "h": 397
+  },
+  "t-maani-folded-quarter": {
+   "file": "cook/items-s17-stove/t-maani-folded-quarter.webp",
+   "w": 314,
+   "h": 295
+  },
+  "t-maani-stack": {
+   "file": "cook/items-s17-stove/t-maani-stack.webp",
+   "w": 415,
+   "h": 402
+  },
+  "t-paratha-rolled-raw": {
+   "file": "cook/items-s17-stove/t-paratha-rolled-raw.webp",
+   "w": 381,
+   "h": 389
+  },
+  "t-paratha-cooked-layered": {
+   "file": "cook/items-s17-stove/t-paratha-cooked-layered.webp",
+   "w": 395,
+   "h": 393
+  },
+  "t-thepla-methi-rolled-raw": {
+   "file": "cook/items-s17-stove/t-thepla-methi-rolled-raw.webp",
+   "w": 387,
+   "h": 391
+  },
+  "t-thepla-methi-cooked": {
+   "file": "cook/items-s17-stove/t-thepla-methi-cooked.webp",
+   "w": 396,
+   "h": 398
+  },
+  "t-puri-rolled-raw": {
+   "file": "cook/items-s17-stove/t-puri-rolled-raw.webp",
+   "w": 374,
+   "h": 379
+  },
+  "t-puri-fried-puffed": {
+   "file": "cook/items-s17-stove/t-puri-fried-puffed.webp",
+   "w": 397,
+   "h": 386
+  },
+  "t-vegetable-samosa-fried-golden": {
+   "file": "cook/items-s17-stove/t-vegetable-samosa-fried-golden.webp",
+   "w": 398,
+   "h": 340
+  },
+  "t-chicken-samosa-fried-golden": {
+   "file": "cook/items-s17-stove/t-chicken-samosa-fried-golden.webp",
+   "w": 383,
+   "h": 350
+  },
+  "t-spring-onion-chopped": {
+   "file": "cook/items-s17-stove/t-spring-onion-chopped.webp",
+   "w": 384,
+   "h": 390
+  },
+  "t-cassava-peeled": {
+   "file": "cook/items-s17-stove/t-cassava-peeled.webp",
+   "w": 408,
+   "h": 386
+  },
+  "t-dish-ginger-chai": {
+   "file": "cook/items-s17-stove/t-dish-ginger-chai.webp",
+   "w": 374,
+   "h": 390
+  },
+  "t-dish-cardamom-chai": {
+   "file": "cook/items-s17-stove/t-dish-cardamom-chai.webp",
+   "w": 388,
+   "h": 396
+  },
+  "t-dish-mint-chai": {
+   "file": "cook/items-s17-stove/t-dish-mint-chai.webp",
+   "w": 351,
+   "h": 362
+  },
+  "t-dish-saffron-chai-celebration": {
+   "file": "cook/items-s17-stove/t-dish-saffron-chai-celebration.webp",
+   "w": 374,
+   "h": 387
+  },
+  "t-dish-daar-and-rice": {
+   "file": "cook/items-s17-stove/t-dish-daar-and-rice.webp",
+   "w": 402,
+   "h": 407
+  },
+  "t-dish-khichdi-with-kadhi": {
+   "file": "cook/items-s17-stove/t-dish-khichdi-with-kadhi.webp",
+   "w": 407,
+   "h": 408
+  },
+  "t-dish-mung-curry-mag-nu-saag": {
+   "file": "cook/items-s17-stove/t-dish-mung-curry-mag-nu-saag.webp",
+   "w": 381,
+   "h": 394
+  },
+  "t-dish-bajr-ji-maani-with-ghee": {
+   "file": "cook/items-s17-stove/t-dish-bajr-ji-maani-with-ghee.webp",
+   "w": 405,
+   "h": 417
+  },
+  "t-dish-paratha": {
+   "file": "cook/items-s17-stove/t-dish-paratha.webp",
+   "w": 412,
+   "h": 420
+  },
+  "t-dish-thepla": {
+   "file": "cook/items-s17-stove/t-dish-thepla.webp",
+   "w": 401,
+   "h": 405
+  },
+  "t-dish-puri": {
+   "file": "cook/items-s17-stove/t-dish-puri.webp",
+   "w": 410,
+   "h": 412
+  },
+  "t-dish-potato-chaat": {
+   "file": "cook/items-s17-stove/t-dish-potato-chaat.webp",
+   "w": 406,
+   "h": 409
+  },
+  "t-dish-sev-puri": {
+   "file": "cook/items-s17-stove/t-dish-sev-puri.webp",
+   "w": 404,
+   "h": 409
+  },
+  "t-dish-pani-puri": {
+   "file": "cook/items-s17-stove/t-dish-pani-puri.webp",
+   "w": 408,
+   "h": 411
+  },
+  "t-dish-chana-bateta": {
+   "file": "cook/items-s17-stove/t-dish-chana-bateta.webp",
+   "w": 404,
+   "h": 406
+  },
+  "t-dish-vegetable-samosas-with-chutney": {
+   "file": "cook/items-s17-stove/t-dish-vegetable-samosas-with-chutney.webp",
+   "w": 402,
+   "h": 415
+  },
+  "t-dish-chicken-mishkaki": {
+   "file": "cook/items-s17-stove/t-dish-chicken-mishkaki.webp",
+   "w": 415,
+   "h": 424
+  },
+  "t-dish-seekh-kebabs": {
+   "file": "cook/items-s17-stove/t-dish-seekh-kebabs.webp",
+   "w": 414,
+   "h": 422
+  },
+  "t-pressure-cooker": {
+   "file": "cook/items-s17-stove/t-pressure-cooker.webp",
+   "w": 420,
+   "h": 389
+  },
+  "t-rice-pot": {
+   "file": "cook/items-s17-stove/t-rice-pot.webp",
+   "w": 405,
+   "h": 347
+  },
+  "t-steel-serving-bowl": {
+   "file": "cook/items-s17-stove/t-steel-serving-bowl.webp",
+   "w": 355,
+   "h": 353
+  },
+  "t-ceramic-plate": {
+   "file": "cook/items-s17-stove/t-ceramic-plate.webp",
+   "w": 368,
+   "h": 373
+  },
+  "t-roti-box-with-cloth": {
+   "file": "cook/items-s17-stove/t-roti-box-with-cloth.webp",
+   "w": 384,
+   "h": 377
+  },
+  "t-strainer-bowl-colander": {
+   "file": "cook/items-s17-stove/t-strainer-bowl-colander.webp",
+   "w": 417,
+   "h": 365
+  },
+  "t-tea-cup": {
+   "file": "cook/items-s17-stove/t-tea-cup.webp",
+   "w": 332,
+   "h": 283
+  },
+  "t-saucer": {
+   "file": "cook/items-s17-stove/t-saucer.webp",
+   "w": 344,
+   "h": 348
+  },
+  "t-teapot": {
+   "file": "cook/items-s17-stove/t-teapot.webp",
+   "w": 442,
+   "h": 314
+  },
+  "t-chai-flask": {
+   "file": "cook/items-s17-stove/t-chai-flask.webp",
+   "w": 403,
+   "h": 365
+  },
+  "t-squeeze-bottle-chutney": {
+   "file": "cook/items-s17-stove/t-squeeze-bottle-chutney.webp",
+   "w": 256,
+   "h": 316
+  },
+  "t-mortar-and-pestle": {
+   "file": "cook/items-s17-stove/t-mortar-and-pestle.webp",
+   "w": 381,
+   "h": 394
+  },
+  "t-hand-fan-for-the-coals": {
+   "file": "cook/items-s17-stove/t-hand-fan-for-the-coals.webp",
+   "w": 383,
+   "h": 396
+  },
+  "t-bag-of-charcoal": {
+   "file": "cook/items-s17-stove/t-bag-of-charcoal.webp",
+   "w": 398,
+   "h": 385
+  },
+  "t-glowing-coals": {
+   "file": "cook/items-s17-stove/t-glowing-coals.webp",
+   "w": 396,
+   "h": 402
+  },
+  "t-tool-wooden-daar-churner-ravaiyo": {
+   "file": "cook/items-s17-stove/t-tool-wooden-daar-churner-ravaiyo.webp",
+   "w": 376,
+   "h": 423
+  },
+  "t-tool-tablespoon": {
+   "file": "cook/items-s17-stove/t-tool-tablespoon.webp",
+   "w": 367,
+   "h": 398
+  },
+  "t-tool-grater": {
+   "file": "cook/items-s17-stove/t-tool-grater.webp",
+   "w": 274,
+   "h": 422
+  },
+  "t-tool-vegetable-peeler": {
+   "file": "cook/items-s17-stove/t-tool-vegetable-peeler.webp",
+   "w": 225,
+   "h": 395
+  },
+  "t-tool-pastry-brush": {
+   "file": "cook/items-s17-stove/t-tool-pastry-brush.webp",
+   "w": 305,
+   "h": 409
+  },
+  "t-tool-pastry-wheel-cutter": {
+   "file": "cook/items-s17-stove/t-tool-pastry-wheel-cutter.webp",
+   "w": 305,
+   "h": 409
+  },
+  "t-tool-chai-stirring-spoon-long": {
+   "file": "cook/items-s17-stove/t-tool-chai-stirring-spoon-long.webp",
+   "w": 385,
+   "h": 404
+  },
+  "t-tool-turner-for-maani-flat": {
+   "file": "cook/items-s17-stove/t-tool-turner-for-maani-flat.webp",
+   "w": 389,
+   "h": 406
+  },
+  "t-cooling-rack": {
+   "file": "cook/items-s17-stove/t-cooling-rack.webp",
+   "w": 398,
+   "h": 403
+  },
+  "t-cake-stand": {
+   "file": "cook/items-s17-stove/t-cake-stand.webp",
+   "w": 405,
+   "h": 422
+  },
+  "t-small-glass-bowl": {
+   "file": "cook/items-s17-stove/t-small-glass-bowl.webp",
+   "w": 372,
+   "h": 375
+  },
+  "t-bread-basket": {
+   "file": "cook/items-s17-stove/t-bread-basket.webp",
+   "w": 401,
+   "h": 406
+  },
+  "f-cream": {
+   "file": "cook/items-s17-stove/f-cream.webp",
+   "w": 274,
+   "h": 414
+  },
+  "f-eggs-in-a-box": {
+   "file": "cook/items-s17-stove/f-eggs-in-a-box.webp",
+   "w": 386,
+   "h": 379
+  },
+  "f-bread-loaf": {
+   "file": "cook/items-s17-stove/f-bread-loaf.webp",
+   "w": 399,
+   "h": 376
+  },
+  "f-rose-water": {
+   "file": "cook/items-s17-stove/f-rose-water.webp",
+   "w": 214,
+   "h": 436
+  },
+  "f-soft-bread-buns-pav": {
+   "file": "cook/items-s17-stove/f-soft-bread-buns-pav.webp",
+   "w": 390,
+   "h": 338
+  },
+  "f-fish": {
+   "file": "cook/items-s17-stove/f-fish.webp",
+   "w": 393,
+   "h": 322
+  },
+  "f-cassava-root": {
+   "file": "cook/items-s17-stove/f-cassava-root.webp",
+   "w": 159,
+   "h": 485
+  },
+  "f-banana": {
+   "file": "cook/items-s17-stove/f-banana.webp",
+   "w": 365,
+   "h": 425
+  },
+  "f-lime": {
+   "file": "cook/items-s17-stove/f-lime.webp",
+   "w": 290,
+   "h": 334
+  },
+  "f-spring-onions": {
+   "file": "cook/items-s17-stove/f-spring-onions.webp",
+   "w": 286,
+   "h": 484
+  },
+  "f-strawberries-punnet": {
+   "file": "cook/items-s17-stove/f-strawberries-punnet.webp",
+   "w": 355,
+   "h": 343
+  },
+  "f-carrot": {
+   "file": "cook/items-s17-stove/f-carrot.webp",
+   "w": 330,
+   "h": 486
+  },
+  "f-spinach-bunch": {
+   "file": "cook/items-s17-stove/f-spinach-bunch.webp",
+   "w": 371,
+   "h": 479
+  },
+  "f-okra": {
+   "file": "cook/items-s17-stove/f-okra.webp",
+   "w": 322,
+   "h": 385
+  },
+  "t-sesame-seeds-katori": {
+   "file": "cook/items-s17-stove/t-sesame-seeds-katori.webp",
+   "w": 389,
+   "h": 396
+  },
+  "t-nigella-seeds-katori": {
+   "file": "cook/items-s17-stove/t-nigella-seeds-katori.webp",
+   "w": 393,
+   "h": 397
+  },
+  "t-plain-flour-katori": {
+   "file": "cook/items-s17-stove/t-plain-flour-katori.webp",
+   "w": 392,
+   "h": 397
+  },
+  "t-gram-flour-katori": {
+   "file": "cook/items-s17-stove/t-gram-flour-katori.webp",
+   "w": 387,
+   "h": 393
+  },
+  "t-dried-yeast-katori": {
+   "file": "cook/items-s17-stove/t-dried-yeast-katori.webp",
+   "w": 393,
+   "h": 394
+  },
+  "t-baking-powder-katori": {
+   "file": "cook/items-s17-stove/t-baking-powder-katori.webp",
+   "w": 391,
+   "h": 394
+  },
+  "t-cocoa-powder-katori": {
+   "file": "cook/items-s17-stove/t-cocoa-powder-katori.webp",
+   "w": 388,
+   "h": 396
+  },
+  "t-desiccated-coconut-katori": {
+   "file": "cook/items-s17-stove/t-desiccated-coconut-katori.webp",
+   "w": 394,
+   "h": 398
+  },
+  "t-chopped-nuts-katori": {
+   "file": "cook/items-s17-stove/t-chopped-nuts-katori.webp",
+   "w": 390,
+   "h": 397
+  },
+  "t-beaten-eggs-bowl": {
+   "file": "cook/items-s17-stove/t-beaten-eggs-bowl.webp",
+   "w": 400,
+   "h": 402
+  },
+  "t-melted-butter-bowl": {
+   "file": "cook/items-s17-stove/t-melted-butter-bowl.webp",
+   "w": 389,
+   "h": 393
+  },
+  "t-whipped-cream-bowl": {
+   "file": "cook/items-s17-stove/t-whipped-cream-bowl.webp",
+   "w": 406,
+   "h": 407
+  },
+  "t-coconut-chutney-bowl": {
+   "file": "cook/items-s17-stove/t-coconut-chutney-bowl.webp",
+   "w": 373,
+   "h": 374
+  },
+  "t-bhajia-batter-bowl": {
+   "file": "cook/items-s17-stove/t-bhajia-batter-bowl.webp",
+   "w": 406,
+   "h": 411
+  },
+  "t-coconut-milk-bowl": {
+   "file": "cook/items-s17-stove/t-coconut-milk-bowl.webp",
+   "w": 385,
+   "h": 389
+  },
+  "t-cassava-boiled-chunks": {
+   "file": "cook/items-s17-stove/t-cassava-boiled-chunks.webp",
+   "w": 363,
+   "h": 377
+  },
+  "t-cassava-chips-golden": {
+   "file": "cook/items-s17-stove/t-cassava-chips-golden.webp",
+   "w": 382,
+   "h": 370
+  },
+  "t-strawberry-whole": {
+   "file": "cook/items-s17-stove/t-strawberry-whole.webp",
+   "w": 325,
+   "h": 342
+  },
+  "t-strawberry-halved": {
+   "file": "cook/items-s17-stove/t-strawberry-halved.webp",
+   "w": 375,
+   "h": 289
+  },
+  "t-egg-scrambled": {
+   "file": "cook/items-s17-stove/t-egg-scrambled.webp",
+   "w": 366,
+   "h": 349
+  },
+  "t-egg-omelette-raw": {
+   "file": "cook/items-s17-stove/t-egg-omelette-raw.webp",
+   "w": 366,
+   "h": 360
+  },
+  "t-egg-omelette-folded": {
+   "file": "cook/items-s17-stove/t-egg-omelette-folded.webp",
+   "w": 384,
+   "h": 349
+  },
+  "t-naan-dough-ball": {
+   "file": "cook/items-s17-stove/t-naan-dough-ball.webp",
+   "w": 338,
+   "h": 334
+  },
+  "t-naan-shaped-raw": {
+   "file": "cook/items-s17-stove/t-naan-shaped-raw.webp",
+   "w": 314,
+   "h": 407
+  },
+  "t-naan-burnt": {
+   "file": "cook/items-s17-stove/t-naan-burnt.webp",
+   "w": 393,
+   "h": 389
+  },
+  "t-yellow-naan-bun-shaped-raw": {
+   "file": "cook/items-s17-stove/t-yellow-naan-bun-shaped-raw.webp",
+   "w": 359,
+   "h": 363
+  },
+  "t-yellow-naan-bun-baked": {
+   "file": "cook/items-s17-stove/t-yellow-naan-bun-baked.webp",
+   "w": 371,
+   "h": 364
+  },
+  "t-corn-in-husk": {
+   "file": "cook/items-s17-stove/t-corn-in-husk.webp",
+   "w": 180,
+   "h": 421
+  },
+  "t-corn-with-lemon-and-chilli": {
+   "file": "cook/items-s17-stove/t-corn-with-lemon-and-chilli.webp",
+   "w": 266,
+   "h": 415
+  },
+  "t-corn-boiled": {
+   "file": "cook/items-s17-stove/t-corn-boiled.webp",
+   "w": 199,
+   "h": 413
+  },
+  "t-corn-kernels-in-a-cup": {
+   "file": "cook/items-s17-stove/t-corn-kernels-in-a-cup.webp",
+   "w": 333,
+   "h": 347
+  },
+  "t-carrot-whole": {
+   "file": "cook/items-s17-stove/t-carrot-whole.webp",
+   "w": 145,
+   "h": 424
+  },
+  "t-carrot-grated": {
+   "file": "cook/items-s17-stove/t-carrot-grated.webp",
+   "w": 376,
+   "h": 363
+  },
+  "t-dish-masala-omelette": {
+   "file": "cook/items-s17-stove/t-dish-masala-omelette.webp",
+   "w": 398,
+   "h": 402
+  },
+  "t-dish-scrambled-egg-and-onion-mayai-dungri": {
+   "file": "cook/items-s17-stove/t-dish-scrambled-egg-and-onion-mayai-dungri.webp",
+   "w": 398,
+   "h": 403
+  },
+  "t-dish-chips-mayai": {
+   "file": "cook/items-s17-stove/t-dish-chips-mayai.webp",
+   "w": 410,
+   "h": 408
+  },
+  "t-dish-yellow-naan-buns": {
+   "file": "cook/items-s17-stove/t-dish-yellow-naan-buns.webp",
+   "w": 405,
+   "h": 404
+  },
+  "t-dish-corn-in-coconut-sauce-makai-paka": {
+   "file": "cook/items-s17-stove/t-dish-corn-in-coconut-sauce-makai-paka.webp",
+   "w": 395,
+   "h": 396
+  },
+  "t-dish-corn-fritters-makai-na-bhajia": {
+   "file": "cook/items-s17-stove/t-dish-corn-fritters-makai-na-bhajia.webp",
+   "w": 415,
+   "h": 409
+  },
+  "t-dish-mogo-chips-with-chilli-and-lemon": {
+   "file": "cook/items-s17-stove/t-dish-mogo-chips-with-chilli-and-lemon.webp",
+   "w": 407,
+   "h": 415
+  },
+  "t-dish-chocolate-birthday-cake": {
+   "file": "cook/items-s17-stove/t-dish-chocolate-birthday-cake.webp",
+   "w": 399,
+   "h": 417
+  },
+  "t-dish-strawberry-cream-cake": {
+   "file": "cook/items-s17-stove/t-dish-strawberry-cream-cake.webp",
+   "w": 407,
+   "h": 424
+  },
+  "t-dish-mithai-platter-celebration": {
+   "file": "cook/items-s17-stove/t-dish-mithai-platter-celebration.webp",
+   "w": 398,
+   "h": 408
+  },
+  "t-dish-pilau": {
+   "file": "cook/items-s17-stove/t-dish-pilau.webp",
+   "w": 402,
+   "h": 411
+  },
+  "t-dish-biryani": {
+   "file": "cook/items-s17-stove/t-dish-biryani.webp",
+   "w": 407,
+   "h": 415
+  },
+  "t-dish-kuku-paka": {
+   "file": "cook/items-s17-stove/t-dish-kuku-paka.webp",
+   "w": 394,
+   "h": 396
+  },
+  "t-dish-bhajia-with-chutney": {
+   "file": "cook/items-s17-stove/t-dish-bhajia-with-chutney.webp",
+   "w": 408,
+   "h": 409
+  },
+  "t-dish-maru-bhajia": {
+   "file": "cook/items-s17-stove/t-dish-maru-bhajia.webp",
+   "w": 412,
+   "h": 417
+  },
+  "t-dish-kachumbari": {
+   "file": "cook/items-s17-stove/t-dish-kachumbari.webp",
+   "w": 392,
+   "h": 402
+  },
+  "t-dish-khichro-meat-lentil-and-wheat": {
+   "file": "cook/items-s17-stove/t-dish-khichro-meat-lentil-and-wheat.webp",
+   "w": 402,
+   "h": 406
+  },
+  "t-dish-gos-tarelo-meat-curry": {
+   "file": "cook/items-s17-stove/t-dish-gos-tarelo-meat-curry.webp",
+   "w": 405,
+   "h": 408
+  },
+  "t-toaster": {
+   "file": "cook/items-s17-stove/t-toaster.webp",
+   "w": 403,
+   "h": 321
+  },
+  "t-toast-slice": {
+   "file": "cook/items-s17-stove/t-toast-slice.webp",
+   "w": 346,
+   "h": 350
+  },
+  "t-measuring-cups-set": {
+   "file": "cook/items-s17-stove/t-measuring-cups-set.webp",
+   "w": 412,
+   "h": 401
+  },
+  "t-measuring-spoons": {
+   "file": "cook/items-s17-stove/t-measuring-spoons.webp",
+   "w": 361,
+   "h": 392
+  },
+  "t-kitchen-scale": {
+   "file": "cook/items-s17-stove/t-kitchen-scale.webp",
+   "w": 331,
+   "h": 399
+  },
+  "t-sieve": {
+   "file": "cook/items-s17-stove/t-sieve.webp",
+   "w": 330,
+   "h": 427
+  },
+  "t-piping-bag": {
+   "file": "cook/items-s17-stove/t-piping-bag.webp",
+   "w": 365,
+   "h": 406
+  },
+  "t-cake-server": {
+   "file": "cook/items-s17-stove/t-cake-server.webp",
+   "w": 378,
+   "h": 401
+  },
+  "t-cake-knife": {
+   "file": "cook/items-s17-stove/t-cake-knife.webp",
+   "w": 398,
+   "h": 401
+  },
+  "t-tool-whisk": {
+   "file": "cook/items-s17-stove/t-tool-whisk.webp",
+   "w": 379,
+   "h": 405
+  },
+  "t-tool-fork": {
+   "file": "cook/items-s17-stove/t-tool-fork.webp",
+   "w": 354,
+   "h": 399
+  },
+  "t-tool-butter-knife": {
+   "file": "cook/items-s17-stove/t-tool-butter-knife.webp",
+   "w": 354,
+   "h": 398
+  },
+  "t-tool-rubber-spatula": {
+   "file": "cook/items-s17-stove/t-tool-rubber-spatula.webp",
+   "w": 379,
+   "h": 408
+  },
+  "t-tool-corn-holder-husk": {
+   "file": "cook/items-s17-stove/t-tool-corn-holder-husk.webp",
+   "w": 388,
+   "h": 401
+  },
+  "t-biryani-pot-deg-with-lid": {
+   "file": "cook/items-s17-stove/t-biryani-pot-deg-with-lid.webp",
+   "w": 444,
+   "h": 391
+  },
+  "t-serving-platter": {
+   "file": "cook/items-s17-stove/t-serving-platter.webp",
+   "w": 393,
+   "h": 405
+  },
+  "t-spice-grinder": {
+   "file": "cook/items-s17-stove/t-spice-grinder.webp",
+   "w": 300,
+   "h": 296
+  },
+  "t-tool-serving-spoon": {
+   "file": "cook/items-s17-stove/t-tool-serving-spoon.webp",
+   "w": 382,
+   "h": 408
+  },
+  "f-coconut-chutney": {
+   "file": "cook/items-s17-stove/f-coconut-chutney.webp",
+   "w": 293,
+   "h": 434
+  },
+  "f-garlic-chutney": {
+   "file": "cook/items-s17-stove/f-garlic-chutney.webp",
+   "w": 301,
+   "h": 434
+  },
+  "f-mango-pickle": {
+   "file": "cook/items-s17-stove/f-mango-pickle.webp",
+   "w": 353,
+   "h": 380
+  },
+  "f-lime-pickle": {
+   "file": "cook/items-s17-stove/f-lime-pickle.webp",
+   "w": 353,
+   "h": 380
+  },
+  "f-coconut-milk": {
+   "file": "cook/items-s17-stove/f-coconut-milk.webp",
+   "w": 367,
+   "h": 352
+  },
+  "f-honey": {
+   "file": "cook/items-s17-stove/f-honey.webp",
+   "w": 335,
+   "h": 405
+  },
+  "f-aubergine": {
+   "file": "cook/items-s17-stove/f-aubergine.webp",
+   "w": 259,
+   "h": 476
+  },
+  "f-cabbage": {
+   "file": "cook/items-s17-stove/f-cabbage.webp",
+   "w": 397,
+   "h": 385
+  },
+  "f-cauliflower": {
+   "file": "cook/items-s17-stove/f-cauliflower.webp",
+   "w": 406,
+   "h": 408
+  },
+  "f-green-beans": {
+   "file": "cook/items-s17-stove/f-green-beans.webp",
+   "w": 269,
+   "h": 474
+  },
+  "f-pumpkin-wedge": {
+   "file": "cook/items-s17-stove/f-pumpkin-wedge.webp",
+   "w": 392,
+   "h": 391
+  },
+  "f-coconut": {
+   "file": "cook/items-s17-stove/f-coconut.webp",
+   "w": 369,
+   "h": 432
+  },
+  "f-ripe-mango": {
+   "file": "cook/items-s17-stove/f-ripe-mango.webp",
+   "w": 346,
+   "h": 425
+  },
+  "f-plantain-bunch-matoke": {
+   "file": "cook/items-s17-stove/f-plantain-bunch-matoke.webp",
+   "w": 377,
+   "h": 427
+  },
+  "t-carrot-diced": {
+   "file": "cook/items-s17-stove/t-carrot-diced.webp",
+   "w": 375,
+   "h": 351
+  },
+  "t-cabbage-shredded": {
+   "file": "cook/items-s17-stove/t-cabbage-shredded.webp",
+   "w": 379,
+   "h": 388
+  },
+  "t-spinach-chopped": {
+   "file": "cook/items-s17-stove/t-spinach-chopped.webp",
+   "w": 387,
+   "h": 384
+  },
+  "t-okra-whole": {
+   "file": "cook/items-s17-stove/t-okra-whole.webp",
+   "w": 390,
+   "h": 365
+  },
+  "t-okra-sliced": {
+   "file": "cook/items-s17-stove/t-okra-sliced.webp",
+   "w": 363,
+   "h": 354
+  },
+  "t-aubergine-whole": {
+   "file": "cook/items-s17-stove/t-aubergine-whole.webp",
+   "w": 308,
+   "h": 398
+  },
+  "t-aubergine-cubed": {
+   "file": "cook/items-s17-stove/t-aubergine-cubed.webp",
+   "w": 366,
+   "h": 367
+  },
+  "t-fish-fillet-raw": {
+   "file": "cook/items-s17-stove/t-fish-fillet-raw.webp",
+   "w": 381,
+   "h": 367
+  },
+  "t-fish-fillet-fried": {
+   "file": "cook/items-s17-stove/t-fish-fillet-fried.webp",
+   "w": 406,
+   "h": 370
+  },
+  "t-bhajia-raw-in-batter": {
+   "file": "cook/items-s17-stove/t-bhajia-raw-in-batter.webp",
+   "w": 385,
+   "h": 365
+  },
+  "t-bhajia-frying": {
+   "file": "cook/items-s17-stove/t-bhajia-frying.webp",
+   "w": 403,
+   "h": 379
+  },
+  "t-bhajia-fried-golden": {
+   "file": "cook/items-s17-stove/t-bhajia-fried-golden.webp",
+   "w": 398,
+   "h": 380
+  },
+  "t-maru-bhajia-potato-fried-golden": {
+   "file": "cook/items-s17-stove/t-maru-bhajia-potato-fried-golden.webp",
+   "w": 394,
+   "h": 388
+  },
+  "t-mandazi-shaped-raw": {
+   "file": "cook/items-s17-stove/t-mandazi-shaped-raw.webp",
+   "w": 402,
+   "h": 394
+  },
+  "t-mandazi-fried-golden": {
+   "file": "cook/items-s17-stove/t-mandazi-fried-golden.webp",
+   "w": 418,
+   "h": 409
+  },
+  "t-dish-keema-with-peas": {
+   "file": "cook/items-s17-stove/t-dish-keema-with-peas.webp",
+   "w": 388,
+   "h": 396
+  },
+  "t-dish-mogo-in-coconut": {
+   "file": "cook/items-s17-stove/t-dish-mogo-in-coconut.webp",
+   "w": 387,
+   "h": 394
+  },
+  "t-dish-bharazi-pigeon-peas-in-coconut": {
+   "file": "cook/items-s17-stove/t-dish-bharazi-pigeon-peas-in-coconut.webp",
+   "w": 389,
+   "h": 395
+  },
+  "t-dish-matoke": {
+   "file": "cook/items-s17-stove/t-dish-matoke.webp",
+   "w": 386,
+   "h": 397
+  },
+  "t-dish-mandazi-with-chai": {
+   "file": "cook/items-s17-stove/t-dish-mandazi-with-chai.webp",
+   "w": 400,
+   "h": 402
+  },
+  "t-dish-chevdo": {
+   "file": "cook/items-s17-stove/t-dish-chevdo.webp",
+   "w": 389,
+   "h": 396
+  },
+  "t-dish-dhokra": {
+   "file": "cook/items-s17-stove/t-dish-dhokra.webp",
+   "w": 389,
+   "h": 405
+  },
+  "t-dish-kadhi": {
+   "file": "cook/items-s17-stove/t-dish-kadhi.webp",
+   "w": 386,
+   "h": 397
+  },
+  "t-dish-masala-fish": {
+   "file": "cook/items-s17-stove/t-dish-masala-fish.webp",
+   "w": 401,
+   "h": 409
+  },
+  "t-dish-bhinda-bateta-okra-and-potato": {
+   "file": "cook/items-s17-stove/t-dish-bhinda-bateta-okra-and-potato.webp",
+   "w": 386,
+   "h": 396
+  },
+  "t-dish-ringra-bateta-aubergine-and-potato": {
+   "file": "cook/items-s17-stove/t-dish-ringra-bateta-aubergine-and-potato.webp",
+   "w": 391,
+   "h": 397
+  },
+  "t-dish-raita": {
+   "file": "cook/items-s17-stove/t-dish-raita.webp",
+   "w": 391,
+   "h": 396
+  },
+  "t-dish-dates-on-a-plate": {
+   "file": "cook/items-s17-stove/t-dish-dates-on-a-plate.webp",
+   "w": 390,
+   "h": 410
+  },
+  "t-dish-dabeli": {
+   "file": "cook/items-s17-stove/t-dish-dabeli.webp",
+   "w": 399,
+   "h": 411
+  },
+  "t-dish-kalyo-pau": {
+   "file": "cook/items-s17-stove/t-dish-kalyo-pau.webp",
+   "w": 428,
+   "h": 429
+  },
+  "t-dish-vitumbua": {
+   "file": "cook/items-s17-stove/t-dish-vitumbua.webp",
+   "w": 403,
+   "h": 417
+  }
+ },
+ "_report": [
+  "fa01: 8 piece(s) by cell for 8 name(s)",
+  "fj03: 8 piece(s) by cell for 8 name(s)",
+  "fj07: 8 piece(s) by cell for 8 name(s)",
+  "fv02: 8 piece(s) by cell for 8 name(s)",
+  "tf01: 9 piece(s) by cell for 9 name(s)",
+  "tf05: 9 piece(s) by cell for 9 name(s)",
+  "tk02: 9 piece(s) by cell for 9 name(s)",
+  "tb04: 9 piece(s) by cell for 9 name(s)",
+  "td03: 9 piece(s) by cell for 9 name(s)",
+  "fj09: 6 piece(s) by cell for 6 name(s)",
+  "td05: 9 piece(s) by cell for 9 name(s)",
+  "fj01: 8 piece(s) by cell for 8 name(s)",
+  "fj04: 8 piece(s) by cell for 8 name(s)",
+  "fj08: 8 piece(s) by cell for 8 name(s)",
+  "tb01: 9 piece(s) by cell for 9 name(s)",
+  "tf02: 9 piece(s) by cell for 9 name(s)",
+  "td01: 9 piece(s) by cell for 9 name(s)",
+  "tk03: 9 piece(s) by cell for 9 name(s)",
+  "tb05: 6 piece(s) by cell for 6 name(s)",
+  "td04: 9 piece(s) by cell for 9 name(s)",
+  "fv04: 8 piece(s) by cell for 8 name(s)",
+  "td06: 7 piece(s) by cell for 7 name(s)",
+  "fk01: 5 piece(s) by cell for 5 name(s)",
+  "fj05: 8 piece(s) by cell for 8 name(s)",
+  "fp01: 8 piece(s) by cell for 8 name(s)",
+  "tb02: 9 piece(s) by cell for 9 name(s)",
+  "tf03: 9 piece(s) by cell for 9 name(s)",
+  "td02: 9 piece(s) by cell for 9 name(s)",
+  "fp02: 6 piece(s) by cell for 6 name(s)",
+  "tf06: 9 piece(s) by cell for 9 name(s)",
+  "tk04: 9 piece(s) by cell for 9 name(s)",
+  "tf08: 9 piece(s) by cell for 9 name(s)",
+  "fj02: 8 piece(s) by cell for 8 name(s)",
+  "fj06: 8 piece(s) by cell for 8 name(s)",
+  "fv01: 8 piece(s) by cell for 8 name(s)",
+  "tb03: 9 piece(s) by cell for 9 name(s)",
+  "tf04: 9 piece(s) by cell for 9 name(s)",
+  "tk01: 9 piece(s) by cell for 9 name(s)",
+  "fv03: 8 piece(s) by cell for 8 name(s)",
+  "tf07: 9 piece(s) by cell for 9 name(s)",
+  "tk05: 9 piece(s) by cell for 9 name(s)",
+  "tf09: 6 piece(s) by cell for 6 name(s)"
+ ]
+}
