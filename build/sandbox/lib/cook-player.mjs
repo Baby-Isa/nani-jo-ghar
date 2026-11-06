@@ -19,7 +19,8 @@ const STIR = { slow: 0.45, quick: 1.4, default: 0.7, spill: 3.4 };
 
 // mode: "fair" does what the game asks. "mistake" makes the wrong pick, tap or amount where the mini-game allows it (a wrong item, the
 // wrong greeting, one too many, a decoy sliced, the wrong stir speed), then goes on to the end. "hint" asks for help: it leaves the first
-// thing alone until the hesitation hint and glow come (the lab is played unguided), presses the light bulb, and peeks at a closed card.
+// thing alone until the hesitation hint and glow come (the lab is played unguided) and peeks at a closed card (no bulb: the bulbs
+// were retired, Zafar, 6 Nov).
 export class CookPlayer {
   constructor(page, rec, { speed = 3, prefix = "", mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix; this.mode = mode;
@@ -30,13 +31,12 @@ export class CookPlayer {
     this.tookBack = 0;
     this.hints = mode === "hint";
     this.seen = new Set();
-    // the "?" and bulb round (tryHelp) is the fair, mistake and take-back players' own: a driver's timing must not wait for it
+    // the "?" round (tryHelp) is the fair, mistake and take-back players' own: a driver's timing must not wait for it
     this.lastKey = null; this.repeats = 0; this.helped = this.hints || !["fair", "mistake", "takeback"].includes(mode); this.intros = 0;
     this.covers = new Set();
     this.taps = 0;
     this.made = new Set();   // the mistakes already made, by kind
     this.waited = false;     // the hesitation wait, once
-    this.bulbs = 0;          // bulb presses in hint mode
     this.peeks = 0;
     this.badges = [];        // what the end card showed, for the report
     // the drivers' bookkeeping: wrongs made (n) and at which step (key), the chai pans' asked items, the last page flags
@@ -451,7 +451,7 @@ export class CookPlayer {
   // the "?" and the order card's helpers, once per run (the first tap-kind moment)
   async tryHelp() {
     if (this.helped || !(await this.page.$("#btn-help"))) return;
-    // an evidence page presses them only for a probe about the "?" or the bulb (lib/evidence-probe.mjs wantsHelp: SH-10, PAN-10)
+    // an evidence page presses it only for a probe about the "?" (lib/evidence-probe.mjs wantsHelp: SH-10, PAN-10)
     const ev = this.page.__njgEvidence;
     if (ev && ev.wantsHelp && !ev.wantsHelp()) { this.helped = true; return; }
     await sleep(400);
@@ -464,14 +464,6 @@ export class CookPlayer {
       await this.once("help-open");
       await this.page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(200);
-    }
-    const bulb = await this.page.$("#btn-bulb");
-    if (bulb && (await bulb.isVisible()) && (await this.page.$("#mission:not(.hidden):not(.stamped)"))) {
-      await bulb.click().catch(() => {});
-      await sleep(120);
-      if (await this.page.$("#side.english")) await this.once("bulb-english");
-      const ms = await this.page.evaluate("Cook.UI.bulbMs() / Cook.speed");
-      await sleep(ms + 400);
     }
   }
 
@@ -677,8 +669,7 @@ export class CookPlayer {
     while (Date.now() - t1 < 5000) { const cur = await this.exp(); if (!cur || cur.kind !== "stir") break; await sleep(50); }
   }
 
-  // the hint player's moves, at the first things it is asked to do: wait for the hesitation hint and glow, press the light bulb (three
-  // times over the run: the end card's bulb goes dim), peek at a folded card
+  // the hint player's moves, at the first things it is asked to do: wait for the hesitation hint and glow, peek at a folded card
   async hintMoves(e) {
     const p = this.page;
     const calm = ["tap", "hold", "count", "more", "swipe", "roll"].includes(e.kind); // not the timed gestures: a wait would cost the window
@@ -709,20 +700,6 @@ export class CookPlayer {
         await sleep(300);
         await this.once("peek-open", { settle: 0 });
         await sleep(300);
-      }
-    }
-    if (calm && this.bulbs < 3 && !this.bulbBusy) {
-      const bulb = await p.$("#btn-bulb");
-      if (bulb && (await bulb.isVisible()) && (await p.$("#mission:not(.hidden):not(.stamped)"))) {
-        this.bulbBusy = true;
-        try {
-          await bulb.click({ force: true }).catch(() => {});
-          this.bulbs++;
-          await sleep(120);
-          if (await p.$("#side.english")) await this.once("bulb-english", { settle: 0 });
-          const ms = await p.evaluate("Cook.UI.bulbMs() / Cook.speed");
-          await sleep(ms + 400);
-        } finally { this.bulbBusy = false; }
       }
     }
   }
