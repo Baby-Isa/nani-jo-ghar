@@ -72,22 +72,85 @@ test("pixel check on the repo: today's four failures are red, their re-cuts gree
   for (const p of red) assert.ok([...KNOWN].some((k) => k.startsWith(`pixel|${p}|`)), `${p} is still shipped: it is on the known list until it is wired to its re-cut`);
 });
 
-// Zafar, 5 Nov (pack s17-pc2's first run stopped: "Files you created cannot be uploaded"): every download-mode block gets its
-// references from GitHub as the runner's own screenshots (never a file it fetched, never Zafar attaching), and downloads the kept
-// images at the end in one go from ChatGPT's Library (tick the first image's bottom-right box, then each other's on hover)
-test("art block (download mode): references by the screenshot route, the Library's bulk download", () => {
-  const moving = readFileSync(join(HERE, "templates", "moving-download.txt"), "utf8");
-  assert.match(moving, /the screenshot route/);
-  assert.match(moving, /Take a screenshot of that tab/);
-  assert.doesNotMatch(moving, /Fetch each reference once into your cloud workspace/, "the refused route (a fetched file uploaded) is gone");
-  assert.doesNotMatch(moving, /please attach|attach (these|the) (two )?files to this chat/i);
-  const block = readFileSync(join(HERE, "templates", "block.txt"), "utf8");
-  assert.match(block, /A reference is never a reason to stop or to ask him/);
+// ART-42 (Zafar, 6 Nov night, decision 4; reopened from 5 Nov): a download-mode run's references are files Zafar drags into the
+// Chrome chat with the block, from one zip artblock.py writes (sources/art/<pack>/refs.zip); the runner uploads those into
+// ChatGPT, asks once at the start for a missing one, and kept images still go in by "Add from library" and come out by the
+// Library's bulk download (tick the first image's bottom-right box, then each other's on hover). No screenshot route, and no
+// talk of checks, refusals or ways round them.
+const CLINIC = join(HERE, "specs", "s17-clinic-redo.run.yaml");
+const blockOf = (spec, extra = "") => JSON.parse(spawnSync("python3", ["-c", `import sys, json, zipfile, io; sys.path.insert(0, ${JSON.stringify(HERE)}); import artblock as B, artspec as S
+sp = S.load(${JSON.stringify(spec)})
+${extra}
+t, blocked, n, z = B.build(sp)
+names = zipfile.ZipFile(io.BytesIO(B.zip_bytes(z))).namelist() if z else []
+print(json.dumps({"t": t, "z": z, "names": names, "same": B.zip_bytes(z) == B.zip_bytes(z), "zip": B.zip_paths(sp)[1]}))`], { encoding: "utf8", maxBuffer: 1 << 24 }).stdout);
+test("art block (download mode, ART-42): references from one zip Zafar drags in with the block; no screenshot route, no workaround words", () => {
+  const { t, z, names, same, zip } = blockOf(CLINIC);
+  const first = t.split("\n")[0];
+  assert.match(first, /^BEFORE YOU SEND THIS \(Zafar\): download the run's reference pictures, https:\/\/raw\.githubusercontent\.com\/Baby-Isa\/nani-jo-ghar\/claude\/exciting-sagan-cz9d5t\/sources\/art\/s17-clinic-redo\/refs\.zip, unzip it, and drag its 5 files/, "the block's first line is the zip line");
+  assert.deepEqual(names, Object.keys(z), "the zip holds exactly the files the block lists, by the names the run order uses");
+  assert.deepEqual(names, ["style-anchor.png", "clinic-style.png", "toothbrush-angle.png", "drop-machine-old.png", "house-swatch.png"]);
+  assert.ok(same && zip === "sources/art/s17-clinic-redo/refs.zip");
+  const moving = t.slice(t.indexOf("MOVING IMAGES"), t.indexOf("THE RUNNER LOOP"));
+  assert.match(moving, /upload exactly the files its line names, in the order it names them, from the files attached to this chat/);
+  assert.match(moving, /before the first prompt, check that every file in that list is attached here\. If one is missing, ask Zafar once, now/);
+  assert.match(moving, /choose "Add from library"/, "kept images still go in from ChatGPT's library");
+  assert.doesNotMatch(moving, /screenshot|refus|safety|classifier|always works|get(ting)? round|work ?around|never ask/i);
+  assert.doesNotMatch(t, /screenshot route|safety|classifier|this route always works|never ask Zafar|Take a screenshot of that tab/i);
+  assert.match(t, /^ house-swatch\.png +\(repo: build\/tools\/art\/data\/house-swatch\.png\)/m);
   const py = readFileSync(join(HERE, "artblock.py"), "utf8");
   assert.match(py, /tick the small check box in its bottom-right corner/);
   assert.match(py, /every other image shows its own check box in its bottom-right corner when you hover over it/);
-  const loop = readFileSync(join(HERE, "templates", "runner-loop.txt"), "utf8");
-  assert.doesNotMatch(loop, /attach the local copies/);
+  for (const f of ["moving-download.txt", "block.txt", "runner-loop.txt"]) assert.doesNotMatch(readFileSync(join(HERE, "templates", f), "utf8"), /screenshot route|safety|classifier|always works|attach the local copies/i, f);
+  // the committed zip is the one the tool writes today (push it with the block)
+  const r = spawnSync("python3", ["-c", `import sys; sys.path.insert(0, ${JSON.stringify(HERE)}); import artblock as B, artspec as S
+sp = S.load(${JSON.stringify(CLINIC)}); z = B.build(sp)[3]; print(open(B.os.path.join(B.REPO, B.zip_paths(sp)[1]), "rb").read() == B.zip_bytes(z))`], { encoding: "utf8" });
+  assert.equal(r.stdout.trim(), "True", "sources/art/s17-clinic-redo/refs.zip is current: rerun artblock.py on the clinic spec");
+});
+
+// ART-58 (Zafar, 6 Nov night): the block reads the plan's own "## N. The prompts" heading, and --check reads every line's filled
+// prompt for Wada colour names: one outside the house family, or colours no one combination holds, fail unless the line names
+// its colour_exception (printed in the block for the runner).
+const colourCase = (lines, heading = "## 7. The prompts") => {
+  const dir = mkdtempSync(join(tmpdir(), "artcolourcase-"));
+  writeFileSync(join(dir, "plan.md"), `# A plan\n\n${heading}\n\n#### CS. A sheet\n\`\`\`\nA sheet of {ITEMS}.\n\`\`\`\n`);
+  const spec = { pack: "t-colours", title: "t", plan: join(dir, "plan.md"), plan_branch: "main", repo: "Baby-Isa/nani-jo-ghar", raw_branch: "main",
+    dest: "sources/art/t-colours", real_people: false, house: { attach: true }, delivery: "download", runner: { windows: 1, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25 },
+    refs: { "style-anchor.png": "sources/art/style-anchor-v1.png" }, people: {}, limb_sets: {}, templates: {}, limb_templates: {},
+    lines: Object.fromEntries(Object.entries(lines).map(([id, l], i) => [id, { prompt: "CS", attach: ["style-anchor.png"], save: `${id.toLowerCase()}-v1.png`, check: "SHEET", slots: { ITEMS: l.items }, ...(l.exception ? { colour_exception: l.exception } : {}) }])),
+    parts: [{ id: "A", title: "A", items: [{ lines: Object.keys(lines) }] }], checks: { SHEET: { text: "a sheet" } }, passfail: ["text"] };
+  writeFileSync(join(dir, "spec.yaml"), JSON.stringify(spec));
+  const r = spawnSync("python3", [join(HERE, "artblock.py"), "--spec", join(dir, "spec.yaml"), "--check"], { encoding: "utf8" });
+  return { status: r.status, out: r.stdout + r.stderr, spec: join(dir, "spec.yaml") };
+};
+test("art block (ART-58): an off-house colour and a mixed sheet fail --check; one combination passes; a named exception passes and reaches the block", () => {
+  const ok = colourCase({ OK1: { items: "a cap in soft Venice Green and a lid in soft Chromium Green (combination 283), a white box, a red apple" } });
+  assert.equal(ok.status, 0, ok.out);
+  const off = colourCase({ OFF1: { items: "gloves in soft Olympic Blue" } });
+  assert.equal(off.status, 1);
+  assert.match(off.out, /OFF1: names Olympic Blue, outside the house family/);
+  const mixed = colourCase({ MIX1: { items: "a jug with a soft Venice Green handle and a comb in soft Yellow Ocher" } });
+  assert.equal(mixed.status, 1, "two house colours from different combinations on one picture");
+  assert.match(mixed.out, /MIX1: Venice Green and Yellow Ocher are in no one Wada combination/);
+  assert.doesNotMatch(mixed.out, /outside the house family/);
+  const plasters = "plasters in soft Chromium Green, soft Olympic Blue, soft Carmine Red and soft Yellow Ocher";
+  const four = colourCase({ CA01: { items: plasters } });
+  assert.match(four.out, /CA01: names Olympic Blue[\s\S]*CA01: Chromium Green, Olympic Blue, Carmine Red and Yellow Ocher are in no one Wada combination/);
+  const exc = colourCase({ CA01: { items: plasters, exception: "a colour-coded set: the colours are the game" } });
+  assert.equal(exc.status, 0, exc.out);
+  const { t } = blockOf(exc.spec);
+  assert.match(t, /^CA01 \(prompt CS\) \| [^\n]*\| SHEET \| colour exception: a colour-coded set: the colours are the game \| slots: /m, "the exception is on the runner's line");
+  assert.match(t, /- A line with "colour exception:" keeps the colours its prompt names/);
+  const empty = colourCase({ CA01: { items: plasters, exception: " " } });
+  assert.match(empty.out, /CA01: colour_exception needs its reason/);
+});
+test("art block (ART-58): the prompts' section number comes from the plan's own heading; a plan without one fails --check", () => {
+  const seven = colourCase({ OK1: { items: "a cap in soft Venice Green" } });
+  assert.match(blockOf(seven.spec).t, /and read section 7, "The prompts"/);
+  assert.match(blockOf(CLINIC).t, /and read section 4, "The prompts"/, "the clinic plan's prompts are its section 4");
+  const none = colourCase({ OK1: { items: "a cap in soft Venice Green" } }, "## The words to paste");
+  assert.equal(none.status, 1);
+  assert.match(none.out, /the plan has no "## N\. The prompts" heading/);
 });
 
 // The colour and look tool (artcolour.py; Zafar's yes, 6 Nov): each check fires on its own synthetic picture, a clean one passes
@@ -171,7 +234,7 @@ print("\\n=====\\n".join([a, b, c]))`;
   assert.match(plain, /HOUSE LOOK[^\n]*\n- House colours, from Sanzo Wada's A Dictionary of Color Combinations \(combinations 283, 249, 311 and 200\): [^\n]*Pale Burnt Lake/);
   assert.match(plain, /- Edge finish: clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left\./);
   assert.doesNotMatch(plain, /house-swatch/, "the swatch strip is attached only when a spec asks (house: {attach: true})");
-  assert.match(attach, /house-swatch\.png RAW \+ build\/tools\/art\/data\/house-swatch\.png/);
+  assert.match(attach, /house-swatch\.png +\(repo: build\/tools\/art\/data\/house-swatch\.png\)/, "a download-mode pack's strip goes in its zip");
   assert.match(attach, /The one addition allowed: the HOUSE LOOK sentence/);
   assert.doesNotMatch(none, /HOUSE LOOK/);
   // The header names the pack's own prompt IDs, and step 3 cites no PEOPLE table for a pack without people (stove-400 second read, 6 Nov)
@@ -368,7 +431,7 @@ if not had:
 print(json.dumps({"t": t, "words": C.combination_words(151), "n": n, "k": len(C.combos()[151])}))`;
   const o = JSON.parse(spawnSync("python3", ["-c", py], { encoding: "utf8", maxBuffer: 1 << 24 }).stdout);
   assert.ok(o.t.includes(`combination 151, picked for these items`) && o.t.includes(o.words), "the block names the pack's combination in words");
-  assert.match(o.t, /wada-151\.png RAW \+ build\/tools\/art\/data\/swatches\/wada-151\.png/);
+  assert.match(o.t, /wada-151\.png +\(repo: build\/tools\/art\/data\/swatches\/wada-151\.png\)/);
   assert.match(o.t, /Attach wada-151\.png/);
   assert.equal(o.n, o.k + 1, "the strip is the combination's colours on white, no text");
   assert.match(o.t, /ONE Wada combination/, "every block says one combination per picture");

@@ -14,11 +14,12 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artblock.py --spec build/tools/art/specs/<pack>.run.yaml
    ```
    A redo: `--redo docs/design-language/art-plans/<pack>-redo-list.yaml` gives a block of just those lines.
-3. **One paste block, nothing else for him to do** (ART-29, Zafar, 28 Oct: "all artworks are given to me a single paste blocks for claude in chrome will all images and things it needs uploaded to github or wherever it can access"): every reference is pushed to the branch the block reads (`--check` refuses one that isn't, and `refs_from: library`). Put it to Zafar: image count, expected redos, time; he pastes it into Chrome as is. No art run without his go.
+   `--check` reads every line's filled prompt for Wada colour names (ART-58): a colour outside the house family (or the pack's `house: {combination: N}`), or colours no one combination holds, fail unless the line says `colour_exception: <why>` (a colour-coded set: the colours are the game), which the block prints for the runner. It also takes the prompts' section number from the plan's `## N. The prompts` heading.
+3. **One paste block and one zip** (ART-29, Zafar, 28 Oct: "all artworks are given to me a single paste blocks for claude in chrome will all images and things it needs uploaded to github or wherever it can access"; ART-42, decision 4, 6 Nov night): a download-mode block writes the run's references to `sources/art/<pack>/refs/` and `refs.zip`, and its first line gives Zafar the zip's raw link: he downloads it, unzips it and drags the files into the Chrome chat with the block; the runner uploads those into ChatGPT and asks once, at the start, if one is missing. Push the zip with the block, then `--check --pushed` must pass. Put it to Zafar: image count, expected redos, time. No art run without his go.
 
 ## While it runs
-- The runner loop in the block keeps N windows generating and commits kept images straight to `sources/art/<pack>/` on `main` (no downloads, no manual steps).
-- The block fetches the references from GitHub itself. If Chrome refuses the attach, find another route that needs nothing from Zafar (ART-29: never ask him to upload); `refs_from: library` is retired.
+- The runner loop in the block keeps N windows generating. In download mode (every pack since s08c) kept images stay in their ChatGPT chats, go into later prompts by "Add from library", and come down at the end in one go from ChatGPT's Library; Zafar pushes them.
+- References are only the files from the zip, attached with the block (ART-42). If a run stops at an upload anyway, fix the tool and its tests (`artcheck.test.mjs`), then reissue the block; `refs_from: library` is retired.
 - Count landed images at each check-in: `node build/tools/ops/checkin.mjs --art sources/art/<pack> --art-target <n>`.
 
 ## When images land
