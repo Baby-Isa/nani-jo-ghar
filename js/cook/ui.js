@@ -2141,6 +2141,11 @@
     };
     const sayPart = async (who, line) => {
       const S = Cook.scene;
+      // CK-59 (Zafar, 6 Nov night: "the second person ordering didn't say milk"): the line names who says it, so the said-again
+      // rule (js/cook/words.js Lang.saidAgain) keeps one person from repeating themselves but lets the next say their own words
+      // (a part made of parts is said part by part by the read-along: each names its speaker too)
+      const byWho = (l) => (l && typeof l === "object" ? Object.assign({}, l, { by: who }, Array.isArray(l.parts) ? { parts: l.parts.map(byWho) } : {}) : l);
+      line = byWho(line);
       if (S && S.chars && S.chars[who] && S.talk) return S.talk(who, line, { ms: Cook.readMs(Lang.plain(line)) * 0.6 });
       // (nobody at the counter to say it: the card's own read-along)
       return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
@@ -2240,9 +2245,14 @@
           if (skipped || token !== Cook.run) return;
           const r = p.row;
           const item = r && m.away.has(r);
+          // CHAI-96 (Zafar, 6 Nov night: "any item that goes in the tea except for water and tea is listed ... saffron style tea and all
+          // the other style teas as well"): the rows a headline says for itself ("Muke elchi waari chai khape" says the elchi row,
+          // Order.sentence's inHead) pop as their item cards while it is said, as milk's does; water and tea leaves are on the card
+          // only (unsaid), never in a part's rows. The sentence is the engine's, unchanged: the word is said once, in the headline
+          const folded = ((p.line && p.line.rows) || []).filter((x) => x && x !== r && !x.head && !x.no && !x.unsaid && m.away.has(x));
           if (!box) return;
           box.innerHTML = "";
-          if (item && m.headOnly && m.headOnly.delete(who)) {
+          if ((item || folded.length) && m.headOnly && m.headOnly.delete(who)) {
             // SH-180 (the judge, 3 Nov: the card went from its headline to three open slots in one step): its height eases open, as the
             // said card's fold does (foldGlide)
             const listO = $("#mission");
@@ -2251,16 +2261,16 @@
             renderOrder(); // (SH-171: the card opens, its slots empty, as the first item is said)
             if (listO) foldGlide(listO, hO, topO, () => listO.scrollTop);
             // (Zafar, 2 Nov: the row opens already scrolled so the first item's slot is whole, the one before it at the left)
-            const first = rowElOf(who, r);
+            const first = rowElOf(who, item ? r : folded[0]);
             if (first && OCard() && OCard().glideTo) OCard().glideTo(first, { lead: true, instant: true });
             // (SH-191: the card has grown as it opened: cut at the panel's foot, the panel glides up until it shows whole)
             if (first) UI.followCard(first.closest(".oc-card"));
             await Cook.wait(260);
           }
-          if (item) {
-            const w = UI.wordOf(r, { size: 240, written: true });
+          const popRow = (x) => {
+            const w = UI.wordOf(x, { size: 240, written: true });
             if (w && s14) {
-              const slot = rowElOf(who, r);
+              const slot = rowElOf(who, x);
               pop14(w, slot);
               if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot, { lead: true });
               // (SH-169, SH-191: the speaker's card whole in view, from its top when it has to move, so a folded card above it is
@@ -2270,19 +2280,40 @@
               if (card && list && list.contains(card)) UI.followCard(card);
               else if (card && card.scrollIntoView) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
             } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
-          }
-          if (!item && s14) {
+          };
+          if (!item && !folded.length && s14) {
             // (an item already on the card, said along: the speaker's card kept whole in view all the same, SH-191; the s14 look only
             // until each game's roll-out)
             const card = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
             if (card) UI.followCard(card);
           }
-          try {
-            // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
-            await Promise.all([sayPart(who, p.line), item && s14 ? Cook.wait(hold14(r)) : null]);
-          } catch (e) {
+          // (a run left meanwhile: the read stops at the loop's next check, as before)
+          const sayOk = (pr) => pr.catch((e) => {
             if (!(e instanceof Cook.Abort)) throw e;
+          });
+          let saying = null;
+          if (folded.length) {
+            // CHAI-96 (Zafar's yes, 6 Nov night: "the order card needs to open and it needs to go in while they order"): the card is
+            // open (above); the headline begins, and as its first word is heard each folded row's card pops, is held as milk's is
+            // (hold14) and flies into its slot while the rest of the headline is said; then the headline ends and milk follows as before
+            let off = null;
+            const heard = new Promise((res) => (off = Lang.onSayStart ? Lang.onSayStart((l) => l && l.by === who && res(true)) : null));
+            saying = sayOk(sayPart(who, p.line));
+            // (a headline with no voice, or one the voice can't start, is shown: its card pops after a beat all the same)
+            await Promise.race([heard, saying, sayOk(Cook.wait(1500))]);
+            if (off) off();
+            for (const x of folded) {
+              if (skipped || token !== Cook.run) break;
+              popRow(x);
+              await Cook.wait(s14 ? hold14(x) : 700);
+              if (skipped) break;
+              await land(x, who, false);
+              if (box) box.innerHTML = "";
+            }
           }
+          if (item && !skipped) popRow(r);
+          // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
+          await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null]);
           if (item && !skipped) await land(r, who, false);
           if (box) box.innerHTML = "";
           if (!skipped) await Cook.wait(120);
