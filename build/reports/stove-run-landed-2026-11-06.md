@@ -5,8 +5,8 @@ matched each sheet to its run line, cut every item, judged the cuts (by numbers 
 wired into the game.
 
 **In plain words.** Every sheet arrived: 42 of 42 lines, no duplicates, nothing I couldn't place. All 346 items are cut into
-`assets/cook/items-s17-stove/` (11 MB of small webp). **337 are usable now. 9 need a redo** for a wrong look (a closed tin that
-hides its flour, two cakes and a dabeli seen from the side, a squeeze bottle side-on, cassava chips drawn as crisps, and two
+`assets/cook/items-s17-stove/` (11 MB of small webp). **337 are usable now. 9 need a redo** for a wrong look (two closed tins that
+hide their flour and powder, two cakes and a dabeli seen from the side, a squeeze bottle side-on, cassava chips drawn as crisps, and two
 see-through things that took the magenta ground's pink). **None are missing.** The catch is the lids: **every jar landed with
 the pale oak lid the run asked for, not walnut.** 68 items carry that lid. They are fine as one batch, so they can be used as
 they are, or redone in walnut if Zafar wants walnut on the jars too (decision 1).
@@ -45,8 +45,8 @@ jar sheets after it.
 
 All 42 run lines landed once. The two "duplicates" (`Eight Spice Jars Grid` and `Eight Spice Jars Grid(1)`) are different sheets
 (FJ01 and FJ02); ChatGPT gave them the same title. Matched by content against the CSV's items in the run line's slot order (the
-spec's order, which differs from the CSV's row order on 9 sheets: FP01, FP02, FV03, TB05, TF07, TK03, TK05, TD04, and FK01's
-layout). Every sheet's items appear in its slot order; confidence high on all 42. The raw sheets now live in
+spec's order, which differs from the CSV's row order on 8 sheets: FP01, FP02, FV03, TB05, TF07, TK03, TK05, TD04; FK01's five
+items sit in a 4x2 grid with three cells empty). Every sheet's items appear in its slot order; confidence high on all 42. The raw sheets now live in
 `sources/art/s17-stove400/` under the run spec's save names, with `landed-mapping.csv` beside them (ChatGPT name, file, line).
 
 | ChatGPT's name | now | line | items |
@@ -194,7 +194,8 @@ light; the katoris are the same plain steel bowl throughout. The faults are the 
 - **One lid family:** the six lids measure `#e7a868` to `#e8ab6d` (ΔE under 1 between them), the same profile; they match the
   approved pantry-v2 jar family it was given.
 - **Light** from the upper left on all eight (artcolour's batch flags on FA01 are the bottle and carton's own caps and finish, and a
-  "camera height" spread that is the contents' tops, not the jars: the six jars are one jar by eye); matte glass with one soft highlight; no shadow, nothing behind; no text.
+  "camera height" spread that is the contents' tops, not the jars: the six jars are one jar by eye); matte glass with one soft highlight; no shadow,
+  nothing behind; no text.
 - **Salt** is coarse crystals, a little pearly; it reads apart from the fine sugar next to it, which is what the game needs.
 - **Heights:** all six jars the same drawn height, the bottle and carton to it, as asked (the game sets the token sizes).
 - **Verdict:** it passes the ANCHOR check and **can replace chai's eight shelf files now, if Zafar keeps pale oak.** For walnut,
@@ -230,8 +231,9 @@ Contact sheet of every cut (one row per sheet; red frame = redo, brown frame = w
    oak cuts stand in.
 2. **Walnut on the tool handles too** (daar churner, pastry brush, turner, spatula, spice grinder, butter brush)? Recommend: **yes,
    but only when those sheets are redone anyway** (TK02 is on the list); not a run of its own.
-3. **The seven look redos** (the closed atta and baking powder tins, the side-on cakes, dabeli and squeeze bottle, the cassava
-   chips, the pink corn cup and frying oil). Recommend: **yes**, in the same run as decision 1 (6 more images; the two tins ride on FJ04 and FJ08).
+3. **The nine look redos** (the closed atta and baking powder tins, the side-on cakes, dabeli and squeeze bottle, the cassava
+   chips, the pink corn cup and frying oil). Recommend: **yes**, in the same run as decision 1 (6 more images;
+   the two tins ride on FJ04 and FJ08).
 4. **The one-combination rule for food:** today 152 of 346 sit inside one Wada combination; dishes and mixed heaps can't. Recommend:
    **apply it to containers, tools and single ingredients, not to dishes or mixed heaps**; the real check (the other builder's)
    should say which.
@@ -268,4 +270,8 @@ Contact sheet of every cut (one row per sheet; red frame = redo, brown frame = w
   262 pass, 84 flag, 0 fail.
 - Redo block: `python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-stove400.run.yaml --redo
   docs/design-language/art-plans/s17-stove400-redo-list.yaml --out <scratch>`: "17 lines" written.
-CHECKS_PROOF
+- `node build/tools/review/checks.mjs` on the commit: unit 635 pass 0 fail; words, static, bump, specs, docs, fixlist, recordings
+  ok; **art** "346 picture(s): 308 pass, 38 flag, 0 fail" (the new pictures, no FAIL); **size** "live site 415 MB in 5379 files"
+  (the raw sheets, 83 MB, left `assets/`; the cuts add 11 MB); load 29/29. **leak** FAILed once ("snap: g1 level 1: oracle
+  100%"), on game code this step does not touch; `checks.mjs --only leak` straight after: "ok leak 20 configs at every level"
+  (and ok in the run before). A flaky sample, worth a row if it comes back.
