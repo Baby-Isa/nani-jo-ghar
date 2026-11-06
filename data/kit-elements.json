@@ -528,12 +528,10 @@
         "Onboard\\.RUNGS\\b",
         "Onboard\\.stuck\\b",
         "\\bG\\.PAUSE\\b",
-        "\\bBULB_PULSE\\b",
         "\\bhelpMs\\b",
-        "\\bbulbPulseMs\\b",
         "\\bLADDER\\b"
       ],
-      "rowWords": "help ladder|after the pause|stuck|hint rung|bulbs? pulse",
+      "rowWords": "help ladder|after the pause|stuck|hint rung|help comes",
       "places": {
         "index": {
           "none": "no step to be stuck at in the house"

@@ -77,7 +77,6 @@
     <span class="seg" id="stage" role="group" aria-label="Stage"><button type="button" data-v="S1">S1</button><button type="button" data-v="S2">S2</button></span>
     <span class="seg" id="rung" role="group" aria-label="Rung"><button type="button" data-v="1">R1 text</button><button type="button" data-v="2">R2 pictures</button><button type="button" data-v="3">R3 sound</button></span>
     <button type="button" class="lab go" id="play">Play</button>
-    <button type="button" class="lab" id="bulb" title="English for a moment (the light bulb)">💡</button>
   </div>
 
   <h2>Simulate the placements</h2>
@@ -247,7 +246,6 @@
     out.tested = !C.hasPlaceholder(ex, sp, { stage: opt.stage });
     say(fmt(out));
   }));
-  $("bulb").addEventListener("click", () => C.bulb());
   $("plus2").addEventListener("click", () => ((offset += 2 * 60 * 1000), paintState()));
   $("reset").addEventListener("click", () => {
     Save.clear("conversations");

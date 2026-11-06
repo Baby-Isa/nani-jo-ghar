@@ -24,7 +24,7 @@ The farm day waits until Cook and the clinic are right (Zafar, 21 Oct). There ar
    - at 0 s, a demo the first time;
    - at 5 s idle, spotlight plus the demo replayed (the 5 s spotlight: a rounded box hugging each live control plus a soft round glow from the item itself (Zafar, 22 Oct); several live controls each get their own, never one box round the group);
    - at 15 s, the real item demonstrates again, with the guide's line. It never does the step for them: the critic warned that teaches a 3-year-old to wait.
-   - The bulb stays everyone's help, whoever is playing (Zafar, 21 Oct).
+   - The help stays everyone's, whoever is playing (Zafar, 21 Oct); the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`).
    - Evidence: time-delay prompting (AFIRM). This replaces the level-based 7-15 s wait for the "where to tap" hint. Nani's bulb and her own lines keep their timing.
 4. **No Next and no ✓ Done anywhere** (Zafar, 22 Oct: "it's so bad we have to drop it"). Every step moves on by itself when complete; tap a placed item to take it back until the step moves on. **A count ticks the moment the right number is reached, and an extra tap doesn't land, in every game** (Zafar, 1 Nov, after play: "just to make it consistent ... it'll be confusing if one thing doesn't follow the rules that everything else follows"; he knows a child can tap until it ticks, and accepts it: there is so much counting that the child learns the numbers anyway). The same for amounts: half ticks when half is poured. This reverses the stillness close he gave earlier the same day.
 5. **Tap by default; drag only along a track or for rubbing.**

@@ -1,7 +1,8 @@
 /*
  * The design tokens in code (S13-A1; the kit review 2, decisions 2 and 8, Zafar 26 Oct). css/shared/tokens.css holds every
- * colour and motion number as a --njg-* variable; data/shared.json holds the help, bulb and bulb-pulse ladders. Code reads
- * them here and keeps no copy of its own (build/lint/static.mjs: jscolour, bulb).
+ * colour and motion number as a --njg-* variable; data/shared.json points at the central rules, whose hint waits are the help
+ * ladder. Code reads them here and keeps no copy of its own (build/lint/static.mjs: jscolour, hintwait). (The bulb and
+ * bulb-pulse tables went with the bulbs: Zafar, 6 Nov.)
  *
  *   Tokens.css(name)    the computed --njg-<name> on <html> ("" with no page, or before the kit's sheet has loaded)
  *   Tokens.hex(name)    "#e0a63a"        a colour token, for SVG and canvas
@@ -12,9 +13,8 @@
  *   Motion              the kit's four moves, read when asked (css/shared/focus.css draws them):
  *                         Motion.glow  {ms, radius, rgb, alpha, color}   (color: Phaser's 0xRRGGBB)
  *                         Motion.pulse {ms, scale}   Motion.hop {ms}   Motion.talk {ms, tilt}
- *   Tokens.ladder       {helpMs: [L1..L4], bulbMs: [L1..L5], bulbPulseMs}: bulb and pulse from data/shared.json, helpMs from the
- *                       central rules (data/rules.json levels.hintS through js/shared/rules.js; SH-155); until they have loaded
- *                       every field is null (the readers then wait: no help, no pulse; the page loads them at once)
+ *   Tokens.ladder       {helpMs: [L1..L4]}: from the central rules (data/rules.json levels.hintS through js/shared/rules.js;
+ *                       SH-155); until they have loaded it is null (the readers then wait: no help; the page loads them at once)
  *   Tokens.ready        a Promise of the ladder (both files in)
  *   Tokens.rules        the central rules' reader (window.Rules) once loaded; Tokens.rulesReady a Promise of it
  *
@@ -96,7 +96,7 @@
   /* ---------------- the ladders: data/shared.json, the hint waits from the central rules ---------------- */
   // SH-155 (Zafar, 29 Oct): the guide's hint waits moved to the central rules (data/rules.json levels.hintS, read through
   // js/shared/rules.js, their one reader); helpMs here is filled from it, so every reader of Tokens.ladder is unchanged
-  const EMPTY = { helpMs: null, bulbMs: null, bulbPulseMs: null };
+  const EMPTY = { helpMs: null };
   T.ladder = Object.assign({}, EMPTY);
   const take = (j) => {
     if (j && typeof j === "object") for (const k of Object.keys(EMPTY)) if (k !== "helpMs" && j[k] != null) T.ladder[k] = j[k];

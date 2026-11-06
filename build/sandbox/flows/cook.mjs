@@ -20,7 +20,7 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
 }
 
 // mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end), "hint" (the unguided lab:
-// waits for the hesitation hint and glow, presses the light bulb, peeks at a closed card) or "takeback" (E14: once something is placed
+// waits for the hesitation hint and glow, peeks at a closed card) or "takeback" (E14: once something is placed
 // and the station offers it, take it back, then carry on to the end)
 // speed: Cook's test speed (3, the default, about 4x quicker to run); 1 plays at a child's pace, so the voice's timing
 // against the stage ends is the real one (S04-A, the contract's voice check: "#speed1")
@@ -68,7 +68,7 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       if (await page.evaluate("(() => { const w = document.querySelector('.njg-results .rs-words'); return !!w && w.getBoundingClientRect().height > 1; })()").catch(() => false)) await P.once("results-words", { settle: 600 });
       await sleep(400);
       await rec.state("result");
-      ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made], tookBack: P.tookBack };
+      ctx.extra = { badges: P.badges, peeks: P.peeks, mistakes: [...P.made], tookBack: P.tookBack };
       // #takeback (E14, R4): the station took something back and the round still ran to its end; a station that never
       // offers a take-back is noted (a gap for the regression list), not failed
       if (mode === "takeback" && !P.tookBack) rec.note("take-back: this station offered none (no njgTest.cook.expectation().undo before Done)");

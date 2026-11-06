@@ -1,7 +1,7 @@
 /*
  * The window ride on a trip day (js/shared/window-ride.js: the view out of the car's window, the road going by; data/day.json
  * window.rides). The shared frame: Nani's guide box at the top of the sidebar (her face = replay, her call written as she says
- * it, the bulb), the list of what to find under it, the play area the view out of the window.
+ * it; no bulb: the bulbs were retired, Zafar, 6 Nov), the list of what to find under it, the play area the view out of the window.
  *   RIDE-09 (Zafar, 22 Oct: "dive straight into this to save on screens"; "on the left there's the three items you have to find
  *   ... the first item is an expanded tablet, basically like that item card ... when you complete it, it collapses up, just
  *   leaves you with the word ... and the second item expands"): no order pop-up; the list on the left, the one to find now open
@@ -80,49 +80,27 @@ export async function runWindow(el, api, day) {
   side.appendChild(cardBox);
 
   let current = -1;
-  let hints = 0;
-  let bulbOn = false;
   let speaking = null; // a speed line on show in the guide box
   const G = window.NaniGuide;
   const guide = G
     ? G.mount(guideEl, {
         face: url(data.door.naniFace),
-        bulb: url("assets/ui/results/icon-bulb.webp"),
         onReplay: (btn) => {
           if (current < 0) return;
           btn.classList.add("on");
           api.say(asks[current], { who: "nani", min: false }).then(() => btn.classList.remove("on"));
         },
-        onBulb: () => {
-          // (between groups: the one to find now, the open card's)
-          const at = current >= 0 ? current : openAt;
-          if (at < 0 || bulbOn) return;
-          hints++;
-          bulbOn = true;
-          guide.set(`<span class="bulb-en" data-bulb-en>${api.esc(asks[at].en)}</span>`);
-          setTimeout(() => {
-            bulbOn = false;
-            showCall(current);
-          }, 5000 / api.speed);
-        },
       })
     : null;
-  // SH-96 (contract-25): the light bulb pulses once the child has done nothing for the guide's BULB_PULSE (15-20 s), as in every game;
-  // the slower ride (RIDE-03) leaves long stretches between finds
-  // (the page's idle clock: the door starts it, so the child's Ha! is its last action, never the page's load)
+  // (the bulb and its pulse are gone: Zafar, 6 Nov, "remove the bulbs from everywhere"; the ride's own help is the asked thing's glow
+  // after its pause, data/day.json window.rides hintMs. The page's idle clock still runs: the door starts it)
   if (G && G.watch) G.watch();
-  const bulbT = G
-    ? setInterval(() => {
-        if (G.watch) G.watch();
-        G.pulseBulbs(G.idleMs() >= G.BULB_PULSE); // (the ONE table's bulbPulseMs, data/shared.json; Infinity until it has loaded)
-      }, 250)
-    : 0;
   const html = (ln) => {
     const n = api.render(ln, { cls: "day-inline" });
     return n.innerHTML;
   };
   const showCall = (i) => {
-    if (!guide || bulbOn) return;
+    if (!guide) return;
     if (speaking && i < 0) return guide.set(html(speaking), { rec: !speaking.ok });
     // nothing asked this moment: her box keeps the question of the one to find now (the open card's), never empty
     const at = i >= 0 ? i : openAt;
@@ -308,7 +286,7 @@ export async function runWindow(el, api, day) {
           showCall(-1);
         }
       },
-      onEnd: (res) => resolve(Object.assign(res, { hints: (res.hints || 0) + hints })),
+      onEnd: (res) => resolve(Object.assign(res, { hints: res.hints || 0 })),
     });
     // (while the help shows the first find, the ride wants nothing of the player: the finger does it)
     api.test.expect(() => (helping ? { kind: "wait", help: true } : r.expect()));
@@ -317,8 +295,6 @@ export async function runWindow(el, api, day) {
     r.start();
   });
   window.Day.rideResult = result;
-  clearInterval(bulbT);
-  if (G) G.pulseBulbs(false);
   if (LC && LC.stageEnd) LC.stageEnd("day:window");
   api.test.state("day/window-end");
   api.test.expect(() => ({ kind: "end" }));

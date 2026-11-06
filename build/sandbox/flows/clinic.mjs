@@ -27,12 +27,12 @@ export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boi
 
 // mode: "fair" does what the stage asks. "mistake" makes one wrong pick per stage where the stage offers one (e.wrong: a wrong dish, probe,
 // seat, card), and in a healing game the game's own deliberate slip (debug.slip()), then goes on to the end. "hint" asks for help: it
-// leaves the first thing alone for the first-time help's idle hint, presses the light bulb (the English flip), and peeks at a closed card.
+// leaves the first thing alone for the first-time help's idle hint and peeks at a closed card.
 export class ClinicPlayer {
   constructor(page, rec, { mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.seen = new Set(); this.covers = new Set();
     this.mode = mode; this.mistakes = mode === "mistake" || mode === "mistake-real"; this.hints = mode === "hint";
-    this.made = new Set(); this.idled = false; this.bulbs = new Set(); this.peeks = new Set(); this.badges = [];
+    this.made = new Set(); this.idled = false; this.hinted = new Set(); this.peeks = new Set(); this.badges = [];
     this.fast = mode === "heal-fast";
     this.drv = { turns: new Set(), wrongs: 0, tapped: false, tookBack: false, spoke: false };
     this.voice = null;
@@ -85,7 +85,7 @@ export class ClinicPlayer {
     await this.once("after-replay-tap", { settle: 0 });
     return true;
   }
-  // the hint player's moves at a stage: wait for the idle hint once, press the bulb once per stage, peek at a closed card once per stage
+  // the hint player's moves at a stage: wait for the idle hint once, peek at a closed card once per stage
   async hintMoves(stage) {
     const p = this.page;
     if (!this.idled) { this.idled = true; await sleep(7500); await this.once(`idle-hint-${stage}`, { settle: 0 }); }
@@ -98,21 +98,7 @@ export class ClinicPlayer {
         await this.once(`peek-${stage}`, { settle: 0 });
       }
     }
-    if (!this.bulbs.has(stage)) {
-      const bulb = await p.$(".ng-bulb");
-      if (bulb && (await bulb.isVisible())) {
-        this.bulbs.add(stage);
-        // the lab's fast mode makes the English flip last 0.3 s: give it its real time for this press
-        await p.evaluate(() => { if (window.Clinic && Clinic.Kit) { window.__njgFast = Clinic.Kit.fast; Clinic.Kit.fast = false; } });
-        await bulb.click({ force: true }).catch(() => {});
-        await p.evaluate(() => { if (window.Clinic && Clinic.Kit && "__njgFast" in window) Clinic.Kit.fast = window.__njgFast; });
-        await sleep(150);
-        await this.once(`bulb-${stage}`, { settle: 0 });
-        await sleep(400);
-        // hold the pick while the bulb's English is open (SH-41: its 8 s must be measurable before the stage moves on and ends it)
-        for (let i = 0; i < 100 && (await p.evaluate(() => !!document.querySelector(".oc-card.english, .cl-side.english, #side.english")).catch(() => false)); i++) await sleep(100);
-      }
-    }
+    this.hinted.add(stage); // (once per stage; the bulb press that was here went with the bulbs: Zafar, 6 Nov)
   }
   // the mistake player's move: one wrong pick per stage
   async mistakeMoves(stage, e) {
@@ -290,7 +276,7 @@ export class ClinicPlayer {
         const slip = await this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; });
         if (slip) { this.made.add("heal-slip"); await this.healAct(slip); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
       }
-      if (this.hints && steps > 3 && !this.bulbs.has("heal")) await this.hintMoves("heal");
+      if (this.hints && steps > 3 && !this.hinted.has("heal")) await this.hintMoves("heal");
       const next = () => this.ev(() => { const r = window.njgTest?.clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
       let a = await next();
       // (s08 w6L, CLN-107 at L2) the slip is looked for once more as the move is chosen: at the game's real pace a row can open between the
@@ -466,7 +452,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       } finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
       await sleep(300);
       await rec.state("end");
-      ctx.extra = { badges: P.badges, mistakes: [...P.made], bulbs: [...P.bulbs], peeks: [...P.peeks] };
+      ctx.extra = { badges: P.badges, mistakes: [...P.made], peeks: [...P.peeks] };
       ctx.reachedEnd = true;
     },
   };
@@ -563,7 +549,7 @@ export function clinicFlows() {
   // point has no wrong pick, so the mistake player made none
   for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) for (const L of [1, 3]) D({ id: `clinic:${st}${L > 1 ? `@L${L}` : ""}#mistake`, title: `Clinic: ${STAGE_NAME[st]}, level ${L}, mistake player`, query: `stage=${st}&level=${L}${st === "diagnosis" && L === 1 ? "&variant=D1" : ""}`, level: L, mode: "mistake" });
   for (const g of HEAL_GAMES) D({ id: `clinic:heal-${g}#mistake`, title: `Clinic: heal game ${g}, level 1, mistake player (its own slip)`, query: `stage=heal&game=${g}&level=1`, mode: "mistake", timeoutMs: 200000 });
-  // hint player: the idle hint, the light bulb's English flip, a peek at a closed card (from level 3: the waiting room and the pharmacy)
+  // hint player: the idle hint, a peek at a closed card (from level 3: the waiting room and the pharmacy)
   for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) D({ id: `clinic:${st}#hint`, title: `Clinic: ${STAGE_NAME[st]}, level 1, hint player`, query: `stage=${st}&level=1`, mode: "hint" });
   for (const st of ["waiting", "pharmacy"]) D({ id: `clinic:${st}@L3#hint`, title: `Clinic: ${STAGE_NAME[st]}, level 3, hint player (the closed card)`, query: `stage=${st}&level=3`, level: 3, mode: "hint" });
   for (const g of HEAL_GAMES) D({ id: `clinic:heal-${g}#hint`, title: `Clinic: heal game ${g}, level 1, hint player`, query: `stage=heal&game=${g}&level=1`, mode: "hint", timeoutMs: 200000 });

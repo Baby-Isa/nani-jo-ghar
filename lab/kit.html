@@ -58,7 +58,6 @@
 <script src="../js/shared/fit.js?v=20261106T090836Z"></script>
 <script src="../js/shared/face.js?v=20261106T090836Z"></script>
 <script src="../js/shared/guide.js?v=20261106T090836Z"></script>
-<script src="../js/shared/bulb.js?v=20261106T090836Z"></script>
 <script src="../js/shared/order-card.js?v=20261106T090836Z"></script>
 <script src="../js/shared/request-popup.js?v=20261106T090836Z"></script>
 <script src="../js/shared/buttons.js?v=20261106T090836Z"></script>
@@ -84,19 +83,18 @@
   const now = Frame.now || {};
   $("ff").textContent = `${innerWidth}x${innerHeight}: ${now.ff} · scale ${now.scale} · sidebar ${now.sideW} px · card rows "${now.rows}" by default`;
 
-  // ---------- the guide box: a line, a long line, a line to record, muted, the bulb on ----------
+  // ---------- the guide box: a line, a long line, a line to record, muted (no bulb: retired, Zafar, 6 Nov) ----------
   const G = [
     ["her line", (g) => g.set(`Pela ${W("paani")}.`)],
     ["a long line (two lines, shrunk)", (g) => g.set(`Hane ${W("dudh")} ne ${W("khun")} ne ${W("elchi")} chai me naakh, beta.`)],
     ["to record (grey italic, flagged)", (g) => g.set("Bring me these for the chai", { rec: true })],
     ["muted", (g) => (NaniGuide.setMuted(true), g.set(`Pela ${W("paani")}.`))],
-    ["the bulb on", (g, el) => { g.set(`Pela ${W("paani")}.`); const b = Bulb.create(el.querySelector(".ng-bulb"), { ms: 600000 }); b.use(); }],
   ];
   for (const [title, fn] of G) {
     const c = col($("guides"), `guide box: ${title}`);
     const el = document.createElement("div");
     c.appendChild(el);
-    const g = NaniGuide.mount(el, { face: face("nani"), bulb: A("assets/ui/results/icon-bulb.webp"), onBulb: () => {} });
+    const g = NaniGuide.mount(el, { face: face("nani") });
     fn(g, el);
   }
   NaniGuide.setMuted(false);

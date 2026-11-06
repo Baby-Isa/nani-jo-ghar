@@ -19,7 +19,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 - **D3 states:** hot, cold, happy, sad, pain and neutral; the body reacts and alternates as the room gets too hot or cold; a blanket, and hugging a hot-water bottle; not every item simulated.
 - **D5 ticks:** try level 1 gold at the count, level 2+ at the step's close; revisit if play-tests say so.
 - **D8:** one instruction at a time, and input never waits for the voice.
-- **D11–D12, the bulb and the eye:** the **bulb is for language** (it translates; one bulb per use); the **eye is for reading** (opening a closed card; its own badge). A clear split.
+- **D11–D12, the eye:** the **eye is for reading** (opening a closed card; its own badge); the bulb that was for language is gone: the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`).
 - **D13 guided first round:** the game shows the first task, then the child does that same task (copying what they've just seen).
 - **D14:** the end review shows which step went wrong (e.g. tap a tick to see more); Mum asked for this ("I don't know what I got wrong"), Cook's serve too.
 - **D15c ear:** more wax appears as you clean (the fun); the whispered-word check needs explaining first.

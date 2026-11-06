@@ -113,7 +113,7 @@ Three dials, each tracked separately: the **answer mode** (the rung), the **leng
 - **Text shows at R1 only**, so a reader can't match letters after that. R1 is *taught*, not tested: echo-matching the text is allowed while learning.
 - **R4 needs family audio** for every answer in the set (`Speech.hasTemplates`). Otherwise the exchange stays at R3 for now.
 - **No mic** (refused, absent, or the parent turned it off): R4 is skipped, and R5 runs with pills.
-- **The light bulb** flips the bubbles to English for 5 s at R1, 3 s at R2, 2 s at R3 and 1 s at R4–R5 (UX §4). It counts as help (§5).
+- (The light bulb that flipped the bubbles to English is gone: the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`).)
 
 ### 3.2 Length
 

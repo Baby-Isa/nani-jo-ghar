@@ -14,11 +14,12 @@ const rng = (s) => {
   return () => ((a = (a * 16807) % 2147483647), a / 2147483647);
 };
 
-test("SH-98 (SH-100): the card's small bulb is the one photo (assets/ui/results/icon-bulb.webp), never a flat drawing", () => {
+test("the bulbs retired (Zafar, 6 Nov): the order card has no bulb, its closed card's peek sign is the eye", () => {
   const OC = require("../js/shared/order-card.js");
-  assert.match(OC.bulbImg(), /^<img [^>]*src="[^"]*assets\/ui\/results\/icon-bulb\.webp/);
-  assert.equal(/<svg/.test(OC.bulbImg()), false);
+  assert.equal(OC.bulbImg, undefined);
+  assert.equal(OC.BULB_FILE, undefined);
   assert.equal(OC.BULB, undefined, "the flat drawing is gone");
+  assert.match(OC.EYE, /^<svg/);
 });
 
 test("SH-99: every number Cook says in an order is written on its card, at every level (numbers heard three times, as after a few plays: the old L3 drop)", async () => {

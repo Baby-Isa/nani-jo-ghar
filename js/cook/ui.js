@@ -35,7 +35,6 @@
     "word-card": ["WordCard", "js/shared/word-card.js", "css/shared/word-card.css"],
     conversations: ["Conversations", "js/shared/conversations.js", "css/shared/conversations.css"],
     speech: ["Speech", "js/shared/speech.js", null],
-    bulb: ["Bulb", "js/shared/bulb.js", null],
     buttons: ["NjgButtons", "js/shared/buttons.js", "css/shared/buttons.css"],
     "word-moment": ["WordMoment", "js/shared/word-moment.js", "css/shared/word-moment.css"],
   };
@@ -177,7 +176,6 @@
     replay: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M18.6 2.8v4.6H14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     eye: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>`,
   };
-  ICON.bulb = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.8.6 1.3 1.4 1.3 2.3V17h5v-.4c0-.9.5-1.7 1.3-2.3A6.5 6.5 0 0 0 12 2.5z" fill="currentColor" opacity=".9"/><path d="M9.6 19h4.8M10.4 21.3h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.6 9.2a2.7 2.7 0 0 1 2.4-2.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".8"/></svg>`;
   UI.ICON = ICON;
   /**
    * Wave 6 (docs/design-language/ux-principles.md), for pages that opt in with <body class="w6">
@@ -619,12 +617,11 @@
    * comes from data.guide (by station, or station:phase); none is recorded yet, so each shows
    * its English flagged "to record" until it gets a `line`. While she says one of her own lines
    * (UI.voice), the box shows that line. Tap the box to mute or unmute her (every mode, saved);
-   * her speaker hears the line again; the light bulb lives here too.
+   * her speaker hears the line again. (No light bulb: retired, Zafar, 6 Nov.)
    */
   let guide = null;
   let guideKey = null;
   let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
-  let guideEnglish = null; // the line the bulb is showing in English now
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -867,12 +864,6 @@
     const g = global.NaniGuide.mount(el, {
       face: Cook.v(Cook.facePath("nani")),
       faces,
-      bulb: Cook.v("assets/ui/results/icon-bulb.webp"),
-      bulbId: "btn-bulb",
-      onBulb: () => {
-        Cook.unlockAudio();
-        UI.bulb();
-      },
       onReplay: (btn) => {
         Cook.unlockAudio();
         const line = guideLine;
@@ -1509,7 +1500,7 @@
       how: how || null,
       plain: !!seqWord && Cook.wordStage(seqWord) >= 3,
       english: false,
-      // the order's level: how long the light bulb shows English (data.calm.bulbMs)
+      // the order's level (the card ladder, the hint's wait)
       level: orderLevel(),
       // Sprint 11 (B-cook): a people order (the chai tray's cups) is said item by item, each a word card that pops from the
       // guide box into its row; its rows are the shared word card's (OrderCard rowEl -> WordCard.row)
@@ -1530,7 +1521,6 @@
     } catch (e) {
       /* only a marker */
     }
-    UI.bulbOff();
     // SH-59 (C16): a new order starts with the "?" calm (no pulse left over from the last station or a conversation)
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
     UI.closeHelp();
@@ -2597,7 +2587,7 @@
   M.introOpen = introOpen;
   M.peopleSaid = () => !!(mission && mission.peopleSaid);
 
-  /* ================= Wave 6: cards, read-along, the light bulb ================= */
+  /* ================= Wave 6: cards, read-along ================= */
   /*
    * docs/design-language/ux-principles.md 1, 3 and 4. The order card and the request card
    * (the intro) are drawn from the same blocks:
@@ -2611,10 +2601,8 @@
    * in order and each part lights up as it's said (read-along, by recorded
    * chunk: each spoken line has its own voice file). Hearing it again once
    * its words are dots is help (a hint), as before.
-   * The light bulb at the top of the sidebar flips the words to English for
-   * a few seconds (data.calm.bulbMs by level: 8 s at every level, SH-41 / D11,
-   * Zafar 1 Oct "give it like eight seconds"; the older 5, 3, 2, 1 s is gone); for rows still
-   * to do that's the answer, so it costs the accuracy badge, like A/En did.
+   * (The light bulb that flipped the words to English went: the bulbs were retired, Zafar, 6 Nov; the help is the word
+   * cards and Nani's timed hint, chai's method.)
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
   const introEls = new Map(); // row -> [elements] on the request card
@@ -3127,9 +3115,6 @@
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
         // fold to face + headline too (a tap opens one; the face is still the replay)
         closed: phase || idle.has(c.key) || !!(mission.said && c.who && mission.said.has(c.who)),
-        // D11 (as the clinic): Nani's English bulb opens a closed card for its time, so the English shows each kind and its parts (SAM-23:
-        // "three samosas" and its fillings under it); the small bulb's peek is the Kutchi (SH-98)
-        open: !!mission.english,
         onPeek: !big && phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
         peekMs: peekMsOf(),
         // (s14: the served card's ticks held, its row glided home, then the fold: OrderCard.settle14, Zafar 4 Nov evening)
@@ -3400,90 +3385,6 @@
       .then(() => btns.forEach((b) => b.classList.remove("on")));
   };
 
-  /* ---- the light bulb: the shared one (js/shared/bulb.js; C3, decision 38d: no Cook shim) ---- */
-  // the bulb's time by level: the ONE ladder table (data/shared.json, read through js/shared/tokens.js Tokens.ladder; S13-A1, S13-B1):
-  // no copy here (the shared bulb, js/shared/bulb.js, reads the same table)
-  UI.bulbMs = () => {
-    const T = global.Tokens;
-    const table = (T && T.ladder && T.ladder.bulbMs) || (global.Bulb && global.Bulb.MS) || [];
-    const lv = mission ? mission.level : orderLevel();
-    // (a parked page with neither tokens.js nor bulb.js has no table: no bulb time until it loads the kit, S13-A1's shell)
-    return table.length ? table[Math.min(table.length, Math.max(1, lv)) - 1] : 0;
-  };
-  // English while it's on: the sidebar, and the order card's rows still to do
-  function bulbOn() {
-    Cook.sfx.click();
-    $("#side").classList.add("english");
-    // SH-57 (decision 57): the bulb flips the guide's line to English too (her box, or her card's strip)
-    if (guide && guideLine && guideLine.en && guideLine.ok !== false) {
-      guideEnglish = guideLine;
-      guide.set(`<span class="en6">${esc(guideLine.en)}</span>`);
-    }
-    if (mission && !$("#mission").classList.contains("stamped")) {
-      mission.english = true;
-      // English for rows still to do is the answer: the accuracy badge (Cook.onHelp "translate")
-      const open = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((x) => !x.done)));
-      if (Cook.onHelp) {
-        if (open.length) Cook.onHelp("translate", { ids: [].concat(...open.map((x) => x.ids)) });
-        else Cook.onHelp("help");
-      }
-      renderOrder();
-    } else if (Cook.onHelp) Cook.onHelp("help");
-  }
-  function bulbOffOwn() {
-    const side = $("#side");
-    if (side) side.classList.remove("english");
-    if (guide && guideEnglish) {
-      if (guideLine === guideEnglish) guide.set(raHtml(guideLine));
-      guideEnglish = null;
-    }
-    if (mission && mission.english) {
-      mission.english = false;
-      renderOrder();
-    }
-  }
-  // a parked page that loads Cook's UI without js/shared/bulb.js (Find it, Dress up, Snap) gets the same
-  // behaviour from a minimal stand-in with the shared bulb's API (until those modes move onto the core)
-  const parkedBulb = (o) => {
-    const b = { on: false, timer: null };
-    b.use = (btn) => {
-      if (b.on) return false;
-      b.on = true;
-      b.btn = btn;
-      const ms = o.ms() / o.speed();
-      btn.style.setProperty("--bulb-ms", `${ms}ms`);
-      btn.classList.remove("on");
-      void btn.offsetWidth;
-      btn.classList.add("on");
-      o.onOn(ms);
-      b.timer = setTimeout(() => b.off(), ms);
-      return true;
-    };
-    b.off = () => {
-      clearTimeout(b.timer);
-      const was = b.on;
-      b.on = false;
-      if (b.btn) b.btn.classList.remove("on");
-      if (was) o.onOff();
-    };
-    return b;
-  };
-  const bulbOpts = { click: false, ms: () => UI.bulbMs(), speed: () => Cook.speed || 1, onOn: bulbOn, onOff: bulbOffOwn };
-  const sharedBulb = global.Bulb ? global.Bulb.create(null, bulbOpts) : parkedBulb(bulbOpts);
-  UI.bulbOff = function () {
-    if (sharedBulb && sharedBulb.on) sharedBulb.off();
-    else {
-      const b = $("#btn-bulb");
-      if (b) b.classList.remove("on", "lit");
-      bulbOffOwn();
-    }
-  };
-  /** One use of the bulb (one at a time: a tap while it's on does nothing). */
-  UI.bulb = function () {
-    const b = $("#btn-bulb");
-    if (!b) return false;
-    return sharedBulb.use(b);
-  };
 
 
   const ladderFor = (dish) => (mission ? mission.ladders.find((L) => L.dish === dish) || mission.ladders[0] : null);
@@ -3818,7 +3719,6 @@
     refit();
     setTimeout(refit, 60);
     setTimeout(refit, 500);
-    UI.bulbOff();
     UI.stepDone();
   };
   M.close = function () {
@@ -4261,9 +4161,6 @@
   UI.init = function () {
     // Sprint 11: the word card and the conversations, there by the first order
     ["word-card", "conversations"].forEach((n) => UI.needShared(n));
-    // SH-131 (S13-A2): a parked page (Find it, Dress up, Snap) loads neither tokens.js nor bulb.js: the shared bulb comes in, and
-    // reads data/shared.json's bulbMs itself, so UI.bulbMs is never 0 s there
-    if (!global.Tokens && !global.Bulb) UI.needShared("bulb");
     // every page element here is optional (another page, like find.html, may not have all of them)
     const on = (sel, fn) => {
       const e = $(sel);
@@ -4347,15 +4244,8 @@
     });
     const tr = on("#mission .m-tr", () => UI.mission.translate());
     if (tr) tr.innerHTML = ICON.translate;
-    // 28 Sept: Nani's guide box carries the light bulb (a page without it keeps its own #btn-bulb)
+    // (no light bulb: the bulbs were retired, Zafar, 6 Nov: "remove the bulbs from everywhere ... replaced by chai's method")
     mountGuide();
-    if (!guide) {
-      const bulb = on("#btn-bulb", () => {
-        Cook.unlockAudio();
-        UI.bulb();
-      });
-      if (bulb) bulb.insertAdjacentHTML("afterbegin", ICON.bulb);
-    }
     // Sidebar v2: a speech card's face (the customer at the tray, Nani's "pass me") hears its line again
     [["#nani-card", ".say-slot"], ["#passme", ".pm-say"]].forEach(([sel, slot]) =>
       on(`${sel} .face-say`, (ev) => {

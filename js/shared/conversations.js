@@ -17,7 +17,6 @@
  *                                                                  calls startVisitNow on load
  *   Conversations.setStage("S2")                                   the syllabus stage (the arcs set it)
  *   Conversations.roundMoments(roundId) / roundWords(roundId)       for Stars.voice / Results.show({words})
- *   Conversations.bulb()                                           the light bulb: English for a moment (UX §4)
  *   Conversations.bubble(anchor, {who, text, en, mood, ...})       THE speech bubble for a line in every game (S13-B2):
  *                                                                  the clinic's people, Cook's characters (see below)
  *
@@ -47,20 +46,13 @@
   const STAGES = ["S1", "S2", "S3", "S4", "S5", "S6"];
   const STAGE_MAX_RUNG = { S1: 3, S2: 4, S3: 5, S4: 5, S5: 5, S6: 5 };
   const REACTIONS = ["embarrassed", "scratch", "puzzled", "sigh"]; // the same four as story.js's Yes/No (UX §14)
-  // SH-86 (Zafar, D11 / SH-41): 8 s at every rung: the ONE ladder table's bulbMs by rung 1-5 (data/shared.json, through
-  // js/shared/tokens.js; S13-A1), no copy here
-  const ladderBulb = () => {
-    const T = root.Tokens || (typeof module === "object" && module.exports && typeof require === "function" ? require("./tokens.js") : null);
-    return (T && T.ladder && T.ladder.bulbMs) || [];
-  };
-  const BULB_MS = new Proxy({}, { get: (o, k) => (/^\d+$/.test(String(k)) ? ladderBulb()[Math.min(ladderBulb().length, +k) - 1] : undefined), ownKeys: () => ladderBulb().map((x, i) => String(i + 1)), getOwnPropertyDescriptor: (o, k) => (/^\d+$/.test(String(k)) && +k >= 1 && +k <= ladderBulb().length ? { enumerable: true, configurable: true, value: ladderBulb()[+k - 1] } : undefined) });
   const BOX_GAP = [0, 1, 2, 4, 8]; // sessions until a mastered type is due again (§5.3)
   const REG_LEVELS = ["heard", "choose", "say", "start"];
   const GAP_MS = 2 * 60 * 1000; // §10a.9: one every 2 minutes on top of one per visit
   const SESSION_IDLE_MS = 30 * 60 * 1000;
   const IDLE_SKIP_MS = 10000;
   const NAMES = ["name-nana", "name-nani", "name-ali", "name-bigma"];
-  Object.assign(C, { NS, STAGES, REACTIONS, BULB_MS, BOX_GAP, GAP_MS, REG_LEVELS });
+  Object.assign(C, { NS, STAGES, REACTIONS, BOX_GAP, GAP_MS, REG_LEVELS });
 
   /* ================= data ================= */
   let D = null;
@@ -258,7 +250,7 @@
   /**
    * ask -> reply -> (wrong -> reply)* -> right -> done. One tap on a pill says it ("commit": SH-126, Zafar, 22 Oct; each
    * reply's own speaker beside it lets the child hear it first); "tap" (hear, then say on a second tap) is only for a
-   * ctx.oneTap === false caller (design §3.1). Events: {type: "asked" | "tap" | "commit" | "bulb" | "replay" | "skip" | "timeout", key}.
+   * ctx.oneTap === false caller (design §3.1). Events: {type: "asked" | "tap" | "commit" | "replay" | "skip" | "timeout", key}.
    * step() returns {m, fx}: fx lists what the browser half does (play, lift, shake, react, throb, float, model).
    */
   C.machine = function (ex, sp, ctx = {}, rng = Math.random) {
@@ -278,7 +270,6 @@
       first: null,
       chose: null,
       replays: 0,
-      bulbs: 0,
       via: null,
       returned: false,
     };
@@ -295,10 +286,6 @@
       case "replay":
         m.replays++;
         fx.push({ fx: "ask" });
-        break;
-      case "bulb":
-        m.bulbs++;
-        fx.push({ fx: "english", ms: BULB_MS[Math.max(1, m.rung || 1)] });
         break;
       case "skip":
       case "timeout": {
@@ -364,7 +351,7 @@
         via: m.via || "tap",
         tries: m.tries,
         wrongs: m.wrongs.slice(),
-        hints: m.bulbs + Math.max(0, m.replays - 1) + (m.lit ? 1 : 0),
+        hints: Math.max(0, m.replays - 1) + (m.lit ? 1 : 0),
         lit: !!m.lit,
         register: { asked: regAsked, chose: regAsked ? m.chose : null, ok: regAsked ? m.chose === regAsked : null },
         words,
@@ -678,12 +665,7 @@
     return english ? `<span class="cv-en">${esc(line.en)}</span>` : `<span class="cv-k">${esc(line.k)}</span>`;
   };
 
-  let active = null; // the moment on screen (for bulb())
-  C.bulb = function () {
-    if (!active) return false;
-    active.event({ type: "bulb" });
-    return true;
-  };
+  let active = null; // the moment on screen (C.isActive; no bulb: the bulbs were retired, Zafar, 6 Nov)
   C.isActive = () => !!active;
 
   function layerFor(ctx) {
@@ -1205,7 +1187,7 @@
    *   who     the speaker (data-who): their last bubble goes when they speak again
    *   text    the engine's line: its words (a string) or the game's rendering of it (a Node: Cook's word pill, the clinic's words)
    *   rec     a string line still to record: its English in grey italic, tagged "to record" in the markup only (decision 84)
-   *   en      its English, for the bulb (data-en; never shown by the bubble)
+   *   en      its English (data-en; never shown by the bubble)
    *   mood    data-mood ("happy", "embarrassed" ...): the kit's own small hop or shake
    *   layer   the (positioned) element it is placed in: the play area. Default document.body
    *   tap     true: it takes taps (a speaker button in it); else a tap goes through it to the game

@@ -21,10 +21,9 @@ const make = (level = 1) => {
 };
 const kinds = (log) => log.map((x) => x[0]).filter((k) => k !== "clear");
 
-test("the ladder's table: 7, 9, 11 and 13 s by level (Zafar, 29 Oct); a repeat after 10 s; the bulbs pulse at 17 s (2 s later than before at level 1)", () => {
+test("the ladder's table: 7, 9, 11 and 13 s by level (Zafar, 29 Oct); a repeat after 10 s", () => {
   assert.deepEqual(G.PAUSE, [7000, 9000, 11000, 13000]);
   assert.equal(G.REPEAT, 10000);
-  assert.ok(G.BULB_PULSE >= 15000 && G.BULB_PULSE <= 20000);
 });
 
 test("a step opens: its line is shown at once (SH-63, Zafar 21 Oct), nothing said or lit, at any level; the help comes after the pause, voice and glow together", async () => {
@@ -101,14 +100,9 @@ test("closing a step stops its help: no voice or glow after the step is done; it
   assert.equal(log[log.length - 1][0], "clear");
 });
 
-test("the page's idle clock: poke() and idleMs(); the bulbs' pulse is a class on both bulbs", () => {
+test("the page's idle clock: poke() and idleMs(); no bulbs (retired, Zafar, 6 Nov) and no pulse", () => {
   G.poke();
   assert.ok(G.idleMs() < 50);
-  const hit = [];
-  const mk = () => ({ classList: { toggle: (c, on) => hit.push([c, on]) } });
-  globalThis.document = { querySelectorAll: () => [mk(), mk()] };
-  G.pulseBulbs(true);
-  G.pulseBulbs(false);
-  delete globalThis.document;
-  assert.deepEqual(hit, [["help-pulse", true], ["help-pulse", true], ["help-pulse", false], ["help-pulse", false]]);
+  assert.equal(G.pulseBulbs, undefined);
+  assert.equal(G.BULB_PULSE, undefined);
 });

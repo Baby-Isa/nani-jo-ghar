@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown, shellFindings, kitImportFindings, motionFindings, jscolourFindings, ladderCopyFindings } from "./static.mjs";
+import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown, shellFindings, kitImportFindings, motionFindings, jscolourFindings, ladderCopyFindings } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
   assert.equal(kitFindings("css/clinic.css", ".cl-card.oc-card { padding: 2px; }").length, 1);
@@ -38,10 +38,10 @@ test("jscolour (S13-A1): colours in code only through Tokens; an art-only file i
   assert.deepEqual(art.map((f) => f.key.split("|").slice(2).join("|")), ["ui halo.setTint(0xe0a63a);", "art-only"]);
   assert.equal(jscolourFindings("js/shared/tokens.js", "const x = 0x123456;", { ui }).length, 0);
 });
-test("bulb (S13-A1): one ladder table; a second one in data or a ladder number in code is a finding", () => {
-  assert.deepEqual(ladderCopyFindings("data/cook.json", { calm: { helpMs: [1], repeatMs: 10000, _help: "helpMs" } }).map((f) => f.key), ["bulb|data/cook.json|calm.helpMs"]);
+test("hintwait (S13-A1): one ladder table; a second one in data or a ladder number in code is a finding", () => {
+  assert.deepEqual(ladderCopyFindings("data/cook.json", { calm: { helpMs: [1], repeatMs: 10000, _help: "helpMs" } }).map((f) => f.key), ["hintwait|data/cook.json|calm.helpMs"]);
   assert.equal(ladderCopyFindings("data/shared.json", { helpMs: [7000] }).length, 0);
-  assert.equal(ladderCopyFindings("js/x.js", "G.PAUSE = [7000, 8000];\nconst ms = G.PAUSE[lv - 1];\n// BULB_MS = 8000").length, 1);
+  assert.equal(ladderCopyFindings("js/x.js", "G.PAUSE = [7000, 8000];\nconst ms = G.PAUSE[lv - 1];\n// PAUSE = 8000").length, 1);
 });
 test("tokens: no hex, rgb, gradient or text-shadow outside tokens.css", () => {
   assert.deepEqual(tokenFindings("css/clinic.css", ".a { color: #fff; background: linear-gradient(red, blue); text-shadow: 0 1px 0 x; }").map((f) => f.text.split(":")[0]).sort(), ["gradient", "hex colour", "text-shadow"]);
@@ -75,11 +75,6 @@ test("reward: no sweet as a reward or send-off help; a sticker's group is not a 
   assert.equal(rewardFindings("d.json", { sendoff: { helpCards: ["blanket", "biscuit"] } }).length, 1);
   assert.equal(rewardFindings("d.json", { sendoff: { helps: { sad: "apple" } } }).length, 0);
   assert.equal(rewardFindings("d.json", { items: { sticker: { group: "sweet" } } }).length, 0);
-});
-test("bulb: 8 s at every level in every table (Zafar, D11 / SH-41)", () => {
-  assert.equal(bulbFindings({ cook: [8000], clinic: { 1: 8000, 2: 8000 } }).length, 0);
-  assert.equal(bulbFindings({ shared: [5000, 3000, 2000, 1000] }).length, 1);
-  assert.match(bulbFindings({ x: [] })[0].text, /no bulb time/);
 });
 test("plane: the doctor and the girl on one feet line, him about 1.45x her, a tad back, him 1.75 m by the door (CLN-154, s08)", () => {
   const doors = { stand: [0.047, 0.728], exam: [0.054, 0.742], door: [0.078, 0.728] };

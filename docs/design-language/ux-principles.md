@@ -15,10 +15,8 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
 - One card per thing being made: one card per skewer, per cup, per bowl.
 - A card always shows the **same number of slots** for that dish. A skewer card always has the **same number of slots**, even when all are meat, so a mixed skewer later is the same picture with different pieces (no step counters, F23).
 
-## 4. Help: one light bulb; the face is the replay
-- **Remove the per-line translate and 👁 buttons.** At the top of the sidebar, a **light bulb**: press it and everything flips to English for a few seconds, then back to Kutchi.
-  - The time shrinks with difficulty: about 5 s at level 1, 3 s at level 2, 2 s at level 3, 1 s at level 4.
-  - It costs a lightbulb on the hints badge (decision 1; E25).
+## 4. Help: chai's method; the face is the replay
+- **No per-line translate or 👁 buttons.** **The bulbs are retired (Zafar, 6 Nov):** no game draws or pulses a bulb; the help is chai's method, the word cards and the guide's timed hint on the level's wait (`docs/game-design/rulebook.md`, `data/rules.json` levels.hintS; contract-91).
 - **Remove the per-line speaker.** The card's face is the one replay: it reads the card's words in order, highlighting each as it's spoken (F8, E25). Hearing it again costs nothing.
 
 ## 5. One job at a time
@@ -41,15 +39,14 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
 ## 8. Onboarding by showing, not telling
 - **Easy to play (Zafar, 21 Oct):** `docs/game-design/easy-to-play.md`.
 - The first time, dim everything but one thing, the real item shows the action once, the child does it, then the next thing appears.
-- UI appears only when it's first needed. The sidebar, badges and light bulb fade in over the first rounds, not all at once.
-- After the first time, the overlay is gone; the light bulb is the help.
+- UI appears only when it's first needed. The sidebar and badges fade in over the first rounds, not all at once.
+- After the first time, the overlay is gone; the help is chai's method (§4).
 - **No English instructions for the child, ever** (Zafar, 29 Sept, restated after the clinic heal games broke it): no English sentences in bubbles and no device voice reading them. The child gets the ghost finger plus the Kutchi line with its read-along. The English goal for grown-ups lives only in the "?" pop. `build/check_onboard.mjs` enforces it in every mode that has first-time help.
 
 ## Claude's comments
 - **Agreed with all of it.** Points 3 and 5 also serve the Kutchi: a fixed four-dot card makes *the count and order* the thing to listen for, and one job at a time leaves attention free for the words.
 - **Keep the challenge, but move it.** You found the games addictive at their current difficulty, so don't delete the harder things: slide them up the level ladder. The juggle (thread while grilling) and the chips come back at levels 3 and 4 for Zayn and Maryam's ages.
 - **Read-along highlighting needs the recording's timings.** Record the family's lines in the chunks the Technical Plan describes (frame, noun phrase…). Each chunk then lights up as it plays, which is simple and robust. Word-by-word highlighting inside one chunk would need timings per word. Whisper's word timestamps can give those from the recordings later.
-- **The light bulb replaces a lot of UI.** Check that "hold" works for small hands: a tap that flips for N seconds is easier than press-and-hold for a five-year-old. The recommendation is **tap**, not hold.
 
 ## 9. The end-of-round screen (Zafar, 25 Sept, evening)
 Two pages, big and visual, the same in every mode (one shared component).
@@ -57,7 +54,7 @@ Two pages, big and visual, the same in every mode (one shared component).
 **Page 1: three big badges, side by side.**
 1. **Time.** A stopwatch with big numbers (seconds) for this round. Each mode and level keeps its own personal best. A new personal best gets a "bing", a sparkle and "New best!", with the time shown inside the stopwatch, so the child tries to beat it next time.
 2. **Accuracy.** A clear picture of right out of total: a chunky tick that fills **gold** for right and grey for the rest (F13). Not a pie chart. All right turns the whole badge gold, with a satisfying sound.
-3. **Hints.** The number of hints used, shown big: 0 hints turns it **gold**, 1 is a middling badge, 2 or more is a plain "not so good" one. The light bulb counts as a hint.
+3. **Hints.** The number of hints used, shown big: 0 hints turns it **gold**, 1 is a middling badge, 2 or more is a plain "not so good" one. The guide's timed hint counts as a hint (the bulb, retired 6 Nov, did before).
 Then a big **Next** button.
 
 **Page 2: the word review.** Just the key Kutchi words heard in the round, each with its English (and a tap to hear it). Nothing else.
@@ -82,7 +79,7 @@ These three badges are the whole score (H5): time, accuracy and hints. There are
 ## 13. The instruction card is the master; Nani is a voice
 - The **instruction/recipe card** (the request card after it shrinks into the sidebar) is the one place to look for what to do.
 - **Nani doesn't compete with it for space.** In play she's her **voice** alongside the on-screen **throbbing hints**, plus short interjections ("Arre re!", "Shabash!"). She appears on screen in story moments, the request card and the send-off.
-- Keep every screen clean and simple: one card, the play area, one light bulb.
+- Keep every screen clean and simple: one card, the play area, Nani's box.
 
 ## 14. Conversations: you get it right before you move on (Zafar, 26 Sept)
 In a conversation, a wrong reply pill **shakes** (with a short vibration where supported). The person looks **embarrassed**, cycling through 3–4 gentle reactions, and **asks again**. The conversation only continues when the child picks the right reply. This holds for the whole game for tap replies, and is TBC for speaking (the child may skip speaking, then taps under the same rule). It's the one deliberate exception to §11's "no negatives mid-round": it's social and gentle, never a red cross, and the first-try result is still logged for the end review and the difficulty ladder. Details: `docs/game-design/modes/conversations.md` §10a.
@@ -133,9 +130,7 @@ Anything the child places, picks or adds (an item on the pharmacy tray, a plaste
 
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
-- **The light bulb is the help:** it flips the text to English for 8 s at every level (Zafar, D11 / SH-41: "give it like eight seconds"; the time is data: Cook's `calm.bulbMs`, the clinic's `Kit.BULB_MS`) and **costs a lightbulb on the hints badge**; the face is the one replay; no per-line translate buttons. (E25, decision 1)
-- **The bulb is for language, the eye is for reading:** the bulb translates (one bulb per use); opening a closed card is a look, counted on its own eye badge at closed-card levels. (E25, F9, decision 27)
-- **The bulb translates the guide line too, and always shows the full order with numbers;** on spoken cards the closed card's eye is a small bulb with no counter. (E25, decision 57)
+- **The bulbs are retired (Zafar, 6 Nov):** no game draws or pulses a bulb; the help is chai's method, the word cards and the guide's timed hint on the level's wait (`docs/game-design/rulebook.md`, `data/rules.json` levels.hintS; contract-91). The face is the one replay; no per-line translate buttons; opening a closed card is a look, counted on its own eye badge. (E25, F9, decisions 1, 27, 57 retired for the bulb)
 - **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation (the first item too), never on a hidden word after its first hidden showing, and never at the top level for what the words should tell. (E16, E28)
 - **A wrong item is redone on the spot:** the rest stays done, that item empties and its row reopens; the second try has help; after three wrong tries the game shows the right way; never a whole-game restart. (E35, decision 51)
 - **Decision 51 (6 Oct):** A wrong item is redone on the spot: the rest stays done, that item (cup, layer, skewer, plaster) empties and its card row reopens; the second try has help; after three wrong tries the game shows the right way. Replaces the whole-game restart.

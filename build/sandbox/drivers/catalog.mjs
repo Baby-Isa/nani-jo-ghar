@@ -49,7 +49,7 @@ export const DRIVERS = {
   "pause-after-tea": { kinds: ["cook"], moments: ["rec:pause-after-tea", "life:card-light"] },
   // the stuck player (S13-T, generalising idle-twice): at the first move it waits, taps nothing, through every help rung, then
   // plays fair. rec:stuck-start as it stops, then rec:stuck-5s, rec:stuck-12s, rec:stuck-18s at that much idle time (the kit's
-  // rungs at 0, 5 and 15 s, Nani's line at 7-15 s by level, the bulbs' pulse at 17 s: js/shared/onboard.js RUNGS, guide.js PAUSE);
+  // rungs at 0, 5 and 15 s, Nani's line at 7-13 s by level: js/shared/onboard.js RUNGS, guide.js PAUSE; no bulbs' pulse since 6 Nov);
   // each rung the kit logs is life:rung, each help Nani gives life:help. drivers/index.mjs stuckWait plays it on every kind below
   stuck: { kinds: ["cook", "heal", "clinic-stage", "day-door"], moments: ["rec:stuck-start", "rec:stuck-5s", "rec:stuck-12s", "rec:stuck-18s", "drv:stuck", "life:rung", "life:help"] },
   "force-passme": { kinds: ["cook-other"], moments: ["rec:passme-forced"] },

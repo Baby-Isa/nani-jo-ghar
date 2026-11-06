@@ -637,7 +637,7 @@
     // the doctor's card (his face = replay); from level 3 it's closed: the counts are heard, not read (13c, Cook's
     // rule Q7: written and heard at L1, written at L2, heard only from L3); a tap peeks and counts a hint
     const face = Kit.faceCircle("doctor", Kit.DOCTOR_FACE, "cl-face doctor"); // ART-08 (S13-A2): the kit's one face maker
-    card.closed = level >= 3 ? { onPeek: () => (screen.peek ? screen.peek("heal-card") : screen.bulb.use()) } : null;
+    card.closed = level >= 3 ? { onPeek: () => screen.peek && screen.peek("heal-card") } : null;
     card.fold = {};
     // D9 (1 Oct, CLN-44): the card's headline is the doctor's goal (a line to record); the card folds to it with
     // the gold check when every step is done. The goal moved here from the doctor's box (one place for a line).
@@ -908,10 +908,12 @@
         log.push(e);
         if (opts.onLog) opts.onLog(e);
       },
+      // (the bulb is gone, Zafar, 6 Nov: the help is the doctor's timed hint, js/clinic/heal/scene.js armGlow; a game's own ask
+      // for a hint has nothing to turn on)
       hint() {
-        return screen.bulb.use();
+        return false;
       },
-      isHinting: () => !!screen.bulb.on,
+      isHinting: () => false,
       onboard(script, o = {}) {
         if (!global.Onboard || opts.onboard === false) return Promise.resolve("skipped");
         return global.Onboard.run(`clinic/heal-${def.id}`, script, Object.assign({}, o));

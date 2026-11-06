@@ -1756,7 +1756,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (pan.state !== "ready" || pan.poured >= 2 || !talked) {
         if (sel !== pan) {
           select(pan);
-          St.acted(); // (picking a pan is a move: the idle clock, the hint's and the bulbs', starts again: contract-25, the sandbox, 4 Nov)
+          St.acted(); // (picking a pan is a move: the idle clock, the hint's, starts again: the sandbox, 4 Nov)
         }
         return;
       }
@@ -2207,7 +2207,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     };
     const supported = (id) => !!id && Cook.wordStage(id) <= 2;
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
-    let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek, the bulb or the arrow's card never counts)
+    let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek or the arrow's card never counts)
     let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
     const helpGlow = (obj) => {
       if (helpObj === obj) return;
@@ -2644,8 +2644,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (answer && !(guided || (sel && sel.redo) || supported(cur.id))) return; // (the answer: only while it is study)
       const items = ITEM_STEPS.has(step);
       const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
-      // (under the spotlight the live thing takes a tap, and so do the bulbs and the "?": the help stays everyone's, Zafar, 21 Oct)
-      const live = [target, ".ng-bulb", "#btn-bulb", "#btn-help"].concat(cur.also ? [cur.also] : []);
+      // (under the spotlight the live thing takes a tap, and so does the "?": the help stays everyone's, Zafar, 21 Oct)
+      const live = [target, "#btn-help"].concat(cur.also ? [cur.also] : []);
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);

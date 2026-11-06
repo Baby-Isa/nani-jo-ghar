@@ -12,9 +12,9 @@
  * The screen and its rules are js/home-proto/kit.js (the farm kit's copy, Nani as the guide); the house js/home-proto/house.js.
  */
 
-/** What the home prototypes need on a host page beyond what lab.html loads (the s14 word card, the bulb, the focus; the sheets). */
+/** What the home prototypes need on a host page beyond what lab.html loads (the s14 word card, the focus; the sheets). */
 export const NEEDS = {
-  scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"],
+  scripts: ["js/shared/word-card.js", "js/shared/focus.js"],
   styles: ["css/home-proto.css", "css/shared/word-tiles.css"],
 };
 

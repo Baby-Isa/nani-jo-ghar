@@ -19,6 +19,7 @@ before it is final.
 | **The order card** | Always open for the active order; its Kutchi always shown; English dotted from L2; picture blurred from L3. One sideways row on every screen that glides, ticked cards first, "no" cards last. |
 | **The order said** | Item by item, each word's card popping big beside the side panel (never over a face), then turning into its row card; "no" items said last, so the row only moves forward; the hold 1.5 s for a new word, 1.0 s learning, 0.6 s known. |
 | **The helper card** | The full answer (picture, Kutchi, English) in the guide's box, which grows in place. |
+| **The bulbs** | Retired (Zafar, 6 Nov): none in any game; the help is this method, the word cards and the guide's hint, checked by contract-91 (help-comes). |
 | **The word ladder** | A word's Kutchi shows under its item until it is picked right three times in a row, then speaker only; a miss brings it back until the next right pick. Dots and the eye are help: a peek is never a right pick. |
 | **Skipping** | A tap in the play area skips what is being said and lands the order; a tap on a speech bubble, the side panel (its cards and speakers), the cog or the menu does its own thing and never skips. |
 | **Showing what to do** | Every item not on the order card is shown at the start; otherwise each new action once; each level's new thing once; when the showing stops, point once at where to look next (the order card, 1.2 s). |
@@ -80,5 +81,5 @@ operates; the hint waits have one owner (the level rules). For the roll-out: "no
 with the rule as the default (a game with no order card, most heal games, skips those rows); the clinic gives each game its own
 L1 count instead of the formula's 1; one repeating unit per game (chai: cups); the old word stages (`data/progress.json`) fold
 into the pill ladder or stay, decided after chai; `onboard.js`'s ghost finger goes when each game takes the light. The helper
-card's English (Zafar, 28 Oct: "always shows everything") is now in non-negotiable 3. Open for Zafar: the bulb's timed English
-lines in the games not yet on the new kit (retire them at the roll-out?).
+card's English (Zafar, 28 Oct: "always shows everything") is now in non-negotiable 3. Answered (Zafar, 6 Nov): the bulbs are retired in every game,
+replaced by this method.

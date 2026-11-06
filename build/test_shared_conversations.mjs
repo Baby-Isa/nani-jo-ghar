@@ -200,7 +200,7 @@ test("tap once to hear a pill (it lifts), tap it again to say it; right first ti
   assert.equal(C.outcome(m, ex).firstTry, true);
 });
 
-test("the No that dodges (E5); a skip has the speaker say it (the model); the bulb counts as help", () => {
+test("the No that dodges (E5); a skip has the speaker say it (the model); a second replay counts as help", () => {
   const ex = D.exchanges["request.help-cook"];
   let m = C.step(C.machine(ex, C.speaker("nani"), {}, seeded(5)), { type: "asked" }).m;
   const no = m.answers.find((a) => a.dodge).key;
@@ -209,7 +209,7 @@ test("the No that dodges (E5); a skip has the speaker say it (the model); the bu
   assert.equal(r.m.state, "reply");
   const ex2 = D.exchanges["greet.bye"];
   let m2 = C.step(C.machine(ex2, C.speaker("girl"), {}, seeded(5)), { type: "asked" }).m;
-  m2 = C.step(m2, { type: "bulb" }).m;
+  m2 = C.step(C.step(m2, { type: "replay" }).m, { type: "replay" }).m;
   const s = C.step(m2, { type: "timeout" });
   assert.equal(s.m.state, "done");
   assert.equal(s.fx[0].fx, "model");

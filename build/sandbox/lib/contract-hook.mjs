@@ -657,15 +657,17 @@ export const CONTRACT_HOOK = `(() => {
     return [...out.values()];
   };
 
-  // contract-28 (SH-100, Zafar, 17 Oct: "let's make them all photorealistic"): every light bulb button or sign on screen: the card's small
-  // bulb, Nani's and the doctor's, with the picture it is drawn with (an <img>'s file or a CSS background's; "svg" is the flat inline drawing)
-  const bulbs = () => [...document.querySelectorAll(".oc-look.bulb, .ng-bulb, .cl-bulb, #btn-bulb")].filter(shown).map((b) => {
-    const im = b.matches("img") ? b : b.querySelector("img");
-    const bg = getComputedStyle(b).backgroundImage;
-    const raw = im ? (im.getAttribute("src") || "") : bg && bg !== "none" ? bg : "";
-    const file = raw.replace(/^.*\\//, "").replace(/[?"')#].*$/, "").slice(0, 60);
-    return { sel: desc(b), kind: im ? "img" : raw ? "bg" : b.querySelector("svg") ? "svg" : "other", file };
-  });
+  // contract-91 (help-comes, Zafar, 6 Nov): what the game waits for now, kind only (Cook's expectation, the clinic's, the host's, the heal
+  // game's next move): the child's turn is a kind that asks for a move; "wait", "end", a button or a timing window is not being stuck
+  const want = () => {
+    const ce = safe(() => window.njgTest?.cook && window.njgTest?.cook.expectation && window.njgTest?.cook.expectation());
+    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro };
+    const k = safe(() => window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect());
+    if (k) return { by: "clinic", kind: String(k.kind || "") };
+    const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
+    if (hx && typeof hx === "object") return { by: "host", kind: String(hx.kind || hx.do || "") };
+    return { by: "", kind: "" };
+  };
 
   // contract-31 (SH-102): every help Cook counts (Cook.onHelp: hint, replay, shown, translate...) as it is counted; a read-only wrap
   // (the call goes through unchanged), put on again whenever a round sets its own
@@ -834,8 +836,7 @@ export const CONTRACT_HOOK = `(() => {
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
     // the rows' words (contract-19, the counting rule: from L3 no number written on a card)
     const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
-    // contract-27, contract-29 (s08 w1b, SH-98, SH-101): a card peeking (a tap on its small bulb opened it for a moment): how many,
-    // and how many dotted words ("•••") show in them
+    // a card peeking (a tap on a closed card opened it for a moment): how many, and how many dotted words ("•••") show in them
     const peeking = cards.filter((c) => c.classList.contains("peek"));
     const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots:not(.unsaid)")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
     if (!same("side", sd)) emit({ k: "side", ...sd });
@@ -844,9 +845,9 @@ export const CONTRACT_HOOK = `(() => {
     const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count, .oc-k, .oc-count")].filter((x) => !x.closest(".cl-row-en") && !x.closest(".oc-en") && !x.closest("[data-howto]")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
     const cwu = [...new Set(cw)].slice(0, 60);
     if (!same("card", cwu)) emit({ k: "card", words: cwu });
-    // contract-28 (SH-100): the light bulbs on screen and what each is drawn with
-    const bl2 = safe(bulbs, []);
-    if (!same("bulbs", bl2)) emit({ k: "bulbs", list: bl2 });
+    // contract-91 (help-comes): what the game waits for now (its kind, on a change)
+    const wn = safe(want, null);
+    if (wn && !same("want", wn)) emit({ k: "want", ...wn });
     const rv = safe(review, null);
     if (!same("review", rv)) emit({ k: "review", ...(rv || { none: true }) });
     const ce = safe(cardEnglish, []);

@@ -29,7 +29,6 @@ import { thenTarget } from "../shared/host.js";
 export const CLASSIC = [
   "js/shared/frame.js",
   "js/shared/stage.js",
-  "js/shared/bulb.js",
   "js/shared/tally.js",
   "js/clinic/lang.js",
   "js/clinic/body.js",
@@ -134,25 +133,8 @@ function hookShared(Clinic) {
   const S = Clinic.Stages;
   if (Kit.__hooked) return;
   Kit.__hooked = true;
-  // the shared bulb and tally behind the Kit's names (R3a), and the scene box from the shared stage
-  if (G().Bulb && G().Bulb.KitBulb) {
-    const Shim = G().Bulb.KitBulb(Kit);
-    // SH-41 (S05-D2): the shim reads the lab's fast mode once, when the screen is built (so a probe that turns fast
-    // mode off for its press still got 0.3 s), and has no off(), so the English outlived its stage: the time is read
-    // at the press, and the stage end (screen.clearStage) turns it off
-    Kit.Bulb = function (btn, opts) {
-      Shim.call(this, btn, opts);
-      const b = this._b;
-      if (!b) return;
-      const table = () => [1, 2, 3, 4].map((l) => (Kit.BULB_MS && Kit.BULB_MS[l]) || G().Bulb.MS[l - 1]);
-      b.duration = () => (Kit.fast ? 300 : G().Bulb.msFor(table, b.level));
-    };
-    Kit.Bulb.prototype = Object.create(Shim.prototype);
-    Kit.Bulb.prototype.constructor = Kit.Bulb;
-    Kit.Bulb.prototype.off = function () {
-      if (this._b) this._b.off();
-    };
-  }
+  // the shared tally behind the Kit's name (R3a), and the scene box from the shared stage (no bulb: the bulbs were retired,
+  // Zafar, 6 Nov; the doctor's help is chai's method, the word cards and his timed hint)
   if (G().Tally && G().Tally.KitTally) Kit.Tally = G().Tally.KitTally(Kit);
   if (G().Stage && S.useStage) S.useStage(G().Stage);
   // S02-E (decision 65): the items' sprite sheets (data/clinic/sheets.json, loaded by Run.load): an old single-view
@@ -304,9 +286,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           const P = G().ClinicPipeline;
           const round = roundFor(ctx, screen);
           const { plan, env } = round;
-          // the bulb is for language (the hints badge, E25); a look at a closed card is for reading (its own eye
-          // badge, D12, decision 27)
-          screen.onHint = () => ctx.hint(1);
+          // a look at a closed card is for reading (its own eye badge, D12, decision 27)
           screen.onLook = () => ctx.look(1);
           screen.card.closedSeen = false;
           ctx.test.state(stage);
@@ -363,7 +343,7 @@ const PROTO = [
   ["nose", "The blocked nose (prototype)", "First the drops, so many; then the tissue (the sneeze!), then the bin."],
   ["drinks", "The drinks (prototype)", "Make the family's drink: each thing into the cup (later, so many spoons), then give it."],
 ];
-const PROTO_NEEDS = { scripts: ["js/shared/word-card.js", "js/shared/bulb.js", "js/shared/focus.js"], styles: ["css/clinic-proto.css"] };
+const PROTO_NEEDS = { scripts: ["js/shared/word-card.js", "js/shared/focus.js"], styles: ["css/clinic-proto.css"] };
 function protoGame(id, label) {
   return {
     id,
@@ -482,11 +462,6 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
     if (nextPlan && nextPlan.stages && nextPlan.stages.heal) G().setTimeout(() => prefetchGame(nextPlan.stages.heal.game), 8000);
     const stages = patientStages({ seed: Math.floor(rng() * 1e9) + 1, morning: i, levels: plan.levels });
     const actions = ends(["again", "next", "list"]);
-    // the light bulb stays hidden through the first-ever patient (UI that appears when first needed, UX s8)
-    if (i === 0 && G().Onboard && session.screen) {
-      if (m.entry.first) G().Onboard.await(session.screen.bulb.btn, "clinic/bulb");
-      else G().Onboard.fadeIn(session.screen.bulb.btn, "clinic/bulb");
-    }
     const res = await host.run({ mode, plan: { game: plan.ailment, stages }, play: { play: "free", place: "clinic" }, level: plan.level, actions });
     if (res.left) return { morning: m, outs, left: true, seed: seed0 };
     const out = { plan, results: session.round ? session.round.results : {}, right: res.round.right, total: res.round.total, coins: res.finish && res.finish.pay ? res.finish.pay.coins : 0 };

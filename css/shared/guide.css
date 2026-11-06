@@ -57,7 +57,7 @@
 }
 .njg-guide.new .ng-say { animation: ngNew .3s ease-out; }
 @keyframes ngNew { from { opacity: .2; transform: translateY(var(--njg-s1)); } }
-/* the tools: the bulb and the mute, side by side on the top line, each a full tap */
+/* the tools: the mute (and, on the s14 look, the arrow), on the top line, each a full tap */
 .njg-guide .ng-tools { grid-area: tools; flex: none; min-width: 0; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: var(--njg-s2); }
 .njg-guide .ng-tools button {
   position: relative; overflow: hidden; width: var(--njg-tool); height: var(--njg-tool); border-radius: 50%; border: var(--njg-line) solid var(--ng-edge);
@@ -65,13 +65,7 @@
   background: var(--njg-card); color: var(--ng-ink); box-shadow: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .njg-guide .ng-tools button svg, .njg-guide .ng-tools button img { width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1; }
-.njg-guide .ng-bulb img { transform: scale(1.3); }
 .njg-guide .ng-slash { display: none; }
-/* the bulb while it's on: its bar runs down (js/shared/bulb.js sets --bulb-ms) */
-.njg-guide .ng-bulb .bulb-t { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--njg-s1); background: var(--njg-gold); transform-origin: left; transform: scaleX(0); }
-.njg-guide .ng-bulb.on, .njg-guide .ng-bulb.lit { background: color-mix(in srgb, var(--njg-gold) 30%, var(--njg-card)); }
-.njg-guide .ng-bulb.on .bulb-t { animation: ngBulbRun var(--bulb-ms, 3000ms) linear forwards; }
-@keyframes ngBulbRun { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 /* muted: the mute button shows a slash on a deep sage disc; her face greys a little */
 .njg-guide.muted .ng-mute { background: var(--ng-deep); border-color: var(--ng-deep); color: var(--njg-card); }
 .njg-guide.muted .ng-waves { display: none; }

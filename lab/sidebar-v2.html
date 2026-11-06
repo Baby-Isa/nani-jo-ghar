@@ -98,7 +98,7 @@
     col.className = "col";
     col.innerHTML = `<div class="cap">${s.cap}</div><aside class="sb2"><div class="guide-slot"></div>${s.card}<div class="play"></div><div class="side-rail"><button class="rail-btn" id="${i ? "" : "btn-help"}">?</button><button class="rail-btn">&#8962;</button><button class="rail-btn">&#128214;</button></div></aside>`;
     box.appendChild(col);
-    const g = NaniGuide.mount(col.querySelector(".guide-slot"), { face: FACE("nani"), bulb: "../assets/ui/results/icon-bulb.webp", onBulb: () => {}, onReplay: (b) => { b.classList.add("on"); setTimeout(() => b.classList.remove("on"), 1200); } });
+    const g = NaniGuide.mount(col.querySelector(".guide-slot"), { face: FACE("nani"), onReplay: (b) => { b.classList.add("on"); setTimeout(() => b.classList.remove("on"), 1200); } });
     g.set(s.nani.html, { rec: !!s.nani.rec });
     if (s.nani.muted) g.el.classList.add("muted");
     col.querySelectorAll(".face-say:not(.ng-face)").forEach((b) => b.addEventListener("click", () => { b.classList.add("on"); setTimeout(() => b.classList.remove("on"), 1200); }));

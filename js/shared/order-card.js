@@ -54,10 +54,7 @@
  *                       design system 13: a card you can't act on now; the start-folded card, 14a). Needs opts.fold.
  *                       With opts.big: the closed big card (the request pop-up from level 3): face + headline and one
  *                       row of dots; the order is heard, never written (CLN-114)
- *       opts.open       with opts.closed: the card is open for now (the light bulb's time, D11), not folded
- *       opts.look       with opts.onPeek: the peek's sign: the small bulb, no counter (default: a closed order is spoken,
- *                       decision 57/89), or "eye" for a closed card whose order is written (D12, E25)
- *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small bulb or eye) opens the card for opts.peekMs (default 3500) and calls
+ *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small eye) opens the card for opts.peekMs (default 3500) and calls
  *                       this (the host counts it as a hint); without it a tap just opens and closes it
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
@@ -87,22 +84,6 @@
   const OC = {};
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const FOLD_AFTER = 700;
-  // decision 57: the small bulb on a closed spoken card (flat, the design tokens' gold; no counter)
-  // SH-100 (Zafar, 17 Oct: "let's make them all photorealistic"): ONE bulb picture on every card and in Nani's and the doctor's box: the photo
-  // (assets/ui/results/icon-bulb.webp, the one results.js and the guide use), never a flat drawing of our own. The path is from this script's
-  // own place (as results.js does), stamped for the cache (njgV) when the card is drawn; a page without the stamp keeps the plain path
-  const scriptBase = (() => {
-    try {
-      const src = typeof document !== "undefined" && document.currentScript && document.currentScript.getAttribute("src");
-      const m = src && src.match(/^(.*?)js\/shared\/order-card\.js(?:[?#].*)?$/);
-      return m ? m[1] : "";
-    } catch (e) {
-      return "";
-    }
-  })();
-  OC.BULB_FILE = "assets/ui/results/icon-bulb.webp";
-  OC.bulbSrc = () => (typeof root.njgV === "function" ? root.njgV(scriptBase + OC.BULB_FILE) : scriptBase + OC.BULB_FILE);
-  OC.bulbImg = () => `<img class="oc-bulb-img" src="${OC.bulbSrc()}" alt="" draggable="false">`;
   OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -684,7 +665,7 @@
   }
 
   /**
-   * SH-98 / contract-27 (Zafar, 17 Oct: "if you click light bulb everything should be written in Kutchi"): while a card peeks, every
+   * SH-98 (Zafar, 17 Oct: "everything should be written in Kutchi"): while a card peeks, every
    * dotted word shows (a dot group carries its words in data-said: Cook's Lang.html); when the peek ends the dots come back.
    */
   function unveil(card, on) {
@@ -719,11 +700,6 @@
     const now = Date.now();
     const open = st.peekUntil ? now < st.peekUntil : !!st.opened;
     c.classList.add("closed");
-    // D11 (1 Oct, decision 27): the light bulb opens a closed card for the bulb's whole time (in English)
-    if (opts.open) {
-      c.classList.add("bulb-open");
-      return;
-    }
     if (open) c.classList.add("peek"), unveil(c, true);
     else c.classList.add("folded", "still");
     const shut = () => {
@@ -834,14 +810,11 @@
       head.insertBefore(s, head.firstChild);
     }
     // D12 (1 Oct, decision 27): on a closed card a small eye says "tap to look" (a look has its own badge)
-    // decision 57 (CLN-91), decision 89 (SH-16): on a spoken card the peek is a small bulb with no counter, not the eye.
-    // A closed order is a spoken one (rules F9, E12: from level 3 nothing is written, the order is heard), so the bulb is
-    // the default; a host whose closed card is written passes opts.look "eye" and keeps the eye and its counted look (E25)
+    // (its small bulb on a spoken card, decision 57, went with the bulbs: Zafar, 6 Nov, "remove the bulbs from everywhere")
     // SH-09 (S05-S2): it sits at the end of the headline's last line (floated right inside it), so it takes room on that
     // line only and the headline keeps its full width (three closed cards fit an 800x360 sidebar); no headline: the corner
     if (opts.closed && opts.onPeek && !opts.big) {
-      const eye = opts.look === "eye";
-      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.bulbImg()}</span>`;
+      const sign = `<span class="oc-look" aria-hidden="true">${OC.EYE}</span>`;
       const hl = head.querySelector(".oc-headline");
       const at = hl ? hl.querySelector(".oc-rec-line") || hl : head;
       at.insertAdjacentHTML("beforeend", sign);

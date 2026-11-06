@@ -150,10 +150,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #count-badge:not(.njg-tally).bump { animation: bump .3s; }
 
 /* (✓ Done and → Next are the kit's buttons, js/shared/buttons.js: Cook's own #done-btn and #go-btn looks went, S13-A2) */
-/* SH-96, SH-53 (17 Oct): the bulbs pulse (class help-pulse, js/shared/guide.js pulseBulbs) once the child has been stuck 15-20 s:
-   the kit's glow (css/shared/focus.css; its numbers css/shared/tokens.css --njg-glow-*, which Cook.GLOW reads for the item glow),
-   so the item glow, the pulsing bulbs and the tick beat together (S13-A1) */
-.help-pulse { animation: var(--njg-glow-anim); }
 
 #toast {
   position: absolute; z-index: 11; left: 50%; top: 40%; transform: translate(-50%, -50%);
@@ -618,17 +614,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   body.w6 #stage { grid-column: 2; }
   body.w6 #passme { grid-column: 1; }
 }
-/* 4. the light bulb, top of the sidebar: English for a few seconds (the bar runs down) */
+/* 4. the top of the sidebar (the light bulb that was here went with the bulbs: Zafar, 6 Nov) */
 body.w6 .side-top { display: flex; align-items: center; gap: 8px; flex: none; }
-#btn-bulb:not(.ng-bulb) {
-  position: relative; overflow: hidden; width: 46px; height: 46px; border-radius: 14px; border: none; padding: 8px;
-  background: var(--cream); color: var(--brass); box-shadow: 0 2px 6px rgba(60,40,20,.12); display: inline-flex; align-items: center; justify-content: center;
-}
-#btn-bulb svg { width: 100%; height: 100%; position: relative; z-index: 1; }
-#btn-bulb.on { background: #ffe7a0; color: #8a6412; box-shadow: 0 0 0 4px rgba(255, 210, 90, .5); }
-#btn-bulb .bulb-t { position: absolute; left: 0; bottom: 0; width: 100%; height: 5px; background: var(--brass); transform-origin: left; transform: scaleX(0); }
-#btn-bulb.on .bulb-t { animation: bulbRun var(--bulb-ms, 3000ms) linear forwards; }
-@keyframes bulbRun { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 /* the English words while it's on */
 .en6 { font-family: var(--ui-font); font-weight: 800; color: var(--indigo); }
 body.w6 #side.english #nani-card .wp-text, body.w6 #side.english #passme .pm-say .wp-text { display: none; }
@@ -684,13 +671,11 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 #intro .icard.person .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
 #intro .ladder { flex-direction: row; flex-wrap: wrap; }
 
-/* 8. the UI fades in as it's first needed: the stars from the second order, the light bulb from the third */
+/* 8. the UI fades in as it's first needed: the stars from the second order */
 body.w6:not(.ui-stars) #mission .m-stars { display: none; }
-body.w6:not(.ui-bulb) .side-top { display: none; }
-body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeIn .9s ease-out; }
+body.w6.ui-stars #mission .m-stars { animation: fadeIn .9s ease-out; }
 
 @media (max-height: 430px) {
-  #btn-bulb:not(.ng-bulb) { width: 40px; height: 40px; padding: 7px; }
   body.w6 #mission .m-head { padding-right: 32px; }
   .r6 .lt { font-size: 16px; }
   .icard { padding: 4px 4px 4px 6px; border-radius: 11px; }
@@ -795,12 +780,8 @@ body.w6 #side .icard.person .lrows { flex-direction: column; gap: 2px; }
 /* "tap to start", without words: a small tapping finger */
 #intro .ic-go { height: 30px; margin-top: clamp(6px, 1.2vh, 12px); background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M22 30V10a5 5 0 0 1 10 0v16l2-1a5 5 0 0 1 6 2l1 1a5 5 0 0 1 7 1l1 2a5 5 0 0 1 7 3v11c0 9-6 16-15 16h-4c-6 0-10-3-13-8l-9-14a5 5 0 0 1 8-6z' fill='%23fffaf1' stroke='%23a8957c' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E"); animation: goTap 1.6s ease-in-out infinite; }
 @keyframes goTap { 0%, 60%, 100% { transform: translateY(0); } 20% { transform: translateY(-5px); } 35% { transform: translateY(1px) scale(.94); } }
-/* Nani's box at the top of the sidebar; the bulb in it fades in as the other UI does */
+/* Nani's box at the top of the sidebar */
 body.w6 #guide { flex: none; }
-body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
-#guide #btn-bulb { background: var(--njg-white); }
-#guide #btn-bulb.on { background: #ffe7a0; box-shadow: 0 0 0 3px rgba(255, 210, 90, .55); }
-#guide #btn-bulb .bulb-t { height: 3px; }
 @media (max-height: 430px) {
   body.w6 .r6 { min-height: 1.5em; padding: 1px 5px 1px 6px; }
   body.w6 #mission .m-head { padding-right: 32px; }
