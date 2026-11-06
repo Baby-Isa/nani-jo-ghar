@@ -47,7 +47,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 | Clinic | 39 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
-| Art | 12 | 10 |
+| Art | 13 | 10 |
 | Language and audio | 12 | 7 |
 
 ---
