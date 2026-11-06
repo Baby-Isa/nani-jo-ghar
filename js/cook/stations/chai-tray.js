@@ -118,6 +118,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const PITCH = 172;
   const GROUP_GAP = 44;
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
+  // SH-219: a pill's card from its face: the word's width plus the speaker, its gap and the padding; the speaker alone
+  const PILL_PAD = 48, PILL_SPK_W = 62;
   const HOB_K = 0.79; // the mock-up's hob, 15% bigger (§10)
   const TRAY_D = 392;
   const GAP = 72;
@@ -780,9 +782,23 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // until its word is at least PILL_MIN_CSS on screen (the platforms' smallest readable label), the speaker with it; never past
     // PILL_MAX (what the shelf band holds under the jars), and never so wide that two pills touch (the row's rule, below). A laptop
     // already shows it larger and keeps 1
+    // SH-219 again (Zafar, 6 Nov 01:40: "do it now for chai so no surprises later"): each pill is as wide as its own face (the word's
+    // measured width, the speaker and the padding; a speaker-only pill narrower), so a crowded row grows its words towards the floor
+    // where short words and speaker-only pills leave room. The rule stays: the floor, at most 1.5x, never touching (PILL_GAP apart)
     const PILL_MIN_CSS = 13, PILL_MAX = 1.5, PILL_TEXT = 25;
-    let chipK = Math.max(1, Math.min(PILL_MAX, PILL_MIN_CSS / (PILL_TEXT * ppw)));
-    const PILL_ROOM = CHIP.w * chipK + 12;
+    const PILL_GAP = Math.max(12, 5 / ppw); // (at least 5 CSS px between two pills)
+    const rowIds = shelfIds.flat();
+    const measureW = (id) => {
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: "800" });
+      const w = t.width;
+      t.destroy();
+      return w;
+    };
+    const natW = {};
+    const faceW = (id, word) => (word ? (natW[id] = natW[id] || measureW(id)) + PILL_PAD : PILL_SPK_W);
+    const pairNeed = () => Math.max(PILL_SPK_W, ...rowIds.slice(1).map((id, i) => (faceW(rowIds[i], pillShows14(rowIds[i])) + faceW(id, pillShows14(id))) / 2));
+    const chipWant = Math.max(1, Math.min(PILL_MAX, PILL_MIN_CSS / (PILL_TEXT * ppw)));
+    const PILL_ROOM = pairNeed() * chipWant + PILL_GAP;
     const LEFT = VL, RIGHT = VR;
     const nG = shelfIds.length - 1;
     let gapW = GROUP_GAP;
@@ -793,9 +809,6 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (fit(gapW) < PILL_ROOM) gapW = Math.max(20, Math.min(GROUP_GAP, (roomMid - slotsN * PILL_ROOM) / Math.max(1, nG)));
       slotW = Math.min(PILL_ROOM, fit(gapW));
     }
-    // (as large as the floor asks, as far as the slots allow without touching)
-    chipK = Math.max(1, Math.min(chipK, (slotW - 12) / CHIP.w));
-    const chipY = Math.min(CHIP.y, 896 - (CHIP.h / 2) * chipK);
     const width = slotsN * slotW + nG * gapW;
     const x0 = mid - width / 2;
     const shelf = {};
@@ -810,6 +823,38 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       });
       sx += gapW;
     });
+    fitPills(false);
+    // SH-219: the pills' one scale for the row: as large as the floor asks (chipWant), as far as each neighbouring pair allows without
+    // touching (PILL_GAP between their cards); never below 1 (today's size): where even that would touch, the long words narrow
+    // (their text scaled down) to their slot, as before. Run again when a pill's face changes (its word hides or comes back)
+    function fitPills(anim) {
+      const chips = rowIds.map((id) => shelf[id] && shelf[id].chip).filter((c) => c && c.active);
+      let k = chipWant;
+      chips.slice(1).forEach((c, i) => {
+        const b = chips[i];
+        k = Math.min(k, (c.x - b.x - PILL_GAP) / ((faceW(b.pillId, b.showsWord) + faceW(c.pillId, c.showsWord)) / 2));
+      });
+      const cap = k < 1 ? slotW - PILL_GAP : Infinity;
+      k = Math.max(1, k);
+      const y = Math.min(CHIP.y, 896 - (CHIP.h / 2) * k);
+      chips.forEach((c) => {
+        if (c.capW !== cap) chipFace(c, c.pillId, c.showsWord, cap);
+        c.k = k;
+        pillHit(c);
+        if (anim) S.tweens.add({ targets: c, scale: k, y, duration: 200, ease: "Sine.easeOut" });
+        else c.setScale(k).setY(y);
+      });
+    }
+    // SH-219 (the pills' measure, read only): each shelf pill on screen in CSS px: its card, its word's size, whether it shows the word
+    Cook.chaiPills = () => {
+      const k = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x;
+      return Object.values(shelf).filter((o) => o && o.chip && o.chip.active).map((o) => {
+        const ch = o.chip, sc = Math.abs(ch.scaleX || 1), w = (ch.cardW || CHIP.w) * sc;
+        const t = (ch.face || []).find((f) => f.type === "Text");
+        const a = UI.worldToScreen(ch.x - w / 2, ch.y - (CHIP.h / 2) * sc), z = UI.worldToScreen(ch.x + w / 2, ch.y + (CHIP.h / 2) * sc);
+        return { id: ch.pillId, word: !!ch.showsWord, left: a.x, right: z.x, top: a.y, bottom: z.y, wordPx: t ? Math.round(25 * Math.abs(t.scaleX || 1) * sc * k * 10) / 10 : null, speakerPx: Math.round(26 * sc * k * 10) / 10 };
+      }).sort((p, q) => p.left - q.left);
+    };
     // where a canvas's picture ends at the bottom (its transparent margin stands below the shelf line)
     function opaqueBottom(key) {
       try {
@@ -827,23 +872,40 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       return 1;
     }
     // SH-159: the pill's face (the word and its speaker, or the speaker alone), drawn again when the word's pill changes
-    function chipFace(chip, id, showWord) {
+    // the tap area: the card and 7 px round it, as wide as its slot allows (up to the old 142 design px), never past the slot
+    function pillHit(chip) {
+      const k = chip.k || 1;
+      const hitW = Math.max(chip.cardW + 14, Math.min(CHIP.hitW, (slotW - 2) / k));
+      chip.setSize(hitW, CHIP.hitH);
+      if (chip.input) chip.input.hitArea.setTo(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH);
+      else chip.setInteractive(new Phaser.Geom.Rectangle(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
+    }
+    function chipFace(chip, id, showWord, cap = chip.capW != null ? chip.capW : Infinity) {
       (chip.face || []).forEach((o) => chip.remove(o, true));
+      const w = Math.min(faceW(id, showWord), cap);
+      const bg = S.add.graphics();
+      bg.fillStyle(0x28190a, 0.1);
+      bg.fillRoundedRect(-w / 2, -CHIP.h / 2 + 2, w, CHIP.h, 12);
+      bg.fillStyle(INK.card, 1);
+      bg.fillRoundedRect(-w / 2, -CHIP.h / 2, w, CHIP.h, 12);
       const icon = S.add.graphics();
       if (showWord) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
-        const maxT = CHIP.w - 52;
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+        const maxT = w - PILL_PAD;
         if (t.width > maxT) t.setScale(maxT / t.width);
-        const w = 22 + 8 + t.displayWidth;
-        speaker(icon, -w / 2 + 10, 0, 24);
-        t.x = -w / 2 + 30;
-        chip.add([icon, t]);
-        chip.face = [icon, t];
+        const cw = 22 + 8 + t.displayWidth;
+        speaker(icon, -cw / 2 + 10, 0, 24);
+        t.x = -cw / 2 + 30;
+        chip.add([bg, icon, t]);
+        chip.face = [bg, icon, t];
       } else {
         speaker(icon, 1, 0, 26);
-        chip.add(icon);
-        chip.face = [icon];
+        chip.add([bg, icon]);
+        chip.face = [bg, icon];
       }
+      chip.cardW = w;
+      pillHit(chip);
+      chip.capW = cap;
       chip.showsWord = !!showWord;
       chip.pillId = id;
     }
@@ -863,22 +925,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // SH-159 (Zafar, 29 Oct, round 3): on the s14 look the word pill's own ladder (js/core/progress.js pill, the central rules'
       // words.pill): written until picked right three times in a row (first try, no peek); a miss brings it back
       const showWord = pillShows14(id);
-      const chip = S.track(S.add.container(x, chipY).setDepth(D.item + 2).setScale(chipK));
-      const bg = S.add.graphics();
-      bg.fillStyle(0x28190a, 0.1);
-      bg.fillRoundedRect(-CHIP.w / 2, -CHIP.h / 2 + 2, CHIP.w, CHIP.h, 12);
-      bg.fillStyle(INK.card, 1);
-      bg.fillRoundedRect(-CHIP.w / 2, -CHIP.h / 2, CHIP.w, CHIP.h, 12);
-      chip.add(bg);
+      const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
       chipFace(chip, id, showWord);
-      chip.setSize(CHIP.hitW, CHIP.hitH);
-      chip.setInteractive(new Phaser.Geom.Rectangle(-CHIP.hitW / 2, -CHIP.hitH / 2 + 8, CHIP.hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
       chip.on("pointerdown", (ptr, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();
         if (Cook.onLabel) Cook.onLabel(id);
         Lang.speakWord(id);
-        S.tweens.add({ targets: chip, scale: chipK * 1.08, duration: 90, yoyo: true });
+        S.tweens.add({ targets: chip, scale: (chip.k || 1) * 1.08, duration: 90, yoyo: true });
       });
       img.chip = chip;
       return img;
@@ -2087,7 +2141,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // have no bounds, so Phaser gave an empty box at the world's corner and the light stretched to the play area's edge
         const ch = o.chip, sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1);
         // (the pill as drawn: its card and its 2 px shadow under it)
-        pill = { x: ch.x - (CHIP.w / 2) * sx, right: ch.x + (CHIP.w / 2) * sx, bottom: ch.y + (CHIP.h / 2 + 2) * sy };
+        pill = { x: ch.x - ((ch.cardW || CHIP.w) / 2) * sx, right: ch.x + ((ch.cardW || CHIP.w) / 2) * sx, bottom: ch.y + (CHIP.h / 2 + 2) * sy };
         [x0, x1, y1] = [Math.min(x0, pill.x), Math.max(x1, pill.right), Math.max(y1, pill.bottom)];
       }
       const a = UI.worldToScreen(x0, y0);
@@ -3130,7 +3184,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
               P14().pill(id, { ok: !!ok, firstTry: !wrongFirst(id), peek: peeked(id) });
               pillNote(id);
             });
-            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && chipFace(o.chip, o.chip.pillId, pillShows14(o.chip.pillId)));
+            let refit = false;
+            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && (refit = true) && chipFace(o.chip, o.chip.pillId, pillShows14(o.chip.pillId), Infinity));
+            if (refit) fitPills(true);
           }
         }
         if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });

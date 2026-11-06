@@ -22,6 +22,12 @@ generous in using fable for judgment and double checks (this time you can be gen
 - **Morning report** by 10:30: a new report in build/reports named overnight-2026-11-06: one page: what is done and live, each report's link with
   its decisions (numbered, "yes to all except ..."), launches and costs. Then `/handover`.
 
+**Zafar's edits at launch (6 Nov, 01:58):** (a) no task 6. (b) **No true relative sizes in item art.** We moved away from real
+sizes because small things (spice jars) become impossible to read beside the milk bottle on small screens. Use *token* size
+differences: just enough to show some things are smaller, far less than real life. Task 5's research gives an opinion and defines
+the rule (his starting point: largest 100% of the slot height, medium 90%, small at least 80%), and the art plan, paste block and
+colour tool use that rule, not true heights.
+
 ## The tasks, in order
 
 1. **Pills that fit their word (SH-219, his "do it now for chai so no surprises later").** The shelf chip's width from its content
@@ -60,12 +66,13 @@ generous in using fable for judgment and double checks (this time you can be gen
    dishes such a game could include in a Kutchi Khoja Shia home (halal, no pork or alcohol, no sweets as rewards), their main
    ingredients and tools; bank likely future ones. One shared list, de-duplicated, each item: name (English, and Kutchi where Mum's
    sheet has it, else blank), which games, view (side-on shelf item or top-down), new or a redo (the chai shelf's two batches are a
-   redo: one batch, one light, one lid family, true relative size). Then the **paste file**: pack spec + art plan + block from
-   `artblock.py` (sheets of items on one sheet, one camera, one light, the house palette, true relative sizes; the colour tool's
+   redo: one batch, one light, one lid family, a token size step). Then the **paste file**: pack spec + art plan + block from
+   `artblock.py` (sheets of items on one sheet, one camera, one light, the house palette, token size steps; the colour tool's
    checks in the judge). a new report in build/reports named stove-art-400-2026-11-06 (the list, the research's sources, the run's size and time) and
    the block in `docs/design-language/art-plans/`. Push the references so the block runs with nothing from him.
 
-6. **If time remains:** start the chai standard's fill on the locked structure (`build/reports/s17-standards-structure-v2.md`,
+6. ~~**If time remains:** start the chai standard's fill~~ **Dropped (Zafar, 6 Nov 01:58): "don't start filling in the chai
+   standards."** Was: start the chai standard's fill on the locked structure (`build/reports/s17-standards-structure-v2.md`,
    section 8: every area rule by rule; every rule tied to a check or tool): the glossary and the patterns first.
 
 Also answer in the morning report, with Fable: do characters drawn from real people (Nani, the doctor) read less AI than invented
