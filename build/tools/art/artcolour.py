@@ -6,6 +6,7 @@ model looks, in the art judge's PASS / FLAG / FAIL words.
   python3 build/tools/art/artcolour.py DIR --sheet out.png --json out.json -v      # every picture under DIR, a contact sheet
   python3 build/tools/art/artcolour.py --scan assets --worst 36 --sheet worst.png  # the retrospective: every asset
   python3 build/tools/art/artcolour.py x.webp --size-class M                       # proportion against a size class
+  python3 build/tools/art/artcolour.py --changed [REF]                             # only pictures changed since REF (checks.mjs `art`)
   python3 build/tools/art/artcolour.py --swatch build/tools/art/data/house-swatch.png   # the house swatch strip
   python3 build/tools/art/artcolour.py --house-words                               # the house colours in words (the block)
 
@@ -18,11 +19,17 @@ Per picture:
   light    (cut-outs) the light direction from the shading inside each material on the outer ring; FLAG when it is clear
            and not from the upper left, above or the left (the art bible). Not on people (look-rules.json light.skip).
   halo     (cut-outs) FLAG a near-white band just inside the alpha edge, much whiter than the band behind it.
-  shadow   (cut-outs) FAIL a baked shadow: dark, low-chroma soft alpha below the body, or a dark skirt wider than the body.
+  shadow   (cut-outs) FAIL a baked shadow: dark, low-chroma soft alpha below the body, a dark skirt wider than the body, or
+           an opaque neutral strip under it that grows lighter away from a dark contact line (Fable, 6 Nov: pan-pour);
+           FLAG a faint (warm-tinted, small) soft shadow.
+  camera   (round items by name) rim = the top arc's height over the body's width, about 0 from the side, 1 from above.
+  shipped  whether a page, script, style or data file names the picture or builds its path (look-rules.json "shipped"):
+           named, built, lab (a lab page only) or none; the summary counts shipped and unreferenced apart.
   size     (cut-outs with a size class) FLAG when the piece's height in its canvas is off its class's target (token steps,
            Zafar 6 Nov: L 100 %, M ~90 %, S >= ~80 % of the slot; data/look-rules.json "sizes").
   batch    (a batch: the pictures of one folder, or --batch) FLAG the odd ones out in gloss, saturation, light direction,
-           specular position, edge whiteness, and lid family: the pictures of one surface come from one run.
+           specular position, edge whiteness, and lid family: the pictures of one surface come from one run; on a named
+           surface a camera range over batch.camera_range; a strong colour with little of it in the house family (house look).
 Thresholds are in data/look-rules.json. Exit 1 when any picture FAILs, 2 when there is nothing to measure, else 0.
 NOT measured: style, anatomy, likeness, text, framing (artjudge.py and a model's look). A PASS is only that the numbers
 are fine."""
@@ -33,6 +40,8 @@ import glob
 import json
 import math
 import os
+import re
+import subprocess
 import sys
 
 import numpy as np
@@ -365,7 +374,106 @@ def baked_shadow(Lab, alpha, R):
         skirt_share = skirt / max(1, (solid & band).sum())
     else:
         skirt_share = 0.0
-    return {"soft_px": int(soft.sum()), "soft": round(float(soft_share), 3), "skirt_px": int(skirt), "skirt": round(float(skirt_share), 3)}
+    # a faint soft shadow (FLAG): the same soft pixels, but warm-tinted allowed and a smaller share (a honey jar's)
+    F = P["faint"]
+    dark_f = (Lab[..., 0] < P["dark_l"]) & (C < F["dark_c"])
+    faint = cov & beyond & below & (alpha >= lo) & (alpha <= hi) & dark_f & band & shows
+    faint_share = faint.sum() / max(1, (cov & band).sum())
+    out = {"soft_px": int(soft.sum()), "soft": round(float(soft_share), 3), "skirt_px": int(skirt), "skirt": round(float(skirt_share), 3),
+           "faint_px": int(faint.sum()), "faint": round(float(faint_share), 3)}
+    out.update(opaque_shadow(Lab, alpha, R))
+    return out
+
+
+def opaque_shadow(Lab, alpha, R):
+    """An opaque baked shadow (Fable, 6 Nov: pan-pour's crescent): per column, the run of opaque, neutral pixels at the
+    bottom edge that grows lighter going down from a dark contact line (a cast shadow fades away from the object; an
+    object's own base shades darker towards its edge), its contact darker than the body just above it. span: the longest
+    stretch of such columns across the piece's width; depth: their pixels per column of the piece's width."""
+    P = R["shadow"]["opaque"]
+    solid = alpha >= 0.5
+    ys, xs = np.nonzero(solid)
+    y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
+    H, W = y1 - y0 + 1, x1 - x0 + 1
+    L, C = Lab[..., 0], np.hypot(Lab[..., 1], Lab[..., 2])
+    neutral = solid & (C < P["dark_c"])
+    has = solid.any(0)
+    bottom = np.where(has, solid.shape[0] - 1 - np.argmax(solid[::-1], 0), -1)
+    band_top, max_run, min_run = y1 - R["shadow"]["band"] * H, P["max_run"] * H, max(P["min_run"], int(P["min_run_h"] * H))
+    cols, px = [], 0
+    for x in range(x0, x1 + 1):
+        b = bottom[x]
+        if b < band_top or not neutral[b, x]:
+            continue
+        y, prev, lmin, ymin = b, L[b, x], L[b, x], b
+        while y > 0 and neutral[y - 1, x] and L[y - 1, x] <= prev + P["tol"] and b - y < max_run:
+            y -= 1
+            prev = L[y, x]
+            if prev < lmin:
+                lmin, ymin = prev, y
+        n = b - ymin + 1
+        if n < min_run or lmin >= R["shadow"]["dark_l"]:
+            continue
+        rise = L[max(ymin, b - 2):b + 1, x].max() - lmin  # the very edge is often soft: the brightest of the bottom 3
+        above = [yy for yy in range(ymin - 1, max(-1, ymin - 1 - 3 * P["above"]), -1) if solid[yy, x]][:P["above"]]
+        if above and rise >= P["rise"] and np.median(L[above, x]) - lmin >= P["gap"]:
+            cols.append(x)
+            px += n
+    best = cur = 0
+    last = None
+    for x in cols:
+        cur = cur + 1 if last is not None and x - last <= 2 else 1
+        best, last = max(best, cur), x
+    return {"opaque_span": round(best / W, 3), "opaque_depth": round(px / W, 2)}
+
+
+def is_round(name, R):
+    """A round vessel by its file name (look-rules.json camera.names): the camera proxy is read only on these."""
+    base = os.path.basename(name).lower()
+    return any(w in base for w in R["camera"]["names"])
+
+
+def camera(alpha, R):
+    """Camera height proxy for a round item (Fable, 6 Nov): half-ellipses fitted to the top and the bottom edge of the
+    piece's body (handles and spouts opened away) across its width; rim = the top arc's height over the body's width, about
+    0 seen from the side and 1 straight down, read only when both arcs fit and agree (a cylinder's rim and base)."""
+    P = R["camera"]
+    k = max(alpha.shape) / float(P["side"])
+    if k > 1:  # measured on a small copy: the opening is the slow part
+        alpha = np.asarray(Image.fromarray((alpha * 255).astype(np.uint8)).resize((max(1, round(alpha.shape[1] / k)), max(1, round(alpha.shape[0] / k))), Image.BILINEAR)) / 255.0
+    solid = alpha >= 0.5
+    if solid.sum() < 300:
+        return None
+    ys, xs = np.nonzero(solid)
+    size = max(ys.max() - ys.min(), xs.max() - xs.min()) + 1
+    r = max(1, int(P["open"] * size))
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
+    body = ndi.binary_opening(solid, structure=(xx * xx + yy * yy) <= r * r)
+    lb, n = ndi.label(body)
+    if n == 0:
+        return None
+    body = lb == (np.bincount(lb.ravel())[1:].argmax() + 1)
+    cols = np.nonzero(body.any(0))[0]
+    if len(cols) < 20:
+        return None
+    a = (cols.max() - cols.min() + 1) / 2.0
+    s = np.sqrt(np.clip(1 - ((cols - (cols.max() + cols.min()) / 2.0) / a) ** 2, 0, 1))
+    out = {}
+    for side, edge, sign in (("top", np.argmax(body[:, cols], 0), -1), ("bottom", body.shape[0] - 1 - np.argmax(body[::-1, cols], 0), 1)):
+        y = edge.astype(float)
+        keep = np.ones(len(y), bool)
+        for _ in range(3):  # trim the points far off the arc (a knob, a foot, a drip) and fit again
+            M = np.stack([np.ones(keep.sum()), sign * s[keep]], 1)
+            c, b = np.linalg.lstsq(M, y[keep], rcond=None)[0]
+            err = np.abs(c + sign * b * s - y)
+            keep = err <= max(2.5 * np.median(err), 1.5)
+        e = float(np.sqrt((err[keep] ** 2).mean())) / (2 * a)
+        if 0 <= b / a <= P["max_ratio"] and e <= P["max_err"] and keep.mean() >= 0.6:
+            out[side] = round(float(b / a), 2)
+    if len(out) < 2 or abs(out["top"] - out["bottom"]) > P["agree"]:
+        return {**out, "rim": None}  # a dome lid, a carton's gable, a bottle's foot: the arcs disagree, no reading
+    out["rim"] = out["top"]
+    return out
 
 
 def gloss(Lab, op, R):
@@ -412,7 +520,8 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         chroma = math.hypot(Lc[1], Lc[2])
         near, hs = match(Lc, R)
         row = {"hex": hexof(lab_to_rgb(Lc)), "share": round(c["share"], 3), "words": words(Lc), "neutral": chroma < R["colour"]["neutral_chroma"] or Lc[0] < R["colour"]["dark_l"],
-               "wada": near, "house": hs, "in_house": hs["de"] <= R["house"]["house_de"]}
+               "wada": near, "house": hs, "in_house": hs["de"] <= R["house"]["house_de"], "chroma": round(chroma, 1),
+               "hue": round(math.degrees(math.atan2(Lc[2], Lc[1])) % 360)}
         cols.append(row)
         if not row["neutral"] and c["share"] >= R["colour"]["off_palette_share"] and near["de"] > R["colour"]["off_palette_de"]:
             res["flag"].append("off-palette: %s %s (%.0f%% of the piece) is ΔE %.0f from the nearest Wada colour (%s)"
@@ -420,6 +529,17 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     res["colours"] = cols
     tinted = [c for c in cols if not c["neutral"]]
     res["info"]["house_share"] = round(sum(c["share"] for c in tinted if c["in_house"]) / max(1e-6, sum(c["share"] for c in tinted)), 2) if tinted else None
+    # a rainbow (Fable, 6 Nov: the drop machine's RGBY tubes, the kite): several strong colours, none of them the house's
+    Hl = R["house_look"]
+    loud = [c for c in tinted if not c["in_house"] and c["chroma"] >= Hl["loud_chroma"] and c["share"] >= Hl["loud_share"]]
+    hues = []
+    for c in sorted(loud, key=lambda c: -c["share"]):
+        if all(min(abs(c["hue"] - h), 360 - abs(c["hue"] - h)) >= Hl["hue_apart"] for h in hues):
+            hues.append(c["hue"])
+    res["info"]["loud_hues"] = len(hues)
+    if len(hues) >= Hl["rainbow"]:
+        res["flag"].append("house look: %d strong colours outside the house family (%s): a stock-art rainbow"
+                           % (len(hues), ", ".join(c["words"] for c in loud[:5])))
     res["info"]["chroma"] = round(float(np.hypot(Lab[..., 1], Lab[..., 2])[op].mean()), 1)
     g, sx = gloss(Lab, alpha >= 0.5, R)  # glass is soft alpha: its highlights sit at 0.5-0.9
     res["info"]["gloss"], res["info"]["spec_x"] = g, sx
@@ -458,9 +578,22 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     sh = baked_shadow(Lab, alpha, R)
     res["info"]["shadow"] = sh
     S = R["shadow"]
+    O = S["opaque"]
     if sh and ((sh["soft_px"] >= S["min_px"] and sh["soft"] >= S["soft_share"]) or (sh["skirt_px"] >= S["min_px"] and sh["skirt"] >= S["skirt_share"])):
         res["fail"].append("baked shadow: a dark soft patch below the piece (%d px soft, %.0f%% of the bottom band; skirt %.0f%%): code draws the contact shadow"
                            % (sh["soft_px"], max(sh["soft"], sh["skirt"]) * 100, sh["skirt"] * 100))
+    elif sh and sh["opaque_span"] >= O["span"] and sh["opaque_depth"] >= O["depth"]:
+        res["fail"].append("baked shadow: an opaque dark strip under the piece, lighter away from the object (%.0f%% of its width, %.1f px deep): code draws the contact shadow"
+                           % (sh["opaque_span"] * 100, sh["opaque_depth"]))
+    elif sh and sh["opaque_span"] >= O["flag_span"] and sh["opaque_depth"] >= O["flag_depth"]:
+        res["flag"].append("shadow: a short opaque dark strip under the piece (%.0f%% of its width, %.1f px deep): check by eye"
+                           % (sh["opaque_span"] * 100, sh["opaque_depth"]))
+    elif sh and sh["faint_px"] >= S["faint"]["min_px"] and sh["faint"] >= S["faint"]["share"]:
+        res["flag"].append("shadow: a faint soft shadow below the piece (%d px, %.0f%% of the bottom band): check by eye; re-cut if it shows"
+                           % (sh["faint_px"], sh["faint"] * 100))
+    # camera height (round items)
+    if name and is_round(name, R):
+        res["info"]["camera"] = camera(alpha, R)
     # proportion
     fill = (np.nonzero((alpha > 0.5).any(1))[0])
     res["info"]["fill_h"] = round(float((fill.max() - fill.min() + 1) / alpha.shape[0]), 3) if len(fill) else None
@@ -531,6 +664,24 @@ def batch_check(results, name, R=None, surface=True):
                                           % (name, spec["label"], fmt(v[i]), fmt(np.median(v[big])), len(big), len(v),
                                              "the batch splits in two" if len(small) > 1 else "the odd one out"))
             summ["splits"].append({"feature": f, "odd": [os.path.basename(have[i][0]["file"]) for i in small], "gap": round(float(gap), 3)})
+    # camera height (Fable, 6 Nov): on one surface the round items' rims may span at most camera_range
+    rims = [(r, r["info"]["camera"]["rim"]) for r in items if (r["info"].get("camera") or {}).get("rim") is not None]
+    if surface and len(rims) >= B["min_items"]:
+        lo_r, hi_r = min(rims, key=lambda t: t[1]), max(rims, key=lambda t: t[1])
+        if hi_r[1] - lo_r[1] > B["camera_range"]:
+            for r, v in (lo_r, hi_r):
+                r["flag"].append("batch %s: camera height differs on one surface: rim %.2f (%s) to %.2f (%s), over %.2f apart (one camera per surface)"
+                                 % (name, lo_r[1], os.path.basename(lo_r[0]["file"]), hi_r[1], os.path.basename(hi_r[0]["file"]), B["camera_range"]))
+            summ["splits"].append({"feature": "camera", "odd": [os.path.basename(lo_r[0]["file"]), os.path.basename(hi_r[0]["file"])], "gap": round(hi_r[1] - lo_r[1], 3)})
+    # house look (Fable, 6 Nov): on a surface in the house look, a strong picture with little of the house in it stands out
+    H = R["house_look"]
+    shares = [r["info"]["house_share"] for r in items if r["info"].get("house_share") is not None]
+    if len(shares) >= B["min_items"] and np.median(shares) >= H["surface_share"]:
+        for r in items:
+            hs, ch = r["info"].get("house_share"), r["info"].get("chroma")
+            if hs is not None and ch is not None and ch >= H["chroma"] and hs <= H["share"] and not any("house look:" in f for f in r["flag"]):
+                r["flag"].append("batch %s: house look: %.0f%% of its colour in the house family at chroma %.0f, on a surface whose median is %.0f%%: strong colour off the house palette"
+                                 % (name, hs * 100, ch, np.median(shares) * 100))
     # lid families: single-linkage by CIEDE2000
     lids = [(r, np.array(r["info"]["lid"])) for r in items if r["info"].get("lid")]
     if len(lids) >= B["min_items"] and (surface or B["lid_in_folders"]):
@@ -561,6 +712,119 @@ def batch_key(path, mode, big=40, counts=None):
     stem = os.path.splitext(os.path.basename(path))[0].split("@")[0]
     parts = stem.split("-")
     return "%s/%s*%s" % (d, parts[0], parts[-1] if len(parts) > 1 else "")
+
+
+# ---------------------------------------------------------------- shipped: by reference, not by folder (Fable, 6 Nov)
+
+def _texts(globs, exclude):
+    out = []
+    for g in globs:
+        for p in sorted(glob.glob(os.path.join(REPO, g), recursive=True)):
+            rel = os.path.relpath(p, REPO)
+            if os.path.isfile(p) and not any(fnmatch.fnmatch(rel, x) for x in exclude):
+                try:
+                    out.append(open(p, encoding="utf8", errors="replace").read())
+                except OSError:
+                    pass
+    return out
+
+
+def _norm(t):
+    """A path as written in code or data -> the part after assets/, without its extension."""
+    t = t.lstrip("./")
+    if "assets/" in t:
+        t = t.split("assets/", 1)[1]
+    root, ext = os.path.splitext(t)
+    return root if ext.lower() in IMG_EXT else t
+
+
+def _template(t):
+    """A JS template literal naming assets/... -> a regex on the path after assets/ (each ${...} one name, no slash);
+    None when its first folder is itself a ${...} (too wide to mean anything)."""
+    i = t.find("assets/")
+    if i < 0:
+        return None
+    t, out, k = t[i + 7:], "", 0
+    while k < len(t):
+        if t.startswith("${", k):
+            depth, k = 1, k + 2
+            while k < len(t) and depth:
+                depth += {"{": 1, "}": -1}.get(t[k], 0)
+                k += 1
+            out += "\0"
+        else:
+            out += t[k]
+            k += 1
+    if "/" not in out or "\0" in out.split("/", 1)[0]:
+        return None
+    return re.compile("[^/]*".join(re.escape(x) for x in out.split("\0")) + r"$")
+
+
+class Refs:
+    """Which pictures a page or data file references (look-rules.json "shipped"): `named` when its path is written out
+    (with or without assets/ and its extension), `built` when code builds it (a template literal's pattern, or its bare
+    name quoted where its folder is named too), `lab` when only a lab page does, else `none`. Shipped = named or built."""
+
+    def __init__(self, R=None):
+        S = (R or rules())["shipped"]
+        self.sets = {k: self._index(_texts(S[k], S["exclude"])) for k in ("pages", "lab")}
+
+    @staticmethod
+    def _index(texts):
+        paths, dirs, names, pats = set(), set(), set(), []
+        for s in texts:
+            for t in re.findall(r"[A-Za-z0-9_./-]*/[A-Za-z0-9_./-]+", s):
+                n = _norm(t)
+                if n.endswith("/"):
+                    dirs.add(n.rstrip("/"))
+                else:
+                    paths.add(n)
+                    dirs.add(os.path.dirname(n))
+            names.update(re.findall(r"""["'`]([A-Za-z0-9_.-]+)["'`]""", s))
+            names.update(re.findall(r"\}([A-Za-z0-9_.-]+\.(?:webp|png|jpe?g))", s))  # `${dir}name.webp`
+            for t in re.findall(r"`([^`]*assets/[^`]*)`", s):
+                p = _template(t)
+                if p:
+                    pats.append(p)
+        return {"paths": paths, "dirs": dirs, "names": {_norm(n) for n in names}, "pats": pats}
+
+    def _hit(self, ix, sub):
+        stem = os.path.splitext(sub)[0]
+        if stem in ix["paths"]:
+            return "named"
+        if any(p.match(sub) or p.match(stem) for p in ix["pats"]):
+            return "built"
+        if os.path.basename(stem) in ix["names"] and os.path.dirname(stem) in ix["dirs"]:
+            return "built"
+        return None
+
+    def of(self, path):
+        rel = os.path.relpath(os.path.abspath(path), REPO)
+        if not rel.startswith("assets/"):
+            return "none"
+        sub = rel[len("assets/"):]
+        return self._hit(self.sets["pages"], sub) or ("lab" if self._hit(self.sets["lab"], sub) else "none")
+
+
+# ---------------------------------------------------------------- changed pictures (checks.mjs `art`)
+
+def _git(*a):
+    return subprocess.run(["git", "-C", REPO, *a], capture_output=True, text=True)
+
+
+def changed(ref=None):
+    """The pictures under assets/ changed since ref (default: the merge-base with origin/main, or HEAD~1 on main),
+    including uncommitted and untracked ones. Returns (ref, paths)."""
+    head = _git("rev-parse", "HEAD").stdout.strip()
+    if not ref:
+        mb = _git("merge-base", "HEAD", "origin/main")
+        ref = mb.stdout.strip() if mb.returncode == 0 and mb.stdout.strip() and mb.stdout.strip() != head else "HEAD~1"
+    d = _git("diff", "--name-only", "--diff-filter=ACMR", ref, "--", "assets")
+    if d.returncode != 0:
+        raise SystemExit("git diff against %s failed: %s" % (ref, d.stderr.strip()))
+    u = _git("ls-files", "--others", "--exclude-standard", "--", "assets")
+    rels = sorted(set(d.stdout.split() + u.stdout.split()))
+    return ref, [os.path.join(REPO, p) for p in rels if p.lower().endswith(IMG_EXT) and os.path.isfile(os.path.join(REPO, p))]
 
 
 # ---------------------------------------------------------------- files, sheet, CLI
@@ -707,6 +971,7 @@ def main(argv=None):
     ap.add_argument("--quiet", action="store_true", help="print only the summary and the FAILs")
     ap.add_argument("--swatch", help="write the house swatch strip here and stop")
     ap.add_argument("--house-words", action="store_true", help="print the house colours in words and stop")
+    ap.add_argument("--changed", nargs="?", const="", metavar="REF", help="only the pictures under assets/ changed since REF (default: the merge-base with origin/main, or HEAD~1), uncommitted and untracked ones too; a named surface's other pictures are measured beside them, not judged (checks.mjs `art`)")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args(argv)
     R = rules(a.rules)
@@ -716,16 +981,34 @@ def main(argv=None):
     if a.house_words:
         print(house_words(R))
         return 0
-    paths = collect(([a.scan] if a.scan else []) + a.paths, R)
+    context = []
+    if a.changed is not None:
+        ref, paths = changed(a.changed or None)
+        if not paths:
+            print("no picture changed since %s" % ref[:12])
+            return 0
+        paths = collect(paths, R)
+        for bname, globs in R.get("batches", {}).items():  # a changed shelf jar is measured beside the rest of its shelf
+            if bname.startswith("_"):
+                continue
+            mem = collect([os.path.join(REPO, g) for g in globs], R)
+            if set(map(os.path.abspath, mem)) & set(map(os.path.abspath, paths)):
+                context += [m for m in mem if os.path.abspath(m) not in set(map(os.path.abspath, paths + context))]
+        print("%d picture(s) changed since %s%s" % (len(paths), ref[:12], " (and %d beside them on their surface)" % len(context) if context else ""))
+    else:
+        paths = collect(([a.scan] if a.scan else []) + a.paths, R)
     if not paths:
         print("no pictures to measure")
         return 2
+    refs = Refs(R)
     res = []
-    for i, p in enumerate(paths):
+    for i, p in enumerate(paths + context):
         try:
-            res.append(analyse(p, R, a.size_class))
+            r = analyse(p, R, a.size_class)
         except Exception as e:  # a bad file never stops the pass
-            res.append({"file": p, "fail": [], "flag": ["could not be measured: %s: %s" % (type(e).__name__, e)], "info": {}, "cutout": False})
+            r = {"file": p, "fail": [], "flag": ["could not be measured: %s: %s" % (type(e).__name__, e)], "info": {}, "cutout": False}
+        r["ref"], r["context"] = refs.of(p), i >= len(paths)
+        res.append(r)
         if a.scan and i % 200 == 199:
             print("  ... %d of %d" % (i + 1, len(paths)), file=sys.stderr)
     mode = "auto" if a.scan and a.batch_by == "folder" else a.batch_by
@@ -748,12 +1031,17 @@ def main(argv=None):
     named = {k for k in R.get("batches", {}) if not k.startswith("_")} | ({a.batch} if a.batch else set())
     batches = [batch_check(g, os.path.relpath(k, REPO) if os.path.isabs(k) else k, R, surface=k in named) for k, g in groups.items() if len(g) > 1]
     counts = {"PASS": 0, "FLAG": 0, "FAIL": 0}
+    split = {k: {"PASS": 0, "FLAG": 0, "FAIL": 0} for k in ("shipped", "unreferenced")}
     for r in res:
+        if r["context"]:
+            continue
         lv = level(r)
         counts[lv] += 1
+        split["shipped" if r["ref"] in ("named", "built") else "unreferenced"][lv] += 1
         if a.quiet and lv != "FAIL":
             continue
-        print("%-5s %s" % (lv, r["file"]) + ("  " + json.dumps(clean(r["info"]), ensure_ascii=False) if a.verbose and lv == "PASS" else ""))
+        print("%-5s %s" % (lv, r["file"]) + ("" if r["ref"] in ("named", "built") else "  (%s)" % {"lab": "a lab page only", "none": "not referenced"}[r["ref"]])
+              + ("  " + json.dumps(clean(r["info"]), ensure_ascii=False) if a.verbose and lv == "PASS" else ""))
         if a.verbose or lv != "PASS":
             for x in r["fail"]:
                 print("        FAIL  " + x)
@@ -765,10 +1053,15 @@ def main(argv=None):
                                                                                       c["house"]["name"], c["house"]["de"], " (in the house)" if c["in_house"] else ""))
             if lv != "PASS":
                 print("        " + json.dumps(clean(r["info"]), ensure_ascii=False))
+    n = sum(counts.values())
     print("\n%d picture(s): %d pass, %d flag, %d fail; %d batch(es), %d with an odd one out"
-          % (len(res), counts["PASS"], counts["FLAG"], counts["FAIL"], len(batches), sum(1 for b in batches if b["splits"])))
+          % (n, counts["PASS"], counts["FLAG"], counts["FAIL"], len(batches), sum(1 for b in batches if b["splits"])))
+    for k, c in split.items():
+        if sum(c.values()):
+            print("  %s: %d (%d pass, %d flag, %d fail)%s" % (k, sum(c.values()), c["PASS"], c["FLAG"], c["FAIL"],
+                  "" if k == "shipped" else "; %d on a lab page only" % sum(1 for r in res if r["ref"] == "lab" and not r["context"])))
     if a.json:
-        json.dump(clean({"results": res, "batches": batches, "counts": counts}), open(a.json, "w"), indent=1, ensure_ascii=False)
+        json.dump(clean({"results": res, "batches": batches, "counts": counts, "shipped": split}), open(a.json, "w"), indent=1, ensure_ascii=False)
     if a.sheet:
         show = sorted(res, key=lambda r: -score(r))[:a.worst] if a.worst else res
         out = sheet(show, a.sheet, title=("the %d worst of %d" % (len(show), len(res))) if a.worst else None)

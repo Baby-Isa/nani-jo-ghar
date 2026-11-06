@@ -175,3 +175,102 @@ print("\\n=====\\n".join([a, b, c]))`;
   assert.doesNotMatch(none, /HOUSE LOOK/);
   assert.match(readFileSync(join(HERE, "artjudge.py"), "utf8"), /r\.flag \+= \["look: " \+ x/, "the art judge carries the look lines");
 });
+
+// Fable's view of the tool (6 Nov): the opaque baked shadow, shipped by reference, house share, camera height, --changed
+const FABLESYNTH = `
+import os, sys, numpy as np
+from PIL import Image
+def piece(path, H=180, W=160, h=100, w=60, rgb=(194, 117, 68), crescent=False, darkbase=False, faint=False, rim=None):
+    yy, xx = np.mgrid[0:H, 0:W].astype(float)
+    cx, cy = W / 2, 80
+    a = ((np.abs(xx - cx) <= w / 2) & (np.abs(yy - cy) <= h / 2)).astype(float)
+    img = np.zeros((H, W, 3)); img[...] = rgb
+    img *= (1 - 0.15 * ((xx - cx) / w + (yy - cy) / h))[..., None]  # lit from the upper left
+    base = cy + h / 2
+    if rim is not None:  # a cylinder seen from a camera height: its top and bottom are ellipses rim x its width high
+        e = lambda yc: ((xx - cx) / (w / 2)) ** 2 + ((yy - yc) / max(0.5, rim * w / 2)) ** 2 <= 1
+        a = np.maximum(a, (e(cy - h / 2) | e(base)).astype(float))
+    if darkbase:  # the object's own dark base: charcoal, darker towards its edge (form shading), no shadow
+        m = (a > 0) & (yy > base - 12)
+        img[m] = np.clip(70 - 3.0 * (yy[m] - (base - 12)), 20, 255)[:, None]
+    if crescent:  # an opaque cast shadow under the piece: dark at the contact, lighter going down, cut off opaque
+        m = (((xx - cx - 6) / (w / 2 + 10)) ** 2 + ((yy - base) / 12) ** 2 <= 1) & (yy > base)
+        img[m] = (25 + 90 * (yy[m] - base) / 12)[:, None]
+        a = np.where(m, 1.0, a)
+    if faint:  # a faint warm soft shadow (a honey jar's): soft alpha, tinted
+        m = (((xx - cx - 4) / (w / 2 + 8)) ** 2 + ((yy - base - 3) / 5) ** 2 <= 1) & (yy > base) & (a == 0)
+        img[m] = (70, 50, 30)
+        a = np.where(m, 0.3, a)
+    Image.fromarray(np.dstack([np.clip(img, 0, 255), a * 255]).astype(np.uint8), "RGBA").save(path)
+d = sys.argv[1]
+for n, kw in {"clean": {}, "crescent": {"crescent": True}, "darkbase": {"darkbase": True}, "faint": {"faint": True},
+              "green": {"rgb": (40, 190, 60)}}.items():
+    piece(os.path.join(d, n + ".png"), **kw)
+os.makedirs(os.path.join(d, "shelf"))
+for i, r in enumerate([0.15, 0.17, 0.16, 0.5]):
+    piece(os.path.join(d, "shelf", "jar-%d.png" % i), rim=r, H=200)
+`;
+const fable = () => {
+  const dir = mkdtempSync(join(tmpdir(), "artfable-"));
+  const r = spawnSync("python3", ["-c", FABLESYNTH, dir], { encoding: "utf8" });
+  assert.equal(r.status, 0, r.stderr);
+  return dir;
+};
+test("colour and look: an opaque cast shadow FAILs, an object's own dark base does not, a faint soft one FLAGs", () => {
+  const dir = fable();
+  const { by } = look(["--batch-by", "none", ...["clean", "crescent", "darkbase", "faint"].map((n) => `${dir}/${n}.png`)]);
+  assert.deepEqual([...by.clean.fail, ...by.clean.flag], []);
+  assert.ok(by.crescent.fail.some((f) => f.startsWith("baked shadow: an opaque dark strip")), `an opaque crescent lighter away from the piece is a baked shadow: ${JSON.stringify(by.crescent.info.shadow)}`);
+  assert.deepEqual(by.darkbase.fail, [], `a dark base shaded darker to its edge is the object, not a shadow: ${JSON.stringify(by.darkbase.info.shadow)}`);
+  assert.ok(by.faint.flag.some((f) => f.startsWith("shadow: a faint soft shadow")), `a faint warm soft shadow is a FLAG: ${JSON.stringify(by.faint.info.shadow)}`);
+  assert.deepEqual(by.faint.fail, [], "a faint shadow is not a FAIL");
+});
+test("colour and look on the repo: pan-pour and the thermometer belt FAIL, the honey jar FLAGs, dark jars and pans pass the shadow test", () => {
+  const fails = ["assets/cook/items/chai-v2/pan-pour.webp", "assets/clinic/sheets/thermometer/thermometer-belt.webp"];
+  const clean = ["assets/cook/items/shelf-cook-chai-bare-f.webp", "assets/cook/items/shelf-elchi-jar-v2-f.webp", "assets/cook/items/tin-chai-f.png", "assets/cook/items/chai-v2/pan-top.webp",
+    "assets/cook/items-s14/chai-pan/pan-empty-s14.webp", "assets/cook/items-s14/chai-pan/pan-black-s14.webp", "assets/cook/items/chai-v2/pan-pour-black.webp", "assets/cook/items/dry-chai-leaves-bowl-t.webp"];
+  const { res } = look(["--batch-by", "none", ...[...fails, "assets/clinic/items-v2/honey-jar.webp", ...clean].map((p) => join(ROOT, p))]);
+  const of = (p) => res.results.find((r) => r.file === join(ROOT, p));
+  for (const p of fails) assert.ok(of(p).fail.some((f) => f.startsWith("baked shadow")), `${p} keeps a baked shadow`);
+  assert.ok(of("assets/clinic/items-v2/honey-jar.webp").flag.some((f) => f.startsWith("shadow: a faint")), "the honey jar's faint soft shadow is flagged");
+  for (const p of clean) assert.ok(!of(p).fail.length && !of(p).flag.some((f) => /shadow/.test(f)), `${p}: its own dark base or rim is not a shadow (${JSON.stringify(of(p).info.shadow)})`);
+});
+test("colour and look: shipped by reference (written out, built in code, a lab page only, none), not by folder", () => {
+  const py = `import sys, json; sys.path.insert(0, ${JSON.stringify(HERE)}); import artcolour as A
+r = A.Refs()
+ps = ["assets/cook/items/chai-v2/pan-pour.webp", "assets/cook/items-s12/chai-pan/pan-pour-black-s12.webp", "assets/items/cook/onion-whole.png",
+      "assets/cook/items/chai-v2/pan-pour-milk-v2.webp", "assets/clinic/sheets/thermometer/thermometer-belt.webp", "assets/shared/word-moment/glass-e2-s17.webp"]
+t = A._template("\${base}assets/cook/items/shelf-\${id}-bare-f.webp")
+print(json.dumps({"of": [r.of(p) for p in ps], "tpl": [bool(t.match(x)) for x in ("cook/items/shelf-chai-bare-f.webp", "cook/items/x/shelf-chai-bare-f.webp")],
+                  "wide": A._template("assets/\${c.image}") is None}))`;
+  const out = JSON.parse(spawnSync("python3", ["-c", py], { cwd: ROOT, encoding: "utf8" }).stdout);
+  assert.deepEqual(out.of, ["none", "none", "none", "named", "named", "built"], "Fable's three are named nowhere (asset-list.json is the generation record); the word moment's glass is built in code");
+  assert.deepEqual(out.tpl, [true, false], "a template's ${...} is one name, never a folder");
+  assert.ok(out.wide, "a template whose first folder is a ${...} is too wide to count");
+});
+test("colour and look: house share and camera height are surface checks; the chai shelf's two runs differ in camera", () => {
+  const dir = fable();
+  const a = look(["--batch", "stock", `${dir}/clean.png`, `${dir}/darkbase.png`, `${dir}/green.png`]).by;
+  assert.ok(a.green.flag.some((f) => /house look/.test(f)), "a strong green with none of it in the house family reads as stock art");
+  assert.ok(!a.clean.flag.some((f) => /house look/.test(f)), "a house cinnamon passes");
+  const stock = ["assets/clinic/heal-v3/drop-machine-v3.webp", "assets/day/s09b/kite.webp"], wm = ["card-full-chai-s17", "card-full-tea-s17", "glass-e2-s17", "glass-wr-s17", "kettle-tilted-s17", "counter-wm-s17"].map((n) => `assets/shared/word-moment/${n}.webp`);
+  const h = look(["--batch-by", "none", ...[...stock, ...wm].map((p) => join(ROOT, p))]).res.results;
+  const hl = (p) => h.find((r) => r.file === join(ROOT, p)).flag.some((f) => /house look/.test(f));
+  for (const p of stock) assert.ok(hl(p), `${p}: a rainbow of strong colours off the house family`);
+  for (const p of wm) assert.ok(!hl(p), `${p}: the chai word moment is in the house look`);
+  const s = look(["--batch", "shelf", `${dir}/shelf`]).by;
+  assert.ok(Math.abs(s["jar-0"].info.camera.rim - 0.15) < 0.1 && Math.abs(s["jar-3"].info.camera.rim - 0.5) < 0.1, `the rim ratio is read: ${s["jar-0"].info.camera.rim}, ${s["jar-3"].info.camera.rim}`);
+  assert.ok(s["jar-3"].flag.some((f) => /camera height differs/.test(f)), "a jar shot from higher on one shelf is flagged");
+  const bare = ["shelf-cook-chai-bare-f", "shelf-cook-khun-bare-f"], v2 = ["shelf-elchi-jar-v2-f", "shelf-aadu-jar-v2-f", "shelf-lasan-jar-v2-f", "shelf-loon-jar-v2-f"];
+  const c = look(["--batch", "chai-shelf", ...[...bare, ...v2].map((n) => join(ROOT, `assets/cook/items/${n}.webp`))]).by;
+  const mean = (ns) => ns.reduce((t, n) => t + c[`${n}.webp`].info.camera.rim, 0) / ns.length;
+  assert.ok(mean(v2) - mean(bare) > 0.08, `the v2 jars are shot from higher than the bare jars: ${mean(v2).toFixed(2)} against ${mean(bare).toFixed(2)}`);
+  assert.ok(Object.values(c).some((r) => r.flag.some((f) => /camera height differs/.test(f))), "the chai shelf flags its camera");
+});
+test("checks.mjs runs the colour and look checks on changed pictures (`art`), failing only on a FAIL", () => {
+  const src = readFileSync(join(ROOT, "build/tools/review/checks.mjs"), "utf8");
+  assert.match(src, /"art", "size", "load"\]/);
+  assert.match(src, /artcolour\.py", "--changed", "--quiet"/);
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--changed", "HEAD", "--quiet"], { cwd: ROOT, encoding: "utf8" });
+  assert.ok([0, 1].includes(r.status) && /^(no picture changed since HEAD|\d+ picture\(s\) changed since)/m.test(r.stdout), r.stdout + r.stderr);
+});

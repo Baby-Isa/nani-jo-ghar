@@ -50,7 +50,47 @@
   "soft_share": 0.25,
   "shows": 0.15,
   "skirt_share": 0.35,
-  "min_px": 60
+  "min_px": 60,
+  "opaque": {
+   "_about": "Fable, 6 Nov: pan-pour's opaque crescent passed the soft and skirt tests. Per column: the opaque, neutral (chroma under dark_c) run at the bottom edge that grows lighter going down (by rise L* over the run, with up to tol L* of noise per pixel; at least min_run px or min_run_h of the height, at most max_run of it) from a contact line darker than the shadow's dark_l and gap L* darker than the body's next `above` opaque pixels. FAIL when such columns run unbroken across span of the width at an average depth px per column of the width; FLAG from flag_span. Calibrated on every asset (6 Nov): pan-pour 0.40 / 9.8 and the clinic sheets' toothbrushes 0.41-0.43 / 4-5 (true shadows), the parked chai cup and foot bath 0.22-0.29 (true); glass jar bases (shelf-spi-11, shelf-veg-14) 0.16-0.19 at depth about 1 (a glass base, not a shadow); dark pans, the black tea jar and top-down pans under 0.03.",
+   "dark_c": 14,
+   "tol": 2.0,
+   "min_run": 4,
+   "min_run_h": 0.025,
+   "max_run": 0.2,
+   "rise": 8,
+   "gap": 10,
+   "above": 6,
+   "span": 0.2,
+   "depth": 2.0,
+   "flag_span": 0.12,
+   "flag_depth": 2.0
+  },
+  "faint": {
+   "_about": "A faint soft shadow (a FLAG, never a FAIL): the soft-alpha test with a warm tint allowed (chroma under dark_c: a honey jar's shadow takes the honey's colour) at a smaller share of the bottom band. Fable, 6 Nov: clinic/items-v2/honey-jar.webp (0.033, 499 px). Calibrated 6 Nov: at 0.03, 84 pictures; looked at, the old cook props (tea tin, garlic, atto), the clinic's items-v2 (eye drops, plasters, thermometer) and the samosa folds keep a true faint grey under them.",
+   "dark_c": 22,
+   "share": 0.03,
+   "min_px": 60
+  }
+ },
+ "house_look": {
+  "_about": "House share as a FLAG (Fable, 6 Nov: what marks the stock pictures is strong colour with little of the house in it). Two rules. A rainbow, per picture: rainbow or more main colours outside the house family, each over loud_chroma and loud_share, their hues hue_apart degrees apart (the drop machine's RGBY tubes, the kite, the parked fever strip: 3 shipped of 1,653). A surface: in a batch whose median house share is at least surface_share, a picture under share at a mean chroma over chroma stands out (the well, the kite, the s09 ride's hen, bush and tree, the cook folder's tomatoes and chillies, the clinic's ice pack). Calibrated 6 Nov on every asset: the chai word-moment set flags nothing (its lowest, glass-we, is 0.21 at chroma 29; the tea cards 0.45-0.57 at 43-60 on a surface below 0.6); a single picture's house share flags 142 shipped at 0.4 / 45 (vegetables are rightly off the house), hence the surface. The onion (all Pompeian Red and Pale Burnt Lake, in the house) is not a colour finding: its stock look is shape and skin, a model's eye.",
+  "loud_chroma": 45,
+  "loud_share": 0.03,
+  "hue_apart": 40,
+  "rainbow": 3,
+  "surface_share": 0.6,
+  "share": 0.4,
+  "chroma": 45
+ },
+ "camera": {
+  "_about": "Camera height proxy for round items (Fable, 6 Nov: the shelf's two batches differ in camera as much as in gloss): half-ellipses fitted across the width of the piece's body (after an opening of open x its size, which takes handles and spouts away) to its top and its bottom edge; rim = the top arc's height over the body's width (about 0 from the side, 1 straight down), read on files whose name holds one of names when both arcs fit (rms off by under max_err of the width, ratio under max_ratio) and agree within agree (a dome lid, a carton's gable or a bottle's foot do not). On a named surface the rims may span at most batch.camera_range. Measured on a copy at most side px. Calibrated 6 Nov: the chai shelf's bare jars 0.17-0.19, its v2 jars 0.26-0.45 (a range of 0.28: flagged); top-down pans, bowls and glasses 0.9-1.2; a pan with a long handle or a pour gives no reading (one arc).",
+  "names": ["pan", "pot", "bowl", "jar", "glass", "cup", "tin", "karahi", "kadai", "tawa", "thali", "plate", "bottle", "jug", "tumbler", "handi", "lota", "bucket", "vessel", "shelf-", "well", "saucer", "katori", "beaker"],
+  "open": 0.06,
+  "max_err": 0.05,
+  "max_ratio": 1.25,
+  "agree": 0.4,
+  "side": 320
  },
  "gloss": {
   "_about": "A specular pixel: near-white (L* over spec_l, chroma under spec_c) and brighter than its 9 px neighbourhood by local_dl. gloss = their share of the solid pixels.",
@@ -67,6 +107,7 @@
   "lid_in_folders": false,
   "folder_odd_only": true,
   "max_odd": 0.4,
+  "camera_range": 0.2,
   "features": {
    "gloss": {"min_gap": 0.012, "label": "gloss (share of hard white specular pixels)"},
    "chroma": {"min_gap": 18.0, "max_odd": 0.2, "label": "saturation (mean chroma of the solid pixels)"},
@@ -91,6 +132,12 @@
   "colours_note": "The big colours of a picture sit near these, in lighter or darker tones; a strong colour far from all of them is a note for the log, not a fail.",
   "edge_line": "clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left.",
   "sentence": "Use the attached colour strip only as the palette (tones of these colours; never draw the strip, swatches or any text). Clean edges, no white halo, no baked shadow, light from the upper left."
+ },
+ "shipped": {
+  "_about": "Shipped by reference, not by folder (Fable, 6 Nov): a picture ships when a page, script, style or data file the game loads names it (pages), written out or built in code (a template literal's pattern, or its bare name quoted where its folder is named). lab: the lab pages, reported apart. exclude: data/asset-list.json is build/gen_assets.py's generation record (what was made, not what is shown: it names items/cook/onion-whole.png, which no page uses).",
+  "pages": ["*.html", "js/**/*.js", "js/**/*.mjs", "css/**/*.css", "data/**/*.json"],
+  "lab": ["lab/**/*.html", "lab/**/*.css", "lab/**/*.js", "lab.html", "labs.html"],
+  "exclude": ["data/asset-list.json", "lab.html", "labs.html", "js/vendor/*"]
  },
  "scan": {
   "_about": "What --scan skips: retina copies, any folder named in skip_dirs, and the second format of one picture (the webp is kept when a png or jpg of the same name sits beside it).",
