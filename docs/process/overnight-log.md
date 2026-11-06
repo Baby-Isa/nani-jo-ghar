@@ -57,3 +57,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-06 03:50 UK · Check-in: 7 commits (Fonts 1, other 4, SH-222 1, artblock 1); reports fonts-across-the-game-2026-11-06.md; art 76 of 115; all reports in with Fable reads; morning report drafted; waiting on the colour-tool fixes, then handover.
 - 2026-11-06 04:07 UK · overnight · colour-tool fixes merged (7 shipped baked shadows: ART-44); checks green; morning report final apart from Zafar's answers / next: nothing running; check-ins continue to 10:30
 - 2026-11-06 04:21 UK · Check-in: 5 commits (status 2, other 3); art 76 of 115; overnight run finished; morning report final (build/reports/overnight-2026-11-06.md); nothing running; the pills wait on Zafar's 'publish'; check-ins stop here.
+- 2026-11-06 08:54 UK · Published 20261106T085157Z to main (12b790b3); Pages serving it.
