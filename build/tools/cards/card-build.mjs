@@ -36,7 +36,7 @@ const CASES = {
 
 // BEFORE: the class is taken off as soon as it is put on (the type's CSS, the drawn pills' face and weight and the row pass all key on it)
 const OFF = `(() => { const strip = () => { const h = document.documentElement; if (h && h.classList.contains("njg-lora")) h.classList.remove("njg-lora"); };
-  new MutationObserver(strip).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] }); strip(); })();`;
+  new MutationObserver(strip).observe(document, { attributes: true, attributeFilter: ["class"], subtree: true }); strip(); })();`;
 // Nani's box held shut while the side panel is shot (the game opens her help card again after a wait)
 const SHUT = `body.njg-s14 #guide.ng-s14 .ng-help { grid-template-rows: 0fr !important; transition: none !important; }
   body.njg-s14 #guide.ng-s14 .ng-arrow svg { transform: none !important; }`;
@@ -126,9 +126,23 @@ const shot = (page, path, clip) => page.screenshot({ path, ...(clip ? { clip } :
 const box = (page, sel, pad = 0) => page.evaluate(([s, p]) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); if (!b.width) return null; const x = Math.max(0, b.left - p), y = Math.max(0, b.top - p); return { x, y, width: Math.min(innerWidth - x, b.width + 2 * p), height: Math.min(innerHeight - y, b.height + 2 * p) }; }, [sel, pad]);
 
 async function atPopup(page, dir, st, size) {
-  await page.waitForFunction(() => [...document.querySelectorAll(".wc14-big:not(.wc14-side) .wc14-en")].some((e) => e.getBoundingClientRect().width > 0), null, { timeout: 15000 }).catch(() => {});
-  await sleep(450);
+  // the pop-up at rest: its English shown, its box the same over two frames (it grows in, then flies to its row a moment later)
+  await page.waitForFunction(() => {
+    const c = [...document.querySelectorAll(".wc14-big:not(.wc14-side):not(.wc14-flyer)")].find((x) => x.querySelector(".wc14-en") && x.querySelector(".wc14-en").getBoundingClientRect().width > 0);
+    if (!c) return false;
+    const b = c.getBoundingClientRect(), k = `${b.left.toFixed(1)},${b.top.toFixed(1)},${b.width.toFixed(1)}`;
+    const same = window.__njgPopKey === k; window.__njgPopKey = k; return same && b.width > 100;
+  }, null, { timeout: 15000, polling: 60 }).catch(() => {});
   await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+  // a still copy pinned where it stands, the game's own hidden (so the order screen, Nani's box and the bubble are shot at the same moment)
+  const ok = await page.evaluate(() => {
+    const src = [...document.querySelectorAll(".wc14-big:not(.wc14-side):not(.wc14-flyer)")].find((x) => x.querySelector(".wc14-en") && x.querySelector(".wc14-en").getBoundingClientRect().width > 0);
+    if (!src) return false;
+    const b = src.getBoundingClientRect();
+    const big = src.cloneNode(true); big.classList.add("njg-mock-pop"); big.classList.remove("wc-pop", "wc14-flyer");
+    Object.assign(big.style, { position: "fixed", left: b.left + "px", top: b.top + "px", width: b.width + "px", height: b.height + "px", margin: "0", zIndex: "9999", animation: "none", transform: "none", visibility: "visible" });
+    document.body.appendChild(big); src.style.visibility = "hidden"; window.__njgPop = big; return true;
+  });
   // (Nani's box and Nana's bubble are cut from this same shot by card-build-sheet.py, from their boxes at this moment)
   data[`${size}|${st}|boxes`] = await page.evaluate(() => {
     const r = (e) => { if (!e) return null; const b = e.getBoundingClientRect(); return b.width ? { x: b.left, y: b.top, w: b.width, h: b.height } : null; };
@@ -136,14 +150,6 @@ async function atPopup(page, dir, st, size) {
     return { guide: r(document.querySelector("#guide")), bubble: r(bubs[bubs.length - 1]) };
   });
   await shot(page, join(dir, `${st}-order-screen.png`));
-  // the pop-up flies into its row a moment later: a still copy pinned where it stands
-  const ok = await page.evaluate(() => {
-    const src = document.querySelector(".wc14-big:not(.wc14-side)"); if (!src) return false;
-    const b = src.getBoundingClientRect();
-    const big = src.cloneNode(true); big.classList.add("njg-mock-pop"); big.classList.remove("wc-pop", "wc14-flyer");
-    Object.assign(big.style, { position: "fixed", left: b.left + "px", top: b.top + "px", width: b.width + "px", height: b.height + "px", margin: "0", zIndex: "9999", animation: "none", transform: "none" });
-    document.body.appendChild(big); src.style.visibility = "hidden"; window.__njgPop = big; return true;
-  });
   if (ok) {
     for (const [nm, k, e, pic] of [["own"], ["long", "fudino ji chutney", "mint chutney", "/assets/cook/items/icon-ph-lili.webp"]]) {
       if (k) await page.evaluate(([k, e, pic]) => { const p = window.__njgPop; p.querySelector(".wc14-k").textContent = k; p.querySelector(".wc14-en").textContent = e; const im = p.querySelector("img.wc-img"); if (im) im.setAttribute("src", pic); }, [k, e, pic]);
