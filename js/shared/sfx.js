@@ -552,12 +552,17 @@
       /** its level, 0..1 (chai: rising with the heat) */
       pitch(k) {
         k = Math.max(0, Math.min(1, k));
-        if (h.ended || F.fixed || Math.abs(k - h.level) < 0.02) return; // (fixed: a pour keeps its own level)
+        // (fixed: a pour keeps its own level.) CHAI-95: a change under about a quarter of a decibel waits (was 0.02 of full: 2.4 dB
+        // steps near the quiet start of a level curve that rises evenly in decibels, a third of a decibel near the top)
+        if (h.ended || F.fixed || Math.abs(k - h.level) < Math.max(0.0005, 0.03 * Math.max(k, h.level))) return;
         h.level = k;
         duckLoop(h, Sfx.speaking(), true);
       },
     };
   }
+  /** CHAI-95: a level (0..1, the loop's gain) from decibels (0 dB: the file's own level); and back */
+  Sfx.fromDb = (db) => Math.pow(10, db / 20);
+  Sfx.toDb = (k) => 20 * Math.log10(Math.max(1e-6, k));
   /** The lab's player: any file of assets/shared/sfx/ by its stem, played once (dur: cut it short with a fade). */
   Sfx.file = function (stem, o) {
     o = o || {};

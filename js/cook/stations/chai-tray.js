@@ -1532,7 +1532,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     });
 
     /* ---------- heat: each knob, each pan ---------- */
-    const setKnob = (pan, state) => pan.burner.set(state);
+    const setKnob = (pan, state, silent = false) => pan.burner.set(state, false, silent);
     const knobTap = (pan) => {
       if (finished) return;
       if (pan.state === "cold") {
@@ -1648,6 +1648,34 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     let last = performance.now();
     let steamT = 0;
     let simmer = null; // (CHAI-92: the simmer loop, one for the hob)
+    /*
+     * CHAI-95, the simmer's level by heat, in decibels from the file's own level (0 dB): from the first heat it rises evenly in
+     * decibels (his question, "linearly or logarithmically?": even in decibels, which the ear hears as a steady rise) from -24 dB to
+     * 75% (-2.5 dB) as the bubbling picture comes in (boilAt), held there through the green, then up to 100% (0 dB) past the green's
+     * end until it boils over (heat 1). The same at every level: each level's boilAt and green are its own.
+     */
+    const SIMMER_DB = { from: -24, held: 20 * Math.log10(0.75), top: 0 };
+    const simmerDb = (h) => {
+      const S0 = SIMMER_DB;
+      if (h <= boilAt) return S0.from + (S0.held - S0.from) * Cook.clamp(h / Math.max(0.01, boilAt), 0, 1);
+      if (h <= hi) return S0.held;
+      return S0.held + (S0.top - S0.held) * Cook.clamp((h - hi) / Math.max(0.01, 1 - hi), 0, 1);
+    };
+    // (the log, CHAI-95's check: the loop's level by heat, a line each 0.05 of heat and at the bubbling picture, the green's start and
+    // end; Cook.chaiSimmer holds them for a probe)
+    const simmerLog = [];
+    Cook.chaiSimmer = simmerLog;
+    let simmerAt = null;
+    const simmerNote = (pan, db, k) => {
+      const h = pan.heat;
+      const mark = h >= hi ? "past-green" : h >= lo ? "green" : h >= boilAt ? "bubbling" : "rising";
+      const bin = `${pan.who}:${mark}:${Math.floor(h / 0.05)}`;
+      if (bin === simmerAt) return;
+      simmerAt = bin;
+      const row = { who: pan.who, heat: Math.round(h * 1000) / 1000, db: Math.round(db * 10) / 10, level: Math.round(k * 1000) / 1000, mark, boilAt: Math.round(boilAt * 1000) / 1000, lo, hi };
+      simmerLog.push(row);
+      note("chai-simmer", `${row.db} dB`, `${pan.who} heat ${row.heat} level ${row.level} ${mark}`);
+    };
     const juiceOff = () => {
       if (simmer) simmer = (simmer.stop(), null);
       pans.forEach((p) => p.steamFx && (p.steamFx = (p.steamFx.stop(), null)));
@@ -1704,13 +1732,17 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         else if (!steaming && pan.steamFx) pan.steamFx = (pan.steamFx.stop(), null);
       });
       if (steamT > 0.3) steamT = 0;
-      // CHAI-92 (Zafar's pick, simmer A, 6 Nov: water at a gentle boil, very quiet): heard while a pan's heat rises past the middle,
-      // louder as it nears the green, gone at the turn-down; silent under a family voice line (js/shared/sfx.js, the voice gate)
-      const hottest = pans.reduce((m, p) => (p.state === "heating" && p.level > 0.05 ? Math.max(m, p.heat) : m), -1);
-      if (hottest >= 0.5 && !finished) {
-        const k = 0.35 + 0.65 * Cook.clamp((hottest - 0.5) / Math.max(0.05, lo - 0.5), 0, 1);
+      // CHAI-92 (Zafar's pick, simmer A, 6 Nov: water at a gentle boil, very quiet): gone at the turn-down; silent under a family voice
+      // line (js/shared/sfx.js, the voice gate). CHAI-95 (Zafar, 6 Nov night: "the tea boiling sound gradually increased until it's max
+      // (at the point the image changes to bubbling) and then stay there, and only increased after the green zone is missed and its
+      // overboiling"): heard from the first heat (was from heat 0.5), by the hottest pan on the heat (simmerDb)
+      const hotPan = pans.reduce((m, p) => (p.state === "heating" && p.level > 0.05 && (!m || p.heat > m.heat) ? p : m), null);
+      if (hotPan && !finished) {
+        const db = simmerDb(hotPan.heat);
+        const k = Math.pow(10, db / 20);
         if (!simmer || simmer.none) simmer = Cook.sfx.simmerLoop(k);
         else simmer.pitch(k);
+        simmerNote(hotPan, db, k);
       } else if (simmer) simmer = (simmer.stop(), null);
       if (gaugePan && gaugePan.state === "heating") zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
     });
@@ -2007,7 +2039,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       closeSpoons(pan);
       // CHAI-54: the glass ticks the moment it holds what was asked (L4: half at the first pour, full at the second)
       if (pan.poured >= needOf(pan)) closePan(pan);
-      if (pan.poured >= 2) setKnob(pan, "off"); // the pan's empty: the fire goes off
+      // the pan's empty: the fire goes off. CHAI-100 (Zafar, 6 Nov night: "when the tea pan goes back on the stove, it plays a sound like
+      // a click ... I think we should remove that ... It just comes at the wrong time every time"): silently; the child's own knob turns
+      // and the boil-over keep their click
+      if (pan.poured >= 2) setKnob(pan, "off", true);
       if (sel === pan && pan.poured < 2 && halves) {
         if (UI.tallyAt) UI.tallyAt(tallyPt(pan), { anchor: "right" });
         if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
@@ -2021,7 +2056,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       St.acted();
       maybeFinish();
       refresh();
-      if (!finished && !doneShown) nextPanSoon(); // (CHAI-68: the first pan poured: the next pan's light in about 3 s)
+      if (!finished && !doneShown) nextPanSoon(); // (CHAI-68: the first pan poured: the next pan's light 0.8 s after, CHAI-99)
     };
     /*
      * SH-105 (decision 6, P26: "once you've poured all the teas it just scores you immediately"): every cup poured and ticked, so
@@ -2180,14 +2215,19 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const x = Math.min(a[0], c[0]), y = Math.min(a[1], c[1]);
       return [x, y, Math.max(a[0] + a[2], c[0] + c[2]) - x, Math.max(a[1] + a[3], c[1] + c[3]) - y];
     };
-    const shelfBut = (obj) => Object.values(shelf).filter((o) => o !== obj && o.active).map((o) => pageRect(o));
+    // (SH-230: each neighbour's picture where it rests and its pill: the lit box stops 2 px short of either)
+    const shelfBut = (obj) =>
+      Object.values(shelf)
+        .filter((o) => o !== obj && o.active)
+        .flatMap((o) => [() => (o.active ? toPage(restBox(o)) : null), () => (o.active ? toPage(pillBox(o)) : null)]);
     /*
      * CHAI-68 (Zafar, 2 Nov: "we need an onboarding for selecting the new pan to start cooking, which kicks in a few seconds after the
      * first pan is poured, when its the first time a second pan is introduced, and/or when they try to put items into the first pan"):
-     * the first time only (a new player; SH-181), the light on the next empty pan and its face: about 3 s after the first pan is
-     * poured while the child is still on it, or at once when they tap a jar into a poured pan. It goes when they pick that pan.
+     * the first time only (a new player; SH-181), the light on the next empty pan and its face: 0.8 s after the first pan's pour ends
+     * (CHAI-99, Zafar 6 Nov night; was about 3 s, then 0.3 s) while the child is still on it, or at once when they tap a jar into a poured pan. It goes when they pick that pan.
      */
     let nextPanT = 0;
+    const NEXT_PAN_MS = 800; // (CHAI-99: after the pour's end; was 300)
     // (the next pan still to make; none once the child has moved between pans by themselves: they know how)
     const nextEmpty = () => pans.find((q) => q !== sel && !q.poured && q.state !== "over");
     const nextPanLight = () => {
@@ -2210,60 +2250,47 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (pans.length < 2 || pans.filter((q) => q.poured > 0).length !== 1) return;
       const from = sel;
       // (Zafar, 3 Nov: "needs to happen quicker ... once it's returned to the stove, literally give it 0.3 seconds": this runs at the
-      // pour's end, the pan back on its burner)
-      nextPanT = setTimeout(() => sel === from && nextPanLight(), 300 / (Cook.speed || 1));
+      // pour's end, the pan back on its burner.) CHAI-99 (Zafar, 6 Nov night: "just half a second longer for once the tea's been
+      // poured, for the person to take in the successful tea pouring animation, with the drop and the twinkle and a sound"): 0.8 s
+      nextPanT = setTimeout(() => sel === from && nextPanLight(), NEXT_PAN_MS / (Cook.speed || 1));
     };
-    // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests
-    // (not where its bounce has it), with room for its own glow (the station's halo, Cook.Stations glowDraw) and its word chip
+    // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests (not
+    // where its bounce has it). SH-230 (Zafar, 6 Nov night: "items with no written words in their pills is much too tight ... a general
+    // rule that works in all cases that leaves some padding around the object+pill+face icon, or object+pill, or object"): this gives
+    // the thing's parts as one union, its picture as drawn AND its pill (a speaker-only pill is narrower than its jar, so the jar sets
+    // the sides; was the pill alone, CHAI-33); the margin round them, and
+    // how far a neighbour or the screen's edge trims it, is the one rule every game's light uses (js/shared/onboard.js Onboard.litBox)
     const restY = (o) => (o.glowFx && o.glowFx.y != null ? o.y - o.glowFx.y : 0);
+    // (the picture's own box, the one the contract measures, contract-92: its opaque part was tried, but the light then sat 3 px
+    // closer to the frame's top than the rule's margin; the jars' frames are a few px, so the box is the same to the eye)
+    const restBox = (o) => {
+      const dy = restY(o);
+      const b = o.getBounds();
+      return { x0: b.x, y0: b.y - dy, x1: b.right, y1: b.bottom - dy };
+    };
+    // the pill as drawn: its card (CHIP, never Container.getBounds: a speaker-only chip holds only graphics, which have no bounds;
+    // CHAI-33) and its 2 px shadow under it
+    const pillBox = (o) => {
+      const ch = o && o.chip;
+      if (!ch || !ch.active) return null;
+      const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = ((ch.cardW || CHIP.w) / 2) * sx;
+      return { x0: ch.x - hw, y0: ch.y - (CHIP.h / 2) * sy, x1: ch.x + hw, y1: ch.y + (CHIP.h / 2 + 2) * sy };
+    };
+    const toPage = (r) => {
+      if (!r) return null;
+      const a = UI.worldToScreen(r.x0, r.y0);
+      const z = UI.worldToScreen(r.x1, r.y1);
+      return [a.x, a.y, z.x - a.x, z.y - a.y];
+    };
+    // (the lit thing hops, js/cook/stations.js glow: its picture's top is where the hop takes it, so the margin over it holds at the
+    // hop's top too; contract-92 caught 1 px over a jar mid-hop at L2 930x430)
+    const hopOf = (o) => Math.max(8, Math.min(48, (o.displayHeight || 0) * ((global.Onboard && global.Onboard.HOP) || 0.1)));
     const itemRect = (o) => () => {
       if (!o || !o.active) return null;
-      const b = o.getBounds();
-      const dy = restY(o);
-      const gx = b.width * 0.125 + 12;
-      const gy = b.height * 0.1 + 10;
-      let [x0, y0, x1, y1] = [b.x - gx, b.y - dy - gy, b.right + gx, b.bottom - dy + gy];
-      let pill = null;
-      if (o.chip && o.chip.active) {
-        // CHAI-33 (Zafar, 27 Oct: the box "covers like three different items ... yet height-wise it cuts the speaker button"):
-        // the chip's box is its drawn card (CHIP), never Container.getBounds: a speaker-only chip holds only graphics, which
-        // have no bounds, so Phaser gave an empty box at the world's corner and the light stretched to the play area's edge
-        const ch = o.chip, sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1);
-        // (the pill as drawn: its card and its 2 px shadow under it)
-        pill = { x: ch.x - ((ch.cardW || CHIP.w) / 2) * sx, right: ch.x + ((ch.cardW || CHIP.w) / 2) * sx, bottom: ch.y + (CHIP.h / 2 + 2) * sy };
-        [x0, x1, y1] = [Math.min(x0, pill.x), Math.max(x1, pill.right), Math.max(y1, pill.bottom)];
-      }
-      const a = UI.worldToScreen(x0, y0);
-      const z = UI.worldToScreen(x1, y1);
-      if (pill) {
-        // CHAI-33 again (Zafar, 1 Nov: "it just clips the bottom of the primary pill rather than ... having a bit more spacing"): the
-        // box clears the pill with even spacing: the same margin outside the pill at its sides and below it (at least 8 px on screen,
-        // at most 16), so the box never lies on the pill's foot
-        const pl = UI.worldToScreen(pill.x, 0).x;
-        const pr = UI.worldToScreen(pill.right, 0).x;
-        const pb = UI.worldToScreen(0, pill.bottom).y;
-        let m = Math.max(8, Math.min(16, Math.min(pl - a.x, z.x - pr)));
-        // (the judge, 3 Nov, L3 740x320: a pill on the play area's foot left no room for that margin below it, so the box's foot lay on
-        // the screen's edge, its gap a quarter of the sides': the margin is what fits below the pill, its gold ring (6 px) included,
-        // and the sides take the same)
-        // (the judge, 3 Nov, final: the box's foot was cut by the screen's edge: the light pads every side by its own BOX_PAD and draws a
-        // 4 px ring, so the room is measured to the screen's bottom with both; one margin then on every side, as small as it must be)
-        const PAD = (global.Onboard && global.Onboard.BOX_PAD) || 10;
-        const st = document.querySelector("#stage");
-        const foot = Math.min(global.innerHeight || 1e4, st ? st.getBoundingClientRect().bottom : 1e4);
-        const room = foot - pb - PAD - 3;
-        m = Math.max(3 - PAD, Math.min(m, room));
-        // (the judge, 3 Nov, every size: the sides came from the picture's own wide margin, so the gap under the pill was a third of the
-        // sides': the box's sides follow the pill by the same margin, wider only where the picture itself would reach past them)
-        // (the judge again: the picture's bounds include its transparent frame, so following them kept the sides twice the foot's: the
-        // sides follow the pill alone, which is as wide as any shelf thing; the top a margin over the picture's frame, not its glow room)
-        const left = pl - m;
-        const right = pr + m;
-        const bottom = pb + m;
-        const top = UI.worldToScreen(0, b.y - dy).y - m;
-        return [left, top, right - left, bottom - top];
-      }
-      return [a.x, a.y, z.x - a.x, z.y - a.y];
+      const p = restBox(o);
+      p.y0 -= hopOf(o);
+      const c = pillBox(o);
+      return toPage(c ? { x0: Math.min(p.x0, c.x0), y0: Math.min(p.y0, c.y0), x1: Math.max(p.x1, c.x1), y1: Math.max(p.y1, c.y1) } : p);
     };
     // the finger taps the top of the thing from above, clear of its hop (the judge, 23 Oct: the hand never covers the thing,
     // even at the top of its bounce, nor its word under it)
@@ -2295,19 +2322,20 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
         // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top and
         // doesn't get a line over the face": the glass's box takes in its face badge, so no edge crosses the face)
-        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(pageRect(pan.well.hit), pan.well.face ? pageRect(pan.well.face, 3) : null), also: pageRect(pan.glowRing) };
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(pageRect(pan.well.hit), pan.well.face ? pageRect(pan.well.face) : null), also: pageRect(pan.glowRing) };
         return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
       }
-      if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob, 4) };
+      // (SH-230: a control's box is its own picture; the margin round it is the one rule's, Onboard.litBox: was 4 px here and 4 more there)
+      if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob) };
       if (/^knob-on-/.test(key)) {
         const pan = pans.find((q) => `knob-on-${q.who}` === key);
-        return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
+        return pan && { obj: pan.knob, target: pageRect(pan.knob) };
       }
       // (the orchestrator's film, 30 Oct: at L3-L4 a cold pan that is not the one in hand opens its knob step as a tap on the pan, so
       // "Chulo bar!" was said with nothing lit (contract-78): its knob is lit, as a tap on the knob takes the pan in hand too)
       if (nx.phase === "knob" && /^pan-/.test(key)) {
         const pan = pans.find((q) => `pan-${q.who}` === key);
-        return pan && { obj: pan.knob, target: pageRect(pan.knob, 4) };
+        return pan && { obj: pan.knob, target: pageRect(pan.knob) };
       }
       // (Zafar, 3 Nov: "I filled the first tea tray, poured the first tea, and then I did nothing for like 30 seconds, and there was no
       // hint to click the second tea tray ... a stuck hint ... using the onboarding methodology of highlighting": the next pan to pick
