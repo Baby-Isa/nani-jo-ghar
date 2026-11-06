@@ -21,12 +21,47 @@
  },
  "palette": {
   "_about": "One palette per item (Zafar, 6 Nov: \"an item should have all of its main colors from within a palette that contains all those colors. If not, it needs redoing ... things that were just way off that aren't in there, raise it as an exception for me to decide\"). The main colours are the k-means colours (colour above) with chroma at least neutral_chroma and L* at least dark_l (neutrals are the ground and exempt: the white marble #edecef is chroma 1.6; near-black hair and char have no Wada match), each at least main_share of the tinted pixels. FAIL when no single Wada combination (any of the book's 348, wada-colors.json) has a colour within combo_de (CIEDE2000, kL from colour) of every main colour. EXCEPTION (Zafar decides; on the block until he does) when a main colour is over exception_de from every Wada colour: it fits no combination at all. allow: globs Zafar has decided to keep, with his words and date (they pass the palette rule). Calibration: build/reports/art-review-strict-2026-11-06.md.",
-  "neutral_chroma": 8.0,
+  "_retuned": "Re-tuned after Fable's view (6 Nov; build/reports/art-review-strict-2026-11-06.md, 'After Fable's view: re-tuned'): the rule stays, the measure changed. (1) Tones of one material are one colour: tinted colours whose hues are within hue_merge degrees merge and their share-weighted mid tone is matched (a chilli's lit and shaded greens, the chai's highlight). (2) Neutrals up to neutral_chroma 14: warm steel, glass and stone are the ground. (3) One in-book accent: one main colour under accent_share, within combo_de of some Wada colour, may sit outside the combination (a lid, a tip, a label). (4) people: judged by eye, never by this rule (skin, hair and clothes are a locked style; decision 2). (5) natural: produce, cooked food, plants and animals keep their real colours: judged by natural_bands (a chroma ceiling per hue band) and the exception rule, not by a combination. (6) sky: a sky picture's colours from its time of day's ONE combination (the sky section; art bible, Skies). Must pass (artcheck.test.mjs): the 55 house-look pictures (the s17 word moment, the marble, the stone shelf and tile) and Fable's steel and glass set.",
+  "neutral_chroma": 14.0,
   "dark_l": 20.0,
   "main_share": 0.1,
   "combo_de": 9.0,
+  "hue_merge": 25.0,
+  "accent_share": 0.2,
   "exception_de": 10.0,
-  "allow": {"_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."}
+  "allow": {"_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."},
+  "people": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*", "assets/town-proto/face-*", "assets/sewing-proto/*-face.webp", "assets/farm/proto/*-face.webp"],
+  "natural": ["assets/items/fruit/*", "assets/items/vegetable/*", "assets/items/spice/*", "assets/cook/items/icon-ph-*", "assets/cook/items/icon-veg-*", "assets/cook/items/icon-fru-*", "assets/cook/items/icon-spi-*", "assets/cook/items/veg-*", "assets/cook/items/mishkaki-*", "assets/cook/items/topping-*", "assets/cook/items/shelf-fru-*", "assets/cook/items/shelf-veg-*",
+   "assets/cook/items-s08b/chaat-strips/*", "assets/cook/items-s08b/potato/*", "assets/cook/items-s08b/daar-discs/*", "assets/cook/items-s08c/sekelo/*", "assets/cook/items/chai-v2/ginger-*", "assets/cook/items/chai-v2/liquid-*", "assets/cook/items/v3/daar/chop-*", "assets/cook/items/v3/daar/dp1-*",
+   "assets/cook/items/v3/sekelo/heap-*", "assets/cook/items/v3/sekelo/*-raw.webp", "assets/cook/items/v3/sekelo/*-grilled.webp", "assets/cook/items/v3/sekelo/*-charred.webp", "assets/cook/items/v3/samosa/fill-*", "assets/cook/items/v3/maani/dough-*", "assets/cook/items/v3/maani/maani-*", "assets/cook/items/served/*", "assets/cook/items-s17-stove/t-dish-*", "assets/cook/items-s17-stove/*-whole*",
+   "assets/characters/chick/*", "assets/characters/goat/*", "assets/characters/hen/*", "assets/day/s09b/buffalo.webp", "assets/day/s09b/camel.webp", "assets/day/s09b/cow.webp", "assets/day/s09b/donkey.webp", "assets/day/s09b/duck.webp", "assets/day/s09b/hen-chicks.webp", "assets/day/s09b/horse.webp", "assets/day/s09b/sheep.webp", "assets/day/s09b/butterfly.webp",
+   "assets/day/ride/s09r/bird.webp", "assets/day/ride/s09r/dog.webp", "assets/day/ride/s09r/goat.webp", "assets/day/ride/s09r/hen.webp", "assets/day/ride/s09r/bush.webp", "assets/day/ride/s09r/tree.webp", "assets/day/ride/s09r/haystack.webp",
+   "assets/safari/proto/elephant-*", "assets/safari/proto/clump.webp", "assets/cook/proto/cat-*", "assets/farm/proto/chick.webp", "assets/farm/proto/grass.webp", "assets/farm/proto/mango.webp", "assets/clinic/items-v2/apple.webp", "assets/clinic/sheets/decoys/apple-*", "assets/clinic/sheets/taste/lemon-*", "assets/clinic/s12/lemon-whole-s12.webp"],
+  "natural_bands": {
+   "_about": "Natural colour bands (Fable, 6 Nov: natural things are judged by their natural colour, not a design book): CIE Lab hue degrees [from, to) and the chroma a real food, plant or animal reaches there in our soft look. A main colour (tones merged) over its band's max_c is louder than nature: a FAIL, tone it towards the real thing. Calibrated 6 Nov on the shipped produce, heaps, dishes and animals (the report's 'After Fable's view: re-tuned').",
+   "bands": [
+    {"name": "reds (tomato, chilli, red onion skin)", "hue": [0, 45], "max_c": 85},
+    {"name": "oranges and yellows (carrot, turmeric, mango, lemon)", "hue": [45, 100], "max_c": 85},
+    {"name": "greens (leaves, chilli, herbs, peas)", "hue": [100, 180], "max_c": 70},
+    {"name": "blues (nothing natural is a loud blue)", "hue": [180, 300], "max_c": 30},
+    {"name": "purples (aubergine, grapes, onion)", "hue": [300, 360], "max_c": 55}
+   ]
+  },
+  "sky": {"_about": "Sky pictures (glob: time of day, first match wins): judged by the sky rule (sky below), not the item rule. Cloudy and rain are the day's combination (their greys are free).",
+   "assets/day/s09b/sky-night.webp": "night", "assets/day/s09b/sky-*.webp": "day", "assets/day/s12/door-sun.webp": "day",
+   "assets/day/sky/*-golden-*": "golden", "assets/day/sky/*-dusk-*": "dusk", "assets/day/sky/*-night-*": "night", "assets/day/sky/*": "day"}
+ },
+ "sky": {
+  "_about": "The sky rule (Zafar, 6 Nov: \"less jarringly vibrant and more in theme, but still distinct and attractive ... ever so slightly muting down the vibrancy of the colours and having the tones merge and match well\"; art bible, Skies). times: each time of day's ONE Wada combination (picked from the 348 for colours that read as that sky; strips build/tools/art/data/swatches/wada-N.png) and its saturation ceiling. A sky's main colours (chroma at least neutral_chroma, tones merged as palette.hue_merge) each within de of a colour of its time's combination, lightness weighted down by kL (a sky is a gradient of tones of few colours); the whole picture's mean chroma at most max_mean_c and its 95th percentile at most max_p95_c (the brightest 5%: a sun's glow may be warm, never loud). A FAIL either way. Calibrated 6 Nov on today's skies: sky-sunny mean 33 / p95 52, sky-night 50 / 60, door-sun 39 / 64 (all too vibrant, Zafar's word), sky-raining 21 / 27, the s17 kitchen backgrounds 12-14 / 19-21.",
+  "neutral_chroma": 10.0,
+  "kL": 3.0,
+  "de": 10.0,
+  "times": {
+   "day": {"combination": 194, "words": "bright day: Olympic Blue sky, Seashell Pink warmth on the clouds (Jasper Red only as a faint warm glow, if at all)", "max_mean_c": 24, "max_p95_c": 40},
+   "golden": {"combination": 209, "words": "golden hour and sunset: Ivory Buff and a muted Yellow Orange low, Salvia Blue above", "max_mean_c": 30, "max_p95_c": 50},
+   "dusk": {"combination": 339, "words": "dusk and nightfall: Violet Blue above, Light Glaucous Blue haze, Ochraceous Salmon glow and a little English Red at the horizon", "max_mean_c": 28, "max_p95_c": 46},
+   "night": {"combination": 75, "words": "night: deep tones of Violet Blue, a Pale King's Blue moonlit haze, white stars", "max_mean_c": 24, "max_p95_c": 40}
+  }
  },
  "wood": {
   "_about": "Walnut wherever there is wood (Zafar, 6 Nov; art bible section 2): lids, boards, handles, trays. FLAG (never a FAIL; meant for new art) a light oak or pine: the top band (a lid) of a lidded item by name (lid_names), or, on a picture whose name says wood (names; a last word in state_suffixes, where the clinic item sits, does not count; people and hands, light.skip, are skin), a main colour of at least share, in the light-wood band (CIE Lab hue degrees, L* l, chroma c). Walnut is Wada's Vandyke Brown (#4b3317, L* 23) to Brown (#7c4226, L* 35).",
@@ -52,8 +87,11 @@
    "assets/clinic/items-s08c/steel-cup-s08c.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-v2/reflex-hammer.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-v2/toothbrush.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/clinic/items-v2/toothbrush-v2.webp": "the same drawing as items-v2/toothbrush.webp, only its blue pulled (recolour.py, 6 Nov)",
    "assets/day/s09b/kite.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
-   "assets/cook/items/shelf-fru-01-bare-f.webp": "Fable, 6 Nov (art-retrospective-2026-11-06: the crate slats)"
+   "assets/cook/items/shelf-fru-01-bare-f.webp": "Fable, 6 Nov (art-retrospective-2026-11-06: the crate slats)",
+   "assets/cook/items-s17-stove/t-tool-tablespoon.webp": "the stove landing's eye, 6 Nov (stove-run-landed-2026-11-06.md: mild, keep)",
+   "assets/cook/items-s17-stove/t-dish-kalyo-pau.webp": "the stove landing's eye, 6 Nov (stove-run-landed-2026-11-06.md: mild, keep)"
   },
   "ring": 0.4,
   "segments": 4,

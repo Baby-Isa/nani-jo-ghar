@@ -180,3 +180,46 @@ Looked at 30 non-people palette FAILs, 15 PASSes, 10 people and the sheets; then
 **Batches, by eye.** Mixed: the chai shelf (lids, camera), `day/s09b` (the well, the aeroplane), `items/spice` (the bare salt heap), `clinic/rough/furniture` (a steel trolley among toy furniture). Not the hands, the sheets (one item's states) or the streams.
 
 **Decisions:** 1 no, re-tune first; 2 yes, exempt; 3 yes, with the hue pull; 4 yes, only what fails after the re-run; 5-7 yes.
+
+## After Fable's view: re-tuned (6 Nov)
+
+Zafar's rule stays (an item's main colours from ONE Wada combination; exceptions to him). The measure changed, as Fable asked, in `artcolour.py` (`palette_fit`, `tone_groups`, `sky_fit`) and `look-rules.json` (`palette._retuned`, `natural`, `natural_bands`, `people`, `sky`):
+
+1. **Tones of one material merge** (hues within 25°) and the share-weighted mid tone is matched.
+2. **Neutrals up to chroma 14** (warm steel, glass, stone are the ground).
+3. **One in-book accent** under 20% may sit outside the combination.
+4. **`palette.natural`** (60 globs: produce, heaps, cooked food, animals, the ride's bush and tree): judged by **natural bands**, a chroma ceiling per hue band (reds 85, oranges and yellows 85, greens 70, blues 30, purples 55), and the exception rule; not by a combination.
+5. **People are exempt** (`palette.people`): judged by eye, as light already was.
+6. **Skies** have their own rule (`sky`): the time of day's one combination and a saturation ceiling (the art bible's new Skies section).
+
+**Must pass, all pass:** the 55 house-look pictures and Fable's set (pan-water-s14, items-v2 tweezers, the chai station's glass, drill-belt, bg/stove); tests in `artcheck.test.mjs`.
+
+| result (shipped, 1,671: 18 wired since the first pass) | first pass | re-tuned |
+|---|---|---|
+| PASS | 847 | 1,466 |
+| FLAG only | 78 | 149 |
+| EXCEPTION | 25 | 6 |
+| FAIL | 703 | 50 |
+
+Of the 699 palette FAILs, 674 now pass (265 people, 116 natural, the rest merged tones, warm neutrals and accents); 25 still fail. Of the 27 exceptions, 11 now FAIL (the sky blue sits within ΔE 10 of Olympic Blue once its tones merge: recolour), 10 pass, 6 stay.
+
+| FAIL by rule | pictures |
+|---|---|
+| palette, one combination (items) | 30 |
+| palette, natural bands | 6 (old icons: `items/vegetable/veg-03, -06, -09, -10`, `items/spice/spi-01`, `cook/items/veg-tameto-chopped-t`) |
+| sky (combination and ceiling) | 4 (`sky-sunny`, `sky-cloudy`, `sky-night`, `door-sun`; `sky-raining` passes) |
+| light | 5 |
+| baked shadow | 7 |
+
+| redo block | pictures | what |
+|---|---|---|
+| clinic | 24 | the two-colour plasters, the wipes, the drop machine, the jug, ointment, dropper, the light and shadow ones |
+| hue pull (`recolour.py`) | 7 now (11 with the toothbrush and plaster exceptions) | the sky-blue toothbrush and brushing pictures |
+| sky | 4 | the day's skies and the sun card |
+| cook | 4 | the low flame, the rai, the dhana jar, the chopped tomato |
+| day (when next touched) | 6 | kite, rainbow, wall, well, the farm card, the bowl's shadow |
+| none (icons no game plays) | 5 | the old vegetable and spice icons |
+
+**Exceptions (6):** `clinic/rough/items/fever-strip` (purple), `rough/items/plaster-blue`, `rough/overlays/face-sad`, `rough/overlays/stitches`, `clinic/s11/toothbrush-s11` (the sky blue), `day/s09b/book-farm-spread` (its sky). Recommend: the blue ones to the hue pull or their area's run; keep none.
+
+The redo list is re-cut by `build/tools/art/artredo.py` (from the scan's stored colours, `--rescore`): `docs/design-language/art-plans/redo-strict-2026-11-06.yaml` and `.csv` (50 rows; each with its block). Fable expected 60 to 90 pictures; the re-run gives 50 plus the chai shelf's 8 (already in the stove run) and the hue pull's 4 exceptions: 62.

@@ -1,0 +1,221 @@
+# The run spec for pack s17-sky: the game's skies redrawn softer, in one Wada combination per time of day (art bible, Skies;
+# ART-56, Zafar 6 Nov), and a small bank. The plan: docs/design-language/art-plans/s17-sky-art-plan.md.
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-sky.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-sky.run.yaml
+# Each line attaches its time of day's strip (sky-day, sky-golden, sky-dusk, sky-night); the house strip is not used (house:
+# false): a sky's palette is its time's combination, named in words in its own prompt.
+pack: s17-sky
+title: 'The skies: today''s skies redrawn softer, and a bank for each time of day'
+plan: docs/design-language/art-plans/s17-sky-art-plan.md
+plan_branch: ccr-1f71c98a-wwowh8
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: ccr-1f71c98a-wwowh8
+dest: sources/art/s17-sky
+real_people: false
+house: false
+approvals: |-
+  - Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+  - No people in this run (the farm card's farmer is not a real person and only its sky changes): you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
+  - No stops: the run is unsupervised (Zafar, 6 Nov). SD01 (part A) is the anchor every later sky copies: judge it hardest against its check, redo it until it passes, then carry on without waiting.
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  sky-day.png: build/tools/art/data/swatches/wada-194.png
+  sky-golden.png: build/tools/art/data/swatches/wada-209.png
+  sky-dusk.png: build/tools/art/data/swatches/wada-339.png
+  sky-night.png: build/tools/art/data/swatches/wada-75.png
+  door-farm-card.png: sources/art/s12/fm-door-farm-v1.png
+  book-farm.png: sources/art/s09b/k1-book-farm-spread-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  SD01:
+    prompt: SK
+    attach: ["sky-day.png"]
+    save: sd01-sky-day-sunny-v1.png
+    check: ANCHOR
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a clear, bright, warm morning sky over a village: a calm blue at the top, paler and warmer towards the bottom, a soft round sun glowing in the upper RIGHT quarter (a pale warm glow, no flare), and three or four big soft cumulus clouds across the middle and lower half. The upper LEFT quarter stays open, calm sky (the game puts a speech bubble there). The left and right edges join seamlessly, so the picture can tile side by side."
+      MATCH: "This is the first of a set: the look every later sky copies."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue) for the sky, Seashell Pink (a pale warm peach) for the warmth on the clouds and near the horizon; the strip's red only as the faintest warmth, if at all"
+  SD02:
+    prompt: SK
+    attach: ["kept:SD01", "sky-day.png"]
+    save: sd02-sky-day-cloudy-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a soft cloudy morning: big rounded friendly grey-white cumulus clouds over most of a pale blue sky, gentle and calm, not stormy; a faint brighter patch where the sun is hidden in the upper RIGHT quarter. The upper LEFT quarter is plain soft cloud with nothing busy (the game puts a speech bubble there)."
+      MATCH: "Exactly the attached sky's style, brushwork and light, as if painted by the same hand on the same morning."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue) where the sky shows, Seashell Pink (a pale warm peach) for the light on the clouds; the clouds themselves in soft warm whites and greys"
+  SD03:
+    prompt: SK
+    attach: ["kept:SD01", "sky-day.png"]
+    save: sd03-sky-day-raining-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a rainy day sky: soft rounded blue-grey rain clouds covering it, cosy rather than gloomy, a little lighter towards the bottom. Draw NO raindrops, streaks or lightning (the game draws the falling rain). The upper LEFT quarter is plain soft cloud with nothing busy (the game puts a speech bubble there)."
+      MATCH: "Exactly the attached sky's style, brushwork and light, on a rainy day."
+      STRIP_WORDS: "mostly soft blue-greys, with a little of the strip's Olympic Blue (a soft mid blue) in the cloud shadows"
+  SN01:
+    prompt: SK
+    attach: ["kept:SD01", "sky-night.png"]
+    save: sn01-sky-night-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a calm, friendly night sky: deep soft violet-blue (never black), a little lighter towards the bottom, a softly glowing crescent moon in the upper RIGHT quarter with a gentle moonlit haze round it, a few thin silvery clouds, and small gentle stars scattered across the top half. The upper LEFT quarter has only a few faint stars (the game puts a speech bubble there). The left and right edges join seamlessly."
+      MATCH: "Exactly the attached sky's style and brushwork, at night."
+      STRIP_WORDS: "deep tones of Violet Blue (a deep soft blue) for the sky, Pale King's Blue (a pale soft blue) for the moonlit haze; white stars"
+  SC01:
+    prompt: SC
+    attach: ["kept:SD01", "sky-day.png"]
+    save: sc01-door-sun-v1.png
+    check: SUN
+    slots:
+      STRIP_WORDS: "Olympic Blue (a soft mid blue) for the sky, Seashell Pink (a pale warm peach) for the sun's glow"
+  SE01:
+    prompt: SE
+    attach: ["edit: door-farm-card.png", "kept:SD01", "sky-day.png"]
+    save: se01-door-farm-sky-v1.png
+    check: EDIT
+    slots:
+      UNCHANGED: "the farmhouse with its red roof, the hay bales, the fence, the farmer with her straw hat and pitchfork, the goat, the hen, the dog, the fields and the hills"
+      SCENE: "a calm bright day sky above the hills: a soft blue at the top, paler and warmer towards the hills, two or three big soft cumulus clouds."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue), Seashell Pink (a pale warm peach) for the warmth near the hills"
+  SE02:
+    prompt: SE
+    attach: ["edit: book-farm.png", "kept:SD01", "sky-day.png"]
+    save: se02-book-farm-sky-v1.png
+    check: EDIT
+    slots:
+      UNCHANGED: "the grass, the fence, the trees, the hills, the open middle tenth where the book folds"
+      SCENE: "a calm bright day sky above the hills: a soft blue at the top, paler and warmer towards the hills, two soft cumulus clouds, nothing in the middle tenth of the width."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue), Seashell Pink (a pale warm peach) for the warmth near the hills"
+  SB01:
+    prompt: SK
+    attach: ["kept:SD01", "sky-day.png"]
+    save: sb01-sky-day-wide-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a bright midday sky with a towering, beautifully lit cumulus cloud rising from the lower left and smaller soft clouds drifting to the right; no sun in the picture, the light from the upper left. The upper LEFT quarter is calm."
+      MATCH: "Exactly the attached sky's style, brushwork and light."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue) for the sky, Seashell Pink (a pale warm peach) for the lit cloud tops"
+  SB02:
+    prompt: SK
+    attach: ["kept:SD01", "sky-golden.png"]
+    save: sb02-sky-golden-wide-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "golden hour turning to sunset: a low sun just above the bottom edge on the RIGHT, its warm glow spreading through the haze, long soft clouds lit gold and peach from below, the sky above fading to a soft dusty blue. The upper LEFT quarter is calm."
+      MATCH: "Exactly the attached sky's style and brushwork, in the evening's warm light."
+      STRIP_WORDS: "Ivory Buff (a warm cream) and a softened Yellow Orange (a warm ochre gold) low in the sky, Salvia Blue (a soft dusty blue) above"
+  SB03:
+    prompt: SK
+    attach: ["kept:SD01", "sky-dusk.png"]
+    save: sb03-sky-dusk-wide-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "dusk turning to nightfall, the sun just gone: a soft salmon and apricot glow along the horizon, a band of pale grey-teal haze above it, then a deep soft violet-blue at the top with the first one or two faint stars; a few long thin clouds catching the last warm light. The upper LEFT quarter is calm."
+      MATCH: "Exactly the attached sky's style and brushwork, at dusk."
+      STRIP_WORDS: "Violet Blue (a deep soft blue) at the top, Light Glaucous Blue (a pale grey-teal) for the haze, Ochraceous Salmon (a soft apricot) for the glow and only a little English Red (a warm orange-red) right at the horizon"
+  SB04:
+    prompt: SK
+    attach: ["kept:SN01", "sky-night.png"]
+    save: sb04-sky-night-wide-v1.png
+    check: SKY
+    slots:
+      SIZE: "1536×1024, landscape"
+      SCENE: "a clear starry night with a full, softly glowing moon in the upper RIGHT quarter and a gentle moonlit haze round it, a few soft silvery clouds low down, many small gentle stars. The upper LEFT quarter has only a few faint stars."
+      MATCH: "Exactly the attached night sky's style and brushwork."
+      STRIP_WORDS: "deep tones of Violet Blue (a deep soft blue) for the sky, Pale King's Blue (a pale soft blue) for the moonlit haze; white stars"
+  SB05:
+    prompt: SK
+    attach: ["kept:SD01", "sky-day.png"]
+    save: sb05-sky-day-square-v1.png
+    check: SKYSQ
+    slots:
+      SIZE: "1024×1024, square"
+      SCENE: "a bright day sky: a calm blue at the top, paler and warmer towards the bottom, one big soft cumulus cloud in the lower half and a smaller one to its right."
+      MATCH: "Exactly the attached sky's style, brushwork and light."
+      STRIP_WORDS: "Olympic Blue (a soft mid blue) for the sky, Seashell Pink (a pale warm peach) for the lit cloud tops"
+  SB06:
+    prompt: SK
+    attach: ["kept:SB02", "sky-golden.png"]
+    save: sb06-sky-golden-square-v1.png
+    check: SKYSQ
+    slots:
+      SIZE: "1024×1024, square"
+      SCENE: "golden hour: a low sun glowing just above the bottom edge in the middle, soft clouds lit gold and peach, the sky above fading to a soft dusty blue."
+      MATCH: "Exactly the attached evening sky's style and colours."
+      STRIP_WORDS: "Ivory Buff (a warm cream) and a softened Yellow Orange (a warm ochre gold) low in the sky, Salvia Blue (a soft dusty blue) above"
+  SB07:
+    prompt: SK
+    attach: ["kept:SB03", "sky-dusk.png"]
+    save: sb07-sky-dusk-square-v1.png
+    check: SKYSQ
+    slots:
+      SIZE: "1024×1024, square"
+      SCENE: "dusk turning to nightfall: a soft salmon glow along the bottom, pale grey-teal haze above it, a deep soft violet-blue at the top with one faint star."
+      MATCH: "Exactly the attached dusk sky's style and colours."
+      STRIP_WORDS: "Violet Blue (a deep soft blue) at the top, Light Glaucous Blue (a pale grey-teal) for the haze, Ochraceous Salmon (a soft apricot) for the glow"
+  SB08:
+    prompt: SK
+    attach: ["kept:SN01", "sky-night.png"]
+    save: sb08-sky-night-square-v1.png
+    check: SKYSQ
+    slots:
+      SIZE: "1024×1024, square"
+      SCENE: "a calm night: a softly glowing crescent moon in the upper right, a gentle haze round it, small gentle stars across the top half, deep soft violet-blue getting a little lighter towards the bottom."
+      MATCH: "Exactly the attached night sky's style and brushwork."
+      STRIP_WORDS: "deep tones of Violet Blue (a deep soft blue) for the sky, Pale King's Blue (a pale soft blue) for the moonlit haze; white stars"
+parts:
+- id: A
+  title: 'THE ANCHOR: THE DOOR''S SUNNY SKY'
+  intro: 'The bright day sky behind the house at the morning door, the farm and the ride window. Every later sky attaches the kept SD01 (or SN01 for night): judge it hardest.'
+  stop: 'Part A done: post SD01''s chat link in the log and carry straight on with part B (no waiting: Zafar, 6 Nov, the run is unsupervised).'
+  items:
+  - lines: [SD01]
+- id: B
+  title: 'TODAY''S OTHER SKIES AND CARDS'
+  intro: 'Cloudy, raining and night for the door; the sun card; the farm card''s and the book''s farm page''s skies as edits (nothing else in them changes).'
+  items:
+  - lines: [SD02, SD03, SN01, SC01, SE01, SE02]
+- id: C
+  title: 'THE BANK: EACH TIME OF DAY, WIDE AND SQUARE'
+  intro: 'Bright day, golden hour, dusk and night. Lowest priority: if the run must stop, stop here.'
+  items:
+  - lines: [SB01, SB02, SB03, SB04, SB05, SB06, SB07, SB08]
+checks:
+  ANCHOR:
+    text: 'only sky (no ground, hills, trees, birds or buildings); soft and painted, semi-realistic 3D, refined and calm, gentle gradients, big soft cumulus with warm lit tops; colours slightly muted, tones merging, still clearly a bright attractive blue morning (not grey, not loud); only the strip''s colours (soft mid blue, pale warm peach) plus whites and soft greys; a pale sun glow in the upper RIGHT quarter; the upper LEFT quarter calm and open; left and right edges that could join side by side; no text'
+    judge: {aspect: [3, 2], bg: none}
+  SKY:
+    text: 'only sky as the line describes it (no ground, hills, trees, birds or buildings); the same painted style, brushwork and cloud shapes as the attached sky, as if from one set; its time of day''s strip colours only (whites and soft greys free), slightly muted and merging, distinct and attractive rather than grey or loud; the upper LEFT quarter calm; no drawn rain, rays or lens flare; no text'
+    judge: {aspect: [3, 2], bg: none}
+  SKYSQ:
+    text: 'a square sky as the line describes it, the same painted style and colours as the attached sky of the same time of day; only sky; slightly muted, merging tones; no text'
+    judge: {aspect: [1, 1], bg: none}
+  SUN:
+    text: 'one big soft sun, its disc about two thirds of the picture''s height, a little above the middle, a warm pale cream glow (never lemon yellow), no face, no line rays, no flare; only sky round it in the attached sky''s style and the strip''s colours; at most two small clouds near the bottom corners; no text'
+    judge: {aspect: [3, 2], bg: none}
+  EDIT:
+    text: 'only the sky changed: every building, person, animal, fence, field and hill is where and as it was in the attached picture (same faces, same colours, same framing); the new sky in the attached sky''s soft painted style and the strip''s colours, merging with the scene; no text, no sign'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- 'Any text, letters, numbers, labels, logos or watermarks, even fake ones; any drawing of the colour strip or swatches.'
+- 'Ground, hills, trees, birds, buildings or people in an only-sky picture.'
+- 'A flat cartoon blue, a loud saturated gradient, a neon or electric colour, or a dull lifeless grey where the line asks for colour.'
+- 'Colours from outside the attached strip (other than whites and soft greys): a green sky, a pink-purple night, a lemon sun.'
+- 'Drawn rain, lightning, rays as lines or spikes, lens flare, a face on the sun or moon.'
+- 'Anything busy in the upper LEFT quarter (the game''s speech bubble sits there).'
+- 'In an edit: anything other than the sky moved, redrawn or recoloured.'
+- 'Any symbol or emblem in the sky: the moon is only the moon, with nothing beside it.'
