@@ -25,7 +25,7 @@
   "allowed_max": 215,
   "min_strength": 8.0,
   "concave_round": 0.84,
-  "skip": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*"],
+  "skip": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*"],
   "concave_arc": [250, 350],
   "ring": 0.4,
   "segments": 4,
@@ -84,7 +84,7 @@
   "chroma": 45
  },
  "camera": {
-  "_about": "Camera height proxy for round items (Fable, 6 Nov: the shelf's two batches differ in camera as much as in gloss): half-ellipses fitted across the width of the piece's body (after an opening of open x its size, which takes handles and spouts away) to its top and its bottom edge; rim = the top arc's height over the body's width (about 0 from the side, 1 straight down), read on files whose name holds one of names when both arcs fit (rms off by under max_err of the width, ratio under max_ratio) and agree within agree (a dome lid, a carton's gable or a bottle's foot do not). On a named surface the rims may span at most batch.camera_range. Measured on a copy at most side px. Calibrated 6 Nov: the chai shelf's bare jars 0.17-0.19, its v2 jars 0.26-0.45 (a range of 0.28: flagged); top-down pans, bowls and glasses 0.9-1.2; a pan with a long handle or a pour gives no reading (one arc).",
+  "_about": "Camera height proxy for round items (Fable, 6 Nov: the shelf's two batches differ in camera as much as in gloss): half-ellipses fitted across the width of the piece's body (after an opening of open x its size, which takes handles and spouts away) to its top and its bottom edge; rim = the top arc's height over the body's width (about 0 from the side, 1 straight down), read on files whose name holds one of names when both arcs fit (rms off by under max_err of the width, ratio under max_ratio) and agree within agree (a dome lid, a carton's gable or a bottle's foot do not). On a named surface the rims may span at most batch.camera_range. Measured on a copy at most side px. Calibrated 6 Nov: the chai shelf's bare jars 0.19, its v2 jars 0.26-0.45 (a range of 0.26: flagged); top-down pans, bowls and glasses 0.9-1.2; a pan with a long handle or a pour gives no reading (one arc).",
   "names": ["pan", "pot", "bowl", "jar", "glass", "cup", "tin", "karahi", "kadai", "tawa", "thali", "plate", "bottle", "jug", "tumbler", "handi", "lota", "bucket", "vessel", "shelf-", "well", "saucer", "katori", "beaker"],
   "open": 0.06,
   "max_err": 0.05,

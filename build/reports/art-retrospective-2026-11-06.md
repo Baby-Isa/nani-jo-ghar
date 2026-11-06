@@ -5,10 +5,10 @@ Overnight task 2 (`docs/process/overnight-brief-2026-11-06.md`). The tool is new
 ## Verdict, flaws first
 
 1. **The chai shelf's two batches are the one join a parent sees, and the tool finds it without being told which is which.** As one surface (the named batch `chai-shelf` in `build/tools/art/data/look-rules.json`) the eight pictures split in two on see-through glass (bare jars 0.02-0.07 of their pixels soft, v2 jars 0.18-0.26), canvas (256x384 against 176x256), fill (88-91% against 94%), shape (0.62 against 0.67 wide for the same jar) and lid (four lid families in eight pictures: pale wood, dark wood, black steel, gold, white, plus the bottle's blue cap and the carton's top). Light is the same (upper left on all seven readable ones), so it is a run join, not a lighting fault. Table below.
-2. **Little else is wrong.** 2,248 pictures (one per name; `@2x` and second formats left out), 2,124 cut-outs: 2,082 PASS, 164 FLAG, 2 FAIL. Of the 1,603 that ship (not the parked hands, roughs, protos or the old scene folder): 1,505 PASS, 97 FLAG, 1 FAIL.
-3. **One shipped baked shadow:** `assets/clinic/sheets/thermometer/thermometer-belt.webp` (named in `data/clinic/sheets.json`) keeps a thin dark strip under the tube (alpha about 0.3). A re-cut, not a redo. The other FAIL, `assets/scene/bowl-back.png`, is the old scene folder (`data/scenes/kitchen.json`).
+2. **Little else is wrong.** 2,248 pictures (one per name; `@2x` and second formats left out), 2,124 cut-outs: 2,015 PASS, 225 FLAG, 8 FAIL after Fable's view (first pass 2,082 / 164 / 2). Shipped is now by reference (a page, script, style or data file names or builds it): 1,653 ship, 1,477 PASS, 169 FLAG, 7 FAIL; 595 are used by nothing (81 by a lab page only).
+3. **Seven shipped baked shadows, not one** (Fable was right: the first test missed the opaque kind). The thermometer belt (a soft strip) and three clinic-sheet toothbrushes (`toothbrush-belt`, `-paste`, `-side`: an opaque grey strip under the handle), all re-cuts; the parked rough chai cup and foot bath (still named in `data/clinic/rough-art.json`, the clinic's fallback art); and `assets/scene/bowl-back.png` (named in `data/scenes/kitchen.json`). `chai-v2/pan-pour.webp` FAILs too, but nothing uses it. 72 shipped pictures keep a faint soft shadow (a FLAG: the honey jar, the old cook props, the clinic's items-v2).
 4. **The one colour outside Sanzo Wada's book is the generator's bright sky blue** (`#60b3f2`, ΔE 10-12 from Olympic Blue): eleven clinic toothbrush and brushing pictures, the ice pack, and the day sky and farm door. Everything else sits within ΔE 10 of a Wada colour (median 4). Half of a typical cook item's colour is in the house family (median share 0.73 on `assets/cook/items`; the word moment 0.96; vegetables 0.22, as vegetables should be).
-5. **Light is right almost everywhere.** 15 shipped pictures read from outside the upper-left arc; most are pans and tools seen at an angle where the reading needs an eye: the three pouring pans (from the right), the samosa jharo (lower left), the well (lower right), the drop machine, the steel cup, the reflex hammer, the tweezers, the kite and the onion (upper right). People are not judged for light (their faces are the locked style, s17-fonts-review).
+5. **Light is right almost everywhere.** 11 shipped pictures read from outside the upper-left arc (the pouring pans and the onion no longer count: nothing uses them). Fable looked: on multi-material pieces the reading is noise (the jharo, steel cup, hammer, tweezers, kite and the bananas crate pass by eye); only the well and the drop machine need a look. People are not judged for light (their faces are the locked style, s17-fonts-review; the parked rough patients are now skipped too).
 6. **No white halos ship.** The six edge hits at the first threshold were steel rims, a hob's trim, a bubble and a wipe's crimp: real edges.
 
 ## The chai shelf (the known finding)
@@ -35,14 +35,19 @@ The tool's lines on it (`--batch chai-shelf`): the bare jars and the carton are 
 
 ## Counts
 
+After Fable's view; shipped by reference (the first pass, by folder, in brackets).
+
 | check | all pictures | shipped |
 |---|---|---|
-| FAIL baked shadow | 2 | 1 |
-| light outside the upper-left arc | 65 (50 are the parked hands and roughs) | 15 |
-| off-palette (ΔE over 10 from every Wada colour) | 27 | 20 |
-| batch: gloss / see-through / specular / edge / light / saturation / lid | 23 / 19 / 14 / 10 / 9 / 7 / 5 | 20 / 17 / 10 / 9 / 7 / 7 / 5 |
+| FAIL baked shadow: soft / opaque | 2 / 6 (2 / 0) | 2 / 5 (1 / 0) |
+| FLAG faint soft shadow | 82 | 72 |
+| light outside the upper-left arc | 16 (65) | 11 (15) |
+| off-palette (ΔE over 10 from every Wada colour) | 27 | 25 (20) |
+| house look: rainbow / on a house-look surface | 4 / 35 | 3 / 17 |
+| camera range on a named surface | 2 | 2 |
+| batch: gloss / see-through / specular / edge / light / saturation / lid | 23 / 19 / 14 / 10 / 9 / 7 / 5 | 14 / 14 / 7 / 8 / 9 / 3 / 5 |
 | white halo | 0 | 0 |
-| PASS / FLAG / FAIL | 2,082 / 164 / 2 | 1,505 / 97 / 1 |
+| PASS / FLAG / FAIL | 2,015 / 225 / 8 (2,082 / 164 / 2) | 1,477 / 169 / 7 of 1,653 (1,505 / 97 / 1 of 1,603) |
 
 ## How I calibrated
 
@@ -62,22 +67,24 @@ Halos: at 0.3 the six hits were real metal edges; 0.4 keeps the test's halo (100
 
 ## The worst outliers
 
-Sheet: `build/reports/art/art-retrospective-2026-11-06-worst.jpg` (the 36 worst shipped; the full-size copy and the whole run's JSON are in `build/screenshots/artcolour/`, not in git).
+Sheet: `build/reports/art/art-retrospective-2026-11-06-worst.jpg` (the 36 worst shipped, redrawn after Fable's view; the whole run's JSON is in `build/screenshots/artcolour/`, not in git). The read column is the first pass's, with Fable's eye where she looked.
 
 | # | file | check | read |
 |---|---|---|---|
 | 1 | `assets/clinic/sheets/thermometer/thermometer-belt.webp` | FAIL baked shadow | true: a dark strip under the tube |
 | 2 | `assets/clinic/sheets/toothbrush/toothbrush-use-up.webp` (and 10 more toothbrush, brushing, ice pack) | off-palette sky blue | true colour finding; the object is honest |
 | 3 | `assets/cook/items/shelf-*-bare-f.webp`, `shelf-*-jar-v2-f.webp` | chai-shelf split, four lids | true, the known join |
-| 4 | `assets/cook/items/chai-v2/pan-pour.webp`, `assets/cook/items-s12/chai-pan/pan-pour-black-s12.webp`, `pan-pour-end-s12.webp` | light from the right | likely true (the pour series); check by eye |
-| 5 | `assets/cook/items/v3/samosa/jharo.webp` | light lower left, odd one of its batch | check by eye |
-| 6 | `assets/day/s09b/well.webp` | light lower right, odd one of its batch | check by eye |
-| 7 | `assets/clinic/heal-v3/drop-machine-v3.webp` | light lower left (strength 17) | likely true |
-| 8 | `assets/clinic/items-v2/reflex-hammer.webp`, `toothbrush.webp`, `assets/items/cook/onion-whole.png`, `assets/day/s09b/kite.webp` | light upper right | mild; check by eye |
+| 4 | `assets/cook/items/chai-v2/pan-pour.webp`, `assets/cook/items-s12/chai-pan/pan-pour-black-s12.webp`, `pan-pour-end-s12.webp` | light from the right; pan-pour now a FAIL (opaque shadow) | nothing uses them (Fable); pan-pour-black-s12's "black tea" is a red-orange syrup: in palette and wrong, a model's call |
+| 5 | `assets/cook/items/v3/samosa/jharo.webp` | light lower left, odd one of its batch | Fable: reads fine |
+| 6 | `assets/day/s09b/well.webp` | light lower right; house look (surface) | Fable: upper right, stock foliage; eye check |
+| 7 | `assets/clinic/heal-v3/drop-machine-v3.webp` | light lower left (strength 17); house look (rainbow) | likely true; eye check |
+| 8 | `assets/clinic/items-v2/reflex-hammer.webp`, `toothbrush.webp`, `assets/items/cook/onion-whole.png`, `assets/day/s09b/kite.webp` | light upper right; the kite a house-look rainbow | Fable: the light reads fine; the onion is used by nothing |
 | 9 | `assets/clinic/sheets/tweezers/tweezers-side.webp`, `assets/clinic/sheets-v3/tweezers/tweezers-side-v3.webp` | glossier and more see-through than the set | true: a side view cut from a different sheet |
-| 10 | `assets/cook/items/shelf-fru-01-bare-f.webp` | light from below | probably tool noise (crate slats); check by eye |
+| 10 | `assets/cook/items/shelf-fru-01-bare-f.webp` | light from below | Fable: tool noise (crate slats) |
 | 11 | `assets/scene/bowl-back.png` | FAIL baked shadow | true; old scene folder |
 | 12 | `assets/cook/items/chai-station/flame-low.webp`, `flame-ring-low-t.png` | off-palette blue | a gas flame is that blue: leave |
+| 13 | `assets/clinic/sheets/toothbrush/toothbrush-belt.webp`, `-paste`, `-side` | FAIL opaque baked shadow (new) | true: a grey strip under the handle at 4x |
+| 14 | `assets/clinic/rough/items/chai-cup.webp`, `foot-bath.webp` | FAIL opaque baked shadow (new) | true; parked roughs the clinic still falls back to |
 
 ## Redo list
 
@@ -85,12 +92,12 @@ The redo YAML that `artblock.py --redo` reads names line IDs of one pack's run s
 
 | what | files | why | how | size |
 |---|---|---|---|---|
-| chai shelf, one run | the 8 shelf pictures (later 9) | two batches on one shelf | task 5's paste block (stove family), `house: {attach: true}` | in task 5 |
-| thermometer belt re-cut | `assets/clinic/sheets/thermometer/thermometer-belt.webp` | kept shadow strip | erase soft dark alpha below the tube (artcut or a small script), `artcolour.py` and `artpixels.py` to prove | 15 min |
+| chai shelf, one run | the 8 shelf pictures (later 9) | two batches on one shelf (now also a camera range of 0.19 to 0.45) | task 5's paste block (stove family), `house: {attach: true}`, size classes (no true heights: Zafar's edit at launch) | in task 5 |
+| clinic sheet re-cuts | `assets/clinic/sheets/thermometer/thermometer-belt.webp`, `assets/clinic/sheets/toothbrush/toothbrush-belt.webp`, `toothbrush-paste.webp`, `toothbrush-side.webp` | kept shadow: a soft strip, and an opaque grey strip under each handle | erase the dark neutral pixels below the body (artcut or a small script); `artcolour.py` and `artpixels.py` to prove | 30 min |
+| faint shadows | 72 shipped (the strongest: the old cook props, the clinic's items-v2, the decoy tumbler) | a faint grey or tinted haze under the piece | one look on `art-retrospective-2026-11-06-after-fable.jpg`; re-cut those that show on the worktop, with the next touch of each game | 10 min to look |
+| retire or re-cut | `chai-v2/pan-pour.webp`; the rough `chai-cup.webp`, `foot-bath.webp`; `scene/bowl-back.png` | baked shadows on a picture nothing uses (pan-pour), the clinic's rough fallbacks and the old scene | retire with the old scene and the roughs; re-cut pan-pour only if a page comes to use it | none now |
 | toothbrush blue | 11 clinic pictures, `ice-pack-s08b.webp` | generator sky blue, off the book | Zafar's call (decision 1): leave, or a hue pull towards Wada's Olympic Blue in post | 30 min if yes |
-| pouring pans | 3 pour pictures | lit from the right | watch list; redo with the stove run only if the eye agrees | none now |
-| eye checks | jharo, well, drop machine, steel cup, hammer, tweezers, kite, onion, bananas | light readings | one look on the worst sheet; anything true joins its game's next run | 10 min |
-| bowl-back | `assets/scene/bowl-back.png` | baked shadow | retire with the old scene, or ignore | none |
+| eye checks | the well, the drop machine (Fable looked at the rest: they pass) | light, and a stock look (house look: the well's foliage, the drop machine's RGBY tubes; the kite too) | one look on the after-Fable sheet; anything true joins its game's next run | 10 min |
 
 ## Fable's view
 
@@ -111,19 +118,33 @@ Looked at 14 flagged and 14 passing cut-outs on grey at 400 px, bottoms at 3x on
 
 **Verdict:** a sound ruler for the shelf join, its one real finding, but its only FAIL misses an opaque shadow and it cannot see camera, chroma or contents, so a PASS is "numbers fine", never "looks right": ship the shelf redo, fix the shadow test and the shipped filter before the next pack.
 
+### After Fable's view (6 Nov, 03:57)
+
+Her five tool fixes are built (`artcolour.py`, thresholds and calibration notes in `look-rules.json`, five tests in `artcheck.test.mjs`, a new `art` line in `checks.mjs`). Her `cm` height per item is not: Zafar's edit at launch keeps token size classes, never true heights.
+
+| fix | what it does | calibrated on the real assets |
+|---|---|---|
+| opaque baked shadow (FAIL) | per column, the opaque neutral run at the bottom edge that grows lighter going down from a contact line darker than the body above it; FAIL across 20% of the width at 2 px a column. A faint (tinted, small) soft shadow FLAGs | pan-pour 0.40 wide, 9.4 px deep, and the toothbrushes 0.41-0.43 fail; glass jar bases 0.13-0.19 at about 1 px pass; the chai shelf, the black tea jar and tin, top-down and black pans read 0. The honey jar FLAGs |
+| shipped by reference | named (a page, script, style or data file writes the path), built (a template literal's pattern, or the bare name quoted where its folder is named), a lab page only, or none. `data/asset-list.json` is the generation record, not a page: it does not count | 1,170 named, 483 built, 81 lab only, 514 none; Fable's three (`pan-pour`, `pan-pour-black-s12`, `onion-whole`) are none; the word moment's glasses are built |
+| house look (FLAG) | a rainbow: three strong hues off the house family; and on a surface whose median house share is 0.6 or more, a picture under 0.4 at chroma 45 | the drop machine and the kite (rainbow), the well (surface); the chai word-moment set flags nothing. The onion is all house colours (Pompeian Red, Pale Burnt Lake): its stock look is shape and skin, an eye's call |
+| camera height | rim = the top arc's height over the width on round items, read when the top and bottom arcs agree; a named surface's rims may span 0.2 | chai shelf: bare jars 0.19, v2 jars 0.26-0.45, flagged; top-down pans, bowls and glasses 0.9-1.2; a long handle or a pour gives no reading |
+| `--changed [REF]` | the pictures changed since the merge-base with origin/main (HEAD~1 on main), uncommitted and untracked too, a named surface's others measured beside them; `checks.mjs` line `art` fails only on a FAIL | about 0.3 s a picture; 13 changed pictures in 4.7 s; tonight's branch: none changed |
+
+**Newly found** (sheet: `build/reports/art/art-retrospective-2026-11-06-after-fable.jpg`): three toothbrushes on the clinic sheets keep an opaque grey strip under the handle (the same cut as the thermometer belt); the parked rough chai cup and foot bath, which the clinic still falls back to; 72 shipped faint shadows (the old cook props, the clinic's items-v2: eye drops, plasters, thermometer, the decoy tumbler); the house look on the drop machine, kite, well, the s09 ride's hen, bush and tree, the cook folder's tomatoes and chillies, and the clinic's ice pack and apple decoy. Light noise: the parked rough patients are people and now skipped (49 light flags gone).
+
 ## Decisions for Zafar
 
 1. **The clinic's sky-blue toothbrushes:** leave them (a child's toothbrush is that blue) and hold new art to the house look. Recommend: leave.
 2. **Light, off-palette and batch lines stay FLAGs, never FAILs;** only a baked shadow FAILs. Recommend: yes.
 3. **The size classes** (L 100%, M 90%, S 80% of the slot height, ±5%) are a draft in `look-rules.json`; task 5's report sets the final rule. Recommend: adopt task 5's numbers there, no change here.
 4. **The swatch strip in prompts** is opt-in per pack (`house: {attach: true}`); every block already names the house colours and the edge line for the judge. Recommend: switch it on for the stove run, check its first sheet for a painted strip.
-5. **Not in `checks.mjs` repo-wide:** six minutes is too slow for every push; it runs in the judge, at art runs and as a retrospective. Recommend: yes.
+5. **Not in `checks.mjs` repo-wide:** ten minutes is too slow for every push; the changed pictures are (`art`, Fable's amendment, built), the whole set runs in the judge, at art runs and as a retrospective. Recommend: yes.
 
 ## Implementation plan
 
 Built tonight (on the branch): `build/tools/art/artcolour.py`, `build/tools/art/data/` (`wada-colors.json` and its licence, `look-rules.json`, `house-swatch.png`), `artjudge.py` (`look:` lines, `--batch`, `--no-look`), `artblock.py` and `templates/block.txt` (HOUSE LOOK section; the swatch and one prompt sentence on opt-in), tests in `artcheck.test.mjs`, rows in `art-pipeline.md` section 15 and `docs/tools.md`. On his yes to the redo list:
 
-1. Re-cut `thermometer-belt.webp` (small script beside `artcut.py`): files `assets/clinic/sheets/thermometer/`. Check: `artcolour.py` PASS, `artpixels.py` PASS, the heal game's thermometer shot. Size 15 min, risk low.
+1. Re-cut `thermometer-belt.webp` and the three toothbrushes (`toothbrush-belt`, `-paste`, `-side`) (small script beside `artcut.py`): files `assets/clinic/sheets/thermometer/`, `assets/clinic/sheets/toothbrush/`. Check: `artcolour.py` PASS, `artpixels.py` PASS, the heal game's thermometer and tooth shots. Size 30 min, risk low.
 2. If decision 1 is "recolour": a hue pull on the 12 blue pictures (Pillow, Lab), before and after sheet. Size 30 min, risk low (one hue).
 3. Task 5's stove run: spec with `house: {attach: true}`, its items named in `look-rules.json` `sizes.items` and a named batch per shelf. Check: `artjudge.py --batch <shelf>` on what lands. Size: inside task 5.
 4. Any pack after: add its surfaces to `batches` and run `artcolour.py` on the landed folder before the judge. Size: minutes per pack.
@@ -135,4 +156,8 @@ Built tonight (on the branch): `build/tools/art/artcolour.py`, `build/tools/art/
 - Paste blocks: all 27 run specs (and 4 redo lists) built before and after the change: 108 lines added (4 per block), 0 removed or changed; no committed block regenerated. `artblock.py --check` unchanged where it passed before (the others fail only on references not fetched locally, as before).
 - `artjudge.py --spec build/tools/art/specs/s17-art3.run.yaml --batch art3`: the `look:` lines print beside the judge's own; 38 images, 20 pass, 15 flag, 3 fail (the 3 FAILs are the judge's own: text-like marks and piece counts; no look: line is a FAIL there).
 - Sheets looked at: the chai shelf, the pans' light, the glass shadows, the halos, the shipped light flags, the worst 36.
-- Not done: no eye check of each light reading at full size; the chai shelf's real-size heights wait for task 5.
+- After Fable's view: `artcolour.py --scan assets --json build/screenshots/artcolour/all.json --quiet` (10 min) and `--scan assets/clinic/rough` after the rough patients joined the light skip: "2248 picture(s): 2015 pass, 225 flag, 8 fail"; "shipped: 1653 (1477 pass, 169 flag, 7 fail); unreferenced: 595 (538 pass, 56 flag, 1 fail); 81 on a lab page only".
+- `node --test build/tools/art/artcheck.test.mjs`: 13 of 13 pass; the five new ones: a synthetic opaque crescent FAILs while a dark base shaded to its edge and a clean jar pass, a faint warm shadow FLAGs; the real pan-pour and thermometer belt FAIL, the honey jar FLAGs, eight dark jars and pans stay clean; references (Fable's three none, the word moment's glass built); a rainbow and a strong green on a house surface flag, six word-moment pictures do not; the shelf's v2 jars read higher than its bare jars and the shelf flags its camera; `checks.mjs` runs `art`.
+- `node build/tools/review/checks.mjs`: every line ok, `art` "no picture changed since 16ab701c9a30".
+- Sheets looked at: the bottoms at 3-4x on white (pan-pour, the toothbrushes, the honey jar, glass jar bases, the rough cup and foot bath), the faint shadows near the threshold, the after-Fable sheet.
+- Not done: no eye check of each light reading at full size; the chai shelf's sizes wait for task 5 (classes, not heights).
