@@ -60,3 +60,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-06 08:54 UK · Published 20261106T085157Z to main (12b790b3); Pages serving it.
 - 2026-11-06 09:11 UK · Published 20261106T090836Z to main (0f22196d); Pages serving it.
 - 2026-11-06 14:22 UK · day run · English study and font sample to Zafar (option 2; Lora recommended pending Fable); juice run landed and judged; juice lab started; running: feedback rows, burner + SH-221, stove cut, strict art / next: Fable's font ranking, size classes
+- 2026-11-06 14:45 UK · day run · done: feedback rows + Fable second read, English study (2b) + old-vs-new card, font sample + Fable (Lora), burner fix + SH-221 (Fable PASS on re-judge), strict art review (703 fail; Fable checking the rule), size-class method, sizes 100/91/84 / running: stove cut, juice lab, size classes data, CHAI-94 / waiting: Zafar's go on the card
