@@ -8,15 +8,19 @@
   },
   "items": {
     "comb": {
+     "sizeClass": "S",
+     "sizeFlag": "LONG",
       "english": "the comb",
       "use": "comb"
     },
     "bug-jar": {
+     "sizeClass": "M",
       "english": "the jar",
       "use": "jar",
       "art": "bug-jar"
     },
     "shampoo": {
+     "sizeClass": "M",
       "english": "shampoo",
       "use": "shampoo",
       "placeholder": true

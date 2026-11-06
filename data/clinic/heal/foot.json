@@ -8,21 +8,26 @@
  },
  "items": {
   "paani": {
+   "sizeClass": "L",
    "english": "paani (the jug: hot or cold is chosen in the game)",
    "use": "paani",
    "art": "jug-water"
   },
   "loon": {
+   "sizeClass": "S",
    "english": "loon (the salt pot and its spoon)",
    "use": "loon",
    "art": "salt-pot"
   },
   "tweezers": {
+   "sizeClass": "S",
+   "sizeFlag": "LONG",
    "english": "tweezers",
    "use": "tweezers",
    "art": "tweezers"
   },
   "plaster": {
+   "sizeClass": "S",
    "english": "a plaster",
    "use": "plaster",
    "art": "plaster"

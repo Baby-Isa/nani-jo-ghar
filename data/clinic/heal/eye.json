@@ -8,16 +8,20 @@
  },
  "items": {
   "drops-green": {
+   "sizeClass": "S",
    "english": "eye drops",
    "use": "drops",
    "art": "drops-green"
   },
   "pointer": {
+   "sizeClass": "M",
+   "sizeFlag": "LONG",
    "english": "the pointer",
    "use": "pointer",
    "art": "pointer"
   },
   "patch": {
+   "sizeClass": "S",
    "english": "eye patch (a pirate one)",
    "use": "patch",
    "art": "eye-patch-pirate"

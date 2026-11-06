@@ -8,11 +8,13 @@
   },
   "items": {
     "cup": {
+     "sizeClass": "S",
       "english": "a cup (the glass: the drink is chosen in the game from three pitchers)",
       "use": "cup",
       "art": "cup"
     },
     "hot-water-bottle": {
+     "sizeClass": "L",
       "english": "the hot-water bottle",
       "use": "bottle",
       "art": "hot-water-bottle"
