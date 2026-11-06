@@ -33,10 +33,10 @@ differ, his word wins and the row says so.
 | P1 | **Every action answers at once, within 100 ms.** | Past about 100 ms the brain stops reading the response as "mine"; consistent timing matters more than speed. "Without immediate feedback there is no virtual sensation." | Swink, *Game Feel* (2008), ch. 2-3: response within ~100 ms; the Rutgers game-feel lecture on Swink *(web, 6 Nov)* | The tap's acknowledgement (sound and a 1-frame squash) fires on the tap itself, never at the end of the bottle's flight (today `soft("tap")` is at `js/cook/stations/chai-tray.js:1300`, after the return flight). |
 | P2 | **Layer small things, not big ones.** | Jonasson and Purho's demo adds ~20 tiny tweaks (tweened scale, a sound per event, particles, a little screen movement) and the same game feels alive; no one of them is large. Nijman's talk builds the same way, one feedback layer at a time. | "Juice it or lose it" (Jonasson, Purho, 2012); "The Art of Screenshake" (Nijman, Vlambeer, INDIGO 2013) *(web, 6 Nov)* | Chai's juice is the sum of the squash on landing, the tick's pop, the tally's bump, a short sound each, never a fanfare per step. **No screenshake** in a children's game: it reads as alarm (P6). |
 | P3 | **Feedback for every action, never a verdict.** | For 3-7s the feedback says "it happened", not "you were right". Right and wrong get the same acknowledgement; only the end review shows what to work on. | Zafar's non-negotiable 7 and UX 11 ("show progress, not verdicts; no red crosses or buzzes mid-round"); audio.md E10 "no buzzes"; Toca Boca and Sago Mini's "toys, not games: no winning, no losing" *(web, 6 Nov)*; NN/g kids' research: under-6s miss subtle audio-visual verdicts anyway *(web, 6 Nov)* | A spoonful that goes in sounds the same whether it was asked for or not. A tap that cannot land (a second water, "not now" on the knob) gets the one soft low note (`cook-soft`) and a wiggle, never `wrong`. |
-| P4 | **The family's voice is the game; nothing masks it.** | Every Kutchi line is a real recording (non-negotiable 2). An effect under it hides a syllable; two voices at once is already a contract failure (PAN-04, contract-7). | audio.md G14, E5; the chai standard §4.1 "one voice at a time" | A **voice gate**: while a family clip sounds (`Cook.voiceBusy()`, `js/cook/core.js:304`) any effect longer than 120 ms waits or is dropped; ticks under 120 ms play at -9 dB. The order's cards landing in their rows stay silent (the person is speaking). |
+| P4 | **The family's voice is the game; nothing masks it.** | Every Kutchi line is a real recording (non-negotiable 2). An effect under it hides a syllable; two voices at once is already a contract failure (PAN-04, contract-7). | audio.md G14, E5; the chai standard §4 (speech and bubbles: "one voice") | A **voice gate**: while a family clip sounds (`Cook.voiceBusy()`, `js/cook/core.js:306`) any effect longer than 120 ms waits or is dropped; ticks under 120 ms play at -9 dB. The order's cards landing in their rows stay silent (the person is speaking). |
 | P5 | **Loudness and pitch for 3-7-year-olds.** | Young ears are more sensitive to bright, sharp sounds; WHO-ITU's children's dose is 75 dB over 40 h/week; parents set phones loud for speech, so effects must sit under the voice. | WHO-ITU H.870 safe listening (children's mode 75 dB) *(web, 6 Nov)*; Apple HIG "Playing audio": effects must not drown speech *(from knowledge)* | Effects peak at least 6 dB under the family voice (`Sfx.volume` 0.5 today, voice at 1.0); no square waves above 0.1 gain; nothing above 4 kHz except a short noise tick. |
 | P6 | **Phone speakers: mid frequencies, no sub-bass, no long tails.** | Small speakers roll off below roughly 250-600 Hz; a 196 Hz sine (today's `wrong`) is nearly inaudible on a phone and distorts when pushed. | Measured phone responses: 230 Hz-10 kHz at best, uniform only from ~700 Hz *(web, 6 Nov)*; Material sound guidance: short, percussive, mid-frequency, made for cheap speakers *(secondary, web, 6 Nov)* | Every fundamental at or above 250 Hz; the body of each sound in 400 Hz-3 kHz; a touch of harmonic above (triangle, not sine) so it carries. Retune `wrong` (196 Hz), `chop`'s 160 Hz thump and `boing`'s 180 Hz start. |
-| P7 | **Reduced motion is a setting, not a hope.** | Motion a child did not ask for can distract or, for some, cause discomfort; WCAG 2.3.3 asks that interaction-triggered animation can be turned off. | WCAG 2.1 SC 2.3.3 (AAA) and the `prefers-reduced-motion` technique *(web, 6 Nov)*; art bible §5 "switched off by the reduce motion setting" | The kit already honours it in the results, onboarding, word moment, request pop-up, word card, focus.css. The gaps: Phaser's tweens in chai (the squash, the fly, the wiggle), the tally bump (done), the order card's tick pop (not yet). One grown-up switch, "less motion", as well as the system's. |
+| P7 | **Reduced motion is a setting, not a hope.** | Motion a child did not ask for can distract or, for some, cause discomfort; WCAG 2.3.3 asks that interaction-triggered animation can be turned off. | WCAG 2.1 SC 2.3.3 (AAA) and the `prefers-reduced-motion` technique *(web, 6 Nov)*; art bible §5 "switched off by the reduce motion setting" | The kit already honours it in the results, onboarding, word moment, request pop-up, word card, focus.css, the tally bump and the order card (every `.oc-card` animation, the tick's pop included: `css/shared/order-card.css:352`). The gap: Phaser's tweens in chai (the squash, the fly, the wiggle). One grown-up switch, "less motion", as well as the system's. |
 | P8 | **Sound off is a grown-up's choice, and the game must still be playable.** | Phones are muted in waiting rooms; a parent may want Nani's voice but not the effects (or neither). | Apple HIG: feedback must remain optional and work with sound muted *(web, 6 Nov)*; WCAG 1.4.2 audio control *(from knowledge)* | `Sfx.muted` exists but nothing sets it. A second switch beside Nani's mute in the "?" pop-up: "Sounds" (effects) separate from "Nani's voice"; both remembered in the save. Every sound has a visible twin (the squash, the tick), so muted play loses nothing the child needs. |
 | P9 | **Repetition fatigue: vary what repeats.** | A sound heard 40 times a round grates unless it moves a little; the standard trick is a random pitch of about ±5-10 % per play, and two or three alternates for the most frequent one. | Jonasson and Purho; game-audio practice (random pitch 0.9-1.1) *(web, 6 Nov)* | A global `Sfx.jitter` (default ±4 %) on every one-shot except chords (`gold`, `fanfare`, `coin`: a detuned chord sounds wrong); the shelf's `pop` gets three alternates by item kind (a liquid, a jar, a spoonful). |
 | P10 | **Match the sound to the picture's weight.** | A sound that is heavier or lighter than the motion it marks reads as false; HIG: match a haptic's intensity and sharpness to the animation. | Apple HIG "Playing haptics" *(web, 6 Nov)*; Swink on polish (sound and motion as one effect) | A 320 ms squash gets a 60-120 ms sound; the pan's settle a soft low thud (330 Hz); the glass filling the rising pour loop (already in); the end screen's gold badge the one long chime of the round. |
@@ -46,7 +46,8 @@ differ, his word wins and the row says so.
 ## 2. The map
 
 Every moment in chai and the shared kit. **Now** is what the code does today (read, not guessed); **sound** and **juice** are what
-to add; **silent** says what stays quiet and why. Priority: P1 = in the chai version; P2 = the next sprint; P3 = nice, later.
+to add; **silent** says what stays quiet and why. The `chai-tray.js` lines are as on `main` (the plan branch) when this was
+written; on the overnight branch everything from `:1300` on sits 54 lines lower (the late `soft("tap")` is at `:1354` there). Priority: P1 = in the chai version; P2 = the next sprint; P3 = nice, later.
 Recipe names in `sfx` are section 3's table.
 
 ### 2a. The shelf, the pan and the spoon
@@ -70,18 +71,18 @@ Recipe names in `sfx` are section 3's table.
 |---|---|---|---|---|---|
 | **Turn the knob on** (`knobTap`, `:1414-1427`; the kit's `set()`, `kitchen-kit.js:278-286`) | the knob turns 260 ms with `click` (1200 Hz square, 30 ms, gain 0.05: the sound SH-196 found too quiet) | **`knob`**: a gas knob's clack (noise 2.2 kHz 25 ms + 1480 Hz triangle 40 ms, gain 0.2), then **`flame`** a 200 ms soft whoomph (noise 700 Hz, rising then falling) as the flame appears | the flame's alpha already fades in over 360 ms | | P1 |
 | **The knob with no water** (`:1416-1422`: the knob wiggles, the bottle glows and bounces) | silent | `cook-soft` | | | P1 |
-| **The heat ring fills** (`drawRing`, the loop at `:1540-1560`) | silent; bubbles roll in the picture | **`simmer`** a very quiet boil loop (`boil` exists: 400 Hz band, 0.05 gain) from heat 0.5, rising with heat, stopped at the turn-down | the s17-juice steam wisps (ST) drift from the pan from heat 0.7, 2-3 at a time, never over a tap target (art bible §5) | | P2 |
+| **The heat ring fills** (`drawRing`, the loop at `:1540-1560`) | silent; the pictured boil rolls, and the s11 steam already drifts off the far rim now and then from `boilAt` (`fx("steam")`, `:1570`, CHAI-63) | **`simmer`** a very quiet boil loop (`boil` exists: 400 Hz band, 0.05 gain) from heat 0.5, rising with heat, stopped at the turn-down | the ST wisps replace the s11 steam there (its start stays `boilAt`, CHAI-63), 2-3 at a time, never over a tap target (art bible §5) | | P2 |
 | **The bar enters the green** (`:1554`, `click`) | the same quiet `click` | **`green`**: a clear two-note ding (1047 + 1319 Hz triangle, 110 ms) so the moment to tap is heard as well as seen (CHAI-24 wants it on that frame) | | | P1 |
 | **Tap before the green** (`:1429-1441`: the knob wiggles, Nani says *hever na*) | the wiggle; Mum's clip | `cook-soft` 150 ms **before** her line (the gate holds it clear of the clip) | | never a buzzer (P3) | P1 |
-| **Turn down in the green** (`turnDown`, `:1491`) | the knob's `click` | **`knob`** (the same clack, falling pitch variant) and the flame loop fades 300 ms | | | P1 |
-| **Boil over** (`boilOver`, `:1472-1489`: foam, two steam puffs, `puff`) | `puff` (300→500 Hz sine 350 ms + noise) | **`over`**: a soft fizz (noise 1.2 kHz, 600 ms, gain fading) in place of `puff`'s rising sine, which reads as "a cartoon pop"; no low note, no verdict | the ST steam wisps replace the s11 steam (`fx("steam")`, `:1476-1477`, ART-31 decision 2a) | Nani says nothing (non-negotiable 7: "no verdict and no mark", `:1470`) | P1 |
+| **Turn down in the green** (`turnDown`, `:1491`) | the knob's `click`; `S.verdict(...)` (`:1501`) scores the timing and would draw a sparkle (`stations.js:722`), invisible today because the `sparkle`/`burst` stubs draw nothing | **`knob`** (the same clack, falling pitch variant) and the flame loop fades 300 ms | | | P1 |
+| **Boil over** (`boilOver`, `:1472-1489`: foam, two steam puffs, `puff`) | `puff` (300→800 Hz sine 350 ms + noise) | **`over`**: a soft fizz (noise 1.2 kHz, 600 ms, gain fading) in place of `puff`'s rising sine, which reads as "a cartoon pop"; no low note, no verdict | the ST steam wisps replace the s11 steam (`fx("steam")`, `:1476-1477`, ART-31 decision 2a) | Nani says nothing (non-negotiable 7: "no verdict and no mark", `:1470`) | P1 |
 
 ### 2c. The pour and the tray
 
 | Moment | Now | Sound to add | Juice to add | Silent, and why | Pri |
 |---|---|---|---|---|---|
-| **Tap a ready pan** (`:1686-1714`) | the pan lifts (the s14 frames, `:1720-1830`); the pour loop runs while it pours, rising with the fill (`:1832-1838`, `pourLoop`, 900 Hz band, wobble 7) | keep; **add a `lift`** (a soft 120 ms whoosh, `cook-whoosh` at -6 dB) as the pan leaves the burner, and the loop's last 150 ms fades (it does) | the last drop (CHAI-80) is drawn in code; the glass's small dip as it fills (`land(top)`, exists in `land()` but not called here): call it at the pour's end, k 0.03 | the read-along: CHAI-51, "the pour is quiet" | P1 |
-| **The glass is full** (`pan.poured = to`, `:1850`) | the fill's last frame; the half/full rows tick (SH-206) | **`glass`**: a glass's single clear ring (1568 Hz triangle 180 ms + 2093 Hz at -12 dB) as the pan settles back | the SK sparkle, once, small, over the glass (the s11 sparkle restyled, decision 2a) | | P1 |
+| **Tap a ready pan** (`:1686-1714`) | the pan lifts (the s14 frames, `:1720-1830`); the pour loop runs while it pours, rising with the fill (`:1832-1838`, `pourLoop`, 900 Hz band, wobble 7) | keep; **add a `lift`** (a soft 120 ms whoosh, `cook-whoosh` at -6 dB) as the pan leaves the burner, and the loop's last 150 ms fades (it does) | the last drop (CHAI-80) is drawn in code; the glass's small dip at the pour's end is already there (`land(w.glass[st(to)], {k: 0.05, top: true})`, `:1854`) | the read-along: CHAI-51, "the pour is quiet" | P1 |
+| **The glass is full** (`pan.poured = to`, `:1850`) | the fill's last frame; the pan and the glass settle (`land`, `:1853-1854`) and `soft("right", 0.35)` plays (`:1855`: an 880→990 Hz triangle, 160 ms, the end screen's count tick); the half/full rows tick (SH-206) | **`glass`**: a glass's single clear ring (1568 Hz triangle 180 ms + 2093 Hz at -12 dB) as the pan settles back, **in place of `right`** (one sound, not two) | the SK sparkle, once, small, over the glass (the s11 sparkle restyled, decision 2a) | | P1 |
 | **A pour past full** (`:1688-1693`, wiggle) | the wiggle | `cook-soft` | | | P1 |
 | **Every glass poured** (`refresh()`, `:2753-2755`: the hob steps back to 0.88) | silent | **nothing here**: the serve beat follows at once (2e) | | the serve has its own sounds; two in a row is noise | — |
 | **The pan back on its burner, empty** (`:1867`: the fire goes off) | the knob's `click` | `knob` (off variant); the flame loop stops | | | P1 |
@@ -91,8 +92,8 @@ Recipe names in `sfx` are section 3's table.
 | Moment | Now | Sound to add | Juice to add | Silent, and why | Pri |
 |---|---|---|---|---|---|
 | **The order is said; a card pops out and flies into its row** (`js/cook/ui.js:1886`, SH-150; the glide, `order-card.js:377-425`) | the person's clip; the card flies whole; no sound | **nothing** | the row's glide is smooth already (contract-72) | the family voice is speaking (P4): a landing sound under each word would mask it | — |
-| **A row ticks** (`tickItem`, `ui.js:3514-3530`; the tick pops in, `order-card.css:177`, `ocTick` 300 ms) | the tick's pop; Nani smiles 1.6 s (`ui.js:3524`) | **`tick`**: a short bright tick (1760 Hz triangle 45 ms + a 3 kHz noise 15 ms, gain 0.14), played only if no clip sounds, else dropped (it is the card's own event; the add's pop already answered the tap) | the tick's pop; add `prefers-reduced-motion` to `ocTick` (it has none) | | P1 |
-| **A person's card folds** (`order-card.js:17`, FOLD_AFTER 700) | the fold | **`fold`**: a paper fold (noise 1.1 kHz 80 ms falling, gain 0.1) | | | P2 |
+| **A row ticks** (`tickItem`, `ui.js:3514-3530`; the tick pops in, `order-card.css:177`, `ocTick` 300 ms) | the tick's pop; Nani smiles 1.6 s (`ui.js:3524`) | **`tick`**: a short bright tick (1760 Hz triangle 45 ms + a 3 kHz noise 15 ms, gain 0.14), played only if no clip sounds, else dropped (it is the card's own event; the add's pop already answered the tap) | the tick's pop (already off under reduced motion: `css/shared/order-card.css:352` blanks every `.oc-card` animation) | | P1 |
+| **A person's card folds** (`order-card.js:89`, FOLD_AFTER 700) | the fold | **`fold`**: a paper fold (noise 1.1 kHz 80 ms falling, gain 0.1) | | | P2 |
 | **A row reopens** (a boil-over, a take-back; `reopen`) | the row opens, the tick goes | **nothing**: the take-back's `pop-back` or the boil-over's fizz is the sound | | one event, one sound | — |
 | **The reveal tap** (the dots → the word; `word-card.js`, the lesson at `chai-tray.js:2885`: `reveal`) | `reveal` in the lesson only (2.6 kHz noise 30 ms + 1480 Hz 50 ms); the child's own tap is silent | play **`reveal`** on the child's own reveal tap too, at -6 dB, jittered | | | P1 |
 | **The word's speaker on a chip or card** | the family clip | nothing | the chip's existing press | the voice (P4) | — |
@@ -105,14 +106,14 @@ Recipe names in `sfx` are section 3's table.
 | **The word moment: the kettle pours** (`word-moment.js:325-382`, `pour-glass` loop with the glass's rising ring, CHAI-87) | the loop; the last drop animates | keep; **`drop`** a single soft plink (1319 Hz sine 70 ms, -9 dB) as the last drop lands | | | P2 |
 | **The snap** (`word-moment.js:434-438`, `shutter`) | the shutter (CHAI-72) | keep | the corners' flash (built) | no iris (his 3 Nov call) | — |
 | **The helper card opens** (`UI.helperOpen`, `chai-tray.js:2199-2219`) | silent; the arrow's light the first time | **nothing**: it opens as a hint, and a sound would call attention to help | | a hint should not announce itself | — |
-| **The stuck hint's light** (`light14`, the help ladder `data/shared.json` helpMs) and **Nani's call** | the glow and the hop (`focus.css`), her clip | nothing | | the voice; the glow is a hint, not an event (E16) | — |
+| **The stuck hint's light** (`light14`, the help ladder `data/shared.json` helpMs) and **Nani's call** | the glow and the hop (`focus.css`), her clip | nothing | | the voice; the glow is a hint, not an event | — |
 | **The bulbs pulse** (`guide.js:140`, 17 s) | the pulse | nothing | | a pulse is a nudge | — |
 | **The bulb is tapped** (`ui.js:3415`, `click`) | `click` (too quiet) | **`bulb`**: a soft switch (noise 1.8 kHz 20 ms + 988 Hz triangle 60 ms) | the English fades in (exists) | | P2 |
 | **The "?" and the cog** (`ui.js:4335-4344`, `click`) | `click` | `bulb` (the same switch) | | | P3 |
 | **Done / Next buttons** (`buttons.js:78-91`, `Sfx.tap`, which is not a function: `Sfx.tap` is undefined, so **no button sound plays**) | silent (a bug: `root.Sfx.tap` should be `root.Sfx.play("tap")`) | fix it: `tap` at -6 dB | the pressed state (exists) | | P1 |
 | **Station start** (the greeting, the first light) | the clips; the s14 light | nothing | | the voice | — |
-| **The serve** (`flow.js:1090-1121`: `pop`, `whoosh`, the stamp's `chop` + `soft`; the coin at `:1172`) | as listed; "Ahhh, chai" and *barabar* are family lines | **retime**: `pop` on the card's rise is fine; the stamp's `chop` (a 160 Hz square thump) is inaudible on phones: use **`stamp`** (noise 500 Hz 50 ms + 294 Hz triangle 90 ms); the coin's `coin` (1320/1760 Hz squares) retuned to triangles | the BU gold burst (pack s17-juice) behind the stamp, once | the "+N" float stays | P1 |
-| **Level-up** (`Cook.roundDone`, `flow.js:404-414`: a save and a log line, nothing shown) | nothing shown or heard | **nothing yet**: there is no level-up screen; when one comes, the end screen's `gold` chime is its sound | | a level-up the child cannot see has no sound | — |
+| **The serve** (`flow.js:1090-1121`: `pop`, `whoosh`, the stamp's `chop` + `soft`; the coin at `:1172`) | as listed; "Ahhh, chai" and *barabar* are engine lines (`phrase.ahhh` is "still to record", `flow.js:973`; *barabar* is Mum's) | **retime**: `pop` on the card's rise is fine; the stamp's `chop` (a 900 Hz noise 60 ms over a 160 Hz square thump) loses its thump on phones: use **`stamp`** (noise 500 Hz 50 ms + 294 Hz triangle 90 ms); the coin's `coin` (1320/1760 Hz squares) retuned to triangles | the BU gold burst (pack s17-juice) behind the stamp, once | the "+N" float stays | P1 |
+| **Level-up** (`Cook.roundDone`, `flow.js:404-414`: a save and a log line, nothing shown; not called for chai at all, `flow.js:510`) | nothing shown or heard | **nothing yet**: there is no level-up screen; when one comes, the end screen's `gold` chime is its sound | | a level-up the child cannot see has no sound | — |
 | **The end screen: the badges** (`results.js:317-370`: the time counts up; `bing` on a new best; `right` per step of the accuracy count; `wrong` once if any wrong; `gold` if all right; the hints and looks badges silent) | as listed | keep `bing` and `gold` (the round's one long chime); **replace `wrong`** (196 Hz falling sine: a verdict) with `cook-soft`, or with silence (decision 5); **`right` per step** retuned to a 60 ms tick (it is 160 ms × up to 12 steps: a stutter) | the badges' rise and the gold's buzz/twinkle (CSS, reduced-motion aware) | the hints badge: a bulb is a count, not a win | P1 |
 | **The end screen: the word review** (page 2) | silent | nothing | | reading time | — |
 | **Again / Home** (`buttons.js`) | (the `Sfx.tap` bug) | `tap` | | | P1 |
@@ -123,8 +124,8 @@ Recipe names in `sfx` are section 3's table.
 | Moment | Now | Add | Pri |
 |---|---|---|---|
 | Sound off | `Sfx.muted` exists (`sfx.js:29`), nothing sets it; Nani's mute is `NaniGuide.muted()` (`guide.js:56-62`, save flag `naniMuted`) | a second switch, "Sounds", in the "?" pop-up beside Nani's mute, save flag `sfxMuted`, read by `Sfx.muted` at load | P1 |
-| Motion off | the system's `prefers-reduced-motion` honoured in `results.js:169`, `onboard.js:380`, `word-moment.js:37`, `request-popup.js:129`, `word-card.js:360`, `focus.css`, `tally.css`; not in chai's Phaser tweens (`land`, `fly`, `wiggle`) nor `ocTick` | one helper, `Motion.less()` (`js/shared/tokens.js`), true for the system setting **or** a grown-up switch "Less motion" (flag `lessMotion`); chai's `land`/`wiggle` go instant when it is true; `html[data-motion="less"]` makes the CSS media rules apply too | P1 |
-| The test hook | synthesised sounds go out as `njg-sfx` events for the sandbox's sound log (`sfx.js:193-217`), only for `coin` and `lap` (`EVENT`) | every sound tells (name, start, end) so the voice gate can be checked (section 3e) | P1 |
+| Motion off | the system's `prefers-reduced-motion` honoured in `results.js:169`, `onboard.js:380`, `word-moment.js:37`, `request-popup.js:129`, `word-card.js:360`, `focus.css`, `tally.css`; and `css/shared/order-card.css:352` (the tick's pop with it); not in chai's Phaser tweens (`land`, `fly`, `wiggle`) | one helper, `Motion.less()` (`js/shared/tokens.js`), true for the system setting **or** a grown-up switch "Less motion" (flag `lessMotion`); chai's `land`/`wiggle` go instant when it is true; `html[data-motion="less"]` makes the CSS media rules apply too | P1 |
+| The test hook | synthesised sounds go out as `njg-sfx` events for the sandbox's sound log (`sfx.js:193-217`), only for `coin`, `lap` (`EVENT`) and the sizzle loop | every sound tells (name, start, end) so the voice gate can be checked (section 3e) | P1 |
 
 ## 3. The chai version: implementation plan
 
@@ -147,7 +148,7 @@ All one-shots under 200 ms except `gold`, `bing`, `fanfare` and `over`; fundamen
 | `green` | new | 1047 Hz + 1319 Hz triangles, 110 ms, gain 0.16, no jitter | `:1554` in place of `click` |
 | `over` | new | noise bandpass 1200 Hz Q 0.6, 600 ms, gain 0.14→0.01 | `boilOver` in place of `puff` |
 | `lift` | reuse | `cook-whoosh` at volume 0.5 | the pan's lift (`:1832`) |
-| `glass` | new | 1568 Hz triangle 180 ms gain 0.14 + 2093 Hz 120 ms gain 0.04 | the glass full (`:1850`) |
+| `glass` | new | 1568 Hz triangle 180 ms gain 0.14 + 2093 Hz 120 ms gain 0.04 | the glass full, in place of `soft("right", 0.35)` (`:1855`) |
 | `tick` | new | 1760 Hz triangle 45 ms gain 0.12 + noise 3000 Hz 15 ms gain 0.1 | `tickItem` (`ui.js:3514`) through the gate |
 | `fold` | new | noise bandpass 1100 Hz 80 ms, gain 0.1 falling | `order-card.js` fold |
 | `reveal` | reuse | as is, volume 0.5 on the child's own tap | `word-card.js` reveal |
@@ -155,7 +156,7 @@ All one-shots under 200 ms except `gold`, `bing`, `fanfare` and `over`; fundamen
 | `tap` | fix | `buttons.js:80`: `root.Sfx.play("tap", {volume: 0.5})` | every shared button |
 | `stamp` | new | noise 500 Hz Q 1, 50 ms, gain 0.2 + 294 Hz triangle 90 ms gain 0.1 | `flow.js:1119` in place of `chop` + `soft` |
 | `coin` | retune | 1320 / 1760 Hz **triangles** (the squares are harsh), gains as now | as now |
-| `wrong` | retune | 294→262 Hz triangle 180 ms gain 0.12 (or retired: decision 5) | `results.js:360` |
+| `wrong` | retune | 294→262 Hz triangle 180 ms gain 0.12 (or retired: decision 5) | `results.js:358` |
 | `right` (the count's step) | retune | 880→990 Hz triangle **60 ms** (was 160) | `results.js:354` |
 | `cook-soft` | keep | 330 Hz sine 160 ms, slide -60; jitter | every "can't land" moment |
 | `drop` | new | 1319 Hz sine 70 ms gain 0.08 | the word moment's last drop |
@@ -163,7 +164,7 @@ All one-shots under 200 ms except `gold`, `bing`, `fanfare` and `over`; fundamen
 ### 3b. The voice gate
 
 `Sfx.play(name, opts)` gains one check: `Sfx.voiceBusy` is a function the host sets (`Cook`: `() => Cook.voiceBusy()`,
-`js/cook/core.js:304`; the clinic and the shared story: their players). While it returns true, a sound whose recipe is longer than
+`js/cook/core.js:306`; the clinic and the shared story: their players). While it returns true, a sound whose recipe is longer than
 120 ms is **dropped** (not queued: a late sound is a wrong sound, P1) unless `opts.under: true` (the pour loops, which the design
 puts under nothing); a sound ≤ 120 ms plays at -9 dB (`volume × 0.35`). The gate never touches the family clips themselves.
 
@@ -172,7 +173,7 @@ puts under nothing); a sound ≤ 120 ms plays at -9 dB (`volume × 0.35`). The g
 1. The tap's squash: `land(obj, {k: 0.04, ms: 120})` at the top of `use()` (after the guards), before the flight.
 2. `pour-in` starts as the bottle reaches its tilt (`:1270`, after the 220 ms turn), not at the pan's picture change.
 3. The late `soft("tap")` (`:1300`) becomes `settle-soft` as the bottle lands, and its call moves to the same line as `land(obj)`.
-4. The glass's dip: `land(glassLayers, {k: 0.03, top: true})` at the pour's end (`:1850`).
+4. The glass's dip: already in the code (`land(w.glass[st(to)], {k: 0.05, top: true})`, `:1854`); only its sound changes (`right` → `glass`).
 5. Motion off: `land`, `wiggle` and `fly` read `Motion.less()` and go to their end state at once (one guard each, no second code path).
 
 ### 3d. Juice in the kit (named functions)
@@ -182,7 +183,7 @@ puts under nothing); a sound ≤ 120 ms plays at -9 dB (`volume × 0.35`). The g
 | `Juice.squash(obj, {k, ms, top})` | `js/shared/juice.js` (new; the body is chai's `land()`, `chai-tray.js:1162-1186`, moved) | the squash-and-settle on a Phaser or DOM thing; instant under `Motion.less()` | chai (today's `land`), every stove game at the roll-out |
 | `Juice.sprite(S, kind, x, y, {w, ms, rise})` | `js/shared/juice.js` (the body is chai's `fx()`, `:1188-1196`) | one painted effect from pack s17-juice: scale in, fade, drift; never blocks a tap | chai's glass sparkle, the boil-over's steam, the serve's burst |
 | `Juice.steam(S, x, y, {n, w})` | `js/shared/juice.js` | 2-3 ST wisps on a slow loop, stopped by the caller; off under `Motion.less()` | the heat loop from heat 0.7 |
-| `Juice.tickPop(el)` | CSS already (`order-card.css:177`); add the reduced-motion rule | the tick's pop | `order-card.js` |
+| `Juice.tickPop(el)` | CSS already (`css/shared/order-card.css:177`, off under reduced motion by `:352`); nothing to add | the tick's pop | `order-card.js` |
 | `Juice.bump(el)` | exists as the tally's `bump` (`tally.js:49-51`) | the count's bump | the tally |
 | `Motion.less()` | `js/shared/tokens.js` | the system setting or the grown-up's flag | every animation above; `focus.css` through `html[data-motion]` |
 | `Cook.Stations.sparkle / steam` | `js/cook/stations.js:667-680` (the empty stubs from Sprint 10) | filled by `Juice.sprite`, so every existing caller works | the stations |
@@ -205,7 +206,7 @@ puts under nothing); a sound ≤ 120 ms plays at -9 dB (`volume × 0.35`). The g
 |---|---|---|---|
 | 1 | `sfx.js`: the recipes (3a), jitter, the gate, every sound tells; `buttons.js` fix; the unit test | half a day | low: no file plays differently unless a caller changes; the test guards the floor |
 | 2 | Chai's timing moves (3c) and the new calls (2a-2c); the serve's `stamp`; the end screen's retunes | half a day | medium: the chai contract run and labcheck at the four sizes must pass again; his ear decides the recipes (a lab page with one button per sound, so he can hear them side by side before they go in) |
-| 3 | The two switches, `Motion.less()`, the CSS hook, reduced-motion in `ocTick` and chai's tweens | half a day | low |
+| 3 | The two switches, `Motion.less()`, the CSS hook, reduced-motion in chai's tweens | half a day | low |
 | 4 | The contract rows and the sound log's new fields | half a day | low |
 | 5 | `js/shared/juice.js` (the move of `land`/`fx`), the stubs filled | half a day | low until the art lands; the sprites are optional (the code paths exist and draw nothing today) |
 | 6 | After the art run: cut, wire, the judge | half a day + the run | the run itself (section 4) |
@@ -271,7 +272,7 @@ Answerable "yes to all except ...".
 4. **Tea drops (TD): a redraw of the splash you dropped.** You removed the blue splash (ART-31, decision 2a) and asked "is there a
    way to make it look nicer, like the style of the game?". TD is that try: drops in the tea's own colour, from the real glass. It
    is in the pack but wired nowhere until you've seen the cut. **Recommend run it, decide on the cut.**
-5. **The end screen's "wrong" sound.** Today a round with any mistake plays a falling 196 Hz note once (`results.js:360`). (a)
+5. **The end screen's "wrong" sound.** Today a round with any mistake plays a falling 196 Hz note once (`results.js:358`). (a)
    Replace it with the neutral soft note; (b) silence: the grey part of the tick says it. **Recommend (b)**: the review shows, the
    sound would judge.
 6. **The green zone gets an audible two-note ding** (today a near-silent click). It is a timing aid, not a language aid, so it is
@@ -286,3 +287,79 @@ Answerable "yes to all except ...".
 ## Launches and cost
 
 One agent on this task: the top model at high effort, about 35 minutes of reading and writing, roughly 250k tokens in all.
+
+## Second read (Fable, 6 Nov)
+
+Independent read of the map against the code on this branch (HEAD `ececf21`), the pack, the plan, the non-negotiables and
+`docs/feedback/chai-play-*.md`. Flaws first. **Verdict: ready for Zafar with the fixes below** (the body's errors are fixed in
+place; four points want a decision or a change to the plan before anything is built).
+
+### Wrong or overstated (evidence)
+
+1. **Filling the `sparkle`/`steam` stubs "so every existing caller works" (3d, the plan's wire notes) would switch verdict
+   pictures back on, in chai and everywhere.** `S.verdict()` (`js/cook/stations.js:722`: "a result over the action, as a
+   PICTURE") draws a sparkle for a good score and steam for a boil-over through those very stubs; chai calls it at the turn-down
+   (`chai-tray.js:1555` here, `:1501` on `main`) with a timing score, and 30-odd callers in the other stations and mechanics
+   (`maani-line.js`, `tawa.js`, `boil.js`, `fry.js`, `grill.js`, `samosa.js` ...) draw sparkles by score. Sprint 10 emptied the
+   stubs because the drawn effects did not match the art; filling them with real sprites makes `S.verdict` a visible verdict
+   again (non-negotiable 7). The map's own row for the turn-down wants a `knob` sound and a flame fade, no sparkle. **Change:**
+   wire the chai sprites through the chai calls the map names (the glass, the boil-over, the serve) and leave the stubs empty, or
+   fill them and take `S.verdict`'s sparkle/steam out first; either way audit the callers before the roll-out.
+2. **The glass-full moment was misread.** The report said the glass's dip "exists in `land()` but not called here" and that
+   the moment has no sound; the code already settles the pan and the glass (`land(body)`, `land(w.glass[...])`) and plays
+   `soft("right", 0.35)` (`:1853-1855` on `main`, `:1907-1909` here). Fixed in 2c, 3a and 3c.4: `glass` replaces `right`
+   there (one sound, not two). Note that `right` is the end screen's accuracy tick played at the glass: the retune in 3a changes
+   both places at once, so the lab page should play them side by side.
+3. **The heat's steam already exists.** The heat-ring row said "silent; bubbles roll"; the s11 steam already drifts off the far rim
+   from `boilAt` (`fx("steam")`, `:1570` on `main`, CHAI-63). ST replaces it; it is not a new effect at a new heat. Fixed in 2b.
+4. **`ocTick` is already reduced-motion aware**: `css/shared/order-card.css:352` blanks every `.oc-card` animation under the
+   system setting. Fixed in P7, 2d, 2f, 3d and 3f (one less thing to build).
+5. **P3's rule "right and wrong get the same acknowledgement" contradicts a standing decision.** UX §11 keeps "level 1's gentle,
+   one-time correction" and decision 61 (R6) gives it a sound: Mum's "oh oh oh", else `cook-oops` (`js/cook/core.js:404-412`).
+   Chai never calls `Cook.oops`, so the chai version is fine, but decision 1 puts P1-P12 into `audio.md` as the game's rules:
+   P3 must name that exception or it retires decision 61 without his word (non-negotiable 1).
+6. **Dropping sounds Zafar said to keep.** ART-31's row reads "the splash and the pop restyled (**the sound untouched**)"; the
+   plan drops the late `tap`, replaces `puff` and `chop`, and retunes `coin`. His 1 Nov words ("audibly, yes, we should have
+   juiciness") leave room for better sounds, but decision 2 should say in one line that it replaces existing sounds, so his yes
+   covers it.
+7. **TD's ring ripples have nowhere to go.** The chai glass is seen from the side (`wg-chai-glass-side-filling-v1.png`); TD's
+   cells 3 and 4 are ripples "on a flat tea surface seen a little from above". Only the drop, the crown and the droplets can land
+   in the glass. Say so in decision 4, or cut the line to those four and spend the two cells on a second crown and a splash of
+   droplets. (TD's "ripple" is not SH-141's: that was the pointer's tap ripple. Worth one line so he is not tripped by the word.)
+8. **Smaller errors fixed in place:** `results.js:360` → `:358` (3a, decision 5); `core.js:304` → `:306` (P4, 3b);
+   `order-card.js:17` → `:89` (the FOLD_AFTER line); `puff` slides 300→800 Hz, not 500 (`slide` adds); `chop` is a 900 Hz noise
+   over the 160 Hz thump, so "inaudible on phones" was overstated (only the thump goes); the test hook also tells for the sizzle
+   loop; "(E16)" cited a recording-sheet line, removed; the chai standard's "one voice" is §4, not §4.1; the serve's "Ahhh" is an
+   engine line still to record (`flow.js:973`), not yet a family clip; `Cook.roundDone` is not called for chai (`flow.js:510`);
+   the turn-down row now names `S.verdict`. Every `chai-tray.js` line in the map is as on `main`; this branch's merge put
+   everything from `:1300` down by 54 lines (a note at the top of section 2).
+
+### Missing
+
+- The **lab page** (step 2's "one button per sound") is the only proof any recipe is good; nothing was heard tonight. It should
+  be step 1's deliverable, before any call site changes, and play the old and the new side by side (`right` vs `glass`, `click`
+  vs `knob`, `puff` vs `over`).
+- **TD's prompt asks for "glossy"**; the art bible (§1) forbids "glossy clip-art shine spots". Liquid gloss is not that, but the
+  word invites it: "wet, with soft highlights" is safer, and the check should say "no hard white shine spots".
+- **`Sfx.muted` has no setter anywhere** (verified: only its comment in `sfx.js:15`), so the "Sounds" switch is the first thing to
+  read it; the map says so, the build order (1, 3, 2) is right.
+- No row for the **word moment's own effects under its clips**: the `pour-glass` loop plays while the glass's word is said
+  (CHAI-87). The gate's `under: true` is meant for it; say so in 3b so the loop is not dropped by the gate.
+
+### Decisions I would change
+
+- **Decision 1:** yes, with P3's level-1 exception written in (point 5).
+- **Decision 2:** yes, with the line about replacing existing sounds (point 6) and the lab page first.
+- **Decision 3:** yes, but the sprites go in by name, not through the stubs (point 1).
+- **Decision 4:** run TD with cells 3-4 recut as drops, or run it as is and wire only the drop, crown and droplets (point 7).
+- **Decisions 5-9:** as recommended.
+
+### Verified true
+
+`buttons.js:80` calls `root.Sfx.tap`, which does not exist (no shared button makes a sound); `soft("tap", 0.35)` follows the
+bottle's return flight (380 + 220 + 620 + 180 + 320 ms ≈ 1.7 s after the tap) while `cook-pop` plays at the tap; `wrong` is a
+196→150 Hz sine and `right` 160 ms × up to 12 steps (`results.js:354-358`); `click` is a 30 ms 1200 Hz square at gain 0.05
+(`kitchen-kit.js:286`); the stubs at `stations.js:670-677` are empty; the tally bump and the s11 steam/sparkle calls are where the
+map says; SH-141 (the pointer's ripple), ART-31 (the splash dropped, decision 2a), CHAI-51 (the quiet pour, archived as built) and
+UX §14 (the conversation pill's vibration, `conversations.js:334`) are quoted right; the pack has no food, sweets, coins or text,
+its references exist and `artblock.py --check` passes; no game file was changed.
