@@ -503,8 +503,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         return null;
       }
     };
-    const pourArt = St.loadArt(S, ART_POUR).catch(() => {});
-    St.loadArt(S, JUICE_ART).catch(() => {}); // (CHAI-92: the s17 effects, after the start)
+    // (CHAI-92: the s17 effects load with the pour's frames, after the start: one load, so none waits on a loader already busy)
+    const pourArt = St.loadArt(S, ART_POUR.concat(JUICE_ART)).catch(() => {});
     if (Cook.sfx.preload) Cook.sfx.preload(JUICE_SFX);
     /*
      * CHAI-08, CHAI-34 (s14): a glass's picture by its own rim: its rim's centre on the well's middle, its rim's radius the
@@ -1270,7 +1270,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const fx = (kind, x, y, { w = 90, depth = D.fx + 2 } = {}) => {
       const P = J();
       if (!P) return null;
-      return kind === "steam" ? P.puff(S, x, y, { w: w * 1.4, depth }) : kind === "sparkle" ? P.sparkle(S, x, y, { w: w * 1.6, kind: 2, depth }) : null;
+      return kind === "steam" ? P.puff(S, x, y, { w: w * 1.4, depth }) : kind === "sparkle" ? P.sparkle(S, x, y, { w: w * 1.6, kind: 2, depth: D.badge + 0.5, add: true }) : null;
     };
     /*
      * CHAI-92 (Zafar's picks, 6 Nov): a glass just poured. The painted last drop falls into it from a third of the lab's height, smaller
@@ -1286,7 +1286,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (!g || !P) return Cook.sfx.glass();
       const gw = g.displayWidth || 90;
       const full = look === "full";
-      return P.drop(S, w.x, w.y - gw * 0.62, w.y, {
+      // (a little right of the middle: the person's face sits over the glass's upper left, and the drop falls clear of it into the tea)
+      return P.drop(S, w.x + gw * 0.22, w.y - gw * 0.62, w.y, {
         w: gw * 0.11,
         ms: 300,
         splash: "none",
@@ -1298,7 +1299,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       }).then(() => {
         if (!full || !g.active) return undefined;
         Cook.sfx.sparkle();
-        return P.sparkle(S, w.x + gw * 0.3, w.y - gw * 0.3, { w: gw * 0.9, kind: 2, depth: D.fx + 2 });
+        // (over the glass's right half, clear of the face on its upper left; added light, so the gold reads on the wood and the tea)
+        return P.sparkle(S, w.x + gw * 0.25, w.y - gw * 0.1, { w: gw, kind: 2, depth: D.badge + 0.5, add: true });
       });
     };
     const panLayers = (pan) => [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((o) => o && o.visible);

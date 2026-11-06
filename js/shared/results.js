@@ -319,7 +319,7 @@
     const disc = badge && badge.querySelector(".rs-disc");
     const pic = disc && disc.querySelector("img");
     if (!J || !J.burst || !disc || !pic || !disc.clientWidth) return;
-    J.burst(disc, disc.clientWidth / 2, disc.clientHeight / 2, { w: disc.clientWidth * 2, kind: 1, behind: pic });
+    J.burst(disc, disc.clientWidth / 2, disc.clientHeight / 2, { w: disc.clientWidth * 1.7, kind: 1, behind: pic });
     if (chime) sfx("sparkle");
   }
   // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills

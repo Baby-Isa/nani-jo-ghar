@@ -359,6 +359,7 @@
         finish();
       };
       sounding = src;
+      if (global.Sfx && global.Sfx.hush) global.Sfx.hush(); // (CHAI-92: the voice gate: no effect rings on over a family line)
       const span = spanOf(buf);
       setTimeout(finish, (span.dur * 1000) / Cook.speed + 150);
       src.start(0, span.at, span.dur);

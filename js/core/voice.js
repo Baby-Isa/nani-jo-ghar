@@ -621,6 +621,7 @@ export function playClip(url, { volume = 1, rate = null, path = voicePath() } = 
         end(true);
       };
       liveClips.add(h);
+      if (globalThis.Sfx && globalThis.Sfx.hush) globalThis.Sfx.hush(); // (CHAI-92: the effects' voice gate, js/shared/sfx.js)
       const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
       if (layer && layer.track) untrack = layer.track(a, h.cut) || untrack;
       a.onended = () => end(true);

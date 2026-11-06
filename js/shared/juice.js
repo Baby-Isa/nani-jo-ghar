@@ -226,7 +226,7 @@
   /* ---- the Phaser twin (a canvas game: chai's hob and tray), CHAI-92 (Zafar's picks, 6 Nov): the same effects by the same names
    *      and timings, as Phaser images and tweens in place of the DOM's animations; Juice.less() makes each a fade in place.
    *   Juice.P.keys(names) -> [[key, url], ...]    the sprites to load with a station's art (texture key "juice-<name>")
-   *   Juice.P.sparkle(S, x, y, {w, kind, depth}) -> Promise          kind 1 one star; kind 2 three twinkles
+   *   Juice.P.sparkle(S, x, y, {w, kind, depth, add}) -> Promise     kind 1 one star; kind 2 three twinkles; add: added light
    *   Juice.P.steam(S, x, y, {w, thin, every, depth}) -> {stop()}    wisps rising on a slow loop until stopped
    *   Juice.P.puff(S, x, y, {w, depth}) -> Promise                    one full wisp rising once (a boil-over's steam)
    *   Juice.P.drop(S, x, y0, y1, {w, ms, splash: "crown" | "dots" | "none", depth, onLand}) -> Promise   the painted last drop falls
@@ -270,10 +270,12 @@
     o = o || {};
     const w = o.w || 80;
     const d = o.depth;
-    if (Juice.less()) return stillP(S, img(S, "sk-3", x, y, w, d), 700);
+    // (add: added light, the glow brightening what is under it: the gold reads on wood and tea as on the lab's dark tiles)
+    const pic = (...a) => { const im = img(...a); if (im && o.add && im.setBlendMode) im.setBlendMode(1); return im; };
+    if (Juice.less()) return stillP(S, pic(S, "sk-3", x, y, w, d), 700);
     if ((o.kind || 1) === 1) {
-      const a = img(S, "sk-1", x, y, w * 0.4, d);
-      const b = img(S, "sk-3", x, y, w, d);
+      const a = pic(S, "sk-1", x, y, w * 0.4, d);
+      const b = pic(S, "sk-3", x, y, w, d);
       const k = (im, s) => (im ? im.baseScale * s : 0);
       if (a) a.setScale(k(a, 0.4));
       if (b) b.setScale(k(b, 0.2));
@@ -285,7 +287,7 @@
     // three small twinkles round the point, one after another
     const at = [[-0.32, -0.18, "sk-2", 0.7], [0.3, -0.34, "sk-4", 0.6], [0.12, 0.22, "sk-5", 0.55]];
     return Promise.all(at.map(([dx, dy, n, s], i) => {
-      const im = img(S, n, x + dx * w, y + dy * w, w * s, d);
+      const im = pic(S, n, x + dx * w, y + dy * w, w * s, d);
       const k = im ? im.baseScale : 0;
       if (im) im.setScale(k * 0.2);
       return steps(S, im, [{ props: { alpha: 1, scale: k, angle: 10 }, ms: 234, delay: i * 150 }, { props: { alpha: 0, scale: k * 0.6, angle: 20 }, ms: 286 }]);

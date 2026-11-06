@@ -450,6 +450,11 @@
       });
     }, 50);
   }
+  /** A family voice line starts now (its player says so, js/cook/core.js and js/core/voice.js): every recorded sound still ringing fades
+   *  out at once and the loop goes silent, without waiting for the gate's next look (which then brings the loop back after the line) */
+  Sfx.hush = function () {
+    live.forEach((h) => (h.loop ? duckLoop(h, true) : !h.under && h.stop(0.03)));
+  };
   function startBuf(buf, vol, meta) {
     const c = ac();
     if (!c || !buf) return null;

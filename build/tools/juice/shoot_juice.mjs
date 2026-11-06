@@ -1,5 +1,5 @@
 // CHAI-92 (the juice wired into chai, 6 Nov): plays chai with the sandbox's fair player and shoots each effect at its moment, frozen
-// (Phaser's tweens and timers at time scale 0, the page's animations paused) so a still shows it; the same play with the game's
+// (Phaser's tweens and timers at time scale 0) so a still shows it; the same play with the game's
 // files of an earlier commit (--before <dir>: every changed file served from that folder) gives the BEFORE of each pair. It also
 // saves the play's sound log (the sandbox's sound hook: every voice clip and every effect, with their times) for the voice gate's proof.
 //   COOK_TEST_PORT=8870 node build/tools/juice/shoot_juice.mjs <outdir> <size> <lab|order> [level] [--before <dir>] [--less]
@@ -22,8 +22,11 @@ const [out = "build/screenshots/juice", size = "1280x665", what = "lab", lv = "1
 const level = +lv;
 const tag = `${before ? "before" : "after"}-${what}-L${level}${less ? "-less" : ""}-${size}`;
 mkdirSync(out, { recursive: true });
+const log = (m) => process.env.DBG && console.log(new Date().toISOString().slice(11, 19), m);
 const srv = await startServer();
+log("server");
 const browser = await launch();
+log("browser");
 const shots = [];
 try {
   const { ctx, page, errors, sound } = await newPage(browser, size);
@@ -41,12 +44,13 @@ try {
   await page.evaluate(() => localStorage.clear());
   await page.goto(`${BASE}/cook.html?speed=1`, { waitUntil: "load" });
   await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
+  log("title");
   const rec = new Recorder({ flow: "juice", size, dir: join(out, "_rec"), page });
   const P = new CookPlayer(page, rec, { mode: "fair", speed: 1 });
   const freeze = (on) => page.evaluate((on) => {
     const S = window.Cook && Cook.scene;
     if (S) { S.tweens.timeScale = on ? 0 : 1; if (S.time) S.time.timeScale = on ? 0 : 1; }
-    (document.getAnimations ? document.getAnimations() : []).forEach((a) => { try { on ? a.pause() : a.play(); } catch (e) {} });
+    // (the page's own animations run on: pausing them for each still stretched a strip's timeline; a still is one frame anyway)
   }, on);
   const shoot = async (name, clip) => {
     await freeze(true);
@@ -60,14 +64,19 @@ try {
     await freeze(false);
   };
   if (what === "order") await page.evaluate((lv) => { window.__orderDone = false; njgTest.cook.order({ dish: "chai", level: lv }).then(() => (window.__orderDone = true)); }, level);
-  else await page.evaluate((lv) => njgTest.cook.lab("chai-tray", true, { level: lv }), level);
+  else await page.evaluate((lv) => { njgTest.cook.lab("chai-tray", true, { level: lv }); }, level);
   await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 }).catch(() => {});
   let done = false;
   const got = {};
   const watcher = (async () => {
     let glassAt = null;
+    let dbgAt = 0;
     while (!done) {
       try {
+        if (process.env.DBG && Date.now() - dbgAt > 3000) {
+          dbgAt = Date.now();
+          console.log(JSON.stringify(await page.evaluate(() => { const C = window.Cook; const S = C && C.scene; return { pans: C && C.chaiPans ? C.chaiPans().map((p) => [p.state, +p.heat.toFixed(2)]) : null, keys: S ? [...new Set(S.children.list.filter((o) => o.texture && /juice|fx-s11/.test(o.texture.key)).map((o) => o.texture.key))] : null, juice: !!window.Juice }; })));
+        }
         // A: the boiling pan's steam (after: two s17 wisps up; before: an s11 wisp up)
         if (!got.A) {
           const s = await page.evaluate(() => {
@@ -87,8 +96,10 @@ try {
           else if (glassAt) {
             got.B = true;
             const t0 = Date.now();
-            for (const ms of [120, 260, 420, 650, 900]) {
+            for (const ms of [150, 300, 600, 900, 1200, 1500]) {
               await sleep(Math.max(0, t0 + ms - Date.now()));
+              if (process.env.DBG) console.log(ms, JSON.stringify(await page.evaluate(() => Cook.scene.children.list.filter((o) => o.texture && /juice/.test(o.texture.key)).map((o) => [o.texture.key, +o.alpha.toFixed(2), Math.round(o.x), Math.round(o.y), o.depth, Cook.UI.worldToScreen(o.x, o.y), o.displayWidth])), glassAt));
+              if (process.env.DBG && ms === 900) await shoot("B-whole", null);
               await shoot(`B-glass-${String(ms).padStart(3, "0")}`, { x: glassAt.x - 110, y: glassAt.y - 130, w: 220, h: 220 });
             }
           }
