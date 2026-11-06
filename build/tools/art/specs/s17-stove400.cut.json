@@ -1,0 +1,1301 @@
+{
+ "pack": "s17-stove400",
+ "about": "The stove family's shared item art (Zafar's run of 6 Nov, build/tools/art/specs/s17-stove400.run.yaml; landed in build/reports/stove-run-landed-2026-11-06.md). One grid job per sheet, the names in the run line's slot order (the CSV docs/design-language/art-plans/stove-400-items.csv ids). Not wired.",
+ "src": "sources/art/s17-stove400",
+ "out": "assets",
+ "data": "assets/cook/items-s17-stove/cut-data.json",
+ "jobs": [
+  {
+   "id": "fa01",
+   "type": "grid",
+   "src": "fa01-chai-shelf-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-water-bottle",
+    "f-milk-carton",
+    "f-tea-jar",
+    "f-sugar-jar",
+    "f-cardamom-jar",
+    "f-ginger-jar",
+    "f-garlic-jar",
+    "f-salt-jar"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-water-bottle",
+    "f-tea-jar",
+    "f-sugar-jar",
+    "f-cardamom-jar",
+    "f-ginger-jar",
+    "f-garlic-jar",
+    "f-salt-jar"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 4.0,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj01",
+   "type": "grid",
+   "src": "fj01-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-turmeric-jar",
+    "f-cumin-seeds-jar",
+    "f-mustard-seeds-jar",
+    "f-black-pepper-jar",
+    "f-cinnamon-sticks-jar",
+    "f-cloves-jar",
+    "f-fennel-seeds-jar",
+    "f-red-chilli-powder-jar"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-turmeric-jar",
+    "f-cumin-seeds-jar",
+    "f-black-pepper-jar",
+    "f-cinnamon-sticks-jar",
+    "f-cloves-jar",
+    "f-fennel-seeds-jar",
+    "f-red-chilli-powder-jar"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "hole_min": 8,
+   "tols": {
+    "f-mustard-seeds-jar": 16
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fk01",
+   "type": "grid",
+   "src": "fk01-chai-kit-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-kettle",
+    "f-milk-pan-with-handle",
+    "f-chai-flask",
+    "f-tea-strainer",
+    "f-tea-cup-and-saucer"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "f-kettle": 5,
+    "f-milk-pan-with-handle": 5,
+    "f-chai-flask": 5,
+    "f-tea-strainer": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj02",
+   "type": "grid",
+   "src": "fj02-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-coriander-seeds-jar",
+    "f-fenugreek-seeds-jar",
+    "f-garam-masala-jar",
+    "f-bay-leaves-jar",
+    "f-asafoetida-jar",
+    "f-sesame-seeds-jar",
+    "f-dried-red-chillies-jar",
+    "f-chai-masala-jar"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-coriander-seeds-jar",
+    "f-fenugreek-seeds-jar",
+    "f-garam-masala-jar",
+    "f-bay-leaves-jar",
+    "f-asafoetida-jar",
+    "f-sesame-seeds-jar",
+    "f-dried-red-chillies-jar",
+    "f-chai-masala-jar"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj03",
+   "type": "grid",
+   "src": "fj03-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-saffron-jar",
+    "f-chaat-masala-jar",
+    "f-roasted-cumin-powder-jar",
+    "f-nigella-seeds-jar",
+    "f-carom-seeds-ajwain-jar",
+    "f-dried-mint-jar",
+    "f-mango-powder-amchur-jar",
+    "f-black-salt-jar"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-saffron-jar",
+    "f-chaat-masala-jar",
+    "f-roasted-cumin-powder-jar",
+    "f-carom-seeds-ajwain-jar",
+    "f-dried-mint-jar",
+    "f-mango-powder-amchur-jar",
+    "f-black-salt-jar"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "hole_min": 8,
+   "tols": {
+    "f-nigella-seeds-jar": 16
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj04",
+   "type": "grid",
+   "src": "fj04-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-poppy-seeds-jar",
+    "f-dhana-jeeru-powder-jar",
+    "f-chapati-flour-atta",
+    "f-millet-flour-bajri",
+    "f-plain-flour-maida",
+    "f-gram-flour-besan",
+    "f-rice-flour",
+    "f-semolina"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-poppy-seeds-jar",
+    "f-dhana-jeeru-powder-jar",
+    "f-semolina"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "tols": {
+    "f-chapati-flour-atta": 5,
+    "f-millet-flour-bajri": 5,
+    "f-plain-flour-maida": 5,
+    "f-gram-flour-besan": 5,
+    "f-rice-flour": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj05",
+   "type": "grid",
+   "src": "fj05-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-basmati-rice",
+    "f-toor-daar",
+    "f-chana-daar",
+    "f-mung-beans-whole",
+    "f-yellow-mung-daar",
+    "f-red-lentils-masoor",
+    "f-dried-chickpeas",
+    "f-red-kidney-beans"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-basmati-rice",
+    "f-toor-daar",
+    "f-chana-daar",
+    "f-mung-beans-whole",
+    "f-yellow-mung-daar",
+    "f-red-lentils-masoor",
+    "f-dried-chickpeas",
+    "f-red-kidney-beans"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj06",
+   "type": "grid",
+   "src": "fj06-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-pigeon-peas-dried",
+    "f-black-eyed-beans",
+    "f-cracked-wheat",
+    "f-flattened-rice-poha",
+    "f-sev-crispy-noodles",
+    "f-puri-crisps-papdi",
+    "f-fried-peas-watana",
+    "f-peanuts"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-pigeon-peas-dried",
+    "f-black-eyed-beans",
+    "f-cracked-wheat",
+    "f-flattened-rice-poha",
+    "f-sev-crispy-noodles",
+    "f-puri-crisps-papdi",
+    "f-fried-peas-watana",
+    "f-peanuts"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj07",
+   "type": "grid",
+   "src": "fj07-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-desiccated-coconut",
+    "f-cashew-nuts",
+    "f-almonds",
+    "f-raisins",
+    "f-dates",
+    "f-brown-sugar-lumps-jaggery",
+    "f-tamarind-block",
+    "f-dried-yeast"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-desiccated-coconut",
+    "f-cashew-nuts",
+    "f-almonds",
+    "f-raisins",
+    "f-dates",
+    "f-brown-sugar-lumps-jaggery",
+    "f-tamarind-block",
+    "f-dried-yeast"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj08",
+   "type": "grid",
+   "src": "fj08-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-baking-powder",
+    "f-cocoa-powder",
+    "f-tea-bags",
+    "f-vermicelli",
+    "f-ghee",
+    "f-green-mint-chutney",
+    "f-tamarind-chutney",
+    "f-ginger-garlic-paste"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-vermicelli",
+    "f-ghee",
+    "f-green-mint-chutney",
+    "f-tamarind-chutney",
+    "f-ginger-garlic-paste"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "tols": {
+    "f-baking-powder": 5,
+    "f-cocoa-powder": 5,
+    "f-tea-bags": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fp01",
+   "type": "grid",
+   "src": "fp01-packs-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-cooking-oil",
+    "f-yoghurt",
+    "f-samosa-pastry-sheets",
+    "f-lamb",
+    "f-chicken",
+    "f-mince",
+    "f-tomato-ketchup",
+    "f-butter"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-cooking-oil",
+    "f-butter"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "tols": {
+    "f-lamb": 5,
+    "f-chicken": 5,
+    "f-mince": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fv01",
+   "type": "grid",
+   "src": "fv01-produce-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-onion",
+    "f-tomato",
+    "f-potato",
+    "f-garlic-bulb",
+    "f-ginger-root",
+    "f-green-chilli",
+    "f-lemon",
+    "f-coriander-bunch"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "fv02",
+   "type": "grid",
+   "src": "fv02-produce-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-mint-bunch",
+    "f-curry-leaves-sprig",
+    "f-green-pepper",
+    "f-peas-in-the-pod",
+    "f-cucumber",
+    "f-raw-green-mango",
+    "f-pomegranate",
+    "f-corn-cob-in-husk"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tb01",
+   "type": "grid",
+   "src": "tb01-katoris-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-black-pepper-katori",
+    "t-cinnamon-stick-katori",
+    "t-cloves-katori",
+    "t-fennel-seeds-katori",
+    "t-garam-masala-katori",
+    "t-coriander-seeds-katori",
+    "t-asafoetida-katori",
+    "t-dried-red-chillies-katori",
+    "t-chai-masala-katori"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tb02",
+   "type": "grid",
+   "src": "tb02-katoris-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-saffron-threads-katori",
+    "t-chaat-masala-katori",
+    "t-roasted-cumin-powder-katori",
+    "t-fenugreek-leaves-dried-katori",
+    "t-millet-flour-katori",
+    "t-basmati-rice-raw-katori",
+    "t-chana-daar-dry-katori",
+    "t-yellow-mung-daar-dry-katori",
+    "t-dried-chickpeas-katori"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tb03",
+   "type": "grid",
+   "src": "tb03-katoris-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-black-salt-katori",
+    "t-mango-powder-katori",
+    "t-dried-mint-katori",
+    "t-ginger-garlic-paste-katori",
+    "t-tamarind-pulp-katori",
+    "t-cooking-oil-bowl",
+    "t-lemon-juice-bowl",
+    "t-marinade-yoghurt-and-spice-bowl",
+    "t-flour-paste-samosa-glue-bowl"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-cooking-oil-bowl": 5,
+    "t-lemon-juice-bowl": 5,
+    "t-flour-paste-samosa-glue-bowl": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tf01",
+   "type": "grid",
+   "src": "tf01-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-onion-sliced-rings",
+    "t-onion-fried-golden",
+    "t-onion-burnt",
+    "t-tomato-sliced",
+    "t-potato-boiled-cubes",
+    "t-potato-mashed",
+    "t-potato-chips-burnt",
+    "t-garlic-sizzling-golden",
+    "t-ginger-sliced"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf02",
+   "type": "grid",
+   "src": "tf02-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-green-chilli-slit",
+    "t-mint-bunch",
+    "t-mint-leaves",
+    "t-curry-leaves-sprig",
+    "t-curry-leaves-sizzling",
+    "t-green-pepper-whole",
+    "t-green-pepper-chunks",
+    "t-peas-pods",
+    "t-peas-shelled"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf03",
+   "type": "grid",
+   "src": "tf03-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-cucumber-whole",
+    "t-cucumber-diced",
+    "t-raw-green-mango-diced",
+    "t-pomegranate-halved",
+    "t-pomegranate-seeds",
+    "t-chicken-cubes-raw",
+    "t-chicken-cubes-on-skewer-raw",
+    "t-chicken-cubes-grilled",
+    "t-chicken-cubes-charred"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf04",
+   "type": "grid",
+   "src": "tf04-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-mince-raw",
+    "t-mince-cooked-in-the-pan",
+    "t-kebab-seekh-raw-on-skewer",
+    "t-kebab-seekh-grilled",
+    "t-maani-cooked-spotted",
+    "t-maani-ghee-brushed",
+    "t-maani-folded-quarter",
+    "t-maani-stack",
+    "t-paratha-rolled-raw"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf05",
+   "type": "grid",
+   "src": "tf05-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-paratha-cooked-layered",
+    "t-thepla-methi-rolled-raw",
+    "t-thepla-methi-cooked",
+    "t-puri-rolled-raw",
+    "t-puri-fried-puffed",
+    "t-vegetable-samosa-fried-golden",
+    "t-chicken-samosa-fried-golden",
+    "t-spring-onion-chopped",
+    "t-cassava-peeled"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "td01",
+   "type": "grid",
+   "src": "td01-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-ginger-chai",
+    "t-dish-cardamom-chai",
+    "t-dish-mint-chai",
+    "t-dish-saffron-chai-celebration",
+    "t-dish-daar-and-rice",
+    "t-dish-khichdi-with-kadhi",
+    "t-dish-mung-curry-mag-nu-saag",
+    "t-dish-bajr-ji-maani-with-ghee",
+    "t-dish-paratha"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-ginger-chai": 5,
+    "t-dish-daar-and-rice": 5,
+    "t-dish-khichdi-with-kadhi": 5,
+    "t-dish-mung-curry-mag-nu-saag": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "td02",
+   "type": "grid",
+   "src": "td02-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-thepla",
+    "t-dish-puri",
+    "t-dish-potato-chaat",
+    "t-dish-sev-puri",
+    "t-dish-pani-puri",
+    "t-dish-chana-bateta",
+    "t-dish-vegetable-samosas-with-chutney",
+    "t-dish-chicken-mishkaki",
+    "t-dish-seekh-kebabs"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-potato-chaat": 5,
+    "t-dish-pani-puri": 5,
+    "t-dish-chana-bateta": 5,
+    "t-dish-vegetable-samosas-with-chutney": 5,
+    "t-dish-chicken-mishkaki": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tk01",
+   "type": "grid",
+   "src": "tk01-kit-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-pressure-cooker",
+    "t-rice-pot",
+    "t-steel-serving-bowl",
+    "t-ceramic-plate",
+    "t-roti-box-with-cloth",
+    "t-strainer-bowl-colander",
+    "t-tea-cup",
+    "t-saucer",
+    "t-teapot"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-steel-serving-bowl": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tk02",
+   "type": "grid",
+   "src": "tk02-kit-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-chai-flask",
+    "t-squeeze-bottle-chutney",
+    "t-mortar-and-pestle",
+    "t-hand-fan-for-the-coals",
+    "t-bag-of-charcoal",
+    "t-glowing-coals",
+    "t-tool-wooden-daar-churner-ravaiyo",
+    "t-tool-tablespoon",
+    "t-tool-grater"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tk03",
+   "type": "grid",
+   "src": "tk03-kit-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-tool-vegetable-peeler",
+    "t-tool-pastry-brush",
+    "t-tool-pastry-wheel-cutter",
+    "t-tool-chai-stirring-spoon-long",
+    "t-tool-turner-for-maani-flat",
+    "t-cooling-rack",
+    "t-cake-stand",
+    "t-small-glass-bowl",
+    "t-bread-basket"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "t-small-glass-bowl"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "shadow": true,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fp02",
+   "type": "grid",
+   "src": "fp02-packs-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-cream",
+    "f-eggs-in-a-box",
+    "f-bread-loaf",
+    "f-rose-water",
+    "f-soft-bread-buns-pav",
+    "f-fish"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-rose-water"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "tols": {
+    "f-fish": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fv03",
+   "type": "grid",
+   "src": "fv03-produce-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-cassava-root",
+    "f-banana",
+    "f-lime",
+    "f-spring-onions",
+    "f-strawberries-punnet",
+    "f-carrot",
+    "f-spinach-bunch",
+    "f-okra"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tb04",
+   "type": "grid",
+   "src": "tb04-katoris-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-sesame-seeds-katori",
+    "t-nigella-seeds-katori",
+    "t-plain-flour-katori",
+    "t-gram-flour-katori",
+    "t-dried-yeast-katori",
+    "t-baking-powder-katori",
+    "t-cocoa-powder-katori",
+    "t-desiccated-coconut-katori",
+    "t-chopped-nuts-katori"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tb05",
+   "type": "grid",
+   "src": "tb05-katoris-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-beaten-eggs-bowl",
+    "t-melted-butter-bowl",
+    "t-whipped-cream-bowl",
+    "t-coconut-chutney-bowl",
+    "t-bhajia-batter-bowl",
+    "t-coconut-milk-bowl"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-melted-butter-bowl": 5,
+    "t-coconut-chutney-bowl": 5,
+    "t-bhajia-batter-bowl": 5,
+    "t-coconut-milk-bowl": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tf06",
+   "type": "grid",
+   "src": "tf06-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-cassava-boiled-chunks",
+    "t-cassava-chips-golden",
+    "t-strawberry-whole",
+    "t-strawberry-halved",
+    "t-egg-scrambled",
+    "t-egg-omelette-raw",
+    "t-egg-omelette-folded",
+    "t-naan-dough-ball",
+    "t-naan-shaped-raw"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf07",
+   "type": "grid",
+   "src": "tf07-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-naan-burnt",
+    "t-yellow-naan-bun-shaped-raw",
+    "t-yellow-naan-bun-baked",
+    "t-corn-in-husk",
+    "t-corn-with-lemon-and-chilli",
+    "t-corn-boiled",
+    "t-corn-kernels-in-a-cup",
+    "t-carrot-whole",
+    "t-carrot-grated"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "td03",
+   "type": "grid",
+   "src": "td03-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-masala-omelette",
+    "t-dish-scrambled-egg-and-onion-mayai-dungri",
+    "t-dish-chips-mayai",
+    "t-dish-yellow-naan-buns",
+    "t-dish-corn-in-coconut-sauce-makai-paka",
+    "t-dish-corn-fritters-makai-na-bhajia",
+    "t-dish-mogo-chips-with-chilli-and-lemon",
+    "t-dish-chocolate-birthday-cake",
+    "t-dish-strawberry-cream-cake"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-corn-in-coconut-sauce-makai-paka": 5,
+    "t-dish-corn-fritters-makai-na-bhajia": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "td04",
+   "type": "grid",
+   "src": "td04-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-mithai-platter-celebration",
+    "t-dish-pilau",
+    "t-dish-biryani",
+    "t-dish-kuku-paka",
+    "t-dish-bhajia-with-chutney",
+    "t-dish-maru-bhajia",
+    "t-dish-kachumbari",
+    "t-dish-khichro-meat-lentil-and-wheat",
+    "t-dish-gos-tarelo-meat-curry"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-mithai-platter-celebration": 5,
+    "t-dish-kuku-paka": 5,
+    "t-dish-bhajia-with-chutney": 5,
+    "t-dish-maru-bhajia": 5,
+    "t-dish-kachumbari": 5,
+    "t-dish-khichro-meat-lentil-and-wheat": 5,
+    "t-dish-gos-tarelo-meat-curry": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tk04",
+   "type": "grid",
+   "src": "tk04-kit-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-toaster",
+    "t-toast-slice",
+    "t-measuring-cups-set",
+    "t-measuring-spoons",
+    "t-kitchen-scale",
+    "t-sieve",
+    "t-piping-bag",
+    "t-cake-server",
+    "t-cake-knife"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "tk05",
+   "type": "grid",
+   "src": "tk05-kit-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-tool-whisk",
+    "t-tool-fork",
+    "t-tool-butter-knife",
+    "t-tool-rubber-spatula",
+    "t-tool-corn-holder-husk",
+    "t-biryani-pot-deg-with-lid",
+    "t-serving-platter",
+    "t-spice-grinder",
+    "t-tool-serving-spoon"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "shadow": true,
+   "tols": {
+    "t-tool-fork": 4,
+    "t-tool-whisk": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fj09",
+   "type": "grid",
+   "src": "fj09-jars-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-coconut-chutney",
+    "f-garlic-chutney",
+    "f-mango-pickle",
+    "f-lime-pickle",
+    "f-coconut-milk",
+    "f-honey"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "glass": [
+    "f-coconut-chutney",
+    "f-garlic-chutney",
+    "f-mango-pickle",
+    "f-lime-pickle",
+    "f-honey"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.0,
+   "tols": {
+    "f-coconut-milk": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "fv04",
+   "type": "grid",
+   "src": "fv04-produce-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "f-aubergine",
+    "f-cabbage",
+    "f-cauliflower",
+    "f-green-beans",
+    "f-pumpkin-wedge",
+    "f-coconut",
+    "f-ripe-mango",
+    "f-plantain-bunch-matoke"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf08",
+   "type": "grid",
+   "src": "tf08-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-carrot-diced",
+    "t-cabbage-shredded",
+    "t-spinach-chopped",
+    "t-okra-whole",
+    "t-okra-sliced",
+    "t-aubergine-whole",
+    "t-aubergine-cubed",
+    "t-fish-fillet-raw",
+    "t-fish-fillet-fried"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "tf09",
+   "type": "grid",
+   "src": "tf09-food-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-bhajia-raw-in-batter",
+    "t-bhajia-frying",
+    "t-bhajia-fried-golden",
+    "t-maru-bhajia-potato-fried-golden",
+    "t-mandazi-shaped-raw",
+    "t-mandazi-fried-golden"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 90,
+   "hole_min": 8,
+   "_note": "magenta ground keyed hard (tol 90: shaded ground between onion rings and oil bubbles), any enclosed ground a hole (hole_min 8); then build/tools/art/artdespill.py on the cuts"
+  },
+  {
+   "id": "td05",
+   "type": "grid",
+   "src": "td05-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-keema-with-peas",
+    "t-dish-mogo-in-coconut",
+    "t-dish-bharazi-pigeon-peas-in-coconut",
+    "t-dish-matoke",
+    "t-dish-mandazi-with-chai",
+    "t-dish-chevdo",
+    "t-dish-dhokra",
+    "t-dish-kadhi",
+    "t-dish-masala-fish"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-keema-with-peas": 5,
+    "t-dish-mogo-in-coconut": 5,
+    "t-dish-bharazi-pigeon-peas-in-coconut": 5,
+    "t-dish-matoke": 5,
+    "t-dish-chevdo": 5,
+    "t-dish-kadhi": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  },
+  {
+   "id": "td06",
+   "type": "grid",
+   "src": "td06-dishes-v1.png",
+   "cells": [
+    3,
+    3
+   ],
+   "names": [
+    "t-dish-bhinda-bateta-okra-and-potato",
+    "t-dish-ringra-bateta-aubergine-and-potato",
+    "t-dish-raita",
+    "t-dish-dates-on-a-plate",
+    "t-dish-dabeli",
+    "t-dish-kalyo-pau",
+    "t-dish-vitumbua"
+   ],
+   "outdir": "cook/items-s17-stove",
+   "max": 512,
+   "pad": 16,
+   "q": 88,
+   "tol": 8,
+   "tols": {
+    "t-dish-bhinda-bateta-okra-and-potato": 5,
+    "t-dish-ringra-bateta-aubergine-and-potato": 5,
+    "t-dish-raita": 5,
+    "t-dish-kalyo-pau": 5
+   },
+   "_note": "grey ground; glass at partial alpha as the s17 word-moment glasses; steel tol 5"
+  }
+ ]
+}
