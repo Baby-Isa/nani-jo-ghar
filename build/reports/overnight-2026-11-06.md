@@ -64,8 +64,11 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 
 **Fonts (task 3)**
 16. One face for a Kutchi word everywhere it appears. **Recommend yes.**
-17. Which face: see Fable's ranking below. The builder ranked C (Fraunces everywhere) first, then D (Andika, the school "a").
-18. Load the true italics now (no layout change). **Recommend yes.**
+17. **Which face: C, Fraunces for every Kutchi word** (your card's face; on a phone's close-ups the serif pills read as clearly as
+    the sans, and darker). Fable and the builder agree on C; Fable's safe second is B (Nunito everywhere: no reflow, already loaded).
+    Andika's school "a" lost the one measured test of an infant face. Look at `build/reports/fonts/closeups.webp`. **Recommend C.**
+18. Load a true italic now: only the Nunito italic, since every grey line is grown-up English (Fable's change: no Fraunces
+    italic, and the farm's label goes upright). **Recommend yes.**
 19. Host the fonts in the repo with the face change. **Recommend yes.**
 20. No font named outside the type tokens (clinic, home, who pages), and widen the check. **Recommend yes.**
 
@@ -98,7 +101,7 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 | Task 5 stove list | Opus 5.5, high | 360k |
 | Stove dish looks and blocks | Opus 5.5, high | 185k |
 | Tool fixes after Fable | Opus 5.5, high | (running) |
-| Fable: pills judge; second reads of 4 and 5; real people; retrospective view; fonts ranking | Fable 5.1 | 27k, 186k, 152k, 147k, 132k, (running) |
+| Fable: pills judge; second reads of 4 and 5; real people; retrospective view; fonts ranking | Fable 5.1 | 27k, 186k, 152k, 147k, 132k, ~150k |
 
 ## Implementation plan
 

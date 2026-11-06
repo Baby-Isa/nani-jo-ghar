@@ -88,19 +88,25 @@ is learning phonics at school, where the "a" they are taught to read and write i
 the "?" pop-up, the end review and the grey not-yet-recorded lines.
 
 **What the research says, briefly.**
-- *Size and spacing matter most.* Hughes and Wilkins (2000): 5-7-year-olds read faster with larger, less crowded text, and the youngest
-  most. Wilkins et al. (2009): spacing (crowding) matters as much as size. Legge and Bigelow (2011): fluent reading needs an x-height
-  of at least about 0.2 degrees for adults, more for children. At a phone's 30 cm that is about 1 mm, which on Zafar's phone (Flip 5,
-  1 CSS px = 0.16 mm) is about 6.5 CSS px of x-height: a 13 CSS px word in Nunito. The game's 13 px floor is the adult minimum, not a
-  child's comfort.
+- *Size matters most.* Hughes and Wilkins (2000): 120 children aged 5-7 read passages set as the stages of two reading schemes, where
+  size and spacing shrink together stage by stage; they read fastest in the largest setting (the one meant for 5-6-year-olds), and the
+  authors argue no child would be held back by larger, wider-spaced text. Wilkins et al. (2009), 7-9-year-olds: an x-height of 5.0 mm
+  against 4.2 mm was read about 9 % faster, and a reading test scored four months older when its print did not shrink; its last studies
+  set Sassoon Primary against Verdana, and Verdana was read and searched faster (the one measured result on an infant face: it lost).
+  Neither paper separates spacing from size (Fable, 6 Nov: checked against the abstracts; the builder's "spacing matters as much as
+  size" was not in them). Legge and Bigelow (2011): fluent reading needs an x-height of at least about 0.2 degrees, 1.4 mm at 40 cm;
+  the paper is about adults and says nothing of children (the "more for children" is Hughes and Wilkins, above). At a phone's 30 cm
+  0.2 degrees is about 1 mm, which on Zafar's phone (Flip 5, 1 CSS px = 0.16 mm) is about 6.5 CSS px of x-height: a 13 CSS px word in
+  Nunito. The game's 13 px floor is the adult minimum, not a child's comfort.
 - *Letter spacing.* A little extra spacing helps young readers (Perea et al. 2012) and much more helps dyslexic children (Zorzi et al.
-  2012, PNAS); the BDA Dyslexia Style Guide asks for about 35 % of the average letter width. The game's words are set at the faces' default
+  2012, PNAS); the BDA Dyslexia Style Guide (the 2018 edition; the 2023 one was not reachable tonight) asks for about 35 % of the
+  average letter width. The game's words are set at the faces' default
   spacing; a pill or a card word could take +0.02-0.04 em at no layout risk where there is room.
-- *Infant letters (single-storey a and g).* Walker and Reynolds (2003, the Typographic Design for Children project): 5-7-year-olds read
-  standard and infant versions of Gill and Century equally well, and serif against sans made no measurable difference; children
-  noticed the different a and g but were not slowed by them. Sassoon Primary (Rosemary Sassoon, built with children) and SIL's Andika
-  (built for beginning readers) are the reference infant faces. So infant letters are a comfort and a match with school, not a
-  measured gain.
+- *Infant letters (single-storey a and g).* Walker and Reynolds (2003, the Typographic Design for Children project): six-year-olds read
+  standard and infant versions of Gill Sans and Century equally well (miscue analysis), and serif against sans made no measurable
+  difference; children noticed the different a and g but were not slowed by them. Sassoon Primary (Rosemary Sassoon, built with
+  children) and SIL's Andika (built for beginning readers) are the reference infant faces; Wilkins et al. (2009) found Sassoon Primary
+  slower to read than Verdana. So infant letters are a comfort and a match with school, not a measured gain.
 - *Italics.* The BDA guide says avoid them for reading; the game's grey italic lines are for grown-ups only, so this only argues for
   the true italic (finding 5), never for italic on a word a child reads.
 - *Consistency.* For a pre-reader learning a word's look, the same word in three shapes is three pictures (finding 1). Of all the
@@ -217,7 +223,35 @@ The close-ups are the sheet to judge the faces on: the others are scaled to a qu
 
 ## 4. Fable's ranking
 
-(pending: the orchestrator's Fable review)
+Fable, independent of the builder, 6 Nov: the eight sheets (`closeups.webp` at full size), the cited lines, the papers' abstracts.
+
+**Flaws found.** The code citations hold: `cook.css:23` and `:274` do put Nana's bubble in Baloo 2 (the A column of `closeups.webp`
+shows it, heavier and rounder than the card under it), so my own flaw 3 in `s17-fonts-review.md` was wrong and finding 1 here is
+right; `clinic.css:18` names Baloo 2; `word-card.css:203` clamps the English at `--njg-card14-u12`, which `order-card.css:648` scales
+by `--njg-p` (floor 0.66: 12 x 0.66 = 7.9 px); no link carries `ital`; `day.html:34` and `clinic.html:25` load no Fraunces; the
+farm's `.wt-label` is italic. The research was quoted loosely: Wilkins et al. 2009 is about x-height and a face comparison, not
+spacing, and its one infant-face result went against Sassoon Primary; Legge and Bigelow say nothing of children; Walker and Reynolds
+tested six-year-olds. Corrected in section 2. The lexicon counts depend on how forms are counted (mine: 595, a 20.4 %): not an error.
+
+**Ranking.**
+
+1. **C, Fraunces for every word.** One shape per word is the only point here the game controls completely, and C does it with the
+   face Zafar chose. On the sheets the serif pills at 971x318 are as clear as the sans and darker; Nana's bubble and the card become
+   one thing. Costs are real but bounded: 9 % wider (the door's line goes to three lines at 740x320, nothing clips), the canvas
+   font race (step 5), and the pills need a real 800 (the link loads 600 and 700 only; the mock's 800 was the variable file).
+2. **B, Nunito for every word.** The safe one: already on every page, narrowest, tallest x-height, no race, no reflow (its sizes equal
+   A's in every row). It drops the serif he chose, which is why it is second, not first; the maroon still marks the Kutchi.
+3. **D, Andika.** The school "a" is a comfort, but the only measured test of an infant face (Wilkins 2009) lost to a plain sans, a
+   third family goes on every page, it shrinks Nani's line at 740x320, and on the sheets it reads as a textbook, not Nani's house.
+4. **A, today.** Three faces for one word in one round; the Baloo 2 bubble is the odd one out on every close-up.
+
+**Decisions I would change.** Decision 4: no Fraunces italic at all. The grey line is English for grown-ups, and the card already sets
+its to-record word in Nunito (`word-card.css:116`): make every grey line Nunito true italic (one file, about 30 KB, not 150), and
+the farm's label upright. Decision 1 and 3 as written. Decision 6 stays the bigger problem whichever face wins: the 7.9 px English
+and the 9 px pills are size rows, not font rows, and C makes the smallest pill 0.4 px smaller, which SH-219's floor must absorb.
+
+**Verdict.** Ship nothing tonight (his word); show him `closeups.webp` with C recommended, B as the safe second, and fix the two
+sizes and the italics whichever he picks.
 
 ## 5. My ranking
 
@@ -318,8 +352,9 @@ the close-ups exist. Rollback: the one token line.
   serifs and infant characters in children's reading books, *Information Design Journal* 11(2/3); Perea, M. et al. (2012), The effects
   of inter-letter spacing in visual-word recognition: young normal readers and developmental dyslexics, *Learning and Instruction* 22(6);
   Zorzi, M. et al. (2012), Extra-large letter spacing improves reading in dyslexia, *PNAS* 109(28); British Dyslexia Association,
-  *Dyslexia Style Guide* (2023); SIL International, Andika (design notes); R. Sassoon, Sassoon Primary. The findings are quoted from
-  memory of the papers, not re-read tonight: Fable's review should check any it leans on.
+  *Dyslexia Style Guide* (2018; current edition 2023); SIL International, Andika (design notes); R. Sassoon, Sassoon Primary. The
+  findings were quoted from memory of the papers; Fable checked the abstracts of Hughes and Wilkins, Wilkins et al., Walker and Reynolds
+  and Legge and Bigelow on 6 Nov and corrected the research paragraph (section 2) where they differed.
 - **Not done**: no shot of the book, the clinic's heal games or the older stations under the options (inventory from the code); no
   Fredoka option (Fable's lab idea: it would sit with D, single-storey letters, but rounder and wider); no change to the game.
 - `node build/tools/review/checks.mjs`: see the commit's run (docs check passes; this report has its Proof section).
