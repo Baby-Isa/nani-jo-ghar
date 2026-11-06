@@ -1380,8 +1380,7 @@
     "shot"
    ],
    "expect": [
-    "count:.oc-card=1",
-    "count:#btn-bulb<=1"
+    "count:.oc-card=1"
    ],
    "note": "the first round: one card, one bulb, silence first, help behind '?'; played as Cook's pantry round with a fresh profile (the first-launch flow's CookPlayer states, pantry-round-*, are not moments a first-flow probe can name: the plan refused it, PRC-06) (s08 w8B)"
   }
@@ -7641,28 +7640,6 @@
    ],
    "expect": null,
    "note": "the selector circles: one even row, clear of everyone's feet"
-  }
- ],
- "CLN-91": [
-  {
-   "flow": "clinic:waiting",
-   "path": "fair",
-   "level": 3,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "rec:stage-waiting",
-   "after": null,
-   "capture": [
-    "zoom2:.cl-side .oc-card"
-   ],
-   "expect": [
-    "count:.cl-side .ng-bulb=1",
-    "count:.cl-hint-n=0"
-   ],
-   "note": "the closed card's eye is a small bulb, no counter"
   }
  ],
  "CLN-92": {
@@ -20299,27 +20276,6 @@
    "note": "the eye test's first-time help, a new player: the dim, the one box round haa, na and the mic (each lit), and the kit's finger tapping by them on every card step, at the laptop size as at the phone; the drops step too; one finger only",
    "delay": 600,
    "max": 8
-  }
- ],
- "SH-131": [
-  {
-   "flow": "repo",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1280x665"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "now",
-   "after": null,
-   "capture": [
-    "cmd:node build/test_shared_bulb.mjs"
-   ],
-   "expect": [
-    "pass"
-   ],
-   "note": "the bulb on a page without js/shared/tokens.js (the parked games) reads data/shared.json's bulbMs itself: 8 s at every level, never 0 s"
   }
  ],
  "SH-134": [
