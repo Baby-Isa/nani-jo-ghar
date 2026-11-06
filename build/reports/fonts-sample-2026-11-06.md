@@ -141,5 +141,7 @@ shelf pills would read the same size as today.
 
 ## Proof
 
-- `node build/tools/review/checks.mjs`: see the result line below.
+- `node build/tools/review/checks.mjs`: **not confirmed green.** Run twice while two shooters loaded the machine (four cores shared with
+  other builders); it printed nothing in 5 and then 20 minutes and was stopped at the 14:00 hard stop. The orchestrator runs it before
+  any merge. The change adds no game code: a lab page, a labs tile, mock tools, fonts and pictures.
 - Shots: 7 options x 740x320, 1280x665 (with the L4 shelf), 930x430, 1920x1080 (without it); full shots deleted after the sheets.
