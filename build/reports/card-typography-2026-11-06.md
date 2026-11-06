@@ -279,7 +279,25 @@ zone never touches the English (1.9 px or more between them).
 
 ### Fable's round-2 pick
 
-(pending)
+Six sheets, phone columns zoomed, pixels measured. Flaws first:
+
+1. **The alignment is real:** on his phone the one-line Englishes are level in A, B and C (0 px; option 2: 17 px apart), the speakers
+   level; nothing clipped or overlapping.
+2. **The English-to-zone gap is the tightest spot:** about 4.5 px from the glyphs to A's hairline or C's pill at 971x412. Clean, not a
+   pixel less.
+3. **C on the phone is a button in a button:** a 33 px pill round a 30 px circle, a 3 px halo that reads as an outline.
+4. **B's 1 px line** reads as "cut here", not "tap here".
+5. **Big screens:** A's band is 59 px tall at 1920 (circle 45); across the row the bands make one warm stripe. C's pill is taller still.
+6. The speaker stays prominent: 30 px maroon, the card's only strong colour, the whole foot tapping (73 x 37, was 48 x 34).
+7. The next card's headline at 971x318, all two lines: whole everywhere; 1 to 2 px into the fade is invisible at phone size.
+8. The bigger pictures at 1280 and 1920 are plainly better.
+
+**Pick: A, the footer band.** The one treatment that groups the circle with the card's bottom edge (his critique) and shows a
+non-reader where to tap without a fourth shape. Two small changes: cap the band's padding on big screens (about 5 px above and below
+the circle, about 55 px at 1920); if the band vanishes on his phone, warm it one more shade rather than thicken the hairline. Circle
+stays 30 px.
+
+**Recommend:** yes to A with the big-screen padding cap, the circle 30 px, and the 1 to 2 px fade in the tightest case accepted.
 
 ### Decision for Zafar
 
