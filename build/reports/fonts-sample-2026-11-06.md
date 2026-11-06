@@ -94,8 +94,36 @@ shelf pills would read the same size as today.
 
 ## Fable's ranking
 
-(pending: the orchestrator adds it)
+Independent look at every `*-2026-11-06b` sheet (close-ups, the phone, then the five screens).
 
+**Flaws first.**
+
+1. Nothing is clipped, ellipsised or badly wrapped in any option at any size.
+2. Flaw 1 above is visible: in every option the pills are heavier than the card's word (the game draws them at 800, Lora's 700). One
+   word, two weights; the pills must move to 600 in the rollout.
+3. Option 2 draws "dudh" in two faces (Fraunces card, Lora pill and bubble); the phone close-up shows the a and d differ. That rules it
+   out for a pre-reader.
+4. On the phone, 500 is thin in Nana's small bubble and in Nani's line on the door's dark veil. Lora 500 is just acceptable; Literata
+   450 and Alegreya 500 are fainter. Take 600 there.
+5. Not the font: option 3's order card at 930x430 was shot mid-landing, and the door at 3/1280 and 4/1920 before the veil. Those cells
+   are not judged.
+6. Claims checked: the x-heights match what I see (Literata biggest; Source Serif and Alegreya visibly smaller on the pills); Lora's
+   pills are the size of today's Nunito; every face is SIL OFL 1.1 (`woff2/LICENSE.txt`).
+
+**Ranking** (children 3-7, one word at a time, on a phone):
+
+1. **Option 1, Lora throughout.** One shape for a word on the card, pill, bubble, door and end screen, and still light: his "a little
+   serif, not newspaper" exactly. Clear at 740x320; the pills are the largest after Literata.
+2. **Option 3, Lora + Fraunces headline.** The same wherever a child reads a word; Fraunces only on the sentence headline, which at 600
+   is already the "older" look he noticed. A second font file for one line.
+3. **Option 4, Literata.** The most legible small letters, but heavier and more "book" than Lora at the same weight. The fallback if the
+   pills ever feel small.
+4. **Option 2, Fraunces + Lora.** Two faces for one word (flaw 3); out.
+5. **Option 5, Source Serif 4.** Clean but small and cool; the pills are the second-hardest to read.
+6. **Option 6, Alegreya.** Charming, but the smallest letters and the faintest Nani's line on the phone.
+
+**Recommendation:** Lora everywhere (option 1): 600 for the card word, headline, pills, door and Nana's bubble, 500 for Nani's lines
+on light boxes; Fraunces retired. Yes?
 ## Decisions for Zafar (yes to all except ...)
 
 1. **The face:** option 1, Lora for every Kutchi word and line (headline, cards, Nani's line, bubbles, the door, shelf pills, the end
