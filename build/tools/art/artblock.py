@@ -8,15 +8,24 @@
   python3 build/tools/art/artblock.py --redo docs/design-language/art-plans/clinic-heal-redo-list.yaml
                                                                     # a redo block: only those lines (+ the edits that follow them)
   python3 build/tools/art/artblock.py --sync-doc                    # copy the runner loop into art-pipeline.md between its markers
+  python3 build/tools/art/artblock.py --check --pushed              # the gate before Zafar gets the block: the references'
+                                                                    # zip is current and on the pushed branch
 
 Inputs: build/tools/art/specs/<pack>.run.yaml (people, templates, run order, checks, runner knobs), the plan's PEOPLE
-table and prompt headings (a line whose prompt is missing from the plan is refused), and templates/block.txt +
-templates/runner-loop.txt (the generic text). Prints a one-line summary; the block is a file, never a dump."""
+table, its "## N. The prompts" heading and prompt headings (a line whose prompt is missing from the plan is refused), and
+templates/block.txt + templates/runner-loop.txt (the generic text). Prints a one-line summary; the block is a file, never a
+dump. A download-mode block also writes the run's references to sources/art/<pack>/refs/ and refs.zip (ART-42): Zafar
+drags them into the Chrome chat with the block. Every check also reads each line's filled prompt for Wada colour names
+(ART-58): a colour outside the house family (or the pack's combination), or colours no one combination holds, are refused
+unless the line says `colour_exception: <why>`."""
 import argparse
+import io
+import math
 import subprocess
 import os
 import re
 import sys
+import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artspec as S  # noqa: E402
@@ -61,6 +70,8 @@ def check_str(l):
 def line_str(l):
     lid = l["id"] if l["tid"] == l["id"] else "%s (prompt %s)" % (l["id"], l["tid"])
     s = "%s | %s | %s | %s" % (lid, ", ".join(att_str(a) for a in l["attach"]), l["save"], check_str(l))
+    if l.get("colour_exception"):
+        s += " | colour exception: " + l["colour_exception"]
     slots = l.get("slots") or {}
     if slots:
         s += " | slots: " + "; ".join("{%s} = %s" % (k, v) for k, v in slots.items())
@@ -79,7 +90,7 @@ def delivery_texts(mode, spec):
             "OPENING": "putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything.",
             "PLACES": "The upload page: https://github.com/%s/upload/main/%s\nThe folder (to check and to resume): https://github.com/%s/tree/main/%s" % (spec["repo"], dest, spec["repo"], dest),
             "MOVING": tpl("moving-github.txt").replace("{{PACK}}", spec["pack"]),
-            "SAFETY_COMMIT": "Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.",
+            "COMMIT_RULE": "Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.",
             "STEP6": "Save the kept image (move 2 a and b) and queue it for the next batch commit.",
             "LOG_HEAD": "One line per kept image, used in its batch commit's description:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>",
             "LOG_ALSO": "every \"NOT SAVED\" image, ",
@@ -90,14 +101,18 @@ def delivery_texts(mode, spec):
             "PASS_SAVE": "Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.",
             "CHORE_NAMES": "committing to GitHub, fetching references, posting the log",
             "CHORES": "(a) commit SAVE (all queued files in one upload) when {{BATCH}} files are queued, or the oldest has waited {{FLUSH}} minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log.",
+            "REF_RULE": "A reference is never a reason to stop: MOVING IMAGES step 1 gets every one from GitHub.",
+            "START_REFS": "At the start, get only the references the first prompts need (MOVING IMAGES), send them, and get the rest during the gaps.",
         }
     if mode == "download":
         lib = library_refs(spec)
         return {
-            "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. References come from GitHub by the screenshot route (MOVING IMAGES, step 1): nothing is ever needed from Zafar to start.",
+            "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Images move only as MOVING IMAGES says: no page JavaScript, no GitHub uploads, no file pickers. Zafar pushes the downloaded folder and your log to the repo himself. The reference pictures are the files Zafar attached to this chat with this message (MOVING IMAGES, step 1).",
             "PLACES": "Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library",
             "MOVING": refs_from_library(tpl("moving-download.txt"), lib) if lib else tpl("moving-download.txt"),
-            "SAFETY_COMMIT": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names." + (" Upload no file to ChatGPT yourself: every attachment comes from ChatGPT's own library (see MOVING IMAGES)." if lib else ""),
+            "REF_RULE": "The references are settled before the first prompt (MOVING IMAGES, step 1); after that the run needs nothing more from him.",
+            "START_REFS": "At the start, check the attached references once (MOVING IMAGES, step 1a), then fill every window.",
+            "COMMIT_RULE": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names." + (" Upload no file to ChatGPT yourself: every attachment comes from ChatGPT's own library (see MOVING IMAGES)." if lib else ""),
             "STEP6": "Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.",
             "LOG_HEAD": "One line per kept image:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>",
             "LOG_ALSO": "",
@@ -106,8 +121,8 @@ def delivery_texts(mode, spec):
             "NOTES": "One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).",
             "DONE": "KEPT or SKIPPED",
             "PASS_SAVE": "Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the \"+\" button, then \"Add from library\": the kept image is there under its chat), never by download and re-upload.",
-            "CHORE_NAMES": "finding references in the library, posting the log" if lib else "screenshotting references, posting the log",
-            "CHORES": "(a) find in ChatGPT's library the references the next READY prompts need; (b) post the progress line and log." if lib else "(a) open and screenshot the references the next READY prompts need (MOVING IMAGES, step 1); (b) post the progress line and log.",
+            "CHORE_NAMES": "finding references in the library, posting the log" if lib else "posting the log",
+            "CHORES": "(a) find in ChatGPT's library the references the next READY prompts need; (b) post the progress line and log." if lib else "post the progress line and log.",
         }
     raise SystemExit("delivery must be github or download, not %r" % mode)
 
@@ -276,7 +291,7 @@ def swatch_ref(spec):
     return "wada-%d.png" % n, rel
 
 
-def house_text(spec):
+def house_text(spec, used=()):
     """The HOUSE LOOK section (with its blank line before it), or "" when the spec says house: false."""
     if spec.get("house", True) is False:
         return ""
@@ -294,7 +309,153 @@ def house_text(spec):
     if house_attach(spec):
         out.append("- Attach %s (see the references) as the last file of every new picture, never of an edit, and add this one sentence at "
                    "the end of the pasted prompt, word for word: \"%s\"" % (swatch_ref(spec)[0], b["sentence"]))
+    if any(l.get("colour_exception") for l in used):
+        out.append("- A line with \"colour exception:\" keeps the colours its prompt names, for the reason given there: judge each item "
+                   "by the colour its prompt names (a calm tone of it), and do not fail the picture for mixing colours from different combinations.")
     return "\n".join(out) + "\n"
+
+
+# ART-58 (Zafar, 6 Nov night: the clinic redo named Olympic Blue, not a house colour, and four plaster colours from different
+# combinations on one sheet; the block said section 5 for the plan's section 4). The block reads the plan's own "## N. The
+# prompts" heading, and every check reads each line's filled prompt (its code box with the line's slots) for Wada colour names.
+def prompts_section(spec):
+    """N from the plan's "## N. The prompts" heading, or None when it has none."""
+    m = re.search(r"^##\s+(\d+)\.\s+The prompts\b", S.plan_text(spec), re.M | re.I)
+    return int(m.group(1)) if m else None
+
+
+def colour_names():
+    """[(Wada name, index)], longest first. Neutral colours (chroma under the palette rule's neutral_chroma: white, the greys,
+    black) are free, so they are left out."""
+    rows, labs = C.wada()
+    free = C.rules()["palette"]["neutral_chroma"]
+    out = [(r["name"], i) for i, r in enumerate(rows) if math.hypot(labs[i][1], labs[i][2]) >= free]
+    return sorted(out, key=lambda x: -len(x[0]))
+
+
+def named_colours(text):
+    """The Wada colours a prompt names as the book writes them ("Olympic Blue", not "a calm mid blue"), in the order they first
+    appear. A longer name is read first, so "Carmine Red" is never also "Carmine" and "Red"."""
+    hits = {}
+    for name, i in colour_names():
+        def take(m, i=i):
+            hits.setdefault(i, m.start())
+            return "\0" * len(m.group(0))
+        text = re.sub(r"(?<![\w-])%s(?![\w-])" % re.escape(name), take, text)
+    return sorted(hits, key=hits.get)
+
+
+def filled_prompt(box, l):
+    for k, v in (l.get("slots") or {}).items():
+        box = box.replace("{%s}" % k, str(v))
+    return box
+
+
+def colour_exception(spec, l):
+    """The line's `colour_exception: <why>` (or its template's), "" when it has none."""
+    src = (spec.get("lines") or {}).get(l["id"]) or (spec.get("templates") or {}).get(l["tid"]) or {}
+    return str(src.get("colour_exception") or "").strip()
+
+
+def _and(words):
+    return words[0] if len(words) == 1 else ", ".join(words[:-1]) + " and " + words[-1]
+
+
+def colour_problems(spec, lines=None):
+    """A line whose filled prompt names a colour outside the house family (or the pack's combination), or colours that no one
+    Wada combination holds, unless it carries colour_exception."""
+    lines = lines if lines is not None else S.expand(spec)
+    rows, _ = C.wada()
+    n = house_combo(spec)
+    allowed = set(C.combos()[n]) if n is not None else set(C.house())
+    where = ("this pack's combination %d" % n) if n is not None else "the house family"
+    boxes = S.plan_prompt_boxes(spec)
+    bad = []
+    for l in lines:
+        src = (spec.get("lines") or {}).get(l["id"]) or {}
+        if "colour_exception" in src and not colour_exception(spec, l):
+            bad.append("%s: colour_exception needs its reason (colour_exception: <why>)" % l["id"])
+        if l["tid"] not in boxes or colour_exception(spec, l):
+            continue
+        idx = named_colours(filled_prompt(boxes[l["tid"]], l))
+        off = [i for i in idx if i not in allowed]
+        if off and spec.get("house", True) is not False:
+            bad.append("%s: names %s, outside %s: use a house colour, or give the line colour_exception: <why>"
+                       % (l["id"], _and([rows[i]["name"] for i in off]), where))
+        if len(idx) > 1 and not any(set(idx) <= set(c) for c in C.combos().values()):
+            bad.append("%s: %s are in no one Wada combination: one combination per picture, or give the line colour_exception: <why>"
+                       % (l["id"], _and([rows[i]["name"] for i in idx])))
+    return bad
+
+
+# ART-42 (Zafar, 6 Nov night, decision 4): a download-mode run's references go in as files Zafar attaches to the Chrome chat with
+# the block: artblock.py copies every file the run attaches (its references, the swatch strip, and in a redo the kept images an
+# earlier run made) to sources/art/<pack>/refs/ under the names the block uses, and zips them as refs.zip (a redo block:
+# refs-redo/ and refs-redo.zip). The block's first lines give him the zip's raw link; the runner asks once, at the start, for a
+# file that is missing.
+ZIP_TIME = (2026, 1, 1, 0, 0, 0)  # a fixed time, so the same files always make the same zip
+
+
+def run_refs(spec, used, redone=None):
+    """{name the block uses: repo path} of every file the runner attaches that this run does not make."""
+    names = {a["name"] for l in used for a in l["attach"] if a["kind"] in ("ref", "edit-ref")}
+    out = {k: v for k, v in spec["refs"].items() if k in names}
+    if house_attach(spec):
+        sn, sp = swatch_ref(spec)
+        out[sn] = sp
+    if redone is not None:
+        by = {l["id"]: l for l in S.expand(spec)}
+        for l in used:
+            for a in l["attach"]:
+                if a["kind"] in ("kept", "edit-kept") and a["name"] not in redone and a["name"] in by:
+                    s = by[a["name"]]["save"]
+                    out[s] = "%s/%s" % (spec["dest"], s)
+    return out
+
+
+def zip_paths(spec, redo=False):
+    """(the refs folder, the zip), repo-relative."""
+    stem = "sources/art/%s/%s" % (spec["pack"], "refs-redo" if redo else "refs")
+    return stem, stem + ".zip"
+
+
+def zip_bytes(refs):
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_STORED) as z:
+        for name, path in refs.items():
+            zi = zipfile.ZipInfo(name, date_time=ZIP_TIME)
+            zi.external_attr = 0o644 << 16
+            z.writestr(zi, open(os.path.join(REPO, path), "rb").read())
+    return buf.getvalue()
+
+
+def write_refs(spec, refs, redo=False):
+    folder, zp = zip_paths(spec, redo)
+    d = os.path.join(REPO, folder)
+    os.makedirs(d, exist_ok=True)
+    for f in os.listdir(d):
+        if f not in refs:
+            os.remove(os.path.join(d, f))
+    for name, path in refs.items():
+        with open(os.path.join(REPO, path), "rb") as src, open(os.path.join(d, name), "wb") as dst:
+            dst.write(src.read())
+    with open(os.path.join(REPO, zp), "wb") as f:
+        f.write(zip_bytes(refs))
+    return zp
+
+
+def zip_status(spec, refs, redo=False):
+    """What is left before Zafar can download the zip: it is missing or out of date here (write it: run artblock.py without
+    --check), or not on origin/<raw_branch> as it is here (push it). Problems only with --check --pushed."""
+    _, zp = zip_paths(spec, redo)
+    full = os.path.join(REPO, zp)
+    if not os.path.exists(full) or open(full, "rb").read() != zip_bytes(refs):
+        return ["%s is missing or out of date: run artblock.py without --check to write it, then push it" % zp]
+    there = subprocess.run(["git", "-C", REPO, "rev-parse", "--verify", "-q", "origin/%s:%s" % (spec["raw_branch"], zp)], capture_output=True, text=True)
+    here = subprocess.run(["git", "-C", REPO, "hash-object", full], capture_output=True, text=True).stdout.strip()
+    if there.returncode != 0 or there.stdout.strip() != here:
+        return ["%s is not on origin/%s as it is here, where Zafar downloads it (push it, then git fetch)" % (zp, spec["raw_branch"])]
+    return []
 
 
 # The header's example IDs and step 3's slot source come from the spec itself (the stove-400 second read, 6 Nov: "S1, W1, K1"
@@ -321,14 +482,20 @@ def step3_slots(spec, used):
 
 def build(spec, redo_path=None):
     lines = S.expand(spec)
+    for l in lines:
+        l["colour_exception"] = colour_exception(spec, l)
     people, limbs = S.plan_people(spec)
     plan_ids = S.plan_prompt_ids(spec)
+    section = prompts_section(spec)
+    if section is None:
+        raise SystemExit("%s has no \"## N. The prompts\" heading (the block sends the runner to it)" % spec["plan"])
     r = spec["runner"]
+    mode = spec.get("delivery", "github")
     repo, branch = spec["repo"], spec.get("plan_branch") or spec["raw_branch"]
     raw = "https://raw.githubusercontent.com/%s/%s/" % (repo, spec["raw_branch"])
-    blocked, extra_checks = [], {}
+    blocked, extra_checks, redone = [], {}, None
     if redo_path:
-        sel, blocked, extra_checks, _ = load_redo(redo_path, spec, lines, plan_ids)
+        sel, blocked, extra_checks, redone = load_redo(redo_path, spec, lines, plan_ids)
         run_text = "REDO LIST (%d). Each line ends with REDO: what was wrong last time; judge for that first, then the whole check.\n" % len(sel)
         run_text += "\n".join(line_str(l) for l in sel)
         run_text += "\nA kept image that is not in this list is the one already in the repo; one that is in this list is the new one from this run (it waits for it)."
@@ -340,30 +507,50 @@ def build(spec, redo_path=None):
         count, used = len(lines), lines
     used_refs = {a["name"] for l in used for a in l["attach"] if a["kind"] in ("ref", "edit-ref")}
     w = max(len(k) for k in spec["refs"])
-    lib = library_refs(spec) if spec.get("delivery") == "download" else None
+    lib = library_refs(spec) if mode == "download" else None
+    zrefs = run_refs(spec, used, redone) if mode == "download" and not lib else {}
+    strip = "(the %s swatch strip: see HOUSE LOOK)" % ("house" if house_combo(spec) is None else "pack's colour")
+    zafar_first = ""
     if lib:
         refs = ("(All of these are in ChatGPT's library, uploaded by Zafar to the chat titled \"%s\"; attach them from there, "
                 "never by upload. The repo path is only for the log.)\n" % lib)
         refs += "\n".join(" %s (repo: %s)" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
+        if house_attach(spec):
+            sn, sp = swatch_ref(spec)
+            refs += "\n %s RAW + %s %s" % (sn.ljust(w + 1), sp, strip)
+    elif mode == "download":
+        zp = zip_paths(spec, bool(redo_path))[1]
+        sn = swatch_ref(spec)[0] if house_attach(spec) else None
+        kept = {v: k for k, v in ((l["id"], l["save"]) for l in lines)}
+        zw = max([len(k) for k in zrefs] + [1])
+        note = lambda k: (" " + strip) if k == sn else (" (kept:%s, made by an earlier run)" % kept[k]) if k in kept else ""
+        refs = ("(Zafar attached these %d files to this chat with this message, from %s; the repo path is only for the log.)\n"
+                % (len(zrefs), os.path.basename(zp)))
+        refs += "\n".join(" %s (repo: %s)%s" % (k.ljust(zw + 1), v, note(k)) for k, v in zrefs.items())
+        if zrefs:
+            zafar_first = ("BEFORE YOU SEND THIS (Zafar): download the run's reference pictures, %s%s, unzip it, and drag its %d files (%s) "
+                           "into this Chrome chat together with this message. That is all the run needs from you.\n\n"
+                           % (raw, zp, len(zrefs), _and(list(zrefs))))
     else:
         refs = "\n".join(" %s RAW + %s" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
-    if house_attach(spec):
-        sn, sp = swatch_ref(spec)
-        refs += "\n %s RAW + %s (the %s swatch strip: see HOUSE LOOK)" % (sn.ljust(w + 1), sp, "house" if house_combo(spec) is None else "pack's colour")
+        if house_attach(spec):
+            sn, sp = swatch_ref(spec)
+            refs += "\n %s RAW + %s %s" % (sn.ljust(w + 1), sp, strip)
     check_ids = sorted({l["check"] for l in used}, key=lambda c: list(spec["checks"]).index(c) if c in spec["checks"] else 999)
     allc = dict(spec["checks"])
     allc.update({k: v for k, v in extra_checks.items()})
     checks = "\n".join("%s: %s" % (c, allc[c]["text"]) for c in check_ids if c in allc)
     real = spec.get("real_people")
-    dv = delivery_texts(spec.get("delivery", "github"), spec)
+    dv = delivery_texts(mode, spec)
     loop = fill(tpl("runner-loop.txt"), {"LOOP_REDO": ("put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed." if spec.get("amend") else "put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed."), "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"],
-                                         "NOTES": dv["NOTES"], "DONE": dv["DONE"], "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]})
+                                         "NOTES": dv["NOTES"], "DONE": dv["DONE"], "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "START_REFS": dv["START_REFS"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]})
     approvals = spec.get("approvals") or (
                  "- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.\n"
                  "- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log \"needs Zafar: likeness\" and carry on."
                  if not real else
                  "- Zafar approves characters based on real people. After each such image, post it and wait for his ok in this chat before using it; keep the other windows generating meanwhile.")
     vals = {
+        "ZAFAR_FIRST": zafar_first, "PROMPTS_SECTION": section,
         "VERB": "redoing" if redo_path else "making", "COUNT": count, "PACK": spec["pack"], "DEST": spec["dest"],
         "WATCH": "Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS)." if not real else "Zafar approves the likenesses (see APPROVALS).",
         "PAGE_URL": "https://github.com/%s/blob/%s/%s" % (repo, branch, spec["plan"]), "RAW": raw, "REFS": refs,
@@ -375,24 +562,26 @@ def build(spec, redo_path=None):
         + (" and, where a line ends with \"slots:\", putting each slot's words from that line into the code box's matching {SLOT}, word for word (a code box with a {SLOT} is never sent unfilled)."
            if any(l.get("slots") for l in used) else ".")
         + (" The one addition allowed: the HOUSE LOOK sentence and its swatch strip." if house_attach(spec) else ""),
-        "KEPT_NOTE": (", from this run if it is in the run order below, otherwise the one already in the repo at RAW + %s/<X's save-as name>" % spec["dest"]) if redo_path
-        else (", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"]) if spec.get("delivery", "github") == "github"
+        "KEPT_NOTE": (", from this run if it is in the run order below (attach it from ChatGPT's library, see below), otherwise the one an earlier run made: "
+                      "it is one of the attached files, under its save-as name (the list above names it), attached like a reference") if redo_path and zrefs
+        else (", from this run if it is in the run order below, otherwise the one already in the repo at RAW + %s/<X's save-as name>" % spec["dest"]) if redo_path
+        else (", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"]) if mode == "github"
         else ", still in its ChatGPT chat (attach it from ChatGPT's library, see below)",
         "LOOP": loop,
         "FIRST_PASS": "" if spec.get("delivery") == "download" else ("FIRST-PASS NUMBERS (optional)\nIf your workspace has python and a clone of https://github.com/%s, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.\n\n" % repo),
         "REWORD_RULE": ("Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it." if spec.get("amend") else "Never write a prompt of your own, and never reword, shorten or add to one."),
         "REDO_RULE": ("If it fails, redo it in a fresh chat with the same attachments, at most %d redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]) if spec.get("amend") else ("If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most %d redos. Never send corrections like \"make it smaller\". Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]),
         "APPROVALS": approvals, "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "REDOS": r["redos"],
-        "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]), "HOUSE": house_text(spec),
+        "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]), "HOUSE": house_text(spec, used),
     }
-    vals.update({k: v for k, v in dv.items() if k in ("OPENING", "PLACES", "MOVING", "SAFETY_COMMIT", "STEP6", "LOG_HEAD", "LOG_ALSO", "RESUMING", "AT_END")})
-    return fill(tpl("block.txt"), vals) + "\n", blocked, count
+    vals.update({k: v for k, v in dv.items() if k in ("OPENING", "PLACES", "MOVING", "COMMIT_RULE", "STEP6", "LOG_HEAD", "LOG_ALSO", "RESUMING", "AT_END", "REF_RULE")})
+    return fill(tpl("block.txt"), vals) + "\n", blocked, count, zrefs
 
 
 def sync_doc():
     dv = delivery_texts("github", {"dest": "<dest>", "repo": "<repo>", "pack": "<pack>"})
     loop = fill(tpl("runner-loop.txt"), {"LOOP_REDO": "put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed (a pack with amend: true may amend it first, step 5).", "WINDOWS": "N", "GAP": "G", "STALL": "X", "HARD": "Y", "NOTES": dv["NOTES"], "DONE": dv["DONE"],
-                                         "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": "B", "FLUSH": "F"})
+                                         "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "START_REFS": dv["START_REFS"], "BATCH": "B", "FLUSH": "F"})
     txt = open(DOC).read()
     a, b = "<!-- runner-loop:start -->", "<!-- runner-loop:end -->"
     if a not in txt:
@@ -406,10 +595,13 @@ def sync_doc():
 # ART-29 (Zafar, 28 Oct): "all artworks are given to me a single paste blocks for claude in chrome will all images and things it
 # needs uploaded to github or wherever it can access": no reference waits on Zafar to upload it, and every one is on the pushed
 # branch the block's RAW links read, before he gets the block.
+# A download-mode block's references reach the runner in the zip instead (ART-42): zip_status checks that.
 def reachable(spec):
     bad = []
     if spec.get("refs_from", "upload") != "upload":
         bad.append("refs_from: %s asks Zafar to upload the references himself (ART-29): fetch them from RAW" % spec["refs_from"])
+    if spec.get("delivery", "github") == "download":
+        return bad
     br = spec["raw_branch"]
     refs = dict(spec["refs"])
     if house_attach(spec):
@@ -429,6 +621,7 @@ def main():
     ap.add_argument("--stdout", action="store_true")
     ap.add_argument("--redo", help="a redo list (YAML): build a block for just those lines")
     ap.add_argument("--check", action="store_true", help="validate the spec against the plan and the repo; write nothing")
+    ap.add_argument("--pushed", action="store_true", help="with --check: also fail when the references' zip is not on origin/<raw_branch> as it is here (the gate before Zafar gets the block)")
     ap.add_argument("--sync-doc", action="store_true")
     a = ap.parse_args()
     if a.sync_doc:
@@ -439,21 +632,36 @@ def main():
         if not os.path.exists(os.path.join(REPO, v)):
             bad.append("reference %s: %s is not in the repo" % (k, v))
     bad += reachable(spec)
+    if prompts_section(spec) is None:
+        bad.append("the plan has no \"## N. The prompts\" heading: the block sends the runner to that section by its number")
+    bad += colour_problems(spec)
+    to_push = []
+    if not bad and spec.get("delivery", "github") == "download":
+        zrefs = build(spec, a.redo)[3]
+        bad += ["%s: %s is not in the repo, so it cannot go in the zip" % (k, v) for k, v in zrefs.items() if not os.path.exists(os.path.join(REPO, v))]
+        if zrefs and a.check and not bad:
+            to_push = zip_status(spec, zrefs, bool(a.redo))
+            bad += to_push if a.pushed else []
     if bad:
         print("%d problem(s) in the spec:" % len(bad))
         for b in bad:
             print("  - " + b)
         return 1
     if a.check:
-        print("spec ok: %d lines, %d checks, %d references, every prompt is in the plan" % (len(S.expand(spec)), len(spec["checks"]), len(spec["refs"])))
+        print("spec ok: %d lines, %d checks, %d references, every prompt is in the plan, every colour in one combination or a named exception"
+              % (len(S.expand(spec)), len(spec["checks"]), len(spec["refs"])))
+        for p in to_push:
+            print("  before Zafar gets the block: " + p + "; then --check --pushed")
         return 0
-    text, blocked, count = build(spec, a.redo)
+    text, blocked, count, zrefs = build(spec, a.redo)
     if a.stdout:
         print(text)
         return 0
     out = a.out or os.path.join(REPO, "docs/design-language/art-plans", "%s-%s.txt" % (spec["pack"].replace("clinic-heal-v3", "clinic-heal"), "redo-block" if a.redo else "chrome-block"))
     open(out, "w").write(text)
     print("wrote %s: %d lines, %d chars%s" % (os.path.relpath(out, REPO), count, len(text), ("; NOT READY: %d" % len(blocked)) if blocked else ""))
+    if zrefs:
+        print("wrote %s: %d references (%s); push it with the block" % (write_refs(spec, zrefs, bool(a.redo)), len(zrefs), ", ".join(zrefs)))
     for b in blocked:
         print("  not ready: " + b)
     return 0
