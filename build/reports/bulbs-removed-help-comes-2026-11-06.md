@@ -96,5 +96,6 @@ time, a timing window, the pop-up, #mistake and the clinic's stage).
 - `--quick` (1280x665) on `cook:chai-tray#hint`, `cook:chai-tray@L4#hint`, `day:window`, `clinic:patient`, `clinic:pharmacy@L3`,
   `clinic:heal-knee#hint`: all reach their end, 0 page errors, 0 contract breaks, 0 new findings. No bulb is drawn on any page of
   either run except the end card's hints badge (flaw 1).
-- `node build/tools/review/checks.mjs`: unit (89 files, 0 fail), words, static, leak, bump, specs, docs, recordings, fixlist, size,
-  load: see the hand-back for the final line; art red from the branch's pictures (flaw 5).
+- `node build/tools/review/checks.mjs`: ok unit (89 files, 641 pass, 0 fail), words, static (0 new; the 14 bulb findings dropped
+  from the known list), leak, bump, specs (0 flagged), docs, recordings, fixlist, size, load (29/29); **FAIL art** only, from the
+  branch's pictures (flaw 5). `node --test build/sandbox/*.test.mjs build/tools/review/*.test.mjs`: 213 pass, 0 fail.

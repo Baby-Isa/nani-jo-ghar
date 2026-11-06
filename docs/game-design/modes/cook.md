@@ -41,7 +41,7 @@ The single home for Cook's design: where Cook is now, the standing rules, the st
 5. **The logic is muddled** (chai made partly in the glass; an order card that holds other people's orders), which makes the screen feel confusing even where it's pretty.
 
 What the reviews got right and we adopt: a strong grid and inventory slots; fewer containers; one type scale; UI colours from Nani's home; quieter inactive objects; bigger tap targets and audio; the word appearing at the moment of the action; small rewarding feedback.
-**What we don't adopt:** restyling all the art to a Toca Boca cartoon look (the photoreal jars are what Zafar likes); "Step 3 of 8" counters; English support text on screen (the word cards do that job; the bulb retired, Zafar, 6 Nov); red crosses (UX §11/§14 stand).
+**What we don't adopt:** restyling all the art to a Toca Boca cartoon look (the photoreal jars are what Zafar likes); "Step 3 of 8" counters; English support text on screen (the word cards do that job); red crosses (UX §11/§14 stand).
 
 
 > from: docs/design-language/ui-design-system.md (before the split) § §5 The chai station v2
