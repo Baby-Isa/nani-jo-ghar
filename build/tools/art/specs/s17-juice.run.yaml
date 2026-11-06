@@ -1,0 +1,57 @@
+# The run spec for pack s17-juice: the painted effects the sound-and-juice map needs (build/reports/sound-and-juice-chai-2026-11-06.md
+# section 4): a sparkle, steam, drops of tea and a gold burst, each a small sprite sheet on flat grey, in the game's own look
+# (ART-31, decision 2a: the s11 steam and sparkle redrawn in the s14 look). Halal, no sweets, no coins, no tick (the kit's SVG).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-juice.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-juice.run.yaml
+pack: s17-juice
+title: 'The juice sprites: a sparkle, steam, drops of tea and a gold burst, in the game''s look'
+plan: docs/design-language/art-plans/s17-juice-art-plan.md
+plan_branch: claude/vibrant-hopper-v3yexp
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/vibrant-hopper-v3yexp
+dest: sources/art/s17-juice
+real_people: false
+approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No people and no food in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+amend: true
+runner: {windows: 2, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 3, flush_minutes: 25}
+refs:
+  style.png: sources/art/style-anchor-v1.png
+  chai-glass.png: sources/art/s17-art1/wg-chai-glass-side-filling-v1.png
+  chai-pan.png: sources/art/s14/st-chai-pan-states-overhead-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  SK: {attach: [style.png], save: sk-sparkle-steps-v1.png, check: SPARKLE}
+  ST: {attach: [style.png, chai-pan.png], save: st-steam-wisps-v1.png, check: STEAM}
+  TD: {attach: [chai-glass.png], save: td-tea-drops-v1.png, check: DROPS}
+  BU: {attach: [style.png], save: bu-gold-burst-v1.png, check: BURST}
+parts:
+- id: A
+  title: 'THE JUICE SPRITES'
+  intro: 'Four small sprite sheets of painted effects for the chai game, each on one flat mid-grey: a warm sparkle in four steps, soft steam wisps, drops of milky chai, and a gold burst of light. Soft, glowing, never clip-art; nothing touches a cell''s edge; no shadow on the grey.'
+  items:
+  - lines: [SK, ST, TD, BU]
+checks:
+  SPARKLE:
+    text: 'a 3 by 2 grid: row 1 the SAME warm gold sparkle in three growing steps (a soft point of light; a small soft four-point star; a larger soft four-point star with a faint glow); row 2 the star fading thinner, then two tiny soft dots of light, the last cell empty; soft and glowing with no hard points, no clip-art star shapes, no outlines; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 5, soft_edges: true}
+  STEAM:
+    text: 'a 3 by 2 grid of soft white steam wisps alone, each rising and curling gently, semi-transparent, no pan or cup drawn: row 1 three wisps of different curl (left, straight, right); row 2 the same three thinner and fainter; nothing solid, no cloud outlines; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, soft_edges: true}
+  DROPS:
+    text: 'a 3 by 2 grid of milky caramel chai in motion, the exact tea colour of the attached glass, no glass or cup drawn: row 1 one falling round drop, a small crown splash as it lands, a single ring ripple on a flat tea surface seen a little from above; row 2 two rings, one small droplet, two small droplets; glossy and soft, nothing blue; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, soft_edges: true}
+  BURST:
+    text: 'a 3 by 2 grid of a soft gold burst of light alone, no object in it: row 1 the burst small, medium and large (soft rays radiating from a bright warm centre, fading to nothing at the tips); row 2 three single soft rays of the same gold, the last two thinner; no stars, confetti, coins or sparkles mixed in; no shadow on ONE flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, soft_edges: true}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake ones.
+- Outlines, cel shading, a flat vector look, clip-art shapes or painterly brushwork.
+- A pan, a glass, a cup, a hand, food or any object drawn where the check asks for the effect alone.
+- A key background that isn't one flat mid-grey (a gradient, a floor, a shadow or haze on it).
+- Anything blue in the tea drops; any coin, confetti, star shape or sweet.
+- Sweets, lollies or biscuits; any religious marker.
