@@ -20,6 +20,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artspec as S  # noqa: E402
+import artcolour as C  # noqa: E402
 
 REPO = S.REPO
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -237,6 +238,36 @@ def load_redo(path, spec, lines, plan_ids):
     return out, blocked, checks, redone
 
 
+# The house look (Zafar's yes, 6 Nov; build/reports/s17-palette-review.md, s17-fonts-review.md "Gemini's critique"): every
+# block names the house colours in words and the edge finish, for the judge. A spec with `house: {attach: true}` also
+# attaches the house swatch strip (data/house-swatch.png, plain blocks) to every new picture and adds one sentence to the
+# prompt; `house: false` leaves the section out.
+SWATCH = "build/tools/art/data/house-swatch.png"
+SWATCH_NAME = "house-swatch.png"
+
+
+def house_attach(spec):
+    h = spec.get("house", True)
+    return isinstance(h, dict) and bool(h.get("attach"))
+
+
+def house_text(spec):
+    """The HOUSE LOOK section (with its blank line before it), or "" when the spec says house: false."""
+    if spec.get("house", True) is False:
+        return ""
+    R = C.rules()
+    b = R["block"]
+    combos = R["house"]["combinations"]
+    out = ["", "HOUSE LOOK (every image; judge it with the checks above)",
+           "- House colours, from Sanzo Wada's A Dictionary of Color Combinations (combinations %s): %s. %s"
+           % (", ".join(str(c) for c in combos[:-1]) + " and %s" % combos[-1], C.house_words(R), b["colours_note"]),
+           "- Edge finish: %s" % b["edge_line"]]
+    if house_attach(spec):
+        out.append("- Attach %s (see the references) as the last file of every new picture, never of an edit, and add this one sentence at "
+                   "the end of the pasted prompt, word for word: \"%s\"" % (SWATCH_NAME, b["sentence"]))
+    return "\n".join(out) + "\n"
+
+
 def build(spec, redo_path=None):
     lines = S.expand(spec)
     people, limbs = S.plan_people(spec)
@@ -265,6 +296,8 @@ def build(spec, redo_path=None):
         refs += "\n".join(" %s (repo: %s)" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
     else:
         refs = "\n".join(" %s RAW + %s" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
+    if house_attach(spec):
+        refs += "\n %s RAW + %s (the house swatch strip: see HOUSE LOOK)" % (SWATCH_NAME.ljust(w + 1), SWATCH)
     check_ids = sorted({l["check"] for l in used}, key=lambda c: list(spec["checks"]).index(c) if c in spec["checks"] else 999)
     allc = dict(spec["checks"])
     allc.update({k: v for k, v in extra_checks.items()})
@@ -286,7 +319,8 @@ def build(spec, redo_path=None):
         "SLOT_RULE": ("The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table"
                       if spec.get("people") else "The only change allowed is filling a code box's {SLOTS}")
         + (" and, where a line ends with \"slots:\", putting each slot's words from that line into the code box's matching {SLOT}, word for word (a code box with a {SLOT} is never sent unfilled)."
-           if any(l.get("slots") for l in used) else "."),
+           if any(l.get("slots") for l in used) else ".")
+        + (" The one addition allowed: the HOUSE LOOK sentence and its swatch strip." if house_attach(spec) else ""),
         "KEPT_NOTE": (", from this run if it is in the run order below, otherwise the one already in the repo at RAW + %s/<X's save-as name>" % spec["dest"]) if redo_path
         else (", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"]) if spec.get("delivery", "github") == "github"
         else ", still in its ChatGPT chat (attach it from ChatGPT's library, see below)",
@@ -295,7 +329,7 @@ def build(spec, redo_path=None):
         "REWORD_RULE": ("Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it." if spec.get("amend") else "Never write a prompt of your own, and never reword, shorten or add to one."),
         "REDO_RULE": ("If it fails, redo it in a fresh chat with the same attachments, at most %d redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]) if spec.get("amend") else ("If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most %d redos. Never send corrections like \"make it smaller\". Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]),
         "APPROVALS": approvals, "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "REDOS": r["redos"],
-        "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]),
+        "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]), "HOUSE": house_text(spec),
     }
     vals.update({k: v for k, v in dv.items() if k in ("OPENING", "PLACES", "MOVING", "SAFETY_COMMIT", "STEP6", "LOG_HEAD", "LOG_ALSO", "RESUMING", "AT_END")})
     return fill(tpl("block.txt"), vals) + "\n", blocked, count
@@ -323,7 +357,10 @@ def reachable(spec):
     if spec.get("refs_from", "upload") != "upload":
         bad.append("refs_from: %s asks Zafar to upload the references himself (ART-29): fetch them from RAW" % spec["refs_from"])
     br = spec["raw_branch"]
-    for k, v in spec["refs"].items():
+    refs = dict(spec["refs"])
+    if house_attach(spec):
+        refs[SWATCH_NAME] = SWATCH
+    for k, v in refs.items():
         ok = subprocess.run(["git", "-C", REPO, "cat-file", "-e", "origin/%s:%s" % (br, v)], capture_output=True).returncode == 0
         if not ok:
             bad.append("reference %s: %s is not on origin/%s, where the block fetches it (push it, then git fetch)" % (k, v, br))

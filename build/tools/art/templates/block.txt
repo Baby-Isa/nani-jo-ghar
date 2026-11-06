@@ -41,7 +41,7 @@ CHECKS (by check ID)
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 {{PASSFAIL}}
-
+{{HOUSE}}
 THE LOG
 {{LOG_HEAD}}
 Also log every skipped or stalled prompt (and why), every image-limit message with its time, {{LOG_ALSO}}and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.

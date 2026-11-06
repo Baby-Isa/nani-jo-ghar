@@ -48,7 +48,7 @@ Every tool in one table. Run one when the job needs it; each prints its own `--h
 
 ## Art and audio
 
-`build/tools/art/`, `build/tools/audio/` and the `build/*.py` scripts cut, fit and check art and audio (most were one-off cuts for a past art run; `/art-run` and `/mum-round` name the ones they use). Skills live in `.claude/skills/`; the `judge` agent in `.claude/agents/`.
+`python3 build/tools/art/artcolour.py <files or folders> [--sheet S.png]` measures any picture's colours against Sanzo Wada's palette and the house family, its light, edge halo, baked shadow, size class and its batch's odd ones out (art-pipeline.md section 15; the art judge and every paste block use it). `build/tools/art/`, `build/tools/audio/` and the `build/*.py` scripts cut, fit and check art and audio (most were one-off cuts for a past art run; `/art-run` and `/mum-round` name the ones they use). Skills live in `.claude/skills/`; the `judge` agent in `.claude/agents/`.
 
 ## Data the tools keep
 
