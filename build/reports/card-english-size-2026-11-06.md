@@ -98,4 +98,6 @@ card's height; option 3 is a smaller gain for the same change.
 - The study: `COOK_TEST_PORT=8852 flock /tmp/njg-browser-8852.lock node build/tools/cards/english-options.mjs` (chai L1, the fair player,
   five sizes, each option injected at the order pop-up and at the first shelf view), then `python3 build/tools/cards/sheet.py`.
   All 25 option-by-size measurements: no clipped text, no overlap, nothing outside its card.
-- `node build/tools/review/checks.mjs`: green (see the commit's run).
+- `node build/tools/review/checks.mjs`: unit (635 pass, 0 fail), words and static ok; `node build/tools/review/docs.mjs`: within every
+  limit. The run did not finish its later steps (the leak bots) before the 14:00 stop on the shared machine: **not fully green yet**;
+  this commit changes no game file, so re-run it before the build.
