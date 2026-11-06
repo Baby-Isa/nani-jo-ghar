@@ -1,0 +1,42 @@
+{
+ "_about": "Cook's redos (Zafar's run of 6 Nov, build/tools/art/specs/s17-cook-redo.run.yaml; landed in build/reports/cook-redo-landed-2026-11-06.md). The sheets are chat screenshots, not full-size downloads. The glass (KW01 cell 3) is not cut: chai keeps its glass (Zafar, 6 Nov). The two flame rings are then placed on the old flames' canvas and the three round steel pieces (the knob off and on, the tray) cut as clean circles, the lit knob's glow at partial alpha (build/tools/art/cook_redo_post.py, which also writes Nani's shop's rolling pin). Only what the game shows goes into assets/ (cook_redo_post.py: the two flame rings into assets/cook/items/s17-cook-redo/, the shop's pin into assets/cook/props/); every other cut waits in sources/art/s17-cook-redo/cuts/ until a station uses it.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "flame-low-raw": {
+   "file": "cuts/flame-low-raw.webp",
+   "w": 337,
+   "h": 325
+  },
+  "flame-high-raw": {
+   "file": "cuts/flame-high-raw.webp",
+   "w": 376,
+   "h": 381
+  },
+  "velan": {
+   "file": "cuts/velan.webp",
+   "w": 488,
+   "h": 94
+  },
+  "rolling-pin": {
+   "file": "cuts/rolling-pin.webp",
+   "w": 512,
+   "h": 126
+  },
+  "tameto-chopped-t": {
+   "file": "cuts/tameto-chopped-t.webp",
+   "w": 511,
+   "h": 512
+  },
+  "rai-bowl-t": {
+   "file": "cuts/rai-bowl-t.webp",
+   "w": 501,
+   "h": 512
+  }
+ },
+ "_report": [
+  "kh01-flames: 2 piece(s) by cell for 2 name(s)",
+  "kw01: 2 piece(s) by cell for 2 name(s)",
+  "kf01: 2 piece(s) by cell for 2 name(s)"
+ ]
+}

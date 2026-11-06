@@ -9,6 +9,7 @@ rules: {combo_de: 9.0, main_share: 0.1, neutral_chroma: 14.0, hue_merge: 25.0, a
 redo:
   cook-items:  # 4
     - file: "assets/cook/items/chai-station/flame-low.webp"
+      # landed 6 Nov (build/reports/cook-redo-landed-2026-11-06.md): swapped for assets/cook/items/s17-cook-redo/flame-*.webp (passes); this file now unused
       broken: ["palette"]
       fix: "recolour"
       block: "cook"
@@ -23,6 +24,7 @@ redo:
       combination_colours: ["Coral Red", "Sulpher Yellow", "Oil Green", "Light Glaucous Blue"]
       off_combination: ["#d8a56d ochre 40%"]
     - file: "assets/cook/items/veg-tameto-chopped-t.png"
+      # landed 6 Nov: never drawn (daar shows v3/daar/chop-heap-tomato.webp, which passes; its CHOPPED entry is shadowed by HEAP5); the redo cut waits in sources/art/s17-cook-redo/cuts/
       broken: ["palette"]
       fix: "recolour"
       block: "cook"
@@ -30,6 +32,7 @@ redo:
       combination: 155
       combination_colours: ["Jasper Red", "Benzol Green", "Deep Indigo"]
     - file: "assets/cook/props/rai.webp"
+      # landed 6 Nov: never drawn (the game's rai is spice-rai-bowl-t.webp, one of the tadka's five bowls, which passes); the redo cut waits in sources/art/s17-cook-redo/cuts/
       broken: ["palette"]
       fix: "recolour"
       block: "cook"

@@ -1,0 +1,79 @@
+{
+  "pack": "s17-cook-redo",
+  "about": "Cook's redos (Zafar's run of 6 Nov, build/tools/art/specs/s17-cook-redo.run.yaml; landed in build/reports/cook-redo-landed-2026-11-06.md). The sheets are chat screenshots, not full-size downloads. The glass (KW01 cell 3) is not cut: chai keeps its glass (Zafar, 6 Nov). The two flame rings are then placed on the old flames' canvas and the three round steel pieces (the knob off and on, the tray) cut as clean circles, the lit knob's glow at partial alpha (build/tools/art/cook_redo_post.py, which also writes Nani's shop's rolling pin). Only what the game shows goes into assets/ (cook_redo_post.py: the two flame rings into assets/cook/items/s17-cook-redo/, the shop's pin into assets/cook/props/); every other cut waits in sources/art/s17-cook-redo/cuts/ until a station uses it.",
+  "src": "sources/art/s17-cook-redo",
+  "out": "sources/art/s17-cook-redo",
+  "data": "sources/art/s17-cook-redo/cuts/cut-data.json",
+  "jobs": [
+    {
+      "id": "kh01-flames",
+      "type": "grid",
+      "src": "kh01-chai-hob-v1.png",
+      "cells": [
+        3,
+        2
+      ],
+      "names": [
+        "flame-low-raw",
+        "flame-high-raw",
+        null,
+        null,
+        null,
+        null
+      ],
+      "outdir": "cuts",
+      "max": 512,
+      "pad": 16,
+      "q": 90,
+      "tol": 4,
+      "min_bit": 20,
+      "min_area": 40,
+      "glass": [
+        "flame-low-raw",
+        "flame-high-raw"
+      ],
+      "soft_floor": 0.0,
+      "soft_gain": 1.25,
+      "_note": "the flames at partial alpha: the glow unmixed from the grey (soft, gain 1.25: a solid core, a soft halo)"
+    },
+    {
+      "id": "kw01",
+      "type": "grid",
+      "src": "kw01-walnut-glass-v1.png",
+      "cells": [
+        3,
+        1
+      ],
+      "names": [
+        "velan",
+        "rolling-pin",
+        null
+      ],
+      "outdir": "cuts",
+      "max": 512,
+      "pad": 16,
+      "q": 90,
+      "tol": 8
+    },
+    {
+      "id": "kf01",
+      "type": "grid",
+      "src": "kf01-daar-chaat-v1.png",
+      "cells": [
+        2,
+        1
+      ],
+      "names": [
+        "tameto-chopped-t",
+        "rai-bowl-t"
+      ],
+      "outdir": "cuts",
+      "max": 512,
+      "pad": 16,
+      "q": 90,
+      "tol": 90,
+      "hole_min": 8,
+      "_note": "magenta: tol 90, any enclosed ground a hole, then artdespill.py (the stove landing's recipe)"
+    }
+  ]
+}

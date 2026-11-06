@@ -5125,7 +5125,7 @@
       "elchi"
      ],
      "files": [
-      "assets/cook/items/chai-station/*",
+      "assets/cook/items/s17-cook-redo/flame-*.webp",
       "assets/cook/items/chai-v2/*",
       "assets/cook/items-s14/chai-pan/pan-*-s14.webp",
       "assets/cook/items/v3/chai/*",
@@ -5153,8 +5153,8 @@
       "assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp",
       "assets/cook/items-s14/chai-pan/pan-black-s14.webp",
       "assets/cook/items-s14/glass/glass-empty-top-s14.webp",
-      "assets/cook/items/chai-station/flame-high.webp",
-      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/s17-cook-redo/flame-high.webp",
+      "assets/cook/items/s17-cook-redo/flame-low.webp",
       "assets/cook/items/chai-v2/glass-black-full.webp",
       "assets/cook/items/chai-v2/glass-black-half.webp",
       "assets/cook/items/chai-v2/glass-empty.webp",
@@ -5261,15 +5261,15 @@
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
-      "assets/cook/items/chai-station/*",
+      "assets/cook/items/s17-cook-redo/flame-*.webp",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/maani/*",
       "assets/cook/items/maani-v2/thali.webp",
       "assets/cook/items/vessel-tawa-t.webp"
      ],
      "prefetch": [
-      "assets/cook/items/chai-station/flame-high.webp",
-      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/s17-cook-redo/flame-high.webp",
+      "assets/cook/items/s17-cook-redo/flame-low.webp",
       "assets/cook/items/maani-v2/thali.webp",
       "assets/cook/items/v3/hob/hob-1.webp",
       "assets/cook/items/v3/hob/knob-off-v2.webp",
@@ -5387,7 +5387,7 @@
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
-      "assets/cook/items/chai-station/*",
+      "assets/cook/items/s17-cook-redo/flame-*.webp",
       "assets/cook/items/v3/daar/*",
       "assets/cook/items-s08b/daar-pot-top-s08b.webp",
       "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
@@ -5400,8 +5400,8 @@
       "assets/cook/items-s08c/daar-in/*"
      ],
      "prefetch": [
-      "assets/cook/items/chai-station/flame-high.webp",
-      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/s17-cook-redo/flame-high.webp",
+      "assets/cook/items/s17-cook-redo/flame-low.webp",
       "assets/cook/items/shelf-spi-01-bare-f.webp",
       "assets/cook/items/shelf-spi-02-bare-f.webp",
       "assets/cook/items/shelf-veg-12-bare-f.webp",
@@ -5611,7 +5611,7 @@
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
-      "assets/cook/items/chai-station/*",
+      "assets/cook/items/s17-cook-redo/flame-*.webp",
       "assets/cook/items/samosa-v2/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/samosa/*",
@@ -5622,8 +5622,8 @@
       "assets/cook/items-s08b/potato/potato-pile-v3.webp"
      ],
      "prefetch": [
-      "assets/cook/items/chai-station/flame-high.webp",
-      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/s17-cook-redo/flame-high.webp",
+      "assets/cook/items/s17-cook-redo/flame-low.webp",
       "assets/cook/items/samosa-v2/fry-0.webp",
       "assets/cook/items/samosa-v2/fry-1.webp",
       "assets/cook/items/samosa-v2/fry-2.webp",
@@ -6106,7 +6106,7 @@
    "id": "pin",
    "station": "Rolling",
    "name": "Special rolling pin",
-   "image": "rolling-pin",
+   "image": "rolling-pin-walnut",
    "special": true,
    "effect": "Rolls twice as fast and never goes too big.",
    "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push.",
