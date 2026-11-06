@@ -39,7 +39,7 @@
 //   contract-22 once-whole  each Cook line said once (the same line not again within 10 s) and whole (no clip cut by another line) (PAN-04, PAN-16)
 //   contract-23 item-word    an item's name on a tap only when nothing else is speaking, never at L3-L4, not again within 10 s (SH-94)
 //   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
-//   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
+//   contract-25 bulb-pulse   the bulbs pulse after 15-20 s stuck, never before (SH-96); only where a bulb is shown (not Cook: CHAI-94)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
 //   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106); S13-A2: every go-on, done and
 //                            answer-pill button on screen is the kit's .njg-btn
@@ -84,7 +84,7 @@ export const CHECKS = {
   "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap) or the game opened a new step whose call it says again on purpose (Lifecycle step-call \"queued-again\": maani's Firai on both turns, MAA-15, Zafar 17 Oct); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
   "contract-23": { item: "item-word", title: "an item's name only when nothing else speaks", how: "Lines tagged role item (js/cook/words.js Lang.popWord: an item's name as it is tapped or lands) that made a sound: at level 3 or 4 any is a break; one starting while another Cook line is being said (from its call to its end, or a clip of it sounding) is a break; the same item word again within 10 s is a break (SH-94, decision 1 of 17 Oct)." },
   "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95). A glow that comes with a rung of the onboarding kit (Lifecycle rung: the first-time box at once, chai's 5 s card; Zafar, 22 Oct, CHAI-32) is that help, not a break." },
-  "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck)." },
+  "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage that shows a bulb must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck). Cook's stages show no bulb since the s14 look went to every dish (Zafar, 6 Nov: the bulbs are out, replaced by the word cards and Nani's timed hints; CHAI-94), so they need no pulse; the day window's bulb still does." },
   "contract-26": { item: "opening", title: "the opening line is heard whole", how: "Every Cook line said while the request pop-up is up: each of its words that is in the lexicon must have a sound, a family clip of that word or the device voice saying it (the sound log); a word that made no sound (the device voice's text thrown away by a cancel, no stand-in at all) is a break (LNG-16: \"I didn't hear the muke\")." },
   "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
   "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
@@ -1045,6 +1045,13 @@ function check24(r, tl, segs, v, add) {
   }
 }
 // 25 (SH-96): both light bulbs pulse after 15-20 s stuck, never before
+// CHAI-94 (Zafar, 6 Nov: "the bulbs are out of the game now, the entire mechanism has been replaced with the word cards and the
+// hints on timers from Nani and the doctor"): a Cook stage (a station, or the host's cook stage around it) shows no bulb: every
+// dish wears the s14 look (js/cook/ui.js UI.S14_ALL), which hides Nani's bulb (css/shared/order-card.css body.njg-s14 #guide.ng-s14
+// .ng-bulb), and Cook never gives a closed card the bulb peek (js/cook/ui.js onPeek needs a phase fold with closed.peek, which
+// memoryClosed rules out). A hidden bulb needs no pulse. The day window's bulb is still shown (js/day/window.js), so it still must.
+// (A pulse that starts too early is still a break everywhere.)
+export const showsBulb = (key) => !/(^|\|)cook:|^host:cook\//.test(key || "");
 function check25(tl, segs, add) {
   const seen = new Set();
   const pulses = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "bulb-pulse");
@@ -1057,7 +1064,7 @@ function check25(tl, segs, add) {
   // any real tap is an action (the shared guide's idle clock restarts on every pointerdown: the card's face, a peek, the bulb as much as a tap in the play area; s08 w1b, SH-102: a replay is a child doing something)
   const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
   for (const s of segs) {
-    if (!isPlayStage(s.key)) continue;
+    if (!isPlayStage(s.key) || !showsBulb(s.key)) continue;
     const end = s.t1 == null ? (tl[tl.length - 1] || {}).t : s.t1;
     const ts = [s.t0, ...inputs.filter((i) => i.t >= s.t0 && i.t < end).map((i) => i.t), end];
     for (let i = 0; i + 1 < ts.length; i++) {
