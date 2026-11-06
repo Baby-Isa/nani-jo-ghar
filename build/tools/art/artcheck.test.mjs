@@ -89,3 +89,89 @@ test("art block (download mode): references by the screenshot route, the Library
   const loop = readFileSync(join(HERE, "templates", "runner-loop.txt"), "utf8");
   assert.doesNotMatch(loop, /attach the local copies/);
 });
+
+// The colour and look tool (artcolour.py; Zafar's yes, 6 Nov): each check fires on its own synthetic picture, a clean one passes
+const LOOKSYNTH = `
+import os, sys, numpy as np
+from PIL import Image
+def jar(path, H=160, W=160, h=100, w=60, rgb=(194, 117, 68), light="ul", grad=0.22, halo=False, shadow=False, gloss=False):
+    yy, xx = np.mgrid[0:H, 0:W].astype(float)
+    cy, cx = H / 2, W / 2
+    a = ((np.abs(xx - cx) <= w / 2) & (np.abs(yy - cy) <= h / 2)).astype(float)
+    x, y = (xx - cx) / (w / 2), (yy - cy) / (h / 2)
+    s = {"ul": -(x + y), "lr": x + y}[light] / 2
+    img = np.clip(np.array(rgb, float)[None, None] * (1 + grad * s)[..., None], 0, 255)
+    if halo:  # the outer 2 px near-white: a rim or edge glow
+        edge = (a > 0) & ~((np.abs(xx - cx) <= w / 2 - 2) & (np.abs(yy - cy) <= h / 2 - 2))
+        img[edge] = (246, 245, 243)
+    if gloss:  # hard white specular stripes down both sides
+        for sx in (cx - w / 2 + 6, cx + w / 2 - 9):
+            img[(xx >= sx) & (xx < sx + 3) & (np.abs(yy - cy) <= h / 2 - 12)] = (252, 252, 252)
+    if shadow:  # a soft dark smear below the piece, wider than it
+        e = (((xx - cx) / 55) ** 2 + ((yy - (cy + h / 2 + 8)) / 9) ** 2 <= 1) & (a == 0)
+        img[e] = (40, 40, 42)
+        a = np.where(e, 0.4, a)
+    Image.fromarray(np.dstack([img, a * 255]).astype(np.uint8), "RGBA").save(path)
+d = sys.argv[1]
+for n, kw in {"clean": {}, "halo": {"halo": True}, "shadow": {"shadow": True}, "lowerright": {"light": "lr", "grad": 0.4},
+              "offpalette": {"rgb": (255, 0, 255), "grad": 0.03}, "fit": {"H": 112, "W": 120}}.items():
+    jar(os.path.join(d, n + ".png"), **kw)
+os.makedirs(os.path.join(d, "batch"))
+for i in range(5):
+    jar(os.path.join(d, "batch", "jar-%d.png" % i), gloss=(i == 4))
+`;
+const look = (args) => {
+  const out = join(mkdtempSync(join(tmpdir(), "artlook-")), "r.json");
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--json", out, "--quiet", ...args], { encoding: "utf8", maxBuffer: 1 << 26 });
+  assert.ok([0, 1].includes(r.status), `artcolour.py ran: ${r.stderr}`);
+  const res = JSON.parse(readFileSync(out, "utf8"));
+  return { status: r.status, by: Object.fromEntries(res.results.map((x) => [x.file.split("/").pop().replace(".png", ""), x])), res };
+};
+test("colour and look: halo, baked shadow, lower-right light, off-palette and size fire; a clean jar passes", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artlook-"));
+  assert.equal(spawnSync("python3", ["-c", LOOKSYNTH, dir], { encoding: "utf8" }).status, 0);
+  const files = ["clean", "halo", "shadow", "lowerright", "offpalette"].map((n) => `${dir}/${n}.png`);
+  const { status, by } = look(["--batch-by", "none", ...files]);
+  assert.equal(status, 1, "a baked shadow is a FAIL, so the run exits 1");
+  assert.deepEqual([...by.clean.fail, ...by.clean.flag], [], "a clean jar lit from the upper left passes");
+  assert.ok(by.clean.colours[0].wada.name === "Cinnamon Rufous" && by.clean.colours.some((c) => c.in_house), "its colour is matched to Wada's Cinnamon Rufous, a house colour");
+  assert.ok(by.halo.flag.some((f) => f.startsWith("white halo")), "a near-white rim at the alpha edge is a halo");
+  assert.ok(by.shadow.fail.some((f) => f.startsWith("baked shadow")), "a soft dark smear below the piece is a baked shadow (FAIL)");
+  assert.ok(by.lowerright.flag.some((f) => f.startsWith("light from the lower right")), "light from the lower right is flagged");
+  assert.ok(by.offpalette.flag.some((f) => f.startsWith("off-palette")), "a magenta far from every Wada colour is off-palette");
+  for (const n of ["halo", "lowerright", "offpalette"]) assert.deepEqual(by[n].fail, [], `${n} is a FLAG, not a FAIL`);
+  const L = look(["--batch-by", "none", "--size-class", "L", `${dir}/clean.png`]).by.clean;
+  assert.ok(L.flag.some((f) => f.startsWith("size: fills 63%")), "a jar filling 63% of the slot is off size class L (100%)");
+  assert.deepEqual(look(["--batch-by", "none", "--size-class", "M", `${dir}/fit.png`]).by.fit.flag, [], "a jar filling 89% of its slot meets class M (90% ±5%)");
+});
+test("colour and look: one glossy jar in a matte batch is the odd one out; the rest of the batch passes", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artlook-"));
+  assert.equal(spawnSync("python3", ["-c", LOOKSYNTH, dir], { encoding: "utf8" }).status, 0);
+  const { by, res } = look(["--batch", "shelf", `${dir}/batch`]);
+  assert.ok(by["jar-4"].flag.some((f) => /^batch shelf: gloss .*the odd one out/.test(f)), "the glossy jar is flagged for gloss");
+  for (const i of [0, 1, 2, 3]) assert.deepEqual(by[`jar-${i}`].flag, [], `matte jar ${i} passes`);
+  assert.equal(res.batches[0].splits[0].feature, "gloss");
+});
+test("colour and look: the vendored Wada data, the house family, CIEDE2000, and the house look in every paste block", () => {
+  const wada = JSON.parse(readFileSync(join(HERE, "data", "wada-colors.json"), "utf8"));
+  assert.equal(wada.length, 159);
+  assert.match(readFileSync(join(HERE, "data", "wada-colors.LICENSE.txt"), "utf8"), /mattdesl\/dictionary-of-colour-combinations[\s\S]*MIT/);
+  const py = `import sys; sys.path.insert(0, ${JSON.stringify(HERE)}); import artcolour as A, numpy as np
+print(round(float(A.de2000(np.array([50, 2.6772, -79.7751]), np.array([50, 0, -82.7485]))), 4))
+print(A.house_words())`;
+  const [de, words] = spawnSync("python3", ["-c", py], { encoding: "utf8" }).stdout.trim().split("\n");
+  assert.equal(de, "2.0425", "CIEDE2000 matches Sharma's published test pair 1");
+  for (const n of ["Pale Burnt Lake", "Chromium Green", "Ecru", "Pompeian Red", "Dark Medici Blue", "Khaki", "Cinnamon Rufous"]) assert.ok(words.includes(n), `${n} is in the house family`);
+  const gen = `import sys; sys.path.insert(0, ${JSON.stringify(HERE)}); import artblock as B, artspec as S
+sp = S.load(${JSON.stringify(join(HERE, "specs", "s17-pc2.run.yaml"))})
+a = B.build(sp)[0]; sp["house"] = {"attach": True}; b = B.build(sp)[0]; sp["house"] = False; c = B.build(sp)[0]
+print("\\n=====\\n".join([a, b, c]))`;
+  const [plain, attach, none] = spawnSync("python3", ["-c", gen], { encoding: "utf8", maxBuffer: 1 << 24 }).stdout.split("\n=====\n");
+  assert.match(plain, /HOUSE LOOK[^\n]*\n- House colours, from Sanzo Wada's A Dictionary of Color Combinations \(combinations 283, 249, 311 and 200\): [^\n]*Pale Burnt Lake/);
+  assert.match(plain, /- Edge finish: clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left\./);
+  assert.doesNotMatch(plain, /house-swatch/, "the swatch strip is attached only when a spec asks (house: {attach: true})");
+  assert.match(attach, /house-swatch\.png RAW \+ build\/tools\/art\/data\/house-swatch\.png/);
+  assert.match(attach, /The one addition allowed: the HOUSE LOOK sentence/);
+  assert.doesNotMatch(none, /HOUSE LOOK/);
+  assert.match(readFileSync(join(HERE, "artjudge.py"), "utf8"), /r\.flag \+= \["look: " \+ x/, "the art judge carries the look lines");
+});

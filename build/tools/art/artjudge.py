@@ -12,7 +12,10 @@ Measured: canvas size and aspect; the flat #808080 ground (and shadows or gradie
 subject touches against which it should, margins, height fill); skin colour ΔE against the approved render; edits (how
 much changed, how much outside the allowed region after registration, identical to the original); "like" images (W9/W10
 against W1: size and feet line); glyph-like marks on the ground (text); near-duplicate images; round glossy discs that
-may read as sweets. NOT measured (a model must look): gaze, anatomy, fingers, likeness, modesty beyond a missing-sleeve
+may read as sweets; the colour and look checks (artcolour.py, data/look-rules.json; lines start "look:"): off-palette
+colours against Sanzo Wada's 159 and the house family, light not from the upper left, a white halo at the edge, a baked
+shadow (FAIL), a size class's height, and with --batch (or a check's judge.batch) the odd ones out of one surface's
+batch. NOT measured (a model must look): gaze, anatomy, fingers, likeness, modesty beyond a missing-sleeve
 hint, style. A PASS here is never a pass of the art, only that the numbers are fine."""
 import argparse
 import functools
@@ -28,6 +31,7 @@ from scipy import ndimage as ndi
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artlib as L  # noqa: E402
 import artspec as S  # noqa: E402
+import artcolour as C  # noqa: E402
 
 REPO = S.REPO
 SKIN_RENDER = np.array([0xF3, 0x98, 0x61], float)  # the lit skin of the approved family renders (Ali, Ma), as in the cutter
@@ -235,6 +239,23 @@ def judge_one(spec, r, ctx):
         r.info["sweets"] = n
         if n:
             r.flag.append("%d round, saturated disc(s) with a glossy highlight: may read as sweets or gumballs (I2)" % n)
+    # 6 the colour and look checks (artcolour.py): on the keyed cut-out when the ground is flat, else colour only
+    if LOOK["on"] and prof.get("look", True):
+        look(r, k if prof.get("bg") == "flat" else np.dstack([a, np.ones(a.shape[:2])]), prof)
+
+
+LOOK = {"on": True}
+
+
+def look(r, rgba, prof):
+    """artcolour.py's per-picture checks on a keyed RGBA (alpha 0..1): its FAIL and FLAG lines, prefixed "look:"."""
+    im = Image.fromarray(np.dstack([np.clip(rgba[..., :3], 0, 255), np.clip(rgba[..., 3] * 255, 0, 255)]).astype(np.uint8), "RGBA")
+    rgb, al = C.prep(im, 512)
+    res = C.analyse_arrays(rgb, al, size_class=prof.get("size_class"), name=r.path)
+    r.look = res
+    r.info["look"] = {"colours": ["%s %.0f%% %s ΔE%.0f%s" % (c["hex"], c["share"] * 100, c["wada"]["name"], c["wada"]["de"], " house" if c["in_house"] else "") for c in res.get("colours", [])[:4]]}
+    r.fail += ["look: " + x for x in res["fail"]]
+    r.flag += ["look: " + x for x in res["flag"]]
 
 
 def judge_edit(spec, r, base_path, ctx):
@@ -291,6 +312,8 @@ def main(argv=None):
     ap.add_argument("--dir", help="the images (default: the spec's dest folder)")
     ap.add_argument("--only", help="comma-separated run-line IDs (girl-M1) or file names")
     ap.add_argument("--json", help="also write the result as JSON here")
+    ap.add_argument("--batch", help="judge every image given as one batch of one surface (artcolour.py: the odd ones out)")
+    ap.add_argument("--no-look", action="store_true", help="skip the colour and look checks (artcolour.py)")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args(argv)
     spec = S.load(a.spec)
@@ -299,6 +322,7 @@ def main(argv=None):
     by_save = {l["save"]: l for l in lines}
     by_id = {l["id"]: l for l in lines}
     want = set(a.only.split(",")) if a.only else None
+    LOOK["on"] = not a.no_look
     res = []
     for f in sorted(os.listdir(d)):
         l = by_save.get(f)
@@ -323,6 +347,17 @@ def main(argv=None):
                     judge_like(spec, r, os.path.join(d, by_id[lid]["save"]), lid)
         except Exception as e:  # a bad file never stops the pass
             r.flag.append("could not be measured: %s: %s" % (type(e).__name__, e))
+    # batches (artcolour.py): --batch, or a check's judge.batch; the odd ones out of one surface
+    groups = {}
+    for r in res:
+        b = a.batch or spec["checks"][r.line["check"]].get("judge", {}).get("batch")
+        if b and getattr(r, "look", None):
+            groups.setdefault(b, []).append(r)
+    for b, rs in groups.items():
+        before = [len(r.look["flag"]) for r in rs]
+        C.batch_check([r.look for r in rs], b)
+        for r, n in zip(rs, before):
+            r.flag += ["look: " + x for x in r.look["flag"][n:]]
     # near-duplicates: two different run lines whose pictures are the same picture (an edit and its original excepted)
     hs = {}
     for r in res:

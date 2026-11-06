@@ -1,0 +1,96 @@
+{
+ "_about": "Thresholds for artcolour.py (the colour and look tool) and the look lines artjudge.py and artblock.py take from it. Tune here, not in code; say why in the commit. Calibration notes: build/reports/art-retrospective-2026-11-06.md.",
+ "house": {
+  "_about": "The house family (build/reports/s17-palette-review.md): Wada combinations 283 (the sage and maroon), 249 and 311 (maroon, ecru stone, ochre gold, honey), 200 (Chromium Green with Carmine Red again), and the single colours that review matched our fixed set to.",
+  "combinations": [283, 249, 311, 200],
+  "names": ["Khaki", "Yellow Ocher", "Cinnamon Rufous", "Ivory Buff", "Sulpher Yellow"],
+  "house_de": 8.0
+ },
+ "colour": {
+  "_about": "Main colours: k-means in CIE Lab (D65) on the opaque pixels; distances are CIEDE2000 with kL (lightness weight) 2, so a tint or shade of a Wada colour counts as near (the review read the stone and marble as tints of Ecru and Ivory Buff). Neutral colours (chroma under neutral_chroma: steel, glass, white, black) are reported, never off-palette.",
+  "k": 6,
+  "min_share": 0.03,
+  "merge_de": 5.0,
+  "kL": 2.0,
+  "neutral_chroma": 9.0,
+  "off_palette_de": 14.0,
+  "off_palette_share": 0.08,
+  "sample": 20000,
+  "max_side": 384
+ },
+ "light": {
+  "_about": "Light direction from the shading inside each material (pixels grouped by colour, lightness weighted down so a lit and a shaded side of one material stay one group), on the outer ring of the cut-out (convex shading; a bowl's inside lights the other way). angle: 90 = from above, 180 = from the left, 135 = upper left (the art bible). FLAG when the light is clear (strength over min_strength L* units) and comes from outside the allowed arc, or the brightest quadrant is the lower right (opposite the bible's light). A round piece (a bowl, pan or glass from above: the largest circle inside it covers over concave_round of its area) reading from the lower right (concave_arc) is the bible's light on a concave inside, so it is not flagged (a round convex piece from above lit wrongly is missed: a known limit). Calibrated on assets/cook/items (6 Nov): at 6 every top-down pan read 'lower right'.",
+  "allowed_min": 55,
+  "allowed_max": 215,
+  "min_strength": 8.0,
+  "concave_round": 0.84,
+  "concave_arc": [250, 350],
+  "ring": 0.4,
+  "segments": 4,
+  "l_weight": 0.35
+ },
+ "halo": {
+  "_about": "A near-white band just inside the alpha edge (outer edge_px of the solid piece) against the band behind it (inner_from..inner_to px): FLAG when the edge band is mostly near-white and much whiter than the band behind it.",
+  "edge_px": 2,
+  "inner_from": 4,
+  "inner_to": 9,
+  "white_l": 88,
+  "white_c": 12,
+  "min_share": 0.3,
+  "ratio": 2.5
+ },
+ "shadow": {
+  "_about": "A baked shadow: dark, low-chroma pixels below the object's body, either soft alpha (kept haze) or a solid dark skirt wider than the body above it. FAIL: code draws the contact shadow (art bible section 2).",
+  "band": 0.22,
+  "dark_l": 42,
+  "dark_c": 14,
+  "soft_alpha": [0.06, 0.88],
+  "soft_share": 0.25,
+  "skirt_share": 0.35,
+  "min_px": 60
+ },
+ "gloss": {
+  "_about": "A specular pixel: near-white (L* over spec_l, chroma under spec_c) and brighter than its 9 px neighbourhood by local_dl. gloss = their share of the solid pixels.",
+  "spec_l": 90,
+  "spec_c": 12,
+  "local_dl": 8
+ },
+ "batch": {
+  "_about": "Batch consistency (one surface, one run): per feature, the batch is split in two by 1-D 2-means; the smaller group is flagged when the gap between the groups is over min_gap (the feature's own units) and over sep times the spread inside the groups. A batch under min_items is not judged. The odd group is at most max_odd of the batch (a feature may set its own). The lid is the top lid_band of the piece; lids are compared by CIEDE2000 (lid_de), on a named surface or --batch only unless lid_in_folders (a folder holds bowls and jars; one shelf holds one lid family).",
+  "min_items": 3,
+  "sep": 3.0,
+  "lid_band": 0.14,
+  "lid_de": 22.0,
+  "lid_in_folders": false,
+  "max_odd": 0.4,
+  "features": {
+   "gloss": {"min_gap": 0.012, "label": "gloss (share of hard white specular pixels)"},
+   "chroma": {"min_gap": 18.0, "max_odd": 0.2, "label": "saturation (mean chroma of the solid pixels)"},
+   "light": {"min_gap": 60.0, "label": "light direction (degrees)", "circular": true},
+   "spec_x": {"min_gap": 0.5, "label": "specular position (across the piece, -1 left to +1 right)"},
+   "halo": {"min_gap": 0.2, "label": "edge whiteness (share of near-white pixels on the outer edge)"},
+   "soft": {"min_gap": 0.08, "label": "soft alpha (share of see-through pixels: glass and edge treatment)"}
+  }
+ },
+ "batches": {
+  "_about": "Named batches: the pictures that stand on one surface together (one shelf, one worktop), judged as one batch in a --scan as well as their folder. Globs from the repo root.",
+  "chai-shelf": ["assets/cook/items/shelf-cook-paani-bare-f.webp", "assets/cook/items/shelf-cook-dudh-bare-f.webp", "assets/cook/items/shelf-cook-chai-bare-f.webp", "assets/cook/items/shelf-cook-khun-bare-f.webp", "assets/cook/items/shelf-elchi-jar-v2-f.webp", "assets/cook/items/shelf-aadu-jar-v2-f.webp", "assets/cook/items/shelf-lasan-jar-v2-f.webp", "assets/cook/items/shelf-loon-jar-v2-f.webp"]
+ },
+ "sizes": {
+  "_about": "Proportion (Zafar, 6 Nov, at launch: token size steps, never true relative sizes): a size class per item, its target the share of the slot (canvas) height the piece fills. Draft: L 100%, M ~90%, S at least ~80%; the final rule comes from the stove art run's report (task 5). Items are matched by glob (first match wins); an item with no class is not measured.",
+  "classes": {"L": 1.0, "M": 0.9, "S": 0.8},
+  "tolerance": 0.05,
+  "items": {}
+ },
+ "block": {
+  "_about": "The HOUSE LOOK lines artblock.py writes into every paste block (the colours themselves come from house above).",
+  "colours_note": "The big colours of a picture sit near these, in lighter or darker tones; a strong colour far from all of them is a note for the log, not a fail.",
+  "edge_line": "clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left.",
+  "sentence": "Use the attached colour strip only as the palette (tones of these colours; never draw the strip, swatches or any text). Clean edges, no white halo, no baked shadow, light from the upper left."
+ },
+ "scan": {
+  "_about": "What --scan skips: retina copies, any folder named in skip_dirs, and the second format of one picture (the webp is kept when a png or jpg of the same name sits beside it).",
+  "skip_dirs": [],
+  "skip_name": ["@2x", "-thumb", ".thumb"]
+ }
+}
