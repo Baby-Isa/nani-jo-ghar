@@ -1,10 +1,10 @@
 You're making 4 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. References come from GitHub by the screenshot route (MOVING IMAGES, step 1): nothing is ever needed from Zafar to start. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
 
 THE PAGE
-Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/vibrant-hopper-v3yexp/docs/design-language/art-plans/s17-juice-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-1f71c98a-wwowh8/docs/design-language/art-plans/s17-juice-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (SK, ST, TD, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
 
 WHERE FILES LIVE (all public; open nothing locally)
-RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/vibrant-hopper-v3yexp/
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/ccr-1f71c98a-wwowh8/
 Reference images, by the name the run order uses:
  style.png       RAW + sources/art/style-anchor-v1.png
  chai-glass.png  RAW + sources/art/s17-art1/wg-chai-glass-side-filling-v1.png
@@ -60,7 +60,7 @@ SAFETY RULES (always)
 HOW TO RUN EACH PROMPT
 1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
 2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
-3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
+3. Paste the text of its code box, word for word, and send.
 4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
 5. If it fails, redo it in a fresh chat with the same attachments, at most 2 redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong.
 6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
@@ -87,6 +87,10 @@ PASS/FAIL LIST (every image; any one of these is a fail)
 - A key background that isn't one flat mid-grey (a gradient, a floor, a shadow or haze on it).
 - Anything blue in the tea drops; any coin, confetti, star shape or sweet.
 - Sweets, lollies or biscuits; any religious marker.
+
+HOUSE LOOK (every image; judge it with the checks above)
+- House colours, from Sanzo Wada's A Dictionary of Color Combinations (combinations 283, 249, 311 and 200): Ochre Red (brick red), Carmine Red (dark red), Pompeian Red (dark red), Hay's Russet (maroon), Pale Burnt Lake (maroon), Sulpher Yellow (pale soft yellow), Ivory Buff (cream), Cream Yellow (light ochre), Olive Buff (light soft yellow), Ecru (stone), Olive Ocher (ochre), Yellow Ocher (light ochre), Cinnamon Rufous (cinnamon), Khaki (khaki), Dark Greenish Glaucous (light greyish green), Light Green Yellow (light yellow), Chromium Green (soft green), Venice Green (teal), Dark Medici Blue (dark greyish teal). The big colours of a picture sit near these, in lighter or darker tones; a strong colour far from all of them is a note for the log, not a fail.
+- Edge finish: clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left.
 
 THE LOG
 One line per kept image:

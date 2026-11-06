@@ -6,9 +6,9 @@
 pack: s17-juice
 title: 'The juice sprites: a sparkle, steam, drops of tea and a gold burst, in the game''s look'
 plan: docs/design-language/art-plans/s17-juice-art-plan.md
-plan_branch: claude/vibrant-hopper-v3yexp
+plan_branch: ccr-1f71c98a-wwowh8
 repo: Baby-Isa/nani-jo-ghar
-raw_branch: claude/vibrant-hopper-v3yexp
+raw_branch: ccr-1f71c98a-wwowh8
 dest: sources/art/s17-juice
 real_people: false
 approvals: "- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).

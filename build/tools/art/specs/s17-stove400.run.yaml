@@ -9,11 +9,13 @@
 pack: s17-stove400
 title: 'The stove family: one batch of shelf items, station heaps, kit and dishes (the chai shelf redo first)'
 plan: docs/design-language/art-plans/s17-stove400-art-plan.md
-plan_branch: claude/vibrant-hopper-v3yexp
+plan_branch: ccr-1f71c98a-wwowh8
 repo: Baby-Isa/nani-jo-ghar
-raw_branch: claude/vibrant-hopper-v3yexp
+raw_branch: ccr-1f71c98a-wwowh8
 dest: sources/art/s17-stove400
 real_people: false
+# The house swatch strip on every new picture (artblock.py HOUSE LOOK); it and the plan are on the branch above (6 Nov).
+house: {attach: true}
 approvals: |-
   - Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
   - No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
@@ -270,7 +272,7 @@ lines:
       N: "9"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. ginger chai, served, seen from directly above; 2. cardamom chai, served, seen from directly above; 3. mint chai, served, seen from directly above; 4. saffron chai (celebration), served, seen from directly above; 5. daar and rice, served, seen from directly above; 6. khichdi with kadhi, served, seen from directly above; 7. mung curry (mag nu saag), served, seen from directly above; 8. bajr ji maani with ghee, served, seen from directly above; 9. paratha, served, seen from directly above"
+      ITEMS: "1. a clear straight-sided glass of milky caramel-brown chai on a small plain steel saucer, a thin creamy skin on the tea, a few thin slivers of fresh pale yellow ginger lying on the saucer; 2. a plain white cup on a plain white saucer of milky caramel-brown chai with a little pale froth, two plump pale green cardamom pods on the saucer; 3. a clear straight-sided glass of lighter golden-brown milky chai with a sprig of fresh bright green mint leaves floating on top; 4. a small white cup with a thin gold rim on its matching saucer, pale golden-yellow milky chai with a few deep red-orange saffron threads floating on top; 5. a plain white plate: a mound of fluffy white long-grain rice on one side, beside it a small steel katori of runny golden-yellow daar topped with a few black mustard seeds and two green curry leaves; 6. a plain white plate: a soft grainy heap of pale yellow khichdi (rice and lentils cooked together) with a dot of melting ghee, beside it a small steel katori of smooth thin creamy-yellow yoghurt kadhi with curry leaves on top; 7. a plain steel bowl of whole green mung beans in a thick olive-brown gravy, a little chopped fresh coriander on top; 8. a plain white plate with one thick round hand-patted millet flatbread, grey-brown with darker toasted spots and finger marks, a small pool of golden melting ghee in its centre; 9. a plain white plate with two triangle-folded flaky flatbreads, golden-brown with crisp brown spots, their layers showing at the edges, glistening with ghee"
       EMPTY: "Every cell holds one item."
   TD02:
     prompt: TS
@@ -281,7 +283,7 @@ lines:
       N: "9"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. thepla, served, seen from directly above; 2. puri, served, seen from directly above; 3. potato chaat, served, seen from directly above; 4. sev puri, served, seen from directly above; 5. pani puri, served, seen from directly above; 6. chana bateta, served, seen from directly above; 7. vegetable samosas with chutney, served, seen from directly above; 8. chicken mishkaki, served, seen from directly above; 9. seekh kebabs, served, seen from directly above"
+      ITEMS: "1. a plain white plate with a stack of thin round flatbreads, pale golden with dark green flecks of fenugreek leaf and light brown spots, a small dab of red-orange mango pickle beside them; 2. a plain white plate of five small round golden puris, puffed up like little pillows, smooth and lightly blistered, overlapping in a ring; 3. a plain steel bowl of small boiled potato cubes dusted with red chilli, drizzled with dark brown tamarind chutney and bright green chutney, scattered with chopped red onion, red pomegranate seeds and coriander leaves; 4. a plain white plate of six flat round crisp golden puris in a ring, each topped with a little diced potato, drops of brown and green chutney and a small heap of fine yellow sev; 5. a plain steel plate with a ring of eight hollow round golden puri shells, a small hole broken in the top of each showing chickpeas inside, a small steel bowl of green minty water in the middle; 6. a plain steel bowl of round beige chickpeas and potato cubes in a thin tangy reddish-brown tamarind gravy, topped with chopped red onion and fresh coriander; 7. a plain white plate with three crisp golden-brown triangular samosas with blistered thin pastry, a small steel katori of bright green coriander chutney and a lemon wedge beside them; 8. a plain white plate with three steel skewers of chargrilled chicken chunks, orange-red from the marinade with dark grill marks, a lemon wedge and a few red onion rings beside them; 9. a plain white plate of four long smooth minced-lamb kebabs (no skewers), deep brown and charred along their length, lying side by side, with red onion rings and a lemon wedge"
       EMPTY: "Every cell holds one item."
   TK01:
     prompt: TS
@@ -391,7 +393,7 @@ lines:
       N: "9"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. masala omelette, served, seen from directly above; 2. scrambled egg and onion (mayai dungri), served, seen from directly above; 3. chips mayai, served, seen from directly above; 4. yellow naan buns, served, seen from directly above; 5. corn in coconut sauce (makai paka), served, seen from directly above; 6. corn fritters (makai na bhajia), served, seen from directly above; 7. mogo chips with chilli and lemon, served, seen from directly above; 8. chocolate birthday cake, served, seen from directly above; 9. strawberry cream cake, served, seen from directly above"
+      ITEMS: "1. a plain white plate with one round flat golden-yellow omelette, lightly browned at the edge, flecked with chopped red onion, tomato, green chilli and coriander; 2. a plain white plate of soft loose yellow scrambled-egg curds mixed with golden fried onion slices, a few green chilli rings and coriander; 3. a plain white plate with one thick round omelette with golden potato chips set inside it, the chips showing through the egg, a dab of red ketchup and a little chopped tomato and onion salad beside it; 4. a plain white plate of four round soft bread buns, golden-yellow with a glossy golden-brown top sprinkled with pale green fennel seeds; 5. a plain steel bowl of short round pieces of yellow corn cob sitting in a thick creamy pale-yellow coconut sauce, flecks of green chilli and coriander; 6. a plain white plate of small round crisp golden fritters studded with yellow corn kernels and green coriander, a small steel katori of green chutney beside them; 7. a plain white plate of thick chunky pale-golden cassava chips (fatter and paler than potato chips) dusted with red chilli powder and salt, two lemon wedges; 8. a round chocolate birthday cake on a plain white cake stand: smooth glossy dark-brown chocolate icing, a ring of piped chocolate-cream swirls round the edge, four slim plain candles (no writing, no sprinkles); 9. a round cake on a plain white cake stand, covered in smooth white whipped cream, a ring of halved red strawberries round the top edge and three whole strawberries in the middle"
       EMPTY: "Every cell holds one item."
   TD04:
     prompt: TS
@@ -402,7 +404,7 @@ lines:
       N: "9"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. mithai platter (celebration), served, seen from directly above; 2. pilau, served, seen from directly above; 3. biryani, served, seen from directly above; 4. kuku paka, served, seen from directly above; 5. bhajia with chutney, served, seen from directly above; 6. maru bhajia, served, seen from directly above; 7. kachumbari, served, seen from directly above; 8. khichro (meat, lentil and wheat), served, seen from directly above; 9. gos tarelo (meat curry), served, seen from directly above"
+      ITEMS: "1. a round plain steel platter with neat rows of mithai for a celebration: pale cream milk-fudge squares, round orange-yellow ladoos and glossy round brown gulab jamuns, a few pistachio slivers (no silver leaf); 2. a plain white plate heaped with warm brown spiced rice studded with whole spices (a cinnamon stick, cloves, cardamom pods), chunks of meat and golden potato pieces; 3. a plain white plate of fluffy rice in white and saffron-orange patches over chunks of chicken in thick red-brown masala, topped with crisp fried onions, a halved boiled egg and a golden potato half; 4. a plain steel bowl of chargrilled chicken pieces in a creamy yellow coconut curry, two halved boiled eggs and chopped coriander on top; 5. a plain white plate of round lumpy golden onion fritters with crisp frilly edges, a small steel katori of bright green coriander chutney beside them; 6. a plain white plate of thin flat potato slices in a crisp golden spiced batter, flecked with green chilli and coriander, a small steel katori of dark brown tamarind chutney beside them; 7. a plain steel bowl of fresh salad: chopped red tomato, thin red onion rings, green chilli rings and coriander leaves, a lime wedge on top; 8. a plain steel bowl of a thick smooth light-brown porridge-like stew of meat, wheat and lentils, topped with crisp golden fried onions, thin ginger strips, chopped coriander and a lemon wedge; 9. a plain steel bowl of tender lamb pieces in a thick dark reddish-brown onion and tomato masala, a sheen of oil at the edges, chopped coriander on top"
       EMPTY: "Every cell holds one item."
   TK04:
     prompt: TS
@@ -479,7 +481,7 @@ lines:
       N: "9"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. keema with peas, served, seen from directly above; 2. mogo in coconut, served, seen from directly above; 3. bharazi (pigeon peas in coconut), served, seen from directly above; 4. matoke, served, seen from directly above; 5. mandazi with chai, served, seen from directly above; 6. chevdo, served, seen from directly above; 7. dhokra, served, seen from directly above; 8. kadhi, served, seen from directly above; 9. masala fish, served, seen from directly above"
+      ITEMS: "1. a plain steel bowl of fine brown minced meat mixed with bright green peas, a light sheen of oil, chopped coriander on top; 2. a plain steel bowl of chunky white cassava pieces in a smooth creamy white coconut sauce, a few green chilli slices and coriander leaves; 3. a plain steel bowl of small round speckled beige-brown pigeon peas in a creamy pale-yellow coconut sauce, a little coriander on top; 4. a plain steel bowl of soft golden-yellow green-banana (plantain) chunks in a light orange tomato and onion gravy, a little coriander on top; 5. a plain white plate with three puffy golden-brown triangular fried breads (mandazi) beside a small clear glass of milky chai standing on the same plate; 6. a plain steel bowl of crunchy golden-yellow snack mix: thin fried potato sticks, rice flakes, peanuts, cashews, a few raisins, green curry leaves and green chilli slices; 7. a plain white plate of soft spongy pale yellow steamed savoury squares, topped with black mustard seeds, white sesame seeds, green chilli slices and chopped coriander; 8. a plain steel bowl of smooth thin pale yellow yoghurt curry, a swirl of golden ghee on top holding black mustard seeds, green curry leaves and one dried red chilli; 9. a plain white plate with two fried fish steaks coated in a deep orange-red masala with crisp edges, two lemon wedges and a few red onion rings"
       EMPTY: "Every cell holds one item."
   TD06:
     prompt: TS
@@ -490,7 +492,7 @@ lines:
       N: "7"
       GRID: "3 by 3"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. bhinda bateta (okra and potato), served, seen from directly above; 2. ringra bateta (aubergine and potato), served, seen from directly above; 3. raita, served, seen from directly above; 4. dates on a plate, served, seen from directly above; 5. dabeli, served, seen from directly above; 6. kalyo pau, served, seen from directly above; 7. vitumbua, served, seen from directly above"
+      ITEMS: "1. a plain steel bowl of dry-fried green okra rounds and turmeric-yellow potato cubes with specks of red chilli, no gravy; 2. a plain steel bowl of soft dark purple-brown aubergine pieces and potato cubes in a light red tomato masala, chopped coriander on top; 3. a plain steel bowl of thick white yoghurt with grated pale green cucumber stirred through, a dusting of red chilli and brown roasted cumin on top and one mint leaf; 4. a small plain white plate of glossy dark brown dates with wrinkled skins, one split open showing its stone; 5. a plain white plate with a soft round bread bun split and filled with red-brown spiced potato, its open edge thick with crunchy yellow sev, red pomegranate seeds and masala peanuts; 6. a plain white plate: a steel bowl of rich reddish-brown lamb and potato curry with a glossy layer of ghee on top, two soft white bread rolls beside the bowl; 7. a plain white plate of six small round puffed rice-and-coconut cakes, golden-brown domed tops with paler cream edges, in a ring"
       EMPTY: "The last 2 cells stay empty (plain ground)."
 parts:
 - id: A
@@ -531,7 +533,7 @@ checks:
     text: 'the sheet''s vessels and tools in a 3 by 3 grid in the order listed, seen from DIRECTLY above (round things perfect circles), each filling about 85% of its cell (a long tool lies diagonally corner to corner), empty and clean, the materials and light of the attached TB01; no shadow, one flat grey ground'
     judge: {aspect: [1, 1], bg: flat, pieces_min: 4}
   DISH:
-    text: 'the sheet''s dishes in a 3 by 3 grid in the order listed, each served on a plain white plate, a plain steel thali or in a plain steel bowl, seen from DIRECTLY above (rims perfect circles), each filling about 85% of its cell, appetising and clearly that dish; the light and finish of the attached TB01; no cutlery unless named; no shadow, one flat grey ground'
+    text: 'the sheet''s dishes in a 3 by 3 grid in the order listed, each served exactly as its line describes it (its vessel, its colours and the garnish that names it: a plain white plate, a plain steel plate, platter or bowl, or the glass, cup or cake stand the line names), seen from DIRECTLY above (rims perfect circles), each filling about 85% of its cell, appetising and clearly that dish (the four chais told apart by vessel, tea colour and garnish); the light and finish of the attached TB01; no cutlery unless named; no shadow, one flat grey ground'
     judge: {aspect: [1, 1], bg: flat, pieces_min: 4, sweets: true}
   FOOD:
     text: 'the sheet''s food in a 3 by 3 grid in the order listed, each seen from DIRECTLY above, loose (no board, no plate unless named), each filling about 70% of its cell, the heap look of the attached heaps; true food colours; light from the upper left; no shadow, one flat magenta ground'
