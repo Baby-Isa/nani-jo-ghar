@@ -246,6 +246,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * handling is the station's (S.tappable(b.knobHit, …)).
      */
     burner(S, hob, i, { who, flameR = 112, spread, state = "off" } = {}) {
+      if (Cook.sfx.preload) Cook.sfx.preload(["knob", "flame"]); // (CHAI-92: the knob's recorded sounds, in before the first turn)
       const { x, y } = hob.burners[i];
       const fy = hob.frontY;
       const off = spread != null ? spread : Math.min(58, hob.pitch * 0.2);
@@ -273,6 +274,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const b = { i, x, y, face, knob, kOff, kOn, knobHit, flameHi, flameLo, state: "off" };
       /** Turn the knob: off, high (the big flame ring) or low (the small one). */
       b.set = (st, quiet = false) => {
+        const was = b.state;
         b.state = st;
         // high: a quarter turn (the bar upright); low: further round, the bar on the diagonal (29 Sept:
         // at 180 the H6 knob's bar lay flat again and "low" read as "off")
@@ -282,7 +284,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: kOn, alpha: st === "off" ? 0 : 1, duration: 260 * t + 1 });
         S.tweens.add({ targets: flameHi, alpha: st === "high" ? 0.95 : 0, duration: 360 * t + 1 });
         S.tweens.add({ targets: flameLo, alpha: st === "low" ? 0.95 : 0, duration: 360 * t + 1 });
-        if (!quiet) Cook.sfx.click();
+        // CHAI-92 (Zafar's picks, 6 Nov, lab/juice.html): the gas knob's click (knob A, was the tiny "click" SH-196 found too quiet),
+        // and as it turns on from off, the flame catching 180 ms later (flame B)
+        if (!quiet) {
+          Cook.sfx.knob();
+          if (was === "off" && st !== "off") Cook.sfx.flame({ delay: 180 });
+        }
       };
       if (state !== "off") b.set(state, true);
       return b;

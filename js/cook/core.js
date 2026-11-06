@@ -448,6 +448,17 @@
     pourLoop: () => fxLoop("pour"),
     sizzleLoop: () => fxLoop("sizzle"),
     boilLoop: () => fxLoop("boil"),
+    // CHAI-92 / SH-226 (Zafar's picks, 6 Nov, lab/juice.html): the recorded sounds (js/shared/sfx.js FILES), through the voice gate
+    knob: () => fx("knob"),
+    flame: (o) => fx("flame", o),
+    green: () => fx("green"),
+    glass: () => fx("glass"),
+    settle: () => fx("settle"),
+    sparkle: () => fx("sparkle"),
+    drop: () => fx("drop"),
+    simmerLoop: (volume) => (global.Sfx && global.Sfx.loop ? global.Sfx.loop("simmer", { quiet: !ctx, volume }) : { stop() {}, pitch() {}, none: true }),
+    /** fetch and decode recorded sounds now (a station's start), so each plays on its moment */
+    preload: (names) => (global.Sfx && global.Sfx.preload ? global.Sfx.preload(names) : Promise.resolve()),
   };
 
   /* ---------------- misc ---------------- */

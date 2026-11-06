@@ -407,17 +407,26 @@
       // the stream stops: its tail falls into the glass, then a last drop from the spout
       if (o.streamWipe) wipeTo(0, 104, 460 / sp, "tail");
       else stream.classList.add("ending");
-      const drop = el("i", "wm-drop", box);
       const sl0 = parseFloat(stream.style.left) + parseFloat(stream.style.width) / 2;
       const st0 = parseFloat(stream.style.top);
-      const ds = Math.max(4, g * 0.045);
-      drop.style.cssText = `left:${sl0 - ds / 2}px;top:${st0}px;width:${ds}px;height:${ds * 1.25}px`;
-      if (!o.instant && drop.animate)
-        drop.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: `translateY(${parseFloat(stream.style.height) * 0.95}px)`, opacity: 1, offset: 0.92 }, { transform: `translateY(${parseFloat(stream.style.height)}px)`, opacity: 0 }], { duration: 420 / sp, delay: 160 / sp, easing: "cubic-bezier(.5,0,1,1)", fill: "both" });
+      const sh = parseFloat(stream.style.height);
+      // CHAI-92 (Zafar's pick, 6 Nov, lab/juice.html "last drop 1"): the painted last drop (art run s17-juice, js/shared/juice.js) falls
+      // from the spout into the tea and lands with its crown splash and its plink (drop B, at twice the lab's level); under reduced
+      // motion it fades where it lands. Where the juice kit is not on the page, the code-drawn drop as before
+      let drop = null;
+      if (root.Juice && root.Juice.drop && !o.instant)
+        wait(160).then(() => alive() && root.Juice.drop(box, sl0, st0, st0 + sh, { w: Math.max(8, g * 0.11), ms: 420 / sp, splash: "crown", onLand: () => sfx("drop") }));
+      else {
+        drop = el("i", "wm-drop", box);
+        const ds = Math.max(4, g * 0.045);
+        drop.style.cssText = `left:${sl0 - ds / 2}px;top:${st0}px;width:${ds}px;height:${ds * 1.25}px`;
+        if (!o.instant && drop.animate)
+          drop.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: `translateY(${sh * 0.95}px)`, opacity: 1, offset: 0.92 }, { transform: `translateY(${sh}px)`, opacity: 0 }], { duration: 420 / sp, delay: 160 / sp, easing: "cubic-bezier(.5,0,1,1)", fill: "both" });
+      }
       if (v.pour) vim.src = v.src;
       tiltTo(LIFT, 320);
       await wait(600);
-      drop.remove();
+      if (drop) drop.remove();
       stream.classList.remove("on", "flow", "ending");
     };
 

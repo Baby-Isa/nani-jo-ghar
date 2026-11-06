@@ -518,7 +518,7 @@
   }
   function fileLoop(name, opts) {
     const F = FILES[name];
-    const none = { stop() {}, pitch() {} };
+    const none = { stop() {}, pitch() {}, none: true }; // (none: nothing plays yet; the caller may ask again)
     if (Sfx.muted || opts.quiet) return none;
     const buf = bufs[F.file];
     if (!buf) {

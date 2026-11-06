@@ -5030,7 +5030,8 @@
      "assets/cook/bg/bg-cook-*-1600.webp",
      "assets/cook/worktop-s08c/*",
      "assets/cook/worktop-s17/*",
-     "assets/shared/panel/*"
+     "assets/shared/panel/*",
+     "assets/shared/juice/bu-*.webp"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
@@ -5143,7 +5144,10 @@
       "assets/cook/items-s14/glass/glass-fill-black-*-s14.webp",
       "assets/cook/items-s08c/teaspoon/*",
       "assets/shared/fx-s11/steam-s11.webp",
-      "assets/shared/fx-s11/sparkle-s11.webp"
+      "assets/shared/fx-s11/sparkle-s11.webp",
+      "assets/shared/juice/sk-*.webp",
+      "assets/shared/juice/st-*.webp",
+      "assets/shared/juice/td-*.webp"
      ],
      "prefetch": [
       "assets/cook/items-s14/chai-pan/pan-empty-s14.webp",
