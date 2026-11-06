@@ -1,7 +1,7 @@
 You're {{VERB}} {{COUNT}} images in ChatGPT for a children's game called Nani jo Ghar and {{OPENING}} {{WATCH}}
 
 THE PAGE
-Open {{PAGE_URL}} and read section 5, "The prompts"{{PEOPLE_TABLE}}. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+Open {{PAGE_URL}} and read section 5, "The prompts"{{PEOPLE_TABLE}}. Every prompt there has an ID ({{PROMPT_IDS}}) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
 
 WHERE FILES LIVE (all public; open nothing locally)
 RAW = {{RAW}}
@@ -28,7 +28,7 @@ SAFETY RULES (always)
 HOW TO RUN EACH PROMPT
 1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
 2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
-3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
+3. Paste the text of its code box{{STEP3_SLOTS}}, and send.
 4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
 5. {{REDO_RULE}}
 6. {{STEP6}}

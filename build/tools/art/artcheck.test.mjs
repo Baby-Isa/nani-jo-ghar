@@ -173,5 +173,9 @@ print("\\n=====\\n".join([a, b, c]))`;
   assert.match(attach, /house-swatch\.png RAW \+ build\/tools\/art\/data\/house-swatch\.png/);
   assert.match(attach, /The one addition allowed: the HOUSE LOOK sentence/);
   assert.doesNotMatch(none, /HOUSE LOOK/);
+  // The header names the pack's own prompt IDs, and step 3 cites no PEOPLE table for a pack without people (stove-400 second read, 6 Nov)
+  assert.match(plain, /Every prompt there has an ID \(ST, SL, PV\)/);
+  assert.match(plain, /3\. Paste the text of its code box, word for word, and send\./);
+  assert.doesNotMatch(plain, /S1, W1, K1|the PEOPLE table's/);
   assert.match(readFileSync(join(HERE, "artjudge.py"), "utf8"), /r\.flag \+= \["look: " \+ x/, "the art judge carries the look lines");
 });
