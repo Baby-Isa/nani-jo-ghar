@@ -4,7 +4,7 @@
 // files are untouched.
 //   COOK_TEST_PORT=8831 flock -w 1800 /tmp/njg-browser-8831.lock node build/tools/fonts/shoot.mjs
 //      [--options A,B,C,D] [--sizes 740x320,930x430,1280x665,1920x1080,971x318] [--screens chai,shelf4,wm,door,clinic]
-//      [--out build/screenshots/fonts] [--all-states] [--dpr 2]
+//      [--out build/screenshots/fonts] [--all-states] [--dpr 2] [--b: the options of options-b.mjs, the font sample of 6 Nov b]
 //   chai    chai L1 played fair (the order card with the bubble, the shelf, the end screen's words); --all-states keeps every state
 //   shelf4  chai L4 from a fresh save: the crowded shelf (ten pills)      wm  the word moment's two cards (its lab page, at the end)
 //   door    the morning door, its lines and Ha!/Na      clinic  the waiting room (W1), its first state
@@ -16,7 +16,9 @@ import { fileURLToPath } from "node:url";
 import { startServer, launch, newPage, SIZES, BASE, sleep, FONTS_DIR } from "../../sandbox/lib/env.mjs";
 import { cookStation } from "../../sandbox/flows/cook.mjs";
 import { clinicFlow } from "../../sandbox/flows/clinic.mjs";
-import { OPTIONS } from "./options.mjs";
+import { OPTIONS as OPTS_A } from "./options.mjs";
+import { OPTIONS as OPTS_B } from "./options-b.mjs";
+const OPTIONS = process.argv.includes("--b") ? OPTS_B : OPTS_A;
 import { pageInventory } from "./inventory.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
