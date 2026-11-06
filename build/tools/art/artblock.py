@@ -241,7 +241,9 @@ def load_redo(path, spec, lines, plan_ids):
 # The house look (Zafar's yes, 6 Nov; build/reports/s17-palette-review.md, s17-fonts-review.md "Gemini's critique"): every
 # block names the house colours in words and the edge finish, for the judge. A spec with `house: {attach: true}` also
 # attaches the house swatch strip (data/house-swatch.png, plain blocks) to every new picture and adds one sentence to the
-# prompt; `house: false` leaves the section out.
+# prompt; `house: false` leaves the section out. Zafar, 6 Nov: new items that need colours outside the house take one Wada
+# combination that suits them, `house: {attach: true, combination: N}` (any of the book's 348): the block names that
+# combination's colours and attaches its strip (data/swatches/wada-N.png, made here when missing; push it before the run).
 SWATCH = "build/tools/art/data/house-swatch.png"
 SWATCH_NAME = "house-swatch.png"
 
@@ -251,6 +253,29 @@ def house_attach(spec):
     return isinstance(h, dict) and bool(h.get("attach"))
 
 
+def house_combo(spec):
+    """The Wada combination a spec picks for its pack (house: {combination: N}), or None for the house family."""
+    h = spec.get("house", True)
+    if isinstance(h, dict) and h.get("combination") is not None:
+        n = int(h["combination"])
+        if n not in C.combos():
+            raise SystemExit("house.combination %d is not one of Wada's combinations (1-%d)" % (n, max(C.combos())))
+        return n
+    return None
+
+
+def swatch_ref(spec):
+    """(name, repo path) of the strip a block attaches: the house's, or the pack's combination's (written when missing)."""
+    n = house_combo(spec)
+    if n is None:
+        return SWATCH_NAME, SWATCH
+    rel = "build/tools/art/data/swatches/wada-%d.png" % n
+    if not os.path.exists(os.path.join(REPO, rel)):
+        os.makedirs(os.path.dirname(os.path.join(REPO, rel)), exist_ok=True)
+        C.swatch(os.path.join(REPO, rel), combo=n)
+    return "wada-%d.png" % n, rel
+
+
 def house_text(spec):
     """The HOUSE LOOK section (with its blank line before it), or "" when the spec says house: false."""
     if spec.get("house", True) is False:
@@ -258,13 +283,17 @@ def house_text(spec):
     R = C.rules()
     b = R["block"]
     combos = R["house"]["combinations"]
+    n = house_combo(spec)
     out = ["", "HOUSE LOOK (every image; judge it with the checks above)",
            "- House colours, from Sanzo Wada's A Dictionary of Color Combinations (combinations %s): %s. %s"
            % (", ".join(str(c) for c in combos[:-1]) + " and %s" % combos[-1], C.house_words(R), b["colours_note"]),
            "- Edge finish: %s" % b["edge_line"]]
+    if n is not None:
+        out[2] = ("- This pack's colours, from Sanzo Wada's A Dictionary of Color Combinations (combination %d, picked for these items "
+                  "where the house colours do not suit them): %s. %s" % (n, C.combination_words(n), b["colours_note"]))
     if house_attach(spec):
         out.append("- Attach %s (see the references) as the last file of every new picture, never of an edit, and add this one sentence at "
-                   "the end of the pasted prompt, word for word: \"%s\"" % (SWATCH_NAME, b["sentence"]))
+                   "the end of the pasted prompt, word for word: \"%s\"" % (swatch_ref(spec)[0], b["sentence"]))
     return "\n".join(out) + "\n"
 
 
@@ -319,7 +348,8 @@ def build(spec, redo_path=None):
     else:
         refs = "\n".join(" %s RAW + %s" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
     if house_attach(spec):
-        refs += "\n %s RAW + %s (the house swatch strip: see HOUSE LOOK)" % (SWATCH_NAME.ljust(w + 1), SWATCH)
+        sn, sp = swatch_ref(spec)
+        refs += "\n %s RAW + %s (the %s swatch strip: see HOUSE LOOK)" % (sn.ljust(w + 1), sp, "house" if house_combo(spec) is None else "pack's colour")
     check_ids = sorted({l["check"] for l in used}, key=lambda c: list(spec["checks"]).index(c) if c in spec["checks"] else 999)
     allc = dict(spec["checks"])
     allc.update({k: v for k, v in extra_checks.items()})
@@ -383,7 +413,8 @@ def reachable(spec):
     br = spec["raw_branch"]
     refs = dict(spec["refs"])
     if house_attach(spec):
-        refs[SWATCH_NAME] = SWATCH
+        sn, sp = swatch_ref(spec)
+        refs[sn] = sp
     for k, v in refs.items():
         ok = subprocess.run(["git", "-C", REPO, "cat-file", "-e", "origin/%s:%s" % (br, v)], capture_output=True).returncode == 0
         if not ok:

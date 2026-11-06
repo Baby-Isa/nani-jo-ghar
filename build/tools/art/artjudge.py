@@ -255,6 +255,7 @@ def look(r, rgba, prof):
     r.look = res
     r.info["look"] = {"colours": ["%s %.0f%% %s ΔE%.0f%s" % (c["hex"], c["share"] * 100, c["wada"]["name"], c["wada"]["de"], " house" if c["in_house"] else "") for c in res.get("colours", [])[:4]]}
     r.fail += ["look: " + x for x in res["fail"]]
+    r.fail += ["look: " + x for x in res.get("exception", [])]  # a colour the book lacks: Zafar decides, on the block until he does
     r.flag += ["look: " + x for x in res["flag"]]
 
 

@@ -11,7 +11,7 @@
 
 ## 1. Style
 
-**In one paragraph:** a stylised 3D animated-feature look, the kind of frame you'd see in a modern family film. Soft global illumination and warm sunlight; believable materials (marble with warm veins, brushed steel, polished brass, pale oak, cotton and linen, glossy tomato skin, matte flour); no outlines. Shapes are simplified and slightly chunky, with clean surfaces and restrained micro-detail, so every item reads at 90 px on a phone. Faces are stylised, not realistic: big expressive eyes, soft rounded forms, simple readable mouths, a small nose, smooth skin with rosy cheeks. The home is a **modern kitchen with Kutch accents** (limewash, marble, sage cabinets, brass, mirror-work, ajrakh); the bazaar may be more traditional. Modern throughout, culture as a hint; the language is the main cultural thing.
+**In one paragraph:** a stylised 3D animated-feature look, the kind of frame you'd see in a modern family film. Soft global illumination and warm sunlight; believable materials (white marble with quiet grey veins, brushed steel, polished brass, walnut, cotton and linen, glossy tomato skin, matte flour); no outlines. Shapes are simplified and slightly chunky, with clean surfaces and restrained micro-detail, so every item reads at 90 px on a phone. Faces are stylised, not realistic: big expressive eyes, soft rounded forms, simple readable mouths, a small nose, smooth skin with rosy cheeks. The home is a **modern kitchen with Kutch accents** (limewash, marble, sage cabinets, brass, mirror-work, ajrakh); the bazaar may be more traditional. Modern throughout, culture as a hint; the language is the main cultural thing.
 
 **Set dressing: restraint (decided with the family, 24 Sept 2026).** Zafar's wife: "don't do too much, it will look old again." The game is modern-looking with hints and nods to East Africa and Kutch, never a caricature of either. **At most 1–2 cultural nods per scene**, rotated between scenes and visits rather than all shown at once, and introduced gradually as the game goes on. Never clutter. Full object list: `docs/archive/art/Asset Building Plan.md`, section 6.
 
@@ -61,9 +61,9 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Marigold | Warm yellow-orange | `#E8A33A` | Turmeric, daar, celebrations (petals), highlights |
 | Indigo | Ajrakh blue | `#2E3A6E` | Ajrakh prints, spice cupboard back, calm UI accents |
 | Limewash cream | Walls (lit) | `#EFE3D3` | Home walls; `#D3B196` in shade |
-| Marble | Warm white | `#FAE5D4` | Worktops, island top |
+| Marble | White, never yellowed (Zafar, 6 Nov) | `#EDECEF` | Worktops, island top |
 | Sage | Cabinet green | `#9CA78A` | Cabinets, doors |
-| Pale oak | Shelves, island front | `#D1874D` / `#C38355` | Wood |
+| Walnut | Every wooden thing: lids, boards, handles, trays (Zafar, 6 Nov) | `#4B3317` to `#7C4226` (Wada's Vandyke Brown to Brown) | Wood; never light oak or pine |
 | Brass | Warm gold | `#CB9847` | Pots, knobs, handles, lanterns, Nani's rings |
 | Steel | Neutral with warm reflections | `#B9B4AC` | Pans, thali, katori, dabbas |
 | Terracotta | Earth | `#B8643E` | Bazaar, clay pots, plants |
@@ -71,6 +71,8 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Hands (skin) | One tone, Zafar's own: a warm light tan, **not orange, not saturated** (sampled from his photos, 24 Sept 2026) | Midtone `#C49A78`, highlights `#D8B894`, shadows `#A07A60` (daylight face sample `#BE826B`) | Every hand sprite (section 7); no variants for now. The generator drifts orange (round 3 came out `#D3833E`–`#DE9351`), so check the sampled hex and colour-correct in post if needed |
 
 **Rules:**
+- **One Wada combination per item (Zafar, 6 Nov).** All of an item's main colours come from one combination in Sanzo Wada's *A Dictionary of Color Combinations* (any of the 348; the house's are 283, 249, 311 and 200), in lighter or darker tones. Whites, greys and near-black are the ground and free. An item that mixes combinations is redone; a colour the book lacks is an exception Zafar decides. New items that need colours outside the house take one combination that suits them, and its strip goes into the run. `artcolour.py` checks it (thresholds in `build/tools/art/data/look-rules.json`).
+- **Walnut wherever there is wood** (lids, boards, handles, trays).
 - **Reds belong to Nani.** Keep large red areas out of the backgrounds behind her head (curtains, frames), so she always pops.
 - **Tappable items get the most saturation in the frame.** Backgrounds are lighter and calmer than what sits on them.
 - **One accent pattern per surface.** A tiled splashback or an ajrakh cushion, not both in the same small area.
@@ -89,7 +91,8 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 **Rule: a scene's backgrounds come in every lighting state it uses.** Same camera, same layers (section 5), so a background painted for day and reused at night is a straight relight, not a redraw: the worktop, shelves and occluders stay in the same place, only the light, shadows and any lamps/lanterns change. A scene that only ever plays in daylight needs only the day background.
 
 **Shadow rules:**
-- **One light direction per scene.** Every sprite's highlights and shadows agree with its background.
+- **One light direction per scene.** Every sprite's highlights and shadows agree with its background. A sprite lit from outside the upper left is a FAIL, on the block or in the redo pipeline (Zafar, 6 Nov; people are judged by eye).
+- **One batch per surface.** A batch difference is a problem only if you can tell (Zafar, 6 Nov): the tool flags it, an eye on its contact sheet decides.
 - **Everything resting on a surface has a contact shadow** where it touches: a tight dark core plus a soft falloff towards the lower right.
 - **Nothing floats.** An item without a contact shadow is a reject.
 - **Sprites carry no cast shadow of their own** unless they come from an edit-in-place cut (section 5), where the shadow is kept as a separate layer. Otherwise code draws the contact shadow (a soft multiply ellipse, offset down-right).
@@ -129,50 +132,21 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 ---
 
-## 4. Scale reference
+## 4. Size classes (Zafar, 6 Nov: no true sizes)
 
-**Unit:** the player's reference hand, a child's right hand, **13 cm** from wrist crease to middle fingertip. Nani's hand is 18 cm.
+Items are never drawn to true relative size. Each item gets a size class, the share of its slot's height the piece fills:
 
-**How scale is kept:** each asset in the asset list carries a real size in cm (`size_cm`, longest visible dimension), and each scene records its own pixels per cm, measured from a known object in the background (the board, the hob, a shelf). Code scales sprites from these numbers. **(provisional, not yet in the code)**
+| Class | Fills | For |
+|---|---|---|
+| **L** | 100% | Tall or big things: bottles, jugs, cartons, pans, big jars |
+| **M** | 90% | Jars, tins, bowls |
+| **S** | 81% | Small things: a katori, a lemon, a small spice jar |
 
-| Item | Real size (cm) | × hand | Notes |
-|---|---|---|---|
-| Cumin / mustard seed | 0.3–0.5 | 0.03 | Never a sprite on its own: always a heap in a katori or a pinch |
-| Cardamom pod (elchi) | 1.5 | 0.1 | Never a sprite on its own: a small heap in a katori |
-| Garlic clove | 2.5 | 0.2 | |
-| Dough ball (per maani) | 5 | 0.4 | |
-| Garlic bulb | 6 | 0.45 | |
-| Lemon | 6 | 0.45 | |
-| Chai glass (cutting glass) | 6 wide, 9 tall | 0.7 | |
-| Tomato | 7 | 0.55 | |
-| Onion | 8 | 0.6 | |
-| Potato | 8 | 0.6 | |
-| Green chilli | 8 long | 0.6 | |
-| Katori (small steel bowl) | 9 | 0.7 | Default spice container |
-| Samosa | 9 per side | 0.7 | |
-| Tea tin | 9 | 0.7 | |
-| Tadka pan (vaghariyu) | 12 across | 0.9 | Plus handle |
-| Masala dabba (spice box) | 20 across | 1.5 | Seven katoris inside |
-| Milk jug | 10 wide, 18 tall | 1.4 | Pantry faults had it the same size as cardamom |
-| Chapati / maani (rolled) | 18–20 | 1.5 | |
-| Saucepan (chai) | 16 across, handle 18 | 1.2 + handle | |
-| Daar pot | 22 across | 1.7 | |
-| Chakla (rolling board) | 25 across | 1.9 | |
-| Tawa | 26 across, plus handle | 2.0 | |
-| Knife | 28 long | 2.1 | Tool sprite, sits in the B1 grip |
-| Ladle / spatula | 30 long | 2.3 | |
-| Sekelo skewer | 30 long | 2.3 | |
-| Thali | 30 across | 2.3 | |
-| Rolling pin (velan) | 35 long | 2.7 | Thin and tapered, the Gujarati style |
-| Two-burner hob | 60 × 50 | 4.6 | |
-| Zazu (grey cat, 1) | about 38 long without tail | 3 | About 85% of Simba, leaner |
-| Simba (black cat, 5) | about 45 long without tail, 25 at the shoulder | 3.5 | |
-| Island top | 90 high | 7 | Nani (155 cm) shows from the waist up; Ali (tall and lanky for his age, about 130 cm) from the chest up |
+L 100%, M 90%, S 81%: equal steps, each ×0.9. **The floor:** the smallest piece is at least 40 CSS px high on the smallest phone (740x320), so a slot there is at least 50 CSS px high. Thresholds and the per-item classes: `build/tools/art/data/look-rules.json` (`sizes`); `artcolour.py --size-class` checks a picture, `--slot-css` a slot.
 
 **Readability rules:**
-- **Minimum tap target: about 90 px** on the 1600×900 stage. Anything smaller than that at true scale comes in a container (katori, tin, jar) or is shown as a heap.
-- **Readability boost:** small items may be drawn up to 1.5× true scale. **The order of sizes never inverts**: cardamom is never bigger than garlic, and garlic never bigger than the milk jug.
-- **(Parked, H13.) First-person hands are drawn at 1.2× the worktop scale** (they're nearer the camera). Every hand uses the same factor.
+- **Minimum tap target: about 90 px** on the 1600×900 stage. Anything smaller comes in a container (katori, tin, jar) or as a heap.
+- **The order never inverts:** a smaller thing is never in a bigger class than a bigger thing on the same surface.
 
 ---
 

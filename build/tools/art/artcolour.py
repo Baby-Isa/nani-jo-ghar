@@ -163,6 +163,60 @@ def wada():
     return rows, labs
 
 
+@functools.lru_cache(maxsize=1)
+def combos():
+    """Wada's combinations: {combination id: [indices of its colours in wada()]} (348 of 2 to 4 colours)."""
+    rows, _ = wada()
+    out = {}
+    for i, c in enumerate(rows):
+        for k in c["combos"]:
+            out.setdefault(int(k), []).append(i)
+    return out
+
+
+def combination_words(combo):
+    """One combination's colours as one line of words: name (plain words)."""
+    rows, labs = wada()
+    return ", ".join("%s (%s)" % (rows[i]["name"], words(labs[i])) for i in combos()[int(combo)])
+
+
+def palette_fit(cols, R=None, name=""):
+    """Zafar's one-palette rule (6 Nov): every main colour of an item near a colour of ONE Wada combination. cols: the
+    main colours ({lab, share, chroma}). Returns {main, combo, colours, fit, missing, off, allowed}: combo is the best
+    combination (every main colour covered, the tightest; else the most share covered), off the main colours over
+    exception_de from every Wada colour (an EXCEPTION), allowed Zafar's word when the file is on palette.allow."""
+    R = R or rules()
+    P, kL = R["palette"], R["colour"]["kL"]
+    rows, labs = wada()
+    tinted = [c for c in cols if c["chroma"] >= P["neutral_chroma"] and c["lab"][0] >= P["dark_l"]]
+    tot = sum(c["share"] for c in tinted)
+    main = [dict(c, tshare=c["share"] / tot) for c in tinted if tot and c["share"] / tot >= P["main_share"]]
+    rel = os.path.relpath(os.path.abspath(name), REPO) if name else ""
+    allowed = next((v for g, v in P.get("allow", {}).items() if not g.startswith("_") and rel and (fnmatch.fnmatch(rel, g) or fnmatch.fnmatch(os.path.basename(rel), g))), None)
+    out = {"main": [], "combo": None, "colours": [], "fit": True, "missing": [], "off": [], "allowed": allowed}
+    if not main:
+        return out
+    D = de2000(np.array([c["lab"] for c in main], float)[:, None], labs[None], kL=kL)
+    near = D <= P["combo_de"]
+    sh = np.array([c["tshare"] for c in main])
+    best = None
+    for k, idx in combos().items():
+        cov = near[:, idx].any(1)
+        worst = float(D[:, idx].min(1).max())
+        key = (bool(cov.all()), float(sh[cov].sum()), -worst)
+        if best is None or key > best[0]:
+            best = (key, k, cov)
+    (full, _, _), k, cov = best
+    for c, d, ok in zip(main, D, cov):
+        i = int(d.argmin())
+        out["main"].append({"hex": c["hex"], "share": round(c["tshare"], 3), "words": c.get("words", ""), "nearest": rows[i]["name"], "de": round(float(d[i]), 1), "in_combo": bool(ok)})
+    out["combo"], out["fit"] = k, full
+    out["colours"] = [rows[i]["name"] for i in combos()[k]]
+    out["missing"] = [m["hex"] for m in out["main"] if not m["in_combo"]]
+    out["off"] = [m for m in out["main"] if m["de"] > P["exception_de"]]
+    return out
+
+
 def house(R=None):
     R = R or rules()
     rows, _ = wada()
@@ -176,10 +230,11 @@ def house_words(R=None):
     return ", ".join("%s (%s)" % (rows[i]["name"], words(labs[i])) for i in house(R))
 
 
-def swatch(out, R=None, w=1200, h=160):
-    """The house swatch strip: plain blocks, no text (a reference ChatGPT must not copy letters from)."""
+def swatch(out, R=None, w=1200, h=160, combo=None):
+    """The house swatch strip (or one Wada combination's, combo): plain blocks, no text (a reference ChatGPT must not
+    copy letters from)."""
     rows, _ = wada()
-    idx = house(R)
+    idx = combos()[int(combo)] if combo is not None else house(R)
     im = Image.new("RGB", (w, h), (255, 255, 255))
     d = ImageDraw.Draw(im)
     step = w / len(idx)
@@ -493,6 +548,27 @@ def gloss(Lab, op, R):
     return round(float(g), 4), round(float(((sx - cx) / hw).mean()), 2)
 
 
+def wood(res, name, R):
+    """What reads as light wood (look-rules.json "wood"): the lid of a lidded item by name, or a main colour of an item
+    whose name says wood; None when nothing does."""
+    W = R.get("wood")
+    if not W or not name:
+        return None
+    base = os.path.basename(name).lower()
+
+    def light_wood(L):
+        h, c = math.degrees(math.atan2(L[2], L[1])) % 360, math.hypot(L[1], L[2])
+        return W["hue"][0] <= h <= W["hue"][1] and W["l"][0] <= L[0] <= W["l"][1] and W["c"][0] <= c <= W["c"][1]
+    lid = res["info"].get("lid")
+    if lid and any(n in base for n in W["lid_names"]) and light_wood(lid):
+        return "the lid or top (%s)" % words(lid)
+    if any(n in base for n in W["names"]):
+        hits = [c for c in res.get("colours", []) if c["share"] >= W["share"] and light_wood(c["lab"])]
+        if hits:
+            return "%s %s (%.0f%% of the piece)" % (hits[0]["hex"], hits[0]["words"], hits[0]["share"] * 100)
+    return None
+
+
 def size_class_of(path, R):
     rel = os.path.relpath(os.path.abspath(path), REPO)
     for pat, cls in R["sizes"]["items"].items():
@@ -505,7 +581,7 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     """Every per-picture measure on one picture (straight-alpha RGB 0..255, alpha 0..1). Returns a result dict with
     `fail` and `flag` lists in the judge's words; artjudge.py calls this on its keyed cut-outs."""
     R = R or rules()
-    res = {"file": name, "fail": [], "flag": [], "info": {}}
+    res = {"file": name, "fail": [], "flag": [], "exception": [], "info": {}}
     Lab = lab(rgb)
     cutout = bool((alpha < 0.05).mean() > 0.02)
     res["cutout"] = cutout
@@ -519,14 +595,24 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         Lc = c["lab"]
         chroma = math.hypot(Lc[1], Lc[2])
         near, hs = match(Lc, R)
-        row = {"hex": hexof(lab_to_rgb(Lc)), "share": round(c["share"], 3), "words": words(Lc), "neutral": chroma < R["colour"]["neutral_chroma"] or Lc[0] < R["colour"]["dark_l"],
+        row = {"hex": hexof(lab_to_rgb(Lc)), "lab": [round(float(v), 2) for v in Lc], "share": round(c["share"], 3), "words": words(Lc), "neutral": chroma < R["colour"]["neutral_chroma"] or Lc[0] < R["colour"]["dark_l"],
                "wada": near, "house": hs, "in_house": hs["de"] <= R["house"]["house_de"], "chroma": round(chroma, 1),
                "hue": round(math.degrees(math.atan2(Lc[2], Lc[1])) % 360)}
         cols.append(row)
-        if not row["neutral"] and c["share"] >= R["colour"]["off_palette_share"] and near["de"] > R["colour"]["off_palette_de"]:
-            res["flag"].append("off-palette: %s %s (%.0f%% of the piece) is ΔE %.0f from the nearest Wada colour (%s)"
-                               % (row["hex"], row["words"], c["share"] * 100, near["de"], near["name"]))
     res["colours"] = cols
+    # one palette per item (Zafar, 6 Nov): all the main colours from ONE Wada combination; a colour the book lacks is his call
+    pf = palette_fit(cols, R, name)
+    res["palette"] = pf
+    if pf["allowed"]:
+        pass
+    elif pf["off"]:
+        res["exception"].append("palette exception: %s fit%s no Wada colour (nearest %s): no combination holds %s; Zafar decides"
+                                % (", ".join("%s %s (%.0f%% of its colour)" % (m["hex"], m["words"], m["share"] * 100) for m in pf["off"]),
+                                   "s" if len(pf["off"]) == 1 else "", ", ".join("%s ΔE %.0f" % (m["nearest"], m["de"]) for m in pf["off"]),
+                                   "it" if len(pf["off"]) == 1 else "them"))
+    elif not pf["fit"]:
+        res["fail"].append("palette: no one Wada combination holds its main colours; the nearest, %d (%s), lacks %s: recolour within one combination"
+                           % (pf["combo"], ", ".join(pf["colours"]), ", ".join("%s %s (%.0f%%, nearest %s)" % (m["hex"], m["words"], m["share"] * 100, m["nearest"]) for m in pf["main"] if not m["in_combo"])))
     tinted = [c for c in cols if not c["neutral"]]
     res["info"]["house_share"] = round(sum(c["share"] for c in tinted if c["in_house"]) / max(1e-6, sum(c["share"] for c in tinted)), 2) if tinted else None
     # a rainbow (Fable, 6 Nov: the drop machine's RGBY tubes, the kite): several strong colours, none of them the house's
@@ -553,6 +639,10 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     top[int(ys.min() + R["batch"]["lid_band"] * (ys.max() - ys.min() + 1)):] = False
     if top.sum() > 30:
         res["info"]["lid"] = [round(float(v), 1) for v in np.median(Lab[top], 0)]
+    # walnut wherever there is wood (Zafar, 6 Nov): a light oak or pine lid, board, handle or tray is a FLAG
+    wd = wood(res, name, R)
+    if wd:
+        res["flag"].append("wood: %s reads as light oak or pine; walnut wherever there is wood (Zafar, 6 Nov)" % wd)
     # light
     li = light(Lab, op, R)
     res["info"]["light"] = li
@@ -564,8 +654,8 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         li["concave"] = concave
         skip = any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in P["skip"]) if name else False
         li["skipped"] = skip
-        if off_arc and not concave and not skip:
-            res["flag"].append("light from %s (%d°, strength %.0f; brightest quadrant %s): the bible's light is from the upper left"
+        if off_arc and not concave and not skip:  # a FAIL since 6 Nov (Zafar): on the block or in the redo pipeline
+            res["fail"].append("light from %s (%d°, strength %.0f; brightest quadrant %s): the bible's light is from the upper left"
                                % (angle_word(li["angle"]), li["angle"], li["strength"], li["brightest"]))
     # halo
     ha = halo(Lab, alpha, R)
@@ -848,8 +938,12 @@ def collect(args, R):
     return sorted(set(stems.values()))
 
 
+LEVELS = ("PASS", "FLAG", "EXCEPTION", "FAIL")
+
+
 def level(r):
-    return "FAIL" if r["fail"] else "FLAG" if r["flag"] else "PASS"
+    """FAIL, then EXCEPTION (a colour the book lacks: Zafar decides; on the block until he does), FLAG, PASS."""
+    return "FAIL" if r["fail"] else "EXCEPTION" if r.get("exception") else "FLAG" if r["flag"] else "PASS"
 
 
 @functools.lru_cache(maxsize=4)
@@ -903,7 +997,7 @@ def sheet(results, out, cols=6, tw=300, title=None):
             x += w
         y += 18
         lv = level(r)
-        col = {"PASS": (40, 110, 60), "FLAG": (180, 110, 0), "FAIL": (180, 30, 30)}[lv]
+        col = {"PASS": (40, 110, 60), "FLAG": (180, 110, 0), "EXCEPTION": (120, 40, 160), "FAIL": (180, 30, 30)}[lv]
         rel = os.path.relpath(r["file"], REPO) if os.path.isabs(r["file"]) or r["file"].startswith(REPO) else r["file"]
         for ln in wrap(d, "%s  %s" % (lv, rel.replace("assets/", "")), fb, tw - 4)[:2]:
             d.text((2, y), ln, font=fb, fill=col)
@@ -911,7 +1005,7 @@ def sheet(results, out, cols=6, tw=300, title=None):
         for c in cols_[:3]:
             d.text((2, y), "%2.0f%% %s  %s ΔE%.0f%s" % (c["share"] * 100, c["words"], c["wada"]["name"], c["wada"]["de"], "  H" if c["in_house"] else ""), font=f, fill=(60, 55, 50))
             y += lh
-        for fl in (r["fail"] + r["flag"])[:4]:
+        for fl in (r["fail"] + r.get("exception", []) + r["flag"])[:4]:
             for ln in wrap(d, ("FAIL " if fl in r["fail"] else "") + fl, f, tw - 4)[:3]:
                 d.text((2, y), ln, font=f, fill=col)
                 y += lh
@@ -938,9 +1032,68 @@ def sheet(results, out, cols=6, tw=300, title=None):
     return out
 
 
+def batch_sheet(name, items, odd, out, th=150, notes=None, cols=8):
+    """One flagged batch for an eye (Zafar, 6 Nov: "a problem if you can tell it comes from different batches"): every
+    picture's canvas at the same height on one plain ground, as they would stand together; the odd ones out ringed."""
+    f, fb = font(11), font(13)
+    tw, pad, lh = int(th * 0.9), 8, 13
+    tiles = []
+    for r in items:
+        t = Image.new("RGB", (tw, th + 2 * lh + 4), (232, 229, 224))
+        try:
+            im = Image.open(r["file"]).convert("RGBA")
+            im.thumbnail((tw - 6, th - 6), Image.LANCZOS)
+            t.paste(im, ((tw - im.width) // 2, th - 3 - im.height), im)
+        except Exception:
+            pass
+        d = ImageDraw.Draw(t)
+        b = os.path.splitext(os.path.basename(r["file"]))[0]
+        is_odd = b in odd or os.path.basename(r["file"]) in odd
+        if is_odd:
+            d.rectangle([0, 0, tw - 1, th - 1], outline=(214, 120, 0), width=3)
+        for k, ln in enumerate(wrap(d, b, f, tw - 4)[:2]):
+            d.text((2, th + 2 + k * lh), ln, font=f, fill=(150, 80, 0) if is_odd else (60, 55, 50))
+        tiles.append(t)
+    if not tiles:
+        return None
+    rows = [tiles[i:i + cols] for i in range(0, len(tiles), cols)]
+    head = 22 + lh * len(notes or [])
+    W = pad + min(cols, len(tiles)) * (tw + pad)
+    H = head + sum(max(x.height for x in row) + pad for row in rows) + pad
+    S = Image.new("RGB", (max(W, 420), H), (250, 248, 244))
+    d = ImageDraw.Draw(S)
+    d.text((pad, 4), name, font=fb, fill=(30, 30, 30))
+    for k, n in enumerate(notes or []):
+        d.text((pad, 22 + k * lh), n[:110], font=f, fill=(150, 80, 0))
+    y = head
+    for row in rows:
+        for i, x in enumerate(row):
+            S.paste(x, (pad + i * (tw + pad), y))
+        y += max(x.height for x in row) + pad
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+    S.save(out, quality=78, optimize=True)
+    return out
+
+
+def batch_sheets(groups, batches, outdir):
+    """A sheet per batch with an odd one out (batch_sheet), named after the batch; returns [(batch, path)]."""
+    out = []
+    for b in batches:
+        if not b["splits"]:
+            continue
+        g = groups.get(b["batch"]) or groups.get(os.path.join(REPO, b["batch"])) or []
+        odd = {o for s in b["splits"] for o in s.get("odd", [])}
+        notes = ["%s: %s" % (s["feature"], ", ".join(s.get("odd", [])) or "%d families" % s.get("families", 0)) for s in b["splits"]]
+        safe = re.sub(r"[^A-Za-z0-9]+", "-", b["batch"].replace("assets/", "")).strip("-")
+        p = batch_sheet(b["batch"], [r for r in g if r.get("cutout")], odd, os.path.join(outdir, safe + ".jpg"), notes=notes)
+        if p:
+            out.append((b["batch"], p))
+    return out
+
+
 def score(r):
     """How bad a picture is, for --worst: a FAIL, then each flag (off-palette weighted by share)."""
-    return 10 * len(r["fail"]) + sum(2 if f.startswith("batch") else 3 for f in r["flag"])
+    return 10 * len(r["fail"]) + 8 * len(r.get("exception", [])) + sum(2 if f.startswith("batch") else 3 for f in r["flag"])
 
 
 def clean(o):
@@ -968,16 +1121,29 @@ def main(argv=None):
     ap.add_argument("--sheet", help="write a contact sheet (PNG or JPG) here")
     ap.add_argument("--worst", type=int, help="the sheet shows only the N worst pictures")
     ap.add_argument("--json", help="write every result as JSON here")
+    ap.add_argument("--batch-sheets", metavar="DIR", help="write a contact sheet per batch with an odd one out here, for an eye to judge (Zafar, 6 Nov: a batch is a problem only if you can tell)")
     ap.add_argument("--quiet", action="store_true", help="print only the summary and the FAILs")
-    ap.add_argument("--swatch", help="write the house swatch strip here and stop")
+    ap.add_argument("--swatch", help="write the house swatch strip (or --combination's) here and stop")
+    ap.add_argument("--combination", type=int, help="with --swatch: a Wada combination's strip instead of the house's; alone: print its colours in words")
+    ap.add_argument("--slot-css", type=float, metavar="H", help="a slot's height in CSS px at look-rules.json sizes.at: whether each size class's piece meets sizes.min_css_px, and stop")
     ap.add_argument("--house-words", action="store_true", help="print the house colours in words and stop")
     ap.add_argument("--changed", nargs="?", const="", metavar="REF", help="only the pictures under assets/ changed since REF (default: the merge-base with origin/main, or HEAD~1), uncommitted and untracked ones too; a named surface's other pictures are measured beside them, not judged (checks.mjs `art`)")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args(argv)
     R = rules(a.rules)
     if a.swatch:
-        print("wrote %s: %d house colours" % (swatch(a.swatch, R), len(house(R))))
+        n = len(combos()[a.combination]) if a.combination is not None else len(house(R))
+        print("wrote %s: %d %s colours" % (swatch(a.swatch, R, combo=a.combination), n, "house" if a.combination is None else "combination %d" % a.combination))
         return 0
+    if a.combination is not None:
+        print("Wada combination %d: %s" % (a.combination, combination_words(a.combination)))
+        return 0
+    if a.slot_css is not None:
+        Z = R["sizes"]
+        bad = [k for k, v in Z["classes"].items() if a.slot_css * v < Z["min_css_px"]]
+        for k, v in Z["classes"].items():
+            print("  %s: %.0f%% of %.0f px = %.1f CSS px%s" % (k, v * 100, a.slot_css, a.slot_css * v, "  (under %d at %s)" % (Z["min_css_px"], Z["at"]) if k in bad else ""))
+        return 1 if bad else 0
     if a.house_words:
         print(house_words(R))
         return 0
@@ -1006,7 +1172,7 @@ def main(argv=None):
         try:
             r = analyse(p, R, a.size_class)
         except Exception as e:  # a bad file never stops the pass
-            r = {"file": p, "fail": [], "flag": ["could not be measured: %s: %s" % (type(e).__name__, e)], "info": {}, "cutout": False}
+            r = {"file": p, "fail": [], "exception": [], "flag": ["could not be measured: %s: %s" % (type(e).__name__, e)], "info": {}, "cutout": False}
         r["ref"], r["context"] = refs.of(p), i >= len(paths)
         res.append(r)
         if a.scan and i % 200 == 199:
@@ -1030,21 +1196,23 @@ def main(argv=None):
             groups[bname] = mem
     named = {k for k in R.get("batches", {}) if not k.startswith("_")} | ({a.batch} if a.batch else set())
     batches = [batch_check(g, os.path.relpath(k, REPO) if os.path.isabs(k) else k, R, surface=k in named) for k, g in groups.items() if len(g) > 1]
-    counts = {"PASS": 0, "FLAG": 0, "FAIL": 0}
-    split = {k: {"PASS": 0, "FLAG": 0, "FAIL": 0} for k in ("shipped", "unreferenced")}
+    counts = {k: 0 for k in LEVELS}
+    split = {k: {x: 0 for x in LEVELS} for k in ("shipped", "unreferenced")}
     for r in res:
         if r["context"]:
             continue
         lv = level(r)
         counts[lv] += 1
         split["shipped" if r["ref"] in ("named", "built") else "unreferenced"][lv] += 1
-        if a.quiet and lv != "FAIL":
+        if a.quiet and lv not in ("FAIL", "EXCEPTION"):
             continue
         print("%-5s %s" % (lv, r["file"]) + ("" if r["ref"] in ("named", "built") else "  (%s)" % {"lab": "a lab page only", "none": "not referenced"}[r["ref"]])
               + ("  " + json.dumps(clean(r["info"]), ensure_ascii=False) if a.verbose and lv == "PASS" else ""))
         if a.verbose or lv != "PASS":
             for x in r["fail"]:
                 print("        FAIL  " + x)
+            for x in r.get("exception", []):
+                print("        EXCEPTION  " + x)
             for x in r["flag"]:
                 print("        flag  " + x)
         if a.verbose:
@@ -1054,19 +1222,22 @@ def main(argv=None):
             if lv != "PASS":
                 print("        " + json.dumps(clean(r["info"]), ensure_ascii=False))
     n = sum(counts.values())
-    print("\n%d picture(s): %d pass, %d flag, %d fail; %d batch(es), %d with an odd one out"
-          % (n, counts["PASS"], counts["FLAG"], counts["FAIL"], len(batches), sum(1 for b in batches if b["splits"])))
+    print("\n%d picture(s): %d pass, %d flag, %d exception, %d fail; %d batch(es), %d with an odd one out"
+          % (n, counts["PASS"], counts["FLAG"], counts["EXCEPTION"], counts["FAIL"], len(batches), sum(1 for b in batches if b["splits"])))
     for k, c in split.items():
         if sum(c.values()):
-            print("  %s: %d (%d pass, %d flag, %d fail)%s" % (k, sum(c.values()), c["PASS"], c["FLAG"], c["FAIL"],
+            print("  %s: %d (%d pass, %d flag, %d exception, %d fail)%s" % (k, sum(c.values()), c["PASS"], c["FLAG"], c["EXCEPTION"], c["FAIL"],
                   "" if k == "shipped" else "; %d on a lab page only" % sum(1 for r in res if r["ref"] == "lab" and not r["context"])))
     if a.json:
         json.dump(clean({"results": res, "batches": batches, "counts": counts, "shipped": split}), open(a.json, "w"), indent=1, ensure_ascii=False)
+    if a.batch_sheets:
+        for bname, p in batch_sheets({(os.path.relpath(k, REPO) if os.path.isabs(k) else k): g for k, g in groups.items()}, batches, a.batch_sheets):
+            print("batch sheet: %s (%s)" % (p, bname))
     if a.sheet:
         show = sorted(res, key=lambda r: -score(r))[:a.worst] if a.worst else res
         out = sheet(show, a.sheet, title=("the %d worst of %d" % (len(show), len(res))) if a.worst else None)
         print("sheet: %s" % out)
-    return 1 if counts["FAIL"] else 0
+    return 1 if counts["FAIL"] or counts["EXCEPTION"] else 0
 
 
 if __name__ == "__main__":

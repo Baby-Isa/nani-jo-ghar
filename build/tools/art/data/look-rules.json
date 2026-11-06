@@ -7,7 +7,7 @@
   "house_de": 8.0
  },
  "colour": {
-  "_about": "Main colours: k-means in CIE Lab (D65) on the opaque pixels; distances are CIEDE2000 with kL (lightness weight) 2, so a tint or shade of a Wada colour counts as near (the review read the stone and marble as tints of Ecru and Ivory Buff). Neutral colours (chroma under neutral_chroma: steel, glass, white, black) and near-blacks (L* under dark_l: hair, char, the pupil) are reported, never off-palette. Calibrated 6 Nov on every asset (2,248 pictures, 8,804 main colours): the nearest Wada colour is a median ΔE 4 away, 99% within 9.9, the furthest 12.2; the book covers almost everything, so off_palette_de 10 flags the top 1% (at 14, nothing); at 10 most hits were near-black hair and char (the book has no warm near-black), hence dark_l.",
+  "_about": "Main colours: k-means in CIE Lab (D65) on the opaque pixels; distances are CIEDE2000 with kL (lightness weight) 2, so a tint or shade of a Wada colour counts as near (the review read the stone and marble as tints of Ecru and Ivory Buff). Neutral colours (chroma under neutral_chroma: steel, glass, white, black) and near-blacks (L* under dark_l: hair, char, the pupil) are reported, never off-palette. Calibrated 6 Nov on every asset (2,248 pictures, 8,804 main colours): the nearest Wada colour is a median ΔE 4 away, 99% within 9.9, the furthest 12.2; the book covers almost everything, so off_palette_de 10 flags the top 1% (at 14, nothing); at 10 most hits were near-black hair and char (the book has no warm near-black), hence dark_l. Since 6 Nov (Zafar) a colour that far off is a palette EXCEPTION (palette below), not a FLAG.",
   "k": 6,
   "min_share": 0.03,
   "merge_de": 5.0,
@@ -19,8 +19,26 @@
   "sample": 20000,
   "max_side": 384
  },
+ "palette": {
+  "_about": "One palette per item (Zafar, 6 Nov: \"an item should have all of its main colors from within a palette that contains all those colors. If not, it needs redoing ... things that were just way off that aren't in there, raise it as an exception for me to decide\"). The main colours are the k-means colours (colour above) with chroma at least neutral_chroma and L* at least dark_l (neutrals are the ground and exempt: the white marble #edecef is chroma 1.6; near-black hair and char have no Wada match), each at least main_share of the tinted pixels. FAIL when no single Wada combination (any of the book's 348, wada-colors.json) has a colour within combo_de (CIEDE2000, kL from colour) of every main colour. EXCEPTION (Zafar decides; on the block until he does) when a main colour is over exception_de from every Wada colour: it fits no combination at all. allow: globs Zafar has decided to keep, with his words and date (they pass the palette rule). Calibration: build/reports/art-review-strict-2026-11-06.md.",
+  "neutral_chroma": 6.0,
+  "dark_l": 20.0,
+  "main_share": 0.08,
+  "combo_de": 8.0,
+  "exception_de": 10.0,
+  "allow": {"_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."}
+ },
+ "wood": {
+  "_about": "Walnut wherever there is wood (Zafar, 6 Nov; art bible section 2): lids, boards, handles, trays. FLAG (never a FAIL; meant for new art) a light oak or pine: the top band (a lid) of a lidded item by name (lid_names), or, on a picture whose name says wood (names), a main colour of at least share, in the light-wood band (CIE Lab hue degrees, L* l, chroma c). Walnut is Wada's Vandyke Brown (#4b3317, L* 23) to Brown (#7c4226, L* 35).",
+  "names": ["board", "chakla", "velan", "rolling-pin", "tray", "spoon", "crate", "handle", "lid", "stool", "spatula", "mortar", "pestle", "wood"],
+  "lid_names": ["jar", "tin-", "dabba", "canister", "shelf-cook-"],
+  "hue": [55, 90],
+  "l": [52, 84],
+  "c": [16, 48],
+  "share": 0.15
+ },
  "light": {
-  "_about": "Light direction from the shading inside each material (pixels grouped by colour, lightness weighted down so a lit and a shaded side of one material stay one group), on the outer ring of the cut-out (convex shading; a bowl's inside lights the other way). angle: 90 = from above, 180 = from the left, 135 = upper left (the art bible). FLAG when the light is clear (strength over min_strength L* units) and comes from outside the allowed arc (the brightest quadrant is reported, not judged: a diagonal rolling pin's lower right was brightest under an upper-left light). People are skipped (skip: hair, jeans and faces are albedo, not light; the faces are a locked style, s17-fonts-review). A round piece (a bowl, pan or glass from above: the largest circle inside it covers over concave_round of its area) reading from the lower right (concave_arc) is the bible's light on a concave inside, so it is not flagged (a round convex piece from above lit wrongly is missed: a known limit). Calibrated on assets/cook/items (6 Nov): at 6 every top-down pan read 'lower right'.",
+  "_about": "Light direction from the shading inside each material (pixels grouped by colour, lightness weighted down so a lit and a shaded side of one material stay one group), on the outer ring of the cut-out (convex shading; a bowl's inside lights the other way). angle: 90 = from above, 180 = from the left, 135 = upper left (the art bible). FAIL (Zafar, 6 Nov: \"light and color should be failures ... on the block or in the pipeline for redoing\") when the light is clear (strength over min_strength L* units) and comes from outside the allowed arc (the brightest quadrant is reported, not judged: a diagonal rolling pin's lower right was brightest under an upper-left light). People are skipped (skip: hair, jeans and faces are albedo, not light; the faces are a locked style, s17-fonts-review). A round piece (a bowl, pan or glass from above: the largest circle inside it covers over concave_round of its area) reading from the lower right (concave_arc) is the bible's light on a concave inside, so it is not flagged (a round convex piece from above lit wrongly is missed: a known limit). Calibrated on assets/cook/items (6 Nov): at 6 every top-down pan read 'lower right'.",
   "allowed_min": 55,
   "allowed_max": 215,
   "min_strength": 8.0,
@@ -122,14 +140,16 @@
   "chai-shelf": ["assets/cook/items/shelf-cook-paani-bare-f.webp", "assets/cook/items/shelf-cook-dudh-bare-f.webp", "assets/cook/items/shelf-cook-chai-bare-f.webp", "assets/cook/items/shelf-cook-khun-bare-f.webp", "assets/cook/items/shelf-elchi-jar-v2-f.webp", "assets/cook/items/shelf-aadu-jar-v2-f.webp", "assets/cook/items/shelf-lasan-jar-v2-f.webp", "assets/cook/items/shelf-loon-jar-v2-f.webp"]
  },
  "sizes": {
-  "_about": "Proportion (Zafar, 6 Nov, at launch: token size steps, never true relative sizes): a size class per item, its target the share of the slot (canvas) height the piece fills. Draft: L 100%, M ~90%, S at least ~80%; the final rule comes from the stove art run's report (task 5). Items are matched by glob (first match wins); an item with no class is not measured.",
-  "classes": {"L": 1.0, "M": 0.9, "S": 0.8},
-  "tolerance": 0.05,
+  "_about": "Proportion (Zafar, 6 Nov: token size steps, never true relative sizes): a size class per item, its target the share of the slot (canvas) height the piece fills: L 100%, M 90%, S 81% (equal ratio steps, each x0.9); tolerance under half a step, so the classes never overlap. min_css_px: the smallest piece is at least that many CSS px high on the smallest phone (at), so a slot there is at least min_css_px / S high (a layout rule for the game's code: artcolour.py --slot-css H checks a slot height). Items are matched by glob (first match wins); an item with no class is not measured.",
+  "classes": {"L": 1.0, "M": 0.9, "S": 0.81},
+  "tolerance": 0.04,
+  "min_css_px": 40,
+  "at": "740x320",
   "items": {}
  },
  "block": {
   "_about": "The HOUSE LOOK lines artblock.py writes into every paste block (the colours themselves come from house above).",
-  "colours_note": "The big colours of a picture sit near these, in lighter or darker tones; a strong colour far from all of them is a note for the log, not a fail.",
+  "colours_note": "Each picture's main colours come from ONE Wada combination, in lighter or darker tones (white, greys and near-black are free); a picture that mixes colours from different combinations, or has a colour the book lacks, is redone (Zafar, 6 Nov). Wood (lids, boards, handles, trays) is walnut, never light oak or pine.",
   "edge_line": "clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left.",
   "sentence": "Use the attached colour strip only as the palette (tones of these colours; never draw the strip, swatches or any text). Clean edges, no white halo, no baked shadow, light from the upper left."
  },
