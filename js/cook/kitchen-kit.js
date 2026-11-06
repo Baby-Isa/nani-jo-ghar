@@ -32,9 +32,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const D = Cook.D;
 
   const V2 = "assets/cook/items/chai-v2/";
-  // the gas flames (6 Nov, the Cook redo: a calmer blue, build/reports/cook-redo-landed-2026-11-06.md), placed on the old
-  // chai-station flames' 512 px canvas at the same ring radius (build/tools/art/cook_redo_post.py); the old files stay unused
-  const FL = "assets/cook/items/s17-cook-redo/";
+  const ST = "assets/cook/items/chai-station/";
   // the hob family (29 Sept, X5: ChatGPT H1-H5, build/cut_cook_v3.py): each hob drawn whole (no more
   // tiles stitched from one 2-burner picture), scaled so every burner is the same size. Measured from
   // the art (assets/cook/items/v3/hob/meta.json; build/check_vessel_meta.py checks them): the canvas
@@ -94,8 +92,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // 30 Sept (v3.1, R2): the knob with the stronger "on" glow
         ["kit-knob-off", V3 + "knob-off-v2.webp"],
         ["kit-knob-on", V3 + "knob-on-v2.webp"],
-        ["kit-flame-high", FL + "flame-high.webp"],
-        ["kit-flame-low", FL + "flame-low.webp"],
+        ["kit-flame-high", ST + "flame-high.webp"],
+        ["kit-flame-low", ST + "flame-low.webp"],
       ].concat(vessels.filter((v) => VESSELS[v]).map((v) => [VESSELS[v].key, VESSELS[v].url]));
     },
 
