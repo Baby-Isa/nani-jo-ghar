@@ -75,3 +75,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 18:56 UK · progress table 10 / N and P still finishing (contract runs) / next: merge, Fable judges, publish
 - 19:05 UK · merged the stove redo + walnut shelf with size classes (N); Fable 3/3 pass (ART-50, 51, 53) / next: P, then checks, contract run, publish
 - 19:27 UK · progress table 11 / three of four merged and passed; card + fonts (P) finishing / next: merge P, Fable judges, checks, contract run, publish
+- 19:52 UK · merged card + fonts (P); Fable 12/12 pass; full checks green on everything merged / next: chai contract run, then publish
