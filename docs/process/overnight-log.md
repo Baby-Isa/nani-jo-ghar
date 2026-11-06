@@ -70,3 +70,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 18:10 UK · merged Cook redo (O: flames on every hob, walnut pin in the shop) and juice (M: picks wired, contract run 1 flaky contract-8 break, clean on re-run) / next: Fable judges both, checks, wait for N and P
 - 18:11 UK · Fable: Cook redo's flames FAIL (lopsided ring), shop pin PASS; flames switched back to the old ring (ART-57 for a redraw), pin kept; shop tick overlap logged (SH-229) / next: juice judge, N and P
 - 18:17 UK · Fable: juice 2 pass / 1 fail (tray glass: drop unseen, flare by the face); fixed (drop bigger and slower, twinkles half size inside the glass) and the strip tool now counts game time; Fable re-check running
+- 18:17 UK · Fable re-check: CHAI-92 tray glass PASS / next: N and P
