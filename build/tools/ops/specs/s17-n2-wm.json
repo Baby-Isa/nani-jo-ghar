@@ -1,0 +1,21 @@
+{
+  "name": "s17-n2-wm: the word moment: the half glass's pour sound, a drop half the size, more cabinet with wider doors, the card checked",
+  "model": "Opus", "effort": "high",
+  "why": "framing and scale judged by eye at four sizes",
+  "cost": "about $20-30", "stop": "7 Nov 2026, 02:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared", "browser": true, "live": true,
+  "read": ["docs/feedback/chai-play-2026-11-06-night.md (P5, P6, P7, P10)", "docs/feedback/images-2026-11-06/wm-l4-phone-night.jpg (his phone shot)", "docs/design-language/guide-and-card.md (the 6 Nov card)"],
+  "owns": ["js/shared/word-moment.js", "css/shared/word-moment.css", "assets/shared/word-moment/**", "build/reports/s17-n2-wm.md", "build/screenshots/s17-n2/**"],
+  "readOnly": ["js/cook/stations/chai-tray.js, js/shared/onboard.js, js/shared/sfx.js (s17-n1: ask for a change in your report)", "js/cook/ui.js, js/cook/words.js (s17-n3), except the word moment's scene line ui.js:136 which you may change", "js/shared/word-card.js, css/shared/word-card.css (report any card difference; change only with a one-line reason)"],
+  "stubs": "none",
+  "rows": ["CHAI-97", "CHAI-98", "CHAI-101", "SH-231"],
+  "tasks": [
+    {"do": "CHAI-97: the word moment loads the pour-glass file before its first pour and waits for it (sfx.js:297-303 plays the old made loop while the file isn't in; the only preload is chai-tray.js:509, after the word moment). Use the public Sfx/Cook.sfx preload API from word-moment.js; never the made loop in the game.", "accept": "both pours name pour-a in the sound log on a cold load (cache cleared), L4"},
+    {"do": "CHAI-98: the falling drop half its size (word-moment.js:418: w 0.11 of the glass -> 0.055, floor scaled down to match), its splash with it.", "accept": "before/after shots of the drop mid-fall and the splash at 740x320 and 1280x665"},
+    {"do": "CHAI-101: more cabinet under the glasses and doors that read bigger than a glass (word-moment.js:164-194): the counter's line no lower than 70% of the screen's height (so at least 30% is cabinet), the glasses shrinking to fit the kettle's room above; the counter picture drawn about 1.6x larger (zoom the cover, centred) so about three doors span the screen instead of five. Judge sharpness at dpr 2.8 (his phone, 905x298): if the crop is visibly soft, say so in the report (a new wide-door counter goes on the next art run) and pick the largest zoom that stays crisp.", "accept": "before/after shots at 740x320, 930x430, 1280x665, 1920x1080 and 905x298 (dpr 2.8): cabinet >= 30% of the height, about three doors, the kettle, stream and glasses whole"},
+    {"do": "SH-231: compare the word moment's card (WordCard.big14, word-moment.js:476) with the order's 6 Nov item card at the four sizes: the faces (Lora and Nunito Sans), sizes, divider and gaps. A difference in the shared card is fixed in the shared card only with a one-line reason; a difference from the word moment's own CSS is fixed there.", "accept": "a side-by-side sheet at the four sizes and a table of face, size and gap for both cards"}
+  ],
+  "flows": ["cook:chai-tray"],
+  "port": 8842, "report": "s17-n2-wm", "publish": false
+}

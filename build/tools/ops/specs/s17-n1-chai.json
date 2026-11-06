@@ -1,0 +1,21 @@
+{
+  "name": "s17-n1-chai: the boil's sound, the pause after a serve, no click after a pour, and one highlight rule for every game",
+  "model": "Opus", "effort": "high",
+  "why": "sound curves and a shared geometry rule judged by eye at four sizes and every level",
+  "cost": "about $20-30", "stop": "7 Nov 2026, 02:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared", "browser": true, "live": true,
+  "read": ["docs/feedback/chai-play-2026-11-06-night.md (P1, P2, P8, P9: his words, causes, fixes)", "docs/design-language/chai-standard.md", "docs/design-language/audio.md"],
+  "owns": ["js/cook/stations/chai-tray.js", "data/stations/chai-tray.json", "js/shared/onboard.js", "js/cook/coach.js", "js/shared/sfx.js (a level curve helper only, if needed)", "build/reports/s17-n1-chai.md", "build/screenshots/s17-n1/**"],
+  "readOnly": ["js/shared/word-moment.js, css/shared/word-moment.css (s17-n2)", "js/cook/ui.js, js/cook/words.js, js/cook/order.js (s17-n3)", "build/tools/art/** (s17-n4)"],
+  "stubs": "none",
+  "rows": ["CHAI-95", "CHAI-99", "CHAI-100", "SH-230"],
+  "tasks": [
+    {"do": "CHAI-95: the simmer heard from the first heat (chai-tray.js:1710-1714): its level rises evenly in decibels from about -24 dB to 75% (about -2.5 dB) as the bubbling picture comes in (boilAt, :1008), held through the green, then rising to 100% past the green's end until it boils over; a voice line still ducks it. Chai and the chai tray, L1-L4.", "accept": "a log line of the loop's level by heat shows the curve at L1-L4; heard on the lab page"},
+    {"do": "CHAI-99: the next pan's light 0.8 s after a pour (chai-tray.js:2214, was 0.3 s); fix the stale 'about 3 s' comment.", "accept": "the log's next-pan note at least 0.8 s after the pour's end, L1-L4"},
+    {"do": "CHAI-100: the fire going off after a pan's last pour is silent (chai-tray.js:2010 -> kitchen-kit.js:290 knob and flame); the child's own knob turns and the boil-over keep their sounds. kitchen-kit.js may take a quiet flag (owned for that one call only).", "accept": "no knob sound in the log after a pour at L1-L4; the child's turns still click"},
+    {"do": "SH-230, one shared rule in js/shared/onboard.js used by every game's onboarding light: the box is the union of the thing's picture, its word pill and its face icon (whichever it has), plus a margin of 12% of the union's smaller side, 8 to 16 px; on a side where that margin would touch a neighbouring item (the avoid list), it shrinks only as far as keeps 2 px clear of that item (was half the gap, down to 0); at the screen's edge it stops at the edge. Chai's shelf (itemRect, chai-tray.js:2219-2267) builds its union from the jar picture AND the pill (a speaker-only pill is narrower than its jar: the jar sets the sides). Every other game that lights a thing goes through the same rule (coach.js hugOf and others: find them with build/tools/review/kitmap.mjs).", "accept": "script-made before/after shots of the lit box on a speaker-only shelf item and a word-pill item at 740x320, 930x430, 1280x665, 1920x1080, L1-L4; a shot of a tight shelf row where the box stops 2 px short of the neighbour; one other game's light (clinic or pantry) unchanged or better"}
+  ],
+  "flows": ["cook:chai-tray"],
+  "port": 8841, "report": "s17-n1-chai", "publish": false
+}

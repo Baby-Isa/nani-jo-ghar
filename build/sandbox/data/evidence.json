@@ -23994,5 +23994,184 @@
    "note": "a new player at L1 who looks for what comes next after the water and the tea (the player waits 4.5 s): the next (third) item's card in the order row lit once, whole in view, no box over a face",
    "delay": 200
   }
- ]
+ ],
+ "CHAI-95": {
+  "human": "the boil is heard from the first heat, growing evenly to the bubbling picture, steady through the green, louder past it (chai and chai tray, L1-L4)"
+ },
+ "CHAI-99": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:next-pan",
+   "after": null,
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the next pan's light comes at least 0.8 s after the pour ends; the drop, twinkle and sound seen first"
+  }
+ ],
+ "CHAI-100": {
+  "human": "no knob click or flame as a poured pan's fire goes off; the child's own knob turns still click (L1-L4)"
+ },
+ "SH-230": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:glow",
+   "after": null,
+   "capture": [
+    "shot",
+    "zoom2:#game"
+   ],
+   "expect": null,
+   "note": "the lit box round a shelf item (speaker-only and word pills): at least 8 px round picture, pill and face, or 2 px short of a neighbour"
+  }
+ ],
+ "CHAI-97": {
+  "human": "both word-moment pours (half and full) play the new pour sound on a cold load (L4)"
+ },
+ "CHAI-98": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wm",
+   "after": null,
+   "capture": [
+    "strip:.wm:6x120"
+   ],
+   "expect": null,
+   "note": "the falling drop half its old size, its splash with it"
+  }
+ ],
+ "CHAI-101": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wm",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "at least 30% of the height is cabinet under the glasses; about three doors; kettle, stream and glasses whole"
+  }
+ ],
+ "SH-231": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wm-card",
+   "after": null,
+   "capture": [
+    "zoom2:.wm-card"
+   ],
+   "expect": null,
+   "note": "the word moment's card in the 6 Nov style: Lora word, Nunito Sans English, the divider and gaps as the order's item card"
+  }
+ ],
+ "CHAI-96": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:pop-face",
+   "after": null,
+   "capture": [
+    "strip:#mission:6x200",
+    "voice"
+   ],
+   "expect": null,
+   "note": "a style tea's extra (elchi, aadu, saffron) pops as its item card while the headline is said and flies into its slot, before dudh's"
+  }
+ ],
+ "CK-59": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:order-pass",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "two people both ordering dudh: both say it (two say-starts)"
+  }
+ ],
+ "ART-42": {
+  "human": "the next art run lands its images with only the reference zip dragged in at the start; no refusal at an upload"
+ },
+ "ART-58": {
+  "human": "auto: build/tools/art/artcheck.test.mjs (colours outside the house or mixed combinations refused unless named; the prompts' section read from the plan)"
+ }
 }
