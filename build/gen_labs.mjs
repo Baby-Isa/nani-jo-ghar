@@ -152,6 +152,8 @@ export const BEHIND = [
       { href: "lab/conversations.html", title: "Conversations", text: "The nine MVP exchanges: play each one, boy/girl voice, register, placeholder flags; simulate the first launch, Cook and the clinic." },
       { href: "lab/family-audio.html", title: "Family voice clips", text: "Mum's and Zafar's words from the recordings (Section B, then Round 3): play each one, tick the good ones." },
       { href: "lab/shared-ui.html", title: "End-of-round screen and onboarding", text: "The three badges and word review; the ghost-hand onboarding on a fake chai station." },
+      // CHAI-92 (Zafar, 6 Nov: "play me all the sounds and show me all the visuals in one place on one page in isolation")
+      { href: "lab/juice.html", title: "Juice", text: "Every sound and effect for chai on one page: numbered options side by side with today's sound, each effect alone and over a chai screenshot. Nothing here is in the game yet." },
       { href: "lab/fonts.html", title: "Fonts", text: "Chai's screen with each font option switched in live: today, Lora, Fraunces with Lora, Literata, Source Serif 4, Alegreya (6 Nov sample)." },
       { href: "lab/word-moment.html", title: "Word moment: half and full", text: "Sprint 17 (CHAI-67): a tilted vessel pours half a glass and a full one; a camera snap turns each glass into its word card, said by the family. Numbered choices at the top; placeholder art until art block 1." },
       { href: "lab/word-card.html", title: "Word card and hint rungs", text: "Sprint 11: the shared word card at its five stages (English, then the picture, then the Kutchi text fade; the free reveals), and the real item's demo with the 5 s and 15 s rungs." },

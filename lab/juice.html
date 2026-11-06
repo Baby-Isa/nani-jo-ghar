@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Juice lab</title>
+<meta name="robots" content="noindex">
+<!-- CHAI-92 (Zafar, 6 Nov: "play me all the sounds and show me all the visuals in one place on one page in isolation ... Or ... a
+     screenshot of like the tea game and then overlay the juice on top, roughly where it would go"). Grown-ups only. Nothing here is
+     in the game yet: the effects are js/shared/juice.js (art run s17-juice, cut into assets/shared/juice/), the recorded sounds are
+     assets/shared/sfx/ (assets/shared/sfx/SOURCES.md: source, licence, author), "Now" is today's game sound (js/shared/sfx.js) and
+     "made" is a synthesised recipe from build/reports/sound-and-juice-chai-2026-11-06.md section 3a. The report for this page:
+     build/reports/juice-lab-2026-11-06.md. -->
+<link rel="stylesheet" href="../css/shared/tokens.css?v=20261106T090836Z">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--njg-page); color: var(--njg-ink); font: 600 15px/1.4 "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 10px 16px 48px; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+  .top a { color: #7d2234; font-weight: 800; text-decoration: none; }
+  h1 { font-size: 1.4rem; margin: 0; color: #7d2234; }
+  h2 { font-size: 1.15rem; margin: 22px 0 4px; color: #7d2234; }
+  p.lead { margin: 4px 0 8px; color: var(--njg-ink-soft); max-width: 70em; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  button { font: 800 14px/1.1 "Nunito", system-ui, sans-serif; min-height: 44px; min-width: 44px; border-radius: 10px; border: 2px solid var(--njg-cream-edge); background: var(--njg-cream); color: var(--njg-ink); padding: 4px 12px; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--njg-focus); outline-offset: 2px; }
+  button.now { background: var(--njg-plain); border-color: var(--njg-grey); }
+  button.picked { border-color: var(--njg-gold-lo); box-shadow: inset 0 0 0 2px var(--njg-gold-hi); }
+  button.voice { background: #e7f3ec; border-color: #b7d8c5; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .card { background: var(--njg-card); border: 1px solid var(--njg-edge); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+  .card b { display: block; font-size: 1.02rem; color: #7d2234; }
+  .card .where { display: block; font-size: .85rem; color: var(--njg-ink-soft); margin: 0 0 6px; overflow-wrap: anywhere; }
+  .opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 8px; align-items: start; }
+  .opts button { width: 100%; }
+  .opt { display: flex; flex-direction: column; align-items: stretch; gap: 2px; max-width: 100%; }
+  .opt small { font-size: .74rem; color: var(--njg-ink-soft); font-weight: 600; overflow-wrap: anywhere; }
+  .stage { position: relative; height: 230px; border-radius: 10px; overflow: hidden; background: var(--bg-stage, #4a423c); }
+  body.light .stage { --bg-stage: #f4ecdf; }
+  .stage > img.prop { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+  .stage .tag { position: absolute; left: 8px; top: 6px; font-size: .8rem; color: #fff; opacity: .75; z-index: 9; }
+  body.light .stage .tag { color: var(--njg-ink); }
+  .over { position: relative; max-width: min(960px, calc((100vh - 64px) * 1280 / 665)); }
+  .over > img.shot { display: block; width: 100%; height: auto; border-radius: 10px; }
+  .note { font-size: .85rem; color: var(--njg-ink-soft); }
+  details { margin-top: 24px; }
+  details > summary { cursor: pointer; font-weight: 800; color: #7d2234; min-height: 44px; padding: 10px 0; }
+  details img { max-width: 100%; height: auto; }
+  @media (max-height: 500px) { main { padding-top: 6px; } h2 { margin-top: 14px; } .stage { height: 200px; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <a href="../labs.html">&larr; Labs</a>
+    <h1>Juice lab: chai's sounds and sparkles</h1>
+  </div>
+  <p class="lead">Nothing on this page is in the game yet. <b>Sounds:</b> press a button to hear it. Grey <b>Now</b> is what chai plays
+    today; the letters are the choices (real recordings first, "made" is a synthesised sound). <b>Effects:</b> each one plays on its own
+    and again over a real chai screenshot, with the sound you last pressed for that moment. Tell me a letter and a number for each
+    row, e.g. "pour B, knob A, sparkle 1".</p>
+  <div class="row">
+    <button class="voice" id="voice" type="button">Nani's voice, to set your volume</button>
+    <button id="bg" type="button">Light background</button>
+    <span class="note" id="motion"></span>
+  </div>
+
+  <h2>1. Sounds</h2>
+  <p class="lead">Every sound is set soft, well under the family's voice (press the green button first and set the volume by it).</p>
+  <div class="grid" id="sounds"></div>
+
+  <h2>2. Effects on their own</h2>
+  <p class="lead">They loop on their own, silently; <b>Play</b> replays one with its sound.</p>
+  <div class="grid" id="stages"></div>
+
+  <h2>3. Over chai</h2>
+  <p class="lead">Real chai screenshots (level 1, 1280 &times; 665) with the effects roughly where they would go. <b>Play</b> runs the moment with its sounds.</p>
+  <div id="overs"></div>
+
+  <details>
+    <summary>The cut sprites (on dark, mid-grey and light) and where the sounds come from</summary>
+    <img src="juice/contact-sheet.webp" alt="Every cut sprite of the juice art run on dark, grey and light backgrounds" loading="lazy" width="1400" height="2400">
+    <p class="note">Sources and licences of every recorded sound: <code>assets/shared/sfx/SOURCES.md</code>. The plan for putting the
+      chosen ones into chai: <code>build/reports/juice-lab-2026-11-06.md</code>.</p>
+  </details>
+</main>
+<script src="../js/version.js?v=20261106T090836Z"></script>
+<script src="../js/shared/sfx.js?v=20261106T090836Z"></script>
+<script src="../js/shared/juice.js?v=20261106T090836Z"></script>
+<script>
+(function () {
+  "use strict";
+  const $ = (s, el) => (el || document).querySelector(s);
+  const mk = (tag, props, kids) => { const e = Object.assign(document.createElement(tag), props || {}); (kids || []).forEach((k) => e.append(k)); return e; };
+
+  // ---- "made": the synthesised recipes of the sound-and-juice report (section 3a), played at the game's effect level (Sfx.volume) ----
+  let ctx = null;
+  const ac = () => ctx || (ctx = new (window.AudioContext || window.webkitAudioContext)());
+  function tone(c, out, f, dur, { type = "triangle", gain = 0.2, when = 0, slide = 0 } = {}) {
+    const t = c.currentTime + when, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f + slide), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(out); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function noise(c, out, dur, { gain = 0.2, when = 0, freq = 2000, q = 0.8, attack = 0.02 } = {}) {
+    const t = c.currentTime + when, n = Math.max(1, Math.floor(c.sampleRate * dur)), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    const s = c.createBufferSource(); s.buffer = buf;
+    const f = c.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = freq; f.Q.value = q;
+    const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + attack); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(out); s.start(t);
+  }
+  const MADE = {
+    "pour-in": (c, o) => noise(c, o, 0.38, { gain: 0.14, freq: 900, q: 0.7 }),
+    "pop-liquid": (c, o) => tone(c, o, 520, 0.08, { type: "sine", gain: 0.2, slide: 300 }),
+    knob: (c, o) => { noise(c, o, 0.025, { gain: 0.2, freq: 2200, q: 1, attack: 0.003 }); tone(c, o, 1480, 0.04, { gain: 0.12 }); },
+    flame: (c, o) => noise(c, o, 0.22, { gain: 0.1, freq: 700, q: 0.5, attack: 0.09 }),
+    green: (c, o) => { tone(c, o, 1047, 0.11, { gain: 0.16 }); tone(c, o, 1319, 0.11, { gain: 0.16, when: 0.09 }); },
+    glass: (c, o) => { tone(c, o, 1568, 0.18, { gain: 0.14 }); tone(c, o, 2093, 0.12, { gain: 0.04 }); },
+    drop: (c, o) => tone(c, o, 1319, 0.07, { type: "sine", gain: 0.08 }),
+    "settle-soft": (c, o) => tone(c, o, 330, 0.06, { gain: 0.08 }),
+  };
+  function made(name) {
+    try {
+      const c = ac(); if (c.state === "suspended") c.resume();
+      const out = c.createGain(); out.gain.value = Sfx.volume; out.connect(c.destination);
+      MADE[name](c, out);
+    } catch (e) { /* no audio here */ }
+  }
+  // today's game sounds, as chai plays them
+  const now = {
+    loop(name, ms, rise) {
+      const h = Sfx.loop(name);
+      if (rise) { const t0 = performance.now(); const tick = () => { const k = (performance.now() - t0) / ms; if (k < 1) { h.pitch(k); requestAnimationFrame(tick); } }; tick(); }
+      setTimeout(() => h.stop(), ms);
+    },
+    play: (name, volume) => Sfx.play(name, { volume: volume == null ? 1 : volume }),
+  };
+  const rec = (file, dur) => () => Juice.sound(file, { dur });
+
+  // ---- the moments, each with today's sound and the numbered choices ----
+  const MOMENTS = [
+    { id: "pour", title: "Tea poured into the glass", where: "the hob's pour into a glass, the word moment (CHAI-87)",
+      now: () => now.loop("pour-glass", 3000, true), nowNote: "made: noise with a rising ring",
+      opts: [["A", rec("pour-a"), "water from a bottle into a glass; real, CC0"], ["B", rec("pour-b"), "water into a glass; real, Mixkit"], ["C", rec("pour-c"), "a steady stream into a jug; real, CC0"]] },
+    { id: "pourShort", title: "A short pour: bottle into the pan", where: "the shelf's water and milk going in",
+      now: null, nowNote: "silent today",
+      opts: [["A", rec("pour-a", 0.9), "the first second of pour A"], ["B", rec("pour-b", 0.9), "the first second of pour B"], ["C", rec("pour-c", 0.9), "the first second of pour C"], ["D", () => made("pour-in"), "made (the report's pour-in)"]] },
+    { id: "tap", title: "A soft tap: picking a thing off the shelf", where: "every shelf tap, at once",
+      now: () => now.play("cook-pop"), nowNote: "made: a rising pop",
+      opts: [["A", rec("tap-a"), "a soft click; Kenney, CC0"], ["B", rec("tap-b"), "a soft pop; Kenney, CC0"], ["C", rec("tap-c"), "a teaspoon set on a plate; real, CC0"]] },
+    { id: "knob", title: "The gas knob turns", where: "the knob on and off",
+      now: () => now.play("click"), nowNote: "made: a tiny click (too quiet)",
+      opts: [["A", rec("knob-a"), "a gas stove's ignition click; real, Mixkit"], ["B", rec("knob-b"), "a metal click; Kenney, CC0"], ["C", rec("knob-c"), "a switch; Kenney, CC0"], ["D", () => made("knob"), "made (the report's knob)"]] },
+    { id: "flame", title: "The flame catches: whoomph", where: "just after the knob turns on",
+      now: null, nowNote: "silent today",
+      opts: [["A", rec("flame-a"), "a gas stove catching; real, Mixkit"], ["B", rec("flame-b"), "a gas torch catching; real, CC0"], ["C", () => made("flame"), "made (the report's flame)"]] },
+    { id: "simmer", title: "The pan simmers", where: "while the heat rises (very quiet)",
+      now: () => now.loop("boil", 3000), nowNote: "made: a low noise loop (not used in chai today)",
+      opts: [["A", rec("simmer-a"), "water at a gentle boil; real, CC0"]] },
+    { id: "green", title: "The heat reaches the green", where: "the moment to turn it down",
+      now: () => now.play("click"), nowNote: "made: the same tiny click",
+      opts: [["A", rec("ding-a"), "a kitchen oven's ding; real, Mixkit"], ["B", rec("ding-b"), "a soft bell chime; Mixkit"], ["C", rec("ding-c"), "a shop door's chime, one strike; real, CC0"], ["D", () => made("green"), "made (the report's two-note ding)"]] },
+    { id: "glass", title: "The glass is full", where: "as the pan settles back after a pour",
+      now: () => now.play("right", 0.35), nowNote: "made: the end screen's count tick",
+      opts: [["A", rec("glass-a"), "a glass ting; Kenney, CC0"], ["B", rec("glass-b"), "a wine glass clink; real, Mixkit"], ["C", rec("glass-c"), "a knife on a full water glass; real, CC0"], ["D", () => made("glass"), "made (the report's glass ring)"]] },
+    { id: "drop", title: "The last drop lands", where: "the word moment's painted last drop",
+      now: null, nowNote: "silent today",
+      opts: [["A", rec("drop-a"), "a soft drop; Kenney, CC0"], ["B", () => made("drop"), "made (the report's plink)"]] },
+    { id: "settle", title: "A bottle or glass set down", where: "the bottle back on the shelf",
+      now: () => now.play("tap", 0.35), nowNote: "made: a tap, 1.7 s late today",
+      opts: [["A", rec("settle-a"), "a glass set on a wooden table; real, CC0"], ["B", () => made("settle-soft"), "made (the report's settle)"]] },
+    { id: "sparkle", title: "The sparkle's chime", where: "with the sparkle on a full glass and the gold burst",
+      now: null, nowNote: "silent today",
+      opts: [["A", rec("sparkle-a"), "a fairy sparkle; Mixkit"], ["B", rec("sparkle-b"), "a sparkle touch; Mixkit"], ["C", rec("sparkle-c"), "a soft chime; Kenney, CC0"]] },
+  ];
+  const pick = {}; // moment id -> the option last pressed (its play function)
+  const byId = Object.fromEntries(MOMENTS.map((m) => [m.id, m]));
+  const hear = (id) => { const m = byId[id]; const f = pick[id] || (m.opts[0] && m.opts[0][1]); if (f) f(); };
+
+  const grid = $("#sounds");
+  for (const m of MOMENTS) {
+    const row = mk("div", { className: "opts" });
+    const btns = [];
+    const opt = (label, cls, fn, note, isPick) => {
+      const b = mk("button", { type: "button", className: cls, textContent: label });
+      b.addEventListener("click", () => {
+        Sfx.unlock();
+        if (fn) fn();
+        if (isPick) { pick[m.id] = fn; btns.forEach((x) => x.classList.toggle("picked", x === b)); }
+      });
+      if (isPick) btns.push(b);
+      row.append(mk("span", { className: "opt" }, [b, mk("small", { textContent: note })]));
+      return b;
+    };
+    const nb = opt("Now", "now", m.now, m.nowNote, false);
+    if (!m.now) nb.disabled = true;
+    m.opts.forEach(([k, fn, note], i) => { const b = opt(k, i === 0 ? "picked" : "", fn, note, true); if (i === 0) pick[m.id] = fn; });
+    grid.append(mk("div", { className: "card" }, [mk("b", { textContent: m.title }), mk("span", { className: "where", textContent: m.where }), row]));
+  }
+
+  // ---- 2. the effects, alone ----
+  const A = (p) => "../assets/" + p;
+  const STAGES = [
+    { name: "Sparkle 1: one star", prop: [A("shared/word-moment/glass-side-5-s17.webp"), 120], sounds: ["glass", "sparkle"], every: 2400,
+      run: (h, W, H) => Juice.sparkle(h, W / 2 + 34, H / 2 - 48, { w: 90, kind: 1 }) },
+    { name: "Sparkle 2: three twinkles", prop: [A("shared/word-moment/glass-side-5-s17.webp"), 120], sounds: ["glass", "sparkle"], every: 2400,
+      run: (h, W, H) => Juice.sparkle(h, W / 2 + 10, H / 2 - 40, { w: 110, kind: 2 }) },
+    { name: "Steam 1: full wisps", prop: [A("cook/items-s14/chai-pan/pan-milk-s14.webp"), 170, 40], sounds: ["simmer"], loop: true,
+      run: (h, W, H) => Juice.steam(h, W / 2, H / 2 + 20, { w: 120 }) },
+    { name: "Steam 2: thin wisps", prop: [A("cook/items-s14/chai-pan/pan-milk-s14.webp"), 170, 40], sounds: ["simmer"], loop: true,
+      run: (h, W, H) => Juice.steam(h, W / 2, H / 2 + 20, { w: 120, thin: true }) },
+    { name: "Last drop 1: with a crown", prop: [A("shared/word-moment/glass-side-5-s17.webp"), 120, 30], sounds: ["drop"], every: 2200,
+      run: (h, W, H) => Juice.drop(h, W / 2, 18, H / 2 - 24, { w: 18, splash: "crown" }) },
+    { name: "Last drop 2: droplets only", prop: [A("shared/word-moment/glass-side-5-s17.webp"), 120, 30], sounds: ["drop"], every: 2200,
+      run: (h, W, H) => Juice.drop(h, W / 2, 18, H / 2 - 24, { w: 18, splash: "dots" }) },
+    { name: "Crown splash, alone", prop: null, sounds: ["drop"], every: 1800,
+      run: (h, W, H) => Juice.crown(h, W / 2, H / 2 + 30, { w: 150 }) },
+    { name: "Gold burst 1: behind a badge", prop: [A("ui/results/stopwatch-good.webp"), 110], sounds: ["sparkle"], every: 2600,
+      run: (h, W, H) => Juice.burst(h, W / 2, H / 2, { w: 230, kind: 1, behind: h.querySelector("img.prop") }) },
+    { name: "Gold burst 2: and a light sweep", prop: [A("ui/results/stopwatch-good.webp"), 110], sounds: ["sparkle"], every: 2600,
+      run: (h, W, H) => Juice.burst(h, W / 2, H / 2, { w: 230, kind: 2, behind: h.querySelector("img.prop") }) },
+  ];
+  const live = new Set();
+  function stageCard(s, i) {
+    const st = mk("div", { className: "stage" }, [mk("span", { className: "tag", textContent: String(i + 1) })]);
+    if (s.prop) st.append(mk("img", { className: "prop", src: s.prop[0], alt: "", style: `width:${s.prop[1]}px;top:calc(50% + ${s.prop[2] || 0}px)` }));
+    let loopH = null, timer = null;
+    const go = () => {
+      const W = st.clientWidth, H = st.clientHeight;
+      if (s.loop) { if (!loopH) loopH = s.run(st, W, H); return; }
+      s.run(st, W, H);
+    };
+    const tick = () => { if (live.has(st)) go(); timer = setTimeout(tick, Juice.less() ? (s.every || 2400) * 1.5 : s.every || 2400); };
+    const stop = () => { if (loopH) { loopH.stop(); loopH = null; } };
+    st._on = () => { if (s.loop) go(); };
+    st._off = stop;
+    tick();
+    const play = mk("button", { type: "button", textContent: "Play" });
+    play.addEventListener("click", () => {
+      Sfx.unlock();
+      s.sounds.forEach(hear);
+      if (s.loop) { stop(); go(); } else s.run(st, st.clientWidth, st.clientHeight);
+    });
+    return mk("div", { className: "card" }, [mk("b", { textContent: s.name }), mk("span", { className: "where", textContent: "sound: " + s.sounds.map((id) => byId[id].title.toLowerCase()).join(" + ") }), st, mk("div", { className: "row", style: "margin-top:6px" }, [play])]);
+  }
+  STAGES.forEach((s, i) => $("#stages").append(stageCard(s, i)));
+
+  // ---- 3. over chai: the effects at fractions of the 1280 x 665 screenshot ----
+  const OVERS = [
+    { name: "The heat: the knob, the flame, the steam over the boiling pan", shot: "juice/chai-heat.webp",
+      sounds: [["knob", 0], ["flame", 180], ["simmer", 600], ["green", 2600]],
+      loop: (h, W, H) => Juice.steam(h, 0.527 * W, 0.27 * H, { w: 0.14 * W }),
+      every: 0 },
+    { name: "The glass is full: the last drop, the ring, the sparkle", shot: "juice/chai-glass.webp",
+      sounds: [["pour", 0], ["drop", 2300], ["glass", 2400], ["sparkle", 2450]],
+      run: (h, W, H, withSound) => {
+        const go = () => { Juice.drop(h, 0.7125 * W, 0.08 * H, 0.32 * H, { w: 0.014 * W, splash: "dots" }); setTimeout(() => Juice.sparkle(h, 0.74 * W, 0.27 * H, { w: 0.07 * W, kind: 1 }), 600); };
+        if (withSound) setTimeout(go, 1800); else go();
+      }, every: 2600 },
+    { name: "The end screen: the gold burst at the badge", shot: "juice/chai-end.webp",
+      sounds: [["sparkle", 0]],
+      // the badge's ring is cut out of the same screenshot and laid back on top, so the burst sits behind it as it would in the game
+      cut: [0.403, 0.409, 0.065],
+      run: (h, W, H) => Juice.burst(h, 0.403 * W, 0.394 * H, { w: 0.3 * W, kind: 2, behind: h.querySelector("img.cut") }), every: 2800 },
+  ];
+  OVERS.forEach((o) => {
+    const shot = mk("img", { className: "shot", src: o.shot, alt: "Chai, " + o.name, width: 1280, height: 665 });
+    const box = mk("div", { className: "over" }, [shot]);
+    if (o.cut) {
+      const [cx, cy, r] = o.cut;
+      box.append(mk("img", { className: "cut", src: o.shot, alt: "", style: `position:absolute;inset:0;width:100%;height:auto;pointer-events:none;z-index:6;-webkit-mask-image:radial-gradient(ellipse ${r * 100}% ${r * 100 * 1280 / 665}% at ${cx * 100}% ${cy * 100}%, #000 90%, transparent 100%);mask-image:radial-gradient(ellipse ${r * 100}% ${r * 100 * 1280 / 665}% at ${cx * 100}% ${cy * 100}%, #000 90%, transparent 100%)` }));
+    }
+    let loopH = null;
+    const start = () => { if (o.loop && !loopH && box.clientWidth) loopH = o.loop(box, box.clientWidth, box.clientHeight); };
+    const restart = () => { if (loopH) { loopH.stop(); loopH = null; } start(); };
+    box._on = start;
+    box._off = () => { if (loopH) { loopH.stop(); loopH = null; } };
+    if (o.run) { const tick = () => { if (live.has(box)) o.run(box, box.clientWidth, box.clientHeight, false); setTimeout(tick, o.every * (Juice.less() ? 1.5 : 1)); }; setTimeout(tick, 400); }
+    const play = mk("button", { type: "button", textContent: "Play with sound" });
+    play.addEventListener("click", () => {
+      Sfx.unlock();
+      o.sounds.forEach(([id, ms]) => setTimeout(() => hear(id), ms));
+      if (o.run) o.run(box, box.clientWidth, box.clientHeight, true);
+      else restart();
+    });
+    $("#overs").append(mk("h3", { textContent: o.name, style: "font-size:1rem;margin:14px 0 6px" }), box, mk("div", { className: "row", style: "margin-top:6px" }, [play]));
+    addEventListener("resize", () => { if (live.has(box)) restart(); });
+  });
+
+  // only what is on screen animates
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { live.add(e.target); e.target._on && e.target._on(); } else { live.delete(e.target); e.target._off && e.target._off(); }
+  }));
+  document.querySelectorAll(".stage, .over").forEach((el) => io.observe(el));
+
+  // the level check: a family clip (the voice everything sits under)
+  $("#voice").addEventListener("click", () => { try { new Audio("../assets/audio/word/snt-14.mp3").play(); } catch (e) { /* none */ } });
+  $("#bg").addEventListener("click", (e) => { const on = document.body.classList.toggle("light"); e.target.textContent = on ? "Dark background" : "Light background"; });
+  $("#motion").textContent = Juice.less() ? "Reduced motion is on: the effects fade in place." : "";
+})();
+</script>
+</body>
+</html>
