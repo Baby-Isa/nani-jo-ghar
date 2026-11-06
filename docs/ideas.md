@@ -116,3 +116,14 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 - **The peripheries: how a round starts and ends** (Zafar, 5 Nov: "We'll fix up the peripheries and onboarding and offboarding and
   stuff, and we decide how it all plugs into the game"): the arrival, the word moment, the order, the closing thanks and goodbye,
   the end screen, and how one game hands to the next, decided as one piece before the stores (`docs/feedback/chai-play-2026-11-05-am.md` P4).
+
+## Zafar, 6 Nov
+
+- **Many more recipes from the drawn items** (Zafar, 6 Nov: "we just made a whole load of new items that could probably quite easily
+  go into Cook and massively explode the number of recipes"): daar as a curry game (ringna bateta, thin rounds of aubergine and
+  potato in a curry with mani; binda; each with its own spices, jeera, dana, meti), the egg game's pan for frying fish before a
+  fish curry; a map of every drawn food item to its recipe and game. Held until he gives the recipes and the go (CK-58,
+  `docs/feedback/chai-play-2026-11-06.md` P18).
+- **Faces for crowds without inventing them** (Zafar, 6 Nov: "describe in your own words 2 or 3 distinctive features and then
+  generate an image like that"): for the birthday party's many guests, describe a few features from a real or stock photo and draw
+  from the words, never the face; an experiment at the character run (ART-54, P22).
