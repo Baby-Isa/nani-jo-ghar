@@ -260,6 +260,17 @@
       pre.src = v.pour; // (ready before the first pour)
     }
     const stream = el("div", `wm-stream${o.stream ? " wm-art" : ""}${o.stream && o.streamWipe ? " wm-wipe" : ""}`, box);
+    // (Zafar, 6 Nov: "keep just the dark rim of the glass in front of the chai stream to give it the illusion of it going inside the
+    // glass"): each side-on glass's front lip (a thin strip of its own picture) laid back over the stream while it pours, so the
+    // stream passes behind the lip into the glass (css .wm-rim: shown only beside a stream that is on)
+    if (o.side)
+      slots.forEach((sl) => {
+        const r = el("img", "wm-rim", box);
+        r.alt = "";
+        r.draggable = false;
+        r.src = sl.x.empty;
+        r.style.cssText = `left:${sl.s.style.left};top:${sl.s.style.top};width:${g}px;height:${g}px`;
+      });
     // CHAI-80 (Zafar, 4 Nov evening: "a static pouring image, that then fades out by you putting a transparent layer from top to bottom
     // slowly over time, so it's like the last drops are falling through"): the real stream (o.streamWipe) is one still picture, shown
     // through a mask: its head runs down from the spout as the pour starts, and at the end its tail runs down into the glass

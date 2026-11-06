@@ -25,6 +25,9 @@
    enough to show it through, so behind it the stream stopped at the rim; Zafar, 6 Nov) */
 .wm-stream.wm-art { z-index: 2; border-radius: 0; background-color: transparent; background-position: center; background-size: 100% 100%; background-repeat: no-repeat; }
 .wm-stream.wm-art.on { opacity: 1; }
+/* (the glass's front lip over the stream while it pours: rows 3-5% of glass-e2-s17's height, the dark line; Zafar, 6 Nov) */
+.wm-rim { position: absolute; z-index: 2; object-fit: contain; object-position: 50% 100%; clip-path: inset(3% 0 95% 0); opacity: 0; pointer-events: none; -webkit-user-drag: none; user-select: none; }
+.wm-stream.on ~ .wm-rim { opacity: 1; }
 /* the shutter: four gold corners close in round the glass, then a white flash */
 .wm-shut { position: absolute; z-index: 4; border-radius: var(--njg-card14-u16); }
 /* CHAI-82 (Zafar, 4 Nov: "slimmer, thinner, rounded corner ... camera looking style thing would look more modern. It should go around
