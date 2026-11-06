@@ -606,6 +606,23 @@
   "commit": "4d8a9393",
   "date": "2026-10-20"
  },
+ "CHAI-101": {
+  "hash": "d2ef181c1f3caae87d4b",
+  "dhash": [
+   "3e3e1e3634367074",
+   "7f3f3d262624e9cd",
+   "3a1a1b1216166d64",
+   "7e1e1f3414146b75"
+  ],
+  "verdict": "FAIL",
+  "line": "A, at 1280x665 the cabinet is still about a quarter of the height, the same as before (about 147 of 588 px after vs 153 of 590 before). The glasses are the same height (about 188 px) and the space above them is unchanged. Only the doors changed, from five narrow to three wide. B (1920x1080) is the same. C and D gain only a little cabinet (about 20% to 24%), short of \"camera slightly lower, more cabinet\".",
+  "panel": "A",
+  "judge": "claude-opus-5-5 (Opus 5.5), session 05818d17-b46b-536a-ab94-2b6678bf687a",
+  "run": "br-s17-n2-wm-after-20261106-233740-gwd",
+  "commit": "4ce845f",
+  "png": "build/screenshots/evidence/br-s17-n2-wm-after-20261106-233740-gwd/CHAI-101.png",
+  "date": "2026-11-06"
+ },
  "CHAI-11": {
   "hash": "4b27aef7b2c627796e2f",
   "dhash": [
@@ -7697,6 +7714,23 @@
   "run": "ev-20261020-203453-9h9",
   "commit": "4d8a9393",
   "date": "2026-10-20"
+ },
+ "SH-231": {
+  "hash": "7eae73cbc4be241b9d66",
+  "dhash": [
+   "3131313131113131",
+   "3131303131013131",
+   "3131313131313131",
+   "3131313131513131"
+  ],
+  "verdict": "PASS",
+  "line": "C, at 740x320 the before card has no divider and the speaker button rides up over \"half\". The after card has the serif Kutchi word, the sans \"half\", a divider and clear gaps above the speaker button. A, B and D show the same divider and spacing at the other three sizes. Flaw: the sheet does not show the 6 Nov order card beside it, so the match is judged against the named style (divider, fonts, gaps), not side by side.",
+  "panel": "C",
+  "judge": "claude-opus-5-5 (Opus 5.5), session 05818d17-b46b-536a-ab94-2b6678bf687a",
+  "run": "br-s17-n2-wm-after-20261106-233740-gwd",
+  "commit": "4ce845f",
+  "png": "build/screenshots/evidence/br-s17-n2-wm-after-20261106-233740-gwd/SH-231.png",
+  "date": "2026-11-06"
  },
  "SH-24": {
   "hash": "3a9dfbd20d81bc799679",
