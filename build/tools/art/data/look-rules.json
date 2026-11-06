@@ -33,7 +33,7 @@
   "people": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*", "assets/town-proto/face-*", "assets/sewing-proto/*-face.webp", "assets/farm/proto/*-face.webp"],
   "natural": ["assets/items/fruit/*", "assets/items/vegetable/*", "assets/items/spice/*", "assets/cook/items/icon-ph-*", "assets/cook/items/icon-veg-*", "assets/cook/items/icon-fru-*", "assets/cook/items/icon-spi-*", "assets/cook/items/veg-*", "assets/cook/items/mishkaki-*", "assets/cook/items/topping-*", "assets/cook/items/shelf-fru-*", "assets/cook/items/shelf-veg-*",
    "assets/cook/items-s08b/chaat-strips/*", "assets/cook/items-s08b/potato/*", "assets/cook/items-s08b/daar-discs/*", "assets/cook/items-s08c/sekelo/*", "assets/cook/items/chai-v2/ginger-*", "assets/cook/items/chai-v2/liquid-*", "assets/cook/items/v3/daar/chop-*", "assets/cook/items/v3/daar/dp1-*",
-   "assets/cook/items/v3/sekelo/heap-*", "assets/cook/items/v3/sekelo/*-raw.webp", "assets/cook/items/v3/sekelo/*-grilled.webp", "assets/cook/items/v3/sekelo/*-charred.webp", "assets/cook/items/v3/samosa/fill-*", "assets/cook/items/v3/maani/dough-*", "assets/cook/items/v3/maani/maani-*", "assets/cook/items/served/*",
+   "assets/cook/items/v3/sekelo/heap-*", "assets/cook/items/v3/sekelo/*-raw.webp", "assets/cook/items/v3/sekelo/*-grilled.webp", "assets/cook/items/v3/sekelo/*-charred.webp", "assets/cook/items/v3/samosa/fill-*", "assets/cook/items/v3/maani/dough-*", "assets/cook/items/v3/maani/maani-*", "assets/cook/items/served/*", "assets/cook/items-s17-stove/t-dish-*", "assets/cook/items-s17-stove/*-whole*",
    "assets/characters/chick/*", "assets/characters/goat/*", "assets/characters/hen/*", "assets/day/s09b/buffalo.webp", "assets/day/s09b/camel.webp", "assets/day/s09b/cow.webp", "assets/day/s09b/donkey.webp", "assets/day/s09b/duck.webp", "assets/day/s09b/hen-chicks.webp", "assets/day/s09b/horse.webp", "assets/day/s09b/sheep.webp", "assets/day/s09b/butterfly.webp",
    "assets/day/ride/s09r/bird.webp", "assets/day/ride/s09r/dog.webp", "assets/day/ride/s09r/goat.webp", "assets/day/ride/s09r/hen.webp", "assets/day/ride/s09r/bush.webp", "assets/day/ride/s09r/tree.webp", "assets/day/ride/s09r/haystack.webp",
    "assets/safari/proto/elephant-*", "assets/safari/proto/clump.webp", "assets/cook/proto/cat-*", "assets/farm/proto/chick.webp", "assets/farm/proto/grass.webp", "assets/farm/proto/mango.webp", "assets/clinic/items-v2/apple.webp", "assets/clinic/sheets/decoys/apple-*", "assets/clinic/sheets/taste/lemon-*", "assets/clinic/s12/lemon-whole-s12.webp"],
@@ -89,7 +89,9 @@
    "assets/clinic/items-v2/toothbrush.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-v2/toothbrush-v2.webp": "the same drawing as items-v2/toothbrush.webp, only its blue pulled (recolour.py, 6 Nov)",
    "assets/day/s09b/kite.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
-   "assets/cook/items/shelf-fru-01-bare-f.webp": "Fable, 6 Nov (art-retrospective-2026-11-06: the crate slats)"
+   "assets/cook/items/shelf-fru-01-bare-f.webp": "Fable, 6 Nov (art-retrospective-2026-11-06: the crate slats)",
+   "assets/cook/items-s17-stove/t-tool-tablespoon.webp": "the stove landing's eye, 6 Nov (stove-run-landed-2026-11-06.md: mild, keep)",
+   "assets/cook/items-s17-stove/t-dish-kalyo-pau.webp": "the stove landing's eye, 6 Nov (stove-run-landed-2026-11-06.md: mild, keep)"
   },
   "ring": 0.4,
   "segments": 4,

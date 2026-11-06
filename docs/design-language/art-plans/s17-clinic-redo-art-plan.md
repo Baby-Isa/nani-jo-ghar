@@ -111,8 +111,8 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 
 - **Cut:** each sheet by its gutters (`artcut.py`, `grid`, `rows` 2; partial alpha for clear plastic and glass against the measured
   grey), trimmed, padded 16 px, WebP with alpha, at most 512 px tall; names from the line's item list, in
-  `assets/clinic/items-s17/<item>-belt.webp`; the toothbrush views in `assets/clinic/sheets-s17/toothbrush/`.
-- **Judge:** `artjudge.py`, then `python3 build/tools/art/artcolour.py assets/clinic/items-s17 --batch items-s17` (one batch:
+  a new clinic folder items-s17, as `<item>-belt.webp`; the toothbrush views beside them, as `toothbrush-<view>-s17.webp` (a new folder, made at the cut).
+- **Judge:** `artjudge.py`, then `artcolour.py` on that new folder with `--batch items-s17` (one batch:
   the palette, light, shadow and batch checks), then a contact sheet on the pharmacy belt at 740x320 and 1920x1080, flaws first.
 - **Wire (a build session, after Zafar's yes):** the redos swap in place of the rows' files (`redo-strict-2026-11-06.yaml`, block
   `clinic`); the new items join `data/clinic.json` as decoys and future asks; nothing about any game's rules changes.

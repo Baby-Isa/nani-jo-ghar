@@ -102,10 +102,10 @@ Do not add any text, letters, numbers, labels, signs, logos or watermarks.
 - **Cut:** the skies are full pictures (no key): WebP at the source size, `@2x` never past it. Today's skies replace their files
   in place after Zafar's yes (`sky-sunny`, `-cloudy`, `-raining`, `-night` in `assets/day/s09b/`; `door-sun`, `door-farm` in
   `assets/day/s12/`, cover-cropped to 4:3 as before; `book-farm-spread` in `assets/day/s09b/`); the old ones move to
-  `sources/art/s09b/` and `s12/` as `-v1`. The bank goes to `assets/day/sky/` as `sky-<time>-wide.webp` and
+  `sources/art/s09b/` and `s12/` as `-v1`. The bank goes to a new day folder, sky (made at the cut), as `sky-<time>-wide.webp` and
   `sky-<time>-square.webp` (`<time>`: day, golden, dusk, night): `look-rules.json` `palette.sky` names their time from the name.
-- **Judge:** `artjudge.py` (aspect), then `python3 build/tools/art/artcolour.py assets/day/sky assets/day/s09b/sky-*.webp
-  assets/day/s12/door-sun.webp` (the sky rule: the time's combination and the ceiling), then a look at the door at the four sizes.
+- **Judge:** `artjudge.py` (aspect), then `python3 build/tools/art/artcolour.py` on the new sky folder and `assets/day/s09b/sky-*.webp`
+  and `assets/day/s12/door-sun.webp` (the sky rule: the time's combination and the ceiling), then a look at the door at the four sizes.
 - **Wire (a build session):** `data/day.json` `weather.<w>.sky.art` → the door's four skies (the ride window and tomorrow's card
   then paint the picture, not the SVG gradient); nothing else changes.
 
