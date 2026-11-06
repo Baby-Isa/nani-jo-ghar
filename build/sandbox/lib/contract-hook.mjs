@@ -35,7 +35,8 @@
 //                                          its card's box: contract-51), the sidebar's buttons and whether each sits inside the
 //                                          sidebar (contract-54), the sidebar's box
 //   k: "spot"    {holes, things}           SH-138: the first-time help's light (js/shared/onboard.js Onboard.spot: its drawn holes,
-//                                          data-holes) and the tappable things on screen (Cook's pictures with a word): contract-53
+//                                          data-holes) and the tappable things on screen (Cook's pictures with a word, each with its word
+//                                          pill when it has one: the light hugs both; ART-50, 6 Nov): contract-53
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
 //
@@ -804,7 +805,7 @@ export const CONTRACT_HOOK = `(() => {
       const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
       for (const sc of g.scene.getScenes(true)) {
         const cam = sc.cameras.main;
-        const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list); if (o.wordId && o.getBounds && o.input && o.input.enabled) { const b = safe(() => o.getBounds()); if (b) things.push({ id: o.wordId, l: Math.round(cr.left + (b.x - cam.worldView.x) * kx * cam.zoom), t: Math.round(cr.top + (b.y - cam.worldView.y) * ky * cam.zoom), r: Math.round(cr.left + (b.right - cam.worldView.x) * kx * cam.zoom), b: Math.round(cr.top + (b.bottom - cam.worldView.y) * ky * cam.zoom) }); } } };
+        const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list); if (o.wordId && o.getBounds && o.input && o.input.enabled) { const b = safe(() => { const r = o.getBounds(); const ch = o.chip; if (ch && ch.active && ch.cardW) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (ch.cardW / 2) * sx, hh = ((ch.cardH || 46) / 2) * sy; const x = Math.min(r.x, ch.x - hw), y = Math.min(r.y, ch.y - hh); return { x, y, right: Math.max(r.right, ch.x + hw), bottom: Math.max(r.bottom, ch.y + hh) }; } return r; }); if (b) things.push({ id: o.wordId, l: Math.round(cr.left + (b.x - cam.worldView.x) * kx * cam.zoom), t: Math.round(cr.top + (b.y - cam.worldView.y) * ky * cam.zoom), r: Math.round(cr.left + (b.right - cam.worldView.x) * kx * cam.zoom), b: Math.round(cr.top + (b.bottom - cam.worldView.y) * ky * cam.zoom) }); } } };
         safe(() => walk(sc.children.list));
       }
     }

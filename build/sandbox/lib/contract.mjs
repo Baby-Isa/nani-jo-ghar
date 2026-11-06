@@ -1661,7 +1661,9 @@ export function check53(tl, add) {
     for (const h of e.holes || []) {
       const inside = (e.things || []).filter((x) => { const cx = (x.l + x.r) / 2, cy = (x.t + x.b) / 2; return cx >= h.l && cx <= h.r && cy >= h.t && cy <= h.b; });
       const big = inside.length ? Math.max(...inside.map(area)) : 0;
-      // (a picture's word pill sits under it, often wider than the picture: up to 3.5 times its area; CHAI-33's box was 5.4)
+      // (a picture's word pill sits under it, often wider than the picture: a thing is the picture and its pill (ART-50, 6 Nov: the
+      // stove-400 cuts are cropped tight, so a slim bottle's own box no longer carries the old canvas's margin), the light up to 3.5
+      // times that; CHAI-33's box was 5.4 times its picture and held three things)
       if (inside.length >= 2) { add("contract-53", e.t, `the help's light holds ${inside.length} things (${inside.map((x) => x.id).join(", ")}): it should hold one`); return; }
       if (big && area(h) > 3.5 * big) { add("contract-53", e.t, `the help's light is ${(area(h) / big).toFixed(1)} times the size of ${inside[0].id}: it should hug it`); return; }
     }

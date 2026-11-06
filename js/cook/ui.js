@@ -2787,6 +2787,9 @@
   // (a station's own shelf picture first, Cook.shelfPic: the card shows exactly what the child taps; Zafar, 3 Nov)
   // (and before the station is up, the same art run's spice jars the shelf takes first: art.s02's C5 jars, as chai-tray.js spiceJar)
   const s02Jar = (id) => {
+    // (ART-50, 6 Nov: chai's shelf is the stove-400 walnut set now, art.chaiShelf, as chai-tray.js spiceJar)
+    const cs = ((Cook.data && Cook.data.art) || {}).chaiShelf || {};
+    if (typeof cs[id] === "string") return cs[id];
     const s02 = ((Cook.data && Cook.data.art) || {}).s02 || {};
     const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
     return (e && e.file) || null;

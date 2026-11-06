@@ -108,13 +108,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every object stands on it
   const BOX = 128; // a slot's fallback box (a word without shelf art)
-  // true relative heights (Zafar, 28 Sept, late): the bottle and carton stand tall, the chai and
-  // sugar jars medium, the spice jars short, all on one shelf line (the scale per group of the
-  // pantry-v2 canvases: liquids | jars | spices)
-  // PAN-09 (S05-C): the small spice jars (elchi, aadu, lasan, loon) drawn as big as the band allows (St.shelfFit caps
-  // them at its padding), so their contents read at phone size
-  // SH-112 (Zafar 20 Oct: a taller band, bigger jars): the caps a third up; shelfFit keeps each to the band's rule
-  const SHELF_K = [0.56, 0.44, 0.66];
+  // ART-51 (Zafar, 6 Nov: size classes, never true sizes): each shelf item stands at its class's share of the band's room (L 100 /
+  // M 91 / S 84, the class in data/cook.json, St.classFit), never under 40 CSS px; was the per-group SHELF_K over the pantry-v2
+  // canvases (28 Sept, PAN-09, SH-112)
   const PITCH = 172;
   const GROUP_GAP = 44;
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
@@ -136,7 +132,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   // the small-jar family for every spice slot: the art run's jars with lids that differ (art.s02 "spice-jar-*", C5; the
   // ginger jar replaces the old one that read as gummies, C24) once they land, else the v2 jars
   const SPICE_JAR = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp" };
+  // ART-50 (Zafar, 6 Nov: "swap the chai shelf jars in one change once cut and judged"): the stove-400 walnut set first
+  // (data/cook.json art.chaiShelf: FA01's eight and FJ01's cumin and mustard, one batch); the old pictures stay as the fallback
   const spiceJar = (id) => {
+    const cs = (Cook.data.art || {}).chaiShelf || {};
+    if (typeof cs[id] === "string") return cs[id];
     const s02 = ((Cook.data.art || {}).s02 || {});
     const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
     return (e && e.file) || SPICE_JAR[id] || jarUrl(id);
@@ -840,15 +840,22 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const x0 = mid - width / 2;
     const shelf = {};
     let sx = x0 + slotW / 2;
-    shelfIds.forEach((group, gi) => {
+    const fits = {};
+    shelfIds.forEach((group) => {
       // (ART-41: the stone shelf is the line they stand on now; no plank under each group)
-      // 29 Sept (X7): the band's padding rule (St.shelfFit): the group's tallest thing, hop included, keeps the top gap
-      const K = Math.min(...group.map((id) => St.shelfFit(S, `jar-${id}`, SHELF_K[gi], BASE)));
+      // ART-51: each item by its size class (St.classFit: the band's room with the hop kept, as the old shelfFit, times the class)
       group.forEach((id) => {
-        shelf[id] = slot(id, sx, K);
+        const f = (fits[id] = St.classFit(S, `jar-${id}`, id, { base: BASE, ppw, slotW: slotW - 8 }));
+        shelf[id] = slot(id, sx, f.scale);
         sx += slotW;
       });
       sx += gapW;
+    });
+    // (the size classes' measure, read only: each shelf item's class and opaque height on screen, CSS px; the L height it is a share of)
+    Cook.chaiShelfSizes = () => rowIds.filter((id) => shelf[id] && fits[id]).map((id) => {
+      const f = fits[id], o = shelf[id];
+      const sc = Math.abs(o.scaleY || 1) / (f.scale || 1);
+      return { id, cls: f.cls, flag: f.flag, k: f.k, cssH: Math.round(f.h * sc * ppw * 10) / 10, cssL: Math.round(f.hL * ppw * 10) / 10, cssW: Math.round(o.displayWidth * ppw * 10) / 10, cssSlot: Math.round(slotW * ppw * 10) / 10, floored: f.floored, capped: f.capped };
     });
     fitPills(false);
     // SH-219: the pills' one scale for the row: as large as the floor asks (chipWant), as far as each neighbouring pair allows without
@@ -931,6 +938,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         chip.face = [bg, icon];
       }
       chip.cardW = w;
+      chip.cardH = CHIP.h; // (the drawn card's height: the contract's light measure, contract-53)
       pillHit(chip);
       chip.capW = cap;
       chip.showsWord = !!showWord;

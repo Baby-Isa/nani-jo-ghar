@@ -285,6 +285,55 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     for (let n = 0; n < 3; n++) s = Math.min(k, (room - (hop ? S$.shelfHop(h * s) : 0)) / h);
     return Math.max(0.05, s);
   };
+  /*
+   * Size classes (Zafar, 6 Nov: token steps, never true sizes; L 100 / M 91 / S 84 of the slot, a 40 CSS px floor at 740x320;
+   * Fable's method, build/reports/size-classes-method-2026-11-06.md). The class is data: data/cook.json words[id].size, else
+   * art.sizes[id].size; missing = M. sizeFlag LONG: the class on the picture's long side; W: fitted to the slot's width.
+   * The art draws every item the same height, so the picture's own size never decides how big it stands.
+   */
+  S$.CLASS_K = { L: 1, M: 0.91, S: 0.84 };
+  S$.FLOOR_CSS = 40;
+  S$.sizeClass = function (id) {
+    const D = Cook.data || {};
+    const w = (D.words || {})[id];
+    const a = ((D.art || {}).sizes || {})[id];
+    const e = w && w.size ? w : a && a.size ? a : null;
+    return { size: e && S$.CLASS_K[e.size] ? e.size : "M", flag: (e && e.sizeFlag) || null, given: !!e };
+  };
+  /**
+   * The scale for texture `key` (word `id`) standing on `base` in the shelf band: the L height is the band's room (its top gap and
+   * the hop kept, as shelfFit), M and S their share of it; never under FLOOR_CSS on screen (ppw: CSS px per design px), and then
+   * `floored` (the slot is too small for the class). slotW (design px): a W item's width, and the cap no picture passes
+   * (`capped`). Returns { scale, cls, flag, k, h (the opaque height, design px), hL, floored, capped }.
+   */
+  S$.classFit = function (S, key, id, { base, ppw = 1, slotW = Infinity, hop = true } = {}) {
+    const c = S$.sizeClass(id);
+    const k = S$.CLASS_K[c.size];
+    const room = base - S$.shelfItemTop() - SHELF.glow;
+    let hL = room;
+    for (let n = 0; n < 4; n++) hL = room - (hop ? S$.shelfHop(hL) : 0);
+    const out = { scale: 1, cls: c.size, flag: c.flag, k, h: 0, hL, floored: false, capped: false };
+    if (!S.textures.exists(key)) return out;
+    const src = S.textures.get(key).getSourceImage();
+    const [t, b] = S$.opaqueSpan(S, key);
+    const ph = (b - t) * src.height, pw = src.width;
+    let s;
+    if (c.flag === "W" && isFinite(slotW)) s = (slotW * k) / pw;
+    else if (c.flag === "LONG") s = (hL * k) / Math.max(ph, pw);
+    else s = (hL * k) / ph;
+    const floor = S$.FLOOR_CSS / Math.max(1e-6, ppw);
+    if (ph * s < floor) {
+      s = floor / ph;
+      out.floored = true;
+    }
+    if (isFinite(slotW) && pw * s > slotW) {
+      s = slotW / pw;
+      out.capped = true;
+    }
+    out.scale = Math.max(0.05, s);
+    out.h = ph * out.scale;
+    return out;
+  };
   S$.hideKnown = hideKnown;
 
   /*

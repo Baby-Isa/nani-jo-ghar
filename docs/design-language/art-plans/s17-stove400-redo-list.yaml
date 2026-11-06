@@ -1,61 +1,14 @@
-# The stove pack's redo (6 Nov), from the landing judge (build/reports/stove-run-landed-2026-11-06.md).
+# The stove pack's redo list (6 Nov).
 # Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-stove400.run.yaml --redo docs/design-language/art-plans/s17-stove400-redo-list.yaml
-# Two kinds of line. (1) Wrong item or wrong view: these sheets' other items are usable now; only the named items are wanted
-# from the redo. (2) Walnut: Zafar, 6 Nov, "put walnut where there's wood"; the run drew every jar lid in pale oak. These
-# run only on his yes to decision 1 in the report, and need the run spec's "pale oak" wording changed to walnut first
-# (the FS prompt in the plan, the ANCHOR and SHELF checks, the jar lines' ITEMS); FA01 first, every later jar sheet copies it.
+# Round 1 (from build/reports/stove-run-landed-2026-11-06.md): 17 lines, run by Zafar 6 Nov and landed the same day
+# (build/reports/stove-redo-landed-2026-11-06.md): FA01, FJ01-FJ09 and FP02 in mid-walnut lids (one family, kept), and the
+# look redos TF06, TK02, TD03 and TF07 kept. Round 2, below: what that landing judge found still wrong. Each line regenerates
+# its whole sheet; only the named item is wanted from it (the sheet's other cuts stay).
 pack: s17-stove400
 redo:
-  # (1) wrong item or wrong view
-  - id: TF06
-    why: "item 2, the cassava chips, came as thin round potato crisps: draw thick golden cassava (mogo) chips, chunky like thick-cut chips, as a loose heap"
-    source: "Claude's landing judge, 6 Nov"
-  - id: TK02
-    why: "item 2, the chutney squeeze bottle, is drawn side-on: it must be seen from directly above like every other item on the sheet (its round cap and shoulder as circles)"
-    source: "Claude's landing judge, 6 Nov"
-  - id: TD03
-    why: "items 8 and 9, the two birthday cakes, are drawn three-quarter with their sides and stand showing: from directly above, the cake top a perfect circle, no side wall"
-    source: "Claude's landing judge, 6 Nov"
-  - id: TF07
-    why: "item 7, the corn kernels: the clear plastic cup took the magenta ground's pink through it; the kernels in a plain white paper cup (opaque), nothing see-through on a magenta sheet"
-    source: "Claude's landing judge, 6 Nov"
   - id: TF09
-    why: "item 2, the bhajia frying: the pool of see-through oil round them took the magenta ground's pink; draw the bhajia pale gold with a few small oil bubbles clinging at their edges, no pool of oil"
-    source: "Claude's landing judge, 6 Nov"
+    why: "item 2, the bhajia frying: the pool of oil is gone, but the small see-through oil bubbles round the bhajia took the magenta ground's pink at their rims (it shows as pink specks on the dark shelf). Draw the bhajia pale gold and glistening with NO bubbles and no oil at all: nothing see-through on a magenta sheet"
+    source: "Claude's redo landing judge, 6 Nov"
   - id: TD06
-    why: "item 5, the dabeli, is a bun seen three-quarter from the side: from directly above on its plate, the bun's top a circle with the filling showing at the cut"
-    source: "Claude's landing judge, 6 Nov"
-  # (2) walnut, on Zafar's yes (decision 1)
-  - id: FA01
-    why: "every jar lid is pale oak: Zafar (6 Nov) wants walnut where there's wood. The same sheet, the same jars, glass, light and contents, one dark walnut screw lid family"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ01
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ02
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ03
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ04
-    why: "pale oak lids on the three glass jars: walnut, copying the kept walnut FA01 (the five steel tins stay steel); and item 3, the chapati flour tin, came shut with a string band so no flour shows: open with its lid leaning beside it like items 4-7"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ05
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ06
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ07
-    why: "pale oak lids: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ08
-    why: "pale oak lids on the five glass jars: walnut, copying the kept walnut FA01 (the three steel tins stay steel); and item 1, the baking powder tin, came shut so nothing shows: open with its lid leaning beside it like items 2 and 3"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FJ09
-    why: "pale oak lids on the five glass jars: walnut, copying the kept walnut FA01 (the coconut milk tin stays steel)"
-    source: "Zafar, 6 Nov (walnut)"
-  - id: FP02
-    why: "the rose water bottle's cap is pale oak: walnut, copying the kept walnut FA01"
-    source: "Zafar, 6 Nov (walnut)"
+    why: "item 5, the dabeli: the plate is now round from above, but the bun is still seen from the front and above (its top dome, the filling at the cut and the lower bun's side all show). From directly above like every other dish: the bun's top a circle, lifted off and laid beside the lower half so the filling (masala potato, pomegranate, peanuts, sev) faces up"
+    source: "Claude's redo landing judge, 6 Nov"

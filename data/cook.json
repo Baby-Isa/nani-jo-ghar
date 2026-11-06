@@ -3312,7 +3312,7 @@
  },
  "art": {
   "sizes": {
-   "_about": "Size classes (Fable's method, build/reports/size-classes-method-2026-11-06.md; classed 6 Nov, build/reports/size-classes-data-2026-11-06.md): size = L, M or S (STN = station piece, laid out by the scene), sizeFlag = LONG or W. For slot items with no row in words (shelf-only containers, tools, props, vessels). Read by nothing yet; the code step (St.classFit) lands later. The shelf's old numbers in sprites.shelf stay as they are until then.",
+   "_about": "Size classes (Fable's method, build/reports/size-classes-method-2026-11-06.md; classed 6 Nov, build/reports/size-classes-data-2026-11-06.md): size = L, M or S (STN = station piece, laid out by the scene), sizeFlag = LONG or W. For slot items with no row in words (shelf-only containers, tools, props, vessels). Read by St.classFit (js/cook/station-lib.js), with words[id].size first; chai's shelf uses it (6 Nov, ART-51); the other shelves keep their old numbers in sprites.shelf until their step.",
    "ph-bajri-atto": {
     "size": "L"
    },
@@ -3458,6 +3458,19 @@
    "vessel:kadai": {
     "size": "STN"
    }
+  },
+  "chaiShelf": {
+   "_about": "Chai's shelf pictures (ART-50: Zafar, 6 Nov, \"swap the chai shelf jars in one change once cut and judged\"): the stove-400 walnut set (build/reports/stove-redo-landed-2026-11-06.md), FA01's eight as one batch and the two tea decoys, cumin and mustard, from FJ01 (the same jar, lid and light, copying FA01), so the shelf never mixes two lid families. Read by js/cook/stations/chai-tray.js (spiceJar) and by the order's word cards while chai is up (js/cook/ui.js). Each item's size is its class (words[id].size, St.classFit), not the picture's. The old two-batch pictures (shelf-*-bare-f, the s02 C5 spice jars) stay in the repo for the other stations and until Zafar has seen this.",
+   "cook-paani": "assets/cook/items-s17-stove/f-water-bottle.webp",
+   "cook-dudh": "assets/cook/items-s17-stove/f-milk-carton.webp",
+   "cook-chai": "assets/cook/items-s17-stove/f-tea-jar.webp",
+   "cook-khun": "assets/cook/items-s17-stove/f-sugar-jar.webp",
+   "spi-10": "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+   "veg-14": "assets/cook/items-s17-stove/f-ginger-jar.webp",
+   "veg-13": "assets/cook/items-s17-stove/f-garlic-jar.webp",
+   "spi-16": "assets/cook/items-s17-stove/f-salt-jar.webp",
+   "spi-02": "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+   "spi-05": "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"
   },
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
   "props": [
@@ -5135,6 +5148,16 @@
        "assets/shared/word-moment/*-s17.webp",
        "assets/cook/bg/bg-cook-worktop-t-v1.webp",
       "assets/cook/items/shelf-*",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-milk-jug-f.webp",
       "assets/cook/items/vessel-saucepan-t.webp",
