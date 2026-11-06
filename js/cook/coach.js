@@ -291,15 +291,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   /**
    * A picture's box on screen, [x, y, w, h] in page px (null: none, or too small to be the thing). SH-230 (Zafar, 6 Nov night: "a
-   * general rule that works in all cases that leaves some padding around the object"): the picture's opaque part (its texture's
-   * transparent frame left out, the scene's opaqueBox) with no margin of its own: the light adds the one rule's (Onboard.litBox; was
-   * 8% here, 4-10 px, and the light's 10 px more on top).
+   * general rule that works in all cases that leaves some padding around the object"): the picture as drawn with no margin of its
+   * own: the light adds the one rule's (Onboard.litBox; was 8% here, 4-10 px, and the light's 10 px more on top).
    */
   function hugOf(obj) {
     if (!obj || !obj.getBounds || !Cook.UI.worldToScreen) return null;
-    const S = Cook.scene;
-    const q = S && S.opaqueBox && obj.texture ? S.opaqueBox(obj) : null;
-    const b = q ? { x: q.x - q.w / 2, y: q.y - q.h / 2, width: q.w, height: q.h } : obj.getBounds();
+    const b = obj.getBounds();
     const a = Cook.UI.worldToScreen(b.x, b.y);
     const z = Cook.UI.worldToScreen(b.x + b.width, b.y + b.height);
     const w = z.x - a.x;

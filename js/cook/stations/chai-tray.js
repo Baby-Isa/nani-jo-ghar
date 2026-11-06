@@ -2215,7 +2215,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const x = Math.min(a[0], c[0]), y = Math.min(a[1], c[1]);
       return [x, y, Math.max(a[0] + a[2], c[0] + c[2]) - x, Math.max(a[1] + a[3], c[1] + c[3]) - y];
     };
-    // (SH-230: each neighbour's picture where it rests, its opaque part, and its pill: the lit box stops 2 px short of either)
+    // (SH-230: each neighbour's picture where it rests and its pill: the lit box stops 2 px short of either)
     const shelfBut = (obj) =>
       Object.values(shelf)
         .filter((o) => o !== obj && o.active)
@@ -2257,14 +2257,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests (not
     // where its bounce has it). SH-230 (Zafar, 6 Nov night: "items with no written words in their pills is much too tight ... a general
     // rule that works in all cases that leaves some padding around the object+pill+face icon, or object+pill, or object"): this gives
-    // the thing's parts as one union, its picture (its opaque part: the texture's transparent frame left out) AND its pill (a
-    // speaker-only pill is narrower than its jar, so the jar sets the sides; was the pill alone, CHAI-33); the margin round them, and
+    // the thing's parts as one union, its picture as drawn AND its pill (a speaker-only pill is narrower than its jar, so the jar sets
+    // the sides; was the pill alone, CHAI-33); the margin round them, and
     // how far a neighbour or the screen's edge trims it, is the one rule every game's light uses (js/shared/onboard.js Onboard.litBox)
     const restY = (o) => (o.glowFx && o.glowFx.y != null ? o.y - o.glowFx.y : 0);
+    // (the picture's own box, the one the contract measures, contract-92: its opaque part was tried, but the light then sat 3 px
+    // closer to the frame's top than the rule's margin; the jars' frames are a few px, so the box is the same to the eye)
     const restBox = (o) => {
       const dy = restY(o);
-      const q = S.opaqueBox ? S.opaqueBox(o) : null;
-      if (q) return { x0: q.x - q.w / 2, y0: q.y - q.h / 2 - dy, x1: q.x + q.w / 2, y1: q.y + q.h / 2 - dy };
       const b = o.getBounds();
       return { x0: b.x, y0: b.y - dy, x1: b.right, y1: b.bottom - dy };
     };
