@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { imageInfo, isBg, isCutout, findings, staleKnown } from "./artcheck.mjs";
-import { readFileSync, mkdtempSync } from "node:fs";
+import { readFileSync, mkdtempSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -127,7 +127,7 @@ const look = (args) => {
   const res = JSON.parse(readFileSync(out, "utf8"));
   return { status: r.status, by: Object.fromEntries(res.results.map((x) => [x.file.split("/").pop().replace(".png", ""), x])), res };
 };
-test("colour and look: halo, baked shadow, lower-right light, off-palette and size fire; a clean jar passes", () => {
+test("colour and look: halo, baked shadow, lower-right light (a FAIL), off-book colour (an EXCEPTION) and size fire; a clean jar passes", () => {
   const dir = mkdtempSync(join(tmpdir(), "artlook-"));
   assert.equal(spawnSync("python3", ["-c", LOOKSYNTH, dir], { encoding: "utf8" }).status, 0);
   const files = ["clean", "halo", "shadow", "lowerright", "offpalette"].map((n) => `${dir}/${n}.png`);
@@ -137,12 +137,13 @@ test("colour and look: halo, baked shadow, lower-right light, off-palette and si
   assert.ok(by.clean.colours[0].wada.name === "Cinnamon Rufous" && by.clean.colours.some((c) => c.in_house), "its colour is matched to Wada's Cinnamon Rufous, a house colour");
   assert.ok(by.halo.flag.some((f) => f.startsWith("white halo")), "a near-white rim at the alpha edge is a halo");
   assert.ok(by.shadow.fail.some((f) => f.startsWith("baked shadow")), "a soft dark smear below the piece is a baked shadow (FAIL)");
-  assert.ok(by.lowerright.flag.some((f) => f.startsWith("light from the lower right")), "light from the lower right is flagged");
-  assert.ok(by.offpalette.flag.some((f) => f.startsWith("off-palette")), "a magenta far from every Wada colour is off-palette");
-  for (const n of ["halo", "lowerright", "offpalette"]) assert.deepEqual(by[n].fail, [], `${n} is a FLAG, not a FAIL`);
+  assert.ok(by.lowerright.fail.some((f) => f.startsWith("light from the lower right")), "light from the lower right is a FAIL (Zafar, 6 Nov: on the block or in the redo pipeline)");
+  assert.ok(by.offpalette.exception.some((f) => f.startsWith("palette exception")), "a magenta far from every Wada colour is an exception for Zafar");
+  assert.deepEqual(by.offpalette.fail, [], "an off-book colour is his call (an EXCEPTION), not a FAIL");
+  assert.deepEqual(by.halo.fail, [], "a halo is a FLAG, not a FAIL");
   const L = look(["--batch-by", "none", "--size-class", "L", `${dir}/clean.png`]).by.clean;
-  assert.ok(L.flag.some((f) => f.startsWith("size: fills 63%")), "a jar filling 63% of the slot is off size class L (100%)");
-  assert.deepEqual(look(["--batch-by", "none", "--size-class", "M", `${dir}/fit.png`]).by.fit.flag, [], "a jar filling 89% of its slot meets class M (90% ±5%)");
+  assert.ok(L.flag.some((f) => f.startsWith("size: fills 63% of its cell")), "a slot item filling 63% of its cell is flagged (every item fills at least 85%)");
+  assert.deepEqual(look(["--batch-by", "none", "--size-class", "S", `${dir}/fit.png`]).by.fit.flag, [], "a jar filling 89% of its cell passes, whatever its class (the game applies the class)");
 });
 test("colour and look: one glossy jar in a matte batch is the odd one out; the rest of the batch passes", () => {
   const dir = mkdtempSync(join(tmpdir(), "artlook-"));
@@ -237,7 +238,7 @@ test("colour and look on the repo: pan-pour and the thermometer belt FAIL, the h
   const of = (p) => res.results.find((r) => r.file === join(ROOT, p));
   for (const p of fails) assert.ok(of(p).fail.some((f) => f.startsWith("baked shadow")), `${p} keeps a baked shadow`);
   assert.ok(of("assets/clinic/items-v2/honey-jar.webp").flag.some((f) => f.startsWith("shadow: a faint")), "the honey jar's faint soft shadow is flagged");
-  for (const p of clean) assert.ok(!of(p).fail.length && !of(p).flag.some((f) => /shadow/.test(f)), `${p}: its own dark base or rim is not a shadow (${JSON.stringify(of(p).info.shadow)})`);
+  for (const p of clean) assert.ok(![...of(p).fail, ...of(p).flag].some((f) => /shadow/.test(f)), `${p}: its own dark base or rim is not a shadow (${JSON.stringify(of(p).info.shadow)})`);
 });
 test("colour and look: shipped by reference (written out, built in code, a lab page only, none), not by folder", () => {
   const py = `import sys, json; sys.path.insert(0, ${JSON.stringify(HERE)}); import artcolour as A
@@ -277,4 +278,104 @@ test("checks.mjs runs the colour and look checks on changed pictures (`art`), fa
   assert.match(src, /artcolour\.py", "--changed", "--quiet"/);
   const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--changed", "HEAD", "--quiet"], { cwd: ROOT, encoding: "utf8" });
   assert.ok([0, 1].includes(r.status) && /^(no picture changed since HEAD|\d+ picture\(s\) changed since)/m.test(r.stdout), r.stdout + r.stderr);
+});
+
+// Zafar's stricter rules (6 Nov): one Wada combination per item (neutrals exempt), a colour the book lacks an exception for
+// him, light a FAIL, walnut wood, size classes L 100 / M 91 / S 84 (every piece filling 85% of its cell) with a 40 px floor, a batch sheet for an eye, any
+// combination's strip in a paste block
+const STRICTSYNTH = `
+import os, sys, numpy as np
+from PIL import Image
+def piece(path, cols, fracs=None, H=160, W=160, h=100, w=60):
+    yy, xx = np.mgrid[0:H, 0:W].astype(float)
+    cx, cy = W / 2, H / 2
+    a = ((np.abs(xx - cx) <= w / 2) & (np.abs(yy - cy) <= h / 2)).astype(float)
+    fracs = fracs or [1 / len(cols)] * len(cols)
+    img = np.zeros((H, W, 3))
+    y0 = cy - h / 2
+    for k, (c, f) in enumerate(zip(cols, fracs)):  # horizontal bands, one colour each
+        m = (yy >= y0) & ((yy < y0 + f * h) | (k == len(cols) - 1))
+        img[m] = [int(c[i:i + 2], 16) for i in (1, 3, 5)]
+        y0 += f * h
+    img *= (1 - 0.12 * ((xx - cx) / w + (yy - cy) / h))[..., None]  # lit from the upper left
+    Image.fromarray(np.dstack([np.clip(img, 0, 255), a * 255]).astype(np.uint8), "RGBA").save(path)
+d = sys.argv[1]
+piece(d + "/one-combo.png", ["#ab544d", "#719470"])            # Ochre Red and Chromium Green: Wada 283
+piece(d + "/two-combos.png", ["#f37420", "#719470"])           # Orange and Chromium Green: no combination near both
+piece(d + "/marble.png", ["#edecef", "#c27544"], [0.7, 0.3])   # the white marble is ground, not a colour
+piece(d + "/magenta.png", ["#ff00ff"])                         # no Wada colour near it
+piece(d + "/chopping-board.png", ["#c8965a"])                  # light oak
+piece(d + "/walnut-board.png", ["#4b3317"])                    # walnut (Vandyke Brown)
+`;
+const strict = () => { const dir = mkdtempSync(join(tmpdir(), "artstrict-")); const r = spawnSync("python3", ["-c", STRICTSYNTH, dir], { encoding: "utf8" }); assert.equal(r.status, 0, r.stderr); return dir; };
+test("one palette per item: one combination passes, two combinations FAIL, the white marble is ground, an off-book colour is Zafar's exception (until he allows it)", () => {
+  const dir = strict();
+  const { by, status } = look(["--batch-by", "none", ...["one-combo", "two-combos", "marble", "magenta"].map((n) => `${dir}/${n}.png`)]);
+  assert.equal(status, 1);
+  assert.deepEqual([...by["one-combo"].fail, ...by["one-combo"].exception], [], `two colours of Wada 283 pass: ${JSON.stringify(by["one-combo"].palette)}`);
+  assert.ok(by["one-combo"].palette.fit && by["one-combo"].palette.main.length === 2);
+  assert.ok(by["two-combos"].fail.some((f) => f.startsWith("palette: no one Wada combination")), `orange and green from different combinations fail: ${JSON.stringify(by["two-combos"].palette)}`);
+  assert.deepEqual(by["two-combos"].exception, [], "both colours are in the book: a FAIL to recolour, not an exception");
+  assert.deepEqual([...by.marble.fail, ...by.marble.exception], [], "the white marble (#edecef, chroma 1.6) is a neutral: only the cinnamon is judged");
+  assert.equal(by.marble.palette.main.length, 1);
+  assert.ok(by.magenta.exception.some((f) => /palette exception: #[0-9a-f]{6}/.test(f)) && !by.magenta.fail.length);
+  const rules = JSON.parse(readFileSync(join(HERE, "data", "look-rules.json"), "utf8"));
+  rules.palette.allow["*/magenta.png"] = "Zafar, test: keep it";
+  const rp = join(dir, "rules.json"); writeFileSync(rp, JSON.stringify(rules));
+  const allowed = look(["--rules", rp, "--batch-by", "none", `${dir}/magenta.png`]);
+  assert.equal(allowed.status, 0, "an allowed exception passes");
+  assert.equal(allowed.by.magenta.palette.allowed, "Zafar, test: keep it");
+});
+test("walnut wherever there is wood: a light oak board FLAGs, a walnut one does not", () => {
+  const dir = strict();
+  const { by } = look(["--batch-by", "none", `${dir}/chopping-board.png`, `${dir}/walnut-board.png`]);
+  assert.ok(by["chopping-board"].flag.some((f) => f.startsWith("wood:")), JSON.stringify(by["chopping-board"].colours));
+  assert.ok(!by["walnut-board"].flag.some((f) => f.startsWith("wood:")));
+  assert.deepEqual(by["chopping-board"].fail, [], "wood is a FLAG, never a FAIL");
+});
+test("size classes: L 100%, M 91%, S 84% (Zafar's steps), every piece filling 85% of its cell, a 40 CSS px floor at 740x320", () => {
+  const Z = JSON.parse(readFileSync(join(HERE, "data", "look-rules.json"), "utf8")).sizes;
+  assert.deepEqual(Z.classes, { L: 1.0, M: 0.91, S: 0.84 });
+  assert.equal(Z.min_fill, 0.85);
+  assert.equal(Z.min_css_px, 40); assert.equal(Z.at, "740x320");
+  const slot = (h) => spawnSync("python3", [join(HERE, "artcolour.py"), "--slot-css", String(h)], { encoding: "utf8" });
+  assert.equal(slot(48).status, 0, "a 48 px slot holds a 40.3 px S piece");
+  const s = slot(47); assert.equal(s.status, 1); assert.match(s.stdout, /S: 84% of 47 px = 39\.5 CSS px {2}\(under 40 at 740x320\)/);
+  const bible = readFileSync(join(ROOT, "docs/design-language/art-bible.md"), "utf8");
+  assert.match(bible, /L 100%, M 91%, S 84%/); assert.match(bible, /every item the same height/); assert.match(bible, /40 CSS px/); assert.match(bible, /walnut/i);
+  assert.doesNotMatch(bible, /size_cm/, "no true sizes (Zafar, 6 Nov)");
+});
+test("a flagged batch gets a contact sheet for an eye; the glossy jar is ringed", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artlook-"));
+  assert.equal(spawnSync("python3", ["-c", LOOKSYNTH, dir], { encoding: "utf8" }).status, 0);
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--quiet", "--batch", "shelf", "--batch-sheets", join(dir, "sheets"), `${dir}/batch`], { encoding: "utf8" });
+  assert.match(r.stdout, /batch sheet: .*shelf\.jpg \(shelf\)/);
+  assert.ok(readFileSync(join(dir, "sheets", "shelf.jpg")).length > 2000);
+});
+test("a pack may take any Wada combination's strip: the block names its colours and attaches wada-N.png", () => {
+  const dir = mkdtempSync(join(tmpdir(), "artstrip-"));
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--swatch", join(dir, "s.png"), "--combination", "151"], { encoding: "utf8" });
+  assert.match(r.stdout, /combination 151/);
+  const py = `import sys, os, json; sys.path.insert(0, ${JSON.stringify(HERE)}); import artblock as B, artspec as S, artcolour as C
+p = os.path.join(C.REPO, "build/tools/art/data/swatches/wada-151.png"); had = os.path.exists(p)
+sp = S.load(${JSON.stringify(join(HERE, "specs", "s17-pc2.run.yaml"))}); sp["house"] = {"attach": True, "combination": 151}
+t = B.build(sp)[0]
+from PIL import Image
+n = len(set(Image.open(p).convert("RGB").getdata()))
+if not had:
+    os.remove(p)
+    if not os.listdir(os.path.dirname(p)): os.rmdir(os.path.dirname(p))
+print(json.dumps({"t": t, "words": C.combination_words(151), "n": n, "k": len(C.combos()[151])}))`;
+  const o = JSON.parse(spawnSync("python3", ["-c", py], { encoding: "utf8", maxBuffer: 1 << 24 }).stdout);
+  assert.ok(o.t.includes(`combination 151, picked for these items`) && o.t.includes(o.words), "the block names the pack's combination in words");
+  assert.match(o.t, /wada-151\.png RAW \+ build\/tools\/art\/data\/swatches\/wada-151\.png/);
+  assert.match(o.t, /Attach wada-151\.png/);
+  assert.equal(o.n, o.k + 1, "the strip is the combination's colours on white, no text");
+  assert.match(o.t, /ONE Wada combination/, "every block says one combination per picture");
+});
+test("light is a FAIL unless an eye passed the reading (light.eye_passed): the jharo passes, the well fails", () => {
+  const { res } = look(["--batch-by", "none", ...["assets/cook/items/v3/samosa/jharo.webp", "assets/day/s09b/well.webp"].map((p) => join(ROOT, p))]);
+  const [j, w] = res.results;
+  assert.ok(!j.fail.some((f) => f.startsWith("light")) && /Fable, 6 Nov/.test(j.info.light.eye_passed), JSON.stringify(j.info.light));
+  assert.ok(w.fail.some((f) => f.startsWith("light from the lower right")));
 });
