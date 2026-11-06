@@ -76,7 +76,7 @@ other 15 files stay for the lab.
 | The same proof on the code before (09c3dc4's files, the same plays) | 1 overlap: the stamp's `cook-soft` under Mum's "barabar"; the gate now drops it |
 | The tap's sound at the tap (`cook-pop` against the input that caused it, every chai page) | 619 taps: median 1 ms, 90% within 4 ms, the latest 25 ms after the tap (the late made `tap` 1.7 s later is gone: the settle plays as the bottle lands) |
 | Unit: `node --test build/test_shared_sfx_files.mjs` (new; in `checks.mjs`) | 7 pass: every sound chai calls exists (a recipe, a loop or its file on disk), chai calls each pick, every file has its `SOURCES.md` row and licence, only the picked files are named by game code, the three Mixkit ones listed; the gate on a stand-in Web Audio (no >120 ms effect under a voice, a tick ducked to x0.35, a file not loaded is skipped, muted is silent) |
-| `node build/tools/review/checks.mjs` | CHECKS_LINE |
+| `node build/tools/review/checks.mjs` (17:40-17:58 UK) | **green** but for one flake: unit 90 files, 651 pass, 0 fail; words 0 literals; static 822 known, 0 new; bump; specs; docs; fixlist; recordings; art 0 fail; size 416 MB; **load 29/29** (the juice sprites are in chai's and the shared Cook manifests). The leak bots failed once on the clinic and snap (neither touched here) and passed on the re-run (`--only leak`: 20 configs at every level), as they had at 17:07 on the same code: a flaky bot, worth a row of its own |
 | Reduced motion (`--less`, the system setting) | every effect fades in place: one still wisp, one soft star, the drop a dot where it lands, the burst a glow (sheet F); the reduced-motion star was halved after a first shot showed it glaring over the glass (`juice.js`, after the contract run: that path is not in the run; sheet F is after the change) |
 
 ## Shots for the judge
@@ -95,5 +95,5 @@ branch) beside AFTER, at 1280x665; and `strip-after-1280x665.png`. Tools: `build
 
 ## Launches and cost
 
-One builder (this session, the top model), about four hours: the wiring, the checks, the contract run (twice: the first ran across
+One builder (this session, the top model), about two hours (16:14-18:00 UK): the wiring, the checks, the contract run (twice: the first ran across
 my own mid-run edits), the shots.
