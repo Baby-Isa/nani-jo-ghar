@@ -81,9 +81,10 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 Generate an image, 1536×1024, landscape.
 
 A sprite sheet of milky caramel chai in motion for a children's cooking game, the exact tea colour of the attached glass, in an invisible grid of 3 columns and 2 rows, each cell showing the liquid alone with NO glass, cup, pan or surface edge drawn:
-Row 1: (1) one round falling drop of chai; (2) a small crown splash as the drop lands, a few droplets lifting; (3) a single soft ring ripple on a flat chai surface, seen a little from above.
-Row 2: (4) two concentric ring ripples on the chai surface; (5) one small round droplet; (6) two small droplets.
-Glossy, soft, with gentle highlights; nothing blue, nothing clear like water. Everything well inside its cell.
+Everything seen exactly from the side, at eye level (the game shows a glass from the side).
+Row 1: (1) the LAST DROP of a pour, seen from the side: a teardrop of chai with a thin tail at its top, as it leaves a spout; (2) the same drop falling, now round; (3) a small crown splash seen from the side as a drop lands in a glass of chai, a few droplets lifting above the line of the tea.
+Row 2: (4) one small round droplet; (5) two small droplets; (6) three tiny droplets.
+Soft, with a gentle sheen and one small highlight from the upper left; not glossy plastic; nothing blue, nothing clear like water. Everything well inside its cell.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No gradient, NO shadows or haze on the grey. Do not draw grid lines.
 
