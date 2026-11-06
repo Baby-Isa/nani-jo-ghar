@@ -11,8 +11,8 @@
 //   privacy   nothing leaves the device: no fetch/XMLHttpRequest/sendBeacon/WebSocket to an absolute URL in js/, no third-party
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
-//   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in the ONE ladder table, data/shared.json; a second
-//             table (a ladder key in other data, a ladder name beside a number in js/) is a finding (S13-A1)
+//   hintwait  ONE help ladder (the central rules' hint waits); a second table (a helpMs key in other data, a ladder name beside a
+//             number in js/) is a finding (S13-A1). (Was "bulb": the bulb's 8 s went with the bulbs, Zafar, 6 Nov)
 //   shell     every live page links css/shared/kit.css once and no shared sheet directly; kit.css imports every shared sheet
 //   motion    no game keyframes for a kit motion (glow, hop, pulse, throb, bounce, talk, bob, shake) outside css/shared/
 //   jscolour  no colour literal in js/ (UI colours through js/shared/tokens.js); an art-only file is listed once in the known list
@@ -213,26 +213,13 @@ export function rewardFindings(file, json) {
   go(json, "", "");
   return out;
 }
-// ---- bulb ----
-// the bulb's English shows long enough to read: 8 s at every level (Zafar, D11 / SH-41); every bulb time table holds >= 7.5 s
-export const BULB_MIN = 7500;
-export function bulbFindings(tables) {
-  const out = [];
-  for (const [where, ms] of Object.entries(tables)) {
-    const list = (Array.isArray(ms) ? ms : Object.values(ms || {})).filter((x) => typeof x === "number");
-    if (!list.length) { out.push({ check: "bulb", at: where, key: `bulb|${where}|missing`, text: `${where}: no bulb time found` }); continue; }
-    if (list.some((x) => x < BULB_MIN)) out.push({ check: "bulb", at: where, key: `bulb|${where}`, text: `${where}: the bulb's English shows [${list.join(", ")}] ms; 8 s at every level (D11, SH-41)` });
-  }
-  return out;
-}
-// S13-A1 (the kit review F3, decision 8): ONE ladder table, data/shared.json {helpMs, bulbMs, bulbPulseMs}, read by guide.js,
-// bulb.js, conversations.js, the clinic and Cook through js/shared/tokens.js (Tokens.ladder). The check reads that table alone
+// ---- hintwait ----
+// S13-A1 (the kit review F3, decision 8), SH-155: ONE help ladder, the central rules' hint waits (data/rules.json levels.hintS), filled
+// into Tokens.ladder.helpMs by js/shared/tokens.js from data/shared.json's pointer. (The bulb's 8 s table and its check went with the
+// bulbs: Zafar, 6 Nov, "remove the bulbs from everywhere and retire them and take their rules out".)
 export const LADDER_FILE = "data/shared.json";
-export function bulbTables(rd, J) {
-  return { [`${LADDER_FILE} bulbMs`]: [].concat((J(LADDER_FILE) || {}).bulbMs ?? []) };
-}
 // ... and a second table anywhere is a finding: a ladder key in other data, or a ladder name beside a number in code
-const LADDER_KEY = /^(helpMs|bulbMs|bulbPulseMs|bulb_ms|help_ms|bulb_pulse_ms)$/;
+const LADDER_KEY = /^(helpMs|help_ms)$/;
 export function ladderCopyFindings(file, textOrJson) {
   const out = [];
   if (file === LADDER_FILE) return out;
@@ -242,7 +229,7 @@ export function ladderCopyFindings(file, textOrJson) {
       for (const [k, v] of Object.entries(x)) {
         if (k.startsWith("_")) continue;
         const p = path ? `${path}.${k}` : k;
-        if (LADDER_KEY.test(k)) out.push({ check: "bulb", at: `${file} ${p}`, key: `bulb|${file}|${p}`, text: `a second ladder table (the one is ${LADDER_FILE})` });
+        if (LADDER_KEY.test(k)) out.push({ check: "hintwait", at: `${file} ${p}`, key: `hintwait|${file}|${p}`, text: `a second ladder table (the one is ${LADDER_FILE})` });
         else go(v, p);
       }
     };
@@ -252,7 +239,7 @@ export function ladderCopyFindings(file, textOrJson) {
   lines(textOrJson).forEach((l, i) => {
     if (/^\s*(\/\/|\*|\/\*)/.test(l)) return;
     const code = l.replace(/\/\/.*$/, "");
-    if (/\b(helpMs|bulbMs|bulbPulseMs|BULB_MS|BULB_PULSE|PAUSE|bulb_ms)\b/.test(code) && /(?<![\w.])\d{4,5}(?![\w.])/.test(code)) out.push({ check: "bulb", at: `${file}:${i + 1}`, key: `bulb|${file}|${code.trim().slice(0, 80)}`, text: `a ladder number in code (the one table is ${LADDER_FILE}): ${code.trim().slice(0, 80)}` });
+    if (/\b(helpMs|PAUSE)\b/.test(code) && /(?<![\w.])\d{4,5}(?![\w.])/.test(code)) out.push({ check: "hintwait", at: `${file}:${i + 1}`, key: `hintwait|${file}|${code.trim().slice(0, 80)}`, text: `a ladder number in code (the one table is ${LADDER_FILE}): ${code.trim().slice(0, 80)}` });
   });
   return out;
 }
@@ -371,8 +358,7 @@ export function run(root = ROOT, only = null) {
     for (const f of readdirSync(root).filter((x) => x.endsWith(".html"))) out.push(...privacyFindings(f, rd(f)));
   }
   if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
-  if (want("bulb")) {
-    out.push(...bulbFindings(bulbTables(rd, J)));
+  if (want("hintwait")) {
     for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/^data\/lang\//.test(p))) { try { out.push(...ladderCopyFindings(f, J(f))); } catch (e) { /* not JSON */ } }
     for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...ladderCopyFindings(f, rd(f)));
   }

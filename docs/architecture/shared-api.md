@@ -12,7 +12,7 @@ Two kinds of module live here. **Classic scripts** set a global (and some also h
 |---|---|---|---|
 | `host.js`, `mode.js`, `input.js` | ES exports; `window.njgTest` | Cook, the clinic, the demo | **current**: the plug-in contract |
 | `frame.js`, `stage.js`, `fit.js` | `Frame`, `Stage`, `FitText` | every page with the frame | current |
-| `guide.js`, `bulb.js`, `order-card.js`, `buttons.js`, `tally.js`, `results.js`, `onboard.js`, `focus.js`, `say.js` | `NaniGuide`, `Bulb`, `OrderCard`, `NjgButtons`, `Tally`, `Results`, `Onboard`, `Focus`, `Say` | Cook, the clinic | current |
+| `guide.js`, `order-card.js`, `buttons.js`, `tally.js`, `results.js`, `onboard.js`, `focus.js`, `say.js` | `NaniGuide`, `OrderCard`, `NjgButtons`, `Tally`, `Results`, `Onboard`, `Focus`, `Say` | Cook, the clinic | current |
 | `speech.js` | `Speech` | the speaking moments | current (on-device, closed set) |
 | `app.js`, `save.js`, `uistore.js`, `family-voice.js`, `sfx.js` | `NjgApp`, `Save`, `UIStore`, `FamilyVoice`, `Sfx` | every page | current (`save.js` is the classic tag the parked pages load; the core's `js/core/save.js` is the same API as a module) |
 | `character.js`, `charmaker.js`, `story.js` | `Character`, the character maker, the story player | first launch | current |
@@ -571,7 +571,7 @@ Classes a mode can style or query: `.oc-card` (`.done`, `.folded`, `.foldable`, 
 
 ### 14.4 Nani's guide box: `js/shared/guide.js`, `css/shared/guide.css`
 
-The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2 lines, never cut off), the light bulb and mute. `const g = NaniGuide.mount(el, {face, bulb, bulbId, onBulb, onReplay, base})`; `g.set(html, {rec})`, `g.talk(on)`, `g.replaying(on)`; `NaniGuide.muted()` / `setMuted(v)` / `onMute(fn)` (remembered per player in the save). The file's header has the details.
+The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2 lines, never cut off) and mute (no bulb: the help is chai's method (the bulbs retired, Zafar, 6 Nov: `docs/game-design/rulebook.md`)). `const g = NaniGuide.mount(el, {face, onReplay, base})`; `g.set(html, {rec})`, `g.talk(on)`, `g.replaying(on)`; `NaniGuide.muted()` / `setMuted(v)` / `onMute(fn)` (remembered per player in the save). The file's header has the details.
 
 ### 14.5 A mode adopting it (the clinic, Find it)
 1. Load the two order-card files (and `fit.js`, `guide.js` with `guide.css` for Nani's box).

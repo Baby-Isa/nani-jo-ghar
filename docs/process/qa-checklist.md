@@ -77,7 +77,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | CMP-12 | Badges: gold = perfect; stopwatch with crowned best; gold/grey tick with "7/10"; bulb dims and cracks per hint. No stars anywhere | F13, H5 | eye · auto: `build/test_shared_ui.mjs` (badge tiers) |
 | CMP-13 | Word review: right on the right (gold outline), wrong on the left (red outline; red only here); speaker buttons neutral for both; vertically balanced in its card | F14 | eye |
 | CMP-14 | The grown-up skip is behind the "?" menu, never a visible button | E31 | eye |
-| CMP-15 | One light bulb at the top of the sidebar; no per-line translate, eye or speaker buttons; the face is the replay | E25 | eye → auto |
+| CMP-15 | No light bulb (the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`)); no per-line translate, eye or speaker buttons; the face is the replay | E25 | eye → auto: contract-91 |
 | CMP-16 | Every talking character has two poses (three-quarter, mirrored for left/right, and front) and turns to the player on the child's turn | E20, D17 | eye |
 
 ## LNG: language
@@ -107,7 +107,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | INT-04 | First-time help in every phase: dim all but one thing, ghost finger once, child does it | E2, E9 | auto: `build/check_onboard.mjs` (Cook) · eye elsewhere |
 | INT-05 | No red crosses or buzzes mid-round; mistakes show in the end review | E10 | eye |
 | INT-06 | A glow hint only after a wrong tap or ~5 s hesitation, never at the top level | E16, E28 | eye |
-| INT-07 | The light bulb flips to English for 5/3/2/1 s by level, and costs a bulb on the hints badge | E25 | eye → auto |
+| INT-07 | Retired with the bulbs (Zafar, 6 Nov): the guide's timed hint comes when the child is stuck, on the level's wait | E25 | auto: contract-91 help-comes |
 | INT-08 | Visible timers wherever there's time pressure, ~15% quicker per level, set in data | H8, H47 | eye |
 | INT-09 | Colour never carries meaning alone | E33 | eye |
 | INT-10 | Counting follows the level rule (L1 written + counted aloud, L2 written, L3+ heard) | E12 | eye |

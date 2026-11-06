@@ -99,7 +99,7 @@ Where age does change things:
 
 **Tone.** Warm, never sarcastic, never babyish. Nani is pleased when you get it right and unbothered when you do not. Nothing in the game hurries, scolds or nags, and there are no notifications.
 
-**Accessibility.** Everything is audio-first, so a child who cannot read plays exactly the same game. Touch targets sized for four-year-old fingers. Every Kutchi line is written in romanised Kutchi and underlined as it is spoken; there is no written English for the child (the light bulb and the grown-ups' "?" are the help). Colour never carries meaning on its own, which matters particularly in the quilt-making arc, where each colour is also named aloud.
+**Accessibility.** Everything is audio-first, so a child who cannot read plays exactly the same game. Touch targets sized for four-year-old fingers. Every Kutchi line is written in romanised Kutchi and underlined as it is spoken; there is no written English for the child (chai's method, the word cards and the guide's timed hint, and the grown-ups' "?" are the help; the bulbs retired, Zafar, 6 Nov). Colour never carries meaning on its own, which matters particularly in the quilt-making arc, where each colour is also named aloud.
 
 ### The personas
 
@@ -150,7 +150,7 @@ These settle arguments later, so they are worth disagreeing with now.
 1. **Difficulty is per word, not per level.** How much help a word gets depends on how many times that player has met that word. There is no beginner mode and no expert mode. This is how one app serves a four-year-old and an adult on the same screen, and it is where spaced repetition lives.
 2. **The task is the test.** Assessment happens by acting on an instruction, never by a quiz screen. If Nani asks for two lemons and you bring two lemons, you have been assessed.
 3. **No cutscenes.** Teaching happens inside the interaction. Anything that plays at you is skippable.
-4. **No written English for the child, ever.** Nani's voice is Kutchi, and spoken English appears only in story mode (said first, then repeated in Kutchi where needed, rare, E1, G15). Games and help use no English at all; the light bulb is the help and costs a bulb on the hints badge (E25); written English for grown-ups lives only in the "?" pop-up.
+4. **No written English for the child, ever.** Nani's voice is Kutchi, and spoken English appears only in story mode (said first, then repeated in Kutchi where needed, rare, E1, G15). Games and help use no English at all; the help is chai's method, the word cards and the guide's timed hint (the bulbs retired, Zafar, 6 Nov); written English for grown-ups lives only in the "?" pop-up.
 5. **Every voice is a real person.** No synthesis, no text-to-speech, no AI-generated Kutchi in the product.
 6. **Nothing is ever lost.** No punishment mechanics, no losing items or money for being slow. Pressure creates bonuses, never penalties.
 7. **Calm places and busy places.** Pressure is always the upside version: nothing floods, breaks or punishes, and customers never leave angry (E29). Cook's timers come from the level, set in data and getting about 15% quicker per level (H8); whether a relaxed no-timer setting exists is an open question (`docs/status.md`).

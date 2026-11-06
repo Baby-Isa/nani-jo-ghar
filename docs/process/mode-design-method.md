@@ -36,7 +36,7 @@ Add a new top section to the mode's design doc, **"Pipeline design, 25 Sept 2026
 7. **Words needed**, marking what's already in the Questions for Mum doc.
 8. A rewritten **build brief**, phased, own files first.
 
-Follow `docs/design-language/ux-principles.md` (request card, left sidebar, fixed-shape cards, light bulb, one job at a time, start tiny, the end-of-round screen) and `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`'s principles (modular mechanics, speaking moments with a closed set and a fallback, the Sceptic's win-without-Kutchi test).
+Follow `docs/design-language/ux-principles.md` (request card, left sidebar, fixed-shape cards, chai's help (the bulbs retired, Zafar, 6 Nov), one job at a time, start tiny, the end-of-round screen) and `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`'s principles (modular mechanics, speaking moments with a closed set and a fallback, the Sceptic's win-without-Kutchi test).
 
 ## 2. The mini-game quality pass (25 Sept): five questions, then cut to the best
 
@@ -139,7 +139,7 @@ Repo: `/home/user/nani-jo-ghar`.
 
 1. **Every choice the player makes is set by something said in Kutchi, and it varies between rounds.** Pass the Kutchi leak test (non-negotiable 6): someone who knows no Kutchi must not be able to win by reading, matching letter shapes, eliminating options, remembering fixed patterns, or waiting for a glow.
 2. **Known leak patterns to design out from day one:**
-   - Help that shows the answer is free (it must cost a lightbulb on the hints badge).
+   - Help that shows the answer is free (it must count on the hints badge).
    - Counts end by themselves, or trays hold exactly the number needed.
    - Optional steps are only offered when they were ordered.
    - Fixed positions or order.
@@ -266,7 +266,7 @@ UK English. Tables and short bullets. No filler. Sections:
 
 > from: docs/archive/mode-briefs/OVERVIEW.md § What all six designs agree on
 
-2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, the three badges and the light bulb as the help, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
+2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, the three badges and chai's method as the help, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
 3. **Most modes have a slice that already works as a real Kutchi test:**
    - Monsoon rush's kitchen leak (food words);
    - Who did it?'s magnifier (*hardar*);

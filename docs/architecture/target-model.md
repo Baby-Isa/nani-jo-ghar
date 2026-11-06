@@ -14,7 +14,7 @@ Step 2a (1 Oct 2026) set the model and Zafar approved it (decision 18). Step 3 (
 |---|---|---|
 | **Core** (no drawing; browser and Node) | the one save (schema 2), per-word progress, the three-badge score and pocket money, one wallet, one voice player (stitched speech), the play context, unlocks, settings, content versions, the story log; `loadCore()` | `js/core/*.js`; data `data/economy.json`, `progress.json`, `unlocks.json`, `map.json` |
 | **Language engine** (inside the core) | the seam `Lang` and a general linearizer, clip planner, gap reporter and data validator; no Kutchi in code | `js/core/lang/index.js`, `js/core/lang/engine/`; data `data/lang/` (built by `build/lang/import_all.mjs` from `data/lang/seed/` and the other sources) |
-| **Framework** | the frame and tokens, the stage, text fitting, the guide box, bulb, order card, buttons, tally, end screen, onboarding, focus pulse, the speaking moment; **the game host, the mode interface and the input layer**; the app shell | `js/shared/` and `css/shared/` |
+| **Framework** | the frame and tokens, the stage, text fitting, the guide box, order card, buttons, tally, end screen, onboarding, focus pulse, the speaking moment; **the game host, the mode interface and the input layer**; the app shell | `js/shared/` and `css/shared/` |
 | **Modes as plug-ins** | **Cook** and **the clinic** are plug-ins (`main.js` exports the mode object); a demo mode built from two adapters proves the pattern | `js/cook/main.js`, `js/clinic/main.js`, `js/demo/` |
 | **Content as data** | arcs (the Birthday skeleton, a demo arc), the map, unlocks, the economy, scenes, each mode's levels, the engine's words | `data/` |
 | **Tooling** | the sandbox, the screen and CSS lints, the word lint, the review, ops and art tools, the language tools and eight project skills | `build/sandbox/`, `build/lint/`, `build/tools/`, `build/lang/`, `.claude/skills/` |
@@ -46,7 +46,7 @@ flowchart TB
     LV[levels and games] --- SC[scenes with measured positions] --- AR[arcs and errands] --- EC[economy: pay and prices]
   end
   subgraph FW[Shared game framework: js/shared/ + css/shared/]
-    FR[frame and stage] --- KIT[UI kit: guide, card, bulb, buttons, shelf, end screen, onboarding]
+    FR[frame and stage] --- KIT[UI kit: guide, card, buttons, shelf, end screen, onboarding]
     KIT --- HOST[game host: runs a mode's stages] --- HUB[shell: hub, arcs, bookshelf]
   end
   subgraph CORE[Engine core: js/core/]
@@ -172,8 +172,8 @@ Everything a child sees that isn't a mode's own play area. One component per sha
 
 | Component | File (as built) | Rules |
 |---|---|---|
-| Guide box (Nani; the doctor in the clinic) with face replay, bulb, mute | `guide.js` | F11, E27, CMP-06 |
-| Light bulb (English for 5/3/2/1 s by level; costs a bulb) | `bulb.js` (`Bulb.create`) | E25, decision 1 |
+| Guide box (Nani; the doctor in the clinic) with face replay, mute, the timed hint | `guide.js` | F11, E27, CMP-06 |
+| (Light bulb: retired, Zafar, 6 Nov; the help is chai's method (the bulbs retired, Zafar, 6 Nov: `docs/game-design/rulebook.md`)) | (none) | E25, decision 1 (retired) |
 | Order card, request pop-up, closed cards | `order-card.js` | E4, E21, F8–F10 |
 | Buttons: Done, Next, answer pills, end actions | `buttons.js` | F6, F22 |
 | Shelf band and the `🔊 word` chip | Cook's kitchen kit, `js/cook/kitchen-kit.js` (a shared shelf is not built) | F15, F16 |
@@ -300,7 +300,7 @@ Cook's stations, the clinic's five stages and its heal games are mini-games of t
 1. The shell (`js/shared/mode.js`) is asked for Cook's errand, for example `lab.html?mode=cook&play=story` or the Birthday's `cook-1`; it checks the unlock service (`data/unlocks.json`, `data/arcs/birthday.json`) and the entry.
 2. Cook's `plan()` gives the stages: the pantry first if it's the first time that day (H15, H49), then the order's stations. The host mounts each one in the play area (`js/cook/mount.js`).
 3. The station asks `Lang` (through `js/cook/words.js`) for a meaning such as *Need(nana, chai with milk, two sugars)*; the order card shows `r.rows`, `Voice.say(r)` reads it word by word with the underline.
-4. The child plays; the game calls `ctx.mark()` as each row closes (E11) and `ctx.hint()` when the bulb is used.
+4. The child plays; the game calls `ctx.mark()` as each row closes (E11) and `ctx.hint()` when the guide's hint comes (the bulb is retired).
 5. When the plan ends, `Score.finish` gives three badges and pocket money and writes the best, the coins, the word evidence and the story line; the one end screen shows them; Again / Next / Home.
 6. Back at the hub, the next errand lights; the arc's book grows.
 

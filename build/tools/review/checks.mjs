@@ -4,7 +4,7 @@
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
  * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
  * leak   the Kutchi leak bots (build/tools/review/leak.mjs) for every config that needs no browser, at every level
- * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, the bulb; a finding not in build/lint/static-known.json fails
+ * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, one hint-wait table; a finding not in build/lint/static-known.json fails
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
@@ -53,7 +53,7 @@ if (only.includes("words")) {
   for (const d of gate.ready) console.log(`     ready, not enforced: ${d} has ${count([d])} literals (build/lint/words-gate.json)`);
 }
 if (only.includes("static")) {
-  // checks-to-build 9, 10, 11, 13, 17, 18, 21: shared-kit identity, tokens, level ladders, banned forms, privacy, rewards, the bulb
+  // checks-to-build 9, 10, 11, 13, 17, 18, 21: shared-kit identity, tokens, level ladders, banned forms, privacy, rewards, one hint-wait table
   const r = run(process.execPath, ["build/lint/static.mjs"]);
   note("static", r.status === 0, (r.stdout.trim().split("\n").pop() || `static.mjs exited ${r.status}`));
   if (r.status !== 0) console.log((r.stdout.match(/^NEW .*$/gm) || []).slice(0, 10).map((l) => "     " + l).join("\n"));

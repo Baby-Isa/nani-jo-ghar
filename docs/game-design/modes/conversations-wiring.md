@@ -21,10 +21,7 @@ Load the stylesheet and the script after `save.js`, and before the page's own sc
   ```
 - **The player's gender** (the child's reply voice: Zafar for a boy, Mum for a girl) is read from `Save.get("character").choices.body`. There's nothing to pass.
 - **The parent setting** is `Save.setting("conversations")`: `often`, `sometimes` (the default), `story` or `off`. The grown-ups panel can add a four-way picker with `Save.setSetting("conversations", v)`.
-- **The light bulb.** The page's existing bulb handler also calls `Conversations.bulb()`, which returns `false` when no conversation is on screen:
-  ```js
-  if (window.Conversations && Conversations.bulb()) return; // flips the bubbles to English for a moment
-  ```
+- **The light bulb:** none (`Conversations.bulb()` is gone): the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`).
 - **The end-of-round screen** gets the conversation's words. Add them to the words passed to `Results.show`:
   ```js
   words: words.concat(Conversations.roundWords(roundId))

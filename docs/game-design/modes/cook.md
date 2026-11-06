@@ -41,7 +41,7 @@ The single home for Cook's design: where Cook is now, the standing rules, the st
 5. **The logic is muddled** (chai made partly in the glass; an order card that holds other people's orders), which makes the screen feel confusing even where it's pretty.
 
 What the reviews got right and we adopt: a strong grid and inventory slots; fewer containers; one type scale; UI colours from Nani's home; quieter inactive objects; bigger tap targets and audio; the word appearing at the moment of the action; small rewarding feedback.
-**What we don't adopt:** restyling all the art to a Toca Boca cartoon look (the photoreal jars are what Zafar likes); "Step 3 of 8" counters; English support text on screen (the light bulb does that job); red crosses (UX §11/§14 stand).
+**What we don't adopt:** restyling all the art to a Toca Boca cartoon look (the photoreal jars are what Zafar likes); "Step 3 of 8" counters; English support text on screen (the word cards do that job; the bulb retired, Zafar, 6 Nov); red crosses (UX §11/§14 stand).
 
 
 > from: docs/design-language/ui-design-system.md (before the split) § §5 The chai station v2
@@ -148,7 +148,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 ### 14a. Zafar's decisions on chaat v2 (29 Sept)
 - **Words on the chips (Zafar, 20 Oct; every Cook jar and chip, replacing s08 w6M's speaker-only chaat jars and the L1-L2 words elsewhere):** an item's word is written on its chip while the child is still learning it; once they have used it right, from the next round the chip is the speaker alone (`Cook.chipWord`, the core's word progress; "Start over" and "Play as new" bring the words back). "It won't last for long and gives an easier onboarding and learning."
 - **Drop the tally** at this station; the glass shows what's in.
-- **Level 4 = still one person**, but the person's card starts **folded** (face + headline only). The child must remember the order they heard; opening the card to peek costs a hint (it counts on the light-bulb badge). This replaces "two bowls for two people".
+- **Level 4 = still one person**, but the person's card starts **folded** (face + headline only). The child must remember the order they heard; opening the card to peek costs a hint (it counts on the hints badge). This replaces "two bowls for two people".
 - **The serve and taste moment:** Done → the bowl slides to the person, who tastes it.
   - **Right:** a happy reaction and a family praise clip (*Shabash!*, or another recorded, age-appropriate praise).
   - **Wrong:** a gentle "not quite" face; the bowl slides back **empty** and the child builds it again. It's social and gentle, like UX §14, never a red cross, and the first-try result is logged for the end review.

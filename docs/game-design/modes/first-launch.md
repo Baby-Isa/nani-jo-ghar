@@ -28,7 +28,7 @@
    - **Panel 4:** Nani points at the kitchen, where empty pots and a big table wait. She holds out a spoon, and the child taps ✓ to take it.
 
    Nani speaks every panel in **Kutchi**, in the family's recorded lines.
-   - **The light bulb** (UX §4) plays the English line for the parent or an older child, and it's free during story beats.
+   - (The light bulb that played the English line is gone: the bulbs retired (Zafar, 6 Nov): the help is chai's method, the word cards and the guide's timed hint (`docs/game-design/rulebook.md`).)
    - A parent sitting alongside can translate, which suits the "grandparent / parent" play mode.
 4. **Into Cook.** The first station is the smallest one (one cup of chai, UX §7).
 
@@ -94,9 +94,9 @@ Zafar's idea: in the story, Nani says each line in English first, then Kutchi. H
 
 **Claude's recommendation: the "sandwich", for story lines only.** Nani says the line in **Kutchi, then English, then Kutchi again**. The child understands it, and the last thing they hear is Kutchi.
 - **Only in the first chapter.** The English fades out after that:
-  - chapter 2: English only when the light bulb is pressed;
+  - chapter 2: English only when asked (the word card, tapped);
   - later: Kutchi only.
-- **Gameplay lines never get English** (the light bulb stays the help there), so the lesson isn't given away.
+- **Gameplay lines never get English** (chai's method is the help there), so the lesson isn't given away.
 - **A parent setting, "Story help"**, offers spoken English, off (pictures only) or later another language. That covers non-English families: the lines are one file per language.
 
 ### Decided (Zafar, 26 Sept): English, then Kutchi, with no sandwich
@@ -106,7 +106,7 @@ In the story, Nani says each line **in English first, then in Kutchi**. The line
 - "Oh no, the food is not ready."
 - "Can you help me cook?"
 
-Gameplay lines stay Kutchi only, with the light bulb as the help. The "Story help" setting can still turn the English off, or later switch it to another language.
+Gameplay lines stay Kutchi only, with chai's method as the help. The "Story help" setting can still turn the English off, or later switch it to another language.
 
 ### Lines to record (add to the next Questions for Mum; Mum says each three times)
 1. "Can you get me the chai things from the pantry?"
