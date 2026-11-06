@@ -94,7 +94,22 @@ The redo YAML that `artblock.py --redo` reads names line IDs of one pack's run s
 
 ## Fable's view
 
-(pending: the orchestrator's Fable review)
+Looked at 14 flagged and 14 passing cut-outs on grey at 400 px, bottoms at 3x on white; the tool re-run on four folders and single files with `-v`.
+
+**Flaws, evidence first.**
+
+1. **The one FAIL rule misses an opaque baked shadow.** `assets/cook/items/chai-v2/pan-pour.webp` carries a near-solid dark crescent under the pan (plain at 3x on white); the tool reports `shadow soft 0, skirt 0`, because the check only sees soft alpha or a skirt wider than the body. `clinic/items-v2/honey-jar.webp` (PASS) has a faint soft shadow too (69 px, under the 0.25 share). Add a third test: dark, neutral, opaque pixels in the bottom band darker than the body's lowest material. Until then "no baked shadows ship" is unproven.
+2. **"Shipped" is by folder, not by reference.** `chai-v2/pan-pour.webp`, `pan-pour-black-s12.webp` and `items/cook/onion-whole.png` are named in no `data/*.json`; count from `asset-list.json` and the data files.
+3. **Light flags are noise on multi-material pieces,** the albedo confound the real-people report found: the bananas crate "from below", the well "lower right" (my eye: upper right), the kite, jharo, steel cup and hammer all read fine. Four segments cannot separate six materials.
+4. **What my eye sees that no number does: camera height.** `chai-v2/pan-pour` is 45° above, `pan-empty-s14` straight down, the karahi 60°, the well 30°; the shelf's two batches differ in camera as much as in gloss. Cheap proxy: rim-ellipse height over width on round items, as a batch feature.
+5. **Off-palette at ΔE 10 against 159 colours is toothless by construction** (99% within 9.9: the book covers the wheel), so calibration left only the generator's sky blue. What marks the stock pictures (the well's foliage, the drop machine's RGBY tubes, the kite, the onion as a smooth maroon ball with no skin) is high chroma with a low house share: reported, never judged. Make house share a surface-level FLAG (say under 0.4 on cook).
+6. **Colour semantics:** `pan-pour-black-s12`'s "black tea" is a red-orange syrup matched "Red Orange, in the house". In palette and wrong; only a model's look catches that; say so beside "the object is honest".
+
+**Redo list.** Order right: the shelf first. Add Gemini's fix 2, a `cm` height per shelf item in `data/cook.json` (half an hour, fixes bottle = jar before the run lands). Cut the eye-check row to the well and the drop machine; the rest I looked at and they pass.
+
+**Decisions.** 1 yes (leave the blue). 2 yes, once the opaque-shadow test exists. 3 and 4 yes. 5 amend: not repo-wide, but `--changed` (the pictures in `git diff`, 0.16 s each) in `checks.mjs` at every push, so no pack lands unmeasured.
+
+**Verdict:** a sound ruler for the shelf join, its one real finding, but its only FAIL misses an opaque shadow and it cannot see camera, chroma or contents, so a PASS is "numbers fine", never "looks right": ship the shelf redo, fix the shadow test and the shipped filter before the next pack.
 
 ## Decisions for Zafar
 
