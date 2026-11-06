@@ -1,0 +1,479 @@
+id,name_en,kutchi,kutchi_status,kind,view,state,holder,ground,size,games,dishes,status,wave,sheet,look,note
+f-water-bottle,water bottle,paani,draft,ingredient,F,full,"clear plastic bottle, plain cap",grey,L,chai;baking;eggs,chai; naan; boiled egg,redo,A,FA01,"a clear plastic water bottle, full of water, a plain pale blue cap, no label",chai shelf redo (was shelf-cook-paani-bare-f)
+f-milk-carton,milk carton,dudh,confirmed,ingredient,F,full,"plain carton, no print",grey,L,chai;baking;cake,chai; naan; cake,redo,A,FA01,"a plain white and pale blue milk carton with a white screw cap, no print",chai shelf redo (was shelf-cook-dudh-bare-f)
+f-tea-jar,tea leaves jar,chai,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chai,chai,redo,A,FA01,"a tall glass jar full of loose black tea leaves (dark, crinkly, dry), a pale oak screw lid",chai shelf redo (was shelf-cook-chai-bare-f)
+f-sugar-jar,sugar jar,khun,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chai;baking;cake,chai; cake,redo,A,FA01,"a tall glass jar full of white granulated sugar (fine sparkling grains), a pale oak screw lid",chai shelf redo (was shelf-cook-khun-bare-f); the salt jar is its lookalike
+f-cardamom-jar,cardamom jar,elchi,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;baking;bank,elchi chai; biryani; pilau,redo,A,FA01,"a small glass jar full of plump pale green cardamom pods, a pale oak screw lid",chai shelf redo (was shelf-elchi-jar-v2-f)
+f-ginger-jar,ginger root jar,aadu,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;sekelo;bank,adrak chai; daar; mishkaki marinade,redo,A,FA01,"a small glass jar full of knobbly fresh ginger root pieces, one cut yellow face, a pale oak screw lid",chai shelf redo (was shelf-aadu-jar-v2-f)
+f-garlic-jar,garlic cloves jar,lasan,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;sekelo;samosa;bank,daar; mishkaki; samosa filling,redo,A,FA01,"a small glass jar full of whole papery white garlic cloves, a pale oak screw lid",chai shelf redo (was shelf-lasan-jar-v2-f)
+f-salt-jar,salt jar,loon,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;eggs;corn;maani;baking;bank,everything,redo,A,FA01,"a small glass jar full of coarse white sea-salt crystals (clear, angular, glinting: never round pearls), a pale oak screw lid","chai shelf redo (was shelf-loon-jar-v2-f); must read as salt crystals, not tapioca (Fable)"
+f-turmeric-jar,turmeric jar,hardar,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,daar; pilau; eggs,redo,A,FJ01,"a small glass jar of bright golden-yellow turmeric powder, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-cumin-seeds-jar,cumin seeds jar,jeeru,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,daar tadka; chaat,redo,A,FJ01,"a small glass jar of slim ridged brown cumin seeds, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-mustard-seeds-jar,mustard seeds jar,rai,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,daar tadka,redo,A,FJ01,"a small glass jar of tiny round dark brown-black mustard seeds, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-black-pepper-jar,black pepper jar,mari,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;chaat;corn;eggs;bank,chai; eggs; corn,redo,A,FJ01,"a small glass jar of round wrinkled black peppercorns, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-cinnamon-sticks-jar,cinnamon sticks jar,taj,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,chai masala; pilau; biryani,redo,A,FJ01,"a small glass jar of rolled reddish-brown cinnamon sticks standing up, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-cloves-jar,cloves jar,laving,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,chai masala; pilau,new,A,FJ01,"a small glass jar of dark brown cloves (little nail shapes with round heads), a pale oak screw lid",
+f-fennel-seeds-jar,fennel seeds jar,variyali,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;bank,chai; yellow naan,new,A,FJ01,"a small glass jar of pale green-grey ridged fennel seeds, a pale oak screw lid",
+f-red-chilli-powder-jar,red chilli powder jar,laal marcha,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;daar;chaat;corn;eggs;bank,corn; chaat; mishkaki,redo,A,FJ01,"a small glass jar of deep red chilli powder, a pale oak screw lid",chai's decoy pool and daar's tadka; was a shelf-spi bare jar (pantry batch)
+f-coriander-seeds-jar,coriander seeds jar,dhana,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,daar;bank,daar; dhana-jeeru,new,B,FJ02,"a small glass jar of round pale tan coriander seeds, a pale oak screw lid",
+f-fenugreek-seeds-jar,fenugreek seeds jar,methi,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,maani;bank,thepla; achar,new,B,FJ02,"a small glass jar of small square mustard-yellow fenugreek seeds, a pale oak screw lid",
+f-garam-masala-jar,garam masala jar,garam masalo,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,samosa;sekelo;bank,samosa filling; biryani; keema,new,B,FJ02,"a small glass jar of warm brown garam masala powder, a pale oak screw lid",
+f-bay-leaves-jar,bay leaves jar,tamalpatr,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,pilau; biryani,new,B,FJ02,"a small glass jar of dried olive-green bay leaves standing up, a pale oak screw lid",
+f-asafoetida-jar,asafoetida jar,hing,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,daar;bank,daar tadka; kadhi,new,B,FJ02,"a small glass jar of pale yellow asafoetida powder, a pale oak screw lid",
+f-sesame-seeds-jar,sesame seeds jar,tal,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,baking;bank,naan; dhebra,new,B,FJ02,"a small glass jar of tiny cream sesame seeds, a pale oak screw lid",
+f-dried-red-chillies-jar,dried red chillies jar,marcha,draft,ingredient,F,full,"small glass jar, pale oak lid",grey,S,daar;bank,daar tadka; achar,new,B,FJ02,"a small glass jar of whole dried wrinkled red chillies, a pale oak screw lid",
+f-chai-masala-jar,chai masala jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai,masala chai,new,B,FJ02,"a small glass jar of a coarse light-brown spice blend with flecks of green cardamom and cinnamon, a pale oak screw lid",
+f-saffron-jar,saffron jar,kesar,confirmed,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chai;cake;bank,kesar chai; biryani; mithai,new,B,FJ03,"a very small glass jar holding a loose tuft of deep red-orange saffron threads, a pale oak screw lid",
+f-chaat-masala-jar,chaat masala jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;corn,chaat; corn,new,B,FJ03,"a small glass jar of dusky pinkish-brown chaat masala powder, a pale oak screw lid",
+f-roasted-cumin-powder-jar,roasted cumin powder jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;bank,chaat; raita,new,B,FJ03,"a small glass jar of dark brown ground cumin, a pale oak screw lid",
+f-nigella-seeds-jar,nigella seeds jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,baking;bank,naan,new,B,FJ03,"a small glass jar of tiny matt black angular nigella seeds, a pale oak screw lid",
+f-carom-seeds-ajwain-jar,carom seeds (ajwain) jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,bhajia; puri,new,B,FJ03,"a small glass jar of tiny grey-brown striped carom seeds, a pale oak screw lid",
+f-dried-mint-jar,dried mint jar,fudino,confirmed,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;bank,chaat; raita,new,B,FJ03,"a small glass jar of crumbled dried dark green mint leaves, a pale oak screw lid",
+f-mango-powder-amchur-jar,mango powder (amchur) jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;samosa,chaat; samosa,new,B,FJ03,"a small glass jar of pale beige mango powder, a pale oak screw lid",
+f-black-salt-jar,black salt jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;corn,chaat; corn,new,B,FJ03,"a small glass jar of pinkish-grey black-salt powder, a pale oak screw lid",
+f-poppy-seeds-jar,poppy seeds jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,kuku paka; korma,new,B,FJ04,"a small glass jar of tiny cream-white poppy seeds, a pale oak screw lid",
+f-dhana-jeeru-powder-jar,dhana-jeeru powder jar,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,daar;samosa;bank,daar; samosa filling; keema,new,B,FJ04,"a small glass jar of khaki-brown ground coriander and cumin, a pale oak screw lid",
+f-chapati-flour-atta,chapati flour (atta),atto,draft,ingredient,F,full,"tall steel tin, plain lid",grey,L,maani;samosa;baking,maani; samosa pastry; naan,redo,B,FJ04,"a tall plain brushed-steel tin with its lid on, a little pale wholemeal flour dusted on the rim",was shelf-cook-atto-bare-f / jar-atto-f
+f-millet-flour-bajri,millet flour (bajri),bajr,confirmed,ingredient,F,full,"tall steel tin, plain lid",grey,L,maani,bajr ji maani; dhebra,redo,B,FJ04,"a tall plain brushed-steel tin with its lid off and leaning against it, showing grey-green millet flour",was shelf-ph-bajri-atto-bare-f
+f-plain-flour-maida,plain flour (maida),,,ingredient,F,full,"tall steel tin, plain lid",grey,L,baking;cake;samosa,naan; cake; samosa pastry,new,B,FJ04,"a tall plain brushed-steel tin with its lid off and leaning against it, showing bright white flour",
+f-gram-flour-besan,gram flour (besan),,,ingredient,F,full,"tall steel tin, plain lid",grey,L,bank;chaat,bhajia; kadhi; dhokra,new,B,FJ04,"a tall plain brushed-steel tin with its lid off and leaning against it, showing pale yellow chickpea flour",chickpea flour
+f-rice-flour,rice flour,,,ingredient,F,full,"tall steel tin, plain lid",grey,L,bank,vitumbua; chakri,new,B,FJ04,"a tall plain brushed-steel tin with its lid off and leaning against it, showing fine white rice flour",
+f-semolina,semolina,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,siro (celebration); dhokra,new,B,FJ04,a tall glass jar of pale golden semolina grains,
+f-basmati-rice,basmati rice,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar;bank,khichdi; pilau; biryani,redo,B,FJ05,a tall glass jar of long slim white basmati rice grains,was shelf-ph-rice-bare-f
+f-toor-daar,toor daar,daar,draft,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar,daar; khichdi,redo,B,FJ05,a tall glass jar of split yellow lentils (toor daar),was shelf-cook-daal-bare-f / jar-daal-f
+f-chana-daar,chana daar,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar;bank,chana daar; khichro,new,B,FJ05,"a tall glass jar of split golden chickpeas (chana daar), larger than toor daar",
+f-mung-beans-whole,mung beans (whole),,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar;bank,mag nu saag; mung soup,new,B,FJ05,a tall glass jar of small whole green mung beans,
+f-yellow-mung-daar,yellow mung daar,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar;bank,khichdi; daar,new,B,FJ05,a tall glass jar of small pale yellow split mung beans,
+f-red-lentils-masoor,red lentils (masoor),,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,daar;bank,daar; haleem,new,B,FJ05,a tall glass jar of small salmon-orange lentils,
+f-dried-chickpeas,dried chickpeas,chana,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chaat;daar,chana chaat; chana bateta,redo,B,FJ05,a tall glass jar of round beige dried chickpeas,was shelf-ph-chana-bare-f
+f-red-kidney-beans,red kidney beans,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,maharage ya nazi,new,B,FJ05,a tall glass jar of glossy dark red kidney beans,
+f-pigeon-peas-dried,pigeon peas (dried),,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,bharazi,new,B,FJ06,a tall glass jar of small round speckled beige pigeon peas,
+f-black-eyed-beans,black-eyed beans,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,chora nu saag; chora bhajia,new,B,FJ06,"a tall glass jar of cream black-eyed beans, each with its black eye",
+f-cracked-wheat,cracked wheat,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,khichro; haleem,new,B,FJ06,a tall glass jar of golden cracked wheat,"Ashura dish (khichro): keep the picture plain, no religious marker"
+f-flattened-rice-poha,flattened rice (poha),,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,chevdo,new,B,FJ06,a tall glass jar of thin white rice flakes,
+f-sev-crispy-noodles,sev (crispy noodles),sev,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chaat,chaat; sev puri,redo,B,FJ06,a tall glass jar of thin crispy golden-yellow chickpea noodles (sev),was shelf-ph-sev-bare-f
+f-puri-crisps-papdi,puri crisps (papdi),,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chaat,papdi chaat; sev puri,new,B,FJ06,a tall glass jar of small round flat golden crisps stacked on their edges,
+f-fried-peas-watana,fried peas (watana),watana,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,chaat;bank,chevdo; chaat topping,new,B,FJ06,a tall glass jar of crunchy fried yellow-green peas,
+f-peanuts,peanuts,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,chevdo; peanut curry,new,B,FJ06,a tall glass jar of shelled red-skinned peanuts,
+f-desiccated-coconut,desiccated coconut,nair,confirmed,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank;cake,coconut chutney; cake,new,B,FJ07,a tall glass jar of fine white shredded coconut,
+f-cashew-nuts,cashew nuts,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,biryani; korma,new,B,FJ07,a small glass jar of pale curved cashew nuts,
+f-almonds,almonds,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank;cake,badam siro; cake,new,B,FJ07,a small glass jar of brown almonds,
+f-raisins,raisins,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,biryani; pilau,new,B,FJ07,a small glass jar of dark golden raisins,
+f-dates,dates,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,breaking a fast,new,B,FJ07,a tall glass jar of glossy brown dates,"Ramadan food: plain, no marker"
+f-brown-sugar-lumps-jaggery,brown sugar lumps (jaggery),,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,chutney; daar (some homes),new,B,FJ07,a small glass jar of golden-brown jaggery lumps,"an ingredient, never a reward"
+f-tamarind-block,tamarind block,amli,confirmed,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;bank,amli chutney; kuku paka,redo,B,FJ07,a small glass jar of dark sticky brown tamarind pulp,was shelf-ph-amli-bare-f (as the paste)
+f-dried-yeast,dried yeast,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,baking,naan,new,B,FJ07,a small glass jar of tiny beige yeast granules,
+f-baking-powder,baking powder,,,ingredient,F,full,"small steel tin, plain lid",grey,S,baking;cake,naan; cake,new,B,FJ08,"a small plain brushed-steel tin, lid on, no print",no print
+f-cocoa-powder,cocoa powder,,,ingredient,F,full,"small steel tin, plain lid",grey,S,cake,chocolate birthday cake,redo,B,FJ08,"a small plain brushed-steel tin, lid off beside it, dark brown cocoa showing",was shelf-ph-cocoa-bare-f
+f-tea-bags,tea bags,chai,confirmed,ingredient,F,full,"small steel tin, plain lid",grey,S,chai;bank,quick chai,new,B,FJ08,"a small plain brushed-steel tin, lid off beside it, white tea bags showing",
+f-vermicelli,vermicelli,,,ingredient,F,full,"tall glass jar, pale oak lid",grey,M,bank,sev (Eid celebration dish),new,B,FJ08,a tall glass jar of fine golden roasted vermicelli nests,"a celebration dish, never a reward"
+f-cooking-oil,cooking oil,,,ingredient,F,full,"tall clear bottle, plain cap",grey,L,samosa;daar;maani;eggs;sekelo;corn,frying; tadka,redo,B,FP01,"a tall clear bottle of golden cooking oil, plain cap, no label",was shelf-ph-oil-bare-f
+f-ghee,ghee,ghee,confirmed,ingredient,F,full,"squat glass jar, pale oak lid",grey,M,maani;daar;baking,maani; tadka; naan,redo,B,FJ08,"a squat glass jar of pale golden grainy ghee, a pale oak screw lid",was shelf-ph-ghee-bare-f
+f-yoghurt,yoghurt,dai,confirmed,ingredient,F,full,"white tub, plain lid",grey,M,chaat;sekelo;baking,chaat; marinade; naan,redo,B,FP01,"a round white yoghurt tub, plain white lid, no print",was shelf-ph-dahi-bare-f
+f-green-mint-chutney,green (mint) chutney,fudino ji chutney,Mum's note (grammar-notes s26),ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat,chaat; samosa,redo,B,FJ08,"a small glass jar of bright green mint chutney, a pale oak screw lid",was shelf-ph-lili-bare-f; Mum: no general word for green chutney
+f-tamarind-chutney,tamarind chutney,amli,confirmed,ingredient,F,full,"small glass jar, pale oak lid",grey,S,chaat;samosa,chaat; samosa,new,B,FJ08,"a small glass jar of glossy dark brown tamarind chutney, a pale oak screw lid",
+f-coconut-chutney,coconut chutney,nair ji chutney,Mum's note (grammar-notes s26),ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,bhajia; mogo,new,D,FJ09,"a small glass jar of creamy white coconut chutney with green flecks, a pale oak screw lid",
+f-garlic-chutney,garlic chutney,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,bank,bajra rotla; chevdo,new,D,FJ09,"a small glass jar of deep red garlic chutney, a pale oak screw lid",lasan ni chutney (khojicook)
+f-mango-pickle,mango pickle,,,ingredient,F,full,"squat glass jar, pale oak lid",grey,M,bank,with daar and maani,new,D,FJ09,"a squat glass jar of mango pickle (orange-red mango pieces in oil), a pale oak screw lid",achar
+f-lime-pickle,lime pickle,,,ingredient,F,full,"squat glass jar, pale oak lid",grey,M,bank,with pilau,new,D,FJ09,"a squat glass jar of lime pickle (dark yellow lime pieces), a pale oak screw lid",
+f-ginger-garlic-paste,ginger-garlic paste,,,ingredient,F,full,"small glass jar, pale oak lid",grey,S,sekelo;samosa;bank,marinades; keema,new,B,FJ08,"a small glass jar of pale creamy-beige ginger and garlic paste, a pale oak screw lid",
+f-coconut-milk,coconut milk,nair,confirmed,ingredient,F,full,plain steel tin,grey,M,bank,kuku paka; makai paka; bharazi,new,D,FJ09,"a plain brushed-steel food tin, no label",no label
+f-rose-water,rose water,,,ingredient,F,full,small glass bottle,grey,S,bank,biryani; falooda,new,D,FP02,"a small clear glass bottle of rose water, plain cap, no label",
+f-tomato-ketchup,tomato ketchup,,,ingredient,F,full,"squeeze bottle, red, no label",grey,M,eggs;bank,chips mayai,redo,C,FP01,"a plain red squeeze bottle, white cap, no label",was shelf-ph-ketchup-bare-f
+f-honey,honey,,,ingredient,F,full,"squat glass jar, pale oak lid",grey,M,bank,honey on toast; honey in chai,redo,D,FJ09,"a squat glass jar of golden honey, a pale oak screw lid",was shelf-ph-honey-bare-f
+f-butter,butter,,,ingredient,F,full,butter dish with lid,grey,W,eggs;baking;cake,toast; cake,redo,C,FP01,"a white butter dish, its glass lid on, a yellow block of butter inside",was shelf-ph-butter-bare-f
+f-cream,cream,,,ingredient,F,full,"small carton, plain",grey,M,cake,cake icing,redo,C,FP02,"a small plain white cream carton, no print",was shelf-ph-cream-bare-f
+f-eggs-in-a-box,eggs in a box,indo,confirmed,ingredient,F,full,"open egg box, six eggs",grey,W,eggs;baking;cake,boiled egg; omelette; cake,redo,C,FP02,an open plain grey card egg box holding six brown eggs,was shelf-ph-eggs-bare-f
+f-bread-loaf,bread loaf,,,ingredient,F,full,"sliced loaf, no bag print",grey,W,eggs,eggs on toast,redo,C,FP02,"a sliced white bread loaf, no bag",was shelf-ph-bread-bare-f
+f-soft-bread-buns-pav,soft bread buns (pav),,,ingredient,F,full,four buns joined,grey,W,bank,dabeli; kalyo pau,new,D,FP02,four soft golden bread buns baked joined together,
+f-samosa-pastry-sheets,samosa pastry sheets,chapri,confirmed,ingredient,F,full,"stack on a plate, cloth over",grey,W,samosa,samosa,redo,B,FP01,"a small stack of thin pale samosa pastry strips on a white plate, a cotton cloth folded over half",was shelf-ph-pastry-bare-f
+f-lamb,lamb or beef cubes,gos,confirmed,ingredient,F,raw,"steel bowl, side-on",grey,M,sekelo;bank,mishkaki; gos tarelo; biryani,redo,B,FP01,"a steel bowl of raw red meat cubes, seen side-on, the meat heaped above the rim","was shelf-ph-meat-bare-f; halal butcher's meat, never pork"
+f-chicken,chicken pieces,murgi,confirmed,ingredient,F,raw,"steel bowl, side-on",grey,M,sekelo;bank,chicken mishkaki; kuku paka; biryani,redo,B,FP01,"a steel bowl of raw pale pink chicken pieces, seen side-on, heaped above the rim",was shelf-ph-chicken-bare-f
+f-mince,mince,chundo,confirmed,ingredient,F,raw,"steel bowl, side-on",grey,M,samosa;bank,samosa; keema; kebab,redo,B,FP01,"a steel bowl of raw red mince, seen side-on, heaped above the rim",was shelf-ph-keema-bare-f
+f-fish,fish fillets,,,ingredient,F,raw,"steel bowl, side-on",grey,M,bank,machi paka; masala fish,redo,D,FP02,"a steel bowl of raw white fish fillets, seen side-on, heaped above the rim",was shelf-ph-fish-bare-f
+f-onion,onion,dungri,confirmed,ingredient,F,whole,"loose, standing",magenta,S,daar;chaat;samosa;sekelo;eggs;bank,almost everything,redo,B,FV01,a whole red onion with papery skin,was shelf-veg/fru bare (pantry batch)
+f-tomato,tomato,tameto,confirmed,ingredient,F,whole,"loose, standing",magenta,S,daar;chaat;sekelo;eggs;bank,daar; chaat; kachumbari,redo,B,FV01,a whole red tomato with a green stalk,was shelf-veg/fru bare (pantry batch)
+f-potato,potato,bataato,draft,ingredient,F,whole,"loose, standing",magenta,S,samosa;chaat;bank,samosa; chaat; bhajia,redo,B,FV01,a whole brown potato,was shelf-veg/fru bare (pantry batch)
+f-garlic-bulb,garlic bulb,lasan,draft,ingredient,F,whole,"loose, standing",magenta,S,daar;sekelo;bank,daar; marinades,redo,B,FV01,a whole white garlic bulb,was shelf-veg/fru bare (pantry batch)
+f-ginger-root,ginger root,aadu,draft,ingredient,F,whole,"loose, standing",magenta,S,chai;daar;bank,adrak chai; daar,redo,B,FV01,a knobbly ginger root,was shelf-veg/fru bare (pantry batch)
+f-green-chilli,green chilli,mirchi,confirmed,ingredient,F,whole,"loose, standing",magenta,S,daar;chaat;samosa;eggs;bank,almost everything,redo,B,FV01,two long green chillies leaning together,was shelf-veg/fru bare (pantry batch)
+f-lemon,lemon,limu,confirmed,ingredient,F,whole,"loose, standing",magenta,S,corn;chaat;sekelo;samosa;bank,corn; chaat; mishkaki,redo,B,FV01,a whole yellow lemon,was shelf-veg/fru bare (pantry batch)
+f-coriander-bunch,coriander bunch,dhania,confirmed,ingredient,F,whole,"loose, standing",magenta,M,daar;chaat;samosa;eggs;bank,garnish,redo,B,FV01,a bunch of fresh coriander tied with string,was shelf-veg/fru bare (pantry batch)
+f-mint-bunch,mint bunch,fudino,confirmed,ingredient,F,whole,"loose, standing",magenta,M,chai;chaat;bank,fudino chai; chutney,new,B,FV02,a bunch of fresh mint tied with string,
+f-curry-leaves-sprig,curry leaves sprig,,,ingredient,F,whole,"loose, standing",magenta,M,daar;bank,daar tadka; kadhi,new,B,FV02,a sprig of glossy curry leaves standing up,
+f-green-pepper,green pepper,,,ingredient,F,whole,"loose, standing",magenta,S,sekelo;bank,mishkaki,redo,B,FV02,a whole green bell pepper,was shelf-veg/fru bare (pantry batch)
+f-carrot,carrot,gajar,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,pilau; sambharo,redo,D,FV03,two orange carrots with green tops,was shelf-veg/fru bare (pantry batch)
+f-peas-in-the-pod,peas in the pod,matar,confirmed,ingredient,F,whole,"loose, standing",magenta,S,samosa;bank,samosa filling,redo,B,FV02,three fat green pea pods,was shelf-veg/fru bare (pantry batch)
+f-spinach-bunch,spinach bunch,bhaji,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,bhaji nu saag,new,D,FV03,a bunch of dark green spinach,
+f-okra,okra,bhindaa,draft,ingredient,F,whole,"loose, standing",magenta,S,bank,bhinda,new,D,FV03,four green okra pods standing up,
+f-aubergine,aubergine,ringraa,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,ringra bateta,new,D,FV04,a glossy purple aubergine standing up,
+f-cabbage,cabbage,kobi,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,bhajia; sambharo,new,D,FV04,a whole green cabbage,
+f-cauliflower,cauliflower,phulaver,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,phulaver bateta,new,D,FV04,a whole cauliflower in its leaves,
+f-cucumber,cucumber,kaakri,draft,ingredient,F,whole,"loose, standing",magenta,M,chaat;bank,kachumbari; raita,new,B,FV02,a whole green cucumber standing up,
+f-green-beans,green beans,phali,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,phali nu saag,new,D,FV04,a small bunch of green beans tied with string,
+f-pumpkin-wedge,pumpkin wedge,kolu,draft,ingredient,F,whole,"loose, standing",magenta,M,bank,kolu nu saag,new,D,FV04,a big wedge of orange pumpkin,
+f-corn-cob-in-husk,corn cob in husk,makai,confirmed,ingredient,F,whole,"loose, standing",magenta,M,corn;bank,roast corn; makai paka,redo,C,FV02,"a corn cob in its green husk, standing up",was shelf-veg/fru bare (pantry batch)
+f-cassava-root,cassava root,mogo,confirmed,ingredient,F,whole,"loose, standing",magenta,M,corn;bank,mogo chips; mogo in coconut,new,C,FV03,"a long brown cassava root, standing up",
+f-coconut,coconut,nair,confirmed,ingredient,F,whole,"loose, standing",magenta,S,bank,kuku paka; chutney,redo,D,FV04,a whole brown hairy coconut,was shelf-veg/fru bare (pantry batch)
+f-raw-green-mango,raw green mango,ambo,confirmed,ingredient,F,whole,"loose, standing",magenta,S,chaat;bank,chaat; achar,new,B,FV02,a hard green raw mango,
+f-ripe-mango,ripe mango,ambo,confirmed,ingredient,F,whole,"loose, standing",magenta,S,bank,mango with chilli,redo,D,FV04,a ripe yellow-red mango,was shelf-veg/fru bare (pantry batch)
+f-plantain-bunch-matoke,plantain bunch (matoke),,,ingredient,F,whole,"loose, standing",magenta,M,bank,matoke,new,D,FV04,a small bunch of green plantains (matoke),
+f-banana,banana,kelo,draft,ingredient,F,whole,"loose, standing",magenta,M,eggs;bank,breakfast,redo,C,FV03,a small bunch of yellow bananas,was shelf-veg/fru bare (pantry batch)
+f-pomegranate,pomegranate,daadam,draft,ingredient,F,whole,"loose, standing",magenta,S,chaat,chaat topping,new,B,FV02,a whole red pomegranate with its crown,
+f-lime,lime,,,ingredient,F,whole,"loose, standing",magenta,S,corn;bank,corn; kachumbari,new,C,FV03,a whole green lime,
+f-spring-onions,spring onions,,,ingredient,F,whole,"loose, standing",magenta,M,eggs;bank,omelette,new,C,FV03,a bunch of spring onions,
+f-strawberries-punnet,strawberries (punnet),,,ingredient,F,whole,"loose, standing",magenta,M,cake,cake topping,new,C,FV03,a small plain card punnet of strawberries,
+f-kettle,kettle,,,vessel,F,empty,steel or glass,grey,L,chai;bank,chai water,new,A,FK01,"a brushed-steel stove-top kettle, black handle",
+f-milk-pan-with-handle,milk pan with handle,,,vessel,F,empty,steel or glass,grey,W,chai,chai,new,A,FK01,"a small steel milk pan with a long handle, side-on",
+f-chai-flask,chai flask,,,vessel,F,empty,steel or glass,grey,L,chai;bank,chai for guests,new,A,FK01,a tall steel chai flask with a cup lid,
+f-tea-strainer,tea strainer,,,vessel,F,empty,steel or glass,grey,M,chai,chai,new,A,FK01,"a steel tea strainer with a handle, side-on",
+f-measuring-jug,measuring jug,,,vessel,F,empty,steel or glass,grey,M,baking,naan amounts,planned,C,,,s17-art1 BJ / s17-art3 BW draw it
+f-tea-cup-and-saucer,tea cup and saucer,cup,confirmed,vessel,F,empty,steel or glass,grey,S,chai;bank,chai,new,A,FK01,a plain white tea cup on its saucer,
+t-cardamom-pods-katori,cardamom pods in a katori,elchi,draft,ingredient,T,heaped,steel katori,grey,M,chai;baking;bank,chai,have,B,,,assets/cook/items/spice-elchi-bowl-t.png
+t-turmeric-katori,turmeric in a katori,hardar,draft,ingredient,T,heaped,steel katori,grey,M,daar;eggs;bank,daar,have,B,,,assets/cook/items/spice-hardar-bowl-t.png
+t-cumin-seeds-katori,cumin seeds in a katori,jeeru,draft,ingredient,T,heaped,steel katori,grey,M,daar;chaat,tadka,have,B,,,assets/cook/items/spice-jeeru-bowl-t.png
+t-red-chilli-powder-katori,red chilli powder in a katori,laal marcha,draft,ingredient,T,heaped,steel katori,grey,M,corn;chaat;sekelo,corn,have,B,,,assets/cook/items/spice-lal-marcha-bowl-t.png
+t-salt-katori,salt in a katori,loon,draft,ingredient,T,heaped,steel katori,grey,M,daar;eggs;corn;maani,all,have,B,,,assets/cook/items/spice-loon-bowl-t.png
+t-mustard-seeds-katori,mustard seeds in a katori,rai,draft,ingredient,T,heaped,steel katori,grey,M,daar,tadka,have,B,,,assets/cook/items/spice-rai-bowl-t.png
+t-chapati-flour-katori,chapati flour in a katori,atto,draft,ingredient,T,heaped,steel katori,grey,M,maani;samosa;baking,dough,have,B,,,assets/cook/items/dry-atto-bowl-t.png
+t-tea-leaves-katori,tea leaves in a katori,chai,confirmed,ingredient,T,heaped,steel katori,grey,M,chai,chai,have,B,,,assets/cook/items/dry-chai-leaves-bowl-t.png
+t-toor-daar-dry-katori,toor daar (dry) in a katori,daar,draft,ingredient,T,heaped,steel katori,grey,M,daar,daar,have,B,,,assets/cook/items/dry-daal-bowl-t.png
+t-ghee-katori,ghee in a katori,ghee,confirmed,ingredient,T,heaped,steel katori,grey,M,maani;daar,maani,have,B,,,assets/cook/items/dry-ghee-bowl-t.png
+t-sugar-katori,sugar in a katori,khun,confirmed,ingredient,T,heaped,steel katori,grey,M,chai;baking;cake,chai,have,B,,,assets/cook/items/dry-khun-bowl-t.png
+t-black-pepper-katori,black pepper in a katori,mari,draft,ingredient,T,heaped,steel katori,grey,M,eggs;corn;chai,eggs; corn,new,B,TB01,"black pepper in a katori, seen from directly above",
+t-cinnamon-stick-katori,cinnamon stick in a katori,taj,draft,ingredient,T,heaped,steel katori,grey,M,chai;bank,chai masala,new,B,TB01,"cinnamon stick in a katori, seen from directly above",
+t-cloves-katori,cloves in a katori,laving,draft,ingredient,T,heaped,steel katori,grey,M,chai;bank,chai masala; pilau,new,B,TB01,"cloves in a katori, seen from directly above",
+t-fennel-seeds-katori,fennel seeds in a katori,variyali,draft,ingredient,T,heaped,steel katori,grey,M,chai;baking,chai; naan,new,B,TB01,"fennel seeds in a katori, seen from directly above",
+t-garam-masala-katori,garam masala in a katori,garam masalo,draft,ingredient,T,heaped,steel katori,grey,M,samosa;sekelo;bank,filling,new,B,TB01,"garam masala in a katori, seen from directly above",
+t-coriander-seeds-katori,coriander seeds in a katori,dhana,draft,ingredient,T,heaped,steel katori,grey,M,daar;bank,daar,new,B,TB01,"coriander seeds in a katori, seen from directly above",
+t-asafoetida-katori,asafoetida in a katori,hing,draft,ingredient,T,heaped,steel katori,grey,M,daar,tadka,new,B,TB01,"asafoetida in a katori, seen from directly above",
+t-dried-red-chillies-katori,dried red chillies in a katori,marcha,draft,ingredient,T,heaped,steel katori,grey,M,daar,tadka,new,B,TB01,"dried red chillies in a katori, seen from directly above",
+t-chai-masala-katori,chai masala in a katori,,,ingredient,T,heaped,steel katori,grey,M,chai,masala chai,new,B,TB01,"chai masala in a katori, seen from directly above",
+t-saffron-threads-katori,saffron threads in a katori,kesar,confirmed,ingredient,T,heaped,steel katori,grey,M,chai;bank,kesar chai,new,B,TB02,"saffron threads in a katori, seen from directly above",
+t-chaat-masala-katori,chaat masala in a katori,,,ingredient,T,heaped,steel katori,grey,M,chaat;corn,chaat,new,B,TB02,"chaat masala in a katori, seen from directly above",
+t-roasted-cumin-powder-katori,roasted cumin powder in a katori,,,ingredient,T,heaped,steel katori,grey,M,chaat,chaat,new,B,TB02,"roasted cumin powder in a katori, seen from directly above",
+t-sesame-seeds-katori,sesame seeds in a katori,tal,draft,ingredient,T,heaped,steel katori,grey,M,baking,naan,new,C,TB04,"sesame seeds in a katori, seen from directly above",
+t-nigella-seeds-katori,nigella seeds in a katori,,,ingredient,T,heaped,steel katori,grey,M,baking,naan,new,C,TB04,"nigella seeds in a katori, seen from directly above",
+t-fenugreek-leaves-dried-katori,fenugreek leaves (dried) in a katori,methi,draft,ingredient,T,heaped,steel katori,grey,M,maani,thepla,new,B,TB02,"fenugreek leaves (dried) in a katori, seen from directly above",
+t-millet-flour-katori,millet flour in a katori,bajr,confirmed,ingredient,T,heaped,steel katori,grey,M,maani,bajr ji maani,new,B,TB02,"millet flour in a katori, seen from directly above",
+t-plain-flour-katori,plain flour in a katori,,,ingredient,T,heaped,steel katori,grey,M,baking;cake,naan; cake,new,C,TB04,"plain flour in a katori, seen from directly above",
+t-gram-flour-katori,gram flour in a katori,,,ingredient,T,heaped,steel katori,grey,M,bank,bhajia batter,new,C,TB04,"gram flour in a katori, seen from directly above",
+t-basmati-rice-raw-katori,basmati rice (raw) in a katori,,,ingredient,T,heaped,steel katori,grey,M,daar;bank,khichdi,new,B,TB02,"basmati rice (raw) in a katori, seen from directly above",
+t-chana-daar-dry-katori,chana daar (dry) in a katori,,,ingredient,T,heaped,steel katori,grey,M,daar,daar,new,B,TB02,"chana daar (dry) in a katori, seen from directly above",
+t-yellow-mung-daar-dry-katori,yellow mung daar (dry) in a katori,,,ingredient,T,heaped,steel katori,grey,M,daar,khichdi,new,B,TB02,"yellow mung daar (dry) in a katori, seen from directly above",
+t-dried-chickpeas-katori,dried chickpeas in a katori,chana,confirmed,ingredient,T,heaped,steel katori,grey,M,chaat,chaat,new,B,TB02,"dried chickpeas in a katori, seen from directly above",
+t-dried-yeast-katori,dried yeast in a katori,,,ingredient,T,heaped,steel katori,grey,M,baking,naan,new,C,TB04,"dried yeast in a katori, seen from directly above",
+t-baking-powder-katori,baking powder in a katori,,,ingredient,T,heaped,steel katori,grey,M,baking;cake,cake,new,C,TB04,"baking powder in a katori, seen from directly above",
+t-cocoa-powder-katori,cocoa powder in a katori,,,ingredient,T,heaped,steel katori,grey,M,cake,cake,new,C,TB04,"cocoa powder in a katori, seen from directly above",
+t-desiccated-coconut-katori,desiccated coconut in a katori,nair,confirmed,ingredient,T,heaped,steel katori,grey,M,cake;bank,cake,new,C,TB04,"desiccated coconut in a katori, seen from directly above",
+t-chopped-nuts-katori,chopped nuts in a katori,,,ingredient,T,heaped,steel katori,grey,M,cake;bank,cake; biryani,new,C,TB04,"chopped nuts in a katori, seen from directly above",
+t-black-salt-katori,black salt in a katori,,,ingredient,T,heaped,steel katori,grey,M,chaat;corn,chaat,new,B,TB03,"black salt in a katori, seen from directly above",
+t-mango-powder-katori,mango powder in a katori,,,ingredient,T,heaped,steel katori,grey,M,chaat,chaat,new,B,TB03,"mango powder in a katori, seen from directly above",
+t-dried-mint-katori,dried mint in a katori,fudino,confirmed,ingredient,T,heaped,steel katori,grey,M,chaat,chaat,new,B,TB03,"dried mint in a katori, seen from directly above",
+t-ginger-garlic-paste-katori,ginger-garlic paste in a katori,,,ingredient,T,heaped,steel katori,grey,M,sekelo;samosa,marinade,new,B,TB03,"ginger-garlic paste in a katori, seen from directly above",
+t-tamarind-pulp-katori,tamarind pulp in a katori,amli,confirmed,ingredient,T,heaped,steel katori,grey,M,chaat,chutney,new,B,TB03,"tamarind pulp in a katori, seen from directly above",
+t-water-bowl,water (steel jug from above),paani,draft,ingredient,T,ready,steel jug from above,grey,M,chai;maani;baking,chai; dough,have,B,,,vessel-water-jug-f / chai-v2 liquids
+t-milk-bowl,milk (steel jug from above),dudh,confirmed,ingredient,T,ready,steel jug from above,grey,M,chai;baking,chai,have,B,,,vessel-milk-jug-f / chai-v2 liquids
+t-cooking-oil-bowl,cooking oil (small steel bowl with spoon),,,ingredient,T,ready,small steel bowl with spoon,grey,M,daar;samosa;eggs;maani,tadka; frying,new,B,TB03,"cooking oil (small steel bowl with spoon), seen from directly above",
+t-yoghurt-bowl,yoghurt (steel katori),dai,confirmed,ingredient,T,ready,steel katori,grey,M,chaat;sekelo;baking,chaat; marinade,have,B,,,topping-dai-bowl-t
+t-green-mint-chutney-bowl,green (mint) chutney (steel katori),fudino ji chutney,Mum's note (grammar-notes s26),ingredient,T,ready,steel katori,grey,M,chaat;samosa,chaat,have,B,,,topping-lili-bowl-t
+t-tamarind-chutney-bowl,tamarind chutney (steel katori),amli,confirmed,ingredient,T,ready,steel katori,grey,M,chaat;samosa,chaat,have,B,,,topping-amli-bowl-t
+t-coconut-chutney-bowl,coconut chutney (steel katori),nair ji chutney,Mum's note (grammar-notes s26),ingredient,T,ready,steel katori,grey,M,bank,bhajia; mogo,new,D,TB05,"coconut chutney (steel katori), seen from directly above",
+t-lemon-juice-bowl,lemon juice (small steel bowl),limu,confirmed,ingredient,T,ready,small steel bowl,grey,M,corn;chaat,corn,new,B,TB03,"lemon juice (small steel bowl), seen from directly above",
+t-beaten-eggs-bowl,beaten eggs (glass bowl with fork),indo,confirmed,ingredient,T,ready,glass bowl with fork,grey,M,eggs;baking;cake,omelette; cake,new,C,TB05,"beaten eggs (glass bowl with fork), seen from directly above",
+t-melted-butter-bowl,melted butter (small steel bowl with brush),,,ingredient,T,ready,small steel bowl with brush,grey,M,baking;cake,naan; cake tin,new,C,TB05,"melted butter (small steel bowl with brush), seen from directly above",
+t-marinade-yoghurt-and-spice-bowl,marinade (yoghurt and spice) (glass bowl),,,ingredient,T,ready,glass bowl,grey,M,sekelo,mishkaki,new,B,TB03,"marinade (yoghurt and spice) (glass bowl), seen from directly above",
+t-cake-batter-bowl,cake batter (mixing bowl),,,ingredient,T,ready,mixing bowl,grey,M,cake,cake,planned,C,,,"s17-art1 BB (the mixing bowl, its contents rising)"
+t-naan-dough-bowl,naan dough (mixing bowl),,,ingredient,T,ready,mixing bowl,grey,M,baking,naan,planned,C,,,s17-art1 BB
+t-flour-paste-samosa-glue-bowl,flour paste (samosa glue) (small steel bowl),atto,draft,ingredient,T,ready,small steel bowl,grey,M,samosa,samosa sealing,new,B,TB03,"flour paste (samosa glue) (small steel bowl), seen from directly above",
+t-bhajia-batter-bowl,bhajia batter (steel bowl),,,ingredient,T,ready,steel bowl,grey,M,bank,bhajia,new,D,TB05,"bhajia batter (steel bowl), seen from directly above",
+t-whipped-cream-bowl,whipped cream (glass bowl),,,ingredient,T,ready,glass bowl,grey,M,cake,icing,new,C,TB05,"whipped cream (glass bowl), seen from directly above",
+t-coconut-milk-bowl,coconut milk (steel bowl),nair,confirmed,ingredient,T,ready,steel bowl,grey,M,bank,kuku paka,new,D,TB05,"coconut milk (steel bowl), seen from directly above",
+t-onion-whole,"onion, whole",dungri,confirmed,ingredient,T,whole,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-onion-halved,"onion, halved",dungri,confirmed,ingredient,T,halved,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-onion-peeled,"onion, peeled",dungri,confirmed,ingredient,T,peeled,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-onion-chopped,"onion, chopped",dungri,confirmed,ingredient,T,chopped,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-onion-sliced-rings,"onion, sliced rings",dungri,confirmed,ingredient,T,sliced rings,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,new,B,TF01,"onion, sliced rings, seen from directly above",
+t-onion-fried-golden,"onion, fried golden",dungri,confirmed,ingredient,T,fried golden,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,new,B,TF01,"onion, fried golden, seen from directly above",
+t-onion-burnt,"onion, burnt",dungri,confirmed,ingredient,T,burnt,loose on the board,magenta,M,daar;chaat;samosa;sekelo;eggs,,new,B,TF01,"onion, burnt, seen from directly above",
+t-tomato-whole,"tomato, whole",tameto,confirmed,ingredient,T,whole,loose on the board,magenta,M,daar;chaat;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-tomato-halved,"tomato, halved",tameto,confirmed,ingredient,T,halved,loose on the board,magenta,M,daar;chaat;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-tomato-chopped,"tomato, chopped",tameto,confirmed,ingredient,T,chopped,loose on the board,magenta,M,daar;chaat;sekelo;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-tomato-sliced,"tomato, sliced",tameto,confirmed,ingredient,T,sliced,loose on the board,magenta,M,daar;chaat;sekelo;eggs,,new,B,TF01,"tomato, sliced, seen from directly above",
+t-potato-whole,"potato, whole",bataato,draft,ingredient,T,whole,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-halved,"potato, halved",bataato,draft,ingredient,T,halved,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-peeled,"potato, peeled",bataato,draft,ingredient,T,peeled,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-cubed,"potato, cubed",bataato,draft,ingredient,T,cubed,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-boiled-cubes,"potato, boiled cubes",bataato,draft,ingredient,T,boiled cubes,loose on the board,magenta,M,samosa;chaat;bank,,new,B,TF01,"potato, boiled cubes, seen from directly above",
+t-potato-mashed,"potato, mashed",bataato,draft,ingredient,T,mashed,loose on the board,magenta,M,samosa;chaat;bank,,new,B,TF01,"potato, mashed, seen from directly above",
+t-potato-chips-raw,"potato, chips raw",bataato,draft,ingredient,T,chips raw,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-chips-golden,"potato, chips golden",bataato,draft,ingredient,T,chips golden,loose on the board,magenta,M,samosa;chaat;bank,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-potato-chips-burnt,"potato, chips burnt",bataato,draft,ingredient,T,chips burnt,loose on the board,magenta,M,samosa;chaat;bank,,new,B,TF01,"potato, chips burnt, seen from directly above",
+t-garlic-whole,"garlic, whole",lasan,draft,ingredient,T,whole,loose on the board,magenta,S,daar;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-garlic-clove,"garlic, clove",lasan,draft,ingredient,T,clove,loose on the board,magenta,S,daar;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-garlic-chopped,"garlic, chopped",lasan,draft,ingredient,T,chopped,loose on the board,magenta,M,daar;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-garlic-sizzling-golden,"garlic, sizzling golden",lasan,draft,ingredient,T,sizzling golden,loose on the board,magenta,M,daar;sekelo,,new,B,TF01,"garlic, sizzling golden, seen from directly above",
+t-ginger-whole,"ginger, whole",aadu,draft,ingredient,T,whole,loose on the board,magenta,S,chai;daar,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-ginger-chopped,"ginger, chopped",aadu,draft,ingredient,T,chopped,loose on the board,magenta,M,chai;daar,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-ginger-grated,"ginger, grated",aadu,draft,ingredient,T,grated,loose on the board,magenta,M,chai;daar,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-ginger-sliced,"ginger, sliced",aadu,draft,ingredient,T,sliced,loose on the board,magenta,M,chai;daar,,new,B,TF01,"ginger, sliced, seen from directly above",
+t-green-chilli-whole,"green chilli, whole",mirchi,confirmed,ingredient,T,whole,loose on the board,magenta,S,daar;chaat;samosa;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-green-chilli-chopped,"green chilli, chopped",mirchi,confirmed,ingredient,T,chopped,loose on the board,magenta,M,daar;chaat;samosa;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-green-chilli-slit,"green chilli, slit",mirchi,confirmed,ingredient,T,slit,loose on the board,magenta,S,daar;chaat;samosa;eggs,,new,B,TF02,"green chilli, slit, seen from directly above",
+t-lemon-whole,"lemon, whole",limu,confirmed,ingredient,T,whole,loose on the board,magenta,S,corn;chaat;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-lemon-halved,"lemon, halved",limu,confirmed,ingredient,T,halved,loose on the board,magenta,M,corn;chaat;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-lemon-wedge,"lemon, wedge",limu,confirmed,ingredient,T,wedge,loose on the board,magenta,S,corn;chaat;sekelo,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-coriander-bunch,"coriander, bunch",dhania,confirmed,ingredient,T,bunch,loose on the board,magenta,M,daar;chaat;samosa;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-coriander-chopped,"coriander, chopped",dhania,confirmed,ingredient,T,chopped,loose on the board,magenta,M,daar;chaat;samosa;eggs,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-mint-bunch,"mint, bunch",fudino,confirmed,ingredient,T,bunch,loose on the board,magenta,M,chai;chaat,,new,B,TF02,"mint, bunch, seen from directly above",
+t-mint-leaves,"mint, leaves",fudino,confirmed,ingredient,T,leaves,loose on the board,magenta,M,chai;chaat,,new,B,TF02,"mint, leaves, seen from directly above",
+t-curry-leaves-sprig,"curry leaves, sprig",,,ingredient,T,sprig,loose on the board,magenta,M,daar,,new,B,TF02,"curry leaves, sprig, seen from directly above",
+t-curry-leaves-sizzling,"curry leaves, sizzling",,,ingredient,T,sizzling,loose on the board,magenta,M,daar,,new,B,TF02,"curry leaves, sizzling, seen from directly above",
+t-green-pepper-whole,"green pepper, whole",,,ingredient,T,whole,loose on the board,magenta,M,sekelo,,new,B,TF02,"green pepper, whole, seen from directly above",
+t-green-pepper-chunks,"green pepper, chunks",,,ingredient,T,chunks,loose on the board,magenta,M,sekelo,,new,B,TF02,"green pepper, chunks, seen from directly above",
+t-peas-pods,"peas, pods",matar,confirmed,ingredient,T,pods,loose on the board,magenta,M,samosa,,new,B,TF02,"peas, pods, seen from directly above",
+t-peas-shelled,"peas, shelled",matar,confirmed,ingredient,T,shelled,loose on the board,magenta,M,samosa,,new,B,TF02,"peas, shelled, seen from directly above",
+t-carrot-whole,"carrot, whole",gajar,draft,ingredient,T,whole,loose on the board,magenta,M,bank,,new,D,TF07,"carrot, whole, seen from directly above",
+t-carrot-grated,"carrot, grated",gajar,draft,ingredient,T,grated,loose on the board,magenta,M,bank,,new,D,TF07,"carrot, grated, seen from directly above",
+t-carrot-diced,"carrot, diced",gajar,draft,ingredient,T,diced,loose on the board,magenta,M,bank,,new,D,TF08,"carrot, diced, seen from directly above",
+t-cabbage-shredded,"cabbage, shredded",kobi,draft,ingredient,T,shredded,loose on the board,magenta,M,bank,,new,D,TF08,"cabbage, shredded, seen from directly above",
+t-cucumber-whole,"cucumber, whole",kaakri,draft,ingredient,T,whole,loose on the board,magenta,M,chaat;bank,,new,B,TF03,"cucumber, whole, seen from directly above",
+t-cucumber-diced,"cucumber, diced",kaakri,draft,ingredient,T,diced,loose on the board,magenta,M,chaat;bank,,new,B,TF03,"cucumber, diced, seen from directly above",
+t-raw-green-mango-diced,"raw green mango, diced",ambo,confirmed,ingredient,T,diced,loose on the board,magenta,M,chaat,,new,B,TF03,"raw green mango, diced, seen from directly above",
+t-pomegranate-halved,"pomegranate, halved",daadam,draft,ingredient,T,halved,loose on the board,magenta,M,chaat,,new,B,TF03,"pomegranate, halved, seen from directly above",
+t-pomegranate-seeds,"pomegranate, seeds",daadam,draft,ingredient,T,seeds,loose on the board,magenta,M,chaat,,new,B,TF03,"pomegranate, seeds, seen from directly above",
+t-spring-onion-chopped,"spring onion, chopped",,,ingredient,T,chopped,loose on the board,magenta,M,eggs,,new,C,TF05,"spring onion, chopped, seen from directly above",
+t-spinach-chopped,"spinach, chopped",bhaji,draft,ingredient,T,chopped,loose on the board,magenta,M,bank,,new,D,TF08,"spinach, chopped, seen from directly above",
+t-okra-whole,"okra, whole",bhindaa,draft,ingredient,T,whole,loose on the board,magenta,S,bank,,new,D,TF08,"okra, whole, seen from directly above",
+t-okra-sliced,"okra, sliced",bhindaa,draft,ingredient,T,sliced,loose on the board,magenta,M,bank,,new,D,TF08,"okra, sliced, seen from directly above",
+t-aubergine-whole,"aubergine, whole",ringraa,draft,ingredient,T,whole,loose on the board,magenta,M,bank,,new,D,TF08,"aubergine, whole, seen from directly above",
+t-aubergine-cubed,"aubergine, cubed",ringraa,draft,ingredient,T,cubed,loose on the board,magenta,M,bank,,new,D,TF08,"aubergine, cubed, seen from directly above",
+t-cassava-peeled,"cassava, peeled",mogo,confirmed,ingredient,T,peeled,loose on the board,magenta,M,corn;bank,,new,C,TF05,"cassava, peeled, seen from directly above",
+t-cassava-boiled-chunks,"cassava, boiled chunks",mogo,confirmed,ingredient,T,boiled chunks,loose on the board,magenta,M,corn;bank,,new,C,TF06,"cassava, boiled chunks, seen from directly above",
+t-cassava-chips-golden,"cassava, chips golden",mogo,confirmed,ingredient,T,chips golden,loose on the board,magenta,M,corn;bank,,new,C,TF06,"cassava, chips golden, seen from directly above",
+t-strawberry-whole,"strawberry, whole",,,ingredient,T,whole,loose on the board,magenta,S,cake,,new,C,TF06,"strawberry, whole, seen from directly above",
+t-strawberry-halved,"strawberry, halved",,,ingredient,T,halved,loose on the board,magenta,M,cake,,new,C,TF06,"strawberry, halved, seen from directly above",
+t-boiled-chickpeas-in-a-katori,"boiled chickpeas, in a katori",chana,confirmed,ingredient,T,in a katori,steel katori,magenta,M,chaat,,have,B,,,live s0x art (veg-*-t / layer-*-t)
+t-lamb-cubes-raw,"lamb cubes, raw",gos,confirmed,ingredient,T,raw,loose,magenta,M,sekelo,,have,B,,,"live or s17-art1 (EG, EY)"
+t-lamb-cubes-on-skewer-raw,"lamb cubes, on skewer raw",gos,confirmed,ingredient,T,on skewer raw,loose,magenta,M,sekelo,,have,B,,,"live or s17-art1 (EG, EY)"
+t-lamb-cubes-grilled,"lamb cubes, grilled",gos,confirmed,ingredient,T,grilled,loose,magenta,M,sekelo,,have,B,,,"live or s17-art1 (EG, EY)"
+t-lamb-cubes-charred,"lamb cubes, charred",gos,confirmed,ingredient,T,charred,loose,magenta,M,sekelo,,have,B,,,"live or s17-art1 (EG, EY)"
+t-chicken-cubes-raw,"chicken cubes, raw",murgi,confirmed,ingredient,T,raw,loose,magenta,M,sekelo,,new,B,TF03,"chicken cubes, raw, seen from directly above",
+t-chicken-cubes-on-skewer-raw,"chicken cubes, on skewer raw",murgi,confirmed,ingredient,T,on skewer raw,loose,magenta,M,sekelo,,new,B,TF03,"chicken cubes, on skewer raw, seen from directly above",
+t-chicken-cubes-grilled,"chicken cubes, grilled",murgi,confirmed,ingredient,T,grilled,loose,magenta,M,sekelo,,new,B,TF03,"chicken cubes, grilled, seen from directly above",
+t-chicken-cubes-charred,"chicken cubes, charred",murgi,confirmed,ingredient,T,charred,loose,magenta,M,sekelo,,new,B,TF03,"chicken cubes, charred, seen from directly above",
+t-mince-raw,"mince, raw",chundo,confirmed,ingredient,T,raw,loose,magenta,M,samosa,,new,B,TF04,"mince, raw, seen from directly above",
+t-mince-cooked-in-the-pan,"mince, cooked in the pan",chundo,confirmed,ingredient,T,cooked in the pan,loose,magenta,M,samosa,,new,B,TF04,"mince, cooked in the pan, seen from directly above",
+t-mince-samosa-filling,"mince, samosa filling",chundo,confirmed,ingredient,T,samosa filling,loose,magenta,M,samosa,,have,B,,,"live or s17-art1 (EG, EY)"
+t-kebab-seekh-raw-on-skewer,"kebab (seekh), raw on skewer",kebab,confirmed,ingredient,T,raw on skewer,loose,magenta,M,sekelo;bank,,new,B,TF04,"kebab (seekh), raw on skewer, seen from directly above",
+t-kebab-seekh-grilled,"kebab (seekh), grilled",kebab,confirmed,ingredient,T,grilled,loose,magenta,M,sekelo;bank,,new,B,TF04,"kebab (seekh), grilled, seen from directly above",
+t-egg-whole,"egg, whole",indo,confirmed,ingredient,T,whole,loose,magenta,S,eggs,,have,C,,,"live or s17-art1 (EG, EY)"
+t-egg-cracked,"egg, cracked",indo,confirmed,ingredient,T,cracked,loose,magenta,S,eggs,,have,C,,,"live or s17-art1 (EG, EY)"
+t-egg-boiled-in-shell,"egg, boiled in shell",indo,confirmed,ingredient,T,boiled in shell,loose,magenta,S,eggs,,planned,C,,,
+t-egg-boiled-peeled-halved,"egg, boiled peeled halved",indo,confirmed,ingredient,T,boiled peeled halved,loose,magenta,M,eggs,,planned,C,,,
+t-egg-fried-sunny,"egg, fried sunny",indo,confirmed,ingredient,T,fried sunny,loose,magenta,M,eggs,,have,C,,,"live or s17-art1 (EG, EY)"
+t-egg-fried-done,"egg, fried done",indo,confirmed,ingredient,T,fried done,loose,magenta,M,eggs,,have,C,,,"live or s17-art1 (EG, EY)"
+t-egg-fried-burnt,"egg, fried burnt",indo,confirmed,ingredient,T,fried burnt,loose,magenta,M,eggs,,have,C,,,"live or s17-art1 (EG, EY)"
+t-egg-scrambled,"egg, scrambled",indo,confirmed,ingredient,T,scrambled,loose,magenta,M,eggs,,new,C,TF06,"egg, scrambled, seen from directly above",
+t-egg-omelette-raw,"egg, omelette raw",indo,confirmed,ingredient,T,omelette raw,loose,magenta,M,eggs,,new,C,TF06,"egg, omelette raw, seen from directly above",
+t-egg-omelette-folded,"egg, omelette folded",indo,confirmed,ingredient,T,omelette folded,loose,magenta,M,eggs,,new,C,TF06,"egg, omelette folded, seen from directly above",
+t-fish-fillet-raw,"fish fillet, raw",,,ingredient,T,raw,loose,magenta,M,bank,,new,D,TF08,"fish fillet, raw, seen from directly above",
+t-fish-fillet-fried,"fish fillet, fried",,,ingredient,T,fried,loose,magenta,M,bank,,new,D,TF08,"fish fillet, fried, seen from directly above",
+t-maani-dough-ball,"maani, dough ball",maani,confirmed,ingredient,T,dough ball,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-maani-rolled-raw,"maani, rolled raw",maani,confirmed,ingredient,T,rolled raw,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-maani-half-cooked,"maani, half cooked",maani,confirmed,ingredient,T,half cooked,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-maani-puffed,"maani, puffed",maani,confirmed,ingredient,T,puffed,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-maani-cooked-spotted,"maani, cooked spotted",maani,confirmed,ingredient,T,cooked spotted,loose,magenta,M,maani,,new,B,TF04,"maani, cooked spotted, seen from directly above",
+t-maani-burnt,"maani, burnt",maani,confirmed,ingredient,T,burnt,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-maani-ghee-brushed,"maani, ghee brushed",maani,confirmed,ingredient,T,ghee brushed,loose,magenta,M,maani,,new,B,TF04,"maani, ghee brushed, seen from directly above",
+t-maani-folded-quarter,"maani, folded quarter",maani,confirmed,ingredient,T,folded quarter,loose,magenta,M,maani,,new,B,TF04,"maani, folded quarter, seen from directly above",
+t-maani-stack,"maani, stack",maani,confirmed,ingredient,T,stack,loose,magenta,M,maani,,new,B,TF04,"maani, stack, seen from directly above",
+t-bajr-ji-maani-dough-ball,"bajr ji maani, dough ball",bajr ji maani,Mum (stove.md words),ingredient,T,dough ball,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-bajr-ji-maani-patted-raw,"bajr ji maani, patted raw",bajr ji maani,Mum (stove.md words),ingredient,T,patted raw,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-bajr-ji-maani-half-cooked,"bajr ji maani, half cooked",bajr ji maani,Mum (stove.md words),ingredient,T,half cooked,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-bajr-ji-maani-cooked,"bajr ji maani, cooked",bajr ji maani,Mum (stove.md words),ingredient,T,cooked,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-bajr-ji-maani-burnt,"bajr ji maani, burnt",bajr ji maani,Mum (stove.md words),ingredient,T,burnt,loose,magenta,M,maani,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-paratha-rolled-raw,"paratha, rolled raw",,,ingredient,T,rolled raw,loose,magenta,M,maani;bank,,new,B,TF04,"paratha, rolled raw, seen from directly above",
+t-paratha-cooked-layered,"paratha, cooked layered",,,ingredient,T,cooked layered,loose,magenta,M,maani;bank,,new,B,TF05,"paratha, cooked layered, seen from directly above",
+t-thepla-methi-rolled-raw,"thepla (methi), rolled raw",,,ingredient,T,rolled raw,loose,magenta,M,maani;bank,,new,B,TF05,"thepla (methi), rolled raw, seen from directly above",
+t-thepla-methi-cooked,"thepla (methi), cooked",,,ingredient,T,cooked,loose,magenta,M,maani;bank,,new,B,TF05,"thepla (methi), cooked, seen from directly above",
+t-puri-rolled-raw,"puri, rolled raw",,,ingredient,T,rolled raw,loose,magenta,M,maani;bank,,new,B,TF05,"puri, rolled raw, seen from directly above",
+t-puri-fried-puffed,"puri, fried puffed",,,ingredient,T,fried puffed,loose,magenta,M,maani;bank,,new,B,TF05,"puri, fried puffed, seen from directly above",
+t-naan-dough-ball,"naan, dough ball",,,ingredient,T,dough ball,loose,magenta,M,baking,,new,C,TF06,"naan, dough ball, seen from directly above",
+t-naan-shaped-raw,"naan, shaped raw",,,ingredient,T,shaped raw,loose,magenta,M,baking,,new,C,TF06,"naan, shaped raw, seen from directly above",
+t-naan-baked-golden,"naan, baked golden",,,ingredient,T,baked golden,loose,magenta,M,baking,,have,C,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-naan-burnt,"naan, burnt",,,ingredient,T,burnt,loose,magenta,M,baking,,new,C,TF07,"naan, burnt, seen from directly above",
+t-yellow-naan-bun-shaped-raw,"yellow naan bun, shaped raw",,,ingredient,T,shaped raw,loose,magenta,M,baking;bank,,new,C,TF07,"yellow naan bun, shaped raw, seen from directly above",
+t-yellow-naan-bun-baked,"yellow naan bun, baked",,,ingredient,T,baked,loose,magenta,M,baking;bank,,new,C,TF07,"yellow naan bun, baked, seen from directly above",
+t-samosa-pastry-strip,"samosa, pastry strip",samosa,confirmed,ingredient,T,pastry strip,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-folded-cone,"samosa, folded cone",samosa,confirmed,ingredient,T,folded cone,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-filled,"samosa, filled",samosa,confirmed,ingredient,T,filled,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-folded-raw,"samosa, folded raw",samosa,confirmed,ingredient,T,folded raw,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-frying-pale,"samosa, frying pale",samosa,confirmed,ingredient,T,frying pale,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-fried-golden,"samosa, fried golden",samosa,confirmed,ingredient,T,fried golden,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-samosa-burnt,"samosa, burnt",samosa,confirmed,ingredient,T,burnt,loose,magenta,M,samosa,,have,B,,,live s0x art (maani-*-t / samosa-*-t / s17-art1 BN)
+t-vegetable-samosa-fried-golden,"vegetable samosa, fried golden",samosa,confirmed,ingredient,T,fried golden,loose,magenta,M,samosa,,new,B,TF05,"vegetable samosa, fried golden, seen from directly above",
+t-chicken-samosa-fried-golden,"chicken samosa, fried golden",samosa,confirmed,ingredient,T,fried golden,loose,magenta,M,samosa;bank,,new,B,TF05,"chicken samosa, fried golden, seen from directly above",
+t-bhajia-raw-in-batter,"bhajia, raw in batter",bhajiya,draft,ingredient,T,raw in batter,loose,magenta,M,bank,,new,D,TF09,"bhajia, raw in batter, seen from directly above",
+t-bhajia-frying,"bhajia, frying",bhajiya,draft,ingredient,T,frying,loose,magenta,M,bank,,new,D,TF09,"bhajia, frying, seen from directly above",
+t-bhajia-fried-golden,"bhajia, fried golden",bhajiya,draft,ingredient,T,fried golden,loose,magenta,M,bank,,new,D,TF09,"bhajia, fried golden, seen from directly above",
+t-maru-bhajia-potato-fried-golden,"maru bhajia (potato), fried golden",bhajiya,draft,ingredient,T,fried golden,loose,magenta,M,bank,,new,D,TF09,"maru bhajia (potato), fried golden, seen from directly above",
+t-mandazi-shaped-raw,"mandazi, shaped raw",,,ingredient,T,shaped raw,loose,magenta,M,bank,,new,D,TF09,"mandazi, shaped raw, seen from directly above","mandazi is a fried bread served with chai, never a reward"
+t-mandazi-fried-golden,"mandazi, fried golden",,,ingredient,T,fried golden,loose,magenta,M,bank,,new,D,TF09,"mandazi, fried golden, seen from directly above","mandazi is a fried bread served with chai, never a reward"
+t-corn-in-husk,"corn cob, in husk",makai,confirmed,ingredient,T,in husk,loose,magenta,M,corn,roast corn,new,C,TF07,"corn cob, in husk, seen from directly above",
+t-corn-husked-raw,"corn cob, husked raw",makai,confirmed,ingredient,T,husked raw,loose,magenta,M,corn,roast corn,have,C,,,s17-art1 CB (four states)
+t-corn-roasting,"corn cob, roasting",makai,confirmed,ingredient,T,roasting,loose,magenta,M,corn,roast corn,have,C,,,s17-art1 CB (four states)
+t-corn-charred-spots,"corn cob, charred spots",makai,confirmed,ingredient,T,charred spots,loose,magenta,M,corn,roast corn,have,C,,,s17-art1 CB (four states)
+t-corn-done,"corn cob, done",makai,confirmed,ingredient,T,done,loose,magenta,M,corn,roast corn,have,C,,,s17-art1 CB (four states)
+t-corn-with-lemon-and-chilli,"corn cob, with lemon and chilli",makai,confirmed,ingredient,T,with lemon and chilli,loose,magenta,M,corn,roast corn,new,C,TF07,"corn cob, with lemon and chilli, seen from directly above",
+t-corn-boiled,"corn cob, boiled",makai,confirmed,ingredient,T,boiled,loose,magenta,M,corn,roast corn,new,C,TF07,"corn cob, boiled, seen from directly above",
+t-corn-kernels-in-a-cup,"corn cob, kernels in a cup",makai,confirmed,ingredient,T,kernels in a cup,loose,magenta,M,corn,roast corn,new,C,TF07,"corn cob, kernels in a cup, seen from directly above",
+t-chai-saucepan,chai saucepan,,,vessel,T,empty,,grey,STN,chai,,have,B,,,items-s14 pan
+t-cooking-pot,cooking pot,tapelo,confirmed,vessel,T,empty,,grey,STN,daar;bank,,have,B,,,vessel-pot-t
+t-tadka-pan,tadka pan,,,vessel,T,empty,,grey,STN,daar,,have,B,,,vessel-tadka-pan-t
+t-tawa,tawa,tawa,confirmed,vessel,T,empty,,grey,STN,maani;eggs,,have,B,,,vessel-tawa-t
+t-karai-with-oil,karai with oil,,,vessel,T,empty,,grey,STN,samosa;bank,,have,B,,,samosa-v2 karahi
+t-frying-pan,frying pan,,,vessel,T,empty,,grey,STN,eggs,,have,C,,,s17-art1 EF
+t-egg-pot,egg pot,,,vessel,T,empty,,grey,STN,eggs,,have,C,,,s17-art1 EP
+t-chakla-rolling-board,chakla (rolling board),,,vessel,T,empty,,grey,STN,maani,,have,B,,,tool-chakla-t
+t-chopping-board,chopping board,,,vessel,T,empty,,grey,STN,daar;chaat,,have,B,,,tool-board-t / s17-art3 KC
+t-charcoal-grill-jiko,charcoal grill (jiko),,,vessel,T,empty,,grey,STN,sekelo;corn,,have,B,,,grill-jiko-t / sekelo grill-t
+t-chai-tray,chai tray,,,vessel,T,empty,,grey,STN,chai,,have,B,,,tray-chai-t
+t-chaat-bowl,chaat bowl,,,vessel,T,empty,,grey,STN,chaat,,have,B,,,chaat-bowl-empty-t
+t-thali,thali,,,vessel,T,empty,,grey,L,maani,,have,B,,,vessel-thali-t
+t-katori-empty,katori (empty),,,vessel,T,empty,,grey,M,chai;maani;daar;chaat;samosa;sekelo;eggs;baking;corn,,have,B,,,vessel-katori-t
+t-masala-dabba,masala dabba,,,vessel,T,empty,,grey,L,daar;bank,,have,B,,,vessel-masala-dabba-t
+t-enamel-plate,enamel plate,saani,confirmed,vessel,T,empty,,grey,L,sekelo,,have,B,,,plate-enamel-empty-t
+t-skewer-rack,skewer rack,,,vessel,T,empty,,grey,STN,sekelo,,have,B,,,vessel-skewer-rack-t
+t-chai-glass,chai glass,glass,confirmed,vessel,T,empty,,grey,S,chai,,have,B,,,chai-v2 / s17-wm2
+t-pressure-cooker,pressure cooker,,,vessel,T,empty,,grey,STN,daar;bank,,new,B,TK01,"pressure cooker, empty and clean, seen from directly above",
+t-biryani-pot-deg-with-lid,biryani pot (deg) with lid,,,vessel,T,empty,,grey,STN,bank,,new,D,TK05,"biryani pot (deg) with lid, empty and clean, seen from directly above",
+t-rice-pot,rice pot,,,vessel,T,empty,,grey,STN,daar;bank,,new,B,TK01,"rice pot, empty and clean, seen from directly above",
+t-mixing-bowl,mixing bowl,,,vessel,T,empty,,grey,L,baking;cake,,planned,C,,,s17-art1 BB
+t-baking-tray,baking tray,,,vessel,T,empty,,grey,STN,baking,,planned,C,,,s17-art1 BN
+t-cake-tin,cake tin,,,vessel,T,empty,,grey,L,cake,,planned,C,,,s17-art1/3 BL
+t-loaf-tin,loaf tin,,,vessel,T,empty,,grey,L,baking,,planned,C,,,s17-art1/3 BL
+t-cooling-rack,cooling rack,,,vessel,T,empty,,grey,STN,baking;cake,,new,C,TK03,"cooling rack, empty and clean, seen from directly above",
+t-cake-stand,cake stand,,,vessel,T,empty,,grey,L,cake,,new,C,TK03,"cake stand, empty and clean, seen from directly above",
+t-serving-platter,serving platter,,,vessel,T,empty,,grey,L,bank,,new,D,TK05,"serving platter, empty and clean, seen from directly above",
+t-steel-serving-bowl,steel serving bowl,bakuli,confirmed,vessel,T,empty,,grey,L,daar;bank,,new,B,TK01,"steel serving bowl, empty and clean, seen from directly above",
+t-ceramic-plate,ceramic plate,saani,confirmed,vessel,T,empty,,grey,L,eggs;samosa;bank,,new,B,TK01,"ceramic plate, empty and clean, seen from directly above",
+t-egg-cup,egg cup,,,vessel,T,empty,,grey,S,eggs,,have,C,,,s17-art1 EB
+t-small-glass-bowl,small glass bowl,bakuli,confirmed,vessel,T,empty,,grey,M,eggs;cake,,new,C,TK03,"small glass bowl, empty and clean, seen from directly above",
+t-roti-box-with-cloth,roti box with cloth,,,vessel,T,empty,,grey,L,maani,,new,B,TK01,"roti box with cloth, empty and clean, seen from directly above",keeps the maani warm
+t-bread-basket,bread basket,,,vessel,T,empty,,grey,L,baking;bank,,new,C,TK03,"bread basket, empty and clean, seen from directly above",
+t-paper-lined-plate,paper-lined plate,,,vessel,T,empty,,grey,L,samosa;bank,,have,B,,,samosa-v2 plate-paper
+t-strainer-bowl-colander,strainer bowl (colander),,,vessel,T,empty,,grey,L,daar;chaat,,new,B,TK01,"strainer bowl (colander), empty and clean, seen from directly above",
+t-tea-cup,tea cup,cup,confirmed,vessel,T,empty,,grey,S,chai,,new,B,TK01,"tea cup, empty and clean, seen from directly above",
+t-saucer,saucer,,,vessel,T,empty,,grey,S,chai,,new,B,TK01,"saucer, empty and clean, seen from directly above",
+t-teapot,teapot,,,vessel,T,empty,,grey,M,chai;bank,,new,B,TK01,"teapot, empty and clean, seen from directly above",
+t-chai-flask,chai flask,,,vessel,T,empty,,grey,M,chai;bank,,new,B,TK02,"chai flask, empty and clean, seen from directly above",
+t-salt-shaker,salt shaker,,,vessel,T,empty,,grey,S,eggs,,have,C,,,s17-art1 EG
+t-pepper-shaker,pepper shaker,,,vessel,T,empty,,grey,S,eggs,,have,C,,,s17-art1 EG
+t-squeeze-bottle-chutney,squeeze bottle (chutney),,,vessel,T,empty,,grey,S,chaat;bank,,new,B,TK02,"squeeze bottle (chutney), empty and clean, seen from directly above",
+t-mortar-and-pestle,mortar and pestle,,,vessel,T,empty,,grey,M,chai;daar,,new,B,TK02,"mortar and pestle, empty and clean, seen from directly above",crushes elchi and ginger for chai
+t-spice-grinder,spice grinder,,,vessel,T,empty,,grey,M,bank,,new,D,TK05,"spice grinder, empty and clean, seen from directly above",
+t-hand-fan-for-the-coals,hand fan (for the coals),,,vessel,T,empty,,grey,M,sekelo;corn,,new,B,TK02,"hand fan (for the coals), empty and clean, seen from directly above",
+t-bag-of-charcoal,bag of charcoal,,,vessel,T,empty,,grey,M,sekelo;corn,,new,B,TK02,"bag of charcoal, empty and clean, seen from directly above",
+t-glowing-coals,glowing coals,,,vessel,T,empty,,grey,M,sekelo;corn,,new,B,TK02,"glowing coals, empty and clean, seen from directly above",partial alpha: glow drawn in code
+t-toaster,toaster,,,vessel,T,empty,,grey,M,eggs,,new,C,TK04,"toaster, empty and clean, seen from directly above",
+t-toast-slice,toast slice,,,vessel,T,empty,,grey,M,eggs,,new,C,TK04,"toast slice, empty and clean, seen from directly above",
+t-oven,oven,,,vessel,T,empty,,grey,STN,baking;cake,,have,C,,,s17-art1 BO1-3
+t-measuring-cups-set,measuring cups set,,,vessel,T,empty,,grey,M,baking;cake,,new,C,TK04,"measuring cups set, empty and clean, seen from directly above",
+t-measuring-spoons,measuring spoons,,,vessel,T,empty,,grey,M,baking;cake,,new,C,TK04,"measuring spoons, empty and clean, seen from directly above",
+t-kitchen-scale,kitchen scale,,,vessel,T,empty,,grey,M,baking;cake,,new,C,TK04,"kitchen scale, empty and clean, seen from directly above",
+t-sieve,sieve,,,vessel,T,empty,,grey,M,baking;cake,,new,C,TK04,"sieve, empty and clean, seen from directly above",
+t-piping-bag,piping bag,,,vessel,T,empty,,grey,M,cake,,new,C,TK04,"piping bag, empty and clean, seen from directly above",
+t-birthday-candles,birthday candles,,,vessel,T,empty,,grey,S,cake,,have,C,,,s17-art1 CN
+t-cake-server,cake server,,,vessel,T,empty,,grey,LONG,cake,,new,C,TK04,"cake server, empty and clean, seen from directly above",
+t-cake-knife,cake knife,,,vessel,T,empty,,grey,LONG,cake,,new,C,TK04,"cake knife, empty and clean, seen from directly above",
+t-cake-slice,cake slice,,,vessel,T,empty,,grey,M,cake,,have,C,,,s17-art1 CK
+t-tool-rolling-pin-welan,rolling pin (welan),welan,confirmed,tool,T,clean,,grey,LONG,maani;baking,,have,B,,,tool-velan-t
+t-tool-tongs-chimta,tongs (chimta),,,tool,T,clean,,grey,LONG,maani;sekelo;corn,,have,B,,,tool-tongs-t
+t-tool-knife,knife,,,tool,T,clean,,grey,LONG,daar;chaat,,have,B,,,tool-knife-t-v2
+t-tool-ladle,ladle,chamcho,confirmed,tool,T,clean,,grey,LONG,daar,,have,B,,,tool-ladle-t
+t-tool-slotted-spoon,slotted spoon,,,tool,T,clean,,grey,LONG,samosa,,have,B,,,tool-slotted-spoon-t
+t-tool-spatula,spatula,,,tool,T,clean,,grey,LONG,eggs;maani,,have,B,,,tool-spatula-t
+t-tool-tea-strainer,tea strainer,,,tool,T,clean,,grey,LONG,chai,,have,B,,,tool-tea-strainer-t
+t-tool-teaspoon,teaspoon,chamchi,confirmed,tool,T,clean,,grey,LONG,chai,,have,B,,,tool-teaspoon-t
+t-tool-wooden-spoon,wooden spoon,,,tool,T,clean,,grey,LONG,daar;baking,,have,B,,,tool-wooden-spoon-t
+t-tool-skewer-empty,skewer (empty),lakri,confirmed,tool,T,clean,,grey,LONG,sekelo,,have,B,,,skewer-empty-t
+t-tool-wooden-daar-churner-ravaiyo,wooden daar churner (ravaiyo),,,tool,T,clean,,grey,LONG,daar,,new,B,TK02,"wooden daar churner (ravaiyo), empty and clean, seen from directly above",for whisking daar
+t-tool-whisk,whisk,,,tool,T,clean,,grey,LONG,baking;cake;eggs,,new,C,TK05,"whisk, empty and clean, seen from directly above",
+t-tool-fork,fork,,,tool,T,clean,,grey,LONG,eggs,,new,C,TK05,"fork, empty and clean, seen from directly above",
+t-tool-tablespoon,tablespoon,chamcho,confirmed,tool,T,clean,,grey,LONG,baking;chaat,,new,B,TK02,"tablespoon, empty and clean, seen from directly above",
+t-tool-grater,grater,,,tool,T,clean,,grey,LONG,chai;daar,,new,B,TK02,"grater, empty and clean, seen from directly above",ginger for chai
+t-tool-vegetable-peeler,vegetable peeler,,,tool,T,clean,,grey,LONG,daar;samosa,,new,B,TK03,"vegetable peeler, empty and clean, seen from directly above",
+t-tool-pastry-brush,pastry brush,,,tool,T,clean,,grey,LONG,baking;sekelo,,new,B,TK03,"pastry brush, empty and clean, seen from directly above",basting
+t-tool-butter-knife,butter knife,,,tool,T,clean,,grey,LONG,eggs,,new,C,TK05,"butter knife, empty and clean, seen from directly above",
+t-tool-serving-spoon,serving spoon,,,tool,T,clean,,grey,LONG,bank,,new,D,TK05,"serving spoon, empty and clean, seen from directly above",
+t-tool-rubber-spatula,rubber spatula,,,tool,T,clean,,grey,LONG,cake;baking,,new,C,TK05,"rubber spatula, empty and clean, seen from directly above",
+t-tool-pastry-wheel-cutter,pastry wheel cutter,,,tool,T,clean,,grey,LONG,samosa,,new,B,TK03,"pastry wheel cutter, empty and clean, seen from directly above",cuts the strips
+t-tool-chai-stirring-spoon-long,chai stirring spoon (long),,,tool,T,clean,,grey,LONG,chai,,new,B,TK03,"chai stirring spoon (long), empty and clean, seen from directly above",
+t-tool-turner-for-maani-flat,turner for maani (flat),,,tool,T,clean,,grey,LONG,maani,,new,B,TK03,"turner for maani (flat), empty and clean, seen from directly above",the turner has no word (picture only)
+t-tool-corn-holder-husk,corn holder (husk),,,tool,T,clean,,grey,LONG,corn,,new,C,TK05,"corn holder (husk), empty and clean, seen from directly above",
+t-dish-masala-chai-in-a-glass,masala chai in a glass,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,masala chai in a glass,have,B,,,live served/ art
+t-dish-black-chai-kari-chai,black chai (kari chai),kari chai,kari: confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,black chai (kari chai),have,B,,,live served/ art
+t-dish-ginger-chai,ginger chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,ginger chai,new,B,TD01,"ginger chai, served, seen from directly above",
+t-dish-cardamom-chai,cardamom chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,cardamom chai,new,B,TD01,"cardamom chai, served, seen from directly above",
+t-dish-mint-chai,mint chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai;bank,mint chai,new,B,TD01,"mint chai, served, seen from directly above",
+t-dish-saffron-chai-celebration,saffron chai (celebration),chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai;bank,saffron chai (celebration),new,B,TD01,"saffron chai (celebration), served, seen from directly above","; a celebration dish, never a reward"
+t-dish-daar-in-a-bowl,daar in a bowl,daar,draft,dish,T,served,"plate, bowl or glass",grey,L,daar,daar in a bowl,have,B,,,live served/ art
+t-dish-daar-and-rice,daar and rice,daar,draft,dish,T,served,"plate, bowl or glass",grey,L,daar;bank,daar and rice,new,B,TD01,"daar and rice, served, seen from directly above",
+t-dish-khichdi-with-kadhi,khichdi with kadhi,,,dish,T,served,"plate, bowl or glass",grey,L,daar;bank,khichdi with kadhi,new,B,TD01,"khichdi with kadhi, served, seen from directly above",
+t-dish-mung-curry-mag-nu-saag,mung curry (mag nu saag),,,dish,T,served,"plate, bowl or glass",grey,L,daar;bank,mung curry (mag nu saag),new,B,TD01,"mung curry (mag nu saag), served, seen from directly above",
+t-dish-maani-on-a-plate,maani on a plate,maani,confirmed,dish,T,served,"plate, bowl or glass",grey,L,maani,maani on a plate,have,B,,,live served/ art
+t-dish-bajr-ji-maani-with-ghee,bajr ji maani with ghee,bajr ji maani,Mum (stove.md words),dish,T,served,"plate, bowl or glass",grey,L,maani,bajr ji maani with ghee,new,B,TD01,"bajr ji maani with ghee, served, seen from directly above",
+t-dish-paratha,paratha,,,dish,T,served,"plate, bowl or glass",grey,L,maani;bank,paratha,new,B,TD01,"paratha, served, seen from directly above",
+t-dish-thepla,thepla,,,dish,T,served,"plate, bowl or glass",grey,L,maani;bank,thepla,new,B,TD02,"thepla, served, seen from directly above",
+t-dish-puri,puri,,,dish,T,served,"plate, bowl or glass",grey,L,maani;bank,puri,new,B,TD02,"puri, served, seen from directly above",
+t-dish-chana-chaat,chana chaat,chaat,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chaat,chana chaat,have,B,,,live served/ art
+t-dish-potato-chaat,potato chaat,chaat,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chaat,potato chaat,new,B,TD02,"potato chaat, served, seen from directly above",
+t-dish-sev-puri,sev puri,,,dish,T,served,"plate, bowl or glass",grey,L,chaat;bank,sev puri,new,B,TD02,"sev puri, served, seen from directly above",
+t-dish-pani-puri,pani puri,,,dish,T,served,"plate, bowl or glass",grey,L,chaat;bank,pani puri,new,B,TD02,"pani puri, served, seen from directly above",
+t-dish-chana-bateta,chana bateta,chana,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chaat;bank,chana bateta,new,B,TD02,"chana bateta, served, seen from directly above",
+t-dish-samosas-on-a-plate,samosas on a plate,samosa,confirmed,dish,T,served,"plate, bowl or glass",grey,L,samosa,samosas on a plate,have,B,,,live served/ art
+t-dish-vegetable-samosas-with-chutney,vegetable samosas with chutney,samosa,confirmed,dish,T,served,"plate, bowl or glass",grey,L,samosa,vegetable samosas with chutney,new,B,TD02,"vegetable samosas with chutney, served, seen from directly above",
+t-dish-mishkaki-on-a-plate,mishkaki on a plate,mishkaki,confirmed,dish,T,served,"plate, bowl or glass",grey,L,sekelo,mishkaki on a plate,have,B,,,live served/ art
+t-dish-chicken-mishkaki,chicken mishkaki,mishkaki,confirmed,dish,T,served,"plate, bowl or glass",grey,L,sekelo,chicken mishkaki,new,B,TD02,"chicken mishkaki, served, seen from directly above",
+t-dish-mixed-skewers,mixed skewers,mixed,confirmed,dish,T,served,"plate, bowl or glass",grey,L,sekelo,mixed skewers,have,B,,,live served/ art
+t-dish-seekh-kebabs,seekh kebabs,kebab,confirmed,dish,T,served,"plate, bowl or glass",grey,L,sekelo;bank,seekh kebabs,new,B,TD02,"seekh kebabs, served, seen from directly above",
+t-dish-boiled-egg-in-an-egg-cup,boiled egg in an egg cup,indo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,eggs,boiled egg in an egg cup,have,C,,,live served/ art
+t-dish-fried-egg-on-toast,fried egg on toast,indo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,eggs,fried egg on toast,have,C,,,live served/ art
+t-dish-masala-omelette,masala omelette,indo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,eggs,masala omelette,new,C,TD03,"masala omelette, served, seen from directly above",
+t-dish-scrambled-egg-and-onion-mayai-dungri,scrambled egg and onion (mayai dungri),indo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,eggs,scrambled egg and onion (mayai dungri),new,C,TD03,"scrambled egg and onion (mayai dungri), served, seen from directly above",
+t-dish-chips-mayai,chips mayai,chips,confirmed,dish,T,served,"plate, bowl or glass",grey,L,eggs;bank,chips mayai,new,C,TD03,"chips mayai, served, seen from directly above",
+t-dish-naan-basket,naan basket,,,dish,T,served,"plate, bowl or glass",grey,L,baking,naan basket,have,C,,,live served/ art
+t-dish-yellow-naan-buns,yellow naan buns,,,dish,T,served,"plate, bowl or glass",grey,L,baking;bank,yellow naan buns,new,C,TD03,"yellow naan buns, served, seen from directly above",
+t-dish-roast-corn-with-lemon-and-chilli,roast corn with lemon and chilli,makai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,corn,roast corn with lemon and chilli,have,C,,,live served/ art
+t-dish-corn-in-coconut-sauce-makai-paka,corn in coconut sauce (makai paka),makai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,corn;bank,corn in coconut sauce (makai paka),new,C,TD03,"corn in coconut sauce (makai paka), served, seen from directly above",
+t-dish-corn-fritters-makai-na-bhajia,corn fritters (makai na bhajia),makai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,corn;bank,corn fritters (makai na bhajia),new,C,TD03,"corn fritters (makai na bhajia), served, seen from directly above",
+t-dish-mogo-chips-with-chilli-and-lemon,mogo chips with chilli and lemon,mogo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,corn;bank,mogo chips with chilli and lemon,new,C,TD03,"mogo chips with chilli and lemon, served, seen from directly above",
+t-dish-birthday-cake,birthday cake,,,dish,T,served,"plate, bowl or glass",grey,L,cake,birthday cake,have,C,,,live served/ art
+t-dish-chocolate-birthday-cake,chocolate birthday cake,,,dish,T,served,"plate, bowl or glass",grey,L,cake,chocolate birthday cake,new,C,TD03,"chocolate birthday cake, served, seen from directly above",
+t-dish-strawberry-cream-cake,strawberry cream cake,,,dish,T,served,"plate, bowl or glass",grey,L,cake,strawberry cream cake,new,C,TD03,"strawberry cream cake, served, seen from directly above",
+t-dish-pilau,pilau,,,dish,T,served,"plate, bowl or glass",grey,L,bank,pilau,new,D,TD04,"pilau, served, seen from directly above",
+t-dish-biryani,biryani,,,dish,T,served,"plate, bowl or glass",grey,L,bank,biryani,new,D,TD04,"biryani, served, seen from directly above",
+t-dish-kuku-paka,kuku paka,murgi,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank,kuku paka,new,D,TD04,"kuku paka, served, seen from directly above",
+t-dish-bhajia-with-chutney,bhajia with chutney,bhajiya,draft,dish,T,served,"plate, bowl or glass",grey,L,bank,bhajia with chutney,new,D,TD04,"bhajia with chutney, served, seen from directly above",
+t-dish-maru-bhajia,maru bhajia,bhajiya,draft,dish,T,served,"plate, bowl or glass",grey,L,bank,maru bhajia,new,D,TD04,"maru bhajia, served, seen from directly above",
+t-dish-kachumbari,kachumbari,,,dish,T,served,"plate, bowl or glass",grey,L,bank,kachumbari,new,D,TD04,"kachumbari, served, seen from directly above",
+t-dish-khichro-meat-lentil-and-wheat,"khichro (meat, lentil and wheat)",,,dish,T,served,"plate, bowl or glass",grey,L,bank,"khichro (meat, lentil and wheat)",new,D,TD04,"khichro (meat, lentil and wheat), served, seen from directly above",
+t-dish-gos-tarelo-meat-curry,gos tarelo (meat curry),gos,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank,gos tarelo (meat curry),new,D,TD04,"gos tarelo (meat curry), served, seen from directly above",
+t-dish-keema-with-peas,keema with peas,keema,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank,keema with peas,new,D,TD05,"keema with peas, served, seen from directly above",
+t-dish-mogo-in-coconut,mogo in coconut,mogo,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank,mogo in coconut,new,D,TD05,"mogo in coconut, served, seen from directly above",
+t-dish-bharazi-pigeon-peas-in-coconut,bharazi (pigeon peas in coconut),,,dish,T,served,"plate, bowl or glass",grey,L,bank,bharazi (pigeon peas in coconut),new,D,TD05,"bharazi (pigeon peas in coconut), served, seen from directly above",
+t-dish-matoke,matoke,,,dish,T,served,"plate, bowl or glass",grey,L,bank,matoke,new,D,TD05,"matoke, served, seen from directly above",
+t-dish-mandazi-with-chai,mandazi with chai,,,dish,T,served,"plate, bowl or glass",grey,L,bank,mandazi with chai,new,D,TD05,"mandazi with chai, served, seen from directly above",
+t-dish-chevdo,chevdo,,,dish,T,served,"plate, bowl or glass",grey,L,bank,chevdo,new,D,TD05,"chevdo, served, seen from directly above",
+t-dish-dhokra,dhokra,,,dish,T,served,"plate, bowl or glass",grey,L,bank,dhokra,new,D,TD05,"dhokra, served, seen from directly above",
+t-dish-kadhi,kadhi,,,dish,T,served,"plate, bowl or glass",grey,L,bank,kadhi,new,D,TD05,"kadhi, served, seen from directly above",
+t-dish-masala-fish,masala fish,,,dish,T,served,"plate, bowl or glass",grey,L,bank,masala fish,new,D,TD05,"masala fish, served, seen from directly above",
+t-dish-bhinda-bateta-okra-and-potato,bhinda bateta (okra and potato),bhindaa,draft,dish,T,served,"plate, bowl or glass",grey,L,bank,bhinda bateta (okra and potato),new,D,TD06,"bhinda bateta (okra and potato), served, seen from directly above",
+t-dish-ringra-bateta-aubergine-and-potato,ringra bateta (aubergine and potato),ringraa,draft,dish,T,served,"plate, bowl or glass",grey,L,bank,ringra bateta (aubergine and potato),new,D,TD06,"ringra bateta (aubergine and potato), served, seen from directly above",
+t-dish-raita,raita,dai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank,raita,new,D,TD06,"raita, served, seen from directly above",
+t-dish-mithai-platter-celebration,mithai platter (celebration),mitai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,bank;cake,mithai platter (celebration),new,C,TD04,"mithai platter (celebration), served, seen from directly above","; a celebration dish, never a reward"
+t-dish-dates-on-a-plate,dates on a plate,,,dish,T,served,"plate, bowl or glass",grey,L,bank,dates on a plate,new,D,TD06,"dates on a plate, served, seen from directly above",
+t-dish-dabeli,dabeli,,,dish,T,served,"plate, bowl or glass",grey,L,bank,dabeli,new,D,TD06,"dabeli, served, seen from directly above",
+t-dish-kalyo-pau,kalyo pau,,,dish,T,served,"plate, bowl or glass",grey,L,bank,kalyo pau,new,D,TD06,"kalyo pau, served, seen from directly above",
+t-dish-vitumbua,vitumbua,,,dish,T,served,"plate, bowl or glass",grey,L,bank,vitumbua,new,D,TD06,"vitumbua, served, seen from directly above",

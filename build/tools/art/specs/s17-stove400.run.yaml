@@ -1,0 +1,548 @@
+# The run spec for pack s17-stove400: the stove family's shared item art (the chai shelf redo first, then every stove game's
+# shelf items, station heaps, states, kit and dishes, then the banked future dishes), as sheets of items on one sheet.
+# The list it draws from: docs/design-language/art-plans/stove-400-items.csv (the `sheet` column). The plan:
+# docs/design-language/art-plans/s17-stove400-art-plan.md (section 2: the token size rule).
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-stove400.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-stove400.run.yaml
+# Every sheet is one line; the two prompts (FS side-on, TS top-down) take the sheet's items as slots. A sheet's items are drawn
+# all the same height: the game, not the picture, sets the token size steps (L 100 / M 92 / S 85 of the slot; plan section 2).
+pack: s17-stove400
+title: 'The stove family: one batch of shelf items, station heaps, kit and dishes (the chai shelf redo first)'
+plan: docs/design-language/art-plans/s17-stove400-art-plan.md
+plan_branch: claude/vibrant-hopper-v3yexp
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/vibrant-hopper-v3yexp
+dest: sources/art/s17-stove400
+real_people: false
+approvals: |-
+  - Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+  - No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
+  - ONE stop: after FA01 (part A), post its chat link and wait for Zafar's "go". Every later shelf sheet copies its jar, lid and light, so he looks at it once before the other 41 sheets.
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  jar-family.png: sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png
+  style-anchor.png: sources/art/style-anchor-v1.png
+  food-heaps.png: sources/art/cook-v3/s5-fillings-top-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  FA01:
+    prompt: FS
+    attach: ["jar-family.png", "style-anchor.png"]
+    save: fa01-chai-shelf-v1.png
+    check: ANCHOR
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a clear plastic water bottle, full of water, a plain pale blue cap, no label; 2. a plain white and pale blue milk carton with a white screw cap, no print; 3. a tall glass jar full of loose black tea leaves (dark, crinkly, dry), a pale oak screw lid; 4. a tall glass jar full of white granulated sugar (fine sparkling grains), a pale oak screw lid; 5. a small glass jar full of plump pale green cardamom pods, a pale oak screw lid; 6. a small glass jar full of knobbly fresh ginger root pieces, one cut yellow face, a pale oak screw lid; 7. a small glass jar full of whole papery white garlic cloves, a pale oak screw lid; 8. a small glass jar full of coarse white sea-salt crystals (clear, angular, glinting: never round pearls), a pale oak screw lid"
+      EMPTY: "Every cell holds one item."
+  FJ01:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj01-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small glass jar of bright golden-yellow turmeric powder, a pale oak screw lid; 2. a small glass jar of slim ridged brown cumin seeds, a pale oak screw lid; 3. a small glass jar of tiny round dark brown-black mustard seeds, a pale oak screw lid; 4. a small glass jar of round wrinkled black peppercorns, a pale oak screw lid; 5. a small glass jar of rolled reddish-brown cinnamon sticks standing up, a pale oak screw lid; 6. a small glass jar of dark brown cloves (little nail shapes with round heads), a pale oak screw lid; 7. a small glass jar of pale green-grey ridged fennel seeds, a pale oak screw lid; 8. a small glass jar of deep red chilli powder, a pale oak screw lid"
+      EMPTY: "Every cell holds one item."
+  FK01:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fk01-chai-kit-v1.png
+    check: SHELF
+    slots:
+      N: "5"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a brushed-steel stove-top kettle, black handle; 2. a small steel milk pan with a long handle, side-on; 3. a tall steel chai flask with a cup lid; 4. a steel tea strainer with a handle, side-on; 5. a plain white tea cup on its saucer"
+      EMPTY: "The last 3 cells stay empty (plain ground)."
+  FJ02:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj02-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small glass jar of round pale tan coriander seeds, a pale oak screw lid; 2. a small glass jar of small square mustard-yellow fenugreek seeds, a pale oak screw lid; 3. a small glass jar of warm brown garam masala powder, a pale oak screw lid; 4. a small glass jar of dried olive-green bay leaves standing up, a pale oak screw lid; 5. a small glass jar of pale yellow asafoetida powder, a pale oak screw lid; 6. a small glass jar of tiny cream sesame seeds, a pale oak screw lid; 7. a small glass jar of whole dried wrinkled red chillies, a pale oak screw lid; 8. a small glass jar of a coarse light-brown spice blend with flecks of green cardamom and cinnamon, a pale oak screw lid"
+      EMPTY: "Every cell holds one item."
+  FJ03:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj03-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a very small glass jar holding a loose tuft of deep red-orange saffron threads, a pale oak screw lid; 2. a small glass jar of dusky pinkish-brown chaat masala powder, a pale oak screw lid; 3. a small glass jar of dark brown ground cumin, a pale oak screw lid; 4. a small glass jar of tiny matt black angular nigella seeds, a pale oak screw lid; 5. a small glass jar of tiny grey-brown striped carom seeds, a pale oak screw lid; 6. a small glass jar of crumbled dried dark green mint leaves, a pale oak screw lid; 7. a small glass jar of pale beige mango powder, a pale oak screw lid; 8. a small glass jar of pinkish-grey black-salt powder, a pale oak screw lid"
+      EMPTY: "Every cell holds one item."
+  FJ04:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj04-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small glass jar of tiny cream-white poppy seeds, a pale oak screw lid; 2. a small glass jar of khaki-brown ground coriander and cumin, a pale oak screw lid; 3. a tall plain brushed-steel tin with its lid on, a little pale wholemeal flour dusted on the rim; 4. a tall plain brushed-steel tin with its lid off and leaning against it, showing grey-green millet flour; 5. a tall plain brushed-steel tin with its lid off and leaning against it, showing bright white flour; 6. a tall plain brushed-steel tin with its lid off and leaning against it, showing pale yellow chickpea flour; 7. a tall plain brushed-steel tin with its lid off and leaning against it, showing fine white rice flour; 8. a tall glass jar of pale golden semolina grains"
+      EMPTY: "Every cell holds one item."
+  FJ05:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj05-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a tall glass jar of long slim white basmati rice grains; 2. a tall glass jar of split yellow lentils (toor daar); 3. a tall glass jar of split golden chickpeas (chana daar), larger than toor daar; 4. a tall glass jar of small whole green mung beans; 5. a tall glass jar of small pale yellow split mung beans; 6. a tall glass jar of small salmon-orange lentils; 7. a tall glass jar of round beige dried chickpeas; 8. a tall glass jar of glossy dark red kidney beans"
+      EMPTY: "Every cell holds one item."
+  FJ06:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj06-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a tall glass jar of small round speckled beige pigeon peas; 2. a tall glass jar of cream black-eyed beans, each with its black eye; 3. a tall glass jar of golden cracked wheat; 4. a tall glass jar of thin white rice flakes; 5. a tall glass jar of thin crispy golden-yellow chickpea noodles (sev); 6. a tall glass jar of small round flat golden crisps stacked on their edges; 7. a tall glass jar of crunchy fried yellow-green peas; 8. a tall glass jar of shelled red-skinned peanuts"
+      EMPTY: "Every cell holds one item."
+  FJ07:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj07-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a tall glass jar of fine white shredded coconut; 2. a small glass jar of pale curved cashew nuts; 3. a small glass jar of brown almonds; 4. a small glass jar of dark golden raisins; 5. a tall glass jar of glossy brown dates; 6. a small glass jar of golden-brown jaggery lumps; 7. a small glass jar of dark sticky brown tamarind pulp; 8. a small glass jar of tiny beige yeast granules"
+      EMPTY: "Every cell holds one item."
+  FJ08:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj08-jars-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small plain brushed-steel tin, lid on, no print; 2. a small plain brushed-steel tin, lid off beside it, dark brown cocoa showing; 3. a small plain brushed-steel tin, lid off beside it, white tea bags showing; 4. a tall glass jar of fine golden roasted vermicelli nests; 5. a squat glass jar of pale golden grainy ghee, a pale oak screw lid; 6. a small glass jar of bright green mint chutney, a pale oak screw lid; 7. a small glass jar of glossy dark brown tamarind chutney, a pale oak screw lid; 8. a small glass jar of pale creamy-beige ginger and garlic paste, a pale oak screw lid"
+      EMPTY: "Every cell holds one item."
+  FP01:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fp01-packs-v1.png
+    check: SHELF
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a tall clear bottle of golden cooking oil, plain cap, no label; 2. a round white yoghurt tub, plain white lid, no print; 3. a small stack of thin pale samosa pastry strips on a white plate, a cotton cloth folded over half; 4. a steel bowl of raw red meat cubes, seen side-on, the meat heaped above the rim; 5. a steel bowl of raw pale pink chicken pieces, seen side-on, heaped above the rim; 6. a steel bowl of raw red mince, seen side-on, heaped above the rim; 7. a plain red squeeze bottle, white cap, no label; 8. a white butter dish, its glass lid on, a yellow block of butter inside"
+      EMPTY: "Every cell holds one item."
+  FV01:
+    prompt: FS
+    attach: ["kept:FA01", "style-anchor.png"]
+    save: fv01-produce-v1.png
+    check: PRODUCE
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. a whole red onion with papery skin; 2. a whole red tomato with a green stalk; 3. a whole brown potato; 4. a whole white garlic bulb; 5. a knobbly ginger root; 6. two long green chillies leaning together; 7. a whole yellow lemon; 8. a bunch of fresh coriander tied with string"
+      EMPTY: "Every cell holds one item."
+  FV02:
+    prompt: FS
+    attach: ["kept:FA01", "style-anchor.png"]
+    save: fv02-produce-v1.png
+    check: PRODUCE
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. a bunch of fresh mint tied with string; 2. a sprig of glossy curry leaves standing up; 3. a whole green bell pepper; 4. three fat green pea pods; 5. a whole green cucumber standing up; 6. a hard green raw mango; 7. a whole red pomegranate with its crown; 8. a corn cob in its green husk, standing up"
+      EMPTY: "Every cell holds one item."
+  TB01:
+    prompt: TS
+    attach: ["style-anchor.png", "food-heaps.png"]
+    save: tb01-katoris-v1.png
+    check: KATORI
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. black pepper in a katori, seen from directly above; 2. cinnamon stick in a katori, seen from directly above; 3. cloves in a katori, seen from directly above; 4. fennel seeds in a katori, seen from directly above; 5. garam masala in a katori, seen from directly above; 6. coriander seeds in a katori, seen from directly above; 7. asafoetida in a katori, seen from directly above; 8. dried red chillies in a katori, seen from directly above; 9. chai masala in a katori, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TB02:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tb02-katoris-v1.png
+    check: KATORI
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. saffron threads in a katori, seen from directly above; 2. chaat masala in a katori, seen from directly above; 3. roasted cumin powder in a katori, seen from directly above; 4. fenugreek leaves (dried) in a katori, seen from directly above; 5. millet flour in a katori, seen from directly above; 6. basmati rice (raw) in a katori, seen from directly above; 7. chana daar (dry) in a katori, seen from directly above; 8. yellow mung daar (dry) in a katori, seen from directly above; 9. dried chickpeas in a katori, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TB03:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tb03-katoris-v1.png
+    check: KATORI
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. black salt in a katori, seen from directly above; 2. mango powder in a katori, seen from directly above; 3. dried mint in a katori, seen from directly above; 4. ginger-garlic paste in a katori, seen from directly above; 5. tamarind pulp in a katori, seen from directly above; 6. cooking oil (small steel bowl with spoon), seen from directly above; 7. lemon juice (small steel bowl), seen from directly above; 8. marinade (yoghurt and spice) (glass bowl), seen from directly above; 9. flour paste (samosa glue) (small steel bowl), seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF01:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf01-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. onion, sliced rings, seen from directly above; 2. onion, fried golden, seen from directly above; 3. onion, burnt, seen from directly above; 4. tomato, sliced, seen from directly above; 5. potato, boiled cubes, seen from directly above; 6. potato, mashed, seen from directly above; 7. potato, chips burnt, seen from directly above; 8. garlic, sizzling golden, seen from directly above; 9. ginger, sliced, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF02:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf02-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. green chilli, slit, seen from directly above; 2. mint, bunch, seen from directly above; 3. mint, leaves, seen from directly above; 4. curry leaves, sprig, seen from directly above; 5. curry leaves, sizzling, seen from directly above; 6. green pepper, whole, seen from directly above; 7. green pepper, chunks, seen from directly above; 8. peas, pods, seen from directly above; 9. peas, shelled, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF03:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf03-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. cucumber, whole, seen from directly above; 2. cucumber, diced, seen from directly above; 3. raw green mango, diced, seen from directly above; 4. pomegranate, halved, seen from directly above; 5. pomegranate, seeds, seen from directly above; 6. chicken cubes, raw, seen from directly above; 7. chicken cubes, on skewer raw, seen from directly above; 8. chicken cubes, grilled, seen from directly above; 9. chicken cubes, charred, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF04:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf04-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. mince, raw, seen from directly above; 2. mince, cooked in the pan, seen from directly above; 3. kebab (seekh), raw on skewer, seen from directly above; 4. kebab (seekh), grilled, seen from directly above; 5. maani, cooked spotted, seen from directly above; 6. maani, ghee brushed, seen from directly above; 7. maani, folded quarter, seen from directly above; 8. maani, stack, seen from directly above; 9. paratha, rolled raw, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF05:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf05-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. paratha, cooked layered, seen from directly above; 2. thepla (methi), rolled raw, seen from directly above; 3. thepla (methi), cooked, seen from directly above; 4. puri, rolled raw, seen from directly above; 5. puri, fried puffed, seen from directly above; 6. vegetable samosa, fried golden, seen from directly above; 7. chicken samosa, fried golden, seen from directly above; 8. spring onion, chopped, seen from directly above; 9. cassava, peeled, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TD01:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td01-dishes-v1.png
+    check: DISH
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. ginger chai, served, seen from directly above; 2. cardamom chai, served, seen from directly above; 3. mint chai, served, seen from directly above; 4. saffron chai (celebration), served, seen from directly above; 5. daar and rice, served, seen from directly above; 6. khichdi with kadhi, served, seen from directly above; 7. mung curry (mag nu saag), served, seen from directly above; 8. bajr ji maani with ghee, served, seen from directly above; 9. paratha, served, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TD02:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td02-dishes-v1.png
+    check: DISH
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. thepla, served, seen from directly above; 2. puri, served, seen from directly above; 3. potato chaat, served, seen from directly above; 4. sev puri, served, seen from directly above; 5. pani puri, served, seen from directly above; 6. chana bateta, served, seen from directly above; 7. vegetable samosas with chutney, served, seen from directly above; 8. chicken mishkaki, served, seen from directly above; 9. seekh kebabs, served, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TK01:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tk01-kit-v1.png
+    check: KIT
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. pressure cooker, empty and clean, seen from directly above; 2. rice pot, empty and clean, seen from directly above; 3. steel serving bowl, empty and clean, seen from directly above; 4. ceramic plate, empty and clean, seen from directly above; 5. roti box with cloth, empty and clean, seen from directly above; 6. strainer bowl (colander), empty and clean, seen from directly above; 7. tea cup, empty and clean, seen from directly above; 8. saucer, empty and clean, seen from directly above; 9. teapot, empty and clean, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TK02:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tk02-kit-v1.png
+    check: KIT
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. chai flask, empty and clean, seen from directly above; 2. squeeze bottle (chutney), empty and clean, seen from directly above; 3. mortar and pestle, empty and clean, seen from directly above; 4. hand fan (for the coals), empty and clean, seen from directly above; 5. bag of charcoal, empty and clean, seen from directly above; 6. glowing coals, empty and clean, seen from directly above; 7. wooden daar churner (ravaiyo), empty and clean, seen from directly above; 8. tablespoon, empty and clean, seen from directly above; 9. grater, empty and clean, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TK03:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tk03-kit-v1.png
+    check: KIT
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. vegetable peeler, empty and clean, seen from directly above; 2. pastry brush, empty and clean, seen from directly above; 3. pastry wheel cutter, empty and clean, seen from directly above; 4. chai stirring spoon (long), empty and clean, seen from directly above; 5. turner for maani (flat), empty and clean, seen from directly above; 6. cooling rack, empty and clean, seen from directly above; 7. cake stand, empty and clean, seen from directly above; 8. small glass bowl, empty and clean, seen from directly above; 9. bread basket, empty and clean, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  FP02:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fp02-packs-v1.png
+    check: SHELF
+    slots:
+      N: "6"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small plain white cream carton, no print; 2. an open plain grey card egg box holding six brown eggs; 3. a sliced white bread loaf, no bag; 4. a small clear glass bottle of rose water, plain cap, no label; 5. four soft golden bread buns baked joined together; 6. a steel bowl of raw white fish fillets, seen side-on, heaped above the rim"
+      EMPTY: "The last 2 cells stay empty (plain ground)."
+  FV03:
+    prompt: FS
+    attach: ["kept:FA01", "style-anchor.png"]
+    save: fv03-produce-v1.png
+    check: PRODUCE
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. a long brown cassava root, standing up; 2. a small bunch of yellow bananas; 3. a whole green lime; 4. a bunch of spring onions; 5. a small plain card punnet of strawberries; 6. two orange carrots with green tops; 7. a bunch of dark green spinach; 8. four green okra pods standing up"
+      EMPTY: "Every cell holds one item."
+  TB04:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tb04-katoris-v1.png
+    check: KATORI
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. sesame seeds in a katori, seen from directly above; 2. nigella seeds in a katori, seen from directly above; 3. plain flour in a katori, seen from directly above; 4. gram flour in a katori, seen from directly above; 5. dried yeast in a katori, seen from directly above; 6. baking powder in a katori, seen from directly above; 7. cocoa powder in a katori, seen from directly above; 8. desiccated coconut in a katori, seen from directly above; 9. chopped nuts in a katori, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TB05:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tb05-katoris-v1.png
+    check: KATORI
+    slots:
+      N: "6"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. beaten eggs (glass bowl with fork), seen from directly above; 2. melted butter (small steel bowl with brush), seen from directly above; 3. whipped cream (glass bowl), seen from directly above; 4. coconut chutney (steel katori), seen from directly above; 5. bhajia batter (steel bowl), seen from directly above; 6. coconut milk (steel bowl), seen from directly above"
+      EMPTY: "The last 3 cells stay empty (plain ground)."
+  TF06:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf06-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. cassava, boiled chunks, seen from directly above; 2. cassava, chips golden, seen from directly above; 3. strawberry, whole, seen from directly above; 4. strawberry, halved, seen from directly above; 5. egg, scrambled, seen from directly above; 6. egg, omelette raw, seen from directly above; 7. egg, omelette folded, seen from directly above; 8. naan, dough ball, seen from directly above; 9. naan, shaped raw, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF07:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf07-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. naan, burnt, seen from directly above; 2. yellow naan bun, shaped raw, seen from directly above; 3. yellow naan bun, baked, seen from directly above; 4. corn cob, in husk, seen from directly above; 5. corn cob, with lemon and chilli, seen from directly above; 6. corn cob, boiled, seen from directly above; 7. corn cob, kernels in a cup, seen from directly above; 8. carrot, whole, seen from directly above; 9. carrot, grated, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TD03:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td03-dishes-v1.png
+    check: DISH
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. masala omelette, served, seen from directly above; 2. scrambled egg and onion (mayai dungri), served, seen from directly above; 3. chips mayai, served, seen from directly above; 4. yellow naan buns, served, seen from directly above; 5. corn in coconut sauce (makai paka), served, seen from directly above; 6. corn fritters (makai na bhajia), served, seen from directly above; 7. mogo chips with chilli and lemon, served, seen from directly above; 8. chocolate birthday cake, served, seen from directly above; 9. strawberry cream cake, served, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TD04:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td04-dishes-v1.png
+    check: DISH
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. mithai platter (celebration), served, seen from directly above; 2. pilau, served, seen from directly above; 3. biryani, served, seen from directly above; 4. kuku paka, served, seen from directly above; 5. bhajia with chutney, served, seen from directly above; 6. maru bhajia, served, seen from directly above; 7. kachumbari, served, seen from directly above; 8. khichro (meat, lentil and wheat), served, seen from directly above; 9. gos tarelo (meat curry), served, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TK04:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tk04-kit-v1.png
+    check: KIT
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. toaster, empty and clean, seen from directly above; 2. toast slice, empty and clean, seen from directly above; 3. measuring cups set, empty and clean, seen from directly above; 4. measuring spoons, empty and clean, seen from directly above; 5. kitchen scale, empty and clean, seen from directly above; 6. sieve, empty and clean, seen from directly above; 7. piping bag, empty and clean, seen from directly above; 8. cake server, empty and clean, seen from directly above; 9. cake knife, empty and clean, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TK05:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: tk05-kit-v1.png
+    check: KIT
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. whisk, empty and clean, seen from directly above; 2. fork, empty and clean, seen from directly above; 3. butter knife, empty and clean, seen from directly above; 4. rubber spatula, empty and clean, seen from directly above; 5. corn holder (husk), empty and clean, seen from directly above; 6. biryani pot (deg) with lid, empty and clean, seen from directly above; 7. serving platter, empty and clean, seen from directly above; 8. spice grinder, empty and clean, seen from directly above; 9. serving spoon, empty and clean, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  FJ09:
+    prompt: FS
+    attach: ["kept:FA01", "jar-family.png"]
+    save: fj09-jars-v1.png
+    check: SHELF
+    slots:
+      N: "6"
+      GRID: "4 by 2"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. a small glass jar of creamy white coconut chutney with green flecks, a pale oak screw lid; 2. a small glass jar of deep red garlic chutney, a pale oak screw lid; 3. a squat glass jar of mango pickle (orange-red mango pieces in oil), a pale oak screw lid; 4. a squat glass jar of lime pickle (dark yellow lime pieces), a pale oak screw lid; 5. a plain brushed-steel food tin, no label; 6. a squat glass jar of golden honey, a pale oak screw lid"
+      EMPTY: "The last 2 cells stay empty (plain ground)."
+  FV04:
+    prompt: FS
+    attach: ["kept:FA01", "style-anchor.png"]
+    save: fv04-produce-v1.png
+    check: PRODUCE
+    slots:
+      N: "8"
+      GRID: "4 by 2"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. a glossy purple aubergine standing up; 2. a whole green cabbage; 3. a whole cauliflower in its leaves; 4. a small bunch of green beans tied with string; 5. a big wedge of orange pumpkin; 6. a whole brown hairy coconut; 7. a ripe yellow-red mango; 8. a small bunch of green plantains (matoke)"
+      EMPTY: "Every cell holds one item."
+  TF08:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf08-food-v1.png
+    check: FOOD
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. carrot, diced, seen from directly above; 2. cabbage, shredded, seen from directly above; 3. spinach, chopped, seen from directly above; 4. okra, whole, seen from directly above; 5. okra, sliced, seen from directly above; 6. aubergine, whole, seen from directly above; 7. aubergine, cubed, seen from directly above; 8. fish fillet, raw, seen from directly above; 9. fish fillet, fried, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TF09:
+    prompt: TS
+    attach: ["kept:TB01", "food-heaps.png"]
+    save: tf09-food-v1.png
+    check: FOOD
+    slots:
+      N: "6"
+      GRID: "3 by 3"
+      GROUND: "flat pure magenta #FF00FF"
+      ITEMS: "1. bhajia, raw in batter, seen from directly above; 2. bhajia, frying, seen from directly above; 3. bhajia, fried golden, seen from directly above; 4. maru bhajia (potato), fried golden, seen from directly above; 5. mandazi, shaped raw, seen from directly above; 6. mandazi, fried golden, seen from directly above"
+      EMPTY: "The last 3 cells stay empty (plain ground)."
+  TD05:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td05-dishes-v1.png
+    check: DISH
+    slots:
+      N: "9"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. keema with peas, served, seen from directly above; 2. mogo in coconut, served, seen from directly above; 3. bharazi (pigeon peas in coconut), served, seen from directly above; 4. matoke, served, seen from directly above; 5. mandazi with chai, served, seen from directly above; 6. chevdo, served, seen from directly above; 7. dhokra, served, seen from directly above; 8. kadhi, served, seen from directly above; 9. masala fish, served, seen from directly above"
+      EMPTY: "Every cell holds one item."
+  TD06:
+    prompt: TS
+    attach: ["kept:TB01", "style-anchor.png"]
+    save: td06-dishes-v1.png
+    check: DISH
+    slots:
+      N: "7"
+      GRID: "3 by 3"
+      GROUND: "flat neutral mid-grey #808080"
+      ITEMS: "1. bhinda bateta (okra and potato), served, seen from directly above; 2. ringra bateta (aubergine and potato), served, seen from directly above; 3. raita, served, seen from directly above; 4. dates on a plate, served, seen from directly above; 5. dabeli, served, seen from directly above; 6. kalyo pau, served, seen from directly above; 7. vitumbua, served, seen from directly above"
+      EMPTY: "The last 2 cells stay empty (plain ground)."
+parts:
+- id: A
+  title: 'THE ANCHOR: CHAI''S SHELF, ONE SHEET'
+  intro: 'The eight things on chai''s shelf, one batch: the water bottle, the milk carton, the tea and sugar jars and the four small spice jars, one camera, one light, one pale oak lid family. Every later side-on sheet attaches the kept FA01.'
+  stop: 'Part A done: STOP. Post FA01''s chat link in the log and wait for Zafar''s "go" (or his one-line change, which you apply as an amended redo of FA01). Then carry on with part B.'
+  items:
+  - lines: [FA01]
+- id: B
+  title: 'THE LIVE STOVE GAMES (CHAI, DAAR, MAANI, CHAAT, SAMOSA, SEKELO)'
+  intro: 'The shelf sheets copy FA01; the top-down sheets copy TB01 (the first top-down sheet). Send TB01 as soon as a window is free: it unblocks every other top-down sheet.'
+  items:
+  - lines: [FJ01, FK01, FJ02, FJ03, FJ04, FJ05, FJ06, FJ07, FJ08, FP01, FV01, FV02, TB01, TB02, TB03, TF01, TF02, TF03, TF04, TF05, TD01, TD02, TK01, TK02, TK03]
+- id: C
+  title: 'THE PROTOTYPES (EGGS AT BREAKFAST, BAKING, THE CORN STALL, THE CAKE)'
+  intro: 'The same two anchors.'
+  items:
+  - lines: [FP02, FV03, TB04, TB05, TF06, TF07, TD03, TD04, TK04, TK05]
+- id: D
+  title: 'THE BANK (DISHES THE FAMILY COOKS THAT NO GAME HAS YET)'
+  intro: 'The same two anchors. Lowest priority: if the run must stop, stop here.'
+  items:
+  - lines: [FJ09, FV04, TF08, TF09, TD05, TD06]
+checks:
+  ANCHOR:
+    text: 'eight separate items in a 4 by 2 grid, in the order listed, each standing upright, exactly side-on at its own mid-height (a hint of each lid''s top, no more), every one the SAME drawn height (about 85% of its cell''s height); all four small jars and both tall jars share ONE pale oak screw lid (the attached jars'' lid: same wood, same profile, only the diameter changes); matte clear glass with one soft highlight, no hard white stripes; warm light from the upper left on every item; nothing under or behind them (no shelf, no shadow, no reflection), on one flat grey ground; salt reads as salt crystals, not pearls or tapioca'
+    judge: {aspect: [3, 2], bg: flat, soft_edges: true, pieces: 8}
+  SHELF:
+    text: 'the sheet''s items in a 4 by 2 grid in the order listed, each upright, exactly side-on like the attached FA01, every one the SAME drawn height (about 85% of its cell; a wide thing fills 85% of the cell''s width instead); every glass jar has FA01''s pale oak lid; the same glass, light (upper left) and finish as FA01, as if from the same photo shoot; no labels; nothing under them, no shadow, one flat grey ground'
+    judge: {aspect: [3, 2], bg: flat, soft_edges: true, pieces_min: 4}
+  PRODUCE:
+    text: 'the sheet''s produce in a 4 by 2 grid in the order listed, each standing on its own base, exactly side-on like the attached FA01, every one the SAME drawn height (about 85% of its cell); true food colours; the same light (upper left) and finish as FA01; nothing under them, no shadow, one flat magenta ground'
+    judge: {aspect: [3, 2], bg: none, sweets: true}
+  KATORI:
+    text: 'the sheet''s items in a 3 by 3 grid in the order listed, seen from DIRECTLY above (rims perfect circles, no side wall showing), each plain brushed-steel katori or bowl the same size, its heap filling it; the style of the attached kitchen picture; light from the upper left; no shadow, one flat grey ground'
+    judge: {aspect: [1, 1], bg: flat, pieces_min: 4}
+  KIT:
+    text: 'the sheet''s vessels and tools in a 3 by 3 grid in the order listed, seen from DIRECTLY above (round things perfect circles), each filling about 85% of its cell (a long tool lies diagonally corner to corner), empty and clean, the materials and light of the attached TB01; no shadow, one flat grey ground'
+    judge: {aspect: [1, 1], bg: flat, pieces_min: 4}
+  DISH:
+    text: 'the sheet''s dishes in a 3 by 3 grid in the order listed, each served on a plain white plate, a plain steel thali or in a plain steel bowl, seen from DIRECTLY above (rims perfect circles), each filling about 85% of its cell, appetising and clearly that dish; the light and finish of the attached TB01; no cutlery unless named; no shadow, one flat grey ground'
+    judge: {aspect: [1, 1], bg: flat, pieces_min: 4, sweets: true}
+  FOOD:
+    text: 'the sheet''s food in a 3 by 3 grid in the order listed, each seen from DIRECTLY above, loose (no board, no plate unless named), each filling about 70% of its cell, the heap look of the attached heaps; true food colours; light from the upper left; no shadow, one flat magenta ground'
+    judge: {aspect: [1, 1], bg: none, sweets: true}
+passfail:
+- Any text, letters, numbers, labels, logos or price stickers, even fake ones, on any jar, tin, bottle, carton or pack.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- Items at different heights on a side-on sheet (the token sizes are the game's job), or a camera that differs between cells (one from above, one side-on).
+- On a side-on sheet, any glass jar whose lid is not the pale oak lid of FA01; hard white specular stripes down the glass; a rim light or a halo round the edge.
+- A shadow, a reflection, a floor, a shelf or a table under any item; anything crossing into the next cell; two items merged.
+- A cell holding the wrong item, an item missing or drawn twice, or the order changed.
+- Pork, ham, bacon or anything that reads as it; wine, beer or any bottle that reads as alcohol.
+- Sweets, lollies, biscuits or chocolates (mithai only on the one celebration platter, cake only as the birthday cake); sprinkles.
+- Any religious marker (a swastika, an om, a diya, a bindi, a tilak) on a pot, a box or a cloth.
