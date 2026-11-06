@@ -189,12 +189,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
    * CK-27's "it went in"), steam (the boil), sparkle (a finished, served glass). Brief and small over the motion on the real
    * art: scale in, fade out in about half a second. No code-drawn dots, rings or sparkles. (The shine is held back.)
    */
-  const FX = "assets/shared/fx-s11/";
-  // (ART-31, 1 Nov: the splash went, so it is no longer loaded; the steam and the sparkle wait for the next art run, decision 2)
-  const FX_SIZE = { steam: [123, 181], sparkle: [138, 160] };
+  // (ART-31, 1 Nov: the splash went, so it is no longer loaded; the steam and the sparkle waited for the next art run, decision 2)
+  // CHAI-92 (Zafar's picks, 6 Nov, lab/juice.html): that run's effects, art run s17-juice (assets/shared/juice/), drawn by name through
+  // the Phaser twin of the juice kit (js/shared/juice.js Juice.P), never through Cook.Stations' sparkle/steam stubs (S.verdict's): the
+  // full wisps (steam 1) over a boiling pan and a boil-over, the three twinkles (sparkle 2) over a full glass, the painted last drop
+  // into the tray's glass. Loaded after the station starts (nothing waits on them; a sprite not in yet is not drawn). The s11 steam
+  // and sparkle are no longer loaded.
+  const JUICE_ART = ["sk-2", "sk-3", "sk-4", "sk-5", "st-1", "st-2", "st-3", "td-1", "td-2"].map((n) => [`fx-juice-${n}`, `assets/shared/juice/${n}.webp`]);
+  // (and its picked sounds, js/shared/sfx.js FILES: fetched at the start too, so each plays on its moment, never late)
+  const JUICE_SFX = ["knob", "flame", "simmer", "green", "glass", "settle", "sparkle", "pour-tea", "pour-glass", "pour-short"];
   const ART = [
-    ["fx-s11-steam", `${FX}steam-s11.webp`],
-    ["fx-s11-sparkle", `${FX}sparkle-s11.webp`],
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
     // CHAI-08 (s14, Zafar 29 Oct): the glasses exactly from above, each placed by its rim (GLASS)
     ["v2-glass-empty", `${S14}glass/glass-empty-top-s14.webp`],
@@ -499,7 +503,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         return null;
       }
     };
-    const pourArt = St.loadArt(S, ART_POUR).catch(() => {});
+    // (CHAI-92: the s17 effects load with the pour's frames, after the start: one load, so none waits on a loader already busy)
+    const pourArt = St.loadArt(S, ART_POUR.concat(JUICE_ART)).catch(() => {});
+    if (Cook.sfx.preload) Cook.sfx.preload(JUICE_SFX);
     /*
      * CHAI-08, CHAI-34 (s14): a glass's picture by its own rim: its rim's centre on the well's middle, its rim's radius the
      * well's (every s14 glass and fill frame is cut a little differently, so each is placed by its own measure). The half
@@ -1257,24 +1263,47 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           };
           step();
         });
-    // a painted effect: w design px wide, scaled in, then faded out (ms in all), drifting up by rise; never blocks a tap
-    const fx = (kind, x, y, { w = 90, ms = 520, rise = 0, depth = D.fx + 2 } = {}) => {
-      const key = `fx-s11-${kind}`;
-      if (!S.textures.exists(key)) return null;
-      const k = w / FX_SIZE[kind][0];
-      const im = S.track(S.add.image(x, y, key).setDepth(depth).setScale(k * 0.55).setAlpha(0));
-      S.tweens.add({ targets: im, scale: k, alpha: 1, duration: ms * 0.3, ease: "Back.easeOut" });
-      S.tweens.add({ targets: im, alpha: 0, y: y - rise, delay: ms * 0.3, duration: ms * 0.7, ease: "Sine.easeIn", onComplete: () => im.destroy() });
-      return im;
+    // a painted effect at (x, y), about w design px across; never blocks a tap. CHAI-92 (Zafar's picks, 6 Nov): the s17 effects by
+    // name through the Phaser twin (js/shared/juice.js Juice.P): "steam" one full wisp rising (steam 1), "sparkle" the three twinkles
+    // (sparkle 2); under reduced motion each fades in place (Juice.less). (Was the s11 picture, scaled in and faded.)
+    const J = () => (global.Juice && global.Juice.P) || null;
+    const fx = (kind, x, y, { w = 90, depth = D.fx + 2 } = {}) => {
+      const P = J();
+      if (!P) return null;
+      return kind === "steam" ? P.puff(S, x, y, { w: w * 1.4, depth }) : kind === "sparkle" ? P.sparkle(S, x, y, { w: w * 1.6, kind: 2, depth: D.badge + 0.5, add: true }) : null;
+    };
+    /*
+     * CHAI-92 (Zafar's picks, 6 Nov): a glass just poured. The painted last drop falls into it from a third of the lab's height, smaller
+     * (Zafar, on the tray's top-down glass: "maybe it just needs to start from a smaller height, like a third of the height ... so it
+     * doesn't start from way above ... It's just a bit more subtle, but paired with the 3 sparkles"), lands with its plink (drop B, at
+     * twice the lab's level) and the glass's ring (glass C, in place of the end screen's "right" tick that played here); a full glass
+     * then gets the three twinkles (sparkle 2) with their chime (sparkle A). Every glass gets them, whatever went in (never a verdict).
+     */
+    const glassDone = (pan, look) => {
+      const w = pan.well;
+      const g = w && w.glass[look];
+      const P = J();
+      if (!g || !P) return Cook.sfx.glass();
+      const gw = g.displayWidth || 90;
+      const full = look === "full";
+      // (a little right of the middle: the person's face sits over the glass's upper left, and the drop falls clear of it into the tea)
+      return P.drop(S, w.x + gw * 0.22, w.y - gw * 0.62, w.y, {
+        w: gw * 0.11,
+        ms: 300,
+        splash: "none",
+        depth: D.fx + 2,
+        onLand: () => {
+          Cook.sfx.drop();
+          Cook.sfx.glass();
+        },
+      }).then(() => {
+        if (!full || !g.active) return undefined;
+        Cook.sfx.sparkle();
+        // (over the glass's right half, clear of the face on its upper left; added light, so the gold reads on the wood and the tea)
+        return P.sparkle(S, w.x + gw * 0.25, w.y - gw * 0.1, { w: gw, kind: 2, depth: D.badge + 0.5, add: true });
+      });
     };
     const panLayers = (pan) => [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((o) => o && o.visible);
-    const soft = (name, volume = 0.5) => {
-      try {
-        if (global.Sfx && global.Sfx.play) global.Sfx.play(name, { volume });
-      } catch (e) {
-        /* never break the game for a sound */
-      }
-    };
     /** A client rect (the DOM's px) in the station's design px. */
     const toWorld = (sx, sy) => {
       const o = UI.worldToScreen(0, 0);
@@ -1341,6 +1370,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       art.setOrigin(0.5, 0.5);
       art.y = obj.y - obj.displayHeight / 2;
       await S.fly(art, ox, oy, { duration: 380, arc: 60 });
+      // (Zafar's pick, 6 Nov ~17:45, the short pour A: the first 0.9 s of a real pour as the bottle or carton reaches its tip; never
+      // over a family voice line, js/shared/sfx.js)
+      S.time.delayedCall(170, () => Cook.sfx.pourShort && Cook.sfx.pourShort());
       await new Promise((r) => S.tweens.add({ targets: art, angle: -118, duration: 220, ease: "Sine.easeOut", onComplete: r }));
       // CHAI-64 (Zafar, 1 Nov: "when the milk pours, there's a little white rectangle that comes out ... We should take that out. I
       // don't think we need to draw milk going in, because the colour of the tea changes"; decision 5: water too): no drawn line; the
@@ -1371,8 +1403,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       obj.flying = false;
       obj.setAlpha(1);
       if (obj.shadow) obj.shadow.setVisible(true);
-      land(obj, { k: 0.06 }); // (back on the shelf: it settles)
-      soft("tap", 0.35);
+      // (back on the shelf: it settles, and is heard set down: CHAI-92, Zafar's pick settle A, a glass set on a wooden table, in place
+      // of the made "tap" that played here; the tap's own sound, cook-pop, plays at the tap, use() below)
+      land(obj, { k: 0.06 });
+      Cook.sfx.settle();
       busy--;
       St.acted(); // (SH-184: the hint's wait from the end of this pour)
     };
@@ -1421,8 +1455,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         note("chai-add", id, `${pan.who}:1:capped`);
         return;
       }
-      unglow();
+      // (the tap's sound, at the tap: CHAI-92, Zafar's pick "Now", today's soft pop; the bottle's late sound is its settle, pourInto)
       Cook.sfx.pop();
+      unglow();
       const look = pan.shown;
       if (id === "cook-paani") {
         pop(id, pan);
@@ -1600,6 +1635,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const drawRing = (pan) => pan.heatRing.draw(pan.x, pan.y, rimR, pan.heat, lo, hi);
     let last = performance.now();
     let steamT = 0;
+    let simmer = null; // (CHAI-92: the simmer loop, one for the hob)
+    const juiceOff = () => {
+      if (simmer) simmer = (simmer.stop(), null);
+      pans.forEach((p) => p.steamFx && (p.steamFx = (p.steamFx.stop(), null)));
+    };
+    // (a station left mid-boil: the loop never rings on)
+    if (S.events && S.events.once) ["shutdown", "destroy"].forEach((ev) => S.events.once(ev, juiceOff));
     const stopHeat = S.addTick(() => {
       const now = performance.now();
       const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
@@ -1626,7 +1668,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           }
           const inBand = pan.heat >= lo && pan.heat <= hi;
           if (inBand && !was) {
-            Cook.sfx.click();
+            Cook.sfx.green(); // (CHAI-92, Zafar's pick green A: a kitchen oven's ding, so the moment to turn it down is heard; was the tiny click)
             refresh(); // CHAI-24: the turn-off line on the frame the bar enters the green (not the next nudge)
           }
           drawRing(pan);
@@ -1640,12 +1682,24 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           // CK-06 (CP4 v2: "never drawn circles or rings"): no drawn bubbles; the pictured boil rolls (its picture turns slowly)
           const spin = 0.0025 * Math.min(1.4, hot);
           [pan.disc, pan.mixDisc].forEach((im) => im && im.visible && im.setRotation(im.rotation + spin));
-          // the painted steam, now and then, off the far rim (never over the tea: CK-06), only near the boil (CHAI-63: from the boil's
-          // own start, boilAt, the same time before the green at every level; was a fixed heat, later at the quicker levels)
-          if (steamT > 0.3 && pan.state === "heating" && pan.heat >= boilAt && Math.random() < 0.12 + hot * 0.1) fx("steam", pan.x + (Math.random() - 0.5) * rIn * 0.8, pan.y - rIn * 1.2, { w: rIn * 0.55, ms: 900, rise: rIn * 0.35, depth: D.fx - 2 });
         }
+        // the painted steam over the boiling pan, rising from its far rim, only near the boil (CHAI-63: from the boil's own start,
+        // boilAt, the same time before the green at every level). CHAI-92 (Zafar's pick, steam 1, 6 Nov): the s17 full wisps on their
+        // slow loop (Juice.P.steam) from the boil until the pan leaves the heat (was the s11 wisp now and then); one still wisp under
+        // reduced motion
+        const steaming = pan.state === "heating" && pan.heat >= boilAt && pan.level > 0.05 && !pan.away;
+        if (steaming && !pan.steamFx && J()) pan.steamFx = J().steam(S, pan.x, pan.y - rimR * 0.64, { w: rimR * 2.4, depth: D.fx - 2 });
+        else if (!steaming && pan.steamFx) pan.steamFx = (pan.steamFx.stop(), null);
       });
       if (steamT > 0.3) steamT = 0;
+      // CHAI-92 (Zafar's pick, simmer A, 6 Nov: water at a gentle boil, very quiet): heard while a pan's heat rises past the middle,
+      // louder as it nears the green, gone at the turn-down; silent under a family voice line (js/shared/sfx.js, the voice gate)
+      const hottest = pans.reduce((m, p) => (p.state === "heating" && p.level > 0.05 ? Math.max(m, p.heat) : m), -1);
+      if (hottest >= 0.5 && !finished) {
+        const k = 0.35 + 0.65 * Cook.clamp((hottest - 0.5) / Math.max(0.05, lo - 0.5), 0, 1);
+        if (!simmer || simmer.none) simmer = Cook.sfx.simmerLoop(k);
+        else simmer.pitch(k);
+      } else if (simmer) simmer = (simmer.stop(), null);
       if (gaugePan && gaugePan.state === "heating") zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
     });
 
@@ -1904,10 +1958,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       };
       // (the test hook: where the pan is in its pour, for the filmstrip; frames: the pan's and the glass's)
       Cook.chaiPour = { total: plan.total, marks: M, frames: () => ({ pan: fr.texture.key, glass: gf.texture.key, at: { x: fr.x, y: fr.y }, glassAt: { x: gf.x, y: gf.y } }) };
-      // the pour's sound: Cook's soft pour loop while the chai runs, rising as the glass fills
+      // the pour's sound while the chai runs (CHAI-87; Zafar's pick, 6 Nov ~17:45: pour A, a real pour into a glass, at its own level;
+      // the made loop rising as the glass fills plays only if its file is not in yet)
       let loop = null;
       const sound = (f) => {
-        if (f.phase === "pour" && !loop && Cook.sfx.pourLoop) loop = Cook.sfx.pourLoop() || { pitch() {}, stop() {} };
+        if (f.phase === "pour" && !loop && Cook.sfx.teaPourLoop) loop = Cook.sfx.teaPourLoop() || { pitch() {}, stop() {} };
         if (loop) loop.pitch(f.fill * 0.6);
         if (loop && f.phase === "back") loop = (loop.stop(), null);
       };
@@ -1927,7 +1982,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       body.setVisible(true).setPosition(pan.x, pan.y).setAngle(TOP.turn).setScale(s8).setDepth(D.item);
       land(body, { k: 0.04, top: true }); // (it sets down on the burner: a small settle)
       land(w.glass[st(to)], { k: 0.05, top: true }); // (the glass, full: a small settle and its clink)
-      soft("right", 0.35);
+      // (CHAI-92: its last drop, its ring and, full, its twinkles: glassDone above; was soft("right", 0.35), nothing waits on it)
+      glassDone(pan, st(to));
       pan.away = false;
       if (pan.poured < 2) flames.forEach((fl, j) => S.tweens.add({ targets: fl, alpha: pan.burner.state === (j ? "low" : "high") ? 0.95 : 0, duration: 200 }));
       drawSel();
@@ -3247,6 +3303,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       refresh();
     }
     stopHeat();
+    juiceOff();
     // SH-181 (P9: js/cook/coach.js C.start returns before chai's coach could be marked seen, so every returning player was "fresh"):
     // chai's first-time showing is used up once its first round ends; a returning player gets the calls alone and the stuck hints
     if (!guided) {

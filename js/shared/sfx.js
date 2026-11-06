@@ -13,6 +13,18 @@
  *   Sfx.loop(name, {quiet}) -> {stop(), pitch(level)}   a looping noise the caller stops: "pour", "sizzle", "boil"
  *   Sfx.unlock()                      call inside a tap (iOS) if the page has no other audio
  *   Sfx.muted = true                  silence everything (a grown-up's setting)
+ * CHAI-92 / SH-226 (Zafar's picks, 6 Nov, lab/juice.html): the recorded sounds (assets/shared/sfx/, SOURCES.md) play here too, by
+ * the same Sfx.play name ("knob", "flame", "green", "glass", "settle", "sparkle", "pour-short": FILES below) and Sfx.loop ("simmer",
+ * "pour-tea", "pour-glass"), each at the
+ * lab's level (the file as cut, gain 1); only the picked files are ever fetched (Sfx.preload, at a station's start):
+ *   Sfx.preload([name, ...])          fetch and decode those files now (a file not in yet when its moment comes is skipped: a late
+ *                                     sound is a wrong sound)
+ *   Sfx.file(stem, {volume, dur, wait}) -> {stop()}   any file of assets/shared/sfx/ by its stem (the lab's player; wait: play it
+ *                                     once it has loaded)
+ * THE VOICE GATE (the sound-and-juice report 3b; the family's voice is never masked): while a family voice line sounds
+ * (Sfx.speaking(): the host's own Sfx.voiceBusy when it set one, else Cook.voiceBusy, else NjgVoice.busy), an effect longer than
+ * 120 ms does not start (dropped, never queued: a late sound is a wrong one) unless {under: true}; a short tick plays ducked
+ * (x 0.35). A recorded sound still ringing when a voice starts fades out at once, and the simmer loop is silent while a voice speaks.
  *
  * Every call is safe without Web Audio (Node, old browsers): it does nothing.
  * Plain <script>: window.Sfx (and Shared.sfx); Node: require().
@@ -26,7 +38,7 @@
   }
 })(typeof self !== "undefined" ? self : this, function (root) {
   "use strict";
-  const Sfx = { muted: false, volume: 0.5 };
+  const Sfx = { muted: false, volume: 0.5, voiceBusy: null };
   let ctx = null;
   const ac = () => {
     if (ctx) return ctx;
@@ -170,6 +182,9 @@
       tone(c, o, 1568, 0.16, { type: "triangle", gain: 0.1, when: 0.05 });
     },
     fanfare: (c, o) => [523, 659, 784, 1047].forEach((f, i) => tone(c, o, f, 0.3, { type: "triangle", gain: 0.2, when: i * 0.12 })),
+    // CHAI-92 (Zafar, 6 Nov, lab/juice.html "the last drop lands": B, the report's made plink, "at double its current volume ... it's
+    // quite quiet"): one soft plink as the last drop lands, at twice the lab's gain (0.08 -> 0.16)
+    drop: (c, o) => tone(c, o, 1319, 0.07, { type: "sine", gain: 0.16 }),
     // ---- the clinic's (js/clinic/heal/games/boing.js): a cartoon "boing", a springy pitch wobble ----
     boing: (c, out) => {
       const o = c.createOscillator();
@@ -215,10 +230,37 @@
       }
     };
   }
+  // ---- the voice gate ----
+  // each synthesised sound's length (ms): one up to SHORT ms is a tick, and may play ducked under a voice
+  const SHORT = 120;
+  const LEN = { bing: 1100, gold: 1360, right: 160, wrong: 220, tap: 80, whoosh: 250, pop: 120, oops: 390, "cook-right": 300, "cook-soft": 160, "cook-oops": 390, "cook-pop": 80, "cook-whoosh": 220, chop: 70, sizzle: 700, coin: 250, star: 250, puff: 350, flip: 100, bubble: 60, click: 30, reveal: 50, shutter: 150, lap: 210, fanfare: 660, boing: 550, drop: 70 };
+  /** A sound's length in ms (a recorded one's from FILES). */
+  Sfx.len = (name) => (FILES[name] ? FILES[name].ms : LEN[name] != null ? LEN[name] : 400);
+  /** Is a family voice line sounding now? (the host's own Sfx.voiceBusy when it set one; else Cook's player, else the shared voice) */
+  Sfx.speaking = function () {
+    try {
+      if (typeof Sfx.voiceBusy === "function") return !!Sfx.voiceBusy();
+      const C = root && root.Cook;
+      if (C && typeof C.voiceBusy === "function" && C.voiceBusy()) return true;
+      const V = root && root.NjgVoice;
+      return !!(V && typeof V.busy === "function" && V.busy());
+    } catch (e) {
+      return false;
+    }
+  };
+  // -> 0 (it does not play), else its volume factor (1, or ducked under a voice)
+  const gate = (name, opts) => (opts.under || !Sfx.speaking() ? 1 : Sfx.len(name) <= SHORT ? 0.35 : 0);
+
   Sfx.names = Object.keys(SOUNDS);
   Sfx.play = function (name, opts) {
     opts = opts || {};
-    if (Sfx.muted || !SOUNDS[name]) return false;
+    if (Sfx.muted) return false;
+    if (FILES[name]) return playFile(name, opts);
+    if (!SOUNDS[name]) return false;
+    // the voice gate (a quiet call plays nothing anyway: its test-hook event still goes out, as before)
+    const duck = opts.quiet ? 1 : gate(name, opts);
+    if (!duck) return false;
+    if (duck !== 1) opts = Object.assign({}, opts, { volume: (opts.volume != null ? opts.volume : 1) * duck });
     // quiet: the caller's sound is not on yet (Cook before its first tap): nothing plays, the test hook still says so
     const c = opts.quiet ? null : ac();
     if (EVENT[name] && root && root.dispatchEvent) {
@@ -228,6 +270,8 @@
     if (!c) return false;
     if (c.state === "suspended") c.resume().catch(() => {});
     const run = () => {
+      // (a delayed sound meets the gate again when it starts)
+      if (opts.delay && !opts.quiet && !gate(name, opts)) return;
       try {
         const out = c.createGain();
         out.gain.value = (opts.volume != null ? opts.volume : 1) * (FULL[name] ? 1 : Sfx.volume);
@@ -250,6 +294,13 @@
     boil: { gain: 0.05, freq: 400, q: 2, wobble: 5 },
   };
   Sfx.loop = function (name, opts) {
+    if (FILES[name] && FILES[name].loop) {
+      const h = fileLoop(name, opts || {});
+      // (its file not in yet: the made loop it replaced plays instead, as before: the word moment's pour on a lab page)
+      const was = FILES[name].was || name;
+      if (!h.none || !LOOPS[was] || Sfx.muted || (opts && opts.quiet)) return h;
+      name = was;
+    }
     const L = LOOPS[name];
     const none = { stop() {}, pitch() {} };
     if (!L || Sfx.muted) return none;
@@ -321,6 +372,205 @@
     } catch (e) {
       return { stop: off, pitch() {} };
     }
+  };
+
+  /* ---------------- the recorded sounds (CHAI-92, SH-226) ----------------
+   * Zafar's picks, 6 Nov (lab/juice.html; the row and letter in each comment). file: its stem in assets/shared/sfx/ (SOURCES.md has
+   * its source, licence and author); ms: its length (the gate's). Each plays at the lab's level: the file as it was cut and levelled
+   * (build/tools/juice/make_sfx.py: a hit peaks at -16 dBFS, the simmer near -32 dBFS RMS), gain 1. The files he did not pick stay in
+   * the folder for the lab and are never fetched here.
+   * Mixkit's licence (knob-a, ding-a, sparkle-a) is his decision before the app stores (build/reports/juice-chai-wired-2026-11-06.md).
+   */
+  const FILES = {
+    knob: { file: "knob-a", ms: 235 }, // the gas knob turns: A, a gas stove's ignition click (Mixkit)
+    flame: { file: "flame-b", ms: 1149 }, // the flame catches: B, a gas torch catching (CC0)
+    simmer: { file: "simmer-a", ms: 4049, loop: true }, // the pan simmers: A, water at a gentle boil (CC0)
+    green: { file: "ding-a", ms: 418 }, // the heat reaches the green: A, a kitchen oven's ding (Mixkit)
+    glass: { file: "glass-c", ms: 1228 }, // the glass is full: C, a knife on a full water glass (CC0)
+    settle: { file: "settle-a", ms: 366 }, // a bottle set down: A, a glass set on a wooden table (CC0)
+    sparkle: { file: "sparkle-a", ms: 940 }, // the sparkle's chime: A, a fairy sparkle (Mixkit)
+    // (Zafar, 6 Nov ~17:45: he did pick the pours) tea poured into the glass: A, water from a bottle into a glass (CC0), as a loop at
+    // its own level while the pan pours (the hob, "pour-tea") and in the word moment ("pour-glass": the made loop of that name stays
+    // for a page that has not fetched the file); a short pour, bottle into the pan: A, its first 0.9 s with a fade
+    "pour-tea": { file: "pour-a", ms: 5042, loop: true, fixed: true, was: "pour" },
+    "pour-glass": { file: "pour-a", ms: 5042, loop: true, fixed: true },
+    "pour-short": { file: "pour-a", ms: 900, dur: 0.9 },
+  };
+  /** name -> the file's stem, for the checks (build/test_shared_sfx_files.mjs) */
+  Sfx.files = Object.fromEntries(Object.entries(FILES).map(([k, f]) => [k, f.file]));
+  Object.keys(FILES).forEach((k) => !FILES[k].loop && Sfx.names.push(k));
+  let fileBase = "assets/shared/sfx/";
+  try {
+    const d = root && root.document;
+    const me = d && (d.currentScript || [...d.scripts].find((s) => /js\/shared\/sfx\.js/.test(s.src)));
+    if (me && me.src) fileBase = new URL("../../assets/shared/sfx/", me.src).href;
+  } catch (e) {
+    /* the default */
+  }
+  Sfx.fileUrl = (stem) => fileBase + stem + ".mp3" + (root && root.NJG_V ? "?v=" + root.NJG_V : "");
+  // decoded once, on an offline context (no live audio context before the child's first tap: no autoplay warning), played on ours
+  const bufs = {};
+  const loading = {};
+  let dec = null;
+  const load = (stem) => {
+    if (loading[stem]) return loading[stem];
+    const OAC = root && (root.OfflineAudioContext || root.webkitOfflineAudioContext);
+    if (!OAC || !root.fetch) return (loading[stem] = Promise.resolve(null));
+    try {
+      dec = dec || new OAC(1, 1, 44100);
+    } catch (e) {
+      return (loading[stem] = Promise.resolve(null));
+    }
+    loading[stem] = root
+      .fetch(Sfx.fileUrl(stem))
+      .then((r) => (r.ok ? r.arrayBuffer() : null))
+      .then((ab) => ab && new Promise((ok, no) => dec.decodeAudioData(ab, ok, no)))
+      .then((b) => (bufs[stem] = b || null))
+      .catch(() => (bufs[stem] = null));
+    return loading[stem];
+  };
+  /** Fetch and decode the named recorded sounds now (a station's start), so each plays on its moment. */
+  Sfx.preload = (names) => Promise.all([].concat(names || []).map((n) => (FILES[n] ? load(FILES[n].file) : null)));
+  const gateMs = (ms, opts) => (opts.under || !Sfx.speaking() ? 1 : ms <= SHORT ? 0.35 : 0);
+  // the sounds playing now: a one-shot fades out when a voice starts; the loop goes silent while it speaks
+  const live = new Set();
+  let watching = null;
+  function watch() {
+    if (watching || !root || !root.setInterval) return;
+    watching = root.setInterval(() => {
+      if (!live.size) {
+        root.clearInterval(watching);
+        watching = null;
+        return;
+      }
+      const busy = Sfx.speaking();
+      live.forEach((h) => {
+        if (h.loop) duckLoop(h, busy);
+        else if (Sfx.muted || (busy && !h.under)) h.stop(0.03);
+      });
+    }, 50);
+  }
+  /** A family voice line starts now (its player says so, js/cook/core.js and js/core/voice.js): every recorded sound still ringing fades
+   *  out at once and the loop goes silent, without waiting for the gate's next look (which then brings the loop back after the line) */
+  Sfx.hush = function () {
+    live.forEach((h) => (h.loop ? duckLoop(h, true) : !h.under && h.stop(0.03)));
+  };
+  function startBuf(buf, vol, meta) {
+    const c = ac();
+    if (!c || !buf) return null;
+    if (c.state === "suspended") c.resume().catch(() => {});
+    try {
+      const src = c.createBufferSource();
+      src.buffer = buf;
+      src.loop = !!meta.loop;
+      const g = c.createGain();
+      g.gain.setValueAtTime(vol, c.currentTime);
+      src.connect(g).connect(c.destination);
+      src.start();
+      const h = Object.assign({ src, g, c, ended: false }, meta);
+      h.stop = (fade = 0.12) => {
+        if (h.ended) return;
+        h.ended = true;
+        live.delete(h);
+        if (h.off) (h.off(), (h.off = null));
+        try {
+          g.gain.cancelScheduledValues(c.currentTime);
+          g.gain.setValueAtTime(Math.max(0.0001, g.gain.value), c.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + fade);
+          src.stop(c.currentTime + fade + 0.02);
+        } catch (e) {
+          /* already ended */
+        }
+      };
+      src.onended = () => {
+        h.ended = true;
+        live.delete(h);
+      };
+      if (meta.dur && meta.dur < buf.duration) {
+        g.gain.setValueAtTime(vol, c.currentTime + Math.max(0, meta.dur - 0.18));
+        g.gain.linearRampToValueAtTime(0.0001, c.currentTime + meta.dur);
+        src.stop(c.currentTime + meta.dur + 0.02);
+      }
+      live.add(h);
+      watch();
+      return h;
+    } catch (e) {
+      return null;
+    }
+  }
+  function playFile(name, opts) {
+    const F = FILES[name];
+    // (quiet: the caller's sound is not on yet, Cook before its first tap; a loop is started with Sfx.loop)
+    if (opts.quiet || F.loop) return false;
+    const buf = bufs[F.file];
+    if (!buf) {
+      load(F.file); // not in yet: this time it is skipped (never late), the next one plays
+      return false;
+    }
+    const go = () => {
+      const duck = gateMs(F.ms, opts);
+      if (!duck || Sfx.muted) return null;
+      return startBuf(buf, (opts.volume != null ? opts.volume : 1) * duck, { name, under: !!opts.under || F.ms <= SHORT, dur: F.dur });
+    };
+    if (opts.delay) {
+      if (!gateMs(F.ms, opts)) return false;
+      if (root && root.setTimeout) root.setTimeout(go, opts.delay);
+      return true;
+    }
+    return !!go();
+  }
+  // the loop's level follows the caller's (0..1) and goes to nothing while a voice speaks; the test hook hears it on and off as
+  // "sfx/<name>-loop" (njg-sfx), so the sound log shows exactly when it is heard
+  function duckLoop(h, busy, force) {
+    const want = busy || Sfx.muted ? 0 : h.level;
+    if (!force && want === h.want) return;
+    h.want = want;
+    try {
+      h.g.gain.setTargetAtTime(Math.max(0.0001, want), h.c.currentTime, busy ? 0.02 : 0.15);
+    } catch (e) {
+      /* ignore */
+    }
+    const heard = want > 0.001;
+    if (heard && !h.off && root && root.dispatchEvent) h.off = tell(h.name + "-loop", false);
+    else if (!heard && h.off) (h.off(), (h.off = null));
+  }
+  function fileLoop(name, opts) {
+    const F = FILES[name];
+    const none = { stop() {}, pitch() {}, none: true }; // (none: nothing plays yet; the caller may ask again)
+    if (Sfx.muted || opts.quiet) return none;
+    const buf = bufs[F.file];
+    if (!buf) {
+      load(F.file);
+      return none;
+    }
+    const h = startBuf(buf, 0.0001, { name, loop: true });
+    if (!h) return none;
+    h.level = Math.max(0, Math.min(1, opts.volume != null ? opts.volume : 1));
+    duckLoop(h, Sfx.speaking(), true);
+    return {
+      stop: () => h.stop(0.25),
+      /** its level, 0..1 (chai: rising with the heat) */
+      pitch(k) {
+        k = Math.max(0, Math.min(1, k));
+        if (h.ended || F.fixed || Math.abs(k - h.level) < 0.02) return; // (fixed: a pour keeps its own level)
+        h.level = k;
+        duckLoop(h, Sfx.speaking(), true);
+      },
+    };
+  }
+  /** The lab's player: any file of assets/shared/sfx/ by its stem, played once (dur: cut it short with a fade). */
+  Sfx.file = function (stem, o) {
+    o = o || {};
+    const h = { stopped: false, live: null, stop() { h.stopped = true; if (h.live) h.live.stop(0.04); } };
+    if (Sfx.muted) return h;
+    const go = (buf) => {
+      if (!buf || h.stopped) return;
+      const duck = gateMs(buf.duration * 1000, o);
+      if (duck) h.live = startBuf(buf, (o.volume != null ? o.volume : 1) * duck, { name: stem, under: !!o.under, dur: o.dur });
+    };
+    if (bufs[stem]) go(bufs[stem]);
+    else if (o.wait !== false) load(stem).then(go);
+    return h;
   };
   return Sfx;
 });

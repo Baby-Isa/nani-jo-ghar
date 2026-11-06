@@ -1114,6 +1114,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // (a stamp's thump, then a warm low note: never a verdict's chime)
     Cook.sfx.chop();
     setTimeout(() => Cook.sfx.soft(), 60);
+    // CHAI-92 (Zafar's pick, gold burst 1, 6 Nov, lab/juice.html): a soft gold burst blooms behind the stamp as it lands (art run s17-juice,
+    // js/shared/juice.js; a fade in place under reduced motion), with the sparkle's chime (sparkle A) when no one is speaking (the voice
+    // gate, js/shared/sfx.js: under "barabar" it does not play). Every served order gets it, whatever the round's score
+    if (global.Juice && global.Juice.burst) {
+      cards.forEach((c) => {
+        const s = c.stamp;
+        global.Juice.burst(c.el, s.offsetLeft + s.offsetWidth / 2, s.offsetTop + s.offsetHeight / 2, { w: s.offsetWidth * 1.9, kind: 1, behind: s });
+      });
+      if (Cook.sfx.sparkle) setTimeout(() => Cook.sfx.sparkle(), 120);
+    }
     await Promise.all([talking, Cook.wait(700)]);
     // (the test hook stays up until they've gone: serve clears it)
     Cook.servedMoment.phase = "thanks";

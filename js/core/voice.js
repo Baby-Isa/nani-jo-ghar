@@ -621,6 +621,7 @@ export function playClip(url, { volume = 1, rate = null, path = voicePath() } = 
         end(true);
       };
       liveClips.add(h);
+      if (globalThis.Sfx && globalThis.Sfx.hush) globalThis.Sfx.hush(); // (CHAI-92: the effects' voice gate, js/shared/sfx.js)
       const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
       if (layer && layer.track) untrack = layer.track(a, h.cut) || untrack;
       a.onended = () => end(true);
@@ -670,7 +671,8 @@ export function stopAll() {
   }
 }
 if (typeof globalThis !== "undefined" && !globalThis.NjgVoice) {
-  globalThis.NjgVoice = { clip: playClip, device: speakDevice, allowed: clipAllowed, path: voicePath, stop: stopAll, deviceSpeak };
+  // (busy: a family clip is sounding now: the sound effects' voice gate reads it, js/shared/sfx.js Sfx.speaking; CHAI-92)
+  globalThis.NjgVoice = { clip: playClip, device: speakDevice, allowed: clipAllowed, path: voicePath, stop: stopAll, deviceSpeak, busy: () => liveClips.size > 0 };
   try {
     const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
     if (layer && layer.onStop) layer.onStop(() => liveClips.forEach((h) => h.cut()));

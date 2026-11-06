@@ -313,6 +313,15 @@
     return col("rs-words-bad", bad, Math.max(1, Math.min(bad.length, 3))) + col("rs-words-ok", ok, 4);
   }
 
+  // CHAI-92: the gold burst (art run s17-juice) behind a badge's picture, inside its square (the picture stays on top)
+  function burstBehind(badge, chime) {
+    const J = root.Juice;
+    const disc = badge && badge.querySelector(".rs-disc");
+    const pic = disc && disc.querySelector("img");
+    if (!J || !J.burst || !disc || !pic || !disc.clientWidth) return;
+    J.burst(disc, disc.clientWidth / 2, disc.clientHeight / 2, { w: disc.clientWidth * 1.7, kind: 1, behind: pic });
+    if (chime) sfx("sparkle");
+  }
   // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills
   async function animate(el, b, opts) {
     const calm = reduced();
@@ -336,6 +345,10 @@
           }
         }
         big.textContent = Results.clock(b.time.timeMs);
+        // CHAI-92 (Zafar's pick, gold burst 1, 6 Nov, lab/juice.html): a soft gold burst blooms behind the stopwatch as its count lands,
+        // every round whatever the time (js/shared/juice.js, where the page has it; a fade in place under reduced motion), with the
+        // sparkle's chime (sparkle A; not over a new best's bing, and never over a voice: the gate in js/shared/sfx.js)
+        burstBehind(x, sound && !b.time.newBest);
         if (b.time.newBest) {
           x.classList.add("celebrate");
           if (sound) sfx("bing");

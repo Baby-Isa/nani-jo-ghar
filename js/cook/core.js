@@ -359,6 +359,7 @@
         finish();
       };
       sounding = src;
+      if (global.Sfx && global.Sfx.hush) global.Sfx.hush(); // (CHAI-92: the voice gate: no effect rings on over a family line)
       const span = spanOf(buf);
       setTimeout(finish, (span.dur * 1000) / Cook.speed + 150);
       src.start(0, span.at, span.dur);
@@ -448,6 +449,21 @@
     pourLoop: () => fxLoop("pour"),
     sizzleLoop: () => fxLoop("sizzle"),
     boilLoop: () => fxLoop("boil"),
+    // CHAI-92 / SH-226 (Zafar's picks, 6 Nov, lab/juice.html): the recorded sounds (js/shared/sfx.js FILES), through the voice gate
+    knob: () => fx("knob"),
+    flame: (o) => fx("flame", o),
+    green: () => fx("green"),
+    glass: () => fx("glass"),
+    settle: () => fx("settle"),
+    sparkle: () => fx("sparkle"),
+    drop: () => fx("drop"),
+    // (Zafar, 6 Nov ~17:45, pour A and short pour A) the tea poured from the pan into a glass, a loop the caller stops; and the shelf's
+    // water or milk going into the pan, its first 0.9 s
+    teaPourLoop: () => fxLoop("pour-tea"),
+    pourShort: () => fx("pour-short"),
+    simmerLoop: (volume) => (global.Sfx && global.Sfx.loop ? global.Sfx.loop("simmer", { quiet: !ctx, volume }) : { stop() {}, pitch() {}, none: true }),
+    /** fetch and decode recorded sounds now (a station's start), so each plays on its moment */
+    preload: (names) => (global.Sfx && global.Sfx.preload ? global.Sfx.preload(names) : Promise.resolve()),
   };
 
   /* ---------------- misc ---------------- */
