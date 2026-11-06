@@ -41,7 +41,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a clear plastic water bottle, full of water, a plain pale blue cap, no label; 2. a plain white and pale blue milk carton with a white screw cap, no print; 3. a tall glass jar full of loose black tea leaves (dark, crinkly, dry), a pale oak screw lid; 4. a tall glass jar full of white granulated sugar (fine sparkling grains), a pale oak screw lid; 5. a small glass jar full of plump pale green cardamom pods, a pale oak screw lid; 6. a small glass jar full of knobbly fresh ginger root pieces, one cut yellow face, a pale oak screw lid; 7. a small glass jar full of whole papery white garlic cloves, a pale oak screw lid; 8. a small glass jar full of coarse white sea-salt crystals (clear, angular, glinting: never round pearls), a pale oak screw lid"
+      ITEMS: "1. a clear plastic water bottle, full of water, a plain pale blue cap, no label; 2. a plain white and pale blue milk carton with a white screw cap, no print; 3. a tall glass jar full of loose black tea leaves (dark, crinkly, dry), a mid-walnut screw lid (warm, not too dark); 4. a tall glass jar full of white granulated sugar (fine sparkling grains), a mid-walnut screw lid (warm, not too dark); 5. a small glass jar full of plump pale green cardamom pods, a mid-walnut screw lid (warm, not too dark); 6. a small glass jar full of knobbly fresh ginger root pieces, one cut yellow face, a mid-walnut screw lid (warm, not too dark); 7. a small glass jar full of whole papery white garlic cloves, a mid-walnut screw lid (warm, not too dark); 8. a small glass jar full of coarse white sea-salt crystals (clear, angular, glinting: never round pearls), a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "Every cell holds one item."
   FJ01:
     prompt: FS
@@ -52,7 +52,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a small glass jar of bright golden-yellow turmeric powder, a pale oak screw lid; 2. a small glass jar of slim ridged brown cumin seeds, a pale oak screw lid; 3. a small glass jar of tiny round dark brown-black mustard seeds, a pale oak screw lid; 4. a small glass jar of round wrinkled black peppercorns, a pale oak screw lid; 5. a small glass jar of rolled reddish-brown cinnamon sticks standing up, a pale oak screw lid; 6. a small glass jar of dark brown cloves (little nail shapes with round heads), a pale oak screw lid; 7. a small glass jar of pale green-grey ridged fennel seeds, a pale oak screw lid; 8. a small glass jar of deep red chilli powder, a pale oak screw lid"
+      ITEMS: "1. a small glass jar of bright golden-yellow turmeric powder, a mid-walnut screw lid (warm, not too dark); 2. a small glass jar of slim ridged brown cumin seeds, a mid-walnut screw lid (warm, not too dark); 3. a small glass jar of tiny round dark brown-black mustard seeds, a mid-walnut screw lid (warm, not too dark); 4. a small glass jar of round wrinkled black peppercorns, a mid-walnut screw lid (warm, not too dark); 5. a small glass jar of rolled reddish-brown cinnamon sticks standing up, a mid-walnut screw lid (warm, not too dark); 6. a small glass jar of dark brown cloves (little nail shapes with round heads), a mid-walnut screw lid (warm, not too dark); 7. a small glass jar of pale green-grey ridged fennel seeds, a mid-walnut screw lid (warm, not too dark); 8. a small glass jar of deep red chilli powder, a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "Every cell holds one item."
   FK01:
     prompt: FS
@@ -74,7 +74,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a small glass jar of round pale tan coriander seeds, a pale oak screw lid; 2. a small glass jar of small square mustard-yellow fenugreek seeds, a pale oak screw lid; 3. a small glass jar of warm brown garam masala powder, a pale oak screw lid; 4. a small glass jar of dried olive-green bay leaves standing up, a pale oak screw lid; 5. a small glass jar of pale yellow asafoetida powder, a pale oak screw lid; 6. a small glass jar of tiny cream sesame seeds, a pale oak screw lid; 7. a small glass jar of whole dried wrinkled red chillies, a pale oak screw lid; 8. a small glass jar of a coarse light-brown spice blend with flecks of green cardamom and cinnamon, a pale oak screw lid"
+      ITEMS: "1. a small glass jar of round pale tan coriander seeds, a mid-walnut screw lid (warm, not too dark); 2. a small glass jar of small square mustard-yellow fenugreek seeds, a mid-walnut screw lid (warm, not too dark); 3. a small glass jar of warm brown garam masala powder, a mid-walnut screw lid (warm, not too dark); 4. a small glass jar of dried olive-green bay leaves standing up, a mid-walnut screw lid (warm, not too dark); 5. a small glass jar of pale yellow asafoetida powder, a mid-walnut screw lid (warm, not too dark); 6. a small glass jar of tiny cream sesame seeds, a mid-walnut screw lid (warm, not too dark); 7. a small glass jar of whole dried wrinkled red chillies, a mid-walnut screw lid (warm, not too dark); 8. a small glass jar of a coarse light-brown spice blend with flecks of green cardamom and cinnamon, a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "Every cell holds one item."
   FJ03:
     prompt: FS
@@ -85,7 +85,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a very small glass jar holding a loose tuft of deep red-orange saffron threads, a pale oak screw lid; 2. a small glass jar of dusky pinkish-brown chaat masala powder, a pale oak screw lid; 3. a small glass jar of dark brown ground cumin, a pale oak screw lid; 4. a small glass jar of tiny matt black angular nigella seeds, a pale oak screw lid; 5. a small glass jar of tiny grey-brown striped carom seeds, a pale oak screw lid; 6. a small glass jar of crumbled dried dark green mint leaves, a pale oak screw lid; 7. a small glass jar of pale beige mango powder, a pale oak screw lid; 8. a small glass jar of pinkish-grey black-salt powder, a pale oak screw lid"
+      ITEMS: "1. a very small glass jar holding a loose tuft of deep red-orange saffron threads, a mid-walnut screw lid (warm, not too dark); 2. a small glass jar of dusky pinkish-brown chaat masala powder, a mid-walnut screw lid (warm, not too dark); 3. a small glass jar of dark brown ground cumin, a mid-walnut screw lid (warm, not too dark); 4. a small glass jar of tiny matt black angular nigella seeds, a mid-walnut screw lid (warm, not too dark); 5. a small glass jar of tiny grey-brown striped carom seeds, a mid-walnut screw lid (warm, not too dark); 6. a small glass jar of crumbled dried dark green mint leaves, a mid-walnut screw lid (warm, not too dark); 7. a small glass jar of pale beige mango powder, a mid-walnut screw lid (warm, not too dark); 8. a small glass jar of pinkish-grey black-salt powder, a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "Every cell holds one item."
   FJ04:
     prompt: FS
@@ -96,7 +96,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a small glass jar of tiny cream-white poppy seeds, a pale oak screw lid; 2. a small glass jar of khaki-brown ground coriander and cumin, a pale oak screw lid; 3. a tall plain brushed-steel tin with its lid on, a little pale wholemeal flour dusted on the rim; 4. a tall plain brushed-steel tin with its lid off and leaning against it, showing grey-green millet flour; 5. a tall plain brushed-steel tin with its lid off and leaning against it, showing bright white flour; 6. a tall plain brushed-steel tin with its lid off and leaning against it, showing pale yellow chickpea flour; 7. a tall plain brushed-steel tin with its lid off and leaning against it, showing fine white rice flour; 8. a tall glass jar of pale golden semolina grains"
+      ITEMS: "1. a small glass jar of tiny cream-white poppy seeds, a mid-walnut screw lid (warm, not too dark); 2. a small glass jar of khaki-brown ground coriander and cumin, a mid-walnut screw lid (warm, not too dark); 3. a tall plain brushed-steel tin with its lid on, a little pale wholemeal flour dusted on the rim; 4. a tall plain brushed-steel tin with its lid off and leaning against it, showing grey-green millet flour; 5. a tall plain brushed-steel tin with its lid off and leaning against it, showing bright white flour; 6. a tall plain brushed-steel tin with its lid off and leaning against it, showing pale yellow chickpea flour; 7. a tall plain brushed-steel tin with its lid off and leaning against it, showing fine white rice flour; 8. a tall glass jar of pale golden semolina grains"
       EMPTY: "Every cell holds one item."
   FJ05:
     prompt: FS
@@ -140,7 +140,7 @@ lines:
       N: "8"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a small plain brushed-steel tin, lid on, no print; 2. a small plain brushed-steel tin, lid off beside it, dark brown cocoa showing; 3. a small plain brushed-steel tin, lid off beside it, white tea bags showing; 4. a tall glass jar of fine golden roasted vermicelli nests; 5. a squat glass jar of pale golden grainy ghee, a pale oak screw lid; 6. a small glass jar of bright green mint chutney, a pale oak screw lid; 7. a small glass jar of glossy dark brown tamarind chutney, a pale oak screw lid; 8. a small glass jar of pale creamy-beige ginger and garlic paste, a pale oak screw lid"
+      ITEMS: "1. a small plain brushed-steel tin, lid on, no print; 2. a small plain brushed-steel tin, lid off beside it, dark brown cocoa showing; 3. a small plain brushed-steel tin, lid off beside it, white tea bags showing; 4. a tall glass jar of fine golden roasted vermicelli nests; 5. a squat glass jar of pale golden grainy ghee, a mid-walnut screw lid (warm, not too dark); 6. a small glass jar of bright green mint chutney, a mid-walnut screw lid (warm, not too dark); 7. a small glass jar of glossy dark brown tamarind chutney, a mid-walnut screw lid (warm, not too dark); 8. a small glass jar of pale creamy-beige ginger and garlic paste, a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "Every cell holds one item."
   FP01:
     prompt: FS
@@ -437,7 +437,7 @@ lines:
       N: "6"
       GRID: "4 by 2"
       GROUND: "flat neutral mid-grey #808080"
-      ITEMS: "1. a small glass jar of creamy white coconut chutney with green flecks, a pale oak screw lid; 2. a small glass jar of deep red garlic chutney, a pale oak screw lid; 3. a squat glass jar of mango pickle (orange-red mango pieces in oil), a pale oak screw lid; 4. a squat glass jar of lime pickle (dark yellow lime pieces), a pale oak screw lid; 5. a plain brushed-steel food tin, no label; 6. a squat glass jar of golden honey, a pale oak screw lid"
+      ITEMS: "1. a small glass jar of creamy white coconut chutney with green flecks, a mid-walnut screw lid (warm, not too dark); 2. a small glass jar of deep red garlic chutney, a mid-walnut screw lid (warm, not too dark); 3. a squat glass jar of mango pickle (orange-red mango pieces in oil), a mid-walnut screw lid (warm, not too dark); 4. a squat glass jar of lime pickle (dark yellow lime pieces), a mid-walnut screw lid (warm, not too dark); 5. a plain brushed-steel food tin, no label; 6. a squat glass jar of golden honey, a mid-walnut screw lid (warm, not too dark)"
       EMPTY: "The last 2 cells stay empty (plain ground)."
   FV04:
     prompt: FS
@@ -497,7 +497,7 @@ lines:
 parts:
 - id: A
   title: 'THE ANCHOR: CHAI''S SHELF, ONE SHEET'
-  intro: 'The eight things on chai''s shelf, one batch: the water bottle, the milk carton, the tea and sugar jars and the four small spice jars, one camera, one light, one pale oak lid family. Every later side-on sheet attaches the kept FA01.'
+  intro: 'The eight things on chai''s shelf, one batch: the water bottle, the milk carton, the tea and sugar jars and the four small spice jars, one camera, one light, one mid-walnut lid family. Every later side-on sheet attaches the kept FA01.'
   stop: 'Part A done: post FA01''s chat link in the log and carry straight on with part B (no waiting: Zafar, 6 Nov, the run is unsupervised).'
   items:
   - lines: [FA01]
@@ -518,10 +518,10 @@ parts:
   - lines: [FJ09, FV04, TF08, TF09, TD05, TD06]
 checks:
   ANCHOR:
-    text: 'eight separate items in a 4 by 2 grid, in the order listed, each standing upright, exactly side-on at its own mid-height (a hint of each lid''s top, no more), every one the SAME drawn height (about 85% of its cell''s height); all four small jars and both tall jars share ONE pale oak screw lid (the attached jars'' lid: same wood, same profile, only the diameter changes); matte clear glass with one soft highlight, no hard white stripes; warm light from the upper left on every item; nothing under or behind them (no shelf, no shadow, no reflection), on one flat grey ground; salt reads as salt crystals, not pearls or tapioca'
+    text: 'eight separate items in a 4 by 2 grid, in the order listed, each standing upright, exactly side-on at its own mid-height (a hint of each lid''s top, no more), every one the SAME drawn height (about 85% of its cell''s height); all four small jars and both tall jars share ONE mid-walnut screw lid (the attached jars'' lid: same wood, same profile, only the diameter changes); matte clear glass with one soft highlight, no hard white stripes; warm light from the upper left on every item; nothing under or behind them (no shelf, no shadow, no reflection), on one flat grey ground; salt reads as salt crystals, not pearls or tapioca'
     judge: {aspect: [3, 2], bg: flat, soft_edges: true, pieces: 8}
   SHELF:
-    text: 'the sheet''s items in a 4 by 2 grid in the order listed, each upright, exactly side-on like the attached FA01, every one the SAME drawn height (about 85% of its cell; a wide thing fills 85% of the cell''s width instead); every glass jar has FA01''s pale oak lid; the same glass, light (upper left) and finish as FA01, as if from the same photo shoot; no labels; nothing under them, no shadow, one flat grey ground'
+    text: 'the sheet''s items in a 4 by 2 grid in the order listed, each upright, exactly side-on like the attached FA01, every one the SAME drawn height (about 85% of its cell; a wide thing fills 85% of the cell''s width instead); every glass jar has FA01''s mid-walnut lid; the same glass, light (upper left) and finish as FA01, as if from the same photo shoot; no labels; nothing under them, no shadow, one flat grey ground'
     judge: {aspect: [3, 2], bg: flat, soft_edges: true, pieces_min: 4}
   PRODUCE:
     text: 'the sheet''s produce in a 4 by 2 grid in the order listed, each standing on its own base, exactly side-on like the attached FA01, every one the SAME drawn height (about 85% of its cell); true food colours; the same light (upper left) and finish as FA01; nothing under them, no shadow, one flat magenta ground'
@@ -542,7 +542,7 @@ passfail:
 - Any text, letters, numbers, labels, logos or price stickers, even fake ones, on any jar, tin, bottle, carton or pack.
 - Outlines, cel shading, a flat vector look or painterly brushwork.
 - Items at different heights on a side-on sheet (the token sizes are the game's job), or a camera that differs between cells (one from above, one side-on).
-- On a side-on sheet, any glass jar whose lid is not the pale oak lid of FA01; hard white specular stripes down the glass; a rim light or a halo round the edge.
+- On a side-on sheet, any glass jar whose lid is not the mid-walnut lid of FA01; hard white specular stripes down the glass; a rim light or a halo round the edge.
 - A shadow, a reflection, a floor, a shelf or a table under any item; anything crossing into the next cell; two items merged.
 - A cell holding the wrong item, an item missing or drawn twice, or the order changed.
 - Pork, ham, bacon or anything that reads as it; wine, beer or any bottle that reads as alcohol.

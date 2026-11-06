@@ -66,10 +66,10 @@ the same on every screen.
 - **Camera:** side-on sheets exactly side-on at each item's mid-height, a hint of the lid's top and no more (the art bible's F view);
   top-down sheets straight down, rims perfect circles (T view). Never both on one sheet.
 - **Light:** one warm key from the upper left, a soft fill; no second light, no rim light.
-- **Palette:** containers in quiet materials (clear glass, pale oak, brushed steel, white ceramic, plain card) so the food carries the
+- **Palette:** containers in quiet materials (clear glass, mid-walnut, brushed steel, white ceramic, plain card) so the food carries the
   colour; warm highlights in the house's undertone (the stone and marble, hue 27-43; `build/reports/s17-palette-review.md`); the only
   coloured plastics are the water bottle's plain pale blue cap and the ketchup bottle. No reds in big areas (reds belong to Nani).
-- **Lids:** one family. Every glass jar, small or tall, has the same pale oak screw lid (the approved bare jars in
+- **Lids:** one family. Every glass jar, small or tall, has the same mid-walnut screw lid (the approved bare jars in
   `sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png`); every tin is plain brushed steel with a plain lid.
 - **Edges and shadows:** clean, crisp edges; matte glass with one soft highlight; no halo, no rim light, no drop shadow, no cast or
   contact shadow, no reflection, no floor or shelf (the game draws the contact shadow and the stone shelf).
@@ -79,7 +79,7 @@ the same on every screen.
 
 | Name | Repo path | What it carries |
 |---|---|---|
-| jar-family.png | `sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png` | the approved bare jars: their glass, their pale oak lid, their light |
+| jar-family.png | `sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png` | the approved bare jars: their glass, their lid shape, their light (their lids are pale oak: draw every lid in mid-walnut instead) |
 | style-anchor.png | `sources/art/style-anchor-v1.png` | the house look from above: steel katoris, the board, whole vegetables on marble |
 | food-heaps.png | `sources/art/cook-v3/s5-fillings-top-v1.png` | the approved heap look for loose food from above |
 | house-swatch.png | `build/tools/art/data/house-swatch.png` | the house colours as plain blocks: the palette only, attached last to every new picture (the block's HOUSE LOOK) |
@@ -94,7 +94,7 @@ Generate an image, 1536×1024, landscape.
 
 A product sheet of {N} separate kitchen items for a children's cooking game, laid out in a {GRID} grid of equal cells, in this order (left to right, top row first): {ITEMS}. {EMPTY}
 
-Every item stands upright in the middle of its own cell, seen EXACTLY side-on at its own mid-height (only a hint of its top shows), and every item is drawn the SAME height: each fills about 85% of its cell's height (an item wider than it is tall fills about 85% of its cell's width instead). Do not draw them at their real sizes. Every glass jar has the SAME pale oak screw lid as the attached jars (same wood, same profile; only its diameter follows the jar). Clean matte clear glass with one soft highlight, brushed steel, plain white or pale card: no labels. Nothing touches anything else and nothing crosses into another cell.
+Every item stands upright in the middle of its own cell, seen EXACTLY side-on at its own mid-height (only a hint of its top shows), and every item is drawn the SAME height: each fills about 85% of its cell's height (an item wider than it is tall fills about 85% of its cell's width instead). Do not draw them at their real sizes. Every glass jar has the SAME mid-walnut screw lid as the attached jars (same wood, same profile; only its diameter follows the jar). Clean matte clear glass with one soft highlight, brushed steel, plain white or pale card: no labels. Nothing touches anything else and nothing crosses into another cell.
 
 Background: one {GROUND}, perfectly even, edge to edge: no floor, no shelf, no table, no shadow, no reflection under any item.
 
