@@ -506,7 +506,11 @@
    * (and Lang.speak itself drops one asked for anyway: it resolves false, Lifecycle say-skip). Said again:
    *   - when the child asked (a tap on a face, a speaker, the bulb, the sidebar's order card or its buttons just before it, and
    *     the lines read on from that tap: a replay's later parts);
-   *   - by another person in the same pop-up (two people may ask for the same thing, each on their own card);
+   *   - by another person (CK-59, Zafar 6 Nov night: "the second person ordering didn't say milk"): the rule is per speaker. A
+   *     line may name who says it (line.by: the person at the counter, set by the order's read, js/cook/ui.js sayPart); one
+   *     person never says the same line twice within the window, a different person always says their own words. A line with
+   *     no speaker named is judged against every speaker, as before; two people in one pop-up, each on their own card (the
+   *     read-along marks the card being said: .speaking), still count as two;
    *   - a step's call (role call: the stepper keeps its own rule, maani's Firai on both turns, MAA-15; a call is not counted
    *     as said here either), a word the child tapped to hear (role hear), counts and item names (their own rules);
    *   - when it never began (a stop cleared it while it waited its turn): it was never heard. (One cut short by the child's tap
@@ -516,7 +520,8 @@
   const ASKED_MS = 700;
   const CHAIN_MS = 1200; // a replay's next part follows its last within this (the read-along's own beats)
   const FREE_ROLES = { call: 1, hear: 1, count: 1, laps: 1, countdown: 1, item: 1 };
-  const said = new Map(); // the line's words -> {t, popup, card}
+  const said = new Map(); // the line's words -> Map(its speaker, "" when none is named -> {t, popup, card, by, k})
+  const byOf = (line) => (line && line.by != null && line.by !== "" ? String(line.by) : "");
   const normLine = (t) => (String(t || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’-]*/gu) || []).join(" ");
   let tapAt = -1e9;
   let chain = { on: false, end: -1e9 };
@@ -565,15 +570,21 @@
       chain.end = Math.max(chain.end, now);
       return null;
     }
-    const last = said.get(k);
-    if (!last) return null;
+    const marks = said.get(k);
+    if (!marks) return null;
     const win = Math.round(role === "howto" ? AGAIN_MS : AGAIN_MS / (Cook.speed || 1)); // (in whole ms: a harness at speed 1e6 has none)
-    if (now - last.t >= win) return null;
-    // two people in one pop-up, each reading their own card (the read-along marks the card being said: .speaking)
+    const by = byOf(line);
     const pop = popupNow();
     const card = cardNow();
-    if (pop && last.popup === pop && card && last.card && card !== last.card) return null;
-    return "said";
+    for (const last of marks.values()) {
+      if (now - last.t >= win) continue;
+      // CK-59: another person says their own words (both speakers named, and not the same one)
+      if (by && last.by && by !== last.by) continue;
+      // two people in one pop-up, each reading their own card (the read-along marks the card being said: .speaking)
+      if (pop && last.popup === pop && card && last.card && card !== last.card) continue;
+      return "said";
+    }
+    return null;
   };
   Lang.speak = async (line, { over = false, kind = over ? "count" : "line" } = {}) => {
     if (!line) return false;
@@ -586,8 +597,11 @@
         return false;
       }
       const k = normLine(Lang.plain(line));
-      if (k && !(line.role && FREE_ROLES[line.role])) said.set(k, (mine = { t: Date.now(), popup: popupNow(), card: cardNow() }));
-      if (mine) mine.k = k;
+      if (k && !(line.role && FREE_ROLES[line.role])) {
+        mine = { t: Date.now(), popup: popupNow(), card: cardNow(), by: byOf(line), k };
+        if (!said.has(k)) said.set(k, new Map());
+        said.get(k).set(mine.by, mine);
+      }
     }
     // (the help ladder never says again what was said less than 10 s ago: js/shared/guide.js recentlySaid)
     if (kind === "line" && global.NaniGuide && global.NaniGuide.markSaid) global.NaniGuide.markSaid(Lang.plain(line));
@@ -609,7 +623,7 @@
       if (started) note("say-end", turn, "");
       if (kind !== "item" && !V.busy("cook")) quietSince = Date.now();
       // a line a stop cleared before it began (it waited its turn) was never heard: it may be said again
-      if (mine && !started && said.get(mine.k) === mine) said.delete(mine.k);
+      if (mine && !started && said.get(mine.k) && said.get(mine.k).get(mine.by) === mine) said.get(mine.k).delete(mine.by);
       if (chain.on) chain.end = Date.now();
       return !(r && r.skipped);
     }

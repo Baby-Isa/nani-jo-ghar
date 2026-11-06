@@ -2141,6 +2141,11 @@
     };
     const sayPart = async (who, line) => {
       const S = Cook.scene;
+      // CK-59 (Zafar, 6 Nov night: "the second person ordering didn't say milk"): the line names who says it, so the said-again
+      // rule (js/cook/words.js Lang.saidAgain) keeps one person from repeating themselves but lets the next say their own words
+      // (a part made of parts is said part by part by the read-along: each names its speaker too)
+      const byWho = (l) => (l && typeof l === "object" ? Object.assign({}, l, { by: who }, Array.isArray(l.parts) ? { parts: l.parts.map(byWho) } : {}) : l);
+      line = byWho(line);
       if (S && S.chars && S.chars[who] && S.talk) return S.talk(who, line, { ms: Cook.readMs(Lang.plain(line)) * 0.6 });
       // (nobody at the counter to say it: the card's own read-along)
       return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
