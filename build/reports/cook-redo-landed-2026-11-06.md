@@ -79,5 +79,13 @@ the hob zoomed, and Nani's shop. Judge batch: `build/screenshots/cook-redo/judge
 - Cut: `python3 build/tools/art/artcut.py build/tools/art/specs/s17-cook-redo.cut.json` (3 jobs, 0 flags), then
   `artdespill.py` on the tomato and rai, then `python3 build/tools/art/cook_redo_post.py` (the rings placed, the round steel
   pieces, the shop pin).
+- `node build/tools/review/checks.mjs`: unit 644 pass 0 fail; words, static, leak (20 configs), bump, specs, docs, fixlist,
+  recordings ok; art "386 picture(s): 308 pass, 78 flag, 0 fail"; size "450 MB"; load "29/29 pages load only what's on their
+  screen" (the stations' file lists now name `s17-cook-redo/flame-*.webp` in place of `chai-station/*`).
+- Sandbox, `run.mjs --flow cook:chai-tray,cook:daar,cook:samosa,cook:maani-line --quick --check` (run `cook-redo-quick`): every
+  flow reaches its end, 0 new page errors, **chai-tray clean**. It exits 1 on 4 order-card findings in daar and the maani line
+  (`p.english.wc-en` 11-12 px, `p.oc-t.wc-k` tap height) and contract-91/24 timing breaks in daar, samosa and the maani line;
+  **the same run on the branch without this step's code** (`cook-redo-quick-base`) gives the same 4 findings and the same kinds
+  of breaks, so they are the branch's (the order-card typography rounds), not the flames'. Worth a look by whoever owns the card.
 - Rows: ART-53 (the walnut pins landed; the jars still wait); the redo list `redo-strict-2026-11-06.yaml` notes on the flame,
   tomato and rai rows.
