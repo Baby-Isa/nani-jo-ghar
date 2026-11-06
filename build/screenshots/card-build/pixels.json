@@ -1,0 +1,506 @@
+{
+ "971x318|game": {
+  "g": 4.48,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.48,
+    13.79,
+    14.13
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    13.79,
+    14.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.34000000000000163
+ },
+ "971x318|one": {
+  "g": 4.48,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.48,
+    5.96,
+    5.48
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    5.96,
+    5.48
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.47999999999999954
+ },
+ "971x318|two": {
+  "g": 4.48,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.48,
+    10.96,
+    11.13
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    4.48,
+    4.46,
+    4.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.33000000000000007
+ },
+ "971x318|mixed": {
+  "g": 4.48,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.48,
+    5.46,
+    5.13
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    13.29,
+    13.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.33000000000000007
+ },
+ "740x320|game": {
+  "g": 4.48,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.48,
+    13.79,
+    14.13
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    13.79,
+    14.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.34000000000000163
+ },
+ "740x320|one": {
+  "g": 4.48,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.48,
+    5.96,
+    5.48
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    5.96,
+    5.48
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.47999999999999954
+ },
+ "740x320|two": {
+  "g": 4.48,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.48,
+    10.96,
+    11.13
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    4.48,
+    4.46,
+    4.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.33000000000000007
+ },
+ "740x320|mixed": {
+  "g": 4.48,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.48,
+    5.46,
+    5.13
+   ],
+   [
+    "chai",
+    "chai",
+    4.48,
+    13.29,
+    13.13
+   ]
+  ],
+  "rowLastGap": 4.46,
+  "pixelVsGame": 0.33000000000000007
+ },
+ "971x412|game": {
+  "g": 4.41,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.41,
+    13.73,
+    13.95
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    13.73,
+    13.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.21999999999999886
+ },
+ "971x412|one": {
+  "g": 4.41,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.41,
+    5.9,
+    6.29
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    5.9,
+    6.29
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.3899999999999997
+ },
+ "971x412|two": {
+  "g": 4.41,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.41,
+    10.9,
+    10.95
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    4.41,
+    4.4,
+    3.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.4500000000000002
+ },
+ "971x412|mixed": {
+  "g": 4.41,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.41,
+    5.4,
+    4.95
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    13.23,
+    12.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.4500000000000002
+ },
+ "930x430|game": {
+  "g": 4.41,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.41,
+    13.73,
+    13.95
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    13.73,
+    13.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.21999999999999886
+ },
+ "930x430|one": {
+  "g": 4.41,
+  "cards": [
+   [
+    "paani",
+    "water",
+    4.41,
+    5.9,
+    6.29
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    5.9,
+    6.29
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.3899999999999997
+ },
+ "930x430|two": {
+  "g": 4.41,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.41,
+    10.9,
+    10.95
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    4.41,
+    4.4,
+    3.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.4500000000000002
+ },
+ "930x430|mixed": {
+  "g": 4.41,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    4.41,
+    5.4,
+    4.95
+   ],
+   [
+    "chai",
+    "chai",
+    4.41,
+    13.23,
+    12.95
+   ]
+  ],
+  "rowLastGap": 4.4,
+  "pixelVsGame": 0.4500000000000002
+ },
+ "1280x665|game": {
+  "g": 6.83,
+  "cards": [
+   [
+    "paani",
+    "water",
+    6.83,
+    8.32,
+    7.84
+   ],
+   [
+    "chai",
+    "chai",
+    6.83,
+    8.32,
+    7.84
+   ]
+  ],
+  "rowLastGap": 6.82,
+  "pixelVsGame": 0.4800000000000004
+ },
+ "1280x665|one": {
+  "g": 6.83,
+  "cards": [
+   [
+    "paani",
+    "water",
+    6.83,
+    8.32,
+    7.84
+   ],
+   [
+    "chai",
+    "chai",
+    6.83,
+    8.32,
+    7.84
+   ]
+  ],
+  "rowLastGap": 6.82,
+  "pixelVsGame": 0.4800000000000004
+ },
+ "1280x665|two": {
+  "g": 6.83,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    6.83,
+    6.82,
+    7.71
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    6.83,
+    8.32,
+    8.71
+   ]
+  ],
+  "rowLastGap": 6.82,
+  "pixelVsGame": 0.8899999999999997
+ },
+ "1280x665|mixed": {
+  "g": 6.83,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    6.83,
+    6.82,
+    7.71
+   ],
+   [
+    "chai",
+    "chai",
+    6.83,
+    16.76,
+    16.71
+   ]
+  ],
+  "rowLastGap": 6.82,
+  "pixelVsGame": 0.8899999999999997
+ },
+ "1920x1080|game": {
+  "g": 8.4,
+  "cards": [
+   [
+    "paani",
+    "water",
+    8.4,
+    9.88,
+    10.29
+   ],
+   [
+    "chai",
+    "chai",
+    8.4,
+    9.88,
+    10.29
+   ]
+  ],
+  "rowLastGap": 8.38,
+  "pixelVsGame": 0.40999999999999837
+ },
+ "1920x1080|one": {
+  "g": 8.4,
+  "cards": [
+   [
+    "paani",
+    "water",
+    8.4,
+    9.88,
+    10.29
+   ],
+   [
+    "chai",
+    "chai",
+    8.4,
+    9.88,
+    10.29
+   ]
+  ],
+  "rowLastGap": 8.38,
+  "pixelVsGame": 0.40999999999999837
+ },
+ "1920x1080|two": {
+  "g": 8.4,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    8.4,
+    8.38,
+    9.02
+   ],
+   [
+    "amli ji chutney",
+    "tamarind chutney",
+    8.4,
+    8.38,
+    9.02
+   ]
+  ],
+  "rowLastGap": 8.38,
+  "pixelVsGame": 0.6399999999999988
+ },
+ "1920x1080|mixed": {
+  "g": 8.4,
+  "cards": [
+   [
+    "fudino ji chutney",
+    "mint chutney",
+    8.4,
+    8.38,
+    9.02
+   ],
+   [
+    "chai",
+    "chai",
+    8.4,
+    20.26,
+    20.02
+   ]
+  ],
+  "rowLastGap": 8.38,
+  "pixelVsGame": 0.6399999999999988
+ }
+}

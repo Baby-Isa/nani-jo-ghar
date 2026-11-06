@@ -4,9 +4,9 @@
     python3 build/tools/cards/card-build-sheet.py <raw dir> <out dir>
 
 <raw dir> is card-build.mjs's --out (one folder per size, measure.json). Writes to <out dir>:
-  panel-<size>.png    the side panel's order card: chai's own order, all one line, all two lines, mixed (BEFORE above, AFTER below),
+  panel-<size>.webp   the side panel's order card: chai's own order, all one line, all two lines, mixed (BEFORE above, AFTER below),
                       then AFTER with the English hidden and with one English peeking
-  screens-<size>.png  the pop-up card (chai's word, then "fudino ji chutney"), Nani's box, Nana's bubble, the shelf pills, the word
+  screens-<size>.webp the pop-up card (chai's word, then "fudino ji chutney"), Nani's box, Nana's bubble, the shelf pills, the word
                       moment's cards: BEFORE left, AFTER right
   pixels.json         every AFTER row's last gap read off the pixels: the lowest dark pixel over the divider's span, above the divider
 Prints one line per row: g, the row's last gap as the game set it (every card, the ones scrolled out of view too), and for each card
@@ -107,7 +107,7 @@ for size in sizes:
     hid = [label(trim_foot(load(size, f"after-panel-{p}-{c}")), f"AFTER: English {p}, {names[c]}", GREEN) for c in ["mixed", "two"] for p in ["hidden", "peek"]]
     s = grid([before, after, hid], f"{size}: the order card in the side panel (Nani's box shut, the next order's card under it); 2x pixels")
     if s:
-        s.save(os.path.join(OUT, f"panel-{size}.png"), optimize=True)
+        s.save(os.path.join(OUT, f"panel-{size}.webp"), "WEBP", quality=90, method=6)
     # the pop-up, Nani's box, the bubble, the pills, the word moment
     rows = []
     for nm, txt in [("popup-own", "the pop-up card"), ("popup-long", "the pop-up card, a long word")]:
@@ -134,7 +134,7 @@ for size in sizes:
     if s:
         if s.width > 4000:
             s = fit(s, 4000)
-        s.save(os.path.join(OUT, f"screens-{size}.png"), optimize=True)
+        s.save(os.path.join(OUT, f"screens-{size}.webp"), "WEBP", quality=90, method=6)
     # the last gap, off the pixels (AFTER, the English shown)
     for c in cases:
         m = M.get(f"{size}|after|{c}")
