@@ -41,6 +41,14 @@ front). The pills' rule stays green; the chai contract run had 0 breaks.
 8. **The pill check's 1920x1080 L4 is timing-flaky**: its 30 s wait for the pills is close to the order's intro there (27 s, in
    the old tree and the new); one run in three found no pills. Not a layout fault (the same run's pills pass when they come);
    worth a longer wait in `pillcheck.mjs` (a fix-list row if it bites again).
+9. **The swap broke contract-53 once, fixed in the check's measure.** The first contract run had 6 breaks of "the help's light is
+   3.5 times the size of cook-paani: it should hug it" (L1 and L3 at 740x320). The light itself is unchanged (it hugs the bottle and
+   its word pill, as before); the denominator changed: the old pantry-v2 bottle sat on a wide canvas, the new cut is cropped tight,
+   so the slim bottle's own box is small beside its pill. The check now measures a shelf thing as its picture and its pill together
+   (`build/sandbox/lib/contract-hook.mjs`, `contract.mjs` check53; chai's pill records `cardH`); the CHAI-33 fault it guards (one
+   box over three things) is still caught by its "two things in one box" rule, and its unit tests pass. Rerun: 0 breaks.
+   The first run's other 16 breaks (contract-18, -22, -74, -79: timing of ticks, lines and lights) did not come back in the rerun;
+   the old tree's run the same evening had 2 (contract-74), so they are load-timing flakes, not the swap.
 
 ## 1. The mapping
 
@@ -133,7 +141,8 @@ and by the order's word cards while chai is up (`ui.js` `s02Jar`), so the card s
 **My call, beyond the brief's eight:** chai's shelf also puts out cumin and mustard as tea decoys (`teaDecoys`, L1-L4 by the seed);
 left on the old pictures they would have put a second lid family back on the shelf, so they take FJ01's walnut jars (the sheet that
 copies FA01). The old files all stay in the repo: the pantry-v2 bare jars are still used by baking, daar, the pantry and the clinic
-prototype; the s02 C5 jars by the pantry (`fetch`); none is deleted. `look-rules.json`'s named batch `chai-shelf` now lists the ten
+prototype; the s02 C5 jars by the pantry (`fetch`); none is deleted. Chai's load manifest (`art.assets.stations["chai-tray"].files`)
+names the ten new files, one by one (not the whole stove folder). `look-rules.json`'s named batch `chai-shelf` now lists the ten
 new pictures.
 
 ## 6. The size classes on chai's shelf (ART-51)
@@ -186,7 +195,16 @@ ART-53).
 - Judge batch: `build/screenshots/shelf-swap/judge/brief-01.md` (ART-50, ART-51, ART-53), for the orchestrator's judge.
 - Pills: `node build/tools/review/pillcheck.mjs`: 20 of 20 pass (1920x1080 L4 on a second run; Flaws 8).
 - Contract: `COOK_TEST_PORT=8861 ... node build/sandbox/run.mjs --touched cook:chai-tray,lab:cook/chai-tray --parallel 3
-  --budget-min 20 --check` (run 20261106-1733, resumed once): CONTRACT_RESULT.
-- `node build/tools/review/checks.mjs`: CHECKS_RESULT.
+  --budget-min 20 --check`: run 20261106-1733 (resumed once) 22 breaks (Flaws 9); after the contract-53 fix, run 20261106-1811
+  (`--budget-min 24`, all 60 pages): **"CONTRACT PASSED: 0 breaks over 60 pages"**, 0 page errors, every flow reached its end.
+  Its `--check` still says FAILED on 20 "new" findings: all the order card's small taps and text in the side panel (`.oc-part`
+  "dudh", "khun na", the speaker, the dots), which the swap does not touch; the old tree's run (586e972 copied to scratch,
+  `--root`-style) has the same kind, 16, varying with the shuffled order. Not baselined by me.
+- `node build/tools/review/checks.mjs` (full, on e80a282 plus the manifest line): unit 644 pass 0 fail; words, static (822 known,
+  0 new), **leak "20 configs at every level"** (an earlier run the same hour failed on clinic and snap, games this step does not
+  touch; green on the rerun), bump, specs, docs, fixlist, recordings ok; **art** "383 picture(s): 325 pass, 58 flag, 0 exception,
+  0 fail"; size "416 MB"; **load** first FAILed (chai's page asked for five of the new pictures outside its manifest: the swap
+  forgot `data/cook.json` art.assets.stations chai-tray files), fixed by naming the ten files there; `--only load`: "29/29 pages
+  load only what's on their screen".
 - Rows: ART-50, ART-51, ART-53 to **to fix: check** (built; the judge and Zafar's eye to come), ART-52 **to fix: code** (chai's
   shelf built; daar, the pantry, the clinic and `sizecheck.mjs` to do).
