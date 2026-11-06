@@ -92,6 +92,7 @@
       const T = f.tea;
       const yf = T.bottom - (T.bottom - T.top) * lv;
       const y = b.oy + yf * b.h;
+      f.surf = y; // (the tea's surface in the glass, where the stream meets it)
       // CHAI-88 (Zafar, 5 Nov evening, his phone: "if you zoom in to the halfway line and look just outside the edge of the glass, you'll
       // see kind of a black shadow ... as the tea fills the glass, you also get this black shadow going up in line with the level of the
       // tea, all along the outside edge on both sides ... the only thing that changes is what's inside the glass"): the full picture is
@@ -134,6 +135,7 @@
     }
     const P = f.prof;
     if (!P) return;
+    f.surf = P.bottom - (P.bottom - P.top) * Math.max(0, lv);
     if (lv <= 0.002) {
       f.tea.style.clipPath = "polygon(0 0, 0 0, 0 0)";
       f.top.style.opacity = "0";
@@ -347,11 +349,21 @@
     // tail falls in with a last drop, tip back
     // (CHAI-87, Zafar 5 Nov: "add a tea pouring sound to the word focus": the pour is heard, the glass's ring rising as it fills; was
     // the quiet loop, its event only)
+    // (Zafar, 6 Nov: "the chai pouring stream isn't visible inside the glass, it stops as it enters the glass"): a side-on glass's stream
+    // is drawn over the glass (css: the glass picture isn't clear enough to show it through) and ends at the tea's surface as it
+    // rises, so it is seen falling inside the glass into the tea, never through it
+    const reach = (sl) => {
+      if (!o.side || !sl.fill || sl.fill.surf == null) return;
+      const top = parseFloat(stream.style.top);
+      const surf = sl.cy - g / 2 + sl.fill.surf + 2;
+      if (surf > top) stream.style.height = `${(surf - top).toFixed(1)}px`;
+    };
     const pourFill = async (sl) => {
       tiltTo(0, 320);
       await wait(320);
       if (!alive()) return;
       stream.classList.remove("ending");
+      reach(sl);
       if (o.streamWipe) {
         wipeTo(0, 104, 0, "head"); // (hidden until it runs down)
         stream.classList.add("on");
@@ -373,6 +385,7 @@
           const u = Math.min(1, (now - t0) / dur);
           // (a pour fills steadily and slows a touch as it is tipped back)
           drawTea(sl.fill, to * (u < 0.85 ? u / 0.85 * 0.96 : 0.96 + 0.04 * ((u - 0.85) / 0.15)));
+          reach(sl);
           if (loop && loop.pitch) loop.pitch(0.2 + u * 0.8);
           if (u < 1) root.requestAnimationFrame(step);
           else res();
