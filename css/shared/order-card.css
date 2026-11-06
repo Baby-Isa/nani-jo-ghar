@@ -670,6 +670,9 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
    css/shared/tokens.css). The roll-out drops the ":root.njg-lora" from these lines. ---------- */
 /* Lora 600 for the order's headline, 500 for Nani's line in her light box (Fable's weights, Zafar 6 Nov) */
 :root.njg-lora .oc-card.oc-s14 .oc-headline { font-weight: 600; }
+/* (SH-192 with Lora: its letters sit high in their line, so the words are set .05em lower to stay centred between the card's top and the
+   item cards: panelcheck measured 18.4 above / 20.6 below at 1280, over its 2 px; the phones were within it, 3.0 / 3.6) */
+@media (min-height: 501px) { :root.njg-lora .oc-card.oc-s14 .oc-headline { position: relative; top: .05em; } }
 :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line, :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line .wp-text { font-weight: 500; }
 /* Cook's Kutchi words and its bubbles (css/cook.css .wp-text, .wr-pill b, the ladder lines and dishes): Lora 600, they were 800, which
    Lora draws at its heaviest (the gate's class is the kit's, so its rules live in the kit: build/lint/static.mjs kit) */
