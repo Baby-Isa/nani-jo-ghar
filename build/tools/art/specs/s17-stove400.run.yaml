@@ -19,7 +19,7 @@ house: {attach: true}
 approvals: |-
   - Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
   - No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
-  - ONE stop: after FA01 (part A), post its chat link and wait for Zafar's "go". Every later shelf sheet copies its jar, lid and light, so he looks at it once before the other 41 sheets.
+  - No stops: the run is unsupervised (Zafar, 6 Nov: "not stop for my feedback, i want it to run unsupervised"). FA01 (part A) is the anchor every later shelf sheet copies (its jar, lid and light): judge it hardest against its checks, redo it until it passes, then carry on without waiting.
 delivery: download
 amend: true
 runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
@@ -498,7 +498,7 @@ parts:
 - id: A
   title: 'THE ANCHOR: CHAI''S SHELF, ONE SHEET'
   intro: 'The eight things on chai''s shelf, one batch: the water bottle, the milk carton, the tea and sugar jars and the four small spice jars, one camera, one light, one pale oak lid family. Every later side-on sheet attaches the kept FA01.'
-  stop: 'Part A done: STOP. Post FA01''s chat link in the log and wait for Zafar''s "go" (or his one-line change, which you apply as an amended redo of FA01). Then carry on with part B.'
+  stop: 'Part A done: post FA01''s chat link in the log and carry straight on with part B (no waiting: Zafar, 6 Nov, the run is unsupervised).'
   items:
   - lines: [FA01]
 - id: B

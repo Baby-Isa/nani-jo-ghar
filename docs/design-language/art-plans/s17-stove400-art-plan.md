@@ -14,7 +14,7 @@ PowerToys Awake on.
 
 | Part | What | Sheets | Items |
 |---|---|---|---|
-| A | The anchor: chai's shelf as one sheet (bottle, carton, tea and sugar jars, the four small jars), then a stop for Zafar's look | 1 | 8 |
+| A | The anchor: chai's shelf as one sheet (bottle, carton, tea and sugar jars, the four small jars); no stop (Zafar, 6 Nov: unsupervised) | 1 | 8 |
 | B | The live games: the spice and dry-goods jars, packs, produce, chai's kettle and flask; the top-down katoris, food states, kit and dishes | 25 | 210 |
 | C | The prototypes: eggs at breakfast, baking, the corn stall, the cake | 10 | 83 |
 | D | The bank: dishes the family cooks that no game has yet | 6 | 45 |
@@ -33,7 +33,7 @@ the garnish that tells it apart from directly above (6 Nov: the four chais by cu
 3. **Magenta and glass:** produce and loose food go on magenta (the art pipeline's rule for food); glass, steel and packs on grey,
    because metal and glass pick up a magenta tint. Dishes are on grey (their plates and bowls are steel or white).
 4. **The lid family is the anchor's.** If FA01's lids drift (four lid styles, as the v2 jars had), every later sheet copies the drift:
-   the one stop after part A is there so Zafar sees it once.
+   the run is unsupervised (Zafar, 6 Nov), so FA01 is judged hardest on its lids and redone until they are one family.
 5. **Contents that read wrong at 40 CSS px:** cumin and fennel, chilli powder and garam masala, white sugar, salt and semolina look
    alike in a jar. The look column names a shape cue for each (ridged, round, crystal, grain); the game's shelf never puts two
    lookalikes in one row except as the level's deliberate lookalike (chai L4: salt beside sugar).

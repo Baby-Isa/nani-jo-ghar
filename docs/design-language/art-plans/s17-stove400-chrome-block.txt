@@ -50,7 +50,7 @@ STALLS. A tab is stalled when its screen shows no change (no progress text, no i
 APPROVALS
 - Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
 - No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
-- ONE stop: after FA01 (part A), post its chat link and wait for Zafar's "go". Every later shelf sheet copies its jar, lid and light, so he looks at it once before the other 41 sheets.
+- No stops: the run is unsupervised (Zafar, 6 Nov: "not stop for my feedback, i want it to run unsupervised"). FA01 (part A) is the anchor every later shelf sheet copies (its jar, lid and light): judge it hardest against its checks, redo it until it passes, then carry on without waiting.
 
 SAFETY RULES (always)
 - Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
@@ -72,7 +72,7 @@ RUN ORDER. Line format: ID (person) | attach | save as | check
 PART A: THE ANCHOR: CHAI'S SHELF, ONE SHEET (1)
 The eight things on chai's shelf, one batch: the water bottle, the milk carton, the tea and sugar jars and the four small spice jars, one camera, one light, one pale oak lid family. Every later side-on sheet attaches the kept FA01.
 FA01 (prompt FS) | jar-family.png, style-anchor.png | fa01-chai-shelf-v1.png | ANCHOR | slots: {N} = 8; {GRID} = 4 by 2; {GROUND} = flat neutral mid-grey #808080; {ITEMS} = 1. a clear plastic water bottle, full of water, a plain pale blue cap, no label; 2. a plain white and pale blue milk carton with a white screw cap, no print; 3. a tall glass jar full of loose black tea leaves (dark, crinkly, dry), a pale oak screw lid; 4. a tall glass jar full of white granulated sugar (fine sparkling grains), a pale oak screw lid; 5. a small glass jar full of plump pale green cardamom pods, a pale oak screw lid; 6. a small glass jar full of knobbly fresh ginger root pieces, one cut yellow face, a pale oak screw lid; 7. a small glass jar full of whole papery white garlic cloves, a pale oak screw lid; 8. a small glass jar full of coarse white sea-salt crystals (clear, angular, glinting: never round pearls), a pale oak screw lid; {EMPTY} = Every cell holds one item.
-Part A done: STOP. Post FA01's chat link in the log and wait for Zafar's "go" (or his one-line change, which you apply as an amended redo of FA01). Then carry on with part B.
+Part A done: post FA01's chat link in the log and carry straight on with part B (no waiting: Zafar, 6 Nov, the run is unsupervised).
 
 PART B: THE LIVE STOVE GAMES (CHAI, DAAR, MAANI, CHAAT, SAMOSA, SEKELO) (25)
 The shelf sheets copy FA01; the top-down sheets copy TB01 (the first top-down sheet). Send TB01 as soon as a window is free: it unblocks every other top-down sheet.
