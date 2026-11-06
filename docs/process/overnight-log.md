@@ -77,3 +77,5 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 19:27 UK · progress table 11 / three of four merged and passed; card + fonts (P) finishing / next: merge P, Fable judges, checks, contract run, publish
 - 19:52 UK · merged card + fonts (P); Fable 12/12 pass; full checks green on everything merged / next: chai contract run, then publish
 - 20:03 UK · chai contract run on all four merged: 1 timing break (contract-74, a tap 1218 ms under load), its path re-run 0 breaks over 3 pages; the 20 'new' findings are the lab flows with no baseline yet / next: publish to main for Zafar's review
+- 2026-11-06 20:18 UK · Published 20261106T200832Z to main (19657cd5); Pages serving it.
+- 20:18 UK · handover written for the new chat (status.md Next chat)

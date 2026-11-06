@@ -8,29 +8,29 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (6 Nov 2026, 04:00 UK):** Sprint 17. **Live on `main`: 20261106T090836Z** (09:11 UK, on Zafar's word: the pills that fit their word, SH-219; the word moment's stream inside the glass behind its front lip, CHAI-90; the overnight tools and reports). The overnight
-run (`docs/process/overnight-brief-2026-11-06.md`, with Zafar's launch edits: no chai standard fill; token size steps, not true
-sizes) is done on branch `ccr-1f71c98a-wwowh8` (pushed; it holds everything from `claude/vibrant-hopper-v3yexp` too). The morning
-report is `build/reports/overnight-2026-11-06.md`: what's done, 32 numbered decisions, launches and tokens.
+**Where things stand (6 Nov 2026, 20:20 UK):** Sprint 17. **Live on `main`: 20261106T200832Z** (20:18 UK, on Zafar's word, for his
+review of chai). Branch `ccr-1f71c98a-wwowh8` (pushed) = `main`. In this publish, each judged by Fable, chai only unless said:
+- **Juice:** Zafar's picked sounds and effects (CHAI-92/93, CHAI-87, SH-226: `build/reports/juice-chai-wired-2026-11-06.md`); the
+  tray glass's drop re-fixed after a Fable FAIL (brief-02 PASS). Knob and flame sounds reach every stove game.
+- **Card and fonts:** Lora and Nunito Sans self-hosted (`assets/fonts/`, `css/shared/fonts.css`), the paired item card, the 85%
+  divider, equal gaps, the ink-measured last gap (SH-222/223/224/227: `build/reports/card-build-chai-2026-11-06.md`; the roll-out
+  steps are in it). Long English that can't fit at 10 px wraps (e.g. "tamarind chutney" on phones).
+- **Stove redo + chai's shelf:** walnut jars, size classes L 100 / M 91 / S 84 with the 40 px floor (ART-50/51/53:
+  `build/reports/stove-redo-landed-2026-11-06.md`). Round-2 redos: TF09 bhajia, TD06 dabeli.
+- **Cook redo:** only the walnut rolling pin in Nani's shop; the new flames failed Fable (lopsided), so the hobs keep the old ring
+  (ART-57 redraw). `build/reports/cook-redo-landed-2026-11-06.md`.
+- Bulbs gone everywhere; the help comes on chai (SH-228). The day's feedback: `docs/feedback/chai-play-2026-11-06.md`.
 
-- **Pills that fit their word (SH-219):** built, Fable PASS, chai contract run clean; live. The stove art run (unsupervised, no stop)
-  was handed to Zafar at about 08:30 to run.
-- **Reports, each with a Fable read:** `art-retrospective-2026-11-06.md` (the colour tool `build/tools/art/artcolour.py`),
-  `fonts-across-the-game-2026-11-06.md` (C, Fraunces for every word, recommended), `sound-and-juice-chai-2026-11-06.md`,
-  `stove-art-400-2026-11-06.md` (the block ready: `docs/design-language/art-plans/s17-stove400-chrome-block.txt`, branch fields on
-  `ccr-1f71c98a-wwowh8`), `real-people-art-2026-11-06.md`.
-- **New rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English 7.9 px on phones), ART-44 (seven
-  shipped baked shadows, found by the colour tool, now checked at every push).
+**Next, in this order (Zafar, 6 Nov):** his review of chai on the live site, then sign chai off; then the chai standard and the gap
+analysis; then finish Sprint 17 (`docs/sprints/S17-chai-done-families.md`). The skies run lands from him (cut and judge it).
 
-**Next, in order (once Zafar answers the morning report):** the fonts change (half a day); the sound lab page then
-chai's sounds; the stove art run, part A (the chai shelf sheet) first, then the shelf swap.
-
-**Open questions to Zafar:** the morning report's 32 decisions ("yes to all except ...").
+**Open questions to Zafar:** the reports' own decisions: the Cook redo's 3 (keep today's knob; leave the tomato and rai cuts),
+the stove redo's lid-rule widening, the juice's Mixkit licence and the done sparkle on every glass, the card's smaller pop-up on
+short phones; SH-229 (the shop's tick button) and the white/black jar pairs at 740x320 (Fable's note on the shelf).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/overnight-2026-11-06.md`. Work on branch
-> `ccr-1f71c98a-wwowh8` (pushed; `main` is the live site). Wait for my answers to the morning report's decisions; tell me before
-> launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Work on branch `ccr-1f71c98a-wwowh8` (`main` is the live site). I'm
+> reviewing chai live; take my notes with `/feedback`, then we sign chai off and do the chai standard and the gap analysis.
 
 ## The fix list
 
@@ -50,6 +50,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+6 Nov 2026, published 20:18 UK (19657cd5, 20261106T200832Z): chai for Zafar's review: the juice, the 6 Nov card and fonts, the walnut shelf with size classes, the walnut rolling pin; `--force` on his word ("then we can publish for me to review").
 
 4 Nov 2026, published 16:06 UK, live 16:49 (2aae00ff, b575c206, 20261104T155132Z): Zafar's three replays of 4 Nov (L1, L2, L4: `docs/feedback/chai-play-2026-11-04.md`), the word moment on pack s17-wm2, the card's flight, the ladder between games, the shelf (`build/reports/s17-chai-replay-2026-11-04.md`); `--force` on his word; Pages held up by a GitHub incident.
 
