@@ -121,7 +121,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 - **Cut:** each sheet by its gutters (`artcut.py`, job type `grid`: `rows` 2 for side-on, 3 for top-down; `glass: true` for the jar
   and bottle sheets, partial alpha against the measured grey; magenta sheets keyed hard). Trim, pad 16 px, WebP with alpha, at
   most 512 px tall; the `@2x` never past the source. Names from the CSV's `id` column: `shelf-<id>-f.webp` side-on,
-  `<id>-t.webp` top-down, in `assets/cook/items/s17-stove400/`.
+  `<id>-t.webp` top-down, in a new folder, assets/cook/items/s17-stove400.
 - **Wire (no game code in this run):** each item's class goes into its catalogue entry (`data/cook.json` words, a `size: "L"|"M"|"S"|"W"`
   field) and the shelf scales by class instead of by group (the report's implementation plan). The chai shelf's eight files swap
   first; the old v2 and bare jars stay in the repo until the swap is judged.

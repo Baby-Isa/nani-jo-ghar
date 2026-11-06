@@ -413,7 +413,7 @@ t-tool-chai-stirring-spoon-long,chai stirring spoon (long),,,tool,T,clean,,grey,
 t-tool-turner-for-maani-flat,turner for maani (flat),,,tool,T,clean,,grey,LONG,maani,,new,B,TK03,"turner for maani (flat), empty and clean, seen from directly above",the turner has no word (picture only)
 t-tool-corn-holder-husk,corn holder (husk),,,tool,T,clean,,grey,LONG,corn,,new,C,TK05,"corn holder (husk), empty and clean, seen from directly above",
 t-dish-masala-chai-in-a-glass,masala chai in a glass,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,masala chai in a glass,have,B,,,live served/ art
-t-dish-black-chai-kari-chai,black chai (kari chai),kari chai,kari: confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,black chai (kari chai),have,B,,,live served/ art
+t-dish-black-chai-no-milk,black chai (no milk),chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,black chai (no milk),have,B,,,live served/ art
 t-dish-ginger-chai,ginger chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,ginger chai,new,B,TD01,"ginger chai, served, seen from directly above",
 t-dish-cardamom-chai,cardamom chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai,cardamom chai,new,B,TD01,"cardamom chai, served, seen from directly above",
 t-dish-mint-chai,mint chai,chai,confirmed,dish,T,served,"plate, bowl or glass",grey,L,chai;bank,mint chai,new,B,TD01,"mint chai, served, seen from directly above",
