@@ -1,0 +1,127 @@
+# The run spec for pack s17-cook-redo: Cook's honest redos after the re-tuned review (the redo list's block `cook`, chai's
+# leftovers first, then daar and chaat, then walnut where there is wood). Nothing the stove run draws.
+# The plan: docs/design-language/art-plans/s17-cook-redo-art-plan.md.
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-cook-redo.run.yaml --check
+#   python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-cook-redo.run.yaml
+pack: s17-cook-redo
+title: 'Cook''s redos: chai''s flames and hob, the chopped tomato and rai, walnut rolling pins'
+plan: docs/design-language/art-plans/s17-cook-redo-art-plan.md
+plan_branch: ccr-1f71c98a-wwowh8
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: ccr-1f71c98a-wwowh8
+dest: sources/art/s17-cook-redo
+real_people: false
+house:
+  attach: true
+approvals: '- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+
+  - No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
+
+  - No stops: the run is unsupervised (Zafar, 6 Nov).'
+delivery: download
+amend: true
+runner:
+  windows: 3
+  send_gap_seconds: 60
+  stall_minutes: 6
+  hard_minutes: 10
+  redos: 2
+  commit_batch: 6
+  flush_minutes: 25
+refs:
+  style-anchor.png: sources/art/style-anchor-v1.png
+  jar-family.png: sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png
+  food-heaps.png: sources/art/cook-v3/s5-fillings-top-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  KH01:
+    prompt: KT
+    attach:
+    - style-anchor.png
+    save: kh01-chai-hob-v1.png
+    check: HOB
+    slots:
+      N: '5'
+      GRID: 3 by 2
+      GROUND: 'flat neutral mid-grey #808080'
+      ITEMS: '1. a ring of small gas flames on a burner, LOW: short, soft, calm Olympic Blue (a calm mid blue) flames with pale warm tips, no burner drawn; 2. the same ring of gas flames, HIGH: the same calm Olympic Blue flames, taller and fuller; 3. a round hob knob, OFF: dark charcoal with a brushed-steel ring, its pointer straight up; 4. the same knob, ON: its pointer turned a quarter to the right, a soft warm amber glow round its ring; 5. a round brushed-steel tray, empty'
+      EMPTY: The last cell stays empty (plain ground).
+  KF01:
+    prompt: KT
+    attach:
+    - food-heaps.png
+    - style-anchor.png
+    save: kf01-daar-chaat-v1.png
+    check: FOOD
+    slots:
+      N: '2'
+      GRID: 2 by 1
+      GROUND: 'flat magenta #ff00ff'
+      ITEMS: 1. a loose heap of freshly chopped tomato cubes, a true but calm tomato red (soft, ripe, not fire-engine red), juicy cut faces; 2. a small cream glazed ceramic bowl full of tiny round dark brown-black mustard seeds
+      EMPTY: Every cell holds one item.
+  KW01:
+    prompt: KS
+    attach:
+    - jar-family.png
+    - style-anchor.png
+    save: kw01-walnut-glass-v1.png
+    check: SIDE
+    slots:
+      N: '3'
+      GRID: 3 by 1
+      GROUND: 'flat neutral mid-grey #808080'
+      ITEMS: 1. a slim straight Indian rolling pin (velan), thicker in the middle and tapering to both ends, in smooth mid walnut wood (not too dark), lying level; 2. a rolling pin with two handles, in smooth mid walnut wood (not too dark), lying level; 3. a plain empty clear chai glass (a small straight tumbler), matte glass with one soft highlight
+      EMPTY: Every cell holds one item.
+parts:
+- id: A
+  title: 'CHAI''S LEFTOVERS: THE FLAMES AND THE HOB'
+  intro: The two gas flames in a calm blue with the hob's knobs and the station's tray, one batch.
+  items:
+  - lines:
+    - KH01
+- id: B
+  title: DAAR AND CHAAT
+  intro: The chopped tomato toned to a real tomato, the mustard seeds in one bowl.
+  items:
+  - lines:
+    - KF01
+- id: C
+  title: WALNUT WHEREVER THERE IS WOOD
+  intro: The two rolling pins in walnut, not too dark, and chai's empty glass.
+  items:
+  - lines:
+    - KW01
+checks:
+  HOB:
+    text: the five items in a 3 by 2 grid in the order listed, each straight from above (rings perfect circles); the flames a CALM mid blue with pale warm tips, never electric cyan or neon; the low ring clearly shorter than the high; the two knobs the same knob; light from the upper left; one flat grey ground, no shadow; no text
+    judge:
+      aspect:
+      - 1
+      - 1
+      bg: flat
+      pieces_min: 4
+  FOOD:
+    text: the two items straight from above, true food colours, calm not loud (the tomato a real ripe tomato red); the heap look of the attached heaps; one flat magenta ground, no shadow; no text
+    judge:
+      aspect:
+      - 1
+      - 1
+      bg: none
+      sweets: true
+  SIDE:
+    text: the three items exactly side-on, the rolling pins lying level and filling 85% of their cells' width, in mid walnut wood (never light oak or pine, never near-black); the glass clear and matte with one soft highlight; light from the upper left; one flat grey ground, no shadow; no text
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces_min: 3
+passfail:
+- Any text, letters, numbers, labels or logos, even fake ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- 'Electric cyan, neon or fire-engine colours: every colour calm and natural.'
+- 'Light oak or pine wood: wood is walnut, not too dark.'
+- A shadow, a reflection, a floor, a hob or a table under any item; two items merged; the order changed.

@@ -1,0 +1,116 @@
+You're making 3 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. References come from GitHub by the screenshot route (MOVING IMAGES, step 1): nothing is ever needed from Zafar to start. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-1f71c98a-wwowh8/docs/design-language/art-plans/s17-cook-redo-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (KT, KS) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/ccr-1f71c98a-wwowh8/
+Reference images, by the name the run order uses:
+ style-anchor.png  RAW + sources/art/style-anchor-v1.png
+ jar-family.png    RAW + sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png
+ food-heaps.png    RAW + sources/art/cook-v3/s5-fillings-top-v1.png
+ house-swatch.png  RAW + build/tools/art/data/house-swatch.png (the house swatch strip: see HOUSE LOOK)
+Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
+Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
+
+MOVING IMAGES (references in, kept images stay put until the end)
+Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
+
+1. INTO CHATGPT (references): the screenshot route (Zafar, 5 Nov: "it should get images it needs from github"). Your upload tool refuses files you fetched yourself ("Files you created cannot be uploaded"), but it does take your own screenshots, so a reference goes in as a screenshot of itself. Never ask Zafar to attach, upload or drag anything, and never stop the run for a reference: this route always works.
+   a. Open the reference's RAW address (WHERE FILES LIVE) in its own tab and wait until the picture shows whole. Chrome shows a picture on its own on a dark background: a small one at its own size in the middle, a large one shrunk to fit the tab. Leave the zoom at 100%.
+   b. Take a screenshot of that tab and note its screenshot id against the reference's name (e.g. "option1.png = screenshot 12"). Keep that tab open for the whole run and reuse the same screenshot for every prompt that names the reference; take it again only if the id stops working.
+   c. In the prompt's fresh ChatGPT chat, upload the screenshots into the composer with your image-upload tool (onto the message box as a drop target, or the composer's own file input), exactly the references the line names, in the order it names them. Check the composer shows exactly that many thumbnails before you paste.
+   d. Paste the prompt, then add this one sentence at its end: "Each attached picture is a browser screenshot of the reference: use only the picture itself and ignore the dark border around it."
+
+2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest kept try of that chat, by its title and thumbnail), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
+
+3. OUT OF CHATGPT: only at the very end, or when Zafar says "stop" or "download": all at once from the Library page (https://chatgpt.com/library) by ticking the kept images and downloading the selection (see AT THE END). Until then every kept image stays in its chat, and its chat link, title and save-as name are in THE LOG.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (screenshotting references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
+
+THE TICK. Repeat until every line is KEPT or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
+   FAIL with redos left: put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the references its line names as MOVING IMAGES says (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) open and screenshot the references the next READY prompts need (MOVING IMAGES, step 1); (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, get only the references the first prompts need (MOVING IMAGES), send them, and get the rest during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+APPROVALS
+- Zafar: keep this laptop awake for the whole run (Mac: run `caffeinate -dims` in Terminal, charger in, lid open; Windows: PowerToys Awake on).
+- No people in this run: you judge every image with the checks below. Redo only for a failed check or a PASS/FAIL point.
+- No stops: the run is unsupervised (Zafar, 6 Nov).
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it. The only change allowed is filling a code box's {SLOTS} and, where a line ends with "slots:", putting each slot's words from that line into the code box's matching {SLOT}, word for word (a code box with a {SLOT} is never sent unfilled). The one addition allowed: the HOUSE LOOK sentence and its swatch strip.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on. A reference is never a reason to stop or to ask him: MOVING IMAGES step 1 gets every one from GitHub as a screenshot.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with its slots filled for that line (the words after "slots:" on the line), and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it in a fresh chat with the same attachments, at most 2 redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong.
+6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: CHAI'S LEFTOVERS: THE FLAMES AND THE HOB (1)
+The two gas flames in a calm blue with the hob's knobs and the station's tray, one batch.
+KH01 (prompt KT) | style-anchor.png | kh01-chai-hob-v1.png | HOB | slots: {N} = 5; {GRID} = 3 by 2; {GROUND} = flat neutral mid-grey #808080; {ITEMS} = 1. a ring of small gas flames on a burner, LOW: short, soft, calm Olympic Blue (a calm mid blue) flames with pale warm tips, no burner drawn; 2. the same ring of gas flames, HIGH: the same calm Olympic Blue flames, taller and fuller; 3. a round hob knob, OFF: dark charcoal with a brushed-steel ring, its pointer straight up; 4. the same knob, ON: its pointer turned a quarter to the right, a soft warm amber glow round its ring; 5. a round brushed-steel tray, empty; {EMPTY} = The last cell stays empty (plain ground).
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: DAAR AND CHAAT (1)
+The chopped tomato toned to a real tomato, the mustard seeds in one bowl.
+KF01 (prompt KT) | food-heaps.png, style-anchor.png | kf01-daar-chaat-v1.png | FOOD | slots: {N} = 2; {GRID} = 2 by 1; {GROUND} = flat magenta #ff00ff; {ITEMS} = 1. a loose heap of freshly chopped tomato cubes, a true but calm tomato red (soft, ripe, not fire-engine red), juicy cut faces; 2. a small cream glazed ceramic bowl full of tiny round dark brown-black mustard seeds; {EMPTY} = Every cell holds one item.
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: WALNUT WHEREVER THERE IS WOOD (1)
+The two rolling pins in walnut, not too dark, and chai's empty glass.
+KW01 (prompt KS) | jar-family.png, style-anchor.png | kw01-walnut-glass-v1.png | SIDE | slots: {N} = 3; {GRID} = 3 by 1; {GROUND} = flat neutral mid-grey #808080; {ITEMS} = 1. a slim straight Indian rolling pin (velan), thicker in the middle and tapering to both ends, in smooth mid walnut wood (not too dark), lying level; 2. a rolling pin with two handles, in smooth mid walnut wood (not too dark), lying level; 3. a plain empty clear chai glass (a small straight tumbler), matte glass with one soft highlight; {EMPTY} = Every cell holds one item.
+Part C done.
+
+CHECKS (by check ID)
+HOB: the five items in a 3 by 2 grid in the order listed, each straight from above (rings perfect circles); the flames a CALM mid blue with pale warm tips, never electric cyan or neon; the low ring clearly shorter than the high; the two knobs the same knob; light from the upper left; one flat grey ground, no shadow; no text
+FOOD: the two items straight from above, true food colours, calm not loud (the tomato a real ripe tomato red); the heap look of the attached heaps; one flat magenta ground, no shadow; no text
+SIDE: the three items exactly side-on, the rolling pins lying level and filling 85% of their cells' width, in mid walnut wood (never light oak or pine, never near-black); the glass clear and matte with one soft highlight; light from the upper left; one flat grey ground, no shadow; no text
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- Electric cyan, neon or fire-engine colours: every colour calm and natural.
+- Light oak or pine wood: wood is walnut, not too dark.
+- A shadow, a reflection, a floor, a hob or a table under any item; two items merged; the order changed.
+
+HOUSE LOOK (every image; judge it with the checks above)
+- House colours, from Sanzo Wada's A Dictionary of Color Combinations (combinations 283, 249, 311 and 200): Ochre Red (brick red), Carmine Red (dark red), Pompeian Red (dark red), Hay's Russet (maroon), Pale Burnt Lake (maroon), Sulpher Yellow (pale soft yellow), Ivory Buff (cream), Cream Yellow (light ochre), Olive Buff (light soft yellow), Ecru (stone), Olive Ocher (ochre), Yellow Ocher (light ochre), Cinnamon Rufous (cinnamon), Khaki (khaki), Dark Greenish Glaucous (light greyish green), Light Green Yellow (light yellow), Chromium Green (soft green), Venice Green (teal), Dark Medici Blue (dark greyish teal). Each picture's main colours come from ONE Wada combination, in lighter or darker tones (white, greys and near-black are free); a picture that mixes colours from different combinations, or has a colour the book lacks, is redone (Zafar, 6 Nov). Wood (lids, boards, handles, trays) is walnut, never light oak or pine.
+- Edge finish: clean edges, no white halo, no rim light, no baked or drop shadow; light from the upper left.
+- Attach house-swatch.png (see the references) as the last file of every new picture, never of an edit, and add this one sentence at the end of the pasted prompt, word for word: "Use the attached colour strip only as the palette (tones of these colours; never draw the strip, swatches or any text). Clean edges, no white halo, no baked shadow, light from the upper left."
+
+THE LOG
+One line per kept image:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link and title. At the very end, or as soon as Zafar says "stop" or "download" in this chat, post the whole log as one block, then download every kept image at once from ChatGPT's Library (Zafar, 5 Nov: the bulk download): open https://chatgpt.com/library. Hover over the first kept image and tick the small check box in its bottom-right corner; once one is ticked, every other image shows its own check box in its bottom-right corner when you hover over it: tick each other kept image (by its chat's title and thumbnail; the newest kept try of each chat), and nothing else. Then press the download button the selection bar shows: Chrome's normal download into the Downloads folder (one file each, or one zip). Log what landed at once, in the run order, as "DOWNLOADED <n>: <ChatGPT's file name> -> <save as>"; ChatGPT names the files, you cannot rename them. If the selection or its download is refused, download the kept images one at a time with each one's own download button instead, and log the same way. When every kept image is down, post the whole log once more with that numbered file -> save-as list at its end: Zafar renames from it and pushes the folder and the log to the repo himself. Never page JavaScript, never a GitHub upload, never a file picker. If every download is refused, say so, log it, and post the ordered list of chat links, titles and save-as names instead; Zafar downloads from it.
