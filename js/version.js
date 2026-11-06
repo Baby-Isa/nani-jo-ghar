@@ -10,7 +10,7 @@
  * before each push to main.
  */
 (function (global) {
-  const V = "20261106T085157Z";
+  const V = "20261106T090836Z";
   global.NJG_V = V;
   /** url -> url?v=<stamp> (relative URLs only; data:, blob: and full URLs are left alone). */
   global.njgV = function (url) {
