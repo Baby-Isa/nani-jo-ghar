@@ -1,0 +1,2 @@
+Fraunces, Andika, Fredoka and Nunito: SIL Open Font License 1.1 (https://openfontlicense.org), from Google Fonts, latin subset.
+Mock only (build/tools/fonts/shoot.mjs serves them); the game does not load these files.
