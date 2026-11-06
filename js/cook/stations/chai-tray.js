@@ -775,17 +775,27 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // while the pills fit (CHAI-66); where they would touch, it widens evenly on both sides as far as the play area's margins let it
     // (the left margin and the tick's clearance, whichever is nearer the centre); past that the groups' gaps close to 20 px, then the
     // pills sit close
-    const PILL_ROOM = CHIP.w + 12;
+    // SH-219 (Zafar, 6 Nov: "the text in the pills and the speaker button next to the pills are super small on mobile ... it should follow
+    // some logic or principle or scaling rule or minimum ... so the solution works nicely as a rule for all screens"): a word pill grows
+    // until its word is at least PILL_MIN_CSS on screen (the platforms' smallest readable label), the speaker with it; never past
+    // PILL_MAX (what the shelf band holds under the jars), and never so wide that two pills touch (the row's rule, below). A laptop
+    // already shows it larger and keeps 1
+    const PILL_MIN_CSS = 13, PILL_MAX = 1.5, PILL_TEXT = 25;
+    let chipK = Math.max(1, Math.min(PILL_MAX, PILL_MIN_CSS / (PILL_TEXT * ppw)));
+    const PILL_ROOM = CHIP.w * chipK + 12;
     const LEFT = VL, RIGHT = VR;
     const nG = shelfIds.length - 1;
     let gapW = GROUP_GAP;
-    let slotW = Math.min(PITCH, (roomW - nG * gapW) / slotsN);
+    let slotW = Math.min(Math.max(PITCH, PILL_ROOM), (roomW - nG * gapW) / slotsN); // (SH-219: a grown pill widens its slot where there is room)
     if (slotW < PILL_ROOM) {
       const roomMid = 2 * Math.min(mid - LEFT, RIGHT - mid);
       const fit = (g) => (roomMid - nG * g) / slotsN;
       if (fit(gapW) < PILL_ROOM) gapW = Math.max(20, Math.min(GROUP_GAP, (roomMid - slotsN * PILL_ROOM) / Math.max(1, nG)));
       slotW = Math.min(PILL_ROOM, fit(gapW));
     }
+    // (as large as the floor asks, as far as the slots allow without touching)
+    chipK = Math.max(1, Math.min(chipK, (slotW - 12) / CHIP.w));
+    const chipY = Math.min(CHIP.y, 896 - (CHIP.h / 2) * chipK);
     const width = slotsN * slotW + nG * gapW;
     const x0 = mid - width / 2;
     const shelf = {};
@@ -853,7 +863,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // SH-159 (Zafar, 29 Oct, round 3): on the s14 look the word pill's own ladder (js/core/progress.js pill, the central rules'
       // words.pill): written until picked right three times in a row (first try, no peek); a miss brings it back
       const showWord = pillShows14(id);
-      const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
+      const chip = S.track(S.add.container(x, chipY).setDepth(D.item + 2).setScale(chipK));
       const bg = S.add.graphics();
       bg.fillStyle(0x28190a, 0.1);
       bg.fillRoundedRect(-CHIP.w / 2, -CHIP.h / 2 + 2, CHIP.w, CHIP.h, 12);
@@ -868,7 +878,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         Cook.unlockAudio();
         if (Cook.onLabel) Cook.onLabel(id);
         Lang.speakWord(id);
-        S.tweens.add({ targets: chip, scale: 1.08, duration: 90, yoyo: true });
+        S.tweens.add({ targets: chip, scale: chipK * 1.08, duration: 90, yoyo: true });
       });
       img.chip = chip;
       return img;
