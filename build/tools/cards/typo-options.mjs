@@ -388,22 +388,27 @@ async function panel(page, size) {
       await page.screenshot({ path: join(dir, `${cs}-${name}.png`), clip: { x: 0, y: 0, width: Math.ceil(s.r) + 2, height: Math.ceil(s.b) }, animations: "disabled" }).catch((e) => console.log("shot", e.message));
     }
   }
-  // round 3 (--hidden r3w85): the English hidden (its dots, a tap shows it for 3 s), then the first card's English peeking
+  // round 3 (--hidden r3w85): the English hidden (its dots, a tap shows it for 3 s), then one card's English peeking as the game does it
+  // (word-card.js: the English .wc14-peek and .revealed, its dots .wc14-gone): the first card in the mixed row, "tamarind chutney" (the
+  // second, the one that wraps) in the all-two-lines row
   const hid = val("hidden", null);
   if (hid && OPTIONS[hid]) for (const cs of ["mixed", "two"]) {
     await page.evaluate(`(${writeCase.toString()})(${JSON.stringify(CASES[cs])})`);
     for (const st of ["hidden", "peek"]) {
       await inject(page, SHUT + "\n" + OPTIONS[hid].css);
-      await page.evaluate((st) => document.querySelectorAll("#side .m-order > .oc-card .oc-row.oc-it14").forEach((c, i) => {
-        c.classList.add("wc14-hide-en"); const e = c.querySelector(".wc14-en"); if (e) e.classList.toggle("wc14-peek", st === "peek" && i % 4 === 0);
-      }), st);
+      await page.evaluate(([st, pi]) => document.querySelectorAll("#side .m-order > .oc-card .oc-row.oc-it14").forEach((c, i) => {
+        c.classList.add("wc14-hide-en"); const on = st === "peek" && i % 4 === pi;
+        const e = c.querySelector(".wc14-en"), d = c.querySelector(".wc14-en-dots");
+        if (e) { e.classList.toggle("wc14-peek", on); e.classList.toggle("revealed", on); }
+        if (d) d.classList.toggle("wc14-gone", on);
+      }), [st, cs === "two" ? 1 : 0]);
       await settle(page, OPTIONS[hid]);
       await page.evaluate(() => { const m = document.querySelector("#mission"); if (m) m.scrollTop = 0; document.querySelectorAll("#side .oc-row14").forEach((r) => { r.scrollLeft = 0; }); });
       const m = await page.evaluate(`(${measure.toString()})()`);
       data[`${size}|${st}-${cs}|${hid}`] = m;
       await page.screenshot({ path: join(dir, `${st}-${cs}-${hid}.png`), clip: { x: 0, y: 0, width: Math.ceil(m.side.r) + 2, height: Math.ceil(m.side.b) }, animations: "disabled" }).catch((e) => console.log("shot", e.message));
     }
-    await page.evaluate(() => document.querySelectorAll("#side .oc-row.oc-it14").forEach((c) => { c.classList.remove("wc14-hide-en"); c.querySelector(".wc14-en")?.classList.remove("wc14-peek"); }));
+    await page.evaluate(() => document.querySelectorAll("#side .oc-row.oc-it14").forEach((c) => { c.classList.remove("wc14-hide-en"); c.querySelector(".wc14-en")?.classList.remove("wc14-peek", "revealed"); c.querySelector(".wc14-en-dots")?.classList.remove("wc14-gone"); }));
   }
   await inject(page, "");
 }
