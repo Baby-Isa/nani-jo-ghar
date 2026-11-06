@@ -46,6 +46,9 @@ export const S14_CHECKS = {
   "contract-87": { item: "one-light", title: "one light at a time", how: "Every lit event (the S14 probe: the light layers up, .njg-onboard): two or more light layers up together for longer than 300 ms is a break: their dims stack (the screen darker each time) and the older one's box stays on a control whose step has ended (CHAI-50, Zafar, 30 Oct: \"a black tint ... that never goes away, although it gets even more darker ... the gold square box doesn't go away either\")." },
   "contract-88": { item: "item-said", title: "no item on the order card before it is said", how: "Every rows14 event (the S14 probe: the order panel's item rows, the words of those shown and how many wait as a dashed slot): a row shown and later back to its dashed slot (the item seen, then hidden as the person greets, then shown again) is a break (SH-171, Zafar, 30 Oct: \"before the guy even comes to give the order ... it gives the order card for ... one onion ... when he comes and he says, Salaam Alaikum, the item card for the onion disappears, but it leaves a dotted outline and then reappears again ... You shouldn't see the item until he's given the order\")." },
   "contract-89": { item: "helper-call", title: "the helper says the item as her card opens", how: "Cook flows: every Cook line tagged role call that starts while Nani's helper card names an item (the S14 probe's helper event: her arrow up) and is closed, and more than 1.5 s (scaled by the test speed) after her card last opened, is a break: the next item said before her card shows it (SH-172, Zafar, 30 Oct: \"that instruction should be said out loud, only at the same time as the order hint is shown ... when she expands her card to help you ... that's a rule for all the games always\"). A control's call (no item named) is contract-78's." },
+  "contract-92": { item: "light-room", title: "the help's light leaves room round its thing", how: "Every spot sample (lib/contract-hook.mjs: the first-time help's drawn holes and Cook's tappable pictures with a word): for the thing whose middle is in a lit box, each side of the box must sit at least 6 px out from the thing's picture, unless that side stops short of a neighbouring thing (within 6 px of it, never over it) or at the screen's edge; a lit box that covers a neighbour by more than 2 px is a break too, once per page (SH-230, Zafar 6 Nov night: 'a general rule that works in all cases that leaves some padding around the object+pill+face icon ... unless it ... touches another item, in which case it reduces ... as much as it needs to')." },
+  "contract-93": { item: "own-words", title: "every part of an order is spoken", how: "Cook flows: every line said while an order is given (from the order's request to the station's start, before a skip tap), by a person at the counter, must play (a family clip or, while testing, the device voice): a silent part is a break, once per page (CK-59, Zafar 6 Nov night: 'the second person ordering didn't say milk ... even though they ordered milk in their tea'; the same word said by an earlier person within 10 s was taken for a repeat)." },
+  "contract-94": { item: "wm-card", title: "the word moment's card is the 6 Nov card", how: "Every wmcard sample (lib/contract-hook.mjs: each word-moment card's Kutchi and English faces and the gap from its English's box to its speaker's top): with the 6 Nov type on (:root.njg-lora) the Kutchi must be Lora and the English Nunito Sans, and the speaker must sit at least 2 px clear of the English, once per page (SH-231, Zafar 6 Nov night: 'check that the card that pops up is within the new style of cards that we've created and has the same fonts and spacings'; the judge, 6 Nov: the speaker pressed into 'half')." },
 };
 
 // 78
@@ -293,5 +296,56 @@ export function check89(r, tl, v, add) {
     if (l.t0 - openedAt <= HELPER_CALL_MS / speed) continue;
     add("contract-89", l.t0, `"${l.text.trim()}" was said while Nani's helper card named the item and was closed: the item said before her card shows it`);
     return;
+  }
+}
+
+// 92 (SH-230): the help's light leaves room round its thing, or stops short of a neighbour, or at the screen's edge
+export const LIGHT_ROOM_PX = 6;
+export function check92(r, tl, add) {
+  const W = r.w || (r.size ? +String(r.size).split("x")[0] : 0), H = r.h || (r.size ? +String(r.size).split("x")[1] : 0);
+  for (const e of ev(tl, "spot")) {
+    const things = e.things || [];
+    for (const h of e.holes || []) {
+      const mid = (x) => ({ x: (x.l + x.r) / 2, y: (x.t + x.b) / 2 });
+      const lit = things.filter((x) => { const c = mid(x); return c.x >= h.l && c.x <= h.r && c.y >= h.t && c.y <= h.b; });
+      if (lit.length !== 1) continue; // (two things in one light is contract-53's)
+      const t = lit[0];
+      const others = things.filter((x) => x !== t);
+      const over = others.find((o) => Math.min(h.r, o.r) - Math.max(h.l, o.l) > 2 && Math.min(h.b, o.b) - Math.max(h.t, o.t) > 2 && !(mid(o).x >= h.l && mid(o).x <= h.r && mid(o).y >= h.t && mid(o).y <= h.b));
+      if (over) { add("contract-92", e.t, `the light round ${t.id} covers its neighbour ${over.id}: it should stop short of it`); return; }
+      const sides = [["left", t.l - h.l, (o) => o.r <= t.l && o.r >= h.l - LIGHT_ROOM_PX, h.l <= 1], ["right", h.r - t.r, (o) => o.l >= t.r && o.l <= h.r + LIGHT_ROOM_PX, W && h.r >= W - 1], ["top", t.t - h.t, (o) => o.b <= t.t && o.b >= h.t - LIGHT_ROOM_PX, h.t <= 1], ["bottom", h.b - t.b, (o) => o.t >= t.b && o.t <= h.b + LIGHT_ROOM_PX, H && h.b >= H - 1]];
+      for (const [name, room, near, edge] of sides) {
+        if (room >= LIGHT_ROOM_PX || edge) continue;
+        if (others.some((o) => near(o) && (name === "left" || name === "right" ? Math.min(o.b, h.b) > Math.max(o.t, h.t) : Math.min(o.r, h.r) > Math.max(o.l, h.l)))) continue;
+        add("contract-92", e.t, `the light round ${t.id} leaves ${Math.round(room)} px on its ${name} with nothing beside it: at least ${LIGHT_ROOM_PX} px`);
+        return;
+      }
+    }
+  }
+}
+
+// 93 (CK-59): every part of an order is spoken
+export function check93(r, tl, v, add) {
+  if (!isCookFlow(r.flow)) return;
+  const life = (w) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === w);
+  const req = life("request").find((n) => /order/.test(n.reason || "")) || null;
+  const st = tl.find((e) => e.type === "c" && e.k === "life" && e.what === "stage-start" && /^cook:station/.test(e.reason || ""));
+  const skip = life("order-skip")[0];
+  const t0 = req ? req.t : -Infinity, t1 = Math.min(st ? st.t : Infinity, skip ? skip.t : Infinity);
+  for (const l of v.lines) {
+    if (l.t0 < t0 || l.t0 >= t1 || !(l.text || "").trim() || l.who === "cook" || l.role === "call") continue;
+    if (l.plays && l.plays.length) continue;
+    add("contract-93", l.t0, `${l.who || "a person"}'s "${l.text.trim()}" was shown in the order but not spoken`);
+    return;
+  }
+}
+
+// 94 (SH-231): the word moment's card is the 6 Nov card
+export function check94(tl, add) {
+  for (const e of ev(tl, "wmcard")) {
+    for (const c of e.list || []) {
+      if (e.lora && (!/lora/i.test(c.kf || "") || !/nunito sans/i.test(c.ef || ""))) { add("contract-94", e.t, `the word moment's card "${c.word}" is set in ${c.kf} / ${c.ef}: Lora for the Kutchi, Nunito Sans for the English`); return; }
+      if (c.gap != null && c.gap < 2) { add("contract-94", e.t, `the word moment's card "${c.word}": its speaker sits ${c.gap} px from its English (at least 2 px clear)`); return; }
+    }
   }
 }

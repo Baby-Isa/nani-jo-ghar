@@ -790,6 +790,18 @@ export const CONTRACT_HOOK = `(() => {
     const list = [...side.querySelectorAll("#btn-help, #btn-home, #btn-book, .rail-btn, .side-rail .njg-gu-btn, .side-cog, .side-menu button")].filter(shown).map((b) => { const r = b.getBoundingClientRect(); return { sel: desc(b), out: r.left < sr.left - 1 || r.right > sr.right + 1 || r.top < sr.top - 1 || r.bottom > sr.bottom + 1 }; });
     return { side: R(sr), list: list.filter((x) => x.out).slice(0, 8) };
   };
+  // contract-94 (SH-231): each word-moment card's faces and its speaker's room under the English
+  const wmCards = () => {
+    const fam = (el) => (el ? getComputedStyle(el).fontFamily.split(",")[0].replace(/["']/g, "").trim() : null);
+    const list = [];
+    for (const c of document.querySelectorAll(".wm .wc14-big")) {
+      if (!shown(c)) continue;
+      const k = c.querySelector(".wc-slot.wc14-k"), en = c.querySelector(".wc-slot.wc14-en"), sp = c.querySelector(".wc14-spk");
+      const eb = en && en.getBoundingClientRect(), sb = sp && sp.getBoundingClientRect();
+      list.push({ word: ((k && k.textContent) || "").trim().slice(0, 20), kf: fam(k), ef: fam(en), gap: eb && sb && eb.height > 0 ? Math.round(sb.top - eb.bottom) : null });
+    }
+    return list.length ? { list, lora: document.documentElement.classList.contains("njg-lora") } : null;
+  };
   const spotNow = () => {
     const holes = [];
     let dark = 0; // CHAI-36: a help layer up and dimming (not marked empty) with no lit box in it
@@ -882,6 +894,8 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("layout", [sp.map((x) => x.card + x.text), rl2.list.map((x) => x.sel)])) emit({ k: "layout", spill: sp, rail: rl2.list, side: rl2.side });
     const so = safe(spotNow, null);
     if (!same("spot", so ? [so.holes, so.dark, so.things.map((x) => x.id + Math.round(x.l / 8))] : null) && so) emit({ k: "spot", ...so });
+    const wc = safe(wmCards, null);
+    if (!same("wmcard", wc) && wc) emit({ k: "wmcard", ...wc });
     // contract-49 (S13-B2): the classes on the end screen that are not the kit's
     const ke = safe(kitEnd, null);
     if (ke && !same("kitend", ke)) emit({ k: "kitend", ...ke });

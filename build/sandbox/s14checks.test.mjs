@@ -18,9 +18,9 @@ const lines = (...l) => ({ lines: l.map(([text, t0]) => ({ text, t0, role: "call
 
 test("the new checks are in the contract table with their rows", () => {
   for (const k of Object.keys(S14_CHECKS)) { assert.ok(CHECKS[k], k); assert.ok(S14_CHECKS[k].how.length > 60); }
-  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89"]);
-  const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d)\b/.test(k));
-  assert.equal(rows.length, 12, "each check names the fix-list rows it guards");
+  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89", "contract-92", "contract-93", "contract-94"]);
+  const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d|9[234])\b/.test(k));
+  assert.equal(rows.length, 15, "each check names the fix-list rows it guards");
 });
 
 test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice, pause, dim' is red", () => {
@@ -256,4 +256,34 @@ test("contract-74 on lab.html: the station's own start note counts (the host's s
   const segs = [{ key: "host:cook/chai-tray|cook:station1:marble", t0: 1000, t1: 20000 }];
   assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl, segs).length, 0);
   assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl.slice(0, 1).concat(tl.slice(2)), segs).length, 1, "no station start at all");
+});
+
+test("contract-92 (SH-230): the light leaves room, or stops short of a neighbour, or at the edge", async () => {
+  const { check92 } = await import("./lib/contract-s14.mjs");
+  const jar = { id: "jar", l: 100, t: 100, r: 160, b: 200 };
+  const r = { size: "740x320" };
+  const spot = (h, things) => [c("spot", 1, { holes: [h], things })];
+  assert.equal(run(check92, r, spot({ l: 90, t: 90, r: 170, b: 210 }, [jar])).length, 0, "10 px all round");
+  assert.match(run(check92, r, spot({ l: 98, t: 90, r: 170, b: 210 }, [jar]))[0].msg, /2 px on its left/, "tight with nothing beside it");
+  const nb = { id: "nb", l: 0, t: 100, r: 97, b: 200 };
+  assert.equal(run(check92, r, spot({ l: 99, t: 90, r: 170, b: 210 }, [jar, nb])).length, 0, "stops 2 px short of a neighbour");
+  assert.match(run(check92, r, spot({ l: 80, t: 90, r: 170, b: 210 }, [jar, nb]))[0].msg, /covers its neighbour/, "over a neighbour");
+  assert.equal(run(check92, r, spot({ l: 0, t: 90, r: 170, b: 210 }, [{ id: "e", l: 1, t: 100, r: 60, b: 200 }])).length, 0, "at the screen's edge");
+});
+
+test("contract-93 (CK-59): a part of the order shown but not spoken is red", async () => {
+  const { check93 } = await import("./lib/contract-s14.mjs");
+  const r = { flow: "cook:chai-tray" };
+  const tl = [c("life", 0, { what: "request", reason: "cook:order" }), c("life", 9000, { what: "stage-start", reason: "cook:station" })];
+  const v = (plays) => ({ lines: [{ text: "dudh,", t0: 2000, who: "nana", plays: [{}] }, { text: "dudh,", t0: 5000, who: "cousin", plays }] });
+  assert.equal(run(check93, r, tl, v([{}])).length, 0, "both said");
+  assert.match(run(check93, r, tl, v([]))[0].msg, /cousin's "dudh,"/, "the second person silent");
+});
+
+test("contract-94 (SH-231): the word moment's card in Lora and Nunito Sans, its speaker clear", async () => {
+  const { check94 } = await import("./lib/contract-s14.mjs");
+  const ok = { word: "adh", kf: "Lora", ef: "Nunito Sans", gap: 6 };
+  assert.equal(run(check94, [c("wmcard", 1, { lora: true, list: [ok] })]).length, 0);
+  assert.match(run(check94, [c("wmcard", 1, { lora: true, list: [{ ...ok, kf: "Fraunces" }] })])[0].msg, /Lora/);
+  assert.match(run(check94, [c("wmcard", 1, { lora: true, list: [{ ...ok, gap: -3 }] })])[0].msg, /-3 px/);
 });
