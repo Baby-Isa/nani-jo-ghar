@@ -6,9 +6,9 @@
 pack: s17-clinic-redo
 title: 'The clinic: the redos, the toothbrush at Zafar''s angle, and its items at three times, one batch'
 plan: docs/design-language/art-plans/s17-clinic-redo-art-plan.md
-plan_branch: ccr-1f71c98a-wwowh8
+plan_branch: claude/exciting-sagan-cz9d5t
 repo: Baby-Isa/nani-jo-ghar
-raw_branch: ccr-1f71c98a-wwowh8
+raw_branch: claude/exciting-sagan-cz9d5t
 dest: sources/art/s17-clinic-redo
 real_people: false
 house:
@@ -45,6 +45,7 @@ lines:
     - clinic-style.png
     save: ca01-plasters-v1.png
     check: ANCHOR
+    colour_exception: 'a colour-coded set: the colours are the game (the four plaster colours a child is asked for)'
     slots:
       N: '8'
       ITEMS: '1. a fabric plaster strip in soft Chromium Green (a calm sage green) with a pale cream pad in its middle, lying flat; 2. the same plaster strip in soft Olympic Blue (a calm mid blue) with a pale cream pad; 3. the same plaster strip in soft Carmine Red (a calm deep red) with a pale cream pad; 4. the same plaster strip in soft Yellow Ocher (a warm golden yellow) with a pale cream pad; 5. a small round plaster, pale warm beige, its round pad in the middle; 6. a medium round plaster, the same beige, the same look, clearly bigger; 7. a large round plaster, the same beige, the same look, the biggest of the three; 8. a curved round plaster for the heel of a foot: an oval beige plaster gently cupped, as if shaped round a heel, its pad in the middle'
@@ -57,6 +58,7 @@ lines:
     - kept:CA01
     save: tb01-toothbrush-angle-v1.png
     check: ANGLE
+    colour_exception: 'a colour-coded set: the colours are the game (the toothbrush matches the shipped blue brushes)'
   TB02:
     prompt: CS
     attach:
@@ -64,6 +66,7 @@ lines:
     - kept:CA01
     save: tb02-toothbrush-views-v1.png
     check: TOOTH
+    colour_exception: 'a colour-coded set: the colours are the game (the toothbrush matches the shipped blue brushes)'
     slots:
       N: '8'
       ITEMS: 1. the toothbrush standing upright, bristles facing us, seen from the front and a little above; 2. the toothbrush lying flat, seen from directly above, bristles up; 3. the toothbrush lying flat, bristles up, a pea-sized blob of white toothpaste on the bristles; 4. the toothbrush seen exactly side-on, bristles up, the handle level; 5. the toothbrush tilted with the bristles pointing up and away; 6. the toothbrush tilted with the bristles pointing down; 7. the toothbrush level, bristles pointing straight away from us, its back square-on (the attached angle); 8. the same, with a pea-sized blob of white toothpaste just showing on the bristle tips
@@ -76,6 +79,7 @@ lines:
     - kept:CA01
     save: dm01-drop-machine-v1.png
     check: MACHINE
+    colour_exception: 'a colour-coded set: the colours are the game (the drop machine''s four dispensers)'
   CB01:
     prompt: CS
     attach:
@@ -85,7 +89,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. a sealed square alcohol-wipe packet in soft Olympic Blue foil, crimped edges, no print; 2. the same wipe packet torn open with the white wipe unfolded flat beside it; 3. a clear glass jug of cold water with a soft Olympic Blue handle; 4. a glass dropper: a clear glass tube with a soft grey rubber bulb; 5. a small medicine bottle of soft Olympic Blue glass with a white screw cap, no label; 6. a single drop of clear water, soft blue-tinted, teardrop-shaped; 7. a rolled white crepe bandage with its loose end hanging a little; 8. brushed-steel tweezers holding a tiny wooden splinter at their tips'
+      ITEMS: '1. a sealed square alcohol-wipe packet in soft Venice Green foil (a calm teal), crimped edges, no print; 2. the same wipe packet torn open with the white wipe unfolded flat beside it; 3. a clear glass jug of cold water with a soft Venice Green handle; 4. a glass dropper: a clear glass tube with a soft grey rubber bulb; 5. a small medicine bottle of soft Venice Green glass with a white screw cap, no label; 6. a single drop of clear water, soft blue-tinted, teardrop-shaped; 7. a rolled white crepe bandage with its loose end hanging a little; 8. brushed-steel tweezers holding a tiny wooden splinter at their tips'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CB02:
@@ -97,7 +101,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. a slim white digital thermometer with a soft Olympic Blue end and a plain blank grey screen; 2. a small brushed-steel cup of milky tea (chai), a soft cream-brown; 3. a round shallow basin of warm water for soaking feet, cream plastic; 4. a white pot of ointment with a soft Chromium Green screw lid, no label; 5. a steel kidney dish; 6. a forehead fever strip: a slim cream strip with a soft row of colour squares (sage, ochre, a calm red), no numbers; 7. a cream face flannel, folded; 8. a small cream tissue box with one tissue standing up, no print'
+      ITEMS: '1. a slim white digital thermometer with a soft Venice Green end (a calm teal) and a plain blank grey screen; 2. a small brushed-steel cup of milky tea (chai), a soft cream-brown; 3. a round shallow basin of warm water for soaking feet, cream plastic; 4. a white pot of ointment with a soft Chromium Green screw lid, no label; 5. a steel kidney dish; 6. a forehead fever strip: a slim cream strip with a soft row of colour squares (sage, ochre, a calm red), no numbers; 7. a cream face flannel, folded; 8. a small cream tissue box with one tissue standing up, no print'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN01:
@@ -121,7 +125,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: 1. a triangular cream cotton sling, folded into a neat triangle; 2. a short roll of soft cream tubular bandage; 3. blunt-ended steel bandage scissors with soft Olympic Blue handles; 4. a white tube of antiseptic cream with a soft Chromium Green cap, no print; 5. three fluffy white cotton wool balls in a little heap; 6. a short stack of round white cotton pads; 7. one long cotton bud, white tips; 8. a small clear plastic pod of saline with a twist-off top
+      ITEMS: 1. a triangular cream cotton sling, folded into a neat triangle; 2. a short roll of soft cream tubular bandage; 3. blunt-ended steel bandage scissors with soft Venice Green handles (a calm teal); 4. a white tube of antiseptic cream with a soft Chromium Green cap, no print; 5. three fluffy white cotton wool balls in a little heap; 6. a short stack of round white cotton pads; 7. one long cotton bud, white tips; 8. a small clear plastic pod of saline with a twist-off top
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN03:
@@ -133,7 +137,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. an otoscope (an ear scope): a dark grey handle and a steel head with a small cone tip; 2. an ophthalmoscope (an eye scope): a dark grey handle and a small round steel head; 3. a plain tongue depressor: a flat stick with round ends, in mid walnut wood (not too dark); 4. a white ear thermometer with a soft Olympic Blue tip cover; 5. a white forehead thermometer (a small hand-held scanner) with a blank grey screen; 6. a finger pulse oximeter: a small white clip with a blank grey screen; 7. a pen torch: a slim steel pen-shaped torch with its small light glowing warm; 8. a reflex hammer: a short steel handle with a soft red rubber triangle head'
+      ITEMS: '1. an otoscope (an ear scope): a dark grey handle and a steel head with a small cone tip; 2. an ophthalmoscope (an eye scope): a dark grey handle and a small round steel head; 3. a plain tongue depressor: a flat stick with round ends, in mid walnut wood (not too dark); 4. a white ear thermometer with a soft Venice Green tip cover (a calm teal); 5. a white forehead thermometer (a small hand-held scanner) with a blank grey screen; 6. a finger pulse oximeter: a small white clip with a blank grey screen; 7. a pen torch: a slim steel pen-shaped torch with its small light glowing warm; 8. a reflex hammer: a short steel handle with a soft red rubber triangle head'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN04:
@@ -145,7 +149,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. a child''s blood pressure cuff in soft Olympic Blue fabric, its tube, a grey squeeze bulb and a round dial with plain ticks and no numbers; 2. a stethoscope: dark grey tubing, steel earpieces and a round steel chest piece, laid in a loose loop; 3. a peak flow meter: a clear plastic tube with a white mouthpiece and a sliding marker, no numbers; 4. a soft cream tape measure in a loose coil, plain tick marks, no numbers; 5. baby weighing scales: a shallow cream tray on a white base with a round dial, plain ticks, no numbers; 6. a round magnifying glass with a walnut handle; 7. a small dental mirror on a slim steel handle; 8. a small plastic hourglass timer with white sand and a walnut frame (not too dark)'
+      ITEMS: '1. a child''s blood pressure cuff in soft Venice Green fabric (a calm teal), its tube, a grey squeeze bulb and a round dial with plain ticks and no numbers; 2. a stethoscope: dark grey tubing, steel earpieces and a round steel chest piece, laid in a loose loop; 3. a peak flow meter: a clear plastic tube with a white mouthpiece and a sliding marker, no numbers; 4. a soft cream tape measure in a loose coil, plain tick marks, no numbers; 5. baby weighing scales: a shallow cream tray on a white base with a round dial, plain ticks, no numbers; 6. a round magnifying glass with a walnut handle; 7. a small dental mirror on a slim steel handle; 8. a small plastic hourglass timer with white sand and a walnut frame (not too dark)'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN05:
@@ -157,7 +161,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. an amber pill bottle with a white child-proof cap, no label; 2. a white pill bottle with a soft Olympic Blue cap, no label; 3. a blister pack of round white tablets, silver backing, no print; 4. a 5 ml oral syringe: a clear barrel with a soft Olympic Blue plunger, NO needle; 5. a white double-ended medicine spoon; 6. a small clear plastic dosing cup; 7. an amber glass bottle of liquid medicine with a white screw cap, no label; 8. a small plain pale paper sachet, no print'
+      ITEMS: '1. an amber pill bottle with a white child-proof cap, no label; 2. a white pill bottle with a soft Venice Green cap (a calm teal), no label; 3. a blister pack of round white tablets, silver backing, no print; 4. a 5 ml oral syringe: a clear barrel with a soft Venice Green plunger, NO needle; 5. a white double-ended medicine spoon; 6. a small clear plastic dosing cup; 7. an amber glass bottle of liquid medicine with a white screw cap, no label; 8. a small plain pale paper sachet, no print'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN06:
@@ -169,7 +173,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. a small white eye-drops bottle with a slim nozzle cap; 2. a small ear-drops bottle with a glass dropper cap; 3. a white nasal spray bottle with its cap off beside it; 4. an inhaler: a cream L-shaped holder with a soft Olympic Blue canister; 5. a spacer: a clear plastic tube with a soft child''s face mask on one end; 6. a child''s nebuliser mask: a soft clear mask with its thin clear tubing in a loose loop; 7. a small cream nebuliser machine, a rounded box with one round button; 8. a round tub of cream with its lid leaning against it'
+      ITEMS: '1. a small white eye-drops bottle with a slim nozzle cap; 2. a small ear-drops bottle with a glass dropper cap; 3. a white nasal spray bottle with its cap off beside it; 4. an inhaler: a cream L-shaped holder with a soft Venice Green canister (a calm teal); 5. a spacer: a clear plastic tube with a soft child''s face mask on one end; 6. a child''s nebuliser mask: a soft clear mask with its thin clear tubing in a loose loop; 7. a small cream nebuliser machine, a rounded box with one round button; 8. a round tub of cream with its lid leaning against it'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN07:
@@ -181,7 +185,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: 1. a pair of soft Olympic Blue examination gloves lying flat; 2. a plain cream box of gloves with one glove poking out, no print; 3. a white pump bottle of hand gel, no label; 4. a pale blue paper face mask with ear loops, flat; 5. a roll of white paper towel; 6. a small clear specimen pot with a white lid; 7. a pedal bin for clinic waste, cream with a steel pedal; 8. a soft cream pillow
+      ITEMS: 1. a pair of soft Venice Green examination gloves (a calm teal) lying flat; 2. a plain cream box of gloves with one glove poking out, no print; 3. a white pump bottle of hand gel, no label; 4. a pale Venice Green paper face mask with ear loops, flat; 5. a roll of white paper towel; 6. a small clear specimen pot with a white lid; 7. a pedal bin for clinic waste, cream with a steel pedal; 8. a soft cream pillow
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN08:
@@ -193,7 +197,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: 1. a small cream box of dental floss; 2. a small plain white toothpaste tube with a soft Olympic Blue cap, no print; 3. a cream plastic rinsing cup; 4. a big friendly model of a white back tooth (a molar); 5. a soft rubber finger toothbrush for a baby, cream; 6. a cream eye patch with its elastic strap; 7. a small soft grey eye-bath cup; 8. a pair of children's glasses with round walnut-brown frames
+      ITEMS: 1. a small cream box of dental floss; 2. a small plain white toothpaste tube with a soft Venice Green cap (a calm teal), no print; 3. a cream plastic rinsing cup; 4. a big friendly model of a white back tooth (a molar); 5. a soft rubber finger toothbrush for a baby, cream; 6. a cream eye patch with its elastic strap; 7. a small soft grey eye-bath cup; 8. a pair of children's glasses with round walnut-brown frames
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CN09:
@@ -215,6 +219,7 @@ lines:
     - clinic-style.png
     save: cd01-today-1-v1.png
     check: SHEET
+    colour_exception: 'a colour-coded set: the colours are the game (the game''s red, blue, green and yellow bandages and its red and blue threads)'
     slots:
       N: '8'
       ITEMS: 1. a clear glass jug of hot water with a soft Carmine Red handle; 2. a soft cream cotton cloth, folded; 3. a rolled bandage in soft Carmine Red; 4. a rolled bandage in soft Olympic Blue; 5. a rolled bandage in soft Chromium Green; 6. a rolled bandage in soft Yellow Ocher; 7. a spool of thread in soft Carmine Red; 8. a spool of thread in soft Olympic Blue
@@ -229,7 +234,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: 1. a spool of thread in soft Chromium Green; 2. a cream pot of cotton buds, the buds standing up; 3. a small white drops bottle with a squeeze body; 4. a hot-water bottle in a soft knitted Carmine Red cover; 5. a wide-toothed comb in soft Yellow Ocher; 6. a small cream dentist's drill handpiece with a steel tip; 7. a clear tube of filling paste, its cap off; 8. a honey jar with a walnut lid (not too dark)
+      ITEMS: 1. a spool of thread in soft Chromium Green; 2. a cream pot of cotton buds, the buds standing up; 3. a small white drops bottle with a squeeze body; 4. a hot-water bottle in a soft knitted Carmine Red cover; 5. a wide-toothed comb in soft Olive Buff (a light soft yellow); 6. a small cream dentist's drill handpiece with a steel tip; 7. a clear tube of filling paste, its cap off; 8. a honey jar with a walnut lid (not too dark)
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot. These are the game''s own items, redrawn in this batch.'
   CD03:
@@ -253,7 +258,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: '1. a small clear bug jar with a perforated steel lid; 2. half a lemon, cut face towards us; 3. a small glass jug of milk; 4. a red apple; 5. a long steel pointer stick with a rounded tip; 6. a heater: a small cream oil-filled radiator; 7. a gel ice pack in soft Olympic Blue; 8. a soft cream hot-water bottle, no cover'
+      ITEMS: '1. a small clear bug jar with a perforated steel lid; 2. half a lemon, cut face towards us; 3. a small glass jug of milk; 4. a red apple; 5. a long steel pointer stick with a rounded tip; 6. a heater: a small cream oil-filled radiator; 7. a gel ice pack in soft Venice Green (a calm teal); 8. a soft cream hot-water bottle, no cover'
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot. These are the game''s own items, redrawn in this batch.'
 parts:
@@ -343,7 +348,7 @@ passfail:
 - Outlines, cel shading, a flat vector look or painterly brushwork.
 - A needle, a blade or anything sharp pointed at the viewer; blood.
 - Sweets, lollies, lollipops, biscuits or chocolates as anything (a sticker sheet is stars only).
-- 'The generator''s bright sky blue (a light electric cyan-blue): every blue is a calm mid Olympic Blue.'
+- 'The generator''s bright sky blue (a light electric cyan-blue): a blue is a calm mid Olympic Blue, and only where the line''s prompt names one.'
 - A shadow, a reflection, a floor or a table under any item; anything crossing into the next cell; two items merged.
 - A cell holding the wrong item, an item missing or drawn twice, or the order changed.
 - 'Light oak or pine: any wood is walnut, not too dark on a lid.'
