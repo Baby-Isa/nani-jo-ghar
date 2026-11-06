@@ -932,6 +932,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         chip.face = [bg, icon];
       }
       chip.cardW = w;
+      chip.cardH = CHIP.h; // (the drawn card's height: the contract's light measure, contract-53)
       pillHit(chip);
       chip.capW = cap;
       chip.showsWord = !!showWord;
