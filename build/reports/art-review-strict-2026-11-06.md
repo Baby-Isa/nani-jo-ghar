@@ -149,6 +149,6 @@ Built on this branch: `artcolour.py` (`palette_fit`, the EXCEPTION level and exi
 
 - Scan: `artcolour.py --batch-by auto --quiet --json` in four jobs (cook/items, the rest of cook, clinic, everything else) over `assets/` without the ChatGPT folder: 2,248 pictures, 22 min; the review recomputed the palette and wood verdicts with the final thresholds on the stored colours.
 - `node --test build/tools/art/artcheck.test.mjs`: 19 of 19 pass. New: one combination passes, two FAIL, the marble is ground, magenta is an EXCEPTION until allowed; a light-oak board FLAGs and a walnut one does not; the size classes (100 / 91 / 84), the 85% cell fill, the floor, and the bible (no `size_cm`); a batch sheet is written; a block takes combination 151's strip. Changed: light is a FAIL (and the jharo, eye-passed, is not; the well is), off-book colour an EXCEPTION; the shadow tests ask only about shadows.
-- `node build/tools/review/checks.mjs`: see the commit; the `art` line reads "no picture changed".
+- `node build/tools/review/checks.mjs`: every line ok (unit 641 pass; docs within every limit); `art` "no picture changed since c7a1ddcafa7b".
 - Sheets looked at: the worst (30) and the Cook items' batch sheet.
 - Not done: no eye on each of the 699 palette FAILs; the 48 batches wait for the judge.
