@@ -14,9 +14,11 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 2. **The colour and look tool (task 2): built.** `build/tools/art/artcolour.py`: main colours against Sanzo Wada's 159 (vendored,
    MIT) and the house family; light direction, white halo, baked shadow, batch consistency, size class; contact sheets. It's wired
    into `artjudge.py` and every paste block now names the house colours and the edge line. Retrospective of 2,248 pictures:
-   [art-retrospective-2026-11-06](art-retrospective-2026-11-06.md). After Fable's view, the tool is being taught a solid-shadow
-   test (the chai pouring pan's dark crescent slipped through), "shipped" by reference, and a fast check of changed pictures at
-   every push (note below when it lands).
+   [art-retrospective-2026-11-06](art-retrospective-2026-11-06.md). After Fable's view the tool learned a solid-shadow test, counts
+   a picture as shipped only when the game uses it, flags stock-looking colours and mixed camera heights on one surface, and now
+   checks every changed picture at each push (`checks.mjs` line `art`). The re-run: the chai shelf's two batches (light, gloss
+   and camera), **7 shipped baked shadows** (ART-44: the thermometer belt, three toothbrushes, two rough clinic pictures, a bowl),
+   and 595 pictures nothing uses.
 3. **Fonts (task 3): options, nothing changed.** [fonts-across-the-game-2026-11-06](fonts-across-the-game-2026-11-06.md): every
    surface, four options mocked on the real screens at five sizes. The big find: one Kutchi word is drawn in three faces in one
    chai round (card Fraunces, Nana's bubble Baloo 2, pills Nunito).
@@ -30,7 +32,8 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 6. **Characters from real people (your question):** [real-people-art-2026-11-06](real-people-art-2026-11-06.md). Yes, Nani and
    the doctor read less AI-made, but it's the process (a locked face, specific features), not the photo: the girl is from the
    locked lineup and still came out as the stock cartoon child because the prompt asked for "large expressive eyes".
-7. **New fix-list rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English at 7.9 px on phones).
+7. **New fix-list rows:** SH-221 (shared buttons' missing tap sound), SH-222 (the order card's English at 7.9 px on phones),
+   ART-44 (seven shipped baked shadows).
 
 ## Decisions ("yes to all except ...")
 
@@ -60,7 +63,8 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 12. The clinic's sky-blue toothbrushes stay; new art is held to the house look. **Recommend yes.**
 13. Light, colour and batch lines are flags; only a baked shadow fails. **Recommend yes.**
 14. The house swatch strip goes with the stove run's prompts (switched on; its first sheet is checked for a painted strip). **Recommend yes.**
-15. Redo first: the chai shelf as one batch (it is part A of the stove run); re-cut the thermometer belt's shadow. **Recommend yes.**
+15. Redo first: the chai shelf as one batch (it is part A of the stove run); re-cut the four clinic pictures with baked shadows
+    (ART-44, about 30 minutes). **Recommend yes.**
 
 **Fonts (task 3)**
 16. One face for a Kutchi word everywhere it appears. **Recommend yes.**
@@ -100,7 +104,7 @@ Your launch edits are in the brief: no chai standard fill; token size steps, not
 | Task 4 sound map | Fable 5.1 | 310k |
 | Task 5 stove list | Opus 5.5, high | 360k |
 | Stove dish looks and blocks | Opus 5.5, high | 185k |
-| Tool fixes after Fable | Opus 5.5, high | (running) |
+| Tool fixes after Fable | Opus 5.5, high | 380k |
 | Fable: pills judge; second reads of 4 and 5; real people; retrospective view; fonts ranking | Fable 5.1 | 27k, 186k, 152k, 147k, 132k, ~150k |
 
 ## Implementation plan
