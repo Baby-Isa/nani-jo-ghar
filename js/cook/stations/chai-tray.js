@@ -197,7 +197,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   // and sparkle are no longer loaded.
   const JUICE_ART = ["sk-2", "sk-3", "sk-4", "sk-5", "st-1", "st-2", "st-3", "td-1", "td-2"].map((n) => [`juice-${n}`, `assets/shared/juice/${n}.webp`]);
   // (and its picked sounds, js/shared/sfx.js FILES: fetched at the start too, so each plays on its moment, never late)
-  const JUICE_SFX = ["knob", "flame", "simmer", "green", "glass", "settle", "sparkle"];
+  const JUICE_SFX = ["knob", "flame", "simmer", "green", "glass", "settle", "sparkle", "pour-tea", "pour-glass", "pour-short"];
   const ART = [
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
     // CHAI-08 (s14, Zafar 29 Oct): the glasses exactly from above, each placed by its rim (GLASS)
@@ -1368,6 +1368,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       art.setOrigin(0.5, 0.5);
       art.y = obj.y - obj.displayHeight / 2;
       await S.fly(art, ox, oy, { duration: 380, arc: 60 });
+      // (Zafar's pick, 6 Nov ~17:45, the short pour A: the first 0.9 s of a real pour as the bottle or carton reaches its tip; never
+      // over a family voice line, js/shared/sfx.js)
+      S.time.delayedCall(170, () => Cook.sfx.pourShort && Cook.sfx.pourShort());
       await new Promise((r) => S.tweens.add({ targets: art, angle: -118, duration: 220, ease: "Sine.easeOut", onComplete: r }));
       // CHAI-64 (Zafar, 1 Nov: "when the milk pours, there's a little white rectangle that comes out ... We should take that out. I
       // don't think we need to draw milk going in, because the colour of the tea changes"; decision 5: water too): no drawn line; the
@@ -1953,10 +1956,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       };
       // (the test hook: where the pan is in its pour, for the filmstrip; frames: the pan's and the glass's)
       Cook.chaiPour = { total: plan.total, marks: M, frames: () => ({ pan: fr.texture.key, glass: gf.texture.key, at: { x: fr.x, y: fr.y }, glassAt: { x: gf.x, y: gf.y } }) };
-      // the pour's sound: Cook's soft pour loop while the chai runs, rising as the glass fills
+      // the pour's sound while the chai runs (CHAI-87; Zafar's pick, 6 Nov ~17:45: pour A, a real pour into a glass, at its own level;
+      // the made loop rising as the glass fills plays only if its file is not in yet)
       let loop = null;
       const sound = (f) => {
-        if (f.phase === "pour" && !loop && Cook.sfx.pourLoop) loop = Cook.sfx.pourLoop() || { pitch() {}, stop() {} };
+        if (f.phase === "pour" && !loop && Cook.sfx.teaPourLoop) loop = Cook.sfx.teaPourLoop() || { pitch() {}, stop() {} };
         if (loop) loop.pitch(f.fill * 0.6);
         if (loop && f.phase === "back") loop = (loop.stop(), null);
       };

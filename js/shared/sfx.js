@@ -14,7 +14,8 @@
  *   Sfx.unlock()                      call inside a tap (iOS) if the page has no other audio
  *   Sfx.muted = true                  silence everything (a grown-up's setting)
  * CHAI-92 / SH-226 (Zafar's picks, 6 Nov, lab/juice.html): the recorded sounds (assets/shared/sfx/, SOURCES.md) play here too, by
- * the same Sfx.play name ("knob", "flame", "green", "glass", "settle", "sparkle": FILES below) and Sfx.loop("simmer"), each at the
+ * the same Sfx.play name ("knob", "flame", "green", "glass", "settle", "sparkle", "pour-short": FILES below) and Sfx.loop ("simmer",
+ * "pour-tea", "pour-glass"), each at the
  * lab's level (the file as cut, gain 1); only the picked files are ever fetched (Sfx.preload, at a station's start):
  *   Sfx.preload([name, ...])          fetch and decode those files now (a file not in yet when its moment comes is skipped: a late
  *                                     sound is a wrong sound)
@@ -293,7 +294,13 @@
     boil: { gain: 0.05, freq: 400, q: 2, wobble: 5 },
   };
   Sfx.loop = function (name, opts) {
-    if (FILES[name] && FILES[name].loop) return fileLoop(name, opts || {});
+    if (FILES[name] && FILES[name].loop) {
+      const h = fileLoop(name, opts || {});
+      // (its file not in yet: the made loop it replaced plays instead, as before: the word moment's pour on a lab page)
+      const was = FILES[name].was || name;
+      if (!h.none || !LOOPS[was] || Sfx.muted || (opts && opts.quiet)) return h;
+      name = was;
+    }
     const L = LOOPS[name];
     const none = { stop() {}, pitch() {} };
     if (!L || Sfx.muted) return none;
@@ -370,8 +377,8 @@
   /* ---------------- the recorded sounds (CHAI-92, SH-226) ----------------
    * Zafar's picks, 6 Nov (lab/juice.html; the row and letter in each comment). file: its stem in assets/shared/sfx/ (SOURCES.md has
    * its source, licence and author); ms: its length (the gate's). Each plays at the lab's level: the file as it was cut and levelled
-   * (build/tools/juice/make_sfx.py: a hit peaks at -16 dBFS, the simmer near -32 dBFS RMS), gain 1. The rows he left open (the pour,
-   * the short pour) keep today's sounds; the files he did not pick stay in the folder for the lab and are never fetched here.
+   * (build/tools/juice/make_sfx.py: a hit peaks at -16 dBFS, the simmer near -32 dBFS RMS), gain 1. The files he did not pick stay in
+   * the folder for the lab and are never fetched here.
    * Mixkit's licence (knob-a, ding-a, sparkle-a) is his decision before the app stores (build/reports/juice-chai-wired-2026-11-06.md).
    */
   const FILES = {
@@ -382,6 +389,12 @@
     glass: { file: "glass-c", ms: 1228 }, // the glass is full: C, a knife on a full water glass (CC0)
     settle: { file: "settle-a", ms: 366 }, // a bottle set down: A, a glass set on a wooden table (CC0)
     sparkle: { file: "sparkle-a", ms: 940 }, // the sparkle's chime: A, a fairy sparkle (Mixkit)
+    // (Zafar, 6 Nov ~17:45: he did pick the pours) tea poured into the glass: A, water from a bottle into a glass (CC0), as a loop at
+    // its own level while the pan pours (the hob, "pour-tea") and in the word moment ("pour-glass": the made loop of that name stays
+    // for a page that has not fetched the file); a short pour, bottle into the pan: A, its first 0.9 s with a fade
+    "pour-tea": { file: "pour-a", ms: 5042, loop: true, fixed: true, was: "pour" },
+    "pour-glass": { file: "pour-a", ms: 5042, loop: true, fixed: true },
+    "pour-short": { file: "pour-a", ms: 900, dur: 0.9 },
   };
   /** name -> the file's stem, for the checks (build/test_shared_sfx_files.mjs) */
   Sfx.files = Object.fromEntries(Object.entries(FILES).map(([k, f]) => [k, f.file]));
@@ -492,7 +505,7 @@
     const go = () => {
       const duck = gateMs(F.ms, opts);
       if (!duck || Sfx.muted) return null;
-      return startBuf(buf, (opts.volume != null ? opts.volume : 1) * duck, { name, under: !!opts.under || F.ms <= SHORT });
+      return startBuf(buf, (opts.volume != null ? opts.volume : 1) * duck, { name, under: !!opts.under || F.ms <= SHORT, dur: F.dur });
     };
     if (opts.delay) {
       if (!gateMs(F.ms, opts)) return false;
@@ -534,7 +547,7 @@
       /** its level, 0..1 (chai: rising with the heat) */
       pitch(k) {
         k = Math.max(0, Math.min(1, k));
-        if (h.ended || Math.abs(k - h.level) < 0.02) return;
+        if (h.ended || F.fixed || Math.abs(k - h.level) < 0.02) return; // (fixed: a pour keeps its own level)
         h.level = k;
         duckLoop(h, Sfx.speaking(), true);
       },

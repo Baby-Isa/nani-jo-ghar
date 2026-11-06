@@ -456,6 +456,10 @@
     settle: () => fx("settle"),
     sparkle: () => fx("sparkle"),
     drop: () => fx("drop"),
+    // (Zafar, 6 Nov ~17:45, pour A and short pour A) the tea poured from the pan into a glass, a loop the caller stops; and the shelf's
+    // water or milk going into the pan, its first 0.9 s
+    teaPourLoop: () => fxLoop("pour-tea"),
+    pourShort: () => fx("pour-short"),
     simmerLoop: (volume) => (global.Sfx && global.Sfx.loop ? global.Sfx.loop("simmer", { quiet: !ctx, volume }) : { stop() {}, pitch() {}, none: true }),
     /** fetch and decode recorded sounds now (a station's start), so each plays on its moment */
     preload: (names) => (global.Sfx && global.Sfx.preload ? global.Sfx.preload(names) : Promise.resolve()),

@@ -66,9 +66,7 @@ test("every sound chai calls exists: a recipe, a loop, or a recorded file on dis
 
 test("chai calls each of Zafar's picks (6 Nov)", () => {
   const names = new Set(calls().map((c) => c.name));
-  for (const n of ["cook-pop", "knob", "flame", "simmer", "green", "glass", "drop", "settle", "sparkle"]) assert.ok(names.has(n), n);
-  // the rows he left open keep today's sounds (the pour loop, the word moment's pour-glass loop)
-  assert.ok(names.has("pour") && names.has("pour-glass"), "the pours keep today's sounds");
+  for (const n of ["cook-pop", "knob", "flame", "simmer", "green", "glass", "drop", "settle", "sparkle", "pour-tea", "pour-glass", "pour-short"]) assert.ok(names.has(n), n);
 });
 
 const SOURCES = rd(join(SFX_DIR, "SOURCES.md"));
@@ -88,7 +86,7 @@ test("every recorded file has its SOURCES.md row, with a licence", () => {
 });
 
 test("only the picked files are named by the game (the others stay for the lab)", () => {
-  assert.deepEqual(Object.values(Sfx.files).sort(), ["ding-a", "flame-b", "glass-c", "knob-a", "settle-a", "simmer-a", "sparkle-a"]);
+  assert.deepEqual([...new Set(Object.values(Sfx.files))].sort(), ["ding-a", "flame-b", "glass-c", "knob-a", "pour-a", "settle-a", "simmer-a", "sparkle-a"]);
   const picked = new Set(Object.values(Sfx.files));
   const others = readdirSync(join(ROOT, SFX_DIR)).filter((f) => f.endsWith(".mp3")).map((f) => f.slice(0, -4)).filter((s) => !picked.has(s));
   const bad = [];
