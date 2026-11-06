@@ -161,4 +161,7 @@ Pending (to be filled after Fable looks at `typo-overview.webp`, `typo-panel-fit
   fair player, five sizes at 2x; each option injected at the order pop-up and at the shelf view, three content cases), then
   `python3 build/tools/cards/typo-sheet.py <dir> build/reports/cards`. The pop-ups were shot again with `--popup-only`. All 111 (105 options by case by size, 6 faces)
   panel measurements: nothing clipped, overlapping or outside its card (the pop-up's flag: flaw 4).
-- `node build/tools/review/checks.mjs`: see the line below.
+- `node build/tools/review/checks.mjs` (6 Nov, 15:25, on 07ff2d1 plus this study): words, static, leak (20 configs), bump, specs, docs,
+  fixlist, recordings, art, size and load (29/29) ok; unit 643 pass, **1 fail: `docs/design-language/art-pipeline.md` 13,528 characters
+  over its 13,500 limit**. This study does not touch that file; the branch has fixed it since (abd993d, "art-pipeline under its word
+  limit"), so the run is green once this branch is merged onto it. No game file changed.
