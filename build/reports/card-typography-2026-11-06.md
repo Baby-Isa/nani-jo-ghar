@@ -441,7 +441,25 @@ pressed against the card's foot, the thing he disliked first.
 
 ### Fable's round-3 pick
 
-(pending)
+The five sheets at phone size; the gaps re-measured off the pixels.
+
+**Flaws first.**
+
+1. **Equal to the line box, not to the eye.** Under an English with a descender ("mint chutney") the three gaps read as one. Under one
+   without ("water", "chai": the all-one-line row, the one he sees most) the letters sit about 7 px above the line against 4.4 below it
+   (`typo3-85.webp`, measured 7 / 5 / 4.5). He asked for equal; fix before the game: measure the last gap to the English's baseline
+   (the descender, about 2 px on the phones, comes off it).
+2. 6 px into the fade at 971x318: the headline is whole and readable. Acceptable.
+3. Hidden and peeking: the dots sit where the English goes; a "tamarind chutney" peek steps the row down 11 px, as today. Leave it.
+4. Nothing clipped or overlapping in any panel.
+
+**Width: 85%.** On the phone 80, 85 and 90 are 44 / 47 / 50 px and look alike; the choice shows at 1280 and 1920. 70 is a dash
+narrower than the button; 100 nearly spans the card and reads as a cut. 85's solid middle matches the 30 px speaker, so line and button
+read as one unit.
+
+**g = 7% (4.4 px).** 6% saves 0.6 px, invisible; the fade case is whole either way.
+
+**Recommendation:** divider 85%, g 7%, the last gap measured to the baseline so all three look equal: yes to all.
 
 ### Decision for Zafar
 
