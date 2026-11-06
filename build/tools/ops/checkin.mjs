@@ -63,7 +63,7 @@ console.log(`Commits: ${commits.length}${commits.length ? ` (${Object.entries(ta
 for (const [t, l] of Object.entries(tags)) console.log(`  ${t}: ${l[0].slice(0, 110)}${l.length > 1 ? ` (+${l.length - 1})` : ""}`);
 
 // reports landed
-const reports = [...new Set(gitSoft("log", ref, `--since=${iso}`, "--diff-filter=A", "--name-only", "--format=", "--", "build/reports/").split("\n").filter(Boolean))];
+const reports = [...new Set(gitSoft("log", ref, `--since=${iso}`, "--diff-filter=A", "--name-only", "--format=", "--", "build/reports/").split("\n").filter((r) => r && !r.includes("/archive/") && /\.md$/.test(r)))]; // (moves into the archive aren't new reports)
 console.log(`Reports landed: ${reports.length ? reports.map((r) => r.replace("build/reports/", "")).join(", ") : "none"}`);
 
 // art on main
@@ -91,6 +91,6 @@ for (const s of seen.values()) console.log(`  ${s}`);
 if (a.has("log")) {
   rotateLog();
   const parts = [`Check-in: ${commits.length} commits${commits.length ? ` (${Object.entries(tags).map(([t, l]) => `${t} ${l.length}`).join(", ")})` : ""}`,
-    reports.length ? `reports ${reports.map((r) => r.replace("build/reports/", "")).join(", ")}` : "", `art ${art.length} of ${target}`, a.val("note") || ""].filter(Boolean);
+    reports.length ? `reports ${reports.slice(0, 6).map((r) => r.replace("build/reports/", "")).join(", ")}${reports.length > 6 ? ` and ${reports.length - 6} more` : ""}` : "", `art ${art.length} of ${target}`, a.val("note") || ""].filter(Boolean);
   console.log(`Logged: ${logLine(parts.join("; ") + ".")}`);
 }
