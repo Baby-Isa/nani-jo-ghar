@@ -24,3 +24,14 @@ test("checks-to-build 23: a report's prose is counted without its tables, headin
   const { proseWords } = await import("./docs.mjs");
   assert.equal(proseWords("# Title\n\nfour words of prose\n\n| a | b |\n|---|---|\n| x y z | w |\n\n```\ncode here\n```"), 4);
 });
+
+test("the handover names its branch, and the starting prompt fetches it (Zafar, 6 Nov)", async () => {
+  const { handoverProblems } = await import("./docs.mjs");
+  const ok = "# s\n\n## Next chat\n\n**Handover branch:** `b1`\n\n**Starting prompt for a new chat:**\n> First `git fetch origin b1`.\n\n## Fix list\n";
+  assert.deepEqual(handoverProblems(ok, "b2", false), []);
+  assert.deepEqual(handoverProblems(ok, "b1", true), []);
+  assert.deepEqual(handoverProblems(ok, "HEAD", true), []);
+  assert.match(handoverProblems(ok, "b2", true)[0], /being written on b2/);
+  assert.match(handoverProblems(ok.replace("**Handover branch:** `b1`", ""), "b1", true)[0], /no "\*\*Handover branch/);
+  assert.match(handoverProblems(ok.replace("git fetch origin b1", "read it"), "b1", false)[0], /must say/);
+});

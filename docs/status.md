@@ -8,8 +8,10 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
+**Handover branch:** `claude/exciting-sagan-cz9d5t` (the newest handover is here; `main` may be a step behind).
+
 **Where things stand (6 Nov 2026, 20:20 UK):** Sprint 17. **Live on `main`: 20261106T200832Z** (20:18 UK, on Zafar's word, for his
-review of chai). Branch `ccr-1f71c98a-wwowh8` (pushed) = `main`. In this publish, each judged by Fable, chai only unless said:
+review of chai). Branch `claude/exciting-sagan-cz9d5t` (pushed) = `main` plus this handover and the handover-branch check. In this publish, each judged by Fable, chai only unless said:
 - **Juice:** Zafar's picked sounds and effects (CHAI-92/93, CHAI-87, SH-226: `build/reports/juice-chai-wired-2026-11-06.md`); the
   tray glass's drop re-fixed after a Fable FAIL (brief-02 PASS). Knob and flame sounds reach every stove game.
 - **Card and fonts:** Lora and Nunito Sans self-hosted (`assets/fonts/`, `css/shared/fonts.css`), the paired item card, the 85%
@@ -29,7 +31,8 @@ the stove redo's lid-rule widening, the juice's Mixkit licence and the done spar
 short phones; SH-229 (the shop's tick button) and the white/black jar pairs at 740x320 (Fable's note on the shelf).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Work on branch `ccr-1f71c98a-wwowh8` (`main` is the live site). I'm
+> First `git fetch origin claude/exciting-sagan-cz9d5t` and work from that branch (it holds the newest handover; `main` is the live site). Read
+> `CLAUDE.md`, then `docs/status.md` "Next chat" only, from that branch. I'm
 > reviewing chai live; take my notes with `/feedback`, then we sign chai off and do the chai standard and the gap analysis.
 
 ## The fix list

@@ -9,9 +9,13 @@
  *   - a fix-list status cell is over STATUS_CHARS or carries an old "· earlier:" chain (history belongs in the history file)
  *   - a regression ID appears twice across the fix list and its archive, or a decision number twice in the log
  *   - a non-live row (built, fixed, retired) sits in the fix list
+ *   - status.md "Next chat" has no "**Handover branch:** `<branch>`" line, its starting prompt doesn't say `git fetch origin
+ *     <branch>`, or a handover being written (status.md changed and not committed, or in the last commit) names a branch other
+ *     than the one it is on (Zafar, 6 Nov: a new chat must know which branch holds the newest handover)
  * Run by checks.mjs ("docs"), so every push and every /review runs it. Change a limit only with Zafar's yes.
  */
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { execSync } from "node:child_process";
 import { join } from "node:path";
 import { args, help, ROOT } from "./lib/common.mjs";
 import { parseRegressions, statusKind } from "./lib/regressions.mjs";
@@ -87,6 +91,7 @@ export function checkDocs() {
     for (const f of readdirSync(join(ROOT, d)).filter((x) => x.endsWith(".md"))) if (!(`${d}/${f}` in DOC_LIMITS)) fails.push(`${d}/${f}: no word limit (add it to DOC_LIMITS in build/tools/review/docs.mjs)`);
   }
   const status = read("docs/status.md");
+  if (status) fails.push(...handoverProblems(status, gitBranch(), statusBeingWritten()));
   if (status && !PROTOTYPE) {
     const m = /## Next chat\n([\s\S]*?)\n## /.exec(status + "\n## ");
     const n = m ? words(m[1]) : 0; (n > NEXT_CHAT ? fails : info).push(`status.md "Next chat": ${n} words (limit ${NEXT_CHAT})`);
@@ -125,6 +130,23 @@ export function checkDocs() {
   info.push(`${live.length} rows in the fix list, ${all.length - live.length} in the archive`);
   return { fails, info };
 }
+
+// The handover names the branch it lives on (Zafar, 6 Nov): a new chat starts from main, whose status.md can be a step behind,
+// so the starting prompt must send it to the branch that holds the newest "Next chat".
+export function handoverProblems(status, branch, writing) {
+  const m = /## Next chat\n([\s\S]*?)\n## /.exec(String(status) + "\n## ");
+  if (!m) return ['status.md has no "## Next chat" section'];
+  const next = m[1], out = [];
+  const b = /\*\*Handover branch:\*\*\s*`([^`]+)`/.exec(next)?.[1];
+  if (!b) return ['status.md "Next chat": no "**Handover branch:** `<branch>`" line (/handover writes it from `git branch --show-current`)'];
+  const prompt = next.split(/Starting prompt/i)[1] || "";
+  if (!prompt.includes(`git fetch origin ${b}`)) out.push(`status.md "Next chat": the starting prompt must say \`git fetch origin ${b}\` (the handover branch)`);
+  if (writing && branch && branch !== "HEAD" && branch !== b) out.push(`status.md "Next chat" names handover branch ${b}, but this handover is being written on ${branch}: name ${branch}`);
+  return out;
+}
+function git(cmd) { try { return execSync(`git ${cmd}`, { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { return ""; } }
+const gitBranch = () => git("rev-parse --abbrev-ref HEAD");
+const statusBeingWritten = () => /docs\/status\.md/.test(git("status --porcelain -- docs/status.md") + "\n" + git("diff --name-only HEAD~1 HEAD -- docs/status.md"));
 
 export const REPORT_PROSE = 300;
 export function proseWords(md) {
