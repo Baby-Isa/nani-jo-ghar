@@ -321,3 +321,8 @@ zone never touches the English (1.9 px or more between them).
 971x412,971x318,740x320,1280x665,1920x1080 --no-popup`, then `python3 build/tools/cards/typo-sheet.py <dir> build/reports/cards
 --round2` (6 Nov, 15:55). 60 panels, 180 cards: nothing clipped, overlapping or outside its card; this order card whole and clear in
 every panel; the next card's headline whole in every panel; the one-line Englishes and the speakers level in every round-2 row.
+
+`node build/tools/review/checks.mjs` (6 Nov, 16:00, on 156c8d0 plus this round): unit (644 pass), words, static, leak (20 configs),
+bump, specs, docs, fixlist, recordings, size and load (29/29) ok; **art fails** on the stove run's new item pictures
+(`assets/cook/items-s17-stove/`, 5760719: "not referenced" and palette flags, 170 of 369). This round touches no picture; that is the
+stove run's open redo list, not this study's. No game file changed.
