@@ -106,7 +106,7 @@
     }
   }, 250);
 
-  // the "Save log" button (bottom-left; its taps never reach the game)
+  // the "Recording · tap to save" button (bottom-left; its taps never reach the game)
   const save = async () => {
     const name = `njg-log-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
     const text = JSON.stringify({ saved: new Date().toISOString(), entries: log }, null, 0);
@@ -130,8 +130,9 @@
     const b = d.createElement("button");
     b.id = "njg-rec";
     b.type = "button";
-    b.textContent = "● Save log";
-    b.setAttribute("style", "position:fixed;left:6px;bottom:6px;z-index:2147483000;font:600 12px system-ui,sans-serif;padding:6px 10px;border-radius:14px;border:1px solid #b33;background:#fff;color:#b33;opacity:.85");
+    // (Zafar, 6 Nov: "where do i find the button to stop and save the recording?": bigger and plainer, in the bottom-left corner)
+    b.textContent = "● Recording · tap to save";
+    b.setAttribute("style", "position:fixed;left:8px;bottom:8px;z-index:2147483000;font:700 15px system-ui,sans-serif;padding:10px 14px;border-radius:18px;border:0;background:#b3261e;color:#fff;box-shadow:var(--njg-shadow)");
     const stop = (e) => {
       e.stopPropagation();
       e.stopImmediatePropagation();

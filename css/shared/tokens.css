@@ -104,7 +104,7 @@
   --njg-ink-said: #2d2018;                          /* a line drawn on the play area */
   --njg-ink-rec: #6b5a4c;                           /* a to-record line drawn on the play area (grey italic) */
   --njg-ink-outline: #3a2410;                       /* the outline round a big drawn word */
-  --njg-helper-bg: #e6efe2;                         /* Nani's box and her helper card, every mode */
+  --njg-helper-bg: #e4ecdd;                         /* Nani's box and her helper card, every mode */ /* (Zafar, 6 Nov: yes to Fable's palette review, build/reports/s17-palette-review.md: the same sage, 10 degrees warmer at the same lightness, so it no longer reads mint beside the stone; was #e6efe2) */
   /* the s14 card (Sprint 14, lab/cards.html, Zafar 27-28 Oct): the new word card, order row and helper card, on for chai through
      the kit's option (WordCard.big14 / item14, OrderCard s14); the other games keep the card above until the roll-out. Its type
      (the serif) and its inks live here, so one line changes them all. */
