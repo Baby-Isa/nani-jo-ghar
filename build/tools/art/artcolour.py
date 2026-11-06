@@ -5,7 +5,7 @@ model looks, in the art judge's PASS / FLAG / FAIL words.
   python3 build/tools/art/artcolour.py assets/cook/items/shelf-*-f.webp            # one line per picture, batch by folder
   python3 build/tools/art/artcolour.py DIR --sheet out.png --json out.json -v      # every picture under DIR, a contact sheet
   python3 build/tools/art/artcolour.py --scan assets --worst 36 --sheet worst.png  # the retrospective: every asset
-  python3 build/tools/art/artcolour.py x.webp --size-class M                       # proportion against a size class
+  python3 build/tools/art/artcolour.py x.webp --size-class M                       # a slot item: fills its cell (>= 85%)
   python3 build/tools/art/artcolour.py --changed [REF]                             # only pictures changed since REF (checks.mjs `art`)
   python3 build/tools/art/artcolour.py --swatch build/tools/art/data/house-swatch.png   # the house swatch strip
   python3 build/tools/art/artcolour.py --house-words                               # the house colours in words (the block)
@@ -25,8 +25,9 @@ Per picture:
   camera   (round items by name) rim = the top arc's height over the body's width, about 0 from the side, 1 from above.
   shipped  whether a page, script, style or data file names the picture or builds its path (look-rules.json "shipped"):
            named, built, lab (a lab page only) or none; the summary counts shipped and unreferenced apart.
-  size     (cut-outs with a size class) FLAG when the piece's height in its canvas is off its class's target (token steps,
-           Zafar 6 Nov: L 100 %, M ~90 %, S >= ~80 % of the slot; data/look-rules.json "sizes").
+  size     (slot items: a size class given or in sizes.items) FLAG when the piece fills under min_fill of its cell on its
+           longer side: the art draws every item the same height; the class (Zafar 6 Nov: L 100 %, M 91 %, S 84 % of the
+           slot) is data the game applies (Fable's size-class method, 6 Nov; data/look-rules.json "sizes").
   batch    (a batch: the pictures of one folder, or --batch) FLAG the odd ones out in gloss, saturation, light direction,
            specular position, edge whiteness, and lid family: the pictures of one surface come from one run; on a named
            surface a camera range over batch.camera_range; a strong colour with little of it in the house family (house look).
@@ -695,15 +696,17 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         res["info"]["camera"] = camera(alpha, R)
     # proportion
     fill = (np.nonzero((alpha > 0.5).any(1))[0])
+    fillw = (np.nonzero((alpha > 0.5).any(0))[0])
     res["info"]["fill_h"] = round(float((fill.max() - fill.min() + 1) / alpha.shape[0]), 3) if len(fill) else None
-    if size_class:
+    res["info"]["fill_w"] = round(float((fillw.max() - fillw.min() + 1) / alpha.shape[1]), 3) if len(fillw) else None
+    if size_class:  # every item drawn the same height, filling its cell; the class is the game's (Fable's method, 6 Nov)
         Z = R["sizes"]
-        want = Z["classes"].get(size_class)
-        if want is None:
+        if size_class not in Z["classes"]:
             res["flag"].append("size class %r is not in look-rules.json sizes.classes" % size_class)
-        elif res["info"]["fill_h"] is not None and abs(res["info"]["fill_h"] - want) > Z["tolerance"]:
-            res["flag"].append("size: fills %.0f%% of the slot height; class %s wants %.0f%% (±%.0f%%)"
-                               % (res["info"]["fill_h"] * 100, size_class, want * 100, Z["tolerance"] * 100))
+        f = max(res["info"]["fill_h"] or 0, res["info"]["fill_w"] or 0)
+        if f < Z["min_fill"]:
+            res["flag"].append("size: fills %.0f%% of its cell on its longer side; every item fills at least %.0f%% (the game applies class %s)"
+                               % (f * 100, Z["min_fill"] * 100, size_class))
         res["info"]["size_class"] = size_class
     return res
 

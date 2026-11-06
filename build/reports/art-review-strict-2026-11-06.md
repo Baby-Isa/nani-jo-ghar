@@ -50,7 +50,7 @@ Zafar's rules of 6 Nov, built into `build/tools/art/artcolour.py` and run over e
 | (b) light, palette | light outside the upper-left arc and the palette rule are FAILs; people still skipped for light; `light.eye_passed` holds an eye's pass | |
 | (c) batch | still a FLAG; `--batch-sheets DIR` writes a sheet per flagged batch, odd ones ringed | |
 | (d) wood | FLAG a light oak or pine (hue 55-90°, L* 52-84, chroma 16-48) on a lid (jars, tins, the chai shelf) or on an item named as wood; not on hands | 14 shipped |
-| (e) sizes | classes L 1.0, M 0.9, S 0.81, tolerance 0.04 (no overlap); floor 40 CSS px at 740x320; `--slot-css H` checks a slot | |
+| (e) sizes | classes L 1.0, M 0.91, S 0.84 (Zafar's own steps, 15:00); the art draws every item the same height, so a slot item (a class given) FLAGs only when it fills under 85% of its cell on its longer side (Fable's size-class method); floor 40 CSS px at 740x320 (a slot of 48); `--slot-css H` checks a slot | |
 | (f) strip | a spec's `house: {attach: true, combination: N}` names that combination in the block and attaches `build/tools/art/data/swatches/wada-N.png` (made when missing; push it before the run) | |
 
 **Tuning.** Neutral cutoff 6 or 8, main share 8, 10 or 12%, ΔE 8, 9 or 10, on two anchor sets: 55 pictures in the house look (the chai word moment, the s17 marble and stone) that should pass, 5 stock-looking ones that should fail (drop machine, kite, well, hen, a sky-blue toothbrush).
@@ -134,7 +134,7 @@ The nearest combinations most named: 121 (Brown, Ochraceous Salmon, Lincoln Gree
 4. **Redo order:** the chai shelf first (already in the stove run, with combination strips), then the Cook items in their next runs, then the clinic sheets; backgrounds and other modes when each is next touched. Recommend: yes.
 5. **The six light readings Fable passed by eye** stay passed (`light.eye_passed`); new ones need an eye's name and date. Recommend: yes.
 6. **Wood:** a FLAG for new art; the 14 shipped (the shelf jars' pale lids, the jar slots, the velan, the old rolling pin) go with their area's next run. Recommend: yes.
-7. **The 40 px floor:** the game's slot heights at 740x320 are not checked yet (a slot needs 50 CSS px). Recommend: a sandbox measure in the stove sprint.
+7. **The 40 px floor:** the game's slot heights at 740x320 are not checked yet (a slot needs 48 CSS px for S at 84%). Recommend: a sandbox measure in the stove sprint.
 
 ## Implementation plan
 
@@ -148,7 +148,7 @@ Built on this branch: `artcolour.py` (`palette_fit`, the EXCEPTION level and exi
 ## Proof
 
 - Scan: `artcolour.py --batch-by auto --quiet --json` in four jobs (cook/items, the rest of cook, clinic, everything else) over `assets/` without the ChatGPT folder: 2,248 pictures, 22 min; the review recomputed the palette and wood verdicts with the final thresholds on the stored colours.
-- `node --test build/tools/art/artcheck.test.mjs`: 19 of 19 pass. New: one combination passes, two FAIL, the marble is ground, magenta is an EXCEPTION until allowed; a light-oak board FLAGs and a walnut one does not; the size classes, the floor, and the bible (no `size_cm`); a batch sheet is written; a block takes combination 151's strip. Changed: light is a FAIL (and the jharo, eye-passed, is not; the well is), off-book colour an EXCEPTION; the shadow tests ask only about shadows.
+- `node --test build/tools/art/artcheck.test.mjs`: 19 of 19 pass. New: one combination passes, two FAIL, the marble is ground, magenta is an EXCEPTION until allowed; a light-oak board FLAGs and a walnut one does not; the size classes (100 / 91 / 84), the 85% cell fill, the floor, and the bible (no `size_cm`); a batch sheet is written; a block takes combination 151's strip. Changed: light is a FAIL (and the jharo, eye-passed, is not; the well is), off-book colour an EXCEPTION; the shadow tests ask only about shadows.
 - `node build/tools/review/checks.mjs`: see the commit; the `art` line reads "no picture changed".
 - Sheets looked at: the worst (30) and the Cook items' batch sheet.
 - Not done: no eye on each of the 699 palette FAILs; the 48 batches wait for the judge.

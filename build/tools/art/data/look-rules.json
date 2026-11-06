@@ -150,9 +150,9 @@
   "chai-shelf": ["assets/cook/items/shelf-cook-paani-bare-f.webp", "assets/cook/items/shelf-cook-dudh-bare-f.webp", "assets/cook/items/shelf-cook-chai-bare-f.webp", "assets/cook/items/shelf-cook-khun-bare-f.webp", "assets/cook/items/shelf-elchi-jar-v2-f.webp", "assets/cook/items/shelf-aadu-jar-v2-f.webp", "assets/cook/items/shelf-lasan-jar-v2-f.webp", "assets/cook/items/shelf-loon-jar-v2-f.webp"]
  },
  "sizes": {
-  "_about": "Proportion (Zafar, 6 Nov: token size steps, never true relative sizes): a size class per item, its target the share of the slot (canvas) height the piece fills: L 100%, M 90%, S 81% (equal ratio steps, each x0.9); tolerance under half a step, so the classes never overlap. min_css_px: the smallest piece is at least that many CSS px high on the smallest phone (at), so a slot there is at least min_css_px / S high (a layout rule for the game's code: artcolour.py --slot-css H checks a slot height). Items are matched by glob (first match wins); an item with no class is not measured.",
-  "classes": {"L": 1.0, "M": 0.9, "S": 0.81},
-  "tolerance": 0.04,
+  "_about": "Proportion (Zafar, 6 Nov: token size steps, never true relative sizes; his steps at 15:00: L 100%, M 91%, S 84% of the slot height, \"9% and 8%\"). classes: the factor the game applies to an item's slot (Fable's size-class method, build/reports/size-classes-method-2026-11-06.md: the class is data in each mode's catalogue; the art draws every item the same height). min_fill: what artcolour.py checks on a slot item (a size class given, or matched in items): the piece fills at least this share of its cell on its longer side. min_css_px: the smallest piece is at least that many CSS px on the smallest phone (at), so a slot there is at least min_css_px / S high (48 CSS px; artcolour.py --slot-css H checks a slot height). items: glob to class (first match wins).",
+  "classes": {"L": 1.0, "M": 0.91, "S": 0.84},
+  "min_fill": 0.85,
   "min_css_px": 40,
   "at": "740x320",
   "items": {}

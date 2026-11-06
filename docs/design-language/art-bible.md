@@ -134,15 +134,15 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 ## 4. Size classes (Zafar, 6 Nov: no true sizes)
 
-Items are never drawn to true relative size. Each item gets a size class, the share of its slot's height the piece fills:
+Items are never drawn to true relative size. **The art draws every item the same height,** filling at least 85% of its cell; each item's size class is data in its mode's catalogue, and the game scales it to that share of its slot's height (method: `build/reports/size-classes-method-2026-11-06.md`):
 
 | Class | Fills | For |
 |---|---|---|
 | **L** | 100% | Tall or big things: bottles, jugs, cartons, pans, big jars |
-| **M** | 90% | Jars, tins, bowls |
-| **S** | 81% | Small things: a katori, a lemon, a small spice jar |
+| **M** | 91% | Jars, tins, bowls |
+| **S** | 84% | Small things: a katori, a lemon, a small spice jar |
 
-L 100%, M 90%, S 81%: equal steps, each ×0.9. **The floor:** the smallest piece is at least 40 CSS px high on the smallest phone (740x320), so a slot there is at least 50 CSS px high. Thresholds and the per-item classes: `build/tools/art/data/look-rules.json` (`sizes`); `artcolour.py --size-class` checks a picture, `--slot-css` a slot.
+L 100%, M 91%, S 84% (Zafar, 6 Nov: his steps of 9% and 8%). **The floor:** the smallest piece is at least 40 CSS px high on the smallest phone (740x320), so a slot there is at least 48 CSS px high. Thresholds and the per-item classes: `build/tools/art/data/look-rules.json` (`sizes`); `artcolour.py --size-class` checks a slot item fills its cell, `--slot-css` a slot.
 
 **Readability rules:**
 - **Minimum tap target: about 90 px** on the 1600×900 stage. Anything smaller comes in a container (katori, tin, jar) or as a heap.

@@ -142,8 +142,8 @@ test("colour and look: halo, baked shadow, lower-right light (a FAIL), off-book 
   assert.deepEqual(by.offpalette.fail, [], "an off-book colour is his call (an EXCEPTION), not a FAIL");
   assert.deepEqual(by.halo.fail, [], "a halo is a FLAG, not a FAIL");
   const L = look(["--batch-by", "none", "--size-class", "L", `${dir}/clean.png`]).by.clean;
-  assert.ok(L.flag.some((f) => f.startsWith("size: fills 63%")), "a jar filling 63% of the slot is off size class L (100%)");
-  assert.deepEqual(look(["--batch-by", "none", "--size-class", "M", `${dir}/fit.png`]).by.fit.flag, [], "a jar filling 89% of its slot meets class M (90% ±5%)");
+  assert.ok(L.flag.some((f) => f.startsWith("size: fills 63% of its cell")), "a slot item filling 63% of its cell is flagged (every item fills at least 85%)");
+  assert.deepEqual(look(["--batch-by", "none", "--size-class", "S", `${dir}/fit.png`]).by.fit.flag, [], "a jar filling 89% of its cell passes, whatever its class (the game applies the class)");
 });
 test("colour and look: one glossy jar in a matte batch is the odd one out; the rest of the batch passes", () => {
   const dir = mkdtempSync(join(tmpdir(), "artlook-"));
@@ -281,7 +281,7 @@ test("checks.mjs runs the colour and look checks on changed pictures (`art`), fa
 });
 
 // Zafar's stricter rules (6 Nov): one Wada combination per item (neutrals exempt), a colour the book lacks an exception for
-// him, light a FAIL, walnut wood, size classes L 100 / M 90 / S 81 with a 40 px floor, a batch sheet for an eye, any
+// him, light a FAIL, walnut wood, size classes L 100 / M 91 / S 84 (every piece filling 85% of its cell) with a 40 px floor, a batch sheet for an eye, any
 // combination's strip in a paste block
 const STRICTSYNTH = `
 import os, sys, numpy as np
@@ -333,16 +333,16 @@ test("walnut wherever there is wood: a light oak board FLAGs, a walnut one does 
   assert.ok(!by["walnut-board"].flag.some((f) => f.startsWith("wood:")));
   assert.deepEqual(by["chopping-board"].fail, [], "wood is a FLAG, never a FAIL");
 });
-test("size classes: L 100%, M 90%, S 81% (each x0.9), never overlapping, with a 40 CSS px floor at 740x320", () => {
+test("size classes: L 100%, M 91%, S 84% (Zafar's steps), every piece filling 85% of its cell, a 40 CSS px floor at 740x320", () => {
   const Z = JSON.parse(readFileSync(join(HERE, "data", "look-rules.json"), "utf8")).sizes;
-  assert.deepEqual(Z.classes, { L: 1.0, M: 0.9, S: 0.81 });
-  assert.ok(Z.tolerance < (Z.classes.M - Z.classes.S) / 2, "the classes never overlap");
+  assert.deepEqual(Z.classes, { L: 1.0, M: 0.91, S: 0.84 });
+  assert.equal(Z.min_fill, 0.85);
   assert.equal(Z.min_css_px, 40); assert.equal(Z.at, "740x320");
   const slot = (h) => spawnSync("python3", [join(HERE, "artcolour.py"), "--slot-css", String(h)], { encoding: "utf8" });
-  assert.equal(slot(50).status, 0, "a 50 px slot holds a 40.5 px S piece");
-  const s = slot(48); assert.equal(s.status, 1); assert.match(s.stdout, /S: 81% of 48 px = 38\.9 CSS px {2}\(under 40 at 740x320\)/);
+  assert.equal(slot(48).status, 0, "a 48 px slot holds a 40.3 px S piece");
+  const s = slot(47); assert.equal(s.status, 1); assert.match(s.stdout, /S: 84% of 47 px = 39\.5 CSS px {2}\(under 40 at 740x320\)/);
   const bible = readFileSync(join(ROOT, "docs/design-language/art-bible.md"), "utf8");
-  assert.match(bible, /L 100%, M 90%, S 81%/); assert.match(bible, /40 CSS px/); assert.match(bible, /walnut/i);
+  assert.match(bible, /L 100%, M 91%, S 84%/); assert.match(bible, /every item the same height/); assert.match(bible, /40 CSS px/); assert.match(bible, /walnut/i);
   assert.doesNotMatch(bible, /size_cm/, "no true sizes (Zafar, 6 Nov)");
 });
 test("a flagged batch gets a contact sheet for an eye; the glossy jar is ringed", () => {
