@@ -2914,7 +2914,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (ok) return ok;
           const open = all.find((x) => !x.closest(".oc-card.folded"));
           if (open && UI.cardIntoView) UI.cardIntoView(open.closest(".oc-card"));
-          if (!all.length || Date.now() - t0 > 3000) return null;
+          if (Date.now() - t0 > 4000) return null;
           await new Promise((r) => global.setTimeout(r, 120));
         }
       };
@@ -2926,7 +2926,10 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         }
       };
       const DOTS14 = `${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`;
-      const anyDots = [...document.querySelectorAll(DOTS14)].some(vis);
+      // (Zafar's recorded play, 6 Nov 00:35, L2 New player: a tap during the order skipped it and play began at once, while the cards
+      // were still landing: no dotted word was visible yet, so the lesson was dropped before it began. It is decided by the dotted
+      // words being on the card at all; pick14 then waits for one to land and show)
+      const anyDots = document.querySelectorAll(DOTS14).length > 0;
       if (anyDots && firstAll("reveal-word")) {
         const dots = await pick14(DOTS14);
         // (the recorder, labs.html's "Record a play": why each dotted word was taken or not)
@@ -2938,7 +2941,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         noteLesson("word", dots ? `shown ${why(dots)}` : `none-in-view ${[...document.querySelectorAll(DOTS14)].map(why).join(" ")}`);
         if (dots) await lesson(dots);
       }
-      const anyEye = [...document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`)].some(vis);
+      const anyEye = document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`).length > 0;
       const eye = anyEye && seen14[`*:${S14_TAG}reveal-word`] ? await pick14(`${rows14} .wc14-hide-pic .wc14-eye`) : null;
       // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
       if (eye && seen14[`*:${S14_TAG}reveal-word`] && firstAll("reveal-pic")) {
