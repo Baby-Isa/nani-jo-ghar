@@ -2282,9 +2282,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const z = UI.worldToScreen(r.x1, r.y1);
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
+    // (the lit thing hops, js/cook/stations.js glow: its picture's top is where the hop takes it, so the margin over it holds at the
+    // hop's top too; contract-92 caught 1 px over a jar mid-hop at L2 930x430)
+    const hopOf = (o) => Math.max(8, Math.min(48, (o.displayHeight || 0) * ((global.Onboard && global.Onboard.HOP) || 0.1)));
     const itemRect = (o) => () => {
       if (!o || !o.active) return null;
       const p = restBox(o);
+      p.y0 -= hopOf(o);
       const c = pillBox(o);
       return toPage(c ? { x0: Math.min(p.x0, c.x0), y0: Math.min(p.y0, c.y0), x1: Math.max(p.x1, c.x1), y1: Math.max(p.y1, c.y1) } : p);
     };
