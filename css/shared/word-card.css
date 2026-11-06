@@ -222,5 +222,5 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height
 @media (max-height: 500px) {
   :root.njg-lora body.njg-s14 #side .wc14-it .wc14-en { font-size: clamp(calc(var(--njg-px) * 12), 10cqi, max(calc(var(--njg-px) * 12), var(--njg-card14-u19))); }
 }
-/* the pop-up card and the helper card: the English a little apart from its Kutchi (round 1's option 2) */
-:root.njg-lora .wc14-big .wc14-slot-e { margin-top: 1.75cqi; }
+/* the pop-up card: the English a little apart from its Kutchi (round 1's option 2); the helper card keeps its height (Zafar, 30 Oct) */
+:root.njg-lora .wc14-big:not(.wc14-side) .wc14-slot-e { margin-top: 1.75cqi; }

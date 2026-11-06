@@ -220,7 +220,7 @@
    * <html class="njg-lora"> carries it (css/shared/tokens.css, the "6 Nov type" blocks in css/shared/word-card.css and
    * order-card.css; Tokens.font and Tokens.weight read <html>, so the drawn shelf pills follow). Returns once Lora and Nunito Sans
    * are in (at most 1.5 s, real time), so Phaser never draws a pill in the fallback face. The roll-out: on for every game
-   * (UI.TYPE_ALL, as S14_ALL did for the s14 look), then the gate goes (docs/design-language/ui-design-system.md, "Kit").
+   * (UI.TYPE_ALL, as S14_ALL did for the s14 look), then the gate goes (docs/design-language/guide-and-card.md, "The 6 Nov card").
    */
   UI.TYPE_ALL = false;
   UI.applyType = function (on) {
