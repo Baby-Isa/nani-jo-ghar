@@ -268,6 +268,28 @@ def house_text(spec):
     return "\n".join(out) + "\n"
 
 
+# The header's example IDs and step 3's slot source come from the spec itself (the stove-400 second read, 6 Nov: "S1, W1, K1"
+# and "the PEOPLE table's" were the clinic packs' words, wrong for a pack whose prompts are FS and TS and that has no people).
+def prompt_ids(used):
+    """The plan's prompt IDs this block uses, in run order: 'FS, TS' or 'SK, ST, TD, ...' (at most three, then '...')."""
+    ids = []
+    for l in used:
+        if l["tid"] not in ids and not l["tid"].startswith("<"):
+            ids.append(l["tid"])
+    return ", ".join(ids[:3]) + (", ..." if len(ids) > 3 else "")
+
+
+def step3_slots(spec, used):
+    people, slots = bool(spec.get("people")), any(l.get("slots") for l in used)
+    if people and slots:
+        return ', with its slots filled for that line (the PEOPLE table\'s, or the words after "slots:" on the line)'
+    if people:
+        return ", with its slots filled for that line from the PEOPLE table"
+    if slots:
+        return ', with its slots filled for that line (the words after "slots:" on the line)'
+    return ", word for word"
+
+
 def build(spec, redo_path=None):
     lines = S.expand(spec)
     people, limbs = S.plan_people(spec)
@@ -316,6 +338,8 @@ def build(spec, redo_path=None):
         "WATCH": "Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS)." if not real else "Zafar approves the likenesses (see APPROVALS).",
         "PAGE_URL": "https://github.com/%s/blob/%s/%s" % (repo, branch, spec["plan"]), "RAW": raw, "REFS": refs,
         "PEOPLE_TABLE": ", and its PEOPLE table" if spec.get("people") else "",
+        "PROMPT_IDS": prompt_ids(used),
+        "STEP3_SLOTS": step3_slots(spec, used),
         "SLOT_RULE": ("The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table"
                       if spec.get("people") else "The only change allowed is filling a code box's {SLOTS}")
         + (" and, where a line ends with \"slots:\", putting each slot's words from that line into the code box's matching {SLOT}, word for word (a code box with a {SLOT} is never sent unfilled)."

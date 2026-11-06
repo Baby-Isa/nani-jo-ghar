@@ -21,7 +21,8 @@ PowerToys Awake on.
 | | **Total** | **42 prompts** (about 57 images with redos) | **346 items** |
 
 Two prompts serve every sheet: **FS** (side-on, 8 items on 1536x1024) and **TS** (top-down, 9 items on 1024x1024); each line fills
-their slots with its sheet's items in order (`stove-400-items.csv`, the `look` column).
+their slots with its sheet's items in order (`stove-400-items.csv`, the `look` column). Every dish's look names its vessel, its colours and
+the garnish that tells it apart from directly above (6 Nov: the four chais by cup, tea colour and garnish).
 
 ## 1. Flaws and uncertainties first
 
@@ -81,6 +82,7 @@ the same on every screen.
 | jar-family.png | `sources/art/pantry-v2/pantry-v2-sheet1-tall-jars.png` | the approved bare jars: their glass, their pale oak lid, their light |
 | style-anchor.png | `sources/art/style-anchor-v1.png` | the house look from above: steel katoris, the board, whole vegetables on marble |
 | food-heaps.png | `sources/art/cook-v3/s5-fillings-top-v1.png` | the approved heap look for loose food from above |
+| house-swatch.png | `build/tools/art/data/house-swatch.png` | the house colours as plain blocks: the palette only, attached last to every new picture (the block's HOUSE LOOK) |
 | kept:FA01 | (made in part A) | the batch every side-on sheet copies |
 | kept:TB01 | (made in part B) | the batch every top-down sheet copies |
 
@@ -107,7 +109,7 @@ Generate an image, 1024×1024, square.
 
 A sheet of {N} separate items for a children's cooking game, laid out in a {GRID} grid of equal cells, in this order (left to right, top row first): {ITEMS}. {EMPTY}
 
-Every item is seen from DIRECTLY above, straight down: round rims are perfect circles, no side walls showing. Each sits in the middle of its own cell and fills about 85% of it (loose food about 70%; a long tool lies diagonally from corner to corner). Bowls and katoris are plain brushed steel, plates plain white or plain steel. Nothing touches anything else and nothing crosses into another cell.
+Every item is seen from DIRECTLY above, straight down: round rims are perfect circles, no side walls showing. Each sits in the middle of its own cell and fills about 85% of it (loose food about 70%; a long tool lies diagonally from corner to corner). Bowls and katoris are plain brushed steel, plates plain white or plain steel; a glass, cup, saucer, platter or cake stand only where an item names one. Draw each item as its words describe it (its vessel, its colours, its garnish). Nothing touches anything else and nothing crosses into another cell.
 
 Background: one {GROUND}, perfectly even, edge to edge: no board, no worktop, no cloth, no shadow under any item.
 
