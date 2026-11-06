@@ -12,6 +12,8 @@
  * docs   build/tools/review/docs.mjs (decision 99): the docs' size limits and unique IDs
  * fixlist  every open row on the fix list starts its status with one label (to fix: code / to fix: check / waiting on Zafar / Mum / art, before app store; Zafar, 21 Oct)
  * recordings  build/tools/ops/recordings.mjs --check (Zafar, 20 Oct): docs/language/recording-sheet.md is current (regenerate: node build/tools/ops/recordings.mjs)
+ * art    build/tools/art/artcolour.py --changed (Fable's view, 6 Nov): the colour and look checks on the pictures changed since the merge-base
+ *        with origin/main (HEAD~1 on main), so no pack lands unmeasured; FAIL only on a FAIL (a baked shadow); flags are counted, not failed
  * size   build/tools/review/sitesize.mjs (Zafar, 14 Oct): the live site stays under 800 MB (GitHub Pages stops deploying near 1 GB)
  * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures
  *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
@@ -29,7 +31,7 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "recordings", "fixlist", "size", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "recordings", "fixlist", "art", "size", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
@@ -98,6 +100,13 @@ if (only.includes("fixlist")) {
 if (only.includes("recordings")) {
   const r = run(process.execPath, ["build/tools/ops/recordings.mjs", "--check"]);
   note("recordings", r.status === 0, ((r.status === 0 ? r.stdout : r.stderr || r.stdout).trim().split("\n").pop()) || `recordings.mjs exited ${r.status}`);
+}
+if (only.includes("art")) {
+  const r = run("python3", ["build/tools/art/artcolour.py", "--changed", "--quiet"]);
+  const out = r.stdout.trim().split("\n");
+  const sum = out.find((l) => /^\d+ picture\(s\): /.test(l)) || out.find((l) => /^no picture changed/.test(l)) || r.stderr.trim().split("\n").pop() || `artcolour.py exited ${r.status}`;
+  note("art", r.status === 0, sum + (r.status === 1 ? " (python3 build/tools/art/artcolour.py --changed lists them)" : ""));
+  if (r.status === 1) console.log(out.filter((l) => /^FAIL|^\s+FAIL/.test(l)).slice(0, 10).map((l) => "     " + l.trim()).join("\n"));
 }
 if (only.includes("size")) {
   const r = run(process.execPath, ["build/tools/review/sitesize.mjs"]);
