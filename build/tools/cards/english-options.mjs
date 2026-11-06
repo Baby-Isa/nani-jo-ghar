@@ -14,6 +14,9 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
 const val = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] : d; };
 const OUT = val("out", join(HERE, "..", "..", "screenshots", "cards"));
+// --long "kutchi|english": write that word onto the first item card and the pop-up card before shooting (a long word that may wrap)
+const LONG = val("long", null);
+const ONLY = val("only", null);
 const sizes = val("sizes", "740x320,930x430,1280x665,1920x1080,971x318").split(",");
 if (!SIZES["971x318"]) SIZES["971x318"] = { width: 971, height: 318, label: "Zafar's phone in a browser", touch: true };
 const px = (n) => `calc(var(--njg-px) * ${n})`;
@@ -28,6 +31,12 @@ export const OPTIONS = {
   //    (5 -> 2.5cqi), the English set tight (line-height 1); the card's height holds
   nudge: `@media (max-height: 500px) {
     .wc14-it .wc14-en { font-size: clamp(${px(12)}, 10cqi, max(${px(12)}, var(--njg-card14-u19))) !important; line-height: 1 !important; }
+    .wc14-it > .wc14-slot-k { margin-top: 3cqi !important; }
+    .wc14-it > .wc14-spk { margin-top: 2.5cqi !important; } }`,
+  // 2b (6 Nov, Zafar's long-word test "fudino ji chutney"): option 2, but the English's size is not forced (no !important), so the card's
+  //    own fit (word-card.js fitOne14) shrinks a long English to 10 px on one line before it would wrap; the card's height holds
+  nudgefit: `@media (max-height: 500px) {
+    body #side .wc14-it .wc14-en, body .wc14-it .wc14-en { font-size: clamp(${px(12)}, 10cqi, max(${px(12)}, var(--njg-card14-u19))); line-height: 1 !important; }
     .wc14-it > .wc14-slot-k { margin-top: 3cqi !important; }
     .wc14-it > .wc14-spk { margin-top: 2.5cqi !important; } }`,
   // 3: a gentler 11 px floor, the Kutchi up a little; the card's height holds
@@ -78,8 +87,18 @@ mkdirSync(OUT, { recursive: true });
 
 async function applyAndShoot(page, size, state) {
   const dir = join(OUT, size); mkdirSync(dir, { recursive: true });
-  for (const [name, css] of Object.entries(OPTIONS)) {
+  if (LONG) await page.evaluate((w) => {
+    const [kw, ew] = w.split("|");
+    for (const card of [document.querySelector("#side .wc14-it, .wc14-it"), document.querySelector(".wc14-big")].filter(Boolean)) {
+      const k = card.querySelector(".wc14-k"), e = card.querySelector(".wc14-en");
+      if (k) k.textContent = kw;
+      if (e) e.textContent = ew;
+    }
+  }, LONG);
+  for (const [name, css] of Object.entries(OPTIONS).filter(([n]) => !ONLY || ONLY.split(",").includes(n))) {
     await page.evaluate((c) => { let s = document.getElementById("njg-mock-cards"); if (!s) { s = document.createElement("style"); s.id = "njg-mock-cards"; document.head.appendChild(s); } s.textContent = c; }, css);
+    await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
+    await page.evaluate(() => { const W = window.WordCard; if (W && W.fit14) W.fit14(); });
     await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
     await sleep(150);
     data[`${size}|${state}|${name}`] = await page.evaluate(`(${measure.toString()})()`);
