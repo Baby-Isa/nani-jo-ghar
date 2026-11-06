@@ -9,11 +9,13 @@
   },
   "items": {
     "cup": {
+     "sizeClass": "S",
       "english": "a glass (for the paani)",
       "use": "cup",
       "art": "cup"
     },
     "paani": {
+     "sizeClass": "L",
       "english": "paani (the jug: one tap fills half the glass)",
       "use": "paani",
       "art": "jug-water"

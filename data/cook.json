@@ -3,9 +3,11 @@
  "_words": "The item catalogue (step 4d): each thing's picture (image), drawn heap, bowl, piece and layer, and joinless, by Cook's id. Its words (Kutchi, English, gender, forms, voice spelling) are the language engine's (data/lang/; their old home is data/lang/seed/cook.json); Cook's ids are the engine's aliases.",
  "words": {
   "cook-paani": {
+   "size": "L",
    "image": "water-jug"
   },
   "cook-chai": {
+   "size": "M",
    "image": "tea-tin",
    "heap": {
     "kind": "grains",
@@ -14,9 +16,11 @@
    "bowl": "steel"
   },
   "cook-dudh": {
+   "size": "L",
    "image": "milk-jug"
   },
   "cook-khun": {
+   "size": "M",
    "heap": {
     "kind": "crystals",
     "color": "#f4efe4"
@@ -24,6 +28,7 @@
    "bowl": "ceramic"
   },
   "cook-atto": {
+   "size": "L",
    "image": "atto",
    "heap": {
     "kind": "powder",
@@ -32,6 +37,7 @@
    "bowl": "steel"
   },
   "cook-daal": {
+   "size": "L",
    "image": "daal-dry",
    "heap": {
     "kind": "balls",
@@ -44,6 +50,7 @@
   },
   "cook-bajrmaani": {},
   "veg-01": {
+   "size": "M",
    "heap": {
     "kind": "cubes",
     "color": "#ecd18a"
@@ -59,6 +66,7 @@
    "bowl": "steel"
   },
   "veg-02": {
+   "size": "M",
    "image": "onion",
    "heap": {
     "kind": "pieces",
@@ -75,6 +83,7 @@
    "bowl": "ceramic"
   },
   "veg-03": {
+   "size": "M",
    "image": "tomato",
    "heap": {
     "kind": "cubes",
@@ -91,6 +100,7 @@
    "bowl": "ceramic"
   },
   "veg-12": {
+   "size": "S",
    "image": "chilli",
    "heap": {
     "kind": "pieces",
@@ -103,6 +113,7 @@
    "bowl": "ceramic"
   },
   "veg-13": {
+   "size": "S",
    "image": "garlic",
    "heap": {
     "kind": "pieces",
@@ -111,6 +122,7 @@
    "bowl": "ceramic"
   },
   "veg-10": {
+   "size": "S",
    "heap": {
     "kind": "balls",
     "color": "#7cb342"
@@ -118,6 +130,7 @@
    "bowl": "steel"
   },
   "veg-14": {
+   "size": "S",
    "heap": {
     "kind": "pieces",
     "color": "#d9b26f"
@@ -125,6 +138,7 @@
    "bowl": "ceramic"
   },
   "fru-02": {
+   "size": "S",
    "heap": {
     "kind": "pieces",
     "color": "#f3d54a"
@@ -132,6 +146,7 @@
    "bowl": "ceramic"
   },
   "spi-01": {
+   "size": "S",
    "heap": {
     "kind": "powder",
     "color": "#e9a313"
@@ -139,6 +154,7 @@
    "bowl": "ceramic"
   },
   "spi-02": {
+   "size": "S",
    "heap": {
     "kind": "grains",
     "color": "#7a5530"
@@ -146,6 +162,7 @@
    "bowl": "ceramic"
   },
   "spi-05": {
+   "size": "S",
    "heap": {
     "kind": "dots",
     "color": "#2a1d18"
@@ -153,6 +170,7 @@
    "bowl": "ceramic"
   },
   "spi-10": {
+   "size": "S",
    "image": "elchi",
    "heap": {
     "kind": "pods",
@@ -161,6 +179,7 @@
    "bowl": "ceramic"
   },
   "spi-16": {
+   "size": "S",
    "heap": {
     "kind": "crystals",
     "color": "#ffffff",
@@ -169,6 +188,7 @@
    "bowl": "ceramic"
   },
   "spi-04": {
+   "size": "S",
    "heap": {
     "kind": "powder",
     "color": "#c7361f"
@@ -181,6 +201,7 @@
   "num-04": {},
   "num-05": {},
   "ph-chana": {
+   "size": "M",
    "heap": {
     "kind": "balls",
     "color": "#d9b77a"
@@ -192,6 +213,7 @@
    "bowl": "steel"
   },
   "ph-dahi": {
+   "size": "M",
    "heap": {
     "kind": "liquid",
     "color": "#f8f5ee"
@@ -203,6 +225,7 @@
    "bowl": "ceramic"
   },
   "ph-amli": {
+   "size": "M",
    "heap": {
     "kind": "liquid",
     "color": "#6b3a1e",
@@ -216,6 +239,7 @@
    "bowl": "ceramic"
   },
   "ph-lili": {
+   "size": "M",
    "heap": {
     "kind": "liquid",
     "color": "#5d9b3a",
@@ -229,6 +253,7 @@
    "bowl": "ceramic"
   },
   "ph-sev": {
+   "size": "M",
    "heap": {
     "kind": "strands",
     "color": "#e8b23a"
@@ -240,6 +265,7 @@
    "bowl": "brass"
   },
   "ph-dhana": {
+   "size": "M",
    "heap": {
     "kind": "leaves",
     "color": "#4f8f3a"
@@ -251,6 +277,7 @@
    "bowl": "ceramic"
   },
   "ph-keema": {
+   "size": "M",
    "heap": {
     "kind": "pieces",
     "color": "#8a5238"
@@ -258,6 +285,7 @@
    "bowl": "steel"
   },
   "ph-meat": {
+   "size": "M",
    "heap": {
     "kind": "cubes",
     "color": "#9c4a32"
@@ -269,6 +297,7 @@
    "bowl": "steel"
   },
   "ph-pepper": {
+   "size": "M",
    "heap": {
     "kind": "pieces",
     "color": "#4f9a3a"
@@ -287,6 +316,7 @@
    "bowl": "steel"
   },
   "ph-ghee": {
+   "size": "M",
    "heap": {
     "kind": "liquid",
     "color": "#f2d27a"
@@ -297,7 +327,10 @@
   "ph-samosa": {},
   "ph-sekelo": {},
   "ph-mishkaki": {},
-  "ph-lakri": {},
+  "ph-lakri": {
+   "size": "M",
+   "sizeFlag": "LONG"
+  },
   "lnk-nepoi": {},
   "ph-no": {},
   "ph-slowly": {},
@@ -3278,6 +3311,154 @@
   }
  },
  "art": {
+  "sizes": {
+   "_about": "Size classes (Fable's method, build/reports/size-classes-method-2026-11-06.md; classed 6 Nov, build/reports/size-classes-data-2026-11-06.md): size = L, M or S (STN = station piece, laid out by the scene), sizeFlag = LONG or W. For slot items with no row in words (shelf-only containers, tools, props, vessels). Read by nothing yet; the code step (St.classFit) lands later. The shelf's old numbers in sprites.shelf stay as they are until then.",
+   "ph-bajri-atto": {
+    "size": "L"
+   },
+   "ph-rice": {
+    "size": "L"
+   },
+   "ph-cocoa": {
+    "size": "M"
+   },
+   "spi-11": {
+    "size": "S"
+   },
+   "spi-09": {
+    "size": "S"
+   },
+   "ph-sprinkles": {
+    "size": "S"
+   },
+   "ph-oil": {
+    "size": "L"
+   },
+   "ph-juice": {
+    "size": "L"
+   },
+   "ph-ketchup": {
+    "size": "M"
+   },
+   "ph-honey": {
+    "size": "M"
+   },
+   "ph-rose": {
+    "size": "M"
+   },
+   "ph-chicken": {
+    "size": "M"
+   },
+   "ph-fish": {
+    "size": "M"
+   },
+   "ph-butter": {
+    "size": "M"
+   },
+   "ph-cheese": {
+    "size": "M"
+   },
+   "ph-cream": {
+    "size": "M"
+   },
+   "fru-01": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "fru-04": {
+    "size": "M"
+   },
+   "fru-05": {
+    "size": "M"
+   },
+   "fru-06": {
+    "size": "M"
+   },
+   "fru-08": {
+    "size": "M"
+   },
+   "fru-09": {
+    "size": "M"
+   },
+   "veg-04": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "ph-corn": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "ph-eggs": {
+    "size": "M",
+    "sizeFlag": "W"
+   },
+   "ph-bread": {
+    "size": "M",
+    "sizeFlag": "W"
+   },
+   "ph-biscuits": {
+    "size": "M"
+   },
+   "ph-mithai": {
+    "size": "M"
+   },
+   "ph-pastry": {
+    "size": "S"
+   },
+   "ph-crisps": {
+    "size": "M"
+   },
+   "ph-candles": {
+    "size": "S"
+   },
+   "ph-jam": {
+    "size": "M"
+   },
+   "ph-chocolate": {
+    "size": "S"
+   },
+   "glass": {
+    "size": "S"
+   },
+   "hand:knife": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:ladle": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:spatula": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:spoon": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "stick": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "tawa": {
+    "size": "STN"
+   },
+   "vessel:pan": {
+    "size": "STN"
+   },
+   "vessel:pot": {
+    "size": "STN"
+   },
+   "vessel:tadka": {
+    "size": "STN"
+   },
+   "vessel:serving": {
+    "size": "STN"
+   },
+   "vessel:kadai": {
+    "size": "STN"
+   }
+  },
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
   "props": [
    "dough-ball-bajr",
