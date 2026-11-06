@@ -129,9 +129,13 @@ async function atPopup(page, dir, st, size) {
   await page.waitForFunction(() => [...document.querySelectorAll(".wc14-big:not(.wc14-side) .wc14-en")].some((e) => e.getBoundingClientRect().width > 0), null, { timeout: 15000 }).catch(() => {});
   await sleep(450);
   await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+  // (Nani's box and Nana's bubble are cut from this same shot by card-build-sheet.py, from their boxes at this moment)
+  data[`${size}|${st}|boxes`] = await page.evaluate(() => {
+    const r = (e) => { if (!e) return null; const b = e.getBoundingClientRect(); return b.width ? { x: b.left, y: b.top, w: b.width, h: b.height } : null; };
+    const bubs = [...document.querySelectorAll(".cv-bubble")].filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.bottom > 0 && +getComputedStyle(e).opacity > 0.5 && e.textContent.trim(); });
+    return { guide: r(document.querySelector("#guide")), bubble: r(bubs[bubs.length - 1]) };
+  });
   await shot(page, join(dir, `${st}-order-screen.png`));
-  const g = await box(page, "#guide", 4); if (g) await shot(page, join(dir, `${st}-nani-box.png`), g);
-  const bub = await box(page, ".cv-bubble.in", 6); if (bub) await shot(page, join(dir, `${st}-bubble.png`), bub);
   // the pop-up flies into its row a moment later: a still copy pinned where it stands
   const ok = await page.evaluate(() => {
     const src = document.querySelector(".wc14-big:not(.wc14-side)"); if (!src) return false;

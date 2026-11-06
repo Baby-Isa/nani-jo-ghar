@@ -114,7 +114,7 @@
   /* the 6 Nov type (SH-223, SH-224, SH-227; Zafar, 6 Nov: Lora for the Kutchi everywhere, 600 for a word and 500 for Nani's lines;
      Nunito Sans 600 grey for the English under it; the buttons and the UI stay Nunito): the faces live in assets/fonts/, declared
      in css/shared/fonts.css. On for chai first (:root.njg-lora at the end of this sheet, set by js/cook/ui.js applyType); the
-     roll-out moves those lines up here (docs/design-language/type-and-cards.md). */
+     roll-out moves those lines up here (docs/design-language/ui-design-system.md, "Kit"). */
   --njg-font-kutchi: "Lora", Georgia, "Times New Roman", serif;          /* every Kutchi word and line */
   --njg-font-english: "Nunito Sans", "Nunito", system-ui, sans-serif;    /* the English under a Kutchi word on a card */
   --njg-weight-drawn: 800;                          /* a Kutchi word drawn in the play area (the shelf pills): Tokens.weight("drawn") */
