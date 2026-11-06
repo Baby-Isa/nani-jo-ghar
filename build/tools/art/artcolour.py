@@ -555,6 +555,12 @@ def wood(res, name, R):
     if not W or not name:
         return None
     base = os.path.basename(name).lower()
+    if any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in R["light"]["skip"]):
+        return None  # people and hands: a hand on a rolling pin is skin, not wood
+    toks = re.split(r"[-_.]", os.path.splitext(base)[0])
+    if len(toks) > 1 and toks[-1] in W.get("state_suffixes", []):
+        toks = toks[:-1]  # the clinic's "-tray" and "-belt" are where the item sits, not what it is
+    words_ = "-".join(toks)
 
     def light_wood(L):
         h, c = math.degrees(math.atan2(L[2], L[1])) % 360, math.hypot(L[1], L[2])
@@ -562,7 +568,7 @@ def wood(res, name, R):
     lid = res["info"].get("lid")
     if lid and any(n in base for n in W["lid_names"]) and light_wood(lid):
         return "the lid or top (%s)" % words(lid)
-    if any(n in base for n in W["names"]):
+    if any(n in words_ for n in W["names"]):
         hits = [c for c in res.get("colours", []) if c["share"] >= W["share"] and light_wood(c["lab"])]
         if hits:
             return "%s %s (%.0f%% of the piece)" % (hits[0]["hex"], hits[0]["words"], hits[0]["share"] * 100)
@@ -654,7 +660,10 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         li["concave"] = concave
         skip = any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in P["skip"]) if name else False
         li["skipped"] = skip
-        if off_arc and not concave and not skip:  # a FAIL since 6 Nov (Zafar): on the block or in the redo pipeline
+        eye = P.get("eye_passed", {}).get(os.path.relpath(os.path.abspath(name), REPO)) if name else None
+        if eye:
+            li["eye_passed"] = eye
+        if off_arc and not concave and not skip and not eye:  # a FAIL since 6 Nov (Zafar): on the block or in the redo pipeline
             res["fail"].append("light from %s (%d°, strength %.0f; brightest quadrant %s): the bible's light is from the upper left"
                                % (angle_word(li["angle"]), li["angle"], li["strength"], li["brightest"]))
     # halo

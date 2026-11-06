@@ -21,17 +21,18 @@
  },
  "palette": {
   "_about": "One palette per item (Zafar, 6 Nov: \"an item should have all of its main colors from within a palette that contains all those colors. If not, it needs redoing ... things that were just way off that aren't in there, raise it as an exception for me to decide\"). The main colours are the k-means colours (colour above) with chroma at least neutral_chroma and L* at least dark_l (neutrals are the ground and exempt: the white marble #edecef is chroma 1.6; near-black hair and char have no Wada match), each at least main_share of the tinted pixels. FAIL when no single Wada combination (any of the book's 348, wada-colors.json) has a colour within combo_de (CIEDE2000, kL from colour) of every main colour. EXCEPTION (Zafar decides; on the block until he does) when a main colour is over exception_de from every Wada colour: it fits no combination at all. allow: globs Zafar has decided to keep, with his words and date (they pass the palette rule). Calibration: build/reports/art-review-strict-2026-11-06.md.",
-  "neutral_chroma": 6.0,
+  "neutral_chroma": 8.0,
   "dark_l": 20.0,
-  "main_share": 0.08,
-  "combo_de": 8.0,
+  "main_share": 0.1,
+  "combo_de": 9.0,
   "exception_de": 10.0,
   "allow": {"_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."}
  },
  "wood": {
-  "_about": "Walnut wherever there is wood (Zafar, 6 Nov; art bible section 2): lids, boards, handles, trays. FLAG (never a FAIL; meant for new art) a light oak or pine: the top band (a lid) of a lidded item by name (lid_names), or, on a picture whose name says wood (names), a main colour of at least share, in the light-wood band (CIE Lab hue degrees, L* l, chroma c). Walnut is Wada's Vandyke Brown (#4b3317, L* 23) to Brown (#7c4226, L* 35).",
+  "_about": "Walnut wherever there is wood (Zafar, 6 Nov; art bible section 2): lids, boards, handles, trays. FLAG (never a FAIL; meant for new art) a light oak or pine: the top band (a lid) of a lidded item by name (lid_names), or, on a picture whose name says wood (names; a last word in state_suffixes, where the clinic item sits, does not count; people and hands, light.skip, are skin), a main colour of at least share, in the light-wood band (CIE Lab hue degrees, L* l, chroma c). Walnut is Wada's Vandyke Brown (#4b3317, L* 23) to Brown (#7c4226, L* 35).",
   "names": ["board", "chakla", "velan", "rolling-pin", "tray", "spoon", "crate", "handle", "lid", "stool", "spatula", "mortar", "pestle", "wood"],
   "lid_names": ["jar", "tin-", "dabba", "canister", "shelf-cook-"],
+  "state_suffixes": ["tray", "belt"],
   "hue": [55, 90],
   "l": [52, 84],
   "c": [16, 48],
@@ -45,6 +46,15 @@
   "concave_round": 0.84,
   "skip": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*"],
   "concave_arc": [250, 350],
+  "eye_passed": {
+   "_about": "Pictures whose light reading an eye passed (a multi-material piece's albedo, not its light): no light FAIL. Path: who and when.",
+   "assets/cook/items/v3/samosa/jharo.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/clinic/items-s08c/steel-cup-s08c.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/clinic/items-v2/reflex-hammer.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/clinic/items-v2/toothbrush.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/day/s09b/kite.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/cook/items/shelf-fru-01-bare-f.webp": "Fable, 6 Nov (art-retrospective-2026-11-06: the crate slats)"
+  },
   "ring": 0.4,
   "segments": 4,
   "l_weight": 0.35

@@ -373,3 +373,9 @@ print(json.dumps({"t": t, "words": C.combination_words(151), "n": n, "k": len(C.
   assert.equal(o.n, o.k + 1, "the strip is the combination's colours on white, no text");
   assert.match(o.t, /ONE Wada combination/, "every block says one combination per picture");
 });
+test("light is a FAIL unless an eye passed the reading (light.eye_passed): the jharo passes, the well fails", () => {
+  const { res } = look(["--batch-by", "none", ...["assets/cook/items/v3/samosa/jharo.webp", "assets/day/s09b/well.webp"].map((p) => join(ROOT, p))]);
+  const [j, w] = res.results;
+  assert.ok(!j.fail.some((f) => f.startsWith("light")) && /Fable, 6 Nov/.test(j.info.light.eye_passed), JSON.stringify(j.info.light));
+  assert.ok(w.fail.some((f) => f.startsWith("light from the lower right")));
+});
