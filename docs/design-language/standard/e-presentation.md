@@ -14,7 +14,7 @@
 - **Layer:** shared kit · **Lives in:** `js/shared/frame.js` · **Value:** four sizes (values.md 0.2) · **Impact:** wrong · **Source rows:** CHAI-33, CHAI-86
 
 #### STD-E1-02 · The side panel's size follows only the window, scaling as one to a 2.5-card floor, never changing as a card opens
-- **Why:** "is there no scaling of words, text, and image sizes on the left bar?" (Zafar, 1 Nov)
+- **Why:** "is there no scaling ... on the left bar?" (Zafar, 1 Nov)
 - **Scope:** House
 - **Pattern / part:** P11 / the side panel
 - **Checked by:** tool:panelcheck + gap: a contract on panel sizes while a card opens
@@ -38,7 +38,7 @@
 - **Checked by:** tool:panelcheck + probe:SH-169 + probe:SH-191 + probe:SH-199
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** card fit time (values.md G1) · **Impact:** stuck · **Source rows:** SH-169, SH-191, SH-194, SH-199, SH-206, CHAI-62
+- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** card fit time (values.md E1) · **Impact:** stuck · **Source rows:** SH-169, SH-191, SH-194, SH-199, SH-206, CHAI-62, SH-204
 
 #### STD-E1-05 · Nothing on screen overlaps a thing it is not meant to touch
 - **Why:** "aren't in line with the tea tray and the tea hobs" (Zafar, 1 Nov)
@@ -76,7 +76,7 @@
 - **Checked by:** tool:panelcheck + tool:spkgap + probe:SH-189 + probe:SH-192
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2 (740x320)
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `css/shared/order-card.css` · **Value:** item padding floor, Nani's line room (values.md E2) · **Impact:** cosmetic · **Source rows:** SH-190, SH-193, SH-165, SH-143, SH-189, SH-209, SH-179, SH-192, SH-176
+- **Layer:** shared kit · **Lives in:** `css/shared/order-card.css` · **Value:** item padding floor (values.md E2), Nani's line room (values.md D3) · **Impact:** cosmetic · **Source rows:** SH-190, SH-193, SH-165, SH-143, SH-189, SH-209, SH-179, SH-192, SH-176, CLN-218
 
 #### STD-E2-04 · An item card shows the thing exactly as the play area does, every state's filter stacking on the others
 - **Why:** "the one on the shelf is the correct one" (Zafar, 3 Nov)
@@ -121,7 +121,7 @@
 - **Checked by:** contract-53 + contract-92 + contract-82 + contract-84 + probe:CHAI-33
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (740x320), New player
 - **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** light pad, light corner (values.md D1) · **Impact:** wrong · **Source rows:** CHAI-33, SH-196, led:1.6-11
+- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** light pad, light corner (values.md D1) · **Impact:** wrong · **Source rows:** CHAI-33, SH-196, led:1.6-11, CHAI-25
 
 ## E3 Art and materials
 
@@ -165,7 +165,7 @@
 - **Why:** "old models that haven't been re-drawn" (Zafar, 1 Nov)
 - **Scope:** Family
 - **Pattern / part:** P10 / the closing scene
-- **Checked by:** judge: the counter, chai L3, 1280x665
+- **Checked by:** judge: the counter, chai L3 + gap: an art check for counter poses
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (1280x665)
 - **Status:** waiting on art
 - **Layer:** kitchen kit · **Lives in:** `data/cook.json` · **Impact:** cosmetic · **Source rows:** ART-33
@@ -179,7 +179,7 @@
 - **Checked by:** contract-72 + contract-80 + probe:SH-180 + gap: a frame-by-frame jump check
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (930x430)
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Value:** card fold, Nani's box fold (values.md E4) · **Impact:** feels bad · **Source rows:** SH-180, SH-215, SH-211, CK-57
+- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Value:** card fold (values.md E4), Nani's box fold (values.md D3) · **Impact:** feels bad · **Source rows:** SH-180, SH-215, SH-211, CK-57, SH-174
 
 #### STD-E4-02 · The pop-out flies the least bowed path clear of faces and lands exactly on its row card
 - **Why:** "take the straightest path" (Zafar, 3 Nov)
@@ -194,7 +194,7 @@
 - **Why:** "I didn't see that on the other modes" (Zafar, 1 Nov)
 - **Scope:** Family
 - **Pattern / part:** P9 / the hob
-- **Checked by:** judge: the boil, chai L1 and L4, 1280x665
+- **Checked by:** judge: the boil, chai L1 and L4 + gap: a contract that the boil shows before the green
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (1280x665)
 - **Status:** agreed 1 Nov
 - **Layer:** kitchen kit, stove part · **Lives in:** `js/cook/kitchen-kit.js` · **Value:** boil lead (values.md B2) · **Impact:** unfinished · **Source rows:** CHAI-63, CHAI-38

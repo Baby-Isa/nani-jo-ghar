@@ -1,42 +1,40 @@
 # Values: every number the standard's rules use
 
-Each value says what it is derived from, so a family re-derives it instead of copying chai's number. A rule cites a value by its
-name and area (e.g. "zoom-in (values.md D1)"). "Token" names the tokens file (`css/shared/tokens.css`), the frame's numbers
-(`data/layout.json`), the central rules (`data/rules.json`) or the Cook data (`data/cook.json`) where the number already lives, or
-says **to tokenise** (the number is still a constant in code: Sprint 18's F2 work). "A family may change it": yes, no, or with
-Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one unit of the 1600x900 play area.
+A rule cites a value by name and area ("zoom-in (values.md D1)"). "Derived from" lets a family re-derive a number, never copy it.
+"Token" is where the number lives (`css/shared/tokens.css`, `data/layout.json`, `data/rules.json`, `data/cook.json`), or **to
+tokenise** (still a constant in code). Read from the code on 7 Nov; a design px is one unit of the 1600x900 play area.
 
 ## 0.2 Who it is for
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| four sizes | 740x320, 930x430, 1280x665, 1920x1080 | CSS px | Zafar, 27 Oct (CLAUDE.md): layouts by height, the phone and big-screen extremes | not a token (the check sizes) | no |
-| phone | the short side under 500 | CSS px | the frame's form factors (decisions 24, 25) | `data/layout.json` formFactors | no |
-| tablet | short side 600 or more, no wider than 3:2; scale 1.15 to 1.4 | CSS px | the frame's form factors | `data/layout.json` formFactors | no |
+| four sizes | 740x320, 930x430, 1280x665, 1920x1080 | CSS px | Zafar, 27 Oct: the phone and big-screen extremes | not a token (the check sizes) | no |
+| phone | the short side under 500 | CSS px | decisions 24, 25 | `data/layout.json` formFactors | no |
+| tablet | short side 600 or more, no wider than 3:2; scale 1.15 to 1.4 | CSS px | decisions 24, 25 | `data/layout.json` formFactors | no |
 
 ## A2 The word card's support
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| card by level | English shown at L1 only; the picture at L1-L2; the Kutchi always | levels | SH-110 (26 Oct), contract-35 | `data/rules.json` levels.cardEnglish, cardPicture | with Zafar |
-| pill right in a row | 3 | right picks | SH-159 (Zafar, 29 Oct): a word's pill goes after three right in a row | `data/rules.json` words.pill.rightInARow | with Zafar |
+| card by level | English at L1; the picture at L1-L2; Kutchi always | levels | SH-110 (26 Oct), contract-35 | `data/rules.json` levels.cardEnglish, cardPicture | with Zafar |
+| pill right in a row | 3 | right picks | SH-159 (Zafar, 29 Oct) | `data/rules.json` words.pill.rightInARow | with Zafar |
 | word hold | new 1.5, learning 1.0, known 0.6 | s | SH-159 | `data/rules.json` words.holdMs | with Zafar |
-| reveal English shown | 1.6 | s | SH-196 (Zafar, 3 Nov: the lesson shows the English, then the child taps) | to tokenise | no |
+| reveal English shown | 1.6 | s | SH-196 (Zafar, 3 Nov) | to tokenise | no |
 
 ## B2 The mechanic
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| level speed | each level's timers about 15% quicker (0.13 to 0.17) | share | design system §11; the static ladder check | `data/cook.json` timing.levelSpeed | yes, inside the band |
+| level speed | each level's timers about 15% quicker (0.13 to 0.17) | share | design system §11 | `data/cook.json` timing.levelSpeed | yes, inside the band |
 | heat to the green | about 15, 21, 28 by level | s | CHAI-10 (20 Oct: twice as fast) | `data/cook.json` | yes |
-| green at L4 | 2 | s | CHAI-58 (S16: 1.7 s was tight at a child's pace) | `data/cook.json` | yes |
+| green at L4 | 2 | s | CHAI-58 (1.7 s was tight at a child's pace) | `data/cook.json` | yes |
 | boil lead | the boil picture 2 s before the green, at every level | s | CHAI-63 (1 Nov) | to tokenise | yes |
 
 ## B3 Counts and amounts
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| count by level | L1 is 1, L4 the game's most, even steps between (chai 1 to 3 cups) | things | the central rules' count (29 Oct) | `data/rules.json` count.games | yes, per game |
+| count by level | L1 one, L4 the game's most, even steps (chai 1 to 3) | things | the rulebook (29 Oct) | `data/rules.json` count.games | yes, per game |
 | half | 0.42 of the glass's inside | share | Zafar, 5 Nov: "half should be a little lower" (CHAI-84) | to tokenise (`js/cook/ui.js`) | yes (baking's jug) |
 | full | to the rim (1.0) | share | CHAI-84 | to tokenise | yes |
 | pours to the amount | L4: half 1, full 2; below L4 one | pours | CHAI-54 (1 Nov) | to tokenise | yes |
@@ -47,8 +45,8 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 |---|---|---|---|---|---|
 | decoys | 1, 2, 3, 4 by level, L4's last a lookalike | things | CK-49; contract-37 | `data/rules.json` levels.decoys, lookalike | with Zafar |
 | "no" asks | from L2 | level | the rulebook (29 Oct) | `data/rules.json` levels.noAsks | with Zafar |
-| level up | after 3 rounds in a row with at most 1 hint; never down; top L4 | rounds | Zafar, 29 Oct ("make it easy to change") | `data/rules.json` advance | with Zafar |
-| people at the counter | 1: middle; 2: middle and right; 3: all three | spots | Zafar, 29 Oct | `data/rules.json` scene.counterSpots | yes |
+| level up | 3 rounds in a row, at most 1 hint; never down; top L4 | rounds | Zafar, 29 Oct | `data/rules.json` advance | with Zafar |
+| people at the counter | 1: middle; 2: middle, right; 3: all | spots | Zafar, 29 Oct | `data/rules.json` scene.counterSpots | yes |
 
 ## D1 The first time
 
@@ -57,12 +55,12 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 | breath before a light | 1 after the stage is still, never more than 3 | s | CHAI-52 (Zafar: "add a second extra") | to tokenise (chai's CONTROL_PAUSE_MS) | no |
 | call after its light | 0: together, within 200 ms | ms | CHAI-40, contract-78 | `data/rules.json` showing.callAfterLightMs | no |
 | card light after the last move | 0.5 | s | CHAI-42 | `data/rules.json` showing.pointAfterMoveMs | no |
-| still-kitchen wait | up to 8 | s | CHAI-77 (a child's pace; 3 s gave up) | to tokenise | no |
+| still-kitchen wait | up to 8 | s | CHAI-77 (a child's pace) | to tokenise | no |
 | light time | 1.2 | s | the rulebook's showing | `data/rules.json` showing.pointMs | no |
 | zoom-in | the whole 0.65, then shrink 0.45; the part's pad 4 px | s | SH-213 (Zafar, 5 Nov) | to tokenise (Onboard.ZOOM) | no |
-| next-pan light | 0.8 after the pour | s | CHAI-99 (Zafar, 6 Nov: "half a second longer"; was 0.3, CHAI-68) | to tokenise | yes |
+| next-pan light | 0.8 after the pour | s | CHAI-99 (Zafar, 6 Nov: "half a second longer") | to tokenise | yes |
 | light after the dots | ends 0.9 after the dots | s | SH-196 (4 Nov) | to tokenise | no |
-| light pad | 0.12 of the thing's smaller side, 8 to 16 px, 2 px clear of a neighbour | CSS px | SH-230 (Zafar, 6 Nov: "a general rule that works in all cases") | to tokenise (Onboard.LIGHT) | no |
+| light pad | 0.12 of the smaller side, 8 to 16, 2 clear of a neighbour | CSS px | SH-230 (Zafar, 6 Nov) | to tokenise (Onboard.LIGHT) | no |
 | light corner | at most a quarter of the box's height | share | SH-196 (Zafar, 3 Nov) | to tokenise | no |
 | dim | 0.45 | opacity | the s14 light (28 Oct) | `--njg-card14-dim` | no |
 | hop | 0.1 of the thing's height | share | the judge, 23 Oct | to tokenise (Onboard.HOP) | no |
@@ -73,37 +71,31 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
 | hint wait | 7, 9, 11, 13 by level | s | CHAI-56 (Zafar, 1 Nov: "7 or 9 or 11 seconds") | `data/rules.json` levels.hintS | with Zafar |
-| hint stages | the first time at once; the light at 5 idle; Nani's line at 15 | s | the help ladder (principle 3) | to tokenise (Onboard.RUNGS) | with Zafar |
+| hint stages | first time at once; the light at 5 idle; her line at 15 | s | the help ladder (principle 3) | to tokenise (Onboard.RUNGS) | with Zafar |
 | help comes | at most the hint wait plus 4 | s | contract-91 (Zafar, 6 Nov) | not a token (the check) | no |
 
 ## D3 Nani's box and the helper card
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| Nani's line room | 2 | lines | SH-210 (5 Nov: one height whatever her line) | to tokenise | no |
-| Nani's box fold | opens 0.45, shuts 0.5 | s | SH-215 (Zafar, 5 Nov: "it snaps up") | to tokenise (`css/shared/order-card.css`) | no |
-
-## D4 Feedback in play
-
-| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
-|---|---|---|---|---|---|
-| fold after done | 0.7 | s | the order card's fold (SH-148) | to tokenise (FOLD_AFTER) | yes |
-| tick | 0.3 | s | the order card's tick | to tokenise | no |
+| Nani's line room | 2 | lines | SH-210 (5 Nov) | to tokenise | no |
+| Nani's box fold | opens 0.45, shuts 0.5 | s | SH-215 (Zafar, 5 Nov) | to tokenise (`css/shared/order-card.css`) | no |
 
 ## E1 The frame
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
 | play area | 1600 x 900 | design px | the layout contract (23 Sept) | not a token | no |
-| shelf band | the bottom 30% (630 of 900 down) | design px | SH-112 (Zafar, 20 Oct: bigger jars) | to tokenise (St.SHELF) | no |
-| shelf line | 818 of 900 | design px | every shelf object stands on one line | to tokenise (chai's BASE) | no |
+| shelf band | the bottom 30% (630 of 900 down) | design px | SH-112 (Zafar, 20 Oct) | to tokenise (St.SHELF) | no |
+| shelf line | 818 of 900 | design px | the shelf art's feet | to tokenise (chai's BASE) | no |
 | chip line | 860 of 900, the chip 46 high | design px | SH-112 | to tokenise (St.SHELF.chipY) | no |
 | chip tap | 142 x 80 | design px | as big as the band allows | to tokenise | no |
 | shelf spacing | pitch 172, group gap 44 | design px | CHAI-66 (1 Nov) | to tokenise | yes |
-| gap floor | the groups' gaps close to 20, no less | design px | SH-208 (Zafar, 4 Nov: "pick what's sensible") | to tokenise | yes |
-| pill word | at least 13, at most 1.5x; pills at least 4 apart | CSS px | SH-219 (Zafar, 6 Nov: "pills that fit their word") | to tokenise | no |
+| gap floor | the groups' gaps close to 20, no less | design px | SH-208 (Zafar, 4 Nov) | to tokenise | yes |
+| pill word | at least 13, at most 1.5x; pills at least 4 apart | CSS px | SH-219 (Zafar, 6 Nov) | to tokenise | no |
 | panel scale | the window's height / 665, from 0.66 to 1 | ratio | SH-185 (1 Nov) | `--njg-p` | no |
 | card floor | 2.5 item cards show in a card's row | cards | SH-185 (Zafar, 2 Nov) | not a token (`css/shared/order-card.css`) | no |
+| card fit time | a fitting card whole within 400 | ms | SH-191 (panelcheck) | not a token (the check) | no |
 | side panel width | laptop clamp(200, 19vw, 360); phone up to 260 | CSS px | the frame (decision 24) | `--njg-side-w` | no |
 
 ## E2 Components
@@ -128,19 +120,21 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| card fold | 0.42, cubic-bezier(0.3, 0.7, 0.2, 1) | s | SH-180 (Zafar, 1 Nov: "smoothly minimize") | to tokenise (`css/shared/order-card.css`) | no |
+| card fold | 0.42, cubic-bezier(0.3, 0.7, 0.2, 1) | s | SH-180 (Zafar, 1 Nov) | to tokenise (`css/shared/order-card.css`) | no |
 | landing error | within 2 | CSS px | SH-203 (4 Nov) | not a token (the check) | no |
-| word moment pace | speed 0.75; a look of 0.9; 0.5 in the frame; each card 1; both cards 2.2 | s | CHAI-70 (3 Nov: "about half the speed"), CHAI-81 (4 Nov); the ledger's 2.4 s is older | to tokenise (`js/cook/ui.js`) | yes, per moment |
-| word moment room | top margin 4% of the height; the glass at most 42%; the counter line at most 65% down | share | CHAI-86 (5 Nov), CHAI-101 (6 Nov) | to tokenise (`js/shared/word-moment.js`) | yes |
-| stream gap | the spout 0.4 of a glass above the rim | glass | CHAI-86 (Zafar, 5 Nov: "move the tea kettle higher") | to tokenise | no |
+| word moment pace | speed 0.75; look 0.9; frame 0.5; each card 1; both 2.2 | s | CHAI-70 (3 Nov), CHAI-81 (4 Nov); was 2.4 s | to tokenise (`js/cook/ui.js`) | yes, per moment |
+| word moment room | top margin 4%; the glass at most 42% of the height; the counter at most 65% down | share | CHAI-86 (5 Nov), CHAI-101 (6 Nov) | to tokenise (`js/shared/word-moment.js`) | yes |
+| stream gap | the spout 0.4 of a glass above the rim | glass | CHAI-86 (Zafar, 5 Nov) | to tokenise | no |
 | glow, pulse | 1.2 each; the pulse to 1.06 | s | the kit's focal glow | `--njg-glow-ms`, `--njg-pulse-ms` | no |
 | hop, talk | 0.9; 0.45 | s | the help kit; ART-18 | `--njg-hop-ms`, `--njg-talk-ms` | no |
+| fold after done | 0.7 | s | the order card's fold (SH-148) | to tokenise (FOLD_AFTER) | yes |
+| tick | 0.3 | s | the order card's tick | to tokenise | no |
 
 ## E5 Sound and voice
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| boil loudness | rises from the first heat to 75% (-2.5 dB) at the bubbling picture, held through the green, 100% past it | share | CHAI-95 (Zafar, 6 Nov) | to tokenise | yes |
+| boil loudness | up from the first heat to 75% at the bubbling picture, held in the green, 100% past it | share | CHAI-95 (Zafar, 6 Nov) | to tokenise | yes |
 | short pour | the first 0.9 of a real pour | s | Zafar's pick, 6 Nov (CHAI-92) | not a token (the clip) | yes |
 
 ## E6 Tokens
@@ -150,8 +144,8 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 | text floor | 14 | CSS px | the frame's floors (TXT-05) | `data/layout.json` | no |
 | tap floor | 48 | CSS px | the frame's floors (LAY-04) | `--njg-tap` | no |
 | spacing grid | 0, 4, 8, 12, then multiples of 8 | CSS px | LAY-03 (the CSS lint) | `--njg-s1` to `--njg-s7` | no |
-| focus colour | #e0a63a | colour | decision 95, SH-53: one highlight colour | `--njg-focus` | no |
-| stone | #dfd5cd | colour | the mean of the stone tile Zafar chose (ART-41, 5 Nov) | `--njg-stone` | yes (a family's own panel) |
+| focus colour | #e0a63a | colour | decision 95, SH-53 | `--njg-focus` | no |
+| stone | #dfd5cd | colour | his stone tile's mean (ART-41, 5 Nov) | `--njg-stone` | yes (a family's own panel) |
 | Kutchi ink | maroon #7d2234 on cards | colour | SH-147 (27 Oct: maroon Kutchi) | `--njg-card14-kutchi` | no |
 | type faces | Kutchi in Lora; English in Nunito Sans | - | SH-224 (6 Nov) | `--njg-font-kutchi`, `--njg-font-english` | no |
 
@@ -159,22 +153,12 @@ Zafar. Numbers read from the code on 7 Nov (chai signed off); a design px is one
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| picture retries | 3 tries, 0.3 apart | s | CHAI-91 (6 Nov: a phone drops requests) | to tokenise | no |
+| picture retries | 3 tries, 0.3 apart | s | CHAI-91 (6 Nov) | to tokenise | no |
 | load time growth | fails past 20% | share | the load-time baseline | `build/tools/review/data/loadtime-baseline.json` | no |
-| site size | under 800 | MB | Zafar, 14 Oct (Pages stops near 1 GB) | not a token (sitesize.mjs) | no |
-
-## G1 Automatic checks
-
-| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
-|---|---|---|---|---|---|
-| card fit time | a fitting card whole within 400 | ms | SH-191 (panelcheck) | not a token (the check) | no |
-| tap handed on | within 150 | ms | contract-21 (non-negotiable 7) | not a token | no |
-| one highlight | a second one held 300 fails | ms | contract-8 (SH-53) | not a token | no |
-| light lift | the lit box 12 of 255 lighter than the dim | levels | contract-84 (SH-164) | not a token | no |
-| same line again | not within 10 | s | contract-22 | not a token | no |
+| site size | under 800 | MB | Zafar, 14 Oct | not a token (sitesize.mjs) | no |
 
 ## H1 Art
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| art queue | two days, about 240 pictures (about 120 a day) | pictures | ART-35 (Zafar, 2 Nov: "I get 120 images a day") | not a token | with Zafar |
+| art queue | two days, about 240 pictures (about 120 a day) | pictures | ART-35 (Zafar, 2 Nov) | not a token | with Zafar |
