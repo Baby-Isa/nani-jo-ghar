@@ -10,33 +10,23 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `claude/exciting-sagan-cz9d5t` (the newest handover is here; `main` may be a step behind).
 
-**Where things stand (7 Nov 2026, 00:25 UK):** Sprint 17. **Live on `main`: 20261107T001739Z** (00:21 UK, on Zafar's word, for his
-chai replay and sign-off). It carries Zafar's 6 Nov night notes (`docs/feedback/chai-play-2026-11-06-night.md`), built by four
-in-chat builders (reports `build/reports/s17-n1-chai.md`, `s17-n2-wm.md`, `s17-n3-order.md`, `s17-n4-art.md`):
-- **Chai:** the boil heard from the first heat, even in dB, held through the green, louder past it (CHAI-95); the next pan's light
-  0.8 s after a pour (CHAI-99); no click after the last pour (CHAI-100); a style tea's card pops and flies in while its headline
-  is said (CHAI-96); each person says their own words (CK-59: the cousin's dudh).
-- **Every game's light:** one rule, `Onboard.litBox` (SH-230): picture, pill and face plus 12% (8-16 px), 2 px short of a neighbour.
-- **Word moment:** the pour's real sound for both glasses (CHAI-97); the drop half (CHAI-98); the counter at 65%, three wide doors,
-  smaller glasses (CHAI-101, re-judge); the card as the 6 Nov item card (SH-231, judge PASS).
-- **Art runs:** references from one zip Zafar drags in with the block; colours checked (ART-42, ART-58). The clinic redo block is
-  reissued: `docs/design-language/art-plans/s17-clinic-redo-chrome-block.txt`.
-- **Checks:** contract-92 (light room), -93 (every order part spoken), -94 (word-moment card). Chai L1-L4 at four sizes: one break,
-  contract-11, the enlarged counter at 1920 (ART-59: a wide-door counter on the next art run). Mount test: the same 22 as live.
-- **Not proven by a probe:** CHAI-99 (the player taps on too fast), CHAI-95/97/100 (Zafar's ear).
-- Zafar's art upload `assets/ChatGPT 261107 1/` (34 pictures, on `main`) waits to be landed into `sources/art/` and judged.
+**Where things stand (7 Nov 2026, 12:10 UK):** Sprint 17. **Live on `main`: 20261107T120301Z** for Zafar's chai replay and sign-off.
+It carries all of his 7 Nov notes (`docs/feedback/chai-play-2026-11-07.md`): nothing said after a skip (CK-60, contract-95); the
+boil one seamless 12 s loop (CHAI-95; hear it on `lab/juice.html`, "Play the rising boil"); the dotted-word lesson always shows
+(CHAI-102); the word moment's pour waits for the stream (CHAI-103); half lands with its headline (CHAI-104); the side panel follows
+a served card's fold to the next card's place, every game (SH-232). Clinic redo (138 items) and skies (13) cut and stored, not wired.
 
-**Next, in this order:** Zafar replays chai on the live site and signs it off (`/feedback` for his notes); land his art upload;
-then the chai standard and the gap analysis; finish Sprint 17 (`docs/sprints/S17-chai-done-families.md`).
+**Next, in order:** Zafar replays chai and signs it off (`/feedback` for notes); then chai's frozen recorded run; then the roll-out
+plan (`build/reports/game-rollout-plan-review-2026-11-07.md`, his yes with chop its own game and chai split three ways): step 1 (the
+standard and its checks, about 5 builders) only after his sign-off (Zafar, 7 Nov: "wait for sign off on chai").
 
-**Open questions to Zafar:** the earlier reports' decisions (the Cook redo's 3, the lid-rule widening, the Mixkit licence and the
-done sparkle, the card's smaller pop-up on short phones; SH-229; the jar pairs at 740x320); the word moment's smaller glasses on
-phones (124 to 88 px) for the 65% counter.
+**Open questions to Zafar:** the skies' four (the night ceiling, the day square, the two farm edits as sky-only redos, wiring next
+sprint); the phone glasses' size in the word moment (88 px); the tongue depressor's brown (darker or keep).
 
 **Starting prompt for a new chat:**
 > First `git fetch origin claude/exciting-sagan-cz9d5t` and work from that branch (it holds the newest handover; `main` is the live
 > site). Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, from that branch. I'm replaying chai live; take my notes with
-> `/feedback`, then we sign chai off and land my art upload.
+> `/feedback`, then we sign chai off and record its frozen run.
 
 ## The fix list
 
