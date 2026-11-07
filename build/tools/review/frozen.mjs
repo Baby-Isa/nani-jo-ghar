@@ -27,6 +27,13 @@ const SIZES_QUICK = ["1280x665", "740x320"];
 const NOISY = new Set(["poke", "chai-simmer", "rung", "glow", "ghost", "timed-hold"]);
 // chai's moments whose timing the ear and the eye care about, from the stage's start (ms)
 const MOMENTS = ["request", "order-landed", "chai-add", "chai-boil", "chai-slow", "chai-down", "step-call", "card-fold", "results"];
+// what a page is compared by (diff): the states the sandbox recorded, the kinds of note the game logged, the effects and family
+// clips it played (not the device voice: its words follow the order dealt)
+const FACETS = {
+  "a state": (f) => f.states.filter((x) => !/^stopped-here$/.test(x)),
+  "a game note": (f) => Object.keys(f.counts),
+  "a sound": (f) => Object.keys(f.sounds).filter((x) => !/^tts:/.test(x)),
+};
 // the ear items (Zafar's: the boil loop, the clicks, the pour)
 const EAR = {
   boil: /simmer|boil|bubble/,
@@ -78,12 +85,13 @@ if (a.has("freeze")) {
   const runs = String(a.val("runs") || "").split(",").filter(Boolean);
   if (!runs.length) { console.log("--freeze needs --runs <run>,<run>"); process.exit(1); }
   mkdirSync(join(OUT, "films"), { recursive: true });
-  const frozen = { game, frozenAt: new Date().toISOString(), commit: spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).stdout.trim(), runs, pages: {}, breaks: [] };
+  const frozen = { game, frozenAt: new Date().toISOString(), commit: spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).stdout.trim(), runs, pages: {}, samples: {}, breaks: [] };
   const ear = [];
   for (const id of runs) {
     const run = readRun(id);
-    Object.assign(frozen.pages, run.pages);
-    frozen.breaks.push(...run.breaks.map(breakKey));
+    // every run of the same game files is a sample: pages keeps the first, samples all of them (the diff's always and ever)
+    for (const [k, p] of Object.entries(run.pages)) { if (!frozen.pages[k]) frozen.pages[k] = p; (frozen.samples[k] = frozen.samples[k] || []).push(p); }
+    for (const b of run.breaks.map(breakKey)) if (!frozen.breaks.includes(b)) frozen.breaks.push(b);
     for (const f of ["contract.md", "summary.md"]) if (existsSync(join(run.dir, f))) copyFileSync(join(run.dir, f), join(OUT, `${id.split("/").pop()}-${f}`));
     if (existsSync(join(run.dir, "films"))) for (const f of readdirSync(join(run.dir, "films"))) copyFileSync(join(run.dir, "films", f), join(OUT, "films", f));
   }
@@ -106,7 +114,7 @@ if (a.has("freeze")) {
     `The runs: ${runs.map((r) => `\`build/screenshots/sandbox/${r}/\``).join(", ")}; the fingerprint \`build/frozen/${game}/frozen.json\`.`,
     "",
   ].join("\n"));
-  console.log(`frozen ${Object.keys(frozen.pages).length} pages, ${frozen.breaks.length} contract break(s) known, films: ${readdirSync(join(OUT, "films")).length} -> ${OUT.slice(ROOT.length + 1)}/`);
+  console.log(`frozen ${Object.keys(frozen.pages).length} pages (${Object.values(frozen.samples).filter((x) => x.length > 1).length} with two samples or more), ${frozen.breaks.length} contract break(s) known, films: ${readdirSync(join(OUT, "films")).length} -> ${OUT.slice(ROOT.length + 1)}/`);
   process.exit(0);
 }
 
@@ -130,24 +138,38 @@ if (a.has("diff")) {
   const diffs = [];
   const add = (page, what, before, after) => diffs.push({ page, what, before, after });
   const nowBreaks = new Set(now.breaks.map(breakKey));
-  for (const b of nowBreaks) if (!frozen.breaks.includes(b)) add(b.split(" ")[1], "a new contract break", "-", b.split(" ")[0]);
-  for (const b of frozen.breaks) if (!nowBreaks.has(b) && now.pages[b.split(" ")[1]]) add(b.split(" ")[1], "a contract break gone", b.split(" ")[0], "-");
+  // a break seen in any frozen run is known (a timing check can trip under load: contract-79, -83); a new one is re-played once
+  // before it counts (--diff re-plays those pages itself; with --run it is listed as "to confirm")
+  const newBreaks = [...nowBreaks].filter((b) => !frozen.breaks.includes(b));
+  let confirmed = newBreaks;
+  if (newBreaks.length && !a.val("run")) {
+    const again = `${runId}-again`;
+    const flows = [...new Set(newBreaks.map((b) => b.split(" ")[1].split("@").slice(0, -1).join("@")))];
+    const sizes = [...new Set(newBreaks.map((b) => b.split("@").pop()))];
+    console.log(`re-playing ${flows.length} page(s) with a new break to confirm it ...`);
+    spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "1800", process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--flow", flows.join(","), "--sizes", sizes.join(","), "--contract", "--no-sheets", "--run-id", again], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8819" }, maxBuffer: 64 << 20 });
+    const twice = new Set(readRun(again).breaks.map(breakKey));
+    confirmed = newBreaks.filter((b) => twice.has(b));
+    for (const b of newBreaks.filter((b) => !twice.has(b))) console.log(`  ${b}: not on the re-play (a flake)`);
+  }
+  for (const b of confirmed) add(b.split(" ")[1], a.val("run") ? "a new contract break (re-play to confirm)" : "a new contract break, twice", "-", b.split(" ")[0]);
+  // Chai is not the same twice (the orders it deals, when a hint comes, a tap that skips a line), so a page is compared by what it
+  // does, not by counts or times: across the frozen samples of a page (every run it was frozen from), what ALWAYS happened is
+  // required (states, the game's note kinds, the effects and family clips heard) and what EVER happened is allowed. A change is a
+  // required thing missing, a thing never seen before, a page that no longer reaches its end, or a new page error.
   for (const [k, p] of Object.entries(now.pages)) {
-    const f = frozen.pages[k];
-    if (!f) continue;
-    if (f.complete !== p.complete) add(k, "reached its end", f.complete, p.complete);
-    for (const e of p.errors) if (!f.errors.includes(e)) add(k, "a new page error", "-", e.slice(0, 160));
-    if (f.states.join(",") !== p.states.join(",")) add(k, "the states it passed through", f.states.join(" > "), p.states.join(" > "));
-    if (f.seq.join(",") !== p.seq.join(",")) {
-      const i = f.seq.findIndex((w, j) => p.seq[j] !== w);
-      add(k, "the game's notes, in order (first difference)", f.seq.slice(Math.max(0, i - 2), i + 3).join(" > "), p.seq.slice(Math.max(0, i - 2), i + 3).join(" > "));
-    }
-    const sk = new Set([...Object.keys(f.sounds), ...Object.keys(p.sounds)]);
-    for (const s of sk) if ((f.sounds[s] || 0) !== (p.sounds[s] || 0) && !/simmer|loop/.test(s)) add(k, `the sound ${s}`, `${f.sounds[s] || 0}x`, `${p.sounds[s] || 0}x`);
-    for (const m of MOMENTS) {
-      const x = f.moments[m] || [], y = p.moments[m] || [];
-      if (x.length !== y.length) { add(k, `how often ${m} happens`, x.length, y.length); continue; }
-      x.forEach((t, i) => { const tol = Math.max(400, Math.abs(t) * 0.15); if (Math.abs(y[i] - t) > tol) add(k, `when ${m} happens (#${i + 1})`, `${(t / 1000).toFixed(2)} s`, `${(y[i] / 1000).toFixed(2)} s`); });
+    const samples = frozen.samples && frozen.samples[k] ? frozen.samples[k] : frozen.pages[k] ? [frozen.pages[k]] : null;
+    if (!samples) continue;
+    if (samples.some((f) => f.complete) && !p.complete) add(k, "reached its end", true, false);
+    const errs = new Set(samples.flatMap((f) => f.errors));
+    for (const e of p.errors) if (!errs.has(e)) add(k, "a new page error", "-", e.slice(0, 160));
+    for (const [what, get] of Object.entries(FACETS)) {
+      const sets = samples.map((f) => new Set(get(f)));
+      const ever = new Set(sets.flatMap((x) => [...x]));
+      const always = [...sets[0]].filter((x) => sets.every((y) => y.has(x)));
+      const nowSet = new Set(get(p));
+      for (const x of always) if (!nowSet.has(x)) add(k, `${what}: always there before, missing now`, x, "-");
+      for (const x of nowSet) if (!ever.has(x)) add(k, `${what}: never seen before`, "-", x);
     }
   }
   const missing = frozenKeys.filter((k) => !now.pages[k] && (a.has("full") || SIZES_QUICK.includes(k.split("@").pop())) && !a.val("run"));
