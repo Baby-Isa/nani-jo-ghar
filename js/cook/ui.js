@@ -3422,6 +3422,68 @@
       if (mission && mission.focusWho === who && was !== who) M.focus(was);
     }
   };
+  /*
+   * Piece 18 (docs/architecture/module-map.md): people say their orders, every game's. A person at the counter says their order (a tap
+   * on their face replays it; at a station's start, those the request pop-up didn't say): their card read along (M.sayPerson), else the
+   * game's own sentence in Nani's box. While they speak her box shows their face and their figure takes the kit's one talk motion
+   * (Lifecycle.talk.phaser, contract-14), and both go back after. Nothing is said once the round has moved on (Cook.run).
+   *   UI.personSay(who, {obj, rows, line, hide})  obj: their figure on the scene (default the scene's own for them); rows: only these
+   *                                               rows; line: the sentence (or () => it) when the card can't say it; hide: Lang's hide
+   *   UI.hearPerson(who, o)   the replay: one at a time (false while anyone is speaking); o.onHelp() first (a replay counted as help)
+   *   UI.peopleSay(list, o)   each [{who, obj, rows, line, hide}] in turn, o.gap ms between (default UI.mission.times.speakGap)
+   *   UI.personSpeaking()     someone is saying their order now
+   */
+  let personTalks = 0;
+  UI.personSay = async function (who, o = {}) {
+    const S = Cook.scene;
+    const token = Cook.run;
+    const img = document.querySelector("#nani-card .nc-face");
+    const prev = img ? img.getAttribute("src") : null;
+    if (img && Cook.facePath) img.src = Cook.v(Cook.facePath(who));
+    const obj = o.obj || (S && S.chars && S.chars[who]) || null;
+    const y0 = obj ? obj.y : 0;
+    const LC = global.Lifecycle;
+    let stop = null;
+    if (obj && S) {
+      if (LC && LC.talk && LC.talk.phaser) stop = LC.talk.phaser(S, obj);
+      else if (S.tweens) {
+        const tw = S.tweens.add({ targets: obj, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
+        stop = () => tw.stop();
+      }
+    }
+    personTalks++;
+    try {
+      const said = M.sayPerson ? await M.sayPerson(who, o.rows || null) : false;
+      if (!said && o.line && token === Cook.run) {
+        const line = typeof o.line === "function" ? o.line() : o.line;
+        if (line) await UI.say(line, { badge: true }, { hide: o.hide });
+      }
+      return said;
+    } finally {
+      personTalks--;
+      if (typeof stop === "function") stop();
+      if (obj && obj.active && Math.abs(obj.y - y0) > 0.01) obj.y = y0;
+      UI.hideBubble();
+      if (img && prev) img.src = prev;
+    }
+  };
+  UI.personSpeaking = () => personTalks > 0;
+  UI.hearPerson = async function (who, o = {}) {
+    if (personTalks > 0) return false;
+    if (o.onHelp) o.onHelp();
+    try {
+      await UI.personSay(who, o);
+    } catch (e) {
+      if (!(e instanceof Cook.Abort)) throw e;
+    }
+    return true;
+  };
+  UI.peopleSay = async function (list, o = {}) {
+    for (const p of list || []) {
+      await UI.personSay(p.who, p);
+      await Cook.wait(o.gap != null ? o.gap : ORDER_T.speakGap);
+    }
+  };
   async function sayPersonCard(who, rows) {
     const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
     if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
