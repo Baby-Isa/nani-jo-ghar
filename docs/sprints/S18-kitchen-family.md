@@ -1,6 +1,6 @@
 # Sprint 18: every kitchen game at chai's standard, built properly
 
-**Status:** open (Zafar, 7 Nov: "yes to all"; opens the moment Sprint 17's tools and docs are pushed, ~18:00 Sat 7 Nov, no gap)
+**Status:** open since Sat 7 Nov 18:40 UK (Zafar, 7 Nov: "yes to all"); wave 1 running. Integration branch `ccr-31767b7f-rfyrg4`
 **Opened:** 7 Nov 2026 · **Closes at:** the publish to `main` by Mon 9 Nov 07:00 UK, Zafar's play and `/feedback`
 
 ## Goal
@@ -79,6 +79,15 @@ diff, never a game's gap page, and never a kit piece half-switched (chai is on t
 
 ## Sessions
 One line each as they launch: id, what it does, model and effort, report in `build/reports/`.
+- **Wave 1, launched Sat 7 Nov ~18:40 UK** (specs and briefs `build/tools/ops/specs/s18-*.json`; each in its own worktree
+  `/home/user/wt/s18-<id>` on branch `s18-<id>`, without `sources/` except prep; `brief.mjs --live-check`: 8 live, no overlap;
+  the orchestrator merges `KIT-READY` commits into the integration branch mid-run):
+  s18-chai, chai's owner (Opus high, $40-60, stop Sun 10:00); s18-kit-a stove, s18-kit-b pans/pour/serve, s18-kit-c shelf and
+  pills, s18-kit-d lights and lessons, s18-kit-e order flow (Opus high, $20-30 each, stop Sun 08:00); s18-chop (Opus high,
+  $20-30); s18-prep, eggs, baking, the corn stall (Sonnet high, $10-15). Wave 1 about $190-285. Reports `build/reports/s18-<id>.md`.
+- Small decision at launch (the orchestrator): CK-60's cause is in `js/cook/ui.js`, which kit builder (e) owns, so (e) fixes it
+  first (rule 2, the lowest layer) and chai's owner proves it on chai; chai's owner fixes CHAI-105 and CHAI-106 in chai. Lab pages:
+  each builder writes its own `lab/sections/*.html`; chai's owner makes the two shells that load them (one file, one owner).
 
 ## Zafar's decisions at the opening (7 Nov afternoon, "yes to all"; 11-13 at ~14:00)
 1. The sign-off of chai covers the 88 px phone glasses and the side panel moving unscrolled on phones, as built.
