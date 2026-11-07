@@ -92,13 +92,13 @@ with its Why naming the non-negotiable. The rule block's shape: `README.md`, "Th
 
 ## 0.2 Who it is for
 
-#### STD-02-01 · Every game is playable by a child of 3 to 7: a three-year-old with a grown-up near, a seven-year-old alone
-- **Why:** "3-7, a grown-up near, no reading, touch, the four sizes" (the locked structure, 0.2; Zafar, 5 Nov); his testers' 3-year-old "didn't know what to tap next" (`docs/game-design/easy-to-play.md`, 21 Oct)
+#### STD-02-01 · Every game is playable alone by a five-year-old at L1-L2, stretches a child up to 14 at L3-L4, and stays worth an adult's time
+- **Why:** "core 5-14, but age up to adults ... I want all ages to find it useful and engaging" (Zafar, 7 Nov; 5 the floor); "no reading, touch, the four sizes" (the locked structure, 0.2, 5 Nov); his testers' 3-year-old "didn't know what to tap next" (`docs/game-design/easy-to-play.md`, 21 Oct)
 - **Scope:** House
 - **Pattern / part:** - / -
-- **Checked by:** judge: a New player's first round at L1 at a child's pace, 930x430 + gap: a child-pace driver for every game (the sandbox's pause-after-tea is chai's only)
+- **Checked by:** judge: a New player's first round at L1 at a child's pace, 930x430 (chai: `lab:cook/chai-tray#child`, `build/sandbox/lib/child-player.mjs`) + gap: the child-pace flows for every game
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=1` (labs.html: New player), 930x430
-- **Status:** agreed 5 Nov
+- **Status:** agreed 7 Nov: 5 the floor, core 5 to 14, adults welcome (was: 3 to 7, 5 Nov)
 - **Layer:** shared kit · **Lives in:** - · **Impact:** stuck
 
 #### STD-02-02 · No step needs reading: every choice the child makes can be made from pictures and the family's voice alone

@@ -221,7 +221,8 @@ sign-off; tools and docs pushed to `main`.
 > docs/design-language/standard/ (README, glossary, patterns, the nine domain pages, values, placement; `chai-standard.md` a
 > pointer), the mechanical ID check green (`placement.md` complete, the dropped list written), and the module map; if any is
 > missing, finish it first and say so. Then open Sprint 18 and launch wave 1's eight builders with `/brief`, disjoint files each:
-> chai's owner (Opus, high, $40-60), the five kit builders (Opus, high, $20-30 each; the shelf and pills in the shared kit), chop
+> chai's owner (Opus, high, $40-60; its first tasks fix CHAI-105, CHAI-106 and CK-60, then re-freeze chai: the S18 file, "Zafar's answers,
+> 7 Nov ~16:30"), the five kit builders (Opus, high, $20-30 each; the shelf and pills in the shared kit), chop
 > as its own game (Opus, high, $20-30; its gap page first), the prep for eggs, baking and the corn stall (Sonnet, high, $10-15).
 > Zafar approved the plan on 7 Nov ("yes to all", decisions 1-13): launch without asking again; state model, effort and cost per
 > launch; a progress table every half hour; chai's frozen-run diff after every switch. Wave 2 (one builder per game, each writing

@@ -2,15 +2,6 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### Open, not blocking (7 Nov evening; everything else of the day's list answered: "yes to everything else")
-1. **The age we design for.** The standard says 3-7; vision.md says 4 to 11; Zafar (7 Nov) asks what the youngest age for chai is,
-   with no upper bound and a core he imagines at 7 to 14. *Recommended: the youngest 4 (L1 with a grown-up near), a 5-year-old alone
-   at L1-L2; the core 5 to 10; no upper bound (L3-L4 and story mode stretch older children and adults).* His pick changes vision.md
-   and STD-02-01.
-2. **Decoys at L4: contract-37's description says "1, 2, 3, 3 and a lookalike"; the rules file and the rulebook say 1, 2, 3, 4 with one
-   of the four a lookalike.** The check already counts by the rules file for every Cook game; the old table is unused text.
-   *Recommended: the rules file (his newer word, 29 Oct over 17 Oct); fix the check's description and drop the old table.*
-
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.

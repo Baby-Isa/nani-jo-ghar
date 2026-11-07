@@ -10,7 +10,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `claude/sprint-17-builders-standard-gub2dj` (the newest handover; `main` has the same tools and docs once pushed).
 
-**Where things stand (Sat 7 Nov 2026, ~16:45 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
+**Where things stand (Sat 7 Nov 2026, ~17:00 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
 look back). Chai signed off; **live on `main`: 20261107T120301Z** (the game unchanged since). Sprint 18 starts from four things,
 all on this branch:
 1. **Chai's frozen run** (`build/reports/s17-frozen-run.md`, `build/frozen/chai-tray/`): the contract L1-L4 at the four sizes (one
@@ -38,8 +38,8 @@ game, its `standard/gaps/<game>.md` first); wave 3 Sun 20:00 (merge, audit, film
 then a re-freeze); pass-me out of every game (`data/cook.json`, on this branch, not yet on `main`: it ships with Sprint 18's publish);
 SH-234 (a 4 px item padding floor); the skies (nights kept, ceiling re-tuned), art block 3c queued; the standard and vision updated.
 
-**Open questions to Zafar (none blocking, `docs/questions.md`):** 1. the age we design for (recommended: youngest 4 with a grown-up,
-core 5 to 10, no upper bound); 2. decoys at L4 (recommended: the rules file, 1-2-3-4; fix contract-37's old description).
+**Settled at ~17:00 (Zafar):** the age: 5 the floor, the core 5 to 14, adults welcome (vision.md, STD-02-01; the book mode's lesson path
+for older learners in `docs/ideas.md`); decoys at L4 by the rules file, 1-2-3-4 (contract-37 aligned). **No open questions.**
 
 **Starting prompt for the new chat (Sprint 18):** the one at the end of the Sprint 17 file ("When Sprint 17 is done"):
 > First `git fetch origin claude/sprint-17-builders-standard-gub2dj` and work from that branch (it holds the newest handover;

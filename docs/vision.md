@@ -75,8 +75,8 @@ Three audiences share one app. They are served by the same screens, not by separ
 
 | Audience | Who | What they need | What breaks it for them |
 | --- | --- | --- | --- |
-| Children 4 to 11 | Isa, his cousins, community children | Play, repetition, warmth, visible progress | Timers everywhere, losing things, reading-heavy screens |
-| Adult heritage learners | Zafar, his generation | To reach useful speech fast, without counting to ten again | Childish padding, slow pacing, no way to skip ahead |
+| Children 5 to 14 (the core; 5 the floor; Zafar, 7 Nov) | Isa, his cousins, community children | Play, repetition, warmth, visible progress | Timers everywhere, losing things, reading-heavy screens |
+| Adult heritage learners (every age above the core is welcome: "I want all ages to find it useful and engaging", Zafar, 7 Nov) | Zafar, his generation | To reach useful speech fast, without counting to ten again | Childish padding, slow pacing, no way to skip ahead |
 | The teaching adult | Zafar's mother, aunts, grandparents | A structure to teach from, and a reason to be in the room | Being replaced by the app rather than used by it |
 
 The third audience is the one most language apps ignore. Here it is central: the adult who speaks Kutchi is a participant, not a bystander.

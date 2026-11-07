@@ -127,3 +127,7 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 - **Faces for crowds without inventing them** (Zafar, 6 Nov: "describe in your own words 2 or 3 distinctive features and then
   generate an image like that"): for the birthday party's many guests, describe a few features from a real or stock photo and draw
   from the words, never the face; an experiment at the character run (ART-54, P22).
+
+- **The book mode grows a lesson path for older learners and adults** (Zafar, 7 Nov: "the book mode can be extended to have more
+  traditional duo lingo language learning so it has something for all ages"): short lessons built by the language engine from the
+  family's recordings, beside the games, for 10-14s and adult heritage learners; the games stay picture-led for the 5-year-olds.
