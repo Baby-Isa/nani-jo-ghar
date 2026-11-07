@@ -76,9 +76,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   // canvases (28 Sept, PAN-09, SH-112)
   const PITCH = 172;
   const GROUP_GAP = 44;
-  const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
-  // SH-219: a pill's card from its face: the word's width plus the speaker, its gap and the padding; the speaker alone
-  const PILL_PAD = 48, PILL_SPK_W = 62;
+  const CHIP = { w: 128, h: 46, y: 860 }; // (a word pill's card and its line: the shared kit's Shelf.PILL, Shelf.BAND.chipY)
+  const SHADE = 0x28190a; // (chai's card shadow under the pills and the word pop; the kit's token is shade-rgb)
   const HOB_K = 0.79; // the mock-up's hob, 15% bigger (§10)
   const TRAY_D = 392;
   const GAP = 72;
@@ -199,9 +198,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   // 29 Sept (X1): one sentence per person, in card order ("Muke aadu waari chai khape, with dudh, ba khun.")
   const personLine = (L, who, rows) => Cook.Order.sentence(personHead(L, who), rows || personRows(L, who), { join: Cook.Order.joinOf(L) });
   const hiddenRow = (r) => !r.unsaid && !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.dotItem(s.w, Cook.roundLevel()));
-
-  /** The speaker icon (the kitchen kit's). */
-  const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
 
   async function station(host, params) {
     Cook.serveTicks = new Set(["ph-half", "ph-full"]); // (SH-206: the glass ticks these as it is poured)
@@ -635,7 +631,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     };
 
     /* ---------- the shelf: identical slots, grouped, a chip under each ---------- */
-    const slotsN = shelfIds.reduce((a, g) => a + g.length, 0);
     // CHAI-66 (Zafar, 1 Nov night: "the items at the bottom aren't in line with the tea tray and the tea hobs on the top ... There
     // should be the equal amount of space between the juru and the right edge of the tea board as there is the water bottle on the
     // left edge of the teapot"): the row centred under the hob-and-tray span (the first pan's handle to the tray's right edge), so the
@@ -643,14 +638,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // jars at L3-L4), the slots narrow, so the row stays centred and clear
     const spanL = hobX - overL;
     const spanR = trayX + trayD;
-    const mid = (spanL + spanR) / 2;
     // (Zafar, 5 Nov evening, L4 at his laptop: "can you see the word pills of the items on the shelf are touching? We had a rule ...
     // they could basically have space to spread out more and avoid overlapping": the right edge kept 190 px clear for the old tick
     // button, which chai no longer draws, so with three pans the row was squeezed short of the tray's edge. The margins are the view's
     // own edges now, 40 px in)
     const VL = (Cook.view && Cook.view.left != null ? Cook.view.left : 0) + 40;
     const VR = (Cook.view && Cook.view.right != null ? Cook.view.right : 1600) - 40;
-    const roomW = 2 * Math.min(mid - VL, VR - mid, (spanR - spanL) / 2);
     // SH-208 (Zafar, 4 Nov: "the pills are like overlapping ... where there's space to spread them out more ... we should try to do
     // that"; then, his screenshot: "The items should be centered between the red dotted lines (furtherest edges of in game objects on
     // both sides)"): the row is always centred on the hob-and-tray span (the pan's handle to the tray's right edge). Under that span
@@ -665,44 +658,29 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // SH-219 again (Zafar, 6 Nov 01:40: "do it now for chai so no surprises later"): each pill is as wide as its own face (the word's
     // measured width, the speaker and the padding; a speaker-only pill narrower), so a crowded row grows its words towards the floor
     // where short words and speaker-only pills leave room. The rule stays: the floor, at most 1.5x, never touching (PILL_GAP apart)
-    const PILL_MIN_CSS = 13, PILL_MAX = 1.5, PILL_TEXT = 25;
-    const PILL_GAP = Math.max(12, 5 / ppw); // (at least 5 CSS px between two pills)
+    // (the shared kit's shelf, piece 9-10: js/shared/shelf.js Shelf.slots lays the row; Shelf.pillWant, .pillRoom, .pillScale the pills)
+    const Shelf = global.Shelf;
+    const PILL_GAP = Shelf.pillGap(ppw); // (at least 5 CSS px between two pills)
     const rowIds = shelfIds.flat();
-    const measureW = (id) => {
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: WEIGHT() });
-      const w = t.width;
-      t.destroy();
-      return w;
-    };
     const natW = {};
-    const faceW = (id, word) => (word ? (natW[id] = natW[id] || measureW(id)) + PILL_PAD : PILL_SPK_W);
-    const pairNeed = () => Math.max(PILL_SPK_W, ...rowIds.slice(1).map((id, i) => (faceW(rowIds[i], pillShows14(rowIds[i])) + faceW(id, pillShows14(id))) / 2));
-    const chipWant = Math.max(1, Math.min(PILL_MAX, PILL_MIN_CSS / (PILL_TEXT * ppw)));
-    const PILL_ROOM = pairNeed() * chipWant + PILL_GAP;
-    const LEFT = VL, RIGHT = VR;
-    const nG = shelfIds.length - 1;
-    let gapW = GROUP_GAP;
-    let slotW = Math.min(Math.max(PITCH, PILL_ROOM), (roomW - nG * gapW) / slotsN); // (SH-219: a grown pill widens its slot where there is room)
-    if (slotW < PILL_ROOM) {
-      const roomMid = 2 * Math.min(mid - LEFT, RIGHT - mid);
-      const fit = (g) => (roomMid - nG * g) / slotsN;
-      if (fit(gapW) < PILL_ROOM) gapW = Math.max(20, Math.min(GROUP_GAP, (roomMid - slotsN * PILL_ROOM) / Math.max(1, nG)));
-      slotW = Math.min(PILL_ROOM, fit(gapW));
-    }
-    const width = slotsN * slotW + nG * gapW;
-    const x0 = mid - width / 2;
+    const measureW = (id) => {
+      if (natW[id] == null) {
+        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${Shelf.PILL.text}px`, fontStyle: WEIGHT() });
+        natW[id] = t.width;
+        t.destroy();
+      }
+      return natW[id];
+    };
+    const chipWant = Shelf.pillWant(ppw);
+    const PILL_ROOM = Shelf.pillRoom(rowIds.map((id) => (pillShows14(id) ? Shelf.faceW(true, measureW(id)) : Shelf.faceW(false))), chipWant, PILL_GAP);
+    const { slotW, x: slotX } = Shelf.slots(shelfIds, { span: [spanL, spanR], view: [VL, VR], pitch: PITCH, groupGap: GROUP_GAP, pillRoom: PILL_ROOM });
     const shelf = {};
-    let sx = x0 + slotW / 2;
     const fits = {};
-    shelfIds.forEach((group) => {
-      // (ART-41: the stone shelf is the line they stand on now; no plank under each group)
-      // ART-51: each item by its size class (St.classFit: the band's room with the hop kept, as the old shelfFit, times the class)
-      group.forEach((id) => {
-        const f = (fits[id] = St.classFit(S, `jar-${id}`, id, { base: BASE, ppw, slotW: slotW - 8 }));
-        shelf[id] = slot(id, sx, f.scale);
-        sx += slotW;
-      });
-      sx += gapW;
+    // (ART-41: the stone shelf is the line they stand on now; no plank under each group)
+    // ART-51: each item by its size class (St.classFit: the band's room with the hop kept, as the old shelfFit, times the class)
+    rowIds.forEach((id) => {
+      const f = (fits[id] = St.classFit(S, `jar-${id}`, id, { base: BASE, ppw, slotW: slotW - 8 }));
+      shelf[id] = slot(id, slotX[id], f.scale);
     });
     // (the size classes' measure, read only: each shelf item's class and opaque height on screen, CSS px; the L height it is a share of)
     Cook.chaiShelfSizes = () => rowIds.filter((id) => shelf[id] && fits[id]).map((id) => {
@@ -716,18 +694,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (their text scaled down) to their slot, as before. Run again when a pill's face changes (its word hides or comes back)
     function fitPills(anim) {
       const chips = rowIds.map((id) => shelf[id] && shelf[id].chip).filter((c) => c && c.active);
-      let k = chipWant;
-      chips.slice(1).forEach((c, i) => {
-        const b = chips[i];
-        k = Math.min(k, (c.x - b.x - PILL_GAP) / ((faceW(b.pillId, b.showsWord) + faceW(c.pillId, c.showsWord)) / 2));
-      });
-      const cap = k < 1 ? slotW - PILL_GAP : Infinity;
-      k = Math.max(1, k);
+      const { k, cap } = Shelf.pillScale(chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want: chipWant, gap: PILL_GAP, slotW });
       const y = Math.min(CHIP.y, 896 - (CHIP.h / 2) * k);
       chips.forEach((c) => {
-        if (c.capW !== cap) chipFace(c, c.pillId, c.showsWord, cap);
+        if (c.capW !== cap) c.face(c.showsWord, cap);
         c.k = k;
-        pillHit(c);
+        c.hit(slotW);
         if (anim) S.tweens.add({ targets: c, scale: k, y, duration: 200, ease: "Sine.easeOut" });
         else c.setScale(k).setY(y);
       });
@@ -737,7 +709,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const k = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x;
       return Object.values(shelf).filter((o) => o && o.chip && o.chip.active).map((o) => {
         const ch = o.chip, sc = Math.abs(ch.scaleX || 1), w = (ch.cardW || CHIP.w) * sc;
-        const t = (ch.face || []).find((f) => f.type === "Text");
+        const t = (ch.parts || []).find((f) => f.type === "Text");
         const a = UI.worldToScreen(ch.x - w / 2, ch.y - (CHIP.h / 2) * sc), z = UI.worldToScreen(ch.x + w / 2, ch.y + (CHIP.h / 2) * sc);
         return { id: ch.pillId, word: !!ch.showsWord, left: a.x, right: z.x, top: a.y, bottom: z.y, wordPx: t ? Math.round(25 * Math.abs(t.scaleX || 1) * sc * k * 10) / 10 : null, speakerPx: Math.round(26 * sc * k * 10) / 10 };
       }).sort((p, q) => p.left - q.left);
@@ -758,45 +730,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       }
       return 1;
     }
-    // SH-159: the pill's face (the word and its speaker, or the speaker alone), drawn again when the word's pill changes
-    // the tap area: the card and 7 px round it, as wide as its slot allows (up to the old 142 design px), never past the slot
-    function pillHit(chip) {
-      const k = chip.k || 1;
-      const hitW = Math.max(chip.cardW + 14, Math.min(CHIP.hitW, (slotW - 2) / k));
-      chip.setSize(hitW, CHIP.hitH);
-      if (chip.input) chip.input.hitArea.setTo(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH);
-      else chip.setInteractive(new Phaser.Geom.Rectangle(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
-    }
-    function chipFace(chip, id, showWord, cap = chip.capW != null ? chip.capW : Infinity) {
-      (chip.face || []).forEach((o) => chip.remove(o, true));
-      const w = Math.min(faceW(id, showWord), cap);
-      const bg = S.add.graphics();
-      bg.fillStyle(0x28190a, 0.1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2 + 2, w, CHIP.h, 12);
-      bg.fillStyle(INK.card, 1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2, w, CHIP.h, 12);
-      const icon = S.add.graphics();
-      if (showWord) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: `${PILL_TEXT}px`, fontStyle: WEIGHT(), color: INK.kutchi }).setOrigin(0, 0.5);
-        const maxT = w - PILL_PAD;
-        if (t.width > maxT) t.setScale(maxT / t.width);
-        const cw = 22 + 8 + t.displayWidth;
-        speaker(icon, -cw / 2 + 10, 0, 24);
-        t.x = -cw / 2 + 30;
-        chip.add([bg, icon, t]);
-        chip.face = [bg, icon, t];
-      } else {
-        speaker(icon, 1, 0, 26);
-        chip.add([bg, icon]);
-        chip.face = [bg, icon];
-      }
-      chip.cardW = w;
-      chip.cardH = CHIP.h; // (the drawn card's height: the contract's light measure, contract-53)
-      pillHit(chip);
-      chip.capW = cap;
-      chip.showsWord = !!showWord;
-      chip.pillId = id;
-    }
     function slot(id, x, K) {
       const key = `jar-${id}`;
       let img;
@@ -812,16 +745,20 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
       // SH-159 (Zafar, 29 Oct, round 3): on the s14 look the word pill's own ladder (js/core/progress.js pill, the central rules'
       // words.pill): written until picked right three times in a row (first try, no peek); a miss brings it back
-      const showWord = pillShows14(id);
-      const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
-      chipFace(chip, id, showWord);
-      chip.on("pointerdown", (ptr, lx, ly, ev) => {
-        if (ev && ev.stopPropagation) ev.stopPropagation();
-        Cook.unlockAudio();
-        if (Cook.onLabel) Cook.onLabel(id);
-        Lang.speakWord(id);
-        S.tweens.add({ targets: chip, scale: (chip.k || 1) * 1.08, duration: 90, yoyo: true });
+      // (the shared kit's pill, piece 10: Shelf.P.chip; chip.face(word, cap) redraws it, chip.hit(slotW) its tap area: the card and
+      // 7 px round it, as wide as its slot allows)
+      const chip = Shelf.P.chip(S, x, CHIP.y, Cook.display(id), {
+        word: pillShows14(id),
+        depth: D.item + 2,
+        shade: SHADE,
+        onTap: () => {
+          Cook.unlockAudio();
+          if (Cook.onLabel) Cook.onLabel(id);
+          Lang.speakWord(id);
+        },
       });
+      chip.pillId = id;
+      chip.hit(slotW);
       img.chip = chip;
       return img;
     }
@@ -958,25 +895,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // name is never said twice within 10 s of the child's time, contract-23)
     const saidAt = {};
     const saidLately = (ids) => (ids || []).some((id) => saidAt[id] && Date.now() - saidAt[id] < 10000);
+    // (the shared kit's word pop, piece 12: Juice.P.pop draws the card, the speaker and the word, rises into place, holds and fades;
+    // chai says the word)
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
-      const c = S.track(S.add.container(0, 0).setDepth(D.fx + 3).setAlpha(0).setScale(k));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "36px", fontStyle: WEIGHT(), color: INK.kutchi }).setOrigin(0, 0.5);
-      const w = 34 + 10 + t.width + 36;
-      const g = S.add.graphics();
-      g.fillStyle(0x28190a, 0.1);
-      g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
-      g.fillStyle(INK.card, 1);
-      g.fillRoundedRect(-w / 2, -28, w, 56, 12);
-      speaker(g, -w / 2 + 30, 0, 26);
-      t.x = -w / 2 + 50;
-      c.add([g, t]);
-      const { x, y } = popAt(pan, w * k, 59 * k);
-      const v = Cook.view || {};
-      const drift = y - (59 * k) / 2 - 14 >= (v.top || 0) + 10 ? 14 : 0; // (CHAI-19: no room above, no drift up)
-      c.setPosition(x, y + 14);
-      S.tweens.add({ targets: c, alpha: 1, y, duration: 180, ease: "Back.easeOut" });
-      S.tweens.add({ targets: c, alpha: 0, y: y - drift, delay: 1900, duration: 320, onComplete: () => c.destroy() });
+      const c = global.Juice.P.pop(S, (W, H) => popAt(pan, W, H), Cook.display(id), { k, depth: D.fx + 3, top: (Cook.view || {}).top || 0, shade: SHADE });
       if (speak && !UI.naniMuted()) {
         Lang.popWord(id);
         saidAt[id] = Date.now();
@@ -1060,28 +983,14 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
       // top and pushed the bubble back onto its rim)
       const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
-      const top = (wv && wv.height ? wv.y : v.top || 0) + 10;
-      const left = (v.left || 0) + 10;
-      const right = (v.right || 1600) - 10;
-      let x = pan.x;
-      let y = pan.y - rimR - 16 - H / 2;
-      // s08 w6B (CHAI-19): never across the hob's top edge: where the pan reaches almost to it, the bubble sits wholly above
-      // the hob, centred on the pan
-      const offRim = (v) => (v - H / 2 < hobY + RIM_CLEAR && v + H / 2 > hobY - 10 ? hobY - 10 - H / 2 : v); // (only ever up)
-      if (y - H / 2 < hobY + RIM_CLEAR) y = hobY - 10 - H / 2;
-      const bb = badgeBox();
-      const hits = (cx, cy) => bb && cx - W / 2 < bb.x1 + 8 && cx + W / 2 > bb.x0 - 8 && cy - H / 2 < bb.y1 + 8 && cy + H / 2 > bb.y0 - 8;
-      if (hits(x, y)) {
-        // above the count badge, and still never across the hob's top edge (1366x768: the badge sits just under the edge)
-        const above = offRim(Math.min(bb.y0 - 8 - H / 2, y));
-        if (above - H / 2 - 14 >= top && !hits(x, above)) y = above;
-        else x = bb.x1 + 8 + W / 2;
-      }
-      // (the room above a short stage's hob is tight: the bubble may come up to just under the view's top; it then fades
-      // where it is, never drifting up: pop() below)
-      y = Math.max(top + H / 2 + 2, y);
-      x = Math.max(left + W / 2, Math.min(right - W / 2, x));
-      return { x, y };
+      // (the shared kit's placing, Juice.popAt: never across the hob's top edge (s08 w6B, CHAI-19), above the count badge or beside it)
+      return global.Juice.popAt({ x: pan.x, y: pan.y - rimR - 16 }, W, H, {
+        top: (wv && wv.height ? wv.y : v.top || 0) + 10,
+        left: (v.left || 0) + 10,
+        right: (v.right || 1600) - 10,
+        edge: { y: hobY, clear: RIM_CLEAR, above: 10 },
+        avoid: badgeBox(),
+      });
     };
 
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
@@ -2757,7 +2666,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
               pillNote(id);
             });
             let refit = false;
-            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && (refit = true) && chipFace(o.chip, o.chip.pillId, pillShows14(o.chip.pillId), Infinity));
+            Object.values(shelf).forEach((o) => o && o.chip && o.chip.active && o.chip.showsWord !== pillShows14(o.chip.pillId) && (refit = true) && o.chip.face(pillShows14(o.chip.pillId), Infinity));
             if (refit) fitPills(true);
           }
         }
