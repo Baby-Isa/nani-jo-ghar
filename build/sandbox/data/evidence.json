@@ -24173,5 +24173,20 @@
  },
  "ART-58": {
   "human": "auto: build/tools/art/artcheck.test.mjs (colours outside the house or mixed combinations refused unless named; the prompts' section read from the plan)"
+ },
+ "CK-60": {
+  "human": "after a skip during the order, no line is said: the game starts silent (every Cook game)"
+ },
+ "CHAI-102": {
+  "human": "the dotted-word lesson lights a dotted word on screen at every level, after the order has landed"
+ },
+ "CHAI-103": {
+  "human": "in the word moment, the fill sound and the tea's rise start only when the stream reaches the glass's bottom"
+ },
+ "CHAI-104": {
+  "human": "at L4, half or full said in the headline lands its card with the headline: no gap in the row"
+ },
+ "SH-232": {
+  "human": "after a served card folds in play, the side panel glides so the next card sits at the panel's top (scrolled or not)"
  }
 }
