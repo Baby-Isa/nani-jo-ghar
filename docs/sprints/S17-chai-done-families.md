@@ -1,6 +1,6 @@
 # Sprint 17: chai polished as the kitchen family's reference
 
-**Status:** open; chai signed off (Zafar, 7 Nov); closing on the frozen run, the standard and its checks (below). (Zafar, 2 Nov:
+**Status:** closed 7 Nov (Outcome below); chai signed off (Zafar, 7 Nov). (Zafar, 2 Nov:
 "yes agree to all", "wirte the sprint and get fable to approve"; reshaped the same day to his rhythm: one reference polished a
 sprint, its family rolled out the next, `docs/process/prototype-to-game.md`)
 **Opened:** 2 Nov 2026 · **Closes at:** the push of the tools and docs to `main` after chai's sign-off (his play came first this
@@ -45,6 +45,10 @@ About $150-200 and three days.
 - Fable review of the first version of this file and the plan (2 Nov): approve with changes; applied (art first, the word moment
   through a lab page, a judge before each of his plays, a Kutchi gate before the stores, Orders split into stove and fetch-and-serve;
   the pantry and the farm's three moved out, as Fable advised and Zafar's rhythm puts them).
+- 7 Nov, the rest (one orchestrating chat; specs and briefs in `build/tools/ops/specs/s17-*.json`): s17-std1 to -std5, the standard
+  by domain (Opus high); s17-chk1, chai's checks keyed by `games.json` (Opus high); s17-chk2, contract-96 to -99 (Sonnet high);
+  s17-tool, `audit --standard` (Sonnet high); Fable's review of the fill (`build/reports/s17-standard-review-fable.md`); s17-fix-std
+  and s17-fix-audit, its fixes (Opus high, Sonnet high). Reports `build/reports/s17-*.md`.
 
 ## Decisions at the opening (Zafar, 2 Nov)
 1. One reference polished each sprint, in a different family from the one rolled out; the next sprint rolls it out to its family
@@ -190,14 +194,27 @@ first, up to eight builders).
 
 ## Outcome
 
+Chai signed off (7 Nov, live 20261107T120301Z) and Sprint 17 closed the same day with the four things Sprint 18 starts from:
+**chai's frozen run** (`build/reports/s17-frozen-run.md`: the contract at L1-L4 at the four sizes, 44 pages, one known break,
+ART-59; four films at a child's pace, 0 breaks; the ear sheet; `frozen.mjs --diff`, which compares chai by what it does and counts a
+change only if a re-play shows it again), **the standard folder** (`docs/design-language/standard/`: 222 rules in Zafar's locked
+structure, the glossary, 14 patterns, the values sheet; Fable's review applied), **the mechanical ID check** (`stdids.mjs --check`:
+all 217 source IDs placed once; the dropped list, 6, `build/reports/s17-dropped-list.md`) and **the module map**
+(`docs/architecture/module-map.md`). With them: contract-96 to -99, chai's game checks keyed by `build/sandbox/data/games.json`,
+`audit --standard`, SH-233, and 14 questions for Zafar in `docs/questions.md` (none blocking). The game is unchanged since the
+sign-off; tools and docs pushed to `main`.
+
 ## Look back (three lines)
-1.
-2.
-3.
+1. Kept: a fixed format note and the ID tool written before the five standard builders launched made five pages stitch with 4 IDs
+   left over; Fable's one review then caught what no builder could see alone (15 doubles, 4 layers against the map).
+2. Changed: chai is not the same twice (orders, hint timing), so an exact replay diff raised 805 false changes; a guard compares what
+   a game does across several frozen plays and counts only a change that comes again.
+3. Next time: eight worktrees filled the disk and crashed a browser run; remove each worktree when its branch merges, and give
+   builders `checks.mjs --only` instead of the full run (the leak bots tripled the load).
 
 ## When Sprint 17 is done: paste this into a new chat to start Sprint 18
 
-> First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
+> First `git fetch origin claude/sprint-17-builders-standard-gub2dj` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-kitchen-family.md`; open nothing else until a
 > task needs it (the standard's structure is `build/reports/s17-standards-structure-v2.md`, read when a brief needs it). Confirm
 > Sprint 17 left four things on the branch: chai's frozen run (its films and contract reports), the standard folder

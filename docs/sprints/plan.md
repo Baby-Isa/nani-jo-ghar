@@ -17,7 +17,7 @@ when he can and judges while they run or after); Mum's recording sheet grows by 
 
 | Sprint | Polish (the reference) | Roll out (to its family) | Art block made |
 |---|---|---|---|
-| **17** (closing) | **chai**: signed off (Zafar, 7 Nov) | the shared ground: chai's frozen run, the standard folder in its locked structure with its checks, the module map | 1: the kitchen family, chai's half and full moment, Simba |
+| **17** (done, 7 Nov) | **chai**: signed off (Zafar, 7 Nov) | the shared ground, done: chai's frozen run, the standard folder in its locked structure with its checks, the module map | 1: the kitchen family, chai's half and full moment, Simba |
 | **18** (open, 7 Nov) | none: the pantry moved to 19 (Zafar, 7 Nov) | **the kitchen family ("make in the kitchen", Zafar, 7 Nov), built on three layers:** daar, chaat, samosa, maani, sekelo, eggs, baking, the corn stall, and chop as its own game (the cake went to word tiles, 3 Nov); `docs/sprints/S18-kitchen-family.md` | 2: fetch and serve |
 | 19 | the pantry (fetch and serve), no roll-out (Zafar, 7 Nov) | none (the chain slid one sprint) | 3: clinic care |
 | 20 | the scrape (clinic care) | **fetch and serve:** the fruit stall, the beach stalls, the cloth stall, picky shopping, the pharmacy belt | 4: word tiles (the farm) |
