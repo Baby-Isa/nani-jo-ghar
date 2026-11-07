@@ -76,3 +76,32 @@ test("contract-77: the first-time hold: never a returning player's, always ended
   assert.equal(run(check77, { flow: "cook:chai-tray" }, hold.slice(0, 1)).length, 1);
   assert.equal(run(check77, { flow: "cook:chai-tray" }, []).length, 0);
 });
+
+// Sprint 17 (s17-chk1): CONTROL_CALLS, S14_TAPS and the decoys read the per-game data list (data/games.json): a fake game added to
+// the list is checked by contract-78 (its control's call with no light) and contract-37 (its decoys), and not before it is listed
+import { analyse } from "./lib/contract.mjs";
+import { CONTROL_CALLS, check78 } from "./lib/contract-s14.mjs";
+import { GAMES, setGames, S14_TAPS, DECOY_STATIONS } from "./lib/contract-chai.mjs";
+
+test("a fake game added to the list: its control calls, its finger-free light and its decoys are checked", () => {
+  const tan = { stations: ["tandoor"], controlCalls: { words: ["dhimo kar"] }, s14Taps: true, decoys: "exact" };
+  const call = { lines: [{ role: "call", text: "Dhimo kar!", t0: 1000, t1: 1800 }] };
+  const page = (tl) => analyse({ flow: "cook:tandoor@L2", size: "1366x768", t0: 0, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station1:marble", t: 0 }, ...tl] }, { lexicon: new Set(), numbers: new Set() });
+  const decoys = [life(500, "decoys", 1, "shelf")];
+  const of37 = (out) => out.filter((b) => b.check === "contract-37");
+  assert.equal(CONTROL_CALLS.tandoor, undefined);
+  assert.equal(run(check78, { flow: "cook:tandoor" }, [], call).length, 0, "not listed: not judged");
+  assert.equal(of37(page(decoys)).length, 0, "not listed: its decoys not judged");
+  const was = setGames({ ...GAMES, games: { ...GAMES.games, tandoor: tan } });
+  try {
+    assert.deepEqual(CONTROL_CALLS.tandoor, ["dhimo kar"]);
+    assert.deepEqual(CONTROL_CALLS["chai-tray"], ["chulo bar", "slow kar"], "chai's calls stay");
+    assert.match(run(check78, { flow: "cook:tandoor" }, [], call)[0].msg, /no light comes with it/);
+    assert.ok(S14_TAPS.test("tandoor") && DECOY_STATIONS.test("tandoor"));
+    assert.match(of37(page(decoys))[0].measured, /tandoor, shelf at L2\): 1 decoy, the table wants 2/);
+    assert.equal(of37(page([life(500, "decoys", 2, "shelf")])).length, 0);
+  } finally {
+    setGames(was);
+  }
+  assert.equal(CONTROL_CALLS.tandoor, undefined, "taken off the list");
+});
