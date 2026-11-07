@@ -149,8 +149,8 @@
 - **Pattern / part:** - / the frame
 - **Checked by:** check:static/tokens + judge: chai L1 at the four sizes
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (1280x665)
-- **Status:** agreed 5 Nov
-- **Layer:** kitchen kit · **Lives in:** `css/cook-side-v2.css` · **Value:** stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-40, ART-41
+- **Status:** agreed 5 Nov; whether the marble and the stone fit the house strip waits on Zafar (ART-55, 6 Nov)
+- **Layer:** kitchen kit · **Lives in:** `css/cook-side-v2.css` · **Value:** stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-40, ART-41, ART-55
 
 #### STD-E3-04 · The hob always shows each pan's own picture for its state, centred on its burner, the heat ring over its handle
 - **Why:** "the burner still showing" (Zafar, 6 Nov)
@@ -258,16 +258,16 @@
 ## E6 Tokens
 
 #### STD-E6-01 · Every colour, shadow, font and kit motion comes from the shared tokens, with one highlight colour for whatever is lit
-- **Why:** "keep the fonts in the repo" (Zafar, 6 Nov); decision 95
+- **Why:** one kit (Zafar, 26 Oct, decisions 2 and 8); "keep the fonts in the repo" (Zafar, 6 Nov); decision 95
 - **Scope:** House
 - **Pattern / part:** - / the glow
 - **Checked by:** check:static/tokens + check:static/jscolour + check:static/fonts + check:static/motion + contract-14 + contract-87
 - **See it:** lab/kit.html (1280x665)
 - **Status:** agreed 6 Nov
-- **Layer:** shared kit · **Lives in:** `css/shared/tokens.css` · **Value:** focus colour, stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-41
+- **Layer:** shared kit · **Lives in:** `css/shared/tokens.css`, `js/shared/tokens.js` · **Value:** focus colour, stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-41
 
 #### STD-E6-02 · Every size comes from the one scale, with text never under 14 px, a tap area never under 48 px and spacing on the grid
-- **Why:** the frame's floors; SH-185 (2 Nov)
+- **Why:** the frame's floors; SH-185 (2 Nov); "The speaker button for the water is massive" (Zafar, 1 Nov: the tap stays 48 px however small its picture)
 - **Scope:** House
 - **Pattern / part:** P11 / the frame
 - **Checked by:** check:layout/text-small + check:layout/tap-small + check:unit

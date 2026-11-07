@@ -210,8 +210,8 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 
 ## D4 Feedback in play
 
-#### STD-D4-01 · A row ticks the moment its count or amount is reached, in any order, and a tap past it does not land
-- **Why:** "just to make it consistent ... it just ticks it there and then" (Zafar, 1 Nov)
+#### STD-D4-01 · A row ticks the moment its count or amount is reached, in any order, at every level
+- **Why:** "just to make it consistent ... it just ticks it there and then" (Zafar, 1 Nov); a tap past the count is STD-B3-02
 - **Scope:** House
 - **Pattern / part:** P7 / item card
 - **Checked by:** contract-18 + probe:SH-38 + probe:CHAI-54 + gap: a count row ticks within 1 s of its count
