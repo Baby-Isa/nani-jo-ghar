@@ -117,12 +117,18 @@
     },
     {
       "id": "cn09", "type": "grid", "src": "cn09-casts-comfort-v1.png", "cells": [4, 2],
-      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", "ear-syringe-belt",
+      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", null,
                 "ear-plugs-belt", "star-stickers-belt", "teddy-belt", "bubbles-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "glass": ["bubbles-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
-      "tols": {"crutches-belt": 5, "ear-syringe-belt": 5},
-      "_note": "the bubble jar soft; the grey rubber bulb and the steel crutches at tol 5"
+      "tols": {"crutches-belt": 5},
+      "_note": "the bubble jar soft; the steel crutches at tol 5; the ear syringe is its own job below"
+    },
+    {
+      "id": "cn09-bulb", "type": "grid", "src": "cn09-casts-comfort-v1.png", "cells": [4, 2],
+      "names": [null, null, null, "ear-syringe-belt", null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 3, "hole_min": 100000000,
+      "_note": "the grey rubber bulb sits on the key grey: tol 3 and no holes (at tol 5 its shaded side was cut out in patches)"
     },
     {
       "id": "cd01", "type": "grid", "src": "cd01-today-1-v1.png", "cells": [4, 2],

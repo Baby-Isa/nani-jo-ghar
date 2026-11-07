@@ -1,0 +1,719 @@
+{
+ "_about": "The clinic redo run (Zafar's run of 6-7 Nov, build/tools/art/specs/s17-clinic-redo.run.yaml; landed in build/reports/s17-clinic-redo-landed-2026-11-07.md). One grid job per sheet, the names in the run line's slot order: belt-view items as <item>-belt.webp, the toothbrush views as toothbrush-<view>-s17.webp, in the new folder assets/clinic/s17-clinic-redo/. Grey ground: tol 8; steel and grey rubber at tol 5 (tols); clear glass, plastic, water, steam and the drop at partial alpha (glass, as the s17 word-moment glasses); the two toothbrush sheets drop their faint contact shadow (shadow). Longest side at most 512 px (the drop machine 1024: it is drawn wide), pad 16, WebP q 88. Not wired: a future sprint swaps the redos in and adds the new items to data/clinic.json.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "plaster-green-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-green-belt.webp",
+   "w": 365,
+   "h": 177
+  },
+  "plaster-blue-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-blue-belt.webp",
+   "w": 362,
+   "h": 177
+  },
+  "plaster-red-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-red-belt.webp",
+   "w": 364,
+   "h": 178
+  },
+  "plaster-yellow-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-yellow-belt.webp",
+   "w": 363,
+   "h": 177
+  },
+  "plaster-round-small-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-round-small-belt.webp",
+   "w": 221,
+   "h": 227
+  },
+  "plaster-round-medium-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-round-medium-belt.webp",
+   "w": 290,
+   "h": 292
+  },
+  "plaster-round-large-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-round-large-belt.webp",
+   "w": 343,
+   "h": 348
+  },
+  "plaster-heel-belt": {
+   "file": "clinic/s17-clinic-redo/plaster-heel-belt.webp",
+   "w": 360,
+   "h": 262
+  },
+  "toothbrush-back-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-back-s17.webp",
+   "w": 1024,
+   "h": 135
+  },
+  "toothbrush-upright-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-upright-s17.webp",
+   "w": 102,
+   "h": 437
+  },
+  "toothbrush-top-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-top-s17.webp",
+   "w": 381,
+   "h": 113
+  },
+  "toothbrush-top-paste-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-top-paste-s17.webp",
+   "w": 379,
+   "h": 122
+  },
+  "toothbrush-side-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-side-s17.webp",
+   "w": 386,
+   "h": 107
+  },
+  "toothbrush-tilt-up-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-tilt-up-s17.webp",
+   "w": 329,
+   "h": 279
+  },
+  "toothbrush-tilt-down-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-tilt-down-s17.webp",
+   "w": 366,
+   "h": 249
+  },
+  "toothbrush-back-level-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-back-level-s17.webp",
+   "w": 382,
+   "h": 121
+  },
+  "toothbrush-back-paste-s17": {
+   "file": "clinic/s17-clinic-redo/toothbrush-back-paste-s17.webp",
+   "w": 382,
+   "h": 135
+  },
+  "drop-machine-belt": {
+   "file": "clinic/s17-clinic-redo/drop-machine-belt.webp",
+   "w": 1024,
+   "h": 809
+  },
+  "wipe-packet-belt": {
+   "file": "clinic/s17-clinic-redo/wipe-packet-belt.webp",
+   "w": 317,
+   "h": 326
+  },
+  "wipe-open-belt": {
+   "file": "clinic/s17-clinic-redo/wipe-open-belt.webp",
+   "w": 378,
+   "h": 356
+  },
+  "jug-cold-belt": {
+   "file": "clinic/s17-clinic-redo/jug-cold-belt.webp",
+   "w": 362,
+   "h": 373
+  },
+  "dropper-belt": {
+   "file": "clinic/s17-clinic-redo/dropper-belt.webp",
+   "w": 309,
+   "h": 364
+  },
+  "medicine-bottle-teal-belt": {
+   "file": "clinic/s17-clinic-redo/medicine-bottle-teal-belt.webp",
+   "w": 228,
+   "h": 395
+  },
+  "water-drop-belt": {
+   "file": "clinic/s17-clinic-redo/water-drop-belt.webp",
+   "w": 187,
+   "h": 270
+  },
+  "bandage-white-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-white-belt.webp",
+   "w": 371,
+   "h": 352
+  },
+  "tweezers-splinter-belt": {
+   "file": "clinic/s17-clinic-redo/tweezers-splinter-belt.webp",
+   "w": 370,
+   "h": 321
+  },
+  "thermometer-belt": {
+   "file": "clinic/s17-clinic-redo/thermometer-belt.webp",
+   "w": 386,
+   "h": 203
+  },
+  "chai-cup-belt": {
+   "file": "clinic/s17-clinic-redo/chai-cup-belt.webp",
+   "w": 277,
+   "h": 323
+  },
+  "foot-bath-belt": {
+   "file": "clinic/s17-clinic-redo/foot-bath-belt.webp",
+   "w": 402,
+   "h": 314
+  },
+  "ointment-pot-belt": {
+   "file": "clinic/s17-clinic-redo/ointment-pot-belt.webp",
+   "w": 294,
+   "h": 313
+  },
+  "kidney-dish-belt": {
+   "file": "clinic/s17-clinic-redo/kidney-dish-belt.webp",
+   "w": 394,
+   "h": 225
+  },
+  "fever-strip-belt": {
+   "file": "clinic/s17-clinic-redo/fever-strip-belt.webp",
+   "w": 366,
+   "h": 119
+  },
+  "flannel-belt": {
+   "file": "clinic/s17-clinic-redo/flannel-belt.webp",
+   "w": 376,
+   "h": 267
+  },
+  "tissue-box-belt": {
+   "file": "clinic/s17-clinic-redo/tissue-box-belt.webp",
+   "w": 362,
+   "h": 313
+  },
+  "steri-strips-belt": {
+   "file": "clinic/s17-clinic-redo/steri-strips-belt.webp",
+   "w": 340,
+   "h": 305
+  },
+  "stitches-patch-belt": {
+   "file": "clinic/s17-clinic-redo/stitches-patch-belt.webp",
+   "w": 318,
+   "h": 307
+  },
+  "finger-plaster-belt": {
+   "file": "clinic/s17-clinic-redo/finger-plaster-belt.webp",
+   "w": 403,
+   "h": 162
+  },
+  "knuckle-plaster-belt": {
+   "file": "clinic/s17-clinic-redo/knuckle-plaster-belt.webp",
+   "w": 339,
+   "h": 325
+  },
+  "gauze-folded-belt": {
+   "file": "clinic/s17-clinic-redo/gauze-folded-belt.webp",
+   "w": 352,
+   "h": 335
+  },
+  "gauze-roll-belt": {
+   "file": "clinic/s17-clinic-redo/gauze-roll-belt.webp",
+   "w": 344,
+   "h": 359
+  },
+  "crepe-bandage-clip-belt": {
+   "file": "clinic/s17-clinic-redo/crepe-bandage-clip-belt.webp",
+   "w": 308,
+   "h": 369
+  },
+  "medical-tape-belt": {
+   "file": "clinic/s17-clinic-redo/medical-tape-belt.webp",
+   "w": 347,
+   "h": 315
+  },
+  "sling-belt": {
+   "file": "clinic/s17-clinic-redo/sling-belt.webp",
+   "w": 372,
+   "h": 328
+  },
+  "tubular-bandage-belt": {
+   "file": "clinic/s17-clinic-redo/tubular-bandage-belt.webp",
+   "w": 269,
+   "h": 318
+  },
+  "bandage-scissors-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-scissors-belt.webp",
+   "w": 433,
+   "h": 316
+  },
+  "antiseptic-cream-belt": {
+   "file": "clinic/s17-clinic-redo/antiseptic-cream-belt.webp",
+   "w": 240,
+   "h": 393
+  },
+  "cotton-wool-belt": {
+   "file": "clinic/s17-clinic-redo/cotton-wool-belt.webp",
+   "w": 362,
+   "h": 325
+  },
+  "cotton-pads-belt": {
+   "file": "clinic/s17-clinic-redo/cotton-pads-belt.webp",
+   "w": 317,
+   "h": 290
+  },
+  "cotton-bud-belt": {
+   "file": "clinic/s17-clinic-redo/cotton-bud-belt.webp",
+   "w": 449,
+   "h": 102
+  },
+  "saline-pod-belt": {
+   "file": "clinic/s17-clinic-redo/saline-pod-belt.webp",
+   "w": 219,
+   "h": 435
+  },
+  "otoscope-belt": {
+   "file": "clinic/s17-clinic-redo/otoscope-belt.webp",
+   "w": 236,
+   "h": 456
+  },
+  "ophthalmoscope-belt": {
+   "file": "clinic/s17-clinic-redo/ophthalmoscope-belt.webp",
+   "w": 170,
+   "h": 459
+  },
+  "tongue-depressor-belt": {
+   "file": "clinic/s17-clinic-redo/tongue-depressor-belt.webp",
+   "w": 126,
+   "h": 458
+  },
+  "ear-thermometer-belt": {
+   "file": "clinic/s17-clinic-redo/ear-thermometer-belt.webp",
+   "w": 194,
+   "h": 467
+  },
+  "forehead-thermometer-belt": {
+   "file": "clinic/s17-clinic-redo/forehead-thermometer-belt.webp",
+   "w": 252,
+   "h": 449
+  },
+  "pulse-oximeter-belt": {
+   "file": "clinic/s17-clinic-redo/pulse-oximeter-belt.webp",
+   "w": 247,
+   "h": 352
+  },
+  "pen-torch-belt": {
+   "file": "clinic/s17-clinic-redo/pen-torch-belt.webp",
+   "w": 122,
+   "h": 456
+  },
+  "reflex-hammer-belt": {
+   "file": "clinic/s17-clinic-redo/reflex-hammer-belt.webp",
+   "w": 217,
+   "h": 458
+  },
+  "bp-cuff-belt": {
+   "file": "clinic/s17-clinic-redo/bp-cuff-belt.webp",
+   "w": 382,
+   "h": 367
+  },
+  "stethoscope-belt": {
+   "file": "clinic/s17-clinic-redo/stethoscope-belt.webp",
+   "w": 335,
+   "h": 423
+  },
+  "peak-flow-meter-belt": {
+   "file": "clinic/s17-clinic-redo/peak-flow-meter-belt.webp",
+   "w": 294,
+   "h": 421
+  },
+  "tape-measure-belt": {
+   "file": "clinic/s17-clinic-redo/tape-measure-belt.webp",
+   "w": 337,
+   "h": 311
+  },
+  "baby-scales-belt": {
+   "file": "clinic/s17-clinic-redo/baby-scales-belt.webp",
+   "w": 391,
+   "h": 359
+  },
+  "magnifying-glass-belt": {
+   "file": "clinic/s17-clinic-redo/magnifying-glass-belt.webp",
+   "w": 246,
+   "h": 445
+  },
+  "dental-mirror-belt": {
+   "file": "clinic/s17-clinic-redo/dental-mirror-belt.webp",
+   "w": 131,
+   "h": 456
+  },
+  "hourglass-belt": {
+   "file": "clinic/s17-clinic-redo/hourglass-belt.webp",
+   "w": 224,
+   "h": 401
+  },
+  "pill-bottle-amber-belt": {
+   "file": "clinic/s17-clinic-redo/pill-bottle-amber-belt.webp",
+   "w": 251,
+   "h": 415
+  },
+  "pill-bottle-white-belt": {
+   "file": "clinic/s17-clinic-redo/pill-bottle-white-belt.webp",
+   "w": 267,
+   "h": 415
+  },
+  "blister-pack-belt": {
+   "file": "clinic/s17-clinic-redo/blister-pack-belt.webp",
+   "w": 283,
+   "h": 403
+  },
+  "oral-syringe-belt": {
+   "file": "clinic/s17-clinic-redo/oral-syringe-belt.webp",
+   "w": 189,
+   "h": 443
+  },
+  "medicine-spoon-belt": {
+   "file": "clinic/s17-clinic-redo/medicine-spoon-belt.webp",
+   "w": 189,
+   "h": 441
+  },
+  "dosing-cup-belt": {
+   "file": "clinic/s17-clinic-redo/dosing-cup-belt.webp",
+   "w": 287,
+   "h": 276
+  },
+  "medicine-bottle-amber-belt": {
+   "file": "clinic/s17-clinic-redo/medicine-bottle-amber-belt.webp",
+   "w": 230,
+   "h": 442
+  },
+  "sachet-belt": {
+   "file": "clinic/s17-clinic-redo/sachet-belt.webp",
+   "w": 329,
+   "h": 353
+  },
+  "eye-drops-belt": {
+   "file": "clinic/s17-clinic-redo/eye-drops-belt.webp",
+   "w": 172,
+   "h": 384
+  },
+  "ear-drops-belt": {
+   "file": "clinic/s17-clinic-redo/ear-drops-belt.webp",
+   "w": 178,
+   "h": 407
+  },
+  "nasal-spray-belt": {
+   "file": "clinic/s17-clinic-redo/nasal-spray-belt.webp",
+   "w": 269,
+   "h": 414
+  },
+  "inhaler-belt": {
+   "file": "clinic/s17-clinic-redo/inhaler-belt.webp",
+   "w": 277,
+   "h": 393
+  },
+  "spacer-belt": {
+   "file": "clinic/s17-clinic-redo/spacer-belt.webp",
+   "w": 398,
+   "h": 288
+  },
+  "nebuliser-mask-belt": {
+   "file": "clinic/s17-clinic-redo/nebuliser-mask-belt.webp",
+   "w": 311,
+   "h": 411
+  },
+  "nebuliser-machine-belt": {
+   "file": "clinic/s17-clinic-redo/nebuliser-machine-belt.webp",
+   "w": 327,
+   "h": 339
+  },
+  "cream-tub-belt": {
+   "file": "clinic/s17-clinic-redo/cream-tub-belt.webp",
+   "w": 389,
+   "h": 263
+  },
+  "gloves-belt": {
+   "file": "clinic/s17-clinic-redo/gloves-belt.webp",
+   "w": 348,
+   "h": 350
+  },
+  "glove-box-belt": {
+   "file": "clinic/s17-clinic-redo/glove-box-belt.webp",
+   "w": 372,
+   "h": 234
+  },
+  "hand-gel-belt": {
+   "file": "clinic/s17-clinic-redo/hand-gel-belt.webp",
+   "w": 212,
+   "h": 407
+  },
+  "face-mask-belt": {
+   "file": "clinic/s17-clinic-redo/face-mask-belt.webp",
+   "w": 439,
+   "h": 227
+  },
+  "paper-towel-belt": {
+   "file": "clinic/s17-clinic-redo/paper-towel-belt.webp",
+   "w": 258,
+   "h": 406
+  },
+  "specimen-pot-belt": {
+   "file": "clinic/s17-clinic-redo/specimen-pot-belt.webp",
+   "w": 282,
+   "h": 324
+  },
+  "pedal-bin-belt": {
+   "file": "clinic/s17-clinic-redo/pedal-bin-belt.webp",
+   "w": 299,
+   "h": 404
+  },
+  "pillow-belt": {
+   "file": "clinic/s17-clinic-redo/pillow-belt.webp",
+   "w": 424,
+   "h": 320
+  },
+  "floss-belt": {
+   "file": "clinic/s17-clinic-redo/floss-belt.webp",
+   "w": 333,
+   "h": 357
+  },
+  "toothpaste-belt": {
+   "file": "clinic/s17-clinic-redo/toothpaste-belt.webp",
+   "w": 209,
+   "h": 419
+  },
+  "rinsing-cup-belt": {
+   "file": "clinic/s17-clinic-redo/rinsing-cup-belt.webp",
+   "w": 320,
+   "h": 371
+  },
+  "molar-belt": {
+   "file": "clinic/s17-clinic-redo/molar-belt.webp",
+   "w": 325,
+   "h": 375
+  },
+  "finger-toothbrush-belt": {
+   "file": "clinic/s17-clinic-redo/finger-toothbrush-belt.webp",
+   "w": 203,
+   "h": 366
+  },
+  "eye-patch-belt": {
+   "file": "clinic/s17-clinic-redo/eye-patch-belt.webp",
+   "w": 408,
+   "h": 258
+  },
+  "eye-bath-belt": {
+   "file": "clinic/s17-clinic-redo/eye-bath-belt.webp",
+   "w": 318,
+   "h": 248
+  },
+  "glasses-belt": {
+   "file": "clinic/s17-clinic-redo/glasses-belt.webp",
+   "w": 409,
+   "h": 200
+  },
+  "cast-arm-belt": {
+   "file": "clinic/s17-clinic-redo/cast-arm-belt.webp",
+   "w": 234,
+   "h": 357
+  },
+  "cast-leg-belt": {
+   "file": "clinic/s17-clinic-redo/cast-leg-belt.webp",
+   "w": 241,
+   "h": 427
+  },
+  "crutches-belt": {
+   "file": "clinic/s17-clinic-redo/crutches-belt.webp",
+   "w": 290,
+   "h": 432
+  },
+  "ear-plugs-belt": {
+   "file": "clinic/s17-clinic-redo/ear-plugs-belt.webp",
+   "w": 303,
+   "h": 232
+  },
+  "star-stickers-belt": {
+   "file": "clinic/s17-clinic-redo/star-stickers-belt.webp",
+   "w": 305,
+   "h": 388
+  },
+  "teddy-belt": {
+   "file": "clinic/s17-clinic-redo/teddy-belt.webp",
+   "w": 333,
+   "h": 406
+  },
+  "bubbles-belt": {
+   "file": "clinic/s17-clinic-redo/bubbles-belt.webp",
+   "w": 321,
+   "h": 363
+  },
+  "ear-syringe-belt": {
+   "file": "clinic/s17-clinic-redo/ear-syringe-belt.webp",
+   "w": 254,
+   "h": 405
+  },
+  "jug-hot-belt": {
+   "file": "clinic/s17-clinic-redo/jug-hot-belt.webp",
+   "w": 354,
+   "h": 449
+  },
+  "cloth-belt": {
+   "file": "clinic/s17-clinic-redo/cloth-belt.webp",
+   "w": 385,
+   "h": 293
+  },
+  "bandage-red-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-red-belt.webp",
+   "w": 354,
+   "h": 343
+  },
+  "bandage-blue-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-blue-belt.webp",
+   "w": 347,
+   "h": 343
+  },
+  "bandage-green-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-green-belt.webp",
+   "w": 354,
+   "h": 346
+  },
+  "bandage-yellow-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-yellow-belt.webp",
+   "w": 348,
+   "h": 346
+  },
+  "thread-red-belt": {
+   "file": "clinic/s17-clinic-redo/thread-red-belt.webp",
+   "w": 284,
+   "h": 357
+  },
+  "thread-blue-belt": {
+   "file": "clinic/s17-clinic-redo/thread-blue-belt.webp",
+   "w": 284,
+   "h": 356
+  },
+  "thread-green-belt": {
+   "file": "clinic/s17-clinic-redo/thread-green-belt.webp",
+   "w": 293,
+   "h": 383
+  },
+  "cotton-buds-pot-belt": {
+   "file": "clinic/s17-clinic-redo/cotton-buds-pot-belt.webp",
+   "w": 291,
+   "h": 402
+  },
+  "drop-bottle-belt": {
+   "file": "clinic/s17-clinic-redo/drop-bottle-belt.webp",
+   "w": 212,
+   "h": 410
+  },
+  "hot-water-bottle-knitted-belt": {
+   "file": "clinic/s17-clinic-redo/hot-water-bottle-knitted-belt.webp",
+   "w": 312,
+   "h": 451
+  },
+  "comb-belt": {
+   "file": "clinic/s17-clinic-redo/comb-belt.webp",
+   "w": 364,
+   "h": 248
+  },
+  "drill-belt": {
+   "file": "clinic/s17-clinic-redo/drill-belt.webp",
+   "w": 172,
+   "h": 417
+  },
+  "paste-tube-belt": {
+   "file": "clinic/s17-clinic-redo/paste-tube-belt.webp",
+   "w": 325,
+   "h": 393
+  },
+  "honey-jar-belt": {
+   "file": "clinic/s17-clinic-redo/honey-jar-belt.webp",
+   "w": 323,
+   "h": 392
+  },
+  "teaspoon-belt": {
+   "file": "clinic/s17-clinic-redo/teaspoon-belt.webp",
+   "w": 380,
+   "h": 291
+  },
+  "glass-belt": {
+   "file": "clinic/s17-clinic-redo/glass-belt.webp",
+   "w": 286,
+   "h": 349
+  },
+  "desk-fan-belt": {
+   "file": "clinic/s17-clinic-redo/desk-fan-belt.webp",
+   "w": 332,
+   "h": 433
+  },
+  "hand-fan-belt": {
+   "file": "clinic/s17-clinic-redo/hand-fan-belt.webp",
+   "w": 438,
+   "h": 300
+  },
+  "blanket-belt": {
+   "file": "clinic/s17-clinic-redo/blanket-belt.webp",
+   "w": 403,
+   "h": 318
+  },
+  "syringe-belt": {
+   "file": "clinic/s17-clinic-redo/syringe-belt.webp",
+   "w": 380,
+   "h": 270
+  },
+  "salt-pot-belt": {
+   "file": "clinic/s17-clinic-redo/salt-pot-belt.webp",
+   "w": 268,
+   "h": 333
+  },
+  "shampoo-belt": {
+   "file": "clinic/s17-clinic-redo/shampoo-belt.webp",
+   "w": 233,
+   "h": 427
+  },
+  "bug-jar-belt": {
+   "file": "clinic/s17-clinic-redo/bug-jar-belt.webp",
+   "w": 299,
+   "h": 375
+  },
+  "lemon-half-belt": {
+   "file": "clinic/s17-clinic-redo/lemon-half-belt.webp",
+   "w": 325,
+   "h": 332
+  },
+  "milk-jug-belt": {
+   "file": "clinic/s17-clinic-redo/milk-jug-belt.webp",
+   "w": 352,
+   "h": 377
+  },
+  "apple-belt": {
+   "file": "clinic/s17-clinic-redo/apple-belt.webp",
+   "w": 326,
+   "h": 392
+  },
+  "pointer-belt": {
+   "file": "clinic/s17-clinic-redo/pointer-belt.webp",
+   "w": 346,
+   "h": 407
+  },
+  "heater-belt": {
+   "file": "clinic/s17-clinic-redo/heater-belt.webp",
+   "w": 319,
+   "h": 441
+  },
+  "ice-pack-belt": {
+   "file": "clinic/s17-clinic-redo/ice-pack-belt.webp",
+   "w": 378,
+   "h": 310
+  },
+  "hot-water-bottle-belt": {
+   "file": "clinic/s17-clinic-redo/hot-water-bottle-belt.webp",
+   "w": 287,
+   "h": 433
+  }
+ },
+ "_report": [
+  "ca01: 8 piece(s) by cell for 8 name(s)",
+  "tb01: 1 piece(s) by cell for 1 name(s)",
+  "tb02: 8 piece(s) by cell for 8 name(s)",
+  "dm01: 1 piece(s) by cell for 1 name(s)",
+  "cb01: 8 piece(s) by cell for 8 name(s)",
+  "cb02: 8 piece(s) by cell for 8 name(s)",
+  "cn01: 8 piece(s) by cell for 8 name(s)",
+  "cn02: 8 piece(s) by cell for 8 name(s)",
+  "cn03: 8 piece(s) by cell for 8 name(s)",
+  "cn04: 8 piece(s) by cell for 8 name(s)",
+  "cn05: 8 piece(s) by cell for 8 name(s)",
+  "cn06: 8 piece(s) by cell for 8 name(s)",
+  "cn07: 8 piece(s) by cell for 8 name(s)",
+  "cn08: 8 piece(s) by cell for 8 name(s)",
+  "cn09: 7 piece(s) by cell for 7 name(s)",
+  "cn09-bulb: 1 piece(s) by cell for 1 name(s)",
+  "cd01: 8 piece(s) by cell for 8 name(s)",
+  "cd02: 8 piece(s) by cell for 8 name(s)",
+  "cd03: 8 piece(s) by cell for 8 name(s)",
+  "cd04: 8 piece(s) by cell for 8 name(s)"
+ ]
+}

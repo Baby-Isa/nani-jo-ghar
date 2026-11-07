@@ -118,11 +118,17 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 
 ## 5. Cut and wire notes
 
-- **Cut:** each sheet by its gutters (`artcut.py`, `grid`, `rows` 2; partial alpha for clear plastic and glass against the measured
-  grey), trimmed, padded 16 px, WebP with alpha, at most 512 px tall; names from the line's item list, in
-  a new clinic folder items-s17, as `<item>-belt.webp`; the toothbrush views beside them, as `toothbrush-<view>-s17.webp` (a new folder, made at the cut).
-- **Judge:** `artjudge.py`, then `artcolour.py` on that new folder with `--batch items-s17` (one batch:
-  the palette, light, shadow and batch checks), then a contact sheet on the pharmacy belt at 740x320 and 1920x1080, flaws first.
+- **Cut (done 7 Nov, `build/tools/art/specs/s17-clinic-redo.cut.json`, landed in `build/reports/s17-clinic-redo-landed-2026-11-07.md`):**
+  each sheet by its cells (`artcut.py`, `grid`, `cells` 4x2, whole blobs by centroid), grey ground at tol 8, steel and grey rubber at
+  tol 5, clear glass, plastic, water, steam and the drop at partial alpha (`glass`, soft floor 0.25, gain 2.0), the two toothbrush
+  sheets with `shadow` (a faint contact shadow), trimmed, padded 16 px, WebP q 88 with alpha, longest side at most 512 px (the drop
+  machine and Zafar's-angle toothbrush 1024: both are drawn wide). Names from the line's item list, in the new folder
+  `assets/clinic/s17-clinic-redo/` (the brief's folder, not items-s17): belt items as `<item>-belt.webp` (today's items keep the
+  game's names: `bandage-<colour>-belt`, `thread-<colour>-belt`), the toothbrush views as `toothbrush-<view>-s17.webp`;
+  `cut-data.json` beside them. 138 pieces, 2.5 MB.
+- **Judge (done):** `artjudge.py --spec … --no-look` on the 19 sheets, `artcolour.py` on the cuts with `--batch items-s17`, the pixel
+  check `artcheck.mjs`, and every cut by eye on a split dark and light ground (`build/screenshots/s17-land-clinic-redo/`). The belt
+  contact sheet at 740x320 and 1920x1080 waits for the wiring sprint (nothing is wired).
 - **Wire (a build session, after Zafar's yes):** the redos swap in place of the rows' files (`redo-strict-2026-11-06.yaml`, block
   `clinic`); the new items join `data/clinic.json` as decoys and future asks; nothing about any game's rules changes.
 
