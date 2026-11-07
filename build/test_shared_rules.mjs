@@ -157,7 +157,9 @@ test("a change in the file is seen by chai: the numbers chai asks for follow the
   assert.deepEqual(R.counts("chai-tray"), [1, 2, 3, 4]);
   assert.equal(R.pointMs(), 900);
   const chai = read("js/cook/stations/chai-tray.js");
-  for (const ask of ["rulesAt(level)", "RULES().pointMs()", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
+  for (const ask of ["rulesAt(level)", "RULES().firstTimeHold()", "Cook.roundDone(\"chai\""]) assert.ok(chai.includes(ask), `chai asks the rules: ${ask}`);
+  // (Sprint 18, kit d: a light's hold is asked by the kitchen kit's coach, js/cook/coach.js, for chai and every game)
+  assert.ok(read("js/cook/coach.js").includes("R.pointMs()"), "the kit's coach asks the rules: pointMs");
   // (the S14 roll-out: every dish's counts filled in by one walker, js/cook/recipes.js Recipes.fromRules, called from flow.js)
   assert.ok(read("js/cook/flow.js").includes("Cook.Recipes.fromRules(data, R)"), "chai's cups: the rules' count, filled in as Cook's data loads");
   assert.ok(read("js/cook/recipes.js").includes("Rules.counts(x.rules)"), "the walker asks the rules for a game's counts");

@@ -1313,39 +1313,14 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
 
     /* ---------- people speak ---------- */
     const L = () => ladderOf(ctx, people);
-    const faceImg = () => document.querySelector("#nani-card .nc-face");
-    async function personSay(pan, rows) {
-      const img = faceImg();
-      const prev = img ? img.getAttribute("src") : null;
-      if (img) img.src = Cook.v(Cook.facePath(pan.who));
-      const y0 = pan.face.y;
-      // (contract-14, ART-13: the kit's one talk motion, not a bob of its own (8 px every 200 ms): found 30 Oct when the sandbox's
-      // player tapped a face at L4 to hear the order again)
-      const LC = global.Lifecycle;
-      const bob = LC && LC.talk && LC.talk.phaser ? { stop: LC.talk.phaser(S, pan.face) } : S.tweens.add({ targets: pan.face, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
-      try {
-        const said = UI.mission.sayPerson ? await UI.mission.sayPerson(pan.who, rows) : false;
-        if (!said) await UI.say(personLine(L(), pan.who, rows), { badge: true }, { hide: St.hideKnown(ctx) });
-      } finally {
-        bob.stop();
-        if (pan.face.active) pan.face.y = y0;
-        UI.hideBubble();
-        if (img && prev) img.src = prev;
-      }
-    }
-    let speaking = false;
-    const hear = async (pan) => {
-      if (speaking) return;
-      speaking = true;
-      if (!guided && personRows(L(), pan.who).some(hiddenRow) && Cook.onHelp) Cook.onHelp("replay", { ids: personRows(L(), pan.who).flatMap((r) => r.ids) });
-      try {
-        await personSay(pan);
-      } catch (e) {
-        if (!(e instanceof Cook.Abort)) throw e;
-      } finally {
-        speaking = false;
-      }
-    };
+    // (kit e, piece 18: a person says their order through the kitchen kit, UI.personSay / UI.hearPerson / UI.peopleSay: their card
+    // read along, else chai's own sentence in Nani's box, their face in her box and the kit's one talk motion (contract-14, ART-13).
+    // Chai's own personSay, its talk motion and its `speaking` flag are gone; a replay waits while anyone speaks (UI.personSpeaking))
+    const orderOf = (pan, rows) => ({ who: pan.who, obj: pan.face, rows, line: () => personLine(L(), pan.who, rows), hide: St.hideKnown(ctx) });
+    const hear = (pan) =>
+      UI.hearPerson(pan.who, Object.assign(orderOf(pan), {
+        onHelp: () => !guided && personRows(L(), pan.who).some(hiddenRow) && Cook.onHelp && Cook.onHelp("replay", { ids: personRows(L(), pan.who).flatMap((r) => r.ids) }),
+      }));
 
     /* ---------- what's next (the tester, Nani's glow, the focal rule) ---------- */
     const at = (o) => {
@@ -2015,12 +1990,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     /* ---------- the start: everyone says how they like it ---------- */
     ctx.nextStep && ctx.nextStep("Water");
     select(pans[0]);
-    for (const pan of ctx.requestsSaid ? [] : pans) { // decision 53: said already in the requests pop-up
-      speaking = true;
-      await personSay(pan);
-      speaking = false;
-      await Cook.wait(K.speakGapMs || 300);
-    }
+    // decision 53: said already in the requests pop-up; else each in turn, the kit's gap between (UI.mission.times.speakGap)
+    if (!ctx.requestsSaid) await UI.peopleSay(pans.map((pan) => orderOf(pan)));
     // SH-196 (Zafar, 2 Nov: "teach the blur of the word, and then the image, both when they first happen (no need to repeat for the
     // kutchi blurred as its same and english word blurred)"): once per player, for every game (one key each, not chai's own), the
     // first dotted word on the order card is lit ("tap the dots": a tap shows the word in its place, free help), then, the first
@@ -2069,7 +2040,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const p = pan.p;
       const ids = ["cook-paani", "cook-chai", p.dudh ? "cook-dudh" : null, p.khun ? "cook-khun" : null, p.extra || null].filter((id) => id && shelf[id]);
       select(pan);
-      const said = personSay(pan).catch(() => {});
+      const said = UI.personSay(pan.who, orderOf(pan)).catch(() => {});
       for (const id of ids) {
         S.glow(shelf[id], true, { bounce: true });
         await Cook.wait(520);
@@ -2191,7 +2162,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       oops: () => zb.oops(),
       recast: async (pan, rows) => {
         select(pan);
-        await personSay(pan, rows || undefined);
+        await UI.personSay(pan.who, orderOf(pan, rows || undefined));
       },
       afterReview: () => pans.forEach((q) => q.well.face && q.well.face.active && q.well.face.setVisible(true)),
       redo: ctx.redo,
