@@ -1,57 +1,50 @@
-# s18-chai: chai's owner (Sprint 18, wave 1), first pass
+# s18-chai: chai's owner (Sprint 18, wave 1)
 
-Opus, high. Cost so far about $15 (reading, six short sandbox plays, one frozen-run diff, the lab shells, the first switch).
+Opus, high. Cost so far about $30 (reading, nine sandbox plays, two frozen-run diffs, the re-freeze, three switches).
 
 ## What landed
 
 | Commit | What |
 |---|---|
-| 8c42e213 | **Switch (a), heat and boil:** chai on `Mech.boil(S, pan, opts)` per pan and `Mech.boil.stove(S, {log: "chai", hold, done, onHoldEnd})`; chai's knob tap, heat clock, hold, too early, green, turn-down, boil-over and again, steam and simmer deleted (about 190 lines). Chai keeps only what each step does to its own pans, cards and pictures (`on`). The test hooks and notes keep their names. `build/test_shared_sfx_files.mjs`: chai's sound files now include `mechanics/boil.js`. |
-| 9d357098 | **Switch (a), the worktop:** `Cook.Kit.worktop(S, {top, far})` in place of chai's own wash rectangle; `St.stoneBand` unchanged (now in the kit, name kept). |
-| a39bccd0 | The lab shells: `lab/kitchen-kit.html` shows every `lab/sections/kk-*.html` (kk-stove, kk-pan-pour named; any other a local listing finds, or `?also=`), `lab/kit.html` one loader for `lab/sections/kit-*.html` (kit-order, kit-shelf, kit-lights, kit-serve), each section in its own frame, a section not written yet says so; `?only=<name>` shows one; linked from `labs.html`. Loaded at 1280x665 and 740x320: 0 errors, no sideways scroll (a temporary test section, removed). |
+| a39bccd0 | Lab shells: `lab/kitchen-kit.html` (every `lab/sections/kk-*.html`), `lab/kit.html`'s loader (`kit-*.html`), each section in a frame; 0 errors at 1280x665 and 740x320. |
+| 8c42e213 | **(a) heat and boil:** `Mech.boil(S, pan, opts)` per pan, `Mech.boil.stove(S, {log: "chai", hold, done, onHoldEnd})`; chai's knob, clock, hold, too early, green, boil-over and again, steam and simmer deleted (about 190 lines). Hooks and notes keep their names. `build/test_shared_sfx_files.mjs` lists `mechanics/boil.js` among chai's sound files. |
+| 9d357098 | **(a) the worktop:** `Cook.Kit.worktop(S, {top, far})`. |
+| 030077eb | **The re-freeze** after CK-60 (below). |
+| 3338b26f | **(b) piece 5, pans and looks:** `Cook.Kit.pan(S, {at, rimR, panR, set: kit.pan, lookOf, heaps, spoonWet, sel})`; chai's pan pictures, look-setting, fade, spoonfuls and chosen-pan drawing deleted (about 200 lines). `data/stations/chai-tray.json` gains `"kit"` (pan, glass, shelf: kit b's KIT object, unchanged). |
 
-## CHAI-105: chai is right; contract-96 reads too late (a check fix for the orchestrator)
+## The three chai rows
 
-Reproduced (`cook:chai-tray@L3#returning`, 1280x665, run `s18-chai-b2`, data kept): nana's pot boils over at 35.4 s, starts again at 36.0 s with **0 of 5 rows ticked** (the panel sample at 36.0) and the row gliding home (304 px, then 0 by 36.4 s). At 36.5 s the player puts the water back in, which ticks one row; contract-96 takes the *last* sample of its 1.5 s window, so it sees that new tick as "still ticked". Same pattern on `@L4#tap-mid-order` (run `s18-chai-c1`, five restarts). `@L3#boil-over` is green.
+- **CHAI-105**: chai was right; contract-96 read past the player's refill (the orchestrator's fix landed).
+- **CHAI-106**: a skip keeps the lesson; the missing light was the player's pace (contract-90 now at every level).
+- **CK-60**: (e)'s fix merged; contract-95 green on `#takeback` and `#returning` at 1280x665 and 740x320 (run `s18-chai-ck60`), nothing played between the skip and the first step.
 
-**The exact change to `build/sandbox/lib/contract-s17.mjs` check96** (the orchestrator owns it): inside the loop, after `const t = ...`:
+## The re-freeze
 
-```js
-const back = life(tl, "chai-add").find((x) => (x.at || x.t) > t && String(x.by || "").split(":")[0] === who);
-const end = Math.min(t + REOPEN_MS, back ? (back.at || back.t) - 1 : Infinity);
-const rowsIn = (to) => panels.filter((e) => e.t >= t - 1 && e.t <= to).map((e) => (e.rows || []).find((x) => x.who === who)).filter(Boolean);
-const open = rowsIn(end), win = rowsIn(t + REOPEN_MS);
-if (!open.length) continue;
-if (!open.some((x) => x.done === 0)) { add("contract-96", t, `${who}'s pot started again after boiling over and its rows never all opened before anything went back in`); return; }
-if (!win.some((x) => x.sl <= 2)) { add("contract-96", t, `${who}'s pot started again after boiling over and its card never came back to its first item within ${REOPEN_MS} ms`); return; }
-```
-
-(replacing the `let p` loop and the two `row.` breaks). Applied to both runs: green; a pot whose rows stay ticked still breaks. Row CHAI-105: "chai right, check fixed" once it lands.
-
-## CHAI-106: a skip keeps the lesson already; the missing light was the player's pace
-
-Decided: a skip keeps the lesson. It already does: the plain `@L4` play skipped the order too (skip-zone at 25.9 s) and logged `card-light` 1.6 s after nana's tea. In `@L4#tap-mid-order` no light: after every tea the player moved on within 0.5-1.0 s, and the station's rule (CHAI-37, the 30 Oct film; SH-178 re-arms at each pan's tea) skips the pointer for a child already on the next thing. contract-90 holds the same rule (a pause of 2.5 s after the first item). No chai change.
-
-**contract-90's widening (`build/sandbox/lib/contract-chai.mjs` check90):** drop `/@L[2-9]/.test(f) ||` from the first line, and the message's "at L1" becomes the flow's level. Row CHAI-106: "decided, not a bug: pace" once it lands.
+`frozen.mjs --freeze --runs s18-chai-freeze1,s18-chai-freeze2`: the 15 frozen flows at 1280x665 and 740x320, two plays each (30 pages,
+two samples each). Known break left: contract-99 at `@L4` 1280x665 (SH-232, the panel after a fold; kit e's panel), once in two
+plays. The freeze holds the two quick sizes only: 930x430 and 1920x1080 are the orchestrator's four-size run.
 
 ## Frozen-run diff per switch
 
-- (a) heat and boil + the worktop: `build/reports/frozen-diff-chai-tray-202611071854.md`: **no change** over 30 pages (9 changes on the
-  first play, none came again on the re-play).
+- (a) heat and boil + worktop: `build/reports/frozen-diff-chai-tray-202611071854.md`: **no change** over 30 pages (against the old freeze).
+- (b) piece 5, pans: `build/reports/frozen-diff-chai-tray-202611072011.md`: 2 changes on 1 page, both the same sound: the last glass's
+  ring (`glass-c`) missing on `#mistake` 740x320 (twice). **Explained, not the switch:** the ring comes about 2.7 s after the last
+  pour starts and races the round's end at 740x320; the frozen run itself lacks it on the L1 page in both samples and on `#hint`
+  in one (`build/frozen/chai-tray/frozen.json`). Piece 5 does not touch the glass. Worth a row: the last glass's ring cut by the
+  round's end on phones (the sfx voice gate or the closing).
 
-## Waits
+## Waits (Zafar's order)
 
-- **CK-60**: (e)'s `KIT-READY (e): CK-60` is not on the integration branch yet; then contract-95 on take-back and returning at 1280x665 and 740x320.
-- **The re-freeze** after CK-60 (so the frozen run holds it).
-- **Switches** (b) pour and serve, (c) the shelf, (d) lights: landed, next in that order; (e) the order's flow: not landed.
+- **(b) pieces 6-8**: the pour from the shelf (`Mech.pour`, `.spoon`), the pan into its glass and take-back (`Mech.pour.toGlass`, `.takeBack`), the serving loop (`NjgServe`). Chai's pour reads `kit.pan`'s mirror, rim and empty look now; its frames (`S14F`) and `POUR` timings stay chai's until piece 7 (then `kit.glass`, `kit.shelf`).
+- **(c) the shelf** (`Shelf`, `Tally.label/.place`, `Juice.P.pop`), **(d) lights and lessons** (kit d's map in `build/reports/s18-kit-d.md`; the `lightHelpArrow` block goes then), **(e) the order's flow** (not landed).
 
-## Seen on the way (not mine)
+## For other builders
 
-- `@L4#tap-mid-order`: ma's pot boiled over five times (the player's late tap in L4's short green, CHAI-58); contract-99 broke once (ma's card 13 px above the panel's top after nana's card folded; SH-232, kit builder e's panel).
+- Kit b: `lab/sections/kk-pan-pour.html` can drop its own `KIT` copy now that `data/stations/chai-tray.json` has `"kit"`.
 
 ## Proof
 
-- `s18-chai-b2` (`@L3#returning`, 1280x665) and `s18-chai-c1` (`@L4`, `@L4#tap-mid-order`, 1280x665): CHAI-105 and CHAI-106 traced (data kept).
-- `s18-chai-d1` (`@L3#boil-over`, 1280x665, after the switch): end reached, 0 page errors, `CONTRACT PASSED: 0 breaks over 1 pages`.
-- `frozen-diff-chai-tray-202611071854`: no change over 30 pages (the runs deleted; the report kept).
-- Unit: `kit-boil`, `chai104` 12 pass; `test_shared_sfx_files` 7 pass. `checks.mjs --only static,words,bump,load`: all ok.
+- `s18-chai-b2`, `s18-chai-c1`: CHAI-105 and CHAI-106 traced (data kept). `s18-chai-ck60`: `CONTRACT PASSED: 0 breaks over 4 pages`.
+- After (a): `@L3#boil-over` 1280x665, end reached, 0 page errors, contract passed; the frozen diff: no change.
+- After piece 5: `@L3` and `@L3#boil-over` 1280x665, end reached, 0 page errors, `CONTRACT PASSED: 0 breaks over 2 pages`.
+- Unit: kit-boil, chai104, kitpan, sfx, chip-words: 30 pass. `checks.mjs --only static,words,bump,load`: all ok.
