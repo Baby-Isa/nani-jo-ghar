@@ -357,6 +357,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
     // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
+    // (el: the thing, or a function giving it now: CHAI-102, a card redrawn under the light; -> a promise with .handle, the light's
+    // own: handle.box() is the box drawn, null while nothing is; and .stop(), the light gone now)
     const light14 = (el, look, ms, onTap, quitIf, opts) => {
       if (!el || !OB14 || !OB14.light) return Promise.resolve();
       // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
@@ -366,13 +368,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       } catch (e) {
         /* only a log */
       }
-      return new Promise((res) => {
+      const at = typeof el === "function" ? el() : el;
+      let stop = () => {};
+      const p = new Promise((res) => {
         let t = 0;
         let q = 0;
         const end = () => {
           clearTimeout(t);
           clearInterval(q);
-          if (onTap) el.removeEventListener("click", tap, true);
+          if (onTap && at) at.removeEventListener("click", tap, true);
           h.close();
           res();
         };
@@ -380,11 +384,15 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (onTap) onTap();
           end();
         };
-        if (onTap) el.addEventListener("click", tap, true);
+        if (onTap && at) at.addEventListener("click", tap, true);
         // (quitIf: the light goes as soon as it holds, e.g. the child already pouring the next thing)
         if (quitIf) q = setInterval(() => quitIf() && end(), 60);
         t = setTimeout(end, ms);
+        stop = end;
       });
+      p.handle = h;
+      p.stop = () => stop();
+      return p;
     };
     /*
      * contract-79 (the audit, 3 Nov: the first-time "tap the dots" lesson lit the order card while its cards still slid in, and its
@@ -2946,35 +2954,67 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // always shows at the beginning when first time player is selected": the save's mark lasted the whole visit, so a second round
       // (Play again, the next level) never had it; with the grown-ups' New player it is every round's, once)
       const np14 = !!(OB14 && OB14.newPlayer && OB14.newPlayer());
-      const firstAll = (k) => {
+      // CHAI-102 (Zafar, 7 Nov: "I didn't get an onboarding for the blurred word"): due is asked first; the once-only mark is spent
+      // only once the lesson's box is drawn (was: spent as the word was picked, so a lesson lit on nothing never came again)
+      const dueAll = (k) => {
         const key = `*:${S14_TAG}${k}`;
-        if (!fresh14 || (!np14 && seen14[key]) || (np14 && round14.has(key))) return false;
+        return !!fresh14 && !(np14 ? round14.has(key) : seen14[key]);
+      };
+      const spendAll = (k) => {
+        const key = `*:${S14_TAG}${k}`;
         seen14[key] = true;
         round14.add(key);
-        return true;
       };
-      const lesson = async (el) => {
-        const row = el.closest(".oc-row");
-        // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
-        // card is not already whole in view; the stillness wait below covers the rest)
-        const rowBox = row && row.closest(".oc-row14");
-        const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
-        if (cut && UI.mission && global.OrderCard && global.OrderCard.glideTo) {
-          global.OrderCard.glideTo(row);
-          await Cook.wait(400);
-        }
-        // (contract-79: the cards have landed and the row has stopped before the card is lit; looked at once more as it lights, as a
-        // card's slide can begin in the same frame)
-        for (let k = 0; k < 4; k++) {
-          await settled14();
-          if (!movingNow14()) break;
-        }
-        // (contract-79, the sandbox, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once it has stopped, the
-        // rules' 1/6 s, and once more if a slide began in it)
-        for (let k = 0; k < 3; k++) {
-          await new Promise((r) => global.setTimeout(r, 170));
-          if (!movingNow14()) break;
-          await settled14();
+      // -> true once its box was drawn (onLit is called then: the mark spent, the note logged); false: nothing lit, nothing spent
+      const lesson = async (first, sel, onLit) => {
+        // CHAI-102: the dotted word, or the eye, on a card redrawn under the lesson (the order's end redraws every card): the same
+        // one on the new card (its person's card, its place among that card's), else picked again
+        let el = first;
+        let key = null;
+        const keep = (x) => {
+          el = x;
+          const c = x.closest(".oc-card");
+          key = { who: c && c.dataset.who, i: c ? [...c.querySelectorAll(sel)].indexOf(x) : -1 };
+        };
+        const live = () => {
+          if (el && el.isConnected) return el;
+          const c = key && [...document.querySelectorAll("#mission .oc-card")].find((q) => q.dataset.who === key.who);
+          const x = c && key.i >= 0 ? c.querySelectorAll(sel)[key.i] : null;
+          if (x) {
+            if (el && el.classList.contains("ob-dots-now")) x.classList.add("ob-dots-now");
+            el = x;
+          }
+          return el;
+        };
+        keep(first);
+        for (let go = 0; ; go++) {
+          const row = live().closest(".oc-row");
+          // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
+          // card is not already whole in view; the stillness wait below covers the rest)
+          const rowBox = row && row.closest(".oc-row14");
+          const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
+          if (cut && UI.mission && global.OrderCard && global.OrderCard.glideTo) {
+            global.OrderCard.glideTo(row);
+            await Cook.wait(400);
+          }
+          // (contract-79: the cards have landed and the row has stopped before the card is lit; looked at once more as it lights, as a
+          // card's slide can begin in the same frame)
+          for (let k = 0; k < 4; k++) {
+            await settled14();
+            if (!movingNow14()) break;
+          }
+          // (contract-79, the sandbox, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once it has stopped, the
+          // rules' 1/6 s, and once more if a slide began in it)
+          for (let k = 0; k < 3; k++) {
+            await new Promise((r) => global.setTimeout(r, 170));
+            if (!movingNow14()) break;
+            await settled14();
+          }
+          // (CHAI-102: still on the page and showing as it lights; else picked again, three goes at most, and none: no lesson)
+          if (live().isConnected && vis(el)) break;
+          const again = go < 2 ? await pick14(sel, 1500) : null;
+          if (!again) return false;
+          keep(again);
         }
         el.classList.add("ob-dots-now");
         const prevExpect = Cook.expect;
@@ -2983,8 +3023,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (the judge, 3 Nov: the ring round the dots overlapped the word above them: a tight ring, 1 px out)
         // (the judge, 4 Nov: still over it: the dots' tap area is 24 px tall for 4 px dots; the box hugs the dots and stops short
         // of the word above, the whole tap area still lit and tappable)
-        const above = el.closest(".wc14") && el.closest(".wc14").querySelector(".wc14-k");
         const hug = () => {
+          const el = live();
+          const above = el.closest(".wc14") && el.closest(".wc14").querySelector(".wc14-k");
           const ks = [...el.children].map((k) => k.getBoundingClientRect()).filter((q) => q.width && q.height);
           if (!ks.length) return null;
           const x0 = Math.min(...ks.map((q) => q.left)), x1 = Math.max(...ks.map((q) => q.right));
@@ -2997,7 +3038,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (Zafar, 4 Nov: as the tap is shown the dots go and the box went with them, so the screen came up lit in the middle of the
         // lesson and then lit the dots again: while the word shows in their place the box is on the word; it ends a beat after)
         const shown = () => {
-          const c = el.closest(".wc14");
+          const c = live().closest(".wc14");
           const pk = c && [...c.querySelectorAll(".wc14-peek")].find((x) => x.getBoundingClientRect().width > 0);
           if (!pk) return null;
           const q = pk.getBoundingClientRect();
@@ -3007,6 +3048,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // size of the English words, so it doesn't jump up in size when the English is revealed": the word's own text, measured while
         // it is still hidden, joins the dots' box from the start)
         const wordBox = () => {
+          const el = live();
           const c = el.closest(".wc14");
           const t = c && (el.classList.contains("wc14-en-dots") ? c.querySelector(".wc14-en") : el.classList.contains("wc14-k-dots") ? c.querySelector(".wc14-k") : null);
           if (!t || !t.textContent.trim() || !document.createRange) return null;
@@ -3034,18 +3076,32 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // area should shrink down just to the blurred image size"): the whole item card first, then the box shrinks onto the hidden
         // word, or onto the blurred picture itself (was: the eye button only); the kit's zoom-in light, every game
         const isEye = el.classList.contains("wc14-eye");
-        const whole = el.closest(".wc14");
-        const picEl = isEye ? el.closest(".wc14-pic") : null;
+        const whole = () => live().closest(".wc14");
+        const picEl = isEye ? () => live().closest(".wc14-pic") : null;
         const picBox = () => {
-          const q = picEl && picEl.getBoundingClientRect();
+          const p = picEl && picEl();
+          const q = p && p.getBoundingClientRect();
           if (q && q.width) lastBox = { x: q.left, y: q.top, w: q.width, h: q.height };
           return lastBox;
         };
         const zoomMs = OB14.ZOOM ? OB14.ZOOM.total() : 0;
-        const lit = light14(el, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl ? picBox : undefined) : boxNow, zoomFrom: whole || undefined, avoid: [...document.querySelectorAll("#mission .oc-face")] });
+        const lit = light14(live, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll("#mission .oc-face")] });
+        // CHAI-102: a box drawn (looked at for up to 0.6 s: a thing mid-move has none until it is back), else no lesson: the light goes,
+        // nothing is spent, and the caller logs none-in-view
+        const drawn = () => !!(lit.handle && lit.handle.box && lit.handle.box());
+        for (let t0 = Date.now(); !drawn() && Date.now() - t0 < 600; ) await new Promise((r) => global.setTimeout(r, 60));
+        if (!drawn()) {
+          if (lit.stop) lit.stop();
+          await lit;
+          live().classList.remove("ob-dots-now");
+          if (Cook.expect === wait14) Cook.expect = prevExpect || null;
+          return false;
+        }
+        if (onLit) onLit(live());
         // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
         // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
-        const card = row && row.wc;
+        const rowNow = live().closest(".oc-row");
+        const card = rowNow && rowNow.wc;
         const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
         if (card && card.demo) {
           // (the zoom-in first: the whole card, then the box shrinks onto the part; then the part alone a beat before the tap is shown)
@@ -3060,10 +3116,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           over = true;
         }
         await lit;
-        el.classList.remove("ob-dots-now");
+        live().classList.remove("ob-dots-now");
         if (Cook.expect === wait14) Cook.expect = prevExpect || null;
         // (its light has faded before play and the shelf come in: the kit's fade is 300 ms of real time, never the test speed's)
         await new Promise((r) => global.setTimeout(r, 340));
+        return true;
       };
       const rows14 = "#mission .oc-row14";
       // SH-196, told before again (Zafar, 5 Nov evening: "it's still absolute toss-up whether I see the onboarding for the blurred English
@@ -3087,7 +3144,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         // (a word cut at the row's edge is fine: the lesson glides the row to it first)
         return !hit ? r.left + r.width / 2 < rr.left || r.left + r.width / 2 > rr.right : hit === x || x.contains(hit) || hit.contains(x) || !!(hit.closest && hit.closest(".wc14") === x.closest(".wc14"));
       };
-      const pick14 = async (sel) => {
+      const pick14 = async (sel, ms = 4000) => {
         const t0 = Date.now();
         for (;;) {
           const all = [...document.querySelectorAll(sel)].filter(vis);
@@ -3095,7 +3152,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (ok) return ok;
           const open = all.find((x) => !x.closest(".oc-card.folded"));
           if (open && UI.cardIntoView) UI.cardIntoView(open.closest(".oc-card"));
-          if (Date.now() - t0 > 4000) return null;
+          if (Date.now() - t0 > ms) return null;
           await new Promise((r) => global.setTimeout(r, 120));
         }
       };
@@ -3110,24 +3167,37 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // (Zafar's recorded play, 6 Nov 00:35, L2 New player: a tap during the order skipped it and play began at once, while the cards
       // were still landing: no dotted word was visible yet, so the lesson was dropped before it began. It is decided by the dotted
       // words being on the card at all; pick14 then waits for one to land and show)
-      const anyDots = document.querySelectorAll(DOTS14).length > 0;
-      if (anyDots && firstAll("reveal-word")) {
-        const dots = await pick14(DOTS14);
-        // (the recorder, labs.html's "Record a play": why each dotted word was taken or not)
-        const why = (x) => {
-          const c = x.closest(".oc-card");
-          const r = x.getBoundingClientRect();
-          return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !vis(x) ? "hidden" : shown14(x) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
-        };
-        noteLesson("word", dots ? `shown ${why(dots)}` : `none-in-view ${[...document.querySelectorAll(DOTS14)].map(why).join(" ")}`);
-        if (dots) await lesson(dots);
+      // CHAI-102 (Zafar, 7 Nov, laptop L2: "I didn't get an onboarding for the blurred word"; his log: the word picked 180 ms before
+      // the order's end redrew every card, so it lit a card no longer on the page and waited 4.5 s on nothing): the station starts as
+      // the order's card starts to fly, so a lesson due waits for the order to have landed (station-lib orderLanded) before it picks
+      if (dueAll("reveal-word") || dueAll("reveal-pic")) {
+        const ms = await St.orderLanded(ctx);
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-landed", { step: "reveal", by: `${ms}ms` });
+        } catch (e) {
+          /* only a log */
+        }
       }
-      const anyEye = document.querySelectorAll(`${rows14} .wc14-hide-pic .wc14-eye`).length > 0;
-      const eye = anyEye && seen14[`*:${S14_TAG}reveal-word`] ? await pick14(`${rows14} .wc14-hide-pic .wc14-eye`) : null;
+      // (the recorder, labs.html's "Record a play": why each dotted word was taken or not)
+      const why = (x) => {
+        const c = x.closest(".oc-card");
+        const r = x.getBoundingClientRect();
+        return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !vis(x) ? "hidden" : shown14(x) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
+      };
+      const anyDots = document.querySelectorAll(DOTS14).length > 0;
+      if (anyDots && dueAll("reveal-word")) {
+        const dots = await pick14(DOTS14);
+        // (the note when its box is drawn, the mark spent then; none drawn: none-in-view, nothing spent)
+        const ok = !!dots && (await lesson(dots, DOTS14, (x) => (spendAll("reveal-word"), noteLesson("word", `shown ${why(x)}`))));
+        if (!ok) noteLesson("word", `none-in-view ${[...document.querySelectorAll(DOTS14)].map(why).join(" ") || "-"}`);
+      }
+      const EYE14 = `${rows14} .wc14-hide-pic .wc14-eye`;
+      const anyEye = document.querySelectorAll(EYE14).length > 0;
       // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
-      if (eye && seen14[`*:${S14_TAG}reveal-word`] && firstAll("reveal-pic")) {
-        noteLesson("pic", "shown");
-        await lesson(eye);
+      const eye = anyEye && seen14[`*:${S14_TAG}reveal-word`] && dueAll("reveal-pic") ? await pick14(EYE14) : null;
+      if (anyEye && seen14[`*:${S14_TAG}reveal-word`] && dueAll("reveal-pic")) {
+        const ok = !!eye && (await lesson(eye, EYE14, (x) => (spendAll("reveal-pic"), noteLesson("pic", `shown ${why(x)}`))));
+        if (!ok) noteLesson("pic", `none-in-view ${[...document.querySelectorAll(EYE14)].map(why).join(" ") || "-"}`);
       }
     }
     talked = true;
