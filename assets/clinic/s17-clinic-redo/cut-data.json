@@ -250,8 +250,8 @@
   },
   "tongue-depressor-belt": {
    "file": "clinic/s17-clinic-redo/tongue-depressor-belt.webp",
-   "w": 126,
-   "h": 458
+   "w": 114,
+   "h": 462
   },
   "ear-thermometer-belt": {
    "file": "clinic/s17-clinic-redo/ear-thermometer-belt.webp",
@@ -320,8 +320,8 @@
   },
   "hourglass-belt": {
    "file": "clinic/s17-clinic-redo/hourglass-belt.webp",
-   "w": 224,
-   "h": 401
+   "w": 228,
+   "h": 408
   },
   "stethoscope-belt": {
    "file": "clinic/s17-clinic-redo/stethoscope-belt.webp",
@@ -687,6 +687,11 @@
    "file": "clinic/s17-clinic-redo/honey-jar-belt.webp",
    "w": 323,
    "h": 392
+  },
+  "ear-syringe-belt": {
+   "file": "clinic/s17-clinic-redo/ear-syringe-belt.webp",
+   "w": 236,
+   "h": 400
   }
  },
  "_report": [
@@ -718,6 +723,9 @@
   "cd02: 8 piece(s) by cell for 8 name(s)",
   "  honey-jar-belt: judged a fail, not cut (artcolour.py light FAIL (from below: the lit honey is brightest low); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed)",
   "cd03: 8 piece(s) by cell for 8 name(s)",
-  "cd04: 8 piece(s) by cell for 8 name(s)"
+  "cd04: 8 piece(s) by cell for 8 name(s)",
+  "cn03-v2: 1 piece(s) by cell for 1 name(s)",
+  "cn04-v2: 1 piece(s) by cell for 1 name(s)",
+  "cn09-v2: 1 piece(s) by cell for 1 name(s)"
  ]
 }
