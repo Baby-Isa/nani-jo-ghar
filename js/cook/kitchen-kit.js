@@ -62,7 +62,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the v2 karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
     karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
-  const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
+  const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522, shade: 0x28190a };
   const BADGE = 64;
   // the knob (R2, v3.1): its round body is the badge's size beside it (X5); the art's body (its gold ring) is
   // 0.839 of its canvas (2 x r 0.4193, assets/cook/items/v3/hob/meta.json knob-off-v2; H6's was 0.742)
@@ -316,58 +316,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return img;
     },
 
-    /** The speaker icon, drawn at (x, y) about `s` px tall, in the charcoal text colour. */
+    /** The speaker icon, drawn at (x, y) about `s` px tall, in the charcoal text colour (the shared kit's: Shelf.P.speaker). */
     speaker(g, x, y, s, color = INK.text) {
-      const k = s / 24;
-      g.fillStyle(color, 1);
-      g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
-      g.fillTriangle(x - 4 * k, y - 3.5 * k, x + 2 * k, y - 9 * k, x + 2 * k, y + 9 * k);
-      g.fillTriangle(x - 4 * k, y + 3.5 * k, x + 2 * k, y - 9 * k, x - 4 * k, y - 3.5 * k);
-      g.lineStyle(2.2 * k, color, 1);
-      g.beginPath();
-      g.arc(x + 3 * k, y, 5 * k, -0.9, 0.9);
-      g.strokePath();
-      g.beginPath();
-      g.arc(x + 3 * k, y, 9.5 * k, -0.9, 0.9);
-      g.strokePath();
+      return global.Shelf.P.speaker(g, x, y, s, color);
     },
 
     /**
-     * The shelf chip under an object (§4): `🔊 word`, one tappable chip; tap it = hear the word.
+     * The shelf chip under an object (§4): `🔊 word`, one tappable chip; tap it = hear the word (the shared kit's pill:
+     * Shelf.P.chip, js/shared/shelf.js; this keeps the kitchen's look: its font, its shadow and the room beside the word).
      * opts.word false: the speaker alone, the same size and place (higher levels). opts.w: its width.
      */
     chip(S, id, x, y, { word = true, w = CHIP.w, depth = D.item + 2 } = {}) {
-      const chip = S.track(S.add.container(x, y).setDepth(depth));
-      const bg = S.add.graphics();
-      bg.fillStyle(0x28190a, 0.1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2 + 2, w, CHIP.h, 12);
-      bg.fillStyle(0xffffff, 1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2, w, CHIP.h, 12);
-      chip.add(bg);
-      const icon = S.add.graphics();
-      if (word) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0, 0.5);
-        const maxT = w - 52;
-        if (t.width > maxT) t.setScale(maxT / t.width);
-        const tw = 22 + 8 + t.displayWidth;
-        Kit.speaker(icon, -tw / 2 + 10, 0, 24);
-        t.x = -tw / 2 + 30;
-        chip.add([icon, t]);
-      } else {
-        Kit.speaker(icon, 1, 0, 26);
-        chip.add(icon);
-      }
-      const hitW = Math.max(CHIP.hitW, w + 14);
-      chip.setSize(hitW, CHIP.hitH);
-      chip.setInteractive(new Phaser.Geom.Rectangle(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
-      chip.on("pointerdown", (ptr, lx, ly, ev) => {
-        if (ev && ev.stopPropagation) ev.stopPropagation();
-        Cook.unlockAudio();
-        if (Cook.onLabel) Cook.onLabel(id);
-        Cook.Lang.speakWord(id);
-        S.tweens.add({ targets: chip, scale: 1.08, duration: 90, yoyo: true });
+      return global.Shelf.P.chip(S, x, y, Cook.display(id), {
+        word,
+        w,
+        depth,
+        font: FONT(),
+        weight: "800",
+        pad: 52,
+        shade: INK.shade,
+        onTap: () => {
+          Cook.unlockAudio();
+          if (Cook.onLabel) Cook.onLabel(id);
+          Cook.Lang.speakWord(id);
+        },
       });
-      return chip;
     },
 
     /**
