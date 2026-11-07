@@ -47,7 +47,8 @@ cuts prose: the rule rows are the content. A builder writes only its own files a
 - **Checked by:** the tool that catches it, one or more terms joined by ` + `, each starting with one of these words, so
   `audit.mjs --standard` can read it:
   - `contract-NN` (a contract check, `build/sandbox/lib/contract*.mjs`)
-  - `check:<name>` (a step of `build/tools/review/checks.mjs`, or a static lint rule: `check:static/<rule>`)
+  - `check:<name>` (a step of `build/tools/review/checks.mjs`, a static lint rule `check:static/<rule>`, or a screen-lint rule of
+    `build/lint/layout.mjs` run by the sandbox, `check:layout/<rule>`)
   - `tool:<script>` (a review tool run in the audit: `tool:panelcheck`, `tool:labcheck`, `tool:leak`, `tool:loadtime`,
     `tool:teachgate`, `tool:shelfshot`, `tool:voicegate`, `tool:kitsheet`)
   - `probe:<ROW>` (the fix-list row's evidence probe in `build/sandbox/data/evidence.json`)
