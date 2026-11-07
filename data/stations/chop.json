@@ -1,0 +1,174 @@
+{
+ "_about": "Sprint 18 (s18-chop; Zafar, 7 Nov: chop as its own game, 'as other games and recipes will use chop'): the chop game's settings (js/cook/stations/chop.js reads this file; its own mechanic is js/cook/mechanics/chop.js, whose base knobs stay data/cook.json mechanics.chop until they move here). station: its name, verb, goal and phase line (the grown-ups' '?' box). view: its worktop (the white marble, the kitchen family's, STD-E3-03: the placeholder for the chop's board until ART-37 lands, decision 7). recipe: Nani's order (registered as Cook.Recipes.chop, the engine says it: STD-A4-01): DAAR-37's kinds and chops by level, a 'no' from L2 said last (DAAR-36). levels: what changes by level over the mechanic's knobs (phases: rounds with a switch; L4's speed about 15% over L3's, STD-C2-06). The decoys and the lookalike are the central rules' (data/rules.json levels), read in code, never here (STD-F2-02).",
+ "station": {
+  "name": "Chop",
+  "verb": "Ninja slicing",
+  "goal": "Nani says what to chop and how many. Swipe the knife through only those, as many of each as she says. When the last one is chopped, the board is done. Listen: from level 2 she switches to the next thing while you chop.",
+  "phases": {
+   "chop": "Swipe the knife through what Nani names, as many as she says."
+  }
+ },
+ "view": "marble",
+ "recipe": {
+  "_about": "DAAR-37 (Zafar, 30 Oct: 'Daar I meant 4 types of things to chop in the chop game - the number of total chops per play per level can go: 2, 4, 6, 8 (min 1 and max 3 chops per single item)'): kinds 1-4 by level (his 4 at L4; 1-3 below Claude's reading, to confirm at his play), chops 2, 4, 6, 8, each kind 1-3; garlic the fourth kind. One tomato at most (LNG-17: no Kutchi plural yet), so L1's one kind is never the tomato. 'rules': 'chop' reads data/rules.json count.games.chop (x the kinds, y the chops) once it is there; byLevel is the stand-in until then. A 'no' from L2 (the central rules' noAsks; CK-50 keeps L1 free of one), said last (DAAR-36). Kept out of free play (free: false).",
+  "english": "Chop",
+  "stations": [
+   "chop"
+  ],
+  "free": false,
+  "how": "Listen to what Nani wants chopped and how many, then swipe the knife through only those.",
+  "headline": {
+   "line": "chop-these",
+   "line_plain": "chop-these"
+  },
+  "lists": {
+   "veg": [
+    "veg-02",
+    "veg-03",
+    "veg-12",
+    "veg-13"
+   ],
+   "veg1": [
+    "veg-02",
+    "veg-12",
+    "veg-13"
+   ],
+   "thrown": [
+    "veg-01",
+    "veg-02",
+    "veg-03",
+    "veg-12",
+    "veg-13",
+    "veg-14"
+   ]
+  },
+  "slots": {
+   "kinds": {
+    "type": "items",
+    "from": {
+     "byLevel": [
+      "$veg1",
+      "$veg"
+     ]
+    },
+    "take": {
+     "rules": "chop",
+     "axis": "x",
+     "range": true,
+     "byLevel": [
+      [
+       1,
+       1
+      ],
+      [
+       2,
+       2
+      ],
+      [
+       3,
+       3
+      ],
+      [
+       4,
+       4
+      ]
+     ]
+    },
+    "order": "any"
+   },
+   "chops": {
+    "type": "tally",
+    "kinds": "$kinds",
+    "total": {
+     "rules": "chop",
+     "axis": "y",
+     "byLevel": [
+      2,
+      4,
+      6,
+      8
+     ]
+    },
+    "min": {
+     "veg-02": 1,
+     "veg-03": 1,
+     "veg-12": 1,
+     "veg-13": 1
+    },
+    "max": {
+     "veg-02": 3,
+     "veg-03": 1,
+     "veg-12": 3,
+     "veg-13": 3
+    }
+   },
+   "no": {
+    "type": "items",
+    "from": "$veg",
+    "exclude": "kinds",
+    "take": {
+     "byLevel": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    }
+   }
+  },
+  "say": [
+   {
+    "tally": "$chops",
+    "frame": "only"
+   },
+   {
+    "forEach": "$no",
+    "frame": "no",
+    "x": [
+     "$it"
+    ]
+   }
+  ],
+  "need": [
+   "$kinds"
+  ],
+  "steps": [
+   "Chop"
+  ],
+  "run": []
+ },
+ "levels": [
+  {
+   "knobs": {
+    "phases": 1
+   }
+  },
+  {
+   "knobs": {
+    "phases": 2
+   }
+  },
+  {
+   "knobs": {
+    "phases": 3
+   }
+  },
+  {
+   "_about": "L4: one kind a round (four rounds, three switches), and about 15% quicker than L3 (STD-C2-06): throws 0.48 s apart (L3 0.58), about 2.5 s in the air (L3 2.8)",
+   "knobs": {
+    "phases": 4,
+    "slow": 0.97,
+    "every": 0.47,
+    "throwSpeed": [
+     1370,
+     1540
+    ],
+    "gravity": 1470
+   }
+  }
+ ]
+}
