@@ -1,0 +1,50 @@
+{
+  "name": "s17-tool: audit.mjs --standard <game> reads the standard's rule rows and prints every rule as pass, fail, judge or gap",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "a parser and a report over existing run results",
+  "cost": "about $8-12",
+  "stop": "7 Nov 2026, 17:30 UK",
+  "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "tools",
+  "browser": false,
+  "live": true,
+  "read": [
+    "build/reports/s17-standard-format.md (the rule block and the Checked-by words: your parser's grammar)",
+    "build/tools/review/audit.mjs, build/tools/review/stdids.mjs (the folder's reader to share), docs/tools.md",
+    "build/screenshots/sandbox/frozen-chai-20261107/contract.json and contract.md (a contract run's results: what pass/fail per contract-NN looks like), build/tools/review/checks.mjs (its step names)",
+    "docs/sprints/S18-kitchen-family.md (the family list; a game's scope: House for every game, Family for the kitchen family, Game for chai only)"
+  ],
+  "owns": [
+    "build/tools/review/audit.mjs",
+    "build/tools/review/lib/standard.mjs (new: the rule-block parser, shared with stdids.mjs later)",
+    "build/tools/review/standard.test.mjs (new)",
+    "build/tools/review/fixtures/standard/** (new: a small fake folder for the tests)",
+    "docs/tools.md (the audit row only)",
+    "build/reports/s17-tool.md"
+  ],
+  "readOnly": [
+    "docs/design-language/standard/** (the five standard builders write it now: test on your fixtures, then run on whatever exists at the end)",
+    "build/tools/review/stdids.mjs (the orchestrator's)",
+    "build/sandbox/** (no runs needed: read saved run results)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "lib/standard.mjs: parse every rule block of docs/design-language/standard/*.md (the format note's exact shape: `#### STD-XX-NN · rule` then the bulleted fields and the optional last line) into {id, rule, why, scope, pattern, checkedBy:[{kind, ref, text}], seeIt, status, layer, livesIn, value, impact, sourceRows, file}; report malformed blocks (a missing field, an unknown Checked-by word).",
+      "accept": "standard.test.mjs passes on the fixtures, including a malformed block reported with its file and line"
+    },
+    {
+      "do": "`audit.mjs --standard <game> [--run <sandbox run id>] [--no-play]`: for the game's rules (House for any game, Family for a kitchen-family game, Game only for chai-tray), each Checked-by term resolved: contract-NN from the game's latest sandbox run's contract.json (pass when no break on that game's pages, fail with the count, 'not run' when the check never ran on it); check:<name> from a checks.mjs run (or its saved output); tool:<script> from the audit's own step results when the audit ran it, else 'not run'; probe:<ROW> from build/tools/review/data verdict cache when present; doc: and judge: print 'judge'; gap: prints 'gap'. A rule passes only when all its machine terms pass. Writes build/reports/audit-standard-<game>-<date>.md: a table per domain (ID, rule, scope, result, why) and counts per domain (pass, fail, judge, gap, not run). With --standard alone, no browser: it reads saved runs. Without --standard, the audit is unchanged.",
+      "accept": "`node build/tools/review/audit.mjs --standard chai-tray --run frozen-chai-20261107` on the fixtures folder (an env or flag pointing at it) prints the table and counts; on the real folder it runs on whatever pages exist without crashing"
+    },
+    {
+      "do": "docs/tools.md: the audit row gains --standard. Write build/reports/s17-tool.md (usage, what each result means, a sample output, a 'Proof' section); run `node build/tools/review/checks.mjs` before your last commit.",
+      "accept": "report written; checks pass"
+    }
+  ],
+  "flows": [],
+  "port": 8853,
+  "report": "s17-tool",
+  "publish": false
+}

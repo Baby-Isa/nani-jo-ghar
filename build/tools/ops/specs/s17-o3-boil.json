@@ -8,7 +8,7 @@
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
     "docs/design-language/chai-standard.md"

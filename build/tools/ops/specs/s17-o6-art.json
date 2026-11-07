@@ -8,7 +8,7 @@
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "art",
   "browser": false,
-  "live": true,
+  "live": false,
   "read": [
     ".claude/skills/art-run/SKILL.md ('When images land')",
     "build/reports/s17-clinic-redo-landed-2026-11-07.md (the first landing, its method and names)",

@@ -1,0 +1,62 @@
+SESSION NAME / MODE:  s17-tool: audit.mjs --standard <game> reads the standard's rule rows and prints every rule as pass, fail, judge or gap
+MODEL AND EFFORT:     Sonnet, high effort (a parser and a report over existing run results)
+COST ESTIMATE:        about $8-12
+HARD STOP:            7 Nov 2026, 17:30 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s17-tool.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s17-standard-format.md (the rule block and the Checked-by words: your parser's grammar)
+     build/tools/review/audit.mjs, build/tools/review/stdids.mjs (the folder's reader to share), docs/tools.md
+     build/screenshots/sandbox/frozen-chai-20261107/contract.json and contract.md (a contract run's results: what pass/fail per contract-NN looks like), build/tools/review/checks.mjs (its step names)
+     docs/sprints/S18-kitchen-family.md (the family list; a game's scope: House for every game, Family for the kitchen family, Game for chai only)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/review/audit.mjs
+  - build/tools/review/lib/standard.mjs (new: the rule-block parser, shared with stdids.mjs later)
+  - build/tools/review/standard.test.mjs (new)
+  - build/tools/review/fixtures/standard/** (new: a small fake folder for the tests)
+  - docs/tools.md (the audit row only)
+  - build/reports/s17-tool.md
+READ-ONLY (never edit):
+  - docs/design-language/standard/** (the five standard builders write it now: test on your fixtures, then run on whatever exists at the end)
+  - build/tools/review/stdids.mjs (the orchestrator's)
+  - build/sandbox/** (no runs needed: read saved run results)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python
+
+TASKS (each with its acceptance criterion):
+  1. lib/standard.mjs: parse every rule block of docs/design-language/standard/*.md (the format note's exact shape: `#### STD-XX-NN · rule` then the bulleted fields and the optional last line) into {id, rule, why, scope, pattern, checkedBy:[{kind, ref, text}], seeIt, status, layer, livesIn, value, impact, sourceRows, file}; report malformed blocks (a missing field, an unknown Checked-by word).
+     Accept: standard.test.mjs passes on the fixtures, including a malformed block reported with its file and line
+  2. `audit.mjs --standard <game> [--run <sandbox run id>] [--no-play]`: for the game's rules (House for any game, Family for a kitchen-family game, Game only for chai-tray), each Checked-by term resolved: contract-NN from the game's latest sandbox run's contract.json (pass when no break on that game's pages, fail with the count, 'not run' when the check never ran on it); check:<name> from a checks.mjs run (or its saved output); tool:<script> from the audit's own step results when the audit ran it, else 'not run'; probe:<ROW> from build/tools/review/data verdict cache when present; doc: and judge: print 'judge'; gap: prints 'gap'. A rule passes only when all its machine terms pass. Writes build/reports/audit-standard-<game>-<date>.md: a table per domain (ID, rule, scope, result, why) and counts per domain (pass, fail, judge, gap, not run). With --standard alone, no browser: it reads saved runs. Without --standard, the audit is unchanged.
+     Accept: `node build/tools/review/audit.mjs --standard chai-tray --run frozen-chai-20261107` on the fixtures folder (an env or flag pointing at it) prints the table and counts; on the real folder it runs on whatever pages exist without crashing
+  3. docs/tools.md: the audit row gains --standard. Write build/reports/s17-tool.md (usage, what each result means, a sample output, a 'Proof' section); run `node build/tools/review/checks.mjs` before your last commit.
+     Accept: report written; checks pass
+
+REGRESSION ROWS TO RECHECK (0; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (0): none
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s17-tool.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8853 NJG_LOCK=/tmp/njg-browser-8853.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s17-tool.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8853.lock timeout 1800 node build/sandbox/run.mjs --contract --flow <the spec's flows> --sizes 740x320,930x430,1280x665,1920x1080 --run-id s17-tool-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s17-tool.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s17-tool.json`).
+TESTS: no browser needed.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s17-tool.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

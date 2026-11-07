@@ -7,7 +7,7 @@
   "cost": "about $35-50",
   "stop": "when every task is accepted, or 4 hours",
   "branch": "a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges)",
-  "live": true,
+  "live": false,
   "read": [
     "docs/game-design/days/README.md (§1 the principles, §3 the stage library, §5 the door: the design for the day runner) and docs/game-design/days/farm.md (the farm day's list)",
     "docs/sprints/S09-a-day-at-nanis.md (the door: Zafar's 19-20 Oct lines, newest last)",

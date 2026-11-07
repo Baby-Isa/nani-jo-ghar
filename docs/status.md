@@ -8,7 +8,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-9f26f7e3-ytvg4h` (the newest handover is here; `main` may be a step behind).
+**Handover branch:** `claude/sprint-17-builders-standard-gub2dj` (the newest handover is here; `main` may be a step behind).
 
 **Where things stand (Sat 7 Nov 2026, ~14:30 UK):** Sprint 17, closing. **Chai is signed off** (Zafar, 7 Nov); **live on
 `main`: 20261107T120301Z**. The weekend plan is approved ("yes to all", decisions 1-13): `docs/sprints/S17-chai-done-families.md`
@@ -38,7 +38,7 @@ every kitchen game's first pass live on `main` by **Mon 9 Nov 07:00 UK**. Up to 
 2. the tongue depressor's brown; 3. ART-59, the wide-door counter (a placeholder for now); 4. the dropped list, once made.
 
 **Starting prompt for the new orchestrating chat (the rest of Sprint 17):**
-> First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
+> First `git fetch origin claude/sprint-17-builders-standard-gub2dj` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S17-chai-done-families.md` ("Chai signed off"
 > onward), `docs/sprints/S18-kitchen-family.md` and `build/reports/s17-standards-structure-v2.md` (the standard's locked
 > structure); open nothing else until a task needs it. Zafar approved the plan on 7 Nov ("yes to all", decisions 1-13): launch

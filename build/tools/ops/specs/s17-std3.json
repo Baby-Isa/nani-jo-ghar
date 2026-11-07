@@ -1,0 +1,58 @@
+{
+  "name": "s17-std3: the standard, D Guidance (and chai's onboarding states)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "turning chai's signed-off rules into testable, layered rules needs judgement",
+  "cost": "about $8-12",
+  "stop": "7 Nov 2026, 17:30 UK",
+  "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "docs",
+  "browser": false,
+  "live": true,
+  "read": [
+    "build/reports/s17-standard-format.md (THE format: folder, rule block, Checked-by words, fragment; follow it exactly)",
+    "build/reports/s17-standards-structure-v2.md (Zafar's locked structure, his §8 answers: every rule's Checked by names a tool, or it is a gap)",
+    "build/reports/s17-standards-structure-review.md §7 (Fable's drafts: domains, scopes, glossary, patterns, rule row, values, lessons)",
+    "docs/design-language/chai-standard.md (the signed-off source, 7 Nov: every rule on it gets a home)",
+    "build/reports/s16-s17-change-ledger.md (the 118 changes) and `node build/tools/review/stdids.mjs --sources` (the 213 source IDs)",
+    "docs/sprints/S18-kitchen-family.md (\"Coded well\": the three layers, decision 13: what the pantry and the stalls also need is House)",
+    "docs/game-design/families/kitchen.md (the old kitchen page: every ID it cites gets a home)",
+    "docs/tools.md and build/sandbox/lib/contract*.mjs (the checks that exist, for Checked by: name only real ones; grep)",
+    "js/shared/onboard.js, js/cook/stations/chai-tray.js (every first14/S14_TAG lesson key, the help ladder), data/cook.json calm, data/rules.json",
+    "docs/design-language/guide-and-card.md, docs/game-design/easy-to-play.md"
+  ],
+  "owns": [
+    "docs/design-language/standard/d-guidance.md",
+    "build/reports/s17-std-placement-3.md",
+    "build/reports/s17-std3-guidance.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (no game code this sprint)",
+    "docs/design-language/chai-standard.md (the orchestrator turns it into a pointer at the stitch)",
+    "build/reports/s17-standard-format.md (ask in your report for a change)",
+    "every other builder's page and fragment"
+  ],
+  "stubs": "none; a rule you cannot word without Zafar is a question in your report, never guessed",
+  "tasks": [
+    {
+      "do": "Write d-guidance.md in the folder docs/design-language/standard/ (domain D: the first time, when stuck, Nani's box and the helper card, feedback in play, the grown-ups' door): read chai's code, the source pages and the ledger, and write every rule of your domains as a rule block (eight fields, the optional last line with Layer filled: shared kit, kitchen kit, kitchen kit stove part, or game). One testable sentence each, the aim not the case; scope House, Family or Game; Checked by names a real check, tool, probe or launch doc, else `gap: <the tool that should catch it>`. Each page at most 2,500 words (`wc -w`): rows over prose.",
+      "accept": "every area of the v2 table for your domains has its heading and its rules; every rule block has all eight fields and the Layer; every Checked-by term starts with one of the format's words and names something that exists (or is a gap); each page under 2,500 words"
+    },
+    {
+      "do": "Place the source IDs of your domains in build/reports/s17-std-placement-3.md (the format's fragment table): every ID that fed a rule, value or lesson of yours, and those that are 'not a standard' or retired in your domains. When in doubt, place it.",
+      "accept": "`node build/tools/review/stdids.mjs --check --fragments build/reports/s17-std-placement-3.md --mine` lists no dangling STD ID and no bad kind; your report says how many IDs you placed and lists any you were unsure of"
+    },
+    {
+      "do": "Every one of chai's onboarding states (the onb: source IDs, and any other once-only lesson key you find in chai-tray.js) gets a fragment row: a rule (House, Family or Game), or retired with Zafar's word and date.",
+      "accept": "every onb: ID from `stdids.mjs --sources` is in your fragment"
+    },
+    {
+      "do": "Write build/reports/s17-std3-guidance.md: rules per area and scope, gaps (rules with `gap:` Checked by: the list Sprint 18's check work closes), questions for Zafar (never guessed), the IDs placed, word counts; and a 'Proof' section. Run `node build/tools/review/checks.mjs` before your last commit.",
+      "accept": "the report exists with those parts; checks.mjs passes (or the report names the one failure that is not yours)"
+    }
+  ],
+  "flows": [],
+  "port": 8843,
+  "report": "s17-std3-guidance",
+  "publish": false
+}

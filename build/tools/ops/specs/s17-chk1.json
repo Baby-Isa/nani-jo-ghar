@@ -1,0 +1,56 @@
+{
+  "name": "s17-chk1: chai's contract checks keyed by a per-game data list, so a game is checked the day it is listed",
+  "model": "Opus",
+  "effort": "high",
+  "why": "changing shared contract code without weakening chai's guard needs care",
+  "cost": "about $15-20",
+  "stop": "7 Nov 2026, 17:30 UK",
+  "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "read": [
+    "build/sandbox/lib/contract-chai.mjs (contract-70, -71, -90), build/sandbox/lib/contract-s14.mjs (CONTROL_CALLS at :28; contract-91 where it lives), build/sandbox/lib/contract.mjs:1415-1440 (CHAI_ROW, S14_TAPS, DECOY_STATIONS, DECOY_AT_LEAST)",
+    "docs/sprints/S18-kitchen-family.md (the family list: chai, chop, daar, chaat, samosa, maani, sekelo, eggs, baking, the corn stall)",
+    "build/sandbox/README.md, docs/tools.md"
+  ],
+  "owns": [
+    "build/sandbox/lib/contract-chai.mjs",
+    "build/sandbox/lib/contract-s14.mjs",
+    "build/sandbox/lib/contract.mjs (except its S17 lines: keep `S17_CHECKS` and `checkS17` registered as they are)",
+    "build/sandbox/data/games.json (new: the per-game data list)",
+    "build/sandbox/contract-chai.test.mjs",
+    "build/sandbox/contract-s14.test.mjs",
+    "build/reports/s17-chk1.md"
+  ],
+  "readOnly": [
+    "build/sandbox/lib/contract-s17.mjs and build/sandbox/lib/cook-player.mjs (s17-chk2)",
+    "js/**, css/** (no game code)",
+    "build/tools/review/audit.mjs (s17-tool)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "One per-game data list, build/sandbox/data/games.json: for each game (chai-tray first; the family list's games with what they have today, an empty or absent entry meaning 'not yet'), the data the chai-only checks read: its station ids and flow pattern, its control calls (CONTROL_CALLS), its 'once each' ingredients (contract-71), its slow-at-green note (contract-70), whether the next-item light for a new player applies (contract-90), its help-when-stuck stage (contract-91), whether it is in the s14 taps set (S14_TAPS), its decoys (DECOY_STATIONS, DECOY_AT_LEAST), and CHAI_ROW's use. A comment or README line says how a game joins: add its entry.",
+      "accept": "games.json exists with chai-tray's full entry and an entry for each family game that today's checks already name (samosa, chaat/assemble, daar, the pantry/fetch for decoys); its shape documented in build/sandbox/README.md or the file's header"
+    },
+    {
+      "do": "Rewrite contract-70, -71, -90, -91, CONTROL_CALLS, CHAI_ROW, S14_TAPS and DECOY_STATIONS (and DECOY_AT_LEAST) to read games.json: no game name left hard-coded in those checks. Behaviour for today's games unchanged.",
+      "accept": "`grep -n 'chai-tray' build/sandbox/lib/contract-chai.mjs build/sandbox/lib/contract-s14.mjs` shows no hard-coded game in those checks; the unit tests (contract-chai.test.mjs, contract-s14.test.mjs, contract.test.mjs) pass, with a new test that a fake game added to the list is checked"
+    },
+    {
+      "do": "Prove it unchanged on chai: one contract run of chai at one size under the shared lock: `COOK_TEST_PORT=8851 flock -w 3600 /tmp/njg-browser-all.lock timeout 1800 node build/sandbox/run.mjs --flow cook:chai-tray,cook:chai-tray@L4 --sizes 1280x665 --check --run-id s17-chk1`, compared with the frozen run's contract (build/screenshots/sandbox/frozen-chai-20261107/contract.md: 1 break, contract-11 at L4 1920x1080 only, the known low-res word-moment counter).",
+      "accept": "the same breaks as the frozen run at that size (none at 1280x665); the report gives both counts"
+    },
+    {
+      "do": "Write build/reports/s17-chk1.md (what moved into games.json, how a game joins, the proof, a 'Proof' section); run `node build/tools/review/checks.mjs` before your last commit.",
+      "accept": "report written; checks pass"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8851,
+  "report": "s17-chk1",
+  "publish": false
+}
