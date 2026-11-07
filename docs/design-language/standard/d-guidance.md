@@ -22,9 +22,9 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Checked by:** contract-44 + contract-84 + gap: a contract failing a finger on a tap
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1, New player (1280x665)
 - **Status:** agreed 30 Oct
-- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** dim 0.45 · **Impact:** stuck · **Source rows:** SH-141, DAAR-36, onb:light
+- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** dim 0.45 · **Impact:** stuck · **Source rows:** SH-141, CHAI-25, DAAR-36, onb:light
 
-#### STD-D1-03 · The dim never shows without its lit thing, one light at a time, gone completely once its thing is done or its step ends
+#### STD-D1-03 · The dim never shows without its lit thing, one light at a time, gone once its thing is done or its step ends
 - **Why:** "a black tint ... that never goes away" (Zafar, 30 Oct)
 - **Scope:** House
 - **Pattern / part:** P4 / the light
@@ -69,7 +69,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Status:** agreed 1 Nov
 - **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Value:** 1.2 s · **Impact:** stuck · **Source rows:** CHAI-37, SH-178, CHAI-77, onb:card, led:1.11-1
 
-#### STD-D1-08 · The reveal is taught when it first happens (the dotted word, then the blurred picture) by showing its tap on a card in view, never counted as help
+#### STD-D1-08 · The reveal is taught when it first happens (the dotted word, then the blurred picture) by showing its tap on a card in view, never as help
 - **Why:** "teach the blur of the word, and then the image" (Zafar, 2 Nov)
 - **Scope:** House
 - **Pattern / part:** P2 / the light, item card
@@ -206,7 +206,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Checked by:** tool:panelcheck + probe:SH-189 + gap: a still-order-list film check
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (740x320)
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** two lines' room; the fold 0.5 s · **Impact:** cosmetic · **Source rows:** SH-189, SH-209, SH-210, SH-215
+- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** two lines' room; the fold 0.5 s · **Impact:** cosmetic · **Source rows:** SH-189, SH-179, SH-209, SH-210, SH-215
 
 ## D4 Feedback in play
 
@@ -235,7 +235,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Checked by:** contract-16 + contract-5 + probe:CHAI-57 + probe:CHAI-62
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (1280x665)
 - **Status:** agreed 7 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Value:** the green 2 s at L4 · **Impact:** feels bad · **Source rows:** CHAI-57, CHAI-58, CHAI-62
+- **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Value:** green 2 s at L4 · **Impact:** feels bad · **Source rows:** CHAI-57, CHAI-58, CHAI-62
 
 ## D5 The grown-up's door
 
@@ -255,7 +255,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Checked by:** tool:kitsheet + gap: a one-live-cog contract
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1, New player (930x430)
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `data/rules.json` · **Impact:** unfinished · **Source rows:** -
+- **Layer:** shared kit · **Lives in:** `data/rules.json` · **Impact:** unfinished · **Source rows:** CK-53
 
 #### STD-D5-03 · New player brings every first-time showing back from the first frame, Words known the lessons past support; nothing else does
 - **Why:** "as soon as I load into the game, it should do the walkthrough" (Zafar, 22 Oct)
