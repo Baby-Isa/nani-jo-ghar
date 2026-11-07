@@ -36,7 +36,7 @@
   "branch": "s18-chai in the existing worktree /home/user/wt/s18-chai (it holds the first session's commits); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4 once each switch's frozen diff is clean",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
     "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
