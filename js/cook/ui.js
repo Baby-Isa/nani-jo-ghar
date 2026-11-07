@@ -3146,7 +3146,7 @@
               .then(() => face && face.classList.remove("on"));
           }
         : null;
-      const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
+      const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace, inProgress: () => mission.focusWho || null });
       e.dataset.extra = x.key;
       e.dataset.ck = `x:${x.key}`;
       if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
@@ -3183,6 +3183,7 @@
         s14, // (Sprint 14: the new order row of item cards, chai only)
         stamped: !big && !!mission.stamped,
         mini: minis.has(c.key), // (G1's face alone: OrderCard draws its left speaker, SH-110)
+        inProgress: () => mission.focusWho || null, // (SH-232: the pan in hand's person, for the panel's follow after a fold)
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress

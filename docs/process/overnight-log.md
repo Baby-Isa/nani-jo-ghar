@@ -92,3 +92,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-07 UK · s17-o3-boil and s17-o5-pour merged (CHAI-95 seamless loop; CHAI-103 the pour waits for the stream); juice lab's rising boil; clinic smoke 0 breaks
 - 2026-11-07 UK · s17-o4-lesson merged: CHAI-102, the lesson waits for the order to land (27 of 27 runs lit)
 - 2026-11-07 11:26 UK · Published 20261107T112304Z to main (7ca44a47); Pages serving it.
+- 2026-11-07 UK · s17-o2-panel merged: SH-232, the panel follows a served card's fold to the next card's planned place (every game); Cook passes the pan in hand
