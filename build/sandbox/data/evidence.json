@@ -24272,5 +24272,69 @@
    "note": "the chop's background: a placeholder in the first pass (decision 7), the real art later",
    "delay": 0
   }
+ ],
+ "DAAR-40": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/sandbox/run.mjs --contract --flow cook:daar@L4,cook:daar@L2 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-95 on daar: nothing said after the order is skipped until the first step",
+   "delay": 0
+  }
+ ],
+ "DAAR-41": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/sandbox/run.mjs --contract --flow cook:daar@L4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-98 on daar: every dotted word's first-time lesson is logged",
+   "delay": 0
+  }
+ ],
+ "ART-38": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "samosa's fill and fold: a placeholder in the first pass (decision 7), the real art later",
+   "delay": 0
+  }
  ]
 }

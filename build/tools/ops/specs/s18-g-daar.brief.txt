@@ -1,0 +1,73 @@
+SESSION NAME / MODE:  s18-g-daar: daar at chai's standard on the kits (wave 2)
+MODEL AND EFFORT:     Opus, high effort (one game at the standard, rule by rule)
+COST ESTIMATE:        about $20-30
+HARD STOP:            Sun 8 Nov 2026, 20:00 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s18-g-daar in your own worktree /home/user/wt/s18-g-daar (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s18-g-daar.context.md (888 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', wave 2)
+     docs/architecture/module-map.md (the kit's calls)
+     docs/design-language/standard/README.md, then the domain pages your gaps cite
+     docs/game-design/families/kitchen.md (your game's section)
+     build/reports/s18-kit-a.md .. s18-kit-e.md (each kit piece: its call and chai's line map)
+     docs/design-language/standard/gaps/chop.md (a finished gap page to copy the form of)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/daar.js
+  - data/stations/daar.json
+  - js/cook/mechanics/tadka.js
+  - js/cook/mechanics/stir.js
+  - data/stations/stir.json
+  - js/cook/mechanics/chop.js
+  - js/cook/stations/chop.js
+  - data/stations/chop.json (chop's owner for wave 2: chaat asks through the orchestrator)
+  - docs/design-language/standard/gaps/daar.md (new)
+  - build/reports/s18-g-daar.md
+READ-ONLY (never edit):
+  - js/shared/**, js/cook/ui.js, js/cook/kitchen-kit.js, js/cook/station-lib.js, js/cook/coach.js, js/cook/mechanics/{boil,pour,pan}.js (the kits: ask for a change in your report, exact code; the orchestrator lands it in the kit)
+  - js/cook/stations/chai-tray.js (chai's owner)
+  - js/cook/{index,recipes,order,zone}.js, data/cook.json, data/rules.json, build/sandbox/** (the orchestrator)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. First, the gap page docs/design-language/standard/gaps/daar.md: `node build/tools/review/audit.mjs --standard daar` plus your own read of the game, every House and Family rule scored on the proof scale (0 n/a, 1 missing, 2 built unproven, 3 check green, 4 judged, 5 his done; or 'different by design', dated), each with its next step (Kit, Adopt, Game code, Art, Words, Decision, Check). Commit it alone before any build.
+     Accept: every House and Family rule has a score and a next step; committed first
+  2. Then work to that page. Daar keeps chop, tadka and stir. Move daar's chop onto chop as its own game (`Cook.Chop.play(z, params)`, build/reports/s18-chop.md) and delete daar's copy. Fix DAAR-40 (something said after the order is skipped at L4 and L2: contract-95) and DAAR-41 (a dotted word with no first-time lesson: contract-98), both found by the orchestrator and older than chop. The chop board stays the marble placeholder (ART-37). Keep the game's own mechanic (non-negotiable 1); move it onto its settings file and the kits for everything else (heat and boil, pans and pouring, serving, the shelf and pills, lights and lessons, the order's flow and timings); delete the code it copied from chai or the kits (STD-F1-02: no game copies kit code). Take each kit piece once chai is switched onto it (git log ccr-31767b7f-rfyrg4 shows chai's switches; heat and boil and the worktop are switched; the rest land through the morning: merge ccr-31767b7f-rfyrg4 to take them); start with the game's own parts. Missing Kutchi shows as its English in grey italic, logged by the recording-sheet tools; never invent Kutchi. Rescore the gap page at the end.
+     Accept: the game plays L1-L4 at 1280x665 with 0 contract breaks and 0 page errors; its copied kit code gone (name the lines deleted); the gap page rescored
+  3. Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs: keep runs short, one size while building); `node build/tools/review/checks.mjs --only <checks for your files>` not the full run; delete sandbox runs you no longer need; pass-me stays out; labs.html is generated (build/gen_labs.mjs), never hand-edited; if you need a file another builder or the orchestrator owns, write the exact change in your report and carry on.
+     Accept: your report build/reports/s18-g-daar.md with a Proof section: commits, the contract line, the gap page's before and after counts, the asks, under 600 words
+
+KEEP (what Zafar liked in daar: never change it without his word; 3):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-02: Daar: chopped things wait at the side and you add them in
+  KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
+
+REGRESSION ROWS TO RECHECK (3; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (3): DAAR-40*, DAAR-41*, ART-37*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s18-g-daar.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8880 NJG_LOCK=/tmp/njg-browser-8880.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s18-g-daar.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8880.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:daar --sizes 740x320,930x430,1280x665,1920x1080 --run-id s18-g-daar-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s18-g-daar.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s18-g-daar.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8880.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8880; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s18-g-daar.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

@@ -1,0 +1,52 @@
+{
+  "name": "s18-g-chaat: chaat at chai's standard on the kits (wave 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "one game at the standard, rule by rule",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 20:00 UK",
+  "branch": "s18-g-chaat in your own worktree /home/user/wt/s18-g-chaat (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', wave 2)",
+    "docs/architecture/module-map.md (the kit's calls)",
+    "docs/design-language/standard/README.md, then the domain pages your gaps cite",
+    "docs/game-design/families/kitchen.md (your game's section)",
+    "build/reports/s18-kit-a.md .. s18-kit-e.md (each kit piece: its call and chai's line map)",
+    "docs/design-language/standard/gaps/chop.md (a finished gap page to copy the form of)"
+  ],
+  "owns": [
+    "js/cook/mechanics/assemble.js",
+    "data/stations/chaat.json (new: chaat's settings file)",
+    "docs/design-language/standard/gaps/chaat.md (new)",
+    "build/reports/s18-g-chaat.md"
+  ],
+  "readOnly": [
+    "js/shared/**, js/cook/ui.js, js/cook/kitchen-kit.js, js/cook/station-lib.js, js/cook/coach.js, js/cook/mechanics/{boil,pour,pan}.js (the kits: ask for a change in your report, exact code; the orchestrator lands it in the kit)",
+    "js/cook/stations/chai-tray.js (chai's owner)",
+    "js/cook/{index,recipes,order,zone}.js, data/cook.json, data/rules.json, build/sandbox/** (the orchestrator)"
+  ],
+  "stubs": "none",
+  "port": 8881,
+  "report": "s18-g-chaat",
+  "publish": false,
+  "flows": [
+    "cook:chaat"
+  ],
+  "tasks": [
+    {
+      "do": "First, the gap page docs/design-language/standard/gaps/chaat.md: `node build/tools/review/audit.mjs --standard chaat` plus your own read of the game, every House and Family rule scored on the proof scale (0 n/a, 1 missing, 2 built unproven, 3 check green, 4 judged, 5 his done; or 'different by design', dated), each with its next step (Kit, Adopt, Game code, Art, Words, Decision, Check). Commit it alone before any build.",
+      "accept": "every House and Family rule has a score and a next step; committed first"
+    },
+    {
+      "do": "Then work to that page. Chaat keeps its bowl (assemble). Its chop step calls chop as its own game (`Cook.Chop.play`; the daar builder owns chop's files for wave 2: ask through your report). Its own open rows CHT-*. The side-on bowl and its layers wait on art (CHT-13, CHT-04): placeholders. Keep the game's own mechanic (non-negotiable 1); move it onto its settings file and the kits for everything else (heat and boil, pans and pouring, serving, the shelf and pills, lights and lessons, the order's flow and timings); delete the code it copied from chai or the kits (STD-F1-02: no game copies kit code). Take each kit piece once chai is switched onto it (git log ccr-31767b7f-rfyrg4 shows chai's switches; heat and boil and the worktop are switched; the rest land through the morning: merge ccr-31767b7f-rfyrg4 to take them); start with the game's own parts. Missing Kutchi shows as its English in grey italic, logged by the recording-sheet tools; never invent Kutchi. Rescore the gap page at the end.",
+      "accept": "the game plays L1-L4 at 1280x665 with 0 contract breaks and 0 page errors; its copied kit code gone (name the lines deleted); the gap page rescored"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs: keep runs short, one size while building); `node build/tools/review/checks.mjs --only <checks for your files>` not the full run; delete sandbox runs you no longer need; pass-me stays out; labs.html is generated (build/gen_labs.mjs), never hand-edited; if you need a file another builder or the orchestrator owns, write the exact change in your report and carry on.",
+      "accept": "your report build/reports/s18-g-chaat.md with a Proof section: commits, the contract line, the gap page's before and after counts, the asks, under 600 words"
+    }
+  ]
+}
