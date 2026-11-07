@@ -166,7 +166,6 @@
   R.pointMs = () => Number(sec("showing").pointMs) || 0;
   R.callAfterLightMs = () => Number(sec("showing").callAfterLightMs) || 0;
   R.pointAfterMoveMs = () => Number(sec("showing").pointAfterMoveMs) || 0;
-  R.lightHelpArrow = () => sec("showing").lightHelpArrow === true;
   /** The counter's spot (0 left, 1 middle, 2 right) of person i of n (the central rules' scene.counterSpots). */
   R.counterSpot = (i, n) => {
     const t = (sec("scene").counterSpots || {})[String(n)];
