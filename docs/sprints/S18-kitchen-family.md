@@ -140,7 +140,7 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - Builders own disjoint files (`brief.mjs --live-check`); a refused brief is not written: check every "Wrote …brief.txt" line.
 - Set `"live": false` on specs once builders finish.
 - A builder's worktree starts with `git fetch && git reset --hard origin/<branch>`.
-- One browser lock for every browser run (`/tmp/njg-browser-all.lock`); long jobs one at a time (container restarts kill
+- One browser lock for every browser run (`/tmp/njg-browser-all.lock`); `frozen.mjs` takes it itself, so never wrap it in flock (it deadlocked chai's owner for 28 minutes, 7 Nov 21:00); long jobs one at a time (container restarts kill
   background tasks); eight builders on four CPUs is untested (six was), so browser runs are rationed.
 - Merges: the overnight log conflicts every time (append both); never `git pull --rebase` after merges.
 - A fix moved into the shared module avoids clashes and reaches every game.

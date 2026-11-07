@@ -51,7 +51,7 @@
       "accept": "the game plays L1-L4 at 1280x665 with 0 contract breaks and 0 page errors; its copied kit code gone (name the lines deleted); the gap page rescored"
     },
     {
-      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs: keep runs short, one size while building); `node build/tools/review/checks.mjs --only <checks for your files>` not the full run; delete sandbox runs you no longer need; pass-me stays out; labs.html is generated (build/gen_labs.mjs), never hand-edited; if you need a file another builder or the orchestrator owns, write the exact change in your report and carry on.",
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (except `frozen.mjs`, which takes that lock itself: never wrap it, it deadlocks) (eight builders share four CPUs: keep runs short, one size while building); `node build/tools/review/checks.mjs --only <checks for your files>` not the full run; delete sandbox runs you no longer need; pass-me stays out; labs.html is generated (build/gen_labs.mjs), never hand-edited; if you need a file another builder or the orchestrator owns, write the exact change in your report and carry on.",
       "accept": "your report build/reports/s18-g-maani.md with a Proof section: commits, the contract line, the gap page's before and after counts, the asks, under 600 words"
     }
   ]
