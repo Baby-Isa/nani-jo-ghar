@@ -314,9 +314,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const level = zb.level;
     const people = (params.cups || []).slice(0, 4);
     const n = Math.max(1, people.length);
-    const kBoil = Mech.knobs("boil", { level: K.boilLevel || level, profile: "tray" });
-    // Zafar, 29 Oct (chai level rules 6): chai's own heat by level over the tray profile (data/stations/chai-tray.json heat)
-    if (K.heat) Object.assign(kBoil, K.heat);
+    // Zafar, 29 Oct (chai level rules 6): chai's own heat by level over the tray profile (data/stations/chai-tray.json heat); the
+    // kitchen kit's heat and boil (Mech.boil, Sprint 18) runs it
+    const kBoil = Mech.boil.settings({ level: K.boilLevel || level, profile: "tray", heat: K.heat });
     const kCount = Mech.knobs("count", { level });
     const halves = people.some((p) => p.amount); // level 4: half or full
     // how many pours a glass takes to hold what was asked (L4: half 1, full 2; below L4 one tap fills it)
@@ -1001,9 +1001,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      * knob the child turns holds (never a thing that moves by itself). A returning player's heat never holds.
      */
     const HOLD14 = `${STATION14}:${S14_TAG}boil-hold`;
-    let hold14 = !!(fresh14 && RULES() && RULES().firstTimeHold() && !seen14[HOLD14]);
-    const holdAt14 = lo + (hi - lo) * 0.5;
-    let holding14 = null;
+    const hold14 = !!(fresh14 && RULES() && RULES().firstTimeHold() && !seen14[HOLD14]);
 
     // C8: which picture the pan shows: [the stage, the next one fading in over it, how far]. The leaves
     // steep to black tea as it heats; near the green it comes to the boil; past the green milky chai
@@ -1012,8 +1010,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // green zone - i didn't see that on the other modes"): the boil comes up the same TIME before the green at every level (was a
     // fixed 0.12 of heat: 1.3 s at L1's slow rate, 0.9 s at L4's, and L1's first-time hold kept it on screen for as long as the child
     // waited); its steam starts with it, and black tea boils too (below, STAGE)
-    const BOIL_LEAD_S = 2;
-    const boilAt = Math.max(0.3, lo - kBoil.rate * BOIL_LEAD_S);
+    const boilAt = Mech.boil.boilAt(lo, kBoil.rate);
     const lookOf = (pan) => {
       const tea = pan.has.leaves > 0;
       const milk = pan.has.milk > 0;
@@ -1287,7 +1284,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     const fx = (kind, x, y, { w = 90, depth = D.fx + 2 } = {}) => {
       const P = J();
       if (!P) return null;
-      return kind === "steam" ? P.puff(S, x, y, { w: w * 1.4, depth }) : kind === "sparkle" ? P.sparkle(S, x, y, { w: w * 1.6, kind: 2, depth: D.badge + 0.5, add: true }) : null;
+      return kind === "sparkle" ? P.sparkle(S, x, y, { w: w * 1.6, kind: 2, depth: D.badge + 0.5, add: true }) : null;
     };
     /*
      * CHAI-92 (Zafar's picks, 6 Nov): a glass just poured. The painted last drop falls into it from a third of the lab's height, smaller
@@ -1539,103 +1536,75 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       S.tappable(o, () => talked && !finished && use(id));
     });
 
-    /* ---------- heat: each knob, each pan ---------- */
-    const setKnob = (pan, state, silent = false) => pan.burner.set(state, false, silent);
-    const knobTap = (pan) => {
-      if (finished) return;
-      if (pan.state === "cold") {
-        if (!pan.has.water) {
-          // nothing to heat yet: the knob won't turn, the water bottle hops
-          S.wiggle(pan.knob);
-          S.glow(shelf["cook-paani"], true, { bounce: true });
-          S.time.delayedCall(1200, () => glowing !== shelf["cook-paani"] && S.glow(shelf["cook-paani"], false));
-          return;
-        }
-        if (sel !== pan) select(pan);
-        pan.state = "heating";
-        setKnob(pan, "high");
-        refresh();
-      } else if (pan.state === "heating") {
-        // CHAI-57 (Zafar, 1 Nov: "Maybe it just doesn't let you click it too early ... It just shakes and says no ... the timer keeps
-        // going until ... you click it when it's in the green. And if you click it in the red after the green, then it overboils and
-        // you have to start again"; decision 5): before the green the knob shakes, Nani says hever na (Mum's "not now") and the heat
-        // runs on, nothing marked; in the green it turns down as before; in the red it boils over and that pot starts again
-        if (pan.heat < lo) {
-          S.wiggle(pan.knob);
-          boilNote(pan, "early");
-          const now = Date.now();
-          if (!(now - (pan.noAt || 0) < 1500) && !UI.naniMuted()) {
-            pan.noAt = now;
-            const line = Cook.data.lines && Cook.data.lines["not-now"] ? Lang.line("not-now") : null;
-            if (line) UI.voice(line, { ms: 900 }).catch(() => {});
-          }
-          return;
-        }
-        // (SH-158: the tap ends the first-time hold, for good)
-        if (hold14 && pan.heat >= lo) {
-          hold14 = false;
-          seen14[HOLD14] = true;
-          if (holding14) note("timed-hold", "end", `${pan.who} ${pan.heat.toFixed(3)} ${Date.now() - holding14}ms`);
-          holding14 = null;
-        }
-        if (pan.heat > hi) return boilOver(pan);
-        turnDown(pan, false);
-      }
-    };
-    // (the test hook, js:Cook.chaiBoil: every boil event, for the evidence probes)
-    const boilLog = [];
-    Cook.chaiBoil = boilLog;
-    const boilNote = (pan, what) => {
-      boilLog.push({ who: pan.who, what, heat: Math.round(pan.heat * 1000) / 1000, lo, hi });
-      note("chai-boil", what, `${pan.who} ${pan.heat.toFixed(3)}`);
-    };
-    /*
-     * CHAI-57 (decision 5c): a tap in the red, or no tap by the red's end: it boils over (the v3 foam over the milky boil and the
-     * painted steam stand in until ART-32 brings the s14 boil-over), then that pan empties, its person's card rows open again and that
-     * pot starts again from the water; the other pots keep theirs. No verdict and no mark (progress, not a verdict: non-negotiable 7).
+    /* ---------- heat: each knob, each pan (the kitchen kit's heat and boil, Mech.boil: js/cook/mechanics/boil.js) ----------
+     * The kit owns the knob's taps, the heat's clock (CHAI-10: twice as fast to the green, half speed in it), too early (CHAI-57:
+     * the knob shakes, Nani says hever na, the heat runs on), the green (its ding, CHAI-92), the turn-down, the boil-over and starting
+     * again (CHAI-57, decision 5c: no verdict, no mark), the first-time hold (SH-158), the boil's steam from boilAt (CHAI-63, CHAI-92)
+     * and the hob's simmer loop by the hottest pan (CHAI-95). Chai says what each step does to its pans, cards and pictures (on).
+     * The test hooks keep their names: Cook.chaiBoil (every boil event), Cook.chaiSimmer (the loop's level by heat).
      */
-    const boilOver = (pan) => {
-      if (pan.state === "over") return;
-      boilNote(pan, "over");
-      pan.state = "over";
-      pan.heat = 1;
-      pan.ring.clear();
-      setKnob(pan, "off");
-      setLook(pan);
-      fx("steam", pan.x - rIn * 0.5, pan.y - rIn * 0.9, { w: rIn * 0.7, ms: 900, rise: rIn * 0.3 });
-      fx("steam", pan.x, pan.y - rIn * 1.1, { w: rIn * 0.8, ms: 1000, rise: rIn * 0.4 });
-      Cook.sfx.puff();
-      if (sel === pan) UI.hideCount();
-      refresh();
-      Cook.wait(1100).then(() => {
-        if (finished || pan.state !== "over") return;
-        Object.assign(pan, { level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [], spoons: [], heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false, capped: false });
-        pan.bubbles.clear();
-        setLook(pan);
-        UI.mission.reopen(null, dishNo(), { for: pan.who });
-        if (sel === pan) UI.hideCount();
-        boilNote(pan, "again");
-        refresh();
-      });
-    };
-    const turnDown = (pan, over) => {
-      note("chai-down", pan.heat.toFixed(3), `${lo}/${hi}/${pan.who}`); // (contract-70)
-      if (over) return boilOver(pan); // (CHAI-57: the red's end with no tap boils it over: that pot starts again)
-      pan.state = "ready";
-      pan.ring.clear();
-      setKnob(pan, "low");
-      boilNote(pan, "green");
-      // (only ever in the green now, CHAI-57: a tap before it shakes the knob)
-      const score = S.bandScore(pan.heat, lo, hi);
-      zb.skill(score, "boil");
-      S.verdict(pan.x, pan.y - panR - 40, score, { bad: "too-early" });
-      pan.heat = Math.min(pan.heat, hi);
-      setLook(pan);
-      if (trayQuiet.alpha > 0) S.tweens.add({ targets: trayQuiet, alpha: 0, duration: 400 });
-      refresh();
-    };
+    const setKnob = (pan, state, silent = false) => pan.burner.set(state, false, silent);
+    const stove = Mech.boil.stove(S, {
+      log: "chai",
+      hold: hold14,
+      done: () => finished,
+      onHoldEnd: () => (seen14[HOLD14] = true),
+    });
+    Cook.chaiBoil = stove.boilLog;
+    Cook.chaiSimmer = stove.simmerLog;
     pans.forEach((pan) => {
-      S.tappable(pan.knobHit, () => knobTap(pan));
+      pan.boil = Mech.boil(S, pan, {
+        id: pan.who,
+        band: [lo, hi],
+        rate: kBoil.rate,
+        burner: pan.burner,
+        ring: pan.heatRing,
+        ringR: rimR, // (the gauge rides on the pan's rim, inside the flames: 29 Sept, at panR + 14 it sat on the flame tips)
+        bind: true, // (chai reads and resets pan.state and pan.heat everywhere)
+        can: () => !finished,
+        canLight: () => !!pan.has.water,
+        has: () => pan.level > 0.05,
+        steam: { at: () => ({ x: pan.x, y: pan.y - rimR * 0.64, w: rimR * 2.4, depth: D.fx - 2 }), when: () => !pan.away },
+        puff: { r: rIn },
+        on: {
+          // nothing to heat yet: the knob won't turn (the kit shakes it), the water bottle hops
+          cantLight: () => {
+            S.glow(shelf["cook-paani"], true, { bounce: true });
+            S.time.delayedCall(1200, () => glowing !== shelf["cook-paani"] && S.glow(shelf["cook-paani"], false));
+          },
+          light: () => sel !== pan && select(pan),
+          green: () => refresh(), // CHAI-24: the turn-off line on the frame the bar enters the green (not the next nudge)
+          tick: () => setLook(pan),
+          // (only ever in the green now, CHAI-57: a tap before it shakes the knob)
+          down: (b, score) => {
+            zb.skill(score, "boil");
+            S.verdict(pan.x, pan.y - panR - 40, score, { bad: "too-early" });
+          },
+          // CHAI-57: boiled over (the v3 foam over the milky boil and the kit's steam puffs stand in until ART-32 brings the s14
+          // boil-over); then that pan empties, its person's card rows open again and that pot starts again from the water; the
+          // other pots keep theirs
+          over: () => {
+            setLook(pan);
+            if (sel === pan) UI.hideCount();
+          },
+          again: () => {
+            Object.assign(pan, { level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [], spoons: [], poured: 0, closed: false, spoonsClosed: false, capped: false });
+            pan.bubbles.clear();
+            setLook(pan);
+            UI.mission.reopen(null, dishNo(), { for: pan.who });
+            if (sel === pan) UI.hideCount();
+          },
+          changed: (b, what) => {
+            if (what === "down") {
+              setLook(pan);
+              if (trayQuiet.alpha > 0) S.tweens.add({ targets: trayQuiet, alpha: 0, duration: 400 });
+            }
+            refresh();
+          },
+        },
+      });
+    });
+    pans.forEach((pan) => {
       S.tappable(pan.img, () => panTap(pan));
       // Sprint 14 (lab/cards.html: "the glass lit for the pour"): on the s14 look the glass takes the tap too (its pan pours),
       // as well as the pan itself (kept)
@@ -1651,78 +1620,13 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       });
       setLook(pan);
     });
-    // the gauge rides on the pan's rim, inside the flames (29 Sept: at panR + 14 it sat on the flame tips)
-    const drawRing = (pan) => pan.heatRing.draw(pan.x, pan.y, rimR, pan.heat, lo, hi);
-    let last = performance.now();
-    let steamT = 0;
-    let simmer = null; // (CHAI-92: the simmer loop, one for the hob)
-    /*
-     * CHAI-95, the simmer's level by heat, in decibels from the file's own level (0 dB): from the first heat it rises evenly in
-     * decibels (his question, "linearly or logarithmically?": even in decibels, which the ear hears as a steady rise) from -24 dB to
-     * 75% (-2.5 dB) as the bubbling picture comes in (boilAt), held there through the green, then up to 100% (0 dB) past the green's
-     * end until it boils over (heat 1). The same at every level: each level's boilAt and green are its own.
-     */
-    const SIMMER_DB = { from: -24, held: 20 * Math.log10(0.75), top: 0 };
-    const simmerDb = (h) => {
-      const S0 = SIMMER_DB;
-      if (h <= boilAt) return S0.from + (S0.held - S0.from) * Cook.clamp(h / Math.max(0.01, boilAt), 0, 1);
-      if (h <= hi) return S0.held;
-      return S0.held + (S0.top - S0.held) * Cook.clamp((h - hi) / Math.max(0.01, 1 - hi), 0, 1);
-    };
-    // (the log, CHAI-95's check: the loop's level by heat, a line each 0.05 of heat and at the bubbling picture, the green's start and
-    // end; Cook.chaiSimmer holds them for a probe)
-    const simmerLog = [];
-    Cook.chaiSimmer = simmerLog;
-    let simmerAt = null;
-    const simmerNote = (pan, db, k) => {
-      const h = pan.heat;
-      const mark = h >= hi ? "past-green" : h >= lo ? "green" : h >= boilAt ? "bubbling" : "rising";
-      const bin = `${pan.who}:${mark}:${Math.floor(h / 0.05)}`;
-      if (bin === simmerAt) return;
-      simmerAt = bin;
-      const row = { who: pan.who, heat: Math.round(h * 1000) / 1000, db: Math.round(db * 10) / 10, level: Math.round(k * 1000) / 1000, mark, boilAt: Math.round(boilAt * 1000) / 1000, lo, hi };
-      simmerLog.push(row);
-      note("chai-simmer", `${row.db} dB`, `${pan.who} heat ${row.heat} level ${row.level} ${mark}`);
-    };
-    const juiceOff = () => {
-      if (simmer) simmer = (simmer.stop(), null);
-      pans.forEach((p) => p.steamFx && (p.steamFx = (p.steamFx.stop(), null)));
-    };
-    // (a station left mid-boil: the loop never rings on)
-    if (S.events && S.events.once) ["shutdown", "destroy"].forEach((ev) => S.events.once(ev, juiceOff));
+    // (the stove's own tick, made with it above, heats the pans first; this one follows each frame: the handle, the rolling boil,
+    // the gauge)
     const stopHeat = S.addTick(() => {
-      const now = performance.now();
-      const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
-      last = now;
-      steamT += dt;
       pans.forEach((pan) => {
         const hd = pan.layers && pan.layers.handle;
         if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
-        // CHAI-61 (Zafar, 1 Nov: "the addition of paani stops the cooking of the first one (pauses is during the animation). Check the
-        // additions to the other pans dont stop or slow the cooking of the lit chai pans"): a lit pan's boil runs on its own clock,
-        // whatever goes into another pan (was: every lit pan held its heat while a pour or a spoon was in flight, s14's contract-70
-        // fix; the turn-off call now comes through the pour instead: refresh() below)
-        if (pan.state === "heating") {
-          const was = pan.heat >= lo && pan.heat <= hi;
-          // CHAI-10: twice as fast to the green; in the green it slows to half, so the turn-down keeps its old time
-          pan.heat += kBoil.rate * (pan.heat >= lo ? 0.5 : 1) * dt;
-          // (SH-158: the first time, the heat waits in the middle of the green until the knob is tapped)
-          if (hold14 && pan.heat > holdAt14) {
-            pan.heat = holdAt14;
-            if (!holding14) {
-              holding14 = Date.now();
-              note("timed-hold", "start", `${pan.who} ${pan.heat.toFixed(3)}`);
-            }
-          }
-          const inBand = pan.heat >= lo && pan.heat <= hi;
-          if (inBand && !was) {
-            Cook.sfx.green(); // (CHAI-92, Zafar's pick green A: a kitchen oven's ding, so the moment to turn it down is heard; was the tiny click)
-            refresh(); // CHAI-24: the turn-off line on the frame the bar enters the green (not the next nudge)
-          }
-          drawRing(pan);
-          setLook(pan);
-          if (pan.heat >= 1) turnDown(pan, true);
-        }
+        // (CHAI-61, Zafar, 1 Nov: a lit pan's boil runs on its own clock, whatever goes into another pan: the kit's)
         // bubbles as it nears the boil, a gentle simmer once it's ready
         pan.bubbles.clear();
         const hot = pan.state === "heating" ? Cook.clamp((pan.heat - 0.3) / (lo - 0.3), 0, 1.4) : pan.state === "ready" && pan.poured < 2 ? 0.35 : 0;
@@ -1731,27 +1635,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           const spin = 0.0025 * Math.min(1.4, hot);
           [pan.disc, pan.mixDisc].forEach((im) => im && im.visible && im.setRotation(im.rotation + spin));
         }
-        // the painted steam over the boiling pan, rising from its far rim, only near the boil (CHAI-63: from the boil's own start,
-        // boilAt, the same time before the green at every level). CHAI-92 (Zafar's pick, steam 1, 6 Nov): the s17 full wisps on their
-        // slow loop (Juice.P.steam) from the boil until the pan leaves the heat (was the s11 wisp now and then); one still wisp under
-        // reduced motion
-        const steaming = pan.state === "heating" && pan.heat >= boilAt && pan.level > 0.05 && !pan.away;
-        if (steaming && !pan.steamFx && J()) pan.steamFx = J().steam(S, pan.x, pan.y - rimR * 0.64, { w: rimR * 2.4, depth: D.fx - 2 });
-        else if (!steaming && pan.steamFx) pan.steamFx = (pan.steamFx.stop(), null);
       });
-      if (steamT > 0.3) steamT = 0;
-      // CHAI-92 (Zafar's pick, simmer A, 6 Nov: water at a gentle boil, very quiet): gone at the turn-down; silent under a family voice
-      // line (js/shared/sfx.js, the voice gate). CHAI-95 (Zafar, 6 Nov night: "the tea boiling sound gradually increased until it's max
-      // (at the point the image changes to bubbling) and then stay there, and only increased after the green zone is missed and its
-      // overboiling"): heard from the first heat (was from heat 0.5), by the hottest pan on the heat (simmerDb)
-      const hotPan = pans.reduce((m, p) => (p.state === "heating" && p.level > 0.05 && (!m || p.heat > m.heat) ? p : m), null);
-      if (hotPan && !finished) {
-        const db = simmerDb(hotPan.heat);
-        const k = Math.pow(10, db / 20);
-        if (!simmer || simmer.none) simmer = Cook.sfx.simmerLoop(k);
-        else simmer.pitch(k);
-        simmerNote(hotPan, db, k);
-      } else if (simmer) simmer = (simmer.stop(), null);
       if (gaugePan && gaugePan.state === "heating") zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
     });
 
@@ -3413,7 +3297,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       refresh();
     }
     stopHeat();
-    juiceOff();
+    stove.end(); // (the kit's heat: its loop and steam off, nothing ticks or starts again)
     // SH-181 (P9: js/cook/coach.js C.start returns before chai's coach could be marked seen, so every returning player was "fresh"):
     // chai's first-time showing is used up once its first round ends; a returning player gets the calls alone and the stuck hints
     if (!guided) {
