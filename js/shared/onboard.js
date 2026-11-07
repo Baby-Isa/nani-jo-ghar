@@ -328,6 +328,58 @@
   };
   Onboard.fingerMs = () => Onboard.FINGER.in + Onboard.FINGER.press + Onboard.FINGER.up + Onboard.FINGER.gap;
 
+  /* ---------------- the lights and lessons kit (Sprint 18, module map pieces 13-14; pure parts) ---------------- */
+  /*
+   * The lights every game shares (docs/architecture/module-map.md pieces 13-14; the standard's D1 and D2): one set of times
+   * (values.md D1, "to tokenise"), the zoom-in's box, the first-time gate, the stuck hint's clock and its rush, and the rule that
+   * a hint never says a word past support. The page parts (Onboard.light's timed form, Onboard.stuck's rush, Onboard.lesson) are
+   * under the overlay below; Cook's kitchen wiring (the stage's stillness, the call with its light, the next vessel, the order
+   * card's light, the lessons in order) is js/cook/coach.js. No game is named here (STD-F1-02): a game passes its things and numbers.
+   *   breath       a control's light waits this long after the stage is still (CHAI-52: "add a second extra"), never more than
+   *                breathMax in all
+   *   still        the order card's light waits up to this long for a still kitchen (CHAI-77: a child's pace), then gives up
+   *   settle       a lesson's stillness wait gives up after this long
+   *   nextVessel   the next vessel's light, this long after the last one's pour ends (CHAI-99: "half a second longer"); nextLit:
+   *                how long it stays up if the child does nothing
+   *   lessonLit    a lesson's light, the longest it stays up; lessonEnd: it ends this long after the tap is shown (SH-196)
+   */
+  Onboard.WAIT = { breath: 1000, breathMax: 3000, still: 8000, settle: 6000, nextVessel: 800, nextLit: 5000, lessonLit: 6000, lessonEnd: 900 };
+  /**
+   * SH-213, the zoom-in light (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... just to
+   * draw your eye to the item card and then to the part of the item card that you need to focus on ... a generalizable principle"):
+   * every game, a light on a small part of a thing (a card's hidden word, its blurred picture, a knob's mark) is given
+   * {zoomFrom: <the whole thing>}: the whole thing is lit for `hold` ms, then the box shrinks onto the part over `shrink` ms (eased).
+   * Reduced motion: the whole thing, then the part, no shrink. Onboard.ZOOM.total() is how long before the part alone is lit.
+   */
+  Onboard.ZOOM = { hold: 650, shrink: 450, pad: 4, total() { return this.hold + this.shrink; } };
+  /**
+   * The zoom-in's box `t` ms after it began (pure; Onboard.spot draws it every frame): from the whole thing `from` (ZOOM.pad round it,
+   * less the light's own o.pad, which the light adds on top) to the part `to`, eased out. o: {pad, avoid: [{x, y, w, h}] (a face
+   * circle overhanging the whole thing: the box's nearer edge is trimmed clear of it, contract-82), reduced}.
+   */
+  Onboard.zoomBox = function (from, to, t, o) {
+    o = o || {};
+    if (!from || !to) return to || null;
+    const Z = Onboard.ZOOM;
+    const pad = o.pad || 0;
+    const u = t < Z.hold ? 0 : o.reduced ? 1 : Math.min(1, (t - Z.hold) / Z.shrink);
+    if (u >= 1) return to;
+    const e = 1 - Math.pow(1 - u, 3);
+    const g = (a, b) => a + (b - a) * e;
+    const fx = { x: from.x - Z.pad + pad, y: from.y - Z.pad + pad, w: from.w + 2 * (Z.pad - pad), h: from.h + 2 * (Z.pad - pad) };
+    const pd = pad + 1;
+    (o.avoid || []).forEach((q) => {
+      if (!q || q.x > fx.x + fx.w || q.x + q.w < fx.x || q.y > fx.y + fx.h || q.y + q.h < fx.y) return;
+      if (q.y + q.h / 2 < fx.y + fx.h / 2) {
+        const y1 = Math.max(fx.y, q.y + q.h + pd);
+        fx.h -= y1 - fx.y;
+        fx.y = y1;
+      } else fx.h = Math.min(fx.h, q.y - pd - fx.y);
+    });
+    return { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
+  };
+  /** The stuck hint's rungs (ms): the first time at once, the box at 5 s idle, the guide's line at 15 s (values.md D2). */
+  Onboard.RUNGS = [0, 5000, 15000];
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
    * The play log (easy-to-play.md principle 11): each stage's events folded into one round
@@ -1255,29 +1307,9 @@
       if (zoom) {
         const to = ob || Onboard.unionOf(sp.rects);
         const fr = rectOf(o.zoomFrom);
-        if (to && fr) {
-          const t = Date.now() - zoom.t0;
-          const Z = Onboard.ZOOM;
-          const u = t < Z.hold ? 0 : reduced() ? 1 : Math.min(1, (t - Z.hold) / Z.shrink);
-          const e = 1 - Math.pow(1 - u, 3);
-          const g = (a, b) => a + (b - a) * e;
-          // (the whole thing's box has Z.pad round it; the spot adds o.pad to whatever it draws, so that is taken off here)
-          const fx = { x: fr.x - Z.pad + (o.pad || 0), y: fr.y - Z.pad + (o.pad || 0), w: fr.w + 2 * (Z.pad - (o.pad || 0)), h: fr.h + 2 * (Z.pad - (o.pad || 0)) };
-          // (contract-82, the review of 5 Nov at 740x320: the whole card's box cut the person's face circle that overlaps the card's top:
-          // a shape to avoid trims the box's nearer edge clear of it, never crosses it)
-          if (o.avoid) {
-            const pd = (o.pad || 0) + 1;
-            rectsOf(o.avoid).forEach((q) => {
-              if (!q || q.x > fx.x + fx.w || q.x + q.w < fx.x || q.y > fx.y + fx.h || q.y + q.h < fx.y) return;
-              if (q.y + q.h / 2 < fx.y + fx.h / 2) {
-                const y1 = Math.max(fx.y, q.y + q.h + pd);
-                fx.h -= y1 - fx.y;
-                fx.y = y1;
-              } else fx.h = Math.min(fx.h, q.y - pd - fx.y);
-            });
-          }
-          ob = u >= 1 ? to : { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
-        }
+        // (contract-82, the review of 5 Nov at 740x320: the whole card's box cut the person's face circle that overlaps the card's top:
+        // a shape to avoid trims the box's nearer edge clear of it, never crosses it: Onboard.zoomBox)
+        if (to && fr) ob = Onboard.zoomBox(fr, to, Date.now() - zoom.t0, { pad: o.pad, avoid: o.avoid ? rectsOf(o.avoid) : null, reduced: reduced() });
       }
       // (SH-230: every thing's box by the one rule, Onboard.litBox; a caller's own pad only for a pan's rim circle, CHAI-68, or a part
       // of a card drawn by o.box, SH-213: shapes that are not a thing with a picture and a pill)
@@ -1355,18 +1387,73 @@
     [...liveSpots].forEach((sp) => { try { sp.close(); } catch (e) { /* its own */ } });
   };
 
+  /**
+   * The light (the s14 look's one lit thing; module map piece 13): Onboard.light(target, o) -> handle {close(), stop(), box(), layer,
+   * done}. o (the look): {look: "glow" | "bob" | "" (the order card: no glow, no bounce), pad, round (a circle: a pan's rim), live,
+   * pass (the dim blocks no tap: the child is never held), box (a function giving the box drawn round a part), zoomFrom (the whole
+   * thing first, SH-213), avoid, container}. And its timing, so a game never wraps it (was each game's own, chai's light14):
+   *   ms       it goes by itself after ms (a game passes its own speed's share)
+   *   onTap    the lit thing (an element, or a function giving one) tapped: onTap(), and the light goes
+   *   quitIf   asked every 60 ms: true, and the light goes (the child has moved on)
+   *   note     a step name: the light is logged as a first-time rung (Lifecycle "rung", rung 0, coach), as the checks count it
+   * handle.done resolves once the light has gone, whichever way. A null target lights nothing (handle.done resolved).
+   */
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
+    if (target == null) return { layer: null, box: () => null, close() {}, stop() {}, done: Promise.resolve() };
+    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
+    if (o.note != null) LCnote("rung", { step: String(o.note), rung: 0, coach: true });
+    let gone;
+    h.done = new Promise((r) => (gone = r));
+    let t = 0;
+    let q = 0;
+    const at = o.onTap ? htmlOf(target) : null;
+    const tap = () => {
+      try {
+        o.onTap();
+      } catch (e) {
+        /* the game's own */
+      }
+      h.close();
+    };
+    if (at) at.addEventListener("click", tap, true);
+    const shut = h.close;
+    h.close = function () {
+      clearTimeout(t);
+      clearInterval(q);
+      if (at) at.removeEventListener("click", tap, true);
+      shut.call(h);
+      gone();
+    };
+    h.stop = h.close;
+    if (typeof o.quitIf === "function")
+      q = setInterval(() => {
+        let quit = false;
+        try {
+          quit = !!o.quitIf();
+        } catch (e) {
+          quit = false;
+        }
+        if (quit) h.close();
+      }, 60);
+    if (o.ms != null) t = setTimeout(() => h.close(), o.ms);
+    return h;
   };
   /**
-   * SH-213, the zoom-in light (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... just to
-   * draw your eye to the item card and then to the part of the item card that you need to focus on ... a generalizable principle"):
-   * every game, a light on a small part of a thing (a card's hidden word, its blurred picture, a knob's mark) is given
-   * {zoomFrom: <the whole thing>}: the whole thing is lit for `hold` ms, then the box shrinks onto the part over `shrink` ms (eased).
-   * Reduced motion: the whole thing, then the part, no shrink. Onboard.ZOOM.total() is how long before the part alone is lit.
+   * Is anything on the page still moving that will end (STD-D1-06: a light comes a breath after the last move ends)? A running,
+   * finite page animation, the overlay's own, the bubbles', the request card's and the helper's left out (STILL_SKIP, plus skip).
    */
-  Onboard.ZOOM = { hold: 650, shrink: 450, pad: 4, total() { return this.hold + this.shrink; } };
+  Onboard.STILL_SKIP = ".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer";
+  Onboard.pageMoving = function (skip) {
+    const sk = skip ? `${Onboard.STILL_SKIP}, ${skip}` : Onboard.STILL_SKIP;
+    return !!(document.getAnimations && document.getAnimations().some((a) => {
+      if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
+      const tm = a.effect.getComputedTiming();
+      const el = a.effect.target;
+      return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(sk);
+    }));
+  };
+  // (the zoom-in's times, Onboard.ZOOM, and its box, Onboard.zoomBox: the pure part above)
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
   const ownClock = { t: Date.now(), on: false };
@@ -1382,7 +1469,7 @@
     }
     return Date.now() - ownClock.t;
   };
-  Onboard.RUNGS = [0, 5000, 15000];
+  // (Onboard.RUNGS: the pure part above)
   /**
    * The hint rungs for one step (principle 3), on the shared idle clock:
    *   at[0]   the first time this step appears for this child (once per profile per o.id, default "stuck/<step>"; a New player:

@@ -160,49 +160,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // (moved on: a tap or a gesture, the station over, or a pop-up waiting for its own tap, Nani's pass-me or the order's: never lit
     // over it, and its light goes if one comes)
     const moved = () => (Cook.acted || 0) !== m0 || !Cook.inStation || !!(Cook.expect && Cook.expect.kind === "click") || !!document.querySelector("#passme:not(.hidden), .njg-rq-open");
-    let rowX = null;
-    const seenAt = new WeakMap();
-    const moving = () => {
-      const rows = [...document.querySelectorAll("#mission .oc-row14")];
-      const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
-      const was = rowX;
-      rowX = xs;
-      if ((was != null && xs !== was) || rows.some((r) => r._auto)) return true;
-      const S = Cook.scene;
-      const chars = new Set(Object.values((S && S.chars) || {}));
-      const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
-      try {
-        if (S && S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
-      } catch (e) {
-        /* no tween list: the rest still counts */
-      }
-      // (a picture moved or faded by a station's own code, never a tween: daar's stirred disc fading in, its pieces turning with the
-      // ladle: any that moved or faded since the last look, as the sandbox's contract-79 sees it; a tool in the hand left out)
-      let stirred = false;
-      const walk = (list) =>
-        (list || []).forEach((o) => {
-          if (!o || stirred) return;
-          if (o.list) walk(o.list);
-          if (o.type === "Graphics" || o.visible === false || chars.has(o) || o.glowFx) return;
-          if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow|spoon|ladle|hand/i.test(((o.texture && o.texture.key) || "") + (o.name || ""))) return;
-          const now = { x: o.x, y: o.y, a: o.alpha };
-          const was = seenAt.get(o);
-          seenAt.set(o, now);
-          if (was && (Math.abs(now.x - was.x) > 0.6 || Math.abs(now.y - was.y) > 0.6 || (Math.abs(now.a - was.a) > 0.03 && now.a > 0.02 && now.a < 0.98))) stirred = true;
-        });
-      try {
-        walk(S && S.children && S.children.list);
-      } catch (e) {
-        /* no scene: the rest still counts */
-      }
-      if (stirred) return true;
-      return !!(document.getAnimations && document.getAnimations().some((a) => {
-        if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
-        const tm = a.effect.getComputedTiming();
-        const el = a.effect.target;
-        return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
-      }));
-    };
+    // (STD-D1-06: the kit's one stillness look, with a station's own moves: C.mover below)
+    const moving = C.mover({ walk: true, pend: false });
     let quiet = null;
     let tries = 0;
     const go = () => {
@@ -232,6 +191,106 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     go();
   }
 
+  /* ---------------- the lights kit (Sprint 18, module map pieces 13-14: Cook's wiring of js/shared/onboard.js) ---------------- */
+  /*
+   * What every kitchen game calls for its lights and lessons (no game is named here, STD-F1-02; a game passes its own things, its
+   * own state as functions and its own key):
+   *   C.mover(o) -> moving()          is anything on the stage still moving that will end? (STD-D1-06)
+   *   C.settled(o) -> Promise<bool>   a quiet spell of the rules' pointAfterMoveMs (true), or gave up (false)
+   *   C.firsts(key, o) -> gate         the first-time gate for this game (Onboard.firsts on Cook's save; STD-D1-01)
+   *   C.control(o) -> handle           a control's call with its light, or the call alone and the light after the wait (STD-D1-06,
+   *                                    STD-D2-01, STD-D2-04)
+   *   C.wrong(by)                      a wrong move: every waiting hint comes at once (STD-D2-04; Onboard.rush)
+   *   C.nextLight(o) -> handle         the next vessel's first-time light (STD-D1-10)
+   *   C.cardLight(o) -> Promise<bool>  the next item's card lit for a moment after the first items (STD-D1-07)
+   *   C.lessons(o) -> Promise          the reveal lessons, the dotted word then the blurred picture (STD-D1-08; Onboard.lesson)
+   *   C.rungs(key, step, o)            the stuck rungs (above), with o.word: no hint says a word past support (STD-D2-05)
+   * The lab: lab/sections/kit-lights.html.
+   */
+  const note = (what, info) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note(what, info);
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  const speed = () => Cook.speed || 1;
+  const rules = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
+  const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
+  /**
+   * STD-D1-06 (Zafar, 29 Oct: "start its timer after the last animation action"): is anything still moving that will end? The order
+   * row's glide (running, or about to start after a redraw: _auto, _pend14 unless o.pend is false), Nani's box folding (o.helper),
+   * a kitchen tween that ends (the people's idling, glows and effects left out), with o.walk a picture a game moved or faded by its
+   * own code (any that moved since the last look; a tool in the hand left out), a page animation that ends (Onboard.pageMoving),
+   * and the game's own moves (o.busy()). As the sandbox's contract-79 sees it. -> a function (it remembers the last look)
+   */
+  C.mover = function (o = {}) {
+    let rowX = null;
+    const seenAt = new WeakMap();
+    return () => {
+      if (o.busy && o.busy()) return true;
+      const rows = [...document.querySelectorAll("#mission .oc-row14")];
+      const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
+      const was = rowX;
+      rowX = xs;
+      if ((was != null && xs !== was) || rows.some((r) => r._auto || (o.pend !== false && r._pend14))) return true;
+      // (Nani's box folding or unfolding moves the order list: SH-215, contract-79)
+      if (o.helper && Cook.UI && Cook.UI.helperMovingUntil && Date.now() < Cook.UI.helperMovingUntil) return true;
+      const S = Cook.scene;
+      const chars = new Set(Object.values((S && S.chars) || {}));
+      try {
+        if (S && S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((t) => t && t.visible !== false && !chars.has(t) && !t.glowFx && !FX.test(((t.texture && t.texture.key) || "") + (t.name || ""))))) return true;
+      } catch (e) {
+        /* no tween list: the rest still counts */
+      }
+      if (o.walk) {
+        // (daar's stirred disc fading in, its pieces turning with the ladle: any picture that moved or faded since the last look)
+        let stirred = false;
+        const walk = (list) =>
+          (list || []).forEach((t) => {
+            if (!t || stirred) return;
+            if (t.list) walk(t.list);
+            if (t.type === "Graphics" || t.visible === false || chars.has(t) || t.glowFx) return;
+            if (/^fx-|steam|spark|boil|bubble|glow|halo|shadow|spoon|ladle|hand/i.test(((t.texture && t.texture.key) || "") + (t.name || ""))) return;
+            const now = { x: t.x, y: t.y, a: t.alpha };
+            const w = seenAt.get(t);
+            seenAt.set(t, now);
+            if (w && (Math.abs(now.x - w.x) > 0.6 || Math.abs(now.y - w.y) > 0.6 || (Math.abs(now.a - w.a) > 0.03 && now.a > 0.02 && now.a < 0.98))) stirred = true;
+          });
+        try {
+          walk(S && S.children && S.children.list);
+        } catch (e) {
+          /* no scene: the rest still counts */
+        }
+        if (stirred) return true;
+      }
+      const OBk = OB();
+      return !!(OBk && OBk.pageMoving && OBk.pageMoving());
+    };
+  };
+  /**
+   * A quiet spell: nothing moving (C.mover(o), sampled every 60 ms) for the central rules' pointAfterMoveMs at the game's speed
+   * (o.needMs), capped at o.maxMs (Onboard.WAIT.settle). -> Promise<true> still, <false> gave up (the cap, or o.quitIf()).
+   */
+  C.settled = function (o = {}) {
+    const moving = o.moving || C.mover(o);
+    const R = rules();
+    const need = o.needMs != null ? o.needMs : (R && R.pointAfterMoveMs ? R.pointAfterMoveMs() : 500) / speed();
+    const max = o.maxMs != null ? o.maxMs : (OB() && OB().WAIT ? OB().WAIT.settle : 6000);
+    return new Promise((res) => {
+      const t0 = Date.now();
+      let quiet = null;
+      const tick = () => {
+        if (o.quitIf && o.quitIf()) return res(false);
+        if (!moving()) quiet = quiet == null ? Date.now() : quiet;
+        else quiet = null;
+        if (quiet != null && Date.now() - quiet >= need) return res(true);
+        if (Date.now() - t0 > max) return res(false);
+        setTimeout(tick, 60);
+      };
+      tick();
+    });
+  };
   /*
    * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
    * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by
