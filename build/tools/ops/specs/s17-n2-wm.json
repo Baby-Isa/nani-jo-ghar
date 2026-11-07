@@ -4,7 +4,7 @@
   "why": "framing and scale judged by eye at four sizes",
   "cost": "about $20-30", "stop": "7 Nov 2026, 02:00 UK",
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
-  "kind": "shared", "browser": true, "live": true,
+  "kind": "shared", "browser": true, "live": false,
   "read": ["docs/feedback/chai-play-2026-11-06-night.md (P5, P6, P7, P10)", "docs/feedback/images-2026-11-06/wm-l4-phone-night.jpg (his phone shot)", "docs/design-language/guide-and-card.md (the 6 Nov card)"],
   "owns": ["js/shared/word-moment.js", "css/shared/word-moment.css", "assets/shared/word-moment/**", "build/reports/s17-n2-wm.md", "build/screenshots/s17-n2/**"],
   "readOnly": ["js/cook/stations/chai-tray.js, js/shared/onboard.js, js/shared/sfx.js (s17-n1: ask for a change in your report)", "js/cook/ui.js, js/cook/words.js (s17-n3), except the word moment's scene line ui.js:136 which you may change", "js/shared/word-card.js, css/shared/word-card.css (report any card difference; change only with a one-line reason)"],

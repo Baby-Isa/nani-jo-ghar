@@ -4,7 +4,7 @@
   "why": "the runner's wording decides whether a run lands; colour exceptions need judgement",
   "cost": "about $15-25", "stop": "7 Nov 2026, 02:00 UK",
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
-  "kind": "tools", "browser": false, "live": true,
+  "kind": "tools", "browser": false, "live": false,
   "read": ["docs/feedback/chai-play-2026-11-06-night.md (P4 and section 5)", ".claude/skills/art-run/SKILL.md", "docs/design-language/art-pipeline.md section 15", "docs/design-language/art-plans/s17-clinic-redo-art-plan.md and its chrome block"],
   "owns": ["build/tools/art/artblock.py", "build/tools/art/templates/**", "build/tools/art/artcheck.mjs", "build/tools/art/artcheck.test.mjs", "build/tools/art/artcolour.py (helpers only)", "build/tools/art/specs/s17-clinic-redo.run.yaml", "docs/design-language/art-plans/s17-clinic-redo-art-plan.md", "docs/design-language/art-plans/s17-clinic-redo-chrome-block.txt", "sources/art/s17-clinic-redo/refs/**", ".claude/skills/art-run/SKILL.md", "docs/design-language/art-pipeline.md (section 15 only)", "build/reports/s17-n4-art.md"],
   "readOnly": ["js/**, css/**, data/** (no game code)", "other packs' blocks (regenerate none of them)"],

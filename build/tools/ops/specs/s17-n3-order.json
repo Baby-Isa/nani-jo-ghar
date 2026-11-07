@@ -4,7 +4,7 @@
   "why": "the order's timing and the one speech queue touch every Cook game",
   "cost": "about $20-30", "stop": "7 Nov 2026, 02:00 UK",
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
-  "kind": "shared", "browser": true, "live": true,
+  "kind": "shared", "browser": true, "live": false,
   "read": ["docs/feedback/chai-play-2026-11-06-night.md (P3, P11)", "docs/feedback/logs/njg-log-2026-11-06T21-08-22-649Z.json (the missing dudh: the cousin's card popped at 21.4 s with no say-start)", "docs/game-design/modes/cook.md"],
   "owns": ["js/cook/ui.js (the order read loop, about 1960-2340, and the order card's _parts, about 3150-3175)", "js/cook/words.js", "js/cook/order.js", "data/cook.json (chai's say list only, if needed)", "build/reports/s17-n3-order.md", "build/screenshots/s17-n3/**"],
   "readOnly": ["js/cook/stations/chai-tray.js (s17-n1)", "js/shared/word-moment.js and ui.js:136 (s17-n2)", "build/tools/art/** (s17-n4)"],

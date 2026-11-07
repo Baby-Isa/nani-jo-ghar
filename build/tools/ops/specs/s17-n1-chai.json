@@ -4,7 +4,7 @@
   "why": "sound curves and a shared geometry rule judged by eye at four sizes and every level",
   "cost": "about $20-30", "stop": "7 Nov 2026, 02:00 UK",
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
-  "kind": "shared", "browser": true, "live": true,
+  "kind": "shared", "browser": true, "live": false,
   "read": ["docs/feedback/chai-play-2026-11-06-night.md (P1, P2, P8, P9: his words, causes, fixes)", "docs/design-language/chai-standard.md", "docs/design-language/audio.md"],
   "owns": ["js/cook/stations/chai-tray.js", "data/stations/chai-tray.json", "js/shared/onboard.js", "js/cook/coach.js", "js/shared/sfx.js (a level curve helper only, if needed)", "build/reports/s17-n1-chai.md", "build/screenshots/s17-n1/**"],
   "readOnly": ["js/shared/word-moment.js, css/shared/word-moment.css (s17-n2)", "js/cook/ui.js, js/cook/words.js, js/cook/order.js (s17-n3)", "build/tools/art/** (s17-n4)"],
