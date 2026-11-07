@@ -69,5 +69,7 @@ rounds and hints (C2); recalls to move a stage, right picks to earn the pill, th
 - `node build/tools/review/stdids.mjs --check --fragments build/reports/s17-std-placement-1.md --mine`: "213 source IDs; 33 placed
   in the fragments; 180 unplaced; 56 rules defined; 0 problem(s)".
 - `wc -w`: README 978, 0-foundations 1,221, a-learning 2,131, c-progression 2,220 (all under their limits).
-- `node build/tools/review/checks.mjs`: CHECKS_RESULT
+- `node build/tools/review/checks.mjs`: every step ok (unit 661 pass, words, static 0 new, leak 20 configs, bump, specs, fixlist,
+  recordings, art, size, load 29/29) but docs, which failed on this fragment having no Proof section; fixed, and `docs.mjs`
+  now says "docs: within every limit".
 - QA checklist: docs only, so the browser, evidence and contract lines do not apply (decision 3).
