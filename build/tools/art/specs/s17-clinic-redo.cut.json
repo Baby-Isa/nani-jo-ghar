@@ -1,6 +1,6 @@
 {
   "pack": "s17-clinic-redo",
-  "about": "The clinic redo run (Zafar's run of 6-7 Nov, build/tools/art/specs/s17-clinic-redo.run.yaml; landed in build/reports/s17-clinic-redo-landed-2026-11-07.md). One grid job per sheet, the names in the run line's slot order: belt-view items as <item>-belt.webp, the toothbrush views as toothbrush-<view>-s17.webp, in the new folder assets/clinic/s17-clinic-redo/. Grey ground: tol 8; steel and grey rubber at tol 5 (tols); clear glass, plastic, water, steam and the drop at partial alpha (glass, as the s17 word-moment glasses); the two toothbrush sheets drop their faint contact shadow (shadow). Longest side at most 512 px (the drop machine 1024: it is drawn wide), pad 16, WebP q 88. Not wired: a future sprint swaps the redos in and adds the new items to data/clinic.json.",
+  "about": "The clinic redo run (Zafar's run of 6-7 Nov, build/tools/art/specs/s17-clinic-redo.run.yaml; landed in build/reports/s17-clinic-redo-landed-2026-11-07.md). One grid job per sheet, the names in the run line's slot order: belt-view items as <item>-belt.webp, the toothbrush views as toothbrush-<view>-s17.webp, in the new folder assets/clinic/s17-clinic-redo/. Grey ground: tol 8; steel at tol 5 (tols); clear glass, plastic, water, steam and the drop at partial alpha (glass: soft floor 0.25, gain 2 where the glass is wide, 4 or 8 where the pixel check artpixels.py read a wide soft rim, each gain its own job on the same sheet); the dark-grey scopes and the stethoscope through the soft key at gain 24 and floor 0 (a near-hard key: the solid key's 3 px ramp on a dark piece reads as a kept shadow); the two toothbrush sheets drop their faint contact shadow (shadow). `failed` names what is judged a fail and not cut (the redo list says why). Longest side at most 512 px (the drop machine and the angle toothbrush 1024: both drawn wide), pad 16, WebP q 88. Not wired: a future sprint swaps the redos in and adds the new items to data/clinic.json.",
   "src": "sources/art/s17-clinic-redo",
   "out": "assets",
   "data": "assets/clinic/s17-clinic-redo/cut-data.json",
@@ -29,17 +29,30 @@
       "id": "dm01", "type": "grid", "src": "dm01-drop-machine-v1.png", "cells": [1, 1],
       "names": ["drop-machine-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 1024, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["drop-machine-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["drop-machine-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "_note": "one piece, the empty glass above each liquid at partial alpha; 1024 px wide (the machine is drawn wide across the pharmacy)"
     },
     {
       "id": "cb01", "type": "grid", "src": "cb01-redo-wipes-kit-v1.png", "cells": [4, 2],
       "names": ["wipe-packet-belt", "wipe-open-belt", "jug-cold-belt", "dropper-belt",
-                "medicine-bottle-teal-belt", "water-drop-belt", "bandage-white-belt", "tweezers-splinter-belt"],
+                null, null, "bandage-white-belt", "tweezers-splinter-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["jug-cold-belt", "water-drop-belt", "medicine-bottle-teal-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["jug-cold-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
       "tols": {"tweezers-splinter-belt": 5},
-      "_note": "the dropper is cut solid (its grey rubber bulb would go see-through under a soft key); the teal glass bottle soft"
+      "failed": {"tweezers-splinter-belt": "artcolour.py light FAIL (lower right, the steel's reflections); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed"},
+      "_note": "the dropper is cut solid (its grey rubber bulb would go see-through under a soft key); the teal bottle and the drop are the two jobs below"
+    },
+    {
+      "id": "cb01-g4", "type": "grid", "src": "cb01-redo-wipes-kit-v1.png", "cells": [4, 2],
+      "names": [null, null, null, null, null, "water-drop-belt", null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["water-drop-belt"], "soft_floor": 0.25, "soft_gain": 4.0
+    },
+    {
+      "id": "cb01-g8", "type": "grid", "src": "cb01-redo-wipes-kit-v1.png", "cells": [4, 2],
+      "names": [null, null, null, null, "medicine-bottle-teal-belt", null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["medicine-bottle-teal-belt"], "soft_floor": 0.25, "soft_gain": 8.0
     },
     {
       "id": "cb02", "type": "grid", "src": "cb02-redo-kit-v1.png", "cells": [4, 2],
@@ -61,50 +74,82 @@
       "names": ["sling-belt", "tubular-bandage-belt", "bandage-scissors-belt", "antiseptic-cream-belt",
                 "cotton-wool-belt", "cotton-pads-belt", "cotton-bud-belt", "saline-pod-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["saline-pod-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["saline-pod-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "tols": {"bandage-scissors-belt": 5},
       "_note": "the saline pod soft; scissors steel at tol 5"
     },
     {
       "id": "cn03", "type": "grid", "src": "cn03-diagnostics-v1.png", "cells": [4, 2],
-      "names": ["otoscope-belt", "ophthalmoscope-belt", "tongue-depressor-belt", "ear-thermometer-belt",
+      "names": [null, null, "tongue-depressor-belt", "ear-thermometer-belt",
                 "forehead-thermometer-belt", "pulse-oximeter-belt", "pen-torch-belt", "reflex-hammer-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "tols": {"otoscope-belt": 5, "ophthalmoscope-belt": 5, "pen-torch-belt": 5, "reflex-hammer-belt": 5},
-      "_note": "dark grey handles and steel at tol 5; the grey screens are solid parts"
+      "tols": {"pen-torch-belt": 5, "reflex-hammer-belt": 5},
+      "_note": "steel at tol 5; the grey screens are solid parts; the tongue depressor is a stand-in (light wood: on the redo list); the two dark scopes are the job below"
+    },
+    {
+      "id": "cn03-dark", "type": "grid", "src": "cn03-diagnostics-v1.png", "cells": [4, 2],
+      "names": ["otoscope-belt", "ophthalmoscope-belt", null, null, null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["otoscope-belt", "ophthalmoscope-belt"], "soft_floor": 0.0, "soft_gain": 24.0,
+      "_note": "dark grey handles: the soft key at gain 24 is a near-hard key with no dark ramp (the solid key's 3 px ramp read as a kept shadow in artpixels.py)"
     },
     {
       "id": "cn04", "type": "grid", "src": "cn04-diagnostics-2-v1.png", "cells": [4, 2],
-      "names": ["bp-cuff-belt", "stethoscope-belt", "peak-flow-meter-belt", "tape-measure-belt",
+      "names": ["bp-cuff-belt", null, "peak-flow-meter-belt", "tape-measure-belt",
                 "baby-scales-belt", "magnifying-glass-belt", "dental-mirror-belt", "hourglass-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["peak-flow-meter-belt", "hourglass-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
-      "tols": {"bp-cuff-belt": 5, "stethoscope-belt": 5, "dental-mirror-belt": 5},
-      "_note": "the peak flow tube and the hourglass glass soft; the magnifier's lens is tinted, cut solid; grey rubber and steel at tol 5"
+      "glass": ["peak-flow-meter-belt", "hourglass-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
+      "tols": {"bp-cuff-belt": 5, "dental-mirror-belt": 5},
+      "_note": "the peak flow tube and the hourglass glass soft; the magnifier's lens is tinted, cut solid; grey rubber and steel at tol 5; the hourglass is a stand-in (light wood frame: on the redo list); the stethoscope is the job below"
+    },
+    {
+      "id": "cn04-dark", "type": "grid", "src": "cn04-diagnostics-2-v1.png", "cells": [4, 2],
+      "names": [null, "stethoscope-belt", null, null, null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["stethoscope-belt"], "soft_floor": 0.0, "soft_gain": 24.0,
+      "_note": "dark grey tubing: the near-hard soft key, as cn03-dark"
     },
     {
       "id": "cn05", "type": "grid", "src": "cn05-medicines-v1.png", "cells": [4, 2],
       "names": ["pill-bottle-amber-belt", "pill-bottle-white-belt", "blister-pack-belt", "oral-syringe-belt",
-                "medicine-spoon-belt", "dosing-cup-belt", "medicine-bottle-amber-belt", "sachet-belt"],
+                "medicine-spoon-belt", null, "medicine-bottle-amber-belt", "sachet-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["oral-syringe-belt", "dosing-cup-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["oral-syringe-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
       "tols": {"blister-pack-belt": 5},
-      "_note": "the clear syringe and dosing cup soft; the amber bottles are opaque enough to cut solid; the silver blister at tol 5"
+      "_note": "the clear syringe soft; the amber bottles are opaque enough to cut solid; the silver blister at tol 5; the dosing cup is the job below"
+    },
+    {
+      "id": "cn05-g8", "type": "grid", "src": "cn05-medicines-v1.png", "cells": [4, 2],
+      "names": [null, null, null, null, null, "dosing-cup-belt", null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["dosing-cup-belt"], "soft_floor": 0.25, "soft_gain": 8.0
     },
     {
       "id": "cn06", "type": "grid", "src": "cn06-drops-breathing-v1.png", "cells": [4, 2],
-      "names": ["eye-drops-belt", "ear-drops-belt", "nasal-spray-belt", "inhaler-belt",
-                "spacer-belt", "nebuliser-mask-belt", "nebuliser-machine-belt", "cream-tub-belt"],
+      "names": ["eye-drops-belt", null, "nasal-spray-belt", "inhaler-belt",
+                null, "nebuliser-mask-belt", "nebuliser-machine-belt", "cream-tub-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["ear-drops-belt", "spacer-belt", "nebuliser-mask-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
-      "_note": "the glass ear-drops bottle, the clear spacer and the clear mask with its tubing soft"
+      "glass": ["nebuliser-mask-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "_note": "the clear mask with its tubing soft; the ear drops and the spacer are the two jobs below"
+    },
+    {
+      "id": "cn06-g4", "type": "grid", "src": "cn06-drops-breathing-v1.png", "cells": [4, 2],
+      "names": [null, "ear-drops-belt", null, null, null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["ear-drops-belt"], "soft_floor": 0.25, "soft_gain": 4.0
+    },
+    {
+      "id": "cn06-g8", "type": "grid", "src": "cn06-drops-breathing-v1.png", "cells": [4, 2],
+      "names": [null, null, null, null, "spacer-belt", null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["spacer-belt"], "soft_floor": 0.25, "soft_gain": 8.0
     },
     {
       "id": "cn07", "type": "grid", "src": "cn07-supplies-v1.png", "cells": [4, 2],
       "names": ["gloves-belt", "glove-box-belt", "hand-gel-belt", "face-mask-belt",
                 "paper-towel-belt", "specimen-pot-belt", "pedal-bin-belt", "pillow-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["specimen-pot-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["specimen-pot-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "_note": "the clear specimen pot soft"
     },
     {
@@ -117,18 +162,13 @@
     },
     {
       "id": "cn09", "type": "grid", "src": "cn09-casts-comfort-v1.png", "cells": [4, 2],
-      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", null,
+      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", "ear-syringe-belt",
                 "ear-plugs-belt", "star-stickers-belt", "teddy-belt", "bubbles-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "glass": ["bubbles-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
       "tols": {"crutches-belt": 5},
-      "_note": "the bubble jar soft; the steel crutches at tol 5; the ear syringe is its own job below"
-    },
-    {
-      "id": "cn09-bulb", "type": "grid", "src": "cn09-casts-comfort-v1.png", "cells": [4, 2],
-      "names": [null, null, null, "ear-syringe-belt", null, null, null, null],
-      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 3, "hole_min": 100000000,
-      "_note": "the grey rubber bulb sits on the key grey: tol 3 and no holes (at tol 5 its shaded side was cut out in patches)"
+      "failed": {"ear-syringe-belt": "the grey rubber bulb is the ground's grey: at tol 5 and 3 its shaded side comes away with the ground; on the redo list (a cream bulb)"},
+      "_note": "the bubble jar soft; the steel crutches at tol 5"
     },
     {
       "id": "cd01", "type": "grid", "src": "cd01-today-1-v1.png", "cells": [4, 2],
@@ -143,9 +183,10 @@
       "names": ["thread-green-belt", "cotton-buds-pot-belt", "drop-bottle-belt", "hot-water-bottle-knitted-belt",
                 "comb-belt", "drill-belt", "paste-tube-belt", "honey-jar-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["paste-tube-belt", "honey-jar-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
+      "glass": ["paste-tube-belt", "honey-jar-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "tols": {"drill-belt": 5},
-      "_note": "the clear paste tube and the honey jar's glass soft; the drill's steel at tol 5"
+      "failed": {"honey-jar-belt": "artcolour.py light FAIL (from below: the lit honey is brightest low); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed"},
+      "_note": "the clear paste tube soft; the drill's steel at tol 5"
     },
     {
       "id": "cd03", "type": "grid", "src": "cd03-today-3-v1.png", "cells": [4, 2],

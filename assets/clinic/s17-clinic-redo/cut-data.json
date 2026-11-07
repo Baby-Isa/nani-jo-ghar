@@ -1,5 +1,5 @@
 {
- "_about": "The clinic redo run (Zafar's run of 6-7 Nov, build/tools/art/specs/s17-clinic-redo.run.yaml; landed in build/reports/s17-clinic-redo-landed-2026-11-07.md). One grid job per sheet, the names in the run line's slot order: belt-view items as <item>-belt.webp, the toothbrush views as toothbrush-<view>-s17.webp, in the new folder assets/clinic/s17-clinic-redo/. Grey ground: tol 8; steel and grey rubber at tol 5 (tols); clear glass, plastic, water, steam and the drop at partial alpha (glass, as the s17 word-moment glasses); the two toothbrush sheets drop their faint contact shadow (shadow). Longest side at most 512 px (the drop machine 1024: it is drawn wide), pad 16, WebP q 88. Not wired: a future sprint swaps the redos in and adds the new items to data/clinic.json.",
+ "_about": "The clinic redo run (Zafar's run of 6-7 Nov, build/tools/art/specs/s17-clinic-redo.run.yaml; landed in build/reports/s17-clinic-redo-landed-2026-11-07.md). One grid job per sheet, the names in the run line's slot order: belt-view items as <item>-belt.webp, the toothbrush views as toothbrush-<view>-s17.webp, in the new folder assets/clinic/s17-clinic-redo/. Grey ground: tol 8; steel at tol 5 (tols); clear glass, plastic, water, steam and the drop at partial alpha (glass: soft floor 0.25, gain 2 where the glass is wide, 4 or 8 where the pixel check artpixels.py read a wide soft rim, each gain its own job on the same sheet); the dark-grey scopes and the stethoscope through the soft key at gain 24 and floor 0 (a near-hard key: the solid key's 3 px ramp on a dark piece reads as a kept shadow); the two toothbrush sheets drop their faint contact shadow (shadow). `failed` names what is judged a fail and not cut (the redo list says why). Longest side at most 512 px (the drop machine and the angle toothbrush 1024: both drawn wide), pad 16, WebP q 88. Not wired: a future sprint swaps the redos in and adds the new items to data/clinic.json.",
  "patients": {},
  "closeups": {},
  "props": {
@@ -113,25 +113,20 @@
    "w": 309,
    "h": 364
   },
-  "medicine-bottle-teal-belt": {
-   "file": "clinic/s17-clinic-redo/medicine-bottle-teal-belt.webp",
-   "w": 228,
-   "h": 395
+  "bandage-white-belt": {
+   "file": "clinic/s17-clinic-redo/bandage-white-belt.webp",
+   "w": 371,
+   "h": 352
   },
   "water-drop-belt": {
    "file": "clinic/s17-clinic-redo/water-drop-belt.webp",
    "w": 187,
    "h": 270
   },
-  "bandage-white-belt": {
-   "file": "clinic/s17-clinic-redo/bandage-white-belt.webp",
-   "w": 371,
-   "h": 352
-  },
-  "tweezers-splinter-belt": {
-   "file": "clinic/s17-clinic-redo/tweezers-splinter-belt.webp",
-   "w": 370,
-   "h": 321
+  "medicine-bottle-teal-belt": {
+   "file": "clinic/s17-clinic-redo/medicine-bottle-teal-belt.webp",
+   "w": 228,
+   "h": 395
   },
   "thermometer-belt": {
    "file": "clinic/s17-clinic-redo/thermometer-belt.webp",
@@ -253,16 +248,6 @@
    "w": 219,
    "h": 435
   },
-  "otoscope-belt": {
-   "file": "clinic/s17-clinic-redo/otoscope-belt.webp",
-   "w": 236,
-   "h": 456
-  },
-  "ophthalmoscope-belt": {
-   "file": "clinic/s17-clinic-redo/ophthalmoscope-belt.webp",
-   "w": 170,
-   "h": 459
-  },
   "tongue-depressor-belt": {
    "file": "clinic/s17-clinic-redo/tongue-depressor-belt.webp",
    "w": 126,
@@ -293,15 +278,20 @@
    "w": 217,
    "h": 458
   },
+  "otoscope-belt": {
+   "file": "clinic/s17-clinic-redo/otoscope-belt.webp",
+   "w": 236,
+   "h": 456
+  },
+  "ophthalmoscope-belt": {
+   "file": "clinic/s17-clinic-redo/ophthalmoscope-belt.webp",
+   "w": 170,
+   "h": 459
+  },
   "bp-cuff-belt": {
    "file": "clinic/s17-clinic-redo/bp-cuff-belt.webp",
    "w": 382,
    "h": 367
-  },
-  "stethoscope-belt": {
-   "file": "clinic/s17-clinic-redo/stethoscope-belt.webp",
-   "w": 335,
-   "h": 423
   },
   "peak-flow-meter-belt": {
    "file": "clinic/s17-clinic-redo/peak-flow-meter-belt.webp",
@@ -333,6 +323,11 @@
    "w": 224,
    "h": 401
   },
+  "stethoscope-belt": {
+   "file": "clinic/s17-clinic-redo/stethoscope-belt.webp",
+   "w": 335,
+   "h": 423
+  },
   "pill-bottle-amber-belt": {
    "file": "clinic/s17-clinic-redo/pill-bottle-amber-belt.webp",
    "w": 251,
@@ -358,11 +353,6 @@
    "w": 189,
    "h": 441
   },
-  "dosing-cup-belt": {
-   "file": "clinic/s17-clinic-redo/dosing-cup-belt.webp",
-   "w": 287,
-   "h": 276
-  },
   "medicine-bottle-amber-belt": {
    "file": "clinic/s17-clinic-redo/medicine-bottle-amber-belt.webp",
    "w": 230,
@@ -373,15 +363,15 @@
    "w": 329,
    "h": 353
   },
+  "dosing-cup-belt": {
+   "file": "clinic/s17-clinic-redo/dosing-cup-belt.webp",
+   "w": 287,
+   "h": 276
+  },
   "eye-drops-belt": {
    "file": "clinic/s17-clinic-redo/eye-drops-belt.webp",
    "w": 172,
    "h": 384
-  },
-  "ear-drops-belt": {
-   "file": "clinic/s17-clinic-redo/ear-drops-belt.webp",
-   "w": 178,
-   "h": 407
   },
   "nasal-spray-belt": {
    "file": "clinic/s17-clinic-redo/nasal-spray-belt.webp",
@@ -392,11 +382,6 @@
    "file": "clinic/s17-clinic-redo/inhaler-belt.webp",
    "w": 277,
    "h": 393
-  },
-  "spacer-belt": {
-   "file": "clinic/s17-clinic-redo/spacer-belt.webp",
-   "w": 398,
-   "h": 288
   },
   "nebuliser-mask-belt": {
    "file": "clinic/s17-clinic-redo/nebuliser-mask-belt.webp",
@@ -412,6 +397,16 @@
    "file": "clinic/s17-clinic-redo/cream-tub-belt.webp",
    "w": 389,
    "h": 263
+  },
+  "ear-drops-belt": {
+   "file": "clinic/s17-clinic-redo/ear-drops-belt.webp",
+   "w": 178,
+   "h": 407
+  },
+  "spacer-belt": {
+   "file": "clinic/s17-clinic-redo/spacer-belt.webp",
+   "w": 398,
+   "h": 288
   },
   "gloves-belt": {
    "file": "clinic/s17-clinic-redo/gloves-belt.webp",
@@ -528,11 +523,6 @@
    "w": 321,
    "h": 363
   },
-  "ear-syringe-belt": {
-   "file": "clinic/s17-clinic-redo/ear-syringe-belt.webp",
-   "w": 254,
-   "h": 405
-  },
   "jug-hot-belt": {
    "file": "clinic/s17-clinic-redo/jug-hot-belt.webp",
    "w": 354,
@@ -607,11 +597,6 @@
    "file": "clinic/s17-clinic-redo/paste-tube-belt.webp",
    "w": 325,
    "h": 393
-  },
-  "honey-jar-belt": {
-   "file": "clinic/s17-clinic-redo/honey-jar-belt.webp",
-   "w": 323,
-   "h": 392
   },
   "teaspoon-belt": {
    "file": "clinic/s17-clinic-redo/teaspoon-belt.webp",
@@ -699,20 +684,29 @@
   "tb01: 1 piece(s) by cell for 1 name(s)",
   "tb02: 8 piece(s) by cell for 8 name(s)",
   "dm01: 1 piece(s) by cell for 1 name(s)",
-  "cb01: 8 piece(s) by cell for 8 name(s)",
+  "cb01: 6 piece(s) by cell for 6 name(s)",
+  "  tweezers-splinter-belt: judged a fail, not cut (artcolour.py light FAIL (lower right, the steel's reflections); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed)",
+  "cb01-g4: 1 piece(s) by cell for 1 name(s)",
+  "cb01-g8: 1 piece(s) by cell for 1 name(s)",
   "cb02: 8 piece(s) by cell for 8 name(s)",
   "cn01: 8 piece(s) by cell for 8 name(s)",
   "cn02: 8 piece(s) by cell for 8 name(s)",
-  "cn03: 8 piece(s) by cell for 8 name(s)",
-  "cn04: 8 piece(s) by cell for 8 name(s)",
-  "cn05: 8 piece(s) by cell for 8 name(s)",
-  "cn06: 8 piece(s) by cell for 8 name(s)",
+  "cn03: 6 piece(s) by cell for 6 name(s)",
+  "cn03-dark: 2 piece(s) by cell for 2 name(s)",
+  "cn04: 7 piece(s) by cell for 7 name(s)",
+  "cn04-dark: 1 piece(s) by cell for 1 name(s)",
+  "cn05: 7 piece(s) by cell for 7 name(s)",
+  "cn05-g8: 1 piece(s) by cell for 1 name(s)",
+  "cn06: 6 piece(s) by cell for 6 name(s)",
+  "cn06-g4: 1 piece(s) by cell for 1 name(s)",
+  "cn06-g8: 1 piece(s) by cell for 1 name(s)",
   "cn07: 8 piece(s) by cell for 8 name(s)",
   "cn08: 8 piece(s) by cell for 8 name(s)",
-  "cn09: 7 piece(s) by cell for 7 name(s)",
-  "cn09-bulb: 1 piece(s) by cell for 1 name(s)",
+  "cn09: 8 piece(s) by cell for 8 name(s)",
+  "  ear-syringe-belt: judged a fail, not cut (the grey rubber bulb is the ground's grey: at tol 5 and 3 its shaded side comes away with the ground; on the redo list (a cream bulb))",
   "cd01: 8 piece(s) by cell for 8 name(s)",
   "cd02: 8 piece(s) by cell for 8 name(s)",
+  "  honey-jar-belt: judged a fail, not cut (artcolour.py light FAIL (from below: the lit honey is brightest low); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed)",
   "cd03: 8 piece(s) by cell for 8 name(s)",
   "cd04: 8 piece(s) by cell for 8 name(s)"
  ]

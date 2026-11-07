@@ -125,7 +125,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
   machine and Zafar's-angle toothbrush 1024: both are drawn wide). Names from the line's item list, in the new folder
   `assets/clinic/s17-clinic-redo/` (the brief's folder, not items-s17): belt items as `<item>-belt.webp` (today's items keep the
   game's names: `bandage-<colour>-belt`, `thread-<colour>-belt`), the toothbrush views as `toothbrush-<view>-s17.webp`;
-  `cut-data.json` beside them. 138 pieces, 2.5 MB.
+  `cut-data.json` beside them. 135 pieces, 2.2 MB (three judged a fail and not cut: the redo list).
 - **Judge (done):** `artjudge.py --spec … --no-look` on the 19 sheets, `artcolour.py` on the cuts with `--batch items-s17`, the pixel
   check `artcheck.mjs`, and every cut by eye on a split dark and light ground (`build/screenshots/s17-land-clinic-redo/`). The belt
   contact sheet at 740x320 and 1920x1080 waits for the wiring sprint (nothing is wired).
