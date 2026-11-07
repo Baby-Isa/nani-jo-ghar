@@ -293,3 +293,38 @@ test("no game named in the kit's stove files (STD-F1-02); asset folders aside", 
     assert.equal(hit, -1, `${f}:${hit + 1} names a game`);
   }
 });
+
+// ---- module map piece 4: the worktop wash and the stone band, moved into the kitchen kit (names kept) ----
+test("the worktop wash and the stone band live in the kitchen kit, moved unchanged, and draw the band in the stone's colour", async () => {
+  globalThis.Tokens = { int: (k) => ({ "worktop-wash": 0x111111, stone: 0x222222 })[k] };
+  await import("../../js/cook/kitchen-kit.js");
+  const St = Cook.Stations;
+  assert.equal(St.worktopWash(), 0x111111);
+  assert.equal(St.STONE.mean, 0x222222);
+  assert.equal(Cook.Kit.stoneBand, St.stoneBand);
+  // the same code as station-lib's (S$ there, St here) while that copy waits to be deleted by its owner
+  const body = (text, start) => {
+    const i = text.indexOf(start);
+    if (i < 0) return null;
+    const j = text.indexOf("\n  };\n", i);
+    return text.slice(i, j).replace(/\bS\$/g, "St").replace(/\s+/g, " ");
+  };
+  const lib = read("js/cook/station-lib.js");
+  const kk = read("js/cook/kitchen-kit.js");
+  const libBand = body(lib, "S$.stoneBand = function");
+  if (libBand) assert.equal(body(kk, "St.stoneBand = function"), libBand);
+  const fills = [];
+  const drawn = [];
+  const S = {
+    track: (o) => (drawn.push(o), o),
+    add: {
+      graphics: () => ({ setDepth() { return this; }, fillStyle: (c, a) => fills.push([c, a]), fillRect: (...r) => fills.push(r) }),
+      rectangle: (...a) => ({ args: a, setOrigin() { return this; }, setDepth(d) { this.depth = d; return this; } }),
+    },
+  };
+  St.stoneBand(S, { top: 630, base: 818, far: 100, depth: 1.2 });
+  assert.deepEqual(fills, [[0x222222, 1], [-100, 630, 1800, 370]]);
+  const w = Cook.Kit.worktop(S, { top: 630, far: 100, depth: 1 });
+  assert.deepEqual(w.args, [-100, -100, 1800, 730, 0x111111, 0.18]);
+  assert.equal(w.depth, 1);
+});
