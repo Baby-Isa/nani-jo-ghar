@@ -44,7 +44,7 @@
   "branch": "s18-kit-e in your own worktree /home/user/wt/s18-kit-e (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
     "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",

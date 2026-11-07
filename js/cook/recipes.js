@@ -670,6 +670,8 @@
         return `${(Number(d.onions) || 0) + (Number(d.tomatoes) || 0) + (Number(d.chillies) || 0)}+${[].concat(d.tadka || []).flat().length}`;
       case "chai":
         return [].concat(d.cups || []).length;
+      case "chop":
+        return sum(d.chops);
       default:
         return null;
     }

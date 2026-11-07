@@ -357,7 +357,7 @@ export function check94(tl, add) {
 export function check95(r, tl, v, add) {
   if (!isCookFlow(r.flow)) return;
   const life = (w) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === w);
-  const skip = life("skip-zone").find((n) => /skipped/.test(n.reason || n.by || "")) || life("order-skip")[0];
+  const skip = life("skip-zone").find((n) => /skipped/.test(`${n.reason || ""} ${n.by || ""}`)) // (S18, kit e: the skip-zone note says skipped:1 in by) || life("order-skip")[0];
   if (!skip) return;
   const step = life("step-open").find((n) => n.t > skip.t);
   const until = step ? step.t : skip.t + 3000;

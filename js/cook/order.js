@@ -203,7 +203,14 @@
     // "no X": among the any-order rows, else sprinkled through the list
     // (a dish in blocks, SAM-11: its "no" rows go with the first block, said once for all of them)
     const home = any || L.sections.filter((s) => !s.when && !s.for && !s.block).pop() || L.sections.find((s) => s.block === 1) || L.sections.filter((s) => !s.when && !s.for).pop();
-    if (home) sprinkle(home.groups, nos);
+    // DAAR-36 (the judge, 30 Oct: "the 'no' item said second"; data/rules.json order.noLast, Zafar 29 Oct round 4: "no items said
+    // last for now"): on the central rules the "no" rows go at the end of the last group, in a random order among themselves, so the
+    // order row only moves forward while it is given; without the rule they are sprinkled as before
+    const noLast = !!(global.Rules && typeof global.Rules.noLast === "function" && global.Rules.noLast());
+    if (home && noLast) {
+      if (!home.groups.length) home.groups.push([]);
+      home.groups[home.groups.length - 1].push(...Cook.shuffle(nos));
+    } else if (home) sprinkle(home.groups, nos);
     else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
     // 30 Sept (Zafar, samosa): "baseFirst" names the slot whose first item is the base (samosa's chundo or
     // bataato): its row goes first in every block, the rest stay shuffled. (Not "headFirst": that's maani's

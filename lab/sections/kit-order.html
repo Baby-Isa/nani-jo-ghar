@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The order's flow</title>
+<!--
+  The shared kit's order flow (Sprint 18, module map pieces 15-18; kit builder e): the order card through its flow, the side panel and
+  the bubbles, on the kit's own calls (js/shared/order-card.js OrderCard, js/shared/word-card.js WordCard, js/shared/request-popup.js
+  Lifecycle.request and Lifecycle.bubble.place), with no game behind it. Every time is the kit's one table, OrderCard.TIMES (the
+  same numbers Cook's UI.mission.times gives a game). lab/kit.html loads it (an iframe keeps its own paths); it opens on its own too.
+  ?state=<name> opens one state (the buttons list them; the evidence tool's strips use it), ?speed=N plays it N times faster.
+  The words are the language data's own (data/conversations/lines.json nouns), never written here. window.KitOrder: {states, show(name),
+  ready, log}.
+-->
+<link rel="stylesheet" href="../../css/shared/tokens.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/app.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/face.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/word-card.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/order-card.css?v=20261107T120301Z">
+<style>
+  /* the lab page itself (developer chrome, not the game) */
+  html, body { margin: 0; background: var(--njg-page); color: var(--njg-ink); font-family: var(--njg-font); }
+  body { padding: var(--njg-s2, 8px) var(--njg-s3, 12px); box-sizing: border-box; min-height: 100vh; }
+  h1 { font-size: var(--njg-t2, 20px); margin: 0 0 4px; }
+  .ko-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .ko-nav button { font: 600 13px/1.1 var(--njg-font); padding: 6px 10px; min-height: 32px; border-radius: 10px; border: 1px solid var(--njg-line, #d9bf95); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; }
+  .ko-nav button[aria-pressed="true"] { background: var(--njg-focus, #f2c14e); }
+  .ko-stage { display: grid; grid-template-columns: minmax(180px, 30%) 1fr; gap: 8px; height: clamp(230px, calc(100vh - 150px), 560px); }
+  #side { background: var(--njg-panel); border-radius: var(--njg-radius, 12px); padding: 8px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  #mission { min-height: 0; flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
+  #stage { position: relative; background: #f4e3c4; border-radius: var(--njg-radius, 12px); overflow: hidden; min-width: 0; }
+  .ko-face { position: absolute; width: 18%; max-width: 96px; aspect-ratio: 1; border-radius: 50%; background: #fff7ea center / cover no-repeat; box-shadow: 0 2px 8px rgba(70, 45, 20, .2); }
+  #ko-nana { left: 30%; top: 58%; }
+  #ko-cousin { left: 66%; top: 58%; }
+  .ko-bubble { position: absolute; background: var(--njg-bubble, #fffaf0); color: var(--njg-bubble-ink, #2a2522); border: 2px solid var(--njg-bubble-edge, #d9bf95); border-radius: 14px; padding: 6px 12px; font: 700 15px/1.2 var(--njg-font); white-space: nowrap; pointer-events: none; }
+  .ko-bubble.ko-rec { color: #8a7f74; font-style: italic; font-weight: 600; }
+  .ko-status { font: 12px/1.3 ui-monospace, monospace; color: var(--njg-ink-soft); white-space: pre-wrap; margin: 6px 0 0; min-height: 3.9em; }
+</style>
+</head>
+<body class="w6 njg-s14">
+<h1>The order's flow</h1>
+<nav class="ko-nav" id="nav"></nav>
+<div class="ko-stage">
+  <aside id="side"><div id="mission"></div></aside>
+  <main id="stage">
+    <div class="ko-face" id="ko-nana"></div>
+    <div class="ko-face" id="ko-cousin"></div>
+  </main>
+</div>
+<p class="ko-status" id="status"></p>
+<script src="../../js/version.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/uistore.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/fit.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/face.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/word-card.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/order-card.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/request-popup.js?v=20261107T120301Z"></script>
+<script type="module">
+  const Q = new URLSearchParams(location.search);
+  const SPEED = Math.max(0.25, Number(Q.get("speed")) || 1);
+  const T = OrderCard.TIMES;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms / SPEED));
+  const $ = (s) => document.querySelector(s);
+  const status = $("#status");
+  const log = [];
+  const say = (t) => {
+    log.push(t);
+    status.textContent = log.slice(-3).join("\n");
+  };
+  window.KitOrder = { ready: false, log, states: [] };
+  // the page's log, as the games' Lifecycle keeps it (the kit's pop-up logs its skip zones and requests through it)
+  const note0 = Lifecycle.note;
+  Lifecycle.note = (w, info) => {
+    say(`${w} ${typeof info === "object" ? JSON.stringify(info) : info || ""}`);
+    if (note0) note0(w, info);
+  };
+
+  const lines = await fetch("../../data/conversations/lines.json").then((r) => r.json()).catch(() => ({}));
+  const nouns = (lines && lines.nouns) || {};
+  const pic = (id) => ({ src: `../../assets/cook/items/icon-${id}.webp`, fit: "contain" });
+  // (a word the data lacks shows its English in grey, as missing Kutchi does in a game: non-negotiable 2)
+  const word = (id) => ({ id, kutchi: (nouns[id] && nouns[id].k) || "", english: (nouns[id] && nouns[id].en) || "", picture: pic(id), rec: !(nouns[id] && nouns[id].k) });
+  const face = (who) => `../../assets/cook/characters/${who}-badge.webp`;
+  ["nana", "cousin"].forEach((w) => ($(`#ko-${w}`).style.backgroundImage = `url(${face(w)})`));
+  const PEOPLE = { nana: ["cook-paani", "cook-chai", "cook-dudh"], cousin: ["cook-paani", "cook-chai", "cook-dudh"] };
+
+  // ---- the panel: each person's card from a small model (the host's job in a game: js/cook/ui.js orderCards) ----
+  let model = {};
+  const folds = {};
+  const fresh = () => {
+    model = {};
+    Object.keys(PEOPLE).forEach((who) => (model[who] = { shown: true, headOnly: false, rows: PEOPLE[who].map((id) => ({ id, done: false, away: false })) }));
+  };
+  const cardData = (who) => {
+    const m = model[who];
+    const parts = m.rows.map((r) => ({ key: `${who}:${r.id}`, word: word(r.id), done: r.done, wordOpts: {} }));
+    return { person: { id: who, face: face(who) }, headline: { html: "" }, items: [{ label: null, parts }], done: parts.every((p) => p.done) && !!m.served };
+  };
+  const rowEl = (who, id) => document.querySelector(`#mission .oc-card[data-who="${who}"] .oc-row[data-key="${who}:${id}"]`);
+  const draw = () => {
+    const box = $("#mission");
+    const snap = OrderCard.snap14 ? OrderCard.snap14(box) : null;
+    box.textContent = "";
+    Object.keys(model).forEach((who) => {
+      const m = model[who];
+      if (!m.shown) return;
+      folds[who] = folds[who] || {};
+      const c = OrderCard.card(cardData(who), { s14: true, fold: folds[who], foldAfter: T.foldAfter });
+      c.dataset.who = who;
+      c.dataset.ck = who;
+      c.classList.toggle("oc-headonly", m.headOnly);
+      if (m.said) c.classList.add("folded"); // (said, while the next person speaks: face and headline only)
+      box.appendChild(c);
+      m.rows.forEach((r) => r.away && rowEl(who, r.id) && rowEl(who, r.id).classList.add("oc-away"));
+      if (OrderCard.settle14 && snap) OrderCard.settle14(c, snap.get(who), folds[who]);
+    });
+    if (window.WordCard && WordCard.fit14) WordCard.fit14(box);
+  };
+
+  // ---- the bubble at a speaker's head (Lifecycle.bubble.place) ----
+  let bubble = null;
+  const bubbleAt = (who, id, side) => {
+    hideBubble();
+    const w = word(id);
+    bubble = document.createElement("div");
+    bubble.className = `ko-bubble${w.rec ? " ko-rec" : ""}`;
+    bubble.textContent = w.rec ? w.english : w.kutchi;
+    $("#stage").appendChild(bubble);
+    const head = $(`#ko-${who}`);
+    const where = Lifecycle.bubble.place(bubble, head, $("#stage"), side === "face" ? { face: true } : {});
+    say(`bubble ${who} ${where}`);
+    return where;
+  };
+  const hideBubble = () => {
+    if (bubble) bubble.remove();
+    bubble = null;
+  };
+
+  // ---- one person says their order, item by item: the card opens at the first item, each word pops big and turns into its row ----
+  let run = 0;
+  const live = (tok) => tok === run;
+  const pop = async (who, id, tok) => {
+    const slot = rowEl(who, id);
+    if (!slot || !live(tok)) return;
+    if (OrderCard.glideTo) OrderCard.glideTo(slot, { lead: true });
+    bubbleAt(who, id);
+    const st = $("#stage").getBoundingClientRect();
+    const big = WordCard.big14(null, word(id), { cls: "wc14-pop" });
+    const wd = Math.round(Math.min(300, st.height * 0.6, st.width * 0.42));
+    Object.assign(big.style, { position: "fixed", left: `${st.left + 14}px`, top: `${st.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
+    document.body.appendChild(big);
+    await wait(T.popHold);
+    if (!live(tok)) return big.remove();
+    const r = model[who].rows.find((x) => x.id === id);
+    await WordCard.morph(big, slot).catch(() => {});
+    big.remove();
+    r.away = false;
+    slot.classList.remove("oc-away");
+    hideBubble();
+    await wait(T.partGap);
+  };
+  const sayPerson = async (who, tok) => {
+    const m = model[who];
+    m.shown = true;
+    m.headOnly = true;
+    draw();
+    await wait(T.cardOpen);
+    if (!live(tok)) return;
+    m.headOnly = false;
+    draw();
+    for (const r of m.rows) await pop(who, r.id, tok);
+  };
+  // the order passes on: the said card folds to its face while the next opens (the card's own fold, the panel following)
+  const passOn = (who) => {
+    const c = document.querySelector(`#mission .oc-card[data-who="${who}"]`);
+    if (!c) return;
+    model[who].said = true;
+    const go = () => c.classList.add("folded");
+    if (OrderCard.followFold) OrderCard.followFold(c, go, {});
+    else go();
+  };
+
+  const STATES = {
+    // the order said item by item: each card shows folded as its person starts, opens at the first item; each word pops big beside
+    // the panel and turns into its row (the rows wait as dashed slots until they are said)
+    said: async (tok) => {
+      fresh();
+      Object.values(model).forEach((m) => ((m.shown = false), m.rows.forEach((r) => (r.away = true))));
+      draw();
+      for (const who of Object.keys(model)) {
+        if (!live(tok)) return;
+        await sayPerson(who, tok);
+        if (who !== "cousin") passOn(who);
+        await wait(T.fold);
+      }
+      // (as the order ends every card opens again for play)
+      Object.values(model).forEach((m) => (m.said = false));
+      draw();
+      say("said: every row landed, every card open again");
+    },
+    // a tap on the play area while the order is given lands it all at once (the skip on the press; nothing more is said)
+    skip: async (tok) => {
+      fresh();
+      Object.values(model).forEach((m) => m.rows.forEach((r) => (r.away = true)));
+      draw();
+      let skipped = false;
+      const landAll = () => {
+        Object.values(model).forEach((m) => m.rows.forEach((r) => (r.away = false)));
+        document.querySelectorAll(".wc14-pop").forEach((x) => x.remove());
+        hideBubble();
+        draw();
+        say("skip: every card in its row as the pop-up folds");
+      };
+      await Lifecycle.request({
+        reason: "lab:order",
+        along: true,
+        host: $("#stage"),
+        target: () => $("#mission"),
+        lead: T.lead,
+        hold: T.holdAlong,
+        wait,
+        onTap: () => (skipped = true),
+        onFold: landAll,
+        read: async () => {
+          for (const who of Object.keys(model)) for (const r of model[who].rows) {
+            if (skipped || !live(tok)) return;
+            await pop(who, r.id, tok);
+          }
+        },
+        build: () => {},
+      });
+      // (the lab taps for you after the first word, so the state shows on its own; a real tap on the play area does the same)
+    },
+    // the rows tick as each thing goes in; the row glides on so the next card is whole; served, the card holds, glides home and folds
+    ticks: async (tok) => {
+      fresh();
+      draw();
+      for (const r of model.nana.rows) {
+        await wait(700);
+        if (!live(tok)) return;
+        r.done = true;
+        draw();
+      }
+      await wait(700);
+      model.nana.served = true;
+      draw();
+      say("ticks: served, the card folds and the panel follows the next");
+    },
+    // a start again (a pan boiled over, a redo): its ticked rows open again and the row glides back to its first card (CHAI-62)
+    again: async (tok) => {
+      fresh();
+      model.nana.rows.forEach((r) => (r.done = true));
+      draw();
+      await wait(1200);
+      if (!live(tok)) return;
+      model.nana.rows.forEach((r) => (r.done = false));
+      draw();
+      say("again: rows open, the row home");
+    },
+    // the bubble's places: above the head, below it when there is no room above, beside a whole painted face
+    bubbles: async (tok) => {
+      fresh();
+      draw();
+      for (const [who, id, side] of [["nana", "cook-chai"], ["cousin", "cook-dudh"], ["nana", "cook-paani", "face"]]) {
+        if (!live(tok)) return;
+        bubbleAt(who, id, side);
+        await wait(1200);
+      }
+    },
+  };
+
+  const nav = $("#nav");
+  const show = async (name) => {
+    const tok = ++run;
+    if (Lifecycle.close) Lifecycle.close();
+    hideBubble();
+    document.querySelectorAll(".wc14-pop").forEach((x) => x.remove());
+    nav.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.s === name)));
+    say(`state ${name}`);
+    const p = STATES[name](tok);
+    // (the skip state taps the play area itself after its first word, as a child would)
+    if (name === "skip") {
+      await wait(T.popHold + 300);
+      const st = $("#stage").getBoundingClientRect();
+      const at = { clientX: st.left + st.width * 0.5, clientY: st.top + 12, bubbles: true, button: 0 };
+      const veil = document.querySelector(".njg-rq-veil");
+      if (veil && live(tok)) veil.dispatchEvent(new PointerEvent("pointerdown", at));
+    }
+    await p;
+  };
+  Object.keys(STATES).forEach((name) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = name;
+    b.dataset.s = name;
+    b.onclick = () => show(name);
+    nav.appendChild(b);
+  });
+  Object.assign(window.KitOrder, { states: Object.keys(STATES), show, ready: true });
+  show(STATES[Q.get("state")] ? Q.get("state") : "said");
+</script>
+</body>
+</html>

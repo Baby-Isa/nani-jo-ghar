@@ -9,7 +9,7 @@
 <!--
   The kitchen kit's stove part (Sprint 18, kit builder a; docs/architecture/module-map.md pieces 1-4), every piece in every state.
   It opens on its own, and lab/kitchen-kit.html shows it in a frame. The real kit code draws it (js/cook/kitchen-kit.js,
-  js/cook/mechanics/boil.js) on a plain Cook scene; nothing here is drawn by hand.
+  js/cook/mechanics/boil.js) on a plain Cook scene (only the plain pan picture is placed here).
     ?set=a      (the default) four burners: cold | too early (the knob shakes, "not now") | green | boiled over
     ?set=b      bubbling (the steam from the boil's start) | past the green | turned down | cold
     ?set=c      the first-time hold: lit and left, the heat waits in the middle of the green until its knob is tapped
@@ -468,7 +468,9 @@ function build(S) {
   const NAMES = { a: ["cold", "too early", "green", "boiled over"], b: ["bubbling", "past the green", "turned down", "cold"], c: ["first-time hold", "", "", ""], live: ["", "", "", ""] }[SET];
   const pans = hob.burners.map((at, i) => {
     const burner = Kit.burner(S, hob, i, { flameR: r * 0.97 });
-    const img = Kit.place(S, "pan", at, r);
+    // the kit's plain pan picture, its round body on the burner (a game's own pan and its looks: Cook.Kit.pan, js/cook/mechanics/pan.js)
+    const v = Kit.VESSELS.pan;
+    const img = S.track(S.add.image(at.x, at.y, v.key).setOrigin(v.cx, v.cy).setScale(r / (v.r * v.w)).setDepth(D.item));
     const pan = { x: at.x, y: at.y, r, img };
     const b = Mech.boil(S, pan, {
       id: `pan${i + 1}`,

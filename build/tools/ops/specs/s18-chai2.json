@@ -1,0 +1,54 @@
+{
+  "name": "s18-chai2: chai's owner, second session (the pan switch's glass sound, then pour, serve, shelf, lights, order flow)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "judgement on the reference game; the frozen run guards every move",
+  "cost": "about $20-30 (inside chai's owner's $40-60; the first session used about $25)",
+  "stop": "Sun 8 Nov 2026, 10:00 UK",
+  "port": 8870,
+  "owns": [
+    "js/cook/stations/chai-tray.js",
+    "data/stations/chai-tray.json",
+    "build/frozen/chai-tray/**",
+    "build/reports/s18-chai.md",
+    "build/reports/frozen-diff-chai-tray-*",
+    "build/reports/s18-chai2.md"
+  ],
+  "readOnly": [
+    "js/cook/ui.js, js/shared/order-card.js (kit builder e owns them: CK-60's fix lands there, you prove it)",
+    "js/cook/kitchen-kit.js, js/cook/mechanics/**, js/cook/station-lib.js, js/shared/** (the kit builders)",
+    "build/sandbox/lib/contract*.mjs (the orchestrator widens contract-90 if you name the change)"
+  ],
+  "tasks": [
+    {
+      "do": "First: the pan switch (3338b26f) is not merged. Its frozen diff (build/reports/frozen-diff-chai-tray-202611072011.md) shows the last glass's ring (sfx/glass, file glass-c) missing on cook:chai-tray#mistake at 740x320, which the freeze had in both plays. Replay that one page three times on the commit before the switch (030077eb, a detached temporary worktree, sparse without sources/) and three times on 3338b26f, counting the glass sounds. If the old code misses it too, it is a flake: write the counts in your report and propose a row; if only the new code misses it, find and fix the cause in chai's switch (or name the exact kit (b) change).",
+      "accept": "the six counts in the report; then a clean frozen diff for the pan switch"
+    },
+    {
+      "do": "Then the remaining switches, in Zafar's order, each its own commit with chai's old copy deleted, frozen.mjs --diff after each: (b) pieces 6-8 pour, pan to glass and take-back, serve (kit b's report build/reports/s18-kit-b.md maps chai's lines to the calls); (c) the shelf, word pills, count pills, the word pop (build/reports/s18-kit-c.md); (d) lights and lessons, deleting chai's lightHelpArrow block in showCallout (build/reports/s18-kit-d.md); (e) people say their orders: UI.personSay(pan.who, {obj: pan.face, rows, line: () => personLine(L(), pan.who, rows), hide: St.hideKnown(ctx)}) and the timings from UI.mission.times (build/reports/s18-kit-e.md). Hand back after every two switches with their diff files so the orchestrator can merge as you go; if your context nears full, hand back at once with what is done.",
+      "accept": "per switch: a clean diff file named in the report; chai's old code for the piece gone"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-chai2.md (with a Proof section): switches done (commit, diff file), what waits, under 600 words"
+    }
+  ],
+  "branch": "s18-chai in the existing worktree /home/user/wt/s18-chai (it holds the first session's commits); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4 once each switch's frozen diff is clean",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-chai",
+  "publish": false,
+  "rows": [
+    "CK-60"
+  ]
+}

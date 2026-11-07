@@ -1869,6 +1869,18 @@
    * voice and lands every row at once), in its see-through kind (along, S13-B1): no veil, nothing over a face, the word card
    * said now made by the kit's one entrance (WordCard.pop) in the pop-up's body.
    */
+  /*
+   * Piece 15 (docs/architecture/module-map.md; Sprint 18 "Coded well"): the order's flow and its timings, every game's, in one place.
+   * The calls a game makes: UI.mission.open (the order's card), .introduce (the order said and landed: item by item at the asker's
+   * face where each row is a word card, else along the whole card; a tap on the play area lands it all at once), .request (a part a
+   * station gives), .replay, .askLine (Nani's own line in the pop-up), .tickItem / .untickItem / .closeItem / .reopen (a step done, taken
+   * back, closed, started again: the card glides home), .focus (the person in hand), UI.followCard (the panel keeps a card whole in
+   * view), UI.personSay / UI.hearPerson / UI.peopleSay (a person at the counter says their order: piece 18). Each time is ms at
+   * speed 1, in the kit's one table (OrderCard.TIMES, read here as ORDER_T and given to a game as UI.mission.times).
+   */
+  // (the times are the shared kit's: js/shared/order-card.js OrderCard.TIMES, read when used)
+  const ORDER_T = new Proxy({}, { get: (_, k) => ((global.OrderCard && global.OrderCard.TIMES) || {})[k] });
+  Object.defineProperty(M, "times", { get: () => (global.OrderCard && global.OrderCard.TIMES) || null, enumerable: true });
   async function introduceAlong(opts = {}) {
     const m = mission;
     let box = null;
@@ -2155,14 +2167,14 @@
       line = byWho(line);
       if (S && S.chars && S.chars[who] && S.talk) return S.talk(who, line, { ms: Cook.readMs(Lang.plain(line)) * 0.6 });
       // (nobody at the counter to say it: the card's own read-along)
-      return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
+      return Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(ORDER_T.lineMin)]) : Cook.wait(Cook.readMs(Lang.plain(line)) * 0.6);
     };
     /*
      * SH-180: one motion as the order passes to the next person: each card whose height changed eases from its old height to its new
      * one (clipped while it moves, about 300 ms), and the panel's scroll follows the speaker's card, from where it was to where it
      * ends, frame by frame on the same ease; a reduced-motion setting, or nothing to move, keeps the old jump (the end state is the same)
      */
-    const FOLD_MS = 320;
+    const FOLD_MS = ORDER_T.fold;
     const foldGlide = (list, h0, top0, aim) => {
       const sp = Cook.speed || 1;
       const ms = FOLD_MS / sp;
@@ -2283,7 +2295,7 @@
             if (first && OCard() && OCard().glideTo) OCard().glideTo(first, { lead: true, instant: true });
             // (SH-191: the card has grown as it opened: cut at the panel's foot, the panel glides up until it shows whole)
             if (first) UI.followCard(first.closest(".oc-card"));
-            await Cook.wait(260);
+            await Cook.wait(ORDER_T.cardOpen);
             // (CK-60: a skip during the card's opening wait: nothing more is said or popped)
             if (!live()) return;
           }
@@ -2320,12 +2332,12 @@
             const heard = new Promise((res) => (off = Lang.onSayStart ? Lang.onSayStart((l) => l && l.by === who && res(true)) : null));
             saying = sayOk(sayPart(who, p.line));
             // (a headline with no voice, or one the voice can't start, is shown: its card pops after a beat all the same)
-            await Promise.race([heard, saying, sayOk(Cook.wait(1500))]);
+            await Promise.race([heard, saying, sayOk(Cook.wait(ORDER_T.headCap))]);
             if (off) off();
             for (const x of folded) {
               if (!live()) break;
               popRow(x);
-              await Cook.wait(s14 ? hold14(x) : 700);
+              await Cook.wait(s14 ? hold14(x) : ORDER_T.popHold);
               if (skipped) break;
               await land(x, who, false);
               if (box) box.innerHTML = "";
@@ -2336,7 +2348,7 @@
           await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null]);
           if (item && !skipped) await land(r, who, false);
           if (box) box.innerHTML = "";
-          if (!skipped) await Cook.wait(120);
+          if (!skipped) await Cook.wait(ORDER_T.partGap);
         }
         UI.hideBubble();
       }
@@ -2347,8 +2359,8 @@
           reason: "cook:order",
           along: true,
           target: () => $("#mission"),
-          lead: 0,
-          hold: 300,
+          lead: ORDER_T.lead,
+          hold: ORDER_T.holdAlong,
           wait: (ms) => Cook.wait(ms),
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
           // (SH-157: on the central rules, a tap on a bubble, the cog or its menu does its own thing and never skips:
@@ -2440,23 +2452,23 @@
         c.classList.add("speaking");
         if (face) face.classList.add("on");
         try {
-          await readAlong(parts, { min: 700 });
+          await readAlong(parts, { min: ORDER_T.readPerson });
         } finally {
           c.classList.remove("speaking");
           if (face) face.classList.remove("on");
         }
-        await Cook.wait(160);
+        await Cook.wait(ORDER_T.personGap);
       }
     };
     // Wave 6: read along: each part lights up on the card as it's said
-    const read = () => ((people || only) && opts.speak !== false ? sayPeople() : opts.speak !== false ? readAlong(keep(partsOf(m.line, introEls)), { min: 900 }) : Cook.wait(Cook.readMs(Lang.plain(m.line))));
+    const read = () => ((people || only) && opts.speak !== false ? sayPeople() : opts.speak !== false ? readAlong(keep(partsOf(m.line, introEls)), { min: ORDER_T.readCard }) : Cook.wait(Cook.readMs(Lang.plain(m.line))));
     try {
       await request(
         {
           reason: opts.only ? "cook:reveal" : "cook:order",
           target: () => $("#mission"),
-          lead: 0,
-          hold: opts.pause != null ? opts.pause : 1400,
+          lead: ORDER_T.lead,
+          hold: opts.pause != null ? opts.pause : ORDER_T.holdCard,
           wait: (ms) => Cook.wait(ms),
           ignore: (ev) => {
             if (!ev.target.closest(".oc-face")) return false;
@@ -2477,7 +2489,7 @@
     const target = $("#mission");
     target.classList.remove("arriving");
     target.classList.add("landed");
-    setTimeout(() => target.classList.remove("landed"), 400);
+    setTimeout(() => target.classList.remove("landed"), ORDER_T.landed);
   }
   /**
    * Show the order big while it's said. Resolves once it has flown into
@@ -2567,12 +2579,12 @@
         c.classList.add("speaking");
         if (face) face.classList.add("on");
         try {
-          await readAlong(parts, { min: 700 });
+          await readAlong(parts, { min: ORDER_T.readPerson });
         } finally {
           c.classList.remove("speaking");
           if (face) face.classList.remove("on");
         }
-        await Cook.wait(160);
+        await Cook.wait(ORDER_T.personGap);
       }
     };
     // S03-A (decision 53, SH-64), S04-B: the shared lifecycle's request pop-up (js/shared/request-popup.js) runs it:
@@ -2580,7 +2592,7 @@
     // it into the sidebar. opts.only: a part of the order revealed mid-station (M.request): only its rows are read
     const read = () => {
       // Wave 6: read along: each part lights up on the card as it's said
-      const said = (people || only) && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(keep(partsOf(m.line, introEls)), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+      const said = (people || only) && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(keep(partsOf(m.line, introEls)), { min: ORDER_T.readCard }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
       return said.then(() => card.classList.remove("talk"));
     };
     try {
@@ -2589,8 +2601,8 @@
         el,
         card,
         target: () => $("#mission"),
-        lead: 0,
-        hold: opts.pause != null ? opts.pause : 1400,
+        lead: ORDER_T.lead,
+        hold: opts.pause != null ? opts.pause : ORDER_T.holdCard,
         wait: (ms) => Cook.wait(ms),
         ignore: (ev) => {
           if (!ev.target.closest(".ic-say, .oc-face")) return false;
@@ -2610,7 +2622,7 @@
     const target = $("#mission");
     target.classList.remove("arriving");
     target.classList.add("landed");
-    setTimeout(() => target.classList.remove("landed"), 400);
+    setTimeout(() => target.classList.remove("landed"), ORDER_T.landed);
   };
   /** ↻ on the small card: the order big again, said again (a replay: help once its words are dots). */
   M.replay = async function () {
@@ -2621,7 +2633,7 @@
     const wasPaused = Cook.paused;
     if (relaxed) Cook.paused = true;
     try {
-      await M.introduce({ pause: 1200 });
+      await M.introduce({ pause: ORDER_T.holdReplay });
     } catch (e) {
       if (!(e instanceof Cook.Abort)) throw e;
     } finally {
@@ -2655,7 +2667,7 @@
     const own = who === "nani" && !!UI.guideStrip;
     if (own) UI.guideStrip(true);
     try {
-      await request({ reason: "cook:station-order", target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read }, draw);
+      await request({ reason: "cook:station-order", target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: ORDER_T.lead, hold: ORDER_T.holdStation, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read }, draw);
     } finally {
       if (own) UI.guideStrip(!!mine && mine.isConnected);
       if (mine) mine.style.visibility = "";
@@ -3408,6 +3420,68 @@
     } finally {
       // back to the person in progress (unless a station moved on to someone else meanwhile)
       if (mission && mission.focusWho === who && was !== who) M.focus(was);
+    }
+  };
+  /*
+   * Piece 18 (docs/architecture/module-map.md): people say their orders, every game's. A person at the counter says their order (a tap
+   * on their face replays it; at a station's start, those the request pop-up didn't say): their card read along (M.sayPerson), else the
+   * game's own sentence in Nani's box. While they speak her box shows their face and their figure takes the kit's one talk motion
+   * (Lifecycle.talk.phaser, contract-14), and both go back after. Nothing is said once the round has moved on (Cook.run).
+   *   UI.personSay(who, {obj, rows, line, hide})  obj: their figure on the scene (default the scene's own for them); rows: only these
+   *                                               rows; line: the sentence (or () => it) when the card can't say it; hide: Lang's hide
+   *   UI.hearPerson(who, o)   the replay: one at a time (false while anyone is speaking); o.onHelp() first (a replay counted as help)
+   *   UI.peopleSay(list, o)   each [{who, obj, rows, line, hide}] in turn, o.gap ms between (default UI.mission.times.speakGap)
+   *   UI.personSpeaking()     someone is saying their order now
+   */
+  let personTalks = 0;
+  UI.personSay = async function (who, o = {}) {
+    const S = Cook.scene;
+    const token = Cook.run;
+    const img = document.querySelector("#nani-card .nc-face");
+    const prev = img ? img.getAttribute("src") : null;
+    if (img && Cook.facePath) img.src = Cook.v(Cook.facePath(who));
+    const obj = o.obj || (S && S.chars && S.chars[who]) || null;
+    const y0 = obj ? obj.y : 0;
+    const LC = global.Lifecycle;
+    let stop = null;
+    if (obj && S) {
+      if (LC && LC.talk && LC.talk.phaser) stop = LC.talk.phaser(S, obj);
+      else if (S.tweens) {
+        const tw = S.tweens.add({ targets: obj, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
+        stop = () => tw.stop();
+      }
+    }
+    personTalks++;
+    try {
+      const said = M.sayPerson ? await M.sayPerson(who, o.rows || null) : false;
+      if (!said && o.line && token === Cook.run) {
+        const line = typeof o.line === "function" ? o.line() : o.line;
+        if (line) await UI.say(line, { badge: true }, { hide: o.hide });
+      }
+      return said;
+    } finally {
+      personTalks--;
+      if (typeof stop === "function") stop();
+      if (obj && obj.active && Math.abs(obj.y - y0) > 0.01) obj.y = y0;
+      UI.hideBubble();
+      if (img && prev) img.src = prev;
+    }
+  };
+  UI.personSpeaking = () => personTalks > 0;
+  UI.hearPerson = async function (who, o = {}) {
+    if (personTalks > 0) return false;
+    if (o.onHelp) o.onHelp();
+    try {
+      await UI.personSay(who, o);
+    } catch (e) {
+      if (!(e instanceof Cook.Abort)) throw e;
+    }
+    return true;
+  };
+  UI.peopleSay = async function (list, o = {}) {
+    for (const p of list || []) {
+      await UI.personSay(p.who, p);
+      await Cook.wait(o.gap != null ? o.gap : ORDER_T.speakGap);
     }
   };
   async function sayPersonCard(who, rows) {
