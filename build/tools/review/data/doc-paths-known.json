@@ -4,7 +4,6 @@
  "docs/architecture/cook-recipes-guide.md -> assets/cook/props/omelette-raw.webp",
  "docs/architecture/shared-api.md -> js/storage.js",
  "docs/architecture/target-model.md -> build/package.mjs",
- "docs/architecture/target-model.md -> build/tools/review/approved-shots.json",
  "docs/architecture/technical-plan.md -> build/package.mjs",
  "docs/design-language/art-pipeline.md -> assets/props/bunting.png",
  "docs/design-language/art-pipeline.md -> assets/props/lantern.png",
