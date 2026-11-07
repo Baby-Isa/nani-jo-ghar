@@ -66,6 +66,15 @@
     <span class="note" id="motion"></span>
   </div>
 
+  <h2>The boil, as chai plays it (CHAI-95)</h2>
+  <p class="lead">The new seamless loop with chai's level curve, sped up to 16 s: quiet from the first heat, rising evenly to the
+    bubbling picture (75%), steady through the green, louder past it until it boils over.</p>
+  <div class="row">
+    <button id="boilPlay" type="button">Play the rising boil</button>
+    <button id="boilStop" type="button">Stop</button>
+    <span class="note" id="boilNote"></span>
+  </div>
+
   <h2>1. Sounds</h2>
   <p class="lead">Every sound is set soft, well under the family's voice (press the green button first and set the volume by it).</p>
   <div class="grid" id="sounds"></div>
@@ -300,6 +309,26 @@
   $("#voice").addEventListener("click", () => { try { new Audio("../assets/audio/word/snt-14.mp3").play(); } catch (e) { /* none */ } });
   $("#bg").addEventListener("click", (e) => { const on = document.body.classList.toggle("light"); e.target.textContent = on ? "Dark background" : "Light background"; });
   $("#motion").textContent = Juice.less() ? "Reduced motion is on: the effects fade in place." : "";
+
+  // CHAI-95 demo: chai's curve (js/cook/stations/chai-tray.js) on Sfx.loop("simmer"): -24 dB at the first heat, even in dB to
+  // -2.5 dB at the bubbling picture (heat 0.46), held through the green (to 0.85), then to 0 dB at the boil-over (heat 1)
+  (function boilDemo() {
+    let h = null, raf = 0, t0 = 0;
+    const MS = 16000, BUB = 0.46, HI = 0.85, note = (t) => (document.getElementById("boilNote").textContent = t);
+    const dbAt = (x) => (x < BUB ? -24 + (21.5 * x) / BUB : x < HI ? -2.5 : -2.5 + (2.5 * (x - HI)) / (1 - HI));
+    const stop = (why) => { if (raf) cancelAnimationFrame(raf); raf = 0; if (h) h.stop(); h = null; note(why || ""); };
+    document.getElementById("boilStop").onclick = () => stop("stopped");
+    document.getElementById("boilPlay").onclick = () => {
+      stop(); h = Sfx.loop("simmer", { volume: Sfx.fromDb(-24) }); t0 = performance.now();
+      const tick = () => {
+        const x = Math.min(1, (performance.now() - t0) / MS), db = dbAt(x);
+        if (h && h.pitch) h.pitch(Sfx.fromDb(db));
+        note(`heat ${x.toFixed(2)} · ${db.toFixed(1)} dB · ${x < BUB ? "rising" : x < HI ? "bubbling, then the green" : x < 1 ? "past the green" : "boils over"}`);
+        if (x < 1) raf = requestAnimationFrame(tick); else stop("boiled over");
+      };
+      raf = requestAnimationFrame(tick);
+    };
+  })();
 })();
 </script>
 </body>
