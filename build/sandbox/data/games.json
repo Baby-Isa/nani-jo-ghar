@@ -71,7 +71,8 @@
   "chop": {
    "family": "kitchen",
    "stations": ["chop"],
-   "help": "cook"
+   "help": "cook",
+   "decoys": "exact"
   },
   "eggs": {
    "family": "kitchen",
