@@ -1,7 +1,7 @@
 # Recorded sounds: sources and licences
 
 Candidates for chai's juice (CHAI-92, SH-226), heard on `lab/juice.html`. **In the game since 6 Nov (Zafar's picks; played by
-`js/shared/sfx.js` FILES):** pour-a (the pour and the short pour), knob-a, flame-b, simmer-a, ding-a, glass-c, settle-a, sparkle-a; the
+`js/shared/sfx.js` FILES):** pour-a (the pour and the short pour), knob-a, flame-b, simmer-b (simmer-a until 7 Nov), ding-a, glass-c, settle-a, sparkle-a; the
 others stay here for the lab and are never fetched by a game. Each file is cut, trimmed,
 high-passed at 160 Hz, made mono and set soft by `build/tools/juice/make_sfx.py` (a hit peaks at -16 dBFS; a pour or simmer
 sits near -32 dBFS RMS, peak -12 dBFS; the family's clips run near -21 dBFS RMS), then encoded as 64 kbit/s mp3. Fetched 6 Nov 2026.
@@ -37,6 +37,7 @@ as much (decision in `build/reports/juice-lab-2026-11-06.md`).
 | drop-a.mp3 | a soft drop | kenney_interfaceSounds.zip, drop_003.ogg | CC0 | Kenney | whole |
 | settle-a.mp3 | a glass set on a wooden table | https://bigsoundbank.com/ sound #0215 "Glass lying on a table" | CC0 | Joseph Sardin, BigSoundBank | 7.56 s, 0.35 s |
 | simmer-a.mp3 | water at a gentle boil | https://bigsoundbank.com/ sound #0149 "Boiling water" | CC0 | Joseph Sardin, BigSoundBank | 3 s, 4 s |
+| simmer-b.mp3 | water at a gentle boil, one seamless 12 s loop (CHAI-95, 7 Nov) | simmer-a.mp3's steady part (BigSoundBank sound #0149 "Boiling water"), re-grained by `sources/audio/simmer-b-make.py` | CC0 | Joseph Sardin, BigSoundBank | simmer-a 0.02 s, 3.43 s |
 
 Licence pages: Kenney, the `License.txt` in each pack (CC0 1.0); BigSoundBank, https://bigsoundbank.com/licenses.html ("Creative
 Commons CC0 1.0 Universal ... Use, including for commercial purposes. Without any restrictions"); Mixkit, https://mixkit.co/license/

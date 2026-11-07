@@ -86,7 +86,7 @@ test("every recorded file has its SOURCES.md row, with a licence", () => {
 });
 
 test("only the picked files are named by the game (the others stay for the lab)", () => {
-  assert.deepEqual([...new Set(Object.values(Sfx.files))].sort(), ["ding-a", "flame-b", "glass-c", "knob-a", "pour-a", "settle-a", "simmer-a", "sparkle-a"]);
+  assert.deepEqual([...new Set(Object.values(Sfx.files))].sort(), ["ding-a", "flame-b", "glass-c", "knob-a", "pour-a", "settle-a", "simmer-b", "sparkle-a"]);
   const picked = new Set(Object.values(Sfx.files));
   const others = readdirSync(join(ROOT, SFX_DIR)).filter((f) => f.endsWith(".mp3")).map((f) => f.slice(0, -4)).filter((s) => !picked.has(s));
   const bad = [];
