@@ -39,3 +39,8 @@ An ID another domain also uses is placed here too where it fed one of these rule
 | SH-207 | rule | STD-C2-09, STD-C3-05 | the level and the ladder change only between games |
 | SH-196 | rule | STD-C4-01 | the general first meeting; the reveal lesson itself is D1's |
 | SH-212 | rule | STD-C4-02 | loading behind is also F4's |
+
+## Proof
+
+`node build/tools/review/stdids.mjs --check --fragments build/reports/s17-std-placement-1.md --mine`: "213 source IDs; 33 placed in
+the fragments; 180 unplaced; 56 rules defined; 0 problem(s)" (7 Nov).
