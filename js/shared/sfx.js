@@ -384,7 +384,11 @@
   const FILES = {
     knob: { file: "knob-a", ms: 235 }, // the gas knob turns: A, a gas stove's ignition click (Mixkit)
     flame: { file: "flame-b", ms: 1149 }, // the flame catches: B, a gas torch catching (CC0)
-    simmer: { file: "simmer-a", ms: 4049, loop: true }, // the pan simmers: A, water at a gentle boil (CC0)
+    // the pan simmers: A, water at a gentle boil (CC0). CHAI-95 (Zafar, 7 Nov: "I'm hearing the join"): simmer-a's 4 s faded out
+    // and ended in silence at every join; simmer-b is one seamless 12 s loop of its steady part at the same loudness
+    // (sources/audio/simmer-b-make.py), looped 0.1-12.1 s (loopAt: the file carries 0.1 s of the loop either side, so the join holds
+    // whether a browser trims the mp3's encoder delay and padding or not)
+    simmer: { file: "simmer-b", ms: 12200, loop: true, loopAt: [0.1, 12.1] },
     green: { file: "ding-a", ms: 418 }, // the heat reaches the green: A, a kitchen oven's ding (Mixkit)
     glass: { file: "glass-c", ms: 1228 }, // the glass is full: C, a knife on a full water glass (CC0)
     settle: { file: "settle-a", ms: 366 }, // a bottle set down: A, a glass set on a wooden table (CC0)
@@ -463,6 +467,7 @@
       const src = c.createBufferSource();
       src.buffer = buf;
       src.loop = !!meta.loop;
+      if (meta.loop && meta.loopAt && meta.loopAt[1] <= buf.duration) [src.loopStart, src.loopEnd] = meta.loopAt; // (CHAI-95)
       const g = c.createGain();
       g.gain.setValueAtTime(vol, c.currentTime);
       src.connect(g).connect(c.destination);
@@ -543,7 +548,7 @@
       load(F.file);
       return none;
     }
-    const h = startBuf(buf, 0.0001, { name, loop: true });
+    const h = startBuf(buf, 0.0001, { name, loop: true, loopAt: F.loopAt });
     if (!h) return none;
     h.level = Math.max(0, Math.min(1, opts.volume != null ? opts.volume : 1));
     duckLoop(h, Sfx.speaking(), true);
