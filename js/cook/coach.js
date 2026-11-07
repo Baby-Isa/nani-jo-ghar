@@ -408,6 +408,106 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     go();
     return h;
   };
+  /**
+   * The next vessel (STD-D1-10; Zafar, 2 Nov: "we need an onboarding for selecting the new pan"): the first time a next one is needed,
+   * a light circles its rim once the last one is served, never while another still cooks. C.nextLight(o) waits o.delayMs (at the game's
+   * speed; Onboard.WAIT.nextVessel, CHAI-99), or none with o.now (a wrong move: a thing tapped into a served vessel), then asks o.ok()
+   * (the game's state still right, and its first-time gate: gate.first("next-pan")) and lights o.target round (pad 2) for o.litMs
+   * (WAIT.nextLit) until o.quitIf() (picked). o.who: its log name ("next-pan" note). -> {cancel() (the wait), stop() (the light too)}
+   */
+  C.nextLight = function (o = {}) {
+    const Onboard = OB();
+    const W = (Onboard && Onboard.WAIT) || { nextVessel: 800, nextLit: 5000 };
+    let t = 0;
+    let lit = null;
+    const fire = () => {
+      if (!Onboard || !Onboard.light || !o.target) return;
+      if (o.ok && !o.ok()) return;
+      lit = Onboard.light(o.target, { look: "glow", pad: o.pad != null ? o.pad : 2, round: o.round !== false, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
+      note("next-pan", { step: o.who != null ? String(o.who) : "", by: "light" });
+    };
+    if (o.now) fire();
+    else t = setTimeout(fire, (o.delayMs != null ? o.delayMs : W.nextVessel) / speed());
+    return {
+      cancel: () => clearTimeout(t),
+      stop() {
+        clearTimeout(t);
+        if (lit) lit.close();
+      },
+      lit: () => lit,
+    };
+  };
+  /**
+   * The next item's card on the order card (STD-D1-07; Zafar, 27 Oct: "so the eye is directed to where to look next"): after the
+   * first items, its card in the order row is glided whole into view, then, once the kitchen is still (C.mover with the row and Nani's
+   * box: the rules' pointAfterMoveMs at the game's speed, up to Onboard.WAIT.still: CHAI-77), lit for the rules' pointMs (no glow, no
+   * bounce), following the card as the order card is drawn again (SH-178); the whole order card when the item has no card in the row
+   * (or one cut at the row's edge); a face circle overhanging it taken into its box (contract-82).
+   * o: {item() (the next item's card in the row: C.itemCard), quitIf() (moved on or the step changed: it gives up), busy() (the game's
+   * moves in flight), endIf() (while lit: default busy() or quitIf()), step (its log name), note, onLit()}.
+   * -> Promise<true> lit, <false> gave up
+   */
+  C.itemCard = function (id, who) {
+    if (!id) return null;
+    const card = who != null ? [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who) : null;
+    const inCard = (x) => !card || card.contains(x);
+    return [...document.querySelectorAll("#mission .oc-row.oc-it14")].find((x) => (x.dataset.word === id || (x.querySelector(".wc14") || {}).dataset?.word === id) && inCard(x) && x.getBoundingClientRect().width > 0) || null;
+  };
+  C.cardLight = function (o = {}) {
+    const Onboard = OB();
+    const R = rules();
+    const UI = Cook.UI || {};
+    const itemOf = () => (o.item ? o.item() : null);
+    const whole = (item) => {
+      const row = item && item.closest(".oc-row14");
+      if (!item || !row) return false;
+      const a = item.getBoundingClientRect();
+      const b = row.getBoundingClientRect();
+      return a.left >= b.left - 1 && a.right <= b.right + 1;
+    };
+    const it0 = itemOf();
+    if (it0 && !whole(it0) && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(it0);
+    const lightOf = () => {
+      const item = itemOf();
+      const seen = whole(item);
+      const card = seen ? item : document.querySelector("#mission .oc-card");
+      if (!card) return null;
+      if (UI.cardIntoView) UI.cardIntoView(seen ? card.closest(".oc-card") : card); // (its headline first: never cut at its top)
+      const cb = card.getBoundingClientRect();
+      const cut = [...document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say")].filter((f) => {
+        const b = f.getBoundingClientRect();
+        if (!b.width) return false;
+        const meets = b.right > cb.left && b.left < cb.right && b.bottom > cb.top + 1 && b.top < cb.bottom - 1;
+        const inside = b.left >= cb.left - 4 && b.right <= cb.right + 4 && b.top >= cb.top - 4 && b.bottom <= cb.bottom + 4;
+        return meets && !inside;
+      });
+      return cut.length ? [card].concat(cut) : card;
+    };
+    const side = C.mover({ helper: true });
+    const busy = () => !!(o.busy && o.busy());
+    const endIf = o.endIf || (() => busy() || !!(o.quitIf && o.quitIf()));
+    const until = Date.now() + ((Onboard && Onboard.WAIT && Onboard.WAIT.still) || 8000);
+    return new Promise((res) => {
+      if (!Onboard || !Onboard.light) return res(false);
+      let quiet = null;
+      const go = () => {
+        if ((o.quitIf && o.quitIf()) || Date.now() > until) return res(false);
+        const still = !busy();
+        if (!side() && still) quiet = quiet == null ? Date.now() : quiet;
+        else quiet = null;
+        if (quiet == null || Date.now() - quiet < (R ? R.pointAfterMoveMs() : 0) / speed()) return void setTimeout(go, 60);
+        if (o.onLit) o.onLit();
+        note("card-light", { step: o.step != null ? String(o.step) : "" });
+        const first = lightOf();
+        // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
+        const onItem = first && first.classList && first.classList.contains("oc-row");
+        const lit = Array.isArray(first) || !first ? first : () => (onItem ? itemOf() || first : document.querySelector("#mission .oc-card") || first);
+        const h = Onboard.light(lit, { look: "", pad: 4, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note });
+        h.done.then(() => res(true));
+      };
+      go();
+    });
+  };
   /*
    * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
    * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by
