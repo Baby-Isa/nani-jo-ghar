@@ -1,10 +1,10 @@
 # E. Presentation
 
-**What does it look, move and sound like?** Parts: glossary.md; numbers: values.md.
+**What does it look, move and sound like?**
 
 ## E1 The frame
 
-#### STD-E1-01 · Every screen is laid out by height and works at the four sizes, with no size given an exception unless strictly required
+#### STD-E1-01 · Every screen is laid out by height and works at all four sizes, none with its own exception
 - **Why:** "layouts by height" (Zafar, 27 Oct); CHAI-33 (3 Nov)
 - **Scope:** House
 - **Pattern / part:** P11 / the frame
@@ -13,7 +13,7 @@
 - **Status:** agreed 3 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/frame.js` · **Value:** four sizes (values.md 0.2) · **Impact:** wrong · **Source rows:** CHAI-33, CHAI-86
 
-#### STD-E1-02 · The side panel's size follows only the window: its parts scale together to a floor of 2.5 item cards, and a card opening never changes it
+#### STD-E1-02 · The side panel's size follows only the window, scaling as one to a 2.5-card floor, never changing as a card opens
 - **Why:** "is there no scaling of words, text, and image sizes on the left bar?" (Zafar, 1 Nov)
 - **Scope:** House
 - **Pattern / part:** P11 / the side panel
@@ -22,7 +22,7 @@
 - **Status:** agreed 2 Nov
 - **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** panel scale, card floor (values.md E1) · **Impact:** wrong · **Source rows:** SH-185, SH-210
 
-#### STD-E1-03 · A list that scrolls by design is declared in its markup, has no scroll bar and is moved only by code, never by snapping
+#### STD-E1-03 · A list that scrolls by design is declared in its markup, with no scroll bar and no snapping
 - **Why:** "jerkily scrolls back and forth" (Zafar, 5 Nov)
 - **Scope:** House
 - **Pattern / part:** P6 / the item row
@@ -61,7 +61,7 @@
 - **Layer:** shared kit · **Lives in:** `js/shared/word-card.js` · **Impact:** wrong · **Source rows:** SH-147, SH-149
 
 #### STD-E2-02 · No word leaves its card, is cut or ellipsised, or covers its speaker: it shrinks, then wraps
-- **Why:** non-negotiable 6; "how we fix it for all" (Zafar, 27 Oct)
+- **Why:** non-negotiable 6; SH-142 (27 Oct)
 - **Scope:** House
 - **Pattern / part:** P11 / the word card
 - **Checked by:** contract-51 + contract-15 + check:layout/text-clipped + probe:SH-142
@@ -69,7 +69,7 @@
 - **Status:** agreed 27 Oct
 - **Layer:** shared kit · **Lives in:** `js/shared/fit.js` · **Impact:** wrong · **Source rows:** SH-142, CHAI-69
 
-#### STD-E2-03 · Every card and box in the side panel is even: equal padding and gaps, words level, speakers padded alike, one height in every state
+#### STD-E2-03 · Every card and box in the side panel is even: equal padding and gaps, words level, one height in every state
 - **Why:** "That arrow shouldn't change the size of the box." (Zafar, 4 Nov)
 - **Scope:** House
 - **Pattern / part:** P11 / Nani's box
@@ -96,25 +96,16 @@
 - **Status:** agreed 3 Nov
 - **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Impact:** wrong · **Source rows:** CHAI-43, CHAI-59
 
-#### STD-E2-06 · A bubble takes the first free place in one order and never covers a face, the side panel, a corner button or a reply
+#### STD-E2-06 · A bubble takes the first free place in one order, never over a face, the panel, a corner button or a reply, and holds only what the child can use
 - **Why:** "we have rules around this" (Zafar, 1 Nov)
 - **Scope:** House
 - **Pattern / part:** P1 / the bubble
-- **Checked by:** contract-4 + contract-52 + contract-86 + probe:SH-145
+- **Checked by:** contract-4 + contract-52 + contract-86 + probe:SH-145 + probe:SH-153 + gap: a contract on bubble word size and tail
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (930x430)
 - **Status:** agreed 1 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/conversations.js` · **Impact:** wrong · **Source rows:** SH-177, SH-145, SH-187, CK-18
+- **Layer:** shared kit · **Lives in:** `js/shared/conversations.js` · **Impact:** wrong · **Source rows:** SH-177, SH-145, SH-187, CK-18, SH-153, SH-186, SH-188
 
-#### STD-E2-07 · A bubble holds only what the child can use, its words no bigger than the order card's, replies in one row, its tail behind it
-- **Why:** "we may as well save space" (Zafar, 1 Nov)
-- **Scope:** House
-- **Pattern / part:** - / the bubble
-- **Checked by:** probe:SH-153 + gap: a contract on bubble word size and tail
-- **See it:** lab/conversations.html (740x320)
-- **Status:** agreed 1 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/conversations.js` · **Impact:** cosmetic · **Source rows:** SH-153, SH-186, SH-188
-
-#### STD-E2-08 · Every face circle is the kit's, one of three sizes above its floor, beside what it owns, on top of all but a thing pouring over it
+#### STD-E2-07 · Every face circle is the kit's, one of three sizes, beside what it owns and on top of all but a pouring thing
 - **Why:** "it should go on top of the face icons" (Zafar, 1 Nov)
 - **Scope:** House
 - **Pattern / part:** P11 / the face circle
@@ -123,7 +114,7 @@
 - **Status:** agreed 1 Nov
 - **Layer:** shared kit · **Lives in:** `css/shared/face.css` · **Value:** face sizes (values.md E2) · **Impact:** feels bad · **Source rows:** SH-139, SH-140, SH-183, CHAI-47, CHAI-65, CHAI-18
 
-#### STD-E2-09 · A lit box hugs its target by one margin all round, its corners at most a quarter of its height, and never crosses a face
+#### STD-E2-08 · A lit box hugs its target by one margin all round, its corners at most a quarter of its height, and never crosses a face
 - **Why:** "it can't have such rounded corners" (Zafar, 3 Nov)
 - **Scope:** House
 - **Pattern / part:** - / the light
@@ -134,14 +125,14 @@
 
 ## E3 Art and materials
 
-#### STD-E3-01 · Each scene has one camera: the shelf front-on, the hob, pans and tray straight top-down
-- **Why:** "I like how it is in the chai one, side-on." (Zafar, 29 Sept)
+#### STD-E3-01 · Every item is drawn in its scene's one camera, at one height, and scaled by its size class, never true size
+- **Why:** "no true sizes" (Zafar, 6 Nov); art bible §3
 - **Scope:** House
 - **Pattern / part:** P10 / the shelf
-- **Checked by:** check:art + judge: pans top-down, chai L1, 1280x665
-- **See it:** lab.html?mode=cook&game=chai-tray&level=1 (1280x665)
-- **Status:** agreed 28 Oct
-- **Layer:** shared kit · **Lives in:** `docs/design-language/art-bible.md` · **Impact:** wrong · **Source rows:** CHAI-02, CHAI-08, CHAI-34
+- **Checked by:** check:art + tool:shelfshot + judge: pans top-down, chai L1, 1280x665
+- **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
+- **Status:** agreed 6 Nov
+- **Layer:** shared kit · **Lives in:** `build/tools/art/data/look-rules.json` · **Value:** size classes, item floor (values.md E3) · **Impact:** wrong · **Source rows:** CHAI-02, CHAI-08, CHAI-34
 
 #### STD-E3-02 · Everything shown is a real, steady picture: code draws only a liquid or tint inside a picture's outline, or a thin frame
 - **Why:** "I think that's a code drawn animation" (Zafar, 1 Nov)
@@ -152,16 +143,7 @@
 - **Status:** agreed 4 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/juice.js` · **Impact:** wrong · **Source rows:** CK-06, ART-31, CHAI-64, CHAI-13, CHAI-31, CHAI-79, CHAI-73, ART-39, CHAI-72, CHAI-82, CHAI-80
 
-#### STD-E3-03 · Items are drawn one height and scaled by size class, never true size, above a floor on the smallest phone
-- **Why:** "no true sizes" (Zafar, 6 Nov)
-- **Scope:** House
-- **Pattern / part:** P11 / the shelf
-- **Checked by:** tool:shelfshot + check:art
-- **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
-- **Status:** agreed 6 Nov
-- **Layer:** shared kit · **Lives in:** `build/tools/art/data/look-rules.json` · **Value:** size classes, item floor (values.md E3) · **Impact:** wrong · **Source rows:** -
-
-#### STD-E3-04 · The kitchen family's worktop is the white marble, its side panel and shelf band the stone
+#### STD-E3-03 · The kitchen family's worktop is the white marble, its side panel and shelf band the stone
 - **Why:** "the new background marble for the stove top down games" (Zafar, 5 Nov)
 - **Scope:** Family
 - **Pattern / part:** - / the frame
@@ -170,7 +152,7 @@
 - **Status:** agreed 5 Nov
 - **Layer:** kitchen kit · **Lives in:** `css/cook-side-v2.css` · **Value:** stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-40, ART-41
 
-#### STD-E3-05 · The hob always shows each pan's own picture for its state, centred on its burner, the heat ring over its handle
+#### STD-E3-04 · The hob always shows each pan's own picture for its state, centred on its burner, the heat ring over its handle
 - **Why:** "the burner still showing" (Zafar, 6 Nov)
 - **Scope:** Family
 - **Pattern / part:** P10 / the hob
@@ -179,7 +161,7 @@
 - **Status:** agreed 6 Nov
 - **Layer:** kitchen kit, stove part · **Lives in:** `js/cook/kitchen-kit.js` · **Impact:** wrong · **Source rows:** CHAI-91, CHAI-08, CHAI-34, CHAI-12
 
-#### STD-E3-06 · Everyone at a counter is drawn in a behind-the-counter pose
+#### STD-E3-05 · Everyone at a counter is drawn in a behind-the-counter pose
 - **Why:** "old models that haven't been re-drawn" (Zafar, 1 Nov)
 - **Scope:** Family
 - **Pattern / part:** P10 / the closing scene
@@ -199,7 +181,7 @@
 - **Status:** agreed 5 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Value:** card fold, Nani's box fold (values.md E4) · **Impact:** feels bad · **Source rows:** SH-180, SH-215, SH-211, CK-57
 
-#### STD-E4-02 · The pop-out flies the least bowed path clear of faces and lands exactly on its row card, leaving nothing behind
+#### STD-E4-02 · The pop-out flies the least bowed path clear of faces and lands exactly on its row card
 - **Why:** "take the straightest path" (Zafar, 3 Nov)
 - **Scope:** House
 - **Pattern / part:** P4 / the pop-out
@@ -208,7 +190,7 @@
 - **Status:** agreed 4 Nov
 - **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Value:** landing error (values.md E4) · **Impact:** feels bad · **Source rows:** SH-203, SH-163, SH-144
 
-#### STD-E4-03 · A thing that changes with time shows it in its own picture as it happens, at every level
+#### STD-E4-03 · A thing that changes with time shows it in its own picture, at every level
 - **Why:** "I didn't see that on the other modes" (Zafar, 1 Nov)
 - **Scope:** Family
 - **Pattern / part:** P9 / the hob
@@ -237,7 +219,7 @@
 - **Status:** agreed 17 Oct
 - **Layer:** shared kit · **Lives in:** `js/core/voice.js` · **Impact:** wrong · **Source rows:** PAN-04
 
-#### STD-E5-02 · The child never waits for speech: a tap during a line or a light lands at once, a tap on the kitchen lands the whole order
+#### STD-E5-02 · The child never waits for speech: any tap during a line lands at once, a tap on the kitchen the whole order
 - **Why:** non-negotiable 7; "skip the slow ordering" (Zafar, 28 Oct)
 - **Scope:** House
 - **Pattern / part:** - / -
@@ -255,16 +237,16 @@
 - **Status:** agreed 6 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/sfx.js` · **Impact:** unfinished · **Source rows:** CHAI-92, CHAI-87, ART-31, SH-196, CHAI-72
 
-#### STD-E5-04 · Sound follows what the child does: nothing read aloud during an action, no click the child did not cause, an ongoing sound growing with its thing
+#### STD-E5-04 · Sound follows the child: nothing read aloud during an action, no click it did not cause, an ongoing sound growing with its thing
 - **Why:** "It just comes at the wrong time every time" (Zafar, 6 Nov)
 - **Scope:** House
 - **Pattern / part:** - / -
 - **Checked by:** probe:CHAI-51 + probe:CHAI-95 + probe:CHAI-100 + tool:voicegate
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2 (1280x665)
 - **Status:** agreed 6 Nov
-- **Layer:** shared kit (the boil: kitchen kit, stove part) · **Lives in:** `js/cook/kitchen-kit.js` · **Value:** boil loudness (values.md E5) · **Impact:** feels bad · **Source rows:** CHAI-51, CHAI-95, CHAI-100
+- **Layer:** shared kit · **Lives in:** `js/shared/sfx.js`, `js/cook/kitchen-kit.js` · **Value:** boil loudness (values.md E5) · **Impact:** feels bad · **Source rows:** CHAI-51, CHAI-95, CHAI-100
 
-#### STD-E5-05 · Every line can sound the first time it is said: a fresh page waits on one play button, and lines load as the order starts
+#### STD-E5-05 · Every line sounds the first time: a fresh page waits on one play button, and lines load as the order starts
 - **Why:** "the first item in their order didn't have a sound" (Zafar, 3 Nov)
 - **Scope:** House
 - **Pattern / part:** P13 / the play button
