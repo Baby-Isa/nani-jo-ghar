@@ -31,8 +31,8 @@ The sheet is generated (`recordings --check`), so no hand rows: the three amount
 
 ## Proof
 
-Machine checks: `recordings`, `docs`, `bump`, `words`, `fixlist` ok; `art` as above. Station load at 1280x665 (one lock run): see the last line below.
+Machine checks: `recordings`, `docs`, `bump`, `words`, `fixlist` ok; `art` as above. Station load: eggs, baking and corn have no sandbox flow (lab-only prototypes), so each was mounted with `build/test_cook_mount.mjs --times 1 --station <id>` under the lock.
 
-RUN_RESULT
+Result: each of the three mounts and unmounts with **no page errors** (the new keys are ignored by the stations). Its 5 other lines fail the same way for all three (the page listeners, voice timers, the one sfx AudioContext, the Cook global): the known shared ones in `checks.mjs --help`, not this change. The contract replay at four sizes was not run: there is no flow for these games.
 
 Open: the three amounts need Mum (R6-135); CO, BK and CX redos; Simba and Hannah Mami stay placeholders.
