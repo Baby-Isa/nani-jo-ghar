@@ -291,6 +291,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       tick();
     });
   };
+  /**
+   * The first-time gate for game `key` (STD-D1-01), on Cook's save (save.seenStation): fresh while the s14 look is on and this is the
+   * grown-ups' New player or the game's coach not yet seen (save.coached), as the game starts (made once per round). o.round: a Set
+   * the game makes each round (a lesson every game shares is once a round for the New player). -> Onboard.firsts's gate
+   */
+  C.firsts = function (key, o = {}) {
+    const Onboard = OB();
+    const s14 = !!(Cook.UI && Cook.UI.s14 && Cook.UI.s14());
+    const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
+    const fresh = s14 && (newPlayer() || !(Cook.save.coached || {})[key]);
+    if (!Onboard || !Onboard.firsts) return { scope: key, fresh: false, key: () => "", spent: () => false, due: () => false, spend() {}, first: () => false };
+    return Onboard.firsts(key, { seen, fresh, round: o.round || null, newPlayer: newPlayer() });
+  };
   /*
    * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
    * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by

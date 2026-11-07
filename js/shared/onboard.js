@@ -378,6 +378,41 @@
     });
     return { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
   };
+  /**
+   * The first time (STD-D1-01: an action is lit only the first time it comes up for this player). A gate over a plain record of what
+   * was shown (a game's save: Cook's save.seenStation), for one game `scope`:
+   *   due(k, all)    is k's first-time help still to come? (all: a lesson every game shares, key "*:<tag>k"; for the New player once
+   *                  a round, given `round`, a Set the game makes each round: Zafar, 4 Nov evening; else once a visit, or once ever)
+   *   spend(k, all)  it was shown (spent only once its light is drawn: CHAI-102)
+   *   first(k, all)  due, and spent now: true once
+   *   spent(k, all)  was it ever shown?
+   * o: {seen (the record), fresh (this player still has first-time help here: the New player, or the game's coach not yet seen),
+   * round, newPlayer, tag (default "s14-")}.
+   */
+  Onboard.firsts = function (scope, o) {
+    o = o || {};
+    const seen = o.seen || {};
+    const tag = o.tag == null ? "s14-" : o.tag;
+    const key = (k, all) => `${all ? "*" : scope}:${tag}${k}`;
+    const byRound = (all) => !!(all && o.round && o.newPlayer);
+    const g = {
+      scope,
+      fresh: !!o.fresh,
+      key,
+      spent: (k, all) => !!seen[key(k, all)],
+      due: (k, all) => !!o.fresh && !(byRound(all) ? o.round.has(key(k, all)) : seen[key(k, all)]),
+      spend(k, all) {
+        seen[key(k, all)] = true;
+        if (all && o.round) o.round.add(key(k, all));
+      },
+      first(k, all) {
+        if (!g.due(k, all)) return false;
+        g.spend(k, all);
+        return true;
+      },
+    };
+    return g;
+  };
   /** The stuck hint's rungs (ms): the first time at once, the box at 5 s idle, the guide's line at 15 s (values.md D2). */
   Onboard.RUNGS = [0, 5000, 15000];
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
