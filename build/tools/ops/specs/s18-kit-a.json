@@ -1,0 +1,49 @@
+{
+  "name": "s18-kit-a: heat, burners, knobs, the boil and its sound (the kitchen kit's stove part), worktop wash and stone band",
+  "model": "Opus",
+  "effort": "high",
+  "why": "kit design from chai's code",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8871,
+  "owns": [
+    "js/cook/mechanics/boil.js",
+    "js/cook/kitchen-kit.js (sole owner; builder b's pan part lives in js/cook/mechanics/pan.js)",
+    "js/shared/sfx.js (the boil loop's start and stop only)",
+    "build/reports/s18-kit-a.md",
+    "lab/sections/kk-stove.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (read chai 317, 575-632, 1542-1757, 1666-1692 for the behaviour; chai's owner switches)",
+    "js/cook/station-lib.js"
+  ],
+  "tasks": [
+    {
+      "do": "Module map pieces 1-4: grow js/cook/mechanics/boil.js into Mech.boil(scene, pan, opts) with chai's behaviour (the knob, too early, the green window, boil-over, the heat tick, the boil's sound loop start and stop through Sfx), the game's window and times from its json; Cook.Kit.hob/.burner/.heatRing kept; St.worktopWash and St.stoneBand moved into the kit (names kept). No game name in the files.",
+      "accept": "each piece a KIT-READY commit; the call and options documented at the file's head; chai's values reproduce chai's timings (a unit check or a lab readout)"
+    },
+    {
+      "do": "Your lab section file: every piece in every state (cold, too early, green, boil-over; the sound on and off).",
+      "accept": "the lab sections load with no errors at 1280x665 and 740x320; a script-made strip of each state in your report"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-kit-a.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-kit-a in your own worktree /home/user/wt/s18-kit-a (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-kit-a",
+  "publish": false
+}

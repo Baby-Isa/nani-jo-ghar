@@ -8,7 +8,7 @@
   "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "docs",
   "browser": false,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s17-standard-review-fable.md (THE list: fixes 1, 2, 3, 5, 6, 7, 8, 9, 10; fix 4 is s17-fix-audit's, except dropping its four mis-cited contracts, which is yours since they are in the pages)",
     "build/reports/s17-standard-format.md (the format)",

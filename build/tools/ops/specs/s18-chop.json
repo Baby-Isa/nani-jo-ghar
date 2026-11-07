@@ -1,0 +1,51 @@
+{
+  "name": "s18-chop: chop as its own game on the kits (daar and chaat use it)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a new game from an existing mechanic",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8876,
+  "owns": [
+    "js/cook/mechanics/chop.js",
+    "js/cook/stations/chop.js (new)",
+    "data/stations/chop.json (new)",
+    "docs/design-language/standard/gaps/chop.md (new)",
+    "build/reports/s18-chop.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/daar.js (wave 2's daar builder switches daar onto chop)",
+    "docs/game-design/families/kitchen.md (DAAR-36..39, CHT-16)",
+    "the kits (the kit builders)"
+  ],
+  "tasks": [
+    {
+      "do": "First the gap page docs/design-language/standard/gaps/chop.md: `node build/tools/review/audit.mjs --standard chop` (or on daar's chop if chop has no flow yet) plus your read, every rule scored on the proof scale (0 n/a, 1 missing, 2 built unproven, 3 check green, 4 judged, 5 his done; or different by design, dated) with its next step (Kit, Adopt, Game code, Art, Words, Decision, Check).",
+      "accept": "every House and Family rule has a score and a next step"
+    },
+    {
+      "do": "Build chop as its own game: its settings file and its own mechanic, everything else from the kits as they land (the order card, shelf, lights); DAAR-36 to -39 (kinds to chop 1-4 by level, 2-8 chops; ends on the last chop; the chop's light). Placeholder for the chop background (ART-37 class, decision 7). Missing Kutchi as grey English. A call daar and chaat can use.",
+      "accept": "chop plays L1-L4 at 1280x665 with no page errors; its flow in games.json so the contract judges it"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-chop.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-chop in your own worktree /home/user/wt/s18-chop (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite",
+    "docs/game-design/families/kitchen.md (chop, daar, chaat)"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:daar"
+  ],
+  "report": "s18-chop",
+  "publish": false
+}

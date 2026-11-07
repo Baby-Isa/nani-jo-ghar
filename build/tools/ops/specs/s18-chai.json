@@ -1,0 +1,68 @@
+{
+  "name": "s18-chai: chai's owner (fix chai first, re-freeze, then switch chai onto each kit piece)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "judgement on the reference game; the frozen run guards every move",
+  "cost": "about $40-60",
+  "stop": "Sun 8 Nov 2026, 10:00 UK",
+  "port": 8870,
+  "owns": [
+    "js/cook/stations/chai-tray.js",
+    "data/stations/chai-tray.json",
+    "build/frozen/chai-tray/**",
+    "build/reports/s18-chai.md",
+    "build/reports/frozen-diff-chai-tray-*",
+    "lab/kitchen-kit.html (new shell: loads every lab/sections/kk-*.html)",
+    "lab/kit.html (only the loader line for lab/sections/kit-*.html)"
+  ],
+  "readOnly": [
+    "js/cook/ui.js, js/shared/order-card.js (kit builder e owns them: CK-60's fix lands there, you prove it)",
+    "js/cook/kitchen-kit.js, js/cook/mechanics/**, js/cook/station-lib.js, js/shared/** (the kit builders)",
+    "build/sandbox/lib/contract*.mjs (the orchestrator widens contract-90 if you name the change)"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-105: after a boil-over the pot starts again but its person's order card stays ticked and folded. Fix in chai (the boil-over's reset calls the shared card's untick and re-open, as CHAI-57 says). If the untick itself is missing from js/cook/ui.js, write the exact call you need in your report (kit builder e owns ui.js) and use it once it lands.",
+      "accept": "contract-96 green on L3 returning at 1280x665 and 740x320; frozen.mjs --diff shows only this change"
+    },
+    {
+      "do": "CHAI-106: after a skipped order a new player at L4 gets no order-card light on the next item. Decide (a skip keeps the lesson: the child skipped the words, not the lesson), fix in chai, and name contract-90's widening past L1 in your report.",
+      "accept": "the L4 skip play logs the card-light; frozen diff shows only this change"
+    },
+    {
+      "do": "CK-60 (nothing said after a skip): the cause is in js/cook/ui.js (:2301, :2316; sayPart after a skip), which kit builder (e) fixes as its first task. Merge (e)'s commit when the orchestrator says it is on the integration branch, and prove it on chai.",
+      "accept": "contract-95 green on the take-back and returning players at 1280x665 and 740x320"
+    },
+    {
+      "do": "Re-freeze chai (frozen.mjs --freeze on fresh runs) so the guard holds the fixed chai; note the known breaks left.",
+      "accept": "build/frozen/chai-tray/frozen.json rewritten; frozen.mjs --diff on a re-play green"
+    },
+    {
+      "do": "Make lab/kitchen-kit.html's shell: it loads every lab/sections/kk-*.html (one per kitchen-kit piece; the kit builders write them) and add to lab/kit.html one loader for lab/sections/kit-*.html (the shared-kit builders' sections); linked from the labs page. Do this first after CHAI-105 so the kit builders can see their sections.",
+      "accept": "the page loads with no errors at 1280x665 and 740x320"
+    },
+    {
+      "do": "Switch chai onto each kit piece as it lands, in Zafar's order: heat and boil (a); pour and serve (b); the shelf and pills (c); lights and lessons (d); the order's flow and timings (e). Merge the integration branch (git merge ccr-31767b7f-rfyrg4) to take a landed piece; delete chai's copy of it in the same commit (never both); frozen.mjs --diff after every switch; a film only where the diff shows change. When no more pieces have landed, report what is switched and what is waiting; the orchestrator resumes you.",
+      "accept": "per switch: one commit, the diff report named in your report, chai's old code for that piece gone"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-chai.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-chai in your own worktree /home/user/wt/s18-chai (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-chai",
+  "publish": false
+}

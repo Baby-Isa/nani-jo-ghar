@@ -1,0 +1,47 @@
+{
+  "name": "s18-kit-d: lights and lessons (the shared kit)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "shared-kit design; the lessons every game teaches",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8874,
+  "owns": [
+    "js/shared/onboard.js",
+    "js/cook/coach.js",
+    "build/reports/s18-kit-d.md",
+    "lab/sections/kit-lights.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (chai 351-441, 2118-2807, 2946-3206)"
+  ],
+  "tasks": [
+    {
+      "do": "Module map pieces 13-14: the lights (the first time, the zoom-in, the next pan, the stuck rungs, the call-out with its light STD-D1-06; a wrong move brings the hint at once STD-D2-04; Nani's hint hides a word past support STD-D2-05) and the reveal lessons (the dots, the blur) as Onboard.light, Onboard.stuck, Cook.Coach.rungs, Onboard.lesson(kind, sel). Delete the old showing.lightHelpArrow switch (off since 29 Oct; Zafar 7 Nov).",
+      "accept": "each piece a KIT-READY commit; lightHelpArrow gone from the tree (grep)"
+    },
+    {
+      "do": "Your lab section file: every light and lesson in each state.",
+      "accept": "no errors at 1280x665 and 740x320; a strip per state"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-kit-d.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-kit-d in your own worktree /home/user/wt/s18-kit-d (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-kit-d",
+  "publish": false
+}

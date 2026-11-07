@@ -1,0 +1,51 @@
+{
+  "name": "s18-kit-b: pans and their looks, pouring, pan to glass and take-back (kitchen kit); serving to a customer (shared kit)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "kit design from chai's code",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8872,
+  "owns": [
+    "js/cook/mechanics/pour.js",
+    "js/shared/pour.js",
+    "js/shared/serve.js (new: the serve part)",
+    "js/cook/mechanics/pan.js (new: Cook.Kit.pan, the pans and their looks; the old pan and review code in kitchen-kit.js 178-247, 303-314 stays until you name its deletion in your report: builder a owns that file)",
+    "build/reports/s18-kit-b.md",
+    "lab/sections/kk-pan-pour.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)",
+    "lab/sections/kit-serve.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (chai 641-768, 985-1223, 1377-1541, 1758-2081, 3207-3415)",
+    "js/cook/station-lib.js (St.redo stays where it is unless you name a move)"
+  ],
+  "tasks": [
+    {
+      "do": "Module map pieces 5-8: Cook.Kit.pan (empty, filling, colours), Mech.pour (pour or spoon from the shelf into a pan), pan into its glass and take-back on NjgPour, and serving (the review faces, the tick, recast) as a shared serve part the pantry and stalls can call. Chai's behaviour exactly; the game's data in its json.",
+      "accept": "each piece a KIT-READY commit with its call documented; chai's values reproduce chai's look and timings"
+    },
+    {
+      "do": "Your lab section file: every pan look, a pour, a take-back, each review face.",
+      "accept": "no errors at 1280x665 and 740x320; a strip per state in your report"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-kit-b.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-kit-b in your own worktree /home/user/wt/s18-kit-b (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-kit-b",
+  "publish": false
+}

@@ -1,0 +1,57 @@
+{
+  "name": "s18-prep: eggs, baking and the corn stall ready for wave 2 (art cut and wired, settings files, missing Kutchi)",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "mechanical prep",
+  "cost": "about $10-15",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8877,
+  "owns": [
+    "assets/cook/proto/**",
+    "data/stations/eggs.json",
+    "data/stations/baking.json",
+    "data/stations/corn.json",
+    "docs/language/recording-sheet.md (the three games' rows only)",
+    "build/reports/s18-prep.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/{eggs,baking,corn}.js (wave 2's builders own them)",
+    "docs/design-language/art-plans/s17-art1-art-plan.md (art block 1: EP, EF, EG, EY, EB, ES, EM, EN; BK, BB, BJ, BO1-3, BN; CT, CB, CX, CD; CO failed)"
+  ],
+  "tasks": [
+    {
+      "do": "Cut art block 1's landed images for eggs, baking and the corn stall into webp game assets (the art pipeline's cut tools; measure the source assets), and name in each settings file the asset each item uses. No new art; CO stays in the redo list.",
+      "accept": "every landed item cut, sized by the size classes, listed in your report with a contact strip"
+    },
+    {
+      "do": "Write each game's settings (data/stations/*.json): recipe, levels L1-L4, items, words by the engine's ids; eggs' end is chai's progress display (decision 8, no frown).",
+      "accept": "each json loads in its station at 1280x665 with no errors"
+    },
+    {
+      "do": "List each game's missing Kutchi (engine gaps, not invented): add rows to the recording sheet; show as grey English.",
+      "accept": "the list in your report; no hand-written Kutchi"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-prep.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-prep in your own worktree /home/user/wt/s18-prep (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite",
+    "docs/game-design/families/kitchen.md (eggs, baking, the corn stall)"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:eggs",
+    "cook:baking",
+    "cook:corn"
+  ],
+  "report": "s18-prep",
+  "publish": false
+}

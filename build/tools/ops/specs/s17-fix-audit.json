@@ -8,7 +8,7 @@
   "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "tools",
   "browser": false,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s17-standard-review-fable.md fix 4",
     "build/tools/review/lib/standard.mjs (TOOL_STEP, the resolver), build/tools/review/audit.mjs, build/reports/s17-tool.md",

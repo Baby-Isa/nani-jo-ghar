@@ -1,0 +1,52 @@
+{
+  "name": "s18-kit-c: the shelf, its word chips and count pills, the word pop (the shared kit)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "shared-kit design the pantry and stalls will load",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8873,
+  "owns": [
+    "js/shared/shelf.js (new: name it in your report if you choose another)",
+    "css/shared/shelf.css (new, if needed)",
+    "js/shared/tally.js",
+    "js/shared/juice.js",
+    "js/cook/station-lib.js (tableDecoys, classFit and the shelf's slots only)",
+    "build/reports/s18-kit-c.md",
+    "lab/sections/kit-shelf.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (chai 337-350, 442-466, 793-984, 1224-1376)",
+    "js/cook/ui.js (UI.count, UI.tallyAt at 3901-4073: builder e owns ui.js; leave thin wrappers there, write the change in your report)",
+    "js/cook/kitchen-kit.js (Cook.Kit.chip at 334-371: write the move in your report)"
+  ],
+  "tasks": [
+    {
+      "do": "Module map pieces 9-12: the shelf (decoys by the rules file, size classes, slots), word chips and pills, count pills (js/shared/tally.js), the word pop by the action (Juice.P) in a shared shelf file the pantry can load without Cook. Decoys at L4 by the rules file, 1-2-3-4 (contract-37).",
+      "accept": "each piece a KIT-READY commit; the file loads on a page without js/cook/"
+    },
+    {
+      "do": "Your lab section file: the shelf at each size class, chips said and unsaid, pills at 0-4, the pop.",
+      "accept": "no errors at 1280x665 and 740x320; a strip per state"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-kit-c.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-kit-c in your own worktree /home/user/wt/s18-kit-c (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-kit-c",
+  "publish": false
+}

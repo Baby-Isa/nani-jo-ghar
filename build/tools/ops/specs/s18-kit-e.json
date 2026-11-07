@@ -1,0 +1,59 @@
+{
+  "name": "s18-kit-e: the order's flow and timings, the side panel, bubbles, people saying their orders (the shared kit); CK-60 and SH-234 first",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared order flow every game runs",
+  "cost": "about $20-30",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "port": 8875,
+  "owns": [
+    "js/cook/ui.js (sole owner for the run)",
+    "js/shared/order-card.js",
+    "css/shared/order-card.css",
+    "js/shared/request-popup.js",
+    "js/cook/flow.js (437-526 only, the order's flow)",
+    "lab/order-card.html",
+    "build/reports/s18-kit-e.md",
+    "lab/sections/kit-order.html (new: your lab section; the shell made by chai's owner loads it; until then open it on its own)"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (chai 2082-2117, 2937-2945)"
+  ],
+  "tasks": [
+    {
+      "do": "First, within the first hour: CK-60 (nothing said after a skip): sayPart refuses once skipped, the check after the card's opening wait, the skip on pointerdown (ui.js:2301, :2316). Commit it alone as 'KIT-READY (e): CK-60' so chai's owner can prove it. Also any untick call chai's owner asks for CHAI-105 (the orchestrator relays it).",
+      "accept": "contract-95 green for chai at 1280x665 and 740x320"
+    },
+    {
+      "do": "SH-234: the item card's picture padding at least 4 px (--njg-itpad as max(4px, 2.6%); values.md 'item padding floor').",
+      "accept": "eye: chai L1 at 740x320, the item cards; a strip"
+    },
+    {
+      "do": "Module map pieces 15-18: the order's flow and timings (said, pop-out, fold, follow, ticks, skip), the side panel, bubbles, people say their orders (UI.readAlong) as clean shared calls any game uses; the timings in one place.",
+      "accept": "each piece a KIT-READY commit with its call documented"
+    },
+    {
+      "do": "Your lab section file: the order card through its flow, the panel, bubbles.",
+      "accept": "no errors at 1280x665 and 740x320"
+    },
+    {
+      "do": "Standing for this run: every browser run under the one lock `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (eight builders share four CPUs); `node build/tools/review/checks.mjs --only <the checks for your files>` not the full run; delete sandbox runs and screenshots you no longer need (the disk is shared); no game name in a kit file (STD-F1-02); a kit piece never changes chai: chai's owner switches chai onto it; pass-me stays out (data/cook.json passMeChance 0); if you need a file another builder owns, write the exact change in your report and carry on with the rest.",
+      "accept": "your report build/reports/s18-kit-e.md: what landed (commit, call), what waits, the cost, in under 600 words"
+    }
+  ],
+  "branch": "s18-kit-e in your own worktree /home/user/wt/s18-kit-e (made for you; no sources/ except where said); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Commit each finished kit piece on its own with a message starting 'KIT-READY (<letter>): <piece>, call <the call>' so the orchestrator can merge it mid-run",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', the waves, Zafar's answers 7 Nov ~16:30)",
+    "docs/architecture/module-map.md (your pieces, their lines today, the target file and call)",
+    "docs/design-language/standard/README.md, then f-build.md (STD-F1-01..06) and the domain pages your pieces cite"
+  ],
+  "stubs": "none",
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "report": "s18-kit-e",
+  "publish": false
+}

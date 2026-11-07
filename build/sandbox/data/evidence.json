@@ -24188,5 +24188,89 @@
  },
  "SH-232": {
   "human": "after a served card folds in play, the side panel glides so the next card sits at the panel's top (scrolled or not)"
- }
+ },
+ "SH-234": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "eye: the item cards' pictures keep at least 4 px padding at 740x320 (--njg-itpad max(4px, 2.6%))",
+   "delay": 0
+  }
+ ],
+ "CHAI-105": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/frozen.mjs --diff --quick"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-96 inside the frozen diff: after a boil-over the person's card unticks and opens again (L3 returning, 1280x665 and 740x320)",
+   "delay": 0
+  }
+ ],
+ "CHAI-106": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/frozen.mjs --diff --quick"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-90 widened past L1: after a skipped order at L4 a new player gets the card light on the next item",
+   "delay": 0
+  }
+ ],
+ "ART-37": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the chop's background: a placeholder in the first pass (decision 7), the real art later",
+   "delay": 0
+  }
+ ]
 }
