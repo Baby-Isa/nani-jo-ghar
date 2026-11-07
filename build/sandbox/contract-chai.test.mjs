@@ -47,7 +47,7 @@ test("games.json: today's games keep the stations the old patterns named", () =>
   const old = {
     s14: /^(chai-tray|chai|fetch|pantry|assemble|chaat|samosa|mishkaki-grill|mishkaki)$/,
     row: /^chai-tray$/,
-    decoys: /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/,
+    decoys: /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat|chop)$/, // (S18: chop, its own game, has decoys, contract-37)
     atLeast: /^(fetch|pantry|daar|daal)$/,
   };
   const ids = ["chai-tray", "chai", "fetch", "pantry", "assemble", "chaat", "samosa", "mishkaki-grill", "mishkaki", "daar", "daal", "maani-line", "maani", "chop", "tadka", "stir", "eggs", "baking", "corn", "fill", "pour", "round", "order"];
