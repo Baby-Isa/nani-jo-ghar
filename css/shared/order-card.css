@@ -600,7 +600,7 @@ body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - va
 .oc-card.oc-s14 .oc-row14.oc-at-end { -webkit-mask-image: none; mask-image: none; }
 /* (the row is the container: a card is 1/2.3 of it, so its padding, 6% of the card, is 2.6cqi of the row; SH-234, Zafar 7 Nov:
    never under 4 px, so a picture never touches its card's edge on a small phone: values.md "item padding floor") */
-.oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex: 0 0 calc((100% - 2 * var(--njg-s2)) / 2.3) !important; min-width: 0 !important; max-width: none; scroll-snap-align: start; display: grid; min-height: 0; padding: max(4px, 2.6cqi); gap: 0; border-radius: var(--njg-card14-u14); background: var(--njg-card14-card); border: var(--njg-card14-u1p5) solid transparent; box-shadow: var(--njg-card14-shadow-it); align-items: stretch; }
+.oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex: 0 0 calc((100% - 2 * var(--njg-s2)) / 2.3) !important; min-width: 0 !important; max-width: none; scroll-snap-align: start; display: grid; min-height: 0; padding: max(calc(var(--njg-px) * 4), 2.6cqi); gap: 0; border-radius: var(--njg-card14-u14); background: var(--njg-card14-card); border: var(--njg-card14-u1p5) solid transparent; box-shadow: var(--njg-card14-shadow-it); align-items: stretch; }
 .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14::before { display: none; }
 .oc-card.oc-s14 .oc-row.oc-it14 .oc-t { flex: none; padding: 0; font-size: clamp(var(--njg-card14-u15), 16cqi, var(--njg-card14-u32)); font-weight: 700; line-height: 1.04; }
 .oc-card.oc-s14 .oc-row.oc-it14 .oc-t::first-letter { text-transform: none; }
@@ -691,7 +691,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
    (g is used only by the card's children, so it is in the card's own cqi; the card's padding is in the row's cqi, a different unit:
    --njg-itpad, registered so it resolves on the card, carries it to the speaker's tap area.) */
 @property --njg-itpad { syntax: "<length>"; inherits: true; initial-value: 0px; }
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { grid-template-rows: auto 1fr auto auto 1fr auto auto; --njg-itpad: max(4px, 2.6cqi); padding: var(--njg-itpad) var(--njg-itpad) 0; border-width: var(--njg-card14-hair); isolation: isolate; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { grid-template-rows: auto 1fr auto auto 1fr auto auto; --njg-itpad: max(calc(var(--njg-px) * 4), 2.6cqi); padding: var(--njg-itpad) var(--njg-itpad) 0; border-width: var(--njg-card14-hair); isolation: isolate; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > * { grid-column: 1; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-pic { grid-row: 1; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-slot-k { grid-row: 3; align-self: end; margin-top: 4cqi; }
