@@ -23,3 +23,27 @@
 @media (prefers-reduced-motion: reduce) { .njg-tally-chip.bump { animation: none; } }
 /* An anchored tally (js/shared/tally.js Tally.place): centred over its point, growing up from it */
 .njg-tally.at { right: auto; justify-content: center; max-width: none; transform: translate(-50%, -100%); }
+
+/* ---- the shelf's word pills (js/shared/shelf.js; Sprint 18, pieces 9-10): the count pills' cousins, in the same sheet ----
+   Shelf.mount draws a shelf in its host's box: each thing on the base line, its pill under it. A pill is `speaker word` while the
+   word is written, the speaker alone after; its word at least Shelf.PILL.min CSS px (SH-219's floor, set on the pill by js/shared/shelf.js as --njg-wpill-min), the band's
+   own size above that. A Kutchi
+   word not yet recorded is its English in grey italic (Zafar, 3 Nov: the kit's .njg-ph, css/shared/app.css). */
+.njg-shelf { position: absolute; inset: 0; }
+.njg-shelf-item { position: absolute; pointer-events: none; }
+.njg-shelf-item img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; }
+.njg-shelf-box { width: 100%; height: 100%; border-radius: var(--njg-radius); background: var(--njg-card); box-shadow: var(--njg-shadow); }
+.njg-wpill {
+  position: absolute; display: inline-flex; align-items: center; gap: calc(var(--njg-shelf-u, var(--njg-line)) * 8);
+  height: max(calc(var(--njg-shelf-u, var(--njg-line)) * 46), 2.2em); padding: 0 calc(var(--njg-shelf-u, var(--njg-line)) * 18) 0 calc(var(--njg-shelf-u, var(--njg-line)) * 12);
+  border: 0; border-radius: var(--njg-radius); background: var(--njg-card); box-shadow: var(--njg-shadow);
+  font: var(--njg-weight-drawn, 800) max(var(--njg-wpill-min), calc(var(--njg-shelf-u, var(--njg-line)) * 25))/1 var(--njg-font-word, var(--njg-font)); color: var(--njg-ink-kutchi);
+  white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.njg-wpill-spk { display: inline-grid; place-items: center; width: 1em; height: 1em; color: var(--njg-ink); flex: none; }
+.njg-wpill-spk svg { width: 100%; height: 100%; }
+.njg-wpill-spk-only { padding: 0 calc(var(--njg-shelf-u, var(--njg-line)) * 18); }
+.njg-wpill-spk-only .njg-wpill-w { display: none; }
+.njg-wpill-tap { animation: njgWpillTap .18s ease-out; }
+@keyframes njgWpillTap { 50% { transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .njg-wpill-tap { animation: none; } }
