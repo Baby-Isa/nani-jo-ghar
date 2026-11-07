@@ -29,7 +29,7 @@ cuts prose: the rule rows are the content. A builder writes only its own files a
 - **Scope:** House
 - **Pattern / part:** P3 / the light
 - **Checked by:** contract-53 + judge: the shrink's motion, chai L2 New player
-- **See it:** lab.html?mode=cook&game=chai-tray&level=2&new=1 (1280x665)
+- **See it:** lab.html?mode=cook&game=chai-tray&level=2, New player (1280x665)
 - **Status:** agreed 5 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** zoom-in (values.md E4) · **Impact:** stuck · **Source rows:** SH-213
 ```
@@ -58,7 +58,7 @@ cuts prose: the rule rows are the content. A builder writes only its own files a
     check builders and Sprint 18 close these)
   Name only checks that exist (grep for them). A check being built this sprint is still `gap:` with its name.
 - **See it:** a lab link reachable in a minute (`lab.html?mode=cook&game=chai-tray&level=N`, `lab/kit.html`, `labs.html`), with
-  the player (New player, Words known) and the size. Not "n/a" unless the rule has nothing to see (then `-`).
+  the player (New player and Words known are labs.html switches, not URL parameters) and the size. Not "n/a" unless the rule has nothing to see (then `-`).
 - **Status:** dated; a reversal keeps the history, newest first: `agreed 7 Nov (was: X, 3 Nov)`.
 - **The last line (optional fields, keep the line):** `Layer:` shared kit / kitchen kit / kitchen kit, stove part / game (where
   the code that owns it lives: Sprint 18's map); `Lives in:` file(s); `Value:` a values.md name; `Impact:` stuck, wrong,
