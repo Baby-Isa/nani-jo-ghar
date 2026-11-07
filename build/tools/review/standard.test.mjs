@@ -9,7 +9,8 @@ import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import {
-  parseStandardText, parseStandardDir, parseCheckedBy, parseChecksOutput, parseAuditReport, loadContract, auditRules, scopesFor, flowIsGame, countBy, renderReport,
+  parseStandardText, parseStandardDir, parseCheckedBy, parseChecksOutput, parseAuditReport, parseAuditRows, mergeAuditRows, loadContract, auditRules, scopesFor, flowIsGame, countBy, renderReport,
+  TOOL_STEP, EXTRA_STEPS, JUDGE_TOOLS, PROCESS_TOOLS, DEFAULT_STEPS, ALL_STEPS,
 } from "./lib/standard.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -180,4 +181,74 @@ test("the CLI reports a malformed folder and exits 1; a missing folder exits 2 w
   const missing = spawnSync(process.execPath, [AUDIT, "--standard", "chai-tray", "--std-dir", join(FIX, "nope")], { encoding: "utf8" });
   assert.equal(missing.status, 2);
   assert.match(missing.stderr, /No standard folder/);
+});
+
+// ---- Sprint 17, fix 4: every tool the rules cite is run by the audit or named with a reason ----
+const ROOT = join(HERE, "..", "..", "..");
+const rulesOf = (checkedBy) => parseStandardText(`#### STD-B1-01 · r\n\n- **Why:** w\n- **Scope:** House\n- **Pattern / part:** - / -\n- **Checked by:** ${checkedBy}\n- **See it:** s\n- **Status:** agreed\n`).rules;
+const toolAudit = (game, checkedBy, tools) => auditRules(rulesOf(checkedBy), { game, contract: loadContract(null, game), checks: null, tools, verdicts: null }).results[0];
+
+test("a process tool reads judge with its name, never not run", () => {
+  for (const t of ["publishgate", "evidence", "feedbackcheck", "brief", "stdids", "artcheck", "artblock", "artcut", "artdespill", "mumsheet", "mumround", "test_cook_mount"]) {
+    const x = toolAudit("chai-tray", `tool:${t}`, null);
+    assert.equal(x.result, "judge", t);
+    assert.match(x.terms[0].note, /process tool/);
+  }
+  assert.equal(toolAudit("chai-tray", "tool:kitsheet + tool:kitmap + tool:teachgate + tool:shelfshot", null).result, "judge");
+  assert.equal(toolAudit("chai-tray", "tool:made-up-tool", null).terms[0].note, "the audit has no step for it");
+});
+
+test("a review tool the audit did not run is not run, and names the --only key that runs it", () => {
+  const first = (tool, game = "chai-tray") => toolAudit(game, `tool:${tool}`, null).terms[0];
+  for (const [tool, key] of [["voicegate", "voicegate"], ["spkgap", "spkgap"], ["lightfollow", "lightfollow"], ["faces", "faces"], ["tapgate", "tapgate"], ["pillcheck", "pillcheck"], ["panelcheck", "panel"], ["loadtime", "load"], ["layout", "sandbox"]]) {
+    const t = first(tool);
+    assert.equal(t.result, "not run", tool);
+    assert.equal(t.note, `run: audit.mjs chai-tray --only ${key}`);
+  }
+  assert.equal(first("lightfollow", "daar").note, "run: audit.mjs daar --only lightfollow");
+});
+
+test("a review tool the audit ran reads its pass or fail; a tool that cannot judge the game yet reads judge with why", () => {
+  const tools = parseAuditReport(readFileSync(join(RUN, "audit-report-extra.md"), "utf8"));
+  assert.deepEqual([...tools.keys()], ["panel", "voicegate", "spkgap"]);
+  assert.equal(toolAudit("chai-tray", "tool:voicegate", tools).result, "pass");
+  const gap = toolAudit("chai-tray", "tool:spkgap", tools);
+  assert.equal(gap.result, "fail"); assert.match(gap.terms[0].note, /audit spkgap: 1 gap under 300 ms/);
+  assert.equal(toolAudit("chai-tray", "tool:voicegate + tool:spkgap", tools).result, "fail");
+  const chaiOnly = toolAudit("daar", "tool:pillcheck", tools).terms[0];
+  assert.equal(chaiOnly.result, "judge"); assert.match(chaiOnly.note, /chai-tray only so far/);
+});
+
+test("the report shows the reason on a tool term that reads judge or not run", () => {
+  const audit = auditRules(rulesOf("tool:pillcheck + tool:publishgate + tool:voicegate"), { game: "daar", contract: loadContract(null, "daar"), checks: null, tools: null, verdicts: null });
+  const md = renderReport({ game: "daar", day: "2026-11-07", audit, problems: [], sources: ["s"], command: "cmd" });
+  assert.match(md, /tool: pillcheck judge \(pillcheck reads chai-tray only so far\)/);
+  assert.match(md, /tool: publishgate judge \(process tool/);
+  assert.match(md, /tool: voicegate not run \(run: audit\.mjs daar --only voicegate\)/);
+});
+
+test("--only rows merge into today's report instead of wiping the other steps", () => {
+  const old = parseAuditRows(readFileSync(join(RUN, "audit-report.md"), "utf8"));
+  assert.deepEqual(old.map((r) => r.key), ["sandbox", "panel", "labcheck", "leak", "load"]);
+  const merged = mergeAuditRows(old, parseAuditRows(readFileSync(join(RUN, "audit-report-extra.md"), "utf8")));
+  assert.deepEqual(merged.map((r) => r.key), ["sandbox", "panel", "labcheck", "leak", "load", "voicegate", "spkgap"]);
+  assert.equal(merged.find((r) => r.key === "spkgap").ok, false);
+  assert.deepEqual(DEFAULT_STEPS, ["sandbox", "panel", "labcheck", "leak", "load"], "the default audit's steps do not grow unasked");
+  assert.deepEqual(ALL_STEPS.slice(5).sort(), Object.keys(EXTRA_STEPS).sort());
+});
+
+test("the audit refuses an unknown --only key or --steps value before it plays anything", () => {
+  const bad = spawnSync(process.execPath, [AUDIT, "daar", "--only", "voicegate,nosuch"], { encoding: "utf8" });
+  assert.equal(bad.status, 2); assert.match(bad.stderr, /Unknown step nosuch; the keys: sandbox, panel, labcheck, leak, load, voicegate/);
+  const steps = spawnSync(process.execPath, [AUDIT, "daar", "--steps", "some"], { encoding: "utf8" });
+  assert.equal(steps.status, 2); assert.match(steps.stderr, /--steps takes "all"/);
+});
+
+test("every tool the standard's pages cite has a place: run by the audit, judge, or process (none says 'no step')", () => {
+  const { rules } = parseStandardDir(join(ROOT, "docs", "design-language", "standard"));
+  const cited = new Set(rules.flatMap((r) => r.checkedBy.filter((t) => t.kind === "tool").map((t) => t.ref)));
+  assert.ok(cited.size > 10, "the standard cites tools");
+  const known = new Set([...Object.keys(TOOL_STEP), ...Object.keys(EXTRA_STEPS), ...Object.keys(JUDGE_TOOLS), ...Object.keys(PROCESS_TOOLS)]);
+  assert.deepEqual([...cited].filter((t) => !known.has(t)), []);
+  for (const f of [...Object.values(EXTRA_STEPS).map((x) => x.file), ...Object.values(JUDGE_TOOLS).map((x) => x.file), ...Object.values(PROCESS_TOOLS)]) assert.ok(existsSync(join(ROOT, f)), `${f} exists`);
 });

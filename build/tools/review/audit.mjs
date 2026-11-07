@@ -11,7 +11,13 @@
 // Writes build/reports/audit-<game>-<date>.md (one line per step, its result and where its detail is); exit 1 if any step fails.
 // The judge looks at what it can't measure (docs/process/prototype-to-game.md, step 3).
 //
-//   node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load] [--leak <config>]
+//   Optional steps (Sprint 17, the review tools the standard's rules cite; each takes the game and exits 1 on a fault), run only when asked:
+//   6 voicegate no effect over a voice, read from the game's sandbox run (the audit's own run when step 1 ran, else the newest run of the game)
+//   7 spkgap    the gap between speakers' lines   8 lightfollow  a new player who taps what is lit
+//   9 faces     every face box reads              10 tapgate  a phone's first tap (chai-tray only)   11 pillcheck  the shelf pills (chai-tray only)
+//   --only <key,key> runs just those (the other rows of today's report stay); --steps all runs the five above and these six.
+//
+//   node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load,voicegate,spkgap,lightfollow,faces,tapgate,pillcheck | --steps all] [--leak <config>]
 //   e.g. node build/tools/review/audit.mjs chai-tray        (Cook games for now: the lab page is lab.html?mode=cook&game=<game>)
 //
 //   node build/tools/review/audit.mjs --standard <game> [--run <sandbox run id or folder>] [--play | --no-play] [--run-checks | --checks <file>]
@@ -22,7 +28,7 @@ import { spawnSync } from "node:child_process";
 import { writeFileSync, mkdirSync, existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { args, ROOT, RUNS, runDir, rel } from "./lib/common.mjs";
-import { parseStandardDir, loadContract, latestContractRun, parseChecksOutput, parseAuditReport, auditRules, renderReport, countBy, RESULTS, DOMAINS } from "./lib/standard.mjs";
+import { parseStandardDir, loadContract, latestContractRun, parseChecksOutput, parseAuditReport, parseAuditRows, mergeAuditRows, auditRules, renderReport, countBy, RESULTS, DOMAINS, DEFAULT_STEPS, EXTRA_STEPS, ALL_STEPS } from "./lib/standard.mjs";
 
 const a = args();
 if (a.has("standard")) process.exit(await standardAudit());
@@ -105,11 +111,13 @@ async function standardAudit() {
 
 const game = a.pos[0];
 if (!game || a.has("help")) {
-  console.log("node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load] [--leak <config>]");
+  console.log(`node build/tools/review/audit.mjs <game> [--only ${ALL_STEPS.join(",")} | --steps all] [--leak <config>]`);
   process.exit(game ? 0 : 1);
 }
-const only = a.val("only") ? String(a.val("only")).split(",") : null;
-const want = (k) => !only || only.includes(k);
+const only = a.val("only") ? String(a.val("only")).split(",").map((k) => k.trim()) : null;
+const unknown = (only || []).filter((k) => !ALL_STEPS.includes(k));
+if (unknown.length || (a.val("steps") && a.val("steps") !== "all")) { console.error(`${unknown.length ? `Unknown step ${unknown.join(", ")}` : `--steps takes "all"`}; the keys: ${ALL_STEPS.join(", ")}.`); process.exit(2); }
+const want = (k) => (only ? only.includes(k) : a.val("steps") === "all" || DEFAULT_STEPS.includes(k));
 const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "");
 const day = new Date().toISOString().slice(0, 10);
 const logDir = join(ROOT, "build", "screenshots", "audit", `${game}-${stamp}`);
@@ -117,6 +125,8 @@ mkdirSync(logDir, { recursive: true });
 const leakCfg = a.val("leak") || (existsSync(join(ROOT, "build/tools/review/leak-configs", `${game}.json`)) ? game : "cook");
 
 const steps = [];
+// a step the game cannot take yet (chai-only tools) or that has nothing to read is named, not run
+const skip = (key, why) => { if (want(key)) console.log(`\n== ${key}: skipped, ${why}`); };
 const run = (key, what, cmd, argv, timeoutMin) => {
   if (!want(key)) return;
   console.log(`\n== ${key}: ${what}\n   node ${[cmd, ...argv].join(" ")}`);
@@ -137,19 +147,34 @@ run("labcheck", "the lab page at L1-L4, played to the order: errors, spills, spe
 run("leak", "a bot that knows no Kutchi can't win", "build/tools/review/leak.mjs", [leakCfg], 20);
 run("load", "time to the first play tap against the baseline", "build/tools/review/loadtime.mjs", ["--games", game], 15);
 
-const fails = steps.filter((s) => !s.ok);
+// the optional review tools (lib/standard.mjs EXTRA_STEPS)
+const chaiOnly = (key) => EXTRA_STEPS[key].games && !EXTRA_STEPS[key].games.includes(game);
+const soundRun = want("sandbox") ? join(RUNS, `audit-${game}-${stamp}`) : latestContractRun(RUNS, game); // the run whose sound log voicegate reads
+if (!soundRun || !existsSync(soundRun)) skip("voicegate", `no sandbox run of this game to read (run: audit.mjs ${game} --only sandbox)`);
+else run("voicegate", EXTRA_STEPS.voicegate.what, EXTRA_STEPS.voicegate.file, [soundRun], 5);
+run("spkgap", EXTRA_STEPS.spkgap.what, EXTRA_STEPS.spkgap.file, ["--game", game], 20);
+run("lightfollow", EXTRA_STEPS.lightfollow.what, EXTRA_STEPS.lightfollow.file, ["--game", game], 10);
+run("faces", EXTRA_STEPS.faces.what, EXTRA_STEPS.faces.file, ["--game", game], 5);
+for (const key of ["tapgate", "pillcheck"]) {
+  if (chaiOnly(key)) { skip(key, `${key} reads ${EXTRA_STEPS[key].games.join(", ")} only so far`); continue; }
+  run(key, EXTRA_STEPS[key].what, EXTRA_STEPS[key].file, key === "tapgate" ? [logDir] : ["--json", join(logDir, "pillcheck.json")], 15);
+}
+
+// today's report keeps the rows an earlier run saved (a run with --only never wipes the other steps)
+const report = join(ROOT, "build", "reports", `audit-${game}-${day}.md`);
+const rows = mergeAuditRows(existsSync(report) ? parseAuditRows(readFileSync(report, "utf8")) : [], steps.map((s) => ({ key: s.key, what: s.what, ok: s.ok, min: s.min, tail: s.tail.replace(/\|/g, "/") })));
+const fails = rows.filter((s) => !s.ok);
 const md = [
   `# Audit: ${game} (${day})`,
   "",
-  `\`node build/tools/review/audit.mjs ${game}\`: ${fails.length ? `**${fails.length} of ${steps.length} steps fail**` : `all ${steps.length} steps pass`}. Logs: \`${logDir.slice(ROOT.length + 1)}/\`.`,
+  `\`node build/tools/review/audit.mjs ${game}\`: ${fails.length ? `**${fails.length} of ${rows.length} steps fail**` : `all ${rows.length} steps pass`}. Logs: \`${logDir.slice(ROOT.length + 1)}/\`.`,
   "The judge looks at what this can't measure (the light's look, the motion, the art); the standard is `docs/process/prototype-to-game.md`.",
   "",
   "| Step | What it checks | Result | Minutes | Last lines |",
   "|---|---|---|---|---|",
-  ...steps.map((s) => `| ${s.key} | ${s.what} | ${s.ok ? "pass" : "**FAIL**"} | ${s.min} | ${s.tail.replace(/\|/g, "/")} |`),
+  ...rows.map((s) => `| ${s.key} | ${s.what} | ${s.ok ? "pass" : "**FAIL**"} | ${s.min} | ${s.tail} |`),
   "",
 ];
-const report = join(ROOT, "build", "reports", `audit-${game}-${day}.md`);
 writeFileSync(report, md.join("\n"));
 console.log(`\n${report.slice(ROOT.length + 1)}: ${fails.length ? `${fails.length} step(s) fail` : "all pass"}`);
 process.exit(fails.length ? 1 : 0);
