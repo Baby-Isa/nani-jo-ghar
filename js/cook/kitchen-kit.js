@@ -1,10 +1,10 @@
 /*
  * The shared kitchen kit (docs/design-language/ui-design-system.md §13; API note: docs/architecture/shared-api.md).
  *
- * One hob for every Cook station, extracted from the chai v2 station: a compact top-down hob with
+ * One hob for every Cook station (the kitchen kit's stove part): a compact top-down hob with
  * ONE BURNER PER PAN IN PLAY (1-4, never an empty burner: the burner rule), each burner's small
  * face badge and 48 px knob on the hob's front edge in front of it, the painted flame ring under
- * the pan, and the heat ring (the chai v2 clock ring: a white track, the sage "now" band, a gold
+ * the pan, and the heat ring (the clock ring: a white track, the sage "now" band, a gold
  * sweep and a white dot) centred on the pan. A pan, tawa or karahi is placed with its own round
  * body centred on the burner, whatever its handle does.
  *
@@ -14,6 +14,9 @@
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
  *   Cook.Kit.place(S, kind, at, r)        a vessel (pan | tawa | karahi) centred on at {x, y}, body radius r
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
+ *     (hob, burner and heatRing are the stove part, for the games that cook with heat (Sprint 18, module map piece 2); the
+ *     heat and boil on them, the knob's taps, the green, the boil-over and the simmer loop, is Mech.boil(S, pan, {burner,
+ *     ring, band, rate, ...}): js/cook/mechanics/boil.js)
  *   Cook.Kit.faceUrl(who, mood)           a person's round face art (mood: neutral | happy | frown)
  *   Cook.Kit.faceArt(who)                 [key, url] pairs for their three faces (keys <who>-badge[-mood])
  *   Cook.Kit.badge(S, who, mood, N)       a person's face on a white disc (a texture key)
@@ -21,6 +24,8 @@
  *                                         happy when it's right, gently frowning when it's wrong
  *   Cook.Kit.chip(S, id, x, y, opts)      the shelf's `🔊 word` chip (speaker only when opts.word is false)
  *   Cook.Kit.speaker(g, x, y, s)          the flat speaker icon, drawn into a Graphics
+ *   Cook.Kit.worktop(S, {top, far, depth}) the worktop's wash; St.worktopWash() its colour; St.stoneBand(S, {top, base, far,
+ *                                         depth}) the stone shelf band (at the foot of this file)
  *
  * Coordinates are the station's design px (the combined stations draw 1:1 on 1600x900).
  */
@@ -44,7 +49,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     2: { w: 931, h: 568, burners: [[0.251, 0.4025], [0.7445, 0.4025]], frontY: 0.8342 },
     3: { w: 1388, h: 709, burners: [[0.1596, 0.3725], [0.4993, 0.3728], [0.8389, 0.3725]], frontY: 0.7885 },
     // 30 Sept (v3.1, R1): hob-4-v2, four burners at H1's burner size: at the same cap size it's 1546 px wide, not
-    // 1753, so a station fitting it to a width draws bigger burners (chai at 4 people)
+    // 1753, so a station fitting it to a width draws bigger burners (a pan for each of 4 people)
     4: { w: 1546, h: 530, burners: [[0.1413, 0.4542], [0.3807, 0.4543], [0.6202, 0.4544], [0.8597, 0.4544]], frontY: 0.8928, file: "hob-4-v2" },
     wide: { w: 937, h: 568, burners: [[0.4954, 0.3929]], frontY: 0.862 },
   };
@@ -52,9 +57,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const HOB = { sets: HOBS, w: [1, 2, 3, 4].map((n) => HOBS[n].w), h: [1, 2, 3, 4].map((n) => HOBS[n].h) };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
   const VESSELS = {
-    pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.3434, cy: 0.6408, r: 0.3644 }, // centre fitted to the rim (29 Sept), as chai-tray.js
+    pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.3434, cy: 0.6408, r: 0.3644 }, // centre fitted to the rim (29 Sept)
     tawa: { key: "kit-tawa", url: "assets/cook/items/vessel-tawa-t.webp", w: 400, cx: 0.388, cy: 0.552, r: 0.386 },
-    // samosa v2's karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
+    // the v2 karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
     karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
   const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
@@ -402,6 +407,50 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
     },
   };
+
+  /*
+   * THE WORKTOP AND THE STONE BAND (Sprint 18, module map piece 4: moved here from js/cook/station-lib.js, names kept).
+   * ART-41 (Zafar, 5 Nov: "I like 1 ... this colour left and bottom panel and this ledge style ... add this"): the shelf band in his
+   * pale warm-grey stone (pack s17-pc2's tile, assets/shared/panel/stone-tile-s17) and the stone shelf the jars stand on (its strip,
+   * stone-shelf-s17: the top face, the front edge, a soft shadow), in place of the flat parchment band and the grey plank lines.
+   * The band's stone colour is drawn at once (no blank frame); the tile and the shelf come in when loaded. One call for every
+   * station that has the band. base: the line every object stands on.
+   *   St.worktopWash()                          the worktop's wash colour (Zafar, 5 Nov: the white marble warmed to the stone's
+   *                                             undertone, "they should just sing off each other"; Fable's study: alpha 0.18)
+   *   Cook.Kit.worktop(S, {top, far, depth, alpha})   the wash drawn over the worktop, from far above to the band's top
+   *   St.STONE                                  the stone's colour (a token), its tile and shelf pictures and their scales
+   *   St.stoneBand(S, {top, base, far, depth})  the band from top to the screen's foot, and the shelf at base
+   */
+  const St = Cook.Stations;
+  St.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
+  St.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
+  St.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
+    const ST = St.STONE;
+    const W = 1600 + 2 * far;
+    const flat = S.track(S.add.graphics().setDepth(depth));
+    flat.fillStyle(ST.mean, 1);
+    flat.fillRect(-far, top, W, 900 - top + far);
+    const A = Cook.Art;
+    if (!A || !A.loadFile || !S.add.tileSprite) return flat;
+    A.loadFile(S, "panel-stone", ST.tile).then((ok) => {
+      if (!ok || !S.sys || !S.sys.isActive()) return;
+      const t = S.track(S.add.tileSprite(-far, top, W, 900 - top + far, "panel-stone").setOrigin(0).setDepth(depth + 0.01));
+      t.setTileScale(ST.tileK, ST.tileK);
+    });
+    if (base != null) {
+      A.loadFile(S, "panel-shelf", ST.shelf).then((ok) => {
+        if (!ok || !S.sys || !S.sys.isActive()) return;
+        const src = S.textures.get("panel-shelf").getSourceImage();
+        const h = src.height * ST.shelfK;
+        const sh = S.track(S.add.tileSprite(-far, base - ST.faceDown, W, h, "panel-shelf").setOrigin(0).setDepth(depth + 0.02));
+        sh.setTileScale(ST.shelfK, ST.shelfK);
+      });
+    }
+    return flat;
+  };
+  Kit.worktop = (S, { top, far = 2000, depth = D.bg + 1, alpha = 0.18 } = {}) => S.track(S.add.rectangle(-far, -far, 1600 + 2 * far, top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(depth));
+  Kit.worktopWash = St.worktopWash;
+  Kit.stoneBand = St.stoneBand;
 
   Cook.Kit = Kit;
 })(window);
