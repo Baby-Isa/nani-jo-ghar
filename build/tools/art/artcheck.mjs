@@ -45,7 +45,8 @@ const walk = (dir, ok, out = []) => {
   return out;
 };
 const IMG = /\.(png|webp|jpe?g)$/i;
-export const isBg = (p) => /\/bg\/|^assets\/backgrounds\/|^assets\/clinic\/rooms\//.test(p) && !/@2x|thumb/.test(p);
+// (a sky bank is not a 1600x900 scene: assets/backgrounds/s17-sky/ keeps its skies at the source size, covered or tiled by the game)
+export const isBg = (p) => /\/bg\/|^assets\/backgrounds\/|^assets\/clinic\/rooms\//.test(p) && !/^assets\/backgrounds\/s17-sky\//.test(p) && !/@2x|thumb/.test(p);
 export const isCutout = (p) => /\/(items[\w-]*|props|room-items)\//.test(p);
 // the pixel check (artpixels.py --scan --json): {path: [reasons]}; a failure to run it is itself a finding, never a silent pass
 export function pixelFindings() {

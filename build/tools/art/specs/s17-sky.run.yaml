@@ -121,6 +121,7 @@ lines:
     prompt: SK
     attach: ["kept:SD01", "sky-dusk.png"]
     save: sb03-sky-dusk-wide-v1.png
+    colour_exception: 'one dusk combination: the checker reads Light Glaucous Blue as a second blue; it is the dusk combination''s own pale sky'
     check: SKY
     slots:
       SIZE: "1536×1024, landscape"
@@ -161,6 +162,7 @@ lines:
     prompt: SK
     attach: ["kept:SB03", "sky-dusk.png"]
     save: sb07-sky-dusk-square-v1.png
+    colour_exception: 'one dusk combination: the checker reads Light Glaucous Blue as a second blue; it is the dusk combination''s own pale sky'
     check: SKYSQ
     slots:
       SIZE: "1024×1024, square"
