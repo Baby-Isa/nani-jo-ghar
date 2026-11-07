@@ -93,3 +93,14 @@ About $200-300 and 5-6 days against the plan's implied 3-4; the difference is ph
 
 The files cited; reopened rows from `docs/process/regressions.md` and `docs/archive/regressions-done.md` (28 in all); commits from
 `git log --since=2026-10-30`; timings from the sandbox runs' `chunks.log` and the 3 Nov audit reports.
+
+## Zafar's decisions (7 Nov)
+
+- **Yes to the plan** (all seven decisions): the kit work waits for chai's sign-off; the standard and its checks first; chai's
+  behaviours move to the stove kit one at a time with one owner; live games keep their own mechanics; six builders for the family
+  step only; the judge sees diffs and one new-player film per game; other families get the standard the same way at their sprints.
+- **Chop is its own game, not part of daar** ("as other games and recipes will use chop"): it is built once on the kit and used by
+  daar and every recipe that chops.
+- **First:** chai perfected and its recorded (frozen) test run, the guard every later step is measured against.
+- **The layers:** the shared kit (`js/shared/`, every game; its page `lab/kit.html`) → a family kit (the stove kit from chai; the
+  clinic's `js/clinic/kit.js`) → each game (its settings plus its own mechanic). A fix goes in the lowest layer that owns it.
