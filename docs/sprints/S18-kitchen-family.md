@@ -88,6 +88,11 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - Small decision at launch (the orchestrator): CK-60's cause is in `js/cook/ui.js`, which kit builder (e) owns, so (e) fixes it
   first (rule 2, the lowest layer) and chai's owner proves it on chai; chai's owner fixes CHAI-105 and CHAI-106 in chai. Lab pages:
   each builder writes its own `lab/sections/*.html`; chai's owner makes the two shells that load them (one file, one owner).
+- Sat 7 Nov ~20:35: wave 1's kit builders, chop and prep finished and merged (reports `build/reports/s18-kit-{a..e}.md`, `s18-chop.md`,
+  `s18-prep.md`). Chai's owner, first session: CHAI-105/-106 traced to the checks (fixed), CK-60 proven, chai re-frozen, switches
+  (a) merged; it ran out of context after the pan switch. **s18-chai2**, chai's owner's second session (Opus high, about $20-30
+  inside chai's $40-60, stop Sun 10:00): first the pan switch's missing glass sound at #mistake 740x320 (old code vs new), then (b)
+  pieces 6-8, (c), (d), (e).
 
 ## Zafar's decisions at the opening (7 Nov afternoon, "yes to all"; 11-13 at ~14:00)
 1. The sign-off of chai covers the 88 px phone glasses and the side panel moving unscrolled on phones, as built.
