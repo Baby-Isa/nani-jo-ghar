@@ -434,6 +434,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- one order ---------------- */
+  // (piece 15: the order's timings are the kit's one table, js/cook/ui.js UI.mission.times)
+  const OT = () => (UI.mission && UI.mission.times) || { arriveNani: 500, arriveBack: 400, arriveEnter: 900, arriveOthers: 900 };
   async function runOrder(order, day, { demo, asked } = {}) {
     // SH-207: the words as they are now for this whole game; what it records shows from the next
     if (Cook.core && Cook.core.progress && Cook.core.progress.freeze) Cook.core.progress.freeze();
@@ -457,11 +459,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!demo && who === "nani") {
       // Nani asks herself (the pantry): she's already here, no small talk
       await serviceView(null);
-      await Cook.wait(500);
+      await Cook.wait(OT().arriveNani);
     } else if (!demo) {
       // CHT-07: a customer who asked before the pantry trip is still at the counter: straight to the order
       await serviceView(who, { enter: !asked || !S().chars[who] });
-      await Cook.wait(asked ? 400 : 900);
+      await Cook.wait(asked ? OT().arriveBack : OT().arriveEnter);
       if (!asked) {
         await firstMeeting(who);
         await exchange(who, EX("salaam"));
@@ -475,7 +477,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // on the redrawn kitchen the next person stands behind the next tray along (decision 64)
       const along = traySpots().map((t) => t[0]).filter((x) => x > base + 100);
       others.forEach((w, i) => S().addChar(w, { enter: true, x: along[i] != null ? along[i] : Math.min(1460, base + 250 * (i + 1)) }));
-      if (others.length) await Cook.wait(900);
+      if (others.length) await Cook.wait(OT().arriveOthers);
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();

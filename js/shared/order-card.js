@@ -83,7 +83,36 @@
   "use strict";
   const OC = {};
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const FOLD_AFTER = 700;
+  /*
+   * Piece 15 (docs/architecture/module-map.md; Sprint 18 "Coded well"): the order's flow and its timings, every game's, in one place.
+   * Each is ms at speed 1 (a host's wait divides by its speed); a game never keeps a copy of one. Cook reads them as
+   * UI.mission.times (js/cook/ui.js, the order's flow: said, pop-out, fold, follow, ticks, skip); lab/sections/kit-order.html shows them.
+   */
+  OC.TIMES = Object.freeze({
+    lead: 0, // the pop-up up, then its first line at once
+    holdAlong: 300, // item by item: the beat after the last line before the pop-up folds
+    holdCard: 1400, // a whole card said along: the beat before it folds (Cook's introduce({pause}) overrides)
+    holdReplay: 1200, // the same, for a replay (the small card's replay)
+    holdStation: 900, // a station's own line in the pop-up (Cook's askLine)
+    cardOpen: 260, // a person's card opening at their first item, before the item pops (SH-171, SH-180)
+    headCap: 1500, // a headline whose voice never starts: its rows pop after this all the same (CHAI-96)
+    popHold: 700, // a row's big card where the word's state gives no hold (the central rules' Rules.hold gives it on the s14 look)
+    partGap: 120, // one part of a person's order to the next
+    personGap: 160, // one person's card to the next (a whole-card read)
+    lineMin: 700, // the least a line with a voice holds when nobody at the counter says it (the card's own read-along)
+    readPerson: 700, // the least a person's card is read for
+    readCard: 900, // the least a whole card (no people) is read for
+    fold: 320, // a card folding or opening as the order passes on, the panel gliding with it (SH-180)
+    foldAfter: 700, // a finished card holds its last tick this long before it folds (opts.foldAfter overrides)
+    followFold: 420, // a served card's fold in play, the panel following the next card (SH-232)
+    landed: 400, // the side panel's "landed" glow as the order arrives
+    arriveNani: 500, // Nani asks herself, before her order
+    arriveBack: 400, // a customer already at the counter, before the order
+    arriveEnter: 900, // a customer walking in, before the greeting
+    arriveOthers: 900, // the other people who order walking in
+    speakGap: 300, // one person saying their order to the next (Cook's UI.peopleSay; a game's settings may give its own)
+  });
+  const FOLD_AFTER = OC.TIMES.foldAfter;
   OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -645,7 +674,7 @@
    * eases on the fold's own curve and time (css/shared/order-card.css .oc-body), so the card and the panel move as one; a touch or
    * wheel on the panel while it glides leaves the scroll to the child.
    */
-  const FOLD_MS = 420;
+  const FOLD_MS = OC.TIMES.followFold;
   // the fold's curve, cubic-bezier(0.3, 0.7, 0.2, 1): x(t) solved for t by bisection, then y(t)
   const foldCurve = (u) => {
     const bz = (t, a, b) => 3 * (1 - t) * (1 - t) * t * a + 3 * (1 - t) * t * t * b + t * t * t;
