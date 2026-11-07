@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Kitchen kit: every state</title>
+<!--
+  Sprint 18 ("Coded well" 5: a lab page shows every piece in every state): the kitchen kit's sheet. A shell only: each kitchen-kit
+  piece's builder writes its own section, lab/sections/kk-<piece>.html, a page that also opens on its own; this shell shows every
+  one of them, one after the other, each in its own frame (its own scripts and styles, never this page's). The shared kit's
+  sections (lab/sections/kit-*.html) are on lab/kit.html.
+  ?only=kk-stove shows one section; ?also=kk-a,kk-b adds sections not on the list below. A section not written yet says so.
+-->
+<link rel="stylesheet" href="../css/shared/tokens.css?v=20261107T120301Z">
+<style>
+  /* the lab page itself (developer chrome, not the game) */
+  html, body { margin: 0; background: var(--njg-page, #f6efe3); font-family: var(--njg-font, system-ui, sans-serif); color: var(--njg-ink, #3b2a1a); }
+  body { padding: 16px; box-sizing: border-box; overflow-x: hidden; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .kk-note { font-size: 15px; color: var(--njg-ink-soft, #6b5a48); margin: 0 0 14px; max-width: 70ch; }
+  .kk-sec { margin: 0 0 18px; }
+  .kk-sec h2 { font-size: 17px; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .kk-sec h2 a { font-size: 14px; font-weight: 500; color: inherit; }
+  .kk-sec iframe { display: block; width: 100%; border: 0; border-radius: 10px; background: #fff; }
+  .kk-wait { font-size: 15px; color: var(--njg-ink-soft, #6b5a48); font-style: italic; padding: 10px 12px; border: 1px dashed currentColor; border-radius: 10px; }
+</style>
+</head>
+<body>
+<h1>Kitchen kit</h1>
+<p class="kk-note">Every piece of the kitchen kit (<code>js/cook/</code>) in every state, one section per piece, each written by that piece's builder. The shared kit's pieces are on <a href="kit.html">the shared kit's sheet</a>.</p>
+<div id="sections"></div>
+<script>
+/*
+ * The section loader (the same on lab/kit.html, for its kit-* sections). A static host has no folder listing, so the pieces the
+ * module map names are listed here; a server that lists folders (the local one) adds any other section of the set it finds.
+ */
+(async function () {
+  "use strict";
+  const SET = "kk";
+  const NAMED = ["kk-stove", "kk-pan-pour"]; // (a) heat, burners, knobs and the boil sound; (b) the pans and pouring
+  const Q = new URLSearchParams(location.search);
+  const box = document.getElementById("sections");
+  let names = NAMED.slice();
+  try {
+    const r = await fetch("sections/", { cache: "no-store" });
+    if (r.ok) for (const m of (await r.text()).matchAll(new RegExp(`href="(?:[^"]*/)?(${SET}-[\\w-]+)\\.html"`, "g"))) names.push(m[1]);
+  } catch (e) { /* no listing: the named ones */ }
+  names.push(...(Q.get("also") || "").split(",").filter(Boolean));
+  if (Q.get("only")) names = Q.get("only").split(",");
+  names = [...new Set(names)];
+  for (const n of names) {
+    const sec = document.createElement("section");
+    sec.className = "kk-sec";
+    sec.id = n;
+    const src = `sections/${n}.html`;
+    sec.innerHTML = `<h2>${n}<a href="${src}">open on its own</a></h2>`;
+    box.appendChild(sec);
+    let ok = false;
+    try { ok = (await fetch(src, { method: "HEAD", cache: "no-store" })).ok; } catch (e) { ok = false; }
+    if (!ok) {
+      sec.insertAdjacentHTML("beforeend", `<div class="kk-wait">Not written yet (its builder adds ${src}).</div>`);
+      continue;
+    }
+    const f = document.createElement("iframe");
+    f.title = n;
+    f.loading = "lazy";
+    f.style.height = `${innerHeight}px`;
+    // (as tall as what it shows, never shorter than the screen: a section laid out by the screen's height sees the real one)
+    const fit = () => {
+      try {
+        const d = f.contentDocument;
+        if (!d || !d.documentElement) return;
+        const h = Math.max(innerHeight, Math.min(d.documentElement.scrollHeight, innerHeight * 8));
+        if (Math.abs(parseFloat(f.style.height) - h) > 2) f.style.height = `${h}px`;
+      } catch (e) { /* another origin: kept at the screen's height */ }
+    };
+    f.addEventListener("load", () => {
+      fit();
+      try { new ResizeObserver(fit).observe(f.contentDocument.documentElement); } catch (e) { /* fit once */ }
+    });
+    f.src = src;
+    sec.appendChild(f);
+  }
+})();
+</script>
+</body>
+</html>
