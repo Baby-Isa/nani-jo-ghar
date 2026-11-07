@@ -146,6 +146,25 @@ export class CookPlayer {
       await this.once("idle-again", { settle: 0 });
       return true;
     }
+    // boil-over (checks-to-build row 26, CHAI-57; S17 contract-96): at chai's first knob step (the "Slow kar!" turn-down) the knob is not
+    // tapped: the heat runs through the green into the red and over, the pot empties and starts again (its rows open again, its card back at
+    // its first item). The game's clock keeps running (this driver only waits, polling the pots' boil log, Cook.chaiBoil), then the player
+    // plays the pot fair from the water. The first-time hold in the green is seen (flows/cook.mjs), or it would wait for the tap.
+    if (m === "boil-over" && !d.boiled && e.kind === "timing" && /^knob-/.test(e.key || "")) {
+      d.boiled = true;
+      const log = () => p.evaluate("(window.Cook && Cook.chaiBoil ? Cook.chaiBoil : []).map((b) => b.who + ':' + b.what)").catch(() => []);
+      const t0 = Date.now();
+      let over = false, again = false;
+      while (Date.now() - t0 < 120000) {
+        const w = await log();
+        if (!over && w.some((x) => /:over$/.test(x))) { over = true; await this.once("boil-over", { settle: 0 }); }
+        if (w.some((x) => /:again$/.test(x))) { again = true; break; }
+        await sleep(40);
+      }
+      if (again) { await sleep(900); await this.once("boil-reopened", { settle: 200 }); this.made.add("boil-over"); }
+      else this.rec.note(`boil-over: the pot ${over ? "boiled over but did not start again" : "never boiled over"} in 120 s`);
+      return true;
+    }
     // pause-after-tea (CHAI-77, Zafar 4 Nov): chai's first move after the tea went in waits 4.5 s, nothing tapped (a new player looking
     // for what comes next: the order card's next item is lit for them), then plays fair
     const prevKey = d.curKey;
@@ -345,6 +364,14 @@ export class CookPlayer {
     }
     return false;
   }
+  // the page's CSS and Web animations at a set speed (the DevTools protocol's document timeline rate): slow-cards
+  async animRate(rate) {
+    try {
+      this.cdp = this.cdp || (await this.page.context().newCDPSession(this.page));
+      await this.cdp.send("Animation.enable");
+      await this.cdp.send("Animation.setPlaybackRate", { playbackRate: rate });
+    } catch (e) { this.rec.note(`animation rate ${rate}: ${String(e && e.message).slice(0, 100)}`); }
+  }
   exp() { this.tExp = Date.now(); return this.page.evaluate("njgTest.cook.expectation()"); }
   gauge() { return this.page.evaluate("njgTest.cook.gauge()"); }
   // record a state once per flow
@@ -430,6 +457,30 @@ export class CookPlayer {
       await sleep(600);
       if (this.intros === 1) await this.once("order-card-in-sidebar");
       if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
+      return;
+    }
+    // slow-cards (SH-196, S17 contract-98): the cards' landing is slowed (the page's animations at a quarter speed for the order's giving
+    // and the first seconds of play: a device that lands its cards late), the order tapped as the fair player does; the first-time
+    // lesson due must still come once they have landed
+    if (this.mode === "slow-cards" && this.intros === 1) {
+      await this.animRate(0.25);
+      this.drv.slowT = setTimeout(() => { this.animRate(1).catch(() => {}); }, 9000);
+      await this.once("cards-slowed", { settle: 0 });
+    }
+    // tap-mid-order (SH-196, S17 contract-98: Zafar's recorded play, 6 Nov, L2 New player): a tap in the play area while the order is
+    // being given and its first card is up, half a second in, so the order is skipped and play begins while the cards are still landing
+    if (this.mode === "tap-mid-order" && this.intros === 1) {
+      await until(() => popupOpen(p), 3000, 15);
+      await until(async () => !!(await p.$(".wc14-pop")), 6000, 30);
+      await sleep(500);
+      const at = await p.evaluate(() => { const st = document.querySelector("#stage"); if (!st) return null; const r = st.getBoundingClientRect(); const busy = [...document.querySelectorAll(".cv-bubble, .wc14-pop, .side-rail")].map((e) => e.getBoundingClientRect()); for (const [fx, fy] of [[0.5, 0.75], [0.7, 0.8], [0.3, 0.85], [0.5, 0.5]]) { const x = r.left + r.width * fx, y = r.top + r.height * fy; if (!busy.some((b) => x >= b.left && x <= b.right && y >= b.top && y <= b.bottom)) return { x, y }; } return { x: r.left + r.width / 2, y: r.bottom - 20 }; }).catch(() => null);
+      if (at && (await popupOpen(p))) {
+        await p.mouse.click(at.x, at.y);
+        await sleep(250);
+        await this.once("tapped-mid-order", { settle: 0 });
+      } else this.rec.note("tap-mid-order: the order was over before the tap");
+      await sleep(600);
+      if (this.intros === 1) await this.once("order-card-in-sidebar");
       return;
     }
     // tap-during-pause: its tap is the watcher's (pauseWatch); the pop-up may already have folded on it

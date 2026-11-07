@@ -57,6 +57,11 @@ export const DRIVERS = {
   "turn-early-late": { kinds: ["cook"], moments: ["rec:wrong-early", "rec:wrong-late", "rec:turned-early", "rec:turned-late"] },
   "wrong-thrice": { kinds: ["cook", "heal"], moments: ["rec:wrong-1", "rec:wrong-2", "rec:wrong-3", "rec:shown-right"] },
   "lab-log-on": { kinds: ["clinic-stage"], moments: ["rec:lab-log-on"] },
+  // S17 (s17-chk2): the paths of the S17 contract checks. boil-over (checks-to-build row 26, contract-96): chai's knob left alone until the pot
+  // boils over and starts again; tap-mid-order and slow-cards (SH-196, contract-98): the order tapped half-way, and its cards landing late
+  "boil-over": { kinds: ["cook"], moments: ["rec:boil-over", "rec:boil-reopened"] },
+  "tap-mid-order": { kinds: ["cook"], moments: ["rec:tapped-mid-order"] },
+  "slow-cards": { kinds: ["cook"], moments: ["rec:cards-slowed"] },
   "heal-fast": { kinds: ["morning"], moments: ["drv:heal-fast-done"] },
   "find-scene": { kinds: ["mode"], moments: ["rec:scene-*", "rec:scene-*-*"] },
   // not in _drivers (a path the spec already used): the clinic's take-back, like Cook's #takeback (CLN-112, CK-TB-01)
