@@ -376,7 +376,8 @@
       // "bare": the words on their own, no frame ("trae aste thi": the stir row, T14)
       const line = frame === "bare" ? Lang.bare(Lang.phrase(ps)) : Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
       // silent: on the card only, never said (SAM-11: the first block's head, "ba samosa", is already in the order); unsaid
-      // (CK-51): a row on the card that is never said at all, at the station either (chai's water and tea)
+      // (CK-51): a row on the card that is never said at all, at the station either (chai's water and tea); saidBy "head"
+      // (CHAI-104): an unsaid row whose word the person's headline says ("Muke adh chai khape": the amount), so it lands with it
       if (!when && !e.silent && !e.unsaid) lines.push(line);
       // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
@@ -387,7 +388,7 @@
       const kind = e.blockHead && e.block ? "bhead" : e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
       if (kind !== "no" && kind !== "phead" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
       // pic (DAAR-19): a step row's own tool beside its words (the stir row's ladle: "ba" alone read as a stray row)
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame, pic: e.pic || null, unsaid: !!e.unsaid });
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame, pic: e.pic || null, unsaid: !!e.unsaid, saidBy: e.saidBy || null });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };
