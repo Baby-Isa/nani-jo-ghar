@@ -1,9 +1,10 @@
 {
  "game": "chai-tray",
- "frozenAt": "2026-11-07T14:05:49.982Z",
- "commit": "34641d3b05010671d1b5784979c53425292bb561",
+ "frozenAt": "2026-11-07T14:12:34.936Z",
+ "commit": "26c75eee38c57a6709805cc92c0a839685c91c90",
  "runs": [
-  "frozen-chai-20261107"
+  "frozen-chai-20261107",
+  "frozen-chai-child-20261107"
  ],
  "pages": {
   "cook:chai-tray#hint@1280x665": {
@@ -18028,6 +18029,1803 @@
     ]
    },
    "findings": 9
+  },
+  "lab:cook/chai-tray#child@1280x665": {
+   "complete": true,
+   "stops": [],
+   "errors": [],
+   "states": [
+    "chai-tray-start",
+    "chai-tray-order-card-big",
+    "chai-tray-order-card-in-sidebar",
+    "chai-tray-view-marble",
+    "chai-tray-kind-tap",
+    "chai-tray-kind-timing",
+    "chai-tray-view-service",
+    "results-badges",
+    "results-words",
+    "end"
+   ],
+   "seq": [
+    "stage-start",
+    "order-count",
+    "order-level",
+    "request",
+    "say-start",
+    "say-end",
+    "order-pass",
+    "card-fold",
+    "row-glide",
+    "pop-face",
+    "say-start",
+    "say-end",
+    "skip-zone",
+    "stage-start",
+    "decoys",
+    "row-home",
+    "order-skip",
+    "order-landed",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "say-start",
+    "say-end",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "say-start",
+    "step-call",
+    "say-end",
+    "act",
+    "chai-add",
+    "step-close",
+    "say-start",
+    "say-end",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "step-call",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "say-start",
+    "row-home",
+    "say-end",
+    "level-up",
+    "stage-end",
+    "stage-start",
+    "say-start",
+    "say-end",
+    "say-start",
+    "say-end",
+    "stage-end",
+    "results",
+    "stage-end",
+    "stage-end",
+    "results"
+   ],
+   "counts": {
+    "stage-start": 3,
+    "order-count": 1,
+    "order-level": 1,
+    "poke": 7,
+    "ghost": 1,
+    "request": 1,
+    "say-start": 10,
+    "say-end": 10,
+    "order-pass": 1,
+    "card-fold": 1,
+    "row-glide": 2,
+    "pop-face": 1,
+    "skip-zone": 1,
+    "decoys": 1,
+    "row-home": 2,
+    "order-skip": 1,
+    "order-landed": 1,
+    "step-open": 11,
+    "step-call": 10,
+    "rung": 4,
+    "glow": 4,
+    "act": 7,
+    "step-close": 4,
+    "chai-add": 3,
+    "chai-simmer": 18,
+    "chai-slow": 1,
+    "timed-hold": 2,
+    "chai-down": 1,
+    "chai-boil": 1,
+    "pill": 4,
+    "level-up": 1,
+    "stage-end": 4,
+    "results": 2
+   },
+   "sounds": {
+    "family/mum/salamun-alaykum.mp3": 1,
+    "tts:muke": 1,
+    "tts:chai": 2,
+    "tts:khape": 1,
+    "tts:dudh": 2,
+    "sfx/cook-pop": 4,
+    "tts:paani": 1,
+    "sfx/file:pour-a": 3,
+    "sfx/pour-short": 2,
+    "sfx/file:settle-a": 2,
+    "sfx/settle": 2,
+    "tts:hakro": 1,
+    "tts:khun": 1,
+    "sfx/file:knob-a": 2,
+    "sfx/knob": 2,
+    "sfx/flame": 1,
+    "sfx/file:simmer-b": 1,
+    "sfx/simmer-loop": 3,
+    "sfx/file:flame-b": 1,
+    "sfx/file:ding-a": 1,
+    "sfx/green": 1,
+    "family/mum/slow.mp3": 1,
+    "family/mum/kar.mp3": 1,
+    "sfx/pour-tea-loop": 1,
+    "sfx/cook-right": 1,
+    "family/mum/shabash-rc.mp3": 1,
+    "sfx/drop": 1,
+    "tts:thank you": 1,
+    "tts:khuda-fis": 1,
+    "sfx/file:sparkle-a": 1,
+    "sfx/sparkle": 1,
+    "sfx/right": 4,
+    "sfx/gold": 1,
+    "sfx/tap": 1,
+    "sfx/whoosh": 1
+   },
+   "moments": {
+    "request": [
+     15646
+    ],
+    "order-landed": [
+     17769
+    ],
+    "chai-add": [
+     23311,
+     26581,
+     28316
+    ],
+    "chai-boil": [
+     43371
+    ],
+    "chai-slow": [
+     41066
+    ],
+    "chai-down": [
+     43371
+    ],
+    "step-call": [
+     17770,
+     25215,
+     26581,
+     26581,
+     30185,
+     30185,
+     32420,
+     33762,
+     41066,
+     43371
+    ],
+    "card-fold": [
+     16502
+    ],
+    "results": [
+     52974,
+     52974
+    ]
+   },
+   "ear": {
+    "boil": [
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 33717,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 33718,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 41741,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 42237,
+      "dur": null
+     }
+    ],
+    "clicks": [
+     {
+      "s": "sfx/file:knob-a",
+      "at": 33714,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 33715,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 43298,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 43298,
+      "dur": null
+     },
+     {
+      "s": "sfx/tap",
+      "at": 55979,
+      "dur": null
+     }
+    ],
+    "pour": [
+     {
+      "s": "sfx/file:pour-a",
+      "at": 23842,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 23842,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 28853,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 28853,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 45577,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 45578,
+      "dur": null
+     }
+    ]
+   },
+   "findings": 4
+  },
+  "lab:cook/chai-tray@L2#child@1280x665": {
+   "complete": true,
+   "stops": [],
+   "errors": [],
+   "states": [
+    "chai-tray-start",
+    "chai-tray-order-card-big",
+    "chai-tray-order-card-in-sidebar",
+    "chai-tray-view-marble",
+    "chai-tray-kind-tap",
+    "chai-tray-kind-timing",
+    "chai-tray-view-service",
+    "results-badges",
+    "results-words",
+    "end"
+   ],
+   "seq": [
+    "stage-start",
+    "order-count",
+    "order-level",
+    "request",
+    "order-pass",
+    "card-fold",
+    "row-glide",
+    "say-start",
+    "pop-face",
+    "say-end",
+    "skip-zone",
+    "stage-start",
+    "decoys",
+    "row-home",
+    "order-skip",
+    "order-landed",
+    "reveal-lesson",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "say-start",
+    "say-end",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "say-start",
+    "step-call",
+    "say-end",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "say-start",
+    "step-call",
+    "say-end",
+    "act",
+    "chai-add",
+    "step-close",
+    "say-start",
+    "say-end",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-open",
+    "step-call",
+    "step-call",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "say-start",
+    "say-end",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "step-open",
+    "step-call",
+    "row-home",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "say-start",
+    "step-call",
+    "say-end",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "say-start",
+    "step-call",
+    "say-end",
+    "act",
+    "chai-add",
+    "step-close",
+    "say-start",
+    "say-end",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-call",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "say-start",
+    "row-home",
+    "say-end",
+    "level-up",
+    "stage-end",
+    "stage-start",
+    "say-start",
+    "say-end",
+    "say-start",
+    "say-end",
+    "stage-end",
+    "results",
+    "stage-end",
+    "stage-end",
+    "results"
+   ],
+   "counts": {
+    "stage-start": 3,
+    "order-count": 1,
+    "order-level": 1,
+    "poke": 17,
+    "ghost": 1,
+    "request": 1,
+    "order-pass": 1,
+    "card-fold": 1,
+    "row-glide": 3,
+    "say-start": 14,
+    "pop-face": 1,
+    "say-end": 14,
+    "skip-zone": 1,
+    "decoys": 1,
+    "row-home": 3,
+    "order-skip": 1,
+    "order-landed": 1,
+    "rung": 5,
+    "reveal-lesson": 1,
+    "step-open": 26,
+    "step-call": 24,
+    "glow": 4,
+    "act": 19,
+    "step-close": 10,
+    "chai-add": 6,
+    "chai-simmer": 36,
+    "chai-slow": 2,
+    "timed-hold": 2,
+    "chai-down": 2,
+    "chai-boil": 2,
+    "pill": 10,
+    "level-up": 1,
+    "stage-end": 4,
+    "results": 2
+   },
+   "sounds": {
+    "family/mum/salamun-alaykum.mp3": 1,
+    "tts:muke": 1,
+    "tts:elchi": 2,
+    "tts:waari": 1,
+    "tts:chai": 3,
+    "tts:khape": 1,
+    "sfx/reveal": 1,
+    "sfx/cook-pop": 11,
+    "tts:paani": 2,
+    "sfx/file:pour-a": 6,
+    "sfx/pour-short": 4,
+    "sfx/file:settle-a": 4,
+    "sfx/settle": 4,
+    "tts:dudh": 2,
+    "sfx/file:knob-a": 4,
+    "sfx/knob": 4,
+    "sfx/flame": 2,
+    "sfx/file:simmer-b": 2,
+    "sfx/simmer-loop": 6,
+    "sfx/file:flame-b": 2,
+    "sfx/file:ding-a": 2,
+    "sfx/green": 2,
+    "family/mum/slow.mp3": 2,
+    "family/mum/kar.mp3": 2,
+    "sfx/pour-tea-loop": 2,
+    "sfx/drop": 2,
+    "sfx/file:glass-c": 1,
+    "sfx/glass": 1,
+    "sfx/file:sparkle-a": 2,
+    "sfx/sparkle": 2,
+    "tts:aadu": 1,
+    "sfx/cook-right": 2,
+    "family/mum/shabash-rc.mp3": 1,
+    "tts:thank you": 1,
+    "tts:khuda-fis": 1,
+    "sfx/right": 10,
+    "sfx/gold": 1,
+    "sfx/tap": 1,
+    "sfx/whoosh": 1
+   },
+   "moments": {
+    "request": [
+     15842
+    ],
+    "order-landed": [
+     18188
+    ],
+    "chai-add": [
+     27636,
+     30959,
+     35159,
+     43515,
+     56708,
+     60563
+    ],
+    "chai-boil": [
+     47570,
+     74913
+    ],
+    "chai-slow": [
+     45729,
+     73222
+    ],
+    "chai-down": [
+     47569,
+     74913
+    ],
+    "step-call": [
+     24176,
+     29681,
+     30959,
+     30959,
+     32801,
+     32801,
+     37116,
+     37116,
+     38440,
+     40231,
+     40231,
+     45729,
+     47570,
+     52293,
+     56708,
+     56708,
+     58331,
+     58332,
+     62461,
+     62461,
+     65641,
+     67756,
+     73222,
+     74913
+    ],
+    "card-fold": [
+     15842
+    ],
+    "results": [
+     89268,
+     89268
+    ]
+   },
+   "ear": {
+    "boil": [
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 40181,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 40181,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 46629,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 47362,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 67693,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 67693,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 73619,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 74168,
+      "dur": null
+     }
+    ],
+    "clicks": [
+     {
+      "s": "sfx/file:knob-a",
+      "at": 40175,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 40175,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 47512,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 47513,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 67691,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 67691,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 74882,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 74882,
+      "dur": null
+     },
+     {
+      "s": "sfx/tap",
+      "at": 92401,
+      "dur": null
+     }
+    ],
+    "pour": [
+     {
+      "s": "sfx/file:pour-a",
+      "at": 28201,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 28201,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 35699,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 35699,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 44078,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 44078,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 50439,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 50439,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 61127,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 61127,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 77882,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 77882,
+      "dur": null
+     }
+    ]
+   },
+   "findings": 4
+  },
+  "lab:cook/chai-tray@L3#child@1280x665": {
+   "complete": true,
+   "stops": [],
+   "errors": [],
+   "states": [
+    "chai-tray-start",
+    "chai-tray-order-card-big",
+    "chai-tray-order-card-in-sidebar",
+    "chai-tray-view-marble",
+    "chai-tray-kind-tap",
+    "chai-tray-kind-timing",
+    "chai-tray-view-service",
+    "results-badges",
+    "results-words",
+    "end"
+   ],
+   "seq": [
+    "stage-start",
+    "order-count",
+    "order-level",
+    "request",
+    "order-pass",
+    "card-fold",
+    "row-glide",
+    "say-start",
+    "pop-face",
+    "say-end",
+    "skip-zone",
+    "stage-start",
+    "decoys",
+    "row-home",
+    "order-skip",
+    "order-landed",
+    "row-home",
+    "reveal-lesson",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "chai-add",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-open",
+    "step-call",
+    "step-call",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "say-end",
+    "act",
+    "step-open",
+    "step-call",
+    "row-home",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-call",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "say-start",
+    "row-home",
+    "say-end",
+    "level-up",
+    "stage-end",
+    "stage-start",
+    "say-start",
+    "say-end",
+    "say-start",
+    "say-end",
+    "stage-end",
+    "results",
+    "stage-end",
+    "stage-end",
+    "results"
+   ],
+   "counts": {
+    "stage-start": 3,
+    "order-count": 1,
+    "order-level": 1,
+    "poke": 16,
+    "ghost": 1,
+    "request": 1,
+    "order-pass": 1,
+    "card-fold": 1,
+    "row-glide": 3,
+    "say-start": 6,
+    "pop-face": 1,
+    "say-end": 6,
+    "skip-zone": 1,
+    "decoys": 1,
+    "row-home": 4,
+    "order-skip": 1,
+    "order-landed": 1,
+    "rung": 5,
+    "reveal-lesson": 1,
+    "step-open": 24,
+    "step-call": 22,
+    "glow": 4,
+    "act": 18,
+    "step-close": 10,
+    "chai-add": 5,
+    "chai-simmer": 34,
+    "chai-slow": 2,
+    "timed-hold": 2,
+    "chai-down": 2,
+    "chai-boil": 2,
+    "pill": 9,
+    "level-up": 1,
+    "stage-end": 4,
+    "results": 2
+   },
+   "sounds": {
+    "family/mum/salamun-alaykum.mp3": 1,
+    "tts:muke": 1,
+    "tts:elchi": 1,
+    "tts:waari": 1,
+    "tts:chai": 1,
+    "tts:khape": 1,
+    "sfx/reveal": 1,
+    "sfx/cook-pop": 10,
+    "sfx/file:pour-a": 5,
+    "sfx/pour-short": 3,
+    "sfx/file:settle-a": 3,
+    "sfx/settle": 3,
+    "sfx/file:knob-a": 3,
+    "sfx/knob": 3,
+    "sfx/flame": 2,
+    "sfx/file:simmer-b": 2,
+    "sfx/simmer-loop": 5,
+    "sfx/file:flame-b": 2,
+    "sfx/file:ding-a": 2,
+    "sfx/green": 2,
+    "family/mum/slow.mp3": 2,
+    "family/mum/kar.mp3": 2,
+    "sfx/pour-tea-loop": 2,
+    "sfx/drop": 2,
+    "sfx/file:glass-c": 2,
+    "sfx/glass": 2,
+    "sfx/file:sparkle-a": 3,
+    "sfx/sparkle": 3,
+    "sfx/cook-right": 2,
+    "family/mum/shabash-rc.mp3": 1,
+    "tts:thank you": 1,
+    "tts:khuda-fis": 1,
+    "sfx/right": 10,
+    "sfx/gold": 1,
+    "sfx/tap": 1,
+    "sfx/whoosh": 1
+   },
+   "moments": {
+    "request": [
+     15850
+    ],
+    "order-landed": [
+     18264
+    ],
+    "chai-add": [
+     28451,
+     31936,
+     36316,
+     44765,
+     57752
+    ],
+    "chai-boil": [
+     48531,
+     71812
+    ],
+    "chai-slow": [
+     47201,
+     70478
+    ],
+    "chai-down": [
+     48531,
+     71811
+    ],
+    "step-call": [
+     24651,
+     30407,
+     31936,
+     31936,
+     33948,
+     33948,
+     38262,
+     38262,
+     39598,
+     41406,
+     41481,
+     47201,
+     48531,
+     53430,
+     57752,
+     57752,
+     59326,
+     59326,
+     63485,
+     64751,
+     70479,
+     71812
+    ],
+    "card-fold": [
+     15851
+    ],
+    "results": [
+     85977,
+     85977
+    ]
+   },
+   "ear": {
+    "boil": [
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 41374,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 41374,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 48125,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 64640,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 64640,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 70953,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 71401,
+      "dur": null
+     }
+    ],
+    "clicks": [
+     {
+      "s": "sfx/file:knob-a",
+      "at": 41355,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 41355,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 64639,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 64639,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 71780,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 71780,
+      "dur": null
+     },
+     {
+      "s": "sfx/tap",
+      "at": 88946,
+      "dur": null
+     }
+    ],
+    "pour": [
+     {
+      "s": "sfx/file:pour-a",
+      "at": 28918,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 28918,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 36877,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 36878,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 45386,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 45386,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 51534,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 51534,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 74404,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 74404,
+      "dur": null
+     }
+    ]
+   },
+   "findings": 4
+  },
+  "lab:cook/chai-tray@L4#child@1280x665": {
+   "complete": true,
+   "stops": [],
+   "errors": [],
+   "states": [
+    "chai-tray-start",
+    "chai-tray-order-card-big",
+    "chai-tray-order-card-in-sidebar",
+    "chai-tray-view-marble",
+    "chai-tray-kind-tap",
+    "chai-tray-kind-timing",
+    "chai-tray-view-service",
+    "results-badges",
+    "results-words",
+    "end"
+   ],
+   "seq": [
+    "stage-start",
+    "order-count",
+    "order-level",
+    "say-start",
+    "say-end",
+    "say-start",
+    "say-end",
+    "request",
+    "order-pass",
+    "card-fold",
+    "row-glide",
+    "say-start",
+    "pop-face",
+    "say-end",
+    "skip-zone",
+    "stage-start",
+    "decoys",
+    "row-home",
+    "order-skip",
+    "order-landed",
+    "reveal-lesson",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "chai-add",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-open",
+    "step-call",
+    "step-call",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "say-end",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "row-home",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "step-call",
+    "act",
+    "chai-add",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-open",
+    "step-call",
+    "step-call",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "row-home",
+    "act",
+    "step-open",
+    "act",
+    "step-close",
+    "chai-add",
+    "step-open",
+    "step-call",
+    "row-glide",
+    "step-open",
+    "step-call",
+    "act",
+    "chai-add",
+    "step-close",
+    "step-open",
+    "step-call",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "step-close",
+    "step-open",
+    "step-call",
+    "act",
+    "step-call",
+    "chai-slow",
+    "step-open",
+    "step-call",
+    "say-start",
+    "say-end",
+    "act",
+    "chai-down",
+    "chai-boil",
+    "step-open",
+    "step-call",
+    "act",
+    "act",
+    "step-close",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "pill",
+    "say-start",
+    "row-home",
+    "say-end",
+    "level-up",
+    "stage-end",
+    "stage-start",
+    "say-start",
+    "say-end",
+    "say-start",
+    "say-end",
+    "stage-end",
+    "results",
+    "stage-end",
+    "stage-end",
+    "results"
+   ],
+   "counts": {
+    "stage-start": 3,
+    "order-count": 1,
+    "order-level": 1,
+    "poke": 27,
+    "say-start": 9,
+    "say-end": 9,
+    "ghost": 1,
+    "request": 1,
+    "order-pass": 1,
+    "card-fold": 1,
+    "row-glide": 4,
+    "pop-face": 1,
+    "skip-zone": 1,
+    "decoys": 1,
+    "row-home": 4,
+    "order-skip": 1,
+    "order-landed": 1,
+    "rung": 5,
+    "reveal-lesson": 1,
+    "step-open": 35,
+    "step-call": 32,
+    "glow": 4,
+    "act": 31,
+    "step-close": 16,
+    "chai-add": 9,
+    "chai-simmer": 54,
+    "chai-slow": 3,
+    "timed-hold": 2,
+    "chai-down": 3,
+    "chai-boil": 3,
+    "pill": 13,
+    "level-up": 1,
+    "stage-end": 4,
+    "results": 2
+   },
+   "sounds": {
+    "sfx/file:pour-a": 12,
+    "sfx/pour-glass-loop": 2,
+    "sfx/drop": 7,
+    "sfx/shutter": 2,
+    "sfx/pop": 2,
+    "family/mum/adh-rc.mp3": 1,
+    "family/zafar/aako-rc.mp3": 1,
+    "family/mum/salamun-alaykum.mp3": 1,
+    "tts:muke": 1,
+    "tts:elchi": 1,
+    "tts:waari": 1,
+    "tts:chai": 1,
+    "tts:khape": 1,
+    "sfx/reveal": 1,
+    "sfx/cook-pop": 16,
+    "sfx/pour-short": 5,
+    "sfx/file:settle-a": 6,
+    "sfx/settle": 6,
+    "sfx/file:knob-a": 6,
+    "sfx/knob": 6,
+    "sfx/flame": 3,
+    "sfx/file:simmer-b": 3,
+    "sfx/simmer-loop": 8,
+    "sfx/file:flame-b": 3,
+    "sfx/file:ding-a": 3,
+    "sfx/green": 3,
+    "family/mum/slow.mp3": 3,
+    "family/mum/kar.mp3": 3,
+    "sfx/pour-tea-loop": 5,
+    "sfx/file:glass-c": 5,
+    "sfx/glass": 5,
+    "sfx/file:sparkle-a": 3,
+    "sfx/sparkle": 3,
+    "sfx/cook-right": 3,
+    "family/mum/shabash-rc.mp3": 1,
+    "tts:thank you": 1,
+    "tts:khuda-fis": 1,
+    "sfx/right": 12,
+    "sfx/gold": 1,
+    "sfx/tap": 1,
+    "sfx/whoosh": 1
+   },
+   "moments": {
+    "request": [
+     39289
+    ],
+    "order-landed": [
+     42362
+    ],
+    "chai-add": [
+     52983,
+     56741,
+     61342,
+     70102,
+     82901,
+     84707,
+     100433,
+     111671,
+     113387
+    ],
+    "chai-boil": [
+     73832,
+     102164,
+     129467
+    ],
+    "chai-slow": [
+     72042,
+     100590,
+     128004
+    ],
+    "chai-down": [
+     73832,
+     102164,
+     129467
+    ],
+    "step-call": [
+     48815,
+     55051,
+     56741,
+     56741,
+     58825,
+     58825,
+     63233,
+     63233,
+     64674,
+     66500,
+     66571,
+     72043,
+     73832,
+     78246,
+     82901,
+     82901,
+     86733,
+     86733,
+     92586,
+     94887,
+     94889,
+     100590,
+     102739,
+     108827,
+     111671,
+     111673,
+     115535,
+     115535,
+     120332,
+     122510,
+     128005,
+     129468
+    ],
+    "card-fold": [
+     39289
+    ],
+    "results": [
+     152461,
+     152461
+    ]
+   },
+   "ear": {
+    "boil": [
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 66473,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 66474,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 73184,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 94829,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 94831,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 101100,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 101872,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:simmer-b",
+      "at": 122433,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 122434,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 128526,
+      "dur": null
+     },
+     {
+      "s": "sfx/simmer-loop",
+      "at": 128943,
+      "dur": null
+     }
+    ],
+    "clicks": [
+     {
+      "s": "sfx/file:knob-a",
+      "at": 66464,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 66464,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 73775,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 73777,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 94824,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 94824,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 102101,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 102102,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 122432,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 122432,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:knob-a",
+      "at": 129422,
+      "dur": 0.20492063492063492
+     },
+     {
+      "s": "sfx/knob",
+      "at": 129422,
+      "dur": null
+     },
+     {
+      "s": "sfx/tap",
+      "at": 155308,
+      "dur": null
+     }
+    ],
+    "pour": [
+     {
+      "s": "sfx/file:pour-a",
+      "at": 2469,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-glass-loop",
+      "at": 2469,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 6868,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-glass-loop",
+      "at": 6868,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 53491,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 53491,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 61864,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 61864,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 70657,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 70657,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 77018,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 77018,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 85235,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 85237,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 104705,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 104705,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 107610,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 107610,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 113865,
+      "dur": 4.9981179138322
+     },
+     {
+      "s": "sfx/pour-short",
+      "at": 113865,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 132650,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 132651,
+      "dur": null
+     },
+     {
+      "s": "sfx/file:pour-a",
+      "at": 136552,
+      "dur": null
+     },
+     {
+      "s": "sfx/pour-tea-loop",
+      "at": 136553,
+      "dur": null
+     }
+    ]
+   },
+   "findings": 4
   }
  },
  "breaks": [
