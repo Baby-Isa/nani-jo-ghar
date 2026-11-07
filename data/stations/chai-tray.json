@@ -78,5 +78,414 @@
   ]
  },
  "_heat": "Zafar, 29 Oct (chai level rules 6; suggested, for his review): the heat by level, over the tray profile (data/cook.json mechanics.boil): L1 as before; L2 quicker (rate 0.12) with L1's band; L3 the green band narrower [0.70, 0.84] at 0.12; L4 a little of both [0.72, 0.85] at 0.13 (CHAI-58, Zafar 1 Nov: extend to two seconds: the green, at half rate, lasts 0.13/0.065 = 2.0 s; was [0.72, 0.83], 1.7 s).",
- "_pour": "CHAI-26 (Zafar 23 Oct; s12-w3b): the s12 pour frames (PT1 milky, PT2 black, cut MIRRORED: spout right, handle left; assets/cook/items-s12/): the hob pan lifts and is carried spout-first to just up-left of its glass, the six frames play (tip 0, 20, 40, 60, pour, pour end) and the thin stream (js/shared/pour.js) runs from where the chai leaves the rim; for a right-hand glass the pan hangs over the left column, never past the tray. The times in ms: liftMs the carry, tipMs the four tip frames, pourMs each half glass, untipMs, backMs"
+ "_pour": "CHAI-26 (Zafar 23 Oct; s12-w3b): the s12 pour frames (PT1 milky, PT2 black, cut MIRRORED: spout right, handle left; assets/cook/items-s12/): the hob pan lifts and is carried spout-first to just up-left of its glass, the six frames play (tip 0, 20, 40, 60, pour, pour end) and the thin stream (js/shared/pour.js) runs from where the chai leaves the rim; for a right-hand glass the pan hangs over the left column, never past the tray. The times in ms: liftMs the carry, tipMs the four tip frames, pourMs each half glass, untipMs, backMs",
+ "kit": {
+  "_about": "Sprint 18 (kit b's ask): chai's values for the kitchen kit's pan (Cook.Kit.pan: its looks by registration, the contents pictures, the glow ring, the chosen pan, the spoonfuls), its glass and pour frames (Mech.pour.toGlass) and its shelf's pour timings (Mech.pour); moved here from lab/sections/kk-pan-pour.html, which reads them from here.",
+  "pan": {
+   "looks": {
+    "empty": {
+     "key": "s14-pan-empty",
+     "file": "assets/cook/items-s14/chai-pan/pan-empty-s14.webp",
+     "w": 514,
+     "h": 405,
+     "cx": 203.8,
+     "cy": 241
+    },
+    "water": {
+     "key": "s14-pan-water",
+     "file": "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
+     "w": 514,
+     "h": 405,
+     "cx": 184.8,
+     "cy": 241
+    },
+    "leaves": {
+     "key": "s14-pan-leaves",
+     "file": "assets/cook/items-s14/chai-pan/pan-leaves-s14.webp",
+     "w": 496,
+     "h": 405,
+     "cx": 181.1,
+     "cy": 240.5
+    },
+    "milk": {
+     "key": "s14-pan-milk",
+     "file": "assets/cook/items-s14/chai-pan/pan-milk-s14.webp",
+     "w": 514,
+     "h": 405,
+     "cx": 204.1,
+     "cy": 164.5
+    },
+    "boil": {
+     "key": "s14-pan-boil",
+     "file": "assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp",
+     "w": 514,
+     "h": 405,
+     "cx": 186.4,
+     "cy": 164
+    },
+    "black": {
+     "key": "s14-pan-black",
+     "file": "assets/cook/items-s14/chai-pan/pan-black-s14.webp",
+     "w": 496,
+     "h": 405,
+     "cx": 179.1,
+     "cy": 164.5
+    }
+   },
+   "rim": 158,
+   "inner": 140,
+   "turn": 0,
+   "mirror": true,
+   "bodyDy": 0,
+   "handle": [
+    -14,
+    14
+   ],
+   "rimOfPan": 0.92,
+   "near": {
+    "boil": [
+     "milk",
+     "leaves",
+     "water"
+    ],
+    "black": [
+     "leaves",
+     "water"
+    ],
+    "milk": [
+     "leaves",
+     "water"
+    ],
+    "leaves": [
+     "water"
+    ],
+    "water": []
+   },
+   "stages": {
+    "empty": [
+     "empty"
+    ],
+    "water": [
+     "water"
+    ],
+    "leaves": [
+     "leaves"
+    ],
+    "tea": [
+     "black"
+    ],
+    "milky": [
+     "milk"
+    ],
+    "spiced": [
+     "milk"
+    ],
+    "boil-tea": [
+     "black",
+     "boil-tea"
+    ],
+    "boil-milky": [
+     "boil"
+    ],
+    "foam": [
+     "boil",
+     "foam"
+    ]
+   },
+   "disc": {
+    "prefix": "v3-pan-",
+    "w": 405,
+    "cx": 0.3754,
+    "cy": 0.6146,
+    "rIn": 0.3037,
+    "files": {
+     "boil-tea": "assets/cook/items/v3/chai/pan-boil-tea.webp",
+     "foam": "assets/cook/items/v3/chai/pan-foam.webp"
+    }
+   },
+   "ring": {
+    "colour": "#ffe2a6",
+    "width": 9
+   },
+   "sel": {
+    "pool": "#ffd98a",
+    "poolA": 0.14,
+    "badge": 64
+   },
+   "heaps": {
+    "wet": "#5a3a1c",
+    "wetA": 0.26,
+    "crystals": [
+     "#ffffff",
+     "#f1ece2",
+     "#d9d1c2"
+    ],
+    "under": "#3a2410",
+    "underA": 0.2,
+    "blob": "#b07a3a"
+   }
+  },
+  "glass": {
+   "half": 4,
+   "lift": 1.07,
+   "gap": 0.12,
+   "arc": 24,
+   "ms": {
+    "lift": 520,
+    "pour": 700,
+    "back": 420
+   },
+   "rest": {
+    "key": "v2-glass-empty",
+    "file": "assets/cook/items-s14/glass/glass-empty-top-s14.webp",
+    "w": 480,
+    "h": 469,
+    "cx": 243.5,
+    "cy": 233,
+    "r": 230.5
+   },
+   "frames": {
+    "milky": {
+     "pan": [
+      {
+       "key": "s14-pe-milky-1",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-1-s14.webp",
+       "w": 494,
+       "h": 328,
+       "cx": 179.4,
+       "cy": 164,
+       "r": 159
+      },
+      {
+       "key": "s14-pe-milky-2",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-2-s14.webp",
+       "w": 497,
+       "h": 327,
+       "cx": 182.8,
+       "cy": 163,
+       "r": 158
+      },
+      {
+       "key": "s14-pe-milky-3",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-3-s14.webp",
+       "w": 495,
+       "h": 329,
+       "cx": 179.1,
+       "cy": 164.5,
+       "r": 158.5
+      },
+      {
+       "key": "s14-pe-milky-4",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-4-s14.webp",
+       "w": 494,
+       "h": 328,
+       "cx": 178.1,
+       "cy": 163.5,
+       "r": 158.5
+      },
+      {
+       "key": "s14-pe-milky-5",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-5-s14.webp",
+       "w": 497,
+       "h": 327,
+       "cx": 185.1,
+       "cy": 163.5,
+       "r": 158.5
+      },
+      {
+       "key": "s14-pe-milky-6",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-milky-6-s14.webp",
+       "w": 496,
+       "h": 328,
+       "cx": 179.1,
+       "cy": 163.5,
+       "r": 158.5
+      }
+     ],
+     "glass": [
+      {
+       "key": "s14-gf-milky-1",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-1-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 236,
+       "cy": 257,
+       "r": 206
+      },
+      {
+       "key": "s14-gf-milky-2",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-2-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 224,
+       "cy": 257,
+       "r": 204
+      },
+      {
+       "key": "s14-gf-milky-3",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 213,
+       "cy": 257,
+       "r": 206
+      },
+      {
+       "key": "s14-gf-milky-4",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-4-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 236,
+       "cy": 207.5,
+       "r": 207
+      },
+      {
+       "key": "s14-gf-milky-5",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-5-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 222,
+       "cy": 208,
+       "r": 203
+      },
+      {
+       "key": "s14-gf-milky-6",
+       "file": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp",
+       "w": 448,
+       "h": 464,
+       "cx": 209.5,
+       "cy": 207,
+       "r": 205.5
+      }
+     ]
+    },
+    "black": {
+     "pan": [
+      {
+       "key": "s14-pe-black-1",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-1-s14.webp",
+       "w": 492,
+       "h": 325,
+       "cx": 179.2,
+       "cy": 162,
+       "r": 157
+      },
+      {
+       "key": "s14-pe-black-2",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-2-s14.webp",
+       "w": 495,
+       "h": 326,
+       "cx": 182.5,
+       "cy": 162.5,
+       "r": 157.5
+      },
+      {
+       "key": "s14-pe-black-3",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-3-s14.webp",
+       "w": 494,
+       "h": 326,
+       "cx": 180.5,
+       "cy": 162.5,
+       "r": 157.5
+      },
+      {
+       "key": "s14-pe-black-4",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-4-s14.webp",
+       "w": 494,
+       "h": 326,
+       "cx": 178.5,
+       "cy": 162.5,
+       "r": 157.5
+      },
+      {
+       "key": "s14-pe-black-5",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-5-s14.webp",
+       "w": 496,
+       "h": 327,
+       "cx": 183.5,
+       "cy": 163.5,
+       "r": 157.5
+      },
+      {
+       "key": "s14-pe-black-6",
+       "file": "assets/cook/items-s14/chai-pan/pan-empty-black-6-s14.webp",
+       "w": 495,
+       "h": 326,
+       "cx": 180.5,
+       "cy": 162.5,
+       "r": 157.5
+      }
+     ],
+     "glass": [
+      {
+       "key": "s14-gf-black-1",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-1-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 266,
+       "cy": 262,
+       "r": 209
+      },
+      {
+       "key": "s14-gf-black-2",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-2-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 237.5,
+       "cy": 262,
+       "r": 207.5
+      },
+      {
+       "key": "s14-gf-black-3",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-3-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 214,
+       "cy": 262,
+       "r": 208
+      },
+      {
+       "key": "s14-gf-black-4",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-4-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 265,
+       "cy": 206,
+       "r": 208
+      },
+      {
+       "key": "s14-gf-black-5",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-5-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 235.5,
+       "cy": 206,
+       "r": 206.5
+      },
+      {
+       "key": "s14-gf-black-6",
+       "file": "assets/cook/items-s14/glass/glass-fill-black-6-s14.webp",
+       "w": 480,
+       "h": 471,
+       "cx": 211.5,
+       "cy": 206,
+       "r": 207.5
+      }
+     ]
+    }
+   }
+  },
+  "shelf": {
+   "fly": 380,
+   "arc": 60,
+   "tip": 220,
+   "tilt": -118,
+   "sound": 170,
+   "fill": 620,
+   "untip": 180,
+   "back": 320,
+   "backArc": 40,
+   "settle": 0.06
+  }
+ }
 }
