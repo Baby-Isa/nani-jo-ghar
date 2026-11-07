@@ -122,6 +122,8 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - contract-83 is flaky: re-run once before calling it red.
 
 ## Small decisions
+- 7 Nov ~15:00 (the orchestrator, from the standard's F1): the module map is `docs/architecture/module-map.md`; the pans and their
+  looks go to kit builder (b) with pouring, the worktop wash and the stone band to (a) with the stove's scene.
 - The S18 row in `docs/sprints/plan.md` is the kitchen family only; the pantry's six opening decisions (in Sprint 17's file) wait for
   Sprint 19's opening.
 - 7 Nov ~14:00: this file and the family page were renamed from "stove" to "kitchen" (decision 11); stubs at the old paths.
