@@ -47,7 +47,7 @@
 - **Checked by:** check:art + gap: the audit listing every code-drawn effect (R5)
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2 (1280x665)
 - **Status:** agreed 7 Nov
-- **Layer:** game · **Source rows:** CK-06, CHAI-64, ART-31, ART-32, CHAI-79, CHAI-80, ART-59, DAAR-02, SEK-20, CHT-13, CHT-04, CHT-16, BO1-3
+- **Layer:** game · **Source rows:** CK-06, CHAI-64, ART-31, ART-32, CHAI-79, CHAI-80, ART-59, DAAR-02, SEK-20, CHT-13, CHT-04, CHT-16, BO1-3, CHAI-07, CHAI-13
 
 #### STD-H1-06 · Every picture is cut by the cutter and passes the art data check and the rim rules before it is wired
 - **Why:** a counter strip beside the glass (ART-39); twelve fill frames swapped and drifting (CHAI-79); lesson R7
