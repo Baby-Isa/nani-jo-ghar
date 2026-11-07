@@ -1,5 +1,5 @@
 // Chai's method, checked game by game (s08 wave 4B; Sprint 17, s17-chk1): the checks that were chai's alone now read the per-game data
-// list, build/sandbox/data/games.json, so a game is checked the day its entry says so (README: "The per-game data list"). This file
+// list, build/sandbox/data/games.json, so a game is checked the day its entry says so (its shape: the file's _about and _fields). This file
 // loads the list and gives the other contract files what they read from it: CONTROL_CALLS (contract-78, lib/contract-s14.mjs), the
 // station sets S14_TAPS, CHAI_ROW, DECOY_STATIONS, DECOY_AT_LEAST and helpStageRe (lib/contract.mjs). Its own checks, numbered from 70,
 // are judged from the station's own test notes (Lifecycle.note, only logged: lib/contract-hook.mjs passes them on as k "life" with
