@@ -5,6 +5,6 @@
    costs the other games nothing. swap: the words show at once in the fallback and change face when the file arrives (it is local and
    small); the s14 cards fit again when it does (js/shared/word-card.js), and Cook waits for it before drawing chai (js/cook/ui.js
    applyType). Nunito and Baloo 2 still come from Google until the roll-out (cook.html, index.html, lab.html). */
-@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora.woff2?v=20261106T200832Z") format("woff2"); }
-@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora-italic.woff2?v=20261106T200832Z") format("woff2"); }
-@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 200 1000; font-display: swap; src: url("../../assets/fonts/nunito-sans.woff2?v=20261106T200832Z") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora.woff2?v=20261107T001739Z") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../../assets/fonts/lora-italic.woff2?v=20261107T001739Z") format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 200 1000; font-display: swap; src: url("../../assets/fonts/nunito-sans.woff2?v=20261107T001739Z") format("woff2"); }
