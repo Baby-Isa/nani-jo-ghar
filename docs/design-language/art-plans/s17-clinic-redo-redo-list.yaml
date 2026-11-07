@@ -1,23 +1,13 @@
 # The clinic redo pack's redo list (7 Nov), from the landing judge (build/reports/s17-clinic-redo-landed-2026-11-07.md).
 # Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-clinic-redo.run.yaml --redo docs/design-language/art-plans/s17-clinic-redo-redo-list.yaml
 # Each line regenerates its whole sheet; only the named item is wanted from it (the sheet's other cuts stay as cut).
-# Two are the wood rule (PASS/FAIL: light oak or pine; any wood is walnut), one item on each sheet; one is a cut that cannot
-# be made clean (a grey rubber bulb on the grey ground). The other 21 items on these three sheets are usable now. Zafar may
-# also let the two wood ones stand (the tongue depressor and the hourglass are decoys no game asks for yet).
-# CN09's line needs its run-spec words changed first (item 4: "a soft grey rubber ear-syringe bulb" to a cream one), a
-# request in the landing report: the run spec is not the landing session's to edit.
-# Two more (CB01's tweezers, CD02's honey jar) are the light tool's FAILs ("light from the lower right" on the steel, "from
-# below" on the lit honey); by eye both are lit from the upper left, so the recommended fix is no run at all: their two paths
-# into look-rules.json light.eye_passed (Fable, 7 Nov) and a re-cut with their `failed` entries removed from the cut spec.
-# That route was taken (the orchestrator, 7 Nov): both passed by eye, re-cut; their lines are off this list.
+# History: five lines on 7 Nov. CB01's tweezers and CD02's honey jar were the light tool's FAILs that an eye passed
+# (lit from the upper left): both went into look-rules.json light.eye_passed and were cut (the orchestrator, 7 Nov).
+# CN03 (the tongue depressor's light wood), CN04 (the hourglass's light frame) and CN09 (the grey ear-syringe bulb on
+# the grey ground) were redone in Zafar's second upload (the redo block, 7 Nov) and landed the same day (the landing
+# report's second addendum): CN04's frame came in mid walnut (#8d5634, the magnifier handle's wood) and CN09's bulb in
+# cream, both passed and cut; CN03's depressor came in a warm mid-brown (#ab744d, L* 54: darker and browner than the
+# honey #c1814e, still lighter than the pack's other wood at L* 41-43), passed by eye as "mid walnut, not too dark"
+# and cut over the stand-in. Zafar may put CN03 back on this list if he wants it darker (a decoy no game asks for yet).
 pack: s17-clinic-redo
-redo:
-  - id: CN09
-    why: "item 4, the ear-syringe bulb: it was drawn in the ground's own mid grey, so no key can cut it out (its shaded side comes away with the ground). Draw the bulb in soft cream rubber (Ivory Buff) with a pale grey nozzle, nothing on it near the ground's grey; everything else on the sheet as it is"
-    source: "Claude's landing judge, 7 Nov"
-  - id: CN03
-    why: "item 3, the tongue depressor: it came in a light honey wood (median #c1814e, the look tool's light-oak band), not walnut. Draw it in mid walnut (a warm mid-brown like the thread spools on the CD01 sheet, #9d6f56 to #a0663f), the grain soft; everything else on the sheet as it is"
-    source: "Claude's landing judge, 7 Nov"
-  - id: CN04
-    why: "item 8, the hourglass: its frame (the two round ends and the three posts) came in a light honey wood (median #bc7c54), not walnut. Draw the frame in mid walnut (a warm mid-brown like the magnifying glass's handle beside it, #8e5532), the glass and white sand as they are; everything else on the sheet as it is"
-    source: "Claude's landing judge, 7 Nov"
+redo: []
