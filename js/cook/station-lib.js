@@ -456,6 +456,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   const lastFoldMs = () => (foldAt ? Date.now() - foldAt : Infinity);
   S$.lastFoldMs = lastFoldMs; // (the mount test reads it: build/test_cook_mount.mjs)
+  /*
+   * CHAI-102 (Zafar, 7 Nov: "I didn't get an onboarding for the blurred word"): a station starts as the order's card starts to fly
+   * (CK-48, begin below), so the order is still landing, and its end redraws every card (ui.js introduce's finally): a light picked
+   * on a card before then lit a card no longer on the page. orderLanded(ctx) resolves once the order has landed: the intro has
+   * ended (ctx.landed, set by begin: its cards' last redraw done), no pop-up open, no word card popped or in flight and no row
+   * still away; then a frame. Capped (ms), so it never waits on nothing. -> how long it waited, in ms
+   */
+  S$.LANDED_SEL = ".njg-rq-open, .wc14-pop, .wc14-flyer, #mission .oc-row.oc-away";
+  S$.orderLanded = async function (ctx, ms = 12000) {
+    const t0 = Date.now();
+    const cap = (p) => Promise.race([Promise.resolve(p).catch(() => {}), new Promise((r) => setTimeout(r, Math.max(0, ms - (Date.now() - t0))))]);
+    if (ctx && ctx.landed) await cap(ctx.landed);
+    const RP = global.RequestPopup;
+    const doc = global.document;
+    const busy = () => !!((RP && RP.isOpen && RP.isOpen()) || (doc && doc.querySelector(S$.LANDED_SEL)));
+    while (busy() && Date.now() - t0 < ms) await new Promise((r) => setTimeout(r, 60));
+    await new Promise((r) => {
+      setTimeout(r, 100); // (a frame, or a tenth of a second where frames stop: a page in the background)
+      if (global.requestAnimationFrame) global.requestAnimationFrame(() => r());
+    });
+    return Date.now() - t0;
+  };
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   /*
@@ -516,6 +538,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (ctx && ctx.intro) {
       const intro = ctx.intro;
       ctx.intro = null;
+      ctx.landed = intro; // (CHAI-102: the order's own end, its cards' last redraw: S$.orderLanded)
       const fold = folded();
       swap = Promise.race([fold, intro]).then(() => ready).then(() => S.setView(view, { underCard: true }));
       await Promise.race([fold, intro]);
