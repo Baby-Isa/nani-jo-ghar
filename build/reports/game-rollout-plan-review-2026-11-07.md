@@ -104,3 +104,8 @@ The files cited; reopened rows from `docs/process/regressions.md` and `docs/arch
 - **First:** chai perfected and its recorded (frozen) test run, the guard every later step is measured against.
 - **The layers:** the shared kit (`js/shared/`, every game; its page `lab/kit.html`) → a family kit (the stove kit from chai; the
   clinic's `js/clinic/kit.js`) → each game (its settings plus its own mechanic). A fix goes in the lowest layer that owns it.
+- **Chai splits three ways, not two** (Zafar, 7 Nov): each piece of chai-tray.js goes to the lowest layer that owns it: the
+  shared kit (any game: the onboarding lessons and lights, the dotted-word lesson, the next item's light and its timings, the
+  order's flow), the stove kit (stove games: pans, burners, heat and the boil sound, pouring, the shelf), or stays in chai (the
+  recipe, the glasses, the style teas, half and full). The step-2 owner sorts every piece before moving it; the chai standard page
+  names each rule's layer.
