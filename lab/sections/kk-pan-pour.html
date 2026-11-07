@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Kitchen kit: pans and pouring</title>
+<!--
+  The kitchen kit's section for pans and pouring (Sprint 18, builder b; the module map's pieces 5-7; STD-F5-03: every kit piece in
+  every state, alone). Cook's own page plays in the frame; this page gives it the showcase (njgKitLab, run by the Pour lab entry,
+  js/cook/mechanics/pour.js) with the reference game's values (data/stations/chai-tray.json "kit" once it has them, else the copy
+  below, taken from js/cook/stations/chai-tray.js at 34641d3). Open it alone, or in the kitchen kit's lab shell (an iframe).
+    ?state=looks      every look of the pan (Cook.Kit.pan): the nine looks, the spoonfuls on the surface, the glow ring, the chosen pan
+    ?state=pour       water then milk poured from the shelf (Mech.pour), the tea leaves and two sugars spooned in (Mech.pour.spoon)
+    ?state=takeback   a sugar taken back out by its chip on the count badge (Mech.pour.takeBack, Mech.pour.unspoon)
+    ?state=glass      a full pan carried over its glass, emptying as the glass fills (Mech.pour.toGlass on NjgPour)
+    ?state=half       the same at half then full: two pours (level 4's adh, then aako), black tea
+    ?state=tip        held mid-pour from the shelf: the carton tipped over the pan, its look half way
+    ?state=carry      held mid-carry: the pan over its glass, both pictures half way
+  &speed=n plays it faster. When a state is reached the caption shows "ready" (class kl-done: the lab check waits for it).
+-->
+<link rel="stylesheet" href="../../css/shared/tokens.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--njg-page); font-family: var(--njg-font); color: var(--njg-ink); }
+  #cook { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #cap { position: absolute; left: 6px; bottom: 6px; z-index: 2; font-size: 12px; line-height: 1.3; background: var(--njg-card); border: 1px solid var(--njg-edge); border-radius: 6px; padding: 3px 7px; max-width: 46%; pointer-events: none; opacity: 0.92; }
+  #cap b { color: var(--njg-ink-soft); }
+  #cap.kl-done b::after { content: " · ready"; color: var(--njg-tick-green); }
+  #cap .err { color: var(--njg-wrong); }
+</style>
+</head>
+<body>
+<iframe id="cook" title="Cook" src="about:blank"></iframe>
+<div id="cap"><b id="cap-state"></b> <span id="cap-what"></span></div>
+<script>
+(function () {
+  "use strict";
+  const Q = new URLSearchParams(location.search);
+  const STATE = Q.get("state") || "looks";
+  const SPEED = Number(Q.get("speed")) || 1;
+  const cap = document.getElementById("cap");
+  const say = (what) => (document.getElementById("cap-what").textContent = what);
+  document.getElementById("cap-state").textContent = STATE;
+  // a state reached: the caption says so, and the showcase holds there (never ending the lab round, so no end screen comes up)
+  const done = (what) => {
+    say(what);
+    cap.classList.add("kl-done");
+    return new Promise(() => {});
+  };
+
+  /* the reference game's values (js/cook/stations/chai-tray.js at 34641d3: TOP, STAGE, NEAR, the v3 discs, S14F, GLASS, POUR,
+     the pour's times in data/stations/chai-tray.json): what the game's json "kit" carries once its owner moves them there */
+  const S14 = "assets/cook/items-s14/";
+  const KIT = {
+    pan: {
+      looks: {
+        empty: { key: "s14-pan-empty", file: S14 + "chai-pan/pan-empty-s14.webp", w: 514, h: 405, cx: 203.8, cy: 241.0 },
+        water: { key: "s14-pan-water", file: S14 + "chai-pan/pan-water-s14.webp", w: 514, h: 405, cx: 184.8, cy: 241.0 },
+        leaves: { key: "s14-pan-leaves", file: S14 + "chai-pan/pan-leaves-s14.webp", w: 496, h: 405, cx: 181.1, cy: 240.5 },
+        milk: { key: "s14-pan-milk", file: S14 + "chai-pan/pan-milk-s14.webp", w: 514, h: 405, cx: 204.1, cy: 164.5 },
+        boil: { key: "s14-pan-boil", file: S14 + "chai-pan/pan-boil-milky-s14.webp", w: 514, h: 405, cx: 186.4, cy: 164.0 },
+        black: { key: "s14-pan-black", file: S14 + "chai-pan/pan-black-s14.webp", w: 496, h: 405, cx: 179.1, cy: 164.5 },
+      },
+      rim: 158, inner: 140, turn: 0, mirror: true, bodyDy: 0, handle: [-14, 14], rimOfPan: 0.92,
+      near: { boil: ["milk", "leaves", "water"], black: ["leaves", "water"], milk: ["leaves", "water"], leaves: ["water"], water: [] },
+      stages: { empty: ["empty"], water: ["water"], leaves: ["leaves"], tea: ["black"], milky: ["milk"], spiced: ["milk"], "boil-tea": ["black", "boil-tea"], "boil-milky": ["boil"], foam: ["boil", "foam"] },
+      disc: { prefix: "v3-pan-", w: 405, cx: 0.3754, cy: 0.6146, rIn: 0.3037, files: { "boil-tea": "assets/cook/items/v3/chai/pan-boil-tea.webp", foam: "assets/cook/items/v3/chai/pan-foam.webp" } },
+      ring: { colour: "#ffe2a6", width: 9 },
+      sel: { pool: "#ffd98a", poolA: 0.14, badge: 64 },
+      heaps: { wet: "#5a3a1c", wetA: 0.26, crystals: ["#ffffff", "#f1ece2", "#d9d1c2"], under: "#3a2410", underA: 0.2, blob: "#b07a3a" },
+    },
+    glass: {
+      half: 4, lift: 1.07, gap: 0.12, arc: 24, ms: { lift: 520, pour: 700, back: 420 },
+      rest: { key: "v2-glass-empty", file: S14 + "glass/glass-empty-top-s14.webp", w: 480, h: 469, cx: 243.5, cy: 233.0, r: 230.5 },
+      frames: {},
+    },
+    shelf: { fly: 380, arc: 60, tip: 220, tilt: -118, sound: 170, fill: 620, untip: 180, back: 320, backArc: 40, settle: 0.06 },
+  };
+  // the s14 pour's frames (S14F): the pan emptying (pe-*-1 full .. 6 empty) and the glass filling (gf-*-1 empty .. 6 full)
+  const PE = {
+    milky: [[494, 328, 179.4, 164.0, 159.0], [497, 327, 182.8, 163.0, 158.0], [495, 329, 179.1, 164.5, 158.5], [494, 328, 178.1, 163.5, 158.5], [497, 327, 185.1, 163.5, 158.5], [496, 328, 179.1, 163.5, 158.5]],
+    black: [[492, 325, 179.2, 162.0, 157.0], [495, 326, 182.5, 162.5, 157.5], [494, 326, 180.5, 162.5, 157.5], [494, 326, 178.5, 162.5, 157.5], [496, 327, 183.5, 163.5, 157.5], [495, 326, 180.5, 162.5, 157.5]],
+  };
+  const GF = {
+    milky: [[448, 464, 236.0, 257.0, 206.0], [448, 464, 224.0, 257.0, 204.0], [448, 464, 213.0, 257.0, 206.0], [448, 464, 236.0, 207.5, 207.0], [448, 464, 222.0, 208.0, 203.0], [448, 464, 209.5, 207.0, 205.5]],
+    black: [[480, 471, 266.0, 262.0, 209.0], [480, 471, 237.5, 262.0, 207.5], [480, 471, 214.0, 262.0, 208.0], [480, 471, 265.0, 206.0, 208.0], [480, 471, 235.5, 206.0, 206.5], [480, 471, 211.5, 206.0, 207.5]],
+  };
+  const m5 = ([w, h, cx, cy, r]) => ({ w, h, cx, cy, r });
+  ["milky", "black"].forEach((set) => {
+    KIT.glass.frames[set] = {
+      pan: PE[set].map((a, i) => Object.assign({ key: `s14-pe-${set}-${i + 1}`, file: `${S14}chai-pan/pan-empty-${set}-${i + 1}-s14.webp` }, m5(a))),
+      glass: GF[set].map((a, i) => Object.assign({ key: `s14-gf-${set}-${i + 1}`, file: `${S14}glass/glass-fill-${set}-${i + 1}-s14.webp` }, m5(a))),
+    };
+  });
+
+  /* the showcase: run by the Pour lab entry on Cook's own scene (L.S), with Cook's namespace */
+  window.njgKitLab = async function (L, Cook) {
+    const json = await fetch("../../data/stations/chai-tray.json").then((r) => r.json()).catch(() => ({}));
+    const kit = Object.assign({}, KIT, json.kit || {});
+    const z = await L.scene("pour", "marble");
+    const S = z.S;
+    const St = Cook.Stations;
+    const D = Cook.D;
+    const v = Cook.view || { left: 0, right: 1600, top: 0, bottom: 900 };
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms / (Cook.speed || 1)));
+    // (a lab page's own wait for a moment in the motion: checked each 20 ms, given up after 20 s)
+    const until = (fn) => new Promise((r) => { const t0 = Date.now(); const tick = () => (fn() || Date.now() - t0 > 20000 ? r() : setTimeout(tick, 20)); tick(); });
+    const shelf = (id) => ((Cook.data.art || {}).chaiShelf || {})[id];
+    const ids = ["cook-paani", "cook-dudh", "cook-chai", "cook-khun"];
+    const glassArt = ["milky", "black"].flatMap((s) => kit.glass.frames[s].pan.concat(kit.glass.frames[s].glass)).map((m) => [m.key, m.file]);
+    await Cook.Mech.need("count"); // (the shared spoon: Cook.Spoon)
+    await St.loadArt(S, Cook.Kit.pan.art(kit.pan).concat(ids.map((id) => [`jar-${id}`, shelf(id)]), [[kit.glass.rest.key, kit.glass.rest.file], ["v2-tray", "assets/cook/items/chai-v2/tray-4-cutout-t.webp"]], glassArt, St.artLoad(["teaspoon", "teaspoon-empty", "teaspoon-chai"])));
+    const has = { water: 0, milk: 0, leaves: 0, sugar: 0 };
+    // the lab's own pan state, as a game would keep it: which look, and what lies on the surface
+    const lookOf = () => {
+      if (!(has.water || has.milk)) return ["empty", null, 0];
+      if (!has.leaves) return has.milk ? ["water", "milky", 0.5] : ["water", null, 0];
+      return [has.milk ? "milky" : "tea", null, 0];
+    };
+    const heaps = () => ({ list: has.water || has.milk ? Array.from({ length: has.sugar }, () => ({ heap: true })) : null, sink: 1 });
+    const jar = (id, x) => {
+      const o = S.track(S.add.image(x, 818, `jar-${id}`).setOrigin(0.5, 1).setDepth(D.item));
+      o.setScale(150 / o.height);
+      return o;
+    };
+
+    if (STATE === "looks") {
+      // every look, each on its own pan; then the spoonfuls, the glow ring and the chosen pan
+      const looks = Object.keys(kit.pan.stages);
+      const cols = 6;
+      const W = Math.min(v.right - v.left, 1600);
+      const pitch = (W - 120) / cols;
+      const rimR = Math.min(70, pitch * 0.26);
+      const top = Math.max(v.top + rimR + 30, 140);
+      const row = Math.min(320, (818 - top) / 2);
+      looks.concat("heaps", "glow", "chosen").forEach((name, i) => {
+        const at = { x: v.left + 60 + pitch * (i % cols) + pitch * 0.62, y: top + row * Math.floor(i / cols) };
+        const ownLook = looks.includes(name) ? name : "milky";
+        const p = Cook.Kit.pan(S, { at, rimR, set: kit.pan, lookOf: () => [ownLook, null, 0], heaps: name === "heaps" ? () => ({ list: [{ heap: true }, { heap: true }, { colour: "#b07a3a" }], sink: 1 }) : null });
+        p.show();
+        if (name === "glow") p.glow(true);
+        if (name === "chosen") p.select(true, { x: at.x, y: at.y + rimR * 1.6 });
+      });
+      return done(looks.join(", ") + "; heaps, glow, chosen (left to right, top to bottom)");
+    }
+
+    if (STATE === "tip") {
+      // the shelf pour held at its middle (its fill made very long): the carton tipped over the pan, the look half way to milky
+      has.water = has.leaves = 1;
+      const pan = Cook.Kit.pan(S, { at: { x: 620, y: 420 }, panR: 112, set: kit.pan, lookOf, heaps });
+      pan.level = 0.62;
+      pan.show();
+      const carton = jar("cook-dudh", 1150);
+      const look = pan.shown;
+      has.milk = 1;
+      Cook.Mech.pour(S, { pan, from: carton, level: 0.84, look, ms: kit.shelf });
+      // (held: every tween paused the moment the new look is half in)
+      await until(() => pan.fading && pan.mix.alpha >= 0.5);
+      S.tweens.pauseAll();
+      return done("milk mid-pour: the carton tipped over the pan, the pan's look fading from tea to milky");
+    }
+
+    if (STATE === "pour" || STATE === "takeback") {
+      const pan = Cook.Kit.pan(S, { at: { x: 620, y: 420 }, panR: 112, set: kit.pan, lookOf, heaps, spoonWet: () => (has.milk ? "chai" : "empty") });
+      pan.level = 0;
+      pan.show();
+      const J = {};
+      ids.forEach((id, i) => (J[id] = jar(id, 1000 + i * 150)));
+      say("water poured in");
+      let look = pan.shown;
+      has.water++;
+      await Cook.Mech.pour(S, { pan, from: J["cook-paani"], level: 0.62, look, settle: true, ms: kit.shelf });
+      say("tea leaves spooned in");
+      look = pan.shown;
+      await Cook.Mech.pour.spoon(z, { pan, from: J["cook-chai"], word: "cook-chai", ms: 360 });
+      has.leaves++;
+      pan.level = Math.max(pan.level, 0.12);
+      await pan.fade(look);
+      say("milk poured in");
+      look = pan.shown;
+      has.milk++;
+      await Cook.Mech.pour(S, { pan, from: J["cook-dudh"], level: 0.84, look, ms: kit.shelf });
+      for (let k = 0; k < 2; k++) {
+        say(`sugar ${k + 1} spooned in`);
+        has.sugar++;
+        await Cook.Mech.pour.spoon(z, { pan, from: J["cook-khun"], word: "cook-khun", ms: 360 });
+        pan.show();
+        Cook.Kit.pan.land(S, [pan.img, pan.mix], { k: 0.03, top: true, ms: 260 });
+      }
+      if (STATE === "pour") return done("water, leaves, milk, two sugars: the pan's look and its heaps");
+      // the take-back: the count badge over the pan, a zone over its chip, one sugar lifted back to its jar
+      const UI = Cook.UI;
+      if (UI.tallyAt) UI.tallyAt([pan.x - pan.panR * 0.7, pan.y - pan.panR * 1.02], { anchor: "right" });
+      UI.count(has.sugar, { speak: false, id: "cook-khun" });
+      let taken = null;
+      const tb = Cook.Mech.pour.takeBack(S, { can: (id) => id === "cook-khun" && has.sugar > 0, onTap: (id) => (taken = id) });
+      await wait(400);
+      tb.sync();
+      const at = tb.at("cook-khun");
+      say(at ? "a tap on the sugar's chip" : "no chip found");
+      await wait(900);
+      has.sugar--;
+      UI.hideCount();
+      if (has.sugar) UI.count(has.sugar, { speak: false, id: "cook-khun" });
+      pan.show();
+      await Cook.Mech.pour.unspoon(z, { pan, to: J["cook-khun"], word: "cook-khun", ms: 360 });
+      tb.sync();
+      return done(`one sugar taken back (zone ${at ? "over the chip" : "missing"}${taken ? ", tapped" : ""}): one heap left`);
+    }
+
+    if (STATE === "glass" || STATE === "half" || STATE === "carry") {
+      const black = STATE === "half";
+      has.water = has.leaves = 1;
+      has.milk = black ? 0 : 1;
+      const pan = Cook.Kit.pan(S, { at: { x: 560, y: 470 }, panR: 112, set: kit.pan, lookOf: () => (pan.poured >= 2 ? ["empty", null, 0] : lookOf()) });
+      pan.poured = 0;
+      pan.show();
+      const trayD = 300;
+      const tx = 980;
+      const ty = 300;
+      S.track(S.add.image(tx, ty, "v2-tray").setOrigin(0).setDepth(D.item - 4).setDisplaySize(trayD, (trayD * 754) / 768));
+      const wx = tx + 0.283 * trayD;
+      const wy = ty + 0.708 * ((trayD * 754) / 768);
+      const r = (0.33 * trayD) / 2;
+      const F = kit.glass.frames[black ? "black" : "milky"];
+      const by = Cook.Mech.pour.byRim;
+      const glass = {
+        empty: by(S.track(S.add.image(wx, wy, kit.glass.rest.key)), kit.glass.rest, r).setDepth(D.item + 0.5),
+        half: by(S.track(S.add.image(wx, wy, F.glass[kit.glass.half - 1].key)), F.glass[kit.glass.half - 1], r).setDepth(D.item + 0.5).setAlpha(0),
+        full: by(S.track(S.add.image(wx, wy, F.glass[F.glass.length - 1].key)), F.glass[F.glass.length - 1], r).setDepth(D.item + 0.5).setAlpha(0),
+      };
+      const well = { x: wx, y: wy, r, glass };
+      const pour = async (from, to) => {
+        const o = { pan, well, from, to, frames: F, look: black ? "black" : "milk", ms: kit.glass.ms, lift: kit.glass.lift, gap: kit.glass.gap, arc: kit.glass.arc, sound: () => Cook.sfx.teaPourLoop && Cook.sfx.teaPourLoop(), onDone: (x) => (pan.poured = x) };
+        await Cook.Mech.pour.toGlass(S, o);
+        pan.unhide();
+      };
+      if (STATE === "carry") {
+        // held over the glass half way through (its pour made very long): the pan's and the glass's pictures in step
+        let h = null;
+        Cook.Mech.pour.toGlass(S, { pan, well, from: 0, to: 2, frames: F, look: "milk", ms: kit.glass.ms, lift: kit.glass.lift, gap: kit.glass.gap, arc: kit.glass.arc, hook: (x) => x && (h = x) });
+        // (held: every tween paused the moment both pictures reach their middle frame)
+        await until(() => h && /-3$/.test(h.frames().glass));
+        S.tweens.pauseAll();
+        const f = h.frames();
+        return done(`mid-carry: the pan over its glass (${f.pan} over ${f.glass})`);
+      }
+      if (!black) {
+        say("a full pour");
+        await pour(0, 2);
+        return done("milky chai: the pan over its glass, emptying as it fills; home empty");
+      }
+      say("half (adh)");
+      await pour(0, 1);
+      await wait(600);
+      say("then full (aako)");
+      await pour(1, 2);
+      return done("black tea, half then full: two pours; home empty");
+    }
+    return done("no such state");
+  };
+
+  // Cook's own page in the frame; once it has started, the Pour lab entry runs the showcase above (its errors show here too)
+  const frame = document.getElementById("cook");
+  frame.addEventListener("load", () => {
+    const w = frame.contentWindow;
+    if (!w || w.location.href === "about:blank") return;
+    const err = (m) => {
+      console.error(`[cook] ${m}`);
+      const e = document.createElement("div");
+      e.className = "err";
+      e.textContent = String(m).slice(0, 160);
+      cap.appendChild(e);
+    };
+    w.addEventListener("error", (e) => err(e.message));
+    w.addEventListener("unhandledrejection", (e) => err((e.reason && e.reason.message) || e.reason));
+    const start = () => {
+      const T = w.njgTest && w.njgTest.cook;
+      // (Cook's scene is ready when its title is up: Cook.boot's onSceneReady shows it)
+      const up = !!(T && w.document.querySelector(".title-wrap"));
+      if (!up) return setTimeout(start, 150);
+      T.lab("pour", false, { level: 1 }).catch((e) => err(e.message || e));
+    };
+    start();
+  });
+  frame.src = `../../cook.html?speed=${SPEED}`;
+})();
+</script>
+</body>
+</html>
