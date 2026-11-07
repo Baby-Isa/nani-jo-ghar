@@ -1,0 +1,15 @@
+sky-sunny: background 1536x1024 from rows 0..1024
+sky-cloudy: background 1536x1024 from rows 0..1024
+sky-raining: background 1536x1024 from rows 0..1024
+sky-night: background 1536x1024 from rows 0..1024
+door-sun-full: background 1536x1024 from rows 0..1024
+sky-day-wide: background 1536x1024 from rows 0..1024
+sky-golden-wide: background 1536x1024 from rows 0..1024
+sky-dusk-wide: background 1536x1024 from rows 0..1024
+sky-night-wide: background 1536x1024 from rows 0..1024
+sky-day-square: background 1254x1254 from rows 0..1254
+sky-golden-square: background 1254x1254 from rows 0..1254
+sky-dusk-square: background 1254x1254 from rows 0..1254
+sky-night-square: background 1254x1254 from rows 0..1254
+  se01-door-farm-sky-v1.png: judged a fail, not cut (SE01 redo: the whole card was regenerated at 1672x941 (the original is 1536x1024): the house, bales, fence and animals moved; only its sky was to change)
+  se02-book-farm-sky-v1.png: judged a fail, not cut (SE02 redo: the whole spread was regenerated at 1819x865 (the original is 1536x1024): the trees, bushes and fence moved; only its sky was to change)

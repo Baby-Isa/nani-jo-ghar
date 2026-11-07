@@ -1,0 +1,27 @@
+# The sky pack's redo list (7 Nov), from build/reports/s17-sky-landed-2026-11-07.md.
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s17-sky.run.yaml --redo docs/design-language/art-plans/s17-sky-redo-list.yaml
+# Two groups. (1) For sure: the two edits (SE01, SE02) came back as whole new pictures at the wrong canvas. (2) On Zafar's
+# decision (the landing report, decision 1): the three night skies and the day square fail artcolour.py's sky rule by its
+# numbers (the night ceiling, mean chroma 24, against 36-40; the day square at 25-26 against 24 with a lilac cloud shadow),
+# but by eye they are what he asked for: muted about a quarter against today's night, one combination, soft. If he re-tunes
+# the ceiling instead (the report's request), delete lines SN01, SB04, SB08 and SB05 before the block is made.
+pack: s17-sky
+redo:
+  - id: SE01
+    why: "the generator rebuilt the whole farm card at 1672x941 instead of editing the 1536x1024 card: the house (its chimney and windows), the hay bales, the fence posts, the farmer and the three animals all moved or were redrawn. Redo as a true edit at the SAME canvas, 1536x1024, the farmer, goat, hen, dog, house, bales, fence and fields pixel for pixel where they were; only the sky above the hills is new (a calm bright-day blue with two or three soft clouds, in the attached anchor's style). A result at any other size, or with anything but the sky moved, is a fail. If the second try moves the scene again, stop: the new sky goes in by code (the old sky masked above the hills, SD01 laid behind), no third try."
+    source: "Claude's landing judge, 7 Nov (build/reports/s17-sky-landed-2026-11-07.md)"
+  - id: SE02
+    why: "the generator rebuilt the whole farm spread at 1819x865 instead of editing the 1536x1024 picture: the two big trees, the bushes, the fence and the hills moved, and one cloud sits near the middle where the book folds. Redo as a true edit at the SAME canvas, 1536x1024, the grass, fence, trees and hills pixel for pixel where they were; only the sky is new (a calm bright-day blue, two soft clouds well left and right, nothing in the middle tenth of the width). A result at any other size, or with anything but the sky moved, is a fail. If the second try moves the scene again, stop: the sky goes in by code (the old sky masked above the hills and trees, SD01 laid behind), no third try."
+    source: "Claude's landing judge, 7 Nov"
+  - id: SN01
+    why: "ON ZAFAR'S DECISION (landing report, decision 1; delete this line if he re-tunes the night ceiling). Passes by eye and sits in the night combination, but artcolour.py's night ceiling (mean chroma 24) fails it at 36. If redone: the same crescent, haze and stars, the blue noticeably more muted and dusty, a soft slate violet-blue, never a vivid royal blue; the horizon only a little lighter"
+    source: "artcolour.py sky rule, 7 Nov"
+  - id: SB04
+    why: "ON ZAFAR'S DECISION (landing report, decision 1; delete this line if he re-tunes the night ceiling). Passes by eye; artcolour.py's night ceiling (mean chroma 24) fails it at 38. If redone: the same full moon, haze and stars, the blue noticeably more muted and dusty, a soft slate violet-blue, never a vivid royal blue"
+    source: "artcolour.py sky rule, 7 Nov"
+  - id: SB08
+    why: "ON ZAFAR'S DECISION (landing report, decision 1; delete this line if he re-tunes the night ceiling). Passes by eye; artcolour.py's night ceiling (mean chroma 24) fails it at 40. If redone: the same crescent and stars, the blue noticeably more muted and dusty, a soft slate violet-blue, never a vivid royal blue"
+    source: "artcolour.py sky rule, 7 Nov"
+  - id: SB05
+    why: "ON ZAFAR'S DECISION (landing report, decision 1). Matches the anchor by eye, but the sky rule fails it at the margin: mean chroma 25-26 against the day ceiling of 24, and the big cloud's shaded underside leans lilac (#d1c9dd, ΔE 19 from Seashell Pink). If redone: the same two clouds, their shadows a warm soft grey rather than lilac, the blue a touch softer"
+    source: "artcolour.py sky rule, 7 Nov"

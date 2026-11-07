@@ -108,6 +108,19 @@ Do not add any text, letters, numbers, labels, signs, logos or watermarks.
   and `assets/day/s12/door-sun.webp` (the sky rule: the time's combination and the ceiling), then a look at the door at the four sizes.
 - **Wire (a build session):** `data/day.json` `weather.<w>.sky.art` → the door's four skies (the ride window and tomorrow's card
   then paint the picture, not the SVG gradient); nothing else changes.
+- **Landed (7 Nov; `build/reports/s17-sky-landed-2026-11-07.md`):** the cuts live in **`assets/backgrounds/s17-sky/`** (the
+  landing brief's folder, not the new day folder named above, so `look-rules.json` `palette.sky` still needs a glob for it:
+  a request in the report), 424 KB in 15 files, nothing in the game pointing at them yet: `sky-sunny`, `sky-cloudy`,
+  `sky-raining`, `sky-night` (1536×1024, WebP q 86 at the source size), `door-sun` (960×720, the 4:3 cover crop of SC01 about
+  its centre: 1.5× today's 640×480 card), the bank `sky-<time>-wide` (1536×1024) and `sky-<time>-square` (1254×1254, the
+  generator's square), and `sky-sunny-tile` and `sky-night-tile` (1472×1024: the last 64 columns cross-faded into the first
+  with `artlib.make_tileable`, seam ratio 16.8 → 0.99 and 4.3 → 0.88; the anchor's own edges did not join, the sun's haze sits
+  on its right edge). The cut: `build/tools/art/specs/s17-sky.cut.json` (one `background` job per sky) then
+  `sources/art/s17-sky/post-cut.py` (the card and the tile copies, which the cutter cannot make). The two edits (SE01, SE02)
+  were not cut: both came back as whole new pictures at the wrong canvas (redo list). At wiring, `data/farm/photo.json`'s
+  sky becomes `sky-sunny-tile.webp` with `tile` 3067 (1472 × 3200/1536) and the same `tileH`; the door's and the farm's
+  skies swap by file name in `data/days.json` `weather.*.art`, `data/day.json` `weather.sunny.art`, `js/farm/art.js` and
+  `js/pets-proto/art.js`, after Zafar's yes on the night skies (the report's decision 1).
 
 ## 6. Judging
 
