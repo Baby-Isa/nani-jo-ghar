@@ -19,6 +19,14 @@
  *                                              js/shared/sfx.js (Sfx.file); dur: cut it short with a fade (a short pour)
  *   Juice.less()                               true when the system asks for reduced motion (or ?motion=less): effects then
  *                                              fade in place, nothing moves, nothing loops
+ *   Juice.pop(host, at, text, {hold, top, missing, u}) -> Promise   the word pop by the action (Sprint 18, module map piece 12): a
+ *                                              card, the speaker and the word, rising into place and fading after hold ms; at:
+ *                                              {x, y}, or a function (w, h) -> {x, y} placing it once its size is known (Juice.popAt).
+ *                                              It draws only: the game says the word (its voice), never this file
+ *   Juice.popAt(at, w, h, {top, left, right, edge, avoid, gap})  where a pop w x h sits centred over at {x, y: the target's
+ *                                              top}: never across edge {y, clear, above} (a line it never sits on: it goes wholly
+ *                                              above), above an avoid box {x0, y0, x1, y1} (or beside it, right, where the top has no
+ *                                              room), inside the view (top, left, right) -> {x, y}
  *
  * x, y are px in the host's box (the host is positioned). Each one-shot returns a Promise for its end. Pointer events never
  * reach the effects (they never block a tap). Safe without a DOM (Node): every call does nothing.
@@ -215,6 +223,59 @@
     return Promise.all(runs);
   };
 
+  // ---- the word pop by the action (piece 12; §4: learning happens during the action) ----
+  Juice.popAt = function (at, w, h, { top = -Infinity, left = -Infinity, right = Infinity, edge = null, avoid = null, gap = 8 } = {}) {
+    let x = at.x;
+    let y = at.y - h / 2;
+    // (never across the edge's line: where the target reaches almost to it, the pop sits wholly above it; only ever up)
+    const offEdge = (v) => (edge && v - h / 2 < edge.y + (edge.clear || 0) && v + h / 2 > edge.y - (edge.above || 0) ? edge.y - (edge.above || 0) - h / 2 : v);
+    if (edge && y - h / 2 < edge.y + (edge.clear || 0)) y = edge.y - (edge.above || 0) - h / 2;
+    const bb = avoid;
+    const hits = (cx, cy) => bb && cx - w / 2 < bb.x1 + gap && cx + w / 2 > bb.x0 - gap && cy - h / 2 < bb.y1 + gap && cy + h / 2 > bb.y0 - gap;
+    if (hits(x, y)) {
+      const above = offEdge(Math.min(bb.y0 - gap - h / 2, y));
+      if (above - h / 2 - 14 >= top && !hits(x, above)) y = above;
+      else x = bb.x1 + gap + w / 2;
+    }
+    y = Math.max(top + h / 2 + 2, y);
+    x = Math.max(left + w / 2, Math.min(right - w / 2, x));
+    return { x, y };
+  };
+  const POP = { hold: 1900, rise: 14, inMs: 180, outMs: 320, min: 14 }; // (min: the word never under 14 CSS px, F2)
+  Juice.POP = POP;
+  Juice.pop = function (host, at, text, o) {
+    if (!doc || !host) return none();
+    o = o || {};
+    const el = doc.createElement("div");
+    el.className = "njg-wpill njg-pop";
+    el.setAttribute("aria-hidden", "true");
+    const spk = root.Shelf && root.Shelf.speakerSvg ? root.Shelf.speakerSvg() : "";
+    el.innerHTML = `<span class="njg-wpill-spk">${spk}</span><span class="njg-wpill-w"></span>`;
+    const word = el.querySelector(".njg-wpill-w");
+    word.textContent = text;
+    if (o.missing) word.classList.add("njg-ph");
+    if (o.u) el.style.setProperty("--njg-shelf-u", o.u + "px");
+    el.style.setProperty("--njg-wpill-min", POP.min + "px");
+    Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", opacity: "0", pointerEvents: "none", zIndex: "6", transform: "translate(-50%, -50%)" });
+    host.appendChild(el);
+    const w = el.offsetWidth, h = el.offsetHeight;
+    const p = typeof at === "function" ? at(w, h) : at;
+    el.style.left = p.x + "px";
+    el.style.top = p.y + "px";
+    // (no room above: no drift up, it fades where it is)
+    const drift = p.y - h / 2 - POP.rise >= (o.top || 0) + 10 ? POP.rise : 0;
+    const hold = o.hold == null ? POP.hold : o.hold;
+    const tr = (dy) => `translate(-50%, -50%) translate(0, ${dy}px)`;
+    if (Juice.less()) return still(el, hold + POP.inMs + POP.outMs);
+    const all = hold + POP.outMs;
+    return play(el, [
+      { opacity: 0, transform: tr(POP.rise), easing: "cubic-bezier(.34,1.56,.64,1)" },
+      { opacity: 1, transform: tr(0), offset: POP.inMs / all },
+      { opacity: 1, transform: tr(0), offset: hold / all },
+      { opacity: 0, transform: tr(-drift) },
+    ], all, { easing: "linear" });
+  };
+
   // ---- the recorded sounds: js/shared/sfx.js plays them (Sfx.file: the one place a sound is played, build/lint/static.mjs voice;
   //      moved there when Zafar's picks went into chai, 6 Nov). Juice.sound stays as the lab's name for it ----
   Juice.file = (name) => (root.Sfx && root.Sfx.fileUrl ? root.Sfx.fileUrl(name) : Juice.base + "sfx/" + name + ".mp3");
@@ -230,6 +291,10 @@
    *   Juice.P.steam(S, x, y, {w, thin, every, depth}) -> {stop()}    wisps rising on a slow loop until stopped
    *   Juice.P.puff(S, x, y, {w, depth}) -> Promise                    one full wisp rising once (a boil-over's steam)
    *   Juice.P.drop(S, x, y0, y1, {w, ms, splash: "crown" | "dots" | "none", depth, onLand}) -> Promise   the painted last drop falls
+ *   Juice.P.pop(S, at, text, {k, depth, top, hold, font, weight, color, shade, card}) -> container   the word pop by the action (piece 12): the card,
+ *                                              the speaker (js/shared/shelf.js Shelf.P.speaker) and the word at 36 px, k times; at
+ *                                              {x, y} or (W, H) -> {x, y} (W, H: its size as drawn, k in); rises 14 px into place,
+ *                                              holds, fades (no drift where the top, the view's, has no room)
    * x, y in the scene's own px. A sprite whose texture is not loaded is not drawn. Nothing takes a tap (no input on any of them).
    * Never through Cook.Stations' sparkle/steam stubs: S.verdict draws those by score.
    */
@@ -341,6 +406,42 @@
     const w = o.w || 100;
     if (Juice.less()) return stillP(S, img(S, "st-2", x, y - w * 0.5, w * 0.6, o.depth), 900);
     return wisp(S, o.name || "st-1", x, y - w * 0.3, w, w * 0.08, o.depth);
+  };
+
+  P.pop = function (S, at, text, o) {
+    o = o || {};
+    const TK = root.Tokens;
+    const k = o.k || 1;
+    const font = o.font || (TK && TK.font ? TK.font("word") : "");
+    const weight = o.weight || (TK && TK.weight ? TK.weight("drawn", "800") : "800");
+    const color = o.color || (TK && TK.hex ? TK.hex("ink-kutchi") : "");
+    const c0 = S.add.container(0, 0).setDepth(o.depth == null ? 50 : o.depth).setAlpha(0).setScale(k);
+    const c = S.track ? S.track(c0) : c0;
+    const t = S.add.text(0, 0, text, { fontFamily: font, fontSize: "36px", fontStyle: weight, color }).setOrigin(0, 0.5);
+    const w = 34 + 10 + t.width + 36;
+    const g = S.add.graphics();
+    const ink = (n) => (TK && TK.int ? TK.int(n) : null) || 0;
+    g.fillStyle(o.shade != null ? o.shade : ink("shade-rgb"), 0.1);
+    g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
+    g.fillStyle(o.card != null ? o.card : ink("card"), 1);
+    g.fillRoundedRect(-w / 2, -28, w, 56, 12);
+    if (root.Shelf && root.Shelf.P) root.Shelf.P.speaker(g, -w / 2 + 30, 0, 26);
+    t.x = -w / 2 + 50;
+    c.add([g, t]);
+    const { x, y } = typeof at === "function" ? at(w * k, 59 * k) : at;
+    const drift = y - (59 * k) / 2 - POP.rise >= (o.top || 0) + 10 ? POP.rise : 0;
+    const hold = o.hold == null ? POP.hold : o.hold;
+    c.setPosition(x, y + POP.rise);
+    c.popW = w * k;
+    if (Juice.less()) {
+      c.setY(y);
+      S.tweens.add({ targets: c, alpha: 1, duration: POP.inMs });
+      S.tweens.add({ targets: c, alpha: 0, delay: hold, duration: POP.outMs, onComplete: () => c.destroy() });
+      return c;
+    }
+    S.tweens.add({ targets: c, alpha: 1, y, duration: POP.inMs, ease: "Back.easeOut" });
+    S.tweens.add({ targets: c, alpha: 0, y: y - drift, delay: hold, duration: POP.outMs, onComplete: () => c.destroy() });
+    return c;
   };
 
   P.drop = function (S, x, y0, y1, o) {

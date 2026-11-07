@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Shared kit: the shelf, its pills, the count pills, the word pop</title>
+<!--
+  The shared kit's shelf section (Sprint 18, module map pieces 9-12; kit builder (c)). Loaded by lab/kit.html, and opens on its own.
+  Nothing from js/cook/ is loaded here: the shelf (js/shared/shelf.js), the count pills (js/shared/tally.js) and the word pop
+  (js/shared/juice.js) draw from the shared kit alone, on the page and on a canvas (Phaser, the shelf's and the pop's twins).
+  Every Kutchi word is the lexicon's (data/lang/lexicon.json, the item's own entry); a word without one shows its English in grey
+  italic. Each strip is one state: data-state names it (the evidence tool's anchor).
+-->
+<link rel="stylesheet" href="../../css/shared/kit.css?v=20261107T120301Z">
+<style>
+  /* the lab page itself (developer chrome, not the game) */
+  html, body { margin: 0; background: var(--njg-page); font-family: var(--njg-font); color: var(--njg-ink); }
+  body { padding: var(--njg-s3); }
+  h1 { font-size: var(--njg-t2); margin: 0 0 var(--njg-s2); }
+  .ks-strip { margin: 0 0 var(--njg-s4); }
+  .ks-cap { font-size: var(--njg-t4); color: var(--njg-ink-soft); font-weight: 700; margin: 0 0 var(--njg-s1); }
+  .ks-band { position: relative; width: 100%; aspect-ratio: 1600 / 270; background: var(--njg-panel); border-radius: var(--njg-radius); overflow: hidden; }
+  .ks-band.half { width: 100%; }
+  .ks-row { display: flex; flex-wrap: wrap; gap: var(--njg-s3); align-items: center; }
+  .ks-pillbox { position: relative; width: 11em; height: 3.2em; }
+  .ks-play { position: relative; width: 100%; max-width: 720px; height: 220px; background: var(--njg-panel); border-radius: var(--njg-radius); overflow: hidden; }
+  .ks-pan { position: absolute; left: 50%; top: 150px; width: 160px; height: 90px; margin-left: -80px; border-radius: 50%; background: var(--njg-card); box-shadow: var(--njg-shadow); }
+  .ks-tally { position: relative; width: 100%; max-width: 720px; height: 64px; background: var(--njg-panel); border-radius: var(--njg-radius); }
+  #ks-canvas { width: 100%; max-width: 720px; aspect-ratio: 1600 / 270; border-radius: var(--njg-radius); overflow: hidden; }
+  #ks-canvas canvas { width: 100% !important; height: auto !important; display: block; }
+  .ks-note { font-size: var(--njg-t4); color: var(--njg-ink-soft); }
+</style>
+</head>
+<body>
+<section id="kit-shelf">
+<h1>The shelf, its pills, the count pills, the word pop</h1>
+<p class="ks-note" id="ks-load"></p>
+
+<div class="ks-strip" data-state="shelf-classes"><p class="ks-cap">shelf: L, M and S classes in three groups, the word pills under them</p><div class="ks-band" id="ks-shelf-classes"></div></div>
+<div class="ks-strip" data-state="decoys-L1"><p class="ks-cap" id="ks-cap-1"></p><div class="ks-band" id="ks-shelf-1"></div></div>
+<div class="ks-strip" data-state="decoys-L2"><p class="ks-cap" id="ks-cap-2"></p><div class="ks-band" id="ks-shelf-2"></div></div>
+<div class="ks-strip" data-state="decoys-L3"><p class="ks-cap" id="ks-cap-3"></p><div class="ks-band" id="ks-shelf-3"></div></div>
+<div class="ks-strip" data-state="decoys-L4"><p class="ks-cap" id="ks-cap-4"></p><div class="ks-band" id="ks-shelf-4"></div></div>
+<div class="ks-strip" data-state="shelf-narrow"><p class="ks-cap">shelf, crowded (ten things, the most a row holds): the slots narrow, the groups close up, the pills never touch</p><div class="ks-band half" id="ks-shelf-narrow"></div></div>
+<div class="ks-strip" data-state="pills"><p class="ks-cap">word pills: said (the word written), unsaid (the speaker alone), no Kutchi yet (its English, grey italic)</p><div class="ks-row" id="ks-pills"></div></div>
+<div class="ks-strip" data-state="count-L1"><p class="ks-cap">count pills at 0 to 4, levels 1-2 (the number's word)</p><div class="ks-row" id="ks-count-1"></div></div>
+<div class="ks-strip" data-state="count-L3"><p class="ks-cap">count pills at 0 to 4, levels 3-4 (dots, never a digit)</p><div class="ks-row" id="ks-count-3"></div></div>
+<div class="ks-strip" data-state="pop"><p class="ks-cap">the word pop by the action: over the pan, above the count pill (held here; tap the pan to pop again)</p><div class="ks-play" id="ks-play"><div class="ks-pan" id="ks-pan"></div><div id="ks-play-tally"></div></div></div>
+<div class="ks-strip" data-state="canvas"><p class="ks-cap">on a canvas (Phaser): the shelf's pills (said, unsaid, a long word capped) and the word pop</p><div id="ks-canvas"></div></div>
+</section>
+
+<script src="../../js/shared/tokens.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/rules.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/shelf.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/tally.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/juice.js?v=20261107T120301Z"></script>
+<script src="../../js/vendor/phaser.min.js?v=20261107T120301Z"></script>
+<script>
+(async function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const A = (p) => "../../" + p;
+  const json = (p) => fetch(A(p)).then((r) => r.json());
+  const [cook, lex, rules] = await Promise.all([json("data/cook.json"), json("data/lang/lexicon.json"), json("data/rules.json")]);
+  window.Rules.set(rules);
+  // an item's Kutchi: its own lexicon entry (the one that names data/cook.json words.<id>), else none (its English shows)
+  const entry = (id) => lex.entries.find((e) => (e.src || []).some((s) => String(s).startsWith(`data/cook.json words.${id}:`)));
+  const text = (id) => (entry(id) ? entry(id).lemma : null);
+  const english = (id) => (entry(id) ? entry(id).gloss : id);
+  const label = (id) => text(id) || english(id);
+  const pics = (cook.art || {}).chaiShelf || {};
+  const pic = (id) => (pics[id] ? A(pics[id]) : null);
+  const size = (id) => Shelf.sizeClass(id, { words: cook.words, sizes: (cook.art || {}).sizes });
+  const opts = (extra) => Object.assign({ pic, text: label, missing: (id) => !text(id), size, shows: () => true, onTap: () => {} }, extra || {});
+  const shelves = {};
+
+  // the size classes: two L, two M, the S jars
+  shelves.classes = Shelf.mount($("ks-shelf-classes"), opts({ groups: [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], ["veg-14", "spi-10", "veg-13"]] }));
+
+  // decoys by level, from the rules file (1, 2, 3, 4; one a lookalike at L4: the salt, sugar's)
+  const asked = ["veg-14"];
+  const pool = ["spi-10", "veg-13", "spi-02", "spi-05", "spi-16"];
+  for (const lv of [1, 2, 3, 4]) {
+    const notes = [];
+    const ds = Shelf.decoys(pool, asked.concat(lv < 4 ? ["spi-16"] : []), lv, { want: ["cook-khun"], lookalikes: cook.lookalikes || {}, note: (n, o) => notes.push([n, o]), shuffle: (a) => a.slice() });
+    $(`ks-cap-${lv}`).textContent = `L${lv}: asked ${asked.length}, decoys ${notes[0][0]} (the rules: ${Rules.level(lv).decoys}), lookalike ${notes[0][1].lookalike ? "yes" : "no"}`;
+    shelves[lv] = Shelf.mount($(`ks-shelf-${lv}`), opts({ groups: [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], asked.concat(ds)], shows: (id) => lv < 3 || id !== "cook-paani" }));
+  }
+  shelves.narrow = Shelf.mount($("ks-shelf-narrow"), opts({ groups: [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], ["veg-14", "spi-10", "veg-13", "spi-02", "spi-05", "spi-16"]] }));
+
+  // the pills alone
+  const pillAt = (el) => {
+    const box = document.createElement("div");
+    box.className = "ks-pillbox";
+    box.appendChild(el);
+    $("ks-pills").appendChild(box);
+  };
+  pillAt(Shelf.chip(label("cook-dudh"), { word: true }));
+  pillAt(Shelf.chip(label("cook-dudh"), { word: false }));
+  pillAt(Shelf.chip(english("cook-dudh"), { word: true, missing: true }));
+
+  // the count pills at 0 to 4: L1-L2 the lexicon's number words, L3-L4 dots
+  const num = (n) => { const e = lex.entries.find((x) => x.id === `num.${n}`); return e ? e.lemma : null; };
+  for (const [row, lv] of [["ks-count-1", 1], ["ks-count-3", 3]]) {
+    for (let n = 0; n <= 4; n++) {
+      const box = document.createElement("div");
+      box.className = "ks-tally";
+      box.style.width = "9em";
+      const el = document.createElement("div");
+      box.appendChild(el);
+      $(row).appendChild(box);
+      const c = Tally.counter(el, { level: lv, icon: () => pic("cook-khun"), word: num });
+      c.set("cook-khun", n, { say: false }); // (at 0 the picture alone: no count drawn)
+    }
+  }
+
+  // the pop, over the pan, clear of the count pill beside it
+  const play = $("ks-play"), pan = $("ks-pan");
+  const tl = Tally.counter($("ks-play-tally"), { level: 1, icon: () => pic("cook-khun"), word: num });
+  const popNow = (hold) => {
+    const n = tl.up("cook-khun", { say: false });
+    if (n >= 4) tl.clear();
+    const pr = play.getBoundingClientRect(), r = pan.getBoundingClientRect();
+    tl.at(r.left - pr.left + 12, r.top - pr.top + 10, { anchor: "right" });
+    const tb = $("ks-play-tally").getBoundingClientRect();
+    const avoid = { x0: tb.left - pr.left, y0: tb.top - pr.top, x1: tb.right - pr.left, y1: tb.bottom - pr.top };
+    return Juice.pop(play, (w, h) => Juice.popAt({ x: r.left - pr.left + r.width / 2, y: r.top - pr.top - 12 }, w, h, { top: 4, left: 4, right: pr.width - 4, avoid }), label("cook-khun"), { hold });
+  };
+  tl.set("cook-khun", 1, { say: false });
+  popNow(1e9);
+  pan.addEventListener("click", () => popNow());
+
+  // the canvas twins: Shelf.P.chip and Juice.P.pop, no Cook
+  const W = 1600, H = 270;
+  new Phaser.Game({
+    type: Phaser.CANVAS, parent: "ks-canvas", width: W, height: H, transparent: true, banner: false,
+    scene: {
+      create() {
+        const S = this;
+        const g = S.add.graphics();
+        g.fillStyle(Tokens.int("panel") || 0, 1);
+        g.fillRect(0, 0, W, H);
+        const xs = [200, 420, 640];
+        Shelf.P.chip(S, xs[0], 200, label("cook-dudh"), { word: true });
+        Shelf.P.chip(S, xs[1], 200, label("cook-dudh"), { word: false });
+        const long = Shelf.P.chip(S, xs[2], 200, label("spi-02") + " " + label("spi-05"), { word: true, cap: 150 });
+        long.hit(160);
+        Juice.P.pop(S, (w, h) => ({ x: 1100, y: 90 }), label("cook-khun"), { hold: 1e9 });
+        window.ksCanvasReady = true;
+      },
+    },
+  });
+  $("ks-load").textContent = `loaded without js/cook/: Cook ${typeof window.Cook === "undefined" ? "absent" : "present"}`;
+  window.ksShelves = shelves;
+  window.ksReady = true;
+})().catch((e) => {
+  document.getElementById("ks-load").textContent = "error: " + e.message;
+  throw e;
+});
+</script>
+</body>
+</html>

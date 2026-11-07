@@ -23,6 +23,7 @@
  */
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame, onEnd } from "./life.js";
+import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic script, imported for its side effect; Sprint 18, piece 9)
 
 (function (global) {
   const Cook = CookNS;
@@ -166,38 +167,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * CK-49: the decoys for a round by the table: `n` of `pool` (leaving out `not`), at L4 one of them a lookalike of a wanted
    * thing (data/cook.json lookalikes) where the pool has one; `ok(id)` keeps only those the station can draw. Logged for
    * contract-37 (St.decoyNote, with `also` more already on offer). Returns the list.
+   * Sprint 18 (piece 9): the rule is the shared kit's (js/shared/shelf.js Shelf.decoys); this passes Cook's level row (a station's
+   * own row first), its lookalikes and its shuffle.
    */
   S$.tableDecoys = function (pool, not, level, { want = not, ok = () => true, what = "", n = null, station = null, also = 0, alsoLook = false } = {}) {
-    const row = Cook.levelRow(level, station);
-    const need = n == null ? row.decoys : n;
-    const left = [...new Set((pool || []).filter((x) => !not.includes(x) && ok(x)))];
-    const out = [];
-    let look = false;
-    if (row.lookalike && need > 0 && !alsoLook) {
-      const L = Cook.data.lookalikes || {};
-      // (a lookalike the station can draw: data.lookalikes, else a picture from the same lookalike group, from the pool)
-      const groups = ((Cook.data.lookalike_groups || {}).groups || []).filter(Array.isArray);
-      const mates = (w) => (L[w] || []).concat(...groups.filter((g) => g.includes(w)));
-      const cand = Cook.shuffle([].concat(...[].concat(want || []).map(mates))).find((x) => left.includes(x));
-      if (cand) {
-        out.push(cand);
-        look = true;
-      }
-    }
-    Cook.shuffle(left).forEach((x) => out.length < need && !out.includes(x) && out.push(x));
-    // (also: things on offer that nobody asked for besides these, the 'no' item: an ordinary decoy, counted)
-    // (the S14 roll-out; the central rules: "one more a level where the space allows": a pool with no more to offer says so, room:n, for contract-37)
-    S$.decoyNote(out.length + also, { what: out.length < need ? `${what} room:${out.length + also}` : what, lookalike: look || (row.lookalike && alsoLook) });
-    return out;
+    return global.Shelf.decoys(pool, not, level, {
+      want, ok, what, n, also, alsoLook,
+      row: Cook.levelRow(level, station),
+      lookalikes: (Cook.data || {}).lookalikes || {},
+      groups: ((Cook.data || {}).lookalike_groups || {}).groups || [],
+      shuffle: Cook.shuffle,
+      note: S$.decoyNote,
+    });
   };
   /** CK-49 (contract-37): a station reports how many decoys it put out this round, and whether one is a lookalike. */
-  S$.decoyNote = function (n, { what = "", lookalike = false } = {}) {
-    try {
-      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("decoys", { step: String(n), by: `${what}${what ? " " : ""}lookalike:${lookalike ? 1 : 0}` });
-    } catch (e) {
-      /* only a log */
-    }
-  };
+  S$.decoyNote = (n, o) => global.Shelf.decoyNote(n, o);
 
   /*
    * 29 Sept (X7, Zafar): the shelf band's one padding rule. The band is the bottom 30% (630-900 in
@@ -208,12 +192,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * the hop and a little glow come off the room first. shelfFit gives the largest scale (at most k)
    * that keeps a picture standing on `base` inside the rule.
    */
-  const SHELF = { top: 630, bottom: 900, chipY: 860, chipH: 46, glow: 4 };
+  // (Sprint 18, piece 9: the band's numbers and rule are the shared kit's, js/shared/shelf.js Shelf.BAND)
+  const SHELF = global.Shelf.BAND;
   S$.SHELF = SHELF;
-  S$.shelfPad = () => SHELF.bottom - (SHELF.chipY + SHELF.chipH / 2);
-  S$.shelfItemTop = () => SHELF.top + S$.shelfPad();
+  S$.shelfPad = () => global.Shelf.pad();
+  S$.shelfItemTop = () => global.Shelf.itemTop();
   /** How far S.glow's bounce lifts a thing this tall (the same rule as stations.js glow()). */
-  S$.shelfHop = (h) => Math.max(6, Math.min(16, h * 0.07));
+  S$.shelfHop = (h) => global.Shelf.hop(h);
   /*
    * ART-41 (Zafar, 5 Nov: "I like 1 ... this colour left and bottom panel and this ledge style ... add this"): the shelf band in his
    * pale warm-grey stone (pack s17-pc2's tile, assets/shared/panel/stone-tile-s17) and the stone shelf the jars stand on (its strip,
@@ -291,14 +276,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * art.sizes[id].size; missing = M. sizeFlag LONG: the class on the picture's long side; W: fitted to the slot's width.
    * The art draws every item the same height, so the picture's own size never decides how big it stands.
    */
-  S$.CLASS_K = { L: 1, M: 0.91, S: 0.84 };
-  S$.FLOOR_CSS = 40;
+  // (Sprint 18, piece 9: the classes and the fit are the shared kit's, js/shared/shelf.js; Cook passes its data and its textures)
+  S$.CLASS_K = global.Shelf.CLASS_K;
+  S$.FLOOR_CSS = global.Shelf.FLOOR_CSS;
   S$.sizeClass = function (id) {
     const D = Cook.data || {};
-    const w = (D.words || {})[id];
-    const a = ((D.art || {}).sizes || {})[id];
-    const e = w && w.size ? w : a && a.size ? a : null;
-    return { size: e && S$.CLASS_K[e.size] ? e.size : "M", flag: (e && e.sizeFlag) || null, given: !!e };
+    return global.Shelf.sizeClass(id, { words: D.words || {}, sizes: (D.art || {}).sizes || {} });
   };
   /**
    * The scale for texture `key` (word `id`) standing on `base` in the shelf band: the L height is the band's room (its top gap and
@@ -307,32 +290,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * (`capped`). Returns { scale, cls, flag, k, h (the opaque height, design px), hL, floored, capped }.
    */
   S$.classFit = function (S, key, id, { base, ppw = 1, slotW = Infinity, hop = true } = {}) {
-    const c = S$.sizeClass(id);
-    const k = S$.CLASS_K[c.size];
-    const room = base - S$.shelfItemTop() - SHELF.glow;
-    let hL = room;
-    for (let n = 0; n < 4; n++) hL = room - (hop ? S$.shelfHop(hL) : 0);
-    const out = { scale: 1, cls: c.size, flag: c.flag, k, h: 0, hL, floored: false, capped: false };
-    if (!S.textures.exists(key)) return out;
-    const src = S.textures.get(key).getSourceImage();
-    const [t, b] = S$.opaqueSpan(S, key);
-    const ph = (b - t) * src.height, pw = src.width;
-    let s;
-    if (c.flag === "W" && isFinite(slotW)) s = (slotW * k) / pw;
-    else if (c.flag === "LONG") s = (hL * k) / Math.max(ph, pw);
-    else s = (hL * k) / ph;
-    const floor = S$.FLOOR_CSS / Math.max(1e-6, ppw);
-    if (ph * s < floor) {
-      s = floor / ph;
-      out.floored = true;
+    let pic = null;
+    if (S.textures.exists(key)) {
+      const src = S.textures.get(key).getSourceImage();
+      const [t, b] = S$.opaqueSpan(S, key);
+      pic = { ph: (b - t) * src.height, pw: src.width };
     }
-    if (isFinite(slotW) && pw * s > slotW) {
-      s = slotW / pw;
-      out.capped = true;
-    }
-    out.scale = Math.max(0.05, s);
-    out.h = ph * out.scale;
-    return out;
+    return global.Shelf.classFit(pic, S$.sizeClass(id), { base, ppw, slotW, hop, floorCss: S$.FLOOR_CSS });
   };
   S$.hideKnown = hideKnown;
 
