@@ -44,3 +44,8 @@ build/reports/s17-std-placement-2.md --mine`.
 | CHAI-63 | rule | STD-B4-03 | the boil-ready picture at every level (open) |
 | CHAI-99 | rule | STD-B4-04 | the pour's payoff before the next pan's light |
 | DAAR-12 | not a standard | | daar's stir: how laps and speed show on the card, waiting on Zafar; a B3 rule once he decides |
+
+## Proof
+
+`node build/tools/review/stdids.mjs --check --fragments build/reports/s17-std-placement-2.md --mine`: 38 placed, 28 rules
+defined, 0 problems (7 Nov). Read against `stdids.mjs --sources` (213 IDs) and the rules of `docs/design-language/standard/b-play.md`.
