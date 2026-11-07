@@ -508,6 +508,56 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       go();
     });
   };
+  /**
+   * The reveal lessons in their order (STD-D1-08, SH-196: the dotted word, then the blurred picture, each once per player in every
+   * game; for the New player once a round; CHAI-102): each only if due on the gate (o.gate: C.firsts(key, {round})) and on the order
+   * card at all; waits for the order to have landed first (Cook.Stations.orderLanded(o.ctx)); each lights through Onboard.lesson,
+   * spent only once its box is drawn; the picture's only after the word's was ever shown. Cook's expect is "wait" while one runs (the
+   * tester waits). Logged: "order-landed", "reveal-lesson" (shown <why> | none-in-view <why...>). -> Promise<{word, pic}>
+   */
+  C.lessons = async function (o = {}) {
+    const Onboard = OB();
+    const gate = o.gate;
+    const out = { word: false, pic: false };
+    if (!Onboard || !Onboard.lesson || !gate) return out;
+    const L = Onboard.LESSON;
+    const wordSel = o.wordSel || L.word;
+    const picSel = o.picSel || L.pic;
+    const St = Cook.Stations || {};
+    if ((gate.due("reveal-word", true) || gate.due("reveal-pic", true)) && St.orderLanded) {
+      const ms = await St.orderLanded(o.ctx);
+      note("order-landed", { step: "reveal", by: `${ms}ms` });
+    }
+    const why = (x) => Onboard.lessonWhy(x);
+    const mover = C.mover({ busy: o.busy });
+    const prev = { e: null };
+    const wait14 = { kind: "wait", dots: true };
+    const lo = {
+      speed: speed(),
+      wait: (ms) => Cook.wait(ms),
+      moving: mover,
+      settle: () => C.settled({ moving: mover }),
+      intoView: (card) => Cook.UI && Cook.UI.cardIntoView && Cook.UI.cardIntoView(card),
+      sound: () => (Cook.sfx && Cook.sfx.reveal ? Cook.sfx.reveal() : Cook.sfx && Cook.sfx.click ? Cook.sfx.click() : null),
+      hold(on) {
+        if (on) {
+          prev.e = Cook.expect;
+          Cook.expect = wait14;
+        } else if (Cook.expect === wait14) Cook.expect = prev.e || null;
+      },
+      note: `${gate.scope}:s14-light`,
+    };
+    const run = async (kind, sel, k) => {
+      const ok = await Onboard.lesson(kind, sel, Object.assign({}, lo, { onLit: (x) => (gate.spend(k, true), note("reveal-lesson", { step: kind, by: `shown ${why(x)}` })) }));
+      if (!ok) note("reveal-lesson", { step: kind, by: `none-in-view ${[...document.querySelectorAll(sel)].map(why).join(" ") || "-"}` });
+      return ok;
+    };
+    if (document.querySelectorAll(wordSel).length > 0 && gate.due("reveal-word", true)) out.word = await run("word", wordSel, "reveal-word");
+    // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
+    if (document.querySelectorAll(picSel).length > 0 && gate.spent("reveal-word", true) && gate.due("reveal-pic", true)) out.pic = await run("pic", picSel, "reveal-pic");
+    return out;
+  };
+
   /*
    * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
    * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by

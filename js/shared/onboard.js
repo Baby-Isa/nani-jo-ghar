@@ -1700,6 +1700,220 @@
       }
     });
   };
+  /* ---------------- the reveal lessons (module map piece 14) ---------------- */
+  /*
+   * SH-196, STD-D1-08 (Zafar, 2 Nov: "teach the blur of the word, and then the image, both when they first happen"): the reveal is
+   * taught when it first happens by showing its tap on a card in view, never as help. Onboard.lesson(kind, sel, o) lights one hidden
+   * thing on the order card (kind "word": a dotted word, the Kutchi or the English, one lesson; "pic": a blurred picture's eye), zooms
+   * from its item card onto it (SH-213), shows the tap once in place (the card's own demo: the word shows, then the dots come back),
+   * and lets go a beat after. -> Promise<true> once its box was drawn (o.onLit(el) is called then: the game spends its first time
+   * and logs it); false: nothing was in view, nothing lit, nothing spent (CHAI-102).
+   * Only a thing the child can see (Onboard.inView: inside an open card, inside the order list's view, on top at its middle); a card
+   * just out of the list's view is brought in (o.intoView), a row cut at its edge glided to it (OrderCard.glideTo); the stage still
+   * first (o.settle, o.moving: contract-79). A card redrawn under the lesson (the order's end redraws every card) is followed: the
+   * same thing on the new card (its person's card, its place among that card's), else picked again (twice at most).
+   * o: {settle() -> Promise (the stage still), moving() (default Onboard.pageMoving), intoView(card), wait(ms) (the game's own
+   * speed; default real time), speed (1), sound() (the tap's click), hold(on) (the game's "wait" while it runs), onLit(el), note
+   * (the light's log step), list ("#mission"), pickMs (4000)}.
+   */
+  const LIST = "#mission";
+  const ROWS = `${LIST} .oc-row14`;
+  Onboard.LESSON = {
+    list: LIST,
+    word: `${ROWS} .wc14-hide-en .wc14-en-dots, ${ROWS} .wc14-hide-k .wc14-k-dots, ${ROWS} .wc14-k .dots`,
+    pic: `${ROWS} .wc14-hide-pic .wc14-eye`,
+  };
+  const visible = (x) => !!(x && x.offsetParent && root.getComputedStyle && getComputedStyle(x).display !== "none" && getComputedStyle(x).visibility !== "hidden");
+  /** Can the child see x on the order card? (open card, inside the list's view, what shows at its middle; cut at the row's edge is fine) */
+  Onboard.inView = function (x, list) {
+    if (!visible(x) || x.closest(".oc-card.folded")) return false;
+    const L = document.querySelector(list || LIST);
+    const r = x.getBoundingClientRect();
+    const m = L ? L.getBoundingClientRect() : null;
+    if (!m || r.width <= 1 || r.height <= 1 || r.top < m.top - 1 || r.bottom > m.bottom + 1) return false;
+    const row = x.closest(".oc-row14");
+    const rr = row ? row.getBoundingClientRect() : m;
+    const mid = r.left + r.width / 2;
+    const cx = Math.max(rr.left + 2, Math.min(rr.right - 2, mid));
+    const hit = mid >= rr.left && mid <= rr.right ? document.elementFromPoint(cx, r.top + r.height / 2) : null;
+    return !hit ? mid < rr.left || mid > rr.right : hit === x || x.contains(hit) || hit.contains(x) || !!(hit.closest && hit.closest(".wc14") === x.closest(".wc14"));
+  };
+  /** The first thing matching sel the child can see, waited for up to ms while the cards settle (a card brought into view meanwhile). */
+  Onboard.pickShown = async function (sel, o) {
+    o = o || {};
+    const ms = o.ms == null ? 4000 : o.ms;
+    const t0 = Date.now();
+    for (;;) {
+      const all = [...document.querySelectorAll(sel)].filter(visible);
+      const ok = all.find((x) => Onboard.inView(x, o.list));
+      if (ok) return ok;
+      const open = all.find((x) => !x.closest(".oc-card.folded"));
+      if (open && o.intoView) o.intoView(open.closest(".oc-card"));
+      if (Date.now() - t0 > ms) return null;
+      await new Promise((r) => setTimeout(r, 120));
+    }
+  };
+  /** Why a thing was taken or not, for the play log (the labs' "Record a play"): "<who>:ok|folded|hidden|out@x,y". */
+  Onboard.lessonWhy = function (x, list) {
+    const c = x.closest(".oc-card");
+    const r = x.getBoundingClientRect();
+    return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !visible(x) ? "hidden" : Onboard.inView(x, list) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
+  };
+  Onboard.lesson = async function (kind, sel, o) {
+    o = o || {};
+    sel = sel || Onboard.LESSON[kind === "pic" ? "pic" : "word"];
+    const sp = o.speed || 1;
+    const real = (ms) => new Promise((r) => setTimeout(r, ms));
+    const wait = o.wait || ((ms) => real(ms / sp));
+    const moving = o.moving || (() => Onboard.pageMoving());
+    const settle =
+      o.settle ||
+      (async () => {
+        const t0 = Date.now();
+        let quiet = null;
+        while (Date.now() - t0 < Onboard.WAIT.settle) {
+          if (!moving()) quiet = quiet == null ? Date.now() : quiet;
+          else quiet = null;
+          if (quiet != null && Date.now() - quiet >= 500 / sp) return;
+          await real(60);
+        }
+      });
+    const pick = (ms) => Onboard.pickShown(sel, { ms, list: o.list, intoView: o.intoView });
+    const first = await pick(o.pickMs);
+    if (!first) return false;
+    // the thing, followed onto a card redrawn under the lesson (CHAI-102)
+    let el = first;
+    let key = null;
+    const keep = (x) => {
+      el = x;
+      const c = x.closest(".oc-card");
+      key = { who: c && c.dataset.who, i: c ? [...c.querySelectorAll(sel)].indexOf(x) : -1 };
+    };
+    const live = () => {
+      if (el && el.isConnected) return el;
+      const c = key && [...document.querySelectorAll(`${o.list || LIST} .oc-card`)].find((q) => q.dataset.who === key.who);
+      const x = c && key.i >= 0 ? c.querySelectorAll(sel)[key.i] : null;
+      if (x) {
+        if (el && el.classList.contains("ob-dots-now")) x.classList.add("ob-dots-now");
+        el = x;
+      }
+      return el;
+    };
+    keep(first);
+    for (let go = 0; ; go++) {
+      const row = live().closest(".oc-row");
+      // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
+      // card is not already whole in view)
+      const rowBox = row && row.closest(".oc-row14");
+      const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
+      if (cut && root.OrderCard && root.OrderCard.glideTo) {
+        root.OrderCard.glideTo(row);
+        await wait(400);
+      }
+      // (contract-79: the cards have landed and the row has stopped, looked at again as it lights: a slide can begin in that frame)
+      for (let k = 0; k < 4; k++) {
+        await settle();
+        if (!moving()) break;
+      }
+      // (contract-79, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once still, and again if a slide began in it)
+      for (let k = 0; k < 3; k++) {
+        await real(170);
+        if (!moving()) break;
+        await settle();
+      }
+      if (live().isConnected && visible(el)) break;
+      const again = go < 2 ? await pick(1500) : null;
+      if (!again) return false;
+      keep(again);
+    }
+    el.classList.add("ob-dots-now");
+    if (o.hold) o.hold(true);
+    // (the judge, 3-4 Nov: the box hugs the dots and stops short of the word above them; the whole tap area is still lit and tapped)
+    const hug = () => {
+      const e = live();
+      const above = e.closest(".wc14") && e.closest(".wc14").querySelector(".wc14-k");
+      const ks = [...e.children].map((k) => k.getBoundingClientRect()).filter((q) => q.width && q.height);
+      if (!ks.length) return null;
+      const x0 = Math.min(...ks.map((q) => q.left)), x1 = Math.max(...ks.map((q) => q.right));
+      let y0 = Math.min(...ks.map((q) => q.top)) - 3;
+      const y1 = Math.max(...ks.map((q) => q.bottom)) + 3;
+      const w = above && above !== e && !above.contains(e) ? above.getBoundingClientRect() : null;
+      if (w && w.bottom > y0 - 3 && w.top < y0) y0 = Math.min(y1 - 6, w.bottom + 3);
+      return { x: x0 - 4, y: y0, w: x1 - x0 + 8, h: y1 - y0 };
+    };
+    // (Zafar, 4 Nov: while the word shows in the dots' place the box is on the word)
+    const peek = () => {
+      const c = live().closest(".wc14");
+      const pk = c && [...c.querySelectorAll(".wc14-peek")].find((x) => x.getBoundingClientRect().width > 0);
+      if (!pk) return null;
+      const q = pk.getBoundingClientRect();
+      return { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 };
+    };
+    // (Zafar, 4 Nov evening: "the highlight box for the blurred words should be the biggest size it's going to be": the word's own
+    // text, measured while hidden, joins the dots' box from the start)
+    const wordBox = () => {
+      const e = live();
+      const c = e.closest(".wc14");
+      const t = c && (e.classList.contains("wc14-en-dots") ? c.querySelector(".wc14-en") : e.classList.contains("wc14-k-dots") ? c.querySelector(".wc14-k") : null);
+      if (!t || !t.textContent.trim() || !document.createRange) return null;
+      const rg = document.createRange();
+      rg.selectNodeContents(t);
+      const q = rg.getBoundingClientRect();
+      return q.width && q.height ? { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 } : null;
+    };
+    let lastBox = null;
+    const boxNow = () => {
+      const b = Onboard.unionOf([hug() || peek(), wordBox()]) || lastBox;
+      if (b) lastBox = b;
+      return b;
+    };
+    let over = false;
+    // (SH-213: the whole item card first, then the box shrinks onto the hidden word, or onto the blurred picture itself)
+    const isEye = el.classList.contains("wc14-eye");
+    const whole = () => live().closest(".wc14");
+    const picEl = isEye ? () => live().closest(".wc14-pic") : null;
+    const picBox = () => {
+      const p = picEl && picEl();
+      const q = p && p.getBoundingClientRect();
+      if (q && q.width) lastBox = { x: q.left, y: q.top, w: q.width, h: q.height };
+      return lastBox;
+    };
+    const zoomMs = Onboard.ZOOM.total();
+    const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)] });
+    const end = () => {
+      live().classList.remove("ob-dots-now");
+      if (o.hold) o.hold(false);
+    };
+    // (CHAI-102: a box drawn, looked at for up to 0.6 s: a thing mid-move has none until it is back; else no lesson, nothing spent)
+    const drawn = () => !!(lit.box && lit.box());
+    for (let t0 = Date.now(); !drawn() && Date.now() - t0 < 600; ) await real(60);
+    if (!drawn()) {
+      lit.stop();
+      await lit.done;
+      end();
+      return false;
+    }
+    if (o.onLit) o.onLit(live());
+    // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap once,
+    // in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
+    const rowNow = live().closest(".oc-row");
+    const card = rowNow && rowNow.wc;
+    const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
+    if (card && card.demo) {
+      // (the zoom-in first; then the part alone a beat before the tap is shown: 0.5 s after a zoom, Zafar 5 Nov, else 1.1 s)
+      if (zoomMs) await real(zoomMs);
+      await wait(zoomMs ? 500 : 1100);
+      if (o.sound) o.sound();
+      await card.demo(slot, 1600 / sp);
+      await wait(Onboard.WAIT.lessonEnd);
+      over = true;
+    }
+    await lit.done;
+    end();
+    // (its light has faded before play comes in: the kit's fade is 300 ms of real time, never the test speed's)
+    await real(340);
+    return true;
+  };
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */
   // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
   if (root.PlayLog && root.PlayLog.__live) {
