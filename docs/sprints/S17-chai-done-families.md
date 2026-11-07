@@ -197,7 +197,7 @@ first, up to eight builders).
 Chai signed off (7 Nov, live 20261107T120301Z) and Sprint 17 closed the same day with the four things Sprint 18 starts from:
 **chai's frozen run** (`build/reports/s17-frozen-run.md`: the contract at L1-L4 at the four sizes, 44 pages, one known break,
 ART-59; four films at a child's pace, 0 breaks; the ear sheet; `frozen.mjs --diff`, which compares chai by what it does and counts a
-change only if a re-play shows it again), **the standard folder** (`docs/design-language/standard/`: 222 rules in Zafar's locked
+change only if a re-play shows it again), **the standard folder** (`docs/design-language/standard/`: 208 live rules, 14 doubles retired, in Zafar's locked
 structure, the glossary, 14 patterns, the values sheet; Fable's review applied), **the mechanical ID check** (`stdids.mjs --check`:
 all 217 source IDs placed once; the dropped list, 6, `build/reports/s17-dropped-list.md`) and **the module map**
 (`docs/architecture/module-map.md`). With them: contract-96 to -99, chai's game checks keyed by `build/sandbox/data/games.json`,
