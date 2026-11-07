@@ -129,3 +129,7 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | SH-215 | rule | STD-E4-01 | also a value: Nani's box fold (values.md D3) |
 | led:1.11-3 | rule | STD-E1-03 |  |
 | led:1.6-11 | rule | STD-E2-08 |  |
+
+## Proof
+
+`node build/tools/review/stdids.mjs --check --fragments build/reports/s17-std-placement-4.md --mine`: 213 source IDs; 123 placed in the fragments; 0 problems. Placed: 95 rule, 12 value, 14 not a standard, 2 retired.

@@ -91,4 +91,8 @@ CLN-218 (the clinic's side card, under E2-03), CHT-17 (chaat's labels, under E1-
   `voicegate`), every `check:static/`, `check:layout/` and `check:` name a real rule or step, every `probe:` a row in
   `build/sandbox/data/evidence.json`; every value a rule cites is a row of values.md, and value names are unique.
 - `wc -w`: e-presentation.md 2,490, glossary.md 1,103, values.md 2,462 (each at most 2,500).
-- `node build/tools/review/checks.mjs`: see the last line below.
+- `node build/tools/review/checks.mjs` (run in parts: the whole run hit its 15-minute cap under eight builders' load):
+  `ok unit 92 files, 661 pass, 0 fail` · `ok words` · `ok static 822 findings, 822 known, 0 new` · `ok bump` · `ok specs` ·
+  `ok docs within every limit` (after adding a Proof section to my fragment) · `ok fixlist` · `ok recordings` · `ok art` ·
+  `ok size` · `ok load 29/29 pages`. **One failure, not mine:** `FAIL leak 1 leak(s): snap: g1 level 1: oracle 100.0%` (the snap
+  game; this session changed no game code).
