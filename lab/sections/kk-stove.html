@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Kitchen kit: the stove</title>
+<!-- every path from the site's root: Cook's code loads its data and pictures from there -->
+<base href="../../">
+<!--
+  The kitchen kit's stove part (Sprint 18, kit builder a; docs/architecture/module-map.md pieces 1-4), every piece in every state.
+  It opens on its own, and lab/kitchen-kit.html shows it in a frame. The real kit code draws it (js/cook/kitchen-kit.js,
+  js/cook/mechanics/boil.js) on a plain Cook scene; nothing here is drawn by hand.
+    ?set=a      (the default) four burners: cold | too early (the knob shakes, "not now") | green | boiled over
+    ?set=b      bubbling (the steam from the boil's start) | past the green | turned down | cold
+    ?set=c      the first-time hold: lit and left, the heat waits in the middle of the green until its knob is tapped
+    ?set=live   four cold pans: tap a knob to light it, tap it again in the green (the real timings, level by level)
+    &sound=off  the simmer loop off (the readout says what the loop is doing)
+    &level=1-4  the window and times of that level (the game's json below; default 1)
+  Below the hob: the kit's readout of each level's timings from the game's json (Mech.boil.times), the same numbers
+  build/core/kit-boil.test.mjs proves frame for frame against the loop it replaces.
+-->
+<link rel="stylesheet" href="css/shared/tokens.css?v=20261107T120301Z">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap">
+<style>
+  html, body { margin: 0; background: var(--njg-page); color: var(--njg-ink); font: 600 14px/1.35 "Nunito", system-ui, sans-serif; }
+  .kk-top { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 6px 12px; }
+  .kk-top h1 { font-size: 16px; margin: 0; font-weight: 800; }
+  .kk-top a, .kk-top button { font: 800 13px/1 "Nunito", system-ui, sans-serif; min-height: 32px; padding: 0 10px; border-radius: 8px; border: 2px solid var(--njg-cream-edge); background: var(--njg-cream); color: var(--njg-ink); text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; }
+  .kk-top a[aria-current] { border-color: var(--njg-ink); }
+  #kk-sound { min-width: 0; }
+  #kk-stage { width: 100%; height: calc(100vh - 46px); min-height: 220px; }
+  #kk-read { padding: 4px 12px 2px; min-height: 1.4em; }
+  table { border-collapse: collapse; margin: 6px 12px 16px; }
+  th, td { padding: 3px 10px; text-align: right; border-bottom: 1px solid var(--njg-cream-edge); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  .kk-note { margin: 0 12px 12px; max-width: 70em; }
+</style>
+<!-- the import map: lab.html's (Cook's ES modules by name; from the base, the site's root) -->
+<script type="importmap" data-njg="core">
+{
+ "imports": {
+  "#beach-proto/art.js": "./js/beach-proto/art.js?v=20261107T120301Z",
+  "./js/beach-proto/art.js": "./js/beach-proto/art.js?v=20261107T120301Z",
+  "#beach-proto/castle.js": "./js/beach-proto/castle.js?v=20261107T120301Z",
+  "./js/beach-proto/castle.js": "./js/beach-proto/castle.js?v=20261107T120301Z",
+  "#beach-proto/fishing.js": "./js/beach-proto/fishing.js?v=20261107T120301Z",
+  "./js/beach-proto/fishing.js": "./js/beach-proto/fishing.js?v=20261107T120301Z",
+  "#beach-proto/kit.js": "./js/beach-proto/kit.js?v=20261107T120301Z",
+  "./js/beach-proto/kit.js": "./js/beach-proto/kit.js?v=20261107T120301Z",
+  "#beach-proto/main.js": "./js/beach-proto/main.js?v=20261107T120301Z",
+  "./js/beach-proto/main.js": "./js/beach-proto/main.js?v=20261107T120301Z",
+  "#beach-proto/picnic.js": "./js/beach-proto/picnic.js?v=20261107T120301Z",
+  "./js/beach-proto/picnic.js": "./js/beach-proto/picnic.js?v=20261107T120301Z",
+  "#beach-proto/play.js": "./js/beach-proto/play.js?v=20261107T120301Z",
+  "./js/beach-proto/play.js": "./js/beach-proto/play.js?v=20261107T120301Z",
+  "#beach-proto/ride.js": "./js/beach-proto/ride.js?v=20261107T120301Z",
+  "./js/beach-proto/ride.js": "./js/beach-proto/ride.js?v=20261107T120301Z",
+  "#beach-proto/shells.js": "./js/beach-proto/shells.js?v=20261107T120301Z",
+  "./js/beach-proto/shells.js": "./js/beach-proto/shells.js?v=20261107T120301Z",
+  "#beach-proto/stalls.js": "./js/beach-proto/stalls.js?v=20261107T120301Z",
+  "./js/beach-proto/stalls.js": "./js/beach-proto/stalls.js?v=20261107T120301Z",
+  "#clinic-proto/drinks.js": "./js/clinic-proto/drinks.js?v=20261107T120301Z",
+  "./js/clinic-proto/drinks.js": "./js/clinic-proto/drinks.js?v=20261107T120301Z",
+  "#clinic-proto/hand.js": "./js/clinic-proto/hand.js?v=20261107T120301Z",
+  "./js/clinic-proto/hand.js": "./js/clinic-proto/hand.js?v=20261107T120301Z",
+  "#clinic-proto/kit.js": "./js/clinic-proto/kit.js?v=20261107T120301Z",
+  "./js/clinic-proto/kit.js": "./js/clinic-proto/kit.js?v=20261107T120301Z",
+  "#clinic-proto/nose.js": "./js/clinic-proto/nose.js?v=20261107T120301Z",
+  "./js/clinic-proto/nose.js": "./js/clinic-proto/nose.js?v=20261107T120301Z",
+  "#clinic-proto/play.js": "./js/clinic-proto/play.js?v=20261107T120301Z",
+  "./js/clinic-proto/play.js": "./js/clinic-proto/play.js?v=20261107T120301Z",
+  "#clinic-proto/where.js": "./js/clinic-proto/where.js?v=20261107T120301Z",
+  "./js/clinic-proto/where.js": "./js/clinic-proto/where.js?v=20261107T120301Z",
+  "#clinic/main.js": "./js/clinic/main.js?v=20261107T120301Z",
+  "./js/clinic/main.js": "./js/clinic/main.js?v=20261107T120301Z",
+  "#cook/app.js": "./js/cook/app.js?v=20261107T120301Z",
+  "./js/cook/app.js": "./js/cook/app.js?v=20261107T120301Z",
+  "#cook/art.js": "./js/cook/art.js?v=20261107T120301Z",
+  "./js/cook/art.js": "./js/cook/art.js?v=20261107T120301Z",
+  "#cook/boot.js": "./js/cook/boot.js?v=20261107T120301Z",
+  "./js/cook/boot.js": "./js/cook/boot.js?v=20261107T120301Z",
+  "#cook/coach.js": "./js/cook/coach.js?v=20261107T120301Z",
+  "./js/cook/coach.js": "./js/cook/coach.js?v=20261107T120301Z",
+  "#cook/dom.js": "./js/cook/dom.js?v=20261107T120301Z",
+  "./js/cook/dom.js": "./js/cook/dom.js?v=20261107T120301Z",
+  "#cook/flow.js": "./js/cook/flow.js?v=20261107T120301Z",
+  "./js/cook/flow.js": "./js/cook/flow.js?v=20261107T120301Z",
+  "#cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261107T120301Z",
+  "./js/cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261107T120301Z",
+  "#cook/hands.js": "./js/cook/hands.js?v=20261107T120301Z",
+  "./js/cook/hands.js": "./js/cook/hands.js?v=20261107T120301Z",
+  "#cook/index.js": "./js/cook/index.js?v=20261107T120301Z",
+  "./js/cook/index.js": "./js/cook/index.js?v=20261107T120301Z",
+  "#cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261107T120301Z",
+  "./js/cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261107T120301Z",
+  "#cook/life.js": "./js/cook/life.js?v=20261107T120301Z",
+  "./js/cook/life.js": "./js/cook/life.js?v=20261107T120301Z",
+  "#cook/main.js": "./js/cook/main.js?v=20261107T120301Z",
+  "./js/cook/main.js": "./js/cook/main.js?v=20261107T120301Z",
+  "#cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261107T120301Z",
+  "./js/cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261107T120301Z",
+  "#cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261107T120301Z",
+  "./js/cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261107T120301Z",
+  "#cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261107T120301Z",
+  "./js/cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261107T120301Z",
+  "#cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261107T120301Z",
+  "./js/cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261107T120301Z",
+  "#cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261107T120301Z",
+  "./js/cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261107T120301Z",
+  "#cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261107T120301Z",
+  "./js/cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261107T120301Z",
+  "#cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261107T120301Z",
+  "./js/cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261107T120301Z",
+  "#cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261107T120301Z",
+  "./js/cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261107T120301Z",
+  "#cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261107T120301Z",
+  "./js/cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261107T120301Z",
+  "#cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261107T120301Z",
+  "./js/cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261107T120301Z",
+  "#cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261107T120301Z",
+  "./js/cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261107T120301Z",
+  "#cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261107T120301Z",
+  "./js/cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261107T120301Z",
+  "#cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261107T120301Z",
+  "./js/cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261107T120301Z",
+  "#cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261107T120301Z",
+  "./js/cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261107T120301Z",
+  "#cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261107T120301Z",
+  "./js/cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261107T120301Z",
+  "#cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261107T120301Z",
+  "./js/cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261107T120301Z",
+  "#cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261107T120301Z",
+  "./js/cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261107T120301Z",
+  "#cook/mount.js": "./js/cook/mount.js?v=20261107T120301Z",
+  "./js/cook/mount.js": "./js/cook/mount.js?v=20261107T120301Z",
+  "#cook/ns.js": "./js/cook/ns.js?v=20261107T120301Z",
+  "./js/cook/ns.js": "./js/cook/ns.js?v=20261107T120301Z",
+  "#cook/page.js": "./js/cook/page.js?v=20261107T120301Z",
+  "./js/cook/page.js": "./js/cook/page.js?v=20261107T120301Z",
+  "#cook/station-lib.js": "./js/cook/station-lib.js?v=20261107T120301Z",
+  "./js/cook/station-lib.js": "./js/cook/station-lib.js?v=20261107T120301Z",
+  "#cook/stations.js": "./js/cook/stations.js?v=20261107T120301Z",
+  "./js/cook/stations.js": "./js/cook/stations.js?v=20261107T120301Z",
+  "#cook/stations/baking.js": "./js/cook/stations/baking.js?v=20261107T120301Z",
+  "./js/cook/stations/baking.js": "./js/cook/stations/baking.js?v=20261107T120301Z",
+  "#cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261107T120301Z",
+  "./js/cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261107T120301Z",
+  "#cook/stations/corn.js": "./js/cook/stations/corn.js?v=20261107T120301Z",
+  "./js/cook/stations/corn.js": "./js/cook/stations/corn.js?v=20261107T120301Z",
+  "#cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261107T120301Z",
+  "./js/cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261107T120301Z",
+  "#cook/stations/eggs.js": "./js/cook/stations/eggs.js?v=20261107T120301Z",
+  "./js/cook/stations/eggs.js": "./js/cook/stations/eggs.js?v=20261107T120301Z",
+  "#cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261107T120301Z",
+  "./js/cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261107T120301Z",
+  "#cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261107T120301Z",
+  "./js/cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261107T120301Z",
+  "#cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261107T120301Z",
+  "./js/cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261107T120301Z",
+  "#cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261107T120301Z",
+  "./js/cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261107T120301Z",
+  "#cook/zone.js": "./js/cook/zone.js?v=20261107T120301Z",
+  "./js/cook/zone.js": "./js/cook/zone.js?v=20261107T120301Z",
+  "#core/content.js": "./js/core/content.js?v=20261107T120301Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261107T120301Z",
+  "#core/context.js": "./js/core/context.js?v=20261107T120301Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261107T120301Z",
+  "#core/env.js": "./js/core/env.js?v=20261107T120301Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261107T120301Z",
+  "#core/index.js": "./js/core/index.js?v=20261107T120301Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261107T120301Z",
+  "#core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261107T120301Z",
+  "./js/core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261107T120301Z",
+  "#core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261107T120301Z",
+  "./js/core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261107T120301Z",
+  "#core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261107T120301Z",
+  "./js/core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261107T120301Z",
+  "#core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261107T120301Z",
+  "./js/core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261107T120301Z",
+  "#core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261107T120301Z",
+  "./js/core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261107T120301Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261107T120301Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261107T120301Z",
+  "#core/log.js": "./js/core/log.js?v=20261107T120301Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261107T120301Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261107T120301Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261107T120301Z",
+  "#core/save.js": "./js/core/save.js?v=20261107T120301Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261107T120301Z",
+  "#core/score.js": "./js/core/score.js?v=20261107T120301Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261107T120301Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261107T120301Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261107T120301Z",
+  "#core/types.js": "./js/core/types.js?v=20261107T120301Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261107T120301Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261107T120301Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261107T120301Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261107T120301Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261107T120301Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261107T120301Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261107T120301Z",
+  "#day/book-games.js": "./js/day/book-games.js?v=20261107T120301Z",
+  "./js/day/book-games.js": "./js/day/book-games.js?v=20261107T120301Z",
+  "#day/book-play.js": "./js/day/book-play.js?v=20261107T120301Z",
+  "./js/day/book-play.js": "./js/day/book-play.js?v=20261107T120301Z",
+  "#day/book.js": "./js/day/book.js?v=20261107T120301Z",
+  "./js/day/book.js": "./js/day/book.js?v=20261107T120301Z",
+  "#day/day.js": "./js/day/day.js?v=20261107T120301Z",
+  "./js/day/day.js": "./js/day/day.js?v=20261107T120301Z",
+  "#day/door.js": "./js/day/door.js?v=20261107T120301Z",
+  "./js/day/door.js": "./js/day/door.js?v=20261107T120301Z",
+  "#day/sky.js": "./js/day/sky.js?v=20261107T120301Z",
+  "./js/day/sky.js": "./js/day/sky.js?v=20261107T120301Z",
+  "#day/window.js": "./js/day/window.js?v=20261107T120301Z",
+  "./js/day/window.js": "./js/day/window.js?v=20261107T120301Z",
+  "#demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261107T120301Z",
+  "./js/demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261107T120301Z",
+  "#demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261107T120301Z",
+  "./js/demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261107T120301Z",
+  "#demo/main.js": "./js/demo/main.js?v=20261107T120301Z",
+  "./js/demo/main.js": "./js/demo/main.js?v=20261107T120301Z",
+  "#demo/paths.js": "./js/demo/paths.js?v=20261107T120301Z",
+  "./js/demo/paths.js": "./js/demo/paths.js?v=20261107T120301Z",
+  "#farm/art.js": "./js/farm/art.js?v=20261107T120301Z",
+  "./js/farm/art.js": "./js/farm/art.js?v=20261107T120301Z",
+  "#farm/eggs.js": "./js/farm/eggs.js?v=20261107T120301Z",
+  "./js/farm/eggs.js": "./js/farm/eggs.js?v=20261107T120301Z",
+  "#farm/feed.js": "./js/farm/feed.js?v=20261107T120301Z",
+  "./js/farm/feed.js": "./js/farm/feed.js?v=20261107T120301Z",
+  "#farm/grow-pick.js": "./js/farm/grow-pick.js?v=20261107T120301Z",
+  "./js/farm/grow-pick.js": "./js/farm/grow-pick.js?v=20261107T120301Z",
+  "#farm/home-dusk.js": "./js/farm/home-dusk.js?v=20261107T120301Z",
+  "./js/farm/home-dusk.js": "./js/farm/home-dusk.js?v=20261107T120301Z",
+  "#farm/kit.js": "./js/farm/kit.js?v=20261107T120301Z",
+  "./js/farm/kit.js": "./js/farm/kit.js?v=20261107T120301Z",
+  "#farm/main.js": "./js/farm/main.js?v=20261107T120301Z",
+  "./js/farm/main.js": "./js/farm/main.js?v=20261107T120301Z",
+  "#farm/photo.js": "./js/farm/photo.js?v=20261107T120301Z",
+  "./js/farm/photo.js": "./js/farm/photo.js?v=20261107T120301Z",
+  "#farm/play.js": "./js/farm/play.js?v=20261107T120301Z",
+  "./js/farm/play.js": "./js/farm/play.js?v=20261107T120301Z",
+  "#home-proto/art.js": "./js/home-proto/art.js?v=20261107T120301Z",
+  "./js/home-proto/art.js": "./js/home-proto/art.js?v=20261107T120301Z",
+  "#home-proto/clean.js": "./js/home-proto/clean.js?v=20261107T120301Z",
+  "./js/home-proto/clean.js": "./js/home-proto/clean.js?v=20261107T120301Z",
+  "#home-proto/fetch.js": "./js/home-proto/fetch.js?v=20261107T120301Z",
+  "./js/home-proto/fetch.js": "./js/home-proto/fetch.js?v=20261107T120301Z",
+  "#home-proto/hide.js": "./js/home-proto/hide.js?v=20261107T120301Z",
+  "./js/home-proto/hide.js": "./js/home-proto/hide.js?v=20261107T120301Z",
+  "#home-proto/house.js": "./js/home-proto/house.js?v=20261107T120301Z",
+  "./js/home-proto/house.js": "./js/home-proto/house.js?v=20261107T120301Z",
+  "#home-proto/kit.js": "./js/home-proto/kit.js?v=20261107T120301Z",
+  "./js/home-proto/kit.js": "./js/home-proto/kit.js?v=20261107T120301Z",
+  "#home-proto/main.js": "./js/home-proto/main.js?v=20261107T120301Z",
+  "./js/home-proto/main.js": "./js/home-proto/main.js?v=20261107T120301Z",
+  "#home-proto/play.js": "./js/home-proto/play.js?v=20261107T120301Z",
+  "./js/home-proto/play.js": "./js/home-proto/play.js?v=20261107T120301Z",
+  "#party-proto/art.js": "./js/party-proto/art.js?v=20261107T120301Z",
+  "./js/party-proto/art.js": "./js/party-proto/art.js?v=20261107T120301Z",
+  "#party-proto/balloon.js": "./js/party-proto/balloon.js?v=20261107T120301Z",
+  "./js/party-proto/balloon.js": "./js/party-proto/balloon.js?v=20261107T120301Z",
+  "#party-proto/cake.js": "./js/party-proto/cake.js?v=20261107T120301Z",
+  "./js/party-proto/cake.js": "./js/party-proto/cake.js?v=20261107T120301Z",
+  "#party-proto/how.js": "./js/party-proto/how.js?v=20261107T120301Z",
+  "./js/party-proto/how.js": "./js/party-proto/how.js?v=20261107T120301Z",
+  "#party-proto/kit.js": "./js/party-proto/kit.js?v=20261107T120301Z",
+  "./js/party-proto/kit.js": "./js/party-proto/kit.js?v=20261107T120301Z",
+  "#party-proto/main.js": "./js/party-proto/main.js?v=20261107T120301Z",
+  "./js/party-proto/main.js": "./js/party-proto/main.js?v=20261107T120301Z",
+  "#party-proto/play.js": "./js/party-proto/play.js?v=20261107T120301Z",
+  "./js/party-proto/play.js": "./js/party-proto/play.js?v=20261107T120301Z",
+  "#party-proto/presents.js": "./js/party-proto/presents.js?v=20261107T120301Z",
+  "./js/party-proto/presents.js": "./js/party-proto/presents.js?v=20261107T120301Z",
+  "#party-proto/statues.js": "./js/party-proto/statues.js?v=20261107T120301Z",
+  "./js/party-proto/statues.js": "./js/party-proto/statues.js?v=20261107T120301Z",
+  "#pets-proto/art.js": "./js/pets-proto/art.js?v=20261107T120301Z",
+  "./js/pets-proto/art.js": "./js/pets-proto/art.js?v=20261107T120301Z",
+  "#pets-proto/care.js": "./js/pets-proto/care.js?v=20261107T120301Z",
+  "./js/pets-proto/care.js": "./js/pets-proto/care.js?v=20261107T120301Z",
+  "#pets-proto/home.js": "./js/pets-proto/home.js?v=20261107T120301Z",
+  "./js/pets-proto/home.js": "./js/pets-proto/home.js?v=20261107T120301Z",
+  "#pets-proto/kit.js": "./js/pets-proto/kit.js?v=20261107T120301Z",
+  "./js/pets-proto/kit.js": "./js/pets-proto/kit.js?v=20261107T120301Z",
+  "#pets-proto/main.js": "./js/pets-proto/main.js?v=20261107T120301Z",
+  "./js/pets-proto/main.js": "./js/pets-proto/main.js?v=20261107T120301Z",
+  "#pets-proto/play.js": "./js/pets-proto/play.js?v=20261107T120301Z",
+  "./js/pets-proto/play.js": "./js/pets-proto/play.js?v=20261107T120301Z",
+  "#pets-proto/yard.js": "./js/pets-proto/yard.js?v=20261107T120301Z",
+  "./js/pets-proto/yard.js": "./js/pets-proto/yard.js?v=20261107T120301Z",
+  "#safari-proto/art.js": "./js/safari-proto/art.js?v=20261107T120301Z",
+  "./js/safari-proto/art.js": "./js/safari-proto/art.js?v=20261107T120301Z",
+  "#safari-proto/hiding.js": "./js/safari-proto/hiding.js?v=20261107T120301Z",
+  "./js/safari-proto/hiding.js": "./js/safari-proto/hiding.js?v=20261107T120301Z",
+  "#safari-proto/kit.js": "./js/safari-proto/kit.js?v=20261107T120301Z",
+  "./js/safari-proto/kit.js": "./js/safari-proto/kit.js?v=20261107T120301Z",
+  "#safari-proto/main.js": "./js/safari-proto/main.js?v=20261107T120301Z",
+  "./js/safari-proto/main.js": "./js/safari-proto/main.js?v=20261107T120301Z",
+  "#safari-proto/play.js": "./js/safari-proto/play.js?v=20261107T120301Z",
+  "./js/safari-proto/play.js": "./js/safari-proto/play.js?v=20261107T120301Z",
+  "#safari-proto/snap.js": "./js/safari-proto/snap.js?v=20261107T120301Z",
+  "./js/safari-proto/snap.js": "./js/safari-proto/snap.js?v=20261107T120301Z",
+  "#school-proto/art.js": "./js/school-proto/art.js?v=20261107T120301Z",
+  "./js/school-proto/art.js": "./js/school-proto/art.js?v=20261107T120301Z",
+  "#school-proto/bag.js": "./js/school-proto/bag.js?v=20261107T120301Z",
+  "./js/school-proto/bag.js": "./js/school-proto/bag.js?v=20261107T120301Z",
+  "#school-proto/board.js": "./js/school-proto/board.js?v=20261107T120301Z",
+  "./js/school-proto/board.js": "./js/school-proto/board.js?v=20261107T120301Z",
+  "#school-proto/clock.js": "./js/school-proto/clock.js?v=20261107T120301Z",
+  "./js/school-proto/clock.js": "./js/school-proto/clock.js?v=20261107T120301Z",
+  "#school-proto/kit.js": "./js/school-proto/kit.js?v=20261107T120301Z",
+  "./js/school-proto/kit.js": "./js/school-proto/kit.js?v=20261107T120301Z",
+  "#school-proto/main.js": "./js/school-proto/main.js?v=20261107T120301Z",
+  "./js/school-proto/main.js": "./js/school-proto/main.js?v=20261107T120301Z",
+  "#school-proto/play.js": "./js/school-proto/play.js?v=20261107T120301Z",
+  "./js/school-proto/play.js": "./js/school-proto/play.js?v=20261107T120301Z",
+  "#school-proto/ready.js": "./js/school-proto/ready.js?v=20261107T120301Z",
+  "./js/school-proto/ready.js": "./js/school-proto/ready.js?v=20261107T120301Z",
+  "#sewing-proto/art.js": "./js/sewing-proto/art.js?v=20261107T120301Z",
+  "./js/sewing-proto/art.js": "./js/sewing-proto/art.js?v=20261107T120301Z",
+  "#sewing-proto/cloth.js": "./js/sewing-proto/cloth.js?v=20261107T120301Z",
+  "./js/sewing-proto/cloth.js": "./js/sewing-proto/cloth.js?v=20261107T120301Z",
+  "#sewing-proto/fit.js": "./js/sewing-proto/fit.js?v=20261107T120301Z",
+  "./js/sewing-proto/fit.js": "./js/sewing-proto/fit.js?v=20261107T120301Z",
+  "#sewing-proto/kit.js": "./js/sewing-proto/kit.js?v=20261107T120301Z",
+  "./js/sewing-proto/kit.js": "./js/sewing-proto/kit.js?v=20261107T120301Z",
+  "#sewing-proto/main.js": "./js/sewing-proto/main.js?v=20261107T120301Z",
+  "./js/sewing-proto/main.js": "./js/sewing-proto/main.js?v=20261107T120301Z",
+  "#sewing-proto/make.js": "./js/sewing-proto/make.js?v=20261107T120301Z",
+  "./js/sewing-proto/make.js": "./js/sewing-proto/make.js?v=20261107T120301Z",
+  "#sewing-proto/mend.js": "./js/sewing-proto/mend.js?v=20261107T120301Z",
+  "./js/sewing-proto/mend.js": "./js/sewing-proto/mend.js?v=20261107T120301Z",
+  "#sewing-proto/play.js": "./js/sewing-proto/play.js?v=20261107T120301Z",
+  "./js/sewing-proto/play.js": "./js/sewing-proto/play.js?v=20261107T120301Z",
+  "#sewing-proto/stall.js": "./js/sewing-proto/stall.js?v=20261107T120301Z",
+  "./js/sewing-proto/stall.js": "./js/sewing-proto/stall.js?v=20261107T120301Z",
+  "#shared/host.js": "./js/shared/host.js?v=20261107T120301Z",
+  "./js/shared/host.js": "./js/shared/host.js?v=20261107T120301Z",
+  "#shared/input.js": "./js/shared/input.js?v=20261107T120301Z",
+  "./js/shared/input.js": "./js/shared/input.js?v=20261107T120301Z",
+  "#shared/mode.js": "./js/shared/mode.js?v=20261107T120301Z",
+  "./js/shared/mode.js": "./js/shared/mode.js?v=20261107T120301Z",
+  "#shared/pour.js": "./js/shared/pour.js?v=20261107T120301Z",
+  "./js/shared/pour.js": "./js/shared/pour.js?v=20261107T120301Z",
+  "#shared/word-tiles.js": "./js/shared/word-tiles.js?v=20261107T120301Z",
+  "./js/shared/word-tiles.js": "./js/shared/word-tiles.js?v=20261107T120301Z",
+  "#town-proto/art.js": "./js/town-proto/art.js?v=20261107T120301Z",
+  "./js/town-proto/art.js": "./js/town-proto/art.js?v=20261107T120301Z",
+  "#town-proto/kit.js": "./js/town-proto/kit.js?v=20261107T120301Z",
+  "./js/town-proto/kit.js": "./js/town-proto/kit.js?v=20261107T120301Z",
+  "#town-proto/main.js": "./js/town-proto/main.js?v=20261107T120301Z",
+  "./js/town-proto/main.js": "./js/town-proto/main.js?v=20261107T120301Z",
+  "#town-proto/map.js": "./js/town-proto/map.js?v=20261107T120301Z",
+  "./js/town-proto/map.js": "./js/town-proto/map.js?v=20261107T120301Z",
+  "#town-proto/pay.js": "./js/town-proto/pay.js?v=20261107T120301Z",
+  "./js/town-proto/pay.js": "./js/town-proto/pay.js?v=20261107T120301Z",
+  "#town-proto/picky.js": "./js/town-proto/picky.js?v=20261107T120301Z",
+  "./js/town-proto/picky.js": "./js/town-proto/picky.js?v=20261107T120301Z",
+  "#town-proto/play.js": "./js/town-proto/play.js?v=20261107T120301Z",
+  "./js/town-proto/play.js": "./js/town-proto/play.js?v=20261107T120301Z",
+  "#town-proto/serve.js": "./js/town-proto/serve.js?v=20261107T120301Z",
+  "./js/town-proto/serve.js": "./js/town-proto/serve.js?v=20261107T120301Z"
+ }
+}
+</script>
+<script src="js/version.js?v=20261107T120301Z"></script>
+<script src="js/vendor/phaser.min.js?v=20261107T120301Z"></script>
+<script src="js/shared/tokens.js?v=20261107T120301Z"></script>
+<script src="js/shared/sfx.js?v=20261107T120301Z"></script>
+<script src="js/shared/juice.js?v=20261107T120301Z"></script>
+</head>
+<body>
+<div class="kk-top">
+  <h1>The stove</h1>
+  <a href="lab/sections/kk-stove.html?set=a" data-set="a">cold · early · green · over</a>
+  <a href="lab/sections/kk-stove.html?set=b" data-set="b">bubbling · past · down</a>
+  <a href="lab/sections/kk-stove.html?set=c" data-set="c">first-time hold</a>
+  <a href="lab/sections/kk-stove.html?set=live" data-set="live">play</a>
+  <button id="kk-sound" type="button">sound: on</button>
+</div>
+<div id="kk-read" aria-live="polite"></div>
+<div id="kk-stage"></div>
+<table id="kk-times"></table>
+<p class="kk-note">The calls: <code>Mech.boil(S, pan, {band, rate, burner, ring, ...})</code> one pan's heat;
+<code>Mech.boil.stove(S, {log, hold, sound, done})</code> the hob's clock, first-time hold and simmer loop;
+<code>Cook.Kit.hob</code>, <code>.burner</code>, <code>.heatRing</code> the hob, its knobs and flames, the ring;
+<code>Cook.Kit.worktop</code>, <code>St.worktopWash()</code>, <code>St.stoneBand</code> the worktop's wash and the stone band.
+The window and times are the game's (<code>data/stations/&lt;game&gt;.json</code> mechanic.levels[].heat over data/cook.json mechanics.boil).</p>
+<script type="module">
+import { Cook } from "./js/cook/index.js"; // (from the base: the site's root)
+
+const Q = new URLSearchParams(location.search);
+const SET = ["a", "b", "c", "live"].includes(Q.get("set")) ? Q.get("set") : "a";
+const LEVEL = Math.max(1, Math.min(4, Number(Q.get("level")) || 1));
+let soundOn = Q.get("sound") !== "off";
+document.querySelectorAll("[data-set]").forEach((a) => {
+  if (a.dataset.set === SET) a.setAttribute("aria-current", "page");
+  a.href += `&level=${LEVEL}${soundOn ? "" : "&sound=off"}`;
+});
+const read = document.getElementById("kk-read");
+const soundBtn = document.getElementById("kk-sound");
+// the game whose json gives the window and times (a lab page may name one; the kit never does)
+const GAME = Q.get("game") || "chai-tray";
+
+await Cook.load();
+const Mech = Cook.Mech;
+await Mech.need("boil"); // (a mechanic's file loads when it is chosen: js/cook/index.js PARTS)
+const St = Cook.Stations;
+const Kit = Cook.Kit;
+const D = Cook.D;
+const gameJson = await fetch(Cook.v(`data/stations/${GAME}.json`)).then((r) => r.json()).catch(() => ({}));
+// each level's window and times, as the game reads them: its boil level and its own heat over data/cook.json's (profile tray)
+const levels = (() => {
+  const out = [];
+  let acc = {};
+  ((gameJson.mechanic || {}).levels || [{}]).forEach((L, i) => {
+    acc = Object.assign({}, acc, L);
+    out.push(Mech.boil.settings({ level: acc.boilLevel || i + 1, profile: "tray", heat: acc.heat }));
+  });
+  return out;
+})();
+const K = levels[Math.min(levels.length, LEVEL) - 1];
+
+/* ---------- the readout of every level's timings ---------- */
+{
+  const s = (v) => `${v.toFixed(1)} s`;
+  const rows = levels.map((k, i) => {
+    const t = Mech.boil.times(k);
+    return `<tr><td>L${i + 1}</td><td>${k.band[0]}–${k.band[1]}</td><td>${k.rate}</td><td>${t.boilAt.toFixed(3)}</td><td>${s(t.toBoil)}</td><td>${s(t.toGreen)}</td><td>${s(t.green)}</td><td>${s(t.toOver)}</td></tr>`;
+  });
+  document.getElementById("kk-times").innerHTML = `<caption style="text-align:left;font-weight:800;padding:0 0 4px">${GAME}: each level's window and times (Mech.boil.times)</caption><tr><th>level</th><th>green</th><th>rate /s</th><th>boils at</th><th>bubbling</th><th>green at</th><th>green lasts</th><th>boils over</th></tr>${rows.join("")}`;
+}
+
+/* ---------- a plain Cook scene: the kit's own helpers (track, addTick, tappable, wiggle), no kitchen ---------- */
+class StoveLab extends Cook.CookScene {
+  preload() {
+    const art = Kit.art(4, ["pan"]).concat(Mech.boil.art());
+    art.forEach(([key, url]) => this.load.image(key, url));
+  }
+  create() {
+    this.layer = [];
+    this.loops = [];
+    this.ticks = [];
+    this.chars = {};
+    Cook.scene = this;
+    this.cameras.main.setBackgroundColor(Tokens.hex("page") || "#f3e7d3");
+    this.events.on("update", () => {
+      if (Cook.paused) return;
+      this.ticks.slice().forEach((t) => t.fn && t.fn());
+    });
+    build(this);
+  }
+}
+
+function build(S) {
+  // the worktop (piece 4): the wash, then the stone band and its shelf at the foot
+  const FAR = 2000;
+  const SHELF_TOP = 700;
+  Kit.worktop(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1 });
+  St.stoneBand(S, { top: SHELF_TOP, base: 860, far: FAR, depth: D.bg + 1.2 });
+  // the hob (piece 2): four burners, a knob and flames each, a pan on each, a heat ring round each
+  const n = 4;
+  const k = 0.95;
+  const sz = Kit.size(n, k);
+  const hob = Kit.hob(S, { n, x: (1600 - sz.w) / 2, y: 70, k });
+  const r = Math.min(120, hob.pitch * 0.36);
+  const stove = Mech.boil.stove(S, { log: "kk-lab", sound: soundOn, hold: SET === "c" });
+  const NAMES = { a: ["cold", "too early", "green", "boiled over"], b: ["bubbling", "past the green", "turned down", "cold"], c: ["first-time hold", "", "", ""], live: ["", "", "", ""] }[SET];
+  const pans = hob.burners.map((at, i) => {
+    const burner = Kit.burner(S, hob, i, { flameR: r * 0.97 });
+    const img = Kit.place(S, "pan", at, r);
+    const pan = { x: at.x, y: at.y, r, img };
+    const b = Mech.boil(S, pan, {
+      id: `pan${i + 1}`,
+      band: K.band,
+      rate: K.rate,
+      burner,
+      ringR: r + 10,
+      ringDepth: D.fx - 1.85,
+      overResetMs: SET === "live" ? 1100 : 1e9,
+      can: () => true,
+      on: { changed: () => say() },
+    });
+    if (NAMES[i]) S.track(S.add.text(burner.knob.x, burner.knob.y + 64, NAMES[i], { fontFamily: Tokens.font ? Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif", fontSize: "30px", fontStyle: "800", color: Tokens.hex("ink") || "#2a2522" }).setOrigin(0.5, 0).setDepth(D.item + 3));
+    return b;
+  });
+  // each burner brought to its state through the kit's own calls, then its heat held where it is (rate 0) so the picture stays
+  const hold = (b, heat) => {
+    b.heat = heat;
+    b.opts.rate = 0;
+    b.drawRing();
+  };
+  const [lo, hi] = K.band;
+  if (SET === "a") {
+    // cold: left alone. too early: lit, short of the green, the knob tapped (it shakes; "not now"). green: lit, in the window.
+    // boiled over: lit and run past the top (the kit boils it over at heat 1; held there)
+    pans[1].tap(); hold(pans[1], lo * 0.55); pans[1].tap();
+    // (tapped again now and then, so the shake is seen; "not now" is said at most every 1.5 s)
+    S.time.addEvent({ delay: 1600, loop: true, callback: () => pans[1].tap() });
+    pans[2].tap(); hold(pans[2], (lo + hi) / 2);
+    pans[3].tap(); pans[3].heat = 0.995; pans[3].opts.rate = 1;
+  } else if (SET === "b") {
+    // bubbling (from the boil's start the steam rises); past the green (the ring's sweep goes red); turned down in the green
+    pans[0].tap(); hold(pans[0], (pans[0].boilAt + lo) / 2);
+    pans[1].tap(); hold(pans[1], hi + (1 - hi) * 0.5);
+    pans[2].tap(); pans[2].heat = (lo + hi) / 2; pans[2].tap();
+  } else if (SET === "c") {
+    // the first-time hold (a new player, once ever): lit just short of the green and left to run at four times the speed; the
+    // heat stops in the middle of the green until the knob is tapped (then it runs on and, untouched, boils over)
+    pans[0].tap(); pans[0].heat = lo * 0.9; pans[0].opts.rate = K.rate * 4;
+  }
+  function say() {
+    const loop = stove.loop && !stove.loop.none;
+    const last = stove.simmerLog[stove.simmerLog.length - 1];
+    const hot = stove.pans.filter((b) => b.state === "heating").sort((a, b) => b.heat - a.heat)[0];
+    const parts = pans.map((b) => `${b.id} ${b.phase()} ${b.heat.toFixed(2)}`);
+    const snd = !soundOn ? "simmer loop: off (sound off)" : hot ? `simmer loop: on by ${hot.id}, ${Mech.boil.simmerDb(hot.heat, hot.boilAt, hot.hi).toFixed(1)} dB${loop ? "" : " (asked for; the browser plays it after a tap)"}` : "simmer loop: off (nothing heating)";
+    const held = stove.hold.since ? " · held (first time)" : "";
+    read.textContent = `L${LEVEL} green ${lo}–${hi}, rate ${K.rate}/s · ${parts.join(" · ")}${held} · ${snd}${last ? ` · last loop row ${last.db} dB at ${last.heat}` : ""}`;
+  }
+  S.addTick(say);
+  soundBtn.textContent = `sound: ${soundOn ? "on" : "off"}`;
+  soundBtn.onclick = () => {
+    soundOn = !soundOn;
+    stove.o.sound = soundOn;
+    if (soundOn && Cook.unlockAudio) Cook.unlockAudio();
+    soundBtn.textContent = `sound: ${soundOn ? "on" : "off"}`;
+    say();
+  };
+  globalThis.kkStove = { stove, pans, K, levels };
+}
+
+if (Cook.sfx.preload) Cook.sfx.preload(Mech.boil.sounds);
+const stage = document.getElementById("kk-stage");
+new Phaser.Game({
+  type: Phaser.AUTO,
+  parent: stage,
+  width: 1600,
+  height: 900,
+  backgroundColor: Tokens.hex("page") || "#f3e7d3",
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scene: [StoveLab],
+});
+</script>
+</body>
+</html>
