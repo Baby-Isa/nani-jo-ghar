@@ -12,7 +12,6 @@
  *   Cook.Kit.size(n, k)                   {w, h, burnerY, frontY} of an n-burner hob at scale k (for layout)
  *   Cook.Kit.hob(S, {n, x, y, k})         the hob: {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch}
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
- *   Cook.Kit.place(S, kind, at, r)        a vessel (pan | tawa | karahi) centred on at {x, y}, body radius r
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
  *     (hob, burner and heatRing are the stove part, for the games that cook with heat (Sprint 18, module map piece 2); the
  *     heat and boil on them, the knob's taps, the green, the boil-over and the simmer loop, is Mech.boil(S, pan, {burner,
@@ -20,7 +19,7 @@
  *   Cook.Kit.faceUrl(who, mood)           a person's round face art (mood: neutral | happy | frown)
  *   Cook.Kit.faceArt(who)                 [key, url] pairs for their three faces (keys <who>-badge[-mood])
  *   Cook.Kit.badge(S, who, mood, N)       a person's face on a white disc (a texture key)
- *   Cook.Kit.review(S, opts)              the review (X10 / Q1): their big round face over the dish,
+ *   Cook.Kit.review(S, opts)              the review (X10 / Q1; NjgServe.review, js/shared/serve.js): their big face over the dish,
  *                                         happy when it's right, gently frowning when it's wrong
  *   Cook.Kit.chip(S, id, x, y, opts)      the shelf's `🔊 word` chip (speaker only when opts.word is false)
  *   Cook.Kit.speaker(g, x, y, s)          the flat speaker icon, drawn into a Graphics
@@ -31,6 +30,7 @@
  */
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+import { NjgServe } from "../shared/serve.js";
 
 (function (global) {
   const Cook = CookNS;
@@ -62,7 +62,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the v2 karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
     karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
-  const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
+  const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522, shade: 0x28190a };
   const BADGE = 64;
   // the knob (R2, v3.1): its round body is the badge's size beside it (X5); the art's body (its gold ring) is
   // 0.839 of its canvas (2 x r 0.4193, assets/cook/items/v3/hob/meta.json knob-off-v2; H6's was 0.742)
@@ -75,6 +75,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const FACES = Cook.FACES;
   const MOODS = ["neutral", "happy", "frown"];
   const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
+
+  /*
+   * The kitchen's chip keeps the box it always had (the orchestrator, 7 Nov: a stove game's contract-92): Kit.chip never reported its
+   * card's size, so a game's first-time light and the light-room check (contract-92) measure the shelf item alone. The shared pill
+   * keeps its card's size as cardW / cardH (the shelf's own lay-out and its check read them); here they move to pillW / pillH, and
+   * come back only while the pill itself redraws or sizes its tap area.
+   */
+  function keepBox(chip) {
+    const hide = () => {
+      if (chip.cardW == null) return;
+      chip.pillW = chip.cardW;
+      chip.pillH = chip.cardH;
+      delete chip.cardW;
+      delete chip.cardH;
+    };
+    const show = () => {
+      if (chip.pillW != null && chip.cardW == null) Object.assign(chip, { cardW: chip.pillW, cardH: chip.pillH });
+    };
+    const { face, hit } = chip;
+    chip.face = (...a) => (show(), face.apply(chip, a), hide(), chip);
+    chip.hit = (...a) => (show(), hit.apply(chip, a), hide(), chip);
+    hide();
+    return chip;
+  }
 
   const Kit = {
     /** the shared ring and badge colours (the heat ring's; CHT-05: the chop timer uses them too) */
@@ -180,68 +204,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      *   line (what they say when it's right; default the "welldone" line; false for none),
      *   side ("left" | "right": where the praise card goes), k (the card's scale: the zone's), depth.
      */
-    async review(S, { who, ok, x, y, size = 220, line, side = "left", k = 1, depth = D.fx + 4 } = {}) {
-      // (Cook.forceReview: the screenshot script shows a face it can't make the bot earn; the look only,
-      // the station's own verdict still decides what happens next)
-      if (Cook.forceReview != null) ok = Cook.forceReview;
-      const mood = ok ? "happy" : "frown";
-      // never cut off by the view's edge (a phone shows less of the stage above the dish)
-      const view = S.cameras && S.cameras.main && S.cameras.main.worldView;
-      if (view && view.height) {
-        const m = size * 0.08;
-        y = Math.max(view.y + size / 2 + m, Math.min(view.bottom - size / 2 - m, y));
-        x = Math.max(view.x + size / 2 + m, Math.min(view.right - size / 2 - m, x));
-      }
-      const key = Kit.badge(S, who, mood, 256);
-      const face = S.track(S.add.container(x, y).setDepth(depth));
-      const sh = S.add.graphics();
-      sh.fillStyle(0x28190a, 0.16);
-      sh.fillCircle(0, size * 0.035, size * 0.5);
-      const img = S.add.image(0, 0, key).setDisplaySize(size, size);
-      face.add([sh, img]);
-      face.setScale(0.5).setAlpha(0);
-      face.mood = mood;
-      await Cook.tween(S, { targets: face, scale: 1, alpha: 1, duration: 340, ease: "Back.easeOut" });
-      // (Cook.tasted and Cook.tasteHold: for the screenshot scripts)
-      Cook.tasted = ok ? "happy" : "not-quite";
-      let card = null;
-      if (ok) {
-        Cook.sfx.right();
-        S.sparkle(x, y + size * 0.35);
-        S.tweens.add({ targets: face, y: y - size * 0.06, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeOut" });
-        const said = line === false ? null : line || Cook.Lang.line("welldone");
-        if (said) {
-          const t = S.add.text(0, 0, Cook.Lang.plain(said).trim(), { fontFamily: FONT(), fontSize: "34px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0.5);
-          const w = t.width + 44;
-          const h = 58;
-          const dir = side === "right" ? 1 : -1;
-          card = S.track(S.add.container(x + dir * (size * 0.5 + (18 + w / 2) * k), y).setDepth(depth + 0.5).setScale(k).setAlpha(0));
-          const g = S.add.graphics();
-          g.fillStyle(0x28190a, 0.12);
-          g.fillRoundedRect(-w / 2, -h / 2 + 3, w, h, 14);
-          g.fillStyle(0xffffff, 1);
-          g.fillRoundedRect(-w / 2, -h / 2, w, h, 14);
-          card.add([g, t]);
-          S.tweens.add({ targets: card, alpha: 1, duration: 200 });
-          await Promise.race([Cook.Lang.speak(said).catch(() => {}), Cook.wait(2200)]);
-        } else await Cook.wait(900);
-        await Cook.wait(400);
-      } else {
-        // not quite: a gentle frown and a small shake of the head (never a red cross)
-        Cook.sfx.soft();
-        await Cook.tween(S, { targets: face, angle: { from: -5, to: 5 }, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeInOut" });
-        face.setAngle(0);
-        await Cook.wait(600);
-      }
-      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
-      const close = async () => {
-        const all = [face, card].filter((o) => o && o.active);
-        if (!all.length) return;
-        await Cook.tween(S, { targets: all, alpha: 0, scale: 0.85, duration: 260, ease: "Sine.easeIn" });
-        all.forEach((o) => o.destroy());
-      };
-      return { face, card, close };
-    },
+    review: (S, o) => NjgServe.review(S, o, NjgServe.env(Cook)), // (Sprint 18, piece 8: the shared serve part, js/shared/serve.js)
 
     /**
      * Burner i's front-edge controls and flames. opts: who (a face badge left of the knob; omit for
@@ -301,73 +264,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return b;
     },
 
-    /**
-     * A vessel centred on `at` ({x, y}: a burner), its round body r px across the radius, with a
-     * contact shadow. kind: pan | tawa | karahi (Kit.VESSELS). Returns the image (baseScale set).
-     */
-    place(S, kind, at, r, { depth = D.item } = {}) {
-      const v = VESSELS[kind] || VESSELS.pan;
-      const w = v.w || S.textures.get(v.key).getSourceImage().width;
-      const scale = r / (v.r * w);
-      const img = S.track(S.add.image(at.x, at.y, v.key).setOrigin(v.cx, v.cy).setScale(scale).setDepth(depth));
-      img.baseScale = scale;
-      img.bodyR = r;
-      img.shadow = S.contactShadow(img, { centerX: at.x, centerY: at.y + r * 0.08, width: r * 2.15, height: r * 2.15 });
-      return img;
-    },
 
-    /** The speaker icon, drawn at (x, y) about `s` px tall, in the charcoal text colour. */
+    /** The speaker icon, drawn at (x, y) about `s` px tall, in the charcoal text colour (the shared kit's: Shelf.P.speaker). */
     speaker(g, x, y, s, color = INK.text) {
-      const k = s / 24;
-      g.fillStyle(color, 1);
-      g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
-      g.fillTriangle(x - 4 * k, y - 3.5 * k, x + 2 * k, y - 9 * k, x + 2 * k, y + 9 * k);
-      g.fillTriangle(x - 4 * k, y + 3.5 * k, x + 2 * k, y - 9 * k, x - 4 * k, y - 3.5 * k);
-      g.lineStyle(2.2 * k, color, 1);
-      g.beginPath();
-      g.arc(x + 3 * k, y, 5 * k, -0.9, 0.9);
-      g.strokePath();
-      g.beginPath();
-      g.arc(x + 3 * k, y, 9.5 * k, -0.9, 0.9);
-      g.strokePath();
+      return global.Shelf.P.speaker(g, x, y, s, color);
     },
 
     /**
-     * The shelf chip under an object (§4): `🔊 word`, one tappable chip; tap it = hear the word.
+     * The shelf chip under an object (§4): `🔊 word`, one tappable chip; tap it = hear the word (the shared kit's pill:
+     * Shelf.P.chip, js/shared/shelf.js; this keeps the kitchen's look: its font, its shadow and the room beside the word).
      * opts.word false: the speaker alone, the same size and place (higher levels). opts.w: its width.
      */
     chip(S, id, x, y, { word = true, w = CHIP.w, depth = D.item + 2 } = {}) {
-      const chip = S.track(S.add.container(x, y).setDepth(depth));
-      const bg = S.add.graphics();
-      bg.fillStyle(0x28190a, 0.1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2 + 2, w, CHIP.h, 12);
-      bg.fillStyle(0xffffff, 1);
-      bg.fillRoundedRect(-w / 2, -CHIP.h / 2, w, CHIP.h, 12);
-      chip.add(bg);
-      const icon = S.add.graphics();
-      if (word) {
-        const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT(), fontSize: "25px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0, 0.5);
-        const maxT = w - 52;
-        if (t.width > maxT) t.setScale(maxT / t.width);
-        const tw = 22 + 8 + t.displayWidth;
-        Kit.speaker(icon, -tw / 2 + 10, 0, 24);
-        t.x = -tw / 2 + 30;
-        chip.add([icon, t]);
-      } else {
-        Kit.speaker(icon, 1, 0, 26);
-        chip.add(icon);
-      }
-      const hitW = Math.max(CHIP.hitW, w + 14);
-      chip.setSize(hitW, CHIP.hitH);
-      chip.setInteractive(new Phaser.Geom.Rectangle(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
-      chip.on("pointerdown", (ptr, lx, ly, ev) => {
-        if (ev && ev.stopPropagation) ev.stopPropagation();
-        Cook.unlockAudio();
-        if (Cook.onLabel) Cook.onLabel(id);
-        Cook.Lang.speakWord(id);
-        S.tweens.add({ targets: chip, scale: 1.08, duration: 90, yoyo: true });
-      });
-      return chip;
+      return keepBox(global.Shelf.P.chip(S, x, y, Cook.display(id), {
+        word,
+        w,
+        depth,
+        font: FONT(),
+        weight: "800",
+        pad: 52,
+        shade: INK.shade,
+        onTap: () => {
+          Cook.unlockAudio();
+          if (Cook.onLabel) Cook.onLabel(id);
+          Cook.Lang.speakWord(id);
+        },
+      }));
     },
 
     /**
