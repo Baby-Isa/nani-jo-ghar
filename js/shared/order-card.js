@@ -692,7 +692,7 @@
     return by || cards.find((c) => open(c) && c.classList.contains("speaking")) || cards.slice(i + 1).find(open) || cards.find(open) || null;
   };
   /** Fold `card` (fold(): the host's class change) and bring its panel's card in progress to its planned place with it (SH-232). */
-  OC.followFold = function (card, fold, opts = {}) {
+  OC.followFold = function (card, fold, opts = {}, snap = false) {
     const sc = typeof getComputedStyle === "function" ? scrollerOf(card) : null;
     const target = sc && card.parentNode ? OC.inProgress(sc, card, opts) : null;
     if (!target) return fold();
@@ -732,7 +732,8 @@
     if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("panel-follow", { step: who || "", by: `from:${Math.round(top0)} to:${Math.round(aim1)} fold:${Math.round(delta)}` });
     const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
     const raf = root.requestAnimationFrame;
-    if (reduced || !raf) {
+    // (snap: the fold was drawn at once by a redraw, so the panel lands with it, before the frame is painted, never a cut frame)
+    if (snap || reduced || !raf) {
       const a = live(1);
       if (a != null) sc.scrollTop = a;
       return;
@@ -772,20 +773,34 @@
     if (!done) {
       st.doneAt = 0;
       st.open = false;
+      st.followed = false;
       return;
     }
     const now = Date.now();
-    if (!st.doneAt) st.doneAt = now;
+    const fresh = !st.doneAt;
+    if (fresh) st.doneAt = now;
     const due = st.doneAt + (opts.foldAfter != null ? opts.foldAfter : FOLD_AFTER) - now;
     c.classList.add("foldable");
     if (st.open) c.classList.add("reopened");
-    else if (due <= 0) c.classList.add("folded", "still");
-    else {
+    else if (due <= 0) {
+      c.classList.add("folded", "still");
+      // SH-232: a card seen open that folds on a host's redraw (its fold drawn at once, not on the timer) takes the panel along too,
+      // once, as soon as it is on the page (the redraw puts it there)
+      if (!fresh && !st.followed && root.requestAnimationFrame) {
+        st.followed = true;
+        root.requestAnimationFrame(() => {
+          const cur = st.el && st.el.isConnected ? st.el : null;
+          if (cur && !st.open && cur.classList.contains("folded")) OC.followFold(cur, () => {}, opts, true);
+        });
+      }
+    } else {
       clearTimeout(st.timer);
       // the card as it is then (a host may have drawn it again since): the one that carries this state
       st.timer = setTimeout(() => {
         const cur = st.el && st.el.isConnected ? st.el : null;
-        if (cur && !st.open && cur.classList.contains("done")) OC.followFold(cur, () => cur.classList.add("folded"), opts);
+        if (!cur || st.open || !cur.classList.contains("done")) return;
+        st.followed = true;
+        OC.followFold(cur, () => cur.classList.add("folded"), opts);
       }, due);
     }
     c.addEventListener("click", (e) => {
