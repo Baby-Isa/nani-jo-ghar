@@ -24,7 +24,7 @@ const ORDER = ["./boot.js", "./core.js", "./words.js", "./art.js", "./ui.js", ".
 const M = "./mechanics/";
 const SKEWER = [M + "thread.js", M + "grill.js"];
 const CHAI = [M + "pour.js", M + "add.js", M + "boil.js", M + "count.js"];
-const DAAR = [M + "chop.js", M + "tadka.js", M + "stir.js"];
+const DAAR = [M + "chop.js", "./stations/chop.js", M + "tadka.js", M + "stir.js"]; // (S18: daar calls chop, its own game)
 const SAMOSA = [M + "fill-fold.js", M + "fry.js"];
 const DOUGH = [M + "roll.js", M + "tawa.js"];
 // what each lab entry and recipe step needs, in load order (a station after the mechanics it builds on)
@@ -36,7 +36,7 @@ const PARTS = {
   roll: [M + "roll.js"],
   flip: [M + "tawa.js"],
   tawa: [M + "tawa.js"],
-  chop: [M + "chop.js"],
+  chop: [M + "chop.js", "./stations/chop.js"],
   tadka: [M + "tadka.js"],
   stir: [M + "stir.js"],
   assemble: [M + "assemble.js"],

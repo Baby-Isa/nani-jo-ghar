@@ -33,6 +33,7 @@
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 import { NjgPour } from "../../shared/pour.js";
+import "./pan.js"; // the kitchen kit's pan (Cook.Kit.pan): the pour pieces below move and show it
 
 (function (global) {
   const Cook = CookNS;
@@ -374,6 +375,297 @@ import { NjgPour } from "../../shared/pour.js";
 
   Cook.Pour = { hold, measure, lines, surfaceAt, band, score: pourScore, stream: drawStream };
 
+  /* =====================================================================================================================
+   * The kitchen kit's pouring (Sprint 18, the module map's pieces 6 and 7; docs/architecture/module-map.md), from the reference
+   * game's signed-off pour (7 Nov). A game calls these with its kit pan (Cook.Kit.pan, ./pan.js) and its own numbers from its
+   * settings file; no game is named here (STD-F1-02). Each that is a child's move calls St.acted() at its end (SH-184: a pour,
+   * a spoonful or a take-back is a right move: the hint's wait runs again from there).
+   *
+   *   Mech.pour(S, o)            a bottle or carton from the shelf pours into a pan (piece 6). o: pan (a kit pan: its level and
+   *                              look), from (the shelf thing: it hides while a copy flies), level (the pan's level after), look
+   *                              (the look before it went in: it cross-fades to what the pan's lookOf says), settle (the pan gives a
+   *                              little as it lands: water), ms {fly, arc, tip, tilt, sound, fill, untip, back, backArc, settle}
+   *                              (defaults: the reference game's 380, 60, 220, -118, 170, 620, 180, 320, 40, 0.06), onLevel(level),
+   *                              onEnd() (before St.acted)
+   *   Mech.pour.spoon(z, o)      a spoonful from a jar into a pan (Cook.Spoon, ./count.js): o.pan, o.from, o.word, o.ms, o.onEnd
+   *   Mech.pour.toGlass(S, o)    a ready pan carried over its glass, emptying as the glass fills (piece 7; NjgPour.plan, frameOf,
+   *                              holdOver). o: pan, well {x, y, r, glass: {empty, half, full}} (its resting glasses), from, to
+   *                              (0 empty, 1 half, 2 full), frames {pan: [n measures], glass: [n]} (each {key, w, h, cx, cy, r}:
+   *                              the emptying and filling pictures), look (the pan's full look as it lifts), ms {lift, pour,
+   *                              back} (pour: each half glass), lift, gap, arc, over (the depth it passes over the faces at),
+   *                              shadow (the contact shadow's texture key), sound() -> {pitch(u), stop()} (the pour's loop),
+   *                              hook(info | null) (a test hook: the plan's total, marks and frames now), onDone(to) (the game's
+   *                              state, before the pan settles back). -> {glass, look} (the resting glass now shown). The game
+   *                              then shows the pan again (pan.unhide()) once its own state says what the pan holds
+   *   Mech.pour.takeBack(S, o)   CK-TB-01's tap zones over the count badge's chips (the DOM badge never takes a tap): sync() puts
+   *                              one 48 px zone over each chip o.can(id) allows and clears the rest, at(id) its centre, clear().
+   *                              o.onTap(id), o.depth, o.chips (the selector)
+   *   Mech.pour.unspoon(z, o)    a spoonful lifted back out of the pan to its jar: o.pan, o.to (the jar), o.word, o.ms
+   *   Mech.pour.byRim(im, m, R)  a picture placed by its own measured rim (m {w, h, cx, cy, r}): its rim's centre on the image's
+   *                              place, its rim's radius R (or the last R it was given)
+   * ===================================================================================================================== */
+  const Kit = () => Cook.Kit || {};
+  const acted = () => St && St.acted && St.acted();
+  const SHELF_MS = { fly: 380, arc: 60, tip: 220, tilt: -118, sound: 170, fill: 620, untip: 180, back: 320, backArc: 40, settle: 0.06 };
+  const tweenP = (S, cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
+  const trk = (S, o) => (S.track ? S.track(o) : o);
+
+  /** Piece 6: a bottle or carton lifts from the shelf, tips over the pan (its cap the spout) and pours; the pan's look changes. */
+  async function shelfPour(S, o) {
+    const pan = o.pan;
+    const obj = o.from;
+    const ms = Object.assign({}, SHELF_MS, o.ms || {});
+    const land = Kit().pan.land;
+    obj.flying = true;
+    const art = trk(S, S.add.image(obj.x, obj.y, obj.texture.key).setOrigin(0.5, 1).setScale(obj.scaleX).setDepth(D.fx + 1));
+    obj.setAlpha(0);
+    if (obj.shadow) obj.shadow.setVisible(false);
+    // (CHAI-19: it tips in from the pan's right, level with the rim's middle, under the word's bubble over the pan)
+    art.setOrigin(0.5, 0.5);
+    art.y = obj.y - obj.displayHeight / 2;
+    await S.fly(art, pan.x + pan.panR * 0.55, pan.y + pan.panR * 0.05, { duration: ms.fly, arc: ms.arc });
+    // (the short pour: the first 0.9 s of a real pour as it reaches its tip; never over a family voice line, js/shared/sfx.js)
+    S.time.delayedCall(ms.sound, () => Cook.sfx.pourShort && Cook.sfx.pourShort());
+    await tweenP(S, { targets: art, angle: ms.tilt, duration: ms.tip, ease: "Sine.easeOut" });
+    // CHAI-64 (Zafar, 1 Nov: "I don't think we need to draw milk going in, because the colour of the tea changes"): no drawn
+    // stream; the pan's own picture changes over the pour
+    const from = pan.level || 0;
+    const to = o.level;
+    pan.fading = true;
+    await new Promise((r) =>
+      S.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: ms.fill,
+        onUpdate: (tw) => {
+          const u = tw.getValue();
+          pan.level = from + (to - from) * u;
+          if (o.onLevel) o.onLevel(pan.level);
+          pan.show({ from: o.look, u });
+        },
+        onComplete: r,
+      })
+    );
+    pan.fading = false;
+    pan.show();
+    // ART-31 (decision 2a): no painted splash; the pan gives its small settle
+    if (o.settle) land(S, [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((im) => im && im.visible), { k: 0.03, top: true, ms: 260 });
+    await tweenP(S, { targets: art, angle: 0, duration: ms.untip });
+    await S.fly(art, obj.x, obj.y - obj.displayHeight / 2, { duration: ms.back, arc: ms.backArc });
+    art.destroy();
+    obj.flying = false;
+    obj.setAlpha(1);
+    if (obj.shadow) obj.shadow.setVisible(true);
+    // (back on the shelf: it settles, and is heard set down: CHAI-92, settle A, a glass set on a wooden table)
+    land(S, obj, { k: ms.settle });
+    if (Cook.sfx.settle) Cook.sfx.settle();
+    if (o.onEnd) o.onEnd();
+    acted();
+  }
+
+  /** Piece 6: a spoonful from a jar into a pan (the shared spoon); the hint's wait runs again from its landing. */
+  async function spoon(z, o) {
+    try {
+      await Cook.Spoon.spoon(z, { bowl: o.from, into: o.pan.vessel, word: o.word, ms: o.ms });
+    } finally {
+      if (o.onEnd) o.onEnd();
+      acted();
+    }
+  }
+
+  /** Piece 7, the take-back: a spoonful lifted back out of the pan, to its jar (the game calls St.acted when its count is right). */
+  function unspoon(z, o) {
+    const c = z.S.centre(o.to);
+    return Cook.Spoon.spoon(z, { bowl: o.pan.img, into: { x: c.x, y: c.y }, word: o.word, ms: o.ms });
+  }
+
+  /** A picture by its own measured rim: the rim's centre on its place, the rim's radius R (or the last R it was given). */
+  function byRim(im, m, R) {
+    im.glassR = R || im.glassR;
+    return m ? im.setOrigin(m.cx / m.w, m.cy / m.h).setScale(im.glassR / m.r) : im;
+  }
+
+  /**
+   * Piece 7 (CHAI-34, Zafar 29 Oct: "just having the pans move above the glasses and empty and the glasses fill up"): the pan
+   * lifts off its burner and holds just above its glass; its emptying pictures play in step with the glass's filling ones, each
+   * placed by its own measured rim so neither rim's centre moves; then it goes home (empty after a full pour). No tipping, no
+   * drawn stream. The game first takes the flames off and its count away; the pan's other layers hide while it is away.
+   */
+  async function toGlass(S, o) {
+    const pan = o.pan;
+    const set = pan.set;
+    const w = o.well;
+    const P = Object.assign({ lift: 520, pour: 700, back: 420 }, o.ms || {});
+    const from = o.from;
+    const to = o.to;
+    const FP = o.frames.pan;
+    const FG = o.frames.glass;
+    const n = FP.length;
+    const s8 = pan.scale;
+    const look = Kit().pan.look;
+    const body = look(pan.img, set, o.look);
+    const kFrom = NjgPour.frameOf(from, n);
+    const kTo = NjgPour.frameOf(to, n);
+    // the emptying pan: one picture, its rim's centre on the pan's place, drawn the pan's rim size times z
+    const fr = trk(S, S.add.image(pan.x, pan.y, FP[kFrom - 1].key)).setFlipX(!!set.mirror).setVisible(false);
+    const frame = (k, z) => {
+      const m = FP[k - 1];
+      if (fr.texture.key !== m.key) fr.setTexture(m.key);
+      fr.setOrigin(set.mirror ? 1 - m.cx / m.w : m.cx / m.w, m.cy / m.h).setScale((set.rim * z) / m.r);
+      return m;
+    };
+    // the filling glass: one picture over the well's resting glasses, its rim on the well's
+    const gf = byRim(trk(S, S.add.image(w.x, w.y, FG[kFrom - 1].key)), FG[kFrom - 1], w.r).setDepth(D.item + 0.6).setVisible(false);
+    // its shadow on the worktop, dropping away as it lifts (the contact shadow's own picture)
+    const lsh = trk(S, S.add.image(pan.x, pan.y, o.shadow || S.tex("shadow")).setDepth(D.fx + 0.5).setAlpha(0));
+    pan.hide();
+    // SH-183 amended (Zafar, 1 Nov night): while it pours, the pan and its shadow pass over the faces
+    const over = o.over != null ? o.over : D.badge;
+    body.setDepth(over + 0.5);
+    fr.setDepth(over + 0.51);
+    lsh.setDepth(over + 0.4);
+    const v = Cook.view || {};
+    const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: (v.right || 1600) - 12, b: (v.bottom || 900) - 12 };
+    const { at: hold, z: zs } = NjgPour.holdOver({ well: w, rim: set.rim, scale: s8, lift: o.lift, gap: o.gap, meta: FP[0], mirror: !!set.mirror, box });
+    const plan = NjgPour.plan({ from: { x: pan.x, y: pan.y }, to: hold, tilt: 1, arc: o.arc == null ? 24 : o.arc, ms: { lift: P.lift, tip: 0, pour: P.pour * (to - from), untip: 0, back: P.back } });
+    const M = plan.marks;
+    const st = (x) => (x >= 2 ? "full" : x >= 1 ? "half" : "empty");
+    const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    const emptied = to >= 2;
+    const draw = (f) => {
+      if (!body.active) return;
+      const t = f.t;
+      // up: 0 on the burner, 1 lifted over the glasses (the lift and the way home)
+      const up = f.phase === "lift" ? ease(Math.min(1, t / M.lift)) : f.phase === "back" || f.phase === "done" ? 1 - ease(Math.min(1, (t - M.untip) / P.back)) : 1;
+      const z = s8 + (zs - s8) * up;
+      // the frame: in step with the glass, from where this pour starts to where it stops
+      const home = f.phase === "back" || f.phase === "done";
+      const k = f.phase === "lift" ? kFrom : home ? kTo : Math.round(kFrom + (kTo - kFrom) * f.fill);
+      // the hob's pan as it lifts fades into the first frame; going home, the last frame into the hob's pan
+      let frameA = 1;
+      if (f.phase === "lift") frameA = Math.min(1, Math.max(0, (t / M.lift - 0.2) / 0.4));
+      else if (home) frameA = Math.min(1, Math.max(0, 1 - ((t - M.untip) / P.back - 0.4) / 0.4));
+      if (emptied && home && body.texture.key !== set.looks.empty.key) look(body, set, "empty");
+      frame(k, z);
+      fr.setVisible(frameA > 0).setAlpha(frameA).setPosition(f.x, f.y);
+      body.setVisible(frameA < 1).setAlpha(1).setPosition(f.x, f.y).setScale(z);
+      // the shadow: under it on the burner, falling away down and right as it rises
+      const sw = set.rim * z * 2.1;
+      lsh.setPosition(f.x + up * 26, f.y + up * 34).setDisplaySize(sw, sw).setAlpha(0.55 - 0.25 * up);
+      // the glass: its own frame, in step with the pan's (the resting glasses under it, hidden while it shows)
+      const g = FG[k - 1];
+      if (gf.texture.key !== g.key) byRim(gf.setTexture(g.key), g);
+      // (as the pan comes over, the resting glass gives way to the first frame: the same glass, so nothing jumps)
+      const gA = f.phase === "lift" ? frameA : 1;
+      gf.setVisible(true).setAlpha(gA);
+      ["empty", "half", "full"].forEach((s2) => w.glass[s2] && w.glass[s2].setAlpha(s2 === st(from) ? 1 - gA : 0));
+    };
+    if (o.hook) o.hook({ total: plan.total, marks: M, frames: () => ({ pan: fr.texture.key, glass: gf.texture.key, at: { x: fr.x, y: fr.y }, glassAt: { x: gf.x, y: gf.y } }) });
+    // the pour's sound while it runs (CHAI-87: a real pour into a glass, at its own level)
+    let loop = null;
+    const sound = (f) => {
+      if (f.phase === "pour" && !loop && o.sound) loop = o.sound() || { pitch() {}, stop() {} };
+      if (loop) loop.pitch(f.fill * 0.6);
+      if (loop && f.phase === "back") loop = (loop.stop(), null);
+    };
+    try {
+      await new Promise((r) =>
+        S.tweens.addCounter({
+          from: 0,
+          to: 1,
+          duration: plan.total,
+          onUpdate: (tw) => {
+            const f = plan.at(tw.getValue() * plan.total);
+            draw(f);
+            sound(f);
+          },
+          onComplete: r,
+        })
+      );
+    } finally {
+      if (loop) loop.stop();
+    }
+    draw(plan.at(plan.total));
+    if (o.hook) o.hook(null);
+    lsh.destroy();
+    fr.destroy();
+    gf.destroy();
+    ["empty", "half", "full"].forEach((s2) => w.glass[s2] && w.glass[s2].setAlpha(s2 === st(to) ? 1 : 0));
+    if (o.onDone) o.onDone(to);
+    body.setVisible(true).setPosition(pan.x, pan.y).setAngle(set.turn || 0).setScale(s8).setDepth(pan.depth);
+    const land = Kit().pan.land;
+    land(S, body, { k: 0.04, top: true }); // (it sets down on the burner: a small settle)
+    land(S, w.glass[st(to)], { k: 0.05, top: true }); // (the glass, full: a small settle)
+    return { glass: w.glass[st(to)], look: st(to) };
+  }
+
+  /** CK-TB-01's tap zones over the count badge's chips (the DOM badge never takes a tap: the tap falls through to the canvas). */
+  function takeBack(S, o) {
+    const sel = o.chips || "#count-badge .njg-tally-chip[data-tally], #count-badge .tl[data-k]";
+    const zones = new Map();
+    const UI = Cook.UI;
+    const toWorld = (sx, sy) => {
+      const a = UI.worldToScreen(0, 0);
+      const s1 = UI.worldToScreen(1, 0).x - a.x || 1;
+      return { x: (sx - a.x) / s1, y: (sy - a.y) / s1 };
+    };
+    const chips = () =>
+      [...document.querySelectorAll(sel)]
+        .map((el) => ({ id: el.dataset.tally || el.dataset.k, r: el.getBoundingClientRect() }))
+        .filter((c) => c.r.width > 0 && c.r.height > 0);
+    const api = {
+      sync() {
+        const live = new Set();
+        chips().forEach(({ id, r }) => {
+          if (!o.can(id)) return;
+          const a = toWorld(r.left, r.top);
+          const b = toWorld(r.right, r.bottom);
+          // (at least the 48 px tap target, LAY-04, centred on the chip)
+          const min = toWorld(48, 0).x - toWorld(0, 0).x;
+          const w = Math.max(b.x - a.x, min);
+          const h = Math.max(b.y - a.y, min);
+          const cx = (a.x + b.x) / 2;
+          const cy = (a.y + b.y) / 2;
+          let z = zones.get(id);
+          if (!z) {
+            z = trk(S, S.add.zone(cx, cy, w, h)).setDepth(o.depth != null ? o.depth : D.fx + 6);
+            z.chipId = id;
+            S.tappable(z, () => o.onTap(id));
+            zones.set(id, z);
+          } else if (Math.abs(z.x - cx) > 1 || Math.abs(z.y - cy) > 1 || Math.abs(z.width - w) > 1 || Math.abs(z.height - h) > 1) {
+            z.setPosition(cx, cy).setSize(w, h);
+            if (z.input && z.input.hitArea) z.input.hitArea.setTo(0, 0, w, h);
+          }
+          live.add(id);
+        });
+        zones.forEach((z, id) => {
+          if (live.has(id)) return;
+          S.untap(z);
+          z.destroy();
+          zones.delete(id);
+        });
+        return api;
+      },
+      at(id) {
+        const z = zones.get(id);
+        return z && z.active && o.can(id) ? { x: z.x, y: z.y } : null;
+      },
+      clear() {
+        zones.forEach((z) => {
+          S.untap(z);
+          z.destroy();
+        });
+        zones.clear();
+      },
+    };
+    return api;
+  }
+
+  Object.assign(shelfPour, { spoon, unspoon, toGlass, takeBack, byRim, MS: SHELF_MS });
+  Cook.Pour.toGlass = toGlass;
+  Cook.Pour.byRim = byRim;
+  Mech.pour = shelfPour;
+
   Mech.define("pour", {
     api: "pourInto",
     profile: (p) => (p.source ? "cup" : p.liquid === "cook-paani" || !p.liquid ? "water" : "milk"),
@@ -464,10 +756,25 @@ import { NjgPour } from "../../shared/pour.js";
     return v;
   }
 
+  /*
+   * A kit lab section (lab/sections/kk-pan-pour.html, lab/sections/kit-serve.html: Sprint 18, every kit piece in every state,
+   * STD-F5-03): the section page holds cook.html in a frame and gives its showcase as njgKitLab(L, Cook); this entry runs it on
+   * the lab's own scene in place of the jug. Never on a page that isn't framed by such a section.
+   */
+  const kitLab = () => {
+    try {
+      const P = global.parent;
+      return P && P !== global && typeof P.njgKitLab === "function" ? P.njgKitLab : null;
+    } catch (e) {
+      return null;
+    }
+  };
   Mech.lab("pour", {
     name: "Pour",
     verb: "Tap the jug",
     async run(L) {
+      const host = kitLab();
+      if (host) return host(L, Cook);
       L.card([Lang.wordLine("cook-paani")], ["pour"]);
       const z = await L.scene("pour", "hob");
       const pan = St.vessel(L.S, "pan", z.X(St.BURNER.left.x), z.Y(St.BURNER.left.y - 30), 1.35 * z.k);

@@ -259,6 +259,7 @@
  "jscolour|js/shared/say.js|.njg-say{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:",
  "jscolour|js/shared/say.js|@keyframes njg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,85,61,.5),0 4px 0 #8e35",
  "jscolour|js/shared/say.js|@keyframes njg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,85,61,.5),0 4px 0 #8e35",
+ "jscolour|js/shared/serve.js|art-only",
  "jscolour|js/shared/speech.js|.njg-mic-pop{position:fixed;z-index:951;display:flex;align-items:center;gap:var(",
  "jscolour|js/shared/speech.js|@keyframes njg-mic-breathe{0%,100%{box-shadow:0 0 0 0 rgba(224,166,58,.55)}50%{b",
  "jscolour|js/shared/speech.js|@keyframes njg-mic-breathe{0%,100%{box-shadow:0 0 0 0 rgba(224,166,58,.55)}50%{b",
