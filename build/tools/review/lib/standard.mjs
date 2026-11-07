@@ -204,16 +204,62 @@ export function parseChecksOutput(text) {
   return steps;
 }
 
+// the tools the standard's rules cite (Sprint 17, fix 4; build/reports/s17-fix-audit.md): which the audit runs, which it only names
+
+// the audit's default steps (a run with no flags); TOOL_STEP: the tool a rule cites -> the step whose result it reads (layout is the
+// screen lint the sandbox step runs)
+export const DEFAULT_STEPS = ["sandbox", "panel", "labcheck", "leak", "load"];
+export const TOOL_STEP = { panelcheck: "panel", labcheck: "labcheck", leak: "leak", loadtime: "load", sandbox: "sandbox", layout: "sandbox" };
+// review tools that judge a game and exit 1 on a fault: optional steps (audit.mjs <game> --only <key>, or --steps all);
+// games: null = any Cook game, else the games the tool can judge so far
+export const EXTRA_STEPS = {
+  voicegate: { file: "build/tools/juice/voicegate.mjs", games: null, what: "no effect over a voice, read from the sandbox run's sound log (no browser)" },
+  spkgap: { file: "build/tools/review/spkgap.mjs", games: null, what: "the gap between speakers' lines at the four sizes" },
+  lightfollow: { file: "build/tools/review/lightfollow.mjs", games: null, what: "a new player who taps what is lit gets through the first order" },
+  faces: { file: "build/tools/review/faces.mjs", games: null, what: "every face box reads from the test hook at L4" },
+  tapgate: { file: "build/tools/review/tapgate.mjs", games: ["chai-tray"], what: "a phone's rule: the play button shows and one tap starts the game" },
+  pillcheck: { file: "build/tools/review/pillcheck.mjs", games: ["chai-tray"], what: "the shelf pills fit their word and never touch" },
+};
+export const ALL_STEPS = [...DEFAULT_STEPS, ...Object.keys(EXTRA_STEPS)];
+// review tools that make a picture, a map or a list for the eye, or judge no Cook game: judge, with the reason
+export const JUDGE_TOOLS = {
+  kitsheet: { file: "build/tools/review/kitsheet.mjs", why: "makes one sheet per shared element for the judge, no pass or fail per game" },
+  kitmap: { file: "build/tools/review/kitmap.mjs", why: "maps where an element is drawn, no pass or fail" },
+  shelfshot: { file: "build/tools/review/shelfshot.mjs", why: "shoots chai's shelf for a BEFORE and AFTER sheet, no pass or fail" },
+  teachgate: { file: "build/tools/review/teachgate.mjs", why: "judges the prototype modes' labs, not a Cook game" },
+  audit: { file: "build/tools/review/audit.mjs", why: "the audit itself" },
+};
+// process tools judge a session, not a game: judge, with the tool's name (as doc: does)
+export const PROCESS_TOOLS = {
+  publishgate: "build/tools/ops/publishgate.mjs", feedbackcheck: "build/tools/ops/feedbackcheck.mjs", brief: "build/tools/ops/brief.mjs",
+  mumsheet: "build/tools/ops/mumsheet.mjs", mumround: "build/tools/ops/mumround.mjs",
+  evidence: "build/tools/review/evidence.mjs", stdids: "build/tools/review/stdids.mjs",
+  artcheck: "build/tools/art/artcheck.mjs", artblock: "build/tools/art/artblock.py", artcut: "build/tools/art/artcut.py", artdespill: "build/tools/art/artdespill.py",
+  test_cook_mount: "build/test_cook_mount.mjs",
+};
+// the audit step a tool term reads, or null (judged by hand, or a process tool)
+export const stepOf = (tool) => TOOL_STEP[tool] || (EXTRA_STEPS[tool] ? tool : null);
+export const runHint = (game, key) => `run: audit.mjs ${game} --only ${key}`;
+
 // an audit report (build/reports/audit-<game>-<date>.md): "| key | what | pass or **FAIL** | min | last lines |"
-export function parseAuditReport(text) {
-  const steps = new Map();
+export function parseAuditRows(text) {
+  const rows = [];
+  const re = new RegExp(`^\\|\\s*(${ALL_STEPS.join("|")})\\s*\\|\\s*([^|]*?)\\s*\\|\\s*(\\*\\*FAIL\\*\\*|pass)\\s*\\|\\s*([^|]*?)\\s*\\|\\s*(.*?)\\s*\\|?\\s*$`);
   for (const l of String(text).split("\n")) {
-    const m = /^\|\s*(sandbox|panel|labcheck|leak|load)\s*\|[^|]*\|\s*(\*\*FAIL\*\*|pass)\s*\|[^|]*\|\s*(.*?)\s*\|?\s*$/.exec(l);
-    if (m) steps.set(m[1], { ok: m[2] === "pass", text: m[3] });
+    const m = re.exec(l);
+    if (m) rows.push({ key: m[1], what: m[2], ok: m[3] === "pass", min: m[4], tail: m[5] });
   }
-  return steps;
+  return rows;
 }
-export const TOOL_STEP = { panelcheck: "panel", labcheck: "labcheck", leak: "leak", loadtime: "load", sandbox: "sandbox" };
+export function parseAuditReport(text) {
+  return new Map(parseAuditRows(text).map((r) => [r.key, { ok: r.ok, text: r.tail }]));
+}
+// a run with --only must not wipe the other steps' results saved the same day: old rows stay unless the new run has the key
+export function mergeAuditRows(oldRows, newRows) {
+  const by = new Map(oldRows.map((r) => [r.key, r]));
+  for (const r of newRows) by.set(r.key, r);
+  return ALL_STEPS.filter((k) => by.has(k)).map((k) => by.get(k));
+}
 
 // ---------- part 4: resolving a term, a rule ----------
 
@@ -246,10 +292,17 @@ export function resolveTerm(term, ctx) {
     return { result: "fail", note: st.text.slice(0, 90) };
   }
   if (kind === "tool") {
-    const step = TOOL_STEP[ref];
-    const st = step && ctx.tools && ctx.tools.get(step);
-    if (!st) return { result: "not run", note: step ? "audit did not run it" : "the audit has no step for it" };
-    return st.ok ? { result: "pass", note: `audit ${step}` } : { result: "fail", note: `audit ${step}: ${st.text.slice(0, 80)}` };
+    const step = stepOf(ref);
+    if (step) {
+      const x = EXTRA_STEPS[step];
+      if (x && x.games && !x.games.includes(ctx.game)) return { result: "judge", note: `${ref} reads ${x.games.join(", ")} only so far` };
+      const st = ctx.tools && ctx.tools.get(step);
+      if (!st) return { result: "not run", note: runHint(ctx.game, step) };
+      return st.ok ? { result: "pass", note: `audit ${step}` } : { result: "fail", note: `audit ${step}: ${st.text.slice(0, 80)}` };
+    }
+    if (JUDGE_TOOLS[ref]) return { result: "judge", note: JUDGE_TOOLS[ref].why };
+    if (PROCESS_TOOLS[ref]) return { result: "judge", note: "process tool: judges a session, not a game" };
+    return { result: "not run", note: "the audit has no step for it" };
   }
   if (kind === "probe") {
     const v = ctx.verdicts && ctx.verdicts[ref];
@@ -307,7 +360,7 @@ export function renderReport({ game, day, audit, problems, sources, command }) {
     const list = byDomain.get(k);
     md.push(`## ${k} ${DOMAINS[k] || ""}: ${countLine(countBy(list))}`, "", "| ID | Rule | Scope | Result | Terms | Why |", "|---|---|---|---|---|---|");
     for (const x of list) {
-      const terms = x.terms.map((t) => `${t.term.kind === "contract" ? t.term.ref : `${t.term.kind}: ${cut(esc(t.term.ref), 28)}`} ${t.result}${t.note && t.result !== "pass" && t.result !== "judge" && t.result !== "gap" ? ` (${cut(esc(t.note), 80)})` : ""}`).join("; ");
+      const terms = x.terms.map((t) => `${t.term.kind === "contract" ? t.term.ref : `${t.term.kind}: ${cut(esc(t.term.ref), 28)}`} ${t.result}${t.note && (t.term.kind === "tool" ? t.result !== "pass" : t.result !== "pass" && t.result !== "judge" && t.result !== "gap") ? ` (${cut(esc(t.note), 80)})` : ""}`).join("; ");
       md.push(`| ${x.rule.id} | ${esc(x.rule.rule)} | ${x.rule.scope} | ${x.result === "fail" ? "**fail**" : x.result} | ${terms} | ${cut(esc(x.rule.why), 120)} |`);
     }
     md.push("");
