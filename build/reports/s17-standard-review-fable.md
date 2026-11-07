@@ -33,20 +33,20 @@ The fill is sound and complete: 222 rules, all 217 source IDs placed (`stdids.mj
 4. **Checked by names tools the audit cannot run.** `lib/standard.mjs` TOOL_STEP knows panelcheck, labcheck, leak, loadtime and sandbox; the rules name 24 other tools (voicegate 6, evidence 5, kitsheet, kitmap, publishgate 4 each, and 19 more). Each resolves "not run: the audit has no step for it", so `audit --standard` prints about 50 rules as not run. Fix in one place, not 50 rules: Sprint 17's tool builder adds the review tools (voicegate, kitsheet, teachgate, tapgate, pillcheck, shelfshot, spkgap, lightfollow, faces, kitmap) to the audit; the process tools (publishgate, evidence, feedbackcheck, brief, stdids, the art and Mum tools, test_cook_mount) render as "judge" with the tool's name, as `doc:` does. Mis-cites to drop: STD-A2-05 contract-31 (a free *replay*, not the reveal: `gap: a reveal-is-free contract`); STD-A1-04 contract-16 (written English, not "never explained": `doc:/brief standing lines`); STD-E1-05 contract-75 (skip zones, not overlap); STD-F4-01 contract-73 (the bubble's speaker) and `tool:layout tap-small` (should be `check:layout/tap-small`).
 
 5. **Why that does not trace, or states the case (R4):**
-   - STD-B1-07 "never in a session's first order, and at most once a round outside the busy mode": MAA-14 says "never in a mode's first plays"; the code (`js/cook/flow.js:179-185`, `data/cook.json` calm) is after the dish's first two plays, then a chance per order (0.4 relaxed, 0.55 busy, 0.2 at L1). Reword: "Nani's 'pass me' never comes in a dish's first two plays, and after that only sometimes, never every order"; Value rows passMeAfterPlays and passMeChance.
+   - STD-B1-07 "never in a session's first order, and at most once a round outside the busy mode": MAA-14 says "never in a mode's first plays"; the code (`flow.js:179-185`, `cook.json` calm) waits two plays of the dish, then a chance per order (0.4 relaxed, 0.55 busy, 0.2 at L1). Reword: "Nani's 'pass me' never comes in a dish's first two plays, and after that only sometimes"; Value rows passMeAfterPlays, passMeChance.
    - STD-B2-08 "the third wrong try is shown the right way": no row or doc says it (there is no `docs/decisions.md`). Cite it or cut the clause.
-   - STD-B3-04 is daar's number ("min 1 and max 3 chops", 30 Oct), written as a Family rule. Status: "daar's, 30 Oct; the family's number is his to confirm" and a line in `docs/questions.md`.
+   - STD-B3-04 is daar's number ("min 1 and max 3 chops", 30 Oct) written as a Family rule: Status "daar's; the family's number is his to confirm", a line in `docs/questions.md`.
    - STD-D1-06 "its step's call with it": Zafar's rule is a beat after the light (CHAI-40, kept 3 Nov; old page §1.3); the code is 0 "until his video shows the moment" (`rules.json` showing). Status must carry both, newest first.
 
 **Medium**
 
 6. **Value fields are not values.md names** (the format: "Value: a values.md name"; F2-04's lint will fail them). d-guidance writes literals in 11 rules (D1-01, -02, -04, -05, -06, -07, -08, -10, D2-01, D3-05, D4-03): replace with the names (dim; light pad, light corner; zoom-in; card light after the last move; light time; reveal English shown; next-pan light; hint wait; Nani's line room, Nani's box fold). a-learning and c-progression name values and areas values.md lacks: A1-01 (no A1 table), A2-01 "support by stage", A3-03 "pair hold", A3-04 "half's fill line", C2-03/C2-08/C3-02/C3-04/C3-06 (values.md says decoys, level up, pill right in a row, word hold, under A2/B3; "recalls to move a stage" has no row). Fix: use values.md's names; add rows new words a round (3-5), hearings a round (3+), support by stage (`progress.json`), recalls to move a stage (0, 4, 5, 6), the pair hold (2.2 s).
 
-7. **Glossary parts the rules name but the glossary lacks:** the knob, the heat ring, the burner (sub-parts of the hob), the glass, the boil-over (B2, B4, D2 cite them). Add them to the kitchen table, stove part. Rules that use another name for a listed part: "the gear" (D5-02), "the buttons" (B1-06, F1-04), "help ladder" (F2-02, F3-05), "the support steps" (F3-03), "Nani's pass-me pop-up" (B1-07) → the corner buttons, the hint stages, the word ladder, or add the part.
+7. **Parts the rules name but the glossary lacks:** the knob, the heat ring, the burner, the glass, the boil-over (B2, B4, D2): add them to the kitchen table. Other names for listed parts: "the gear" (D5-02), "the buttons" (B1-06, F1-04), "help ladder" (F2-02, F3-05), "the support steps" (F3-03), "Nani's pass-me pop-up" (B1-07) → the corner buttons, the hint stages, the word ladder, or add the part.
 
-8. **See it at 1366x768** (not one of the four sizes): STD-B2-08, B2-10, B3-01, B3-02, B4-05 → 1280x665.
+8. **See it at 1366x768** (not a check size): STD-B2-08, B2-10, B3-01, B3-02, B4-05 → 1280x665.
 
-9. **patterns.md's rule lists miss citing rules:** P4 lacks STD-F3-06, STD-G2-05; P10 lacks STD-H1-04, -05, -06, -09. STD-E4-03 cites P9 (consequence) for a picture rule: P10.
+9. **patterns.md's lists miss citing rules:** P4 lacks STD-F3-06, -G2-05; P10 lacks STD-H1-04, -05, -06, -09. STD-E4-03 cites P9 for a picture rule: P10.
 
 **Low**
 
@@ -57,11 +57,10 @@ The fill is sound and complete: 222 rules, all 217 source IDs placed (`stdids.mj
 - The 0.1 pointers: CLAUDE.md never restated, each non-negotiable tied to its checks.
 - `placement.md` with `stdids.mjs --check` green: completeness proven, not claimed (v2 §1.7).
 - The F1 piece table and the module map agree (24 pieces, same layers; the two unowned pieces given owners, a "Moves to" column added).
-- `values.md`'s "derived from" column: every number I checked matches the code (tokens, the shelf 630/860/46, the fold 0.42 s, `Onboard.ZOOM`, `RUNGS`, retries 3 x 0.3 s, half 0.42, hint waits, `advance`, `holdMs`, `rightInARow`).
-- Honest Status lines (D2-05 waiting on Zafar, A4-05 on Mum, E3-05 on art, C2-05's contract-35 gap); g-proof's lessons table; `patterns.md`'s code pointers at 34641d3; the README's scopes and layers in Zafar's words.
-- Scope is right throughout; the Family rules in B give the stove family a clean copy.
+- `values.md`'s "derived from" column: every number I checked matches the code (tokens, the shelf, the fold, `Onboard.ZOOM`, `RUNGS`, retries, half 0.42, hint waits, `advance`, `holdMs`, `rightInARow`).
+- Honest Status lines (D2-05, A4-05, E3-05, C2-05's gap); g-proof's lessons table; `patterns.md`'s code pointers; the README's scopes and layers in Zafar's words; Scope right throughout.
 
-Could a Sprint 18 builder write `gaps/<game>.md` from this? Yes, once the doubles are retired (else one fault scores twice) and the audit runs the tools (else half the rows read "not run"); the Layer fixes in 2 stop builders (a), (b) and (d) writing into each other's files.
+A Sprint 18 builder can write `gaps/<game>.md` from this once the doubles are retired (else one fault scores twice) and the audit runs the tools (else half the rows read "not run"); fix 2 stops builders (a), (b) and (d) writing into each other's files.
 
 ## Proof
 
