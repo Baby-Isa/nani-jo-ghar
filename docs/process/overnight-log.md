@@ -94,3 +94,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-07 11:26 UK · Published 20261107T112304Z to main (7ca44a47); Pages serving it.
 - 2026-11-07 UK · s17-o2-panel merged: SH-232, the panel follows a served card's fold to the next card's planned place (every game); Cook passes the pan in hand
 - 2026-11-07 12:06 UK · Published 20261107T120301Z to main (80a9f0bc); Pages serving it.
+- 2026-11-07 UK · s18-kit-d (lights and lessons): the kit's calls for chai's switch: Onboard.light's timing, Cook.Coach.settled/firsts/control/wrong/nextLight/cardLight/lessons, Onboard.lesson, Onboard.rush (STD-D2-04), no hint past support (STD-D2-05); lab/sections/kit-lights.html; lightHelpArrow's deletion written for its owners
