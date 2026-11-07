@@ -1,6 +1,6 @@
 # Glossary: one name for every part
 
-Rules cite a part by the name in the first column. "His words" are names Zafar uses for it in his notes (as the feedback reports
+Rules cite a part by its name: the first column's words before the brackets. "His words" are names Zafar uses for it in his notes (as the feedback reports
 and the fix list quote them), so a note can be matched to a part. "Kit element" is the element's name in `data/kit-elements.json` (what
 `tool:kitsheet` and `kitmap.mjs` measure), or `-` where the part has none yet. Layer is where the code belongs after Sprint 18
 (decision 13): shared kit, kitchen kit, kitchen kit stove part, or game. A file marked "(today)" is still chai's own.
@@ -12,7 +12,7 @@ and the fix list quote them), so a note can be matched to a part. "Kit element" 
 | the frame (side panel, play area, shelf band; the four sizes) | "left bar", "bottom panel" | - | `js/shared/frame.js`, `data/layout.json` | shared kit |
 | the side panel (Nani's box, then the order cards) | "left bar", "sidebar" | - | `js/cook/ui.js`, `css/cook-side-v2.css` | shared kit |
 | the play area (the stage the game draws on) | "the kitchen" | - | `js/cook/ui.js` | shared kit |
-| the shelf band and the shelf line (the bottom 30%) | "bottom panel", "the shelf" | - | `js/cook/station-lib.js` | shared kit |
+| the shelf (the band, the bottom 30%, and the line its things stand on) | "bottom panel", "the shelf" | - | `js/cook/station-lib.js` | shared kit |
 | the word pill (a shelf item's word chip, with its speaker) | "pill" | - | `js/cook/stations/chai-tray.js` (today) | shared kit |
 | the count pills (a counted item's grouped pills) | "pills" | - | `js/cook/stations/chai-tray.js` (today) | shared kit |
 | the corner buttons (the cog and its menu: "?", home, book) | "gear icon", "cog" | buttons | `js/shared/buttons.js`, `data/rules.json` | shared kit |
