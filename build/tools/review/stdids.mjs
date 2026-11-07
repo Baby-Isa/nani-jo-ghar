@@ -14,6 +14,7 @@
 //        build/reports/s17-dropped-list.md
 import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 import { args, ROOT } from "./lib/common.mjs";
 
 const a = args();
@@ -27,6 +28,10 @@ const CHAI_JS = "js/cook/stations/chai-tray.js";
 const ID_RE = /\b(SH|CHAI|CK|ART|LNG|KEEP|CLN|DAAR|SEK|MAA|CHT|PAN|SAM|BO1|R6|COOK|CORN|EGG|BAK|CHOP)-\d{1,4}\b/g;
 const KINDS = ["rule", "value", "lesson", "not a standard", "retired"];
 const read = (p) => (existsSync(join(ROOT, p)) ? readFileSync(join(ROOT, p), "utf8") : "");
+// the sources as they stood when chai was signed off and the standard was filled (7 Nov, commit 50e660f): chai-standard.md is a
+// pointer since the stitch, so the source set is read from git, not the working tree
+const PIN = "50e660f";
+const readPinned = (p) => { const r = spawnSync("git", ["show", `${PIN}:${p}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 32 << 20 }); return r.status === 0 ? r.stdout : read(p); };
 
 // The *14 onboarding states of chai: every once-only key (first14, the S14_TAG keys, the ctl-<phase> lessons)
 function onboardingKeys(src) {
@@ -42,10 +47,10 @@ function onboardingKeys(src) {
 export function sources() {
   const map = new Map(); // id -> Set(origin)
   const add = (id, o) => (map.get(id) || map.set(id, new Set()).get(id)).add(o);
-  for (const [o, p] of Object.entries(SOURCES)) for (const m of read(p).matchAll(ID_RE)) add(m[0], o);
+  for (const [o, p] of Object.entries(SOURCES)) for (const m of readPinned(p).matchAll(ID_RE)) add(m[0], o);
   // a ledger change with no row ID (a tool, a check, a process change) is its own source: led:<section>-<n>, n its row in the section
   let sec = null, n = 0;
-  for (const l of read(SOURCES.ledger).split("\n")) {
+  for (const l of readPinned(SOURCES.ledger).split("\n")) {
     if (/^## 2\./.test(l)) break;
     const h = l.match(/^### (1\.\d+)/);
     if (h) { sec = h[1]; n = 0; continue; }
@@ -55,7 +60,7 @@ export function sources() {
     if (!ID_RE.test(first)) add(`led:${sec}-${n}`, `ledger row: ${first.trim().slice(0, 50)}`);
     ID_RE.lastIndex = 0;
   }
-  const js = read(CHAI_JS);
+  const js = readPinned(CHAI_JS);
   for (const m of js.matchAll(/\bCHAI-\d{1,4}\b/g)) if (!map.has(m[0])) add(m[0], "chai-tray.js only");
   for (const k of onboardingKeys(js)) add(k, "onboarding state");
   return map;

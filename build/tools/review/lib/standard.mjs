@@ -255,6 +255,10 @@ export function resolveTerm(term, ctx) {
     const v = ctx.verdicts && ctx.verdicts[ref];
     if (!v) return { result: "not run", note: "no verdict cached" };
     const verdict = String(v.verdict || "").toUpperCase();
+    // a row retired on the fix list has no verdict to keep; a FAIL older than the game's frozen run (its sign-off, ctx.since) is stale:
+    // the game was signed off after it, so the eye decides until the probe is played again
+    if (ctx.retired && ctx.retired.has(ref)) return { result: "judge", note: "row retired" };
+    if (verdict === "FAIL" && ctx.since && v.date && String(v.date) < ctx.since) return { result: "judge", note: `stale: last verdict FAIL ${v.date}, before the sign-off (${ctx.since}); play the probe again` };
     return verdict === "PASS" ? { result: "pass", note: `${v.date || ""}` } : verdict === "FAIL" ? { result: "fail", note: `${v.date || ""} ${String(v.line || "").slice(0, 70)}`.trim() } : { result: "not run", note: `verdict ${verdict || "empty"}` };
   }
   return { result: "not run", note: "unknown term" };

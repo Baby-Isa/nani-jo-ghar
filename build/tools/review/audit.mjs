@@ -82,7 +82,13 @@ async function standardAudit() {
   if (existsSync(vf)) { try { verdicts = JSON.parse(readFileSync(vf, "utf8")); } catch { /* unreadable: treated as absent */ } }
   sources.push(verdicts ? `probes: verdict cache \`${short(vf)}\` (${Object.keys(verdicts).length} rows)` : "probes: no verdict cache (every probe: term is not run)");
 
-  const audit = auditRules(parsed.rules, { game, contract, checks, tools, verdicts });
+  // the game's frozen run (build/frozen/<game>/frozen.json, its sign-off): a probe's FAIL from before it is stale (lib/standard.mjs)
+  const frozenFile = join(ROOT, "build", "frozen", game, "frozen.json");
+  const since = a.val("since") || (existsSync(frozenFile) ? String(JSON.parse(readFileSync(frozenFile, "utf8")).frozenAt || "").slice(0, 10) : null);
+  let retired = new Set();
+  try { const R = await import("./lib/regressions.mjs"); retired = new Set(R.loadRegressions().filter((r) => R.statusKind(r.status) === "retired").map((r) => r.id)); } catch { /* no fix list: none retired */ }
+  if (since) sources.push(`stale verdicts: a probe's FAIL before ${since} (the game's frozen run) counts as judge`);
+  const audit = auditRules(parsed.rules, { game, contract, checks, tools, verdicts, since, retired });
   const command = `node build/tools/review/audit.mjs --standard ${game}${a.val("run") ? ` --run ${a.val("run")}` : ""}`;
   const md = renderReport({ game, day, audit, problems: parsed.problems, sources, command });
   const out = a.val("out") || join(ROOT, "build", "reports", `audit-standard-${game}-${day}.md`);

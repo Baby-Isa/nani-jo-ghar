@@ -13,7 +13,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Checked by:** probe:SH-181 + contract-78 + check:unit
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1, New player (1280x665)
 - **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** New player once a visit, else once ever · **Impact:** feels bad · **Source rows:** SH-146, SH-181, SH-196, CHAI-68, CHAI-60, onb:control, onb:ctl-knob, onb:ctl-pour
+- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** New player once a visit, else once ever · **Impact:** feels bad · **Source rows:** SH-146, SH-181, SH-196, CHAI-68, CHAI-60, onb:control, onb:ctl-knob, onb:ctl-pour, onb:ctl-slow, onb:ctl-water, onb:ctl-tea, onb:ctl-cups
 
 #### STD-D1-02 · The light is one look everywhere: all dims but a gold-edged box round the glowing thing, a finger only for a drag, hold or swipe
 - **Why:** "no ripples ... Yes hand for drag is fine." (Zafar, 30 Oct)
