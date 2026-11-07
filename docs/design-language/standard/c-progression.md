@@ -45,7 +45,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=3`, 1280x665
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `data/rules.json` (count), `js/shared/rules.js` (`Rules.count`) · **Value:** count by level (values.md C2) · **Impact:** wrong · **Source rows:** DAAR-37
+- **Layer:** shared kit · **Lives in:** `data/rules.json` (count), `js/shared/rules.js` (`Rules.count`) · **Value:** count by level (values.md B3) · **Impact:** wrong · **Source rows:** DAAR-37
 
 #### STD-C2-03 · Decoys rise one a level from 1 at L1, and at L4 one decoy is a lookalike of a wanted thing
 - **Why:** Zafar, 29 Oct round 1 ("from L1, one more a level where the space allows"); a game caps it by its space
@@ -54,7 +54,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit + contract-37
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4`, 1280x665
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `data/rules.json` (levels.decoys, lookalike) · **Value:** decoys by level (values.md C2) · **Impact:** wrong
+- **Layer:** shared kit · **Lives in:** `data/rules.json` (levels.decoys, lookalike) · **Value:** decoys (values.md C2) · **Impact:** wrong
 
 #### STD-C2-04 · "No" asks come from L2, never at L1
 - **Why:** the rulebook's L2, "more of it": "numbers; 'no' asks; one added item" (Zafar, 28-29 Oct)
@@ -72,7 +72,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit + contract-35 + gap: contract-35 still expects the 26 Oct ladder (no dots at L1-L2): retune it to `data/rules.json` levels
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=2` and `level=3` (labs.html: New player + Words known), 1280x665
 - **Status:** agreed 29 Oct (the blur's ladder condition 3 Nov)
-- **Layer:** shared kit · **Lives in:** `data/rules.json` (cardKutchi, cardEnglish, cardPicture), `js/cook/ui.js` · **Value:** the card by level (values.md C2) · **Impact:** wrong
+- **Layer:** shared kit · **Lives in:** `data/rules.json` (cardKutchi, cardEnglish, cardPicture), `js/cook/ui.js` · **Value:** card by level (values.md A2) · **Impact:** wrong
 
 #### STD-C2-06 · Timing gets about 15% quicker with each level
 - **Why:** "Cook's timers come from the level, set in data and getting about 15% quicker per level (H8)" (`docs/vision.md`, pillar 7); the rulebook's L1 "the gentlest timing"
@@ -81,7 +81,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:static/ladder
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=1` against `level=4`, 1280x665
 - **Status:** agreed (H8)
-- **Layer:** shared kit · **Lives in:** `data/cook.json` (timing.levelSpeed) · **Value:** level speed (values.md C2) · **Impact:** feels bad
+- **Layer:** shared kit · **Lives in:** `data/cook.json` (timing.levelSpeed) · **Value:** level speed (values.md B2) · **Impact:** feels bad
 
 #### STD-C2-07 · A level only adds to the one before: no count goes down from one level to the next
 - **Why:** the rulebook (Zafar's answers, 28-29 Oct): "L2 more of it", L4 "the most items"; his counts by game rise level by level (29 Oct)
@@ -99,7 +99,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit
 - **See it:** `labs.html` (pick a level), then three rounds of `lab.html?mode=cook&game=chai-tray&level=1`
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `js/shared/rules.js` (`Rules.advance`), `data/rules.json` (advance) · **Value:** level-up rounds and hints (values.md C2) · **Impact:** wrong
+- **Layer:** shared kit · **Lives in:** `js/shared/rules.js` (`Rules.advance`), `data/rules.json` (advance) · **Value:** level up (values.md C2) · **Impact:** wrong
 
 #### STD-C2-09 · The level never changes during a game, only between games
 - **Why:** SH-207 (Zafar, 4 Nov: "word, ladder, effects should only take place after the game has ended"); the row names the level with the ladder
@@ -155,7 +155,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=2` (labs.html: New player), 1280x665
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `js/shared/rules.js` (`Rules.pillRun`), `js/core/progress.js` · **Value:** right picks to earn the pill (values.md C3) · **Impact:** wrong
+- **Layer:** shared kit · **Lives in:** `js/shared/rules.js` (`Rules.pillRun`), `js/core/progress.js` · **Value:** pill right in a row (values.md A2) · **Impact:** wrong
 
 #### STD-C3-05 · The word ladder a game reads is frozen at its start and thawed at its end screen, while every right pick and miss is saved at once
 - **Why:** SH-207 (Zafar, 4 Nov: "the item card started blurring halfway through playing ... word, ladder, effects should only take place after the game has ended")
@@ -173,7 +173,7 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Checked by:** check:unit
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=2` (labs.html: New player), 1280x665
 - **Status:** agreed 29 Oct
-- **Layer:** shared kit · **Lives in:** `data/rules.json` (words.holdMs), `js/shared/rules.js` · **Value:** the big card's hold (values.md C3) · **Impact:** cosmetic
+- **Layer:** shared kit · **Lives in:** `data/rules.json` (words.holdMs), `js/shared/rules.js` · **Value:** word hold (values.md A2) · **Impact:** cosmetic
 
 #### STD-C3-07 · A word has one ladder across every game: a word met or learned in one game reads as met or learned in the next
 - **Why:** "Difficulty is per word, not per level" (`docs/vision.md`, pillar 1); one progress model for every game (rule G23)
@@ -201,8 +201,8 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 - **Pattern / part:** P13 / -
 - **Checked by:** tool:loadtime + gap: a next-game preload check (the next game's files fetched before the end screen)
 - **See it:** `cook.html?app=1&first=pantry&then=...` (labs.html: Walkthrough), 1280x665
-- **Status:** agreed 5 Nov; to build before the store run
-- **Layer:** shared kit · **Lives in:** `js/shared/host.js` · **Impact:** feels bad · **Source rows:** SH-212
+- **Status:** retired 7 Nov: doubles STD-F4-04 (its Why, gap and file moved there; was: agreed 5 Nov, to build before the store run)
+- **Layer:** shared kit · **Lives in:** `js/shared/host.js` · **Impact:** feels bad
 
 #### STD-C4-03 · Each game keeps its own level in the save; a grown-up's or a story day's pick sets it without moving the count
 - **Why:** the level-up rule (Zafar, 29 Oct round 4; `data/rules.json` advance: "Kept per game in the save")

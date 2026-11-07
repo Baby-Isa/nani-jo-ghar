@@ -119,14 +119,14 @@ with its Why naming the non-negotiable. The rule block's shape: `README.md`, "Th
 - **Status:** agreed 21 Oct
 - **Layer:** shared kit · **Lives in:** `js/shared/input.js` · **Impact:** stuck · **Source rows:** SH-141
 
-#### STD-02-04 · Every screen works at the four sizes (740x320, 930x430, 1280x665, 1920x1080), laid out by height, with no exception for one size unless it is strictly required
-- **Why:** CLAUDE.md, rapid prototype (Zafar, 27 Oct); CHAI-33 (Zafar, 3 Nov: no exception for 740x320, an unpopular size, unless strictly required)
+#### STD-02-04 · Every screen works at the four sizes (740x320, 930x430, 1280x665, 1920x1080), with no exception for one size unless it is strictly required
+- **Why:** CLAUDE.md, rapid prototype (Zafar, 27 Oct); CHAI-33 (Zafar, 3 Nov: no exception for 740x320, an unpopular size, unless strictly required); CHAI-86 (5 Nov: "so it all fits nicely on all screens"); laying out by height is STD-E1-01
 - **Scope:** House
 - **Pattern / part:** - / the frame
 - **Checked by:** tool:panelcheck + tool:labcheck + doc:CLAUDE.md
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4` at each of the four sizes
 - **Status:** agreed 3 Nov (sizes 27 Oct)
-- **Layer:** shared kit · **Lives in:** `js/shared/frame.js`, `css/shared/frame.css` · **Value:** the four sizes (values.md E1) · **Impact:** stuck · **Source rows:** CHAI-33
+- **Layer:** shared kit · **Lives in:** `js/shared/frame.js`, `css/shared/frame.css` · **Value:** four sizes (values.md 0.2) · **Impact:** stuck · **Source rows:** CHAI-33, CHAI-86
 
 #### STD-02-05 · Nothing leaves the device: no accounts, uploads or analytics, and speech is recognised on the device
 - **Why:** "Nothing leaves the device. No accounts, no uploads, no analytics" (`docs/vision.md`, pillar 9); checks-to-build J1
