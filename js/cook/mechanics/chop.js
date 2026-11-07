@@ -628,7 +628,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const b = UI.worldToScreen(right(), z.Y(SY) + half());
           return [a.x, a.y, b.x - a.x, b.y - a.y];
         };
-        const light = OB.light(rect, { live: [], pad: 0 });
+        const light = OB.light(rect, { live: [], pad: 0, note: "chop:s14-strip" });
         // the finger on the handle (the knife's lower right, its blade and tip clear: DAAR-13, s08 w8A)
         let fpt = null;
         const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
