@@ -94,3 +94,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-07 11:26 UK · Published 20261107T112304Z to main (7ca44a47); Pages serving it.
 - 2026-11-07 UK · s17-o2-panel merged: SH-232, the panel follows a served card's fold to the next card's planned place (every game); Cook passes the pan in hand
 - 2026-11-07 12:06 UK · Published 20261107T120301Z to main (80a9f0bc); Pages serving it.
+- 2026-11-07 UK · s18-prep (Sonnet): art block 1's eggs, baking and corn-stall images cut to assets/cook/proto/ (63 webp; CO not cut), settings written into data/stations/{eggs,baking,corn}.json, three jug amounts into the gap list and the recording sheet (cook 119 to 122); no code changed (report build/reports/s18-prep.md)
