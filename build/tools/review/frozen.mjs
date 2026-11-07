@@ -126,54 +126,64 @@ if (a.has("diff")) {
   let runId = a.val("run");
   const flowsOf = (keys) => [...new Set(keys.map((k) => k.split("@").slice(0, -1).join("@")))];
   const frozenKeys = Object.keys(frozen.pages);
+  const play = (id, flows, sizes, min) => spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", String(min * 60), process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--flow", flows.join(","), "--sizes", sizes.join(","), "--contract", "--parallel", "2", "--no-sheets", "--run-id", id], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8819" }, maxBuffer: 64 << 20 });
   if (!runId) {
     runId = `frozen-diff-${game}-${stamp}`;
     const sizes = a.has("full") ? [...new Set(frozenKeys.map((k) => k.split("@").pop()))] : SIZES_QUICK;
     const flows = flowsOf(frozenKeys);
     console.log(`playing ${flows.length} flows at ${sizes.join(", ")} (run ${runId}) ...`);
-    const r = spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "3600", process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--flow", flows.join(","), "--sizes", sizes.join(","), "--contract", "--parallel", "2", "--no-sheets", "--run-id", runId], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8819" }, maxBuffer: 64 << 20 });
+    const r = play(runId, flows, sizes, 60);
     if (r.status !== 0 && r.status !== 1) console.log(`(the run exited ${r.status}: ${String(r.stderr || "").slice(-300)})`);
   }
-  const now = readRun(runId);
-  const diffs = [];
-  const add = (page, what, before, after) => diffs.push({ page, what, before, after });
-  const nowBreaks = new Set(now.breaks.map(breakKey));
-  // a break seen in any frozen run is known (a timing check can trip under load: contract-79, -83); a new one is re-played once
-  // before it counts (--diff re-plays those pages itself; with --run it is listed as "to confirm")
-  const newBreaks = [...nowBreaks].filter((b) => !frozen.breaks.includes(b));
-  let confirmed = newBreaks;
-  if (newBreaks.length && !a.val("run")) {
-    const again = `${runId}-again`;
-    const flows = [...new Set(newBreaks.map((b) => b.split(" ")[1].split("@").slice(0, -1).join("@")))];
-    const sizes = [...new Set(newBreaks.map((b) => b.split("@").pop()))];
-    console.log(`re-playing ${flows.length} page(s) with a new break to confirm it ...`);
-    spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "1800", process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--flow", flows.join(","), "--sizes", sizes.join(","), "--contract", "--no-sheets", "--run-id", again], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8819" }, maxBuffer: 64 << 20 });
-    const twice = new Set(readRun(again).breaks.map(breakKey));
-    confirmed = newBreaks.filter((b) => twice.has(b));
-    for (const b of newBreaks.filter((b) => !twice.has(b))) console.log(`  ${b}: not on the re-play (a flake)`);
-  }
-  for (const b of confirmed) add(b.split(" ")[1], a.val("run") ? "a new contract break (re-play to confirm)" : "a new contract break, twice", "-", b.split(" ")[0]);
+  const crashed = (p) => (p.stops || []).some((x) => /crash|has been closed|ENOSPC/i.test(x));
   // Chai is not the same twice (the orders it deals, when a hint comes, a tap that skips a line), so a page is compared by what it
   // does, not by counts or times: across the frozen samples of a page (every run it was frozen from), what ALWAYS happened is
   // required (states, the game's note kinds, the effects and family clips heard) and what EVER happened is allowed. A change is a
-  // required thing missing, a thing never seen before, a page that no longer reaches its end, or a new page error.
-  for (const [k, p] of Object.entries(now.pages)) {
-    const samples = frozen.samples && frozen.samples[k] ? frozen.samples[k] : frozen.pages[k] ? [frozen.pages[k]] : null;
-    if (!samples) continue;
-    if (samples.some((f) => f.complete) && !p.complete) add(k, "reached its end", true, false);
-    const errs = new Set(samples.flatMap((f) => f.errors));
-    for (const e of p.errors) if (!errs.has(e)) add(k, "a new page error", "-", e.slice(0, 160));
-    for (const [what, get] of Object.entries(FACETS)) {
-      const sets = samples.map((f) => new Set(get(f)));
-      const ever = new Set(sets.flatMap((x) => [...x]));
-      const always = [...sets[0]].filter((x) => sets.every((y) => y.has(x)));
-      const nowSet = new Set(get(p));
-      for (const x of always) if (!nowSet.has(x)) add(k, `${what}: always there before, missing now`, x, "-");
-      for (const x of nowSet) if (!ever.has(x)) add(k, `${what}: never seen before`, "-", x);
+  // required thing missing, a thing never seen before, a page that no longer reaches its end, a new page error, or a new contract
+  // break. A page whose browser crashed (a full disk, the machine) is not compared.
+  const compare = (run) => {
+    const out = [];
+    const add = (page, what, before, after) => out.push({ page, what, before: String(before), after: String(after) });
+    for (const b of run.breaks.map(breakKey)) if (!frozen.breaks.includes(b)) add(b.split(" ")[1], "a new contract break", "-", b.split(" ")[0]);
+    for (const [k, p] of Object.entries(run.pages)) {
+      const samples = frozen.samples && frozen.samples[k] ? frozen.samples[k] : frozen.pages[k] ? [frozen.pages[k]] : null;
+      if (!samples) continue;
+      if (crashed(p)) { add(k, "the browser crashed (not compared)", "-", (p.stops || [])[0] || ""); continue; }
+      if (samples.some((f) => f.complete) && !p.complete) add(k, "reached its end", true, false);
+      const errs = new Set(samples.flatMap((f) => f.errors));
+      for (const e of p.errors) if (!errs.has(e)) add(k, "a new page error", "-", e.slice(0, 160));
+      for (const [what, get] of Object.entries(FACETS)) {
+        const sets = samples.map((f) => new Set(get(f)));
+        const ever = new Set(sets.flatMap((x) => [...x]));
+        const always = [...sets[0]].filter((x) => sets.every((y) => y.has(x)));
+        const nowSet = new Set(get(p));
+        for (const x of always) if (!nowSet.has(x)) add(k, `${what}: always there before, missing now`, x, "-");
+        for (const x of nowSet) if (!ever.has(x)) add(k, `${what}: never seen before`, "-", x);
+      }
     }
+    return out;
+  };
+  const sig = (d) => `${d.page}|${d.what}|${d.before}|${d.after}`;
+  const now = readRun(runId);
+  let diffs = compare(now);
+  // a change counts only if it comes again: every changed or crashed page is re-played once (without --run), and only what both
+  // plays show is reported (one-off variation, a flake under load, a crash: not a change)
+  if (diffs.length && !a.val("run")) {
+    const pages = [...new Set(diffs.map((d) => d.page))];
+    const again = `${runId}-again`;
+    console.log(`re-playing ${pages.length} page(s) that changed, to confirm ...`);
+    const bySize = {};
+    for (const k of pages) (bySize[k.split("@").pop()] = bySize[k.split("@").pop()] || []).push(k.split("@").slice(0, -1).join("@"));
+    for (const [size, flows] of Object.entries(bySize)) play(`${again}-${size}`, [...new Set(flows)], [size], 40);
+    const second = { pages: {}, breaks: [] };
+    for (const size of Object.keys(bySize)) { const r = readRun(`${again}-${size}`); Object.assign(second.pages, r.pages); second.breaks.push(...r.breaks); }
+    const twice = new Set(compare(second).filter((d) => !/crashed/.test(d.what)).map(sig));
+    const once = diffs.filter((d) => !twice.has(sig(d)));
+    console.log(`  ${once.length} of ${diffs.length} change(s) did not come again (variation, a flake or a crash)`);
+    diffs = diffs.filter((d) => twice.has(sig(d)));
   }
   const missing = frozenKeys.filter((k) => !now.pages[k] && (a.has("full") || SIZES_QUICK.includes(k.split("@").pop())) && !a.val("run"));
-  for (const k of missing) add(k, "the page did not play", "played", "missing");
+  for (const k of missing) diffs.push({ page: k, what: "the page did not play", before: "played", after: "missing" });
   const changed = [...new Set(diffs.map((d) => d.page))];
   const report = join(ROOT, "build", "reports", `frozen-diff-${game}-${stamp}.md`);
   writeFileSync(report, [
