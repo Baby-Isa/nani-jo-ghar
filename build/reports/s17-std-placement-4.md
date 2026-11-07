@@ -22,7 +22,7 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | CHAI-07 | not a standard | | art landed (the black-tea glass, the tipped pan) |
 | CHAI-08 | rule | STD-E3-01, STD-E3-04 |  |
 | CHAI-10 | value | heat to the green (values.md B2) | |
-| CHAI-100 | rule | STD-E5-04 |  |
+| CHAI-100 | rule | STD-B4-02 |  |
 | CHAI-12 | retired | | Zafar, 29 Oct: the heat ring goes over the handle (STD-E3-04, contract-81) |
 | CHAI-13 | rule | STD-E3-02 |  |
 | CHAI-14 | not a standard | | a one-off art fix (the ginger jar); its rule is STD-E3-01 |
@@ -31,7 +31,7 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | CHAI-25 | rule | STD-E2-08 |  |
 | CHAI-26 | retired | | Zafar, 29 Oct: no tilted pan; the pan moves over its glass and empties |
 | CHAI-31 | rule | STD-E3-02 |  |
-| CHAI-33 | rule | STD-E1-01, STD-E2-08 |  |
+| CHAI-33 | rule | STD-02-04, STD-E2-08 |  |
 | CHAI-34 | rule | STD-E3-01, STD-E3-04 |  |
 | CHAI-38 | rule | STD-E4-03 |  |
 | CHAI-40 | value | call after its light (values.md D1) | |
@@ -61,11 +61,11 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | CHAI-81 | rule | STD-E4-04 | also a value: word moment pace (values.md E4) |
 | CHAI-82 | rule | STD-E3-02 |  |
 | CHAI-84 | rule | STD-E2-04 | also a value: half, full (values.md B3) |
-| CHAI-86 | rule | STD-E1-01 | also a value: stream gap, word moment room (values.md E4) |
+| CHAI-86 | rule | STD-02-04 | also a value: stream gap, word moment room (values.md E4) |
 | CHAI-87 | rule | STD-E5-03 |  |
 | CHAI-91 | rule | STD-E3-04 | also a value: picture retries (values.md F4) |
 | CHAI-92 | rule | STD-E5-03 | also a value: short pour (values.md E5) |
-| CHAI-95 | rule | STD-E5-04 | also a value: boil loudness (values.md E5) |
+| CHAI-95 | rule | STD-B4-03 | also a value: boil loudness (values.md E5) |
 | CHAI-99 | value | next-pan light (values.md D1) | |
 | CHT-04 | not a standard | | chaat's art, waiting (its gap page) |
 | CHT-13 | not a standard | | chaat's bowl art, waiting (its gap page) |
@@ -73,9 +73,9 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | CHT-17 | rule | STD-E1-05 |  |
 | CK-06 | rule | STD-E3-02 |  |
 | CK-18 | rule | STD-E2-06 |  |
-| CK-45 | rule | STD-E5-02 |  |
+| CK-45 | rule | STD-B2-07 |  |
 | CK-53 | rule | STD-E1-05 |  |
-| CK-54 | rule | STD-E5-02 |  |
+| CK-54 | rule | STD-B1-05 |  |
 | CK-57 | rule | STD-E4-01 |  |
 | CLN-218 | rule | STD-E2-03 |  |
 | DAAR-02 | not a standard | | daar's kadchi art, waiting (its gap page) |
@@ -89,14 +89,14 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | SH-144 | rule | STD-E4-02 |  |
 | SH-145 | rule | STD-E2-06 |  |
 | SH-147 | rule | STD-E2-01 |  |
-| SH-148 | rule | STD-E1-03 |  |
+| SH-148 | rule | STD-F3-04 |  |
 | SH-149 | rule | STD-E2-01 |  |
 | SH-153 | rule | STD-E2-06 |  |
 | SH-163 | rule | STD-E4-02 |  |
 | SH-165 | rule | STD-E2-03 |  |
 | SH-169 | rule | STD-E1-04 |  |
 | SH-174 | rule | STD-E4-01 |  |
-| SH-175 | rule | STD-E5-05 |  |
+| SH-175 | rule | STD-F4-03 |  |
 | SH-176 | rule | STD-E2-03 |  |
 | SH-177 | rule | STD-E2-06 |  |
 | SH-179 | rule | STD-E2-03 |  |
@@ -113,21 +113,21 @@ wins over a value). "Also a value" names the values.md rows a rule's ID also fed
 | SH-193 | rule | STD-E2-03 |  |
 | SH-194 | rule | STD-E1-04 |  |
 | SH-196 | rule | STD-E2-08, STD-E5-03 | also a value: reveal English shown (values.md A2), light after the dots, light corner (values.md D1) |
-| SH-198 | rule | STD-E5-05 |  |
+| SH-198 | rule | STD-F4-02 |  |
 | SH-199 | rule | STD-E1-04 |  |
 | SH-200 | rule | STD-E2-04 |  |
-| SH-201 | rule | STD-E5-05 |  |
+| SH-201 | rule | STD-F4-03 |  |
 | SH-202 | rule | STD-E2-04 |  |
 | SH-203 | rule | STD-E4-02 | also a value: landing error (values.md E4) |
 | SH-204 | rule | STD-E1-04 |  |
 | SH-206 | rule | STD-E1-04 |  |
 | SH-208 | rule | STD-E1-05 | also a value: gap floor (values.md E1) |
 | SH-209 | rule | STD-E2-03 |  |
-| SH-210 | rule | STD-E1-02, STD-E1-03 | also a value: Nani's line room (values.md D3) |
-| SH-211 | rule | STD-E1-03, STD-E4-01 |  |
+| SH-210 | rule | STD-E1-02, STD-F3-04 | also a value: Nani's line room (values.md D3) |
+| SH-211 | rule | STD-F3-04, STD-E4-01 |  |
 | SH-213 | value | zoom-in (values.md D1) | |
 | SH-215 | rule | STD-E4-01 | also a value: Nani's box fold (values.md D3) |
-| led:1.11-3 | rule | STD-E1-03 |  |
+| led:1.11-3 | rule | STD-F3-04 |  |
 | led:1.6-11 | rule | STD-E2-08 |  |
 
 ## Proof

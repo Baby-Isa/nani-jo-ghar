@@ -23,7 +23,7 @@ Format: `build/reports/s17-standard-format.md`. Lessons are named in the Note (t
 | CHAI-25 | rule | STD-F4-06 | in code: a load capped in real time (static loadcap) |
 | CHAI-33 | rule | STD-G1-06, STD-G2-01 | measured for size, not clearance; lesson R2 |
 | CHAI-37 | rule | STD-G1-04 | the next item's light: early, never never |
-| CHAI-43 | rule | STD-F4-01, STD-G1-06, STD-G2-01 | the speaker's 48 px tap; shot at one size; lesson R1 |
+| CHAI-43 | rule | STD-E6-02, STD-G1-06, STD-G2-01 | the speaker's 48 px tap; shot at one size; lesson R1 |
 | CHAI-53 | rule | STD-H4-04 | retired to his user testing |
 | CHAI-58 | rule | STD-G2-03 | a child's pace; lesson R1 |
 | CHAI-60 | rule | STD-G1-05 | the check was wrong, not the game |
@@ -49,33 +49,33 @@ Format: `build/reports/s17-standard-format.md`. Lessons are named in the Note (t
 | CK-57 | rule | STD-G2-06 | a test artefact; lesson R7 |
 | DAAR-02 | rule | STD-H1-05 | the kadchi art waits |
 | DAAR-12 | rule | STD-H4-01 | waits on Zafar |
-| DAAR-26 | rule | STD-H4-02 | waits on Mum (R6-146) |
+| DAAR-26 | rule | STD-A4-02 | waits on Mum (R6-146) |
 | DAAR-36 | rule | STD-F1-03, STD-H3-03 | the s14 kit list |
 | DAAR-37 | not a standard |  | daar's own mechanic row: its gap page (Sprint 18) |
 | DAAR-38 | not a standard |  | daar's own mechanic row: its gap page |
 | DAAR-39 | not a standard |  | daar's chop light: its gap page (the light rules are domain D) |
 | KEEP-21 | rule | STD-G4-04, STD-H3-05 | the keep list |
-| LNG-23 | rule | STD-H4-02 | waits on Mum |
+| LNG-23 | rule | STD-A4-02 | waits on Mum |
 | MAA-14 | not a standard |  | maani's own check: its gap page |
-| MAA-15 | rule | STD-H4-02 | waits on Mum |
-| MAA-16 | rule | STD-H4-02 | waits on Mum |
+| MAA-15 | rule | STD-A4-02 | waits on Mum |
+| MAA-16 | rule | STD-A4-02 | waits on Mum |
 | MAA-19 | rule | STD-F1-03, STD-H3-03 | the s14 kit reopened in maani |
 | PAN-19 | not a standard |  | a sprint-plan decision, changed 7 Nov (decision 6) |
 | PAN-22 | not a standard |  | a sprint-plan decision, changed 7 Nov (decision 11) |
-| R6-131 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-134 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-135 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-136 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-137 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-138 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-139 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-141 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-146 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-18 | rule | STD-H4-02 | a question on Mum's sheet |
-| R6-19 | rule | STD-H4-02 | a question on Mum's sheet |
+| R6-131 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-134 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-135 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-136 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-137 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-138 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-139 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-141 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-146 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-18 | rule | STD-A4-02 | a question on Mum's sheet |
+| R6-19 | rule | STD-A4-02 | a question on Mum's sheet |
 | SAM-28 | rule | STD-F1-03, STD-H3-03 | the s14 kit built in samosa |
 | SEK-14 | not a standard |  | sekelo's own check: its gap page |
-| SEK-18 | rule | STD-H4-02 | waits on Mum |
+| SEK-18 | rule | STD-A4-02 | waits on Mum |
 | SEK-20 | rule | STD-H1-05 | sekelo's barbecue art waits |
 | SEK-22 | rule | STD-F1-03, STD-H3-03 | the s14 kit reopened in sekelo |
 | SH-38 | rule | STD-G4-06 | reversed three times: a dated Status, not a lesson |
@@ -95,7 +95,7 @@ Format: `build/reports/s17-standard-format.md`. Lessons are named in the Note (t
 | SH-182 | rule | STD-F3-05 | one plan for the next thing |
 | SH-183 | rule | STD-G4-02, STD-G2-05 | the pour never filmed; lesson R5 |
 | SH-184 | rule | STD-G2-03 | the clock at a child's pace |
-| SH-185 | rule | STD-F4-01, STD-F2-04, STD-G1-06 | scale to a floor; lesson R2 |
+| SH-185 | rule | STD-E6-02, STD-F2-04, STD-G1-06 | scale to a floor; lesson R2 |
 | SH-195 | rule | STD-F3-03 | the round's snapshot |
 | SH-196 | rule | STD-F3-01, STD-G2-01, STD-G3-04 | once per visit; the box jumped; barely visible; lessons R1, R3, R9 |
 | SH-197 | rule | STD-F3-02, STD-H3-07 | a light left on a finished thing; fixed in every copy |
