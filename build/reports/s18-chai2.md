@@ -4,23 +4,9 @@ Opus, high. Zafar's decision 5 for this run: no BEFORE run, no evidence --before
 
 ## 1. The last glass's ring on `#mistake` 740x320 (the pan switch's diff)
 
-`cook:chai-tray#mistake` at 740x320, three plays on each commit (detached sparse worktrees, deleted after), the glass sounds counted
-from each page's sound log (`sfx/glass`, file `glass-c`):
-
-| Commit | Play 1 | Play 2 | Play 3 |
-|---|---|---|---|
-| 030077eb (before the pan switch) | 0 | 1 (13.2 s) | 1 (13.4 s) |
-| 3338b26f (the pan switch) | 0 | 0 | 0 |
-
-All six reached their end, contract passed. **A flake, on the old code too.** The cause, in every page's timeline: the glass's
-drop lands 460 ms after the pour ends (`glassDone`, Juice.P.drop's onLand plays `drop` then `glass`); the tick's praise
-("shabash", the family's voice) starts within the same 0-50 ms. `js/shared/sfx.js` gates any effect longer than SHORT while a family
-voice sounds (`gate`: glass-c is 1228 ms, so 0): when the drop lands first the ring plays, when the praise starts first it is
-silenced (the `drop` itself, short, always plays). The switch shifts the race by a few ms; it does not touch the glass.
-
-**Proposed row (chai, sfx):** "The last glass's ring is silenced when the tick's praise starts as the drop lands (the voice gate,
-glass-c 1228 ms); seen on L1 and #mistake at 740x320." Fix options for Zafar: (1) the ring at the drop's start of the fall
-rather than its landing; (2) the praise waits for the drop (about 0.5 s); (3) leave it (the drop is heard). Recommend (2).
+Replayed three times before and after the pan switch (030077eb: 0, 1, 1 rings; 3338b26f: 0, 0, 0; all six ended, contract passed):
+**a flake on the old code too**. The drop lands as the tick's praise starts; `js/shared/sfx.js` gates long effects (glass-c,
+1228 ms) under a family voice, so whichever starts first wins. Logged as CHAI-107 (fix options for Zafar there).
 
 ## 2. Switches
 
@@ -63,6 +49,4 @@ the browser lock itself (never wrap it in flock).
 - `checks.mjs --only static,words,load`: words ok (0 literals), static ok (0 new), load ok (29/29).
 - After (c): unit shelf, cook harness, smoke, sfx files pass; `checks.mjs --only static,words,load` ok (0 new, 0 literals, 29/29);
   frozen diff `frozen-diff-chai-tray-202611072132.md`, **no change**.
-- Frozen diff after (b): `frozen-diff-chai-tray-202611072039.md`, **no change**. The first play showed 13 one-off changes on 7 pages
-  that did not come again on the re-play (the glass ring above; the known contract-99 panel at L4, SH-232; one contract-83 at L4
-  1280x665, the order card's pop 10 px square over Nana's face at 17.4 s, before any pour; L3 740x320's help firing on a slow beat).
+- Frozen diff after (b): `frozen-diff-chai-tray-202611072039.md`, **no change** (13 one-off changes on the first play, none again).
