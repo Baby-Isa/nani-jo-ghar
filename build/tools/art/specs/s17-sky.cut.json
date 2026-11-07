@@ -1,0 +1,28 @@
+{
+ "pack": "s17-sky",
+ "about": "The skies of pack s17-sky (ART-56, Zafar 6 Nov; art plan docs/design-language/art-plans/s17-sky-art-plan.md section 5), cut by build/tools/art/artcut.py from sources/art/s17-sky/ into assets/backgrounds/s17-sky/ (a new folder: nothing in the game points at it until a build session wires it). Every sky is a full picture, no key: one `background` job each, at the source's own size (WebP q 86, no @2x: the plan says never past the source). The two derived files the cutter cannot make (door-sun.webp, the 4:3 cover crop of SC01 at 960x720, and the -tile copies of the two skies the game lays side by side, the seam cross-faded 64 px with artlib.make_tileable) are made by sources/art/s17-sky/post-cut.py straight after, which adds them to cut-data.json. Names are the plan's: today's files' names for the door skies and the sun card, sky-<time>-wide / -square for the bank.",
+ "src": "sources/art/s17-sky",
+ "out": "assets/backgrounds/s17-sky",
+ "data": "assets/backgrounds/s17-sky/cut-data.json",
+ "failed": {
+  "se01-door-farm-sky-v1.png": "SE01 redo: the whole card was regenerated at 1672x941 (the original is 1536x1024): the house, bales, fence and animals moved; only its sky was to change",
+  "se02-book-farm-sky-v1.png": "SE02 redo: the whole spread was regenerated at 1819x865 (the original is 1536x1024): the trees, bushes and fence moved; only its sky was to change"
+ },
+ "jobs": [
+  {"id": "sky-sunny", "type": "background", "src": "sd01-sky-day-sunny-v1.png", "out": "sky-sunny.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-cloudy", "type": "background", "src": "sd02-sky-day-cloudy-v1.png", "out": "sky-cloudy.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-raining", "type": "background", "src": "sd03-sky-day-raining-v1.png", "out": "sky-raining.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-night", "type": "background", "src": "sn01-sky-night-v1.png", "out": "sky-night.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "door-sun-full", "type": "background", "src": "sc01-door-sun-v1.png", "out": "door-sun-full.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-day-wide", "type": "background", "src": "sb01-sky-day-wide-v1.png", "out": "sky-day-wide.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-golden-wide", "type": "background", "src": "sb02-sky-golden-wide-v1.png", "out": "sky-golden-wide.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-dusk-wide", "type": "background", "src": "sb03-sky-dusk-wide-v1.png", "out": "sky-dusk-wide.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-night-wide", "type": "background", "src": "sb04-sky-night-wide-v1.png", "out": "sky-night-wide.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "sky-day-square", "type": "background", "src": "sb05-sky-day-square-v1.png", "out": "sky-day-square.webp", "size": [1254, 1254], "crop_y": 0, "q": 86},
+  {"id": "sky-golden-square", "type": "background", "src": "sb06-sky-golden-square-v1.png", "out": "sky-golden-square.webp", "size": [1254, 1254], "crop_y": 0, "q": 86},
+  {"id": "sky-dusk-square", "type": "background", "src": "sb07-sky-dusk-square-v1.png", "out": "sky-dusk-square.webp", "size": [1254, 1254], "crop_y": 0, "q": 86},
+  {"id": "sky-night-square", "type": "background", "src": "sb08-sky-night-square-v1.png", "out": "sky-night-square.webp", "size": [1254, 1254], "crop_y": 0, "q": 86},
+  {"id": "door-farm", "type": "background", "src": "se01-door-farm-sky-v1.png", "out": "door-farm.webp", "size": [1536, 1024], "crop_y": 0, "q": 86},
+  {"id": "book-farm-spread", "type": "background", "src": "se02-book-farm-sky-v1.png", "out": "book-farm-spread.webp", "size": [1536, 1024], "crop_y": 0, "q": 86}
+ ]
+}

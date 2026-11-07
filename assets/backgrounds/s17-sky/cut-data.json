@@ -1,0 +1,200 @@
+{
+ "_about": "The skies of pack s17-sky (ART-56, Zafar 6 Nov; art plan docs/design-language/art-plans/s17-sky-art-plan.md section 5), cut by build/tools/art/artcut.py from sources/art/s17-sky/ into assets/backgrounds/s17-sky/ (a new folder: nothing in the game points at it until a build session wires it). Every sky is a full picture, no key: one `background` job each, at the source's own size (WebP q 86, no @2x: the plan says never past the source). The two derived files the cutter cannot make (door-sun.webp, the 4:3 cover crop of SC01 at 960x720, and the -tile copies of the two skies the game lays side by side, the seam cross-faded 64 px with artlib.make_tileable) are made by sources/art/s17-sky/post-cut.py straight after, which adds them to cut-data.json. Names are the plan's: today's files' names for the door skies and the sun card, sky-<time>-wide / -square for the bank.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "sky-sunny": {
+   "file": "sky-sunny.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-cloudy": {
+   "file": "sky-cloudy.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-raining": {
+   "file": "sky-raining.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-night": {
+   "file": "sky-night.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-day-wide": {
+   "file": "sky-day-wide.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-golden-wide": {
+   "file": "sky-golden-wide.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-dusk-wide": {
+   "file": "sky-dusk-wide.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-night-wide": {
+   "file": "sky-night-wide.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1536,
+    1024
+   ]
+  },
+  "sky-day-square": {
+   "file": "sky-day-square.webp",
+   "size": [
+    1254,
+    1254
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1254,
+    1254
+   ]
+  },
+  "sky-golden-square": {
+   "file": "sky-golden-square.webp",
+   "size": [
+    1254,
+    1254
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1254,
+    1254
+   ]
+  },
+  "sky-dusk-square": {
+   "file": "sky-dusk-square.webp",
+   "size": [
+    1254,
+    1254
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1254,
+    1254
+   ]
+  },
+  "sky-night-square": {
+   "file": "sky-night-square.webp",
+   "size": [
+    1254,
+    1254
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1254,
+    1254
+   ]
+  },
+  "door-sun": {
+   "file": "door-sun.webp",
+   "size": [
+    960,
+    720
+   ],
+   "crop_x": 85,
+   "src_band": [
+    1365,
+    1024
+   ],
+   "src": "sc01-door-sun-v1.png"
+  },
+  "sky-sunny-tile": {
+   "file": "sky-sunny-tile.webp",
+   "w": 1472,
+   "h": 1024,
+   "seam_before": 16.76,
+   "seam_after": 0.99,
+   "overlap": 64,
+   "src": "sd01-sky-day-sunny-v1.png"
+  },
+  "sky-night-tile": {
+   "file": "sky-night-tile.webp",
+   "w": 1472,
+   "h": 1024,
+   "seam_before": 4.25,
+   "seam_after": 0.88,
+   "overlap": 64,
+   "src": "sn01-sky-night-v1.png"
+  }
+ },
+ "_report": [
+  "sky-sunny: background 1536x1024 from rows 0..1024",
+  "sky-cloudy: background 1536x1024 from rows 0..1024",
+  "sky-raining: background 1536x1024 from rows 0..1024",
+  "sky-night: background 1536x1024 from rows 0..1024",
+  "door-sun-full: background 1536x1024 from rows 0..1024",
+  "sky-day-wide: background 1536x1024 from rows 0..1024",
+  "sky-golden-wide: background 1536x1024 from rows 0..1024",
+  "sky-dusk-wide: background 1536x1024 from rows 0..1024",
+  "sky-night-wide: background 1536x1024 from rows 0..1024",
+  "sky-day-square: background 1254x1254 from rows 0..1254",
+  "sky-golden-square: background 1254x1254 from rows 0..1254",
+  "sky-dusk-square: background 1254x1254 from rows 0..1254",
+  "sky-night-square: background 1254x1254 from rows 0..1254",
+  "  se01-door-farm-sky-v1.png: judged a fail, not cut (SE01 redo: the whole card was regenerated at 1672x941 (the original is 1536x1024): the house, bales, fence and animals moved; only its sky was to change)",
+  "  se02-book-farm-sky-v1.png: judged a fail, not cut (SE02 redo: the whole spread was regenerated at 1819x865 (the original is 1536x1024): the trees, bushes and fence moved; only its sky was to change)"
+ ],
+ "_post": "door-sun (4:3 card) and the two -tile copies by sources/art/s17-sky/post-cut.py"
+}
