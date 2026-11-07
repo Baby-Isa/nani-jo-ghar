@@ -79,7 +79,7 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-B1-02 | H | not run | 0 | none | chop alone has no guests; its users serve |
 | STD-B1-03 | H | not run | 2 | Adopt | (e) |
 | STD-B1-04 | H | not run | 1 | Kit | the board says the "no" last (build); the card sprinkles it (order.js ask) |
-| STD-B1-05 | H | not run | 2 | Adopt | (e) |
+| STD-B1-05 | H | not run | 3 | Check | contract-95 green: nothing said after a skip (build) |
 | STD-B1-06 | H | not run | 2 | Check | ends on the last wanted chop (build) |
 | STD-B1-07 | H | fail | 2 | Check | passMeChance 0; chop never calls passMeAfter |
 | STD-B2-01 | F | pass | 0 | none | nothing cooks in chop |
@@ -137,7 +137,7 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-D1-05 | H | gap | 0 | none | DAAR-39 sets the strip instead |
 | STD-D1-06 | H | not run | 1 | Adopt | (d) |
 | STD-D1-07 | H | fail | 1 | Adopt | (d) |
-| STD-D1-08 | H | fail | 1 | Adopt | (d) |
+| STD-D1-08 | H | fail | 3 | Check | kit (d)'s lessons before the first throw; contract-98 green L1-L4 (build) |
 | STD-D1-09 | H | not run | 0 | none |  |
 | STD-D1-10 | F | fail | 0 | none | no vessel |
 | STD-D2-01 | H | not run | 2 | Adopt | (d) |

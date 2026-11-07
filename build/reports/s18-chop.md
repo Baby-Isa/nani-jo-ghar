@@ -33,7 +33,16 @@ STD-D4-01 (a row ticks at its count at every level), STD-B3-02 (one past the cou
 
 ## Proof
 
-PROOF_PLACEHOLDER
+- Contract, chop L1-L4 at 1280x665 (`run.mjs --contract --flow cook:chop,cook:chop@L2,@L3,@L4 --run-id s18-chop-contract`):
+  `CONTRACT PASSED: 0 breaks over 4 pages`, every page to its end, 0 page errors. The first run's 4 breaks were fixed: contract-98
+  (the reveal lessons now run before the first throw, kit (d)'s `Cook.Coach.lessons`) and contract-95 (an order heard or skipped is
+  not said again on the board). Folder: `build/screenshots/sandbox/s18-chop-contract/`.
+- Played paths at 1280x665 (deleted after reading): `#hint`, `@L3#mistake` (a short count chopped again, only the tomato, then done),
+  fair L1-L4: the strip's notes (start, cut, end), `chop-done` within the last slice's frame, decoys 1, 2, 3, 4 per round.
+- `loadcheck.mjs --only cook:chop`: 1/1 pages load only what's on their screen (41 pictures).
+- `checks.mjs --only static,words,docs,specs,fixlist,recordings`: ok (docs' two fails are the merged status.md branch name and
+  s18-chai's report, not mine). `--only unit`: 698 pass, 3 fail, all art-block tests in build/tools/ops (untouched; kit (d) saw the same).
+- No BEFORE run (Zafar's decision 5); no evidence --after (the brief's rows have no before folder). The judge has not seen it.
 
 ## Waits
 

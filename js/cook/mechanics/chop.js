@@ -715,8 +715,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
           // (DAAR-39: the strip comes a breath after her line, so it is never over her voice)
           const first = stripDue();
-          if (a.asked) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
-          else if (heard && !first) z.say(line, { hide }).catch(() => {});
+          // (contract-95, CK-60: an order already read out in its pop-up, or skipped, is not said again before play: her box shows it
+          // quietly; only an order not yet heard is said here)
+          if (a.asked || heard) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
           else await z.say(line, { hide }).catch(() => {});
           if (first) await strip();
           running = true;

@@ -103,6 +103,8 @@ import { Cook as CookNS } from "../ns.js";
     await knife;
     const pool = ((s.recipe || {}).lists || {}).thrown || [];
     const redo = St.redo(ctx);
+    // the shared kit's first-time gate for this round (kit (d), STD-D1-01): the reveal lessons spend on it
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts(KEY, { round: new Set() }) : null;
     const got = {};
     let need = Object.assign({}, d.chops || {});
     for (let tries = 0; Object.keys(need).length; tries++) {
@@ -112,6 +114,9 @@ import { Cook as CookNS } from "../ns.js";
       if (ctx.nextStep) ctx.nextStep("Chop");
       const phases = (Cook.data.stations[KEY] || {}).phases || {};
       if (phases.chop && !tries) UI.gist(phases.chop);
+      // STD-D1-08 (SH-196, contract-98): the reveal lessons, the dotted word then the blurred picture, once the order has landed and
+      // before the first throw (kit (d)'s Cook.Coach.lessons; the knife waits)
+      if (!tries && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
       const z = Mech.zone(S, ctx, { id: KEY, level });
       const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, onRounds: tries ? null : (rs) => noteDecoys(rs, knobs(level).decoys || 0) });
       z.close();
