@@ -4,7 +4,7 @@ import { BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
 import { seedCook, isSeedProfile } from "../lib/seed.mjs";
 
-export const KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"];
+export const KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa", "eggs", "baking", "corn"]; // (S18: eggs, baking, the corn stall get flows for wave 2)
 export const RECIPES = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"];
 export const PARTS = ["passme", "pour", "boil", "count", "roll", "flip", "fill", "fry", "thread", "grill", "roll-tawa"];
 // stations that cook a whole order on one screen take longer (seconds, at test speed 3)
