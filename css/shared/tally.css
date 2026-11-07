@@ -47,3 +47,6 @@
 .njg-wpill-tap { animation: njgWpillTap .18s ease-out; }
 @keyframes njgWpillTap { 50% { transform: scale(1.08); } }
 @media (prefers-reduced-motion: reduce) { .njg-wpill-tap { animation: none; } }
+/* The word pop by the action (js/shared/juice.js Juice.pop; piece 12): the pill's card at the pop's size (36 over 25), never under
+   Juice.POP.min px (--njg-wpill-min, set by js/shared/juice.js) */
+.njg-pop { font-size: max(var(--njg-wpill-min), calc(var(--njg-shelf-u, var(--njg-line)) * 36)); height: max(calc(var(--njg-shelf-u, var(--njg-line)) * 56), 1.6em); cursor: default; }
