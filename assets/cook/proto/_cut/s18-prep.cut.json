@@ -1,0 +1,34 @@
+{
+  "pack": "s17-art1 (stove family)",
+  "about": "Sprint 18 prep (7 Nov): art block 1's eggs, baking and corn-stall images cut to assets/cook/proto/{eggs,baking,corn}/. Sizes are drawn size x1.5 on the 1600x900 stage (decision 68), never above the sheet's own pixels. CO (dressings on a cob) failed and stays in the redo list: not cut. Run: python3 build/tools/art/artcut.py assets/cook/proto/_cut/s18-prep.cut.json; then python3 build/tools/art/artdespill.py on the corn cut-outs; then python3 assets/cook/proto/_cut/post.py.",
+  "src": "sources/art/s17-art1",
+  "out": "assets",
+  "data": "assets/cook/proto/_cut/cut-data.json",
+  "report_beside_data": true,
+  "jobs": [
+    {"id": "ep-pots", "type": "grid", "src": "ep-egg-pot-states-v1.png", "cells": [3, 1], "names": ["egg-pot-empty", "egg-pot-water", "egg-pot-boil"], "outdir": "cook/proto/eggs", "tol": 5, "cell_align": true, "max": 560, "pad": 4, "_note": "steel; rim-registered on one window"},
+    {"id": "ef-pans", "type": "grid", "src": "ef-frying-pan-v1.png", "cells": [2, 1], "names": ["fry-pan", "fry-pan-oil"], "outdir": "cook/proto/eggs", "tol": 6, "cell_align": true, "max": 700, "pad": 4},
+    {"id": "eg-eggs", "type": "grid", "src": "eg-eggs-crack-shakers-top-v1.png", "cells": [3, 2], "names": ["egg-white", "egg-brown", "egg-cracked", "egg-shells", "shaker-salt-t", "shaker-pepper-t"], "outdir": "cook/proto/eggs", "tol": 8, "sizes": {"egg-white": 100, "egg-brown": 100, "egg-cracked": 100, "egg-shells": 110, "shaker-salt-t": 140, "shaker-pepper-t": 140}, "glass": ["shaker-salt-t", "shaker-pepper-t"], "soft_floor": 0.25, "soft_gain": 2.0, "pad": 4},
+    {"id": "ey-fried", "type": "grid", "src": "ey-fried-egg-states-v1.png", "cells": [2, 2], "names": ["egg-fried-raw", "egg-fried-setting", "egg-fried-done", "egg-fried-crispy"], "outdir": "cook/proto/eggs", "tol": 8, "sizes": {"egg-fried-raw": 190, "egg-fried-setting": 190, "egg-fried-done": 190, "egg-fried-crispy": 190}, "glass": ["egg-fried-raw"], "soft_floor": 0.25, "soft_gain": 2.0, "pad": 4},
+    {"id": "eb-bowls", "type": "grid", "src": "eb-egg-bowl-eggcups-top-v1.png", "cells": [3, 2], "names": ["egg-bowl-6", "egg-bowl-3", "egg-bowl-0", null, null, null], "outdir": "cook/proto/eggs", "tol": 8, "cell_align": true, "max": 350, "pad": 4},
+    {"id": "eb-cups", "type": "grid", "src": "eb-egg-bowl-eggcups-top-v1.png", "cells": [3, 2], "names": [null, null, null, "eggcup-t", "eggcup-egg-t", "eggcup-open-t"], "outdir": "cook/proto/eggs", "tol": 8, "cell_align": true, "max": 110, "pad": 4},
+    {"id": "es-flat", "type": "grid", "src": "es-breakfast-served-side-v1.png", "cells": [3, 2], "names": ["plate-f", "egg-fried-f", null, null, null, null], "outdir": "cook/proto/eggs", "tol": 8, "sizes": {"plate-f": 330, "egg-fried-f": 200}, "pad": 4},
+    {"id": "es-cups", "type": "grid", "src": "es-breakfast-served-side-v1.png", "cells": [3, 2], "names": [null, null, "eggcup-egg-f", "eggcup-tapped-f", "eggcup-soft-f", "eggcup-hard-f"], "outdir": "cook/proto/eggs", "tol": 8, "cell_align": true, "max": 170, "pad": 4},
+    {"id": "em-morning", "type": "background", "src": "em-kitchen-morning-v1.png", "out": "cook/proto/eggs/bg-kitchen-morning.webp", "crop_y": 0, "lines": {"island-back": [679, 705]}, "data": "bg-kitchen-morning"},
+    {"id": "en-night", "type": "background", "src": "en-kitchen-night-v1.png", "out": "cook/proto/eggs/bg-kitchen-night.webp", "crop_y": 0, "lines": {"island-back": [679, 705]}, "data": "bg-kitchen-night"},
+
+    {"id": "bk-counter", "type": "background", "src": "bk-baking-counter-v1.png", "out": "cook/proto/baking/bg-counter.webp", "crop_y": 146, "lines": {"worktop-edge": [597, 470]}, "data": "bg-counter"},
+    {"id": "bb-bowls", "type": "grid", "src": "bb-mixing-bowl-states-v1.png", "cells": [3, 2], "names": ["bowl-f-0", "bowl-f-1", "bowl-f-2", "bowl-f-3", "bowl-f-4", "bowl-f-dough"], "outdir": "cook/proto/baking", "tol": 5, "cell_align": true, "max": 570, "pad": 4},
+    {"id": "bj-jugs", "type": "grid", "src": "bj-measuring-jug-v1.png", "cells": [3, 2], "names": ["jug-empty", "jug-water", "jug-milk", "jug-flour", "jug-yoghurt", "jug-sugar"], "outdir": "cook/proto/baking", "tol": 8, "cell_align": true, "glass": ["jug-empty", "jug-water", "jug-milk", "jug-flour", "jug-yoghurt", "jug-sugar"], "soft_floor": 0.25, "soft_gain": 2.0, "max": 400, "pad": 4},
+    {"id": "bn-trays", "type": "grid", "src": "bn-naan-tray-states-v1.png", "cells": [3, 2], "names": ["tray", "naan-raw", "naan-puff", "naan-golden", "naan-deep", null], "outdir": "cook/proto/baking", "tol": 5, "cell_align": true, "max": 400, "pad": 4},
+    {"id": "bn-alone", "type": "grid", "src": "bn-naan-tray-states-v1.png", "cells": [3, 2], "names": [null, null, null, null, null, "naan-alone"], "outdir": "cook/proto/baking", "tol": 8, "max": 300, "pad": 4},
+    {"id": "bo1-shut", "type": "grid", "src": "bo1-oven-shut-v1.png", "cells": [1, 1], "names": ["oven-shut"], "outdir": "cook/proto/baking", "tol": 8, "max": 840, "pad": 4},
+    {"id": "bo2-baking", "type": "grid", "src": "bo2-oven-baking-v1.png", "cells": [1, 1], "names": ["oven-baking"], "outdir": "cook/proto/baking", "tol": 8, "max": 840, "pad": 4},
+    {"id": "bo3-open", "type": "grid", "src": "bo3-oven-open-v1.png", "cells": [1, 1], "names": ["oven-open"], "outdir": "cook/proto/baking", "tol": 8, "max": 840, "pad": 4},
+
+    {"id": "ct-table", "type": "background", "src": "ct-corn-stall-table-v1.png", "out": "cook/proto/corn/bg-table.webp", "data": "bg-table"},
+    {"id": "cb-cobs", "type": "grid", "src": "cb-corn-cob-states-v1.png", "cells": [4, 1], "names": ["cob-raw", "cob-half", "cob-turned", "cob-done"], "outdir": "cook/proto/corn", "tol": 12, "cell_align": true, "max": 380, "pad": 4},
+    {"id": "cx-crate", "type": "grid", "src": "cx-corn-crate-v1.png", "cells": [1, 1], "names": ["corn-crate"], "outdir": "cook/proto/corn", "tol": 12, "max": 570, "pad": 4},
+    {"id": "cd-bowls", "type": "grid", "src": "cd-corn-dressing-bowls-v1.png", "cells": [3, 2], "names": ["dress-lemon", "dress-salt", "dress-chilli", "dress-green", "dress-amli", "dress-pepper"], "outdir": "cook/proto/corn", "tol": 6, "cell_align": true, "max": 225, "pad": 4}
+  ]
+}
