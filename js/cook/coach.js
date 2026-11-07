@@ -304,6 +304,110 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!Onboard || !Onboard.firsts) return { scope: key, fresh: false, key: () => "", spent: () => false, due: () => false, spend() {}, first: () => false };
     return Onboard.firsts(key, { seen, fresh, round: o.round || null, newPlayer: newPlayer() });
   };
+  /** STD-D2-04: a wrong move (any game): every hint waiting on its clock comes at once (Onboard.rush). */
+  C.wrong = (by) => {
+    const Onboard = OB();
+    if (Onboard && Onboard.rush) Onboard.rush(by || "wrong");
+  };
+  /**
+   * The call with its light (STD-D1-06; Zafar, 29 Oct: "it was voice, pause, dim, pause, gold outline": a control's call and its light
+   * come together) for one step on a control (a knob, a glass to pour, the next vessel to pick):
+   *   the first time (o.first): Nani's call is held (UI.holdCalls) until the light is on the screen, then let go two frames and a beat
+   *     later (contract-78); a breath first (o.pauseMs: after the last thing went in, the stage still for that long, never more than
+   *     Onboard.WAIT.breathMax in all: CHAI-52);
+   *   after that: the call alone (SH-181, CHAI-56), and the same light as the stuck hint after the level's wait (o.hintMs(): the central
+   *     rules' hintS) from the later of the step's opening and the last action (SH-184), at once after a wrong move (C.wrong, or
+   *     handle.rush: STD-D2-04); o.noHint: no stuck light (a timed control's green is called as it opens, decision 5e).
+   * o: {target (the control's page box: a function), also (another live thing under the light), round (a circle), first, pauseMs,
+   *   hintMs(), current() (still this step), busy() (the game's moves in flight hold the hint), still() (the stage still; default no
+   *   finite kitchen tween), onLight(on, rung) (the game's own glow on the thing), onHint() (the hint came: count it, say the call
+   *   again), key (the game's key: the light's log step "<key>:s14-control"), note}.
+   * -> handle {close(), rush(), lit() (the light up now, or null)}
+   */
+  C.control = function (o = {}) {
+    const Onboard = OB();
+    if (!Onboard || !Onboard.light || !o.target) return null;
+    const UI = Cook.UI || {};
+    const W = Onboard.WAIT || { breathMax: 3000 };
+    const step = o.note != null ? String(o.note) : `${o.key || "kit"}:s14-control`;
+    const h = { over: false };
+    let lit = null;
+    let release = null;
+    let timer = 0;
+    let rushed = false;
+    let offRush = null;
+    const cur = () => !h.over && (!o.current || o.current());
+    // (a wrong move any time in the step, its breath included, brings the stuck light at once)
+    offRush = Onboard.onRush ? Onboard.onRush(() => h.rush()) : null;
+    const pauseMs = o.pauseMs || 0;
+    if ((pauseMs || o.first) && UI.holdCalls) UI.holdCalls(new Promise((r) => (release = r)));
+    const let_go = () => {
+      const r = release;
+      release = null;
+      if (r) r();
+    };
+    const still =
+      o.still ||
+      (() => {
+        try {
+          const S = Cook.scene;
+          return !(S && S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite));
+        } catch (e) {
+          return true;
+        }
+      });
+    const light = (rung) => {
+      if (lit) lit.close();
+      lit = Onboard.light(o.target, { look: "glow", pad: o.round ? 2 : 4, round: !!o.round, pass: true, live: [o.target].concat(o.also ? [o.also] : []) });
+      note("rung", { step, rung, coach: rung === 0 });
+      if (o.onLight) o.onLight(true, rung);
+    };
+    h.lit = () => lit;
+    h.rush = () => {
+      rushed = true;
+    };
+    h.close = () => {
+      if (h.over) return;
+      h.over = true;
+      clearTimeout(timer);
+      if (offRush) offRush();
+      if (lit) lit.close();
+      lit = null;
+      let_go();
+    };
+    let quiet = null;
+    const t0 = Date.now();
+    const go = () => {
+      if (!cur()) return let_go();
+      if (still()) quiet = quiet == null ? Date.now() : quiet;
+      else quiet = null;
+      if (pauseMs && (quiet == null || Date.now() - quiet < pauseMs / speed()) && Date.now() - t0 < W.breathMax / speed()) return void (timer = setTimeout(go, 60));
+      if (!o.first) {
+        let_go();
+        if (o.noHint) return;
+        const opened = Date.now();
+        const NG = global.NaniGuide;
+        const due = () => Onboard.hintDue(opened, NG && NG.lastAction ? NG.lastAction() : opened, (o.hintMs ? o.hintMs() : 0) / speed(), rushed);
+        const wait = () => {
+          if (!cur()) return;
+          if ((o.busy && o.busy()) || Date.now() < due()) return void (timer = setTimeout(wait, 200));
+          rushed = false;
+          light(1);
+          if (o.onHint) o.onHint();
+        };
+        timer = setTimeout(wait, 200);
+        return;
+      }
+      light(0);
+      // (the call once the light's layer is showing: two frames for it to be drawn, then a beat of its fade-in)
+      if (release) {
+        const raf = global.requestAnimationFrame ? requestAnimationFrame : (f) => setTimeout(f, 16);
+        raf(() => raf(() => (timer = setTimeout(let_go, 90))));
+      }
+    };
+    go();
+    return h;
+  };
   /*
    * Sprint 11 (docs/game-design/easy-to-play.md principles 2-3; B-cook), Sprint 12 (EASY-03, CHAI-32: no item moves by
    * itself): a station whose script's steps name a "step" (data.onboard["chai-tray"]) is helped on the REAL item, step by
@@ -320,11 +424,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /**
    * The rungs for one step of station `key` (Onboard.stuck): o {target (the live control: a page rect or a function giving
    * one), live, light, at, glowAt, glow(on), line, first}. The first time per profile (and not once the station's coach was
-   * seen, Cook.save.coached; a New player: every visit) the spotlight comes up as the step opens. -> handle {done(), stop()}
+   * seen, Cook.save.coached; a New player: every visit) the spotlight comes up as the step opens. o.word, o.answer, o.study: no
+   * hint for an asked-for word past support (STD-D2-05). -> handle {done(), stop(), rush()} (a wrong move: C.wrong), or null
    */
   C.rungs = function (key, step, o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
+    // STD-D2-05 (the leak test, non-negotiable 4): a step whose thing is the answer (o.answer: what a person asked for, o.word its
+    // id) gets no hint once the word is past support, unless it is study (o.study: Nani helps, a redo)
+    if (o.word != null && Onboard.hintHides && Onboard.hintHides({ answer: !!o.answer, stage: Cook.wordStage ? Cook.wordStage(o.word) : null, study: !!o.study })) return null;
     const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
     return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));

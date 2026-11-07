@@ -415,6 +415,29 @@
   };
   /** The stuck hint's rungs (ms): the first time at once, the box at 5 s idle, the guide's line at 15 s (values.md D2). */
   Onboard.RUNGS = [0, 5000, 15000];
+  /**
+   * STD-D2-04 (Zafar, 3 Nov: "that's an incorrect move, which again should have triggered the stuck mechanism"; every game, 7 Nov):
+   * a wrong move brings the stuck hint at once. hintDue (pure): the hint's time, `wait` after the later of the step's opening and the
+   * last action (SH-184: "times itself from the last correct action"), or now when rushed. rushRung: which rung a rush brings: the
+   * light help (glowAt) if it is not up, else the box (at[1]) if not yet shown, else none (the help is up already).
+   */
+  Onboard.hintDue = (opened, lastAction, wait, rushed) => (rushed ? 0 : Math.max(opened || 0, lastAction || 0) + (wait || 0));
+  Onboard.rushRung = function (o) {
+    o = o || {};
+    const at = o.at || Onboard.RUNGS;
+    const fired = o.fired || {};
+    if (o.glowAt != null && !fired.g && !o.spot) return "g";
+    if (at[1] != null && !fired[1]) return 1;
+    return null;
+  };
+  /**
+   * STD-D2-05 (the leak test, non-negotiable 4; Zafar, 7 Nov: yes): once a word is past support, no hint says it. A hint whose
+   * thing is the answer (what a person asked for) comes only while the word is still supported (its stage at most SUPPORTED_TOP), or
+   * while it is study (Nani helps, a redo). o: {answer, stage, study} -> true: the hint must not come.
+   */
+  Onboard.SUPPORTED_TOP = 2;
+  Onboard.hintHides = (o) => !!(o && o.answer && !o.study && !(o.stage != null && Number(o.stage) <= Onboard.SUPPORTED_TOP));
+
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
    * The play log (easy-to-play.md principle 11): each stage's events folded into one round
@@ -1514,8 +1537,11 @@
    *   at[1]   idle this long: the spotlight (o.glow(false) first: never the call-out and the heavy dim together);
    *   at[2]   idle this long: the guide's line (o.line()). null leaves a rung out.
    * After an action the clock runs again and so can the rungs (the spotlight and the call-out go). It never does the step.
+   * STD-D2-04 (every game, Zafar 7 Nov): a wrong move brings the hint at once: rush() (or Onboard.rush(), every live step's) brings
+   * the next rung now (Onboard.rushRung: the light help, else the box), whatever the clock says; the wrong tap's own press and lift
+   * (within RUSH_GRACE of the rush) don't count as the action that would take that help away again.
    *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id}
-   *   -> {done(), stop(), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
+   *   -> {done(), stop(), rush(by), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
    */
   Onboard.stuck = function (step, o) {
     o = o || {};
@@ -1531,7 +1557,14 @@
     let lastAct = null;
     let off = null;
     let glowing = false;
+    let rushed = null;
+    let rushT = 0;
     const h = { rung: 0 };
+    h.rush = (by) => {
+      if (h.over) return;
+      rushed = by || "wrong";
+      rushT = Date.now();
+    };
     // Zafar, 23 Oct: a drag or a brush (a canvas thing that moves itself along a path: the toothbrush) keeps its demo: the item
     // shows the move at each rung, and the light never bounces it or taps it (only a tap item glows in its box)
     const drag = o.drag != null ? !!o.drag : typeof o.move === "function" && o.path != null && !split(o.target).els.length;
@@ -1588,8 +1621,9 @@
       const G = root.NaniGuide;
       const la = G && G.lastAction ? G.lastAction() : ownClock.t;
       if (la !== lastAct) {
-        // the child did something: the rungs start again from now, and the help goes
-        if (lastAct != null) {
+        // the child did something: the rungs start again from now, and the help goes (not the wrong move that rushed it: its own
+        // press and lift land just around the rush)
+        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
           fired = {};
           closeSpot();
           glow(false);
@@ -1599,6 +1633,23 @@
       // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long
       // read-out is not a child who has been stuck all that time)
       const idle = Math.min(idleMs(), Date.now() - opened);
+      if (rushed) {
+        const by = rushed;
+        rushed = null;
+        const r = Onboard.rushRung({ glowAt: o.glowAt, at: AT, fired, spot: !!spot });
+        if (r === "g") {
+          fired.g = true;
+          h.rung = Math.round(o.glowAt / 1000);
+          LCnote("rung", { step: name, rung: h.rung, light: true, by });
+          glow(true);
+        } else if (r === 1) {
+          fired[1] = true;
+          h.rung = Math.round(AT[1] / 1000);
+          LCnote("rung", { step: name, rung: h.rung, by });
+          openSpot();
+          demo();
+        }
+      }
       if (o.glowAt != null && idle >= o.glowAt && !fired.g && !spot) {
         fired.g = true;
         h.rung = Math.round(o.glowAt / 1000);
@@ -1627,6 +1678,27 @@
     if (root.Lifecycle && root.Lifecycle.onStageEnd) off = root.Lifecycle.onStageEnd(end);
     liveStuck.add(h);
     return h;
+  };
+  Onboard.RUSH_GRACE = 700;
+  /**
+   * STD-D2-04: a wrong move, in any game: every live step's stuck hint comes at once (Onboard.stuck's rush), and so does every other
+   * hint waiting on a clock that asked to hear of it (Onboard.onRush(fn) -> off(): Cook's control light, js/cook/coach.js).
+   */
+  const rushers = new Set();
+  Onboard.onRush = (fn) => {
+    if (typeof fn !== "function") return () => {};
+    rushers.add(fn);
+    return () => rushers.delete(fn);
+  };
+  Onboard.rush = function (by) {
+    [...liveStuck].forEach((h) => h.rush && h.rush(by));
+    [...rushers].forEach((fn) => {
+      try {
+        fn(by || "wrong");
+      } catch (e) {
+        /* its own */
+      }
+    });
   };
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */
   // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
