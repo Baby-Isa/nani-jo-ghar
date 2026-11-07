@@ -1230,7 +1230,9 @@
        ],
        "when": "chai-tray",
        "unsaid": true,
-       "_lng23": "LNG-23: the amount's row stays on the card (it ticks at the pour, CHAI-54) but is not said again: the headline says it"
+       "saidBy": "head",
+       "_lng23": "LNG-23: the amount's row stays on the card (it ticks at the pour, CHAI-54) but is not said again: the headline says it",
+       "_chai104": "CHAI-104 (Zafar, 7 Nov: 'There was a gap'): saidBy head: the headline says it, so its card pops and lands with the headline, as a style tea's extra does (CHAI-96)"
       },
       {
        "if": [
@@ -1245,7 +1247,8 @@
         "$it.amount"
        ],
        "when": "chai-tray",
-       "unsaid": true
+       "unsaid": true,
+       "saidBy": "head"
       },
       {
        "if": [

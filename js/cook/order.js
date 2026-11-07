@@ -93,6 +93,8 @@
       pic: r.pic || null,
       // CK-51 (Zafar, 22 Oct): on the card, never said (chai's water and tea: every item a dish needs is on its card)
       unsaid: !!r.unsaid,
+      // CHAI-104: an unsaid row the person's headline says (chai L4's "Muke adh chai khape": the amount): it lands with the headline
+      saidBy: r.saidBy || null,
     };
   }
   O.row = row;
@@ -299,6 +301,9 @@
   };
   O.sentence = function (head, rows, { join = "with" } = {}) {
     const F = Lang.frames();
+    // CHAI-104 (Zafar, 7 Nov, L4: "There was a gap"): an unsaid row the headline says (saidBy "head": the amount in "Muke adh chai
+    // khape") is never said on its own, but it is one of the headline's rows, so its card lands with the headline (as CHAI-96's extra)
+    const byHead = rows.filter((r) => r.unsaid && r.saidBy === "head");
     rows = rows.filter((r) => !r.unsaid); // (CK-51: a row on the card only is never said)
     head = spokenHead(head, F);
     const parts = [];
@@ -307,7 +312,7 @@
       rows.forEach((r) => parts.push(Object.assign({}, r.no || !r.said ? r.line : r.said, { row: r })));
       return Lang.join(parts);
     }
-    const inH = rows.filter((r) => inHead(head, r));
+    const inH = rows.filter((r) => inHead(head, r)).concat(byHead.filter((r) => inHead(head, r)));
     const rest = rows.filter((r) => !inH.includes(r));
     const end = (k) => (k === rest.length - 1 ? "." : ",");
     // plan: each part keeps the engine's clip plan for what it says (the cut and the commas change no word)

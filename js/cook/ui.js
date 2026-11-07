@@ -2139,7 +2139,13 @@
       big.remove();
       return flight;
     };
+    // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound"): the read's own voice generation (js/shared/request-popup.js
+    // VoiceStop), taken as the read starts; a skip, a run left or any voice stop since ends the read, and no line is asked for after it
+    const VS = global.Lifecycle && global.Lifecycle.voice;
+    let gen0 = null;
+    const live = () => !skipped && token === Cook.run && (!VS || gen0 == null || VS.gen() === gen0);
     const sayPart = async (who, line) => {
+      if (!live()) return;
       const S = Cook.scene;
       // CK-59 (Zafar, 6 Nov night: "the second person ordering didn't say milk"): the line names who says it, so the said-again
       // rule (js/cook/words.js Lang.saidAgain) keeps one person from repeating themselves but lets the next say their own words
@@ -2198,8 +2204,9 @@
     };
     const read = async () => {
       let prev = null;
+      gen0 = VS ? VS.gen() : null;
       for (const who of people.map((c) => c.who)) {
-        if (skipped || token !== Cook.run) return;
+        if (!live()) return;
         // (Zafar, 30 Oct: "we minimise (fold up) menu boxes once that item is complete ... and then all the cards open again when
         // the game starts": while the order is given, a person whose order has been said folds to face and headline as the next
         // one speaks, so no card is ever half under the panel's top; every card opens again as the order ends)
@@ -2216,6 +2223,14 @@
         if (prev) {
           m.said = m.said || new Set();
           m.said.add(prev);
+          // (CHAI-104: no card is left as a gap as the order passes on: a said row of theirs still away lands now, with no flight;
+          // the water and the tea, on the card only, come with the rest as the order ends, CK-51)
+          const was = people.find((c) => c.who === prev);
+          if (was) was.rows.forEach((x) => {
+            if (x.head || !m.away.has(x) || (x.unsaid && x.saidBy !== "head")) return;
+            m.away.delete(x);
+            (m.landed = m.landed || new Set()).add(x);
+          });
           // SH-180 (Zafar, 1 Nov: "it should like smoothly minimize, another one should maximize, rather than it kind of like just snapping
           // as it does at the moment"): the cards' heights before the redraw, so each one that changes size eases from its old height
           // to its new one (the said card folding, the next one opening), and the panel glides with them, one motion
@@ -2242,14 +2257,16 @@
         if (M.focus) M.focus(who);
         const parts = c._parts();
         for (const p of parts) {
-          if (skipped || token !== Cook.run) return;
+          if (!live()) return;
           const r = p.row;
           const item = r && m.away.has(r);
           // CHAI-96 (Zafar, 6 Nov night: "any item that goes in the tea except for water and tea is listed ... saffron style tea and all
           // the other style teas as well"): the rows a headline says for itself ("Muke elchi waari chai khape" says the elchi row,
           // Order.sentence's inHead) pop as their item cards while it is said, as milk's does; water and tea leaves are on the card
           // only (unsaid), never in a part's rows. The sentence is the engine's, unchanged: the word is said once, in the headline
-          const folded = ((p.line && p.line.rows) || []).filter((x) => x && x !== r && !x.head && !x.no && !x.unsaid && m.away.has(x));
+          // CHAI-104 (Zafar, 7 Nov: "There was a gap"): an unsaid row the headline says (saidBy "head": the amount, "Muke adh chai
+          // khape") is one of them: it pops and lands with the headline, never a gap left when the order passes on
+          const folded = ((p.line && p.line.rows) || []).filter((x) => x && x !== r && !x.head && !x.no && (!x.unsaid || x.saidBy === "head") && m.away.has(x));
           if (!box) return;
           box.innerHTML = "";
           if ((item || folded.length) && m.headOnly && m.headOnly.delete(who)) {
@@ -2266,6 +2283,8 @@
             // (SH-191: the card has grown as it opened: cut at the panel's foot, the panel glides up until it shows whole)
             if (first) UI.followCard(first.closest(".oc-card"));
             await Cook.wait(260);
+            // (CK-60: a skip during the card's opening wait: nothing more is said or popped)
+            if (!live()) return;
           }
           const popRow = (x) => {
             const w = UI.wordOf(x, { size: 240, written: true });
@@ -2303,7 +2322,7 @@
             await Promise.race([heard, saying, sayOk(Cook.wait(1500))]);
             if (off) off();
             for (const x of folded) {
-              if (skipped || token !== Cook.run) break;
+              if (!live()) break;
               popRow(x);
               await Cook.wait(s14 ? hold14(x) : 700);
               if (skipped) break;
@@ -2311,7 +2330,7 @@
               if (box) box.innerHTML = "";
             }
           }
-          if (item && !skipped) popRow(r);
+          if (item && live()) popRow(r);
           // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
           await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null]);
           if (item && !skipped) await land(r, who, false);
