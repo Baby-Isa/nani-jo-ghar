@@ -238,7 +238,12 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
       if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
+      const vid = process.env.NJG_VIDEO && page.video ? page.video() : null;
       await ctx.close().catch(() => {});
+      if (vid) {
+        // the page's film (NJG_VIDEO): <run>/films/<flow>@<size>.webm
+        try { mkdirSync(join(runDir, "films"), { recursive: true }); await vid.saveAs(join(runDir, "films", `${flow.id.replace(/[^\w@-]+/g, "-")}@${size}.webm`)); await vid.delete(); } catch (e) { log(`film of ${flow.id}: ${e.message}`); }
+      }
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
       const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), store: process.env.NJG_STORE === "1", timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
       if (probe) { r.evidence = await probe.finish(r, { root: ROOT }); r.moments = probe.seen; }

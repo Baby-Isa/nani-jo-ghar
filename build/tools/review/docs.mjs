@@ -33,6 +33,12 @@ export const LIMITS = {
   "docs/README.md": 700,
   "docs/tools.md": 1000,
 };
+// The standard folder (Zafar, 7 Nov, Sprint 18's decision 12: "the standard is a folder, not one page", each page under its own
+// limit): every page of docs/design-language/standard/ and its gaps/ at most STANDARD_PAGE words, the README and placement their own.
+// Checked in the rapid prototype too (his yes to the limit's intent).
+export const STANDARD_DIR = "docs/design-language/standard";
+export const STANDARD_PAGE = 2500;
+export const STANDARD_LIMITS = { "README.md": 1000, "placement.md": 6000 };
 // docs/game-design/modes/*.md and docs/design-language/*.md: each doc's size after the Sprint 6 cut-down, rounded up to the next 500
 // words, so it passes today and cannot grow unnoticed. Raise one only with Zafar's yes (and archive the old text first).
 export const DOC_LIMITS = {
@@ -81,6 +87,13 @@ export function checkDocs() {
     if (PROTOTYPE && p !== "CLAUDE.md") continue;
     const t = read(p); if (t == null) continue;
     const n = words(t); (n > max ? fails : info).push(`${p}: ${n} words (limit ${max})`);
+  }
+  for (const sub of [STANDARD_DIR, `${STANDARD_DIR}/gaps`]) {
+    if (!existsSync(join(ROOT, sub))) continue;
+    for (const f of readdirSync(join(ROOT, sub)).filter((x) => x.endsWith(".md"))) {
+      const max = (sub === STANDARD_DIR && STANDARD_LIMITS[f]) || STANDARD_PAGE;
+      const n = words(read(`${sub}/${f}`) || ""); (n > max ? fails : info).push(`${sub}/${f}: ${n} words (limit ${max})`);
+    }
   }
   for (const [p, max] of PROTOTYPE ? [] : Object.entries(DOC_LIMITS)) {
     const t = read(p); if (t == null) { fails.push(`${p}: in DOC_LIMITS but the file is gone (remove the limit)`); continue; }

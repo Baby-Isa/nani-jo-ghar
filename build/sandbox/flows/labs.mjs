@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { ChildPlayer } from "../lib/child-player.mjs";
 import { seedCook, isSeedProfile } from "../lib/seed.mjs";
 import { openGrownUps } from "../drivers/index.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
@@ -91,7 +92,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           if (mode === "replay") { rounds++; await sleep(2100); await logTextures(page, rounds, rec); if (rounds >= 2) { await rec.state("replay-round-2"); replayed = true; break; } }
           if (stages === 1) await openGrownUps(page, rec, "#btn-help"); // (S13-A2: a probe about the grown-ups' "?")
           if (mode === "mute-across-modes" && !muted) { muted = true; await muteAcross(ctx, `${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`); continue; }
-          const P = new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-`, mode: mode === "mistake" ? "mistake" : "fair" });
+          const P = mode === "child" ? new ChildPlayer(page, rec, { prefix: `${game.split("/").pop()}-` }) : new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-`, mode: mode === "mistake" ? "mistake" : "fair" });
           P.helped = true;
           try { await P.play(async () => !(await hostState(page)).startsWith(game + "/"), { timeout: ctx.timeoutMs - (Date.now() - t0) - 30000 }); }
           finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
@@ -164,6 +165,8 @@ export function labFlows() {
   // the story round: Nani's pantry to its end, then on into the chai order (the next station)
   for (const L of [1, 2, 3, 4]) f.push(labCook({ id: `lab:cook/round${L > 1 ? `@L${L}` : ""}`, title: `labs.html: Cook story round (the pantry, then the chai order), level ${L}`, query: `mode=cook&level=${L}`, timeoutS: 700 }));
   // at a child's pace (speed 1): the voice against the stage ends in real time (the pantry's voice spill, Z5)
+  // chai at a child's pace (Sprint 17's frozen run): the real speed and a human's think time before every move (lib/child-player.mjs)
+  for (const L of [1, 2, 3, 4]) f.push(labCook({ id: `lab:cook/chai-tray${L > 1 ? `@L${L}` : ""}#child`, title: `labs.html: chai at a child's pace (speed 1, think time), level ${L}`, query: `mode=cook&game=chai-tray&level=${L}`, timeoutS: 900, speed: 1, mode: "child" }));
   f.push(labCook({ id: "lab:cook/round#speed1", title: "labs.html: Cook story round at a child's pace (speed 1): the pantry's voice into the order", query: "mode=cook&level=1", timeoutS: 700, speed: 1 }));
   f.push(labCook({ id: "lab:cook/story-birthday", title: "labs.html: Story, birthday, cook-guests (chapter 1)", query: "mode=cook&play=story&arc=birthday&chapter=1&errand=cook-guests", timeoutS: 900, firstDone: true }));
   f.push(labCook({ id: "lab:cook/free", title: "labs.html: Cook free play (as the map starts it)", query: "mode=cook&play=free", timeoutS: 500 }));

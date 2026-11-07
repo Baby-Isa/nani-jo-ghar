@@ -90,7 +90,9 @@ const fontsCss = () => readFileSync(join(FONTS_DIR, "fonts.css"), "utf8").replac
 export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {}) {
   const size = SIZES[sizeKey];
   const useTouch = touch === undefined ? !!size.touch : touch;
-  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: dpr, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}) });
+  // (NJG_VIDEO=<dir>: every page filmed, run.mjs files it as <run>/films/<flow>@<size>.webm: chai's frozen run, frozen.mjs)
+  const video = process.env.NJG_VIDEO ? { recordVideo: { dir: process.env.NJG_VIDEO, size: { width: size.width, height: size.height } } } : {};
+  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: dpr, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}), ...video });
   await ctx.route(/^https?:\/\//, (route) => {
     const u = route.request().url();
     if (u.startsWith(BASE)) return route.fallback();
