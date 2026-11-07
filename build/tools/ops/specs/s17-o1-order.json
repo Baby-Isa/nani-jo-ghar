@@ -1,0 +1,52 @@
+{
+  "name": "s17-o1-order: nothing said after a skip; half or full lands with its headline",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the order's read loop and the one speech path touch every Cook game",
+  "cost": "about $15-25",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
+    "docs/design-language/chai-standard.md"
+  ],
+  "owns": [
+    "js/cook/ui.js (the order's read loop, about 1960-2380, and the order card's _parts, about 3150-3180; nothing else)",
+    "js/shared/request-popup.js",
+    "js/cook/order.js",
+    "js/cook/recipes.js",
+    "data/cook.json (chai's say list only)",
+    "build/reports/s17-o1-order.md"
+  ],
+  "readOnly": [
+    "js/shared/order-card.js and js/cook/ui.js drawCards (s17-o2)",
+    "js/cook/stations/chai-tray.js (s17-o4)",
+    "js/shared/word-moment.js (s17-o5)",
+    "js/shared/sfx.js (s17-o3)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "CK-60",
+    "CHAI-104"
+  ],
+  "tasks": [
+    {
+      "do": "CK-60: nothing is said after a skip, every Cook game. Diagnosis (verify): the read loop asks for its next part after the skip because sayPart is not guarded (js/cook/ui.js:2316, and CHAI-96's :2301), the skip lands on click in js/shared/request-popup.js:356 while UI.say ends the current line on pointerdown (ui.js:513-524), so the loop runs on into the card's 260 ms opening wait (:2268). Fix: sayPart returns at once when skipped or the run changed; the same check after the opening wait; the skip acts on pointerdown; as a backstop, the voice generation taken when the read starts, and any line asked for after it changed is dropped.",
+      "accept": "a scripted press of about 250 ms on the kitchen during a headline at L1 and L4, chai tray and one other Cook station: no say-start after the skip-zone note (sound log in the report)"
+    },
+    {
+      "do": "CHAI-104: half or full said in the headline (\"Muke adh chai khape\") lands its card with the headline, as a style tea's extra does (CHAI-96): the amount row is unsaid (data/cook.json:1221-1249) and js/cook/order.js:302 drops it before the headline's rows are found. Mark the rows the headline says (e.g. saidBy: head), carry it through recipes.js and order.js, keep them in the headline part's rows and in ui.js's folded list despite unsaid; water and tea (CK-51) stay off the order. No card is ever left as a gap when the order passes on.",
+      "accept": "chai tray L4 plain-half-no-sugar order (seed it): every slot filled before the order passes to the next person; L1-L3 unchanged; the sentence unchanged"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8861,
+  "report": "s17-o1-order",
+  "publish": false
+}

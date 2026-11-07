@@ -1,0 +1,42 @@
+{
+  "name": "s17-o2-panel: after a served card folds in play, the side panel glides to the next card's planned place",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a shared order-card motion, judged by eye at four sizes",
+  "cost": "about $15-25",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
+    "docs/design-language/chai-standard.md"
+  ],
+  "owns": [
+    "js/shared/order-card.js",
+    "css/shared/order-card.css",
+    "build/reports/s17-o2-panel.md"
+  ],
+  "readOnly": [
+    "js/cook/ui.js (s17-o1 owns it: the fix lives in the shared card, which knows its scroller, its cards and which one is done; if Cook must tell it the person in progress, read the panel's existing focus mark or ask in your report)",
+    "js/cook/stations/chai-tray.js (s17-o4)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "SH-232"
+  ],
+  "tasks": [
+    {
+      "do": "SH-232, every game's side panel: when a served card folds in play (js/shared/order-card.js:653-656, the class on a timer), the panel and the card ease together so the card in progress ends at its planned place: its top at the panel's top less 4 px (0 when the whole list fits), clamped to the scroll range; the same aim as the order's (js/cook/ui.js:2235) and UI.followCard (ui.js:1068-1079). The card in progress is the pan in hand's person (mission.focusWho) else the first not done. If that card is already whole in view, nothing moves. All in the shared card (js/shared/order-card.js), so every game gets it: at the fold, it finds its scroller and the card in progress (the person whose card is focused or speaking, else the first card after the folding one that is not done); overflow-anchor: none on the panel.",
+      "accept": "script-made before/after strips at 905x298 (dpr 2.8) and 740x320, chai tray L4: scroll the panel down to the second card, serve the first: after, the second card ends at the panel's top; unscrolled, nothing changes; 1280x665 and 1920x1080 unchanged when all fits"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8862,
+  "report": "s17-o2-panel",
+  "publish": false
+}

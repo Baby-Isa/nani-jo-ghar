@@ -1,21 +1,57 @@
 {
   "name": "s17-land-sky: land Zafar's sky run: match, judge, cut and store every image for future sprints (no wiring)",
-  "model": "Fable", "effort": "high",
+  "model": "Fable",
+  "effort": "high",
   "why": "judging AI art against its plan and the house look, and cutting it cleanly, needs a careful eye",
-  "cost": "about $15-25", "stop": "7 Nov 2026, 05:00 UK",
+  "cost": "about $15-25",
+  "stop": "7 Nov 2026, 05:00 UK",
   "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
-  "kind": "art", "browser": false, "live": true,
-  "read": [".claude/skills/art-run/SKILL.md ('When images land')", "docs/design-language/art-plans/s17-sky-art-plan.md (the prompts, checks, the cut and wire notes) and build/tools/art/specs/s17-sky.run.yaml (every line: its ID, save-as name and check)", "docs/design-language/art-plans/s17-sky-chrome-block.txt (the PASS/FAIL list and HOUSE LOOK)", "build/reports/stove-run-landed-2026-11-06.md (the last landing: copy its method and report shape)", "docs/design-language/art-bible.md and art-pipeline.md (cutting, sizes, webp, the colour tool build/tools/art/artcolour.py)"],
-  "owns": ["sources/art/s17-sky/**", "assets/backgrounds/s17-sky/** (the cut game assets: a new folder only)", "build/tools/art/specs/s17-sky.cut.json", "docs/design-language/art-plans/s17-sky-redo-list.yaml", "docs/design-language/art-plans/s17-sky-art-plan.md (section 5, the cut notes, only)", "build/reports/s17-sky-landed-2026-11-07.md", "build/screenshots/s17-land-sky/**"],
-  "readOnly": ["js/**, css/**, data/** (no wiring: future sprints wire them)", "every other pack's sources and assets", "build/tools/art/*.py (run them; a fix to a tool goes in your report as a request)"],
+  "kind": "art",
+  "browser": false,
+  "live": false,
+  "read": [
+    ".claude/skills/art-run/SKILL.md ('When images land')",
+    "docs/design-language/art-plans/s17-sky-art-plan.md (the prompts, checks, the cut and wire notes) and build/tools/art/specs/s17-sky.run.yaml (every line: its ID, save-as name and check)",
+    "docs/design-language/art-plans/s17-sky-chrome-block.txt (the PASS/FAIL list and HOUSE LOOK)",
+    "build/reports/stove-run-landed-2026-11-06.md (the last landing: copy its method and report shape)",
+    "docs/design-language/art-bible.md and art-pipeline.md (cutting, sizes, webp, the colour tool build/tools/art/artcolour.py)"
+  ],
+  "owns": [
+    "sources/art/s17-sky/**",
+    "assets/backgrounds/s17-sky/** (the cut game assets: a new folder only)",
+    "build/tools/art/specs/s17-sky.cut.json",
+    "docs/design-language/art-plans/s17-sky-redo-list.yaml",
+    "docs/design-language/art-plans/s17-sky-art-plan.md (section 5, the cut notes, only)",
+    "build/reports/s17-sky-landed-2026-11-07.md",
+    "build/screenshots/s17-land-sky/**"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (no wiring: future sprints wire them)",
+    "every other pack's sources and assets",
+    "build/tools/art/*.py (run them; a fix to a tool goes in your report as a request)"
+  ],
   "stubs": "none: an image you can't place or that fails goes on the redo list with why, never a stand-in",
   "rows": [],
   "tasks": [
-    {"do": "Match: Zafar's run of the skies (the door's sunny sky anchor, cloudy, raining, night, the sun card, the farm card's sky, the book's farm spread's sky, the bank of times of day) landed as 15 images under ChatGPT's own chat titles in sources/art/s17-sky/inbox/ (no runner log came with them). Look at every image and match it to its run line (ID and save-as name in the run spec); git mv each to sources/art/s17-sky/<save-as name> (a second try of one line: -v2). List any line with no image and any image you can't place.", "accept": "a table in the report: ChatGPT title -> line ID -> save-as name; every line accounted for; inbox/ empty"},
-    {"do": "Judge every image against its line's check, the block's PASS/FAIL list and HOUSE LOOK (one Wada combination per picture or its named colour_exception; no baked shadow, light from the upper left, clean edges): python3 build/tools/art/artjudge.py and python3 build/tools/art/artcolour.py on the new sources, plus your own eye on what the tools can't see (the right item, its view and angle, counts, text or labels drawn, anything not modest or not halal). Failures go on docs/design-language/art-plans/s17-sky-redo-list.yaml in the shape artredo.py reads, with the fix in plain words.", "accept": "a pass/fail line per image with its reason; the redo list file validates with python3 build/tools/art/artredo.py --help's check"},
-    {"do": "Cut every passing image into game-ready assets in assets/backgrounds/s17-sky/ (webp, sized for their use in the plan's cut notes, clean alpha where the item is cut out; skies full-bleed at the plan's sizes, a tiling sky with joined edges as the plan asks) with a cut spec build/tools/art/specs/s17-sky.cut.json and python3 build/tools/art/artcut.py; prove the cut (artdiff.py or a contact sheet in build/screenshots/s17-land-sky/). Name each asset so a future sprint can find it (the plan's names). Old files stay where they are: nothing in the game changes.", "accept": "every passing image cut, a contact sheet of all cuts on light and dark grounds, no halo or ground colour left at the edges; assets total size noted"},
-    {"do": "Write build/reports/s17-sky-landed-2026-11-07.md in the stove landing's shape: in plain words first (how many landed, usable now, need a redo, missing), flaws first, the match table, the judging table, the cut list with sizes and paths, what a future sprint must do to wire them (which game file uses which asset), and the redo list's count.", "accept": "the report exists, under 600 words of prose plus its tables"}
+    {
+      "do": "Match: Zafar's run of the skies (the door's sunny sky anchor, cloudy, raining, night, the sun card, the farm card's sky, the book's farm spread's sky, the bank of times of day) landed as 15 images under ChatGPT's own chat titles in sources/art/s17-sky/inbox/ (no runner log came with them). Look at every image and match it to its run line (ID and save-as name in the run spec); git mv each to sources/art/s17-sky/<save-as name> (a second try of one line: -v2). List any line with no image and any image you can't place.",
+      "accept": "a table in the report: ChatGPT title -> line ID -> save-as name; every line accounted for; inbox/ empty"
+    },
+    {
+      "do": "Judge every image against its line's check, the block's PASS/FAIL list and HOUSE LOOK (one Wada combination per picture or its named colour_exception; no baked shadow, light from the upper left, clean edges): python3 build/tools/art/artjudge.py and python3 build/tools/art/artcolour.py on the new sources, plus your own eye on what the tools can't see (the right item, its view and angle, counts, text or labels drawn, anything not modest or not halal). Failures go on docs/design-language/art-plans/s17-sky-redo-list.yaml in the shape artredo.py reads, with the fix in plain words.",
+      "accept": "a pass/fail line per image with its reason; the redo list file validates with python3 build/tools/art/artredo.py --help's check"
+    },
+    {
+      "do": "Cut every passing image into game-ready assets in assets/backgrounds/s17-sky/ (webp, sized for their use in the plan's cut notes, clean alpha where the item is cut out; skies full-bleed at the plan's sizes, a tiling sky with joined edges as the plan asks) with a cut spec build/tools/art/specs/s17-sky.cut.json and python3 build/tools/art/artcut.py; prove the cut (artdiff.py or a contact sheet in build/screenshots/s17-land-sky/). Name each asset so a future sprint can find it (the plan's names). Old files stay where they are: nothing in the game changes.",
+      "accept": "every passing image cut, a contact sheet of all cuts on light and dark grounds, no halo or ground colour left at the edges; assets total size noted"
+    },
+    {
+      "do": "Write build/reports/s17-sky-landed-2026-11-07.md in the stove landing's shape: in plain words first (how many landed, usable now, need a redo, missing), flaws first, the match table, the judging table, the cut list with sizes and paths, what a future sprint must do to wire them (which game file uses which asset), and the redo list's count.",
+      "accept": "the report exists, under 600 words of prose plus its tables"
+    }
   ],
   "flows": [],
-  "port": 8846, "report": "s17-sky-landed-2026-11-07", "publish": false
+  "port": 8846,
+  "report": "s17-sky-landed-2026-11-07",
+  "publish": false
 }

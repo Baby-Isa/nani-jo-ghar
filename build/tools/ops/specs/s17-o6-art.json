@@ -1,0 +1,41 @@
+{
+  "name": "s17-o6-art: land the clinic redo's three redos",
+  "model": "Fable",
+  "effort": "high",
+  "why": "judging and cutting art",
+  "cost": "about $5-10",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "art",
+  "browser": false,
+  "live": true,
+  "read": [
+    ".claude/skills/art-run/SKILL.md ('When images land')",
+    "build/reports/s17-clinic-redo-landed-2026-11-07.md (the first landing, its method and names)",
+    "docs/design-language/art-plans/s17-clinic-redo-redo-list.yaml"
+  ],
+  "owns": [
+    "sources/art/s17-clinic-redo/**",
+    "assets/clinic/s17-clinic-redo/**",
+    "build/tools/art/specs/s17-clinic-redo.cut.json",
+    "docs/design-language/art-plans/s17-clinic-redo-redo-list.yaml",
+    "build/reports/s17-clinic-redo-landed-2026-11-07.md (an addendum)"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/**",
+    "build/tools/art/*.py (run them)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Zafar's second upload (sources/art/s17-clinic-redo/inbox2/, 3 images) is the redo run of docs/design-language/art-plans/s17-clinic-redo-redo-block.txt (CN03 walnut tongue depressor, CN04 walnut hourglass frame, CN09 cream ear-syringe bulb; each regenerated its whole sheet). Match each to its line, git mv to sources/art/s17-clinic-redo/<save-as>-v2.png, judge the named item (and that the rest of the sheet still holds; only the named item is wanted), cut ONLY the named items over today's stand-ins (CN03, CN04) and add the ear syringe (CN09) with the cut spec (artcut.py --only; then restore and merge cut-data.json: artcut --only rewrites it with only its jobs), take passed lines off the redo list, write the addendum.",
+      "accept": "artjudge/artcolour on the three; the three items cut and checked on light and dark grounds; the redo list updated; checks.mjs art line ok"
+    }
+  ],
+  "flows": [],
+  "port": 8866,
+  "report": "s17-o6-art",
+  "publish": false
+}

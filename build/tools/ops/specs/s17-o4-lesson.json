@@ -1,0 +1,42 @@
+{
+  "name": "s17-o4-lesson: the dotted-word lesson always shows",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a race in the onboarding, judged on the run's frames",
+  "cost": "about $10-20",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
+    "docs/design-language/chai-standard.md"
+  ],
+  "owns": [
+    "js/cook/stations/chai-tray.js",
+    "js/cook/station-lib.js",
+    "build/reports/s17-o4-lesson.md"
+  ],
+  "readOnly": [
+    "js/cook/ui.js (s17-o1, s17-o2: if you need an 'order landed' signal from ui.js, add a one-line request in your report and use RequestPopup's own promise or the cards' redraw instead)",
+    "js/shared/order-card.js (s17-o2)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "CHAI-102"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-102: the dotted-word lesson (js/cook/stations/chai-tray.js:2938-3115) picks its word while the order is still landing; the order's end redraws every card (js/cook/ui.js:2353-2362), so it lights a card no longer on the page and waits 4.5 s on nothing, its once-only key already spent. Fix: wait until the order has landed (no pop-up card or flyer, the cards' final redraw done) before picking; inside the lesson, if the element is no longer connected, pick again (bail if none); spend the once-only key only when a box was drawn, and log none-in-view if not.",
+      "accept": "chai tray L2 and L4 at 1280x609, 905x298 and 740x320, new player: a lit box on a dotted word after the reveal-lesson note in every run (five runs each at L2: no miss); the skip path too"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8864,
+  "report": "s17-o4-lesson",
+  "publish": false
+}

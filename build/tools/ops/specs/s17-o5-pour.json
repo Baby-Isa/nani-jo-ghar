@@ -1,0 +1,41 @@
+{
+  "name": "s17-o5-pour: the word moment's fill starts when the stream reaches the glass",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a timing fix judged on a strip",
+  "cost": "about $5-10",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "shared",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
+    "docs/design-language/chai-standard.md"
+  ],
+  "owns": [
+    "js/shared/word-moment.js",
+    "css/shared/word-moment.css",
+    "build/reports/s17-o5-pour.md"
+  ],
+  "readOnly": [
+    "js/shared/sfx.js (s17-o3)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "CHAI-103"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-103: in the word moment's pourFill (js/shared/word-moment.js:392-430) the stream runs down over 300 ms but the pour loop and the tea's rise start at once. Start both when the stream's head reaches the glass's bottom (the run-down's end, measured from the stream's own wipe), for the half and the full glass; nothing else changes (the drop, the twinkle, the card).",
+      "accept": "a strip at 60 ms steps around each pour's start at 1280x665 and 905x298: no tea rise and no pour sound in the log before the stream touches the bottom"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8865,
+  "report": "s17-o5-pour",
+  "publish": false
+}

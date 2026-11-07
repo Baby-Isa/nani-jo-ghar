@@ -1,0 +1,42 @@
+{
+  "name": "s17-o3-boil: the boil's sound one seamless loop",
+  "model": "Opus",
+  "effort": "high",
+  "why": "sound judged by measurement; small",
+  "cost": "about $5-10",
+  "stop": "7 Nov 2026, 06:00 UK",
+  "branch": "claude/exciting-sagan-cz9d5t (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/feedback/chai-play-2026-11-07.md (his words, the causes in code, the fixes)",
+    "docs/design-language/chai-standard.md"
+  ],
+  "owns": [
+    "assets/shared/sfx/simmer-b.mp3 (new)",
+    "js/shared/sfx.js (the simmer entry only)",
+    "sources/audio/**",
+    "build/reports/s17-o3-boil.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/chai-tray.js (s17-o4: the simmer's level curve stays as it is)",
+    "build/sandbox/lib/contract*.mjs and build/tools/review/lib/regressions.mjs (the orchestrator adds the checks)"
+  ],
+  "stubs": "none",
+  "rows": [
+    "CHAI-95"
+  ],
+  "tasks": [
+    {
+      "do": "CHAI-95 reopened: assets/shared/sfx/simmer-a.mp3 fades out over its last 0.4 s and ends in 50 ms of silence, so the 4 s loop pauses at every join. The orchestrator made sources/audio/simmer-b-proposed.mp3: 12 s of overlapped random grains of the clip's steady part, its join cross-faded, every 0.1 s within -37 to -32 dB. Check it (decode it, the join, the level, the MP3's encoder padding: the decoded length must loop with no gap; set loopStart/loopEnd on the buffer source if the padding shows), improve it if you can hear or measure a seam or a repeat, ship it as assets/shared/sfx/simmer-b.mp3 and point the simmer at it (sfx.js:387). The curve's levels are unchanged (match simmer-a's loudness).",
+      "accept": "a waveform/envelope plot of 3 loops back to back (no dip at the joins, no gap) in the report; the lab's sound page plays it; the sound log names simmer-b"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray"
+  ],
+  "port": 8863,
+  "report": "s17-o3-boil",
+  "publish": false
+}
