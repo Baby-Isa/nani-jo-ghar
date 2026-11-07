@@ -29,7 +29,7 @@ flow and timings (sole owner of `js/cook/ui.js` and `js/shared/order-card.js` fo
 | 6 | Pour or spoon from the shelf into a pan | kitchen kit | chai 1377-1541 | `js/cook/mechanics/pour.js` | (b) | `Mech.pour(...)` |
 | 7 | Pan into its glass; take-back | kitchen kit | chai 1758-2081; `js/shared/pour.js` | `js/cook/mechanics/pour.js` on `NjgPour` | (b) | `NjgPour.plan` (chai 1970) |
 | 8 | Serving: the review faces, the tick, recast | shared kit | chai 3207-3415; kk 178-247; lib 1129 | `js/shared/` (a serve part) or lib | (b) | `Cook.Kit.review`, `St.redo` |
-| 9 | The shelf: decoys, size classes, slots | shared kit | chai 442-466, 793-984; lib 170-336 | lib (or a `js/shared/shelf.js` the pantry can load) | (c) | `St.tableDecoys`, `St.classFit` |
+| 9 | The shelf: decoys, size classes, slots | shared kit | chai 442-466, 793-984; lib 170-336 | lib, or a new shared shelf file the pantry can load (builder (c) names it) | (c) | `St.tableDecoys`, `St.classFit` |
 | 10 | Word chips and pills | shared kit | chai 337-350, 827-955; kk 334-371 | the shelf's file | (c) | `Cook.Kit.chip`, `progress.pillShows` |
 | 11 | Count pills | shared kit | ui 3901-4073; `js/shared/tally.js` | `js/shared/tally.js` | (c) | `UI.count`, `UI.tallyAt` |
 | 12 | The word pop by the action; juice | shared kit | chai 1224-1376; `js/shared/juice.js` | `js/shared/juice.js` | (c) | `Juice.P` |

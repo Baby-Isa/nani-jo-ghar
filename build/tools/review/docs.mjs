@@ -92,7 +92,8 @@ export function checkDocs() {
     if (!existsSync(join(ROOT, sub))) continue;
     for (const f of readdirSync(join(ROOT, sub)).filter((x) => x.endsWith(".md"))) {
       const max = (sub === STANDARD_DIR && STANDARD_LIMITS[f]) || STANDARD_PAGE;
-      const n = words(read(`${sub}/${f}`) || ""); (n > max ? fails : info).push(`${sub}/${f}: ${n} words (limit ${max})`);
+      // words with a letter or digit in them: the rule rows' separators (·, →, |) are not words (as `wc -w` counts them)
+      const n = ((read(`${sub}/${f}`) || "").match(/\S*[\p{L}\p{N}]\S*/gu) || []).length; (n > max ? fails : info).push(`${sub}/${f}: ${n} words (limit ${max})`);
     }
   }
   for (const [p, max] of PROTOTYPE ? [] : Object.entries(DOC_LIMITS)) {

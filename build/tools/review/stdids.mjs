@@ -137,6 +137,10 @@ if (a.has("stitch")) {
     "|---|---|---|",
     ...dropped.map((id) => { const r = merged.get(id); return `| ${id} | ${r ? r.kind : "unplaced"} | ${r ? r.note.replace(/\|/g, "/") : ""} |`; }),
     "",
+    "## Proof",
+    "",
+    `\`node build/tools/review/stdids.mjs --stitch\` from ${files.map((f) => `\`${f}\``).join(", ")}; \`--check\` on the result.`,
+    "",
   ].join("\n"));
   console.log(`placement.md: ${all.length} IDs from ${files.length} fragment(s); dropped list: ${dropped.length}`);
   process.exit(0);
