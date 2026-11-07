@@ -73,7 +73,7 @@ import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.m
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
-import { CHAI_CHECKS, check70, check71, check90 } from "./contract-chai.mjs";
+import { CHAI_CHECKS, check70, check71, check90, S14_TAPS, CHAI_ROW, DECOY_STATIONS, DECOY_AT_LEAST, helpStageRe } from "./contract-chai.mjs";
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
 import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, check92, check93, check94, check95, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
@@ -1055,7 +1055,8 @@ const HINTS = /^(help|helper-open|helper-call|rung)$/;
 const RESETS = /^(stage-start|step-open|poke|act)$/;
 // the kinds that are not the child's move to make: the game busy, the round over, a button, the pop-up, a timing window to wait for
 const NOT_A_MOVE = /^(|wait|end|none|idle|watch|click|button|timing|results|done|between|say|listen)$/;
-export const helpStage = (key) => isPlayStage(key || "") && /(^|\|)cook:station|^host:cook\/|^host:clinic\//.test(key || "");
+// (the stage kinds on chai's method: data/games.json stages, those a listed entry's help names; a Cook station, the clinic's stages)
+export const helpStage = (key) => isPlayStage(key || "") && helpStageRe.test(key || "");
 function check91(r, tl, segs, v, add) {
   if (/#mistake/.test(r.flow || "")) return;
   const wants = tl.filter((e) => e.type === "c" && e.k === "want");
@@ -1419,16 +1420,15 @@ function check36(r, tl, segs, v, add) {
 // 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
 export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
 // Zafar, 29 Oct (chai level rules 5, 7; SH-155: the central rules, data/rules.json levels.decoys): chai's decoys 1, 2, 3, 4; its order
-// card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target")
-export const CHAI_ROW = /^chai-tray$/;
+// card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target").
+// CHAI_ROW (the card's item words written at L3-L4), S14_TAPS (no finger in the light), DECOY_STATIONS and DECOY_AT_LEAST are the
+// stations of the per-game data list's games (data/games.json cardWritten, s14Taps, decoys; lib/contract-chai.mjs), read live
+export { CHAI_ROW, S14_TAPS };
 // the S14 roll-out (s14-cook, 30 Oct; Zafar 29-30 Oct: "change all the cook ... games to the new chai style"): every Cook station is on
 // the s14 kit and the central rules now, so chai's rows above hold for every Cook flow: the decoys the rules' (1, 2, 3, 4 with the
 // lookalike at L4), the order card's Kutchi always written (never dotted at L3-L4), its English shown at L1, no finger in the light
 export const S14_COOK = (flow) => isCookFlow(flow);
-export const S14_TAPS = /^(chai-tray|chai|fetch|pantry|assemble|chaat|samosa|mishkaki-grill|mishkaki)$/;
 export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
-const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
-const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
 function check37(r, tl, segs, add) {
   if (!isCookFlow(r.flow)) return;
   const st = stationOf(r.flow);
