@@ -35,7 +35,7 @@ build/reports/s17-std-placement-2.md --mine`.
 | CHAI-54 | rule | STD-B3-03 | half ticks at the first pour, full at the second |
 | KEEP-21 | rule | STD-B3-03 | praise for the half pour (the card's place and the stuck prompt are E2's and D2's) |
 | CHAI-84 | rule | STD-B3-03 | half lower (0.42), full to the rim: also a value (values.md) |
-| DAAR-37 | rule | STD-B3-04 | 1 to 3 of one thing, totals by level |
+| DAAR-37 | rule | STD-C2-02 | daar's own row of the count rule (1 to 3 of one thing, totals by level; STD-B3-04 retired 7 Nov) |
 | ART-31 | rule | STD-B4-01 | "audibly, yes, we should have juiciness" (the splash's art is E3's) |
 | CHAI-92 | rule | STD-B4-01 | the juice: every effect and sound by his picks |
 | CHAI-87 | rule | STD-B4-01 | a pour heard (the word moment's sound is also E5's) |

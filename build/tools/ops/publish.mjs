@@ -7,14 +7,15 @@ import { ROOT, args, help, die, sh, git, gitSoft, branch, logLine, pagesDeployed
 import { gather, gateProblems } from "./publishgate.mjs";
 
 const HELP = `
-node build/tools/ops/publish.mjs [--go] [--force] [--no-checks] [--site URL] [--timeout 900] [--via site|api|auto] [--allow-dirty] [--log] [--trailer TEXT]
+node build/tools/ops/publish.mjs [--go] [--force --words "<his words>"] [--no-checks] [--site URL] [--timeout 900] [--via site|api|auto] [--allow-dirty] [--log] [--trailer TEXT]
 node build/tools/ops/publish.mjs --pages <sha|main> [--timeout 900]     only wait for Pages to deploy that commit (the API path; no push)
   Dry run by default: checks the branch, the tree, whether origin/main is already in this branch, what bump_version would
   stamp and how many commits would reach main; prints the steps; changes nothing and uses no network beyond git fetch.
   The publish gate (checks-to-build 2) runs first, in the dry run too: it refuses --go while a fix-list row is open without a
   "waiting on Mum/art/Zafar" note, checks.mjs is red, the last full contract run has a break or is older than the game files, or
   the last evidence run is older than the game files or has rows not judged or verdicts not collected; it prints the list for
-  Zafar. --force publishes anyway (only on Zafar's word); --no-checks skips running checks.mjs in a dry run.
+  Zafar. --force publishes anyway (only on Zafar's word, which --words carries into the commit: Zafar, 7 Nov); --no-checks skips
+  running checks.mjs in a dry run.
   --go publishes (rules B7-B9; only when Zafar has approved publishing):
     1. python3 build/bump_version.py, commit "Publish: version <stamp>"
     2. git push -u origin <branch>, then git push origin HEAD:main (network errors retried at 2, 4, 8, 16 s)
@@ -72,6 +73,9 @@ const gate = gateProblems(G);
 say(gate.length ? `  publish gate: ${gate.length} problem(s)${a.has("force") ? " (--force: publishing anyway)" : ""}:\n${gate.map((p) => `    - ${p}`).join("\n")}` : "  publish gate: clear");
 if (G.waiting.length) say(`  for Zafar (open, waiting on Mum, art or him): ${G.waiting.join(", ")}`);
 if (gate.length && !a.has("force")) problems.push(`the publish gate (${gate.length} problem(s) above)`);
+// (Zafar, 7 Nov: a forced publish writes his words into its commit) --force past the gate needs --words "<his words and date>"
+const words = a.val("words") ? String(a.val("words")) : "";
+if (a.has("force") && gate.length && !words.trim()) problems.push('--force needs --words "<his words and date>" (they go into the commit)');
 if (!GO) {
   say("Steps --go would run: bump_version -> commit -> push branch -> push HEAD:main -> poll js/version.js -> screenshot labs.html");
   say(problems.length ? `Blockers: ${problems.join("; ")}` : "Ready: re-run with --go once Zafar has approved publishing.");
@@ -86,7 +90,7 @@ git("add", "-A");
 // the attribution lines the session's system prompt gives (CLAUDE.md, Git and publishing)
 const sid = process.env.CLAUDE_CODE_REMOTE_SESSION_ID || process.env.CLAUDE_CODE_SESSION_ID || "";
 const trailer = a.val("trailer") || `Co-Authored-By: Claude <noreply@anthropic.com>${sid.startsWith("session_") ? `\nClaude-Session: https://claude.ai/code/${sid}` : ""}`;
-git("commit", "-q", "-m", `Publish: version ${stamp}\n\n${trailer}`);
+git("commit", "-q", "-m", `Publish: version ${stamp}${words ? `\n\nPublished past the gate on his word: ${words}` : ""}\n\n${trailer}`);
 const sha = git("rev-parse", "HEAD");
 say(`1. bumped to ${stamp}, commit ${sha.slice(0, 8)}`);
 

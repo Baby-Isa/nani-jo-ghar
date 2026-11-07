@@ -60,7 +60,7 @@
    "day": {"combination": 194, "words": "bright day: Olympic Blue sky, Seashell Pink warmth on the clouds (Jasper Red only as a faint warm glow, if at all)", "max_mean_c": 24, "max_p95_c": 40},
    "golden": {"combination": 209, "words": "golden hour and sunset: Ivory Buff and a muted Yellow Orange low, Salvia Blue above", "max_mean_c": 30, "max_p95_c": 50},
    "dusk": {"combination": 339, "words": "dusk and nightfall: Violet Blue above, Light Glaucous Blue haze, Ochraceous Salmon glow and a little English Red at the horizon", "max_mean_c": 28, "max_p95_c": 46},
-   "night": {"combination": 75, "words": "night: deep tones of Violet Blue, a Pale King's Blue moonlit haze, white stars", "max_mean_c": 24, "max_p95_c": 40}
+   "night": {"combination": 75, "words": "night: deep tones of Violet Blue, a Pale King's Blue moonlit haze, white stars", "max_mean_c": 42, "max_p95_c": 48, "_was": "24 and 40 until Zafar, 7 Nov: keep the three new nights and re-tune the ceiling (build/reports/s17-sky-landed-2026-11-07.md decision 1)"}
   }
  },
  "wood": {

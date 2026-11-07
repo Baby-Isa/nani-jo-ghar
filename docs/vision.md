@@ -149,7 +149,7 @@ These settle arguments later, so they are worth disagreeing with now.
 
 1. **Difficulty is per word, not per level.** How much help a word gets depends on how many times that player has met that word. There is no beginner mode and no expert mode. This is how one app serves a four-year-old and an adult on the same screen, and it is where spaced repetition lives.
 2. **The task is the test.** Assessment happens by acting on an instruction, never by a quiz screen. If Nani asks for two lemons and you bring two lemons, you have been assessed.
-3. **No cutscenes.** Teaching happens inside the interaction. Anything that plays at you is skippable.
+3. **No cutscenes.** Teaching happens inside the interaction. Anything that plays at you is skippable. One exception: the word moment, a few seconds that show a word no single picture can (half, full) and turn it into its word card (Zafar, 7 Nov).
 4. **No written English for the child, ever.** Nani's voice is Kutchi, and spoken English appears only in story mode (said first, then repeated in Kutchi where needed, rare, E1, G15). Games and help use no English at all; the help is chai's method, the word cards and the guide's timed hint (the bulbs retired, Zafar, 6 Nov); written English for grown-ups lives only in the "?" pop-up.
 5. **Every voice is a real person.** No synthesis, no text-to-speech, no AI-generated Kutchi in the product.
 6. **Nothing is ever lost.** No punishment mechanics, no losing items or money for being slow. Pressure creates bonuses, never penalties.
@@ -202,7 +202,7 @@ Written down so they do not get proposed again in six months.
 | Card battlers, escape rooms | Good mechanics, different app |
 | Text-to-speech for Kutchi | Does not exist, and a synthetic approximation would teach the wrong pronunciation |
 | Teaching a written script | Kutchi has no agreed standard. Choosing one is the community's decision, not this app's |
-| Cutscenes | Passive. Teaching happens inside the interaction or not at all |
+| Cutscenes | Passive. Teaching happens inside the interaction or not at all (the word moment's few seconds excepted, Zafar, 7 Nov) |
 
 One rule behind most of these: **nothing in this game may make a child feel bad.** The game can be hard, and should be for an adult, but the cost of failure is always another go.
 

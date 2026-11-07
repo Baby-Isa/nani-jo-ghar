@@ -59,13 +59,13 @@ heat ring's green; "a dish" is one person's pan, glass or plate. New player is t
 - **Status:** agreed 30 Oct
 - **Layer:** shared kit · **Lives in:** each game's mechanic · **Impact:** stuck · **Source rows:** DAAR-38
 
-#### STD-B1-07 · Nani's "pass me" never comes in a dish's first two plays, and after that only sometimes
+#### STD-B1-07 · Nani's "pass me" stays out of every game until its own onboarding is designed; when it returns, never before a mode has been played 8 times
 - **Why:** row MAA-14 (6 Oct): "never in a mode's first plays"; the code waits two plays of the dish, then asks by chance each order (`js/cook/flow.js:177-189`)
 - **Scope:** House
 - **Pattern / part:** - / the pass-me pop-up
 - **Checked by:** probe:MAA-14 + gap: pass-me pop-ups counted per order
 - **See it:** lab.html?mode=cook&play=story, day 2 (1280x665)
-- **Status:** agreed 6 Oct, worded to the code 7 Nov (was: never in a session's first order, at most once a round outside the busy mode); to check
+- **Status:** parked 7 Nov (Zafar: "only comes after playing a game mode at least 8 times and it needs onboarding ... keep it out for now until we decide how to put it in"; `data/cook.json` passMeChance 0); was: after a dish's first two plays, by chance (6 Oct)
 - **Layer:** shared kit · **Lives in:** `js/cook/flow.js`, `data/cook.json` (calm) · **Value:** passMeAfterPlays, passMeChance (values.md B1) · **Impact:** feels bad · **Source rows:** MAA-14
 
 ## B2 The mechanic
@@ -204,7 +204,7 @@ heat ring's green; "a dish" is one person's pan, glass or plate. New player is t
 - **Pattern / part:** - / the count pills
 - **Checked by:** gap: a seeded-order check of counts by level
 - **See it:** lab.html?mode=cook&game=daar&level=4 (1280x665)
-- **Status:** daar's; the family's number is Zafar's to confirm (`docs/questions.md`, question 4; was: agreed 30 Oct, daar's kinds at L1-L3 to confirm)
+- **Status:** retired 7 Nov: daar's own count, not a family rule (Zafar, 7 Nov: the agreed level table answers it: the rulebook's "How many", STD-C2-02, with a game's own row; daar's row is 1 to 3 chops a kind, 2, 4, 6, 8 in all)
 - **Layer:** game · **Lives in:** `data/cook.json` · **Impact:** feels bad · **Source rows:** DAAR-37
 
 ## B4 Feel

@@ -2,26 +2,14 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### Open, not blocking (Zafar, 7 Nov: these wait; Sprint 18 goes ahead)
-- The skies' four: the night ceiling, the day square, the two farm edits as sky-only redos, wiring next sprint.
-- The tongue depressor's brown: darker, or keep.
-- ART-59, the wide-door counter: a placeholder in Sprint 18's first pass.
-
-### The standard's questions (Sprint 17's builders, 7 Nov; none blocking; recommendations first)
-1. The children's age in `docs/vision.md`: "4 to 11" becomes 3-7, as the standard's 0.2 says? *Recommended: yes.*
-2. vision.md's "No cutscenes" pillar allows the word moment (a few seconds that teach a word a picture can't show)? *Recommended: yes.*
-3. "A contrasting pair is asked in teaching order" (STD-C1-01): every game (House) or the kitchen family? *Recommended: every game.*
-4. "Each thing 1 to 3 times, the total growing by level" (STD-B3-04, from daar's "min 1 and max 3 chops", 30 Oct): every kitchen game, or daar's only? *Recommended: every kitchen game.*
-5. The end review's gentle frown on a wrong cup, after the serve: fine, or a verdict? *Recommended: replace it with chai's progress display, as eggs (Sprint 18, decision 8).*
-6. Nani's "pass me" (MAA-14, waiting since 6 Oct): still wanted? *Recommended: keep it, never in a first order, once a round at most.*
-7. CHAI-76: Nani's hint hides a word once it is past support? *Recommended: yes.*
-8. "A wrong move brings the stuck hint at once": every game? *Recommended: yes.*
-9. The `lightHelpArrow` switch (off since 29 Oct) is deleted when the lights move into the kit? *Recommended: yes.*
-10. The item card's padding: a 4 px floor under the 2.6% of the row (SH-190)? *Recommended: yes.*
-11. The word moment's last hold: 2.2 s (the code) or 2.4 s (the ledger)? *Recommended: 2.2 s, as played.*
-12. A step's call and its light: together (the rules file, 0 ms; contract-78 within 200 ms) rather than the call a beat after? *Recommended: together.*
-13. Decoys at L4: the rules file's count (contract-37's title says otherwise)? *Recommended: the rules file.*
-14. A forced publish writes your words into its commit, and every brief carries the game's keep list? *Recommended: yes to both.*
+### Open, not blocking (7 Nov evening; everything else of the day's list answered: "yes to everything else")
+1. **The age we design for.** The standard says 3-7; vision.md says 4 to 11; Zafar (7 Nov) asks what the youngest age for chai is,
+   with no upper bound and a core he imagines at 7 to 14. *Recommended: the youngest 4 (L1 with a grown-up near), a 5-year-old alone
+   at L1-L2; the core 5 to 10; no upper bound (L3-L4 and story mode stretch older children and adults).* His pick changes vision.md
+   and STD-02-01.
+2. **Decoys at L4: contract-37's description says "1, 2, 3, 3 and a lookalike"; the rules file and the rulebook say 1, 2, 3, 4 with one
+   of the four a lookalike.** The check already counts by the rules file for every Cook game; the old table is unused text.
+   *Recommended: the rules file (his newer word, 29 Oct over 17 Oct); fix the check's description and drop the old table.*
 
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.

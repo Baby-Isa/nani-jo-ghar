@@ -128,10 +128,13 @@ if (a.has("stitch")) {
   ];
   writeFileSync(join(STD, "placement.md"), lines.join("\n"));
   const dropped = all.filter((id) => { const r = merged.get(id); return !r || r.kind === "not a standard" || r.kind === "retired"; });
-  writeFileSync(join(ROOT, "build/reports/s17-dropped-list.md"), [
+  // Zafar's answer on the list (a line starting **Zafar,) is kept across stitches
+  const droppedFile = join(ROOT, "build/reports/s17-dropped-list.md");
+  const answer = existsSync(droppedFile) ? (readFileSync(droppedFile, "utf8").match(/^\*\*Zafar,.*$/m) || [null])[0] : null;
+  writeFileSync(droppedFile, [
     "# The dropped list (Sprint 17): source IDs that became no rule, value or lesson",
     "",
-    "For Zafar to read whenever he likes; it blocks nothing. A yes keeps them out of the standard; a no names the rule to write.",
+    answer || "For Zafar to read whenever he likes; it blocks nothing. A yes keeps them out of the standard; a no names the rule to write.",
     "",
     "| Source ID | Placed as | Why |",
     "|---|---|---|",

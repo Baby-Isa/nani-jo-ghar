@@ -108,7 +108,7 @@ lesson, not a standard, retired. The dropped list (not a standard, retired, unpl
 | DAAR-12 | rule | STD-H4-01 | daar's stir: how laps and speed show on the card, waiting on Zafar; a B3 rule once he decides; waits on Zafar |
 | DAAR-26 | rule | STD-A4-02 | daar's stir line waits on Mum; waits on Mum (R6-146) |
 | DAAR-36 | rule | STD-D1-02, STD-D3-02, STD-F1-03, STD-H3-03 | the s14 kit list (the lit box, Nani's helper card); daar's own reopen is its gap page; the s14 kit list |
-| DAAR-37 | rule | STD-C2-02, STD-B3-04 | daar's kinds by level follow the count rule; its own numbers are its gap page's; 1 to 3 of one thing, totals by level; daar's own mechanic row: its gap page (Sprint 18) |
+| DAAR-37 | rule | STD-C2-02 | daar's kinds by level follow the count rule; its own numbers are its gap page's; daar's own row of the count rule (1 to 3 of one thing, totals by level; STD-B3-04 retired 7 Nov); daar's own mechanic row: its gap page (Sprint 18) |
 | DAAR-38 | rule | STD-B1-06 | the chop ends on the last chop; daar's own mechanic row: its gap page |
 | DAAR-39 | rule | STD-E2-08 | daar's chop light; its fix is its gap page; daar's chop light: its gap page (the light rules are domain D) |
 | KEEP-21 | rule | STD-B3-03, STD-D2-01, STD-G4-04, STD-H3-05 | praise for the half pour (the card's place and the stuck prompt are E2's and D2's); praise: "the stuck prompt" is on the keep list; also B4; the keep list |

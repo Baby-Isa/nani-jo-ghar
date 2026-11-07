@@ -10,7 +10,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `claude/sprint-17-builders-standard-gub2dj` (the newest handover; `main` has the same tools and docs once pushed).
 
-**Where things stand (Sat 7 Nov 2026, ~16:05 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
+**Where things stand (Sat 7 Nov 2026, ~16:45 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
 look back). Chai signed off; **live on `main`: 20261107T120301Z** (the game unchanged since). Sprint 18 starts from four things,
 all on this branch:
 1. **Chai's frozen run** (`build/reports/s17-frozen-run.md`, `build/frozen/chai-tray/`): the contract L1-L4 at the four sizes (one
@@ -33,8 +33,13 @@ game, its `standard/gaps/<game>.md` first); wave 3 Sun 20:00 (merge, audit, film
 07:00). Lessons for the launches: remove each worktree as its branch merges (eight filled the disk today); builders run
 `checks.mjs --only` (the full run's leak bots tripled the load; `snap` times out under load and passes alone).
 
-**Open questions to Zafar (none blocking):** 1. the skies' four; 2. the tongue depressor's brown; 3. ART-59, the wide-door
-counter; 4. the standard's 14 questions (`docs/questions.md`, each with a recommendation); 5. the dropped list, whenever he likes.
+**Zafar's answers (7 Nov ~16:30):** yes to the day's list except the five he took apart; recorded in
+`docs/sprints/S18-kitchen-family.md` ("Zafar's answers, 7 Nov ~16:30"): **chai is fixed first** (chai's owner: CHAI-105, CHAI-106, CK-60,
+then a re-freeze); pass-me out of every game (`data/cook.json`, on this branch, not yet on `main`: it ships with Sprint 18's publish);
+SH-234 (a 4 px item padding floor); the skies (nights kept, ceiling re-tuned), art block 3c queued; the standard and vision updated.
+
+**Open questions to Zafar (none blocking, `docs/questions.md`):** 1. the age we design for (recommended: youngest 4 with a grown-up,
+core 5 to 10, no upper bound); 2. decoys at L4 (recommended: the rules file, 1-2-3-4; fix contract-37's old description).
 
 **Starting prompt for the new chat (Sprint 18):** the one at the end of the Sprint 17 file ("When Sprint 17 is done"):
 > First `git fetch origin claude/sprint-17-builders-standard-gub2dj` and work from that branch (it holds the newest handover;
@@ -50,7 +55,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 |---|---|---|
 | Shared components (end screen, cards, onboarding, buttons, layout) | 110 | 98 |
 | Cook: pantry | 9 | 10 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 28 / 4 / 7 / 2 / 1 / 4 / 13 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 28 / 3 / 7 / 2 / 1 / 4 / 13 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
 | Clinic | 39 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |

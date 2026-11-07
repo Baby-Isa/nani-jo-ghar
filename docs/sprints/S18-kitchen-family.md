@@ -107,6 +107,21 @@ One line each as they launch: id, what it does, model and effort, report in `bui
     kit builder (c) builds there. The 5 Nov "Engine" scope folds away: a rule scoped Engine goes to House if the pantry or stalls
     need it, else Family. Scopes are now three: House, Family (the kitchen family), Game (chai only).
 
+## Zafar's answers, 7 Nov ~16:30 (the standard's questions and the art: "yes to everything else"; 8, 11, 12, 13, 19 below)
+- **Chai is fixed first ("ensure the chai is fixed"):** chai's owner's first three tasks, before any switch onto a kit piece, each
+  proven by `frozen.mjs --diff` and its check: **CHAI-105** (a boiled-over pot's card stays ticked; contract-96), **CHAI-106** (no
+  card light after a skipped order at L4; contract-90 widened past L1), **CK-60** (a word said after a skip on the take-back
+  player; contract-95). Then re-freeze chai (`frozen.mjs --freeze`) so the guard holds the fixed chai.
+- **Kit builder (e)** (the order card): the item card's padding at least 4 px (SH-234, values.md "item padding floor").
+- **Kit builder (d)** (lights): delete the old `showing.lightHelpArrow` switch as the lights move into the kit (off since 29 Oct).
+- **Pass-me out** of every game (13: `data/cook.json` passMeChance 0, done 7 Nov; MAA-14 parked): no builder brings it back.
+- **The orchestrator's fast lane:** the door's four skies and the sun card swapped in (the nights kept, ceiling re-tuned; the day
+  square kept); art block 3c (the two farm edits, the walnut tongue depressor and hourglass, the wide counter) in the art queue.
+- Settled in the docs: a contrasting pair in teaching order in every game (STD-C1-01), a wrong move brings the hint at once
+  everywhere (STD-D2-04), Nani's hint hides a word past support (STD-D2-05), the call with its light (STD-D1-06), the word moment's
+  pair hold 2.2 s, the white marble kept (ART-55), the vision's age line and cutscene pillar, the dropped list, `publish.mjs --force`
+  needs `--words` (his words into the commit), every brief lists the game's keep rows. 12 (the frown after a wrong cup) left as is.
+
 ## For every brief (lessons from 6-7 Nov)
 - Builders own disjoint files (`brief.mjs --live-check`); a refused brief is not written: check every "Wrote …brief.txt" line.
 - Set `"live": false` on specs once builders finish.

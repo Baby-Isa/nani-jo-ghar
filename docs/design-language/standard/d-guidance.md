@@ -57,7 +57,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Pattern / part:** P8 / the light
 - **Checked by:** contract-79 + contract-78 + probe:CHAI-52
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1, New player (1280x665)
-- **Status:** agreed 3 Nov: Zafar's rule is the call a beat after its light (CHAI-40, his 1 Nov rule kept 3 Nov); the code calls with the light (0 ms, `data/rules.json` showing.callAfterLightMs) until his video shows the moment (29 Oct)
+- **Status:** agreed 7 Nov: the call comes with its light (Zafar, 7 Nov; `data/rules.json` showing.callAfterLightMs 0); was: the call a beat after the light (CHAI-40, 1 and 3 Nov)
 - **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Value:** card light after the last move, breath before a light, call after its light (values.md D1) · **Impact:** stuck · **Source rows:** CHAI-42, CHAI-52, CHAI-77, CHAI-40, CHAI-60
 
 #### STD-D1-07 · After the first items, the light moves briefly to the next item's card on the order card, whole in view
@@ -140,7 +140,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Pattern / part:** - / the stuck hint
 - **Checked by:** contract-91 + probe:CHAI-75 + gap: a wrong-tap-rushes-the-hint contract
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2 (1280x665)
-- **Status:** agreed 3 Nov
+- **Status:** agreed 3 Nov; a wrong move brings the hint at once in every game (Zafar, 7 Nov)
 - **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Impact:** stuck · **Source rows:** CHAI-75, CHAI-55
 
 #### STD-D2-05 · Once a word is past support, no hint says it
@@ -149,7 +149,7 @@ Format: `build/reports/s17-standard-format.md`. New player and Words known are `
 - **Pattern / part:** - / the stuck hint
 - **Checked by:** tool:leak + judge: Nani's stuck line, chai L3
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3, Words known (1280x665)
-- **Status:** waiting on Zafar (keep or change), 3 Nov
+- **Status:** agreed 7 Nov (Zafar: yes)
 - **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Impact:** wrong · **Source rows:** CHAI-76
 
 #### STD-D2-06 · A timed control is called the moment its window opens, never later as a stuck hint

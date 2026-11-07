@@ -33,7 +33,7 @@ tokenise** (still a constant in code). Read from the code on 7 Nov; a design px 
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| pair hold | 2.2 | s | CHAI-81 (Zafar, 4 Nov: "it lingers on the two cards for ... a couple of seconds") | to tokenise (`js/cook/ui.js:153`) | yes, per moment |
+| pair hold | 2.2 | s | CHAI-81 (Zafar, 4 Nov: "it lingers on the two cards for ... a couple of seconds"); 2.2 s, as played (Zafar, 7 Nov) | to tokenise (`js/cook/ui.js:153`) | yes, per moment |
 
 ## B1 The round's steps
 
@@ -130,7 +130,7 @@ tokenise** (still a constant in code). Read from the code on 7 Nov; a design px 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
 | face sizes | 44, 56, 72 (phone 36, 40, 44); the tap 48 | CSS px | contract-42 (three sizes); SH-139 | `--njg-face`, `--njg-guide-face`, `--njg-big-face` | no |
-| item padding floor | 2.6% of the row's width, equal all round | share | SH-190 (1 Nov) | to tokenise (`--njg-itpad`) | no |
+| item padding floor | 2.6% of the row's width and at least 4 px, equal all round | share | SH-190 (1 Nov); the 4 px floor (Zafar, 7 Nov) | to tokenise (`--njg-itpad`) | no |
 | speaker | drawn 32% of its card, up to 60; the tap at least 48 | CSS px | SH-147, SH-185 | `--njg-tap` | no |
 | radius | 12 | CSS px | the design system's corner | `--njg-radius` | no |
 | bubble words | no bigger than the order card's item words | - | SH-186 (1 Nov) | to tokenise | no |

@@ -11,11 +11,11 @@ change only between games (STD-C2-09, STD-C3-05). The numbers live in `data/rule
 
 #### STD-C1-01 · While a contrasting pair of words is still supported, the round asks for them in a set teaching order, and at random once both are learned
 - **Why:** CHAI-55 (Zafar, 1 Nov: "we should be strategic about when we introduce half ... Maybe the first person says half, and the second person says full")
-- **Scope:** Family
+- **Scope:** House
 - **Pattern / part:** - / the order card
 - **Checked by:** probe:CHAI-55
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4` (labs.html: New player), 1280x665
-- **Status:** agreed 1 Nov
+- **Status:** agreed 1 Nov; every game (Zafar, 7 Nov)
 - **Layer:** game (chai's `cups.amount.teach`; Sprint 18 may lift it to the kitchen kit) · **Lives in:** `data/cook.json` · **Impact:** wrong · **Source rows:** CHAI-55
 
 #### STD-C1-02 · Within a round a word is modelled before the child is asked for it: the conversation before the order, the word moment before the kitchen

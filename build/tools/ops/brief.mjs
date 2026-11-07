@@ -109,6 +109,16 @@ if ((s.elements || []).length) {
   add(`PLACES (build/tools/review/kitmap.mjs --elem ${s.elements.join(",")}: where each element is drawn or styled today; one place to fix, the copies go):`, kitMapText(kitMap(s.elements)), "");
 }
 
+// KEEP (Zafar, 7 Nov: every brief carries the game's keep list): the fix list's KEEP rows whose text names one of the brief's games
+// (its flows' stations) or every station: what he liked, never changed without his word
+{
+  const games = [...new Set((s.flows || []).map((f) => (/^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?|clinic:)([\w-]+)/.exec(f) || [])[1]).filter(Boolean).map((g) => g.replace(/-tray$/, "")))];
+  const keeps = loadRegressions().filter((r) => /^KEEP-/.test(r.id) && (/every (station|game)/i.test(`${r.issue} ${r.check}`) || games.some((g) => new RegExp(`\\b${g}\\b`, "i").test(`${r.issue} ${r.check}`))));
+  add(`KEEP (what Zafar liked in ${games.join(", ") || "every game"}: never change it without his word; ${keeps.length}):`);
+  for (const r of keeps) add(`  ${r.id}: ${String(r.issue).replace(/\s+/g, " ").slice(0, 160)}`);
+  add("");
+}
+
 // REGRESSION ROWS (S13-T): the rows the tasks name and the open rows of the elements named, never a flow's whole list (S12's 190+)
 if (!a.has("no-rows") && !a.has("flow-rows")) {
   let kit = { elements: {} }; try { kit = loadKit(); } catch (e) { /* no element map: element rows are listed as unknown */ }

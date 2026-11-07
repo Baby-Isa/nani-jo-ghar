@@ -1,6 +1,6 @@
 # The dropped list (Sprint 17): source IDs that became no rule, value or lesson
 
-For Zafar to read whenever he likes; it blocks nothing. A yes keeps them out of the standard; a no names the rule to write.
+**Zafar, 7 Nov: yes, they stay out.** (For Zafar to read whenever he likes; a no would name the rule to write.)
 
 | Source ID | Placed as | Why |
 |---|---|---|
