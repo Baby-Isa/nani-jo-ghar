@@ -634,6 +634,135 @@
     if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
 
+  /*
+   * SH-232 (Zafar, 7 Nov, phone L4: "I had to scroll down on the left bar so I could see what to put in order number two ... it
+   * ticked off and minimized that order card. But then it scrolled down the left panel as if it had never been scrolled ... the better
+   * logic would have been to scroll the left menu such that the second order card found itself in the desired correct position"):
+   * a served card folding in play takes its panel with it. The card in progress (the host's opts.inProgress(), e.g. Cook's pan in
+   * hand; else the card speaking; else the first card after the folding one that is not done) ends at its planned place, the same aim
+   * as the order's giving (js/cook/ui.js foldGlide, UI.followCard): its top at the panel's top less 4 px, 0 when the whole list
+   * fits, clamped to the scroll range. Where it would be whole in view anyway once the fold is over, nothing moves. The panel's scroll
+   * eases on the fold's own curve and time (css/shared/order-card.css .oc-body), so the card and the panel move as one; a touch or
+   * wheel on the panel while it glides leaves the scroll to the child.
+   */
+  const FOLD_MS = 420;
+  // the fold's curve, cubic-bezier(0.3, 0.7, 0.2, 1): x(t) solved for t by bisection, then y(t)
+  const foldCurve = (u) => {
+    const bz = (t, a, b) => 3 * (1 - t) * (1 - t) * t * a + 3 * (1 - t) * t * t * b + t * t * t;
+    let lo = 0;
+    let hi = 1;
+    for (let i = 0; i < 22; i++) {
+      const m = (lo + hi) / 2;
+      if (bz(m, 0.3, 0.2) < u) lo = m;
+      else hi = m;
+    }
+    return bz((lo + hi) / 2, 0.7, 1);
+  };
+  OC.foldCurve = foldCurve;
+  const scrollerOf = (el) => {
+    for (let x = el && el.parentElement; x && x.nodeType === 1; x = x.parentElement) {
+      if (/(auto|scroll)/.test(getComputedStyle(x).overflowY)) return x;
+    }
+    return null;
+  };
+  // the card's height once folded: a hidden copy beside it, folded at once (.still), measured and taken away in the same frame
+  const foldedHeight = (c) => {
+    const k = c.cloneNode(true);
+    k.classList.remove("reopened");
+    k.classList.add("folded", "still");
+    k.setAttribute("aria-hidden", "true");
+    Object.assign(k.style, { position: "absolute", visibility: "hidden", pointerEvents: "none", left: "0px", top: "0px", width: `${c.getBoundingClientRect().width}px`, boxSizing: "border-box" });
+    c.parentNode.appendChild(k);
+    const h = k.getBoundingClientRect().height;
+    k.remove();
+    return h;
+  };
+  /** The card in progress among a panel's cards, when `card` folds (SH-232). */
+  OC.inProgress = function (sc, card, opts = {}) {
+    const cards = [...sc.querySelectorAll(".oc-card")].filter((c) => !c.classList.contains("oc-big") && c.getBoundingClientRect().height > 0);
+    const open = (c) => c !== card && !c.classList.contains("done");
+    let who = null;
+    try {
+      who = typeof opts.inProgress === "function" ? opts.inProgress() : null;
+    } catch (e) {
+      who = null;
+    }
+    const by = who != null ? cards.find((c) => open(c) && c.dataset.who === String(who)) : null;
+    const i = cards.indexOf(card);
+    return by || cards.find((c) => open(c) && c.classList.contains("speaking")) || cards.slice(i + 1).find(open) || cards.find(open) || null;
+  };
+  /** Fold `card` (fold(): the host's class change) and bring its panel's card in progress to its planned place with it (SH-232). */
+  OC.followFold = function (card, fold, opts = {}) {
+    const sc = typeof getComputedStyle === "function" ? scrollerOf(card) : null;
+    const target = sc && card.parentNode ? OC.inProgress(sc, card, opts) : null;
+    if (!target) return fold();
+    sc.style.overflowAnchor = "none"; // (the browser's own scroll anchoring would pull against the glide; the CSS says it for #mission)
+    // the end state, measured before the fold: the folding card's height lost, and where the card in progress would then be
+    const lr = sc.getBoundingClientRect();
+    const tr = target.getBoundingClientRect();
+    const above = !!(card.compareDocumentPosition(target) & 4); // (Node.DOCUMENT_POSITION_FOLLOWING: the folding card is above it)
+    const delta = above ? Math.max(0, card.getBoundingClientRect().height - foldedHeight(card)) : 0;
+    const view = sc.clientHeight;
+    const top0 = sc.scrollTop;
+    const max1 = Math.max(0, sc.scrollHeight - delta - view);
+    const keep = Math.min(top0, max1);
+    const at1 = top0 + (tr.top - lr.top) - delta;
+    // (the panel's soft foot counts as cut, as in UI.followCard: a masked panel's bottom padding is its fade)
+    const cs = getComputedStyle(sc);
+    const masked = (cs.maskImage && cs.maskImage !== "none") || (cs.webkitMaskImage && cs.webkitMaskImage !== "none");
+    const fade = masked ? parseFloat(cs.paddingBottom) || 0 : 0;
+    fold();
+    if (at1 >= keep - 1 && at1 + tr.height <= keep + view - fade + 1) return; // whole in view once folded: nothing moves
+    const aim1 = max1 <= 1 ? 0 : Math.max(0, Math.min(max1, at1 - 4));
+    if (Math.abs(aim1 - keep) <= 1) return;
+    // the aim live, frame by frame (the folding card's height easing, a host's redraw): the card in progress, found again by its person
+    const who = target.dataset.who;
+    const live = () => {
+      let t = target;
+      if (!t.isConnected && who) t = [...sc.querySelectorAll(".oc-card")].find((c) => c.dataset.who === who && !c.classList.contains("done")) || null;
+      if (!t) return null;
+      const room = sc.scrollHeight - sc.clientHeight;
+      if (room <= 1) return 0;
+      return Math.max(0, Math.min(room, sc.scrollTop + (t.getBoundingClientRect().top - sc.getBoundingClientRect().top) - 4));
+    };
+    if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("panel-follow", { step: who || "", by: `from:${Math.round(top0)} to:${Math.round(aim1)} fold:${Math.round(delta)}` });
+    const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const raf = root.requestAnimationFrame;
+    if (reduced || !raf) {
+      const a = live();
+      if (a != null) sc.scrollTop = a;
+      return;
+    }
+    const me = {};
+    sc._ocFollow = me;
+    const HANDS = ["wheel", "touchstart", "pointerdown"];
+    const stop = () => {
+      if (sc._ocFollow === me) sc._ocFollow = null;
+      HANDS.forEach((ev) => sc.removeEventListener(ev, stop));
+    };
+    HANDS.forEach((ev) => sc.addEventListener(ev, stop, { passive: true }));
+    const now = () => (root.performance && root.performance.now ? root.performance.now() : Date.now());
+    const t0 = now();
+    let last = null;
+    let calm = 0;
+    const step = () => {
+      if (sc._ocFollow !== me || !sc.isConnected) return;
+      const ms = now() - t0;
+      const a = live();
+      if (a == null) return stop();
+      const u = Math.min(1, ms / FOLD_MS);
+      sc.scrollTop = top0 + (a - top0) * foldCurve(u);
+      // past the fold's time, on until the aim is still (the transition's last frames), at most 300 ms more
+      if (u >= 1) {
+        calm = last != null && Math.abs(a - last) < 0.5 ? calm + 1 : 0;
+        if (calm >= 2 || ms > FOLD_MS + 300) return stop();
+      }
+      last = a;
+      raf(step);
+    };
+    raf(step);
+  };
+
   /** Fold a finished card a beat after its last tick; a tap opens (and closes) it again. */
   function foldable(c, st, done, opts) {
     if (!done) {
@@ -652,7 +781,7 @@
       // the card as it is then (a host may have drawn it again since): the one that carries this state
       st.timer = setTimeout(() => {
         const cur = st.el && st.el.isConnected ? st.el : null;
-        if (cur && !st.open && cur.classList.contains("done")) cur.classList.add("folded");
+        if (cur && !st.open && cur.classList.contains("done")) OC.followFold(cur, () => cur.classList.add("folded"), opts);
       }, due);
     }
     c.addEventListener("click", (e) => {
