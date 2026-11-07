@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Shared kit: serving</title>
+<!--
+  The shared kit's section for serving to a customer (Sprint 18, builder b; the module map's piece 8, js/shared/serve.js; STD-F5-03:
+  every kit piece in every state, alone). Cook's own page plays in the frame; this page gives it the showcase (njgKitLab, run by the
+  Pour lab entry, js/cook/mechanics/pour.js) on a tray of glasses, the reference game's (chai's) look. Open it alone, or in a lab
+  shell (an iframe).
+    ?state=one     one glass, right: their happy face over it and the praise beside it (NjgServe.review)
+    ?state=right   four glasses, all right: four happy faces, the praise said once (NjgServe.faces, NjgServe.layout)
+    ?state=wrong   four glasses, two wrong: two gentle frowns, no praise
+    ?state=round   the tick and the recast (NjgServe.round): one glass wrong, its person frowns and is heard again, the glass is
+                   redone, then every face is happy; the caption lists each step
+  &speed=n plays it faster. When a state is reached the caption shows "ready" (class kl-done: the lab check waits for it).
+-->
+<link rel="stylesheet" href="../../css/shared/tokens.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--njg-page); font-family: var(--njg-font); color: var(--njg-ink); }
+  #cook { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #cap { position: absolute; left: 6px; bottom: 6px; z-index: 2; font-size: 12px; line-height: 1.3; background: var(--njg-card); border: 1px solid var(--njg-edge); border-radius: 6px; padding: 3px 7px; max-width: 46%; pointer-events: none; opacity: 0.92; }
+  #cap b { color: var(--njg-ink-soft); }
+  #cap.kl-done b::after { content: " · ready"; color: var(--njg-tick-green); }
+  #cap .err { color: var(--njg-wrong); }
+</style>
+</head>
+<body>
+<iframe id="cook" title="Cook" src="about:blank"></iframe>
+<div id="cap"><b id="cap-state"></b> <span id="cap-what"></span></div>
+<script type="module">
+import { NjgServe } from "../../js/shared/serve.js";
+
+const Q = new URLSearchParams(location.search);
+const STATE = Q.get("state") || "right";
+const SPEED = Number(Q.get("speed")) || 1;
+const cap = document.getElementById("cap");
+const say = (what) => (document.getElementById("cap-what").textContent = what);
+document.getElementById("cap-state").textContent = STATE;
+// a state reached: the caption says so, and the showcase holds there (never ending the lab round, so no end screen comes up)
+const done = (what) => {
+  say(what);
+  cap.classList.add("kl-done");
+  return new Promise(() => {});
+};
+const frame = document.getElementById("cook");
+const S14 = "assets/cook/items-s14/";
+// the reference game's tray (its cut-outs' middles, chai-tray.js WELLS, WELL_D) and its full glasses (the s14 fill's frame 6)
+const WELLS = [[0.283, 0.29], [0.717, 0.29], [0.283, 0.708], [0.717, 0.708]];
+const FULL = { key: "s14-gf-milky-6", file: `${S14}glass/glass-fill-milky-6-s14.webp`, w: 448, h: 464, cx: 209.5, cy: 207.0, r: 205.5 };
+const EMPTY = { key: "v2-glass-empty", file: `${S14}glass/glass-empty-top-s14.webp`, w: 480, h: 469, cx: 243.5, cy: 233.0, r: 230.5 };
+
+window.njgKitLab = async function (L, Cook) {
+  const z = await L.scene("pour", "marble");
+  const S = z.S;
+  const St = Cook.Stations;
+  const D = Cook.D;
+  const v = Cook.view || { left: 0, right: 1600, top: 0, bottom: 900 };
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms / (Cook.speed || 1)));
+  const Serve = NjgServe.for(Cook, frame.contentWindow);
+  const n = STATE === "one" ? 1 : 4;
+  const people = (Cook.FACES || ["nana", "ma", "cousin", "nani"]).slice(0, n);
+  await St.loadArt(S, [["v2-tray", "assets/cook/items/chai-v2/tray-4-cutout-t.webp"], [FULL.key, FULL.file], [EMPTY.key, EMPTY.file]].concat(people.flatMap((w) => Cook.Kit.faceArt(w))));
+  // the tray in the middle of the worktop that shows, its glasses full
+  const trayD = Math.min(420, (v.bottom - v.top) * 0.62);
+  const tx = (v.left + v.right) / 2 - trayD / 2 + 80;
+  const ty = Math.max(v.top + 150, 160);
+  const trayH = (trayD * 754) / 768;
+  const tray = S.track(S.add.image(tx, ty, "v2-tray").setOrigin(0).setDepth(D.item - 4).setDisplaySize(trayD, trayH));
+  const by = Cook.Mech.pour.byRim;
+  const dishes = people.map((who, i) => {
+    const [fx, fy] = WELLS[i];
+    const x = tx + fx * trayD;
+    const y = ty + fy * trayH;
+    const r = (0.33 * trayD) / 2;
+    const full = by(S.track(S.add.image(x, y, FULL.key)), FULL, r).setDepth(D.item + 0.5);
+    const empty = by(S.track(S.add.image(x, y, EMPTY.key)), EMPTY, r).setDepth(D.item + 0.5).setAlpha(0);
+    return { who, x, y, w: full.displayWidth, full, empty };
+  });
+  const layout = { left: tray.x, right: v.right };
+
+  if (STATE === "one" || STATE === "right" || STATE === "wrong") {
+    const wrong = STATE === "wrong" ? [1, 2] : [];
+    await Serve.faces(S, dishes, wrong, layout);
+    return done(STATE === "wrong" ? "two wrong: two gentle frowns, no praise" : STATE === "one" ? "one right: the happy face and the praise" : "all right: four happy faces, the praise said once");
+  }
+
+  if (STATE === "round") {
+    const log = [];
+    const note = (s) => (log.push(s), say(log.join(" · ")));
+    let tries = 0;
+    await Serve.round({
+      items: dishes,
+      done: async (r) => (r ? wait(900) : wait(300)),
+      // the lab's check: the second glass is wrong on its first try only
+      check: (d, r) => ({ ok: !(d === dishes[1] && r === 0), rows: null }),
+      onRight: (d) => d === dishes[1] && note("redo right"),
+      review: async (wrong, r) => {
+        note(r ? "faces again" : `faces (${wrong.length} wrong)`);
+        const wi = wrong.map((d) => dishes.indexOf(d));
+        // (only the dishes still open have a face after the first try)
+        const open = r ? dishes.filter((d) => d === dishes[1]) : dishes;
+        return Serve.faces(S, open, wi.map((i) => open.indexOf(dishes[i])).filter((i) => i >= 0), layout);
+      },
+      oops: async () => note("oops"),
+      recast: async () => (note("said again"), wait(900)),
+      redo: { wrong: () => ({ tries: ++tries, action: tries >= 3 ? "show" : "redo" }) },
+      key: (d) => `serve:${d.who}`,
+      showRight: async () => note("shown"),
+      reset: (d) => (d.full.setAlpha(0), d.empty.setAlpha(1), note("glass emptied")),
+      again: async (items) => {
+        note("redone");
+        await wait(400);
+        items.forEach((d) => (d.full.setAlpha(1), d.empty.setAlpha(0)));
+      },
+    });
+    return done(log.join(" · "));
+  }
+  return done("no such state");
+};
+
+// Cook's own page in the frame; once it has started, the Pour lab entry runs the showcase above (its errors show here too)
+frame.addEventListener("load", () => {
+  const w = frame.contentWindow;
+  if (!w || w.location.href === "about:blank") return;
+  const err = (m) => {
+    console.error(`[cook] ${m}`);
+    const e = document.createElement("div");
+    e.className = "err";
+    e.textContent = String(m).slice(0, 160);
+    cap.appendChild(e);
+  };
+  w.addEventListener("error", (e) => err(e.message));
+  w.addEventListener("unhandledrejection", (e) => err((e.reason && e.reason.message) || e.reason));
+  // (Cook's scene is ready when its title is up: Cook.boot's onSceneReady shows it)
+  const start = () => {
+    const T = w.njgTest && w.njgTest.cook;
+    if (!(T && w.document.querySelector(".title-wrap"))) return setTimeout(start, 150);
+    T.lab("pour", false, { level: 1 }).catch((e) => err(e.message || e));
+  };
+  start();
+});
+frame.src = `../../cook.html?speed=${SPEED}`;
+</script>
+</body>
+</html>

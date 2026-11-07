@@ -154,6 +154,51 @@ function stream(sp, p, w, t = 0) {
   };
 }
 
+/*
+ * The carry (Sprint 18, the kitchen kit's "pan into its glass"; Zafar, 29 Oct: "just having the pans move above the glasses and
+ * empty and the glasses fill up"): the pan lifts off its burner, holds just over its glass and plays its emptying pictures in step
+ * with the glass's filling ones, then goes home. Two plain parts, for js/cook/mechanics/pour.js Cook.Pour.toGlass:
+ *   NjgPour.frameOf(x, n = 6) -> 1..n   the picture for a glass holding x (0 empty, 1 half, 2 full) of n pictures: the half glass on
+ *                                       frame 1 + round((n - 1) / 2) (4 of 6), the full one on n
+ *   NjgPour.holdOver(o) -> {at, z}      where the pan holds while it pours, and its drawn scale there: just above its glass (the rims
+ *        o.gap of the pan's rim apart), else just left of it, else just below, each tried with the pan's whole picture inside o.box
+ *        {l, t, r, b}; drawn smaller (down to 0.6 of its lift size, in 5% steps) where none fits, else the first place.
+ *        o.well {x, y, r} the glass's rim, o.rim the pan's rim (source px), o.scale the pan's scale on the hob, o.lift its scale
+ *        over that as it lifts (1.07), o.meta {w, h, cx, cy, r} its first emptying picture's measures, o.mirror (flipped)
+ */
+function frameOf(x, n = 6) {
+  return Math.max(1, Math.min(n, 1 + Math.round((x * (n - 1)) / 2)));
+}
+function holdOver(o) {
+  const w = o.well;
+  const m = o.meta;
+  const gap = o.gap == null ? 0.12 : o.gap;
+  const box = o.box;
+  const extent = (c, z) => {
+    const k = (o.rim * z) / m.r;
+    const l = o.mirror ? c.x - (m.w - m.cx) * k : c.x - m.cx * k;
+    return { l, r: l + m.w * k, t: c.y - m.cy * k, b: c.y + (m.h - m.cy) * k };
+  };
+  const inView = (c, z) => {
+    if (!box) return true;
+    const e = extent(c, z);
+    return e.l >= box.l && e.r <= box.r && e.t >= box.t && e.b <= box.b;
+  };
+  const spots = (z) => {
+    const d = w.r + o.rim * z * (1 + gap);
+    return [{ x: w.x, y: w.y - d }, { x: w.x - d, y: w.y }, { x: w.x, y: w.y + d }];
+  };
+  const zLift = o.scale * (o.lift == null ? 1.07 : o.lift);
+  let z = zLift;
+  let at = spots(z).find((c) => inView(c, z));
+  for (let i = 0; !at && i < 8; i++) {
+    z = zLift * (1 - 0.05 * (i + 1));
+    at = spots(z).find((c) => inView(c, z));
+  }
+  if (!at) at = spots(z)[0];
+  return { at, z };
+}
+
 /** Play a plan: counter(ms, onUpdate(u)) -> Promise runs the clock (the scene's own, so test speeds apply). */
 function play(o, draw, counter) {
   const p = plan(o);
@@ -272,6 +317,6 @@ function svg(layer, o) {
   return play(spec, draw, o.counter).then(() => root.remove());
 }
 
-export const NjgPour = { plan, holdAt, lipAt, stream, play, phaser, svg, turn, MS };
+export const NjgPour = { plan, holdAt, lipAt, stream, play, phaser, svg, turn, MS, frameOf, holdOver };
 if (typeof globalThis !== "undefined") globalThis.NjgPour = NjgPour;
 export default NjgPour;
