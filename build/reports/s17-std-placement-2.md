@@ -18,19 +18,19 @@ build/reports/s17-std-placement-2.md --mine`.
 | DAAR-38 | rule | STD-B1-06 | the chop ends on the last chop |
 | MAA-14 | rule | STD-B1-07 | Nani's pass-me: never in the first order |
 | CHAI-04 | rule | STD-B2-01 | made in the pan, never the glass |
-| CHAI-24 | rule | STD-B2-03 | the call to act as the window opens |
+| CHAI-24 | rule | STD-D2-06 | the call to act as the window opens |
 | CHAI-38 | rule | STD-B2-03 | the real heat ring and its animation kept |
 | CHAI-57 | rule | STD-B2-04 | early: refused; late: boils over, that pot only |
 | CHAI-58 | rule | STD-B2-05 | the green at L4 2 s (the number is values.md's) |
-| CHAI-10 | rule | STD-B2-05 | the burner reaches the green twice as fast |
+| CHAI-10 | value | heat to the green (values.md B2) | the burner reaches the green twice as fast (STD-B2-05 cut to the window, 7 Nov) |
 | CHAI-61 | rule | STD-B2-06 | a lit pan's boil runs on while another pan is worked |
 | SH-182 | rule | STD-B2-06 | any order lands (the hint naming the next item is D2's) |
 | CK-45 | rule | STD-B2-07 | a tap during a line lands at once |
 | CHAI-62 | rule | STD-B2-09 | a lost dish's row glides back to its start |
 | CHAI-26 | rule | STD-B2-11 | the pour: the pan over its glass (the frames' art is E3's) |
 | CHAI-34 | rule | STD-B2-11 | "the pans move above the glasses and empty" (29 Oct); the top-down pan art is E3's |
-| SH-38 | rule | STD-B3-01 | a count ticks when reached |
-| CHAI-16 | rule | STD-B3-01 | the L1-only tick at the count, superseded by SH-38 (history in the rule's Status) |
+| SH-38 | rule | STD-D4-01 | a count ticks when reached |
+| CHAI-16 | rule | STD-D4-01 | the L1-only tick at the count, superseded by SH-38 (history in the rule's Status) |
 | CHAI-22 | rule | STD-B3-02 | milk, water and tea once each |
 | CHAI-54 | rule | STD-B3-03 | half ticks at the first pour, full at the second |
 | KEEP-21 | rule | STD-B3-03 | praise for the half pour (the card's place and the stuck prompt are E2's and D2's) |

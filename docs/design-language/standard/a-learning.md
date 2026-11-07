@@ -15,7 +15,7 @@ shape: `README.md`, "The rule format".
 - **Checked by:** gap: a word-exposure count over the sandbox's sound log (new words a round, hearings of each)
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=1` (labs.html: New player), 1280x665
 - **Status:** agreed 21 Oct
-- **Layer:** shared kit · **Lives in:** `data/rules.json` (not yet a key) · **Value:** new words a round; hearings a round (values.md A1) · **Impact:** wrong
+- **Layer:** shared kit · **Lives in:** `data/rules.json` (not yet a key) · **Value:** new words a round, hearings a round (values.md A1) · **Impact:** wrong
 
 #### STD-A1-02 · Every item of an order is heard in a family voice as its card is shown, so a deciding word is met as sound and picture together
 - **Why:** "Each word is said at the order (its card pops from the guide), at the shelf, and at the pour" (easy-to-play principle 9, 21 Oct)
@@ -32,14 +32,14 @@ shape: `README.md`, "The rule format".
 - **Pattern / part:** P10 / the item card
 - **Checked by:** probe:SH-200 + probe:CHAI-74 + gap: a picture check that each order card's picture is its shelf item's own file
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4` (labs.html: New player), 1280x665
-- **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` (the row's picture) · **Impact:** wrong · **Source rows:** SH-200, CHAI-74, CHAI-84
+- **Status:** retired 7 Nov: doubles STD-E2-04 (its Whys, check and rows moved there; was: agreed 3 Nov)
+- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` (the row's picture) · **Impact:** wrong
 
 #### STD-A1-04 · Grammar is learned from many varied orders and is never explained to the child
 - **Why:** "Grammar ... comes from many varied orders. It is never explained to children." (easy-to-play principle 9, 21 Oct)
 - **Scope:** House
 - **Pattern / part:** - / -
-- **Checked by:** contract-16
+- **Checked by:** doc:/brief standing lines
 - **See it:** -
 - **Status:** agreed 21 Oct
 - **Layer:** shared kit · **Lives in:** `js/core/lang/` · **Impact:** wrong
@@ -95,7 +95,7 @@ shape: `README.md`, "The rule format".
 - **Why:** "a peek at the dots or the eye ... never count" (the level-up rule, Zafar, 29 Oct round 4); "A reveal is free" (easy-to-play principle 7, 21 Oct)
 - **Scope:** House
 - **Pattern / part:** P14 / the word card
-- **Checked by:** check:unit + contract-31
+- **Checked by:** check:unit + gap: a reveal-is-free contract
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=3` (labs.html: New player + Words known), 1280x665
 - **Status:** agreed 29 Oct
 - **Layer:** shared kit · **Lives in:** `js/shared/word-card.js`, `js/shared/rules.js` · **Impact:** feels bad
@@ -106,8 +106,8 @@ shape: `README.md`, "The rule format".
 - **Pattern / part:** - / the item card
 - **Checked by:** probe:SH-202
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=3` (labs.html: New player + Words known; an order with "no"), 1280x665
-- **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/ui.js`, `css/shared/order-card.css` · **Impact:** wrong · **Source rows:** SH-202
+- **Status:** retired 7 Nov: doubles STD-E2-04 (the filter under a "no" card; its Why and rows moved there; was: agreed 3 Nov)
+- **Layer:** shared kit · **Lives in:** `js/cook/ui.js`, `css/shared/order-card.css` · **Impact:** wrong
 
 ## A3 Words a picture can't show
 
@@ -136,7 +136,7 @@ shape: `README.md`, "The rule format".
 - **Checked by:** judge: the word moment at L4, New player, 1280x665 + gap: a word-moment order check (both fills end before the first snap)
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4` (labs.html: New player), 1280x665
 - **Status:** agreed 4 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/word-moment.js` · **Value:** the word moment's pair hold (values.md A3) · **Impact:** wrong · **Source rows:** CHAI-81
+- **Layer:** shared kit · **Lives in:** `js/shared/word-moment.js` · **Value:** pair hold (values.md A3) · **Impact:** wrong · **Source rows:** CHAI-81
 
 #### STD-A3-04 · A measure's pictures read beyond doubt: the amounts far enough apart to tell at a glance, in one vessel that never changes between them
 - **Why:** CHAI-84 (Zafar, 5 Nov: "half should be a little lower ... full should be right to the rim"); CHAI-79 (4 Nov: "the glasses move around ... the internal reflections are all changing")
@@ -145,7 +145,7 @@ shape: `README.md`, "The rule format".
 - **Checked by:** judge: the two glasses at L4, New player, 740x320 and 1920x1080
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4` (labs.html: New player), 740x320
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/word-moment.js` · **Value:** half's fill line (values.md A3) · **Impact:** wrong · **Source rows:** CHAI-84, CHAI-79
+- **Layer:** shared kit · **Lives in:** `js/shared/word-moment.js` · **Value:** half, full (values.md B3) · **Impact:** wrong · **Source rows:** CHAI-84, CHAI-79
 
 ## A4 Language lines
 
@@ -159,21 +159,21 @@ shape: `README.md`, "The rule format".
 - **Layer:** shared kit · **Lives in:** `js/core/lang/`, `data/lang/` · **Impact:** wrong · **Source rows:** R6-136
 
 #### STD-A4-02 · A line with no Kutchi yet shows its English in grey italic with no "to record" sign, and is logged on Mum's recording sheet
-- **Why:** Zafar, 3 Nov (CLAUDE.md non-negotiable 2; `docs/language/recording-sheet.md`: "this sheet is the log")
+- **Why:** Zafar, 3 Nov (CLAUDE.md non-negotiable 2: missing Kutchi as grey English, logged on the sheet; `docs/language/recording-sheet.md`: "this sheet is the log"); a word for Mum is a numbered question on her sheet
 - **Scope:** House
 - **Pattern / part:** - / -
-- **Checked by:** contract-16 + check:recordings + check:unit
+- **Checked by:** contract-16 + check:recordings + check:words + check:unit
 - **See it:** `lab.html?mode=cook&game=chai-tray&level=4`, 1280x665 (a line still to record)
 - **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/word-card.js`, `build/tools/ops/recordings.mjs` · **Impact:** unfinished · **Source rows:** R6-18, R6-19, R6-131, R6-132, R6-133, R6-134, R6-135, R6-137, R6-138, R6-139, R6-146, DAAR-26, MAA-15, MAA-16, SEK-18
+- **Layer:** shared kit · **Lives in:** `js/shared/word-card.js`, `build/tools/ops/recordings.mjs` · **Impact:** unfinished · **Source rows:** R6-18, R6-19, R6-131, R6-132, R6-133, R6-134, R6-135, R6-136, R6-137, R6-138, R6-139, R6-141, R6-146, DAAR-26, MAA-15, MAA-16, SEK-18, LNG-23
 
 #### STD-A4-03 · A store build plays only clips the family recorded and Zafar marked OK; the device voice speaks a missing line while testing only
-- **Why:** CLAUDE.md non-negotiable 2 ("device-spoken while testing, never in a store build")
+- **Why:** CLAUDE.md non-negotiable 2 ("device-spoken while testing, never in a store build"; Zafar, 3 Nov)
 - **Scope:** House
 - **Pattern / part:** - / -
-- **Checked by:** contract-17 + check:unit
+- **Checked by:** contract-17 + check:unit + gap: the store-build flag that makes every fallback silent (checks-to-build, "No device voice in a store build")
 - **See it:** -
-- **Status:** agreed (CLAUDE.md)
+- **Status:** agreed 3 Nov (CLAUDE.md; before the store run)
 - **Layer:** shared kit · **Lives in:** `js/core/voice.js` · **Impact:** wrong
 
 #### STD-A4-04 · Every Kutchi spelling a line shows is the lexicon's settled form; a losing variant or a banned form never reaches the screen or the voice

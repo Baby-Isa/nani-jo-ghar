@@ -25,8 +25,8 @@ Layers: decision 13 (7 Nov), as in the README.
 - **Layer:** shared kit
 
 #### STD-F1-03 · A game is its settings file and its own mechanic; all else is a kit call
-- **Why:** Sprint 18 rule 1 (7 Nov)
-- **Scope:** Family
+- **Why:** Sprint 18 rule 1 (7 Nov); decision 13 applies it to every game
+- **Scope:** House
 - **Pattern / part:** - / -
 - **Checked by:** tool:kitmap + gap: audit.mjs --standard (Sprint 17's tool builder)
 - **See it:** lab/kit.html (1280x665)
@@ -36,7 +36,7 @@ Layers: decision 13 (7 Nov), as in the README.
 #### STD-F1-04 · A screen or button seen in two modes is one shared component, never restyled
 - **Why:** non-negotiable 6
 - **Scope:** House
-- **Pattern / part:** - / order card, Nani's box, end screen, buttons, face circle
+- **Pattern / part:** - / order card, Nani's box, end screen, the buttons, face circle
 - **Checked by:** check:static/kit + check:static/shell + contract-34 + contract-40 + contract-41 + contract-42 + contract-49
 - **See it:** lab/kit.html (930x430)
 - **Status:** agreed 26 Oct (one kit)
@@ -100,13 +100,13 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 - **Pattern / part:** - / -
 - **Checked by:** check:static/tokens + check:static/jscolour + check:static/fonts + check:static/motion
 - **See it:** -
-- **Status:** agreed 6 Nov
+- **Status:** retired 7 Nov: doubles STD-E6-01 (its Why moved there; was: agreed 6 Nov)
 - **Layer:** shared kit · **Lives in:** `css/shared/tokens.css`, `js/shared/tokens.js`
 
 #### STD-F2-02 · Every number that changes by level is read from the central rules file
 - **Why:** SH-155 (Zafar, 29 Oct): decoys by level from the central rules
 - **Scope:** House
-- **Pattern / part:** - / help ladder
+- **Pattern / part:** - / the hint stages
 - **Checked by:** check:static/hintwait + check:static/ladder + contract-35 + contract-37
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (1280x665)
 - **Status:** agreed 29 Oct
@@ -153,25 +153,25 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 #### STD-F3-03 · A round's reads of progress are frozen at its start and thawed at the end screen; writes save at once
 - **Why:** "word, ladder, effects should only take place after the game has ended" (Zafar, 4 Nov)
 - **Scope:** House
-- **Pattern / part:** P5 / the support steps
+- **Pattern / part:** P5 / the word ladder
 - **Checked by:** probe:SH-195 + gap: a static rule that every ladder read goes through `Cook.core.progress`
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3, Play again (1280x665)
 - **Status:** agreed 4 Nov
 - **Layer:** shared kit · **Lives in:** `js/core/progress.js` · **Source rows:** SH-207, SH-195
 
-#### STD-F3-04 · A list that scrolls by design is marked so; fit engines and checks leave it alone, and code alone places it, never snapping
-- **Why:** "two competing instructions" (Zafar, 5 Nov)
+#### STD-F3-04 · A list that scrolls by design is marked so in its markup, with no scroll bar; fit engines and checks leave it alone, and code alone places it, never snapping
+- **Why:** "two competing instructions"; "jerkily scrolls back and forth" (Zafar, 5 Nov)
 - **Scope:** House
 - **Pattern / part:** P6 / the frame, item row
-- **Checked by:** tool:panelcheck + contract-72 + gap: a panel-steady check as a card opens; a CSS rule failing scroll-snap in a scroller
+- **Checked by:** tool:panelcheck + contract-72 + check:layout/scroll-container + gap: a panel-steady check as a card opens; a CSS rule failing scroll-snap in a scroller
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/frame.js` (data-njg-scroller) · **Source rows:** SH-210, SH-211, SH-199, SH-206, led:1.11-3
+- **Layer:** shared kit · **Lives in:** `js/shared/frame.js` (data-njg-scroller), `js/shared/order-card.js` · **Impact:** feels bad · **Source rows:** SH-210, SH-211, SH-199, SH-206, led:1.11-3, SH-148
 
 #### STD-F3-05 · The next thing to do is published once; the light, hint, helper card and test hooks all read it
 - **Why:** "the hint prompt from Nani should always be the next item" (Zafar, 1 Nov)
 - **Scope:** House
-- **Pattern / part:** P12 / help ladder
+- **Pattern / part:** P12 / the hint stages
 - **Checked by:** contract-79 + contract-89 + contract-91 + probe:SH-182
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2, idle (1280x665)
 - **Status:** agreed 1 Nov
@@ -191,11 +191,11 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 #### STD-F4-01 · A tap area is at least 48 px on screen however small its drawn picture
 - **Why:** "The speaker button for the water is massive" (Zafar, 1 Nov)
 - **Scope:** House
-- **Pattern / part:** P11 / buttons
-- **Checked by:** tool:layout tap-small + contract-73
+- **Pattern / part:** P11 / the speaker
+- **Checked by:** check:layout/tap-small
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
-- **Status:** agreed 1 Nov
-- **Layer:** shared kit · **Value:** the 48 px tap · **Source rows:** SH-185, CHAI-43
+- **Status:** retired 7 Nov: doubles STD-E6-02 (its Why and rows moved there; was: agreed 1 Nov)
+- **Layer:** shared kit
 
 #### STD-F4-02 · A page opened or reloaded starts on one play button, so a phone plays sound from the first line
 - **Why:** "orders give no sound at all" (Zafar, 3 Nov); lesson R6
@@ -204,7 +204,7 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 - **Checked by:** tool:tapgate + probe:SH-198
 - **See it:** chai L1 on a phone, reloaded (930x430)
 - **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/buttons.js` · **Source rows:** SH-198
+- **Layer:** shared kit · **Lives in:** `js/shared/buttons.js` · **Impact:** stuck · **Source rows:** SH-198
 
 #### STD-F4-03 · A game asks at once for only its own files, at drawn size, and decodes every person's lines as the order starts
 - **Why:** "the first item ... didn't have a sound" (Zafar, 3 Nov); decision 68
@@ -213,16 +213,16 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 - **Checked by:** check:load + tool:loadtime + probe:SH-175 + probe:SH-201
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (1280x665)
 - **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/lang.js` (Lang.warm) · **Source rows:** SH-175, SH-201
+- **Layer:** shared kit · **Lives in:** `js/cook/lang.js` (Lang.warm) · **Impact:** stuck · **Source rows:** SH-175, SH-201
 
 #### STD-F4-04 · The next game loads behind the current one, so there is never a wait between games
-- **Why:** "make sure every next game loads in the background" (Zafar, 5 Nov)
+- **Why:** "make sure every next game loads in the background of the current game so there's zero delay" (Zafar, 5 Nov, SH-212)
 - **Scope:** House
 - **Pattern / part:** P13 / -
-- **Checked by:** tool:loadtime + gap: loadtime.mjs failing a wait over 300 ms between stages
-- **See it:** labs.html, a story day (1280x665)
-- **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/cook/flow.js` (Cook.prefetchDishes) · **Source rows:** SH-212
+- **Checked by:** tool:loadtime + gap: loadtime.mjs failing a wait over 300 ms between stages; a next-game preload check (the next game's files fetched before the end screen)
+- **See it:** labs.html, a story day, or Walkthrough (`cook.html?app=1&first=pantry&then=...`) (1280x665)
+- **Status:** agreed 5 Nov; to build before the store run
+- **Layer:** shared kit · **Lives in:** `js/cook/flow.js` (Cook.prefetchDishes), `js/shared/host.js` · **Impact:** feels bad · **Source rows:** SH-212
 
 #### STD-F4-05 · Nothing is seen half-built: a screen is final from its first frame, or covered while it loads
 - **Why:** "the kitchen background still loads and is visible first" (Zafar, 5 Nov)
@@ -240,7 +240,7 @@ flow = `js/cook/flow.js`; (a) to (e): Sprint 18's kit builders; a blank call is 
 - **Checked by:** check:static/loadcap + gap: loadtime.mjs with dropped requests
 - **See it:** chai L4 on a phone (930x430)
 - **Status:** agreed 6 Nov
-- **Layer:** kitchen kit · **Lives in:** lib 742-777 · **Source rows:** CHAI-91, CHAI-25
+- **Layer:** shared kit · **Lives in:** lib 742-777 · **Source rows:** CHAI-91, CHAI-25
 
 ## F5 Test hooks
 

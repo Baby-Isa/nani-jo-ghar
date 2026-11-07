@@ -4,14 +4,14 @@
 
 ## E1 The frame
 
-#### STD-E1-01 · Every screen is laid out by height and works at all four sizes, none with its own exception
-- **Why:** "layouts by height" (Zafar, 27 Oct); CHAI-33 (3 Nov)
+#### STD-E1-01 · The frame's measures follow the window's height, never its width
+- **Why:** "layouts by height" (Zafar, 27 Oct); the four sizes themselves are STD-02-04
 - **Scope:** House
 - **Pattern / part:** P11 / the frame
-- **Checked by:** tool:labcheck + tool:panelcheck + doc:CLAUDE.md
+- **Checked by:** tool:panelcheck + doc:CLAUDE.md
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
-- **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/frame.js` · **Value:** four sizes (values.md 0.2) · **Impact:** wrong · **Source rows:** CHAI-33, CHAI-86
+- **Status:** agreed 7 Nov, Fable's rewording (was: laid out by height and works at all four sizes, 3 Nov)
+- **Layer:** shared kit · **Lives in:** `js/shared/frame.js` · **Value:** panel scale (values.md E1) · **Impact:** wrong
 
 #### STD-E1-02 · The side panel's size follows only the window, scaling as one to a 2.5-card floor, never changing as a card opens
 - **Why:** "is there no scaling ... on the left bar?" (Zafar, 1 Nov)
@@ -28,8 +28,8 @@
 - **Pattern / part:** P6 / the item row
 - **Checked by:** contract-72 + check:layout/scroll-container
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (930x430)
-- **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Impact:** feels bad · **Source rows:** SH-211, SH-148, SH-210, led:1.11-3
+- **Status:** retired 7 Nov: doubles STD-F3-04 (its Why, check and rows moved there; was: agreed 5 Nov)
+- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Impact:** feels bad
 
 #### STD-E1-04 · Whatever the child needs next is always whole in view, the panel or the row gliding to show it
 - **Why:** "it needs to automatically scroll up" (Zafar, 1 Nov)
@@ -44,7 +44,7 @@
 - **Why:** "aren't in line with the tea tray and the tea hobs" (Zafar, 1 Nov)
 - **Scope:** House
 - **Pattern / part:** P1 / the shelf
-- **Checked by:** tool:pillcheck + tool:shelfshot + contract-54 + contract-75 + probe:CHAI-19
+- **Checked by:** tool:pillcheck + tool:shelfshot + contract-54 + probe:CHAI-19
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
 - **Status:** agreed 4 Nov
 - **Layer:** shared kit · **Lives in:** `js/cook/stations/chai-tray.js` · **Value:** shelf line, gap floor (values.md E1) · **Impact:** wrong · **Source rows:** CHAI-66, SH-208, CHAI-02, CHAI-19, CHT-17, CK-53, SH-187
@@ -79,13 +79,13 @@
 - **Layer:** shared kit · **Lives in:** `css/shared/order-card.css` · **Value:** item padding floor (values.md E2), Nani's line room (values.md D3) · **Impact:** cosmetic · **Source rows:** SH-190, SH-193, SH-165, SH-143, SH-189, SH-209, SH-179, SH-192, SH-176, CLN-218
 
 #### STD-E2-04 · An item card shows the thing exactly as the play area does, every state's filter stacking on the others
-- **Why:** "the one on the shelf is the correct one" (Zafar, 3 Nov)
+- **Why:** "the bottle of ginger on the item card is different from the bottle of ginger on the shelf ... the one on the shelf is the correct one" (Zafar, 3 Nov, SH-200); "the item cards for full and half cup need to be the side on views" (3 Nov, CHAI-74); "the order of no sugar doesn't blur the sugar as well as it's meant to" (3 Nov, SH-202)
 - **Scope:** House
 - **Pattern / part:** P10 / the item card
-- **Checked by:** probe:SH-200 + probe:SH-202
+- **Checked by:** probe:SH-200 + probe:SH-202 + probe:CHAI-74 + gap: a picture check that each order card's picture is its shelf item's own file
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (1280x665), Words known
 - **Status:** agreed 5 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js` · **Impact:** wrong · **Source rows:** SH-200, SH-202, CHAI-74, CHAI-84
+- **Layer:** shared kit · **Lives in:** `js/shared/order-card.js`, `js/cook/ui.js` (the row's picture), `css/shared/order-card.css` · **Impact:** wrong · **Source rows:** SH-200, SH-202, CHAI-74, CHAI-84
 
 #### STD-E2-05 · The pop-out keeps L1's shape, scaled evenly to the biggest that fits the free room, never bigger than at L1
 - **Why:** "Just keep ... its usual proportions." (Zafar, 2 Nov)
@@ -114,14 +114,14 @@
 - **Status:** agreed 1 Nov
 - **Layer:** shared kit · **Lives in:** `css/shared/face.css` · **Value:** face sizes (values.md E2) · **Impact:** feels bad · **Source rows:** SH-139, SH-140, SH-183, CHAI-47, CHAI-65, CHAI-18
 
-#### STD-E2-08 · A lit box hugs its target by one margin all round, its corners at most a quarter of its height, and never crosses a face
-- **Why:** "it can't have such rounded corners" (Zafar, 3 Nov)
+#### STD-E2-08 · A lit box hugs its one whole target (picture, pill, face) by one margin all round, its corners at most a quarter of its height, and never crosses a face
+- **Why:** "a general rule ... that leaves some padding" (Zafar, 6 Nov night); "it can't have such rounded corners" (Zafar, 3 Nov)
 - **Scope:** House
 - **Pattern / part:** - / the light
 - **Checked by:** contract-53 + contract-92 + contract-82 + contract-84 + probe:CHAI-33
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (740x320), New player
-- **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** light pad, light corner (values.md D1) · **Impact:** wrong · **Source rows:** CHAI-33, SH-196, led:1.6-11, CHAI-25
+- **Status:** agreed 6 Nov (the corners 3 Nov)
+- **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** light pad, light corner (values.md D1) · **Impact:** wrong · **Source rows:** CHAI-33, SH-196, led:1.6-11, CHAI-25, CHAI-47, SEK-22, DAAR-39
 
 ## E3 Art and materials
 
@@ -149,8 +149,8 @@
 - **Pattern / part:** - / the frame
 - **Checked by:** check:static/tokens + judge: chai L1 at the four sizes
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (1280x665)
-- **Status:** agreed 5 Nov
-- **Layer:** kitchen kit · **Lives in:** `css/cook-side-v2.css` · **Value:** stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-40, ART-41
+- **Status:** agreed 5 Nov; whether the marble and the stone fit the house strip waits on Zafar (ART-55, 6 Nov)
+- **Layer:** kitchen kit · **Lives in:** `css/cook-side-v2.css` · **Value:** stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-40, ART-41, ART-55
 
 #### STD-E3-04 · The hob always shows each pan's own picture for its state, centred on its burner, the heat ring over its handle
 - **Why:** "the burner still showing" (Zafar, 6 Nov)
@@ -193,7 +193,7 @@
 #### STD-E4-03 · A thing that changes with time shows it in its own picture, at every level
 - **Why:** "I didn't see that on the other modes" (Zafar, 1 Nov)
 - **Scope:** Family
-- **Pattern / part:** P9 / the hob
+- **Pattern / part:** P10 / the hob
 - **Checked by:** judge: the boil, chai L1 and L4 + gap: a contract that the boil shows before the green
 - **See it:** lab.html?mode=cook&game=chai-tray&level=1 (1280x665)
 - **Status:** agreed 1 Nov
@@ -225,8 +225,8 @@
 - **Pattern / part:** - / -
 - **Checked by:** contract-21 + contract-74 + contract-75
 - **See it:** lab.html?mode=cook&game=chai-tray&level=2 (1280x665)
-- **Status:** agreed 28 Oct
-- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Impact:** feels bad · **Source rows:** CK-45, CK-54
+- **Status:** retired 7 Nov: doubles STD-B2-07 (a tap lands during a line) and STD-B1-05 (the skip), its rows moved there (was: agreed 28 Oct)
+- **Layer:** shared kit · **Lives in:** `js/cook/ui.js` · **Impact:** feels bad
 
 #### STD-E5-03 · Every action has its own clearly heard sound, and no effect sounds over a family line
 - **Why:** "audibly, yes, we should have juiciness" (Zafar, 1 Nov)
@@ -237,14 +237,14 @@
 - **Status:** agreed 6 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/sfx.js` · **Impact:** unfinished · **Source rows:** CHAI-92, CHAI-87, ART-31, SH-196, CHAI-72
 
-#### STD-E5-04 · Sound follows the child: nothing read aloud during an action, no click it did not cause, an ongoing sound growing with its thing
-- **Why:** "It just comes at the wrong time every time" (Zafar, 6 Nov)
+#### STD-E5-04 · No line is read aloud while the child is mid-action
+- **Why:** "when the tea is pouring it says 'milk and one sugar' which it shouldn't" (Zafar, 30 Oct, CHAI-51); the click and the boil's rise are STD-B4-02 and STD-B4-03
 - **Scope:** House
 - **Pattern / part:** - / -
-- **Checked by:** probe:CHAI-51 + probe:CHAI-95 + probe:CHAI-100 + tool:voicegate
-- **See it:** lab.html?mode=cook&game=chai-tray&level=2 (1280x665)
-- **Status:** agreed 6 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/sfx.js`, `js/cook/kitchen-kit.js` · **Value:** boil loudness (values.md E5) · **Impact:** feels bad · **Source rows:** CHAI-51, CHAI-95, CHAI-100
+- **Checked by:** probe:CHAI-51 + tool:voicegate
+- **See it:** lab.html?mode=cook&game=chai-tray&level=2, a pour (1280x665)
+- **Status:** agreed 7 Nov, Fable's cut (was: sound follows the child, three rules in one, 6 Nov)
+- **Layer:** shared kit · **Lives in:** `js/core/voice.js`, `js/cook/ui.js` · **Impact:** feels bad · **Source rows:** CHAI-51
 
 #### STD-E5-05 · Every line sounds the first time: a fresh page waits on one play button, and lines load as the order starts
 - **Why:** "the first item in their order didn't have a sound" (Zafar, 3 Nov)
@@ -252,22 +252,22 @@
 - **Pattern / part:** P13 / the play button
 - **Checked by:** tool:tapgate + tool:loadtime + probe:SH-198 + probe:SH-201
 - **See it:** lab.html?mode=cook&game=chai-tray&level=3 (740x320), reloaded
-- **Status:** agreed 3 Nov
-- **Layer:** shared kit · **Lives in:** `js/shared/buttons.js` · **Impact:** stuck · **Source rows:** SH-198, SH-201, SH-175
+- **Status:** retired 7 Nov: doubles STD-F4-02 (the play button) and STD-F4-03 (files at once), its rows moved there (was: agreed 3 Nov)
+- **Layer:** shared kit · **Lives in:** `js/shared/buttons.js` · **Impact:** stuck
 
 ## E6 Tokens
 
 #### STD-E6-01 · Every colour, shadow, font and kit motion comes from the shared tokens, with one highlight colour for whatever is lit
-- **Why:** "keep the fonts in the repo" (Zafar, 6 Nov); decision 95
+- **Why:** one kit (Zafar, 26 Oct, decisions 2 and 8); "keep the fonts in the repo" (Zafar, 6 Nov); decision 95
 - **Scope:** House
 - **Pattern / part:** - / the glow
 - **Checked by:** check:static/tokens + check:static/jscolour + check:static/fonts + check:static/motion + contract-14 + contract-87
 - **See it:** lab/kit.html (1280x665)
 - **Status:** agreed 6 Nov
-- **Layer:** shared kit · **Lives in:** `css/shared/tokens.css` · **Value:** focus colour, stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-41
+- **Layer:** shared kit · **Lives in:** `css/shared/tokens.css`, `js/shared/tokens.js` · **Value:** focus colour, stone (values.md E6) · **Impact:** cosmetic · **Source rows:** ART-41
 
 #### STD-E6-02 · Every size comes from the one scale, with text never under 14 px, a tap area never under 48 px and spacing on the grid
-- **Why:** the frame's floors; SH-185 (2 Nov)
+- **Why:** the frame's floors; SH-185 (2 Nov); "The speaker button for the water is massive" (Zafar, 1 Nov: the tap stays 48 px however small its picture)
 - **Scope:** House
 - **Pattern / part:** P11 / the frame
 - **Checked by:** check:layout/text-small + check:layout/tap-small + check:unit

@@ -12,14 +12,35 @@ tokenise** (still a constant in code). Read from the code on 7 Nov; a design px 
 | phone | the short side under 500 | CSS px | decisions 24, 25 | `data/layout.json` formFactors | no |
 | tablet | short side 600 or more, no wider than 3:2; scale 1.15 to 1.4 | CSS px | decisions 24, 25 | `data/layout.json` formFactors | no |
 
+## A1 The words
+
+| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
+|---|---|---|---|---|---|
+| new words a round | 3 to 5 | words | easy-to-play principle 9 (Zafar's yes, 21 Oct) | to tokenise (`data/rules.json`, not yet a key) | with Zafar |
+| hearings a round | 3 or more of each new word | hearings | easy-to-play principle 9 (Zafar's yes, 21 Oct) | to tokenise (`data/rules.json`, not yet a key) | with Zafar |
+
 ## A2 The word card's support
 
 | Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
 |---|---|---|---|---|---|
-| card by level | English at L1; the picture at L1-L2; Kutchi always | levels | SH-110 (26 Oct), contract-35 | `data/rules.json` levels.cardEnglish, cardPicture | with Zafar |
+| card by level | English at L1; the picture at L1-L2; Kutchi always | levels | `data/rules.json` levels (Zafar, 29 Oct) | `data/rules.json` levels.cardEnglish, cardPicture | with Zafar |
+| support by stage | stages 1-2: picture, English and Kutchi text; 3: no English; 4: no picture; 5: the speaker alone | word stage | the fade order (Zafar, 21 Oct: English, then the picture, then the Kutchi text) | `data/progress.json` support | with Zafar |
 | pill right in a row | 3 | right picks | SH-159 (Zafar, 29 Oct) | `data/rules.json` words.pill.rightInARow | with Zafar |
 | word hold | new 1.5, learning 1.0, known 0.6 | s | SH-159 | `data/rules.json` words.holdMs | with Zafar |
 | reveal English shown | 1.6 | s | SH-196 (Zafar, 3 Nov) | to tokenise | no |
+
+## A3 Words a picture can't show
+
+| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
+|---|---|---|---|---|---|
+| pair hold | 2.2 | s | CHAI-81 (Zafar, 4 Nov: "it lingers on the two cards for ... a couple of seconds") | to tokenise (`js/cook/ui.js:153`) | yes, per moment |
+
+## B1 The round's steps
+
+| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
+|---|---|---|---|---|---|
+| passMeAfterPlays | 2 plays of the dish before Nani may ask | plays | MAA-14 (6 Oct: "never in a mode's first plays") | `data/cook.json` calm.passMeAfterPlays | yes |
+| passMeChance | per order: relaxed 0.4, busy 0.55, L1 0.2; none in a session's first order; at most once an order (twice in busy above L1) | chance | Wave 5, clarity and calm (`js/cook/flow.js:177-189`, `:442-444`) | `data/cook.json` calm.passMeChance | yes |
 
 ## B2 The mechanic
 
@@ -47,6 +68,12 @@ tokenise** (still a constant in code). Read from the code on 7 Nov; a design px 
 | "no" asks | from L2 | level | the rulebook (29 Oct) | `data/rules.json` levels.noAsks | with Zafar |
 | level up | 3 rounds in a row, at most 1 hint; never down; top L4 | rounds | Zafar, 29 Oct | `data/rules.json` advance | with Zafar |
 | people at the counter | 1: middle; 2: middle, right; 3: all | spots | Zafar, 29 Oct | `data/rules.json` scene.counterSpots | yes |
+
+## C3 Across the word ladder
+
+| Name | Value or formula | Unit | Derived from | Token or "to tokenise" | A family may change it |
+|---|---|---|---|---|---|
+| recalls to move a stage | 0, 4, 5, 6 (stage 1 to 2, 2 to 3, 3 to 4, 4 to 5) | recalls from the Kutchi | easy-to-play principle 7 (Zafar's yes, 21 Oct: "6-10 meetings across days"); rule G23 | `data/progress.json` understand.advanceAfter | with Zafar |
 
 ## D1 The first time
 
@@ -122,7 +149,7 @@ tokenise** (still a constant in code). Read from the code on 7 Nov; a design px 
 |---|---|---|---|---|---|
 | card fold | 0.42, cubic-bezier(0.3, 0.7, 0.2, 1) | s | SH-180 (Zafar, 1 Nov) | to tokenise (`css/shared/order-card.css`) | no |
 | landing error | within 2 | CSS px | SH-203 (4 Nov) | not a token (the check) | no |
-| word moment pace | speed 0.75; look 0.9; frame 0.5; each card 1; both 2.2 | s | CHAI-70 (3 Nov), CHAI-81 (4 Nov); was 2.4 s | to tokenise (`js/cook/ui.js`) | yes, per moment |
+| word moment pace | speed 0.75; look 0.9; frame 0.5; each card 1; both: the pair hold (A3) | s | CHAI-70 (3 Nov), CHAI-81 (4 Nov); was 2.4 s | to tokenise (`js/cook/ui.js`) | yes, per moment |
 | word moment room | top margin 4%; the glass at most 42% of the height; the counter at most 65% down | share | CHAI-86 (5 Nov), CHAI-101 (6 Nov) | to tokenise (`js/shared/word-moment.js`) | yes |
 | stream gap | the spout 0.4 of a glass above the rim | glass | CHAI-86 (Zafar, 5 Nov) | to tokenise | no |
 | glow, pulse | 1.2 each; the pulse to 1.06 | s | the kit's focal glow | `--njg-glow-ms`, `--njg-pulse-ms` | no |
