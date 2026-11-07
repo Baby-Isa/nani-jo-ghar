@@ -72,4 +72,5 @@ its gap page), PAN-19, PAN-22 (sprint-plan decisions changed on 7 Nov). Left to 
   in the fragments; 93 unplaced; 80 rules defined; 0 problem(s).
 - `wc -w`: f-build 2,500, g-proof 2,488, h-supply 2,055, patterns 1,201.
 - `node build/tools/review/docs.mjs`: within every limit (every backticked path exists).
-- `node build/tools/review/checks.mjs`: CHECKS_RESULT
+- `node build/tools/review/checks.mjs`: 11 of 12 ok (unit 661 pass, words, static 0 new, bump, specs, docs, fixlist, recordings,
+  art, size, load 29/29). One FAIL that is not mine: `leak` on snap g1 L1 (oracle 100%, lens 63%), a parked game no file of mine touches.
