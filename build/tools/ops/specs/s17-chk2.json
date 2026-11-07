@@ -8,7 +8,7 @@
   "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "tools",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/process/checks-to-build.md (row 26 the boil-over driver; 'The zoom-in light, checked everywhere'; 'A first-time lesson survives a tap during the order' SH-196)",
     "docs/process/regressions.md row SH-232 and docs/feedback/chai-play-2026-11-07.md (the panel follows a fold)",

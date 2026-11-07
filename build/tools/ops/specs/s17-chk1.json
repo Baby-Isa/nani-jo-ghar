@@ -8,7 +8,7 @@
   "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "tools",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "build/sandbox/lib/contract-chai.mjs (contract-70, -71, -90), build/sandbox/lib/contract-s14.mjs (CONTROL_CALLS at :28; contract-91 where it lives), build/sandbox/lib/contract.mjs:1415-1440 (CHAI_ROW, S14_TAPS, DECOY_STATIONS, DECOY_AT_LEAST)",
     "docs/sprints/S18-kitchen-family.md (the family list: chai, chop, daar, chaat, samosa, maani, sekelo, eggs, baking, the corn stall)",

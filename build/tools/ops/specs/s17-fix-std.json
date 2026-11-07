@@ -1,0 +1,49 @@
+{
+  "name": "s17-fix-std: Fable's review of the standard applied (doubles retired, layers, values names, glossary, sizes, patterns, Whys)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "judgement on which of two rules survives and exact rewording",
+  "cost": "about $10-15",
+  "stop": "7 Nov 2026, 17:30 UK",
+  "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "docs",
+  "browser": false,
+  "live": true,
+  "read": [
+    "build/reports/s17-standard-review-fable.md (THE list: fixes 1, 2, 3, 5, 6, 7, 8, 9, 10; fix 4 is s17-fix-audit's, except dropping its four mis-cited contracts, which is yours since they are in the pages)",
+    "build/reports/s17-standard-format.md (the format)",
+    "docs/design-language/standard/ (all pages)",
+    "docs/architecture/module-map.md (the layers fix 2 aligns to)",
+    "data/rules.json, data/cook.json, js/cook/flow.js:179-185 (fix 5's pass-me), data/progress.json"
+  ],
+  "owns": [
+    "docs/design-language/standard/*.md (every page, placement.md through the stitch only)",
+    "build/reports/s17-std-placement-*.md (move Source rows of retired doubles to their survivors)",
+    "docs/architecture/module-map.md (only the 'STD-F1-01 to -07' citation)",
+    "build/reports/s17-fix-std.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (no game code)",
+    "build/tools/** (s17-fix-audit owns lib/standard.mjs and audit.mjs)",
+    "docs/questions.md and docs/process/regressions.md (the orchestrator adds STD-B3-04's question and the contract-44 row, SH-233, already added)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "Fix 1, the doubles: for every pair or triple Fable lists, keep the survivor he names, retire the other block(s) in place (Status 'retired 7 Nov: doubles STD-x', the rule text kept), move their Why, Source rows, gaps and Values into the survivor, apply his rewordings (E1-01, B3-02, B2-03, B2-05, E5-04, H2-05). Then update every placement fragment row that pointed only at a retired rule so it points at the survivor, and run `node build/tools/review/stdids.mjs --stitch && node build/tools/review/stdids.mjs --check`.",
+      "accept": "stdids --check 0 problems; no placement row cites only a retired rule (grep); every retired block says which rule it doubles"
+    },
+    {
+      "do": "Fix 2 (the four Layer fields and the module map's F1 citation), fix 3 (STD-D1-02's Checked by as Fable wrote it, citing SH-233; values.md A2 'card by level' derived from data/rules.json levels, Zafar 29 Oct), fix 4's mis-cites in the pages (STD-A2-05, A1-04, E1-05, F4-01 as Fable wrote), fix 5 (B1-07 reworded to the code with Value rows passMeAfterPlays and passMeChance in values.md; B2-08's clause cut unless you find its source; B3-04's Status 'daar's; the family's number is Zafar's to confirm'; D1-06's Status carrying both, newest first), fixes 6-10 as listed (Value names, the new values.md rows, glossary parts, 1280x665 for 1366x768, patterns.md's lists, E3-03 ART-55, F1-03 House, H rules' Layer '-').",
+      "accept": "each of Fable's items 1-3 and 5-10 is done or its reason not to is in the report; `node build/tools/review/docs.mjs` within every limit; every Value field names a values.md row (a script check in your report)"
+    },
+    {
+      "do": "Write build/reports/s17-fix-std.md: a table of Fable's items, each done (what changed) or not (why); rule counts live and retired; a 'Proof' section. Run `node build/tools/review/checks.mjs --only docs,unit` before your last commit.",
+      "accept": "report written; those checks pass"
+    }
+  ],
+  "flows": [],
+  "port": 8861,
+  "report": "s17-fix-std",
+  "publish": false
+}

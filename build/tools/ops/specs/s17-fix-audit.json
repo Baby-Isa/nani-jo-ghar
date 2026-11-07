@@ -1,0 +1,49 @@
+{
+  "name": "s17-fix-audit: audit --standard runs or names every tool the standard's rules cite",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "a well-specified extension of a parser and a resolver",
+  "cost": "about $5-8",
+  "stop": "7 Nov 2026, 17:30 UK",
+  "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
+  "kind": "tools",
+  "browser": false,
+  "live": true,
+  "read": [
+    "build/reports/s17-standard-review-fable.md fix 4",
+    "build/tools/review/lib/standard.mjs (TOOL_STEP, the resolver), build/tools/review/audit.mjs, build/reports/s17-tool.md",
+    "docs/design-language/standard/*.md (grep every `tool:` term to list the tools named)",
+    "docs/tools.md (what each review tool prints and how it exits)"
+  ],
+  "owns": [
+    "build/tools/review/lib/standard.mjs",
+    "build/tools/review/audit.mjs",
+    "build/tools/review/standard.test.mjs",
+    "build/tools/review/fixtures/standard/**",
+    "build/reports/s17-fix-audit.md"
+  ],
+  "readOnly": [
+    "docs/design-language/standard/** (s17-fix-std edits it now)",
+    "js/**, css/**, data/**",
+    "every other tool's own file (run them, never change them)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "List every `tool:<name>` the standard's pages cite (grep). Sort them: review tools that judge a game and can run in the audit (voicegate, kitsheet, teachgate, tapgate, pillcheck, shelfshot, spkgap, lightfollow, faces, kitmap, and any other that takes a game and exits 1 on a fault), and process tools that judge a session, not a game (publishgate, evidence, feedbackcheck, brief, stdids, the art and Mum tools, test_cook_mount, and the like).",
+      "accept": "the report has both lists with each tool's file"
+    },
+    {
+      "do": "Process tools resolve as 'judge' with the tool's name (as doc: does), never 'not run'. Review tools: add each to the audit as an optional step (`--only` keys, and an `--steps all` that runs every one) with its own command for the game, so `audit --standard` reads their result when the audit ran them, and says 'not run (run: audit.mjs <game> --only <key>)' when it did not. Keep the default audit's steps as they are (sandbox, panel, labcheck, leak, load), so its run time does not grow unasked. A tool that cannot judge one game yet (it is chai-only or needs a lab) resolves as 'judge' with that reason.",
+      "accept": "standard.test.mjs passes with new tests (a process tool reads judge; a review tool not run names its --only key; one ran reads pass/fail); `node build/tools/review/audit.mjs --standard chai-tray --run frozen-chai-20261107 --quiet` prints no 'the audit has no step for it'"
+    },
+    {
+      "do": "Write build/reports/s17-fix-audit.md (the tools, the steps added, the before and after counts of not run, a 'Proof' section); docs/tools.md is the orchestrator's (say the line to add in the report); run `node build/tools/review/checks.mjs --only unit,docs` before your last commit.",
+      "accept": "report written; checks pass"
+    }
+  ],
+  "flows": [],
+  "port": 8862,
+  "report": "s17-fix-audit",
+  "publish": false
+}

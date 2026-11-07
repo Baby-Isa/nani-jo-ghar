@@ -8,7 +8,7 @@
   "branch": "claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges)",
   "kind": "tools",
   "browser": false,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s17-standard-format.md (the rule block and the Checked-by words: your parser's grammar)",
     "build/tools/review/audit.mjs, build/tools/review/stdids.mjs (the folder's reader to share), docs/tools.md",
