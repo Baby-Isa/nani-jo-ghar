@@ -109,8 +109,8 @@ Do not add any text, letters, numbers, labels, signs, logos or watermarks.
 - **Wire (a build session):** `data/day.json` `weather.<w>.sky.art` → the door's four skies (the ride window and tomorrow's card
   then paint the picture, not the SVG gradient); nothing else changes.
 - **Landed (7 Nov; `build/reports/s17-sky-landed-2026-11-07.md`):** the cuts live in **`assets/backgrounds/s17-sky/`** (the
-  landing brief's folder; not `assets/day/sky/` as above, so `look-rules.json` `palette.sky` still needs a glob for it: a
-  request in the report), 424 KB in 15 files, nothing in the game pointing at them yet: `sky-sunny`, `sky-cloudy`,
+  landing brief's folder, not the new day folder named above, so `look-rules.json` `palette.sky` still needs a glob for it:
+  a request in the report), 424 KB in 15 files, nothing in the game pointing at them yet: `sky-sunny`, `sky-cloudy`,
   `sky-raining`, `sky-night` (1536×1024, WebP q 86 at the source size), `door-sun` (960×720, the 4:3 cover crop of SC01 about
   its centre: 1.5× today's 640×480 card), the bank `sky-<time>-wide` (1536×1024) and `sky-<time>-square` (1254×1254, the
   generator's square), and `sky-sunny-tile` and `sky-night-tile` (1472×1024: the last 64 columns cross-faded into the first
