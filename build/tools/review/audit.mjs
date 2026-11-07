@@ -49,7 +49,7 @@ async function standardAudit() {
   try { contract = loadContract(a.val("run") ? runDir(a.val("run")) : latestContractRun(RUNS, game), game); }
   catch (e) { console.error(e.message); return 2; }
   sources.push(contract.found
-    ? `contract run: \`${short(contract.dir)}\` (${contract.date || "undated"}; ${contract.ran.size} checks, ${contract.gamePages} of ${contract.pages || "its"} pages are ${game}, ${contract.breaks.length} breaks in all)${contract.covered ? "" : "; it has no pages of this game, so every contract term is not run"}`
+    ? `contract run: \`${short(contract.dir)}\` (${contract.date || "undated"}; ${contract.ran.size} checks, ${contract.gamePages} of ${contract.pages || "its"} pages are ${game}, ${contract.breaks.length} break(s) in all)${contract.covered ? "" : "; it has no pages of this game, so every contract term is not run"}`
     : "contract run: none found (every contract term is not run; give --run <id|folder>)");
 
   // checks: --run-checks runs the no-browser steps now; --checks <file> or the last saved output otherwise
