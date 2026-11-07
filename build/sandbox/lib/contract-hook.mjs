@@ -51,7 +51,7 @@ export function playerName(text, inNameEl, typed) {
   const t = String(text).trim().toLowerCase();
   return !!t && [...(typed || [])].some((n) => String(n || "").trim().toLowerCase() === t);
 }
-export const CONTRACT_HOOK = `(() => {
+const BASE_HOOK = `(() => {
   if (window.__njgContractHook) return;
   window.__njgContractHook = true;
   const emit = (e) => {
@@ -939,3 +939,117 @@ export const CONTRACT_HOOK = `(() => {
     } catch (e) {}
   }, true);
 })();`;
+
+// ---- S17 (s17-chk2): the three probes the S17 checks (lib/contract-s17.mjs) read. A function, not a string: the page gets its source ----
+//   k: "litthing" {hole, thing, sel}    the first-time help's light and the whole thing it sits on (the item card .wc14, else the order
+//                                       card): the first lit box's middle looked through to what is under it (contract-97: a light on a
+//                                       part smaller than a quarter of its thing starts on the thing and shrinks onto the part)
+//   k: "reveal"   {dots, eyes}          the dotted words and the blurred pictures on the order panel's open item cards (contract-98)
+//   k: "panel"    {st, sh, view, top, cards, rows, focus}   the order panel (#mission): its scroll, and each card's top in it, its
+//                                       rows done and its item row's sideways scroll (contract-96, contract-99)
+//   k: "fold"     {who, at}             a served card (done) that went from open to folded (contract-99)
+function s17hook() {
+  if (window.__njgS17Hook) return;
+  window.__njgS17Hook = true;
+  const emit = (e) => {
+    try {
+      e.type = "c"; e.t = Date.now(); e.page = location.pathname.replace(/^\//, "");
+      if (window.__njgLog) window.__njgLog(e); else (window.__njgPending = window.__njgPending || []).push(e);
+    } catch (x) { /* a probe only */ }
+  };
+  const safe = (f, d = null) => { try { return f(); } catch (e) { return d; } };
+  const R = (r) => [Math.round(r.left * 10) / 10, Math.round(r.top * 10) / 10, Math.round(r.right * 10) / 10, Math.round(r.bottom * 10) / 10];
+  const shown = (el) => {
+    if (!el || !el.isConnected) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    let o = 1;
+    for (let x = el; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") return false; o *= parseFloat(cs.opacity); }
+    return o > 0.2;
+  };
+  const last = {};
+  const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
+
+  // ---- the light and its thing ----
+  const firstHole = () => {
+    for (const l of document.querySelectorAll(".njg-onboard")) {
+      let hs = [];
+      try { hs = JSON.parse(l.dataset.holes || "[]"); } catch (e) { /* none */ }
+      if (hs.length) { const h = hs[0]; return [Math.round(h.x), Math.round(h.y), Math.round(h.x + h.w), Math.round(h.y + h.h)]; }
+    }
+    return null;
+  };
+  const litThing = () => {
+    const h = firstHole();
+    if (!h) { last.litthing = null; return; }
+    const cx = (h[0] + h[2]) / 2, cy = (h[1] + h[3]) / 2;
+    let thing = null;
+    for (const el of document.elementsFromPoint(cx, cy)) {
+      if (el.closest(".njg-onboard")) continue;
+      const w = el.closest(".wc14") || el.closest(".oc-card");
+      if (w) { thing = w; break; }
+    }
+    const sig = thing ? R(thing.getBoundingClientRect()).map((v) => Math.round(v / 4)) : null;
+    if (same("litthing", [!!thing, sig])) return;
+    const cls = thing && typeof thing.className === "string" ? thing.className.trim().split(/\s+/).slice(0, 2).join(".") : "";
+    emit({ k: "litthing", hole: h, thing: thing ? R(thing.getBoundingClientRect()) : null, sel: cls });
+  };
+
+  // ---- the dotted words and the blurred pictures a first-time lesson is due on ----
+  const DOTS = "#mission .oc-row14 .wc14-hide-en .wc14-en-dots, #mission .oc-row14 .wc14-hide-k .wc14-k-dots, #mission .oc-row14 .wc14-k .dots";
+  const EYE = "#mission .oc-row14 .wc14-hide-pic .wc14-eye";
+  const reveal = () => {
+    const n = (sel) => [...document.querySelectorAll(sel)].filter((x) => shown(x) && !x.closest(".oc-card.folded")).length;
+    const v = { dots: n(DOTS), eyes: n(EYE) };
+    if (!same("reveal", v)) emit({ k: "reveal", ...v });
+  };
+
+  // ---- the order panel ----
+  let focusWrapped = false;
+  const wrapFocus = () => {
+    if (focusWrapped) return;
+    const M = window.Cook && window.Cook.UI && window.Cook.UI.mission;
+    if (!M || typeof M.focus !== "function") return;
+    focusWrapped = true;
+    const f = M.focus;
+    M.focus = function (who) { try { window.__njgFocus = who || null; } catch (e) { /* a probe only */ } return f.apply(this, arguments); };
+  };
+  const foldAt = {};
+  const seenOpen = {};
+  const watch = () => {
+    try {
+      new MutationObserver((ms) => {
+        for (const m of ms) {
+          const c = m.target;
+          if (c && c.nodeType === 1 && c.classList.contains("oc-card") && c.classList.contains("folded") && !/\bfolded\b/.test(m.oldValue || "")) foldAt[c.dataset.who || "?"] = Date.now();
+        }
+      }).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+    } catch (e) { /* a probe only */ }
+  };
+  if (document.documentElement) watch(); else document.addEventListener("DOMContentLoaded", watch);
+  const panel = () => {
+    wrapFocus();
+    const sc = document.querySelector("#mission");
+    const cards = sc ? [...sc.querySelectorAll(".oc-card")].filter((c) => !c.classList.contains("oc-big") && c.getBoundingClientRect().height > 0) : [];
+    if (!sc || !cards.length) { last.panel = null; return; }
+    const pr = sc.getBoundingClientRect();
+    const cs = cards.map((c) => {
+      const r = c.getBoundingClientRect();
+      return { who: c.dataset.who || "", top: Math.round((r.top - pr.top) * 10) / 10, h: Math.round(r.height * 10) / 10, done: c.classList.contains("done"), folded: c.classList.contains("folded"), speaking: c.classList.contains("speaking") };
+    });
+    for (const c of cs) {
+      if (c.folded && c.done && seenOpen[c.who]) { emit({ k: "fold", who: c.who, at: foldAt[c.who] || Date.now() }); seenOpen[c.who] = false; }
+      else if (!c.folded) seenOpen[c.who] = true;
+    }
+    const rows = cards.map((c) => {
+      const row = c.querySelector(".oc-row14");
+      const its = [...c.querySelectorAll(".oc-row")];
+      return { who: c.dataset.who || "", n: its.length, done: its.filter((x) => x.classList.contains("done")).length, sl: row ? Math.round(row.scrollLeft) : 0 };
+    });
+    const v = { st: Math.round(sc.scrollTop * 2) / 2, sh: sc.scrollHeight, view: sc.clientHeight, top: Math.round(pr.top * 10) / 10, cards: cs, rows, focus: window.__njgFocus || null };
+    if (!same("panel", [v.st, v.sh, v.view, cs.map((c) => [Math.round(c.top), c.done, c.folded, c.speaking]), rows.map((x) => [x.done, x.sl]), v.focus])) emit({ k: "panel", ...v });
+  };
+  setInterval(() => { try { if (window.__njgFilm) return; litThing(); reveal(); panel(); } catch (e) { /* a probe only */ } }, 100);
+}
+const S17_HOOK = `(${s17hook.toString()})()`;
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK;

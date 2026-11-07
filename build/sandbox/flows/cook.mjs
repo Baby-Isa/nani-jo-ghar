@@ -52,6 +52,9 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
       if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.njgTest?.cook.coachesSeen && window.njgTest?.cook.coachesSeen());
+      // #boil-over (row 26): the first-time hold in the green is seen (it would wait for the knob's tap, and the pot would never boil over);
+      // every other first-time help stays, so this is still a new player's round (contract-78, contract-98 judge it as one)
+      if (mode === "boil-over") await page.evaluate(() => { const C = window.Cook; if (!C || !C.save) return; C.save.seenStation = C.save.seenStation || {}; C.save.seenStation["chai-tray:s14-boil-hold"] = true; });
       // ctx.profile "numbers-known" (SH-13, decision 57): every number word has been heard three times, as after a few plays
       if (ctx.profile === "numbers-known") await page.evaluate(() => { const C = window.Cook; for (let n = 1; n <= 12; n++) for (let i = 0; i < 3; i++) C.markSeen(C.numId(n)); });
       await page.evaluate(([k, l, g]) => { njgTest.cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint" && mode !== "returning"]);
