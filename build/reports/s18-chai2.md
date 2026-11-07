@@ -16,20 +16,8 @@ Replayed three times before and after the pan switch (030077eb: 0, 1, 1 rings; 3
 | (c) pieces 9-12: the shelf slots, word pills, the word pop (third session) | 39d520da | `build/reports/frozen-diff-chai-tray-202611072132.md` | **No change** over 30 pages (7 one-off changes on the first play, none again on the re-play) |
 | (d) pieces 13-14: lights and lessons | (this commit) | `build/reports/frozen-diff-chai-tray-202611072153.md` | **5 changes on 3 pages, all explained** (below) |
 
-**(b) pieces 6-8** (chai-tray.js about 290 lines fewer):
-- Piece 6: `pourInto` is `Mech.pour(S, {pan, from, level, look, settle, onEnd})`; `spoonInto` is `Mech.pour.spoon`; chai's `land`
-  is `Cook.Kit.pan.land` (the same lines).
-- Piece 7: the pour into the glass is `Mech.pour.toGlass(S, {pan, well, from, to, frames, look, lift, gap, arc, ms, sound, hook,
-  onDone})`, then `pan.unhide()`; the take-back zones are `Mech.pour.takeBack(S, {can, onTap})` (`sync`, `at` for `Cook.undoAt`),
-  the spoonful back to its jar `Mech.pour.unspoon`. Chai's frame table (S14F), POUR, GLASS and the `pour` times are gone: the
-  frames, the resting glass and the measures are read from `data/stations/chai-tray.json` `kit.glass` (checked equal, 24 frames),
-  the art lists built from it.
-- Piece 8: the review faces are `NjgServe.for(Cook).faces(S, dishes, wrong, {left: tray.x, right})`; the tick and the recast loop
-  is `NjgServe.round({items, done, check, onRight, review, oops, recast, afterReview, redo, key, showRight, reset, again})`;
-  chai keeps its check of a glass and what its people say.
-
-Outside my files: `build/test_shared_sfx_files.mjs` lists `js/cook/mechanics/pour.js` among chai's sound files (the short pour
-and the settle moved there), as the first session did for boil.js.
+**(b) pieces 6-8**: `Mech.pour`, `.spoon`, `.toGlass`, `.takeBack`, `.unspoon`; `NjgServe.faces` and `.round`; the glass frames
+read from `data/stations/chai-tray.json` `kit.glass` (checked equal). `build/test_shared_sfx_files.mjs` lists `js/cook/mechanics/pour.js`.
 
 **(c) pieces 9-12** (third session; chai-tray.js about 90 lines fewer): the slots are `Shelf.slots(shelfIds, {span, view, pitch,
 groupGap, pillRoom})`; the pills' floor, gap, room and row scale `Shelf.pillWant`, `.pillGap`, `.pillRoom`, `.pillScale`; each pill
@@ -49,8 +37,7 @@ cousin's) happens on the old code too (replayed at 14710163: puff at 34 s, "Slow
 ## What waits
 
 (e) people say their orders and the timings. Static check: "4 known ones are
-fixed" (`checks.mjs` static `--write-known` would shrink its list; build/tools is not mine). Frozen runs: `frozen.mjs --diff` takes
-the browser lock itself (never wrap it in flock).
+fixed" (`checks.mjs` static `--write-known` would shrink its list; build/tools is not mine).
 
 ## Proof
 
