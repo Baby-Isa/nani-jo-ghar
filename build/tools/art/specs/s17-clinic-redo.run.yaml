@@ -209,7 +209,7 @@ lines:
     check: SHEET
     slots:
       N: '8'
-      ITEMS: 1. a plain white plaster cast for a child's lower arm; 2. a plain white plaster cast for a child's lower leg, the toes' opening at the front; 3. a pair of children's crutches, steel with grey grips; 4. a soft grey rubber ear-syringe bulb; 5. two soft foam ear plugs, sage green; 6. a sheet of plain gold star stickers, no text; 7. a small soft teddy bear, cream, sitting; 8. a small bottle of bubble mixture with its wand, no label
+      ITEMS: 1. a plain white plaster cast for a child's lower arm; 2. a plain white plaster cast for a child's lower leg, the toes' opening at the front; 3. a pair of children's crutches, steel with grey grips; 4. a soft cream rubber ear-syringe bulb (Ivory Buff) with a pale grey nozzle; 5. two soft foam ear plugs, sage green; 6. a sheet of plain gold star stickers, no text; 7. a small soft teddy bear, cream, sitting; 8. a small bottle of bubble mixture with its wand, no label
       EMPTY: Every cell holds one item.
       MATCH: 'The same batch as the attached first sheet: its camera, light, finish and calm colours, as if from the same photo shoot.'
   CD01:

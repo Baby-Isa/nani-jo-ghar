@@ -9,15 +9,9 @@
 # Two more (CB01's tweezers, CD02's honey jar) are the light tool's FAILs ("light from the lower right" on the steel, "from
 # below" on the lit honey); by eye both are lit from the upper left, so the recommended fix is no run at all: their two paths
 # into look-rules.json light.eye_passed (Fable, 7 Nov) and a re-cut with their `failed` entries removed from the cut spec.
-# Drop these two lines from the list if that route is taken.
+# That route was taken (the orchestrator, 7 Nov): both passed by eye, re-cut; their lines are off this list.
 pack: s17-clinic-redo
 redo:
-  - id: CB01
-    why: "item 8, the tweezers: the light tool reads the steel's reflections as light from the lower right (an eye reads the upper left). If redrawn: brushed steel with ONE soft highlight along the upper-left edge of each arm, the lower-right edges in shade, no mirror reflections"
-    source: "artcolour.py light FAIL, 7 Nov (by eye a pass: eye_passed is the better fix)"
-  - id: CD02
-    why: "item 8, the honey jar: the light tool reads the glowing honey (brightest at the jar's bottom) as light from below (an eye reads the upper left on the lid and glass). If redrawn: the honey darker and denser towards the bottom of the jar, lit from the upper left like the lid, no glow from inside"
-    source: "artcolour.py light FAIL, 7 Nov (by eye a pass: eye_passed is the better fix)"
   - id: CN09
     why: "item 4, the ear-syringe bulb: it was drawn in the ground's own mid grey, so no key can cut it out (its shaded side comes away with the ground). Draw the bulb in soft cream rubber (Ivory Buff) with a pale grey nozzle, nothing on it near the ground's grey; everything else on the sheet as it is"
     source: "Claude's landing judge, 7 Nov"

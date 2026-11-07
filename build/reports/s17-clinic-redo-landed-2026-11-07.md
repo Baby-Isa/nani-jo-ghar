@@ -153,3 +153,7 @@ and 1920x1080 and the judge; no game rule changes.
 - `artblock.py --spec … --redo <the list> --out <scratch>`: "5 lines".
 - No browser work: the brief names no rows or flows and nothing in the game changed.
 - `node build/tools/review/checks.mjs` on the final commit, all ok: unit 659 pass 0 fail; words, static (822 known, 0 new), leak (20 configs), bump, specs, docs, fixlist, recordings ok; **art** "135 picture(s): 134 pass, 1 flag, 0 exception, 0 fail"; **size** "live site 419 MB in 5607 files"; load 29/29. (The first cut failed unit, the pixel check, and art, the two light FAILs: both fixed by the re-cut.)
+
+**Addendum (the orchestrator, 7 Nov):** the tweezers (CB01) and the honey jar (CD02) passed by eye (lit from the upper left), went into
+`look-rules.json` `light.eye_passed` and were cut: **137 usable now, 3 on the redo list** (CN03, CN04, CN09). CN09's run-spec words
+now ask for a cream bulb.

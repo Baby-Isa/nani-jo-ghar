@@ -677,6 +677,16 @@
    "file": "clinic/s17-clinic-redo/hot-water-bottle-belt.webp",
    "w": 287,
    "h": 433
+  },
+  "tweezers-splinter-belt": {
+   "file": "clinic/s17-clinic-redo/tweezers-splinter-belt.webp",
+   "w": 370,
+   "h": 321
+  },
+  "honey-jar-belt": {
+   "file": "clinic/s17-clinic-redo/honey-jar-belt.webp",
+   "w": 323,
+   "h": 392
   }
  },
  "_report": [

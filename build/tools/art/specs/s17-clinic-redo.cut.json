@@ -39,7 +39,6 @@
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "glass": ["jug-cold-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
       "tols": {"tweezers-splinter-belt": 5},
-      "failed": {"tweezers-splinter-belt": "artcolour.py light FAIL (lower right, the steel's reflections); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed"},
       "_note": "the dropper is cut solid (its grey rubber bulb would go see-through under a soft key); the teal bottle and the drop are the two jobs below"
     },
     {
@@ -185,7 +184,6 @@
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "glass": ["paste-tube-belt", "honey-jar-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "tols": {"drill-belt": 5},
-      "failed": {"honey-jar-belt": "artcolour.py light FAIL (from below: the lit honey is brightest low); by eye a pass: on the redo list, or eye_passed in look-rules.json and this entry removed"},
       "_note": "the clear paste tube soft; the drill's steel at tol 5"
     },
     {
