@@ -21,3 +21,5 @@
 .njg-tally-chip.bump { animation: njgTallyBump .3s; }
 @keyframes njgTallyBump { 50% { transform: scale(1.2); } }
 @media (prefers-reduced-motion: reduce) { .njg-tally-chip.bump { animation: none; } }
+/* An anchored tally (js/shared/tally.js Tally.place): centred over its point, growing up from it */
+.njg-tally.at { right: auto; justify-content: center; max-width: none; transform: translate(-50%, -100%); }
