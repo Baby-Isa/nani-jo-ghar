@@ -61,12 +61,12 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 ## 2. Cook
 
-119 rows: 40 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+122 rows: 43 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
+| one | Cook: water; Cook: milk; Cook: sugar | 48 lines | Kutchi known (hakro); no family recording. |
 | three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 46 lines | Kutchi known (trae); no family recording. |
-| one | Cook: water; Cook: milk; Cook: sugar | 45 lines | Kutchi known (hakro); no family recording. |
 | I / me | Cook line: I need {x}. | 16 lines | Kutchi known (muke); no family recording. |
 | chai | Cook: chai; Cook: black (of tea: no milk); Cook: unsweetened (of tea) | 13 lines | Kutchi known (chai); no family recording. |
 | milk | Cook: milk; Cook line: I need {x}. | 10 lines | Kutchi known (dudh); no family recording. |
@@ -115,6 +115,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | water | Cook: water | 2 lines | Kutchi known (paani); no family recording. |
 | a little, a bit (in thori war: a bit of time) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (thori); no family recording. |
 | A lot. | Cook line: A lot. | 1 line | No Kutchi yet (grey English). |
+| a quarter cup | Cook: a quarter cup | 1 line | No Kutchi yet (grey English). |
 | a while (thori war = a bit longer) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (war); no family recording. |
 | Add the spices, in order | Cook line: Add the spices, in order | 1 line | No Kutchi yet (grey English). |
 | be | Cook line: How are you? | 1 line | Kutchi known (aiye); no family recording. |
@@ -156,6 +157,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | mince | Cook: mince | 1 line | Kutchi known (chunda); no family recording. |
 | naan | Cook: naan | 1 line | No Kutchi yet (grey English). |
 | oh dear! | Cook line: Oh dear! | 1 line | Kutchi known (arre re); no family recording. |
+| one and a half cups | Cook: one and a half cups | 1 line | No Kutchi yet (grey English). |
 | Pass me that one | Cook line: Pass me that one | 1 line | No Kutchi yet (grey English). |
 | Pour it into their glass | Cook line: Pour it into their glass | 1 line | No Kutchi yet (grey English). |
 | Pour it up to the line | Cook line: Pour it up to the line | 1 line | No Kutchi yet (grey English). |
@@ -181,6 +183,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | Thread them | Cook line: Thread them | 1 line | No Kutchi yet (grey English). |
 | To the grill | Cook line: To the grill | 1 line | No Kutchi yet (grey English). |
 | turner | Cook: turner | 1 line | No Kutchi yet (grey English). |
+| two and a half cups | Cook: two and a half cups | 1 line | No Kutchi yet (grey English). |
 | unsweetened (of tea) | Cook: unsweetened (of tea) | 1 line | Kutchi known (mori); no family recording. |
 | wait | Cook line: Wait for me! | 1 line | Kutchi known (khobar); no family recording. |
 | you're welcome (it's no trouble at all) | Cook line: You're welcome. | 1 line | Kutchi known (jara e wandho nai); no family recording. |
@@ -1356,4 +1359,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (175 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (178 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

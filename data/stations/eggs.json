@@ -96,5 +96,441 @@
     "meal": "dinner"
    }
   ]
- }
+ },
+ "kitchen": {
+  "about": "Sprint 18 prep (7 Nov), the settings every kitchen game keeps (STD-F1-03): recipe, scene, items (the art each uses, its size class L/M/S, its engine word), vocab, lines, end, gaps, assets. Added beside the station's own station/words/mechanic keys, which the station reads today and are untouched; wave 2's builder moves the station onto the new keys and deletes the code it copied. Art: block 1 (sources/art/s17-art1/), cut by assets/cook/proto/_cut/s18-prep.cut.json; sizes are the largest drawn size on the 1600x900 stage x1.5, never above the sheet. Words are the engine's ids only: a word or line the engine has no Kutchi for shows as its English in grey italic and is a row in docs/language/recording-sheet.md; `gaps` lists them as of 7 Nov (the engine is the source)."
+ },
+ "recipe": {
+  "key": "eggs",
+  "dish": "n.egg",
+  "ref": "data/cook.json recipes.eggs (its slots and say-lines live there until wave 2 moves them here)",
+  "steps": [
+   "Eggs",
+   "Cook",
+   "Plates",
+   "Serve"
+  ],
+  "family": [
+   "nana",
+   "ma",
+   "cousin"
+  ],
+  "friedChance": 0.5,
+  "levels": [
+   {
+    "level": 1,
+    "people": 1,
+    "eggsEach": [
+     1,
+     1
+    ],
+    "salt": [
+     null
+    ],
+    "pepper": [
+     null
+    ]
+   },
+   {
+    "level": 2,
+    "people": 2,
+    "eggsEach": [
+     1,
+     2
+    ],
+    "salt": [
+     null
+    ],
+    "pepper": [
+     null
+    ]
+   },
+   {
+    "level": 3,
+    "people": 3,
+    "eggsEach": [
+     1,
+     1
+    ],
+    "salt": [
+     "yes",
+     null
+    ],
+    "pepper": [
+     "yes",
+     null
+    ]
+   },
+   {
+    "level": 4,
+    "people": 3,
+    "eggsEach": [
+     1,
+     2
+    ],
+    "salt": [
+     "yes",
+     "no",
+     null
+    ],
+    "pepper": [
+     "yes",
+     null
+    ]
+   }
+  ],
+  "_levels": "As recipes.eggs.slots today (people byLevel 1,2,3,3). cookMs, room, shakers and the meal's sky by level are mechanic.levels (the station reads them now)."
+ },
+ "scene": {
+  "stage": [
+   1600,
+   900
+  ],
+  "view": "T the hob (two burners, the pot left, the pan right), then E the table",
+  "bg": {
+   "breakfast": "assets/cook/proto/eggs/bg-kitchen-morning.webp",
+   "lunch": "assets/cook/bg/service-master-v2.webp",
+   "dinner": "assets/cook/proto/eggs/bg-kitchen-night.webp"
+  },
+  "bgByMeal": "mechanic.levels[].meal picks the key: L1-L2 breakfast, L3 lunch, L4 dinner",
+  "bgIsland": {
+   "island-back-edge-y": 708,
+   "wanted": 705,
+   "note": "EM and EN cut at crop_y 0 so the island's back edge lands within 3 px of the master's (service-master-v2: 1058 of 1350 = 705 of 900); EM and EN match each other exactly (row 679)"
+  },
+  "hob": {
+   "call": "Cook.Kit.hob",
+   "n": 2,
+   "x": 300,
+   "y": 70,
+   "k": 0.74
+  },
+  "reuse": true,
+  "tray": {
+   "file": "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+   "d": 470,
+   "x": 1090,
+   "y": 90,
+   "reuse": true,
+   "plate": "assets/cook/items/plate-enamel-empty-t.webp"
+  },
+  "people": {
+   "call": "Cook.Kit.faceArt(who)",
+   "reuse": true,
+   "note": "Nana, Ma, Ali (cousin), Nani: the counter characters, 470 px, standing behind the table"
+  }
+ },
+ "items": {
+  "pot": {
+   "size": "L",
+   "view": "T",
+   "states": {
+    "empty": "assets/cook/proto/eggs/egg-pot-empty.webp",
+    "water": "assets/cook/proto/eggs/egg-pot-water.webp",
+    "boil": "assets/cook/proto/eggs/egg-pot-boil.webp"
+   },
+   "px": [
+    492,
+    389
+   ],
+   "role": "vessel",
+   "word": null,
+   "drawn": {
+    "w": 375
+   },
+   "replaces": "assets/cook/items-s14/chai-pan/pan-water-s14.webp (chai's pan: the wrong vessel)",
+   "_note": "one canvas, rim-registered (cell_align); handles included"
+  },
+  "pan": {
+   "size": "L",
+   "view": "T",
+   "states": {
+    "dry": "assets/cook/proto/eggs/fry-pan.webp",
+    "oil": "assets/cook/proto/eggs/fry-pan-oil.webp"
+   },
+   "px": [
+    445,
+    700
+   ],
+   "role": "vessel",
+   "word": null,
+   "drawn": {
+    "body": 300,
+    "handle": 170
+   },
+   "replaces": "assets/cook/proto/egg-pan.webp",
+   "_note": "handle points down; one canvas"
+  },
+  "egg": {
+   "size": "S",
+   "view": "T",
+   "states": {
+    "white": "assets/cook/proto/eggs/egg-white.webp",
+    "brown": "assets/cook/proto/eggs/egg-brown.webp",
+    "cracked": "assets/cook/proto/eggs/egg-cracked.webp",
+    "shells": "assets/cook/proto/eggs/egg-shells.webp"
+   },
+   "px": [
+    100,
+    81
+   ],
+   "word": "n.egg",
+   "drawn": {
+    "w": 48,
+    "h": 62
+   },
+   "_note": "whole eggs lifted from the bowl; the crack at the rim; the shells after"
+  },
+  "friedEgg": {
+   "size": "S",
+   "view": "T",
+   "states": {
+    "raw": "assets/cook/proto/eggs/egg-fried-raw.webp",
+    "setting": "assets/cook/proto/eggs/egg-fried-setting.webp",
+    "done": "assets/cook/proto/eggs/egg-fried-done.webp",
+    "crispy": "assets/cook/proto/eggs/egg-fried-crispy.webp"
+   },
+   "px": [
+    190,
+    185
+   ],
+   "word": [
+    "a.fried",
+    "n.egg"
+   ],
+   "drawn": {
+    "w": 120
+   },
+   "_note": "in the pan, by the ring's progress; raw is partial alpha"
+  },
+  "boiledEgg": {
+   "size": "S",
+   "view": "T",
+   "word": "ph-boiledegg",
+   "english": "boiled egg",
+   "states": {
+    "inPot": "assets/cook/proto/eggs/egg-white.webp"
+   },
+   "px": [
+    100,
+    81
+   ],
+   "_note": "no Kutchi yet: grey English. In the pot it is the whole egg; on a plate it stands in its cup (eggCup)."
+  },
+  "bowl": {
+   "size": "M",
+   "view": "T",
+   "states": {
+    "six": "assets/cook/proto/eggs/egg-bowl-6.webp",
+    "three": "assets/cook/proto/eggs/egg-bowl-3.webp",
+    "empty": "assets/cook/proto/eggs/egg-bowl-0.webp"
+   },
+   "px": [
+    350,
+    331
+   ],
+   "word": "n.egg",
+   "drawn": {
+    "w": 230
+   },
+   "at": [
+    150,
+    520
+   ],
+   "replaces": "assets/cook/proto/egg-bowl.webp",
+   "_note": "tap: an egg lifts out; the picture follows the count left"
+  },
+  "shakerSalt": {
+   "size": "S",
+   "view": "T",
+   "word": "spi-16",
+   "file": "assets/cook/proto/eggs/shaker-salt-t.webp",
+   "px": [
+    137,
+    140
+   ],
+   "drawn": {
+    "w": 90
+   },
+   "at_y": 560,
+   "levels": [
+    3,
+    4
+   ],
+   "_note": "partial alpha (glass)"
+  },
+  "shakerPepper": {
+   "size": "S",
+   "view": "T",
+   "word": "spi-11",
+   "file": "assets/cook/proto/eggs/shaker-pepper-t.webp",
+   "px": [
+    137,
+    140
+   ],
+   "drawn": {
+    "w": 90
+   },
+   "at_y": 560,
+   "levels": [
+    3,
+    4
+   ]
+  },
+  "eggCupTop": {
+   "size": "S",
+   "view": "T",
+   "states": {
+    "empty": "assets/cook/proto/eggs/eggcup-t.webp",
+    "egg": "assets/cook/proto/eggs/eggcup-egg-t.webp",
+    "open": "assets/cook/proto/eggs/eggcup-open-t.webp"
+   },
+   "px": [
+    110,
+    95
+   ],
+   "drawn": {
+    "w": 72
+   },
+   "_note": "a boiled egg lands in its cup on the tray's plate; one canvas"
+  },
+  "plate": {
+   "size": "M",
+   "view": "E",
+   "file": "assets/cook/proto/eggs/plate-f.webp",
+   "px": [
+    330,
+    178
+   ],
+   "drawn": {
+    "w": 220,
+    "h": 90
+   },
+   "_note": "the served plate, side-on, slides to each person"
+  },
+  "friedOnPlate": {
+   "size": "S",
+   "view": "E",
+   "word": [
+    "a.fried",
+    "n.egg"
+   ],
+   "file": "assets/cook/proto/eggs/egg-fried-f.webp",
+   "px": [
+    200,
+    105
+   ]
+  },
+  "eggCupServed": {
+   "size": "S",
+   "view": "E",
+   "states": {
+    "egg": "assets/cook/proto/eggs/eggcup-egg-f.webp",
+    "tapped": "assets/cook/proto/eggs/eggcup-tapped-f.webp",
+    "soft": "assets/cook/proto/eggs/eggcup-soft-f.webp",
+    "hard": "assets/cook/proto/eggs/eggcup-hard-f.webp"
+   },
+   "px": [
+    106,
+    170
+   ],
+   "word": "ph-boiledegg",
+   "drawn": {
+    "h": 110
+   },
+   "_note": "soft and hard are drawn but the game does not ask for them: nothing wired to them (no mechanic added)"
+  },
+  "cat": {
+   "size": "L",
+   "view": "E",
+   "file": "assets/cook/proto/cat-sit.webp",
+   "placeholder": true,
+   "note": "Placeholder crops (the 1 Nov mock-ups) the station loads today until wave 2 moves it onto this file's art. Simba's real sheet waits (art plan Q6)."
+  }
+ },
+ "vocab": {
+  "n.egg": {
+   "item": "egg",
+   "card": "assets/cook/proto/eggs/egg-white.webp"
+  },
+  "ph-boiledegg": {
+   "item": "boiledEgg",
+   "card": "assets/cook/proto/eggs/egg-white.webp",
+   "english": "boiled egg"
+  },
+  "a.fried": {
+   "item": "friedEgg",
+   "card": "assets/cook/proto/eggs/egg-fried-done.webp"
+  },
+  "spi-16": {
+   "item": "shakerSalt",
+   "card": "assets/cook/proto/eggs/shaker-salt-t.webp"
+  },
+  "spi-11": {
+   "item": "shakerPepper",
+   "card": "assets/cook/proto/eggs/shaker-pepper-t.webp"
+  }
+ },
+ "lines": {
+  "ask": "recipe say-lines (frames order, need, and, no)",
+  "now": "now",
+  "welldone": "welldone",
+  "_note": "Lang.line keys the station says; each built by the engine"
+ },
+ "end": {
+  "display": "progress",
+  "frown": false,
+  "ref": "docs/sprints/S18-kitchen-family.md decision 8; non-negotiable 7",
+  "note": "The round ends on chai's progress display (the kit's end), never a frown. A plate that is not what they asked for gets a neutral face and the soft sound; the child can redo until the step moves on."
+ },
+ "gaps": [
+  {
+   "id": "ph-boiledegg",
+   "english": "boiled egg",
+   "kind": "no Kutchi",
+   "shows": "grey English in the order line, the row and the word card",
+   "sheet": "boiled egg (R6-19, R6-137)"
+  },
+  {
+   "id": "n.egg",
+   "english": "egg",
+   "kind": "gender not yet asked (he-form used, flagged)",
+   "sheet": "section 1a, he-word or she-word"
+  }
+ ],
+ "assets": [
+  "assets/cook/proto/eggs/bg-kitchen-morning.webp",
+  "assets/cook/bg/service-master-v2.webp",
+  "assets/cook/proto/eggs/bg-kitchen-night.webp",
+  "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+  "assets/cook/items/plate-enamel-empty-t.webp",
+  "assets/cook/proto/eggs/egg-pot-empty.webp",
+  "assets/cook/proto/eggs/egg-pot-water.webp",
+  "assets/cook/proto/eggs/egg-pot-boil.webp",
+  "assets/cook/proto/eggs/fry-pan.webp",
+  "assets/cook/proto/eggs/fry-pan-oil.webp",
+  "assets/cook/proto/eggs/egg-white.webp",
+  "assets/cook/proto/eggs/egg-brown.webp",
+  "assets/cook/proto/eggs/egg-cracked.webp",
+  "assets/cook/proto/eggs/egg-shells.webp",
+  "assets/cook/proto/eggs/egg-fried-raw.webp",
+  "assets/cook/proto/eggs/egg-fried-setting.webp",
+  "assets/cook/proto/eggs/egg-fried-done.webp",
+  "assets/cook/proto/eggs/egg-fried-crispy.webp",
+  "assets/cook/proto/eggs/egg-bowl-6.webp",
+  "assets/cook/proto/eggs/egg-bowl-3.webp",
+  "assets/cook/proto/eggs/egg-bowl-0.webp",
+  "assets/cook/proto/eggs/shaker-salt-t.webp",
+  "assets/cook/proto/eggs/shaker-pepper-t.webp",
+  "assets/cook/proto/eggs/eggcup-t.webp",
+  "assets/cook/proto/eggs/eggcup-egg-t.webp",
+  "assets/cook/proto/eggs/eggcup-open-t.webp",
+  "assets/cook/proto/eggs/plate-f.webp",
+  "assets/cook/proto/eggs/egg-fried-f.webp",
+  "assets/cook/proto/eggs/eggcup-egg-f.webp",
+  "assets/cook/proto/eggs/eggcup-tapped-f.webp",
+  "assets/cook/proto/eggs/eggcup-soft-f.webp",
+  "assets/cook/proto/eggs/eggcup-hard-f.webp",
+  "assets/cook/proto/cat-sit.webp"
+ ]
 }

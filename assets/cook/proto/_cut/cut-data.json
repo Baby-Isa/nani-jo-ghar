@@ -1,0 +1,422 @@
+{
+ "_about": "Sprint 18 prep (7 Nov): art block 1's eggs, baking and corn-stall images cut to assets/cook/proto/{eggs,baking,corn}/. Sizes are drawn size x1.5 on the 1600x900 stage (decision 68), never above the sheet's own pixels. CO (dressings on a cob) failed and stays in the redo list: not cut. Run: python3 build/tools/art/artcut.py assets/cook/proto/_cut/s18-prep.cut.json; then python3 build/tools/art/artdespill.py on the corn cut-outs; then python3 assets/cook/proto/_cut/post.py.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "egg-pot-empty": {
+   "file": "cook/proto/eggs/egg-pot-empty.webp",
+   "w": 492,
+   "h": 389
+  },
+  "egg-pot-water": {
+   "file": "cook/proto/eggs/egg-pot-water.webp",
+   "w": 492,
+   "h": 389
+  },
+  "egg-pot-boil": {
+   "file": "cook/proto/eggs/egg-pot-boil.webp",
+   "w": 492,
+   "h": 389
+  },
+  "fry-pan": {
+   "file": "cook/proto/eggs/fry-pan.webp",
+   "w": 445,
+   "h": 700
+  },
+  "fry-pan-oil": {
+   "file": "cook/proto/eggs/fry-pan-oil.webp",
+   "w": 445,
+   "h": 700
+  },
+  "egg-white": {
+   "file": "cook/proto/eggs/egg-white.webp",
+   "w": 100,
+   "h": 81
+  },
+  "egg-brown": {
+   "file": "cook/proto/eggs/egg-brown.webp",
+   "w": 100,
+   "h": 79
+  },
+  "egg-cracked": {
+   "file": "cook/proto/eggs/egg-cracked.webp",
+   "w": 100,
+   "h": 80
+  },
+  "egg-shells": {
+   "file": "cook/proto/eggs/egg-shells.webp",
+   "w": 110,
+   "h": 64
+  },
+  "shaker-salt-t": {
+   "file": "cook/proto/eggs/shaker-salt-t.webp",
+   "w": 137,
+   "h": 140
+  },
+  "shaker-pepper-t": {
+   "file": "cook/proto/eggs/shaker-pepper-t.webp",
+   "w": 137,
+   "h": 140
+  },
+  "egg-fried-raw": {
+   "file": "cook/proto/eggs/egg-fried-raw.webp",
+   "w": 190,
+   "h": 185
+  },
+  "egg-fried-setting": {
+   "file": "cook/proto/eggs/egg-fried-setting.webp",
+   "w": 190,
+   "h": 188
+  },
+  "egg-fried-done": {
+   "file": "cook/proto/eggs/egg-fried-done.webp",
+   "w": 190,
+   "h": 189
+  },
+  "egg-fried-crispy": {
+   "file": "cook/proto/eggs/egg-fried-crispy.webp",
+   "w": 190,
+   "h": 183
+  },
+  "egg-bowl-6": {
+   "file": "cook/proto/eggs/egg-bowl-6.webp",
+   "w": 350,
+   "h": 331
+  },
+  "egg-bowl-3": {
+   "file": "cook/proto/eggs/egg-bowl-3.webp",
+   "w": 350,
+   "h": 329
+  },
+  "egg-bowl-0": {
+   "file": "cook/proto/eggs/egg-bowl-0.webp",
+   "w": 350,
+   "h": 330
+  },
+  "eggcup-t": {
+   "file": "cook/proto/eggs/eggcup-t.webp",
+   "w": 110,
+   "h": 95
+  },
+  "eggcup-egg-t": {
+   "file": "cook/proto/eggs/eggcup-egg-t.webp",
+   "w": 110,
+   "h": 95
+  },
+  "eggcup-open-t": {
+   "file": "cook/proto/eggs/eggcup-open-t.webp",
+   "w": 110,
+   "h": 95
+  },
+  "plate-f": {
+   "file": "cook/proto/eggs/plate-f.webp",
+   "w": 330,
+   "h": 178
+  },
+  "egg-fried-f": {
+   "file": "cook/proto/eggs/egg-fried-f.webp",
+   "w": 200,
+   "h": 105
+  },
+  "eggcup-egg-f": {
+   "file": "cook/proto/eggs/eggcup-egg-f.webp",
+   "w": 106,
+   "h": 170
+  },
+  "eggcup-tapped-f": {
+   "file": "cook/proto/eggs/eggcup-tapped-f.webp",
+   "w": 106,
+   "h": 170
+  },
+  "eggcup-soft-f": {
+   "file": "cook/proto/eggs/eggcup-soft-f.webp",
+   "w": 106,
+   "h": 170
+  },
+  "eggcup-hard-f": {
+   "file": "cook/proto/eggs/eggcup-hard-f.webp",
+   "w": 106,
+   "h": 170
+  },
+  "bg-kitchen-morning": {
+   "file": "cook/proto/eggs/bg-kitchen-morning.webp",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1535,
+    863
+   ],
+   "lines": {
+    "island-back": {
+     "src": 679,
+     "at": 708.1,
+     "want": 705
+    }
+   }
+  },
+  "bg-kitchen-night": {
+   "file": "cook/proto/eggs/bg-kitchen-night.webp",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 0,
+   "src_band": [
+    1535,
+    863
+   ],
+   "lines": {
+    "island-back": {
+     "src": 679,
+     "at": 708.1,
+     "want": 705
+    }
+   }
+  },
+  "bg-counter": {
+   "file": "cook/proto/baking/bg-counter.webp",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 146,
+   "src_band": [
+    1536,
+    864
+   ],
+   "lines": {
+    "worktop-edge": {
+     "src": 597,
+     "at": 469.8,
+     "want": 470
+    }
+   }
+  },
+  "bowl-f-0": {
+   "file": "cook/proto/baking/bowl-f-0.webp",
+   "w": 484,
+   "h": 401
+  },
+  "bowl-f-1": {
+   "file": "cook/proto/baking/bowl-f-1.webp",
+   "w": 484,
+   "h": 401
+  },
+  "bowl-f-2": {
+   "file": "cook/proto/baking/bowl-f-2.webp",
+   "w": 484,
+   "h": 401
+  },
+  "bowl-f-3": {
+   "file": "cook/proto/baking/bowl-f-3.webp",
+   "w": 484,
+   "h": 401
+  },
+  "bowl-f-4": {
+   "file": "cook/proto/baking/bowl-f-4.webp",
+   "w": 484,
+   "h": 401
+  },
+  "bowl-f-dough": {
+   "file": "cook/proto/baking/bowl-f-dough.webp",
+   "w": 484,
+   "h": 401
+  },
+  "jug-empty": {
+   "file": "cook/proto/baking/jug-empty.webp",
+   "w": 400,
+   "h": 343
+  },
+  "jug-water": {
+   "file": "cook/proto/baking/jug-water.webp",
+   "w": 400,
+   "h": 343
+  },
+  "jug-milk": {
+   "file": "cook/proto/baking/jug-milk.webp",
+   "w": 400,
+   "h": 343
+  },
+  "jug-flour": {
+   "file": "cook/proto/baking/jug-flour.webp",
+   "w": 400,
+   "h": 343
+  },
+  "jug-yoghurt": {
+   "file": "cook/proto/baking/jug-yoghurt.webp",
+   "w": 400,
+   "h": 343
+  },
+  "jug-sugar": {
+   "file": "cook/proto/baking/jug-sugar.webp",
+   "w": 400,
+   "h": 343
+  },
+  "tray": {
+   "file": "cook/proto/baking/tray.webp",
+   "w": 400,
+   "h": 210
+  },
+  "naan-raw": {
+   "file": "cook/proto/baking/naan-raw.webp",
+   "w": 400,
+   "h": 210
+  },
+  "naan-puff": {
+   "file": "cook/proto/baking/naan-puff.webp",
+   "w": 400,
+   "h": 210
+  },
+  "naan-golden": {
+   "file": "cook/proto/baking/naan-golden.webp",
+   "w": 400,
+   "h": 210
+  },
+  "naan-deep": {
+   "file": "cook/proto/baking/naan-deep.webp",
+   "w": 400,
+   "h": 210
+  },
+  "naan-alone": {
+   "file": "cook/proto/baking/naan-alone.webp",
+   "w": 300,
+   "h": 144
+  },
+  "oven-shut": {
+   "file": "cook/proto/baking/oven-shut.webp",
+   "w": 840,
+   "h": 639
+  },
+  "oven-baking": {
+   "file": "cook/proto/baking/oven-baking.webp",
+   "w": 840,
+   "h": 638
+  },
+  "oven-open": {
+   "file": "cook/proto/baking/oven-open.webp",
+   "w": 840,
+   "h": 643
+  },
+  "bg-table": {
+   "file": "cook/proto/corn/bg-table.webp",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 80,
+   "src_band": [
+    1536,
+    864
+   ]
+  },
+  "cob-raw": {
+   "file": "cook/proto/corn/cob-raw.webp",
+   "w": 128,
+   "h": 380
+  },
+  "cob-half": {
+   "file": "cook/proto/corn/cob-half.webp",
+   "w": 128,
+   "h": 380
+  },
+  "cob-turned": {
+   "file": "cook/proto/corn/cob-turned.webp",
+   "w": 128,
+   "h": 380
+  },
+  "cob-done": {
+   "file": "cook/proto/corn/cob-done.webp",
+   "w": 128,
+   "h": 380
+  },
+  "corn-crate": {
+   "file": "cook/proto/corn/corn-crate.webp",
+   "w": 570,
+   "h": 463
+  },
+  "dress-lemon": {
+   "file": "cook/proto/corn/dress-lemon.webp",
+   "w": 225,
+   "h": 224
+  },
+  "dress-salt": {
+   "file": "cook/proto/corn/dress-salt.webp",
+   "w": 225,
+   "h": 224
+  },
+  "dress-chilli": {
+   "file": "cook/proto/corn/dress-chilli.webp",
+   "w": 225,
+   "h": 224
+  },
+  "dress-green": {
+   "file": "cook/proto/corn/dress-green.webp",
+   "w": 225,
+   "h": 224
+  },
+  "dress-amli": {
+   "file": "cook/proto/corn/dress-amli.webp",
+   "w": 225,
+   "h": 224
+  },
+  "dress-pepper": {
+   "file": "cook/proto/corn/dress-pepper.webp",
+   "w": 225,
+   "h": 224
+  },
+  "jug-lines": {
+   "from_top_fraction_of_jug-empty": [
+    0.249,
+    0.391,
+    0.532,
+    0.672,
+    0.812
+   ],
+   "jug_px": [
+    400,
+    343
+   ],
+   "note": "five lines, no numbers; the game's quarter, half, full, one and a half, two and a half"
+  }
+ },
+ "_report": [
+  "ep-pots: 3 piece(s) by cell for 3 name(s)",
+  "  ep-pots: 3 piece(s) on one window 484x381 (cell_align)",
+  "ef-pans: 2 piece(s) by cell for 2 name(s)",
+  "  ef-pans: 2 piece(s) on one window 568x899 (cell_align)",
+  "eg-eggs: 6 piece(s) by cell for 6 name(s)",
+  "ey-fried: 4 piece(s) by cell for 4 name(s)",
+  "eb-bowls: 3 piece(s) by cell for 3 name(s)",
+  "  eb-bowls: 3 piece(s) on one window 517x485 (cell_align)",
+  "eb-cups: 3 piece(s) by cell for 3 name(s)",
+  "  eb-cups: 3 piece(s) on one window 334x287 (cell_align)",
+  "es-flat: 2 piece(s) by cell for 2 name(s)",
+  "es-cups: 4 piece(s) by cell for 4 name(s)",
+  "  es-cups: 4 piece(s) on one window 255x412 (cell_align)",
+  "  island-back: source row 679 lands at 708.1 (old background 705)",
+  "em-morning: background 1600x900 from rows 0..863",
+  "  island-back: source row 679 lands at 708.1 (old background 705)",
+  "en-night: background 1600x900 from rows 0..863",
+  "  worktop-edge: source row 597 lands at 469.8 (old background 470)",
+  "bk-counter: background 1600x900 from rows 146..1010",
+  "bb-bowls: 6 piece(s) by cell for 6 name(s)",
+  "  bb-bowls: 6 piece(s) on one window 476x393 (cell_align)",
+  "bj-jugs: 6 piece(s) by cell for 6 name(s)",
+  "  bj-jugs: 6 piece(s) on one window 457x391 (cell_align)",
+  "bn-trays: 5 piece(s) by cell for 5 name(s)",
+  "  bn-trays: 5 piece(s) on one window 499x258 (cell_align)",
+  "bn-alone: 1 piece(s) by cell for 1 name(s)",
+  "bo1-shut: 1 piece(s) by cell for 1 name(s)",
+  "bo2-baking: 1 piece(s) by cell for 1 name(s)",
+  "bo3-open: 1 piece(s) by cell for 1 name(s)",
+  "ct-table: background 1600x900 from rows 80..944",
+  "cb-cobs: 4 piece(s) by cell for 4 name(s)",
+  "  cb-cobs: 4 piece(s) on one window 289x873 (cell_align)",
+  "cx-crate: 1 piece(s) by cell for 1 name(s)",
+  "cd-bowls: 6 piece(s) by cell for 6 name(s)",
+  "  cd-bowls: 6 piece(s) on one window 459x457 (cell_align)"
+ ]
+}
