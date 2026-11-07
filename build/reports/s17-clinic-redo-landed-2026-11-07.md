@@ -157,3 +157,34 @@ and 1920x1080 and the judge; no game rule changes.
 **Addendum (the orchestrator, 7 Nov):** the tweezers (CB01) and the honey jar (CD02) passed by eye (lit from the upper left), went into
 `look-rules.json` `light.eye_passed` and were cut: **137 usable now, 3 on the redo list** (CN03, CN04, CN09). CN09's run-spec words
 now ask for a cream bulb.
+
+**Second addendum (s17-o6-art, 7 Nov): the three redos landed.** Zafar's second upload (3 images, the redo block's run) matched
+by content, one try each, confidence high: "Medical Instruments Toy-Style Product Grid" → `cn03-diagnostics-v2.png` (CN03),
+"Medical Tools Collection" → `cn04-diagnostics-2-v2.png` (CN04), "Cozy Pediatric Care Essentials Grid" → `cn09-casts-comfort-v2.png`
+(CN09). `inbox2/` is gone.
+
+*Flaws first.* (1) **CN03's tongue depressor is not walnut by the numbers**: a warm mid-brown, median `#ab744d` (L* 54, hue 60°),
+darker and browner than v1's honey `#c1814e` (L* 60) but still lighter than every other wood in the pack (the magnifier handle and the
+hourglass frame L* 42-43, the spools L* 41) and at the dark edge of the look tool's light-wood band (L* 52-84). By eye it reads as the
+prompt's "mid walnut, not too dark", not honey or pine, and the wood rule never flags it (its name says no wood): **passed and cut over
+the stand-in, with this flag**; one line puts it back on the list if Zafar wants it darker. (2) The judge flags CN03 ("edge not crisp
+11.9%", the pen torch's glow and the steel, as v1) and CN04 (7.3%, and "tight margin 0.7%": the BP cuff nearly touches the sheet's left
+edge); only the named items are wanted and those cut clean. (3) The rest of each sheet redrew (CN04's peak-flow marker is red, not teal;
+CN03's scopes have ribbed grips): all 8 items in order, no text, no needles, no shadows, the same grey ground; not used.
+
+*The judge.* `artjudge.py` on the three (as CN03/CN04/CN09): 1 pass (CN09), 2 flag (above), 0 fail. `artcolour.py` on the three sheets with
+CA01 as one batch: 4 pass, no odd one out. **CN04's hourglass frame** is mid walnut, median `#8d5634` (L* 42), the magnifier handle's wood
+(`#935832`) beside it: pass. **CN09's ear-syringe bulb** is cream (Ivory Buff ΔE 4, house share 1.0) with a pale grey nozzle, well off the
+ground's grey: pass.
+
+*The cut.* Three grid jobs in the cut spec (`cn03-v2`, `cn04-v2`, `cn09-v2`) cut only the named item from each v2 sheet (the hourglass's
+glass soft at gain 4 as before; the depressor and the bulb solid at tol 8); the v1 jobs drop those three names and cn09's `failed`
+entry. `artcut.py --only cn03-v2,cn04-v2,cn09-v2` → "3 job(s); 0 flag(s)"; `cut-data.json` merged back over the full one (**138 props**:
+`tongue-depressor-belt` 114x462, `hourglass-belt` 228x408, `ear-syringe-belt` 236x400, all `-belt.webp` in `assets/clinic/s17-clinic-redo/`).
+`artpixels.py`: 3 PASS (grey 0.000, rim 1.3-2.8 px); `artcolour.py` on the folder as `items-s17`: "138 picture(s): 124 pass, 14 flag, 0 fail"
+(the three pass; the flags are the known ones, the tweezers' gloss and light among them); `artcheck.mjs`: 471 known, 0 new. The three on cream
+and on dark: `sources/art/s17-clinic-redo/contact-redos-v2.jpg`.
+
+*Coverage now:* 138 drawn, **138 cut and usable**, 0 on the redo list (`s17-clinic-redo-redo-list.yaml` keeps the history; CN03's flag there).
+Still nothing wired (section 6). For the orchestrator: one line in `docs/process/overnight-log.md` ("7 Nov: clinic redo's 3 redos landed,
+3/3 cut, 138 usable, 0 on the list, nothing wired").

@@ -79,11 +79,17 @@
     },
     {
       "id": "cn03", "type": "grid", "src": "cn03-diagnostics-v1.png", "cells": [4, 2],
-      "names": [null, null, "tongue-depressor-belt", "ear-thermometer-belt",
+      "names": [null, null, null, "ear-thermometer-belt",
                 "forehead-thermometer-belt", "pulse-oximeter-belt", "pen-torch-belt", "reflex-hammer-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "tols": {"pen-torch-belt": 5, "reflex-hammer-belt": 5},
-      "_note": "steel at tol 5; the grey screens are solid parts; the tongue depressor is a stand-in (light wood: on the redo list); the two dark scopes are the job below"
+      "_note": "steel at tol 5; the grey screens are solid parts; the tongue depressor comes from the v2 sheet (cn03-v2); the two dark scopes are the job below"
+    },
+    {
+      "id": "cn03-v2", "type": "grid", "src": "cn03-diagnostics-v2.png", "cells": [4, 2],
+      "names": [null, null, "tongue-depressor-belt", null, null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "_note": "the redo run (7 Nov, upload 2): only the tongue depressor is wanted from this sheet (the redo list asked for walnut; it came in a warm mid-brown, L* 54); the other seven stay as cut from v1"
     },
     {
       "id": "cn03-dark", "type": "grid", "src": "cn03-diagnostics-v1.png", "cells": [4, 2],
@@ -95,11 +101,18 @@
     {
       "id": "cn04", "type": "grid", "src": "cn04-diagnostics-2-v1.png", "cells": [4, 2],
       "names": ["bp-cuff-belt", null, "peak-flow-meter-belt", "tape-measure-belt",
-                "baby-scales-belt", "magnifying-glass-belt", "dental-mirror-belt", "hourglass-belt"],
+                "baby-scales-belt", "magnifying-glass-belt", "dental-mirror-belt", null],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
-      "glass": ["peak-flow-meter-belt", "hourglass-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
+      "glass": ["peak-flow-meter-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
       "tols": {"bp-cuff-belt": 5, "dental-mirror-belt": 5},
-      "_note": "the peak flow tube and the hourglass glass soft; the magnifier's lens is tinted, cut solid; grey rubber and steel at tol 5; the hourglass is a stand-in (light wood frame: on the redo list); the stethoscope is the job below"
+      "_note": "the peak flow tube soft; the magnifier's lens is tinted, cut solid; grey rubber and steel at tol 5; the hourglass comes from the v2 sheet (cn04-v2); the stethoscope is the job below"
+    },
+    {
+      "id": "cn04-v2", "type": "grid", "src": "cn04-diagnostics-2-v2.png", "cells": [4, 2],
+      "names": [null, null, null, null, null, null, null, "hourglass-belt"],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "glass": ["hourglass-belt"], "soft_floor": 0.25, "soft_gain": 4.0,
+      "_note": "the redo run (7 Nov, upload 2): only the hourglass is wanted from this sheet (its frame now mid walnut, #8d5634, the magnifier handle's wood); the glass soft as before; the other seven stay as cut from v1"
     },
     {
       "id": "cn04-dark", "type": "grid", "src": "cn04-diagnostics-2-v1.png", "cells": [4, 2],
@@ -161,13 +174,18 @@
     },
     {
       "id": "cn09", "type": "grid", "src": "cn09-casts-comfort-v1.png", "cells": [4, 2],
-      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", "ear-syringe-belt",
+      "names": ["cast-arm-belt", "cast-leg-belt", "crutches-belt", null,
                 "ear-plugs-belt", "star-stickers-belt", "teddy-belt", "bubbles-belt"],
       "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
       "glass": ["bubbles-belt"], "soft_floor": 0.25, "soft_gain": 2.0,
       "tols": {"crutches-belt": 5},
-      "failed": {"ear-syringe-belt": "the grey rubber bulb is the ground's grey: at tol 5 and 3 its shaded side comes away with the ground; on the redo list (a cream bulb)"},
-      "_note": "the bubble jar soft; the steel crutches at tol 5"
+      "_note": "the bubble jar soft; the steel crutches at tol 5; the ear syringe comes from the v2 sheet (cn09-v2): v1's grey bulb was the ground's grey and could not be cut"
+    },
+    {
+      "id": "cn09-v2", "type": "grid", "src": "cn09-casts-comfort-v2.png", "cells": [4, 2],
+      "names": [null, null, null, "ear-syringe-belt", null, null, null, null],
+      "outdir": "clinic/s17-clinic-redo", "max": 512, "pad": 16, "q": 88, "tol": 8,
+      "_note": "the redo run (7 Nov, upload 2): only the ear syringe is wanted from this sheet (a cream bulb, a pale grey nozzle, cut solid); the other seven stay as cut from v1"
     },
     {
       "id": "cd01", "type": "grid", "src": "cd01-today-1-v1.png", "cells": [4, 2],
