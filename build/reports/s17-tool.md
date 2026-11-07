@@ -83,7 +83,10 @@ Lighter checks this sprint (Zafar, 7 Nov, decision 3): no browser, no evidence, 
   with file and line, scopes, per-game breaks, not run, report shape, the CLI end to end).
 - The CLI on the frozen run with the fixtures' standard: the table and counts print, the report is written; on the real folder path (absent here)
   it exits 2 with a one-line message and does not crash.
-- `node build/tools/review/checks.mjs`: see the line below (without `load`, which needs the browser).
+- `node build/tools/review/checks.mjs --only unit,words,static,leak,bump,specs,docs,recordings,fixlist,art,size` (no `load`: it needs the browser):
+  unit 92 files, 661 pass, 0 fail; words, static, bump, specs, recordings, fixlist, art, size ok; docs failed once on my first `docs/tools.md` wording
+  (it named the standard folder path, which is not in this worktree yet), fixed and `docs.mjs` now says "within every limit". One red that is not
+  mine: leak `snap` (g1 level 1, oracle 100%, blind 1.1%) in the full run, and a rerun timed out under the other builders' load; I touched no game code.
 
 ## Open
 
