@@ -1,0 +1,7 @@
+ok   unit   46 files, 1200 pass, 0 fail
+FAIL words  strict on js/cook: 3 literals (node build/lint/words.mjs --only a --dirs js/cook lists them)
+FAIL static 2 findings
+     NEW banned-forms js/cook/y.js:3 dash
+     NEW design-tokens js/cook/x.js:12 raw colour
+ok   leak   12 configs at every level
+ok   docs   docs limits ok

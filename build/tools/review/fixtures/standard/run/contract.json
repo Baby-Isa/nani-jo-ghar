@@ -1,0 +1,24 @@
+[
+ {
+  "check": "contract-11",
+  "item": "background",
+  "flow": "cook:chai-tray@L4",
+  "level": 4,
+  "size": "1920x1080",
+  "state": "start",
+  "shot": "01-start.png",
+  "at": 2.9,
+  "measured": "page: background counter-wm-s17.webp (img) low-res: 1.58 screen px per source px"
+ },
+ {
+  "check": "contract-81",
+  "item": "gauge",
+  "flow": "cook:daar",
+  "level": 2,
+  "size": "1280x665",
+  "state": "stir",
+  "shot": "02-stir.png",
+  "at": 4.1,
+  "measured": "a picture over the heat ring (daar, not chai)"
+ }
+]

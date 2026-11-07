@@ -13,12 +13,90 @@
 //
 //   node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load] [--leak <config>]
 //   e.g. node build/tools/review/audit.mjs chai-tray        (Cook games for now: the lab page is lab.html?mode=cook&game=<game>)
+//
+//   node build/tools/review/audit.mjs --standard <game> [--run <sandbox run id or folder>] [--play | --no-play] [--run-checks | --checks <file>]
+//        [--audit-report <file>] [--std-dir <folder>] [--verdicts <file>] [--out <file>] [--quiet]
+//        (Sprint 17) every rule of docs/design-language/standard/ that applies to the game (House always, Family for a kitchen-family
+//        game, Game for chai-tray) as pass, fail, judge, gap or not run, read from SAVED results: no browser (details: build/reports/s17-tool.md)
 import { spawnSync } from "node:child_process";
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { args, ROOT } from "./lib/common.mjs";
+import { args, ROOT, RUNS, runDir, rel } from "./lib/common.mjs";
+import { parseStandardDir, loadContract, latestContractRun, parseChecksOutput, parseAuditReport, auditRules, renderReport, countBy, RESULTS, DOMAINS } from "./lib/standard.mjs";
 
 const a = args();
+if (a.has("standard")) process.exit(await standardAudit());
+
+// ---- --standard <game>: the standard's rules against the saved results (a browser only when --play is given) ----
+async function standardAudit() {
+  const game = a.val("standard") || a.pos[0];
+  if (!game) { console.log("node build/tools/review/audit.mjs --standard <game> [--run <id|folder>] [--play] [--run-checks | --checks <file>] [--std-dir <folder>] [--out <file>] [--quiet]"); return 1; }
+  const day = new Date().toISOString().slice(0, 10);
+  const short = (p) => (p.startsWith(ROOT) ? rel(p) : p);
+  const stdDir = a.val("std-dir") || process.env.NJG_STANDARD_DIR || join(ROOT, "docs/design-language/standard");
+  const parsed = parseStandardDir(stdDir);
+  if (parsed.missing) { console.error(`No standard folder at ${short(stdDir)} yet (--std-dir <folder> points at another).`); return 2; }
+  const sources = [`standard: \`${short(stdDir)}\` (${parsed.files.length} pages, ${parsed.rules.length} rules)`];
+
+  // the audit's own steps, only when asked to play (--no-play wins)
+  if (a.has("play") && !a.has("no-play")) {
+    console.log(`== playing the audit: node build/tools/review/audit.mjs ${game}`);
+    spawnSync("node", [join(ROOT, "build/tools/review/audit.mjs"), game], { cwd: ROOT, stdio: "inherit", timeout: 150 * 60000 });
+  }
+
+  // contract: --run (a run id or a folder), else the newest sandbox run that covers the game
+  let contract;
+  try { contract = loadContract(a.val("run") ? runDir(a.val("run")) : latestContractRun(RUNS, game), game); }
+  catch (e) { console.error(e.message); return 2; }
+  sources.push(contract.found
+    ? `contract run: \`${short(contract.dir)}\` (${contract.date || "undated"}; ${contract.ran.size} checks, ${contract.gamePages} of ${contract.pages || "its"} pages are ${game}, ${contract.breaks.length} breaks in all)${contract.covered ? "" : "; it has no pages of this game, so every contract term is not run"}`
+    : "contract run: none found (every contract term is not run; give --run <id|folder>)");
+
+  // checks: --run-checks runs the no-browser steps now; --checks <file> or the last saved output otherwise
+  let checks = null;
+  const savedChecks = join(ROOT, "build", "screenshots", "audit", "checks-latest.txt");
+  if (a.has("run-checks")) {
+    mkdirSync(join(ROOT, "build", "screenshots", "audit"), { recursive: true });
+    const r = spawnSync("node", [join(ROOT, "build/tools/review/checks.mjs"), "--only", "unit,words,static,leak,bump,specs,docs,recordings,fixlist,art,size"], { cwd: ROOT, encoding: "utf8", timeout: 40 * 60000, maxBuffer: 64 << 20 });
+    const text = `${r.stdout || ""}${r.stderr || ""}`;
+    writeFileSync(savedChecks, text);
+    checks = parseChecksOutput(text);
+    sources.push(`checks: run just now (${[...checks.values()].filter((x) => x.ok).length} of ${checks.size} steps ok; the browser step "load" is not run here)`);
+  } else {
+    const f = a.val("checks") || (existsSync(savedChecks) ? savedChecks : null);
+    if (f && existsSync(f)) { checks = parseChecksOutput(readFileSync(f, "utf8")); sources.push(`checks: saved output \`${short(f)}\` of ${statSync(f).mtime.toISOString().slice(0, 10)} (${checks.size} steps)`); }
+    else sources.push("checks: none saved (every check: term is not run; use --run-checks or --checks <file>)");
+  }
+
+  // tools: the audit's own step results (the game's latest audit report, or --audit-report)
+  let tools = null;
+  const repDir = join(ROOT, "build/reports");
+  const reports = existsSync(repDir) ? readdirSync(repDir).filter((f) => f.startsWith(`audit-${game}-`) && /^\d{4}-\d\d-\d\d\.md$/.test(f.slice(`audit-${game}-`.length))).sort() : [];
+  const auditFile = a.val("audit-report") || (reports.length ? join(repDir, reports[reports.length - 1]) : null);
+  if (auditFile && existsSync(auditFile)) { tools = parseAuditReport(readFileSync(auditFile, "utf8")); sources.push(`tools: audit report \`${short(auditFile)}\` (steps: ${[...tools.keys()].join(", ") || "none"})`); }
+  else sources.push("tools: no audit report for this game (every tool: term is not run; use --play, or --audit-report <file>)");
+
+  // probes: the verdict cache
+  const vf = a.val("verdicts") || join(ROOT, "build/tools/review/data/verdicts.json");
+  let verdicts = null;
+  if (existsSync(vf)) { try { verdicts = JSON.parse(readFileSync(vf, "utf8")); } catch { /* unreadable: treated as absent */ } }
+  sources.push(verdicts ? `probes: verdict cache \`${short(vf)}\` (${Object.keys(verdicts).length} rows)` : "probes: no verdict cache (every probe: term is not run)");
+
+  const audit = auditRules(parsed.rules, { game, contract, checks, tools, verdicts });
+  const command = `node build/tools/review/audit.mjs --standard ${game}${a.val("run") ? ` --run ${a.val("run")}` : ""}`;
+  const md = renderReport({ game, day, audit, problems: parsed.problems, sources, command });
+  const out = a.val("out") || join(ROOT, "build", "reports", `audit-standard-${game}-${day}.md`);
+  writeFileSync(out, md);
+
+  const total = countBy(audit.results);
+  if (a.has("quiet")) {
+    console.log(`Standard audit: ${game}, ${audit.results.length} rules (${audit.scopes.join(" + ")})`);
+    for (const k of [...new Set(audit.results.map((x) => x.rule.domain))].sort()) { const c = countBy(audit.results.filter((x) => x.rule.domain === k)); console.log(`  ${k} ${(DOMAINS[k] || "").padEnd(12)} ${RESULTS.map((r) => `${c[r]} ${r}`).join(", ")}`); }
+  } else console.log(md);
+  console.log(`\n${short(out)}: ${RESULTS.map((r) => `${total[r]} ${r}`).join(", ")}${parsed.problems.length ? `; ${parsed.problems.length} malformed block problem(s)` : ""}`);
+  return total.fail || parsed.problems.length ? 1 : 0;
+}
+
 const game = a.pos[0];
 if (!game || a.has("help")) {
   console.log("node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load] [--leak <config>]");
