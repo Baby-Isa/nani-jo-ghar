@@ -10,7 +10,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `claude/sprint-17-builders-standard-gub2dj` (the newest handover; `main` has the same tools and docs once pushed).
 
-**Where things stand (Sat 7 Nov 2026, ~15:45 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
+**Where things stand (Sat 7 Nov 2026, ~16:05 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
 look back). Chai signed off; **live on `main`: 20261107T120301Z** (the game unchanged since). Sprint 18 starts from four things,
 all on this branch:
 1. **Chai's frozen run** (`build/reports/s17-frozen-run.md`, `build/frozen/chai-tray/`): the contract L1-L4 at the four sizes (one
@@ -22,7 +22,9 @@ all on this branch:
    `build/reports/s17-dropped-list.md`.
 4. **The module map** `docs/architecture/module-map.md` (24 pieces, layer, file now and target, owner, the call a game makes).
 Also: contract-96 to -99; chai's game checks keyed by `build/sandbox/data/games.json`; `audit.mjs --standard <game>` (with
-optional steps `--only voicegate,...`); SH-233 (contract-44's finger clause). Nothing is running.
+optional steps `--only voicegate,...`); SH-233 (contract-44's finger clause). The frozen run found three chai faults for chai's owner:
+CHAI-105 (a boiled-over pot's card stays ticked), CHAI-106 (no card light after a skipped order at L4), CK-60 still seen after a
+skip. Nothing is running.
 
 **Next, in order:** Sprint 18 in a new chat, per `docs/sprints/S18-kitchen-family.md` (Zafar, 7 Nov, "yes to all", decisions
 1-13): wave 1 now (chai's owner, Opus high $40-60; the five kit builders (a)-(e), Opus high $20-30 each, owners as the module map
@@ -48,7 +50,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 |---|---|---|
 | Shared components (end screen, cards, onboarding, buttons, layout) | 110 | 98 |
 | Cook: pantry | 9 | 10 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 4 / 7 / 2 / 1 / 4 / 13 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 28 / 4 / 7 / 2 / 1 / 4 / 13 | 27 / 14 / 27 / 12 / 22 / 17 / 34 |
 | Clinic | 39 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
