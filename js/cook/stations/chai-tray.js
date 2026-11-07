@@ -578,7 +578,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     // SH-108 reopened (Zafar, 27 Oct: "chai has the old stand in background, not the modern countertop"): a lighter wash, so the
     // painted marble reads as marble on a phone (at 0.5 it read as the old plain stand-in)
     // (Zafar, 5 Nov: the worktop and the stone "should just sing off each other": the wash in the stone's undertone, St.worktopWash)
-    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, St.worktopWash(), 0.18).setOrigin(0).setDepth(D.bg + 1));
+    Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR }); // (the kitchen kit's wash: 0.18 over the worktop at D.bg + 1)
     // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
     // and a grey plank line under each group)
     St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2 });
