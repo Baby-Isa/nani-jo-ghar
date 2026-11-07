@@ -1,6 +1,6 @@
 # Sprint 18: every kitchen game at chai's standard, built properly
 
-**Status:** open since Sat 7 Nov 18:40 UK (Zafar, 7 Nov: "yes to all"); wave 1 running. Integration branch `ccr-31767b7f-rfyrg4`
+**Status:** open since Sat 7 Nov 18:25 UK (Zafar, 7 Nov: "yes to all"); wave 1 running. Integration branch `ccr-31767b7f-rfyrg4`
 **Opened:** 7 Nov 2026 · **Closes at:** the publish to `main` by Mon 9 Nov 07:00 UK, Zafar's play and `/feedback`
 
 ## Goal
@@ -79,7 +79,7 @@ diff, never a game's gap page, and never a kit piece half-switched (chai is on t
 
 ## Sessions
 One line each as they launch: id, what it does, model and effort, report in `build/reports/`.
-- **Wave 1, launched Sat 7 Nov ~18:40 UK** (specs and briefs `build/tools/ops/specs/s18-*.json`; each in its own worktree
+- **Wave 1, launched Sat 7 Nov ~18:25 UK** (specs and briefs `build/tools/ops/specs/s18-*.json`; each in its own worktree
   `/home/user/wt/s18-<id>` on branch `s18-<id>`, without `sources/` except prep; `brief.mjs --live-check`: 8 live, no overlap;
   the orchestrator merges `KIT-READY` commits into the integration branch mid-run):
   s18-chai, chai's owner (Opus high, $40-60, stop Sun 10:00); s18-kit-a stove, s18-kit-b pans/pour/serve, s18-kit-c shelf and
