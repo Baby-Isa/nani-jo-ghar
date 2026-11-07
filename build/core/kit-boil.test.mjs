@@ -287,7 +287,7 @@ test("a view cleared mid-boil: the loop stops, nothing ticks on, and the next st
 });
 
 test("no game named in the kit's stove files (STD-F1-02); asset folders aside", () => {
-  for (const f of ["js/cook/mechanics/boil.js"]) {
+  for (const f of ["js/cook/mechanics/boil.js", "js/cook/kitchen-kit.js"]) {
     const text = read(f).replace(/assets\/[\w/.-]+/g, "").replace(/\b[A-Z]+-\d+\b/g, "").replace(/build\/[\w/.-]+/g, "");
     const hit = text.split("\n").findIndex((l) => /\b(chai|daar|daal|maani|samosa|chaat|sekelo|mishkaki|eggs|baking|corn)\b/i.test(l));
     assert.equal(hit, -1, `${f}:${hit + 1} names a game`);

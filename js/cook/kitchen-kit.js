@@ -1,10 +1,10 @@
 /*
  * The shared kitchen kit (docs/design-language/ui-design-system.md §13; API note: docs/architecture/shared-api.md).
  *
- * One hob for every Cook station, extracted from the chai v2 station: a compact top-down hob with
+ * One hob for every Cook station (the kitchen kit's stove part): a compact top-down hob with
  * ONE BURNER PER PAN IN PLAY (1-4, never an empty burner: the burner rule), each burner's small
  * face badge and 48 px knob on the hob's front edge in front of it, the painted flame ring under
- * the pan, and the heat ring (the chai v2 clock ring: a white track, the sage "now" band, a gold
+ * the pan, and the heat ring (the clock ring: a white track, the sage "now" band, a gold
  * sweep and a white dot) centred on the pan. A pan, tawa or karahi is placed with its own round
  * body centred on the burner, whatever its handle does.
  *
@@ -14,6 +14,9 @@
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
  *   Cook.Kit.place(S, kind, at, r)        a vessel (pan | tawa | karahi) centred on at {x, y}, body radius r
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
+ *     (hob, burner and heatRing are the stove part, for the games that cook with heat (Sprint 18, module map piece 2); the
+ *     heat and boil on them, the knob's taps, the green, the boil-over and the simmer loop, is Mech.boil(S, pan, {burner,
+ *     ring, band, rate, ...}): js/cook/mechanics/boil.js)
  *   Cook.Kit.faceUrl(who, mood)           a person's round face art (mood: neutral | happy | frown)
  *   Cook.Kit.faceArt(who)                 [key, url] pairs for their three faces (keys <who>-badge[-mood])
  *   Cook.Kit.badge(S, who, mood, N)       a person's face on a white disc (a texture key)
@@ -44,7 +47,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     2: { w: 931, h: 568, burners: [[0.251, 0.4025], [0.7445, 0.4025]], frontY: 0.8342 },
     3: { w: 1388, h: 709, burners: [[0.1596, 0.3725], [0.4993, 0.3728], [0.8389, 0.3725]], frontY: 0.7885 },
     // 30 Sept (v3.1, R1): hob-4-v2, four burners at H1's burner size: at the same cap size it's 1546 px wide, not
-    // 1753, so a station fitting it to a width draws bigger burners (chai at 4 people)
+    // 1753, so a station fitting it to a width draws bigger burners (a pan for each of 4 people)
     4: { w: 1546, h: 530, burners: [[0.1413, 0.4542], [0.3807, 0.4543], [0.6202, 0.4544], [0.8597, 0.4544]], frontY: 0.8928, file: "hob-4-v2" },
     wide: { w: 937, h: 568, burners: [[0.4954, 0.3929]], frontY: 0.862 },
   };
@@ -52,9 +55,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const HOB = { sets: HOBS, w: [1, 2, 3, 4].map((n) => HOBS[n].w), h: [1, 2, 3, 4].map((n) => HOBS[n].h) };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
   const VESSELS = {
-    pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.3434, cy: 0.6408, r: 0.3644 }, // centre fitted to the rim (29 Sept), as chai-tray.js
+    pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.3434, cy: 0.6408, r: 0.3644 }, // centre fitted to the rim (29 Sept)
     tawa: { key: "kit-tawa", url: "assets/cook/items/vessel-tawa-t.webp", w: 400, cx: 0.388, cy: 0.552, r: 0.386 },
-    // samosa v2's karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
+    // the v2 karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
     karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
   const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
