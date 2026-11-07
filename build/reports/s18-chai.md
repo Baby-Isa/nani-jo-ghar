@@ -36,7 +36,7 @@ plays. The freeze holds the two quick sizes only: 930x430 and 1920x1080 are the 
 ## Waits (Zafar's order)
 
 - **(b) pieces 6-8**: the pour from the shelf (`Mech.pour`, `.spoon`), the pan into its glass and take-back (`Mech.pour.toGlass`, `.takeBack`), the serving loop (`NjgServe`). Chai's pour reads `kit.pan`'s mirror, rim and empty look now; its frames (`S14F`) and `POUR` timings stay chai's until piece 7 (then `kit.glass`, `kit.shelf`).
-- **(c) the shelf** (`Shelf`, `Tally.label/.place`, `Juice.P.pop`), **(d) lights and lessons** (kit d's map in `build/reports/s18-kit-d.md`; the `lightHelpArrow` block goes then), **(e) the order's flow** (not landed).
+- **(c) the shelf** (`Shelf`, `Tally.label/.place`, `Juice.P.pop`), **(d) lights and lessons** (kit d's map in `build/reports/s18-kit-d.md`; the `lightHelpArrow` block goes then), **(e) the order's flow** (landed: `UI.personSay(pan.who, {obj: pan.face, rows, line, hide})`, `OrderCard.TIMES`).
 
 ## For other builders
 
