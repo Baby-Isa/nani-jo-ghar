@@ -715,21 +715,25 @@
     if (at1 >= keep - 1 && at1 + tr.height <= keep + view - fade + 1) return; // whole in view once folded: nothing moves
     const aim1 = max1 <= 1 ? 0 : Math.max(0, Math.min(max1, at1 - 4));
     if (Math.abs(aim1 - keep) <= 1) return;
-    // the aim live, frame by frame (the folding card's height easing, a host's redraw): the card in progress, found again by its person
+    // the card in progress's place in the panel (its top less the panel's) eases from where it is to where it ends, on the fold's
+    // curve; each frame the scroll is whatever puts it there, measured live (the folding card's height easing, a host's redraw: the
+    // card found again by its person), so it never slips under the panel's top while the card above it rolls up
     const who = target.dataset.who;
-    const live = () => {
+    const rel0 = tr.top - lr.top;
+    const rel1 = at1 - aim1;
+    const live = (k) => {
       let t = target;
       if (!t.isConnected && who) t = [...sc.querySelectorAll(".oc-card")].find((c) => c.dataset.who === who && !c.classList.contains("done")) || null;
       if (!t) return null;
       const room = sc.scrollHeight - sc.clientHeight;
       if (room <= 1) return 0;
-      return Math.max(0, Math.min(room, sc.scrollTop + (t.getBoundingClientRect().top - sc.getBoundingClientRect().top) - 4));
+      return Math.max(0, Math.min(room, sc.scrollTop + (t.getBoundingClientRect().top - sc.getBoundingClientRect().top) - (rel0 + (rel1 - rel0) * k)));
     };
     if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("panel-follow", { step: who || "", by: `from:${Math.round(top0)} to:${Math.round(aim1)} fold:${Math.round(delta)}` });
     const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
     const raf = root.requestAnimationFrame;
     if (reduced || !raf) {
-      const a = live();
+      const a = live(1);
       if (a != null) sc.scrollTop = a;
       return;
     }
@@ -748,10 +752,10 @@
     const step = () => {
       if (sc._ocFollow !== me || !sc.isConnected) return;
       const ms = now() - t0;
-      const a = live();
-      if (a == null) return stop();
       const u = Math.min(1, ms / FOLD_MS);
-      sc.scrollTop = top0 + (a - top0) * foldCurve(u);
+      const a = live(foldCurve(u));
+      if (a == null) return stop();
+      sc.scrollTop = a;
       // past the fold's time, on until the aim is still (the transition's last frames), at most 300 ms more
       if (u >= 1) {
         calm = last != null && Math.abs(a - last) < 0.5 ? calm + 1 : 0;
