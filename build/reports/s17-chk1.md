@@ -34,7 +34,10 @@ than the whole game. It is checked from that run on.
 - Contract run (1280x665, cook:chai-tray and @L4, under the shared lock): `CONTRACT PASSED: 0 breaks over 2 pages`.
   The frozen run (frozen-chai-20261107): 1 break over 44 pages, contract-11 at L4 1920x1080 only, so 0 at 1280x665.
   Same.
-- Checks: see below.
+- Checks (`checks.mjs`, without `load`: the only browser run allowed was the contract run): unit 92 files, 664 pass, 0 fail;
+  words, static, bump, specs, docs, fixlist, recordings, art, size ok. **leak FAIL**: `snap: g1 level 1: oracle 100.0%`.
+  That's the snap game's leak bot, which reads none of these files (game code, not the sandbox): it was already failing,
+  not caused here.
 
 ## Unfinished
 
