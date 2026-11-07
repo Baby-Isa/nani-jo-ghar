@@ -8,44 +8,38 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `claude/sprint-17-builders-standard-gub2dj` (the newest handover; `main` has the same tools and docs once pushed).
+**Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, unchanged since 20261107T120301Z).
 
-**Where things stand (Sat 7 Nov 2026, ~17:00 UK):** **Sprint 17 is closed** (`docs/sprints/S17-chai-done-families.md`, Outcome and
-look back). Chai signed off; **live on `main`: 20261107T120301Z** (the game unchanged since). Sprint 18 starts from four things,
-all on this branch:
-1. **Chai's frozen run** (`build/reports/s17-frozen-run.md`, `build/frozen/chai-tray/`): the contract L1-L4 at the four sizes (one
-   known break, ART-59), four child-pace films (0 breaks), the ear sheet; `node build/tools/review/frozen.mjs --diff` after every
-   switch (compares what chai does across three frozen plays; a change counts only if a re-play shows it again).
-2. **The standard folder** `docs/design-language/standard/` (start at its README): 208 live rules, glossary, 14 patterns, values;
-   Fable's review applied (`build/reports/s17-standard-review-fable.md`, `s17-fix-std.md`). `chai-standard.md` is a pointer.
-3. **The ID check** green (`node build/tools/review/stdids.mjs --check`: 217/217 placed); the dropped list (6):
-   `build/reports/s17-dropped-list.md`.
-4. **The module map** `docs/architecture/module-map.md` (24 pieces, layer, file now and target, owner, the call a game makes).
-Also: contract-96 to -99; chai's game checks keyed by `build/sandbox/data/games.json`; `audit.mjs --standard <game>` (with
-optional steps `--only voicegate,...`); SH-233 (contract-44's finger clause). The frozen run found three chai faults for chai's owner:
-CHAI-105 (a boiled-over pot's card stays ticked), CHAI-106 (no card light after a skipped order at L4), CK-60 still seen after a
-skip. Nothing is running.
+**Where things stand (Sat 7 Nov 2026, ~22:45 UK):** Sprint 18 open (`docs/sprints/S18-kitchen-family.md`). **Wave 1 is done and
+merged**, nothing running:
+- **The kits:** (a) stove `Mech.boil`, hob, worktop; (b) `Cook.Kit.pan`, `Mech.pour` (.toGlass, .takeBack), `NjgServe`
+  (`js/shared/serve.js`); (c) `js/shared/shelf.js`, `Tally.label/.place`, `Juice.P.pop`; (d) `Onboard.light/.lesson`,
+  `Cook.Coach.*`; (e) `UI.personSay`, `OrderCard.TIMES`, "no" rows last. Reports `build/reports/s18-kit-{a..e}.md`; module map rows 5-8 updated.
+- **Chai on all five kit pieces**, each switch proven by `frozen.mjs --diff` (repeated changes replayed on the old code: CHAI-107's
+  glass-ring race, a boil-over puff, a card light, all variation). `chai-tray.js` 3,453 -> 2,219 lines. Reports `s18-chai.md`,
+  `s18-chai2.md`. CHAI-105/-106 were the checks (fixed), CK-60 built, chai re-frozen at 20:06.
+- **Chop** its own game (`Cook.Chop.play`, `gaps/chop.md`; daar loads it). **Prep:** eggs, baking, the corn stall cut, settings
+  written (`zone.js` carries them), flows added (they play to the end; 9 breaks of their own for wave 2).
+- New rows: DAAR-40, DAAR-41 (older than chop), CHAI-107. `frozen.mjs` takes the shared lock itself: never wrap it.
 
-**Next, in order:** Sprint 18 in a new chat, per `docs/sprints/S18-kitchen-family.md` (Zafar, 7 Nov, "yes to all", decisions
-1-13): wave 1 now (chai's owner, Opus high $40-60; the five kit builders (a)-(e), Opus high $20-30 each, owners as the module map
-says; chop, Opus high $20-30; the prep for eggs, baking and the corn stall, Sonnet high $10-15); wave 2 Sun 08:00 (one builder per
-game, its `standard/gaps/<game>.md` first); wave 3 Sun 20:00 (merge, audit, films, Fable's batches, publish on his word by Mon
-07:00). Lessons for the launches: remove each worktree as its branch merges (eight filled the disk today); builders run
-`checks.mjs --only` (the full run's leak bots tripled the load; `snap` times out under load and passes alone).
+**Next, in order:**
+1. **Wave 2 at Sun 08:00** (decision 4): eight builders, specs and briefs ready (`build/tools/ops/specs/s18-g-*.json`, live-check
+   clean): daar, chaat, samosa, maani, sekelo, eggs, baking, corn; Opus high, $20-30 each, stop Sun 20:00; each in
+   `/home/user/wt/s18-g-<game>` (sparse, no `sources/`), gap page first.
+2. **Wave 3 at Sun 20:00:** merge, four-size audit with `--standard`, one new-player film per game, Fable's batches, publish by
+   Mon 07:00 on Zafar's word (decision 9), handover with his play list.
+3. For his play list: chai's two small changes from the kit (a face tap waits while someone speaks during a recast; the fallback
+   line skipped once the round moved on).
 
-**Zafar's answers (7 Nov ~16:30):** yes to the day's list except the five he took apart; recorded in
-`docs/sprints/S18-kitchen-family.md` ("Zafar's answers, 7 Nov ~16:30"): **chai is fixed first** (chai's owner: CHAI-105, CHAI-106, CK-60,
-then a re-freeze); pass-me out of every game (`data/cook.json`, on this branch, not yet on `main`: it ships with Sprint 18's publish);
-SH-234 (a 4 px item padding floor); the skies (nights kept, ceiling re-tuned), art block 3c queued; the standard and vision updated.
+**Spend (builders' own estimates, not measured):** kit builders and prep about $8-15 each; chai's owner over its $40-60 line (four sessions, likely $70-90); wave 1 under its $190-285 overall.
 
-**Settled at ~17:00 (Zafar):** the age: 5 the floor, the core 5 to 14, adults welcome (vision.md, STD-02-01; the book mode's lesson path
-for older learners in `docs/ideas.md`); decoys at L4 by the rules file, 1-2-3-4 (contract-37 aligned). **No open questions.**
+**Open questions to Zafar** (`docs/questions.md`): 1. Chop's kinds at L1-L3 (1, 2, 3) and its swipe kept by design: yes?
 
-**Starting prompt for the new chat (Sprint 18):** the one at the end of the Sprint 17 file ("When Sprint 17 is done"):
-> First `git fetch origin claude/sprint-17-builders-standard-gub2dj` and work from that branch (it holds the newest handover;
-> `main` is the live site). Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-kitchen-family.md`;
-> open nothing else until a task needs it. Confirm Sprint 17 left its four things (above), then open Sprint 18 and launch wave 1
-> with `/brief`, as that file and the prompt at the end of the Sprint 17 file say; tell me before launching anything new beyond it.
+**Starting prompt for a new chat:**
+> First `git fetch origin ccr-31767b7f-rfyrg4` and work from that branch (it holds the newest handover; `main` is the live site).
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-kitchen-family.md`; open nothing else until a
+> task needs it. Wave 1 is merged. At Sun 08:00 make the eight worktrees and launch wave 2 from the ready briefs, as the sprint
+> file says (Zafar's yes, 7 Nov); tell me before launching anything new beyond it.
 
 ## The fix list
 
