@@ -28,8 +28,8 @@ for (const m of cookBlock.matchAll(/^\s{4}(\w+):[^\n]*?(?:fx|fxLoop)\("([\w-]+)"
 for (const m of cookBlock.matchAll(/^\s{4}(\w+):[^\n]*?Sfx\.loop\("([\w-]+)"/gm)) COOK[m[1]] = { name: m[2], loop: true };
 
 // what chai plays: its station, the kit's hob and its heat and boil (Mech.boil: the green, the simmer, the puff; Sprint 18), the serve
-// and the word moment and end screen it shows
-const CHAI = ["js/cook/stations/chai-tray.js", "js/cook/kitchen-kit.js", "js/cook/mechanics/boil.js", "js/cook/flow.js", "js/shared/word-moment.js", "js/shared/results.js"];
+// and its pours (Mech.pour: the short pour, the settle; Sprint 18), the word moment and end screen it shows
+const CHAI = ["js/cook/stations/chai-tray.js", "js/cook/kitchen-kit.js", "js/cook/mechanics/boil.js", "js/cook/mechanics/pour.js", "js/cook/flow.js", "js/shared/word-moment.js", "js/shared/results.js"];
 const calls = () => {
   const out = [];
   for (const f of CHAI) {
