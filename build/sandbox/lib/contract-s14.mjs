@@ -49,6 +49,7 @@ export const S14_CHECKS = {
   "contract-92": { item: "light-room", title: "the help's light leaves room round its thing", how: "Every spot sample (lib/contract-hook.mjs: the first-time help's drawn holes and Cook's tappable pictures with a word): for the thing whose middle is in a lit box, each side of the box must sit at least 6 px out from the thing's picture, unless that side stops short of a neighbouring thing (within 6 px of it, never over it) or at the screen's edge; a lit box that covers a neighbour by more than 2 px is a break too, once per page (SH-230, Zafar 6 Nov night: 'a general rule that works in all cases that leaves some padding around the object+pill+face icon ... unless it ... touches another item, in which case it reduces ... as much as it needs to')." },
   "contract-93": { item: "own-words", title: "every part of an order is spoken", how: "Cook flows: every line said while an order is given (from the order's request to the station's start, before a skip tap), by a person at the counter, must play (a family clip or, while testing, the device voice): a silent part is a break, once per page (CK-59, Zafar 6 Nov night: 'the second person ordering didn't say milk ... even though they ordered milk in their tea'; the same word said by an earlier person within 10 s was taken for a repeat)." },
   "contract-94": { item: "wm-card", title: "the word moment's card is the 6 Nov card", how: "Every wmcard sample (lib/contract-hook.mjs: each word-moment card's Kutchi and English faces and the gap from its English's box to its speaker's top): with the 6 Nov type on (:root.njg-lora) the Kutchi must be Lora and the English Nunito Sans, and the speaker must sit at least 2 px clear of the English, once per page (SH-231, Zafar 6 Nov night: 'check that the card that pops up is within the new style of cards that we've created and has the same fonts and spacings'; the judge, 6 Nov: the speaker pressed into 'half')." },
+  "contract-95": { item: "skip-silent", title: "nothing is said after a skip", how: "Cook flows: after a tap skips the order (Lifecycle skip-zone with skipped, or order-skip), no line starts before the game's first step opens (Lifecycle step-open): a line started in that gap is a break, once per page (CK-60, Zafar 7 Nov: 'I skipped the order before the first item's been called ... I hear the word milk spoken out loud straight away ... skipping it should have stopped all sound')." },
 };
 
 // 78
@@ -348,4 +349,16 @@ export function check94(tl, add) {
       if (c.gap != null && c.gap < 2) { add("contract-94", e.t, `the word moment's card "${c.word}": its speaker sits ${c.gap} px from its English (at least 2 px clear)`); return; }
     }
   }
+}
+
+// 95 (CK-60): nothing is said after a skip, until the game's first step opens
+export function check95(r, tl, v, add) {
+  if (!isCookFlow(r.flow)) return;
+  const life = (w) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === w);
+  const skip = life("skip-zone").find((n) => /skipped/.test(n.reason || n.by || "")) || life("order-skip")[0];
+  if (!skip) return;
+  const step = life("step-open").find((n) => n.t > skip.t);
+  const until = step ? step.t : skip.t + 3000;
+  const l = v.lines.find((x) => x.t0 > skip.t + 50 && x.t0 < until && (x.text || "").trim() && x.plays && x.plays.length);
+  if (l) add("contract-95", l.t0, `"${l.text.trim()}" was said ${Math.round(l.t0 - skip.t)} ms after the order was skipped, before the game's first step`);
 }

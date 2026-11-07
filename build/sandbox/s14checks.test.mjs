@@ -18,9 +18,9 @@ const lines = (...l) => ({ lines: l.map(([text, t0]) => ({ text, t0, role: "call
 
 test("the new checks are in the contract table with their rows", () => {
   for (const k of Object.keys(S14_CHECKS)) { assert.ok(CHECKS[k], k); assert.ok(S14_CHECKS[k].how.length > 60); }
-  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89", "contract-92", "contract-93", "contract-94"]);
-  const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d|9[234])\b/.test(k));
-  assert.equal(rows.length, 15, "each check names the fix-list rows it guards");
+  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89", "contract-92", "contract-93", "contract-94", "contract-95"]);
+  const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d|9[2345])\b/.test(k));
+  assert.equal(rows.length, 16, "each check names the fix-list rows it guards");
 });
 
 test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice, pause, dim' is red", () => {
@@ -286,4 +286,12 @@ test("contract-94 (SH-231): the word moment's card in Lora and Nunito Sans, its 
   assert.equal(run(check94, [c("wmcard", 1, { lora: true, list: [ok] })]).length, 0);
   assert.match(run(check94, [c("wmcard", 1, { lora: true, list: [{ ...ok, kf: "Fraunces" }] })])[0].msg, /Lora/);
   assert.match(run(check94, [c("wmcard", 1, { lora: true, list: [{ ...ok, gap: -3 }] })])[0].msg, /-3 px/);
+});
+
+test("contract-95 (CK-60): a line said after a skip, before the first step, is red", async () => {
+  const { check95 } = await import("./lib/contract-s14.mjs");
+  const r = { flow: "cook:chai-tray" };
+  const tl = [c("life", 1000, { what: "skip-zone", reason: "skipped:1" }), c("life", 2500, { what: "step-open" })];
+  assert.equal(run(check95, r, tl, { lines: [{ text: "Paani", t0: 2600, plays: [{}] }] }).length, 0, "the first step's call");
+  assert.match(run(check95, r, tl, { lines: [{ text: "dudh,", t0: 1153, plays: [{}] }] })[0].msg, /153 ms after/);
 });
