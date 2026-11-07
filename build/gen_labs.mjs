@@ -159,7 +159,8 @@ export const BEHIND = [
       { href: "lab/word-card.html", title: "Word card and hint rungs", text: "Sprint 11: the shared word card at its five stages (English, then the picture, then the Kutchi text fade; the free reveals), and the real item's demo with the 5 s and 15 s rungs." },
       { href: "lab/play-log.html", title: "Play log", text: "Where players hesitated on this device: each step's seconds to the first action, taps that did nothing and help shown; slow steps flagged; export as JSON." },
       { href: "lab/order-card.html", title: "Order card", text: "The shared person card (person &rarr; items &rarr; parts): every state, in the sidebar and the request pop-up." },
-      { href: "lab/kit.html", title: "Shared kit: every state", text: "The frame's sidebar kit on one sheet: the guide box, the order card (stacked and pills), the tally and the bulb. <code>?part=results</code> or <code>?part=words</code> opens the end screen." },
+      { href: "lab/kit.html", title: "Shared kit: every state", text: "The frame's sidebar kit on one sheet: the guide box, the order card (stacked and pills), the tally and the bulb. <code>?part=results</code> or <code>?part=words</code> opens the end screen. Sprint 18: the shared-kit builders' sections follow the sheet." },
+      { href: "lab/kitchen-kit.html", title: "Kitchen kit: every state", text: "Sprint 18: the kitchen kit's pieces (the stove, the pans and pouring), one section per piece, each written by its builder. <code>?only=kk-stove</code> shows one." },
     ],
   },
 ];

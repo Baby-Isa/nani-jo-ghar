@@ -38,13 +38,15 @@ export function check96(r, tl, add) {
   for (const n of life(tl, "chai-boil").filter((x) => (x.reason || x.step) === "again")) {
     const who = String(n.by || "").split(/\s+/)[0];
     const t = n.at || n.t;
-    let p = null;
-    for (const e of panels) { if (e.t > t + REOPEN_MS) break; p = e; }
-    const row = p && (p.rows || []).find((x) => x.who === who);
-    if (!row) continue;
-    // (the last sample inside the window: a row ticked or scrolled at its end is still so, as the samples are on change)
-    if (row.done > 0) { add("contract-96", t, `${who}'s pot started again after boiling over and ${row.done} of ${row.n} rows are still ticked ${REOPEN_MS} ms on`); return; }
-    if (row.sl > 2) { add("contract-96", t, `${who}'s pot started again after boiling over and its card is scrolled ${row.sl} px along, not back at the first item`); return; }
+    // (S18, CHAI-105 traced by chai's owner: the window ends where that person's pot takes its next thing, so a refill is not read as a
+    // stuck tick; the rows must all show open at some sample in it, and the row come home within REOPEN_MS)
+    const back = life(tl, "chai-add").find((x) => (x.at || x.t) > t && String(x.by || "").split(":")[0] === who);
+    const end = Math.min(t + REOPEN_MS, back ? (back.at || back.t) - 1 : Infinity);
+    const rowsIn = (to) => panels.filter((e) => e.t >= t - 1 && e.t <= to).map((e) => (e.rows || []).find((x) => x.who === who)).filter(Boolean);
+    const open = rowsIn(end), win = rowsIn(t + REOPEN_MS);
+    if (!open.length) continue;
+    if (!open.some((x) => x.done === 0)) { const l = open[open.length - 1]; add("contract-96", t, `${who}'s pot started again after boiling over and ${l.done} of ${l.n} rows are still ticked (never all open before ${REOPEN_MS} ms or the next thing in)`); return; }
+    if (!win.some((x) => x.sl <= 2)) { add("contract-96", t, `${who}'s pot started again after boiling over and its card is scrolled ${win[win.length - 1].sl} px along, not back at the first item within ${REOPEN_MS} ms`); return; }
   }
 }
 

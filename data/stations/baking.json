@@ -43,7 +43,10 @@
  },
  "words": {
   "ph-naan": {"heap": {"kind": "pieces", "color": "#e7c58b"}, "bowl": "ceramic"},
-  "ph-cup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"}
+  "ph-cup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
+  "ph-quartercup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
+  "ph-cups-1h": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
+  "ph-cups-2h": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"}
  },
  "mechanic": {
   "levels": [
@@ -81,5 +84,425 @@
     ]
    }
   ]
- }
+ },
+ "kitchen": {
+  "about": "Sprint 18 prep (7 Nov): see data/stations/eggs.json kitchen.about (the same shape in every kitchen game). The station's own station/mechanic keys are untouched; its words gained three jug amounts (so the gap list reads them)."
+ },
+ "recipe": {
+  "key": "baking",
+  "dish": "ph-naan",
+  "ref": "data/cook.json recipes.baking (no slots: the plan is picked from mechanic.levels[].plans by level)",
+  "steps": [
+   "Mix",
+   "Oven"
+  ],
+  "who": "nana",
+  "amounts": {
+   "little": "one tap; it stops; 'that's good'",
+   "lot": "tap until lotTaps; 'enough'",
+   "more": "a little, tap, 'still a little more', tap, 'enough'",
+   "jug": "tap until `units` quarter cups are in the measuring jug (its five lines, no numbers)"
+  },
+  "levels": [
+   {
+    "level": 1,
+    "instructions": 2,
+    "amounts": [
+     "lot",
+     "little"
+    ],
+    "decoys": 1,
+    "bakeMs": 3600
+   },
+   {
+    "level": 2,
+    "instructions": 3,
+    "amounts": [
+     "lot",
+     "little",
+     "more"
+    ],
+    "decoys": 2
+   },
+   {
+    "level": 3,
+    "instructions": 3,
+    "amounts": [
+     "jug",
+     "jug",
+     "little"
+    ],
+    "decoys": 3,
+    "jug": true
+   },
+   {
+    "level": 4,
+    "instructions": 4,
+    "amounts": [
+     "jug",
+     "jug",
+     "jug or more",
+     "little"
+    ],
+    "decoys": 3,
+    "bakeMs": 4200,
+    "jug": true
+   }
+  ],
+  "_levels": "The plans themselves (which container, how much, its engine parts) stay in mechanic.levels[].plans, as the station reads them."
+ },
+ "scene": {
+  "stage": [
+   1600,
+   900
+  ],
+  "view": "E side-on counter; the oven is its own close-up",
+  "bg": "assets/cook/proto/baking/bg-counter.webp",
+  "worktopEdgeY": 470,
+  "_bg": "BK cut at crop_y 146 so the worktop's front edge lands at y 469.8 (wanted 470). BK is a kept best try: its tiles and marble lean peach (run log).",
+  "cat": {
+   "file": "assets/cook/proto/cat-peek.webp",
+   "placeholder": true,
+   "note": "Placeholder crops (the 1 Nov mock-ups) the station loads today until wave 2 moves it onto this file's art."
+  },
+  "oven": {
+   "states": {
+    "shut": "assets/cook/proto/baking/oven-shut.webp",
+    "baking": "assets/cook/proto/baking/oven-baking.webp",
+    "open": "assets/cook/proto/baking/oven-open.webp"
+   },
+   "px": [
+    840,
+    639
+   ],
+   "centre": [
+    900,
+    360
+   ],
+   "drawn": {
+    "w": 560,
+    "h": 460
+   },
+   "_note": "one 840x643 canvas, top-left aligned on the cabinet frame: a swap changes only the glow or the door"
+  }
+ },
+ "items": {
+  "mixBowl": {
+   "size": "M",
+   "view": "E",
+   "states": {
+    "empty": "assets/cook/proto/baking/bowl-f-0.webp",
+    "scoop": "assets/cook/proto/baking/bowl-f-1.webp",
+    "heap": "assets/cook/proto/baking/bowl-f-2.webp",
+    "well": "assets/cook/proto/baking/bowl-f-3.webp",
+    "mixing": "assets/cook/proto/baking/bowl-f-4.webp",
+    "dough": "assets/cook/proto/baking/bowl-f-dough.webp"
+   },
+   "px": [
+    484,
+    401
+   ],
+   "drawn": {
+    "w": 380
+   },
+   "at": [
+    820,
+    520
+   ],
+   "replaces": "assets/cook/proto/bake-bowl.webp and the drawn mound",
+   "_note": "contents rise by turn: the first picture is empty, the last is the dough after the final instruction; one canvas"
+  },
+  "jug": {
+   "size": "L",
+   "view": "F",
+   "states": {
+    "empty": "assets/cook/proto/baking/jug-empty.webp",
+    "water": "assets/cook/proto/baking/jug-water.webp",
+    "milk": "assets/cook/proto/baking/jug-milk.webp",
+    "flour": "assets/cook/proto/baking/jug-flour.webp",
+    "yoghurt": "assets/cook/proto/baking/jug-yoghurt.webp",
+    "sugar": "assets/cook/proto/baking/jug-sugar.webp"
+   },
+   "px": [
+    400,
+    343
+   ],
+   "levels": [
+    3,
+    4
+   ],
+   "drawn": {
+    "w": 150,
+    "h": 230
+   },
+   "at": [
+    470,
+    470
+   ],
+   "partialAlpha": true,
+   "fillFor": {
+    "cook-paani": "water",
+    "cook-dudh": "milk",
+    "cook-atto": "flour",
+    "ph-dahi": "yoghurt",
+    "cook-khun": "sugar"
+   },
+   "lineAt": {
+    "1": 0.812,
+    "2": 0.672,
+    "4": 0.532,
+    "6": 0.391,
+    "10": 0.249
+   },
+   "_lineAt": "key = quarter cups (1 = a quarter ... 10 = two and a half), value = the line's height as a fraction of the jug picture from its TOP; five evenly drawn lines, no numbers. The game reveals a full jug through a rising mask up to the line, never a proportional fill.",
+   "replaces": "the drawn jug and its drawn fill"
+  },
+  "tray": {
+   "size": "M",
+   "view": "F",
+   "file": "assets/cook/proto/baking/tray.webp",
+   "px": [
+    400,
+    210
+   ],
+   "_note": "an empty steel tray; flagged by artcolour (warm steel reads tan, 19%): the pots and bowls share that warm steel"
+  },
+  "naan": {
+   "size": "M",
+   "view": "F",
+   "states": {
+    "raw": "assets/cook/proto/baking/naan-raw.webp",
+    "puff": "assets/cook/proto/baking/naan-puff.webp",
+    "golden": "assets/cook/proto/baking/naan-golden.webp",
+    "deep": "assets/cook/proto/baking/naan-deep.webp"
+   },
+   "px": [
+    400,
+    210
+   ],
+   "word": "ph-naan",
+   "english": "naan",
+   "drawn": {
+    "w": 260
+   },
+   "_note": "on its tray, registered with the tray: in the oven by the ring's progress; the tray alone is items.tray",
+   "replaces": "assets/cook/proto/bake-naan.webp"
+  },
+  "naanOut": {
+   "size": "M",
+   "view": "F",
+   "word": "ph-naan",
+   "file": "assets/cook/proto/baking/naan-alone.webp",
+   "px": [
+    300,
+    144
+   ],
+   "_note": "taken out of the oven, alone"
+  },
+  "dough": {
+   "size": "M",
+   "view": "F",
+   "file": "assets/cook/props/dough-ball.webp",
+   "reuse": true,
+   "drawn": {
+    "w": 170
+   }
+  },
+  "containers": {
+   "size": "L",
+   "view": "F",
+   "reuse": true,
+   "drawn": {
+    "h": 170
+   },
+   "row_y": 820,
+   "files": {
+    "cook-atto": "assets/cook/items/shelf-cook-atto-bare-f.webp",
+    "cook-paani": "assets/cook/items/shelf-cook-paani-bare-f.webp",
+    "cook-dudh": "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+    "cook-khun": "assets/cook/items/shelf-cook-khun-bare-f.webp",
+    "spi-16": "assets/cook/items/shelf-loon-jar-v2-f.webp",
+    "ph-dahi": "assets/cook/items/shelf-ph-dahi-bare-f.webp",
+    "ph-ghee": "assets/cook/items/shelf-ph-ghee-bare-f.webp"
+   }
+  },
+  "streams": {
+   "reuse": true,
+   "shared": "assets/shared/word-moment/",
+   "files": {
+    "cook-atto": "assets/shared/word-moment/stream-flour-s17.webp",
+    "cook-paani": "assets/shared/word-moment/stream-water-s17.webp",
+    "cook-dudh": "assets/shared/word-moment/stream-milk-s17.webp",
+    "cook-khun": "assets/shared/word-moment/stream-sugar-s17.webp"
+   },
+   "_note": "the shared pour columns (WS), stretched from a container's lip to the bowl or jug; yoghurt, salt and ghee have none yet (the drawn drops stay)"
+  }
+ },
+ "vocab": {
+  "ph-naan": {
+   "item": "naan",
+   "card": "assets/cook/proto/baking/naan-alone.webp",
+   "english": "naan"
+  },
+  "cook-atto": {
+   "item": "containers"
+  },
+  "cook-paani": {
+   "item": "containers"
+  },
+  "cook-dudh": {
+   "item": "containers"
+  },
+  "cook-khun": {
+   "item": "containers"
+  },
+  "spi-16": {
+   "item": "containers"
+  },
+  "ph-dahi": {
+   "item": "containers"
+  },
+  "ph-ghee": {
+   "item": "containers"
+  },
+  "ph-cup": {
+   "item": "jug",
+   "card": "assets/cook/proto/baking/jug-flour.webp"
+  },
+  "ph-half": {
+   "item": "jug",
+   "card": "assets/cook/proto/baking/jug-water.webp",
+   "note": "adh, recorded; CHAI-67's word moment names it"
+  },
+  "ph-quartercup": {
+   "item": "jug",
+   "english": "a quarter cup",
+   "units": 1
+  },
+  "ph-cups-1h": {
+   "item": "jug",
+   "english": "one and a half cups",
+   "units": 6
+  },
+  "ph-cups-2h": {
+   "item": "jug",
+   "english": "two and a half cups",
+   "units": 10
+  }
+ },
+ "lines": {
+  "now": "now",
+  "alot": "alot",
+  "little": "little",
+  "stillmore": "stillmore",
+  "good": "good",
+  "enough": "enough",
+  "ready": "ready",
+  "careful": "careful",
+  "instruction": "DoIt v.put-in with the item (and the amount's line)",
+  "_note": "Lang.line keys the station says today; the amounts of the jug are the word moment's job (CHAI-67)"
+ },
+ "wordMoment": {
+  "call": "UI.wordMoment(ids)",
+  "ids": [
+   "ph-quartercup",
+   "ph-half",
+   "ph-cup",
+   "ph-cups-1h",
+   "ph-cups-2h"
+  ],
+  "ref": "docs/design-language/art-plans/s17-art1-art-plan.md §1.1; baking's own word moment art (ART-37/38) is a placeholder this sprint",
+  "note": "adh is recorded; the other four are grey English until Mum gives them"
+ },
+ "end": {
+  "display": "progress",
+  "note": "the kit's end, as chai's"
+ },
+ "gaps": [
+  {
+   "id": "ph-naan",
+   "english": "naan",
+   "kind": "no Kutchi",
+   "sheet": "naan (R6-18)"
+  },
+  {
+   "id": "cook.line.alot",
+   "english": "A lot.",
+   "kind": "no Kutchi",
+   "sheet": "A lot."
+  },
+  {
+   "id": "cook.line.stillmore",
+   "english": "Still a little more.",
+   "kind": "no Kutchi",
+   "sheet": "Still a little more."
+  },
+  {
+   "id": "cook.line.good",
+   "english": "That's good.",
+   "kind": "no Kutchi",
+   "sheet": "That's good."
+  },
+  {
+   "id": "ph-quartercup",
+   "english": "a quarter cup",
+   "kind": "no Kutchi",
+   "sheet": "added by this prep (R6-135)"
+  },
+  {
+   "id": "ph-cups-1h",
+   "english": "one and a half cups",
+   "kind": "no Kutchi",
+   "sheet": "added by this prep (R6-135)"
+  },
+  {
+   "id": "ph-cups-2h",
+   "english": "two and a half cups",
+   "kind": "no Kutchi",
+   "sheet": "added by this prep (R6-135)"
+  },
+  {
+   "id": "frame: put in <amount> of <item>",
+   "english": "Put in a cup of flour / half a cup of water",
+   "kind": "no frame (the engine has no 'N cups of X' rule: its Join)",
+   "sheet": "R6-136"
+  }
+ ],
+ "assets": [
+  "assets/cook/proto/baking/bg-counter.webp",
+  "assets/cook/proto/cat-peek.webp",
+  "assets/cook/proto/baking/oven-shut.webp",
+  "assets/cook/proto/baking/oven-baking.webp",
+  "assets/cook/proto/baking/oven-open.webp",
+  "assets/cook/proto/baking/bowl-f-0.webp",
+  "assets/cook/proto/baking/bowl-f-1.webp",
+  "assets/cook/proto/baking/bowl-f-2.webp",
+  "assets/cook/proto/baking/bowl-f-3.webp",
+  "assets/cook/proto/baking/bowl-f-4.webp",
+  "assets/cook/proto/baking/bowl-f-dough.webp",
+  "assets/cook/proto/baking/jug-empty.webp",
+  "assets/cook/proto/baking/jug-water.webp",
+  "assets/cook/proto/baking/jug-milk.webp",
+  "assets/cook/proto/baking/jug-flour.webp",
+  "assets/cook/proto/baking/jug-yoghurt.webp",
+  "assets/cook/proto/baking/jug-sugar.webp",
+  "assets/cook/proto/baking/tray.webp",
+  "assets/cook/proto/baking/naan-raw.webp",
+  "assets/cook/proto/baking/naan-puff.webp",
+  "assets/cook/proto/baking/naan-golden.webp",
+  "assets/cook/proto/baking/naan-deep.webp",
+  "assets/cook/proto/baking/naan-alone.webp",
+  "assets/cook/props/dough-ball.webp",
+  "assets/cook/items/shelf-cook-atto-bare-f.webp",
+  "assets/cook/items/shelf-cook-paani-bare-f.webp",
+  "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+  "assets/cook/items/shelf-cook-khun-bare-f.webp",
+  "assets/cook/items/shelf-loon-jar-v2-f.webp",
+  "assets/cook/items/shelf-ph-dahi-bare-f.webp",
+  "assets/cook/items/shelf-ph-ghee-bare-f.webp",
+  "assets/shared/word-moment/stream-flour-s17.webp",
+  "assets/shared/word-moment/stream-water-s17.webp",
+  "assets/shared/word-moment/stream-milk-s17.webp",
+  "assets/shared/word-moment/stream-sugar-s17.webp"
+ ]
 }

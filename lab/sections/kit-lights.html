@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lights and lessons</title>
+<!--
+  The shared kit's lights and lessons (Sprint 18, module map pieces 13-14; kit builder d): every light and lesson in each state, on the
+  kit's own calls (js/shared/onboard.js, js/cook/coach.js), with no game behind it. lab/kit.html loads it (an iframe keeps its own
+  paths); it opens on its own too. ?state=<name> opens one state (the buttons list them; the evidence tool's strips use it), ?speed=N
+  plays it N times faster. The words on the order card are the language data's own (data/conversations/lines.json nouns), never
+  written here. window.KitLights: {states, show(name), ready, log}.
+-->
+<link rel="stylesheet" href="../../css/shared/tokens.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/app.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/face.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/onboard.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/word-card.css?v=20261107T120301Z">
+<link rel="stylesheet" href="../../css/shared/order-card.css?v=20261107T120301Z">
+<style>
+  /* the lab page itself (developer chrome, not the game) */
+  html, body { margin: 0; background: var(--njg-page); color: var(--njg-ink); font-family: var(--njg-font); }
+  body { padding: var(--njg-s2, 8px) var(--njg-s3, 12px); box-sizing: border-box; min-height: 100vh; }
+  h1 { font-size: var(--njg-t2, 20px); margin: 0 0 4px; }
+  .kl-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .kl-nav button { font: 600 13px/1.1 var(--njg-font); padding: 6px 10px; min-height: 32px; border-radius: 10px; border: 1px solid var(--njg-line, #d9bf95); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; }
+  .kl-nav button[aria-pressed="true"] { background: var(--njg-focus, #f2c14e); }
+  .kl-stage { display: grid; grid-template-columns: minmax(200px, 30%) 1fr; gap: 8px; height: clamp(250px, calc(100vh - 150px), 560px); }
+  .kl-side { background: var(--njg-panel); border-radius: var(--njg-radius, 12px); padding: 8px; display: flex; flex-direction: column; gap: 8px; min-width: 0; overflow: hidden; }
+  .kl-guide { background: var(--njg-card); border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--njg-ink-soft); min-height: 26px; transition: box-shadow .2s; }
+  .kl-guide.said { box-shadow: 0 0 0 3px var(--njg-focus, #f2c14e); color: var(--njg-ink); }
+  #mission { min-height: 0; overflow: hidden; flex: 1; }
+  .kl-play { position: relative; background: #f4e3c4; border-radius: var(--njg-radius, 12px); overflow: hidden; min-width: 0; }
+  .kl-thing { position: absolute; display: block; user-select: none; -webkit-user-drag: none; cursor: pointer; }
+  #kl-tin { left: 8%; top: 18%; width: 15%; max-width: 110px; }
+  #kl-jug { left: 26%; top: 18%; width: 15%; max-width: 110px; }
+  #kl-knob { left: 12%; bottom: 10%; width: 11%; max-width: 70px; }
+  .kl-pan { position: absolute; bottom: 12%; width: 26%; max-width: 210px; aspect-ratio: 1; }
+  .kl-pan img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .kl-pan .kl-rim { position: absolute; left: 14%; top: 14%; width: 72%; height: 72%; border-radius: 50%; }
+  #kl-pan-a { left: 34%; }
+  #kl-pan-b { left: 66%; }
+  .kl-glow { filter: drop-shadow(0 0 10px rgba(255, 200, 80, .95)); animation: kl-hop .9s ease-in-out infinite; }
+  @keyframes kl-hop { 50% { translate: 0 -8%; } }
+  @media (prefers-reduced-motion: reduce) { .kl-glow { animation: none; } }
+  .kl-status { font: 600 12px/1.3 ui-monospace, monospace; color: var(--njg-ink-soft); margin: 6px 0 0; white-space: pre-wrap; max-height: 3.9em; overflow: hidden; }
+  .kl-what { font-size: 13px; margin: 0 0 6px; color: var(--njg-ink); min-height: 1.3em; }
+  @media (max-height: 460px) {
+    h1 { display: none; }
+    .kl-nav button { padding: 3px 7px; min-height: 26px; font-size: 11px; }
+    .kl-stage { height: calc(100vh - 92px); }
+    .kl-what { font-size: 12px; margin-bottom: 2px; }
+    .kl-status { display: none; }
+  }
+</style>
+</head>
+<body>
+<h1>Lights and lessons</h1>
+<nav class="kl-nav" id="kl-nav" aria-label="States"></nav>
+<p class="kl-what" id="kl-what"></p>
+<div class="kl-stage">
+  <aside class="kl-side">
+    <div class="kl-guide" id="kl-guide">the step's call (held for its light)</div>
+    <div id="mission"></div>
+  </aside>
+  <div class="kl-play" id="kl-play">
+    <img class="kl-thing" id="kl-tin" alt="" src="../../assets/cook/items/icon-cook-chai.webp">
+    <img class="kl-thing" id="kl-jug" alt="" src="../../assets/cook/items/icon-cook-dudh.webp">
+    <img class="kl-thing" id="kl-knob" alt="" src="../../assets/cook/items/hob-knob-off-t.png">
+    <div class="kl-pan" id="kl-pan-a"><img alt="" src="../../assets/cook/props/saucepan-chai.webp"><i class="kl-rim"></i></div>
+    <div class="kl-pan" id="kl-pan-b"><img alt="" src="../../assets/cook/props/saucepan-chai.webp"><i class="kl-rim" id="kl-rim-b"></i></div>
+  </div>
+</div>
+<p class="kl-status" id="kl-status"></p>
+
+<script src="../../js/version.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/uistore.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/rules.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/face.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/onboard.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/word-card.js?v=20261107T120301Z"></script>
+<script src="../../js/shared/order-card.js?v=20261107T120301Z"></script>
+<script type="module">
+  const q = new URLSearchParams(location.search);
+  const SPEED = Number(q.get("speed")) || 1;
+  const log = [];
+  const status = document.getElementById("kl-status");
+  const what = document.getElementById("kl-what");
+  const guide = document.getElementById("kl-guide");
+  const say = (t) => {
+    log.push(t);
+    status.textContent = log.slice(-3).join("\n");
+  };
+  // the page's log, as the games' Lifecycle keeps it (the kit logs its rungs and lights here)
+  window.Lifecycle = { note: (w, info) => say(`${w} ${JSON.stringify(info || {})}`) };
+  window.KitLights = { ready: false, log, states: [] };
+
+  const load = (p) => fetch(p).then((r) => r.json());
+  const [rules, lines] = await Promise.all([load("../../data/rules.json").catch(() => null), load("../../data/conversations/lines.json").catch(() => ({}))]);
+  if (rules && window.Rules) Rules.set(rules);
+
+  // Cook's kitchen wiring with no game behind it: the namespace with the few things the kit reads
+  const { Cook } = await import("../../js/cook/ns.js");
+  await import("../../js/cook/coach.js");
+  const held = { p: null };
+  Object.assign(Cook, {
+    save: {},
+    speed: SPEED,
+    scene: null,
+    data: { onboard: { "lab-kit": [{ step: "item", do: "tap" }] } },
+    UI: { s14: () => true, holdCalls: (p) => { guide.classList.remove("said"); held.p = Promise.resolve(p).then(() => guide.classList.add("said")); }, cardIntoView() {} },
+    wait: (ms) => new Promise((r) => setTimeout(r, ms / SPEED)),
+    wordStage: (id) => (id === "cook-dudh" ? 4 : 1),
+  });
+  const C = Cook.Coach;
+
+  // the order card: the language data's own words (never written here), shown at the stages the lessons teach
+  const nouns = (lines && lines.nouns) || {};
+  const pic = (id) => ({ src: `../../assets/cook/items/icon-${id}.webp`, fit: "contain" });
+  const word = (id) => ({ id, kutchi: (nouns[id] && nouns[id].k) || "", english: (nouns[id] && nouns[id].en) || "", picture: pic(id), rec: !(nouns[id] && nouns[id].k) });
+  const part = (id, slots, done) => ({ key: id, word: word(id), done: !!done, wordOpts: { slots } });
+  const mission = document.getElementById("mission");
+  const drawCard = () => {
+    mission.textContent = "";
+    const card = OrderCard.card({ person: { id: "nana", face: "../../assets/cook/characters/nana-badge.webp" }, headline: { html: "" }, items: [{ label: null, parts: [
+      part("cook-paani", { english: false }, true),
+      part("cook-chai", { english: false }),
+      part("cook-dudh", { picture: false, english: false }),
+    ] }] }, { s14: true, fold: {} });
+    mission.appendChild(card);
+    if (window.WordCard && WordCard.fit14) WordCard.fit14(mission);
+  };
+
+  const $ = (s) => document.querySelector(s);
+  let live = [];
+  const reset = () => {
+    live.forEach((h) => h && (h.close ? h.close() : h.stop && h.stop()));
+    live = [];
+    Onboard.stopAll();
+    document.querySelectorAll(".kl-glow").forEach((e) => e.classList.remove("kl-glow"));
+    guide.classList.remove("said");
+    UIStore.clear && UIStore.clear("onboarded");
+    Cook.save = {};
+    drawCard();
+  };
+  const glowOn = (el) => (on) => el.classList.toggle("kl-glow", !!on);
+  const later = (ms, fn) => setTimeout(fn, ms / SPEED);
+
+  const STATES = {
+    "light": ["The first time: one thing lit, the rest dimmed (Onboard.light, timed: ms, quitIf, onTap)", () => {
+      live.push(Onboard.light("#kl-tin", { look: "glow", pad: 4, pass: true, ms: 6000 / SPEED, onTap: () => say("tapped: the light goes"), note: "lab-kit:s14-light" }));
+    }],
+    "zoom": ["The zoom-in: the whole item card, then the box shrinks onto its hidden word (Onboard.zoomBox)", () => {
+      const dots = $("#mission .oc-row14 .wc14-hide-en .wc14-en-dots");
+      if (!dots) return say("no dotted word");
+      live.push(Onboard.light(dots, { look: "glow", pad: 0, pass: true, zoomFrom: () => dots.closest(".wc14"), ms: 20000 }));
+    }],
+    "control-first": ["The call with its light, the first time: the call is held until the light is up (Cook.Coach.control)", () => {
+      live.push(C.control({ target: "#kl-knob", first: true, pauseMs: Onboard.WAIT.breath, key: "lab-kit", onLight: () => say("the thing's own glow on") }));
+    }],
+    "control-hint": ["After the first time: the call alone, the light after the level's wait (3 s here)", () => {
+      guide.classList.add("said");
+      live.push(C.control({ target: "#kl-knob", first: false, hintMs: () => 3000, key: "lab-kit", onHint: () => say("the hint came") }));
+    }],
+    "rushed": ["A wrong move: the hint at once, the level's wait or not (Cook.Coach.wrong, Onboard.rush)", () => {
+      guide.classList.add("said");
+      live.push(C.control({ target: "#kl-knob", first: false, hintMs: () => 60000, key: "lab-kit" }));
+      live.push(C.rungs("lab-kit", "item", { target: "#kl-tin", first: false, at: [0, null, null], glowAt: 60000, glow: glowOn($("#kl-tin")) }));
+      later(600, () => { say("a wrong move"); C.wrong(); });
+    }],
+    "next": ["The next vessel: its rim lit round, a beat after the last one's pour (Cook.Coach.nextLight)", () => {
+      live.push(C.nextLight({ target: "#kl-rim-b", who: "b", litMs: 20000, ok: () => true, note: "lab-kit:s14-light" }));
+    }],
+    "card": ["The next item's card on the order card, lit a moment once all is still (Cook.Coach.cardLight)", () => {
+      C.cardLight({ item: () => C.itemCard("cook-chai"), step: "lab", note: "lab-kit:s14-light" }).then((ok) => say(`card light: ${ok ? "lit" : "gave up"}`));
+    }],
+    "stuck-first": ["The stuck rungs, the first time: the box at once on the real thing (Onboard.stuck via Cook.Coach.rungs)", () => {
+      live.push(C.rungs("lab-kit", "item", { name: "lab-item", target: "#kl-tin", first: true, at: [0, null, null] }));
+    }],
+    "stuck-glow": ["Stuck, after the wait: the thing's own light help, no dim (glowAt)", () => {
+      live.push(C.rungs("lab-kit", "item", { target: "#kl-tin", first: false, at: [0, null, null], glowAt: 1500 / SPEED, glow: glowOn($("#kl-tin")) }));
+    }],
+    "stuck-box": ["Stuck, longer: the dim and the box (at[1])", () => {
+      live.push(C.rungs("lab-kit", "item", { target: "#kl-jug", first: false, at: [0, 1500 / SPEED, null] }));
+    }],
+    "hidden": ["A word past support: no hint says it (STD-D2-05: the milk, stage 4, asked for)", () => {
+      const h = C.rungs("lab-kit", "item", { target: "#kl-jug", first: true, word: "cook-dudh", answer: true, at: [0, 1000, null] });
+      say(h ? "a hint (wrong)" : "no hint: the word is past support");
+      live.push(h);
+    }],
+    "lesson-word": ["The reveal lesson: the dotted word, its tap shown once in place (Onboard.lesson('word'))", () => {
+      Onboard.lesson("word", null, { speed: SPEED, wait: Cook.wait, onLit: () => say("lesson lit: spent"), sound: () => say("click") }).then((ok) => say(`word lesson: ${ok}`));
+    }],
+    "lesson-pic": ["The reveal lesson: the blurred picture (Onboard.lesson('pic'))", () => {
+      Onboard.lesson("pic", null, { speed: SPEED, wait: Cook.wait, onLit: () => say("lesson lit: spent") }).then((ok) => say(`picture lesson: ${ok}`));
+    }],
+    "lessons": ["Both lessons in their order, once each (Cook.Coach.lessons on a first-time gate)", () => {
+      const gate = C.firsts("lab-kit", { round: new Set() });
+      C.lessons({ gate }).then((r) => say(`lessons: ${JSON.stringify(r)}; again: ${JSON.stringify([gate.due("reveal-word", true), gate.due("reveal-pic", true)])}`));
+    }],
+  };
+  const nav = document.getElementById("kl-nav");
+  const show = (name) => {
+    if (!STATES[name]) return false;
+    reset();
+    nav.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === name)));
+    what.textContent = STATES[name][0];
+    document.body.dataset.state = name;
+    // (a frame for the card to be drawn and fitted)
+    requestAnimationFrame(() => requestAnimationFrame(() => STATES[name][1]()));
+    return true;
+  };
+  Object.keys(STATES).forEach((k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.state = k;
+    b.dataset.obPass = "";
+    b.textContent = k;
+    b.addEventListener("click", () => show(k));
+    nav.appendChild(b);
+  });
+  Object.assign(window.KitLights, { states: Object.keys(STATES), show, ready: true });
+  drawCard();
+  if (q.get("state")) show(q.get("state"));
+  else what.textContent = "Pick a state.";
+</script>
+</body>
+</html>

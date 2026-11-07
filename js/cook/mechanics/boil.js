@@ -7,14 +7,14 @@
  * knob turns itself down. Nani may interrupt mid-boil (Busy: it keeps
  * boiling while you help her).
  *
- * It can run on a back burner while another zone keeps you busy (the Chai
- * tray): canPost() says when it may ask for your attention, and it only
+ * It can run on a back burner while another zone keeps you busy (a
+ * combined station): canPost() says when it may ask for your attention, and it only
  * asks once the ring is within `quiet` of the green.
  * Params: vessel, knobAt [x, y] (design; default below-right of the pan),
  * needOn, canPost, onLit, ready (a promise: the ring starts after it), quiet.
  * Knobs (data.mechanics.boil): band, rate, rise, passMeAfterMs, overScore,
- * knobR (the knob's size), instant/instantMs (the chai machine).
- * Profiles: tray (the Chai tray's slower back-burner boil).
+ * knobR (the knob's size), instant/instantMs (the brass machine upgrade).
+ * Profiles: tray (the slower back-burner boil of a stove with a pan per person).
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -205,7 +205,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       K.set("high");
       if (onLit) onLit();
       // the pan takes a moment to heat: the ring starts when `ready` resolves
-      // (the Chai tray: once everyone has said how they like their chai)
+      // (a combined station: once everyone has said what they want)
       if (ready) await ready;
       if (k.instant) {
         await Cook.wait(k.instantMs);
@@ -299,6 +299,339 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     },
   });
   Cook.Boil = { knob, ART };
+
+  /* =====================================================================================================================
+   * THE KITCHEN KIT'S HEAT AND BOIL (Sprint 18, module map pieces 1 and 3; docs/architecture/module-map.md): one pan's heat
+   * on a stove, for every game that cooks with heat. The game says what goes in the pan; the kit owns the knob's taps, the
+   * heat's clock, the green window, too early, the boil-over and starting again, the first-time hold, the boil's steam and
+   * the hob's simmer loop. Its window and times are the game's (its json), never the kit's.
+   *
+   *   const b = Mech.boil(S, pan, opts)
+   *     S     the station's scene (Cook.CookScene: add, tweens, time, addTick, tappable, wiggle)
+   *     pan   {x, y, r}: the pan's contents centre and rim radius, station px (the ring, the steam and the boil-over sit by
+   *           it); the game's own fields on it are left alone
+   *     opts  band [lo, hi]   the green window, heat 0..1                                     (the game's json)
+   *           rate            heat a second up to the green; in it and past it rate x greenRate (the game's json)
+   *           greenRate 0.5   CHAI-10: twice as fast to the green, half speed in it, so the turn-down keeps its time
+   *           leadS 2         CHAI-63: the boil (bubbling, steam) starts this long before the green at every level
+   *           id              whose pan (the test notes and logs: who)
+   *           burner          a Cook.Kit.burner: the kit turns it (high, low, off) and wiggles its knob
+   *           ring            a Cook.Kit.heatRing (else one is made at ringDepth); ringR: its radius (default pan.r)
+   *           tap true        the kit takes the knob's taps (S.tappable(burner.knobHit)); false: the game calls b.tap()
+   *           can()           false: a tap does nothing (the round over, the order not said yet)
+   *           canLight()      false: a cold knob won't turn (nothing in the pan yet): the knob shakes, on.cantLight
+   *           has()           false: an empty pan (no steam, no simmer)
+   *           notNow "not-now"  the line a too-early tap says (data/cook.json lines: Mum's "not now"), null for none
+   *           overResetMs 1100  a boiled-over pan starts again this long after
+   *           steam {at, when}  the boil's painted steam (Juice.P.steam) from boilAt while heating, and the boil-over's two
+   *                           puffs (Juice.P.puff): at() -> {x, y, w, depth} (default over the pan), when() -> bool; false: none
+   *           puff {r}        the boil-over puffs' size (the contents' radius; default pan.r x 0.93)
+   *           bind            true: pan.state and pan.heat read and write b's (a game that keeps reading its pan's state)
+   *           on              the game's part, each (b, ...): light (before it lights), early, green (it enters the green),
+   *                           down (b, score: turned down in the green), over, again (it starts again), cantLight,
+   *                           tick (b, dt: each frame it heats), changed (b, what: after every step: light, down, over, again)
+   *     b     {pan, id, state: "cold" | "heating" | "ready" | "over", heat, lo, hi, boilAt, phase(), tap(), light(), down(),
+   *            over(), reset(), stop()}
+   *
+   *   Mech.boil.stove(S, opts)    the hob's shared part, one per scene (made by the first Mech.boil if the game didn't):
+   *           log             the prefix of the test notes (Lifecycle `<log>-boil`, `<log>-down`, `<log>-simmer`): the game's
+   *           hold            SH-158: the first time a child meets the boil the heat holds in the green (holdAt of the way
+   *                           in, 0.5) until the knob is tapped (notes timed-hold start / end); onHoldEnd() when it ends
+   *           sound true      the simmer loop by the hottest pan on the heat (simmerDb: CHAI-95), stopped at done()
+   *           done()          true: the round is over (the loop stops)
+   *           clock()         ms now (performance.now; a test passes its own)
+   *     -> {boilLog, simmerLog, pans, hold, stop() (the loop and steam off), end() (gone with the view: the scene's clearView)}
+   *   Mech.boil.settings({level, profile, heat})   the window and times: data.mechanics.boil at level (its profile) under the
+   *                                                game's own `heat` (its json): {band, rate, ...}
+   *   Mech.boil.times({band, rate, greenRate, leadS})  {toBoil, toGreen, green, toOver, boilAt} in seconds (the lab's readout)
+   *   Mech.boil.simmerDb(heat, boilAt, hi)          the loop's level in dB: -24 rising evenly to -2.5 at boilAt, held through
+   *                                                the green, up to 0 dB at a boil-over
+   *   Mech.boil.art(), Mech.boil.sounds            what to load (the steam wisps) and preload (knob, flame, green, simmer)
+   * ===================================================================================================================== */
+  const J = () => (global.Juice && global.Juice.P) || null;
+  const note = (what, step, by) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note(what, { step: String(step), by: String(by) });
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const BOIL_DEFAULTS = { greenRate: 0.5, leadS: 2, overResetMs: 1100, notNow: "not-now", holdAt: 0.5, notNowGapMs: 1500 };
+  // CHAI-95: the simmer's level by heat in decibels from the file's own level (0 dB): even in decibels from -24 dB at the first
+  // heat to 75% (-2.5 dB) as the bubbling starts (boilAt), held through the green, then up to 0 dB at a boil-over (heat 1)
+  const SIMMER_DB = { from: -24, held: 20 * Math.log10(0.75), top: 0 };
+  const simmerDb = (h, boilAt, hi) => {
+    const S0 = SIMMER_DB;
+    if (h <= boilAt) return S0.from + (S0.held - S0.from) * clamp(h / Math.max(0.01, boilAt), 0, 1);
+    if (h <= hi) return S0.held;
+    return S0.held + (S0.top - S0.held) * clamp((h - hi) / Math.max(0.01, 1 - hi), 0, 1);
+  };
+  const boilAtOf = (lo, rate, leadS = BOIL_DEFAULTS.leadS) => Math.max(0.3, lo - rate * leadS);
+  /** one step of the heat's clock: rate a second up to the green, rate x greenRate in it and past it (CHAI-10) */
+  const step = (heat, dt, { lo, rate, greenRate = BOIL_DEFAULTS.greenRate }) => heat + rate * (heat >= lo ? greenRate : 1) * dt;
+  function times({ band, rate, greenRate = BOIL_DEFAULTS.greenRate, leadS = BOIL_DEFAULTS.leadS }) {
+    const [lo, hi] = band;
+    const boilAt = boilAtOf(lo, rate, leadS);
+    const slow = rate * greenRate;
+    return { boilAt, toBoil: boilAt / rate, toGreen: lo / rate, green: (hi - lo) / slow, toOver: lo / rate + (1 - lo) / slow };
+  }
+
+  /** The hob's shared part: one clock for every pan on the heat, the first-time hold, the simmer loop. */
+  function stove(S, opts) {
+    if (S.__boilStove && !S.__boilStove.dead) {
+      if (opts) Object.assign(S.__boilStove.o, opts);
+      return S.__boilStove;
+    }
+    const o = Object.assign({ log: "boil", hold: false, holdAt: BOIL_DEFAULTS.holdAt, sound: true, done: () => false, clock: () => performance.now() }, opts || {});
+    const st = { o, pans: [], boilLog: [], simmerLog: [], hold: { on: !!o.hold, since: null }, loop: null, binAt: null };
+    S.__boilStove = st;
+    st.note = (what, step, by) => note(`${st.o.log}-${what}`, step, by);
+    st.holdOn = () => st.hold.on;
+    st.endHold = (b) => {
+      if (!st.hold.on) return;
+      st.hold.on = false;
+      if (st.hold.since) note("timed-hold", "end", `${b.id} ${b.heat.toFixed(3)} ${Date.now() - st.hold.since}ms`);
+      st.hold.since = null;
+      if (st.o.onHoldEnd) st.o.onHoldEnd(b);
+    };
+    const sound = () => {
+      const o2 = st.o;
+      const hot = st.pans.reduce((m, b) => (b.state === "heating" && b.has() && (!m || b.heat > m.heat) ? b : m), null);
+      if (hot && o2.sound && !o2.done()) {
+        const db = simmerDb(hot.heat, hot.boilAt, hot.hi);
+        const k = Math.pow(10, db / 20);
+        if (!st.loop || st.loop.none) st.loop = Cook.sfx.simmerLoop(k);
+        else st.loop.pitch(k);
+        simmerNote(hot, db, k);
+      } else if (st.loop) st.loop = (st.loop.stop(), null);
+    };
+    // (the log, CHAI-95's check: the loop's level by heat, a line each 0.05 of heat and at the bubbling, the green's start and end)
+    const simmerNote = (b, db, k) => {
+      const h = b.heat;
+      const mark = b.phase();
+      const bin = `${b.id}:${mark}:${Math.floor(h / 0.05)}`;
+      if (bin === st.binAt) return;
+      st.binAt = bin;
+      const row = { who: b.id, heat: Math.round(h * 1000) / 1000, db: Math.round(db * 10) / 10, level: Math.round(k * 1000) / 1000, mark, boilAt: Math.round(b.boilAt * 1000) / 1000, lo: b.lo, hi: b.hi };
+      st.simmerLog.push(row);
+      st.note("simmer", `${row.db} dB`, `${b.id} heat ${row.heat} level ${row.level} ${mark}`);
+    };
+    let last = o.clock();
+    st.tick = () => {
+      const now = st.o.clock();
+      const dt = Math.min(0.1, (now - last) / 1000) * (Cook.speed || 1);
+      last = now;
+      st.pans.slice().forEach((b) => b.tick(dt));
+      sound();
+    };
+    st.stopTick = S.addTick ? S.addTick(st.tick) : null;
+    /** silent: the loop and the steam stop (the round's end; the pans keep their state) */
+    st.stop = () => {
+      if (st.loop) st.loop = (st.loop.stop(), null);
+      st.pans.forEach((b) => b.steamOff());
+    };
+    /** gone with the view (the scene's clearView, or the scene shut down): nothing ticks, rings on or starts again */
+    st.end = () => {
+      st.stop();
+      st.dead = true;
+      st.pans.slice().forEach((b) => b.stop());
+      if (st.stopTick) st.stopTick();
+      if (S.__boilStove === st) S.__boilStove = null;
+    };
+    // (a station left mid-boil: the loop never rings on; the next station's pans get a stove of their own)
+    if (S.loops) S.loops.push({ stop: st.end });
+    if (S.events && S.events.once) ["shutdown", "destroy"].forEach((ev) => S.events.once(ev, st.end));
+    return st;
+  }
+
+  function boil(S, pan, opts = {}) {
+    const st = stove(S);
+    const o = Object.assign({}, BOIL_DEFAULTS, opts);
+    const on = o.on || {};
+    const call = (name, ...a) => (on[name] ? on[name](b, ...a) : undefined);
+    const [lo, hi] = o.band;
+    const burner = o.burner || null;
+    const ring = o.ring || (Cook.Kit && Cook.Kit.heatRing ? Cook.Kit.heatRing(S, o.ringDepth != null ? { depth: o.ringDepth } : {}) : null);
+    const has = o.has || (() => true);
+    const can = o.can || (() => true);
+    const steamAt = () => (o.steam && o.steam.at ? o.steam.at(b) : { x: pan.x, y: pan.y - pan.r * 0.64, w: pan.r * 2.4, depth: D.fx - 2 });
+    const steamWhen = () => !o.steam || !o.steam.when || o.steam.when(b);
+    const puffR = (o.puff && o.puff.r) || pan.r * 0.93;
+    let steamFx = null;
+    let noAt = 0;
+    const logBoil = (what) => {
+      st.boilLog.push({ who: b.id, what, heat: Math.round(b.heat * 1000) / 1000, lo, hi });
+      st.note("boil", what, `${b.id} ${b.heat.toFixed(3)}`);
+    };
+    const knobObj = () => (burner ? burner.knob : null);
+    const b = {
+      pan,
+      id: o.id != null ? o.id : st.pans.length,
+      state: "cold",
+      heat: 0,
+      lo,
+      hi,
+      rate: o.rate,
+      boilAt: boilAtOf(lo, o.rate, o.leadS),
+      opts: o,
+      ring,
+      has,
+      /** where the heat is: cold | rising | bubbling | green | past-green | ready | over */
+      phase() {
+        if (b.state !== "heating") return b.state;
+        const h = b.heat;
+        return h >= hi ? "past-green" : h >= lo ? "green" : h >= b.boilAt ? "bubbling" : "rising";
+      },
+      drawRing() {
+        if (ring) ring.draw(pan.x, pan.y, o.ringR || pan.r, b.heat, lo, hi);
+      },
+      /** the knob's tap: light it, too early, turn it down in the green, or boil it over past the green */
+      tap() {
+        if (!can()) return;
+        if (b.state === "cold") {
+          if (o.canLight && !o.canLight(b)) {
+            if (knobObj() && S.wiggle) S.wiggle(knobObj());
+            call("cantLight");
+            return;
+          }
+          b.light();
+        } else if (b.state === "heating") {
+          // CHAI-57 (decision 5): before the green the knob shakes, Nani says "not now" and the heat runs on, nothing marked;
+          // in the green it turns down; past it, it boils over and that pot starts again
+          if (b.heat < lo) {
+            if (knobObj() && S.wiggle) S.wiggle(knobObj());
+            logBoil("early");
+            const now = Date.now();
+            if (o.notNow && !(now - noAt < o.notNowGapMs) && !(Cook.UI && Cook.UI.naniMuted && Cook.UI.naniMuted())) {
+              noAt = now;
+              const line = Cook.data && Cook.data.lines && Cook.data.lines[o.notNow] && Cook.Lang ? Cook.Lang.line(o.notNow) : null;
+              if (line && Cook.UI && Cook.UI.voice) Cook.UI.voice(line, { ms: 900 }).catch(() => {});
+            }
+            call("early");
+            return;
+          }
+          // (SH-158: the tap ends the first-time hold, for good)
+          st.endHold(b);
+          if (b.heat > hi) return b.over();
+          b.down();
+        }
+      },
+      light() {
+        call("light");
+        b.state = "heating";
+        if (burner) burner.set("high");
+        call("changed", "light");
+      },
+      /** turned down (over: the heat ran out with no tap: it boils over instead) */
+      down(over = false) {
+        st.note("down", b.heat.toFixed(3), `${lo}/${hi}/${b.id}`); // (contract-70)
+        if (over) return b.over();
+        b.state = "ready";
+        if (ring) ring.clear();
+        if (burner) burner.set("low");
+        logBoil("green");
+        const score = S.bandScore ? S.bandScore(b.heat, lo, hi) : 100;
+        call("down", score);
+        b.heat = Math.min(b.heat, hi);
+        b.steamOff();
+        call("changed", "down");
+        return score;
+      },
+      /** CHAI-57 (decision 5c): boiled over: the steam puffs, the fire off, then the pan starts again (no verdict, no mark) */
+      over() {
+        if (b.state === "over") return;
+        logBoil("over");
+        b.state = "over";
+        b.heat = 1;
+        if (ring) ring.clear();
+        if (burner) burner.set("off");
+        b.steamOff();
+        const P = o.steam !== false && J();
+        if (P) {
+          P.puff(S, pan.x - puffR * 0.5, pan.y - puffR * 0.9, { w: puffR * 0.7 * 1.4, depth: D.fx + 2 });
+          P.puff(S, pan.x, pan.y - puffR * 1.1, { w: puffR * 0.8 * 1.4, depth: D.fx + 2 });
+        }
+        Cook.sfx.puff();
+        call("over");
+        call("changed", "over");
+        b.againAt = Cook.wait(o.overResetMs).then(() => {
+          if (b.stopped || b.state !== "over" || !can()) return;
+          b.state = "cold";
+          b.heat = 0;
+          call("again");
+          logBoil("again");
+          call("changed", "again");
+        });
+      },
+      /** back to cold, the knob off (a game's own restart) */
+      reset() {
+        b.state = "cold";
+        b.heat = 0;
+        if (ring) ring.clear();
+        if (burner) burner.set("off", true);
+        b.steamOff();
+      },
+      steamOff() {
+        if (steamFx) steamFx = (steamFx.stop(), null);
+      },
+      /** one frame of heat (the stove's clock calls it) */
+      tick(dt) {
+        if (b.stopped) return;
+        if (b.state === "heating") {
+          const was = b.heat >= lo && b.heat <= hi;
+          b.heat = step(b.heat, dt, { lo, rate: o.rate, greenRate: o.greenRate });
+          // (SH-158: the first time, the heat waits in the middle of the green until the knob is tapped)
+          const holdAt = lo + (hi - lo) * st.o.holdAt;
+          if (st.hold.on && b.heat > holdAt) {
+            b.heat = holdAt;
+            if (!st.hold.since) {
+              st.hold.since = Date.now();
+              note("timed-hold", "start", `${b.id} ${b.heat.toFixed(3)}`);
+            }
+          }
+          const inBand = b.heat >= lo && b.heat <= hi;
+          if (inBand && !was) {
+            Cook.sfx.green(); // (CHAI-92, Zafar's pick green A: a kitchen oven's ding, so the moment to turn it down is heard)
+            call("green");
+          }
+          b.drawRing();
+          call("tick", dt);
+          if (b.heat >= 1) b.down(true);
+        }
+        // CHAI-63, CHAI-92: the painted steam from the boil's start (boilAt) until the pan leaves the heat
+        const steaming = o.steam !== false && b.state === "heating" && b.heat >= b.boilAt && has() && steamWhen();
+        if (steaming && !steamFx && J()) {
+          const at = steamAt();
+          steamFx = J().steam(S, at.x, at.y, { w: at.w, depth: at.depth });
+        } else if (!steaming && steamFx) b.steamOff();
+      },
+      /** off the stove for good (the round's end): no more ticks, steam or taps */
+      stop() {
+        b.stopped = true;
+        b.steamOff();
+        const i = st.pans.indexOf(b);
+        if (i >= 0) st.pans.splice(i, 1);
+      },
+    };
+    // bind: the pan's own state and heat are the kit's (a game reading or resetting pan.state / pan.heat reaches b)
+    if (o.bind) ["state", "heat"].forEach((k) => Object.defineProperty(pan, k, { get: () => b[k], set: (v) => (b[k] = v), configurable: true, enumerable: true }));
+    st.pans.push(b);
+    if (burner && o.tap !== false && S.tappable) S.tappable(burner.knobHit, () => b.tap());
+    return b;
+  }
+  boil.stove = stove;
+  boil.step = step;
+  boil.times = times;
+  boil.simmerDb = simmerDb;
+  boil.boilAt = boilAtOf;
+  boil.SIMMER_DB = SIMMER_DB;
+  boil.DEFAULTS = BOIL_DEFAULTS;
+  /** the window and times: data.mechanics.boil at `level` (and its profile), the game's own heat over it (its json) */
+  boil.settings = ({ level = 1, profile, heat } = {}) => Object.assign(Mech.knobs("boil", { level, profile }), heat || {});
+  boil.art = () => (J() ? J().keys(["st-1", "st-2", "st-3"]) : []);
+  boil.sounds = ["knob", "flame", "green", "simmer"];
+  Mech.boil = boil;
 
   Mech.lab("boil", {
     name: "Boil",

@@ -7,7 +7,7 @@
 //   contract-70 slow-at-green  a game's turn-off line (slowAtGreen) is called as the heat bar enters the green, never before it and not
 //                              well past it (CHAI-24, Zafar 17 Oct, P56)
 //   contract-71 once-each      a game's once-each things (onceEach) go into a pan once each: a second tap adds nothing (CHAI-22, P33)
-//   contract-90 card-light     a new player at L1 sees the order card's next item lit after the first item (cardLight; CHAI-37)
+//   contract-90 card-light     a new player at any level sees the order card's next item lit after the first item (cardLight; CHAI-37)
 import { readFileSync } from "node:fs";
 
 export const GAMES_FILE = new URL("../data/games.json", import.meta.url);
@@ -127,10 +127,10 @@ export function check71(r, tl, add) {
   }
 }
 
-// 90 (CHAI-37, CHAI-77; Zafar, 4 Nov): a new player at L1 sees the order card's next item lit once after the first item
+// 90 (CHAI-37, CHAI-77; Zafar, 4 Nov): a new player at any level (S18, CHAI-106) sees the order card's next item lit once after the first item
 export function check90(r, tl, add) {
   const f = r.flow || "";
-  if (/@L[2-9]/.test(f) || /#(returning|mistake|takeback)/.test(f)) return;
+  if (/#(returning|mistake|takeback)/.test(f)) return; // (S18, CHAI-106: every level, not L1 only)
   for (const { conf } of gamesFor("cardLight", f)) {
     const adds = lifeOf(tl, conf.note).filter((n) => !/:(again|capped)$/.test(String(n.by || "")));
     const first = adds.find((n) => n.reason === conf.first);
@@ -141,6 +141,6 @@ export function check90(r, tl, add) {
     // more after the first item must bring the light)
     const next = tl.find((e) => e.type === "c" && e.k === "input" && e.t > first.t);
     if (next && next.t - first.t < 2500) continue;
-    if (!lifeOf(tl, "card-light").length) add("contract-90", after.t, `a new player at L1: the first item (${conf.first}) went in and the next item followed, but the order card's next item was never lit (no card-light note): the first time's pointer to the third item is missing`);
+    if (!lifeOf(tl, "card-light").length) add("contract-90", after.t, `a new player at L${(f.match(/@L(\d)/) || [, "1"])[1]}: the first item (${conf.first}) went in and the next item followed, but the order card's next item was never lit (no card-light note): the first time's pointer to the third item is missing`);
   }
 }
