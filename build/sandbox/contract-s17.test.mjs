@@ -37,6 +37,11 @@ test("contract-96: rows left ticked, or the row left where it was, is a break", 
   assert.equal(run(check96, { flow: "cook:chai-tray#boil-over" }, [panelRows(1000, "ma", 6, 130), life(6200, "chai-boil", "again", "nana 0")]).length, 0);
 });
 
+test("contract-96: the player's refill just after the reset is not a stuck tick (S18, CHAI-105)", () => {
+  const tl = [panelRows(1000, "nana", 5, 304), life(6200, "chai-boil", "again", "nana 0"), panelRows(6220, "nana", 0, 304), panelRows(6600, "nana", 0, 0), life(6730, "chai-add", "cook-paani", "nana:1"), panelRows(6740, "nana", 1, 0)];
+  assert.equal(run(check96, { flow: "cook:chai-tray@L3#returning" }, tl).length, 0);
+});
+
 // ---- 97 ----
 const CARD = [15, 148, 138, 353];
 test("contract-97: a light that starts on the whole card and shrinks onto the dotted word passes", () => {

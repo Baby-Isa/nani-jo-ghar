@@ -45,8 +45,8 @@ export function check96(r, tl, add) {
     const rowsIn = (to) => panels.filter((e) => e.t >= t - 1 && e.t <= to).map((e) => (e.rows || []).find((x) => x.who === who)).filter(Boolean);
     const open = rowsIn(end), win = rowsIn(t + REOPEN_MS);
     if (!open.length) continue;
-    if (!open.some((x) => x.done === 0)) { add("contract-96", t, `${who}'s pot started again after boiling over and its rows never all opened before anything went back in`); return; }
-    if (!win.some((x) => x.sl <= 2)) { add("contract-96", t, `${who}'s pot started again after boiling over and its card never came back to its first item within ${REOPEN_MS} ms`); return; }
+    if (!open.some((x) => x.done === 0)) { const l = open[open.length - 1]; add("contract-96", t, `${who}'s pot started again after boiling over and ${l.done} of ${l.n} rows are still ticked (never all open before ${REOPEN_MS} ms or the next thing in)`); return; }
+    if (!win.some((x) => x.sl <= 2)) { add("contract-96", t, `${who}'s pot started again after boiling over and its card is scrolled ${win[win.length - 1].sl} px along, not back at the first item within ${REOPEN_MS} ms`); return; }
   }
 }
 
