@@ -267,6 +267,7 @@
     unlayout = () => { if (refit) refit.disconnect(); unlayout0(); };
     return new Promise((resolve) => {
       let over = false;
+      let unpress = () => {};
       const me = {
         el: veil,
         card: cardEl,
@@ -276,6 +277,7 @@
           unclose();
           unlayout();
           veil.removeEventListener("click", onTap);
+          unpress();
           if (current === me) current = null;
           veil.classList.add("going");
           // CLN-87 (the clinic's zoom waited for the fly): the host's next move starts as the card leaves, not after
@@ -317,16 +319,25 @@
         if (!d.elementsFromPoint) return null;
         return d.elementsFromPoint(ev.clientX, ev.clientY).find((el) => el !== veil && !veil.contains(el)) || null;
       };
-      const zoneTap = (ev) => {
+      // the zone a tap lands in, {el, zone}; null: this pop-up takes no zones (every tap on it skips)
+      const zoneAt = (ev) => {
         const R = root.Rules;
-        if (!opts.zones || !R || !R.zoneOf) return false; // (a game on the central rules asks for them: Cook's chai order)
+        if (!opts.zones || !R || !R.zoneOf) return null; // (a game on the central rules asks for them: Cook's chai order)
         const el = under(ev);
-        const zone = el ? R.zoneOf(el) : "play";
+        return { el, zone: el ? R.zoneOf(el) : "play" };
+      };
+      const logZone = (zone) => {
         try {
           if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("skip-zone", { step: zone, by: `skipped:${zone === "play" ? 1 : 0}` });
         } catch (e) {
           /* only a log */
         }
+      };
+      const zoneTap = (ev) => {
+        const z = zoneAt(ev);
+        if (!z) return false;
+        const { el, zone } = z;
+        logZone(zone);
         if (zone === "play") return false;
         // (it does its own thing: a button presses; never a skip. SH-153, Zafar 1 Nov: a bubble that plays and goes has no speaker, so
         // a tap on it replays nothing: it is taken, and nothing else happens)
@@ -337,23 +348,59 @@
         }
         return true;
       };
-      const onTap = (ev) => {
-        if (over) return;
-        if (opts.ignore && opts.ignore(ev)) return;
-        if (zoneTap(ev)) return;
+      const skipNow = (ev) => {
         if (opts.onTap) opts.onTap(ev);
         VoiceStop.stop("request-popup");
         if (opts.onStop) opts.onStop();
         me.fold(true);
-        // (contract-21, non-negotiable 7: a tap on a game's own button under the veil (the eye test's yes and no pills while the
-        // doctor says the word) is the child's answer too, never only a skip: the orchestrator, 30 Oct)
-        if (opts.zones) {
-          const el = under(ev);
-          const btn = el && el.closest ? el.closest("button, [role=button]") : null;
-          if (btn && !veil.contains(btn) && typeof btn.click === "function") btn.click();
-        }
+      };
+      // (contract-21, non-negotiable 7: a tap on a game's own button under the veil (the eye test's yes and no pills while the
+      // doctor says the word) is the child's answer too, never only a skip: the orchestrator, 30 Oct)
+      const passOn = (ev) => {
+        if (!opts.zones) return;
+        const el = under(ev);
+        const btn = el && el.closest ? el.closest("button, [role=button]") : null;
+        if (btn && !veil.contains(btn) && typeof btn.click === "function") btn.click();
+      };
+      const onTap = (ev) => {
+        if (over) return;
+        if (opts.ignore && opts.ignore(ev)) return;
+        if (zoneTap(ev)) return;
+        skipNow(ev);
+        passOn(ev);
       };
       veil.addEventListener("click", onTap);
+      // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound and gone straight into the game mode"): the skip lands on
+      // the press, not its click. A line ends on the press (Cook's UI.say), so a skip on the click came a press's length later
+      // and the read had gone on to its next line meanwhile. Taken on the document before the bubble's own listeners, so the
+      // skip is in before the line it ends hands over. A press in another zone (a bubble, the side panel, the cog) does its own
+      // thing on its click, as before. The press's click then belongs to the skip: under the veil it reaches a game's own button
+      // (passOn, as a tap did); once the veil is gone, only such a button takes it, never the game under it
+      const doc = root.document;
+      const onPress = (ev) => {
+        if (over || !ev || !ev.target || !veil.contains(ev.target)) return;
+        if (ev.button > 0) return; // (a mouse's other buttons)
+        if (opts.ignore && opts.ignore(ev)) return;
+        const z = zoneAt(ev);
+        if (z && z.zone !== "play") return;
+        if (z) logZone("play");
+        const at = Date.now();
+        skipNow(ev);
+        const onClick = (cev) => {
+          doc.removeEventListener("click", onClick, true);
+          if (Date.now() - at > 2000) return;
+          if (veil.isConnected && veil.contains(cev.target)) return passOn(cev);
+          if (opts.zones && cev.target && cev.target.closest && cev.target.closest("button, [role=button]")) return;
+          cev.stopPropagation();
+          cev.preventDefault();
+        };
+        doc.addEventListener("click", onClick, true);
+        setTimeout(() => doc.removeEventListener("click", onClick, true), 2000);
+      };
+      if (doc && doc.addEventListener) {
+        doc.addEventListener("pointerdown", onPress, true);
+        unpress = () => doc.removeEventListener("pointerdown", onPress, true);
+      }
       Promise.resolve()
         .then(() => wait(fast ? 20 : opts.lead != null ? opts.lead : 300))
         .then(() => (!over && opts.read ? opts.read() : null))
