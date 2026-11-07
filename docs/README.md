@@ -19,7 +19,7 @@ Start with `CLAUDE.md`, then `docs/status.md` "Next chat". Open anything else on
 
 ## How it is built
 - `architecture/`: `target-model.md`, `shared-api.md`, `code-map.md`, `building-games.md`, `clinic-heal-api.md`, `cook-recipes-guide.md`, `evidence-loop.md`, `testing.md` (ports, browser-test lessons, the contract checks), `speech-recognition-plan.md`, `technical-plan.md`.
-- `game-design/families/`: each family's games against its reference (`stove.md`: the stove family against chai, Sprint 18's roll-out).
+- `game-design/families/`: each family's games against its reference (`kitchen.md`: the kitchen family against chai, Sprint 18's roll-out; `stove.md` is its old name's stub).
 - `process/`: `checks-to-build.md`, `qa-checklist.md`, `mode-design-method.md`, `session-brief-template.md`, `cost-and-speed.md`, `overnight-log.md`, `prototype-to-game.md` (from prototype to finished game, by family). The sprint plan to the launch: `sprints/plan.md`.
 - `sprints/`: the current sprint and `TEMPLATE.md` (closed sprints in `archive/sprints/`).
 - The old rulebook: `archive/process/rules-2026-10-13.md`, with `archive/process/rules-redirect.md` saying where each letter of rules lives now.

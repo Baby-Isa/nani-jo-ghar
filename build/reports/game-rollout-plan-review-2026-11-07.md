@@ -113,10 +113,10 @@ The files cited; reopened rows from `docs/process/regressions.md` and `docs/arch
 ## Addendum (7 Nov afternoon): the plan reshaped for Monday
 
 Zafar signed chai off at about 13:00 ("chai is officially signed off - it's done and complete as a reference point for the other
-games") and set the target: a first pass of every stove game at chai's standard, built on the three layers, live on `main` before
+games") and set the target: a first pass of every kitchen game at chai's standard, built on the three layers, live on `main` before
 **Monday 9 Nov 10:00 UK** (planned for 07:00), with up to eight builders in parallel and no gate between the two sprints. The
 orchestrator's plan for that was reviewed against this report; eight things changed, and Zafar said yes to all
-(`docs/sprints/S17-chai-done-families.md`, `docs/sprints/S18-stove-family.md`).
+(`docs/sprints/S17-chai-done-families.md`, `docs/sprints/S18-kitchen-family.md`).
 
 1. **The serial split cannot reach Monday.** Step 2 as one builder (1.5-2 days) plus adoption (1.5 days) from Saturday 12:40 lands
    Tuesday. The split is now five kit builders in parallel, each in its own files, with chai's one owner switching chai onto each
@@ -124,18 +124,28 @@ orchestrator's plan for that was reviewed against this report; eight things chan
 2. **"Nobody else edits `js/shared/` or `js/cook/` meanwhile" forbids parallel work.** It becomes "nobody else in the same file";
    `brief.mjs --live-check` enforces disjoint files.
 3. **The six adoption builders left out chaat.** Chaat is in the original family (`docs/process/prototype-to-game.md:34`,
-   `docs/sprints/plan.md`, `docs/game-design/families/stove.md`; its code is `js/cook/mechanics/assemble.js`). Now eight builders,
+   `docs/sprints/plan.md`, `docs/game-design/families/kitchen.md`; its code is `js/cook/mechanics/assemble.js`). Now eight builders,
    one per game: daar, chaat, samosa, maani, sekelo, eggs, baking, the corn stall; chop built in wave 1 as its own game.
 4. **The frozen run ran only at test speed**, which hides chai's timing races (the lesson race at `chai-tray.js:2938-2955`, the
    skip, the next-pan light). It now includes one pass at a child's pace, with human tap timing.
 5. **Five builders writing one standard page would clash.** Each writes its own section fragment; the orchestrator stitches.
-6. **The layer sort of every chai piece moves into phase 1:** the standard's builders sort each rule (shared kit / stove kit /
+6. **The layer sort of every chai piece moves into phase 1:** the standard's builders sort each rule (shared kit / kitchen kit /
    game) as they write it, so phase 2 starts with a map, not a reading of chai-tray.js.
 7. **The brief skill's "before" evidence run and judge at launch** (about an hour per launch, about sixteen launches) is cut for
    this run; builders make script-made before/after strips at fixed moments; Fable judges in batches at each wave's end.
-8. **Gaps filled:** SH-232 (the panel follows a fold) gets its own check; the stove-kit lab page has an owner (chai's owner, its
+8. **Gaps filled:** SH-232 (the panel follows a fold) gets its own check; the kitchen-kit lab page has an owner (chai's owner, its
    shell; each kit builder its section); eight builders on four CPUs is untested (six was), so browser runs are rationed under one
    lock.
+
+9. **The standard follows the structure Zafar locked on 5 Nov** (`build/reports/s17-standards-structure-v2.md`, his §8 answers:
+   every area rule by rule, each rule's "Checked by" naming a tool), as the folder docs/design-language/standard/, not the old
+   page's six sections; the five standard builders split by domain; each Sprint 18 game builder writes its `gaps/<game>.md` first.
+10. **Zafar's ~14:00 answers** (Sprint 18's decisions 11-13): the family is "Make in the kitchen (a recipe)", every Cook game except
+    the pantry (fetch and serve's reference), chaat and chop in it; three layers in code, the shared kit → the kitchen kit (its stove
+    part for games that cook with heat) → the game, with whatever the pantry and the stalls also need in the shared kit (the shelf
+    and its pills, the order's flow and timings, lights and lessons, serving), so kit builder (c) builds there; the "stove" files
+    renamed "kitchen" (`docs/sprints/S18-kitchen-family.md`, `docs/game-design/families/kitchen.md`); the Engine scope folds away
+    (House, Family, Game).
 
 The costs: the rest of Sprint 17 about $90-130; Sprint 18 about $380-575; the weekend about $470-700. The accuracy guards of the
 plan above stay: the frozen run before any move, the standard finished from the code with a check or a named judge row per rule,

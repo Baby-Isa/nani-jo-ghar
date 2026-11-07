@@ -10,38 +10,43 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-9f26f7e3-ytvg4h` (the newest handover is here; `main` may be a step behind).
 
-**Where things stand (Sat 7 Nov 2026, ~13:15 UK):** Sprint 17, closing. **Chai is signed off** (Zafar, 7 Nov: "done and complete
-as a reference point for the other games"); **live on `main`: 20261107T120301Z**. The weekend plan is approved ("yes to all"):
-`docs/sprints/S17-chai-done-families.md` ("Chai signed off") and `docs/sprints/S18-stove-family.md`; the review and its addendum
-in `build/reports/game-rollout-plan-review-2026-11-07.md`. Nothing is launched yet. Target: every stove game's first pass at chai's
-standard live on `main` by **Mon 9 Nov 07:00 UK** (his review before 10:00). Up to eight builders at once (Zafar, 7 Nov).
+**Where things stand (Sat 7 Nov 2026, ~14:30 UK):** Sprint 17, closing. **Chai is signed off** (Zafar, 7 Nov); **live on
+`main`: 20261107T120301Z**. The weekend plan is approved ("yes to all", decisions 1-13): `docs/sprints/S17-chai-done-families.md`
+("Chai signed off" onward) and `docs/sprints/S18-kitchen-family.md` (renamed at ~14:00: the family is **"Make in the kitchen (a
+recipe)"**, every Cook game except the pantry; chaat and chop in it); the review's addendum in
+`build/reports/game-rollout-plan-review-2026-11-07.md`. **The standard takes Zafar's locked 5 Nov structure**
+(`build/reports/s17-standards-structure-v2.md`) as the folder docs/design-language/standard/. Nothing is launched yet. Target:
+every kitchen game's first pass live on `main` by **Mon 9 Nov 07:00 UK**. Up to eight builders at once.
 
 **Next, in order:**
 1. **Chai's frozen run** (the orchestrator, the first browser job): the contract L1-L4 at the four sizes, one film per level, one
    child-pace pass, his ear items as judge rows with sound logs. The guard for everything after.
-2. **Sprint 17's eight builders, no game code** (S17 file, "The rest"): five standard builders (Opus, high, $8-12 each, one section
-   each, fragment files); the per-game-data check builder (Opus, high, $15-20); the three missing checks + SH-232's check (Sonnet,
-   high, $10-15); `audit.mjs --standard` (Sonnet, high, $8-12). About $90-130.
-3. **Stitch the standard page; Fable reads it once; write the module map** (each kit piece: file, owner, the API games call).
-4. **Close Sprint 17** (look back, plan.md chain row); one push to `main` of tools and docs, the game unchanged. Housekeeping, not a
-   gate.
-5. **Sprint 18, in a new chat** (the prompt at the end of the S17 file), per its file: wave 1 Sat 18:00 (chai's owner, five kit builders, chop, the prototypes' prep); wave 2 Sun 08:00
-   (one builder per game, eight); wave 3 Sun 20:00 (merge, audit at four sizes, a new-player film per game, Fable's batches,
-   publish on his word, handover with his play list). Progress table every half hour.
+2. **Sprint 17's eight builders, no game code** (S17 file, "The rest"): five standard builders by domain (Opus, high, $8-12 each:
+   0+A+C; B; D; E with the glossary and values; F+G+H with the patterns), each writing its pages and placement fragment; the
+   per-game-data check builder (Opus, high, $15-20); the three missing checks + SH-232's (Sonnet, high, $10-15); `audit.mjs
+   --standard` reading the rule rows (Sonnet, high, $8-12). About $90-130.
+3. **Stitch the folder** (per-page limits in `docs.mjs`; `chai-standard.md` a pointer); **the mechanical ID check** (every ledger
+   change and old-page ID placed once; the dropped list for Zafar, blocking nothing); Fable reviews the fill once; **the module
+   map** from F1.
+4. **Close Sprint 17** (look back, plan.md chain row); one push to `main` of tools and docs, the game unchanged. Not a gate.
+5. **Sprint 18, in a new chat** (the prompt at the end of the S17 file), per its file: wave 1 Sat 18:00 (chai's owner, five kit
+   builders, the shelf and pills in the shared kit, chop, the prototypes' prep); wave 2 Sun 08:00 (one builder per game, each
+   writing `standard/gaps/<game>.md` rule by rule first); wave 3 Sun 20:00 (merge, audit, films, Fable's batches, publish on his
+   word, handover with his play list). Progress table every half hour.
 
-**Open questions to Zafar:** 1. **asked ~13:30:** chaat and chop use no stovetop; which family are they in? (Until he answers
-they stay in Sprint 18's family list; the families table is untouched.) Not blocking: 2. the skies' four (the night ceiling, the
-day square, the two farm edits as sky-only redos, wiring next sprint); 3. the tongue depressor's brown; 4. ART-59, the wide-door
-counter (a placeholder in the first pass).
+**Open questions to Zafar (none blocking):** 1. the skies' four (the night ceiling, the day square, the two farm sky-only redos);
+2. the tongue depressor's brown; 3. ART-59, the wide-door counter (a placeholder for now); 4. the dropped list, once made.
 
 **Starting prompt for the new orchestrating chat (the rest of Sprint 17):**
 > First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S17-chai-done-families.md` ("Chai signed off"
-> onward) and `docs/sprints/S18-stove-family.md`; open nothing else until a task needs it. Zafar approved the plan on 7 Nov ("yes
-> to all"): launch without asking again, state model, effort and cost per launch, progress table every half hour. Start with chai's
-> frozen run, then Sprint 17's eight builders with `/brief` (disjoint files), stitch the standard, write the module map, close
-> Sprint 17 and push its tools and docs to `main`. End by updating the handover (`/handover`) and telling Zafar to open a new chat
-> with the prompt at the end of the Sprint 17 file ("When Sprint 17 is done"), which starts Sprint 18 the same evening.
+> onward), `docs/sprints/S18-kitchen-family.md` and `build/reports/s17-standards-structure-v2.md` (the standard's locked
+> structure); open nothing else until a task needs it. Zafar approved the plan on 7 Nov ("yes to all", decisions 1-13): launch
+> without asking again, state model, effort and cost per launch, progress table every half hour. Start with chai's frozen run,
+> then Sprint 17's eight builders with `/brief` (disjoint files; the five standard builders by domain, writing the folder
+> docs/design-language/standard/), stitch the folder, run the mechanical ID check, have Fable review the fill, write the module
+> map, close Sprint 17 and push its tools and docs to `main`. End by updating the handover (`/handover`) and telling Zafar to open
+> a new chat with the prompt at the end of the Sprint 17 file ("When Sprint 17 is done"), which starts Sprint 18 the same evening.
 
 ## The fix list
 

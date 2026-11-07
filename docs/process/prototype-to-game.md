@@ -31,17 +31,21 @@ In `docs/sprints/plan.md` (Zafar, 2 Nov: "we'll try stick to it this time").
 
 | Family | Reference | The rest |
 |---|---|---|
-| Make at the stove (a recipe, cooked) | chai | daar, sekelo, maani (and the rolling), chaat, samosa, eggs at breakfast, baking, the corn stall, the cake |
+| Make in the kitchen (a recipe) (Zafar, 7 Nov; "make at the stove" until then) | chai | daar, sekelo, maani (and the rolling), chaat, chop (its own game, used by daar and chaat), samosa, eggs at breakfast, baking, the corn stall |
 | Fetch and serve (someone asks, you find and give) | the pantry | serve at the fruit stall, the beach stalls, the cloth stall, Nani's picky shopping, the pharmacy belt |
 | Clinic care (find the hurt, heal it) | the scrape | the knee, ear, tooth, fever, boing, eye, foot, tummy, hiccups, hair, taste; where does it hurt?, the hand splinter, the blocked nose, the drinks, mend |
-| Instructions on word tiles (who gets what) | feeding time | collect the eggs, home at dusk, plant and pick, pick it up and put it back, the clean-up, the pet hotel's two, pack the bag, the presents |
+| Instructions on word tiles (who gets what) | feeding time | collect the eggs, home at dusk, plant and pick, pick it up and put it back, the clean-up, the pet hotel's two, pack the bag, the presents, the birthday cake (3 Nov) |
 | Find and snap | Find it or Snap (parked, nearly done) | the photo shoot, hide and seek, who's hiding?, Snap from the jeep, Snap the guests, shells, who ate the cake?, the town map |
 | "Nani says, do it" | Dress up (parked, nearly done) | getting ready, musical statues (once its music is decided), pass the balloon, the wake-up clock, make, the sandcastle, Tidy up |
 | Talk and pay | the conversations (live) | the café order, how are you?, pay, the fitting, the picnic |
 | Rides | the car ride (live) | the ride on the water, litter fishing, the blackboard (to place) |
 
 **The farm spans three families:** feeding, eggs, home at dusk and plant and pick are word tiles; the photo shoot is find and snap;
-the corn stall is make at the stove.
+the corn stall is make in the kitchen.
+
+**Make in the kitchen is every Cook game except the pantry** (Zafar, 7 Nov): the pantry stays fetch and serve's reference (its
+family includes stalls outside the kitchen). Story mode and free play are ways of playing the Cook games, not games; "count to a
+heard number" is its own mode outside Cook. The family's page: `docs/game-design/families/kitchen.md`.
 
 ## Once, in Sprint 17
 
@@ -51,7 +55,8 @@ the corn stall is make at the stove.
 2. **The shared kit:** the spotlight bug fixed in every area's copy now; each area's copy folds into `js/shared/` in its family's
    roll-out sprint.
 3. **The chai standard** (`docs/design-language/chai-standard.md`): written from chai's rows once chai is done; every rule either
-   built into the kit or checked by the audit.
+   built into the kit or checked by the audit. From 7 Nov: the folder docs/design-language/standard/, in the structure Zafar
+   locked on 5 Nov (`build/reports/s17-standards-structure-v2.md`), each game's gap rule by rule in `gaps/<game>.md`.
 
 ## Every family, step by step
 

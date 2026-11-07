@@ -1,4 +1,4 @@
-# Sprint 17: chai polished as the stove family's reference
+# Sprint 17: chai polished as the kitchen family's reference
 
 **Status:** open; chai signed off (Zafar, 7 Nov); closing on the frozen run, the standard and its checks (below). (Zafar, 2 Nov:
 "yes agree to all", "wirte the sprint and get fable to approve"; reshaped the same day to his rhythm: one reference polished a
@@ -7,11 +7,12 @@ sprint, its family rolled out the next, `docs/process/prototype-to-game.md`)
 time: 7 Nov)
 
 ## Goal
-Zafar plays chai and calls it done, so it is the reference for the stove family; the stove family is listed, its art block is in the
-queue and its words are on Mum's sheet, so Sprint 18 can roll it out (and polish the pantry).
+Zafar plays chai and calls it done, so it is the reference for the kitchen family ("make in the kitchen", Zafar, 7 Nov; "the stove
+family" until then); the family is listed, its art block is in the queue and its words are on Mum's sheet, so Sprint 18 can roll it
+out (and polish the pantry).
 
 ## How (in order; Fable's review of 2 Nov applied: art first, a judge before each of his plays)
-0. **Art block 1, before any code** (ART-35, ART-36): a first draft for the stove family's games still on placeholders (the cake,
+0. **Art block 1, before any code** (ART-35, ART-36): a first draft for the kitchen family's games still on placeholders (the cake,
    eggs at breakfast, baking, the corn stall: each one's art list from its design and report) and chai's half and full word moment
    (a new piece for the teaching moment only, not the pour chai has now: an opaque vessel held tilted, its tea stream, the half and
    full glasses, the snap frame). Target sizes stated. A builder writes the plan and the one paste block (on his go).
@@ -30,7 +31,7 @@ queue and its words are on Mum's sheet, so Sprint 18 can roll it out (and polish
    Fast lane in this chat; filmed at the four sizes; the judge on chai before he plays it; he says "done".
 2. **The shared ground:** the audit command; the spotlight bug fixed in every area's kit copy; the chai standard page written from
    chai's rows.
-3. **Sprint 18 made ready:** the stove family listed (its games, words, what each still lacks against chai); its words on Mum's
+3. **Sprint 18 made ready:** the kitchen family listed (its games, words, what each still lacks against chai); its words on Mum's
    sheet; the pantry's design calls (PAN-19 to PAN-22, its word-adds) put to Zafar as numbered decisions at Sprint 18's opening.
 
 ## Budget
@@ -74,8 +75,8 @@ About $150-200 and three days.
 
 ## Sprint 18's opening decisions (Zafar, 3 Nov evening: yes to all except 7, changed; 9 with baking's own art)
 
-The stove family's list and each game's gap to chai: `docs/game-design/families/stove.md`. The pantry is Sprint 18's reference to
-polish (fetch and serve); its four rows from his 30 Oct play:
+The kitchen family's list and each game's gap to chai: `docs/game-design/families/kitchen.md` (named "the stove family" until
+7 Nov). The pantry is Sprint 18's reference to polish (fetch and serve); its four rows from his 30 Oct play:
 1. **PAN-19, who gives the order:** Nani walks in and gives it as chai's customers do, each card appearing as she says it, then stays
    as the helper. *Recommended.*
 2. **PAN-20, the jars' words:** every jar gets the kit's word chip by the word ladder (L1 the written word and a speaker, L2-L4 by the
@@ -87,13 +88,13 @@ polish (fetch and serve); its four rows from his 30 Oct play:
 6. **The pantry on chai's whole standard,** the order card, the helper card, the pop-out and the next-item light included, so it
    becomes fetch-and-serve's reference for Sprint 19. *Recommended.*
 
-The stove family's roll-out:
-7. **The roll-out (Zafar, 3 Nov, late):** all nine stove games at once, each brought to chai's standard before he reviews them as one
+The kitchen family's roll-out:
+7. **The roll-out (Zafar, 3 Nov, late):** all nine kitchen games at once, each brought to chai's standard before he reviews them as one
    family (`docs/process/prototype-to-game.md`, steps 5-6); art block 4 (daar's chop scene, samosa's fill and fold, baking's word
    moment: ART-37, ART-38) is folded into art block 3 so every game's art is ready first; samosa's and daar's layout calls to him at
    the roll-out.
-8. **The cake** moves to the word-tiles family (it is on the party kit's tiles, and has no recipe); the stove family is the nine.
-   *Recommended.*
+8. **The cake** moves to the word-tiles family (it is on the party kit's tiles, and has no recipe); the kitchen family is the nine
+   (ten with chop as its own game, 7 Nov). *Recommended.*
 9. **Baking's amounts** use the word moment (CHAI-67) for half and full now, and for a quarter, one and a half and two and a half once
    Mum records them (Round 6, R6-135); **in baking's own art**, a baking version of chai's moment (Zafar, 3 Nov): ART-38.
 10. **One builder or the chat:** the five live games in the chat (Opus, high), and one builder for the three prototypes (Opus, high,
@@ -124,7 +125,7 @@ The stove family's roll-out:
 "Chai is officially signed off - it's done and complete as a reference point for the other games." Live: 20261107T120301Z. The
 sign-off covers his two open items as built: the phone word-moment glasses at 88 px and the side panel moving unscrolled on phones.
 The chai standard page is final (`docs/design-language/chai-standard.md`). What is left of this sprint is chai's recorded run and
-the standard made complete, with its checks, so Sprint 18 starts with a map (`docs/sprints/S18-stove-family.md`; the plan and
+the standard made complete, with its checks, so Sprint 18 starts with a map (`docs/sprints/S18-kitchen-family.md`; the plan and
 Fable's review of it: `build/reports/game-rollout-plan-review-2026-11-07.md`, its addendum).
 
 **The rest of Sprint 17 (now → ~18:00 Sat), as fast as it goes:**
@@ -133,25 +134,41 @@ Fable's review of it: `build/reports/game-rollout-plan-review-2026-11-07.md`, it
    lesson race, the skip, the next-pan light); his ear items (the boil loop, the clicks, the pour) as judge rows with sound logs. It
    is the guard everything after is measured against.
 2. **Eight builders, no game code** (launched together, each in its own files):
-   - **Five standard builders** (Opus, high, $8-12 each), one section each, following "How the page is finished" on the standard
-     page: (1) §1 onboarding and lights; (2) §2 the order with §3 the cards and the side panel; (3) §4 speech and bubbles; (4) §5
-     play, where §5.1 becomes the stove kit's own section (heat, the boil and its sound, several pans, the pour, the shelf and its
-     pills) and §5.2-5.4 (layout, undo, loading) stay "every game"; (5) §6 words and the leak test, plus chai's own recipe rules (the
-     recipe, the glasses, the style teas, half and full, the word moment as chai uses it). Every rule line carries the rule in plain
-     words, its source (Zafar's words and date, the row ids), its layer (shared kit / stove kit / game), where it lives in code now,
-     its check (contract-N, panel, lab, leak, load, or a named judge row), and what it applies to (every game / stove / chai only).
-     Every CHAI row cited only in chai-tray.js and every `*14` onboarding state gets a line: shared kit, stove kit, chai's recipe,
-     or retired. Each writes its own fragment file; the orchestrator stitches the page.
+   - **Five standard builders** (Opus, high, $8-12 each), one or more domains each, writing **the standard in the structure Zafar
+     locked on 5 Nov** (`build/reports/s17-standards-structure-v2.md`, his §8 answers; the patterns and glossary drafted in
+     `build/reports/s17-standards-structure-review.md` §7.3-7.4). The split: (1) 0 Foundations, A Learning, C Progression;
+     (2) B Play; (3) D Guidance; (4) E Presentation, plus the glossary and the values sheet; (5) F Build, G Proof, H Supply, plus
+     the 14 patterns; F1 (kit vs game) is the source of the module map. **The unit is a rule**, one testable sentence in exactly one
+     area; **each rule row has the eight fields:** ID (`STD-D1-07`), Rule, Why (Zafar's words and date, or the lesson), Scope,
+     Pattern/part, Checked by, See it (a lab link reachable in a minute), Status (dated, reversals newest first); optional Value,
+     Lives in, Impact, Source rows. **Scopes are three** (decision 13): House (every game), Family (the kitchen family), Game (chai
+     only). **Checked by names a tool** (his 5 Nov answer): a probe, check, contract or build-tool rule, or a design doc read at
+     every launch (such as `/brief`'s standing lines); a rule with no such home is a gap in itself, written as one. Every ledger
+     change (`build/reports/s16-s17-change-ledger.md`, 118) and every ID the old chai and stove pages cite is placed once (a rule, a
+     value, a lesson, or "not a standard"): each builder places the ones it owns in its own placement fragment. Every CHAI row
+     cited only in chai-tray.js and every `*14` onboarding state gets a row: House, Family, Game, or retired. Each builder writes
+     its own page(s) and fragments; nobody touches another's; the orchestrator stitches.
+     **Where it lives:** a folder, docs/design-language/standard/ (decision 12; the builders create it, not before):
+     `README.md` (the index, the three scopes, the proof scale 0-5, how a family uses it), `glossary.md`, `patterns.md`, one page
+     per domain (`0-foundations.md`, `a-learning.md`, `b-play.md`, `c-progression.md`, `d-guidance.md`, `e-presentation.md`,
+     `f-build.md`, `g-proof.md`, `h-supply.md`), `values.md`, `placement.md`, and `gaps/<game>.md` (one per kitchen game, rule by
+     rule, written in Sprint 18). `docs/design-language/chai-standard.md` stays the signed-off source until the stitch, then becomes
+     a pointer to the folder (history in git).
    - **One check builder** (Opus, high, $15-20): contract-70, -71, -90, -91, `CONTROL_CALLS` (`build/sandbox/lib/contract-s14.mjs:28`),
      `CHAI_ROW`, `S14_TAPS` and `DECOY_STATIONS` (`build/sandbox/lib/contract.mjs:1421-1428`) keyed by a per-game data list, so a
      game is checked the day it is listed.
    - **One check builder** (Sonnet, high, $10-15): the three missing checks (`docs/process/checks-to-build.md`: 26 the boil-over
      driver; the zoom-in light everywhere; SH-196's lesson surviving a tap) and SH-232's own check (the panel follows a fold).
-   - **One tool builder** (Sonnet, high, $8-12): `audit.mjs --standard <game>` prints every rule as pass, fail or judge.
-3. **Close:** the orchestrator stitches the page; Fable reads it once; the orchestrator writes **the module map** (each kit piece: its
-   file, its owner, the API games call); the look back below; the chain row in `docs/sprints/plan.md` marked; one push to `main` of
-   tools and docs, the game unchanged. Zafar reads the standard's "every game" lines whenever he likes; it blocks nothing. Closing
-   Sprint 17 and opening Sprint 18 is housekeeping, not a gate: the next wave launches the same evening.
+   - **One tool builder** (Sonnet, high, $8-12): `audit.mjs --standard <game>` reads the rule rows (ID, Checked by) from the
+     standard folder and prints every rule as pass, fail or judge, per game.
+3. **Close:** the orchestrator stitches the folder (the placement fragments into `placement.md`; per-page limits of about 2,500
+   words set in `build/tools/review/docs.mjs`; `chai-standard.md` becomes the pointer); runs **the mechanical ID check** (every
+   ledger change and every ID the old chai and stove pages cite, placed once: unplaced or doubled IDs resolved; what is left over is
+   **the dropped list**, to Zafar whenever he likes, blocking nothing); Fable reviews the fill once (v2 decision 7); the orchestrator
+   writes **the module map** from F1 (each kit piece: its layer, its file, its owner, the API games call); the look back below; the
+   chain row in `docs/sprints/plan.md` marked; one push to `main` of tools and docs, the game unchanged. Zafar reads the House
+   rules whenever he likes; it blocks nothing. Closing Sprint 17 and opening Sprint 18 is housekeeping, not a gate: the next wave
+   launches the same evening.
 
 Cost of the rest: about $90-130 (the sprint's total goes past its $150-200 ceiling by the standard's builders; Zafar, 7 Nov: speed
 first, up to eight builders).
@@ -164,6 +181,12 @@ first, up to eight builders).
    judges in batches at each wave's end; his reading of the standard blocks nothing.
 4. Chai keeps one owner; the kit pieces are built in parallel, each in its own files ("nobody else in the same file", not "the same
    folders"); chop is its own game; the Sprint 18 decisions are in its file.
+5. (~14:00, his answers 11-13 in Sprint 18's file) **The family is "Make in the kitchen (a recipe)":** every Cook game except the
+   pantry, which stays fetch and serve's reference; the files renamed from "stove" to "kitchen" (stubs at the old paths).
+6. **Three layers in code, what the pantry and the stalls also need in the shared kit** (the orchestrator's recommendation,
+   applied; he can strike it): shared kit → kitchen kit (its stove part for games that cook with heat) → game; scopes House,
+   Family, Game (the Engine scope folds away).
+7. **The standard is a folder** in his locked 5 Nov structure, each page under its own limit (the five builders above).
 
 ## Outcome
 
@@ -175,12 +198,16 @@ first, up to eight builders).
 ## When Sprint 17 is done: paste this into a new chat to start Sprint 18
 
 > First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-stove-family.md`; open nothing else until a
-> task needs it. Confirm Sprint 17 left three things on the branch: chai's frozen run (its films and contract reports), the
-> stitched chai standard page, and the module map; if any is missing, finish it first and say so. Then open Sprint 18 and launch
-> wave 1's eight builders with `/brief`, disjoint files each: chai's owner (Opus, high, $40-60), the five kit builders (Opus, high,
-> $20-30 each), chop as its own game (Opus, high, $20-30), the prep for eggs, baking and the corn stall (Sonnet, high, $10-15).
-> Zafar approved the plan on 7 Nov ("yes to all"): launch without asking again; state model, effort and cost per launch; a progress
-> table every half hour; chai's frozen-run diff after every switch. Wave 2 (one builder per game) from Sun 08:00, wave 3 (merge,
-> audit, films, Fable's batches) from Sun 20:00. Target: every stove game's first pass live on `main` by Mon 9 Nov 07:00 UK, on his
-> word, with a handover and his play list.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-kitchen-family.md`; open nothing else until a
+> task needs it (the standard's structure is `build/reports/s17-standards-structure-v2.md`, read when a brief needs it). Confirm
+> Sprint 17 left four things on the branch: chai's frozen run (its films and contract reports), the standard folder
+> docs/design-language/standard/ (README, glossary, patterns, the nine domain pages, values, placement; `chai-standard.md` a
+> pointer), the mechanical ID check green (`placement.md` complete, the dropped list written), and the module map; if any is
+> missing, finish it first and say so. Then open Sprint 18 and launch wave 1's eight builders with `/brief`, disjoint files each:
+> chai's owner (Opus, high, $40-60), the five kit builders (Opus, high, $20-30 each; the shelf and pills in the shared kit), chop
+> as its own game (Opus, high, $20-30; its gap page first), the prep for eggs, baking and the corn stall (Sonnet, high, $10-15).
+> Zafar approved the plan on 7 Nov ("yes to all", decisions 1-13): launch without asking again; state model, effort and cost per
+> launch; a progress table every half hour; chai's frozen-run diff after every switch. Wave 2 (one builder per game, each writing
+> `standard/gaps/<game>.md` rule by rule from `audit --standard` first) from Sun 08:00, wave 3 (merge, audit, films, Fable's
+> batches) from Sun 20:00. Target: every kitchen game's first pass live on `main` by Mon 9 Nov 07:00 UK, on his word, with a
+> handover and his play list.

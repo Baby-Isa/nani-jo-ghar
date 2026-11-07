@@ -3,22 +3,23 @@
 Chai is the reference game: every rule it earned, so any game can show it meets it (`docs/process/prototype-to-game.md`).
 
 **Status: signed off, final** (Zafar, 7 Nov; live 20261107T120301Z; the 88 px phone glasses and the panel moving unscrolled on
-phones, as built). Sections 1-6 are the 3 Nov draft; Sprint 17's builders finish them to the structure below. Rows:
-`docs/process/regressions.md` and its archive.
+phones, as built). Sections 1-6 are the 3 Nov draft, finished in the standard folder (below). Rows: `docs/process/regressions.md`
+and its archive.
 
-**The three layers (Zafar, 7 Nov), where a rule lives:** *shared kit* (`js/shared/`, `js/cook/ui.js`: every game); *stove kit*
-(from chai, `js/cook/kitchen-kit.js`, `js/cook/mechanics/`: every stove game); *game* (chai's recipe, `js/cook/stations/chai-tray.js`).
-A fix goes in the lowest layer that owns it. **Checked by:** contract, panel, lab, leak, load, or a named judge row on film.
+**The three layers (Zafar, 7 Nov, decision 13), where a rule lives:** *shared kit* (`js/shared/`, `js/cook/ui.js`: every game,
+and what the pantry and the stalls also need: the shelf and its pills, the order's flow and timings, lights and lessons, serving);
+*kitchen kit* (`js/cook/kitchen-kit.js`, `js/cook/mechanics/`: every kitchen game; its stove part only for games that cook with
+heat); *game* (chai's recipe, `js/cook/stations/chai-tray.js`). A fix goes in the lowest layer that owns it.
 
-## How the page is finished (Sprint 17; Zafar, 7 Nov)
+## How this page is finished (Sprint 17; Zafar, 5 and 7 Nov)
 
-Five builders, a section each in its own fragment, stitched by the orchestrator, read once by Fable. The split: (1) §1;
-(2) §2-3; (3) §4; (4) §5: §5.1 becomes **the stove kit's own section** (heat, the boil and its sound, several pans, the
-pour, the shelf and pills) and §5.2-5.4 stay "every game"; (5) §6 plus **chai's own recipe rules** (the recipe, the glasses, the
-style teas, half and full, its word moment). **Each rule line:** the rule in plain words · source (Zafar's words and
-date, row ids) · layer · code home · check (contract-N, panel, lab, leak, load, or a named judge row) · applies to (every
-game / stove / chai only). Every CHAI row cited only in chai-tray.js and every `*14` onboarding state gets a line:
-shared kit, stove kit, chai's recipe, or retired: the map Sprint 18 starts from (`docs/sprints/S18-stove-family.md`).
+Not as one page: in the structure he locked on 5 Nov (`build/reports/s17-standards-structure-v2.md`, his §8 answers): nine
+domains, the unit a rule, eight fields a row (ID, Rule, Why, Scope, Pattern/part, Checked by: a probe, check, contract, build-tool
+rule or a doc read at every launch; See it; Status, dated), three scopes (House, Family: the kitchen family, Game: chai), glossary,
+14 patterns, values, placement, the proof scale 0-5; as the folder docs/design-language/standard/ (a page per domain, each under
+its limit), by five builders (`docs/sprints/S17-chai-done-families.md`, "The rest"). This page is the source until the stitch,
+then a pointer (history in git). Every CHAI row cited only in chai-tray.js and every
+`*14` onboarding state gets a row there (House, Family, Game, or retired): Sprint 18's map (`docs/sprints/S18-kitchen-family.md`).
 
 ## 1. Onboarding: one rule for every game (SH-146; Zafar, 3 Nov: yes)
 
