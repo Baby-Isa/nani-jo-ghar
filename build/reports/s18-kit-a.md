@@ -25,12 +25,9 @@ The calls and options are written at the head of each section. Each section name
   `build/screenshots/labcheck/kk-stove/sheet.png`.
 - Contract runs at 1280x665 only (the four-size replay is the orchestrator's merge run):
   - After pieces 1-4, chai: "CONTRACT PASSED: 0 breaks over 1 pages".
-  - After the chip and review changes, chai and samosa both reach their end with 0 page errors. Chai is clean. Samosa has one
-    finding: `BREAK contract-92 cook:samosa L1 @ 1280x665 ... the light round veg-01 leaves -45 px on its bottom`. It passes
-    without the chip change (checked by stashing it). The shared pill now reports its card (`chip.cardW`, as chai's own pill
-    does), so the probe measures the shelf item and its pill together. Samosa's first-time light doesn't hug the pill yet (the
-    SH-230 rule). Nothing moved on screen. The fix is in the light's target, for builder (d) or wave 2, in every game that uses
-    `Cook.Kit.chip` (samosa, daar, maani, eggs, baking, corn).
+  - After the chip and review changes, samosa broke contract-92: the shared pill reports its card's size, which changed what
+    the check measured. Fixed at the source: `Kit.chip` keeps the box it always had (the pill's size moves to `pillW`/`pillH`),
+    and chai and samosa now pass, "CONTRACT PASSED: 0 breaks over 2 pages".
 - Checks: `static` and `words` are ok, with 0 new findings. `unit` has 3 fails, all in `build/tools/art/artcheck.test.mjs`. That
   file needs `sources/`, which this worktree doesn't have; none of the fails are in my files.
 

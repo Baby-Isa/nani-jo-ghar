@@ -76,6 +76,30 @@ import { NjgServe } from "../shared/serve.js";
   const MOODS = ["neutral", "happy", "frown"];
   const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
 
+  /*
+   * The kitchen's chip keeps the box it always had (the orchestrator, 7 Nov: a stove game's contract-92): Kit.chip never reported its
+   * card's size, so a game's first-time light and the light-room check (contract-92) measure the shelf item alone. The shared pill
+   * keeps its card's size as cardW / cardH (the shelf's own lay-out and its check read them); here they move to pillW / pillH, and
+   * come back only while the pill itself redraws or sizes its tap area.
+   */
+  function keepBox(chip) {
+    const hide = () => {
+      if (chip.cardW == null) return;
+      chip.pillW = chip.cardW;
+      chip.pillH = chip.cardH;
+      delete chip.cardW;
+      delete chip.cardH;
+    };
+    const show = () => {
+      if (chip.pillW != null && chip.cardW == null) Object.assign(chip, { cardW: chip.pillW, cardH: chip.pillH });
+    };
+    const { face, hit } = chip;
+    chip.face = (...a) => (show(), face.apply(chip, a), hide(), chip);
+    chip.hit = (...a) => (show(), hit.apply(chip, a), hide(), chip);
+    hide();
+    return chip;
+  }
+
   const Kit = {
     /** the shared ring and badge colours (the heat ring's; CHT-05: the chop timer uses them too) */
     INK,
@@ -252,7 +276,7 @@ import { NjgServe } from "../shared/serve.js";
      * opts.word false: the speaker alone, the same size and place (higher levels). opts.w: its width.
      */
     chip(S, id, x, y, { word = true, w = CHIP.w, depth = D.item + 2 } = {}) {
-      return global.Shelf.P.chip(S, x, y, Cook.display(id), {
+      return keepBox(global.Shelf.P.chip(S, x, y, Cook.display(id), {
         word,
         w,
         depth,
@@ -265,7 +289,7 @@ import { NjgServe } from "../shared/serve.js";
           if (Cook.onLabel) Cook.onLabel(id);
           Cook.Lang.speakWord(id);
         },
-      });
+      }));
     },
 
     /**
