@@ -122,8 +122,44 @@
   },
   "say": [
    {
-    "tally": "$chops",
-    "frame": "only"
+    "if": "chops.veg-02",
+    "frame": "need",
+    "x": [
+     {
+      "n": "$chops.veg-02",
+      "of": "veg-02"
+     }
+    ]
+   },
+   {
+    "if": "chops.veg-03",
+    "frame": "need",
+    "x": [
+     {
+      "n": "$chops.veg-03",
+      "of": "veg-03"
+     }
+    ]
+   },
+   {
+    "if": "chops.veg-12",
+    "frame": "need",
+    "x": [
+     {
+      "n": "$chops.veg-12",
+      "of": "veg-12"
+     }
+    ]
+   },
+   {
+    "if": "chops.veg-13",
+    "frame": "need",
+    "x": [
+     {
+      "n": "$chops.veg-13",
+      "of": "veg-13"
+     }
+    ]
    },
    {
     "forEach": "$no",
@@ -139,7 +175,8 @@
   "steps": [
    "Chop"
   ],
-  "run": []
+  "run": [],
+  "_say": "Each thing to chop is its own full sentence, 'Muke ba dungri khape.' (the engine's Need frame, as the pantry's GiveMe), so the card's any-order rows can be said in any order; a 'no' row 'Lasan na.' The board's own lines are the mechanic's ('Kali ba dungri. Ne hakro tameto.', the switch 'Hane trae mirchi!')."
  },
  "levels": [
   {
@@ -158,16 +195,17 @@
    }
   },
   {
-   "_about": "L4: one kind a round (four rounds, three switches), and about 15% quicker than L3 (STD-C2-06): throws 0.48 s apart (L3 0.58), about 2.5 s in the air (L3 2.8)",
+   "_about": "L4: one kind a round (four rounds, three switches), a little quicker than L3 (STD-C2-06: throws 0.53 s apart against L3's 0.58, about 2.6 s in the air against 2.8), and one more spare throw of each wanted thing, since every round has four decoys",
    "knobs": {
     "phases": 4,
-    "slow": 0.97,
-    "every": 0.47,
+    "slow": 0.95,
+    "every": 0.5,
+    "spare": 2,
     "throwSpeed": [
-     1370,
-     1540
+     1360,
+     1520
     ],
-    "gravity": 1470
+    "gravity": 1450
    }
   }
  ]

@@ -79,10 +79,13 @@ import { Cook as CookNS } from "../ns.js";
     return { cut, got, wrong };
   }
 
-  /** CK-49 (contract-37): the things thrown that nobody asked for, the "no" one too, and whether one is a lookalike. */
-  const noteDecoys = (rounds) => {
-    const off = [...new Set(rounds.flatMap((r) => r.decoys))].filter((id) => !rounds.some((r) => r.targets.includes(id)));
-    St.decoyNote(off.length, { what: KEY, lookalike: rounds.some((r) => r.lookalikes.length) });
+  /**
+   * CK-49 (contract-37): how many decoys fly with each round's things (a thing asked in another round is a decoy in this one; the
+   * "no" one too), the fewest of any round, and whether one is a lookalike; "room" when the six whole vegetables run out first.
+   */
+  const noteDecoys = (rounds, want) => {
+    const n = Math.min(...rounds.map((r) => r.decoys.length));
+    St.decoyNote(n, { what: n < want ? `${KEY} room:${n}` : KEY, lookalike: rounds.some((r) => r.lookalikes.length) });
   };
 
   /** The game's round: Nani's order, the board, the chop (again for a short count), the end. */
@@ -110,7 +113,7 @@ import { Cook as CookNS } from "../ns.js";
       const phases = (Cook.data.stations[KEY] || {}).phases || {};
       if (phases.chop && !tries) UI.gist(phases.chop);
       const z = Mech.zone(S, ctx, { id: KEY, level });
-      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, onRounds: tries ? null : noteDecoys });
+      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, onRounds: tries ? null : (rs) => noteDecoys(rs, knobs(level).decoys || 0) });
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {
