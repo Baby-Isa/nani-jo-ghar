@@ -18,8 +18,25 @@ only of that page for the judge. A sound row is judged from the sound log, since
 
 **Not covered:** the device's own audio (the sandbox hears the game's calls, not the speaker); the store build's voice path.
 
+## Determinism: what the diff tolerates (7 Nov, 14:12-16:10)
+
+Chai is not the same twice: the orders it deals, when a hint comes, a tap that lands in the order and skips it, and the load on
+the machine (eight builders on four CPUs) all vary. A first diff by exact counts and times raised 805 "changes" on an unchanged
+chai; so the diff compares **what a page does** (the states, the kinds of note the game logs, the effects and family clips heard,
+reaching its end, page errors, contract breaks) across **every frozen play** of that page (what always happened is required, what
+ever happened is allowed), **re-plays every changed page once and counts only what comes again**, and never compares a page whose
+browser crashed (a full disk crashed four, 14:44). Held-out plays of the unchanged game: 805 → 238 (crashes) → 18, all traced to
+the harness itself changing after the freeze (s17-chk2's page hook and player: a tap now lands in the order and skips it); so chai
+was **re-frozen with the current harness** from six plays (the frozen run, the child pass, two held-out plays and their re-plays).
+
+**Known breaks (seen in a frozen play; not reported again):** contract-11 at L4 1920x1080 (ART-59); contract-96 at L3 returning,
+twice (**a real fault: CHAI-105**, a boiled-over pot's card stays ticked; chai's owner in Sprint 18); seen once each under heavy
+load and never on a quiet run, tolerated: contract-18 (L2 mistake 740x320; L3 child), contract-79 (L4 1280x665; L3 child),
+contract-3 (L4 child 740x320), contract-95 (returning and take-back 740x320, after a skipped order). Chai's owner re-plays any of
+these on a quiet machine when it touches its piece.
+
 ## Proof
 
 Runs `build/screenshots/sandbox/frozen-chai-20261107/` and `build/screenshots/sandbox/frozen-chai-child-20261107/` (not in git;
 their contract reports and the films are copied to `build/frozen/chai-tray/`). Determinism: a second play compared with the
-frozen one by `frozen.mjs --diff` (the result is added below once it lands).
+frozen one by `frozen.mjs --diff` (above).
