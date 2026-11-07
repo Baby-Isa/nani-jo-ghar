@@ -395,12 +395,22 @@
       if (!alive()) return;
       stream.classList.remove("ending");
       reach(sl);
+      // CHAI-103 (Zafar, 7 Nov: "the sound of the teacup being filled up ... should begin only once the liquid from the spout has
+      // reached the bottom of the glass. And the level of the liquid in the cup rising should only begin rising once again the stream
+      // has hit the bottom of the glass"): the stream runs down first (its wipe's own end: the head at the tea's surface, the empty
+      // glass's bottom), then the pour is heard and the tea rises; was all three at once
+      let runDown;
       if (o.streamWipe) {
-        wipeTo(0, 104, 0, "head"); // (hidden until it runs down)
+        wipeTo(0, 0, 0, "head"); // (hidden until it runs down: was set to 104, the whole stream, for its first frame)
         stream.classList.add("on");
-        wipeTo(0, 104, 300 / sp, "head");
-      } else stream.classList.add("on", "flow");
+        runDown = wipeTo(0, 104, 300 / sp, "head");
+      } else {
+        stream.classList.add("on", "flow");
+        runDown = wait(reduced() ? 0 : 200 * sp); // (the drawn stream's own grow, css .wm-stream: .2s, not paced)
+      }
       if (v.pour) vim.src = v.pour;
+      await runDown;
+      if (!alive()) return;
       const loop = pourLoop();
       const to =Math.max(0, Math.min(1, sl.x.fill));
       const dur = (o.instant ? 0 : 2600 * to + 300) / sp;
