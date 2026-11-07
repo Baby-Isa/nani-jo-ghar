@@ -13,7 +13,8 @@ Replayed three times before and after the pan switch (030077eb: 0, 1, 1 rings; 3
 | Switch | Commit | Frozen diff | Verdict |
 |---|---|---|---|
 | (b) pieces 6-8: the shelf pour and spoon, pan into glass and take-back, serving | d4ec4236 | `build/reports/frozen-diff-chai-tray-202611072039.md` | **No change** over 30 pages |
-| (c) pieces 9-12: the shelf slots, word pills, the word pop (third session) | (this commit) | `build/reports/frozen-diff-chai-tray-202611072132.md` | **No change** over 30 pages (7 one-off changes on the first play, none again on the re-play) |
+| (c) pieces 9-12: the shelf slots, word pills, the word pop (third session) | 39d520da | `build/reports/frozen-diff-chai-tray-202611072132.md` | **No change** over 30 pages (7 one-off changes on the first play, none again on the re-play) |
+| (d) pieces 13-14: lights and lessons | (this commit) | `build/reports/frozen-diff-chai-tray-202611072153.md` | **5 changes on 3 pages, all explained** (below) |
 
 **(b) pieces 6-8** (chai-tray.js about 290 lines fewer):
 - Piece 6: `pourInto` is `Mech.pour(S, {pan, from, level, look, settle, onEnd})`; `spoonInto` is `Mech.pour.spoon`; chai's `land`
@@ -37,9 +38,17 @@ pillHit, PILL_* and its speaker wrapper gone); the word pop `Juice.P.pop` placed
 Chai keeps its old card shadow (40, 25, 10: `shade`). The test hook `Cook.chaiPills` reads `chip.parts`. Count pills: chai draws
 none (the count badge is ui.js's, `UI.tallyAt`). The decoys and size classes already go through St's wrappers onto `Shelf`.
 
+**(d) pieces 13-14** (about 490 lines fewer): `gate14 = Cook.Coach.firsts("chai-tray", {round})` for fresh14, first14 and the
+lessons' dueAll/spendAll; light14, movingNow14, settled14, sideMoving gone; the control's call and light `Cook.Coach.control`, a
+wrong move `Cook.Coach.wrong()`; the answer's gate `Cook.Coach.rungs(..., {word, answer, study})`; the next pan
+`Cook.Coach.nextLight`; the card light `Cook.Coach.cardLight` with `Cook.Coach.itemCard`; the lessons `Cook.Coach.lessons`. The
+`lightHelpArrow` block is gone from showCallout. The diff's changes: the glass ring on `#takeback` 740x320 (missing) and L1 740x320
+(new) is CHAI-107's race; the boil-over puff on L3 `#returning` 1280x665 (the tester missed the green on Nana's pan while on the
+cousin's) happens on the old code too (replayed at 14710163: puff at 34 s, "Slow kar" 0.9 s before), a variation the freeze missed.
+
 ## What waits
 
-(d) lights and lessons (the `lightHelpArrow` block); (e) people say their orders and the timings. Static check: "4 known ones are
+(e) people say their orders and the timings. Static check: "4 known ones are
 fixed" (`checks.mjs` static `--write-known` would shrink its list; build/tools is not mine). Frozen runs: `frozen.mjs --diff` takes
 the browser lock itself (never wrap it in flock).
 
@@ -49,4 +58,6 @@ the browser lock itself (never wrap it in flock).
 - `checks.mjs --only static,words,load`: words ok (0 literals), static ok (0 new), load ok (29/29).
 - After (c): unit shelf, cook harness, smoke, sfx files pass; `checks.mjs --only static,words,load` ok (0 new, 0 literals, 29/29);
   frozen diff `frozen-diff-chai-tray-202611072132.md`, **no change**.
+- After (d): unit cook harness, smoke, onboard lights pass (cook mount fails before and after); static, words, load ok; frozen diff
+  `frozen-diff-chai-tray-202611072153.md` (above). Outside my files: rules.js `R.lightHelpArrow` and rules.json's flag (kit d's list).
 - Frozen diff after (b): `frozen-diff-chai-tray-202611072039.md`, **no change** (13 one-off changes on the first play, none again).

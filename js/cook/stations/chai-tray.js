@@ -250,98 +250,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     };
     const STATION14 = "chai-tray";
     const S14_TAG = "s14-";
-    const fresh14 = s14 && ((OB14 && OB14.newPlayer && OB14.newPlayer()) || !(Cook.save.coached || {})["chai-tray"]);
-    const first14 = (k) => {
-      const key = `${STATION14}:${S14_TAG}${k}`;
-      if (!fresh14 || seen14[key]) return false;
-      seen14[key] = true;
-      return true;
-    };
+    // (the kitchen kit's first-time gate, Cook.Coach.firsts: chai's lights once each for a new player; the lessons every game
+    // shares once a round for the New player, CHAI-102)
+    const gate14 = Cook.Coach.firsts(STATION14, { round: new Set() });
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
-    // a DOM thing lit alone for a moment (the order card) or until it is tapped (the arrow, the dots), never longer than ms
-    // (el: the thing, or a function giving it now: CHAI-102, a card redrawn under the light; -> a promise with .handle, the light's
-    // own: handle.box() is the box drawn, null while nothing is; and .stop(), the light gone now)
-    const light14 = (el, look, ms, onTap, quitIf, opts) => {
-      if (!el || !OB14 || !OB14.light) return Promise.resolve();
-      // (pass: the light shows the way; a tap anywhere still goes through, so the child is never held and the idle clock sees it)
-      const h = OB14.light(el, Object.assign({ look, pad: 4, pass: true }, opts || {}));
-      try {
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}light`, rung: 0, coach: true });
-      } catch (e) {
-        /* only a log */
-      }
-      const at = typeof el === "function" ? el() : el;
-      let stop = () => {};
-      const p = new Promise((res) => {
-        let t = 0;
-        let q = 0;
-        const end = () => {
-          clearTimeout(t);
-          clearInterval(q);
-          if (onTap && at) at.removeEventListener("click", tap, true);
-          h.close();
-          res();
-        };
-        const tap = () => {
-          if (onTap) onTap();
-          end();
-        };
-        if (onTap && at) at.addEventListener("click", tap, true);
-        // (quitIf: the light goes as soon as it holds, e.g. the child already pouring the next thing)
-        if (quitIf) q = setInterval(() => quitIf() && end(), 60);
-        t = setTimeout(end, ms);
-        stop = end;
-      });
-      p.handle = h;
-      p.stop = () => stop();
-      return p;
-    };
-    /*
-     * contract-79 (the audit, 3 Nov: the first-time "tap the dots" lesson lit the order card while its cards still slid in, and its
-     * light was still fading when play began): a light on the order card waits for a quiet spell, nothing moving for the central
-     * rules' pointAfterMoveMs (the order row's glide, a page animation that ends, a kitchen tween that ends; the people's idling,
-     * glows, effects and bubbles left out, as the sandbox's contract-79 leaves them), sampled every 60 ms; capped at 6 s.
-     */
-    const movingNow14 = (() => {
-      let rowX = null;
-      return () => {
-        const rows = [...document.querySelectorAll("#mission .oc-row14")];
-        const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
-        const was = rowX;
-        rowX = xs;
-        if ((was != null && xs !== was) || rows.some((r) => r._auto || r._pend14)) return true;
-        const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
-        const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
-        try {
-          if (S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
-        } catch (e) {
-          /* no tween list: the rest still counts */
-        }
-        return !!(document.getAnimations && document.getAnimations().some((a) => {
-          if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
-          const tm = a.effect.getComputedTiming();
-          const el = a.effect.target;
-          return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
-        }));
-      };
-    })();
-    const settled14 = () =>
-      new Promise((res) => {
-        const sp = Cook.speed || 1;
-        const need = (RULES() ? RULES().pointAfterMoveMs() : 500) / sp;
-        const t0 = Date.now();
-        let quiet = null;
-        const tick = () => {
-          const still = !movingNow14() && !busy && !spoons14;
-          if (still) {
-            if (quiet == null) quiet = Date.now();
-          } else quiet = null;
-          if ((quiet != null && Date.now() - quiet >= need) || Date.now() - t0 > 6000) return res();
-          setTimeout(tick, 60);
-        };
-        tick();
-      });
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
     // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
@@ -782,7 +695,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
      * knob the child turns holds (never a thing that moves by itself). A returning player's heat never holds.
      */
     const HOLD14 = `${STATION14}:${S14_TAG}boil-hold`;
-    const hold14 = !!(fresh14 && RULES() && RULES().firstTimeHold() && !seen14[HOLD14]);
+    const hold14 = !!(gate14.fresh && RULES() && RULES().firstTimeHold() && !seen14[HOLD14]);
 
     // C8: which picture the pan shows: [the stage, the next one fading in over it, how far]. The leaves
     // steep to black tea as it heats; near the green it comes to the boil; past the green milky chai
@@ -1017,7 +930,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (obj && !busy) S.wiggle(obj);
         if (pan && pan.poured > 0 && !finished) {
           nextPanLight(); // (CHAI-68: a jar tapped into a poured pan: the next pan, at once)
-          rushHint14 = true; // (and after the first time, the stuck hint on the next pan at once)
+          Cook.Coach.wrong(); // (and after the first time, the stuck hint on the next pan at once)
         }
         return;
       }
@@ -1553,33 +1466,38 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
      * the first time only (a new player; SH-181), the light on the next empty pan and its face: 0.8 s after the first pan's pour ends
      * (CHAI-99, Zafar 6 Nov night; was about 3 s, then 0.3 s) while the child is still on it, or at once when they tap a jar into a poured pan. It goes when they pick that pan.
      */
-    let nextPanT = 0;
-    const NEXT_PAN_MS = 800; // (CHAI-99: after the pour's end; was 300)
+    let nextPan14 = null;
     // (the next pan still to make; none once the child has moved between pans by themselves: they know how)
     const nextEmpty = () => pans.find((q) => q !== sel && !q.poured && q.state !== "over");
-    const nextPanLight = () => {
-      clearTimeout(nextPanT);
-      if (!s14 || pans.length < 2 || finished || !OB14 || !OB14.light || !sel || !(sel.poured > 0) || !(sel.closed || sel.poured >= needOf(sel))) return;
-      const nx = nextEmpty();
-      if (!nx || switched14 || !first14("next-pan")) return;
-      const sp = Cook.speed || 1;
-      // (Zafar, 2 Nov: "a tighter highlight for the pan onboarding - just around the pan, maybe even circular around the rim ... tight to
-      // the clickable area": a circle on the pan's rim ring, its tap area)
-      light14(pageRect(nx.glowRing), "glow", 5000 / sp, null, () => finished || sel === nx, { round: true, pad: 2 });
-      try {
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("next-pan", { step: nx.who, by: "light" });
-      } catch (e) {
-        /* only a log */
-      }
+    // (the kitchen kit's next vessel, Cook.Coach.nextLight: 0.8 s after the pour's end (CHAI-99), or at once (o.from unset); lit round
+    // the next pan's rim, its tap area (Zafar, 2 Nov: "a tighter highlight for the pan onboarding ... circular around the rim"), until
+    // it is picked)
+    const nextPanLight = (o = {}) => {
+      if (nextPan14) nextPan14.cancel();
+      if (!s14 || pans.length < 2) return;
+      let nx = null;
+      nextPan14 = Cook.Coach.nextLight({
+        now: !o.from,
+        get target() {
+          const q = nextEmpty();
+          return q ? pageRect(q.glowRing) : null;
+        },
+        ok: () => {
+          if ((o.from && sel !== o.from) || finished || !sel || !(sel.poured > 0) || !(sel.closed || sel.poured >= needOf(sel))) return false;
+          nx = nextEmpty();
+          return !!nx && !switched14 && gate14.first("next-pan");
+        },
+        quitIf: () => finished || sel === nx,
+        get who() {
+          return nx && nx.who;
+        },
+        note: `${STATION14}:${S14_TAG}light`,
+      });
     };
     const nextPanSoon = () => {
-      clearTimeout(nextPanT);
+      if (nextPan14) nextPan14.cancel();
       if (pans.length < 2 || pans.filter((q) => q.poured > 0).length !== 1) return;
-      const from = sel;
-      // (Zafar, 3 Nov: "needs to happen quicker ... once it's returned to the stove, literally give it 0.3 seconds": this runs at the
-      // pour's end, the pan back on its burner.) CHAI-99 (Zafar, 6 Nov night: "just half a second longer for once the tea's been
-      // poured, for the person to take in the successful tea pouring animation, with the drop and the twinkle and a sound"): 0.8 s
-      nextPanT = setTimeout(() => sel === from && nextPanLight(), NEXT_PAN_MS / (Cook.speed || 1));
+      nextPanLight({ from: sel });
     };
     // a shelf thing's box (EASY-08, Zafar: "the item itself glowing and radiating ... in the box"): the thing where it rests (not
     // where its bounce has it). SH-230 (Zafar, 6 Nov night: "items with no written words in their pills is much too tight ... a general
@@ -1627,7 +1545,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const hop = (global.Onboard && global.Onboard.HOP) || 0.1;
       return UI.worldToScreen(b.centerX, b.y - restY(o) - b.height * hop);
     };
-    const supported = (id) => !!id && Cook.wordStage(id) <= 2;
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
     let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek or the arrow's card never counts)
     let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
@@ -1702,17 +1619,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const showCallout = (pid) => {
       hideCallout();
       if (s14 && UI.helperOpen) {
-        // the first hint teaches the arrow only where the central rules ask (Zafar, 29 Oct: "There's no need to highlight the down
-        // arrow on the help card, it's obvious when it opens": showing.lightHelpArrow false, so the card simply opens)
-        if (RULES() && RULES().lightHelpArrow && RULES().lightHelpArrow() && first14("arrow")) {
-          const a = document.querySelector("#guide .ng-arrow");
-          if (a && !a.hidden) {
-            // (tapped: the arrow's own tap opens the card; untapped, it opens by itself as the light goes)
-            let tapped = false;
-            light14(a, "glow", 4000 / (Cook.speed || 1), () => (tapped = true)).then(() => !tapped && UI.helperOpen(true, { by: "hint" }));
-            return;
-          }
-        }
         UI.helperOpen(true, { by: "hint" });
         return;
       }
@@ -1806,10 +1712,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     let lastStep14 = null;
     const firstLit14 = {};
     const CONTROL14 = new Set(["knob", "slow", "pour"]);
-    let rushHint14 = false; // (a wrong move while a control's stuck hint waits: it comes at once)
     let cardWait14 = false; // (CHAI-37's order card light waiting for stillness: one waiter only)
     let ctl14 = null;
-    let ctlHint14 = 0; // SH-181: a control's stuck hint, waiting for the level's wait
     const coachStep = (nx, sid) => {
       // (s12-w3b: never a help spotlight while a pan is off its burner pouring)
       if (pans.some((q) => q.away)) return coachEnd();
@@ -1822,127 +1726,34 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // until nothing is in flight, then a beat, then its time)
         // (SH-178, the judge, 3 Nov: a light skipped because the child had already moved on still used up its one showing, so a child who
         // stalled later never saw it: the showing is used only when the light is up; until then each pan's tea brings it again)
-        const cardKey14 = `${STATION14}:${S14_TAG}card`;
         // (one waiter at a time: the sandbox, 3 Nov, contract-87: each step opened while it waited started another, and three lit the
         // card together)
         // (and only towards an item: the sandbox, 3 Nov: after a pan's tea the next step can be picking the next pan, which has no item,
         // and the whole order card lit beside the pan's own light, contract-79 and -87)
-        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && fresh14 && !seen14[cardKey14] && !cardWait14 && rungCur && rungCur.id) {
+        if (lastStep14 === "tea" && st !== "tea" && firstLit14.tea && gate14.fresh && !gate14.spent("card") && !cardWait14 && rungCur && rungCur.id) {
           cardWait14 = true;
-          const sp = Cook.speed || 1;
-          // (the orchestrator's film, 30 Oct: a child who picked the milk during the beat had the card lit over the milk's pour and
-          // then over the sugar: a child who has already moved on to the next thing needs no pointer, so it is skipped, and a pour
-          // begun while it is lit ends it)
-          // (contract-79: the order row's own glide and the side panel's slides are moves too: the light waits for a quiet spell of
-          // pointAfterMoveMs with nothing moving at all, sampled every 60 ms)
-          // (contract-82, CHAI-47's rule: no box edge across a face: the card is brought whole into view, and a face circle that
-          // overhangs it (Nani's at 740x320) is taken into its box)
-          // (Zafar, 30 Oct: "the onboarding of the menu card after the first two items should just highlight the item card (milk)":
-          // the light is the next item's own card in the order row; SH-178, 1 Nov, his L2 play: "it highlighted the whole order card,
-          // not the next item ... That needs fixing to be like level one": the next item is the card's own next (want(), SH-182: it
-          // was the sugar, cut at the row's right edge, so the whole card was lit), and a card cut at the row's edge is glided whole
-          // into view first; the light then waits for the glide to end, as for every move (contract-79). The whole order card only
-          // when the item has no card in the row)
-          const itemOf = () => {
-            const pid = rungCur && rungCur.id;
-            const sp = sel ? [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === sel.who) : null;
-            const inCard = (x) => !sp || sp.contains(x);
-            return pid ? [...document.querySelectorAll("#mission .oc-row.oc-it14")].find((x) => (x.dataset.word === pid || (x.querySelector(".wc14") || {}).dataset?.word === pid) && inCard(x) && x.getBoundingClientRect().width > 0) : null;
-          };
-          const whole = (item) => {
-            const row = item && item.closest(".oc-row14");
-            if (!item || !row) return false;
-            const a = item.getBoundingClientRect();
-            const b = row.getBoundingClientRect();
-            return a.left >= b.left - 1 && a.right <= b.right + 1;
-          };
-          {
-            const it0 = itemOf();
-            if (it0 && !whole(it0) && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(it0);
-          }
-          const cardLit = () => {
-            const item = itemOf();
-            const seen = whole(item);
-            const card = seen ? item : document.querySelector("#mission .oc-card");
-            if (!card) return null;
-            if (UI.cardIntoView) UI.cardIntoView(seen ? card.closest(".oc-card") : card); // (its headline first: a card taller than the list never cut at its top)
-            const cb = card.getBoundingClientRect();
-            const cut = [...document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say")].filter((f) => {
-              const b = f.getBoundingClientRect();
-              if (!b.width) return false;
-              const meets = b.right > cb.left && b.left < cb.right && b.bottom > cb.top + 1 && b.top < cb.bottom - 1; // (a face over the card itself, not the next card's below it)
-              const inside = b.left >= cb.left - 4 && b.right <= cb.right + 4 && b.top >= cb.top - 4 && b.bottom <= cb.bottom + 4;
-              return meets && !inside;
-            });
-            return cut.length ? [card].concat(cut) : card;
-          };
+          // (the orchestrator's film, 30 Oct: a child who has already moved on to the next thing needs no pointer: skipped, and a pour
+          // begun while it is lit ends it; contract-79: it waits for a quiet spell; contract-82: the card whole in view, a face over it
+          // in its box; SH-178: the next item's own card, following it as the order card is drawn again, the whole card only when the
+          // item has no card in the row; Zafar, 4 Nov: up to 8 s, giving up only once the step has moved on from this one)
+          // (the kitchen kit's card light, Cook.Coach.cardLight)
           const m0 = moves14;
-          const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
-          // (anything else in flight that will end: a tween in the kitchen (the leaves fading into the pan), an animation on the page, the
-          // order row's glide, running or about to start after a redraw (its _auto); the people's idling, glows, effects and bubbles
-          // are left out, as the sandbox's contract-79 leaves them)
-          let rowX = null;
-          const sideMoving = () => {
-            const rows = [...document.querySelectorAll("#mission .oc-row14")];
-            const xs = rows.map((r) => Math.round(r.scrollLeft)).join(",");
-            const was = rowX;
-            rowX = xs;
-            if ((was != null && xs !== was) || rows.some((r) => r._auto || r._pend14)) return true;
-        // (Nani's box folding or unfolding moves the order list: SH-215, contract-79)
-        if (UI.helperMovingUntil && Date.now() < UI.helperMovingUntil) return true;
-            const chars = new Set(Object.values((Cook.scene && Cook.scene.chars) || {}));
-            const FX = /^fx-|steam|spark|boil|bubble|glow|halo|shadow/i;
-            try {
-              if (S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && (tw.targets || []).some((o) => o && o.visible !== false && !chars.has(o) && !o.glowFx && !FX.test(((o.texture && o.texture.key) || "") + (o.name || ""))))) return true;
-            } catch (e) {
-              /* no tween list: the rest still counts */
-            }
-            return !!(document.getAnimations && document.getAnimations().some((a) => {
-              if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
-              const tm = a.effect.getComputedTiming();
-              const el = a.effect.target;
-              return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer");
-            }));
-          };
           const on = () => moves14 !== m0;
-          let quiet = null;
-          // (the sandbox, 3 Nov: a kitchen that never went still held the waiter for seconds, and it lit in the middle of another move;
-          // past its 3 s it gives up, and the next pan's tea brings it again: SH-178)
-          // (Zafar, 4 Nov, his L1 replay: the light never came: after the tea the spoon and the row's glide keep the kitchen moving for
-          // over 3 s at a child's pace, so it always gave up; it waits up to 8 s for stillness, and gives up as soon as the child moves
-          // on or the step changes, so it never lights beside another step's light)
-          const until = Date.now() + 8000;
-          // (only on the step it was for: the sandbox, 4 Nov: it waited through the milk and lit beside "Slow kar!"'s own light)
-          // (Zafar, 4 Nov, his L1 replay: "after the first two items, I didn't get the onboarding screen to draw my attention to the next
-          // third item": the first look ran before this step's key was set (rungKey is set below), so it always gave up: it gives up only
-          // when the step has moved on from this one, not while the key is still the step before)
+          const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
           const forStep = sid;
           const keyBefore = rungKey;
-          const go = () => {
-            if (on() || finished || Date.now() > until || (rungKey !== forStep && rungKey !== keyBefore)) return void (cardWait14 = false);
-            const still = !moving();
-            if (!sideMoving() && still) {
-              if (quiet == null) quiet = Date.now();
-            } else quiet = null;
-            if (quiet != null && Date.now() - quiet >= (RULES() ? RULES().pointAfterMoveMs() : 0) / sp) {
-              // SH-178 (the judge, 3 Nov: at L2-L4 the box sat on the ticked card while Nani called the next): the light follows the
-              // next item's card every frame (a tick draws the order card again, and a fixed element went stale where the old card was)
-              seen14[cardKey14] = true;
+          Cook.Coach.cardLight({
+            item: () => Cook.Coach.itemCard(rungCur && rungCur.id, sel ? sel.who : null),
+            quitIf: () => on() || finished || (rungKey !== forStep && rungKey !== keyBefore),
+            busy: moving,
+            endIf: () => moving() || on(),
+            step: st || "",
+            note: `${STATION14}:${S14_TAG}light`,
+            onLit: () => {
+              gate14.spend("card");
               cardWait14 = false;
-              try {
-                if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("card-light", { step: st || "" });
-              } catch (e) {
-                /* only a log */
-              }
-              const first = cardLit();
-              // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
-              const onItem = first && first.classList && first.classList.contains("oc-row");
-              const lit = Array.isArray(first) || !first ? first : () => (onItem ? itemOf() || first : document.querySelector("#mission .oc-card") || first);
-              light14(lit, "", (RULES() ? RULES().pointMs() : 0) / sp, null, () => moving() || on());
-            }
-            else setTimeout(go, 60);
-          };
-          go();
+            },
+          }).then((lit) => !lit && (cardWait14 = false));
         }
         lastStep14 = st || lastStep14;
         // Nani's helper card follows the step: the item asked for now (the arrow opens it whenever the child wants)
@@ -1954,14 +1765,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       }
       if (ctl14) ctl14.close();
       ctl14 = null;
-      clearTimeout(ctlHint14);
       // (Zafar, 29 Oct, his video: "it was voice, pause, dim, pause, gold outline": a control's call and its light come together:
       // the knob to light the cooker, the knob at the green, the glass for the pour are lit (the dim, the gold box, the glow) as the
       // step opens and its call is said, until the step moves on)
       // SH-181, CHAI-56 (Zafar, 1 Nov: "the turn on the stove onboarding already happens on the first pot of tea, so it doesn't need to
       // repeat itself on a second pot of tea. Onboarding should only be actions that occur for the first time"; "If you're not a new
       // player, Nani should just give you the instruction, and then ... after that time has elapsed, then you should get the
-      // onboarding visual"): that light only the first time each control comes up, for a new player (first14: once a visit for the
+      // onboarding visual"): that light only the first time each control comes up, for a new player (gate14.first: once a visit for the
       // labs' New player, once ever otherwise); every other time the call alone, and the same light as the stuck hint after the
       // level's wait (data/rules.json levels.hintS: 7, 9, 11, 13 s); never for the timed knob at the green (decision 5e)
       // (CHAI-50, Zafar, 30 Oct: "a black tint ... that never goes away ... the gold square box doesn't go away either": closing the
@@ -1970,7 +1780,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const r0 = rung;
       rung = null;
       rungKey = sid;
-      rushHint14 = false; // (a new step: a wrong move from the one before doesn't rush this one)
       if (s14 && (CONTROL14.has(nx && nx.phase) || (rungCur && rungCur.panPick)) && rungCur && rungCur.target && OB14 && OB14.light) {
         if (r0) r0.done();
         hideCallout();
@@ -1982,78 +1791,28 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // held for the light (UI.holdCalls), so they still come together, contract-78)
         const target = rungCur.target, also = rungCur.also, obj = rungCur.obj;
         // (picking the next pan: its first time is CHAI-68's own light, so here only the stuck hint)
-        const firstTime = rungCur.panPick ? false : first14(`ctl-${nx.phase}`);
-        const roundLit = !!rungCur.round;
-        let release = null;
-        // (only lighting the cooker after the last thing went in: the knob at the green, "Slow kar!", is timed and comes at once)
-        const pauseMs = nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0;
-        // (contract-78, the audit at L4 on phones, 3 Nov: "Slow kar!" began 215-244 ms before its light was seen: a first-time light
-        // holds its call until the light is on the screen too)
-        if ((pauseMs || firstTime) && UI.holdCalls) UI.holdCalls(new Promise((r) => (release = r)));
-        const sp = Cook.speed || 1;
-        const still = () => {
-          try {
-            return !(S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite));
-          } catch (e) {
-            return true;
-          }
-        };
-        let quiet = null;
-        const t0 = Date.now();
-        const go = () => {
-          if (rungKey !== sid || finished) return release && release();
-          if (still()) quiet = quiet == null ? Date.now() : quiet;
-          else quiet = null;
-          // (never longer than 3 s: a pan that keeps a tween going never holds the light back for ever)
-          if (pauseMs && (quiet == null || Date.now() - quiet < pauseMs / sp) && Date.now() - t0 < 3000 / sp) return void setTimeout(go, 60);
-          if (!firstTime) {
-            // (the call alone now; the light only if the child is still stuck after the level's wait)
-            if (release) release();
-            if (nx.phase === "slow") return;
-            // SH-184 (Zafar, 1 Nov: the hint "times itself from the last correct action"): on the page's one idle clock (NaniGuide:
-            // every tap, and the end of every pour or spoonful, St.acted), from the later of the step's opening and the last action;
-            // any action restarts the wait (was a one-shot timer from the step's opening, cancelled for good by a pour or a spoon and
-            // blind to every other action)
-            const opened = Date.now();
-            const NGd = global.NaniGuide;
-            // (a wrong move on the way, a jar tapped into a poured pan, brings it at once: Zafar, 3 Nov: "that's an incorrect move, which
-            // again should have triggered the stuck mechanism")
-            const due = () => (rushHint14 ? 0 : Math.max(opened, NGd && NGd.lastAction ? NGd.lastAction() : opened) + hintMs14() / sp);
-            const wait = () => {
-              if (rungKey !== sid || finished || !(OB14 && OB14.light)) return;
-              if (busy || pans.some((q) => q.away) || Date.now() < due()) return void (ctlHint14 = setTimeout(wait, 200));
-              hints14++; // (SH-160: the guide's hint came)
-              rushHint14 = false;
-              if (ctl14) ctl14.close();
-              ctl14 = OB14.light(target, { look: "glow", pad: roundLit ? 2 : 4, round: roundLit, pass: true, live: [target].concat(also ? [also] : []) });
-              try {
-                if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 1, coach: false });
-              } catch (e) {
-                /* only a log */
-              }
-              helpGlow(obj);
-              // (her call again with the light: the control's call and its light together, contract-78)
-              if (UI.stepHelp) UI.stepHelp();
-            };
-            ctlHint14 = setTimeout(wait, 200);
-            return;
-          }
-          if (ctl14) ctl14.close();
-          ctl14 = OB14.light(target, { look: "glow", pad: 4, pass: true, live: [target].concat(also ? [also] : []) });
-          try {
-            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${STATION14}:${S14_TAG}control`, rung: 0, coach: true });
-          } catch (e) {
-            /* only a log */
-          }
-          helpGlow(obj);
-          // (the call once the light's layer is showing: two frames for it to be drawn, then a beat of its fade-in)
-          if (release) {
-            const rel = release;
-            const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
-            raf(() => raf(() => setTimeout(rel, 90)));
-          }
-        };
-        go();
+        const firstTime = rungCur.panPick ? false : gate14.first(`ctl-${nx.phase}`);
+        // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
+        // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
+        // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
+        // the level's wait from the last action (SH-184), at once after a wrong move (Cook.Coach.wrong); none at the green)
+        ctl14 = Cook.Coach.control({
+          key: STATION14,
+          target,
+          also,
+          round: !!rungCur.round,
+          first: firstTime,
+          pauseMs: nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0,
+          hintMs: hintMs14,
+          current: () => rungKey === sid && !finished,
+          busy: () => busy || pans.some((q) => q.away),
+          noHint: nx.phase === "slow",
+          onLight: () => helpGlow(obj),
+          onHint: () => {
+            hints14++; // (SH-160: the guide's hint came)
+            if (UI.stepHelp) UI.stepHelp(); // (her call again with the light: contract-78)
+          },
+        });
         return;
       }
       if (r0) r0.done();
@@ -2064,7 +1823,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const cur = rungCur;
       if (!cur) return;
       const answer = step === "cups";
-      if (answer && !(guided || (sel && sel.redo) || supported(cur.id))) return; // (the answer: only while it is study)
       const items = ITEM_STEPS.has(step);
       const target = () => (rungCur && rungCur.target ? rungCur.target() : null);
       // (under the spotlight the live thing takes a tap, and so does the "?": the help stays everyone's, Zafar, 21 Oct)
@@ -2072,7 +1830,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const name = UI.stepId && UI.stepId() != null ? UI.stepId() : null;
       const mark = () => answer && cur.id && !helped.has(cur.id) && (helped.add(cur.id), Cook.onHelp && Cook.onHelp("hint", { ids: [cur.id] }));
       const lightObj = () => (rungCur ? rungCur.obj : cur.obj);
+      // (the answer: no hint past support unless it is study, Cook.Coach.rungs's word, answer, study: STD-D2-05)
       rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
+        { word: cur.id, answer, study: !!(guided || (sel && sel.redo)) },
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
         { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? ((firstLit14[step] = true), mark(), helpGlow(lightObj())) : helpGlow(null)) },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
@@ -2100,7 +1860,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const coachEnd = () => {
       if (ctl14) ctl14.close();
       ctl14 = null;
-      clearTimeout(ctlHint14);
       // (every rung this station started: one replaced while its first-time spotlight was still to open kept it, over the pour)
       allRungs.forEach((r) => r && r.done && r.done());
       allRungs.clear();
@@ -2266,259 +2025,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // kutchi blurred as its same and english word blurred)"): once per player, for every game (one key each, not chai's own), the
     // first dotted word on the order card is lit ("tap the dots": a tap shows the word in its place, free help), then, the first
     // time a picture is blurred, its eye. The English and the Kutchi dots are one lesson. Was (Sprint 14): the Kutchi dots only.
-    const round14 = new Set();
-    if (s14) {
-      const vis = (x) => x && x.offsetParent && getComputedStyle(x).display !== "none" && getComputedStyle(x).visibility !== "hidden";
-      // (Zafar, 4 Nov evening: "I couldn't consistently recreate the onboarding for the blurred word ... this needs fixing to ensure it
-      // always shows at the beginning when first time player is selected": the save's mark lasted the whole visit, so a second round
-      // (Play again, the next level) never had it; with the grown-ups' New player it is every round's, once)
-      const np14 = !!(OB14 && OB14.newPlayer && OB14.newPlayer());
-      // CHAI-102 (Zafar, 7 Nov: "I didn't get an onboarding for the blurred word"): due is asked first; the once-only mark is spent
-      // only once the lesson's box is drawn (was: spent as the word was picked, so a lesson lit on nothing never came again)
-      const dueAll = (k) => {
-        const key = `*:${S14_TAG}${k}`;
-        return !!fresh14 && !(np14 ? round14.has(key) : seen14[key]);
-      };
-      const spendAll = (k) => {
-        const key = `*:${S14_TAG}${k}`;
-        seen14[key] = true;
-        round14.add(key);
-      };
-      // -> true once its box was drawn (onLit is called then: the mark spent, the note logged); false: nothing lit, nothing spent
-      const lesson = async (first, sel, onLit) => {
-        // CHAI-102: the dotted word, or the eye, on a card redrawn under the lesson (the order's end redraws every card): the same
-        // one on the new card (its person's card, its place among that card's), else picked again
-        let el = first;
-        let key = null;
-        const keep = (x) => {
-          el = x;
-          const c = x.closest(".oc-card");
-          key = { who: c && c.dataset.who, i: c ? [...c.querySelectorAll(sel)].indexOf(x) : -1 };
-        };
-        const live = () => {
-          if (el && el.isConnected) return el;
-          const c = key && [...document.querySelectorAll("#mission .oc-card")].find((q) => q.dataset.who === key.who);
-          const x = c && key.i >= 0 ? c.querySelectorAll(sel)[key.i] : null;
-          if (x) {
-            if (el && el.classList.contains("ob-dots-now")) x.classList.add("ob-dots-now");
-            el = x;
-          }
-          return el;
-        };
-        keep(first);
-        for (let go = 0; ; go++) {
-          const row = live().closest(".oc-row");
-          // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
-          // card is not already whole in view; the stillness wait below covers the rest)
-          const rowBox = row && row.closest(".oc-row14");
-          const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
-          if (cut && UI.mission && global.OrderCard && global.OrderCard.glideTo) {
-            global.OrderCard.glideTo(row);
-            await Cook.wait(400);
-          }
-          // (contract-79: the cards have landed and the row has stopped before the card is lit; looked at once more as it lights, as a
-          // card's slide can begin in the same frame)
-          for (let k = 0; k < 4; k++) {
-            await settled14();
-            if (!movingNow14()) break;
-          }
-          // (contract-79, the sandbox, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once it has stopped, the
-          // rules' 1/6 s, and once more if a slide began in it)
-          for (let k = 0; k < 3; k++) {
-            await new Promise((r) => global.setTimeout(r, 170));
-            if (!movingNow14()) break;
-            await settled14();
-          }
-          // (CHAI-102: still on the page and showing as it lights; else picked again, three goes at most, and none: no lesson)
-          if (live().isConnected && vis(el)) break;
-          const again = go < 2 ? await pick14(sel, 1500) : null;
-          if (!again) return false;
-          keep(again);
-        }
-        el.classList.add("ob-dots-now");
-        const prevExpect = Cook.expect;
-        const wait14 = { kind: "wait", dots: true };
-        Cook.expect = wait14;
-        // (the judge, 3 Nov: the ring round the dots overlapped the word above them: a tight ring, 1 px out)
-        // (the judge, 4 Nov: still over it: the dots' tap area is 24 px tall for 4 px dots; the box hugs the dots and stops short
-        // of the word above, the whole tap area still lit and tappable)
-        const hug = () => {
-          const el = live();
-          const above = el.closest(".wc14") && el.closest(".wc14").querySelector(".wc14-k");
-          const ks = [...el.children].map((k) => k.getBoundingClientRect()).filter((q) => q.width && q.height);
-          if (!ks.length) return null;
-          const x0 = Math.min(...ks.map((q) => q.left)), x1 = Math.max(...ks.map((q) => q.right));
-          let y0 = Math.min(...ks.map((q) => q.top)) - 3;
-          const y1 = Math.max(...ks.map((q) => q.bottom)) + 3;
-          const w = above && above !== el && !above.contains(el) ? above.getBoundingClientRect() : null;
-          if (w && w.bottom > y0 - 3 && w.top < y0) y0 = Math.min(y1 - 6, w.bottom + 3);
-          return { x: x0 - 4, y: y0, w: x1 - x0 + 8, h: y1 - y0 };
-        };
-        // (Zafar, 4 Nov: as the tap is shown the dots go and the box went with them, so the screen came up lit in the middle of the
-        // lesson and then lit the dots again: while the word shows in their place the box is on the word; it ends a beat after)
-        const shown = () => {
-          const c = live().closest(".wc14");
-          const pk = c && [...c.querySelectorAll(".wc14-peek")].find((x) => x.getBoundingClientRect().width > 0);
-          if (!pk) return null;
-          const q = pk.getBoundingClientRect();
-          return { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 };
-        };
-        // (Zafar, 4 Nov evening: "the highlight box for the blurred words should be the biggest size it's going to be ... wrapped to the
-        // size of the English words, so it doesn't jump up in size when the English is revealed": the word's own text, measured while
-        // it is still hidden, joins the dots' box from the start)
-        const wordBox = () => {
-          const el = live();
-          const c = el.closest(".wc14");
-          const t = c && (el.classList.contains("wc14-en-dots") ? c.querySelector(".wc14-en") : el.classList.contains("wc14-k-dots") ? c.querySelector(".wc14-k") : null);
-          if (!t || !t.textContent.trim() || !document.createRange) return null;
-          const rg = document.createRange();
-          rg.selectNodeContents(t);
-          const q = rg.getBoundingClientRect();
-          return q.width && q.height ? { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 } : null;
-        };
-        const union = (bs) => {
-          const v = bs.filter(Boolean);
-          if (!v.length) return null;
-          const x0 = Math.min(...v.map((b) => b.x)), y0 = Math.min(...v.map((b) => b.y));
-          const x1 = Math.max(...v.map((b) => b.x + b.w)), y1 = Math.max(...v.map((b) => b.y + b.h));
-          return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
-        };
-        let lastBox = null;
-        const boxNow = () => {
-          const b = union([hug() || shown(), wordBox()]) || lastBox;
-          if (b) lastBox = b;
-          return b;
-        };
-        let over = false;
-        // SH-213 (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... the highlighted box
-        // quickly shrinks just to the size of the highlighted box required ... also do that for the blurred image ... the highlighted
-        // area should shrink down just to the blurred image size"): the whole item card first, then the box shrinks onto the hidden
-        // word, or onto the blurred picture itself (was: the eye button only); the kit's zoom-in light, every game
-        const isEye = el.classList.contains("wc14-eye");
-        const whole = () => live().closest(".wc14");
-        const picEl = isEye ? () => live().closest(".wc14-pic") : null;
-        const picBox = () => {
-          const p = picEl && picEl();
-          const q = p && p.getBoundingClientRect();
-          if (q && q.width) lastBox = { x: q.left, y: q.top, w: q.width, h: q.height };
-          return lastBox;
-        };
-        const zoomMs = OB14.ZOOM ? OB14.ZOOM.total() : 0;
-        const lit = light14(live, "glow", (6000 + zoomMs) / (Cook.speed || 1), () => {}, () => over, { pad: isEye ? 2 : 0, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll("#mission .oc-face")] });
-        // CHAI-102: a box drawn (looked at for up to 0.6 s: a thing mid-move has none until it is back), else no lesson: the light goes,
-        // nothing is spent, and the caller logs none-in-view
-        const drawn = () => !!(lit.handle && lit.handle.box && lit.handle.box());
-        for (let t0 = Date.now(); !drawn() && Date.now() - t0 < 600; ) await new Promise((r) => global.setTimeout(r, 60));
-        if (!drawn()) {
-          if (lit.stop) lit.stop();
-          await lit;
-          live().classList.remove("ob-dots-now");
-          if (Cook.expect === wait14) Cook.expect = prevExpect || null;
-          return false;
-        }
-        if (onLit) onLit(live());
-        // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap
-        // once, in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
-        const rowNow = live().closest(".oc-row");
-        const card = rowNow && rowNow.wc;
-        const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
-        if (card && card.demo) {
-          // (the zoom-in first: the whole card, then the box shrinks onto the part; then the part alone a beat before the tap is shown)
-          // (Zafar, 5 Nov: "the onboarding for paani only started after a delay, as though it was waiting for the blurred onboarding to
-          // finish": the zoom already holds the eye, so the part alone is held 0.5 s, not 1.1 s, before the tap is shown)
-          if (zoomMs) await new Promise((r) => global.setTimeout(r, zoomMs));
-          await Cook.wait(zoomMs ? 500 : 1100);
-          if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
-          else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
-          await card.demo(slot, 1600 / (Cook.speed || 1));
-          await Cook.wait(900);
-          over = true;
-        }
-        await lit;
-        live().classList.remove("ob-dots-now");
-        if (Cook.expect === wait14) Cook.expect = prevExpect || null;
-        // (its light has faded before play and the shelf come in: the kit's fade is 300 ms of real time, never the test speed's)
-        await new Promise((r) => global.setTimeout(r, 340));
-        return true;
-      };
-      const rows14 = "#mission .oc-row14";
-      // SH-196, told before again (Zafar, 5 Nov evening: "it's still absolute toss-up whether I see the onboarding for the blurred English
-      // words ... I played level 2, didn't get the onboarding ... then immediately played level 3 ... and I got onboarding both for the
-      // blurred English word and the blurred image ... on level 2, it waits, as if it's waiting or it's expecting the onboarding for the
-      // blurred word to be taking place, but it's not"): the lesson took the first dotted word in the page, shown or not (a card still
-      // rolled up from the order, a card scrolled out of the list), so it could run lit on nothing while the next light waited. Now only
-      // a word the child can see: inside an open card, inside the order list's view (brought into it if it is just out); waited for up
-      // to 3 s while the cards settle; none: no lesson and no wait (logged for the checks)
-      const shown14 = (x) => {
-        if (!vis(x) || x.closest(".oc-card.folded")) return false;
-        const list = document.querySelector("#mission");
-        const r = x.getBoundingClientRect();
-        const m = list ? list.getBoundingClientRect() : null;
-        if (!m || r.width <= 1 || r.height <= 1 || r.top < m.top - 1 || r.bottom > m.bottom + 1) return false;
-        // (and it is what shows at its middle: never under a card still unfolding, a mask or another layer)
-        const row = x.closest(".oc-row14");
-        const rr = row ? row.getBoundingClientRect() : m;
-        const cx = Math.max(rr.left + 2, Math.min(rr.right - 2, r.left + r.width / 2));
-        const hit = r.left + r.width / 2 >= rr.left && r.left + r.width / 2 <= rr.right ? document.elementFromPoint(cx, r.top + r.height / 2) : null;
-        // (a word cut at the row's edge is fine: the lesson glides the row to it first)
-        return !hit ? r.left + r.width / 2 < rr.left || r.left + r.width / 2 > rr.right : hit === x || x.contains(hit) || hit.contains(x) || !!(hit.closest && hit.closest(".wc14") === x.closest(".wc14"));
-      };
-      const pick14 = async (sel, ms = 4000) => {
-        const t0 = Date.now();
-        for (;;) {
-          const all = [...document.querySelectorAll(sel)].filter(vis);
-          const ok = all.find(shown14);
-          if (ok) return ok;
-          const open = all.find((x) => !x.closest(".oc-card.folded"));
-          if (open && UI.cardIntoView) UI.cardIntoView(open.closest(".oc-card"));
-          if (Date.now() - t0 > ms) return null;
-          await new Promise((r) => global.setTimeout(r, 120));
-        }
-      };
-      const noteLesson = (step, by) => {
-        try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("reveal-lesson", { step, by });
-        } catch (e) {
-          /* only a log */
-        }
-      };
-      const DOTS14 = `${rows14} .wc14-hide-en .wc14-en-dots, ${rows14} .wc14-hide-k .wc14-k-dots, ${rows14} .wc14-k .dots`;
-      // (Zafar's recorded play, 6 Nov 00:35, L2 New player: a tap during the order skipped it and play began at once, while the cards
-      // were still landing: no dotted word was visible yet, so the lesson was dropped before it began. It is decided by the dotted
-      // words being on the card at all; pick14 then waits for one to land and show)
-      // CHAI-102 (Zafar, 7 Nov, laptop L2: "I didn't get an onboarding for the blurred word"; his log: the word picked 180 ms before
-      // the order's end redrew every card, so it lit a card no longer on the page and waited 4.5 s on nothing): the station starts as
-      // the order's card starts to fly, so a lesson due waits for the order to have landed (station-lib orderLanded) before it picks
-      if (dueAll("reveal-word") || dueAll("reveal-pic")) {
-        const ms = await St.orderLanded(ctx);
-        try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-landed", { step: "reveal", by: `${ms}ms` });
-        } catch (e) {
-          /* only a log */
-        }
-      }
-      // (the recorder, labs.html's "Record a play": why each dotted word was taken or not)
-      const why = (x) => {
-        const c = x.closest(".oc-card");
-        const r = x.getBoundingClientRect();
-        return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !vis(x) ? "hidden" : shown14(x) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
-      };
-      const anyDots = document.querySelectorAll(DOTS14).length > 0;
-      if (anyDots && dueAll("reveal-word")) {
-        const dots = await pick14(DOTS14);
-        // (the note when its box is drawn, the mark spent then; none drawn: none-in-view, nothing spent)
-        const ok = !!dots && (await lesson(dots, DOTS14, (x) => (spendAll("reveal-word"), noteLesson("word", `shown ${why(x)}`))));
-        if (!ok) noteLesson("word", `none-in-view ${[...document.querySelectorAll(DOTS14)].map(why).join(" ") || "-"}`);
-      }
-      const EYE14 = `${rows14} .wc14-hide-pic .wc14-eye`;
-      const anyEye = document.querySelectorAll(EYE14).length > 0;
-      // (the image after the word: a picture blurred before any word was dotted waits for the word's lesson first)
-      const eye = anyEye && seen14[`*:${S14_TAG}reveal-word`] && dueAll("reveal-pic") ? await pick14(EYE14) : null;
-      if (anyEye && seen14[`*:${S14_TAG}reveal-word`] && dueAll("reveal-pic")) {
-        const ok = !!eye && (await lesson(eye, EYE14, (x) => (spendAll("reveal-pic"), noteLesson("pic", `shown ${why(x)}`))));
-        if (!ok) noteLesson("pic", `none-in-view ${[...document.querySelectorAll(EYE14)].map(why).join(" ") || "-"}`);
-      }
-    }
+    // (the kitchen kit's reveal lessons, Cook.Coach.lessons: once the order has landed, the dotted word then the blurred picture, each
+    // spent only once its box is drawn: CHAI-102; once a round for the New player, Zafar 4 Nov evening)
+    if (s14) await Cook.Coach.lessons({ gate: gate14, ctx, busy: () => busy || spoons14 > 0 });
     talked = true;
     refresh();
     let nudge = setInterval(() => !finished && refresh(), 250);
