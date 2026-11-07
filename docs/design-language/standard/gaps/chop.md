@@ -6,6 +6,8 @@ Family rules; no contract run, no saved checks: 2 pass, 14 fail, 26 judge, 36 ga
 game of its own yet: the lab plays a daal order's chop on Nana's card. Scores are for chop alone; where chop is a step of daar or
 chaat, that game's gap page scores the rest.
 
+**Updated** the same evening after the build (s18-chop's commits): a note ending "(build)" is what it changed.
+
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece as it lands: (d) lights and lessons, (e) the order's flow) ·
 Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--standard chop` printed.
@@ -39,12 +41,12 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-01-05 | H | judge | 1 | Check | never judged as its own game |
 | STD-01-06 | H | not run | 2 | Check |  |
 | STD-01-07 | H | not run | 2 | Check | L1 one gentle "Arre re", L2 up quiet; the ring's "enough" is no verdict |
-| STD-01-08 | H | not run | 1 | Art | the board is code-drawn wood (ART-37, CHT-16) |
+| STD-01-08 | H | not run | 1 | Art | the board waits on ART-37 (CHT-16) |
 | STD-01-09 | H | not run | 2 | Check |  |
 | STD-02-01 | H | gap | 2 | Check | no child-pace play of chop |
 | STD-02-02 | H | not run | 2 | Check |  |
 | STD-02-03 | H | not run | dbd | Decision | a swipe, not a tap: the swipe chop is his (29 Sept, D1/Q4); confirm against principle 5 (21 Oct) |
-| STD-02-04 | H | not run | 1 | Game code | DAAR-39: at 740x320 the light framed the whole board |
+| STD-02-04 | H | not run | 2 | Check | DAAR-39 strip measured from the board every frame (build) |
 | STD-02-05 | H | not run | 2 | Check |  |
 
 ## A Learning
@@ -73,12 +75,12 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-B1-01 | H | not run | 1 | Game code | the lab plays a daal order's chop: Nana's card, no round of its own |
+| STD-B1-01 | H | not run | 2 | Check | its own round: her order, the board, the chop, the end (build) |
 | STD-B1-02 | H | not run | 0 | none | chop alone has no guests; its users serve |
 | STD-B1-03 | H | not run | 2 | Adopt | (e) |
-| STD-B1-04 | H | not run | 1 | Game code | DAAR-36: the "no" said second |
+| STD-B1-04 | H | not run | 1 | Kit | the board says the "no" last (build); the card sprinkles it (order.js ask) |
 | STD-B1-05 | H | not run | 2 | Adopt | (e) |
-| STD-B1-06 | H | not run | 1 | Game code | DAAR-38: runs until the ring is empty |
+| STD-B1-06 | H | not run | 2 | Check | ends on the last wanted chop (build) |
 | STD-B1-07 | H | fail | 2 | Check | passMeChance 0; chop never calls passMeAfter |
 | STD-B2-01 | F | pass | 0 | none | nothing cooks in chop |
 | STD-B2-02 | H | gap | 2 | Check | one swipe at every level |
@@ -87,11 +89,11 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-B2-05 | F | gap | 2 | Check | a throw's air time about 2.8 s at the top level |
 | STD-B2-06 | F | not run | 0 | none | one board |
 | STD-B2-07 | H | not run | 2 | Check | swipes count from the first throw |
-| STD-B2-08 | H | gap | 1 | Game code | alone it grades and ends; daar redoes only the wrong ones |
+| STD-B2-08 | H | gap | 2 | Check | short counts chopped again, the third put out (build) |
 | STD-B2-09 | F | not run | 0 | none |  |
 | STD-B2-10 | H | pass | 0 | none | nothing placed; a cut is not undone |
 | STD-B2-11 | F | not run | 0 | none |  |
-| STD-B3-02 | H | not run | 1 | Game code | a slice past the count counts as too many |
+| STD-B3-02 | H | not run | 2 | Check | one past the count adds nothing, falls grey (build) |
 | STD-B3-03 | F | not run | 0 | none |  |
 | STD-B4-01 | H | not run | 2 | Check | the chop sound, the halves, the cut line |
 | STD-B4-02 | H | not run | 0 | none | no control |
@@ -107,11 +109,11 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-C1-01 | H | not run | 1 | Decision | no pair named for chop (onion and tomato?) |
 | STD-C1-02 | H | gap | 1 | Kit | the vegetables are first met here (d: the general first meeting) |
 | STD-C2-01 | H | not run | 2 | Check |  |
-| STD-C2-02 | H | not run | 1 | Game code | DAAR-37: kinds 1-4, chops 2-8; the lab reads pieces |
-| STD-C2-03 | H | not run | 1 | Game code | 3-4 decoys at every level, lookalikes always |
-| STD-C2-04 | H | not run | 2 | Game code | true of the daal order; chop needs its own |
+| STD-C2-02 | H | not run | 2 | Check | kinds 1-4, chops 2-8, each 1-3 (build); rules row asked |
+| STD-C2-03 | H | not run | 2 | Check | decoys and the L4 lookalike from the rules; six vegetables cap L4 (build) |
+| STD-C2-04 | H | not run | 2 | Check | its own order: a "no" from L2 (build) |
 | STD-C2-05 | H | not run | 2 | Adopt | (e) |
-| STD-C2-06 | H | not run | 1 | Game code | L1-L3 about 15% apart; L4 as L3 |
+| STD-C2-06 | H | not run | 2 | Check | L4 its own row, about 11% over L3 (build) |
 | STD-C2-07 | H | not run | 2 | Check |  |
 | STD-C2-08 | H | not run | 2 | Adopt |  |
 | STD-C2-09 | H | gap | 2 | Check |  |
@@ -129,8 +131,8 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-D1-01 | H | not run | 2 | Adopt | (d) |
-| STD-D1-02 | H | not run | 1 | Game code | DAAR-39: the strip, the finger on the knife; then (d) |
+| STD-D1-01 | H | not run | 2 | Check | the strip on the kit's first-time gate (build) |
+| STD-D1-02 | H | not run | 2 | Check | the strip, the kit's light and finger (build) |
 | STD-D1-03 | H | not run | 2 | Adopt | (d) |
 | STD-D1-05 | H | gap | 0 | none | DAAR-39 sets the strip instead |
 | STD-D1-06 | H | not run | 1 | Adopt | (d) |
@@ -139,17 +141,17 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-D1-09 | H | not run | 0 | none |  |
 | STD-D1-10 | F | fail | 0 | none | no vessel |
 | STD-D2-01 | H | not run | 2 | Adopt | (d) |
-| STD-D2-02 | H | not run | 1 | Game code | no stuck hint while things fly |
+| STD-D2-02 | H | not run | 2 | Check | the first thing still short, its helper card (build) |
 | STD-D2-03 | H | not run | 2 | Adopt | (d) |
-| STD-D2-04 | H | not run | 1 | Game code | as D2-02 |
-| STD-D2-05 | H | not run | 2 | Adopt | (d) |
+| STD-D2-04 | H | not run | 2 | Check | a wrong chop brings it at once (build) |
+| STD-D2-05 | H | not run | 2 | Check | none past support, Onboard.hintHides (build) |
 | STD-D2-06 | F | not run | 0 | none |  |
 | STD-D3-01 | H | not run | 2 | Adopt | (e) |
-| STD-D3-02 | H | fail | 1 | Adopt | (e) |
+| STD-D3-02 | H | fail | 2 | Check | the stuck hint opens the helper card (build) |
 | STD-D3-03 | H | not run | 2 | Adopt | (e) |
 | STD-D3-04 | H | not run | 2 | Adopt | (e) |
 | STD-D3-05 | H | not run | 2 | Adopt | (e) |
-| STD-D4-01 | H | not run | 1 | Game code | rows tick on the count at L1 only |
+| STD-D4-01 | H | not run | 2 | Check | ticks at the count, every level (build) |
 | STD-D4-02 | H | fail | 2 | Adopt | (e) |
 | STD-D5-01 | H | not run | 2 | Check |  |
 | STD-D5-02 | H | gap | 2 | Check |  |
@@ -171,13 +173,13 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-E2-05 | H | not run | 2 | Check |  |
 | STD-E2-06 | H | not run | 2 | Check |  |
 | STD-E2-07 | H | not run | 2 | Check |  |
-| STD-E2-08 | H | not run | 1 | Game code | DAAR-39 |
+| STD-E2-08 | H | not run | 2 | Check | the strip (build) |
 | STD-E3-01 | H | not run | 2 | Check | one throw size for every kind, so a finger can hit |
-| STD-E3-02 | H | fail | 1 | Art | the wood board is drawn by code |
-| STD-E3-03 | F | not run | 1 | Game code | the wood view; the marble and the landed chakla until ART-37 |
+| STD-E3-02 | H | fail | 1 | Art | no code-drawn board now (build); the board picture waits on ART-37 |
+| STD-E3-03 | F | not run | 2 | Art | the white marble (build); ART-37's board to come |
 | STD-E3-04 | F | not run | 0 | none |  |
 | STD-E3-05 | F | gap | 0 | none |  |
-| STD-E4-01 | H | fail | 1 | Game code | DAAR-39: the demo light went up and down jerkily |
+| STD-E4-01 | H | fail | 2 | Check | the strip eases, no loop (build) |
 | STD-E4-02 | H | not run | 2 | Adopt | (e) |
 | STD-E4-03 | F | gap | 2 | Check | the ring |
 | STD-E4-04 | H | gap | 2 | Check | slower throws at L1 |
@@ -191,14 +193,14 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-F1-01 | H | gap | 1 | Game code | Nani's chop card is in the mechanic and again in daar |
-| STD-F1-02 | H | not run | 1 | Game code | the lab entry builds a daal order |
-| STD-F1-03 | H | gap | 1 | Game code | no settings file, no game file |
+| STD-F1-01 | H | gap | 2 | Check | her card is the kit's order card (build) |
+| STD-F1-02 | H | not run | 2 | Check | the lab builds chop's own order (build) |
+| STD-F1-03 | H | gap | 2 | Check | settings file and game file (build) |
 | STD-F1-04 | H | not run | 2 | Check |  |
 | STD-F1-05 | H | gap | 2 | Adopt | daar and chaat switch in wave 2 |
 | STD-F1-06 | H | judge | 3 | Check | brief.mjs --live-check |
-| STD-F2-02 | H | not run | 1 | Decision | no rules row for chop; daar's x read as pieces |
-| STD-F2-03 | F | gap | 1 | Game code | knobs in data/cook.json |
+| STD-F2-02 | H | not run | 2 | Kit | rules decoys read; the counts wait on a rules row (asked) |
+| STD-F2-03 | F | gap | 2 | Kit | the game's numbers in its file; the base knobs still in data/cook.json |
 | STD-F2-04 | H | gap | 2 | Check |  |
 | STD-F3-01 | H | fail | 2 | Check |  |
 | STD-F3-02 | H | not run | 2 | Check |  |
@@ -257,7 +259,7 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-H1-02 | H | judge | 2 | Check |  |
 | STD-H1-03 | H | gap | 2 | Check |  |
 | STD-H1-04 | H | judge | 1 | Art | ART-37 queued, no sizes yet |
-| STD-H1-05 | H | not run | 1 | Game code | decision 7: a placeholder from landed art |
+| STD-H1-05 | H | not run | 2 | Art | the marble stands in until ART-37 (build) |
 | STD-H1-06 | H | not run | 2 | Check |  |
 | STD-H1-07 | H | not run | 2 | Check |  |
 | STD-H1-08 | H | gap | 2 | Check |  |

@@ -77,7 +77,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       const S = z.S;
@@ -372,10 +372,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           S.burst(img.x, img.y, [0xffffff, 0xf6d27a], 10, z.L(70));
           z.progress({ cut: id, n: cut[id] });
+          idle = 0;
+          if (hinted && UI.helperOpen) {
+            hinted = null;
+            UI.helperOpen(false, { by: "quiet" });
+          }
           // DAAR-38 (Zafar, 30 Oct: "end the game once all chops have been done"): the last wanted chop ends the round
           if (ids.every((x) => (cut[x] || 0) >= want[x])) finish();
         } else {
           wrong++;
+          rush();
           z.listen(false, no.includes(id) ? `sliced ${id} (they said no)` : `sliced ${id}`);
           // level 1: one gentle "Arre re!" and a red burst; from level 2 the halves just fall grey (UX 11)
           if (z.quiet) S.burst(img.x, img.y, GREY, 10, z.L(60));
@@ -460,6 +466,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * frame never adds to the gap; the flying things still move by the capped step.
        */
       let onSwitch = null;
+      /*
+       * The stuck hint (STD-D2-01, -02, -04, -05, D3-02; kit (d)'s rules, kit (e)'s helper card): while things fly, no right chop for
+       * the level's hint wait (data/rules.json levels.hintS) opens Nani's helper card on the first thing of this round still short
+       * (its word card; she says it as it opens), the item asked, never which one in the air; a wrong chop brings it at once. A word
+       * past support gets none (the leak test), unless this is study (Nani helps, a chop again).
+       */
+      const RLV = global.Rules && global.Rules.level ? global.Rules.level(Cook.roundLevel(ctx)) : null;
+      const HINT_S = RLV && RLV.hintMs ? RLV.hintMs / 1000 : 7 + 2 * (Cook.roundLevel(ctx) - 1);
+      let idle = 0;
+      let hinted = null;
+      const shortNow = () => (phase ? phase.targets.find((x) => (cut[x] || 0) < want[x]) : null) || ids.find((x) => (cut[x] || 0) < want[x]) || null;
+      const hintHides = (id) => {
+        const OB = global.Onboard;
+        return !!(OB && OB.hintHides && OB.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(id) : null, study: !!(z.guided || retryRun) }));
+      };
+      const stuckHint = () => {
+        idle = 0;
+        const id = shortNow();
+        if (!id || hintHides(id) || !UI.helperOpen) return;
+        hinted = id;
+        UI.helperOpen(true, { by: "hint" });
+      };
+      const rush = () => {
+        idle = Math.max(idle, HINT_S);
+        if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("chop");
+      };
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
@@ -469,6 +501,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         last = now;
         if (running && phase) {
           roundT += beat;
+          idle += beat;
+          if (idle >= HINT_S && !done) stuckHint();
           left = Math.max(0, left - beat);
           spawnT -= beat;
           const next = rounds[phase.i + 1] || null;
@@ -545,7 +579,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const decAt = dec && at(dec);
         z.expect(
           tgt
-            ? { kind: "slice", x: aim.x, y: aim.y, x1: aim.x, y1: aim.y - z.L(size * 0.8), x2: aim.x, y2: aim.y + z.L(size * 0.8), wrongs: dec ? [{ x: decAt.x, y: decAt.y }] : [] }
+            ? { kind: "slice", key: shortNow(), x: aim.x, y: aim.y, x1: aim.x, y1: aim.y - z.L(size * 0.8), x2: aim.x, y2: aim.y + z.L(size * 0.8), wrongs: dec ? [{ x: decAt.x, y: decAt.y }] : [] }
             : { kind: "wait" }
         );
       });
@@ -558,8 +592,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * finger holds the knife's handle; the knife and the board are inert until it ends. The strip is measured every frame, so a
        * window resized meanwhile moves it with the board. It replaces the ghost finger's loop (DAAR-13), which ran every L1 round.
        */
+      // (the shared kit's first-time gate, STD-D1-01: Cook.Coach.firsts, kit (d); this visit's flag where the kit has none)
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("chop") : null;
       const stripDue = () => {
         if (firstLight === false || STRIP.visit || !(knifeKey && knife.texture && knife.texture.key === knifeKey)) return false;
+        if (gate && gate.fresh) return gate.due("strip");
         const C = Cook.Coach;
         return !(C && C.seen ? C.seen("chop") : (Cook.save.coached || {}).chop);
       };
@@ -574,6 +611,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const OB = global.Onboard;
         if (!OB || !OB.light || !UI.worldToScreen) return;
         STRIP.visit = true;
+        if (gate && gate.fresh) gate.spend("strip");
         demoing = true;
         if (Cook.Coach && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(false); // (nothing else lit: DAAR-39)
         z.expect({ kind: "wait" });

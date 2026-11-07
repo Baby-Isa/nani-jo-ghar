@@ -113,7 +113,7 @@ import { Cook as CookNS } from "../ns.js";
       const phases = (Cook.data.stations[KEY] || {}).phases || {};
       if (phases.chop && !tries) UI.gist(phases.chop);
       const z = Mech.zone(S, ctx, { id: KEY, level });
-      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, onRounds: tries ? null : (rs) => noteDecoys(rs, knobs(level).decoys || 0) });
+      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, onRounds: tries ? null : (rs) => noteDecoys(rs, knobs(level).decoys || 0) });
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {
