@@ -1,0 +1,95 @@
+{
+ "_about": "The per-game data list the contract's game checks read (Sprint 17, s17-chk1; read by lib/contract-chai.mjs, used by lib/contract.mjs and lib/contract-s14.mjs). A game is checked the day it is listed: to join, add or fill its entry under games; a field left out means 'not yet' and that check passes it by. Shape: _fields below (each check's field: true, a word, or an object whose own stations and routes narrow the game's); stages: the stage kinds contract-91 judges, as regular expressions on the stage key; hosts: entries that are not games (the clinic) but share chai's help. Proof a game joined: node --test build/sandbox/contract-chai.test.mjs (a fake game added is checked).",
+ "_fields": {
+  "stations": "the station ids its flows play, as the flow names them (cook:<id>, cook:recipe:<id>, lab:cook/<id>, lab:cook/recipe-<id>); every check below reads these unless its own entry names stations",
+  "routes": "(in a check's entry) only these flow routes: cook (cook:<id>), recipe (cook:recipe:<id>), lab (lab:cook/<id>), lab-recipe (lab:cook/recipe-<id>); default all four",
+  "help": "contract-91 (help-comes): the stage kind (a key of stages) where the help comes when stuck; stage keys do not name the game, so every stage of that kind is judged once any listed entry names it",
+  "controlCalls": "contract-78 (call-light) and CONTROL_CALLS: the calls that open a control step, the engine's words in lower case, no marks",
+  "slowAtGreen": "contract-70: the turn-off call as the heat bar enters the green: its Lifecycle notes (slow: the call, down: a pan turned down), the line as said, how far past the green's edge is late",
+  "onceEach": "contract-71: the things that go in once each: the Lifecycle note of an add and the notes' items, what they are in words",
+  "cardLight": "contract-90: a new player at L1 sees the order card's next item lit after the first item: the Lifecycle note of an add and that first item",
+  "s14Taps": "contract-44 (S14_TAPS): its light has no finger (chai's s14 light; a drag's hand is fine)",
+  "decoys": "contract-37 (DECOY_STATIONS): exact (the rules' count by level) or atLeast (at least that many)",
+  "cardWritten": "contract-35 (CHAI_ROW): its order card's item words stay written at L3-L4 (never dotted)"
+ },
+ "stages": {
+  "cook": ["(^|\\|)cook:station", "^host:cook/"],
+  "clinic": ["^host:clinic/"]
+ },
+ "games": {
+  "chai": {
+   "family": "kitchen",
+   "stations": ["chai-tray", "chai"],
+   "help": "cook",
+   "controlCalls": { "stations": ["chai-tray"], "words": ["chulo bar", "slow kar"] },
+   "slowAtGreen": { "slow": "chai-slow", "down": "chai-down", "line": "Slow kar", "late": 0.06 },
+   "onceEach": { "note": "chai-add", "items": ["cook-dudh", "cook-paani", "cook-chai"], "what": "milk, water and tea" },
+   "cardLight": { "stations": ["chai-tray"], "routes": ["cook"], "note": "chai-add", "first": "cook-chai" },
+   "s14Taps": true,
+   "decoys": "exact",
+   "cardWritten": { "stations": ["chai-tray"] }
+  },
+  "pantry": {
+   "family": "fetch",
+   "stations": ["fetch", "pantry"],
+   "help": "cook",
+   "s14Taps": true,
+   "decoys": "atLeast"
+  },
+  "daar": {
+   "family": "kitchen",
+   "stations": ["daar", "daal"],
+   "help": "cook",
+   "decoys": "atLeast"
+  },
+  "chaat": {
+   "family": "kitchen",
+   "stations": ["assemble", "chaat"],
+   "help": "cook",
+   "s14Taps": true,
+   "decoys": "exact"
+  },
+  "samosa": {
+   "family": "kitchen",
+   "stations": ["samosa"],
+   "help": "cook",
+   "s14Taps": true,
+   "decoys": "exact"
+  },
+  "sekelo": {
+   "family": "kitchen",
+   "stations": ["mishkaki-grill", "mishkaki"],
+   "help": "cook",
+   "s14Taps": true,
+   "decoys": "exact"
+  },
+  "maani": {
+   "family": "kitchen",
+   "stations": ["maani-line", "maani"],
+   "help": "cook"
+  },
+  "chop": {
+   "family": "kitchen",
+   "stations": ["chop"],
+   "help": "cook"
+  },
+  "eggs": {
+   "family": "kitchen",
+   "stations": ["eggs"],
+   "help": "cook"
+  },
+  "baking": {
+   "family": "kitchen",
+   "stations": ["baking"],
+   "help": "cook"
+  },
+  "corn": {
+   "family": "kitchen",
+   "stations": ["corn"],
+   "help": "cook"
+  }
+ },
+ "hosts": {
+  "clinic": { "help": "clinic" }
+ }
+}

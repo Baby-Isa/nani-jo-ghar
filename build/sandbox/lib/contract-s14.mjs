@@ -15,6 +15,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { DARK_BELOW, LIGHT_LIFT } from "./lightpix.mjs";
+import { CONTROL_CALLS } from "./contract-chai.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 export const RULES_SHOWING = (() => { try { return JSON.parse(readFileSync(join(ROOT, "data", "rules.json"), "utf8")).showing || {}; } catch (e) { return {}; } })();
@@ -23,9 +24,10 @@ export const POINT_AFTER_MOVE_MS = Number(RULES_SHOWING.pointAfterMoveMs) || 500
 export const SAMPLE_MS = 100;            // the contract probe samples twice a ... ten times a second: its end of a move is within this
 export const JUMP_WINDOW_MS = 2000;      // from the first drawn frame (CHAI-45, B5)
 export const JUMP_PX = 3;                // the kitchen's picture moved or grew by more than this on screen
-// the calls that open a control step (a knob, a timed turn, a pour): each is lit with its call for every player (chai: CONTROL14 in
-// js/cook/stations/chai-tray.js). The words are what the engine says (family lines already in the game), lower case, no marks.
-export const CONTROL_CALLS = { "chai-tray": ["chulo bar", "slow kar"] };
+// the calls that open a control step (a knob, a timed turn, a pour): each is lit with its call for every player (chai: CONTROL14 in its
+// station). The words are what the engine says (family lines already in the game), lower case, no marks. By station, from the per-game
+// data list (data/games.json controlCalls, lib/contract-chai.mjs): a game is judged the day its entry names its calls
+export { CONTROL_CALLS };
 const norm = (s) => String(s || "").toLowerCase().replace(/[^\p{L}\p{N} ]+/gu, " ").replace(/\s+/g, " ").trim();
 const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 const stationOf = (flow) => { const m = /^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?)([\w-]+)/.exec(flow || ""); return m ? m[1] : null; };
@@ -34,7 +36,7 @@ const area = (b) => Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1]);
 const over = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
 
 export const S14_CHECKS = {
-  "contract-78": { item: "call-light", title: "a control's call and its light come together", how: "Cook flows: for each call line (role call) whose words are a control step's (CONTROL_CALLS: chai's \"Chulo bar!\" and \"Slow kar!\"), the first-time help's light (the S14 probe's lit event: the dim with its gold box, timed on the animation frame) must come up within 200 ms of the call starting, either way, or already be up. Only each control's first call on the page is judged (CHAI-60, SH-181: a control is lit only the first time it comes up; a later call is the call alone). A call with no light within 200 ms is a break, named with when the light came (never: the child hears the voice, waits, and sees the dim later: Zafar's video, 29 Oct: \"voice, pause, dim, pause, gold outline\", CHAI-40)." },
+  "contract-78": { item: "call-light", title: "a control's call and its light come together", how: "Cook flows: for each call line (role call) whose words are a control step's (CONTROL_CALLS, from data/games.json controlCalls: chai's \"Chulo bar!\" and \"Slow kar!\"), the first-time help's light (the S14 probe's lit event: the dim with its gold box, timed on the animation frame) must come up within 200 ms of the call starting, either way, or already be up. Only each control's first call on the page is judged (CHAI-60, SH-181: a control is lit only the first time it comes up; a later call is the call alone). A call with no light within 200 ms is a break, named with when the light came (never: the child hears the voice, waits, and sees the dim later: Zafar's video, 29 Oct: \"voice, pause, dim, pause, gold outline\", CHAI-40)." },
   "contract-79": { item: "card-light", title: "the order card's light waits until nothing moves", how: "Every lit event whose box is the order card's (the S14 probe: a hole over half of an .oc-card): no finite animation may be in flight at that moment (moving events: Phaser tweens that end, DOM animations that end, the order row's scroll; the characters' own idling and the speech bubbles left out), and the last one must have ended at least the central rules' showing.pointAfterMoveMs (500 ms; minus the probe's 100 ms sample) before the light starts. A light that starts while the tea still flies, or a beat too soon after, is a break (CHAI-42: \"start its timer after the last animation action ... when the tea has finished going in\")." },
   "contract-80": { item: "no-jump", title: "the kitchen does not change after its first drawn frame", how: "lab.html Cook flows (Zafar's route): the S14 probe's fit events (every animation frame the Cook scene's fit changes: the kitchen picture's box on screen, the camera's zoom and scroll, the canvas, the world). For each named view (the station or the counter, not the title's backdrop while the page lays itself out), from the first frame its picture is drawn (a real texture, not fading) to 2 s on, a later fit of the same picture that moved an edge by more than 3 px or changed the zoom by more than 0.5% is a break: the picture that loads and then jerks into a different zoom (CHAI-45, Zafar 29 Oct: \"the kitchen ceiling becomes more visible\")." },
   "contract-81": { item: "over-gauge", title: "no picture over a gauge", how: "Every gaugeover event (the S14 probe: the heat ring found by its arc round the gauge's centre in the Phaser display list, then every picture drawn above it that sits on it, tools and effects left out): any picture of the thing the gauge is on (the pan's handle) drawn above the ring is a break, named with its key and depth against the ring's (CHAI-46: \"part of the handle looks like it covers the loading circle\")." },
