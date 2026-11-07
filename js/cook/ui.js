@@ -1899,6 +1899,7 @@
     const s14 = UI.s14() && global.WordCard && global.WordCard.big14 && global.WordCard.morph;
     let big14 = null;
     let tapAt = 0;
+    let landedAll = false;
     const pop14 = (w, slot) => {
       if (big14) big14.remove();
       const side = $("#side");
@@ -2356,11 +2357,23 @@
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
+          // CK-60 (the frozen run, 7 Nov 15:35): the order lands as its pop-up starts to fold, not after the card's flight: the
+          // station starts at that same moment (station-lib begin, CK-48), so its first step opens on the landed cards and nothing
+          // of the order's (its last redraw, its log) comes after the game's first step
+          onFold: () => landAll(),
           read,
         },
         (body) => (box = body)
       );
     } finally {
+      landAll();
+      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
+    }
+    Cook.checkRun(token);
+    // the order's end, once (the pop-up's fold, else the request's end): every card in its row, the panel from its top
+    function landAll() {
+      if (landedAll) return;
+      landedAll = true;
       skipped = true;
       if (box) box.innerHTML = "";
       // (Sprint 14: a tap on the kitchen lands the whole order at once: no big card or copy of one left on screen, CK-54)
@@ -2391,9 +2404,7 @@
         }
       }
       if (M.focus && m === mission) M.focus(null);
-      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
     }
-    Cook.checkRun(token);
   }
 
   /*
