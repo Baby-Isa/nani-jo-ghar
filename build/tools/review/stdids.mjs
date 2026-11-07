@@ -34,7 +34,7 @@ function onboardingKeys(src) {
   for (const m of src.matchAll(/first14\(["'`]([a-z0-9-]+)["'`]\)/g)) keys.add(m[1]);
   for (const m of src.matchAll(/\$\{S14_TAG\}([a-z0-9-]+)/g)) keys.add(m[1]);
   // ctl-<phase>: every phase a step can carry, a ternary's both words included (phase: green ? "slow" : "knob")
-  if (/first14\(`ctl-\$\{nx\.phase\}`\)/.test(src)) for (const m of src.matchAll(/phase: ([^,}\n]*)/g)) for (const w of m[1].matchAll(/"([a-z-]+)"/g)) keys.add(`ctl-${w[1]}`);
+  if (/first14\(`ctl-\$\{nx\.phase\}`\)/.test(src)) for (const m of src.matchAll(/phase: ([^,}\n]*)/g)) for (const w of m[1].matchAll(/(?<!=== )"([a-z-]+)"/g)) keys.add(`ctl-${w[1]}`);
   for (const m of src.matchAll(/(?:dueAll|spendAll|lesson)\(\s*"([a-z0-9-]+)"/g)) keys.add(m[1]);
   return [...keys].sort().map((k) => `onb:${k}`);
 }
