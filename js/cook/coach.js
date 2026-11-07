@@ -244,7 +244,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         /* no tween list: the rest still counts */
       }
       if (o.walk) {
-        // (daar's stirred disc fading in, its pieces turning with the ladle: any picture that moved or faded since the last look)
+        // (a disc a game fades in as it is stirred, pieces turning with a ladle: any picture that moved or faded since the last look)
         let stirred = false;
         const walk = (list) =>
           (list || []).forEach((t) => {
