@@ -27,12 +27,12 @@ reaching its end, page errors, contract breaks) across **every frozen play** of 
 ever happened is allowed), **re-plays every changed page once and counts only what comes again**, and never compares a page whose
 browser crashed (a full disk crashed four, 14:44). Held-out plays of the unchanged game: 805 → 238 (crashes) → 18, all traced to
 the harness itself changing after the freeze (s17-chk2's page hook and player: a tap now lands in the order and skips it); so chai
-was **re-frozen with the current harness** from six plays (the frozen run, the child pass, two held-out plays and their re-plays).
+was **re-frozen with the current harness** from nine plays (the frozen run, the child pass, three held-out plays and their re-plays). The last held-out play (15:35) left 2 changes, both after a skipped order and both real: CK-60 (a word said 5.6 s after the skip, take-back player) and the order card's light not coming after a skipped order at L4; both are now in the freeze and on the fix list for chai's owner. The new page hook (s17-chk2) makes a tap land in the order more often, a path children take, so the guard now covers it.
 
 **Known breaks (seen in a frozen play; not reported again):** contract-11 at L4 1920x1080 (ART-59); contract-96 at L3 returning,
 twice (**a real fault: CHAI-105**, a boiled-over pot's card stays ticked; chai's owner in Sprint 18); seen once each under heavy
 load and never on a quiet run, tolerated: contract-18 (L2 mistake 740x320; L3 child), contract-79 (L4 1280x665; L3 child),
-contract-3 (L4 child 740x320), contract-95 (returning and take-back 740x320, after a skipped order). Chai's owner re-plays any of
+contract-3 (L4 child 740x320), contract-95 (returning and take-back, after a skipped order: **real, CK-60**). Chai's owner re-plays any of
 these on a quiet machine when it touches its piece.
 
 ## Proof

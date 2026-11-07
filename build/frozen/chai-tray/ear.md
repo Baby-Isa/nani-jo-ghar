@@ -1,4 +1,4 @@
-# chai-tray: the ear items, frozen 2026-11-07T15:35 (commit 11304528)
+# chai-tray: the ear items, frozen 2026-11-07T15:54 (commit eac72f8f)
 
 Zafar's ear items (the boil loop, the clicks, the pour) as judge rows: what each page played and when, from the stage's start, by
 the sandbox's sound log. A judge listens to the film beside this (films/) and passes each row; after a Sprint 18 switch,
@@ -24,4 +24,4 @@ the sandbox's sound log. A judge listens to the film beside this (films/) and pa
 
 ## Proof
 
-The runs: `build/screenshots/sandbox/frozen-chai-20261107/`, `build/screenshots/sandbox/frozen-chai-child-20261107/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071412/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511-again-1280x665/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511-again-740x320/`; the fingerprint `build/frozen/chai-tray/frozen.json`.
+The runs: `build/screenshots/sandbox/frozen-chai-20261107/`, `build/screenshots/sandbox/frozen-chai-child-20261107/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071412/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511-again-1280x665/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071511-again-740x320/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071535/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071535-again-1280x665/`, `build/screenshots/sandbox/frozen-diff-chai-tray-202611071535-again-740x320/`; the fingerprint `build/frozen/chai-tray/frozen.json`.
