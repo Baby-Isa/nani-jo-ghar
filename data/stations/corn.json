@@ -39,5 +39,238 @@
    {"sideMs": 3000},
    {"sideMs": 3200}
   ]
- }
+ },
+ "kitchen": {
+  "about": "Sprint 18 prep (7 Nov): see data/stations/eggs.json kitchen.about (the same shape in every kitchen game). The station's own station/words/mechanic keys are untouched."
+ },
+ "recipe": {
+  "key": "corn",
+  "dish": "n.corn-on-the-cob",
+  "ref": "data/cook.json recipes.corn (its slots and say-lines live there until wave 2 moves them here)",
+  "steps": [
+   "Grill",
+   "Dress",
+   "Serve"
+  ],
+  "who": "cousin",
+  "dress": [
+   "fru-02",
+   "spi-16",
+   "spi-04",
+   "ph-lili",
+   "ph-amli",
+   "spi-11"
+  ],
+  "levels": [
+   {
+    "level": 1,
+    "cobs": 1,
+    "dressings": [
+     1,
+     1
+    ],
+    "no": 0
+   },
+   {
+    "level": 2,
+    "cobs": 1,
+    "dressings": [
+     2,
+     2
+    ],
+    "no": 0
+   },
+   {
+    "level": 3,
+    "cobs": 2,
+    "dressings": [
+     2,
+     2
+    ],
+    "no": 0
+   },
+   {
+    "level": 4,
+    "cobs": 2,
+    "dressings": [
+     2,
+     3
+    ],
+    "no": 0.6
+   }
+  ],
+  "_levels": "As recipes.corn.slots today. sideMs (a side on the grill) and slots (cobs the grill holds) by level are mechanic.levels (the station reads them now). 'no' is the chance of a 'not X' ask."
+ },
+ "scene": {
+  "stage": [
+   1600,
+   900
+  ],
+  "view": "T at the stall's table (a sekelo redress on one screen)",
+  "bg": "assets/cook/proto/corn/bg-table.webp",
+  "_bg": "CT centre-cropped to 16:9; honey oak planks (the art plan's table), a leaf shadow top-left.",
+  "grill": {
+   "file": "assets/cook/items/v3/sekelo/grill.webp",
+   "reuse": true,
+   "drawn": {
+    "w": 640
+   },
+   "at": [
+    760,
+    250
+   ]
+  },
+  "plate": {
+   "file": "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+   "reuse": true,
+   "drawn": {
+    "w": 360
+   }
+  },
+  "tray": {
+   "drawn": true,
+   "note": "the dressing board stays a plain drawn board (art plan Q7); 1300 x 200 at y 590",
+   "palette": "station.palette.tray, trayEdge"
+  },
+  "host": {
+   "note": "Nani's guide box stands in for Hannah Mami until her approved sheet exists (Zafar, 1 Nov)"
+  }
+ },
+ "items": {
+  "crate": {
+   "size": "L",
+   "view": "T",
+   "word": "n.corn-on-the-cob",
+   "file": "assets/cook/proto/corn/corn-crate.webp",
+   "px": [
+    570,
+    463
+   ],
+   "drawn": {
+    "w": 380
+   },
+   "at": [
+    230,
+    40
+   ],
+   "replaces": "assets/cook/proto/corn-box.webp",
+   "_note": "CX is a kept best try: six cobs in a wooden crate, tips right, but green husk leaves on them (the alternative chat has six clean cobs, tips left). Tap: a cob goes on the grill."
+  },
+  "cob": {
+   "size": "L",
+   "view": "T",
+   "states": {
+    "raw": "assets/cook/proto/corn/cob-raw.webp",
+    "half": "assets/cook/proto/corn/cob-half.webp",
+    "turned": "assets/cook/proto/corn/cob-turned.webp",
+    "done": "assets/cook/proto/corn/cob-done.webp"
+   },
+   "px": [
+    128,
+    380
+   ],
+   "word": "n.corn-on-the-cob",
+   "drawn": {
+    "long": 250
+   },
+   "replaces": "assets/cook/proto/corn-cob-{raw,half,done}.webp",
+   "_note": "raw, one side grilled (half), the turn (the ungrilled side up, so it reads raw: the second glow), done; one canvas. The station has three looks today: raw, half, done."
+  },
+  "dressings": {
+   "size": "S",
+   "view": "T",
+   "drawn": {
+    "w": 150
+   },
+   "row_y": 690,
+   "files": {
+    "fru-02": "assets/cook/proto/corn/dress-lemon.webp",
+    "spi-16": "assets/cook/proto/corn/dress-salt.webp",
+    "spi-04": "assets/cook/proto/corn/dress-chilli.webp",
+    "ph-lili": "assets/cook/proto/corn/dress-green.webp",
+    "ph-amli": "assets/cook/proto/corn/dress-amli.webp",
+    "spi-11": "assets/cook/proto/corn/dress-pepper.webp"
+   },
+   "replaces": "assets/cook/proto/corn-{lemon,salt,chilli,chutney-*,pepper}.webp",
+   "_note": "steel katoris, one canvas each; the six ids are the station's DRESS"
+  },
+  "onCob": {
+   "file": null,
+   "_note": "CO (the dressings drawn on a cob) failed and stays in the redo list: the game keeps its drawn drops for each dressing until it is redone"
+  }
+ },
+ "vocab": {
+  "n.corn-on-the-cob": {
+   "item": "cob",
+   "card": "assets/cook/proto/corn/cob-done.webp"
+  },
+  "fru-02": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-lemon.webp"
+  },
+  "spi-16": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-salt.webp"
+  },
+  "spi-04": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-chilli.webp",
+   "english": "red chilli powder"
+  },
+  "ph-lili": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-green.webp",
+   "english": "mint chutney"
+  },
+  "ph-amli": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-amli.webp",
+   "english": "tamarind chutney"
+  },
+  "spi-11": {
+   "item": "dressings",
+   "card": "assets/cook/proto/corn/dress-pepper.webp"
+  }
+ },
+ "lines": {
+  "ask": "recipe say-lines (frames order, and, no)",
+  "now": "now",
+  "lift": "lift",
+  "turn": "guide-firai",
+  "welldone": "welldone"
+ },
+ "end": {
+  "display": "progress",
+  "note": "the kit's end, as chai's"
+ },
+ "gaps": [
+  {
+   "id": "spi-04, ph-lili, ph-amli",
+   "english": "red chilli powder; mint chutney; tamarind chutney",
+   "kind": "no standalone Kutchi form: the sentences say them (Ne laal marcha. Ne fudino ji chutney. Ne amli ji chutney.) but a word card on its own shows grey English",
+   "sheet": "chutney (the engine's form rows)"
+  },
+  {
+   "id": "n.corn-on-the-cob",
+   "english": "corn on the cob",
+   "kind": "gender not yet asked (he-form used, flagged)",
+   "sheet": "section 1a, he-word or she-word"
+  }
+ ],
+ "assets": [
+  "assets/cook/proto/corn/bg-table.webp",
+  "assets/cook/items/v3/sekelo/grill.webp",
+  "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+  "assets/cook/proto/corn/corn-crate.webp",
+  "assets/cook/proto/corn/cob-raw.webp",
+  "assets/cook/proto/corn/cob-half.webp",
+  "assets/cook/proto/corn/cob-turned.webp",
+  "assets/cook/proto/corn/cob-done.webp",
+  "assets/cook/proto/corn/dress-lemon.webp",
+  "assets/cook/proto/corn/dress-salt.webp",
+  "assets/cook/proto/corn/dress-chilli.webp",
+  "assets/cook/proto/corn/dress-green.webp",
+  "assets/cook/proto/corn/dress-amli.webp",
+  "assets/cook/proto/corn/dress-pepper.webp"
+ ]
 }
