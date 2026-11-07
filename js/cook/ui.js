@@ -1899,6 +1899,7 @@
     const s14 = UI.s14() && global.WordCard && global.WordCard.big14 && global.WordCard.morph;
     let big14 = null;
     let tapAt = 0;
+    let landedAll = false;
     const pop14 = (w, slot) => {
       if (big14) big14.remove();
       const side = $("#side");
@@ -2356,11 +2357,23 @@
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
+          // CK-60 (the frozen run, 7 Nov 15:35): the order lands as its pop-up starts to fold, not after the card's flight: the
+          // station starts at that same moment (station-lib begin, CK-48), so its first step opens on the landed cards and nothing
+          // of the order's (its last redraw, its log) comes after the game's first step
+          onFold: () => landAll(),
           read,
         },
         (body) => (box = body)
       );
     } finally {
+      landAll();
+      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
+    }
+    Cook.checkRun(token);
+    // the order's end, once (the pop-up's fold, else the request's end): every card in its row, the panel from its top
+    function landAll() {
+      if (landedAll) return;
+      landedAll = true;
       skipped = true;
       if (box) box.innerHTML = "";
       // (Sprint 14: a tap on the kitchen lands the whole order at once: no big card or copy of one left on screen, CK-54)
@@ -2391,9 +2404,7 @@
         }
       }
       if (M.focus && m === mission) M.focus(null);
-      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
     }
-    Cook.checkRun(token);
   }
 
   /*
@@ -3960,13 +3971,16 @@
    * dots: they must know panj is five); never a digit to match. The station puts the tally on the tool in use
    * (UI.tallyAt), never in a card row or a far corner.
    */
+  // (piece 11, kit (c): the rule is the shared kit's, js/shared/tally.js Tally.label; the number's word, agreeing with its thing, is Cook's)
   function tallyLabel(t, key) {
-    if (t.lv >= 3) return "\u25cf".repeat(Math.max(0, Math.min(t.n, 12)));
-    const ws = key && key !== "_" ? String(key).split("+") : [];
-    const g = ws.length && Lang.gender ? Lang.gender(ws[ws.length - 1]) : null;
-    const w = t.n >= 1 && t.n <= 10 && Lang.num ? (Lang.num(t.n, g)[0] || {}).t : null;
-    // (DAAR-12's flaw, s08 w8A: the laps chip read the digit "0" before the first lap; nothing counted yet is the icon alone)
-    return w || (t.n >= 1 ? String(t.n) : "");
+    return global.Tally.label(t.n, {
+      level: t.lv,
+      word: (n) => {
+        const ws = key && key !== "_" ? String(key).split("+") : [];
+        const g = ws.length && Lang.gender ? Lang.gender(ws[ws.length - 1]) : null;
+        return Lang.num ? (Lang.num(n, g)[0] || {}).t : null;
+      },
+    });
   }
   UI.count = function (n, { speak = true, id = "_", icon = null, state = null } = {}) {
     const prev = tally.get(id);
@@ -4021,21 +4035,9 @@
     }
     const st = $("#stage").getBoundingClientRect();
     const p = UI.worldToScreen(tallyPt[0], tallyPt[1]);
-    b.classList.add("at");
-    // SH-39: a tally anchored by its right edge grows to the left, away from the word that pops on the pan's other side
-    b.classList.toggle("at-r", tallyAnchor === "right");
-    b.style.left = `${p.x - st.left}px`;
-    b.style.top = `${p.y - st.top}px`;
-    // CHAI-20 (S05-C3): a badge anchored by its right edge that grows past the stage's left edge (two count groups at L3 on
-    // the first pan) is pushed back on screen, never cut (non-negotiable 9)
-    // SH-39 (s08 w8A: at 844x390 the badge over the first pan ran off the stage's top edge, its words cut in half): any
-    // badge that would leave the stage, on any side, is moved back inside it, whole
-    const gap = 8;
-    const r = b.getBoundingClientRect();
-    const dx = r.left < st.left + gap ? st.left + gap - r.left : r.right > st.right - gap ? Math.max(st.left + gap - r.left, st.right - gap - r.right) : 0;
-    const dy = r.top < st.top + gap ? st.top + gap - r.top : r.bottom > st.bottom - gap ? Math.max(st.top + gap - r.top, st.bottom - gap - r.bottom) : 0;
-    if (dx) b.style.left = `${p.x - st.left + dx}px`;
-    if (dy) b.style.top = `${p.y - st.top + dy}px`;
+    // (piece 11, kit (c): js/shared/tally.js Tally.place: SH-39's right anchor grows to the left; CHAI-20 and SH-39's keep-inside: a
+    // badge that would leave the stage, on any side, is moved back inside it, whole, 8 px in)
+    global.Tally.place(b, $("#stage"), p.x - st.left, p.y - st.top, { anchor: tallyAnchor });
   }
   let tallyAnchor = null;
   UI.tallyAt = function (pt, { anchor = null } = {}) {

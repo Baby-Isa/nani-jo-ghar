@@ -354,11 +354,10 @@
   "top": 4
  },
  "showing": {
-  "_about": "Showing what to do (rulebook): every item not on the order card is shown at the start; otherwise each new action once; each level's new thing once; once ever per player ('New player' resets it). pointMs: when the showing stops, the order card is lit this long, once, so the eye knows where to look next (CHAI-37: 1.2 s). callAfterLightMs (Zafar, 29 Oct: \"Chulo bar is spoken early, before the visual help\"): a step's call this long after its step opens; 0 for now: at 350 ms a call was sometimes lost (contract-36, chai L4) and the early call did not reproduce here; to set once his video shows the moment. pointAfterMoveMs (Zafar, 29 Oct: \"start its timer after the last animation action ... when the tea has finished going in\"): the order card's light waits until nothing is moving, then this long, then pointMs. lightHelpArrow (Zafar, 29 Oct: \"no need to highlight the down arrow on the help card, it's obvious when it opens (make that rule everywhere)\"): false, the helper card just opens.",
+  "_about": "Showing what to do (rulebook): every item not on the order card is shown at the start; otherwise each new action once; each level's new thing once; once ever per player ('New player' resets it). pointMs: when the showing stops, the order card is lit this long, once, so the eye knows where to look next (CHAI-37: 1.2 s). callAfterLightMs (Zafar, 29 Oct: \"Chulo bar is spoken early, before the visual help\"): a step's call this long after its step opens; 0 for now: at 350 ms a call was sometimes lost (contract-36, chai L4) and the early call did not reproduce here; to set once his video shows the moment. pointAfterMoveMs (Zafar, 29 Oct: \"start its timer after the last animation action ... when the tea has finished going in\"): the order card's light waits until nothing is moving, then this long, then pointMs.",
   "pointMs": 1200,
   "callAfterLightMs": 0,
-  "pointAfterMoveMs": 500,
-  "lightHelpArrow": false
+  "pointAfterMoveMs": 500
  },
  "timed": {
   "_about": "Timed controls (SH-158; Zafar 29 Oct round 4; the Fable review: only a control the child operates, never a thing that moves by itself): the first time a child meets one (a new player: chai's boil knob, later the tawa flip, the grill turn, the fry lift), its timer holds in the green while the light shows the control, until the child taps it; after that, normal timing. firstTimeHold: on or off for every game.",

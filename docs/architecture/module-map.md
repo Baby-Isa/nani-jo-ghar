@@ -25,10 +25,10 @@ flow and timings (sole owner of `js/cook/ui.js` and `js/shared/order-card.js` fo
 | 2 | Hob, burners, flames, the heat ring | kitchen kit, stove part | kk 88-124, 248-302, 372-404 | kk (stays) | (a) | `Cook.Kit.hob`, `.burner`, `.heatRing` |
 | 3 | The boil's sound (the loop, its start and stop) | kitchen kit, stove part | chai 1666-1692; `js/shared/sfx.js` | `js/cook/mechanics/boil.js` calling `Sfx` | (a) | inside `Mech.boil` |
 | 4 | Worktop wash, stone band | kitchen kit | chai 575-632; lib 225-251 | kk | (a) | `St.worktopWash`, `St.stoneBand` (kept as names) |
-| 5 | Pans and their looks (empty, filling, colours) | kitchen kit | chai 641-768, 985-1223; kk 303-314 | kk (a `pan` part) | (b) | `Cook.Kit.place`, `Cook.Kit.pan` (new) |
-| 6 | Pour or spoon from the shelf into a pan | kitchen kit | chai 1377-1541 | `js/cook/mechanics/pour.js` | (b) | `Mech.pour(...)` |
-| 7 | Pan into its glass; take-back | kitchen kit | chai 1758-2081; `js/shared/pour.js` | `js/cook/mechanics/pour.js` on `NjgPour` | (b) | `NjgPour.plan` (chai 1970) |
-| 8 | Serving: the review faces, the tick, recast | shared kit | chai 3207-3415; kk 178-247; lib 1129 | `js/shared/` (a serve part) or lib | (b) | `Cook.Kit.review`, `St.redo` |
+| 5 | Pans and their looks (empty, filling, colours) | kitchen kit | chai 641-768, 985-1223; kk 303-314 | `js/cook/mechanics/pan.js` (S18, built) | (b) | `Cook.Kit.pan(S, {at, panR, set, lookOf, heaps, spoonWet})` |
+| 6 | Pour or spoon from the shelf into a pan | kitchen kit | chai 1377-1541 | `js/cook/mechanics/pour.js` (S18, built) | (b) | `Mech.pour(S, {pan, from, level, look, settle, ms})`, `Mech.pour.spoon`, `.unspoon` |
+| 7 | Pan into its glass; take-back | kitchen kit | chai 1758-2081; `js/shared/pour.js` | `js/cook/mechanics/pour.js` on `NjgPour` (S18, built) | (b) | `Mech.pour.toGlass(S, {...})`, `Mech.pour.takeBack(S, {can, onTap}).sync()`; `NjgPour.plan`, `.frameOf`, `.holdOver` |
+| 8 | Serving: the review faces, the tick, recast | shared kit | chai 3207-3415; kk 178-247; lib 1129 | `js/shared/serve.js` (S18, built) | (b) | `NjgServe.for(Cook).review`, `.faces`; `NjgServe.round`, `.layout`; `St.redo` |
 | 9 | The shelf: decoys, size classes, slots | shared kit | chai 442-466, 793-984; lib 170-336 | lib, or a new shared shelf file the pantry can load (builder (c) names it) | (c) | `St.tableDecoys`, `St.classFit` |
 | 10 | Word chips and pills | shared kit | chai 337-350, 827-955; kk 334-371 | the shelf's file | (c) | `Cook.Kit.chip`, `progress.pillShows` |
 | 11 | Count pills | shared kit | ui 3901-4073; `js/shared/tally.js` | `js/shared/tally.js` | (c) | `UI.count`, `UI.tallyAt` |

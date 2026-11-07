@@ -456,6 +456,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         .then((r) => r.json())
         .catch(() => null);
       if (extra) {
+        // (S18, s18-prep) the station's whole settings file, for the keys the kit reads (recipe, scene, items, vocab, lines, end, assets)
+        (data.settings = data.settings || {})[id] = extra;
         data.mechanics = data.mechanics || {};
         data.mechanics[id] = Object.assign({}, extra.mechanic || {}, data.mechanics[id] || {});
         if (extra.station) data.stations[id] = Object.assign({}, extra.station, data.stations[id] || {});
