@@ -1449,7 +1449,7 @@
    * The light (the s14 look's one lit thing; module map piece 13): Onboard.light(target, o) -> handle {close(), stop(), box(), layer,
    * done}. o (the look): {look: "glow" | "bob" | "" (the order card: no glow, no bounce), pad, round (a circle: a pan's rim), live,
    * pass (the dim blocks no tap: the child is never held), box (a function giving the box drawn round a part), zoomFrom (the whole
-   * thing first, SH-213), avoid, container}. And its timing, so a game never wraps it (was each game's own, chai's light14):
+   * thing first, SH-213), avoid, container}. And its timing, so a game never wraps it (each game wrapped it its own way before):
    *   ms       it goes by itself after ms (a game passes its own speed's share)
    *   onTap    the lit thing (an element, or a function giving one) tapped: onTap(), and the light goes
    *   quitIf   asked every 60 ms: true, and the light goes (the child has moved on)
