@@ -11,7 +11,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 1. The children's age in `docs/vision.md`: "4 to 11" becomes 3-7, as the standard's 0.2 says? *Recommended: yes.*
 2. vision.md's "No cutscenes" pillar allows the word moment (a few seconds that teach a word a picture can't show)? *Recommended: yes.*
 3. "A contrasting pair is asked in teaching order" (STD-C1-01): every game (House) or the kitchen family? *Recommended: every game.*
-4. "Each thing 1 to 3 times, the total growing by level": every kitchen game, or daar's only? *Recommended: every kitchen game.*
+4. "Each thing 1 to 3 times, the total growing by level" (STD-B3-04, from daar's "min 1 and max 3 chops", 30 Oct): every kitchen game, or daar's only? *Recommended: every kitchen game.*
 5. The end review's gentle frown on a wrong cup, after the serve: fine, or a verdict? *Recommended: replace it with chai's progress display, as eggs (Sprint 18, decision 8).*
 6. Nani's "pass me" (MAA-14, waiting since 6 Oct): still wanted? *Recommended: keep it, never in a first order, once a round at most.*
 7. CHAI-76: Nani's hint hides a word once it is past support? *Recommended: yes.*
@@ -22,7 +22,6 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 12. A step's call and its light: together (the rules file, 0 ms; contract-78 within 200 ms) rather than the call a beat after? *Recommended: together.*
 13. Decoys at L4: the rules file's count (contract-37's title says otherwise)? *Recommended: the rules file.*
 14. A forced publish writes your words into its commit, and every brief carries the game's keep list? *Recommended: yes to both.*
-15. "Min 1 and max 3 chops" (daar, 30 Oct) as the kitchen family's number for every counted thing (STD-B3-04)? *Recommended: yes, each game's own count inside it.*
 
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
