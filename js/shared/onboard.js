@@ -328,6 +328,116 @@
   };
   Onboard.fingerMs = () => Onboard.FINGER.in + Onboard.FINGER.press + Onboard.FINGER.up + Onboard.FINGER.gap;
 
+  /* ---------------- the lights and lessons kit (Sprint 18, module map pieces 13-14; pure parts) ---------------- */
+  /*
+   * The lights every game shares (docs/architecture/module-map.md pieces 13-14; the standard's D1 and D2): one set of times
+   * (values.md D1, "to tokenise"), the zoom-in's box, the first-time gate, the stuck hint's clock and its rush, and the rule that
+   * a hint never says a word past support. The page parts (Onboard.light's timed form, Onboard.stuck's rush, Onboard.lesson) are
+   * under the overlay below; Cook's kitchen wiring (the stage's stillness, the call with its light, the next vessel, the order
+   * card's light, the lessons in order) is js/cook/coach.js. No game is named here (STD-F1-02): a game passes its things and numbers.
+   *   breath       a control's light waits this long after the stage is still (CHAI-52: "add a second extra"), never more than
+   *                breathMax in all
+   *   still        the order card's light waits up to this long for a still kitchen (CHAI-77: a child's pace), then gives up
+   *   settle       a lesson's stillness wait gives up after this long
+   *   nextVessel   the next vessel's light, this long after the last one's pour ends (CHAI-99: "half a second longer"); nextLit:
+   *                how long it stays up if the child does nothing
+   *   lessonLit    a lesson's light, the longest it stays up; lessonEnd: it ends this long after the tap is shown (SH-196)
+   */
+  Onboard.WAIT = { breath: 1000, breathMax: 3000, still: 8000, settle: 6000, nextVessel: 800, nextLit: 5000, lessonLit: 6000, lessonEnd: 900 };
+  /**
+   * SH-213, the zoom-in light (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... just to
+   * draw your eye to the item card and then to the part of the item card that you need to focus on ... a generalizable principle"):
+   * every game, a light on a small part of a thing (a card's hidden word, its blurred picture, a knob's mark) is given
+   * {zoomFrom: <the whole thing>}: the whole thing is lit for `hold` ms, then the box shrinks onto the part over `shrink` ms (eased).
+   * Reduced motion: the whole thing, then the part, no shrink. Onboard.ZOOM.total() is how long before the part alone is lit.
+   */
+  Onboard.ZOOM = { hold: 650, shrink: 450, pad: 4, total() { return this.hold + this.shrink; } };
+  /**
+   * The zoom-in's box `t` ms after it began (pure; Onboard.spot draws it every frame): from the whole thing `from` (ZOOM.pad round it,
+   * less the light's own o.pad, which the light adds on top) to the part `to`, eased out. o: {pad, avoid: [{x, y, w, h}] (a face
+   * circle overhanging the whole thing: the box's nearer edge is trimmed clear of it, contract-82), reduced}.
+   */
+  Onboard.zoomBox = function (from, to, t, o) {
+    o = o || {};
+    if (!from || !to) return to || null;
+    const Z = Onboard.ZOOM;
+    const pad = o.pad || 0;
+    const u = t < Z.hold ? 0 : o.reduced ? 1 : Math.min(1, (t - Z.hold) / Z.shrink);
+    if (u >= 1) return to;
+    const e = 1 - Math.pow(1 - u, 3);
+    const g = (a, b) => a + (b - a) * e;
+    const fx = { x: from.x - Z.pad + pad, y: from.y - Z.pad + pad, w: from.w + 2 * (Z.pad - pad), h: from.h + 2 * (Z.pad - pad) };
+    const pd = pad + 1;
+    (o.avoid || []).forEach((q) => {
+      if (!q || q.x > fx.x + fx.w || q.x + q.w < fx.x || q.y > fx.y + fx.h || q.y + q.h < fx.y) return;
+      if (q.y + q.h / 2 < fx.y + fx.h / 2) {
+        const y1 = Math.max(fx.y, q.y + q.h + pd);
+        fx.h -= y1 - fx.y;
+        fx.y = y1;
+      } else fx.h = Math.min(fx.h, q.y - pd - fx.y);
+    });
+    return { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
+  };
+  /**
+   * The first time (STD-D1-01: an action is lit only the first time it comes up for this player). A gate over a plain record of what
+   * was shown (a game's save: Cook's save.seenStation), for one game `scope`:
+   *   due(k, all)    is k's first-time help still to come? (all: a lesson every game shares, key "*:<tag>k"; for the New player once
+   *                  a round, given `round`, a Set the game makes each round: Zafar, 4 Nov evening; else once a visit, or once ever)
+   *   spend(k, all)  it was shown (spent only once its light is drawn: CHAI-102)
+   *   first(k, all)  due, and spent now: true once
+   *   spent(k, all)  was it ever shown?
+   * o: {seen (the record), fresh (this player still has first-time help here: the New player, or the game's coach not yet seen),
+   * round, newPlayer, tag (default "s14-")}.
+   */
+  Onboard.firsts = function (scope, o) {
+    o = o || {};
+    const seen = o.seen || {};
+    const tag = o.tag == null ? "s14-" : o.tag;
+    const key = (k, all) => `${all ? "*" : scope}:${tag}${k}`;
+    const byRound = (all) => !!(all && o.round && o.newPlayer);
+    const g = {
+      scope,
+      fresh: !!o.fresh,
+      key,
+      spent: (k, all) => !!seen[key(k, all)],
+      due: (k, all) => !!o.fresh && !(byRound(all) ? o.round.has(key(k, all)) : seen[key(k, all)]),
+      spend(k, all) {
+        seen[key(k, all)] = true;
+        if (all && o.round) o.round.add(key(k, all));
+      },
+      first(k, all) {
+        if (!g.due(k, all)) return false;
+        g.spend(k, all);
+        return true;
+      },
+    };
+    return g;
+  };
+  /** The stuck hint's rungs (ms): the first time at once, the box at 5 s idle, the guide's line at 15 s (values.md D2). */
+  Onboard.RUNGS = [0, 5000, 15000];
+  /**
+   * STD-D2-04 (Zafar, 3 Nov: "that's an incorrect move, which again should have triggered the stuck mechanism"; every game, 7 Nov):
+   * a wrong move brings the stuck hint at once. hintDue (pure): the hint's time, `wait` after the later of the step's opening and the
+   * last action (SH-184: "times itself from the last correct action"), or now when rushed. rushRung: which rung a rush brings: the
+   * light help (glowAt) if it is not up, else the box (at[1]) if not yet shown, else none (the help is up already).
+   */
+  Onboard.hintDue = (opened, lastAction, wait, rushed) => (rushed ? 0 : Math.max(opened || 0, lastAction || 0) + (wait || 0));
+  Onboard.rushRung = function (o) {
+    o = o || {};
+    const at = o.at || Onboard.RUNGS;
+    const fired = o.fired || {};
+    if (o.glowAt != null && !fired.g && !o.spot) return "g";
+    if (at[1] != null && !fired[1]) return 1;
+    return null;
+  };
+  /**
+   * STD-D2-05 (the leak test, non-negotiable 4; Zafar, 7 Nov: yes): once a word is past support, no hint says it. A hint whose
+   * thing is the answer (what a person asked for) comes only while the word is still supported (its stage at most SUPPORTED_TOP), or
+   * while it is study (Nani helps, a redo). o: {answer, stage, study} -> true: the hint must not come.
+   */
+  Onboard.SUPPORTED_TOP = 2;
+  Onboard.hintHides = (o) => !!(o && o.answer && !o.study && !(o.stage != null && Number(o.stage) <= Onboard.SUPPORTED_TOP));
+
   /* ---------------- the play log (Sprint 11; pure part) ---------------- */
   /*
    * The play log (easy-to-play.md principle 11): each stage's events folded into one round
@@ -1255,29 +1365,9 @@
       if (zoom) {
         const to = ob || Onboard.unionOf(sp.rects);
         const fr = rectOf(o.zoomFrom);
-        if (to && fr) {
-          const t = Date.now() - zoom.t0;
-          const Z = Onboard.ZOOM;
-          const u = t < Z.hold ? 0 : reduced() ? 1 : Math.min(1, (t - Z.hold) / Z.shrink);
-          const e = 1 - Math.pow(1 - u, 3);
-          const g = (a, b) => a + (b - a) * e;
-          // (the whole thing's box has Z.pad round it; the spot adds o.pad to whatever it draws, so that is taken off here)
-          const fx = { x: fr.x - Z.pad + (o.pad || 0), y: fr.y - Z.pad + (o.pad || 0), w: fr.w + 2 * (Z.pad - (o.pad || 0)), h: fr.h + 2 * (Z.pad - (o.pad || 0)) };
-          // (contract-82, the review of 5 Nov at 740x320: the whole card's box cut the person's face circle that overlaps the card's top:
-          // a shape to avoid trims the box's nearer edge clear of it, never crosses it)
-          if (o.avoid) {
-            const pd = (o.pad || 0) + 1;
-            rectsOf(o.avoid).forEach((q) => {
-              if (!q || q.x > fx.x + fx.w || q.x + q.w < fx.x || q.y > fx.y + fx.h || q.y + q.h < fx.y) return;
-              if (q.y + q.h / 2 < fx.y + fx.h / 2) {
-                const y1 = Math.max(fx.y, q.y + q.h + pd);
-                fx.h -= y1 - fx.y;
-                fx.y = y1;
-              } else fx.h = Math.min(fx.h, q.y - pd - fx.y);
-            });
-          }
-          ob = u >= 1 ? to : { x: g(fx.x, to.x), y: g(fx.y, to.y), w: g(fx.w, to.w), h: g(fx.h, to.h) };
-        }
+        // (contract-82, the review of 5 Nov at 740x320: the whole card's box cut the person's face circle that overlaps the card's top:
+        // a shape to avoid trims the box's nearer edge clear of it, never crosses it: Onboard.zoomBox)
+        if (to && fr) ob = Onboard.zoomBox(fr, to, Date.now() - zoom.t0, { pad: o.pad, avoid: o.avoid ? rectsOf(o.avoid) : null, reduced: reduced() });
       }
       // (SH-230: every thing's box by the one rule, Onboard.litBox; a caller's own pad only for a pan's rim circle, CHAI-68, or a part
       // of a card drawn by o.box, SH-213: shapes that are not a thing with a picture and a pill)
@@ -1355,18 +1445,73 @@
     [...liveSpots].forEach((sp) => { try { sp.close(); } catch (e) { /* its own */ } });
   };
 
+  /**
+   * The light (the s14 look's one lit thing; module map piece 13): Onboard.light(target, o) -> handle {close(), stop(), box(), layer,
+   * done}. o (the look): {look: "glow" | "bob" | "" (the order card: no glow, no bounce), pad, round (a circle: a pan's rim), live,
+   * pass (the dim blocks no tap: the child is never held), box (a function giving the box drawn round a part), zoomFrom (the whole
+   * thing first, SH-213), avoid, container}. And its timing, so a game never wraps it (was each game's own, chai's light14):
+   *   ms       it goes by itself after ms (a game passes its own speed's share)
+   *   onTap    the lit thing (an element, or a function giving one) tapped: onTap(), and the light goes
+   *   quitIf   asked every 60 ms: true, and the light goes (the child has moved on)
+   *   note     a step name: the light is logged as a first-time rung (Lifecycle "rung", rung 0, coach), as the checks count it
+   * handle.done resolves once the light has gone, whichever way. A null target lights nothing (handle.done resolved).
+   */
   Onboard.light = function (target, o) {
     o = o || {};
-    return Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
+    if (target == null) return { layer: null, box: () => null, close() {}, stop() {}, done: Promise.resolve() };
+    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
+    if (o.note != null) LCnote("rung", { step: String(o.note), rung: 0, coach: true });
+    let gone;
+    h.done = new Promise((r) => (gone = r));
+    let t = 0;
+    let q = 0;
+    const at = o.onTap ? htmlOf(target) : null;
+    const tap = () => {
+      try {
+        o.onTap();
+      } catch (e) {
+        /* the game's own */
+      }
+      h.close();
+    };
+    if (at) at.addEventListener("click", tap, true);
+    const shut = h.close;
+    h.close = function () {
+      clearTimeout(t);
+      clearInterval(q);
+      if (at) at.removeEventListener("click", tap, true);
+      shut.call(h);
+      gone();
+    };
+    h.stop = h.close;
+    if (typeof o.quitIf === "function")
+      q = setInterval(() => {
+        let quit = false;
+        try {
+          quit = !!o.quitIf();
+        } catch (e) {
+          quit = false;
+        }
+        if (quit) h.close();
+      }, 60);
+    if (o.ms != null) t = setTimeout(() => h.close(), o.ms);
+    return h;
   };
   /**
-   * SH-213, the zoom-in light (Zafar, 5 Nov: "initially the whole item card is highlighted, and then it quickly zooms in ... just to
-   * draw your eye to the item card and then to the part of the item card that you need to focus on ... a generalizable principle"):
-   * every game, a light on a small part of a thing (a card's hidden word, its blurred picture, a knob's mark) is given
-   * {zoomFrom: <the whole thing>}: the whole thing is lit for `hold` ms, then the box shrinks onto the part over `shrink` ms (eased).
-   * Reduced motion: the whole thing, then the part, no shrink. Onboard.ZOOM.total() is how long before the part alone is lit.
+   * Is anything on the page still moving that will end (STD-D1-06: a light comes a breath after the last move ends)? A running,
+   * finite page animation, the overlay's own, the bubbles', the request card's and the helper's left out (STILL_SKIP, plus skip).
    */
-  Onboard.ZOOM = { hold: 650, shrink: 450, pad: 4, total() { return this.hold + this.shrink; } };
+  Onboard.STILL_SKIP = ".cv-bubble, .ng-say, .cv-replies, .ra, .njg-onboard, .njg-rq-card, .njg-rq-veil, .njg-gu-pop, .cv-layer";
+  Onboard.pageMoving = function (skip) {
+    const sk = skip ? `${Onboard.STILL_SKIP}, ${skip}` : Onboard.STILL_SKIP;
+    return !!(document.getAnimations && document.getAnimations().some((a) => {
+      if (a.playState !== "running" || !a.effect || !a.effect.getComputedTiming) return false;
+      const tm = a.effect.getComputedTiming();
+      const el = a.effect.target;
+      return tm.iterations !== Infinity && tm.endTime < 1e7 && el && el.closest && !el.closest(sk);
+    }));
+  };
+  // (the zoom-in's times, Onboard.ZOOM, and its box, Onboard.zoomBox: the pure part above)
 
   /** Ms since the child last did anything: the shared idle clock (NaniGuide), else this file's own. */
   const ownClock = { t: Date.now(), on: false };
@@ -1382,7 +1527,7 @@
     }
     return Date.now() - ownClock.t;
   };
-  Onboard.RUNGS = [0, 5000, 15000];
+  // (Onboard.RUNGS: the pure part above)
   /**
    * The hint rungs for one step (principle 3), on the shared idle clock:
    *   at[0]   the first time this step appears for this child (once per profile per o.id, default "stuck/<step>"; a New player:
@@ -1392,8 +1537,11 @@
    *   at[1]   idle this long: the spotlight (o.glow(false) first: never the call-out and the heavy dim together);
    *   at[2]   idle this long: the guide's line (o.line()). null leaves a rung out.
    * After an action the clock runs again and so can the rungs (the spotlight and the call-out go). It never does the step.
+   * STD-D2-04 (every game, Zafar 7 Nov): a wrong move brings the hint at once: rush() (or Onboard.rush(), every live step's) brings
+   * the next rung now (Onboard.rushRung: the light help, else the box), whatever the clock says; the wrong tap's own press and lift
+   * (within RUSH_GRACE of the rush) don't count as the action that would take that help away again.
    *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id}
-   *   -> {done(), stop(), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
+   *   -> {done(), stop(), rush(by), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
    */
   Onboard.stuck = function (step, o) {
     o = o || {};
@@ -1409,7 +1557,14 @@
     let lastAct = null;
     let off = null;
     let glowing = false;
+    let rushed = null;
+    let rushT = 0;
     const h = { rung: 0 };
+    h.rush = (by) => {
+      if (h.over) return;
+      rushed = by || "wrong";
+      rushT = Date.now();
+    };
     // Zafar, 23 Oct: a drag or a brush (a canvas thing that moves itself along a path: the toothbrush) keeps its demo: the item
     // shows the move at each rung, and the light never bounces it or taps it (only a tap item glows in its box)
     const drag = o.drag != null ? !!o.drag : typeof o.move === "function" && o.path != null && !split(o.target).els.length;
@@ -1466,8 +1621,9 @@
       const G = root.NaniGuide;
       const la = G && G.lastAction ? G.lastAction() : ownClock.t;
       if (la !== lastAct) {
-        // the child did something: the rungs start again from now, and the help goes
-        if (lastAct != null) {
+        // the child did something: the rungs start again from now, and the help goes (not the wrong move that rushed it: its own
+        // press and lift land just around the rush)
+        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
           fired = {};
           closeSpot();
           glow(false);
@@ -1477,6 +1633,23 @@
       // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long
       // read-out is not a child who has been stuck all that time)
       const idle = Math.min(idleMs(), Date.now() - opened);
+      if (rushed) {
+        const by = rushed;
+        rushed = null;
+        const r = Onboard.rushRung({ glowAt: o.glowAt, at: AT, fired, spot: !!spot });
+        if (r === "g") {
+          fired.g = true;
+          h.rung = Math.round(o.glowAt / 1000);
+          LCnote("rung", { step: name, rung: h.rung, light: true, by });
+          glow(true);
+        } else if (r === 1) {
+          fired[1] = true;
+          h.rung = Math.round(AT[1] / 1000);
+          LCnote("rung", { step: name, rung: h.rung, by });
+          openSpot();
+          demo();
+        }
+      }
       if (o.glowAt != null && idle >= o.glowAt && !fired.g && !spot) {
         fired.g = true;
         h.rung = Math.round(o.glowAt / 1000);
@@ -1505,6 +1678,241 @@
     if (root.Lifecycle && root.Lifecycle.onStageEnd) off = root.Lifecycle.onStageEnd(end);
     liveStuck.add(h);
     return h;
+  };
+  Onboard.RUSH_GRACE = 700;
+  /**
+   * STD-D2-04: a wrong move, in any game: every live step's stuck hint comes at once (Onboard.stuck's rush), and so does every other
+   * hint waiting on a clock that asked to hear of it (Onboard.onRush(fn) -> off(): Cook's control light, js/cook/coach.js).
+   */
+  const rushers = new Set();
+  Onboard.onRush = (fn) => {
+    if (typeof fn !== "function") return () => {};
+    rushers.add(fn);
+    return () => rushers.delete(fn);
+  };
+  Onboard.rush = function (by) {
+    [...liveStuck].forEach((h) => h.rush && h.rush(by));
+    [...rushers].forEach((fn) => {
+      try {
+        fn(by || "wrong");
+      } catch (e) {
+        /* its own */
+      }
+    });
+  };
+  /* ---------------- the reveal lessons (module map piece 14) ---------------- */
+  /*
+   * SH-196, STD-D1-08 (Zafar, 2 Nov: "teach the blur of the word, and then the image, both when they first happen"): the reveal is
+   * taught when it first happens by showing its tap on a card in view, never as help. Onboard.lesson(kind, sel, o) lights one hidden
+   * thing on the order card (kind "word": a dotted word, the Kutchi or the English, one lesson; "pic": a blurred picture's eye), zooms
+   * from its item card onto it (SH-213), shows the tap once in place (the card's own demo: the word shows, then the dots come back),
+   * and lets go a beat after. -> Promise<true> once its box was drawn (o.onLit(el) is called then: the game spends its first time
+   * and logs it); false: nothing was in view, nothing lit, nothing spent (CHAI-102).
+   * Only a thing the child can see (Onboard.inView: inside an open card, inside the order list's view, on top at its middle); a card
+   * just out of the list's view is brought in (o.intoView), a row cut at its edge glided to it (OrderCard.glideTo); the stage still
+   * first (o.settle, o.moving: contract-79). A card redrawn under the lesson (the order's end redraws every card) is followed: the
+   * same thing on the new card (its person's card, its place among that card's), else picked again (twice at most).
+   * o: {settle() -> Promise (the stage still), moving() (default Onboard.pageMoving), intoView(card), wait(ms) (the game's own
+   * speed; default real time), speed (1), sound() (the tap's click), hold(on) (the game's "wait" while it runs), onLit(el), note
+   * (the light's log step), list ("#mission"), pickMs (4000)}.
+   */
+  const LIST = "#mission";
+  const ROWS = `${LIST} .oc-row14`;
+  Onboard.LESSON = {
+    list: LIST,
+    word: `${ROWS} .wc14-hide-en .wc14-en-dots, ${ROWS} .wc14-hide-k .wc14-k-dots, ${ROWS} .wc14-k .dots`,
+    pic: `${ROWS} .wc14-hide-pic .wc14-eye`,
+  };
+  const visible = (x) => !!(x && x.offsetParent && root.getComputedStyle && getComputedStyle(x).display !== "none" && getComputedStyle(x).visibility !== "hidden");
+  /** Can the child see x on the order card? (open card, inside the list's view, what shows at its middle; cut at the row's edge is fine) */
+  Onboard.inView = function (x, list) {
+    if (!visible(x) || x.closest(".oc-card.folded")) return false;
+    const L = document.querySelector(list || LIST);
+    const r = x.getBoundingClientRect();
+    const m = L ? L.getBoundingClientRect() : null;
+    if (!m || r.width <= 1 || r.height <= 1 || r.top < m.top - 1 || r.bottom > m.bottom + 1) return false;
+    const row = x.closest(".oc-row14");
+    const rr = row ? row.getBoundingClientRect() : m;
+    const mid = r.left + r.width / 2;
+    const cx = Math.max(rr.left + 2, Math.min(rr.right - 2, mid));
+    const hit = mid >= rr.left && mid <= rr.right ? document.elementFromPoint(cx, r.top + r.height / 2) : null;
+    return !hit ? mid < rr.left || mid > rr.right : hit === x || x.contains(hit) || hit.contains(x) || !!(hit.closest && hit.closest(".wc14") === x.closest(".wc14"));
+  };
+  /** The first thing matching sel the child can see, waited for up to ms while the cards settle (a card brought into view meanwhile). */
+  Onboard.pickShown = async function (sel, o) {
+    o = o || {};
+    const ms = o.ms == null ? 4000 : o.ms;
+    const t0 = Date.now();
+    for (;;) {
+      const all = [...document.querySelectorAll(sel)].filter(visible);
+      const ok = all.find((x) => Onboard.inView(x, o.list));
+      if (ok) return ok;
+      const open = all.find((x) => !x.closest(".oc-card.folded"));
+      if (open && o.intoView) o.intoView(open.closest(".oc-card"));
+      if (Date.now() - t0 > ms) return null;
+      await new Promise((r) => setTimeout(r, 120));
+    }
+  };
+  /** Why a thing was taken or not, for the play log (the labs' "Record a play"): "<who>:ok|folded|hidden|out@x,y". */
+  Onboard.lessonWhy = function (x, list) {
+    const c = x.closest(".oc-card");
+    const r = x.getBoundingClientRect();
+    return `${(c && c.dataset.who) || "?"}:${x.closest(".oc-card.folded") ? "folded" : !visible(x) ? "hidden" : Onboard.inView(x, list) ? "ok" : `out@${Math.round(r.left)},${Math.round(r.top)}`}`;
+  };
+  Onboard.lesson = async function (kind, sel, o) {
+    o = o || {};
+    sel = sel || Onboard.LESSON[kind === "pic" ? "pic" : "word"];
+    const sp = o.speed || 1;
+    const real = (ms) => new Promise((r) => setTimeout(r, ms));
+    const wait = o.wait || ((ms) => real(ms / sp));
+    const moving = o.moving || (() => Onboard.pageMoving());
+    const settle =
+      o.settle ||
+      (async () => {
+        const t0 = Date.now();
+        let quiet = null;
+        while (Date.now() - t0 < Onboard.WAIT.settle) {
+          if (!moving()) quiet = quiet == null ? Date.now() : quiet;
+          else quiet = null;
+          if (quiet != null && Date.now() - quiet >= 500 / sp) return;
+          await real(60);
+        }
+      });
+    const pick = (ms) => Onboard.pickShown(sel, { ms, list: o.list, intoView: o.intoView });
+    const first = await pick(o.pickMs);
+    if (!first) return false;
+    // the thing, followed onto a card redrawn under the lesson (CHAI-102)
+    let el = first;
+    let key = null;
+    const keep = (x) => {
+      el = x;
+      const c = x.closest(".oc-card");
+      key = { who: c && c.dataset.who, i: c ? [...c.querySelectorAll(sel)].indexOf(x) : -1 };
+    };
+    const live = () => {
+      if (el && el.isConnected) return el;
+      const c = key && [...document.querySelectorAll(`${o.list || LIST} .oc-card`)].find((q) => q.dataset.who === key.who);
+      const x = c && key.i >= 0 ? c.querySelectorAll(sel)[key.i] : null;
+      if (x) {
+        if (el && el.classList.contains("ob-dots-now")) x.classList.add("ob-dots-now");
+        el = x;
+      }
+      return el;
+    };
+    keep(first);
+    for (let go = 0; ; go++) {
+      const row = live().closest(".oc-row");
+      // (Zafar, 4 Nov: "the whole screen is fully lit for a few seconds" before it: the row is glided, and waited for, only when its
+      // card is not already whole in view)
+      const rowBox = row && row.closest(".oc-row14");
+      const cut = !!(row && rowBox && (() => { const a = row.getBoundingClientRect(), b = rowBox.getBoundingClientRect(); return a.left < b.left - 1 || a.right > b.right + 1; })());
+      if (cut && root.OrderCard && root.OrderCard.glideTo) {
+        root.OrderCard.glideTo(row);
+        await wait(400);
+      }
+      // (contract-79: the cards have landed and the row has stopped, looked at again as it lights: a slide can begin in that frame)
+      for (let k = 0; k < 4; k++) {
+        await settle();
+        if (!moving()) break;
+      }
+      // (contract-79, 4 Nov: lit 7 ms after the row's scroll ended: a beat of real time once still, and again if a slide began in it)
+      for (let k = 0; k < 3; k++) {
+        await real(170);
+        if (!moving()) break;
+        await settle();
+      }
+      if (live().isConnected && visible(el)) break;
+      const again = go < 2 ? await pick(1500) : null;
+      if (!again) return false;
+      keep(again);
+    }
+    el.classList.add("ob-dots-now");
+    if (o.hold) o.hold(true);
+    // (the judge, 3-4 Nov: the box hugs the dots and stops short of the word above them; the whole tap area is still lit and tapped)
+    const hug = () => {
+      const e = live();
+      const above = e.closest(".wc14") && e.closest(".wc14").querySelector(".wc14-k");
+      const ks = [...e.children].map((k) => k.getBoundingClientRect()).filter((q) => q.width && q.height);
+      if (!ks.length) return null;
+      const x0 = Math.min(...ks.map((q) => q.left)), x1 = Math.max(...ks.map((q) => q.right));
+      let y0 = Math.min(...ks.map((q) => q.top)) - 3;
+      const y1 = Math.max(...ks.map((q) => q.bottom)) + 3;
+      const w = above && above !== e && !above.contains(e) ? above.getBoundingClientRect() : null;
+      if (w && w.bottom > y0 - 3 && w.top < y0) y0 = Math.min(y1 - 6, w.bottom + 3);
+      return { x: x0 - 4, y: y0, w: x1 - x0 + 8, h: y1 - y0 };
+    };
+    // (Zafar, 4 Nov: while the word shows in the dots' place the box is on the word)
+    const peek = () => {
+      const c = live().closest(".wc14");
+      const pk = c && [...c.querySelectorAll(".wc14-peek")].find((x) => x.getBoundingClientRect().width > 0);
+      if (!pk) return null;
+      const q = pk.getBoundingClientRect();
+      return { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 };
+    };
+    // (Zafar, 4 Nov evening: "the highlight box for the blurred words should be the biggest size it's going to be": the word's own
+    // text, measured while hidden, joins the dots' box from the start)
+    const wordBox = () => {
+      const e = live();
+      const c = e.closest(".wc14");
+      const t = c && (e.classList.contains("wc14-en-dots") ? c.querySelector(".wc14-en") : e.classList.contains("wc14-k-dots") ? c.querySelector(".wc14-k") : null);
+      if (!t || !t.textContent.trim() || !document.createRange) return null;
+      const rg = document.createRange();
+      rg.selectNodeContents(t);
+      const q = rg.getBoundingClientRect();
+      return q.width && q.height ? { x: q.left - 4, y: q.top - 2, w: q.width + 8, h: q.height + 4 } : null;
+    };
+    let lastBox = null;
+    const boxNow = () => {
+      const b = Onboard.unionOf([hug() || peek(), wordBox()]) || lastBox;
+      if (b) lastBox = b;
+      return b;
+    };
+    let over = false;
+    // (SH-213: the whole item card first, then the box shrinks onto the hidden word, or onto the blurred picture itself)
+    const isEye = el.classList.contains("wc14-eye");
+    const whole = () => live().closest(".wc14");
+    const picEl = isEye ? () => live().closest(".wc14-pic") : null;
+    const picBox = () => {
+      const p = picEl && picEl();
+      const q = p && p.getBoundingClientRect();
+      if (q && q.width) lastBox = { x: q.left, y: q.top, w: q.width, h: q.height };
+      return lastBox;
+    };
+    const zoomMs = Onboard.ZOOM.total();
+    const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)] });
+    const end = () => {
+      live().classList.remove("ob-dots-now");
+      if (o.hold) o.hold(false);
+    };
+    // (CHAI-102: a box drawn, looked at for up to 0.6 s: a thing mid-move has none until it is back; else no lesson, nothing spent)
+    const drawn = () => !!(lit.box && lit.box());
+    for (let t0 = Date.now(); !drawn() && Date.now() - t0 < 600; ) await real(60);
+    if (!drawn()) {
+      lit.stop();
+      await lit.done;
+      end();
+      return false;
+    }
+    if (o.onLit) o.onLit(live());
+    // (Zafar, 3 Nov: "it highlights it as dotted, plays a clicking sound, and it changes to English": the lesson shows the tap once,
+    // in place, then the dots come back for the child's own tap; a demonstration, never counted as their help)
+    const rowNow = live().closest(".oc-row");
+    const card = rowNow && rowNow.wc;
+    const slot = el.classList.contains("wc14-eye") ? "picture" : el.classList.contains("wc14-en-dots") ? "english" : "text";
+    if (card && card.demo) {
+      // (the zoom-in first; then the part alone a beat before the tap is shown: 0.5 s after a zoom, Zafar 5 Nov, else 1.1 s)
+      if (zoomMs) await real(zoomMs);
+      await wait(zoomMs ? 500 : 1100);
+      if (o.sound) o.sound();
+      await card.demo(slot, 1600 / sp);
+      await wait(Onboard.WAIT.lessonEnd);
+      over = true;
+    }
+    await lit.done;
+    end();
+    // (its light has faded before play comes in: the kit's fade is 300 ms of real time, never the test speed's)
+    await real(340);
+    return true;
   };
   /* ---------------- the play log (Sprint 11): the runtime ---------------- */
   // one recorder per page (a mode that loads this file again, Cook's needs list, keeps the first one and its taps)
