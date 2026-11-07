@@ -17,6 +17,7 @@ and the fix list quote them), so a note can be matched to a part. "Kit element" 
 | the count pills (a counted item's grouped pills) | "pills" | - | `js/cook/stations/chai-tray.js` (today) | shared kit |
 | the corner buttons (the cog and its menu: "?", home, book) | "gear icon", "cog" | buttons | `js/shared/buttons.js`, `data/rules.json` | shared kit |
 | the play button (a fresh page's one tap, so sound can play) | - | buttons | `js/shared/buttons.js` | shared kit |
+| the buttons (Done, Again, Next, Home: one shared button in every mode) | "buttons" | buttons | `js/shared/buttons.js` | shared kit |
 
 ## Cards and boxes
 
@@ -52,15 +53,21 @@ and the fix list quote them), so a note can be matched to a part. "Kit element" 
 | the hint stages (the waits before each step of help) | "after the pause" | help ladder | `js/shared/rules.js`, `data/rules.json` | shared kit |
 | the word ladder (a word's support steps: written, dotted, blurred) | "word ladder", "blur" | - | `js/shared/rules.js` | shared kit |
 | the closing scene (everyone back to say thank you) | "the end" | - | `js/cook/flow.js` | shared kit |
+| the pass-me pop-up (Nani comes across mid-play and asks for a thing, a 3 s ring) | "pass me" | - | `js/cook/ui.js` (UI.passMe), `js/cook/flow.js` | shared kit |
 
 ## The kitchen
 
 | Part (ours) | His words | Kit element (data/kit-elements.json) | File | Layer |
 |---|---|---|---|---|
 | the worktop (the white marble) | "background marble" | - | `data/cook.json` | kitchen kit |
-| the hob (burners, knobs, the heat ring and its green) | "hobs", "cooker", "loading circle", "green zone" | - | `js/cook/kitchen-kit.js` | kitchen kit, stove part |
+| the hob (burners, knobs, the heat ring and its green) | "hobs", "cooker" | - | `js/cook/kitchen-kit.js` | kitchen kit, stove part |
+| the burner (one pan's place on the hob, its flames) | "burner" | - | `js/cook/kitchen-kit.js` | kitchen kit, stove part |
+| the knob (a burner's control: on, and off in the window) | - | - | `js/cook/kitchen-kit.js`, `js/cook/stations/chai-tray.js` (today) | kitchen kit, stove part |
+| the heat ring (the ring round a pan filling to its green, the window) | "loading circle", "progress bar", "green zone" | - | `js/cook/kitchen-kit.js` | kitchen kit, stove part |
+| the boil-over (a pan past its window: it fails and that dish starts again) | "overboils" | - | `js/cook/stations/chai-tray.js` (today) | kitchen kit, stove part |
 | the pan (its picture per state, poured over its glass) | "saucepan", "tea pan" | - | `js/cook/kitchen-kit.js` | kitchen kit, stove part |
 | the tray (chai's glasses in their wells) | "tea tray" | - | `js/cook/stations/chai-tray.js` | game |
+| the glass (a serving glass, filled by a pour to half or full) | "cup", "full and half cup" | - | `js/cook/stations/chai-tray.js` (today), `js/shared/pour.js` | kitchen kit |
 | the word moment (a cutscene for a word a picture can't show) | "word focus", "T word focus" | - | `js/shared/word-moment.js` | shared kit |
 | the snap (the word moment's corners, flash and shutter) | "camera snap", "shutter" | - | `js/shared/word-moment.js` | shared kit |
 | juice (an action's effect and its sound) | "juice", "juiciness" | - | `js/shared/juice.js`, `js/shared/sfx.js` | shared kit |

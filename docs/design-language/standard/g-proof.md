@@ -47,7 +47,7 @@
 - **Checked by:** check:unit + doc:/review
 - **See it:** -
 - **Status:** agreed 1 Nov
-- **Layer:** shared kit · **Source rows:** CHAI-60, led:1.11-2
+- **Layer:** shared kit · **Source rows:** CHAI-60, led:1.11-2, SH-233
 
 #### STD-G1-06 · A size fix is measured for size, place and neighbours at the four sizes, before and after, with the numbers
 - **Why:** "That arrow shouldn't change the size of the box" (Zafar, 4 Nov), then the arrow moved (5 Nov); lesson R2

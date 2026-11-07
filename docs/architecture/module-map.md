@@ -2,7 +2,7 @@
 
 Sprint 18's map (`docs/sprints/S18-kitchen-family.md`, "Coded well"): every piece of chai today, the layer it belongs in, the file it
 lives in now, the file it moves to, its Sprint 18 owner and the call a game makes. Written by the orchestrator from the standard's F1
-(`docs/design-language/standard/f-build.md`, STD-F1-01 to -07 and its piece table; line ranges at commit 34641d3, the signed-off
+(`docs/design-language/standard/f-build.md`, STD-F1-01 to -06 and its piece table; line ranges at commit 34641d3, the signed-off
 chai). The rules that govern it: STD-F1-01 (the lowest layer that owns it, fixed once), STD-F1-02 (no game copies kit code, no kit
 file names a game), STD-F1-05 (a piece on the old code or the kit, never both). A kit builder that needs a different file or call
 says so in its report and this page changes the same day.
