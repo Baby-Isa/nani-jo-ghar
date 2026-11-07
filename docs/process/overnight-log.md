@@ -91,3 +91,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-11-07 UK · s17-o3-boil (builder): CHAI-95 the simmer is one seamless 12 s loop (assets/shared/sfx/simmer-b.mp3, looped 0.1-12.1 s); 0.1 s levels -35.4 to -32.9 dB; plot sources/audio/simmer-b-loops.png; report build/reports/s17-o3-boil.md / next: the orchestrator merges, the judge, Zafar's ear
 - 2026-11-07 UK · s17-o3-boil and s17-o5-pour merged (CHAI-95 seamless loop; CHAI-103 the pour waits for the stream); juice lab's rising boil; clinic smoke 0 breaks
 - 2026-11-07 UK · s17-o4-lesson merged: CHAI-102, the lesson waits for the order to land (27 of 27 runs lit)
+- 2026-11-07 11:26 UK · Published 20261107T112304Z to main (7ca44a47); Pages serving it.
