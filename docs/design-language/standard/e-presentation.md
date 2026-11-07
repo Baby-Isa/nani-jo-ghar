@@ -159,7 +159,7 @@
 - **Checked by:** contract-81 + judge: the hob, chai L4, 740x320
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (740x320)
 - **Status:** agreed 6 Nov
-- **Layer:** kitchen kit, stove part · **Lives in:** `js/cook/kitchen-kit.js` · **Impact:** wrong · **Source rows:** CHAI-91, CHAI-08, CHAI-34, CHAI-12
+- **Layer:** kitchen kit, stove part · **Lives in:** `js/cook/kitchen-kit.js` · **Impact:** wrong · **Source rows:** CHAI-91, CHAI-08, CHAI-34
 
 #### STD-E3-05 · Everyone at a counter is drawn in a behind-the-counter pose
 - **Why:** "old models that haven't been re-drawn" (Zafar, 1 Nov)
