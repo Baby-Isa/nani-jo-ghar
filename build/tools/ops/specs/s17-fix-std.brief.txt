@@ -1,0 +1,61 @@
+SESSION NAME / MODE:  s17-fix-std: Fable's review of the standard applied (doubles retired, layers, values names, glossary, sizes, patterns, Whys)
+MODEL AND EFFORT:     Opus, high effort (judgement on which of two rules survives and exact rewording)
+COST ESTIMATE:        about $10-15
+HARD STOP:            7 Nov 2026, 17:30 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               claude/sprint-17-builders-standard-gub2dj (work in your own worktree; commit there, never push; the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s17-fix-std.context.md (1207 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s17-standard-review-fable.md (THE list: fixes 1, 2, 3, 5, 6, 7, 8, 9, 10; fix 4 is s17-fix-audit's, except dropping its four mis-cited contracts, which is yours since they are in the pages)
+     build/reports/s17-standard-format.md (the format)
+     docs/design-language/standard/ (all pages)
+     docs/architecture/module-map.md (the layers fix 2 aligns to)
+     data/rules.json, data/cook.json, js/cook/flow.js:179-185 (fix 5's pass-me), data/progress.json
+
+FILES THIS SESSION OWNS (edit only these):
+  - docs/design-language/standard/*.md (every page, placement.md through the stitch only)
+  - build/reports/s17-std-placement-*.md (move Source rows of retired doubles to their survivors)
+  - docs/architecture/module-map.md (only the 'STD-F1-01 to -07' citation)
+  - build/reports/s17-fix-std.md
+READ-ONLY (never edit):
+  - js/**, css/**, data/** (no game code)
+  - build/tools/** (s17-fix-audit owns lib/standard.mjs and audit.mjs)
+  - docs/questions.md and docs/process/regressions.md (the orchestrator adds STD-B3-04's question; the contract-44 row is added)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python
+
+TASKS (each with its acceptance criterion):
+  1. Fix 1, the doubles: for every pair or triple Fable lists, keep the survivor he names, retire the other block(s) in place (Status 'retired 7 Nov: doubles STD-x', the rule text kept), move their Why, Source rows, gaps and Values into the survivor, apply his rewordings (E1-01, B3-02, B2-03, B2-05, E5-04, H2-05). Then update every placement fragment row that pointed only at a retired rule so it points at the survivor, and run `node build/tools/review/stdids.mjs --stitch && node build/tools/review/stdids.mjs --check`.
+     Accept: stdids --check 0 problems; no placement row cites only a retired rule (grep); every retired block says which rule it doubles
+  2. Fix 2 (the four Layer fields and the module map's F1 citation), fix 3 (STD-D1-02's Checked by as Fable wrote it, citing the new fix-list row for contract-44; values.md A2 'card by level' derived from data/rules.json levels, Zafar 29 Oct), fix 4's mis-cites in the pages (STD-A2-05, A1-04, E1-05, F4-01 as Fable wrote), fix 5 (B1-07 reworded to the code with Value rows passMeAfterPlays and passMeChance in values.md; B2-08's clause cut unless you find its source; B3-04's Status 'daar's; the family's number is Zafar's to confirm'; D1-06's Status carrying both, newest first), fixes 6-10 as listed (Value names, the new values.md rows, glossary parts, 1280x665 for 1366x768, patterns.md's lists, E3-03 waiting on the marble art row, F1-03 House, H rules' Layer '-').
+     Accept: each of Fable's items 1-3 and 5-10 is done or its reason not to is in the report; `node build/tools/review/docs.mjs` within every limit; every Value field names a values.md row (a script check in your report)
+  3. Write build/reports/s17-fix-std.md: a table of Fable's items, each done (what changed) or not (why); rule counts live and retired; a 'Proof' section. Run `node build/tools/review/checks.mjs --only docs,unit` before your last commit.
+     Accept: report written; those checks pass
+
+REGRESSION ROWS TO RECHECK (0; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (0): none
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s17-fix-std.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8861 NJG_LOCK=/tmp/njg-browser-8861.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s17-fix-std.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8861.lock timeout 1800 node build/sandbox/run.mjs --contract --flow <the spec's flows> --sizes 740x320,930x430,1280x665,1920x1080 --run-id s17-fix-std-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s17-fix-std.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s17-fix-std.json`).
+TESTS: no browser needed.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s17-fix-std.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

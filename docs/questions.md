@@ -22,6 +22,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 12. A step's call and its light: together (the rules file, 0 ms; contract-78 within 200 ms) rather than the call a beat after? *Recommended: together.*
 13. Decoys at L4: the rules file's count (contract-37's title says otherwise)? *Recommended: the rules file.*
 14. A forced publish writes your words into its commit, and every brief carries the game's keep list? *Recommended: yes to both.*
+15. "Min 1 and max 3 chops" (daar, 30 Oct) as the kitchen family's number for every counted thing (STD-B3-04)? *Recommended: yes, each game's own count inside it.*
 
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.

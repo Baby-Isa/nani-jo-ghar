@@ -25,7 +25,7 @@
   "readOnly": [
     "js/**, css/**, data/** (no game code)",
     "build/tools/** (s17-fix-audit owns lib/standard.mjs and audit.mjs)",
-    "docs/questions.md and docs/process/regressions.md (the orchestrator adds STD-B3-04's question and the contract-44 row, SH-233, already added)"
+    "docs/questions.md and docs/process/regressions.md (the orchestrator adds STD-B3-04's question; the contract-44 row is added)"
   ],
   "stubs": "none",
   "tasks": [
@@ -34,7 +34,7 @@
       "accept": "stdids --check 0 problems; no placement row cites only a retired rule (grep); every retired block says which rule it doubles"
     },
     {
-      "do": "Fix 2 (the four Layer fields and the module map's F1 citation), fix 3 (STD-D1-02's Checked by as Fable wrote it, citing SH-233; values.md A2 'card by level' derived from data/rules.json levels, Zafar 29 Oct), fix 4's mis-cites in the pages (STD-A2-05, A1-04, E1-05, F4-01 as Fable wrote), fix 5 (B1-07 reworded to the code with Value rows passMeAfterPlays and passMeChance in values.md; B2-08's clause cut unless you find its source; B3-04's Status 'daar's; the family's number is Zafar's to confirm'; D1-06's Status carrying both, newest first), fixes 6-10 as listed (Value names, the new values.md rows, glossary parts, 1280x665 for 1366x768, patterns.md's lists, E3-03 ART-55, F1-03 House, H rules' Layer '-').",
+      "do": "Fix 2 (the four Layer fields and the module map's F1 citation), fix 3 (STD-D1-02's Checked by as Fable wrote it, citing the new fix-list row for contract-44; values.md A2 'card by level' derived from data/rules.json levels, Zafar 29 Oct), fix 4's mis-cites in the pages (STD-A2-05, A1-04, E1-05, F4-01 as Fable wrote), fix 5 (B1-07 reworded to the code with Value rows passMeAfterPlays and passMeChance in values.md; B2-08's clause cut unless you find its source; B3-04's Status 'daar's; the family's number is Zafar's to confirm'; D1-06's Status carrying both, newest first), fixes 6-10 as listed (Value names, the new values.md rows, glossary parts, 1280x665 for 1366x768, patterns.md's lists, E3-03 waiting on the marble art row, F1-03 House, H rules' Layer '-').",
       "accept": "each of Fable's items 1-3 and 5-10 is done or its reason not to is in the report; `node build/tools/review/docs.mjs` within every limit; every Value field names a values.md row (a script check in your report)"
     },
     {
