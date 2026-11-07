@@ -5,20 +5,32 @@ step 1), written in Sprint 17 (3 Nov) so Sprint 18 can begin with the roll-out i
 the kit calls it uses (code), its open fix-list rows, and `audit.mjs <game>` (the panel and lab-page steps, run 3 Nov). Zafar's word
 changes this page (rule: newest word wins).
 
+**Chai is signed off** (Zafar, 7 Nov: "done and complete as a reference point for the other games"); its rules are
+`docs/design-language/chai-standard.md`. **The roll-out is Sprint 18** (`docs/sprints/S18-stove-family.md`): eight games brought to
+chai's standard on three layers (shared kit → stove kit → the game's settings and its own mechanic), plus **chop as its own game**
+(Zafar, 7 Nov: "as other games and recipes will use chop"), built once on the kit and used by daar and chaat. The cake left for the
+word-tiles family (3 Nov, decision 8), so the family is the eight below. **Open (asked 7 Nov ~13:30):** chaat and chop use no
+stovetop; Zafar thinks they may belong to another family. Sprint 18's file holds the one list; his answer changes it and this page.
+
 ## The family
 
-| Game | Where it is | Where it sits in the days | Levels today |
-|---|---|---|---|
-| **Chai** (the reference) | live; Zafar's play of 3 Nov due | the kitchen, every visit | L1-L4, the word moment at L4 |
-| Daar (chop, tadka, stir) | live | the kitchen | L1-L4 |
-| Sekelo (thread, grill) | live | the kitchen | L1-L4 |
-| Maani (roll, the tawa) | live | the kitchen | L1-L4 |
-| Chaat (the bowl) | live | the kitchen | L1-L4 |
-| Samosa (fill, fold, fry) | live | the kitchen | L1-L4 |
-| Eggs at breakfast | lab prototype (1 Nov), not judged | the kitchen, from visit 2 | L1-L4 |
-| Baking (naan) | lab prototype (1 Nov), not judged | the kitchen, from visit 2 | L1-L4 |
-| The corn stall | lab prototype (1 Nov), a sekelo redress, not judged | the farm (day 2) | L1-L4 |
-| The birthday cake | lab prototype (2 Nov, the party kit, not Cook's) | the birthday | L1-L2 |
+| Game | Where it is | Where its code is | Where it sits in the days | Levels today |
+|---|---|---|---|---|
+| **Chai** (the reference) | live; signed off 7 Nov | `stations/chai-tray.js` | the kitchen, every visit | L1-L4, the word moment at L4 |
+| Chop (its own game; daar and chaat use it) | to build on the kit (Sprint 18, wave 1) | `mechanics/chop.js` today | the kitchen | as its users' |
+| Daar (chop, tadka, stir) | live | `stations/daar.js` | the kitchen | L1-L4 |
+| Chaat (the bowl) | live | `mechanics/assemble.js` | the kitchen | L1-L4 |
+| Samosa (fill, fold, fry) | live | `stations/samosa.js` | the kitchen | L1-L4 |
+| Maani (roll, the tawa) | live | `stations/maani-line.js`, `roll-tawa.js` | the kitchen | L1-L4 |
+| Sekelo (thread, grill) | live | `stations/mishkaki-grill.js`, `mechanics/grill.js` | the kitchen | L1-L4 |
+| Eggs at breakfast | lab prototype (1 Nov), not judged | `stations/eggs.js` | the kitchen, from visit 2 | L1-L4 |
+| Baking (naan) | lab prototype (1 Nov), not judged | `stations/baking.js` | the kitchen, from visit 2 | L1-L4 |
+| The corn stall | lab prototype (1 Nov), a sekelo redress, not judged | `stations/corn.js` | the farm (day 2) | L1-L4 |
+| The birthday cake | moved to word tiles (3 Nov); kept below for its words | the party kit | the birthday | L1-L2 |
+
+Paths are under `js/cook/`. At the roll-out: eggs' frown at the end becomes chai's progress display (Zafar, 7 Nov; non-negotiable 7);
+the first pass uses landed art only, with placeholders for daar's chop background, samosa's fill and fold, baking's word moment
+(ART-37, ART-38) and the wide-door counter (ART-59).
 
 ## What chai has, and who has it
 
@@ -150,6 +162,7 @@ Round 6 (`docs/language/mum-questions/Questions for Mum (Round 6).md` and `.docx
 family only (the clinic waits for its family's round). The gap list now reads every station's words (it read two, so eggs, baking and
 the corn stall never reached it; fixed 3 Nov in `build/lang/reports.mjs`).
 
-## Sprint 18's opening decisions (the pantry, the reference polished next)
+## Sprint 18's opening decisions
 
-In `docs/sprints/S17-chai-done-families.md`, "Sprint 18's opening decisions", for his "yes to all except …".
+In `docs/sprints/S18-stove-family.md` (Zafar, 7 Nov: yes to all). The pantry's polish moved to Sprint 19 (its six decisions stay in
+`docs/sprints/S17-chai-done-families.md`, "Sprint 18's opening decisions", for that sprint's opening).

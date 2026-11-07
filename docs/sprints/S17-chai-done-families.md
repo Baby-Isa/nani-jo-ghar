@@ -1,8 +1,10 @@
 # Sprint 17: chai polished as the stove family's reference
 
-**Status:** open (Zafar, 2 Nov: "yes agree to all", "wirte the sprint and get fable to approve"; reshaped the same day to his
-rhythm: one reference polished a sprint, its family rolled out the next, `docs/process/prototype-to-game.md`)
-**Opened:** 2 Nov 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
+**Status:** open; chai signed off (Zafar, 7 Nov); closing on the frozen run, the standard and its checks (below). (Zafar, 2 Nov:
+"yes agree to all", "wirte the sprint and get fable to approve"; reshaped the same day to his rhythm: one reference polished a
+sprint, its family rolled out the next, `docs/process/prototype-to-game.md`)
+**Opened:** 2 Nov 2026 · **Closes at:** the push of the tools and docs to `main` after chai's sign-off (his play came first this
+time: 7 Nov)
 
 ## Goal
 Zafar plays chai and calls it done, so it is the reference for the stove family; the stove family is listed, its art block is in the
@@ -117,9 +119,68 @@ The stove family's roll-out:
 - **A progress table every half hour** (done in the last half hour, still to do, percentage).
 - Sizes: 100 / 91 / 84 (Zafar, 6 Nov 15:00: "go with my sizes for decision 3"); a 40 CSS px floor either way; walnut wherever there's wood; one palette per item.
 
+## Chai signed off (Zafar, 7 Nov, ~13:00)
+
+"Chai is officially signed off - it's done and complete as a reference point for the other games." Live: 20261107T120301Z. The
+sign-off covers his two open items as built: the phone word-moment glasses at 88 px and the side panel moving unscrolled on phones.
+The chai standard page is final (`docs/design-language/chai-standard.md`). What is left of this sprint is chai's recorded run and
+the standard made complete, with its checks, so Sprint 18 starts with a map (`docs/sprints/S18-stove-family.md`; the plan and
+Fable's review of it: `build/reports/game-rollout-plan-review-2026-11-07.md`, its addendum).
+
+**The rest of Sprint 17 (now → ~18:00 Sat), as fast as it goes:**
+1. **The frozen (golden) run**, the orchestrator, the first browser job: the contract at L1-L4 at 740x320, 930x430, 1280x665 and
+   1920x1080; one film per level; one pass at a child's pace (human tap timing, because test speed hides chai's timing races: the
+   lesson race, the skip, the next-pan light); his ear items (the boil loop, the clicks, the pour) as judge rows with sound logs. It
+   is the guard everything after is measured against.
+2. **Eight builders, no game code** (launched together, each in its own files):
+   - **Five standard builders** (Opus, high, $8-12 each), one section each, following "How the page is finished" on the standard
+     page: (1) §1 onboarding and lights; (2) §2 the order with §3 the cards and the side panel; (3) §4 speech and bubbles; (4) §5
+     play, where §5.1 becomes the stove kit's own section (heat, the boil and its sound, several pans, the pour, the shelf and its
+     pills) and §5.2-5.4 (layout, undo, loading) stay "every game"; (5) §6 words and the leak test, plus chai's own recipe rules (the
+     recipe, the glasses, the style teas, half and full, the word moment as chai uses it). Every rule line carries the rule in plain
+     words, its source (Zafar's words and date, the row ids), its layer (shared kit / stove kit / game), where it lives in code now,
+     its check (contract-N, panel, lab, leak, load, or a named judge row), and what it applies to (every game / stove / chai only).
+     Every CHAI row cited only in chai-tray.js and every `*14` onboarding state gets a line: shared kit, stove kit, chai's recipe,
+     or retired. Each writes its own fragment file; the orchestrator stitches the page.
+   - **One check builder** (Opus, high, $15-20): contract-70, -71, -90, -91, `CONTROL_CALLS` (`build/sandbox/lib/contract-s14.mjs:28`),
+     `CHAI_ROW`, `S14_TAPS` and `DECOY_STATIONS` (`build/sandbox/lib/contract.mjs:1421-1428`) keyed by a per-game data list, so a
+     game is checked the day it is listed.
+   - **One check builder** (Sonnet, high, $10-15): the three missing checks (`docs/process/checks-to-build.md`: 26 the boil-over
+     driver; the zoom-in light everywhere; SH-196's lesson surviving a tap) and SH-232's own check (the panel follows a fold).
+   - **One tool builder** (Sonnet, high, $8-12): `audit.mjs --standard <game>` prints every rule as pass, fail or judge.
+3. **Close:** the orchestrator stitches the page; Fable reads it once; the orchestrator writes **the module map** (each kit piece: its
+   file, its owner, the API games call); the look back below; the chain row in `docs/sprints/plan.md` marked; one push to `main` of
+   tools and docs, the game unchanged. Zafar reads the standard's "every game" lines whenever he likes; it blocks nothing. Closing
+   Sprint 17 and opening Sprint 18 is housekeeping, not a gate: the next wave launches the same evening.
+
+Cost of the rest: about $90-130 (the sprint's total goes past its $150-200 ceiling by the standard's builders; Zafar, 7 Nov: speed
+first, up to eight builders).
+
+## Zafar's decisions, 7 Nov afternoon ("yes to all")
+
+1. The sign-off covers the 88 px phone glasses and the panel moving unscrolled on phones, as built.
+2. **Up to eight builders at once** for Sprints 17 and 18 (CLAUDE.md's "two at most" suspended for these two sprints; Zafar, 7 Nov).
+3. Lighter checks: no before-run and judge at each launch; builders make script-made before/after strips at fixed moments; Fable
+   judges in batches at each wave's end; his reading of the standard blocks nothing.
+4. Chai keeps one owner; the kit pieces are built in parallel, each in its own files ("nobody else in the same file", not "the same
+   folders"); chop is its own game; the Sprint 18 decisions are in its file.
+
 ## Outcome
 
 ## Look back (three lines)
 1.
 2.
 3.
+
+## When Sprint 17 is done: paste this into a new chat to start Sprint 18
+
+> First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-stove-family.md`; open nothing else until a
+> task needs it. Confirm Sprint 17 left three things on the branch: chai's frozen run (its films and contract reports), the
+> stitched chai standard page, and the module map; if any is missing, finish it first and say so. Then open Sprint 18 and launch
+> wave 1's eight builders with `/brief`, disjoint files each: chai's owner (Opus, high, $40-60), the five kit builders (Opus, high,
+> $20-30 each), chop as its own game (Opus, high, $20-30), the prep for eggs, baking and the corn stall (Sonnet, high, $10-15).
+> Zafar approved the plan on 7 Nov ("yes to all"): launch without asking again; state model, effort and cost per launch; a progress
+> table every half hour; chai's frozen-run diff after every switch. Wave 2 (one builder per game) from Sun 08:00, wave 3 (merge,
+> audit, films, Fable's batches) from Sun 20:00. Target: every stove game's first pass live on `main` by Mon 9 Nov 07:00 UK, on his
+> word, with a handover and his play list.

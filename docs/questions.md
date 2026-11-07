@@ -2,6 +2,14 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
+### Asked 7 Nov ~13:30 (Sprint 18 goes ahead meanwhile)
+- Chaat and chop use no stovetop: which family are they in? Until answered they stay in Sprint 18's list (`docs/sprints/S18-stove-family.md`, "The family this sprint") and the families table in `docs/process/prototype-to-game.md` is untouched.
+
+### Open, not blocking (Zafar, 7 Nov: these wait; Sprint 18 goes ahead)
+- The skies' four: the night ceiling, the day square, the two farm edits as sky-only redos, wiring next sprint.
+- The tongue depressor's brown: darker, or keep.
+- ART-59, the wide-door counter: a placeholder in Sprint 18's first pass.
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.

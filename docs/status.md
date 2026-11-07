@@ -8,25 +8,40 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `claude/exciting-sagan-cz9d5t` (the newest handover is here; `main` may be a step behind).
+**Handover branch:** `ccr-9f26f7e3-ytvg4h` (the newest handover is here; `main` may be a step behind).
 
-**Where things stand (7 Nov 2026, 12:10 UK):** Sprint 17. **Live on `main`: 20261107T120301Z** for Zafar's chai replay and sign-off.
-It carries all of his 7 Nov notes (`docs/feedback/chai-play-2026-11-07.md`): nothing said after a skip (CK-60, contract-95); the
-boil one seamless 12 s loop (CHAI-95; hear it on `lab/juice.html`, "Play the rising boil"); the dotted-word lesson always shows
-(CHAI-102); the word moment's pour waits for the stream (CHAI-103); half lands with its headline (CHAI-104); the side panel follows
-a served card's fold to the next card's place, every game (SH-232). Clinic redo (138 items) and skies (13) cut and stored, not wired.
+**Where things stand (Sat 7 Nov 2026, ~13:15 UK):** Sprint 17, closing. **Chai is signed off** (Zafar, 7 Nov: "done and complete
+as a reference point for the other games"); **live on `main`: 20261107T120301Z**. The weekend plan is approved ("yes to all"):
+`docs/sprints/S17-chai-done-families.md` ("Chai signed off") and `docs/sprints/S18-stove-family.md`; the review and its addendum
+in `build/reports/game-rollout-plan-review-2026-11-07.md`. Nothing is launched yet. Target: every stove game's first pass at chai's
+standard live on `main` by **Mon 9 Nov 07:00 UK** (his review before 10:00). Up to eight builders at once (Zafar, 7 Nov).
 
-**Next, in order:** Zafar replays chai and signs it off (`/feedback` for notes); then chai's frozen recorded run; then the roll-out
-plan (`build/reports/game-rollout-plan-review-2026-11-07.md`, his yes with chop its own game and chai split three ways): step 1 (the
-standard and its checks, about 5 builders) only after his sign-off (Zafar, 7 Nov: "wait for sign off on chai").
+**Next, in order:**
+1. **Chai's frozen run** (the orchestrator, the first browser job): the contract L1-L4 at the four sizes, one film per level, one
+   child-pace pass, his ear items as judge rows with sound logs. The guard for everything after.
+2. **Sprint 17's eight builders, no game code** (S17 file, "The rest"): five standard builders (Opus, high, $8-12 each, one section
+   each, fragment files); the per-game-data check builder (Opus, high, $15-20); the three missing checks + SH-232's check (Sonnet,
+   high, $10-15); `audit.mjs --standard` (Sonnet, high, $8-12). About $90-130.
+3. **Stitch the standard page; Fable reads it once; write the module map** (each kit piece: file, owner, the API games call).
+4. **Close Sprint 17** (look back, plan.md chain row); one push to `main` of tools and docs, the game unchanged. Housekeeping, not a
+   gate.
+5. **Sprint 18, in a new chat** (the prompt at the end of the S17 file), per its file: wave 1 Sat 18:00 (chai's owner, five kit builders, chop, the prototypes' prep); wave 2 Sun 08:00
+   (one builder per game, eight); wave 3 Sun 20:00 (merge, audit at four sizes, a new-player film per game, Fable's batches,
+   publish on his word, handover with his play list). Progress table every half hour.
 
-**Open questions to Zafar:** the skies' four (the night ceiling, the day square, the two farm edits as sky-only redos, wiring next
-sprint); the phone glasses' size in the word moment (88 px); the tongue depressor's brown (darker or keep).
+**Open questions to Zafar:** 1. **asked ~13:30:** chaat and chop use no stovetop; which family are they in? (Until he answers
+they stay in Sprint 18's family list; the families table is untouched.) Not blocking: 2. the skies' four (the night ceiling, the
+day square, the two farm edits as sky-only redos, wiring next sprint); 3. the tongue depressor's brown; 4. ART-59, the wide-door
+counter (a placeholder in the first pass).
 
-**Starting prompt for a new chat:**
-> First `git fetch origin claude/exciting-sagan-cz9d5t` and work from that branch (it holds the newest handover; `main` is the live
-> site). Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, from that branch. I'm replaying chai live; take my notes with
-> `/feedback`, then we sign chai off and record its frozen run.
+**Starting prompt for the new orchestrating chat (the rest of Sprint 17):**
+> First `git fetch origin ccr-9f26f7e3-ytvg4h` and work from that branch (it holds the newest handover; `main` is the live site).
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S17-chai-done-families.md` ("Chai signed off"
+> onward) and `docs/sprints/S18-stove-family.md`; open nothing else until a task needs it. Zafar approved the plan on 7 Nov ("yes
+> to all"): launch without asking again, state model, effort and cost per launch, progress table every half hour. Start with chai's
+> frozen run, then Sprint 17's eight builders with `/brief` (disjoint files), stitch the standard, write the module map, close
+> Sprint 17 and push its tools and docs to `main`. End by updating the handover (`/handover`) and telling Zafar to open a new chat
+> with the prompt at the end of the Sprint 17 file ("When Sprint 17 is done"), which starts Sprint 18 the same evening.
 
 ## The fix list
 
@@ -87,4 +102,4 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 ## How we work now (decision 99)
 
-Small fixes in the orchestrator's chat (red then green, Fable judges the picture, Zafar sees it); one build session at a time (two at most); sprints of one to three days with one playable goal. The old plan table and the 5 Oct "where each part is" estimates are in `docs/archive/status-2026-10-13.md`.
+Small fixes in the orchestrator's chat (red then green, Fable judges the picture, Zafar sees it); one build session at a time (two at most; up to eight in Sprints 17-18, Zafar, 7 Nov); sprints of one to three days with one playable goal. The old plan table and the 5 Oct "where each part is" estimates are in `docs/archive/status-2026-10-13.md`.

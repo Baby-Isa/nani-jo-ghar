@@ -1,16 +1,24 @@
 # The chai standard (Sprint 17; Zafar, 2 Nov)
 
-Chai is the reference game. This page lists every rule chai earned, each one either built into the shared kit or checked by the
-audit, so any game can show it meets it (`docs/process/prototype-to-game.md`). A family's roll-out brings each game to this page; the
-audit (`node build/tools/review/audit.mjs <game>`) measures what it can and the judge looks at the rest.
+Chai is the reference game: every rule it earned, so any game can show it meets it (`docs/process/prototype-to-game.md`).
 
-**Status: a draft** (3 Nov), written before his play of chai so his notes change a draft, not a blank page; section 1 has his yes
-(3 Nov). It becomes final when he says chai is done. The rows behind each rule are in `docs/process/regressions.md` and `docs/archive/regressions-done.md`.
+**Status: signed off, final** (Zafar, 7 Nov; live 20261107T120301Z; the 88 px phone glasses and the panel moving unscrolled on
+phones, as built). Sections 1-6 are the 3 Nov draft; Sprint 17's builders finish them to the structure below. Rows:
+`docs/process/regressions.md` and its archive.
 
-**Where a rule lives:** *kit* means in shared code (`js/shared/`, or `js/cook/ui.js` for every station on the order card), so a game
-that uses the kit has it; *chai* means it is still in chai's own code (`js/cook/stations/chai-tray.js`) and moves to the kit at the
-stove family's roll-out. **How it is checked:** *contract* (the sandbox's contract checks), *panel* (`panelcheck.mjs`), *lab*
-(`labcheck.mjs`), *leak* (`leak.mjs`), *load* (`loadtime.mjs`), or *judge* (on film).
+**The three layers (Zafar, 7 Nov), where a rule lives:** *shared kit* (`js/shared/`, `js/cook/ui.js`: every game); *stove kit*
+(from chai, `js/cook/kitchen-kit.js`, `js/cook/mechanics/`: every stove game); *game* (chai's recipe, `js/cook/stations/chai-tray.js`).
+A fix goes in the lowest layer that owns it. **Checked by:** contract, panel, lab, leak, load, or a named judge row on film.
+
+## How the page is finished (Sprint 17; Zafar, 7 Nov)
+
+Five builders, a section each in its own fragment, stitched by the orchestrator, read once by Fable. The split: (1) §1;
+(2) §2-3; (3) §4; (4) §5: §5.1 becomes **the stove kit's own section** (heat, the boil and its sound, several pans, the
+pour, the shelf and pills) and §5.2-5.4 stay "every game"; (5) §6 plus **chai's own recipe rules** (the recipe, the glasses, the
+style teas, half and full, its word moment). **Each rule line:** the rule in plain words · source (Zafar's words and
+date, row ids) · layer · code home · check (contract-N, panel, lab, leak, load, or a named judge row) · applies to (every
+game / stove / chai only). Every CHAI row cited only in chai-tray.js and every `*14` onboarding state gets a line:
+shared kit, stove kit, chai's recipe, or retired: the map Sprint 18 starts from (`docs/sprints/S18-stove-family.md`).
 
 ## 1. Onboarding: one rule for every game (SH-146; Zafar, 3 Nov: yes)
 
@@ -24,7 +32,7 @@ stove family's roll-out. **How it is checked:** *contract* (the sandbox's contra
    hand shows only for a drag, hold or swipe (SH-141). The dim never comes without its lit target (CHAI-36), and leaves completely
    (CHAI-50).
 3. **When it comes:** after the last animation of the step before it has finished (CHAI-42), with a short breath (CHAI-52); a step's
-   spoken call comes a beat after its light (CHAI-40: the first time only, Zafar's 1 Nov rule, waiting on his answer).
+   spoken call comes a beat after its light (CHAI-40: the first time only, Zafar's 1 Nov rule, kept 3 Nov).
 4. **The order card is taught first:** after the first items are shown, the light moves briefly to the order card so the eye knows
    where to look (CHAI-37), and then follows the next item on it (SH-178).
 5. **The reveal is taught when it first happens:** the first time a card's word is dotted, then the first time a picture is
@@ -42,9 +50,6 @@ stove family's roll-out. **How it is checked:** *contract* (the sandbox's contra
    skipped with a tap on the kitchen (CK-54).
 9. **"New player" in the settings** gives the first-time showing again; nothing else does (CHAI-56).
 
-*Lives:* kit (`js/shared/onboard.js`, `js/cook/ui.js`) for 2, 3, 6, 7, 8; chai for 4 and 5 and the next-pan light. *Checked:* contract
-(one light, a light with its call, the dim with its target), judge (the first round of a new player, filmed).
-
 ## 2. The order
 
 1. **Said whole, then shown:** the customer says the whole order; each item's big word card pops out beside the side panel as it is
@@ -56,9 +61,6 @@ stove family's roll-out. **How it is checked:** *contract* (the sandbox's contra
 5. **A finished order folds** to its face and sentence, the next one opening below with a smooth scroll (SH-148, SH-169, SH-180); the
    current order is always whole in view (SH-191, SH-194).
 6. **A lost dish** (spilled, boiled over) resets its row to the start, scrolled back (CHAI-62).
-
-*Lives:* kit (`js/shared/order-card.js`, `word-card.js`, `js/cook/ui.js`). *Checked:* contract (cards off faces, the card's light),
-panel (SH-169, SH-189 to SH-192), judge (the order filmed).
 
 ## 3. The cards and the side panel
 
@@ -72,8 +74,6 @@ panel (SH-169, SH-189 to SH-192), judge (the order filmed).
    (SH-139).
 5. **No reveal eyes in a speech bubble or on a spoken card** (SH-153); a reveal control centred in its slot (SH-143).
 
-*Lives:* kit. *Checked:* panel, lab (spills), contract (screen lint: clipped, covered, off-screen text).
-
 ## 4. Speech and bubbles
 
 1. **One voice at a time** (PAN-04, contract-7).
@@ -82,8 +82,6 @@ panel (SH-169, SH-189 to SH-192), judge (the order filmed).
    (SH-188); replies never stacked over each other (SH-186).
 3. **The pour is quiet** (CHAI-51): no read-along during an action.
 4. **A reloaded page starts on one big play button** so a phone lets the sound play (SH-198).
-
-*Lives:* kit (`js/shared/`, the bubble placer, `buttons.js`). *Checked:* contract (bubbles off faces, one voice), judge.
 
 ## 5. Play
 
@@ -96,16 +94,16 @@ panel (SH-169, SH-189 to SH-192), judge (the order filmed).
 4. **Loading:** the game's files asked for at once, the greeting's lines with them (SH-175); Nani's box in its final look from the
    first frame (SH-174); no menu buttons over the play (CK-53).
 
-*Checked:* contract, lab, load, judge.
-
 ## 6. Words and the leak test
 
 1. **Every line from the language engine,** from recorded phrases and words; a missing Kutchi line is its English in grey italic
    (Zafar, 3 Nov), logged in `docs/language/recording-sheet.md`.
 2. **The leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting (non-negotiable 4).
 
-*Checked:* leak (the bot that knows no Kutchi can't win), the Kutchi gate before the stores.
+**Where the draft's rules live today:** §1 the kit (`js/shared/onboard.js`, `js/cook/ui.js`) for
+2, 3, 6-8, chai for 4, 5 and the next-pan light; §2-4 the kit (`order-card.js`, `word-card.js`, `js/cook/ui.js`, the bubble placer,
+`buttons.js`). Checked: §1 contract, judge (a new player's first round); §2 contract, panel, judge; §3 panel, lab, contract; §4 contract, judge; §5 contract, lab, load, judge; §6 leak and the Kutchi gate.
 
-## Open in chai while this is a draft
+## Open in chai
 
-- His play of chai (3 Nov) and his "done".
+Nothing: signed off 7 Nov. Sprint 18 moves its code to the layers above; the frozen run proves chai unchanged.

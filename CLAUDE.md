@@ -14,9 +14,9 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - **Keep it small:** a rule that can be code becomes a check (`docs/process/checks-to-build.md`); new rules replace old.
 - **Fix it properly, once** (the fix list, `docs/process/regressions.md`): a builder fixes what it breaks before handing back; anything found broken after a merge, and every point of Zafar's feedback, is a row the same day, fixed this sprint if it blocks play, else next. Built is done; done rows come back if they fail (Zafar, 22 Oct).
 - **Fast lane (Zafar, 26 Oct):** small tweaks in this chat with the checks; the judge looks once, at the sprint's end. New screens: a mock-up (his, or ChatGPT after talking), a lab page, my four-size check, his numbered choices, then the game (Zafar, 27 Oct).
-- **Builders** (in-chat subagents, own worktrees, two at most) only for new mechanics or screens, one per game area, design settled first; they never judge their own work or push; the orchestrator judges, merges, checks and publishes (`/publish`). Briefs: `docs/process/session-brief-template.md`.
+- **Builders** (subagents, own worktrees, two at most; eight in Sprints 17-18, Zafar, 7 Nov) only for new mechanics or screens, one per game area, design settled first; never judging their own work or pushing; the orchestrator judges, merges, checks and publishes. Briefs: `docs/process/session-brief-template.md`.
 - **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical; no fan-outs or re-shoots while iterating.
-- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** phone and big-screen layouts by height, checked at 740x320, 930x430, 1280x665, 1920x1080 (Zafar, 27 Oct); the leak bot and the judge only on what a sprint changed; script-made before-and-after shots of a builder's rows; only CLAUDE.md has a word limit. Full checks before the stores.
+- **Rapid prototype (Zafar, 22 Oct), until the app-store run:** phone and big-screen layouts by height, checked at 740x320, 930x430, 1280x665, 1920x1080 (Zafar, 27 Oct); leak bot and judge only on what a sprint changed; script-made before-and-after shots of a builder's rows; only CLAUDE.md has a word limit. Full checks before the stores.
 
 ## Non-negotiables
 
@@ -38,6 +38,6 @@ Each area's design and decisions live in its own doc (shared screens and art in 
 
 Zafar never has to ask: `/sprint`, `/brief` (every launch), `/checkin`, `/review` (before anything reaches Zafar or `main`), `/publish`, `/feedback` (every voice note), `/mum-round`, `/art-run`, `/handover` (every step end); `node build/tools/review/checks.mjs` before every push. Fix any that is missing or broken.
 
-## Starting a chat or session
+## Starting a chat
 
 Read `docs/status.md` "Next chat" only; open nothing else until a task needs it. Check `git log origin/main`. Read reports, never transcripts. Hand over at each step end or ~70% context.
