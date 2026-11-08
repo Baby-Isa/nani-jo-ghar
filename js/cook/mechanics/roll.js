@@ -157,6 +157,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the target you're nearest to (by ratio: 10% short of small is nearer small)
       const nearest = () => targets.reduce((a, t) => (Math.abs(Math.log(r / t.R)) < Math.abs(Math.log(r / a.R)) ? t : a));
       const guide = S.track(S.add.graphics().setDepth(D.fx));
+      // (STD-E6-01: the ring's colours are the tokens: the flat gold, the one highlight colour for its glow, sage for the dashes' right)
+      const T = global.Tokens;
+      const tok = (name) => (T && T.int ? T.int(name) : 0);
+      const INK = { gold: tok("gold"), glow: tok("focus"), right: tok("cook-sage-dark"), card: tok("card") };
       const drawGuide = () => {
         guide.clear();
         const near = nearest();
@@ -164,14 +168,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const ok = t === near && r >= t.R * lo && r <= t.R * hi;
           if (opts.gold) {
             if (ok) {
-              guide.lineStyle(z.L(22), 0xe8c060, 0.28);
+              guide.lineStyle(z.L(22), INK.glow, 0.28);
               guide.strokeCircle(cx, cy, t.R);
             }
-            guide.lineStyle(z.L(ok ? 7 : 4), 0xc9962e, ok ? 1 : 0.45);
+            guide.lineStyle(z.L(ok ? 7 : 4), INK.gold, ok ? 1 : 0.45);
             guide.strokeCircle(cx, cy, t.R);
             return;
           }
-          guide.lineStyle(z.L(7), ok ? 0x4f6b4b : 0xffffff, 0.95);
+          guide.lineStyle(z.L(7), ok ? INK.right : INK.card, 0.95);
           for (let a = 0; a < 360; a += 12) {
             guide.beginPath();
             guide.arc(cx, cy, t.R, Phaser.Math.DegToRad(a), Phaser.Math.DegToRad(a + 6));

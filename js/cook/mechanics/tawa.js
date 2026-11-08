@@ -18,7 +18,7 @@
  * the done one tinted), doneWord (verdict key for the second tap, default
  * "perfect": a maani doesn't puff up, M5).
  * Knobs (data.mechanics.tawa): band, rate, rate2, speedUp, burntScore,
- * tawas, passMeAfterMs, special.
+ * tawas, special (passMeAfterMs is read by nothing: Nani's "pass me" is out of every game, MAA-14 parked).
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -90,7 +90,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else ch = S.track(S.add.image(x, y, RAW).setScale(sz).setDepth(D.item + 1));
         ch.baseScale = sz;
         Cook.sfx.sizzle(0.4);
-        if (i === 0) z.passMeAfter(k.passMeAfterMs);
         const v1 = await S.ring(ch, { r: 180 * ks, lo, hi, rate: k.rate * (1 + i * k.speedUp), io: wz.io, alsoTap: [tw], onLevel: (v) => ch.setTint(mul(base, C.GetColor(255, 255 - v * 45, 255 - v * 90))) });
         // the spatula slides under and flips it
         await Cook.tween(S, { targets: spat, x: x + z.L(40), y: y + z.L(30), duration: 120 });
