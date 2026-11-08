@@ -31,6 +31,9 @@
     "js/cook/mechanics/tadka.js",
     "data/stations/mishkaki-grill.json, daar.json, eggs.json, corn.json, chop.json",
     "build/sandbox/data/evidence.json (your rows' entries only)",
+    "js/cook/mechanics/knead.js",
+    "js/cook/stations/baking.js",
+    "data/stations/baking.json",
     "build/reports/s19-games.md"
   ],
   "readOnly": [
@@ -54,7 +57,8 @@
     "CK-63",
     "CK-61",
     "DAAR-43",
-    "CK-65"
+    "CK-65",
+    "SH-228"
   ],
   "tasks": [
     {
@@ -76,6 +80,10 @@
     {
       "do": "DAAR-43: daar's first-time light round a pile's picture, not its tap box (`Cook.Coach.box(obj, pad, {bounds})`), so it never covers the next pile at 740x320. CK-61: corn's lights leave the kit's room (contract-92). CK-65: corn's green zone at least as long as chai's green at the same level (measure chai's, set corn's in its settings, give both numbers).",
       "accept": "contract-92 green on daar@L2 at 740x320 and corn; corn's and chai's green lengths per level in the report"
+    },
+    {
+      "do": "The kit's lights (s19-lights phase 1, merged before you start: js/shared/onboard.js, js/cook/coach.js; its report build/reports/s19-lights.md): stir.js:316 and knead.js:53 still call their own S.ghost: replace with Cook.Coach.demo(...) (contract-102). Eggs: the pan gets litBounds (its round body without the handle) and the bowl's light uses C.thingBox(obj) so its pill is inside (SH-230, CK-63). Sekelo, daar, eggs, corn and baking call Cook.Coach.stuck({...}) for the stuck help (SH-228). Call C.began/C.ended where a mechanic's move starts and ends (SH-236).",
+      "accept": "contract-91, 102, 105, 106 and 107 green on your flows at L1-L4"
     },
     {
       "do": "Out of scope (needs Zafar or art): the timed windows' look (sekelo's dial, daar's gauge, eggs' knob and ring), one stir (DAAR-45), the grill and coals art, the scene and shelf angle, the counting rule, eggs' L1 length. Write any you meet in the report.",
