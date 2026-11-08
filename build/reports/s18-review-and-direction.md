@@ -1,174 +1,258 @@
 # Sprint 18: review and direction (8 Nov 2026)
 
-One place for everything said on 8 Nov about the kitchen games: what went wrong, Zafar's play, the look, the decisions, and the
-questions to settle before the next plan. Written by the orchestrator from Fable's two reviews, Zafar's messages and his voice note.
-To be read in a fresh chat and turned into a plan there.
+Everything said on 8 Nov about the kitchen games in one place: what went wrong, Zafar's play, the look, the decisions, the principles to
+settle and a draft plan. Written by the orchestrator from Fable's two reviews, Zafar's messages and his voice note; checked and extended
+by Fable that evening. To be read in a fresh chat and turned into the agreed plan.
 
-Sources: Fable `build/reports/s18-fable-what-went-wrong.md` (why) and `build/reports/s18-fable-look-review.md` (the look); the voice
-note's transcript `docs/feedback/kitchen-play-2026-11-08-transcript.md` (times below are its own); its rows and causes in code
-`docs/feedback/kitchen-play-2026-11-08.md` (41 points, each with its cause in code and its layer; 27 new rows and 7 reopened:
-SH-236 to SH-243, MAA-20 to -22, SEK-25, DAAR-44, -45, CHT-18, -19, SAM-30, -31, CK-63 to -65, ART-61 to -64, LNG-24, PRC-12; reopened
-SH-119, -149, -227, -228, -230, MAA-19, SEK-18).
+Sources: Fable `build/reports/s18-fable-what-went-wrong.md` and `s18-fable-look-review.md`; the transcript
+`docs/feedback/kitchen-play-2026-11-08-transcript.md` (times below are its own) and its report `docs/feedback/kitchen-play-2026-11-08.md`
+(41 points with causes in code, seven questions, 27 new rows, 7 reopened; IDs in its §3); today's other rows SEK-24, CK-61, CK-62,
+DAAR-43, SH-235, CHAI-107; Fable's second reader `s18-feedback-1108-second-reader.md` (folded in); the sprint file.
+
+**Changes on review (Fable, 8 Nov):** cause 7 and why seven reopened rows slipped (§2); three themes (§3); baking, chop and today's six
+rows (§4); the mock's plate and today's flaws (§5); the report's seven questions folded into §6 and Fable's seven scene questions as
+principle 12; two decisions (§7); §8 updated; §9 the plan. Disagreements are said in place.
 
 ## 1. Where things stand
 
-- **Chai** is signed off and still loved ("clean, modern, beautiful"). Three fixes from today's play (the order card's jerk at a
-  person change and at the half card, the item timings checked, the half-glass ding) are on the branch with a clean frozen diff;
-  **not yet live** (the publish is blocked by the session's safety check; it needs Zafar's explicit go, or a permission rule).
-- **The other nine games** are live on `main` for his play (20261108T142321Z). Their code runs on the kits' calls, but most kept their
-  own looks and old copies of shared pieces. Zafar's verdict on several: "a million miles off"; maani and the corn stall "on the
-  right framework".
+- **Chai** is signed off and still loved ("clean, modern, beautiful"). Three fixes from today (the card's jerk at a person change and the
+  half card, the item timings, the half-glass ding) are on the branch, frozen diff clean, **not live**: the session's safety check blocked
+  the publish; it needs his explicit go or a permission rule. Open: CHAI-107, the last glass's ring muted by the praise (kit fix: the
+  praise waits about 0.5 s).
+- **The other nine** are live on `main` (20261108T142321Z) on the kits' calls, most with their own looks and old copies of shared pieces;
+  eggs, baking and corn still prototypes in their own scenes. Zafar: several "a million miles off"; maani and corn "on the right
+  framework". Played: maani (L1), sekelo, daar, stir, chaat, samosa, eggs, corn; **not baking or chop.**
 
 ## 2. What went wrong (and whose)
 
-Fable's six causes, and the orchestrator's own share:
-1. **The kit has no scene.** Chai's kitchen (worktop, stone band, slots, pills, its light) is five optional calls; a game could skip
-   them. The kit even let a game add its own round glow.
-2. **The briefs named functions, not the look.** "Done" was "0 contract breaks, copied code deleted". Every builder met it.
-3. **No check measures the look**, and builders scored their own gap pages (they could write "different by design").
-4. **The judging asked the wrong question** (clipping, English) with no chai frame beside each game.
-5. **The orchestrator merged seven games in an hour on "0 breaks"** and never looked at one beside chai. Zafar (17:00-19:00 in the
-   voice note): "at what point can you just use your judgment ... any human being would look at the tea game and be like this daar
-   game is not the same style." That is right: the orchestrator should have refused those merges.
-6. **The shared pieces were not carried over even where they exist**: the item card (the line above the speaker, the Kutchi and
-   English alignment), Nani's box with its drop-down and one-line wrap, the dimmed onboarding with the rounded light, the order card
-   that ticks as you go, no tick buttons. Zafar found them missing in maani, sekelo, daar, chaat, samosa and eggs.
+Fable's six causes, a seventh from the rows, and the orchestrator's share:
+1. **The kit has no scene.** Chai's kitchen is five optional calls; the kit allowed a game's own glow (`onLight`), and chaat switched the
+   kit's coach off for its own finger.
+2. **The briefs named functions, not the look.** "Done" was "0 contract breaks, copied code deleted"; every builder met it.
+3. **No check measures the look**; builders scored their own gap pages ("different by design").
+4. **The judging asked the wrong question** (clipping, English), with no chai frame beside any game.
+5. **The orchestrator merged seven games in an hour on "0 breaks"**, never looking at one beside chai. Zafar (17:00-19:00): "at what point
+   can you just use your judgment ... any human being would look at the tea game and be like this daar game is not the same style."
+   Right: those merges should have been refused.
+6. **Shared pieces not carried over even where they exist**: the item card (the line above the speaker, the Kutchi and English alignment),
+   Nani's box (drop-down, one-line wrap), the dimmed onboarding with the rounded light, the ticking card, no tick buttons; missing in
+   maani, sekelo, daar, chaat, samosa and eggs.
+7. **Chai's pieces were built with a switch left off** (the rows' finding). The 6 Nov card and type come on only for an all-chai order
+   (`ui.js:1552`, `flow.js:1721`; `UI.TYPE_ALL` false), so other games draw the old card, type, strip and box; only chai calls the stuck help;
+   the helper arrow needs an order-row word, which sekelo's pieces and daar's chop never give; the kit's box hugs the picture without its
+   pill; mechanics keep their own ghost fingers. Hence seven rows told between 22 Oct and 6 Nov came back: built on chai, and "every game
+   joins at the roll-out" never happened. One flag and a few retired paths close five.
 
-Zafar's own share, in his words: "we put time, love and attention into tea ... some of these other games need some of that love and
-attention as well"; and "maybe I'm over-prescribing ... use your wisdom ... and tell me how best to make this work".
+Zafar's share, his words: "we put time, love and attention into tea ... some of these other games need some of that love and attention
+as well"; "maybe I'm over-prescribing ... use your wisdom ... and tell me how best to make this work".
 
-**What the orchestrator will do differently (proposed):** a game is merged only when it sits beside chai at the same moments and an
-eye (the orchestrator's, then Fable's) says it is chai's kitchen; the kit gives one scene a game cannot skip; the shared pieces are
-the only way to draw a card, a light, a hint; a game's look is set by a mock-up Zafar likes before any builder starts.
+**Proposed (the orchestrator):** principle 10's merge rule; one scene a game cannot skip; the shared pieces the only way to draw a card,
+a light or a hint; a game's scene set by a mock-up Zafar likes before its builder starts (Fable: true of scenes and art; the shared pieces
+and behaviour rows need no mock-up and should not wait for one, §9).
 
 ## 3. Zafar's play, 8 Nov: themes across the games
 
-These come up in more than one game; each is a principle to settle once (section 6), not a fix per game.
+Each comes up in more than one game; each is a principle to settle once (§6), not a fix per game.
 
 | Theme | Where heard | What he wants |
 |---|---|---|
-| Shared pieces missing | maani 1:02, sekelo 9:14-9:56, daar 17:00, chaat 20:04, eggs 23:00 | Chai's item card, Nani's box (drop-down, one-line wrap), onboarding dim and rounded light, in every game |
-| No ticks, no "next" buttons | maani 5:38-5:57, chaat 21:18, samosa 22:04 | "No ticks hard and fast ... not a good game mechanic"; cut every tick and next-scene button |
-| The order card ticks as you go | maani 6:16-7:24 | Each item ticks as it is done; "well done" when that person's whole card is complete, then the round ends |
-| Onboarding light | maani 2:15-3:47, eggs 23:00-23:21 | It hugs the thing (never clips it or its pill); it leaves as soon as the child starts the task; one finger only |
-| Item cards: one unit each | sekelo 10:09-11:28, eggs 23:32-24:07 | The order names the dish and count ("two fried eggs"); one item card per unit, each naming the unit ("fried egg"), so no "one" on cards |
-| Top-down art | maani 8:07-8:27, daar 18:55 | Boards, trays, the oil pan exactly top-down; give ChatGPT a royalty-free exact top-down reference |
-| The shelf | daar 19:05, chaat 20:57 | Items on chai's shelf (or a counter), never floating |
-| Hints | sekelo 9:14, chaat 20:24-20:36 | The stuck hint arrives (it did not in chaat); Nani's English placeholder replaced in time |
+| Shared pieces missing | maani 1:02, sekelo 9:14-9:56, daar 17:00, chaat 20:04, eggs 23:00 | Chai's item card, Nani's box (drop-down, one-line wrap), the dim and rounded light, everywhere |
+| The old card's relics | daar 16:59, chaat 20:14, samosa 21:34 | No arrow strip, old count box or old pop-up: steps and kinds-of-several as 6 Nov cards (SH-241, SAM-31, DAAR-44) |
+| No ticks, no "next" | maani 5:38, chaat 21:18, samosa 22:04 | "Not a good game mechanic"; no tick, next or X button; a step moves on by itself (SH-238) |
+| The card ticks as you go | maani 6:16-7:24 | Each item ticks when done; "well done" when the whole card is complete; then the round ends (SH-239) |
+| Onboarding light | maani 2:15-4:57, eggs 23:00-23:21 | Hugs thing, pill and board; leaves as the child starts the move; one finger; only shelf items hop (SH-230, -236, -237, -119) |
+| First-time lessons missing | maani 5:28, chaat 20:03, samosa 21:23 | The flip, the fry and chaat's layers with the kit's dim and lit box (MAA-19, SAM-30, CHT-18) |
+| One unit per item card | sekelo 10:09-11:28, eggs 23:32-24:07 | The order names dish and count ("two fried eggs"); one card per unit; no "one" on cards |
+| One of the thing on a card | daar 17:49, sekelo's card | One onion, one tomato, never the shelf's crate (SH-242, SEK-24: `Cook.shelfPic` is the card's first picture) |
+| Top-down art | maani 8:07-8:27, daar 18:55 | Boards, trays, oil pan exactly top-down, a royalty-free reference for ChatGPT (ART-62, -63) |
+| The shelf | daar 19:05, chaat 20:57 | Items on chai's shelf (or a counter), never floating (SH-243) |
+| Hints | sekelo 9:14-9:47, chaat 20:24-20:36 | The stuck hint past the level's wait (SH-228); Nani's line in chai's type, one line (SH-240); the drop-down (SH-149); the placeholder waits on Mum (SEK-18) |
 
-## 4. Zafar's play, game by game (the points; rows to follow)
+## 4. Zafar's play, game by game (the points; rows in the report's §3)
 
-**Maani (0:00-9:00):** keep "one" in orders for now (it teaches the gender forms of one, 0:52); the item card lacks chai's line and
-alignment (1:02); the onboarding box clips the images, the pills and the rolling board (2:15); two finger animations overlap (2:58);
-the rolling lesson: one finger dragging the rolling pin up and down, or a pulsing circle, try both (3:07); the box should go once
-rolling starts; the first time, rolling stops at the right size, then the light and a juice sound prompt the tap, with no finger
-(3:34-4:30); the pan should not bounce: only shelf items bounce (4:35-4:57); the dough balls flashed as highlighted while one flew to
-the pan (5:00); no lesson for the flip (5:28); a tick button appeared (5:38); the dough balls may not read as dough (5:58); the order
-card did not tick as each was made (6:16-7:24); boards and trays not exactly top-down (8:07).
+**Maani (0:00-9:00):** keep "one" for now (it teaches the gender forms of one, 0:52; provisional; principle 4); silver dishes fine
+(2:12); the item card lacks chai's line and alignment (1:02); the box clips images, pills and the rolling board (2:15); two fingers
+overlap (2:58); the lesson: one finger dragging the pin up and down, or a pulsing circle, try both (3:07); the box goes once rolling
+starts; the first time, rolling stops at the right size, the light and a juice sound prompt the tap, no finger (3:34-4:30); the pan does
+not bounce (4:35); the dough balls flashed lit while one flew (5:00); no flip lesson (5:28); a tick button (5:38); the balls may not read
+as dough (5:58: his ChatGPT options first); the card did not tick as each was made (6:16-7:24); boards and trays not exactly top-down
+(8:07). "On the right framework" (7:40).
 
-**Sekelo (8:43-16:45):** Nani's hint is English, a placeholder (9:14); the stuck hint wrapped to two lines when it fits one, and
-Nani's box has no drop-down (9:26-9:47). **The order (his proposal, 9:56-16:39):** the order card holds four item cards, the four
-pieces of the skewer, even if all the same, each ticking as it goes on; the order names the dish ("Muke sekelo khape" or the meat's
-name, words for Mum), so the pieces' words (gos, the chicken) are separate from the dish's; one skewer per person; an order like
-"first chicken, then three lamb" pops the chicken card, then a lamb card that stays while three copies shrink into the card in turn
-(he prefers this to one card splitting into three). Plus the tomato crate picture for a tomato skewer (SEK-24).
+**Sekelo (8:43-16:45):** Nani's hint an English placeholder (9:14; Mum's "thread them", since 17 Oct); the stuck hint wrapped to two
+lines when one fits; no drop-down (9:47). **His order (9:56-16:39):** four item cards, the skewer's four pieces, even if all the same,
+each ticking as it goes on ("otherwise you have to put four on before you even know"); the order names the dish, so the pieces' words
+(gos, chicken) are separate from the dish's; one skewer per person; "first chicken, then three lamb" pops the chicken card, then a lamb
+card that stays while three copies shrink into the order card in turn (preferred to a split into three). **For Mum (LNG-24):** "I want
+beef / chicken mishkaki", mixed perhaps just "mishkaki", or drop mishkaki (East African) for "grilled meat / vegetables"; his tries are
+drafts. **PRC-12:** Mum's questions and the grammar sheets grouped by game. SEK-24: a tomato crate on a tomato skewer's card.
 
-**Daar (16:59-19:20):** the old order card's relic (a long strip with an arrow) cuts across the card; the item cards are not chai's;
-no drop-down; a crate of onions where one onion is meant; after chopping, the old-style pop-up; the oil pan is not top-down (an art
-run); the items are not on a shelf. **Stir** (19:26): split out from daar but a different dial, art and zoom from daar's own stir.
+**Daar (16:59-19:20):** the old card's relic (a strip with an arrow) across the card; the item cards not chai's; no drop-down; a crate of
+onions for one onion; after chopping, the old-style pop-up (the tadka's order via `UI.mission.request`); the oil pan not top-down; items
+on a code-drawn plank, not a shelf. Today: DAAR-43, on a phone the first-time light covers the next pile. **Stir** (19:26): a different
+dial, art and zoom from daar's own; one stir in the kitchen kit for both (DAAR-45).
 
-**Chaat (20:03-21:18):** no dimmed onboarding; the order card wrong; the hint to pick the next item never came for a new player; told
-to put in the chillies straight after the potatoes (to check); perhaps a bowl on the counter or shelf, as chai; a tick button.
+**Chaat (20:03-21:18):** no dim (its own finger, not the kit's coach); the card wrong (sequences on the old strip); no stuck hint for a
+new player; chillies asked straight after the potatoes (CHT-19: no log; replay ten seeds); perhaps a bowl on the counter or shelf, as
+chai (ART-64); a tick button.
 
-**Samosa (21:23-22:53):** no lesson for placing samosas in the pan; the item card a mess; six pastry rectangles do not work; the fold
-animation does not work; the next button "horrible". **His idea:** go back to one roll; the game guides more and allows fewer
-mistakes, which puts the focus on the language: you can't put in a wrong item, only the number asked, it moves on when done.
+**Samosa (21:23-22:53):** no lesson for the pan; the item card a mess (the old box with count row and filling pills); six rectangles and
+the fold do not work; the next button "horrible ... you can't have an X button". **His idea:** one roll; more guidance, fewer mistakes,
+the focus on the language: no wrong item goes in, only the number asked, it moves on when done.
 
-**Eggs (22:57-24:07):** the light round the eggs cuts the word pill; the pan's light circle is too small, off-centre and half on the
-handle; the order logic (above).
+**Eggs (22:57-24:07):** the light round the eggs cuts the pill; the pan's light too small, off-centre, half on the handle ("how can that
+pass": drawn round the whole picture); the order logic (§3); CK-62, an empty picture box on the card.
 
-**Corn (24:14):** not bad; the green zone is far too short; he asks for a rule that it is longer.
+**Corn (24:14):** not bad; the green zone far too short (the last tenth of a 2.6-3.2 s side: 0.26-0.32 s); he asks for a rule. Today:
+CK-61 (the light's room), ART-60 (the table background low-res).
+
+**Baking and chop (not played; Fable's frames):** baking's bowl floats, containers sit in front of the doors, a round glow clips the
+pill, no band; its "?" goal ran off a phone (SH-235). Chop: bare marble, a gold strip, things fly in from the air, no greeting, no shelf.
 
 ## 5. The look (shelf, shadows, marble, light, mock-ups)
 
-**Zafar's ChatGPT redos** (maani, chai with shadows, sekelo with three shelf options) and ChatGPT's six findings, reviewed by Fable
-and the orchestrator; Fable's full answer in `s18-fable-look-review.md`.
+**Zafar's ChatGPT redos** (maani, chai with shadows, sekelo with three shelves) and ChatGPT's six findings, reviewed by Fable and the
+orchestrator (`s18-fable-look-review.md`). Fable's flaws today: nothing grounded (no shadow under hob, tray, board, tawa); sekelo's board
+light oak, its skewer one pixel on a phone, its heaps at a 3/4 angle that is neither camera; maani's thalis read as discs on a wall; at
+740x320 the marble is a grey wall.
 
-- **The shelf: option 4, the stone ledge with a front lip** (chai's own). The rule: the camera belongs to the surface: the worktop
-  seen from straight above, the shelf from the front and a little above (10 degrees), the lip the line between them, everything on
-  the shelf standing on that line with its contact shadow. Bowls for loose pieces; containers sit on the ledge, never float.
-- **Dough balls** stay strictly top-down (Zafar), in a shallow thali on the shelf (Fable). Zafar (8 Nov): try maani's bottom panel
-  both ways, the shelf and the plain band; he leans to the shelf.
-- **Shadows: yes, at about half the mock's strength.** One upper-left light; a contact shadow under everything, fading down-right
-  (the art bible's rule, never fully applied). Built two ways: a pre-made soft silhouette for each fixed object (hob, board, trays,
-  tawa); the existing soft oval for things that move (shelf items, pans, pieces), one shadow per skewer that grows. Not Phaser's
-  shadow effect (WebGL only, costly on phones). No light streaks on the worktop.
-- **The shadow on the back of the bottom panel** (ChatGPT's chai): the orchestrator's call, as Zafar asked: **no.** The band is the
-  shelf's front face, not a wall behind the items; a shadow climbing it would read as a wall and break the two-camera rule. Shadows
-  fall on the ledge only, as in option 4.
-- **The marble:** a careful middle: today's colour (white, never yellowed), its veins somewhat stronger and cool, so it reads as
-  stone on a phone. Tried side by side in a lab before it changes.
-- **ChatGPT's six findings:** 1 walnut board, bevelled: agree. 2 thicker skewer: agree. **3 the tray: its size in the mock is right**
-  (Zafar, 8 Nov: that screen has one board and one tray; the two trays and the grill are the next screen; "deeper, not bigger" was the
-  orchestrator's mistake). 4 piles instead of bowls: disagree, keep bowls. 5 one upper-left light: agree. 6 balance: agree.
-- **ChatGPT for every screen (Zafar, 8 Nov): yes.** It is good at proportion and placement for the screen it sees. Start from each
-  game's current screen (the developed games' layouts already fit their constraints) and let it improve; for the least developed
-  (the corn stall) give it more room. Every brief carries the house lines: the camera rule, the shelf, the light, the shadow weight,
-  the marble, walnut, no text, only the game's own items (the sekelo mocks invented murgi and dropped makai), the space other pieces
-  need (the count pills, the side panel, the gear). Each mock becomes a one-page look sheet (numbered changes, each art, code or
-  rejected). Exact top-down reference images attached for boards, trays and pans.
-- **The shelf art (Zafar, 8 Nov, amended):** one art run draws the one shelf at a set of angles, each **empty and with items** (so each
-  angle's contact shadows are captured too); more angles are cheap in one run and give consistency. **Measured (8 Nov):** a round rim's
-  height over its width is the sine of the camera's angle: ChatGPT's option 4 bowls measure 0.48 (both bowls), **about 29 degrees**;
-  chai's jars today measure about 0.12, **about 7 degrees**. So the set: 0, 7 (chai today), **29 (the key one, option 4)**, 45, and
-  top-down. One shelf has one camera: each game's shelf and everything on it share one angle (low bowls need about 30 to show what is
-  in them; tall jars read best near side-on). Which angle each game uses: decided from its mock. Fable's "10 degrees" was wrong for
-  the mock; the orchestrator's three views too few.
-- **Containers drawn on the shelf, then cut (Zafar's idea):** yes: drawn standing on the ledge, the contact reads real; cut with its
-  shadow as a separate layer (the art bible's edit-in-place cut).
+- **The shelf: option 4, the stone ledge with a front lip** (chai's). The camera belongs to the surface: the worktop from straight above,
+  the shelf from the front and a little above, the lip the line between, everything on the shelf standing on it with a contact shadow.
+  Bowls for loose pieces; containers on the ledge, never floating.
+- **Dough balls** strictly top-down (Zafar), in a shallow thali on the shelf (Fable); maani's bottom panel tried both ways, shelf and
+  plain band; he leans to the shelf.
+- **Shadows: yes, at about half the mock's strength.** One upper-left light; a contact shadow under everything, fading down-right (the
+  bible's rule). Two builds: a pre-made soft silhouette per fixed object; the existing soft oval for things that move, one per skewer,
+  growing. Not Phaser's shadow effect (WebGL only, costly on phones). No light streaks.
+- **The back-panel shadow** (ChatGPT's chai): the orchestrator's call, as asked: **no.** The band is the shelf's front face, not a wall.
+- **The marble:** today's white (never yellowed), veins somewhat stronger and cool so it reads as stone on a phone; a lab first.
+- **ChatGPT's six findings:** 1 walnut board, bevelled: agree. 2 thicker skewer: agree. **3 the tray's size in the mock is right** (Zafar:
+  one board and one tray on that screen; two trays and the grill are the next; "deeper, not bigger" was the orchestrator's mistake).
+  4 piles not bowls: disagree. 5 one upper-left light: agree. 6 balance: agree.
+- **ChatGPT for every screen: yes.** From each game's current screen; the corn stall gets more room. Chai and sekelo first so the shared
+  rules settle once; the other eight answer only their own questions. Every brief carries the house lines (camera rule, shelf, light,
+  shadow weight, marble, walnut, no text, only the game's own items: the sekelo mocks invented murgi and dropped makai; the room other
+  pieces need). **The plate:** a grey-box screenshot of the real stage at 1280x665 (`shelfshot.mjs`); the four-size check is on the cut
+  assets, never the mock. Each mock becomes a one-page look sheet (numbered changes: art, code or rejected). Top-down references travel in
+  the block's zip (ART-29: Zafar uploads nothing).
+- **The shelf art (amended):** one run draws the shelf at several angles, each **empty and with items** (contact shadows captured).
+  **Measured:** a rim's height over width is the sine of the camera's angle: option 4's bowls 0.48, **about 29 degrees**; chai's jars 0.12,
+  **about 7**. So 0, 7, **29 (the key one)**, 45, top-down. One shelf, one camera: each game's shelf and everything on it share one angle
+  (low bowls need about 30; tall jars read best near side-on), decided from its mock. Fable's "10 degrees" was wrong; three views too few.
+- **Containers drawn on the shelf, then cut** (Zafar): yes; the shadow cut as its own layer.
 
 ## 6. Principles to settle (decisions for Zafar, with recommendations)
 
-1. **Shared pieces only.** Every game draws its item cards, Nani's box, the onboarding light and the order card through the shared kit;
-   a game's own copy is a merge blocker. (Yes.)
-2. **No ticks, no tick buttons, no next-scene buttons** in any game. (Yes: his words.)
+1. **Shared pieces only:** cards, Nani's box, lights, stuck help and order card through the shared kit, the roll-out switch on, the old
+   paths deleted; a game's own copy blocks a merge. (Yes.)
+2. **No ticks, no tick, next-scene or X buttons;** a step or order moves on by itself. (Yes: his words.)
 3. **The order card ticks as you go;** "well done" from the person when their whole card is complete; then the round ends. (Yes.)
-4. **One item card per unit.** The order names the dish and the count; each item card names one unit; no "one" on a card. A skewer's
-   card holds its four pieces. (Yes; the Kutchi for each dish to Mum: the questions sheet organised by game.)
-5. **One order per person** in these games (other modes keep multiples). (Yes.)
-6. **Onboarding:** the light hugs the thing and its pill; it leaves when the child starts the task; one finger at most; only shelf
-   items bounce. (Yes.)
-7. **Timing:** each game keeps its own timings (7 Nov), with **a floor**: no green window under a set minimum (he asks this for the
-   corn stall). Recommend a floor of 1.5 s at L4 for every timed window, each game free above it. (To decide.)
-8. **Samosa:** one roll, more guidance, fewer ways to go wrong, the focus on the words. (Recommend yes, designed in a lab first.)
-9. **The look:** sections 5's choices: option 4 shelf, shadows at half weight, no back-panel shadow, the marble middle, mock-ups per
-   screen from the current layouts. (Yes; the marble and shadows tried in a lab first.)
-10. **The merge rule:** nothing merges until it sits beside chai and an eye passes it. (Yes.)
+4. **The counting rule, every game (Q1; "do help me establish it").** The spoken order and headline carry the number ("I want two fried
+   eggs"); one item card per thing, naming it alone (two "fried egg" cards; a skewer is four "gos" cards), so no card says "one"; the
+   he/she forms of one are still heard. It overturns the earlier "no one for a single item"; his maani "keep it for now" was provisional.
+   (Recommend yes everywhere; SEK-25, CK-64, SH-239 follow; each dish's Kutchi to Mum, her sheets by game.)
+5. **Sekelo: one skewer per person (Q2);** levels grow by people (1-4), not skewers each (SEK-22). (Recommend yes.) *Fable: the earlier
+   "one order per person in these games" over-generalised: chai's and eggs' orders carry counts; he said it for sekelo.*
+6. **Onboarding:** the light hugs the thing, its pill and its board, with the margin; it leaves the moment the child starts the move; one
+   finger, the kit's; **the hop rule (Q7): "only things on the shelf (the bottom bar) hop when lit; pans, boards and things in play
+   never."** (Yes; SH-237 is drafted so.)
+7. **Timing:** each game's own timings (7 Nov) with **a floor**: no green window under a minimum, every timed control, by level (Q5).
+   *Fable: the 1.5 s at L4 proposed earlier is a guess; measure chai's green at each level, set the floor there, measure every game
+   against it.* (After the measurement.)
+8. **Samosa (Q4):** one roll, more guidance, fewer ways to go wrong, the focus on the words; a wrong filling refused, only the asked
+   number, it rolls up and moves on. (Recommend yes in principle, by the fast lane: mock-up, lab page, his numbered choices, after the
+   scene round; nothing removed until he picks.)
+9. **The look:** §5's choices. (Yes; marble and shadows in a lab first.)
+10. **The merge rule and judgement (Q6):** nothing merges until it sits beside chai at the same moments (`sidebyside.mjs`, to build) and
+    an eye passes it, the orchestrator's then Fable's; his ideas are improved, not waited for. **"How can that pass":** no check asks
+    whether a light is centred on and whole round its thing (contract-92 asks only that it does not cover a neighbour), the judge's
+    batches never asked, and the merge was on "0 breaks" with no look beside chai. (Yes; a contract row for centred, whole lights.)
+11. **A count in the pop-up (Q3):** a copy of the pop-up card shrinks into the order card once per piece, the pop-up going with the last
+    (his first option), not a split into three. (Recommend it as the shared pop-up's way for any count.)
+12. **Each game's scene (Fable's seven questions, unanswered):** one kitchen scene for every game, band and ledge along the bottom, every
+    pickable item in a slot with its pill, the game's own things above, the kit refusing a game without it (yes); baking's counter, oven
+    and cat as a backdrop above the band, containers on the shelf (yes); eggs on chai's marble, the oak table as the corn stall's backdrop
+    (yes); samosa's top-down heaps with no ledge kept as his S2/Q2, or onto the ledge like every other game (Fable: the ledge; his call);
+    chop's things start on the shelf and fly from it, the mechanic unchanged (yes). The ~06:10 "flat strip for flat things" gives way to
+    the thali on the shelf (§5; to confirm).
 
 ## 7. Decisions recorded (8 Nov)
 
+- ~00:30, chop: levels from the rules' table (kinds 1-4, chops 2-4-6-8); chop keeps its swipe.
 - ~05:30, eggs: the "no" item from L2; counts rise; never slower by level; chai's redo; overcook like chai, then redo.
-- ~06:10: publish what is built for his play; he defines each game's look; Fable's rebuild round not started.
-- ~17:00: the shelf art at several angles (0, 7, 29, 45, top-down), each empty and with items; 29 degrees (option 4) the key one.
-- ~16:00: yes to the six look decisions (publish chai's fixes; option 4 shelf, one rule, dough in a thali; shadows at half weight;
-  the marble middle; the chai lab page first; mock-ups chai and sekelo first, then the rest), **amended:** the tray's size as in the
-  mock; ChatGPT mocks for every screen, starting from the current layouts; maani's bottom panel tried both ways; the shelf drawn in a
-  few views; containers drawn on the shelf then cut; the back-panel shadow left to the orchestrator (no).
+- ~06:10: publish what is built for his play; he defines each game's look; Fable's round not started. The shelf principle proposed (a
+  shelf wherever named things are picked; a flat strip for flat things; none where nothing is picked), to confirm.
+- ~16:00: yes to the six look decisions (publish chai's fixes; option 4 shelf, one rule, dough in a thali; shadows at half weight; the
+  marble middle; the chai lab first; mocks chai and sekelo first), **amended** as §5 records.
+- ~17:00: the shelf art at 0, 7, 29, 45 and top-down, each empty and with items; 29 (option 4) the key one.
+- Evening (a note, weighed in §9): lock the visual and layout principles, then mock-ups by an art run he can start "sooner rather than
+  later, because I think that might be the critical path"; what went wrong discussed while it runs.
 
 ## 8. Next (for the planning chat)
 
 1. Zafar's go to publish chai's three fixes (or a permission rule for `publish.mjs`).
-2. The /feedback report and rows are in (`docs/feedback/kitchen-play-2026-11-08.md`); its seven questions fold into section 6
-   (the counting rule, one skewer per person, how the pop-up shows a count, samosa, the green floor, judgement, the hop rule's words).
-3. Settle section 6's ten principles.
-4. A plan in that chat: likely (a) the kit's one scene and the shared pieces made compulsory, with the side-by-side check; (b) the
-   chai lab (shadows, marble) for his eye; (c) ChatGPT mocks per screen; (d) an art run (top-down boards, trays, the oil pan; the
-   shelf views; bowls); (e) the games, two at a time, each merged only beside chai.
+2. Done: the /feedback report, its rows and Fable's second reader; its seven questions are in §6.
+3. Settle §6's twelve principles in one message ("yes to all except ...").
+4. Agree §9's plan, or his changes, and launch its day 0.
+
+## 9. Draft plan (Fable, for discussion)
+
+**Shape.** Two tracks from the same hour. Track A, Zafar's: the principles, one ChatGPT **house art run** (the critical path, as he
+says), then the mocks. Track B, the chat's: the shared layer, which needs no picture from him (27 of 34 rows are code, most sharing three
+causes), the checks that gate every merge, then the games two at a time as their mocks and art land. A milestone he can play on `main`
+every day or two. **Six days (Mon 9 to Sun 15 Nov), $450-600:** Sprint 19's goal and budget; the pantry's polish slides again.
+
+**Where I disagree with the document.** Its "Next" was one serial chain (kit, lab, mocks, art, games): the house run's list is already
+decided, so it starts first and the shared layer the same morning; "a game's look is set by a mock-up before any builder starts" is right
+for scenes, wrong for the shared pieces chai already defines. My own 8 Nov "one day, $200-270" covered the scene alone: too small. Two
+builders at a time, not eight: eight was what no one could look at.
+
+**Day 0 (Zafar, an hour).** Answers to §6; the go to publish chai. The orchestrator writes the house run's block (`/art-run`, about $15):
+the shelf at five angles, empty and with items, containers on the ledge; low bowls at 29; board, trays and oil pan exactly top-down with
+royalty-free references in the zip; one onion, one tomato and every item a card shows as a crate; three dough-ball options; the thicker
+skewer. He runs it (half a day, in the background) while we talk through §2.
+
+**Days 1-2, track B: the shared layer** (three builders in disjoint files if he allows a third for two days; else the checks go second).
+**Cards** (Opus high, $25-35): principles 1-4 and 11 in the shared card and pop-up; `UI.TYPE_ALL` on; the old strip, box and big-card
+paths and `UI.done` gone; chai's frozen diff after each. **Lights** (Opus high, $25-35): principle 6, the stuck help in every game,
+centred round lights. **Checks** (Sonnet high, $10-15): `sidebyside.mjs`, chai's frame beside a game's at order-in-sidebar, first-time
+light, kind-tap, serve and well-done at 740x320 and 1280x665, one question, "Is this chai's kitchen? List every difference"; the
+structural contract (band, base line, pill line, one light layer); `kitmap` gating `S.glow`, own graphics and backgrounds; contract rows
+for no ✓, the light gone within 300 ms, a centred whole light, the floor once measured. Then **the scene** (Opus high, $30-40):
+`Kit.scene` to Fable's 8 Nov design with shadow tokens and pre-blurred silhouettes; chai switched onto it, frozen diff clean; a lab
+section with chai's, maani's and sekelo's items, the marble middle and the shadows beside today's. **Milestone 1 (Tue evening): every
+game on the 6 Nov cards, no ticks, ticking cards, the lights right; none worse; published.** The side-by-side runs on every game as a
+baseline.
+
+**Days 1-2, track A: the mocks.** When the house art lands (Day 1 evening) the orchestrator judges and cuts it (about $20) and the scene
+builder wires the shelf views into the lab. Zafar's mocks: chai and sekelo first (two ChatGPT chats over their `shelfshot` plates, an
+hour), his pick of the shelf angle; then the other eight in one sitting (two hours). Each becomes its look sheet that evening; art lines
+go to **art run 2** (Days 3-4, half a day of his: chaat's bowl, samosa's one roll and fold, baking's and the stall's backdrops), code lines
+to the game's brief. The samosa lab (one roll, his numbered choices) runs here.
+
+**Days 3-5: the games, two at a time, each merged only when `sidebyside` lists no difference the look sheet did not accept and the
+orchestrator and Fable have looked.** Maani and sekelo (Opus high, $25, $30); daar and chaat ($30, $20: one stir in the kit for both
+screens); eggs and corn (Opus $20, Sonnet $12); samosa and baking ($30, $20: samosa after his lab pick); chop (Sonnet high, $12). Each
+onto `Kit.scene` with its §4 rows and its look sheet; mechanics and timings untouched except where a row says; Fable judges each pair
+($10). **Milestone 2 (Thu): maani and sekelo in chai's kitchen with the house art. 3 (Fri): daar, chaat, eggs, corn. 4 (Sun): samosa,
+baking, chop; full checks; publish; his play; the look-back.** Language gaps show as grey English and never block; Mum's round, by game,
+when she is free.
+
+**Cost and time, honestly.** Builders $330-400; art judging, cutting and wiring $40-60; Fable's judging $50-60; the chat's briefs, look
+sheets and merges $50-80: **$450-600**, over if a mock sends a game back to art (then cut chop, baking, the stall's backdrop, samosa's
+redesign to Sprint 20). Zafar: an hour Day 0, half a day Day 1, three hours of mocks, half a day Days 3-4, a play per milestone. Nothing
+in track B waits on him after Day 0; if he can give only the house run this week, Milestones 1 and 2 still happen and 3 and 4 slide a week.
+
+**His first three things:** 1. answer §6 ("yes to all except ...") and say "publish chai"; 2. run the house art block Monday morning;
+3. two mocks, chai and sekelo, over the plates we send, and pick the shelf angle.
 
 ## Proof
 
-Read: Fable's two reports named above; the transcript (all 239 lines); the art bible's light and shadow rules
-(`docs/design-language/art-bible.md` 84-98); the publish and frozen-diff results (`build/reports/frozen-diff-chai-tray-202611081519.md`,
-clean); the live sekelo frame (`build/screenshots/sandbox/s18-w3-full/cook-mishkaki-grill/1920x1080/05-kind-tap.png`). Research on
-mixed perspective and 2D shadows: Unity's 2D perspectives reference; Phaser's FX shadow docs and 3.60 devlog; Construct and OpenFL
-notes on drop-shadow cost (links in the 8 Nov chat).
+Read (the orchestrator): Fable's two reports; the transcript (239 lines); the art bible's light and shadow rules
+(`docs/design-language/art-bible.md` 84-98); the frozen-diff result (`build/reports/frozen-diff-chai-tray-202611081519.md`, clean); the
+live sekelo frame (`build/screenshots/sandbox/s18-w3-full/cook-mishkaki-grill/1920x1080/05-kind-tap.png`); research on mixed perspective
+and 2D shadows (Unity's 2D perspectives reference; Phaser's FX shadow docs and 3.60 devlog; Construct and OpenFL drop-shadow notes).
+
+Read (Fable, the review): `docs/feedback/kitchen-play-2026-11-08.md` whole; the 40 named rows in `docs/process/regressions.md` (27 new,
+7 reopened, SEK-24, CK-61, CK-62, DAAR-43, SH-235, CHAI-107) plus ART-29 and ART-60; `s18-feedback-1108-second-reader.md`;
+`docs/sprints/S18-kitchen-family.md`; `docs/status.md` "Next chat"; `git log origin/main`; the art-run skill; `build/tools/review/` (no
+`sidebyside.mjs` yet; `shelfshot.mjs`, `kitmap.mjs` exist); `js/cook/kitchen-kit.js` (no `Kit.scene` yet). No other file changed.
