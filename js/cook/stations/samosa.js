@@ -50,52 +50,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
-  const V2 = "assets/cook/items/samosa-v2/";
-  const V3 = "assets/cook/items/v3/samosa/";
-  // what build/cut_cook_v3.py measured (assets/cook/items/v3/samosa/meta.json; fractions of each sprite)
-  const META = {
-    // (SAM-21, 19 Oct: the six fixed fold pictures gave way to the coded fold, Cook.Pastry in js/cook/mechanics/fill-fold.js)
-    // the karahi of oil (S14, S17, S19): its round body, handles left out; oil = the oil's radius / the body's
-    karahi: { w: 1253, cx: 0.4975, cy: 0.4992, r: 0.3914, oil: 0.8994 },
-    // the paper-lined enamel plate (S10): its rim; flat = the flat paper-lined centre's half-width / the rim r
-    plate: { w: 825, cx: 0.4982, cy: 0.4994, r: 0.4826, flat: 0.6 },
-    // the slotted spoon (S20): its bowl's middle and radius (x, r fractions of the width, y of the height)
-    jharo: { w: 657, h: 837, bx: 0.279, by: 0.227, br: 0.25 },
-    heap: { w: 419, h: 410 },
-    fry: { w: 400, h: 340 },
-  };
-  // S2 / Q2: the fillings as top-down heaps, no bowls (samosa only)
-  const HEAP = { "ph-keema": "chundo", "veg-01": "potato", "veg-10": "peas", "veg-02": "onion", "veg-12": "chilli", "ph-dhana": "dhania", "veg-carrot": "carrot", "veg-cabbage": "cabbage" };
-  // 30 Sept (v3.1): S5's green chilli heap read as peas; R5's sliced chilli rings (cut for daar) take its place
-  // ART-11 (s08 w6G): the potato is the landed PT1 pile (matte, starchy cubes), not the butter-yellow v3 heap
-  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp", "veg-01": "assets/cook/items-s08b/potato/potato-pile-v3.webp" };
-  const heapUrl = (id) => HEAP_ART[id] || (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
+  /*
+   * The game's own numbers live in its settings file, data/stations/samosa.json (STD-F1-03, STD-F2-03: its art and what
+   * build/cut_cook_v3.py measured on it, the heaps, the grid's places; the knobs by level stay data.mechanics.fill, .fold, .fry).
+   * Read from Cook.data.settings.samosa (js/cook/zone.js M.stationData) as the file loads and as each round starts.
+   */
+  let ART = null; // the pictures (art), META their measures
+  let META = null;
+  let BOARD, PLATE, FRY, GRID, HEAP_Y, CHIP_Y, PITCH, HEAP_W, STRIPS, STRIP_H, PPU;
+  function settings() {
+    const s = ((Cook.data && Cook.data.settings) || {}).samosa;
+    if (!s || !s.art || !s.grid) throw new Error("samosa: data/stations/samosa.json not loaded");
+    ART = s.art;
+    META = s.art.meta;
+    GRID = s.grid;
+    ({ board: BOARD, plate: PLATE, fry: FRY, heapY: HEAP_Y, chipY: CHIP_Y, pitch: PITCH, heapW: HEAP_W } = s.grid);
+    // a strip's height at full size (design px; its length is the fold's, Cook.Pastry), the fold's canvas px per strip height,
+    // and how many strips lie on the board (SAM-25: six at every level)
+    ({ stripH: STRIP_H, ppu: PPU, strips: STRIPS } = s.grid);
+  }
+  const heapUrl = (id) => (ART && ART.heaps[id]) || null;
+  // a samosa in the oil (design px wide) and where they float, by how many fry (grid.oil)
+  const OIL = (n) => GRID.oil.find((o) => o.upTo == null || n <= o.upTo);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  // SH-112 (Zafar 20 Oct): the taller band's heaps are a quarter bigger, centred between the band's top gap and the chips
-  const HEAP_Y = 742;
-  const CHIP_Y = 860;
-  const PITCH = 182;
-  const HEAP_W = 160;
-  // the house board (S6): board.webp is 1397 x 847
-  // SAM-25 (P43: "increase the size of the chopping board"): the board takes the worktop left of the plate, for six strips
-  // (SH-112: a little smaller, so its foot stays above the taller band)
-  const BOARD = { x: 640, y: 322, w: 985, h: 985 * (847 / 1397) };
-  const PLATE = { x: 1390, y: 400, d: 320 };
-  // the fry (S17, S19, Q9): the wide hob (one big burner) with the karahi ~1.4x its old size (body r 180 ->
-  // 250: at 270 its rim ran over the hob's knob), and the plate right of the hob. The hob (937 x 568 at
-  // k 1, its burner in the middle; its knob 0.469 h below the burner, clear of the rim) centred on bx, the
-  // plate just clear of its right edge: 66 ... 1134, 1140 ... 1480.
-  // (SH-112: the hob and karahi 5% smaller so the hob's top stays on the stage above the taller band; the thalis bigger)
-  const FRY = { hobK: 1.08, bx: 600, r: 237, px: 1310, pd: 330, trayY: 744, trayD: 180, trayPitch: 210 };
-  // a samosa in the oil (design px wide) and where they float (degrees round the middle, radius / the oil's):
-  // fewer samosas, bigger and further apart
-  // SAM-14 (A8, decision 56): every samosa stays inside the oil's flat surface: its spot (r, a fraction of the oil's
-  // radius) plus half its size stays within 0.8 of the oil (was up to 0.94: they reached the karahi's sides)
-  const OIL = (n) => (n <= 3 ? { size: 170, r: 0.42, at: [-90, 30, 150] } : n <= 4 ? { size: 150, r: 0.47, at: [-135, -45, 45, 135] } : { size: 128, r: 0.52, at: [-90, 30, 150, -30, 90, 210] });
-  const INK = { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; }, glow: 0xffe3a0 }; // the central tokens (SH-151)
-  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
 
   /** A frame's length in ms, for a tick (the scene's ticks get no dt). */
   const clock = () => {
@@ -106,17 +85,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t0 = t;
       return dt;
     };
-  };
-  /** {id: n} from a tally, a list (one spoon each) or any-order groups. */
-  const asTally = (f) => {
-    const out = {};
-    if (!f) return out;
-    if (!Array.isArray(f)) {
-      Object.keys(f).forEach((id) => Number(f[id]) > 0 && (out[id] = Number(f[id])));
-      return out;
-    }
-    f.flat().forEach((id) => (out[id] = (out[id] || 0) + 1));
-    return out;
   };
   const ladderOf = (ctx) => {
     const Ls = UI.mission.ladders() || [];
@@ -131,15 +99,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The station's own pictures every round draws (the board, plate, karahi, jharo, thali, the pastry tile, the fry states). */
   const BASE_ART = () =>
     [
-      ["sv3-board", V3 + "board.webp"],
-      ["sv3-plate", V3 + "plate.webp"],
-      ["sv3-karahi", V3 + "karahi.webp"],
-      ["sv3-jharo", V3 + "jharo.webp"],
-      ["sv2-thali", "assets/cook/items/vessel-thali-t.webp"],
-    ]
+      ["sv3-board", ART.board],
+      ["sv3-plate", ART.plate],
+      ["sv3-karahi", ART.karahi],
+      ["sv3-jharo", ART.jharo],
+      ["sv2-thali", ART.thali],
       // SAM-21: the pastry texture the coded fold is drawn in (the s08 art run's tile, seamless across)
-      .concat([["sv3-pastry", "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp"]])
-      .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]));
+      ["sv3-pastry", ART.pastry],
+    ].concat(ART.fry.map((url, i) => [`sv2-fry-${i}`, url]));
   /*
    * s08 w6B (CK-48, P28: "the time it takes for you to listen to the instruction ... should be enough time to load"): this
    * file loads when samosa is chosen (CK-25: with the order, or the lab tile), before its view opens, so its own pictures
@@ -148,6 +115,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   function warm() {
     try {
+      settings();
       const S = Cook.scene;
       if (S && S.load && St.loadArt) St.loadArt(S, BASE_ART().concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : [])).catch(() => {});
     } catch (e) {
@@ -167,16 +135,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   async function station(host, p) {
     const S = host.S;
     const ctx = host.ctx;
+    settings();
     Object.values(host.zones).forEach((z) => z.close());
     const level = Math.max(host.level || 1, Cook.roundLevel(ctx));
     const phases = (Cook.data.stations.samosa || {}).phases || {};
     const who = p.who || (ctx.order && ctx.order.who) || "nana";
-    const want = asTally(p.fillings);
+    const want = Cook.Pastry.tally(p.fillings);
     const kinds = Object.keys(want);
     const exclude = [].concat(p.exclude || []).filter(Boolean);
     const count = p.count || 1;
     // 30 Sept: a second kind of samosa (its own block on the card), from level 3
-    const want2 = asTally(p.fillings2);
+    const want2 = Cook.Pastry.tally(p.fillings2);
     const kinds2 = Object.keys(want2);
     const count2 = kinds2.length ? Number(p.count2) || 0 : 0;
     const kFill = Mech.knobs("fill", { level });
@@ -212,7 +181,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (phases.fill) UI.gist(phases.fill);
     if (ctx.nextStep) ctx.nextStep("Fill");
     const fz = Mech.zone(S, ctx, { id: "fill", level });
-    const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: false, redo, steps });
+    const made = await fillFold(fz, { who, ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: false, redo, steps });
     fz.close();
     St.end();
 
@@ -234,7 +203,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
-    await serve(yz, { who, plate: fried.plate, ok: true, last: true });
+    await serve(yz, { who, plate: fried.plate });
     yz.close();
     St.end();
     const result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
@@ -274,52 +243,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const M = UI.mission;
     if (M && M.closeCards) M.closeCards(on);
   }
-  /** Not quite: the card starts again, open (its misses stay for the review). */
-  function cardAgain(ctx) {
-    const L = ladderOf(ctx);
-    if (L) {
-      Cook.Order.rows(L, { all: true }).forEach((r) => {
-        if (r.head) return;
-        r.done = false;
-        r.got = 0;
-      });
-      UI.mission.refresh();
-    }
-    cardFold(false);
-  }
-
   /* ---------- the flat pieces every job shares ---------- */
-  function backdrop(z, S, band = true) {
-    S.track(
-      S.add
-        // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
-        .rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L((band ? SHELF_TOP : 900) + FAR * (band ? 1 : 2)), INK.page, 0.5)
-        .setOrigin(0)
-        .setDepth(D.bg + 1),
-    );
-    if (!band) return;
-    const g = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-    g.fillStyle(INK.panel, 1);
-    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
-    g.fillStyle(0x2a1a0a, 0.08);
-    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
+  /** The worktop and the band: the kitchen kit's wash and stone band (module map piece 4, ART-41; was samosa's own copy). */
+  function backdrop(S) {
+    Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR });
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2 }); // (no ledge: the heaps lie top-down on the band)
   }
 
-  /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
+  /**
+   * The word pop (§4) by the action: the shared kit's (Juice.P.pop, module map piece 12: the card, the speaker, the Kutchi word,
+   * rising into place at (x, y), held ms) and the family clip. Was samosa's own copy of chai's.
+   */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1700 } = {}) {
-    const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(z.k * 0.8));
-    const t = S.add.text(0, 0, text, { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
-    const w = 34 + 10 + t.width + 36;
-    const g = S.add.graphics();
-    g.fillStyle(0x28190a, 0.1);
-    g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
-    g.fillStyle(INK.card, 1);
-    g.fillRoundedRect(-w / 2, -28, w, 56, 12);
-    (Cook.Kit ? Cook.Kit.speaker : () => {})(g, -w / 2 + 30, 0, 26);
-    t.x = -w / 2 + 50;
-    c.add([g, t]);
-    S.tweens.add({ targets: c, alpha: 1, scale: Math.max(z.k, Cook.Kit.textFloor(S, 36)), y: y - z.L(18), duration: 200, ease: "Back.easeOut" });
-    S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: ms, duration: 320, onComplete: () => c.destroy() });
+    global.Juice.P.pop(S, { x, y: y - z.L(18) }, text, { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: (Cook.view || {}).top || 0, hold: ms });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
     const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
@@ -398,10 +334,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * Cook.Pastry in js/cook/mechanics/fill-fold.js), onto the plate, and straight on to the karahi (SAM-22: nothing waits for a
    * button with nothing to decide).
    */
-  const STRIP_H = 290; // a strip's height at full size (design px); its length is the fold's (Cook.Pastry)
-  const PPU = 300; // the fold's canvas px per strip height
-  const STRIPS = 6;
-  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
+  async function fillFold(z, { who, ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     const z0 = z;
     z = Cook.liftZone(z0);
@@ -409,7 +342,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const ctx = z.ctx;
     const dish = ctx.dishAt || 0;
     const k = Mech.knobs("fold", { level });
-    backdrop(z0, S);
+    backdrop(S);
     // the house board (S6), bigger (P43: "increase the size of the chopping board")
     const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "sv3-board").setDepth(D.item - 2));
     board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
@@ -490,7 +423,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, at.x, at.y - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
       await new Promise((r) => S.tweens.add({ targets: b, y: at.y, displayWidth: at.size * 0.9, displayHeight: at.size * 0.86, duration: 140, ease: "Quad.easeIn", onComplete: r }));
-      if (!quiet) S.puff(at.x, at.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#f3e3b0"), z.L(26));
+      if (!quiet) S.puff(at.x, at.y, St.color(((Cook.item(id) || {}).layer || {}).color || ART.colours.fillPuff), z.L(26));
       if (own) {
         b.destroy();
         own.spoons = (own.spoons || 1) + 1;
@@ -568,6 +501,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       strips.push(st);
     }
     if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
+    // SH-196, STD-D1-08 (the kitchen kit's reveal lessons, Cook.Coach.lessons, piece 14): once the order has landed and before the
+    // first spoon, the dotted word then the blurred picture, each once per player (once a round for the New player); the board
+    // waits, and the first-time coach starts after it (its first thing to point at is the next pick's)
+    if (!retry && Cook.Coach && Cook.Coach.firsts && Cook.Coach.lessons) await Cook.Coach.lessons({ gate: Cook.Coach.firsts("samosa", { round: new Set() }), ctx });
     let active = null;
     // (the test hook focus, flow.js: the strip's filling corner, where each spoonful lands and puffs; CK-27's filmstrip)
     Cook.focusBox = () => {
@@ -841,13 +778,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       if (!again) break;
       helping = true;
+      if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("samosa:fill"); // STD-D2-04: a wrong tick brings the hint at once
       active = null;
       if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
-      if (sayOrder) {
-        const line = orderLine(ladderOf(ctx));
-        if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
-        St.customerDone();
-      }
+      // (too few: they say their order again, the kit's way: their card read along, else the sentence; UI.personSay, piece 18)
+      if (sayOrder) await Promise.race([UI.personSay(who, { line: () => orderLine(ladderOf(ctx)), hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
     }
     Cook.undoAt = null;
     // SAM-24: the fill closes now, for every strip at once: each kind's rows tick together, its samosas all made
@@ -1124,7 +1059,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-158, the S14 roll-out (SAM-28; the central rules' timed.firstTimeHold): a new player's first fry holds in the golden
     // band until a samosa is lifted (js/cook/station-lib.js St.firstHold)
     const hold14 = St.firstHold(z.ctx, "fry:lift");
-    backdrop(z0, S);
+    backdrop(S);
     // S19 / Q9: the wide hob (one big landscape burner) and the karahi 1.5x its old size, the plate to its
     // right on the burner's line; the folded samosas wait on thalis on the band
     const hob = Kit.hob(S, { wide: true, k: z.L(FRY.hobK), cx: z.X(FRY.bx), bottom: z.Y(SHELF_TOP - 16) });
@@ -1186,7 +1121,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let sizzle = null;
     let fireOn = false;
     // shimmer on the oil: it's hot
-    const shimmer = S.track(S.add.ellipse(cx, cy, oilR * 1.7, oilR * 1.7, 0xfff3c0, 0).setDepth(D.item + 0.05));
+    const shimmer = S.track(S.add.ellipse(cx, cy, oilR * 1.7, oilR * 1.7, St.color(ART.colours.shimmer), 0).setDepth(D.item + 0.05));
     S.tweens.add({ targets: shimmer, alpha: 0.12, duration: 700, yoyo: true, repeat: -1 });
     let post = () => {};
     const setFire = (on) => {
@@ -1241,7 +1176,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (Math.random() < 0.08) {
           const bx = f.a.x + (Math.random() - 0.5) * z.L(130);
           const by = f.a.y + (Math.random() - 0.5) * z.L(100);
-          const bub = S.track(S.add.circle(bx, by, z.L(3 + Math.random() * 4), 0xfffbe6, 0.7).setDepth(D.item + 0.9));
+          const bub = S.track(S.add.circle(bx, by, z.L(3 + Math.random() * 4), St.color(ART.colours.bubble), 0.7).setDepth(D.item + 0.9));
           S.tweens.add({ targets: bub, scale: 1.6, alpha: 0, duration: 420, onComplete: () => bub.destroy() });
         }
       });
@@ -1296,7 +1231,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           Cook.sfx.whoosh();
           await S.fly(im, tx, ty, { scale: FS * 0.92, duration: 380, arc: z.L(120) });
           Cook.sfx.sizzle(0.6);
-          S.puff(tx, ty, 0xfff1c0, z.L(40));
+          S.puff(tx, ty, St.color(ART.colours.oilPuff), z.L(40));
           const b = S.track(S.add.image(tx, ty, "sv2-fry-1").setScale(FS * 0.92).setAngle(im.angle).setDepth(im.depth + 0.001).setAlpha(0));
           b.handAction = false;
           const f = { a: im, b, level: 0, rate: Cook.pick([].concat(k.rate || [0.13, 0.18])) || 0.15, y0: ty, ph: Math.random() * 6, ring: Kit.heatRing(S, { width: z.L(7) }), out: false };
@@ -1314,6 +1249,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               if (redo.wrong("samosa:fry").action !== "show") {
                 f.scored = true;
                 if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
+                if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("samosa:lift"); // STD-D2-04
                 if (verdict === "light") {
                   S.tweens.add({ targets: [im, b], y: f.y0 - z.L(18), duration: 140, yoyo: true });
                   f.help = true;
@@ -1402,34 +1338,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- serve and taste (§14a) ---------- */
-  async function serve(z, { who, plate, ok, last }) {
+  /**
+   * The review (X10 / Q1): their big round face over the plate (the kitchen kit's Kit.review on the shared serve, NjgServe), no
+   * body, no pretend eating; over the plate itself, a little above its middle. Always the happy face: decision 51 redid each wrong
+   * piece where it happened (the strip, the count, the lift), and only the first try is scored. (The old "not quite" path, the plate
+   * emptied and the order said again, never ran since decision 51 and is gone.)
+   */
+  async function serve(z, { who, plate }) {
     const S = z.S;
-    const ctx = z.ctx;
     z.expect({ kind: "wait" });
-    // the review (X10 / Q1): their big round face over the plate, no body, no pretend eating
-    // (over the plate itself, a little above its middle; Kit.review keeps it inside the view)
     const pr = (plate.img.displayWidth || z.L(FRY.pd)) / 2;
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr * 0.18, size: z.L(250), k: z.L(1) });
-    if (ok || last) {
-      await Cook.wait(300);
-      await look.close();
-      return true;
-    }
-    // not quite: the card starts again, they say their order again, the plate comes back empty
-    cardAgain(ctx);
-    const line = orderLine(ladderOf(ctx));
-    if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
-    St.customerDone();
-    plate.items.forEach((o) => S.tweens.add({ targets: o, alpha: 0, duration: 300 }));
+    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x, y: plate.img.y - pr * 0.18, size: z.L(250), k: z.L(1) });
+    await Cook.wait(300);
     await look.close();
-    await Cook.wait(120);
-    return false;
   }
 
   Mech.lab("samosa", {
     name: "Samosa",
     verb: "Fill, fold, fry",
     async run(L) {
+      settings();
       const R = Cook.Recipes;
       const who = (L.ctx.order && L.ctx.order.who) || "nana";
       let d = R.samosa.make(who, { level: L.level });
