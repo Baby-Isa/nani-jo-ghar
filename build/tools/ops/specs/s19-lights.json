@@ -24,6 +24,7 @@
     "js/shared/guide.js",
     "js/shared/focus.js",
     "js/cook/hands.js",
+    "build/sandbox/data/evidence.json (your rows' entries only, added in phase 2)",
     "build/reports/s19-lights.md"
   ],
   "readOnly": [
