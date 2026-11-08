@@ -198,7 +198,6 @@
  "jscolour|js/cook/stations/daar.js|ui flagG.lineStyle(L(2), 0x2a2522, 0.85).strokeRect(L(2), -L(pole) + L(2), L(fw), L",
  "jscolour|js/cook/stations/daar.js|ui for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) flagG.fillStyle((i + j) ",
  "jscolour|js/cook/stations/maani-line.js|art-only",
- "jscolour|js/cook/stations/samosa.js|art-only",
  "jscolour|js/core/save.js|export const COLOURS = [\"#c0392b\", \"#2e86c1\", \"#27ae60\", \"#8e44ad\", \"#e67e22\", \"",
  "jscolour|js/core/save.js|export const COLOURS = [\"#c0392b\", \"#2e86c1\", \"#27ae60\", \"#8e44ad\", \"#e67e22\", \"",
  "jscolour|js/core/save.js|export const COLOURS = [\"#c0392b\", \"#2e86c1\", \"#27ae60\", \"#8e44ad\", \"#e67e22\", \"",

@@ -193,6 +193,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
+| SAM-29 | Samosa's worktop lost its 3 px top shade when it moved onto the kit's stone band (`St.stoneBand` draws none; chai draws its own at chai-tray.js 402-404) | **to fix: code** · s18-g-samosa's ask: the kit's stoneBand draws the shade, chai's own lines go (one frozen diff); also `Cook.Coach.pageBox` so chai and samosa stop keeping one each; wave 3 | eye: samosa L1 at 1280x665, the worktop's top edge | Sprint 18, 8 Nov |
 
 ## Cook: maani
 
